@@ -28,6 +28,7 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
+import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -277,6 +278,47 @@ public class NodeStyleController implements IExtension {
 		return DEFAULT_BORDER_WIDTH;
 	}
 	
+	
+	private Boolean getBorderColorMatchesEdgeColor(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeBorderModel borderModel = NodeBorderModel.getModel(styleNode);
+			if (borderModel == null) {
+				continue;
+			}
+			final Boolean borderColorMatchesEdgeColor = borderModel.getBorderColorMatchesEdgeColor();
+			if (borderColorMatchesEdgeColor == null) {
+				continue;
+			}
+			return borderColorMatchesEdgeColor;
+		}
+		return true;
+	}
+	
+	private Color getBorderColor(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeBorderModel borderModel = NodeBorderModel.getModel(styleNode);
+			if (borderModel == null) {
+				continue;
+			}
+			final Color borderColor = borderModel.getBorderColor();
+			if (borderColor == null) {
+				continue;
+			}
+			return borderColor;
+		}
+		return EdgeController.STANDARD_EDGE_COLOR;
+	}
+	
 	public static Font getDefaultFont() {
 		final int fontSize = NodeStyleController.getDefaultFontSize();
 		final int fontStyle = NodeStyleController.getDefaultFontStyle();
@@ -498,5 +540,21 @@ public class NodeStyleController implements IExtension {
 		final Collection<IStyle> style = styleController.getStyles(node);
 		final Quantity<LengthUnits> borderWidth = getBorderWidth(map, style);
 		return borderWidth;
+	}
+
+	public Boolean getBorderColorMatchesEdgeColor(NodeModel node) {
+		final MapModel map = node.getMap();
+		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+		final Collection<IStyle> style = styleController.getStyles(node);
+		final Boolean borderColorMatchesEdgeColor = getBorderColorMatchesEdgeColor(map, style);
+		return borderColorMatchesEdgeColor;
+	}
+
+	public Color getBorderColor(NodeModel node) {
+		final MapModel map = node.getMap();
+		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+		final Collection<IStyle> style = styleController.getStyles(node);
+		final Color borderColor = getBorderColor(map, style);
+		return borderColor;
 	}
 }

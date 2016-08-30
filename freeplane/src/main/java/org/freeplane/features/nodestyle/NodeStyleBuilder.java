@@ -272,6 +272,25 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_WIDTH", borderWidthHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_WIDTH", borderWidthHandler);
+
+		final IAttributeHandler borderColorMatchesEdgeColorHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeBorderModel.setBorderColorMatchesEdgeColor(node, Boolean.valueOf(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_COLOR_LIKE_EDGE", borderColorMatchesEdgeColorHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_COLOR_LIKE_EDGE", borderColorMatchesEdgeColorHandler);
+
+		final IAttributeHandler borderColorHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeBorderModel.setBorderColor(node, ColorUtils.stringToColor(value));
+			}
+		};
+		
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_COLOR", borderColorHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_COLOR", borderColorHandler);
 	}
 
 	/**
@@ -388,6 +407,14 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final Quantity<LengthUnits> borderWidth = forceFormatting ? nsc.getBorderWidth(node) : size.getBorderWidth();
 		if (borderWidth != null) {
 			writer.addAttribute("BORDER_WIDTH", borderWidth.toString());
+		}
+		final Boolean borderColorMatchesEdgeColor = forceFormatting ? nsc.getBorderColorMatchesEdgeColor(node) : size.getBorderColorMatchesEdgeColor();
+		if (borderColorMatchesEdgeColor != null) {
+			writer.addAttribute("BORDER_COLOR_LIKE_EDGE", borderColorMatchesEdgeColor.toString());
+		}
+		final Color borderColor = forceFormatting ? nsc.getBorderColor(node) : size.getBorderColor();
+		if (borderColor != null) {
+			writer.addAttribute("BORDER_COLOR", ColorUtils.colorToString(borderColor));
 		}
 	}
 	

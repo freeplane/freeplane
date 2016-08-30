@@ -119,6 +119,12 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichData.getBorderWidth()) {
 				fromData.setBorderWidth(null);
 			}
+			if (null != whichData.getBorderColorMatchesEdgeColor()) {
+				fromData.setBorderColorMatchesEdgeColor(null);
+			}
+			if (null != whichData.getBorderColor()) {
+				fromData.setBorderColor(null);
+			}
         }
 		
 		private void removeStyleData(Object key, NodeModel from, NodeModel which) {
@@ -264,6 +270,8 @@ public class MNodeStyleController extends NodeStyleController {
 		if (from != null) {
 			setBorderWidthMatchesEdgeWidth(target, from.getBorderWidthMatchesEdgeWidth());
 			setBorderWidth(target, from.getBorderWidth());
+			setBorderColorMatchesEdgeColor(target, from.getBorderColorMatchesEdgeColor());
+			setBorderColor(target, from.getBorderColor());
 		}
     }
 
@@ -717,6 +725,28 @@ public class MNodeStyleController extends NodeStyleController {
     }
 	
 
+	public void setBorderColorMatchesEdgeColor(final NodeModel node, final Boolean borderColorMatchesEdgeColor) {
+		final Boolean oldBorderColorMatchesEdgeColor = NodeBorderModel.getBorderColorMatchesEdgeColor(node);
+		final IActor actor = new IActor() {
+			public void act() {
+				NodeBorderModel.setBorderColorMatchesEdgeColor(node, borderColorMatchesEdgeColor);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setBorderColorMatchesEdgeColor";
+			}
+
+			public void undo() {
+				NodeBorderModel.setBorderColorMatchesEdgeColor(node, oldBorderColorMatchesEdgeColor);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node);
+			}
+		};
+		getModeController().execute(actor, node.getMap());
+    }
+	
 	public void setBorderWidth(final NodeModel node, final Quantity<LengthUnits> borderWidth) {
 		final Quantity<LengthUnits> oldBorderWidth = NodeBorderModel.getBorderWidth(node);
 		final IActor actor = new IActor() {
@@ -740,4 +770,26 @@ public class MNodeStyleController extends NodeStyleController {
 		
     }
 	
+	public void setBorderColor(final NodeModel node, final Color borderColor) {
+		final Color oldBorderColor = NodeBorderModel.getBorderColor(node);
+		final IActor actor = new IActor() {
+			public void act() {
+				NodeBorderModel.setBorderColor(node, borderColor);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setBorderColor";
+			}
+
+			public void undo() {
+				NodeBorderModel.setBorderColor(node, oldBorderColor);
+				final MapController mapController = getModeController().getMapController();
+				mapController.nodeChanged(node);
+			}
+		};
+		getModeController().execute(actor, node.getMap());
+		
+    }
 }

@@ -84,7 +84,7 @@ class ForkMainView extends MainView {
 		float edgeWidth  = getPaintedBorderWidth();
 		g.setStroke(new BasicStroke(edgeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
 		final Color oldColor = g.getColor();
-		g.setColor(nodeView.getEdgeColor());
+		g.setColor(getBorderColor());
 		Point leftLinePoint = getLeftPoint();
 		g.drawLine(leftLinePoint.x, leftLinePoint.y, leftLinePoint.x + getWidth(), leftLinePoint.y);
 		g.setColor(oldColor);

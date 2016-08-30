@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.nodestyle;
 
+import java.awt.Color;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
@@ -45,6 +47,9 @@ public class NodeBorderModel implements IExtension {
 
 	private Boolean borderWidthMatchesEdgeWidth = null;
 	private Quantity<LengthUnits> borderWidth = null;
+
+	private Boolean borderColorMatchesEdgeColor = null;
+	private Color borderColor = null;
 
 	public Boolean getBorderWidthMatchesEdgeWidth() {
 		return borderWidthMatchesEdgeWidth;
@@ -83,10 +88,50 @@ public class NodeBorderModel implements IExtension {
 		this.borderWidthMatchesEdgeWidth = borderWidthMatchesEdgeWidth;
 	}
 
+	public Boolean getBorderColorMatchesEdgeColor() {
+		return borderColorMatchesEdgeColor;
+	}
+	
+	public static Boolean getBorderColorMatchesEdgeColor(final NodeModel node) {
+		final NodeBorderModel extension = node.getExtension(NodeBorderModel.class);
+		return extension == null ? null : extension.getBorderColorMatchesEdgeColor();
+	}
+
+	public static Color getBorderColor(final NodeModel node) {
+		final NodeBorderModel extension = node.getExtension(NodeBorderModel.class);
+		return extension == null ? null : extension.getBorderColor();
+	}
+
+
+	public Color getBorderColor() {
+		return borderColor;
+	}
+
+	public static void setBorderColorMatchesEdgeColor(final NodeModel node, final Boolean borderColorMatchesEdgeColor) {
+		createNodeBorderModel(node).setBorderColorMatchesEdgeColor(borderColorMatchesEdgeColor);
+	}
+
+	public static void setBorderColor(final NodeModel node, final Color borderColor) {
+		createNodeBorderModel(node).setBorderColor(borderColor);
+	}
+
+	public void setBorderColor(Color borderColor) {
+		this.borderColor = borderColor;
+		
+	}
+
+	public void setBorderColorMatchesEdgeColor(Boolean borderColorMatchesEdgeColor) {
+		this.borderColorMatchesEdgeColor = borderColorMatchesEdgeColor;
+	}
+
 	public void copyTo(NodeBorderModel to) {
 	    if(borderWidthMatchesEdgeWidth != null)
 	    	to.setBorderWidthMatchesEdgeWidth(borderWidthMatchesEdgeWidth);
 	    if(borderWidth != null)
 	    	to.setBorderWidth(borderWidth);
+	    if(borderColorMatchesEdgeColor != null)
+	    	to.setBorderColorMatchesEdgeColor(borderColorMatchesEdgeColor);
+	    if(borderColor != null)
+	    	to.setBorderColor(borderColor);
     }
 }
