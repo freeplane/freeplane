@@ -886,6 +886,12 @@ public class NodeView extends JComponent implements INodeView {
 			revalidate();
 			return;
 		}
+		if (property.equals(NodeModel.NODE_ICON_SIZE))
+		{
+			mainView.updateIcons(this);
+			revalidate();
+			return;
+		}
 
 		if (property.equals(HistoryInformationModel.class)) {
 			return;

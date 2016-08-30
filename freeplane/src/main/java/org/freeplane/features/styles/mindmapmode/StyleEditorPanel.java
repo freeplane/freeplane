@@ -45,8 +45,8 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.ComboProperty;
@@ -78,7 +78,7 @@ import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.icon.IconController;
-import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -317,26 +317,15 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 
-	private class IconWidthChangeListener extends ChangeListener {
-		public IconWidthChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+	private class IconSizeChangeListener extends ChangeListener {
+		public IconSizeChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
 		@Override
 		void applyValue(boolean enabled, NodeModel node, PropertyChangeEvent evt) {
-			final IconController iconController = IconController.getController();
-			final Collection<MindIcon> icons = iconController.getIcons(node);
-		}
-	}
-
-	private class IconHeightChangeListener extends ChangeListener {
-		public IconHeightChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(boolean enabled, NodeModel node, PropertyChangeEvent evt) {
-
+			final MIconController iconController = (MIconController) IconController.getController();
+			iconController.changeIconSize(node, mIconWidth.getQuantifiedValue(), mIconHeight.getQuantifiedValue());
 		}
 	}
 
@@ -731,8 +720,9 @@ public class StyleEditorPanel extends JPanel {
 		mSetIconWidth = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetIconWidth);
 		mIconWidth = new QuantityProperty<LengthUnits>(StyleEditorPanel.ICON_WIDTH, 0, 256, 4, LengthUnits.px);
+		mIconWidth.setValue("16");
 		controls.add(mIconWidth);
-		final IconWidthChangeListener listener = new IconWidthChangeListener(mSetIconWidth, mIconWidth);
+		final IconSizeChangeListener listener = new IconSizeChangeListener(mSetIconWidth, mIconWidth);
 		mSetIconWidth.addPropertyChangeListener(listener);
 		mIconWidth.addPropertyChangeListener(listener);
 	}
@@ -741,8 +731,9 @@ public class StyleEditorPanel extends JPanel {
 		mSetIconHeight = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetIconHeight);
 		mIconHeight = new QuantityProperty<LengthUnits>(StyleEditorPanel.ICON_HEIGHT, 0, 256, 4, LengthUnits.px);
+		mIconHeight.setValue("16");
 		controls.add(mIconHeight);
-		final IconHeightChangeListener listener = new IconHeightChangeListener(mSetIconHeight, mIconHeight);
+		final IconSizeChangeListener listener = new IconSizeChangeListener(mSetIconHeight, mIconHeight);
 		mSetIconHeight.addPropertyChangeListener(listener);
 		mIconHeight.addPropertyChangeListener(listener);
 	}
@@ -878,6 +869,7 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(new NextLineProperty());
 		controls.add(new NextColumnProperty(2));
 		addCloudShapeControl(controls);
+		controls.add(new SeparatorProperty("OptionPanel.separator.IconControls"));
 		addIconWidthControl(controls);
 		addIconHeightControl(controls);
 		return controls;
@@ -1062,6 +1054,16 @@ public class StyleEditorPanel extends JPanel {
 				final Quantity<LengthUnits> viewWidth = styleController.getMinWidth(node);
 				mSetMinNodeWidth.setValue(width != null);
 				mMinNodeWidth.setQuantifiedValue(viewWidth);
+			}
+			{
+				final Quantity<LengthUnits> iconWidth = node.getSharedData().getIcons().getIconWidth();
+				mSetIconWidth.setValue(iconWidth != null);
+				if (iconWidth != null)
+					mIconWidth.setQuantifiedValue(iconWidth);
+				final Quantity<LengthUnits> iconHeight = node.getSharedData().getIcons().getIconHeight();
+				mSetIconHeight.setValue(iconHeight != null);
+				if (iconHeight != null)
+					mIconHeight.setQuantifiedValue(iconHeight);
 			}
 			{
 				final LocationModel locationModel = LocationModel.getModel(node);

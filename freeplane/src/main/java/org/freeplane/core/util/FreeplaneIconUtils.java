@@ -54,6 +54,10 @@ public class FreeplaneIconUtils {
 	}
 
 	public static SVGIcon createSVGIcon(final URL url) {
+		return createSVGIcon(url, 16, 16);
+	}
+
+	public static SVGIcon createSVGIcon(final URL url, final int widthPixels, final int heightPixels) {
 		if (svgUniverse == null)
 			svgUniverse = new SVGUniverse();
 
@@ -63,7 +67,7 @@ public class FreeplaneIconUtils {
 			svgUri = svgUniverse.loadSVG(url.openStream(), url.getPath());
 			icon.setSvgUniverse(svgUniverse);
 			icon.setSvgURI(svgUri);
-			icon.setPreferredSize(new Dimension(16, 16));
+			icon.setPreferredSize(new Dimension(widthPixels, heightPixels));
 			icon.setAutosize(SVGIcon.AUTOSIZE_STRETCH);
 			icon.setAntiAlias(isSvgAntialiasEnabled());
 			return icon;

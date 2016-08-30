@@ -26,8 +26,11 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.factory.ImageIconFactory;
+import org.freeplane.features.map.NodeModel;
 
 /**
  * Base class for all icons used in FreePlane.
@@ -88,6 +91,21 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 
 	public Icon getIcon() {
 		return ImageIconFactory.getInstance().getImageIcon(this);
+	}
+
+	public Icon getIcon(final NodeModel node) {
+		// TODO: can NodeIconSetModel be made public???
+		// TODO: the default (16,16) should be set in NodeIconSetModel!!
+		final Quantity<LengthUnits> iconWidth = node.getSharedData().getIcons().getIconWidth();
+		final Quantity<LengthUnits> iconHeight = node.getSharedData().getIcons().getIconHeight();
+
+		if (iconWidth == null)
+			return getIcon();
+		else {
+			final int widthPixels = iconWidth.toBaseUnitsRounded();
+			final int heightPixels = iconHeight.toBaseUnitsRounded();
+			return ImageIconFactory.getInstance().getImageIcon(this, widthPixels, heightPixels);
+		}
 	}
 
 	public KeyStroke getKeyStroke() {

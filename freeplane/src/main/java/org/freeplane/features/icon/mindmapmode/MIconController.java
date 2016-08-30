@@ -49,6 +49,7 @@ import org.freeplane.core.resources.components.KeyProperty;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
@@ -59,6 +60,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconGroup;
@@ -245,6 +247,32 @@ public class MIconController extends IconController {
 			public void undo() {
 				node.removeIcon(position);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, icon, null);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, node.getMap());
+	}
+
+	public void changeIconSize(final NodeModel node, final Quantity<LengthUnits> iconWidth, final Quantity<LengthUnits> iconHeight)
+	{
+		final IActor actor = new IActor() {
+
+			private Quantity<LengthUnits> oldIconWidth;
+			private Quantity<LengthUnits> oldIconHeight;
+
+			public void act() {
+				oldIconWidth = node.getSharedData().getIcons().getIconWidth();
+				oldIconHeight = node.getSharedData().getIcons().getIconHeight();
+				node.getSharedData().getIcons().setIconSize(iconWidth, iconHeight);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON_SIZE, null, null);
+			}
+
+			public String getDescription() {
+				return "changeIconSize";
+			}
+
+			public void undo() {
+				node.getSharedData().getIcons().setIconSize(oldIconWidth, oldIconHeight);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON_SIZE, null, null);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());

@@ -41,29 +41,42 @@ public final class ImageIconFactory {
 	private static final String DEFAULT_IMAGE_PATH = "/images/";
 	private static final ImageIcon ICON_NOT_FOUND = new ImageIcon(ResourceController.getResourceController()
 	    .getResource(DEFAULT_IMAGE_PATH + "IconNotFound.png"));
-	private final WeakHashMap<URL, ImageIcon> ICON_CACHE = new WeakHashMap<URL, ImageIcon>();
+	private final WeakHashMap<String, ImageIcon> ICON_CACHE = new WeakHashMap<String, ImageIcon>();
 
 	public static ImageIconFactory getInstance() {
 		return FACTORY;
 	}
 
 	public ImageIcon getImageIcon(final UIIcon uiIcon) {
-		return getImageIcon(uiIcon.getUrl());
+		return getImageIcon(uiIcon.getUrl(), 16, 16);
+	}
+
+	public ImageIcon getImageIcon(final UIIcon uiIcon, final int widthPixels, final int heightPixels) {
+		return getImageIcon(uiIcon.getUrl(), widthPixels, heightPixels);
 	}
 
 	public ImageIcon getImageIcon(final URL url) {
+		return getImageIcon(url, 16, 16);
+	}
+
+	private String createCacheKey(final URL url, final int widthPixels, final int heightPixels) {
+		return url.toString() + "-" + widthPixels + "x" + heightPixels;
+	}
+
+	public ImageIcon getImageIcon(final URL url, final int widthPixels, final int heightPixels) {
 		ImageIcon result = ICON_NOT_FOUND;
 		if (url != null) {
-			if (ICON_CACHE.containsKey(url)) {
-				result = ICON_CACHE.get(url);
+			final String cacheKey = createCacheKey(url, widthPixels, heightPixels);
+			if (ICON_CACHE.containsKey(cacheKey)) {
+				result = ICON_CACHE.get(cacheKey);
 			}
 			else {
 				if (url.getPath().toLowerCase(Locale.ENGLISH).endsWith(".svg")) {
-					result = FreeplaneIconUtils.createSVGIcon(url);
+					result = FreeplaneIconUtils.createSVGIcon(url, widthPixels, heightPixels);
 				} else {
 					result = new ImageIcon(url);
 				}
-				ICON_CACHE.put(url, result);
+				ICON_CACHE.put(cacheKey, result);
 			}
 		}
 		return result;
