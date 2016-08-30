@@ -2,6 +2,7 @@
 1.6.0
 ===============================
 Configurable node border widths
+Configurable node border colors
 
 ===============================
 1.5.16
