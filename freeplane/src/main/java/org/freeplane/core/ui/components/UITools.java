@@ -47,6 +47,7 @@ import javax.swing.FocusManager;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -646,7 +647,7 @@ public class UITools {
 
 	public static boolean isEditingText() {
 	    final Component focusOwner = FocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-		final boolean isTextComponentFocused = focusOwner instanceof JTextComponent;
+		final boolean isTextComponentFocused = focusOwner instanceof JEditorPane;
 		return isTextComponentFocused && focusOwner.isShowing() && ((JTextComponent)focusOwner).isEditable();
     }
 
