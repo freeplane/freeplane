@@ -101,8 +101,7 @@ class ForkMainView extends MainView {
     public Insets getInsets(Insets insets) {
     	final NodeView nodeView = getNodeView();
         int edgeWidth = nodeView.getEdgeWidth();
-        final EdgeStyle style = nodeView.getEdgeStyle();
-        edgeWidth = Math.max((int)style.getNodeLineWidth(edgeWidth), 1);
+        edgeWidth = Math.round(getUnzoomedBorderWidth());
 		if(insets == null)
     		insets = new Insets(0, 2, edgeWidth, 2);
     	else
