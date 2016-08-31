@@ -305,6 +305,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		writer.addExtensionElementWriter(NodeStyleModel.class, this);
 		writer.addExtensionAttributeWriter(NodeStyleModel.class, this);
 		writer.addExtensionAttributeWriter(NodeSizeModel.class, this);
+		writer.addExtensionAttributeWriter(NodeBorderModel.class, this);
 	}
 
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
@@ -398,21 +399,21 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		}
 	}
 	
-	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeBorderModel size,
+	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeBorderModel border,
 			final boolean forceFormatting) {
-		final Boolean borderWidthMatchesEdgeWidth = forceFormatting ? nsc.getBorderWidthMatchesEdgeWidth(node) : size.getBorderWidthMatchesEdgeWidth();
+		final Boolean borderWidthMatchesEdgeWidth = forceFormatting ? nsc.getBorderWidthMatchesEdgeWidth(node) : border.getBorderWidthMatchesEdgeWidth();
 		if (borderWidthMatchesEdgeWidth != null) {
 			writer.addAttribute("BORDER_WIDTH_LIKE_EDGE", borderWidthMatchesEdgeWidth.toString());
 		}
-		final Quantity<LengthUnits> borderWidth = forceFormatting ? nsc.getBorderWidth(node) : size.getBorderWidth();
+		final Quantity<LengthUnits> borderWidth = forceFormatting ? nsc.getBorderWidth(node) : border.getBorderWidth();
 		if (borderWidth != null) {
 			writer.addAttribute("BORDER_WIDTH", borderWidth.toString());
 		}
-		final Boolean borderColorMatchesEdgeColor = forceFormatting ? nsc.getBorderColorMatchesEdgeColor(node) : size.getBorderColorMatchesEdgeColor();
+		final Boolean borderColorMatchesEdgeColor = forceFormatting ? nsc.getBorderColorMatchesEdgeColor(node) : border.getBorderColorMatchesEdgeColor();
 		if (borderColorMatchesEdgeColor != null) {
 			writer.addAttribute("BORDER_COLOR_LIKE_EDGE", borderColorMatchesEdgeColor.toString());
 		}
-		final Color borderColor = forceFormatting ? nsc.getBorderColor(node) : size.getBorderColor();
+		final Color borderColor = forceFormatting ? nsc.getBorderColor(node) : border.getBorderColor();
 		if (borderColor != null) {
 			writer.addAttribute("BORDER_COLOR", ColorUtils.colorToString(borderColor));
 		}
