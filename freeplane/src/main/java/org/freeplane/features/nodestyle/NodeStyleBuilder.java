@@ -45,6 +45,8 @@ import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.n3.nanoxml.XMLElement;
 
+import com.sun.xml.internal.ws.util.StringUtils;
+
 class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, IExtensionAttributeWriter,
         IAttributeWriter, IElementWriter {
 	static class FontProperties {
@@ -285,12 +287,21 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final IAttributeHandler borderColorHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeBorderModel.setBorderColor(node, ColorUtils.stringToColor(value));
+				NodeBorderModel.setBorderColor(node, ColorUtils.stringToColor(value, NodeBorderModel.getBorderColor(node)));
 			}
 		};
+		final IAttributeHandler borderColorAlphaHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeBorderModel.setBorderColor(node, ColorUtils.alphaToColor(value, NodeBorderModel.getBorderColor(node)));
+			}
+		};
+
 		
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_COLOR", borderColorHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_COLOR_ALPHA", borderColorAlphaHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_COLOR", borderColorHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_COLOR_ALPHA", borderColorAlphaHandler);
 	}
 
 	/**
@@ -415,6 +426,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		}
 		final Color borderColor = forceFormatting ? nsc.getBorderColor(node) : border.getBorderColor();
 		if (borderColor != null) {
+			ColorUtils.addColorAttributes(writer, "BORDER_COLOR", "BORDER_COLOR_ALPHA", borderColor);
 			writer.addAttribute("BORDER_COLOR", ColorUtils.colorToString(borderColor));
 		}
 	}
