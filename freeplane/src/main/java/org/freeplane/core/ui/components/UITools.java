@@ -28,6 +28,9 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -38,6 +41,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 import java.net.URI;
 
 import javax.swing.AbstractAction;
@@ -238,41 +242,64 @@ public class UITools {
 
 	public static Rectangle getValidFrameBounds(final Component frame, int win_x, int win_y, int win_width,
 			int win_height) {
-		final Rectangle desktopBounds = getDesktopBounds(frame);
-		int screenWidth = desktopBounds.width;
+		GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(frame, win_x, win_y);
+		final Rectangle screenBounds = getScreenBounds(graphicsConfiguration);
+		int screenWidth = screenBounds.width;
 		if(win_width != -1)
 			win_width = Math.min(win_width, screenWidth );
 		else
 			win_width =  screenWidth * 4 / 5;
-		int screenHeight = desktopBounds.height;
+		int screenHeight = screenBounds.height;
 		if(win_height != -1)
 			win_height = Math.min(win_height, screenHeight);
 		else
 			win_height =  screenHeight * 4 / 5;
 		if(win_x != -1){
-			win_x = Math.min(screenWidth + desktopBounds.x - win_width, win_x);
-			win_x = Math.max(desktopBounds.x, win_x);
+			win_x = Math.min(screenWidth + screenBounds.x - win_width, win_x);
+			win_x = Math.max(screenBounds.x, win_x);
 		}
 		else
-			win_x = desktopBounds.x + (screenWidth - win_width) / 2;
+			win_x = screenBounds.x + (screenWidth - win_width) / 2;
 		if(win_y != -1){
-			win_y = Math.max(desktopBounds.y, win_y);
-			win_y = Math.min(screenHeight + desktopBounds.y - win_height, win_y);
+			win_y = Math.max(screenBounds.y, win_y);
+			win_y = Math.min(screenHeight + screenBounds.y - win_height, win_y);
 		}
 		else
-			win_y = desktopBounds.y + (screenHeight - win_height) / 2;
+			win_y = screenBounds.y + (screenHeight - win_height) / 2;
 		final Rectangle frameBounds = new Rectangle( win_x, win_y, win_width, win_height);
 		return frameBounds;
 	}
 
-	public static Rectangle getDesktopBounds(Component frame) {
+	private static GraphicsConfiguration findGraphicsConfiguration(final Component component, int x, int y) {
+	    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	      GraphicsDevice[] gs = ge.getScreenDevices();
+	      for (int j = 0; j < gs.length; j++) {
+	          GraphicsDevice gd = gs[j];
+	          GraphicsConfiguration[] gc = gd.getConfigurations();
+	          for (int i=0; i < gc.length; i++) {
+	              final Rectangle screenBounds = gc[i].getBounds();
+	              if(screenBounds.contains(x, y))
+	            	  return gc[i];
+	          }
+	      }
+		return component != null ? component.getGraphicsConfiguration() : null;
+	}
+
+	public static Rectangle getAvailableScreenBounds(Component frame) {
+		final GraphicsConfiguration graphicsConfiguration = frame.getGraphicsConfiguration();
+		return getScreenBounds(graphicsConfiguration);
+    }
+
+	public static Rectangle getScreenBounds(final GraphicsConfiguration graphicsConfiguration) {
 		final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-		final Insets screenInsets = defaultToolkit.getScreenInsets(frame.getGraphicsConfiguration());
-		final Dimension screenSize = defaultToolkit.getScreenSize();
+		final Insets screenInsets = defaultToolkit.getScreenInsets(graphicsConfiguration);
+		final Rectangle screenBounds = graphicsConfiguration.getBounds();
+		final Point screenLocation = screenBounds.getLocation();
+		final Dimension screenSize = screenBounds.getSize();
 		final int screenWidth = screenSize.width - screenInsets.left - screenInsets.right;
 		final int screenHeight = screenSize.height - screenInsets.top - screenInsets.bottom;
-		return new Rectangle(screenInsets.left,  screenInsets.top, screenWidth, screenHeight);
-    }
+		return new Rectangle(screenLocation.x + screenInsets.left,  screenLocation.y + screenInsets.top, screenWidth, screenHeight);
+	}
 
 	public static void setDialogLocationRelativeTo(final JDialog dialog, final Component c) {
 		if (c == null || ! c.isShowing()) {
@@ -287,7 +314,7 @@ public class UITools {
 		final int ph = parent.getHeight();
 		final int dw = dialog.getWidth();
 		final int dh = dialog.getHeight();
-		final Rectangle desktopBounds = getDesktopBounds(c);
+		final Rectangle desktopBounds = getAvailableScreenBounds(c);
 		final int minX = Math.max(parentLocation.x, desktopBounds.x);
 		final int minY = Math.max(parentLocation.y, desktopBounds.y);
 		final int maxX = Math.min(parentLocation.x + pw, desktopBounds.x + desktopBounds.width);
@@ -598,22 +625,33 @@ public class UITools {
 	static {
 		float factor = 1f;
 		try {
-	        factor = UITools.getScreenResolution()  / 72f;
+	        factor = UITools.getScaleFactor();
         }
         catch (Exception e) {
         }
 		FONT_SCALE_FACTOR = factor;
 	}
 
-	public static int getScreenResolution() {
+	private static float getScaleFactor() {
 		final int systemScreenResolution = Toolkit.getDefaultToolkit().getScreenResolution();
 		if(ResourceController.getResourceController().getBooleanProperty("apply_system_screen_resolution")){
-			return systemScreenResolution;
+			int windowX = ResourceController.getResourceController().getIntProperty("appwindow_x", 0);
+			int windowY = ResourceController.getResourceController().getIntProperty("appwindow_y", 0);
+			final GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(null, windowX, windowY);
+			final float scaleFactor;
+			if(graphicsConfiguration != null) {
+				final AffineTransform normalizingTransform = graphicsConfiguration.getNormalizingTransform();
+				scaleFactor = (float) normalizingTransform.getScaleX();
+			}
+			else
+				scaleFactor = systemScreenResolution / 72f;
+			LogUtils.info("Apply system screen resolution, scaleFactor = " + scaleFactor);
+			return scaleFactor;
 		}
 		else
-			return ResourceController.getResourceController().getIntProperty("user_defined_screen_resolution", systemScreenResolution);
+			return ResourceController.getResourceController().getIntProperty("user_defined_screen_resolution", systemScreenResolution)  / 72f;
     }
-
+	
 	public static Font scale(Font font) {
 		return font.deriveFont(font.getSize2D()*FONT_SCALE_FACTOR);
 	}

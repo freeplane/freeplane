@@ -149,7 +149,7 @@ public class ExportWithXSLT implements IExportEngine {
 		if (Controller.getCurrentController().getMapViewManager().getMapViewComponent() == null) {
 			return false;
 		}
-		final RenderedImage image = new ImageCreator(UITools.getScreenResolution()).createBufferedImage(map);
+		final RenderedImage image = new ImageCreator(Math.round(UITools.FONT_SCALE_FACTOR * 72)).createBufferedImage(map);
 		if(image == null){
 			return false;
 		}
