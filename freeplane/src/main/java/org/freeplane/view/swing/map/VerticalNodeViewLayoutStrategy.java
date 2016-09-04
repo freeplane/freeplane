@@ -188,6 +188,10 @@ class VerticalNodeViewLayoutStrategy {
 						contentHeightSumAtGroupStart[level] = contentHeightSumAtGroupStart[itemLevel];
 						groupStartIndex[level] = groupStartIndex[itemLevel];
 					}
+					if(groupUpperYCoordinate[itemLevel] == Integer.MAX_VALUE){
+						groupUpperYCoordinate[itemLevel] = 0;
+						groupLowerYCoordinate[itemLevel] = 0;
+					}
 					int summaryY = (groupUpperYCoordinate[itemLevel] + groupLowerYCoordinate[itemLevel]) / 2 
 							- childContentHeight / 2 + childShiftY
 							- (child.getContent().getY() - childCloudHeigth / 2 - spaceAround);
