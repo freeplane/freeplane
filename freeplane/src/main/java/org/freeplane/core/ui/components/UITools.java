@@ -638,12 +638,15 @@ public class UITools {
 			int windowX = ResourceController.getResourceController().getIntProperty("appwindow_x", 0);
 			int windowY = ResourceController.getResourceController().getIntProperty("appwindow_y", 0);
 			final GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(null, windowX, windowY);
+			final float scaleFactor;
 			if(graphicsConfiguration != null) {
 				final AffineTransform normalizingTransform = graphicsConfiguration.getNormalizingTransform();
-				return (float) normalizingTransform.getScaleX();
+				scaleFactor = (float) normalizingTransform.getScaleX();
 			}
 			else
-				return systemScreenResolution / 72f;
+				scaleFactor = systemScreenResolution / 72f;
+			LogUtils.info("Apply system screen resolution, scaleFactor = " + scaleFactor);
+			return scaleFactor;
 		}
 		else
 			return ResourceController.getResourceController().getIntProperty("user_defined_screen_resolution", systemScreenResolution)  / 72f;
