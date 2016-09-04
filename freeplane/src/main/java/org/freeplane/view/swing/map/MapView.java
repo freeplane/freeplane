@@ -53,6 +53,7 @@ import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -60,6 +61,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.swing.JComponent;
@@ -95,6 +97,7 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
+import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -875,40 +878,31 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	ArrayList<NodeModel> getSelectedNodesSortedByY(final boolean differentSubtrees) {
 		validateSelecteds();
-		final TreeMap<Integer, LinkedList<NodeModel>> sortedNodes = new TreeMap<Integer, LinkedList<NodeModel>>();
+		final TreeSet<NodeModel> sortedNodes = new TreeSet<NodeModel>(NodeRelativePath.comparator());
 		for (final NodeView view : selection.getSelectedSet()) {
-			if (differentSubtrees) {
-				if(viewBelongsToSelectedSubtreeOrItsClone(view))
-					continue;
+			if (! ( differentSubtrees  && viewBelongsToSelectedSubtreeOrItsClone(view))) {
+				sortedNodes.add(view.getModel());
 			}
-			final Point point = new Point();
-			UITools.convertPointToAncestor(view.getParent(), point, this);
-			final NodeModel node = view.getModel();
-			if(node.getParentNode() != null){
-			    point.y += node.getParentNode().getIndex(node);
-			}
-			LinkedList<NodeModel> nodeList = sortedNodes.get(point.y);
-			if (nodeList == null) {
-				nodeList = new LinkedList<NodeModel>();
-				sortedNodes.put(point.y, nodeList);
-			}
-			nodeList.add(node);
 		}
-		final ArrayList<NodeModel> selectedNodes = new ArrayList<NodeModel>();
-		for (final LinkedList<NodeModel> nodeList : sortedNodes.values()) {
-			ADD_NODES: for (final NodeModel nodeModel : nodeList) {
-				if(differentSubtrees){
-					final NodeModel parentNode = nodeModel.getParentNode();
-					if(parentNode != null){
-						final int index = parentNode.getIndex(nodeModel);
-						for(NodeModel parentClone : parentNode.subtreeClones())
-							if(selectedNodes.contains(parentClone.getChildAt(index)))
-								continue ADD_NODES;
-					}
+		if(differentSubtrees){
+			return getUniqueNodes(sortedNodes);
+		}
+		else
+			return new ArrayList<NodeModel>(sortedNodes);
+	}
 
-				}
-				selectedNodes.add(nodeModel);
+	private ArrayList<NodeModel> getUniqueNodes(final Collection<NodeModel> sortedNodes) {
+		final ArrayList<NodeModel> selectedNodes = new ArrayList<NodeModel>();
+		ADD_NODES: for (final NodeModel nodeModel : sortedNodes) {
+			final NodeModel parentNode = nodeModel.getParentNode();
+			if(parentNode != null){
+				final int index = parentNode.getIndex(nodeModel);
+				for(NodeModel parentClone : parentNode.subtreeClones())
+					if(selectedNodes.contains(parentClone.getChildAt(index)))
+						continue ADD_NODES;
 			}
+
+			selectedNodes.add(nodeModel);
 		}
 		return selectedNodes;
 	}

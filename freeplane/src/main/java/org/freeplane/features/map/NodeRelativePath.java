@@ -20,6 +20,8 @@
 package org.freeplane.features.map;
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
 
 
 /**
@@ -31,10 +33,38 @@ public class NodeRelativePath {
 	private final NodeModel commonAncestor;
 	private final int[] beginPath;
 	private final int[] endPath;
+	
+	public final static Comparator<NodeModel> comparator() {
+		return new Comparator<NodeModel>() {
+			private final HashMap<NodeModel, NodeAbsolutePath> paths = new HashMap<>(); 
+
+			@Override
+			public int compare(NodeModel o1, NodeModel o2) {
+				if(o1 == o2)
+					return 0;
+				if(o1 == null)
+					return -1;
+				final NodeAbsolutePath absoluteBeginPath = getPath(o1);
+				final NodeAbsolutePath absoluteEndPath = getPath(o2);
+				return new NodeRelativePath(absoluteBeginPath, absoluteEndPath).compareNodePositions();
+			}
+
+			public NodeAbsolutePath getPath(NodeModel node) {
+				NodeAbsolutePath path = paths.get(node);
+				if(path == null) {
+					path = new NodeAbsolutePath(node);
+					paths.put(node, path);
+				}
+				return path;
+			}
+		};
+	}
 
 	public NodeRelativePath(NodeModel begin, NodeModel end) {
-		final NodeAbsolutePath absoluteBeginPath = new NodeAbsolutePath(begin);
-		final NodeAbsolutePath absoluteEndPath = new NodeAbsolutePath(end);
+		this(new NodeAbsolutePath(begin), new NodeAbsolutePath(end));
+	}
+		
+	public NodeRelativePath(NodeAbsolutePath absoluteBeginPath, NodeAbsolutePath absoluteEndPath) {
 		NodeModel commonAncestor = null;
 		while(absoluteBeginPath.hasNext() && absoluteEndPath.hasNext()){
 			 NodeModel nextNodeOnBeginPath = absoluteBeginPath.next();

@@ -146,6 +146,18 @@ public class NodeRelativePathTest {
 		assertTrue(compared < 0);
 	}
 	
+
+	@Test
+	public void compareNodesWithSameParentUsingComparator(){
+		final NodeModel parent = root();
+		final NodeModel node1 = new NodeModel("node1", map);
+		parent.insert(node1);
+		final NodeModel node2 = new NodeModel("node2", map);
+		parent.insert(node2);
+		final int compared = NodeRelativePath.comparator().compare(node2, node1);
+		assertTrue(compared > 0);
+	}
+	
 	@Test
 	public void compareSameNode(){
 		final NodeModel parent = root();
