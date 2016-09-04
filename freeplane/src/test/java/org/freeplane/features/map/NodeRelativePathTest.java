@@ -134,4 +134,40 @@ public class NodeRelativePathTest {
 		final NodeRelativePath nodeRelativePath = new NodeRelativePath(node1, node2);
 		assertThat(nodeRelativePath.endPathElement(1), equalTo(node2));
 	}
+
+	@Test
+	public void compareNodesWithSameParent(){
+		final NodeModel parent = root();
+		final NodeModel node1 = new NodeModel("node1", map);
+		parent.insert(node1);
+		final NodeModel node2 = new NodeModel("node2", map);
+		parent.insert(node2);
+		final int compared = new NodeRelativePath(node1, node2).compareNodePositions();
+		assertTrue(compared < 0);
+	}
+	
+	@Test
+	public void compareSameNode(){
+		final NodeModel parent = root();
+		final int compared = new NodeRelativePath(parent, parent).compareNodePositions();
+		assertTrue(compared == 0);
+	}
+
+	@Test
+	public void compareParentToDescendantNode(){
+		final NodeModel parent = root();
+		final NodeModel node1 = new NodeModel("node1", map);
+		parent.insert(node1);
+		final int compared = new NodeRelativePath(parent, node1).compareNodePositions();
+		assertTrue(compared < 0);
+	}
+
+	@Test
+	public void compareDescendantNodeToParent(){
+		final NodeModel parent = root();
+		final NodeModel node1 = new NodeModel("node1", map);
+		parent.insert(node1);
+		final int compared = new NodeRelativePath(parent, node1).compareNodePositions();
+		assertTrue(compared < 0);
+	}
 }

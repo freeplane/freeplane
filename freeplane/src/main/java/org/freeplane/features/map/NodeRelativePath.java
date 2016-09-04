@@ -116,5 +116,15 @@ public class NodeRelativePath {
 	public int getPathLength() {
 		return beginPath.length + endPath.length;
 	}
+
+	public int compareNodePositions() {
+		if(beginPath.length == 0 && endPath.length == 0)
+			return 0;
+		if(beginPath.length == 0) 
+			return -1;
+		if(endPath.length == 0) 
+			return 1;
+		return Integer.compare(beginPath[0], endPath[0]);
+	}
 	
 }
