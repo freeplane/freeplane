@@ -20,10 +20,10 @@ public enum LengthUnits implements Convertible{
 		
  */
 		px(1d), 
-		in(UITools.getScreenResolution()), 
-		mm(UITools.getScreenResolution() / 25.4), 
-		cm(UITools.getScreenResolution() / 2.54),
-		pt(UITools.getScreenResolution() / 72.0);
+		in(UITools.FONT_SCALE_FACTOR * 72.0), 
+		mm(UITools.FONT_SCALE_FACTOR * 72.0 / 25.4), 
+		cm(UITools.FONT_SCALE_FACTOR * 72.0 / 2.54),
+		pt(UITools.FONT_SCALE_FACTOR);
 		
 		LengthUnits(double factor){
 			this.factor = factor;

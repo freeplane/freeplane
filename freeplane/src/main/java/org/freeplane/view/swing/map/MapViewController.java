@@ -326,7 +326,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		view.preparePrinting();
 		final Rectangle innerBounds = view.getInnerBounds();
 
-		double scaleFactor = (double) dpi / (double) UITools.getScreenResolution();
+		double scaleFactor = (double) dpi / (double) (UITools.FONT_SCALE_FACTOR * 72);
 
 		int imageWidth = (int) Math.ceil(innerBounds.width * scaleFactor);
 		int imageHeight = (int) Math.ceil(innerBounds.height * scaleFactor);

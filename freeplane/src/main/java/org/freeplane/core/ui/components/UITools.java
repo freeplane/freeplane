@@ -41,6 +41,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 import java.net.URI;
 
 import javax.swing.AbstractAction;
@@ -281,7 +282,7 @@ public class UITools {
 	            	  return gc[i];
 	          }
 	      }
-		return component.getGraphicsConfiguration();
+		return component != null ? component.getGraphicsConfiguration() : null;
 	}
 
 	public static Rectangle getAvailableScreenBounds(Component frame) {
@@ -624,22 +625,30 @@ public class UITools {
 	static {
 		float factor = 1f;
 		try {
-	        factor = UITools.getScreenResolution()  / 72f;
+	        factor = UITools.getScaleFactor();
         }
         catch (Exception e) {
         }
 		FONT_SCALE_FACTOR = factor;
 	}
 
-	public static int getScreenResolution() {
+	private static float getScaleFactor() {
 		final int systemScreenResolution = Toolkit.getDefaultToolkit().getScreenResolution();
 		if(ResourceController.getResourceController().getBooleanProperty("apply_system_screen_resolution")){
-			return systemScreenResolution;
+			int windowX = ResourceController.getResourceController().getIntProperty("appwindow_x", 0);
+			int windowY = ResourceController.getResourceController().getIntProperty("appwindow_y", 0);
+			final GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(null, windowX, windowY);
+			if(graphicsConfiguration != null) {
+				final AffineTransform normalizingTransform = graphicsConfiguration.getNormalizingTransform();
+				return (float) normalizingTransform.getScaleX();
+			}
+			else
+				return systemScreenResolution / 72f;
 		}
 		else
-			return ResourceController.getResourceController().getIntProperty("user_defined_screen_resolution", systemScreenResolution);
+			return ResourceController.getResourceController().getIntProperty("user_defined_screen_resolution", systemScreenResolution)  / 72f;
     }
-
+	
 	public static Font scale(Font font) {
 		return font.deriveFont(font.getSize2D()*FONT_SCALE_FACTOR);
 	}
