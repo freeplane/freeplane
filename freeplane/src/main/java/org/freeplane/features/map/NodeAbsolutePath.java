@@ -29,7 +29,7 @@ import java.util.ListIterator;
  */
 public class NodeAbsolutePath{
 	final private List<NodeModel> path;
-	final private ListIterator<NodeModel> iterator;
+	private ListIterator<NodeModel> iterator;
 	public NodeAbsolutePath(NodeModel node) {
 		path = Arrays.asList(node.getPathToRoot());
 		iterator = path.listIterator();
@@ -49,6 +49,10 @@ public class NodeAbsolutePath{
 	public NodeModel previous() {
 	    return iterator.previous();
     }
+	
+	public void reset(){
+		iterator = path.listIterator();
+	}
 	
 	
 }
