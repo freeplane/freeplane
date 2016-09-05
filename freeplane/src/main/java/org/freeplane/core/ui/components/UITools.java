@@ -633,23 +633,7 @@ public class UITools {
 	}
 
 	private static float getScaleFactor() {
-		final int systemScreenResolution = Toolkit.getDefaultToolkit().getScreenResolution();
-		if(ResourceController.getResourceController().getBooleanProperty("apply_system_screen_resolution")){
-			int windowX = ResourceController.getResourceController().getIntProperty("appwindow_x", 0);
-			int windowY = ResourceController.getResourceController().getIntProperty("appwindow_y", 0);
-			final GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(null, windowX, windowY);
-			final float scaleFactor;
-			if(graphicsConfiguration != null) {
-				final AffineTransform normalizingTransform = graphicsConfiguration.getNormalizingTransform();
-				scaleFactor = (float) normalizingTransform.getScaleX();
-			}
-			else
-				scaleFactor = systemScreenResolution / 72f;
-			LogUtils.info("Apply system screen resolution, scaleFactor = " + scaleFactor);
-			return scaleFactor;
-		}
-		else
-			return ResourceController.getResourceController().getIntProperty("user_defined_screen_resolution", systemScreenResolution)  / 72f;
+			return ResourceController.getResourceController().getIntProperty("user_defined_screen_resolution", 96)  / 72f;
     }
 	
 	public static Font scale(Font font) {
