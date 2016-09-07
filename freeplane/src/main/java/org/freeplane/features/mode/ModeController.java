@@ -382,7 +382,6 @@ public class ModeController extends AController implements FreeplaneActions{
 	public void updateMenus(String menuStructure, final Set<String> plugins) {
 		final IUserInputListenerFactory userInputListenerFactory = getUserInputListenerFactory();
 		userInputListenerFactory.updateMenus(menuStructure, plugins);
-		userInputListenerFactory.getAcceleratorManager().loadAcceleratorPresets();
 	}
 
 	public boolean canEdit() {

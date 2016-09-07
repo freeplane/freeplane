@@ -158,6 +158,8 @@ public class FreeplaneApplet extends JApplet {
 			controller.addAction(new NextNodeAction(Direction.BACK_N_FOLD));
 			controller.addAction(new NextPresentationItemAction());
 			browseController.updateMenus("/xml/appletmenu.xml", emptySet);
+			browseController.getUserInputListenerFactory().getAcceleratorManager().loadAcceleratorPresets();
+
 			controller.selectMode(browseController);
 			appletResourceController.setPropertyByParameter(this, "browsemode_initial_map");
 			appletViewController.init(controller);
