@@ -34,7 +34,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 		final MapView mapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 		if (mapView == null || SwingUtilities.isDescendingFrom(mapView, e.getComponent()))
 			return;
-		final ActionAcceleratorManager acceleratorManager = mapView.getModeController().getUserInputListenerFactory().getAcceleratorManager();
+		final ActionAcceleratorManager acceleratorManager = ResourceController.getResourceController().getAcceleratorManager();
 		if(acceleratorManager.canProcessKeyEvent(e))
 			return;
 		if(checkForScrollMap){

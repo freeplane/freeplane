@@ -402,8 +402,7 @@ public class EditNodeTextField extends EditNodeBase {
 			final int keyCode = e.getKeyCode();
 			if (keyCode == SPLIT_KEY_CODE && keyCode != -1 && e.isAltDown() && ! Compat.isMacOsX())
 				return true;
-			final ModeController modeController = Controller.getCurrentModeController();
-			final KeyStroke splitNodeHotKey = modeController.getUserInputListenerFactory().getAcceleratorManager().getAccelerator("SplitNode");
+			final KeyStroke splitNodeHotKey = ResourceController.getResourceController().getAcceleratorManager().getAccelerator("SplitNode");
 			return splitNodeHotKey != null && splitNodeHotKey.getKeyCode() == keyCode  &&  
 					(e.getModifiersEx() & KEYSTROKE_MODIFIERS)  == (splitNodeHotKey.getModifiers() & KEYSTROKE_MODIFIERS);
 		}

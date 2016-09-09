@@ -35,6 +35,7 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.TimePeriodUnits;
 import org.freeplane.core.util.FileUtils;
@@ -58,6 +59,8 @@ public abstract class ResourceController {
 	}
 
 	final private List<IFreeplanePropertyListener> propertyChangeListeners = new Vector<IFreeplanePropertyListener>();
+	static private  final ActionAcceleratorManager acceleratorManager = new ActionAcceleratorManager();
+
 	private ResourceBundles resources;
     public static final String FREEPLANE_RESOURCE_URL_PROTOCOL = "freeplaneresource";
 	public static final String OBJECT_TYPE = "ObjectType";
@@ -327,5 +330,9 @@ public abstract class ResourceController {
 				return;
 			}
 		}
+	}
+
+	public ActionAcceleratorManager getAcceleratorManager() {
+		return acceleratorManager;
 	}
 }
