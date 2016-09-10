@@ -352,10 +352,11 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 				keyStroke = UITools.getKeyStroke(keystrokeString);
  				final AFreeplaneAction oldAction = accelerators.get(key(modeController, keyStroke));
  				if (oldAction != null) {
- 					setAccelerator(modeController, oldAction, null);
  					final Object key = oldAction.getKey();
  					final String oldShortcutKey = getPropertyKey(modeController, key.toString());
- 					setKeysetProperty(oldShortcutKey, "");
+ 					final boolean isOldAcceleratorUserDefined = keysetProps.containsKey(oldShortcutKey);
+					if(! isOldAcceleratorUserDefined)
+ 						setAccelerator(modeController, oldAction, null);
  				}
  			}
  			else {
@@ -481,9 +482,6 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
 	private void setKeysetProperty(String key, String value) {
-//		if(! key.startsWith("acceleratorFor.MindMap"))
-//			throw new AssertionError(key);
 		keysetProps.setProperty(key, value);
-		
 	}
 }
