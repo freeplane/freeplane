@@ -370,7 +370,10 @@ public class UrlManager implements IExtension {
 			if (!FileUtils.isAbsolutePath(map)) {
 				map = System.getProperty("user.dir") + System.getProperty("file.separator") + map;
 			}
-			loadURL(new File(map).toURI());
+			final NodeAndMapReference nodeAndMapReference = new NodeAndMapReference(map);
+			final URI uri = new File(nodeAndMapReference.getMapReference()).toURI();
+			final URI uriWithNodeReference = new URI(uri.getScheme(), null, uri.getPath(), nodeAndMapReference.getNodeReference());
+			loadURL(uriWithNodeReference);
 		}
 	}
 	
