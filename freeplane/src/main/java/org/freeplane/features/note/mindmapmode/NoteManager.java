@@ -136,7 +136,8 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		if(newMap == null) {
 			node = null;
 			final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
-			noteViewerComponent.setCurrentDocumentContent("");
+			if(noteViewerComponent != null)
+				noteViewerComponent.setCurrentDocumentContent("");
 		}
 	}
 
