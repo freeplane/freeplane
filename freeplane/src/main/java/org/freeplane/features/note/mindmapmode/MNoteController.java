@@ -325,6 +325,7 @@ public class MNoteController extends NoteController {
 
 	public void shutdownController() {
 		Controller.getCurrentModeController().getMapController().removeNodeSelectionListener(noteManager);
+		Controller.getCurrentController().getMapViewManager().removeMapSelectionListener(noteManager);
 		if (noteViewerComponent == null) {
 			return;
 		}
@@ -341,6 +342,7 @@ public class MNoteController extends NoteController {
 			showNotesPanel(false);
 		}
 		modeController.getMapController().addNodeSelectionListener(noteManager);
+		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(noteManager);
 		noteManager.mNoteDocumentListener = new NoteDocumentListener();
 	}
 
