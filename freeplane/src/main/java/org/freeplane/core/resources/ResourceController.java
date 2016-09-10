@@ -59,7 +59,7 @@ public abstract class ResourceController {
 	}
 
 	final private List<IFreeplanePropertyListener> propertyChangeListeners = new Vector<IFreeplanePropertyListener>();
-	static private  final ActionAcceleratorManager acceleratorManager = new ActionAcceleratorManager();
+	static private ActionAcceleratorManager acceleratorManager;
 
 	private ResourceBundles resources;
     public static final String FREEPLANE_RESOURCE_URL_PROTOCOL = "freeplaneresource";
@@ -333,6 +333,8 @@ public abstract class ResourceController {
 	}
 
 	public ActionAcceleratorManager getAcceleratorManager() {
+		if(acceleratorManager == null)
+			acceleratorManager = new ActionAcceleratorManager();
 		return acceleratorManager;
 	}
 }
