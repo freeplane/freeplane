@@ -41,7 +41,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
-import java.awt.geom.AffineTransform;
 import java.net.URI;
 
 import javax.swing.AbstractAction;

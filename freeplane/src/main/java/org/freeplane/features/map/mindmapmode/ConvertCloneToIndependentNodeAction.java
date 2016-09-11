@@ -2,8 +2,6 @@ package org.freeplane.features.map.mindmapmode;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
-import java.util.List;
-
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.NodeModel;

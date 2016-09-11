@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
 import javax.swing.JComboBox;
 
 import org.freeplane.core.ui.components.JComboBoxWithBorder;

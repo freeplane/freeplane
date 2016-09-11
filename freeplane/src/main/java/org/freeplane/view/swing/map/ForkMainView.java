@@ -27,7 +27,6 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Stroke;
 
-import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
 class ForkMainView extends MainView {

@@ -45,8 +45,6 @@ import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-
 class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, IExtensionAttributeWriter,
         IAttributeWriter, IElementWriter {
 	static class FontProperties {

@@ -8,8 +8,6 @@ import java.net.MalformedURLException;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
-
 import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.view.swing.features.filepreview.ViewerController.FactoryFileFilter;

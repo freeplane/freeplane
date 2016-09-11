@@ -62,7 +62,6 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IPropertyControlCreator;

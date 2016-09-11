@@ -12,7 +12,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 
 import org.freeplane.core.ui.IUserInputListenerFactory;
-import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
