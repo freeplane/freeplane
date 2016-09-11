@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.extension.IExtension;

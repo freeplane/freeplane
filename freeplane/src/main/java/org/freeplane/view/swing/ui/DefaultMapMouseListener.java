@@ -19,8 +19,6 @@
  */
 package org.freeplane.view.swing.ui;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;

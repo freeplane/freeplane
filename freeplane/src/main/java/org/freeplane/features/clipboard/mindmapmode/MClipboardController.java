@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.clipboard.mindmapmode;
 
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -39,7 +38,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
@@ -79,7 +77,6 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLException;
-import org.freeplane.view.swing.features.filepreview.ExternalResource;
 import org.freeplane.view.swing.features.filepreview.ImageAdder;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.features.filepreview.ViewerController.PasteMode;

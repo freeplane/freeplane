@@ -10,7 +10,6 @@ import javax.swing.JViewport;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.ViewController;
 
 class MapScroller {
