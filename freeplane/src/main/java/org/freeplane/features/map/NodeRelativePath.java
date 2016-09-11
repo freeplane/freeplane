@@ -44,6 +44,8 @@ public class NodeRelativePath {
 					return 0;
 				if(o1 == null)
 					return -1;
+				if(o2 == null)
+					return 1;
 				final NodeAbsolutePath absoluteBeginPath = getPath(o1);
 				final NodeAbsolutePath absoluteEndPath = getPath(o2);
 				return new NodeRelativePath(absoluteBeginPath, absoluteEndPath).compareNodePositions();
@@ -55,6 +57,8 @@ public class NodeRelativePath {
 					path = new NodeAbsolutePath(node);
 					paths.put(node, path);
 				}
+				else
+					path.reset();
 				return path;
 			}
 		};
@@ -64,7 +68,7 @@ public class NodeRelativePath {
 		this(new NodeAbsolutePath(begin), new NodeAbsolutePath(end));
 	}
 		
-	public NodeRelativePath(NodeAbsolutePath absoluteBeginPath, NodeAbsolutePath absoluteEndPath) {
+	private NodeRelativePath(NodeAbsolutePath absoluteBeginPath, NodeAbsolutePath absoluteEndPath) {
 		NodeModel commonAncestor = null;
 		while(absoluteBeginPath.hasNext() && absoluteEndPath.hasNext()){
 			 NodeModel nextNodeOnBeginPath = absoluteBeginPath.next();

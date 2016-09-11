@@ -117,7 +117,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 			if(key.startsWith(oldPrefix)){
 				String newKey = SHORTCUT_PROPERTY_PREFIX +  key.substring(oldPrefix.length()).replaceFirst("\\$", "").replaceFirst("\\$\\d", "");
 				String value = (String)property.getValue();
-				loadAcceleratorPreset(newKey, value);
+				loadAcceleratorPreset(newKey, value, new Properties());
 				propertyIterator.remove();
 			}
 		}
@@ -313,7 +313,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 					else
 						continue;
 				}
-				loadAcceleratorPreset(updatedShortcutKey, keystrokeString);
+				loadAcceleratorPreset(updatedShortcutKey, keystrokeString, prop);
 			}
 		}
 		catch (final IOException e) {
@@ -332,7 +332,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 		return updatedShortcutKey;
 	}
 
- 	private void loadAcceleratorPreset(final String shortcutKey, final String keystrokeString) {
+ 	private void loadAcceleratorPreset(final String shortcutKey, final String keystrokeString, Properties allPresets) {
  		if (!shortcutKey.startsWith(SHORTCUT_PROPERTY_PREFIX)) {
  			LogUtils.warn("wrong property key " + shortcutKey);
  			return;
@@ -352,10 +352,11 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 				keyStroke = UITools.getKeyStroke(keystrokeString);
  				final AFreeplaneAction oldAction = accelerators.get(key(modeController, keyStroke));
  				if (oldAction != null) {
- 					setAccelerator(modeController, oldAction, null);
  					final Object key = oldAction.getKey();
  					final String oldShortcutKey = getPropertyKey(modeController, key.toString());
- 					setKeysetProperty(oldShortcutKey, "");
+ 					final boolean keepOldPreset = allPresets.containsKey(oldShortcutKey);
+					if(! keepOldPreset)
+ 						setAccelerator(modeController, oldAction, null);
  				}
  			}
  			else {
@@ -481,9 +482,6 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
 	private void setKeysetProperty(String key, String value) {
-//		if(! key.startsWith("acceleratorFor.MindMap"))
-//			throw new AssertionError(key);
 		keysetProps.setProperty(key, value);
-		
 	}
 }

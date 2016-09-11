@@ -85,8 +85,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			final SplitAction splitAction = new SplitAction();
 			splitButton.addActionListener(splitAction);
 			UITools.addKeyActionToDialog(getDialog(), submitAction, "alt ENTER", "submit");
-			final ModeController modeController = Controller.getCurrentModeController();
-			final KeyStroke splitNodeHotKey = modeController.getUserInputListenerFactory().getAcceleratorManager().getAccelerator("SplitNode");
+			final KeyStroke splitNodeHotKey = ResourceController.getResourceController().getAcceleratorManager().getAccelerator("SplitNode");
 			if(splitNodeHotKey != null)
 				UITools.addKeyActionToDialog(getDialog(), splitAction, splitNodeHotKey.toString(), "split");
 			final JPanel buttonPane = new JPanel();

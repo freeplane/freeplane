@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
@@ -155,7 +156,7 @@ public class AddOnDetailsPanel extends JPanel {
 
     private String formatShortcut(final Script script) {
         final String menuItemKey = ExecuteScriptAction.makeMenuItemKey(script.menuTitleKey, script.executionMode);
-        final ActionAcceleratorManager acceleratorManager = Controller.getCurrentModeController().getUserInputListenerFactory().getAcceleratorManager();
+        final ActionAcceleratorManager acceleratorManager = ResourceController.getResourceController().getAcceleratorManager();
         final KeyStroke userDefinedKeystroke = acceleratorManager.getAccelerator(menuItemKey);
         final KeyStroke keyStroke = userDefinedKeystroke != null ?   userDefinedKeystroke : UITools.getKeyStroke(script.keyboardShortcut);
         return UITools.keyStrokeToString(keyStroke);

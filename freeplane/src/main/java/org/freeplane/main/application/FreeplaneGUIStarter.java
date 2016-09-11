@@ -245,6 +245,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	    buildMenus(controller, plugins, MModeController.MODENAME, "/xml/mindmapmodemenu.xml");
 	    buildMenus(controller, plugins, BModeController.MODENAME, "/xml/browsemodemenu.xml");
 	    buildMenus(controller, plugins, FModeController.MODENAME, "/xml/filemodemenu.xml");
+	    ResourceController.getResourceController().getAcceleratorManager().loadAcceleratorPresets();
     }
 
 	private void buildMenus(final Controller controller, final Set<String> plugins, String mode, String xml) {

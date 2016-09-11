@@ -25,7 +25,9 @@ import java.util.regex.Pattern;
 import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeSelectionListener;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.note.NoteModel;
@@ -33,7 +35,7 @@ import org.freeplane.features.note.mindmapmode.MNoteController.NoteDocumentListe
 
 import com.lightdev.app.shtm.SHTMLPanel;
 
-final class NoteManager implements INodeSelectionListener {
+final class NoteManager implements INodeSelectionListener, IMapSelectionListener {
 	public final static Pattern HEAD = Pattern.compile("<head>.*</head>\n", Pattern.DOTALL);
 	private boolean ignoreEditorUpdate;
 	NoteDocumentListener mNoteDocumentListener;
@@ -127,5 +129,19 @@ final class NoteManager implements INodeSelectionListener {
 		else 
 			noteViewerComponent.setCurrentDocumentContent("");
 		document.addDocumentListener(mNoteDocumentListener);
+	}
+
+	@Override
+	public void afterMapChange(MapModel oldMap, MapModel newMap) {
+		if(newMap == null) {
+			node = null;
+			final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
+			if(noteViewerComponent != null)
+				noteViewerComponent.setCurrentDocumentContent("");
+		}
+	}
+
+	@Override
+	public void beforeMapChange(MapModel oldMap, MapModel newMap) {
 	}
 }

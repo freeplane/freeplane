@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.features.mode.Controller;
@@ -39,6 +40,6 @@ public class TextChangeHotKeyAction extends AFreeplaneAction {
 	}
 
 	private ActionAcceleratorManager getAcceleratorManager() {
-		return Controller.getCurrentModeController().getUserInputListenerFactory().getAcceleratorManager();
+		return ResourceController.getResourceController().getAcceleratorManager();
 	}
 }

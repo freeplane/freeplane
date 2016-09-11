@@ -189,8 +189,8 @@ class VerticalNodeViewLayoutStrategy {
 						groupStartIndex[level] = groupStartIndex[itemLevel];
 					}
 					if(groupUpperYCoordinate[itemLevel] == Integer.MAX_VALUE){
-						groupUpperYCoordinate[itemLevel] = 0;
-						groupLowerYCoordinate[itemLevel] = 0;
+						groupUpperYCoordinate[itemLevel] = y;
+						groupLowerYCoordinate[itemLevel] = y;
 					}
 					int summaryY = (groupUpperYCoordinate[itemLevel] + groupLowerYCoordinate[itemLevel]) / 2 
 							- childContentHeight / 2 + childShiftY
