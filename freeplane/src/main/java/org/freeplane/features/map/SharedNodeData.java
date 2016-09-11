@@ -75,8 +75,8 @@ public class SharedNodeData {
 		return xmlText;
 	}
 
-	public void setXmlText(String xmlText) {
-		xmlText = XmlUtils.makeValidXml(xmlText);
+	public void setXmlText(String content) {
+		xmlText = XmlUtils.makeValidXml(content);
 		userObject = HtmlUtils.toHtml(xmlText);
 	}
 
