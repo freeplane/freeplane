@@ -126,6 +126,9 @@ class UITextChanger implements KeyEventDispatcher {
 				TranslatedElement.TOOLTIP.setKey(weblateButton, ORIGINAL_TEXT_IS_NOT_DEFINED);
 				weblateButton.setToolTipText(TextUtils.getText(ORIGINAL_TEXT_IS_NOT_DEFINED));
 				weblateButton.setEnabled(false);
+				final ResourceController resourceController = ResourceController.getResourceController();
+				if(! resourceController.getDefaultLanguageCode().equals(resourceController.getLanguageCode()))
+					textField.setEnabled(false);
 			}
 			box.add(weblateButton);
 			components[i] = box;
