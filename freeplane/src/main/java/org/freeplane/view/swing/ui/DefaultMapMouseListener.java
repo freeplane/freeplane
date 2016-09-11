@@ -19,6 +19,8 @@
  */
 package org.freeplane.view.swing.ui;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -27,14 +29,17 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IMouseListener;
+import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.IMapSelection;
@@ -86,7 +91,15 @@ public class DefaultMapMouseListener implements IMouseListener {
 			        window= popup;
 			    }
 			    else{
-					JOptionPane pane = new JOptionPane(popup);
+			    	final Component optionComponent;
+			    	if(popup instanceof JScrollPane)
+			    		optionComponent = popup;
+					else {
+						final JAutoScrollBarPane scrollPane = new JAutoScrollBarPane(popup);
+						scrollPane.setBorder( BorderFactory.createEmptyBorder() );
+						optionComponent = scrollPane;
+					}
+					JOptionPane pane = new JOptionPane(optionComponent);
 					final JDialog d = pane.createDialog(UITools.getMenuComponent(), popup.getName());
 					final Window frame = d.getOwner();
                     d.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
