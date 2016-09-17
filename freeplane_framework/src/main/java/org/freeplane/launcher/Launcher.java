@@ -24,6 +24,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 import org.knopflerfish.framework.Main;
 
@@ -106,13 +108,19 @@ public class Launcher {
 	}
 
 	private void run() {
-		String[] args = new String[]{
-				"-xargs",
-				getAbsolutePath("props.xargs"),
-				"-xargs",
-				getAbsolutePath("init.xargs")
-		};
-		Main.main(args);
+		AccessController.doPrivileged(new PrivilegedAction<Void>() {
+			@Override
+			public Void run() {
+				final String[] args = new String[]{
+						"-xargs",
+						getAbsolutePath("props.xargs"),
+						"-xargs",
+						getAbsolutePath("init.xargs")
+				};
+				Main.main(args);
+				return null;
+			}
+		});
 	}
 
 	private String getAbsolutePath() {
