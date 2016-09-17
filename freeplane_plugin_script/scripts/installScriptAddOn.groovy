@@ -318,7 +318,7 @@ void createKeyboardShortcut(ScriptAddOnProperties.Script script) {
 	def action = new AFreeplaneAction(menuItemKey, menuItemKey, null) {
 		public void actionPerformed(ActionEvent e) {}
 	};
-	def acceleratorManager = Controller.currentModeController.userInputListenerFactory.acceleratorManager
+	def acceleratorManager = ResourceController.resourceController.acceleratorManager
 	acceleratorManager.newAccelerator(action, newKeyStroke)
 }
 
