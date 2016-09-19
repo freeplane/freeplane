@@ -45,51 +45,36 @@ public class MakeLinkFromAnchorAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 
-		// get reference to current modeController
 		final ModeController modeControllerForSelectedMap = Controller.getCurrentModeController();
 
-		// get reference of selected node (target)
 		final NodeModel targetNode = modeControllerForSelectedMap.getMapController().getSelectedNode();
-		// get file path of selected node (target)
 		final File targetMapFile = targetNode.getMap().getFile();
 		if(targetMapFile == null) {
 			UITools.errorMessage(TextUtils.getRawText("map_not_saved"));
 			return;
 		}
-		// extract file name string (URI) for target
 		final String targetMapFileNameURI = targetMapFile.toURI().toString();
-		// extract file name string for target
 		final String targetMapFileName = targetMapFileNameURI.substring(targetMapFileNameURI.indexOf("/")+1);
-		// get ID (consisting of fileName and nodeID) of selected node (as targetID)
 		final String targetID = targetMapFile.toURI().toString() + '#' + targetNode.createID();
 
-		// get anchorID (as sourceID) from MLinkController
 		final String sourceID = ((MLinkController)(LinkController.getController())).getAnchorID();
-		// check if anchorID valid (should be null when file is closed or anchor is cleared)
 		if( sourceID == null) {
 			return;
 		}
-		// extract anchorMapFileName (source)
 		final String sourceMapFileName = sourceID.substring( sourceID.indexOf("/") +1, sourceID.indexOf("#") );
 		
-		// check if target and source reside within same map
 		if( targetMapFileName.equals(sourceMapFileName) ) {
 		
-			// get link controller
 			final MLinkController linkController = (MLinkController) MLinkController.getController();
 			
-			// get nodeID of anchored node (source)
 			final String sourceNodeID = sourceID.substring( sourceID.indexOf("#")+1 );
 			
-			// get reference to node from ID-String (source)
 			final NodeModel sourceNode = modeControllerForSelectedMap.getMapController().getNodeFromID(sourceNodeID);
 
-			// insert only targetNodeID as link
 			linkController.setLink(sourceNode, targetID.substring(targetID.indexOf("#")), LinkController.LINK_ABSOLUTE);
 			
 		} else {
 		
-			// navigate to anchored map (source)
 			final MLinkController linkController_selected = (MLinkController) MLinkController.getController();
 			try {
 				final URI linkToAnchorNode = LinkController.createURI(sourceID.trim());
@@ -97,14 +82,11 @@ public class MakeLinkFromAnchorAction extends AFreeplaneAction {
 			}
 			catch (final URISyntaxException e1) {
 				LogUtils.warn(e1);
-	//			UITools.errorMessage(TextUtils.format("invalid_uri", link));
 				return;
 			}
 
-			// get reference of anchor node within anchor map
 			final NodeModel sourceNode = modeControllerForSelectedMap.getMapController().getSelectedNode();
 	
-			// set link in anchored node within anchored map
 			final MLinkController linkController_anchored = (MLinkController) MLinkController.getController();
 			try {
 				final URI linkToCurrentNode = LinkController.createURI(targetID.trim());
@@ -112,18 +94,15 @@ public class MakeLinkFromAnchorAction extends AFreeplaneAction {
 			}
 			catch (final URISyntaxException e1) {
 				LogUtils.warn(e1);
-	//			UITools.errorMessage(TextUtils.format("invalid_uri", link));
 				return;
 			}
 	
-			// re-navigate to target map
 			try {
 				final URI linkBackToSelectedNode = LinkController.createURI(targetID.trim());
 				linkController_anchored.loadURI(linkBackToSelectedNode);
 			}
 			catch (final URISyntaxException e1) {
 				LogUtils.warn(e1);
-	//			UITools.errorMessage(TextUtils.format("invalid_uri", link));
 				return;
 			}
 		}
