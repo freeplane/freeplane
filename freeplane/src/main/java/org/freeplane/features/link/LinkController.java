@@ -594,52 +594,62 @@ public class LinkController extends SelectionController implements IExtension {
 		return result.toString();
 	}
 
-	public URI createRelativeURI(final File map, final File input, final int linkType) {
+	public URI createRelativeURI(final File mapFile, final File target, final int linkType) {
 		if (linkType == LINK_ABSOLUTE) {
 			return null;
 		}
+		final URI fileUri = target.getAbsoluteFile().toURI();
+		return createRelativeURI(mapFile, fileUri);
+	}
+
+	public URI createRelativeURI(final File mapFile, final URI targetUri) {
+		URI mapUri = null;
+		if (mapFile != null) {
+			mapUri = mapFile.getAbsoluteFile().toURI();
+		}
+
+		return createRelativeURI(mapUri, targetUri);
+	}
+
+	public URI createRelativeURI(URI mapUri, final URI targetUri){
+		boolean isUNCinput = targetUri.getPath().startsWith("//");
+		boolean isUNCmap = mapUri.getPath().startsWith("//");
+		if((isUNCinput != isUNCmap)) {
+			return targetUri;
+		}
+		final String filePathAsString = targetUri.getRawPath();
+		final String mapPathAsString = mapUri.getRawPath();
+		int differencePos;
+		final int lastIndexOfSeparatorInMapPath = mapPathAsString.lastIndexOf("/");
+		final int lastIndexOfSeparatorInFilePath = filePathAsString.lastIndexOf("/");
+		int lastCommonSeparatorPos = -1;
+		for (differencePos = 0; differencePos <= lastIndexOfSeparatorInMapPath
+		        && differencePos <= lastIndexOfSeparatorInFilePath
+		        && filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++) {
+			if (filePathAsString.charAt(differencePos) == '/') {
+				lastCommonSeparatorPos = differencePos;
+			}
+		}
+		if (lastCommonSeparatorPos < 0) {
+			return targetUri;
+		}
+		final StringBuilder relativePath = new StringBuilder();
+		for (int i = lastCommonSeparatorPos + 1; i <= lastIndexOfSeparatorInMapPath; i++) {
+			if (mapPathAsString.charAt(i) == '/') {
+				relativePath.append("../");
+			}
+		}
+		relativePath.append(filePathAsString.substring(lastCommonSeparatorPos + 1));
+		final String rawFragment = targetUri.getRawFragment();
+		if(rawFragment != null)
+			relativePath.append("#" + rawFragment);
 		try {
-			URI mapUri = null;
-			if (map != null) {
-				mapUri = map.getAbsoluteFile().toURI();
-			}
-
-			final URI fileUri = input.getAbsoluteFile().toURI();
-			boolean isUNCinput = fileUri.getPath().startsWith("//");
-			boolean isUNCmap = mapUri.getPath().startsWith("//");
-			if((isUNCinput != isUNCmap)) {
-				return fileUri;
-			}
-			final String filePathAsString = fileUri.getRawPath();
-			final String mapPathAsString = mapUri.getRawPath();
-			int differencePos;
-			final int lastIndexOfSeparatorInMapPath = mapPathAsString.lastIndexOf("/");
-			final int lastIndexOfSeparatorInFilePath = filePathAsString.lastIndexOf("/");
-			int lastCommonSeparatorPos = -1;
-			for (differencePos = 0; differencePos <= lastIndexOfSeparatorInMapPath
-			        && differencePos <= lastIndexOfSeparatorInFilePath
-			        && filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++) {
-				if (filePathAsString.charAt(differencePos) == '/') {
-					lastCommonSeparatorPos = differencePos;
-				}
-			}
-			if (lastCommonSeparatorPos < 0) {
-				return fileUri;
-			}
-			final StringBuilder relativePath = new StringBuilder();
-			for (int i = lastCommonSeparatorPos + 1; i <= lastIndexOfSeparatorInMapPath; i++) {
-				if (mapPathAsString.charAt(i) == '/') {
-					relativePath.append("../");
-				}
-			}
-			relativePath.append(filePathAsString.substring(lastCommonSeparatorPos + 1));
-
 			return new URI(relativePath.toString());
 		}
 		catch (final URISyntaxException e) {
-			e.printStackTrace();
+			return null;
 		}
-		return null;
+
 	}
 
 //	public static URI toRelativeURI(final File map, final File input) {

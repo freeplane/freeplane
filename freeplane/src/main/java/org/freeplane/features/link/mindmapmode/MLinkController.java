@@ -733,9 +733,10 @@ public class MLinkController extends LinkController {
 		if (linkType != LINK_ABSOLUTE && "file".equals(argUri.getScheme())) {
 			try {
 				final File mapFile = node.getMap().getFile();
-				return LinkController.toRelativeURI(mapFile, new File(argUri), linkType);
+				return createRelativeURI(mapFile, argUri);
 			}
 			catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		return argUri;
