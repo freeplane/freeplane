@@ -258,7 +258,11 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 
  	public void newAccelerator(final AFreeplaneAction action, final KeyStroke newAccelerator) {
 		final String shortcutKey = getPropertyKey(action.getKey());
-		final String oldShortcut = getShortcut(shortcutKey);
+		final String oldShortcut;
+		if(getAccelerator(action) != null)
+			oldShortcut = getShortcut(shortcutKey);
+		else
+			oldShortcut = null;
 		if (newAccelerator == null || !new KeystrokeValidator(action).isValid(newAccelerator, newAccelerator.getKeyChar())) {
 			final GrabKeyDialog grabKeyDialog = new GrabKeyDialog(oldShortcut);
 			final IKeystrokeValidator validator = new KeystrokeValidator(action);
@@ -457,7 +461,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 			if (askForReplaceShortcutViaDialog(oldMenuItemTitle)) {
 				setAccelerator(action, null);
 				final String shortcutKey = getPropertyKey(action.getKey());
-				setKeysetProperty(shortcutKey, "");
+				keysetProps.remove(shortcutKey);
 				return true;
 			} else {
 				return false;
