@@ -652,44 +652,6 @@ public class LinkController extends SelectionController implements IExtension {
 
 	}
 
-//	public static URI toRelativeURI(final File map, final File input) {
-//		try {
-//			final URI fileUri = input.getAbsoluteFile().toURI();
-//			if (map == null) {
-//				return fileUri;
-//			}
-//			final URI mapUri = map.getAbsoluteFile().toURI();
-//			final String filePathAsString = fileUri.getRawPath();
-//			final String mapPathAsString = mapUri.getRawPath();
-//			int differencePos;
-//			final int lastIndexOfSeparatorInMapPath = mapPathAsString.lastIndexOf("/");
-//			final int lastIndexOfSeparatorInFilePath = filePathAsString.lastIndexOf("/");
-//			int lastCommonSeparatorPos = 0;
-//			for (differencePos = 1; differencePos <= lastIndexOfSeparatorInMapPath
-//			        && differencePos <= lastIndexOfSeparatorInFilePath
-//			        && filePathAsString.charAt(differencePos) == mapPathAsString.charAt(differencePos); differencePos++) {
-//				if (filePathAsString.charAt(differencePos) == '/') {
-//					lastCommonSeparatorPos = differencePos;
-//				}
-//			}
-//			if (lastCommonSeparatorPos == 0) {
-//				return fileUri;
-//			}
-//			final StringBuilder relativePath = new StringBuilder();
-//			for (int i = lastCommonSeparatorPos + 1; i <= lastIndexOfSeparatorInMapPath; i++) {
-//				if (mapPathAsString.charAt(i) == '/') {
-//					relativePath.append("../");
-//				}
-//			}
-//			relativePath.append(filePathAsString.substring(lastCommonSeparatorPos + 1));
-//			return new URI(relativePath.toString());
-//		}
-//		catch (final URISyntaxException e) {
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}
-
 	// patterns only need to be compiled once
 	static Pattern patSMB = Pattern.compile( // \\host\path[#fragement]
 	    "(?:\\\\\\\\([^\\\\]+)\\\\)(.*?)(?:#([^#]*))?");
