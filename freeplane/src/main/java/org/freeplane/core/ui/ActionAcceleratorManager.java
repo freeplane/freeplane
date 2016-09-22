@@ -144,7 +144,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
         			return;
     			}
     			else {
-    				removeAccelerator(modeController, oldAction);
+    				actionMap.remove(key(modeController, oldAction.getKey()));
     				fireAcceleratorChanged(modeController, oldAction, keyStroke, null);
     			}
     		}
