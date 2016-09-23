@@ -130,24 +130,23 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
 	private void setAccelerator(ModeController modeController, final AFreeplaneAction action, final KeyStroke keyStroke) {
+		final AFreeplaneAction oldAction = accelerators.get(key(modeController, keyStroke));
+ 		if (action == oldAction) {
+ 			return;
+ 		}
+ 		if (keyStroke != null && oldAction != null) {
+			if (acceleratorIsDefinedByUserProperties(oldAction, modeController, keysetProps))
+				return;
+			else {
+				actionMap.remove(key(modeController, oldAction.getKey()));
+				fireAcceleratorChanged(modeController, oldAction, keyStroke, null);
+			}
+		}
  		if(action == null) {
  			return;
  		}
  		if(keyStroke != null) {
-			final AFreeplaneAction oldAction = accelerators.put(key(modeController, keyStroke), action);
-    		if(action == oldAction || (oldAction != null && action.getKey().equals(oldAction.getKey()))) {
-    			return;
-    		}
-    		if (oldAction != null) {
-    			if (acceleratorIsDefinedByUserProperties(oldAction, modeController, keysetProps)) {
-    				accelerators.put(key(modeController, keyStroke), oldAction);
-        			return;
-    			}
-    			else {
-    				actionMap.remove(key(modeController, oldAction.getKey()));
-    				fireAcceleratorChanged(modeController, oldAction, keyStroke, null);
-    			}
-    		}
+			accelerators.put(key(modeController, keyStroke), action);
  		}
 		final KeyStroke removedAccelerator = removeAccelerator(modeController, action);
 		final String actionKey = action.getKey();
