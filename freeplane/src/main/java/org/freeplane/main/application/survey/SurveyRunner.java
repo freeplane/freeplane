@@ -17,12 +17,15 @@ public class SurveyRunner {
 
 	private static final String YES = "Yes";
 	private static final String NO = "No";
+	private static final String LATER = "Remind me later";
 	private static final String NEVER = "Never ask me for help";
 
 	private static final int YES_OPTION = 0;
 	private static final int NO_OPTION = 1;
-	private static final int NEVER_OPTION = 2;
+	private static final int LATER_OPTION = 2;
+	private static final int NEVER_OPTION = 3;
 	private static final int MINIMAL_DAYS_BETWEEN_SURVEYS = 11;
+	private static final int MINIMAL_DAYS_BETWEEN_SURVEY_REMINDERS = 3;
 	
 	private final FreeplaneSurveyProperties freeplaneSurveyProperties;
 	private String surveyId;
@@ -37,7 +40,7 @@ public class SurveyRunner {
 			return;
 		this.surveyId = id;
 		freeplaneSurveyProperties.setNextSurveyTime(MINIMAL_DAYS_BETWEEN_SURVEYS);
-		final String[] options = new String[]{YES, NO, NEVER};
+		final String[] options = new String[]{YES, NO, LATER, NEVER};
 		final List<Image> iconImages = UITools.getFrame().getIconImages();
 		final JLabel messageComponent = new JLabel(question);
 		messageComponent.addHierarchyListener(new HierarchyListener() {
@@ -64,6 +67,10 @@ public class SurveyRunner {
 			}
 			break;
 		case NO_OPTION:
+			freeplaneSurveyProperties.markSurveyAsFilled(surveyId);
+			break;
+		case LATER_OPTION:
+			freeplaneSurveyProperties.setNextSurveyTime(MINIMAL_DAYS_BETWEEN_SURVEY_REMINDERS);
 			break;
 		case NEVER_OPTION:
 			freeplaneSurveyProperties.setNeverShowSurvey();
