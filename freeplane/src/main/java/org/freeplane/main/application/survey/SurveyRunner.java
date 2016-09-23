@@ -13,8 +13,6 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mode.Controller;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.Header;
-
 public class SurveyRunner {
 
 	private static final String YES = "Yes";
