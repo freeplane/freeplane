@@ -11,7 +11,7 @@ public class SurveyRunner {
 
 	private static final String YES = "Yes";
 	private static final String NO = "No";
-	private static final String NEVER = "Never";
+	private static final String NEVER = "Never ask me for help";
 
 	private static final int YES_OPTION = 0;
 	private static final int NO_OPTION = 1;
