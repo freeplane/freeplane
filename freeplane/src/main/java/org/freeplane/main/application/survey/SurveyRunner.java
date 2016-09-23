@@ -1,11 +1,19 @@
 package org.freeplane.main.application.survey;
 
+import java.awt.Image;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.net.URL;
+import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mode.Controller;
+
+import com.sun.xml.internal.messaging.saaj.packaging.mime.Header;
 
 public class SurveyRunner {
 
@@ -32,7 +40,20 @@ public class SurveyRunner {
 		this.surveyId = id;
 		freeplaneSurveyProperties.setNextSurveyTime(MINIMAL_DAYS_BETWEEN_SURVEYS);
 		final String[] options = new String[]{YES, NO, NEVER};
-		final int userDecision = JOptionPane.showOptionDialog(UITools.getCurrentFrame(), question, title, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION,
+		final List<Image> iconImages = UITools.getFrame().getIconImages();
+		final JLabel messageComponent = new JLabel(question);
+		messageComponent.addHierarchyListener(new HierarchyListener() {
+			
+			@Override
+			public void hierarchyChanged(HierarchyEvent e) {
+				if(messageComponent.isShowing()){
+					messageComponent.removeHierarchyListener(this);
+					SwingUtilities.getWindowAncestor(messageComponent).setIconImages(iconImages);
+				}
+				
+			}
+		});
+		final int userDecision = JOptionPane.showOptionDialog(UITools.getCurrentFrame(), messageComponent, title, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION,
 				null,
 				options, YES);
 		switch(userDecision) {
