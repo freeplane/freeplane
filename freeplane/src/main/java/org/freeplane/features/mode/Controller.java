@@ -190,10 +190,10 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 
 	public boolean shutdown() {
 		getViewController().saveProperties();
-		ResourceController.getResourceController().saveProperties();
 		if (!getViewController().quit()) {
 			return false;
 		}
+		ResourceController.getResourceController().saveProperties();
 		extensionContainer.getExtensions().clear();
 		return true;
 	}
@@ -288,10 +288,6 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		return optionPanelController;
 	}
 
-	/** returns an unmodifiableList. */
-	public List<ApplicationLifecycleListener> getApplicationLifecycleListeners() {
-		return Collections.unmodifiableList(applicationLifecycleListeners);
-	}
 
 	public void addApplicationLifecycleListener(ApplicationLifecycleListener applicationLifecycleListener) {
 		this.applicationLifecycleListeners.add(applicationLifecycleListener);
@@ -321,4 +317,17 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		fireMapRemoved(map);
 		
 	}
+	
+	public void fireStartupFinished() {
+		for (ApplicationLifecycleListener listener : applicationLifecycleListeners) {
+			listener.onStartupFinished();
+		}
+	}
+
+	public void fireApplicationStopped() {
+		for (ApplicationLifecycleListener listener : applicationLifecycleListeners) {
+			listener.onApplicationStopped();
+		}
+	}
+
 }

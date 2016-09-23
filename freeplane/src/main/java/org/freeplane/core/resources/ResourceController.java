@@ -200,7 +200,7 @@ public abstract class ResourceController {
     }
 
 	/** register defaults in freeplane.properties respectively defaults.properties instead. */
-	public long getLongProperty(final String key, final int defaultValue) {
+	public long getLongProperty(final String key, final long defaultValue) {
 		try {
 			return Long.parseLong(getProperty(key));
 		}
@@ -280,6 +280,10 @@ public abstract class ResourceController {
 
 	public void setProperty(String name, int value) {
 		setProperty(name, Integer.toString(value));
+	}
+
+	public void setProperty(String name, long value) {
+		setProperty(name, Long.toString(value));
 	}
 
 	abstract public void setProperty(final String property, final String value);
