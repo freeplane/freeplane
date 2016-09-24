@@ -49,7 +49,7 @@ public class SurveyStarter implements ApplicationLifecycleListener{
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
-							surveyRunner.runServey(surveyId, title, question, surveyUrl);
+							surveyRunner.runServey(surveyId, title, question);
 						}
 					});
 			}
@@ -60,7 +60,7 @@ public class SurveyStarter implements ApplicationLifecycleListener{
 	@Override
 	public void onApplicationStopped() {
 		if(runOnQuit)
-			surveyRunner.runServey(surveyId, title, question, surveyUrl);
+			surveyRunner.runServey(surveyId, title, question);
 	}
 
 }

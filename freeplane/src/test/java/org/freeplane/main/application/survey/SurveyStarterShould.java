@@ -21,7 +21,6 @@ import org.junit.Test;
 public class SurveyStarterShould {
 
 	private static final String SURVEY_ID_KEY = "surveyId";
-	private static final String SURVEY_URL_KEY = "surveyUrl";
 	private static final String QUESTION_KEY = "question";
 	private static final String TITLE_KEY = "title";
 
@@ -35,7 +34,7 @@ public class SurveyStarterShould {
 		final SurveyStarter surveyStarter = new SurveyStarter(configurationUrl, surveyRunner);
 		surveyStarter.onStartupFinished();
 		waitForOtherThreadToRun();
-		verify(surveyRunner).runServey("myId", "myTitle", "myQuestion", "mySurveyUrl");
+		verify(surveyRunner).runServey("myId", "myTitle", "myQuestion");
 	}
 
 	private void waitForOtherThreadToRun() throws InterruptedException, InvocationTargetException {
@@ -58,7 +57,7 @@ public class SurveyStarterShould {
 		final SurveyStarter surveyStarter = new SurveyStarter(configurationUrl, surveyRunner);
 		surveyStarter.onStartupFinished();
 		waitForOtherThreadToRun();
-		verify(surveyRunner, never()).runServey("myId", "myTitle", "myQuestion", "mySurveyUrl");
+		verify(surveyRunner, never()).runServey("myId", "myTitle", "myQuestion");
 	}
 
 	@Test
@@ -72,7 +71,7 @@ public class SurveyStarterShould {
 		surveyStarter.onStartupFinished();
 		waitForOtherThreadToRun();
 		surveyStarter.onApplicationStopped();
-		verify(surveyRunner).runServey("myId", "myTitle", "myQuestion", "mySurveyUrl");
+		verify(surveyRunner).runServey("myId", "myTitle", "myQuestion");
 	}
 
 	private Properties createSurveyProperites() {
@@ -80,7 +79,6 @@ public class SurveyStarterShould {
 		configProperties.setProperty(SURVEY_ID_KEY, "myId");
 		configProperties.setProperty(TITLE_KEY, "myTitle");
 		configProperties.setProperty(QUESTION_KEY, "myQuestion");
-		configProperties.setProperty(SURVEY_URL_KEY, "mySurveyUrl");
 		return configProperties;
 	}
 
