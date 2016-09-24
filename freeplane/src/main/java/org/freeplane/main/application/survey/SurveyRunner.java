@@ -1,10 +1,12 @@
 package org.freeplane.main.application.survey;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -43,6 +45,7 @@ public class SurveyRunner {
 		final String[] options = new String[]{NOT_INTERESTED, REMIND_ME_LATER, NEVER};
 		final List<Image> iconImages = UITools.getFrame().getIconImages();
 		final JEditorPane messageComponent = new JEditorPane("text/html", question);
+		messageComponent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		messageComponent.addHyperlinkListener(new HyperlinkListener() {
 			
 			@Override

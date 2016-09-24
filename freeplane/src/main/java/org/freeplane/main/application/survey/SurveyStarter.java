@@ -10,7 +10,6 @@ import org.freeplane.main.application.ApplicationLifecycleListener;
 
 public class SurveyStarter implements ApplicationLifecycleListener{
 	private static final String SURVEY_ID_KEY = "surveyId";
-	private static final String SURVEY_URL_KEY = "surveyUrl";
 	private static final String QUESTION_KEY = "question";
 	private static final String TITLE_KEY = "title";
 
@@ -20,7 +19,6 @@ public class SurveyStarter implements ApplicationLifecycleListener{
 	private String surveyId;
 	private String title;
 	private String question;
-	private String surveyUrl;
 	private boolean runOnQuit;
 	private boolean runOnStart;
 
@@ -40,7 +38,6 @@ public class SurveyStarter implements ApplicationLifecycleListener{
 					surveyId = surveyProperties.getProperty(SURVEY_ID_KEY);
 					title = surveyProperties.getProperty(TITLE_KEY);
 					question = surveyProperties.getProperty(QUESTION_KEY);
-					surveyUrl = surveyProperties.getProperty(SURVEY_URL_KEY);
 					runOnStart = Boolean.parseBoolean(surveyProperties.getProperty("runOnStart"));
 					runOnQuit =  Boolean.parseBoolean(surveyProperties.getProperty("runOnQuit"));
 				} catch (Exception e) {
