@@ -434,8 +434,8 @@ public class NodeStyleController implements IExtension {
 	public Quantity<LengthUnits> getMinWidth(NodeModel node) {
 		final MapModel map = node.getMap();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
-		final Collection<IStyle> style = styleController.getStyles(node);
-		final Quantity<LengthUnits> minWidth = getStyleMinWidth(map, style);
+		final Collection<IStyle> styles = styleController.getStyles(node);
+		final Quantity<LengthUnits> minWidth = getStyleMinWidth(map, styles);
 		return minWidth;
     }
 
