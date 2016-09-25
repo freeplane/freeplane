@@ -19,7 +19,7 @@ import org.freeplane.features.mode.Controller;
 
 public class SurveyRunner {
 
-	private static final String GO = "Open link in browser";
+	private static final String GO = "With pleasure";
 	private static final String NOT_INTERESTED = "Not interested";
 	private static final String REMIND_ME_LATER = "Remind me later";
 	private static final String NEVER = "Don't ask me anything again";
