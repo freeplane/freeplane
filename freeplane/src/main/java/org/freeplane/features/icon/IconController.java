@@ -26,15 +26,19 @@ import java.util.List;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.CombinedPropertyChain;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -44,6 +48,9 @@ import org.freeplane.features.styles.StyleNode;
  * @author Dimitry Polivaev
  */
 public class IconController implements IExtension {
+
+	private static final Quantity<LengthUnits> DEFAULT_ICON_SIZE = new Quantity<LengthUnits>(16, LengthUnits.px);
+
 	final private CombinedPropertyChain<Collection<MindIcon>, NodeModel> iconHandlers;
 	public static IconController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -148,6 +155,32 @@ public class IconController implements IExtension {
 			}
 		}
 		return processed;
+	}
+
+	private Quantity<LengthUnits> getStyleIconSize(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final Quantity<LengthUnits> iconSize = styleNode.getSharedData().getIcons().getIconSize();
+			if (iconSize == null) {
+				continue;
+			}
+			return iconSize;
+		}
+		return DEFAULT_ICON_SIZE;
+	}
+
+	public Quantity<LengthUnits> getIconSize(NodeModel node)
+	{
+		final MapModel map = node.getMap();
+		final ModeController modeController = Controller.getCurrentModeController();
+		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+		final Collection<IStyle> style = styleController.getStyles(node);
+		final Quantity<LengthUnits> minWidth = getStyleIconSize(map, style);
+		return minWidth;
 	}
 
 }

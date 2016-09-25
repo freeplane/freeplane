@@ -252,18 +252,16 @@ public class MIconController extends IconController {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void changeIconSize(final NodeModel node, final Quantity<LengthUnits> iconWidth, final Quantity<LengthUnits> iconHeight)
+	public void changeIconSize(final NodeModel node, final Quantity<LengthUnits> iconSize)
 	{
 		final IActor actor = new IActor() {
 
-			private Quantity<LengthUnits> oldIconWidth;
-			private Quantity<LengthUnits> oldIconHeight;
+			private Quantity<LengthUnits> oldIconSize;
 
 			public void act() {
-				oldIconWidth = node.getSharedData().getIcons().getIconWidth();
-				oldIconHeight = node.getSharedData().getIcons().getIconHeight();
-				node.getSharedData().getIcons().setIconSize(iconWidth, iconHeight);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON_SIZE, null, null);
+				oldIconSize = node.getSharedData().getIcons().getIconSize();
+				node.getSharedData().getIcons().setIconSize(iconSize);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON_SIZE, null, iconSize);
 			}
 
 			public String getDescription() {
@@ -271,8 +269,8 @@ public class MIconController extends IconController {
 			}
 
 			public void undo() {
-				node.getSharedData().getIcons().setIconSize(oldIconWidth, oldIconHeight);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON_SIZE, null, null);
+				node.getSharedData().getIcons().setIconSize(oldIconSize);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON_SIZE, oldIconSize, null);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());

@@ -325,7 +325,7 @@ public class StyleEditorPanel extends JPanel {
 		@Override
 		void applyValue(boolean enabled, NodeModel node, PropertyChangeEvent evt) {
 			final MIconController iconController = (MIconController) IconController.getController();
-			iconController.changeIconSize(node, mIconWidth.getQuantifiedValue(), mIconHeight.getQuantifiedValue());
+			iconController.changeIconSize(node, mIconSize.getQuantifiedValue());
 		}
 	}
 
@@ -510,8 +510,7 @@ public class StyleEditorPanel extends JPanel {
 	private static final String SHAPE_VERTICAL_MARGIN = "shape_vertical_margin";
 	private static final String UNIFORM_SHAPE = "uniform_shape";
 	
-	private static final String ICON_WIDTH = "icon_width";
-	private static final String ICON_HEIGHT = "icon_height";
+	private static final String ICON_SIZE = "icon_size";
 
 
 	private  static <U extends Enum<U>> String[] enumStrings(Class<U> enumerationClass, int length) {
@@ -552,8 +551,7 @@ public class StyleEditorPanel extends JPanel {
 	private QuantityProperty<LengthUnits> mMinNodeWidth;
 	private QuantityProperty<LengthUnits> mChildDistance;
 	private ComboProperty mNodeTextAlignment;
-	private QuantityProperty<LengthUnits> mIconWidth;
-	private QuantityProperty<LengthUnits> mIconHeight;
+	private QuantityProperty<LengthUnits> mIconSize;
 	
 	private BooleanProperty mSetCloud;
 	private BooleanProperty mSetEdgeColor;
@@ -574,8 +572,7 @@ public class StyleEditorPanel extends JPanel {
 	private BooleanProperty mSetMinNodeWidth;
 	private BooleanProperty mSetChildDistance;
 	private BooleanProperty mSetNodeTextAlignment;
-	private BooleanProperty mSetIconWidth;
-	private BooleanProperty mSetIconHeight;
+	private BooleanProperty mSetIconSize;
 	
 	
 	private final boolean addStyleBox;
@@ -716,26 +713,14 @@ public class StyleEditorPanel extends JPanel {
 		mMinNodeWidth.addPropertyChangeListener(listener);
 	}
 
-	private void addIconWidthControl(final List<IPropertyControl> controls) {
-		mSetIconWidth = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
-		controls.add(mSetIconWidth);
-		mIconWidth = new QuantityProperty<LengthUnits>(StyleEditorPanel.ICON_WIDTH, 0, 256, 4, LengthUnits.px);
-		mIconWidth.setValue("16");
-		controls.add(mIconWidth);
-		final IconSizeChangeListener listener = new IconSizeChangeListener(mSetIconWidth, mIconWidth);
-		mSetIconWidth.addPropertyChangeListener(listener);
-		mIconWidth.addPropertyChangeListener(listener);
-	}
-
-	private void addIconHeightControl(final List<IPropertyControl> controls) {
-		mSetIconHeight = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
-		controls.add(mSetIconHeight);
-		mIconHeight = new QuantityProperty<LengthUnits>(StyleEditorPanel.ICON_HEIGHT, 0, 256, 4, LengthUnits.px);
-		mIconHeight.setValue("16");
-		controls.add(mIconHeight);
-		final IconSizeChangeListener listener = new IconSizeChangeListener(mSetIconHeight, mIconHeight);
-		mSetIconHeight.addPropertyChangeListener(listener);
-		mIconHeight.addPropertyChangeListener(listener);
+	private void addIconSizeControl(final List<IPropertyControl> controls) {
+		mSetIconSize = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetIconSize);
+		mIconSize = new QuantityProperty<LengthUnits>(StyleEditorPanel.ICON_SIZE, 0, 256, 4, LengthUnits.px);
+		controls.add(mIconSize);
+		final IconSizeChangeListener listener = new IconSizeChangeListener(mSetIconSize, mIconSize);
+		mSetIconSize.addPropertyChangeListener(listener);
+		mIconSize.addPropertyChangeListener(listener);
 	}
 
 	private void addChildDistanceControl(final List<IPropertyControl> controls) {
@@ -870,8 +855,7 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(new NextColumnProperty(2));
 		addCloudShapeControl(controls);
 		controls.add(new SeparatorProperty("OptionPanel.separator.IconControls"));
-		addIconWidthControl(controls);
-		addIconHeightControl(controls);
+		addIconSizeControl(controls);
 		return controls;
 	}
 	
@@ -1056,14 +1040,9 @@ public class StyleEditorPanel extends JPanel {
 				mMinNodeWidth.setQuantifiedValue(viewWidth);
 			}
 			{
-				final Quantity<LengthUnits> iconWidth = node.getSharedData().getIcons().getIconWidth();
-				mSetIconWidth.setValue(iconWidth != null);
-				if (iconWidth != null)
-					mIconWidth.setQuantifiedValue(iconWidth);
-				final Quantity<LengthUnits> iconHeight = node.getSharedData().getIcons().getIconHeight();
-				mSetIconHeight.setValue(iconHeight != null);
-				if (iconHeight != null)
-					mIconHeight.setQuantifiedValue(iconHeight);
+				final Quantity<LengthUnits> iconSize = IconController.getController().getIconSize(node);
+				mSetIconSize.setValue(iconSize != null);
+				mIconSize.setQuantifiedValue(iconSize);
 			}
 			{
 				final LocationModel locationModel = LocationModel.getModel(node);

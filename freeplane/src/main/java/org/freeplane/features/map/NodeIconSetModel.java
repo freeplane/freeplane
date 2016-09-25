@@ -33,23 +33,16 @@ import org.freeplane.features.icon.MindIcon;
 public class NodeIconSetModel {
 	/** stores the icons associated with this node. */
 	protected List<MindIcon> icons;
-	protected Quantity<LengthUnits> iconWidth = null;
-	protected Quantity<LengthUnits> iconHeight = null;
+	protected Quantity<LengthUnits> iconSize = null;
 
-	public void setIconSize(final Quantity<LengthUnits> width, final Quantity<LengthUnits> height)
+	public void setIconSize(final Quantity<LengthUnits> iconSize)
 	{
-		iconWidth = width;
-		iconHeight = height;
+		this.iconSize = iconSize;
 	}
 
-	public Quantity<LengthUnits> getIconWidth()
+	public Quantity<LengthUnits> getIconSize()
 	{
-		return iconWidth;
-	}
-
-	public Quantity<LengthUnits> getIconHeight()
-	{
-		return iconHeight;
+		return iconSize;
 	}
 
 	void addIcon(final MindIcon icon) {
