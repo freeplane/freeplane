@@ -219,8 +219,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			NodeHistory.install(controller);
 			final FreeplaneSurveyProperties freeplaneSurveyProperties = new FreeplaneSurveyProperties();
 			if(freeplaneSurveyProperties.mayAskUserToFillSurveys()) {
-				URL configurationUrl = freeplaneSurveyProperties.getSurveyUrl();
-				controller.addApplicationLifecycleListener(new SurveyStarter(configurationUrl, new SurveyRunner(freeplaneSurveyProperties)));
+				controller.addApplicationLifecycleListener(new SurveyStarter(freeplaneSurveyProperties, new SurveyRunner(freeplaneSurveyProperties), Math.random()));
 			}
 			return controller;
 		}

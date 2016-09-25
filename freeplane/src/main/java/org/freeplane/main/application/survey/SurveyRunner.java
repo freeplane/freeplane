@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
+import java.net.URL;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -18,13 +19,12 @@ import org.freeplane.features.mode.Controller;
 
 public class SurveyRunner {
 
+	private static final String GO = "Open link in browser";
 	private static final String NOT_INTERESTED = "Not interested";
 	private static final String REMIND_ME_LATER = "Remind me later";
 	private static final String NEVER = "Don't ask me anything again";
 
-	private static final int NOT_INTERESTED_OPTION = 0;
-	private static final int REMIND_ME_LATER_OPTION = 1;
-	private static final int NEVER_OPTION = 2;
+	enum Options {GO_OPTION, NOT_INTERESTED_OPTION, REMIND_ME_LATER_OPTION, NEVER_OPTION};
 	private static final int MINIMAL_DAYS_BETWEEN_SURVEYS = 11;
 	private static final int MINIMAL_DAYS_BETWEEN_SURVEY_REMINDERS = 3;
 	
@@ -37,15 +37,16 @@ public class SurveyRunner {
 		this.freeplaneSurveyProperties = freeplaneSurveyProperties;
 	}
 
-	public void runServey(String id, String title, String question) {
+	public void runServey(String id, String title, String question, String surveyUrl) {
 		if(! freeplaneSurveyProperties.mayAskUserToFillSurvey(surveyId))
 			return;
 		this.surveyId = id;
-		freeplaneSurveyProperties.setNextSurveyTime(MINIMAL_DAYS_BETWEEN_SURVEYS);
-		final String[] options = new String[]{NOT_INTERESTED, REMIND_ME_LATER, NEVER};
+		freeplaneSurveyProperties.setNextSurveyDay(MINIMAL_DAYS_BETWEEN_SURVEYS);
+		final String[] options = new String[]{GO, NOT_INTERESTED, REMIND_ME_LATER, NEVER};
 		final List<Image> iconImages = UITools.getFrame().getIconImages();
 		final JEditorPane messageComponent = new JEditorPane("text/html", question);
-		messageComponent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		messageComponent.setBorder( BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder(Color.BLACK), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 		messageComponent.addHyperlinkListener(new HyperlinkListener() {
 			
 			@Override
@@ -76,17 +77,30 @@ public class SurveyRunner {
 				null,
 				options, REMIND_ME_LATER);
 		switch(userDecision) {
-		case NOT_INTERESTED_OPTION:
-			freeplaneSurveyProperties.markSurveyAsFilled(surveyId);
-			break;
-		case REMIND_ME_LATER_OPTION:
-			freeplaneSurveyProperties.setNextSurveyTime(MINIMAL_DAYS_BETWEEN_SURVEY_REMINDERS);
-			break;
-		case NEVER_OPTION:
-			freeplaneSurveyProperties.setNeverShowSurvey();
 		case JOptionPane.CLOSED_OPTION:
 			if(userVisitedVotingLink)
 				freeplaneSurveyProperties.markSurveyAsFilled(surveyId);
+			break;
+		default:
+			switch(Options.values()[userDecision]){
+			case GO_OPTION:
+				try {
+					freeplaneSurveyProperties.markSurveyAsFilled(surveyId);
+					final URL survey = new URL(surveyUrl);
+					Controller.getCurrentController().getViewController().openDocument(survey);
+				} catch (Exception e) {
+				}
+				break;
+			case NOT_INTERESTED_OPTION:
+				freeplaneSurveyProperties.markSurveyAsFilled(surveyId);
+				break;
+			case REMIND_ME_LATER_OPTION:
+				freeplaneSurveyProperties.setNextSurveyDay(MINIMAL_DAYS_BETWEEN_SURVEY_REMINDERS);
+				break;
+			case NEVER_OPTION:
+				freeplaneSurveyProperties.setNeverShowSurvey();
+				break;
+			}
 		}
 	}
 }
