@@ -53,7 +53,8 @@ public class SurveyRunner {
 			public void hyperlinkUpdate(HyperlinkEvent e) {
 				if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 					try {
-						Controller.getCurrentController().getViewController().openDocument(e.getURL());
+						final URL url = e.getURL();
+						openSurvey(url);
 					} catch (Exception ex) {
 					}
 					userVisitedVotingLink = true;
@@ -87,7 +88,7 @@ public class SurveyRunner {
 				try {
 					freeplaneSurveyProperties.markSurveyAsFilled(surveyId);
 					final URL survey = new URL(surveyUrl);
-					Controller.getCurrentController().getViewController().openDocument(survey);
+					openSurvey(survey);
 				} catch (Exception e) {
 				}
 				break;
@@ -102,5 +103,9 @@ public class SurveyRunner {
 				break;
 			}
 		}
+	}
+
+	private void openSurvey(final URL url) throws Exception {
+		Controller.getCurrentController().getViewController().openDocument(url);
 	}
 }
