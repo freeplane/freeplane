@@ -662,7 +662,7 @@ public class MClipboardController extends ClipboardController {
 		}
 		if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
 			try {
-				BufferedImage image = (BufferedImage) t.getTransferData(DataFlavor.imageFlavor);
+				Image image = (Image) t.getTransferData(DataFlavor.imageFlavor);
 				handlerList.add(new ImageFlavorHandler(image));
 			}
 			catch (final UnsupportedFlavorException e) {
