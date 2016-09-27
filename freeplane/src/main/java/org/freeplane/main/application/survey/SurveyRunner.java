@@ -1,13 +1,19 @@
 package org.freeplane.main.application.survey;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.net.URL;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -19,10 +25,14 @@ import org.freeplane.features.mode.Controller;
 
 public class SurveyRunner {
 
-	private static final String GO = "With pleasure";
-	private static final String NOT_INTERESTED = "Not interested";
-	private static final String REMIND_ME_LATER = "Remind me later";
-	private static final String NEVER = "Don't ask me anything again";
+	private static class OptionButtonListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			final Component source = (Component) e.getSource();
+			JOptionPane pane = (JOptionPane) SwingUtilities.getAncestorOfClass(JOptionPane.class, source);
+			pane.setValue(source);
+		}
+	}
 
 	enum Options {GO_OPTION, NOT_INTERESTED_OPTION, REMIND_ME_LATER_OPTION, NEVER_OPTION};
 	private static final int MINIMAL_DAYS_BETWEEN_SURVEYS = 11;
@@ -42,7 +52,18 @@ public class SurveyRunner {
 			return;
 		this.surveyId = id;
 		freeplaneSurveyProperties.setNextSurveyDay(MINIMAL_DAYS_BETWEEN_SURVEYS);
-		final String[] options = new String[]{GO, NOT_INTERESTED, REMIND_ME_LATER, NEVER};
+		final JButton go = new JButton("With pleasure");
+		go.setToolTipText("Thank you so much!");
+		final JButton notInterested = new JButton("Not interested");
+		notInterested.setToolTipText("We shall not repeat this question, but may be ask you another one.");
+		final JButton remindMeLater = new JButton("Remind me later");
+		remindMeLater.setToolTipText("The same question can be repeated some days later.");
+		final JButton never = new JButton("Don't ask me anything again");
+		never.setToolTipText("We are sorry! We shall never ask you any question like this again.");
+		final JButton[] options = new JButton[]{go, notInterested, remindMeLater, never};
+		final OptionButtonListener optionButtonListener = new OptionButtonListener();
+		for(JButton button : options)
+			button.addActionListener(optionButtonListener);
 		final List<Image> iconImages = UITools.getFrame().getIconImages();
 		final JEditorPane messageComponent = new JEditorPane("text/html", question);
 		messageComponent.setBorder( BorderFactory.createCompoundBorder(
@@ -69,14 +90,17 @@ public class SurveyRunner {
 			public void hierarchyChanged(HierarchyEvent e) {
 				if(messageComponent.isShowing()){
 					messageComponent.removeHierarchyListener(this);
-					SwingUtilities.getWindowAncestor(messageComponent).setIconImages(iconImages);
+					final Window window = SwingUtilities.getWindowAncestor(messageComponent);
+					if(window instanceof JDialog)
+						((JDialog)window).setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+					window.setIconImages(iconImages);
 				}
 				
 			}
 		});
 		final int userDecision = JOptionPane.showOptionDialog(UITools.getCurrentFrame(), messageComponent, title, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION,
 				null,
-				options, REMIND_ME_LATER);
+				options, remindMeLater);
 		switch(userDecision) {
 		case JOptionPane.CLOSED_OPTION:
 			if(userVisitedVotingLink)

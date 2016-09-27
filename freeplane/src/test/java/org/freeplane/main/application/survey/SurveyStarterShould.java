@@ -29,15 +29,13 @@ public class SurveyStarterShould {
 	private static final String SURVEY_URL_KEY = "surveyUrl";
 	private static final String QUESTION_KEY = "question";
 	private static final String TITLE_KEY = "title";
-	private static final String RUN_ON_START_KEY = "runOnStart";
-	private static final String RUN_ON_QUIT_KEY = "runOnQuit";
+	private static final String RUN_ON_KEY = "runOn";
 	private static final String FREQUENCY_KEY = "frequency";
 
 	@Test
 	public void givenRunOnStartIsTrue_loadPropertiesOnStart() throws Exception {
 		Properties configProperties = createSurveyProperites();
-		configProperties.setProperty(RUN_ON_START_KEY, "true");
-		configProperties.setProperty(RUN_ON_QUIT_KEY, "false");
+		configProperties.setProperty(RUN_ON_KEY, "ON_START");
 		final SurveyRunner surveyRunner = mock(SurveyRunner.class);
 		FreeplaneSurveyProperties freeplaneSurveyProperties = mockSurveyProperties(configProperties);
 		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.49);
@@ -59,8 +57,7 @@ public class SurveyStarterShould {
 	@Test
 	public void givenRunOnStartIsFalse_loadNoPropertiesOnStart() throws Exception {
 		Properties configProperties = createSurveyProperites();
-		configProperties.setProperty(RUN_ON_START_KEY, "false");
-		configProperties.setProperty(RUN_ON_QUIT_KEY, "false");
+		configProperties.setProperty(RUN_ON_KEY, "NEVER");
 		final SurveyRunner surveyRunner = mock(SurveyRunner.class);
 		FreeplaneSurveyProperties freeplaneSurveyProperties = mockSurveyProperties(configProperties);
 		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.49);
@@ -72,8 +69,7 @@ public class SurveyStarterShould {
 	@Test
 	public void givenRunOnStartIsTrue_loadPropertiesOnFinish() throws Exception {
 		Properties configProperties = createSurveyProperites();
-		configProperties.setProperty(RUN_ON_START_KEY, "false");
-		configProperties.setProperty(RUN_ON_QUIT_KEY, "true");
+		configProperties.setProperty(RUN_ON_KEY, "ON_QUIT");
 		final SurveyRunner surveyRunner = mock(SurveyRunner.class);
 		FreeplaneSurveyProperties freeplaneSurveyProperties = mockSurveyProperties(configProperties);
 		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.49);
@@ -140,8 +136,7 @@ public class SurveyStarterShould {
 	@Test
 	public void givenTooRandomNumberLargerThanMiddleRunFrequency_doesNotRunServey() throws Exception {
 		Properties configProperties = createSurveyProperites();
-		configProperties.setProperty(RUN_ON_START_KEY, "true");
-		configProperties.setProperty(RUN_ON_QUIT_KEY, "false");
+		configProperties.setProperty(RUN_ON_KEY, "ON_START");
 		final SurveyRunner surveyRunner = mock(SurveyRunner.class);
 		FreeplaneSurveyProperties freeplaneSurveyProperties = mockSurveyProperties(configProperties);
 		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.51);
@@ -157,8 +152,7 @@ public class SurveyStarterShould {
 	@Test
 	public void givenNonPositiveMiddleCheckRunPeriodMiddleRunFrequency_doesNotRunServey() throws Exception {
 		Properties configProperties = createSurveyProperites();
-		configProperties.setProperty(RUN_ON_START_KEY, "true");
-		configProperties.setProperty(RUN_ON_QUIT_KEY, "false");
+		configProperties.setProperty(RUN_ON_KEY, "ON_START");
 		configProperties.setProperty(FREQUENCY_KEY, "0");
 		final SurveyRunner surveyRunner = mock(SurveyRunner.class);
 		FreeplaneSurveyProperties freeplaneSurveyProperties = mockSurveyProperties(configProperties);

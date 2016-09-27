@@ -8,12 +8,16 @@ import javax.swing.SwingUtilities;
 import org.freeplane.main.application.ApplicationLifecycleListener;
 
 public class SurveyStarter implements ApplicationLifecycleListener{
+	
+	enum RunningPoint{
+		ON_START, ON_QUIT, NEVER
+	}
+	
 	private static final String SURVEY_ID_KEY = "surveyId";
 	private static final String SURVEY_URL_KEY = "surveyUrl";
 	private static final String QUESTION_KEY = "question";
 	private static final String TITLE_KEY = "title";
-	private static final String RUN_ON_QUIT_KEY = "runOnQuit";
-	private static final String RUN_ON_START_KEY = "runOnStart";
+	private static final String RUN_ON_KEY = "runOn";
 	private static final String FREQUENCY_KEY = "frequency";
 
 
@@ -23,8 +27,7 @@ public class SurveyStarter implements ApplicationLifecycleListener{
 	private String title;
 	private String question;
 	private String surveyUrl;
-	private boolean runOnQuit;
-	private boolean runOnStart;
+	private RunningPoint runOn;
 	private final double randomNumber;
 
 	public SurveyStarter(FreeplaneSurveyProperties freeplaneSurveyProperties, SurveyRunner surveyRunner, double randomNumber) {
@@ -49,12 +52,12 @@ public class SurveyStarter implements ApplicationLifecycleListener{
 							title = surveyProperties.getProperty(TITLE_KEY);
 							question = surveyProperties.getProperty(QUESTION_KEY);
 							surveyUrl = surveyProperties.getProperty(SURVEY_URL_KEY);
-							runOnStart = Boolean.parseBoolean(surveyProperties.getProperty(RUN_ON_START_KEY));
-							runOnQuit =  Boolean.parseBoolean(surveyProperties.getProperty(RUN_ON_QUIT_KEY));
+							runOn = RunningPoint.valueOf(surveyProperties.getProperty(RUN_ON_KEY, RunningPoint.NEVER.name()));
 						}
 					} catch (Exception e) {
+						runOn = RunningPoint.NEVER;
 					}
-					if(runOnStart)
+					if(RunningPoint.ON_START == runOn)
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
@@ -69,7 +72,7 @@ public class SurveyStarter implements ApplicationLifecycleListener{
 
 	@Override
 	public void onApplicationStopped() {
-		if(runOnQuit)
+		if(RunningPoint.ON_QUIT == runOn)
 			surveyRunner.runServey(surveyId, title, question, surveyUrl);
 	}
 
