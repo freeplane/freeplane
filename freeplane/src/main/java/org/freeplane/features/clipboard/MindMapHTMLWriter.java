@@ -24,6 +24,7 @@ import java.awt.Font;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FileUtils;
@@ -285,7 +286,8 @@ class MindMapHTMLWriter {
 			writeFoldingButtons(localParentID);
 		}
 		final String fontStyle = fontStyle(nodeStyleController.getColor(model), nodeStyleController.getFont(model));
-		if (!fontStyle.equals("")) {
+		boolean shouldOutputFontStyle = !fontStyle.equals("");
+		if (shouldOutputFontStyle) {
 			fileout.write("<span style=\"" + fontStyle + "\">");
 		}
 		String link = NodeLinks.getLinkAsString(model);
@@ -302,7 +304,7 @@ class MindMapHTMLWriter {
 		if (link != null) {
 			fileout.write("</a>" + MindMapHTMLWriter.el);
         }
-		if (fontStyle != "") {
+		if (shouldOutputFontStyle) {
 			fileout.write("</span>");
 		}
         final String detailText = DetailTextModel.getDetailTextText(model);
