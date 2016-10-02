@@ -301,14 +301,15 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (forceFormatting) {
 			return;
 		}
+		final NodeModel node = (NodeModel)userObject;
 		if(extension instanceof NodeStyleModel){
 			final NodeStyleModel style = (NodeStyleModel) extension;
-			writeAttributes(writer, null, style, false);
+			writeAttributes(writer, node, style, false);
 			return;
 		}
 		if(extension instanceof NodeSizeModel){
 			final NodeSizeModel size = (NodeSizeModel) extension;
-			writeAttributes(writer, null, size, false);
+			writeAttributes(writer, node, size, false);
 			return;
 		}
 
