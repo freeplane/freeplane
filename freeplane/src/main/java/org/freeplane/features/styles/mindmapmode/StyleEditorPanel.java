@@ -1040,9 +1040,10 @@ public class StyleEditorPanel extends JPanel {
 				mMinNodeWidth.setQuantifiedValue(viewWidth);
 			}
 			{
-				final Quantity<LengthUnits> iconSize = IconController.getController().getIconSize(node);
+				final Quantity<LengthUnits> iconSize = node.getSharedData().getIcons().getIconSize();
+				final Quantity<LengthUnits> viewedIconSize = IconController.getController().getIconSize(node);
 				mSetIconSize.setValue(iconSize != null);
-				mIconSize.setQuantifiedValue(iconSize);
+				mIconSize.setQuantifiedValue(viewedIconSize);
 			}
 			{
 				final LocationModel locationModel = LocationModel.getModel(node);
