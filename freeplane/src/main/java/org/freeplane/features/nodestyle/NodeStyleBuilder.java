@@ -37,6 +37,7 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.Quantity;
+import org.freeplane.features.icon.IconController;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
@@ -204,6 +205,8 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEMPLATE", formatHandler);
 		}
 
+		// save to 1.1: MAX_WIDTH="200" MAX_WIDTH_QUANTITY="200.0 px"
+		// save: MAX_WIDTH="200.0 px"
 		final IAttributeHandler nodeMaxNodeWidthQuantityHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
@@ -224,6 +227,16 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "MAX_WIDTH", nodeMaxNodeWidthHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "MAX_WIDTH", nodeMaxNodeWidthHandler);
+
+		final IAttributeHandler nodeIconSizeHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				Quantity<LengthUnits> iconSize = Quantity.fromString(value, LengthUnits.px);
+				node.getSharedData().getIcons().setIconSize(iconSize);
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "ICON_SIZE", nodeIconSizeHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "ICON_SIZE", nodeIconSizeHandler);
 
 		final IAttributeHandler nodeMinNodeWidthQuantityHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
@@ -339,6 +352,16 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final TextAlign textAlign = forceFormatting ? nsc.getTextAlign(node) : style.getTextAlign();
 		if (textAlign != null) {
 			writer.addAttribute("TEXT_ALIGN", textAlign.toString());
+		}
+
+		final IconController iconController = IconController.getController();
+		Quantity<LengthUnits> iconSize = null;
+		if (forceFormatting)
+			iconSize = iconController.getIconSize(node);
+		else
+			iconSize = node.getSharedData().getIcons().getIconSize();
+		if (iconSize != null) {
+			writer.addAttribute("ICON_SIZE", iconSize.toString());
 		}
 	}
 
