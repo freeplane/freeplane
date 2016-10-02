@@ -288,11 +288,10 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
-		final NodeModel node = (NodeModel) userObject;
-		writeIconSize(writer, node, forceFormatting);
 		if (!forceFormatting) {
 			return;
 		}
+		final NodeModel node = (NodeModel) userObject;
 		writeAttributes(writer, node, (NodeStyleModel)null, true);
 		writeAttributes(writer, node, (NodeSizeModel)null, true);
 	}
@@ -356,19 +355,6 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			writer.addAttribute("TEXT_ALIGN", textAlign.toString());
 		}
 
-	}
-
-	private void writeIconSize(final ITreeWriter writer, final NodeModel node,
-			final boolean forceFormatting) {
-		final IconController iconController = IconController.getController();
-		Quantity<LengthUnits> iconSize = null;
-		if (forceFormatting)
-			iconSize = iconController.getIconSize(node);
-		else
-			iconSize = node.getSharedData().getIcons().getIconSize();
-		if (iconSize != null) {
-			writer.addAttribute("ICON_SIZE", iconSize.toString());
-		}
 	}
 
 	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeSizeModel size,
