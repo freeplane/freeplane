@@ -325,7 +325,7 @@ public class StyleEditorPanel extends JPanel {
 		@Override
 		void applyValue(boolean enabled, NodeModel node, PropertyChangeEvent evt) {
 			final MIconController iconController = (MIconController) IconController.getController();
-			iconController.changeIconSize(node, mIconSize.getQuantifiedValue());
+			iconController.changeIconSize(node, enabled ? mIconSize.getQuantifiedValue() : null);
 		}
 	}
 
