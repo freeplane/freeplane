@@ -274,6 +274,10 @@ class ScriptingRegistration {
 					script.execute(null);
 				}
 			}
+
+			@Override
+			public void onApplicationStopped() {
+			}
 		});
 	}
 

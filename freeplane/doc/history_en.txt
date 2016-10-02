@@ -5,6 +5,12 @@ Configurable node border widths
 Configurable node border colors
 
 ===============================
+1.5.17
+===============================
+Freeplane Survey Runner
+Bug fixes
+
+===============================
 1.5.16
 ===============================
 Keep last selected exporter in dialog drop-down box

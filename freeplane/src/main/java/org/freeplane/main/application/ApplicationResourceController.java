@@ -237,7 +237,6 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public void saveProperties() {
-		lastOpened.saveProperties();
 		OutputStream out = null;
 		try {
 			out = new FileOutputStream(autoPropertiesFile);

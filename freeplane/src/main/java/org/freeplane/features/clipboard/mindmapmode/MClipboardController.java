@@ -39,6 +39,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.ElementIterator;
@@ -123,6 +124,11 @@ public class MClipboardController extends ClipboardController {
 		}
 
 		public void paste(Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft, int dropAction) {
+	        if (LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP && target.getMap().getFile() == null) {
+	        	JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getCurrentRootComponent(),
+	        	    TextUtils.getText("map_not_saved"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+	        	return;
+	        }
 			boolean pasteImages = dropAction == DnDConstants.ACTION_COPY;
 			ViewerController viewerController = ((ViewerController)Controller.getCurrentModeController().getExtension(ViewerController.class));
 			for (final File file : fileList) {
@@ -662,7 +668,7 @@ public class MClipboardController extends ClipboardController {
 		}
 		if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
 			try {
-				BufferedImage image = (BufferedImage) t.getTransferData(DataFlavor.imageFlavor);
+				Image image = (Image) t.getTransferData(DataFlavor.imageFlavor);
 				handlerList.add(new ImageFlavorHandler(image));
 			}
 			catch (final UnsupportedFlavorException e) {

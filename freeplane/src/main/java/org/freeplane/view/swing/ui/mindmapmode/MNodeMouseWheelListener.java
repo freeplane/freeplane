@@ -38,7 +38,7 @@ public class MNodeMouseWheelListener extends DefaultNodeMouseWheelListener {
 			map.selectAsTheOnlyOneSelected(nodeView);
 		
 		final double factor = e.isControlDown() ? 1 : 6 * LengthUnits.pt.factor();
-		double newZoomedWidth =  (view.getWidth() - wheelRotation * factor) / map.getZoom();
+		double newZoomedWidth =  Math.max((view.getWidth() - wheelRotation * factor) / map.getZoom(), 0);
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		Quantity<LengthUnits> newZoomedWidthQuantity = LengthUnits.pixelsInPt(newZoomedWidth);
 		final ModeController modeController = map.getModeController();
