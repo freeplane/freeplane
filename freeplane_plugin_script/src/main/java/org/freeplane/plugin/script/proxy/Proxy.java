@@ -93,13 +93,11 @@ public interface Proxy {
 		java.util.Map<String, Object> getMap();
 
 		/** returns the attribute value at the given index.
-		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
-		 *         &lt; 0 || index &gt;= size())</tt>.*/
+		 * @throws IndexOutOfBoundsException if index is out of range, i. e. {@code index < 0 || index >= size()}.*/
 		Object get(final int index);
 		
 		/** returns the attribute key at the given index.
-		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
-		 *         &lt; 0 || index &gt;= size())</tt>.*/
+		 * @throws IndexOutOfBoundsException if index is out of range, i. e. {@code index < 0 || index >= size()}.*/
 		String getKey(final int index);
 
 		/** @deprecated since 1.2 - use {@link #findFirst(String)} instead. */
@@ -114,9 +112,9 @@ public interface Proxy {
 		/** returns the values of all attributes for which the closure returns true. The fact that the values are
 		 * returned as a list of {@link Convertible} enables conversion. The following formula sums all attributes
 		 * whose names are not equal to 'TOTAL':
-		 * <pre>
-		 *  = attributes.findValues{key,val&rarr; key != 'TOTAL'}.sum(0){it.num0}
-		 * </pre>
+		 * <pre>{@code
+		 *  = attributes.findValues{key, val -> key != 'TOTAL'}.sum(0){it.num0}
+		 * }</pre>
 		 * @param closure A closure that accepts two arguments (String key, Object value) and returns boolean/Boolean. 
 		 * @since 1.2 */
 		List<? extends Convertible> findValues(Closure<Boolean> closure);
@@ -181,13 +179,11 @@ public interface Proxy {
 	 */
 	interface Attributes extends AttributesRO {
 		/** sets the value of the attribute at an index. This method will not create new attributes.
-		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
-		 *         &lt; 0 || index &gt;= size())</tt>. */
+		 * @throws IndexOutOfBoundsException if index is out of range, i. e. {@code index < 0 || index >= size()}.*/
 		void set(final int index, final Object value);
 
 		/** sets name and value of the attribute at the given index. This method will not create new attributes.
-		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
-		 *         &lt; 0 || index &gt;= size())</tt>. */
+		 * @throws IndexOutOfBoundsException if index is out of range, i. e. {@code index < 0 || index >= size()}.*/
 		void set(final int index, final String name, final Object value);
 
 		/** removes the <em>first</em> attribute with this name.
@@ -201,8 +197,7 @@ public interface Proxy {
 		boolean removeAll(final String name);
 
 		/** removes the attribute at the given index.
-		 * @throws IndexOutOfBoundsException if index is out of range <tt>(index
-		 *         &lt; 0 || index &gt;= size())</tt>. */
+		 * @throws IndexOutOfBoundsException if index is out of range, i. e. {@code index < 0 || index >= size()}.*/
 		void remove(final int index);
 
 		/** adds an attribute if there is no attribute with the given name or changes
@@ -368,7 +363,7 @@ public interface Proxy {
 		/** A read-only list of selected nodes. That is you cannot select a node by adding it to the returned list. */
 		List<Node> getSelecteds();
 
-		/** returns List&lt;Node&gt; of Node objects sorted on Y
+		/** returns {@code List<Node>} sorted by the node's vertical position.
 		 *
 		 * @param differentSubtrees if true
 		 *   children/grandchildren/grandgrandchildren/... nodes of selected
@@ -378,15 +373,15 @@ public interface Proxy {
 		/**
 		 * returns Freeplane version.
 		 * Use it like this:
-		 * <pre>
+		 * <pre>{@code
 		 *   import org.freeplane.core.util.FreeplaneVersion
 		 *   import org.freeplane.core.ui.components.UITools
 		 * 
 		 *   def required = FreeplaneVersion.getVersion("1.1.2");
-		 *   if (c.freeplaneVersion &lt; required)
+		 *   if (c.freeplaneVersion < required)
 		 *       UITools.errorMessage("Freeplane version " + c.freeplaneVersion
 		 *           + " not supported - update to at least " + required);
-		 * </pre>
+		 * }</pre>
 		 */
 		FreeplaneVersion getFreeplaneVersion();
 
@@ -488,14 +483,14 @@ public interface Proxy {
 		
 		void select(Node toSelect);
 		
-		/** toSelect is a List&lt;Node&gt; of Node objects
+		/** selects multiple Nodes.
 		 * @since 1.4 */
 		void select(Collection<Node> toSelect);
 
 		/** selects branchRoot and all children */
 		void selectBranch(Node branchRoot);
 
-		/** toSelect is a Collection&lt;Node&gt; of Node objects */
+		/** same as {@link #select(Collection)} */
 		void selectMultipleNodes(Collection<Node> toSelect);
 
 		/** reset undo / redo lists and deactivate Undo for current script */
@@ -650,7 +645,7 @@ public interface Proxy {
 
 	/** Node's icons: <code>node.icons</code> - read-only. */
 	interface IconsRO {
-		/** returns the name of the icon at the given index (starting at 0) or null if <code>index &ge; size</code>.
+		/** returns the name of the icon at the given index (starting at 0) or null if {@code index >= size}.
 		 * Use it like this: <pre>
 		 *   def secondIconName = node.icons[1]
 		 * </pre>
@@ -826,7 +821,7 @@ public interface Proxy {
 		/**
 		 * closes a map. Note that there is <em>no undo</em> for this method!
 		 * @param force close map even if there are unsaved changes.
-		 * @param allowInteraction if (allowInteraction &amp;&amp; ! force) a saveAs dialog will be opened if there are
+		 * @param allowInteraction {@code if (allowInteraction && ! force)} a saveAs dialog will be opened if there are
 		 *        unsaved changes.
 		 * @return false if the saveAs was cancelled by the user and true otherwise.
 		 * @throws RuntimeException if the map contains changes and parameter force is false.
@@ -1125,7 +1120,6 @@ public interface Proxy {
 		 * </dl>
 		 * @return ConvertibleObject
 		 * @throws ExecuteScriptException on formula evaluation errors
-		 * @throws ConversionException on parse errors, e.g. if to.date is invoked on "0.25"
 		 * @since 1.2
 		 */
 		Convertible getTo();
@@ -1166,7 +1160,7 @@ public interface Proxy {
 		/** if this node's text is shortened for display. */
 		boolean isMinimized();
 
-		/** The count of node sharing their content with this node. Use <code>if (node.countNodesSharingContent() &gt; 0)</code>
+		/** The count of node sharing their content with this node. Use {@code if (node.countNodesSharingContent() > 0)}
 		 * to check if a node has any clones.
 		 * <br><em>Note:</em> {@link #getCountNodesSharingContent()} &ge; {@link #getCountNodesSharingContentAndSubtree()}.
 		 * @return 0 if this node is standalone or the number of other nodes sharing content otherwise. 
@@ -1355,7 +1349,7 @@ public interface Proxy {
 		 * <li>If the conversion result is not valid HTML it will be automatically converted to HTML.
 		 * </ul>
 		 * <p>
-		 * <pre>
+		 * <pre>{@code
 		 *   // converts numbers and other stuff with toString()
 		 *   node.note = 1.2
 		 *   assert node.note.text == "<html><body><p>1.2"
@@ -1375,7 +1369,7 @@ public interface Proxy {
 		 *   // == remove note
 		 *   node.note = null
 		 *   assert node.note.text == null
-		 * </pre>
+		 * }</pre>
 		 * @param value An object for conversion to String. Works well for all types that {@link Convertible}
 		 *        handles, particularly {@link Convertible}s itself.
 		 * @since 1.2 (note that the old setNoteText() did not support non-String arguments.
@@ -1758,8 +1752,7 @@ public interface Proxy {
          * </pre>
          * @param remindAt The timestamp when the reminder fires first.
          * @param periodUnit one of ["MINUTE", "HOUR", "DAY", "WEEK", "MONTH", "YEAR"].
-         * @param period counts the periodUnits.
-         * @throws Exception if there is no reminder yet. */
+         * @param period counts the periodUnits. */
         void createOrReplace(Date remindAt, String periodUnit, Integer period);
 
         /** optional: a Groovy script to execute when the reminder fires.
