@@ -99,7 +99,9 @@
 			<xsl:when test="richcontent[@TYPE='NODE']">
 				<xsl:element name="ss:Data" namespace="urn:schemas-microsoft-com:office:spreadsheet">
 					<xsl:attribute name="ss:Type">String</xsl:attribute>
-					<xsl:copy-of select="richcontent[@TYPE='NODE']/html/body/*" />
+					<xsl:call-template name="strip-html-body">
+					  <xsl:with-param name="body" select="richcontent[@TYPE='NODE']/html/body" />
+					</xsl:call-template>
 				</xsl:element>
 			</xsl:when>
 			<xsl:otherwise>
@@ -116,12 +118,38 @@
 		<xsl:if test="richcontent[@TYPE='NOTE' or @TYPE='DETAILS']">
 			<Comment>
 				<xsl:element name="ss:Data" namespace="urn:schemas-microsoft-com:office:spreadsheet">
-					<xsl:copy-of select="richcontent[@TYPE='DETAILS']/html/body/*" />
-					<xsl:copy-of select="richcontent[@TYPE='NOTE']/html/body/*" />
+					<xsl:call-template name="strip-html-body">
+					  <xsl:with-param name="body" select="richcontent[@TYPE='DETAILS']/html/body" />
+					</xsl:call-template>
+					<xsl:if test="richcontent[@TYPE='NOTE'] and richcontent[@TYPE='DETAILS']">
+					  <xsl:text>&#x0A;&#x0A;</xsl:text>
+					</xsl:if>
+					<xsl:call-template name="strip-html-body">
+					  <xsl:with-param name="body" select="richcontent[@TYPE='NOTE']/html/body" />
+					</xsl:call-template>
 				</xsl:element>
 			</Comment>
 		</xsl:if>
 	</xsl:template>
+
+	<!-- strip of html -->
+	<xsl:template name="strip-html-body">
+	  <xsl:param name="body" />
+	  <xsl:choose>
+	    <xsl:when test="count($body/*) = 1">
+	      <xsl:value-of select="normalize-space($body/*)" />
+	    </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:for-each select="$body/*">
+	      <xsl:value-of select="normalize-space(.)" />
+	      <xsl:if test="position() != last()">
+		<xsl:text>&#x0A;</xsl:text>
+	      </xsl:if>
+	    </xsl:for-each>
+	  </xsl:otherwise>
+	  </xsl:choose>
+	</xsl:template>
+
 
 </xsl:stylesheet>
 
