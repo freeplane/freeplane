@@ -1,8 +1,6 @@
-package org.freeplane.features.routes.mindmapmode;
+package org.freeplane.features.presentations.mindmapmode;
 
 import javax.swing.JFrame;
-
-import org.freeplane.features.presentations.mindmapmode.PresentationEditorPanel;
 
 public class MainFrame {
 	public static void main(String... argv){
