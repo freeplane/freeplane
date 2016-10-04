@@ -1,22 +1,16 @@
 package org.freeplane.features.presentations.mindmapmode;
 
+import java.awt.Component;
+
+import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JComponent;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
-
-import java.awt.GridBagLayout;
-import java.awt.FlowLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import javax.swing.JLabel;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
-import javax.swing.JComboBox;
-import javax.swing.Box;
-import javax.swing.JButton;
-import java.awt.Component;
-import javax.swing.JCheckBox;
 import javax.swing.border.TitledBorder;
 
 public class PresentationEditorPanel extends JPanel {
@@ -26,68 +20,37 @@ public class PresentationEditorPanel extends JPanel {
 	 */
 	public PresentationEditorPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		
-		Box presentations = Box.createVerticalBox();
-		presentations.setBorder(new TitledBorder(null, "Presentations", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		Box presentations = createCollectionBox("Presentations", new DefaultComboBoxModel<String>(new String[] { "first presentation", "second presentation" }));
 		add(presentations);
-		JComboBox comboBoxPresentations = new JComboBox(new String[]{"first presentation", "second presentation"});
-		presentations.add(comboBoxPresentations);
-		comboBoxPresentations.setEditable(true);
-		
-		Box presentationButtons = Box.createHorizontalBox();
-		presentations.add(presentationButtons);
-		
-		JButton btnAppendPresentation = new JButton("Append");
-		presentationButtons.add(btnAppendPresentation);
-		
-		JButton btnDeletePresentation = new JButton("Delete");
-		presentationButtons.add(btnDeletePresentation);
-		
-		Box presentationOrderButtons = Box.createHorizontalBox();
-		presentations.add(presentationOrderButtons);
-		
-		JButton btnPresentationUp = new JButton("Up");
-		presentationOrderButtons.add(btnPresentationUp);
-		
-		JButton btnPresentationDown = new JButton("Down");
-		presentationOrderButtons.add(btnPresentationDown);
-		
-		JButton btnMovePresentationOrder = new JButton("Move");
-		presentationOrderButtons.add(btnMovePresentationOrder);
-		
-		Box slides = Box.createVerticalBox();
-		slides.setBorder(new TitledBorder(null, "Slides", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		Box slides = createCollectionBox("Slides", new DefaultComboBoxModel<String>(new String[] { "first slide", "second slide" }));
 		add(slides);
+		Box content = createSlideContentBox();
+		add(content);
+		Box navigation = createNavigationBox();
+		add(navigation);
+	}
+
+	private Box createNavigationBox() {
+		Box navigation = Box.createVerticalBox();
+		navigation.setBorder(new TitledBorder(null, "Show", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
-		final String[] stepItems = new String[]{"first slide", "second slide"};
-		JComboBox comboBoxSlides = new JComboBox(stepItems);
-		comboBoxSlides.setEditable(true);
-		slides.add(comboBoxSlides);
+		Box navigationButtons = Box.createHorizontalBox();
+		navigation.add(navigationButtons);
 		
-		Box stepButtons = Box.createHorizontalBox();
-		slides.add(stepButtons);
+		JButton btnPrevious = new JButton("Previous");
+		navigationButtons.add(btnPrevious);
 		
-		JButton btnAppendSlide = new JButton("Append");
-		stepButtons.add(btnAppendSlide);
+		JToggleButton tglbtnCurrent = new JToggleButton("Current");
+		navigationButtons.add(tglbtnCurrent);
 		
-		JButton btnDeleteSlide = new JButton("Delete");
-		stepButtons.add(btnDeleteSlide);
-		
-		Box slideOrderButtons = Box.createHorizontalBox();
-		slides.add(slideOrderButtons);
-		
-		JButton btnSlideUp = new JButton("Up");
-		slideOrderButtons.add(btnSlideUp);
-		
-		JButton btnSlideDown = new JButton("Down");
-		slideOrderButtons.add(btnSlideDown);
-		
-		JButton btnMoveSlide = new JButton("Move");
-		slideOrderButtons.add(btnMoveSlide);
-		
+		JButton btnNext = new JButton("Next");
+		navigationButtons.add(btnNext);
+		return navigation;
+	}
+
+	private Box createSlideContentBox() {
 		Box content = Box.createVerticalBox();
 		content.setBorder(new TitledBorder(null, "Slide content", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(content);
 		
 		Box slideButtons = Box.createVerticalBox();
 		content.add(slideButtons);
@@ -136,21 +99,36 @@ public class PresentationEditorPanel extends JPanel {
 		JToggleButton tglbtnSetFilter = new JToggleButton("Set filter");
 		slideButtons.add(tglbtnSetFilter);
 		tglbtnSetFilter.setAlignmentX(Component.CENTER_ALIGNMENT);
+		return content;
+	}
+
+	private Box createCollectionBox(String title, DefaultComboBoxModel<String> names) {
+		Box collectionBox = Box.createVerticalBox();
+		collectionBox.setBorder(new TitledBorder(null, title, TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		JComboBox<String> comboBoxCollectionNames = new JComboBox<String>(names);
+		collectionBox.add(comboBoxCollectionNames);
+		comboBoxCollectionNames.setEditable(true);
 		
-		Box navigation = Box.createVerticalBox();
-		navigation.setBorder(new TitledBorder(null, "Show", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		add(navigation);
+		Box collectionButtons = Box.createHorizontalBox();
+		collectionBox.add(collectionButtons);
 		
-		Box navigationButtons = Box.createHorizontalBox();
-		navigation.add(navigationButtons);
+		JButton btnNewElement = new JButton("Append");
+		collectionButtons.add(btnNewElement);
 		
-		JButton btnPrevious = new JButton("Previous");
-		navigationButtons.add(btnPrevious);
+		JButton btnDeleteElement = new JButton("Delete");
+		collectionButtons.add(btnDeleteElement);
 		
-		JToggleButton tglbtnCurrent = new JToggleButton("Current");
-		navigationButtons.add(tglbtnCurrent);
+		Box orderButtons = Box.createHorizontalBox();
+		collectionBox.add(orderButtons);
 		
-		JButton btnNext = new JButton("Next");
-		navigationButtons.add(btnNext);
+		JButton btnMoveUp = new JButton("Up");
+		orderButtons.add(btnMoveUp);
+		
+		JButton btnMoveDown = new JButton("Down");
+		orderButtons.add(btnMoveDown);
+		
+		JButton btnMove = new JButton("Move");
+		orderButtons.add(btnMove);
+		return collectionBox;
 	}
 }
