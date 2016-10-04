@@ -43,9 +43,6 @@ public class PresentationEditorPanel extends JPanel {
 		JButton btnDeletePresentation = new JButton("Delete");
 		presentationButtons.add(btnDeletePresentation);
 		
-		JButton btnRenamePresentation = new JButton("Rename");
-		presentationButtons.add(btnRenamePresentation);
-		
 		Box presentationOrderButtons = Box.createHorizontalBox();
 		presentations.add(presentationOrderButtons);
 		
@@ -75,9 +72,6 @@ public class PresentationEditorPanel extends JPanel {
 		
 		JButton btnDeleteSlide = new JButton("Delete");
 		stepButtons.add(btnDeleteSlide);
-
-		JButton btnRenameSlide = new JButton("Rename");
-		stepButtons.add(btnRenameSlide);
 		
 		Box slideOrderButtons = Box.createHorizontalBox();
 		slides.add(slideOrderButtons);
