@@ -107,6 +107,15 @@ public class PresentationEditorPanel extends JPanel {
 		btnSetSelectedNode.setAlignmentX(Component.CENTER_ALIGNMENT);
 		slideButtons.add(btnSetSelectedNode);
 		
+		Box zoomBox = Box.createHorizontalBox();
+		slideButtons.add(zoomBox);
+		
+		JToggleButton tglbtnSetZoom = new JToggleButton("Set zoom");
+		zoomBox.add(tglbtnSetZoom);
+		
+		JLabel lblNewLabel = new JLabel("100 %");
+		zoomBox.add(lblNewLabel);
+		
 		JCheckBox checkBoxOnlySpecificNodes = new JCheckBox("Show only specific nodes");
 		checkBoxOnlySpecificNodes.setAlignmentX(Component.CENTER_ALIGNMENT);
 		slideButtons.add(checkBoxOnlySpecificNodes);
