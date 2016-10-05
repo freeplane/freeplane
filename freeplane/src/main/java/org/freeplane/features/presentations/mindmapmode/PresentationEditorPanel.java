@@ -4,15 +4,21 @@ import java.awt.Component;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
 
+import org.freeplane.features.presentations.CollectionModel;
+import org.freeplane.features.presentations.PresentationModel;
+import org.freeplane.features.presentations.CollectionChangeListener;
+import org.freeplane.features.presentations.CollectionChangedEvent;
+import org.freeplane.features.presentations.SlideModel;
+
+@SuppressWarnings("serial")
 public class PresentationEditorPanel extends JPanel {
 
 	/**
@@ -20,11 +26,22 @@ public class PresentationEditorPanel extends JPanel {
 	 */
 	public PresentationEditorPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		Box presentations = createCollectionBox("Presentations", new DefaultComboBoxModel<String>(new String[] { "first presentation", "second presentation" }));
-		add(presentations);
-		Box slides = createCollectionBox("Slides", new DefaultComboBoxModel<String>(new String[] { "first slide", "second slide" }));
-		add(slides);
-		Box content = createSlideContentBox();
+		final CollectionBoxController<PresentationModel> presentationPanelController = new CollectionBoxController<>("Presentations", "New presentation");
+		add(presentationPanelController.getCollectionBox());
+		final CollectionModel<PresentationModel> presentations = new CollectionModel<>(PresentationModel.class);
+		presentationPanelController.setCollection(presentations);
+		final CollectionBoxController<SlideModel> slidePanelController = new CollectionBoxController<SlideModel>("Slides", "New slide");
+		presentations.addSelectionChangeListener(new CollectionChangeListener<PresentationModel>() {
+			
+			@Override
+			public void onCollectionChange(CollectionChangedEvent<PresentationModel> event) {
+				PresentationModel presentationModel = event.collection.getCurrentElement();
+				slidePanelController.setCollection(presentationModel != null ? presentationModel.slides : null);
+			}
+		});
+		
+		add(slidePanelController.getCollectionBox());
+		JComponent content = createSlideContentBox();
 		add(content);
 		Box navigation = createNavigationBox();
 		add(navigation);
@@ -100,35 +117,5 @@ public class PresentationEditorPanel extends JPanel {
 		slideButtons.add(tglbtnSetFilter);
 		tglbtnSetFilter.setAlignmentX(Component.CENTER_ALIGNMENT);
 		return content;
-	}
-
-	private Box createCollectionBox(String title, DefaultComboBoxModel<String> names) {
-		Box collectionBox = Box.createVerticalBox();
-		collectionBox.setBorder(new TitledBorder(null, title, TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		JComboBox<String> comboBoxCollectionNames = new JComboBox<String>(names);
-		collectionBox.add(comboBoxCollectionNames);
-		comboBoxCollectionNames.setEditable(true);
-		
-		Box collectionButtons = Box.createHorizontalBox();
-		collectionBox.add(collectionButtons);
-		
-		JButton btnNewElement = new JButton("Append");
-		collectionButtons.add(btnNewElement);
-		
-		JButton btnDeleteElement = new JButton("Delete");
-		collectionButtons.add(btnDeleteElement);
-		
-		Box orderButtons = Box.createHorizontalBox();
-		collectionBox.add(orderButtons);
-		
-		JButton btnMoveUp = new JButton("Up");
-		orderButtons.add(btnMoveUp);
-		
-		JButton btnMoveDown = new JButton("Down");
-		orderButtons.add(btnMoveDown);
-		
-		JButton btnMove = new JButton("Move");
-		orderButtons.add(btnMove);
-		return collectionBox;
 	}
 }
