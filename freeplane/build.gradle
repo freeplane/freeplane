@@ -6,6 +6,7 @@ configurations{
 dependencies {
 	
 	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.5'
+	mergedViewerDependencies ':kitfox-svg-salamander-1.1.1'
 	
     compile project(':JOrtho_0.4_freeplane')
 
@@ -26,7 +27,6 @@ dependencies {
 
     // from flatDir "localGitDepsRepository":
     compile ':idw-gpl-1.6.1'
-    compile ':svgSalamander-tiny-1.0'
 }
 
 sourceSets {
