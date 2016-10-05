@@ -66,7 +66,7 @@ public class ColorUtils {
 			return new Color(rgb.getRed(), rgb.getGreen(), rgb.getBlue(), alphaHolder.getAlpha());
 	}
 
-	protected static boolean isNonTransparent(final Color alphaHolder) {
+	public static boolean isNonTransparent(final Color alphaHolder) {
 		final boolean isNonTransparent = alphaHolder.getAlpha() == NON_TRANSPARENT_ALPHA;
 		return isNonTransparent;
 	}
@@ -93,5 +93,27 @@ public class ColorUtils {
 		writer.addAttribute(colorAttribute, colorToString(color));
 		if(! isNonTransparent(color))
 			writer.addAttribute(alphaAttribute, Integer.toString(color.getAlpha()));
+	}
+
+	public static Color makeNonTransparent(Color color){
+		return makeNonTransparent(color, Color.WHITE);
+	}
+	
+	public static Color makeNonTransparent(Color color, Color background) {
+		if(color == null)
+			return null;
+		if(isNonTransparent(color))
+			return color;
+		final int r1 = color.getRed(); 
+		final int g1 = color.getGreen(); 
+		final int b1 = color.getBlue(); 
+		final int a1 = color.getAlpha();
+		final int r2 = background.getRed(); 
+		final int g2 = background.getGreen(); 
+		final int b2 = background.getBlue(); 
+		final int r3 = r2 + (r1-r2)*a1 / NON_TRANSPARENT_ALPHA;
+		final int g3 = g2 + (g1-g2)*a1 / NON_TRANSPARENT_ALPHA;
+		final int b3 = b2 + (b1-b2)*a1 / NON_TRANSPARENT_ALPHA;
+		return new Color(r3, g3, b3);
 	}
 }

@@ -5,9 +5,9 @@ import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
 
-import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.format.FormatController;
 
@@ -50,6 +50,10 @@ public class TextUtils {
 		return string == null ? null : TextUtils.getRawText(string);
 	}
 
+	public static String getOptionalText(final String string, final String defaultValue) {
+		return string == null ? null : TextUtils.getRawText(string, defaultValue);
+	}
+
 	public static String removeMnemonic(final String rawLabel) {
 		final int pos = rawLabel.indexOf('&');
 		if(pos == -1)
@@ -87,7 +91,14 @@ public class TextUtils {
 		if (key == null) {
 			return null;
 		}
-		return ((ResourceBundles) ResourceController.getResourceController().getResources()).getResourceString(key);
+		return getLanguageResources().getResourceString(key);
+	}
+
+	public static String getOriginalRawText(final String key) {
+		if (key == null) {
+			return null;
+		}
+		return getLanguageResources().getOriginalString(key);
 	}
 
 	public static String getText(final String key, final String defaultString) {
@@ -100,8 +111,11 @@ public class TextUtils {
 		if (key == null) {
 			return defaultString;
 		}
-		return ((ResourceBundles) ResourceController.getResourceController().getResources()).getResourceString(key,
-		    defaultString);
+		return getLanguageResources().getResourceString(key, defaultString);
+	}
+
+	private static ResourceBundles getLanguageResources() {
+		return (ResourceBundles) ResourceController.getResourceController().getResources();
 	}
 
 	public static String getOptionalTranslation(String text) {

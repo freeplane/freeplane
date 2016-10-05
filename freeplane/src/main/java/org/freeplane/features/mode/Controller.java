@@ -24,9 +24,11 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,6 +40,7 @@ import org.freeplane.core.resources.OptionPanelController;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.ui.IMapViewManager;
@@ -48,7 +51,7 @@ import org.freeplane.main.application.ApplicationLifecycleListener;
  * Provides the methods to edit/change a Node. Forwards all messages to
  * MapModel(editing) or MapView(navigation).
  */
-public class Controller extends AController implements FreeplaneActions{
+public class Controller extends AController implements FreeplaneActions, IMapLifeCycleListener{
 	private final ExtensionContainer extensionContainer;
 	/**
 	 * Converts from a local link to the real file URL of the documentation map.
@@ -63,12 +66,14 @@ public class Controller extends AController implements FreeplaneActions{
 	private final OptionPanelController optionPanelController;
 	private IMapViewManager mapViewManager;
 	private List<ApplicationLifecycleListener> applicationLifecycleListeners = new ArrayList<ApplicationLifecycleListener>(0);
+	final private Collection<IMapLifeCycleListener> mapLifeCycleListeners;
 
 	public Controller(ResourceController resourceController) {
 		super();
 		if(currentController == null){
 			currentController = this;
 		}
+		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
 		this.resourceController = resourceController; 
 		this.optionPanelController = new OptionPanelController();
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
@@ -84,14 +89,16 @@ public class Controller extends AController implements FreeplaneActions{
 		modeControllers.put(modeController.getModeName(), modeController);
 	}
 
-	/**
-	 * Closes the actual map.
-	 * 
-	 * @param withoutSave
-	 *            true= without save.
-	 */
-	public void close(final boolean withoutSave) {
-		getMapViewManager().close(withoutSave);
+	public void addMapLifeCycleListener(final IMapLifeCycleListener listener) {
+		mapLifeCycleListeners.add(listener);
+	}
+	
+	public void removeMapLifeCycleListener(final IMapLifeCycleListener listener) {
+		mapLifeCycleListeners.remove(listener);
+	}
+
+	public void close() {
+		getMapViewManager().close();
 	}
 
 	public <T extends IExtension> T getExtension(final Class<T> clazz){
@@ -183,10 +190,10 @@ public class Controller extends AController implements FreeplaneActions{
 
 	public boolean shutdown() {
 		getViewController().saveProperties();
-		ResourceController.getResourceController().saveProperties();
 		if (!getViewController().quit()) {
 			return false;
 		}
+		ResourceController.getResourceController().saveProperties();
 		extensionContainer.getExtensions().clear();
 		return true;
 	}
@@ -281,12 +288,46 @@ public class Controller extends AController implements FreeplaneActions{
 		return optionPanelController;
 	}
 
-	/** returns an unmodifiableList. */
-	public List<ApplicationLifecycleListener> getApplicationLifecycleListeners() {
-		return Collections.unmodifiableList(applicationLifecycleListeners);
-	}
 
 	public void addApplicationLifecycleListener(ApplicationLifecycleListener applicationLifecycleListener) {
 		this.applicationLifecycleListeners.add(applicationLifecycleListener);
 	}
+	
+	public void fireMapCreated(final MapModel map) {
+		final IMapLifeCycleListener[] list = mapLifeCycleListeners.toArray(new IMapLifeCycleListener[]{});
+		for (final IMapLifeCycleListener next : list) {
+			next.onCreate(map);
+		}
+	}
+
+	protected void fireMapRemoved(final MapModel map) {
+		final IMapLifeCycleListener[] list = mapLifeCycleListeners.toArray(new IMapLifeCycleListener[]{});
+		for (final IMapLifeCycleListener next : list) {
+			next.onRemove(map);
+		}
+	}
+
+	@Override
+	public void onCreate(MapModel map) {
+		fireMapCreated(map);
+	}
+
+	@Override
+	public void onRemove(MapModel map) {
+		fireMapRemoved(map);
+		
+	}
+	
+	public void fireStartupFinished() {
+		for (ApplicationLifecycleListener listener : applicationLifecycleListeners) {
+			listener.onStartupFinished();
+		}
+	}
+
+	public void fireApplicationStopped() {
+		for (ApplicationLifecycleListener listener : applicationLifecycleListeners) {
+			listener.onApplicationStopped();
+		}
+	}
+
 }

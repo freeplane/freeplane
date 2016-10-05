@@ -74,8 +74,8 @@ public interface IMapViewManager {
 	 * @param withoutSave
 	 *            forces the closing without any save actions.
 	 */
-	public boolean close(final boolean withoutSave);
-	public boolean close(final Component view, final boolean force);
+	public boolean close();
+	public boolean close(final Component view);
 	
 	public String createHtmlMap();
 
@@ -141,8 +141,10 @@ public interface IMapViewManager {
 	public void setMapTitles();
 	public Object setEdgesRenderingHint(final Graphics2D g);
 	public void setTextRenderingHint(final Graphics2D g);
-	public boolean closeAllMaps();
-
 	public JComboBox createZoomBox();
+
+	public void onQuitApplication();
+
+	public void closeWithoutSaving();
 
 }

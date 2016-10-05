@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.clipboard.mindmapmode;
 
-import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -38,8 +38,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.ElementIterator;
@@ -78,7 +78,7 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLException;
-import org.freeplane.view.swing.features.filepreview.ExternalResource;
+import org.freeplane.view.swing.features.filepreview.ImageAdder;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.features.filepreview.ViewerController.PasteMode;
 
@@ -124,6 +124,11 @@ public class MClipboardController extends ClipboardController {
 		}
 
 		public void paste(Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft, int dropAction) {
+	        if (LinkController.getLinkType() == LinkController.LINK_RELATIVE_TO_MINDMAP && target.getMap().getFile() == null) {
+	        	JOptionPane.showMessageDialog(Controller.getCurrentController().getViewController().getCurrentRootComponent(),
+	        	    TextUtils.getText("map_not_saved"), "Freeplane", JOptionPane.WARNING_MESSAGE);
+	        	return;
+	        }
 			boolean pasteImages = dropAction == DnDConstants.ACTION_COPY;
 			ViewerController viewerController = ((ViewerController)Controller.getCurrentModeController().getExtension(ViewerController.class));
 			for (final File file : fileList) {
@@ -387,18 +392,13 @@ public class MClipboardController extends ClipboardController {
 		}
 	}
 
-    private class ImageFlavorHandler implements IDataFlavorHandler {
-    	private static final String IMAGE_FORMAT = "png";
-		final private BufferedImage image;
+	private class ImageFlavorHandler implements IDataFlavorHandler {
 
-		public ImageFlavorHandler(BufferedImage img) {
+		final private Image image;
+
+		public ImageFlavorHandler(Image img) {
 			super();
-			BufferedImage fixedImg = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			Graphics2D fig = fixedImg.createGraphics();
-			fig.drawImage(img, 0, 0, null);
-			fig.dispose();
-			fixedImg.flush();
-			this.image = fixedImg;
+			image = img;
 		}
 
         public void paste(Transferable t, NodeModel target, boolean asSibling, boolean isLeft, int dropAction) {
@@ -406,50 +406,48 @@ public class MClipboardController extends ClipboardController {
 			final MMapController mapController = (MMapController) modeController.getMapController();
             File mindmapFile = target.getMap().getFile();
             if(mindmapFile == null) {
-                UITools.errorMessage(TextUtils.getRawText("map_not_saved"));
-                return;
+            	UITools.errorMessage(TextUtils.getRawText("map_not_saved"));
+            	return;
             }
-			final String mmFileName = mindmapFile.getName();
-			String fileNameTemplate = mmFileName.substring(0, mmFileName.lastIndexOf('.')) + "_";
-			while (fileNameTemplate.length() < 3)
-				fileNameTemplate = fileNameTemplate + '_';
-			//file that we'll save to disk.
+            final String mmFileName = mindmapFile.getName();
+            String fileNameTemplate = mmFileName.substring(0, mmFileName.lastIndexOf('.')) + "_";
+            while (fileNameTemplate.length() < 3)
+            	fileNameTemplate = fileNameTemplate + '_';
+            //file that we'll save to disk.
             File file;
             try {
-	            final File dir = mindmapFile.getParentFile();
-				file = File.createTempFile(fileNameTemplate, "."+IMAGE_FORMAT, dir);
-	            String imgfilepath=file.getAbsolutePath();
-	            File tempFile = file = new File(imgfilepath);
-	            final JFileChooser fileChooser = new JFileChooser(file);		
-	            final ExampleFileFilter filter = new ExampleFileFilter();
-	    		filter.addExtension(IMAGE_FORMAT);
-	    		fileChooser.setAcceptAllFileFilterUsed(false);
-	    		fileChooser.setFileFilter(filter);
-	    		fileChooser.setSelectedFile(file);
-	    		int returnVal = fileChooser.showSaveDialog(UITools.getCurrentRootComponent());
-	    		if (returnVal != JFileChooser.APPROVE_OPTION) {
-	    			tempFile.delete();
-	    			return;
-	    		}
-	    		file = fileChooser.getSelectedFile();
-	    		if(tempFile.exists() && ! file.getAbsoluteFile().equals(tempFile)){
-	    			tempFile.delete();
-	    		}
-	    		if(file.isDirectory())
-	    			return;
-	    		if(! FileUtils.getExtension(file.getName()).equals(IMAGE_FORMAT))
-	    			file = new File(file.getPath() + '.' + IMAGE_FORMAT);
-	    		final URI uri = LinkController.toLinkTypeDependantURI(mindmapFile, file);
-	            ImageIO.write(image, IMAGE_FORMAT, file);
-				final NodeModel node = mapController.newNode(file.getName(), target.getMap());
-				final ExternalResource extension = new ExternalResource(uri);
-				node.addExtension(extension);
-				mapController.insertNode(node, target, asSibling, isLeft, isLeft);
+            	final File dir = mindmapFile.getParentFile();
+            	file = File.createTempFile(fileNameTemplate, "."+ImageAdder.IMAGE_FORMAT, dir);
+            	String imgfilepath=file.getAbsolutePath();
+            	File tempFile = file = new File(imgfilepath);
+            	final JFileChooser fileChooser = new JFileChooser(file);		
+            	final ExampleFileFilter filter = new ExampleFileFilter();
+            	filter.addExtension(ImageAdder.IMAGE_FORMAT);
+            	fileChooser.setAcceptAllFileFilterUsed(false);
+            	fileChooser.setFileFilter(filter);
+            	fileChooser.setSelectedFile(file);
+            	int returnVal = fileChooser.showSaveDialog(UITools.getCurrentRootComponent());
+            	if (returnVal != JFileChooser.APPROVE_OPTION) {
+            		tempFile.delete();
+            		return;
+            	}
+            	file = fileChooser.getSelectedFile();
+            	if(tempFile.exists() && ! file.getAbsoluteFile().equals(tempFile)){
+            		tempFile.delete();
+            	}
+            	if(file.isDirectory())
+            		return;
+            	if(! FileUtils.getExtension(file.getName()).equals(ImageAdder.IMAGE_FORMAT))
+            		file = new File(file.getPath() + '.' + ImageAdder.IMAGE_FORMAT);
+            	final NodeModel node = mapController.newNode(file.getName(), target.getMap());
+            	mapController.insertNode(node, target, asSibling, isLeft, isLeft);
+            	new ImageAdder(image, mapController, mindmapFile, file).attachImageToNode(node);
             }
             catch (IOException e) {
-	            e.printStackTrace();
+            	e.printStackTrace();
             }
         }
+
     }
 	private static final Pattern HEADER_REGEX = Pattern.compile("h(\\d)", Pattern.CASE_INSENSITIVE);
 	private static final Pattern HREF_PATTERN = Pattern
@@ -590,7 +588,7 @@ public class MClipboardController extends ClipboardController {
 		}
 		if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
 			try {
-				BufferedImage image = (BufferedImage) t.getTransferData(DataFlavor.imageFlavor);
+				Image image = (Image) t.getTransferData(DataFlavor.imageFlavor);
 				return new ImageFlavorHandler(image);
 			}
 			catch (final UnsupportedFlavorException e) {
@@ -670,7 +668,7 @@ public class MClipboardController extends ClipboardController {
 		}
 		if (t.isDataFlavorSupported(DataFlavor.imageFlavor)) {
 			try {
-				BufferedImage image = (BufferedImage) t.getTransferData(DataFlavor.imageFlavor);
+				Image image = (Image) t.getTransferData(DataFlavor.imageFlavor);
 				handlerList.add(new ImageFlavorHandler(image));
 			}
 			catch (final UnsupportedFlavorException e) {

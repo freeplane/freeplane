@@ -81,7 +81,7 @@ public class ConjunctConditions extends ASelectableCondition implements ICombine
 	 */
 	protected JComponent createRendererComponent() {
 		final JCondition component = new JCondition();
-		component.add(new JLabel("("));
+		component.add(ConditionFactory.createConditionLabel("("));
 		ASelectableCondition cond = conditions[0];
 		JComponent rendererComponent = cond.createShortRendererComponent();
 		component.add(rendererComponent);
@@ -93,7 +93,7 @@ public class ConjunctConditions extends ASelectableCondition implements ICombine
 			rendererComponent = cond.createRendererComponent();
 			component.add(rendererComponent);
 		}
-		component.add(new JLabel(")"));
+		component.add(ConditionFactory.createConditionLabel(")"));
 		return component;
 	}
 

@@ -48,8 +48,6 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 
@@ -85,8 +83,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			final SplitAction splitAction = new SplitAction();
 			splitButton.addActionListener(splitAction);
 			UITools.addKeyActionToDialog(getDialog(), submitAction, "alt ENTER", "submit");
-			final ModeController modeController = Controller.getCurrentModeController();
-			final KeyStroke splitNodeHotKey = modeController.getUserInputListenerFactory().getAcceleratorManager().getAccelerator("SplitNode");
+			final KeyStroke splitNodeHotKey = ResourceController.getResourceController().getAcceleratorManager().getAccelerator("SplitNode");
 			if(splitNodeHotKey != null)
 				UITools.addKeyActionToDialog(getDialog(), splitAction, splitNodeHotKey.toString(), "split");
 			final JPanel buttonPane = new JPanel();

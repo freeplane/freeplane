@@ -15,6 +15,7 @@
 				<boolean name="load_last_maps" />
 				<boolean name="always_load_last_maps" />
 				<boolean name="experimental_file_locking_on" />
+				<boolean name="skip_template_selection" />
 			</separator>
 			<separator name="load">
 				<combo name="load_folding">
@@ -66,6 +67,9 @@
 			<separator name="updates">
 				<boolean name="check_updates_automatically" />
 			</separator>
+			<separator name="surveys">
+				<boolean name="neverShowSurvey" />
+			</separator>
 			<separator name="org.freeplane.plugin.bugreport">
 				<combo name="org.freeplane.plugin.bugreport">
 					<choice value="org.freeplane.plugin.bugreport.allowed" />
@@ -78,8 +82,8 @@
 		<tab name="Appearance">
 			<separator name="look_and_feel">
 				<group name="lookandfeel" />
-				<boolean name="apply_system_screen_resolution" />
-				<number name="user_defined_screen_resolution" min="72" max="1200" />
+				<number name="user_defined_screen_resolution" min="36" max="1200" />
+				<boolean name="lookandfeel.scaleuifonts" />
 				<boolean name="resources_use_default_font_for_notes_too" />
 				<boolean name="resources_use_margin_top_zero_for_notes" />
 				<number name="max_menu_item_count" min="10" />

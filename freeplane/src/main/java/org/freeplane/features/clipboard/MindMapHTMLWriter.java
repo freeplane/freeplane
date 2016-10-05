@@ -24,6 +24,7 @@ import java.awt.Font;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FileUtils;
@@ -43,7 +44,7 @@ import org.freeplane.features.url.UrlManager;
 
 
 class MindMapHTMLWriter {
-	private static String el = System.getProperty("line.separator");
+	private static String lf = System.getProperty("line.separator");
 
 	private static String convertSpecialChar(final char c) {
 		String cvt;
@@ -165,13 +166,13 @@ class MindMapHTMLWriter {
 
 	private void writeBodyWithFolding(final NodeModel rootNodeOfBranch) throws IOException {
 		writeJavaScript();
-		fileout.write("<SPAN class=\"foldspecial\" onclick=\"fold_document()\">All +</SPAN>" + MindMapHTMLWriter.el);
-		fileout.write("<SPAN class=\"foldspecial\" onclick=\"unfold_document()\">All -</SPAN>" + MindMapHTMLWriter.el);
+		fileout.write("<SPAN class=\"foldspecial\" onclick=\"fold_document()\">All +</SPAN>" + lf);
+		fileout.write("<SPAN class=\"foldspecial\" onclick=\"unfold_document()\">All -</SPAN>" + lf);
 		writeHTML(rootNodeOfBranch, "1", 0, /* isRoot */true, true, /* depth */
 		1);
-		fileout.write("<SCRIPT type=\"text/javascript\">" + MindMapHTMLWriter.el);
-		fileout.write("fold_document();" + MindMapHTMLWriter.el);
-		fileout.write("</SCRIPT>" + MindMapHTMLWriter.el);
+		fileout.write("<SCRIPT type=\"text/javascript\">" + lf);
+		fileout.write("fold_document();" + lf);
+		fileout.write("</SCRIPT>" + lf);
 	}
 
 	private void writeFoldingButtons(final String localParentID) throws IOException {
@@ -182,18 +183,18 @@ class MindMapHTMLWriter {
 	}
 
 	void writeHTML(final Collection<NodeModel> selectedNodes) throws IOException {
-		fileout.write("<html>" + MindMapHTMLWriter.el + "<head>" + MindMapHTMLWriter.el);
+		fileout.write("<html>" + lf + "<head>" + lf);
 		if(! selectedNodes.isEmpty()){
 			final MapModel map = selectedNodes.iterator().next().getMap();
 			setDefaultsFrom(map);
 			writeStyle();
 		}
-		fileout.write(MindMapHTMLWriter.el + "</head>" + MindMapHTMLWriter.el + "<body>" + MindMapHTMLWriter.el);
+		fileout.write(lf + "</head>" + lf + "<body>" + lf);
 		for (NodeModel node : selectedNodes) {
 			writeHTML(node, "1", 0, /* isRoot */true, true, /* depth */1);
 		}
-		fileout.write("</body>" + MindMapHTMLWriter.el);
-		fileout.write("</html>" + MindMapHTMLWriter.el);
+		fileout.write("</body>" + lf);
+		fileout.write("</html>" + lf);
 		fileout.close();
 		resetDefaults();
 	}
@@ -219,18 +220,19 @@ class MindMapHTMLWriter {
 		ResourceController.getResourceController().getBooleanProperty("export_icons_in_html");
 		fileout
 		    .write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"
-		            + MindMapHTMLWriter.el + "<html>" + MindMapHTMLWriter.el + "<head>" + MindMapHTMLWriter.el);
+		                + lf + "<html>" + lf + "<head>" + lf);
 		fileout.write("<title>"
 		        + MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(TextController.getController().getPlainTextContent(rootNodeOfBranch)
-		            .replace('\n', ' ')) + "</title>" + MindMapHTMLWriter.el);
+		                .replace('\n', ' '))
+		        + "</title>" + lf);
 		writeStyle();
-		fileout.write(MindMapHTMLWriter.el + "</head>" + MindMapHTMLWriter.el + "<body");
+		fileout.write(lf + "</head>" + lf + "<body");
 		final MapStyleModel style = MapStyleModel.getExtension(rootNodeOfBranch.getMap());
 		final Color background = style != null ? style.getBackgroundColor() : null;
 		if (background != null) {
 			fileout.write(" bgcolor=" + ColorUtils.colorToString(background));
 		}
-		fileout.write(">" + MindMapHTMLWriter.el);
+		fileout.write(">" + lf);
 		if (writeFoldingCode) {
 			writeBodyWithFolding(rootNodeOfBranch);
 		}
@@ -238,8 +240,8 @@ class MindMapHTMLWriter {
 			writeHTML(rootNodeOfBranch, "1", 0, /* isRoot */true, true, /* depth */
 			1);
 		}
-		fileout.write("</body>" + MindMapHTMLWriter.el);
-		fileout.write("</html>" + MindMapHTMLWriter.el);
+		fileout.write("</body>" + lf);
+		fileout.write("</html>" + lf);
 		fileout.close();
 		resetDefaults();
 	}
@@ -272,7 +274,7 @@ class MindMapHTMLWriter {
 		}
 		else {
 			if (heading) {
-				fileout.write("<h" + depth + ">");
+				fileout.write(lf + "<h" + depth + ">");
 			}
 			else if (!hasHtml) {
 				fileout.write("<p>");
@@ -285,7 +287,8 @@ class MindMapHTMLWriter {
 			writeFoldingButtons(localParentID);
 		}
 		final String fontStyle = fontStyle(nodeStyleController.getColor(model), nodeStyleController.getFont(model));
-		if (!fontStyle.equals("")) {
+		boolean shouldOutputFontStyle = !fontStyle.equals("");
+		if (shouldOutputFontStyle) {
 			fileout.write("<span style=\"" + fontStyle + "\">");
 		}
 		String link = NodeLinks.getLinkAsString(model);
@@ -300,9 +303,9 @@ class MindMapHTMLWriter {
 		}
 		writeModelContent(text);
 		if (link != null) {
-			fileout.write("</a>" + MindMapHTMLWriter.el);
+			fileout.write("</a>" + lf);
         }
-		if (fontStyle != "") {
+		if (shouldOutputFontStyle) {
 			fileout.write("</span>");
 		}
         final String detailText = DetailTextModel.getDetailTextText(model);
@@ -313,9 +316,8 @@ class MindMapHTMLWriter {
         if(noteContent != null){
         	writeModelContent(noteContent);
             }
-		fileout.write(MindMapHTMLWriter.el);
 		if (heading) {
-			fileout.write("</h" + depth + ">" + MindMapHTMLWriter.el);
+			fileout.write("</h" + depth + ">" + lf);
 		}
 		if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
 			for (final NodeModel child : mapController.childrenUnfolded(model)) {
@@ -332,8 +334,8 @@ class MindMapHTMLWriter {
 				}
 			}
 			else if (createFolding) {
-				fileout.write("<ul id=\"fold" + localParentID
-				        + "\" style=\"POSITION: relative; VISIBILITY: visible;\">");
+				fileout.write(lf + "<ul id=\"fold" + localParentID
+				        + "\" style=\"POSITION: relative; VISIBILITY: visible;\">" + lf);
 				int localLastChildNumber = 0;
 				for (final NodeModel child : mapController.childrenUnfolded(model)) {
 					localLastChildNumber = writeHTML(child, localParentID, localLastChildNumber,
@@ -341,17 +343,16 @@ class MindMapHTMLWriter {
 				}
 			}
 			else {
-				fileout.write("<ul>");
+				fileout.write(lf + "<ul>" + lf);
 				for (final NodeModel child : mapController.childrenUnfolded(model)) {
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
 					/* isRoot= */false, false, depth + 1);
 				}
 			}
-			fileout.write(MindMapHTMLWriter.el);
-			fileout.write("</ul>");
+			fileout.write("</ul>" + lf);
 		}
 		if (!treatAsParagraph) {
-			fileout.write(MindMapHTMLWriter.el + "</li>" + MindMapHTMLWriter.el);
+			fileout.write("</li>" + lf);
 		}
 		return lastChildNumber;
 	}
@@ -365,9 +366,9 @@ class MindMapHTMLWriter {
 	}
 
 	private void writeJavaScript() throws IOException {
-		fileout.write("<script type=\"text/javascript\">" + MindMapHTMLWriter.el);
+		fileout.write("<script type=\"text/javascript\">" + lf);
 		fileout.write(FileUtils.slurpResource("/html/folding.js"));
-		fileout.write(MindMapHTMLWriter.el + "</script>" + MindMapHTMLWriter.el);
+		fileout.write(lf + "</script>" + lf);
 	}
 
 	private void writeModelContent(final String string) throws IOException {
@@ -398,14 +399,14 @@ class MindMapHTMLWriter {
 		}
     }
 	private void writeStyle() throws IOException {
-		fileout.write("<style type=\"text/css\">" + MindMapHTMLWriter.el);
+		fileout.write("<style type=\"text/css\">" + lf);
 		fileout.write("    body {");
 		writeDefaultFontStyle();
-		fileout.write("}" + MindMapHTMLWriter.el);
+		fileout.write("}" + lf);
 		fileout.write(FileUtils.slurpResource("/html/freeplane.css"));
 		if(writeFoldingCode)
 			fileout.write(FileUtils.slurpResource("/html/folding.css"));
-		fileout.write(MindMapHTMLWriter.el + MindMapHTMLWriter.el + "</style>" + MindMapHTMLWriter.el
+		fileout.write(lf + "</style>" + lf //
 			      + "<!-- ^ Position is not set to relative / absolute here because of Mozilla -->");
 	}
 

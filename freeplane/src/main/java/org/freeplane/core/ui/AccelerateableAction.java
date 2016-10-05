@@ -28,6 +28,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JDialog;
 import javax.swing.KeyStroke;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.IKeyBindingManager;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -147,6 +148,6 @@ public class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	private ActionAcceleratorManager getAcceleratorManager() {
-		return Controller.getCurrentModeController().getUserInputListenerFactory().getAcceleratorManager();
+		return ResourceController.getResourceController().getAcceleratorManager();
 	}
 }

@@ -83,4 +83,14 @@ public class MapLinks implements IExtension {
 	public static MapLinks getLinks(final MapModel map) {
 		return (MapLinks) map.getExtension(MapLinks.class);
 	}
+
+
+	public static boolean hasLinks(final MapModel map) {
+		final MapLinks mapLinks = (MapLinks) map.getExtension(MapLinks.class);
+		return mapLinks != null &&mapLinks.getSize() > 0;
+	}
+
+	private int getSize() {
+		return links.size();
+	}
 }

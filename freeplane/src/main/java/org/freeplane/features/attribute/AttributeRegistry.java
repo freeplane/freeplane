@@ -20,13 +20,12 @@
 package org.freeplane.features.attribute;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.EventListenerList;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.util.collection.IListModel;
@@ -64,7 +63,8 @@ public class AttributeRegistry implements IExtension {
 	protected SortedMapVector elements;
 	protected boolean isAttributeLayoutChanged;
 	private boolean isRestricted;
-	private EventListenerList listenerList = null;
+	private HashSet<IAttributesListener> attributeListeners = null;
+	private HashSet<ChangeListener> changeListeners = null;
 	private AttributeRegistryComboBoxColumnModel myComboBoxColumnModel = null;
 	private AttributeRegistryTableModel myTableModel = null;
 	private Boolean restrictionModel;
@@ -79,7 +79,8 @@ public class AttributeRegistry implements IExtension {
 
 	public AttributeRegistry(final AttributeController attributeController) {
 		super();
-		listenerList = new EventListenerList();
+		attributeListeners = new HashSet<IAttributesListener>();
+		changeListeners = new HashSet<ChangeListener>();
 		isAttributeLayoutChanged = false;
 		this.attributeController = attributeController;
 		visibleElementsNumber = 0;
@@ -91,11 +92,11 @@ public class AttributeRegistry implements IExtension {
 	}
 
 	public void addAttributesListener(final IAttributesListener l) {
-		listenerList.add(IAttributesListener.class, l);
+		attributeListeners.add(l);
 	}
 
 	public void addChangeListener(final ChangeListener l) {
-		listenerList.add(ChangeListener.class, l);
+		changeListeners.add(l);
 	}
 
 	public void applyChanges() {
@@ -138,26 +139,21 @@ public class AttributeRegistry implements IExtension {
 	}
 
 	protected void fireAttributesChanged() {
-		final Object[] listeners = listenerList.getListenerList();
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
-			if (listeners[i] == IAttributesListener.class) {
-				if (attributesEvent == null) {
-					attributesEvent = new ChangeEvent(this);
-				}
-				((IAttributesListener) listeners[i + 1]).attributesChanged(changeEvent);
+		for (IAttributesListener l : attributeListeners) {
+			if (attributesEvent == null) {
+				attributesEvent = new ChangeEvent(this);
 			}
+			l.attributesChanged(changeEvent);
 		}
 	}
 
 	public void fireStateChanged() {
-		final Object[] listeners = listenerList.getListenerList();
-		for (int i = listeners.length - 2; i >= 0; i -= 2) {
-			if (listeners[i] == ChangeListener.class) {
-				if (changeEvent == null) {
-					changeEvent = new ChangeEvent(this);
-				}
-				((ChangeListener) listeners[i + 1]).stateChanged(changeEvent);
+		final ChangeListener[] currentChangeListeners = changeListeners.toArray(new ChangeListener[changeListeners.size()]);
+		for (ChangeListener l : currentChangeListeners) {
+			if (changeEvent == null) {
+				changeEvent = new ChangeEvent(this);
 			}
+			l.stateChanged(changeEvent);
 		}
 	}
 
@@ -304,11 +300,11 @@ public class AttributeRegistry implements IExtension {
 	}
 
 	public void removeAttributesListener(final IAttributesListener l) {
-		listenerList.remove(IAttributesListener.class, l);
+		attributeListeners.remove(l);
 	}
 
 	public void removeChangeListener(final ChangeListener l) {
-		listenerList.remove(ChangeListener.class, l);
+		changeListeners.remove(l);
 	}
 
 	/**

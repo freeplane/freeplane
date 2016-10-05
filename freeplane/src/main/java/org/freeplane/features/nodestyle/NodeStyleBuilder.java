@@ -267,6 +267,52 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "TEXT_ALIGN", textAlignHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "TEXT_ALIGN", textAlignHandler);
+
+		final IAttributeHandler borderWidthMatchesEdgeWidthHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeBorderModel.setBorderWidthMatchesEdgeWidth(node, Boolean.valueOf(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_WIDTH_LIKE_EDGE", borderWidthMatchesEdgeWidthHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_WIDTH_LIKE_EDGE", borderWidthMatchesEdgeWidthHandler);
+
+		final IAttributeHandler borderWidthHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeBorderModel.setBorderWidth(node, Quantity.fromString(value, LengthUnits.px));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_WIDTH", borderWidthHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_WIDTH", borderWidthHandler);
+
+		final IAttributeHandler borderColorMatchesEdgeColorHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeBorderModel.setBorderColorMatchesEdgeColor(node, Boolean.valueOf(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_COLOR_LIKE_EDGE", borderColorMatchesEdgeColorHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_COLOR_LIKE_EDGE", borderColorMatchesEdgeColorHandler);
+
+		final IAttributeHandler borderColorHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeBorderModel.setBorderColor(node, ColorUtils.stringToColor(value, NodeBorderModel.getBorderColor(node)));
+			}
+		};
+		final IAttributeHandler borderColorAlphaHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeBorderModel.setBorderColor(node, ColorUtils.alphaToColor(value, NodeBorderModel.getBorderColor(node)));
+			}
+		};
+
+		
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_COLOR", borderColorHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_COLOR_ALPHA", borderColorAlphaHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_COLOR", borderColorHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_COLOR_ALPHA", borderColorAlphaHandler);
 	}
 
 	/**
@@ -281,6 +327,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		writer.addExtensionElementWriter(NodeStyleModel.class, this);
 		writer.addExtensionAttributeWriter(NodeStyleModel.class, this);
 		writer.addExtensionAttributeWriter(NodeSizeModel.class, this);
+		writer.addExtensionAttributeWriter(NodeBorderModel.class, this);
 	}
 
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
@@ -294,6 +341,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final NodeModel node = (NodeModel) userObject;
 		writeAttributes(writer, node, (NodeStyleModel)null, true);
 		writeAttributes(writer, node, (NodeSizeModel)null, true);
+		writeAttributes(writer, node, (NodeBorderModel)null, true);
 	}
 
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final IExtension extension) {
@@ -310,6 +358,11 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if(extension instanceof NodeSizeModel){
 			final NodeSizeModel size = (NodeSizeModel) extension;
 			writeAttributes(writer, node, size, false);
+			return;
+		}
+		if(extension instanceof NodeBorderModel){
+			final NodeBorderModel border = (NodeBorderModel) extension;
+			writeAttributes(writer, null, border, false);
 			return;
 		}
 
@@ -369,6 +422,28 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			BackwardCompatibleQuantityWriter.forWriter(writer).writeQuantity("MIN_WIDTH", minTextWidth);
 		}
 	}
+	
+	private void writeAttributes(final ITreeWriter writer, final NodeModel node, final NodeBorderModel border,
+			final boolean forceFormatting) {
+		final Boolean borderWidthMatchesEdgeWidth = forceFormatting ? nsc.getBorderWidthMatchesEdgeWidth(node) : border.getBorderWidthMatchesEdgeWidth();
+		if (borderWidthMatchesEdgeWidth != null) {
+			writer.addAttribute("BORDER_WIDTH_LIKE_EDGE", borderWidthMatchesEdgeWidth.toString());
+		}
+		final Quantity<LengthUnits> borderWidth = forceFormatting ? nsc.getBorderWidth(node) : border.getBorderWidth();
+		if (borderWidth != null) {
+			writer.addAttribute("BORDER_WIDTH", borderWidth.toString());
+		}
+		final Boolean borderColorMatchesEdgeColor = forceFormatting ? nsc.getBorderColorMatchesEdgeColor(node) : border.getBorderColorMatchesEdgeColor();
+		if (borderColorMatchesEdgeColor != null) {
+			writer.addAttribute("BORDER_COLOR_LIKE_EDGE", borderColorMatchesEdgeColor.toString());
+		}
+		final Color borderColor = forceFormatting ? nsc.getBorderColor(node) : border.getBorderColor();
+		if (borderColor != null) {
+			ColorUtils.addColorAttributes(writer, "BORDER_COLOR", "BORDER_COLOR_ALPHA", borderColor);
+			writer.addAttribute("BORDER_COLOR", ColorUtils.colorToString(borderColor));
+		}
+	}
+	
 	public void writeContent(final ITreeWriter writer, final Object userObject, final String tag) throws IOException {
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (!forceFormatting) {

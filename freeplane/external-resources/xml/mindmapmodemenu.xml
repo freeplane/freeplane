@@ -453,6 +453,10 @@
 			<Entry name="OpenUserDirAction" />
 			<Entry builder="separator" />
 			<Entry name="PropertyAction" accelerator="control COMMA" builder="removeOnMac"/>
+			<Entry builder="conditionalActionBuilder" property="enableUserDefinedInterfaceStrings" 
+				actionKey="TextChangeHotKeyAction" 
+				actionClass="org.freeplane.core.ui.textchanger.TextChangeHotKeyAction" 
+				accelerator="control shift F10"/>
 		</Entry>
 		<Entry name="mindmaps">
 			<Entry name="modes" builder="navigate_modes,radio_button_group" />

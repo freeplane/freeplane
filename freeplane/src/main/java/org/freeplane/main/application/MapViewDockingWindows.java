@@ -136,7 +136,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
             public void windowClosing(DockingWindow window) throws OperationAbortedException {
 				for(Component mapViewComponent : mapViews.toArray(new Component[]{}))
 					if(SwingUtilities.isDescendingFrom(mapViewComponent, window))
-					if (!Controller.getCurrentController().getMapViewManager().close(mapViewComponent, false))
+					if (!Controller.getCurrentController().getMapViewManager().close(mapViewComponent))
 						throw new OperationAbortedException("can not close view");
             }
 
@@ -223,7 +223,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		contentPaneComponentProperties.setInsets(null);
 		contentPaneComponentProperties.setBorder(null);
 
-		Font tabFont = new Font("Dialog", 0, 11);
+		Font tabFont = new Font("Dialog", 0, 10);
+		tabFont = UITools.scaleFontInt(tabFont, 0.8);
 		TitledTabProperties titledTabProperties = overwrittenProperties.getTabWindowProperties().getTabProperties().getTitledTabProperties();
 		titledTabProperties.getHighlightedProperties().getComponentProperties().setFont(tabFont);
 		titledTabProperties.getNormalProperties().getComponentProperties().setFont(tabFont);

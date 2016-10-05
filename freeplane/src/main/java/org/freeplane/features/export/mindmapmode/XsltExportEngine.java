@@ -2,9 +2,13 @@ package org.freeplane.features.export.mindmapmode;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FilePermission;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.security.Permission;
+import java.security.Policy;
+import java.security.ProtectionDomain;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -22,6 +26,29 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 public class XsltExportEngine implements IExportEngine {
+	
+	static class XsltExportPolicy extends Policy {
+		static FilePermission allFileReadPermission = new FilePermission( "<<ALL FILES>>" , "read,readlink");
+		final Policy alternativePolicy;
+		public XsltExportPolicy() {
+			this(Policy.getPolicy());
+		}
+		public XsltExportPolicy(Policy alternativePolicy) {
+			super();
+			this.alternativePolicy = alternativePolicy;
+		}
+		@Override
+		public boolean implies(ProtectionDomain domain, Permission permission) {
+			return alternativePolicy.implies(domain, permission) || allFileReadPermission.implies(permission);
+		}
+		
+		 public void remove(){
+			 if(Policy.getPolicy() != this)
+				 throw new IllegalStateException();
+			Policy.setPolicy(alternativePolicy);
+		}
+		
+	}
 	public XsltExportEngine(File xsltFile) {
 	    super();
 	    this.xsltFile = xsltFile;
@@ -61,7 +88,9 @@ public class XsltExportEngine implements IExportEngine {
 		final Source xsltSource = new StreamSource(xsltFile);
 		final Source xmlSource = getMapXml(map);
 		FileOutputStream outputStream = null;
+		final XsltExportPolicy xsltExportPolicy = new XsltExportPolicy();
         try {
+        	Policy.setPolicy(xsltExportPolicy);
         	outputStream = new FileOutputStream(toFile);
         	final Result result = new StreamResult(outputStream);
         	final TransformerFactory transFact = TransformerFactory.newInstance();
@@ -73,6 +102,7 @@ public class XsltExportEngine implements IExportEngine {
         	LogUtils.warn(e);
         }
         finally {
+        	xsltExportPolicy.remove();
         	try {
         		if (outputStream != null) {
         			outputStream.close();

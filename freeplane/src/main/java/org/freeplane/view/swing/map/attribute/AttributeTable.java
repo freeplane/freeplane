@@ -822,8 +822,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	private void updateComponentColors(final JComponent c) {
 		final NodeView nodeView = attributeView.getNodeView();
-		if(! SwingUtilities.isDescendingFrom(this, nodeView))
+		if(! SwingUtilities.isDescendingFrom(this, nodeView)) {
+			c.setFont(c.getFont().deriveFont(12f));
 			return;
+		}
 		final MapView mapView = nodeView.getMap();
 		final ModeController modeController = mapView.getModeController();
 		final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
@@ -949,7 +951,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		if(gridColor == null){
 			final NodeView nodeView = attributeView.getNodeView();
 			if(SwingUtilities.isDescendingFrom(this, nodeView))
-				setGridAndBorderColor(nodeView.getEdgeColor());
+				setGridAndBorderColor(nodeView.getMainView().getBorderColor());
 		}
 		super.paintComponent(g);
 	}

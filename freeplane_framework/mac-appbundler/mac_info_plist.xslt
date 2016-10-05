@@ -44,10 +44,6 @@
   </xsl:copy>
 </xsl:template>
 
-<xsl:template match="string[text()='JavaAppLauncher']">
-	<string>universalJavaApplicationStub.sh</string>
-</xsl:template>
-
 <xsl:template match="/ | node() | @* | comment() | processing-instruction()">
   <xsl:copy>
     <xsl:apply-templates select="@* | node()"/>

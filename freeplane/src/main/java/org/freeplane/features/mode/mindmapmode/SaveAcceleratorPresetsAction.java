@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import javax.swing.JOptionPane;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
@@ -66,7 +67,7 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 			final OutputStream output = new BufferedOutputStream(new FileOutputStream(keysetFile));
 			final IUserInputListenerFactory userInputListenerFactory = Controller.getCurrentModeController()
 					.getUserInputListenerFactory();
-			userInputListenerFactory.getAcceleratorManager().storeAcceleratorPreset(output);
+			ResourceController.getResourceController().getAcceleratorManager().storeAcceleratorPreset(output);
 			output.close();
 			userInputListenerFactory.rebuildMenus("load_accelerator_presets");
 		}

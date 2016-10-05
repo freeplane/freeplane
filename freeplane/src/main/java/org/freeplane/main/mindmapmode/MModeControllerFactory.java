@@ -275,7 +275,7 @@ public class MModeControllerFactory {
 		userInputListenerFactory.setKeyEventProcessor(new IKeyStrokeProcessor() {
 			@Override
 			public boolean processKeyBinding(KeyStroke ks, KeyEvent e) {
-				return userInputListenerFactory.getAcceleratorManager().processKeyBinding(ks, e) || fButtonToolBar.processKeyBinding(ks, e);
+				return ResourceController.getResourceController().getAcceleratorManager().processKeyBinding(ks, e) || fButtonToolBar.processKeyBinding(ks, e);
 			}
 		});
 		controller.addAction(new ToggleToolbarAction("ToggleFBarAction", "/fbuttons"));
@@ -283,7 +283,7 @@ public class MModeControllerFactory {
 		modeController.addAction(new SetAcceleratorOnNextClickAction());
 		modeController.addAction(new ShowNotesInMapAction());
 		//userInputListenerFactory.getMenuBuilder().setAcceleratorChangeListener(fButtonToolBar);
-		userInputListenerFactory.getAcceleratorManager().addAcceleratorChangeListener(modeController, fButtonToolBar);
+		ResourceController.getResourceController().getAcceleratorManager().addAcceleratorChangeListener(modeController, fButtonToolBar);
 		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT, ((MIconController) IconController
 		    .getController()).getIconToolBarScrollPane());
 		modeController.addAction(new ToggleToolbarAction("ToggleLeftToolbarAction", "/icon_toolbar"));

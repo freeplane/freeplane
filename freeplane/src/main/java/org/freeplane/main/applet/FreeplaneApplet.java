@@ -38,6 +38,7 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.text.html.parser.ParserDelegator;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.filter.FilterController;
@@ -158,6 +159,8 @@ public class FreeplaneApplet extends JApplet {
 			controller.addAction(new NextNodeAction(Direction.BACK_N_FOLD));
 			controller.addAction(new NextPresentationItemAction());
 			browseController.updateMenus("/xml/appletmenu.xml", emptySet);
+			ResourceController.getResourceController().getAcceleratorManager().loadAcceleratorPresets();
+
 			controller.selectMode(browseController);
 			appletResourceController.setPropertyByParameter(this, "browsemode_initial_map");
 			appletViewController.init(controller);
@@ -193,7 +196,7 @@ public class FreeplaneApplet extends JApplet {
 		String lookAndFeel = "";
 		appletResourceController.setPropertyByParameter(this, "lookandfeel");
 		lookAndFeel = appletResourceController.getProperty("lookandfeel");
-		FrameController.setLookAndFeel(lookAndFeel);
+		FrameController.setLookAndFeel(lookAndFeel, true);
 	}
 
 	@Override

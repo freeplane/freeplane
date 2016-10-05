@@ -19,6 +19,12 @@
  */
 package org.freeplane.core.resources.components;
 
+import java.awt.Component;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+
+import org.freeplane.core.ui.textchanger.TranslatedElement;
 import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -44,7 +50,16 @@ public class SeparatorProperty implements IPropertyControl {
 	}
 
 	public void layout(final DefaultFormBuilder builder) {
-		builder.appendSeparator(TextUtils.getOptionalText(getLabel()));
+		final String labelKey = getLabel();
+		final String text = TextUtils.getOptionalText(labelKey);
+		final JComponent separator = builder.appendSeparator(text);
+		if(text != null) {
+			for (Component child : separator.getComponents()) {
+				if(child instanceof JLabel)
+					TranslatedElement.TEXT.setKey((JComponent) child, labelKey);
+				break;
+			}
+		}
 	}
 
 	public void setEnabled(final boolean pEnabled) {

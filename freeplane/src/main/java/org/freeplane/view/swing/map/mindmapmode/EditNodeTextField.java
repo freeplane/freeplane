@@ -402,8 +402,7 @@ public class EditNodeTextField extends EditNodeBase {
 			final int keyCode = e.getKeyCode();
 			if (keyCode == SPLIT_KEY_CODE && keyCode != -1 && e.isAltDown() && ! Compat.isMacOsX())
 				return true;
-			final ModeController modeController = Controller.getCurrentModeController();
-			final KeyStroke splitNodeHotKey = modeController.getUserInputListenerFactory().getAcceleratorManager().getAccelerator("SplitNode");
+			final KeyStroke splitNodeHotKey = ResourceController.getResourceController().getAcceleratorManager().getAccelerator("SplitNode");
 			return splitNodeHotKey != null && splitNodeHotKey.getKeyCode() == keyCode  &&  
 					(e.getModifiersEx() & KEYSTROKE_MODIFIERS)  == (splitNodeHotKey.getModifiers() & KEYSTROKE_MODIFIERS);
 		}
@@ -553,8 +552,10 @@ public class EditNodeTextField extends EditNodeBase {
 		mapViewManager.removeMapViewChangeListener(mapViewChangeListener);
 		mapViewChangeListener = null;
 		parent.setPreferredSize(null);
-		if(SwingUtilities.getAncestorOfClass(MapView.class, nodeView) != null)
+		if(SwingUtilities.getAncestorOfClass(MapView.class, nodeView) != null) {
 			nodeView.update();
+			keepNodePosition();
+		}
 		final Dimension textFieldSize = textfield.getSize();
 		final Point textFieldCoordinate = new Point();
 		final MapView mapView = nodeView.getMap();
@@ -680,7 +681,7 @@ public class EditNodeTextField extends EditNodeBase {
 		final StyleSheet styleSheet = document.getStyleSheet();
 		styleSheet.addRule(ruleBuilder.toString());
 		textfield.setText(text);
-		final MapView mapView = (MapView) viewController.getMapViewComponent();
+		final MapView mapView = nodeView.getMap();
 		if(! mapView.isValid())
 			mapView.validate();
 		final NodeStyleController nsc = NodeStyleController.getController(modeController);
@@ -706,7 +707,6 @@ public class EditNodeTextField extends EditNodeBase {
 		mapView.scrollNodeToVisible(nodeView);
 		assert( parent.isValid());
 		final int nodeWidth = parent.getWidth();
-		final int nodeHeight = parent.getHeight();
 		final int textFieldBorderWidth = 2;
 		textfield.setBorder(new MatteBorder(textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, nodeView.getSelectedColor()));
 		final Dimension textFieldMinimumSize = textfield.getPreferredSize();
@@ -769,13 +769,17 @@ public class EditNodeTextField extends EditNodeBase {
 			}
 		}
 		
-		if(! layoutMapOnTextChange)
-			UITools.convertPointToAncestor(parent, location, mapView);
-		
-		textfield.setBounds(location.x, location.y, textFieldMinimumSize.width, textFieldMinimumSize.height);
+        keepNodePosition();        
 		parent.setPreferredSize(newParentSize);
 		parent.setText("");
         parent.setHorizontalAlignment(JLabel.LEFT);
+
+		if(! layoutMapOnTextChange) {
+			mapView.doLayout();
+			UITools.convertPointToAncestor(parent, location, mapView);
+		}
+		
+		textfield.setBounds(location.x, location.y, textFieldMinimumSize.width, textFieldMinimumSize.height);
 		if(layoutMapOnTextChange)
 			parent.add(textfield, 0);
 		else
@@ -794,5 +798,9 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 		textfield.repaint();
 		textfield.requestFocusInWindow();
+	}
+
+	private void keepNodePosition() {
+		nodeView.getMap().keepNodePosition(nodeView, 0 , 0);
 	}
 }

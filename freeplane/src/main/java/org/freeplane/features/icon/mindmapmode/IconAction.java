@@ -55,6 +55,11 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 		return icon.getTranslationKeyLabel();
 	}
 
+	@Override
+	public String getTextKey() {
+		return getTranslationKeyLabel();
+	}
+
 	public String getTranslationValueLabel() {
 		return icon.getTranslationValueLabel();
 	}

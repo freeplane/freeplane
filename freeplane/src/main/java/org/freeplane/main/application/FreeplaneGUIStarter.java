@@ -26,13 +26,10 @@ import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collections;
-import java.util.Locale;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -49,7 +46,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
@@ -81,10 +77,12 @@ import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.main.application.CommandLineParser.Options;
+import org.freeplane.main.application.survey.FreeplaneSurveyProperties;
+import org.freeplane.main.application.survey.SurveyRunner;
+import org.freeplane.main.application.survey.SurveyStarter;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
-import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
@@ -174,7 +172,9 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			FreeplaneGUIStarter.showSysInfo();
 			final String lookandfeel = System.getProperty("lookandfeel", applicationResourceController
 			    .getProperty("lookandfeel"));
-			FrameController.setLookAndFeel(lookandfeel);
+			final boolean supportHidpi = Boolean.valueOf(System.getProperty("lookandfeel.scaleuifonts", applicationResourceController
+				    .getProperty("lookandfeel.scaleuifonts")));
+			FrameController.setLookAndFeel(lookandfeel, supportHidpi);
 			final JFrame frame;
 			frame = new JFrame("Freeplane");
 			frame.setContentPane(new JPanel(){
@@ -187,12 +187,12 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				
 			});
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
+			final MMapViewController mapViewController = new MMapViewController(controller);
+			viewController = new ApplicationViewController(controller, mapViewController, frame);
 			splash = new FreeplaneSplashModern(frame);
 			if (!System.getProperty("org.freeplane.nosplash", "false").equals("true")) {
 				splash.setVisible(true);
 			}
-			final MMapViewController mapViewController = new MMapViewController(controller);
-			viewController = new ApplicationViewController(controller, mapViewController, frame);
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
 			FilterController.install();
 			PrintController.install();
@@ -216,8 +216,11 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			FilterController.getCurrentFilterController().getConditionFactory().addConditionController(70,
 			    new LogicalStyleFilterController());
 			MapController.install();
-
 			NodeHistory.install(controller);
+			final FreeplaneSurveyProperties freeplaneSurveyProperties = new FreeplaneSurveyProperties();
+			if(freeplaneSurveyProperties.mayAskUserToFillSurveys()) {
+				controller.addApplicationLifecycleListener(new SurveyStarter(freeplaneSurveyProperties, new SurveyRunner(freeplaneSurveyProperties), Math.random()));
+			}
 			return controller;
 		}
 		catch (final Exception e) {
@@ -244,6 +247,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	    buildMenus(controller, plugins, MModeController.MODENAME, "/xml/mindmapmodemenu.xml");
 	    buildMenus(controller, plugins, BModeController.MODENAME, "/xml/browsemodemenu.xml");
 	    buildMenus(controller, plugins, FModeController.MODENAME, "/xml/filemodemenu.xml");
+	    ResourceController.getResourceController().getAcceleratorManager().loadAcceleratorPresets();
     }
 
 	private void buildMenus(final Controller controller, final Set<String> plugins, String mode, String xml) {
@@ -274,7 +278,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				if (extendedState != frame.getExtendedState()) {
 					frame.setExtendedState(extendedState);
 				}
-				loadMaps(options.getFilesToOpenAsArray());
+				loadMaps(CommandLineParser.parse(args, false).getFilesToOpenAsArray());
 				focusCurrentView();
 				contentPane.setVisible(true);
 				frame.toFront();
@@ -299,10 +303,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		});
 	}
 
-	protected void fireStartupFinished() {
-		for (ApplicationLifecycleListener listener : Controller.getCurrentController().getApplicationLifecycleListeners()) {
-			listener.onStartupFinished();
-		}
+	private void fireStartupFinished() {
+		Controller.getCurrentController().fireStartupFinished();
 	}
 
 	private void loadMaps( final String[] args) {

@@ -304,7 +304,7 @@ public class EditNodeDialog extends EditNodeBase {
 		final EditDialog dialog = new LongNodeDialog(frame, title, getBackground());
 		redispatchKeyEvents(textComponent, firstEvent);
         if (firstEvent == null) {
-            textComponent.setCaretPosition(getText().length());
+            textComponent.setCaretPosition(textComponent.getDocument().getLength());
         }
 		dialog.getDialog().setModal(isModal);
 		dialog.getDialog().pack();

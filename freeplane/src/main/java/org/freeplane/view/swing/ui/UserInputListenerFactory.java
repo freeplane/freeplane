@@ -99,7 +99,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private JPopupMenu nodePopupMenu;
 	private final Map<String, JComponent> toolBars;
 	private final List<JComponent>[] toolbarLists;
-	static private ActionAcceleratorManager acceleratorManager;
 	final private List<Map<String, BuilderDestroyerPair>> customBuilders;
 	final private List<BuildPhaseListener> buildPhaseListeners;
 	private Entry genericMenuStructure;
@@ -108,7 +107,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	final static private IKeyStrokeProcessor DEFAULT_PROCESSOR = new IKeyStrokeProcessor() {
 		@Override
 		public boolean processKeyBinding(KeyStroke ks, KeyEvent e) {
-			return acceleratorManager.processKeyBinding(ks, e);
+			return ResourceController.getResourceController().getAcceleratorManager().processKeyBinding(ks, e);
 		}
 	};
 	final private IKeyStrokeProcessor delegateProcessor = new IKeyStrokeProcessor() {
@@ -192,14 +191,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return null;
 	}
 
-	public ActionAcceleratorManager getAcceleratorManager() {
-		if(acceleratorManager == null) {
-			acceleratorManager = new ActionAcceleratorManager();
-		}
-		return acceleratorManager;
-	}
-	
-	
 
 	public void setKeyEventProcessor(IKeyStrokeProcessor keyEventProcessor) {
 		this.keyEventProcessor = keyEventProcessor;
@@ -447,7 +438,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		try {
 			final FreeplaneResourceAccessor resourceAccessor = new FreeplaneResourceAccessor();
 			final EntriesForAction entries = new EntriesForAction();
-			final ActionAcceleratorManager acceleratorManager = getAcceleratorManager();
+			final ActionAcceleratorManager acceleratorManager = ResourceController.getResourceController().getAcceleratorManager();
 			final BuildProcessFactory buildProcessFactory = new MenuBuildProcessFactory(this, modeController,
 			    resourceAccessor, acceleratorManager, entries, buildPhaseListeners);
 			final PhaseProcessor buildProcessor = buildProcessFactory.getBuildProcessor();

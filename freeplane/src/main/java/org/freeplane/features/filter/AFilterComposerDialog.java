@@ -576,8 +576,8 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		final JLabel conditionColumnHeader = new JLabel(TextUtils.getText("filter_conditions"));
 		conditionColumnHeader.setHorizontalAlignment(SwingConstants.CENTER);
 		conditionScrollPane.setColumnHeaderView(conditionColumnHeader);
-		final Rectangle desktopBounds = UITools.getDesktopBounds(this);
-		Dimension preferredSize = new Dimension(desktopBounds.width * 2 / 3, desktopBounds.height * 2 / 3);
+		final Rectangle screenBounds = UITools.getAvailableScreenBounds(this);
+		Dimension preferredSize = new Dimension(screenBounds.width * 2 / 3, screenBounds.height * 2 / 3);
 		conditionScrollPane.setPreferredSize(preferredSize);
 		getContentPane().add(conditionScrollPane, BorderLayout.CENTER);
 		UITools.addEscapeActionToDialog(this);

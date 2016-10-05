@@ -49,8 +49,6 @@ public interface IUserInputListenerFactory {
 
 	public FreeplaneMenuBar getMenuBar();
 
-	public ActionAcceleratorManager getAcceleratorManager();
-	
 	public Set<IMouseWheelEventHandler> getMouseWheelEventHandlers();
 
 	DragGestureListener getNodeDragListener();

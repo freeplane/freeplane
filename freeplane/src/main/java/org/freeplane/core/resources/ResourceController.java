@@ -35,6 +35,7 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.TimePeriodUnits;
 import org.freeplane.core.util.FileUtils;
@@ -58,6 +59,8 @@ public abstract class ResourceController {
 	}
 
 	final private List<IFreeplanePropertyListener> propertyChangeListeners = new Vector<IFreeplanePropertyListener>();
+	static private ActionAcceleratorManager acceleratorManager;
+
 	private ResourceBundles resources;
     public static final String FREEPLANE_RESOURCE_URL_PROTOCOL = "freeplaneresource";
 	public static final String OBJECT_TYPE = "ObjectType";
@@ -72,6 +75,12 @@ public abstract class ResourceController {
 	public void addLanguageResources(final String language, final Map<String, String> resources) {
 		this.resources.addResources(language, resources);
     }
+	
+	
+
+	public void putUserResourceString(String key, String value) {
+		resources.putUserResourceString(key, value);
+	}
 
 	public void addPropertyChangeListener(final IFreeplanePropertyListener listener) {
 		propertyChangeListeners.add(listener);
@@ -92,7 +101,7 @@ public abstract class ResourceController {
 	}
 
 	protected void loadAnotherLanguage() {
-		resources.loadAnotherLanguage();
+		resources.loadAnotherLanguage(getProperty(ResourceBundles.RESOURCE_LANGUAGE));
 	}
 
 	public void firePropertyChanged(final String property, final String value, final String oldValue) {
@@ -106,6 +115,11 @@ public abstract class ResourceController {
 
 	public boolean getBooleanProperty(final String key) {
 		return Boolean.parseBoolean(getProperty(key));
+	}
+	
+	public boolean getBooleanProperty(final String key, final boolean defaultValue) {
+		final String value = getProperty(key, null);
+		return value != null ? Boolean.parseBoolean(value) : defaultValue;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -186,7 +200,7 @@ public abstract class ResourceController {
     }
 
 	/** register defaults in freeplane.properties respectively defaults.properties instead. */
-	public long getLongProperty(final String key, final int defaultValue) {
+	public long getLongProperty(final String key, final long defaultValue) {
 		try {
 			return Long.parseLong(getProperty(key));
 		}
@@ -232,7 +246,7 @@ public abstract class ResourceController {
 	/** Returns the ResourceBundle with the current language */
 	public ResourceBundle getResources() {
 		if (resources == null) {
-			resources = new ResourceBundles(this);
+			resources = new ResourceBundles(getProperty(ResourceBundles.RESOURCE_LANGUAGE));
 		}
 		return resources;
 	}
@@ -266,6 +280,10 @@ public abstract class ResourceController {
 
 	public void setProperty(String name, int value) {
 		setProperty(name, Integer.toString(value));
+	}
+
+	public void setProperty(String name, long value) {
+		setProperty(name, Long.toString(value));
 	}
 
 	abstract public void setProperty(final String property, final String value);
@@ -316,5 +334,11 @@ public abstract class ResourceController {
 				return;
 			}
 		}
+	}
+
+	public ActionAcceleratorManager getAcceleratorManager() {
+		if(acceleratorManager == null)
+			acceleratorManager = new ActionAcceleratorManager();
+		return acceleratorManager;
 	}
 }

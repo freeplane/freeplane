@@ -30,8 +30,6 @@ import org.freeplane.features.map.NodeModel;
  */
 public class NodeSizeModel implements IExtension {
 	
-	public static final int NOT_SET = -1;
-
 	public static NodeSizeModel getModel(final NodeModel node) {
 		return node.getExtension(NodeSizeModel.class);
 	}

@@ -272,7 +272,9 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		final Controller controller = modeController.getController();
 		MLocationController locationController = (MLocationController) LocationController.getController(controller
 				.getModeController());
-		NodeModel childDistanceContainer = nodeV.getParentView().getChildDistanceContainer().getModel();
+		final NodeView parentView = nodeV.getParentView();
+		final NodeView childDistanceContainerView = parentView.getChildDistanceContainer();
+		NodeModel childDistanceContainer = childDistanceContainerView.getModel();
 		final Quantity<LengthUnits> parentVGap = locationController.getMinimalDistanceBetweenChildren(childDistanceContainer);
 		Quantity<LengthUnits> hgap = LocationModel.getModel(node).getHGap();
 		final Quantity<LengthUnits> shiftY = LocationModel.getModel(node).getShiftY();
@@ -310,7 +312,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 	private NodeModel[] adjustNodeIndexBackupSelection(final NodeView nodeV, NodeModel[] selectedsBackup) {
 		final NodeModel node = nodeV.getModel();
 		boolean isLeft = nodeV.isLeft();
-		final int newIndex = calculateNewNodeIndex(nodeV, isLeft, 0, node.getParentNode().getChildCount());
+		final int newIndex = calculateNewFreeNodeIndex(nodeV);
 		if (newIndex != -1) {
 			final ModeController modeController = nodeV.getMap().getModeController();
 			MMapController mapController = (MMapController) modeController.getMapController();
@@ -327,36 +329,45 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		return node.getContent().getX() + node.getContent().getWidth() / 2;
 	}
 
-	private int calculateNewNodeIndex(final NodeView nodeV, final boolean left, final int start, final int end) {
+	private int calculateNewFreeNodeIndex(final NodeView nodeV) {
 		final NodeModel node = nodeV.getModel();
-		if (SummaryNode.isSummaryNode(node))
+		if (SummaryNode.isHidden(node))
 			return -1;
+		final boolean left = nodeV.isLeft();
 		final int nodeY = getRefY(nodeV);
 		final NodeView parent = nodeV.getParentView();
 		int newIndex = 0;
 		int oldIndex = -1;
 		int wrondSideCount = 0;
-		for (int i = start; i < end; i++) {
+		int hiddenNodeCount = 0;
+		final int childCount = node.getParentNode().getChildCount();
+		for (int i = 0; i < childCount; i++) {
 			final Component component = parent.getComponent(i);
 			if (!(component instanceof NodeView))
 				continue;
-			NodeView sibling = (NodeView) component;
-			if (sibling.isLeft() == left && !SummaryNode.isSummaryNode(sibling.getModel()) && getRefY(sibling) > nodeY)
+			NodeView siblingV = (NodeView) component;
+			final NodeModel sibling = siblingV.getModel();
+			if (siblingV.isLeft() == left && !SummaryNode.isHidden(sibling) && getRefY(siblingV) > nodeY)
 				break;
 			else {
-				if (sibling != nodeV) {
+				if (siblingV != nodeV) {
 					newIndex++;
-					if (sibling.isLeft() != left)
+					if (siblingV.isLeft() != left)
 						wrondSideCount++;
-					else
+					else {
 						wrondSideCount = 0;
+						if(oldIndex >= 0 && SummaryNode.isHidden(sibling))
+							hiddenNodeCount++;
+						else
+							hiddenNodeCount = 0;
+					}
 				}
 				else {
 					oldIndex = i;
 				}
 			}
 		}
-		final int result = newIndex - wrondSideCount;
+		final int result = newIndex - wrondSideCount - hiddenNodeCount;
 		if (result == oldIndex)
 			return -1;
 		return result;

@@ -45,6 +45,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.ObjectRule;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -77,7 +78,6 @@ import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.MapViewLayout;
-import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.attribute.AttributeView;
 import org.freeplane.view.swing.map.cloud.CloudView;
@@ -815,7 +815,10 @@ public class NodeView extends JComponent implements INodeView {
 	/**
 	 */
 	public boolean isContentVisible() {
-		return getModel().hasVisibleContent();
+		if(isValid())
+			return getContent().isVisible();
+		else
+			return getModel().hasVisibleContent();
 	}
 
 	public boolean isLeft() {
@@ -902,7 +905,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-		if (isFolded) {
+		if (nodeDeletionEvent.index >= getComponentCount() - 1) {
 			return;
 		}
 		final boolean preferredChildIsLeft = preferredChild != null && preferredChild.isLeft();
@@ -989,6 +992,15 @@ public class NodeView extends JComponent implements INodeView {
 		if(getMainView() == null)
 			return;
 		final PaintingMode paintingMode = map.getPaintingMode();
+		if(paintingMode == null){
+			LogUtils.severe("paintingMode = null");
+			LogUtils.severe("own map ="  + map);
+			final MapView ancestorMap = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
+			LogUtils.severe("parent component map ="  + ancestorMap);
+			if(ancestorMap != null)
+				LogUtils.severe("ancestor map paintingMode = " + ancestorMap.getPaintingMode());
+			throw new NullPointerException();
+		}
 		if (isContentVisible()) {
 			final Graphics2D g2 = (Graphics2D) g;
 			final ModeController modeController = map.getModeController();
@@ -1022,8 +1034,10 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
     public void paint(Graphics g) {
-	    super.paint(g);
-		paintDecoration((Graphics2D) g);
+		if(isHierarchyVisible()) {
+			super.paint(g);
+			paintDecoration((Graphics2D) g);
+		}
     }
 
 	private void paintCloud(final Graphics g) {
@@ -1336,6 +1350,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public void update() {
+		invalidate();
 		updateShape();
 		updateEdge();
 		if (!isContentVisible()) {
@@ -1346,6 +1361,7 @@ public class NodeView extends JComponent implements INodeView {
 		mainView.updateTextColor(this);
 		mainView.updateFont(this);
 		mainView.updateTextAlign(this);
+		mainView.updateBorder(this);
         MapView map = getMap();
 		final ModeController modeController = map.getModeController();
         final NodeStyleController nsc = NodeStyleController.getController(modeController);
@@ -1610,6 +1626,10 @@ public class NodeView extends JComponent implements INodeView {
 		if(EdgeController.Rules.BY_PARENT != rule)
 			edgeColor.resetCache();
 		super.setBounds(x, y, width, height);
+	}
+
+	boolean isHierarchyVisible() {
+		return getHeight() > 2 * getSpaceAround();
 	}
 
 	

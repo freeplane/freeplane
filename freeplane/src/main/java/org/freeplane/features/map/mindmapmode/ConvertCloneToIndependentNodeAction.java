@@ -1,8 +1,7 @@
 package org.freeplane.features.map.mindmapmode;
 
 import java.awt.event.ActionEvent;
-import java.util.List;
-
+import java.util.Collection;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.NodeModel;
@@ -19,14 +18,14 @@ public class ConvertCloneToIndependentNodeAction extends AFreeplaneAction {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-		final List<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSortedSelection(false);
+		final Collection<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSelection();
 		for(final NodeModel node :selectedNodes)
 			mapController.convertClonesToIndependentNodes(node);
 	}
 	
 	@Override
 	public void setEnabled() {
-		final List<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSortedSelection(false);
+		final Collection<NodeModel> selectedNodes = Controller.getCurrentController().getSelection().getSelection();
 		for(NodeModel node :selectedNodes)
 			if(! node.isCloneTreeRoot()){
 				setEnabled(false);

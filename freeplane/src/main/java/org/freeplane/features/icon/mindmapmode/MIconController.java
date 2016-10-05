@@ -107,7 +107,7 @@ public class MIconController extends IconController {
 			final Entry item = new Entry();
 			EntryAccessor entryAccessor = new EntryAccessor();
 			entryAccessor.setIcon(item, group.getGroupIcon().getIcon());
-			entryAccessor.setText(item, group.getDescription());
+			item.setName(group.getDescriptionKey());
 			target.addChild(item);
 			for (final MindIcon icon : group.getIcons()) {
 				final String fileName = icon.getFileName();

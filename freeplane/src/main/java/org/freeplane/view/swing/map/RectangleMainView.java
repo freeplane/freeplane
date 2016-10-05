@@ -35,7 +35,8 @@ class RectangleMainView extends ShapedMainView {
 
 	@Override
 	protected void paintNodeShape(final Graphics2D g) {
-		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+		final int zoomedEdgeWidth = (int) getPaintedBorderWidth();
+		g.drawRect(zoomedEdgeWidth / 2, zoomedEdgeWidth / 2, getWidth() - zoomedEdgeWidth, getHeight() - zoomedEdgeWidth);
 	}
 
 	@Override
@@ -50,9 +51,10 @@ class RectangleMainView extends ShapedMainView {
 	}
 
 	public Insets getInsets(){
+		int edgeWidthInset = (int) (getUnzoomedBorderWidth() - 1);
     	final ShapeConfigurationModel shapeConfiguration = getShapeConfiguration();
-    	int horizontalMargin = shapeConfiguration.getHorizontalMargin().toBaseUnitsRounded();
-    	int verticalMargin = shapeConfiguration.getVerticalMargin().toBaseUnitsRounded();
+    	int horizontalMargin = shapeConfiguration.getHorizontalMargin().toBaseUnitsRounded() + edgeWidthInset;
+    	int verticalMargin = shapeConfiguration.getVerticalMargin().toBaseUnitsRounded() + edgeWidthInset;
     	return new Insets(verticalMargin, horizontalMargin, verticalMargin, horizontalMargin);
     }
     

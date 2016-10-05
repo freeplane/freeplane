@@ -10,7 +10,6 @@ import javax.swing.JViewport;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.ViewController;
 
 class MapScroller {
@@ -161,6 +160,8 @@ class MapScroller {
 	}
 
 	private void scrollNodeToVisible(final NodeView node, final int extraWidth) {
+		if(node == null)
+			return;
 		if(scrollingDirective == ScrollingDirective.DONE || scrollingDirective == ScrollingDirective.ANCHOR)
 			scrollingDirective = ScrollingDirective.MAKE_NODE_VISIBLE;
 		if (scrolledNode != null && scrollingDirective != ScrollingDirective.MAKE_NODE_VISIBLE) {

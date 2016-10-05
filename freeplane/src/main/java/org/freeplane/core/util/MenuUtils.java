@@ -109,7 +109,7 @@ public class MenuUtils {
 		private final ActionAcceleratorManager acceleratorManager;
 
 		private MenuEntryTreeBuilder() {
-			acceleratorManager = userInputFactory().getAcceleratorManager();
+			acceleratorManager = ResourceController.getResourceController().getAcceleratorManager();
 		}
 
 		private DefaultMutableTreeNode build(final String menuRootKey) {

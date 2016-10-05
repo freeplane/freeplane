@@ -4,9 +4,11 @@ import java.awt.Component;
 import java.awt.Container;
 
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 
+import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionEnabler;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
@@ -19,7 +21,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
-import org.dpolivaev.mnemonicsetter.MnemonicSetter;
+import org.freeplane.core.ui.textchanger.TranslatedElement;
 
 public class JMenuItemBuilder implements EntryVisitor{
 
@@ -57,6 +59,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 	private void addActionItem(Entry entry) {
 		final Component actionComponent = createActionComponent(entry);
 		if(actionComponent != null){
+			setTranslationKey(entry, actionComponent);
 			addComponent(entry, actionComponent);
 		}
 	}
@@ -95,7 +98,19 @@ public class JMenuItemBuilder implements EntryVisitor{
 		final JPopupMenu popupMenu = menu.getPopupMenu();
 		popupMenu.addPopupMenuListener(new PopupMenuListenerForEntry(entry, popupListener));
 		popupMenu.addPopupMenuListener(MnemonicSetter.INSTANCE);
+		setTranslationKey(entry, menu);
 
+	}
+
+	private void setTranslationKey(final Entry entry, Component actionComponent) {
+		if(actionComponent instanceof JComponent) {
+			final String textKey = entryAccessor.getTextKey(entry);
+			if (textKey != null)
+				TranslatedElement.TEXT.setKey((JComponent) actionComponent, textKey);
+			String tooltipKey = entryAccessor.getTooltipKey(entry);
+			if (textKey != null)
+				TranslatedElement.TOOLTIP.setKey((JComponent) actionComponent, tooltipKey);
+		}
 	}
 
 	@Override

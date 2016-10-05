@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.swing.Action;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.extension.IExtension;
@@ -346,33 +345,35 @@ public class MMapController extends MapController {
 	 * Return false if user has canceled.
 	 */
 	@Override
-	public boolean close(final MapModel map, final boolean force) {
-		if (!force && !map.isSaved()) {
-			final List<Component> views = Controller.getCurrentController().getMapViewManager().getViews(map);
-			if (views.size() == 1) {
-				final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
-				final String title = TextUtils.getText("SaveAction.text");
-				Component dialogParent;
-				final Frame viewFrame = JOptionPane.getFrameForComponent(views.get(0));
-				if(viewFrame != null && viewFrame.isShowing() && viewFrame.getExtendedState() != Frame.ICONIFIED)
-					dialogParent = viewFrame;
-				else
-					dialogParent = UITools.getCurrentRootComponent();
-				final int returnVal = JOptionPane.showOptionDialog(dialogParent, text, title,
-				    JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-				if (returnVal == JOptionPane.YES_OPTION) {
-					final boolean savingNotCancelled = ((MFileManager) UrlManager.getController())
-					    .save(map);
-					if (!savingNotCancelled) {
-						return false;
-					}
-				}
-				else if ((returnVal == JOptionPane.CANCEL_OPTION) || (returnVal == JOptionPane.CLOSED_OPTION)) {
+	public boolean close(final MapModel map) {
+		if (!map.isSaved()) {
+			final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
+			final String title = TextUtils.getText("SaveAction.text");
+			Component dialogParent;
+			final Frame viewFrame = UITools.getCurrentFrame();
+			if(viewFrame != null && viewFrame.isShowing() && viewFrame.getExtendedState() != Frame.ICONIFIED)
+				dialogParent = viewFrame;
+			else
+				dialogParent = UITools.getCurrentRootComponent();
+			final int returnVal = JOptionPane.showOptionDialog(dialogParent, text, title,
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+			if (returnVal == JOptionPane.YES_OPTION) {
+				final boolean savingNotCancelled = ((MFileManager) UrlManager.getController())
+						.save(map);
+				if (!savingNotCancelled) {
 					return false;
 				}
 			}
+			else if ((returnVal == JOptionPane.CANCEL_OPTION) || (returnVal == JOptionPane.CLOSED_OPTION)) {
+				return false;
+			}
 		}
-		return super.close(map, force);
+		closeWithoutSaving(map);
+		return true;
+	}
+
+	public void closeWithoutSaving(final MapModel map) {
+		super.closeWithoutSaving(map);
 	}
 
 	private void createActions(ModeController modeController) {
@@ -1009,26 +1010,26 @@ public class MMapController extends MapController {
         }
 
 		if(map.containsExtension(DocuMapAttribute.class)){
-			controller.close(true);
+			closeWithoutSaving(map);
 			return newDocumentationMap(url);
 		}
 
 		final URL alternativeURL = MFileManager.getController(getMModeController()).getAlternativeURL(url, AlternativeFileMode.ALL);
 		if(alternativeURL == null)
 			return false;
-		Controller.getCurrentController().getViewController().setWaitingCursor(true);
+		controller.getViewController().setWaitingCursor(true);
 		try{
 			final MapModel newModel = new MMapModel();
 			((MFileManager)MFileManager.getController()).loadAndLock(alternativeURL, newModel);
 			newModel.setURL(url);
 			newModel.setSaved(alternativeURL.equals(url));
 			fireMapCreated(newModel);
-			controller.close(true);
+			closeWithoutSaving(map);
 			newMapView(newModel);
 			return true;
 		}
 		finally {
-			Controller.getCurrentController().getViewController().setWaitingCursor(false);
+			controller.getViewController().setWaitingCursor(false);
 		}
 	}
 	

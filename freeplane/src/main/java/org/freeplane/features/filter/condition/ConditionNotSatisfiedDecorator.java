@@ -24,8 +24,6 @@ import java.util.Collection;
 import java.util.Vector;
 
 import javax.swing.JComponent;
-import javax.swing.JLabel;
-
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -76,7 +74,7 @@ public class ConditionNotSatisfiedDecorator extends ASelectableCondition impleme
 		final JCondition component = new JCondition();
 		final String not = TextUtils.getText("filter_not");
 		final String text = not + ' ';
-		component.add(new JLabel(text));
+		component.add(ConditionFactory.createConditionLabel(text));
 		originalCondition.getUserName();
 		final JComponent renderer = originalCondition.createShortRendererComponent();
 		component.add(renderer);

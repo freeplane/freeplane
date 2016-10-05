@@ -36,7 +36,7 @@ public class NodeListAction extends AFreeplaneAction {
 
 	public NodeListAction() {
 		super("NodeListAction");
-		nodeList = new NodeList(true, false);
+		nodeList = new NodeList(true, false, "nodelistwindow.configuration");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -20,10 +20,10 @@ public class MapNavigationUtils {
     		}
     		final int index = parentNode.getIndex(current) + 1;
     		final int childCount = parentNode.getChildCount();
+    		if (direction == Direction.FORWARD_N_FOLD) {
+    			Controller.getCurrentModeController().getMapController().setFolded(current, true);
+    		}
     		if (index < childCount) {
-    			if (direction == Direction.FORWARD_N_FOLD) {
-    				Controller.getCurrentModeController().getMapController().setFolded(current, true);
-    			}
     			final NodeModel next = (NodeModel) parentNode.getChildAt(index);
     			if (atEnd(next, end)) {
     				return null;

@@ -1,7 +1,61 @@
 ===============================
+1.6.0
+===============================
+Configurable node border widths
+Configurable node border colors
+
+===============================
+1.5.17
+===============================
+Freeplane Survey Runner
+Bug fixes
+
+===============================
+1.5.16
+===============================
+Keep last selected exporter in dialog drop-down box
+User translations
+Dialog to choose template when new map is created
+
+===============================
+1.5.15
+===============================
+Bug fixes
+
+===============================
+1.5.14
+===============================
+Fix latex export and support latex in style editor
+Fix default hot keys for NewSummaryAction and NewParentAction on mac
+Check for non negative quantity values for minimalDistanceBetweenChildren, minWidth and maxWidth
+Improve bug report generator
+Command line interface improvements
+
+===============================
+1.5.13
+===============================
+Support High Density Monitors by scaling UI elements
+New SimplyHTML actions and short cuts for color and font size changes
+Improve posisioning of inline editing field for left side nodes
+Performance optimizations for filtered maps
+Performance optimizations for huge maps
+
+===============================
+1.5.12
+===============================
+Improvements in launcher for Mac OS
+Bug fixes
+
+===============================
+1.5.11
+===============================
+Restore old default map template
+
+===============================
 1.5.10
 ===============================
 Stable release
+
 ===============================
 1.5.9
 ===============================

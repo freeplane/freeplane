@@ -106,7 +106,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 
 		public TimeListAction() {
 			super("TimeListAction");
-			timeList = new NodeList(false, false);
+			timeList = new NodeList(false, false, "timelistwindow.configuration");
 		}
 
 		public void actionPerformed(final ActionEvent e) {

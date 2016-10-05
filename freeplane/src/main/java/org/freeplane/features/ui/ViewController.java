@@ -67,7 +67,7 @@ public interface ViewController {
 
 	public void openDocument(URI uri) throws IOException;
 
-	public void openDocument(URL fileToUrl) throws Exception;
+	public void openDocument(URL url) throws Exception;
 
 	public void out(final String msg);
 

@@ -33,8 +33,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.EventListener;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -56,8 +58,6 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
@@ -90,6 +90,7 @@ import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
@@ -137,7 +138,8 @@ public class NodeList {
 	    }
 
 		public void nodeChanged(NodeChangeEvent event) {
-			runner.runLater();
+			if(hasTableFieldValueChanged(event.getProperty()))
+				runner.runLater();
         }
 
 		public void afterMapChange(MapModel oldMap, MapModel newMap) {
@@ -323,8 +325,8 @@ public class NodeList {
 //	private static final String PLUGINS_TIME_MANAGEMENT_XML_SELECT = "plugins/TimeManagement.xml_Select";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
-	private static final String WINDOW_PREFERENCE_STORAGE_PROPERTY = NodeList.class.getName() + "_properties";
-
+	private final String windowPreferenceStorageProperty;
+// = NodeList.class.getName() + "_properties"
 	private static String replace(final Pattern p, String input, final String replacement) {
 		final String result = HtmlUtils.getReplaceResult(p, input, replacement);
 		return result;
@@ -351,11 +353,11 @@ public class NodeList {
 	final private boolean modal;
 	private final MapChangeListener mapChangeListener;
 
-	public NodeList(  final boolean showAllNodes, final boolean searchInAllMaps) {
-	    this(false, showAllNodes, searchInAllMaps);
+	public NodeList(  final boolean showAllNodes, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
+	    this(false, showAllNodes, searchInAllMaps, windowPreferenceStorageProperty);
     }
 
-	public NodeList( final boolean modal, final boolean showAllNodes, final boolean searchInAllMaps) {
+	public NodeList( final boolean modal, final boolean showAllNodes, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
 //		this.modeController = modeController;
 //		controller = modeController.getController();
 		this.modal = modal;
@@ -394,7 +396,7 @@ public class NodeList {
 		matchCase = new JCheckBox();
 		matchCase.addActionListener(listener);
 		mapChangeListener = new MapChangeListener();
-
+		this.windowPreferenceStorageProperty = windowPreferenceStorageProperty;
 	}
 
 	/**
@@ -411,7 +413,7 @@ public class NodeList {
 			setting.setColumnSorting(sorter.getSortingStatus(i));
 			storage.addTimeWindowColumnSetting(setting);
 		}
-		storage.storeDialogPositions(dialog, NodeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+		storage.storeDialogPositions(dialog, windowPreferenceStorageProperty);
 		dialog.setVisible(false);
 		dialog.dispose();
 		dialog = null;
@@ -778,7 +780,7 @@ public class NodeList {
 			}
 		});
 		final String marshalled = ResourceController.getResourceController().getProperty(
-		    NodeList.WINDOW_PREFERENCE_STORAGE_PROPERTY);
+				windowPreferenceStorageProperty);
 		final WindowConfigurationStorage result = TimeWindowConfigurationStorage.decorateDialog(marshalled, dialog);
 		final WindowConfigurationStorage storage = result;
 		if (storage != null) {
@@ -874,4 +876,12 @@ public class NodeList {
 			updateModel(model, child);
 		}
 	}
+	static private HashSet<Object> changeableProperties = new HashSet<Object>(
+			Arrays.asList(NodeModel.NODE_TEXT, NodeModel.NODE_ICON, DetailTextModel.class, NodeModel.NOTE_TEXT)
+			);
+	
+	private boolean hasTableFieldValueChanged(Object property) {
+		return changeableProperties.contains(property);
+	}
+
 }

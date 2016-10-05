@@ -36,7 +36,7 @@ public class AllMapsNodeListAction extends AFreeplaneAction {
 
 	public AllMapsNodeListAction() {
 		super("AllMapsNodeListAction");
-		nodeList = new NodeList(true, true);
+		nodeList = new NodeList(true, true, "allmapsnodelistwindow.configuration");
 	}
 
 	public void actionPerformed(final ActionEvent e) {

@@ -197,28 +197,28 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return copyTo(new NodeStyleModel());
 	}
 
-	public NodeStyleModel copyTo(final NodeStyleModel nodeStyleModel) {
+	public NodeStyleModel copyTo(final NodeStyleModel to) {
 	    if(color != null)
-	        nodeStyleModel.setColor(color);
+	        to.setColor(color);
 	    if(backgroundColor != null)
-	        nodeStyleModel.setBackgroundColor(backgroundColor);
+	        to.setBackgroundColor(backgroundColor);
 	    if(isBold != null)
-	        nodeStyleModel.setBold(isBold);
+	        to.setBold(isBold);
 	    if(fontFamilyName != null)
-	        nodeStyleModel.setFontFamilyName(fontFamilyName);
+	        to.setFontFamilyName(fontFamilyName);
 	    if(fontSize != null)
-	        nodeStyleModel.setFontSize(fontSize);
+	        to.setFontSize(fontSize);
 	    if(isItalic != null)
-	        nodeStyleModel.setItalic(isItalic);
+	        to.setItalic(isItalic);
 	    if(getShapeConfiguration() != null)
-			nodeStyleModel.setShapeConfiguration(getShapeConfiguration());
+			to.setShapeConfiguration(getShapeConfiguration());
 	    if(nodeFormat != null)
-	            nodeStyleModel.setNodeFormat(nodeFormat);
+	            to.setNodeFormat(nodeFormat);
 	    if(nodeNumbering != null)
-	        nodeStyleModel.setNodeNumbering(nodeNumbering);
+	        to.setNodeNumbering(nodeNumbering);
 	    if(textAlign != null)
-	    	nodeStyleModel.setTextAlign(textAlign);
-		return nodeStyleModel;
+	    	to.setTextAlign(textAlign);
+		return to;
     }
 
 	public Color getBackgroundColor() {
@@ -318,4 +318,5 @@ public class NodeStyleModel implements IExtension, Cloneable {
 			throw new RuntimeException("Null pointer as shapeConfiguration");
 		this.shapeConfiguration = shapeConfiguration;
 	}
+
 }
