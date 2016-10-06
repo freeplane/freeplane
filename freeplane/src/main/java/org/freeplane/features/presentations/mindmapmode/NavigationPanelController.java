@@ -48,7 +48,7 @@ class NavigationPanelController {
 		PresentationStateChangeListener presentationStateListener = new PresentationStateChangeListener() {
 			@Override
 			public void onPresentationStateChange(PresentationStateChangeEvent presentationStateChangeEvent) {
-				tglbtnCurrent.setSelected(presentationStateChangeEvent.presentationModel.getRunningPresentation() != null);
+				tglbtnCurrent.setSelected(presentationStateChangeEvent.presentationState.getRunningPresentation() != null);
 				updateUi();
 			}
 		};
@@ -57,7 +57,7 @@ class NavigationPanelController {
 			
 			@Override
 			public void onCollectionChange(CollectionChangedEvent<SlideModel> event) {
-				presentationStateModel.setRunningPresentation(null);
+				presentationStateModel.changeSlide(null);
 				updateUi();
 			}
 		};
@@ -77,7 +77,7 @@ class NavigationPanelController {
 			public void actionPerformed(ActionEvent e) {
 				final int currentElementIndex = slides.getCurrentElementIndex();
 				slides.selectCurrentElement(currentElementIndex + 1);
-				presentationStateModel.setRunningPresentation(presentationModel);
+				presentationStateModel.changeSlide(presentationModel);
 			}
 		});
 		return btnNext;
@@ -90,9 +90,9 @@ class NavigationPanelController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(presentationStateModel.getRunningPresentation() == null)
-					presentationStateModel.setRunningPresentation(presentationModel);
+					presentationStateModel.changeSlide(presentationModel);
 				else
-					presentationStateModel.setRunningPresentation(null);
+					presentationStateModel.changeSlide(null);
 			}
 		});
 		return btnCurrent;
@@ -106,7 +106,7 @@ class NavigationPanelController {
 			public void actionPerformed(ActionEvent e) {
 				final int currentElementIndex = slides.getCurrentElementIndex();
 				slides.selectCurrentElement(currentElementIndex - 1);
-				presentationStateModel.setRunningPresentation(presentationModel);
+				presentationStateModel.changeSlide(presentationModel);
 			}
 		});
 		return btnPrevious;

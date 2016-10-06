@@ -3,10 +3,8 @@ package org.freeplane.features.presentations.mindmapmode;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -19,7 +17,6 @@ import javax.swing.border.TitledBorder;
 import org.freeplane.features.filter.FilterComposerDialog;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 class SlideEditorController{
@@ -42,8 +39,11 @@ class SlideEditorController{
 	private final JComponent[] filterRelatedButtons;
 
 	private final SlideChangeListener slideChangeListener;
+
+	private final PresentationStateModel presentationStateModel;
 	
-	public SlideEditorController() {
+	public SlideEditorController(PresentationStateModel presentationStateModel) {
+		this.presentationStateModel = presentationStateModel;
 		tglbtnHighlightVisibleNodes = createHighlightSlideContentToggleButton();
 		btnSetSelectedNode = createSetSelectedNodeButton();
 		tglbtnChangeZoom = createSetZoomToggleButton();
@@ -198,7 +198,7 @@ class SlideEditorController{
 		tglbtnHighlightSlideContent.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				slide.setHighlightsVisibleNodes(! slide.highlightsVisibleNodes());
+				presentationStateModel.setHighlightSlideNodes(! presentationStateModel.highlightsSlideNodes());
 			}
 		});
 		return tglbtnHighlightSlideContent;
@@ -260,7 +260,7 @@ class SlideEditorController{
 			c.setEnabled(showsOnlySpecificNodes);
 		for(JComponent c : filterRelatedButtons)
 			c.setEnabled(showsOnlySpecificNodes || slide.getFilterCondition() != null);
-		tglbtnHighlightVisibleNodes.setSelected(slide.highlightsVisibleNodes());;
+		tglbtnHighlightVisibleNodes.setSelected(presentationStateModel.highlightsSlideNodes());
 		final boolean changesZoom = slide.changesZoom();
 		tglbtnChangeZoom.setSelected(changesZoom);
 		lblZoomFactor.setText(changesZoom ? Math.round(slide.getZoom() * 100) + "%" : "");

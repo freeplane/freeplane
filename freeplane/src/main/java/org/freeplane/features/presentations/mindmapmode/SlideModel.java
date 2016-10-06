@@ -19,8 +19,6 @@ public class SlideModel implements NamedElement<SlideModel>{
 	private ASelectableCondition filterCondition;
 	private Set<String> selectedNodeIds;
 	private Set<String> visibleNodeIds;
-	private boolean highlightsVisibleNodes;
-	
 	private final ArrayList<SlideChangeListener> slideChangeListeners;
 
 	public String getName() {
@@ -171,17 +169,6 @@ public class SlideModel implements NamedElement<SlideModel>{
 	private void fireSlideChangeEvent() {
 		for (SlideChangeListener slideChangeListener : slideChangeListeners)
 			slideChangeListener.onSlideModelChange(SlideChangeEvent.of(this));
-	}
-
-	public boolean highlightsVisibleNodes() {
-		return highlightsVisibleNodes;
-	}
-
-	public void setHighlightsVisibleNodes(boolean highlightsVisibleNodes) {
-		if(this.highlightsVisibleNodes != highlightsVisibleNodes){
-			this.highlightsVisibleNodes = highlightsVisibleNodes;
-			fireSlideChangeEvent();
-		}
 	}
 
 }
