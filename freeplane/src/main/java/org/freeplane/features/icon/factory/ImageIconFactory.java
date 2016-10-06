@@ -72,7 +72,7 @@ public final class ImageIconFactory {
 			}
 			else {
 				if (url.getPath().toLowerCase(Locale.ENGLISH).endsWith(".svg")) {
-					result = FreeplaneIconUtils.createSVGIcon(url, widthPixels, heightPixels);
+					result = FreeplaneIconUtils.createSVGIconPrivileged(url, widthPixels, heightPixels);
 				} else {
 					result = FreeplaneIconUtils.createImageIconPrivileged(url);
 				}
