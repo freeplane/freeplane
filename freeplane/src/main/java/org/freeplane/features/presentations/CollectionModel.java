@@ -9,7 +9,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import static org.freeplane.features.presentations.CollectionChangedEvent.EventType.*;
 
-public class CollectionModel<T extends NamedElement> {
+public class CollectionModel<T extends NamedElement<T>> {
 	final private DefaultComboBoxModel<Stringifyed<T>> elements;
 	private int currentIndex;
 	private Constructor<T> constructor;
@@ -52,7 +52,9 @@ public class CollectionModel<T extends NamedElement> {
 
 	public void add(String name) {
 		try {
-			add(constructor.newInstance(name));
+			final T currentElement = getCurrentElement();
+			final T newInstance = currentElement != null ? currentElement.saveAs(name) : constructor.newInstance(name);
+			add(newInstance);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

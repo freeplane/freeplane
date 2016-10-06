@@ -1,9 +1,9 @@
 package org.freeplane.features.presentations;
 
-public class CollectionChangedEvent<T extends NamedElement> {
+public class CollectionChangedEvent<T extends NamedElement<T>> {
 	public enum EventType {SELECTION_CHANGED, SELECTION_INDEX_CHANGED, COLLECTION_SIZE_CHANGED;
 
-		public <T extends NamedElement> CollectionChangedEvent<T> of(CollectionModel<T> collectionModel) {
+		public <T extends NamedElement<T>> CollectionChangedEvent<T> of(CollectionModel<T> collectionModel) {
 			return new CollectionChangedEvent<>(this, collectionModel);
 		}
 	}

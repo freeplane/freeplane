@@ -250,6 +250,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             MapView.this.replaceSelection(views.toArray(new NodeView[]{}));
         }
 
+		@Override
+		public List<String> getOrderedSelectionIds() {
+			final List<NodeModel> orderedSelection = getOrderedSelection();
+			final ArrayList<String> ids = new ArrayList<>(orderedSelection.size()); 
+			for(NodeModel node :orderedSelection)
+				ids.add(node.getID());
+			return ids;
+		}
+
 	}
 
 	private class Selection {

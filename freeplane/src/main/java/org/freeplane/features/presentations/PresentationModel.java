@@ -1,6 +1,6 @@
 package org.freeplane.features.presentations;
 
-public class PresentationModel implements NamedElement{
+public class PresentationModel implements NamedElement<PresentationModel>{
 	private String name;
 	public final CollectionModel<SlideModel> slides;
 
@@ -18,4 +18,7 @@ public class PresentationModel implements NamedElement{
 		slides = new CollectionModel<>(SlideModel.class);
 	}
 	
+	public PresentationModel saveAs(String name) {
+		return new PresentationModel(name);
+	}
 }
