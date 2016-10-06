@@ -17,11 +17,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
-import org.freeplane.features.presentations.CollectionChangeListener;
-import org.freeplane.features.presentations.CollectionChangedEvent;
-import org.freeplane.features.presentations.CollectionModel;
-import org.freeplane.features.presentations.NamedElement;
-import org.freeplane.features.presentations.Stringifyed;
 
 class CollectionBoxController <T extends NamedElement<T>> {
 	private CollectionModel<T> collection;

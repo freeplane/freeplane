@@ -1,4 +1,4 @@
-package org.freeplane.features.presentations;
+package org.freeplane.features.presentations.mindmapmode;
 
 public class SlideChangeEvent {
 	public final SlideModel slideModel;

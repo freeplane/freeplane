@@ -1,4 +1,4 @@
-package org.freeplane.features.presentations;
+package org.freeplane.features.presentations.mindmapmode;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;

@@ -1,4 +1,4 @@
-package org.freeplane.features.presentations;
+package org.freeplane.features.presentations.mindmapmode;
 
 public class PresentationModel implements NamedElement<PresentationModel>{
 	private String name;

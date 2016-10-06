@@ -1,4 +1,4 @@
-package org.freeplane.features.presentations;
+package org.freeplane.features.presentations.mindmapmode;
 
 public interface PresentationStateChangeListener {
 

@@ -1,9 +1,9 @@
-package org.freeplane.features.presentations;
+package org.freeplane.features.presentations.mindmapmode;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.freeplane.features.presentations.CollectionChangedEvent.EventType.COLLECTION_SIZE_CHANGED;
-import static org.freeplane.features.presentations.CollectionChangedEvent.EventType.SELECTION_CHANGED;
-import static org.freeplane.features.presentations.CollectionChangedEvent.EventType.SELECTION_INDEX_CHANGED;
+import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.COLLECTION_SIZE_CHANGED;
+import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.SELECTION_CHANGED;
+import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.SELECTION_INDEX_CHANGED;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.refEq;
 import static org.mockito.Mockito.never;

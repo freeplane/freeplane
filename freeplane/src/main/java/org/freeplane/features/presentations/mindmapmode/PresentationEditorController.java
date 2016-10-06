@@ -7,13 +7,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import org.freeplane.features.presentations.CollectionChangeListener;
-import org.freeplane.features.presentations.CollectionChangedEvent;
-import org.freeplane.features.presentations.CollectionModel;
-import org.freeplane.features.presentations.PresentationModel;
-import org.freeplane.features.presentations.PresentationStateModel;
-import org.freeplane.features.presentations.SlideModel;
-
 public class PresentationEditorController {
 	private final CollectionBoxController<PresentationModel> presentationPanelController;
 	private final CollectionBoxController<SlideModel> slidePanelController;

@@ -1,4 +1,4 @@
-package org.freeplane.features.presentations;
+package org.freeplane.features.presentations.mindmapmode;
 
 import java.util.ArrayList;
 import java.util.Collection;

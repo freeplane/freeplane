@@ -9,15 +9,6 @@ import javax.swing.JComponent;
 import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
 
-import org.freeplane.features.presentations.CollectionChangeListener;
-import org.freeplane.features.presentations.CollectionChangedEvent;
-import org.freeplane.features.presentations.CollectionModel;
-import org.freeplane.features.presentations.PresentationModel;
-import org.freeplane.features.presentations.PresentationStateChangeEvent;
-import org.freeplane.features.presentations.PresentationStateChangeListener;
-import org.freeplane.features.presentations.PresentationStateModel;
-import org.freeplane.features.presentations.SlideModel;
-
 class NavigationPanelController {
 	
 	private final JButton btnPrevious;

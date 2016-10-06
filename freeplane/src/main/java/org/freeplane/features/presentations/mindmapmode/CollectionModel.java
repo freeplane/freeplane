@@ -1,4 +1,6 @@
-package org.freeplane.features.presentations;
+package org.freeplane.features.presentations.mindmapmode;
+
+import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.*;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -7,7 +9,6 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-import static org.freeplane.features.presentations.CollectionChangedEvent.EventType.*;
 
 public class CollectionModel<T extends NamedElement<T>> {
 	final private DefaultComboBoxModel<Stringifyed<T>> elements;

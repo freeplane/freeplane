@@ -1,4 +1,4 @@
-package org.freeplane.features.presentations;
+package org.freeplane.features.presentations.mindmapmode;
 
 import java.awt.Component;
 
@@ -10,7 +10,6 @@ import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.presentations.mindmapmode.PresentationEditorController;
 
 public class PresentationController implements IExtension{
 	private final PresentationStateModel presentationStateModel;

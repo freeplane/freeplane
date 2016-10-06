@@ -21,9 +21,6 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.presentations.SlideChangeEvent;
-import org.freeplane.features.presentations.SlideChangeListener;
-import org.freeplane.features.presentations.SlideModel;
 
 class SlideEditorController{
 	
