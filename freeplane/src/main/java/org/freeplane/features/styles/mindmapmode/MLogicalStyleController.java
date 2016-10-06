@@ -35,6 +35,8 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
+import org.freeplane.features.filter.FilterComposerDialog;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.IMapChangeListener;
@@ -196,7 +198,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 // 	private final ModeController modeController;
 	final private List<AssignStyleAction> actions;
-	private FilterComposerDialog filterComposerDialog;
 
 	public MLogicalStyleController(ModeController modeController) {
 		super(modeController);
@@ -521,16 +522,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 		};
 	}
 
-	public FilterComposerDialog getFilterComposerDialog() {
-		if(filterComposerDialog == null){
-			filterComposerDialog = new FilterComposerDialog();
-			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(filterComposerDialog);
-		}
-		return filterComposerDialog;
-    }
-	
 	public ASelectableCondition editCondition(ASelectableCondition value) {
-	    final FilterComposerDialog filterComposerDialog = getFilterComposerDialog();
+	    final FilterComposerDialog filterComposerDialog = FilterController.getCurrentFilterController().getFilterComposerDialog();
 	    filterComposerDialog.acceptMultipleConditions(true);
 	    if(value != null)
 	    	filterComposerDialog.addCondition(value);

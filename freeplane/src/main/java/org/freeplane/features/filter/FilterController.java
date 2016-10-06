@@ -195,6 +195,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private final FilterConditionEditor quickEditor;
 	static final int USER_DEFINED_CONDITION_START_INDEX = 3;
 	final private QuickFilterAction quickFilterAction;
+	private FilterComposerDialog filterComposerDialog;
 
 	public FilterController() {
 		Controller controller = Controller.getCurrentController();
@@ -654,4 +655,13 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final ASelectableCondition selectedCondition = getSelectedCondition();
 		return NO_FILTERING != selectedCondition && null != selectedCondition;
 	}
+
+	public FilterComposerDialog getFilterComposerDialog() {
+		if(filterComposerDialog == null){
+			filterComposerDialog = new FilterComposerDialog();
+			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(filterComposerDialog);
+		}
+		return filterComposerDialog;
+    }
+	
 }
