@@ -49,7 +49,7 @@ import org.freeplane.features.styles.StyleNode;
  */
 public class IconController implements IExtension {
 
-	private static final Quantity<LengthUnits> DEFAULT_ICON_SIZE = new Quantity<LengthUnits>(16, LengthUnits.px);
+	private static final Quantity<LengthUnits> DEFAULT_ICON_SIZE = new Quantity<LengthUnits>(12, LengthUnits.pt);
 
 	final private CombinedPropertyChain<Collection<MindIcon>, NodeModel> iconHandlers;
 	public static IconController getController() {
