@@ -12,11 +12,22 @@ public class FreeplaneSurveyProperties {
 	static private final long ONE_DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000; 
 	static final String NEVER_SHOW_SURVEY_PROPERTY = "neverShowSurvey";
 	static final String NEXT_SURVEY_CHECK_DAY_PROPERTY = "nextSurveyCheck";
+	private static final String REMIND_ME_LATER_PROPERTY = "remindMeAboutSurveyIsActive";
 	static final String FILLED_SURVEY = "filledSurvey";
 	private static final String SURVEY_URL_PROPERTY = "surveyUrl";
-	final private ResourceController resourceController = ResourceController.getResourceController();
-	final private long nextCheckDay = resourceController.getLongProperty(NEXT_SURVEY_CHECK_DAY_PROPERTY, 0);
 	
+	final private ResourceController resourceController;
+	final private long nextCheckDay;
+	private boolean remindMeLaterIsActive;
+	
+	public FreeplaneSurveyProperties() {
+		resourceController = ResourceController.getResourceController();
+		nextCheckDay = resourceController.getLongProperty(NEXT_SURVEY_CHECK_DAY_PROPERTY, 0);
+		remindMeLaterIsActive = resourceController.getBooleanProperty(REMIND_ME_LATER_PROPERTY, false);
+		if(remindMeLaterIsActive)
+			resourceController.setProperty(REMIND_ME_LATER_PROPERTY, false);
+	}
+
 	void setNextSurveyDay(int minimalDaysBetweenSurveys) {
 		resourceController.setProperty(NEXT_SURVEY_CHECK_DAY_PROPERTY, dayNow() + minimalDaysBetweenSurveys);
 	}
@@ -70,6 +81,14 @@ public class FreeplaneSurveyProperties {
 	
 	public InputStream openRemoteConfiguration() throws IOException {
 		return getSurveyUrl().openStream();
+	}
+
+	public void activateRemindMeLater() {
+		resourceController.setProperty(REMIND_ME_LATER_PROPERTY, "true");
+	}
+
+	public boolean remindMeLaterIsActive() {
+		return remindMeLaterIsActive;
 	}
 	
 }

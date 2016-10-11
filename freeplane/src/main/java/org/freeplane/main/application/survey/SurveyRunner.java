@@ -121,6 +121,7 @@ public class SurveyRunner {
 				break;
 			case REMIND_ME_LATER_OPTION:
 				freeplaneSurveyProperties.setNextSurveyDay(MINIMAL_DAYS_BETWEEN_SURVEY_REMINDERS);
+				freeplaneSurveyProperties.activateRemindMeLater();
 				break;
 			case NEVER_OPTION:
 				freeplaneSurveyProperties.setNeverShowSurvey();
