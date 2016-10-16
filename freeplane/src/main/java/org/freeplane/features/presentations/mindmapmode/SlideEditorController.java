@@ -3,10 +3,8 @@ package org.freeplane.features.presentations.mindmapmode;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -19,8 +17,6 @@ import javax.swing.border.TitledBorder;
 import org.freeplane.features.filter.FilterComposerDialog;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 class SlideEditorController{
@@ -178,18 +174,7 @@ class SlideEditorController{
 		btnHighlightSlideContent.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Set<String> selectedNodeIds = slide.getSelectedNodeIds();
-				MapModel map = Controller.getCurrentController().getMap();
-				ArrayList<NodeModel> selectedNodes = new ArrayList<>(selectedNodeIds.size());
-				for (String id : selectedNodeIds) {
-					NodeModel node = map.getNodeForID(id);
-					if (node != null && node.isVisible())
-						selectedNodes.add(node);
-				}
-				if (!selectedNodes.isEmpty()) {
-					NodeModel[] nodes = selectedNodes.toArray(new NodeModel[] {});
-					Controller.getCurrentController().getSelection().replaceSelection(nodes);
-				}
+				slide.replaceCurrentSelection();
 			}
 		});
 		return btnHighlightSlideContent;

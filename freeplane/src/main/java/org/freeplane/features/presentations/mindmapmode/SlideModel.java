@@ -5,7 +5,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 public class SlideModel implements NamedElement<SlideModel>{
 	private String name;
@@ -153,6 +155,21 @@ public class SlideModel implements NamedElement<SlideModel>{
 	private void fireSlideChangeEvent() {
 		for (SlideChangeListener slideChangeListener : slideChangeListeners)
 			slideChangeListener.onSlideModelChange(SlideChangeEvent.of(this));
+	}
+
+	void replaceCurrentSelection() {
+		Set<String> selectedNodeIds = getSelectedNodeIds();
+		MapModel map = Controller.getCurrentController().getMap();
+		ArrayList<NodeModel> selectedNodes = new ArrayList<>(selectedNodeIds.size());
+		for (String id : selectedNodeIds) {
+			NodeModel node = map.getNodeForID(id);
+			if (node != null && node.isVisible())
+				selectedNodes.add(node);
+		}
+		if (!selectedNodes.isEmpty()) {
+			NodeModel[] nodes = selectedNodes.toArray(new NodeModel[] {});
+			Controller.getCurrentController().getSelection().replaceSelection(nodes);
+		}
 	}
 
 }
