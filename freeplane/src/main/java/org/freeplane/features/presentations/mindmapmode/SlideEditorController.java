@@ -25,6 +25,8 @@ class SlideEditorController{
 	
 	private final JButton btnHighlightSelectedNodes;
 	private final JButton btnSetSelectedNodes;
+	private final JButton btnAddSelectedNodes;
+	private final JButton btnRemoveSelectedNodes;
 	private final JCheckBox checkBoxCentersSelectedNode;
 	private final JToggleButton tglbtnChangeZoom;
 	private final JLabel lblZoomFactor;
@@ -41,6 +43,8 @@ class SlideEditorController{
 	
 	public SlideEditorController() {
 		btnSetSelectedNodes = createSetSelectedNodeButton();
+		btnAddSelectedNodes = createAddSelectedNodeButton();
+		btnRemoveSelectedNodes = createRemoveSelectedNodeButton();
 		btnHighlightSelectedNodes = createHighlightSelectedNodesButton();
 		checkBoxCentersSelectedNode = createCentersSelectedNodeCheckBox();
 		tglbtnChangeZoom = createSetZoomToggleButton();
@@ -50,7 +54,8 @@ class SlideEditorController{
 		checkBoxShowDescendants = createShowDescendantsCheckBox();
 		tglbtnSetFilter = createSetFilterToggleButton();
 		
-		allButtons = new JComponent[] { btnHighlightSelectedNodes, btnSetSelectedNodes, checkBoxCentersSelectedNode,
+		allButtons = new JComponent[] { btnHighlightSelectedNodes, btnSetSelectedNodes, btnAddSelectedNodes,
+		        btnRemoveSelectedNodes, checkBoxCentersSelectedNode,
 		        tglbtnChangeZoom, lblZoomFactor, 
 		        checkBoxShowOnlySelectedNodes, checkBoxShowAncestors, checkBoxShowDescendants, tglbtnSetFilter };
 		filterRelatedButtons = new JComponent[]{checkBoxShowAncestors, checkBoxShowDescendants};
@@ -77,6 +82,34 @@ class SlideEditorController{
 			}
 		});
 
+		return btnSetSelectedNode;
+	}
+
+	private JButton createAddSelectedNodeButton() {
+		JButton btnSetSelectedNode = new JButton("Add");
+		btnSetSelectedNode.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnSetSelectedNode.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final List<String> selection = Controller.getCurrentController().getSelection()
+				    .getOrderedSelectionIds();
+				slide.addSelectedNodeIds(selection);
+			}
+		});
+		return btnSetSelectedNode;
+	}
+
+	private JButton createRemoveSelectedNodeButton() {
+		JButton btnSetSelectedNode = new JButton("Remove");
+		btnSetSelectedNode.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnSetSelectedNode.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				final List<String> selection = Controller.getCurrentController().getSelection()
+				    .getOrderedSelectionIds();
+				slide.removeSelectedNodeIds(selection);
+			}
+		});
 		return btnSetSelectedNode;
 	}
 
@@ -187,6 +220,8 @@ class SlideEditorController{
 		
 		Box selectionBox = Box.createHorizontalBox();
 		selectionBox.add(btnSetSelectedNodes);
+		selectionBox.add(btnAddSelectedNodes);
+		selectionBox.add(btnRemoveSelectedNodes);
 		selectionBox.add(btnHighlightSelectedNodes);
 		content.add(selectionBox);
 		content.add(checkBoxCentersSelectedNode);
@@ -195,8 +230,6 @@ class SlideEditorController{
 		zoomBox.add(lblZoomFactor);
 		content.add(zoomBox);
 		content.add(checkBoxShowOnlySelectedNodes);
-		Box specificNodeButtons = Box.createHorizontalBox();
-		content.add(specificNodeButtons);
 		content.add(checkBoxShowAncestors);
 		content.add(checkBoxShowDescendants);
 		content.add(tglbtnSetFilter);
@@ -240,7 +273,6 @@ class SlideEditorController{
 		checkBoxCentersSelectedNode.setSelected(centersSelectedNode);
 		for(JComponent c : filterRelatedButtons)
 			c.setEnabled(showsOnlySpecificNodes || slide.getFilterCondition() != null);
-		checkBoxCentersSelectedNode.setEnabled(true);
 		final boolean changesZoom = slide.changesZoom();
 		tglbtnChangeZoom.setSelected(changesZoom);
 		lblZoomFactor.setText(changesZoom ? Math.round(slide.getZoom() * 100) + "%" : "");

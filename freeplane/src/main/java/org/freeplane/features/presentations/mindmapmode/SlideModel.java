@@ -1,6 +1,7 @@
 package org.freeplane.features.presentations.mindmapmode;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -69,6 +70,18 @@ public class SlideModel implements NamedElement<SlideModel>{
 	public void setSelectedNodeIds(Set<String> selectedNodeIds) {
 		if(this.selectedNodeIds != selectedNodeIds){
 			this.selectedNodeIds = new LinkedHashSet<>(selectedNodeIds);
+			fireSlideChangeEvent();
+		}
+	}
+
+	public void addSelectedNodeIds(Collection<String> selectedNodeIds) {
+		if (this.selectedNodeIds.addAll(selectedNodeIds)) {
+			fireSlideChangeEvent();
+		}
+	}
+
+	public void removeSelectedNodeIds(Collection<String> selectedNodeIds) {
+		if (this.selectedNodeIds.removeAll(selectedNodeIds)) {
 			fireSlideChangeEvent();
 		}
 	}
