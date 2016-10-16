@@ -1,8 +1,6 @@
 package org.freeplane.features.presentations.mindmapmode;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -19,7 +17,6 @@ public class SlideModel implements NamedElement<SlideModel>{
 	private boolean showsDescendants;
 	private ASelectableCondition filterCondition;
 	private Set<String> selectedNodeIds;
-	private Set<String> visibleNodeIds;
 	private final ArrayList<SlideChangeListener> slideChangeListeners;
 
 	public String getName() {
@@ -31,22 +28,21 @@ public class SlideModel implements NamedElement<SlideModel>{
 	}
 
 	public SlideModel saveAs(String name) {
-		return new SlideModel(name, new LinkedHashSet<String>(), new HashSet<String>(), centersSelectedNode,
+		return new SlideModel(name, new LinkedHashSet<String>(), centersSelectedNode,
 		    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, filterCondition);
 	}
 
 	public SlideModel(String name){
-		this(name, new LinkedHashSet<String>(), new HashSet<String>(), false, false, 1f, false, false, false, null);
+		this(name, new LinkedHashSet<String>(), false, false, 1f, false, false, false, null);
 	}
 	
-	public SlideModel(String name, Set<String> selectedNodeIds, Set<String> visibleNodeIds, boolean centerSelectedNode,
+	public SlideModel(String name, Set<String> selectedNodeIds, boolean centerSelectedNode,
 	                  boolean changeZoom,
 			float zoom, boolean showOnlySpecificNodes, boolean showAncestors, boolean showDescendants,
 			ASelectableCondition filterCondition) {
 		super();
 		this.name = name;
 		this.selectedNodeIds = selectedNodeIds;
-		this.visibleNodeIds = visibleNodeIds;
 		this.centersSelectedNode = centerSelectedNode;
 		this.changesZoom = changeZoom;
 		this.zoom = zoom;
@@ -55,10 +51,6 @@ public class SlideModel implements NamedElement<SlideModel>{
 		this.showsDescendants = showDescendants;
 		this.filterCondition = filterCondition;
 		slideChangeListeners = new ArrayList<>();
-	}
-
-	public boolean isNodeSelected(NodeModel node) {
-		return selectedNodeIds.contains(node.getID());
 	}
 
 	public Set<String> getSelectedNodeIds() {
@@ -72,32 +64,8 @@ public class SlideModel implements NamedElement<SlideModel>{
 		}
 	}
 
-	public Set<String> getVisibleNodeIds() {
-		return visibleNodeIds;
-	}
-
 	public boolean isNodeVisible(NodeModel node) {
-		return visibleNodeIds.contains(node.getID());
-	}
-	
-
-	public void setVisibleNodeIds(Set<String> visibleNodeIds) {
-		if(this.visibleNodeIds != visibleNodeIds){
-			this.visibleNodeIds = new HashSet<>(visibleNodeIds);
-			fireSlideChangeEvent();
-		}
-	}
-
-	public void addVisibleNodeIds(Collection<String> addedVisibleNodeIds) {
-		if(visibleNodeIds.addAll(addedVisibleNodeIds)){
-			fireSlideChangeEvent();
-		}
-	}
-
-	public void removeVisibleNodeIds(Collection<String> removedVisibleNodeIds) {
-		if(visibleNodeIds.removeAll(removedVisibleNodeIds)){
-			fireSlideChangeEvent();
-		}
+		return selectedNodeIds.contains(node.getID());
 	}
 
 	public boolean centersSelectedNode() {
