@@ -85,7 +85,7 @@ class NavigationPanelController {
 
 	private JToggleButton createCurrentButton() {
 		final JToggleButton btnCurrent = new JToggleButton("Current");
-		btnPrevious.addActionListener(new ActionListener() {
+		btnCurrent.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {

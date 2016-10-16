@@ -15,6 +15,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 public class Slide implements NamedElement<Slide>{
+	public static final Slide ALL_NODES = new Slide("All nodes");
 	private String name;
 	private boolean changesZoom;
 	private boolean centersSelectedNode;

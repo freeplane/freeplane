@@ -36,6 +36,10 @@ public class PresentationState {
 			currentSlide = newSlide;
 			firePresentationStateChangedEvent(SLIDE_CHANGED);
 		}
+		if (newSlide != null)
+			newSlide.apply();
+		else
+			Slide.ALL_NODES.apply();
 	}
 	
 	public void addPresentationStateListener(PresentationStateChangeListener presentationStateChangeListener) {
