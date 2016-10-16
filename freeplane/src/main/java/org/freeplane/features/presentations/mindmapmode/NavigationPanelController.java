@@ -16,7 +16,7 @@ class NavigationPanelController {
 	private final JButton btnNext;
 	private final JComponent[] components;
 	
-	private CollectionModel<Slide> slides;
+	private NamedElementCollection<Slide> slides;
 	private final CollectionChangeListener<Slide> slideChangeListener;
 	private PresentationState presentationStateModel;
 	private Presentation presentationModel;

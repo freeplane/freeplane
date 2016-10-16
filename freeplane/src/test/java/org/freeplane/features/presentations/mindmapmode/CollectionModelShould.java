@@ -20,13 +20,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CollectionModelShould {
-	private CollectionModel<Presentation> elementCollectionModel;
+	private NamedElementCollection<Presentation> elementCollectionModel;
 	@Mock
 	private CollectionChangeListener<Presentation> listener;
 
 	@Before 
 	public void setup() {
-		elementCollectionModel = new CollectionModel<Presentation>(Presentation.class);
+		elementCollectionModel = new NamedElementCollection<Presentation>(Presentation.class);
 	}
 	
 	@Test

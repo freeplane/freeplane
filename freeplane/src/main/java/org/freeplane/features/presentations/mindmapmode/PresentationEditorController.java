@@ -12,7 +12,7 @@ public class PresentationEditorController {
 	private final CollectionBoxController<Slide> slidePanelController;
 	private final SlideEditorController slideEditorController;
 	private final NavigationPanelController navigationPanelController;
-	private CollectionModel<Presentation> presentations;
+	private NamedElementCollection<Presentation> presentations;
 	private CollectionChangeListener<Presentation> presentationChangeListener;
 
 	public PresentationEditorController(PresentationState presentationStateModel) {
@@ -32,7 +32,7 @@ public class PresentationEditorController {
 		};
 		presentationChangeListener = new CollectionChangeListener<Presentation>() {
 			
-			private CollectionModel<Slide> slides;
+			private NamedElementCollection<Slide> slides;
 
 			@Override
 			public void onCollectionChange(CollectionChangedEvent<Presentation> event) {
@@ -53,7 +53,7 @@ public class PresentationEditorController {
 		};
 	}
 
-	public void setPresentations(CollectionModel<Presentation> newPresentations) {
+	public void setPresentations(NamedElementCollection<Presentation> newPresentations) {
 		if(presentations != null)
 			presentations.removeSelectionChangeListener(presentationChangeListener);
 		presentations = newPresentations;

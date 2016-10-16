@@ -20,7 +20,7 @@ import javax.swing.border.TitledBorder;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 
 class CollectionBoxController <T extends NamedElement<T>> {
-	private CollectionModel<T> collection;
+	private NamedElementCollection<T> collection;
 	private JComboBox<Stringifyed<T>> comboBoxCollectionNames;
 	private final JComponent[] components;
 	private final JButton btnMoveUp;
@@ -79,7 +79,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		};
 	}
 	
-	public void setCollection(CollectionModel<T> newCollection) {
+	public void setCollection(NamedElementCollection<T> newCollection) {
 		if(collection == newCollection)
 			return;
 		if(collection != null)

@@ -8,7 +8,7 @@ public class MainFrame {
 		final PresentationState presentationStateModel = new PresentationState();
 		final PresentationEditorController presentationEditorController = new PresentationEditorController(presentationStateModel);
 		frame.getContentPane().add(presentationEditorController.createPanel());
-		presentationEditorController.setPresentations(new CollectionModel<>(Presentation.class));
+		presentationEditorController.setPresentations(new NamedElementCollection<>(Presentation.class));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.show();

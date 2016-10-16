@@ -10,14 +10,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-public class CollectionModel<T extends NamedElement<T>> {
+public class NamedElementCollection<T extends NamedElement<T>> {
 	final private DefaultComboBoxModel<Stringifyed<T>> elements;
 	private int currentIndex;
 	private Constructor<T> constructor;
 	private ArrayList<CollectionChangeListener<T>> selectionChangeListeners;
 	private boolean moveInProgress;
 
-	public CollectionModel(Class<T> elementClass) {
+	public NamedElementCollection(Class<T> elementClass) {
 		super();
 		try {
 			constructor = elementClass.getConstructor(String.class);
