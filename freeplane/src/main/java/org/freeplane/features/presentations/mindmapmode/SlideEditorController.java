@@ -187,7 +187,7 @@ class SlideEditorController{
 						selectedNodes.add(node);
 				}
 				if (!selectedNodes.isEmpty()) {
-					NodeModel[] nodes = selectedNodeIds.toArray(new NodeModel[] {});
+					NodeModel[] nodes = selectedNodes.toArray(new NodeModel[] {});
 					Controller.getCurrentController().getSelection().replaceSelection(nodes);
 				}
 			}
