@@ -51,10 +51,7 @@ public class ConjunctConditions extends ASelectableCondition implements ICombine
 
 	final private ASelectableCondition[] conditions;
 
-	/**
-	 *
-	 */
-	public ConjunctConditions(final ASelectableCondition[] conditions) {
+	public ConjunctConditions(final ASelectableCondition... conditions) {
 		this.conditions = conditions;
 	}
 

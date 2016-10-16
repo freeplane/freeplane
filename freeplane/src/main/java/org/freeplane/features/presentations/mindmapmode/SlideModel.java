@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.filter.condition.ConjunctConditions;
+import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -158,20 +162,79 @@ public class SlideModel implements NamedElement<SlideModel>{
 	}
 
 	void replaceCurrentSelection() {
-		Set<String> selectedNodeIds = getSelectedNodeIds();
-		MapModel map = Controller.getCurrentController().getMap();
-		ArrayList<NodeModel> selectedNodes = new ArrayList<>(selectedNodeIds.size());
-		for (String id : selectedNodeIds) {
-			NodeModel node = map.getNodeForID(id);
-			if (node != null && node.isVisible())
-				selectedNodes.add(node);
-		}
+		ArrayList<NodeModel> selectedNodes = getSelectedNodes(true);
 		if (!selectedNodes.isEmpty()) {
 			NodeModel[] nodes = selectedNodes.toArray(new NodeModel[] {});
 			for (NodeModel node : nodes)
 				Controller.getCurrentModeController().getMapController().displayNode(node);
 			Controller.getCurrentController().getSelection().replaceSelection(nodes);
 		}
+	}
+
+	private ArrayList<NodeModel> getSelectedNodes(boolean onlyVisible) {
+		MapModel map = getMap();
+		ArrayList<NodeModel> selectedNodes = new ArrayList<>(selectedNodeIds.size());
+		for (String id : selectedNodeIds) {
+			NodeModel node = map.getNodeForID(id);
+			if (node != null && (!onlyVisible || node.isVisible()))
+				selectedNodes.add(node);
+		}
+		return selectedNodes;
+	}
+
+	void apply() {
+		applyFilter();
+		applySelection();
+		applyZoom();
+	}
+
+	private void applyZoom() {
+		if (changesZoom)
+			Controller.getCurrentController().getMapViewManager().setZoom(zoom);
+	}
+
+	private void applySelection() {
+		if (selectedNodeIds.isEmpty())
+			return;
+		MapModel map = getMap();
+		NodeModel node = map.getNodeForID(selectedNodeIds.iterator().next());
+		if (!showsOnlySpecificNodes)
+			replaceCurrentSelection();
+		else {
+			if (node != null)
+				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
+		}
+		if (node != null && centersSelectedNode)
+			Controller.getCurrentController().getSelection().centerNode(node);
+	}
+
+	private MapModel getMap() {
+		return Controller.getCurrentController().getMap();
+	}
+
+	private void applyFilter() {
+		final ICondition  condition;
+		if(showsOnlySpecificNodes && filterCondition != null){
+			SelectedViewSnapshotCondition selectedViewSnapshotCondition = getFilterConditionForSelectedNodes();
+			condition = new ConjunctConditions(selectedViewSnapshotCondition, filterCondition);
+		}
+		else if (showsOnlySpecificNodes && filterCondition == null) {
+			condition = getFilterConditionForSelectedNodes();
+		}
+		else if (!showsOnlySpecificNodes && filterCondition != null) {
+			condition = filterCondition;
+		}
+		else{
+			condition = null;
+		}
+		MapModel map = getMap();
+		new Filter(condition, showsAncestors, showsDescendants, false).applyFilter(this, map, false);
+	}
+
+	private SelectedViewSnapshotCondition getFilterConditionForSelectedNodes() {
+		ArrayList<NodeModel> selectedNodes = getSelectedNodes(false);
+		SelectedViewSnapshotCondition selectedViewSnapshotCondition = new SelectedViewSnapshotCondition(selectedNodes);
+		return selectedViewSnapshotCondition;
 	}
 
 }
