@@ -12,6 +12,7 @@ import org.freeplane.features.map.NodeModel;
 public class SlideModel implements NamedElement<SlideModel>{
 	private String name;
 	private boolean changesZoom;
+	private boolean centersSelectedNode;
 	private float zoom;
 	private boolean showsOnlySpecificNodes;
 	private boolean showsAncestors;
@@ -30,20 +31,23 @@ public class SlideModel implements NamedElement<SlideModel>{
 	}
 
 	public SlideModel saveAs(String name) {
-		return new SlideModel(name, new LinkedHashSet<String>(), new HashSet<String>(), changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, filterCondition);
+		return new SlideModel(name, new LinkedHashSet<String>(), new HashSet<String>(), centersSelectedNode,
+		    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, filterCondition);
 	}
 
 	public SlideModel(String name){
-		this(name, new LinkedHashSet<String>(), new HashSet<String>(), false, 1f, false, false, false, null);
+		this(name, new LinkedHashSet<String>(), new HashSet<String>(), false, false, 1f, false, false, false, null);
 	}
 	
-	public SlideModel(String name, Set<String> selectedNodeIds, Set<String> visibleNodeIds, boolean changeZoom,
+	public SlideModel(String name, Set<String> selectedNodeIds, Set<String> visibleNodeIds, boolean centerSelectedNode,
+	                  boolean changeZoom,
 			float zoom, boolean showOnlySpecificNodes, boolean showAncestors, boolean showDescendants,
 			ASelectableCondition filterCondition) {
 		super();
 		this.name = name;
 		this.selectedNodeIds = selectedNodeIds;
 		this.visibleNodeIds = visibleNodeIds;
+		this.centersSelectedNode = centerSelectedNode;
 		this.changesZoom = changeZoom;
 		this.zoom = zoom;
 		this.showsOnlySpecificNodes = showOnlySpecificNodes;
@@ -55,6 +59,10 @@ public class SlideModel implements NamedElement<SlideModel>{
 
 	public boolean isNodeSelected(NodeModel node) {
 		return selectedNodeIds.contains(node.getID());
+	}
+
+	public Set<String> getSelectedNodeIds() {
+		return selectedNodeIds;
 	}
 
 	public void setSelectedNodeIds(Set<String> selectedNodeIds) {
@@ -90,6 +98,14 @@ public class SlideModel implements NamedElement<SlideModel>{
 		if(visibleNodeIds.removeAll(removedVisibleNodeIds)){
 			fireSlideChangeEvent();
 		}
+	}
+
+	public boolean centersSelectedNode() {
+		return centersSelectedNode;
+	}
+
+	public void setCentersSelectedNode(boolean centersSelectedNode) {
+		this.centersSelectedNode = centersSelectedNode;
 	}
 
 	public boolean changesZoom() {

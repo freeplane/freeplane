@@ -1,6 +1,6 @@
 package org.freeplane.features.presentations.mindmapmode;
 
-import static org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType.*;
+import static org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType.SLIDE_CHANGED;
 
 import java.util.ArrayList;
 
@@ -10,20 +10,9 @@ public class PresentationStateModel {
 	private PresentationModel runningPresentation;
 	private final ArrayList<PresentationStateChangeListener> presentationStateChangeListeners;
 	private SlideModel currentSlide;
-	private boolean highlightsSlideNodes;
 	
 	public SlideModel getCurrentSlide() {
 		return currentSlide;
-	}
-
-	public boolean highlightsSlideNodes() {
-		return highlightsSlideNodes;
-	}
-
-	public void setHighlightSlideNodes(boolean highlightVisibleNodes) {
-		if(this.highlightsSlideNodes != highlightVisibleNodes) {
-			this.highlightsSlideNodes = highlightVisibleNodes;
-		}
 	}
 
 	public PresentationStateModel() {

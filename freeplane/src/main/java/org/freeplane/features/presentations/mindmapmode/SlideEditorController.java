@@ -3,8 +3,10 @@ package org.freeplane.features.presentations.mindmapmode;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -17,47 +19,44 @@ import javax.swing.border.TitledBorder;
 import org.freeplane.features.filter.FilterComposerDialog;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 class SlideEditorController{
 	
 	private SlideModel slide;
 	
-	private final JToggleButton tglbtnHighlightVisibleNodes;
-	private final JButton btnSetSelectedNode;
+	private final JButton btnHighlightSelectedNodes;
+	private final JButton btnSetSelectedNodes;
+	private final JCheckBox checkBoxCentersSelectedNode;
 	private final JToggleButton tglbtnChangeZoom;
 	private final JLabel lblZoomFactor;
-	private final JCheckBox checkBoxShowOnlySpecificNodes;
+	private final JCheckBox checkBoxShowOnlySelectedNodes;
 	private final JCheckBox checkBoxShowAncestors;
 	private final JCheckBox checkBoxShowDescendants;
-	private final JButton btnAddNodes;
-	private final JButton btnRemoveNodes;
 	private final JToggleButton tglbtnSetFilter;
 	
 	private final JComponent[] allButtons;
-	private final JComponent[] specificNodeButtons;
 	private final JComponent[] filterRelatedButtons;
 
 	private final SlideChangeListener slideChangeListener;
 
-	private final PresentationStateModel presentationStateModel;
 	
-	public SlideEditorController(PresentationStateModel presentationStateModel) {
-		this.presentationStateModel = presentationStateModel;
-		tglbtnHighlightVisibleNodes = createHighlightSlideContentToggleButton();
-		btnSetSelectedNode = createSetSelectedNodeButton();
+	public SlideEditorController() {
+		btnSetSelectedNodes = createSetSelectedNodeButton();
+		btnHighlightSelectedNodes = createHighlightSelectedNodesButton();
+		checkBoxCentersSelectedNode = createCentersSelectedNodeCheckBox();
 		tglbtnChangeZoom = createSetZoomToggleButton();
 		lblZoomFactor = new JLabel("100 %");
-		checkBoxShowOnlySpecificNodes = createOnlySpecificNodesCheckBox();
+		checkBoxShowOnlySelectedNodes = createOnlySelectedNodesCheckBox();
 		checkBoxShowAncestors = createShowAncestorsCheckBox();
 		checkBoxShowDescendants = createShowDescendantsCheckBox();
-		btnAddNodes = createAddNodesButton();
-		btnRemoveNodes = createRemoveNodesButton();
 		tglbtnSetFilter = createSetFilterToggleButton();
 		
-		allButtons = new JComponent[]{tglbtnHighlightVisibleNodes, btnSetSelectedNode, tglbtnChangeZoom, lblZoomFactor, 
-				checkBoxShowOnlySpecificNodes, checkBoxShowAncestors, checkBoxShowDescendants, btnAddNodes, btnRemoveNodes, tglbtnSetFilter};
-		specificNodeButtons = new JComponent[]{btnAddNodes, btnRemoveNodes};
+		allButtons = new JComponent[] { btnHighlightSelectedNodes, btnSetSelectedNodes, checkBoxCentersSelectedNode,
+		        tglbtnChangeZoom, lblZoomFactor, 
+		        checkBoxShowOnlySelectedNodes, checkBoxShowAncestors, checkBoxShowDescendants, tglbtnSetFilter };
 		filterRelatedButtons = new JComponent[]{checkBoxShowAncestors, checkBoxShowDescendants};
 		slideChangeListener = new SlideChangeListener() {
 			
@@ -71,7 +70,7 @@ class SlideEditorController{
 	}
 
 	private JButton createSetSelectedNodeButton() {
-		JButton btnSetSelectedNode = new JButton("Set selection");
+		JButton btnSetSelectedNode = new JButton("Set");
 		btnSetSelectedNode.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSetSelectedNode.addActionListener(new ActionListener() {
 			
@@ -99,9 +98,20 @@ class SlideEditorController{
 		});
 		return btnSetsZoom;
 	}
-	
-	private JCheckBox createOnlySpecificNodesCheckBox() {
-		final JCheckBox checkBoxOnlySpecificNodes = new JCheckBox("Show only specific nodes");
+	private JCheckBox createCentersSelectedNodeCheckBox() {
+		final JCheckBox checkBoxOnlySpecificNodes = new JCheckBox("Center selected node");
+		checkBoxOnlySpecificNodes.setAlignmentX(Component.CENTER_ALIGNMENT);
+		checkBoxOnlySpecificNodes.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				slide.setCentersSelectedNode(!slide.centersSelectedNode());
+			}
+		});
+		return checkBoxOnlySpecificNodes;
+	}
+
+	private JCheckBox createOnlySelectedNodesCheckBox() {
+		final JCheckBox checkBoxOnlySpecificNodes = new JCheckBox("Show only selected nodes");
 		checkBoxOnlySpecificNodes.setAlignmentX(Component.CENTER_ALIGNMENT);
 		checkBoxOnlySpecificNodes.addActionListener(new ActionListener() {
 			@Override
@@ -161,47 +171,28 @@ class SlideEditorController{
 		return tglbtnSetFilter;
 	}
 
-
-	private JButton createRemoveNodesButton() {
-		final JButton btnRemoveNodes = new JButton("Remove nodes");
-		btnRemoveNodes.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnRemoveNodes.addActionListener(new ActionListener() {
-			
+	private JButton createHighlightSelectedNodesButton() {
+		JButton btnHighlightSlideContent = new JButton("Select");
+		btnHighlightSlideContent.setToolTipText("Highlight visible and selected nodes in the map");
+		btnHighlightSlideContent.setAlignmentX(Component.CENTER_ALIGNMENT);
+		btnHighlightSlideContent.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final List<String> selection = Controller.getCurrentController().getSelection().getOrderedSelectionIds();
-				slide.removeVisibleNodeIds(selection);
+				Set<String> selectedNodeIds = slide.getSelectedNodeIds();
+				MapModel map = Controller.getCurrentController().getMap();
+				ArrayList<NodeModel> selectedNodes = new ArrayList<>(selectedNodeIds.size());
+				for (String id : selectedNodeIds) {
+					NodeModel node = map.getNodeForID(id);
+					if (node != null && node.isVisible())
+						selectedNodes.add(node);
+				}
+				if (!selectedNodes.isEmpty()) {
+					NodeModel[] nodes = selectedNodeIds.toArray(new NodeModel[] {});
+					Controller.getCurrentController().getSelection().replaceSelection(nodes);
+				}
 			}
 		});
-		return btnRemoveNodes;
-	}
-
-
-	private JButton createAddNodesButton() {
-		final JButton btnAddNodes = new JButton("Add nodes");
-		btnAddNodes.setAlignmentX(Component.CENTER_ALIGNMENT);
-		btnAddNodes.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				final List<String> selection = Controller.getCurrentController().getSelection().getOrderedSelectionIds();
-				slide.addVisibleNodeIds(selection);
-			}
-		});
-		return btnAddNodes;
-	}
-
-	private JToggleButton createHighlightSlideContentToggleButton() {
-		JToggleButton tglbtnHighlightSlideContent = new JToggleButton("Highlight content");
-		tglbtnHighlightSlideContent.setToolTipText("Highlight visible and selected nodes in the map");
-		tglbtnHighlightSlideContent.setAlignmentX(Component.CENTER_ALIGNMENT);
-		tglbtnHighlightSlideContent.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				presentationStateModel.setHighlightSlideNodes(! presentationStateModel.highlightsSlideNodes());
-			}
-		});
-		return tglbtnHighlightSlideContent;
+		return btnHighlightSlideContent;
 	}
 
 
@@ -210,22 +201,21 @@ class SlideEditorController{
 		Box content = Box.createVerticalBox();
 		content.setBorder(new TitledBorder(null, "Slide content", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
-		Box slideButtons = Box.createVerticalBox();
-		content.add(slideButtons);
-		slideButtons.add(tglbtnHighlightVisibleNodes);
-		slideButtons.add(btnSetSelectedNode);
+		Box selectionBox = Box.createHorizontalBox();
+		selectionBox.add(btnSetSelectedNodes);
+		selectionBox.add(btnHighlightSelectedNodes);
+		content.add(selectionBox);
+		content.add(checkBoxCentersSelectedNode);
 		Box zoomBox = Box.createHorizontalBox();
 		zoomBox.add(tglbtnChangeZoom);
 		zoomBox.add(lblZoomFactor);
-		slideButtons.add(zoomBox);
-		slideButtons.add(checkBoxShowOnlySpecificNodes);
-		Box horizontalBox = Box.createHorizontalBox();
-		horizontalBox.add(btnAddNodes);
-		horizontalBox.add(btnRemoveNodes);
-		slideButtons.add(horizontalBox);
-		slideButtons.add(checkBoxShowAncestors);
-		slideButtons.add(checkBoxShowDescendants);
-		slideButtons.add(tglbtnSetFilter);
+		content.add(zoomBox);
+		content.add(checkBoxShowOnlySelectedNodes);
+		Box specificNodeButtons = Box.createHorizontalBox();
+		content.add(specificNodeButtons);
+		content.add(checkBoxShowAncestors);
+		content.add(checkBoxShowDescendants);
+		content.add(tglbtnSetFilter);
 
 		return content;
 	}
@@ -255,16 +245,16 @@ class SlideEditorController{
 
 	private void updateUI() {
 		final boolean showsOnlySpecificNodes = slide.showsOnlySpecificNodes();
-		checkBoxShowOnlySpecificNodes.setSelected(showsOnlySpecificNodes);
-		for(JComponent c : specificNodeButtons)
-			c.setEnabled(showsOnlySpecificNodes);
+		checkBoxShowOnlySelectedNodes.setSelected(showsOnlySpecificNodes);
+		final boolean centersSelectedNode = slide.centersSelectedNode();
+		checkBoxCentersSelectedNode.setSelected(centersSelectedNode);
 		for(JComponent c : filterRelatedButtons)
 			c.setEnabled(showsOnlySpecificNodes || slide.getFilterCondition() != null);
-		tglbtnHighlightVisibleNodes.setSelected(presentationStateModel.highlightsSlideNodes());
+		checkBoxCentersSelectedNode.setEnabled(true);
 		final boolean changesZoom = slide.changesZoom();
 		tglbtnChangeZoom.setSelected(changesZoom);
 		lblZoomFactor.setText(changesZoom ? Math.round(slide.getZoom() * 100) + "%" : "");
-		checkBoxShowOnlySpecificNodes.setSelected(showsOnlySpecificNodes);
+		checkBoxShowOnlySelectedNodes.setSelected(showsOnlySpecificNodes);
 		checkBoxShowAncestors.setSelected(slide.showsAncestors());
 		checkBoxShowDescendants.setSelected(slide.showsDescendants());
 		checkBoxShowAncestors.setSelected(slide.showsAncestors());
