@@ -115,9 +115,11 @@ class NavigationPanelController {
 	Box createNavigationBox() {
 		Box navigation = Box.createHorizontalBox();
 		navigation.setBorder(new TitledBorder(null, "Show", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		navigation.add(Box.createHorizontalGlue());
 		navigation.add(btnPrevious);
 		navigation.add(tglbtnCurrent);
 		navigation.add(btnNext);
+		navigation.add(Box.createHorizontalGlue());
 		return navigation;
 	}
 	

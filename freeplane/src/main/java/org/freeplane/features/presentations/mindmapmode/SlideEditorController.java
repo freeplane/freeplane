@@ -199,7 +199,6 @@ class SlideEditorController{
 	Box createSlideContentBox() {
 		
 		Box content = Box.createVerticalBox();
-		content.setBorder(new TitledBorder(null, "Slide content", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		Box selectionBox = Box.createHorizontalBox();
 		selectionBox.add(btnSetSelectedNodes);
@@ -217,7 +216,13 @@ class SlideEditorController{
 		content.add(checkBoxShowDescendants);
 		content.add(tglbtnSetFilter);
 
-		return content;
+		Box contentWithMargins = Box.createHorizontalBox();
+		contentWithMargins
+		    .setBorder(new TitledBorder(null, "Slide content", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		contentWithMargins.add(Box.createHorizontalGlue());
+		contentWithMargins.add(content);
+		contentWithMargins.add(Box.createHorizontalGlue());
+		return contentWithMargins;
 	}
 
 

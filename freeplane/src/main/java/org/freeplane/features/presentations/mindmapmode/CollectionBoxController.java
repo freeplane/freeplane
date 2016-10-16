@@ -1,5 +1,6 @@
 package org.freeplane.features.presentations.mindmapmode;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -53,6 +54,8 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	public CollectionBoxController(final String newElementName) {
 		comboBoxCollectionNames = new JComboBox<Stringifyed<T>>();
 		comboBoxCollectionNames.setEditable(false);
+		Dimension comboBoxPreferredSize = comboBoxCollectionNames.getPreferredSize();
+		comboBoxCollectionNames.setMaximumSize(new Dimension(Integer.MAX_VALUE, comboBoxPreferredSize.height));
 		lblElementCount = new JLabel("XXX/XXX: ");
 		lblElementCount.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblElementCount.setPreferredSize(lblElementCount.getPreferredSize());
