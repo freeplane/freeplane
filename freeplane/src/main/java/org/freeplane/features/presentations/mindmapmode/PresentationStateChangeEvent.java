@@ -5,15 +5,15 @@ public class PresentationStateChangeEvent {
 	
 	enum EventType{
 		SLIDE_CHANGED, HIGNLIGHTING_CHANGED;
-		public PresentationStateChangeEvent of(PresentationStateModel state){
+		public PresentationStateChangeEvent of(PresentationState state){
 			return new PresentationStateChangeEvent(this, state);
 		}
 	}
 	
-	public final PresentationStateModel presentationState;
+	public final PresentationState presentationState;
 	public final EventType eventType;
 
-	public PresentationStateChangeEvent(EventType eventType, PresentationStateModel presentationStateModel) {
+	public PresentationStateChangeEvent(EventType eventType, PresentationState presentationStateModel) {
 		super();
 		this.eventType = eventType;
 		this.presentationState = presentationStateModel;

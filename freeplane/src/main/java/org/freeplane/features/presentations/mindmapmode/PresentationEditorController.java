@@ -15,7 +15,7 @@ public class PresentationEditorController {
 	private CollectionModel<Presentation> presentations;
 	private CollectionChangeListener<Presentation> presentationChangeListener;
 
-	public PresentationEditorController(PresentationStateModel presentationStateModel) {
+	public PresentationEditorController(PresentationState presentationStateModel) {
 		presentationPanelController = new CollectionBoxController<>("New presentation");
 		slidePanelController = new CollectionBoxController<Slide>("New slide");
 		slideEditorController = new SlideEditorController();

@@ -18,7 +18,7 @@ class NavigationPanelController {
 	
 	private CollectionModel<Slide> slides;
 	private final CollectionChangeListener<Slide> slideChangeListener;
-	private PresentationStateModel presentationStateModel;
+	private PresentationState presentationStateModel;
 	private Presentation presentationModel;
 
 	public void setPresentationModel(Presentation presentationModel) {
@@ -39,7 +39,7 @@ class NavigationPanelController {
 		btnNext.setEnabled(slides.getSize() != 0 && slides.getCurrentElementIndex() < slides.getSize() - 1);
 	}
 
-	NavigationPanelController(final PresentationStateModel presentationStateModel){
+	NavigationPanelController(final PresentationState presentationStateModel){
 		this.presentationStateModel = presentationStateModel;
 		btnPrevious = createPreviousButton();
 		tglbtnCurrent = createCurrentButton();

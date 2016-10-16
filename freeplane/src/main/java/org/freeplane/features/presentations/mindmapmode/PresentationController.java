@@ -12,7 +12,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 public class PresentationController implements IExtension{
-	private final PresentationStateModel presentationStateModel;
+	private final PresentationState presentationStateModel;
 	private final PresentationEditorController presentationEditorController;
 	
 	public static void install(final ModeController modeController) {
@@ -22,7 +22,7 @@ public class PresentationController implements IExtension{
 
 	}
 	private PresentationController(ModeController modeController) {
-		presentationStateModel = new PresentationStateModel();
+		presentationStateModel = new PresentationState();
 		presentationEditorController = new PresentationEditorController(presentationStateModel);
 		addMapSelectionListener(modeController);
 	}
