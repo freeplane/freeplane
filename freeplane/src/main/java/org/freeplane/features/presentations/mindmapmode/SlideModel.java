@@ -25,14 +25,17 @@ public class SlideModel implements NamedElement<SlideModel>{
 	private Set<String> selectedNodeIds;
 	private final ArrayList<SlideChangeListener> slideChangeListeners;
 
+	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@Override
 	public SlideModel saveAs(String name) {
 		return new SlideModel(name, new LinkedHashSet<String>(), centersSelectedNode,
 		    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, filterCondition);
