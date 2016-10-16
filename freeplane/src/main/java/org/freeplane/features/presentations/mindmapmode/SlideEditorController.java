@@ -21,7 +21,7 @@ import org.freeplane.features.mode.Controller;
 
 class SlideEditorController{
 	
-	private SlideModel slide;
+	private Slide slide;
 	
 	private final JButton btnHighlightSelectedNodes;
 	private final JButton btnSetSelectedNodes;
@@ -244,7 +244,7 @@ class SlideEditorController{
 	}
 
 
-	public void setSlide(SlideModel newSlide) {
+	public void setSlide(Slide newSlide) {
 		if(slide != null)
 			slide.removeSelectionChangeListener(slideChangeListener);
 		this.slide = newSlide;

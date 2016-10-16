@@ -2,7 +2,7 @@ package org.freeplane.features.presentations.mindmapmode;
 
 public class PresentationModel implements NamedElement<PresentationModel>{
 	private String name;
-	public final CollectionModel<SlideModel> slides;
+	public final CollectionModel<Slide> slides;
 
 	public String getName() {
 		return name;
@@ -15,7 +15,7 @@ public class PresentationModel implements NamedElement<PresentationModel>{
 	public PresentationModel(String name) {
 		super();
 		this.name = name;
-		slides = new CollectionModel<>(SlideModel.class);
+		slides = new CollectionModel<>(Slide.class);
 	}
 	
 	public PresentationModel saveAs(String name) {

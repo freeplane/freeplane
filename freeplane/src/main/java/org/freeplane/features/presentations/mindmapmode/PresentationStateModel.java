@@ -9,9 +9,9 @@ import org.freeplane.features.presentations.mindmapmode.PresentationStateChangeE
 public class PresentationStateModel {
 	private PresentationModel runningPresentation;
 	private final ArrayList<PresentationStateChangeListener> presentationStateChangeListeners;
-	private SlideModel currentSlide;
+	private Slide currentSlide;
 	
-	public SlideModel getCurrentSlide() {
+	public Slide getCurrentSlide() {
 		return currentSlide;
 	}
 
@@ -26,7 +26,7 @@ public class PresentationStateModel {
 	}
 	
 	public void changeSlide(PresentationModel newPresentation) {
-		final SlideModel newSlide;
+		final Slide newSlide;
 		if(newPresentation != null) {
 			newSlide = newPresentation.slides.getCurrentElement();
 		} else

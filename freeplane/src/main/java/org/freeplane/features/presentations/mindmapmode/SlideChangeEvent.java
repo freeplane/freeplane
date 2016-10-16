@@ -1,14 +1,14 @@
 package org.freeplane.features.presentations.mindmapmode;
 
 public class SlideChangeEvent {
-	public final SlideModel slideModel;
+	public final Slide slideModel;
 
-	public SlideChangeEvent(SlideModel slideModel) {
+	public SlideChangeEvent(Slide slideModel) {
 		super();
 		this.slideModel = slideModel;
 	}
 
-	public static SlideChangeEvent of(SlideModel slideModel) {
+	public static SlideChangeEvent of(Slide slideModel) {
 		return new SlideChangeEvent(slideModel);
 	}
 

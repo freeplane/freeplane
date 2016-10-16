@@ -16,8 +16,8 @@ class NavigationPanelController {
 	private final JButton btnNext;
 	private final JComponent[] components;
 	
-	private CollectionModel<SlideModel> slides;
-	private final CollectionChangeListener<SlideModel> slideChangeListener;
+	private CollectionModel<Slide> slides;
+	private final CollectionChangeListener<Slide> slideChangeListener;
 	private PresentationStateModel presentationStateModel;
 	private PresentationModel presentationModel;
 
@@ -53,10 +53,10 @@ class NavigationPanelController {
 			}
 		};
 		presentationStateModel.addPresentationStateListener(presentationStateListener);
-		slideChangeListener = new CollectionChangeListener<SlideModel>() {
+		slideChangeListener = new CollectionChangeListener<Slide>() {
 			
 			@Override
-			public void onCollectionChange(CollectionChangedEvent<SlideModel> event) {
+			public void onCollectionChange(CollectionChangedEvent<Slide> event) {
 				presentationStateModel.changeSlide(null);
 				updateUi();
 			}

@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 public class PresentationEditorController {
 	private final CollectionBoxController<PresentationModel> presentationPanelController;
-	private final CollectionBoxController<SlideModel> slidePanelController;
+	private final CollectionBoxController<Slide> slidePanelController;
 	private final SlideEditorController slideEditorController;
 	private final NavigationPanelController navigationPanelController;
 	private CollectionModel<PresentationModel> presentations;
@@ -17,22 +17,22 @@ public class PresentationEditorController {
 
 	public PresentationEditorController(PresentationStateModel presentationStateModel) {
 		presentationPanelController = new CollectionBoxController<>("New presentation");
-		slidePanelController = new CollectionBoxController<SlideModel>("New slide");
+		slidePanelController = new CollectionBoxController<Slide>("New slide");
 		slideEditorController = new SlideEditorController();
 		navigationPanelController = new NavigationPanelController(presentationStateModel);
-		final CollectionChangeListener<SlideModel> slideChangeListener = new CollectionChangeListener<SlideModel>() {
+		final CollectionChangeListener<Slide> slideChangeListener = new CollectionChangeListener<Slide>() {
 			
-			private SlideModel slide;
+			private Slide slide;
 
 			@Override
-			public void onCollectionChange(CollectionChangedEvent<SlideModel> event) {
+			public void onCollectionChange(CollectionChangedEvent<Slide> event) {
 				slide = event.collection.getCurrentElement();
 				slideEditorController.setSlide(slide);
 			}
 		};
 		presentationChangeListener = new CollectionChangeListener<PresentationModel>() {
 			
-			private CollectionModel<SlideModel> slides;
+			private CollectionModel<Slide> slides;
 
 			@Override
 			public void onCollectionChange(CollectionChangedEvent<PresentationModel> event) {

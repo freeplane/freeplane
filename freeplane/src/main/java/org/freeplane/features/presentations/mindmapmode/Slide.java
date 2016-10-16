@@ -14,7 +14,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
-public class SlideModel implements NamedElement<SlideModel>{
+public class Slide implements NamedElement<Slide>{
 	private String name;
 	private boolean changesZoom;
 	private boolean centersSelectedNode;
@@ -37,16 +37,16 @@ public class SlideModel implements NamedElement<SlideModel>{
 	}
 
 	@Override
-	public SlideModel saveAs(String name) {
-		return new SlideModel(name, new LinkedHashSet<String>(), centersSelectedNode,
+	public Slide saveAs(String name) {
+		return new Slide(name, new LinkedHashSet<String>(), centersSelectedNode,
 		    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, filterCondition);
 	}
 
-	public SlideModel(String name){
+	public Slide(String name){
 		this(name, new LinkedHashSet<String>(), false, false, 1f, false, false, false, null);
 	}
 	
-	public SlideModel(String name, Set<String> selectedNodeIds, boolean centerSelectedNode,
+	public Slide(String name, Set<String> selectedNodeIds, boolean centerSelectedNode,
 	                  boolean changeZoom,
 			float zoom, boolean showOnlySpecificNodes, boolean showAncestors, boolean showDescendants,
 			ASelectableCondition filterCondition) {
