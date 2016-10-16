@@ -168,6 +168,8 @@ public class SlideModel implements NamedElement<SlideModel>{
 		}
 		if (!selectedNodes.isEmpty()) {
 			NodeModel[] nodes = selectedNodes.toArray(new NodeModel[] {});
+			for (NodeModel node : nodes)
+				Controller.getCurrentModeController().getMapController().displayNode(node);
 			Controller.getCurrentController().getSelection().replaceSelection(nodes);
 		}
 	}
