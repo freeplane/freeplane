@@ -20,13 +20,13 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CollectionModelShould {
-	private CollectionModel<PresentationModel> elementCollectionModel;
+	private CollectionModel<Presentation> elementCollectionModel;
 	@Mock
-	private CollectionChangeListener<PresentationModel> listener;
+	private CollectionChangeListener<Presentation> listener;
 
 	@Before 
 	public void setup() {
-		elementCollectionModel = new CollectionModel<PresentationModel>(PresentationModel.class);
+		elementCollectionModel = new CollectionModel<Presentation>(Presentation.class);
 	}
 	
 	@Test
@@ -37,7 +37,7 @@ public class CollectionModelShould {
 	@Test
 	public void addNewElement() throws Exception {
 		elementCollectionModel.add("element");
-		ComboBoxModel<Stringifyed<PresentationModel>> elements = elementCollectionModel.getElements();
+		ComboBoxModel<Stringifyed<Presentation>> elements = elementCollectionModel.getElements();
 		assertThat(elements.getElementAt(0).toString()).isEqualTo("element");
 	}
 	
@@ -52,7 +52,7 @@ public class CollectionModelShould {
 	@Test
 	public void setCurrentItemToNewElement() throws Exception {
 		elementCollectionModel.add("element");
-		ComboBoxModel<Stringifyed<PresentationModel>> elements = elementCollectionModel.getElements();
+		ComboBoxModel<Stringifyed<Presentation>> elements = elementCollectionModel.getElements();
 		assertThat(elements.getElementAt(0)).isEqualTo(elements.getSelectedItem());
 	}
 
@@ -61,7 +61,7 @@ public class CollectionModelShould {
 	public void deleteElement() throws Exception {
 		elementCollectionModel.add("element");
 		elementCollectionModel.removeCurrentElement();
-		ComboBoxModel<Stringifyed<PresentationModel>> elements = elementCollectionModel.getElements();
+		ComboBoxModel<Stringifyed<Presentation>> elements = elementCollectionModel.getElements();
 		assertThat(elements.getSize()).isEqualTo(0);
 	}
 
@@ -78,7 +78,7 @@ public class CollectionModelShould {
 		elementCollectionModel.add("element 1");
 		elementCollectionModel.add("element 2");
 		elementCollectionModel.removeCurrentElement();
-		ComboBoxModel<Stringifyed<PresentationModel>> elements = elementCollectionModel.getElements();
+		ComboBoxModel<Stringifyed<Presentation>> elements = elementCollectionModel.getElements();
 		assertThat(elements.getElementAt(0).toString()).isEqualTo("element 1");
 	}
 
@@ -89,7 +89,7 @@ public class CollectionModelShould {
 		elementCollectionModel.add("element 2");
 		elementCollectionModel.selectCurrentElement(0);
 		elementCollectionModel.removeCurrentElement();
-		ComboBoxModel<Stringifyed<PresentationModel>> elements = elementCollectionModel.getElements();
+		ComboBoxModel<Stringifyed<Presentation>> elements = elementCollectionModel.getElements();
 		assertThat(elements.getElementAt(0).toString()).isEqualTo("element 2");
 	}
 
@@ -100,8 +100,8 @@ public class CollectionModelShould {
 		elementCollectionModel.add("element 3");
 		elementCollectionModel.selectCurrentElement(0);
 		elementCollectionModel.add("element 2");
-		ComboBoxModel<Stringifyed<PresentationModel>> elements = elementCollectionModel.getElements();
-		Stringifyed<PresentationModel> element = elements.getElementAt(1);
+		ComboBoxModel<Stringifyed<Presentation>> elements = elementCollectionModel.getElements();
+		Stringifyed<Presentation> element = elements.getElementAt(1);
 		assertThat(element.toString()).isEqualTo("element 2");
 	}
 
@@ -111,7 +111,7 @@ public class CollectionModelShould {
 		elementCollectionModel.removeCurrentElement();
 		elementCollectionModel.add("element");
 		elementCollectionModel.removeCurrentElement();
-		ComboBoxModel<Stringifyed<PresentationModel>> elements = elementCollectionModel.getElements();
+		ComboBoxModel<Stringifyed<Presentation>> elements = elementCollectionModel.getElements();
 		assertThat(elements.getSize()).isEqualTo(0);
 	}
 
@@ -122,7 +122,7 @@ public class CollectionModelShould {
 		elementCollectionModel.add("element 1");
 		elementCollectionModel.add("element 2");
 		elementCollectionModel.moveCurrentElementUp();
-		ComboBoxModel<Stringifyed<PresentationModel>> elements = elementCollectionModel.getElements();
+		ComboBoxModel<Stringifyed<Presentation>> elements = elementCollectionModel.getElements();
 		assertThat(elements.getElementAt(0).toString()).isEqualTo("element 0");
 		assertThat(elements.getElementAt(1).toString()).isEqualTo("element 2");
 		assertThat(elements.getElementAt(2).toString()).isEqualTo("element 1");
@@ -149,7 +149,7 @@ public class CollectionModelShould {
 		elementCollectionModel.add("element 2");
 		elementCollectionModel.selectCurrentElement(1);
 		elementCollectionModel.moveCurrentElementUp();
-		ComboBoxModel<Stringifyed<PresentationModel>> elements = elementCollectionModel.getElements();
+		ComboBoxModel<Stringifyed<Presentation>> elements = elementCollectionModel.getElements();
 		assertThat(elements.getElementAt(0).toString()).isEqualTo("element 1");
 		assertThat(elements.getElementAt(1).toString()).isEqualTo("element 0");
 		assertThat(elements.getElementAt(2).toString()).isEqualTo("element 2");
@@ -164,7 +164,7 @@ public class CollectionModelShould {
 		elementCollectionModel.add("element 2");
 		elementCollectionModel.selectCurrentElement(0);
 		elementCollectionModel.moveCurrentElementUp();
-		ComboBoxModel<Stringifyed<PresentationModel>> elements = elementCollectionModel.getElements();
+		ComboBoxModel<Stringifyed<Presentation>> elements = elementCollectionModel.getElements();
 		assertThat(elements.getElementAt(0).toString()).isEqualTo("element 0");
 		assertThat(elements.getElementAt(1).toString()).isEqualTo("element 1");
 		assertThat(elements.getElementAt(2).toString()).isEqualTo("element 2");
@@ -178,7 +178,7 @@ public class CollectionModelShould {
 		elementCollectionModel.add("element 1");
 		elementCollectionModel.add("element 2");
 		elementCollectionModel.moveCurrentElementDown();
-		ComboBoxModel<Stringifyed<PresentationModel>> elements = elementCollectionModel.getElements();
+		ComboBoxModel<Stringifyed<Presentation>> elements = elementCollectionModel.getElements();
 		assertThat(elements.getElementAt(0).toString()).isEqualTo("element 0");
 		assertThat(elements.getElementAt(1).toString()).isEqualTo("element 1");
 		assertThat(elements.getElementAt(2).toString()).isEqualTo("element 2");
@@ -191,7 +191,7 @@ public class CollectionModelShould {
 		elementCollectionModel.add("element 2");
 		elementCollectionModel.selectCurrentElement(1);
 		elementCollectionModel.moveCurrentElementDown();
-		ComboBoxModel<Stringifyed<PresentationModel>> elements = elementCollectionModel.getElements();
+		ComboBoxModel<Stringifyed<Presentation>> elements = elementCollectionModel.getElements();
 		assertThat(elements.getElementAt(0).toString()).isEqualTo("element 0");
 		assertThat(elements.getElementAt(1).toString()).isEqualTo("element 2");
 		assertThat(elements.getElementAt(2).toString()).isEqualTo("element 1");
@@ -205,7 +205,7 @@ public class CollectionModelShould {
 		elementCollectionModel.add("element 2");
 		elementCollectionModel.selectCurrentElement(0);
 		elementCollectionModel.moveCurrentElementDown();
-		ComboBoxModel<Stringifyed<PresentationModel>> elements = elementCollectionModel.getElements();
+		ComboBoxModel<Stringifyed<Presentation>> elements = elementCollectionModel.getElements();
 		assertThat(elements.getElementAt(0).toString()).isEqualTo("element 1");
 		assertThat(elements.getElementAt(1).toString()).isEqualTo("element 0");
 		assertThat(elements.getElementAt(2).toString()).isEqualTo("element 2");
@@ -220,7 +220,7 @@ public class CollectionModelShould {
 	public void changeCurrentElementIndexAfterSelectionChange() throws Exception {
 		elementCollectionModel.add("element 1");
 		elementCollectionModel.add("element 2");
-		ComboBoxModel<Stringifyed<PresentationModel>> elements = elementCollectionModel.getElements();
+		ComboBoxModel<Stringifyed<Presentation>> elements = elementCollectionModel.getElements();
 		elements.setSelectedItem(elements.getElementAt(0));
 		assertThat(elementCollectionModel.getCurrentElement().getName()).isEqualTo("element 1");
 	}

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType;
 
 public class PresentationStateModel {
-	private PresentationModel runningPresentation;
+	private Presentation runningPresentation;
 	private final ArrayList<PresentationStateChangeListener> presentationStateChangeListeners;
 	private Slide currentSlide;
 	
@@ -21,11 +21,11 @@ public class PresentationStateModel {
 		this.presentationStateChangeListeners = new ArrayList<>();
 	}
 	
-	public PresentationModel getRunningPresentation() {
+	public Presentation getRunningPresentation() {
 		return runningPresentation;
 	}
 	
-	public void changeSlide(PresentationModel newPresentation) {
+	public void changeSlide(Presentation newPresentation) {
 		final Slide newSlide;
 		if(newPresentation != null) {
 			newSlide = newPresentation.slides.getCurrentElement();

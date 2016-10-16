@@ -8,12 +8,12 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 public class PresentationEditorController {
-	private final CollectionBoxController<PresentationModel> presentationPanelController;
+	private final CollectionBoxController<Presentation> presentationPanelController;
 	private final CollectionBoxController<Slide> slidePanelController;
 	private final SlideEditorController slideEditorController;
 	private final NavigationPanelController navigationPanelController;
-	private CollectionModel<PresentationModel> presentations;
-	private CollectionChangeListener<PresentationModel> presentationChangeListener;
+	private CollectionModel<Presentation> presentations;
+	private CollectionChangeListener<Presentation> presentationChangeListener;
 
 	public PresentationEditorController(PresentationStateModel presentationStateModel) {
 		presentationPanelController = new CollectionBoxController<>("New presentation");
@@ -30,15 +30,15 @@ public class PresentationEditorController {
 				slideEditorController.setSlide(slide);
 			}
 		};
-		presentationChangeListener = new CollectionChangeListener<PresentationModel>() {
+		presentationChangeListener = new CollectionChangeListener<Presentation>() {
 			
 			private CollectionModel<Slide> slides;
 
 			@Override
-			public void onCollectionChange(CollectionChangedEvent<PresentationModel> event) {
+			public void onCollectionChange(CollectionChangedEvent<Presentation> event) {
 				if(slides != null)
 					slides.removeSelectionChangeListener(slideChangeListener);
-				PresentationModel presentationModel = event.collection.getCurrentElement();
+				Presentation presentationModel = event.collection.getCurrentElement();
 				if(presentationModel != null) {
 					slides = presentationModel.slides;
 					slides.addSelectionChangeListener(slideChangeListener);
@@ -53,7 +53,7 @@ public class PresentationEditorController {
 		};
 	}
 
-	public void setPresentations(CollectionModel<PresentationModel> newPresentations) {
+	public void setPresentations(CollectionModel<Presentation> newPresentations) {
 		if(presentations != null)
 			presentations.removeSelectionChangeListener(presentationChangeListener);
 		presentations = newPresentations;

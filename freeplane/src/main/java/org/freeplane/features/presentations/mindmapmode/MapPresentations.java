@@ -10,7 +10,7 @@ public class MapPresentations implements IExtension{
 		MapExtensions.registerMapExtension(MapPresentations.class);
 	}
 	
-	public final CollectionModel<PresentationModel> presentations = new CollectionModel<>(PresentationModel.class);
+	public final CollectionModel<Presentation> presentations = new CollectionModel<>(Presentation.class);
 	
 	static public MapPresentations getPresentations(MapModel map) {
 		final NodeModel rootNode = map.getRootNode();

@@ -19,9 +19,9 @@ class NavigationPanelController {
 	private CollectionModel<Slide> slides;
 	private final CollectionChangeListener<Slide> slideChangeListener;
 	private PresentationStateModel presentationStateModel;
-	private PresentationModel presentationModel;
+	private Presentation presentationModel;
 
-	public void setPresentationModel(PresentationModel presentationModel) {
+	public void setPresentationModel(Presentation presentationModel) {
 		this.presentationModel = presentationModel;
 		if(slides != null)
 			slides.removeSelectionChangeListener(slideChangeListener);
