@@ -1,6 +1,8 @@
 package org.freeplane.features.presentations.mindmapmode;
 
-import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.*;
+import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.COLLECTION_SIZE_CHANGED;
+import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.SELECTION_CHANGED;
+import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.SELECTION_INDEX_CHANGED;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -61,7 +63,7 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 		}
 	}
 	
-	private void add(T element) {
+	public void add(T element) {
 		final int newElementIndex = currentIndex + 1;
 		elements.insertElementAt(new Stringifyed<>(element), newElementIndex);
 		elements.setSelectedItem(element);
@@ -140,4 +142,7 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 		return currentIndex;
 	}
 
+	public T getElement(int i) {
+		return elements.getElementAt(i).element;
+	}
 }

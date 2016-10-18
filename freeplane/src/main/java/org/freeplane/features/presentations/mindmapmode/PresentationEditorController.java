@@ -59,8 +59,14 @@ public class PresentationEditorController {
 			presentations.removeSelectionChangeListener(presentationChangeListener);
 		presentations = newPresentations;
 		presentationPanelController.setCollection(presentations);
-		if(presentations != null)
+		if (presentations != null) {
+			Presentation presentation = presentations.getCurrentElement();
+			if (presentation != null) {
+				slidePanelController.setCollection(presentation.slides);
+				slideEditorController.setSlide(presentation.slides.getCurrentElement());
+			}
 			presentations.addSelectionChangeListener(presentationChangeListener);
+		}
 	}
 
 	public Component createPanel() {

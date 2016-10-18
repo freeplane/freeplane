@@ -22,10 +22,12 @@ public class PresentationController implements IExtension{
 		final PresentationController presentationController = new PresentationController();
 		presentationController.registerActions(modeController);
 		presentationController.addMapSelectionListener(modeController);
+		new PresentationBuilder().register(modeController.getMapController());
 		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
 		tabs.add("Presentations", presentationController.createPanel());
 
 	}
+
 	private PresentationController() {
 		presentationState = new PresentationState();
 		presentationEditorController = new PresentationEditorController(presentationState);
