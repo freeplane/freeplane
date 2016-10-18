@@ -82,6 +82,13 @@ public class PresentationState {
 		return slides.getSize() != 0 && slides.getCurrentElementIndex() < slides.getSize() - 1;
 	}
 
+	public boolean canShowCurrentSlide() {
+		if (currentPresentation == null)
+			return false;
+		NamedElementCollection<Slide> slides = currentPresentation.slides;
+		return slides.getCurrentElement() != null;
+	}
+
 	public boolean canShowPreviousSlide() {
 		if (currentPresentation == null)
 			return false;
