@@ -13,10 +13,10 @@ public class PresentationStateChangeEvent {
 	public final PresentationState presentationState;
 	public final EventType eventType;
 
-	public PresentationStateChangeEvent(EventType eventType, PresentationState presentationStateModel) {
+	public PresentationStateChangeEvent(EventType eventType, PresentationState presentationState) {
 		super();
 		this.eventType = eventType;
-		this.presentationState = presentationStateModel;
+		this.presentationState = presentationState;
 	}
 
 }

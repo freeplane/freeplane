@@ -18,15 +18,13 @@ class NavigationPanelController {
 	
 	private NamedElementCollection<Slide> slides;
 	private final CollectionChangeListener<Slide> slideChangeListener;
-	private PresentationState presentationStateModel;
-	private Presentation presentationModel;
+	private PresentationState presentationState;
 
-	public void setPresentationModel(Presentation presentationModel) {
-		this.presentationModel = presentationModel;
+	public void setPresentation(Presentation presentation) {
 		if(slides != null)
 			slides.removeSelectionChangeListener(slideChangeListener);
-		if(presentationModel != null) {
-			this.slides = presentationModel.slides;
+		if(presentation != null) {
+			this.slides = presentation.slides;
 			updateUi();
 			slides.addSelectionChangeListener(slideChangeListener);
 		} else
@@ -34,13 +32,13 @@ class NavigationPanelController {
 	}
 
 	private void updateUi() {
-		btnPrevious.setEnabled(slides.getCurrentElementIndex() > 0);
+		btnPrevious.setEnabled(presentationState.canShowPreviousSlide());
 		tglbtnCurrent.setEnabled(slides.getSize() != 0);
-		btnNext.setEnabled(slides.getSize() != 0 && slides.getCurrentElementIndex() < slides.getSize() - 1);
+		btnNext.setEnabled(presentationState.canShowNextSlide());
 	}
 
-	NavigationPanelController(final PresentationState presentationStateModel){
-		this.presentationStateModel = presentationStateModel;
+	NavigationPanelController(final PresentationState presentationState){
+		this.presentationState = presentationState;
 		btnPrevious = createPreviousButton();
 		tglbtnCurrent = createCurrentButton();
 		btnNext = createNextButton();
@@ -48,16 +46,16 @@ class NavigationPanelController {
 		PresentationStateChangeListener presentationStateListener = new PresentationStateChangeListener() {
 			@Override
 			public void onPresentationStateChange(PresentationStateChangeEvent presentationStateChangeEvent) {
-				tglbtnCurrent.setSelected(presentationStateChangeEvent.presentationState.getRunningPresentation() != null);
+				tglbtnCurrent.setSelected(presentationStateChangeEvent.presentationState.isPresentationRunning());
 				updateUi();
 			}
 		};
-		presentationStateModel.addPresentationStateListener(presentationStateListener);
+		presentationState.addPresentationStateListener(presentationStateListener);
 		slideChangeListener = new CollectionChangeListener<Slide>() {
 			
 			@Override
 			public void onCollectionChange(CollectionChangedEvent<Slide> event) {
-				presentationStateModel.changeSlide(null);
+				presentationState.stopPresentation();
 				updateUi();
 			}
 		};
@@ -75,9 +73,7 @@ class NavigationPanelController {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final int currentElementIndex = slides.getCurrentElementIndex();
-				slides.selectCurrentElement(currentElementIndex + 1);
-				presentationStateModel.changeSlide(presentationModel);
+				presentationState.showNextSlide();
 			}
 		});
 		return btnNext;
@@ -89,10 +85,10 @@ class NavigationPanelController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(presentationStateModel.getRunningPresentation() == null)
-					presentationStateModel.changeSlide(presentationModel);
+				if (presentationState.isPresentationRunning())
+					presentationState.stopPresentation();
 				else
-					presentationStateModel.changeSlide(null);
+					presentationState.showSlide();
 			}
 		});
 		return btnCurrent;
@@ -104,9 +100,7 @@ class NavigationPanelController {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final int currentElementIndex = slides.getCurrentElementIndex();
-				slides.selectCurrentElement(currentElementIndex - 1);
-				presentationStateModel.changeSlide(presentationModel);
+				presentationState.showPreviousSlide();
 			}
 		});
 		return btnPrevious;

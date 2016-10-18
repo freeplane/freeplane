@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType;
 
 public class PresentationState {
-	private Presentation runningPresentation;
+	private Presentation currentPresentation;
 	private final ArrayList<PresentationStateChangeListener> presentationStateChangeListeners;
 	private Slide currentSlide;
 	
@@ -17,29 +17,31 @@ public class PresentationState {
 
 	public PresentationState() {
 		super();
-		this.runningPresentation = null;
+		this.currentPresentation = null;
 		this.presentationStateChangeListeners = new ArrayList<>();
 	}
 	
-	public Presentation getRunningPresentation() {
-		return runningPresentation;
+	public void changePresentation(Presentation newPresentation) {
+		stopPresentation();
+		currentPresentation = newPresentation;
 	}
-	
-	public void changeSlide(Presentation newPresentation) {
-		final Slide newSlide;
-		if(newPresentation != null) {
-			newSlide = newPresentation.slides.getCurrentElement();
-		} else
-			newSlide = null;
-		if(this.currentSlide != newSlide) {
-			this.runningPresentation = newPresentation;
+
+	public void showSlide() {
+		Slide newSlide = currentPresentation.slides.getCurrentElement();
+		if (currentSlide != newSlide) {
 			currentSlide = newSlide;
 			firePresentationStateChangedEvent(SLIDE_CHANGED);
 		}
-		if (newSlide != null)
-			newSlide.apply();
-		else
+		if (currentSlide != null)
+			currentSlide.apply();
+	}
+
+	public void stopPresentation() {
+		if (currentSlide != null) {
+			currentSlide = null;
+			firePresentationStateChangedEvent(SLIDE_CHANGED);
 			Slide.ALL_NODES.apply();
+		}
 	}
 	
 	public void addPresentationStateListener(PresentationStateChangeListener presentationStateChangeListener) {
@@ -55,4 +57,35 @@ public class PresentationState {
 			presentationStateChangeListener.onPresentationStateChange(eventType.of(this));
 	}
 
+	public boolean isPresentationRunning() {
+		return currentSlide != null;
+	}
+
+	public void showNextSlide() {
+		NamedElementCollection<Slide> slides = currentPresentation.slides;
+		final int currentElementIndex = slides.getCurrentElementIndex();
+		slides.selectCurrentElement(currentElementIndex + 1);
+		showSlide();
+	}
+
+	public void showPreviousSlide() {
+		NamedElementCollection<Slide> slides = currentPresentation.slides;
+		final int currentElementIndex = slides.getCurrentElementIndex();
+		slides.selectCurrentElement(currentElementIndex - 1);
+		showSlide();
+	}
+
+	public boolean canShowNextSlide() {
+		if (currentPresentation == null)
+			return false;
+		NamedElementCollection<Slide> slides = currentPresentation.slides;
+		return slides.getSize() != 0 && slides.getCurrentElementIndex() < slides.getSize() - 1;
+	}
+
+	public boolean canShowPreviousSlide() {
+		if (currentPresentation == null)
+			return false;
+		NamedElementCollection<Slide> slides = currentPresentation.slides;
+		return slides.getCurrentElementIndex() > 0;
+	}
 }

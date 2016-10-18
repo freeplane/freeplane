@@ -15,11 +15,11 @@ public class PresentationEditorController {
 	private NamedElementCollection<Presentation> presentations;
 	private CollectionChangeListener<Presentation> presentationChangeListener;
 
-	public PresentationEditorController(PresentationState presentationStateModel) {
+	public PresentationEditorController(final PresentationState presentationState) {
 		presentationPanelController = new CollectionBoxController<>("New presentation");
 		slidePanelController = new CollectionBoxController<Slide>("New slide");
 		slideEditorController = new SlideEditorController();
-		navigationPanelController = new NavigationPanelController(presentationStateModel);
+		navigationPanelController = new NavigationPanelController(presentationState);
 		final CollectionChangeListener<Slide> slideChangeListener = new CollectionChangeListener<Slide>() {
 			
 			private Slide slide;
@@ -38,17 +38,18 @@ public class PresentationEditorController {
 			public void onCollectionChange(CollectionChangedEvent<Presentation> event) {
 				if(slides != null)
 					slides.removeSelectionChangeListener(slideChangeListener);
-				Presentation presentationModel = event.collection.getCurrentElement();
-				if(presentationModel != null) {
-					slides = presentationModel.slides;
+				Presentation presentation = event.collection.getCurrentElement();
+				if(presentation != null) {
+					slides = presentation.slides;
 					slides.addSelectionChangeListener(slideChangeListener);
 					slideEditorController.setSlide(slides.getCurrentElement());
 				} else {
 					slides = null;
 					slideEditorController.setSlide(null);
 				}
+				presentationState.changePresentation(presentation);
 				slidePanelController.setCollection(slides);
-				navigationPanelController.setPresentationModel(presentationModel);
+				navigationPanelController.setPresentation(presentation);
 			}
 		};
 	}
