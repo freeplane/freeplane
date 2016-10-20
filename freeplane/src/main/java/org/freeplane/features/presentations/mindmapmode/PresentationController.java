@@ -141,6 +141,7 @@ public class PresentationController implements IExtension{
 	}
 }
 
+@SuppressWarnings("serial")
 @SelectableAction
 class ShowCurrentSlideAction extends AFreeplaneAction {
 	private PresentationState presentationState;
@@ -164,6 +165,7 @@ class ShowCurrentSlideAction extends AFreeplaneAction {
 	}
 }
 
+@SuppressWarnings("serial")
 class ShowNextSlideAction extends AFreeplaneAction {
 	private final PresentationState presentationState;
 
@@ -190,6 +192,7 @@ class ShowNextSlideAction extends AFreeplaneAction {
 
 }
 
+@SuppressWarnings("serial")
 class ShowPreviousSlideAction extends AFreeplaneAction {
 	private PresentationState presentationState;
 
