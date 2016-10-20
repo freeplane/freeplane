@@ -15,17 +15,13 @@ import javax.swing.event.ListDataListener;
 public class NamedElementCollection<T extends NamedElement<T>> {
 	final private DefaultComboBoxModel<Stringifyed<T>> elements;
 	private int currentIndex;
-	private Constructor<T> constructor;
 	private ArrayList<CollectionChangeListener<T>> collectionChangeListeners;
 	private boolean moveInProgress;
+	private NamedElementFactory<T> factory;
 
-	public NamedElementCollection(Class<T> elementClass) {
+	public NamedElementCollection(NamedElementFactory<T> factory) {
 		super();
-		try {
-			constructor = elementClass.getConstructor(String.class);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		this.factory = factory;
 		this.elements =  new DefaultComboBoxModel<>();
 		elements.addListDataListener(new ListDataListener() {
 
@@ -54,13 +50,9 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 	}
 
 	public void add(String name) {
-		try {
 			final T currentElement = getCurrentElement();
-			final T newInstance = currentElement != null ? currentElement.saveAs(name) : constructor.newInstance(name);
+			final T newInstance = currentElement != null ? factory.create(currentElement, name) : factory.create(name);
 			add(newInstance);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 	
 	public void add(T element) {

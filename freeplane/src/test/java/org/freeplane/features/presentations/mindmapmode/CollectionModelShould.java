@@ -26,7 +26,32 @@ public class CollectionModelShould {
 
 	@Before 
 	public void setup() {
-		elementCollectionModel = new NamedElementCollection<Presentation>(Presentation.class);
+		final NamedElementFactory<Slide> slideFactory = new NamedElementFactory<Slide>(){
+
+			@Override
+			public Slide create(String name) {
+				return new Slide(name);
+			}
+
+			@Override
+			public Slide create(Slide prototype, String newName) {
+				return prototype.saveAs(newName);
+			}
+			
+		};
+		final NamedElementFactory<Presentation> presentationFactory = new NamedElementFactory<Presentation>() {
+
+			@Override
+			public Presentation create(String name) {
+				return new Presentation(name, slideFactory);
+			}
+
+			@Override
+			public Presentation create(Presentation prototype, String newName) {
+				return prototype.saveAs(newName);
+			}
+		};
+		elementCollectionModel = new NamedElementCollection<Presentation>(presentationFactory);
 	}
 	
 	@Test

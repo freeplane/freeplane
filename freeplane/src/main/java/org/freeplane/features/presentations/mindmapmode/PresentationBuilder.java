@@ -50,7 +50,7 @@ class PresentationBuilder {
 	static final String PRESENTATION = "presentation";
 	static final String NODE_ID = "nodeId";
 
-	void register(MapController mapController) {
+	void register(MapController mapController, final PresentationController presentationController) {
 		mapController.getReadManager().addElementHandler("hook", new IElementDOMHandler() {
 			private final ConditionFactory conditionFactory = FilterController.getCurrentFilterController()
 			    .getConditionFactory();
@@ -68,7 +68,10 @@ class PresentationBuilder {
 
 			@Override
 			public void endElement(Object parent, String tag, Object element, XMLElement dom) {
-				MapPresentations mapPresentationExtension = new MapPresentations();
+				final NodeModel node = (NodeModel) parent;
+				final MapModel map = node.getMap();
+				final NamedElementFactory<Slide> slideFactory = presentationController.getSlideFactory(map);
+				MapPresentations mapPresentationExtension = presentationController.getPresentations(map);
 				NamedElementCollection<Presentation> presentations = mapPresentationExtension.presentations;
 				Enumeration<XMLElement> xmlPresentations = dom.enumerateChildren();
 				while (xmlPresentations.hasMoreElements()) {
@@ -78,7 +81,9 @@ class PresentationBuilder {
 					NamedElementCollection<Slide> slides = presentations.getCurrentElement().slides;
 					while (xmlSlides.hasMoreElements()) {
 						XMLElement xmlSlide = xmlSlides.nextElement();
-						Slide slide = loadSlide(xmlSlide);
+						final String name = xmlSlide.getAttribute("NAME", "noname");
+						Slide s = slideFactory.create(name);
+						Slide slide = applySlideAttributes(xmlSlide, s);
 						slides.add(slide);
 					}
 					if (slides.getSize() > 1)
@@ -86,11 +91,10 @@ class PresentationBuilder {
 				}
 				if (presentations.getSize() > 1)
 					presentations.selectCurrentElement(0);
-				((NodeModel) parent).addExtension(mapPresentationExtension);
+				node.addExtension(mapPresentationExtension);
 			}
 
-			private Slide loadSlide(XMLElement xmlSlide) {
-				Slide s = new Slide (xmlSlide.getAttribute("NAME", "noname"));
+			Slide applySlideAttributes(XMLElement xmlSlide, Slide s) {
 				s.setShowsAncestors(toBoolean(xmlSlide, SHOWS_ANCESTORS));
 				s.setShowsDescendants(toBoolean(xmlSlide, SHOWS_DESCENDANTS));
 				s.setShowsOnlySpecificNodes(toBoolean(xmlSlide, SHOWS_ONLY_SPECIFIC_NODES));

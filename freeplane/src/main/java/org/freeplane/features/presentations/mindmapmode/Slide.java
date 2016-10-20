@@ -47,7 +47,7 @@ public class Slide implements NamedElement<Slide>{
 		this(name, new LinkedHashSet<String>(), false, false, 1f, false, false, false, null);
 	}
 	
-	public Slide(String name, Set<String> selectedNodeIds, boolean centerSelectedNode,
+	private Slide(String name, Set<String> selectedNodeIds, boolean centerSelectedNode,
 	                  boolean changeZoom,
 			float zoom, boolean showOnlySpecificNodes, boolean showAncestors, boolean showDescendants,
 			ASelectableCondition filterCondition) {
@@ -165,11 +165,11 @@ public class Slide implements NamedElement<Slide>{
 		}
 	}
 
-	public void addSelectionChangeListener(SlideChangeListener slideChangeListener) {
+	public void addSlideChangeListener(SlideChangeListener slideChangeListener) {
 		this.slideChangeListeners.add(slideChangeListener);
 	}
 
-	public void removeSelectionChangeListener(SlideChangeListener slideChangeListener) {
+	public void removeSlideChangeListener(SlideChangeListener slideChangeListener) {
 		this.slideChangeListeners.remove(slideChangeListener);
 	}
 	

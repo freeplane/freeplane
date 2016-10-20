@@ -246,13 +246,13 @@ class SlideEditorController{
 
 	public void setSlide(Slide newSlide) {
 		if(slide != null)
-			slide.removeSelectionChangeListener(slideChangeListener);
+			slide.removeSlideChangeListener(slideChangeListener);
 		this.slide = newSlide;
 		if(newSlide != null){
 			for(JComponent c : allButtons)
 				c.setEnabled(true);
 			updateUI();
-			slide.addSelectionChangeListener(slideChangeListener);
+			slide.addSlideChangeListener(slideChangeListener);
 		}
 		else{
 			disableUI();

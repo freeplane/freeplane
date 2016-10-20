@@ -11,35 +11,39 @@ import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType;
 
 public class PresentationController implements IExtension{
 	private final PresentationState presentationState;
 	private final PresentationEditorController presentationEditorController;
+	private ModeController modeController;
 	
 	public static void install(final ModeController modeController) {
-		final PresentationController presentationController = new PresentationController();
-		presentationController.registerActions(modeController);
-		presentationController.addMapSelectionListener(modeController);
-		new PresentationBuilder().register(modeController.getMapController());
+		final PresentationController presentationController = new PresentationController(modeController);
+		presentationController.registerActions();
+		presentationController.addMapSelectionListener();
+		new PresentationBuilder().register(modeController.getMapController(), presentationController);
 		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
 		tabs.add("Presentations", presentationController.createPanel());
 
 	}
 
-	private PresentationController() {
+	private PresentationController(ModeController modeController) {
+		this.modeController = modeController;
 		presentationState = new PresentationState();
 		presentationEditorController = new PresentationEditorController(presentationState);
 	}
 
-	private void registerActions(ModeController modeController) {
+	private void registerActions() {
 		modeController.addAction(new ShowCurrentSlideAction(presentationState));
 		modeController.addAction(new ShowPreviousSlideAction(presentationState));
 		modeController.addAction(new ShowNextSlideAction(presentationState));
 	}
 	
-	private void addMapSelectionListener(final ModeController modeController) {
+	private void addMapSelectionListener() {
 		IMapSelectionListener mapSelectionListener = new IMapSelectionListener() {
 			
 			@Override
@@ -49,14 +53,90 @@ public class PresentationController implements IExtension{
 			@Override
 			public void afterMapChange(MapModel oldMap, MapModel newMap) {
 				if(newMap != null && Controller.getCurrentModeController() == modeController)
-					presentationEditorController.setPresentations(MapPresentations.getPresentations(newMap).presentations);
+					presentationEditorController.setPresentations(getPresentations(newMap).presentations);
 				else
 					presentationEditorController.setPresentations(null);
 			}
+
 		};
 		modeController.getController().getMapViewManager().addMapSelectionListener(mapSelectionListener);
 	}
-	public Component createPanel() {
+	public MapPresentations getPresentations(final MapModel map) {
+		final NodeModel rootNode = map.getRootNode();
+		MapPresentations mapPresentations = rootNode.getExtension(MapPresentations.class);
+		if(mapPresentations == null) {
+			mapPresentations = new MapPresentations(getPresentationFactory(map));
+			final CollectionChangeListener<Presentation> presentationCollectionChangeListener = new CollectionChangeListener<Presentation>() {
+				
+				@Override
+				public void onCollectionChange(CollectionChangedEvent<Presentation> event) {
+					if(event.eventType == EventType.COLLECTION_SIZE_CHANGED)
+						modeController.getMapController().setSaved(map, false);
+				}
+			};
+			mapPresentations.presentations.addCollectionChangeListener(presentationCollectionChangeListener);
+			rootNode.addExtension(mapPresentations);
+		}
+		return mapPresentations;
+	}
+	
+	NamedElementFactory<Presentation> getPresentationFactory(final MapModel map) {
+		final NamedElementFactory<Slide> slideFactory = getSlideFactory(map);
+		
+		final CollectionChangeListener<Slide> slideCollectionChangeListener = new CollectionChangeListener<Slide>() {
+			
+			@Override
+			public void onCollectionChange(CollectionChangedEvent<Slide> event) {
+				if(event.eventType == EventType.COLLECTION_SIZE_CHANGED)
+					modeController.getMapController().setSaved(map, false);
+			}
+		};
+		final NamedElementFactory<Presentation> presentationFactory = new NamedElementFactory<Presentation>() {
+			
+			@Override
+			public Presentation create(Presentation prototype, String newName) {
+				final Presentation presentation = prototype.saveAs(newName);
+				presentation.slides.addCollectionChangeListener(slideCollectionChangeListener);
+				return presentation;
+			}
+			
+			@Override
+			public Presentation create(String name) {
+				final Presentation presentation = new Presentation(name, slideFactory);
+				presentation.slides.addCollectionChangeListener(slideCollectionChangeListener);
+				return presentation;
+			}
+		};
+		return presentationFactory;
+	}
+
+	NamedElementFactory<Slide> getSlideFactory(final MapModel map) {
+		final NamedElementFactory<Slide> slideFactory = new NamedElementFactory<Slide>() {
+			final SlideChangeListener slideChangeListener = new SlideChangeListener() {
+				@Override
+				public void onSlideModelChange(SlideChangeEvent changeEvent) {
+					modeController.getMapController().setSaved(map, false);
+				}
+			};
+			
+			@Override
+			public Slide create(Slide prototype, String newName) {
+				final Slide slide = prototype.saveAs(newName);
+				slide.addSlideChangeListener(slideChangeListener);
+				return slide;
+			}
+			
+			@Override
+			public Slide create(String name) {
+				final Slide slide = new Slide(name);
+				slide.addSlideChangeListener(slideChangeListener);
+				return slide;
+			}
+		};
+		return slideFactory;
+	}
+
+	private Component createPanel() {
 		return new JAutoScrollBarPane(presentationEditorController.createPanel());
 	}
 }

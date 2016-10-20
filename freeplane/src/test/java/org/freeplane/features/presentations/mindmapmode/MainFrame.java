@@ -8,7 +8,32 @@ public class MainFrame {
 		final PresentationState presentationStateModel = new PresentationState();
 		final PresentationEditorController presentationEditorController = new PresentationEditorController(presentationStateModel);
 		frame.getContentPane().add(presentationEditorController.createPanel());
-		presentationEditorController.setPresentations(new NamedElementCollection<>(Presentation.class));
+		final NamedElementFactory<Slide> slideFactory = new NamedElementFactory<Slide>(){
+
+			@Override
+			public Slide create(String name) {
+				return new Slide(name);
+			}
+
+			@Override
+			public Slide create(Slide prototype, String newName) {
+				return prototype.saveAs(newName);
+			}
+			
+		};
+		final NamedElementFactory<Presentation> presentationFactory = new NamedElementFactory<Presentation>() {
+
+			@Override
+			public Presentation create(String name) {
+				return new Presentation(name, slideFactory);
+			}
+
+			@Override
+			public Presentation create(Presentation prototype, String newName) {
+				return prototype.saveAs(newName);
+			}
+		};
+		presentationEditorController.setPresentations(new NamedElementCollection<>(presentationFactory));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.show();
