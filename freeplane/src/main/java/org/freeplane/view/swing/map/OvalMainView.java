@@ -47,7 +47,8 @@ class OvalMainView extends VariableInsetsMainView {
 
 	@Override
 	protected void paintNodeShape(final Graphics2D g) {
-		g.drawOval(0, 0, getWidth() - 1, getHeight() - 1);
+		final int zoomedEdgeWidth = (int) getPaintedBorderWidth();
+		g.drawOval(zoomedEdgeWidth / 2, zoomedEdgeWidth / 2, getWidth() - zoomedEdgeWidth, getHeight() - zoomedEdgeWidth);
 	}
 
 	@Override
@@ -70,8 +71,8 @@ class OvalMainView extends VariableInsetsMainView {
 		}
 		if(getShapeConfiguration().isUniform()){
 			final Dimension prefSize = getPreferredRectangleSizeWithoutMargin(getMaximumWidth());
-			double w = prefSize.width + getZoom() * getMinimumHorizontalInset();
-			double h = prefSize.height + getZoom() * getMinimumVerticalInset();
+			double w = prefSize.width + getMinimumHorizontalInset();
+			double h = prefSize.height + getMinimumVerticalInset();
 			int diameter = (int)(Math.ceil(Math.sqrt(w * w + h * h)));
 			prefSize.width = prefSize.height = limitWidth(diameter);
 			return prefSize;

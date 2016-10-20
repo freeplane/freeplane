@@ -95,6 +95,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
+import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
@@ -109,9 +110,6 @@ import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
-import org.freeplane.features.ui.IMapViewChangeListener;
-import org.freeplane.features.ui.IMapViewManager;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.layout.FormLayout;
@@ -328,6 +326,60 @@ public class StyleEditorPanel extends JPanel {
 			styleController.setMinNodeWidth(node, enabled ? mMinNodeWidth.getQuantifiedValue(): null);
 		}
 	}
+
+
+	private class BorderWidthMatchesEdgeWidthListener extends ChangeListener {
+		public BorderWidthMatchesEdgeWidthListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+			final MNodeStyleController styleController = (MNodeStyleController) Controller
+			.getCurrentModeController().getExtension(NodeStyleController.class);
+			styleController.setBorderWidthMatchesEdgeWidth(node, enabled ? mBorderWidthMatchesEdgeWidth.getBooleanValue(): null);
+		}
+	}
+
+	private class BorderWidthListener extends ChangeListener {
+		public BorderWidthListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+			final MNodeStyleController styleController = (MNodeStyleController) Controller
+			.getCurrentModeController().getExtension(NodeStyleController.class);
+			styleController.setBorderWidth(node, enabled ? mBorderWidth.getQuantifiedValue(): null);
+		}
+	}
+	
+	private class BorderColorMatchesEdgeColorListener extends ChangeListener {
+		public BorderColorMatchesEdgeColorListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+			final MNodeStyleController styleController = (MNodeStyleController) Controller
+			.getCurrentModeController().getExtension(NodeStyleController.class);
+			styleController.setBorderColorMatchesEdgeColor(node, enabled ? mBorderColorMatchesEdgeColor.getBooleanValue(): null);
+		}
+	}
+
+	private class BorderColorListener extends ChangeListener {
+		public BorderColorListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+			final MNodeStyleController styleController = (MNodeStyleController) Controller
+			.getCurrentModeController().getExtension(NodeStyleController.class);
+			styleController.setBorderColor(node, enabled ? mBorderColor.getColorValue(): null);
+		}
+	}
+	
 	private class ChildDistanceChangeListener extends ChangeListener {
 		public ChildDistanceChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -496,6 +548,11 @@ public class StyleEditorPanel extends JPanel {
 	private static final String SHAPE_HORIZONTAL_MARGIN = "shape_horizontal_margin";
 	private static final String SHAPE_VERTICAL_MARGIN = "shape_vertical_margin";
 	private static final String UNIFORM_SHAPE = "uniform_shape";
+	private static final String BORDER_WIDTH_MATCHES_EDGE_WIDTH = "border_width_matches_edge_width";
+	private static final String BORDER_WIDTH = "border_width";
+	private static final String BORDER_COLOR_MATCHES_EDGE_COLOR = "border_color_matches_edge_color";
+	private static final String BORDER_COLOR = "border_color";
+	
 	
 	
 	private  static <U extends Enum<U>> String[] enumStrings(Class<U> enumerationClass, int length) {
@@ -512,53 +569,81 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private boolean internalChange;
+	private List<IPropertyControl> mControls;
+	
+	private BooleanProperty mSetCloud;
 	private ColorProperty mCloudColor;
 	private ComboProperty mCloudShape;
-	private List<IPropertyControl> mControls;
+
+	private BooleanProperty mSetEdgeColor;
 	private ColorProperty mEdgeColor;
+
+	private BooleanProperty mSetEdgeStyle;
 	private ComboProperty mEdgeStyle;
+	
+	private BooleanProperty mSetEdgeWidth;
 	private NumberProperty mEdgeWidth;
-// 	private final ModeController mMindMapController;
+
+	private BooleanProperty mSetNodeBackgroundColor;
 	private ColorProperty mNodeBackgroundColor;
+
+	private BooleanProperty mSetNodeColor;
 	private ColorProperty mNodeColor;
+
+	private BooleanProperty mSetNodeFontBold;
 	private BooleanProperty mNodeFontBold;
+
+	private BooleanProperty mSetNodeFontItalic;
 	private BooleanProperty mNodeFontItalic;
+
+	private BooleanProperty mSetNodeFontHyperlink;
 	private BooleanProperty mNodeFontHyperlink;
+
+	private BooleanProperty mSetNodeFontName;
 	private FontProperty mNodeFontName;
+
+	private BooleanProperty mSetNodeFontSize;
 	private ComboProperty mNodeFontSize;
+
+	private BooleanProperty mSetNodeNumbering;
 	private BooleanProperty mNodeNumbering;
+
+	private BooleanProperty mSetNodeShape;
 	private ComboProperty mNodeShape;
+	
+	private BooleanProperty mSetBorderWidthMatchesEdgeWidth;
+	private BooleanProperty mBorderWidthMatchesEdgeWidth;
+	
+	private BooleanProperty mSetBorderWidth;
+	private QuantityProperty<LengthUnits> mBorderWidth;
+
+	private BooleanProperty mSetBorderColorMatchesEdgeColor;
+	private BooleanProperty mBorderColorMatchesEdgeColor;
+	
+	private BooleanProperty mSetBorderColor;
+	private ColorProperty mBorderColor;
+
 	private QuantityProperty<LengthUnits> mShapeHorizontalMargin;
 	private QuantityProperty<LengthUnits> mShapeVerticalMargin;
 	private BooleanProperty mUniformShape;
+
+	private BooleanProperty mSetNodeFormat;
 	private EditablePatternComboProperty mNodeFormat;
+	
+	private BooleanProperty mSetMaxNodeWidth;
 	private QuantityProperty<LengthUnits> mMaxNodeWidth;
+
+	private BooleanProperty mSetMinNodeWidth;
 	private QuantityProperty<LengthUnits> mMinNodeWidth;
+
+	private BooleanProperty mSetChildDistance;
 	private QuantityProperty<LengthUnits> mChildDistance;
+
+	private BooleanProperty mSetNodeTextAlignment;
 	private ComboProperty mNodeTextAlignment;
 
 	
-	private BooleanProperty mSetCloud;
-	private BooleanProperty mSetEdgeColor;
-	private BooleanProperty mSetEdgeStyle;
-	private BooleanProperty mSetEdgeWidth;
-	private BooleanProperty mSetNodeBackgroundColor;
-	private BooleanProperty mSetNodeColor;
-	private BooleanProperty mSetNodeFontBold;
-	private BooleanProperty mSetNodeFontItalic;
-	private BooleanProperty mSetNodeFontHyperlink;
-	private BooleanProperty mSetNodeFontName;
-	private BooleanProperty mSetNodeFontSize;
-	private BooleanProperty mSetNodeNumbering;
-	private BooleanProperty mSetNodeShape;
-	private BooleanProperty mSetNodeFormat;
 	private BooleanProperty mSetStyle;
-	private BooleanProperty mSetMaxNodeWidth;
-	private BooleanProperty mSetMinNodeWidth;
-	private BooleanProperty mSetChildDistance;
-	private BooleanProperty mSetNodeTextAlignment;
-	
-	
 	private final boolean addStyleBox;
 	private final MUIFactory uiFactory;
 	private final ModeController modeController;
@@ -697,6 +782,46 @@ public class StyleEditorPanel extends JPanel {
 		mMinNodeWidth.addPropertyChangeListener(listener);
 	}
 
+	private void addBorderWidthControl(final List<IPropertyControl> controls) {
+		mSetBorderWidth = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetBorderWidth);
+		mBorderWidth = new QuantityProperty<LengthUnits>(StyleEditorPanel.BORDER_WIDTH, 0, 100000, 0.1, LengthUnits.px);
+		controls.add(mBorderWidth);
+		final BorderWidthListener listener = new BorderWidthListener(mSetBorderWidth, mBorderWidth);
+		mSetBorderWidth.addPropertyChangeListener(listener);
+		mBorderWidth.addPropertyChangeListener(listener);
+	}
+	
+	private void addBorderWidthMatchesEdgeWidthControl(final List<IPropertyControl> controls) {
+		mSetBorderWidthMatchesEdgeWidth = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetBorderWidthMatchesEdgeWidth);
+		mBorderWidthMatchesEdgeWidth = new BooleanProperty(StyleEditorPanel.BORDER_WIDTH_MATCHES_EDGE_WIDTH);
+		controls.add(mBorderWidthMatchesEdgeWidth);
+		final BorderWidthMatchesEdgeWidthListener listener = new BorderWidthMatchesEdgeWidthListener(mSetBorderWidthMatchesEdgeWidth, mBorderWidthMatchesEdgeWidth);
+		mSetBorderWidthMatchesEdgeWidth.addPropertyChangeListener(listener);
+		mBorderWidthMatchesEdgeWidth.addPropertyChangeListener(listener);
+	}
+
+	private void addBorderColorControl(final List<IPropertyControl> controls) {
+		mSetBorderColor = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetBorderColor);
+		mBorderColor = new ColorProperty(StyleEditorPanel.BORDER_COLOR, ColorUtils.colorToString(EdgeController.STANDARD_EDGE_COLOR));
+		controls.add(mBorderColor);
+		final BorderColorListener listener = new BorderColorListener(mSetBorderColor, mBorderColor);
+		mSetBorderColor.addPropertyChangeListener(listener);
+		mBorderColor.addPropertyChangeListener(listener);
+	}
+	
+	private void addBorderColorMatchesEdgeColorControl(final List<IPropertyControl> controls) {
+		mSetBorderColorMatchesEdgeColor = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetBorderColorMatchesEdgeColor);
+		mBorderColorMatchesEdgeColor = new BooleanProperty(StyleEditorPanel.BORDER_COLOR_MATCHES_EDGE_COLOR);
+		controls.add(mBorderColorMatchesEdgeColor);
+		final BorderColorMatchesEdgeColorListener listener = new BorderColorMatchesEdgeColorListener(mSetBorderColorMatchesEdgeColor, mBorderColorMatchesEdgeColor);
+		mSetBorderColorMatchesEdgeColor.addPropertyChangeListener(listener);
+		mBorderColorMatchesEdgeColor.addPropertyChangeListener(listener);
+	}
+
 	private void addChildDistanceControl(final List<IPropertyControl> controls) {
 		mSetChildDistance = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetChildDistance);
@@ -809,6 +934,25 @@ public class StyleEditorPanel extends JPanel {
 		addMinNodeWidthControl(controls);
 		addMaxNodeWidthControl(controls);
 		addChildDistanceControl(controls);
+		controls.add(new SeparatorProperty("OptionPanel.separator.NodeBorder"));
+		addBorderWidthMatchesEdgeWidthControl(controls);
+		addBorderWidthControl(controls);
+		mBorderWidthMatchesEdgeWidth.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				enableOrDisableBorderWidthControls();
+			}
+		});
+		
+		addBorderColorMatchesEdgeColorControl(controls);
+		addBorderColorControl(controls);
+		mBorderColorMatchesEdgeColor.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				enableOrDisableBorderColorControls();
+			}
+		});
+		
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeFont"));
 		addFontNameControl(controls);
@@ -1015,6 +1159,34 @@ public class StyleEditorPanel extends JPanel {
 				mSetMinNodeWidth.setValue(width != null);
 				mMinNodeWidth.setQuantifiedValue(viewWidth);
 			}
+			final NodeBorderModel nodeBorderModel = NodeBorderModel.getModel(node);
+			{
+				final Boolean match = nodeBorderModel != null ? nodeBorderModel.getBorderWidthMatchesEdgeWidth() : null;
+				final Boolean viewMatch = styleController.getBorderWidthMatchesEdgeWidth(node);
+				mSetBorderWidthMatchesEdgeWidth.setValue(match != null);
+				mBorderWidthMatchesEdgeWidth.setValue(viewMatch);
+			}
+			{
+				final Quantity<LengthUnits> width = nodeBorderModel != null ? nodeBorderModel.getBorderWidth() : null;
+				final Quantity<LengthUnits> viewWidth = styleController.getBorderWidth(node);
+				mSetBorderWidth.setValue(width != null);
+				mBorderWidth.setQuantifiedValue(viewWidth);
+				enableOrDisableBorderWidthControls();
+
+			}
+			{
+				final Boolean match = nodeBorderModel != null ? nodeBorderModel.getBorderColorMatchesEdgeColor() : null;
+				final Boolean viewMatch = styleController.getBorderColorMatchesEdgeColor(node);
+				mSetBorderColorMatchesEdgeColor.setValue(match != null);
+				mBorderColorMatchesEdgeColor.setValue(viewMatch);
+			}
+			{
+				final Color color = nodeBorderModel != null ? nodeBorderModel.getBorderColor() : null;
+				final Color viewColor = styleController.getBorderColor(node);
+				mSetBorderColor.setValue(color != null);
+				mBorderColor.setColorValue(viewColor);
+				enableOrDisableBorderColorControls();
+			}
 			{
 				final LocationModel locationModel = LocationModel.getModel(node);
 				final LocationController locationController = modeController.getExtension(LocationController.class);
@@ -1150,11 +1322,20 @@ public class StyleEditorPanel extends JPanel {
 					return;
 				}
 				if (selection.size() == 1) {
+					setComponentsEnabled(true);
 					setStyle(node);
 				}
 			}
 
+			public void setComponentsEnabled(boolean enabled) {
+				final Container panel = (Container) getComponent(0);
+				for (int i = 0; i < panel.getComponentCount(); i++) {
+					panel.getComponent(i).setEnabled(enabled);
+				}
+			}
+
 			public void onDeselect(final NodeModel node) {
+				setComponentsEnabled(false);
 			}
 		});
 		mapController.addNodeChangeListener(new INodeChangeListener() {
@@ -1184,24 +1365,6 @@ public class StyleEditorPanel extends JPanel {
             }
 			
 		});
-		final IMapViewManager mapViewManager = controller.getMapViewManager();
-		mapViewManager.addMapViewChangeListener(new IMapViewChangeListener() {
-			public void beforeViewChange(final Component oldView, final Component newView) {
-			}
-
-			public void afterViewCreated(final Component mapView) {
-			}
-
-			public void afterViewClose(final Component oldView) {
-			}
-
-			public void afterViewChange(final Component oldView, final Component newView) {
-				final Container panel = (Container) getComponent(0);
-				for (int i = 0; i < panel.getComponentCount(); i++) {
-					panel.getComponent(i).setEnabled(newView != null);
-				}
-			}
-		});
 	}
 
 	private void enableShapeConfigurationProperties(final boolean enabled, final Shape shape) {
@@ -1209,5 +1372,17 @@ public class StyleEditorPanel extends JPanel {
 		mShapeHorizontalMargin.setEnabled(enableConfigurationProperties);
 		mShapeVerticalMargin.setEnabled(enableConfigurationProperties);
 		mUniformShape.setEnabled(enableConfigurationProperties);
+	}
+
+	public void enableOrDisableBorderWidthControls() {
+		final boolean borderWidthCanBeSet = ! mBorderWidthMatchesEdgeWidth.getBooleanValue();
+		mSetBorderWidth.setEnabled(borderWidthCanBeSet);
+		mBorderWidth.setEnabled(borderWidthCanBeSet);
+	}
+
+	public void enableOrDisableBorderColorControls() {
+		final boolean borderColorCanBeSet = ! mBorderColorMatchesEdgeColor.getBooleanValue();
+		mSetBorderColor.setEnabled(borderColorCanBeSet);
+		mBorderColor.setEnabled(borderColorCanBeSet);
 	}
 }

@@ -951,7 +951,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		if(gridColor == null){
 			final NodeView nodeView = attributeView.getNodeView();
 			if(SwingUtilities.isDescendingFrom(this, nodeView))
-				setGridAndBorderColor(nodeView.getEdgeColor());
+				setGridAndBorderColor(nodeView.getMainView().getBorderColor());
 		}
 		super.paintComponent(g);
 	}

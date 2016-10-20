@@ -1,4 +1,10 @@
 ===============================
+1.6.0
+===============================
+Configurable node border widths
+Configurable node border colors
+
+===============================
 1.5.17
 ===============================
 Freeplane Survey Runner
@@ -49,6 +55,7 @@ Restore old default map template
 1.5.10
 ===============================
 Stable release
+
 ===============================
 1.5.9
 ===============================

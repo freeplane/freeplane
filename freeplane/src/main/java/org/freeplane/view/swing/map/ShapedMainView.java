@@ -1,5 +1,6 @@
 package org.freeplane.view.swing.map;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -49,9 +50,9 @@ abstract public class ShapedMainView extends MainView {
 		final Object renderingHint = modeController.getController().getMapViewManager().setEdgesRenderingHint(g);
 		paintBackgound(g);
 		paintDragOver(g);
-		final Color edgeColor = nodeView.getEdgeColor();
-		g.setColor(edgeColor);
-		g.setStroke(MainView.DEF_STROKE);
+		final Color borderColor = getBorderColor();
+		g.setColor(borderColor);
+		g.setStroke(new BasicStroke(getPaintedBorderWidth()));
 		paintNodeShape(g);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 		super.paintComponent(g);
