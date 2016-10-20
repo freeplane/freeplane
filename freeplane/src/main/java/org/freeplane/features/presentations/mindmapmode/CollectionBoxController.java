@@ -83,7 +83,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		if(collection == newCollection)
 			return;
 		if(collection != null)
-			collection.removeSelectionChangeListener(collectionChangeListener);;
+			collection.removeCollectionChangeListener(collectionChangeListener);;
 		this.collection = newCollection;
 		if(newCollection == null){
 			disableUiElements();
@@ -92,7 +92,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 			final ComboBoxModel<Stringifyed<T>> elements = newCollection.getElements();
 			comboBoxCollectionNames.setModel(elements);
 			updateUiElements();
-			collection.addSelectionChangeListener(collectionChangeListener);;
+			collection.addCollectionChangeListener(collectionChangeListener);;
 		}
 	}
 

@@ -16,7 +16,7 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 	final private DefaultComboBoxModel<Stringifyed<T>> elements;
 	private int currentIndex;
 	private Constructor<T> constructor;
-	private ArrayList<CollectionChangeListener<T>> selectionChangeListeners;
+	private ArrayList<CollectionChangeListener<T>> collectionChangeListeners;
 	private boolean moveInProgress;
 
 	public NamedElementCollection(Class<T> elementClass) {
@@ -46,7 +46,7 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 			}
 		});
 		currentIndex = -1;
-		selectionChangeListeners = new ArrayList<>();
+		collectionChangeListeners = new ArrayList<>();
 	}
 
 	public ComboBoxModel<Stringifyed<T>> getElements() {
@@ -94,7 +94,7 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 	}
 
 	private void fireCollectionChangeEvent(CollectionChangedEvent.EventType eventType) {
-		for (CollectionChangeListener<T> selectionChangeListener : selectionChangeListeners)
+		for (CollectionChangeListener<T> selectionChangeListener : collectionChangeListeners)
 			selectionChangeListener.onCollectionChange(eventType.of(this));
 	}
 
@@ -130,12 +130,12 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 		}
 	}
 
-	public void addSelectionChangeListener(CollectionChangeListener<T> selectionChangeListener) {
-		this.selectionChangeListeners.add(selectionChangeListener);
+	public void addCollectionChangeListener(CollectionChangeListener<T> selectionChangeListener) {
+		this.collectionChangeListeners.add(selectionChangeListener);
 	}
 
-	public void removeSelectionChangeListener(CollectionChangeListener<T> selectionChangeListener) {
-		this.selectionChangeListeners.remove(selectionChangeListener);
+	public void removeCollectionChangeListener(CollectionChangeListener<T> selectionChangeListener) {
+		this.collectionChangeListeners.remove(selectionChangeListener);
 	}
 
 	public int getCurrentElementIndex() {

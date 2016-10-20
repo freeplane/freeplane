@@ -22,11 +22,11 @@ class NavigationPanelController {
 
 	public void setPresentation(Presentation presentation) {
 		if(slides != null)
-			slides.removeSelectionChangeListener(slideChangeListener);
+			slides.removeCollectionChangeListener(slideChangeListener);
 		if(presentation != null) {
 			this.slides = presentation.slides;
 			updateUi();
-			slides.addSelectionChangeListener(slideChangeListener);
+			slides.addCollectionChangeListener(slideChangeListener);
 		} else
 			this.slides = null;
 	}

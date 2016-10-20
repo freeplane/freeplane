@@ -43,7 +43,7 @@ public class CollectionModelShould {
 	
 	@Test
 	public void notifyListenerAddingNewElement() throws Exception {
-		elementCollectionModel.addSelectionChangeListener(listener);
+		elementCollectionModel.addCollectionChangeListener(listener);
 		elementCollectionModel.add("element");
 		verify(listener).onCollectionChange(refEq(COLLECTION_SIZE_CHANGED.of(elementCollectionModel)));
 		verify(listener).onCollectionChange(refEq(SELECTION_INDEX_CHANGED.of(elementCollectionModel)));
@@ -68,7 +68,7 @@ public class CollectionModelShould {
 	@Test
 	public void notifyListenerDeletingElement() throws Exception {
 		elementCollectionModel.add("element");
-		elementCollectionModel.addSelectionChangeListener(listener);
+		elementCollectionModel.addCollectionChangeListener(listener);
 		elementCollectionModel.removeCurrentElement();
 		verify(listener).onCollectionChange(refEq(COLLECTION_SIZE_CHANGED.of(elementCollectionModel)));
 	}
@@ -135,7 +135,7 @@ public class CollectionModelShould {
 		elementCollectionModel.add("element 0");
 		elementCollectionModel.add("element 1");
 		elementCollectionModel.add("element 2");
-		elementCollectionModel.addSelectionChangeListener(listener);
+		elementCollectionModel.addCollectionChangeListener(listener);
 		elementCollectionModel.moveCurrentElementUp();
 		verify(listener).onCollectionChange(refEq(SELECTION_INDEX_CHANGED.of(elementCollectionModel)));
 		verifyNoMoreInteractions(listener);
@@ -229,7 +229,7 @@ public class CollectionModelShould {
 	public void notifyListenerOnSelectionChange() throws Exception {
 		elementCollectionModel.add("element 1");
 		elementCollectionModel.add("element 2");
-		elementCollectionModel.addSelectionChangeListener(listener);
+		elementCollectionModel.addCollectionChangeListener(listener);
 		elementCollectionModel.selectCurrentElement(0);
 		
 		verify(listener).onCollectionChange(refEq(SELECTION_INDEX_CHANGED.of(elementCollectionModel)));
@@ -241,8 +241,8 @@ public class CollectionModelShould {
 	public void doNotNotifyRemovedListeners() throws Exception {
 		elementCollectionModel.add("element 1");
 		elementCollectionModel.add("element 2");
-		elementCollectionModel.addSelectionChangeListener(listener);
-		elementCollectionModel.removeSelectionChangeListener(listener);
+		elementCollectionModel.addCollectionChangeListener(listener);
+		elementCollectionModel.removeCollectionChangeListener(listener);
 		elementCollectionModel.selectCurrentElement(0);
 		verify(listener, never()).onCollectionChange(any(CollectionChangedEvent.class));
 	}

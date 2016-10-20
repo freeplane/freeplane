@@ -37,11 +37,11 @@ public class PresentationEditorController {
 			@Override
 			public void onCollectionChange(CollectionChangedEvent<Presentation> event) {
 				if(slides != null)
-					slides.removeSelectionChangeListener(slideChangeListener);
+					slides.removeCollectionChangeListener(slideChangeListener);
 				Presentation presentation = event.collection.getCurrentElement();
 				if(presentation != null) {
 					slides = presentation.slides;
-					slides.addSelectionChangeListener(slideChangeListener);
+					slides.addCollectionChangeListener(slideChangeListener);
 					slideEditorController.setSlide(slides.getCurrentElement());
 				} else {
 					slides = null;
@@ -56,7 +56,7 @@ public class PresentationEditorController {
 
 	public void setPresentations(NamedElementCollection<Presentation> newPresentations) {
 		if(presentations != null)
-			presentations.removeSelectionChangeListener(presentationChangeListener);
+			presentations.removeCollectionChangeListener(presentationChangeListener);
 		presentations = newPresentations;
 		presentationPanelController.setCollection(presentations);
 		if (presentations != null) {
@@ -65,7 +65,7 @@ public class PresentationEditorController {
 				slidePanelController.setCollection(presentation.slides);
 				slideEditorController.setSlide(presentation.slides.getCurrentElement());
 			}
-			presentations.addSelectionChangeListener(presentationChangeListener);
+			presentations.addCollectionChangeListener(presentationChangeListener);
 		}
 	}
 
