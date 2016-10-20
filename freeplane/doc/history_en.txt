@@ -3,6 +3,7 @@
 ===============================
 Configurable node border widths
 Configurable node border colors
+Presentations
 
 ===============================
 1.5.17
