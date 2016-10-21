@@ -23,7 +23,10 @@ public class PresentationState {
 	
 	public void changePresentation(Presentation newPresentation) {
 		stopPresentation();
-		currentPresentation = newPresentation;
+		if(currentPresentation != newPresentation){
+			currentPresentation = newPresentation;
+			firePresentationStateChangedEvent(SLIDE_CHANGED);
+		}
 	}
 
 	public void showSlide() {
@@ -94,5 +97,9 @@ public class PresentationState {
 			return false;
 		NamedElementCollection<Slide> slides = currentPresentation.slides;
 		return slides.getCurrentElementIndex() > 0;
+	}
+
+	void changeSlide() {
+		firePresentationStateChangedEvent(SLIDE_CHANGED);
 	}
 }

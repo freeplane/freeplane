@@ -7,6 +7,7 @@ import javax.swing.JTabbedPane;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -89,6 +90,8 @@ public class PresentationController implements IExtension{
 			public void onCollectionChange(CollectionChangedEvent<Slide> event) {
 				if(event.eventType == EventType.COLLECTION_SIZE_CHANGED)
 					modeController.getMapController().setSaved(map, false);
+				else if(event.eventType == EventType.SELECTION_CHANGED)
+					presentationState.changeSlide();
 			}
 		};
 		final NamedElementFactory<Presentation> presentationFactory = new NamedElementFactory<Presentation>() {
@@ -143,12 +146,22 @@ public class PresentationController implements IExtension{
 
 @SuppressWarnings("serial")
 @SelectableAction
+@EnabledAction
 class ShowCurrentSlideAction extends AFreeplaneAction {
 	private PresentationState presentationState;
 
 	public ShowCurrentSlideAction(PresentationState presentationState) {
 		super("ShowCurrentSlideAction");
 		this.presentationState = presentationState;
+		presentationState.addPresentationStateListener(new PresentationStateChangeListener() {
+			@Override
+			public void onPresentationStateChange(PresentationStateChangeEvent presentationStateChangeEvent) {
+				setSelected(ShowCurrentSlideAction.this.presentationState.isPresentationRunning());
+				setEnabled(ShowCurrentSlideAction.this.presentationState.canShowCurrentSlide());
+			}
+		});
+		setSelected(false);
+		setEnabled(false);
 	}
 
 	@Override
@@ -166,6 +179,7 @@ class ShowCurrentSlideAction extends AFreeplaneAction {
 }
 
 @SuppressWarnings("serial")
+@EnabledAction
 class ShowNextSlideAction extends AFreeplaneAction {
 	private final PresentationState presentationState;
 
@@ -178,6 +192,7 @@ class ShowNextSlideAction extends AFreeplaneAction {
 				setEnabled(ShowNextSlideAction.this.presentationState.canShowNextSlide());
 			}
 		});
+		setEnabled(false);
 	}
 
 	@Override
@@ -193,6 +208,7 @@ class ShowNextSlideAction extends AFreeplaneAction {
 }
 
 @SuppressWarnings("serial")
+@EnabledAction
 class ShowPreviousSlideAction extends AFreeplaneAction {
 	private PresentationState presentationState;
 
@@ -205,6 +221,7 @@ class ShowPreviousSlideAction extends AFreeplaneAction {
 				setEnabled(ShowPreviousSlideAction.this.presentationState.canShowPreviousSlide());
 			}
 		});
+		setEnabled(false);
 	}
 
 	@Override

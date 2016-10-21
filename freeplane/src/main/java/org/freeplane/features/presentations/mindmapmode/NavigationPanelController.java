@@ -33,7 +33,7 @@ class NavigationPanelController {
 
 	private void updateUi() {
 		btnPrevious.setEnabled(presentationState.canShowPreviousSlide());
-		tglbtnCurrent.setEnabled(slides.getSize() != 0);
+		tglbtnCurrent.setEnabled(presentationState.canShowCurrentSlide());
 		btnNext.setEnabled(presentationState.canShowNextSlide());
 	}
 
