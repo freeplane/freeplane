@@ -241,7 +241,7 @@ class SlideEditorController{
 
 		Box contentWithMargins = Box.createHorizontalBox();
 		contentWithMargins
-		    .setBorder(new TitledBorder(null, "Slide content", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		    .setBorder(BorderFactory.createTitledBorder("Slide content"));
 		contentWithMargins.add(Box.createHorizontalGlue());
 		contentWithMargins.add(content);
 		contentWithMargins.add(Box.createHorizontalGlue());

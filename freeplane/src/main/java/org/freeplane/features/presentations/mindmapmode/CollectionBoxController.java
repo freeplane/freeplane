@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -34,7 +35,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	
 	public JComponent createCollectionBox(String title) {
 		collectionComponent = Box.createVerticalBox();
-		collectionComponent.setBorder(new TitledBorder(null, title, TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		collectionComponent.setBorder(BorderFactory.createTitledBorder(title));
 		Box namesBox = Box.createHorizontalBox();
 		namesBox.add(lblElementCount);
 		namesBox.add(comboBoxCollectionNames);

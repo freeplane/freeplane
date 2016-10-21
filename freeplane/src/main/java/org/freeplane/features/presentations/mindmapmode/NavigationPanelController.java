@@ -3,6 +3,7 @@ package org.freeplane.features.presentations.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -108,7 +109,7 @@ class NavigationPanelController {
 	
 	Box createNavigationBox() {
 		Box navigation = Box.createHorizontalBox();
-		navigation.setBorder(new TitledBorder(null, "Show", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		navigation.setBorder(BorderFactory.createTitledBorder("Show"));
 		navigation.add(Box.createHorizontalGlue());
 		navigation.add(btnPrevious);
 		navigation.add(tglbtnCurrent);
