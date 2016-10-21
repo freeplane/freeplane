@@ -6,11 +6,13 @@ import java.awt.event.ActionListener;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
 
@@ -34,6 +36,7 @@ class SlideEditorController{
 	private final JCheckBox checkBoxShowAncestors;
 	private final JCheckBox checkBoxShowDescendants;
 	private final JToggleButton tglbtnSetFilter;
+	private final JComponent filterConditionComponentBox;
 	
 	private final JComponent[] allButtons;
 	private final JComponent[] filterRelatedButtons;
@@ -53,6 +56,7 @@ class SlideEditorController{
 		checkBoxShowAncestors = createShowAncestorsCheckBox();
 		checkBoxShowDescendants = createShowDescendantsCheckBox();
 		tglbtnSetFilter = createSetFilterToggleButton();
+		filterConditionComponentBox = Box.createHorizontalBox();
 		
 		allButtons = new JComponent[] { btnHighlightSelectedNodes, btnSetSelectedNodes, btnAddSelectedNodes,
 		        btnRemoveSelectedNodes, checkBoxCentersSelectedNode,
@@ -233,6 +237,7 @@ class SlideEditorController{
 		content.add(checkBoxShowAncestors);
 		content.add(checkBoxShowDescendants);
 		content.add(tglbtnSetFilter);
+		content.add(filterConditionComponentBox);
 
 		Box contentWithMargins = Box.createHorizontalBox();
 		contentWithMargins
@@ -263,6 +268,7 @@ class SlideEditorController{
 	private void disableUI() {
 		for(JComponent c : allButtons)
 			c.setEnabled(false);
+		removeFilterComponent();
 	}
 
 
@@ -271,8 +277,9 @@ class SlideEditorController{
 		checkBoxShowOnlySelectedNodes.setSelected(showsOnlySpecificNodes);
 		final boolean centersSelectedNode = slide.centersSelectedNode();
 		checkBoxCentersSelectedNode.setSelected(centersSelectedNode);
+		final ASelectableCondition filterCondition = slide.getFilterCondition();
 		for(JComponent c : filterRelatedButtons)
-			c.setEnabled(showsOnlySpecificNodes || slide.getFilterCondition() != null);
+			c.setEnabled(showsOnlySpecificNodes || filterCondition != null);
 		final boolean changesZoom = slide.changesZoom();
 		tglbtnChangeZoom.setSelected(changesZoom);
 		lblZoomFactor.setText(changesZoom ? Math.round(slide.getZoom() * 100) + "%" : "");
@@ -280,7 +287,19 @@ class SlideEditorController{
 		checkBoxShowAncestors.setSelected(slide.showsAncestors());
 		checkBoxShowDescendants.setSelected(slide.showsDescendants());
 		checkBoxShowAncestors.setSelected(slide.showsAncestors());
-		tglbtnSetFilter.setSelected(slide.getFilterCondition() != null);
+		tglbtnSetFilter.setSelected(filterCondition != null);
+		removeFilterComponent();
+		if(filterCondition != null) {
+			final JComponent createGraphicComponent = filterCondition.createGraphicComponent();
+			createGraphicComponent.setBorder(BorderFactory.createTitledBorder("Filter"));
+			filterConditionComponentBox.add(createGraphicComponent);
+		}
+		filterConditionComponentBox.revalidate();
+	}
+
+	public void removeFilterComponent() {
+		while(filterConditionComponentBox.getComponentCount() > 0)
+			filterConditionComponentBox.remove(0);
 	}
 	
 	
