@@ -76,12 +76,12 @@ class PresentationBuilder {
 				Enumeration<XMLElement> xmlPresentations = dom.enumerateChildren();
 				while (xmlPresentations.hasMoreElements()) {
 					XMLElement xmlPresentation = xmlPresentations.nextElement();
-					presentations.add(xmlPresentation.getAttribute("NAME", "noname"));
+					presentations.add(xmlPresentation.getAttribute(NAME, "noname"));
 					Enumeration<XMLElement> xmlSlides = xmlPresentation.enumerateChildren();
 					NamedElementCollection<Slide> slides = presentations.getCurrentElement().slides;
 					while (xmlSlides.hasMoreElements()) {
 						XMLElement xmlSlide = xmlSlides.nextElement();
-						final String name = xmlSlide.getAttribute("NAME", "noname");
+						final String name = xmlSlide.getAttribute(NAME, "noname");
 						Slide s = slideFactory.create(name);
 						Slide slide = applySlideAttributes(xmlSlide, s);
 						slides.add(slide);
@@ -154,6 +154,7 @@ class PresentationBuilder {
 }
 
 class PresentationWriter {
+	private static final String HOOK = "hook";
 	private MapModel map;
 
 	public PresentationWriter(MapModel map) {
@@ -164,7 +165,7 @@ class PresentationWriter {
 		MapPresentations mapPresentations = (MapPresentations) extension;
 		NamedElementCollection<Presentation> presentations = mapPresentations.presentations;
 		if (presentations.getSize() > 0) {
-			XMLElement xmlPresentations = new XMLElement("hook");
+			XMLElement xmlPresentations = new XMLElement(HOOK);
 			xmlPresentations.setAttribute(NAME, PresentationBuilder.PRESENTATIONS);
 			for (int i = 0; i < presentations.getSize(); i++) {
 				Presentation p = presentations.getElement(i);

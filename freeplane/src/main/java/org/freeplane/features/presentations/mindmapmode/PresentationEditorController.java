@@ -7,6 +7,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
+
 public class PresentationEditorController {
 	private final CollectionBoxController<Presentation> presentationPanelController;
 	private final CollectionBoxController<Slide> slidePanelController;
@@ -72,8 +74,12 @@ public class PresentationEditorController {
 	public Component createPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-		panel.add(presentationPanelController.createCollectionBox("Presentations"));
-		panel.add(slidePanelController.createCollectionBox("Slides"));
+		final JComponent presentationBox = presentationPanelController.createCollectionBox();
+		TranslatedElementFactory.createTitledBorder(presentationBox, "slide.presentations");
+		panel.add(presentationBox);
+		final JComponent slideBox = slidePanelController.createCollectionBox();
+		TranslatedElementFactory.createTitledBorder(slideBox, "slide.slides");
+		panel.add(slideBox);
 		JComponent content = slideEditorController.createSlideContentBox();
 		panel.add(content);
 		Box navigation = navigationPanelController.createNavigationBox();

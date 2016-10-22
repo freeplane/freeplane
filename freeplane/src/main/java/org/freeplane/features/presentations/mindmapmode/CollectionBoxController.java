@@ -19,6 +19,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
+import org.freeplane.core.util.TextUtils;
 
 class CollectionBoxController <T extends NamedElement<T>> {
 	private NamedElementCollection<T> collection;
@@ -33,9 +35,8 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	private JComponent collectionComponent;
 	private JLabel lblElementCount;
 	
-	public JComponent createCollectionBox(String title) {
+	public JComponent createCollectionBox() {
 		collectionComponent = Box.createVerticalBox();
-		collectionComponent.setBorder(BorderFactory.createTitledBorder(title));
 		Box namesBox = Box.createHorizontalBox();
 		namesBox.add(lblElementCount);
 		namesBox.add(comboBoxCollectionNames);
@@ -119,13 +120,14 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	}
 
 	private JButton createMoveButton(JButton btnMoveDown) {
-		JButton btnMove = new JButton("Move");
+		JButton btnMove = TranslatedElementFactory.createButton("collection.move");
 		btnMove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JList<Stringifyed<T>> targets = new JList<>(collection.getElements());
 				targets.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				if (JOptionPane.showConfirmDialog(collectionComponent, new JAutoScrollBarPane(targets), "Move before", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) 
+				final String title = TextUtils.getText("collection.movebefore");
+				if (JOptionPane.showConfirmDialog(collectionComponent, new JAutoScrollBarPane(targets), title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) 
 						== JOptionPane.OK_OPTION)
 					collection.moveCurrentElementTo(targets.getSelectedIndex());
 			}
@@ -133,7 +135,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		return btnMove;
 	}
 	private JButton createMoveDownButton() {
-		JButton btnMoveDown = new JButton("Down");
+		JButton btnMoveDown = TranslatedElementFactory.createButton("collection.down");
 		btnMoveDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -143,7 +145,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		return btnMoveDown;
 	}
 	private JButton createMoveUpButton() {
-		JButton btnMoveUp = new JButton("Up");
+		JButton btnMoveUp = TranslatedElementFactory.createButton("collection.up");
 		btnMoveUp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -153,7 +155,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		return btnMoveUp;
 	}
 	private JButton createDeleteElementButton() {
-		JButton btnDeleteElement = new JButton("Delete");
+		JButton btnDeleteElement = TranslatedElementFactory.createButton("collection.delete");
 		btnDeleteElement.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -163,7 +165,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		return btnDeleteElement;
 	}
 	private JButton createNewElementButton(final String newElementName) {
-		JButton btnNewElement = new JButton("Append");
+		JButton btnNewElement = TranslatedElementFactory.createButton("collection.append");
 		btnNewElement.addActionListener(new ActionListener() {
 			
 

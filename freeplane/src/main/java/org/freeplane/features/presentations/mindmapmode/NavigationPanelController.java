@@ -9,6 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JToggleButton;
 
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
+
 class NavigationPanelController {
 	
 	private final JButton btnPrevious;
@@ -73,7 +75,7 @@ class NavigationPanelController {
 	}
 
 	private JButton createNextButton() {
-		final JButton btnNext = new JButton("Next");
+		final JButton btnNext = TranslatedElementFactory.createButton("slide.next");
 		btnNext.addActionListener(new ActionListener() {
 			
 			@Override
@@ -85,7 +87,7 @@ class NavigationPanelController {
 	}
 
 	private JToggleButton createCurrentButton() {
-		final JToggleButton btnCurrent = new JToggleButton("Current");
+		final JToggleButton btnCurrent = TranslatedElementFactory.createToggleButton("slide.current");
 		btnCurrent.addActionListener(new ActionListener() {
 
 			@Override
@@ -99,7 +101,7 @@ class NavigationPanelController {
 		return btnCurrent;
 	}
 	private JToggleButton createHighlightSlideNodesButton() {
-		final JToggleButton btnHighlight = new JToggleButton("Highlight slide nodes");
+		final JToggleButton btnHighlight = TranslatedElementFactory.createToggleButton("slide.highlight");
 		btnHighlight.addActionListener(new ActionListener() {
 
 			@Override
@@ -111,7 +113,7 @@ class NavigationPanelController {
 	}
 	
 	private JButton createPreviousButton() {
-		final JButton btnPrevious = new JButton("Previous");
+		final JButton btnPrevious = TranslatedElementFactory.createButton("slide.previous");
 		btnPrevious.addActionListener(new ActionListener() {
 			
 			@Override
@@ -124,7 +126,7 @@ class NavigationPanelController {
 	
 	Box createNavigationBox() {
 		Box navigation = Box.createVerticalBox();
-		navigation.setBorder(BorderFactory.createTitledBorder("Show"));
+		TranslatedElementFactory.createTitledBorder(navigation, "slide.show");
 		Box slideButtons = Box.createHorizontalBox();
 		navigation.add(slideButtons);
 		slideButtons.add(Box.createHorizontalGlue());
