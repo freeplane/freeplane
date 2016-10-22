@@ -46,6 +46,7 @@ import org.freeplane.features.filter.NextNodeAction;
 import org.freeplane.features.filter.NextPresentationItemAction;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.help.HelpController;
+import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
@@ -135,6 +136,7 @@ public class FreeplaneApplet extends JApplet {
 			MapViewController mapViewController = new MapViewController(controller);
 			appletViewController = new AppletViewController(this, controller, mapViewController);
 			controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
+			controller.addExtension(HighlightController.class, new HighlightController());
 			FilterController.install();
 			PrintController.install();
 			HelpController.install();

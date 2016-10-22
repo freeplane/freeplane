@@ -56,6 +56,7 @@ import org.freeplane.features.filter.NextPresentationItemAction;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.help.HelpController;
+import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
@@ -194,6 +195,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				splash.setVisible(true);
 			}
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
+			controller.addExtension(HighlightController.class, new HighlightController());
 			FilterController.install();
 			PrintController.install();
 			FormatController.install(new FormatController());

@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.filter;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -68,6 +69,8 @@ import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.condition.NoFilteringCondition;
 import org.freeplane.features.filter.condition.SelectedViewCondition;
+import org.freeplane.features.highlight.HighlightController;
+import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.map.CloneOfSelectedViewCondition;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController.Direction;
@@ -169,7 +172,21 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	public static void install() {
-		Controller.getCurrentController().addExtension(FilterController.class, new FilterController());
+		final Controller controller = Controller.getCurrentController();
+		final FilterController extension = new FilterController();
+		controller.addExtension(FilterController.class, extension);
+		controller.getExtension(HighlightController.class).addNodeHighlighter(new NodeHighlighter() {
+			@Override
+			public boolean isNodeHighlighted(NodeModel node) {
+				return FilterController.getController(controller).isNodeHighlighted(node);
+			}
+			
+			@Override
+			public Color getColor() {
+				return Color.MAGENTA;
+			}
+		});
+
 	}
 
 	private final ButtonModel applyToVisibleNodeOnly;
