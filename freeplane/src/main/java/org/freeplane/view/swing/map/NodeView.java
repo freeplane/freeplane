@@ -92,7 +92,7 @@ import org.freeplane.view.swing.map.edge.EdgeViewFactory;
  * TreeCellRenderer).
  */
 public class NodeView extends JComponent implements INodeView {
-	private static final int HIGHLIGHTED_NODE_ARC_MARGIN = 8;
+	private static final int HIGHLIGHTED_NODE_ARC_MARGIN = 4;
 	final static int ALIGN_BOTTOM = -1;
 	final static int ALIGN_CENTER = 0;
 	final static int ALIGN_TOP = 1;
@@ -1144,7 +1144,7 @@ public class NodeView extends JComponent implements INodeView {
 		mainView.paintDecoration(this, g);
 		g.translate(-origin.x, -origin.y);
 		final List<Color> highlightingColors = getMap().getModeController().getController().getExtension(HighlightController.class).getHighlightingColors(model);
-		int margin = 0;
+		int margin = HIGHLIGHTED_NODE_ARC_MARGIN;
 		for(Color color : highlightingColors){
 			margin += HIGHLIGHTED_NODE_ARC_MARGIN;
 			highlightNode(g, color, margin);
@@ -1159,7 +1159,7 @@ public class NodeView extends JComponent implements INodeView {
 		g.setStroke(getMap().getStandardSelectionStroke());
 		final JComponent content = getContent();
 		Point contentLocation = content.getLocation();
-		final int arcWidth = arcMargin * 2 - 1;
+		final int arcWidth = 15;
 		g.drawRoundRect(contentLocation.x - arcMargin, contentLocation.y - arcMargin, content.getWidth() + 2 * arcMargin,
 		    content.getHeight() + 2 * arcMargin, arcWidth, arcWidth);
 		g.setColor(oldColor);

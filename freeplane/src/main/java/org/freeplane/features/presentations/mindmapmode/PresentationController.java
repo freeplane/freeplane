@@ -1,5 +1,6 @@
 package org.freeplane.features.presentations.mindmapmode;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 
@@ -10,6 +11,8 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
+import org.freeplane.features.highlight.HighlightController;
+import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -18,6 +21,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType;
 
 public class PresentationController implements IExtension{
+	private static final Color NODE_HIGHLIGHTING_COLOR = Color.GREEN.brighter();
 	private final PresentationState presentationState;
 	private final PresentationEditorController presentationEditorController;
 	private ModeController modeController;
@@ -29,13 +33,38 @@ public class PresentationController implements IExtension{
 		new PresentationBuilder().register(modeController.getMapController(), presentationController);
 		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
 		tabs.add("Presentations", presentationController.createPanel());
+		modeController.getController().getExtension(HighlightController.class).addNodeHighlighter(new NodeHighlighter() {
+			
+			@Override
+			public boolean isNodeHighlighted(NodeModel node) {
+				return presentationController.isNodeHighlighted(node);
+			}
+			
+			@Override
+			public Color getColor() {
+				return NODE_HIGHLIGHTING_COLOR;
+			}
+		});
 
+	}
+
+	boolean isNodeHighlighted(NodeModel node) {
+		return presentationState.isNodeHighlighted(node);
 	}
 
 	private PresentationController(ModeController modeController) {
 		this.modeController = modeController;
 		presentationState = new PresentationState();
 		presentationEditorController = new PresentationEditorController(presentationState);
+		presentationState.addPresentationStateListener(new PresentationStateChangeListener() {
+			
+			@Override
+			public void onPresentationStateChange(PresentationStateChangeEvent presentationStateChangeEvent) {
+				final Component mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
+				if(mapViewComponent != null)
+					mapViewComponent.repaint();
+			}
+		});
 	}
 
 	private void registerActions() {
@@ -119,6 +148,7 @@ public class PresentationController implements IExtension{
 				@Override
 				public void onSlideModelChange(SlideChangeEvent changeEvent) {
 					modeController.getMapController().setSaved(map, false);
+					presentationState.changeSlide();
 				}
 			};
 			
