@@ -69,6 +69,7 @@ public class PresentationEditorController {
 			}
 			presentations.addCollectionChangeListener(presentationChangeListener);
 		}
+		presentationChangeListener.onCollectionChange(CollectionChangedEvent.EventType.SELECTION_CHANGED.of(presentations));
 	}
 
 	public Component createPanel() {

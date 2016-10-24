@@ -1,6 +1,7 @@
 package org.freeplane.features.presentations.mindmapmode;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedHashSet;
@@ -8,6 +9,7 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -16,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.border.TitledBorder;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.filter.FilterComposerDialog;
 import org.freeplane.features.filter.FilterController;
@@ -44,7 +47,10 @@ class SlideEditorController{
 
 	private final SlideChangeListener slideChangeListener;
 
+	private final JComponent filterNotSetLabel;
+
 	
+	@SuppressWarnings("serial")
 	public SlideEditorController() {
 		btnSetSelectedNodes = createSetSelectedNodeButton();
 		btnAddSelectedNodes = createAddSelectedNodeButton();
@@ -58,7 +64,22 @@ class SlideEditorController{
 		checkBoxShowAncestors = createShowAncestorsCheckBox();
 		checkBoxShowDescendants = createShowDescendantsCheckBox();
 		tglbtnSetFilter = createSetFilterToggleButton();
-		filterConditionComponentBox = Box.createHorizontalBox();
+		final int minimumHeight = (int) (60 * UITools.FONT_SCALE_FACTOR);
+		filterConditionComponentBox = new Box(BoxLayout.X_AXIS){
+
+			@Override
+			public Dimension getPreferredSize() {
+				final Dimension preferredSize = super.getPreferredSize();
+				final Dimension minimumSize = getMinimumSize();
+				return new Dimension(Math.max(minimumSize.width, preferredSize.width), Math.max(preferredSize.height, minimumSize.height));
+			}
+			@Override
+			public Dimension getMaximumSize() {
+				return getPreferredSize();
+			}
+			
+		};
+		filterConditionComponentBox.setMinimumSize(new Dimension(1, minimumHeight));
 		
 		allButtons = new JComponent[] { btnSelectNodes, btnSetSelectedNodes, btnAddSelectedNodes,
 		        btnRemoveSelectedNodes, checkBoxCentersSelectedNode,
@@ -72,7 +93,8 @@ class SlideEditorController{
 				updateUI();
 			}
 		};
-		
+		filterNotSetLabel = TranslatedElementFactory.createLabel("slide.nofilter");
+		filterNotSetLabel.setEnabled(false);
 		disableUI();
 	}
 
@@ -224,6 +246,7 @@ class SlideEditorController{
 	Box createSlideContentBox() {
 		
 		Box content = Box.createVerticalBox();
+		content.setName("!!!!");
 		
 		Box selectionBox = Box.createHorizontalBox();
 		selectionBox.add(btnSetSelectedNodes);
@@ -241,6 +264,7 @@ class SlideEditorController{
 		content.add(checkBoxShowDescendants);
 		content.add(tglbtnSetFilter);
 		content.add(filterConditionComponentBox);
+		filterConditionComponentBox.setAlignmentX(Box.CENTER_ALIGNMENT);
 
 		Box contentWithMargins = Box.createHorizontalBox();
 		TranslatedElementFactory.createTitledBorder(contentWithMargins, "slide.content");
@@ -295,6 +319,9 @@ class SlideEditorController{
 			final JComponent component = filterCondition.createGraphicComponent();
 			TranslatedElementFactory.createTitledBorder(component, "slide.filter");
 			filterConditionComponentBox.add(component);
+		}
+		else{
+			filterConditionComponentBox.add(filterNotSetLabel);
 		}
 		filterConditionComponentBox.revalidate();
 	}

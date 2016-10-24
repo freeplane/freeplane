@@ -57,8 +57,9 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 	
 	public void add(T element) {
 		final int newElementIndex = currentIndex + 1;
-		elements.insertElementAt(new Stringifyed<>(element), newElementIndex);
-		elements.setSelectedItem(element);
+		final Stringifyed<T> anObject = new Stringifyed<>(element);
+		elements.insertElementAt(anObject, newElementIndex);
+		elements.setSelectedItem(anObject);
 		fireCollectionChangeEvent(COLLECTION_SIZE_CHANGED);
 		selectCurrentElement(newElementIndex);
 	}

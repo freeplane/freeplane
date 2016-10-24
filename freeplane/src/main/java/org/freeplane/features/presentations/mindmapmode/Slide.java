@@ -8,6 +8,7 @@ import java.util.Set;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConjunctConditions;
+import org.freeplane.features.filter.condition.DisjunctConditions;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.features.map.MapModel;
@@ -40,7 +41,7 @@ public class Slide implements NamedElement<Slide>{
 	@Override
 	public Slide saveAs(String name) {
 		return new Slide(name, new LinkedHashSet<String>(), centersSelectedNode,
-		    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, filterCondition);
+		    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, null);
 	}
 
 	public Slide(String name){
@@ -233,7 +234,7 @@ public class Slide implements NamedElement<Slide>{
 		final ICondition  condition;
 		if(showsOnlySpecificNodes && filterCondition != null){
 			SelectedViewSnapshotCondition selectedViewSnapshotCondition = getFilterConditionForSelectedNodes();
-			condition = new ConjunctConditions(selectedViewSnapshotCondition, filterCondition);
+			condition = new DisjunctConditions(selectedViewSnapshotCondition, filterCondition);
 		}
 		else if (showsOnlySpecificNodes && filterCondition == null) {
 			condition = getFilterConditionForSelectedNodes();
