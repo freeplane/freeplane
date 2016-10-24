@@ -40,7 +40,7 @@ public class PresentationEditorController {
 			public void onCollectionChange(CollectionChangedEvent<Presentation> event) {
 				if(slides != null)
 					slides.removeCollectionChangeListener(slideChangeListener);
-				Presentation presentation = event.collection.getCurrentElement();
+				Presentation presentation = event.collection != null ? event.collection.getCurrentElement() : null;
 				if(presentation != null) {
 					slides = presentation.slides;
 					slides.addCollectionChangeListener(slideChangeListener);
