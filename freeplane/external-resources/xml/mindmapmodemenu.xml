@@ -385,9 +385,9 @@
 				<Entry name="AlwaysUnfoldedNodeAction" />
 			</Entry>
 			<Entry name="presentation">
-				<Entry name="ShowPreviousSlideAction" />
-				<Entry name="ShowCurrentSlideAction" />
-				<Entry name="ShowNextSlideAction" />
+				<Entry name="ShowPreviousSlideAction" accelerator="control F5"/>
+				<Entry name="ShowCurrentSlideAction" accelerator="F5" />
+				<Entry name="ShowNextSlideAction" accelerator="alt F5"/>
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="SelectAllAction" accelerator="control A" />
