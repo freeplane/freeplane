@@ -1,8 +1,15 @@
 package org.freeplane.features.presentations.mindmapmode;
 
+import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.COLLECTION_SIZE_CHANGED;
+import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.SELECTION_CHANGED;
+import static org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType.HIGNLIGHTING_CHANGED;
+import static org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType.PLAYING_STATE_CHANGED;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 
 import javax.swing.JTabbedPane;
 
@@ -18,7 +25,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType;
 
 public class PresentationController implements IExtension{
 	private static final Color NODE_HIGHLIGHTING_COLOR = Color.GREEN.brighter();
@@ -49,7 +55,7 @@ public class PresentationController implements IExtension{
 	}
 
 	boolean isNodeHighlighted(NodeModel node) {
-		return presentationState.isNodeHighlighted(node);
+		return presentationState.isNodeHighlighted(node) && ! presentationState.isPresentationRunning();
 	}
 
 	private PresentationController(ModeController modeController) {
@@ -60,9 +66,7 @@ public class PresentationController implements IExtension{
 			
 			@Override
 			public void onPresentationStateChange(PresentationStateChangeEvent presentationStateChangeEvent) {
-				final Component mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
-				if(mapViewComponent != null)
-					mapViewComponent.repaint();
+				repaintMap();
 			}
 		});
 	}
@@ -100,7 +104,7 @@ public class PresentationController implements IExtension{
 				
 				@Override
 				public void onCollectionChange(CollectionChangedEvent<Presentation> event) {
-					if(event.eventType == EventType.COLLECTION_SIZE_CHANGED)
+					if(event.eventType == COLLECTION_SIZE_CHANGED)
 						modeController.getMapController().setSaved(map, false);
 				}
 			};
@@ -117,9 +121,9 @@ public class PresentationController implements IExtension{
 			
 			@Override
 			public void onCollectionChange(CollectionChangedEvent<Slide> event) {
-				if(event.eventType == EventType.COLLECTION_SIZE_CHANGED)
+				if(event.eventType == COLLECTION_SIZE_CHANGED)
 					modeController.getMapController().setSaved(map, false);
-				else if(event.eventType == EventType.SELECTION_CHANGED)
+				else if(event.eventType == SELECTION_CHANGED)
 					presentationState.changeSlide();
 			}
 		};
@@ -170,7 +174,22 @@ public class PresentationController implements IExtension{
 	}
 
 	private Component createPanel() {
-		return new JAutoScrollBarPane(presentationEditorController.createPanel());
+		final Component presentationEditor = presentationEditorController.createPanel();
+		presentationEditor.addHierarchyListener(new HierarchyListener() {
+			@Override
+			public void hierarchyChanged(HierarchyEvent e) {
+				if( 0 != (e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED))
+					presentationState.setHighlightsNodes(e.getComponent().isShowing());
+				
+			}
+		});
+		return new JAutoScrollBarPane(presentationEditor);
+	}
+
+	private void repaintMap() {
+		final Component mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
+		if(mapViewComponent != null)
+			mapViewComponent.repaint();
 	}
 }
 

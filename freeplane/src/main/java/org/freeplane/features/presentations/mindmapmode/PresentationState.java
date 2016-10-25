@@ -1,6 +1,6 @@
 package org.freeplane.features.presentations.mindmapmode;
 
-import static org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType.SLIDE_CHANGED;
+import static org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType.*;
 
 import java.util.ArrayList;
 
@@ -32,11 +32,12 @@ public class PresentationState {
 	}
 
 	public void showSlide() {
+		final boolean isPresentationAlreadyRunning = isPresentationRunning();
 		Slide newSlide = currentPresentation.slides.getCurrentElement();
 		if (currentSlide != newSlide) {
 			currentSlide = newSlide;
-			firePresentationStateChangedEvent(SLIDE_CHANGED);
-		}
+			firePresentationStateChangedEvent(isPresentationAlreadyRunning ? SLIDE_CHANGED : PLAYING_STATE_CHANGED);
+		}		
 		if (currentSlide != null)
 			currentSlide.apply();
 	}
@@ -44,7 +45,7 @@ public class PresentationState {
 	public void stopPresentation() {
 		if (currentSlide != null) {
 			currentSlide = null;
-			firePresentationStateChangedEvent(SLIDE_CHANGED);
+			firePresentationStateChangedEvent(PLAYING_STATE_CHANGED);
 			Slide.ALL_NODES.apply();
 		}
 	}

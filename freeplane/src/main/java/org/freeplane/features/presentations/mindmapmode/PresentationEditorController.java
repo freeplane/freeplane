@@ -20,7 +20,7 @@ public class PresentationEditorController {
 	public PresentationEditorController(final PresentationState presentationState) {
 		presentationPanelController = new CollectionBoxController<>("New presentation");
 		slidePanelController = new CollectionBoxController<Slide>("New slide");
-		slideEditorController = new SlideEditorController();
+		slideEditorController = new SlideEditorController(presentationState);
 		navigationPanelController = new NavigationPanelController(presentationState);
 		final CollectionChangeListener<Slide> slideChangeListener = new CollectionChangeListener<Slide>() {
 			

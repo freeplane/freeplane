@@ -3,7 +3,6 @@ package org.freeplane.features.presentations.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -16,7 +15,6 @@ class NavigationPanelController {
 	private final JButton btnPrevious;
 	private final JToggleButton tglbtnCurrent;
 	private final JButton btnNext;
-	private final JToggleButton tglbtnHighlightNodes;
 	private final JComponent[] components;
 	
 	private NamedElementCollection<Slide> slides;
@@ -36,11 +34,9 @@ class NavigationPanelController {
 
 	private void updateUi() {
 		tglbtnCurrent.setSelected(presentationState.isPresentationRunning());
-		tglbtnHighlightNodes.setSelected(presentationState.highlightsNodes());
 		btnPrevious.setEnabled(presentationState.canShowPreviousSlide());
 		final boolean canShowCurrentSlide = presentationState.canShowCurrentSlide();
 		tglbtnCurrent.setEnabled(canShowCurrentSlide);
-		tglbtnHighlightNodes.setEnabled(canShowCurrentSlide);
 		btnNext.setEnabled(presentationState.canShowNextSlide());
 	}
 
@@ -49,8 +45,7 @@ class NavigationPanelController {
 		btnPrevious = createPreviousButton();
 		tglbtnCurrent = createCurrentButton();
 		btnNext = createNextButton();
-		tglbtnHighlightNodes = createHighlightSlideNodesButton();
-		components = new JComponent[]{btnPrevious, tglbtnCurrent, btnNext, tglbtnHighlightNodes};
+		components = new JComponent[]{btnPrevious, tglbtnCurrent, btnNext};
 		PresentationStateChangeListener presentationStateListener = new PresentationStateChangeListener() {
 			@Override
 			public void onPresentationStateChange(PresentationStateChangeEvent presentationStateChangeEvent) {
@@ -100,18 +95,6 @@ class NavigationPanelController {
 		});
 		return btnCurrent;
 	}
-	private JToggleButton createHighlightSlideNodesButton() {
-		final JToggleButton btnHighlight = TranslatedElementFactory.createToggleButton("slide.highlight");
-		btnHighlight.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				presentationState.setHighlightsNodes(! presentationState.highlightsNodes());
-			}
-		});
-		return btnHighlight;
-	}
-	
 	private JButton createPreviousButton() {
 		final JButton btnPrevious = TranslatedElementFactory.createButton("slide.previous");
 		btnPrevious.addActionListener(new ActionListener() {
@@ -125,19 +108,15 @@ class NavigationPanelController {
 	}
 	
 	Box createNavigationBox() {
-		Box navigation = Box.createVerticalBox();
-		TranslatedElementFactory.createTitledBorder(navigation, "slide.show");
 		Box slideButtons = Box.createHorizontalBox();
-		navigation.add(slideButtons);
+		TranslatedElementFactory.createTitledBorder(slideButtons, "slide.show");
 		slideButtons.add(Box.createHorizontalGlue());
 		slideButtons.add(btnPrevious);
 		slideButtons.add(tglbtnCurrent);
 		slideButtons.add(btnNext);
 		slideButtons.add(Box.createHorizontalGlue());
 		slideButtons.setAlignmentX(Box.CENTER_ALIGNMENT);
-		tglbtnHighlightNodes.setAlignmentX(Box.CENTER_ALIGNMENT);
-		navigation.add(tglbtnHighlightNodes);
-		return navigation;
+		return slideButtons;
 	}
 	
 }

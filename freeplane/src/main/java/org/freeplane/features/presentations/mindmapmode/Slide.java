@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.features.filter.condition.ConjunctConditions;
 import org.freeplane.features.filter.condition.DisjunctConditions;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.condition.SelectedViewSnapshotCondition;
