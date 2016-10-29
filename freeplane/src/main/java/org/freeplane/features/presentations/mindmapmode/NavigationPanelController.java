@@ -1,51 +1,113 @@
 package org.freeplane.features.presentations.mindmapmode;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JToggleButton;
 
+import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.EnabledAction;
+import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
+import org.freeplane.features.mode.ModeController;
 
 class NavigationPanelController {
 	
-	private final JButton btnPrevious;
-	private final JToggleButton tglbtnCurrent;
-	private final JButton btnNext;
-	private final JComponent[] components;
+	@SuppressWarnings("serial")
+	@EnabledAction
+	static private class ShowNextSlideAction extends AFreeplaneAction {
+		private final PresentationState presentationState;
+
+		public ShowNextSlideAction(PresentationState presentationState) {
+			super("ShowNextSlideAction");
+			this.presentationState = presentationState;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (presentationState.canShowNextSlide())
+				presentationState.showNextSlide();
+		}
+
+		@Override
+		public void afterMapChange(final Object newMap) {
+		}
+	}
+	@SuppressWarnings("serial")
+	@SelectableAction
+	@EnabledAction
+	static private class ShowCurrentSlideAction extends AFreeplaneAction {
+		private PresentationState presentationState;
+
+		public ShowCurrentSlideAction(PresentationState presentationState) {
+			super("ShowCurrentSlideAction");
+			this.presentationState = presentationState;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (presentationState.isPresentationRunning())
+				presentationState.stopPresentation();
+			else if (presentationState.canShowCurrentSlide())
+				presentationState.showSlide();
+			setSelected(presentationState.isPresentationRunning());
+		}
+
+		@Override
+		public void afterMapChange(final Object newMap) {
+		}
+	}
+
+
+	@SuppressWarnings("serial")
+	@EnabledAction
+	static private class ShowPreviousSlideAction extends AFreeplaneAction {
+		private PresentationState presentationState;
+
+		public ShowPreviousSlideAction(PresentationState presentationState) {
+			super("ShowPreviousSlideAction");
+			this.presentationState = presentationState;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (presentationState.canShowPreviousSlide())
+				presentationState.showPreviousSlide();
+		}
+
+		@Override
+		public void afterMapChange(final Object newMap) {
+		}
+	}
+
 	
-	private NamedElementCollection<Slide> slides;
-	private final CollectionChangeListener<Slide> slideChangeListener;
+	private final Action[] actions;
+	
 	private PresentationState presentationState;
+	final AFreeplaneAction showNextSlideAction;
+	final AFreeplaneAction showCurrentSlideAction;
+	final ShowPreviousSlideAction showPreviousSlideAction;
 
 	public void setPresentation(Presentation presentation) {
-		if(slides != null)
-			slides.removeCollectionChangeListener(slideChangeListener);
-		if(presentation != null) {
-			this.slides = presentation.slides;
-			updateUi();
-			slides.addCollectionChangeListener(slideChangeListener);
-		} else
-			this.slides = null;
+		updateUi();
 	}
 
 	private void updateUi() {
-		tglbtnCurrent.setSelected(presentationState.isPresentationRunning());
-		btnPrevious.setEnabled(presentationState.canShowPreviousSlide());
+		showCurrentSlideAction.setSelected(presentationState.isPresentationRunning());
+		showPreviousSlideAction.setEnabled(presentationState.canShowPreviousSlide());
+		showNextSlideAction.setEnabled(presentationState.canShowNextSlide());
 		final boolean canShowCurrentSlide = presentationState.canShowCurrentSlide();
-		tglbtnCurrent.setEnabled(canShowCurrentSlide);
-		btnNext.setEnabled(presentationState.canShowNextSlide());
+		showCurrentSlideAction.setEnabled(canShowCurrentSlide);
 	}
 
 	NavigationPanelController(final PresentationState presentationState){
 		this.presentationState = presentationState;
-		btnPrevious = createPreviousButton();
-		tglbtnCurrent = createCurrentButton();
-		btnNext = createNextButton();
-		components = new JComponent[]{btnPrevious, tglbtnCurrent, btnNext};
+		showPreviousSlideAction = new ShowPreviousSlideAction(presentationState);
+		showCurrentSlideAction = new ShowCurrentSlideAction(presentationState);
+		showNextSlideAction = new ShowNextSlideAction(presentationState);
+		actions = new Action[]{showCurrentSlideAction, showNextSlideAction};
 		PresentationStateChangeListener presentationStateListener = new PresentationStateChangeListener() {
 			@Override
 			public void onPresentationStateChange(PresentationStateChangeEvent presentationStateChangeEvent) {
@@ -53,61 +115,18 @@ class NavigationPanelController {
 			}
 		};
 		presentationState.addPresentationStateListener(presentationStateListener);
-		slideChangeListener = new CollectionChangeListener<Slide>() {
-			
-			@Override
-			public void onCollectionChange(CollectionChangedEvent<Slide> event) {
-				presentationState.stopPresentation();
-				updateUi();
-			}
-		};
 		disableUi();
 	}
 
 	private void disableUi() {
-		for(JComponent c : components)
-			c.setEnabled(false);
+		for(Action a : actions)
+			a.setEnabled(false);
 	}
 
-	private JButton createNextButton() {
-		final JButton btnNext = TranslatedElementFactory.createButton("slide.next");
-		btnNext.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				presentationState.showNextSlide();
-			}
-		});
-		return btnNext;
-	}
-
-	private JToggleButton createCurrentButton() {
-		final JToggleButton btnCurrent = TranslatedElementFactory.createToggleButton("slide.current");
-		btnCurrent.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (presentationState.isPresentationRunning())
-					presentationState.stopPresentation();
-				else
-					presentationState.showSlide();
-			}
-		});
-		return btnCurrent;
-	}
-	private JButton createPreviousButton() {
-		final JButton btnPrevious = TranslatedElementFactory.createButton("slide.previous");
-		btnPrevious.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				presentationState.showPreviousSlide();
-			}
-		});
-		return btnPrevious;
-	}
-	
 	Box createNavigationBox() {
+		JButton btnPrevious = TranslatedElementFactory.createButton(showPreviousSlideAction, "slide.previous");
+		JToggleButton tglbtnCurrent = TranslatedElementFactory.createToggleButton(showCurrentSlideAction, "slide.current");
+		JButton btnNext = TranslatedElementFactory.createButton(showNextSlideAction, "slide.next");
 		Box slideButtons = Box.createHorizontalBox();
 		TranslatedElementFactory.createTitledBorder(slideButtons, "slide.show");
 		slideButtons.add(Box.createHorizontalGlue());
@@ -118,5 +137,12 @@ class NavigationPanelController {
 		slideButtons.setAlignmentX(Box.CENTER_ALIGNMENT);
 		return slideButtons;
 	}
+
+	void registerActions(ModeController modeController) {
+		modeController.addAction(showCurrentSlideAction);
+		modeController.addAction(showNextSlideAction);
+		modeController.addAction(showPreviousSlideAction);
+	}
 	
 }
+

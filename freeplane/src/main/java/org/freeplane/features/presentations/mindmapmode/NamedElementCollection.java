@@ -37,7 +37,12 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 			public void contentsChanged(ListDataEvent e) {
 				final int index = e.getIndex0();
 				if (index == -1 && e.getIndex1() == index && ! moveInProgress){
-					selectCurrentElement(elements.getIndexOf(elements.getSelectedItem()));
+					final int newIndex = elements.getIndexOf(elements.getSelectedItem());
+					if(newIndex != -1) {
+						currentIndex = newIndex;
+						fireCollectionChangeEvent(SELECTION_INDEX_CHANGED);
+						fireCollectionChangeEvent(SELECTION_CHANGED);
+					}
 				}
 			}
 		});

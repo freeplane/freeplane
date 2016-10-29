@@ -8,6 +8,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
+import org.freeplane.features.mode.ModeController;
 
 public class PresentationEditorController {
 	private final CollectionBoxController<Presentation> presentationPanelController;
@@ -86,6 +87,10 @@ public class PresentationEditorController {
 		Box navigation = navigationPanelController.createNavigationBox();
 		panel.add(navigation);
 		return panel;
+	}
+
+	void registerActions(ModeController modeController) {
+		navigationPanelController.registerActions(modeController);
 	}
 
 }

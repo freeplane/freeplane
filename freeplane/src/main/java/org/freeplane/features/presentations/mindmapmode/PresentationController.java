@@ -30,7 +30,7 @@ public class PresentationController implements IExtension{
 	private static final Color NODE_HIGHLIGHTING_COLOR = Color.GREEN.brighter();
 	private final PresentationState presentationState;
 	private final PresentationEditorController presentationEditorController;
-	private ModeController modeController;
+	ModeController modeController;
 	
 	public static void install(final ModeController modeController) {
 		final PresentationController presentationController = new PresentationController(modeController);
@@ -54,6 +54,10 @@ public class PresentationController implements IExtension{
 
 	}
 
+	private void registerActions() {
+		presentationEditorController.registerActions(modeController);
+	}
+
 	boolean isNodeHighlighted(NodeModel node) {
 		return presentationState.isNodeHighlighted(node) && ! presentationState.isPresentationRunning();
 	}
@@ -71,12 +75,6 @@ public class PresentationController implements IExtension{
 		});
 	}
 
-	private void registerActions() {
-		modeController.addAction(new ShowCurrentSlideAction(presentationState));
-		modeController.addAction(new ShowPreviousSlideAction(presentationState));
-		modeController.addAction(new ShowNextSlideAction(presentationState));
-	}
-	
 	private void addMapSelectionListener() {
 		IMapSelectionListener mapSelectionListener = new IMapSelectionListener() {
 			
@@ -190,96 +188,5 @@ public class PresentationController implements IExtension{
 		final Component mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 		if(mapViewComponent != null)
 			mapViewComponent.repaint();
-	}
-}
-
-@SuppressWarnings("serial")
-@SelectableAction
-@EnabledAction
-class ShowCurrentSlideAction extends AFreeplaneAction {
-	private PresentationState presentationState;
-
-	public ShowCurrentSlideAction(PresentationState presentationState) {
-		super("ShowCurrentSlideAction");
-		this.presentationState = presentationState;
-		presentationState.addPresentationStateListener(new PresentationStateChangeListener() {
-			@Override
-			public void onPresentationStateChange(PresentationStateChangeEvent presentationStateChangeEvent) {
-				setSelected(ShowCurrentSlideAction.this.presentationState.isPresentationRunning());
-				setEnabled(ShowCurrentSlideAction.this.presentationState.canShowCurrentSlide());
-			}
-		});
-		setSelected(false);
-		setEnabled(false);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (presentationState.isPresentationRunning())
-			presentationState.stopPresentation();
-		else if (presentationState.canShowCurrentSlide())
-			presentationState.showSlide();
-		setSelected(presentationState.isPresentationRunning());
-	}
-
-	@Override
-	public void afterMapChange(final Object newMap) {
-	}
-}
-
-@SuppressWarnings("serial")
-@EnabledAction
-class ShowNextSlideAction extends AFreeplaneAction {
-	private final PresentationState presentationState;
-
-	public ShowNextSlideAction(PresentationState presentationState) {
-		super("ShowNextSlideAction");
-		this.presentationState = presentationState;
-		presentationState.addPresentationStateListener(new PresentationStateChangeListener() {
-			@Override
-			public void onPresentationStateChange(PresentationStateChangeEvent presentationStateChangeEvent) {
-				setEnabled(ShowNextSlideAction.this.presentationState.canShowNextSlide());
-			}
-		});
-		setEnabled(false);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (presentationState.canShowNextSlide())
-			presentationState.showNextSlide();
-	}
-
-	@Override
-	public void afterMapChange(final Object newMap) {
-	}
-
-}
-
-@SuppressWarnings("serial")
-@EnabledAction
-class ShowPreviousSlideAction extends AFreeplaneAction {
-	private PresentationState presentationState;
-
-	public ShowPreviousSlideAction(PresentationState presentationState) {
-		super("ShowPreviousSlideAction");
-		this.presentationState = presentationState;
-		presentationState.addPresentationStateListener(new PresentationStateChangeListener() {
-			@Override
-			public void onPresentationStateChange(PresentationStateChangeEvent presentationStateChangeEvent) {
-				setEnabled(ShowPreviousSlideAction.this.presentationState.canShowPreviousSlide());
-			}
-		});
-		setEnabled(false);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (presentationState.canShowPreviousSlide())
-			presentationState.showPreviousSlide();
-	}
-
-	@Override
-	public void afterMapChange(final Object newMap) {
 	}
 }

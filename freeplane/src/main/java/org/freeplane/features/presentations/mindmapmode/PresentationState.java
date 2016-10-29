@@ -71,14 +71,12 @@ public class PresentationState {
 		NamedElementCollection<Slide> slides = currentPresentation.slides;
 		final int currentElementIndex = slides.getCurrentElementIndex();
 		slides.selectCurrentElement(currentElementIndex + 1);
-		showSlide();
 	}
 
 	public void showPreviousSlide() {
 		NamedElementCollection<Slide> slides = currentPresentation.slides;
 		final int currentElementIndex = slides.getCurrentElementIndex();
 		slides.selectCurrentElement(currentElementIndex - 1);
-		showSlide();
 	}
 
 	public boolean canShowNextSlide() {
@@ -103,6 +101,8 @@ public class PresentationState {
 	}
 
 	void changeSlide() {
+		if(isPresentationRunning())
+			currentSlide.apply();
 		firePresentationStateChangedEvent(SLIDE_CHANGED);
 	}
 

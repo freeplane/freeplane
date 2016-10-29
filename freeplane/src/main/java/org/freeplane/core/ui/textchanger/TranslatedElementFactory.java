@@ -1,5 +1,6 @@
 package org.freeplane.core.ui.textchanger;
 
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -7,25 +8,34 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JToggleButton;
 
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.util.TextUtils;
 
 public class TranslatedElementFactory {
 	
-	public static JButton createButton(String labelKey) {
+	public static JButton createButton(Action action, String labelKey) {
+		final JButton component = action != null ? new JButton(action) : new JButton();
 		final String text = TextUtils.getRawText(labelKey);
-		final JButton component = new JButton();
 		LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
 		TranslatedElement.TEXT.setKey(component, labelKey);
 		return component;
 	}
+
+	public static JButton createButton(String labelKey) {
+		return createButton(null, labelKey);
+	}
 	
-	public static JToggleButton createToggleButton(String labelKey) {
+	public static JToggleButton createToggleButton(Action action, String labelKey) {
+		final JToggleButton component = action != null ? new JToggleButton(action) : new JToggleButton(action);
 		final String text = TextUtils.getRawText(labelKey);
-		final JToggleButton component = new JToggleButton();
 		LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
 		TranslatedElement.TEXT.setKey(component, labelKey);
 		return component;
+	}
+
+	public static JToggleButton createToggleButton(String labelKey) {
+		return createToggleButton(null, labelKey);
 	}
 	
 	public static JCheckBox createCheckBox(String labelKey) {
@@ -56,4 +66,5 @@ public class TranslatedElementFactory {
 			TranslatedElement.TOOLTIP.setKey(component, labelKey);
 		}
 	}
+
 }
