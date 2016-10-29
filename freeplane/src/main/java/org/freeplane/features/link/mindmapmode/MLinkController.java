@@ -61,9 +61,11 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.link.ConnectorModel;
@@ -421,7 +423,7 @@ public class MLinkController extends LinkController {
                 new ChangeConnectorArrowsAction(this, "backward", link, ArrowType.DEFAULT, ArrowType.NONE),
                 new ChangeConnectorArrowsAction(this, "both", link, ArrowType.DEFAULT, ArrowType.DEFAULT)
 		};
-        final JComboBox connectorArrows = createActionBox(arrowActions);
+        JComboBoxWithBorder connectorArrows = createActionBox(arrowActions);
 		addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_arrows"), connectorArrows);
 
         final boolean twoNodesConnector = ! link.getSource().equals(link.getTarget());
@@ -441,7 +443,7 @@ public class MLinkController extends LinkController {
                     new ChangeConnectorShapeAction(this, link, Shape.LINEAR_PATH)
             };
         }
-            final JComboBox connectorShapes = createActionBox(shapeActions);
+            final JComboBoxWithBorder connectorShapes = createActionBox(shapeActions);
             addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_shapes"), connectorShapes);
 
         AFreeplaneAction[] dashActions = new AFreeplaneAction[] {
@@ -451,7 +453,9 @@ public class MLinkController extends LinkController {
                 new ChangeConnectorDashAction(this, link, new int[]{2, 7}),
                 new ChangeConnectorDashAction(this, link, new int[]{2, 7, 7, 7})
         };
-        final JComboBox connectorDashes = createActionBox(dashActions);
+        final JComboBoxWithBorder connectorDashes = createActionBox(dashActions);
+		final int verticalMargin = new Quantity<>(3, LengthUnits.pt).toBaseUnitsRounded();
+        connectorDashes.setVerticalMargin(verticalMargin);
         addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_lines"), connectorDashes);
 
 		final SpinnerNumberModel widthModel = new SpinnerNumberModel(link.getWidth(),1, 32, 1);
@@ -558,8 +562,8 @@ public class MLinkController extends LinkController {
 	}
 
     @SuppressWarnings("serial")
-    protected JComboBox createActionBox(AFreeplaneAction[] items) {
-        final JComboBox box = new JComboBoxWithBorder();
+    protected JComboBoxWithBorder createActionBox(AFreeplaneAction[] items) {
+        final JComboBoxWithBorder box = new JComboBoxWithBorder();
         box.setEditable(false);
         box.setModel(new DefaultComboBoxModel(items));
         for(AFreeplaneAction item : items){
