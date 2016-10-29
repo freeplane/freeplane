@@ -141,6 +141,7 @@ public class MLinkController extends LinkController {
 		public void act() {
 			NodeLinks nodeLinks = NodeLinks.createLinkExtension(source);
 			arrowLink = new ConnectorModel(source, targetID,
+				getStandardConnectorArrows(),
 				getStandardConnectorColor(), getStandardConnectorAlpha(),
 				getStandardConnectorShape(), getStandardConnectorWidth(),
 				getStandardLabelFontFamily(), getStandardLabelFontSize());

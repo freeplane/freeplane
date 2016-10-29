@@ -45,6 +45,7 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.TimePeriodUnits;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLException;
@@ -92,7 +93,8 @@ public class OptionPanelBuilder {
 				}
 				displayedItems.add(displayedItem);
 			}
-			return createComboProperty(name, choices, displayedItems);
+			final int verticalMargin = Quantity.fromString(data.getAttribute("vertical_margin", "0"), LengthUnits.pt).toBaseUnitsRounded();
+			return createComboProperty(name, choices, displayedItems, verticalMargin);
 		}
 	}
 	private class LanguagesComboCreator extends PropertyCreator {
@@ -123,7 +125,7 @@ public class OptionPanelBuilder {
 					displayedItems.add(entry.getKey());
 				}
 			}
-			return createComboProperty(name, choices, displayedItems);
+			return createComboProperty(name, choices, displayedItems, 0);
 		}
 
 		private Set<String> findAvailableLocales() {
@@ -429,8 +431,8 @@ public class OptionPanelBuilder {
 	}
 
 	public void addComboProperty(final String path, final String name, final Vector<String> choices,
-	                             final Vector<String> displayedItems, final int position) {
-		final IPropertyControlCreator creator = createComboProperty(name, choices, displayedItems);
+	                             final Vector<?> displayedItems, final int position) {
+		final IPropertyControlCreator creator = createComboProperty(name, choices, displayedItems, 0);
 		addCreator(path, creator, name, position);
 	}
 
@@ -506,10 +508,13 @@ public class OptionPanelBuilder {
 	}
 
 	private IPropertyControlCreator createComboProperty(final String name, final Vector<String> choices,
-			final Vector<?> displayedItems) {
+			final Vector<?> displayedItems, final int verticalMargin) {
 		return new IPropertyControlCreator() {
 			public IPropertyControl createControl() {
-				return new ComboProperty(name, choices, displayedItems);
+				final ComboProperty comboProperty = new ComboProperty(name, choices, displayedItems);
+				if(verticalMargin > 0)
+					comboProperty.setVerticalMargin(verticalMargin);
+				return comboProperty;
 			}
 		};
 	}
