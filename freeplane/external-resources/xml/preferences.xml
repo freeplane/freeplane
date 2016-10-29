@@ -124,6 +124,12 @@
 				
 			</separator>
 			<separator name="connectors">
+				<combo name="connector_arrows" vertical_margin="6 pt">
+					<choice value="NONE" icon="arrow-mode-none.png" />
+					<choice value="FORWARD" icon="arrow-mode-forward.png" />
+					<choice value="BACKWARD" icon="arrow-mode-backward.png" />
+					<choice value="BOTH" icon="arrow-mode-both.png" />
+				</combo>
 				<color name="standardlinkcolor" />
 				<number name="connector_alpha" text="edit_transparency_label"
 					min="20" max="255" />
