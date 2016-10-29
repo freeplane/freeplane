@@ -85,10 +85,10 @@ class NavigationPanelController {
 	
 	private final Action[] actions;
 	
-	private PresentationState presentationState;
-	final AFreeplaneAction showNextSlideAction;
-	final AFreeplaneAction showCurrentSlideAction;
-	final ShowPreviousSlideAction showPreviousSlideAction;
+	private final PresentationState presentationState;
+	private final AFreeplaneAction showNextSlideAction;
+	private final AFreeplaneAction showCurrentSlideAction;
+	private final ShowPreviousSlideAction showPreviousSlideAction;
 
 	public void setPresentation(Presentation presentation) {
 		updateUi();
