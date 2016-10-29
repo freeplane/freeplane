@@ -228,7 +228,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			cachedImage = ImageIO.read(cacheFile);
 		}
 		catch (final IOException e) {
-			LogUtils.severe("ImageIO can not read cache file " + cacheFile , e);
+			logImageReadingException(e);
 		}
 	}
 
@@ -261,13 +261,17 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			tempImage = ImageIO.read(url);
 		}
 		catch (final IOException e) {
-			final Throwable cause = e.getCause();
-			if(! (cause instanceof FileNotFoundException))
-				LogUtils.severe(e);
-			else
-				LogUtils.warn(cause.getMessage());
+			logImageReadingException(e);
 		}
 		return tempImage;
+	}
+
+	private void logImageReadingException(final IOException e) {
+		final Throwable cause = e.getCause();
+		if(! (cause instanceof FileNotFoundException))
+			LogUtils.severe(e);
+		else
+			LogUtils.warn(cause.getMessage());
 	}
 
 	private void flushImage() {
