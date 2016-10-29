@@ -25,6 +25,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
@@ -260,7 +261,11 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			tempImage = ImageIO.read(url);
 		}
 		catch (final IOException e) {
-			LogUtils.severe(e);
+			final Throwable cause = e.getCause();
+			if(! (cause instanceof FileNotFoundException))
+				LogUtils.severe(e);
+			else
+				LogUtils.warn(cause.getMessage());
 		}
 		return tempImage;
 	}
