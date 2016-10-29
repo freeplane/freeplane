@@ -107,7 +107,7 @@ public class MModeController extends ModeController {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		URL preferences = resourceController.getResource("/xml/preferences.xml");
 		optionPanelBuilder.load(preferences);
-		addAction(createPropertyAction(optionPanelBuilder));
+		getController().addAction(createPropertyAction(optionPanelBuilder));
 	}
 
 	public static PropertyAction createPropertyAction(OptionPanelBuilder optionPanelBuilder) {
