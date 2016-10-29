@@ -45,7 +45,7 @@ import org.freeplane.core.util.TextUtils;
 /**
  * @author foltin
  */
-public class PropertyAction extends AFreeplaneAction {
+public class ShowPreferencesAction extends AFreeplaneAction {
 	/**
 	 *
 	 */
@@ -56,8 +56,8 @@ public class PropertyAction extends AFreeplaneAction {
 	 * @param controls
 	 *
 	 */
-	public PropertyAction( final DefaultMutableTreeNode controls) {
-		super("PropertyAction");
+	public ShowPreferencesAction( final DefaultMutableTreeNode controls) {
+		super("ShowPreferencesAction");
 		this.controls = controls;
 	}
 
@@ -106,7 +106,7 @@ public class PropertyAction extends AFreeplaneAction {
 		}
 		options.buildPanel(controls);
 		options.setProperties();
-		final String title = TextUtils.getText("PropertyAction.dialog");
+		final String title = TextUtils.getText("ShowPreferencesAction.dialog");
 		dialog.setTitle(title);
 		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {

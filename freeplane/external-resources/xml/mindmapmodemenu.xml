@@ -452,7 +452,7 @@
 			<Entry builder="separator" />
 			<Entry name="OpenUserDirAction" />
 			<Entry builder="separator" />
-			<Entry name="PropertyAction" accelerator="control COMMA" builder="removeOnMac"/>
+			<Entry name="ShowPreferencesAction" accelerator="control COMMA" builder="removeOnMac"/>
 			<Entry builder="conditionalActionBuilder" property="enableUserDefinedInterfaceStrings" 
 				actionKey="TextChangeHotKeyAction" 
 				actionClass="org.freeplane.core.ui.textchanger.TextChangeHotKeyAction" 

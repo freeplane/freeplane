@@ -27,7 +27,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
-import org.freeplane.core.resources.components.PropertyAction;
+import org.freeplane.core.resources.components.ShowPreferencesAction;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
@@ -110,7 +110,7 @@ public class MModeController extends ModeController {
 		getController().addAction(createPropertyAction(optionPanelBuilder));
 	}
 
-	public static PropertyAction createPropertyAction(OptionPanelBuilder optionPanelBuilder) {
+	public static ShowPreferencesAction createPropertyAction(OptionPanelBuilder optionPanelBuilder) {
 	    final LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
 		final Vector<String> lafNames = new Vector<String>(lafInfo.length + 1);
 		final Vector<String> translatedLafNames = new Vector<String>(lafInfo.length + 1);
@@ -125,7 +125,7 @@ public class MModeController extends ModeController {
 		addCurrentLookAndFeelIfNecessary(lafNames, translatedLafNames);
 		optionPanelBuilder.addEditableComboProperty("Appearance/look_and_feel/lookandfeel", LOOKANDFEEL_PROPERTY, lafNames,
 		    translatedLafNames, IndexedTree.AS_CHILD);
-		return new PropertyAction(optionPanelBuilder.getRoot());
+		return new ShowPreferencesAction(optionPanelBuilder.getRoot());
     }
 
     private static void addCurrentLookAndFeelIfNecessary(Vector<String> lafNames, Vector<String> translatedLafNames) {
