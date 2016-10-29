@@ -83,8 +83,10 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 			if(newSelecteditem != elements.getSelectedItem()) {
 				elements.setSelectedItem(newSelecteditem);
 			}
-			fireCollectionChangeEvent(SELECTION_INDEX_CHANGED);
-			fireCollectionChangeEvent(SELECTION_CHANGED);
+			else { 
+				fireCollectionChangeEvent(SELECTION_INDEX_CHANGED);
+				fireCollectionChangeEvent(SELECTION_CHANGED);
+			}
 		}
 	}
 
