@@ -10,6 +10,7 @@ import javax.swing.JToggleButton;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.mode.ModeController;
 
@@ -125,13 +126,13 @@ class NavigationPanelController {
 
 	Box createNavigationBox() {
 		JButton btnPrevious = TranslatedElementFactory.createButton(showPreviousSlideAction, "slide.previous");
-		JToggleButton tglbtnCurrent = TranslatedElementFactory.createToggleButton(showCurrentSlideAction, "slide.current");
+		JToggleButton tglbtnCurrent = TranslatedElementFactory.createToggleButton(showCurrentSlideAction, "slide.present");
 		JButton btnNext = TranslatedElementFactory.createButton(showNextSlideAction, "slide.next");
 		Box slideButtons = Box.createHorizontalBox();
-		TranslatedElementFactory.createTitledBorder(slideButtons, "slide.show");
+		TranslatedElementFactory.createTitledBorder(slideButtons, "slide.presentation");
 		slideButtons.add(Box.createHorizontalGlue());
-		slideButtons.add(btnPrevious);
 		slideButtons.add(tglbtnCurrent);
+		slideButtons.add(btnPrevious);
 		slideButtons.add(btnNext);
 		slideButtons.add(Box.createHorizontalGlue());
 		slideButtons.setAlignmentX(Box.CENTER_ALIGNMENT);

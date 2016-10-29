@@ -4,7 +4,6 @@ import static org.freeplane.features.presentations.mindmapmode.CollectionChanged
 import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.SELECTION_CHANGED;
 import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.SELECTION_INDEX_CHANGED;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 
 import javax.swing.ComboBoxModel;
@@ -65,15 +64,15 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 		final Stringifyed<T> anObject = new Stringifyed<>(element);
 		elements.insertElementAt(anObject, newElementIndex);
 		elements.setSelectedItem(anObject);
-		fireCollectionChangeEvent(COLLECTION_SIZE_CHANGED);
 		selectCurrentElement(newElementIndex);
+		fireCollectionChangeEvent(COLLECTION_SIZE_CHANGED);
 	}
 
 	public void removeCurrentElement() {
 		if(currentIndex >= 0) {
 			elements.removeElementAt(currentIndex);
-			fireCollectionChangeEvent(COLLECTION_SIZE_CHANGED);
 			selectCurrentElement(Math.min(currentIndex, elements.getSize() - 1));
+			fireCollectionChangeEvent(COLLECTION_SIZE_CHANGED);
 		}
 	}
 
@@ -83,11 +82,9 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 			final Stringifyed<T> newSelecteditem = elements.getElementAt(index);
 			if(newSelecteditem != elements.getSelectedItem()) {
 				elements.setSelectedItem(newSelecteditem);
-				fireCollectionChangeEvent(SELECTION_INDEX_CHANGED);
-				fireCollectionChangeEvent(SELECTION_CHANGED);
 			}
-			else
-				fireCollectionChangeEvent(SELECTION_INDEX_CHANGED);
+			fireCollectionChangeEvent(SELECTION_INDEX_CHANGED);
+			fireCollectionChangeEvent(SELECTION_CHANGED);
 		}
 	}
 
