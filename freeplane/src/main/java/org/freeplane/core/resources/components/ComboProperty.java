@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.border.Border;
+import javax.swing.ListCellRenderer;
 
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.util.LogUtils;
@@ -133,6 +133,10 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 	public boolean isEditable() {
 	    return mComboBox.isEditable();
     }
+
+	public void setRenderer(ListCellRenderer<?> renderer) {
+		mComboBox.setRenderer(renderer);
+	}
 
 
 }

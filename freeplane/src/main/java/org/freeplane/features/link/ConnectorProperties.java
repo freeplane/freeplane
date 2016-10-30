@@ -46,7 +46,7 @@ class ConnectorProperties{
 	private String labelFontFamily;
 	private int labelFontSize;
 
-	public ConnectorProperties(ConnectorArrows connectorEnds, final Color color,
+	public ConnectorProperties(ConnectorArrows connectorEnds, int[] dash, final Color color,
 	                      final int alpha, final Shape shape, final int width,
 	                      final String labelFontFamily, final int labelFontSize) {
 		assert color != null;
@@ -54,6 +54,7 @@ class ConnectorProperties{
 		assert connectorEnds!=null;
 		this.startArrow = connectorEnds.start;
 		this.endArrow = connectorEnds.end;
+		this.dash = dash;
 		this.color = color;
 		this.setAlpha(alpha);
 		this.width = width;

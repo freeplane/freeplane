@@ -444,6 +444,7 @@ public class LinkController extends SelectionController implements IExtension {
 	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
 	private static final String RESOURCES_CONNECTOR_SHAPE = "connector_shape";
 	private static final String RESOURCES_CONNECTOR_ARROWS = "connector_arrows";
+	private static final String RESOURCES_DASH_VARIANT = "connector_dash";
 	private static final String RESOURCES_CONNECTOR_COLOR_ALPHA = "connector_alpha";
 	private static final String RESOURCES_CONNECTOR_WIDTH = "connector_width";
 
@@ -804,6 +805,13 @@ public class LinkController extends SelectionController implements IExtension {
 		final ConnectorArrows arrows = ConnectorArrows.valueOf(standard);
 		return arrows;
 	}
+	
+	public DashVariant getStandardDashVariant() {
+		final String standard = ResourceController.getResourceController().getProperty(RESOURCES_DASH_VARIANT);
+		final DashVariant variant = DashVariant.valueOf(standard);
+		return variant;
+	}
+
 	public Shape getStandardConnectorShape() {
 		final String standardShape = ResourceController.getResourceController().getProperty(RESOURCES_CONNECTOR_SHAPE);
 		final Shape shape = Shape.valueOf(standardShape);

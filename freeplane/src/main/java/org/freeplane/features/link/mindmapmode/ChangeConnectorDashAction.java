@@ -28,9 +28,6 @@ import org.freeplane.features.link.DashVariant;
 import org.freeplane.features.link.LinkController;
 
 class ChangeConnectorDashAction extends AFreeplaneAction {
-	private static final int LINE_WIDTH = 2;
-	private static final int ICON_HEIGHT = 6;
-	private static final int ICON_WIDTH = 60;
 	/**
 	 * 
 	 */
@@ -40,7 +37,7 @@ class ChangeConnectorDashAction extends AFreeplaneAction {
 
 	public ChangeConnectorDashAction(final MLinkController linkController,
 	                                   final ConnectorModel connector, final DashVariant dash) {
-		super("ChangeConnectorDashAction", "", dash.createIcon(ChangeConnectorDashAction.ICON_WIDTH, ChangeConnectorDashAction.ICON_HEIGHT, LINE_WIDTH));
+		super("ChangeConnectorDashAction", "", dash.icon);
 		this.connector = connector;
 		this.dash = dash;
 		final int[] dash2 = connector.getDash();

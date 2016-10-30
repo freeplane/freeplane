@@ -34,10 +34,10 @@ public class ConnectorModel extends NodeLinkModel {
 	final private ConnectorProperties connectorProperties;
 	
 	public ConnectorModel(final NodeModel source, final String targetID,
-			final ConnectorArrows connectorEnds,
+			final ConnectorArrows connectorEnds, int[] dash, 
 			final Color color,final int alpha, final Shape shape, final int width,
 	                      final String labelFontFamily, final int labelFontSize) {
-		this(source, targetID, new ConnectorProperties(connectorEnds, color, alpha, shape, width, labelFontFamily, labelFontSize));
+		this(source, targetID, new ConnectorProperties(connectorEnds, dash, color, alpha, shape, width, labelFontFamily, labelFontSize));
 	}
 
 	private ConnectorModel(final NodeModel source, final String targetID, final ConnectorProperties connectorProperties) {
