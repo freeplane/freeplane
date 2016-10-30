@@ -603,12 +603,12 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public URI createRelativeURI(final File mapFile, final URI targetUri) {
-		URI mapUri = null;
 		if (mapFile != null) {
-			mapUri = mapFile.getAbsoluteFile().toURI();
+			URI mapUri = mapFile.getAbsoluteFile().toURI();
+			return createRelativeURI(mapUri, targetUri);
 		}
-
-		return createRelativeURI(mapUri, targetUri);
+		else
+			return targetUri;
 	}
 
 	public URI createRelativeURI(URI mapUri, final URI targetUri){
