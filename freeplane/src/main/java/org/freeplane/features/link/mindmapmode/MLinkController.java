@@ -735,7 +735,7 @@ public class MLinkController extends LinkController {
 	}
 
 	private URI relativeLink(final URI argUri, final NodeModel node, final int linkType) {
-		if (linkType != LINK_ABSOLUTE && "file".equals(argUri.getScheme())) {
+		if (linkType == LINK_RELATIVE_TO_MINDMAP && "file".equals(argUri.getScheme())) {
 			try {
 				final File mapFile = node.getMap().getFile();
 				return createRelativeURI(mapFile, argUri);

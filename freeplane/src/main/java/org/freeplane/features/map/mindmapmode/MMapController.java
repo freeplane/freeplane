@@ -358,7 +358,7 @@ public class MMapController extends MapController {
 			final int returnVal = JOptionPane.showOptionDialog(dialogParent, text, title,
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
 			if (returnVal == JOptionPane.YES_OPTION) {
-				final boolean savingNotCancelled = ((MFileManager) UrlManager.getController())
+				final boolean savingNotCancelled = ((MFileManager) getModeController().getExtension(UrlManager.class))
 						.save(map);
 				if (!savingNotCancelled) {
 					return false;

@@ -304,9 +304,6 @@ public class MModeControllerFactory {
 			    @Override
 			    public Component createComponent(Entry entry) {
 				    final Container fontBox = uiFactory.createFontBox();
-				    final Dimension preferredSize = fontBox.getPreferredSize();
-				    preferredSize.width = 90;
-				    fontBox.setPreferredSize(preferredSize);
 				    return fontBox;
 			    }
 		    }), EntryVisitor.EMTPY);

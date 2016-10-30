@@ -106,12 +106,14 @@ public class SModeControllerFactory {
 	private ExtensionInstaller extentionInstaller;
 
 	Controller createController(final JDialog dialog) {
+		Controller currentController = Controller.getCurrentController();
 		final Controller controller = new Controller(ResourceController.getResourceController());
 		Controller.setCurrentController(controller);
 		final MapViewController mapViewController = new MMapViewController(controller);
 		final DialogController viewController = new DialogController(controller, mapViewController, dialog);
 		controller.setViewController(viewController);
 		controller.addExtension(HighlightController.class, new HighlightController());
+		controller.addAction(currentController.getAction("AboutAction"));
 		FilterController.install();
 		TextController.install();
 		controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
