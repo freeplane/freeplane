@@ -20,9 +20,9 @@ public class CssRuleBuilder {
 
 	public CssRuleBuilder withFont(Font font, float fontScaleFactor) {
 		if (font != null) {
-			rule.append(" font-family: ");
+			rule.append(" font-family: \"");
 			rule.append(font.getFamily());
-			rule.append("; ");
+			rule.append("\"; ");
 			rule.append(" font-size: ");
 			final int fontSize = Math.round(font.getSize() / fontScaleFactor);
 			rule.append(fontSize);

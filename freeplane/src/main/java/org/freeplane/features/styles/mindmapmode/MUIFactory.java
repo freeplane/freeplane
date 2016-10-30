@@ -26,12 +26,14 @@ import java.util.Collection;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -203,9 +205,13 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	}
 
 	public Container createFontBox() {
-		final JComboBox fontsBox = new JComboBoxWithBorder(fonts);
+		final JComboBox fontsBox = new JComboBoxWithBorder();
 		fontsBox.setMaximumRowCount(9);
 		fontsBox.setRenderer(new ComboBoxRendererWithTooltip(fontsBox));
+		final Dimension preferredSize = fontsBox.getPreferredSize();
+		preferredSize.width = Math.round(150 * UITools.FONT_SCALE_FACTOR);
+		fontsBox.setPreferredSize(preferredSize);
+		fontsBox.setModel(fonts);
 		return fontsBox;
 	}
 

@@ -47,13 +47,15 @@ public class SurveyStarter implements ApplicationLifecycleListener{
 					try (final InputStream input = freeplaneSurveyProperties.openRemoteConfiguration()) {
 						surveyProperties.load(input);
 						final int frequency = Integer.parseInt(surveyProperties.getProperty(FREQUENCY_KEY));
-						if(frequency > 0 && randomNumber < 1. / frequency) {
+						if(frequency > 0 && randomNumber < 1. / frequency || freeplaneSurveyProperties.remindMeLaterIsActive()) {
 							surveyId = surveyProperties.getProperty(SURVEY_ID_KEY);
 							title = surveyProperties.getProperty(TITLE_KEY);
 							question = surveyProperties.getProperty(QUESTION_KEY);
 							surveyUrl = surveyProperties.getProperty(SURVEY_URL_KEY);
 							runOn = RunningPoint.valueOf(surveyProperties.getProperty(RUN_ON_KEY, RunningPoint.NEVER.name()));
 						}
+						else
+							runOn = RunningPoint.NEVER;
 					} catch (Exception e) {
 						runOn = RunningPoint.NEVER;
 					}

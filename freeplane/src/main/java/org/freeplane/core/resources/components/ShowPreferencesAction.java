@@ -45,7 +45,7 @@ import org.freeplane.core.util.TextUtils;
 /**
  * @author foltin
  */
-public class PropertyAction extends AFreeplaneAction {
+public class ShowPreferencesAction extends AFreeplaneAction {
 	/**
 	 *
 	 */
@@ -56,8 +56,8 @@ public class PropertyAction extends AFreeplaneAction {
 	 * @param controls
 	 *
 	 */
-	public PropertyAction( final DefaultMutableTreeNode controls) {
-		super("PropertyAction");
+	public ShowPreferencesAction( final DefaultMutableTreeNode controls) {
+		super("ShowPreferencesAction");
 		this.controls = controls;
 	}
 
@@ -67,16 +67,11 @@ public class PropertyAction extends AFreeplaneAction {
 			final Object source = e.getSource();
 			if(source instanceof Component){
 				final Window window = SwingUtilities.getWindowAncestor((Component) source);
-				if(window instanceof Dialog){
-					dialog= new JDialog((Dialog)window, true /* modal */);
-				}
-				else if(window instanceof Frame){
-					dialog= new JDialog((Frame)window, true /* modal */);
-				}
+				dialog = createDialog(window);
 			}
 		}
 		if(dialog == null){
-			dialog= new JDialog((Frame) UITools.getMenuComponent(), true /* modal */);
+			dialog= createDialog((Window) UITools.getMenuComponent());
 		}
 		dialog.setResizable(true);
 		dialog.setUndecorated(false);
@@ -106,7 +101,7 @@ public class PropertyAction extends AFreeplaneAction {
 		}
 		options.buildPanel(controls);
 		options.setProperties();
-		final String title = TextUtils.getText("PropertyAction.dialog");
+		final String title = TextUtils.getText("ShowPreferencesAction.dialog");
 		dialog.setTitle(title);
 		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {
@@ -130,6 +125,17 @@ public class PropertyAction extends AFreeplaneAction {
 			UITools.setBounds(dialog, -1, -1, dialog.getPreferredSize().width + 50, -1);
 		}
 		dialog.setVisible(true);
+	}
+
+	private JDialog createDialog(final Window window) {
+		if(window instanceof Dialog){
+			return new JDialog((Dialog)window, true /* modal */);
+		}
+		else if(window instanceof Frame){
+			return new JDialog((Frame)window, true /* modal */);
+		}
+		else
+			return null;
 	}
 
 	@Override

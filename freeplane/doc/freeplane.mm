@@ -14981,7 +14981,7 @@ elements from the styles activated by conditions are copied.</pre>
 </node>
 </node>
 <node TEXT="Preferences ..." FOLDED="true" ID="ID_827606855" CREATED="1455910904106" MODIFIED="1455910904106" TEXT_SHORTENED="true">
-<icon BUILTIN="../PropertyAction"/>
+<icon BUILTIN="../ShowPreferencesAction"/>
 <richcontent TYPE="DETAILS">
 
 <html>

@@ -129,6 +129,9 @@
 		<Entry name="extras">
 			<Entry name="SetAcceleratorOnNextClickAction" />
 		</Entry>
+		<Entry name="help">
+			<Entry name="AboutAction" builder="removeOnMac"/>
+		</Entry>
 	</Entry>
 	<Entry name="map_popup">
 		<Entry name="ToggleMenubarAction" builder="MP_ToggleMenubarAction" />
