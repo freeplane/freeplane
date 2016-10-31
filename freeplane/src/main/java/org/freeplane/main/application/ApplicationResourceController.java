@@ -150,7 +150,7 @@ public class ApplicationResourceController extends ResourceController {
 			relName = name;
 		}
 		URL resource = urlResourceLoader.getResource(relName);
-		if (resource != null) {
+		if (resource != null && new File(resource.getPath()).exists()) {
 			return resource;
 		}
 		resource = super.getResource(name);
