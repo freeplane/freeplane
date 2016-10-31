@@ -10,7 +10,6 @@ import javax.swing.JToggleButton;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.SelectableAction;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.mode.ModeController;
 
@@ -18,11 +17,56 @@ class NavigationPanelController {
 	
 	@SuppressWarnings("serial")
 	@EnabledAction
+	static private class StartPresentationOrShowNextSlideAction extends AFreeplaneAction {
+		private final PresentationState presentationState;
+
+		public StartPresentationOrShowNextSlideAction(PresentationState presentationState) {
+			super("StartPresentationOrShowNextSlideAction");
+			this.presentationState = presentationState;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(presentationState.isPresentationRunning()) { 
+				if (presentationState.canShowNextSlide())
+					presentationState.showNextSlide();
+			}
+			else if (presentationState.canShowCurrentSlide())
+				presentationState.showSlide();
+		}
+
+		@Override
+		public void afterMapChange(final Object newMap) {
+		}
+	}
+
+	@SuppressWarnings("serial")
+	@EnabledAction
+	static private class StopPresentationAction extends AFreeplaneAction {
+		private PresentationState presentationState;
+
+		public StopPresentationAction(PresentationState presentationState) {
+			super("StopPresentationAction");
+			this.presentationState = presentationState;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (presentationState.isPresentationRunning())
+				presentationState.stopPresentation();
+		}
+
+		@Override
+		public void afterMapChange(final Object newMap) {
+		}
+	}
+	@SuppressWarnings("serial")
+	@EnabledAction
 	static private class ShowNextSlideAction extends AFreeplaneAction {
 		private final PresentationState presentationState;
 
 		public ShowNextSlideAction(PresentationState presentationState) {
-			super("ShowNextSlideAction");
+			super(null, null, null);
 			this.presentationState = presentationState;
 		}
 
@@ -31,11 +75,12 @@ class NavigationPanelController {
 			if (presentationState.canShowNextSlide())
 				presentationState.showNextSlide();
 		}
-
+		
 		@Override
 		public void afterMapChange(final Object newMap) {
 		}
 	}
+	
 	@SuppressWarnings("serial")
 	@SelectableAction
 	@EnabledAction
@@ -43,7 +88,7 @@ class NavigationPanelController {
 		private PresentationState presentationState;
 
 		public ShowCurrentSlideAction(PresentationState presentationState) {
-			super("ShowCurrentSlideAction");
+			super(null, null, null);
 			this.presentationState = presentationState;
 		}
 
@@ -89,26 +134,37 @@ class NavigationPanelController {
 	private final PresentationState presentationState;
 	private final AFreeplaneAction showNextSlideAction;
 	private final AFreeplaneAction showCurrentSlideAction;
-	private final ShowPreviousSlideAction showPreviousSlideAction;
+	private final AFreeplaneAction showPreviousSlideAction;
+
+	private final StartPresentationOrShowNextSlideAction startPresentationOrShowNextSlideAction;
+
+	private final StopPresentationAction stopPresentationAction;
 
 	public void setPresentation(Presentation presentation) {
 		updateUi();
 	}
 
 	private void updateUi() {
-		showCurrentSlideAction.setSelected(presentationState.isPresentationRunning());
-		showPreviousSlideAction.setEnabled(presentationState.canShowPreviousSlide());
-		showNextSlideAction.setEnabled(presentationState.canShowNextSlide());
-		final boolean canShowCurrentSlide = presentationState.canShowCurrentSlide();
+		boolean isPresentationRunning = presentationState.isPresentationRunning();
+		boolean canShowCurrentSlide = presentationState.canShowCurrentSlide();
+		boolean canShowPreviousSlide = presentationState.canShowPreviousSlide();
+		boolean canShowNextSlide = presentationState.canShowNextSlide();
+		startPresentationOrShowNextSlideAction.setEnabled(! isPresentationRunning && canShowCurrentSlide || canShowNextSlide);
+		stopPresentationAction.setEnabled(isPresentationRunning);
+		showPreviousSlideAction.setEnabled(canShowPreviousSlide);
+		showNextSlideAction.setEnabled(canShowNextSlide);
 		showCurrentSlideAction.setEnabled(canShowCurrentSlide);
+		showCurrentSlideAction.setSelected(isPresentationRunning);
 	}
 
 	NavigationPanelController(final PresentationState presentationState){
 		this.presentationState = presentationState;
+		startPresentationOrShowNextSlideAction = new StartPresentationOrShowNextSlideAction(presentationState);
+		stopPresentationAction = new StopPresentationAction(presentationState);
 		showPreviousSlideAction = new ShowPreviousSlideAction(presentationState);
 		showCurrentSlideAction = new ShowCurrentSlideAction(presentationState);
 		showNextSlideAction = new ShowNextSlideAction(presentationState);
-		actions = new Action[]{showCurrentSlideAction, showNextSlideAction};
+		actions = new Action[]{startPresentationOrShowNextSlideAction, stopPresentationAction, showCurrentSlideAction, showNextSlideAction, showNextSlideAction};
 		PresentationStateChangeListener presentationStateListener = new PresentationStateChangeListener() {
 			@Override
 			public void onPresentationStateChange(PresentationStateChangeEvent presentationStateChangeEvent) {
@@ -140,8 +196,8 @@ class NavigationPanelController {
 	}
 
 	void registerActions(ModeController modeController) {
-		modeController.addAction(showCurrentSlideAction);
-		modeController.addAction(showNextSlideAction);
+		modeController.addAction(startPresentationOrShowNextSlideAction);
+		modeController.addAction(stopPresentationAction);
 		modeController.addAction(showPreviousSlideAction);
 	}
 	
