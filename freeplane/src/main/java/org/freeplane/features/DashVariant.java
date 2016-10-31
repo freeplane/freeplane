@@ -1,4 +1,4 @@
-package org.freeplane.features.link;
+package org.freeplane.features;
 
 import javax.swing.Icon;
 
@@ -14,7 +14,7 @@ public enum DashVariant  implements RenderedContentSupplier<DashVariant> {
 	DISTANT_DOTS(new int[]{2, 7}), 
 	DOTS_AND_DASHES(new int[]{2, 7, 7, 7});
 	
-	
+	public static DashVariant DEFAULT = DashVariant.SOLID;
 	public final int[] variant;
 	public final Icon icon;
 

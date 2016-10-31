@@ -23,8 +23,8 @@ import java.awt.event.ActionEvent;
 import java.util.Arrays;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.link.ConnectorModel;
-import org.freeplane.features.link.DashVariant;
 import org.freeplane.features.link.LinkController;
 
 class ChangeConnectorDashAction extends AFreeplaneAction {

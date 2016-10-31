@@ -71,6 +71,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.UIIcon;

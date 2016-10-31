@@ -14,6 +14,8 @@ public enum ConnectorArrows implements RenderedContentSupplier<ConnectorArrows>{
 	 BACKWARD(ArrowType.DEFAULT, ArrowType.NONE, "backward", "arrow-mode-backward.png"), 
 	 BOTH(ArrowType.DEFAULT, ArrowType.DEFAULT, "both", "arrow-mode-both.png");
 	
+	public static ConnectorArrows DEFAULT = ConnectorArrows.FORWARD;
+	
 	public final ArrowType start;
 	public final ArrowType end;
 	private final RenderedContent<ConnectorArrows> renderedContent;
