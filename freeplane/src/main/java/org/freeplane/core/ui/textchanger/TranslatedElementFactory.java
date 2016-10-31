@@ -8,8 +8,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JToggleButton;
 
-import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
+import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.util.TextUtils;
 
 public class TranslatedElementFactory {
@@ -27,7 +27,7 @@ public class TranslatedElementFactory {
 	}
 	
 	public static JToggleButton createToggleButton(Action action, String labelKey) {
-		final JToggleButton component = action != null ? new JToggleButton(action) : new JToggleButton(action);
+		final JToggleButton component = action != null ? new JAutoToggleButton(action) : new JAutoToggleButton();
 		final String text = TextUtils.getRawText(labelKey);
 		LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
 		TranslatedElement.TEXT.setKey(component, labelKey);

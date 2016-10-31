@@ -102,8 +102,9 @@ public class PresentationState {
 
 	void changeSlide() {
 		if(isPresentationRunning())
-			currentSlide.apply();
-		firePresentationStateChangedEvent(SLIDE_CHANGED);
+			showSlide();
+		else
+			firePresentationStateChangedEvent(SLIDE_CHANGED);
 	}
 
 	public boolean isNodeHighlighted(NodeModel node) {
