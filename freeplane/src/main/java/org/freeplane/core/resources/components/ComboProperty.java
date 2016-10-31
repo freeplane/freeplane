@@ -30,8 +30,11 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ListCellRenderer;
 
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.RenderedContent;
+import org.freeplane.core.ui.components.RenderedContentSupplier;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.DashVariant;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -60,7 +63,21 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 		this(name, Arrays.asList(strings), ComboProperty.translate(strings));
 	}
 	
-	
+
+	public static <T extends Enum<T> & RenderedContentSupplier<T>> ComboProperty of(String name, Class<T> enumClass) {
+		T[] enumConstants = enumClass.getEnumConstants();
+		final Vector<String> choices = new Vector<String>(enumConstants.length);
+		final Vector<Object> displayedItems = new Vector<Object>(enumConstants.length);
+		for(Object enumValue : enumConstants){
+			String choice = ((Enum<?>)enumValue).name();
+			choices.add(choice);
+			RenderedContent<?> renderedContent = ((RenderedContentSupplier<?>)enumValue).createRenderedContent();
+			displayedItems.add(renderedContent);
+		}
+		ComboProperty comboProperty = new ComboProperty(name, choices, displayedItems);
+		comboProperty.setRenderer(RenderedContent.createRenderer());
+		return comboProperty;
+	}
 
 	public void setVerticalMargin(int verticalMargin) {
 		mComboBox.setVerticalMargin(verticalMargin);
