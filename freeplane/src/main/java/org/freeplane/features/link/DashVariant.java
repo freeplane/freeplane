@@ -9,10 +9,10 @@ import org.freeplane.core.ui.components.UITools;
 
 public enum DashVariant  implements RenderedContentSupplier<DashVariant> {
 	SOLID(null), 
-	DOT(new int[]{3, 3}), 
-	DASH(new int[]{7, 7}), 
-	DOT_DASH(new int[]{2, 7}), 
-	DOT_THREE_DASHES(new int[]{2, 7, 7, 7});
+	CLOSE_DOTS(new int[]{3, 3}), 
+	DASHES(new int[]{7, 7}), 
+	DISTANT_DOTS(new int[]{2, 7}), 
+	DOTS_AND_DASHES(new int[]{2, 7, 7, 7});
 	
 	
 	public final int[] variant;
