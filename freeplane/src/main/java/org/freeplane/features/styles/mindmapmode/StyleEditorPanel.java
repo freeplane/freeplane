@@ -60,12 +60,14 @@ import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.RenderedContent;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.cloud.mindmapmode.MCloudController;
@@ -301,6 +303,20 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 
+	private class EdgeDashChangeListener extends ChangeListener {
+		public EdgeDashChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+			final MEdgeController styleController = (MEdgeController) Controller
+			.getCurrentModeController().getExtension(
+					EdgeController.class);
+			styleController.setDash(node, enabled ? DashVariant.valueOf(mEdgeDash.getValue()): null);
+		}
+	}
+
 	private class MaxNodeWidthChangeListener extends ChangeListener {
 		public MaxNodeWidthChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -523,6 +539,7 @@ public class StyleEditorPanel extends JPanel {
 	private static final String[] EDGE_STYLES = enumStrings(EdgeStyle.class, EdgeStyle.values().length - 1);
 	private static final String[] CLOUD_SHAPES = StyleEditorPanel.enumStrings(CloudModel.Shape.class);
 	private static final String EDGE_WIDTH = "edgewidth";
+	private static final String EDGE_DASH = "edgedash";
 //	private static final String ICON = "icon";
 	private static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
 	private static final String NODE_COLOR = "nodecolor";
@@ -583,6 +600,9 @@ public class StyleEditorPanel extends JPanel {
 	
 	private BooleanProperty mSetEdgeWidth;
 	private NumberProperty mEdgeWidth;
+
+	private BooleanProperty mSetEdgeDash;
+	private ComboProperty mEdgeDash;
 
 	private BooleanProperty mSetNodeBackgroundColor;
 	private ColorProperty mNodeBackgroundColor;
@@ -760,6 +780,16 @@ public class StyleEditorPanel extends JPanel {
 		final EdgeWidthChangeListener listener = new EdgeWidthChangeListener(mSetEdgeWidth, mEdgeWidth);
 		mSetEdgeWidth.addPropertyChangeListener(listener);
 		mEdgeWidth.addPropertyChangeListener(listener);
+	}
+
+	private void addEdgeDashControl(final List<IPropertyControl> controls) {
+		mSetEdgeDash = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetEdgeDash);
+		mEdgeDash = ComboProperty.of(EDGE_DASH, DashVariant.class);
+		controls.add(mEdgeDash);
+		final EdgeDashChangeListener listener = new EdgeDashChangeListener(mSetEdgeDash, mEdgeDash);
+		mSetEdgeDash.addPropertyChangeListener(listener);
+		mEdgeDash.addPropertyChangeListener(listener);
 	}
 
 	private void addMaxNodeWidthControl(final List<IPropertyControl> controls) {
@@ -964,6 +994,7 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("OptionPanel.separator.EdgeControls"));
 		addEdgeWidthControl(controls);
+		addEdgeDashControl(controls);
 		addEdgeStyleControl(controls);
 		addEdgeColorControl(controls);
 		controls.add(new NextLineProperty());
@@ -1215,6 +1246,12 @@ public class StyleEditorPanel extends JPanel {
 				final int viewWidth = edgeController.getWidth(node);
 				mSetEdgeWidth.setValue(width != EdgeModel.DEFAULT_WIDTH);
 				mEdgeWidth.setValue(Integer.toString(viewWidth));
+			}
+			{
+				final DashVariant dash = edgeModel != null ? edgeModel.getDash() : null;
+				final DashVariant viewDash = edgeController.getDash(node);
+				mSetEdgeDash.setValue(dash != null);
+				mEdgeDash.setValue(viewDash.name());
 			}
 			{
 				final CloudController cloudController = CloudController.getController();

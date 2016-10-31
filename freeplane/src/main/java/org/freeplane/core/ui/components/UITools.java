@@ -527,8 +527,14 @@ public class UITools {
 		});
     }
 
-	public static BasicStroke createStroke(int width, final int[] dash) {
-        final float[] fdash;
+	public static BasicStroke createStroke(float width, final int[] dash) {
+        final float[] fdash = toFloats(dash);
+    	final BasicStroke stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 1f, fdash, 0f);
+        return stroke;
+    }
+
+	public static float[] toFloats(final int[] dash) {
+		final float[] fdash;
     	if(dash  != null){
     		fdash = new float[dash.length];
     		int i = 0;
@@ -539,9 +545,8 @@ public class UITools {
     	else{
     		fdash = null;
     	}
-    	final BasicStroke stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 1f, fdash, 0f);
-        return stroke;
-    }
+		return fdash;
+	}
 
 	public static void repaintAll(Container root) {
 		root.repaint();

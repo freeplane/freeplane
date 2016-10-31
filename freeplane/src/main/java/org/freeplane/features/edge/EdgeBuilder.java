@@ -31,6 +31,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
@@ -102,6 +103,12 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter, IEleme
 				}
 			}
 		});
+		reader.addAttributeHandler("edge", "DASH", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final EdgeModel edge = (EdgeModel) userObject;
+				edge.setDash(DashVariant.valueOf(value));
+			}
+		});
 	}
 
 	/**
@@ -142,7 +149,8 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter, IEleme
 		final String style = EdgeStyle.toString(styleObj);
 		final Color color = forceFormatting ? ec.getColor(node) : model.getColor();
 		final int width = forceFormatting ? ec.getWidth(node) : model.getWidth();
-		if (forceFormatting || style != null || color != null || width != EdgeModel.DEFAULT_WIDTH) {
+		final DashVariant dash = forceFormatting ? ec.getDash(node) : model.getDash();
+		if (forceFormatting || style != null || color != null || width != EdgeModel.DEFAULT_WIDTH || dash != null) {
 			final XMLElement edge = new XMLElement();
 			edge.setName("edge");
 			boolean relevant = false;
@@ -165,6 +173,10 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter, IEleme
 				else {
 					edge.setAttribute("WIDTH", Integer.toString(width));
 				}
+				relevant = true;
+			}
+			if (dash != null) {
+				edge.setAttribute("DASH", dash.name());
 				relevant = true;
 			}
 			if (relevant) {

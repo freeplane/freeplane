@@ -76,6 +76,6 @@ public class OutlineLinkView extends EdgeView {
 
 	@Override
 	protected Stroke getStroke() {
-		return new BasicStroke(getWidth());
+		return getStroke(getWidth());
 	}
 }
