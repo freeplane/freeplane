@@ -29,6 +29,8 @@ import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Properties;
@@ -49,43 +51,37 @@ public class ApplicationResourceController extends ResourceController {
 	final private Properties defProps;
 	private LastOpenedList lastOpened;
 	final private Properties props;
-	final private ClassLoader urlResourceLoader;
 	public static final String FREEPLANE_BASEDIRECTORY_PROPERTY = "org.freeplane.basedirectory";
 	public static final String FREEPLANE_GLOBALRESOURCEDIR_PROPERTY = "org.freeplane.globalresourcedir";
 	public static final String DEFAULT_FREEPLANE_GLOBALRESOURCEDIR = "resources";
+	private ArrayList<File> resourceDirectories;
 
 	/**
 	 * @param controller
 	 */
 	public ApplicationResourceController() {
 		super();
+		resourceDirectories = new ArrayList<File>(2);
 		defProps = readDefaultPreferences();
 		props = readUsersPreferences(defProps);
 		final File userDir = createUserDirectory(defProps);
-		final ArrayList<URL> urls = new ArrayList<URL>(2);
 		final String resourceBaseDir = getResourceBaseDir();
 		if (resourceBaseDir != null) {
 			try {
 				final File userResourceDir = new File(userDir, "resources");
 				userResourceDir.mkdirs();
 				if (userResourceDir.exists()) {
-					final URL userResourceUrl = Compat.fileToUrl(userResourceDir);
-					urls.add(userResourceUrl);
+					resourceDirectories.add(userResourceDir);
 				}
 				final File resourceDir = new File(resourceBaseDir);
 				if (resourceDir.exists()) {
-					final URL globalResourceUrl = Compat.fileToUrl(resourceDir);
-					urls.add(globalResourceUrl);
+					resourceDirectories.add(resourceDir);
 				}
 			}
 			catch (final Exception e) {
 				e.printStackTrace();
 			}
 		}
-		if(urls.size() > 0)
-			urlResourceLoader = new URLClassLoader(urls.toArray(new URL[]{}), null);
-		else
-			urlResourceLoader = null;
 		setDefaultLocale(props);
 		autoPropertiesFile = getUserPreferencesFile();
 		addPropertyChangeListener(new IFreeplanePropertyListener() {
@@ -139,41 +135,50 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public URL getResource(final String name) {
-		if (urlResourceLoader == null) {
-			return super.getResource(name);
-		}
-		final String relName;
-		if (name.startsWith("/")) {
-			relName = name.substring(1);
-		}
-		else {
-			relName = name;
-		}
-		URL resource = urlResourceLoader.getResource(relName);
-		if (resource != null && new File(resource.getPath()).exists()) {
-			return resource;
-		}
-		resource = super.getResource(name);
-		if (resource != null) {
-			return resource;
-		}
-		if ("/lib/freeplaneviewer.jar".equals(name)) {
-			final String rootDir = new File(getResourceBaseDir()).getAbsoluteFile().getParent();
-			try {
-				final File try1 = new File(rootDir + "/plugins/org.freeplane.core/lib/freeplaneviewer.jar");
-				if (try1.exists()) {
-					return try1.toURL();
+		return AccessController.doPrivileged(new PrivilegedAction<URL>() {
+
+			@Override
+			public URL run() {
+				final String relName;
+				if (name.startsWith("/")) {
+					relName = name.substring(1);
 				}
-				final File try2 = new File(rootDir + "/lib/freeplaneviewer.jar");
-				if (try2.exists()) {
-					return try2.toURL();
+				else {
+					relName = name;
 				}
+				for(File directory : resourceDirectories) {
+					File fileResource = new File(directory, relName);
+					if (fileResource.exists()) {
+						try {
+							return Compat.fileToUrl(fileResource);
+						} catch (MalformedURLException e) {
+							throw new RuntimeException(e);
+						}
+					}
+				}
+				URL resource = ApplicationResourceController.super.getResource(name);
+				if (resource != null) {
+					return resource;
+				}
+				if ("/lib/freeplaneviewer.jar".equals(name)) {
+					final String rootDir = new File(getResourceBaseDir()).getAbsoluteFile().getParent();
+					try {
+						final File try1 = new File(rootDir + "/plugins/org.freeplane.core/lib/freeplaneviewer.jar");
+						if (try1.exists()) {
+							return try1.toURL();
+						}
+						final File try2 = new File(rootDir + "/lib/freeplaneviewer.jar");
+						if (try2.exists()) {
+							return try2.toURL();
+						}
+					}
+					catch (final MalformedURLException e) {
+						e.printStackTrace();
+					}
+				}
+				return null;
 			}
-			catch (final MalformedURLException e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
+		});
 	}
 
 	@Override
