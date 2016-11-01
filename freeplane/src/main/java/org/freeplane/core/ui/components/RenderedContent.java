@@ -29,8 +29,12 @@ public class RenderedContent<T> {
             	RenderedContent<?> content = (RenderedContent<?>) value;
                 Object renderedValue = content.text == null ? content.icon : content.text;
                 DefaultListCellRenderer renderer = (DefaultListCellRenderer) super.getListCellRendererComponent(list, renderedValue, index, isSelected, cellHasFocus);
-                if(content.text != null && content.icon != null)
-                    renderer.setIcon(content.icon);
+                if(content.icon != null) {
+                	if(content.text != null)
+                		renderer.setIcon(content.icon);
+                	else
+                		renderer.setHorizontalAlignment(CENTER);
+                }
                 return renderer;
             }
         };
