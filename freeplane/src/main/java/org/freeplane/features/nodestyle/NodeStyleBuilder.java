@@ -444,7 +444,6 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final Color borderColor = forceFormatting ? nsc.getBorderColor(node) : border.getBorderColor();
 		if (borderColor != null) {
 			ColorUtils.addColorAttributes(writer, "BORDER_COLOR", "BORDER_COLOR_ALPHA", borderColor);
-			writer.addAttribute("BORDER_COLOR", ColorUtils.colorToString(borderColor));
 		}
 	}
 	
