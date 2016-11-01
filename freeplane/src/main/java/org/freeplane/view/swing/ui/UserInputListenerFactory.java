@@ -26,8 +26,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelListener;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -72,6 +74,7 @@ import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcesso
 import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
 import org.freeplane.core.ui.menubuilders.menu.MenuAcceleratorChangeListener;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -434,7 +437,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		
 		final URL genericStructure = ResourceController.getResourceController().getResource(
 		    menuStructureResource);
-		final boolean isUserDefined = genericStructure.getProtocol().equalsIgnoreCase("file");
 		try {
 			final FreeplaneResourceAccessor resourceAccessor = new FreeplaneResourceAccessor();
 			final EntriesForAction entries = new EntriesForAction();
@@ -457,6 +459,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				outputUnusedActions();
 		}
 		catch (Exception e) {
+			final boolean isUserDefined = isUserDefined(genericStructure);
 			if (isUserDefined) {
 				LogUtils.warn(e);
 				String myMessage = TextUtils.format("menu_error", genericStructure.getPath(), e.getMessage());
@@ -464,9 +467,23 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				JOptionPane.showMessageDialog(UITools.getMenuComponent(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
 				System.exit(-1);
 			}
-			throw new RuntimeException(e);
+			throw new RuntimeException("Error in menu resource " + menuStructureResource, e);
 		}
 
+	}
+
+	private boolean isUserDefined(final URL location){
+		try {
+			if(! location.getProtocol().equalsIgnoreCase("file"))
+				return false;
+			String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
+			if(freeplaneUserDirectory == null)
+				return false;
+			String userResourcesUrl = Compat.fileToUrl(new File(freeplaneUserDirectory, "resources")).getPath();
+			return location.getPath().startsWith(userResourcesUrl);
+		} catch (MalformedURLException e) {
+			return false;
+		}
 	}
 
 	private void filterPlugins(Entry entry, Set<String> plugins) {

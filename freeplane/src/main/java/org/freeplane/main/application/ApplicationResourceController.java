@@ -64,19 +64,15 @@ public class ApplicationResourceController extends ResourceController {
 		resourceDirectories = new ArrayList<File>(2);
 		defProps = readDefaultPreferences();
 		props = readUsersPreferences(defProps);
-		final File userDir = createUserDirectory(defProps);
+		final File userDir = createUserDirectory();
 		final String resourceBaseDir = getResourceBaseDir();
 		if (resourceBaseDir != null) {
 			try {
 				final File userResourceDir = new File(userDir, "resources");
 				userResourceDir.mkdirs();
-				if (userResourceDir.exists()) {
-					resourceDirectories.add(userResourceDir);
-				}
+				resourceDirectories.add(userResourceDir);
 				final File resourceDir = new File(resourceBaseDir);
-				if (resourceDir.exists()) {
-					resourceDirectories.add(resourceDir);
-				}
+				resourceDirectories.add(resourceDir);
 			}
 			catch (final Exception e) {
 				e.printStackTrace();
@@ -93,7 +89,7 @@ public class ApplicationResourceController extends ResourceController {
 		});
 	}
 
-	private File createUserDirectory(final Properties pDefaultProperties) {
+	private File createUserDirectory() {
 		final File userPropertiesFolder = new File(getFreeplaneUserDirectory());
 		try {
 			if (!userPropertiesFolder.exists()) {
