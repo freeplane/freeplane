@@ -129,6 +129,7 @@ public class GroovyScript implements IScript {
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
             }
             final PrintStream oldOut = System.out;
+            ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             try {
                 trustedCompileAndCache();
                 final Binding binding = createBinding(node);
@@ -137,6 +138,7 @@ public class GroovyScript implements IScript {
 				return compiledScript.run();
             } finally {
                 System.setOut(oldOut);
+                Thread.currentThread().setContextClassLoader(contextClassLoader);
             }
         } catch (final GroovyRuntimeException e) {
             handleScriptRuntimeException(e);

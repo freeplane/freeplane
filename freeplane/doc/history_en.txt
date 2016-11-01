@@ -5,6 +5,11 @@ Configurable node border widths
 Configurable node border colors
 
 ===============================
+1.5.18
+===============================
+Bug fixes
+
+===============================
 1.5.17
 ===============================
 Freeplane Survey Runner
