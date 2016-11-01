@@ -3,6 +3,10 @@
 ===============================
 Configurable node border widths
 Configurable node border colors
+Configurable edge line type
+Configurable node border line type
+Configurable standard for connector arrows
+Configurable standard for line type 
 Presentations
 
 ===============================
