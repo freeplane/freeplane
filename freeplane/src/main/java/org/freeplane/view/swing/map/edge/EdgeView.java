@@ -165,7 +165,8 @@ public abstract class EdgeView {
 		if (width <= 0 && dash == null) {
 			return EdgeView.DEF_STROKE;
 		}
-    	return UITools.createStroke(width * getMap().getZoom(), dash);
+		final int[] dash1 = dash;
+    	return UITools.createStroke(width * getMap().getZoom(), dash1, BasicStroke.JOIN_ROUND);
 	}
 
 	/**

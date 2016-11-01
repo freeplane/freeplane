@@ -24,6 +24,7 @@ import java.awt.Color;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.NodeModel;
 
 /**
@@ -48,6 +49,9 @@ public class NodeBorderModel implements IExtension {
 	private Boolean borderWidthMatchesEdgeWidth = null;
 	private Quantity<LengthUnits> borderWidth = null;
 
+	private Boolean borderDashMatchesEdgeDash = null;
+	private DashVariant borderDash = null;
+
 	private Boolean borderColorMatchesEdgeColor = null;
 	private Color borderColor = null;
 
@@ -64,8 +68,6 @@ public class NodeBorderModel implements IExtension {
 		final NodeBorderModel extension = node.getExtension(NodeBorderModel.class);
 		return extension == null ? null : extension.getBorderWidth();
 	}
-
-
 
 	public Quantity<LengthUnits> getBorderWidth() {
 		return borderWidth;
@@ -86,6 +88,41 @@ public class NodeBorderModel implements IExtension {
 
 	public void setBorderWidthMatchesEdgeWidth(Boolean borderWidthMatchesEdgeWidth) {
 		this.borderWidthMatchesEdgeWidth = borderWidthMatchesEdgeWidth;
+	}
+
+	public Boolean getBorderDashMatchesEdgeDash() {
+		return borderDashMatchesEdgeDash;
+	}
+	
+	public static Boolean getBorderDashMatchesEdgeDash(final NodeModel node) {
+		final NodeBorderModel extension = node.getExtension(NodeBorderModel.class);
+		return extension == null ? null : extension.getBorderDashMatchesEdgeDash();
+	}
+
+	public static DashVariant getBorderDash(final NodeModel node) {
+		final NodeBorderModel extension = node.getExtension(NodeBorderModel.class);
+		return extension == null ? null : extension.getBorderDash();
+	}
+
+	public DashVariant getBorderDash() {
+		return borderDash;
+	}
+
+	public static void setBorderDashMatchesEdgeDash(final NodeModel node, final Boolean borderDashMatchesEdgeDash) {
+		createNodeBorderModel(node).setBorderDashMatchesEdgeDash(borderDashMatchesEdgeDash);
+	}
+
+	public static void setBorderDash(final NodeModel node, final DashVariant borderDash) {
+		createNodeBorderModel(node).setBorderDash(borderDash);
+	}
+
+	public void setBorderDash(DashVariant borderDash) {
+		this.borderDash = borderDash;
+		
+	}
+
+	public void setBorderDashMatchesEdgeDash(Boolean borderDashMatchesEdgeDash) {
+		this.borderDashMatchesEdgeDash = borderDashMatchesEdgeDash;
 	}
 
 	public Boolean getBorderColorMatchesEdgeColor() {
@@ -127,6 +164,8 @@ public class NodeBorderModel implements IExtension {
 	public void copyTo(NodeBorderModel to) {
 	    if(borderWidthMatchesEdgeWidth != null)
 	    	to.setBorderWidthMatchesEdgeWidth(borderWidthMatchesEdgeWidth);
+	    if(borderDashMatchesEdgeDash != null)
+	    	to.setBorderDashMatchesEdgeDash(borderDashMatchesEdgeDash);
 	    if(borderWidth != null)
 	    	to.setBorderWidth(borderWidth);
 	    if(borderColorMatchesEdgeColor != null)

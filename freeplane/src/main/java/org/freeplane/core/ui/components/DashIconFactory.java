@@ -12,7 +12,7 @@ import javax.swing.Icon;
 public class DashIconFactory {
 
 	public static Icon createIcon(final int width, final int height, final int lineWidth, final int[] dash) {
-		final BasicStroke stroke = UITools.createStroke(lineWidth, dash);
+		final BasicStroke stroke = UITools.createStroke((float) lineWidth, dash, BasicStroke.JOIN_ROUND);
 		return new Icon() {
 			public void paintIcon(Component c, Graphics g, int x, int y) {
 				Graphics2D g2 = (Graphics2D) g;

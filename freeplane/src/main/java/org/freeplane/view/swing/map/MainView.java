@@ -55,6 +55,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.icon.IconController;
@@ -96,6 +97,7 @@ public abstract class MainView extends ZoomableLabel {
 	final static Stroke DEF_STROKE = new BasicStroke();
 	private static final int DRAG_OVAL_WIDTH = 10;
 	private float unzoomedBorderWidth = 1f;
+	private DashVariant dash = DashVariant.DEFAULT;
 	private Color borderColor = EdgeController.STANDARD_EDGE_COLOR;
 	private Boolean borderColorMatchesEdgeColor = true;
 
@@ -806,6 +808,10 @@ public abstract class MainView extends ZoomableLabel {
 		return Math.max(unzoomedBorderWidth, 1);
 	}
 
+	public DashVariant getDash() {
+		return dash;
+	}
+
 	public Color getBorderColor() {
 		return borderColorMatchesEdgeColor ? getNodeView().getEdgeColor() : borderColor;
 	}
@@ -818,6 +824,12 @@ public abstract class MainView extends ZoomableLabel {
 			unzoomedBorderWidth = getUnzoomedEdgeWidth();
 		else
 			unzoomedBorderWidth = (float) controller.getBorderWidth(node).toBaseUnits();
+		
+		final Boolean borderDashMatchesEdgeDash = controller.getBorderDashMatchesEdgeDash(node);
+		if(borderDashMatchesEdgeDash)
+			dash = nodeView.getEdgeDash();
+		else
+			dash = controller.getBorderDash(node);
 		
 		borderColorMatchesEdgeColor = controller.getBorderColorMatchesEdgeColor(node);
 		if(borderColorMatchesEdgeColor)

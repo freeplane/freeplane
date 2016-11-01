@@ -527,11 +527,11 @@ public class UITools {
 		});
     }
 
-	public static BasicStroke createStroke(float width, final int[] dash) {
-        final float[] fdash = toFloats(dash);
-    	final BasicStroke stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 1f, fdash, 0f);
+	public static BasicStroke createStroke(float width, final int[] dash, int join) {
+		final float[] fdash = toFloats(dash);
+		final BasicStroke stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, join, 1f, fdash, 0f);
         return stroke;
-    }
+	}
 
 	public static float[] toFloats(final int[] dash) {
 		final float[] fdash;

@@ -370,6 +370,32 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 	
+	private class BorderDashMatchesEdgeDashListener extends ChangeListener {
+		public BorderDashMatchesEdgeDashListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+			final MNodeStyleController styleController = (MNodeStyleController) Controller
+			.getCurrentModeController().getExtension(NodeStyleController.class);
+			styleController.setBorderDashMatchesEdgeDash(node, enabled ? mBorderDashMatchesEdgeDash.getBooleanValue(): null);
+		}
+	}
+
+	private class BorderDashListener extends ChangeListener {
+		public BorderDashListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+			final MNodeStyleController styleController = (MNodeStyleController) Controller
+			.getCurrentModeController().getExtension(NodeStyleController.class);
+			styleController.setBorderDash(node, enabled ? DashVariant.valueOf(mBorderDash.getValue()): null);
+		}
+	}
+	
 	private class BorderColorMatchesEdgeColorListener extends ChangeListener {
 		public BorderColorMatchesEdgeColorListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -567,6 +593,8 @@ public class StyleEditorPanel extends JPanel {
 	private static final String UNIFORM_SHAPE = "uniform_shape";
 	private static final String BORDER_WIDTH_MATCHES_EDGE_WIDTH = "border_width_matches_edge_width";
 	private static final String BORDER_WIDTH = "border_width";
+	private static final String BORDER_DASH_MATCHES_EDGE_DASH = "border_dash_matches_edge_dash";
+	private static final String BORDER_DASH = "border_dash";
 	private static final String BORDER_COLOR_MATCHES_EDGE_COLOR = "border_color_matches_edge_color";
 	private static final String BORDER_COLOR = "border_color";
 	
@@ -636,6 +664,12 @@ public class StyleEditorPanel extends JPanel {
 	
 	private BooleanProperty mSetBorderWidth;
 	private QuantityProperty<LengthUnits> mBorderWidth;
+
+	private BooleanProperty mSetBorderDashMatchesEdgeDash;
+	private BooleanProperty mBorderDashMatchesEdgeDash;
+	
+	private BooleanProperty mSetBorderDash;
+	private ComboProperty mBorderDash;
 
 	private BooleanProperty mSetBorderColorMatchesEdgeColor;
 	private BooleanProperty mBorderColorMatchesEdgeColor;
@@ -832,6 +866,26 @@ public class StyleEditorPanel extends JPanel {
 		mBorderWidthMatchesEdgeWidth.addPropertyChangeListener(listener);
 	}
 
+	private void addBorderDashControl(final List<IPropertyControl> controls) {
+		mSetBorderDash = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetBorderDash);
+		mBorderDash = ComboProperty.of(StyleEditorPanel.BORDER_DASH, DashVariant.class);
+		controls.add(mBorderDash);
+		final BorderDashListener listener = new BorderDashListener(mSetBorderDash, mBorderDash);
+		mSetBorderDash.addPropertyChangeListener(listener);
+		mBorderDash.addPropertyChangeListener(listener);
+	}
+	
+	private void addBorderDashMatchesEdgeDashControl(final List<IPropertyControl> controls) {
+		mSetBorderDashMatchesEdgeDash = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
+		controls.add(mSetBorderDashMatchesEdgeDash);
+		mBorderDashMatchesEdgeDash = new BooleanProperty(StyleEditorPanel.BORDER_DASH_MATCHES_EDGE_DASH);
+		controls.add(mBorderDashMatchesEdgeDash);
+		final BorderDashMatchesEdgeDashListener listener = new BorderDashMatchesEdgeDashListener(mSetBorderDashMatchesEdgeDash, mBorderDashMatchesEdgeDash);
+		mSetBorderDashMatchesEdgeDash.addPropertyChangeListener(listener);
+		mBorderDashMatchesEdgeDash.addPropertyChangeListener(listener);
+	}
+
 	private void addBorderColorControl(final List<IPropertyControl> controls) {
 		mSetBorderColor = new BooleanProperty(StyleEditorPanel.SET_RESOURCE);
 		controls.add(mSetBorderColor);
@@ -971,6 +1025,15 @@ public class StyleEditorPanel extends JPanel {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				enableOrDisableBorderWidthControls();
+			}
+		});
+		
+		addBorderDashMatchesEdgeDashControl(controls);
+		addBorderDashControl(controls);
+		mBorderDashMatchesEdgeDash.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				enableOrDisableBorderDashControls();
 			}
 		});
 		
@@ -1203,7 +1266,19 @@ public class StyleEditorPanel extends JPanel {
 				mSetBorderWidth.setValue(width != null);
 				mBorderWidth.setQuantifiedValue(viewWidth);
 				enableOrDisableBorderWidthControls();
-
+			}
+			{
+				final Boolean match = nodeBorderModel != null ? nodeBorderModel.getBorderDashMatchesEdgeDash() : null;
+				final Boolean viewMatch = styleController.getBorderDashMatchesEdgeDash(node);
+				mSetBorderDashMatchesEdgeDash.setValue(match != null);
+				mBorderDashMatchesEdgeDash.setValue(viewMatch);
+			}
+			{
+				final DashVariant dash = nodeBorderModel != null ? nodeBorderModel.getBorderDash() : null;
+				final DashVariant viewDash = styleController.getBorderDash(node);
+				mSetBorderDash.setValue(dash != null);
+				mBorderDash.setValue(viewDash.name());
+				enableOrDisableBorderDashControls();
 			}
 			{
 				final Boolean match = nodeBorderModel != null ? nodeBorderModel.getBorderColorMatchesEdgeColor() : null;
@@ -1415,6 +1490,12 @@ public class StyleEditorPanel extends JPanel {
 		final boolean borderWidthCanBeSet = ! mBorderWidthMatchesEdgeWidth.getBooleanValue();
 		mSetBorderWidth.setEnabled(borderWidthCanBeSet);
 		mBorderWidth.setEnabled(borderWidthCanBeSet);
+	}
+
+	public void enableOrDisableBorderDashControls() {
+		final boolean borderDashCanBeSet = ! mBorderDashMatchesEdgeDash.getBooleanValue();
+		mSetBorderDash.setEnabled(borderDashCanBeSet);
+		mBorderDash.setEnabled(borderDashCanBeSet);
 	}
 
 	public void enableOrDisableBorderColorControls() {

@@ -77,7 +77,7 @@ public class ConnectorView extends AConnectorView{
 			stroke = new BasicStroke(width);
 		}
 		else{
-			stroke = UITools.createStroke(width, linkController.getDash(connectorModel));
+			stroke = UITools.createStroke((float) width, linkController.getDash(connectorModel), BasicStroke.JOIN_ROUND);
 		}
 
 	}
