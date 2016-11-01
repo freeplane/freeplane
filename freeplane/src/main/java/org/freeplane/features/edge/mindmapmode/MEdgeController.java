@@ -22,6 +22,7 @@ package org.freeplane.features.edge.mindmapmode;
 import java.awt.Color;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.ObjectRule;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
@@ -113,6 +114,7 @@ public class MEdgeController extends EdgeController {
 			}
 			resolveColor(to);
 			resolveWidth(to);
+			resolveDash(to);
 			resolveStyle(to);
         }
 
@@ -146,6 +148,22 @@ public class MEdgeController extends EdgeController {
 
 		private Integer getWidth(NodeModel node) {
 			return modeController.getExtension(EdgeController.class).getWidth(node, false);
+		}
+
+		private void resolveDash(NodeModel to) {
+	        if (null != getDash(to))
+				return;
+			for(NodeModel source = to.getParentNode(); source != null; source = source.getParentNode() ){
+				final DashVariant width = getDash(source);
+				if(width != null){
+					EdgeModel.createEdgeModel(to).setDash(width);
+					return;
+				}
+			}
+        }
+
+		private DashVariant getDash(NodeModel node) {
+			return modeController.getExtension(EdgeController.class).getDash(node, false);
 		}
 
 		private void resolveStyle(NodeModel to) {
@@ -286,6 +304,44 @@ public class MEdgeController extends EdgeController {
 
 			public void undo() {
 				EdgeModel.createEdgeModel(node).setWidth(oldWidth);
+				modeController.getMapController().nodeChanged(node);
+				edgeWidthRefresh(node);
+			}
+		};
+		modeController.execute(actor, node.getMap());
+	}
+
+	public void setDash(final NodeModel node, final DashVariant dash) {
+		final ModeController modeController = Controller.getCurrentModeController();
+		final DashVariant oldDash = EdgeModel.createEdgeModel(node).getDash();
+		if (dash == oldDash) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				EdgeModel.createEdgeModel(node).setDash(dash);
+				modeController.getMapController().nodeChanged(node);
+				edgeWidthRefresh(node);
+			}
+
+			private void edgeWidthRefresh(final NodeModel node) {
+				for (final NodeModel child : modeController.getMapController().childrenUnfolded(node)) {
+					if(child.getViewers().isEmpty())
+						continue;
+					final EdgeModel edge = EdgeModel.getModel(child);
+					if (edge == null || edge.getWidth() == EdgeModel.WIDTH_PARENT) {
+						modeController.getMapController().nodeRefresh(child);
+						edgeWidthRefresh(child);
+					}
+				}
+			}
+
+			public String getDescription() {
+				return "setDash";
+			}
+
+			public void undo() {
+				EdgeModel.createEdgeModel(node).setDash(oldDash);
 				modeController.getMapController().nodeChanged(node);
 				edgeWidthRefresh(node);
 			}

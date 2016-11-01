@@ -27,6 +27,7 @@ import java.awt.Point;
 import java.awt.Stroke;
 
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.DashVariant;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MainView.ConnectorLocation;
 import org.freeplane.view.swing.map.MapView;
@@ -72,6 +73,7 @@ public abstract class EdgeView {
 	private Integer width;
     private ConnectorLocation startConnectorLocation;
     private ConnectorLocation endConnectorLocation;
+	private int[] dash;
 
 	protected void createStart() {
         final MainView mainView = source.getMainView();
@@ -155,13 +157,16 @@ public abstract class EdgeView {
 
 	protected Stroke getStroke() {
 		final int width = getWidth();
-		if (width < 0) {
+		return getStroke(width);
+	}
+
+	protected Stroke getStroke(final float width) {
+		int[] dash = getDash();
+		if (width <= 0 && dash == null) {
 			return EdgeView.DEF_STROKE;
 		}
-		if (width == 0) {
-			return EdgeView.DEF_STROKE;
-		}
-		return new BasicStroke(width * getMap().getZoom(), BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER);
+		final int[] dash1 = dash;
+    	return UITools.createStroke(width * getMap().getZoom(), dash1, BasicStroke.JOIN_ROUND);
 	}
 
 	/**
@@ -181,6 +186,18 @@ public abstract class EdgeView {
 
 	public void setWidth(final int width) {
 		this.width = width;
+	}
+
+	public int[] getDash() {
+		if (dash != null) {
+			return dash;
+		}
+		final DashVariant dash = target.getEdgeDash();
+		return dash.variant;
+	}
+
+	public void setDash(final int[] dash) {
+		this.dash = dash;
 	}
 
 	protected boolean isTargetEclipsed() {

@@ -48,6 +48,7 @@ import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.ObjectRule;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.cloud.CloudController;
@@ -131,6 +132,7 @@ public class NodeView extends JComponent implements INodeView {
 	private int topOverlap;
 	private int bottomOverlap;
 	private boolean isFolded;
+	private DashVariant edgeDash = DashVariant.DEFAULT;
 	
 	public static final int DETAIL_VIEWER_POSITION = 2;
 
@@ -1412,8 +1414,8 @@ public class NodeView extends JComponent implements INodeView {
         final EdgeController edgeController = EdgeController.getController(getMap().getModeController());
 		this.edgeStyle = edgeController.getStyle(model, false);
 		final NodeModel realNode = SummaryNode.getRealNode(model);
-		final Integer newWidth = edgeController.getWidth(realNode, false);
-		this.edgeWidth = newWidth;
+		this.edgeWidth = edgeController.getWidth(realNode, false);
+		this.edgeDash = edgeController.getDash(realNode, false);
 		final ObjectRule<Color, Rules> newColor = edgeController.getColorRule(realNode);
 		this.edgeColor = newColor;
 		final NodeModel parentNode = model.getParentNode();
@@ -1430,6 +1432,15 @@ public class NodeView extends JComponent implements INodeView {
 		return EdgeStyle.values()[0];
     }
 
+	public DashVariant getEdgeDash() {
+		if(edgeDash != null)
+		    return edgeDash;
+		final NodeView parentView = getParentView();
+		if(parentView != null)
+			return parentView.getEdgeDash();
+		return DashVariant.DEFAULT;
+    }
+	
 	public int getEdgeWidth() {
 		if(edgeWidth != null)
 		    return edgeWidth;

@@ -57,7 +57,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 
 	protected NodeLinkModel createArrowLink(final NodeModel source, final String targetID) {
 		return new ConnectorModel(source, targetID, 
-				linkController.getStandardConnectorArrows(),
+				ConnectorArrows.DEFAULT, null,
 			linkController.getStandardConnectorColor(),
 			linkController.getStandardConnectorAlpha(),
 			linkController.getStandardConnectorShape(),

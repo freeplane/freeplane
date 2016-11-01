@@ -23,33 +23,31 @@ import java.awt.event.ActionEvent;
 import java.util.Arrays;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.DashIconFactory;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 
 class ChangeConnectorDashAction extends AFreeplaneAction {
-	private static final int LINE_WIDTH = 2;
-	private static final int ICON_HEIGHT = 6;
-	private static final int ICON_WIDTH = 60;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private ConnectorModel arrowLink;
-	private final int[] dash;
+	private ConnectorModel connector;
+	private final DashVariant dash;
 
 	public ChangeConnectorDashAction(final MLinkController linkController,
-	                                   final ConnectorModel arrowLink, final int[] dash) {
-		super("ChangeConnectorDashAction", "", DashIconFactory.createIcon(ChangeConnectorDashAction.ICON_WIDTH, ChangeConnectorDashAction.ICON_HEIGHT, LINE_WIDTH, dash));
-		this.arrowLink = arrowLink;
+	                                   final ConnectorModel connector, final DashVariant dash) {
+		super("ChangeConnectorDashAction", "", dash.icon);
+		this.connector = connector;
 		this.dash = dash;
-		final int[] dash2 = arrowLink.getDash();
-		final boolean selected = dash2 == dash || dash != null && Arrays.equals(dash, dash2);
+		final int[] dash2 = connector.getDash();
+		final int[] variant = dash.variant;
+		final boolean selected = dash2 == variant || variant != null && Arrays.equals(variant, dash2);
 		setSelected(selected);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final MLinkController linkController = (MLinkController) LinkController.getController();
-		linkController.setConnectorDash(arrowLink, dash);
+		linkController.setConnectorDash(connector, dash.variant);
 	}
 }

@@ -22,6 +22,7 @@ package org.freeplane.features.edge;
 import java.awt.Color;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.NodeModel;
 
 public class EdgeModel implements IExtension {
@@ -50,6 +51,15 @@ public class EdgeModel implements IExtension {
 	private Color color;
 	private EdgeStyle style;
 	private int width = EdgeModel.DEFAULT_WIDTH;
+	private DashVariant dash;
+
+	public DashVariant getDash() {
+		return dash;
+	}
+
+	public void setDash(DashVariant dash) {
+		this.dash = dash;
+	}
 
 	public EdgeModel() {
 	}

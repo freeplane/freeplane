@@ -27,6 +27,8 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Stroke;
 
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
 class ForkMainView extends MainView {
@@ -80,8 +82,7 @@ class ForkMainView extends MainView {
 	@Override
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
 		final Stroke oldStroke = g.getStroke();
-		float edgeWidth  = getPaintedBorderWidth();
-		g.setStroke(new BasicStroke(edgeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
+		g.setStroke(UITools.createStroke(getPaintedBorderWidth(), getDash().variant, BasicStroke.JOIN_MITER));
 		final Color oldColor = g.getColor();
 		g.setColor(getBorderColor());
 		Point leftLinePoint = getLeftPoint();

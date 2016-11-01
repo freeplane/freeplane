@@ -6,6 +6,11 @@ Configurable node border colors
 Presentations
 
 ===============================
+1.5.18
+===============================
+Bug fixes
+
+===============================
 1.5.17
 ===============================
 Freeplane Survey Runner
