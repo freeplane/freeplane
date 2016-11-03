@@ -309,7 +309,7 @@ class SlideEditorController{
 
 
 	private void updateUI() {
-		if(presentationState.isPresentationRunning())
+		if (presentationState.isPresentationRunning() || slide == null)
 			disableUI();
 		else {
 			for(JComponent c : allButtons)
