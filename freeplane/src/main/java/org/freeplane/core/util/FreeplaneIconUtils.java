@@ -18,6 +18,7 @@ import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.MindIconFactory;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 
+import com.kitfox.svg.SVGDiagram;
 import com.kitfox.svg.SVGUniverse;
 import com.kitfox.svg.app.beans.SVGIcon;
 
@@ -90,7 +91,7 @@ public class FreeplaneIconUtils {
 			icon.setSvgUniverse(svgUniverse);
 			icon.setSvgURI(svgUri);
 			icon.setPreferredSize(new Dimension(widthPixels, heightPixels));
-			icon.setAutosize(SVGIcon.AUTOSIZE_STRETCH);
+			icon.setAutosize(SVGIcon.AUTOSIZE_VERT);
 			icon.setAntiAlias(isSvgAntialiasEnabled());
 			return icon;
 		} catch (Exception e) {
