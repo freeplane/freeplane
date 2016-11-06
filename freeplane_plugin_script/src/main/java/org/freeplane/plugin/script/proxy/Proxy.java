@@ -456,15 +456,20 @@ public interface Proxy {
 		 * @since 1.2 */
 		boolean isInteractive();
 
+		/** returns a list of export type descriptions that can be used to specify a specific export type
+		 * in {@link #export(Map, File, String, boolean)}. These descriptions are internationalized.
+		 * @since 1.3.5 */
 		List<String> getExportTypeDescriptions();
 
         /** exports map to destination file, example:
          * <pre>
-         *   println c.getExportTypeDescriptions.join('\n')
+         *   println c.exportTypeDescriptions.join('\n')
          *   boolean overwriteExistingFile = true
          *   c.export(node.map, new File('/tmp/t.png'), 'Portable Network Graphic (PNG) (.png)', overwriteExistingFile)
          * </pre>
-         * @param exportTypeDescription Use {@link #getExportTypeDescriptions()} to look up available exportTypes
+         * @param exportTypeDescription Use {@link #getExportTypeDescriptions()} to look up available exportTypes.
+         *   Note that the file format does not suffice to specify a specific export since there may be more than
+         *   one, as for HTML.
          * @since 1.3.5 */
         void export(Map map, File destinationFile, String exportTypeDescription, boolean overwriteExisting);
 	}
