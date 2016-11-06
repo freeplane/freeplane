@@ -107,10 +107,10 @@ public class MModeController extends ModeController {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		URL preferences = resourceController.getResource("/xml/preferences.xml");
 		optionPanelBuilder.load(preferences);
-		getController().addAction(createPropertyAction(optionPanelBuilder));
+		getController().addAction(createShowPreferencesAction(optionPanelBuilder));
 	}
 
-	public static ShowPreferencesAction createPropertyAction(OptionPanelBuilder optionPanelBuilder) {
+	public static ShowPreferencesAction createShowPreferencesAction(OptionPanelBuilder optionPanelBuilder) {
 	    final LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
 		final Vector<String> lafNames = new Vector<String>(lafInfo.length + 1);
 		final Vector<String> translatedLafNames = new Vector<String>(lafInfo.length + 1);
