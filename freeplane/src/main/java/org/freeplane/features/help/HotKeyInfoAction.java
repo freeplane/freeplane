@@ -29,6 +29,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
@@ -55,7 +56,7 @@ public class HotKeyInfoAction extends AFreeplaneAction{
 	// ==========================================================================
 	//                 format accelerator map as html text
 	// ==========================================================================
-	private String formatAsHtml(final Enumeration<DefaultMutableTreeNode> children) {
+	private String formatAsHtml(final Enumeration<TreeNode> children) {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("<html><head><style type=\"text/css\">" //
 		        //doesn't work: + "  table { margin: 1px 0px; border-spacing: 0px; }"//
@@ -68,7 +69,7 @@ public class HotKeyInfoAction extends AFreeplaneAction{
 		return builder.toString();
 	}
 
-	private void appendAsHtml(final StringBuilder builder, final Enumeration<DefaultMutableTreeNode> children,
+	private void appendAsHtml(final StringBuilder builder, final Enumeration<TreeNode> children,
 	                                 final String title, final int level) {
 		if(! title.equals(""))
 			builder.append("<h").append(level).append('>').append(title).append("</h").append(level).append('>');
@@ -77,13 +78,13 @@ public class HotKeyInfoAction extends AFreeplaneAction{
 
 	@SuppressWarnings("unchecked")
 	private void appendChildrenAsHtml(final StringBuilder builder,
-	                                         final Enumeration<DefaultMutableTreeNode> children, final String title,
+	                                         final Enumeration<TreeNode> children, final String title,
 	                                         final int level) {
 		final ArrayList<MenuEntry> menuEntries = new ArrayList<MenuEntry>();
 		final ArrayList<DefaultMutableTreeNode> submenus = new ArrayList<DefaultMutableTreeNode>();
 		// sort and divide
 		while (children.hasMoreElements()) {
-			final DefaultMutableTreeNode node = children.nextElement();
+			final DefaultMutableTreeNode node = (DefaultMutableTreeNode) children.nextElement();
 			if (node.isLeaf()) {
 				menuEntries.add((MenuEntry) node.getUserObject());
 			}

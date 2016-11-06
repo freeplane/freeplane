@@ -49,6 +49,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 import org.apache.commons.lang.StringUtils;
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
@@ -321,8 +322,8 @@ public class OptionPanel {
 
 	@SuppressWarnings("unchecked")
 	public void addChildControls(BooleanProperty parentControl, final DefaultMutableTreeNode controlsTree) {
-		for (final Enumeration<DefaultMutableTreeNode> i = controlsTree.children(); i.hasMoreElements();) {
-			final DefaultMutableTreeNode node = i.nextElement();
+		for (final Enumeration<TreeNode> i = controlsTree.children(); i.hasMoreElements();) {
+			final DefaultMutableTreeNode node = (DefaultMutableTreeNode) i.nextElement();
 			final IPropertyControlCreator creator = (IPropertyControlCreator) node.getUserObject();
 			if (creator != null) {
 				final IPropertyControl control = creator.createControl();
