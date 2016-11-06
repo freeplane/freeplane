@@ -107,7 +107,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 
 	
 	public void handlePreferences(PreferencesEvent event) {
-		getModeController().getAction("ShowPreferencesAction").actionPerformed(null);
+		getModeController().getAction("PropertyAction").actionPerformed(null);
 		
 	}
 
