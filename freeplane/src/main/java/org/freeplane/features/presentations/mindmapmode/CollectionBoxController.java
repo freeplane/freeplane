@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -16,7 +15,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.border.TitledBorder;
 
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
@@ -26,6 +24,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	private NamedElementCollection<T> collection;
 	private JComboBox<Stringifyed<T>> comboBoxCollectionNames;
 	private final JComponent[] components;
+	private final JComponent[] editingComponents;
 	private final JButton btnMoveUp;
 	private final JButton btnMoveDown;
 	private final JButton btnMove;
@@ -69,8 +68,9 @@ class CollectionBoxController <T extends NamedElement<T>> {
 
 		btnMoveDown = createMoveDownButton();
 		
-		btnMove = createMoveButton(btnMoveDown);
+		btnMove = createMoveButton();
 		components = new JComponent[]{comboBoxCollectionNames, lblElementCount, btnNewElement, btnDeleteElement, btnMoveUp, btnMoveDown, btnMove};
+		editingComponents = new JComponent[] { btnNewElement, btnDeleteElement, btnMoveUp, btnMoveDown, btnMove };
 		disableUiElements();
 		collectionChangeListener = new CollectionChangeListener<T>() {
 			@Override
@@ -85,7 +85,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		if(collection == newCollection)
 			return;
 		if(collection != null)
-			collection.removeCollectionChangeListener(collectionChangeListener);;
+			collection.removeCollectionChangeListener(collectionChangeListener);
 		this.collection = newCollection;
 		if(newCollection == null){
 			disableUiElements();
@@ -94,7 +94,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 			final ComboBoxModel<Stringifyed<T>> elements = newCollection.getElements();
 			comboBoxCollectionNames.setModel(elements);
 			updateUiElements();
-			collection.addCollectionChangeListener(collectionChangeListener);;
+			collection.addCollectionChangeListener(collectionChangeListener);
 		}
 	}
 
@@ -119,7 +119,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 			c.setEnabled(false);
 	}
 
-	private JButton createMoveButton(JButton btnMoveDown) {
+	private JButton createMoveButton() {
 		JButton btnMove = TranslatedElementFactory.createButton("collection.move");
 		btnMove.addActionListener(new ActionListener() {
 			@Override
@@ -176,6 +176,16 @@ class CollectionBoxController <T extends NamedElement<T>> {
 			}
 		});
 		return btnNewElement;
+	}
+
+	void disableEditing() {
+		for (JComponent c : editingComponents)
+			c.setEnabled(false);
+	}
+
+	void enableEditing() {
+		if (collection != null)
+			updateUiElements();
 	}
 	
 }

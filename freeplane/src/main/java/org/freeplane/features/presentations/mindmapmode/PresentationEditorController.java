@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType;
 
 public class PresentationEditorController {
 	private final CollectionBoxController<Presentation> presentationPanelController;
@@ -22,6 +23,21 @@ public class PresentationEditorController {
 		presentationPanelController = new CollectionBoxController<>("New presentation");
 		slidePanelController = new CollectionBoxController<Slide>("New slide");
 		slideEditorController = new SlideEditorController(presentationState);
+		presentationState.addPresentationStateListener(new PresentationStateChangeListener() {
+			@Override
+			public void onPresentationStateChange(PresentationStateChangeEvent presentationStateChangeEvent) {
+				if (presentationStateChangeEvent.eventType == EventType.PLAYING_STATE_CHANGED) {
+					if (presentationStateChangeEvent.presentationState.isPresentationRunning()) {
+						presentationPanelController.disableEditing();
+						slidePanelController.disableEditing();
+					}
+					else {
+						presentationPanelController.enableEditing();
+						slidePanelController.enableEditing();
+					}
+				}
+			}
+		});
 		navigationPanelController = new NavigationPanelController(presentationState);
 		final CollectionChangeListener<Slide> slideChangeListener = new CollectionChangeListener<Slide>() {
 			
