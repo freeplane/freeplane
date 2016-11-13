@@ -173,6 +173,11 @@ fi
 # enable this in order to turn off the splash screen:
 #JAVA_OPTS="-Dorg.freeplane.nosplash=true $JAVA_OPTS"
 
+# grant all permissions to shared java extension libs if available
+if [ -d "/usr/share/java" ] ; then
+	JAVA_OPTS="-Dorg.freeplane.os.lib.ext=/usr/share/java $JAVA_OPTS"
+fi
+
 _debug "Calling: "\
 "${JAVACMD}" -Xmx512m\
  "-Dorg.freeplane.userfpdir=$userfpdir"\
