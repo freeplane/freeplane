@@ -174,7 +174,7 @@ fi
 #JAVA_OPTS="-Dorg.freeplane.nosplash=true $JAVA_OPTS"
 
 # grant all permissions to shared java extension libs if available
-if [ -d "/usr/share/java"] ; then
+if [ -d "/usr/share/java" ] ; then
 	JAVA_OPTS="-Dorg.freeplane.os.lib.ext=/usr/share/java $JAVA_OPTS"
 fi
 
