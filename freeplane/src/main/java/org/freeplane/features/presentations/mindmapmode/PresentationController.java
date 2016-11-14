@@ -2,21 +2,15 @@ package org.freeplane.features.presentations.mindmapmode;
 
 import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.COLLECTION_SIZE_CHANGED;
 import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.SELECTION_CHANGED;
-import static org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType.HIGNLIGHTING_CHANGED;
-import static org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType.PLAYING_STATE_CHANGED;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
 import javax.swing.JTabbedPane;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.EnabledAction;
-import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;

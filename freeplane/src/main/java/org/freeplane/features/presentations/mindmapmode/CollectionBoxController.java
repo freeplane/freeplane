@@ -129,7 +129,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 				final String title = TextUtils.getText("collection.movebefore");
 				if (JOptionPane.showConfirmDialog(collectionComponent, new JAutoScrollBarPane(targets), title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) 
 						== JOptionPane.OK_OPTION)
-					collection.moveCurrentElementTo(targets.getSelectedIndex());
+					UndoableNamedElementCollection.of(collection).moveCurrentElementTo(targets.getSelectedIndex());
 			}
 		});
 		return btnMove;
@@ -139,7 +139,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		btnMoveDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				collection.moveCurrentElementDown();
+				UndoableNamedElementCollection.of(collection).moveCurrentElementDown();
 			}
 		});
 		return btnMoveDown;
@@ -149,7 +149,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		btnMoveUp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				collection.moveCurrentElementUp();
+				UndoableNamedElementCollection.of(collection).moveCurrentElementUp();
 			}
 		});
 		return btnMoveUp;
@@ -159,7 +159,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		btnDeleteElement.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				collection.removeCurrentElement();
+				UndoableNamedElementCollection.of(collection).removeCurrentElement();
 			}
 		});
 		return btnDeleteElement;
@@ -171,8 +171,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				collection.add(newElementName + " " + (collection.getSize() + 1));
-				comboBoxCollectionNames.setEditable(true);
+				UndoableNamedElementCollection.of(collection).add(newElementName + " " + (collection.getSize() + 1));
 			}
 		});
 		return btnNewElement;

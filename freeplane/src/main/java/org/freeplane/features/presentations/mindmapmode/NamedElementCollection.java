@@ -79,7 +79,7 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 	public void selectCurrentElement(int index) {
 		if(currentIndex != index) {
 			currentIndex = index;
-			final Stringifyed<T> newSelecteditem = elements.getElementAt(index);
+			final Stringifyed<T> newSelecteditem = index == -1  ? null : elements.getElementAt(index);
 			if(newSelecteditem != elements.getSelectedItem()) {
 				elements.setSelectedItem(newSelecteditem);
 			}
@@ -112,7 +112,7 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 	}
 	
 	public void moveCurrentElementTo(int newElementIndex) {
-		if(newElementIndex >= 0 && newElementIndex < getSize() && newElementIndex != currentIndex) {
+		if(canMoveCurrentElementTo(newElementIndex)) {
 			final Stringifyed<T> currentElement = elements.getElementAt(currentIndex);
 			moveInProgress = true;
 			try {
@@ -125,6 +125,10 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 			}
 			fireCollectionChangeEvent(SELECTION_INDEX_CHANGED);
 		}
+	}
+
+	public boolean canMoveCurrentElementTo(int newElementIndex) {
+		return newElementIndex >= 0 && newElementIndex < getSize() && newElementIndex != currentIndex;
 	}
 
 	public void addCollectionChangeListener(CollectionChangeListener<T> selectionChangeListener) {

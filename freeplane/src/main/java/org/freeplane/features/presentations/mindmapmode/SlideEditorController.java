@@ -116,7 +116,7 @@ class SlideEditorController{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final List<String> selection = Controller.getCurrentController().getSelection().getOrderedSelectionIds();
-				slide.setSelectedNodeIds(new LinkedHashSet<>(selection));
+				UndoableSlide.of(slide).setSelectedNodeIds(new LinkedHashSet<>(selection));
 			}
 		});
 
@@ -131,7 +131,7 @@ class SlideEditorController{
 			public void actionPerformed(ActionEvent e) {
 				final List<String> selection = Controller.getCurrentController().getSelection()
 				    .getOrderedSelectionIds();
-				slide.addSelectedNodeIds(selection);
+				UndoableSlide.of(slide).addSelectedNodeIds(selection);
 			}
 		});
 		return btnSetSelectedNode;
@@ -145,7 +145,7 @@ class SlideEditorController{
 			public void actionPerformed(ActionEvent e) {
 				final List<String> selection = Controller.getCurrentController().getSelection()
 				    .getOrderedSelectionIds();
-				slide.removeSelectedNodeIds(selection);
+				UndoableSlide.of(slide).removeSelectedNodeIds(selection);
 			}
 		});
 		return btnSetSelectedNode;
@@ -157,9 +157,9 @@ class SlideEditorController{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final boolean changesZoom = ! slide.changesZoom();
-				slide.setChangesZoom(changesZoom);
+				UndoableSlide.of(slide).setChangesZoom(changesZoom);
 				if(changesZoom) {
-					slide.setZoom(Controller.getCurrentController().getMapViewManager().getZoom());
+					UndoableSlide.of(slide).setZoom(Controller.getCurrentController().getMapViewManager().getZoom());
 				}
 			}
 		});
@@ -171,7 +171,7 @@ class SlideEditorController{
 		checkBoxOnlySpecificNodes.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				slide.setCentersSelectedNode(!slide.centersSelectedNode());
+				UndoableSlide.of(slide).setCentersSelectedNode(!slide.centersSelectedNode());
 			}
 		});
 		return checkBoxOnlySpecificNodes;
@@ -183,7 +183,7 @@ class SlideEditorController{
 		checkBoxOnlySpecificNodes.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				slide.setShowsOnlySpecificNodes(! slide.showsOnlySpecificNodes());
+				UndoableSlide.of(slide).setShowsOnlySpecificNodes(! slide.showsOnlySpecificNodes());
 			}
 		});
 		return checkBoxOnlySpecificNodes;
@@ -196,7 +196,7 @@ class SlideEditorController{
 		checkBoxShowAncestors.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				slide.setShowsAncestors(! slide.showsAncestors());
+				UndoableSlide.of(slide).setShowsAncestors(! slide.showsAncestors());
 			}
 		});
 		return checkBoxShowAncestors;
@@ -208,7 +208,7 @@ class SlideEditorController{
 		checkBoxShowDescendants.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				slide.setShowsDescendants(! slide.showsDescendants());
+				UndoableSlide.of(slide).setShowsDescendants(! slide.showsDescendants());
 			}
 		});
 		return checkBoxShowDescendants;
@@ -231,7 +231,7 @@ class SlideEditorController{
 			    List<ASelectableCondition> conditions = filterComposerDialog.getConditions();
 			    if(filterComposerDialog.isSuccess()) {
 					ASelectableCondition newCondition = conditions.isEmpty() ? null : conditions.get(0);
-					slide.setFilterCondition(newCondition);
+					UndoableSlide.of(slide).setFilterCondition(newCondition);
 				}
 			    
 			}
