@@ -105,7 +105,7 @@ subprojects {
 configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ || it.name =~ /^freeplane_framework$/}){
     repositories {
         maven {
-            url 'http://www.knopflerfish.org/maven2/'
+            url 'https://dl.bintray.com/knopflerfish/knopflerfish-maven/'
         }
     }
 
