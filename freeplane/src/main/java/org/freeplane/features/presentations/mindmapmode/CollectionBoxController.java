@@ -75,7 +75,8 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		collectionChangeListener = new CollectionChangeListener<T>() {
 			@Override
 			public void onCollectionChange(CollectionChangedEvent<T> event) {
-				if(event.eventType != CollectionChangedEvent.EventType.SELECTION_CHANGED)
+				if(event.eventType != CollectionChangedEvent.EventType.SELECTION_CHANGED
+						&& btnNewElement.isEnabled())
 				updateUiElements();
 			}
 		};
@@ -99,6 +100,14 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	}
 
 	private void updateUiElements() {
+		if(btnNewElement.isEnabled())
+			enableUiElements();
+		final int collectionSize = collection.getSize();
+		final int currentElementIndex = collection.getCurrentElementIndex();
+		lblElementCount.setText( currentElementIndex >= 0 ? Integer.toString(currentElementIndex + 1) + "/" + Integer.toString(collectionSize) + ": " : "-/-: ");
+	}
+
+	private void enableUiElements() {
 		final int collectionSize = collection.getSize();
 		final int currentElementIndex = collection.getCurrentElementIndex();
 		comboBoxCollectionNames.setEnabled(true);
@@ -109,7 +118,6 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		btnMoveUp.setEnabled(currentElementIndex > 0);
 		btnMoveDown.setEnabled(currentElementIndex >= 0 && currentElementIndex < collectionSize-1);
 		btnMove.setEnabled(collectionSize > 1);
-		lblElementCount.setText( currentElementIndex >= 0 ? Integer.toString(currentElementIndex + 1) + "/" + Integer.toString(collectionSize) + ": " : "-/-: ");
 	}
 
 	private void disableUiElements() {
@@ -184,7 +192,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 
 	void enableEditing() {
 		if (collection != null)
-			updateUiElements();
+			enableUiElements();
 	}
 	
 }

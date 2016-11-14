@@ -2,6 +2,7 @@ package org.freeplane.features.presentations.mindmapmode;
 
 import static org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType.PLAYING_STATE_CHANGED;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -105,6 +106,7 @@ class SlideEditorController{
 		};
 		filterNotSetLabel = TranslatedElementFactory.createLabel("slide.nofilter");
 		filterNotSetLabel.setEnabled(false);
+		filterNotSetLabel.setForeground(Color.DARK_GRAY);
 		disableUI();
 	}
 
@@ -314,13 +316,16 @@ class SlideEditorController{
 		else {
 			for(JComponent c : allButtons)
 				c.setEnabled(true);
+		}
+		if(slide != null){
 			final boolean showsOnlySpecificNodes = slide.showsOnlySpecificNodes();
 			checkBoxShowOnlySelectedNodes.setSelected(showsOnlySpecificNodes);
 			final boolean centersSelectedNode = slide.centersSelectedNode();
 			checkBoxCentersSelectedNode.setSelected(centersSelectedNode);
 			final ASelectableCondition filterCondition = slide.getFilterCondition();
-			for(JComponent c : filterRelatedButtons)
-				c.setEnabled(showsOnlySpecificNodes || filterCondition != null);
+			if (! presentationState.isPresentationRunning())
+				for(JComponent c : filterRelatedButtons)
+					c.setEnabled(showsOnlySpecificNodes || filterCondition != null);
 			final boolean changesZoom = slide.changesZoom();
 			tglbtnChangeZoom.setSelected(changesZoom);
 			lblZoomFactor.setText(changesZoom ? Math.round(slide.getZoom() * 100) + "%" : "");
@@ -329,8 +334,19 @@ class SlideEditorController{
 			checkBoxShowDescendants.setSelected(slide.showsDescendants());
 			checkBoxShowAncestors.setSelected(slide.showsAncestors());
 			tglbtnSetFilter.setSelected(filterCondition != null);
-			updateFilter();
 		}
+		else {
+			checkBoxShowOnlySelectedNodes.setSelected(false);
+			checkBoxCentersSelectedNode.setSelected(false);
+			tglbtnChangeZoom.setSelected(false);
+			lblZoomFactor.setText("");
+			checkBoxShowOnlySelectedNodes.setSelected(false);
+			checkBoxShowAncestors.setSelected(false);
+			checkBoxShowDescendants.setSelected(false);
+			checkBoxShowAncestors.setSelected(false);
+			tglbtnSetFilter.setSelected(false);
+		}
+		updateFilter();
 	}
 
 	private void updateFilter() {
