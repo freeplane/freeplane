@@ -21,7 +21,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="MapStyle">
     <conditional_styles>
@@ -154,7 +153,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -182,7 +180,58 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1341130602702" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200.0 px" HGAP_QUANTITY="22.0 px" VSHIFT_QUANTITY="16.0 px">
+<node TEXT="Introduction" STYLE_REF="Beginner" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1341130602702" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200.0 px" HGAP_QUANTITY="22.0 px" VSHIFT_QUANTITY="16.0 px">
+<node ID="ID_131498432" CREATED="1479208899084" MODIFIED="1479210525907"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Basically, you just start typing to write text into a node, and end with an
+    </p>
+    <p>
+      ENTER.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To create a new node press INSERT (on MacOS press TAB) or ENTER.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To navigate nodes use ARROW-KEYS.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To fold/unfold press SPACE.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      And to write formatted text you press ALT-ENTER
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      These are the basics and should give you a feeling of what Freeplane is for
+    </p>
+    <p>
+      in its core. Have fun, and ask your questions in the <a href="https://sourceforge.net/p/freeplane/discussion/758437/">freeplane-forum</a>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
 <node TEXT="Goal" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1335300198070">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -205,7 +254,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -251,7 +299,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -358,7 +405,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -405,7 +451,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -459,7 +504,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -595,7 +639,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -629,7 +672,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -648,7 +690,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="bezier"/>
 <node ID="ID_265318117" CREATED="1323437723250" MODIFIED="1341131023466" HGAP_QUANTITY="-95.0 px" VSHIFT_QUANTITY="150.0 px" STYLE="fork"><richcontent TYPE="NODE">
@@ -683,7 +724,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge"/>
 <hook NAME="NodeConditionalStyles">
@@ -870,7 +910,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <node ID="ID_1433249332" CREATED="1323438495734" MODIFIED="1341131039869" HGAP_QUANTITY="-100.0 px" VSHIFT_QUANTITY="114.0 px" STYLE="fork"><richcontent TYPE="NODE">
 
@@ -895,7 +934,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge"/>
 <hook NAME="NodeConditionalStyles">
@@ -929,7 +967,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge"/>
 <hook NAME="NodeConditionalStyles">
@@ -1012,7 +1049,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1032,7 +1068,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -1076,7 +1111,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1147,7 +1181,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge"/>
 </node>
@@ -1177,7 +1210,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge"/>
 </node>
@@ -1221,7 +1253,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1245,7 +1276,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1272,7 +1302,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1311,7 +1340,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1349,7 +1377,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1398,7 +1425,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1438,7 +1464,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1471,7 +1496,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1496,7 +1520,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1521,7 +1544,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1544,7 +1566,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1574,7 +1595,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1622,7 +1642,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1654,7 +1673,6 @@
     </ol>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1674,7 +1692,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -1695,7 +1712,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1720,7 +1736,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1771,7 +1786,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1815,7 +1829,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1848,7 +1861,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1877,7 +1889,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -1950,7 +1961,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -2014,7 +2024,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2052,7 +2061,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2098,7 +2106,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2117,7 +2124,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -2178,7 +2184,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2215,7 +2220,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2238,7 +2242,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2272,7 +2275,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2316,7 +2318,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2351,7 +2352,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2386,7 +2386,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2409,7 +2408,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2433,7 +2431,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -2453,7 +2450,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2537,7 +2533,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2563,7 +2558,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2606,7 +2600,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2626,7 +2619,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -2657,7 +2649,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2707,7 +2698,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2755,7 +2745,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2813,7 +2802,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2836,7 +2824,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2857,7 +2844,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <node FOLDED="true" ID="ID_357953420" CREATED="1323613544023" MODIFIED="1335095694181" HGAP_QUANTITY="-583.0 px" VSHIFT_QUANTITY="137.0 px"><richcontent TYPE="NODE">
 
@@ -2897,7 +2883,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <node TEXT="My Example" STYLE_REF="MyTemplate" ID="ID_679492060" CREATED="1323614118804" MODIFIED="1323615655812">
 <attribute NAME="birth date" VALUE=""/>
@@ -2949,7 +2934,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2986,7 +2970,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3009,7 +2992,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3046,7 +3028,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3075,7 +3056,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3095,7 +3075,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -3151,7 +3130,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3189,7 +3167,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3219,7 +3196,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <richcontent TYPE="DETAILS">
 
@@ -3318,7 +3294,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3364,7 +3339,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="Internal source" STYLE_REF="Advanced" FOLDED="true" ID="ID_1322185425" CREATED="1318936419394" MODIFIED="1336383756945" MAX_WIDTH="550.0 px" STYLE="combined">
@@ -3423,7 +3397,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3469,7 +3442,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -3496,7 +3468,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -3627,7 +3598,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3665,7 +3635,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -3732,7 +3701,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
@@ -3797,7 +3765,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3835,7 +3802,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3934,7 +3900,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -4574,7 +4539,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -4732,7 +4696,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -4755,7 +4718,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -4776,7 +4738,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="All nodes a bubble, particular edge,.." STYLE_REF="Advanced" FOLDED="true" ID="ID_210892586" CREATED="1321645917041" MODIFIED="1335301155197" TEXT_SHORTENED="true" MIN_WIDTH="1.0 px" STYLE="combined"><richcontent TYPE="DETAILS">
@@ -4804,7 +4765,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -4836,7 +4796,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -4867,7 +4826,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -4914,7 +4872,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -5126,7 +5083,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -5155,7 +5111,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -5212,7 +5167,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -5245,7 +5199,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -5268,7 +5221,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -5287,7 +5239,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -5317,7 +5268,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="The making of this mind map" STYLE_REF="Advanced" FOLDED="true" ID="ID_1394424447" CREATED="1329890506053" MODIFIED="1335301176959">
@@ -5592,7 +5542,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <font ITALIC="false"/>
 </node>
@@ -5610,7 +5559,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -5635,7 +5583,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
