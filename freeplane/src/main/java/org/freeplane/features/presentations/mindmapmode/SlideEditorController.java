@@ -41,6 +41,7 @@ class SlideEditorController{
 	private final JCheckBox checkBoxShowDescendants;
 	private final JToggleButton tglbtnSetFilter;
 	private final JComponent filterConditionComponentBox;
+	private final JToggleButton tglbtnSetFoldingState;
 	
 	private final JComponent[] allButtons;
 	private final JComponent[] filterRelatedButtons;
@@ -92,10 +93,13 @@ class SlideEditorController{
 		};
 		filterConditionComponentBox.setMinimumSize(new Dimension(1, minimumHeight));
 		
+		tglbtnSetFoldingState = createSetFoldingStateToggleButton();
+		
 		allButtons = new JComponent[] { btnSelectNodes, btnSetSelectedNodes, btnAddSelectedNodes,
 		        btnRemoveSelectedNodes, checkBoxCentersSelectedNode,
 		        tglbtnChangeZoom, lblZoomFactor, 
-		        checkBoxShowOnlySelectedNodes, checkBoxShowAncestors, checkBoxShowDescendants, tglbtnSetFilter };
+		        checkBoxShowOnlySelectedNodes, checkBoxShowAncestors, checkBoxShowDescendants, tglbtnSetFilter, 
+		        tglbtnSetFoldingState};
 		filterRelatedButtons = new JComponent[]{checkBoxShowAncestors, checkBoxShowDescendants};
 		slideChangeListener = new SlideChangeListener() {
 			
@@ -217,6 +221,7 @@ class SlideEditorController{
 	}
 
 
+	
 	private JToggleButton createSetFilterToggleButton() {
 		JToggleButton tglbtnSetFilter = TranslatedElementFactory.createToggleButton("slide.setfilter");
 		tglbtnSetFilter.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -253,6 +258,21 @@ class SlideEditorController{
 		});
 		return btnHighlightSlideContent;
 	}
+	private JToggleButton createSetFoldingStateToggleButton() {
+		JToggleButton tglbtnSetFilter = TranslatedElementFactory.createToggleButton("slide.setfoldingstate");
+		tglbtnSetFilter.setAlignmentX(Component.CENTER_ALIGNMENT);
+		tglbtnSetFilter.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(! slide.foldsNodes())
+					UndoableSlide.of(slide).setCurrentFoldedNodeIDs();
+				else
+					UndoableSlide.of(slide).unsetFoldsNodes();
+			}
+		});
+		return tglbtnSetFilter;
+	}
 
 
 	Box createSlideContentBox() {
@@ -278,7 +298,8 @@ class SlideEditorController{
 		content.add(filterConditionComponentBox);
 		filterConditionComponentBox.setAlignmentX(Box.CENTER_ALIGNMENT);
 		TranslatedElementFactory.createTitledBorder(filterConditionComponentBox, "slide.filter");
-
+		
+		content.add(tglbtnSetFoldingState);
 
 		Box contentWithMargins = Box.createHorizontalBox();
 		TranslatedElementFactory.createTitledBorder(contentWithMargins, "slide.content");
@@ -334,6 +355,7 @@ class SlideEditorController{
 			checkBoxShowDescendants.setSelected(slide.showsDescendants());
 			checkBoxShowAncestors.setSelected(slide.showsAncestors());
 			tglbtnSetFilter.setSelected(filterCondition != null);
+			tglbtnSetFoldingState.setSelected(slide.foldsNodes());
 		}
 		else {
 			checkBoxShowOnlySelectedNodes.setSelected(false);

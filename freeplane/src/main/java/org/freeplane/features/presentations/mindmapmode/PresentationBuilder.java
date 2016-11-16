@@ -3,7 +3,7 @@ package org.freeplane.features.presentations.mindmapmode;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.CENTERS_SELECTED_NODE;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.CHANGES_ZOOM;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.NAME;
-import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.NODES_ON_SLIDE;
+import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.*;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.NODE_ID;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.NODE_ON_SLIDE;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.PRESENTATION;
@@ -37,6 +37,7 @@ class PresentationBuilder {
 	static final String PRESENTATIONS = "presentations";
 	static final String NODE_ON_SLIDE = "NodeOnSlide";
 	static final String NODES_ON_SLIDE = "NodesOnSlide";
+	static final String FOLDED_NODES = "FoldedNodes";
 	static final String SLIDE_CONDITION = "SlideCondition";
 	static final String ZOOM = "zoom";
 	static final String CENTERS_SELECTED_NODE = "centersSelectedNode";
@@ -107,6 +108,10 @@ class PresentationBuilder {
 					if (xmlElement.getName().equals(NODES_ON_SLIDE)) {
 						Set<String> ids = loadSpecificNodeIds(xmlElement);
 						s.setSelectedNodeIds(ids);
+					}
+					else if (xmlElement.getName().equals(FOLDED_NODES)) {
+						Set<String> ids = loadSpecificNodeIds(xmlElement);
+						s.setFoldedNodeIDs(ids);
 					}
 					else if (xmlElement.getName().equals(SLIDE_CONDITION)) {
 						ASelectableCondition condition = loadFilterCondition(xmlElement);
@@ -216,5 +221,16 @@ class PresentationWriter {
 		}
 		if (xmlNodes.hasChildren())
 			xmlSlide.addChild(xmlNodes);
+		if(s.foldsNodes()) {
+			XMLElement xmlFoldedNodes = new XMLElement(FOLDED_NODES);
+			for (String nodeId : s.getFoldedNodeIds()) {
+				if (map.getNodeForID(nodeId) != null) {
+					XMLElement xmlNode = new XMLElement(NODE_ON_SLIDE);
+					xmlNode.setAttribute(NODE_ID, nodeId);
+					xmlFoldedNodes.addChild(xmlNode);
+				}
+			}
+			xmlSlide.addChild(xmlFoldedNodes);
+		}
 	}
 }

@@ -86,6 +86,8 @@ public interface IMapViewManager {
 	public Component getComponent(NodeModel node);
 	
 	public boolean isFoldedOnCurrentView(NodeModel node);
+	
+	public void setFoldedOnCurrentView(NodeModel node, boolean folded);
 
 	public Font getFont(NodeModel node);
 

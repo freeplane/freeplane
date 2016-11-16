@@ -792,8 +792,10 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void addChildViews() {
+		if(isFolded)
+			return;
 		int index = 0;
-		for (NodeModel child : getMap().getModeController().getMapController().childrenFolded(getModel())) {
+		for (NodeModel child : getMap().getModeController().getMapController().childrenUnfolded(getModel())) {
 			if(child.containsExtension(HideChildSubtree.class))
 				return;
 			if(getComponentCount() <= index
@@ -871,15 +873,9 @@ public class NodeView extends JComponent implements INodeView {
 		final Object property = event.getProperty();
 		if (property == NodeChangeType.FOLDING || property == HideChildSubtree.instance || property == EncryptionModel.class) {
 			if(map.isSelected() || property == EncryptionModel.class && ! isFolded){
-				boolean wasFolded = isFolded;
-				isFolded = getMap().getModeController().getMapController().isFolded(model);
-				if(wasFolded != isFolded || property == HideChildSubtree.instance) {
-					treeStructureChanged();
-					getMap().selectIfSelectionIsEmpty(this);
-					Shape shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
-					if (shape.equals(NodeStyleModel.Shape.combined))
-						update();
-				}
+				boolean folded = getMap().getModeController().getMapController().isFolded(model);
+				boolean force = property == HideChildSubtree.instance;
+				setFolded(folded, force);
 			}
 			if(property != EncryptionModel.class)
 				return;
@@ -900,6 +896,23 @@ public class NodeView extends JComponent implements INodeView {
 		update();
 		if (!isRoot())
 			getParentView().numberingChanged(node.getParentNode().getIndex(node) + 1);
+	}
+
+	public void setFolded(boolean folded) {
+		setFolded(folded, false);
+		revalidate();
+	}
+	
+	private void setFolded(boolean folded, boolean force) {
+		boolean wasFolded = isFolded;
+		this.isFolded = folded;
+		if(wasFolded != isFolded || force) {
+			treeStructureChanged();
+			getMap().selectIfSelectionIsEmpty(this);
+			Shape shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
+			if (shape.equals(NodeStyleModel.Shape.combined))
+				update();
+		}
 	}
 
 	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {

@@ -303,4 +303,63 @@ class UndoableSlide {
 		controller.execute(actor, mapModel);
 	}
 
+	public void setCurrentFoldedNodeIDs() {
+		final Collection<String> currentFoldedNodeIds = slide.getCurrentFoldedNodeIds();
+		final Set<String> oldFoldedNodeIds = slide.getFoldedNodeIds();
+		final boolean foldedNodes = slide.foldsNodes();
+		if(currentFoldedNodeIds == oldFoldedNodeIds && foldedNodes)
+			return;
+		IActor actor = new IActor() {
+			
+			@Override
+			public String getDescription() {
+				return "setCurrentFoldedNodeIDs";
+			}
+			
+			@Override
+			public void act() {
+				slide.setFoldedNodeIDs(currentFoldedNodeIds);
+			}
+			
+			@Override
+			public void undo() {
+				if(foldedNodes)
+					slide.setFoldedNodeIDs(oldFoldedNodeIds);
+				else
+					slide.unsetFoldsNodes();
+			}
+			
+		};
+		controller.execute(actor, mapModel);
+	}
+
+	public void unsetFoldsNodes() {
+		final boolean foldedNodes = slide.foldsNodes();
+		if(! foldedNodes)
+			return;
+		final Set<String> oldFoldedNodeIds = slide.getFoldedNodeIds();
+		IActor actor = new IActor() {
+			
+			@Override
+			public String getDescription() {
+				return "setCurrentFoldedNodeIDs";
+			}
+			
+			@Override
+			public void act() {
+				slide.unsetFoldsNodes();
+			}
+			
+			@Override
+			public void undo() {
+				if(foldedNodes)
+					slide.setFoldedNodeIDs(oldFoldedNodeIds);
+				else
+					slide.unsetFoldsNodes();
+			}
+			
+		};
+		controller.execute(actor, mapModel);
+	}
+
 }

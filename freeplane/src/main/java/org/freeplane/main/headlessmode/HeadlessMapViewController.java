@@ -290,6 +290,12 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	@Override
+	public void setFoldedOnCurrentView(NodeModel node, boolean folded) {
+		throw new RuntimeException("Method not implemented");
+	}
+	
+	@Override
 	public void onQuitApplication() {
 	}
+
 }

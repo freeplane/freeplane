@@ -2,6 +2,7 @@ package org.freeplane.features.presentations.mindmapmode;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import org.freeplane.features.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.IMapViewManager;
 
 public class Slide implements NamedElement<Slide>{
 	public static final Slide ALL_NODES = new Slide("All nodes");
@@ -25,6 +27,8 @@ public class Slide implements NamedElement<Slide>{
 	private boolean showsDescendants;
 	private ASelectableCondition filterCondition;
 	private Set<String> selectedNodeIds;
+	private boolean foldsNodes;
+	private Set<String> foldedNodeIds;
 	private final ArrayList<SlideChangeListener> slideChangeListeners;
 
 	@Override
@@ -86,7 +90,99 @@ public class Slide implements NamedElement<Slide>{
 			fireSlideChangeEvent();
 		}
 	}
+	
+	public Set<String> getFoldedNodeIds() {
+		return foldedNodeIds;
+	}
+	
+	public boolean foldsNodes(){
+		return foldsNodes;
+	}
+	
+	public void unsetFoldsNodes(){
+		if(this.foldsNodes){
+			this.foldsNodes = false;
+			foldedNodeIds.clear();
+			fireSlideChangeEvent();
+		}
+	}
+	
+	public Collection<String> getCurrentFoldedNodeIds(){
+		return createNodeIterator().getCurrentFoldedNodeIds();
+	}
+	
+	public void setFoldedNodeIDs(Collection<String> foldedNodeIds) {
+		if(this.foldedNodeIds != foldedNodeIds){
+			this.foldedNodeIds = new LinkedHashSet<>(foldedNodeIds);
+			foldsNodes = true;
+			fireSlideChangeEvent();
+		}
+	}
+	
+	private class NodeIterator {
+		
+		private final IMapViewManager mapViewManager;
+		private Filter filter;
+		
+		public NodeIterator(IMapViewManager mapViewManager) {
+			super();
+			this.mapViewManager = mapViewManager;
+		}
+		
+		public Set<String> getCurrentFoldedNodeIds(){
+			filter = calculateFilterResults();
+			Set<String> foldedNodeIds = calculateCurrentFoldedNodeIds();
+			filter = null;
+			return foldedNodeIds;
+		}
 
+		private Set<String> calculateCurrentFoldedNodeIds() {
+			MapModel map = getMap();
+			HashSet<String> nodeIds = new HashSet<>();
+			addCurrentFoldedNodeIds(map.getRootNode(), nodeIds);
+			return nodeIds;
+		}
+
+		private Filter calculateFilterResults() {
+			MapModel map = getMap();
+			final ICondition condition = getEffectiveFilterCondition();
+			Filter filter = Filter.createOneTimeFilter(condition, true, showsDescendants, false);
+			filter.calculateFilterResults(map);
+			return filter;
+		}
+		
+		private void addCurrentFoldedNodeIds(NodeModel node, HashSet<String> nodeIds) {
+			if(mapViewManager.isFoldedOnCurrentView(node)){
+				if(filter.isVisible(node))
+					nodeIds.add(node.getID());
+				return;
+			}
+			else if(filter.isVisible(node))
+				for(NodeModel child : node.getChildren())
+					addCurrentFoldedNodeIds(child, nodeIds);
+		}
+
+		public void foldNodes() {
+			if(foldsNodes) {
+				filter = new Filter(getEffectiveFilterCondition(), true, showsDescendants, false);
+				foldNodes(getMap().getRootNode());
+				filter = null;
+			}
+		}
+
+		private void foldNodes(NodeModel node) {
+			if(filter.isVisible(node)) {
+				if(foldedNodeIds.contains(node.getID())) {
+					mapViewManager.setFoldedOnCurrentView(node, true);
+					return;
+				}
+				mapViewManager.setFoldedOnCurrentView(node, false);
+				for(NodeModel child : node.getChildren())
+					foldNodes(child);
+			}
+		}
+	}
+	
 	public boolean isNodeVisible(NodeModel node) {
 		return selectedNodeIds.contains(node.getID());
 	}
@@ -202,7 +298,17 @@ public class Slide implements NamedElement<Slide>{
 	void apply() {
 		applyFilter();
 		applySelection();
+		foldNodes();
 		applyZoom();
+	}
+
+
+	public NodeIterator createNodeIterator() {
+		return new NodeIterator(Controller.getCurrentController().getMapViewManager());
+	} 
+	
+	private void foldNodes() {
+		createNodeIterator().foldNodes();
 	}
 
 	private void applyZoom() {
@@ -230,6 +336,12 @@ public class Slide implements NamedElement<Slide>{
 	}
 
 	private void applyFilter() {
+		MapModel map = getMap();
+		final ICondition condition = getEffectiveFilterCondition();
+		new Filter(condition, showsAncestors, showsDescendants, false).applyFilter(this, map, false);
+	}
+
+	public ICondition getEffectiveFilterCondition() {
 		final ICondition  condition;
 		if(showsOnlySpecificNodes && filterCondition != null){
 			SelectedViewSnapshotCondition selectedViewSnapshotCondition = getFilterConditionForSelectedNodes();
@@ -244,8 +356,7 @@ public class Slide implements NamedElement<Slide>{
 		else{
 			condition = null;
 		}
-		MapModel map = getMap();
-		new Filter(condition, showsAncestors, showsDescendants, false).applyFilter(this, map, false);
+		return condition;
 	}
 
 	private SelectedViewSnapshotCondition getFilterConditionForSelectedNodes() {
