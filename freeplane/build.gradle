@@ -175,7 +175,7 @@ jar {
         //instruction 'Export-Package', '*;-noimport:=true'
         //instruction 'Private-Package', '*'
         instruction 'Bundle-Activator', 'org.freeplane.main.osgi.Activator'
-        // instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.7'
+        instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.7'
     }
 }
 
