@@ -325,7 +325,7 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public void setFoldedAndScroll(final NodeModel node, final boolean folded){
-		if(node.isFolded() != folded){
+		if(Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node) != folded){
 			setFolded(node, folded);
 			if(! folded && ResourceController.getResourceController().getBooleanProperty("scrollOnUnfold")){
 				SwingUtilities.invokeLater(new Runnable() {
