@@ -46,7 +46,8 @@ class ToggleFoldedAction extends AFreeplaneAction {
 			r.toggleFolded(selectedNodes);
 		else {
 			final NodeModel selectedNode = r.getSelectedNode();
-			r.setFoldedAndScroll(selectedNode, ! selectedNode.isFolded());
+			boolean folded = Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(selectedNode);
+			r.setFoldedAndScroll(selectedNode, ! folded);
 		}
 	}
 }
