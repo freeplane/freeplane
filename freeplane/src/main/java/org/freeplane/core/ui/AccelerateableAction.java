@@ -48,7 +48,7 @@ public class AccelerateableAction implements IFreeplaneAction {
 		return setAcceleratorOnNextClickActionDialog != null;
 	}
 
-	private static final String SET_ACCELERATOR_ON_NEXT_CLICK_ACTION = "set_accelerator_on_next_click_action";
+	private static final String SET_ACCELERATOR_ON_NEXT_CLICK_ACTION = "set_accelerator_on_next_click_helpmessage";
 
 	static void setNewAcceleratorOnNextClick(KeyStroke accelerator) {
 		if (AccelerateableAction.isNewAcceleratorOnNextClickEnabled()) {
