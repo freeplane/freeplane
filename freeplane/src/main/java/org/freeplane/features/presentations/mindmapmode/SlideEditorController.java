@@ -314,12 +314,9 @@ class SlideEditorController{
 		if(slide != null)
 			slide.removeSlideChangeListener(slideChangeListener);
 		this.slide = newSlide;
+		updateUI();
 		if(newSlide != null){
-			updateUI();
 			slide.addSlideChangeListener(slideChangeListener);
-		}
-		else{
-			disableUI();
 		}
 	}
 
@@ -332,13 +329,20 @@ class SlideEditorController{
 
 
 	private void updateUI() {
-		if (presentationState.isPresentationRunning() || slide == null)
+		if (slide == null) {
 			disableUI();
-		else {
+			checkBoxShowOnlySelectedNodes.setSelected(false);
+			checkBoxCentersSelectedNode.setSelected(false);
+			tglbtnChangeZoom.setSelected(false);
+			lblZoomFactor.setText("");
+			checkBoxShowOnlySelectedNodes.setSelected(false);
+			checkBoxShowAncestors.setSelected(false);
+			checkBoxShowDescendants.setSelected(false);
+			checkBoxShowAncestors.setSelected(false);
+			tglbtnSetFilter.setSelected(false);
+		} else {
 			for(JComponent c : allButtons)
 				c.setEnabled(true);
-		}
-		if(slide != null){
 			final boolean showsOnlySpecificNodes = slide.showsOnlySpecificNodes();
 			checkBoxShowOnlySelectedNodes.setSelected(showsOnlySpecificNodes);
 			final boolean centersSelectedNode = slide.centersSelectedNode();
@@ -356,17 +360,6 @@ class SlideEditorController{
 			checkBoxShowAncestors.setSelected(slide.showsAncestors());
 			tglbtnSetFilter.setSelected(filterCondition != null);
 			tglbtnSetFoldingState.setSelected(slide.foldsNodes());
-		}
-		else {
-			checkBoxShowOnlySelectedNodes.setSelected(false);
-			checkBoxCentersSelectedNode.setSelected(false);
-			tglbtnChangeZoom.setSelected(false);
-			lblZoomFactor.setText("");
-			checkBoxShowOnlySelectedNodes.setSelected(false);
-			checkBoxShowAncestors.setSelected(false);
-			checkBoxShowDescendants.setSelected(false);
-			checkBoxShowAncestors.setSelected(false);
-			tglbtnSetFilter.setSelected(false);
 		}
 		updateFilter();
 	}
