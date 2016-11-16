@@ -64,11 +64,18 @@ class InternationalizedSecurityManager extends SecurityManager {
 	@Override
 	public void checkConnect(final String pHost, final int pPort, final Object pContext) {
 		try{
-			super.checkConnect(pHost, pPort, pContext);
+			checkConnectHandleNullContext(pHost, pPort, pContext);
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_NETWORK, InternationalizedSecurityManager.PERM_Connect);
 		}
+	}
+
+	private void checkConnectHandleNullContext(final String pHost, final int pPort, final Object pContext) {
+		if(pContext != null)
+			super.checkConnect(pHost, pPort, pContext);
+		else
+			super.checkConnect(pHost, pPort);
 	}
 
 	@Override

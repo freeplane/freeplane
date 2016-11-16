@@ -87,7 +87,17 @@ public class Launcher {
 		setDefineIfNeeded("org.freeplane.globalresourcedir", getAbsolutePath("resources"));
 		setDefineIfNeeded("java.security.policy", getAbsolutePath("freeplane.policy"));
 		setDefine("org.osgi.framework.storage", getAbsolutePath("fwdir"));
-		System.setSecurityManager(new SecurityManager());
+		System.setSecurityManager(new SecurityManager(){
+
+			@Override
+			public void checkConnect(String pHost, int pPort, Object pContext) {
+				if(pContext != null)
+					super.checkConnect(pHost, pPort, pContext);
+				else
+					super.checkConnect(pHost, pPort);
+			}
+			
+		});
 	}
 
 	private void setDefineIfNeeded(String name, String value) {
