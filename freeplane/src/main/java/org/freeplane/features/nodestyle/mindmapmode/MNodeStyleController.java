@@ -68,6 +68,10 @@ public class MNodeStyleController extends NodeStyleController {
 			if (fromSize != null) {
 				fromSize.copyTo(NodeSizeModel.createNodeSizeModel(to));
 			}
+			final NodeBorderModel fromBorder = from.getExtension(NodeBorderModel.class);
+			if (fromBorder != null) {
+				fromBorder.copyTo(NodeBorderModel.createNodeBorderModel(to));
+			}
 			
 		}
 
@@ -77,6 +81,7 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 			from.removeExtension(NodeStyleModel.class);
 			from.removeExtension(NodeSizeModel.class);
+			from.removeExtension(NodeBorderModel.class);
 		}
 
 		public void remove(final Object key, final NodeModel from, final NodeModel which) {
