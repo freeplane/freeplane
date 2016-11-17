@@ -998,9 +998,7 @@ public final class LaTeXLexer extends DefaultJFlexLexer {
           { return token(TokenType.TYPE3,  CURLY);
           }
         case 45: break;
-        case 10: 
-          { 
-          }
+        case 10: break;
         case 46: break;
         default: 
           if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {

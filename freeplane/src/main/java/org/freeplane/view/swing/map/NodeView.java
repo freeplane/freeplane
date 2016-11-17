@@ -37,6 +37,7 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.JComponent;
@@ -55,7 +56,7 @@ import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeController.Rules;
 import org.freeplane.features.edge.EdgeStyle;
-import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
@@ -92,6 +93,7 @@ import org.freeplane.view.swing.map.edge.EdgeViewFactory;
  * TreeCellRenderer).
  */
 public class NodeView extends JComponent implements INodeView {
+	private static final int HIGHLIGHTED_NODE_ARC_MARGIN = 4;
 	final static int ALIGN_BOTTOM = -1;
 	final static int ALIGN_CENTER = 0;
 	final static int ALIGN_TOP = 1;
@@ -790,8 +792,10 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	void addChildViews() {
+		if(isFolded)
+			return;
 		int index = 0;
-		for (NodeModel child : getMap().getModeController().getMapController().childrenFolded(getModel())) {
+		for (NodeModel child : getMap().getModeController().getMapController().childrenUnfolded(getModel())) {
 			if(child.containsExtension(HideChildSubtree.class))
 				return;
 			if(getComponentCount() <= index
@@ -869,15 +873,9 @@ public class NodeView extends JComponent implements INodeView {
 		final Object property = event.getProperty();
 		if (property == NodeChangeType.FOLDING || property == HideChildSubtree.instance || property == EncryptionModel.class) {
 			if(map.isSelected() || property == EncryptionModel.class && ! isFolded){
-				boolean wasFolded = isFolded;
-				isFolded = getMap().getModeController().getMapController().isFolded(model);
-				if(wasFolded != isFolded || property == HideChildSubtree.instance) {
-					treeStructureChanged();
-					getMap().selectIfSelectionIsEmpty(this);
-					Shape shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
-					if (shape.equals(NodeStyleModel.Shape.combined))
-						update();
-				}
+				boolean folded = getMap().getModeController().getMapController().isFolded(model);
+				boolean force = property == HideChildSubtree.instance;
+				setFolded(folded, force);
 			}
 			if(property != EncryptionModel.class)
 				return;
@@ -898,6 +896,23 @@ public class NodeView extends JComponent implements INodeView {
 		update();
 		if (!isRoot())
 			getParentView().numberingChanged(node.getParentNode().getIndex(node) + 1);
+	}
+
+	public void setFolded(boolean folded) {
+		setFolded(folded, false);
+		revalidate();
+	}
+	
+	private void setFolded(boolean folded, boolean force) {
+		boolean wasFolded = isFolded;
+		this.isFolded = folded;
+		if(wasFolded != isFolded || force) {
+			treeStructureChanged();
+			getMap().selectIfSelectionIsEmpty(this);
+			Shape shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
+			if (shape.equals(NodeStyleModel.Shape.combined))
+				update();
+		}
 	}
 
 	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
@@ -1143,21 +1158,27 @@ public class NodeView extends JComponent implements INodeView {
 		g.translate(origin.x, origin.y);
 		mainView.paintDecoration(this, g);
 		g.translate(-origin.x, -origin.y);
-		final FilterController filterController = FilterController.getController(getMap().getModeController().getController());
-		if(filterController.isNodeHighlighted(getModel())){
-			final Color oldColor = g.getColor();
-			final Stroke oldStroke = g.getStroke();
-			g.setColor(Color.MAGENTA);
-			g.setStroke(getMap().getStandardSelectionStroke());
-			final JComponent content = getContent();
-			Point contentLocation = content.getLocation();
-			final int arcWidth = 8;
-			g.drawRoundRect(contentLocation.x - arcWidth, contentLocation.y - arcWidth, content.getWidth() + 2 * arcWidth,
-			    content.getHeight() + 2 * arcWidth, 15, 15);
-			g.setColor(oldColor);
-			g.setStroke(oldStroke);
+		final List<Color> highlightingColors = getMap().getModeController().getController().getExtension(HighlightController.class).getHighlightingColors(model);
+		int margin = HIGHLIGHTED_NODE_ARC_MARGIN;
+		for(Color color : highlightingColors){
+			margin += HIGHLIGHTED_NODE_ARC_MARGIN;
+			highlightNode(g, color, margin);
 		}
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
+	}
+
+	public void highlightNode(final Graphics2D g, Color color, final int arcMargin) {
+		final Color oldColor = g.getColor();
+		final Stroke oldStroke = g.getStroke();
+		g.setColor(color);
+		g.setStroke(getMap().getStandardSelectionStroke());
+		final JComponent content = getContent();
+		Point contentLocation = content.getLocation();
+		final int arcWidth = 15;
+		g.drawRoundRect(contentLocation.x - arcMargin, contentLocation.y - arcMargin, content.getWidth() + 2 * arcMargin,
+		    content.getHeight() + 2 * arcMargin, arcWidth, arcWidth);
+		g.setColor(oldColor);
+		g.setStroke(oldStroke);
 	}
 
 	/**

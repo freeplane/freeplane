@@ -29,6 +29,7 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.help.HelpController;
+import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
@@ -66,6 +67,7 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 			final HeadlessMapViewController mapViewController = new HeadlessMapViewController();
 			controller.setMapViewManager(mapViewController);
 			controller.setViewController(new HeadlessUIController(controller, mapViewController, ""));
+			controller.addExtension(HighlightController.class, new HighlightController());
 			FilterController.install();
 			FormatController.install(new FormatController());
 	        final ScannerController scannerController = new ScannerController();

@@ -205,7 +205,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 		public void selectAsTheOnlyOneSelected(final NodeModel node) {
 			final NodeView nodeView = getNodeView(node);
-			if (nodeView != null) {
+			if (nodeView != null && nodeView.isContentVisible()) {
 				MapView.this.selectAsTheOnlyOneSelected(nodeView);
 			}
 		}
@@ -244,11 +244,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             ArrayList<NodeView> views = new ArrayList<NodeView>(nodes.length);
             for(NodeModel node : nodes) {
 	            final NodeView nodeView = getNodeView(node);
-	            if(nodeView != null)
+	            if(nodeView != null && nodeView.isContentVisible())
 	            	views.add(nodeView);
             }
-            MapView.this.replaceSelection(views.toArray(new NodeView[]{}));
+            if(! views.isEmpty())
+            	MapView.this.replaceSelection(views.toArray(new NodeView[]{}));
         }
+
+		@Override
+		public List<String> getOrderedSelectionIds() {
+			final List<NodeModel> orderedSelection = getOrderedSelection();
+			final ArrayList<String> ids = new ArrayList<>(orderedSelection.size()); 
+			for(NodeModel node :orderedSelection)
+				ids.add(node.getID());
+			return ids;
+		}
 
 	}
 
@@ -1071,9 +1081,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * focused selected node.
 	 */
 	void addSelected(final NodeView newSelected, boolean scroll) {
-		selection.add(newSelected);
-		if(scroll)
-			mapScroller.scrollNodeToVisible(newSelected);
+		if(newSelected.isContentVisible()){
+			selection.add(newSelected);
+			if(scroll)
+				mapScroller.scrollNodeToVisible(newSelected);
+		}
 	}
 
 	public void mapChanged(final MapChangeEvent event) {

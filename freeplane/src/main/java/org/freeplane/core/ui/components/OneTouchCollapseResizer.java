@@ -152,22 +152,23 @@ public class OneTouchCollapseResizer extends JResizer {
 		}
 	}
 
-	public void setExpanded(boolean enabled) {
-		if(this.expanded != enabled) {
-			this.expanded = enabled;
+	public void setExpanded(boolean expanded) {
+		if(this.expanded != expanded) {
+			this.expanded = expanded;
 			try {
 				Component resizedComponent = getResizedComponent();
 				if(resizedComponent instanceof JComponent) {
-					((JComponent) resizedComponent).putClientProperty(COLLAPSED, (enabled ? null : "true"));
+					((JComponent) resizedComponent).putClientProperty(COLLAPSED, (expanded ? null : "true"));
 				}
-				if(enabled) {
+				if(expanded) {
 					resizedComponent.setPreferredSize(null);
 				}
 				else {
 					resizedComponent.setPreferredSize(new Dimension(0,0));
 				}
+				resizedComponent.setVisible(expanded);
 
-				fireCollapseStateChanged(resizedComponent, enabled);
+				fireCollapseStateChanged(resizedComponent, expanded);
 
 				recalibrate();
 			}

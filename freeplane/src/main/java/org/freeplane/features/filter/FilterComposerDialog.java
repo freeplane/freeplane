@@ -1,15 +1,14 @@
-package org.freeplane.features.styles.mindmapmode;
+package org.freeplane.features.filter;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.filter.AFilterComposerDialog;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 
 @SuppressWarnings("serial")
-class FilterComposerDialog extends AFilterComposerDialog{
+public class FilterComposerDialog extends AFilterComposerDialog{
 
 	public FilterComposerDialog() {
         super(TextUtils.getText("filter_dialog"), true);

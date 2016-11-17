@@ -33,6 +33,8 @@ public interface IMapSelection {
 	public NodeModel getSelected();
 
 	public Set<NodeModel> getSelection();
+	
+	public List<String> getOrderedSelectionIds();
 
 	public List<NodeModel> getOrderedSelection();
 

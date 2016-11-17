@@ -375,6 +375,16 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			return node.isFolded();
 		return nodeView.isFolded();
 	}
+	
+	public void setFoldedOnCurrentView(NodeModel node, boolean folded){
+		if(selectedMapView == null || ! node.hasChildren())
+			return;
+		final NodeView nodeView = selectedMapView.getNodeView(node);
+		if(nodeView == null)
+			return;
+		nodeView.setFolded(folded);
+		
+	}
 
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getFont(org.freeplane.core.model.NodeModel)
