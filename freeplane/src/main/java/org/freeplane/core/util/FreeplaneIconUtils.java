@@ -90,8 +90,10 @@ public class FreeplaneIconUtils {
 			svgUri = svgUniverse.loadSVG(url.openStream(), url.getPath());
 			icon.setSvgUniverse(svgUniverse);
 			icon.setSvgURI(svgUri);
-			icon.setPreferredSize(new Dimension(widthPixels, heightPixels));
-			icon.setAutosize(SVGIcon.AUTOSIZE_VERT);
+			final SVGDiagram diagram = svgUniverse.getDiagram(svgUri);
+			final float aspectRatio = diagram.getHeight()/diagram.getWidth();
+			icon.setPreferredSize(new Dimension((int)(heightPixels / aspectRatio), heightPixels));
+			icon.setAutosize(SVGIcon.AUTOSIZE_STRETCH);
 			icon.setAntiAlias(isSvgAntialiasEnabled());
 			return icon;
 		} catch (Exception e) {
