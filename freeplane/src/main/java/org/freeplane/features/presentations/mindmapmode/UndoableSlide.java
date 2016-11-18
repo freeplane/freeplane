@@ -342,7 +342,7 @@ class UndoableSlide {
 			
 			@Override
 			public String getDescription() {
-				return "setCurrentFoldedNodeIDs";
+				return "unsetFoldsNodes";
 			}
 			
 			@Override
@@ -352,10 +352,7 @@ class UndoableSlide {
 			
 			@Override
 			public void undo() {
-				if(foldedNodes)
-					slide.setFoldedNodeIDs(oldFoldedNodeIds);
-				else
-					slide.unsetFoldsNodes();
+				slide.setFoldedNodeIDs(oldFoldedNodeIds);
 			}
 			
 		};

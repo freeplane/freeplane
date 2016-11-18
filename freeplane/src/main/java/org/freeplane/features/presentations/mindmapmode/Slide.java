@@ -27,7 +27,6 @@ public class Slide implements NamedElement<Slide>{
 	private boolean showsDescendants;
 	private ASelectableCondition filterCondition;
 	private Set<String> selectedNodeIds;
-	private boolean foldsNodes;
 	private Set<String> foldedNodeIds;
 	private final ArrayList<SlideChangeListener> slideChangeListeners;
 
@@ -66,6 +65,7 @@ public class Slide implements NamedElement<Slide>{
 		this.showsDescendants = showDescendants;
 		this.filterCondition = filterCondition;
 		slideChangeListeners = new ArrayList<>();
+		foldedNodeIds = null;
 	}
 
 	public Set<String> getSelectedNodeIds() {
@@ -96,17 +96,16 @@ public class Slide implements NamedElement<Slide>{
 	}
 	
 	public boolean isNodeFolded(NodeModel node) {
-		return foldedNodeIds.contains(node.getID());
+		return foldsNodes() &&  foldedNodeIds.contains(node.getID());
 	}
 	
 	public boolean foldsNodes(){
-		return foldsNodes;
+		return foldedNodeIds != null;
 	}
 	
 	public void unsetFoldsNodes(){
-		if(this.foldsNodes){
-			this.foldsNodes = false;
-			foldedNodeIds.clear();
+		if(foldedNodeIds != null){
+			foldedNodeIds = null;
 			fireSlideChangeEvent();
 		}
 	}
@@ -118,7 +117,6 @@ public class Slide implements NamedElement<Slide>{
 	public void setFoldedNodeIDs(Collection<String> foldedNodeIds) {
 		if(this.foldedNodeIds != foldedNodeIds){
 			this.foldedNodeIds = new LinkedHashSet<>(foldedNodeIds);
-			foldsNodes = true;
 			fireSlideChangeEvent();
 		}
 	}
@@ -167,7 +165,7 @@ public class Slide implements NamedElement<Slide>{
 		}
 
 		public void foldNodes() {
-			if(foldsNodes) {
+			if(foldedNodeIds != null) {
 				filter = new Filter(getEffectiveFilterCondition(), true, showsDescendants, false);
 				foldNodes(getMap().getRootNode());
 				filter = null;
@@ -175,7 +173,7 @@ public class Slide implements NamedElement<Slide>{
 		}
 
 		private void foldNodes(NodeModel node) {
-			if(filter.isVisible(node)) {
+			if(foldsNodes() && filter.isVisible(node)) {
 				if(foldedNodeIds.contains(node.getID())) {
 					mapViewManager.setFoldedOnCurrentView(node, true);
 					return;
