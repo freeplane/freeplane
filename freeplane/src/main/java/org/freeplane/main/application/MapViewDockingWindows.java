@@ -253,6 +253,10 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			for (int i = 0; i < mapViews.size(); ++i) {
 				if (mapViews.get(i) == pNewMap) {
 					View dockedView = getContainingDockedWindow(pNewMap);
+					Frame window = JOptionPane.getFrameForComponent(dockedView);
+					int frameState = window.getExtendedState();
+					if((frameState & Frame.ICONIFIED) != 0)
+						window.setExtendedState(frameState & ~Frame.ICONIFIED);
 					if(dockedView.isMinimized())
 						dockedView.restore();
 					else
