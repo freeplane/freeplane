@@ -22,6 +22,7 @@ package org.freeplane.features.filter;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -182,8 +183,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			}
 			
 			@Override
-			public Color getColor() {
-				return Color.MAGENTA;
+			public void configure(Graphics2D g) {
+				g.setColor(Color.MAGENTA);
 			}
 		});
 

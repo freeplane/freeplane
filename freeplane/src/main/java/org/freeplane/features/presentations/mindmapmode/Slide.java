@@ -95,6 +95,10 @@ public class Slide implements NamedElement<Slide>{
 		return foldedNodeIds;
 	}
 	
+	public boolean isNodeFolded(NodeModel node) {
+		return foldedNodeIds.contains(node.getID());
+	}
+	
 	public boolean foldsNodes(){
 		return foldsNodes;
 	}

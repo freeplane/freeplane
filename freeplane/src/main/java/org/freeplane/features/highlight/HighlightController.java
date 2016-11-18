@@ -1,6 +1,5 @@
 package org.freeplane.features.highlight;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +14,11 @@ public class HighlightController implements IExtension{
 		this.nodeHighlighters = new ArrayList<>();
 	} 
 	
-	public List<Color> getHighlightingColors(NodeModel node){
-		final ArrayList<Color> colors = new ArrayList<>();
+	public List<NodeHighlighter> getHighlightingColors(NodeModel node){
+		final ArrayList<NodeHighlighter> colors = new ArrayList<>();
 		for(NodeHighlighter highlighter : nodeHighlighters)
 			if(highlighter.isNodeHighlighted(node))
-				colors.add(highlighter.getColor());
+				colors.add(highlighter);
 		return colors;
 	}
 	

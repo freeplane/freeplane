@@ -3,8 +3,10 @@ package org.freeplane.features.presentations.mindmapmode;
 import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.COLLECTION_SIZE_CHANGED;
 import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.SELECTION_CHANGED;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Graphics2D;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
@@ -12,6 +14,7 @@ import javax.swing.JTabbedPane;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -21,11 +24,14 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 public class PresentationController implements IExtension{
+	private static final float FOLDED_NODE_DOT_WIDTH = 3f * UITools.FONT_SCALE_FACTOR;
 	private static final Color NODE_HIGHLIGHTING_COLOR = Color.GREEN.brighter();
+	private static float[] FOLDED_NODE_DASH = new float[]{FOLDED_NODE_DOT_WIDTH/2, 2*FOLDED_NODE_DOT_WIDTH};
+	private static BasicStroke FOLDED_NODE_STROKE = new BasicStroke(FOLDED_NODE_DOT_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 1f, FOLDED_NODE_DASH, 0f);
 	private final PresentationState presentationState;
 	private final PresentationEditorController presentationEditorController;
 	ModeController modeController;
-	
+
 	public static void install(final ModeController modeController) {
 		final PresentationController presentationController = new PresentationController(modeController);
 		presentationController.registerActions();
@@ -33,27 +39,40 @@ public class PresentationController implements IExtension{
 		new PresentationBuilder().register(modeController.getMapController(), presentationController);
 		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
 		tabs.add("Presentations", presentationController.createPanel());
-		modeController.getController().getExtension(HighlightController.class).addNodeHighlighter(new NodeHighlighter() {
+		HighlightController highlightController = modeController.getController().getExtension(HighlightController.class);
+		final PresentationState presentationState = presentationController.presentationState;
+		highlightController.addNodeHighlighter(new NodeHighlighter() {
 			
 			@Override
 			public boolean isNodeHighlighted(NodeModel node) {
-				return presentationController.isNodeHighlighted(node);
+				return presentationState.shouldHighlightNodeContainedOnSlide(node);
 			}
 			
 			@Override
-			public Color getColor() {
-				return NODE_HIGHLIGHTING_COLOR;
+			public void configure(Graphics2D g) {
+				g.setColor(NODE_HIGHLIGHTING_COLOR);
 			}
+
+		});
+		highlightController.addNodeHighlighter(new NodeHighlighter() {
+			
+			@Override
+			public boolean isNodeHighlighted(NodeModel node) {
+				return presentationState.shouldHighlightNodeFoldedOnSlide(node);
+			}
+			
+			@Override
+			public void configure(Graphics2D g) {
+				g.setColor(NODE_HIGHLIGHTING_COLOR);
+				g.setStroke(FOLDED_NODE_STROKE);
+			}
+
 		});
 
 	}
 
 	private void registerActions() {
 		presentationEditorController.registerActions(modeController);
-	}
-
-	boolean isNodeHighlighted(NodeModel node) {
-		return presentationState.isNodeHighlighted(node) && ! presentationState.isPresentationRunning();
 	}
 
 	private PresentationController(ModeController modeController) {

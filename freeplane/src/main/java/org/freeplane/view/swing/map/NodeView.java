@@ -57,6 +57,7 @@ import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeController.Rules;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.highlight.HighlightController;
+import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
@@ -1158,20 +1159,20 @@ public class NodeView extends JComponent implements INodeView {
 		g.translate(origin.x, origin.y);
 		mainView.paintDecoration(this, g);
 		g.translate(-origin.x, -origin.y);
-		final List<Color> highlightingColors = getMap().getModeController().getController().getExtension(HighlightController.class).getHighlightingColors(model);
+		final List<NodeHighlighter> highlighters = getMap().getModeController().getController().getExtension(HighlightController.class).getHighlightingColors(model);
 		int margin = HIGHLIGHTED_NODE_ARC_MARGIN;
-		for(Color color : highlightingColors){
+		for(NodeHighlighter highlighter : highlighters){
 			margin += HIGHLIGHTED_NODE_ARC_MARGIN;
-			highlightNode(g, color, margin);
+			highlightNode(g, highlighter, margin);
 		}
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
 
-	public void highlightNode(final Graphics2D g, Color color, final int arcMargin) {
+	public void highlightNode(final Graphics2D g, NodeHighlighter highlighter, final int arcMargin) {
 		final Color oldColor = g.getColor();
 		final Stroke oldStroke = g.getStroke();
-		g.setColor(color);
-		g.setStroke(getMap().getStandardSelectionStroke());
+		g.setStroke(NodeHighlighter.DEFAULT_STROKE);
+		highlighter.configure(g);
 		final JComponent content = getContent();
 		Point contentLocation = content.getLocation();
 		final int arcWidth = 15;

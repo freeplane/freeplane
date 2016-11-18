@@ -20,7 +20,6 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.AWTKeyStroke;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -77,6 +76,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.filter.Filter;
+import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.LinkController;
@@ -436,7 +436,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final long serialVersionUID = 1L;
 	static boolean standardDrawRectangleForSelection;
 	static Color standardSelectColor;
-	private static Stroke standardSelectionStroke;
 	static Color standardSelectRectangleColor;
 	/** Used to identify a right click onto a link curve. */
 	private Vector<ILinkView> arrowLinkViews;
@@ -1579,7 +1578,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final Color c = g.getColor();
 		final Stroke s = g.getStroke();
 		g.setColor(MapView.standardSelectRectangleColor);
-		final Stroke standardSelectionStroke = getStandardSelectionStroke();
+		final Stroke standardSelectionStroke = NodeHighlighter.DEFAULT_STROKE;
 		g.setStroke(standardSelectionStroke);
 		final Object renderingHint = getModeController().getController().getMapViewManager().setEdgesRenderingHint(g);
 		for (final NodeView selected : getSelection()) {
@@ -1631,14 +1630,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		finally{
 			g.setClip(oldClip);
 		}
-    }
-
-	Stroke getStandardSelectionStroke() {
-	    if (MapView.standardSelectionStroke == null) {
-			MapView.standardSelectionStroke = new BasicStroke(2.0f);
-		}
-		final Stroke standardSelectionStroke = MapView.standardSelectionStroke;
-	    return standardSelectionStroke;
     }
 
 	/**

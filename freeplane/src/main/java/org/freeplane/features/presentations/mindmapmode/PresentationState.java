@@ -107,8 +107,12 @@ public class PresentationState {
 			firePresentationStateChangedEvent(SLIDE_CHANGED);
 	}
 
-	public boolean isNodeHighlighted(NodeModel node) {
-		return highlightsNodes && canShowCurrentSlide()  && currentPresentation.slides.getCurrentElement().isNodeVisible(node);
+	public boolean shouldHighlightNodeContainedOnSlide(NodeModel node) {
+		return  ! isPresentationRunning() && highlightsNodes && canShowCurrentSlide()  && currentPresentation.slides.getCurrentElement().isNodeVisible(node);
+	}
+	
+	public boolean shouldHighlightNodeFoldedOnSlide(NodeModel node) {
+		return ! isPresentationRunning() && highlightsNodes && canShowCurrentSlide()  && currentPresentation.slides.getCurrentElement().isNodeFolded(node);
 	}
 
 	public boolean highlightsNodes() {
@@ -121,4 +125,5 @@ public class PresentationState {
 			firePresentationStateChangedEvent(SLIDE_CHANGED);
 		}
 	}
+
 }
