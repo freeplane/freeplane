@@ -32,12 +32,12 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	private final JButton btnDeleteElement;
 	private final CollectionChangeListener<T> collectionChangeListener;
 	private JComponent collectionComponent;
-	private JLabel lblElementCount;
+	private JLabel lblElementCounter;
 	
 	public JComponent createCollectionBox() {
 		collectionComponent = Box.createVerticalBox();
 		Box namesBox = Box.createHorizontalBox();
-		namesBox.add(lblElementCount);
+		namesBox.add(lblElementCounter);
 		namesBox.add(comboBoxCollectionNames);
 		collectionComponent.add(namesBox);
 		Box collectionButtons = Box.createHorizontalBox();
@@ -57,9 +57,9 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		comboBoxCollectionNames.setEditable(false);
 		Dimension comboBoxPreferredSize = comboBoxCollectionNames.getPreferredSize();
 		comboBoxCollectionNames.setMaximumSize(new Dimension(Integer.MAX_VALUE, comboBoxPreferredSize.height));
-		lblElementCount = new JLabel("XXX/XXX: ");
-		lblElementCount.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblElementCount.setPreferredSize(lblElementCount.getPreferredSize());
+		lblElementCounter = new JLabel("XXX/XXX: ");
+		lblElementCounter.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblElementCounter.setPreferredSize(lblElementCounter.getPreferredSize());
 		btnNewElement = createNewElementButton(newElementName);
 		
 		btnDeleteElement = createDeleteElementButton();
@@ -69,15 +69,17 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		btnMoveDown = createMoveDownButton();
 		
 		btnMove = createMoveButton();
-		components = new JComponent[]{comboBoxCollectionNames, lblElementCount, btnNewElement, btnDeleteElement, btnMoveUp, btnMoveDown, btnMove};
+		components = new JComponent[]{comboBoxCollectionNames, lblElementCounter, btnNewElement, btnDeleteElement, btnMoveUp, btnMoveDown, btnMove};
 		editingComponents = new JComponent[] { btnNewElement, btnDeleteElement, btnMoveUp, btnMoveDown, btnMove };
 		disableUiElements();
 		collectionChangeListener = new CollectionChangeListener<T>() {
 			@Override
 			public void onCollectionChange(CollectionChangedEvent<T> event) {
-				if(event.eventType != CollectionChangedEvent.EventType.SELECTION_CHANGED
-						&& btnNewElement.isEnabled())
-				updateUiElements();
+				if(event.eventType != CollectionChangedEvent.EventType.SELECTION_CHANGED) {
+					if(btnNewElement.isEnabled())
+						enableUiElements();
+					updateElementCounterLabel();
+				}
 			}
 		};
 	}
@@ -94,24 +96,23 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		else{
 			final ComboBoxModel<Stringifyed<T>> elements = newCollection.getElements();
 			comboBoxCollectionNames.setModel(elements);
-			updateUiElements();
+			enableUiElements();
+			updateElementCounterLabel();
 			collection.addCollectionChangeListener(collectionChangeListener);
 		}
 	}
 
-	private void updateUiElements() {
-		if(btnNewElement.isEnabled())
-			enableUiElements();
+	private void updateElementCounterLabel() {
 		final int collectionSize = collection.getSize();
 		final int currentElementIndex = collection.getCurrentElementIndex();
-		lblElementCount.setText( currentElementIndex >= 0 ? Integer.toString(currentElementIndex + 1) + "/" + Integer.toString(collectionSize) + ": " : "-/-: ");
+		lblElementCounter.setText( currentElementIndex >= 0 ? Integer.toString(currentElementIndex + 1) + "/" + Integer.toString(collectionSize) + ": " : "-/-: ");
 	}
 
 	private void enableUiElements() {
 		final int collectionSize = collection.getSize();
 		final int currentElementIndex = collection.getCurrentElementIndex();
 		comboBoxCollectionNames.setEnabled(true);
-		lblElementCount.setEnabled(true);
+		lblElementCounter.setEnabled(true);
 		comboBoxCollectionNames.setEditable(collectionSize > 0);
 		btnNewElement.setEnabled(true);
 		btnDeleteElement.setEnabled(collectionSize > 0);
@@ -122,7 +123,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 
 	private void disableUiElements() {
 		comboBoxCollectionNames.setModel(new DefaultComboBoxModel<Stringifyed<T>>());
-		lblElementCount.setText("-/-: ");
+		lblElementCounter.setText("-/-: ");
 		for(JComponent c : components)
 			c.setEnabled(false);
 	}
