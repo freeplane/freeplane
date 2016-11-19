@@ -83,10 +83,10 @@
 		<Entry name="extras">
 				<Entry name="EnterPassword" />
 		</Entry>
-	</Entry>
-	<Entry name="help">
-			<Entry name="OpenFreeplaneSiteAction" />
-			<Entry name="AboutAction"/>
+		<Entry name="help">
+				<Entry name="OpenFreeplaneSiteAction" />
+				<Entry name="AboutAction"/>
+		</Entry>
 	</Entry>
 	<Entry name="map_popup" builder="map_popup">
 		<Entry name="ToggleMenubarAction"/>
