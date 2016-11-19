@@ -8,6 +8,7 @@ Configurable node border line type
 Configurable standard for connector arrows
 Configurable standard for connector line types 
 Presentations
+Export for java web start
 
 ===============================
 1.5.18
