@@ -24,15 +24,22 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.EventQueue;
+import java.awt.Frame;
 import java.awt.HeadlessException;
+import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.swing.ImageIcon;
 import javax.swing.JApplet;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -67,8 +74,12 @@ import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 public class FreeplaneApplet extends JApplet {
 	
 	@SuppressWarnings("serial")
-	private class GlassPane extends JComponent{
-		public GlassPane() {
+	private static class GlassPane extends JComponent{
+		private final Controller controller;
+
+
+		public GlassPane(Controller controller) {
+			this.controller = controller;
 			addMouseListener(new MouseAdapter(){});
 		}
 
@@ -94,15 +105,16 @@ public class FreeplaneApplet extends JApplet {
 		}
 	}
 	
-	private AppletResourceController appletResourceController;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private AppletViewController appletViewController;
  	private Controller controller;
+	private static boolean instanceInitialized = false;
  	
  	final static Lock appletLock = new ReentrantLock();
+	private Boolean isLaunchedByJavaWebStart;
 
 	public FreeplaneApplet() throws HeadlessException {
 	    super();
@@ -117,7 +129,7 @@ public class FreeplaneApplet extends JApplet {
 	public void init() {
 		try{
 			appletLock.lock();
-			appletResourceController = new AppletResourceController(this);
+			AppletResourceController appletResourceController = new AppletResourceController(this);
 			if (appletResourceController == null) {
 				appletResourceController = new AppletResourceController(this);
 			}
@@ -127,7 +139,7 @@ public class FreeplaneApplet extends JApplet {
 				}
 			};
 			controller = new Controller(appletResourceController);
-			updateLookAndFeel();
+			updateLookAndFeel(appletResourceController);
 			Controller.setCurrentController(controller);
 			final Container contentPane = getContentPane();
 			contentPane.setLayout(new BorderLayout());
@@ -158,13 +170,20 @@ public class FreeplaneApplet extends JApplet {
 			controller.addAction(new NextNodeAction(Direction.BACK_N_FOLD));
 			controller.addAction(new NextPresentationItemAction());
 			browseController.updateMenus("/xml/appletmenu.xml", emptySet);
-			ResourceController.getResourceController().getAcceleratorManager().loadAcceleratorPresets();
+			appletResourceController.getAcceleratorManager().loadAcceleratorPresets();
 
 			controller.selectMode(browseController);
-			appletResourceController.setPropertyByParameter(this, "browsemode_initial_map");
-			final GlassPane glassPane = new GlassPane();
-			setGlassPane(glassPane);
-			glassPane.setVisible(true);
+			setPropertyByParameter(appletResourceController, "browsemode_initial_map");
+			appletViewController.init(controller);
+			isLaunchedByJavaWebStart = isParameterTrue("launched_by_java_web_start");
+			if(isLaunchedByJavaWebStart) {
+				if(instanceInitialized)
+					throw new RuntimeException("singleAppletInstance allowed");
+				else
+					instanceInitialized = true;
+			} else
+				addGlassPane();
+			configureFrame(appletResourceController);
 			controller.getViewController().setMenubarVisible(false);
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -182,6 +201,30 @@ public class FreeplaneApplet extends JApplet {
 		}
 	}
 
+	private Boolean isParameterTrue(String name) {
+		return Boolean.valueOf(getParameter(name));
+	}
+
+	private void configureFrame(ResourceController appletResourceController) {
+		Window window = SwingUtilities.windowForComponent(this);
+		if (window instanceof Frame){
+			Frame frame = (Frame)window;
+			ImageIcon mWindowIcon;
+			mWindowIcon = new ImageIcon(appletResourceController.getResource(
+					"/images/Freeplane_frame_icon_64x64.png"));
+			frame.setIconImage(mWindowIcon.getImage());			
+			if (!frame.isResizable()){
+				frame.setResizable(true);
+			}
+		}
+	}
+
+	private void addGlassPane() {
+		final GlassPane glassPane = new GlassPane(controller);
+		setGlassPane(glassPane);
+		glassPane.setVisible(true);
+	}
+
 	@Override
 	public void start() {
 		EventQueue.invokeLater(new Runnable() {
@@ -196,9 +239,9 @@ public class FreeplaneApplet extends JApplet {
 		super.stop();
 	}
 
-	private void updateLookAndFeel() {
+	private void updateLookAndFeel(ResourceController appletResourceController) {
 		String lookAndFeel = "";
-		appletResourceController.setPropertyByParameter(this, "lookandfeel");
+		setPropertyByParameter(appletResourceController, "lookandfeel");
 		lookAndFeel = appletResourceController.getProperty("lookandfeel");
 		FrameController.setLookAndFeel(lookAndFeel, true);
 	}
@@ -231,6 +274,24 @@ public class FreeplaneApplet extends JApplet {
 			glassPane.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 			glassPane.setVisible(false);
 		}
+	}
+
+	void setPropertyByParameter(ResourceController resourceController, final String key) {
+		final String val = getParameter(key);
+		if (val != null && val != "") {
+			resourceController.setProperty(key, val);
+		}
+	}
+
+	public void showDocument(URL doc) {
+		if(isLaunchedByJavaWebStart && Desktop.isDesktopSupported())
+			try {
+				Desktop.getDesktop().browse(doc.toURI());
+				return;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		getAppletContext().showDocument(doc, "_blank");
 	}
 
 }
