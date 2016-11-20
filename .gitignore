@@ -2,7 +2,8 @@
 */META-INF/MANIFEST.MF
 
 #Build System files
-DIST/
+/DIST/
+/BUILD/
 
 #Ignore everything form IntelliJ
 .idea/
