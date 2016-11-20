@@ -40,7 +40,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;

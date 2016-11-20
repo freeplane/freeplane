@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.mode.browsemode;
+package org.freeplane.main.applet;
 
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
