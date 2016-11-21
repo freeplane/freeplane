@@ -36,6 +36,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.JApplet;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.text.html.parser.ParserDelegator;
 
 import org.freeplane.core.resources.ResourceController;
@@ -161,11 +162,16 @@ public class FreeplaneApplet extends JApplet {
 
 			controller.selectMode(browseController);
 			appletResourceController.setPropertyByParameter(this, "browsemode_initial_map");
-			appletViewController.init(controller);
 			final GlassPane glassPane = new GlassPane();
 			setGlassPane(glassPane);
 			glassPane.setVisible(true);
 			controller.getViewController().setMenubarVisible(false);
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					appletViewController.init(controller);
+				}
+			});
 		}
 		catch(RuntimeException e){
 			e.printStackTrace();
