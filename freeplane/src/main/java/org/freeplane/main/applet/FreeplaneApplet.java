@@ -174,7 +174,6 @@ public class FreeplaneApplet extends JApplet {
 
 			controller.selectMode(browseController);
 			setPropertyByParameter(appletResourceController, "browsemode_initial_map");
-			appletViewController.init(controller);
 			isLaunchedByJavaWebStart = isParameterTrue("launched_by_java_web_start");
 			if(isLaunchedByJavaWebStart) {
 				if(instanceInitialized)
@@ -185,6 +184,13 @@ public class FreeplaneApplet extends JApplet {
 				addGlassPane();
 			configureFrame(appletResourceController);
 			controller.getViewController().setMenubarVisible(false);
+			SwingUtilities.invokeLater(new Runnable() {
+				
+				@Override
+				public void run() {
+					appletViewController.init(controller);
+				}
+			});
 		}
 		catch(RuntimeException e){
 			e.printStackTrace();
