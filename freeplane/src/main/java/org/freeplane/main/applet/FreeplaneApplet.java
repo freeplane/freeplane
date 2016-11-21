@@ -139,8 +139,6 @@ public class FreeplaneApplet extends JApplet {
 			};
 			controller = new Controller(appletResourceController);
 			updateLookAndFeel(appletResourceController);
-			createRootPane();
-			appletResourceController.init();
 			Controller.setCurrentController(controller);
 			final Container contentPane = getContentPane();
 			contentPane.setLayout(new BorderLayout());
