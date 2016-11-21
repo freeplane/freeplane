@@ -76,6 +76,6 @@ public class OutlineEdgeView extends EdgeView {
 		final float nodeLineWidth = mainView.getUnzoomedEdgeWidth();
 		final float zoomedLineWidth = nodeView.getMap().getZoom() * nodeLineWidth;
 		float strokeWidth =  Math.max(zoomedLineWidth, 1);
-		return new BasicStroke(strokeWidth);
+		return getStroke(strokeWidth);
 	}
 }

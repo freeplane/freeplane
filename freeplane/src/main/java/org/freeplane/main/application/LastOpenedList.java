@@ -253,7 +253,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		if(map.containsExtension(DocuMapAttribute.class))
 			return null;
 		final ModeController modeController = Controller.getCurrentModeController();
-		if (!modeController.getModeName().equals(MModeController.MODENAME)) {
+		if (modeController == null || !modeController.getModeName().equals(MModeController.MODENAME)) {
 			return null;
 		}
 		final File file = map.getFile();

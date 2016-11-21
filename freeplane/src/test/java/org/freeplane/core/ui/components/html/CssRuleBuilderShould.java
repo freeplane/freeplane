@@ -38,7 +38,7 @@ public class CssRuleBuilderShould {
 	public void addFont() throws Exception {
 		final Font font = new Font("arial", Font.BOLD | Font.ITALIC, 10);
 		cssRuleBuilder.withFont(font);
-		assertRule(" font-family: " + font.getFamily() + ";  font-size: 10pt; font-weight: bold; font-style: italic;");
+		assertRule(" font-family: \"" + font.getFamily() + "\";  font-size: 10pt; font-weight: bold; font-style: italic;");
 	}
 
 
@@ -47,7 +47,7 @@ public class CssRuleBuilderShould {
 		final float fontScaleFactor = 2f;
 		final Font font = new Font("arial", Font.BOLD | Font.ITALIC, 10);
 		cssRuleBuilder.withFont(font, fontScaleFactor);
-		assertRule(" font-family: " + font.getFamily() + ";  font-size: 5pt; font-weight: bold; font-style: italic;");
+		assertRule(" font-family: \"" + font.getFamily() + "\";  font-size: 5pt; font-weight: bold; font-style: italic;");
 	}
 
 

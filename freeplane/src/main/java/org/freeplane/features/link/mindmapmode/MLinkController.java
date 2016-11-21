@@ -37,19 +37,18 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.FocusManager;
-import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JList;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
@@ -61,10 +60,14 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.RenderedContent;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
@@ -141,6 +144,7 @@ public class MLinkController extends LinkController {
 		public void act() {
 			NodeLinks nodeLinks = NodeLinks.createLinkExtension(source);
 			arrowLink = new ConnectorModel(source, targetID,
+				getStandardConnectorArrows(), getStandardDashVariant().variant,
 				getStandardConnectorColor(), getStandardConnectorAlpha(),
 				getStandardConnectorShape(), getStandardConnectorWidth(),
 				getStandardLabelFontFamily(), getStandardLabelFontSize());
@@ -420,7 +424,7 @@ public class MLinkController extends LinkController {
                 new ChangeConnectorArrowsAction(this, "backward", link, ArrowType.DEFAULT, ArrowType.NONE),
                 new ChangeConnectorArrowsAction(this, "both", link, ArrowType.DEFAULT, ArrowType.DEFAULT)
 		};
-        final JComboBox connectorArrows = createActionBox(arrowActions);
+        JComboBoxWithBorder connectorArrows = createActionBox(arrowActions);
 		addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_arrows"), connectorArrows);
 
         final boolean twoNodesConnector = ! link.getSource().equals(link.getTarget());
@@ -440,17 +444,16 @@ public class MLinkController extends LinkController {
                     new ChangeConnectorShapeAction(this, link, Shape.LINEAR_PATH)
             };
         }
-            final JComboBox connectorShapes = createActionBox(shapeActions);
+            final JComboBoxWithBorder connectorShapes = createActionBox(shapeActions);
             addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_shapes"), connectorShapes);
 
-        AFreeplaneAction[] dashActions = new AFreeplaneAction[] {
-                new ChangeConnectorDashAction(this, link, null),
-                new ChangeConnectorDashAction(this, link, new int[]{3, 3}),
-                new ChangeConnectorDashAction(this, link, new int[]{7, 7}),
-                new ChangeConnectorDashAction(this, link, new int[]{2, 7}),
-                new ChangeConnectorDashAction(this, link, new int[]{2, 7, 7, 7})
-        };
-        final JComboBox connectorDashes = createActionBox(dashActions);
+            
+        ArrayList<AFreeplaneAction> dashActions = new ArrayList<AFreeplaneAction>();
+        for (DashVariant  variant : DashVariant.values())
+        	dashActions.add(new ChangeConnectorDashAction(this, link, variant));
+        final JComboBoxWithBorder connectorDashes = createActionBox(dashActions.toArray(new AFreeplaneAction[dashActions.size()]));
+		final int verticalMargin = new Quantity<>(3, LengthUnits.pt).toBaseUnitsRounded();
+        connectorDashes.setVerticalMargin(verticalMargin);
         addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_lines"), connectorDashes);
 
 		final SpinnerNumberModel widthModel = new SpinnerNumberModel(link.getWidth(),1, 32, 1);
@@ -557,35 +560,23 @@ public class MLinkController extends LinkController {
 	}
 
     @SuppressWarnings("serial")
-    protected JComboBox createActionBox(AFreeplaneAction[] items) {
-        final JComboBox box = new JComboBoxWithBorder();
+    protected JComboBoxWithBorder createActionBox(AFreeplaneAction[] items) {
+        final JComboBoxWithBorder box = new JComboBoxWithBorder();
         box.setEditable(false);
-        box.setModel(new DefaultComboBoxModel(items));
-        for(AFreeplaneAction item : items){
-            if(item.isSelected()){
+        Vector<RenderedContent<AFreeplaneAction>> renderedContent = RenderedContent.of(items);
+		box.setModel(new DefaultComboBoxModel<>(renderedContent));
+        for(RenderedContent<AFreeplaneAction> item : renderedContent){
+            if(item.value.isSelected()){
                 box.setSelectedItem(item);
                 break;
             }
         }
-        box.setRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-                                                          boolean cellHasFocus) {
-                Action action = (Action) value;
-                Icon icon = (Icon)action.getValue(Action.SMALL_ICON);
-                String text = (String)action.getValue(Action.NAME);
-                Object renderedValue = text == null ? icon : text;
-                DefaultListCellRenderer renderer = (DefaultListCellRenderer) super.getListCellRendererComponent(list, renderedValue, index, isSelected, cellHasFocus);
-                if(text != null && icon != null)
-                    renderer.setIcon(icon);
-                return renderer;
-            }
-        });
+        box.setRenderer(RenderedContent.createRenderer());
         box.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
-                AFreeplaneAction item = (AFreeplaneAction)e.getItem();
+            	RenderedContent<AFreeplaneAction> item = (RenderedContent<AFreeplaneAction>)e.getItem();
                 final JComboBox box = (JComboBox) e.getSource();
-                item.actionPerformed(new ActionEvent(box, ActionEvent.ACTION_PERFORMED, null));
+                item.value.actionPerformed(new ActionEvent(box, ActionEvent.ACTION_PERFORMED, null));
             }
         });
         return box;
@@ -730,7 +721,7 @@ public class MLinkController extends LinkController {
 	}
 
 	private URI relativeLink(final URI argUri, final NodeModel node, final int linkType) {
-		if (linkType != LINK_ABSOLUTE && "file".equals(argUri.getScheme())) {
+		if (linkType == LINK_RELATIVE_TO_MINDMAP && "file".equals(argUri.getScheme())) {
 			try {
 				final File mapFile = node.getMap().getFile();
 				return createRelativeURI(mapFile, argUri);

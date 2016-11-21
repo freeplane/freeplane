@@ -43,6 +43,7 @@ import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.ScannerController;
+import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
@@ -105,11 +106,14 @@ public class SModeControllerFactory {
 	private ExtensionInstaller extentionInstaller;
 
 	Controller createController(final JDialog dialog) {
+		Controller currentController = Controller.getCurrentController();
 		final Controller controller = new Controller(ResourceController.getResourceController());
 		Controller.setCurrentController(controller);
 		final MapViewController mapViewController = new MMapViewController(controller);
 		final DialogController viewController = new DialogController(controller, mapViewController, dialog);
 		controller.setViewController(viewController);
+		controller.addExtension(HighlightController.class, new HighlightController());
+		controller.addAction(currentController.getAction("AboutAction"));
 		FilterController.install();
 		TextController.install();
 		controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));

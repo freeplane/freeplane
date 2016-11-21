@@ -77,6 +77,7 @@ class ScriptingPolicy extends Policy {
 		permissions.add(new RuntimePermission("queuePrintJob"));
 		permissions.add(new RuntimePermission("setIO"));
 		permissions.add(new RuntimePermission("exitVM.0"));
+		permissions.add(new RuntimePermission("setContextClassLoader"));
 		permissions.add(new PropertyPermission("*", "read,write"));
 		permissions.add(new AdminPermission("*", "resolve,resource"));
 		permissions.add(new AWTPermission("showWindowWithoutWarningBanner"));

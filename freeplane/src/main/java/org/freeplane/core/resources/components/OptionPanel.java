@@ -50,6 +50,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.jgoodies.forms.factories.Borders;
 import org.apache.commons.lang.StringUtils;
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.resources.ResourceController;
@@ -134,7 +135,7 @@ public class OptionPanel {
 				final TabProperty newTab = (TabProperty) control;
 				bottomLayout = new FormLayout(newTab.getName(), "");
 				bottomBuilder = new DefaultFormBuilder(bottomLayout);
-				bottomBuilder.setDefaultDialogBorder();
+				bottomBuilder.border(Borders.DIALOG);
 				final JScrollPane bottomComponent = new JScrollPane(bottomBuilder.getPanel());
 				UITools.setScrollbarIncrement(bottomComponent);
 				final String tabName = TextUtils.getOptionalText(newTab.getLabel());

@@ -20,7 +20,6 @@
 package org.freeplane.view.swing.map;
 
 import java.awt.AWTKeyStroke;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -77,6 +76,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.filter.Filter;
+import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.LinkController;
@@ -205,7 +205,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 		public void selectAsTheOnlyOneSelected(final NodeModel node) {
 			final NodeView nodeView = getNodeView(node);
-			if (nodeView != null) {
+			if (nodeView != null && nodeView.isContentVisible()) {
 				MapView.this.selectAsTheOnlyOneSelected(nodeView);
 			}
 		}
@@ -244,11 +244,21 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             ArrayList<NodeView> views = new ArrayList<NodeView>(nodes.length);
             for(NodeModel node : nodes) {
 	            final NodeView nodeView = getNodeView(node);
-	            if(nodeView != null)
+	            if(nodeView != null && nodeView.isContentVisible())
 	            	views.add(nodeView);
             }
-            MapView.this.replaceSelection(views.toArray(new NodeView[]{}));
+            if(! views.isEmpty())
+            	MapView.this.replaceSelection(views.toArray(new NodeView[]{}));
         }
+
+		@Override
+		public List<String> getOrderedSelectionIds() {
+			final List<NodeModel> orderedSelection = getOrderedSelection();
+			final ArrayList<String> ids = new ArrayList<>(orderedSelection.size()); 
+			for(NodeModel node :orderedSelection)
+				ids.add(node.getID());
+			return ids;
+		}
 
 	}
 
@@ -426,7 +436,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final long serialVersionUID = 1L;
 	static boolean standardDrawRectangleForSelection;
 	static Color standardSelectColor;
-	private static Stroke standardSelectionStroke;
 	static Color standardSelectRectangleColor;
 	/** Used to identify a right click onto a link curve. */
 	private Vector<ILinkView> arrowLinkViews;
@@ -1071,9 +1080,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 * focused selected node.
 	 */
 	void addSelected(final NodeView newSelected, boolean scroll) {
-		selection.add(newSelected);
-		if(scroll)
-			mapScroller.scrollNodeToVisible(newSelected);
+		if(newSelected.isContentVisible()){
+			selection.add(newSelected);
+			if(scroll)
+				mapScroller.scrollNodeToVisible(newSelected);
+		}
 	}
 
 	public void mapChanged(final MapChangeEvent event) {
@@ -1567,7 +1578,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final Color c = g.getColor();
 		final Stroke s = g.getStroke();
 		g.setColor(MapView.standardSelectRectangleColor);
-		final Stroke standardSelectionStroke = getStandardSelectionStroke();
+		final Stroke standardSelectionStroke = NodeHighlighter.DEFAULT_STROKE;
 		g.setStroke(standardSelectionStroke);
 		final Object renderingHint = getModeController().getController().getMapViewManager().setEdgesRenderingHint(g);
 		for (final NodeView selected : getSelection()) {
@@ -1619,14 +1630,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		finally{
 			g.setClip(oldClip);
 		}
-    }
-
-	Stroke getStandardSelectionStroke() {
-	    if (MapView.standardSelectionStroke == null) {
-			MapView.standardSelectionStroke = new BasicStroke(2.0f);
-		}
-		final Stroke standardSelectionStroke = MapView.standardSelectionStroke;
-	    return standardSelectionStroke;
     }
 
 	/**

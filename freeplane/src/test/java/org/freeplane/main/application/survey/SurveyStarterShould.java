@@ -142,6 +142,7 @@ public class SurveyStarterShould {
 		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.51);
 		surveyStarter.onStartupFinished();
 		waitForOtherThreadToRun();
+		verify(freeplaneSurveyProperties).remindMeLaterIsActive();
 		verify(freeplaneSurveyProperties).mayAskUserAgain();
 		verify(freeplaneSurveyProperties).setNextSurveyDay(1);
 		verify(freeplaneSurveyProperties).openRemoteConfiguration();
@@ -159,9 +160,27 @@ public class SurveyStarterShould {
 		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.49);
 		surveyStarter.onStartupFinished();
 		waitForOtherThreadToRun();
+		verify(freeplaneSurveyProperties).remindMeLaterIsActive();
 		verify(freeplaneSurveyProperties).mayAskUserAgain();
 		verify(freeplaneSurveyProperties).setNextSurveyDay(1);
 		verify(freeplaneSurveyProperties).openRemoteConfiguration();
 		verifyNoMoreInteractions(freeplaneSurveyProperties, surveyRunner);
+	}
+	@Test
+	public void givenNonPositiveMiddleCheckRunPeriodMiddleRunFrequencyAndRemindMeLaterSet_runsServey() throws Exception {
+		Properties configProperties = createSurveyProperites();
+		configProperties.setProperty(RUN_ON_KEY, "ON_START");
+		configProperties.setProperty(FREQUENCY_KEY, "0");
+		final SurveyRunner surveyRunner = mock(SurveyRunner.class);
+		FreeplaneSurveyProperties freeplaneSurveyProperties = mockSurveyProperties(configProperties);
+		when(freeplaneSurveyProperties.remindMeLaterIsActive()).thenReturn(true);
+		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.49);
+		surveyStarter.onStartupFinished();
+		waitForOtherThreadToRun();
+		verify(freeplaneSurveyProperties).remindMeLaterIsActive();
+		verify(freeplaneSurveyProperties).mayAskUserAgain();
+		verify(freeplaneSurveyProperties).setNextSurveyDay(1);
+		verify(freeplaneSurveyProperties).openRemoteConfiguration();
+		verify(surveyRunner).runServey("myId", "myTitle", "myQuestion", "mySurveyUrl");
 	}
 }

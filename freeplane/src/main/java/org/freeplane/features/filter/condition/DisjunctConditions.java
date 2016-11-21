@@ -54,7 +54,7 @@ public class DisjunctConditions extends ASelectableCondition implements ICombine
 	/**
 	 *
 	 */
-	public DisjunctConditions(final ASelectableCondition[] conditions) {
+	public DisjunctConditions(final ASelectableCondition... conditions) {
 		this.conditions = conditions;
 	}
 

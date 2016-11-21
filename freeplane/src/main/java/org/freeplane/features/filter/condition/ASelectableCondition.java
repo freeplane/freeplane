@@ -70,13 +70,18 @@ public abstract class ASelectableCondition  implements ICondition{
 	
 	final public JComponent getListCellRendererComponent() {
 		if (renderer == null) {
-			renderer = createRendererComponent();
-			if(userName != null){
-				final JCondition jCondition = new JCondition();
-				jCondition.add(new JLabel(userName + " : "));
-				jCondition.add(renderer);
-				renderer = jCondition;
-			}
+			this.renderer = createGraphicComponent();
+		}
+		return renderer;
+	}
+
+	public JComponent createGraphicComponent() {
+		JComponent renderer = createRendererComponent();
+		if(userName != null){
+			final JCondition jCondition = new JCondition();
+			jCondition.add(new JLabel(userName + " : "));
+			jCondition.add(renderer);
+			renderer = jCondition;
 		}
 		return renderer;
 	}

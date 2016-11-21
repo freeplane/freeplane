@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.main.browsemode;
+package org.freeplane.main.applet;
 
 import java.security.AccessControlException;
 
@@ -41,7 +41,6 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteController;

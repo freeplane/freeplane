@@ -95,6 +95,7 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.RevisionPlugin;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.mindmapmode.MNoteController;
+import org.freeplane.features.presentations.mindmapmode.PresentationController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.LogicalStyleController;
@@ -180,6 +181,7 @@ public class MModeControllerFactory {
 		modeController.addExtension(ReminderHook.class, new ReminderHook(modeController));
 		new AutomaticEdgeColorHook();
 		new ViewerController();
+		PresentationController.install(modeController);
 		modeController.addAction(new AddAttributeAction());
 		modeController.addAction(new RemoveFirstAttributeAction());
 		modeController.addAction(new RemoveLastAttributeAction());
@@ -302,9 +304,6 @@ public class MModeControllerFactory {
 			    @Override
 			    public Component createComponent(Entry entry) {
 				    final Container fontBox = uiFactory.createFontBox();
-				    final Dimension preferredSize = fontBox.getPreferredSize();
-				    preferredSize.width = 90;
-				    fontBox.setPreferredSize(preferredSize);
 				    return fontBox;
 			    }
 		    }), EntryVisitor.EMTPY);

@@ -98,7 +98,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 
 				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
-					final boolean fold = ! node.isFolded();
+					final boolean fold = !isFoldedOnCurrentView(node);
 					if (!nodeSelector.shouldSelectOnClick(e)) {
 						doubleClickTimer.start(new Runnable() {
 							public void run() {
@@ -120,7 +120,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if ((plainEvent && inFoldingRegion
 				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e))
 		        && !nodeSelector.shouldSelectOnClick(e)) {
-			final boolean fold = ! node.isFolded();
+			final boolean fold = ! isFoldedOnCurrentView(node);
 			doubleClickTimer.cancel();
 			mapController.setFolded(node, fold);
 			e.consume();
@@ -128,6 +128,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		}
 		if(inside && e.getButton() == 1 &&  ! e.isAltDown())
 			nodeSelector.extendSelection(e);
+	}
+	private boolean isFoldedOnCurrentView(final NodeModel node) {
+		return Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node);
 	}
 
 

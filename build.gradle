@@ -83,7 +83,8 @@ subprojects {
     }
 
     dependencies {
-        testCompile group: 'junit', name: 'junit', version: '4.11'
+        testCompile 'junit:junit:4.11'
+        testCompile 'org.assertj:assertj-core:3.5.2'
     }
 
     task copyEclipseSettings(type: Copy) {
@@ -105,7 +106,7 @@ subprojects {
 configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ || it.name =~ /^freeplane_framework$/}){
     repositories {
         maven {
-            url 'http://www.knopflerfish.org/maven2/'
+            url 'https://dl.bintray.com/knopflerfish/knopflerfish-maven/'
         }
     }
 

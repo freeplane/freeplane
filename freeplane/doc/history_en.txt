@@ -3,6 +3,17 @@
 ===============================
 Configurable node border widths
 Configurable node border colors
+Configurable edge line type
+Configurable node border line type
+Configurable standard for connector arrows
+Configurable standard for connector line types 
+Presentations
+Export for java web start
+
+===============================
+1.5.18
+===============================
+Bug fixes
 
 ===============================
 1.5.17

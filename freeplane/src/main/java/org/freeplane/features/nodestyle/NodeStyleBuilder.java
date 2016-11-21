@@ -38,6 +38,7 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
@@ -286,6 +287,24 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_WIDTH", borderWidthHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_WIDTH", borderWidthHandler);
 
+		final IAttributeHandler borderDashMatchesEdgeDashHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeBorderModel.setBorderDashMatchesEdgeDash(node, Boolean.valueOf(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_DASH_LIKE_EDGE", borderDashMatchesEdgeDashHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_DASH_LIKE_EDGE", borderDashMatchesEdgeDashHandler);
+
+		final IAttributeHandler borderDashHandler = new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final NodeModel node = (NodeModel) userObject;
+				NodeBorderModel.setBorderDash(node, DashVariant.valueOf(value));
+			}
+		};
+		reader.addAttributeHandler(NodeBuilder.XML_NODE, "BORDER_DASH", borderDashHandler);
+		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "BORDER_DASH", borderDashHandler);
+
 		final IAttributeHandler borderColorMatchesEdgeColorHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
@@ -440,7 +459,6 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final Color borderColor = forceFormatting ? nsc.getBorderColor(node) : border.getBorderColor();
 		if (borderColor != null) {
 			ColorUtils.addColorAttributes(writer, "BORDER_COLOR", "BORDER_COLOR_ALPHA", borderColor);
-			writer.addAttribute("BORDER_COLOR", ColorUtils.colorToString(borderColor));
 		}
 	}
 	

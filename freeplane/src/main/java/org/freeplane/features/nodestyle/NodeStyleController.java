@@ -28,6 +28,7 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -276,6 +277,47 @@ public class NodeStyleController implements IExtension {
 			return borderWidth;
 		}
 		return DEFAULT_BORDER_WIDTH;
+	}
+	
+	
+	private Boolean getBorderDashMatchesEdgeDash(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeBorderModel borderModel = NodeBorderModel.getModel(styleNode);
+			if (borderModel == null) {
+				continue;
+			}
+			final Boolean borderDashMatchesEdgeDash = borderModel.getBorderDashMatchesEdgeDash();
+			if (borderDashMatchesEdgeDash == null) {
+				continue;
+			}
+			return borderDashMatchesEdgeDash;
+		}
+		return false;
+	}
+	
+	private DashVariant getBorderDash(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeBorderModel borderModel = NodeBorderModel.getModel(styleNode);
+			if (borderModel == null) {
+				continue;
+			}
+			final DashVariant borderDash = borderModel.getBorderDash();
+			if (borderDash == null) {
+				continue;
+			}
+			return borderDash;
+		}
+		return DashVariant.DEFAULT;
 	}
 	
 	
@@ -534,12 +576,28 @@ public class NodeStyleController implements IExtension {
 		return borderWidthMatchesEdgeWidth;
 	}
 
+	public Boolean getBorderDashMatchesEdgeDash(NodeModel node) {
+		final MapModel map = node.getMap();
+		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+		final Collection<IStyle> style = styleController.getStyles(node);
+		final Boolean borderDashMatchesEdgeDash = getBorderDashMatchesEdgeDash(map, style);
+		return borderDashMatchesEdgeDash;
+	}
+
 	public Quantity<LengthUnits> getBorderWidth(NodeModel node) {
 		final MapModel map = node.getMap();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 		final Collection<IStyle> style = styleController.getStyles(node);
 		final Quantity<LengthUnits> borderWidth = getBorderWidth(map, style);
 		return borderWidth;
+	}
+
+	public DashVariant getBorderDash(NodeModel node) {
+		final MapModel map = node.getMap();
+		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+		final Collection<IStyle> style = styleController.getStyles(node);
+		final DashVariant borderDash = getBorderDash(map, style);
+		return borderDash;
 	}
 
 	public Boolean getBorderColorMatchesEdgeColor(NodeModel node) {

@@ -384,6 +384,11 @@
 				<Entry name="RemoveAllAlwaysUnfoldedNodeFlagsAction" />
 				<Entry name="AlwaysUnfoldedNodeAction" />
 			</Entry>
+			<Entry name="presentation">
+				<Entry name="StartPresentationOrShowNextSlideAction" accelerator="F5"/>
+				<Entry name="ShowPreviousSlideAction" accelerator="control F5"/>
+				<Entry name="StopPresentationAction" accelerator="shift F5" />
+			</Entry>
 			<Entry builder="separator" />
 			<Entry name="SelectAllAction" accelerator="control A" />
 			<Entry name="SelectBranchAction" accelerator="control shift A" />

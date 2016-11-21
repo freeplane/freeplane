@@ -65,6 +65,8 @@ public class EdgeLinkView extends AConnectorView {
 			color =  ColorUtils.alphaToColor(alpha, color);
 			final int width = linkController.getWidth(model);
 			edgeView.setWidth(width);
+			int[] dash = linkController.getDash(model);
+			edgeView.setDash(dash);
 		}
 		edgeView.setColor(color);
 	}

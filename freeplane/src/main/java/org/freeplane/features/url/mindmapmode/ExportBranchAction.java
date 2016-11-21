@@ -42,6 +42,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.MapExtensions;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -149,14 +150,14 @@ class ExportBranchAction extends AFreeplaneAction {
 			IExtension[] oldExtensions = map.getRootNode().getSharedExtensions().values().toArray(new IExtension[]{});
 			for(final IExtension extension : oldExtensions){
 				final Class<? extends IExtension> clazz = extension.getClass();
-				if(PersistentNodeHook.isMapExtension(clazz)){
+				if(MapExtensions.isMapExtension(clazz)){
 					existingNode.removeExtension(clazz);
 				}
 			}
 			final Collection<IExtension> newExtensions = parentMap.getRootNode().getSharedExtensions().values();
 			for(final IExtension extension : newExtensions){
 				final Class<? extends IExtension> clazz = extension.getClass();
-				if(PersistentNodeHook.isMapExtension(clazz)){
+				if(MapExtensions.isMapExtension(clazz)){
 					existingNode.addExtension(extension);
 				}
 			}

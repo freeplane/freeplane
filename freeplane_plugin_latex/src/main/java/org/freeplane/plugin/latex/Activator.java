@@ -6,7 +6,6 @@ import java.util.Hashtable;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.ConditionalContentTransformer;

@@ -38,7 +38,7 @@ public class SharpLinearEdgeView extends SharpEdgeView {
 
 	@Override
 	public Stroke getStroke() {
-		return EdgeView.DEF_STROKE;
+		return getStroke(0);
 	}
 
 	@Override

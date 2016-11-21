@@ -33,6 +33,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.ListCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.io.IElementDOMHandler;
@@ -45,6 +46,7 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.TimePeriodUnits;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLException;
@@ -57,6 +59,49 @@ import org.freeplane.n3.nanoxml.XMLException;
  * see {@link #addValidator(IValidator)}.
  */
 public class OptionPanelBuilder {
+	static final class ComboPropertyCreator implements IPropertyControlCreator {
+		private final Vector<String> choices;
+		private final Vector<?> displayedItems;
+		private final String name;
+		private int verticalMargin;
+		private ListCellRenderer<?> renderer;
+		@SuppressWarnings("rawtypes")
+		private Class enumClass;
+
+		ComboPropertyCreator(Vector<String> choices, Vector<?> displayedItems, String name) {
+			this.choices = choices;
+			this.displayedItems = displayedItems;
+			this.name = name;
+			verticalMargin = 0;
+			renderer = null;
+		}
+
+		public IPropertyControl createControl() {
+			@SuppressWarnings("unchecked")
+			final ComboProperty comboProperty = enumClass != null ? ComboProperty.of(name, enumClass) : new ComboProperty(name, choices, displayedItems);
+			if(verticalMargin > 0)
+				comboProperty.setVerticalMargin(verticalMargin);
+			if(renderer != null)
+				comboProperty.setRenderer(renderer);
+			return comboProperty;
+		}
+
+		public ComboPropertyCreator withVerticalMargin(int verticalMargin) {
+			this.verticalMargin = verticalMargin;
+			return this;
+		}
+
+		public ComboPropertyCreator withListCellRenderer(ListCellRenderer<?> createRenderer) {
+			this.renderer = createRenderer;
+			return this;
+		}
+
+		public ComboPropertyCreator withEnum(Class<?> enumClass) {
+			this.enumClass = enumClass;
+			return this;
+		}
+	}
+
 	private class BooleanOptionCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
@@ -74,10 +119,32 @@ public class OptionPanelBuilder {
 	private class ComboOptionCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
-			final int childrenCount = data.getChildrenCount();
-			final Vector<String> choices = new Vector<String>(childrenCount);
-			final Vector<Object> displayedItems = new Vector<Object>(childrenCount);
-			for (int i = 0; i < childrenCount; i++) {
+			String enumClassName = data.getAttribute("enum", null);
+			ComboPropertyCreator comboProperty;
+			if(enumClassName != null) {
+				try {
+					Class<?> enumClass = OptionPanelBuilder.class.getClassLoader().loadClass(enumClassName);
+					comboProperty = createComboProperty(name, enumClass);
+				} 
+				catch (Exception e) {
+					LogUtils.severe(e);
+					return null;
+				}
+			}
+			else {
+				final int childrenCount = data.getChildrenCount();
+				final Vector<String> choices = new Vector<String>(childrenCount);
+				final Vector<Object> displayedItems = new Vector<Object>(childrenCount);
+				addChoicesAndDisplayedItems(data, choices, displayedItems);
+				comboProperty = createComboProperty(name, choices, displayedItems);
+			}
+			final int verticalMargin = Quantity.fromString(data.getAttribute("vertical_margin", "0"), LengthUnits.pt).toBaseUnitsRounded();
+			return comboProperty.withVerticalMargin(verticalMargin);
+		}
+
+		private void addChoicesAndDisplayedItems(final XMLElement data, final Vector<String> choices,
+				final Vector<Object> displayedItems) {
+			for (int i = 0; i < data.getChildrenCount(); i++) {
 				final XMLElement element = data.getChildAtIndex(i);
 				final String choice = element.getAttribute("value", null);
 				choices.add(choice);
@@ -92,7 +159,6 @@ public class OptionPanelBuilder {
 				}
 				displayedItems.add(displayedItem);
 			}
-			return createComboProperty(name, choices, displayedItems);
 		}
 	}
 	private class LanguagesComboCreator extends PropertyCreator {
@@ -429,7 +495,7 @@ public class OptionPanelBuilder {
 	}
 
 	public void addComboProperty(final String path, final String name, final Vector<String> choices,
-	                             final Vector<String> displayedItems, final int position) {
+	                             final Vector<?> displayedItems, final int position) {
 		final IPropertyControlCreator creator = createComboProperty(name, choices, displayedItems);
 		addCreator(path, creator, name, position);
 	}
@@ -505,14 +571,15 @@ public class OptionPanelBuilder {
 		};
 	}
 
-	private IPropertyControlCreator createComboProperty(final String name, final Vector<String> choices,
+	private ComboPropertyCreator createComboProperty(final String name, final Vector<String> choices,
 			final Vector<?> displayedItems) {
-		return new IPropertyControlCreator() {
-			public IPropertyControl createControl() {
-				return new ComboProperty(name, choices, displayedItems);
-			}
-		};
+		return new ComboPropertyCreator(choices, displayedItems, name);
 	}
+	
+	public ComboPropertyCreator createComboProperty(String name, Class<?> enumClass) {
+		return new ComboPropertyCreator(null, null, name).withEnum(enumClass);
+	}
+
 
 	private IPropertyControlCreator createEditableComboProperty(final String name, final Vector<String> choices,
 			final Vector<String> displayedItems) {
