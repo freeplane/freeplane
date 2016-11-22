@@ -126,91 +126,94 @@ public class FreeplaneApplet extends JApplet {
 	@SuppressWarnings("serial")
     @Override
 	public void init() {
-		try{
-			appletLock.lock();
-			AppletResourceController appletResourceController = new AppletResourceController(this);
-			if (appletResourceController == null) {
-				appletResourceController = new AppletResourceController(this);
+		configureFrame();
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try{
+					appletLock.lock();
+					AppletResourceController appletResourceController = new AppletResourceController(FreeplaneApplet.this);
+					new ParserDelegator(){
+						{
+							setDefaultDTD();
+						}
+					};
+					controller = new Controller(appletResourceController);
+					updateLookAndFeel(appletResourceController);
+					Controller.setCurrentController(controller);
+					final Container contentPane = getContentPane();
+					contentPane.setLayout(new BorderLayout());
+					MapViewController mapViewController = new MapViewController(controller);
+					appletViewController = new AppletViewController(FreeplaneApplet.this, controller, mapViewController);
+					controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
+					controller.addExtension(HighlightController.class, new HighlightController());
+					FilterController.install();
+					PrintController.install();
+					HelpController.install();
+					NodeHistory.install(controller);
+					FormatController.install(new FormatController());
+					ModelessAttributeController.install();
+					TextController.install();
+					MapController.install();
+
+					TimeController.install();
+					LinkController.install();
+					IconController.install();
+					FilterController.getCurrentFilterController().getConditionFactory().addConditionController(70,
+					    new LogicalStyleFilterController());
+					final BModeController browseController = BModeControllerFactory.createModeController();
+					final Set<String> emptySet = Collections.emptySet();
+					FilterController.getController(controller).loadDefaultConditions();
+					controller.addAction(new ShowSelectionAsRectangleAction());
+					controller.addAction(new NextNodeAction(Direction.FORWARD));
+					controller.addAction(new NextNodeAction(Direction.BACK));
+					controller.addAction(new NextNodeAction(Direction.FORWARD_N_FOLD));
+					controller.addAction(new NextNodeAction(Direction.BACK_N_FOLD));
+					controller.addAction(new NextPresentationItemAction());
+					browseController.updateMenus("/xml/appletmenu.xml", emptySet);
+					appletResourceController.getAcceleratorManager().loadAcceleratorPresets();
+
+					controller.selectMode(browseController);
+					setPropertyByParameter(appletResourceController, "browsemode_initial_map");
+					isLaunchedByJavaWebStart = isParameterTrue("launched_by_java_web_start");
+					if(isLaunchedByJavaWebStart) {
+						if(instanceInitialized)
+							throw new RuntimeException("singleAppletInstance allowed");
+						else
+							instanceInitialized = true;
+					} else
+						addGlassPane();
+					controller.getViewController().setMenubarVisible(false);
+					SwingUtilities.invokeLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							appletViewController.init(controller);
+						}
+					});
+				}
+				catch(RuntimeException e){
+					e.printStackTrace();
+					throw e;
+				}
+				finally{
+					appletLock.unlock();
+				}
 			}
-			new ParserDelegator(){
-				{
-					setDefaultDTD();
-				}
-			};
-			controller = new Controller(appletResourceController);
-			updateLookAndFeel(appletResourceController);
-			Controller.setCurrentController(controller);
-			final Container contentPane = getContentPane();
-			contentPane.setLayout(new BorderLayout());
-			MapViewController mapViewController = new MapViewController(controller);
-			appletViewController = new AppletViewController(this, controller, mapViewController);
-			controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
-			controller.addExtension(HighlightController.class, new HighlightController());
-			FilterController.install();
-			PrintController.install();
-			HelpController.install();
-			NodeHistory.install(controller);
-			FormatController.install(new FormatController());
-			ModelessAttributeController.install();
-			TextController.install();
-			MapController.install();
-
-			TimeController.install();
-			LinkController.install();
-			IconController.install();
-			FilterController.getCurrentFilterController().getConditionFactory().addConditionController(70,
-			    new LogicalStyleFilterController());
-			final BModeController browseController = BModeControllerFactory.createModeController();
-			final Set<String> emptySet = Collections.emptySet();
-			FilterController.getController(controller).loadDefaultConditions();
-			controller.addAction(new ShowSelectionAsRectangleAction());
-			controller.addAction(new NextNodeAction(Direction.FORWARD));
-			controller.addAction(new NextNodeAction(Direction.BACK));
-			controller.addAction(new NextNodeAction(Direction.FORWARD_N_FOLD));
-			controller.addAction(new NextNodeAction(Direction.BACK_N_FOLD));
-			controller.addAction(new NextPresentationItemAction());
-			browseController.updateMenus("/xml/appletmenu.xml", emptySet);
-			appletResourceController.getAcceleratorManager().loadAcceleratorPresets();
-
-			controller.selectMode(browseController);
-			setPropertyByParameter(appletResourceController, "browsemode_initial_map");
-			isLaunchedByJavaWebStart = isParameterTrue("launched_by_java_web_start");
-			if(isLaunchedByJavaWebStart) {
-				if(instanceInitialized)
-					throw new RuntimeException("singleAppletInstance allowed");
-				else
-					instanceInitialized = true;
-			} else
-				addGlassPane();
-			configureFrame(appletResourceController);
-			controller.getViewController().setMenubarVisible(false);
-			SwingUtilities.invokeLater(new Runnable() {
-				
-				@Override
-				public void run() {
-					appletViewController.init(controller);
-				}
-			});
-		}
-		catch(RuntimeException e){
-			e.printStackTrace();
-			throw e;
-		}
-		finally{
-			appletLock.unlock();
-		}
+		}, "Freeplane applet initialization").start();
 	}
 
 	private Boolean isParameterTrue(String name) {
 		return Boolean.valueOf(getParameter(name));
 	}
 
-	private void configureFrame(ResourceController appletResourceController) {
+	private void configureFrame() {
 		Window window = SwingUtilities.windowForComponent(this);
 		if (window instanceof Frame){
 			Frame frame = (Frame)window;
 			ImageIcon mWindowIcon;
-			mWindowIcon = new ImageIcon(appletResourceController.getResource(
+			mWindowIcon = new ImageIcon(getClass().getResource(
 					"/images/Freeplane_frame_icon_64x64.png"));
 			frame.setIconImage(mWindowIcon.getImage());			
 			if (!frame.isResizable()){
