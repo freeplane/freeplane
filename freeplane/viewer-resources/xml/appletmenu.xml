@@ -88,7 +88,9 @@
 				<Entry name="AboutAction"/>
 		</Entry>
 	</Entry>
-	<Entry name="map_popup" builder="map_popup">
+	<Entry name="map_popup" builder="map_popup" processOnPopup="true">
+		<Entry builder="navigate_maps,radio_button_group" />
+		<Entry builder="separator" />
 		<Entry name="ToggleMenubarAction"/>
 		<Entry name="ToggleToolbarAction" />
 		<Entry name="ShowFilterToolbarAction" />
@@ -105,6 +107,7 @@
 		<Entry name="CopySingleAction" accelerator="control shift C" />
 	</Entry>
 	<Entry name="main_toolbar" builder="toolbar,ignore">
+		<Entry name="url" builder="main_toolbar_url" />
 		<Entry builder="main_toolbar_zoom" name="zoom" />
 		<Entry name="open">
 			<Entry name="PrintAction" />
