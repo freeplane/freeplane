@@ -25,11 +25,14 @@ import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.map.MapModel;
 
 class FMapModel extends MapModel {
-	public FMapModel(final File root) {
+	public FMapModel(final File[] roots) {
 		super();
 		// create empty attribute registry
 		AttributeRegistry.getRegistry(this);
-		setRoot(new FNodeModel(root, this));
+		if(roots.length == 1)
+			setRoot(new FNodeModel(roots[0], this));
+		else
+			setRoot(new FNodeModel(roots, this));
 		getRootNode().setFolded(false);
 	}
 
