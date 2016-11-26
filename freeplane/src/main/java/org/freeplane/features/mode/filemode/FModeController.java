@@ -42,7 +42,7 @@ public class FModeController extends ModeController {
 		final Controller controller = getController();
 		controller.getMapViewManager().changeToMode(MODENAME);
 		if (controller.getMap() == null) {
-			((FMapController) getMapController()).newMap(new File(File.separator));
+			((FMapController) getMapController()).newMap(File.listRoots());
 		}
 		super.startup();
 	}

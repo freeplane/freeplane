@@ -39,11 +39,10 @@ public class FMapController extends MapController {
 		return (FModeController) Controller.getCurrentModeController();
 	}
 
-	public MapModel newMap(final File file) {
-		final FMapModel fileMapModel = new FMapModel(file);
+	public MapModel newMap(final File[] roots) {
+		final FMapModel fileMapModel = new FMapModel(roots);
 		fireMapCreated(fileMapModel);
 		newMapView(fileMapModel);
-		// FIXME: setSaved(true) necessary? (it's removed from newMapView())
 		return fileMapModel;
 	}
 
@@ -56,5 +55,9 @@ public class FMapController extends MapController {
 		if (hasChildren(node) && !node.isRoot()) {
 			setFolded(node, !isFolded(node));
 		}
+	}
+
+	public void newMap(File file) {
+		newMap(new File[]{file});
 	}
 }

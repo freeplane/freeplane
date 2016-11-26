@@ -77,16 +77,10 @@ import org.freeplane.view.swing.map.NodeView;
 
 public class LastOpenedList implements IMapViewChangeListener, IMapChangeListener {
     static class RecentFile {
-        public RecentFile(String restorable, String mapName) {
-            this.restorable = restorable;
-            this.mapName = mapName;
-        }
         public RecentFile(String restorable) {
-            this(restorable, null);
+            this.restorable = restorable;
         }
         String restorable;
-        /** map.toString(), not-null only if opened. */
-        String mapName;
         /** persisted, but not necessary not-null. */
         String lastVisitedNodeId;
         @Override
@@ -293,18 +287,12 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
         final StringTokenizer tokens = new StringTokenizer(recentFile.restorable, ":");
         if (!tokens.hasMoreTokens())
             return;
-        final boolean changedToMapView = tryToChangeToMapView(recentFile);
-        if (changedToMapView)
-            return;
         final String mode = tokens.nextToken();
         Controller.getCurrentController().selectMode(mode);
         File file = createFileFromRestorable(tokens);
-		if(!changedToMapView)
-            Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(file));
-        else {
-            final MapModel map = Controller.getCurrentController().getMap();
-            Controller.getCurrentModeController().getMapController().newMapView(map);
-        }
+        final URL url = Compat.fileToUrl(file);
+        if (!tryToChangeToMapView(url))
+			Controller.getCurrentModeController().getMapController().newMap(url);
     }
 
 	public File createFileFromRestorable(StringTokenizer tokens) {
@@ -318,8 +306,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 
 	void openLastMapOnStart() {
 		if (mapSelectedOnStart != null) {
-			if(!tryToChangeToMapView(mapSelectedOnStart))
-				safeOpen(mapSelectedOnStart);
+			safeOpen(mapSelectedOnStart);
 		}
 	}
 
@@ -416,8 +403,13 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 	    return result;
 	}
 
-    private boolean tryToChangeToMapView(final RecentFile mapSelectedOnStart) {
-		return Controller.getCurrentController().getMapViewManager().tryToChangeToMapView(mapSelectedOnStart.mapName);
+    private boolean tryToChangeToMapView(URL url) {
+		try {
+			return Controller.getCurrentController().getMapViewManager().tryToChangeToMapView(url);
+		} catch (MalformedURLException e) {
+			LogUtils.warn(e);
+			return false;
+		}
 	}
 
 	private void updateList(final MapModel map, final String restoreString) {
@@ -428,11 +420,10 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 			RecentFile recentFile = findRecentFileByRestorable(restoreString);
 			if (recentFile != null) {
 				lastOpenedList.remove(recentFile);
-				recentFile.mapName = map.getTitle();
 				lastOpenedList.add(0, recentFile);
 			}
 			else {
-				lastOpenedList.add(0, new RecentFile(restoreString, map.getTitle()));
+				lastOpenedList.add(0, new RecentFile(restoreString));
 			}
 		}
 		updateMenus();
