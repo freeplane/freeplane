@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.styles.mindmapmode;
+package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -111,6 +111,11 @@ import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.mindmapmode.EditablePatternComboProperty;
+import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
+import org.freeplane.features.styles.mindmapmode.MUIFactory;
+import org.freeplane.features.styles.mindmapmode.ManageMapConditionalStylesAction;
+import org.freeplane.features.styles.mindmapmode.ManageNodeConditionalStylesAction;
 import org.freeplane.features.text.TextController;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Borders;
