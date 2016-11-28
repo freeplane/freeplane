@@ -243,7 +243,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			final StringBuilder ruleBuilder = new StringBuilder(100);
 			ruleBuilder.append("body {");
 			ruleBuilder.append(new CssRuleBuilder()
-					.withFont(font, UITools.FONT_SCALE_FACTOR)
+					.withCSSFont(font, UITools.FONT_SCALE_FACTOR)
 					.withColor(textColor)
 					.withBackground(getBackground())
 					.withAlignment(horizontalAlignment));
