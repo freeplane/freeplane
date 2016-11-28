@@ -672,7 +672,7 @@ public class EditNodeTextField extends EditNodeBase {
 		ruleBuilder.append("body {");
 		final int labelHorizontalAlignment = parent.getHorizontalAlignment();
 		ruleBuilder.append(new CssRuleBuilder()
-				.withFont(font, UITools.FONT_SCALE_FACTOR)
+				.withCSSFont(font, UITools.FONT_SCALE_FACTOR)
 				.withColor(nodeTextColor)
 				.withBackground(getBackground())
 				.withAlignment(labelHorizontalAlignment));

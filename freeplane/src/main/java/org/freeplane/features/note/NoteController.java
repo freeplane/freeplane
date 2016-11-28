@@ -151,7 +151,7 @@ public class NoteController implements IExtension {
 		return Boolean.parseBoolean(property);
 	}
 
-	protected String getNoteCSSStyle(ModeController modeController, NodeModel node, boolean withWidth) {
+	protected String getNoteCSSStyle(ModeController modeController, NodeModel node, boolean asHtmlFragment) {
 		final StringBuilder rule = new StringBuilder();
 		// set default font for notes:
 		final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
@@ -164,12 +164,15 @@ public class NoteController implements IExtension {
 		    Color noteBackground = style.getBackgroundColor(noteStyleNode);
 		    Color noteForeground = style.getColor(noteStyleNode);
 		    final int alignment = style.getTextAlign(noteStyleNode).swingConstant;
-		    final CssRuleBuilder cssRuleBuilder = new CssRuleBuilder()
-		    		.withFont(noteFont)
-		    		.withColor(noteForeground)
+		    final CssRuleBuilder cssRuleBuilder = new CssRuleBuilder();
+		    if(asHtmlFragment)
+		    	cssRuleBuilder.withHTMLFont(noteFont);
+		    else
+			    cssRuleBuilder.withCSSFont(noteFont);
+		    cssRuleBuilder.withColor(noteForeground)
 					.withBackground(noteBackground)
 					.withAlignment(alignment);
-		    if(withWidth)
+		    if(asHtmlFragment)
 		    	cssRuleBuilder.withMaxWidthAsPt(NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node));
 			rule.append(cssRuleBuilder);
 		}
