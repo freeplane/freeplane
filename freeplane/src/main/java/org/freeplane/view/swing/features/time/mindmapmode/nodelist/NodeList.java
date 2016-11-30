@@ -414,6 +414,7 @@ public class NodeList {
 			storage.addTimeWindowColumnSetting(setting);
 		}
 		storage.storeDialogPositions(dialog, windowPreferenceStorageProperty);
+		final boolean dialogWasFocused = dialog.isFocused();
 		dialog.setVisible(false);
 		dialog.dispose();
 		dialog = null;
@@ -421,7 +422,10 @@ public class NodeList {
 		final MapController mapController = modeController.getMapController();
 		mapController.removeMapChangeListener(mapChangeListener);
 		mapController.removeNodeChangeListener(mapChangeListener);
-		Controller.getCurrentController().getMapViewManager().removeMapSelectionListener(mapChangeListener);
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		mapViewManager.removeMapSelectionListener(mapChangeListener);
+		if(dialogWasFocused)
+			mapViewManager.getSelectedComponent().requestFocus();
 	}
 
 	protected void exportSelectedRowsAndClose() {
