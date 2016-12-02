@@ -19,63 +19,67 @@
  */
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
 import org.freeplane.core.resources.components.BooleanProperty;
-import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.resources.components.NumberProperty;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author Joe Berry
- * Nov 27, 2016
+ * Dec 1, 2016
  */
-class EdgeColorControlGroup implements ControlGroup {
-	static final String EDGE_COLOR = "edgecolor";
+public class EdgeWidthControlGroup implements ControlGroup {
+	private static final String EDGE_WIDTH = "edgewidth";
 
-	private BooleanProperty mSetEdgeColor;
-	private ColorProperty mEdgeColor;
-	private EdgeColorChangeListener propertyChangeListener;
-
-	private class EdgeColorChangeListener extends ControlGroupChangeListener {
-		public EdgeColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+	private BooleanProperty mSetEdgeWidth;
+	private NumberProperty mEdgeWidth;
+	private EdgeWidthChangeListener propertyChangeListener;
+	
+	private class EdgeWidthChangeListener extends ControlGroupChangeListener {
+		public EdgeWidthChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
 		@Override
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MEdgeController edgeController = (MEdgeController) MEdgeController.getController();
-			edgeController.setColor(node, enabled ? mEdgeColor.getColorValue() : null);
+			final MEdgeController styleController = (MEdgeController) Controller
+			.getCurrentModeController().getExtension(
+					EdgeController.class);
+			styleController.setWidth(node, enabled ? Integer.parseInt(mEdgeWidth.getValue()): EdgeModel.DEFAULT_WIDTH);
 		}
 
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
-			final EdgeModel edgeModel = EdgeModel.getModel(node);
 			final EdgeController edgeController = EdgeController.getController();
+			final EdgeModel edgeModel = EdgeModel.getModel(node);
 			{
-				final Color edgeColor = edgeModel != null ? edgeModel.getColor() : null;
-				final Color viewColor = edgeController.getColor(node);
-				mSetEdgeColor.setValue(edgeColor != null);
-				mEdgeColor.setColorValue(viewColor);
+				final int width = edgeModel != null ? edgeModel.getWidth() : EdgeModel.DEFAULT_WIDTH;
+				final int viewWidth = edgeController.getWidth(node);
+				mSetEdgeWidth.setValue(width != EdgeModel.DEFAULT_WIDTH);
+				mEdgeWidth.setValue(Integer.toString(viewWidth));
 			}
 		}
 	}
+
+	@Override
 	public void addControlGroup(final List<IPropertyControl> controls) {
-		mSetEdgeColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetEdgeColor);
-		mEdgeColor = new ColorProperty(EdgeColorControlGroup.EDGE_COLOR, ColorUtils.colorToString(EdgeController.STANDARD_EDGE_COLOR));
-		controls.add(mEdgeColor);
-		propertyChangeListener = new EdgeColorChangeListener(mSetEdgeColor, mEdgeColor);
-		mSetEdgeColor.addPropertyChangeListener(propertyChangeListener);
-		mEdgeColor.addPropertyChangeListener(propertyChangeListener);
+		mSetEdgeWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		controls.add(mSetEdgeWidth);
+		mEdgeWidth = new NumberProperty(EDGE_WIDTH, 0, 100, 1);
+		controls.add(mEdgeWidth);
+		propertyChangeListener = new EdgeWidthChangeListener(mSetEdgeWidth, mEdgeWidth);
+		mSetEdgeWidth.addPropertyChangeListener(propertyChangeListener);
+		mEdgeWidth.addPropertyChangeListener(propertyChangeListener);
 	}
-	
+
+	@Override
 	public void setStyle(NodeModel node) {
 		propertyChangeListener.setStyle(node);
 	}

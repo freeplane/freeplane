@@ -54,13 +54,11 @@ import org.freeplane.core.resources.components.FontProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.NextColumnProperty;
 import org.freeplane.core.resources.components.NextLineProperty;
-import org.freeplane.core.resources.components.NumberProperty;
 import org.freeplane.core.resources.components.QuantityProperty;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
-import org.freeplane.core.ui.components.RenderedContent;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
 import org.freeplane.core.util.ColorUtils;
@@ -74,9 +72,6 @@ import org.freeplane.features.cloud.mindmapmode.MCloudController;
 import org.freeplane.features.edge.AutomaticEdgeColor;
 import org.freeplane.features.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.EdgeController;
-import org.freeplane.features.edge.EdgeModel;
-import org.freeplane.features.edge.EdgeStyle;
-import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
@@ -124,20 +119,6 @@ import com.jgoodies.forms.layout.FormLayout;
 public class StyleEditorPanel extends JPanel {
 	private static final int FONT_SIZE = Math.round(UITools.FONT_SCALE_FACTOR * 8);
 	private static final TranslatedObject AUTOMATIC_LAYOUT_DISABLED = new TranslatedObject("automatic_layout_disabled");
-
-	private class BgColorChangeListener extends ChangeListener {
-		public BgColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MNodeStyleController styleController = (MNodeStyleController) Controller
-					.getCurrentModeController().getExtension(
-							NodeStyleController.class);
-			styleController.setBackgroundColor(node, enabled ? mNodeBackgroundColor.getColorValue() : null);
-		}
-	}
 
 	private class NodeShapeChangeListener extends ChangeListener {
 		public NodeShapeChangeListener(final BooleanProperty mSet, final IPropertyControl... mProperty) {
@@ -252,20 +233,6 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 
-	private class EdgeStyleChangeListener extends ChangeListener {
-		public EdgeStyleChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node,
-				final PropertyChangeEvent evt) {
-			final MEdgeController styleController = (MEdgeController) Controller
-					.getCurrentModeController().getExtension(
-							EdgeController.class);
-			styleController.setStyle(node, enabled ? EdgeStyle.getStyle(mEdgeStyle.getValue()) : null);
-		}
-	}
 	private class TextAlignmentChangeListener extends ChangeListener {
 		public TextAlignmentChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -280,36 +247,6 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 	
-	
-
-	private class EdgeWidthChangeListener extends ChangeListener {
-		public EdgeWidthChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MEdgeController styleController = (MEdgeController) Controller
-			.getCurrentModeController().getExtension(
-					EdgeController.class);
-			styleController.setWidth(node, enabled ? Integer.parseInt(mEdgeWidth.getValue()): EdgeModel.DEFAULT_WIDTH);
-		}
-	}
-
-	private class EdgeDashChangeListener extends ChangeListener {
-		public EdgeDashChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MEdgeController styleController = (MEdgeController) Controller
-			.getCurrentModeController().getExtension(
-					EdgeController.class);
-			styleController.setDash(node, enabled ? DashVariant.valueOf(mEdgeDash.getValue()): null);
-		}
-	}
-
 	private class MaxNodeWidthChangeListener extends ChangeListener {
 		public MaxNodeWidthChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -552,14 +489,9 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 	private static final String CLOUD_COLOR = "cloudcolor";
-	private static final String EDGE_STYLE = "edgestyle";
 	private static final String CLOUD_SHAPE = "cloudshape";
-	private static final String[] EDGE_STYLES = enumStrings(EdgeStyle.class, EdgeStyle.values().length - 1);
-	private static final String[] CLOUD_SHAPES = StyleEditorPanel.enumStrings(CloudModel.Shape.class);
-	private static final String EDGE_WIDTH = "edgewidth";
-	private static final String EDGE_DASH = "edgedash";
+	private static final String[] CLOUD_SHAPES = Utilities.enumStrings(CloudModel.Shape.class);
 //	private static final String ICON = "icon";
-	private static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
 	private static final String NODE_COLOR = "nodecolor";
 	private static final String NODE_FONT_BOLD = "nodefontbold";
 	private static final String NODE_FONT_ITALIC = "nodefontitalic";
@@ -571,7 +503,7 @@ public class StyleEditorPanel extends JPanel {
 	private static final String NODE_TEXT_COLOR = "standardnodetextcolor";
 	private static final String NODE_FORMAT = "nodeformat";
 	private static final String TEXT_ALIGNMENT = "textalignment";
-	private static final String[] TEXT_ALIGNMENTS = StyleEditorPanel.enumStrings(TextAlign.class);
+	private static final String[] TEXT_ALIGNMENTS = Utilities.enumStrings(TextAlign.class);
 	/**
 	* 
 	*/
@@ -591,19 +523,6 @@ public class StyleEditorPanel extends JPanel {
 	
 	
 	
-	private  static <U extends Enum<U>> String[] enumStrings(Class<U> enumerationClass, int length) {
-		final U[] enumConstants = enumerationClass.getEnumConstants();
-		final String[] strings = new String[length];
-		for (int i = 0; i < length; i++) {
-			strings[i] = enumConstants[i].toString();
-		}
-		return strings;
-	}
-
-	private  static <U extends Enum<U>> String[] enumStrings(Class<U> enumerationClass) {
-		return enumStrings(enumerationClass, enumerationClass.getEnumConstants().length);
-	}
-
 	private boolean internalChange;
 	private List<IPropertyControl> mControls;
 	
@@ -613,19 +532,11 @@ public class StyleEditorPanel extends JPanel {
 
 	
 	private final ControlGroup mEdgeColorControlGroup = new EdgeColorControlGroup();
-
-	private BooleanProperty mSetEdgeStyle;
-	private ComboProperty mEdgeStyle;
+	private final ControlGroup mEdgeStyleControlGroup = new EdgeStyleControlGroup();
+	private final ControlGroup mEdgeWidthControlGroup = new EdgeWidthControlGroup();
+	private final ControlGroup mEdgeDashControlGroup = new EdgeDashControlGroup();
+	private final ControlGroup mNodeBackgroundColorControlGroup = new NodeBackgroundColorControlGroup();
 	
-	private BooleanProperty mSetEdgeWidth;
-	private NumberProperty mEdgeWidth;
-
-	private BooleanProperty mSetEdgeDash;
-	private ComboProperty mEdgeDash;
-
-	private BooleanProperty mSetNodeBackgroundColor;
-	private ColorProperty mNodeBackgroundColor;
-
 	private BooleanProperty mSetNodeColor;
 	private ColorProperty mNodeColor;
 
@@ -715,17 +626,6 @@ public class StyleEditorPanel extends JPanel {
 		});
 	}
 
-	private void addBgColorControl(final List<IPropertyControl> controls) {
-		mSetNodeBackgroundColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeBackgroundColor);
-		mNodeBackgroundColor = new ColorProperty(StyleEditorPanel.NODE_BACKGROUND_COLOR, ResourceController
-		    .getResourceController().getDefaultProperty(NODE_BACKGROUND_COLOR));
-		controls.add(mNodeBackgroundColor);
-		final BgColorChangeListener listener = new BgColorChangeListener(mSetNodeBackgroundColor, mNodeBackgroundColor);
-		mSetNodeBackgroundColor.addPropertyChangeListener(listener);
-		mNodeBackgroundColor.addPropertyChangeListener(listener);
-	}
-
     private void addFormatControl(final List<IPropertyControl> controls) {
         mSetNodeFormat = new BooleanProperty(ControlGroup.SET_RESOURCE);
         controls.add(mSetNodeFormat);
@@ -770,42 +670,12 @@ public class StyleEditorPanel extends JPanel {
 	}
 
 
-	private void addEdgeStyleControl(final List<IPropertyControl> controls) {
-		mSetEdgeStyle = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetEdgeStyle);
-		mEdgeStyle = new ComboProperty(StyleEditorPanel.EDGE_STYLE, EDGE_STYLES);
-		controls.add(mEdgeStyle);
-		final EdgeStyleChangeListener listener = new EdgeStyleChangeListener(mSetEdgeStyle, mEdgeStyle);
-		mSetEdgeStyle.addPropertyChangeListener(listener);
-		mEdgeStyle.addPropertyChangeListener(listener);
-	}
-
 	private void addCloudShapeControl(final List<IPropertyControl> controls) {
 		mCloudShape = new ComboProperty(StyleEditorPanel.CLOUD_SHAPE, CLOUD_SHAPES);
 		controls.add(mCloudShape);
 		final CloudShapeChangeListener listener = new CloudShapeChangeListener(mSetCloud, mCloudShape);
 		mSetCloud.addPropertyChangeListener(listener);
 		mCloudShape.addPropertyChangeListener(listener);
-	}
-
-	private void addEdgeWidthControl(final List<IPropertyControl> controls) {
-		mSetEdgeWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetEdgeWidth);
-		mEdgeWidth = new NumberProperty(StyleEditorPanel.EDGE_WIDTH, 0, 100, 1);
-		controls.add(mEdgeWidth);
-		final EdgeWidthChangeListener listener = new EdgeWidthChangeListener(mSetEdgeWidth, mEdgeWidth);
-		mSetEdgeWidth.addPropertyChangeListener(listener);
-		mEdgeWidth.addPropertyChangeListener(listener);
-	}
-
-	private void addEdgeDashControl(final List<IPropertyControl> controls) {
-		mSetEdgeDash = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetEdgeDash);
-		mEdgeDash = ComboProperty.of(EDGE_DASH, DashVariant.class);
-		controls.add(mEdgeDash);
-		final EdgeDashChangeListener listener = new EdgeDashChangeListener(mSetEdgeDash, mEdgeDash);
-		mSetEdgeDash.addPropertyChangeListener(listener);
-		mEdgeDash.addPropertyChangeListener(listener);
 	}
 
 	private void addMaxNodeWidthControl(final List<IPropertyControl> controls) {
@@ -953,7 +823,7 @@ public class StyleEditorPanel extends JPanel {
 	private void addNodeShapeControls(final List<IPropertyControl> controls) {
 		mSetNodeShape = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetNodeShape);
-		mNodeShape = new ComboProperty(StyleEditorPanel.NODE_SHAPE, enumStrings(NodeStyleModel.Shape.class));
+		mNodeShape = new ComboProperty(StyleEditorPanel.NODE_SHAPE, Utilities.enumStrings(NodeStyleModel.Shape.class));
 		controls.add(mNodeShape);
 		controls.add(new NextColumnProperty(2));
 		mShapeHorizontalMargin = new QuantityProperty<LengthUnits>(StyleEditorPanel.SHAPE_HORIZONTAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
@@ -991,7 +861,6 @@ public class StyleEditorPanel extends JPanel {
 		final List<IPropertyControl> controls = new ArrayList<IPropertyControl>();
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeColors"));
 		addColorControl(controls);
-		addBgColorControl(controls);
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeText"));
 		addFormatControl(controls);
 		addNodeNumberingControl(controls);
@@ -1038,11 +907,11 @@ public class StyleEditorPanel extends JPanel {
 		addFontHyperlinkControl(controls);
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("OptionPanel.separator.EdgeControls"));
-		addEdgeWidthControl(controls);
-		addEdgeDashControl(controls);
-		addEdgeStyleControl(controls);
-		
+		mEdgeStyleControlGroup.addControlGroup(controls);
 		mEdgeColorControlGroup.addControlGroup(controls);
+		mEdgeWidthControlGroup.addControlGroup(controls);
+		mEdgeDashControlGroup.addControlGroup(controls);
+		mNodeBackgroundColorControlGroup.addControlGroup(controls);
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("OptionPanel.separator.CloudControls"));
 		addCloudColorControl(controls);
@@ -1206,13 +1075,6 @@ public class StyleEditorPanel extends JPanel {
 				mNodeColor.setColorValue(viewNodeColor);
 			}
 			{
-				final Color color = NodeStyleModel.getBackgroundColor(node);
-				final Color viewColor = styleController.getBackgroundColor(node);
-				mSetNodeBackgroundColor.setValue(color != null);
-				mNodeBackgroundColor.setColorValue(viewColor != null ? viewColor : Controller.getCurrentController()
-				    .getMapViewManager().getBackgroundColor(node));
-			}
-			{
 				final NodeStyleModel.Shape shape = NodeStyleModel.getShape(node);
 				ShapeConfigurationModel viewShape = styleController.getShapeConfiguration(node);
 				final boolean enabled = shape != null;
@@ -1286,26 +1148,11 @@ public class StyleEditorPanel extends JPanel {
 			}
 
 			mEdgeColorControlGroup.setStyle(node);
-			final EdgeController edgeController = EdgeController.getController();
-			final EdgeModel edgeModel = EdgeModel.getModel(node);
-			{
-				final EdgeStyle style = edgeModel != null ? edgeModel.getStyle() : null;
-				final EdgeStyle viewStyle = edgeController.getStyle(node);
-				mSetEdgeStyle.setValue(style != null);
-				mEdgeStyle.setValue(viewStyle.toString());
-			}
-			{
-				final int width = edgeModel != null ? edgeModel.getWidth() : EdgeModel.DEFAULT_WIDTH;
-				final int viewWidth = edgeController.getWidth(node);
-				mSetEdgeWidth.setValue(width != EdgeModel.DEFAULT_WIDTH);
-				mEdgeWidth.setValue(Integer.toString(viewWidth));
-			}
-			{
-				final DashVariant dash = edgeModel != null ? edgeModel.getDash() : null;
-				final DashVariant viewDash = edgeController.getDash(node);
-				mSetEdgeDash.setValue(dash != null);
-				mEdgeDash.setValue(viewDash.name());
-			}
+			mEdgeStyleControlGroup.setStyle(node);
+			mEdgeWidthControlGroup.setStyle(node);
+			mEdgeDashControlGroup.setStyle(node);
+			mNodeBackgroundColorControlGroup.setStyle(node);
+			
 			{
 				final CloudController cloudController = CloudController.getController();
 				final CloudModel cloudModel = CloudModel.getModel(node);
