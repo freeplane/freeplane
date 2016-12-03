@@ -1,176 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   height="16"
-   width="16.011274"
-   version="1.1"
-   id="svg2"
-   inkscape:version="0.48.5 r10040"
-   sodipodi:docname="HierarchicalIconsAction.svg">
-  <sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="640"
-     inkscape:window-height="480"
-     id="namedview49"
-     showgrid="false"
-     fit-margin-top="0"
-     fit-margin-left="0"
-     fit-margin-right="0"
-     fit-margin-bottom="0"
-     inkscape:zoom="0.22424933"
-     inkscape:cx="313.95629"
-     inkscape:cy="-322.54001"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="svg2" />
-  <defs
-     id="defs4">
-    <radialGradient
-       id="e"
-       gradientUnits="userSpaceOnUse"
-       cy="530.66998"
-       cx="279.98999"
-       gradientTransform="matrix(-0.29528,0.29528,-0.2559,-0.2559,-197.94,200.87)"
-       r="263.67999">
-      <stop
-         stop-color="#fff"
-         offset="0"
-         id="stop7" />
-      <stop
-         stop-color="#f90909"
-         offset="1"
-         id="stop9" />
-    </radialGradient>
-    <radialGradient
-       id="d"
-       gradientUnits="userSpaceOnUse"
-       cy="530.66998"
-       cx="279.98999"
-       gradientTransform="matrix(-0.25965,0.25965,-0.22502,-0.22502,-224.3,192.6)"
-       r="263.67999">
-      <stop
-         stop-color="#fff"
-         offset="0"
-         id="stop12" />
-      <stop
-         stop-color="#ff8207"
-         offset="1"
-         id="stop14" />
-    </radialGradient>
-    <radialGradient
-       id="c"
-       gradientUnits="userSpaceOnUse"
-       cy="530.66998"
-       cx="279.98999"
-       gradientTransform="matrix(-0.22329,0.22329,-0.19352,-0.19352,-251.2,184.17)"
-       r="263.67999">
-      <stop
-         stop-color="#fff"
-         offset="0"
-         id="stop17" />
-      <stop
-         stop-color="#fefc04"
-         offset="1"
-         id="stop19" />
-    </radialGradient>
-    <radialGradient
-       id="b"
-       gradientUnits="userSpaceOnUse"
-       cy="530.66998"
-       cx="279.98999"
-       gradientTransform="matrix(-0.18403,0.18403,-0.15949,-0.15949,-280.25,175.06)"
-       r="263.67999">
-      <stop
-         stop-color="#fff"
-         offset="0"
-         id="stop22" />
-      <stop
-         stop-color="#18fe04"
-         offset="1"
-         id="stop24" />
-    </radialGradient>
-    <radialGradient
-       id="a"
-       gradientUnits="userSpaceOnUse"
-       cy="439.51999"
-       cx="334.29001"
-       gradientTransform="matrix(-0.073462,0.073462,-0.074846,-0.074846,-358.96,154.75)"
-       r="262.47">
-      <stop
-         stop-color="#fff"
-         offset="0"
-         id="stop27" />
-      <stop
-         stop-color="#807eed"
-         offset="1"
-         id="stop29" />
-    </radialGradient>
-  </defs>
-  <metadata
-     id="metadata31">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <g
-     transform="translate(187.87128,-374)"
-     id="g33">
-    <g
-       transform="matrix(0.19082,0,0,0.19082,-100.41,349.82)"
-       id="g35"
-       style="stroke:#000000;stroke-linejoin:round">
-      <path
-         d="m -416.42,132.54 41.732,72.282 h -83.464 l 41.732,-72.282 z"
-         id="path37"
-         inkscape:connector-curvature="0"
-         style="fill:url(#e);stroke-width:0.38552001" />
-      <path
-         d="m -416.42,132.52 36.697,63.561 h -73.394 l 36.697,-63.561 z"
-         id="path39"
-         inkscape:connector-curvature="0"
-         style="fill:url(#d);stroke-width:0.38552001" />
-      <path
-         d="m -416.42,132.5 31.559,54.661 h -63.118 L -416.42,132.5 z"
-         id="path41"
-         inkscape:connector-curvature="0"
-         style="fill:url(#c);stroke-width:0.38552001" />
-      <path
-         d="m -416.42,132.47 26.01,45.05 h -52.019 l 26.01,-45.05 z"
-         id="path43"
-         inkscape:connector-curvature="0"
-         style="fill:url(#b);stroke-width:0.38552001" />
-      <path
-         d="m -416.42,132.44 19.227,33.303 h -38.455 l 19.227,-33.303 z"
-         id="path45"
-         inkscape:connector-curvature="0"
-         style="fill:url(#a);stroke-width:0.38552001" />
-    </g>
-    <rect
-       style="color:#000000;fill:none"
-       height="16"
-       width="16"
-       y="374"
-       x="-187.86"
-       id="rect47" />
-  </g>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<radialGradient id="e" gradientUnits="userSpaceOnUse" cy="530.67" cx="279.99" gradientTransform="matrix(-.29528 .29528 -.25590 -.25590 -197.94 200.87)" r="263.68">
+<stop stop-color="#fff" offset="0"/>
+<stop stop-color="#f90909" offset="1"/>
+</radialGradient>
+<radialGradient id="d" gradientUnits="userSpaceOnUse" cy="530.67" cx="279.99" gradientTransform="matrix(-.25965 .25965 -.22502 -.22502 -224.3 192.6)" r="263.68">
+<stop stop-color="#fff" offset="0"/>
+<stop stop-color="#ff8207" offset="1"/>
+</radialGradient>
+<radialGradient id="c" gradientUnits="userSpaceOnUse" cy="530.67" cx="279.99" gradientTransform="matrix(-.22329 .22329 -.19352 -.19352 -251.2 184.17)" r="263.68">
+<stop stop-color="#fff" offset="0"/>
+<stop stop-color="#fefc04" offset="1"/>
+</radialGradient>
+<radialGradient id="b" gradientUnits="userSpaceOnUse" cy="530.67" cx="279.99" gradientTransform="matrix(-.18403 .18403 -.15949 -.15949 -280.25 175.06)" r="263.68">
+<stop stop-color="#fff" offset="0"/>
+<stop stop-color="#18fe04" offset="1"/>
+</radialGradient>
+<radialGradient id="a" gradientUnits="userSpaceOnUse" cy="439.52" cx="334.29" gradientTransform="matrix(-.073462 .073462 -.074846 -.074846 -358.96 154.75)" r="262.47">
+<stop stop-color="#fff" offset="0"/>
+<stop stop-color="#807eed" offset="1"/>
+</radialGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-59.239 -140.8)">
+<g transform="translate(247.1 -233.2)">
+<g stroke-linejoin="round" transform="matrix(.19082 0 0 .19082 -100.41 349.82)" stroke="#000">
+<path d="m-416.42 132.54 41.732 72.282h-83.464l41.732-72.282z" stroke-width=".38552" fill="url(#e)"/>
+<path d="m-416.42 132.52 36.697 63.561h-73.394l36.697-63.561z" stroke-width=".38552" fill="url(#d)"/>
+<path d="m-416.42 132.5 31.559 54.661h-63.118l31.559-54.661z" stroke-width=".38552" fill="url(#c)"/>
+<path d="m-416.42 132.47 26.01 45.05h-52.019l26.01-45.05z" stroke-width=".38552" fill="url(#b)"/>
+<path d="m-416.42 132.44 19.227 33.303h-38.455l19.227-33.303z" stroke-width=".38552" fill="url(#a)"/>
+</g>
+<rect style="color:#000000" height="16" width="16" y="374" x="-187.86" fill="none"/>
+</g>
+</g>
 </svg>

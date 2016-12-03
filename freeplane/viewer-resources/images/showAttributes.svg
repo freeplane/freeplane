@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16.147" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-152.76 -164.57)">
+<g transform="translate(63.241 -667.44)">
+<g transform="matrix(.70605 0 0 .70605 63.018 229.25)">
+<rect opacity=".93720" style="color:#000000" fill-rule="evenodd" height="22.161" width="20.342" stroke="#000" y="854.07" x="38.7" stroke-width=".70817" fill="#fff"/>
+<path opacity=".93720" stroke-linejoin="round" style="color:#000000" d="m48.871 858.78h-10.122v-4.6868h10.122m0 4.6868h10.122v-4.6868h-10.122l-0.03471 4.694" fill-rule="evenodd" stroke="#000" stroke-linecap="round" stroke-width=".16712" fill="#b1b1b1"/>
+<path opacity=".93720" stroke-linejoin="round" style="color:#000000" d="m48.871 863.64h-10.122v-4.6868h10.122m0 4.6868h10.122v-4.6868h-10.122l-0.03471 4.694" stroke="#000" stroke-linecap="round" stroke-width=".35408" fill="none"/>
+<path opacity=".93720" stroke-linejoin="round" style="color:#000000" d="m48.871 868.5h-10.122v-4.6868h10.122m0 4.6868h10.122v-4.6868h-10.122l-0.03471 4.694" stroke="#000" stroke-linecap="round" stroke-width=".35408" fill="none"/>
+<path opacity=".93720" stroke-linejoin="round" style="color:#000000" d="m48.871 873.36h-10.122v-4.6868h10.122m0 4.6868h10.122v-4.6868h-10.122l-0.03471 4.694" stroke="#000" stroke-linecap="round" stroke-width=".35408" fill="none"/>
+<path opacity=".93720" stroke-linejoin="round" style="color:#000000" d="m39.023 874.74v-1.2365h9.8478 9.8478v1.2365 1.2365h-9.8478-9.8478v-1.2365z" stroke="#000" stroke-linecap="round" stroke-width=".044161" fill="#ccc"/>
+<text xml:space="preserve" font-size="2.0835px" font-style="italic" y="861.82092" x="40.057484" fill="#0000ff"><tspan x="40.057484" y="861.82092">Predrag</tspan></text>
+<text xml:space="preserve" font-size="2.0835px" font-style="italic" y="866.51904" x="40.350864" fill="#ff0000"><tspan x="40.350864" y="866.51904">Romina</tspan></text>
+<text xml:space="preserve" font-size="2.0835px" font-style="italic" y="866.53125" x="51.055748" fill="#008000"><tspan x="51.055748" y="866.53125">Sara</tspan></text>
+<text xml:space="preserve" font-size="2.0835px" font-style="italic" y="862.04016" x="51.055748" fill="#ff6600"><tspan x="51.055748" y="862.04016">Stela</tspan></text>
+</g>
+<rect style="color:#000000" height="16" width="16" y="832.09" x="89.523" fill="none"/>
+</g>
+</g>
+</svg>
