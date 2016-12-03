@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<linearGradient id="a" y2="-2104.9" gradientUnits="userSpaceOnUse" x2="-2596.4" gradientTransform="matrix(.35401 0 0 .35044 1182.6 1429.7)" y1="-2128.6" x1="-2585.9">
+<stop stop-color="#dcdcdc" offset="0"/>
+<stop stop-color="#fff" offset="1"/>
+</linearGradient>
+<filter id="d" style="color-interpolation-filters:sRGB" height="1.3315" width="1.3481" y="-.16576" x="-.17407">
+<feGaussianBlur stdDeviation="0.82320991"/>
+</filter>
+<linearGradient id="b" y2="-2125.2" gradientUnits="userSpaceOnUse" x2="-2589.3" gradientTransform="matrix(.31920 0 0 .31597 1092.5 1356.3)" y1="-2130.1" x1="-2584.4">
+<stop stop-color="#fff" offset="0"/>
+<stop stop-color="#dcdcdc" offset="1"/>
+</linearGradient>
+<linearGradient id="c" y2="169.99" gradientUnits="userSpaceOnUse" x2="233.17" y1="287.9" x1="290.64">
+<stop stop-color="#dc7fcf" offset="0"/>
+<stop stop-color="#a8bef9" offset="1"/>
+</linearGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-95.692 -46.831)">
+<g transform="translate(-158.57 -634.57)">
+<g fill-rule="evenodd" stroke="#666">
+<path d="m257.78 681.76h7.4607l3.7543 3.9023-0.0848 10.715h-11.13v-14.617z" stroke-width=".51007" fill="url(#a)"/>
+<path stroke-linejoin="round" d="m-2829.3-1828.3c1.0683 4.7916 0.3837 8.5401-0.06 10.889 2.6346-0.6545 5.7398-1.3853 10.35 0.03-4.9699-5.5487-6.9971-7.2565-10.29-10.919z" transform="matrix(.31920 0 0 .31597 1168.4 1260)" filter="url(#d)" stroke-width="1.6061" fill="#d3d3d3"/>
+<path stroke-linejoin="round" d="m265.47 681.99c0.34102 1.514 0.12249 2.6984-0.0191 3.4407 0.84096-0.20682 1.8321-0.43775 3.3038 0.009-1.5864-1.7532-2.2335-2.2928-3.2847-3.4501z" stroke-width=".51007" fill="url(#b)"/>
+</g>
+<rect style="color:#000000" height="16" width="16" y="681.4" x="254.26" fill="none"/>
+<circle stroke-width="5.9806" stroke-opacity=".58333" cy="219.91" fill-rule="evenodd" transform="matrix(.091997 0 0 .091997 235.57 672.18)" stroke="#9000e1" cx="257.44" r="51.206" fill="url(#c)"/>
+<g font-family="&apos;Bitstream Vera Sans&apos;" transform="translate(-.25301 .22994)" stroke="#ffffff" stroke-width=".12138px" fill="#ffffff">
+<text xml:space="preserve" transform="scale(1.0949 .91334)" font-size="16.902px" y="762.48853" x="233.96495"><tspan y="762.48853" x="233.96495" stroke-width=".12138">-</tspan></text>
+<text xml:space="preserve" transform="matrix(0 1.1203 -.89260 0 0 0)" font-size="17.295px" y="-285.99194" x="614.71686"><tspan y="-285.99194" x="614.71686" stroke-width=".12138">-</tspan></text>
+</g>
+</g>
+</g>
+</svg>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 15.987 15.983" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<linearGradient id="b" y2="909.21" gradientUnits="userSpaceOnUse" x2="-290.83" gradientTransform="matrix(.54901 -.035509 .035509 .54901 -148.28 380.46)" y1="915.11" x1="-290.09">
+<stop stop-color="#ffd700" offset="0"/>
+<stop stop-color="#f5f6c2" offset="1"/>
+</linearGradient>
+<linearGradient id="a" y2="903.8" gradientUnits="userSpaceOnUse" x2="-298.56" gradientTransform="matrix(.54901 -.035509 .035509 .54901 -148.28 380.46)" y1="912.77" x1="-290.83">
+<stop stop-color="#ebc600" offset="0"/>
+<stop stop-color="#f5f6c2" offset="1"/>
+</linearGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-95.692 -172.38)">
+<g stroke-linejoin="round" stroke-linecap="round" transform="matrix(1.045 0 0 .98663 392.64 -697.07)">
+<path style="color:#000000" d="m-270.55 892.96-0.73987-11.439-6.8522 2.1351-1.0873-1.6661-4.6524 1.7257c0.16814 2.3372 0.59252 8.891 0.75866 11.346 0.195 2.8811 1.3625 2.0384 1.8899 1.6765 4.8055-1.6994 6.5582-2.5443 10.683-3.7774h-0.00002 0.00002z" stroke="#6c5d53" stroke-width=".579" fill="url(#b)"/>
+<path style="color:#000000" d="m-282.16 897.15c2.082-0.52883 8.2916-2.961 12.437-4.4415l0.55947-9.9369-2.9966 0.99525-4.8737 1.6991-0.96324 1.3081-3.1531 0.91704c0.16755 3.8843 0.16239 8.9902-1.0103 9.4589z" stroke="#6c5d53" stroke-width=".579" fill="url(#a)"/>
+<path style="color:#000000" d="m-272.13 889.51-2.9873 3.9273-3.2785-3.5221 1.7978-0.20963c-0.17758-4.4089-3.3-4.5932-5.1445-2.625 0.77833-1.8695 1.8995-2.6484 3.0869-2.6564 2.2294 0.0894 4.5666 1.4164 4.6209 5.1156l1.9047-0.0299v0.00005z" fill-rule="evenodd" stroke="#008033" stroke-width="0.507" fill="#00d400"/>
+</g>
+</g>
+</svg>
