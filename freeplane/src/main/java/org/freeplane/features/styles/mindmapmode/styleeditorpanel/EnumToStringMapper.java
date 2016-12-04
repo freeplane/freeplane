@@ -23,21 +23,17 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
  * @author Joe Berry
  * Dec 1, 2016
  */
-public class Utilities {
+public class EnumToStringMapper {
 
-	private Utilities() {}
+	private EnumToStringMapper() {}
 	
-	public static <U extends Enum<U>> String[] enumStrings(Class<U> enumerationClass, int length) {
+	public static <U extends Enum<U>> String[] getStringValuesOf(Class<U> enumerationClass) {
 		final U[] enumConstants = enumerationClass.getEnumConstants();
-		final String[] strings = new String[length];
-		for (int i = 0; i < length; i++) {
+		final String[] strings = new String[enumConstants.length-1];
+		for (int i = 0; i < enumConstants.length-1; i++) {
 			strings[i] = enumConstants[i].toString();
 		}
 		return strings;
-	}
-
-	public static <U extends Enum<U>> String[] enumStrings(Class<U> enumerationClass) {
-		return enumStrings(enumerationClass, enumerationClass.getEnumConstants().length);
 	}
 
 }
