@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -414,6 +415,7 @@ public class NodeList {
 			storage.addTimeWindowColumnSetting(setting);
 		}
 		storage.storeDialogPositions(dialog, windowPreferenceStorageProperty);
+		final boolean dialogWasFocused = dialog.isFocused();
 		dialog.setVisible(false);
 		dialog.dispose();
 		dialog = null;
@@ -421,7 +423,13 @@ public class NodeList {
 		final MapController mapController = modeController.getMapController();
 		mapController.removeMapChangeListener(mapChangeListener);
 		mapController.removeNodeChangeListener(mapChangeListener);
-		Controller.getCurrentController().getMapViewManager().removeMapSelectionListener(mapChangeListener);
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		mapViewManager.removeMapSelectionListener(mapChangeListener);
+		if(dialogWasFocused) {
+			final Component selectedComponent = mapViewManager.getSelectedComponent();
+			if(selectedComponent != null)
+				selectedComponent.requestFocus();
+		}
 	}
 
 	protected void exportSelectedRowsAndClose() {

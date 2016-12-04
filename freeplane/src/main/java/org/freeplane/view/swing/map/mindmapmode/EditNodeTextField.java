@@ -400,7 +400,7 @@ public class EditNodeTextField extends EditNodeBase {
 
 		protected boolean isSplitActionTriggered(final KeyEvent e) {
 			final int keyCode = e.getKeyCode();
-			if (keyCode == SPLIT_KEY_CODE && keyCode != -1 && e.isAltDown() && ! Compat.isMacOsX())
+			if (keyCode == SPLIT_KEY_CODE && keyCode != -1 && e.isAltDown()&& !e.isAltGraphDown()&& !e.isControlDown() && ! Compat.isMacOsX())
 				return true;
 			final KeyStroke splitNodeHotKey = ResourceController.getResourceController().getAcceleratorManager().getAccelerator("SplitNode");
 			return splitNodeHotKey != null && splitNodeHotKey.getKeyCode() == keyCode  &&  
@@ -672,7 +672,7 @@ public class EditNodeTextField extends EditNodeBase {
 		ruleBuilder.append("body {");
 		final int labelHorizontalAlignment = parent.getHorizontalAlignment();
 		ruleBuilder.append(new CssRuleBuilder()
-				.withFont(font, UITools.FONT_SCALE_FACTOR)
+				.withCSSFont(font, UITools.FONT_SCALE_FACTOR)
 				.withColor(nodeTextColor)
 				.withBackground(getBackground())
 				.withAlignment(labelHorizontalAlignment));

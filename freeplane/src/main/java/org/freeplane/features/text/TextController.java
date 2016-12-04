@@ -301,7 +301,7 @@ public class TextController implements IExtension {
 					
 					final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
 							.append(new CssRuleBuilder()
-							.withFont(detailFont)
+							.withHTMLFont(detailFont)
 							.withColor(detailForeground)
 							.withBackground(detailBackground)
 							.withAlignment(alignment)
@@ -328,7 +328,7 @@ public class TextController implements IExtension {
 				    final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
 				    final Font font = style.getFont(node);
 					final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
-							.append(new CssRuleBuilder().withFont(font)
+							.append(new CssRuleBuilder().withHTMLFont(font)
 							.withColor(view.getForeground())
 							.withBackground(view.getNodeView().getTextBackground())
 							.withAlignment(view.getHorizontalAlignment())
