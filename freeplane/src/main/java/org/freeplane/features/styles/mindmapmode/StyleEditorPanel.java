@@ -114,6 +114,7 @@ import org.freeplane.features.ui.IMapViewManager;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Borders;
+import com.jgoodies.forms.factories.Paddings;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class StyleEditorPanel extends JPanel {
@@ -842,7 +843,7 @@ public class StyleEditorPanel extends JPanel {
 		final String form = "right:max(20dlu;p), 2dlu, p, 1dlu,right:max(20dlu;p), 4dlu, 80dlu, 7dlu";
 		final FormLayout rightLayout = new FormLayout(form, "");
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
-		rightBuilder.border(Borders.DLU2);
+		rightBuilder.border(Paddings.DLU2);
 		new SeparatorProperty("OptionPanel.separator.NodeStyle").layout(rightBuilder);
 		if (addStyleBox) {
 			addAutomaticLayout(rightBuilder);
