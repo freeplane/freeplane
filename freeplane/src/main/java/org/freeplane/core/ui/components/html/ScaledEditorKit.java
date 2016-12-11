@@ -92,7 +92,7 @@ public class ScaledEditorKit extends HTMLEditorKit {
 		HTMLDocument doc = new HTMLDocument(ss);
 		doc.setPreservesUnknownTags(false);
 		doc.getStyleSheet().addRule(new StringBuffer("body {").append(new CssRuleBuilder()
-		.withFont(font, UITools.FONT_SCALE_FACTOR)
+		.withCSSFont(font, UITools.FONT_SCALE_FACTOR)
 		.withColor(foreground)
 		.withAlignment(c.getHorizontalAlignment())).append("}").toString());
 		doc.setParser(getParser());

@@ -13,6 +13,7 @@ allprojects {
         flatDir name: 'localGitDepsRepository',
                 dirs: [rootDir.path + "/freeplane/lib",
                        rootDir.path + "/freeplane_plugin_jsyntaxpane/lib",
+                       rootDir.path + "/freeplane_plugin_latex/lib",
                        rootDir.path + "/freeplane_plugin_svg/lib"]
     }
 
@@ -84,7 +85,7 @@ subprojects {
 
     dependencies {
         testCompile 'junit:junit:4.11'
-        testCompile 'org.assertj:assertj-core:3.5.2'
+        testCompile 'org.assertj:assertj-core:2.6.0'
     }
 
     task copyEclipseSettings(type: Copy) {

@@ -169,7 +169,7 @@ public class AttributeController implements IExtension {
 		        final Font font = style.getFont(attributeStyleNode);
 		        final StringBuilder tooltip = new StringBuilder();
 				tooltip.append("<html><body><table style='border: 1px solid;");
-				tooltip.append( new CssRuleBuilder().withFont(font)
+				tooltip.append( new CssRuleBuilder().withHTMLFont(font)
 						.withBackground(style.getBackgroundColor(attributeStyleNode))
 						.withColor(style.getColor(attributeStyleNode))
 						);
