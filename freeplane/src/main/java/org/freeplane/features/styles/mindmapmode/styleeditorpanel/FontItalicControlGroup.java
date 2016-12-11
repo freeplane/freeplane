@@ -19,13 +19,10 @@
  */
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
-import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.BooleanProperty;
-import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -37,34 +34,34 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
  * @author Joe Berry
  * Dec 1, 2016
  */
-public class NodeBackgroundColorControlGroup implements ControlGroup {
-	static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
+public class FontItalicControlGroup implements ControlGroup {
+	static final String NODE_FONT_ITALIC = "nodefontitalic";
 
-	private BooleanProperty mSetNodeBackgroundColor;
-	private ColorProperty mNodeBackgroundColor;
-	private BgColorChangeListener propertyChangeListener;
+	private BooleanProperty mSetNodeFontItalic;
+	private BooleanProperty mNodeFontItalic;
+
+	private FontItalicChangeListener propertyChangeListener;
 	
-	private class BgColorChangeListener extends ControlGroupChangeListener {
-		public BgColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+	private class FontItalicChangeListener extends ControlGroupChangeListener {
+		public FontItalicChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
 		@Override
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) Controller
-					.getCurrentModeController().getExtension(
-							NodeStyleController.class);
-			styleController.setBackgroundColor(node, enabled ? mNodeBackgroundColor.getColorValue() : null);
+			.getCurrentModeController().getExtension(
+					NodeStyleController.class);
+			styleController.setItalic(node, enabled ? mNodeFontItalic.getBooleanValue() : null);
 		}
 
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
-			final Color color = NodeStyleModel.getBackgroundColor(node);
-			final Color viewColor = styleController.getBackgroundColor(node);
-			mSetNodeBackgroundColor.setValue(color != null);
-			mNodeBackgroundColor.setColorValue(viewColor != null ? viewColor : Controller.getCurrentController()
-			    .getMapViewManager().getBackgroundColor(node));
+			final Boolean italic = NodeStyleModel.isItalic(node);
+			final Boolean viewitalic = styleController.isItalic(node);
+			mSetNodeFontItalic.setValue(italic != null);
+			mNodeFontItalic.setValue(viewitalic);
 		}
 	}
 
@@ -75,15 +72,12 @@ public class NodeBackgroundColorControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(List<IPropertyControl> controls) {
-		mSetNodeBackgroundColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeBackgroundColor);
-		mNodeBackgroundColor = new ColorProperty(NODE_BACKGROUND_COLOR, ResourceController
-		    .getResourceController().getDefaultProperty(NODE_BACKGROUND_COLOR));
-		controls.add(mNodeBackgroundColor);
-		propertyChangeListener = new BgColorChangeListener(mSetNodeBackgroundColor, mNodeBackgroundColor);
-		mSetNodeBackgroundColor.addPropertyChangeListener(propertyChangeListener);
-		mNodeBackgroundColor.addPropertyChangeListener(propertyChangeListener);
+		mSetNodeFontItalic = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		controls.add(mSetNodeFontItalic);
+		mNodeFontItalic = new BooleanProperty(NODE_FONT_ITALIC);
+		controls.add(mNodeFontItalic);
+		propertyChangeListener = new FontItalicChangeListener(mSetNodeFontItalic, mNodeFontItalic);
+		mSetNodeFontItalic.addPropertyChangeListener(propertyChangeListener);
+		mNodeFontItalic.addPropertyChangeListener(propertyChangeListener);
 	}
-
-	
 }

@@ -33,7 +33,9 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
@@ -113,7 +115,6 @@ import org.freeplane.features.styles.mindmapmode.ManageMapConditionalStylesActio
 import org.freeplane.features.styles.mindmapmode.ManageNodeConditionalStylesAction;
 import org.freeplane.features.text.TextController;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.factories.Paddings;
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -143,48 +144,6 @@ public class StyleEditorPanel extends JPanel {
 				styleController.setShapeConfiguration(node, ShapeConfigurationModel.NULL_SHAPE);
 			final Shape shape = styleController.getShape(node);
 			enableShapeConfigurationProperties(enabled, shape);
-		}
-	}
-
-	private class ColorChangeListener extends ChangeListener {
-		public ColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MNodeStyleController styleController = (MNodeStyleController) Controller
-			.getCurrentModeController().getExtension(
-					NodeStyleController.class);
-			styleController.setColor(node, enabled ? mNodeColor.getColorValue() : null);
-		}
-	}
-
-	private class FontBoldChangeListener extends ChangeListener {
-		public FontBoldChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MNodeStyleController styleController = (MNodeStyleController) Controller
-			.getCurrentModeController().getExtension(
-					NodeStyleController.class);
-			styleController.setBold(node, enabled ? mNodeFontBold.getBooleanValue() : null);
-		}
-	}
-
-	private class FontItalicChangeListener extends ChangeListener {
-		public FontItalicChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MNodeStyleController styleController = (MNodeStyleController) Controller
-			.getCurrentModeController().getExtension(
-					NodeStyleController.class);
-			styleController.setItalic(node, enabled ? mNodeFontItalic.getBooleanValue() : null);
 		}
 	}
 
@@ -491,20 +450,16 @@ public class StyleEditorPanel extends JPanel {
 
 	private static final String CLOUD_COLOR = "cloudcolor";
 	private static final String CLOUD_SHAPE = "cloudshape";
-	private static final String[] CLOUD_SHAPES = Utilities.enumStrings(CloudModel.Shape.class);
+	private static final String[] CLOUD_SHAPES = EnumToStringMapper.getStringValuesOf(CloudModel.Shape.class);
 //	private static final String ICON = "icon";
-	private static final String NODE_COLOR = "nodecolor";
-	private static final String NODE_FONT_BOLD = "nodefontbold";
-	private static final String NODE_FONT_ITALIC = "nodefontitalic";
 	private static final String NODE_FONT_HYPERLINK = "nodefonthyperlink";
 	private static final String NODE_FONT_NAME = "nodefontname";
 	private static final String NODE_FONT_SIZE = "nodefontsize";
 	private static final String NODE_NUMBERING = "nodenumbering";
 	private static final String NODE_SHAPE = "nodeshape";
-	private static final String NODE_TEXT_COLOR = "standardnodetextcolor";
 	private static final String NODE_FORMAT = "nodeformat";
 	private static final String TEXT_ALIGNMENT = "textalignment";
-	private static final String[] TEXT_ALIGNMENTS = Utilities.enumStrings(TextAlign.class);
+	private static final String[] TEXT_ALIGNMENTS = EnumToStringMapper.getStringValuesOf(TextAlign.class);
 	/**
 	* 
 	*/
@@ -531,22 +486,19 @@ public class StyleEditorPanel extends JPanel {
 	private ColorProperty mCloudColor;
 	private ComboProperty mCloudShape;
 
+	@SuppressWarnings("serial")
+	Map<String, ControlGroup> controlGroups = new HashMap<String, ControlGroup>() {{
+		put(EdgeWidthControlGroup.EDGE_WIDTH, new EdgeWidthControlGroup());
+		put(EdgeDashControlGroup.EDGE_DASH, new EdgeDashControlGroup());
+		put(EdgeStyleControlGroup.EDGE_STYLE, new EdgeStyleControlGroup());
+		put(EdgeColorControlGroup.EDGE_COLOR, new NodeColorControlGroup());
+		put(NodeBackgroundColorControlGroup.NODE_BACKGROUND_COLOR, new NodeBackgroundColorControlGroup());
+		put(NodeColorControlGroup.NODE_COLOR, new NodeColorControlGroup());
+		put(FontBoldControlGroup.NODE_FONT_BOLD, new FontBoldControlGroup());
+		put(FontItalicControlGroup.NODE_FONT_ITALIC, new FontItalicControlGroup());
+	}};
 	
-	private final ControlGroup mEdgeColorControlGroup = new EdgeColorControlGroup();
-	private final ControlGroup mEdgeStyleControlGroup = new EdgeStyleControlGroup();
-	private final ControlGroup mEdgeWidthControlGroup = new EdgeWidthControlGroup();
-	private final ControlGroup mEdgeDashControlGroup = new EdgeDashControlGroup();
-	private final ControlGroup mNodeBackgroundColorControlGroup = new NodeBackgroundColorControlGroup();
 	
-	private BooleanProperty mSetNodeColor;
-	private ColorProperty mNodeColor;
-
-	private BooleanProperty mSetNodeFontBold;
-	private BooleanProperty mNodeFontBold;
-
-	private BooleanProperty mSetNodeFontItalic;
-	private BooleanProperty mNodeFontItalic;
-
 	private BooleanProperty mSetNodeFontHyperlink;
 	private BooleanProperty mNodeFontHyperlink;
 
@@ -659,18 +611,6 @@ public class StyleEditorPanel extends JPanel {
 		mCloudColor.addPropertyChangeListener(listener);
 	}
 
-	private void addColorControl(final List<IPropertyControl> controls) {
-		mSetNodeColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeColor);
-		mNodeColor = new ColorProperty(StyleEditorPanel.NODE_COLOR, ResourceController.getResourceController()
-		    .getDefaultProperty(NODE_TEXT_COLOR));
-		controls.add(mNodeColor);
-		final ColorChangeListener listener = new ColorChangeListener(mSetNodeColor, mNodeColor);
-		mSetNodeColor.addPropertyChangeListener(listener);
-		mNodeColor.addPropertyChangeListener(listener);
-	}
-
-
 	private void addCloudShapeControl(final List<IPropertyControl> controls) {
 		mCloudShape = new ComboProperty(StyleEditorPanel.CLOUD_SHAPE, CLOUD_SHAPES);
 		controls.add(mCloudShape);
@@ -769,26 +709,6 @@ public class StyleEditorPanel extends JPanel {
 		mChildDistance.addPropertyChangeListener(listener);
 	}
 
-	private void addFontBoldControl(final List<IPropertyControl> controls) {
-		mSetNodeFontBold = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeFontBold);
-		mNodeFontBold = new BooleanProperty(StyleEditorPanel.NODE_FONT_BOLD);
-		controls.add(mNodeFontBold);
-		final FontBoldChangeListener listener = new FontBoldChangeListener(mSetNodeFontBold, mNodeFontBold);
-		mSetNodeFontBold.addPropertyChangeListener(listener);
-		mNodeFontBold.addPropertyChangeListener(listener);
-	}
-
-	private void addFontItalicControl(final List<IPropertyControl> controls) {
-		mSetNodeFontItalic = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeFontItalic);
-		mNodeFontItalic = new BooleanProperty(StyleEditorPanel.NODE_FONT_ITALIC);
-		controls.add(mNodeFontItalic);
-		final FontItalicChangeListener listener = new FontItalicChangeListener(mSetNodeFontItalic, mNodeFontItalic);
-		mSetNodeFontItalic.addPropertyChangeListener(listener);
-		mNodeFontItalic.addPropertyChangeListener(listener);
-	}
-
 	private void addFontHyperlinkControl(final List<IPropertyControl> controls) {
 		mSetNodeFontHyperlink = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetNodeFontHyperlink);
@@ -824,7 +744,7 @@ public class StyleEditorPanel extends JPanel {
 	private void addNodeShapeControls(final List<IPropertyControl> controls) {
 		mSetNodeShape = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetNodeShape);
-		mNodeShape = new ComboProperty(StyleEditorPanel.NODE_SHAPE, Utilities.enumStrings(NodeStyleModel.Shape.class));
+		mNodeShape = new ComboProperty(StyleEditorPanel.NODE_SHAPE, EnumToStringMapper.getStringValuesOf(NodeStyleModel.Shape.class));
 		controls.add(mNodeShape);
 		controls.add(new NextColumnProperty(2));
 		mShapeHorizontalMargin = new QuantityProperty<LengthUnits>(StyleEditorPanel.SHAPE_HORIZONTAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
@@ -861,7 +781,7 @@ public class StyleEditorPanel extends JPanel {
 	private List<IPropertyControl> getControls() {
 		final List<IPropertyControl> controls = new ArrayList<IPropertyControl>();
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeColors"));
-		addColorControl(controls);
+		controlGroups.get(NodeColorControlGroup.NODE_COLOR).addControlGroup(controls);
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeText"));
 		addFormatControl(controls);
 		addNodeNumberingControl(controls);
@@ -902,17 +822,19 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeFont"));
 		addFontNameControl(controls);
 		addFontSizeControl(controls);
-		addFontBoldControl(controls);
-		addFontItalicControl(controls);
+		controlGroups.get(FontBoldControlGroup.NODE_FONT_BOLD).addControlGroup(controls);
+		controlGroups.get(FontItalicControlGroup.NODE_FONT_ITALIC).addControlGroup(controls);
 		addNodeTextAlignmentControl(controls);
 		addFontHyperlinkControl(controls);
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("OptionPanel.separator.EdgeControls"));
-		mEdgeStyleControlGroup.addControlGroup(controls);
-		mEdgeColorControlGroup.addControlGroup(controls);
-		mEdgeWidthControlGroup.addControlGroup(controls);
-		mEdgeDashControlGroup.addControlGroup(controls);
-		mNodeBackgroundColorControlGroup.addControlGroup(controls);
+		
+		controlGroups.get(EdgeWidthControlGroup.EDGE_WIDTH).addControlGroup(controls);
+		controlGroups.get(EdgeDashControlGroup.EDGE_DASH).addControlGroup(controls);
+		controlGroups.get(EdgeStyleControlGroup.EDGE_STYLE).addControlGroup(controls);
+		controlGroups.get(EdgeColorControlGroup.EDGE_COLOR).addControlGroup(controls);
+		controlGroups.get(NodeBackgroundColorControlGroup.NODE_BACKGROUND_COLOR).addControlGroup(controls);
+		
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("OptionPanel.separator.CloudControls"));
 		addCloudColorControl(controls);
@@ -1070,12 +992,6 @@ public class StyleEditorPanel extends JPanel {
 			setStyleList(mNodeStyleButton, logicalStyleController.getNodeStyleNames(node, "\n"));
 			final NodeStyleController styleController = NodeStyleController.getController();
 			{
-				final Color nodeColor = NodeStyleModel.getColor(node);
-				final Color viewNodeColor = styleController.getColor(node);
-				mSetNodeColor.setValue(nodeColor != null);
-				mNodeColor.setColorValue(viewNodeColor);
-			}
-			{
 				final NodeStyleModel.Shape shape = NodeStyleModel.getShape(node);
 				ShapeConfigurationModel viewShape = styleController.getShapeConfiguration(node);
 				final boolean enabled = shape != null;
@@ -1148,11 +1064,9 @@ public class StyleEditorPanel extends JPanel {
 				mChildDistance.setQuantifiedValue(viewGap);
 			}
 
-			mEdgeColorControlGroup.setStyle(node);
-			mEdgeStyleControlGroup.setStyle(node);
-			mEdgeWidthControlGroup.setStyle(node);
-			mEdgeDashControlGroup.setStyle(node);
-			mNodeBackgroundColorControlGroup.setStyle(node);
+			for (ControlGroup controlGroup : controlGroups.values()) {
+				controlGroup.setStyle(node);
+			}
 			
 			{
 				final CloudController cloudController = CloudController.getController();
@@ -1175,18 +1089,6 @@ public class StyleEditorPanel extends JPanel {
 				final Integer viewfontSize = styleController.getFontSize(node);
 				mSetNodeFontSize.setValue(fontSize != null);
 				mNodeFontSize.setValue(viewfontSize.toString());
-			}
-			{
-				final Boolean bold = NodeStyleModel.isBold(node);
-				final Boolean viewbold = styleController.isBold(node);
-				mSetNodeFontBold.setValue(bold != null);
-				mNodeFontBold.setValue(viewbold);
-			}
-			{
-				final Boolean italic = NodeStyleModel.isItalic(node);
-				final Boolean viewitalic = styleController.isItalic(node);
-				mSetNodeFontItalic.setValue(italic != null);
-				mNodeFontItalic.setValue(viewitalic);
 			}
 			{
 				final TextAlign style = NodeStyleModel.getTextAlign(node);

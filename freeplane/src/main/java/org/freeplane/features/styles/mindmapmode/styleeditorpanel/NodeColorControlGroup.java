@@ -35,55 +35,51 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
 /**
  * @author Joe Berry
- * Dec 1, 2016
+ * Nov 27, 2016
  */
-public class NodeBackgroundColorControlGroup implements ControlGroup {
-	static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
+class NodeColorControlGroup implements ControlGroup {
+	static final String NODE_COLOR = "nodecolor";
+	private static final String NODE_TEXT_COLOR = "standardnodetextcolor";
 
-	private BooleanProperty mSetNodeBackgroundColor;
-	private ColorProperty mNodeBackgroundColor;
-	private BgColorChangeListener propertyChangeListener;
-	
-	private class BgColorChangeListener extends ControlGroupChangeListener {
-		public BgColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+	private BooleanProperty mSetNodeColor;
+	private ColorProperty mNodeColor;
+	private NodeColorChangeListener propertyChangeListener;
+
+	private class NodeColorChangeListener extends ControlGroupChangeListener {
+		public NodeColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
 		}
 
 		@Override
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) Controller
-					.getCurrentModeController().getExtension(
-							NodeStyleController.class);
-			styleController.setBackgroundColor(node, enabled ? mNodeBackgroundColor.getColorValue() : null);
+			.getCurrentModeController().getExtension(
+					NodeStyleController.class);
+			styleController.setColor(node, enabled ? mNodeColor.getColorValue() : null);
 		}
 
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
-			final Color color = NodeStyleModel.getBackgroundColor(node);
-			final Color viewColor = styleController.getBackgroundColor(node);
-			mSetNodeBackgroundColor.setValue(color != null);
-			mNodeBackgroundColor.setColorValue(viewColor != null ? viewColor : Controller.getCurrentController()
-			    .getMapViewManager().getBackgroundColor(node));
+			final Color nodeColor = NodeStyleModel.getColor(node);
+			final Color viewNodeColor = styleController.getColor(node);
+			mSetNodeColor.setValue(nodeColor != null);
+			mNodeColor.setColorValue(viewNodeColor);
 		}
 	}
-
-	@Override
+	
+	public void addControlGroup(final List<IPropertyControl> controls) {
+		mSetNodeColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		controls.add(mSetNodeColor);
+		mNodeColor = new ColorProperty(NODE_COLOR, ResourceController.getResourceController()
+		    .getDefaultProperty(NODE_TEXT_COLOR));
+		controls.add(mNodeColor);
+		propertyChangeListener = new NodeColorChangeListener(mSetNodeColor, mNodeColor);
+		mSetNodeColor.addPropertyChangeListener(propertyChangeListener);
+		mNodeColor.addPropertyChangeListener(propertyChangeListener);
+	}
+	
 	public void setStyle(NodeModel node) {
 		propertyChangeListener.setStyle(node);
 	}
-
-	@Override
-	public void addControlGroup(List<IPropertyControl> controls) {
-		mSetNodeBackgroundColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeBackgroundColor);
-		mNodeBackgroundColor = new ColorProperty(NODE_BACKGROUND_COLOR, ResourceController
-		    .getResourceController().getDefaultProperty(NODE_BACKGROUND_COLOR));
-		controls.add(mNodeBackgroundColor);
-		propertyChangeListener = new BgColorChangeListener(mSetNodeBackgroundColor, mNodeBackgroundColor);
-		mSetNodeBackgroundColor.addPropertyChangeListener(propertyChangeListener);
-		mNodeBackgroundColor.addPropertyChangeListener(propertyChangeListener);
-	}
-
-	
 }
