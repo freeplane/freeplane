@@ -52,7 +52,6 @@ import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.ComboProperty;
-import org.freeplane.core.resources.components.FontProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.NextColumnProperty;
 import org.freeplane.core.resources.components.NextLineProperty;
@@ -158,38 +157,6 @@ public class StyleEditorPanel extends JPanel {
 			.getCurrentModeController().getExtension(
 				LinkController.class);
 			styleController.setFormatNodeAsHyperlink(node, enabled ? mNodeFontHyperlink.getBooleanValue() : null);
-		}
-	}
-
-	private class FontSizeChangeListener extends ChangeListener {
-		public FontSizeChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MNodeStyleController styleController = (MNodeStyleController) Controller
-			.getCurrentModeController().getExtension(
-					NodeStyleController.class);
-			try {
-	            styleController.setFontSize(node, enabled ? Integer.valueOf(mNodeFontSize.getValue()) : null);
-            }
-            catch (NumberFormatException e) {
-            }
-		}
-	}
-
-	private class FontNameChangeListener extends ChangeListener {
-		public FontNameChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MNodeStyleController styleController = (MNodeStyleController) Controller
-			.getCurrentModeController().getExtension(
-					NodeStyleController.class);
-			styleController.setFontFamily(node, enabled ? mNodeFontName.getValue() : null);
 		}
 	}
 
@@ -453,8 +420,6 @@ public class StyleEditorPanel extends JPanel {
 	private static final String[] CLOUD_SHAPES = EnumToStringMapper.getStringValuesOf(CloudModel.Shape.class);
 //	private static final String ICON = "icon";
 	private static final String NODE_FONT_HYPERLINK = "nodefonthyperlink";
-	private static final String NODE_FONT_NAME = "nodefontname";
-	private static final String NODE_FONT_SIZE = "nodefontsize";
 	private static final String NODE_NUMBERING = "nodenumbering";
 	private static final String NODE_SHAPE = "nodeshape";
 	private static final String NODE_FORMAT = "nodeformat";
@@ -496,17 +461,13 @@ public class StyleEditorPanel extends JPanel {
 		put(NodeColorControlGroup.NODE_COLOR, new NodeColorControlGroup());
 		put(FontBoldControlGroup.NODE_FONT_BOLD, new FontBoldControlGroup());
 		put(FontItalicControlGroup.NODE_FONT_ITALIC, new FontItalicControlGroup());
+		put(FontNameControlGroup.NODE_FONT_NAME, new FontNameControlGroup());
+		put(FontSizeControlGroup.NODE_FONT_SIZE, new FontSizeControlGroup());
 	}};
 	
 	
 	private BooleanProperty mSetNodeFontHyperlink;
 	private BooleanProperty mNodeFontHyperlink;
-
-	private BooleanProperty mSetNodeFontName;
-	private FontProperty mNodeFontName;
-
-	private BooleanProperty mSetNodeFontSize;
-	private ComboProperty mNodeFontSize;
 
 	private BooleanProperty mSetNodeNumbering;
 	private BooleanProperty mNodeNumbering;
@@ -719,28 +680,6 @@ public class StyleEditorPanel extends JPanel {
 		mNodeFontHyperlink.addPropertyChangeListener(listener);
 	}
 
-	private void addFontNameControl(final List<IPropertyControl> controls) {
-		mSetNodeFontName = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeFontName);
-		mNodeFontName = new FontProperty(StyleEditorPanel.NODE_FONT_NAME);
-		controls.add(mNodeFontName);
-		final FontNameChangeListener listener = new FontNameChangeListener(mSetNodeFontName, mNodeFontName);
-		mSetNodeFontName.addPropertyChangeListener(listener);
-		mNodeFontName.addPropertyChangeListener(listener);
-	}
-
-	private void addFontSizeControl(final List<IPropertyControl> controls) {
-		mSetNodeFontSize = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeFontSize);
-		final List<String> sizesVector = new ArrayList<String>(Arrays.asList(MUIFactory.FONT_SIZES));
-		mNodeFontSize = new ComboProperty(StyleEditorPanel.NODE_FONT_SIZE, sizesVector, sizesVector);
-		mNodeFontSize.setEditable(true);
-		controls.add(mNodeFontSize);
-		final FontSizeChangeListener listener = new FontSizeChangeListener(mSetNodeFontSize, mNodeFontSize);
-		mSetNodeFontSize.addPropertyChangeListener(listener);
-		mNodeFontSize.addPropertyChangeListener(listener);
-	}
-
 	private void addNodeShapeControls(final List<IPropertyControl> controls) {
 		mSetNodeShape = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetNodeShape);
@@ -820,8 +759,11 @@ public class StyleEditorPanel extends JPanel {
 		
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeFont"));
-		addFontNameControl(controls);
-		addFontSizeControl(controls);
+		// to be added...  ControlGroup sep = new GroupSeparator("OptionPanel.separator.NodeFont");
+		
+		controlGroups.get(FontNameControlGroup.NODE_FONT_NAME).addControlGroup(controls);
+		controlGroups.get(FontSizeControlGroup.NODE_FONT_SIZE).addControlGroup(controls);
+		
 		controlGroups.get(FontBoldControlGroup.NODE_FONT_BOLD).addControlGroup(controls);
 		controlGroups.get(FontItalicControlGroup.NODE_FONT_ITALIC).addControlGroup(controls);
 		addNodeTextAlignmentControl(controls);
@@ -1078,18 +1020,18 @@ public class StyleEditorPanel extends JPanel {
 				final CloudModel.Shape viewCloudShape = cloudController.getShape(node);
 				mCloudShape.setValue(viewCloudShape != null ? viewCloudShape.toString() : CloudModel.Shape.ARC.toString());
 			}
-			{
-				final String fontFamilyName = NodeStyleModel.getFontFamilyName(node);
-				final String viewFontFamilyName = styleController.getFontFamilyName(node);
-				mSetNodeFontName.setValue(fontFamilyName != null);
-				mNodeFontName.setValue(viewFontFamilyName);
-			}
-			{
-				final Integer fontSize = NodeStyleModel.getFontSize(node);
-				final Integer viewfontSize = styleController.getFontSize(node);
-				mSetNodeFontSize.setValue(fontSize != null);
-				mNodeFontSize.setValue(viewfontSize.toString());
-			}
+//			{ Joe
+//				final String fontFamilyName = NodeStyleModel.getFontFamilyName(node);
+//				final String viewFontFamilyName = styleController.getFontFamilyName(node);
+//				mSetNodeFontName.setValue(fontFamilyName != null);
+//				mNodeFontName.setValue(viewFontFamilyName);
+//			}
+//			{
+//				final Integer fontSize = NodeStyleModel.getFontSize(node);
+//				final Integer viewfontSize = styleController.getFontSize(node);
+//				mSetNodeFontSize.setValue(fontSize != null);
+//				mNodeFontSize.setValue(viewfontSize.toString());
+//			}
 			{
 				final TextAlign style = NodeStyleModel.getTextAlign(node);
 				final TextAlign viewStyle = styleController.getTextAlign(node);
