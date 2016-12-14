@@ -73,9 +73,6 @@ import org.freeplane.features.cloud.mindmapmode.MCloudController;
 import org.freeplane.features.edge.AutomaticEdgeColor;
 import org.freeplane.features.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.EdgeController;
-import org.freeplane.features.format.FormatController;
-import org.freeplane.features.format.IFormattedObject;
-import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -107,12 +104,10 @@ import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyle;
-import org.freeplane.features.styles.mindmapmode.EditablePatternComboProperty;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
 import org.freeplane.features.styles.mindmapmode.ManageMapConditionalStylesAction;
 import org.freeplane.features.styles.mindmapmode.ManageNodeConditionalStylesAction;
-import org.freeplane.features.text.TextController;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Paddings;
 import com.jgoodies.forms.layout.FormLayout;
@@ -344,18 +339,18 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 	
-	private class NodeFormatChangeListener extends ChangeListener {
-		public NodeFormatChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MNodeStyleController styleController = (MNodeStyleController) Controller.getCurrentModeController()
-			    .getExtension(NodeStyleController.class);
-			styleController.setNodeFormat(node, enabled ? mNodeFormat.getSelectedPattern() : null);
-		}
-	}
+//	private class NodeFormatChangeListener extends ChangeListener {
+//		public NodeFormatChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+//			super(mSet, mProperty);
+//		}
+//
+//		@Override
+//		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+//			final MNodeStyleController styleController = (MNodeStyleController) Controller.getCurrentModeController()
+//			    .getExtension(NodeStyleController.class);
+//			styleController.setNodeFormat(node, enabled ? mNodeFormat.getSelectedPattern() : null);
+//		}
+//	}
 
 	private class StyleChangeListener implements PropertyChangeListener{
 
@@ -422,7 +417,6 @@ public class StyleEditorPanel extends JPanel {
 	private static final String NODE_FONT_HYPERLINK = "nodefonthyperlink";
 	private static final String NODE_NUMBERING = "nodenumbering";
 	private static final String NODE_SHAPE = "nodeshape";
-	private static final String NODE_FORMAT = "nodeformat";
 	private static final String TEXT_ALIGNMENT = "textalignment";
 	private static final String[] TEXT_ALIGNMENTS = EnumToStringMapper.getStringValuesOf(TextAlign.class);
 	/**
@@ -463,6 +457,7 @@ public class StyleEditorPanel extends JPanel {
 		put(FontItalicControlGroup.NODE_FONT_ITALIC, new FontItalicControlGroup());
 		put(FontNameControlGroup.NODE_FONT_NAME, new FontNameControlGroup());
 		put(FontSizeControlGroup.NODE_FONT_SIZE, new FontSizeControlGroup());
+		put(FormatControlGroup.NODE_FORMAT, new FormatControlGroup());
 	}};
 	
 	
@@ -497,8 +492,9 @@ public class StyleEditorPanel extends JPanel {
 	private QuantityProperty<LengthUnits> mShapeVerticalMargin;
 	private BooleanProperty mUniformShape;
 
-	private BooleanProperty mSetNodeFormat;
-	private EditablePatternComboProperty mNodeFormat;
+	// joe
+//	private BooleanProperty mSetNodeFormat;
+//	private EditablePatternComboProperty mNodeFormat;
 	
 	private BooleanProperty mSetMaxNodeWidth;
 	private QuantityProperty<LengthUnits> mMaxNodeWidth;
@@ -540,16 +536,17 @@ public class StyleEditorPanel extends JPanel {
 		});
 	}
 
-    private void addFormatControl(final List<IPropertyControl> controls) {
-        mSetNodeFormat = new BooleanProperty(ControlGroup.SET_RESOURCE);
-        controls.add(mSetNodeFormat);
-        mNodeFormat = new EditablePatternComboProperty(StyleEditorPanel.NODE_FORMAT,
-            PatternFormat.getIdentityPatternFormat(), FormatController.getController().getAllFormats());
-        controls.add(mNodeFormat);
-        final NodeFormatChangeListener listener = new NodeFormatChangeListener(mSetNodeFormat, mNodeFormat);
-        mSetNodeFormat.addPropertyChangeListener(listener);
-        mNodeFormat.addPropertyChangeListener(listener);
-    }
+	// joe
+//    private void addFormatControl(final List<IPropertyControl> controls) {
+//        mSetNodeFormat = new BooleanProperty(ControlGroup.SET_RESOURCE);
+//        controls.add(mSetNodeFormat);
+//        mNodeFormat = new EditablePatternComboProperty(StyleEditorPanel.NODE_FORMAT,
+//            PatternFormat.getIdentityPatternFormat(), FormatController.getController().getAllFormats());
+//        controls.add(mNodeFormat);
+//        final NodeFormatChangeListener listener = new NodeFormatChangeListener(mSetNodeFormat, mNodeFormat);
+//        mSetNodeFormat.addPropertyChangeListener(listener);
+//        mNodeFormat.addPropertyChangeListener(listener);
+//    }
 	
 	private void addNodeNumberingControl(final List<IPropertyControl> controls) {
 		mSetNodeNumbering = new BooleanProperty(ControlGroup.SET_RESOURCE);
@@ -722,7 +719,9 @@ public class StyleEditorPanel extends JPanel {
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeColors"));
 		controlGroups.get(NodeColorControlGroup.NODE_COLOR).addControlGroup(controls);
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeText"));
-		addFormatControl(controls);
+		// joe addFormatControl(controls);
+		controlGroups.get(FormatControlGroup.NODE_FORMAT).addControlGroup(controls);
+		
 		addNodeNumberingControl(controls);
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeShape"));
 		addNodeShapeControls(controls);
@@ -1050,14 +1049,14 @@ public class StyleEditorPanel extends JPanel {
 				mSetNodeNumbering.setValue(nodeNumbering != null);
 				mNodeNumbering.setValue(viewNodeNumbering);
 			}
-			{
-				String nodeFormat = NodeStyleModel.getNodeFormat(node);
-				String viewNodeFormat = TextController.getController().getNodeFormat(node);
-				mSetNodeFormat.setValue(nodeFormat != null);
-				if (viewNodeFormat == null && node.getUserObject() instanceof IFormattedObject)
-					viewNodeFormat = ((IFormattedObject)node.getUserObject()).getPattern();
-				mNodeFormat.setValue(viewNodeFormat);
-			}
+//			{ joe
+//				String nodeFormat = NodeStyleModel.getNodeFormat(node);
+//				String viewNodeFormat = TextController.getController().getNodeFormat(node);
+//				mSetNodeFormat.setValue(nodeFormat != null);
+//				if (viewNodeFormat == null && node.getUserObject() instanceof IFormattedObject)
+//					viewNodeFormat = ((IFormattedObject)node.getUserObject()).getPattern();
+//				mNodeFormat.setValue(viewNodeFormat);
+//			}
 			if(mAutomaticLayoutComboBox != null){
 				final ModeController modeController = Controller.getCurrentModeController();
 				AutomaticLayoutController al = modeController.getExtension(AutomaticLayoutController.class);
