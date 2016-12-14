@@ -94,9 +94,7 @@ import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.AutomaticLayout;
 import org.freeplane.features.styles.AutomaticLayoutController;
@@ -116,30 +114,6 @@ public class StyleEditorPanel extends JPanel {
 	private static final int FONT_SIZE = Math.round(UITools.FONT_SCALE_FACTOR * 8);
 	private static final TranslatedObject AUTOMATIC_LAYOUT_DISABLED = new TranslatedObject("automatic_layout_disabled");
 
-	private class NodeShapeChangeListener extends ChangeListener {
-		public NodeShapeChangeListener(final BooleanProperty mSet, final IPropertyControl... mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MNodeStyleController styleController = (MNodeStyleController) Controller
-			.getCurrentModeController().getExtension(
-					NodeStyleController.class);
-			if(enabled){
-				styleController.setShapeConfiguration(node, ShapeConfigurationModel.NULL_SHAPE
-						.withShape(NodeStyleModel.Shape.valueOf(mNodeShape.getValue()))
-						.withHorizontalMargin(mShapeHorizontalMargin.getQuantifiedValue())
-						.withVerticalMargin(mShapeVerticalMargin.getQuantifiedValue())
-						.withUniform(mUniformShape.getBooleanValue())
-						);
-			}
-			else
-				styleController.setShapeConfiguration(node, ShapeConfigurationModel.NULL_SHAPE);
-			final Shape shape = styleController.getShape(node);
-			enableShapeConfigurationProperties(enabled, shape);
-		}
-	}
 
 	private class FontHyperlinkChangeListener extends ChangeListener {
 		public FontHyperlinkChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
@@ -415,7 +389,6 @@ public class StyleEditorPanel extends JPanel {
 	private static final String[] CLOUD_SHAPES = EnumToStringMapper.getStringValuesOf(CloudModel.Shape.class);
 //	private static final String ICON = "icon";
 	private static final String NODE_FONT_HYPERLINK = "nodefonthyperlink";
-	private static final String NODE_SHAPE = "nodeshape";
 	private static final String TEXT_ALIGNMENT = "textalignment";
 	private static final String[] TEXT_ALIGNMENTS = EnumToStringMapper.getStringValuesOf(TextAlign.class);
 	/**
@@ -425,9 +398,6 @@ public class StyleEditorPanel extends JPanel {
 	private static final String MAX_TEXT_WIDTH = "max_node_width";
 	private static final String MIN_NODE_WIDTH = "min_node_width";
 	private static final String VERTICAL_CHILD_GAP = "vertical_child_gap";
-	private static final String SHAPE_HORIZONTAL_MARGIN = "shape_horizontal_margin";
-	private static final String SHAPE_VERTICAL_MARGIN = "shape_vertical_margin";
-	private static final String UNIFORM_SHAPE = "uniform_shape";
 	private static final String BORDER_WIDTH_MATCHES_EDGE_WIDTH = "border_width_matches_edge_width";
 	private static final String BORDER_WIDTH = "border_width";
 	private static final String BORDER_DASH_MATCHES_EDGE_DASH = "border_dash_matches_edge_dash";
@@ -458,15 +428,13 @@ public class StyleEditorPanel extends JPanel {
 		put(FontSizeControlGroup.NODE_FONT_SIZE, new FontSizeControlGroup());
 		put(FormatControlGroup.NODE_FORMAT, new FormatControlGroup());
 		put(NodeNumberingControlGroup.NODE_NUMBERING, new NodeNumberingControlGroup());
+		put(NodeShapeControlGroup.NODE_SHAPE, new NodeShapeControlGroup());
 	}};
 	
 	
 	private BooleanProperty mSetNodeFontHyperlink;
 	private BooleanProperty mNodeFontHyperlink;
 
-	private BooleanProperty mSetNodeShape;
-	private ComboProperty mNodeShape;
-	
 	private BooleanProperty mSetBorderWidthMatchesEdgeWidth;
 	private BooleanProperty mBorderWidthMatchesEdgeWidth;
 	
@@ -484,10 +452,6 @@ public class StyleEditorPanel extends JPanel {
 	
 	private BooleanProperty mSetBorderColor;
 	private ColorProperty mBorderColor;
-
-	private QuantityProperty<LengthUnits> mShapeHorizontalMargin;
-	private QuantityProperty<LengthUnits> mShapeVerticalMargin;
-	private BooleanProperty mUniformShape;
 
 	private BooleanProperty mSetMaxNodeWidth;
 	private QuantityProperty<LengthUnits> mMaxNodeWidth;
@@ -648,28 +612,6 @@ public class StyleEditorPanel extends JPanel {
 		mNodeFontHyperlink.addPropertyChangeListener(listener);
 	}
 
-	private void addNodeShapeControls(final List<IPropertyControl> controls) {
-		mSetNodeShape = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeShape);
-		mNodeShape = new ComboProperty(StyleEditorPanel.NODE_SHAPE, EnumToStringMapper.getStringValuesOf(NodeStyleModel.Shape.class));
-		controls.add(mNodeShape);
-		controls.add(new NextColumnProperty(2));
-		mShapeHorizontalMargin = new QuantityProperty<LengthUnits>(StyleEditorPanel.SHAPE_HORIZONTAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
-		controls.add(mShapeHorizontalMargin);
-		controls.add(new NextColumnProperty(2));
-		mShapeVerticalMargin = new QuantityProperty<LengthUnits>(StyleEditorPanel.SHAPE_VERTICAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
-		controls.add(mShapeVerticalMargin);
-		controls.add(new NextColumnProperty(2));
-		mUniformShape = new BooleanProperty(StyleEditorPanel.UNIFORM_SHAPE);
-		controls.add(mUniformShape);
-		final NodeShapeChangeListener listener = new NodeShapeChangeListener(mSetNodeShape, mNodeShape, mShapeHorizontalMargin, mShapeVerticalMargin, mUniformShape);
-		mSetNodeShape.addPropertyChangeListener(listener);
-		mNodeShape.addPropertyChangeListener(listener);
-		mShapeHorizontalMargin.addPropertyChangeListener(listener);
-		mShapeVerticalMargin.addPropertyChangeListener(listener);
-		mUniformShape.addPropertyChangeListener(listener);
-	}
-
 	private void addNodeTextAlignmentControl(final List<IPropertyControl> controls) {
 		mSetNodeTextAlignment = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetNodeTextAlignment);
@@ -694,7 +636,8 @@ public class StyleEditorPanel extends JPanel {
 		controlGroups.get(NodeNumberingControlGroup.NODE_NUMBERING).addControlGroup(controls);
 		
 		controls.add(new SeparatorProperty("OptionPanel.separator.NodeShape"));
-		addNodeShapeControls(controls);
+		controlGroups.get(NodeShapeControlGroup.NODE_SHAPE).addControlGroup(controls);
+		
 		addMinNodeWidthControl(controls);
 		addMaxNodeWidthControl(controls);
 		addChildDistanceControl(controls);
@@ -902,17 +845,6 @@ public class StyleEditorPanel extends JPanel {
 			}
 			setStyleList(mNodeStyleButton, logicalStyleController.getNodeStyleNames(node, "\n"));
 			final NodeStyleController styleController = NodeStyleController.getController();
-			{
-				final NodeStyleModel.Shape shape = NodeStyleModel.getShape(node);
-				ShapeConfigurationModel viewShape = styleController.getShapeConfiguration(node);
-				final boolean enabled = shape != null;
-				mSetNodeShape.setValue(enabled);
-				mNodeShape.setValue(viewShape.getShape().toString());
-				enableShapeConfigurationProperties(enabled, shape);
-				mShapeHorizontalMargin.setQuantifiedValue(viewShape.getHorizontalMargin());
-				mShapeVerticalMargin.setQuantifiedValue(viewShape.getVerticalMargin());
-				mUniformShape.setValue(viewShape.isUniform());
-			}
 			final NodeSizeModel nodeSizeModel = NodeSizeModel.getModel(node);
 			{
 				final Quantity<LengthUnits> width = nodeSizeModel != null ? nodeSizeModel.getMaxNodeWidth() : null;
@@ -1090,13 +1022,6 @@ public class StyleEditorPanel extends JPanel {
             }
 			
 		});
-	}
-
-	private void enableShapeConfigurationProperties(final boolean enabled, final Shape shape) {
-		final boolean enableConfigurationProperties = enabled && shape.hasConfiguration;
-		mShapeHorizontalMargin.setEnabled(enableConfigurationProperties);
-		mShapeVerticalMargin.setEnabled(enableConfigurationProperties);
-		mUniformShape.setEnabled(enableConfigurationProperties);
 	}
 
 	public void enableOrDisableBorderWidthControls() {
