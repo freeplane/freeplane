@@ -149,4 +149,5 @@ public interface IMapViewManager {
 
 	public void closeWithoutSaving();
 
+	public void moveFocusFromDescendantToSelection(Component ancestor);
 }

@@ -298,4 +298,9 @@ public class HeadlessMapViewController implements IMapViewManager {
 	public void onQuitApplication() {
 	}
 
+	@Override
+	public void moveFocusFromDescendantToSelection(Component ancestor) {
+		throw new RuntimeException("Method not implemented");
+	}
+
 }

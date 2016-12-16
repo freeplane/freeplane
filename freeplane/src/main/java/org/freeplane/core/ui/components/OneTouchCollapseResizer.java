@@ -19,6 +19,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.IMapViewManager;
 
 /**
  *
@@ -166,9 +168,12 @@ public class OneTouchCollapseResizer extends JResizer {
 				else {
 					resizedComponent.setPreferredSize(new Dimension(0,0));
 				}
+				IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+				mapViewManager.moveFocusFromDescendantToSelection(resizedComponent);
 				resizedComponent.setVisible(expanded);
 
-				fireCollapseStateChanged(resizedComponent, expanded);
+				if (!expanded)
+					fireCollapseStateChanged(resizedComponent, expanded);
 
 				recalibrate();
 			}
