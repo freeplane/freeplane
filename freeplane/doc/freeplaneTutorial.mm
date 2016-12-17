@@ -4778,7 +4778,7 @@
   </head>
   <body>
     <p>
-      Map <i>standard.mm</i>&#160;in&#160; <i>Tools &gt; Open user directory &gt; Templates</i>&#160;serves as a map template for each new mind map. Consider adapting the style &quot;default&quot; of this template map to your personal favourites, e.g.
+      Map <i>standard-1.5.mm</i>&#160;in&#160; <i>Tools &gt; Open user directory &gt; Templates</i>&#160;serves as a map template for each new mind map. Consider adapting the style &quot;default&quot; of this template map to your personal favourites, e.g.
     </p>
     <ul>
       <li>
