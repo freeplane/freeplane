@@ -1,0 +1,146 @@
+/*
+ *  Freeplane - mind map editor
+ *  Copyright (C) 2016 jberry
+ *
+ *  This file author is jberry
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.List;
+
+import org.freeplane.core.resources.components.BooleanProperty;
+import org.freeplane.core.resources.components.ComboProperty;
+import org.freeplane.core.resources.components.IPropertyControl;
+import org.freeplane.features.DashVariant;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.nodestyle.NodeBorderModel;
+import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+
+/**
+ * @author Joe Berry
+ * Dec 17, 2016
+ */
+public class BorderDashControlGroup implements ControlGroup {
+	static final String BORDER_DASH_MATCHES_EDGE_DASH = "border_dash_matches_edge_dash";
+	static final String BORDER_DASH = "border_dash";
+
+	private BooleanProperty mSetBorderDash;
+	private ComboProperty mBorderDash;
+
+	private BooleanProperty mSetBorderDashMatchesEdgeDash;
+	private BooleanProperty mBorderDashMatchesEdgeDash;
+	
+	private BorderDashListener borderDashListener;
+	private BorderDashMatchesEdgeDashListener borderDashMatchesEdgeDashChangeListener;
+	
+	private class BorderDashListener extends ControlGroupChangeListener {
+		public BorderDashListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+			final MNodeStyleController styleController = (MNodeStyleController) Controller
+			.getCurrentModeController().getExtension(NodeStyleController.class);
+			styleController.setBorderDash(node, enabled ? DashVariant.valueOf(mBorderDash.getValue()): null);
+		}
+
+		@Override
+		void setStyleOnExternalChange(NodeModel node) {
+			final NodeBorderModel nodeBorderModel = NodeBorderModel.getModel(node);
+			final NodeStyleController styleController = NodeStyleController.getController();
+			final DashVariant dash = nodeBorderModel != null ? nodeBorderModel.getBorderDash() : null;
+			final DashVariant viewDash = styleController.getBorderDash(node);
+			mSetBorderDash.setValue(dash != null);
+			mBorderDash.setValue(viewDash.name());
+			enableOrDisableBorderDashControls();
+		}
+	}
+	
+	private class BorderDashMatchesEdgeDashListener extends ControlGroupChangeListener {
+		public BorderDashMatchesEdgeDashListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+			super(mSet, mProperty);
+		}
+
+		@Override
+		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+			final MNodeStyleController styleController = (MNodeStyleController) Controller
+			.getCurrentModeController().getExtension(NodeStyleController.class);
+			styleController.setBorderDashMatchesEdgeDash(node, enabled ? mBorderDashMatchesEdgeDash.getBooleanValue(): null);
+		}
+
+		@Override
+		void setStyleOnExternalChange(NodeModel node) {
+			final NodeBorderModel nodeBorderModel = NodeBorderModel.getModel(node);
+			final NodeStyleController styleController = NodeStyleController.getController();
+			final Boolean match = nodeBorderModel != null ? nodeBorderModel.getBorderDashMatchesEdgeDash() : null;
+			final Boolean viewMatch = styleController.getBorderDashMatchesEdgeDash(node);
+			mSetBorderDashMatchesEdgeDash.setValue(match != null);
+			mBorderDashMatchesEdgeDash.setValue(viewMatch);
+			
+		}
+	}
+	
+	@Override
+	public void addControlGroup(List<IPropertyControl> controls) {
+		addBorderDashControl(controls);
+		addBorderDashMatchesEdgeDashControl(controls);
+
+	}
+	
+	private void addBorderDashControl(final List<IPropertyControl> controls) {
+		mSetBorderDash = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		controls.add(mSetBorderDash);
+		mBorderDash = ComboProperty.of(BORDER_DASH, DashVariant.class);
+		controls.add(mBorderDash);
+		borderDashListener = new BorderDashListener(mSetBorderDash, mBorderDash);
+		mSetBorderDash.addPropertyChangeListener(borderDashListener);
+		mBorderDash.addPropertyChangeListener(borderDashListener);
+	}
+	
+	public void addBorderDashMatchesEdgeDashControl(List<IPropertyControl> controls) {
+		mSetBorderDashMatchesEdgeDash = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		controls.add(mSetBorderDashMatchesEdgeDash);
+		mBorderDashMatchesEdgeDash = new BooleanProperty(BORDER_DASH_MATCHES_EDGE_DASH);
+		controls.add(mBorderDashMatchesEdgeDash);
+		borderDashMatchesEdgeDashChangeListener = new BorderDashMatchesEdgeDashListener(mSetBorderDashMatchesEdgeDash, mBorderDashMatchesEdgeDash);
+		mSetBorderDashMatchesEdgeDash.addPropertyChangeListener(borderDashMatchesEdgeDashChangeListener);
+		mBorderDashMatchesEdgeDash.addPropertyChangeListener(borderDashMatchesEdgeDashChangeListener);
+		mBorderDashMatchesEdgeDash.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				enableOrDisableBorderDashControls();
+			}
+		});
+	}
+
+	@Override
+	public void setStyle(NodeModel node) {
+		borderDashListener.setStyle(node);
+		borderDashMatchesEdgeDashChangeListener.setStyle(node);
+	}
+
+	private void enableOrDisableBorderDashControls() {
+		final boolean borderDashCanBeSet = ! mBorderDashMatchesEdgeDash.getBooleanValue();
+		mSetBorderDash.setEnabled(borderDashCanBeSet);
+		mBorderDash.setEnabled(borderDashCanBeSet);
+	}
+
+}
