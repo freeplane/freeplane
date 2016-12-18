@@ -103,35 +103,21 @@ public class StyleEditorPanel extends JPanel {
 	private static final int FONT_SIZE = Math.round(UITools.FONT_SCALE_FACTOR * 8);
 	private static final TranslatedObject AUTOMATIC_LAYOUT_DISABLED = new TranslatedObject("automatic_layout_disabled");
 
-
-	private class FontHyperlinkChangeListener extends ChangeListener {
-		public FontHyperlinkChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MLinkController styleController = (MLinkController) Controller
-			.getCurrentModeController().getExtension(
-				LinkController.class);
-			styleController.setFormatNodeAsHyperlink(node, enabled ? mNodeFontHyperlink.getBooleanValue() : null);
-		}
-	}
-
-	private class TextAlignmentChangeListener extends ChangeListener {
-		public TextAlignmentChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node,
-				final PropertyChangeEvent evt) {
-			final MNodeStyleController styleController = (MNodeStyleController) Controller
-					.getCurrentModeController().getExtension(NodeStyleController.class);
-			styleController.setTextAlign(node, enabled ? TextAlign.valueOf(mNodeTextAlignment.getValue()) : null);
-		}
-	}
-
+// joe
+//	private class FontHyperlinkChangeListener extends ChangeListener {
+//		public FontHyperlinkChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
+//			super(mSet, mProperty);
+//		}
+//
+//		@Override
+//		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
+//			final MLinkController styleController = (MLinkController) Controller
+//			.getCurrentModeController().getExtension(
+//				LinkController.class);
+//			styleController.setFormatNodeAsHyperlink(node, enabled ? mNodeFontHyperlink.getBooleanValue() : null);
+//		}
+//	}
+//
 	private class CloudColorChangeListener extends ChangeListener {
 		public CloudColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
 			super(mSet, mProperty);
@@ -234,9 +220,7 @@ public class StyleEditorPanel extends JPanel {
 	private static final String CLOUD_SHAPE = "cloudshape";
 	private static final String[] CLOUD_SHAPES = EnumToStringMapper.getStringValuesOf(CloudModel.Shape.class);
 //	private static final String ICON = "icon";
-	private static final String NODE_FONT_HYPERLINK = "nodefonthyperlink";
-	private static final String TEXT_ALIGNMENT = "textalignment";
-	private static final String[] TEXT_ALIGNMENTS = EnumToStringMapper.getStringValuesOf(TextAlign.class);
+
 	/**
 	* 
 	*/
@@ -270,14 +254,13 @@ public class StyleEditorPanel extends JPanel {
 		put(BorderWidthControlGroup.BORDER_WIDTH, new BorderWidthControlGroup());
 		put(BorderDashControlGroup.BORDER_DASH, new BorderDashControlGroup());
 		put(BorderColorControlGroup.BORDER_COLOR, new BorderColorControlGroup());
+		put(NodeTextAlignmentControlGroup.TEXT_ALIGNMENT, new NodeTextAlignmentControlGroup());
+		put(NodeFontHyperLinkControlGroup.NODE_FONT_HYPERLINK, new NodeFontHyperLinkControlGroup());
 	}};
 	
-	
-	private BooleanProperty mSetNodeFontHyperlink;
-	private BooleanProperty mNodeFontHyperlink;
-
-	private BooleanProperty mSetNodeTextAlignment;
-	private ComboProperty mNodeTextAlignment;
+// joe	
+//	private BooleanProperty mSetNodeFontHyperlink;
+//	private BooleanProperty mNodeFontHyperlink;
 
 	
 	private BooleanProperty mSetStyle;
@@ -326,30 +309,17 @@ public class StyleEditorPanel extends JPanel {
 		mCloudShape.addPropertyChangeListener(listener);
 	}
 
-	private void addFontHyperlinkControl(final List<IPropertyControl> controls) {
-		mSetNodeFontHyperlink = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeFontHyperlink);
-		mNodeFontHyperlink = new BooleanProperty(StyleEditorPanel.NODE_FONT_HYPERLINK);
-		controls.add(mNodeFontHyperlink);
-		final FontHyperlinkChangeListener listener = new FontHyperlinkChangeListener(mSetNodeFontHyperlink, mNodeFontHyperlink);
-		mSetNodeFontHyperlink.addPropertyChangeListener(listener);
-		mNodeFontHyperlink.addPropertyChangeListener(listener);
-	}
+	// joe
+//	private void addFontHyperlinkControl(final List<IPropertyControl> controls) {
+//		mSetNodeFontHyperlink = new BooleanProperty(ControlGroup.SET_RESOURCE);
+//		controls.add(mSetNodeFontHyperlink);
+//		mNodeFontHyperlink = new BooleanProperty(StyleEditorPanel.NODE_FONT_HYPERLINK);
+//		controls.add(mNodeFontHyperlink);
+//		final FontHyperlinkChangeListener listener = new FontHyperlinkChangeListener(mSetNodeFontHyperlink, mNodeFontHyperlink);
+//		mSetNodeFontHyperlink.addPropertyChangeListener(listener);
+//		mNodeFontHyperlink.addPropertyChangeListener(listener);
+//	}
 
-	private void addNodeTextAlignmentControl(final List<IPropertyControl> controls) {
-		mSetNodeTextAlignment = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeTextAlignment);
-		final Vector<String> possibleTranslations = new Vector<String>(TEXT_ALIGNMENTS.length);
-		for (int i = 0; i < TEXT_ALIGNMENTS.length; i++) {
-			possibleTranslations.add(TextUtils.getText("TextAlignAction." + TEXT_ALIGNMENTS[i] + ".text"));
-		}
-		Vector<String> translations = possibleTranslations;
-		mNodeTextAlignment = new ComboProperty(StyleEditorPanel.TEXT_ALIGNMENT, Arrays.asList(TEXT_ALIGNMENTS), translations);
-		controls.add(mNodeTextAlignment);
-		final TextAlignmentChangeListener listener = new TextAlignmentChangeListener(mSetNodeTextAlignment, mNodeTextAlignment);
-		mSetNodeTextAlignment.addPropertyChangeListener(listener);
-		mNodeTextAlignment.addPropertyChangeListener(listener);
-	}
 
 	private List<IPropertyControl> getControls() {
 		final List<IPropertyControl> controls = new ArrayList<IPropertyControl>();
@@ -379,8 +349,9 @@ public class StyleEditorPanel extends JPanel {
 		
 		controlGroups.get(FontBoldControlGroup.NODE_FONT_BOLD).addControlGroup(controls);
 		controlGroups.get(FontItalicControlGroup.NODE_FONT_ITALIC).addControlGroup(controls);
-		addNodeTextAlignmentControl(controls);
-		addFontHyperlinkControl(controls);
+		controlGroups.get(NodeTextAlignmentControlGroup.TEXT_ALIGNMENT).addControlGroup(controls);
+		controlGroups.get(NodeFontHyperLinkControlGroup.NODE_FONT_HYPERLINK).addControlGroup(controls);
+		// joe addFontHyperlinkControl(controls);
 		controls.add(new NextLineProperty());
 		controls.add(new SeparatorProperty("OptionPanel.separator.EdgeControls"));
 		
@@ -561,18 +532,12 @@ public class StyleEditorPanel extends JPanel {
 				final CloudModel.Shape viewCloudShape = cloudController.getShape(node);
 				mCloudShape.setValue(viewCloudShape != null ? viewCloudShape.toString() : CloudModel.Shape.ARC.toString());
 			}
-			{
-				final TextAlign style = NodeStyleModel.getTextAlign(node);
-				final TextAlign viewStyle = styleController.getTextAlign(node);
-				mSetNodeTextAlignment.setValue(style != null);
-				mNodeTextAlignment.setValue(viewStyle.toString());
-			}
-			{
-				final Boolean hyperlink = NodeLinks.formatNodeAsHyperlink(node);
-				final Boolean viewhyperlink = LinkController.getController().formatNodeAsHyperlink(node);
-				mSetNodeFontHyperlink.setValue(hyperlink != null);
-				mNodeFontHyperlink.setValue(viewhyperlink);
-			}
+//	joe		{
+//				final Boolean hyperlink = NodeLinks.formatNodeAsHyperlink(node);
+//				final Boolean viewhyperlink = LinkController.getController().formatNodeAsHyperlink(node);
+//				mSetNodeFontHyperlink.setValue(hyperlink != null);
+//				mNodeFontHyperlink.setValue(viewhyperlink);
+//			}
 			if(mAutomaticLayoutComboBox != null){
 				final ModeController modeController = Controller.getCurrentModeController();
 				AutomaticLayoutController al = modeController.getExtension(AutomaticLayoutController.class);
