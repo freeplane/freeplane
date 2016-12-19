@@ -41,7 +41,7 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
  * Nov 27, 2016
  */
 class NodeShapeControlGroup implements ControlGroup {
-	static final String NODE_SHAPE = "nodeshape";
+	private static final String NODE_SHAPE = "nodeshape";
 	private static final String SHAPE_HORIZONTAL_MARGIN = "shape_horizontal_margin";
 	private static final String SHAPE_VERTICAL_MARGIN = "shape_vertical_margin";
 	private static final String UNIFORM_SHAPE = "uniform_shape";

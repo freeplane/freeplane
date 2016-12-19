@@ -37,7 +37,7 @@ import org.freeplane.features.map.NodeModel;
  * Nov 27, 2016
  */
 class EdgeColorControlGroup implements ControlGroup {
-	static final String EDGE_COLOR = "edgecolor";
+	private static final String EDGE_COLOR = "edgecolor";
 
 	private BooleanProperty mSetEdgeColor;
 	private ColorProperty mEdgeColor;

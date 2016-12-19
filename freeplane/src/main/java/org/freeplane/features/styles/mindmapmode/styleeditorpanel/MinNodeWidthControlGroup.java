@@ -38,7 +38,7 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
  * Nov 27, 2016
  */
 class MinNodeWidthControlGroup implements ControlGroup {
-	static final String MIN_NODE_WIDTH = "min_node_width";
+	private static final String MIN_NODE_WIDTH = "min_node_width";
 
 	private BooleanProperty mSetMinNodeWidth;
 	private QuantityProperty<LengthUnits> mMinNodeWidth;

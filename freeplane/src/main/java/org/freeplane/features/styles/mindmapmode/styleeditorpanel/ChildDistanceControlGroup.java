@@ -40,7 +40,7 @@ import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
  * Nov 27, 2016
  */
 class ChildDistanceControlGroup implements ControlGroup {
-	static final String VERTICAL_CHILD_GAP = "vertical_child_gap";
+	private static final String VERTICAL_CHILD_GAP = "vertical_child_gap";
 
 	private BooleanProperty mSetChildDistance;
 	private QuantityProperty<LengthUnits> mChildDistance;

@@ -20,7 +20,6 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.HeadlessException;
@@ -31,12 +30,7 @@ import java.awt.event.HierarchyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -47,14 +41,9 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.components.BooleanProperty;
-import org.freeplane.core.resources.components.ColorProperty;
-import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.resources.components.NextColumnProperty;
-import org.freeplane.core.resources.components.NextLineProperty;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
@@ -62,14 +51,8 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.cloud.CloudController;
-import org.freeplane.features.cloud.CloudModel;
-import org.freeplane.features.cloud.mindmapmode.MCloudController;
 import org.freeplane.features.edge.AutomaticEdgeColor;
 import org.freeplane.features.edge.AutomaticEdgeColorHook;
-import org.freeplane.features.link.LinkController;
-import org.freeplane.features.link.NodeLinks;
-import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeChangeListener;
@@ -81,10 +64,6 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
-import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.AutomaticLayout;
 import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.IStyle;
@@ -103,61 +82,7 @@ public class StyleEditorPanel extends JPanel {
 	private static final int FONT_SIZE = Math.round(UITools.FONT_SCALE_FACTOR * 8);
 	private static final TranslatedObject AUTOMATIC_LAYOUT_DISABLED = new TranslatedObject("automatic_layout_disabled");
 
-// joe
-//	private class FontHyperlinkChangeListener extends ChangeListener {
-//		public FontHyperlinkChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-//			super(mSet, mProperty);
-//		}
-//
-//		@Override
-//		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-//			final MLinkController styleController = (MLinkController) Controller
-//			.getCurrentModeController().getExtension(
-//				LinkController.class);
-//			styleController.setFormatNodeAsHyperlink(node, enabled ? mNodeFontHyperlink.getBooleanValue() : null);
-//		}
-//	}
-//
-	private class CloudColorChangeListener extends ChangeListener {
-		public CloudColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node,
-				final PropertyChangeEvent evt) {
-			final MCloudController styleController = (MCloudController) Controller
-					.getCurrentModeController().getExtension(
-							CloudController.class);
-			if (enabled) {
-				styleController.setColor(node, mCloudColor.getColorValue());
-			}
-			else {
-				styleController.setCloud(node, false);
-			}
-		}
-	}
-
-	private class CloudShapeChangeListener extends ChangeListener {
-		public CloudShapeChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node,
-				final PropertyChangeEvent evt) {
-			final MCloudController styleController = (MCloudController) Controller
-					.getCurrentModeController().getExtension(
-						CloudController.class);
-			if (enabled) {
-				styleController.setShape(node, CloudModel.Shape.valueOf(mCloudShape.getValue()));
-			}
-			else {
-				styleController.setCloud(node, false);
-			}
-		}
-	}
-
+	
 	private class StyleChangeListener implements PropertyChangeListener{
 
 		public StyleChangeListener() {
@@ -178,48 +103,6 @@ public class StyleEditorPanel extends JPanel {
         }
 		
 	}
-	private abstract class ChangeListener implements PropertyChangeListener {
-		final private Collection<IPropertyControl> properties;
-		final private BooleanProperty mSet;
-
-		public ChangeListener(final BooleanProperty mSet, final IPropertyControl... properties) {
-			super();
-			this.mSet = mSet;
-			this.properties = Arrays.asList(properties);
-		}
-
-		abstract void applyValue(final boolean enabled, NodeModel node, PropertyChangeEvent evt);
-
-		public void propertyChange(final PropertyChangeEvent evt) {
-			if (internalChange) {
-				return;
-			}
-			final boolean enabled;
-			if (evt.getSource().equals(mSet)) {
-				enabled = mSet.getBooleanValue();
-			}
-			else {
-				assert properties.contains(evt.getSource());
-				enabled = true;
-			}
-			final IMapSelection selection = Controller.getCurrentController().getSelection();
-			final Collection<NodeModel> nodes = selection.getSelection();
-			if (enabled )
-				internalChange = true;
-			for (final NodeModel node : nodes) {
-				applyValue(enabled, node, evt);
-			}
-			if (enabled  && ! mSet.getBooleanValue())
-				mSet.setValue(true);
-			internalChange = false;
-			setStyle(selection.getSelected());
-		}
-	}
-
-	private static final String CLOUD_COLOR = "cloudcolor";
-	private static final String CLOUD_SHAPE = "cloudshape";
-	private static final String[] CLOUD_SHAPES = EnumToStringMapper.getStringValuesOf(CloudModel.Shape.class);
-//	private static final String ICON = "icon";
 
 	/**
 	* 
@@ -228,40 +111,41 @@ public class StyleEditorPanel extends JPanel {
 	
 	private boolean internalChange;
 	private List<IPropertyControl> mControls;
-	
-	private BooleanProperty mSetCloud;
-	private ColorProperty mCloudColor;
-	private ComboProperty mCloudShape;
 
-	@SuppressWarnings("serial")
-	Map<String, ControlGroup> controlGroups = new HashMap<String, ControlGroup>() {{
-		put(EdgeWidthControlGroup.EDGE_WIDTH, new EdgeWidthControlGroup());
-		put(EdgeDashControlGroup.EDGE_DASH, new EdgeDashControlGroup());
-		put(EdgeStyleControlGroup.EDGE_STYLE, new EdgeStyleControlGroup());
-		put(EdgeColorControlGroup.EDGE_COLOR, new NodeColorControlGroup());
-		put(NodeBackgroundColorControlGroup.NODE_BACKGROUND_COLOR, new NodeBackgroundColorControlGroup());
-		put(NodeColorControlGroup.NODE_COLOR, new NodeColorControlGroup());
-		put(FontBoldControlGroup.NODE_FONT_BOLD, new FontBoldControlGroup());
-		put(FontItalicControlGroup.NODE_FONT_ITALIC, new FontItalicControlGroup());
-		put(FontNameControlGroup.NODE_FONT_NAME, new FontNameControlGroup());
-		put(FontSizeControlGroup.NODE_FONT_SIZE, new FontSizeControlGroup());
-		put(FormatControlGroup.NODE_FORMAT, new FormatControlGroup());
-		put(NodeNumberingControlGroup.NODE_NUMBERING, new NodeNumberingControlGroup());
-		put(NodeShapeControlGroup.NODE_SHAPE, new NodeShapeControlGroup());
-		put(MinNodeWidthControlGroup.MIN_NODE_WIDTH, new MinNodeWidthControlGroup());
-		put(MaxNodeWidthControlGroup.MAX_NODE_WIDTH, new MaxNodeWidthControlGroup());
-		put(ChildDistanceControlGroup.VERTICAL_CHILD_GAP, new ChildDistanceControlGroup());
-		put(BorderWidthControlGroup.BORDER_WIDTH, new BorderWidthControlGroup());
-		put(BorderDashControlGroup.BORDER_DASH, new BorderDashControlGroup());
-		put(BorderColorControlGroup.BORDER_COLOR, new BorderColorControlGroup());
-		put(NodeTextAlignmentControlGroup.TEXT_ALIGNMENT, new NodeTextAlignmentControlGroup());
-		put(NodeFontHyperLinkControlGroup.NODE_FONT_HYPERLINK, new NodeFontHyperLinkControlGroup());
-	}};
-	
-// joe	
-//	private BooleanProperty mSetNodeFontHyperlink;
-//	private BooleanProperty mNodeFontHyperlink;
-
+	ControlGroup [] controlGroups = {
+			new GroupSeparator("OptionPanel.separator.NodeColors"),
+			new NodeColorControlGroup(),
+			new GroupSeparator("OptionPanel.separator.NodeText"),
+			new FormatControlGroup(),
+			new NodeNumberingControlGroup(),
+			new GroupSeparator("OptionPanel.separator.NodeShape"),
+			new NodeShapeControlGroup(),
+			new MinNodeWidthControlGroup(),
+			new MaxNodeWidthControlGroup(),
+			new ChildDistanceControlGroup(),
+			new GroupSeparator("OptionPanel.separator.NodeBorder"),
+			new BorderWidthAndBorderWidthMatchesEdgeControlGroup(),
+			new BorderDashAndDashMatchesEdgeControlGroup(),
+			new BorderColorAndColorMatchesEdgeControlGroup(),
+			new NextLineControlGroup(),
+			new GroupSeparator("OptionPanel.separator.NodeFont"),
+			new FontNameControlGroup(),
+			new FontSizeControlGroup(),
+			new FontBoldControlGroup(),
+			new FontItalicControlGroup(),
+			new NodeTextAlignmentControlGroup(),
+			new NodeFontHyperLinkControlGroup(),
+			new NextLineControlGroup(),
+			new GroupSeparator("OptionPanel.separator.EdgeControls"),
+			new EdgeWidthControlGroup(),
+			new EdgeDashControlGroup(),
+			new EdgeStyleControlGroup(),
+			new EdgeColorControlGroup(),
+			new NodeBackgroundColorControlGroup(),
+			new NextLineControlGroup(),
+			new GroupSeparator("OptionPanel.separator.CloudControls"),
+			new CloudColorShapeControlGroup()
+	};
 	
 	private BooleanProperty mSetStyle;
 	private final boolean addStyleBox;
@@ -290,86 +174,15 @@ public class StyleEditorPanel extends JPanel {
 		});
 	}
 
-	private void addCloudColorControl(final List<IPropertyControl> controls) {
-		mSetCloud = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetCloud);
-		mCloudColor = new ColorProperty(StyleEditorPanel.CLOUD_COLOR, ResourceController.getResourceController()
-		    .getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR));
-		controls.add(mCloudColor);
-		final CloudColorChangeListener listener = new CloudColorChangeListener(mSetCloud, mCloudColor);
-		mSetCloud.addPropertyChangeListener(listener);
-		mCloudColor.addPropertyChangeListener(listener);
-	}
-
-	private void addCloudShapeControl(final List<IPropertyControl> controls) {
-		mCloudShape = new ComboProperty(StyleEditorPanel.CLOUD_SHAPE, CLOUD_SHAPES);
-		controls.add(mCloudShape);
-		final CloudShapeChangeListener listener = new CloudShapeChangeListener(mSetCloud, mCloudShape);
-		mSetCloud.addPropertyChangeListener(listener);
-		mCloudShape.addPropertyChangeListener(listener);
-	}
-
-	// joe
-//	private void addFontHyperlinkControl(final List<IPropertyControl> controls) {
-//		mSetNodeFontHyperlink = new BooleanProperty(ControlGroup.SET_RESOURCE);
-//		controls.add(mSetNodeFontHyperlink);
-//		mNodeFontHyperlink = new BooleanProperty(StyleEditorPanel.NODE_FONT_HYPERLINK);
-//		controls.add(mNodeFontHyperlink);
-//		final FontHyperlinkChangeListener listener = new FontHyperlinkChangeListener(mSetNodeFontHyperlink, mNodeFontHyperlink);
-//		mSetNodeFontHyperlink.addPropertyChangeListener(listener);
-//		mNodeFontHyperlink.addPropertyChangeListener(listener);
-//	}
-
-
 	private List<IPropertyControl> getControls() {
 		final List<IPropertyControl> controls = new ArrayList<IPropertyControl>();
-		controls.add(new SeparatorProperty("OptionPanel.separator.NodeColors"));
-		controlGroups.get(NodeColorControlGroup.NODE_COLOR).addControlGroup(controls);
-		controls.add(new SeparatorProperty("OptionPanel.separator.NodeText"));
-		controlGroups.get(FormatControlGroup.NODE_FORMAT).addControlGroup(controls);
-		controlGroups.get(NodeNumberingControlGroup.NODE_NUMBERING).addControlGroup(controls);
 		
-		controls.add(new SeparatorProperty("OptionPanel.separator.NodeShape"));
-		controlGroups.get(NodeShapeControlGroup.NODE_SHAPE).addControlGroup(controls);
-		controlGroups.get(MinNodeWidthControlGroup.MIN_NODE_WIDTH).addControlGroup(controls);
-		controlGroups.get(MaxNodeWidthControlGroup.MAX_NODE_WIDTH).addControlGroup(controls);
-		controlGroups.get(ChildDistanceControlGroup.VERTICAL_CHILD_GAP).addControlGroup(controls);
+		for (int i=0; i<controlGroups.length; i++) {
+			controlGroups[i].addControlGroup(controls);
+		}
 		
-		controls.add(new SeparatorProperty("OptionPanel.separator.NodeBorder"));
-		controlGroups.get(BorderWidthControlGroup.BORDER_WIDTH).addControlGroup(controls);
-		controlGroups.get(BorderDashControlGroup.BORDER_DASH).addControlGroup(controls);
-		controlGroups.get(BorderColorControlGroup.BORDER_COLOR).addControlGroup(controls);
-
-		controls.add(new NextLineProperty());
-		controls.add(new SeparatorProperty("OptionPanel.separator.NodeFont"));
-		// to be added...  ControlGroup sep = new GroupSeparator("OptionPanel.separator.NodeFont");
-		
-		controlGroups.get(FontNameControlGroup.NODE_FONT_NAME).addControlGroup(controls);
-		controlGroups.get(FontSizeControlGroup.NODE_FONT_SIZE).addControlGroup(controls);
-		
-		controlGroups.get(FontBoldControlGroup.NODE_FONT_BOLD).addControlGroup(controls);
-		controlGroups.get(FontItalicControlGroup.NODE_FONT_ITALIC).addControlGroup(controls);
-		controlGroups.get(NodeTextAlignmentControlGroup.TEXT_ALIGNMENT).addControlGroup(controls);
-		controlGroups.get(NodeFontHyperLinkControlGroup.NODE_FONT_HYPERLINK).addControlGroup(controls);
-		// joe addFontHyperlinkControl(controls);
-		controls.add(new NextLineProperty());
-		controls.add(new SeparatorProperty("OptionPanel.separator.EdgeControls"));
-		
-		controlGroups.get(EdgeWidthControlGroup.EDGE_WIDTH).addControlGroup(controls);
-		controlGroups.get(EdgeDashControlGroup.EDGE_DASH).addControlGroup(controls);
-		controlGroups.get(EdgeStyleControlGroup.EDGE_STYLE).addControlGroup(controls);
-		controlGroups.get(EdgeColorControlGroup.EDGE_COLOR).addControlGroup(controls);
-		controlGroups.get(NodeBackgroundColorControlGroup.NODE_BACKGROUND_COLOR).addControlGroup(controls);
-		
-		controls.add(new NextLineProperty());
-		controls.add(new SeparatorProperty("OptionPanel.separator.CloudControls"));
-		addCloudColorControl(controls);
-		controls.add(new NextLineProperty());
-		controls.add(new NextColumnProperty(2));
-		addCloudShapeControl(controls);
 		return controls;
 	}
-	
 	
 	/**
 	 * Creates all controls and adds them to the frame.
@@ -516,28 +329,11 @@ public class StyleEditorPanel extends JPanel {
 				setStyleList(mMapStyleButton, logicalStyleController.getMapStyleNames(node, "\n"));
 			}
 			setStyleList(mNodeStyleButton, logicalStyleController.getNodeStyleNames(node, "\n"));
-			final NodeStyleController styleController = NodeStyleController.getController();
 
-			for (ControlGroup controlGroup : controlGroups.values()) {
-				controlGroup.setStyle(node);
+			for (int i=0; i<controlGroups.length; i++) {
+				controlGroups[i].setStyle(node);
 			}
 			
-			{
-				final CloudController cloudController = CloudController.getController();
-				final CloudModel cloudModel = CloudModel.getModel(node);
-				final Color viewCloudColor = cloudController.getColor(node);
-				mSetCloud.setValue(cloudModel != null);
-				mCloudColor.setColorValue(viewCloudColor);
-
-				final CloudModel.Shape viewCloudShape = cloudController.getShape(node);
-				mCloudShape.setValue(viewCloudShape != null ? viewCloudShape.toString() : CloudModel.Shape.ARC.toString());
-			}
-//	joe		{
-//				final Boolean hyperlink = NodeLinks.formatNodeAsHyperlink(node);
-//				final Boolean viewhyperlink = LinkController.getController().formatNodeAsHyperlink(node);
-//				mSetNodeFontHyperlink.setValue(hyperlink != null);
-//				mNodeFontHyperlink.setValue(viewhyperlink);
-//			}
 			if(mAutomaticLayoutComboBox != null){
 				final ModeController modeController = Controller.getCurrentModeController();
 				AutomaticLayoutController al = modeController.getExtension(AutomaticLayoutController.class);

@@ -35,7 +35,7 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
  * Dec 1, 2016
  */
 public class FontBoldControlGroup implements ControlGroup {
-	static final String NODE_FONT_BOLD = "nodefontbold";
+	private static final String NODE_FONT_BOLD = "nodefontbold";
 
 	private BooleanProperty mSetNodeFontBold;
 	private BooleanProperty mNodeFontBold;

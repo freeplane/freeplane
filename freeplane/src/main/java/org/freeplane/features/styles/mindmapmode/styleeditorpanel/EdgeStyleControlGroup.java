@@ -37,7 +37,7 @@ import org.freeplane.features.mode.Controller;
  * Dec 1, 2016
  */
 public class EdgeStyleControlGroup implements ControlGroup {
-	static final String EDGE_STYLE = "edgestyle";
+	private static final String EDGE_STYLE = "edgestyle";
 	private static final String[] EDGE_STYLES = EnumToStringMapper.getStringValuesOf(EdgeStyle.class, EdgeStyle.values().length - 1);
 
 	private BooleanProperty mSetEdgeStyle;

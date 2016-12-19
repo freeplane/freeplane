@@ -38,7 +38,7 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
  * Dec 1, 2016
  */
 public class NodeBackgroundColorControlGroup implements ControlGroup {
-	static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
+	private static final String NODE_BACKGROUND_COLOR = "nodebackgroundcolor";
 
 	private BooleanProperty mSetNodeBackgroundColor;
 	private ColorProperty mNodeBackgroundColor;

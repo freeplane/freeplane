@@ -20,35 +20,22 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Vector;
 
 import org.freeplane.core.resources.components.BooleanProperty;
-import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.resources.components.NextColumnProperty;
-import org.freeplane.core.resources.components.QuantityProperty;
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
-import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
-import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
 /**
  * @author Joe Berry
  * Dec 18, 2016
  */
 class NodeFontHyperLinkControlGroup implements ControlGroup {
-	static final String NODE_FONT_HYPERLINK = "nodefonthyperlink";
+	private static final String NODE_FONT_HYPERLINK = "nodefonthyperlink";
 
 	private BooleanProperty mSetNodeFontHyperlink;
 	private BooleanProperty mNodeFontHyperlink;

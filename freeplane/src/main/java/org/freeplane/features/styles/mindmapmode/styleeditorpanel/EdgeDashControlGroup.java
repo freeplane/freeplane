@@ -37,7 +37,7 @@ import org.freeplane.features.mode.Controller;
  * Dec 1, 2016
  */
 public class EdgeDashControlGroup implements ControlGroup {
-	static final String EDGE_DASH = "edgedash";
+	private static final String EDGE_DASH = "edgedash";
 
 	private BooleanProperty mSetEdgeDash;
 	private ComboProperty mEdgeDash;

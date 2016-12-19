@@ -36,7 +36,7 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
  * Dec 1, 2016
  */
 public class FontNameControlGroup implements ControlGroup {
-	static final String NODE_FONT_NAME = "nodefontname";
+	private static final String NODE_FONT_NAME = "nodefontname";
 
 	private BooleanProperty mSetNodeFontName;
 	private FontProperty mNodeFontName;

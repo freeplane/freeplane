@@ -39,9 +39,9 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
  * @author Joe Berry
  * Dec 17, 2016
  */
-public class BorderColorControlGroup implements ControlGroup {
+public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup {
 	private static final String BORDER_COLOR_MATCHES_EDGE_COLOR = "border_color_matches_edge_color";
-	static final String BORDER_COLOR = "border_color";
+	private static final String BORDER_COLOR = "border_color";
 	
 	private BooleanProperty mSetBorderColor;
 	private ColorProperty mBorderColor;
@@ -101,9 +101,8 @@ public class BorderColorControlGroup implements ControlGroup {
 	
 	@Override
 	public void addControlGroup(List<IPropertyControl> controls) {
-		addBorderColorControl(controls);
 		addBorderColorMatchesEdgeColorControl(controls);
-
+		addBorderColorControl(controls);
 	}
 	
 	private void addBorderColorControl(final List<IPropertyControl> controls) {

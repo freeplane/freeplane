@@ -38,7 +38,7 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
  * Nov 27, 2016
  */
 class MaxNodeWidthControlGroup implements ControlGroup {
-	static final String MAX_NODE_WIDTH = "max_node_width";
+	private static final String MAX_NODE_WIDTH = "max_node_width";
 
 	private BooleanProperty mSetMaxNodeWidth;
 	private QuantityProperty<LengthUnits> mMaxNodeWidth;

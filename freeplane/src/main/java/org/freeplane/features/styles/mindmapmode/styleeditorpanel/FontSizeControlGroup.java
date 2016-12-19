@@ -39,7 +39,7 @@ import org.freeplane.features.styles.mindmapmode.MUIFactory;
  * Dec 1, 2016
  */
 public class FontSizeControlGroup implements ControlGroup {
-	static final String NODE_FONT_SIZE = "nodefontsize";
+	private static final String NODE_FONT_SIZE = "nodefontsize";
 
 	private BooleanProperty mSetNodeFontSize;
 	private ComboProperty mNodeFontSize;

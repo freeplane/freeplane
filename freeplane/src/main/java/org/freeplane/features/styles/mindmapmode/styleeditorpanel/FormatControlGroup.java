@@ -40,7 +40,7 @@ import org.freeplane.features.text.TextController;
  * Dec 1, 2016
  */
 public class FormatControlGroup implements ControlGroup {
-	static final String NODE_FORMAT = "nodeformat";
+	private static final String NODE_FORMAT = "nodeformat";
 
 	private BooleanProperty mSetNodeFormat;
 	private EditablePatternComboProperty mNodeFormat;

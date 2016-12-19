@@ -37,9 +37,9 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
  * @author Joe Berry
  * Dec 17, 2016
  */
-public class BorderDashControlGroup implements ControlGroup {
-	static final String BORDER_DASH_MATCHES_EDGE_DASH = "border_dash_matches_edge_dash";
-	static final String BORDER_DASH = "border_dash";
+public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
+	private static final String BORDER_DASH_MATCHES_EDGE_DASH = "border_dash_matches_edge_dash";
+	private static final String BORDER_DASH = "border_dash";
 
 	private BooleanProperty mSetBorderDash;
 	private ComboProperty mBorderDash;
@@ -100,9 +100,8 @@ public class BorderDashControlGroup implements ControlGroup {
 	
 	@Override
 	public void addControlGroup(List<IPropertyControl> controls) {
-		addBorderDashControl(controls);
 		addBorderDashMatchesEdgeDashControl(controls);
-
+		addBorderDashControl(controls);
 	}
 	
 	private void addBorderDashControl(final List<IPropertyControl> controls) {

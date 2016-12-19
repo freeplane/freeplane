@@ -35,7 +35,7 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
  * Dec 1, 2016
  */
 public class FontItalicControlGroup implements ControlGroup {
-	static final String NODE_FONT_ITALIC = "nodefontitalic";
+	private static final String NODE_FONT_ITALIC = "nodefontitalic";
 
 	private BooleanProperty mSetNodeFontItalic;
 	private BooleanProperty mNodeFontItalic;

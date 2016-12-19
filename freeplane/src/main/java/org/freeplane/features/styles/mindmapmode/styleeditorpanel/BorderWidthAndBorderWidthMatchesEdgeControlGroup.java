@@ -38,9 +38,9 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
  * @author Joe Berry
  * Dec 1, 2016
  */
-public class BorderWidthControlGroup implements ControlGroup {
-	static final String BORDER_WIDTH_MATCHES_EDGE_WIDTH = "border_width_matches_edge_width";
-	static final String BORDER_WIDTH = "border_width";
+public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements ControlGroup {
+	private static final String BORDER_WIDTH_MATCHES_EDGE_WIDTH = "border_width_matches_edge_width";
+	private static final String BORDER_WIDTH = "border_width";
 	
 	private BooleanProperty mSetBorderWidthMatchesEdgeWidth;
 	private BooleanProperty mBorderWidthMatchesEdgeWidth;

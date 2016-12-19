@@ -35,7 +35,7 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
  * Dec 1, 2016
  */
 public class NodeNumberingControlGroup implements ControlGroup {
-	static final String NODE_NUMBERING = "nodenumbering";
+	private static final String NODE_NUMBERING = "nodenumbering";
 
 	private BooleanProperty mSetNodeNumbering;
 	private BooleanProperty mNodeNumbering;

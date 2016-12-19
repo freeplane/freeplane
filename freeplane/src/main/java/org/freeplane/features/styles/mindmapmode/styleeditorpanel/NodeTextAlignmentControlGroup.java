@@ -27,16 +27,11 @@ import java.util.Vector;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.resources.components.NextColumnProperty;
-import org.freeplane.core.resources.components.QuantityProperty;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
@@ -45,7 +40,8 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
  * Nov 27, 2016
  */
 class NodeTextAlignmentControlGroup implements ControlGroup {
-	static final String TEXT_ALIGNMENT = "textalignment";
+	private static final String TEXT_ALIGNMENT = "textalignment";
+	
 	private static final String[] TEXT_ALIGNMENTS = EnumToStringMapper.getStringValuesOf(TextAlign.class);
 	private BooleanProperty mSetNodeTextAlignment;
 	private ComboProperty mNodeTextAlignment;

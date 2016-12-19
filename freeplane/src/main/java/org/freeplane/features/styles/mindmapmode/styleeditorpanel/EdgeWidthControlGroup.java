@@ -36,7 +36,7 @@ import org.freeplane.features.mode.Controller;
  * Dec 1, 2016
  */
 public class EdgeWidthControlGroup implements ControlGroup {
-	static final String EDGE_WIDTH = "edgewidth";
+	private static final String EDGE_WIDTH = "edgewidth";
 
 	private BooleanProperty mSetEdgeWidth;
 	private NumberProperty mEdgeWidth;
