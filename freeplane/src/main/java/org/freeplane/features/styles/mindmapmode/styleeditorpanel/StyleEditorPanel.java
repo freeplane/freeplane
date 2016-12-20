@@ -176,11 +176,11 @@ public class StyleEditorPanel extends JPanel {
 
 	private List<IPropertyControl> getControls() {
 		final List<IPropertyControl> controls = new ArrayList<IPropertyControl>();
-		
-		for (int i=0; i<controlGroups.length; i++) {
-			controlGroups[i].addControlGroup(controls);
+	
+		for (ControlGroup controlGroup :controlGroups) {
+			controlGroup.addControlGroup(controls);
 		}
-		
+
 		return controls;
 	}
 	
