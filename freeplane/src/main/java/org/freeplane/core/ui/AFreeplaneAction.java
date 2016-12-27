@@ -31,6 +31,7 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.factory.ImageIconFactory;
 
 /**
  * @author Dimitry Polivaev
@@ -97,12 +98,16 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		else{
 			final String iconResource = ResourceController.getResourceController().getProperty(iconKey, null);
 			if (iconResource != null) {
-				final URL url = ResourceController.getResourceController().getResource(iconResource);
+				URL url;
+				url = ResourceController.getResourceController().getResource(iconResource.replaceFirst("(?i)\\.png$", ".svg"));
+				if (url == null)
+					url = ResourceController.getResourceController().getResource(iconResource);
 				if (url == null) {
 					LogUtils.severe("can not load icon '" + iconResource + "'");
 				}
 				else {
-					final ImageIcon icon = new ImageIcon(url);
+					//final ImageIcon icon = new ImageIcon(url);
+					final ImageIcon icon = ImageIconFactory.getInstance().getImageIcon(url);
 					putValue(SMALL_ICON, icon);
 					iconCache.put(iconKey, icon);
 				}

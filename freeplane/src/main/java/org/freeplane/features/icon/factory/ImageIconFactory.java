@@ -56,7 +56,7 @@ public final class ImageIconFactory {
 	}
 
 	public ImageIcon getImageIcon(final URL url) {
-		return getImageIcon(url, 16, 16);
+		return getImageIcon(url, 64, 64);
 	}
 
 	private String createCacheKey(final URL url, final int widthPixels, final int heightPixels) {
