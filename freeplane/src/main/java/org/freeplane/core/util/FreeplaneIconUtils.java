@@ -71,16 +71,16 @@ public class FreeplaneIconUtils {
 		return ResourceController.getResourceController().getBooleanProperty(ANTIALIAS_SVG);
 	}
 
-	public static SVGIcon createSVGIconPrivileged(final URL url, final int widthPixels, final int heightPixels) {
+	public static SVGIcon createSVGIconPrivileged(final URL url, final int heightPixels) {
 		return AccessController.doPrivileged(new PrivilegedAction<SVGIcon>() {
 			@Override
 			public SVGIcon run() {
-				return createSVGIcon(url, widthPixels, heightPixels);
+				return createSVGIcon(url, heightPixels);
 			}
 		});
 	}
 
-	private static SVGIcon createSVGIcon(final URL url, final int widthPixels, final int heightPixels) {
+	private static SVGIcon createSVGIcon(final URL url, final int heightPixels) {
 		if (svgUniverse == null)
 			svgUniverse = new SVGUniverse();
 

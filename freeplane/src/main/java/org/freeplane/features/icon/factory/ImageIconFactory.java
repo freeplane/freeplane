@@ -48,31 +48,31 @@ public final class ImageIconFactory {
 	}
 
 	public ImageIcon getImageIcon(final UIIcon uiIcon) {
-		return getImageIcon(uiIcon.getUrl(), 16, 16);
+		return getImageIcon(uiIcon.getUrl(), 16);
 	}
 
-	public ImageIcon getImageIcon(final UIIcon uiIcon, final int widthPixels, final int heightPixels) {
-		return getImageIcon(uiIcon.getUrl(), widthPixels, heightPixels);
+	public ImageIcon getImageIcon(final UIIcon uiIcon, final int heightPixels) {
+		return getImageIcon(uiIcon.getUrl(), heightPixels);
 	}
 
 	public ImageIcon getImageIcon(final URL url) {
-		return getImageIcon(url, 64, 64);
+		return getImageIcon(url, 64);
 	}
 
-	private String createCacheKey(final URL url, final int widthPixels, final int heightPixels) {
-		return url.toString() + "-" + widthPixels + "x" + heightPixels;
+	private String createCacheKey(final URL url, final int heightPixels) {
+		return url.toString() + "-" + heightPixels;
 	}
 
-	public ImageIcon getImageIcon(final URL url, final int widthPixels, final int heightPixels) {
+	public ImageIcon getImageIcon(final URL url, final int heightPixels) {
 		ImageIcon result = ICON_NOT_FOUND;
 		if (url != null) {
-			final String cacheKey = createCacheKey(url, widthPixels, heightPixels);
+			final String cacheKey = createCacheKey(url, heightPixels);
 			if (ICON_CACHE.containsKey(cacheKey)) {
 				result = ICON_CACHE.get(cacheKey);
 			}
 			else {
 				if (url.getPath().toLowerCase(Locale.ENGLISH).endsWith(".svg")) {
-					result = FreeplaneIconUtils.createSVGIconPrivileged(url, widthPixels, heightPixels);
+					result = FreeplaneIconUtils.createSVGIconPrivileged(url, heightPixels);
 				} else {
 					result = FreeplaneIconUtils.createImageIconPrivileged(url);
 				}
