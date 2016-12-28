@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.icon.factory;
 
-import static org.freeplane.core.ui.LengthUnits.pt;
-
 import java.net.URL;
 import java.util.Locale;
 import java.util.WeakHashMap;
@@ -42,7 +40,7 @@ import org.freeplane.features.icon.UIIcon;
  *
  */
 public final class ImageIconFactory {
-	private static final Quantity<LengthUnits> DEFAULT_ICON_HEIGHT = new Quantity<LengthUnits>(48, pt);
+	private static final Quantity<LengthUnits> DEFAULT_UI_ICON_HEIGHT = ResourceController.getResourceController().getLengthQuantityProperty("toolbar_icon_height");
 	private static final ImageIconFactory FACTORY = new ImageIconFactory();
 	private static final String DEFAULT_IMAGE_PATH = "/images/";
 	private static final ImageIcon ICON_NOT_FOUND = FACTORY.getImageIcon(ResourceController.getResourceController()
@@ -55,11 +53,11 @@ public final class ImageIconFactory {
 	}
 
 	public ImageIcon getImageIcon(final UIIcon uiIcon) {
-		return getImageIcon(uiIcon.getUrl(), DEFAULT_ICON_HEIGHT);
+		return getImageIcon(uiIcon.getUrl(), DEFAULT_UI_ICON_HEIGHT);
 	}
 
 	public ImageIcon getImageIcon(final URL url) {
-		return getImageIcon(url, DEFAULT_ICON_HEIGHT);
+		return getImageIcon(url, DEFAULT_UI_ICON_HEIGHT);
 	}
 
 	private String createCacheKey(final URL url, final int heightPixels) {
