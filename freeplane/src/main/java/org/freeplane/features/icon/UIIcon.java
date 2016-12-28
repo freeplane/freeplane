@@ -95,9 +95,8 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	}
 
 	public Icon getIcon(final NodeModel node) {
-		final Quantity<LengthUnits> iconSize = IconController.getController().getIconSize(node);
-		final int heightPixels = iconSize.toBaseUnitsRounded();
-		return ImageIconFactory.getInstance().getImageIcon(this, heightPixels);
+		final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(node);
+		return ImageIconFactory.getInstance().getImageIcon(this, iconHeight);
 	}
 
 	public KeyStroke getKeyStroke() {

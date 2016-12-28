@@ -19,14 +19,19 @@
  */
 package org.freeplane.features.icon.factory;
 
+import static org.freeplane.core.ui.LengthUnits.pt;
+
 import java.net.URL;
 import java.util.Locale;
 import java.util.WeakHashMap;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.FreeplaneIconUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.UIIcon;
 
 /**
@@ -37,35 +42,39 @@ import org.freeplane.features.icon.UIIcon;
  *
  */
 public final class ImageIconFactory {
+	private static final Quantity<LengthUnits> DEFAULT_ICON_HEIGHT = new Quantity<LengthUnits>(48, pt);
 	private static final ImageIconFactory FACTORY = new ImageIconFactory();
 	private static final String DEFAULT_IMAGE_PATH = "/images/";
-	private static final ImageIcon ICON_NOT_FOUND = new ImageIcon(ResourceController.getResourceController()
+	private static final ImageIcon ICON_NOT_FOUND = FACTORY.getImageIcon(ResourceController.getResourceController()
 	    .getResource(DEFAULT_IMAGE_PATH + "IconNotFound.png"));
-	private final WeakHashMap<String, ImageIcon> ICON_CACHE = new WeakHashMap<String, ImageIcon>();
+	private final WeakValueCache<String, ImageIcon> ICON_CACHE = new WeakValueCache<String, ImageIcon>();
+	private final WeakHashMap<ImageIcon, URL> ICON_URLS = new WeakHashMap<ImageIcon, URL>();
 
 	public static ImageIconFactory getInstance() {
 		return FACTORY;
 	}
 
 	public ImageIcon getImageIcon(final UIIcon uiIcon) {
-		return getImageIcon(uiIcon.getUrl(), 16);
-	}
-
-	public ImageIcon getImageIcon(final UIIcon uiIcon, final int heightPixels) {
-		return getImageIcon(uiIcon.getUrl(), heightPixels);
+		return getImageIcon(uiIcon.getUrl(), DEFAULT_ICON_HEIGHT);
 	}
 
 	public ImageIcon getImageIcon(final URL url) {
-		return getImageIcon(url, 64);
+		return getImageIcon(url, DEFAULT_ICON_HEIGHT);
 	}
 
 	private String createCacheKey(final URL url, final int heightPixels) {
-		return url.toString() + "-" + heightPixels;
+		return url.toString() + "#" + heightPixels;
 	}
 
-	public ImageIcon getImageIcon(final URL url, final int heightPixels) {
+
+	public Icon getImageIcon(UIIcon uiIcon, Quantity<LengthUnits> iconHeight) {
+		return getImageIcon(uiIcon, iconHeight);
+	}
+	
+	public ImageIcon getImageIcon(final URL url, Quantity<LengthUnits> iconHeight) {
 		ImageIcon result = ICON_NOT_FOUND;
 		if (url != null) {
+			final int heightPixels = iconHeight.toBaseUnitsRounded();
 			final String cacheKey = createCacheKey(url, heightPixels);
 			if (ICON_CACHE.containsKey(cacheKey)) {
 				result = ICON_CACHE.get(cacheKey);
@@ -77,8 +86,19 @@ public final class ImageIconFactory {
 					result = FreeplaneIconUtils.createImageIconPrivileged(url);
 				}
 				ICON_CACHE.put(cacheKey, result);
+				ICON_URLS.put(result, url);
 			}
 		}
 		return result;
+	}
+
+	public ImageIcon getScaledImageIcon(final ImageIcon knownIcon, Quantity<LengthUnits> iconHeight) {
+		if(iconHeight.toBaseUnitsRounded() == knownIcon.getIconHeight())
+			return knownIcon;
+		final URL iconUrl = ICON_URLS.get(knownIcon);
+		if (iconUrl != null)
+			return getImageIcon(iconUrl, iconHeight);
+		else
+			throw new IllegalArgumentException("unknown icon");
 	}
 }
