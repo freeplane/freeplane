@@ -92,10 +92,14 @@ public final class ImageIconFactory {
 		return result;
 	}
 
-	public ImageIcon getScaledImageIcon(final ImageIcon knownIcon, Quantity<LengthUnits> iconHeight) {
-		if(iconHeight.toBaseUnitsRounded() == knownIcon.getIconHeight())
-			return knownIcon;
-		final URL iconUrl = ICON_URLS.get(knownIcon);
+	public boolean canScaleIcon(final Icon icon) {
+		return ICON_URLS.containsKey(icon);
+		
+	}
+	public Icon getScaledIcon(final Icon icon, Quantity<LengthUnits> iconHeight) {
+		if(iconHeight.toBaseUnitsRounded() == icon.getIconHeight())
+			return icon;
+		final URL iconUrl = ICON_URLS.get(icon);
 		if (iconUrl != null)
 			return getImageIcon(iconUrl, iconHeight);
 		else
