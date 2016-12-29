@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="4.7207mm" width="6.567mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 23.26876 16.727014" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <defs>
+  <linearGradient id="a" y2="671.42" gradientUnits="userSpaceOnUse" x2="192.09" y1="689.43" x1="174.33">
+   <stop stop-color="#9f61c2" offset="0"/>
+   <stop stop-color="#2c1598" offset="1"/>
+  </linearGradient>
+ </defs>
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:title/>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g transform="translate(-281.77 -44.135)">
+  <g transform="translate(-151.98 -649.54)">
+   <g style="color:#000000" stroke-opacity=".78453" fill-rule="evenodd" transform="matrix(1.3021 0 0 .93604 224.75 45.367)" stroke="#800080" stroke-width=".77007" fill="#db71c9">
+    <g style="color:#000000" stroke-opacity=".78453" fill-rule="evenodd" transform="translate(-13.77 21.12)" stroke="#800080" stroke-width=".77007" fill="#db71c9">
+     <rect style="color:#000000" stroke-opacity=".78453" fill-rule="evenodd" height="17.1" width="17.1" stroke="#550084" y="671.87" x="174.66" stroke-width=".77007" fill="url(#a)"/>
+    </g>
+   </g>
+   <text font-family="Arial" xml:space="preserve" font-size="12.32px" stroke="#ffffff" stroke-linecap="square" y="706.46899" x="434.61813" stroke-width=".23401" fill="#ffffff"><tspan font-family="Arial" font-weight="bold" font-size="12.32px" stroke="#ffffff" stroke-linecap="square" y="706.46899" x="434.61813" stroke-width=".23401" fill="#ffffff">F12</tspan></text>
+  </g>
+ </g>
+</svg>
