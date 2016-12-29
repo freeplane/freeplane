@@ -66,7 +66,7 @@ public final class ImageIconFactory {
 
 
 	public Icon getImageIcon(UIIcon uiIcon, Quantity<LengthUnits> iconHeight) {
-		return getImageIcon(uiIcon, iconHeight);
+		return getImageIcon(uiIcon.getUrl(), iconHeight);
 	}
 	
 	public ImageIcon getImageIcon(final URL url, Quantity<LengthUnits> iconHeight) {
