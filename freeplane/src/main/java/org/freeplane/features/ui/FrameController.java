@@ -589,13 +589,11 @@ abstract public class FrameController implements ViewController {
 		final int userDefinedMenuItemFontSize = ResourceController.getResourceController().getIntProperty(UITools.MENU_ITEM_FONT_SIZE_PROPERTY, unknown);
 		double scalingFactor = 0.8;
 		
-		final int lookAndFeelDefaultMenuItemFontSize;
+		int lookAndFeelDefaultMenuItemFontSize = 10;
 		Font uiDefaultMenuItemFont = UIManager.getDefaults().getFont("MenuItem.font");
 		if(uiDefaultMenuItemFont != null) {
 			lookAndFeelDefaultMenuItemFontSize = uiDefaultMenuItemFont.getSize();
 		}
-		else
-			lookAndFeelDefaultMenuItemFontSize = 12;
 		
 		if(userDefinedMenuItemFontSize == unknown){
 			final long defaultMenuItemSize = Math.round(lookAndFeelDefaultMenuItemFontSize * scalingFactor);
