@@ -87,6 +87,7 @@
 				<boolean name="resources_use_default_font_for_notes_too" />
 				<boolean name="resources_use_margin_top_zero_for_notes" />
 				<number name="max_menu_item_count" min="10" />
+				<number name="menuItemFontSize" min="3" />
 				<length name="toolbar_icon_height" defaultUnit = "pt" min="0" max = "1000" step = "0.1"/>
 			</separator>
 			<separator name="status">

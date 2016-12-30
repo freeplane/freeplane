@@ -569,11 +569,13 @@ abstract public class FrameController implements ViewController {
 		final UIDefaults uiDefaults = UIManager.getDefaults();
 		final UIDefaults lookAndFeelDefaults = UIManager.getLookAndFeel().getDefaults();
 		
+		double scalingFactor = calculateFontSizeScalingFactor();
+		
 		for (Object key : keys) {
 		    if (isFontKey(key)) {
 				Font font = uiDefaults.getFont(key);
 				if (font != null) {
-				    font = UITools.scaleFontInt(font, 0.8);
+				    font = UITools.scaleFontInt(font, scalingFactor);
 				    UIManager.put(key, font);
 				    lookAndFeelDefaults.put(key, font);
 				}
@@ -581,6 +583,29 @@ abstract public class FrameController implements ViewController {
 		
 		}
     }
+
+	private static double calculateFontSizeScalingFactor() {
+		final int unknown = -1;
+		final int userDefinedMenuItemFontSize = ResourceController.getResourceController().getIntProperty(UITools.MENU_ITEM_FONT_SIZE_PROPERTY, unknown);
+		double scalingFactor = 0.8;
+		
+		final int lookAndFeelDefaultMenuItemFontSize;
+		Font uiDefaultMenuItemFont = UIManager.getDefaults().getFont("MenuItem.font");
+		if(uiDefaultMenuItemFont != null) {
+			lookAndFeelDefaultMenuItemFontSize = uiDefaultMenuItemFont.getSize();
+		}
+		else
+			lookAndFeelDefaultMenuItemFontSize = 12;
+		
+		if(userDefinedMenuItemFontSize == unknown){
+			final long defaultMenuItemSize = Math.round(lookAndFeelDefaultMenuItemFontSize * scalingFactor);
+			ResourceController.getResourceController().setDefaultProperty(UITools.MENU_ITEM_FONT_SIZE_PROPERTY, Long.toString(defaultMenuItemSize));
+		}
+		else{
+			scalingFactor = ((double)userDefinedMenuItemFontSize) / lookAndFeelDefaultMenuItemFontSize;
+		}
+		return scalingFactor;
+	}
 
 	private static boolean isFontKey(Object key) {
 		return key != null && key.toString().toLowerCase().endsWith("font");

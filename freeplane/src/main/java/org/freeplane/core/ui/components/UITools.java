@@ -88,6 +88,9 @@ import org.freeplane.main.application.FreeplaneSplashModern;
  * @since 29.12.2008
  */
 public class UITools {
+	public static final String MENU_ITEM_FONT_SIZE_PROPERTY = "menuItemFontSize";
+	public static final String MAIN_FREEPLANE_FRAME = "mainFreeplaneFrame";
+
 	@SuppressWarnings("serial")
     public static final class InsertEolAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
@@ -96,7 +99,6 @@ public class UITools {
         }
     }
 
-	public static final String MAIN_FREEPLANE_FRAME = "mainFreeplaneFrame";
 
 	public static void addEscapeActionToDialog(final JDialog dialog) {
 		class EscapeAction extends AbstractAction {
@@ -696,6 +698,10 @@ public class UITools {
 		}
 		else
 			runnable.run();
+	}
+
+	public static float getUIFontSize(double scalingFactor) {
+		return (int)Math.round(FONT_SCALE_FACTOR*scalingFactor * ResourceController.getResourceController().getIntProperty(MENU_ITEM_FONT_SIZE_PROPERTY));
 	}
 
 }

@@ -79,6 +79,8 @@ import org.freeplane.features.ui.FrameController;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
+	private static final float ARROW_SIZE = UITools.getUIFontSize(0.8);
+
 	private final class IconActionBuilder implements EntryVisitor {
 		private final HashMap<String, Entry> submenuEntries = new HashMap<String, Entry>();
 		final private ModeController modeController;
@@ -339,7 +341,7 @@ public class MIconController extends IconController {
 				return new Point(getWidth(), 0);
 			}
 		};
-		menu.setFont(menu.getFont().deriveFont(8F));
+		menu.setFont(menu.getFont().deriveFont(ARROW_SIZE));
 		menu.setMargin(new Insets(0, 0, 0, 0));
 		menu.setIcon(group.getGroupIcon().getIcon());
 		for (final MindIcon icon : group.getIcons()) {
