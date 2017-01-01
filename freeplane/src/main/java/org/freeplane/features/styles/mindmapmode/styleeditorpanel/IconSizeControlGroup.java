@@ -6,7 +6,6 @@ import java.util.List;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.QuantityProperty;
-import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.IconController;
