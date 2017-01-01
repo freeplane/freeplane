@@ -1,7 +1,8 @@
 dependencies {
     compile project(':freeplane')
     compile project(':freeplane_plugin_jsyntaxpane')
-    compile group: 'org.scilab.forge', name: 'jlatexmath', version:'1.0.2'
+    // from flatDir "localGitDepsRepository" (jlatexmath-1.0.3 is not in maven!)
+    compile ':jlatexmath-1.0.3'
 }
 
 jar {

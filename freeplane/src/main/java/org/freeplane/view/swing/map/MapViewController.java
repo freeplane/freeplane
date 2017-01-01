@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.FocusManager;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
@@ -921,6 +922,17 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	public void onQuitApplication() {
 		ResourceController.getResourceController().setProperty("antialiasEdges", (antialiasEdges ? "true" : "false"));
 		ResourceController.getResourceController().setProperty("antialiasAll", (antialiasAll ? "true" : "false"));
+	}
+
+	@Override
+	public void moveFocusFromDescendantToSelection(Component ancestor) {
+		Component focusOwner = FocusManager.getCurrentManager().getFocusOwner();
+		boolean toolbarLostFocus = focusOwner != null && SwingUtilities.isDescendingFrom(focusOwner, ancestor);
+		if (toolbarLostFocus) {
+			final Component selectedComponent = getSelectedComponent();
+			if (selectedComponent != null)
+				selectedComponent.requestFocus();
+		}
 	}
 
 }
