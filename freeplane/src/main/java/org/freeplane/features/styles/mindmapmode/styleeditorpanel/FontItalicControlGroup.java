@@ -30,6 +30,8 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Dec 1, 2016
@@ -71,7 +73,7 @@ public class FontItalicControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls) {
+	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		mSetNodeFontItalic = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetNodeFontItalic);
 		mNodeFontItalic = new BooleanProperty(NODE_FONT_ITALIC);

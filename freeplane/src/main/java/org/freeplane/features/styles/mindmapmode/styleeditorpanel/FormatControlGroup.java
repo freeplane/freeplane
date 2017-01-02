@@ -35,6 +35,8 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.mindmapmode.EditablePatternComboProperty;
 import org.freeplane.features.text.TextController;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Dec 1, 2016
@@ -76,7 +78,7 @@ public class FormatControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls) {
+	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
         mSetNodeFormat = new BooleanProperty(ControlGroup.SET_RESOURCE);
         controls.add(mSetNodeFormat);
         mNodeFormat = new EditablePatternComboProperty(NODE_FORMAT,

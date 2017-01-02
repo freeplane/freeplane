@@ -30,6 +30,8 @@ import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Dec 18, 2016
@@ -64,7 +66,7 @@ class NodeFontHyperLinkControlGroup implements ControlGroup {
 		}
 	}
 	
-	public void addControlGroup(final List<IPropertyControl> controls) {
+	public void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		mSetNodeFontHyperlink = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetNodeFontHyperlink);
 		mNodeFontHyperlink = new BooleanProperty(NODE_FONT_HYPERLINK);

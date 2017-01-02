@@ -174,16 +174,6 @@ public class StyleEditorPanel extends JPanel {
 		});
 	}
 
-	private List<IPropertyControl> getControls() {
-		final List<IPropertyControl> controls = new ArrayList<IPropertyControl>();
-	
-		for (ControlGroup controlGroup :controlGroups) {
-			controlGroup.addControlGroup(controls);
-		}
-
-		return controls;
-	}
-	
 	/**
 	 * Creates all controls and adds them to the frame.
 	 * @param modeController 
@@ -193,27 +183,32 @@ public class StyleEditorPanel extends JPanel {
 			return;
 		final String form = "right:max(20dlu;p), 2dlu, p, 1dlu,right:max(20dlu;p), 4dlu, 80dlu, 7dlu";
 		final FormLayout rightLayout = new FormLayout(form, "");
-		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
-		rightBuilder.border(Paddings.DLU2);
-		new SeparatorProperty("OptionPanel.separator.NodeStyle").layout(rightBuilder);
+		final DefaultFormBuilder formBuilder = new DefaultFormBuilder(rightLayout);
+		formBuilder.border(Paddings.DLU2);
+		new SeparatorProperty("OptionPanel.separator.NodeStyle").layout(formBuilder);
 		if (addStyleBox) {
-			addAutomaticLayout(rightBuilder);
-			addStyleBox(rightBuilder);
+			addAutomaticLayout(formBuilder);
+			addStyleBox(formBuilder);
 		}
-		mNodeStyleButton = addStyleButton(rightBuilder, "actual_node_styles", modeController.getAction(ManageNodeConditionalStylesAction.NAME));
+		mNodeStyleButton = addStyleButton(formBuilder, "actual_node_styles", modeController.getAction(ManageNodeConditionalStylesAction.NAME));
 		if (addStyleBox) {
-			mMapStyleButton = addStyleButton(rightBuilder, "actual_map_styles", modeController.getAction(ManageMapConditionalStylesAction.NAME));
+			mMapStyleButton = addStyleButton(formBuilder, "actual_map_styles", modeController.getAction(ManageMapConditionalStylesAction.NAME));
 		}
-		mControls = getControls();
+		final List<IPropertyControl> controls = new ArrayList<IPropertyControl>();
+		
+		for (ControlGroup controlGroup :controlGroups) {
+			controlGroup.addControlGroup(controls, formBuilder);
+		}
+		mControls = controls;
 		for (final IPropertyControl control : mControls) {
-			control.layout(rightBuilder);
+			control.layout(formBuilder);
 		}
-		add(rightBuilder.getPanel(), BorderLayout.CENTER);
+		add(formBuilder.getPanel(), BorderLayout.CENTER);
 		addListeners();
 		setFont(this, FONT_SIZE);
 	}
 
-	private JButton addStyleButton(DefaultFormBuilder rightBuilder, String label, AFreeplaneAction action) {
+	private JButton addStyleButton(DefaultFormBuilder formBuilder, String label, AFreeplaneAction action) {
 	    final JButton button = new JButton(){
 			private static final long serialVersionUID = 1L;
 			{
@@ -226,26 +221,26 @@ public class StyleEditorPanel extends JPanel {
 	    final String labelText = TextUtils.getText(label);
 	    UITools.addTitledBorder(button, labelText, FONT_SIZE);
 		TranslatedElement.BORDER.setKey(button, label);
-	    rightBuilder.append(button, rightBuilder.getColumnCount());
-		rightBuilder.nextLine();
+	    formBuilder.append(button, formBuilder.getColumnCount());
+		formBuilder.nextLine();
 		return button;
     }
 
-	private void addStyleBox(final DefaultFormBuilder rightBuilder) {
+	private void addStyleBox(final DefaultFormBuilder formBuilder) {
 	    mStyleBox = uiFactory.createStyleBox();
 	    mSetStyle = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		final StyleChangeListener listener = new StyleChangeListener();
 		mSetStyle.addPropertyChangeListener(listener);
-		mSetStyle.layout(rightBuilder);
-	    rightBuilder.append(new JLabel(TextUtils.getText("style")));
-	    rightBuilder.append(mStyleBox);
-	    rightBuilder.nextLine();
+		mSetStyle.layout(formBuilder);
+	    formBuilder.append(new JLabel(TextUtils.getText("style")));
+	    formBuilder.append(mStyleBox);
+	    formBuilder.nextLine();
     }
 
 	private JComboBox mAutomaticLayoutComboBox;
 	private JComboBox mAutomaticEdgeColorComboBox;
 	private Container mStyleBox;
-	private void addAutomaticLayout(final DefaultFormBuilder rightBuilder) {
+	private void addAutomaticLayout(final DefaultFormBuilder formBuilder) {
 		{
 		if(mAutomaticLayoutComboBox == null){
 			 TranslatedObject[] automaticLayoutTypes = TranslatedObject.fromEnum(AutomaticLayout.class);
@@ -267,7 +262,7 @@ public class StyleEditorPanel extends JPanel {
 				}
 			});
 		}
-	    appendLabeledComponent(rightBuilder, "AutomaticLayoutAction.text", mAutomaticLayoutComboBox);
+	    appendLabeledComponent(formBuilder, "AutomaticLayoutAction.text", mAutomaticLayoutComboBox);
 		}
 		{
 			
@@ -296,17 +291,17 @@ public class StyleEditorPanel extends JPanel {
 					}
 				});
 			}
-			appendLabeledComponent(rightBuilder, "AutomaticEdgeColorHookAction.text", mAutomaticEdgeColorComboBox);
+			appendLabeledComponent(formBuilder, "AutomaticEdgeColorHookAction.text", mAutomaticEdgeColorComboBox);
 		}
 	}
 
-	private void appendLabeledComponent(final DefaultFormBuilder rightBuilder, String labelKey, Component component) {
+	private void appendLabeledComponent(final DefaultFormBuilder formBuilder, String labelKey, Component component) {
 		final String text = TextUtils.getText(labelKey);
 	    final JLabel label = new JLabel(text);
 		TranslatedElement.TEXT.setKey(label, labelKey);
-		rightBuilder.append(label, 5);
-	    rightBuilder.append(component);
-	    rightBuilder.nextLine();
+		formBuilder.append(label, 5);
+	    formBuilder.append(component);
+	    formBuilder.nextLine();
 	}
 
 	private void setFont(Container c, float size) {
