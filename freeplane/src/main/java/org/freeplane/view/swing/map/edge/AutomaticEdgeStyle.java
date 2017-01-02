@@ -20,8 +20,8 @@ import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
 public class AutomaticEdgeStyle {
-	private NodeModel levelStyleNode;
-	private EdgeController edgeController;
+	private Color color;
+
 	public AutomaticEdgeStyle(NodeView node){
 		MapView map = node.getMap();
 		ModeController modeController = map.getModeController();
@@ -59,14 +59,13 @@ public class AutomaticEdgeStyle {
 		if(SummaryNode.isHidden(node.getModel()))
 			level++;
 		
-		final IStyle levelStyle = automaticLayoutController.getStyle(map.getModel(), level, true);
-		levelStyleNode = mapStyleNodes.getStyleNode(levelStyle);
-		edgeController = modeController.getExtension(EdgeController.class);
+		EdgeController edgeController = modeController.getExtension(EdgeController.class);
+		color = edgeController.areEdgeColorsAvailable(map.getModel()) ? edgeController.getEdgeColor(map.getModel(), level) : EdgeController.STANDARD_EDGE_COLOR;
 		
 		
 	}
 	
 	public Color getColor(){
-		return levelStyleNode != null ? edgeController.getColor(levelStyleNode) : EdgeController.STANDARD_EDGE_COLOR;
+		return color;
 	}
 }

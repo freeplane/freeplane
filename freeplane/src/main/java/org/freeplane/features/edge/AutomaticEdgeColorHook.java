@@ -25,6 +25,7 @@ import org.freeplane.features.edge.AutomaticEdgeColor.Rule;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.mode.Controller;
@@ -59,13 +60,12 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 				final EdgeModel edgeModel = EdgeModel.createEdgeModel(child);
 				if(null == edgeModel.getColor()){
 					final MEdgeController controller = (MEdgeController) EdgeController.getController();
-					final AutomaticEdgeColor model = (AutomaticEdgeColor) getMapHook(parent.getMap());
+					final MapModel map = parent.getMap();
+					final AutomaticEdgeColor model = (AutomaticEdgeColor) getMapHook(map);
 					model.increaseColorCounter();
-					int colorCounter = model.getColorCounter();
-					AutomaticLayoutController automaticLatoutController = modeController.getExtension(AutomaticLayoutController.class);
-					NodeModel styleNode = automaticLatoutController.getStyleNode(parent.getMap(), colorCounter, true);
-					if(styleNode != null){
-						controller.setColor(child, controller.getColor(styleNode));
+					if(controller.areEdgeColorsAvailable(map)){
+						int colorCounter = model.getColorCounter();
+						controller.setColor(child, controller.getEdgeColor(map, colorCounter));
 					}
 				}
 			}
