@@ -233,7 +233,7 @@ class StyleControlGroup implements ControlGroup{
 		});
 		appendLabeledComponent(formBuilder, "AutomaticEdgeColorHookAction.text", mAutomaticEdgeColorComboBox);
 		
-			mEditEdgeColorsBtn= TranslatedElementFactory.createButton("editColors");
+			mEditEdgeColorsBtn= TranslatedElementFactory.createButton("editEdgeColors");
 			mEditEdgeColorsBtn.addActionListener(new ActionListener() {
 				
 				@Override
