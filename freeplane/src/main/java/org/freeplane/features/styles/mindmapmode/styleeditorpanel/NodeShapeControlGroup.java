@@ -36,6 +36,8 @@ import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Nov 27, 2016
@@ -95,7 +97,7 @@ class NodeShapeControlGroup implements ControlGroup {
 		}
 	}
 	
-	public void addControlGroup(final List<IPropertyControl> controls) {
+	public void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		mSetNodeShape = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetNodeShape);
 		mNodeShape = new ComboProperty(NODE_SHAPE, EnumToStringMapper.getStringValuesOf(NodeStyleModel.Shape.class));

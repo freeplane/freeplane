@@ -36,6 +36,8 @@ import org.freeplane.features.cloud.mindmapmode.MCloudController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 
 /**
  * @author Joe Berry
@@ -109,7 +111,7 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 	}
 	
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls) {
+	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		addCloudColorControl(controls);
 		controls.add(new NextLineProperty());
 		controls.add(new NextColumnProperty(2));

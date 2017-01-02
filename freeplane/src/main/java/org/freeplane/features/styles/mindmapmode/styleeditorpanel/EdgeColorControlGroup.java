@@ -32,6 +32,8 @@ import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.NodeModel;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Nov 27, 2016
@@ -66,7 +68,7 @@ class EdgeColorControlGroup implements ControlGroup {
 			}
 		}
 	}
-	public void addControlGroup(final List<IPropertyControl> controls) {
+	public void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		mSetEdgeColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetEdgeColor);
 		mEdgeColor = new ColorProperty(EdgeColorControlGroup.EDGE_COLOR, ColorUtils.colorToString(EdgeController.STANDARD_EDGE_COLOR));

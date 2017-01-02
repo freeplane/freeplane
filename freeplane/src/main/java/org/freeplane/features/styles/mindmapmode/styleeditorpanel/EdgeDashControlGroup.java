@@ -32,6 +32,8 @@ import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Dec 1, 2016
@@ -75,7 +77,7 @@ public class EdgeDashControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls) {
+	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		mSetEdgeDash = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetEdgeDash);
 		mEdgeDash = ComboProperty.of(EDGE_DASH, DashVariant.class);

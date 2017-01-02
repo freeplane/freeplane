@@ -33,6 +33,8 @@ import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Nov 27, 2016
@@ -67,7 +69,7 @@ class MinNodeWidthControlGroup implements ControlGroup {
 		}
 	}
 	
-	public void addControlGroup(final List<IPropertyControl> controls) {
+	public void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		mSetMinNodeWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetMinNodeWidth);
 		mMinNodeWidth = new QuantityProperty<LengthUnits>(MIN_NODE_WIDTH, 0, 100000, 0.1, LengthUnits.px);

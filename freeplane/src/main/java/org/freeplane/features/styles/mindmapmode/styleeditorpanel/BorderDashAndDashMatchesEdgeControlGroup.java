@@ -33,6 +33,8 @@ import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Dec 17, 2016
@@ -99,7 +101,7 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
 	}
 	
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls) {
+	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		addBorderDashMatchesEdgeDashControl(controls);
 		addBorderDashControl(controls);
 	}
