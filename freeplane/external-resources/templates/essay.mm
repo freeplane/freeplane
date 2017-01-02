@@ -2,6 +2,7 @@
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node LOCALIZED_TEXT="new_mindmap" STYLE="oval" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1283093380553">
 <hook NAME="MapStyle" max_node_width="600">
+<properties edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff"/>
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="circle" >
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
