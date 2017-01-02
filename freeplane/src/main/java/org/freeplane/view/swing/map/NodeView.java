@@ -65,6 +65,7 @@ import org.freeplane.features.map.HideChildSubtree;
 import org.freeplane.features.map.HistoryInformationModel;
 import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
@@ -1487,11 +1488,11 @@ public class NodeView extends JComponent implements INodeView {
 				index = parentNode.getIndex(model) + 1;
 			else
 				index = model.getNodeLevel(false) + (model.isHiddenSummary() ? 1 : 0);
-			ModeController modeController = getMap().getModeController();
-			AutomaticLayoutController automaticLayoutController = modeController.getExtension(AutomaticLayoutController.class);
-			NodeModel styleNode = automaticLayoutController.getStyleNode(map.getModel(), index, true);
-			if(styleNode != null){
-				Color color = modeController.getExtension(EdgeController.class).getColor(styleNode);
+			final MapModel mapModel = map.getModel();
+			ModeController modeController = map.getModeController();
+			EdgeController edgeController = modeController.getExtension(EdgeController.class);
+			if(edgeController.areEdgeColorsAvailable(mapModel)){
+				Color color = edgeController.getEdgeColor(mapModel, index);
 				edgeColor.setCache(color);
 				return color;
 			}

@@ -11,6 +11,11 @@ Presentations
 Export for java web start
 
 ===============================
+1.5.19
+===============================
+Rename standard template to standard-1.5
+
+===============================
 1.5.18
 ===============================
 Bug fixes

@@ -1,7 +1,8 @@
-<map version="freeplane 1.5.3">
+<map version="freeplane 1.6.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node LOCALIZED_TEXT="new_mindmap">
 <hook NAME="MapStyle">
+<properties edgeColorConfiguration="#808080ff,#000000ff,#ff0033ff,#009933ff,#3333ffff,#ff6600ff,#cc00ccff,#ffbf00ff,#00ff99ff,#0099ffff,#996600ff,#000000ff,#cc0066ff,#33ff00ff,#ff9999ff,#0000ccff,#cccc00ff,#0099ccff,#006600ff,#ff00ccff,#00cc00ff,#0066ccff,#00ffffff"/>
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24 pt"  TEXT_SHORTENED="true">
 <font SIZE="24"/>
@@ -37,72 +38,6 @@
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#000000" STYLE="oval" UNIFORM_SHAPE="true" MAX_WIDTH_QUANTITY="120.0 pt" MIN_WIDTH_QUANTITY="120.0 pt">
 <font SIZE="24" ITALIC="true"/>
 <edge STYLE="bezier" WIDTH="3"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,1">
-<edge COLOR="#000000"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,2">
-<edge COLOR="#ff0033"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,3">
-<edge COLOR="#009933"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,4">
-<edge COLOR="#3333ff"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,5">
-<edge COLOR="#ff6600"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,6">
-<edge COLOR="#cc00cc"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,7">
-<edge COLOR="#ffbf00"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,8">
-<edge COLOR="#00ff99"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,9">
-<edge COLOR="#0099ff"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,10">
-<edge COLOR="#996600"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,11">
-<edge COLOR="#000000"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,12">
-<edge COLOR="#cc0066"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,13">
-<edge COLOR="#33ff00"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,14">
-<edge COLOR="#ff9999"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,15">
-<edge COLOR="#0000cc"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,16">
-<edge COLOR="#cccc00"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,17">
-<edge COLOR="#0099cc"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,18">
-<edge COLOR="#006600"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,19">
-<edge COLOR="#ff00cc"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,20">
-<edge COLOR="#00cc00"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,21">
-<edge COLOR="#0066cc"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,22">
-<edge COLOR="#00ffff"/>
 </stylenode>
 </stylenode>
 </stylenode>

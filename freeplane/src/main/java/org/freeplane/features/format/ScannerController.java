@@ -19,6 +19,15 @@
  */
 package org.freeplane.features.format;
 
+import static org.freeplane.features.format.IFormattedObject.TYPE_DATE;
+import static org.freeplane.features.format.IFormattedObject.TYPE_DATETIME;
+import static org.freeplane.features.format.IFormattedObject.TYPE_NUMBER;
+import static org.freeplane.features.format.Parser.STYLE_DATE;
+import static org.freeplane.features.format.Parser.STYLE_DECIMAL;
+import static org.freeplane.features.format.Parser.STYLE_ISODATE;
+import static org.freeplane.features.format.Parser.STYLE_NUMBERLITERAL;
+import static org.freeplane.features.format.Parser.createParser;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -175,36 +184,31 @@ public class ScannerController implements IExtension, IFreeplanePropertyListener
     private Scanner createScanner_en() {
 		final Scanner s = new Scanner(new String[] { "en" }, true);
 		s.setFirstChars("+-0123456789.");
-		final String tNumber = IFormattedObject.TYPE_NUMBER;
-		final String tDate = IFormattedObject.TYPE_DATETIME;
 		final Locale loc = new Locale("en");
-		s.addParser(Parser.createParser(Parser.STYLE_DECIMAL, tNumber, null, loc, "supports locale specific numbers"));
+		s.addParser(Parser.createParser(STYLE_DECIMAL, TYPE_NUMBER, null, loc, "supports locale specific numbers"));
 		// number literals are a subset of english localized decimal parser
-		// s.addParser(Parser.createParser(Parser.STYLE_NUMBERLITERAL, tNumber, null, loc, "numbers like 12345.12"));
-		s.addParser(Parser.createParser(Parser.STYLE_ISODATE, tDate, null, loc, "ISO reader for date and date/time"));
-		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "M/d", loc, "completes date with current year"));
-		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "M/d/y", loc, "parses 4/21/11 or 4/21/2011"));
-		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "M/d/y H:m", loc, "parses datetime"));
-		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "M/d/y H:m:s", loc, "parses datetime"));
-        s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "H:m", loc, "parses time, sets date to today"));
+		s.addParser(Parser.createParser(STYLE_DATE, TYPE_DATE, "M/d", loc, "completes date with current year"));
+		s.addParser(Parser.createParser(STYLE_DATE, TYPE_DATE, "M/d/y", loc, "parses 4/21/11 or 4/21/2011"));
+		s.addParser(Parser.createParser(STYLE_DATE, TYPE_DATETIME, "M/d/y H:m", loc, "parses datetime"));
+		s.addParser(Parser.createParser(STYLE_DATE, TYPE_DATETIME, "M/d/y H:m:s", loc, "parses datetime"));
+        s.addParser(Parser.createParser(STYLE_DATE, TYPE_DATETIME, "H:m", loc, "parses time, sets date to today"));
+        s.addParser(Parser.createParser(STYLE_ISODATE, TYPE_DATETIME, null, loc, "ISO reader for date and date/time"));
 		return s;
 	}
 
 	private Scanner createScanner_de() {
 		final Scanner s = new Scanner(new String[] { "de" }, false);
 		s.setFirstChars("+-0123456789,.");
-		final String tNumber = IFormattedObject.TYPE_NUMBER;
-		final String tDate = IFormattedObject.TYPE_DATETIME;
 		final Locale loc = new Locale("de");
-		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M", loc, "completes date with current year"));
-		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M.y", loc, "parses 21.4.11 or 21.4.2011"));
-		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M.y H:m", loc, "parses datetime"));
-		s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M.y H:m:s", loc, "parses datetime"));
-        s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "H:m", loc, "parses time, sets date to today"));
-		s.addParser(Parser.createParser(Parser.STYLE_DECIMAL, tNumber, null, loc,
+		s.addParser(createParser(STYLE_DATE, TYPE_DATE, "d.M", loc, "completes date with current year"));
+		s.addParser(createParser(STYLE_DATE, TYPE_DATE, "d.M.y", loc, "parses 21.4.11 or 21.4.2011"));
+		s.addParser(createParser(STYLE_DATE, TYPE_DATETIME, "d.M.y H:m", loc, "parses datetime"));
+		s.addParser(createParser(STYLE_DATE, TYPE_DATETIME, "d.M.y H:m:s", loc, "parses datetime"));
+        s.addParser(createParser(STYLE_DATE, TYPE_DATETIME, "H:m", loc, "parses time, sets date to today"));
+		s.addParser(createParser(STYLE_DECIMAL, TYPE_NUMBER, null, loc,
 		    "uses comma as decimal separator: 1.234,12"));
-		s.addParser(Parser.createParser(Parser.STYLE_ISODATE, tDate, null, loc, "ISO reader for date and date/time"));
-		s.addParser(Parser.createParser(Parser.STYLE_NUMBERLITERAL, tNumber, null, loc,
+		s.addParser(createParser(STYLE_ISODATE, TYPE_DATETIME, null, loc, "ISO reader for date and date/time"));
+		s.addParser(createParser(STYLE_NUMBERLITERAL, TYPE_NUMBER, null, loc,
 		    "support dot as decimal separator (if nothing else matches)"));
 		return s;
 	}
@@ -212,19 +216,16 @@ public class ScannerController implements IExtension, IFreeplanePropertyListener
 	private Scanner createScanner_hr() {
 	    final Scanner s = new Scanner(new String[] { "hr" }, false);
 	    s.setFirstChars("+-0123456789,.");
-	    final String tNumber = IFormattedObject.TYPE_NUMBER;
-	    final String tDate = IFormattedObject.TYPE_DATETIME;
 	    final Locale loc = new Locale("hr");
-	    s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M", loc, "completes date with current year"));
-	    s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M.y", loc, "parses 21.4.11 or 21.4.2011"));
-	    s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M.y.", loc, "parses 21.4.11. or 21.4.2011."));
-        s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M.y. H:m.", loc, "parses datetime"));
-        s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "d.M.y. H:m:s", loc, "parses datetime"));
-	    s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, "H:m", loc, "parses time, sets date to today"));
-	    s.addParser(Parser.createParser(Parser.STYLE_DECIMAL, tNumber, null, loc,
+	    s.addParser(createParser(STYLE_DATE, TYPE_DATE, "d.M", loc, "completes date with current year"));
+	    s.addParser(createParser(STYLE_DATE, TYPE_DATE, "d.M.y.", loc, "parses 21.4.11. or 21.4.2011."));
+        s.addParser(createParser(STYLE_DATE, TYPE_DATETIME, "d.M.y. H:m.", loc, "parses datetime"));
+        s.addParser(createParser(STYLE_DATE, TYPE_DATETIME, "d.M.y. H:m:s", loc, "parses datetime"));
+	    s.addParser(createParser(STYLE_DATE, TYPE_DATETIME, "H:m", loc, "parses time, sets date to today"));
+	    s.addParser(createParser(STYLE_DECIMAL, TYPE_NUMBER, null, loc,
 	            "uses comma as decimal separator: 1.234,12"));
-	    s.addParser(Parser.createParser(Parser.STYLE_ISODATE, tDate, null, loc, "ISO reader for date and date/time"));
-	    s.addParser(Parser.createParser(Parser.STYLE_NUMBERLITERAL, tNumber, null, loc,
+	    s.addParser(createParser(STYLE_ISODATE, TYPE_DATETIME, null, loc, "ISO reader for date and date/time"));
+	    s.addParser(createParser(STYLE_NUMBERLITERAL, TYPE_NUMBER, null, loc,
 	            "support dot as decimal separator (if nothing else matches)"));
 	    return s;
 	}
@@ -232,22 +233,20 @@ public class ScannerController implements IExtension, IFreeplanePropertyListener
     private Scanner createScanner(Locale loc) {
         final Scanner s = new Scanner(new String[] { loc.toString() }, false);
         s.setFirstChars("+-0123456789,.");
-        final String tNumber = IFormattedObject.TYPE_NUMBER;
-        final String tDate = IFormattedObject.TYPE_DATETIME;
         final DateFormat shortDateTimeFormat = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT,
             loc);
         if (shortDateTimeFormat instanceof SimpleDateFormat) {
-            s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate,
+            s.addParser(createParser(STYLE_DATE, TYPE_DATETIME,
                 ((SimpleDateFormat) shortDateTimeFormat).toPattern(), loc, "short datetime format"));
         }
         final DateFormat shortDateFormat = SimpleDateFormat.getDateInstance(DateFormat.SHORT, loc);
         if (shortDateFormat instanceof SimpleDateFormat) {
-            s.addParser(Parser.createParser(Parser.STYLE_DATE, tDate, ((SimpleDateFormat) shortDateFormat).toPattern(),
+            s.addParser(createParser(STYLE_DATE, TYPE_DATE, ((SimpleDateFormat) shortDateFormat).toPattern(),
                 loc, "short date format"));
         }
-        s.addParser(Parser.createParser(Parser.STYLE_DECIMAL, tNumber, null, loc, "number format"));
-        s.addParser(Parser.createParser(Parser.STYLE_ISODATE, tDate, null, loc, "ISO reader for date and date/time"));
-        s.addParser(Parser.createParser(Parser.STYLE_NUMBERLITERAL, tNumber, null, loc,
+        s.addParser(createParser(STYLE_DECIMAL, TYPE_NUMBER, null, loc, "number format"));
+        s.addParser(createParser(STYLE_ISODATE, TYPE_DATETIME, null, loc, "ISO reader for date and date/time"));
+        s.addParser(createParser(STYLE_NUMBERLITERAL, TYPE_NUMBER, null, loc,
             "support dot as decimal separator (if nothing else matches)"));
         return s;
     }

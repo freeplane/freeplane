@@ -66,9 +66,11 @@ public class EdgeController implements IExtension {
 	final private ExclusivePropertyChain<Integer, NodeModel> widthHandlers;
 	final private ExclusivePropertyChain<DashVariant, NodeModel> dashHandlers;
 	private ModeController modeController;
+	final protected EdgeColorsConfigurationFactory edgeColorsConfigurationFactory;
 
 	public EdgeController(final ModeController modeController) {
 		this.modeController = modeController;
+		edgeColorsConfigurationFactory = new EdgeColorsConfigurationFactory(modeController);
 		colorHandlers = new ExclusivePropertyChain<ObjectRule<Color, Rules>, NodeModel>();
 		styleHandlers = new ExclusivePropertyChain<EdgeStyle, NodeModel>();
 		widthHandlers = new ExclusivePropertyChain<Integer, NodeModel>();
@@ -332,4 +334,14 @@ public class EdgeController implements IExtension {
 		return new ConstantObject<Color, Rules>(styleColor);
 	}
 
+
+	public boolean areEdgeColorsAvailable(MapModel map) {
+		final EdgeColorConfiguration configuration = edgeColorsConfigurationFactory.create(map);
+		return configuration.areEdgeColorsAvailable();
+	}
+
+	public Color getEdgeColor(MapModel map, int colorCounter) {
+		final EdgeColorConfiguration configuration = edgeColorsConfigurationFactory.create(map);
+		return configuration.getEdgeColor(colorCounter);
+	}
 }

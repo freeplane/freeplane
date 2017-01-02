@@ -145,7 +145,6 @@ public class StyleEditorPanel extends JPanel {
 		setFont(this, FONT_SIZE);
 	}
 
-
 	private void setFont(Container c, float size) {
 		c.setFont(c.getFont().deriveFont(size));
 		for(int i = 0; i < c.getComponentCount(); i++){

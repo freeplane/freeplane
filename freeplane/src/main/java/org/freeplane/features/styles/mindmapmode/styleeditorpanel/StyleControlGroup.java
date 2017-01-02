@@ -23,10 +23,13 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.edge.AutomaticEdgeColor;
 import org.freeplane.features.edge.AutomaticEdgeColorHook;
+import org.freeplane.features.edge.EdgeController;
+import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -42,6 +45,7 @@ import org.freeplane.features.styles.mindmapmode.ManageMapConditionalStylesActio
 import org.freeplane.features.styles.mindmapmode.ManageNodeConditionalStylesAction;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormSpecs;
 
 class StyleControlGroup implements ControlGroup{
 	private boolean internalChange;
@@ -51,6 +55,7 @@ class StyleControlGroup implements ControlGroup{
 	private final boolean addStyleBox;
 	private JComboBox mAutomaticLayoutComboBox;
 	private JComboBox mAutomaticEdgeColorComboBox;
+	private JButton mEditEdgeColorsBtn;
 	private Container mStyleBox;
 	
 	private final MUIFactory uiFactory;
@@ -227,6 +232,23 @@ class StyleControlGroup implements ControlGroup{
 			}
 		});
 		appendLabeledComponent(formBuilder, "AutomaticEdgeColorHookAction.text", mAutomaticEdgeColorComboBox);
+		
+			mEditEdgeColorsBtn= TranslatedElementFactory.createButton("editColors");
+			mEditEdgeColorsBtn.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					final MEdgeController edgeController = (MEdgeController) modeController.getExtension(EdgeController.class);
+					edgeController.editEdgeColorConfiguration(Controller.getCurrentController().getMap());
+				}
+			});
+			formBuilder.appendLineGapRow();
+			formBuilder.nextLine();
+			formBuilder.appendRow(FormSpecs.PREF_ROWSPEC);
+			formBuilder.setColumn(1);
+			formBuilder.append(mEditEdgeColorsBtn, 7);
+			formBuilder.nextLine();
+			
 	}
 	
 	private void appendLabeledComponent(final DefaultFormBuilder formBuilder, String labelKey, Component component) {
