@@ -66,7 +66,7 @@ public class EdgeController implements IExtension {
 	final private ExclusivePropertyChain<Integer, NodeModel> widthHandlers;
 	final private ExclusivePropertyChain<DashVariant, NodeModel> dashHandlers;
 	private ModeController modeController;
-	final private EdgeColorsConfigurationFactory edgeColorsConfigurationFactory;
+	final protected EdgeColorsConfigurationFactory edgeColorsConfigurationFactory;
 
 	public EdgeController(final ModeController modeController) {
 		this.modeController = modeController;

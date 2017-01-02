@@ -75,6 +75,7 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.ModelessAttributeController;
+import org.freeplane.features.edge.EdgeColorsConfigurationFactory;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.link.ConnectorModel;
@@ -1123,6 +1124,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
 			adjustViewportScrollMode();
 			adjustBackgroundComponentScale();
+			repaint();
+		}
+		if(property.equals(EdgeColorsConfigurationFactory.EDGE_COLOR_CONFIGURATION_PROPERTY)){
+			getRoot().updateAll();
 			repaint();
 		}
 	}

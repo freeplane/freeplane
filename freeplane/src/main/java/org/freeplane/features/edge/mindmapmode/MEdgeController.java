@@ -20,9 +20,21 @@
 package org.freeplane.features.edge.mindmapmode;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.util.List;
+
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.plaf.TextUI;
+
+import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.ObjectRule;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
+import org.freeplane.features.edge.EdgeColorConfiguration;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
@@ -348,5 +360,25 @@ public class MEdgeController extends EdgeController {
 			}
 		};
 		modeController.execute(actor, node.getMap());
+	}
+
+	public void editEdgeColorConfiguration(MapModel map) {
+		final List<Color> oldColors = edgeColorsConfigurationFactory.create(map).colors;
+		final ColorListEditorPanelBuilder colorListEditorPanelBuilder = new ColorListEditorPanelBuilder(oldColors);
+		final JComponent panel = colorListEditorPanelBuilder.getPanel();
+		JScrollPane jscrollpane = new JRestrictedSizeScrollPane(panel);
+		jscrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		jscrollpane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		jscrollpane.setMaximumSize(new Dimension(Integer.MAX_VALUE, 600));
+		String title = TextUtils.getText("editColors");
+		final int status = JOptionPane.showConfirmDialog(UITools.getCurrentFrame(), jscrollpane, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		switch(status)
+		{
+		case JOptionPane.OK_OPTION:
+			final List<Color> newColors = colorListEditorPanelBuilder.getColors();
+			edgeColorsConfigurationFactory.setConfiguration(map, new EdgeColorConfiguration(newColors));
+			break;
+		default:
+		}
 	}
 }

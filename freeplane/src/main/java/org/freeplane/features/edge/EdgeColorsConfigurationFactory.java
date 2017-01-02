@@ -9,9 +9,11 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.AutomaticLayoutController;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 
 public class EdgeColorsConfigurationFactory {
+	public static final String EDGE_COLOR_CONFIGURATION_PROPERTY = "edgeColorConfiguration";
 	private final static WeakHashMap<String, EdgeColorConfiguration> configurations = new WeakHashMap<>();
 	private ModeController modeController;
 
@@ -21,14 +23,13 @@ public class EdgeColorsConfigurationFactory {
 
 	public EdgeColorConfiguration create(MapModel map){
 		MapStyleModel mapStyle = MapStyleModel.getExtension(map);
-		final String mapPropertyName = "edgeColorConfiguration";
-		final String configurationString = mapStyle.getProperty(mapPropertyName);
+		final String configurationString = mapStyle.getProperty(EDGE_COLOR_CONFIGURATION_PROPERTY);
 		if(configurationString != null)
 			return load(configurationString);
 		else {
 			final EdgeColorConfiguration newConfiguration = createNewConfiguration(map);
 			String newConfigurationString = save(newConfiguration);
-			mapStyle.setProperty(mapPropertyName, newConfigurationString);
+			mapStyle.setProperty(EDGE_COLOR_CONFIGURATION_PROPERTY, newConfigurationString);
 			configurations.put(newConfigurationString, newConfiguration);
 			return newConfiguration;
 		}
@@ -38,8 +39,8 @@ public class EdgeColorsConfigurationFactory {
 		ArrayList<Color> colors = new ArrayList<>();
 		AutomaticLayoutController automaticLayoutController = modeController.getExtension(AutomaticLayoutController.class);
 		EdgeController edgeController = modeController.getExtension(EdgeController.class);
-		for(int levelStyleCounter = 1;;levelStyleCounter++){
-			NodeModel styleNode = automaticLayoutController.getStyleNode(map, levelStyleCounter, false);
+		for(int levelStyleCounter = 0;;levelStyleCounter++){
+			NodeModel styleNode = automaticLayoutController.getStyleNode(map, levelStyleCounter);
 			if(styleNode == null)
 				break;
 			colors.add(edgeController.getColor(styleNode));
@@ -68,6 +69,12 @@ public class EdgeColorsConfigurationFactory {
 			sb.append(ColorUtils.colorToRGBAString(color));
 		}
 		return sb.toString();
+	}
+
+	public void setConfiguration(MapModel map, EdgeColorConfiguration edgeColorConfiguration) {
+		final String serializedConfiguration = save(edgeColorConfiguration);
+		modeController.getExtension(MapStyle.class).setProperty(map, EDGE_COLOR_CONFIGURATION_PROPERTY, serializedConfiguration);
+		configurations.put(serializedConfiguration, edgeColorConfiguration);
 	}
 
 }

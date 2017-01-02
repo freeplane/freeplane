@@ -112,7 +112,7 @@ public class ColorListEditorPanelBuilder {
 		final private int index;
 		public RowButtons(final int index) {
 			super();
-			rowNumber = new JLabel(Integer.toString(index + 1) + ":");
+			rowNumber = new JLabel(Integer.toString(index) + ":");
 			rowNumber.setHorizontalAlignment(SwingConstants.RIGHT);
 			pickColor = new JButton();
 			moveColorUp = new JButton();
@@ -310,6 +310,10 @@ public class ColorListEditorPanelBuilder {
 		addColor.setFont(BUTTON_FONT);
 		addColor.setText(ADD);
 		panel.add(addColor, cc.xy(11, 1));
+	}
+
+	public List<Color> getColors() {
+		return colors;
 	}
 
 

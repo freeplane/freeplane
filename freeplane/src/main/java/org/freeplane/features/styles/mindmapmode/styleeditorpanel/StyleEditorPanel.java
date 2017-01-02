@@ -49,10 +49,13 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.edge.AutomaticEdgeColor;
 import org.freeplane.features.edge.AutomaticEdgeColorHook;
+import org.freeplane.features.edge.EdgeController;
+import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeChangeListener;
@@ -77,6 +80,7 @@ import org.freeplane.features.styles.mindmapmode.ManageNodeConditionalStylesActi
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Paddings;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpecs;
 
 public class StyleEditorPanel extends JPanel {
 	private static final int FONT_SIZE = Math.round(UITools.FONT_SCALE_FACTOR * 8);
@@ -244,6 +248,7 @@ public class StyleEditorPanel extends JPanel {
 
 	private JComboBox mAutomaticLayoutComboBox;
 	private JComboBox mAutomaticEdgeColorComboBox;
+	private JButton mEditEdgeColorsBtn;
 	private Container mStyleBox;
 	private void addAutomaticLayout(final DefaultFormBuilder rightBuilder) {
 		{
@@ -297,6 +302,24 @@ public class StyleEditorPanel extends JPanel {
 				});
 			}
 			appendLabeledComponent(rightBuilder, "AutomaticEdgeColorHookAction.text", mAutomaticEdgeColorComboBox);
+			
+			if(mEditEdgeColorsBtn == null){
+				mEditEdgeColorsBtn= TranslatedElementFactory.createButton("editColors");
+				mEditEdgeColorsBtn.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						final MEdgeController edgeController = (MEdgeController) modeController.getExtension(EdgeController.class);
+						edgeController.editEdgeColorConfiguration(Controller.getCurrentController().getMap());
+					}
+				});
+			}
+			rightBuilder.appendLineGapRow();
+			rightBuilder.nextLine();
+			rightBuilder.appendRow(FormSpecs.PREF_ROWSPEC);
+			rightBuilder.setColumn(1);
+			rightBuilder.append(mEditEdgeColorsBtn, 7);
+			rightBuilder.nextLine();
 		}
 	}
 
