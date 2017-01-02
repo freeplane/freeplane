@@ -233,7 +233,7 @@ public class ColorListEditorPanelBuilder {
 
 		private void updatePickColorButton() {
 			Color color = colors.get(index);
-			pickColor.setBackground(ColorUtils.alphaToColor(255, color));
+			pickColor.setBackground(ColorUtils.makeNonTransparent(color));
 			final Color textColor = UITools.getTextColorForBackground(color);
 			pickColor.setForeground(textColor);
 			pickColor.setText(ColorUtils.colorToString(color));
