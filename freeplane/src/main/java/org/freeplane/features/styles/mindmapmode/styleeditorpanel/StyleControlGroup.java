@@ -171,64 +171,64 @@ class StyleControlGroup implements ControlGroup{
 		final StyleChangeListener listener = new StyleChangeListener();
 		mSetStyle.addPropertyChangeListener(listener);
 		mSetStyle.layout(formBuilder);
-	    formBuilder.append(new JLabel(TextUtils.getText("style")));
-	    formBuilder.append(mStyleBox);
-	    formBuilder.nextLine();
-    }
-	private void addAutomaticLayout(final DefaultFormBuilder formBuilder) {
-		{
-		if(mAutomaticLayoutComboBox == null){
-			 TranslatedObject[] automaticLayoutTypes = TranslatedObject.fromEnum(AutomaticLayout.class);
-			 mAutomaticLayoutComboBox = new JComboBoxWithBorder(automaticLayoutTypes);
-			 DefaultComboBoxModel automaticLayoutComboBoxModel = (DefaultComboBoxModel) mAutomaticLayoutComboBox.getModel();
-			 automaticLayoutComboBoxModel.addElement(AUTOMATIC_LAYOUT_DISABLED);
-			 automaticLayoutComboBoxModel.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
-			 mAutomaticLayoutComboBox.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if(internalChange)
-						return;
-					final ModeController modeController = Controller.getCurrentModeController();
-					AutomaticLayoutController al = modeController.getExtension(AutomaticLayoutController.class);
-					TranslatedObject selectedItem = (TranslatedObject)mAutomaticLayoutComboBox.getSelectedItem();
-					al.undoableDeactivateHook(Controller.getCurrentController().getMap().getRootNode());
-					if(!selectedItem.equals(AUTOMATIC_LAYOUT_DISABLED)){
-						al.undoableActivateHook(Controller.getCurrentController().getMap().getRootNode(), (AutomaticLayout) selectedItem.getObject());
-					}
-				}
-			});
-		}
-	    appendLabeledComponent(formBuilder, "AutomaticLayoutAction.text", mAutomaticLayoutComboBox);
-		}
-		{
-			
-			if(mAutomaticEdgeColorComboBox == null){
-	 			 TranslatedObject[] automaticLayoutTypes = TranslatedObject.fromEnum(AutomaticEdgeColor.class.getSimpleName() + "." , AutomaticEdgeColor.Rule.class);
-	 			 mAutomaticEdgeColorComboBox = new JComboBoxWithBorder(automaticLayoutTypes);
-				 DefaultComboBoxModel automaticEdgeColorComboBoxModel = (DefaultComboBoxModel) mAutomaticEdgeColorComboBox.getModel();
-				 automaticEdgeColorComboBoxModel.addElement(AUTOMATIC_LAYOUT_DISABLED);
-				 automaticEdgeColorComboBoxModel.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
-				 mAutomaticEdgeColorComboBox.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						if(internalChange)
-							return;
-						final ModeController modeController = Controller.getCurrentModeController();
-						AutomaticEdgeColorHook hook = modeController.getExtension(AutomaticEdgeColorHook.class);
-						TranslatedObject selectedItem = (TranslatedObject)mAutomaticEdgeColorComboBox.getSelectedItem();
-						final MapModel map = Controller.getCurrentController().getMap();
-						final AutomaticEdgeColor oldExtension = (AutomaticEdgeColor) hook.getMapHook(map);
-						final int colorCount = oldExtension == null ? 0 : oldExtension.getColorCounter();
-						final NodeModel rootNode = map.getRootNode();
-						hook.undoableDeactivateHook(rootNode);
-						if(!selectedItem.equals(AUTOMATIC_LAYOUT_DISABLED)){
-						final AutomaticEdgeColor newExtension = new  AutomaticEdgeColor((AutomaticEdgeColor.Rule) selectedItem.getObject(), colorCount);
-							hook.undoableActivateHook(rootNode, newExtension);
-						}
-					}
-				});
-			}
-			appendLabeledComponent(formBuilder, "AutomaticEdgeColorHookAction.text", mAutomaticEdgeColorComboBox);
-		}
+		formBuilder.append(new JLabel(TextUtils.getText("style")));
+		formBuilder.append(mStyleBox);
+		formBuilder.nextLine();
 	}
+	private void addAutomaticLayout(final DefaultFormBuilder formBuilder) {
+		addStyleControls(formBuilder);
+		addEdgeColoringControls(formBuilder);
+	}
+
+	private void addStyleControls(final DefaultFormBuilder formBuilder) {
+		TranslatedObject[] automaticLayoutTypes = TranslatedObject.fromEnum(AutomaticLayout.class);
+		mAutomaticLayoutComboBox = new JComboBoxWithBorder(automaticLayoutTypes);
+		DefaultComboBoxModel automaticLayoutComboBoxModel = (DefaultComboBoxModel) mAutomaticLayoutComboBox.getModel();
+		automaticLayoutComboBoxModel.addElement(AUTOMATIC_LAYOUT_DISABLED);
+		automaticLayoutComboBoxModel.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
+		mAutomaticLayoutComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(internalChange)
+					return;
+				final ModeController modeController = Controller.getCurrentModeController();
+				AutomaticLayoutController al = modeController.getExtension(AutomaticLayoutController.class);
+				TranslatedObject selectedItem = (TranslatedObject)mAutomaticLayoutComboBox.getSelectedItem();
+				al.undoableDeactivateHook(Controller.getCurrentController().getMap().getRootNode());
+				if(!selectedItem.equals(AUTOMATIC_LAYOUT_DISABLED)){
+					al.undoableActivateHook(Controller.getCurrentController().getMap().getRootNode(), (AutomaticLayout) selectedItem.getObject());
+				}
+			}
+		});
+		appendLabeledComponent(formBuilder, "AutomaticLayoutAction.text", mAutomaticLayoutComboBox);
+	}
+
+	private void addEdgeColoringControls(final DefaultFormBuilder formBuilder) {
+		TranslatedObject[] automaticLayoutTypes = TranslatedObject.fromEnum(AutomaticEdgeColor.class.getSimpleName() + "." , AutomaticEdgeColor.Rule.class);
+		mAutomaticEdgeColorComboBox = new JComboBoxWithBorder(automaticLayoutTypes);
+		DefaultComboBoxModel automaticEdgeColorComboBoxModel = (DefaultComboBoxModel) mAutomaticEdgeColorComboBox.getModel();
+		automaticEdgeColorComboBoxModel.addElement(AUTOMATIC_LAYOUT_DISABLED);
+		automaticEdgeColorComboBoxModel.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
+		mAutomaticEdgeColorComboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(internalChange)
+					return;
+				final ModeController modeController = Controller.getCurrentModeController();
+				AutomaticEdgeColorHook hook = modeController.getExtension(AutomaticEdgeColorHook.class);
+				TranslatedObject selectedItem = (TranslatedObject)mAutomaticEdgeColorComboBox.getSelectedItem();
+				final MapModel map = Controller.getCurrentController().getMap();
+				final AutomaticEdgeColor oldExtension = (AutomaticEdgeColor) hook.getMapHook(map);
+				final int colorCount = oldExtension == null ? 0 : oldExtension.getColorCounter();
+				final NodeModel rootNode = map.getRootNode();
+				hook.undoableDeactivateHook(rootNode);
+				if(!selectedItem.equals(AUTOMATIC_LAYOUT_DISABLED)){
+					final AutomaticEdgeColor newExtension = new  AutomaticEdgeColor((AutomaticEdgeColor.Rule) selectedItem.getObject(), colorCount);
+					hook.undoableActivateHook(rootNode, newExtension);
+				}
+			}
+		});
+		appendLabeledComponent(formBuilder, "AutomaticEdgeColorHookAction.text", mAutomaticEdgeColorComboBox);
+	}
+	
 	private void appendLabeledComponent(final DefaultFormBuilder formBuilder, String labelKey, Component component) {
 		final String text = TextUtils.getText(labelKey);
 	    final JLabel label = new JLabel(text);
