@@ -12,6 +12,8 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.map.NodeModel;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 class IconSizeControlGroup implements ControlGroup{
 	private class IconSizeChangeListener extends ControlGroupChangeListener{
 
@@ -38,7 +40,7 @@ class IconSizeControlGroup implements ControlGroup{
 	private IconSizeChangeListener propertyChangeListener;
 
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls) {
+	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 			mSetIconSize = new BooleanProperty(SET_RESOURCE);
 			controls.add(mSetIconSize);
 			mIconSize = new QuantityProperty<LengthUnits>(ICON_SIZE, 0, 256, 4, LengthUnits.px);

@@ -34,6 +34,8 @@ import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 
 /**
  * @author Joe Berry
@@ -70,7 +72,7 @@ class ChildDistanceControlGroup implements ControlGroup {
 		}
 	}
 	
-	public void addControlGroup(final List<IPropertyControl> controls) {
+	public void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		mSetChildDistance = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetChildDistance);
 		mChildDistance = new  QuantityProperty<LengthUnits>(VERTICAL_CHILD_GAP, 0, 1000, 0.1, LengthUnits.px);

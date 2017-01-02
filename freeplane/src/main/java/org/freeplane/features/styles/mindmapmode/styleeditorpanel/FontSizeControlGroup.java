@@ -34,6 +34,8 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Dec 1, 2016
@@ -79,7 +81,7 @@ public class FontSizeControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls) {
+	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		mSetNodeFontSize = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetNodeFontSize);
 		final List<String> sizesVector = new ArrayList<String>(Arrays.asList(MUIFactory.FONT_SIZES));

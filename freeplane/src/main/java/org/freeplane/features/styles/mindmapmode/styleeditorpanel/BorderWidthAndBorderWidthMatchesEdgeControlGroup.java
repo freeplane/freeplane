@@ -34,6 +34,8 @@ import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Dec 1, 2016
@@ -99,7 +101,7 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 	}
 	
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls) {
+	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		addBorderWidthControl(controls);
 		addBorderWidthMatchesEdgeWidthControl(controls);
 	}

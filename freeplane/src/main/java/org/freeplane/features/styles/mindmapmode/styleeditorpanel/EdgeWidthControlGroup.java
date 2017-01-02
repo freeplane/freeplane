@@ -31,6 +31,8 @@ import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Dec 1, 2016
@@ -69,7 +71,7 @@ public class EdgeWidthControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void addControlGroup(final List<IPropertyControl> controls) {
+	public void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		mSetEdgeWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetEdgeWidth);
 		mEdgeWidth = new NumberProperty(EDGE_WIDTH, 0, 100, 1);

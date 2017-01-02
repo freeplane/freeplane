@@ -24,6 +24,8 @@ import java.util.List;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.features.map.NodeModel;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Nov 27, 2016
@@ -31,5 +33,5 @@ import org.freeplane.features.map.NodeModel;
 interface ControlGroup{
 	String SET_RESOURCE = "set_property_text";
 	public void setStyle(NodeModel node);
-	void addControlGroup(final List<IPropertyControl> controls);
+	void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder);
 }

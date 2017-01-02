@@ -33,6 +33,8 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Nov 27, 2016
@@ -68,7 +70,7 @@ class NodeColorControlGroup implements ControlGroup {
 		}
 	}
 	
-	public void addControlGroup(final List<IPropertyControl> controls) {
+	public void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		mSetNodeColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetNodeColor);
 		mNodeColor = new ColorProperty(NODE_COLOR, ResourceController.getResourceController()

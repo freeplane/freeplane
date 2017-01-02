@@ -32,6 +32,8 @@ import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Dec 1, 2016
@@ -72,7 +74,7 @@ public class EdgeStyleControlGroup implements ControlGroup {
 	}
 	
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls) {
+	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		mSetEdgeStyle = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetEdgeStyle);
 		mEdgeStyle = new ComboProperty(EDGE_STYLE, EDGE_STYLES);

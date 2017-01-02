@@ -35,6 +35,8 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Nov 27, 2016
@@ -70,7 +72,7 @@ class NodeTextAlignmentControlGroup implements ControlGroup {
 		}
 	}
 	
-	public void addControlGroup(final List<IPropertyControl> controls) {
+	public void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		mSetNodeTextAlignment = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		controls.add(mSetNodeTextAlignment);
 		final Vector<String> possibleTranslations = new Vector<String>(TEXT_ALIGNMENTS.length);

@@ -25,6 +25,8 @@ import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.NextColumnProperty;
 import org.freeplane.features.map.NodeModel;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
 /**
  * @author Joe Berry
  * Dec 13, 2016
@@ -42,7 +44,7 @@ public class NextColumnControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls) {
+	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
 		controls.add(new NextColumnProperty(columns));
 	}
 }
