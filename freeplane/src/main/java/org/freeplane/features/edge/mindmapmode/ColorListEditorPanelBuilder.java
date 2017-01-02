@@ -2,9 +2,11 @@ package org.freeplane.features.edge.mindmapmode;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,20 @@ public class ColorListEditorPanelBuilder {
 	private final List<Color> colors;
 	private final List<RowButtons> buttons;
 	
+	private final static Font BUTTON_FONT;
+	private final static String MOVE_DOWN = "2";
+	private final static String MOVE_UP = "1";
+	private final static String DELETE = "3";
+	private final static String ADD = "4";
+	static {
+		try (final InputStream fontResource = ColorListEditorPanelBuilder.class.getResourceAsStream("/fonts/listcontrols.ttf")){
+			final float fontSize = Math.round(UITools.FONT_SCALE_FACTOR * 14);
+			BUTTON_FONT = Font.createFont(Font.TRUETYPE_FONT, fontResource).deriveFont(fontSize);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	private class ColorAdder implements ActionListener {
 		private final int index;
 		public ColorAdder(int index) {
@@ -55,9 +71,13 @@ public class ColorListEditorPanelBuilder {
 				r.updatePickColorButton();
 				
 			}
-			if(index > 0 && hasAddedLastColumn())
-				buttons.get(index - 1).updateMoveColorDownButton();
-			buttons.get(index).scrollToVisible();
+			buttons.get(colors.size() - 2).updateMoveColorDownButton();
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					buttons.get(index).scrollToVisible();
+				}
+			});
 		}
 		private boolean hasAddedLastColumn() {
 			return index == colors.size() - 1;
@@ -137,27 +157,31 @@ public class ColorListEditorPanelBuilder {
 
 		private void initializeMoveColorDownButton() {
 			moveColorDown.setName("moveColorDown");
-			moveColorDown.setText("Down");
+			moveColorDown.setFont(BUTTON_FONT);
+			moveColorDown.setText(MOVE_DOWN);
 			moveColorDown.addActionListener(new ColorSwapper(+1));
 			updateMoveColorDownButton();
 		}
 
 		private void initializeMoveColorUpButton() {
 			moveColorUp.setName("moveColorUp");
-			moveColorUp.setText("Up");
+			moveColorUp.setFont(BUTTON_FONT);
+			moveColorUp.setText(MOVE_UP);
 			moveColorUp.addActionListener(new ColorSwapper(-1));
 			moveColorUp.setVisible(index > 0);
 		}
 
 		private void initializeAddButton() {
 			addNextColor.setName("addNextColor");
-			addNextColor.setText("Add");
+			addNextColor.setFont(BUTTON_FONT);
+			addNextColor.setText(ADD);
 			addNextColor.addActionListener(new ColorAdder(index + 1));
 		}
 
 		private void initializeDeleteButton() {
 			deleteColor.setName("deleteColor");
-			deleteColor.setText("Delete");
+			deleteColor.setFont(BUTTON_FONT);
+			deleteColor.setText(DELETE);
 			deleteColor.addActionListener(new ActionListener() {
 				
 				@Override
@@ -167,8 +191,8 @@ public class ColorListEditorPanelBuilder {
 						RowButtons r = buttons.get(i);
 						r.updatePickColorButton();
 					}
-					if(index > 0 && index == colors.size()) {
-						RowButtons r = buttons.get(index - 1);
+					if(colors.size() > 0) {
+						RowButtons r = buttons.get(colors.size() - 1);
 						r.updateMoveColorDownButton();
 					}
 					final int lastButtonRowIndex = buttons.size() - 1;
@@ -191,8 +215,8 @@ public class ColorListEditorPanelBuilder {
 			panel.add(pickColor, cc.xy(3, row));
 			panel.add(moveColorUp, cc.xy(5, row));
 			panel.add(moveColorDown, cc.xy(7, row));
-			panel.add(addNextColor, cc.xy(9, row));
-			panel.add(deleteColor, cc.xy(11, row));
+			panel.add(deleteColor, cc.xy(9, row));
+			panel.add(addNextColor, cc.xy(11, row));
 		}
 
 		private void appendRowsToPanel() {
@@ -286,8 +310,9 @@ public class ColorListEditorPanelBuilder {
 		JButton addColor = new JButton();
 		addColor.addActionListener(new ColorAdder(0));
 		addColor.setName("addColor");
-		addColor.setText("Add");
-		panel.add(addColor, cc.xy(9, 1));
+		addColor.setFont(BUTTON_FONT);
+		addColor.setText(ADD);
+		panel.add(addColor, cc.xy(11, 1));
 	}
 
 
