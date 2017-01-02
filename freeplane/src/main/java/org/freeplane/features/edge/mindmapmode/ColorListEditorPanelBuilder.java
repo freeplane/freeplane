@@ -79,9 +79,6 @@ public class ColorListEditorPanelBuilder {
 				}
 			});
 		}
-		private boolean hasAddedLastColumn() {
-			return index == colors.size() - 1;
-		}
 	}
 
 	private class RowButtons {
