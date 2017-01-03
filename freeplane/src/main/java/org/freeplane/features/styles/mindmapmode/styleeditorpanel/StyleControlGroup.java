@@ -116,10 +116,13 @@ class StyleControlGroup implements ControlGroup{
 				final ModeController modeController = Controller.getCurrentModeController();
 				AutomaticEdgeColorHook al = (AutomaticEdgeColorHook) modeController.getExtension(AutomaticEdgeColorHook.class);
 				final AutomaticEdgeColor extension = (AutomaticEdgeColor) al.getExtension(node);
-				if(extension == null)
+				if(extension == null) {
 					mAutomaticEdgeColorComboBox.setSelectedItem(AUTOMATIC_LAYOUT_DISABLED);
-				else
+					mEditEdgeColorsBtn.setEnabled(false);
+				} else {
 					mAutomaticEdgeColorComboBox.setSelectedIndex(extension.rule.ordinal());
+					mEditEdgeColorsBtn.setEnabled(true);
+				}
 			}
 		}
 		finally{
