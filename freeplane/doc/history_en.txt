@@ -9,6 +9,7 @@ Configurable standard for connector arrows
 Configurable standard for connector line types 
 Presentations
 Export for java web start
+Editor dialog for automatic edge colors
 
 ===============================
 1.5.19
