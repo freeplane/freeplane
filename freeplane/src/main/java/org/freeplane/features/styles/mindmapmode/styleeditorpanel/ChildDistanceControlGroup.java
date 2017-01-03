@@ -20,7 +20,6 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
@@ -72,14 +71,14 @@ class ChildDistanceControlGroup implements ControlGroup {
 		}
 	}
 	
-	public void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetChildDistance = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetChildDistance);
 		mChildDistance = new  QuantityProperty<LengthUnits>(VERTICAL_CHILD_GAP, 0, 1000, 0.1, LengthUnits.px);
-		controls.add(mChildDistance);
 		propertyChangeListener = new ChildDistanceChangeListener(mSetChildDistance, mChildDistance);
 		mSetChildDistance.addPropertyChangeListener(propertyChangeListener);
 		mChildDistance.addPropertyChangeListener(propertyChangeListener);
+		mSetChildDistance.layout(formBuilder);
+		mChildDistance.layout(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node) {

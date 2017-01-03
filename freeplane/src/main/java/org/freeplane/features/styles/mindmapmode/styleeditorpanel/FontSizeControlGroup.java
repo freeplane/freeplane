@@ -81,15 +81,15 @@ public class FontSizeControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetNodeFontSize = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeFontSize);
 		final List<String> sizesVector = new ArrayList<String>(Arrays.asList(MUIFactory.FONT_SIZES));
 		mNodeFontSize = new ComboProperty(NODE_FONT_SIZE, sizesVector, sizesVector);
 		mNodeFontSize.setEditable(true);
-		controls.add(mNodeFontSize);
 		propertyChangeListener = new FontSizeChangeListener(mSetNodeFontSize, mNodeFontSize);
 		mSetNodeFontSize.addPropertyChangeListener(propertyChangeListener);
 		mNodeFontSize.addPropertyChangeListener(propertyChangeListener);
+		mSetNodeFontSize.layout(formBuilder);
+		mNodeFontSize.layout(formBuilder);
 	}
 }

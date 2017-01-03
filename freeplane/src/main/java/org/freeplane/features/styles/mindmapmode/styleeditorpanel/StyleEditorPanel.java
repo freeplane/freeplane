@@ -58,8 +58,6 @@ public class StyleEditorPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private boolean internalChange;
-	private List<IPropertyControl> mControls;
-
 	ControlGroup [] controlGroups;
 	
 	/**
@@ -124,8 +122,6 @@ public class StyleEditorPanel extends JPanel {
 	 * @param modeController 
 	 */
 	private void init() {
-		if(mControls != null)
-			return;
 		final String form = "right:max(20dlu;p), 2dlu, p, 1dlu,right:max(20dlu;p), 4dlu, 80dlu, 7dlu";
 		final FormLayout rightLayout = new FormLayout(form, "");
 		final DefaultFormBuilder formBuilder = new DefaultFormBuilder(rightLayout);
@@ -134,11 +130,7 @@ public class StyleEditorPanel extends JPanel {
 		final List<IPropertyControl> controls = new ArrayList<IPropertyControl>();
 		
 		for (ControlGroup controlGroup :controlGroups) {
-			controlGroup.addControlGroup(controls, formBuilder);
-		}
-		mControls = controls;
-		for (final IPropertyControl control : mControls) {
-			control.layout(formBuilder);
+			controlGroup.addControlGroup(formBuilder);
 		}
 		add(formBuilder.getPanel(), BorderLayout.CENTER);
 		addListeners();

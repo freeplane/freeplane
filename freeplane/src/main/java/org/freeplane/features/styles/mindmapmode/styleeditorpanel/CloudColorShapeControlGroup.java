@@ -111,30 +111,30 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 	}
 	
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
-		addCloudColorControl(controls);
-		controls.add(new NextLineProperty());
-		controls.add(new NextColumnProperty(2));
-		addCloudShapeControl(controls);
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
+		addCloudColorControl(formBuilder);
+		new NextLineProperty().layout(formBuilder);
+		new NextColumnProperty(2).layout(formBuilder);
+		addCloudShapeControl(formBuilder);
 	}
 	
-	private void addCloudColorControl(final List<IPropertyControl> controls) {
+	private void addCloudColorControl(DefaultFormBuilder formBuilder) {
 		mSetCloud = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetCloud);
 		mCloudColor = new ColorProperty(CLOUD_COLOR, ResourceController.getResourceController()
 		    .getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR));
-		controls.add(mCloudColor);
 		cloudColorChangeListener = new CloudColorChangeListener(mSetCloud, mCloudColor);
 		mSetCloud.addPropertyChangeListener(cloudColorChangeListener);
 		mCloudColor.addPropertyChangeListener(cloudColorChangeListener);
+		mSetCloud.layout(formBuilder);
+		mCloudColor.layout(formBuilder);
 	}
 
-	private void addCloudShapeControl(final List<IPropertyControl> controls) {
+	private void addCloudShapeControl(DefaultFormBuilder formBuilder) {
 		mCloudShape = new ComboProperty(CLOUD_SHAPE, CLOUD_SHAPES);
-		controls.add(mCloudShape);
 		cloudShapeChangeListener = new CloudShapeChangeListener(mSetCloud, mCloudShape);
 		mSetCloud.addPropertyChangeListener(cloudShapeChangeListener);
 		mCloudShape.addPropertyChangeListener(cloudShapeChangeListener);
+		mCloudShape.layout(formBuilder);
 	}
 
 	@Override

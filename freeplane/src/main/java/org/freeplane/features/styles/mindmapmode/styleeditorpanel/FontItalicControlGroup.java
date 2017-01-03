@@ -20,7 +20,6 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
@@ -73,13 +72,13 @@ public class FontItalicControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetNodeFontItalic = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeFontItalic);
 		mNodeFontItalic = new BooleanProperty(NODE_FONT_ITALIC);
-		controls.add(mNodeFontItalic);
 		propertyChangeListener = new FontItalicChangeListener(mSetNodeFontItalic, mNodeFontItalic);
 		mSetNodeFontItalic.addPropertyChangeListener(propertyChangeListener);
 		mNodeFontItalic.addPropertyChangeListener(propertyChangeListener);
+		mSetNodeFontItalic.layout(formBuilder);
+		mNodeFontItalic.layout(formBuilder);
 	}
 }

@@ -367,6 +367,7 @@ public class MEdgeController extends EdgeController {
 		final ColorListEditorPanelBuilder colorListEditorPanelBuilder = new ColorListEditorPanelBuilder(oldColors);
 		final JComponent panel = colorListEditorPanelBuilder.getPanel();
 		JScrollPane jscrollpane = new JRestrictedSizeScrollPane(panel);
+		UITools.setScrollbarIncrement(jscrollpane);
 		jscrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		jscrollpane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		jscrollpane.setMaximumSize(new Dimension(Integer.MAX_VALUE, 600));

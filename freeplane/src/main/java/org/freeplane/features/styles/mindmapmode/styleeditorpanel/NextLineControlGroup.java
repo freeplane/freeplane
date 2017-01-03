@@ -19,9 +19,6 @@
  */
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
-import java.util.List;
-
-import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.NextLineProperty;
 import org.freeplane.features.map.NodeModel;
 
@@ -42,7 +39,7 @@ public class NextLineControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
-		controls.add(new NextLineProperty());
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
+		new NextLineProperty().layout(formBuilder);
 	}
 }

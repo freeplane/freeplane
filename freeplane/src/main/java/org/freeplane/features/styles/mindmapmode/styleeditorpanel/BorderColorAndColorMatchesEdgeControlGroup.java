@@ -102,26 +102,24 @@ public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup 
 	}
 	
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
-		addBorderColorMatchesEdgeColorControl(controls);
-		addBorderColorControl(controls);
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
+		addBorderColorMatchesEdgeColorControl(formBuilder);
+		addBorderColorControl(formBuilder);
 	}
 	
-	private void addBorderColorControl(final List<IPropertyControl> controls) {
+	private void addBorderColorControl(DefaultFormBuilder formBuilder) {
 		mSetBorderColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetBorderColor);
 		mBorderColor = new ColorProperty(BORDER_COLOR, ColorUtils.colorToString(EdgeController.STANDARD_EDGE_COLOR));
-		controls.add(mBorderColor);
 		borderColorListener = new BorderColorListener(mSetBorderColor, mBorderColor);
 		mSetBorderColor.addPropertyChangeListener(borderColorListener);
 		mBorderColor.addPropertyChangeListener(borderColorListener);
+		mSetBorderColor.layout(formBuilder);
+		mBorderColor.layout(formBuilder);
 	}
 	
-	public void addBorderColorMatchesEdgeColorControl(List<IPropertyControl> controls) {
+	public void addBorderColorMatchesEdgeColorControl(DefaultFormBuilder formBuilder) {
 		mSetBorderColorMatchesEdgeColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetBorderColorMatchesEdgeColor);
 		mBorderColorMatchesEdgeColor = new BooleanProperty(BORDER_COLOR_MATCHES_EDGE_COLOR);
-		controls.add(mBorderColorMatchesEdgeColor);
 		borderColorMatchesEdgeColorChangeListener = new BorderColorMatchesEdgeColorListener(mSetBorderColorMatchesEdgeColor, mBorderColorMatchesEdgeColor);
 		mSetBorderColorMatchesEdgeColor.addPropertyChangeListener(borderColorMatchesEdgeColorChangeListener);
 		mBorderColorMatchesEdgeColor.addPropertyChangeListener(borderColorMatchesEdgeColorChangeListener);
@@ -131,6 +129,9 @@ public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup 
 				enableOrDisableBorderColorControls();
 			}
 		});
+		
+		mSetBorderColorMatchesEdgeColor.layout(formBuilder);
+		mBorderColorMatchesEdgeColor.layout(formBuilder);
 	}
 
 	@Override
