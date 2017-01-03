@@ -40,14 +40,14 @@ class IconSizeControlGroup implements ControlGroup{
 	private IconSizeChangeListener propertyChangeListener;
 
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
 			mSetIconSize = new BooleanProperty(SET_RESOURCE);
-			controls.add(mSetIconSize);
 			mIconSize = new QuantityProperty<LengthUnits>(ICON_SIZE, 0, 256, 4, LengthUnits.px);
-			controls.add(mIconSize);
 			propertyChangeListener = new IconSizeChangeListener(mSetIconSize, mIconSize);
 			mSetIconSize.addPropertyChangeListener(propertyChangeListener);
 			mIconSize.addPropertyChangeListener(propertyChangeListener);
+			mSetIconSize.layout(formBuilder);
+			mIconSize.layout(formBuilder);
 	}
 	@Override
 	public void setStyle(NodeModel node) {
