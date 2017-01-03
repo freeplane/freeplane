@@ -20,7 +20,6 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
@@ -78,14 +77,14 @@ public class FormatControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
         mSetNodeFormat = new BooleanProperty(ControlGroup.SET_RESOURCE);
-        controls.add(mSetNodeFormat);
         mNodeFormat = new EditablePatternComboProperty(NODE_FORMAT,
             PatternFormat.getIdentityPatternFormat(), FormatController.getController().getAllFormats());
-        controls.add(mNodeFormat);
         propertyChangeListener = new NodeFormatChangeListener(mSetNodeFormat, mNodeFormat);
         mSetNodeFormat.addPropertyChangeListener(propertyChangeListener);
         mNodeFormat.addPropertyChangeListener(propertyChangeListener);
+        mSetNodeFormat.layout(formBuilder);
+        mNodeFormat.layout(formBuilder);
 	}
 }

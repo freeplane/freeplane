@@ -19,9 +19,6 @@
  */
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
-import java.util.List;
-
-import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.features.map.NodeModel;
 
@@ -44,7 +41,7 @@ public class GroupSeparator implements ControlGroup {
 	}
 
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
-		controls.add(new SeparatorProperty(labelKey));
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
+		new SeparatorProperty(labelKey).layout(formBuilder);
 	}
 }

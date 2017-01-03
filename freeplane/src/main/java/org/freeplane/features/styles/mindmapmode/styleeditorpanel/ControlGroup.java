@@ -19,9 +19,6 @@
  */
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
-import java.util.List;
-
-import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.features.map.NodeModel;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -33,5 +30,5 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 interface ControlGroup{
 	String SET_RESOURCE = "set_property_text";
 	public void setStyle(NodeModel node);
-	void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder);
+	void addControlGroup(DefaultFormBuilder formBuilder);
 }

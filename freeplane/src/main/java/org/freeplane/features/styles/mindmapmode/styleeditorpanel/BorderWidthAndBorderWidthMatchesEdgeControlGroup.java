@@ -101,26 +101,24 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 	}
 	
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
-		addBorderWidthControl(controls);
-		addBorderWidthMatchesEdgeWidthControl(controls);
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
+		addBorderWidthControl(formBuilder);
+		addBorderWidthMatchesEdgeWidthControl(formBuilder);
 	}
 	
-	private void addBorderWidthControl(final List<IPropertyControl> controls) {
+	private void addBorderWidthControl(DefaultFormBuilder formBuilder) {
 		mSetBorderWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetBorderWidth);
 		mBorderWidth = new QuantityProperty<LengthUnits>(BORDER_WIDTH, 0, 100000, 0.1, LengthUnits.px);
-		controls.add(mBorderWidth);
 		borderWidthListener = new BorderWidthListener(mSetBorderWidth, mBorderWidth);
 		mSetBorderWidth.addPropertyChangeListener(borderWidthListener);
 		mBorderWidth.addPropertyChangeListener(borderWidthListener);
+		mSetBorderWidth.layout(formBuilder);
+		mBorderWidth.layout(formBuilder);
 	}
 	
-	public void addBorderWidthMatchesEdgeWidthControl(List<IPropertyControl> controls) {
+	public void addBorderWidthMatchesEdgeWidthControl(DefaultFormBuilder formBuilder) {
 		mSetBorderWidthMatchesEdgeWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetBorderWidthMatchesEdgeWidth);
 		mBorderWidthMatchesEdgeWidth = new BooleanProperty(BORDER_WIDTH_MATCHES_EDGE_WIDTH);
-		controls.add(mBorderWidthMatchesEdgeWidth);
 		borderWidthMatchesEdgeChangeListener = new BorderWidthMatchesEdgeWidthListener(mSetBorderWidthMatchesEdgeWidth, mBorderWidthMatchesEdgeWidth);
 		mSetBorderWidthMatchesEdgeWidth.addPropertyChangeListener(borderWidthMatchesEdgeChangeListener);
 		mBorderWidthMatchesEdgeWidth.addPropertyChangeListener(borderWidthMatchesEdgeChangeListener);
@@ -131,6 +129,8 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 				enableOrDisableBorderWidthControls();
 			}
 		});
+		mSetBorderWidthMatchesEdgeWidth.layout(formBuilder);
+		mBorderWidthMatchesEdgeWidth.layout(formBuilder);
 	}
 
 	public void enableOrDisableBorderWidthControls() {

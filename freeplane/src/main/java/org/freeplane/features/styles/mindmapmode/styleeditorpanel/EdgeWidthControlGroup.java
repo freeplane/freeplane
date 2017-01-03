@@ -20,7 +20,6 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
@@ -71,14 +70,14 @@ public class EdgeWidthControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetEdgeWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetEdgeWidth);
 		mEdgeWidth = new NumberProperty(EDGE_WIDTH, 0, 100, 1);
-		controls.add(mEdgeWidth);
 		propertyChangeListener = new EdgeWidthChangeListener(mSetEdgeWidth, mEdgeWidth);
 		mSetEdgeWidth.addPropertyChangeListener(propertyChangeListener);
 		mEdgeWidth.addPropertyChangeListener(propertyChangeListener);
+		mSetEdgeWidth.layout(formBuilder);
+		mEdgeWidth.layout(formBuilder);
 	}
 
 	@Override

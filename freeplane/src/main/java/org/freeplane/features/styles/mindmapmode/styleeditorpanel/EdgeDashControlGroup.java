@@ -20,7 +20,6 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
@@ -77,13 +76,13 @@ public class EdgeDashControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetEdgeDash = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetEdgeDash);
 		mEdgeDash = ComboProperty.of(EDGE_DASH, DashVariant.class);
-		controls.add(mEdgeDash);
 		propertyChangeListener = new EdgeDashChangeListener(mSetEdgeDash, mEdgeDash);
 		mSetEdgeDash.addPropertyChangeListener(propertyChangeListener);
 		mEdgeDash.addPropertyChangeListener(propertyChangeListener);
+		mSetEdgeDash.layout(formBuilder);
+		mEdgeDash.layout(formBuilder);
 	}
 }

@@ -20,7 +20,6 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
@@ -74,14 +73,14 @@ public class EdgeStyleControlGroup implements ControlGroup {
 	}
 	
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetEdgeStyle = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetEdgeStyle);
 		mEdgeStyle = new ComboProperty(EDGE_STYLE, EDGE_STYLES);
-		controls.add(mEdgeStyle);
 		propertyChangeListener = new EdgeStyleChangeListener(mSetEdgeStyle, mEdgeStyle);
 		mSetEdgeStyle.addPropertyChangeListener(propertyChangeListener);
 		mEdgeStyle.addPropertyChangeListener(propertyChangeListener);
+		mSetEdgeStyle.layout(formBuilder);
+		mEdgeStyle.layout(formBuilder);
 	}
 
 	@Override

@@ -21,7 +21,6 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.BooleanProperty;
@@ -70,15 +69,15 @@ class NodeColorControlGroup implements ControlGroup {
 		}
 	}
 	
-	public void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetNodeColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeColor);
 		mNodeColor = new ColorProperty(NODE_COLOR, ResourceController.getResourceController()
 		    .getDefaultProperty(NODE_TEXT_COLOR));
-		controls.add(mNodeColor);
 		propertyChangeListener = new NodeColorChangeListener(mSetNodeColor, mNodeColor);
 		mSetNodeColor.addPropertyChangeListener(propertyChangeListener);
 		mNodeColor.addPropertyChangeListener(propertyChangeListener);
+		mSetNodeColor.layout(formBuilder);
+		mNodeColor.layout(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node) {

@@ -20,7 +20,6 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
@@ -69,14 +68,14 @@ class MaxNodeWidthControlGroup implements ControlGroup {
 		}
 	}
 	
-	public void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetMaxNodeWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetMaxNodeWidth);
 		mMaxNodeWidth = new QuantityProperty<LengthUnits>(MAX_NODE_WIDTH, 0, 100000, 0.1, LengthUnits.px);
-		controls.add(mMaxNodeWidth);
 		propertyChangeListener = new MaxNodeWidthChangeListener(mSetMaxNodeWidth, mMaxNodeWidth);
 		mSetMaxNodeWidth.addPropertyChangeListener(propertyChangeListener);
 		mMaxNodeWidth.addPropertyChangeListener(propertyChangeListener);
+		mSetMaxNodeWidth.layout(formBuilder);
+		mMaxNodeWidth.layout(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node) {

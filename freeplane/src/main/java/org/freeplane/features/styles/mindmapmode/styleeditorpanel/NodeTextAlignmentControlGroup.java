@@ -21,7 +21,6 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Vector;
 
 import org.freeplane.core.resources.components.BooleanProperty;
@@ -72,19 +71,19 @@ class NodeTextAlignmentControlGroup implements ControlGroup {
 		}
 	}
 	
-	public void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetNodeTextAlignment = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeTextAlignment);
 		final Vector<String> possibleTranslations = new Vector<String>(TEXT_ALIGNMENTS.length);
 		for (int i = 0; i < TEXT_ALIGNMENTS.length; i++) {
 			possibleTranslations.add(TextUtils.getText("TextAlignAction." + TEXT_ALIGNMENTS[i] + ".text"));
 		}
 		Vector<String> translations = possibleTranslations;
 		mNodeTextAlignment = new ComboProperty(TEXT_ALIGNMENT, Arrays.asList(TEXT_ALIGNMENTS), translations);
-		controls.add(mNodeTextAlignment);
 		propertyChangeListener = new NodeTextAlignmentChangeListener(mSetNodeTextAlignment, mNodeTextAlignment);
 		mSetNodeTextAlignment.addPropertyChangeListener(propertyChangeListener);
 		mNodeTextAlignment.addPropertyChangeListener(propertyChangeListener);
+		mSetNodeTextAlignment.layout(formBuilder);
+		mNodeTextAlignment.layout(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node) {

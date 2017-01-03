@@ -101,26 +101,24 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
 	}
 	
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
-		addBorderDashMatchesEdgeDashControl(controls);
-		addBorderDashControl(controls);
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
+		addBorderDashMatchesEdgeDashControl(formBuilder);
+		addBorderDashControl(formBuilder);
 	}
 	
-	private void addBorderDashControl(final List<IPropertyControl> controls) {
+	private void addBorderDashControl(DefaultFormBuilder formBuilder) {
 		mSetBorderDash = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetBorderDash);
 		mBorderDash = ComboProperty.of(BORDER_DASH, DashVariant.class);
-		controls.add(mBorderDash);
 		borderDashListener = new BorderDashListener(mSetBorderDash, mBorderDash);
 		mSetBorderDash.addPropertyChangeListener(borderDashListener);
 		mBorderDash.addPropertyChangeListener(borderDashListener);
+		mSetBorderDash.layout(formBuilder);
+		mBorderDash.layout(formBuilder);
 	}
 	
-	public void addBorderDashMatchesEdgeDashControl(List<IPropertyControl> controls) {
+	public void addBorderDashMatchesEdgeDashControl(DefaultFormBuilder formBuilder) {
 		mSetBorderDashMatchesEdgeDash = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetBorderDashMatchesEdgeDash);
 		mBorderDashMatchesEdgeDash = new BooleanProperty(BORDER_DASH_MATCHES_EDGE_DASH);
-		controls.add(mBorderDashMatchesEdgeDash);
 		borderDashMatchesEdgeDashChangeListener = new BorderDashMatchesEdgeDashListener(mSetBorderDashMatchesEdgeDash, mBorderDashMatchesEdgeDash);
 		mSetBorderDashMatchesEdgeDash.addPropertyChangeListener(borderDashMatchesEdgeDashChangeListener);
 		mBorderDashMatchesEdgeDash.addPropertyChangeListener(borderDashMatchesEdgeDashChangeListener);
@@ -130,6 +128,8 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
 				enableOrDisableBorderDashControls();
 			}
 		});
+		mSetBorderDashMatchesEdgeDash.layout(formBuilder);
+		mBorderDashMatchesEdgeDash.layout(formBuilder);
 	}
 
 	@Override

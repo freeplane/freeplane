@@ -19,9 +19,6 @@
  */
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
-import java.util.List;
-
-import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.NextColumnProperty;
 import org.freeplane.features.map.NodeModel;
 
@@ -44,7 +41,7 @@ public class NextColumnControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void addControlGroup(List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
-		controls.add(new NextColumnProperty(columns));
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
+		new NextColumnProperty(columns).layout(formBuilder);
 	}
 }

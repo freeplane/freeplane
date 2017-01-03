@@ -20,7 +20,6 @@
 package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
@@ -97,26 +96,27 @@ class NodeShapeControlGroup implements ControlGroup {
 		}
 	}
 	
-	public void addControlGroup(final List<IPropertyControl> controls, DefaultFormBuilder formBuilder) {
+	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetNodeShape = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		controls.add(mSetNodeShape);
 		mNodeShape = new ComboProperty(NODE_SHAPE, EnumToStringMapper.getStringValuesOf(NodeStyleModel.Shape.class));
-		controls.add(mNodeShape);
-		controls.add(new NextColumnProperty(2));
 		mShapeHorizontalMargin = new QuantityProperty<LengthUnits>(SHAPE_HORIZONTAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
-		controls.add(mShapeHorizontalMargin);
-		controls.add(new NextColumnProperty(2));
 		mShapeVerticalMargin = new QuantityProperty<LengthUnits>(SHAPE_VERTICAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
-		controls.add(mShapeVerticalMargin);
-		controls.add(new NextColumnProperty(2));
 		mUniformShape = new BooleanProperty(UNIFORM_SHAPE);
-		controls.add(mUniformShape);
 		propertyChangeListener = new NodeShapeChangeListener(mSetNodeShape, mNodeShape, mShapeHorizontalMargin, mShapeVerticalMargin, mUniformShape);
 		mSetNodeShape.addPropertyChangeListener(propertyChangeListener);
 		mNodeShape.addPropertyChangeListener(propertyChangeListener);
 		mShapeHorizontalMargin.addPropertyChangeListener(propertyChangeListener);
 		mShapeVerticalMargin.addPropertyChangeListener(propertyChangeListener);
 		mUniformShape.addPropertyChangeListener(propertyChangeListener);
+		
+		mSetNodeShape.layout(formBuilder);
+		mNodeShape.layout(formBuilder);
+		new NextColumnProperty(2).layout(formBuilder);
+		mShapeHorizontalMargin.layout(formBuilder);
+		new NextColumnProperty(2).layout(formBuilder);
+		mShapeVerticalMargin.layout(formBuilder);
+		new NextColumnProperty(2).layout(formBuilder);
+		mUniformShape.layout(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node) {
