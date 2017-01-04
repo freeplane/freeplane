@@ -4857,7 +4857,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="&#x3053;&#x306e;&#x300c;&#x30af;&#x30a3;&#x30c3;&#x30af;&#x30ea;&#x30d5;&#x30a1;&#x30ec;&#x30f3;&#x30b9;&#x300d;&#x7528;&#x306e;&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x30bb;&#x30c3;&#x30c8;&#x306e;&#x8aad;&#x307f;&#x8fbc;&#x307f;&#x3068;&#x6d3b;&#x7528;" STYLE_REF="Professional" FOLDED="true" ID="ID_1284293100" CREATED="1455910883544" MODIFIED="1455910883544" LINK="http://www.kioo.nl/freeplane/tutorial_en/filterSet" MIN_WIDTH="1.0 px">
+<node TEXT="&#x3053;&#x306e;&#x300c;&#x30af;&#x30a3;&#x30c3;&#x30af;&#x30ea;&#x30d5;&#x30a1;&#x30ec;&#x30f3;&#x30b9;&#x300d;&#x7528;&#x306e;&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x30bb;&#x30c3;&#x30c8;&#x306e;&#x8aad;&#x307f;&#x8fbc;&#x307f;&#x3068;&#x6d3b;&#x7528;" STYLE_REF="Professional" FOLDED="true" ID="ID_1284293100" CREATED="1455910883544" MODIFIED="1455910883544" MIN_WIDTH="1.0 px">
 <node TEXT="&#xff08;&#x521d;&#x7d1a;&#x3001;&#x4e2d;&#x7d1a;&#x3001;&#x4e0a;&#x7d1a;&#x306e;&#xff09;&#xff13;&#x3064;&#x306e;&#x719f;&#x9054;&#x5ea6;&#x306e;&#x3069;&#x308c;&#x304b;&#xff11;&#x3064;&#x3060;&#x3051;&#x3092;&#x8868;&#x793a;&#x3055;&#x305b;&#x308b;&#x5834;&#x5408;&#x306f;&#x3001;&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x3068;&#x3044;&#x3046; Freeplane &#x306e;&#x5f37;&#x529b;&#x306a;&#x6a5f;&#x80fd;&#x306e;&#x5229;&#x7528;&#x3092;&#x691c;&#x8a0e;&#x3057;&#x3066;&#x304f;&#x3060;&#x3055;&#x3044;&#x3002;&#xa;&#xa;&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x306e;&#x624b;&#x9806;&#x306f;&#x4e0b;&#x8a18;&#x306e;&#x3068;&#x304a;&#x308a;&#x3067;&#x3059;&#x3002;&#x3053;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x8d64;&#x3044;&#x77e2;&#x5370;&#x3092;&#x30af;&#x30ea;&#x30c3;&#x30af;&#x3059;&#x308b;&#x3068;&#x3001;&#x30a2;&#x30cb;&#x30e1;&#x30b7;&#x30e7;&#x30f3;&#x306e;&#x8aac;&#x660e;&#x304c;&#x8868;&#x793a;&#x3055;&#x308c;&#x307e;&#x3059;&#x3002;" ID="ID_352888342" CREATED="1455910883544" MODIFIED="1455910883544"/>
 <node TEXT="&#x3053;&#x306e;&#x30af;&#x30a3;&#x30c3;&#x30af;&#x30ea;&#x30d5;&#x30a1;&#x30ec;&#x30f3;&#x30b9;&#x7528;&#x306e;&#x30d5;&#x30a3;&#x30eb;&#x30bf;&#x30bb;&#x30c3;&#x30c8;&#x3092;&#x8aad;&#x307f;&#x8fbc;&#x3080;" ID="ID_551050917" CREATED="1455910883544" MODIFIED="1455910883544">
 <icon BUILTIN="full-0"/>
@@ -4914,7 +4914,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
 </hook>
 </node>
-<node TEXT="&#x5c55;&#x958b;&#x3057;&#x3066;&#x53ef;&#x8996;&#x72b6;&#x614b;&#x306b;&#x3059;&#x308b;" ID="ID_1451237301" CREATED="1455910883544" MODIFIED="1455910883544" LINK="FilterExampleEnd.jpg" HGAP_QUANTITY="19.0 px" VSHIFT_QUANTITY="-8.0 px">
+<node TEXT="&#x5c55;&#x958b;&#x3057;&#x3066;&#x53ef;&#x8996;&#x72b6;&#x614b;&#x306b;&#x3059;&#x308b;" ID="ID_1451237301" CREATED="1455910883544" MODIFIED="1455910883544" HGAP_QUANTITY="19.0 px" VSHIFT_QUANTITY="-8.0 px">
 <icon BUILTIN="full-2"/>
 <richcontent TYPE="DETAILS">
 
