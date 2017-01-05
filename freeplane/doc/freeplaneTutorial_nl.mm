@@ -4296,7 +4296,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Laden en gebruiken van de filterset voor deze Quick reference" STYLE_REF="Professional" FOLDED="true" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1323713282573" LINK="http://www.kioo.nl/freeplane/tutorial_en/filterSet" MIN_WIDTH="1" VSHIFT="-30">
+<node TEXT="Laden en gebruiken van de filterset voor deze Quick reference" STYLE_REF="Professional" FOLDED="true" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1323713282573" MIN_WIDTH="1" VSHIFT="-30">
 <node TEXT="Consider using a powerfull feature of Freeplane, filtering, to present to you only the information of&#xa;one of these 3 levels (Beginner, Advanced, Professional) at a time.&#xa;&#xa;The procedure for filtering is described to the left.  If you do not see it, click on the colored bar above&#xa;this text to unhide it. If you click on the red arrow, the instruction is illustrated in an animation." ID="ID_352888342" CREATED="1323529491351" MODIFIED="1323529654285"/>
 <node TEXT="Load filter set for this Quick reference" ID="ID_551050917" CREATED="1317234746190" MODIFIED="1323811074382">
 <icon BUILTIN="full-0"/>
@@ -4360,7 +4360,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Unfold to make visible" ID="ID_1451237301" CREATED="1316176206878" MODIFIED="1323811105176" HGAP="15" VSHIFT="-8" LINK="FilterExampleEnd.jpg">
+<node TEXT="Unfold to make visible" ID="ID_1451237301" CREATED="1316176206878" MODIFIED="1323811105176" HGAP="15" VSHIFT="-8">
 <icon BUILTIN="full-2"/>
 <richcontent TYPE="DETAILS">
 
