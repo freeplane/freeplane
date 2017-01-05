@@ -28,9 +28,9 @@
 		</Entry>
 		<Entry builder="separator" />
 		<Entry name="font">
-			<Entry name="toolbar_styles" builder="main_toolbar_style" />
-			<Entry name="toolbar_fonts" builder="main_toolbar_font_name" />
-			<Entry name="toolbar_fonts" builder="main_toolbar_font_size" />
+			<Entry builder="main_toolbar_style" />
+			<Entry builder="main_toolbar_font_name" />
+			<Entry builder="main_toolbar_font_size" />
 			<Entry name="BoldAction" />
 			<Entry name="ItalicAction" />
 		</Entry>
