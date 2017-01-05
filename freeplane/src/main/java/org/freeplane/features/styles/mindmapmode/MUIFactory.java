@@ -198,7 +198,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	public Container createSizeBox() {
 		final JComboBox sizeBox = new JComboBoxWithBorder(size);
 		final Dimension preferredSize = sizeBox.getPreferredSize();
-		sizeBox.setPreferredSize(new Dimension(50, preferredSize.height));
+		sizeBox.setPreferredSize(new Dimension((int) (3 * UITools.getUIFontSize(1)), preferredSize.height));
 		sizeBox.setEditor(new FixedBasicComboBoxEditor());
 		sizeBox.setEditable(true);
 		return sizeBox;
@@ -209,7 +209,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		fontsBox.setMaximumRowCount(9);
 		fontsBox.setRenderer(new ComboBoxRendererWithTooltip(fontsBox));
 		final Dimension preferredSize = fontsBox.getPreferredSize();
-		preferredSize.width = Math.round(150 * UITools.FONT_SCALE_FACTOR);
+		preferredSize.width = Math.round(12 * UITools.getUIFontSize(1));
 		fontsBox.setPreferredSize(preferredSize);
 		fontsBox.setModel(fonts);
 		return fontsBox;
