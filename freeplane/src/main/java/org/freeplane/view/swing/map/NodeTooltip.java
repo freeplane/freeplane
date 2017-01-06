@@ -16,6 +16,7 @@ import java.security.AccessControlException;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 import javax.swing.JToolTip;
+import javax.swing.SwingUtilities;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
@@ -27,6 +28,7 @@ import org.freeplane.core.ui.components.html.SynchronousScaledEditorKit;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 
@@ -55,7 +57,8 @@ public class NodeTooltip extends JToolTip {
 	    		final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) tip.getDocument(), tip.viewToModel(ev.getPoint()));
 	    		if (linkURL != null) {
 	    			try {
-	    				UrlManager.getController().loadURL(new URI(linkURL));
+	    				NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, getComponent());
+	    				LinkController.getController().loadURI(nodeView.getModel(), new URI(linkURL));
 	    			} catch (Exception e) {
 	    				LogUtils.warn(e);
 	    			}

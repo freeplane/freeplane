@@ -86,6 +86,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -418,7 +419,7 @@ public class EditNodeTextField extends EditNodeBase {
 				final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) textfield.getDocument(), textfield.viewToModel(ev.getPoint()));
 				if (linkURL != null) {
 					try {
-						UrlManager.getController().loadURL(new URI(linkURL));
+						LinkController.getController().loadURI(nodeView.getModel(), new URI(linkURL));
 					} catch (Exception e) {
 						LogUtils.warn(e);
 					}
