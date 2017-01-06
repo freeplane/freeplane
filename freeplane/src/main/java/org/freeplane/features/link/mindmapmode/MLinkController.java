@@ -999,12 +999,6 @@ public class MLinkController extends LinkController {
 	}
 
 	@Override
-    @SuppressWarnings("deprecation")
-    public void loadURI(URI uri) {
-		UrlManager.getController().loadURL(uri);
-    }
-
-	@Override
 	protected void loadURL(final NodeModel node, final ActionEvent e) {
 		// load as documentation map if the node belongs to a documentation map
 		boolean addDocuMapAttribute = node.getMap().containsExtension(DocuMapAttribute.class)
@@ -1022,6 +1016,22 @@ public class MLinkController extends LinkController {
 		}
 	}
 
+	public void loadURI(NodeModel node, URI uri) {
+		// load as documentation map if the node belongs to a documentation map
+		boolean addDocuMapAttribute = node.getMap().containsExtension(DocuMapAttribute.class)
+				&& ! modeController.containsExtension(DocuMapAttribute.class);
+		if(addDocuMapAttribute){
+			modeController.addExtension(DocuMapAttribute.class, DocuMapAttribute.instance);
+		}
+		try{
+			loadURI(uri);
+		}
+		finally{
+			if(addDocuMapAttribute){
+				modeController.removeExtension(DocuMapAttribute.class);
+			}
+		}
+	}
 	public String getAnchorID() {
 		return anchorID;
 	}
