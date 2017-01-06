@@ -932,4 +932,7 @@ public class LinkController extends SelectionController implements IExtension {
 		return formatNodeAsHyperlink;
 	}
 
+	public void loadURI(NodeModel node, URI uri) {
+		loadURI(uri);
+	}
 }
