@@ -1,4 +1,11 @@
 ===============================
+1.6.1
+===============================
+SVG icons for map and UI
+Configurable map icon size
+Configurable UI icon size
+
+===============================
 1.6.0
 ===============================
 Configurable node border widths
