@@ -75,8 +75,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				UIIcon uiIcon = component.getUIIconAt(e.getPoint());
 				if(uiIcon != null){
 					final IconController iconController = mc.getExtension(IconController.class);
-					final NodeModel model = component.getNodeView().getModel();
-					if(iconController.onIconClicked(model, uiIcon))
+					if(iconController.onIconClicked(node, uiIcon))
 						return;
 				}
 				else if (component.isClickableLink(e.getX())) {
@@ -90,7 +89,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				if (link != null) {
 					doubleClickTimer.start(new Runnable() {
 						public void run() {
-							loadLink(link);
+							loadLink(node, link);
 						}
 					});
 					e.consume();
@@ -134,9 +133,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	}
 
 
-	protected void loadLink(final String link) {
+	private void loadLink(NodeModel node, final String link) {
 		try {
-			UrlManager.getController().loadURL(new URI(link));
+			LinkController.getController().loadURI(node, new URI(link));
 		} catch (Exception ex) {
 			LogUtils.warn(ex);
 		}

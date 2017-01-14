@@ -82,6 +82,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
@@ -811,8 +812,14 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		if (oldFile != null) {
 			oldFile = oldFile.getAbsoluteFile();
 		}
-		if (!f.getAbsoluteFile().equals(oldFile) && null != map.getExtension(BackupFlag.class)) {
-			map.removeExtension(BackupFlag.class);
+		if (!f.getAbsoluteFile().equals(oldFile)) {
+			if (null != map.getExtension(BackupFlag.class)) {
+				map.removeExtension(BackupFlag.class);
+			}
+			if (null != map.getExtension(DocuMapAttribute.class)) {
+				map.removeExtension(DocuMapAttribute.class);
+			}
+			map.setReadOnly(false);
 		}
 		if (save(map, f)) {
 			Controller.getCurrentController().getMapViewManager().updateMapViewName();
