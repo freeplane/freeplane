@@ -21,6 +21,20 @@ task signViewerJarTsa {
     dependsOn viewerJar
 }
 
+task signSvgJarTsa {
+	onlyIf { props['signjar.alias'] && props['signjar.tsaurl'] }
+	doLast {
+		def svgJar = file('lib/kitfox-svg-salamander-1.1.1-p1.jar')
+		ant.signjar(jar: svgJar,
+			alias: props['signjar.alias'],
+			keystore: props['signjar.keystore'],
+			storetype: props['signjar.storetype'],
+			storepass: props['signjar.storepass'],
+			keypass: props['signjar.keypass'],
+			tsaurl: props['signjar.tsaurl'])
+	}
+}
+
 task signViewerJarNoTsa {
     onlyIf { props['signjar.alias'] && !props['signjar.tsaurl'] }
     doLast {
@@ -32,7 +46,6 @@ task signViewerJarNoTsa {
             storepass: props['signjar.storepass'],
             keypass: props['signjar.keypass'])
     }
-    dependsOn viewerJar
 }
 
 task doNotSignViewerJar {
