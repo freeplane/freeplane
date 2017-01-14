@@ -47,6 +47,7 @@
 	        <j2se version="1.7+"
 	              href="http://java.sun.com/products/autodl/j2se"/>
 	              <jar href="freeplaneviewer.jar" main="true"/>
+	              <jar href="kitfox-svg-salamander-1.1.1-p1.jar" main="false"/>
 	    </resources>
 	    <security>
 	        <all-permissions/>
