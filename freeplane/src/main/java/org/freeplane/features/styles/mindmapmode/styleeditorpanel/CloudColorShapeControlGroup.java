@@ -48,16 +48,24 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 	private static final String CLOUD_SHAPE = "cloudshape";
 	private static final String[] CLOUD_SHAPES = EnumToStringMapper.getStringValuesOf(CloudModel.Shape.class);
 
-	private BooleanProperty mSetCloud;
-	private ColorProperty mCloudColor;
-	private ComboProperty mCloudShape;
-
-	private CloudColorChangeListener cloudColorChangeListener;
-	private CloudShapeChangeListener cloudShapeChangeListener;
+	final private BooleanProperty mSetCloud;
+	final private ColorProperty mCloudColor;
+	final private ComboProperty mCloudShape;
+	final private CloudColorChangeListener mPropertyListener;
 	
+	public CloudColorShapeControlGroup() {
+		mSetCloud = new BooleanProperty(ControlGroup.SET_RESOURCE);
+		mCloudColor = new ColorProperty(CLOUD_COLOR, ResourceController.getResourceController()
+		    .getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR));
+		mCloudShape = new ComboProperty(CLOUD_SHAPE, CLOUD_SHAPES);
+		mPropertyListener = new CloudColorChangeListener(mSetCloud, mCloudColor, mCloudShape);
+		mSetCloud.addPropertyChangeListener(mPropertyListener);
+		mCloudColor.addPropertyChangeListener(mPropertyListener);
+	}
+
 	private class CloudColorChangeListener extends ControlGroupChangeListener {
-		public CloudColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
+		public CloudColorChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty1, final IPropertyControl mProperty2) {
+			super(mSet, mProperty1, mProperty2);
 		}
 
 		@Override
@@ -67,6 +75,7 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 							CloudController.class);
 			if (enabled) {
 				styleController.setColor(node, mCloudColor.getColorValue());
+				styleController.setShape(node, CloudModel.Shape.valueOf(mCloudShape.getValue()));
 			}
 			else {
 				styleController.setCloud(node, false);
@@ -80,33 +89,9 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 			final Color viewCloudColor = cloudController.getColor(node);
 			mSetCloud.setValue(cloudModel != null);
 			mCloudColor.setColorValue(viewCloudColor);
-
-		}
-	}
-	
-	private class CloudShapeChangeListener extends ControlGroupChangeListener {
-		public CloudShapeChangeListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
-			super(mSet, mProperty);
-		}
-	
-		@Override
-		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
-			final MCloudController styleController = (MCloudController) Controller
-					.getCurrentModeController().getExtension(
-						CloudController.class);
-			if (enabled) {
-				styleController.setShape(node, CloudModel.Shape.valueOf(mCloudShape.getValue()));
-			}
-			else {
-				styleController.setCloud(node, false);
-			}
-		}
-
-		@Override
-		void setStyleOnExternalChange(NodeModel node) {
-			final CloudController cloudController = CloudController.getController();
 			final CloudModel.Shape viewCloudShape = cloudController.getShape(node);
 			mCloudShape.setValue(viewCloudShape != null ? viewCloudShape.toString() : CloudModel.Shape.ARC.toString());
+
 		}
 	}
 	
@@ -119,27 +104,17 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 	}
 	
 	private void addCloudColorControl(DefaultFormBuilder formBuilder) {
-		mSetCloud = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		mCloudColor = new ColorProperty(CLOUD_COLOR, ResourceController.getResourceController()
-		    .getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR));
-		cloudColorChangeListener = new CloudColorChangeListener(mSetCloud, mCloudColor);
-		mSetCloud.addPropertyChangeListener(cloudColorChangeListener);
-		mCloudColor.addPropertyChangeListener(cloudColorChangeListener);
 		mSetCloud.layout(formBuilder);
 		mCloudColor.layout(formBuilder);
 	}
 
 	private void addCloudShapeControl(DefaultFormBuilder formBuilder) {
-		mCloudShape = new ComboProperty(CLOUD_SHAPE, CLOUD_SHAPES);
-		cloudShapeChangeListener = new CloudShapeChangeListener(mSetCloud, mCloudShape);
-		mSetCloud.addPropertyChangeListener(cloudShapeChangeListener);
-		mCloudShape.addPropertyChangeListener(cloudShapeChangeListener);
+		mCloudShape.addPropertyChangeListener(mPropertyListener);
 		mCloudShape.layout(formBuilder);
 	}
 
 	@Override
 	public void setStyle(NodeModel node) {
-		cloudColorChangeListener.setStyle(node);
-		cloudShapeChangeListener.setStyle(node);
+		mPropertyListener.setStyle(node);
 	}
 }
