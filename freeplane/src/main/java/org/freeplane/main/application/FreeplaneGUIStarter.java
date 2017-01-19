@@ -290,8 +290,14 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
                 catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                fireStartupFinished();
-                MenuUtils.executeMenuItems(options.getMenuItemsToExecute());
+		        
+		        UITools.executeWhenNodeHasFocus(new Runnable() {
+					@Override
+					public void run() {
+		                fireStartupFinished();
+		                MenuUtils.executeMenuItems(options.getMenuItemsToExecute());
+					}
+				});
             }
 
 			private void focusCurrentView() {
