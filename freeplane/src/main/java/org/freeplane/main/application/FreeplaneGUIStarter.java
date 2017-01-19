@@ -296,6 +296,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 					public void run() {
 		                fireStartupFinished();
 		                MenuUtils.executeMenuItems(options.getMenuItemsToExecute());
+		                if(options.shouldStopAfterLaunch())
+		                	System.exit(0);
 					}
 				});
             }
