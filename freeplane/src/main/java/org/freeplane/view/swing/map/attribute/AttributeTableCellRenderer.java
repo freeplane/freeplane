@@ -42,7 +42,6 @@ import org.freeplane.features.text.TextController;
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	public AttributeTableCellRenderer() {
 		super();
-		defaultBorder = getBorder();
 	}
 
 	/**
@@ -53,7 +52,6 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	private boolean isPainting;
 	private float zoom;
 	private boolean opaque;
-	final private Border defaultBorder;
 
 	/*
 	 * (non-Javadoc)
@@ -74,15 +72,11 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	                                               final boolean hasFocus, final int row, final int column) {
 		final Component rendererComponent = super.getTableCellRendererComponent(table, value, hasFocus, isSelected, row,
 		    column);
-		if (hasFocus) {
-			setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
-		}
 		final AttributeTable attributeTable = (AttributeTable) table;
 		zoom = attributeTable.getZoom();
 	    final IAttributeTableModel attributeTableModel = (IAttributeTableModel) table.getModel();
 		final String originalText = value == null ? null : value.toString();
 		String text = originalText;
-		setBorder(defaultBorder);
 		Icon icon;
 		if (column == 1 && value != null) {
 			try {
