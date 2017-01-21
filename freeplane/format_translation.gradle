@@ -46,22 +46,28 @@ task check_translation(dependsOn: configurations.ant_tasks) << {
     )
 }
 
+void update(File resourceFile){
+   def userFile = file('../User' + resourceFile.name)
+   if (userFile.exists()) {
+	  Properties properties = new Properties()
+	  resourceFile.withInputStream {
+		  properties.load(it)
+	  }
+	  
+	  userFile.withInputStream {
+		  properties.load(it)
+	  }
+	  
+	  properties.store(resourceFile.newWriter(), null)
+   }
+}
+
 task update_translation << {
-	fileTree(dir: './resources/translations', include: 'Resources_*.properties').each{ File resourceFile ->
-		 def userFile = file('../User' + resourceFile.name)
-		 if (userFile.exists()) {
-			Properties properties = new Properties()
-			resourceFile.withInputStream {
-				properties.load(it)
-			}
-			
-			userFile.withInputStream {
-				properties.load(it)
-			}
-			
-			
-			properties.store(resourceFile.newWriter(), null)
-		 }
+	fileTree(dir: './viewer-resources/translations', include: 'Resources_*.properties').each{ 
+		File resourceFile -> update(resourceFile)
+	}
+	fileTree(dir: './resources/translations', include: 'Resources_*.properties').each{ 
+		File resourceFile -> update(resourceFile)
 	}
 }
 
