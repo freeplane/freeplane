@@ -290,11 +290,12 @@ public abstract class MainView extends ZoomableLabel {
 		paintFoldingMark(nodeView, g);
         if (isShortened()) {
         	FoldingMark.SHORTENED.draw(g, nodeView, decorationMarkBounds(nodeView, 7./3, 5./3));
-        }
-        else if (nodeView.getModel().isCloneTreeRoot())
-        	FoldingMark.CLONE.draw(g, nodeView, decorationMarkBounds(nodeView, 2, 2.5));
-        else if (nodeView.getModel().isCloneTreeNode())
-        	FoldingMark.CLONE.draw(g, nodeView, decorationMarkBounds(nodeView, 1.5, 2.5));
+        } else if (nodeView.isSelected()){
+			if (nodeView.getModel().isCloneTreeRoot())
+				FoldingMark.CLONE.draw(g, nodeView, decorationMarkBounds(nodeView, 2, 2.5));
+			else if (nodeView.getModel().isCloneTreeNode())
+				FoldingMark.CLONE.draw(g, nodeView, decorationMarkBounds(nodeView, 1.5, 2.5));
+		}
 	}
 
 	private Rectangle decorationMarkBounds(final NodeView nodeView, double widthFactor, double heightFactor) {

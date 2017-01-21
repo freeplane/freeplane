@@ -4,6 +4,7 @@
 SVG icons for map and UI
 Configurable map icon size
 Configurable UI icon size
+Paint clone node markers only on selected nodes
 
 ===============================
 1.6.0
