@@ -223,7 +223,7 @@ class SlideEditorController{
 
 	
 	private JToggleButton createSetFilterToggleButton() {
-		JToggleButton tglbtnSetFilter = TranslatedElementFactory.createToggleButton("slide.setfilter");
+		final JToggleButton tglbtnSetFilter = TranslatedElementFactory.createToggleButton("slide.setfilter");
 		tglbtnSetFilter.setAlignmentX(Component.CENTER_ALIGNMENT);
 		tglbtnSetFilter.addActionListener(new ActionListener() {
 			
@@ -240,6 +240,7 @@ class SlideEditorController{
 					ASelectableCondition newCondition = conditions.isEmpty() ? null : conditions.get(0);
 					UndoableSlide.of(slide).setFilterCondition(newCondition);
 				}
+			    tglbtnSetFilter.setSelected(slide.getFilterCondition() != null);
 			    
 			}
 		});
