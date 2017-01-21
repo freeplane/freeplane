@@ -20,7 +20,7 @@ public class Slide implements NamedElement<Slide>{
 	public static final Slide ALL_NODES = new Slide("All nodes");
 	private String name;
 	private boolean changesZoom;
-	private boolean centersSelectedNode;
+	private String centeredNodeId;
 	private float zoom;
 	private boolean showsOnlySpecificNodes;
 	private boolean showsAncestors;
@@ -42,22 +42,22 @@ public class Slide implements NamedElement<Slide>{
 
 	@Override
 	public Slide saveAs(String name) {
-		return new Slide(name, new LinkedHashSet<String>(), centersSelectedNode,
+		return new Slide(name, new LinkedHashSet<String>(), null,
 		    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, null);
 	}
 
 	public Slide(String name){
-		this(name, new LinkedHashSet<String>(), false, false, 1f, false, false, false, null);
+		this(name, new LinkedHashSet<String>(), null, false, 1f, false, false, false, null);
 	}
 	
-	private Slide(String name, Set<String> selectedNodeIds, boolean centerSelectedNode,
+	private Slide(String name, Set<String> selectedNodeIds, String centeredNodeId,
 	                  boolean changeZoom,
 			float zoom, boolean showOnlySpecificNodes, boolean showAncestors, boolean showDescendants,
 			ASelectableCondition filterCondition) {
 		super();
 		this.name = name;
 		this.selectedNodeIds = selectedNodeIds;
-		this.centersSelectedNode = centerSelectedNode;
+		this.centeredNodeId = centeredNodeId;
 		this.changesZoom = changeZoom;
 		this.zoom = zoom;
 		this.showsOnlySpecificNodes = showOnlySpecificNodes;
@@ -189,12 +189,12 @@ public class Slide implements NamedElement<Slide>{
 		return selectedNodeIds.contains(node.getID());
 	}
 
-	public boolean centersSelectedNode() {
-		return centersSelectedNode;
+	public String getCenteredNodeId() {
+		return centeredNodeId;
 	}
 
-	public void setCentersSelectedNode(boolean centersSelectedNode) {
-		this.centersSelectedNode = centersSelectedNode;
+	public void setCenteredNodeId(String centeredNodeId) {
+		this.centeredNodeId = centeredNodeId;
 	}
 
 	public boolean changesZoom() {
@@ -302,6 +302,7 @@ public class Slide implements NamedElement<Slide>{
 		applySelection();
 		foldNodes();
 		applyZoom();
+		centerSelectedNode();
 	}
 
 
@@ -329,8 +330,15 @@ public class Slide implements NamedElement<Slide>{
 			if (node != null)
 				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
 		}
-		if (node != null && centersSelectedNode)
-			Controller.getCurrentController().getSelection().centerNode(node);
+	}
+
+	private void centerSelectedNode() {
+		MapModel map = getMap();
+		if (centeredNodeId != null) {
+			NodeModel centeredNode = map.getNodeForID(centeredNodeId);
+			if(centeredNode != null && centeredNode.hasVisibleContent())
+				Controller.getCurrentController().getSelection().centerNodeSlowly(centeredNode);
+		}
 	}
 
 	private MapModel getMap() {

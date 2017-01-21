@@ -129,25 +129,25 @@ class UndoableSlide {
 	}
 	
 	
-	public void setCentersSelectedNode(final boolean centersSelectedNode) {
-		final boolean oldCentersSelectedNode = slide.centersSelectedNode();
-		if(centersSelectedNode == oldCentersSelectedNode)
+	public void setCenteredNodeId(final String centeredNodeId) {
+		final String oldCenteredNodeId = slide.getCenteredNodeId();
+		if(centeredNodeId == oldCenteredNodeId ||centeredNodeId != null && centeredNodeId.equals(oldCenteredNodeId))
 			return;
 		IActor actor = new IActor() {
 			
 			@Override
 			public String getDescription() {
-				return "setCentersSelectedNode";
+				return "setCenteredNodeId";
 			}
 			
 			@Override
 			public void act() {
-				slide.setCentersSelectedNode(centersSelectedNode);
+				slide.setCenteredNodeId(centeredNodeId);
 			}
 			
 			@Override
 			public void undo() {
-				slide.setCentersSelectedNode(oldCentersSelectedNode);
+				slide.setCenteredNodeId(oldCenteredNodeId);
 			}
 			
 		};

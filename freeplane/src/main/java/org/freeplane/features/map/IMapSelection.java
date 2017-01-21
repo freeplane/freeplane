@@ -29,6 +29,8 @@ import java.util.Set;
  */
 public interface IMapSelection {
 	public void centerNode(final NodeModel node);
+	
+	public void centerNodeSlowly(final NodeModel node);
 
 	public NodeModel getSelected();
 
