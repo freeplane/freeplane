@@ -174,13 +174,13 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		return btnDeleteElement;
 	}
 	private JButton createNewElementButton(final String newElementName) {
-		JButton btnNewElement = TranslatedElementFactory.createButton("collection.append");
+		final JButton btnNewElement = TranslatedElementFactory.createButton(newElementName);
 		btnNewElement.addActionListener(new ActionListener() {
 			
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				UndoableNamedElementCollection.of(collection).add(newElementName + " " + (collection.getSize() + 1));
+				UndoableNamedElementCollection.of(collection).add(btnNewElement.getText() + " " + (collection.getSize() + 1));
 			}
 		});
 		return btnNewElement;

@@ -20,8 +20,8 @@ public class PresentationEditorController {
 	private CollectionChangeListener<Presentation> presentationChangeListener;
 
 	public PresentationEditorController(final PresentationState presentationState) {
-		presentationPanelController = new CollectionBoxController<>("New presentation");
-		slidePanelController = new CollectionBoxController<Slide>("New slide");
+		presentationPanelController = new CollectionBoxController<>("collection.new.presentation");
+		slidePanelController = new CollectionBoxController<Slide>("collection.new.slide");
 		slideEditorController = new SlideEditorController(presentationState);
 		presentationState.addPresentationStateListener(new PresentationStateChangeListener() {
 			@Override
