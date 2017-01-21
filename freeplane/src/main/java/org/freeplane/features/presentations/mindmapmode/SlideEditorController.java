@@ -248,7 +248,6 @@ class SlideEditorController{
 
 	private JButton createSelectNodesButton() {
 		JButton btnHighlightSlideContent = TranslatedElementFactory.createButton("slide.select");
-		TranslatedElementFactory.createTooltip(btnHighlightSlideContent, "slide.select.tooltip");
 		btnHighlightSlideContent.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnHighlightSlideContent.addActionListener(new ActionListener() {
 			@Override
