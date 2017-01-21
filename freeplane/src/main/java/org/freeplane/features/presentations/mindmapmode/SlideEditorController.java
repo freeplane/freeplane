@@ -23,6 +23,8 @@ import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.filter.FilterComposerDialog;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
@@ -178,15 +180,21 @@ class SlideEditorController{
 		checkBoxOnlySpecificNodes.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(slide.getCenteredNodeId() == null) {
-					final NodeModel selected = Controller.getCurrentController().getSelection().getSelected();
+				final String centeredNodeId = slide.getCenteredNodeId();
+				final IMapSelection selection = Controller.getCurrentController().getSelection();
+				if(centeredNodeId == null) {
+					final NodeModel selected = selection.getSelected();
 					if(selected != null)
 						UndoableSlide.of(slide).setCenteredNodeId(selected.getID());
 					else
 						UndoableSlide.of(slide).setCenteredNodeId(null);
-				}
-				else
+				} else {
 					UndoableSlide.of(slide).setCenteredNodeId(null);
+					final MapModel map = Controller.getCurrentController().getMap();
+					final NodeModel node = map.getNodeForID(centeredNodeId);
+					if(node != null)
+						selection.selectAsTheOnlyOneSelected(node);
+				}
 				checkBoxOnlySpecificNodes.setSelected(slide.getCenteredNodeId() != null);
 			}
 		});
