@@ -144,7 +144,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			.getModel();
 			for (int col = 0; col < table.getColumnCount(); col++) {
 				final int modelColumnWidth = model.getColumnWidth(col).toBaseUnitsRounded();
-				final int currentColumnWidth = (int) (table.getColumnModel().getColumn(col).getWidth() / zoom);
+				final int currentColumnWidth = Math.round(table.getColumnModel().getColumn(col).getWidth() / zoom);
 				if (modelColumnWidth != currentColumnWidth) {
 					model.setColumnWidth(col, LengthUnits.pixelsInPt(currentColumnWidth));
 				}
