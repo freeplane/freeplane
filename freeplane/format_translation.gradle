@@ -58,7 +58,7 @@ void update(File resourceFile){
 		  properties.load(it)
 	  }
 	  
-	  properties.store(resourceFile.newWriter(), null)
+	  properties.store(resourceFile.newOutputStream(), null)
    }
 }
 
