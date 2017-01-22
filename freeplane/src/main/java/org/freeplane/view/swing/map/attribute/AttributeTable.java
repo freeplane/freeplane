@@ -21,6 +21,7 @@ package org.freeplane.view.swing.map.attribute;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -112,6 +113,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
 			final Component c = delegate.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			final Container mapView = SwingUtilities.getAncestorOfClass(MapView.class, table);
+			if(mapView != null)
+				c.setBackground(mapView.getBackground());
 			final int height = (int) (((AttributeTable)table).getZoom() * 6);
 			final Dimension preferredSize = new Dimension(1, height);
 			c.setPreferredSize(preferredSize);
