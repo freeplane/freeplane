@@ -1,31 +1,130 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="25.331" width="32.001" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32.000598 25.331041" xmlns:dc="http://purl.org/dc/elements/1.1/">
-<defs>
-<linearGradient id="b">
-<stop stop-color="#36d200" offset="0"/>
-<stop stop-color="#fff" offset="1"/>
-</linearGradient>
-<linearGradient id="a" y2="377.6" xlink:href="#b" gradientUnits="userSpaceOnUse" y1="388.92" gradientTransform="matrix(-.00098272 -1.1301 .86375 -.0011671 -76.811 812.82)" x2="142.38" x1="160.7"/>
-</defs>
-<metadata>
-<rdf:RDF>
-<cc:Work rdf:about="">
-<dc:format>image/svg+xml</dc:format>
-<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-<dc:title/>
-</cc:Work>
-</rdf:RDF>
-</metadata>
-<g transform="translate(-433.01 -340.69)">
-<g transform="matrix(1.5832,0,0,1.5832,1475.5,-598.31)">
-<g transform="matrix(.22857 0 0 .22857 -507.84 469.82)" stroke="#80a">
-<rect style="color:#000000" rx="14" ry="14" height="62" width="62" y="543.36" x="-646" stroke-width="8" fill="none"/>
-<path stroke-linejoin="round" d="m-583.97 584.27-12.356-15.996h24.301l-11.944 15.996z" fill-rule="evenodd" stroke-width="2.9" fill="url(#a)"/>
-<path stroke-linejoin="round" d="m-645.2 567.18-12.356 15.996h24.301l-11.944-15.996z" fill-rule="evenodd" stroke-width="2.9" fill="url(#a)"/>
-</g>
-<text style="word-spacing:0px;letter-spacing:1px" font-family="Arial" space="preserve" font-size="11px" y="605.04181" x="-652.3277" font-weight="bold" line-height="125%" fill="#8800aa">
-<tspan y="605.04181" x="-652.3277">R</tspan>
-</text>
-</g>
-</g>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="32"
+   width="40"
+   version="1.1"
+   viewBox="0 0 39.999498 32.000053"
+   id="svg2"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="revision-pink.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1151"
+     inkscape:window-height="695"
+     id="namedview30"
+     showgrid="false"
+     inkscape:zoom="9.3166478"
+     inkscape:cx="1.0273031"
+     inkscape:cy="12.6655"
+     inkscape:window-x="542"
+     inkscape:window-y="132"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs4">
+    <linearGradient
+       id="b">
+      <stop
+         stop-color="#36d200"
+         offset="0"
+         id="stop7" />
+      <stop
+         stop-color="#fff"
+         offset="1"
+         id="stop9" />
+    </linearGradient>
+    <linearGradient
+       id="a"
+       y2="377.60001"
+       xlink:href="#b"
+       gradientUnits="userSpaceOnUse"
+       y1="388.92001"
+       gradientTransform="matrix(-9.8272e-4,-1.1301,0.86375,-0.0011671,-76.811,812.82)"
+       x2="142.38"
+       x1="160.7" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#b"
+       id="linearGradient4372"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(-9.8272e-4,-1.1301,0.86375,-0.0011671,-76.811,812.82)"
+       x1="160.7"
+       y1="388.92001"
+       x2="142.38"
+       y2="377.60001" />
+  </defs>
+  <metadata
+     id="metadata12">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="matrix(1.2497441,0,0,1.2640968,-541.15064,-430.67342)"
+     id="g14">
+    <g
+       transform="matrix(1.5832,0,0,1.5832,1475.5,-598.31)"
+       id="g16">
+      <g
+         transform="matrix(0.22857,0,0,0.22857,-507.84,469.82)"
+         id="g18"
+         style="stroke:#8800aa">
+        <rect
+           style="color:#000000;fill:none;stroke-width:8"
+           rx="14"
+           ry="14"
+           height="62"
+           width="62"
+           y="543.35999"
+           x="-646"
+           id="rect20" />
+        <path
+           d="m -583.97,584.27 -12.356,-15.996 24.301,0 -11.944,15.996 z"
+           id="path22"
+           style="fill:url(#linearGradient4372);fill-rule:evenodd;stroke-width:2.9000001;stroke-linejoin:round"
+           inkscape:connector-curvature="0" />
+        <path
+           d="m -645.2,567.18 -12.356,15.996 24.301,0 -11.944,-15.996 z"
+           id="path24"
+           style="fill:url(#a);fill-rule:evenodd;stroke-width:2.9000001;stroke-linejoin:round"
+           inkscape:connector-curvature="0" />
+      </g>
+      <text
+         style="font-weight:bold;font-size:11px;line-height:125%;font-family:Arial;letter-spacing:1px;word-spacing:0px;fill:#8800aa"
+         space="preserve"
+         font-size="11px"
+         y="605.04181"
+         x="-652.3277"
+         font-weight="bold"
+         line-height="125%"
+         id="text26"
+         sodipodi:linespacing="125%">
+        <tspan
+           y="605.04181"
+           x="-652.3277"
+           id="tspan28">R</tspan>
+      </text>
+    </g>
+  </g>
 </svg>
