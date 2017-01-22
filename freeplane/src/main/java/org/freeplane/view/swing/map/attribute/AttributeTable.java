@@ -56,6 +56,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
@@ -812,7 +813,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		if(gridColor != null) {
 			if(! gridColor.equals(getGridColor())) {
 				AttributeViewScrollPane scrollPane = (AttributeViewScrollPane) SwingUtilities.getAncestorOfClass(AttributeViewScrollPane.class, this);
-				scrollPane.setBorder(BorderFactory.createLineBorder(gridColor));
+				final Border border = BorderFactory.createLineBorder(gridColor);
+				scrollPane.setBorder(border);
+				scrollPane.setViewportBorder(border);
 				super.setGridColor(gridColor);
 			}
 		}
