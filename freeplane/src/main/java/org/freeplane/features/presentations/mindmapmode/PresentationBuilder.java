@@ -1,6 +1,6 @@
 package org.freeplane.features.presentations.mindmapmode;
 
-import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.CENTERS_SELECTED_NODE;
+import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.CENTERED_NODE_ID;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.CHANGES_ZOOM;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.NAME;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.*;
@@ -40,7 +40,7 @@ class PresentationBuilder {
 	static final String FOLDED_NODES = "FoldedNodes";
 	static final String SLIDE_CONDITION = "SlideCondition";
 	static final String ZOOM = "zoom";
-	static final String CENTERS_SELECTED_NODE = "centersSelectedNode";
+	static final String CENTERED_NODE_ID = "centeredNodeId";
 	static final String CHANGES_ZOOM = "changesZoom";
 	static final String SHOWS_ONLY_SPECIFIC_NODES = "showsOnlySpecificNodes";
 	static final String SHOWS_DESCENDANTS = "showsDescendants";
@@ -100,7 +100,7 @@ class PresentationBuilder {
 				s.setShowsDescendants(toBoolean(xmlSlide, SHOWS_DESCENDANTS));
 				s.setShowsOnlySpecificNodes(toBoolean(xmlSlide, SHOWS_ONLY_SPECIFIC_NODES));
 				s.setChangesZoom(toBoolean(xmlSlide, CHANGES_ZOOM));
-				s.setCentersSelectedNode(toBoolean(xmlSlide, CENTERS_SELECTED_NODE));
+				s.setCenteredNodeId(toString(xmlSlide, CENTERED_NODE_ID));
 				s.setZoom(toFloat(xmlSlide, ZOOM));
 				Enumeration<XMLElement> childAttributes = xmlSlide.enumerateChildren();
 				while(childAttributes.hasMoreElements()) {
@@ -146,6 +146,11 @@ class PresentationBuilder {
 			private boolean toBoolean(XMLElement element, String attribute) {
 				return Boolean.parseBoolean(element.getAttribute(attribute, ""));
 			}
+			
+			private String toString(XMLElement element, String attribute) {
+				return element.getAttribute(attribute, null);
+			}
+			
 		});
 
 		mapController.getWriteManager().addExtensionElementWriter(MapPresentations.class,
@@ -200,8 +205,10 @@ class PresentationWriter {
 			xmlSlide.setAttribute(SHOWS_ONLY_SPECIFIC_NODES, TRUE);
 		if (s.changesZoom())
 			xmlSlide.setAttribute(CHANGES_ZOOM, TRUE);
-		if (s.centersSelectedNode())
-			xmlSlide.setAttribute(CENTERS_SELECTED_NODE, TRUE);
+		final String centeredNodeId = s.getCenteredNodeId();
+		if (centeredNodeId != null){
+			xmlSlide.setAttribute(CENTERED_NODE_ID, centeredNodeId);
+		}
 		float zoom = s.getZoom();
 		if (zoom != 1f)
 			xmlSlide.setAttribute(ZOOM, Float.toString(zoom));

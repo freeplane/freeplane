@@ -19,6 +19,7 @@ public class TranslatedElementFactory {
 		final String text = TextUtils.getRawText(labelKey);
 		LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
 		TranslatedElement.TEXT.setKey(component, labelKey);
+		createTooltip(component, labelKey + ".tooltip");
 		return component;
 	}
 
@@ -31,6 +32,7 @@ public class TranslatedElementFactory {
 		final String text = TextUtils.getRawText(labelKey);
 		LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
 		TranslatedElement.TEXT.setKey(component, labelKey);
+		createTooltip(component, labelKey + ".tooltip");
 		return component;
 	}
 
@@ -43,6 +45,7 @@ public class TranslatedElementFactory {
 		final JCheckBox component = new JCheckBox();
 		LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
 		TranslatedElement.TEXT.setKey(component, labelKey);
+		createTooltip(component, labelKey + ".tooltip");
 		return component;
 	}
 
@@ -56,15 +59,16 @@ public class TranslatedElementFactory {
 		final String text = TextUtils.getText(labelKey);
 		final JLabel component = new JLabel(text);
 		TranslatedElement.TEXT.setKey(component, labelKey);
+		createTooltip(component, labelKey + ".tooltip");
 		return component;
 	}
 
-	public static void createTooltip(JComponent component, String labelKey) {
-		final String text = TextUtils.getOptionalText(labelKey);
+	private static void createTooltip(JComponent component, String labelKey) {
+		final String text = TextUtils.getOptionalText(labelKey, null);
 		if(text != null){
 			component.setToolTipText(text);
-			TranslatedElement.TOOLTIP.setKey(component, labelKey);
 		}
+		TranslatedElement.TOOLTIP.setKey(component, labelKey);
 	}
 
 }

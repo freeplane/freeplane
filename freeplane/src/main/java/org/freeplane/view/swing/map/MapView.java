@@ -151,9 +151,19 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private class MapSelection implements IMapSelection {
 		public void centerNode(final NodeModel node) {
+			final boolean slowScroll = false;
+			centerNode(node, slowScroll);
+		}
+
+		public void centerNodeSlowly(final NodeModel node) {
+			final boolean slowScroll = true;
+			centerNode(node, slowScroll);
+		}
+		
+		private void centerNode(final NodeModel node, final boolean slowScroll) {
 			final NodeView nodeView = getNodeView(node);
 			if (nodeView != null) {
-				mapScroller.scrollNode(nodeView, ScrollingDirective.SCROLL_NODE_TO_CENTER, false);
+				mapScroller.scrollNode(nodeView, ScrollingDirective.SCROLL_NODE_TO_CENTER, slowScroll);
 			}
 		}
 

@@ -544,6 +544,14 @@ abstract public class FrameController implements ViewController {
 		if(supportHidpi)
 			scaleDefaultUIFonts();
 
+		// Workaround for https://bugs.openjdk.java.net/browse/JDK-8134828
+		// Scrollbar thumb disappears with Nimbus L&F
+		// http://stackoverflow.com/questions/32857372/jscrollbar-dont-show-thumb-in-nimbus-lf
+
+		final Dimension minimumThumbSize = new Dimension(30, 30);
+		UIManager.getLookAndFeelDefaults().put("ScrollBar.minimumThumbSize", minimumThumbSize);
+		UIManager.put("ScrollBar.minimumThumbSize", minimumThumbSize);
+
 		// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7077418
 		// NullPointerException in WindowsFileChooserUI when system icons missing/invalid
 		// set FileChooserUI to MetalFileChooserUI if no JFileChooser can be created

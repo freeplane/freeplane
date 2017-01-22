@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mode.ModeController;
@@ -52,10 +53,14 @@ abstract public class ShapedMainView extends MainView {
 		paintBackgound(g);
 		paintDragOver(g);
 		final Color borderColor = getBorderColor();
+		final Color oldColor = g.getColor();
 		g.setColor(borderColor);
+		final Stroke oldStroke = g.getStroke();
 		g.setStroke(UITools.createStroke(getPaintedBorderWidth(), getDash().variant, BasicStroke.JOIN_MITER));
 		paintNodeShape(g);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
+		g.setColor(oldColor);
+		g.setStroke(oldStroke);
 		super.paintComponent(g);
 	}
 	

@@ -21,6 +21,7 @@ package org.freeplane.view.swing.map.attribute;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -55,9 +56,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.TableModelEvent;
+import javax.swing.plaf.basic.BasicTableUI;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
@@ -111,6 +114,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
 			final Component c = delegate.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			final Container mapView = SwingUtilities.getAncestorOfClass(MapView.class, table);
+			if(mapView != null)
+				c.setBackground(mapView.getBackground());
 			final int height = (int) (((AttributeTable)table).getZoom() * 6);
 			final Dimension preferredSize = new Dimension(1, height);
 			c.setPreferredSize(preferredSize);
@@ -138,7 +144,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			.getModel();
 			for (int col = 0; col < table.getColumnCount(); col++) {
 				final int modelColumnWidth = model.getColumnWidth(col).toBaseUnitsRounded();
-				final int currentColumnWidth = (int) (table.getColumnModel().getColumn(col).getWidth() / zoom);
+				final int currentColumnWidth = Math.round(table.getColumnModel().getColumn(col).getWidth() / zoom);
 				if (modelColumnWidth != currentColumnWidth) {
 					model.setColumnWidth(col, LengthUnits.pixelsInPt(currentColumnWidth));
 				}
@@ -263,8 +269,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		getTableHeader().setReorderingAllowed(false);
 		setRowSelectionAllowed(false);
 		putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
+		setShowGrid(true);
 	}
-
+	
 	@Override
 	protected JTableHeader createDefaultTableHeader() {
 		return new TableHeader(columnModel);
@@ -806,7 +813,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		if(gridColor != null) {
 			if(! gridColor.equals(getGridColor())) {
 				AttributeViewScrollPane scrollPane = (AttributeViewScrollPane) SwingUtilities.getAncestorOfClass(AttributeViewScrollPane.class, this);
-				scrollPane.setBorder(BorderFactory.createLineBorder(gridColor));
+				final Border border = BorderFactory.createLineBorder(gridColor);
+				scrollPane.setBorder(border);
+				scrollPane.setViewportBorder(border);
 				super.setGridColor(gridColor);
 			}
 		}

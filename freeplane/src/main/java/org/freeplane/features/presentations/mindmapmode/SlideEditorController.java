@@ -23,6 +23,9 @@ import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.filter.FilterComposerDialog;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 class SlideEditorController{
@@ -33,7 +36,7 @@ class SlideEditorController{
 	private final JButton btnSetSelectedNodes;
 	private final JButton btnAddSelectedNodes;
 	private final JButton btnRemoveSelectedNodes;
-	private final JCheckBox checkBoxCentersSelectedNode;
+	private final JToggleButton tglBtnCenterSelectedNode;
 	private final JToggleButton tglbtnChangeZoom;
 	private final JLabel lblZoomFactor;
 	private final JCheckBox checkBoxShowOnlySelectedNodes;
@@ -68,7 +71,7 @@ class SlideEditorController{
 		btnAddSelectedNodes = createAddSelectedNodeButton();
 		btnRemoveSelectedNodes = createRemoveSelectedNodeButton();
 		btnSelectNodes = createSelectNodesButton();
-		checkBoxCentersSelectedNode = createCentersSelectedNodeCheckBox();
+		tglBtnCenterSelectedNode = createCentersSelectedNodeToggleButton();
 		tglbtnChangeZoom = createSetZoomToggleButton();
 		lblZoomFactor = new JLabel("100 %");
 		lblZoomFactor.setPreferredSize(lblZoomFactor.getPreferredSize());
@@ -96,7 +99,7 @@ class SlideEditorController{
 		tglbtnSetFoldingState = createSetFoldingStateToggleButton();
 		
 		allButtons = new JComponent[] { btnSelectNodes, btnSetSelectedNodes, btnAddSelectedNodes,
-		        btnRemoveSelectedNodes, checkBoxCentersSelectedNode,
+		        btnRemoveSelectedNodes, tglBtnCenterSelectedNode,
 		        tglbtnChangeZoom, lblZoomFactor, 
 		        checkBoxShowOnlySelectedNodes, checkBoxShowAncestors, checkBoxShowDescendants, tglbtnSetFilter, 
 		        tglbtnSetFoldingState};
@@ -171,13 +174,28 @@ class SlideEditorController{
 		});
 		return btnSetsZoom;
 	}
-	private JCheckBox createCentersSelectedNodeCheckBox() {
-		final JCheckBox checkBoxOnlySpecificNodes = TranslatedElementFactory.createCheckBox("slide.centernode");
+	private JToggleButton createCentersSelectedNodeToggleButton() {
+		final JToggleButton checkBoxOnlySpecificNodes = TranslatedElementFactory.createToggleButton("slide.centernode");
 		checkBoxOnlySpecificNodes.setAlignmentX(Component.CENTER_ALIGNMENT);
 		checkBoxOnlySpecificNodes.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				UndoableSlide.of(slide).setCentersSelectedNode(!slide.centersSelectedNode());
+				final String centeredNodeId = slide.getCenteredNodeId();
+				final IMapSelection selection = Controller.getCurrentController().getSelection();
+				if(centeredNodeId == null) {
+					final NodeModel selected = selection.getSelected();
+					if(selected != null)
+						UndoableSlide.of(slide).setCenteredNodeId(selected.getID());
+					else
+						UndoableSlide.of(slide).setCenteredNodeId(null);
+				} else {
+					UndoableSlide.of(slide).setCenteredNodeId(null);
+					final MapModel map = Controller.getCurrentController().getMap();
+					final NodeModel node = map.getNodeForID(centeredNodeId);
+					if(node != null)
+						selection.selectAsTheOnlyOneSelected(node);
+				}
+				checkBoxOnlySpecificNodes.setSelected(slide.getCenteredNodeId() != null);
 			}
 		});
 		return checkBoxOnlySpecificNodes;
@@ -223,23 +241,27 @@ class SlideEditorController{
 
 	
 	private JToggleButton createSetFilterToggleButton() {
-		JToggleButton tglbtnSetFilter = TranslatedElementFactory.createToggleButton("slide.setfilter");
+		final JToggleButton tglbtnSetFilter = TranslatedElementFactory.createToggleButton("slide.setfilter");
 		tglbtnSetFilter.setAlignmentX(Component.CENTER_ALIGNMENT);
 		tglbtnSetFilter.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			    final FilterComposerDialog filterComposerDialog = FilterController.getCurrentFilterController().getFilterComposerDialog();
-			    filterComposerDialog.acceptMultipleConditions(true);
+			    filterComposerDialog.acceptMultipleConditions(false);
 			    ASelectableCondition oldCondition = slide.getFilterCondition();
-				if(oldCondition != null)
-			    	filterComposerDialog.addCondition(oldCondition);
-			    filterComposerDialog.show();
-			    List<ASelectableCondition> conditions = filterComposerDialog.getConditions();
-			    if(filterComposerDialog.isSuccess()) {
-					ASelectableCondition newCondition = conditions.isEmpty() ? null : conditions.get(0);
-					UndoableSlide.of(slide).setFilterCondition(newCondition);
+				if(oldCondition != null) {
+					filterComposerDialog.addCondition(oldCondition);
+					UndoableSlide.of(slide).setFilterCondition(null);
+				} else {
+					filterComposerDialog.show();
+					List<ASelectableCondition> conditions = filterComposerDialog.getConditions();
+					if(filterComposerDialog.isSuccess()) {
+						ASelectableCondition newCondition = conditions.isEmpty() ? null : conditions.get(0);
+						UndoableSlide.of(slide).setFilterCondition(newCondition);
+					}
 				}
+			    tglbtnSetFilter.setSelected(slide.getFilterCondition() != null);
 			    
 			}
 		});
@@ -248,7 +270,6 @@ class SlideEditorController{
 
 	private JButton createSelectNodesButton() {
 		JButton btnHighlightSlideContent = TranslatedElementFactory.createButton("slide.select");
-		TranslatedElementFactory.createTooltip(btnHighlightSlideContent, "slide.select.tooltip");
 		btnHighlightSlideContent.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnHighlightSlideContent.addActionListener(new ActionListener() {
 			@Override
@@ -286,7 +307,7 @@ class SlideEditorController{
 		selectionBox.add(btnRemoveSelectedNodes);
 		selectionBox.add(btnSelectNodes);
 		content.add(selectionBox);
-		content.add(checkBoxCentersSelectedNode);
+		content.add(tglBtnCenterSelectedNode);
 		Box zoomBox = Box.createHorizontalBox();
 		zoomBox.add(tglbtnChangeZoom);
 		zoomBox.add(lblZoomFactor);
@@ -332,7 +353,7 @@ class SlideEditorController{
 		if (slide == null) {
 			disableUI();
 			checkBoxShowOnlySelectedNodes.setSelected(false);
-			checkBoxCentersSelectedNode.setSelected(false);
+			tglBtnCenterSelectedNode.setSelected(false);
 			tglbtnChangeZoom.setSelected(false);
 			lblZoomFactor.setText("");
 			checkBoxShowOnlySelectedNodes.setSelected(false);
@@ -345,8 +366,8 @@ class SlideEditorController{
 				c.setEnabled(true);
 			final boolean showsOnlySpecificNodes = slide.showsOnlySpecificNodes();
 			checkBoxShowOnlySelectedNodes.setSelected(showsOnlySpecificNodes);
-			final boolean centersSelectedNode = slide.centersSelectedNode();
-			checkBoxCentersSelectedNode.setSelected(centersSelectedNode);
+			final boolean centersSelectedNode = slide.getCenteredNodeId() != null;
+			tglBtnCenterSelectedNode.setSelected(centersSelectedNode);
 			final ASelectableCondition filterCondition = slide.getFilterCondition();
 			if (! presentationState.isPresentationRunning())
 				for(JComponent c : filterRelatedButtons)
