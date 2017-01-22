@@ -248,15 +248,18 @@ class SlideEditorController{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 			    final FilterComposerDialog filterComposerDialog = FilterController.getCurrentFilterController().getFilterComposerDialog();
-			    filterComposerDialog.acceptMultipleConditions(true);
+			    filterComposerDialog.acceptMultipleConditions(false);
 			    ASelectableCondition oldCondition = slide.getFilterCondition();
-				if(oldCondition != null)
-			    	filterComposerDialog.addCondition(oldCondition);
-			    filterComposerDialog.show();
-			    List<ASelectableCondition> conditions = filterComposerDialog.getConditions();
-			    if(filterComposerDialog.isSuccess()) {
-					ASelectableCondition newCondition = conditions.isEmpty() ? null : conditions.get(0);
-					UndoableSlide.of(slide).setFilterCondition(newCondition);
+				if(oldCondition != null) {
+					filterComposerDialog.addCondition(oldCondition);
+					UndoableSlide.of(slide).setFilterCondition(null);
+				} else {
+					filterComposerDialog.show();
+					List<ASelectableCondition> conditions = filterComposerDialog.getConditions();
+					if(filterComposerDialog.isSuccess()) {
+						ASelectableCondition newCondition = conditions.isEmpty() ? null : conditions.get(0);
+						UndoableSlide.of(slide).setFilterCondition(newCondition);
+					}
 				}
 			    tglbtnSetFilter.setSelected(slide.getFilterCondition() != null);
 			    
