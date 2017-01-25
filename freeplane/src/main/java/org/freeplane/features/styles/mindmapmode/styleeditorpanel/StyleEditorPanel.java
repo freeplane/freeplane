@@ -83,6 +83,7 @@ public class StyleEditorPanel extends JPanel {
 				new StyleControlGroup(addStyleBox, uiFactory, modeController),
 				new GroupSeparator("OptionPanel.separator.NodeColors"),
 				new NodeColorControlGroup(),
+				new NodeBackgroundColorControlGroup(),
 				new GroupSeparator("OptionPanel.separator.NodeText"),
 				new FormatControlGroup(),
 				new NodeNumberingControlGroup(),
@@ -111,7 +112,6 @@ public class StyleEditorPanel extends JPanel {
 				new EdgeDashControlGroup(),
 				new EdgeStyleControlGroup(),
 				new EdgeColorControlGroup(),
-				new NodeBackgroundColorControlGroup(),
 				new NextLineControlGroup(),
 				new GroupSeparator("OptionPanel.separator.CloudControls"),
 				new CloudColorShapeControlGroup()
