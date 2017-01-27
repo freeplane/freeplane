@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
 import java.awt.dnd.DropTarget;
 import java.awt.event.MouseEvent;
@@ -18,11 +19,13 @@ import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.border.MatteBorder;
 import javax.swing.filechooser.FileFilter;
 
@@ -54,6 +57,8 @@ import org.freeplane.view.swing.map.NodeView;
 onceForMap = false)
 public class ViewerController extends PersistentNodeHook implements INodeViewLifeCycleListener, IExtension {
 	private static final MExternalImageDropListener DTL = new MExternalImageDropListener();
+	private static final int BORDER_SIZE = 1;
+	public static final Border VIEWER_BORDER_INSTANCE = new ViewerBorder(BORDER_SIZE, Color.BLACK);
 
 	private final class CombiFactory implements IViewerFactory {
 		private IViewerFactory factory;
@@ -256,7 +261,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			if (isActive) {
 				return;
 			}
-			setCursor(e);
+			setCursor(e.getComponent(), Cursor.DEFAULT_CURSOR);
 		}
 
 		private void setCursor(final MouseEvent e) {
@@ -266,18 +271,24 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			final int width = component.getWidth();
 			final int y = e.getY();
 			final int height = component.getHeight();
-			if (width - 6 * BORDER_SIZE <= x && x <= width && height - 6 * BORDER_SIZE <= y && y <= height) {
+			if (x >= 0 && width - 6 * BORDER_SIZE <= x && x < width 
+					&& y >= 0 && height - 6 * BORDER_SIZE <= y && y < height) {
 				cursorType = Cursor.SE_RESIZE_CURSOR;
 			}
 			else {
 				cursorType = Cursor.DEFAULT_CURSOR;
 			}
+			setCursor(component, cursorType);
+		}
+
+		private void setCursor(final Component component, final int cursorType) {
 			final Cursor cursor = component.getCursor();
 			if (cursor.getType() != cursorType) {
 				final Cursor predefinedCursor = cursorType == Cursor.DEFAULT_CURSOR ? null : Cursor
 				    .getPredefinedCursor(cursorType);
 				component.setCursor(predefinedCursor);
 			}
+			ViewerBorder.repaintBorder((JComponent) component);
 		}
 
 		public void mousePressed(final MouseEvent e) {
@@ -373,8 +384,6 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	}
 
 	static private ExternalImagePopupMenu imagePopupMenu;
-	private static final int BORDER_SIZE = 1;
-	private static final Color BORDER_COLOR = Color.BLACK;
 	static final int VIEWER_POSITION = 5;
 	private final MyMouseListener mouseListener = new MyMouseListener();
 	final private Set<IViewerFactory> factories;
@@ -539,7 +548,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		if (imagePopupMenu == null) {
 			imagePopupMenu = new ExternalImagePopupMenu();
 		}
-		viewer.setBorder(new MatteBorder(BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_SIZE, BORDER_COLOR));
+		viewer.setBorder(VIEWER_BORDER_INSTANCE);
 		final Set<NodeView> viewers = model.getViewers();
 		viewers.add(view);
 		viewer.setBounds(viewer.getX() - 5, viewer.getY() - 5, viewer.getWidth() + 15, viewer.getHeight() + 15);
