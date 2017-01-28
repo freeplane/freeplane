@@ -460,6 +460,14 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (borderColor != null) {
 			ColorUtils.addColorAttributes(writer, "BORDER_COLOR", "BORDER_COLOR_ALPHA", borderColor);
 		}
+		final Boolean borderDashMatchesEdgeDash = forceFormatting ? nsc.getBorderDashMatchesEdgeDash(node) : border.getBorderDashMatchesEdgeDash();
+		if (borderDashMatchesEdgeDash != null) {
+			writer.addAttribute("BORDER_DASH_LIKE_EDGE", borderDashMatchesEdgeDash.toString());
+		}
+		DashVariant borderDash = forceFormatting ? nsc.getBorderDash(node) : border.getBorderDash();
+		if (borderDash != null) {
+			writer.addAttribute("BORDER_DASH", borderDash.name());
+		}
 	}
 	
 	public void writeContent(final ITreeWriter writer, final Object userObject, final String tag) throws IOException {
