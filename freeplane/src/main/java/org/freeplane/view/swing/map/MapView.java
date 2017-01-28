@@ -43,6 +43,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -443,6 +445,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
 	private static final String PRESENTATION_DIMMER_TRANSPARENCY = "presentation_dimmer_transparency";
 	private static final String PRESENTATION_MODE_ENABLED = "presentation_mode";
+	static private final PropertyChangeListener presentationModeChangeListener = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			Component source = (Component) evt.getSource();
+			source.repaint();
+		}
+	};
 
 	private static final long serialVersionUID = 1L;
 	static boolean standardDrawRectangleForSelection;
@@ -473,7 +482,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private int noteHorizontalAlignment;
     private Color noteForeground;
     private Color noteBackground;
-	private static boolean presentationModeEnabled;
 	private boolean fitToViewport;
 	private static int transparency;
 	final private ComponentAdapter backgroundImageResizer;
@@ -500,8 +508,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			    .getProperty("printonwhitebackground");
 			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
 			MapView.transparency = 255 - ResourceController.getResourceController().getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
-			MapView.presentationModeEnabled = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_MODE_ENABLED);
-
 			createPropertyChangeListener();
 		}
 		this.setAutoscrolls(true);
@@ -542,6 +548,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					repaint();
 			}
 		};
+		
+		addPropertyChangeListener(PRESENTATION_MODE_ENABLED, presentationModeChangeListener);
 	}
 
 	public void replaceSelection(NodeView[] views) {
@@ -632,11 +640,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				}
 				if (propertyName.equals(PRESENTATION_DIMMER_TRANSPARENCY)) {
 					MapView.transparency = 255 - ResourceController.getResourceController().getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
-					((MapView) mapView).repaint();
-					return;
-				}
-				if (propertyName.equals(PRESENTATION_MODE_ENABLED)) {
-					MapView.presentationModeEnabled = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_MODE_ENABLED);
 					((MapView) mapView).repaint();
 					return;
 				}
@@ -1453,7 +1456,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    		};
 	    Graphics2D g2 = (Graphics2D) g;
 	    paintChildren(g2, paintModes);
-	    if(presentationModeEnabled)
+	    if(Boolean.TRUE == getClientProperty(PRESENTATION_MODE_ENABLED))
 	    	paintDimmer(g2, paintModes);
 		paintSelecteds(g2);
 		highlightEditor(g2);
