@@ -252,6 +252,7 @@
 				<Entry name="ViewLayoutTypeAction.OUTLINE" />
 				<Entry name="ToggleFullScreenAction" accelerator="F11" />
 				<Entry name="SetBooleanMapViewPropertyAction.presentation_mode" />
+				<Entry name="SetBooleanPropertyAction.hide_single_end_connectors" />
 				<Entry name="ShowSelectionAsRectangleAction" />
 				<Entry name="SetBooleanPropertyAction.highlight_formulas" />
 				<Entry name="CenterSelectedNodeAction" accelerator="alt C" />
