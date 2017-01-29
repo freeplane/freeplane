@@ -7,6 +7,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.KeyboardFocusManager;
+import java.awt.Point;
 import java.awt.dnd.DropTarget;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -31,6 +32,7 @@ import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -128,9 +130,17 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 	}
 
+	private static final int SENSITIVE_AREA_SIZE = (int) Math.max(10, UITools.FONT_SCALE_FACTOR * 10);
 	private class MyMouseListener implements MouseListener, MouseMotionListener {
-		private boolean isActive = false;
 		private boolean sizeChanged = false;
+		private Point basePoint = null;
+		private boolean isActive() {
+			return basePoint != null;
+		}
+
+		private void setBasePoint(Point basePoint) {
+			this.basePoint = basePoint;
+		}
 
 		public void mouseClicked(final MouseEvent e) {
 			if (resetSize(e)) {
@@ -150,7 +160,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			final int width = viewer.getWidth();
 			final int y = e.getY();
 			final int height = viewer.getHeight();
-			if (x < width - 4 * BORDER_SIZE || y < height - 4 * BORDER_SIZE) {
+			if (x < width - 4 || y < height - 4 ) {
 				return false;
 			}
 			final IViewerFactory factory = (IViewerFactory) viewer.getClientProperty(IViewerFactory.class);
@@ -240,7 +250,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 
 		public void mouseEntered(final MouseEvent e) {
-			if (isActive) {
+			if (isActive()) {
 				return;
 			}
 			final ExternalResource model = getModel(e);
@@ -258,7 +268,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 
 		public void mouseExited(final MouseEvent e) {
-			if (isActive) {
+			if (isActive()) {
 				return;
 			}
 			setCursor(e.getComponent(), Cursor.DEFAULT_CURSOR);
@@ -271,8 +281,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			final int width = component.getWidth();
 			final int y = e.getY();
 			final int height = component.getHeight();
-			if (x >= 0 && width - 6 * BORDER_SIZE <= x && x < width 
-					&& y >= 0 && height - 6 * BORDER_SIZE <= y && y < height) {
+			if (x >= 0 && x < width  && y >= 0 && y < height
+					&& (width - SENSITIVE_AREA_SIZE <= x || height - SENSITIVE_AREA_SIZE <= y )) {
 				cursorType = Cursor.SE_RESIZE_CURSOR;
 			}
 			else {
@@ -299,7 +309,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				if (factory == null) {
 					return;
 				}
-				isActive = true;
+				final Point point = e.getPoint();
+				setBasePoint(new Point (component.getWidth() - point.x, component.getHeight() - point.y));
 				return;
 			}
 			else {
@@ -328,32 +339,27 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			else {
 				imagePopupMenu.maybeShowPopup(e);
 			}
-			isActive = false;
+			setBasePoint(null);
 			setCursor(e);
 		}
 
 		public void mouseDragged(final MouseEvent e) {
-			if (!isActive) {
+			if (!isActive()) {
 				return;
 			}
-			setSize(e);
+			final JComponent component = (JComponent) e.getComponent();
+			setSize(component, basePoint.x + e.getX(), basePoint.y + e.getY());
 		}
 
-		private boolean setSize(final MouseEvent e) {
-			if (!isActive) {
-				return false;
-			}
-			final JComponent component = (JComponent) e.getComponent();
+		private void setSize(final JComponent component, int x, int y) {
 			final int cursorType = component.getCursor().getType();
 			sizeChanged = true;
 			final Dimension size;
 			switch (cursorType) {
 				case Cursor.SE_RESIZE_CURSOR:
 					final Dimension minimumSize = new Dimension(10, 10);
-					int x = e.getX() - 4 * BORDER_SIZE;
-					int y = e.getY() - 4 * BORDER_SIZE;
-					if (x <= 0 || y <= 0) {
-						return true;
+					if (x <= 2*BORDER_SIZE || y <= 2*BORDER_SIZE) {
+						return;
 					}
 					final double r = Math.sqrt(x * x + y * y);
 					final Dimension preferredSize = ((ScalableComponent) component).getOriginalSize();
@@ -364,7 +370,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 					y = (int) (height * r / r0);
 					final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, component);
 					if (x < mapView.getZoomed(minimumSize.width) || y < mapView.getZoomed(minimumSize.height)) {
-						return true;
+						return;
 					}
 					size = new Dimension(x, y);
 					((ScalableComponent) component).setDraftViewerSize(size);
@@ -372,15 +378,16 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 					break;
 				default:
 			}
-			return true;
+			return;
 		}
 
 		public void mouseMoved(final MouseEvent e) {
-			if (isActive) {
+			if (isActive()) {
 				return;
 			}
 			setCursor(e);
 		}
+
 	}
 
 	static private ExternalImagePopupMenu imagePopupMenu;
