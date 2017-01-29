@@ -79,7 +79,7 @@ import org.freeplane.features.ui.FrameController;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
-	private static final float ARROW_SIZE = UITools.getUIFontSize(0.8);
+	private static final float ARROW_SIZE = UITools.getUIFontSize(1.0);
 
 	private final class IconActionBuilder implements EntryVisitor {
 		private final HashMap<String, Entry> submenuEntries = new HashMap<String, Entry>();
