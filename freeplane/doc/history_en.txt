@@ -5,6 +5,9 @@ SVG icons for map and UI
 Configurable map icon size
 Configurable UI icon size
 Paint clone node markers only on selected nodes
+Image in node without black border (no border)
+Option to hide connectors when filtering hides other connector end
+Independent presentation mode for different map views
 
 ===============================
 1.6.0
