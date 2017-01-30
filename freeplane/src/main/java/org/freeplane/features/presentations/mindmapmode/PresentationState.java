@@ -31,7 +31,7 @@ public class PresentationState {
 		}
 	}
 
-	public void showSlide() {
+	public void showPresentation() {
 		final boolean isPresentationAlreadyRunning = isPresentationRunning();
 		Slide newSlide = currentPresentation.slides.getCurrentElement();
 		if (currentSlide != newSlide) {
@@ -102,7 +102,7 @@ public class PresentationState {
 
 	void changeSlide() {
 		if(isPresentationRunning())
-			showSlide();
+			showPresentation();
 		else
 			firePresentationStateChangedEvent(SLIDE_CHANGED);
 	}

@@ -32,7 +32,7 @@ class NavigationPanelController {
 					presentationState.showNextSlide();
 			}
 			else if (presentationState.canShowCurrentSlide())
-				presentationState.showSlide();
+				presentationState.showPresentation();
 		}
 
 		@Override
@@ -97,7 +97,7 @@ class NavigationPanelController {
 			if (presentationState.isPresentationRunning())
 				presentationState.stopPresentation();
 			else if (presentationState.canShowCurrentSlide())
-				presentationState.showSlide();
+				presentationState.showPresentation();
 			setSelected(presentationState.isPresentationRunning());
 		}
 
