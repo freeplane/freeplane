@@ -21,6 +21,7 @@ package org.freeplane.features.icon.mindmapmode;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
@@ -79,7 +80,8 @@ import org.freeplane.features.ui.FrameController;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
-	private static final float ARROW_SIZE = UITools.getUIFontSize(1.0);
+	private static final int ARROW_SIZE = Math.round(UITools.getUIFontSize(0.8));
+	private static final Font ARROW_FONT = new Font("SansSerif", 0, ARROW_SIZE);
 
 	private final class IconActionBuilder implements EntryVisitor {
 		private final HashMap<String, Entry> submenuEntries = new HashMap<String, Entry>();
@@ -341,7 +343,7 @@ public class MIconController extends IconController {
 				return new Point(getWidth(), 0);
 			}
 		};
-		menu.setFont(menu.getFont().deriveFont(ARROW_SIZE));
+		menu.setFont(ARROW_FONT);
 		menu.setMargin(new Insets(0, 0, 0, 0));
 		menu.setIcon(group.getGroupIcon().getIcon());
 		for (final MindIcon icon : group.getIcons()) {
