@@ -272,6 +272,12 @@
 					<choice value="PASTE_PLAIN_TEXT" />
 				</combo>
 			</separator>
+			<separator name="presentation">
+				<boolean name="presentation.processesUpDownKeys"/>
+				<boolean name="presentation.switchToFullScreen"/>
+				<boolean name="presentation.switchToPresentationMode"/>
+			</separator>
+			
 		</tab>
 		<tab name="HTML">
 			<separator name="browser">

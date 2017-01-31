@@ -444,7 +444,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public static final String RESOURCES_SELECTED_NODE_COLOR = "standardselectednodecolor";
 	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
 	private static final String PRESENTATION_DIMMER_TRANSPARENCY = "presentation_dimmer_transparency";
-	private static final String PRESENTATION_MODE_ENABLED = "presentation_mode";
+	public static final String PRESENTATION_MODE_ENABLED = "presentation_mode";
 	private static final String HIDE_SINGLE_END_CONNECTORS = "hide_single_end_connectors";
 	static private final PropertyChangeListener repaintOnClientPropertyChangeListener = new PropertyChangeListener() {
 		@Override
