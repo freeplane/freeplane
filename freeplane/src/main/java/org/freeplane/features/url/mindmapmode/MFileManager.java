@@ -43,6 +43,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -415,6 +416,9 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		if (!file.exists()) {
         	throw new FileNotFoundException(TextUtils.format("file_not_found", file.getPath()));
         }
+		if (!Files.isReadable(file.toPath())) {
+			throw new FileNotFoundException(TextUtils.format("file_not_accessible", file.getPath()));
+		}
         if (!file.canWrite()) {
         	map.setReadOnly(true);
         }
