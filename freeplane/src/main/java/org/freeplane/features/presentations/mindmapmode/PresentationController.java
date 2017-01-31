@@ -7,12 +7,14 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
 import javax.swing.JTabbedPane;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.highlight.HighlightController;
@@ -68,7 +70,15 @@ public class PresentationController implements IExtension{
 			}
 
 		});
+		
+		ResourceController resourceController = ResourceController.getResourceController();
+		boolean processUpDownKeys = resourceController.getBooleanProperty(PresentationAutomation.PROCESS_UP_DOWN_KEYS_PROPERTY);
+		UpDownKeyEventDispatcher dispatcher = new UpDownKeyEventDispatcher(presentationState);
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(dispatcher);
 
+		final PresentationAutomation presentationKeyHandler = new PresentationAutomation(presentationState, dispatcher, processUpDownKeys);
+		resourceController.addPropertyChangeListener(presentationKeyHandler);
+		presentationState.addPresentationStateListener(presentationKeyHandler);
 	}
 
 	private void registerActions() {

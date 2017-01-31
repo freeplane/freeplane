@@ -68,15 +68,19 @@ public class PresentationState {
 	}
 
 	public void showNextSlide() {
-		NamedElementCollection<Slide> slides = currentPresentation.slides;
-		final int currentElementIndex = slides.getCurrentElementIndex();
-		slides.selectCurrentElement(currentElementIndex + 1);
+		if(canShowNextSlide()) {
+			NamedElementCollection<Slide> slides = currentPresentation.slides;
+			final int currentElementIndex = slides.getCurrentElementIndex();
+			slides.selectCurrentElement(currentElementIndex + 1);
+		}
 	}
 
 	public void showPreviousSlide() {
-		NamedElementCollection<Slide> slides = currentPresentation.slides;
-		final int currentElementIndex = slides.getCurrentElementIndex();
-		slides.selectCurrentElement(currentElementIndex - 1);
+		if(canShowPreviousSlide()) {
+			NamedElementCollection<Slide> slides = currentPresentation.slides;
+			final int currentElementIndex = slides.getCurrentElementIndex();
+			slides.selectCurrentElement(currentElementIndex - 1);
+		}
 	}
 
 	public boolean canShowNextSlide() {
