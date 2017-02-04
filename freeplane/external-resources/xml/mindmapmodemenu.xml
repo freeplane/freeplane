@@ -400,6 +400,7 @@
 			<Entry name="NextNodeAction.FORWARD" accelerator="control alt RIGHT" />
 			<Entry name="NextNodeAction.BACK_N_FOLD" accelerator="control shift LEFT" />
 			<Entry name="NextNodeAction.FORWARD_N_FOLD" accelerator="control shift RIGHT" />
+			<Entry name="NotFoldingNextPresentationItemAction" accelerator="control alt SPACE" />
 			<Entry name="NextPresentationItemAction" accelerator="control shift SPACE" />
 			<Entry name="BackAction" accelerator="alt LEFT" />
 			<Entry name="ForwardAction" accelerator="alt RIGHT" />

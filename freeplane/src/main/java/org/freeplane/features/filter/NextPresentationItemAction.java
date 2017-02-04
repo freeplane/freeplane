@@ -14,9 +14,19 @@ public class NextPresentationItemAction extends AFreeplaneAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private final Direction direction;
 
-	public NextPresentationItemAction() {
-		super("NextPresentationItemAction");
+	static public NextPresentationItemAction createFoldingAction(){
+		return new NextPresentationItemAction(Direction.FORWARD_N_FOLD, "NextPresentationItemAction");
+	}
+	
+	static public NextPresentationItemAction createNotFoldingAction(){
+		return new NextPresentationItemAction(Direction.FORWARD, "NotFoldingNextPresentationItemAction");
+	}
+	
+	private NextPresentationItemAction(Direction direction, String key) {
+		super(key);
+		this.direction = direction;
 	}
 
 	/**
@@ -25,7 +35,7 @@ public class NextPresentationItemAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final FilterController filterController = FilterController.getCurrentFilterController();
 		final NodeModel start = Controller.getCurrentController().getSelection().getSelected();
-		final NodeModel next = filterController.findNext(start, null, Direction.FORWARD_N_FOLD, null);
+		final NodeModel next = filterController.findNext(start, null, direction, null);
 		if(next != null){
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
 			if (!next.hasVisibleContent()) {

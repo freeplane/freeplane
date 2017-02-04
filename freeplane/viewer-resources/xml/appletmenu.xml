@@ -55,9 +55,10 @@
 			<Entry name="GotoNodeAction" />
 			<Entry accelerator="control alt LEFT" name="NextNodeAction.BACK" />
 			<Entry accelerator="control alt RIGHT" name="NextNodeAction.FORWARD" />
+			<Entry name="NotFoldingNextPresentationItemAction" accelerator="control alt SPACE" />
 			<Entry accelerator="control alt shift LEFT" name="NextNodeAction.BACK_N_FOLD" />
 			<Entry accelerator="control alt shift RIGHT" name="NextNodeAction.FORWARD_N_FOLD" />
-			<Entry name="NextPresentationItemAction" />
+			<Entry name="NextPresentationItemAction" accelerator="control shift SPACE" />
 			<Entry name="links">
 			<Entry accelerator="control ENTER" name="FollowLinkAction" />
 			</Entry>
