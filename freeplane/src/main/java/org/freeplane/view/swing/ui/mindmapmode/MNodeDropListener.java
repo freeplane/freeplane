@@ -72,8 +72,8 @@ private Timer timer;
 	 * item.
 	 */
 	public void dragEnter(final DropTargetDragEvent dtde) {
-		supportFolding(dtde);
 		if (isDragAcceptable(dtde)) {
+			supportFolding(dtde);
 			dtde.acceptDrag(DnDConstants.ACTION_MOVE);
 		}
 		else {
@@ -113,15 +113,17 @@ private Timer timer;
     }
 
 	public void dragOver(final DropTargetDragEvent dtde) {
-		supportFolding(dtde);
+		if(isDragAcceptable(dtde)) {
+			supportFolding(dtde);
 
-		final MainView draggedNode = (MainView) dtde.getDropTargetContext().getComponent();
-		final int oldDraggedOver = draggedNode.getDraggedOver();
-		draggedNode.setDraggedOver(dtde.getLocation());
-		final int newDraggedOver = draggedNode.getDraggedOver();
-		final boolean repaint = newDraggedOver != oldDraggedOver;
-		if (repaint) {
-			draggedNode.repaint();
+			final MainView draggedNode = (MainView) dtde.getDropTargetContext().getComponent();
+			final int oldDraggedOver = draggedNode.getDraggedOver();
+			draggedNode.setDraggedOver(dtde.getLocation());
+			final int newDraggedOver = draggedNode.getDraggedOver();
+			final boolean repaint = newDraggedOver != oldDraggedOver;
+			if (repaint) {
+				draggedNode.repaint();
+			}
 		}
 	}
 
