@@ -100,7 +100,7 @@ public class PresentationEditorController {
 		panel.add(slideBox);
 		JComponent content = slideEditorController.createSlideContentBox();
 		panel.add(content);
-		Box navigation = navigationPanelController.createNavigationBox();
+		JComponent navigation = navigationPanelController.createNavigationBox();
 		panel.add(navigation);
 		return panel;
 	}
