@@ -21,6 +21,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AccelerateableAction;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.JAutoCheckBoxMenuItem;
+import org.freeplane.core.ui.menubuilders.HeadlessFreeplaneRunner;
 import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -34,6 +35,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 public class JMenuItemBuilderTest {
+	static{
+		new HeadlessFreeplaneRunner();
+	}
 	
 	private Entry actionEntry;
 	private AFreeplaneAction action;
