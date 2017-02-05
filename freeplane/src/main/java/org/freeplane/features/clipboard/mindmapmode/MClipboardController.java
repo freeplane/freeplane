@@ -533,17 +533,6 @@ public class MClipboardController extends ClipboardController {
 			catch (final IOException e) {
 			}
 		}
-		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
-			try {
-				final List<File> fileList = castToFileList(t.getTransferData(MindMapNodesSelection.fileListFlavor));
-				if (!shouldIgnoreFileListFlavor(fileList))
-					return new FileListFlavorHandler(fileList);
-			}
-			catch (final UnsupportedFlavorException e) {
-			}
-			catch (final IOException e) {
-			}
-		}
 		final ResourceController resourceController = ResourceController.getResourceController();
 		DataFlavor supportedHtmlFlavor = getSupportedHtmlFlavor(t);
 		if (supportedHtmlFlavor != null) {
@@ -568,6 +557,17 @@ public class MClipboardController extends ClipboardController {
 						}
 					}
 				}
+			}
+			catch (final UnsupportedFlavorException e) {
+			}
+			catch (final IOException e) {
+			}
+		}
+		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
+			try {
+				final List<File> fileList = castToFileList(t.getTransferData(MindMapNodesSelection.fileListFlavor));
+				if (!shouldIgnoreFileListFlavor(fileList))
+					return new FileListFlavorHandler(fileList);
 			}
 			catch (final UnsupportedFlavorException e) {
 			}
