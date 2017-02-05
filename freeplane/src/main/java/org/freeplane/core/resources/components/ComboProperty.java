@@ -19,8 +19,6 @@
  */
 package org.freeplane.core.resources.components;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -29,18 +27,13 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.ListCellRenderer;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.RenderedContent;
 import org.freeplane.core.ui.components.RenderedContentSupplier;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.DashVariant;
-import org.freeplane.features.icon.IconGroup;
-import org.freeplane.features.icon.factory.IconStoreFactory;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

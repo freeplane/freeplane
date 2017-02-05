@@ -1,7 +1,5 @@
 package org.freeplane.features.presentations.mindmapmode;
 
-import java.awt.event.ActionEvent;
-
 import javax.swing.JComponent;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
