@@ -20,19 +20,44 @@ task copyGitProperty(type: Copy) {
     into(globalBuild + '/resources')
 }
 
-task createGitProperty(type: Exec) {
+
+task createGitProperty {
     // for src/srcpure tarballs, /gitinfo.txt exists, so we don't call git
     // (which is not available)
-    onlyIf { !new File(rootDir, 'gitinfo.txt').exists() }
+	def gitInfoFile = new File(rootDir, 'gitinfo.txt')
+    onlyIf { !gitInfoFile.exists() }
 
-    ignoreExitValue = true
 
-    commandLine 'git', 'log', '--pretty=format:git-revision=%H %cn %ci', '-n1'
+	doLast {
+		def whoami
+		def revisionHash
+		def execResult
+		new ByteArrayOutputStream().withStream { os ->
+			execResult = exec {
+				commandLine  'git', 'config', 'user.name'
+				standardOutput = os
+				ignoreExitValue = true
+			}
+			whoami = os.toString().trim()
+		}
+		 if(execResult.exitValue != 0)
+		 	return
+		
+		new ByteArrayOutputStream().withStream { os ->
+			execResult = exec {
+				commandLine 'git', 'log', '--pretty=format:%H', '-n1'
+				standardOutput = os
+				ignoreExitValue = true
+			}
+			revisionHash = os.toString().trim()
+		}
 
-    doFirst {
-        standardOutput = new FileOutputStream(new File(globalBuild, 'gitinfo.txt'))
-    }
-    doLast {
+		 if(execResult.exitValue != 0)
+		 	return
+			 
+		def timestamp=new Date().format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
+		gitInfoFile.write "git-revision=$revisionHash $whoami $timestamp"
+			 
         // create gitinfo.properties!
         copy {
             from(globalBuild) {
