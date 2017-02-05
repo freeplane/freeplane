@@ -74,7 +74,7 @@ public class OptionPanel {
 		void writeProperties(Properties props);
 	}
 
-	final static private String OPTION_PANEL_RESOURCE_PREFIX = "OptionPanel.";
+	public final static String OPTION_PANEL_RESOURCE_PREFIX = "OptionPanel.";
 	static final String PREFERENCE_STORAGE_PROPERTY = "OptionPanel_Window_Properties";
 	private Vector<IPropertyControl> controls;
 	final private IOptionPanelFeedback feedback;

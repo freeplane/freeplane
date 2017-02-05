@@ -3,9 +3,12 @@ package org.freeplane.features.presentations.mindmapmode;
 import java.awt.Component;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.freeplane.core.resources.components.OptionPanel;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType;
@@ -17,6 +20,7 @@ public class PresentationEditorController {
 	private final NavigationPanelController navigationPanelController;
 	private NamedElementCollection<Presentation> presentations;
 	private CollectionChangeListener<Presentation> presentationChangeListener;
+	private AFreeplaneAction configureAction;
 
 	public PresentationEditorController(final PresentationState presentationState) {
 		presentationPanelController = new CollectionBoxController<>("collection.new.presentation");
@@ -101,11 +105,16 @@ public class PresentationEditorController {
 		panel.add(content);
 		JComponent navigation = navigationPanelController.createNavigationBox();
 		panel.add(navigation);
+		JButton btnConfigure = new JButton(configureAction);
+		btnConfigure.setActionCommand(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + "Presentation");
+		btnConfigure.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		panel.add(btnConfigure);
 		return panel;
 	}
 
 	void registerActions(ModeController modeController) {
 		navigationPanelController.registerActions(modeController);
+		configureAction = modeController.getAction("PropertyAction");
 	}
 
 }
