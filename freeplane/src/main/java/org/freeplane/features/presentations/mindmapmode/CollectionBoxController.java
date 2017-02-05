@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Box;
+import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -181,6 +182,9 @@ class CollectionBoxController <T extends NamedElement<T>> {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				UndoableNamedElementCollection.of(collection).add(btnNewElement.getText() + " " + (collection.getSize() + 1));
+				final ComboBoxEditor editor = comboBoxCollectionNames.getEditor();
+				editor.selectAll();
+				editor.getEditorComponent().requestFocusInWindow();
 			}
 		});
 		return btnNewElement;
