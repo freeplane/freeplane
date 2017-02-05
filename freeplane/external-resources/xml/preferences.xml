@@ -96,7 +96,6 @@
 			<separator name="default_colors">
 				<color name="revision_color" />
 				<boolean name="printonwhitebackground" />
-				<number name="presentation_dimmer_transparency" min="0" max="255" />
 			</separator>
 			<separator name="selection_colors">
 				<boolean name="standarddrawrectangleforselection" />
@@ -275,13 +274,6 @@
 					<choice value="PASTE_PLAIN_TEXT" />
 				</combo>
 			</separator>
-			<separator name="presentation">
-				<boolean name="presentation.processesUpDownKeys"/>
-				<boolean name="presentation.processesEscapeKey"/>
-				<boolean name="presentation.switchToFullScreen"/>
-				<boolean name="presentation.switchToPresentationMode"/>
-			</separator>
-			
 		</tab>
 		<tab name="HTML">
 			<separator name="browser">
@@ -303,6 +295,16 @@
 				<boolean name="structured_html_import" />
 				<boolean name="cut_out_pictures_when_pasting_html"/>
 			</separator>
+		</tab>
+		<tab name="Presentation">
+			<separator name="presentation">
+				<boolean name="presentation.processesUpDownKeys"/>
+				<boolean name="presentation.processesEscapeKey"/>
+				<boolean name="presentation.switchToFullScreen"/>
+				<boolean name="presentation.switchToPresentationMode"/>
+				<number name="presentation_dimmer_transparency" min="0" max="255" />
+			</separator>
+			
 		</tab>
 		<tab name="Keystrokes"
 			layout="right:max(40dlu;p), 4dlu, 80dlu, 7dlu,right:max(40dlu;p), 4dlu, 80dlu, 7dlu">
