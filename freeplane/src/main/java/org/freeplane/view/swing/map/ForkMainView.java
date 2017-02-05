@@ -28,7 +28,6 @@ import java.awt.Point;
 import java.awt.Stroke;
 
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.DashVariant;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
 class ForkMainView extends MainView {

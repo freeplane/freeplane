@@ -9,7 +9,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import org.freeplane.core.ui.LengthUnits;

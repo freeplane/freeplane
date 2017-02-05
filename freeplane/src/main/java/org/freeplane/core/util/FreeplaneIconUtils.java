@@ -1,7 +1,6 @@
 package org.freeplane.core.util;
 
 import java.awt.Dimension;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.security.AccessController;

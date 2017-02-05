@@ -89,7 +89,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.LogicalStyleKeys;
-import org.freeplane.features.url.UrlManager;
 
 /**
  * @author Dimitry Polivaev

@@ -26,7 +26,6 @@ import java.util.Collection;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 

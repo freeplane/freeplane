@@ -19,19 +19,13 @@
  */
 package org.freeplane.core.ui;
 
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.icon.factory.ImageIconFactory;
 
 /**
  * @author Dimitry Polivaev

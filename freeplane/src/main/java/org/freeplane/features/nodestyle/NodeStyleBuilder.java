@@ -37,7 +37,6 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.Quantity;
-import org.freeplane.features.icon.IconController;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;

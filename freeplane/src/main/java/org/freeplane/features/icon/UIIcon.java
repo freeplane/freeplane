@@ -31,7 +31,6 @@ import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.factory.ImageIconFactory;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.nodestyle.NodeStyleController;
 
 /**
  * Base class for all icons used in FreePlane.

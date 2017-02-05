@@ -29,8 +29,6 @@ import java.net.URI;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JTable;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.freeplane.core.util.HtmlUtils;
