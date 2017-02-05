@@ -31,8 +31,6 @@ import java.awt.HeadlessException;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Set;
@@ -170,7 +168,8 @@ public class FreeplaneApplet extends JApplet {
 					controller.addAction(new NextNodeAction(Direction.BACK));
 					controller.addAction(new NextNodeAction(Direction.FORWARD_N_FOLD));
 					controller.addAction(new NextNodeAction(Direction.BACK_N_FOLD));
-					controller.addAction(new NextPresentationItemAction());
+					controller.addAction(NextPresentationItemAction.createFoldingAction());
+					controller.addAction(NextPresentationItemAction.createNotFoldingAction());
 					browseController.updateMenus("/xml/appletmenu.xml", emptySet);
 					appletResourceController.getAcceleratorManager().loadAcceleratorPresets();
 

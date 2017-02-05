@@ -37,7 +37,6 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.Quantity;
-import org.freeplane.features.icon.IconController;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
@@ -459,6 +458,14 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final Color borderColor = forceFormatting ? nsc.getBorderColor(node) : border.getBorderColor();
 		if (borderColor != null) {
 			ColorUtils.addColorAttributes(writer, "BORDER_COLOR", "BORDER_COLOR_ALPHA", borderColor);
+		}
+		final Boolean borderDashMatchesEdgeDash = forceFormatting ? nsc.getBorderDashMatchesEdgeDash(node) : border.getBorderDashMatchesEdgeDash();
+		if (borderDashMatchesEdgeDash != null) {
+			writer.addAttribute("BORDER_DASH_LIKE_EDGE", borderDashMatchesEdgeDash.toString());
+		}
+		DashVariant borderDash = forceFormatting ? nsc.getBorderDash(node) : border.getBorderDash();
+		if (borderDash != null) {
+			writer.addAttribute("BORDER_DASH", borderDash.name());
 		}
 	}
 	

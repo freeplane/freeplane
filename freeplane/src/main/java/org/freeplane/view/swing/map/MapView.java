@@ -43,6 +43,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -442,7 +444,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public static final String RESOURCES_SELECTED_NODE_COLOR = "standardselectednodecolor";
 	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
 	private static final String PRESENTATION_DIMMER_TRANSPARENCY = "presentation_dimmer_transparency";
-	private static final String PRESENTATION_MODE_ENABLED = "presentation_mode";
+	public static final String PRESENTATION_MODE_ENABLED = "presentation_mode";
+	private static final String HIDE_SINGLE_END_CONNECTORS = "hide_single_end_connectors";
+	static private final PropertyChangeListener repaintOnClientPropertyChangeListener = new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			Component source = (Component) evt.getSource();
+			source.repaint();
+		}
+	};
 
 	private static final long serialVersionUID = 1L;
 	static boolean standardDrawRectangleForSelection;
@@ -473,7 +483,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private int noteHorizontalAlignment;
     private Color noteForeground;
     private Color noteBackground;
-	private static boolean presentationModeEnabled;
+	private static boolean hideSingleEndConnectors;
 	private boolean fitToViewport;
 	private static int transparency;
 	final private ComponentAdapter backgroundImageResizer;
@@ -500,7 +510,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			    .getProperty("printonwhitebackground");
 			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
 			MapView.transparency = 255 - ResourceController.getResourceController().getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
-			MapView.presentationModeEnabled = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_MODE_ENABLED);
+			MapView.hideSingleEndConnectors = ResourceController.getResourceController().getBooleanProperty(HIDE_SINGLE_END_CONNECTORS);
 
 			createPropertyChangeListener();
 		}
@@ -542,6 +552,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					repaint();
 			}
 		};
+		
+		addPropertyChangeListener(PRESENTATION_MODE_ENABLED, repaintOnClientPropertyChangeListener);
 	}
 
 	public void replaceSelection(NodeView[] views) {
@@ -635,8 +647,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					((MapView) mapView).repaint();
 					return;
 				}
-				if (propertyName.equals(PRESENTATION_MODE_ENABLED)) {
-					MapView.presentationModeEnabled = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_MODE_ENABLED);
+				if (propertyName.equals(HIDE_SINGLE_END_CONNECTORS)) {
+					MapView.hideSingleEndConnectors = ResourceController.getResourceController().getBooleanProperty(HIDE_SINGLE_END_CONNECTORS);
 					((MapView) mapView).repaint();
 					return;
 				}
@@ -1453,7 +1465,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    		};
 	    Graphics2D g2 = (Graphics2D) g;
 	    paintChildren(g2, paintModes);
-	    if(presentationModeEnabled)
+	    if(Boolean.TRUE == getClientProperty(PRESENTATION_MODE_ENABLED))
 	    	paintDimmer(g2, paintModes);
 		paintSelecteds(g2);
 		highlightEditor(g2);
@@ -1527,14 +1539,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					final NodeView sourceView = getNodeView(source);
 					final NodeView targetView = getNodeView(target);
 					final ILinkView arrowLink;
-					if (sourceView != null && targetView != null
-					        && (Shape.EDGE_LIKE.equals(ref.getShape()) || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE)
-					        && source.hasVisibleContent() && target.hasVisibleContent()) {
+					final boolean areBothNodesVisible = sourceView != null && targetView != null && source.hasVisibleContent() && target.hasVisibleContent();
+					if (areBothNodesVisible && (Shape.EDGE_LIKE.equals(ref.getShape()) || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE)) 
 						arrowLink = new EdgeLinkView(ref, getModeController(), sourceView, targetView);
-					}
-					else {
+					else if(areBothNodesVisible || ! hideSingleEndConnectors)
 						arrowLink = new ConnectorView(ref, sourceView, targetView, getBackground());
-					}
+					else
+						break;
 					arrowLink.paint(graphics);
 					arrowLinkViews.add(arrowLink);
 				}

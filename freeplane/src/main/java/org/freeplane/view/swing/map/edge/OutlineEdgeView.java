@@ -19,7 +19,6 @@
  */
 package org.freeplane.view.swing.map.edge;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;

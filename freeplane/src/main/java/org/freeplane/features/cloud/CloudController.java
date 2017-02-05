@@ -26,7 +26,6 @@ import java.util.Collection;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.cloud.CloudModel.Shape;
@@ -45,23 +44,21 @@ import org.freeplane.features.styles.MapStyleModel;
  * @author Dimitry Polivaev
  */
 public class CloudController implements IExtension {
-	protected static class CloudAdapterListener implements IFreeplanePropertyListener {
-		public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-			if (propertyName.equals(CloudController.RESOURCES_CLOUD_COLOR)) {
-				standardColor = ColorUtils.stringToColor(newValue);
-			}
-		}
-	}
-
 	static final Stroke DEF_STROKE = new BasicStroke(3);
 	public static final int DEFAULT_WIDTH = -1;
-	private static CloudAdapterListener listener = null;
 	public static final int NORMAL_WIDTH = 3;
 	public static final String RESOURCES_CLOUD_COLOR = "standardcloudcolor";
-	private static Color standardColor = null;
+	public static final String RESOURCES_CLOUD_SHAPE = "standardcloudshape";
 
 	public static Color getStandardColor() {
-		return standardColor;
+		final ResourceController resourceController = ResourceController.getResourceController();
+		final String colorCode = resourceController.getProperty(CloudController.RESOURCES_CLOUD_COLOR);
+		return ColorUtils.stringToColor(colorCode);
+	}
+
+	public static Shape getStandardShape() {
+		final ResourceController resourceController = ResourceController.getResourceController();
+		return resourceController.getEnumProperty(CloudController.RESOURCES_CLOUD_SHAPE, Shape.ARC);
 	}
 
 	public static CloudController getController() {
@@ -81,11 +78,6 @@ public class CloudController implements IExtension {
 	public CloudController(final ModeController modeController) {
 //		this.modeController = modeController;
 		cloudHandlers = new ExclusivePropertyChain<CloudModel, NodeModel>();
-		if (listener == null) {
-			listener = new CloudAdapterListener();
-			ResourceController.getResourceController().addPropertyChangeListener(listener);
-		}
-		updateStandards();
 		addCloudGetter(IPropertyHandler.STYLE, new IPropertyHandler<CloudModel, NodeModel>() {
 			public CloudModel getProperty(final NodeModel node, final CloudModel currentValue) {
 				return getStyleCloud(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
@@ -123,10 +115,6 @@ public class CloudController implements IExtension {
 		return cloud != null ? cloud.getColor() : null;
 	}
 
-	public Color getExteriorColor(final NodeModel node) {
-		return getColor(node).darker();
-	}
-
 	public int getWidth(final NodeModel node) {
 		return NORMAL_WIDTH;
 	}
@@ -135,20 +123,12 @@ public class CloudController implements IExtension {
 		return cloudHandlers.removeGetter(key);
 	}
 
-	private void updateStandards() {
-		if (standardColor == null) {
-			final String stdColor = ResourceController.getResourceController().getProperty(
-			    CloudController.RESOURCES_CLOUD_COLOR);
-			standardColor = ColorUtils.stringToColor(stdColor);
-		}
-	}
-
 	public CloudModel getCloud(final NodeModel model) {
 		return cloudHandlers.getProperty(model);
 	}
 
 	public Shape getShape(NodeModel node) {
 		final CloudModel cloud = getCloud(node);
-		return cloud != null ? cloud.getShape() : null;
+		return cloud != null ? cloud.getShape() : getStandardShape();
     }
 }

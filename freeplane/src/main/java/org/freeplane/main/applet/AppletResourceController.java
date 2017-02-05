@@ -23,8 +23,6 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import javax.swing.JApplet;
-
 import org.freeplane.core.resources.ResourceController;
 
 /**

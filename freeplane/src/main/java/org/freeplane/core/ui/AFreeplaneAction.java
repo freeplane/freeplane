@@ -19,19 +19,13 @@
  */
 package org.freeplane.core.ui;
 
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.icon.factory.ImageIconFactory;
 
 /**
  * @author Dimitry Polivaev
@@ -77,7 +71,6 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	final private String key;
 	private boolean selected = false;
 	
-	static private Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>();
 	final private String rawText;
 
 	public AFreeplaneAction(final String key) {
@@ -91,29 +84,10 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	}
 
 	protected void setIcon(final String iconKey) {
-		final ImageIcon cachedIcon = iconCache.get(iconKey);
-		if(cachedIcon != null){
-			putValue(SMALL_ICON, cachedIcon);
-		}
-		else{
-			final String iconResource = ResourceController.getResourceController().getProperty(iconKey, null);
-			if (iconResource != null) {
-				URL url;
-				url = ResourceController.getResourceController().getResource(iconResource.replaceFirst("(?i)\\.png$", ".svg"));
-				if (url == null)
-					url = ResourceController.getResourceController().getResource(iconResource);
-				if (url == null) {
-					LogUtils.severe("can not load icon '" + iconResource + "'");
-				}
-				else {
-					//final ImageIcon icon = new ImageIcon(url);
-					final ImageIcon icon = ImageIconFactory.getInstance().getImageIcon(url);
-					putValue(SMALL_ICON, icon);
-					iconCache.put(iconKey, icon);
-				}
-			}
-		}
+		ImageIcon icon = ResourceController.getResourceController().getIcon(iconKey);
+		putValue(SMALL_ICON, icon);
 	}
+
 
 	protected void setTooltip(String tooltipKey) {
 		final String tooltip = TextUtils.getRawText(tooltipKey, null);

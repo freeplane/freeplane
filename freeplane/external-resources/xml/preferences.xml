@@ -96,7 +96,6 @@
 			<separator name="default_colors">
 				<color name="revision_color" />
 				<boolean name="printonwhitebackground" />
-				<color name="standardcloudcolor" />
 				<number name="presentation_dimmer_transparency" min="0" max="255" />
 			</separator>
 			<separator name="selection_colors">
@@ -147,6 +146,10 @@
 				<number name="label_font_size" min="4" max="216" />
 				<boolean name="paint_connectors_behind" />
 			</separator>
+			<separator name="clones">
+				<boolean name="markClones"/>
+				<boolean name="markSelectedClones"/>
+			</separator>
 			<separator name="edit_long_node_window">
 				<boolean name="el__buttons_above" />
 				<boolean name="el__position_window_below_node" />
@@ -163,11 +166,11 @@
 				<boolean name="structured_icon_toolbar" />
 			</separator>
 		</tab>
-		<tab name="Keystrokes"
-			layout="right:max(40dlu;p), 4dlu, 80dlu, 7dlu,right:max(40dlu;p), 4dlu, 80dlu, 7dlu">
-			<separator name="commands_for_the_program" />
-			<text name="use_ctrl_key" />
-			<separator name="icons" />
+		<tab name="Defaults">
+			<separator name="cloud">
+				<color name="standardcloudcolor" />
+				<combo name="standardcloudshape" enum="org.freeplane.features.cloud.CloudModel$Shape"/>
+			</separator>				
 		</tab>
 		<tab name="Behaviour">
 			<separator name="behaviour">
@@ -272,6 +275,13 @@
 					<choice value="PASTE_PLAIN_TEXT" />
 				</combo>
 			</separator>
+			<separator name="presentation">
+				<boolean name="presentation.processesUpDownKeys"/>
+				<boolean name="presentation.processesEscapeKey"/>
+				<boolean name="presentation.switchToFullScreen"/>
+				<boolean name="presentation.switchToPresentationMode"/>
+			</separator>
+			
 		</tab>
 		<tab name="HTML">
 			<separator name="browser">
@@ -291,7 +301,14 @@
 			</separator>
 			<separator name="html_import">
 				<boolean name="structured_html_import" />
+				<boolean name="cut_out_pictures_when_pasting_html"/>
 			</separator>
+		</tab>
+		<tab name="Keystrokes"
+			layout="right:max(40dlu;p), 4dlu, 80dlu, 7dlu,right:max(40dlu;p), 4dlu, 80dlu, 7dlu">
+			<separator name="commands_for_the_program" />
+			<text name="use_ctrl_key" />
+			<separator name="icons" />
 		</tab>
 		<tab name="plugins" />
 	</tabbed_pane>

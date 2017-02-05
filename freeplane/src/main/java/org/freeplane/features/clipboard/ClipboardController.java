@@ -436,20 +436,15 @@ public class ClipboardController implements IExtension {
 		for (int i = 0; i < depth; ++i) {
 			fileout.write(indentation);
 		}
-		if (plainTextContent.matches(" *")) {
-			fileout.write("o");
+		if (NodeLinks.getValidLink(mindMapNodeModel) != null) {
+			final String link = NodeLinks.getLinkAsString(mindMapNodeModel);
+			if (!link.equals(plainTextContent)) {
+				fileout.write(plainTextContent + " ");
+			}
+			fileout.write("<" + link + ">");
 		}
 		else {
-			if (NodeLinks.getValidLink(mindMapNodeModel) != null) {
-				final String link = NodeLinks.getLinkAsString(mindMapNodeModel);
-				if (!link.equals(plainTextContent)) {
-					fileout.write(plainTextContent + " ");
-				}
-				fileout.write("<" + link + ">");
-			}
-			else {
-				fileout.write(plainTextContent);
-			}
+			fileout.write(plainTextContent);
 		}
 		fileout.write("\n");
 		writeChildrenText(mindMapNodeModel, fileout, depth, indentation);

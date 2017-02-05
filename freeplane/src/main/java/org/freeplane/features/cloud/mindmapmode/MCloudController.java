@@ -100,6 +100,7 @@ public class MCloudController extends CloudController {
 			return;
 		}
 		final Color color = cloud != null ? cloud.getColor() : CloudController.getStandardColor();
+		final Shape shape = cloud != null ? cloud.getShape() : CloudController.getStandardShape();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final IActor actor = new IActor() {
 			public void act() {
@@ -120,6 +121,7 @@ public class MCloudController extends CloudController {
 			private void enable() {
 				final CloudModel cloud = new CloudModel();
 				cloud.setColor(color);
+				cloud.setShape(shape);
 				final MapController mapController = modeController.getMapController();
 				CloudModel.setModel(node, cloud);
 				mapController.nodeChanged(node);
