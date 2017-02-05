@@ -232,7 +232,7 @@ public abstract class MainView extends ZoomableLabel {
 				 || PaintingMode.NODES.equals(paintingMode)))
 			return;
 		final NodeView nodeView = getNodeView();
-		final boolean selected = nodeView.isSelected();
+		final boolean selected = shouldPaintCloneMarker(nodeView);
 		if(paintingMode.equals(PaintingMode.SELECTED_NODES) == selected)
 			super.paint(g);
 	}
@@ -290,12 +290,17 @@ public abstract class MainView extends ZoomableLabel {
 		paintFoldingMark(nodeView, g);
         if (isShortened()) {
         	FoldingMark.SHORTENED.draw(g, nodeView, decorationMarkBounds(nodeView, 7./3, 5./3));
-        } else if (nodeView.isSelected()){
+        } else if (shouldPaintCloneMarker(nodeView)){
 			if (nodeView.getModel().isCloneTreeRoot())
 				FoldingMark.CLONE.draw(g, nodeView, decorationMarkBounds(nodeView, 2, 2.5));
 			else if (nodeView.getModel().isCloneTreeNode())
 				FoldingMark.CLONE.draw(g, nodeView, decorationMarkBounds(nodeView, 1.5, 2.5));
 		}
+	}
+
+	private boolean shouldPaintCloneMarker(final NodeView nodeView) {
+		final ResourceController resourceController = ResourceController.getResourceController();
+		return resourceController.getBooleanProperty("markClones") || nodeView.isSelected() && resourceController.getBooleanProperty("markSelectedClones");
 	}
 
 	private Rectangle decorationMarkBounds(final NodeView nodeView, double widthFactor, double heightFactor) {
@@ -522,7 +527,7 @@ public abstract class MainView extends ZoomableLabel {
 		String text;
 		try {
 			final Object transformedContent = textController.getTransformedObject(nodeModel);
-			if(nodeView.isSelected()){
+			if(shouldPaintCloneMarker(nodeView)){
 				nodeView.getMap().getModeController().getController().getViewController().addObjectTypeInfo(transformedContent);
 			}
 			Icon icon = textController.getIcon(transformedContent, nodeModel, userObject);
