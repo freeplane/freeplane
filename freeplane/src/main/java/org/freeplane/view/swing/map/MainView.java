@@ -232,7 +232,7 @@ public abstract class MainView extends ZoomableLabel {
 				 || PaintingMode.NODES.equals(paintingMode)))
 			return;
 		final NodeView nodeView = getNodeView();
-		final boolean selected = shouldPaintCloneMarker(nodeView);
+		final boolean selected = nodeView.isSelected();
 		if(paintingMode.equals(PaintingMode.SELECTED_NODES) == selected)
 			super.paint(g);
 	}
@@ -527,7 +527,7 @@ public abstract class MainView extends ZoomableLabel {
 		String text;
 		try {
 			final Object transformedContent = textController.getTransformedObject(nodeModel);
-			if(shouldPaintCloneMarker(nodeView)){
+			if(nodeView.isSelected()){
 				nodeView.getMap().getModeController().getController().getViewController().addObjectTypeInfo(transformedContent);
 			}
 			Icon icon = textController.getIcon(transformedContent, nodeModel, userObject);
