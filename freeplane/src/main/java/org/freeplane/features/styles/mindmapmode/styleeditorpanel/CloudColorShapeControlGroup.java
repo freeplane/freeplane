@@ -21,8 +21,8 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.awt.Color;
 import java.beans.PropertyChangeEvent;
-import java.util.List;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
@@ -33,6 +33,7 @@ import org.freeplane.core.resources.components.NextLineProperty;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.cloud.mindmapmode.MCloudController;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
@@ -60,6 +61,17 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 		mPropertyListener = new CloudColorChangeListener(mSetCloud, mCloudColor, mCloudShape);
 		mSetCloud.addPropertyChangeListener(mPropertyListener);
 		mCloudColor.addPropertyChangeListener(mPropertyListener);
+		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+			
+			@Override
+			public void propertyChanged(String propertyName, String newValue, String oldValue) {
+				if(propertyName.equals(CloudController.RESOURCES_CLOUD_COLOR) || propertyName.equals(CloudController.RESOURCES_CLOUD_SHAPE)) {
+					final IMapSelection selection = Controller.getCurrentController().getSelection();
+					final NodeModel selected = selection.getSelected();
+					mPropertyListener.setStyle(selected);
+				}
+			}
+		});
 	}
 
 	private class CloudColorChangeListener extends ControlGroupChangeListener {
@@ -89,8 +101,7 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 			mSetCloud.setValue(cloudModel != null);
 			mCloudColor.setColorValue(viewCloudColor);
 			final CloudModel.Shape viewCloudShape = cloudController.getShape(node);
-			mCloudShape.setValue(viewCloudShape != null ? viewCloudShape.toString() : CloudModel.Shape.ARC.toString());
-
+			mCloudShape.setValue(viewCloudShape.name());
 		}
 	}
 	
