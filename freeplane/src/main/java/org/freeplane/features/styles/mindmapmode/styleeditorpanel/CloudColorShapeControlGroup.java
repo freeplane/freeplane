@@ -46,7 +46,6 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 public class CloudColorShapeControlGroup implements ControlGroup {
 	private static final String CLOUD_COLOR = "cloudcolor";
 	private static final String CLOUD_SHAPE = "cloudshape";
-	private static final String[] CLOUD_SHAPES = EnumToStringMapper.getStringValuesOf(CloudModel.Shape.class);
 
 	final private BooleanProperty mSetCloud;
 	final private ColorProperty mCloudColor;
@@ -57,7 +56,7 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 		mSetCloud = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		mCloudColor = new ColorProperty(CLOUD_COLOR, ResourceController.getResourceController()
 		    .getDefaultProperty(CloudController.RESOURCES_CLOUD_COLOR));
-		mCloudShape = new ComboProperty(CLOUD_SHAPE, CLOUD_SHAPES);
+		mCloudShape = ComboProperty.of(CLOUD_SHAPE, CloudModel.Shape.class);
 		mPropertyListener = new CloudColorChangeListener(mSetCloud, mCloudColor, mCloudShape);
 		mSetCloud.addPropertyChangeListener(mPropertyListener);
 		mCloudColor.addPropertyChangeListener(mPropertyListener);

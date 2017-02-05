@@ -58,10 +58,16 @@ public class CloudController implements IExtension {
 	private static CloudAdapterListener listener = null;
 	public static final int NORMAL_WIDTH = 3;
 	public static final String RESOURCES_CLOUD_COLOR = "standardcloudcolor";
+	public static final String RESOURCES_CLOUD_SHAPE = "standardcloudshape";
+	private static Shape standardShape = null;
 	private static Color standardColor = null;
 
 	public static Color getStandardColor() {
 		return standardColor;
+	}
+
+	public static Shape getStandardShape() {
+		return standardShape;
 	}
 
 	public static CloudController getController() {
@@ -137,9 +143,10 @@ public class CloudController implements IExtension {
 
 	private void updateStandards() {
 		if (standardColor == null) {
-			final String stdColor = ResourceController.getResourceController().getProperty(
-			    CloudController.RESOURCES_CLOUD_COLOR);
+			final ResourceController resourceController = ResourceController.getResourceController();
+			final String stdColor = resourceController.getProperty(CloudController.RESOURCES_CLOUD_COLOR);
 			standardColor = ColorUtils.stringToColor(stdColor);
+			standardShape =resourceController.getEnumProperty(CloudController.RESOURCES_CLOUD_SHAPE, Shape.ARC);
 		}
 	}
 

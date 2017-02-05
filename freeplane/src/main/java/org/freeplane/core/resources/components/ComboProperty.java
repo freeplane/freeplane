@@ -19,6 +19,8 @@
  */
 package org.freeplane.core.resources.components;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -27,14 +29,18 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.ListCellRenderer;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.RenderedContent;
 import org.freeplane.core.ui.components.RenderedContentSupplier;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
+import org.freeplane.features.icon.IconGroup;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -64,14 +70,22 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 	}
 	
 
-	public static <T extends Enum<T> & RenderedContentSupplier<T>> ComboProperty of(String name, Class<T> enumClass) {
+	public static <T extends Enum<T>> ComboProperty of(String name, Class<T> enumClass) {
 		T[] enumConstants = enumClass.getEnumConstants();
 		final Vector<String> choices = new Vector<String>(enumConstants.length);
 		final Vector<Object> displayedItems = new Vector<Object>(enumConstants.length);
-		for(Object enumValue : enumConstants){
-			String choice = ((Enum<?>)enumValue).name();
+		for(final T enumValue : enumConstants){
+			final String choice = ((Enum<?>)enumValue).name();
 			choices.add(choice);
-			RenderedContent<?> renderedContent = ((RenderedContentSupplier<?>)enumValue).createRenderedContent();
+			final RenderedContent<T> renderedContent;
+			if(enumValue instanceof RenderedContentSupplier<?>) {
+				final RenderedContentSupplier<T> renderedContentSupplier;
+				renderedContentSupplier = (RenderedContentSupplier<T>)enumValue;
+				renderedContent = renderedContentSupplier.createRenderedContent();
+			}
+			else {
+				renderedContent = RenderedContent.of(enumValue);
+			}
 			displayedItems.add(renderedContent);
 		}
 		ComboProperty comboProperty = new ComboProperty(name, choices, displayedItems);

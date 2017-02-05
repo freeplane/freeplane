@@ -25,11 +25,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.swing.ImageIcon;
+
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -42,6 +46,7 @@ import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.mode.AController.IActionOnChange;
+import org.freeplane.features.icon.factory.ImageIconFactory;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -340,5 +345,28 @@ public abstract class ResourceController {
 		if(acceleratorManager == null)
 			acceleratorManager = new ActionAcceleratorManager();
 		return acceleratorManager;
+	}
+
+	private Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>();
+	public ImageIcon getIcon(final String iconKey) {
+		ImageIcon icon = iconCache.get(iconKey);
+		if(icon == null){
+			final String iconResource = ResourceController.getResourceController().getProperty(iconKey, null);
+			if (iconResource != null) {
+				URL url;
+				url = ResourceController.getResourceController().getResource(iconResource.replaceFirst("(?i)\\.png$", ".svg"));
+				if (url == null)
+					url = ResourceController.getResourceController().getResource(iconResource);
+				if (url == null) {
+					LogUtils.severe("can not load icon '" + iconResource + "'");
+				}
+				else {
+					//final ImageIcon icon = new ImageIcon(url);
+					icon = ImageIconFactory.getInstance().getImageIcon(url);
+					iconCache.put(iconKey, icon);
+				}
+			}
+		}
+		return icon;
 	}
 }
