@@ -56,7 +56,7 @@ task createGitProperty {
 		 	return
 			 
 		def timestamp=new Date().format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
-		gitInfoFile.write "git-revision=$revisionHash $whoami $timestamp"
+		new File(globalBuild, 'gitinfo.txt').write "git-revision=$revisionHash $whoami $timestamp"
 			 
         // create gitinfo.properties!
         copy {
