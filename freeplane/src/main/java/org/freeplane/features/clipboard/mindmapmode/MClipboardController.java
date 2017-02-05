@@ -256,11 +256,11 @@ public class MClipboardController extends ClipboardController {
 			this.textFromClipboard = textFromClipboard;
 		}
 
-		private String addFragment(final HTMLDocument doc, final Element element, final int depth, final int start,
+		private void addFragment(final HTMLDocument doc, final Element element, final int depth, final int start,
 		                           final int end, final LinkedList<TextFragment> htmlFragments)
 		        throws BadLocationException, IOException {
 			final String paragraphText = doc.getText(start, end - start).trim();
-			if (paragraphText.length() > 0) {
+			if (paragraphText.length() > 0 || element.getName().equals("img")) {
 				final StringWriter out = new StringWriter();
 				new PasteHtmlWriter(out, element, doc, start, end - start).write();
 				final String string = out.toString();
@@ -270,7 +270,6 @@ public class MClipboardController extends ClipboardController {
 					htmlFragments.add(htmlFragment);
 				}
 			}
-			return paragraphText;
 		}
 
 		private Element getParentElement(final HTMLDocument doc) {
@@ -296,9 +295,9 @@ public class MClipboardController extends ClipboardController {
 
 		private void pasteHtmlWithoutRedisplay(final Object t, final NodeModel parent, final boolean asSibling,
 		                                       final boolean isLeft) {
-			String textFromClipboard = (String) t;
-			textFromClipboard = cleanHtml(textFromClipboard);
-			final TextFragment[] htmlFragments = split(textFromClipboard);
+			final String textFromClipboard = (String) t;
+			final String cleanedTextFromClipboard = cleanHtml(textFromClipboard);
+			final TextFragment[] htmlFragments = split(cleanedTextFromClipboard);
 			pasteStringWithoutRedisplay(htmlFragments, parent, asSibling, isLeft);
 		}
 
@@ -534,17 +533,6 @@ public class MClipboardController extends ClipboardController {
 			catch (final IOException e) {
 			}
 		}
-		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
-			try {
-				final List<File> fileList = castToFileList(t.getTransferData(MindMapNodesSelection.fileListFlavor));
-				if (!shouldIgnoreFileListFlavor(fileList))
-					return new FileListFlavorHandler(fileList);
-			}
-			catch (final UnsupportedFlavorException e) {
-			}
-			catch (final IOException e) {
-			}
-		}
 		final ResourceController resourceController = ResourceController.getResourceController();
 		DataFlavor supportedHtmlFlavor = getSupportedHtmlFlavor(t);
 		if (supportedHtmlFlavor != null) {
@@ -569,6 +557,17 @@ public class MClipboardController extends ClipboardController {
 						}
 					}
 				}
+			}
+			catch (final UnsupportedFlavorException e) {
+			}
+			catch (final IOException e) {
+			}
+		}
+		if (t.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
+			try {
+				final List<File> fileList = castToFileList(t.getTransferData(MindMapNodesSelection.fileListFlavor));
+				if (!shouldIgnoreFileListFlavor(fileList))
+					return new FileListFlavorHandler(fileList);
 			}
 			catch (final UnsupportedFlavorException e) {
 			}
@@ -695,10 +694,12 @@ public class MClipboardController extends ClipboardController {
 		if (t == null) {
 			return;
 		}
-		/*
-		 * DataFlavor[] fl = t.getTransferDataFlavors(); for (int i = 0; i <
-		 * fl.length; i++) { System.out.println(fl[i]); }
-		 */
+//		
+//		DataFlavor[] fl = t.getTransferDataFlavors();
+//		for (int i = 0; i < fl.length; i++) {
+//			System.out.println(fl[i]);
+//		}
+
 		final IDataFlavorHandler handler = getFlavorHandler(t);
 		paste(t, handler, target, asSibling, isLeft, dropAction);
 	}

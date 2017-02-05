@@ -313,13 +313,9 @@ private Timer timer;
 	}
 
 	private boolean isDragAcceptable(final DropTargetDragEvent ev) {
-		if (ev.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-			return true;
-		}
-		if (ev.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)) {
-			return true;
-		}
-		return false;
+		return ev.isDataFlavorSupported(DataFlavor.stringFlavor) 
+				||ev.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)
+				||ev.isDataFlavorSupported(DataFlavor.imageFlavor);
 	}
 
 }
