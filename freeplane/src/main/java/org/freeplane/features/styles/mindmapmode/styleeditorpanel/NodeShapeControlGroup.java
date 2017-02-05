@@ -98,7 +98,7 @@ class NodeShapeControlGroup implements ControlGroup {
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetNodeShape = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		mNodeShape = new ComboProperty(NODE_SHAPE, EnumToStringMapper.getStringValuesOf(NodeStyleModel.Shape.class));
+		mNodeShape = ComboProperty.of(NODE_SHAPE, NodeStyleModel.Shape.class);
 		mShapeHorizontalMargin = new QuantityProperty<LengthUnits>(SHAPE_HORIZONTAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
 		mShapeVerticalMargin = new QuantityProperty<LengthUnits>(SHAPE_VERTICAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
 		mUniformShape = new BooleanProperty(UNIFORM_SHAPE);

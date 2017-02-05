@@ -28,12 +28,7 @@ public class EnumToStringMapper {
 	private EnumToStringMapper() {}
 	
 	public static <U extends Enum<U>> String[] getStringValuesOf(Class<U> enumerationClass) {
-		final U[] enumConstants = enumerationClass.getEnumConstants();
-		final String[] strings = new String[enumConstants.length];
-		for (int i = 0; i < enumConstants.length; i++) {
-			strings[i] = enumConstants[i].toString();
-		}
-		return strings;
+		return getStringValuesOf(enumerationClass, enumerationClass.getEnumConstants().length);
 	}
 
 	public static <U extends Enum<U>> String[] getStringValuesOf(Class<U> enumerationClass, int length) {
