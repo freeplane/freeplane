@@ -475,8 +475,7 @@ public class MClipboardController extends ClipboardController {
 		    .replaceFirst("(?i)(?s)<body [^>]*>", "<body>").replaceAll("(?i)(?s)<script.*?>.*?</script>", "")
 		    .replaceAll("(?i)(?s)</?tbody.*?>", "").replaceAll("(?i)(?s)<!--.*?-->", "").replaceAll(
 		        "(?i)(?s)</?o[^>]*>", "");
-		if (StringUtils.equals(ResourceController.getResourceController().getProperty(
-		    "cut_out_pictures_when_pasting_html"), "true")) {
+		if (ResourceController.getResourceController().getBooleanProperty("cut_out_pictures_when_pasting_html")) {
 			in = in.replaceAll("(?i)(?s)<img[^>]*>", "");
 		}
 		in = HtmlUtils.unescapeHTMLUnicodeEntity(in);
