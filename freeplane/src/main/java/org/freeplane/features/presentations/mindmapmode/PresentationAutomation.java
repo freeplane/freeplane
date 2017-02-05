@@ -2,27 +2,22 @@ package org.freeplane.features.presentations.mindmapmode;
 
 import javax.swing.JComponent;
 
-import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.FrameController;
 
-class PresentationAutomation implements PresentationStateChangeListener, IFreeplanePropertyListener{
+class PresentationAutomation implements PresentationStateChangeListener{
 
-	static final String PROCESS_UP_DOWN_KEYS_PROPERTY = "presentation.processesUpDownKeys";
 	static final String SWITCH_TO_FULL_SCREEN_PROPERTY = "presentation.switchToFullScreen";
 	static final String SWITCH_TO_PRESENTATION_MODE_PROPERTY = "presentation.switchToPresentationMode";
-	private boolean processUpDownKeys;
 	private boolean isPresentationRunning;
-	private final UpDownKeyEventDispatcher dispatcher;
+	private final PresentationKeyEventDispatcher[] dispatchers;
 	
 
-	PresentationAutomation(PresentationState state, UpDownKeyEventDispatcher dispatcher, //
-			boolean processUpDownKeys) {
+	PresentationAutomation(PresentationState state, PresentationKeyEventDispatcher... dispatchers) {
 		super();
-		this.processUpDownKeys = processUpDownKeys;
 		this.isPresentationRunning = false;
-		this.dispatcher = dispatcher;
+		this.dispatchers = dispatchers;
 	}
 
 	@Override
@@ -58,7 +53,7 @@ class PresentationAutomation implements PresentationStateChangeListener, IFreepl
 	}
 
 	private void updateDispatcherState() {
-		if (processUpDownKeys) {
+		for(PresentationKeyEventDispatcher dispatcher : dispatchers) {
 			if(isPresentationRunning)
 				dispatcher.activate();
 			else
@@ -66,14 +61,4 @@ class PresentationAutomation implements PresentationStateChangeListener, IFreepl
 		}
 	}
 	
-	@Override
-	public void propertyChanged(String propertyName, String newValue, String oldValue) {
-		if(PROCESS_UP_DOWN_KEYS_PROPERTY.equals(propertyName) && isPresentationRunning){
-			if(Boolean.parseBoolean(newValue))
-				dispatcher.activate();
-			else
-				dispatcher.deactivate();
-		}
-	}
-
 }

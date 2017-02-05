@@ -277,6 +277,7 @@
 			</separator>
 			<separator name="presentation">
 				<boolean name="presentation.processesUpDownKeys"/>
+				<boolean name="presentation.processesEscapeKey"/>
 				<boolean name="presentation.switchToFullScreen"/>
 				<boolean name="presentation.switchToPresentationMode"/>
 			</separator>

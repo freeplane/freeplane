@@ -7,14 +7,13 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
-import java.awt.KeyboardFocusManager;
+import java.awt.KeyEventDispatcher;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
 import javax.swing.JTabbedPane;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.highlight.HighlightController;
@@ -28,6 +27,10 @@ import org.freeplane.features.mode.ModeController;
 public class PresentationController implements IExtension{
 	private static final float FOLDED_NODE_DOT_WIDTH = 3f * UITools.FONT_SCALE_FACTOR;
 	private static final Color NODE_HIGHLIGHTING_COLOR = Color.GREEN.brighter();
+	static final String PROCESS_UP_DOWN_KEYS_PROPERTY = "presentation.processesUpDownKeys";
+	static final String PROCESS_ESCAPE_KEY_PROPERTY = "presentation.processesEscapeKey";
+	
+
 	private static float[] FOLDED_NODE_DASH = new float[]{FOLDED_NODE_DOT_WIDTH/2, 2*FOLDED_NODE_DOT_WIDTH};
 	private static BasicStroke FOLDED_NODE_STROKE = new BasicStroke(FOLDED_NODE_DOT_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 1f, FOLDED_NODE_DASH, 0f);
 	private final PresentationState presentationState;
@@ -71,13 +74,11 @@ public class PresentationController implements IExtension{
 
 		});
 		
-		ResourceController resourceController = ResourceController.getResourceController();
-		boolean processUpDownKeys = resourceController.getBooleanProperty(PresentationAutomation.PROCESS_UP_DOWN_KEYS_PROPERTY);
-		UpDownKeyEventDispatcher dispatcher = new UpDownKeyEventDispatcher(presentationState);
-		KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(dispatcher);
-
-		final PresentationAutomation presentationKeyHandler = new PresentationAutomation(presentationState, dispatcher, processUpDownKeys);
-		resourceController.addPropertyChangeListener(presentationKeyHandler);
+		KeyEventDispatcher upDownKeyEventDispatcher = new UpDownKeyEventDispatcher(presentationState);
+		KeyEventDispatcher escapeKeyEventDispatcher = new EscapeKeyEventDispatcher(presentationState);
+		final PresentationAutomation presentationKeyHandler = new PresentationAutomation(presentationState, 
+				PresentationKeyEventDispatcher.of(upDownKeyEventDispatcher, PROCESS_UP_DOWN_KEYS_PROPERTY),
+				PresentationKeyEventDispatcher.of(escapeKeyEventDispatcher, PROCESS_ESCAPE_KEY_PROPERTY));
 		presentationState.addPresentationStateListener(presentationKeyHandler);
 	}
 

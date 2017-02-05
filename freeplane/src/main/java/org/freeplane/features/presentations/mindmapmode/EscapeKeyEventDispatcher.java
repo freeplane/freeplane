@@ -3,9 +3,9 @@ package org.freeplane.features.presentations.mindmapmode;
 import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyEvent;
 
-class UpDownKeyEventDispatcher implements KeyEventDispatcher {
+class EscapeKeyEventDispatcher implements KeyEventDispatcher {
 	private final PresentationState state;
-	public UpDownKeyEventDispatcher(PresentationState state) {
+	public EscapeKeyEventDispatcher(PresentationState state) {
 		super();
 		this.state = state;
 	}
@@ -14,19 +14,13 @@ class UpDownKeyEventDispatcher implements KeyEventDispatcher {
 		if(e.getModifiers() != 0)
 			return false;
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_UP:
+		case KeyEvent.VK_ESCAPE:
 				e.consume();
 				if(e.getID() == KeyEvent.KEY_PRESSED)
-					state.showPreviousSlide();
-				return true;
-		case KeyEvent.VK_DOWN:
-				e.consume();
-				if(e.getID() == KeyEvent.KEY_PRESSED)
-					state.showNextSlide();
+					state.stopPresentation();
 				return true;
 		default:
-			 return false;
+			return false;
 		}
-		
 	}
 }
