@@ -89,7 +89,7 @@ public class FreeplaneIconUtils {
 	}
 
 
-	public static SVGIcon createSVGIconOriginalSize(final URL url) {
+	public static SVGIcon createSVGIcon(final URL url) {
 		return AccessController.doPrivileged(new PrivilegedAction<SVGIcon>() {
 			@Override
 			public SVGIcon run() {
