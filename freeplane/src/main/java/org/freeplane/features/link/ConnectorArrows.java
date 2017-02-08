@@ -18,24 +18,25 @@ public enum ConnectorArrows implements RenderedContentSupplier<ConnectorArrows>{
 	
 	public final ArrowType start;
 	public final ArrowType end;
-	private final String iconName;
-	private final String description;
+	public final String text;
+	public final Icon icon;
 	
 	private RenderedContent<ConnectorArrows> renderedContent;
+
+
 	
 	private ConnectorArrows(ArrowType start, ArrowType end, String description, String iconName) {
 		this.start = start;
 		this.end = end;
-		this.description = description;
-		this.iconName = iconName;
+		icon = new ImageIcon(ResourceController.getResourceController().getResource("/images/" + iconName));
+		text = TextUtils.getText("ChangeConnectorArrowsAction." + description + ".text");
 	}
 
 	
 	@Override
 	public RenderedContent<ConnectorArrows> createRenderedContent() {
 		if(renderedContent == null) {
-			Icon icon = new ImageIcon(ResourceController.getResourceController().getResource("/images/" + iconName));
-			renderedContent = new RenderedContent<ConnectorArrows>(this, TextUtils.getText("ChangeConnectorArrowsAction." + description + ".text"), icon);
+			renderedContent = new RenderedContent<ConnectorArrows>(this, text, icon);
 		}
 		return renderedContent;
 	}

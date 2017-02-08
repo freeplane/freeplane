@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.link.ArrowType;
+import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 
@@ -35,13 +36,12 @@ class ChangeConnectorArrowsAction extends AFreeplaneAction {
 	ArrowType endArrow;
 	ArrowType startArrow;
 
-	public ChangeConnectorArrowsAction(final MLinkController linkController, final String key,
-	                                   final ConnectorModel arrowLink, final ArrowType startArrow,
-	                                   final ArrowType endArrow) {
-		super("ChangeConnectorArrowsAction." + key);
+	public ChangeConnectorArrowsAction(final MLinkController linkController, final ConnectorArrows arrows,
+	                                   final ConnectorModel arrowLink) {
+		super("ChangeConnectorArrowsAction." + arrows.name().toLowerCase(), arrows.text, arrows.icon);
 		this.arrowLink = arrowLink;
-		this.startArrow = startArrow;
-		this.endArrow = endArrow;
+		this.startArrow = arrows.start;
+		this.endArrow = arrows.end;
 		final boolean selected = arrowLink.getStartArrow().equals(startArrow)
 		        && arrowLink.getEndArrow().equals(endArrow);
 		setSelected(selected);

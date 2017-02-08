@@ -69,6 +69,7 @@ import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.link.ArrowType;
+import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.HyperTextLinkModel;
@@ -418,10 +419,10 @@ public class MLinkController extends LinkController {
 
 
 		AFreeplaneAction[] arrowActions = new AFreeplaneAction[]{
-                new ChangeConnectorArrowsAction(this, "none", link, ArrowType.NONE, ArrowType.NONE),
-                new ChangeConnectorArrowsAction(this, "forward", link, ArrowType.NONE, ArrowType.DEFAULT),
-                new ChangeConnectorArrowsAction(this, "backward", link, ArrowType.DEFAULT, ArrowType.NONE),
-                new ChangeConnectorArrowsAction(this, "both", link, ArrowType.DEFAULT, ArrowType.DEFAULT)
+                new ChangeConnectorArrowsAction(this, ConnectorArrows.NONE, link),
+                new ChangeConnectorArrowsAction(this, ConnectorArrows.FORWARD, link),
+                new ChangeConnectorArrowsAction(this, ConnectorArrows.BACKWARD, link),
+                new ChangeConnectorArrowsAction(this, ConnectorArrows.BOTH, link)
 		};
         JComboBoxWithBorder connectorArrows = createActionBox(arrowActions);
 		addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_arrows"), connectorArrows);
