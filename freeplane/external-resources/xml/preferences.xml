@@ -298,7 +298,7 @@
 		</tab>
 		<tab name="Presentation">
 			<separator name="presentation">
-				<boolean name="presentation.processesUpDownKeys"/>
+				<boolean name="presentation.processesNavigationKeys"/>
 				<boolean name="presentation.processesEscapeKey"/>
 				<boolean name="presentation.switchToFullScreen"/>
 				<boolean name="presentation.switchToPresentationMode"/>

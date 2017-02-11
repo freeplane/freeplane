@@ -27,7 +27,7 @@ import org.freeplane.features.mode.ModeController;
 public class PresentationController implements IExtension{
 	private static final float FOLDED_NODE_DOT_WIDTH = 3f * UITools.FONT_SCALE_FACTOR;
 	private static final Color NODE_HIGHLIGHTING_COLOR = Color.GREEN.brighter();
-	static final String PROCESS_UP_DOWN_KEYS_PROPERTY = "presentation.processesUpDownKeys";
+	static final String PROCESS_UP_DOWN_KEYS_PROPERTY = "presentation.processesNavigationKeys";
 	static final String PROCESS_ESCAPE_KEY_PROPERTY = "presentation.processesEscapeKey";
 	
 
