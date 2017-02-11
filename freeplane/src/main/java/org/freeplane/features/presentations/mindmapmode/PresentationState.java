@@ -5,7 +5,9 @@ import static org.freeplane.features.presentations.mindmapmode.PresentationState
 
 import java.util.ArrayList;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType;
 
 public class PresentationState {
@@ -15,6 +17,7 @@ public class PresentationState {
 	private Slide currentSlide;
 	private boolean highlightsNodes;
 	private boolean combinesAllPresentations;
+	private float zoomFactor;
 	
 	protected void setCombinesAllPresentations(boolean combinesAllPresentations) {
 		if(this.combinesAllPresentations != combinesAllPresentations){
@@ -24,15 +27,12 @@ public class PresentationState {
 		}
 	}
 
-	public Slide getCurrentSlide() {
-		return currentSlide;
-	}
-
 	public PresentationState() {
 		super();
 		this.combinesAllPresentations = false;
 		this.currentPresentation = null;
 		this.presentationStateChangeListeners = new ArrayList<>();
+		this.zoomFactor = 1f;
 	}
 	
 	public void changePresentation(CollectionChangedEvent<Presentation> event) {
@@ -53,15 +53,30 @@ public class PresentationState {
 			currentSlide = newSlide;
 			firePresentationStateChangedEvent(isPresentationAlreadyRunning ? SLIDE_CHANGED : PLAYING_STATE_CHANGED);
 		}		
-		if (currentSlide != null)
-			currentSlide.apply();
+		if (currentSlide != null) {
+			if(! isPresentationAlreadyRunning){
+				zoomFactor = Controller.getCurrentController().getMapViewManager().getZoom();
+			}
+			currentSlide.apply(getPresentationZoomFactor());
+		}
+	}
+
+	private float getPresentationZoomFactor() {
+		return usesMapZoom() ? zoomFactor : 1f;
+	}
+
+	private boolean usesMapZoom() {
+		return ResourceController.getResourceController().getBooleanProperty("presentation.zoom");
 	}
 
 	public void stopPresentation() {
 		if (currentSlide != null) {
 			currentSlide = null;
 			firePresentationStateChangedEvent(PLAYING_STATE_CHANGED);
-			Slide.ALL_NODES.apply();
+			Slide.ALL_NODES.apply(1f);
+			if(usesMapZoom())
+				Controller.getCurrentController().getMapViewManager().setZoom(zoomFactor);
+			zoomFactor = 1f;
 		}
 	}
 	

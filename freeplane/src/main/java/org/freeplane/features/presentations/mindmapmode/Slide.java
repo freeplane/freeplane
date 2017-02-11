@@ -297,11 +297,11 @@ public class Slide implements NamedElement<Slide>{
 		return selectedNodes;
 	}
 
-	void apply() {
+	void apply(float zoomFactor) {
 		applyFilter();
 		applySelection();
 		foldNodes();
-		applyZoom();
+		applyZoom(zoomFactor);
 		centerSelectedNode();
 	}
 
@@ -314,9 +314,9 @@ public class Slide implements NamedElement<Slide>{
 		createNodeIterator().foldNodes();
 	}
 
-	private void applyZoom() {
+	private void applyZoom(float zoomFactor) {
 		if (changesZoom)
-			Controller.getCurrentController().getMapViewManager().setZoom(zoom);
+			Controller.getCurrentController().getMapViewManager().setZoom(zoom * zoomFactor);
 	}
 
 	private void applySelection() {
