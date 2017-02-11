@@ -16,6 +16,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.FilterComposerDialog;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.styles.ConditionalStyleModel;
@@ -70,9 +71,15 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 				if(selectedRow == -1){
 					return;
 				}
+				final FilterComposerDialog filterComposerDialog = new FilterComposerDialog();
+				filterComposerDialog.addCondition(null);
+				filterComposerDialog.setConditionRenderer(ConditionalStyleTable.createConditionRenderer());
+				for(int i = 0; i < conditionalStyleTable.getRowCount(); i++){
+					final ASelectableCondition condition = (ASelectableCondition)conditionalStyleTable.getValueAt(i, 1);
+					filterComposerDialog.addCondition(condition);
+				}
 				final ASelectableCondition value = (ASelectableCondition) conditionalStyleTable.getValueAt(selectedRow, 1);
-				final MLogicalStyleController styleController = MLogicalStyleController.getController();
-				final ASelectableCondition newCondition = styleController.editCondition(value);
+				final ASelectableCondition newCondition = filterComposerDialog.editCondition(value);
 				conditionalStyleTable.setValueAt(newCondition, selectedRow, 1);
 			}
 		});
