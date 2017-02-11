@@ -115,7 +115,7 @@ public class MTextController extends TextController {
 	private static final String PARSE_DATA_PROPERTY = "parse_data";
     public static final String NODE_TEXT = "NodeText";
 	private static Pattern FORMATTING_PATTERN = null;
-	private EditNodeBase mCurrentEditDialog = null;
+	private EditNodeBase mCurrentEditor = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
 	private final EventBuffer eventQueue;
 
@@ -578,7 +578,7 @@ public class MTextController extends TextController {
 			}
 			private void stop() {
 				Controller.getCurrentModeController().setBlocked(false);
-				mCurrentEditDialog = null;
+				mCurrentEditor = null;
 			}
 			public boolean canSplit() {
                 return false;
@@ -588,9 +588,9 @@ public class MTextController extends TextController {
                 return EditedComponent.DETAIL;
             }
 		};
-		mCurrentEditDialog = createEditor(nodeModel, editControl, text, false, editLong, true);
+		mCurrentEditor = createEditor(nodeModel, editControl, text, false, editLong, true);
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
-		mCurrentEditDialog.show(frame);
+		mCurrentEditor.show(frame);
     }
 
 
@@ -811,7 +811,7 @@ public class MTextController extends TextController {
 
 	public void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel, final boolean isNewNode,
 	          final boolean parentFolded, final boolean editLong) {
-		if (nodeModel == null || mCurrentEditDialog != null) {
+		if (nodeModel == null || mCurrentEditor != null) {
 			return;
 		}
 		final Controller controller = Controller.getCurrentController();
@@ -854,7 +854,7 @@ public class MTextController extends TextController {
 			private void stop() {
 				Controller.getCurrentModeController().setBlocked(false);
 				viewController.obtainFocusForSelected();
-				mCurrentEditDialog = null;
+				mCurrentEditor = null;
 			}
 
 			public void ok(final String text) {
@@ -883,9 +883,9 @@ public class MTextController extends TextController {
                 return EditedComponent.TEXT;
             }
 		};
-		mCurrentEditDialog = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editLong, true);
+		mCurrentEditor = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editLong, true);
 		final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
-		mCurrentEditDialog.show(frame);
+		mCurrentEditor.show(frame);
 	}
 
 	private EditNodeBase createEditor(final NodeModel nodeModel, final IEditControl editControl,
@@ -919,12 +919,12 @@ public class MTextController extends TextController {
 		if(keyEventDispatcher != null){
 			keyEventDispatcher.uninstall();
 		}
-		if (mCurrentEditDialog != null) {
+		if (mCurrentEditor != null) {
 			// Ensure that setText from the edit and the next action 
 			// are parts of different transactions
-			mCurrentEditDialog.closeEdit();
+			mCurrentEditor.closeEdit();
 			modeController.forceNewTransaction();
-			mCurrentEditDialog = null;
+			mCurrentEditor = null;
 		}
 	}
 	public void addEditorPaneListener(IEditorPaneListener l){
