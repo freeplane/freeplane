@@ -75,11 +75,25 @@ public class PresentationState {
 		}
 	}
 
+	public void showLastSlide() {
+		if(canShowNextSlide()) {
+			NamedElementCollection<Slide> slides = currentPresentation.slides;
+			slides.selectCurrentElement(slides.getSize() - 1);
+		}
+	}
+
 	public void showPreviousSlide() {
 		if(canShowPreviousSlide()) {
 			NamedElementCollection<Slide> slides = currentPresentation.slides;
 			final int currentElementIndex = slides.getCurrentElementIndex();
 			slides.selectCurrentElement(currentElementIndex - 1);
+		}
+	}
+
+	public void showFirstSlide() {
+		if(canShowPreviousSlide()) {
+			NamedElementCollection<Slide> slides = currentPresentation.slides;
+			slides.selectCurrentElement(0);
 		}
 	}
 

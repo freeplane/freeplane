@@ -387,8 +387,13 @@
 			</Entry>
 			<Entry name="presentation">
 				<Entry name="StartPresentationOrShowNextSlideAction" accelerator="F5"/>
-				<Entry name="ShowPreviousSlideAction" accelerator="control F5"/>
+				<Entry name="ShowFirstSlideAndStartPresentationAction"/>
+				<Entry name="StartPresentationAction" />
 				<Entry name="StopPresentationAction" accelerator="shift F5" />
+				<Entry name="ShowFirstSlideAction"/>
+				<Entry name="ShowPreviousSlideAction" accelerator="control F5"/>
+				<Entry name="ShowNextSlideAction" />
+				<Entry name="ShowLastSlideAction"/>
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="SelectAllAction" accelerator="control A" />
