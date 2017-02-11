@@ -240,18 +240,20 @@ class SlideEditorController{
 
 
 	
+	private FilterComposerDialog filterComposerDialog = null;
 	private JToggleButton createSetFilterToggleButton() {
 		final JToggleButton tglbtnSetFilter = TranslatedElementFactory.createToggleButton("slide.setfilter");
 		tglbtnSetFilter.setAlignmentX(Component.CENTER_ALIGNMENT);
 		tglbtnSetFilter.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			    final FilterComposerDialog filterComposerDialog = FilterController.getCurrentFilterController().getFilterComposerDialog();
-			    filterComposerDialog.acceptMultipleConditions(false);
-			    ASelectableCondition oldCondition = slide.getFilterCondition();
+				if( filterComposerDialog == null)
+					filterComposerDialog = new FilterComposerDialog();
+				ASelectableCondition oldCondition = slide.getFilterCondition();
 				if(oldCondition != null) {
 					filterComposerDialog.addCondition(oldCondition);
+					filterComposerDialog.setSelectedItem(oldCondition);
 					UndoableSlide.of(slide).setFilterCondition(null);
 				} else {
 					filterComposerDialog.show();

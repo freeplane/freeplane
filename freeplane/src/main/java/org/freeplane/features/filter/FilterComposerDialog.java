@@ -10,6 +10,9 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 @SuppressWarnings("serial")
 public class FilterComposerDialog extends AFilterComposerDialog{
 
+	final private List<ASelectableCondition> conditions ;
+	private DefaultComboBoxModel model;
+	
 	public FilterComposerDialog() {
         super(TextUtils.getText("filter_dialog"), true);
         conditions = new LinkedList<ASelectableCondition>();
@@ -28,27 +31,20 @@ public class FilterComposerDialog extends AFilterComposerDialog{
     }
 	
 	protected boolean applyModel(DefaultComboBoxModel model, int[] selectedIndices) {
-		if(selectedIndices.length != 1 && ! acceptMultipleConditions){
+		if(this.model != model)
+			throw new IllegalArgumentException();
+		if(selectedIndices.length > 1){
 			return false;
 		}
 		conditions.clear();
-		this.model = model;
 		for(int i : selectedIndices){
 			conditions.add((ASelectableCondition) model.getElementAt(i));
 		}
 	    return true;
     }
 			
-	final private List<ASelectableCondition> conditions ;
-	private DefaultComboBoxModel model;
-	private boolean acceptMultipleConditions;
-
 	public List<ASelectableCondition> getConditions() {
     	return conditions;
-    }
-
-	public void acceptMultipleConditions(boolean acceptMultipleConditions) {
-	    this.acceptMultipleConditions = acceptMultipleConditions;
     }
 
 	public void addCondition(ASelectableCondition value) {
@@ -56,6 +52,17 @@ public class FilterComposerDialog extends AFilterComposerDialog{
 		if (model.getIndexOf(value) == -1){
 			model.addElement(value);
 		}
-		setSelectedItem(value);
     }
+
+
+	public ASelectableCondition editCondition(ASelectableCondition value) {
+		initializeModel();
+		if(value != null)
+			setSelectedItem(value);
+	    show();
+	    List<ASelectableCondition> conditions = getConditions();
+	    if(isSuccess())
+	    	return conditions.isEmpty() ? null : conditions.get(0);
+	    return value;
+	}
 }

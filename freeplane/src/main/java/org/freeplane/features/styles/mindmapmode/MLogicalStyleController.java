@@ -521,18 +521,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 		};
 	}
-
-	public ASelectableCondition editCondition(ASelectableCondition value) {
-	    final FilterComposerDialog filterComposerDialog = FilterController.getCurrentFilterController().getFilterComposerDialog();
-	    filterComposerDialog.acceptMultipleConditions(true);
-	    if(value != null)
-	    	filterComposerDialog.addCondition(value);
-	    filterComposerDialog.show();
-	    List<ASelectableCondition> conditions = filterComposerDialog.getConditions();
-	    if(filterComposerDialog.isSuccess())
-	    	return conditions.isEmpty() ? null : conditions.get(0);
-	    return value;
-    }
     
 
 }
