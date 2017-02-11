@@ -237,8 +237,8 @@ class NavigationPanelController {
 		stopPresentationAction.setEnabled(isPresentationRunning);
 		showPreviousSlideAction.setEnabled(canShowPreviousSlide);
 		showNextSlideAction.setEnabled(canShowNextSlide);
-		boolean canShowFirstSlide = presentationState.canShowPreviousSlide();
-		boolean canShowLastSlide = presentationState.canShowNextSlide();
+		boolean canShowFirstSlide = presentationState.canShowFirstSlide();
+		boolean canShowLastSlide = presentationState.canShowLastSlide();
 		showFirstSlideAndStartPresentationAction.setEnabled(! isPresentationRunning || canShowFirstSlide);
 		showFirstSlideAction.setEnabled(canShowFirstSlide);
 		showLastSlideAction.setEnabled(canShowLastSlide);

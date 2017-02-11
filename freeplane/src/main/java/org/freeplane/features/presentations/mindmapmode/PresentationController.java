@@ -14,6 +14,8 @@ import java.awt.event.HierarchyListener;
 import javax.swing.JTabbedPane;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.highlight.HighlightController;
@@ -89,6 +91,17 @@ public class PresentationController implements IExtension{
 	private PresentationController(ModeController modeController) {
 		this.modeController = modeController;
 		presentationState = new PresentationState();
+		final ResourceController resourceController = ResourceController.getResourceController();
+		boolean combinesAllPresentations = resourceController.getBooleanProperty("presentation.combineAll");
+		resourceController.addPropertyChangeListener(new IFreeplanePropertyListener() {
+			
+			@Override
+			public void propertyChanged(String propertyName, String newValue, String oldValue) {
+				if("presentation.combineAll".equals(propertyName))
+					presentationState.setCombinesAllPresentations(Boolean.parseBoolean(newValue));
+			}
+		});
+		presentationState.setCombinesAllPresentations(combinesAllPresentations);
 		presentationEditorController = new PresentationEditorController(presentationState);
 		presentationState.addPresentationStateListener(new PresentationStateChangeListener() {
 			

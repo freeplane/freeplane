@@ -70,7 +70,7 @@ public class PresentationEditorController {
 					slides = null;
 					slideEditorController.setSlide(null);
 				}
-				presentationState.changePresentation(presentation);
+				presentationState.changePresentation(event);
 				slidePanelController.setCollection(slides);
 				navigationPanelController.setPresentation(presentation);
 			}
