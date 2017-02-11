@@ -27,7 +27,7 @@ import org.freeplane.features.mode.ModeController;
 public class PresentationController implements IExtension{
 	private static final float FOLDED_NODE_DOT_WIDTH = 3f * UITools.FONT_SCALE_FACTOR;
 	private static final Color NODE_HIGHLIGHTING_COLOR = Color.GREEN.brighter();
-	static final String PROCESS_UP_DOWN_KEYS_PROPERTY = "presentation.processesNavigationKeys";
+	static final String PROCESS_NAVIGATION_KEYS_PROPERTY = "presentation.processesNavigationKeys";
 	static final String PROCESS_ESCAPE_KEY_PROPERTY = "presentation.processesEscapeKey";
 	
 
@@ -74,10 +74,10 @@ public class PresentationController implements IExtension{
 
 		});
 		
-		KeyEventDispatcher upDownKeyEventDispatcher = new UpDownKeyEventDispatcher(presentationState);
+		KeyEventDispatcher navigationKeyEventDispatcher = new NavigationKeyEventDispatcher(presentationState);
 		KeyEventDispatcher escapeKeyEventDispatcher = new EscapeKeyEventDispatcher(presentationState);
 		final PresentationAutomation presentationKeyHandler = new PresentationAutomation(presentationState, 
-				PresentationKeyEventDispatcher.of(upDownKeyEventDispatcher, PROCESS_UP_DOWN_KEYS_PROPERTY),
+				PresentationKeyEventDispatcher.of(navigationKeyEventDispatcher, PROCESS_NAVIGATION_KEYS_PROPERTY),
 				PresentationKeyEventDispatcher.of(escapeKeyEventDispatcher, PROCESS_ESCAPE_KEY_PROPERTY));
 		presentationState.addPresentationStateListener(presentationKeyHandler);
 	}

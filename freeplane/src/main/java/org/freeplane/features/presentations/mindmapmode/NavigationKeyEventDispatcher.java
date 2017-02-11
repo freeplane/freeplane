@@ -3,9 +3,9 @@ package org.freeplane.features.presentations.mindmapmode;
 import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyEvent;
 
-class UpDownKeyEventDispatcher implements KeyEventDispatcher {
+class NavigationKeyEventDispatcher implements KeyEventDispatcher {
 	private final PresentationState state;
-	public UpDownKeyEventDispatcher(PresentationState state) {
+	public NavigationKeyEventDispatcher(PresentationState state) {
 		super();
 		this.state = state;
 	}
