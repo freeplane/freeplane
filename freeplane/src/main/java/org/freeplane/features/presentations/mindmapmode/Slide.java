@@ -324,6 +324,12 @@ public class Slide implements NamedElement<Slide>{
 			return;
 		if (!showsOnlySpecificNodes)
 			replaceCurrentSelection();
+		else {
+			MapModel map = getMap();
+			NodeModel node = map.getNodeForID(selectedNodeIds.iterator().next());
+			if (node != null)
+				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
+		}
 	}
 
 	private void centerSelectedNode() {
