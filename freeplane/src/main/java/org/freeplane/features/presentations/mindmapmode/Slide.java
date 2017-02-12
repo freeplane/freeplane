@@ -322,14 +322,8 @@ public class Slide implements NamedElement<Slide>{
 	private void applySelection() {
 		if (selectedNodeIds.isEmpty())
 			return;
-		MapModel map = getMap();
-		NodeModel node = map.getNodeForID(selectedNodeIds.iterator().next());
 		if (!showsOnlySpecificNodes)
 			replaceCurrentSelection();
-		else {
-			if (node != null)
-				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
-		}
 	}
 
 	private void centerSelectedNode() {
