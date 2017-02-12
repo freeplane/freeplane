@@ -140,7 +140,7 @@
 			</Entry>
 			<Entry name="icons">
 				<Entry name="IconSelectionPlugin" accelerator="control F2" />
-				<Entry name="icons">
+				<Entry name="menu_iconByCategory">
 					<Entry builder="icon_actions" />
 				</Entry>
 				<Entry name="progress">
