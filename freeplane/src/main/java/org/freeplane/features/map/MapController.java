@@ -345,21 +345,19 @@ public class MapController extends SelectionController implements IExtension{
 		}
 		if (node.getChildCount() == 0)
 			return;
-		final boolean unfold = ! folded;
-		final boolean childShown = unfoldHiddenChildren(node);
+		final boolean unfold = ! folded || node.isRoot();
+		final boolean hiddenChildShown = unfoldHiddenChildren(node);
 		boolean mapChanged = false;
-	    if (unfold && unfoldInvisibleChildren(node, true))
-	        mapChanged = true;
-	    if (!(node.isRoot() && folded)) {
-	    	if (node.isFolded() != folded) {
-	    		mapChanged = true;
-	    	}
-	    	setFoldingState(node, folded);
-	    }
+	    if (unfold && showChildren(node)) {
+			mapChanged = true;
+		} else if (node.isFolded() != folded && ! (node.isRoot() && folded)) {
+			mapChanged = true;
+			setFoldingState(node, folded);
+		}
 		if(mapChanged){
 			fireFoldingChanged(node);
 		}
-		if(childShown)
+		if(hiddenChildShown)
 	        fireNodeUnfold(node);
 	}
 
@@ -378,18 +376,18 @@ public class MapController extends SelectionController implements IExtension{
 			}
 			setFoldingState(node, false);
 		}
-		boolean childMadeVisible = false;
+		boolean childShown = false;
 		for(NodeModel child:childrenUnfolded(node)){
 			if (child.removeExtension(HideChildSubtree.instance) &&
-					(child.hasVisibleContent() || unfoldInvisibleChildren(child, true))){
-				childMadeVisible = true;
+					(child.hasVisibleContent() || showChildren(child))){
+				childShown = true;
 				break;
 			}
 		}
-		if(childMadeVisible){
+		if(childShown){
 			fireNodeUnfold(node);
 		}
-		return childMadeVisible;
+		return childShown;
 	}
 
 
@@ -432,22 +430,24 @@ public class MapController extends SelectionController implements IExtension{
     }
 
 
-	private boolean unfoldInvisibleChildren(final NodeModel node, final boolean reportUnfolded) {
-		boolean visibleFound = false;
-		boolean unfolded = false;
+	private boolean showChildren(final NodeModel node) {
+		boolean unfold = false;
+		boolean visibleChildrenShown = false;
 		for(int i = 0; i < node.getChildCount(); i++){
 			final NodeModel child = node.getChildAt(i);
-			if(child.hasVisibleContent())
-				visibleFound = true;
-			else if(unfoldInvisibleChildren(child, false) && child.isFolded()){
-				visibleFound = unfolded = true;
-				setFoldingState(node, false);
+			if(child.hasVisibleContent()){
+				unfold = true;
+			} else if (showChildren(child)) {
+				unfold = visibleChildrenShown = true;
 			}
 		}
-		if(reportUnfolded)
-			return unfolded;
-		else
-			return visibleFound;
+		
+		if(unfold && node.isFolded()) {				
+			setFoldingState(node, false);
+			visibleChildrenShown = true;
+		}
+
+		return visibleChildrenShown;
 	}
 
 	public void addMapChangeListener(final IMapChangeListener listener) {
