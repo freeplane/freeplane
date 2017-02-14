@@ -165,7 +165,7 @@ public class Slide implements NamedElement<Slide>{
 		}
 
 		public void foldNodes() {
-			if(foldedNodeIds != null) {
+			if(foldsNodes()) {
 				filter = new Filter(getEffectiveFilterCondition(), true, showsDescendants, false);
 				foldNodes(getMap().getRootNode());
 				filter = null;
@@ -173,7 +173,7 @@ public class Slide implements NamedElement<Slide>{
 		}
 
 		private void foldNodes(NodeModel node) {
-			if(foldsNodes() && filter.isVisible(node)) {
+			if(filter.isVisible(node)) {
 				if(foldedNodeIds.contains(node.getID())) {
 					mapViewManager.setFoldedOnCurrentView(node, true);
 					return;
