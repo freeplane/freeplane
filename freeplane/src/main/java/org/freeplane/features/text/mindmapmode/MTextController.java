@@ -845,7 +845,7 @@ public class MTextController extends TextController {
 				    }
 					final MapController mapController = Controller.getCurrentModeController().getMapController();
 					if (parentFolded) {
-						mapController.setFolded(prevSelectedModel, true);
+						mapController.fold(prevSelectedModel);
 					}
 				}
 				stop();

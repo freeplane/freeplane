@@ -121,6 +121,7 @@ public class PresentationController implements IExtension{
 			
 			@Override
 			public void afterMapChange(MapModel oldMap, MapModel newMap) {
+				presentationState.stopPresentation();
 				if(newMap != null && Controller.getCurrentModeController() == modeController)
 					presentationEditorController.setPresentations(getPresentations(newMap).presentations);
 				else

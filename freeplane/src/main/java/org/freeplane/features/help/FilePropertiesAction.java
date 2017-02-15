@@ -110,7 +110,7 @@ class FilePropertiesAction extends AFreeplaneAction {
         if(filter != null && filter.getCondition() != null){
             final ICondition matchesFilterCondition = new ICondition() {
                 public boolean checkNode(NodeModel node) {
-                    return filter.matches(node);
+                    return node.getFilterInfo().isMatched();
                 }
             };
             nodeTotalFiltered = getNodeCount(rootNode, matchesFilterCondition);

@@ -39,10 +39,12 @@ public class PresentationState {
 		presentations = event.collection;
 		Presentation presentation = presentations != null ? presentations.getCurrentElement() : null;
 		if(currentPresentation != presentation){
+			currentPresentation = presentation;
 			if(presentation == null)
 				stopPresentation();
-			currentPresentation = presentation;
 			firePresentationStateChangedEvent(SLIDE_CHANGED);
+			if(isPresentationRunning())
+				showPresentation();
 		}
 	}
 

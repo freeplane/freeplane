@@ -981,7 +981,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		else {
 			if (oldSelected.isFolded()) {
-				getModeController().getMapController().setFoldedAndScroll(oldModel, false);
+				getModeController().getMapController().unfold(oldModel);
 				return oldSelected;
 			}
 			newSelected = oldSelected.getPreferredVisibleChild(isOutlineLayoutSet(), true);
@@ -1054,7 +1054,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		else {
 			if (oldSelected.isFolded()) {
-				getModeController().getMapController().setFoldedAndScroll(oldModel, false);
+				getModeController().getMapController().unfoldAndScroll(oldModel);
 				if(oldSelected.getModel().hasVisibleContent())
 					return oldSelected;
 			}

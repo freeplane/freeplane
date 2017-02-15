@@ -110,7 +110,7 @@ public class NodeIdHighLighter implements SyntaxComponent, CaretListener {
 		final int countNodesOriginallyUnfolded = nodesOriginallyFolded.size();
 		if (countNodesOriginallyUnfolded > 0) {
 			for (int i = countNodesOriginallyUnfolded - 1; i >= 0; i--)
-				mapController.setFolded(nodesOriginallyFolded.get(i), true);
+				mapController.fold(nodesOriginallyFolded.get(i));
 			nodesOriginallyFolded.clear();
 		}
 	}

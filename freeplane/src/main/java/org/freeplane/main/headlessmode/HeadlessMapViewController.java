@@ -303,4 +303,9 @@ public class HeadlessMapViewController implements IMapViewManager {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
+	public void displayOnCurrentView(NodeModel node) {
+		throw new RuntimeException("Method not implemented");
+	}
+
 }
