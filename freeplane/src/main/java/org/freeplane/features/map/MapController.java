@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.Action;
@@ -339,20 +340,41 @@ public class MapController extends SelectionController implements IExtension{
 		}
 	}
 	
-	public void setFolded(final NodeModel node, final boolean folded) {
-		if (node == null) {
-			throw new IllegalArgumentException("setFolded was called with a null node.");
-		}
+	public void setFolded(final NodeModel node, final boolean fold) {
+		if(!fold || node.isRoot())
+			unfold(node);
+		else
+			fold(node);
+	}
+
+
+	public void unfold(final NodeModel node) {
 		if (node.getChildCount() == 0)
 			return;
-		final boolean unfold = ! folded || node.isRoot();
 		final boolean hiddenChildShown = unfoldHiddenChildren(node);
 		boolean mapChanged = false;
-	    if (unfold && showChildren(node)) {
+	    if (canUnfold(node)) {
+	    	unfoldUpToVisibleChild(node);
 			mapChanged = true;
-		} else if (node.isFolded() != folded && ! (node.isRoot() && folded)) {
+		} else if (! node.isFolded()) {
 			mapChanged = true;
-			setFoldingState(node, folded);
+			setFoldingState(node, false);
+		}
+		if(mapChanged){
+			fireFoldingChanged(node);
+		}
+		if(hiddenChildShown)
+	        fireNodeUnfold(node);
+	}
+	
+	public void fold(final NodeModel node) {
+		if (node.getChildCount() == 0|| node.isRoot())
+			return;
+		final boolean hiddenChildShown = unfoldHiddenChildren(node);
+		boolean mapChanged = false;
+	    if (!node.isFolded()) {
+			mapChanged = true;
+			setFoldingState(node, true);
 		}
 		if(mapChanged){
 			fireFoldingChanged(node);
@@ -378,10 +400,15 @@ public class MapController extends SelectionController implements IExtension{
 		}
 		boolean childShown = false;
 		for(NodeModel child:childrenUnfolded(node)){
-			if (child.removeExtension(HideChildSubtree.instance) &&
-					(child.hasVisibleContent() || showChildren(child))){
-				childShown = true;
-				break;
+			if (child.removeExtension(HideChildSubtree.instance)) {
+				if (child.hasVisibleContent()) {
+					childShown = true;
+					break;
+				} else if (canUnfold(child)) {
+					unfoldUpToVisibleChild(child);
+					childShown = true;
+					break;
+				}
 			}
 		}
 		if(childShown){
@@ -430,24 +457,29 @@ public class MapController extends SelectionController implements IExtension{
     }
 
 
-	private boolean showChildren(final NodeModel node) {
-		boolean unfold = false;
-		boolean visibleChildrenShown = false;
+	public boolean canUnfold(final NodeModel node) {
+		final boolean isFolded = node.isFolded();
 		for(int i = 0; i < node.getChildCount(); i++){
 			final NodeModel child = node.getChildAt(i);
 			if(child.hasVisibleContent()){
-				unfold = true;
-			} else if (showChildren(child)) {
-				unfold = visibleChildrenShown = true;
+				if (isFolded)
+					return true;
+			} else if (canUnfold(child)) {
+				return true;
 			}
 		}
-		
-		if(unfold && node.isFolded()) {				
-			setFoldingState(node, false);
-			visibleChildrenShown = true;
-		}
+		return false;
+	}
 
-		return visibleChildrenShown;
+	private void unfoldUpToVisibleChild(final NodeModel node) {
+		for(int i = 0; i < node.getChildCount(); i++){
+			final NodeModel child = node.getChildAt(i);
+			if (!child.hasVisibleContent() && canUnfold(child)) {
+				unfoldUpToVisibleChild(child);
+			}
+		}
+		setFoldingState(node, false);
+
 	}
 
 	public void addMapChangeListener(final IMapChangeListener listener) {
