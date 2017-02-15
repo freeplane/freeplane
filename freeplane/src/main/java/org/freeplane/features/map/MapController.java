@@ -36,7 +36,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.Action;
@@ -50,7 +49,6 @@ import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.DelayedRunner;
 import org.freeplane.features.filter.FilterController;
@@ -327,9 +325,9 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public void unfoldAndScroll(final NodeModel node) {
-		final boolean wasFoldedOnCurrentView = Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node);
-		final boolean currentViewUnfolded = wasFoldedOnCurrentView != false;
-		if (currentViewUnfolded && ResourceController.getResourceController().getBooleanProperty("scrollOnUnfold")) {
+		final boolean wasFoldedOnCurrentView = canBeUnfoldedOnCurrentView(node);
+		unfold(node);
+		if (wasFoldedOnCurrentView && ResourceController.getResourceController().getBooleanProperty("scrollOnUnfold")) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -480,7 +478,7 @@ public class MapController extends SelectionController implements IExtension{
 			if(child.hasVisibleContent()){
 				if (isFolded)
 					return true;
-			} else if (canBeUnfoldedOnCurrentView(child)) {
+			} else if (node.getFilterInfo().isAncestor() && canBeUnfoldedOnCurrentView(child)) {
 				return true;
 			}
 		}
