@@ -50,6 +50,7 @@ import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.IndexedTree.Node;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.DelayedRunner;
 import org.freeplane.features.filter.FilterController;
@@ -325,18 +326,17 @@ public class MapController extends SelectionController implements IExtension{
 		createActions(modeController);
 	}
 
-	public void setFoldedAndScroll(final NodeModel node, final boolean folded){
-		if(Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node) != folded){
-			setFolded(node, folded);
-			if(! folded && ResourceController.getResourceController().getBooleanProperty("scrollOnUnfold")){
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						Controller.getCurrentController().getSelection().scrollNodeTreeToVisible(node);
-					}
-				});
-				
-			}
+	public void unfoldAndScroll(final NodeModel node) {
+		final boolean wasFoldedOnCurrentView = Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node);
+		final boolean currentViewUnfolded = wasFoldedOnCurrentView != false;
+		if (currentViewUnfolded && ResourceController.getResourceController().getBooleanProperty("scrollOnUnfold")) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					Controller.getCurrentController().getSelection().scrollNodeTreeToVisible(node);
+				}
+			});
+			
 		}
 	}
 	
@@ -347,16 +347,31 @@ public class MapController extends SelectionController implements IExtension{
 			fold(node);
 	}
 
+	public void toggleFolded(final NodeModel node) {
+		if (canBeUnfoldedOnCurrentView(node)) {
+			unfold(node);
+		}
+		else{
+			fold(node);
+		}
+	}
+
+	public void toggleFoldedAndScroll(final NodeModel node){
+		if(canBeUnfoldedOnCurrentView(node))
+			unfoldAndScroll(node);
+		else
+			fold(node);
+	}
 
 	public void unfold(final NodeModel node) {
 		if (node.getChildCount() == 0)
 			return;
 		final boolean hiddenChildShown = unfoldHiddenChildren(node);
 		boolean mapChanged = false;
-	    if (canUnfold(node)) {
+	    if (canBeUnfoldedOnCurrentView(node)) {
 	    	unfoldUpToVisibleChild(node);
 			mapChanged = true;
-		} else if (! node.isFolded()) {
+		} else if (node.isFolded()) {
 			mapChanged = true;
 			setFoldingState(node, false);
 		}
@@ -404,7 +419,7 @@ public class MapController extends SelectionController implements IExtension{
 				if (child.hasVisibleContent()) {
 					childShown = true;
 					break;
-				} else if (canUnfold(child)) {
+				} else if (canBeUnfoldedOnCurrentView(child)) {
 					unfoldUpToVisibleChild(child);
 					childShown = true;
 					break;
@@ -457,14 +472,15 @@ public class MapController extends SelectionController implements IExtension{
     }
 
 
-	public boolean canUnfold(final NodeModel node) {
-		final boolean isFolded = node.isFolded();
+	public boolean canBeUnfoldedOnCurrentView(final NodeModel node) {
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		final boolean isFolded = mapViewManager.isFoldedOnCurrentView(node) ||  hasHiddenChildren(node);
 		for(int i = 0; i < node.getChildCount(); i++){
 			final NodeModel child = node.getChildAt(i);
 			if(child.hasVisibleContent()){
 				if (isFolded)
 					return true;
-			} else if (canUnfold(child)) {
+			} else if (canBeUnfoldedOnCurrentView(child)) {
 				return true;
 			}
 		}
@@ -474,7 +490,7 @@ public class MapController extends SelectionController implements IExtension{
 	private void unfoldUpToVisibleChild(final NodeModel node) {
 		for(int i = 0; i < node.getChildCount(); i++){
 			final NodeModel child = node.getChildAt(i);
-			if (!child.hasVisibleContent() && canUnfold(child)) {
+			if (!child.hasVisibleContent() && canBeUnfoldedOnCurrentView(child)) {
 				unfoldUpToVisibleChild(child);
 			}
 		}
@@ -568,7 +584,7 @@ public class MapController extends SelectionController implements IExtension{
 			if (nodesUnfoldedByDisplay != null && isFolded(nodeOnPath)) {
             	nodesUnfoldedByDisplay.add(nodeOnPath);
             }
-			setFolded(nodeOnPath, false);
+			unfold(nodeOnPath);
 		}
 	}
 
@@ -646,29 +662,6 @@ public class MapController extends SelectionController implements IExtension{
 	public void getFilteredXml(final MapModel map, final Writer fileout, final Mode mode, final boolean forceFormat)
 	        throws IOException {
 		getMapWriter().writeMapAsXml(map, fileout, mode, false, forceFormat);
-	}
-
-	private Boolean getCommonFoldingState(final Collection<NodeModel> list) {
-		Boolean state = null;
-		for(final NodeModel node : list){
-			if (node.getChildCount() == 0) {
-				continue;
-			}
-			if (state == null) {
-				state = canBeUnfolded(node);
-			}
-			else {
-				if (canBeUnfolded(node) != state) {
-					return null;
-				}
-			}
-		}
-		return state;
-	}
-
-
-	private boolean canBeUnfolded(final NodeModel node) {
-		return Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node) ||  hasHiddenChildren(node);
 	}
 
 	public MapReader getMapReader() {
@@ -1053,13 +1046,25 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public void toggleFolded(final Collection<NodeModel> collection) {
-		Boolean isFolded = getCommonFoldingState(collection);
-		final boolean shouldBeFolded = isFolded != null ?  ! isFolded : true;
+		Boolean shouldBeFolded = ! canBeUnfoldedOnCurrentView(collection);
 		final NodeModel nodes[] = collection.toArray(new NodeModel[]{});
 		for (final NodeModel node:nodes) {
 			setFolded(node, shouldBeFolded);
 		}
 	}
+
+	private boolean canBeUnfoldedOnCurrentView(Collection<NodeModel> collection) {
+		for(NodeModel node : collection){
+			if(node.isRoot())
+				return false;
+		}
+		for(NodeModel node : collection){
+			if(canBeUnfoldedOnCurrentView(node))
+				return true;
+		}
+		return false;
+	}
+
 
 	public ModeController getModeController() {
 		return modeController;

@@ -96,11 +96,10 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 
 				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
-					final boolean fold = !isFoldedOnCurrentView(node);
 					if (!nodeSelector.shouldSelectOnClick(e)) {
 						doubleClickTimer.start(new Runnable() {
 							public void run() {
-								mapController.setFolded(node, fold);
+								mapController.toggleFolded(node);
 							}
 						});
 					}
@@ -109,7 +108,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			else if(Compat.isShiftEvent(e)){
 				if (isInFoldingRegion(e)) {
 					if (! mapController.showNextChild(node))
-						mapController.setFolded(node, true);
+						mapController.fold(node);
 					e.consume();
 				}
 			}
@@ -118,9 +117,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if ((plainEvent && inFoldingRegion
 				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e))
 		        && !nodeSelector.shouldSelectOnClick(e)) {
-			final boolean fold = ! isFoldedOnCurrentView(node);
 			doubleClickTimer.cancel();
-			mapController.setFolded(node, fold);
+			mapController.toggleFolded(node);
 			e.consume();
 			return;
 		}

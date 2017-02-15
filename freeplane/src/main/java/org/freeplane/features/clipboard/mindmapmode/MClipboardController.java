@@ -720,7 +720,7 @@ public class MClipboardController extends ClipboardController {
 			final ModeController modeController = Controller.getCurrentModeController();
 			if (!asSibling && modeController.getMapController().isFolded(target)
 			        && ResourceController.getResourceController().getBooleanProperty(RESOURCE_UNFOLD_ON_PASTE)) {
-				modeController.getMapController().setFoldedAndScroll(target, false);
+				modeController.getMapController().unfoldAndScroll(target);
 			}
 			for (final NodeModel child : newNodes) {
 				AttributeController.getController().performRegistrySubtreeAttributes(child);

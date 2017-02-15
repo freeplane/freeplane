@@ -284,8 +284,8 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	}
 
 	private void setFolded(final NodeModel node, final boolean state) {
-		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		if (! node.isRoot()) {
+			final MapController mapController = Controller.getCurrentModeController().getMapController();
 			mapController.setFolded(node, state);
 		}
 	}
