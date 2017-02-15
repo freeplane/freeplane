@@ -43,6 +43,8 @@ public class PresentationState {
 			if(presentation == null)
 				stopPresentation();
 			firePresentationStateChangedEvent(SLIDE_CHANGED);
+			if(isPresentationRunning())
+				showPresentation();
 		}
 	}
 

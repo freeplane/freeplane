@@ -387,8 +387,8 @@ public class MapController extends SelectionController implements IExtension{
 		boolean mapChanged = false;
 	    if (!node.isFolded()) {
 			mapChanged = true;
-			setFoldingState(node, true);
 		}
+	    setFoldingState(node, true);
 		if(mapChanged){
 			fireFoldingChanged(node);
 		}
