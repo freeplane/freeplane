@@ -639,7 +639,31 @@ public class UITools {
 	}
 
 	private static float getScaleFactor() {
-			return ResourceController.getResourceController().getIntProperty("user_defined_screen_resolution", 96)  / 72f;
+			final ResourceController resourceController = ResourceController.getResourceController();
+			int windowX = resourceController.getIntProperty("appwindow_x", 0);
+			int windowY = resourceController.getIntProperty("appwindow_y", 0);
+			final GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(null, windowX, windowY);
+			final int userDefinedScreenResolution; 
+			if(graphicsConfiguration != null) {
+				final Rectangle screenBounds = graphicsConfiguration.getBounds();
+				final int w = screenBounds.width;
+				final int h = screenBounds.height;
+				final double diagonalPixels = Math.sqrt(w*w + h*h);
+				final double monitorSize = resourceController.getDoubleProperty("monitor_size_inches", 0);
+				if(monitorSize != 0){
+					userDefinedScreenResolution = (int) Math.round(diagonalPixels / monitorSize);
+					resourceController.setProperty("user_defined_screen_resolution", userDefinedScreenResolution);
+				}
+				else{
+					userDefinedScreenResolution = resourceController.getIntProperty("user_defined_screen_resolution", 96);
+					final double effectiveMonitorSize = Math.round(diagonalPixels / userDefinedScreenResolution * 10) / 10;
+					resourceController.setDefaultProperty("monitor_size_inches", Double.toString(effectiveMonitorSize));
+				}
+			}
+			else {
+				userDefinedScreenResolution = resourceController.getIntProperty("user_defined_screen_resolution", 96);
+			}
+			return userDefinedScreenResolution  / 72f;
     }
 	
 	public static Font scale(Font font) {
