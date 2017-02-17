@@ -650,7 +650,7 @@ public class UITools {
 				final int h = screenBounds.height;
 				final double diagonalPixels = Math.sqrt(w*w + h*h);
 				final double monitorSize = resourceController.getDoubleProperty("monitor_size_inches", 0);
-				if(monitorSize != 0){
+				if(monitorSize >= 1 && diagonalPixels >= 1){
 					userDefinedScreenResolution = (int) Math.round(diagonalPixels / monitorSize);
 					resourceController.setProperty("user_defined_screen_resolution", userDefinedScreenResolution);
 				}
