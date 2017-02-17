@@ -19,20 +19,39 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+
 /**
  * @author Dimitry Polivaev
  */
-public class RightNodeViewLayout extends NodeViewLayoutAdapter {
+public class RightNodeViewLayout implements INodeViewLayout{
 	static private final RightNodeViewLayout instance = new RightNodeViewLayout();
 
-	static RightNodeViewLayout getInstance() {
+	static INodeViewLayout getInstance() {
 		return RightNodeViewLayout.instance;
 	}
 
-	@Override
-	protected void layout() {
-		final LayoutData layoutData = new LayoutData(getChildCount());
-		calcLayout(false, layoutData);
-		placeChildren(layoutData);
+    public void layoutContainer(final Container c) {
+        NodeView view = (NodeView) c;
+ 		if(view.getContent() != null){
+        	final VerticalNodeViewLayoutStrategy layoutData = new VerticalNodeViewLayoutStrategy(view);
+        	layoutData.layoutRightSide();
+        }
+    }
+
+	public void addLayoutComponent(String name, Component comp) {
+	}
+
+	public void removeLayoutComponent(Component comp) {
+	}
+
+	public Dimension preferredLayoutSize(Container parent) {
+		return ImmediatelyValidatingPreferredSizeCalculator.INSTANCE.preferredLayoutSize(parent);
+	}
+
+	public Dimension minimumLayoutSize(Container parent) {
+		return INodeViewLayout.ZERO_DIMENSION;
 	}
 }

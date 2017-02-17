@@ -1,17 +1,24 @@
 package org.freeplane.view.swing.ui;
 
 import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 
+import javax.swing.Icon;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.DoubleClickTimer;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.AutoHide;
+import org.freeplane.core.ui.components.MultipleImage;
+import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.FoldingController;
 import org.freeplane.features.map.MapController;
@@ -71,12 +78,18 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final MapController mapController = mc.getMapController();
 		if(e.getButton() == 1){
 			if(plainEvent){
-				if (component.isInFollowLinkRegion(e.getX())) {
+				UIIcon uiIcon = component.getUIIconAt(e.getPoint());
+				if(uiIcon != null){
+					mc.getExtension(IconController.class).onIconClicked(component.getNodeView().getModel(), uiIcon);
+					return;
+				}
+				else if (component.isClickableLink(e.getX())) {
 					LinkController.getController(mc).loadURL(node, e);
 					e.consume();
 					return;
 				}
-
+				
+				
 				final String link = component.getLink(e.getPoint());
 				if (link != null) {
 					doubleClickTimer.start(new Runnable() {
@@ -163,7 +176,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		boolean followLink = link != null;
 		Controller currentController = Controller.getCurrentController();
         if(! followLink){
-        	followLink = node.isInFollowLinkRegion(e.getX());
+        	followLink = node.isClickableLink(e.getX());
         	if(followLink){
 				link = LinkController.getController(currentController.getModeController()).getLinkShortText(node.getNodeView().getModel());
         	}

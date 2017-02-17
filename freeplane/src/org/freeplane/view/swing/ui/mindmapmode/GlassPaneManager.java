@@ -43,7 +43,6 @@ public class GlassPaneManager implements AncestorListener {
     }
 
     public void ancestorRemoved(AncestorEvent event) {
-    	rootPane.getJMenuBar().setEnabled(true);
     	final Component glassPane = rootPane.getRootPane().getGlassPane();
     	glassPane.removeMouseListener(mouseListener);
     	glassPane.removeMouseMotionListener(mouseListener);
@@ -55,7 +54,6 @@ public class GlassPaneManager implements AncestorListener {
     }
 
     public void ancestorAdded(AncestorEvent event) {
-    	rootPane.getJMenuBar().setEnabled(false);
     	final Component glassPane = rootPane.getRootPane().getGlassPane();
     	glassPane.addMouseListener(mouseListener);
     	glassPane.addMouseMotionListener(mouseListener);

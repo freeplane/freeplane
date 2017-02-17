@@ -292,8 +292,7 @@ public class UrlManager implements IExtension {
 					uri = uri.toURL().openConnection().getURL().toURI().normalize();
 				}
 				catch (Exception e) {
-					LogUtils.warn("link " + uri + " not found", e);
-					UITools.errorMessage(TextUtils.format("link_not_found", uri.toString()));
+					// ignore all exceptions due to unknown protocols
 				}
 			}
 			try {

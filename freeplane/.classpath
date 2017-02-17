@@ -12,7 +12,7 @@
 	<classpathentry kind="src" path="viewer-resources"/>
 	<classpathentry kind="src" path="external-resources"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-lang-2.6.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/forms-1.2.1.jar" sourcepath="lib/forms-1_2_1.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/forms-1.6.0.jar" sourcepath="lib/forms-1_6_0.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/gnu-regexp-1.1.4.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/SimplyHTML.jar" sourcepath="/simplyHtml/src"/>
 	<classpathentry kind="lib" path="lib/freeplanemac.jar" sourcepath="/freeplane_mac/src"/>

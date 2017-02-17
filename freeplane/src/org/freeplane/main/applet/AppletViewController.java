@@ -238,4 +238,12 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 
 	public void beforeViewChange(Component oldView, Component newView) {
     }
+
+	public void previousMapView() {
+		throw new RuntimeException("Method not implemented");
+	}
+
+	public void nextMapView() {
+		throw new RuntimeException("Method not implemented");
+	}
 }

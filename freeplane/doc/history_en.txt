@@ -1,7 +1,24 @@
 ===============================
+1.3.14
+===============================
+Use oracle launcher for MacOS
+===============================
+1.3.13
+===============================
+Update knopflerfish due to problems with Java 1.8 on MacOS
+Use xslt transformation if map starts with XML directive
+===============================
 1.3.12
 ===============================
 Use universal java launcher script for MacOS
+Include Freeplane_LaTeX.mm in distribution
+Add LaTeX beamer export filter
+Fixes for docked windows and tabs
+Follow redirects for http and https mind map urls
+Fix handling for identity format pattern in attributes
+Fix inputting Japanese via IME on inline-edit (https://github.com/freeplane/freeplane/pull/31)
+Fix https://github.com/freeplane/freeplane/pull/37
+Fix add-on and script handling with Turkish locale
 ===============================
 1.3.11
 ===============================
@@ -17,6 +34,7 @@ Rectangular splash
 Ribbon UI
 Background images
 Clones
+Scripting API extensions
 
 1.3.9
 ===============================

@@ -26,6 +26,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
@@ -166,12 +167,12 @@ class NodeViewFactory {
 	private static Map<Color, Icon> coloredNoteIcons  = new HashMap<Color, Icon>();
 	private final Icon coloredIcon = createColoredIcon();
 	private static final IMouseListener DETAILS_MOUSE_LISTENER = new DetailsViewMouseListener();
-	private static final LinkNavigatorMouseListener LINK_MOUSE_LISTENER = new LinkNavigatorMouseListener();
+	private static final IMouseListener NOTE_MOUSE_LISTENER = new NoteViewMouseListener();
 
 	public ZoomableLabel createNoteViewer() {
 		final ZoomableLabel label = new ZoomableLabel();
-		label.addMouseListener(LINK_MOUSE_LISTENER);
-		label.addMouseMotionListener(LINK_MOUSE_LISTENER);
+		label.addMouseListener(NOTE_MOUSE_LISTENER);
+		label.addMouseMotionListener(NOTE_MOUSE_LISTENER);
 		label.setIcon(coloredIcon);
 		label.setVerticalTextPosition(JLabel.TOP);
 		return label;

@@ -149,4 +149,8 @@ public interface ViewController {
 
 	public void setScrollbarsVisible(boolean b);
 
+	public void previousMapView();
+
+	public void nextMapView();
+
 }

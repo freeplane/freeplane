@@ -58,7 +58,7 @@ public class SelectableLayout implements INodeViewLayout {
 		if (layoutType == MapViewLayout.OUTLINE) {
 			return OutlineLayout.getInstance();
 		}
-		final NodeViewLayoutAdapter layout;
+		final INodeViewLayout layout;
 		if (view.isRoot()) {
 			layout = VerticalRootNodeViewLayout.getInstance();
 		}

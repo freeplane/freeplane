@@ -66,6 +66,12 @@ public class IconController implements IExtension {
 
 // 	final private ModeController modeController;
 	final private Collection<IStateIconProvider> stateIconProviders;
+	
+	final private List<IconMouseListener> iconMouseListeners;
+	
+	public void addIconMouseListener(final IconMouseListener iconMouseListener) {
+		iconMouseListeners.add(iconMouseListener);
+	}
 
 	public boolean addStateIconProvider(IStateIconProvider o) {
 	    return stateIconProviders.add(o);
@@ -99,6 +105,7 @@ public class IconController implements IExtension {
 				return currentValue;
 			}
 		});
+		iconMouseListeners = new LinkedList<IconMouseListener>();
 	}
 
 	public IPropertyHandler<Collection<MindIcon>, NodeModel> addIconGetter(
@@ -130,6 +137,12 @@ public class IconController implements IExtension {
 			}
 		}
 		return icons;
+	}
+	public void onIconClicked(NodeModel node, UIIcon icon) {
+		for (IconMouseListener listener : iconMouseListeners)
+		{
+			listener.uiIconClicked(new IconClickedEvent(icon, node));
+		}
 	}
 
 }

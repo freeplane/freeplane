@@ -46,7 +46,7 @@ public class Launcher {
 	}
 
 	private void setDefines() {
-		setDefine("org.knopflerfish.framework.bundlestorage", "memory");
+		setDefine("org.knopflerfish.framework.readonly", "true");
 		setDefine("org.knopflerfish.gosg.jars", "reference:file:" + getAbsolutePath("core") + '/');
 		if(isDefineNotSet("org.freeplane.globalresourcedir"))
 			setDefine("org.freeplane.globalresourcedir", getAbsolutePath("resources"));

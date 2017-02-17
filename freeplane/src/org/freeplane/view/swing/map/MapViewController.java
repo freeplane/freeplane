@@ -866,7 +866,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		final MapModel model = getModel();
 		if (model != null) {
 			viewName = getMapViewComponent().getName();
-			frameTitle = viewName + (model.isSaved() ? "" : "*") + " - " + frameTitle
+			frameTitle = viewName + ((model.isSaved() || model.isReadOnly()) ? "" : "*") + " - " + frameTitle
 			        + (model.isReadOnly() ? " (" + TextUtils.getText("read_only") + ")" : "");
 			final File file = model.getFile();
 			if (file != null) {

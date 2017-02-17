@@ -760,7 +760,7 @@ public class StyleEditorPanel extends JPanel {
 		final String form = "right:max(20dlu;p), 2dlu, p, 1dlu,right:max(20dlu;p), 4dlu, 80dlu, 7dlu";
 		final FormLayout rightLayout = new FormLayout(form, "");
 		final DefaultFormBuilder rightBuilder = new DefaultFormBuilder(rightLayout);
-		rightBuilder.setBorder(Borders.DLU2_BORDER);
+		rightBuilder.border(Borders.DLU2);
 		rightBuilder.appendSeparator(TextUtils.getText("OptionPanel.separator.NodeStyle"));
 		if (addStyleBox) {
 			addAutomaticLayout(rightBuilder);

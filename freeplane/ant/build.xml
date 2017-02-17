@@ -102,6 +102,7 @@
 			<manifest>
 				<attribute name="Permissions" value="all-permissions"/>
 				<attribute name="Codebase" value="*"/>
+				<attribute name="Application-Library-Allowable-Codebase" value="*"/>
 				<attribute name="Application-Name" value="Freeplane Viewer Applet"/>
 			</manifest>
 			<fileset dir="${build}">
@@ -141,15 +142,19 @@
 	<target name="signjar" depends ="jar, signjar-tsa, signjar-no-tsa" if = "signjar.alias"/>
 
 	<target name="signjar-tsa" depends ="jar" if = "signjar.tsaurl">
-		<signjar jar="${freeplaneviewer.jar}"
-			alias="${signjar.alias}"
+		<signjar jar="${freeplaneviewer.jar}" 
+			keystore="${signjar.keystore}" 
+			storetype="${signjar.storetype}" 
+			alias="${signjar.alias}" 
 			storepass="${signjar.storepass}" keypass="${signjar.keypass}"
 			tsaurl="${signjar.tsaurl}"/>
 	</target>
 
 	<target name="signjar-no-tsa" depends ="jar"  if = "signjar.alias" unless="signjar.tsaurl">
-		<signjar jar="${freeplaneviewer.jar}"
-			alias="${signjar.alias}"
+		<signjar jar="${freeplaneviewer.jar}" 
+			keystore="${signjar.keystore}" 
+			storetype="${signjar.storetype}" 
+			alias="${signjar.alias}" 
 			storepass="${signjar.storepass}" keypass="${signjar.keypass}"/>
 	</target>
 
@@ -216,7 +221,7 @@
 			<arg value="-DartifactId=forms"/>
 			<arg value="-Dversion=1.0.5"/>
 			<arg value="-Dpackaging=jar"/>
-			<arg value="-Dfile=lib/forms-1.2.1.jar"/>
+			<arg value="-Dfile=lib/forms-1.6.0.jar"/>
 		</exec>
 	</target>
 

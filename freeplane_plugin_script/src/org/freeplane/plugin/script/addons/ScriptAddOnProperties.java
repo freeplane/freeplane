@@ -3,6 +3,7 @@ package org.freeplane.plugin.script.addons;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Vector;
 
@@ -89,7 +90,7 @@ public class ScriptAddOnProperties extends AddOnProperties {
 
 	public static ExecutionMode parseExecutionMode(final String executionModeString) {
 		try {
-			return ExecutionMode.valueOf(executionModeString.toUpperCase());
+			return ExecutionMode.valueOf(executionModeString.toUpperCase(Locale.ENGLISH));
 		}
 		catch (Exception e) {
 			throw new RuntimeException("invalid execution mode found in " + executionModeString, e);

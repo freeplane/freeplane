@@ -27,13 +27,18 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		super(delegate, scriptContext);
 	}
 
+    public boolean containsKey(String name) {
+        final int index = findFirst(name);
+        return (index != -1);
+    }
+
 	@Deprecated
 	public Object get(final String name) {
 		return getFirst(name);
 	}
 
 	public Object getFirst(final String name) {
-		final int index = findAttribute(name);
+		final int index = findFirst(name);
 		if (index == -1) {
 			return null;
 		}

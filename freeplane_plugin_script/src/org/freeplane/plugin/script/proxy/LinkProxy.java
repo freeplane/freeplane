@@ -144,4 +144,9 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
     public boolean asBoolean() {
         return getUri() != null;
     }
+
+    @Override
+    public boolean remove() {
+        return removeLinkIfNull(null);
+    }
 }

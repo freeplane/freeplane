@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
@@ -35,18 +35,18 @@ public class NodeRenameDialogPanel extends JPanel {
 	public NodeRenameDialogPanel(String oldName, boolean isMutableNode) {
 		setMinimumSize(new Dimension(240,120));
 		setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("36px"),
-				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+				FormSpecs.LABEL_COMPONENT_GAP_COLSPEC,
 				ColumnSpec.decode("86px:grow"),
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,},
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,},
 			new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,}));
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,}));
 		
 		JLabel lblName = new JLabel("name:");
 		add(lblName, "3, 2, right, default");

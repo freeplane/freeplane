@@ -41,7 +41,7 @@ import org.freeplane.plugin.workspace.model.project.AWorkspaceProject;
 import org.freeplane.plugin.workspace.model.project.ProjectLoader;
 import org.freeplane.plugin.workspace.nodes.ProjectRootNode;
 
-import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
@@ -66,33 +66,33 @@ public class ImportProjectDialogPanel extends JPanel {
 	public ImportProjectDialogPanel() {
 		setPreferredSize(new Dimension(400, 180));
 		setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(100dlu;min):grow"),
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,},
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,},
 			new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("fill:max(50dlu;pref)"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("fill:default"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,}));
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,}));
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new MatteBorder(0, 0, 1, 0, (Color) new Color(0, 0, 0)));
 		panel.setBackground(Color.WHITE);
 		add(panel, "1, 1, 8, 2, fill, fill");
 		panel.setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.RELATED_GAP_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
-				FormFactory.RELATED_GAP_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("fill:default:grow"),}));
 		
 		JLabel lblNewLabel = new JLabel(TextUtils.getText(ImportProjectDialogPanel.class.getSimpleName().toLowerCase(Locale.ENGLISH)+".help"));

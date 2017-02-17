@@ -58,11 +58,6 @@ public class MMapModel extends MapModel {
 		});
 	}
 
-	@Override
-    public boolean isSaved() {
-	    return super.isSaved() || containsExtension(DocuMapAttribute.class);
-    }
-
 	/**
 	 * When a map is closed, this method is called.
 	 *

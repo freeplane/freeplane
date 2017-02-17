@@ -113,10 +113,6 @@ public interface IMapViewManager {
 
 	public void newMapView(final MapModel map, ModeController modeController);
 
-	public void nextMapView();
-
-	public void previousMapView();
-
 	public void removeMapSelectionListener(final IMapSelectionListener pListener);
 
 	public void removeMapViewChangeListener(final IMapViewChangeListener pListener);

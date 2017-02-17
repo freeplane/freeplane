@@ -57,6 +57,10 @@ public interface Proxy {
 		 * @since 1.2 */
 		Object getFirst(final String name);
 
+		/** returns true if there is any attribute with key <a>name</a>.
+		 * @since 1.4 */
+		boolean containsKey(final String name);
+		
 		/** returns all values for the attribute name. */
 		List<Object> getAll(final String name);
 
@@ -136,7 +140,7 @@ public interface Proxy {
      * <pre>
      *   // == text
      *   node["attribute name"] = "a value"
-     *   assert node["attribute name"] == "a value"
+     *   assert node["attribute name"].text == "a value"
      *   assert node.attributes.getFirst("attribute name") == "a value" // the same
      *
      *   // == numbers and others
@@ -474,6 +478,10 @@ public interface Proxy {
 		void editInPopup(Node node);
 		
 		void select(Node toSelect);
+		
+		/** toSelect is a List<Node> of Node objects
+		 * @since 1.4 */
+		void select(Collection<Node> toSelect);
 
 		/** selects branchRoot and all children */
 		void selectBranch(Node branchRoot);
@@ -741,6 +749,11 @@ public interface Proxy {
 		/** @deprecated since 1.2 - use {@link #setText(String)} instead.
 		 * @return true if target could be converted to an URI and false otherwise. */
 		boolean set(String target);
+
+		/** removes the link. Same as <code>node.link.text = null</code>.
+		 * @return <tt>true</tt> if there was a link to remove.
+		 * @since 1.4 */
+		boolean remove();
 	}
 
 	/** The map a node belongs to: <code>node.map</code> - read-only. */

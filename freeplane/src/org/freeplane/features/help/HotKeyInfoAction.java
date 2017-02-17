@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -32,9 +33,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-
 import org.freeplane.core.ui.MenuBuilder;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.MenuUtils.MenuEntry;
@@ -138,6 +139,10 @@ public class HotKeyInfoAction extends AFreeplaneAction{
 		final Dimension preferredSize = refPane.getPreferredSize();
 		JScrollPane scrollPane = new JScrollPane(refPane, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setPreferredSize(new Dimension(preferredSize.width, 600));
-		JOptionPane.showMessageDialog((Component) e.getSource(), scrollPane, title, JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane pane = new JOptionPane(scrollPane, JOptionPane.INFORMATION_MESSAGE);
+		 JDialog dialog = pane.createDialog(UITools.getFrame(), title);
+		 // the line below is added to the example from the docs
+		 dialog.setModal(false); // this says not to block background components
+		 dialog.setVisible(true);
     }
 }

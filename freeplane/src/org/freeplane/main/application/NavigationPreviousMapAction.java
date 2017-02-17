@@ -36,6 +36,6 @@ class NavigationPreviousMapAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		Controller.getCurrentController().getMapViewManager().previousMapView();
+		Controller.getCurrentController().getViewController().previousMapView();
 	}
 }

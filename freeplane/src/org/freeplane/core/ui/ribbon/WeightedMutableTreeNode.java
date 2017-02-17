@@ -172,6 +172,14 @@ public class WeightedMutableTreeNode<T> implements Cloneable, TreeNode, Serializ
 	public void setUserObject(T o) {
 		this.userObject = o;
 	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "WeightedMutableTreeNode [userObject=" + userObject
+				+ ", weight=" + weight + "]";
+	}
 
 	/***********************************************************************************
 	 * REQUIRED METHODS FOR INTERFACES

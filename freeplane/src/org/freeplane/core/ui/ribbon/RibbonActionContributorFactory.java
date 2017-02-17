@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
@@ -45,7 +46,7 @@ import org.pushingpixels.flamingo.api.ribbon.RibbonElementPriority;
 
 public class RibbonActionContributorFactory implements IRibbonContributorFactory {
 
-	public static final String ACTION_KEY_PROPERTY = "ACTION_KEY";
+	public static final String ACTION = "ACTION_KEY";
 	public static final String ACTION_ACCELERATOR = "ACTION_ACCELERATOR";
 	public static final String ACTION_NAME_PROPERTY = "ACTION_NAME";
 	public static final String ACTION_CHANGE_LISTENER = "ACTION_CHANGE_LISTENER";
@@ -59,7 +60,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 	}
 	
 	private final RibbonBuilder builder;
-	private ActionAcceleratorChangeListener changeListener;
+	private AcceleratorChangeListenerForCommandButtons changeListener;
 
 	
 	/***********************************************************************************
@@ -182,16 +183,16 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 				if(sb.length() > 0) {
 					sb.append(" + ");
 				}
-				sb.append(s.substring(0, 1).toUpperCase());
+				sb.append(s.substring(0, 1).toUpperCase(Locale.ENGLISH));
 				sb.append(s.substring(1));
 			}
 		}
 		return sb.toString();
 	}
 
-	protected ActionAcceleratorChangeListener getAccelChangeListener() {
+	protected AcceleratorChangeListenerForCommandButtons getAccelChangeListener() {
 		if(changeListener == null) {
-			changeListener = new ActionAcceleratorChangeListener();
+			changeListener = new AcceleratorChangeListenerForCommandButtons();
 		}
 		return changeListener;
 	}
@@ -270,14 +271,14 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 								updateActionState(action, button);
 							}
 						}
-						button.putClientProperty(ACTION_KEY_PROPERTY, action);
+						button.putClientProperty(ACTION, action);
 						
 						KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(actionKey);
 						if(ks != null) {
 							button.putClientProperty(ACTION_ACCELERATOR, ks);
 							updateRichTooltip(button, action, ks);
 						}
-						getAccelChangeListener().addAction(actionKey, button);
+						getAccelChangeListener().addCommandButton(actionKey, button);
 						
 						builder.getMapChangeAdapter().addListener(new ActionChangeListener(action, button));	
 						parent.addChild(button, childProps);
@@ -304,6 +305,22 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 			private PopupPanelCallback getPopupPanelCallBack(StructurePath path, final RibbonBuildContext context) {
 				childButtons.clear();
 				context.processChildren(path, this);
+				for (Component child : childButtons){
+					if(child instanceof AbstractCommandButton) {
+						AFreeplaneAction action = (AFreeplaneAction) ((AbstractCommandButton) child).getClientProperty(ACTION);
+						if(action != null) {
+							try {
+								builder.getMapChangeAdapter().removeListener((IChangeObserver) (action).getValue(ACTION_CHANGE_LISTENER));
+								getAccelChangeListener().removeCommandButton(((AFreeplaneAction) action).getKey());
+							}
+							catch(Exception e) {
+								LogUtils.info("RibbonActionContributorFactory.getContributor(...).new ARibbonContributor() {...}.addChild(): "+e.getMessage());
+							}
+						}
+					}
+				}
+
+				
 				return new PopupPanelCallback() {
 					
 					public JPopupPanel getPopupPanel(JCommandButton commandButton) {
@@ -313,56 +330,61 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 								popupmenu.addMenuSeparator();
 							}
 							else if(comp instanceof AbstractCommandButton) {
-								AbstractCommandButton button = (AbstractCommandButton) comp;
-								
-								AbstractCommandButton menuButton = null;								
-								AFreeplaneAction action = (AFreeplaneAction)button.getClientProperty(ACTION_KEY_PROPERTY);
-								if(action != null) {
-									if(isSelectionListener(action)) {
-										menuButton = createCommandToggleMenuButton(action);
-										popupmenu.addMenuButton((JCommandToggleMenuButton) menuButton);
-									}
-									else {
-										menuButton = createCommandMenuButton(action);
-										popupmenu.addMenuButton((JCommandMenuButton) menuButton);
-									}
-									menuButton.setEnabled(button.isEnabled());
-									menuButton.putClientProperty(ACTION_KEY_PROPERTY, action);
-									KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(action.getKey());
-									updateRichTooltip(menuButton, action, ks);
-									updateActionState(action, menuButton);
-								}
-								else {
-									action = (AFreeplaneAction)button.getClientProperty(ACTION_NAME_PROPERTY);
-									menuButton = createCommandMenuButton(action);
-									if(action != null) {
-										menuButton.putClientProperty(ACTION_NAME_PROPERTY, action);
-										updateRichTooltip(menuButton, action, null);
-									}
-								}
-								
-								if(button instanceof JCommandButton) {
-									if(((JCommandButton) button).getPopupCallback() != null) {
-										((JCommandMenuButton)menuButton).setPopupCallback(((JCommandButton) button).getPopupCallback());
-										((JCommandMenuButton)menuButton).setCommandButtonKind(((JCommandButton) button).getCommandButtonKind());										
-									}
-								}
-								//clear all RibbonActionListeners from the menuButton
-								for (ActionListener listener : menuButton.getListeners(ActionListener.class)) {
-									if(listener instanceof RibbonActionListener) {
-										menuButton.removeActionListener(listener);
-									}
-								}
-								//add 
-								for (ActionListener listener : button.getListeners(ActionListener.class)) {
-									if(listener instanceof RibbonActionListener) {
-										menuButton.addActionListener(listener);
-									}
-								}
+								replaceCommandButtonByCommandMenuButton(context, popupmenu, (AbstractCommandButton)comp);
 								
 							}
 						}
 						return popupmenu;
+					}
+
+					private void replaceCommandButtonByCommandMenuButton(
+							final RibbonBuildContext context,
+							JCommandPopupMenu popupmenu, AbstractCommandButton button) {
+						
+						AbstractCommandButton menuButton = null;								
+						AFreeplaneAction action = (AFreeplaneAction)button.getClientProperty(ACTION);
+						if(action != null) {
+							if(isSelectionListener(action)) {
+								menuButton = createCommandToggleMenuButton(action);
+								popupmenu.addMenuButton((JCommandToggleMenuButton) menuButton);
+							}
+							else {
+								menuButton = createCommandMenuButton(action);
+								popupmenu.addMenuButton((JCommandMenuButton) menuButton);
+							}
+							menuButton.setEnabled(button.isEnabled());
+							menuButton.putClientProperty(ACTION, action);
+							KeyStroke ks = context.getBuilder().getAcceleratorManager().getAccelerator(action.getKey());
+							updateRichTooltip(menuButton, action, ks);
+							updateActionState(action, menuButton);
+						}
+						else {
+							action = (AFreeplaneAction)button.getClientProperty(ACTION_NAME_PROPERTY);
+							menuButton = createCommandMenuButton(action);
+							if(action != null) {
+								menuButton.putClientProperty(ACTION_NAME_PROPERTY, action);
+								updateRichTooltip(menuButton, action, null);
+							}
+						}
+						
+						if(button instanceof JCommandButton) {
+							if(((JCommandButton) button).getPopupCallback() != null) {
+								((JCommandMenuButton)menuButton).setPopupCallback(((JCommandButton) button).getPopupCallback());
+								((JCommandMenuButton)menuButton).setCommandButtonKind(((JCommandButton) button).getCommandButtonKind());										
+							}
+						}
+						//clear all RibbonActionListeners from the menuButton
+						for (ActionListener listener : menuButton.getListeners(ActionListener.class)) {
+							if(listener instanceof RibbonActionListener) {
+								menuButton.removeActionListener(listener);
+							}
+						}
+						//add 
+						for (ActionListener listener : button.getListeners(ActionListener.class)) {
+							if(listener instanceof RibbonActionListener) {
+								menuButton.addActionListener(listener);
+							}
+						}
 					}
 				};
 			}
@@ -370,16 +392,6 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 			public void addChild(Object child, ChildProperties properties) {
 				if(child instanceof AbstractCommandButton) {
 					childButtons.add((AbstractCommandButton) child);
-					Object obj = ((AbstractCommandButton) child).getClientProperty(ACTION_KEY_PROPERTY);
-					if(obj != null) {
-						try {
-							builder.getMapChangeAdapter().removeListener((IChangeObserver) ((AFreeplaneAction) obj).getValue(ACTION_CHANGE_LISTENER));
-							getAccelChangeListener().removeAction(((AFreeplaneAction) obj).getKey());
-						}
-						catch(Exception e) {
-							LogUtils.info("RibbonActionContributorFactory.getContributor(...).new ARibbonContributor() {...}.addChild(): "+e.getMessage());
-						}
-					}
 				}
 				if(child instanceof RibbonSeparator) {
 					childButtons.add(new JSeparator(JSeparator.HORIZONTAL));
@@ -433,8 +445,8 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 		
 	}
 	
-	public static class ActionAcceleratorChangeListener implements IAcceleratorChangeListener {
-		private final Map<String, AbstractCommandButton> actionMap = new HashMap<String, AbstractCommandButton>();
+	public static class AcceleratorChangeListenerForCommandButtons implements IAcceleratorChangeListener {
+		private final Map<String, AbstractCommandButton> commandButtonsForActionKeys = new HashMap<String, AbstractCommandButton>();
 		
 		/***********************************************************************************
 		 * CONSTRUCTORS
@@ -444,16 +456,16 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 		 * METHODS
 		 **********************************************************************************/
 		
-		public void addAction(String actionKey, AbstractCommandButton button) {
-			actionMap.put(actionKey, button);
+		public void addCommandButton(String actionKey, AbstractCommandButton button) {
+			commandButtonsForActionKeys.put(actionKey, button);
 		}
 		
-		public void removeAction(String actionKey) {
-			actionMap.remove(actionKey);
+		public void removeCommandButton(String actionKey) {
+			commandButtonsForActionKeys.remove(actionKey);
 		}
 		
 		public void clear() {
-			actionMap.clear();
+			commandButtonsForActionKeys.clear();
 		}
 		/***********************************************************************************
 		 * REQUIRED METHODS FOR INTERFACES
@@ -464,7 +476,7 @@ public class RibbonActionContributorFactory implements IRibbonContributorFactory
 		}
 		
 		public void acceleratorChanged(AFreeplaneAction action, KeyStroke oldStroke, KeyStroke newStroke) {
-			AbstractCommandButton button = actionMap.get(action.getKey()); 
+			AbstractCommandButton button = commandButtonsForActionKeys.get(action.getKey()); 
 			if(button != null) {
 				updateRichTooltip(button, action, newStroke);
 			}

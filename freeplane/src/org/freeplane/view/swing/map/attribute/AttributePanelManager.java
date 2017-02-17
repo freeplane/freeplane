@@ -44,6 +44,7 @@ import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.FormattedFormula;
+import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.INodeChangeListener;
@@ -134,6 +135,8 @@ public class AttributePanelManager{
                     final AttributeTable table = attributeView.getAttributeTable();
                     if (table.getSelectedColumn() == 1 && table.getSelectedRow() != -1) {
                         final Object value = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
+                        LogUtils.info("value geändert: " + value + " of class "
+                                + (value == null ? null : value.getClass()) + ", format='" + newFormat + "'");
                         try {
                             final Object newValue = formatValue(newFormat, table, value);
                             if (newValue != null)
@@ -164,9 +167,15 @@ public class AttributePanelManager{
 	                    if(actualObject != objectToBeFormatted)
 	                    	return formatValue(newFormat, table, actualObject);
                     }
-                    if (objectToBeFormatted instanceof String && ((String)objectToBeFormatted).startsWith("="))
+                    if (newFormat == PatternFormat.getIdentityPatternFormat())
+                        return makeFormattedObjectForIdentityFormat(objectToBeFormatted);
+                    if (objectToBeFormatted instanceof String && ((String) objectToBeFormatted).startsWith("="))
                         return new FormattedFormula((String) objectToBeFormatted, newFormat.getPattern());
                     return newFormat.formatObject(objectToBeFormatted);
+                }
+
+                private FormattedObject makeFormattedObjectForIdentityFormat(final Object objectToBeFormatted) {
+                    return new FormattedObject(String.valueOf(objectToBeFormatted), PatternFormat.IDENTITY_PATTERN);
                 }
             });
 
@@ -194,7 +203,7 @@ public class AttributePanelManager{
     	        final Object value = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
     	        if (value instanceof IFormattedObject) {
     	            final String format = ((IFormattedObject) value).getPattern();
-    	            formatChooser.setSelectedItem(format);
+    	            formatChooser.setSelectedItem(PatternFormat.guessPatternFormat(format));
     	        }
     	        else {
     	            formatChooser.setSelectedItem(null);

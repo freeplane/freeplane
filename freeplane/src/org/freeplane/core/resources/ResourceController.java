@@ -27,6 +27,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -107,7 +108,7 @@ public abstract class ResourceController {
 	@SuppressWarnings("unchecked")
 	public <T extends Enum<T>> T getEnumProperty(String propertyName, Enum<T>  defaultValue) {
 		try{
-			final String cacheProptertyValue = getProperty(propertyName).toUpperCase();
+			final String cacheProptertyValue = getProperty(propertyName).toUpperCase(Locale.ENGLISH);
 			defaultValue = Enum.valueOf(defaultValue.getClass(), cacheProptertyValue);
 		}
 		catch (Exception e) {

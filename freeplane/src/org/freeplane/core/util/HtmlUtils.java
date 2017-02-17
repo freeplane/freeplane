@@ -434,10 +434,11 @@ public class HtmlUtils {
 		private String stringWithoutTags;
 
 		public String getReplaceResult(final Pattern pattern, final String replacement, final String text) {
-			initialize(text);
+			final String unescapedText = unescapeHTMLUnicodeEntity(text);
+			initialize(unescapedText);
 			final Matcher matcher = pattern.matcher(stringWithoutTags);
 			if (! matcher.find()) {
-				return text;
+				return unescapedText;
 			}
 			final StringBuilder sbResult = new StringBuilder();
 			int pureTextPosition = 0;
@@ -450,10 +451,10 @@ public class HtmlUtils {
 				if(pair == null){
 					for(pair = indexPairs.next();pair.pureTextEnd <= mStart;pair = indexPairs.next()){
 						if(pair.mIsTag || pureTextPosition <= pair.pureTextStart){
-							sbResult.append(text, pair.originalStart, pair.originalEnd);
+							sbResult.append(unescapedText, pair.originalStart, pair.originalEnd);
 						}
 						else if(pureTextPosition <= pair.pureTextEnd){
-							sbResult.append(text, pair.originalStart + pureTextPosition - pair.pureTextStart, pair.originalEnd);
+							sbResult.append(unescapedText, pair.originalStart + pureTextPosition - pair.pureTextStart, pair.originalEnd);
 						}
 					}
 					if(pureTextPosition < pair.pureTextStart){
@@ -461,7 +462,7 @@ public class HtmlUtils {
 					}
 				}
 
-				sbResult.append(text, 
+				sbResult.append(unescapedText, 
 					pair.originalStart + pureTextPosition - pair.pureTextStart, 
 					pair.originalStart + mStart - pair.pureTextStart);
 				appendReplacement(sbResult, matcher, replacement);
@@ -470,7 +471,7 @@ public class HtmlUtils {
 				if(matcher.find()){
 					if(matcher.start() >= pair.pureTextEnd){
 						if(mEnd < pair.pureTextEnd){
-							sbResult.append(text, pair.originalStart + pureTextPosition - pair.pureTextStart, pair.originalEnd);
+							sbResult.append(unescapedText, pair.originalStart + pureTextPosition - pair.pureTextStart, pair.originalEnd);
 							pureTextPosition = pair.pureTextEnd;
 						}
 						pair = null;
@@ -479,11 +480,11 @@ public class HtmlUtils {
 				}
 				for(;;){
 					if(pureTextPosition <= pair.pureTextEnd){
-						sbResult.append(text, pair.originalStart + pureTextPosition - pair.pureTextStart, text.length());
+						sbResult.append(unescapedText, pair.originalStart + pureTextPosition - pair.pureTextStart, unescapedText.length());
 						return sbResult.toString();
 					}
 					if(pair.mIsTag){
-						sbResult.append(text, pair.originalStart, pair.originalEnd);
+						sbResult.append(unescapedText, pair.originalStart, pair.originalEnd);
 					}
 					pair = indexPairs.next();
 				}

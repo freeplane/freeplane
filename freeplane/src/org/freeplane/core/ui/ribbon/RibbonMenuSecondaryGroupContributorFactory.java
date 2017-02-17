@@ -73,7 +73,7 @@ public class RibbonMenuSecondaryGroupContributorFactory implements IRibbonContri
 				}
 				KeyStroke ks = (KeyStroke) button.getClientProperty(RibbonActionContributorFactory.ACTION_ACCELERATOR);	
 				if(ks != null) {
-					AFreeplaneAction action = (AFreeplaneAction) button.getClientProperty(RibbonActionContributorFactory.ACTION_KEY_PROPERTY);
+					AFreeplaneAction action = (AFreeplaneAction) button.getClientProperty(RibbonActionContributorFactory.ACTION);
 					if(action != null) {
 						RichTooltip tip = RibbonActionContributorFactory.getRichTooltip(action, ks);
 						if(tip != null) {

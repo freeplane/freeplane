@@ -500,4 +500,13 @@ class ApplicationViewController extends FrameController {
 
     }
 
+	public void previousMapView() {
+		mapViewWindows.selectPreviousMapView();
+		
+	}
+
+	public void nextMapView() {
+		mapViewWindows.selectNextMapView();
+	}
+
 }

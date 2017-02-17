@@ -12,6 +12,7 @@ import org.openstreetmap.gui.jmapviewer.DefaultMapController;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.OsmMercator;
+import org.openstreetmap.gui.jmapviewer.interfaces.MapMarker;
 
 /**
  * @author Blair Archibald
@@ -19,14 +20,14 @@ import org.openstreetmap.gui.jmapviewer.OsmMercator;
 public class OpenMapsController extends DefaultMapController implements MouseListener {
 
 	private Set<LocationChoosenListener> Listeners;
-	private int locationCount;
+	private MapMarker currentLocation;
 	
 	public OpenMapsController(JMapViewer map) {
 		super(map);
 		configureButtons();
 		
 		Listeners = new HashSet<LocationChoosenListener>();
-		locationCount = 0;
+		currentLocation = null;
 	}
 
 	private void configureButtons() {
@@ -38,10 +39,7 @@ public class OpenMapsController extends DefaultMapController implements MouseLis
 	public void mouseClicked(MouseEvent e) {
 		 if (e.getClickCount() == 2 && e.getButton() == MouseEvent.BUTTON1) {
 			final Coordinate locationChoosen = getSelectedLocation(e.getPoint());
-			if (locationCount < 1) {
-				addMarkerToLocation(locationChoosen);
-				locationCount++;
-			}
+			setMarkerAtLocation(locationChoosen);
 			sendLocation(locationChoosen, getCurrentZoomLevel());	
 		}
 	}
@@ -68,15 +66,14 @@ public class OpenMapsController extends DefaultMapController implements MouseLis
 		return map.getZoom();
 	}
 
-	private void addMarkerToLocation(final Coordinate locationChoosen) {
-		map.addMapMarker(new MapMarkerDot(locationChoosen.getLat(), locationChoosen.getLon()));
+	private void setMarkerAtLocation(final Coordinate locationChoosen) {
+		if (currentLocation != null)
+			map.removeMapMarker(currentLocation);
+		map.addMapMarker(currentLocation = new MapMarkerDot(locationChoosen.getLat(), locationChoosen.getLon()));
 	}
 	
 	public void zoomToLocation(Coordinate location, int zoom) {
-		if(locationCount == 0) {
-			addMarkerToLocation(location);
-			locationCount++;
-		}
+		setMarkerAtLocation(location);
 		
 		// this method is not available in JMapViewer >= 1.03!
 //		map.setDisplayPositionByLatLon(new Point(map.getWidth() / 2, map.getHeight() / 2), location.getLat(), location.getLon(), zoom);

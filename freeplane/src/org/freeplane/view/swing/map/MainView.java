@@ -54,6 +54,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.IconMouseListener;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.link.LinkController;
@@ -178,13 +179,24 @@ public abstract class MainView extends ZoomableLabel {
 		return getNodeView().getZoomedFoldingSymbolHalfWidth();
 	}
 
-	public boolean isInFollowLinkRegion(final double xCoord) {
+	public boolean isClickableLink(final double xCoord) {
 		final NodeView nodeView = getNodeView();
 		final NodeModel model = nodeView.getModel();
 		if (NodeLinks.getValidLink(model) == null)
 			return false;
-		Rectangle iconR = ((ZoomableLabelUI)getUI()).getIconR(this);
+		return isInIconRegion(xCoord);
+	}
+	
+	public boolean isInIconRegion(final double xCoord)
+	{
+		Rectangle iconR = getIconRectangle();
 		return xCoord >= iconR.x && xCoord < iconR.x + iconR.width;
+	}
+
+	private Rectangle getIconRectangle() {
+		ZoomableLabelUI zoomableLabelUI = (ZoomableLabelUI)getUI();
+		Rectangle iconR = zoomableLabelUI.getIconR(this);
+		return iconR;
 	}
 
 	/**
@@ -420,12 +432,12 @@ public abstract class MainView extends ZoomableLabel {
 		/* fc, 06.10.2003: images? */
 		final NodeModel model = node.getModel();
 		for (final UIIcon icon : IconController.getController().getStateIcons(model)) {
-			iconImages.addImage(icon.getIcon());
+			iconImages.addIcon(icon);
 		}
 		final ModeController modeController = getNodeView().getMap().getModeController();
 		final Collection<MindIcon> icons = IconController.getController(modeController).getIcons(model);
 		for (final MindIcon myIcon : icons) {
-			iconImages.addImage(myIcon.getIcon());
+			iconImages.addIcon(myIcon);
 		}
 		addOwnIcons(iconImages, model);
 		setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
@@ -435,7 +447,7 @@ public abstract class MainView extends ZoomableLabel {
 		final URI link = NodeLinks.getLink(model);
 			final Icon icon = LinkController.getLinkIcon(link, model);
 			if(icon != null)
-				iconImages.addImage(icon);
+				iconImages.addLinkIcon(icon);
 	}
 
 	void updateTextColor(final NodeView node) {
@@ -663,7 +675,7 @@ public abstract class MainView extends ZoomableLabel {
 			return MouseArea.MOTION;
 		if(isInFoldingRegion(point))
 			return MouseArea.FOLDING;
-		if(isInFollowLinkRegion(x))
+		if(isClickableLink(x))
 			return MouseArea.LINK;
 		return MouseArea.DEFAULT;
 	}
@@ -737,4 +749,17 @@ public abstract class MainView extends ZoomableLabel {
 		return getNodeView().getZoomed(DRAG_OVAL_WIDTH);
 	}
 
+	public UIIcon getUIIconAt(Point coordinate){
+		Icon icon = getIcon();
+		if(icon instanceof MultipleImage){
+			Rectangle iconRectangle = getIconRectangle();
+			Point transformedToIconCoordinate = new Point(coordinate);
+			transformedToIconCoordinate.translate(-iconRectangle.x, -iconRectangle.y);
+			return ((MultipleImage)icon).getUIIconAt(transformedToIconCoordinate);
+			
+		}
+		else
+			return null;
+	}
+	
 }

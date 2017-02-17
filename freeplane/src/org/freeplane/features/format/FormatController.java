@@ -325,7 +325,7 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
             if (obj == null)
                 return obj;
 			Object toFormat = extractObject(obj);
-			if (format == null)
+			if (format == null || format == PatternFormat.getIdentityPatternFormat())
 				return toFormat;
 			if (toFormat instanceof String) {
 			    final String string = (String) toFormat;
