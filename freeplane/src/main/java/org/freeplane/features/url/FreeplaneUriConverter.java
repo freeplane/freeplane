@@ -48,7 +48,7 @@ public class FreeplaneUriConverter{
 	    	return new URL(UrlManager.FILE_SCHEME, uri.getHost(), uri.getPath().substring(2));
 	    }
 	    else
-	    	return new URL(scheme, uri.getHost(), uri.getPath());
+	    	return new URL(scheme, uri.getHost(), uri.getPort(), uri.getPath());
     }
 
 	public String fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(String uriCandidate) {
