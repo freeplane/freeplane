@@ -261,8 +261,8 @@ public class AddOnProperties {
 
     private URL homepagePlusLatestVersionFile() {
         try {
-            final File file = new File(homepage.getPath(), AddOnsController.LATEST_VERSION_FILE);
-            return new URL(homepage.getProtocol(), homepage.getHost(), homepage.getPort(), file.getPath());
+       	    final String file = homepage.getPath() + "/" + AddOnsController.LATEST_VERSION_FILE;
+            return new URL(homepage.getProtocol(), homepage.getHost(), homepage.getPort(), file);
         }
         catch (MalformedURLException e) {
             return null;
