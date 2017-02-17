@@ -96,7 +96,7 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 		    OptionPanel.PREFERENCE_STORAGE_PROPERTY);
 		final OptionPanelWindowConfigurationStorage storage = OptionPanelWindowConfigurationStorage.decorateDialog(
 		    marshalled, dialog);
-		final String actionCommand = e.getActionCommand();
+		final String actionCommand = e != null ?  e.getActionCommand() : null;
 		if(actionCommand != null && actionCommand.startsWith(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX))
 			options.setSelectedPanel(actionCommand);
 		else if (storage != null) {
