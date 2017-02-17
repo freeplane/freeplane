@@ -134,7 +134,7 @@ private Timer timer;
 					if(mainView.isDisplayable()){
 						NodeView nodeView = mainView.getNodeView();
 						final NodeModel node = nodeView.getModel();
-						Controller.getCurrentModeController().getMapController().setFolded(node, !nodeView.isFolded());
+						Controller.getCurrentModeController().getMapController().unfold(node);
 					}
 				}
 			});

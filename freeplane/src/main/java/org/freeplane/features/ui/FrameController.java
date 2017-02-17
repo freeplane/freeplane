@@ -60,6 +60,7 @@ import javax.swing.JPanel;
 import javax.swing.LookAndFeel;
 import javax.swing.RootPaneContainer;
 import javax.swing.Timer;
+import javax.swing.ToolTipManager;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -432,6 +433,7 @@ abstract public class FrameController implements ViewController {
 		if (fullScreen == isFullScreenEnabled()) {
 			return;
 		}
+		ToolTipManager.sharedInstance().setEnabled(false);
 		final Controller controller = getController();
 		ResourceController.getResourceController().firePropertyChanged(FULLSCREEN_ENABLED_PROPERTY, Boolean.toString(!fullScreen),Boolean.toString(fullScreen));
 		Iterable<Window> visibleFrames = collectVisibleFrames(frame);
@@ -472,6 +474,7 @@ abstract public class FrameController implements ViewController {
 			}
 			showWindows(visibleFrames);
 		}
+		ToolTipManager.sharedInstance().setEnabled(true);
 		if(focusOwner != null)
 		    focusOwner.requestFocus();
 	}

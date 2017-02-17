@@ -75,7 +75,7 @@ public class Filter {
 
 	final private boolean appliesToVisibleNodesOnly;
 	final private ICondition condition;
-	final private int options;
+	final int options;
 
 	final private FilterInfoAccessor accessor;
 
@@ -240,11 +240,8 @@ public class Filter {
 		if (condition == null) {
 			return true;
 		}
-		final int filterResult = getFilterInfo(node).get();
-		return ((options & FilterInfo.FILTER_SHOW_ANCESTOR) != 0 || (options & FilterInfo.FILTER_SHOW_ECLIPSED) >= (filterResult & FilterInfo.FILTER_SHOW_ECLIPSED))
-		        && ((options & filterResult & ~FilterInfo.FILTER_SHOW_ECLIPSED) != 0);
+		return getFilterInfo(node).isVisible(this.options);
 	}
-
 	private void refreshMap(Object source, MapModel map) {
 		Controller.getCurrentModeController().getMapController().fireMapChanged(new MapChangeEvent(source, map, Filter.class, null, this));
 	}
@@ -280,9 +277,5 @@ public class Filter {
 				mapSelection.selectAsTheOnlyOneSelected(selected.getVisibleAncestorOrSelf());
 		}
 		mapSelection.setSiblingMaxLevel(mapSelection.getSelected().getNodeLevel(false));
-	}
-
-	public boolean matches(NodeModel nodeModel) {
-		return 0 != (getFilterInfo(nodeModel).get() & FilterInfo.FILTER_SHOW_MATCHED);
 	}
 }

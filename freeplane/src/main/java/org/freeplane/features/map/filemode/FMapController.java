@@ -51,12 +51,6 @@ public class FMapController extends MapController {
 		return new FNodeModel((File) userObject, map);
 	}
 
-	public void toggleFolded(final NodeModel node) {
-		if (hasChildren(node) && !node.isRoot()) {
-			setFolded(node, !isFolded(node));
-		}
-	}
-
 	public void newMap(File file) {
 		newMap(new File[]{file});
 	}
