@@ -24,8 +24,8 @@ public class PresentationEditorController {
 	private AFreeplaneAction configureAction;
 
 	public PresentationEditorController(final PresentationState presentationState) {
-		presentationPanelController = new CollectionBoxController<>("collection.new.presentation");
-		slidePanelController = new CollectionBoxController<Slide>("collection.new.slide");
+		presentationPanelController = new CollectionBoxController<>("presentation");
+		slidePanelController = new CollectionBoxController<Slide>("slide");
 		slideEditorController = new SlideEditorController(presentationState);
 		presentationState.addPresentationStateListener(new PresentationStateChangeListener() {
 			@Override

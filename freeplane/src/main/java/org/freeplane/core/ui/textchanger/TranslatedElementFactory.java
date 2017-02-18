@@ -2,15 +2,20 @@ package org.freeplane.core.ui.textchanger;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JToggleButton;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.JAutoToggleButton;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.factory.ImageIconFactory;
 
 public class TranslatedElementFactory {
 	
@@ -63,12 +68,19 @@ public class TranslatedElementFactory {
 		return component;
 	}
 
-	private static void createTooltip(JComponent component, String labelKey) {
+	public static void createTooltip(JComponent component, String labelKey) {
 		final String text = TextUtils.getOptionalText(labelKey, null);
 		if(text != null){
 			component.setToolTipText(text);
 		}
 		TranslatedElement.TOOLTIP.setKey(component, labelKey);
+	}
+
+	public static JButton createButtonWithIcon(final String iconKey, final String tooltipKey ) {
+		final ImageIcon icon = ResourceController.getResourceController().getIcon(iconKey, ImageIconFactory.DEFAULT_UI_ICON_HEIGHT);
+		final JButton button = new JButton(icon);
+		createTooltip(button, tooltipKey);
+		return button;
 	}
 
 }

@@ -349,12 +349,17 @@ public abstract class ResourceController {
 
 	private Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>();
 	public ImageIcon getIcon(final String iconKey) {
+		return getIcon(iconKey, ImageIconFactory.DEFAULT_UI_ICON_HEIGHT);
+	}
+
+	public ImageIcon getIcon(String iconKey, Quantity<LengthUnits> height) {
 		ImageIcon icon = iconCache.get(iconKey);
 		if(icon == null){
 			final String iconResource = ResourceController.getResourceController().getProperty(iconKey, null);
 			if (iconResource != null) {
-				URL url;
-				url = ResourceController.getResourceController().getResource(iconResource.replaceFirst("(?i)\\.png$", ".svg"));
+				URL url = null;
+				if(iconResource.endsWith(".png"))
+					url = ResourceController.getResourceController().getResource(iconResource.replaceFirst("(?i)\\.png$", ".svg"));
 				if (url == null)
 					url = ResourceController.getResourceController().getResource(iconResource);
 				if (url == null) {
@@ -362,7 +367,7 @@ public abstract class ResourceController {
 				}
 				else {
 					//final ImageIcon icon = new ImageIcon(url);
-					icon = ImageIconFactory.getInstance().getImageIcon(url);
+					icon = ImageIconFactory.getInstance().getImageIcon(url, height);
 					iconCache.put(iconKey, icon);
 				}
 			}

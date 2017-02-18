@@ -40,7 +40,7 @@ import org.freeplane.features.icon.UIIcon;
  *
  */
 public final class ImageIconFactory {
-	private static final Quantity<LengthUnits> DEFAULT_UI_ICON_HEIGHT = ResourceController.getResourceController().getLengthQuantityProperty("toolbar_icon_height");
+	public static final Quantity<LengthUnits> DEFAULT_UI_ICON_HEIGHT = ResourceController.getResourceController().getLengthQuantityProperty("toolbar_icon_height");
 	private static final ImageIconFactory FACTORY = new ImageIconFactory();
 	private static final String DEFAULT_IMAGE_PATH = "/images/";
 	private static final ImageIcon ICON_NOT_FOUND = FACTORY.getImageIcon(ResourceController.getResourceController()

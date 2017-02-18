@@ -36,40 +36,39 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	private JLabel lblElementCounter;
 	
 	public JComponent createCollectionBox() {
-		collectionComponent = Box.createVerticalBox();
-		Box namesBox = Box.createHorizontalBox();
-		namesBox.add(lblElementCounter);
-		namesBox.add(comboBoxCollectionNames);
-		collectionComponent.add(namesBox);
+		collectionComponent = Box.createHorizontalBox();
+		final Box controls = Box.createVerticalBox();
+		controls.add(comboBoxCollectionNames);
 		Box collectionButtons = Box.createHorizontalBox();
 		collectionButtons.add(btnNewElement);
 		collectionButtons.add(btnDeleteElement);
-		collectionComponent.add(collectionButtons);
-		Box orderButtons = Box.createHorizontalBox();
-		collectionComponent.add(orderButtons);
-		orderButtons.add(btnMoveUp);
-		orderButtons.add(btnMoveDown);                       
-		orderButtons.add(btnMove);
+		collectionButtons.add(btnMoveUp);
+		collectionButtons.add(btnMoveDown);                       
+		collectionButtons.add(btnMove);
+		collectionButtons.add(Box.createHorizontalGlue());
+		collectionButtons.add(lblElementCounter);
+		controls.add(collectionButtons);
+		collectionComponent.add(controls);
 		return collectionComponent;
 	}
 
-	public CollectionBoxController(final String newElementName) {
+	public CollectionBoxController(final String elementName) {
 		comboBoxCollectionNames = new JComboBox<Stringifyed<T>>();
 		comboBoxCollectionNames.setEditable(false);
 		Dimension comboBoxPreferredSize = comboBoxCollectionNames.getPreferredSize();
 		comboBoxCollectionNames.setMaximumSize(new Dimension(Integer.MAX_VALUE, comboBoxPreferredSize.height));
-		lblElementCounter = new JLabel("XXX/XXX: ");
+		lblElementCounter = new JLabel("XXX/XXX");
 		lblElementCounter.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblElementCounter.setPreferredSize(lblElementCounter.getPreferredSize());
-		btnNewElement = createNewElementButton(newElementName);
+		btnNewElement = createNewElementButton(elementName);
 		
-		btnDeleteElement = createDeleteElementButton();
+		btnDeleteElement = createDeleteElementButton(elementName);
 		
-		btnMoveUp = createMoveUpButton();
+		btnMoveUp = createMoveUpButton(elementName);
 
-		btnMoveDown = createMoveDownButton();
+		btnMoveDown = createMoveDownButton(elementName);
 		
-		btnMove = createMoveButton();
+		btnMove = createMoveButton(elementName);
 		components = new JComponent[]{comboBoxCollectionNames, lblElementCounter, btnNewElement, btnDeleteElement, btnMoveUp, btnMoveDown, btnMove};
 		editingComponents = new JComponent[] { btnNewElement, btnDeleteElement, btnMoveUp, btnMoveDown, btnMove };
 		disableUiElements();
@@ -106,7 +105,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	private void updateElementCounterLabel() {
 		final int collectionSize = collection.getSize();
 		final int currentElementIndex = collection.getCurrentElementIndex();
-		lblElementCounter.setText( currentElementIndex >= 0 ? Integer.toString(currentElementIndex + 1) + "/" + Integer.toString(collectionSize) + ": " : "-/-: ");
+		lblElementCounter.setText( currentElementIndex >= 0 ? Integer.toString(currentElementIndex + 1) + "/" + Integer.toString(collectionSize): "-/-");
 	}
 
 	private void enableUiElements() {
@@ -129,8 +128,8 @@ class CollectionBoxController <T extends NamedElement<T>> {
 			c.setEnabled(false);
 	}
 
-	private JButton createMoveButton() {
-		JButton btnMove = TranslatedElementFactory.createButton("collection.move");
+	private JButton createMoveButton(final String elementName) {
+		JButton btnMove = TranslatedElementFactory.createButtonWithIcon(elementName + ".move.icon", "collection.move");
 		btnMove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -144,8 +143,8 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		});
 		return btnMove;
 	}
-	private JButton createMoveDownButton() {
-		JButton btnMoveDown = TranslatedElementFactory.createButton("collection.down");
+	private JButton createMoveDownButton(final String elementName) {
+		JButton btnMoveDown = TranslatedElementFactory.createButtonWithIcon(elementName + ".down.icon", "collection.down");
 		btnMoveDown.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -154,8 +153,8 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		});
 		return btnMoveDown;
 	}
-	private JButton createMoveUpButton() {
-		JButton btnMoveUp = TranslatedElementFactory.createButton("collection.up");
+	private JButton createMoveUpButton(final String elementName) {
+		JButton btnMoveUp = TranslatedElementFactory.createButtonWithIcon(elementName + ".up.icon", "collection.up");
 		btnMoveUp.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -164,8 +163,8 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		});
 		return btnMoveUp;
 	}
-	private JButton createDeleteElementButton() {
-		JButton btnDeleteElement = TranslatedElementFactory.createButton("collection.delete");
+	private JButton createDeleteElementButton(final String elementName) {
+		JButton btnDeleteElement = TranslatedElementFactory.createButtonWithIcon(elementName + ".delete.icon", "collection.delete");
 		btnDeleteElement.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -174,14 +173,15 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		});
 		return btnDeleteElement;
 	}
-	private JButton createNewElementButton(final String newElementName) {
-		final JButton btnNewElement = TranslatedElementFactory.createButton(newElementName);
+	private JButton createNewElementButton(final String elementName) {
+		final JButton btnNewElement = TranslatedElementFactory.createButtonWithIcon(elementName + ".new.icon", "collection.new." + elementName);
 		btnNewElement.addActionListener(new ActionListener() {
 			
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				UndoableNamedElementCollection.of(collection).add(btnNewElement.getText() + " " + (collection.getSize() + 1));
+				final String text = TextUtils.getText("collection.new." + elementName);
+				UndoableNamedElementCollection.of(collection).add(text + " " + (collection.getSize() + 1));
 				final ComboBoxEditor editor = comboBoxCollectionNames.getEditor();
 				editor.selectAll();
 				editor.getEditorComponent().requestFocusInWindow();
