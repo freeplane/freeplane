@@ -92,7 +92,10 @@ public class ScriptCondition extends ASelectableCondition {
 				TextUtils.getText("error"), JOptionPane.ERROR_MESSAGE);
 		}
 		LogUtils.warn(info);
-		Controller.getCurrentController().getViewController().out(info.trim().replaceAll("\\s", " ").substring(0, 80));
+		String message = info.trim().replaceAll("\\s", " ");
+		if(message.length() > 80)
+			message = message.substring(0, 80);
+		Controller.getCurrentController().getViewController().out(message);
     }
 
 	@Override

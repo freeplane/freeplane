@@ -18,6 +18,7 @@
 package org.freeplane.core.resources.components;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
@@ -40,6 +41,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -74,7 +76,7 @@ public class OptionPanel {
 		void writeProperties(Properties props);
 	}
 
-	final static private String OPTION_PANEL_RESOURCE_PREFIX = "OptionPanel.";
+	public final static String OPTION_PANEL_RESOURCE_PREFIX = "OptionPanel.";
 	static final String PREFERENCE_STORAGE_PROPERTY = "OptionPanel_Window_Properties";
 	private Vector<IPropertyControl> controls;
 	final private IOptionPanelFeedback feedback;
@@ -101,11 +103,13 @@ public class OptionPanel {
 	 * @return a right aligned button bar with the given buttons
 	 */
 	public static JPanel buildRightAlignedBar(JButton... buttons) {
-//        ButtonBarBuilder2 builder = new ButtonBarBuilder2();
 		ButtonBarBuilder builder = new ButtonBarBuilder();
 		builder.addGlue();
 		builder.addButton(buttons);
-		return builder.getPanel();
+		final JPanel panel = builder.getPanel();
+		final JPanel outerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		outerPanel.add(panel);
+		return outerPanel;
 	}
 	
 	
@@ -212,6 +216,7 @@ public class OptionPanel {
 		topDialog.getRootPane().setDefaultButton(okButton);
 		JButton[] buttons = { saveButton, loadButton, cancelButton, okButton };
 		final JPanel buttonPanel = buildRightAlignedBar(buttons);
+		buttonPanel.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
 		MnemonicSetter.INSTANCE.setComponentMnemonics(buttonPanel);
 		topDialog.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 	}

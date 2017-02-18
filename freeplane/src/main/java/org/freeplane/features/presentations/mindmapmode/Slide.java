@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.DisjunctConditions;
@@ -18,6 +19,7 @@ import org.freeplane.features.ui.IMapViewManager;
 
 public class Slide implements NamedElement<Slide>{
 	public static final Slide ALL_NODES = new Slide("All nodes");
+	private static final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 	private String name;
 	private boolean changesZoom;
 	private String centeredNodeId;
@@ -123,13 +125,7 @@ public class Slide implements NamedElement<Slide>{
 	
 	private class NodeIterator {
 		
-		private final IMapViewManager mapViewManager;
 		private Filter filter;
-		
-		public NodeIterator(IMapViewManager mapViewManager) {
-			super();
-			this.mapViewManager = mapViewManager;
-		}
 		
 		public Set<String> getCurrentFoldedNodeIds(){
 			filter = calculateFilterResults();
@@ -154,7 +150,7 @@ public class Slide implements NamedElement<Slide>{
 		}
 		
 		private void addCurrentFoldedNodeIds(NodeModel node, HashSet<String> nodeIds) {
-			if(mapViewManager.isFoldedOnCurrentView(node)){
+			if(isFoldedOnCurrentView(node)){
 				if(filter.isVisible(node))
 					nodeIds.add(node.getID());
 				return;
@@ -165,7 +161,7 @@ public class Slide implements NamedElement<Slide>{
 		}
 
 		public void foldNodes() {
-			if(foldedNodeIds != null) {
+			if(foldsNodes()) {
 				filter = new Filter(getEffectiveFilterCondition(), true, showsDescendants, false);
 				foldNodes(getMap().getRootNode());
 				filter = null;
@@ -173,9 +169,9 @@ public class Slide implements NamedElement<Slide>{
 		}
 
 		private void foldNodes(NodeModel node) {
-			if(foldsNodes() && filter.isVisible(node)) {
+			if(filter.isVisible(node)) {
 				if(foldedNodeIds.contains(node.getID())) {
-					mapViewManager.setFoldedOnCurrentView(node, true);
+					setFoldedOnCurrentView(node, true);
 					return;
 				}
 				mapViewManager.setFoldedOnCurrentView(node, false);
@@ -183,6 +179,7 @@ public class Slide implements NamedElement<Slide>{
 					foldNodes(child);
 			}
 		}
+
 	}
 	
 	public boolean isNodeVisible(NodeModel node) {
@@ -281,7 +278,7 @@ public class Slide implements NamedElement<Slide>{
 		if (!selectedNodes.isEmpty()) {
 			NodeModel[] nodes = selectedNodes.toArray(new NodeModel[] {});
 			for (NodeModel node : nodes)
-				Controller.getCurrentModeController().getMapController().displayNode(node);
+				displayOnCurrentView(node);
 			Controller.getCurrentController().getSelection().replaceSelection(nodes);
 		}
 	}
@@ -297,38 +294,64 @@ public class Slide implements NamedElement<Slide>{
 		return selectedNodes;
 	}
 
-	void apply() {
+	void apply(float zoomFactor) {
 		applyFilter();
 		applySelection();
 		foldNodes();
-		applyZoom();
+		applyZoom(zoomFactor);
 		centerSelectedNode();
 	}
 
 
 	public NodeIterator createNodeIterator() {
-		return new NodeIterator(Controller.getCurrentController().getMapViewManager());
+		return new NodeIterator();
 	} 
 	
 	private void foldNodes() {
 		createNodeIterator().foldNodes();
 	}
 
-	private void applyZoom() {
+	private void applyZoom(float zoomFactor) {
 		if (changesZoom)
-			Controller.getCurrentController().getMapViewManager().setZoom(zoom);
+			Controller.getCurrentController().getMapViewManager().setZoom(zoom * zoomFactor);
 	}
+	
+	private boolean displaysAllSlideNodes() {
+		return ResourceController.getResourceController().getBooleanProperty("presentation.slideDisplaysAllNodes");
+	}
+
 
 	private void applySelection() {
 		if (selectedNodeIds.isEmpty())
 			return;
-		MapModel map = getMap();
-		NodeModel node = map.getNodeForID(selectedNodeIds.iterator().next());
-		if (!showsOnlySpecificNodes)
-			replaceCurrentSelection();
-		else {
-			if (node != null)
-				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
+		ArrayList<NodeModel> selectedNodes = getSelectedNodes(true);
+		final boolean replacesSelection = ! (showsOnlySpecificNodes || selectedNodes.isEmpty());
+		if (replacesSelection){
+			for (NodeModel node : selectedNodes)
+				displayOnCurrentView(node);
+		}
+		else if(! foldsNodes() && displaysAllSlideNodes()){
+			for (NodeModel node : selectedNodes) {
+				displayOnCurrentView(node);
+				if(showsDescendants)
+					displayDescendantsOnCurrentView(node);
+			}
+		}
+		if (showsOnlySpecificNodes) {
+				final NodeModel firstNode = selectedNodes.get(0);
+				displayOnCurrentView(firstNode);
+				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(firstNode);
+		} 
+		else if (replacesSelection) {
+			NodeModel[] nodes = selectedNodes.toArray(new NodeModel[] {});
+			Controller.getCurrentController().getSelection().replaceSelection(nodes);
+		}
+	}
+
+	private void displayDescendantsOnCurrentView(NodeModel node) {
+		for(NodeModel child : node.getChildren()) {
+			mapViewManager.setFoldedOnCurrentView(child, false);
+			displayDescendantsOnCurrentView(child);
 		}
 	}
 
@@ -336,8 +359,10 @@ public class Slide implements NamedElement<Slide>{
 		MapModel map = getMap();
 		if (centeredNodeId != null) {
 			NodeModel centeredNode = map.getNodeForID(centeredNodeId);
-			if(centeredNode != null && centeredNode.hasVisibleContent())
+			if(centeredNode != null && centeredNode.hasVisibleContent()){
+				displayOnCurrentView(centeredNode);
 				Controller.getCurrentController().getSelection().centerNodeSlowly(centeredNode);
+			}
 		}
 	}
 
@@ -375,4 +400,15 @@ public class Slide implements NamedElement<Slide>{
 		return selectedViewSnapshotCondition;
 	}
 
+	private boolean isFoldedOnCurrentView(NodeModel node) {
+		return mapViewManager.isFoldedOnCurrentView(node);
+	}
+
+	private void displayOnCurrentView(NodeModel node) {
+		mapViewManager.displayOnCurrentView(node);
+	}
+
+	private void setFoldedOnCurrentView(NodeModel node, boolean folded) {
+		mapViewManager.setFoldedOnCurrentView(node, folded);
+	}
 }

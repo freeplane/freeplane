@@ -70,34 +70,69 @@ public class FreeplaneIconUtils {
 		return ResourceController.getResourceController().getBooleanProperty(ANTIALIAS_SVG);
 	}
 
-	public static SVGIcon createSVGIconPrivileged(final URL url, final int heightPixels) {
+	public static SVGIcon createSVGIcon(final URL url, final int heightPixels) {
 		return AccessController.doPrivileged(new PrivilegedAction<SVGIcon>() {
 			@Override
 			public SVGIcon run() {
-				return createSVGIcon(url, heightPixels);
+				return new SVGIconCreator(url).setHeight(heightPixels).create();
 			}
 		});
 	}
 
-	private static SVGIcon createSVGIcon(final URL url, final int heightPixels) {
-		if (svgUniverse == null)
-			svgUniverse = new SVGUniverse();
-
-		final SVGIcon icon = new SVGIcon();
-		URI svgUri;
-		try {
-			svgUri = svgUniverse.loadSVG(url.openStream(), url.getPath());
-			icon.setSvgUniverse(svgUniverse);
-			icon.setSvgURI(svgUri);
-			final SVGDiagram diagram = svgUniverse.getDiagram(svgUri);
-			final float aspectRatio = diagram.getHeight()/diagram.getWidth();
-			icon.setPreferredSize(new Dimension((int)(heightPixels / aspectRatio), heightPixels));
-			icon.setAutosize(SVGIcon.AUTOSIZE_STRETCH);
-			icon.setAntiAlias(isSvgAntialiasEnabled());
-			return icon;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+	public static SVGIcon createSVGIconHavingWidth(final URL url, final int widthPixels) {
+		return AccessController.doPrivileged(new PrivilegedAction<SVGIcon>() {
+			@Override
+			public SVGIcon run() {
+				return new SVGIconCreator(url).setWidth(widthPixels).create();
+			}
+		});
 	}
 
+
+	public static SVGIcon createSVGIcon(final URL url) {
+		return AccessController.doPrivileged(new PrivilegedAction<SVGIcon>() {
+			@Override
+			public SVGIcon run() {
+				return new SVGIconCreator(url).create();
+			}
+		});
+	}
+	
+	private static class SVGIconCreator {
+		private float aspectRatio;
+		private SVGIcon icon;
+		
+		SVGIconCreator (URL url) {
+			if (svgUniverse == null)
+				svgUniverse = new SVGUniverse();
+
+			icon = new SVGIcon();
+			URI svgUri;
+			try {
+				svgUri = svgUniverse.loadSVG(url.openStream(), url.getPath());
+				icon.setSvgUniverse(svgUniverse);
+				icon.setSvgURI(svgUri);
+				final SVGDiagram diagram = svgUniverse.getDiagram(svgUri);
+				aspectRatio = diagram.getHeight()/diagram.getWidth();
+				icon.setAutosize(SVGIcon.AUTOSIZE_STRETCH);
+				icon.setAntiAlias(isSvgAntialiasEnabled());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+		public SVGIcon create() {
+			return icon;
+		}
+		
+		SVGIconCreator setHeight(final int heightPixels) {
+			icon.setPreferredSize(new Dimension((int)(heightPixels / aspectRatio), heightPixels));
+			return this;
+		}
+		
+		SVGIconCreator setWidth(final int widthPixels) {
+			icon.setPreferredSize(new Dimension(widthPixels, (int)(widthPixels * aspectRatio)));
+			return this;
+		}
+	}
 }

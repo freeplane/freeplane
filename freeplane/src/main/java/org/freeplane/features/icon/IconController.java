@@ -65,9 +65,8 @@ public class IconController implements IExtension {
 		conditionFactory.addConditionController(50, new PriorityConditionController());
 	}
 
-	public static void install( final IconController iconController) {
-		final ModeController modeController = Controller.getCurrentModeController();
-		modeController.addExtension(IconController.class, iconController);
+	public void install(final ModeController modeController) {
+		modeController.addExtension(IconController.class, this);
 	}
 
 // 	final private ModeController modeController;

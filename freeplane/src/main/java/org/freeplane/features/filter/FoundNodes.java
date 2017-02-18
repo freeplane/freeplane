@@ -50,7 +50,7 @@ class FoundNodes implements IExtension {
 			}
 			oldPathIterator.remove();
 			if (oldPathNode != null) {
-				Controller.getCurrentModeController().getMapController().setFolded(oldPathNode, true);
+				Controller.getCurrentModeController().getMapController().fold(oldPathNode);
 			}
 		}
 		this.nodesUnfoldedByDisplay.addAll(nodesUnfoldedByDisplay);

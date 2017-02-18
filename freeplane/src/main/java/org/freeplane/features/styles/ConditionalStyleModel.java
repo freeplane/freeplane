@@ -12,11 +12,12 @@ import javax.swing.table.TableModel;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.filter.condition.ICombinedCondition;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class ConditionalStyleModel implements IExtension, Iterable<ConditionalStyleModel.Item>{
-	public class Item{
+	public static class Item{
 		private ASelectableCondition condition;
 		private IStyle style;
 		private boolean isActive;
@@ -76,6 +77,25 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 			if(condition != null)
 				condition.toXml(itemElement);
 
+		}
+
+		boolean dependOnCondition(ConditionPredicate predicate) {
+			if (isActive())
+				return dependOnConditionRecursively(condition, predicate);
+			else
+				return false;
+		}
+
+		private boolean dependOnConditionRecursively(ASelectableCondition condition, ConditionPredicate predicate) {
+			if(condition instanceof ICombinedCondition){
+				final Collection<ASelectableCondition> conditions = ((ICombinedCondition)condition).split();
+				for(ASelectableCondition c : conditions)
+					if(dependOnConditionRecursively(c, predicate))
+						return true;
+				return false;
+			}
+			else
+				return  predicate.test(condition);
 		}
 		
 	}
@@ -273,5 +293,13 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 	public ConditionalStyleModel clone() {
 		final ConditionalStyleModel conditionalStyleModel = new ConditionalStyleModel(this);
 		return conditionalStyleModel;
+	}
+
+	boolean dependOnCondition(ConditionPredicate predicate) {
+		for(Item item : styles){
+			if(item.dependOnCondition(predicate))
+				return true;
+		}
+		return false;
 	}
 }

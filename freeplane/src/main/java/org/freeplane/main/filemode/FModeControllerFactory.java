@@ -66,10 +66,10 @@ public class FModeControllerFactory {
 		new FMapController(modeController);
 		UrlManager.install(new UrlManager());
 		MapIO.install(modeController);
-		IconController.install(new IconController(modeController));
+		new IconController(modeController).install(modeController);
 		NodeStyleController.install(new NodeStyleController(modeController));
 		EdgeController.install(new EdgeController(modeController));
-		TextController.install(new TextController(modeController));
+		new TextController(modeController).install(modeController);
 		LinkController.install(new LinkController(modeController));
 		CloudController.install(new CloudController(modeController));
 		ClipboardController.install(new ClipboardController());

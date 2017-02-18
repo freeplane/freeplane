@@ -45,7 +45,6 @@ import javax.swing.text.ElementIterator;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
-import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
@@ -87,25 +86,16 @@ import org.freeplane.view.swing.features.filepreview.ViewerController.PasteMode;
 public class MClipboardController extends ClipboardController {
 	public static final String RESOURCES_REMIND_USE_RICH_TEXT_IN_NEW_NODES = "remind_use_rich_text_in_new_nodes";
 	private class DirectHtmlFlavorHandler implements IDataFlavorHandler {
-		private String textFromClipboard;
+		private final String textFromClipboard;
 
 		public DirectHtmlFlavorHandler(final String textFromClipboard) {
 			this.textFromClipboard = textFromClipboard;
 		}
 
 		void paste(final NodeModel target) {
-			textFromClipboard = cleanHtml(textFromClipboard);
-			final NodeModel node = Controller.getCurrentModeController().getMapController().newNode(textFromClipboard,
+			final String text = cleanHtml(textFromClipboard);
+			final NodeModel node = Controller.getCurrentModeController().getMapController().newNode(text,
 					Controller.getCurrentController().getMap());
-			final String text = textFromClipboard;
-			final Matcher m = HREF_PATTERN.matcher(text);
-			if (m.matches()) {
-				final String body = m.group(2);
-				if (!body.matches(".*<\\s*a.*")) {
-					final String href = m.group(1);
-					((MLinkController) LinkController.getController()).setLinkTypeDependantLink(node, href);
-				}
-			}
 			((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, target);
 		}
 
@@ -448,8 +438,6 @@ public class MClipboardController extends ClipboardController {
 
     }
 	private static final Pattern HEADER_REGEX = Pattern.compile("h(\\d)", Pattern.CASE_INSENSITIVE);
-	private static final Pattern HREF_PATTERN = Pattern
-	    .compile("<html>\\s*<body>\\s*<a\\s+href=\"([^>]+)\">(.*)</a>\\s*</body>\\s*</html>");
 	private static final String RESOURCE_UNFOLD_ON_PASTE = "unfold_on_paste";
 	public static final String RESOURCES_CUT_NODES_WITHOUT_QUESTION = "cut_nodes_without_question";
 
@@ -470,16 +458,20 @@ public class MClipboardController extends ClipboardController {
 		createActions();
 	}
 
-	private String cleanHtml(String in) {
-		in = in.replaceFirst("(?i)(?s)<head>.*</head>", "").replaceFirst("(?i)(?s)^.*<html[^>]*>", "<html>")
+	private String cleanHtml(String content) {
+		content = content.replaceFirst("(?i)(?s)<head>.*</head>", "").replaceFirst("(?i)(?s)^.*<html[^>]*>", "<html>")
 		    .replaceFirst("(?i)(?s)<body [^>]*>", "<body>").replaceAll("(?i)(?s)<script.*?>.*?</script>", "")
 		    .replaceAll("(?i)(?s)</?tbody.*?>", "").replaceAll("(?i)(?s)<!--.*?-->", "").replaceAll(
 		        "(?i)(?s)</?o[^>]*>", "");
 		if (ResourceController.getResourceController().getBooleanProperty("cut_out_pictures_when_pasting_html")) {
-			in = in.replaceAll("(?i)(?s)<img[^>]*>", "");
+			String contentWithoutImages = content.replaceAll("(?i)(?s)<img[^>]*>", "");
+			final boolean contentContainsOnlyImages = HtmlUtils.htmlToPlain(contentWithoutImages).trim().isEmpty();
+			if(! contentContainsOnlyImages) {
+				content = contentWithoutImages;
+			}
 		}
-		in = HtmlUtils.unescapeHTMLUnicodeEntity(in);
-		return in;
+		content = HtmlUtils.unescapeHTMLUnicodeEntity(content);
+		return content;
 	}
 
 	/**
@@ -728,7 +720,7 @@ public class MClipboardController extends ClipboardController {
 			final ModeController modeController = Controller.getCurrentModeController();
 			if (!asSibling && modeController.getMapController().isFolded(target)
 			        && ResourceController.getResourceController().getBooleanProperty(RESOURCE_UNFOLD_ON_PASTE)) {
-				modeController.getMapController().setFoldedAndScroll(target, false);
+				modeController.getMapController().unfoldAndScroll(target);
 			}
 			for (final NodeModel child : newNodes) {
 				AttributeController.getController().performRegistrySubtreeAttributes(child);

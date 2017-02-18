@@ -21,7 +21,7 @@ public class MapNavigationUtils {
     		final int index = parentNode.getIndex(current) + 1;
     		final int childCount = parentNode.getChildCount();
     		if (direction == Direction.FORWARD_N_FOLD) {
-    			Controller.getCurrentModeController().getMapController().setFolded(current, true);
+    			Controller.getCurrentModeController().getMapController().fold(current);
     		}
     		if (index < childCount) {
     			final NodeModel next = (NodeModel) parentNode.getChildAt(index);
@@ -48,12 +48,12 @@ public class MapNavigationUtils {
     			break;
     		}
     		if (direction == Direction.BACK_N_FOLD) {
-    			Controller.getCurrentModeController().getMapController().setFolded(current, true);
+    			Controller.getCurrentModeController().getMapController().fold(current);
     		}
     		final int index = parentNode.getIndex(current) - 1;
     		if (index < 0) {
     			if (direction == Direction.BACK_N_FOLD) {
-    				Controller.getCurrentModeController().getMapController().setFolded(parentNode, true);
+    				Controller.getCurrentModeController().getMapController().fold(parentNode);
     			}
     			if (atEnd(parentNode, end)) {
     				return null;

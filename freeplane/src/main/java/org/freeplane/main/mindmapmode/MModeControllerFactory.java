@@ -228,7 +228,7 @@ public class MModeControllerFactory {
 		UrlManager.install(fileManager);
 		MMapIO.install(modeController);
 		controller.getMapViewManager().addMapViewChangeListener(fileManager);
-		IconController.install(new MIconController(modeController));
+		new MIconController(modeController).install(modeController);
 		new ProgressFactory().installActions(modeController);
 		final MapController mapController = modeController.getMapController();
 		EdgeController.install(new MEdgeController(modeController));
@@ -236,7 +236,7 @@ public class MModeControllerFactory {
 		NoteController.install(new MNoteController(modeController));
 		userInputListenerFactory.setMapMouseListener(new MMapMouseListener());
 		final MTextController textController = new MTextController(modeController);
-		TextController.install(textController);
+		textController.install(modeController);
 		LinkController.install(new MLinkController(modeController));
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		ClipboardController.install(new MClipboardController());

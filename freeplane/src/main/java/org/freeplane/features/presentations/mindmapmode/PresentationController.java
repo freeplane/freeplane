@@ -14,6 +14,8 @@ import java.awt.event.HierarchyListener;
 import javax.swing.JTabbedPane;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.highlight.HighlightController;
@@ -27,7 +29,7 @@ import org.freeplane.features.mode.ModeController;
 public class PresentationController implements IExtension{
 	private static final float FOLDED_NODE_DOT_WIDTH = 3f * UITools.FONT_SCALE_FACTOR;
 	private static final Color NODE_HIGHLIGHTING_COLOR = Color.GREEN.brighter();
-	static final String PROCESS_UP_DOWN_KEYS_PROPERTY = "presentation.processesUpDownKeys";
+	static final String PROCESS_NAVIGATION_KEYS_PROPERTY = "presentation.processesNavigationKeys";
 	static final String PROCESS_ESCAPE_KEY_PROPERTY = "presentation.processesEscapeKey";
 	
 
@@ -74,10 +76,10 @@ public class PresentationController implements IExtension{
 
 		});
 		
-		KeyEventDispatcher upDownKeyEventDispatcher = new UpDownKeyEventDispatcher(presentationState);
+		KeyEventDispatcher navigationKeyEventDispatcher = new NavigationKeyEventDispatcher(presentationState);
 		KeyEventDispatcher escapeKeyEventDispatcher = new EscapeKeyEventDispatcher(presentationState);
 		final PresentationAutomation presentationKeyHandler = new PresentationAutomation(presentationState, 
-				PresentationKeyEventDispatcher.of(upDownKeyEventDispatcher, PROCESS_UP_DOWN_KEYS_PROPERTY),
+				PresentationKeyEventDispatcher.of(navigationKeyEventDispatcher, PROCESS_NAVIGATION_KEYS_PROPERTY),
 				PresentationKeyEventDispatcher.of(escapeKeyEventDispatcher, PROCESS_ESCAPE_KEY_PROPERTY));
 		presentationState.addPresentationStateListener(presentationKeyHandler);
 	}
@@ -89,6 +91,17 @@ public class PresentationController implements IExtension{
 	private PresentationController(ModeController modeController) {
 		this.modeController = modeController;
 		presentationState = new PresentationState();
+		final ResourceController resourceController = ResourceController.getResourceController();
+		boolean combinesAllPresentations = resourceController.getBooleanProperty("presentation.combineAll");
+		resourceController.addPropertyChangeListener(new IFreeplanePropertyListener() {
+			
+			@Override
+			public void propertyChanged(String propertyName, String newValue, String oldValue) {
+				if("presentation.combineAll".equals(propertyName))
+					presentationState.setCombinesAllPresentations(Boolean.parseBoolean(newValue));
+			}
+		});
+		presentationState.setCombinesAllPresentations(combinesAllPresentations);
 		presentationEditorController = new PresentationEditorController(presentationState);
 		presentationState.addPresentationStateListener(new PresentationStateChangeListener() {
 			
@@ -108,6 +121,7 @@ public class PresentationController implements IExtension{
 			
 			@Override
 			public void afterMapChange(MapModel oldMap, MapModel newMap) {
+				presentationState.stopPresentation();
 				if(newMap != null && Controller.getCurrentModeController() == modeController)
 					presentationEditorController.setPresentations(getPresentations(newMap).presentations);
 				else

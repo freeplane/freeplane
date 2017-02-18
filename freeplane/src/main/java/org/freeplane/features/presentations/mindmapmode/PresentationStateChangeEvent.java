@@ -4,7 +4,7 @@ package org.freeplane.features.presentations.mindmapmode;
 public class PresentationStateChangeEvent {
 	
 	enum EventType{
-		SLIDE_CHANGED, HIGNLIGHTING_CHANGED, PLAYING_STATE_CHANGED;
+		SLIDE_CHANGED, HIGNLIGHTING_CHANGED, PLAYING_STATE_CHANGED, COLLECTION_SIZE_CHANGED;
 		public PresentationStateChangeEvent of(PresentationState state){
 			return new PresentationStateChangeEvent(this, state);
 		}

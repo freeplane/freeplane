@@ -377,6 +377,22 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		return nodeView.isFolded();
 	}
 	
+
+	@Override
+	public void displayOnCurrentView(NodeModel node) {
+		if(selectedMapView == null)
+			return;
+		final NodeView nodeView = selectedMapView.getNodeView(node);
+		if(nodeView != null)
+			return;
+		final NodeModel parentNode = node.getParentNode();
+		if(parentNode == null)
+			return;
+		displayOnCurrentView(parentNode);
+		setFoldedOnCurrentView(parentNode, false);
+		
+	}
+	
 	public void setFoldedOnCurrentView(NodeModel node, boolean folded){
 		if(selectedMapView == null || ! node.hasChildren())
 			return;
