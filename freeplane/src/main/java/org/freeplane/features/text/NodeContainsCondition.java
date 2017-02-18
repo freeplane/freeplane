@@ -26,7 +26,7 @@ import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class NodeContainsCondition extends ASelectableCondition {
+public class NodeContainsCondition extends ASelectableCondition implements NodeItemRelation {
 	static final String NAME = "node_contains_condition";
 	static final String VALUE = "VALUE";
 	static final String MATCH_APPROXIMATELY = "MATCH_APPROXIMATELY";
@@ -91,4 +91,9 @@ public class NodeContainsCondition extends ASelectableCondition {
     protected String getName() {
 	    return NAME;
     }
+	
+	public String getNodeItem() {
+		return nodeItem;
+	}
+
 }

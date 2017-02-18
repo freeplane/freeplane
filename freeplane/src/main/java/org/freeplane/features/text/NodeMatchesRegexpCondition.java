@@ -29,7 +29,7 @@ import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class NodeMatchesRegexpCondition extends ASelectableCondition {
+public class NodeMatchesRegexpCondition extends ASelectableCondition implements NodeItemRelation {
 	static final String NAME = "node_matches_regexp";
 	static final String SEARCH_PATTERN = "SEARCH_PATTERN";
 
@@ -97,4 +97,8 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition {
     protected String getName() {
 	    return NAME;
     }
+	
+	public String getNodeItem() {
+		return nodeItem;
+	}
 }

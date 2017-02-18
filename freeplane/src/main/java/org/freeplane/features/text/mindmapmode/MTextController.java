@@ -67,6 +67,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
+import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
@@ -90,8 +91,11 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.ConditionPredicate;
+import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.IContentTransformer;
+import org.freeplane.features.text.NodeItemRelation;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
@@ -118,6 +122,15 @@ public class MTextController extends TextController {
 	private EditNodeBase mCurrentEditor = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
 	private final EventBuffer eventQueue;
+	
+	private static final ConditionPredicate DEPENDS_ON_PARENT = new ConditionPredicate() {
+		
+		@Override
+		public boolean test(ICondition condition) {
+			return condition instanceof NodeItemRelation && 
+					FILTER_PARENT.equals(((NodeItemRelation)condition).getNodeItem());
+		}
+	};
 
 	public static MTextController getController() {
 		return (MTextController) TextController.getController();
@@ -201,6 +214,24 @@ public class MTextController extends TextController {
 			@Override
 			public boolean shouldSkipChildren(Entry entry) {
 				return true;
+			}
+		});
+	}
+	
+	
+
+	@Override
+	public void install(final ModeController modeController) {
+		super.install(modeController);
+		modeController.getMapController().addNodeChangeListener(new INodeChangeListener() {
+			
+			@Override
+			public void nodeChanged(NodeChangeEvent event) {
+				NodeModel node = event.getNode();
+				if (LogicalStyleController.getController().conditionalStylesOf(node).dependOnCondition(DEPENDS_ON_PARENT)){
+					for (NodeModel child : node.getChildren())
+						modeController.getMapController().delayedNodeRefresh(child, NodeModel.UNKNOWN_PROPERTY, null, null);
+				}
 			}
 		});
 	}

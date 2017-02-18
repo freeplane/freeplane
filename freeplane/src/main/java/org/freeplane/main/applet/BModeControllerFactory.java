@@ -69,7 +69,7 @@ public class BModeControllerFactory {
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
 		new MapController(modeController);
-		IconController.install(new IconController(modeController));
+		new IconController(modeController).install(modeController);
 		UrlManager.install(new UrlManager());
 		MapIO.install(modeController);
 		AttributeController.install(new AttributeController(modeController));
@@ -77,7 +77,7 @@ public class BModeControllerFactory {
 		EdgeController.install(new EdgeController(modeController));
 		CloudController.install(new CloudController(modeController));
 		NoteController.install(new NoteController());
-		TextController.install(new TextController(modeController));
+		new TextController(modeController).install(modeController);
 		LinkController.install(new LinkController(modeController));
 		LogicalStyleController.install(new LogicalStyleController(modeController));
 		try {

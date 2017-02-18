@@ -131,9 +131,9 @@ public class SModeControllerFactory {
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController());
 		new MMapController(modeController);
-		TextController.install(new MTextController(modeController));
+		new MTextController(modeController).install(modeController);
 		SpellCheckerController.install(modeController);
-		IconController.install(new MIconController(modeController));
+		new MIconController(modeController).install(modeController);
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		LocationController.install(new MLocationController());
 		EdgeController.install(new MEdgeController(modeController));

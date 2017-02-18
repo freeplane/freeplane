@@ -123,13 +123,12 @@ public class HeadlessMModeControllerFactory {
 		UrlManager.install(fileManager);
 		MMapIO.install(modeController);
 		controller.getMapViewManager().addMapViewChangeListener(fileManager);
-		IconController.install(new MIconController(modeController));
+		new MIconController(modeController).install(modeController);
 		new ProgressFactory().installActions(modeController);
 		EdgeController.install(new MEdgeController(modeController));
 		CloudController.install(new MCloudController(modeController));
 		NoteController.install(new MNoteController(modeController));
-		final MTextController textController = new MTextController(modeController);
-		TextController.install(textController);
+		new MTextController(modeController).install(modeController);
 		LinkController.install(new MLinkController(modeController));
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		ClipboardController.install(new MClipboardController());

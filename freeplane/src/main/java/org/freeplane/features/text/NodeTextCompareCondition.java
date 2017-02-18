@@ -28,7 +28,7 @@ import org.freeplane.features.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class NodeTextCompareCondition extends CompareConditionAdapter {
+public class NodeTextCompareCondition extends CompareConditionAdapter implements NodeItemRelation {
 	static final String COMPARATION_RESULT = "COMPARATION_RESULT";
 	static final String NAME = "node_compare_condition";
 	static final String SUCCEED = "SUCCEED";
@@ -117,4 +117,9 @@ public class NodeTextCompareCondition extends CompareConditionAdapter {
     protected String getName() {
 	    return NAME;
     }
+	
+	public String getNodeItem() {
+		return nodeItem;
+	}
+
 }
