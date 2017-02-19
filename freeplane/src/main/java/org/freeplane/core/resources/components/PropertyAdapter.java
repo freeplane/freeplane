@@ -36,6 +36,11 @@ public class PropertyAdapter {
 	private String label;
 
 	private final String name;
+	private JLabel labelComponent;
+
+	public JLabel getLabelComponent() {
+		return labelComponent;
+	}
 
 	public PropertyAdapter(final String name) {
 		this(name, "OptionPanel." + name, "OptionPanel." + name + ".tooltip");
@@ -68,14 +73,14 @@ public class PropertyAdapter {
 	protected void layout(DefaultFormBuilder builder, JComponent component){
 		final String labelKey = getLabel();
 		final String optionalText = TextUtils.getOptionalText(labelKey);
-		final JLabel label = builder.append(optionalText, component);
+		labelComponent = builder.append(optionalText, component);
 		if(optionalText != null)
-			TranslatedElement.TEXT.setKey(label, labelKey);
+			TranslatedElement.TEXT.setKey(labelComponent, labelKey);
 		String tooltipKey = getTooltip();
 		String tooltip = TextUtils.getOptionalText(tooltipKey, null);
 		if (tooltipKey != null)
-			TranslatedElement.TOOLTIP.setKey(label, tooltipKey);
-		label.setToolTipText(tooltip);
+			TranslatedElement.TOOLTIP.setKey(labelComponent, tooltipKey);
+		labelComponent.setToolTipText(tooltip);
 		component.setToolTipText(tooltip);
 	}
 }
