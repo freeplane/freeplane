@@ -227,10 +227,12 @@ public class MTextController extends TextController {
 			
 			@Override
 			public void nodeChanged(NodeChangeEvent event) {
-				NodeModel node = event.getNode();
-				if (LogicalStyleController.getController().conditionalStylesOf(node).dependOnCondition(DEPENDS_ON_PARENT)){
-					for (NodeModel child : node.getChildren())
-						modeController.getMapController().delayedNodeRefresh(child, NodeModel.UNKNOWN_PROPERTY, null, null);
+				if(event.getProperty().equals(NodeModel.NODE_TEXT)) {
+					NodeModel node = event.getNode();
+					if (LogicalStyleController.getController().conditionalStylesOf(node).dependOnCondition(DEPENDS_ON_PARENT)){
+						for (NodeModel child : node.getChildren())
+							modeController.getMapController().delayedNodeRefresh(child, NodeModel.UNKNOWN_PROPERTY, null, null);
+					}
 				}
 			}
 		});

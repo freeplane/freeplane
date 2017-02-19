@@ -51,6 +51,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.DelayedRunner;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -248,6 +249,8 @@ public class MapController extends SelectionController implements IExtension{
 			actionSelectorOnChange.remove(action);
 		}
 	}
+	
+	
 
 	/**
 	 * This class sortes nodes by ascending depth of their paths to root. This
@@ -290,6 +293,7 @@ public class MapController extends SelectionController implements IExtension{
 	public MapController(ModeController modeController) {
 		super();
 		modeController.setMapController(this);
+		refresher = new Refresher();
 		this.modeController = modeController;
 		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
 		addMapLifeCycleListener(modeController.getController());
@@ -870,11 +874,11 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	// nodes may only be refreshed by their own ModeController, so we have to store that too
-	private final ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue> nodesToRefresh = new ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue>();
 	private final ActionEnablerOnChange actionEnablerOnChange;
 	private final ActionSelectorOnChange actionSelectorOnChange;
+	private final Refresher refresher;
 
-	private static class NodeRefreshKey{
+	static class NodeRefreshKey{
 		final NodeModel node;
 		final Object property;
 		public NodeRefreshKey(NodeModel node, Object property) {
@@ -898,7 +902,7 @@ public class MapController extends SelectionController implements IExtension{
 		}
 	}
 
-	private static class NodeRefreshValue{
+	static class NodeRefreshValue{
 		final ModeController controller;
 		Object oldValue;
 		Object newValue;
@@ -911,38 +915,57 @@ public class MapController extends SelectionController implements IExtension{
 		}
 
 	}
+	
+	static class Refresher { 
+		private final ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue> nodesToRefresh = new ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue>();
+		private boolean refreshRunning;
 
-	/** optimization of nodeRefresh() as it handles multiple nodes in one Runnable, even nodes that weren't on the
-	 * list when the thread was started.*/
-	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
-	                               final Object newValue) {
-	    final boolean startThread = nodesToRefresh.isEmpty();
-	    final NodeRefreshValue value = new NodeRefreshValue(Controller.getCurrentModeController(), oldValue, newValue);
-		final NodeRefreshKey key = new NodeRefreshKey(node, property);
-		final NodeRefreshValue old = nodesToRefresh.put(key, value);
-		if(old != null && old.newValue != value.newValue){
-			old.newValue = value.newValue;
-			nodesToRefresh.put(key, old);
-		}
-        if (startThread) {
-			final Runnable refresher = new Runnable() {
-				public void run() {
-					final ModeController currentModeController = Controller.getCurrentModeController();
-					final Iterator<Entry<NodeRefreshKey, NodeRefreshValue>> it = nodesToRefresh.entrySet().iterator();
-					while (it.hasNext()) {
-					    final Entry<NodeRefreshKey, NodeRefreshValue> entry = it.next();
-					    final NodeRefreshValue info = entry.getValue();
-					    if (info.controller == currentModeController){
-					        final NodeRefreshKey key = entry.getKey();
-							currentModeController.getMapController().nodeRefresh(key.node, key.property, info.oldValue, info.newValue);
-					    }
-					    it.remove();
+		/** optimization of nodeRefresh() as it handles multiple nodes in one Runnable, even nodes that weren't on the
+		 * list when the thread was started.*/
+		void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
+				final Object newValue) {
+			if(refreshRunning){
+				LogUtils.severe("delayedNodeRefresh already running, property change ignored", new RuntimeException());
+				return;
+			}
+			final boolean startThread = nodesToRefresh.isEmpty();
+			final NodeRefreshValue value = new NodeRefreshValue(Controller.getCurrentModeController(), oldValue, newValue);
+			final NodeRefreshKey key = new NodeRefreshKey(node, property);
+			final NodeRefreshValue old = nodesToRefresh.put(key, value);
+			if(old != null && old.newValue != value.newValue){
+				old.newValue = value.newValue;
+				nodesToRefresh.put(key, old);
+			}
+			if (startThread) {
+				final Runnable refresher = new Runnable() {
+					public void run() {
+						final ModeController currentModeController = Controller.getCurrentModeController();
+						@SuppressWarnings("unchecked")
+						final Entry<NodeRefreshKey, NodeRefreshValue>[] entries = nodesToRefresh.entrySet().toArray(new Entry[]{} );
+						nodesToRefresh.clear();
+						refreshRunning = true;
+						try {
+							for (Entry<NodeRefreshKey, NodeRefreshValue> entry : entries) {
+								final NodeRefreshValue info = entry.getValue();
+								if (info.controller == currentModeController){
+									final NodeRefreshKey key = entry.getKey();
+									currentModeController.getMapController().nodeRefresh(key.node, key.property, info.oldValue, info.newValue);
+								}
+							}
+						} finally {
+							refreshRunning = false;
+						}
 					}
-				}
-			};
-			EventQueue.invokeLater(refresher);
+				};
+				EventQueue.invokeLater(refresher);
+			}
 		}
 	}
+	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
+			final Object newValue){
+		refresher.delayedNodeRefresh(node, property, oldValue, newValue);
+	}
+	
 
 	public void removeMapChangeListener(final IMapChangeListener listener) {
 		mapChangeListeners.remove(listener);
