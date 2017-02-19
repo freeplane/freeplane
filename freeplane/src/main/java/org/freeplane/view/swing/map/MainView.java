@@ -63,7 +63,6 @@ import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
-import org.freeplane.features.map.HideChildSubtree;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
@@ -272,7 +271,7 @@ public abstract class MainView extends ZoomableLabel {
 			return FoldingMark.ITSELF_FOLDED;
 		}
 		for (final NodeModel child : mapController.childrenUnfolded(node)) {
-			if (child.hasVisibleContent() && child.containsExtension(HideChildSubtree.class)) {
+			if (child.hasVisibleContent() && nodeView.isChildHidden(child)) {
 				return FoldingMark.ITSELF_FOLDED;
 			}
 		}
@@ -337,7 +336,7 @@ public abstract class MainView extends ZoomableLabel {
 			final FoldingMark foldingCircle;
 			if(markType.equals(FoldingMark.UNFOLDED)) {
 				final NodeModel node = nodeView.getModel();
-				if(mapController.hasHiddenChildren(node))
+				if(nodeView.hasHiddenChildren())
 					foldingCircle = FoldingMark.FOLDING_CIRCLE_HIDDEN_CHILD;
 				else
 					foldingCircle = FoldingMark.FOLDING_CIRCLE_UNFOLDED;

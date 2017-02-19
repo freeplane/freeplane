@@ -64,6 +64,7 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
@@ -404,16 +405,15 @@ public class MapController extends SelectionController implements IExtension{
 	public boolean showNextChild(final NodeModel node) {
 		if (node.getChildCount() == 0)
 			return false;
-		final boolean unfold = Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node);
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		final boolean unfold = mapViewManager.isFoldedOnCurrentView(node);
 		if (unfold){
-			for(NodeModel child:childrenUnfolded(node)){
-				child.addExtension(HideChildSubtree.instance);
-			}
+			mapViewManager.hideChildren(node);
 			setFoldingState(node, false);
 		}
 		boolean childShown = false;
 		for(NodeModel child:childrenUnfolded(node)){
-			if (child.removeExtension(HideChildSubtree.instance)) {
+			if (mapViewManager.showHiddenNode(child)) {
 				if (child.hasVisibleContent()) {
 					childShown = true;
 					break;
@@ -432,18 +432,9 @@ public class MapController extends SelectionController implements IExtension{
 
 
 	private void fireNodeUnfold(final NodeModel node) {
-		node.fireNodeChanged(new NodeChangeEvent(node, HideChildSubtree.instance, null,
+		node.fireNodeChanged(new NodeChangeEvent(node, NodeView.Properties.HIDDEN_CHILDREN, null,
 				null));
     }
-
-	public boolean hasHiddenChildren(final NodeModel node){
-		for(NodeModel child:childrenUnfolded(node)){
-			if (child.containsExtension(HideChildSubtree.class)){
-				return true;
-			}
-		}
-		return false;
-	}
 
 	private void fireFoldingChanged(final NodeModel node) {
 	    if (isFoldingPersistentAlways()) {
@@ -460,19 +451,15 @@ public class MapController extends SelectionController implements IExtension{
 
 
 	protected boolean unfoldHiddenChildren(NodeModel node) {
-		final List<NodeModel> children = childrenFolded(node);
-		boolean changed = false;
-		for (NodeModel child : children){
-			if(child.removeExtension(HideChildSubtree.class) != null)
-				changed = true;
-		}
-		return changed;
-    }
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		return ! mapViewManager.isFoldedOnCurrentView(node) 
+				&& mapViewManager.unfoldHiddenChildren(node);
+	}
 
 
 	public boolean canBeUnfoldedOnCurrentView(final NodeModel node) {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		final boolean isFolded = mapViewManager.isFoldedOnCurrentView(node) ||  hasHiddenChildren(node);
+		final boolean isFolded = mapViewManager.isFoldedOnCurrentView(node) ||  mapViewManager.hasHiddenChildren(node);
 		for(int i = 0; i < node.getChildCount(); i++){
 			final NodeModel child = node.getChildAt(i);
 			if(child.hasVisibleContent()){

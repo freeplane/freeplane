@@ -951,4 +951,60 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 	}
 
+	@Override
+	public boolean isChildHidden(NodeModel node) {
+		if(selectedMapView == null)
+			return false;
+		final NodeModel parentNode = node.getParentNode();
+		if(parentNode == null)
+			return false;
+		final NodeView nodeView = selectedMapView.getNodeView(parentNode);
+		if(nodeView == null)
+			return false;
+		return nodeView.isChildHidden(node);
+	}
+
+	@Override
+	public boolean hasHiddenChildren(NodeModel node) {
+		if(selectedMapView == null)
+			return false;
+		final NodeView nodeView = selectedMapView.getNodeView(node);
+		if(nodeView == null)
+			return false;
+		return nodeView.hasHiddenChildren();
+	}
+
+	@Override
+	public boolean unfoldHiddenChildren(NodeModel node) {
+		if(selectedMapView == null)
+			return false;
+		final NodeView nodeView = selectedMapView.getNodeView(node);
+		if(nodeView == null)
+			return false;
+		return nodeView.unfoldHiddenChildren();
+	}
+
+	@Override
+	public void hideChildren(NodeModel node) {
+		if(selectedMapView == null)
+			return; 
+		final NodeView nodeView = selectedMapView.getNodeView(node);
+		if(nodeView == null)
+			return; 
+		nodeView.hideChildren(node);
+	}
+
+	@Override
+	public boolean showHiddenNode(NodeModel node) {
+		if(selectedMapView == null)
+			return false;
+		final NodeModel parentNode = node.getParentNode();
+		if(parentNode == null)
+			return false;
+		final NodeView nodeView = selectedMapView.getNodeView(parentNode);
+		if(nodeView == null)
+			return false;
+		return nodeView.showHiddenNode(node);
+	}
+
 }

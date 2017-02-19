@@ -308,4 +308,28 @@ public class HeadlessMapViewController implements IMapViewManager {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
+	public boolean isChildHidden(NodeModel nodeOnPath) {
+		return false;
+	}
+
+	@Override
+	public boolean hasHiddenChildren(NodeModel selected) {
+		return false;
+	}
+
+	@Override
+	public boolean unfoldHiddenChildren(NodeModel node) {
+		return false;
+	}
+
+	@Override
+	public void hideChildren(NodeModel node) {
+	}
+
+	@Override
+	public boolean showHiddenNode(NodeModel child) {
+		return false;
+	}
+
 }

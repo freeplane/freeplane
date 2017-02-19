@@ -242,14 +242,12 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		return k;
 	}
 
-	public int getMinDepth(final NodeModel node) {
+	private int getMinDepth(final NodeModel node) {
 		final EncryptionModel encryptionModel = EncryptionModel.getModel(node);
 		if (encryptionModel != null && !encryptionModel.isAccessible() ) {
 			return Integer.MAX_VALUE;
 		}
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		if(node.containsExtension(HideChildSubtree.class))
-			return depth(node) - 1;
 		if (mapController.isFolded(node)) {
 			return depth(node);
 		}
