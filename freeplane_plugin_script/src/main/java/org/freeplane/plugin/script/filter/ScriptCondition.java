@@ -89,15 +89,16 @@ public class ScriptCondition extends ASelectableCondition {
 
 	public boolean checkNodeInFormulaContext(NodeModel node){
 		final ScriptContext scriptContext = new ScriptContext();
-		final Object result = FormulaUtils.eval(node, scriptContext, (String)script.getScript());
-		if(result instanceof Boolean)
-			return (Boolean) result;
-		if(result instanceof Number)
-			return ((Number) result).doubleValue() != 0;
-        final String info = TextUtils.format(SCRIPT_FILTER_ERROR_RESOURCE, createDescription(),
-        	node.toString(), String.valueOf(result));
-        setErrorStatus(info);
-        return false;
+		scriptContext.push(node, (String)script.getScript());
+		script.setScriptContext(scriptContext);
+		try {
+			final boolean checkNode = checkNode(node);
+			return checkNode;
+		}
+		finally {
+			scriptContext.pop();
+			script.setScriptContext(null);
+		}
 	}
 
 
