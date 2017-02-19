@@ -15,6 +15,8 @@ Improved presentation panel
 Optional presentation automatics "processesUpDownKeys", "switchToFullScreen", "switchToPresentationMode"
 Increased sensitive area for image scaling
 No special treatment for white space nodes when content is copied to text
+Option to paste images from files
+Dragged and dropped files are copied into directory mindmap_files/ if CONTROL key is pressed
 
 ===============================
 1.6.0
