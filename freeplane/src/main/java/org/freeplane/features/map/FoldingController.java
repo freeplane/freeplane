@@ -267,14 +267,13 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	public boolean handleMouseWheelEvent(final MouseWheelEvent e) {
 		if ((e.getModifiers() & InputEvent.ALT_MASK) != 0) {
 			Controller controller = Controller.getCurrentController();
-			final NodeModel rootNode = controller.getMap().getRootNode();
+			final IMapSelection selection = controller.getSelection();
+			final NodeModel node = selection.getSelected();
 			if (e.getWheelRotation() > 0) {
-				unfoldOneStage(rootNode);
+				unfoldOneStage(node);
 			}
 			else {
-				final ModeController modeController = controller.getModeController();
-				modeController.getMapController().select(controller.getMap().getRootNode());
-				foldOneStage(rootNode);
+				foldOneStage(node);
 			}
 			return true;
 		}
