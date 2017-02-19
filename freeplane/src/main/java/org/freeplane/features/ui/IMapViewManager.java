@@ -152,4 +152,14 @@ public interface IMapViewManager {
 	public void closeWithoutSaving();
 
 	public void moveFocusFromDescendantToSelection(Component ancestor);
+
+	public boolean isChildHidden(NodeModel nodeOnPath);
+
+	public boolean hasHiddenChildren(NodeModel selected);
+
+	public boolean unfoldHiddenChildren(NodeModel node);
+
+	public void hideChildren(NodeModel node);
+
+	public boolean showHiddenNode(NodeModel child);
 }
