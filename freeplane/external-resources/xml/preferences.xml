@@ -194,6 +194,7 @@
 				<boolean name="copyFormatToNewSiblingIncludesIcons"/>
 				<boolean name="scrollOnUnfold"/>
 				<boolean name="shouldCenterSmallMaps"/>
+				<boolean name="pasteImagesFromFiles"/>
 			</separator>
 			<separator name="reminderOptions">
 				<boolean name="remindersBlink" />

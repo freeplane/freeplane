@@ -642,7 +642,7 @@ public class UITools {
 			final ResourceController resourceController = ResourceController.getResourceController();
 			int windowX = resourceController.getIntProperty("appwindow_x", 0);
 			int windowY = resourceController.getIntProperty("appwindow_y", 0);
-			final GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(null, windowX, windowY);
+			final GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(windowX, windowY);
 			final int userDefinedScreenResolution; 
 			if(graphicsConfiguration != null) {
 				final Rectangle screenBounds = graphicsConfiguration.getBounds();
@@ -662,9 +662,18 @@ public class UITools {
 			}
 			else {
 				userDefinedScreenResolution = resourceController.getIntProperty("user_defined_screen_resolution", 96);
+				resourceController.setDefaultProperty("monitor_size_inches", Double.toString(0));
 			}
 			return userDefinedScreenResolution  / 72f;
     }
+
+	private static GraphicsConfiguration findGraphicsConfiguration(int windowX, int windowY) {
+		final GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(null, windowX, windowY);
+		if(graphicsConfiguration != null || windowX == 0 && windowY == 0)
+			return graphicsConfiguration;
+		else
+			return findGraphicsConfiguration(null, 0, 0);
+	}
 	
 	public static Font scale(Font font) {
 		return font.deriveFont(font.getSize2D()*FONT_SCALE_FACTOR);
