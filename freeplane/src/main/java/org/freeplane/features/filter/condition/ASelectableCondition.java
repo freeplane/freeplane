@@ -8,6 +8,7 @@ import java.security.PrivilegedExceptionAction;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 
@@ -67,6 +68,10 @@ public abstract class ASelectableCondition  implements ICondition{
         }
     }
 	protected abstract String createDescription();
+	
+	public boolean checkNodeInFormulaContext(NodeModel node){
+		return checkNode(node);
+	}
 	
 	final public JComponent getListCellRendererComponent() {
 		if (renderer == null) {
