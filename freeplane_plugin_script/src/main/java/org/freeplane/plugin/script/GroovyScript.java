@@ -22,7 +22,6 @@ package org.freeplane.plugin.script;
 import java.io.File;
 import java.io.PrintStream;
 import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.regex.Matcher;
@@ -131,8 +130,8 @@ public class GroovyScript implements IScript {
             final PrintStream oldOut = System.out;
             ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             try {
-            	Thread.currentThread().setContextClassLoader(scriptClassLoader);
                 trustedCompileAndCache();
+                Thread.currentThread().setContextClassLoader(scriptClassLoader);
                 final Binding binding = createBinding(node);
                 compiledScript.setBinding(binding);
                 System.setOut(outStream);
@@ -194,19 +193,27 @@ public class GroovyScript implements IScript {
             try {
                 final Binding binding = createBindingForCompilation();
 				scriptClassLoader = ScriptClassLoader.createClassLoader();
+				final Thread currentThread = Thread.currentThread();
+				final ClassLoader oldContextClassLoader = currentThread.getContextClassLoader();
 				scriptClassLoader.setSecurityManager(scriptingSecurityManager);
-				final GroovyShell shell = new GroovyShell(scriptClassLoader, binding,
-                        createCompilerConfiguration());
-                compileTimeStrategy.scriptCompileStart();
-                if (script instanceof String) {
-                    compiledScript = shell.parse((String) script);
-                } else if (script instanceof File) {
-                    compiledScript = shell.parse((File) script);
-                } else {
-                    throw new IllegalArgumentException();
-                }
-                compileTimeStrategy.scriptCompiled();
-                return compiledScript;
+				currentThread.setContextClassLoader(scriptClassLoader);
+				try{
+					final GroovyShell shell = new GroovyShell(scriptClassLoader, binding,
+							createCompilerConfiguration());
+					compileTimeStrategy.scriptCompileStart();
+					if (script instanceof String) {
+						compiledScript = shell.parse((String) script);
+					} else if (script instanceof File) {
+						compiledScript = shell.parse((File) script);
+					} else {
+						throw new IllegalArgumentException();
+					}
+					compileTimeStrategy.scriptCompiled();
+					return compiledScript;
+				}
+				finally{
+					currentThread.setContextClassLoader(oldContextClassLoader);
+				}
             } catch (Throwable e) {
                 errorsInScript = e;
                 throw e;
