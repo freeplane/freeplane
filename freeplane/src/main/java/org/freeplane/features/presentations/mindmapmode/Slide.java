@@ -19,6 +19,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
 
 public class Slide implements NamedElement<Slide>{
+	private static final String PRESENTATION_SLOW_MOTION_KEY = "presentation.slowMotion";
 	public static final Slide ALL_NODES = new Slide("All nodes");
 	private static final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 	private String name;
@@ -391,10 +392,14 @@ public class Slide implements NamedElement<Slide>{
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			if(centeredNode != null && centeredNode.hasVisibleContent()) {
 				displayOnCurrentView(centeredNode);
-				selection.centerNodeSlowly(centeredNode);
 			} else {
-				selection.centerNodeSlowly(selection.getSelected());
+				centeredNode = selection.getSelected();
 			}
+			final boolean slowMotion = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_SLOW_MOTION_KEY, false);
+			if(slowMotion)
+				selection.centerNodeSlowly(centeredNode);
+			else
+				selection.centerNode(centeredNode);
 		}
 	}
 

@@ -307,6 +307,7 @@
 				<boolean name="presentation.zoom"/>
 				<boolean name="presentation.combineAll"/>
 				<number name="presentation_dimmer_transparency" min="0" max="255" />
+				<boolean name="presentation.slowMotion" min="0" max="255" />
 			</separator>
 			
 		</tab>
