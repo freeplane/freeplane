@@ -3,6 +3,7 @@ package org.freeplane.features.presentations.mindmapmode;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.ComboBoxEditor;
@@ -134,9 +135,14 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		btnMove.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JList<Stringifyed<T>> targets = new JList<>(collection.getElements());
+				Vector<String> items = new Vector<>(collection.getSize());
+				for(int i = 1; i <= collection.getSize(); i++){
+					items.addElement(i + ": " + collection.getElement(i-1).getName());
+				}
+				final ComboBoxModel<String> elements = new DefaultComboBoxModel<>(items);
+				JList<String> targets = new JList<>(elements);
 				targets.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				final String title = TextUtils.getText("collection.movebefore");
+				final String title = TextUtils.getText("collection.moveTo");
 				if (JOptionPane.showConfirmDialog(collectionComponent, new JAutoScrollBarPane(targets), title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE) 
 						== JOptionPane.OK_OPTION)
 					UndoableNamedElementCollection.of(collection).moveCurrentElementTo(targets.getSelectedIndex());
