@@ -38,7 +38,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
         if (!(obj instanceof String)) {
             return obj;
         }
-        if (textController.isTextFormattingDisabled(node))
+        if (transformedExtension == node.getUserObject() && textController.isTextFormattingDisabled(node))
             return obj;
         final String text = obj.toString();
         if (!FormulaUtils.containsFormulaCheckHTML(text)) {
@@ -54,6 +54,24 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
         return result;
     }
 
+    public boolean isFormula(TextController textController, final Object obj, final NodeModel node,
+    		Object transformedExtension) {
+    	if (obj instanceof FormattedFormula) {
+    		final FormattedFormula formattedFormula = (FormattedFormula) obj;
+    		return isFormula(textController, formattedFormula.getObject(), node,transformedExtension);
+    	}
+    	if (!(obj instanceof String)) {
+    		return false;
+    	}
+    	if (node != null && transformedExtension == node.getUserObject() && textController.isTextFormattingDisabled(node))
+    		return false;
+    	final String text = obj.toString();
+    	if (!FormulaUtils.containsFormulaCheckHTML(text)) {
+    		return false;
+    	}
+    	return true;
+    }
+    
 	public EditNodeBase createEditor(final NodeModel node, final EditNodeBase.IEditControl editControl,
 	                                 String text, final boolean editLong) {
 		MTextController textController = MTextController.getController();

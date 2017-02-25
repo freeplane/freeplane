@@ -28,7 +28,11 @@ public abstract class AbstractContentTransformer implements IContentTransformer 
 			NodeModel node, Object transformedExtension) {
 		return null;
 	}
-	
-	
+
+	@Override
+	public boolean isFormula(TextController textController, Object content, NodeModel node,
+			Object transformedExtension) {
+		return false;
+	}
 	
 }

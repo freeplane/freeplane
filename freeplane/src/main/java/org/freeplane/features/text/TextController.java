@@ -142,7 +142,7 @@ public class TextController implements IExtension {
 		if(object instanceof String){
 			String string = (String) object;
 			if(string.length() > 0 && string.charAt(0) == '\''){
-				if(isTextFormattingDisabled(nodeModel))
+				if(nodeModel != null && extension == nodeModel.getUserObject() && isTextFormattingDisabled(nodeModel))
 					return string;
 				else
 					return string.substring(1);
@@ -165,6 +165,20 @@ public class TextController implements IExtension {
 			return object;
 	}
 	
+	public boolean isFormula(Object object, final NodeModel nodeModel, Object extension) {
+		if(object instanceof String){
+			String string = (String) object;
+			if(string.length() > 0 && string.charAt(0) == '\''){
+				return false;
+			}
+		}
+		for (IContentTransformer textTransformer : getTextTransformers()) {
+			if(textTransformer.isFormula(this, object, nodeModel, extension))
+				return true;
+		}
+		return false;
+	}
+
 	public Icon getIcon(Object object, final NodeModel nodeModel, Object extension){
 		if(object instanceof HighlightedTransformedObject){
 			return getIcon(((HighlightedTransformedObject)object).getObject(), nodeModel, extension);
@@ -202,7 +216,6 @@ public class TextController implements IExtension {
 		return getTransformedObject(userObject, node, userObject);
 	}
 	
-
 	public Object getTransformedObjectNoThrow(NodeModel node) {
 		final Object userObject = node.getUserObject();
 		return getTransformedObjectNoFormattingNoThrow(userObject, node, userObject);
@@ -418,4 +431,5 @@ public class TextController implements IExtension {
 	public boolean canEdit() {
 		return false;
 	}
+
 }
