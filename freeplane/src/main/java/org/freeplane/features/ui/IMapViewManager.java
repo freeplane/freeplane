@@ -162,4 +162,6 @@ public interface IMapViewManager {
 	public void hideChildren(NodeModel node);
 
 	public boolean showHiddenNode(NodeModel child);
+	
+	public boolean isPresentationModeEnabled();
 }

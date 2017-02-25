@@ -332,4 +332,9 @@ public class HeadlessMapViewController implements IMapViewManager {
 		return false;
 	}
 
+	@Override
+	public boolean isPresentationModeEnabled() {
+		return false;
+	}
+
 }

@@ -5,6 +5,7 @@ import javax.swing.JComponent;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.FrameController;
+import org.freeplane.view.swing.map.MapView;
 
 class PresentationAutomation implements PresentationStateChangeListener{
 
@@ -42,7 +43,7 @@ class PresentationAutomation implements PresentationStateChangeListener{
 		if(ResourceController.getResourceController().getBooleanProperty(SWITCH_TO_PRESENTATION_MODE_PROPERTY)){
 			final JComponent mapViewComponent = getMapViewComponent();
 			if(mapViewComponent != null) {
-				mapViewComponent.putClientProperty("presentation_mode", isPresentationRunning);
+				mapViewComponent.putClientProperty(MapView.PRESENTATION_MODE_ENABLED, isPresentationRunning);
 			}
 		}
 	}

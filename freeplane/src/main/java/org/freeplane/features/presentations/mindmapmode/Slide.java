@@ -12,6 +12,7 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.DisjunctConditions;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.condition.SelectedViewSnapshotCondition;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -347,32 +348,38 @@ public class Slide implements NamedElement<Slide>{
 		if (selectedNodeIds.isEmpty())
 			return;
 		ArrayList<NodeModel> selectedNodes = getSelectedNodes(true);
-		final boolean replacesSelection = ! (showsOnlySpecificNodes || selectedNodes.isEmpty());
-		if (replacesSelection){
-			for (NodeModel node : selectedNodes)
-				displayOnCurrentView(node);
-		}
-		else if(! foldsNodes() && displaysAllSlideNodes()){
+		final boolean displaysAllSlideNodes = displaysAllSlideNodes();
+		final boolean selectsAllVisibleNodes = displaysAllSlideNodes && showsOnlySpecificNodes && mapViewManager.isPresentationModeEnabled();
+		final boolean replacesSelectionBySelectedNodes = ! (selectsAllVisibleNodes || showsOnlySpecificNodes || selectedNodes.isEmpty());
+		if(! replacesSelectionBySelectedNodes && ! foldsNodes() && displaysAllSlideNodes){
 			for (NodeModel node : selectedNodes) {
 				displayOnCurrentView(node);
 				if(showsDescendants)
 					displayDescendantsOnCurrentView(node);
 			}
 		}
-		if (showsOnlySpecificNodes) {
-				final NodeModel firstNode = selectedNodes.get(0);
-				displayOnCurrentView(firstNode);
-				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(firstNode);
-		} 
-		else if (replacesSelection) {
+
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
+		if (replacesSelectionBySelectedNodes) {
 			NodeModel[] nodes = selectedNodes.toArray(new NodeModel[] {});
-			Controller.getCurrentController().getSelection().replaceSelection(nodes);
+			selection.replaceSelection(nodes);
+		}
+		if (showsOnlySpecificNodes) {
+			final NodeModel firstNode = selectedNodes.get(0);
+			selection.selectAsTheOnlyOneSelected(firstNode);
+		} 
+		if(selectsAllVisibleNodes){
+			if(showsAncestors) {
+				final NodeModel rootNode = selection.getSelected().getMap().getRootNode();
+				selection.selectBranch(rootNode, true);
+			} else for(NodeModel node :selectedNodes)
+				selection.selectBranch(node, true);
 		}
 	}
 
 	private void displayDescendantsOnCurrentView(NodeModel node) {
+		mapViewManager.setFoldedOnCurrentView(node, false);
 		for(NodeModel child : node.getChildren()) {
-			mapViewManager.setFoldedOnCurrentView(child, false);
 			displayDescendantsOnCurrentView(child);
 		}
 	}

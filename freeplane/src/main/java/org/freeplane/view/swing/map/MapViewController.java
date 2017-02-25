@@ -380,17 +380,8 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 	@Override
 	public void displayOnCurrentView(NodeModel node) {
-		if(selectedMapView == null)
-			return;
-		final NodeView nodeView = selectedMapView.getNodeView(node);
-		if(nodeView != null)
-			return;
-		final NodeModel parentNode = node.getParentNode();
-		if(parentNode == null)
-			return;
-		displayOnCurrentView(parentNode);
-		setFoldedOnCurrentView(parentNode, false);
-		
+		if(selectedMapView != null)
+			selectedMapView.display(node);
 	}
 	
 	public void setFoldedOnCurrentView(NodeModel node, boolean folded){
@@ -1006,6 +997,11 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		if(nodeView == null)
 			return false;
 		return nodeView.showHiddenNode(node);
+	}
+
+	@Override
+	public boolean isPresentationModeEnabled() {
+		return selectedMapView != null && selectedMapView.isPresentationModeEnabled();
 	}
 
 }

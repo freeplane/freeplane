@@ -217,8 +217,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		public void selectAsTheOnlyOneSelected(final NodeModel node) {
+			if(node.isVisible())
+				display(node);
 			final NodeView nodeView = getNodeView(node);
-			if (nodeView != null && nodeView.isContentVisible()) {
+			if (nodeView != null) {
 				MapView.this.selectAsTheOnlyOneSelected(nodeView);
 			}
 		}
@@ -248,6 +250,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 
 		public void toggleSelected(final NodeModel node) {
+			display(node);
 			MapView.this.toggleSelected(getNodeView(node));
 		}
 
@@ -256,9 +259,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 return;
             ArrayList<NodeView> views = new ArrayList<NodeView>(nodes.length);
             for(NodeModel node : nodes) {
-	            final NodeView nodeView = getNodeView(node);
-	            if(nodeView != null && nodeView.isContentVisible())
-	            	views.add(nodeView);
+            	if(node.isVisible()){
+            		display(node);
+            		final NodeView nodeView = getNodeView(node);
+            		if (nodeView != null) {
+            			views.add(nodeView);
+            		}
+            	}
             }
             if(! views.isEmpty())
             	MapView.this.replaceSelection(views.toArray(new NodeView[]{}));
@@ -444,7 +451,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public static final String RESOURCES_SELECTED_NODE_COLOR = "standardselectednodecolor";
 	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
 	private static final String PRESENTATION_DIMMER_TRANSPARENCY = "presentation_dimmer_transparency";
-	public static final String PRESENTATION_MODE_ENABLED = "presentation_mode";
 	private static final String HIDE_SINGLE_END_CONNECTORS = "hide_single_end_connectors";
 	static private final PropertyChangeListener repaintOnClientPropertyChangeListener = new PropertyChangeListener() {
 		@Override
@@ -488,6 +494,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static int transparency;
 	final private ComponentAdapter backgroundImageResizer;
 	private INodeChangeListener connectorChangeListener;
+	public static final String PRESENTATION_MODE_ENABLED = "presentation_mode";
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -553,7 +560,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		};
 		
-		addPropertyChangeListener(PRESENTATION_MODE_ENABLED, repaintOnClientPropertyChangeListener);
+		addPropertyChangeListener(MapView.PRESENTATION_MODE_ENABLED, repaintOnClientPropertyChangeListener);
 	}
 
 	public void replaceSelection(NodeView[] views) {
@@ -1465,11 +1472,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    		};
 	    Graphics2D g2 = (Graphics2D) g;
 	    paintChildren(g2, paintModes);
-	    if(Boolean.TRUE == getClientProperty(PRESENTATION_MODE_ENABLED))
+	    if(isPresentationModeEnabled())
 	    	paintDimmer(g2, paintModes);
 		paintSelecteds(g2);
 		highlightEditor(g2);
     }
+
+	public boolean isPresentationModeEnabled() {
+		return Boolean.TRUE == getClientProperty(MapView.PRESENTATION_MODE_ENABLED);
+	}
 
 	private void paintChildren(Graphics2D g2, final PaintingMode[] paintModes) {
 	    for(PaintingMode paintingMode : paintModes){
@@ -2092,6 +2103,17 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public void keepNodePosition(final NodeView nodeView, final float horizontalPoint, final float verticalPoint) {
 		mapScroller.anchorToNode(nodeView, horizontalPoint, verticalPoint);
+	}
+
+	public void display(NodeModel node) {
+		final NodeView nodeView = getNodeView(node);
+		if(nodeView != null)
+			return;
+		final NodeModel parentNode = node.getParentNode();
+		if(parentNode == null)
+			return;
+		display(parentNode);
+		getNodeView(parentNode).setFolded(false);
 	}
 
 }
