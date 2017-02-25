@@ -131,7 +131,8 @@ public class GroovyScript implements IScript {
             final PrintStream oldOut = System.out;
             ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             try {
-                trustedCompileAndCache();
+                trustedCompileAndCache(createScriptingSecurityManager());
+                Thread.currentThread().setContextClassLoader(scriptClassLoader);
                 final Binding binding = createBinding(node);
                 compiledScript.setBinding(binding);
                 System.setOut(outStream);
@@ -160,13 +161,13 @@ public class GroovyScript implements IScript {
                 .getScriptingSecurityManager();
     }
 
-    private void trustedCompileAndCache() throws Throwable {
+    private void trustedCompileAndCache(final ScriptingSecurityManager scriptingSecurityManager) throws Throwable {
     	AccessController.doPrivileged(new PrivilegedExceptionAction<Void>() {
 
 			@Override
 			public Void run() throws PrivilegedActionException {
 				try {
-					compileAndCache();
+					compileAndCache(scriptingSecurityManager);
 				} catch (Exception e) {
 					throw new PrivilegedActionException(e);
 				} catch (Error e) {
@@ -179,8 +180,7 @@ public class GroovyScript implements IScript {
 		});
 	}
 
-    private Script compileAndCache() throws Throwable {
-		final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
+    private Script compileAndCache(final ScriptingSecurityManager scriptingSecurityManager) throws Throwable {
         if (compileTimeStrategy.canUseOldCompiledScript()) {
 			scriptClassLoader.setSecurityManager(scriptingSecurityManager);
             return compiledScript;
