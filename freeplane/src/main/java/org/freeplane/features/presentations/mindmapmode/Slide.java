@@ -45,7 +45,7 @@ public class Slide implements NamedElement<Slide>{
 
 	@Override
 	public Slide saveAs(String name) {
-		return new Slide(name, new LinkedHashSet<String>(), null,
+		return new Slide(name, new LinkedHashSet<String>(), centeredNodeId != null ? "" : null,
 		    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, null);
 	}
 
