@@ -324,6 +324,15 @@ public class Slide implements NamedElement<Slide>{
 		applyZoom(zoomFactor);
 		centerSelectedNode();
 		slideFilter.selectVisibleNodesNow();
+		scrollMapToSelectedNode();
+	}
+
+	private void scrollMapToSelectedNode() {
+		if(centeredNodeId == null){
+			final Controller controller = Controller.getCurrentController();
+			final NodeModel selected = controller.getSelection().getSelected();
+			controller.getMapViewManager().scrollNodeToVisible(selected);
+		}
 	}
 
 
