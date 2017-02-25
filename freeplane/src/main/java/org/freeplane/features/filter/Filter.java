@@ -254,7 +254,7 @@ public class Filter {
 		return accessor.getFilterInfo(node);
 	}
 
-	private void selectVisibleNode() {
+	protected void selectVisibleNode() {
 		final IMapSelection mapSelection = Controller.getCurrentController().getSelection();
 		final Collection<NodeModel> selectedNodes = mapSelection.getSelection();
 		final NodeModel[] array = new NodeModel[selectedNodes.size()];

@@ -123,6 +123,27 @@ public class Slide implements NamedElement<Slide>{
 		}
 	}
 	
+	private static class SlideFilter extends Filter {
+		private boolean selectsVisibleNodes;
+
+		private SlideFilter(ICondition condition, boolean areAncestorsShown, boolean areDescendantsShown,
+				boolean applyToVisibleNodesOnly) {
+			super(condition, areAncestorsShown, areDescendantsShown, applyToVisibleNodesOnly);
+			selectsVisibleNodes = false;
+		}
+
+		@Override
+		protected void selectVisibleNode() {
+			if(selectsVisibleNodes)
+				selectVisibleNodesNow();
+		}
+
+		protected void selectVisibleNodesNow() {
+			super.selectVisibleNode();
+			selectsVisibleNodes = true;
+		}
+	}
+
 	private class NodeIterator {
 		
 		private Filter filter;
@@ -295,11 +316,12 @@ public class Slide implements NamedElement<Slide>{
 	}
 
 	void apply(float zoomFactor) {
-		applyFilter();
+		final SlideFilter slideFilter = applyFilter();
 		applySelection();
 		foldNodes();
 		applyZoom(zoomFactor);
 		centerSelectedNode();
+		slideFilter.selectVisibleNodesNow();
 	}
 
 
@@ -370,10 +392,12 @@ public class Slide implements NamedElement<Slide>{
 		return Controller.getCurrentController().getMap();
 	}
 
-	private void applyFilter() {
+	private SlideFilter applyFilter() {
 		MapModel map = getMap();
 		final ICondition condition = getEffectiveFilterCondition();
-		new Filter(condition, showsAncestors, showsDescendants, false).applyFilter(this, map, false);
+		final SlideFilter filter = new SlideFilter(condition, showsAncestors, showsDescendants, false);
+		filter.applyFilter(this, map, false);
+		return filter;
 	}
 
 	public ICondition getEffectiveFilterCondition() {
