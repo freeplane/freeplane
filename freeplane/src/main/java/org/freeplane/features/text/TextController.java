@@ -182,18 +182,18 @@ public class TextController implements IExtension {
 	}
 	
 	/** returns an error message instead of a normal result if something goes wrong. */
-	public Object getTransformedObjectNoThrow(Object data, final NodeModel node, Object extension) {
+	public Object getTransformedObjectNoFormattingNoThrow(Object data, final NodeModel node, Object extension) {
 		try {
-			return getTransformedObject(data, node, extension);
+			final Object transformedObject = getTransformedObject(data, node, extension);
+			if(transformedObject  instanceof HighlightedTransformedObject)
+				return ((HighlightedTransformedObject)transformedObject).getObject();
+			else
+				return transformedObject;
 		}
 		catch (Throwable e) {
 			LogUtils.warn(e.getMessage(), e);
 			return TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
 		}
-	}
-	
-	public Object getTransformedObjectNoFormattingNoThrow(Object data, NodeModel node) {
-		return getTransformedObjectNoThrow(data, node, null);
 	}
 
 	
@@ -205,7 +205,7 @@ public class TextController implements IExtension {
 
 	public Object getTransformedObjectNoThrow(NodeModel node) {
 		final Object userObject = node.getUserObject();
-		return getTransformedObjectNoThrow(userObject, node, userObject);
+		return getTransformedObjectNoFormattingNoThrow(userObject, node, userObject);
 	}
 
 	/** convenience method for getTransformedText().toString. */
@@ -215,7 +215,7 @@ public class TextController implements IExtension {
 	}
 	
 	public String getTransformedTextNoThrow(Object text, final NodeModel nodeModel, Object extension) {
-		text = getTransformedObjectNoThrow(text, nodeModel, extension);
+		text = getTransformedObjectNoFormattingNoThrow(text, nodeModel, extension);
 		return text.toString();
 	}
 
