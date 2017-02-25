@@ -388,9 +388,12 @@ public class Slide implements NamedElement<Slide>{
 		MapModel map = getMap();
 		if (centeredNodeId != null) {
 			NodeModel centeredNode = map.getNodeForID(centeredNodeId);
-			if(centeredNode != null && centeredNode.hasVisibleContent()){
+			final IMapSelection selection = Controller.getCurrentController().getSelection();
+			if(centeredNode != null && centeredNode.hasVisibleContent()) {
 				displayOnCurrentView(centeredNode);
-				Controller.getCurrentController().getSelection().centerNodeSlowly(centeredNode);
+				selection.centerNodeSlowly(centeredNode);
+			} else {
+				selection.centerNodeSlowly(selection.getSelected());
 			}
 		}
 	}
