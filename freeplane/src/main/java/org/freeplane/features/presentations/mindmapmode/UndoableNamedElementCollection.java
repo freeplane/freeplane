@@ -94,11 +94,11 @@ public class UndoableNamedElementCollection<T extends NamedElement<T>> {
 	}
 	
 	public void moveCurrentElementUp() {
-		moveCurrentElementTo(collection.getCurrentElementIndex() + 1);
+		moveCurrentElementTo(collection.getCurrentElementIndex() - 1);
 	}
 	
 	public void moveCurrentElementDown() {
-		moveCurrentElementTo(collection.getCurrentElementIndex() - 1);
+		moveCurrentElementTo(collection.getCurrentElementIndex() + 1);
 	}
 
 	public void moveCurrentElementTo(final int newElementIndex) {
