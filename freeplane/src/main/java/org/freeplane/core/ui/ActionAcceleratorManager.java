@@ -499,7 +499,11 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 
 	private static String replaceModifiersForMac(String accelerator) {
 		if (Compat.isMacOsX()) {
-			accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
+			if(accelerator.length() == 5 
+					&& (accelerator.startsWith("alt ") || accelerator.startsWith("ALT ")))
+				accelerator = "control " + accelerator.charAt(4);
+			else
+				accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
 		}
 		return accelerator;
 	}
