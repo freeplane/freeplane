@@ -203,8 +203,14 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
         into(globalBuild + '/plugins/' + pluginid + '/META-INF/')
     }
 
+    task copyOSGiConfig(type: Copy) {
+        from ("OSGI-INF")
+        into(globalBuild + '/plugins/' + pluginid + '/OSGI-INF/')
+    }
+	
     build.dependsOn copyOSGiJars
     build.dependsOn copyOSGiManifest
+	build.dependsOn copyOSGiConfig
 
     // create a separate non-OSGi(!) jar for each plugin!
     task pluginJar(type: Jar) {

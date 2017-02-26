@@ -19,29 +19,23 @@ package org.freeplane.plugin.script;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
 import java.security.CodeSource;
 import java.security.PermissionCollection;
 import java.security.Permissions;
 import java.security.PrivilegedAction;
-import java.util.Map;
 
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.SourceUnit;
-import org.codehaus.groovy.plugin.GroovyRunner;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.codehaus.groovy.runtime.InvokerInvocationException;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyCodeSource;
 import groovy.lang.GroovyObjectSupport;
 import groovy.lang.GroovyRuntimeException;
-import groovy.lang.GroovySystem;
 import groovy.lang.Script;
 
 /**
@@ -96,116 +90,6 @@ class GroovyShell extends GroovyObjectSupport {
 		catch (GroovyRuntimeException e) {
 			// ignore, was probably a dynamic property
 		}
-	}
-
-	/**
-	 * if (theClass is a Script) {
-	 * run it like a script
-	 * } else if (theClass has a main method) {
-	 * run the main method
-	 * } else if (theClass instanceof GroovyTestCase) {
-	 * use the test runner to run it
-	 * } else if (theClass implements Runnable) {
-	 * if (theClass has a constructor with String[] params)
-	 * instantiate theClass with this constructor and run
-	 * else if (theClass has a no-args constructor)
-	 * instantiate theClass with the no-args constructor and run
-	 * }
-	 */
-	private Object runScriptOrMainOrTestOrRunnable(Class scriptClass, String[] args) {
-		if (scriptClass == null) {
-			return null;
-		}
-		if (Script.class.isAssignableFrom(scriptClass)) {
-			// treat it just like a script if it is one
-			Script script = null;
-			try {
-				script = (Script) scriptClass.newInstance();
-			}
-			catch (InstantiationException e) {
-				// ignore instantiation errors,, try to do main
-			}
-			catch (IllegalAccessException e) {
-				// ignore instantiation errors, try to do main
-			}
-			if (script != null) {
-				script.setBinding(context);
-				script.setProperty("args", args);
-				return script.run();
-			}
-		}
-		try {
-			// let's find a main method
-			scriptClass.getMethod("main", new Class[] { String[].class });
-			// if that main method exist, invoke it
-			return InvokerHelper.invokeMethod(scriptClass, "main", new Object[] { args });
-		}
-		catch (NoSuchMethodException e) {
-			// if it implements Runnable, try to instantiate it
-			if (Runnable.class.isAssignableFrom(scriptClass)) {
-				return runRunnable(scriptClass, args);
-			}
-			for (Map.Entry<String, GroovyRunner> entry : GroovySystem.RUNNER_REGISTRY.entrySet()) {
-				GroovyRunner runner = entry.getValue();
-				if (runner != null && runner.canRun(scriptClass, this.loader)) {
-					return runner.run(scriptClass, this.loader);
-				}
-			}
-			String message = "This script or class could not be run.\n" + "It should either:\n"
-			        + "- have a main method,\n" + "- be a JUnit test or extend GroovyTestCase,\n"
-			        + "- implement the Runnable interface,\n"
-			        + "- or be compatible with a registered script runner. Known runners:\n";
-			if (GroovySystem.RUNNER_REGISTRY.isEmpty()) {
-				message += "  * <none>";
-			}
-			for (Map.Entry<String, GroovyRunner> entry : GroovySystem.RUNNER_REGISTRY.entrySet()) {
-				message += "  * " + entry.getKey() + "\n";
-			}
-			throw new GroovyRuntimeException(message);
-		}
-	}
-
-	private Object runRunnable(Class scriptClass, String[] args) {
-		Constructor constructor = null;
-		Runnable runnable = null;
-		Throwable reason = null;
-		try {
-			// first, fetch the constructor taking String[] as parameter
-			constructor = scriptClass.getConstructor(new Class[] { (new String[] {}).getClass() });
-			try {
-				// instantiate a runnable and run it
-				runnable = (Runnable) constructor.newInstance(new Object[] { args });
-			}
-			catch (Throwable t) {
-				reason = t;
-			}
-		}
-		catch (NoSuchMethodException e1) {
-			try {
-				// otherwise, find the default constructor
-				constructor = scriptClass.getConstructor(new Class[] {});
-				try {
-					// instantiate a runnable and run it
-					runnable = (Runnable) constructor.newInstance();
-				}
-				catch (InvocationTargetException ite) {
-					throw new InvokerInvocationException(ite.getTargetException());
-				}
-				catch (Throwable t) {
-					reason = t;
-				}
-			}
-			catch (NoSuchMethodException nsme) {
-				reason = nsme;
-			}
-		}
-		if (constructor != null && runnable != null) {
-			runnable.run();
-		}
-		else {
-			throw new GroovyRuntimeException("This script or class was runnable but could not be run. ", reason);
-		}
-		return null;
 	}
 
 	private Object getVariable(String name) {
