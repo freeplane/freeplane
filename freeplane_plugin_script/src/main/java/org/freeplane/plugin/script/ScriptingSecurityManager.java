@@ -25,6 +25,7 @@ import java.net.SocketPermission;
 import java.security.AllPermission;
 import java.security.Permission;
 import java.security.Permissions;
+import java.util.Enumeration;
 
 class ScriptingSecurityManager {
 
@@ -76,5 +77,15 @@ class ScriptingSecurityManager {
 	private boolean isAllowed(Permission permission) {
 		final boolean isAllowed = permissions.implies(permission);
 		return isAllowed;
+	}
+	
+	public void checkRequiredPermissions(){
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            final Enumeration<Permission> permissionElements = permissions.elements();
+            while(permissionElements.hasMoreElements())
+            	sm.checkPermission(permissionElements.nextElement());
+        }
+
 	}
 }

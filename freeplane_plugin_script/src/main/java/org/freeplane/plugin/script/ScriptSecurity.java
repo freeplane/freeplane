@@ -42,10 +42,6 @@ public class ScriptSecurity {
     }
 
     ScriptingSecurityManager getScriptingSecurityManager() {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new RuntimePermission("setSecurityManager"));
-        }
         final ScriptingSecurityManager scriptingSecurityManager;
         // get preferences (and store them again after the script execution,
         // such that the scripts are not able to change them).
