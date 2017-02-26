@@ -20,6 +20,8 @@
 package org.freeplane.core.ui;
 
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -102,7 +104,13 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 					LogUtils.severe("can not load icon '" + iconResource + "'");
 				}
 				else {
-					final ImageIcon icon = new ImageIcon(url);
+					final ImageIcon icon = AccessController.doPrivileged(new PrivilegedAction <ImageIcon>() {
+						@Override
+						public ImageIcon run() {
+							return new ImageIcon(url);
+						}
+					}); 
+							
 					putValue(SMALL_ICON, icon);
 					iconCache.put(iconKey, icon);
 				}

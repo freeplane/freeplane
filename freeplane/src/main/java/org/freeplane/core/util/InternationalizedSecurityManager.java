@@ -15,15 +15,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.plugin.script;
+package org.freeplane.core.util;
 
 import java.io.FileDescriptor;
+import java.lang.reflect.ReflectPermission;
 import java.net.InetAddress;
 import java.security.AccessControlException;
+import java.security.Permission;
 
 import org.freeplane.core.util.TextUtils;
 
-class InternationalizedSecurityManager extends SecurityManager {
+public class InternationalizedSecurityManager extends SecurityManager {
 	private static final int PERM_Accept = 0;
 	private static final int PERM_Connect = 1;
 	private static final int PERM_Delete = 7;
@@ -208,4 +210,21 @@ class InternationalizedSecurityManager extends SecurityManager {
 	private SecurityException getException(AccessControlException e, final int pPermissionGroup, final int pPermission) {
 		return getException(e, pPermissionGroup, pPermission, "");
 	}
+
+	@Override
+	public void checkPermission(Permission perm) {
+		disallowSupressingAccessChecks(perm);
+		super.checkPermission(perm);
+	}
+
+	private void disallowSupressingAccessChecks(Permission perm) {
+	}
+
+	@Override
+	public void checkPermission(Permission perm, Object context) {
+		disallowSupressingAccessChecks(perm);
+		super.checkPermission(perm, context);	
+	}
+	
+	
 }
