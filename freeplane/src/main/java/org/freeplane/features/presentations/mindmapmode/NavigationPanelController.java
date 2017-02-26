@@ -250,12 +250,12 @@ class NavigationPanelController {
 	}
 
 	JComponent createNavigationBox() {
-		JButton btnPresent = TranslatedElementFactory.createButton(startPresentationAction, "slide.present");
-		JButton btnStop = TranslatedElementFactory.createButton(stopPresentationAction, "slide.stop");
-		JButton btnFirst = TranslatedElementFactory.createButton(showFirstSlideAction, "slide.first");
-		JButton btnPrevious = TranslatedElementFactory.createButton(showPreviousSlideAction, "slide.previous");
-		JButton btnNext = TranslatedElementFactory.createButton(showNextSlideAction, "slide.next");
-		JButton btnLast = TranslatedElementFactory.createButton(showLastSlideAction, "slide.last");
+		JButton btnPresent = TranslatedElementFactory.createButtonWithIcon(startPresentationAction, "StartPresentationAction.icon", "slide.present");
+		JButton btnStop = TranslatedElementFactory.createButtonWithIcon(stopPresentationAction, "StopPresentationAction.icon", "slide.stop");
+		JButton btnFirst = TranslatedElementFactory.createButtonWithIcon(showFirstSlideAction, "ShowFirstSlideAction.icon", "slide.first");
+		JButton btnPrevious = TranslatedElementFactory.createButtonWithIcon(showPreviousSlideAction, "ShowPreviousSlideAction.icon", "slide.previous");
+		JButton btnNext = TranslatedElementFactory.createButtonWithIcon(showNextSlideAction, "ShowNextSlideAction.icon", "slide.next");
+		JButton btnLast = TranslatedElementFactory.createButtonWithIcon(showLastSlideAction, "ShowLastSlideAction.icon", "slide.last");
 		JPanel slideButtons = new JPanel(new GridLayout(2, 4));
 		Box slideBox = Box.createHorizontalBox();
 		TranslatedElementFactory.createTitledBorder(slideBox, "slide.presentation");

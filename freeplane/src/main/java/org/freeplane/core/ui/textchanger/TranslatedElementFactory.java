@@ -11,9 +11,7 @@ import javax.swing.JToggleButton;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.JAutoToggleButton;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.factory.ImageIconFactory;
 
@@ -76,11 +74,21 @@ public class TranslatedElementFactory {
 		TranslatedElement.TOOLTIP.setKey(component, labelKey);
 	}
 
-	public static JButton createButtonWithIcon(final String iconKey, final String tooltipKey ) {
+	public static JButton createButtonWithIcon(Action action, final String iconKey, final String tooltipKey ) {
 		final ImageIcon icon = ResourceController.getResourceController().getIcon(iconKey, ImageIconFactory.DEFAULT_UI_ICON_HEIGHT);
-		final JButton button = new JButton(icon);
+		final JButton button;
+		if (action == null)
+			button = new JButton(icon);
+		else {
+			button = new JButton(action);
+			button.setText(null);
+			button.setIcon(icon);
+		}
 		createTooltip(button, tooltipKey);
 		return button;
+	}
+	public static JButton createButtonWithIcon(final String iconKey, final String tooltipKey ) {
+		return createButtonWithIcon(null, iconKey, tooltipKey);
 	}
 
 }
