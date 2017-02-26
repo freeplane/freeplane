@@ -130,7 +130,8 @@ public class GroovyScript implements IScript {
             final PrintStream oldOut = System.out;
             ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             try {
-                trustedCompileAndCache(createScriptingSecurityManager());
+                trustedCompileAndCache();
+                scriptClassLoader.checkRequiredPermissions();
                 Thread.currentThread().setContextClassLoader(scriptClassLoader);
                 final Binding binding = createBinding(node);
                 compiledScript.setBinding(binding);
@@ -179,8 +180,9 @@ public class GroovyScript implements IScript {
 		});
 	}
 
-    private Script compileAndCache(final ScriptingSecurityManager scriptingSecurityManager) throws Throwable {
-        if (compileTimeStrategy.canUseOldCompiledScript()) {
+    private Script compileAndCache() throws Throwable {
+    	final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
+    	if (compileTimeStrategy.canUseOldCompiledScript()) {
 			scriptClassLoader.setSecurityManager(scriptingSecurityManager);
             return compiledScript;
         }
