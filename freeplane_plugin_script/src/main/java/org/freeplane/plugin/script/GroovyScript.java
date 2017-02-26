@@ -22,7 +22,6 @@ package org.freeplane.plugin.script;
 import java.io.File;
 import java.io.PrintStream;
 import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.regex.Matcher;
@@ -132,6 +131,8 @@ public class GroovyScript implements IScript {
             ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             try {
                 trustedCompileAndCache();
+                scriptClassLoader.checkRequiredPermissions();
+                Thread.currentThread().setContextClassLoader(scriptClassLoader);
                 final Binding binding = createBinding(node);
                 compiledScript.setBinding(binding);
                 System.setOut(outStream);
@@ -160,13 +161,13 @@ public class GroovyScript implements IScript {
                 .getScriptingSecurityManager();
     }
 
-    private void trustedCompileAndCache() throws Throwable {
+    private void trustedCompileAndCache(final ScriptingSecurityManager scriptingSecurityManager) throws Throwable {
     	AccessController.doPrivileged(new PrivilegedExceptionAction<Void>() {
 
 			@Override
 			public Void run() throws PrivilegedActionException {
 				try {
-					compileAndCache();
+					compileAndCache(scriptingSecurityManager);
 				} catch (Exception e) {
 					throw new PrivilegedActionException(e);
 				} catch (Error e) {
@@ -180,8 +181,8 @@ public class GroovyScript implements IScript {
 	}
 
     private Script compileAndCache() throws Throwable {
-		final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
-        if (compileTimeStrategy.canUseOldCompiledScript()) {
+    	final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
+    	if (compileTimeStrategy.canUseOldCompiledScript()) {
 			scriptClassLoader.setSecurityManager(scriptingSecurityManager);
             return compiledScript;
         }
@@ -193,19 +194,27 @@ public class GroovyScript implements IScript {
             try {
                 final Binding binding = createBindingForCompilation();
 				scriptClassLoader = ScriptClassLoader.createClassLoader();
+				final Thread currentThread = Thread.currentThread();
+				final ClassLoader oldContextClassLoader = currentThread.getContextClassLoader();
 				scriptClassLoader.setSecurityManager(scriptingSecurityManager);
-				final GroovyShell shell = new GroovyShell(scriptClassLoader, binding,
-                        createCompilerConfiguration());
-                compileTimeStrategy.scriptCompileStart();
-                if (script instanceof String) {
-                    compiledScript = shell.parse((String) script);
-                } else if (script instanceof File) {
-                    compiledScript = shell.parse((File) script);
-                } else {
-                    throw new IllegalArgumentException();
-                }
-                compileTimeStrategy.scriptCompiled();
-                return compiledScript;
+				currentThread.setContextClassLoader(scriptClassLoader);
+				try{
+					final GroovyShell shell = new GroovyShell(scriptClassLoader, binding,
+							createCompilerConfiguration());
+					compileTimeStrategy.scriptCompileStart();
+					if (script instanceof String) {
+						compiledScript = shell.parse((String) script);
+					} else if (script instanceof File) {
+						compiledScript = shell.parse((File) script);
+					} else {
+						throw new IllegalArgumentException();
+					}
+					compileTimeStrategy.scriptCompiled();
+					return compiledScript;
+				}
+				finally{
+					currentThread.setContextClassLoader(oldContextClassLoader);
+				}
             } catch (Throwable e) {
                 errorsInScript = e;
                 throw e;

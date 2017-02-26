@@ -56,16 +56,31 @@ public class ConditionalContentTransformer implements IContentTransformer, IEdit
 	public Object transformContent(TextController textController,
 			Object content, NodeModel node, Object transformedExtension)
 			throws TransformationException {
-		if (ResourceController.getResourceController().getBooleanProperty(prefsConditionKey))
+		if (isTransformationActive())
 			return target.transformContent(textController, content, node, transformedExtension);
 		else
 			return content;
 	}
 
+	private boolean isTransformationActive() {
+		return ResourceController.getResourceController().getBooleanProperty(prefsConditionKey);
+	}
+	
+	
+
+	@Override
+	public boolean isFormula(TextController textController,
+			Object content, NodeModel node, Object transformedExtension) {
+			if (isTransformationActive())
+				return target.isFormula(textController, content, node, transformedExtension);
+			else
+				return false;
+	}
+
 	@Override
 	public Icon getIcon(TextController textController, Object content,
 			NodeModel node, Object transformedExtension) {
-		if (ResourceController.getResourceController().getBooleanProperty(prefsConditionKey))
+		if (isTransformationActive())
 			return target.getIcon(textController, content, node, transformedExtension);
 		else
 			return null;
@@ -83,7 +98,7 @@ public class ConditionalContentTransformer implements IContentTransformer, IEdit
 
 	@Override
 	public EditNodeBase createEditor(NodeModel nodeModel, IEditControl editControl, String text, boolean editLong) {
-		if (target instanceof IEditBaseCreator && ResourceController.getResourceController().getBooleanProperty(prefsConditionKey))
+		if (target instanceof IEditBaseCreator && isTransformationActive())
 			return ((IEditBaseCreator)target).createEditor(nodeModel, editControl, text, editLong);
 		else
 			return null;

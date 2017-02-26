@@ -123,7 +123,7 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 			Collection<IStyle> matchingStyles = new LinkedHashSet<IStyle>();
 			for(Item item : styles){
 				final ASelectableCondition condition = item.getCondition();
-				if( item.isActive() && (condition == null || condition.checkNode(node))){
+				if( item.isActive() && (condition == null || condition.checkNodeInFormulaContext(node))){
 					matchingStyles.add(item.style);
 					if(item.isLast()){
 						break;

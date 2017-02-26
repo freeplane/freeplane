@@ -12,12 +12,14 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.DisjunctConditions;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.condition.SelectedViewSnapshotCondition;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
 
 public class Slide implements NamedElement<Slide>{
+	private static final String PRESENTATION_SLOW_MOTION_KEY = "presentation.slowMotion";
 	public static final Slide ALL_NODES = new Slide("All nodes");
 	private static final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 	private String name;
@@ -44,7 +46,7 @@ public class Slide implements NamedElement<Slide>{
 
 	@Override
 	public Slide saveAs(String name) {
-		return new Slide(name, new LinkedHashSet<String>(), null,
+		return new Slide(name, new LinkedHashSet<String>(), centeredNodeId != null ? "" : null,
 		    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, null);
 	}
 
@@ -123,6 +125,27 @@ public class Slide implements NamedElement<Slide>{
 		}
 	}
 	
+	private static class SlideFilter extends Filter {
+		private boolean selectsVisibleNodes;
+
+		private SlideFilter(ICondition condition, boolean areAncestorsShown, boolean areDescendantsShown,
+				boolean applyToVisibleNodesOnly) {
+			super(condition, areAncestorsShown, areDescendantsShown, applyToVisibleNodesOnly);
+			selectsVisibleNodes = false;
+		}
+
+		@Override
+		protected void selectVisibleNode() {
+			if(selectsVisibleNodes)
+				selectVisibleNodesNow();
+		}
+
+		protected void selectVisibleNodesNow() {
+			super.selectVisibleNode();
+			selectsVisibleNodes = true;
+		}
+	}
+
 	private class NodeIterator {
 		
 		private Filter filter;
@@ -295,11 +318,21 @@ public class Slide implements NamedElement<Slide>{
 	}
 
 	void apply(float zoomFactor) {
-		applyFilter();
+		final SlideFilter slideFilter = applyFilter();
 		applySelection();
 		foldNodes();
 		applyZoom(zoomFactor);
 		centerSelectedNode();
+		slideFilter.selectVisibleNodesNow();
+		scrollMapToSelectedNode();
+	}
+
+	private void scrollMapToSelectedNode() {
+		if(centeredNodeId == null){
+			final Controller controller = Controller.getCurrentController();
+			final NodeModel selected = controller.getSelection().getSelected();
+			controller.getMapViewManager().scrollNodeToVisible(selected);
+		}
 	}
 
 
@@ -325,32 +358,38 @@ public class Slide implements NamedElement<Slide>{
 		if (selectedNodeIds.isEmpty())
 			return;
 		ArrayList<NodeModel> selectedNodes = getSelectedNodes(true);
-		final boolean replacesSelection = ! (showsOnlySpecificNodes || selectedNodes.isEmpty());
-		if (replacesSelection){
-			for (NodeModel node : selectedNodes)
-				displayOnCurrentView(node);
-		}
-		else if(! foldsNodes() && displaysAllSlideNodes()){
+		final boolean displaysAllSlideNodes = displaysAllSlideNodes();
+		final boolean selectsAllVisibleNodes = displaysAllSlideNodes && showsOnlySpecificNodes && mapViewManager.isPresentationModeEnabled();
+		final boolean replacesSelectionBySelectedNodes = ! (selectsAllVisibleNodes || showsOnlySpecificNodes || selectedNodes.isEmpty());
+		if(! replacesSelectionBySelectedNodes && ! foldsNodes() && displaysAllSlideNodes){
 			for (NodeModel node : selectedNodes) {
 				displayOnCurrentView(node);
 				if(showsDescendants)
 					displayDescendantsOnCurrentView(node);
 			}
 		}
-		if (showsOnlySpecificNodes) {
-				final NodeModel firstNode = selectedNodes.get(0);
-				displayOnCurrentView(firstNode);
-				Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(firstNode);
-		} 
-		else if (replacesSelection) {
+
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
+		if (replacesSelectionBySelectedNodes) {
 			NodeModel[] nodes = selectedNodes.toArray(new NodeModel[] {});
-			Controller.getCurrentController().getSelection().replaceSelection(nodes);
+			selection.replaceSelection(nodes);
+		}
+		if (showsOnlySpecificNodes) {
+			final NodeModel firstNode = selectedNodes.get(0);
+			selection.selectAsTheOnlyOneSelected(firstNode);
+		} 
+		if(selectsAllVisibleNodes){
+			if(showsAncestors) {
+				final NodeModel rootNode = selection.getSelected().getMap().getRootNode();
+				selection.selectBranch(rootNode, true);
+			} else for(NodeModel node :selectedNodes)
+				selection.selectBranch(node, true);
 		}
 	}
 
 	private void displayDescendantsOnCurrentView(NodeModel node) {
+		mapViewManager.setFoldedOnCurrentView(node, false);
 		for(NodeModel child : node.getChildren()) {
-			mapViewManager.setFoldedOnCurrentView(child, false);
 			displayDescendantsOnCurrentView(child);
 		}
 	}
@@ -359,10 +398,17 @@ public class Slide implements NamedElement<Slide>{
 		MapModel map = getMap();
 		if (centeredNodeId != null) {
 			NodeModel centeredNode = map.getNodeForID(centeredNodeId);
-			if(centeredNode != null && centeredNode.hasVisibleContent()){
+			final IMapSelection selection = Controller.getCurrentController().getSelection();
+			if(centeredNode != null && centeredNode.hasVisibleContent()) {
 				displayOnCurrentView(centeredNode);
-				Controller.getCurrentController().getSelection().centerNodeSlowly(centeredNode);
+			} else {
+				centeredNode = selection.getSelected();
 			}
+			final boolean slowMotion = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_SLOW_MOTION_KEY, false);
+			if(slowMotion)
+				selection.centerNodeSlowly(centeredNode);
+			else
+				selection.centerNode(centeredNode);
 		}
 	}
 
@@ -370,10 +416,12 @@ public class Slide implements NamedElement<Slide>{
 		return Controller.getCurrentController().getMap();
 	}
 
-	private void applyFilter() {
+	private SlideFilter applyFilter() {
 		MapModel map = getMap();
 		final ICondition condition = getEffectiveFilterCondition();
-		new Filter(condition, showsAncestors, showsDescendants, false).applyFilter(this, map, false);
+		final SlideFilter filter = new SlideFilter(condition, showsAncestors, showsDescendants, false);
+		filter.applyFilter(this, map, false);
+		return filter;
 	}
 
 	public ICondition getEffectiveFilterCondition() {

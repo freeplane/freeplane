@@ -51,6 +51,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.DelayedRunner;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -64,6 +65,7 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
@@ -247,6 +249,8 @@ public class MapController extends SelectionController implements IExtension{
 			actionSelectorOnChange.remove(action);
 		}
 	}
+	
+	
 
 	/**
 	 * This class sortes nodes by ascending depth of their paths to root. This
@@ -289,6 +293,7 @@ public class MapController extends SelectionController implements IExtension{
 	public MapController(ModeController modeController) {
 		super();
 		modeController.setMapController(this);
+		refresher = new Refresher();
 		this.modeController = modeController;
 		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
 		addMapLifeCycleListener(modeController.getController());
@@ -404,16 +409,15 @@ public class MapController extends SelectionController implements IExtension{
 	public boolean showNextChild(final NodeModel node) {
 		if (node.getChildCount() == 0)
 			return false;
-		final boolean unfold = Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node);
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		final boolean unfold = mapViewManager.isFoldedOnCurrentView(node);
 		if (unfold){
-			for(NodeModel child:childrenUnfolded(node)){
-				child.addExtension(HideChildSubtree.instance);
-			}
+			mapViewManager.hideChildren(node);
 			setFoldingState(node, false);
 		}
 		boolean childShown = false;
 		for(NodeModel child:childrenUnfolded(node)){
-			if (child.removeExtension(HideChildSubtree.instance)) {
+			if (mapViewManager.showHiddenNode(child)) {
 				if (child.hasVisibleContent()) {
 					childShown = true;
 					break;
@@ -432,18 +436,9 @@ public class MapController extends SelectionController implements IExtension{
 
 
 	private void fireNodeUnfold(final NodeModel node) {
-		node.fireNodeChanged(new NodeChangeEvent(node, HideChildSubtree.instance, null,
+		node.fireNodeChanged(new NodeChangeEvent(node, NodeView.Properties.HIDDEN_CHILDREN, null,
 				null));
     }
-
-	public boolean hasHiddenChildren(final NodeModel node){
-		for(NodeModel child:childrenUnfolded(node)){
-			if (child.containsExtension(HideChildSubtree.class)){
-				return true;
-			}
-		}
-		return false;
-	}
 
 	private void fireFoldingChanged(final NodeModel node) {
 	    if (isFoldingPersistentAlways()) {
@@ -460,19 +455,15 @@ public class MapController extends SelectionController implements IExtension{
 
 
 	protected boolean unfoldHiddenChildren(NodeModel node) {
-		final List<NodeModel> children = childrenFolded(node);
-		boolean changed = false;
-		for (NodeModel child : children){
-			if(child.removeExtension(HideChildSubtree.class) != null)
-				changed = true;
-		}
-		return changed;
-    }
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		return ! mapViewManager.isFoldedOnCurrentView(node) 
+				&& mapViewManager.unfoldHiddenChildren(node);
+	}
 
 
 	public boolean canBeUnfoldedOnCurrentView(final NodeModel node) {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		final boolean isFolded = mapViewManager.isFoldedOnCurrentView(node) ||  hasHiddenChildren(node);
+		final boolean isFolded = mapViewManager.isFoldedOnCurrentView(node) ||  mapViewManager.hasHiddenChildren(node);
 		for(int i = 0; i < node.getChildCount(); i++){
 			final NodeModel child = node.getChildAt(i);
 			if(child.hasVisibleContent()){
@@ -883,11 +874,11 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	// nodes may only be refreshed by their own ModeController, so we have to store that too
-	private final ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue> nodesToRefresh = new ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue>();
 	private final ActionEnablerOnChange actionEnablerOnChange;
 	private final ActionSelectorOnChange actionSelectorOnChange;
+	private final Refresher refresher;
 
-	private static class NodeRefreshKey{
+	static class NodeRefreshKey{
 		final NodeModel node;
 		final Object property;
 		public NodeRefreshKey(NodeModel node, Object property) {
@@ -911,7 +902,7 @@ public class MapController extends SelectionController implements IExtension{
 		}
 	}
 
-	private static class NodeRefreshValue{
+	static class NodeRefreshValue{
 		final ModeController controller;
 		Object oldValue;
 		Object newValue;
@@ -924,38 +915,57 @@ public class MapController extends SelectionController implements IExtension{
 		}
 
 	}
+	
+	static class Refresher { 
+		private final ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue> nodesToRefresh = new ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue>();
+		private boolean refreshRunning;
 
-	/** optimization of nodeRefresh() as it handles multiple nodes in one Runnable, even nodes that weren't on the
-	 * list when the thread was started.*/
-	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
-	                               final Object newValue) {
-	    final boolean startThread = nodesToRefresh.isEmpty();
-	    final NodeRefreshValue value = new NodeRefreshValue(Controller.getCurrentModeController(), oldValue, newValue);
-		final NodeRefreshKey key = new NodeRefreshKey(node, property);
-		final NodeRefreshValue old = nodesToRefresh.put(key, value);
-		if(old != null && old.newValue != value.newValue){
-			old.newValue = value.newValue;
-			nodesToRefresh.put(key, old);
-		}
-        if (startThread) {
-			final Runnable refresher = new Runnable() {
-				public void run() {
-					final ModeController currentModeController = Controller.getCurrentModeController();
-					final Iterator<Entry<NodeRefreshKey, NodeRefreshValue>> it = nodesToRefresh.entrySet().iterator();
-					while (it.hasNext()) {
-					    final Entry<NodeRefreshKey, NodeRefreshValue> entry = it.next();
-					    final NodeRefreshValue info = entry.getValue();
-					    if (info.controller == currentModeController){
-					        final NodeRefreshKey key = entry.getKey();
-							currentModeController.getMapController().nodeRefresh(key.node, key.property, info.oldValue, info.newValue);
-					    }
-					    it.remove();
+		/** optimization of nodeRefresh() as it handles multiple nodes in one Runnable, even nodes that weren't on the
+		 * list when the thread was started.*/
+		void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
+				final Object newValue) {
+			if(refreshRunning){
+				LogUtils.severe("delayedNodeRefresh already running, property change ignored", new RuntimeException());
+				return;
+			}
+			final boolean startThread = nodesToRefresh.isEmpty();
+			final NodeRefreshValue value = new NodeRefreshValue(Controller.getCurrentModeController(), oldValue, newValue);
+			final NodeRefreshKey key = new NodeRefreshKey(node, property);
+			final NodeRefreshValue old = nodesToRefresh.put(key, value);
+			if(old != null && old.newValue != value.newValue){
+				old.newValue = value.newValue;
+				nodesToRefresh.put(key, old);
+			}
+			if (startThread) {
+				final Runnable refresher = new Runnable() {
+					public void run() {
+						final ModeController currentModeController = Controller.getCurrentModeController();
+						@SuppressWarnings("unchecked")
+						final Entry<NodeRefreshKey, NodeRefreshValue>[] entries = nodesToRefresh.entrySet().toArray(new Entry[]{} );
+						nodesToRefresh.clear();
+						refreshRunning = true;
+						try {
+							for (Entry<NodeRefreshKey, NodeRefreshValue> entry : entries) {
+								final NodeRefreshValue info = entry.getValue();
+								if (info.controller == currentModeController){
+									final NodeRefreshKey key = entry.getKey();
+									currentModeController.getMapController().nodeRefresh(key.node, key.property, info.oldValue, info.newValue);
+								}
+							}
+						} finally {
+							refreshRunning = false;
+						}
 					}
-				}
-			};
-			EventQueue.invokeLater(refresher);
+				};
+				EventQueue.invokeLater(refresher);
+			}
 		}
 	}
+	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
+			final Object newValue){
+		refresher.delayedNodeRefresh(node, property, oldValue, newValue);
+	}
+	
 
 	public void removeMapChangeListener(final IMapChangeListener listener) {
 		mapChangeListeners.remove(listener);

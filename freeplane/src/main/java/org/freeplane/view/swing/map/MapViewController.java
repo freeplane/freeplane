@@ -380,17 +380,8 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 	@Override
 	public void displayOnCurrentView(NodeModel node) {
-		if(selectedMapView == null)
-			return;
-		final NodeView nodeView = selectedMapView.getNodeView(node);
-		if(nodeView != null)
-			return;
-		final NodeModel parentNode = node.getParentNode();
-		if(parentNode == null)
-			return;
-		displayOnCurrentView(parentNode);
-		setFoldedOnCurrentView(parentNode, false);
-		
+		if(selectedMapView != null)
+			selectedMapView.display(node);
 	}
 	
 	public void setFoldedOnCurrentView(NodeModel node, boolean folded){
@@ -816,7 +807,8 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		return zoomValue;
 	}
 
-	private static final String[] zooms = { "25%", "50%", "75%", "100%", "150%", "200%", "300%", "400%" };
+	private static final String[] zooms = { "25%", "50%", "75%", "100%", 
+			"150%", "200%", "300%", "400%", "600%", "800%", "1200%", "1600%" , "2400%", "3200%" };
 	public void obtainFocusForSelected() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -949,6 +941,67 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			if (selectedComponent != null)
 				selectedComponent.requestFocus();
 		}
+	}
+
+	@Override
+	public boolean isChildHidden(NodeModel node) {
+		if(selectedMapView == null)
+			return false;
+		final NodeModel parentNode = node.getParentNode();
+		if(parentNode == null)
+			return false;
+		final NodeView nodeView = selectedMapView.getNodeView(parentNode);
+		if(nodeView == null)
+			return false;
+		return nodeView.isChildHidden(node);
+	}
+
+	@Override
+	public boolean hasHiddenChildren(NodeModel node) {
+		if(selectedMapView == null)
+			return false;
+		final NodeView nodeView = selectedMapView.getNodeView(node);
+		if(nodeView == null)
+			return false;
+		return nodeView.hasHiddenChildren();
+	}
+
+	@Override
+	public boolean unfoldHiddenChildren(NodeModel node) {
+		if(selectedMapView == null)
+			return false;
+		final NodeView nodeView = selectedMapView.getNodeView(node);
+		if(nodeView == null)
+			return false;
+		return nodeView.unfoldHiddenChildren();
+	}
+
+	@Override
+	public void hideChildren(NodeModel node) {
+		if(selectedMapView == null)
+			return; 
+		final NodeView nodeView = selectedMapView.getNodeView(node);
+		if(nodeView == null)
+			return; 
+		nodeView.hideChildren(node);
+	}
+
+	@Override
+	public boolean showHiddenNode(NodeModel node) {
+		if(selectedMapView == null)
+			return false;
+		final NodeModel parentNode = node.getParentNode();
+		if(parentNode == null)
+			return false;
+		final NodeView nodeView = selectedMapView.getNodeView(parentNode);
+		if(nodeView == null)
+			return false;
+		return nodeView.showHiddenNode(node);
+	}
+
+	@Override
+	public boolean isPresentationModeEnabled() {
+		return selectedMapView != null && selectedMapView.isPresentationModeEnabled();
 	}
 
 }

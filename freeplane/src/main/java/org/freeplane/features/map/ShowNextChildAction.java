@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.IMapViewManager;
 
 /**
  * @author Dimitry Polivaev
@@ -49,7 +50,8 @@ public class ShowNextChildAction extends AFreeplaneAction {
 		if(controller.getSelection() != null) {
 			final NodeModel selected = controller.getSelection().getSelected();
 			final MapController mapController = controller.getModeController().getMapController();
-		    super.setEnabled(controller.getMapViewManager().isFoldedOnCurrentView(selected) || mapController.hasHiddenChildren(selected));
+		    final IMapViewManager mapViewManager = controller.getMapViewManager();
+			super.setEnabled(mapViewManager.isFoldedOnCurrentView(selected) || mapViewManager.hasHiddenChildren(selected));
 		}
 		else {
 			super.setEnabled(false);

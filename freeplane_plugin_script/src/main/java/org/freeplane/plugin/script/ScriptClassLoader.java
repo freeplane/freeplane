@@ -104,4 +104,10 @@ public final class ScriptClassLoader extends URLClassLoader {
 		return securityManager != null && securityManager.implies(permission);
 	}
 
+	public void checkRequiredPermissions() {
+		securityManager.checkRequiredPermissions();
+	}
+	
+	
+
 }

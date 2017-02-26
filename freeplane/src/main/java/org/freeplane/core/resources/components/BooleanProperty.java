@@ -21,6 +21,8 @@ package org.freeplane.core.resources.components;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -49,6 +51,14 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 
 	public void layout(final DefaultFormBuilder builder) {
 		layout(builder, mCheckBox);
+		getLabelComponent().addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				mCheckBox.setSelected(! getBooleanValue());
+			}
+			
+		});
 	}
 
 	public void setEnabled(final boolean pEnabled) {

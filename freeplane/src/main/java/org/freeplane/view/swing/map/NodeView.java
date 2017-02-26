@@ -36,9 +36,11 @@ import java.awt.dnd.DropTarget;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
@@ -61,7 +63,6 @@ import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
-import org.freeplane.features.map.HideChildSubtree;
 import org.freeplane.features.map.HistoryInformationModel;
 import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapChangeEvent;
@@ -797,7 +798,7 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		int index = 0;
 		for (NodeModel child : getMap().getModeController().getMapController().childrenUnfolded(getModel())) {
-			if(child.containsExtension(HideChildSubtree.class))
+			if(isChildHidden(child))
 				return;
 			if(getComponentCount() <= index
 					|| ! (getComponent(index) instanceof NodeView))
@@ -872,10 +873,10 @@ public class NodeView extends JComponent implements INodeView {
 			return;
 		}
 		final Object property = event.getProperty();
-		if (property == NodeChangeType.FOLDING || property == HideChildSubtree.instance || property == EncryptionModel.class) {
+		if (property == NodeChangeType.FOLDING || property == Properties.HIDDEN_CHILDREN || property == EncryptionModel.class) {
 			if(map.isSelected() || property == EncryptionModel.class && ! isFolded){
 				boolean folded = getMap().getModeController().getMapController().isFolded(model);
-				boolean force = property == HideChildSubtree.instance;
+				boolean force = property ==Properties.HIDDEN_CHILDREN;
 				setFolded(folded, force);
 			}
 			if(property != EncryptionModel.class)
@@ -1663,6 +1664,37 @@ public class NodeView extends JComponent implements INodeView {
 
 	boolean isHierarchyVisible() {
 		return getHeight() > 2 * getSpaceAround();
+	}
+	public enum Properties{HIDDEN_CHILDREN};
+	
+	boolean isChildHidden(NodeModel node) {
+		@SuppressWarnings("unchecked")
+		final Set<NodeModel> hiddenChildren = (Set<NodeModel>) getClientProperty(Properties.HIDDEN_CHILDREN);
+		return hiddenChildren != null && hiddenChildren.contains(node);
+	}
+
+	boolean hasHiddenChildren() {
+		@SuppressWarnings("unchecked")
+		final Set<NodeModel> hiddenChildren = (Set<NodeModel>) getClientProperty(Properties.HIDDEN_CHILDREN);
+		return hiddenChildren != null && ! hiddenChildren.isEmpty();
+	}
+
+	boolean unfoldHiddenChildren() {
+		final boolean hasHiddenChildren = hasHiddenChildren();
+		putClientProperty(Properties.HIDDEN_CHILDREN, null);
+		return hasHiddenChildren;
+	}
+
+	public void hideChildren(NodeModel node) {
+		final HashSet<NodeModel> set = new HashSet<>();
+		set.addAll(node.getChildren());
+		putClientProperty(Properties.HIDDEN_CHILDREN, set);
+	}
+
+	public boolean showHiddenNode(NodeModel node) {
+		@SuppressWarnings("unchecked")
+		final Set<NodeModel> hiddenChildren = (Set<NodeModel>) getClientProperty(Properties.HIDDEN_CHILDREN);
+		return hiddenChildren != null && hiddenChildren.remove(node);
 	}
 
 	

@@ -142,7 +142,7 @@ public class TextController implements IExtension {
 		if(object instanceof String){
 			String string = (String) object;
 			if(string.length() > 0 && string.charAt(0) == '\''){
-				if(isTextFormattingDisabled(nodeModel))
+				if(nodeModel != null && extension == nodeModel.getUserObject() && isTextFormattingDisabled(nodeModel))
 					return string;
 				else
 					return string.substring(1);
@@ -165,6 +165,20 @@ public class TextController implements IExtension {
 			return object;
 	}
 	
+	public boolean isFormula(Object object, final NodeModel nodeModel, Object extension) {
+		if(object instanceof String){
+			String string = (String) object;
+			if(string.length() > 0 && string.charAt(0) == '\''){
+				return false;
+			}
+		}
+		for (IContentTransformer textTransformer : getTextTransformers()) {
+			if(textTransformer.isFormula(this, object, nodeModel, extension))
+				return true;
+		}
+		return false;
+	}
+
 	public Icon getIcon(Object object, final NodeModel nodeModel, Object extension){
 		if(object instanceof HighlightedTransformedObject){
 			return getIcon(((HighlightedTransformedObject)object).getObject(), nodeModel, extension);
@@ -182,18 +196,18 @@ public class TextController implements IExtension {
 	}
 	
 	/** returns an error message instead of a normal result if something goes wrong. */
-	public Object getTransformedObjectNoThrow(Object data, final NodeModel node, Object extension) {
+	public Object getTransformedObjectNoFormattingNoThrow(Object data, final NodeModel node, Object extension) {
 		try {
-			return getTransformedObject(data, node, extension);
+			final Object transformedObject = getTransformedObject(data, node, extension);
+			if(transformedObject  instanceof HighlightedTransformedObject)
+				return ((HighlightedTransformedObject)transformedObject).getObject();
+			else
+				return transformedObject;
 		}
 		catch (Throwable e) {
 			LogUtils.warn(e.getMessage(), e);
 			return TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
 		}
-	}
-	
-	public Object getTransformedObjectNoFormattingNoThrow(Object data, NodeModel node) {
-		return getTransformedObjectNoThrow(data, node, null);
 	}
 
 	
@@ -202,10 +216,9 @@ public class TextController implements IExtension {
 		return getTransformedObject(userObject, node, userObject);
 	}
 	
-
 	public Object getTransformedObjectNoThrow(NodeModel node) {
 		final Object userObject = node.getUserObject();
-		return getTransformedObjectNoThrow(userObject, node, userObject);
+		return getTransformedObjectNoFormattingNoThrow(userObject, node, userObject);
 	}
 
 	/** convenience method for getTransformedText().toString. */
@@ -215,7 +228,7 @@ public class TextController implements IExtension {
 	}
 	
 	public String getTransformedTextNoThrow(Object text, final NodeModel nodeModel, Object extension) {
-		text = getTransformedObjectNoThrow(text, nodeModel, extension);
+		text = getTransformedObjectNoFormattingNoThrow(text, nodeModel, extension);
 		return text.toString();
 	}
 
@@ -418,4 +431,5 @@ public class TextController implements IExtension {
 	public boolean canEdit() {
 		return false;
 	}
+
 }
