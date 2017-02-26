@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
@@ -37,19 +38,20 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	private JLabel lblElementCounter;
 	
 	public JComponent createCollectionBox() {
-		collectionComponent = Box.createHorizontalBox();
-		final Box controls = Box.createVerticalBox();
-		controls.add(comboBoxCollectionNames);
+		collectionComponent = Box.createVerticalBox();
+		final Box names = Box.createHorizontalBox();
+		names.add(lblElementCounter);
+		names.add(comboBoxCollectionNames);
+		collectionComponent.add(names);
 		Box collectionButtons = Box.createHorizontalBox();
+		collectionButtons.setBorder(BorderFactory.createEmptyBorder(0, lblElementCounter.getPreferredSize().width + 2, 0, 0));
 		collectionButtons.add(btnNewElement);
 		collectionButtons.add(btnDeleteElement);
 		collectionButtons.add(btnMoveUp);
 		collectionButtons.add(btnMoveDown);                       
 		collectionButtons.add(btnMove);
 		collectionButtons.add(Box.createHorizontalGlue());
-		collectionButtons.add(lblElementCounter);
-		controls.add(collectionButtons);
-		collectionComponent.add(controls);
+		collectionComponent.add(collectionButtons);
 		return collectionComponent;
 	}
 
@@ -58,8 +60,8 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		comboBoxCollectionNames.setEditable(false);
 		Dimension comboBoxPreferredSize = comboBoxCollectionNames.getPreferredSize();
 		comboBoxCollectionNames.setMaximumSize(new Dimension(Integer.MAX_VALUE, comboBoxPreferredSize.height));
-		lblElementCounter = new JLabel("XXX/XXX");
-		lblElementCounter.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblElementCounter = new JLabel("XXX/XXX ");
+		lblElementCounter.setHorizontalAlignment(SwingConstants.CENTER);
 		lblElementCounter.setPreferredSize(lblElementCounter.getPreferredSize());
 		btnNewElement = createNewElementButton(elementName);
 		
@@ -106,7 +108,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	private void updateElementCounterLabel() {
 		final int collectionSize = collection.getSize();
 		final int currentElementIndex = collection.getCurrentElementIndex();
-		lblElementCounter.setText( currentElementIndex >= 0 ? Integer.toString(currentElementIndex + 1) + "/" + Integer.toString(collectionSize): "-/-");
+		lblElementCounter.setText((currentElementIndex >= 0 ? Integer.toString(currentElementIndex + 1) + "/" + Integer.toString(collectionSize): "-/-") + " ");
 	}
 
 	private void enableUiElements() {
@@ -124,7 +126,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 
 	private void disableUiElements() {
 		comboBoxCollectionNames.setModel(new DefaultComboBoxModel<Stringifyed<T>>());
-		lblElementCounter.setText("-/-: ");
+		lblElementCounter.setText("-/- ");
 		for(JComponent c : components)
 			c.setEnabled(false);
 	}
