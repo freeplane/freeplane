@@ -61,6 +61,7 @@ class ScriptingSecurityManager {
 			}
         }
         permissions.setReadOnly();
+        checkRequiredPermissions();
     }
 
     private static final Permission URL_PERMISSION = new SocketPermission("*", "connect");
@@ -79,7 +80,7 @@ class ScriptingSecurityManager {
 		return isAllowed;
 	}
 	
-	public void checkRequiredPermissions(){
+	private void checkRequiredPermissions(){
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
             final Enumeration<Permission> permissionElements = permissions.elements();

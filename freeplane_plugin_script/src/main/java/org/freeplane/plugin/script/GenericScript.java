@@ -192,7 +192,6 @@ public class GenericScript implements IScript {
 			ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             try {
 				final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
-				scriptingSecurityManager.checkRequiredPermissions();
 				scriptClassLoader.setSecurityManager(scriptingSecurityManager);
 				Thread.currentThread().setContextClassLoader(scriptClassLoader);
                 final SimpleScriptContext context = createScriptContext(node);

@@ -102,12 +102,5 @@ public final class ScriptClassLoader extends URLClassLoader {
 
 	public boolean implies(Permission permission) {
 		return securityManager != null && securityManager.implies(permission);
-	}
-
-	public void checkRequiredPermissions() {
-		securityManager.checkRequiredPermissions();
-	}
-	
-	
-
+	}	
 }
