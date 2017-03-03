@@ -21,7 +21,6 @@ import org.codehaus.groovy.runtime.InvokerInvocationException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
@@ -72,15 +71,12 @@ public class CachedConstructor extends ParameterTypes {
         return invoke(argumentArray);
     }
 
-    public boolean isPrivate() {
-        return Modifier.isPrivate(getModifiers());
-    }
-
     public Object invoke(Object[] argumentArray) {
-    	if(isPrivate())
-    		throw new IllegalArgumentException("Cannot invoke the private constuctor '" + clazz.getName() + "'.");
         Constructor constr = cachedConstructor;
         try {
+        	AccessPermissionChecker.checkAccessPermission(cachedConstructor.getDeclaringClass(), // 
+        			"constructor of", cachedConstructor.getDeclaringClass().getSimpleName(), // 
+        			getModifiers());
             return constr.newInstance(argumentArray);
         } catch (InvocationTargetException e) {
             throw e.getCause() instanceof RuntimeException ? (RuntimeException)e.getCause() : new InvokerInvocationException(e);

@@ -15,7 +15,6 @@
  */
 package org.codehaus.groovy.reflection;
 
-import groovy.lang.GroovyRuntimeException;
 import groovy.lang.MetaClassImpl;
 import groovy.lang.MetaMethod;
 import groovy.lang.MissingMethodException;
@@ -29,7 +28,6 @@ import java.lang.ref.SoftReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.*;
 
 /**
@@ -88,9 +86,8 @@ public class CachedMethod extends MetaMethod implements Comparable {
     }
 
     public final Object invoke(Object object, Object[] arguments) {
-    	if(isPrivate())
-    		throw new IllegalArgumentException("Cannot invoke the private method '" +getName() + "'.");
         try {
+        	AccessPermissionChecker.checkAccessPermission(cachedMethod.getDeclaringClass(), "method", cachedMethod.getName(), getModifiers());
             return cachedMethod.invoke(object, arguments);
         } catch (IllegalArgumentException e) {
             throw new InvokerInvocationException(e);
