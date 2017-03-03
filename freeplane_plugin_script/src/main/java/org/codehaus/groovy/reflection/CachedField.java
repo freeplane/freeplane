@@ -34,10 +34,6 @@ public class CachedField extends MetaProperty {
         return Modifier.isStatic(getModifiers());
     }
 
-    public boolean isPrivate() {
-        return Modifier.isPrivate(getModifiers());
-    }
-
     public boolean isFinal() {
         return Modifier.isFinal(getModifiers());
     }
@@ -51,13 +47,11 @@ public class CachedField extends MetaProperty {
      * @throws RuntimeException if the property could not be evaluated
      */
     public Object getProperty(final Object object) {
-    	final boolean isprivate = isPrivate();
-		if(isprivate)
-    		throw new IllegalArgumentException("Cannot get the private property '" + name + "'.");
         try {
+        	AccessPermissionChecker.checkAccessPermission(field.getDeclaringClass(), "field", field.getName(), getModifiers());
             return field.get(object);
         } catch (IllegalAccessException e) {
-            throw new IllegalArgumentException("Cannot get the property '" + name + "'.", e);
+            throw new GroovyRuntimeException("Cannot get the property '" + name + "'.", e);
         }
     }
 
@@ -69,14 +63,13 @@ public class CachedField extends MetaProperty {
      * @throws RuntimeException if the property could not be set
      */
     public void setProperty(final Object object, Object newValue) {
-    	if(isPrivate())
-    		throw new GroovyRuntimeException("Cannot set the private property '" + name + "'.");
         final Object goalValue = DefaultTypeTransformation.castToType(newValue, field.getType());
 
         if (isFinal()) {
             throw new GroovyRuntimeException("Cannot set the property '" + name + "' because the backing field is final.");
         }
         try {
+        	AccessPermissionChecker.checkAccessPermission(field.getDeclaringClass(), "field", field.getName(), getModifiers());
             field.set(object, goalValue);
         } catch (IllegalAccessException ex) {
             throw new GroovyRuntimeException("Cannot set the property '" + name + "'.", ex);
