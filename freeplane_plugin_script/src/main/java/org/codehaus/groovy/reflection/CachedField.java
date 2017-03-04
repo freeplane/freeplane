@@ -15,12 +15,13 @@
  */
 package org.codehaus.groovy.reflection;
 
-import groovy.lang.GroovyRuntimeException;
-import groovy.lang.MetaProperty;
-import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+
+import org.codehaus.groovy.runtime.typehandling.DefaultTypeTransformation;
+
+import groovy.lang.GroovyRuntimeException;
+import groovy.lang.MetaProperty;
 
 public class CachedField extends MetaProperty {
     public final Field field;
@@ -48,7 +49,8 @@ public class CachedField extends MetaProperty {
      */
     public Object getProperty(final Object object) {
         try {
-        	AccessPermissionChecker.checkAccessPermission(field.getDeclaringClass(), "field", field.getName(), getModifiers());
+			AccessPermissionChecker.checkAccessPermission(field.getDeclaringClass(), getModifiers(), field.isAccessible(),
+			    "field", field.getName());
             return field.get(object);
         } catch (IllegalAccessException e) {
             throw new GroovyRuntimeException("Cannot get the property '" + name + "'.", e);
@@ -69,7 +71,8 @@ public class CachedField extends MetaProperty {
             throw new GroovyRuntimeException("Cannot set the property '" + name + "' because the backing field is final.");
         }
         try {
-        	AccessPermissionChecker.checkAccessPermission(field.getDeclaringClass(), "field", field.getName(), getModifiers());
+			AccessPermissionChecker.checkAccessPermission(field.getDeclaringClass(), getModifiers(), field.isAccessible(),
+			    "field", field.getName());
             field.set(object, goalValue);
         } catch (IllegalAccessException ex) {
             throw new GroovyRuntimeException("Cannot set the property '" + name + "'.", ex);
