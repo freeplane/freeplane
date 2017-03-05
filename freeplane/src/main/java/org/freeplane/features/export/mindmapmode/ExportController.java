@@ -13,6 +13,7 @@ import java.util.Properties;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.xml.XMLLocalParserFactory;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
@@ -25,7 +26,6 @@ import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.n3.nanoxml.XMLParserFactory;
 
 /**
  * A registry of all XSLT scripts that are available to transform a .mm file into another format.
@@ -75,7 +75,7 @@ public class ExportController implements IExtension{
 	private void createXSLTExportActions( final String xmlDescriptorFile) {
 		InputStream xmlDescriptorStream = null;
 		try {
-			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
+			final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();
 			final URL resource = ResourceController.getResourceController().getResource(xmlDescriptorFile);
 			xmlDescriptorStream = resource.openStream();
 			final IXMLReader reader = new StdXMLReader(xmlDescriptorStream);

@@ -34,6 +34,7 @@ import java.util.Properties;
 import javax.swing.ComboBoxEditor;
 
 import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.io.xml.XMLLocalParserFactory;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
@@ -55,7 +56,6 @@ import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
 import org.freeplane.plugin.script.addons.ManageAddOnsAction;
@@ -243,7 +243,7 @@ class ScriptingRegistration {
 				return name.endsWith(".script.xml");
 			}
 		});
-		final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
+		final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();
 		for (File file : addonXmlFiles) {
 			BufferedInputStream inputStream = null;
 			try {

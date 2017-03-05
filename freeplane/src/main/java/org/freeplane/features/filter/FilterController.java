@@ -50,6 +50,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.xml.XMLLocalParserFactory;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ButtonModelStateChangeListenerForProperty;
@@ -83,7 +84,6 @@ import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
 
 /**
@@ -496,7 +496,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			final boolean showPopupOnError)
 	        throws IOException {
 		try {
-			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
+			final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();
 			File filterFile = new File(pathToFilterFile);
 			final IXMLReader reader = new StdXMLReader(new BufferedInputStream(new FileInputStream(filterFile)));
 			parser.setReader(reader);

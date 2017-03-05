@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.freeplane.core.io.xml.XMLLocalParserFactory;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
@@ -32,7 +33,6 @@ import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.n3.nanoxml.XMLParserFactory;
 
 public class AddOnsController {
 	private static final String ADDONS_DIR = "addons";
@@ -66,7 +66,7 @@ public class AddOnsController {
 				return name.endsWith(".plugin.xml");
 			}
 		});
-		final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
+		final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();
 		for (File file : addonXmlFiles) {
 			BufferedInputStream inputStream = null;
 			try {
