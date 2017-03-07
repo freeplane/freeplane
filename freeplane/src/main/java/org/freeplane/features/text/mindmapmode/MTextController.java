@@ -52,6 +52,7 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.components.BitmapImagePreview;
@@ -766,15 +767,14 @@ public class MTextController extends TextController {
 	    }
 
 		private boolean isMenuEvent(KeyEvent e) {
-	        if(! editLong){
-	    		final String editLongKeyStrokeProperty = ResourceController.getResourceController().getProperty("acceleratorForMindMap/$EditLongAction$0", null);
-	    		if(editLongKeyStrokeProperty != null){
-	    			final KeyStroke editLongKeyStroke = UITools.getKeyStroke(editLongKeyStrokeProperty);
-	    			if(editLongKeyStroke != null){
-	    				final KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
-	    				if(editLongKeyStroke.equals(keyStroke)){
-	    					return true;
-	    				}
+			if (!editLong) {
+				AFreeplaneAction editLongAcction = modeController.getAction("EditLongAction");
+				KeyStroke accelerator = ResourceController.getResourceController().getAcceleratorManager()
+				    .getAccelerator(editLongAcction);
+				if (accelerator != null) {
+					final KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
+					if (accelerator.equals(keyStroke)) {
+						return true;
 	    			}
 	    		}
 	    	}
