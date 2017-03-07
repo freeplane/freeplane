@@ -98,7 +98,6 @@ import org.freeplane.features.text.mindmapmode.EventBuffer;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.ZoomableLabel;
@@ -694,7 +693,6 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 		Insets parentInsets = parent.getZoomedInsets();
 		maxWidth -= parentInsets.left + parentInsets.right;
-		maxWidth = mapView.getZoomed(maxWidth);
 		extraWidth = ResourceController.getResourceController().getIntProperty("editor_extra_width", 80);
 		extraWidth = mapView.getZoomed(extraWidth);
 		final TextFieldListener textFieldListener = new TextFieldListener();
