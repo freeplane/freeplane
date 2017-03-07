@@ -60,8 +60,8 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IPropertyControlCreator;
@@ -134,7 +134,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	private static final String BACKUP_FILE_NUMBER = "backup_file_number";
-	private static final String FREEPLANE_VERSION_UPDATER_XSLT = "/xslt/freeplane_version_updater.xslt";
 	private static File singleBackupDirectory;
 
 	private File[] findFileRevisions(final File file, final File backupDir, final AlternativeFileMode mode) {
