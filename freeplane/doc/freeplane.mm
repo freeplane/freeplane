@@ -11068,7 +11068,7 @@ elements from the styles activated by conditions are copied.</pre>
     </p>
     <ul>
       <li>
-        <i>File &gt; New map</i>&#160;uses the style <i>standard-1.5.mm</i>. You can define a user map as standard-1.5.mm by naming it that way and putting it in the directory that opens by selecting <i>Tools &gt; Open user directory &gt; templates. </i>
+        <i>File &gt; New map</i>&#160;uses the style <i>standard.mm</i>. You can define a user map as standard.mm by naming it that way and putting it in the directory that opens by selecting <i>Tools &gt; Open user directory &gt; templates. </i>
       </li>
       <li>
         <i>In Tools &gt; Preferences</i>&#160;can be defined that the standard mind map should have a different name.
@@ -15075,7 +15075,7 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 </node>
 <node TEXT="Standard Template File" STYLE_REF="Method" FOLDED="true" ID="ID_1036795471" CREATED="1455910904107" MODIFIED="1455910904107">
-<node TEXT="standard-1.5.mm" ID="ID_706234894" CREATED="1455910904108" MODIFIED="1455910904108">
+<node TEXT="standard.mm" ID="ID_706234894" CREATED="1455910904108" MODIFIED="1455910904108">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
