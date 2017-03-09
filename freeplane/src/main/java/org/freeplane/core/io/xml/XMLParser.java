@@ -30,6 +30,11 @@ import org.freeplane.n3.nanoxml.XMLParseException;
 class XMLParser extends StdXMLParser implements IXMLParser {
 	private boolean skipNextElementContent = false;
 
+	public XMLParser() {
+		super();
+		setResolver(new LocalEntityResolver());
+	}
+
 	void notParseNextElementContent() {
 		skipNextElementContent = true;
 	}
