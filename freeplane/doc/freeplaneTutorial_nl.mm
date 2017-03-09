@@ -4521,10 +4521,10 @@
     </p>
     <ul>
       <li>
-        De veranderde standaardstijl geldt alleen voor de mindmap waarin je werkt. Om de standaardstijl voor alle nieuwe mindmaps toe te passen, moet je de mindmap <i>standard.mm</i>&#160;aanpassen. Deze bevindt zich in: <i>Extra &gt; Openen gebruikersdirectory &gt; Templates.</i>
+        De veranderde standaardstijl geldt alleen voor de mindmap waarin je werkt. Om de standaardstijl voor alle nieuwe mindmaps toe te passen, moet je de mindmap <i>standard-1.6.mm</i>&#160;aanpassen. Deze bevindt zich in: <i>Extra &gt; Openen gebruikersdirectory &gt; Templates.</i>
       </li>
       <li>
-        Overweeg om in standard.mm de optie &quot;Hyperlinks&quot; aan te vinken. Dit zorgt er voor dat de tekst van een pijl-hyperlink wordt onderstreept en klikbaar is.
+        Overweeg om in standard-1.6.mm de optie &quot;Hyperlinks&quot; aan te vinken. Dit zorgt er voor dat de tekst van een pijl-hyperlink wordt onderstreept en klikbaar is.
       </li>
     </ul>
   </body>
