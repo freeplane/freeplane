@@ -65,6 +65,7 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 					putClientProperty(ViewController.SLOW_SCROLLING, null);
 					slowSetViewPosition(p, scrollingDelay);
 				} else {
+					stopTimer();
 					super.setViewPosition(p);
 					MapView view = (MapView)getView();
 					if (view != null) {
@@ -88,10 +89,7 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
         }
 
 		private void slowSetViewPosition(final Point p, final int delay) {
-			if(timer != null) {
-				timer.stop();
-				timer = null;
-			}
+			stopTimer();
 			final Point viewPosition = getViewPosition();
 	        int dx = p.x - viewPosition.x;
 	        int dy = p.y - viewPosition.y;
@@ -110,6 +108,13 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	        timer.setRepeats(false);
 	        timer.start();
         }
+
+		private void stopTimer() {
+			if(timer != null) {
+				timer.stop();
+				timer = null;
+			}
+		}
 
 		private int calcScrollIncrement(int dx) {
 			int v = ResourceController.getResourceController().getIntProperty("scrolling_speed");
