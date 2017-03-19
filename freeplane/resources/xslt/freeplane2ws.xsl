@@ -26,7 +26,7 @@
 
   <xsl:output method="xml" encoding="utf-8" indent="yes"/>
  
-<xsl:param name="file_name"/>
+<xsl:param name="file_ref"/>
 <xsl:param name="destination_dir"/>
 <xsl:param name="propertyList"/>
 <!--
@@ -36,7 +36,7 @@
   
   	<xsl:element name="jnlp">
   		<xsl:attribute name="spec">1.0+</xsl:attribute>
-  		<xsl:attribute name="href"><xsl:text>../</xsl:text><xsl:value-of select="$file_name"/></xsl:attribute>
+  		<xsl:attribute name="href"><xsl:value-of select="$file_ref"/></xsl:attribute>
   		<xsl:attribute name="codebase"><xsl:value-of select="$destination_dir"/></xsl:attribute>
 	    <information>
 	        <title>Freeplane Viewer Applet</title>
