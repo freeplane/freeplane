@@ -13,12 +13,18 @@ class AccessPermissionChecker {
 	static void checkAccessPermission(Class<?> declaringClass, final int modifiers, boolean isAccessible, String memberType,
 	                                  String name) {
 		final SecurityManager securityManager = System.getSecurityManager();
-		if (isAccessible && securityManager != null && (modifiers & (Modifier.PUBLIC | Modifier.PROTECTED)) == 0
-		        && !GroovyObject.class.isAssignableFrom(declaringClass)) {
+		if (isAccessible && securityManager != null) {
 			try {
-				securityManager.checkPermission(REFLECT_PERMISSION);
+				if ((modifiers & (Modifier.PUBLIC | Modifier.PROTECTED)) == 0
+						&& !GroovyObject.class.isAssignableFrom(declaringClass)) {
+                        securityManager.checkPermission(REFLECT_PERMISSION);
+                }
+                else if ((modifiers & (Modifier.PUBLIC)) == 0
+					&& declaringClass.equals(ClassLoader.class)){
+					securityManager.checkCreateClassLoader();
+				}
 			}
-			catch (AccessControlException ex){
+			catch (AccessControlException ex) {
 				throw new IllegalArgumentException("Illegal access to " + memberType + " " + name);
 			}
 		}
