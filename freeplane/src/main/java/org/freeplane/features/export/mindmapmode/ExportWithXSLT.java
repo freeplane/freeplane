@@ -292,9 +292,9 @@ public class ExportWithXSLT implements IExportEngine {
 		try {
 			final TransformerFactory transFact = TransformerFactory.newInstance();
 			final Transformer trans = transFact.newTransformer(xsltSource);
+			trans.setParameter("file_ref", saveFile.getAbsoluteFile().toURI().toString());
 			final String fileName = saveFile.getName();
 			final String fileNameEncoded = toRelativeUri(fileName);
-			trans.setParameter("file_name", fileNameEncoded);
 			trans.setParameter("destination_dir", fileNameEncoded + "_files/");
 			trans.setParameter("area_code", areaCode);
 			trans.setParameter("folding_type", resourceController.getProperty(
