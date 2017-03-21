@@ -56,6 +56,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
@@ -72,6 +73,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.UIBuilder;
 import org.freeplane.core.ui.components.BlindIcon;
+import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.DelayedRunner;
@@ -341,7 +343,7 @@ public class NodeList {
 	final private JComboBox mFilterTextSearchField;
 	private FlatNodeTableFilterModel mFlatNodeTableFilterModel;
 // 	final private ModeController modeController;
-	private JLabel mTreeLabel;
+	private JTextField mNodePath;
 	private TextRenderer textRenderer;
 	private boolean showAllNodes = false;
 	private TableSorter sorter;
@@ -657,17 +659,13 @@ public class NodeList {
 		tableConstraints.weighty = 10;
 		tableConstraints.fill = GridBagConstraints.BOTH;
 		contentPane.add(pane, tableConstraints);
-		mTreeLabel = new JLabel();
+		mNodePath = new JTextField();
+		mNodePath.setEditable(false);
 		layoutConstraints.gridy++;
 		GridBagConstraints treeConstraints = (GridBagConstraints) layoutConstraints.clone();
 		treeConstraints.fill = GridBagConstraints.BOTH;
 		@SuppressWarnings("serial")
-		JScrollPane scrollPane = new JScrollPane(mTreeLabel){
-			@Override
-			public boolean isValidateRoot() {
-				return false;
-			}
-		};
+		JScrollPane scrollPane = new JScrollPane(mNodePath, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		contentPane.add(scrollPane, treeConstraints);
 		final AbstractAction exportAction = new AbstractAction(TextUtils.getText("plugins/TimeManagement.xml_Export")) {
 			/**
@@ -779,12 +777,12 @@ public class NodeList {
 				}
 				final ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 				if (lsm.isSelectionEmpty()) {
-					mTreeLabel.setText("");
+					mNodePath.setText("");
 					return;
 				}
 				final int selectedRow = lsm.getLeadSelectionIndex();
 				final NodeModel mindMapNode = getMindMapNode(selectedRow);
-				mTreeLabel.setText(getNodeText(mindMapNode));
+				mNodePath.setText(getNodeText(mindMapNode));
 			}
 		});
 		final String marshalled = ResourceController.getResourceController().getProperty(
