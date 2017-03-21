@@ -166,8 +166,8 @@ class MindMapHTMLWriter {
 
 	private void writeBodyWithFolding(final NodeModel rootNodeOfBranch) throws IOException {
 		writeJavaScript();
-		fileout.write("<SPAN class=\"foldspecial\" onclick=\"fold_document()\">All +</SPAN>" + lf);
-		fileout.write("<SPAN class=\"foldspecial\" onclick=\"unfold_document()\">All -</SPAN>" + lf);
+		fileout.write("<SPAN class=\"foldspecial\" onclick=\"unfold_document()\">All +</SPAN>" + lf);
+		fileout.write("<SPAN class=\"foldspecial\" onclick=\"fold_document()\">All -</SPAN>" + lf);
 		writeHTML(rootNodeOfBranch, "1", 0, /* isRoot */true, true, /* depth */
 		1);
 		fileout.write("<SCRIPT type=\"text/javascript\">" + lf);
