@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -109,7 +111,7 @@ import com.jgoodies.common.base.Objects;
 import com.lightdev.app.shtm.ActionBuilder;
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.SHTMLPanelImpl;
-import com.lightdev.app.shtm.TextResources;
+import com.lightdev.app.shtm.UIResources;
 
 
 /**
@@ -123,6 +125,31 @@ public class MTextController extends TextController {
 	private EditNodeBase mCurrentEditor = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
 	private final EventBuffer eventQueue;
+	
+	static{
+		final UIResources defaultResources = SHTMLPanel.getResources();
+    	SHTMLPanel.setResources(new UIResources() {
+    		public String getString(final String key) {
+    			if (key.equals("approximate_search_threshold"))
+    			{
+    				return new Double(StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB).toString();
+    			}
+    			String freeplaneKey = "simplyhtml." + key;
+    			String resourceString = ResourceController.getResourceController().getText(freeplaneKey, null);
+    			if (resourceString == null) {
+    				resourceString = ResourceController.getResourceController().getProperty(freeplaneKey);
+    			}
+    			return resourceString;
+    		}
+    		
+    		public Icon getIcon(String name){
+    			String freeplaneKey = "simplyhtml." + name;
+    			final ImageIcon freeplaneIcon = ResourceController.getResourceController().getIcon(freeplaneKey);
+    			return freeplaneIcon != null ? freeplaneIcon : defaultResources.getIcon(name);
+    		}
+    	});
+		
+	}
 	
 	private static final ConditionPredicate DEPENDS_ON_PARENT = new ConditionPredicate() {
 		
@@ -981,20 +1008,6 @@ public class MTextController extends TextController {
 	 * @return
 	 */
 	public SHTMLPanel createSHTMLPanel(String purpose) {
-    	SHTMLPanel.setResources(new TextResources() {
-    		public String getString(String pKey) {
-    			if (pKey.equals("approximate_search_threshold"))
-    			{
-    				return new Double(StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB).toString();
-    			}
-    			pKey = "simplyhtml." + pKey;
-    			String resourceString = ResourceController.getResourceController().getText(pKey, null);
-    			if (resourceString == null) {
-    				resourceString = ResourceController.getResourceController().getProperty(pKey);
-    			}
-    			return resourceString;
-    		}
-    	});
     	com.lightdev.app.shtm.ScaledStyleSheet.FONT_SCALE_FACTOR = UITools.FONT_SCALE_FACTOR;
     	SHTMLPanel.setActionBuilder(new ActionBuilder() {
 			
