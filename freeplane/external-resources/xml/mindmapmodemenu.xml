@@ -232,7 +232,7 @@
 		</Entry>
 		<Entry name="view">
 			<Entry name="NewMapViewAction" />
-			<Entry name="toolbars">
+			<Entry name="controls">
 				<Entry name="ToggleMenubarAction" builder="removeOnMac" />
 				<Entry name="ToggleToolbarAction" />
 				<Entry name="ShowFilterToolbarAction" accelerator="control F" />

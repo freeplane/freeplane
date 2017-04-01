@@ -1150,7 +1150,7 @@
     </p>
     <ol>
       <li>
-        The bar of icons which is showing at the side of the screen. If it is not showing, select <i>View &gt; Toolbars &gt; Icons toolbar.</i>
+        The bar of icons which is showing at the side of the screen. If it is not showing, select <i>View &gt; Controls &gt; Icons toolbar.</i>
       </li>
       <li>
         A table of icons which is displayed when you select <i>Edit&#160;&gt; Icons &gt; Icon from table.</i>

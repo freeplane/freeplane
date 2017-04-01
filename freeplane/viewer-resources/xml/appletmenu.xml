@@ -15,7 +15,7 @@
 			<Entry name="FindPreviousAction" />
 		</Entry>
 		<Entry name="view">
-			<Entry name="toolbars">
+			<Entry name="controls">
 				<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
 				<Entry name="ToggleToolbarAction" />
 				<Entry name="ShowFilterToolbarAction" accelerator="control F" />
