@@ -40,6 +40,7 @@ import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.xml.XMLLocalParserFactory;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
@@ -52,7 +53,6 @@ import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
 
 /**
@@ -194,7 +194,7 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 			return;
 		}
 		try {
-			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
+			final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();
 			inputStream = new BufferedInputStream(new FileInputStream(configXml));
 			final IXMLReader reader = new StdXMLReader(inputStream);
 			parser.setReader(reader);

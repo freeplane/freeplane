@@ -693,7 +693,6 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 		Insets parentInsets = parent.getZoomedInsets();
 		maxWidth -= parentInsets.left + parentInsets.right;
-		maxWidth = mapView.getZoomed(maxWidth);
 		extraWidth = ResourceController.getResourceController().getIntProperty("editor_extra_width", 80);
 		extraWidth = mapView.getZoomed(extraWidth);
 		final TextFieldListener textFieldListener = new TextFieldListener();
