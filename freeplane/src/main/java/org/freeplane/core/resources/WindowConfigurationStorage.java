@@ -5,6 +5,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.swing.JDialog;
+
+import org.freeplane.core.io.xml.XMLLocalParserFactory;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.n3.nanoxml.IXMLParser;
@@ -12,7 +14,6 @@ import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLException;
-import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
 
 public class WindowConfigurationStorage {
@@ -103,7 +104,7 @@ public class WindowConfigurationStorage {
 	}
 	protected XMLElement unmarschall(final String marshalled, final JDialog dialog) {
 		if (marshalled != null) {
-			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
+			final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();
 			final IXMLReader xmlReader = new StdXMLReader(new StringReader(marshalled));
 			parser.setReader(xmlReader);
 			try {
