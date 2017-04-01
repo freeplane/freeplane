@@ -49,8 +49,7 @@ public class CachedField extends MetaProperty {
      */
     public Object getProperty(final Object object) {
         try {
-			AccessPermissionChecker.checkAccessPermission(field.getDeclaringClass(), getModifiers(), field.isAccessible(),
-			    "field", field.getName());
+			AccessPermissionChecker.checkAccessPermission(field);
             return field.get(object);
         } catch (IllegalAccessException e) {
             throw new GroovyRuntimeException("Cannot get the property '" + name + "'.", e);
@@ -71,8 +70,7 @@ public class CachedField extends MetaProperty {
             throw new GroovyRuntimeException("Cannot set the property '" + name + "' because the backing field is final.");
         }
         try {
-			AccessPermissionChecker.checkAccessPermission(field.getDeclaringClass(), getModifiers(), field.isAccessible(),
-			    "field", field.getName());
+			AccessPermissionChecker.checkAccessPermission(field);
             field.set(object, goalValue);
         } catch (IllegalAccessException ex) {
             throw new GroovyRuntimeException("Cannot set the property '" + name + "'.", ex);

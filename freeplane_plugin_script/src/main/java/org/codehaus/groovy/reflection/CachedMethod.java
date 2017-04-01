@@ -15,8 +15,6 @@
  */
 package org.codehaus.groovy.reflection;
 
-import static org.codehaus.groovy.reflection.AccessPermissionChecker.checkAccessPermission;
-
 import java.lang.ref.SoftReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -94,8 +92,7 @@ public class CachedMethod extends MetaMethod implements Comparable {
 
     public final Object invoke(Object object, Object[] arguments) {
         try {
-			checkAccessPermission(cachedMethod.getDeclaringClass(), getModifiers(),
-			    cachedMethod.isAccessible(), "method", cachedMethod.getName());
+			AccessPermissionChecker.checkAccessPermission(cachedMethod);
             return cachedMethod.invoke(object, arguments);
         } catch (IllegalArgumentException e) {
             throw new InvokerInvocationException(e);
@@ -130,8 +127,7 @@ public class CachedMethod extends MetaMethod implements Comparable {
     }
 
     public final Method setAccessible() {
-		checkAccessPermission(cachedMethod.getDeclaringClass(), getModifiers(), cachedMethod.isAccessible(), "method",
-		    cachedMethod.getName());
+		AccessPermissionChecker.checkAccessPermission(cachedMethod);
 //        if (queuedToCompile.compareAndSet(false,true)) {
 //            if (isCompilable())
 //              CompileThread.addMethod(this);
@@ -330,8 +326,7 @@ public class CachedMethod extends MetaMethod implements Comparable {
     }
 
     public Method getCachedMethod() {
-		checkAccessPermission(cachedMethod.getDeclaringClass(), getModifiers(), cachedMethod.isAccessible(), "method",
-		    cachedMethod.getName());
+		AccessPermissionChecker.checkAccessPermission(cachedMethod);
         return cachedMethod;
     }
 
