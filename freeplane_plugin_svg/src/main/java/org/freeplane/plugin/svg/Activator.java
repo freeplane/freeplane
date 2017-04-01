@@ -2,9 +2,6 @@ package org.freeplane.plugin.svg;
 
 import java.util.Hashtable;
 
-import org.freeplane.core.ui.ExampleFileFilter;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
@@ -27,9 +24,6 @@ public class Activator implements BundleActivator {
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(ModeController modeController) {
-			    	final ExportController exportController = ExportController.getController(modeController);
-			    	exportController.addExportEngine(new ExampleFileFilter("pdf", TextUtils.getText("export_pdf_text")), new ExportPdf());
-			    	exportController.addExportEngine(new ExampleFileFilter("svg", TextUtils.getText("export_svg_text")), new ExportSvg());
 				    final ViewerController extension = (ViewerController) modeController
 				        .getExtension(ViewerController.class);
 				    extension.addFactory(new SvgViewerFactory());
