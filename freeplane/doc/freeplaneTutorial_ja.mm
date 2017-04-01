@@ -2897,7 +2897,7 @@
   </head>
   <body>
     <p>
-      &#160;Advanced makes the yellow color and Example adds the eye-icon. To implement this example, first define the two styles and then apply them as node conditional styles by opening the<i>&#160;Properties panel </i>and clicking below <i>Node conditional styles for node. </i>Now a dialog opens and in this<i>&#160;</i>dialog:
+      &#160;Advanced makes the yellow color and Example adds the eye-icon. To implement this example, first define the two styles and then apply them as node conditional styles by opening the<i>&#160;Tool panel </i>and clicking below <i>Node conditional styles for node. </i>Now a dialog opens and in this<i>&#160;</i>dialog:
     </p>
   </body>
 </html>

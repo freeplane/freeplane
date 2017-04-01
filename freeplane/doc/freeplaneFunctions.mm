@@ -825,7 +825,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1812601804">Properties panel,</a>&#160;</b>&#160;<a href="freeplanefreeplane.mm#ID_1492225657">Edges</a>&#160;and <a href="freeplaneTutorial.mm#ID_1005719714">Automatic edge colour</a>
+        <i>Help &gt; <b>&#160;</b></i><b><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1812601804">Tool panel,</a>&#160;</b>&#160;<a href="freeplanefreeplane.mm#ID_1492225657">Edges</a>&#160;and <a href="freeplaneTutorial.mm#ID_1005719714">Automatic edge colour</a>
       </li>
       <li>
         <i>Help &gt; Documentation<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_881523974">Format &gt; Edge styles/width/colour; automatic edge colour</a>
