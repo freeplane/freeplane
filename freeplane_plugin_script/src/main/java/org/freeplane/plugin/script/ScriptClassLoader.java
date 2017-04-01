@@ -15,7 +15,10 @@ import java.util.List;
 
 import org.freeplane.core.util.ClassLoaderFactory;
 
+import net.bytebuddy.ByteBuddy;
+
 public final class ScriptClassLoader extends URLClassLoader {
+	private static final String BYTE_BUDDY_PACKAGE = ByteBuddy.class.getPackage().getName() + ".";
 	private ScriptingSecurityManager securityManager = null;
 
 	public static ScriptClassLoader createClassLoader() {
@@ -78,6 +81,8 @@ public final class ScriptClassLoader extends URLClassLoader {
 
 	@Override
 	protected Class<?> loadClass(final String name, final boolean resolve) throws ClassNotFoundException {
+		if(name.startsWith(BYTE_BUDDY_PACKAGE))
+			throw new ClassNotFoundException("Hide our own own ByteBuddy");
 		try {
 			return AccessController.doPrivileged(
 			        new PrivilegedExceptionAction<Class<?>>() {
