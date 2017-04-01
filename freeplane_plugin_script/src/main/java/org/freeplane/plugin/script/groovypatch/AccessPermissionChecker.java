@@ -1,4 +1,4 @@
-package org.codehaus.groovy.reflection;
+package org.freeplane.plugin.script.groovypatch;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
