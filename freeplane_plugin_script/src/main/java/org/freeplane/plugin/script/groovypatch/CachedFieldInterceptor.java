@@ -7,7 +7,7 @@ import net.bytebuddy.implementation.bind.annotation.FieldValue;
 import net.bytebuddy.implementation.bind.annotation.SuperCall;
 
 public class CachedFieldInterceptor {
-	public static <T> T intercept(@SuperCall Callable<T> c, @FieldValue("field") Field field){
+	public static Object intercept(@SuperCall Callable<?> c, @FieldValue("field") Field field){
 		try {
 			AccessPermissionChecker.checkAccessPermission(field);
 			return c.call();
