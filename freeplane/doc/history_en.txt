@@ -1,7 +1,8 @@
 ===============================
-1.5.19
+1.5.20
 ===============================
-Rename standard template to standard-1.5
+Bug fixes
+Export for java web start
 
 ===============================
 1.5.18

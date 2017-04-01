@@ -26,19 +26,11 @@
 
   <xsl:output method="xml" doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN" 
     doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
-    encoding="us-ascii"/>
+    encoding="utf-8"
+    indent="yes"/>
  
 <!-- fc, 20.10.2004: The following parameters are set by freeplane. -->
 <xsl:param name="destination_dir">./</xsl:param>
-<xsl:param name="area_code"></xsl:param>
-<xsl:param name="folding_type">html_export_no_folding</xsl:param>
-	<!-- possible values: 
-		html_export_fold_all, 
-		html_export_no_folding, 
-		html_export_fold_currently_folded, 
-		html_export_based_on_headings: this means, that approx. five levels are given, more deeper nodes are folded.
-		As of the time being, this parameter is not used.
-		-->
 <xsl:param name="propertyList"/>
 <!--
     

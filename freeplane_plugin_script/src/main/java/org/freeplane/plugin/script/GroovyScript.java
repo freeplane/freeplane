@@ -33,6 +33,7 @@ import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.script.groovypatch.GroovyPatcher;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
 
 import groovy.lang.Binding;
@@ -124,6 +125,7 @@ public class GroovyScript implements IScript {
 
     @Override
     public Object execute(final NodeModel node) {
+    	GroovyPatcher.apply();
         try {
             if (errorsInScript != null && compileTimeStrategy.canUseOldCompiledScript()) {
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);

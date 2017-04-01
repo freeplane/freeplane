@@ -44,6 +44,7 @@ import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.xml.XMLLocalParserFactory;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -54,7 +55,6 @@ import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
 
 /**
@@ -258,7 +258,7 @@ public class ScannerController implements IExtension, IFreeplanePropertyListener
 			return;
 		}
 		try {
-			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
+			final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();
 			final IXMLReader reader = new StdXMLReader(new BufferedInputStream(new FileInputStream(configXml)));
 			parser.setReader(reader);
 			final XMLElement loader = (XMLElement) parser.parse();
