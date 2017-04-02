@@ -159,12 +159,12 @@ abstract public class FrameController implements ViewController {
 		this.mapViewManager = mapViewManager;
 		final ResourceController resourceController = ResourceController.getResourceController();
 		if(textIcon == null){
-			FrameController.textIcon = new ImageIcon(resourceController.getResource("/images/text.png"));
-			FrameController.numberIcon = new ImageIcon(resourceController.getResource("/images/number.png"));
-			FrameController.dateIcon = new ImageIcon(resourceController.getResource("/images/calendar_red.png"));
-			FrameController.dateTimeIcon = new ImageIcon(resourceController.getResource("/images/calendar_clock_red.png"));
-			FrameController.linkIcon = new ImageIcon(resourceController.getResource("/images/" + resourceController.getProperty("link_icon")));
-			FrameController.localLinkIcon = new ImageIcon(resourceController.getResource("/images/" + resourceController.getProperty("link_local_icon")));
+			FrameController.textIcon = resourceController.getIcon("text_icon");
+			FrameController.numberIcon = resourceController.getIcon("number_icon");
+			FrameController.dateIcon = resourceController.getIcon("date_icon");
+			FrameController.dateTimeIcon = resourceController.getIcon("date_time_icon");
+			FrameController.linkIcon = resourceController.getIcon("link_icon");
+			FrameController.localLinkIcon = resourceController.getIcon("link_local_icon");
 		}
 		this.propertyKeyPrefix = propertyKeyPrefix;
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));

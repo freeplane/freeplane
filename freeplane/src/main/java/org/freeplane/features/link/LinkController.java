@@ -74,7 +74,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconStore;
-import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.IMapSelection;
@@ -114,10 +113,6 @@ public class LinkController extends SelectionController implements IExtension {
 		modeController.addExtension(LinkController.class, linkController);
 		linkController.init();
 	}
-
-	public static final String LINK_ICON = ResourceController.getResourceController().getProperty("link_icon");
-	private static final String MAIL_ICON = ResourceController.getResourceController().getProperty("mail_icon");
-	public static final String LINK_LOCAL_ICON = ResourceController.getResourceController().getProperty("link_local_icon");
 
  	final protected ModeController modeController;
 
@@ -241,7 +236,7 @@ public class LinkController extends SelectionController implements IExtension {
 	    		final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, target);
 	    		gotoLinkNodeAction.configureText("follow_graphical_link", target);
 	    		if (!(link instanceof ConnectorModel)) {
-	    			gotoLinkNodeAction.putValue(Action.SMALL_ICON, ICON_STORE.getUIIcon(LINK_LOCAL_ICON).getIcon());
+	    			gotoLinkNodeAction.putValue(Action.SMALL_ICON, LinkType.LOCAL.icon);
 	    		}
 	    		if (firstAction) {
 	    			entry.addChild(new Entry().setBuilders("separator"));
@@ -837,17 +832,17 @@ public class LinkController extends SelectionController implements IExtension {
 	    return ResourceController.getResourceController().getProperty("label_font_family");
     }
 
-	private static final String MENUITEM_ICON = "icons/button.png";
-	private static final String EXECUTABLE_ICON = ResourceController.getResourceController().getProperty("executable_icon");
+	private static final String MENUITEM_ICON = "menuitem_icon";
+	private static final String EXECUTABLE_ICON = "executable_icon";
 	private static final IconStore ICON_STORE = IconStoreFactory.create();
+	private static final String LINK_ICON = "link_icon";
+	private static final String MAIL_ICON = "mail_icon";
+	private static final String LINK_LOCAL_ICON = "link_local_icon";
+
 	public static enum LinkType{
 		LOCAL(LINK_LOCAL_ICON), MAIL(MAIL_ICON), EXECUTABLE(EXECUTABLE_ICON), MENU(MENUITEM_ICON), DEFAULT(LINK_ICON);
-		LinkType(String iconPath){
-			final UIIcon uiIcon = ICON_STORE.getUIIcon(iconPath);
-			if(uiIcon == null)
-				this.icon =  null;
-			else
-				this.icon =  uiIcon.getIcon();
+		LinkType(String iconKey){
+			this.icon =  ResourceController.getResourceController().getIcon(iconKey);
 		}
 		final public Icon icon;
 	}
