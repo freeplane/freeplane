@@ -33,8 +33,8 @@ import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.script.groovypatch.GroovyPatcher;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
+import org.freeplane.securegroovy.GroovyPatcher;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyRuntimeException;
@@ -125,7 +125,6 @@ public class GroovyScript implements IScript {
 
     @Override
     public Object execute(final NodeModel node) {
-    	GroovyPatcher.apply();
         try {
             if (errorsInScript != null && compileTimeStrategy.canUseOldCompiledScript()) {
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
@@ -183,7 +182,12 @@ public class GroovyScript implements IScript {
 		});
 	}
 
+    private static boolean groovyPatched = false; 
     private Script compileAndCache(final ScriptingSecurityManager scriptingSecurityManager) throws Throwable {
+    	if(! groovyPatched){
+    		GroovyPatcher.apply(GroovyScript.class.getClassLoader());
+    		groovyPatched = true;
+    	}
     	if (compileTimeStrategy.canUseOldCompiledScript()) {
 			scriptClassLoader.setSecurityManager(scriptingSecurityManager);
             return compiledScript;
