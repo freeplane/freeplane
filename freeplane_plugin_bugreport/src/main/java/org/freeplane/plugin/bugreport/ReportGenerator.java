@@ -237,12 +237,11 @@ public class ReportGenerator extends StreamHandler {
 						errorCounter++;
 						if(TextUtils.getRawText("internal_error_tooltip", null) != null){
 							if(logButton == null){
-								final ImageIcon errorIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-										"/images/icons/messagebox_warning.png"));
+								final ImageIcon errorIcon = ResourceController.getResourceController().getIcon("messagebox_warning_icon");
 								logButton = new JButton(){
 									@Override public Dimension getPreferredSize(){
 										Dimension preferredSize = super.getPreferredSize();
-										preferredSize.height = getIcon().getIconHeight();
+										preferredSize.height = Math.max(getIcon().getIconHeight(), getFont().getSize());
 										return preferredSize;
 									}
 								};
