@@ -1017,6 +1017,8 @@ public class MTextController extends TextController {
 			}
 		});
     	final SHTMLPanel shtmlPanel = SHTMLPanel.createSHTMLPanel();
+    	final JEditorPane sourceEditorPane = shtmlPanel.getSourceEditorPane();
+    	sourceEditorPane.setFont(UITools.scale(sourceEditorPane.getFont()));
     	shtmlPanel.setOpenHyperlinkHandler(new ActionListener(){
 
 			public void actionPerformed(ActionEvent pE) {
