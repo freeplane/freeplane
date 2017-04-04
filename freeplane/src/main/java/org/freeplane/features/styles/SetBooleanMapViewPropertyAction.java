@@ -44,6 +44,7 @@ public class SetBooleanMapViewPropertyAction extends AFreeplaneAction{
 	    	TextUtils.getRawText("OptionPanel." + propertyName),
 	    	null);
 	    this.propertyName = propertyName;
+	    setIcon(propertyName + ".icon");
 	    setTooltip(getTooltipKey());
     }
 
