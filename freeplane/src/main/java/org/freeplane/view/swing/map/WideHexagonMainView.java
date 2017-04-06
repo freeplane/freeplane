@@ -54,8 +54,8 @@ class WideHexagonMainView extends VariableInsetsMainView {
 		}
 		if(getShapeConfiguration().isUniform()) {
 			final Dimension prefSize = getPreferredRectangleSizeWithoutMargin(getMaximumWidth());
-			double w = prefSize.width + getZoom() * getMinimumHorizontalInset();
-			double h = prefSize.height + getZoom() * getMinimumVerticalInset();
+			double w = prefSize.width + getMinimumHorizontalInset();
+			double h = prefSize.height + getMinimumVerticalInset();
 			double diameter = Math.sqrt(w * w + h * h);
 			double width = limitWidth (diameter/ UNIFORM_HEIGHT_TO_WIDTH_RELATION);
 			prefSize.width = (int) Math.ceil(width);
@@ -72,21 +72,20 @@ class WideHexagonMainView extends VariableInsetsMainView {
 		Polygon polygon = getPaintedShape();
 		g.draw(polygon);
 	}
-
+	
 	protected Polygon getPaintedShape() {
-		final Polygon polygon;
-		if(getShapeConfiguration().isUniform()) {
-			int[] xCoords = new int[]{0,   getWidth()/4, 3 * getWidth() /4 , getWidth(),      3 * getWidth() / 4, getWidth() / 4};
-			int[] yCoords = new int[]{getHeight() / 2, 0,  0,  getHeight() / 2, getHeight() - 1, getHeight() - 1};
-			polygon = new Polygon(xCoords, yCoords, xCoords.length);
+		double[] xCoords;
+		double[] yCoords;
+		if(getShapeConfiguration().isUniform()){
+			xCoords = new double[]{0, 1/4f, 3/4f , 1, 3/4f, 1/4f};
+			yCoords = new double[]{1/2f, 0,  0,  1/2f, 1, 1};
 		}
 		else {
-			final int zoomedHorizontalInset = (int) (getWidth() * (1 - 1 / getHorizontalMarginFactor()) / 2);
-			int[] xCoords = new int[]{0,               zoomedHorizontalInset, getWidth() - zoomedHorizontalInset - 1, getWidth(),      getWidth() - zoomedHorizontalInset - 1, zoomedHorizontalInset};
-			int[] yCoords = new int[]{getHeight() / 2, 0,                     0,                                      getHeight() / 2, getHeight() - 1,                        getHeight() - 1};
-			polygon = new Polygon(xCoords, yCoords, xCoords.length);
+			final double zoomedHorizontalInset = (1 - 1 / getHorizontalMarginFactor() ) / 2;
+			xCoords = new double[]{0, zoomedHorizontalInset, 1-zoomedHorizontalInset, 1, 1-zoomedHorizontalInset, zoomedHorizontalInset};
+			yCoords = new double[]{1/2f, 0, 0, 1/2f, 1, 1};
 		}
-		return polygon;
+		return polygonOf(xCoords, yCoords);
 	}
 
 	@Override

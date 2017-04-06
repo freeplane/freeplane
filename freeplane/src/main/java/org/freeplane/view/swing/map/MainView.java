@@ -55,6 +55,9 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.DashVariant;
+import org.freeplane.features.edge.EdgeController;
+import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.UIIcon;
@@ -93,6 +96,10 @@ public abstract class MainView extends ZoomableLabel {
 	private MouseArea mouseArea = MouseArea.OUT;
 	final static Stroke DEF_STROKE = new BasicStroke();
 	private static final int DRAG_OVAL_WIDTH = 10;
+	private float unzoomedBorderWidth = 1f;
+	private DashVariant dash = DashVariant.DEFAULT;
+	private Color borderColor = EdgeController.STANDARD_EDGE_COLOR;
+	private Boolean borderColorMatchesEdgeColor = true;
 
 	boolean isShortened() {
     	return isShortened;
@@ -782,5 +789,52 @@ public abstract class MainView extends ZoomableLabel {
 	
 	public int getSingleChildShift() {
 		return 0;
+	}
+
+	public float getUnzoomedEdgeWidth() {
+		final NodeView nodeView = getNodeView();
+		final int edgeWidth = nodeView.getEdgeWidth();
+		final EdgeStyle style = nodeView.getEdgeStyle();
+		final float nodeLineWidth = style.getNodeLineWidth(edgeWidth);
+		return nodeLineWidth;
+	}
+	
+	public float getPaintedBorderWidth() {
+		final float zoomedLineWidth = getNodeView().getMap().getZoom() * unzoomedBorderWidth;
+		return Math.max(zoomedLineWidth, 1);
+	}
+
+	public float getUnzoomedBorderWidth() {
+		return Math.max(unzoomedBorderWidth, 1);
+	}
+
+	public DashVariant getDash() {
+		return dash;
+	}
+
+	public Color getBorderColor() {
+		return borderColorMatchesEdgeColor ? getNodeView().getEdgeColor() : borderColor;
+	}
+
+	public void updateBorder(NodeView nodeView) {
+		final NodeStyleController controller = NodeStyleController.getController(nodeView.getMap().getModeController());
+		final NodeModel node = nodeView.getModel();
+		final Boolean borderWidthMatchesEdgeWidth = controller.getBorderWidthMatchesEdgeWidth(node);
+		if(borderWidthMatchesEdgeWidth)
+			unzoomedBorderWidth = getUnzoomedEdgeWidth();
+		else
+			unzoomedBorderWidth = (float) controller.getBorderWidth(node).toBaseUnits();
+		
+		final Boolean borderDashMatchesEdgeDash = controller.getBorderDashMatchesEdgeDash(node);
+		if(borderDashMatchesEdgeDash)
+			dash = nodeView.getEdgeDash();
+		else
+			dash = controller.getBorderDash(node);
+		
+		borderColorMatchesEdgeColor = controller.getBorderColorMatchesEdgeColor(node);
+		if(borderColorMatchesEdgeColor)
+			borderColor = nodeView.getEdgeColor();
+		else
+			borderColor = controller.getBorderColor(node);
 	}
 }

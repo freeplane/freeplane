@@ -26,8 +26,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 
-import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -71,15 +71,11 @@ public class OutlineEdgeView extends EdgeView {
 
 	@Override
 	protected Stroke getStroke() {
-		final NodeView target = getTarget();
-		int edgeWidth = target.getEdgeWidth();
-		final EdgeStyle style = target.getEdgeStyle();
-		final int nodeLineWidth = style.getNodeLineWidth(edgeWidth);
-		final int zoomedWidth;
-		if(edgeWidth != 0)
-	        zoomedWidth = getTarget().getZoomed(nodeLineWidth);
-        else
-	        zoomedWidth = nodeLineWidth;
-		return new BasicStroke(zoomedWidth);
+		final NodeView nodeView = getTarget();
+		final MainView mainView = nodeView.getMainView();
+		final float nodeLineWidth = mainView.getUnzoomedEdgeWidth();
+		final float zoomedLineWidth = nodeView.getMap().getZoom() * nodeLineWidth;
+		float strokeWidth =  Math.max(zoomedLineWidth, 1);
+		return getStroke(strokeWidth);
 	}
 }

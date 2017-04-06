@@ -188,7 +188,7 @@ class NodeViewFactory {
 				NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, c);
 				if(nodeView == null)
 					return;
-				final Color iconColor =  nodeView.getEdgeColor();
+				final Color iconColor =  nodeView.getMainView().getBorderColor();
 				coloredIconCreator.createColoredIcon(iconColor).paintIcon(c, g, x, y);
 			}
 

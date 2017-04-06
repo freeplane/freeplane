@@ -1,4 +1,14 @@
 ===============================
+1.6.0
+===============================
+Configurable node border widths
+Configurable node border colors
+Configurable edge line type
+Configurable node border line type
+Configurable standard for connector arrows
+Configurable standard for line type 
+
+===============================
 1.5.18
 ===============================
 Bug fixes
@@ -54,6 +64,7 @@ Restore old default map template
 1.5.10
 ===============================
 Stable release
+
 ===============================
 1.5.9
 ===============================
