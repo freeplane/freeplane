@@ -37,6 +37,7 @@ import org.freeplane.plugin.script.proxy.ProxyFactory;
 import org.freeplane.securegroovy.GroovyPatcher;
 
 import groovy.lang.Binding;
+import groovy.lang.GroovyObject;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.Script;
 
@@ -185,7 +186,7 @@ public class GroovyScript implements IScript {
     private static boolean groovyPatched = false; 
     private Script compileAndCache(final ScriptingSecurityManager scriptingSecurityManager) throws Throwable {
     	if(! groovyPatched){
-    		GroovyPatcher.apply(GroovyScript.class.getClassLoader());
+    		GroovyPatcher.apply(GroovyObject.class);
     		groovyPatched = true;
     	}
     	if (compileTimeStrategy.canUseOldCompiledScript()) {
