@@ -7,5 +7,6 @@ grant codeBase "file:${org.freeplane.os.lib.ext}/*" {
 };
 
 grant {
+		permission java.io.FilePermission "${org.freeplane.basedirectory}/-", "read";
         permission java.lang.RuntimePermission "getClassLoader";
 };

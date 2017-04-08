@@ -15,5 +15,6 @@ grant codeBase "file:${user.home}/.p2/-" {
 };
 
 grant {
+		permission java.io.FilePermission "${org.freeplane.basedirectory}/-", "read";
         permission java.lang.RuntimePermission "getClassLoader";
 };
