@@ -134,13 +134,7 @@ public class ApplicationResourceController extends ResourceController {
 
 			@Override
 			public URL run() {
-				final String relName;
-				if (name.startsWith("/")) {
-					relName = name.substring(1);
-				}
-				else {
-					relName = name;
-				}
+				final String relName = removeSlashAtStart(name);
 				for(File directory : resourceDirectories) {
 					File fileResource = new File(directory, relName);
 					if (fileResource.exists()) {
@@ -174,6 +168,47 @@ public class ApplicationResourceController extends ResourceController {
 				return null;
 			}
 		});
+	}
+
+	@Override
+	protected URL getFirstResource(final String... names) {
+		final URL url = AccessController.doPrivileged(new PrivilegedAction<URL>() {
+			@Override
+			public URL run() {
+				for(final File directory : resourceDirectories) {
+					for(final String name : names){
+						final String relName = removeSlashAtStart(name);
+						File fileResource = new File(directory, relName);
+						if (fileResource.exists()) {
+							try {
+								return Compat.fileToUrl(fileResource);
+							} catch (MalformedURLException e) {
+								throw new RuntimeException(e);
+							}
+						}
+					}
+				}
+				for(final String name : names){
+					final URL url = ApplicationResourceController.super.getResource(name);
+					if(url  != null)
+						return url;
+				}
+				return null;
+			}
+		});
+		return url;
+
+	}
+
+	private String removeSlashAtStart(final String name) {
+		final String relName;
+		if (name.startsWith("/")) {
+			relName = name.substring(1);
+		}
+		else {
+			relName = name;
+		}
+		return relName;
 	}
 
 	@Override

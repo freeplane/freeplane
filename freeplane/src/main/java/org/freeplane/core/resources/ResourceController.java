@@ -356,22 +356,33 @@ public abstract class ResourceController {
 		ImageIcon icon = iconCache.get(iconKey);
 		if(icon == null){
 			final String iconResource = getProperty(iconKey, null);
-			if (iconResource != null) {
-				URL url = null;
-				if(iconResource.endsWith(".png"))
-					url = getResource(iconResource.replaceFirst("(?i)\\.png$", ".svg"));
-				if (url == null)
-					url = getResource(iconResource);
-				if (url == null) {
-					LogUtils.severe("can not load icon '" + iconResource + "'");
-				}
-				else {
-					//final ImageIcon icon = new ImageIcon(url);
-					icon = ImageIconFactory.getInstance().getImageIcon(url, height);
-					iconCache.put(iconKey, icon);
-				}
+			icon = loadIcon(height, iconResource);
+		}
+		if(icon != null)
+			iconCache.put(iconKey, icon);
+		return icon;
+	}
+
+	private ImageIcon loadIcon(Quantity<LengthUnits> height, final String iconResource) {
+		if (iconResource != null) {
+			URL url = null;
+			if(iconResource.endsWith(".png"))
+				url = getFirstResource(iconResource.replaceFirst("(?i)\\.png$", ".svg"), iconResource);
+			if (url != null) {
+				return ImageIconFactory.getInstance().getImageIcon(url, height);
+			} else {
+				LogUtils.severe("can not load icon '" + iconResource + "'");
 			}
 		}
-		return icon;
+		return null;
+	}
+
+	protected URL getFirstResource(String... names) {
+		for(String name : names){
+			final URL url = getResource(name);
+			if(url != null)
+				return url;
+		}
+		return null;
 	}
 }
