@@ -2,7 +2,7 @@ dependencies {
     compile project(':freeplane')
     compile project(':freeplane_plugin_jsyntaxpane')
     compile 'org.codehaus.groovy:groovy-all:2.3.1'
-	compile ('org.freeplane.securegroovy:groovy-patcher:0.0.1') {
+	compile ('org.freeplane.securegroovy:groovy-patcher:0.0.2') {
 		transitive = false
 	}
     compile 'net.bytebuddy:byte-buddy:1.6.9'
