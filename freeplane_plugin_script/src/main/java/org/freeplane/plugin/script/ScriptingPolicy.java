@@ -81,6 +81,8 @@ class ScriptingPolicy extends Policy {
 		permissions.add(new AWTPermission("accessClipboard"));
 		permissions.add(new AWTPermission("accessEventQueue"));
 		permissions.add(new AWTPermission("setWindowAlwaysOnTop"));
+		permissions.add(new FilePermission(Compat.getApplicationUserDirectory() + "/resources/-", "read"));
+		permissions.add(new FilePermission(Compat.getApplicationUserDirectory() + "/icons/-", "read"));
 	}
 
 
