@@ -92,7 +92,7 @@ public class IconController implements IExtension {
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
-		final IconBuilder textBuilder = new IconBuilder(this, IconStoreFactory.create());
+		final IconBuilder textBuilder = new IconBuilder(this, IconStoreFactory.ICON_STORE);
 		textBuilder.registerBy(readManager, writeManager);
 		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<Collection<MindIcon>, NodeModel>() {
 			public Collection<MindIcon> getProperty(final NodeModel node, final Collection<MindIcon> currentValue) {

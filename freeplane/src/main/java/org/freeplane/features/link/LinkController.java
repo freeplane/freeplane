@@ -834,7 +834,7 @@ public class LinkController extends SelectionController implements IExtension {
 
 	private static final String MENUITEM_ICON = "menuitem_icon";
 	private static final String EXECUTABLE_ICON = "executable_icon";
-	private static final IconStore ICON_STORE = IconStoreFactory.create();
+	private static final IconStore ICON_STORE = IconStoreFactory.ICON_STORE;
 	private static final String LINK_ICON = "link_icon";
 	private static final String MAIL_ICON = "mail_icon";
 	private static final String LINK_LOCAL_ICON = "link_local_icon";

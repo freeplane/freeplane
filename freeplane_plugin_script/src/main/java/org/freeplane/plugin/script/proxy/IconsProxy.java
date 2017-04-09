@@ -24,7 +24,7 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 	}
 
 	public void add(final String name) {
-		getIconController().addIcon(getDelegate(), IconStoreFactory.create().getMindIcon(name));
+		getIconController().addIcon(getDelegate(), IconStoreFactory.ICON_STORE.getMindIcon(name));
 	}
 
 	@Override

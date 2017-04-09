@@ -56,7 +56,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
 
 class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
-	private static final IconStore STORE = IconStoreFactory.create();
+	private static final IconStore STORE = IconStoreFactory.ICON_STORE;
 
 	static private class AttributeTreeNodeInfo extends TreeNodeInfo {
 		final private boolean restricted;

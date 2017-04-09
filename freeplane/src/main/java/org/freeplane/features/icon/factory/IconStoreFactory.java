@@ -57,10 +57,6 @@ public class IconStoreFactory {
 		IconStoreFactory.setIconGroups(ICON_STORE);
 	}
 
-	public static IconStore create() {
-		return ICON_STORE;
-	}
-
 	private static void setIconGroups(final IconStore iconStore) {
 		final String[] groupNames = RESOURCE_CONTROLLER.getProperty(GROUP_NAMES_KEY).split(SEPARATOR);
 		for (final String groupName : groupNames) {

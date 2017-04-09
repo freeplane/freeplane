@@ -213,7 +213,7 @@ public class MIconController extends IconController {
 	}
 
 	private final Map<MindIcon, AFreeplaneAction> iconActions = new LinkedHashMap<MindIcon, AFreeplaneAction>();
-	private final IconStore STORE = IconStoreFactory.create();
+	private final IconStore STORE = IconStoreFactory.ICON_STORE;
 	private final JToolBar iconToolBar;
 	private final Box iconBox;
 

@@ -55,14 +55,14 @@ public class NoteController implements IExtension {
 	 *
 	 */
 	public static final String NODE_NOTE_ICON = "accessories.plugins.NodeNoteIcon";
-	private static final UIIcon noteIcon= IconStoreFactory.create().getUIIcon("knotes.png");
+	private static final UIIcon noteIcon= IconStoreFactory.ICON_STORE.getUIIcon("knotes.png");
 	public static final String bwNoteIconUrl;
 	public static final Icon bwNoteIcon;
 	
 	static {
 			String bwNoteIconName = "note_black_and_transp.png";
 			bwNoteIconUrl = "freeplaneresource:/images/" + bwNoteIconName;
-			bwNoteIcon = IconStoreFactory.create().getUIIcon(bwNoteIconName).getIcon();
+			bwNoteIcon = IconStoreFactory.ICON_STORE.getUIIcon(bwNoteIconName).getIcon();
 	}
 	public static final String SHOW_NOTE_ICONS = "show_note_icons";
 	private static final Integer NOTE_TOOLTIP = 9;
