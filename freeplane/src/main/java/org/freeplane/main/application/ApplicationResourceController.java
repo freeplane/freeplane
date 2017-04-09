@@ -54,7 +54,6 @@ public class ApplicationResourceController extends ResourceController {
 	public static final String FREEPLANE_GLOBALRESOURCEDIR_PROPERTY = "org.freeplane.globalresourcedir";
 	public static final String DEFAULT_FREEPLANE_GLOBALRESOURCEDIR = "resources";
 	private ArrayList<File> resourceDirectories;
-	private File userResourceDirectory;
 
 	/**
 	 * @param controller
@@ -68,9 +67,9 @@ public class ApplicationResourceController extends ResourceController {
 		final String resourceBaseDir = getResourceBaseDir();
 		if (resourceBaseDir != null) {
 			try {
-				userResourceDirectory = new File(userDir, "resources").getAbsoluteFile();
-				userResourceDirectory.mkdirs();
-				resourceDirectories.add(userResourceDirectory);
+				final File userResourceDir = new File(userDir, "resources");
+				userResourceDir.mkdirs();
+				resourceDirectories.add(userResourceDir);
 				final File resourceDir = new File(resourceBaseDir);
 				resourceDirectories.add(resourceDir);
 			}
@@ -336,10 +335,5 @@ public class ApplicationResourceController extends ResourceController {
 		}
 		props.setProperty(key, value);
 		firePropertyChanged(key, value, oldValue);
-	}
-
-	@Override
-	public File getUserResourceDirectory() {
-		return userResourceDirectory;
 	}
 }

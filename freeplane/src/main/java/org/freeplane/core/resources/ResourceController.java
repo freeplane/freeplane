@@ -20,7 +20,6 @@
 package org.freeplane.core.resources;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -389,9 +388,5 @@ public abstract class ResourceController {
 	public URL getIconResource(String resourcePath) {
 		final String[] alternativePaths = ImageIconFactory.getAlternativePaths(resourcePath);
 		return getFirstResource(alternativePaths);
-	}
-
-	public File getUserResourceDirectory() {
-		return null;
 	}
 }
