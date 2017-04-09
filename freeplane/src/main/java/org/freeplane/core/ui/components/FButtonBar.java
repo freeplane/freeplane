@@ -51,6 +51,7 @@ import org.freeplane.core.ui.IAcceleratorChangeListener;
 import org.freeplane.core.ui.IKeyStrokeProcessor;
 import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
@@ -126,9 +127,8 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 	private JButton[] createButtonRow(final int modifiers) {
 		final JButton[] buttons = new JButton[BUTTON_NUMBER];
 		for (int i = 0; i < BUTTON_NUMBER; i++) {
-			final String name = "/images/f" + (i + 1) + ".png";
-			final JButton button = buttons[i] = new JButton(new ImageIcon(
-			    ResourceController.getResourceController().getResource(name))) {
+			final String name = "f" + (i + 1) + ".png";
+			final JButton button = buttons[i] = new JButton(IconStoreFactory.create().getUIIcon(name).getIcon()) {
 				/**
 				 * 
 				 */

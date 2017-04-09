@@ -123,7 +123,7 @@ class AttributeRegistryTable extends JTable {
 		}
 	}
 
-	static final private Icon checkBoxImage = new ImageIcon(ResourceController.getResourceController().getResource(
+	static final private Icon checkBoxImage = new ImageIcon(ResourceController.getResourceController().getIconResource(
 	    "/images/checkbox12.png"));
 	private static final ButtonRenderer editButtonRenderer = new ButtonRenderer(AttributeManagerDialog.editButtonImage,
 	    TextUtils.getText("attributes_edit_tooltip"));

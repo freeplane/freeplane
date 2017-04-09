@@ -105,7 +105,7 @@ public final class ImageIconFactory {
 			throw new IllegalArgumentException("unknown icon");
 	}
 
-	static boolean isSvgIconsEnabled() {
+	static public boolean isSvgIconsEnabled() {
 		return ResourceController.getResourceController().getBooleanProperty(ImageIconFactory.USE_SVG_ICONS);
 	}
 

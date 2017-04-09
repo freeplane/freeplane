@@ -22,7 +22,10 @@ package org.freeplane.features.note;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.swing.Icon;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.WriteManager;
@@ -32,6 +35,7 @@ import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
+import org.freeplane.features.icon.factory.ImageIconFactory;
 import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -47,13 +51,19 @@ import org.freeplane.features.text.TextController;
  * @author Dimitry Polivaev
  */
 public class NoteController implements IExtension {
-	private static boolean firstRun = true;
 	/**
 	 *
 	 */
 	public static final String NODE_NOTE_ICON = "accessories.plugins.NodeNoteIcon";
-	private static UIIcon noteIcon;
-	public static URL bwNoteIconUrl;
+	private static final UIIcon noteIcon= IconStoreFactory.create().getUIIcon("knotes.png");
+	public static final String bwNoteIconUrl;
+	public static final Icon bwNoteIcon;
+	
+	static {
+			String bwNoteIconName = "note_black_and_transp.png";
+			bwNoteIconUrl = "freeplaneresource:/images/" + bwNoteIconName;
+			bwNoteIcon = IconStoreFactory.create().getUIIcon(bwNoteIconName).getIcon();
+	}
 	public static final String SHOW_NOTE_ICONS = "show_note_icons";
 	private static final Integer NOTE_TOOLTIP = 9;
 	public static final String SHOW_NOTES_IN_MAP = "show_notes_in_map";
@@ -70,11 +80,6 @@ public class NoteController implements IExtension {
 	public static void install( final NoteController noteController) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(NoteController.class, noteController);
-		if (firstRun) {
-			noteIcon = IconStoreFactory.create().getUIIcon("knotes.png");
-			bwNoteIconUrl = ResourceController.getResourceController().getResource("/images/note_black_and_transp.png");
-			firstRun = false;
-		}
 	}
 
  	final private ModeController modeController;

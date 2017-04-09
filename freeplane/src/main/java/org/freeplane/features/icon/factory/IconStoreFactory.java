@@ -51,22 +51,14 @@ public class IconStoreFactory {
 	private static final String GROUP_KEY = "icons.group.%s";
 	private static final String GROUP_ICON_KEY = "IconGroupPopupAction.%s.icon";
 	private static final String GROUP_DESC_KEY = "IconGroupPopupAction.%s.text";
-	private static IconStore groups;
+	public static IconStore ICON_STORE;
+	static {
+		ICON_STORE = new IconStore();
+		IconStoreFactory.setIconGroups(ICON_STORE);
+	}
 
-	/**
-	 * 
-	 * Creates an IconStore from the property file. If one was already
-	 * constructed it will be returned without creating a new one.
-	 * 
-	 * @return
-	 */
 	public static IconStore create() {
-		if (groups != null) {
-			return groups;
-		}
-		groups = new IconStore();
-		IconStoreFactory.setIconGroups(groups);
-		return groups;
+		return ICON_STORE;
 	}
 
 	private static void setIconGroups(final IconStore iconStore) {
