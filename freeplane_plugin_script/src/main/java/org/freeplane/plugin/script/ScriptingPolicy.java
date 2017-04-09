@@ -32,6 +32,7 @@ import java.security.ProtectionDomain;
 import java.security.cert.Certificate;
 import java.util.PropertyPermission;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.main.application.ApplicationResourceController;
 import org.osgi.framework.AdminPermission;
@@ -81,6 +82,7 @@ class ScriptingPolicy extends Policy {
 		permissions.add(new AWTPermission("accessClipboard"));
 		permissions.add(new AWTPermission("accessEventQueue"));
 		permissions.add(new AWTPermission("setWindowAlwaysOnTop"));
+		permissions.add(new FilePermission(ResourceController.getResourceController().getUserResourceDirectory().getAbsolutePath() +  "/-", "read"));
 	}
 
 
