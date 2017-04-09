@@ -113,7 +113,7 @@ public class Filter {
 
 	void displayFilterStatus() {
 		if (filterIcon == null) {
-			filterIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/filter.png"));
+			filterIcon = ResourceController.getResourceController().getIcon("/images/filter.png");
 		}
 		if (getCondition() != null) {
 			Controller.getCurrentController().getViewController().addStatusInfo("filter", null, filterIcon);

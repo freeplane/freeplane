@@ -355,7 +355,7 @@ public abstract class ResourceController {
 	public ImageIcon getIcon(String iconKey, Quantity<LengthUnits> height) {
 		ImageIcon icon = iconCache.get(iconKey);
 		if(icon == null){
-			final String iconResource = getProperty(iconKey, null);
+			final String iconResource = iconKey.startsWith("/") ? iconKey : getProperty(iconKey, null);
 			icon = loadIcon(height, iconResource);
 		}
 		if(icon != null)
