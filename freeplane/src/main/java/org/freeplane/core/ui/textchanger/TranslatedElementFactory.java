@@ -1,5 +1,6 @@
 package org.freeplane.core.ui.textchanger;
 
+import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -90,5 +91,17 @@ public class TranslatedElementFactory {
 	public static JButton createButtonWithIcon(final String iconKey, final String tooltipKey ) {
 		return createButtonWithIcon(null, iconKey, tooltipKey);
 	}
+	
+	public static JToggleButton createToggleButtonWithIcon(final String iconKey, String labelKey) {
+		JToggleButton button = createToggleButton(labelKey);
+		return addIcon(button, iconKey);
+	}
+
+	public static <T extends AbstractButton> T addIcon(T button, final String iconKey) {
+		final ImageIcon icon = ResourceController.getResourceController().getIcon(iconKey, ImageIconFactory.DEFAULT_UI_ICON_HEIGHT);
+		button.setIcon(icon);
+		return button;
+	}
+
 
 }

@@ -1,5 +1,8 @@
 package org.freeplane.features.presentations.mindmapmode;
 
+import static org.freeplane.core.ui.textchanger.TranslatedElementFactory.createButtonWithIcon;
+import static org.freeplane.core.ui.textchanger.TranslatedElementFactory.createCheckBox;
+import static org.freeplane.core.ui.textchanger.TranslatedElementFactory.createToggleButtonWithIcon;
 import static org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType.PLAYING_STATE_CHANGED;
 
 import java.awt.Color;
@@ -21,7 +24,6 @@ import javax.swing.JToggleButton;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.filter.FilterComposerDialog;
-import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
@@ -118,7 +120,7 @@ class SlideEditorController{
 	}
 
 	private JButton createSetSelectedNodeButton() {
-		JButton btnSetSelectedNode = TranslatedElementFactory.createButton("slide.set");
+		JButton btnSetSelectedNode = createButtonWithIcon("SetFilterSlideContent.icon", "slide.set.tooltip");
 		btnSetSelectedNode.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSetSelectedNode.addActionListener(new ActionListener() {
 			
@@ -133,7 +135,7 @@ class SlideEditorController{
 	}
 
 	private JButton createAddSelectedNodeButton() {
-		JButton btnSetSelectedNode = TranslatedElementFactory.createButton("slide.add");
+		JButton btnSetSelectedNode = createButtonWithIcon("AddSlideContent.icon", "slide.add.tooltip");
 		btnSetSelectedNode.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSetSelectedNode.addActionListener(new ActionListener() {
 			@Override
@@ -147,7 +149,7 @@ class SlideEditorController{
 	}
 
 	private JButton createRemoveSelectedNodeButton() {
-		JButton btnSetSelectedNode = TranslatedElementFactory.createButton("slide.remove");
+		JButton btnSetSelectedNode = createButtonWithIcon("RemoveSlideContent.icon", "slide.remove.tooltip");
 		btnSetSelectedNode.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSetSelectedNode.addActionListener(new ActionListener() {
 			@Override
@@ -161,7 +163,7 @@ class SlideEditorController{
 	}
 
 	private JToggleButton createSetZoomToggleButton() {
-		final JToggleButton btnSetsZoom = TranslatedElementFactory.createToggleButton("slide.setzoom");
+		final JToggleButton btnSetsZoom = createToggleButtonWithIcon("SetZoomSlideContent.icon", "slide.setzoom");
 		btnSetsZoom.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -175,7 +177,7 @@ class SlideEditorController{
 		return btnSetsZoom;
 	}
 	private JToggleButton createCentersSelectedNodeToggleButton() {
-		final JToggleButton checkBoxOnlySpecificNodes = TranslatedElementFactory.createToggleButton("slide.centernode");
+		final JToggleButton checkBoxOnlySpecificNodes = createToggleButtonWithIcon("CenterSelectedNodeSlideContent.icon", "slide.centernode");
 		checkBoxOnlySpecificNodes.setAlignmentX(Component.CENTER_ALIGNMENT);
 		checkBoxOnlySpecificNodes.addActionListener(new ActionListener() {
 			@Override
@@ -202,7 +204,7 @@ class SlideEditorController{
 	}
 
 	private JCheckBox createOnlySelectedNodesCheckBox() {
-		final JCheckBox checkBoxOnlySpecificNodes = TranslatedElementFactory.createCheckBox("slide.showonlyselected");
+		final JCheckBox checkBoxOnlySpecificNodes = createCheckBox("slide.showonlyselected");
 		checkBoxOnlySpecificNodes.setAlignmentX(Component.CENTER_ALIGNMENT);
 		checkBoxOnlySpecificNodes.addActionListener(new ActionListener() {
 			@Override
@@ -215,7 +217,7 @@ class SlideEditorController{
 
 	private JCheckBox createShowAncestorsCheckBox() {
 				
-		final JCheckBox checkBoxShowAncestors = TranslatedElementFactory.createCheckBox("slide.showancestors");
+		final JCheckBox checkBoxShowAncestors = createCheckBox("slide.showancestors");
 		checkBoxShowAncestors.setAlignmentX(Component.CENTER_ALIGNMENT);
 		checkBoxShowAncestors.addActionListener(new ActionListener() {
 			@Override
@@ -227,7 +229,7 @@ class SlideEditorController{
 	}
 
 	private JCheckBox createShowDescendantsCheckBox() {
-		final JCheckBox checkBoxShowDescendants = TranslatedElementFactory.createCheckBox("slide.descendants");
+		final JCheckBox checkBoxShowDescendants = createCheckBox("slide.descendants");
 		checkBoxShowDescendants.setAlignmentX(Component.CENTER_ALIGNMENT);
 		checkBoxShowDescendants.addActionListener(new ActionListener() {
 			@Override
@@ -242,7 +244,7 @@ class SlideEditorController{
 	
 	private FilterComposerDialog filterComposerDialog = null;
 	private JToggleButton createSetFilterToggleButton() {
-		final JToggleButton tglbtnSetFilter = TranslatedElementFactory.createToggleButton("slide.setfilter");
+		final JToggleButton tglbtnSetFilter = createToggleButtonWithIcon("SetFilterSlideContent.icon", "slide.setfilter");
 		tglbtnSetFilter.setAlignmentX(Component.CENTER_ALIGNMENT);
 		tglbtnSetFilter.addActionListener(new ActionListener() {
 
@@ -271,7 +273,7 @@ class SlideEditorController{
 	}
 
 	private JButton createSelectNodesButton() {
-		JButton btnHighlightSlideContent = TranslatedElementFactory.createButton("slide.select");
+		JButton btnHighlightSlideContent = createButtonWithIcon("SelectSlideContent.icon", "slide.select.tooltip");
 		btnHighlightSlideContent.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnHighlightSlideContent.addActionListener(new ActionListener() {
 			@Override
@@ -282,7 +284,7 @@ class SlideEditorController{
 		return btnHighlightSlideContent;
 	}
 	private JToggleButton createSetFoldingStateToggleButton() {
-		JToggleButton tglbtnSetFilter = TranslatedElementFactory.createToggleButton("slide.setfoldingstate");
+		JToggleButton tglbtnSetFilter = createToggleButtonWithIcon("SetFoldingSlideContent.icon", "slide.setfoldingstate");
 		tglbtnSetFilter.setAlignmentX(Component.CENTER_ALIGNMENT);
 		tglbtnSetFilter.addActionListener(new ActionListener() {
 			
