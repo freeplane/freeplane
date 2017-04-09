@@ -47,12 +47,6 @@ public class FreeplaneIconUtils {
 		return createImageIcon(resourceUrl);
 	}
 	
-	public static ImageIcon createImageIconByResourceKey(final String resourceKey) {
-		final ResourceController resourceController = ResourceController.getResourceController();
-		final URL resourceUrl = resourceController.getResource(resourceController.getProperty(resourceKey));
-		return createImageIcon(resourceUrl);
-	}
-
 	public static ImageIcon createImageIconPrivileged(final URL resourceUrl) {
 		return AccessController.doPrivileged(new PrivilegedAction<ImageIcon>() {
 			@Override
