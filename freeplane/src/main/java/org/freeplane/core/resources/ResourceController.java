@@ -227,8 +227,8 @@ public abstract class ResourceController {
 		return Collections.unmodifiableCollection(propertyChangeListeners);
 	}
 
-	public URL getResource(final String name) {
-		return getClass().getResource(name);
+	public URL getResource(final String resourcePath) {
+		return getClass().getResource(resourcePath);
 	}
 
 	public InputStream getResourceStream(final String resFileName) throws IOException {
@@ -363,26 +363,30 @@ public abstract class ResourceController {
 		return icon;
 	}
 
-	private ImageIcon loadIcon(Quantity<LengthUnits> height, final String iconResource) {
-		if (iconResource != null) {
-			URL url = null;
-			if(iconResource.endsWith(".png"))
-				url = getFirstResource(iconResource.replaceFirst("(?i)\\.png$", ".svg"), iconResource);
+	private ImageIcon loadIcon(Quantity<LengthUnits> height, final String resourcePath) {
+		if (resourcePath != null) {
+			URL url = getFirstResource(ImageIconFactory.getAlternativePaths(resourcePath));
 			if (url != null) {
 				return ImageIconFactory.getInstance().getImageIcon(url, height);
 			} else {
-				LogUtils.severe("can not load icon '" + iconResource + "'");
+				LogUtils.severe("can not load icon '" + resourcePath + "'");
 			}
 		}
 		return null;
 	}
 
-	protected URL getFirstResource(String... names) {
-		for(String name : names){
-			final URL url = getResource(name);
+	public URL getFirstResource(String... resourcePaths) {
+		for(String path : resourcePaths){
+			final URL url = getResource(path);
 			if(url != null)
 				return url;
 		}
 		return null;
+	}
+
+
+	public URL getIconResource(String resourcePath) {
+		final String[] alternativePaths = ImageIconFactory.getAlternativePaths(resourcePath);
+		return getFirstResource(alternativePaths);
 	}
 }

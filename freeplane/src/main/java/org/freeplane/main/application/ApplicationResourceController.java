@@ -129,12 +129,12 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	@Override
-	public URL getResource(final String name) {
+	public URL getResource(final String resourcePath) {
 		return AccessController.doPrivileged(new PrivilegedAction<URL>() {
 
 			@Override
 			public URL run() {
-				final String relName = removeSlashAtStart(name);
+				final String relName = removeSlashAtStart(resourcePath);
 				for(File directory : resourceDirectories) {
 					File fileResource = new File(directory, relName);
 					if (fileResource.exists()) {
@@ -145,11 +145,11 @@ public class ApplicationResourceController extends ResourceController {
 						}
 					}
 				}
-				URL resource = ApplicationResourceController.super.getResource(name);
+				URL resource = ApplicationResourceController.super.getResource(resourcePath);
 				if (resource != null) {
 					return resource;
 				}
-				if ("/lib/freeplaneviewer.jar".equals(name)) {
+				if ("/lib/freeplaneviewer.jar".equals(resourcePath)) {
 					final String rootDir = new File(getResourceBaseDir()).getAbsoluteFile().getParent();
 					try {
 						final File try1 = new File(rootDir + "/plugins/org.freeplane.core/lib/freeplaneviewer.jar");
@@ -171,13 +171,13 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	@Override
-	protected URL getFirstResource(final String... names) {
+	public URL getFirstResource(final String... resourcePaths) {
 		final URL url = AccessController.doPrivileged(new PrivilegedAction<URL>() {
 			@Override
 			public URL run() {
 				for(final File directory : resourceDirectories) {
-					for(final String name : names){
-						final String relName = removeSlashAtStart(name);
+					for(final String path : resourcePaths){
+						final String relName = removeSlashAtStart(path);
 						File fileResource = new File(directory, relName);
 						if (fileResource.exists()) {
 							try {
@@ -188,8 +188,8 @@ public class ApplicationResourceController extends ResourceController {
 						}
 					}
 				}
-				for(final String name : names){
-					final URL url = ApplicationResourceController.super.getResource(name);
+				for(final String path : resourcePaths){
+					final URL url = ApplicationResourceController.super.getResource(path);
 					if(url  != null)
 						return url;
 				}

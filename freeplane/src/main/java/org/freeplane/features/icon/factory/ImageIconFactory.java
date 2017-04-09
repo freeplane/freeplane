@@ -45,6 +45,7 @@ public final class ImageIconFactory {
 	private static final String DEFAULT_IMAGE_PATH = "/images/";
 	private static final ImageIcon ICON_NOT_FOUND = FACTORY.getImageIcon(ResourceController.getResourceController()
 	    .getResource(DEFAULT_IMAGE_PATH + "IconNotFound.png"));
+	private static final String USE_SVG_ICONS = "use_svg_icons";
 	private final WeakValueCache<String, ImageIcon> ICON_CACHE = new WeakValueCache<String, ImageIcon>();
 	private final WeakHashMap<ImageIcon, URL> ICON_URLS = new WeakHashMap<ImageIcon, URL>();
 
@@ -102,5 +103,18 @@ public final class ImageIconFactory {
 			return getImageIcon(iconUrl, iconHeight);
 		else
 			throw new IllegalArgumentException("unknown icon");
+	}
+
+	static boolean isSvgIconsEnabled() {
+		return ResourceController.getResourceController().getBooleanProperty(ImageIconFactory.USE_SVG_ICONS);
+	}
+
+	public static String[] getAlternativePaths(final String resourcePath) {
+		final String pngSuffix = ".png";
+		if(isSvgIconsEnabled() && resourcePath.endsWith(pngSuffix)) {
+			final String svgPath = resourcePath.substring(0, resourcePath.length() - pngSuffix.length()) + ".svg";
+			return new String[]{svgPath, resourcePath};
+		} else
+			return new String[]{resourcePath};
 	}
 }

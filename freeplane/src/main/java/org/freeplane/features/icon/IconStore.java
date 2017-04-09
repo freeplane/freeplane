@@ -115,7 +115,7 @@ public class IconStore {
 			return mindIcons.get(name);
 		}
 		// icons in directory /image are not registered
-		final MindIcon mindIcon = MindIconFactory.createSvgOrPng(name);
+		final MindIcon mindIcon = MindIconFactory.createIcon(name);
 		if (ResourceController.getResourceController().getResource(mindIcon.getPath()) != null) {
 			return mindIcon;
 		}

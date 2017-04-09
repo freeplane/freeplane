@@ -28,7 +28,7 @@ public class FreeplaneIconUtils {
 	private static SVGUniverse svgUniverse;
 
 	public static Icon createStandardIcon(String iconKey) {
-        return MindIconFactory.createPng(iconKey).getIcon();
+        return MindIconFactory.createIcon(iconKey).getIcon();
     }
 
 	/** lists all icons that are available in the icon selection dialog. This may include user icons

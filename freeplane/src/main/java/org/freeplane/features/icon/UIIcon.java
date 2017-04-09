@@ -111,7 +111,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 			return resourceURL;
 		}
 		final String path = getPath();
-		resourceURL = RESOURCE_CONTROLLER.getResource(path);
+		resourceURL = RESOURCE_CONTROLLER.getIconResource(path);
 		return resourceURL;
 	}
 
