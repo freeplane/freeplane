@@ -14,10 +14,10 @@
    height="16"
    id="svg11692"
    version="1.1"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.92.1 r15371"
    viewBox="0 0 16 16"
    sodipodi:docname="CloneAction.svg"
-   inkscape:export-filename="I:\Freeplane\images\CloneAction.png"
+   inkscape:export-filename="F:\Freeplane\freeplane\viewer-resources\images\CloneAction.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -284,46 +284,6 @@
          overflow="visible"
          xlink:href="#SVGID_15_-7-7-5" />
     </clipPath>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient11279"
-       id="linearGradient13656"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.90430794,0,0,0.90430794,158.34371,-0.985201)"
-       x1="784.90271"
-       y1="763.25671"
-       x2="772.09869"
-       y2="763.37689" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient11287"
-       id="linearGradient13658"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.90430794,0,0,0.90430794,158.34371,-0.985201)"
-       x1="788.26123"
-       y1="746.14429"
-       x2="773.62781"
-       y2="743.9024" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient11279"
-       id="linearGradient13660"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.90430794,0,0,0.90430794,158.34371,-0.985201)"
-       x1="784.90271"
-       y1="763.25671"
-       x2="772.09869"
-       y2="763.37689" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient11287"
-       id="linearGradient13662"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.90430794,0,0,0.90430794,158.34371,-0.985201)"
-       x1="788.26123"
-       y1="746.14429"
-       x2="773.62781"
-       y2="743.9024" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -333,17 +293,18 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="22.197802"
-     inkscape:cx="14.982104"
+     inkscape:cx="14.418985"
      inkscape:cy="8"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
-     inkscape:window-width="1256"
-     inkscape:window-height="858"
-     inkscape:window-x="483"
-     inkscape:window-y="201"
-     inkscape:window-maximized="0" />
+     inkscape:window-width="1920"
+     inkscape:window-height="1018"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:snap-global="false" />
   <metadata
      id="metadata11697">
     <rdf:RDF>
@@ -352,7 +313,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -360,1880 +321,637 @@
      id="layer1"
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
+    <rect
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;enable-background:accumulate"
+       id="rect12992"
+       width="16"
+       height="16"
+       x="0"
+       y="0" />
     <g
-       id="g15309">
-      <rect
-         y="0"
-         x="0"
-         height="16"
-         width="16"
-         id="rect12992"
-         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;enable-background:accumulate" />
+       transform="matrix(0.38265261,0,0,0.38288797,-322.76182,-254.30799)"
+       style="display:inline;stroke-width:1.04008996"
+       id="g11405">
+      <path
+         sodipodi:nodetypes="cccccc"
+         inkscape:connector-curvature="0"
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#acacd8;fill-opacity:1;fill-rule:nonzero;stroke:#008080;stroke-width:0.94056165;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+         id="path3-3-2-2"
+         d="m 875.06604,682.09952 c 0,0 2.01113,8.84297 0.2586,16.0713 -0.0887,0.75924 -1.03946,1.68056 -0.77571,0.0883 0,0 -3.03108,-15.42106 -2.15532,-15.39838 0.87568,0.0227 2.67243,-0.76126 2.67243,-0.76126 z" />
+      <path
+         sodipodi:nodetypes="csccc"
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:url(#linearGradient11285);fill-opacity:1;fill-rule:nonzero;stroke:#008080;stroke-width:0.94056165;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+         inkscape:connector-curvature="0"
+         id="path7-6-0-0"
+         d="m 872.95035,697.6455 c -1.7376,7.60687 -11.11981,10.91288 -15.1609,0.46986 -2.78207,-7.18963 -2.11182,-16.41135 -2.11182,-16.41135 h 19.2063 c 0,0 -0.6142,10.1648 -1.93358,15.94149 z" />
+      <path
+         style="fill:#5eaba8;stroke:#008080;stroke-width:0.94056165;stroke-miterlimit:4;stroke-dasharray:none"
+         inkscape:connector-curvature="0"
+         id="path9-0-6-7"
+         d="m 874.94154,681.7258 c -0.34906,0.54921 -4.42373,1.073 -9.77385,1.073 -5.34993,0 -9.43631,-0.52392 -9.60013,-1.073 -0.24251,-0.81302 4.33705,-1.59679 9.68699,-1.59679 5.35012,9e-5 10.10466,0.93975 9.68699,1.59679 z" />
+      <path
+         inkscape:connector-curvature="0"
+         style="fill:url(#linearGradient11293);fill-opacity:1;stroke:#008080;stroke-width:0.94056165;stroke-miterlimit:4;stroke-dasharray:none"
+         id="path11-6-5-0"
+         d="m 875.05208,674.62615 c 0,5.07602 -3.49834,6.62421 -9.00538,6.62421 -5.50686,-10e-5 -10.93703,-1.54819 -10.93703,-6.62421 0,-5.07603 4.4643,-9.19099 9.97116,-9.19099 5.50686,0 9.97125,4.11496 9.97125,9.19099 z" />
+      <path
+         style="fill:#000000;stroke-width:1.04008996"
+         inkscape:connector-curvature="0"
+         id="path13-6-0-8"
+         d="m 872.979,675.42714 c -0.0712,2.73768 -3.7631,3.41974 -7.20979,3.41974 -3.44688,0 -6.89485,-0.90869 -6.98679,-3.64574 -0.10937,-3.25075 3.28351,-6.51339 6.7303,-6.51339 3.87309,0 7.59425,1.81675 7.46628,6.73939 z" />
+      <ellipse
+         style="fill:#b2d3bd;stroke-width:1.04008996"
+         ry="0.20157784"
+         rx="0.54746401"
+         cy="670.77997"
+         cx="863.22919"
+         id="BOTTOM_HIGHLIGHT-1-9-4" />
+      <path
+         style="fill:#b2d3bd;stroke-width:1.04008996"
+         inkscape:connector-curvature="0"
+         d="m 865.30216,669.96257 c 0,0.17144 -0.42086,0.24133 -0.92948,0.31031 -0.66172,0.0898 -0.92938,-0.13896 -0.92938,-0.31031 0,-0.17135 0.55419,-0.36867 1.06571,-0.41088 0.63105,-0.0521 0.79315,0.23962 0.79315,0.41088 z"
+         id="TOP_HIGHLIGHT-8-7-4" />
+      <ellipse
+         style="fill:#5eaba8;fill-opacity:1;stroke:#3771c8;stroke-width:1.04008996;filter:url(#filter1112-9-2-8)"
+         id="ellipse17-4-2-8"
+         ry="23.257"
+         rx="16.163"
+         cy="97.246002"
+         cx="115.154"
+         transform="matrix(0.02319825,-0.08774673,0.08774673,0.02319825,852.59106,681.98058)" />
+      <path
+         transform="matrix(0.09075995,0,0,0.09075995,855.01891,665.43516)"
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#5eaba8;fill-opacity:1;fill-rule:nonzero;stroke:#3771c8;stroke-width:1.04010749;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;filter:url(#filter1112-2-6-2-2);enable-background:accumulate"
+         inkscape:connector-curvature="0"
+         id="path101-9-2-8"
+         d="m 139.55158,100.12435 c 2.072,7.838 12.896,11.775 24.171,8.793 11.279,-2.982 18.742,-11.751998 16.672,-19.590998 -2.074,-7.838 -12.896,-11.774 -24.176,-8.793 -11.278,2.982 -18.738,11.754 -16.667,19.590998 z" />
+      <path
+         sodipodi:nodetypes="ccccc"
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#f6f6ff;fill-opacity:1;fill-rule:nonzero;stroke:#008080;stroke-width:0.94056165;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
+         inkscape:connector-curvature="0"
+         d="m 855.41973,682.09047 c 0,0 -3.2726,8.4577 -2.58714,15.8638 0.3202,0.99249 0.87077,1.60096 0.75469,0.19992 0,0 5.42631,-15.46538 4.55652,-15.56999 -0.8697,-0.10458 -2.72407,-0.49373 -2.72407,-0.49373 z"
+         id="path1028-3-2-9" />
       <g
-         transform="translate(0.45678855,0)"
-         id="g14980">
+         style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1"
+         transform="matrix(0.09075995,0,0,0.09075995,853.40832,665.30631)"
+         id="g19-7-9-6">
         <g
-           transform="matrix(0.39811552,0,0,0.39811552,-339.19117,-264.69501)"
-           style="display:inline"
-           id="g11405">
-          <path
-             sodipodi:nodetypes="cccccc"
-             inkscape:connector-curvature="0"
-             style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#acacd8;fill-opacity:1;fill-rule:nonzero;stroke:#008080;stroke-width:0.90430796;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-             id="path3-3-2-2"
-             d="m 875.06604,682.09952 c 0,0 2.01113,8.84297 0.2586,16.0713 -0.0887,0.75924 -1.03946,1.68056 -0.77571,0.0883 0,0 -3.03108,-15.42106 -2.15532,-15.39838 0.87568,0.0227 2.67243,-0.76126 2.67243,-0.76126 z" />
-          <path
-             sodipodi:nodetypes="csccc"
-             style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:url(#linearGradient11285);fill-opacity:1;fill-rule:nonzero;stroke:#008080;stroke-width:0.90430796;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-             inkscape:connector-curvature="0"
-             id="path7-6-0-0"
-             d="m 872.95035,697.6455 c -1.7376,7.60687 -11.11981,10.91288 -15.1609,0.46986 -2.78207,-7.18963 -2.11182,-16.41135 -2.11182,-16.41135 l 19.2063,0 c 0,0 -0.6142,10.1648 -1.93358,15.94149 z" />
-          <path
-             style="fill:#5eaba8;stroke:#008080;stroke-width:0.90430796;stroke-miterlimit:4;stroke-dasharray:none"
-             inkscape:connector-curvature="0"
-             id="path9-0-6-7"
-             d="m 874.94154,681.7258 c -0.34906,0.54921 -4.42373,1.073 -9.77385,1.073 -5.34993,0 -9.43631,-0.52392 -9.60013,-1.073 -0.24251,-0.81302 4.33705,-1.59679 9.68699,-1.59679 5.35012,9e-5 10.10466,0.93975 9.68699,1.59679 z" />
-          <path
-             inkscape:connector-curvature="0"
-             style="fill:url(#linearGradient11293);fill-opacity:1;stroke:#008080;stroke-width:0.90430796;stroke-miterlimit:4;stroke-dasharray:none"
-             id="path11-6-5-0"
-             d="m 875.05208,674.62615 c 0,5.07602 -3.49834,6.62421 -9.00538,6.62421 -5.50686,-10e-5 -10.93703,-1.54819 -10.93703,-6.62421 0,-5.07603 4.4643,-9.19099 9.97116,-9.19099 5.50686,0 9.97125,4.11496 9.97125,9.19099 z" />
-          <path
-             style="fill:#000000"
-             inkscape:connector-curvature="0"
-             id="path13-6-0-8"
-             d="m 872.979,675.42714 c -0.0712,2.73768 -3.7631,3.41974 -7.20979,3.41974 -3.44688,0 -6.89485,-0.90869 -6.98679,-3.64574 -0.10937,-3.25075 3.28351,-6.51339 6.7303,-6.51339 3.87309,0 7.59425,1.81675 7.46628,6.73939 z" />
-          <ellipse
-             style="fill:#b2d3bd"
-             ry="0.20157784"
-             rx="0.54746401"
-             cy="670.77997"
-             cx="863.22919"
-             id="BOTTOM_HIGHLIGHT-1-9-4" />
-          <path
-             style="fill:#b2d3bd"
-             inkscape:connector-curvature="0"
-             d="m 865.30216,669.96257 c 0,0.17144 -0.42086,0.24133 -0.92948,0.31031 -0.66172,0.0898 -0.92938,-0.13896 -0.92938,-0.31031 0,-0.17135 0.55419,-0.36867 1.06571,-0.41088 0.63105,-0.0521 0.79315,0.23962 0.79315,0.41088 z"
-             id="TOP_HIGHLIGHT-8-7-4" />
-          <ellipse
-             style="fill:#5eaba8;fill-opacity:1;stroke:#3771c8;filter:url(#filter1112-9-2-8)"
-             id="ellipse17-4-2-8"
-             ry="23.257"
-             rx="16.163"
-             cy="97.246002"
-             cx="115.154"
-             transform="matrix(0.02319825,-0.08774673,0.08774673,0.02319825,852.59106,681.98058)" />
-          <path
-             transform="matrix(0.09075995,0,0,0.09075995,855.01891,665.43516)"
-             style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#5eaba8;fill-opacity:1;fill-rule:nonzero;stroke:#3771c8;stroke-width:1.00001681;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;filter:url(#filter1112-2-6-2-2);enable-background:accumulate"
-             inkscape:connector-curvature="0"
-             id="path101-9-2-8"
-             d="m 139.55158,100.12435 c 2.072,7.838 12.896,11.775 24.171,8.793 11.279,-2.982 18.742,-11.751998 16.672,-19.590998 -2.074,-7.838 -12.896,-11.774 -24.176,-8.793 -11.278,2.982 -18.738,11.754 -16.667,19.590998 z" />
-          <path
-             sodipodi:nodetypes="ccccc"
-             style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#f6f6ff;fill-opacity:1;fill-rule:nonzero;stroke:#008080;stroke-width:0.90430796;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-             inkscape:connector-curvature="0"
-             d="m 855.41973,682.09047 c 0,0 -3.2726,8.4577 -2.58714,15.8638 0.3202,0.99249 0.87077,1.60096 0.75469,0.19992 0,0 5.42631,-15.46538 4.55652,-15.56999 -0.8697,-0.10458 -2.72407,-0.49373 -2.72407,-0.49373 z"
-             id="path1028-3-2-9" />
-          <g
-             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-             transform="matrix(0.09075995,0,0,0.09075995,853.40832,665.30631)"
-             id="g19-7-9-6">
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g21-8-4-5">
-              <defs
-                 id="defs23-8-4-3">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="SVGID_1_-2-8-3" />
-              </defs>
-              <clipPath
-                 id="clipPath1654-2-3">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use1656-7-8"
-                   overflow="visible"
-                   xlink:href="#SVGID_1_-2-8-3" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line29-9-2-7"
-                 y2="110.939"
-                 x2="101.642"
-                 y1="110.939"
-                 x1="134.56599"
-                 clip-path="url(#SVGID_2_-02-6-4)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g31-1-5-7">
-              <defs
-                 id="defs33-3-8-3">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="SVGID_3_-5-4-9" />
-              </defs>
-              <clipPath
-                 id="clipPath1662-7-7">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use1664-3-2"
-                   overflow="visible"
-                   xlink:href="#SVGID_3_-5-4-9" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line39-9-9-9"
-                 y2="107.122"
-                 x2="143.25101"
-                 y1="107.122"
-                 x1="94.551003"
-                 clip-path="url(#SVGID_4_-6-8-6)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g41-8-5-0">
-              <defs
-                 id="defs43-4-1-4">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="SVGID_5_-0-90-3" />
-              </defs>
-              <clipPath
-                 id="clipPath1670-2-0">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use1672-8-2"
-                   overflow="visible"
-                   xlink:href="#SVGID_5_-0-90-3" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line49-7-3-6"
-                 y2="102.973"
-                 x2="90.208"
-                 y1="102.973"
-                 x1="146.22501"
-                 clip-path="url(#SVGID_6_-2-8-3)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g51-6-1-0">
-              <defs
-                 id="defs53-3-4-0">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="SVGID_7_-6-3-1" />
-              </defs>
-              <clipPath
-                 id="clipPath1678-1-1">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use1680-0-5"
-                   overflow="visible"
-                   xlink:href="#SVGID_7_-6-3-1" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line59-1-4-8"
-                 y2="99.487"
-                 x2="146.22501"
-                 y1="99.487"
-                 x1="85.634003"
-                 clip-path="url(#SVGID_8_-8-0-6)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g61-5-0-1">
-              <defs
-                 id="defs63-4-7-8">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="SVGID_9_-2-9-1" />
-              </defs>
-              <clipPath
-                 id="clipPath1686-0-5">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use1688-8-4"
-                   overflow="visible"
-                   xlink:href="#SVGID_9_-2-9-1" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line69-0-1-5"
-                 y2="95.667999"
-                 x2="84.489998"
-                 y1="95.667999"
-                 x1="144.164"
-                 clip-path="url(#SVGID_10_-50-2-8)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g71-9-4-2">
-              <defs
-                 id="defs73-7-0-8">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="SVGID_11_-3-7-3" />
-              </defs>
-              <clipPath
-                 id="clipPath1694-9-4">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use1696-5-5"
-                   overflow="visible"
-                   xlink:href="#SVGID_11_-3-7-3" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line79-7-3-1"
-                 y2="91.353996"
-                 x2="140.964"
-                 y1="91.353996"
-                 x1="83.577003"
-                 clip-path="url(#SVGID_12_-0-2-0)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g81-2-8-1">
-              <defs
-                 id="defs83-6-2-4">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="SVGID_13_-0-3-3" />
-              </defs>
-              <clipPath
-                 id="clipPath1702-2-4">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use1704-1-5"
-                   overflow="visible"
-                   xlink:href="#SVGID_13_-0-3-3" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line89-1-0-1"
-                 y2="87.204002"
-                 x2="85.634003"
-                 y1="87.204002"
-                 x1="133.64799"
-                 clip-path="url(#SVGID_14_-6-4-5)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g91-6-4-2">
-              <defs
-                 id="defs93-5-0-0">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="SVGID_15_-7-7-5" />
-              </defs>
-              <clipPath
-                 id="clipPath1710-5-4">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use1712-90-8"
-                   overflow="visible"
-                   xlink:href="#SVGID_15_-7-7-5" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line99-5-5-7"
-                 y2="83.552002"
-                 x2="126.559"
-                 y1="83.552002"
-                 x1="92.950996"
-                 clip-path="url(#SVGID_16_-3-3-6)" />
-            </g>
-          </g>
-          <g
-             id="g1316-4-1-3"
-             transform="matrix(-0.08199096,0,0,0.08199096,878.93636,666.03021)"
-             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-            <g
-               id="g1318-1-2-3"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs1320-2-0-2">
-                <ellipse
-                   id="ellipse1322-0-9-5"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath1324-0-89-2">
-                <use
-                   xlink:href="#SVGID_1_-2-8-3"
-                   overflow="visible"
-                   id="use1326-1-1-2"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_2_-02-6-4)"
-                 x1="134.56599"
-                 y1="110.939"
-                 x2="101.642"
-                 y2="110.939"
-                 id="line1328-4-7-4"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g1330-6-3-0"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs1332-0-3-9">
-                <ellipse
-                   id="ellipse1334-7-0-1"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath1336-1-7-9">
-                <use
-                   xlink:href="#SVGID_3_-5-4-9"
-                   overflow="visible"
-                   id="use1338-7-6-7"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_4_-6-8-6)"
-                 x1="94.551003"
-                 y1="107.122"
-                 x2="143.25101"
-                 y2="107.122"
-                 id="line1340-7-6-8"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g1342-7-0-4"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs1344-7-2-3">
-                <ellipse
-                   id="ellipse1346-3-8-2"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath1348-3-9-8">
-                <use
-                   xlink:href="#SVGID_5_-0-90-3"
-                   overflow="visible"
-                   id="use1350-5-8-4"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_6_-2-8-3)"
-                 x1="146.22501"
-                 y1="102.973"
-                 x2="90.208"
-                 y2="102.973"
-                 id="line1352-9-9-7"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g1354-9-9-2"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs1356-8-9-2">
-                <ellipse
-                   id="ellipse1358-1-4-3"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath1360-8-20-1">
-                <use
-                   xlink:href="#SVGID_7_-6-3-1"
-                   overflow="visible"
-                   id="use1362-2-8-8"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_8_-8-0-6)"
-                 x1="85.634003"
-                 y1="99.487"
-                 x2="146.22501"
-                 y2="99.487"
-                 id="line1364-6-7-1"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g1366-6-8-5"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs1368-0-7-4">
-                <ellipse
-                   id="ellipse1370-3-3-8"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath1372-8-0-0">
-                <use
-                   xlink:href="#SVGID_9_-2-9-1"
-                   overflow="visible"
-                   id="use1374-0-7-0"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_10_-50-2-8)"
-                 x1="144.164"
-                 y1="95.667999"
-                 x2="84.489998"
-                 y2="95.667999"
-                 id="line1376-1-6-4"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g1378-2-4-7"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs1380-5-21-3">
-                <ellipse
-                   id="ellipse1382-0-9-6"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath1384-9-16-3">
-                <use
-                   xlink:href="#SVGID_11_-3-7-3"
-                   overflow="visible"
-                   id="use1386-4-0-9"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_12_-0-2-0)"
-                 x1="83.577003"
-                 y1="91.353996"
-                 x2="140.964"
-                 y2="91.353996"
-                 id="line1388-7-3-5"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g1390-8-3-5"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs1392-3-6-6">
-                <ellipse
-                   id="ellipse1394-5-2-9"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath1396-1-2-6">
-                <use
-                   xlink:href="#SVGID_13_-0-3-3"
-                   overflow="visible"
-                   id="use1398-2-1-1"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_14_-6-4-5)"
-                 x1="133.64799"
-                 y1="87.204002"
-                 x2="85.634003"
-                 y2="87.204002"
-                 id="line1400-0-4-7"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g1402-1-3-5"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs1404-6-2-6">
-                <ellipse
-                   id="ellipse1406-4-6-0"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath1408-0-0-9">
-                <use
-                   xlink:href="#SVGID_15_-7-7-5"
-                   overflow="visible"
-                   id="use1410-6-5-4"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_16_-3-3-6)"
-                 x1="92.950996"
-                 y1="83.552002"
-                 x2="126.559"
-                 y2="83.552002"
-                 id="line1412-1-4-8"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-          </g>
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1"
+           id="g21-8-4-5">
+          <defs
+             id="defs23-8-4-3">
+            <ellipse
+               ry="23.257999"
+               rx="16.164"
+               cy="97.245003"
+               cx="114.954"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               id="SVGID_1_-2-8-3" />
+          </defs>
+          <clipPath
+             id="clipPath1654-2-3">
+            <use
+               height="434"
+               width="240"
+               y="0"
+               x="0"
+               style="overflow:visible"
+               id="use1656-7-8"
+               overflow="visible"
+               xlink:href="#SVGID_1_-2-8-3" />
+          </clipPath>
+          <line
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1"
+             id="line29-9-2-7"
+             y2="110.939"
+             x2="101.642"
+             y1="110.939"
+             x1="134.56599"
+             clip-path="url(#SVGID_2_-02-6-4)" />
         </g>
         <g
-           id="g12996"
-           style="display:inline"
-           transform="matrix(0.39811552,0,0,0.39811552,-339.19117,-264.69501)">
-          <path
-             d="m 875.06604,682.09952 c 0,0 2.01113,8.84297 0.2586,16.0713 -0.0887,0.75924 -1.03946,1.68056 -0.77571,0.0883 0,0 -3.03108,-15.42106 -2.15532,-15.39838 0.87568,0.0227 2.67243,-0.76126 2.67243,-0.76126 z"
-             id="path12998"
-             style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#acacd8;fill-opacity:1;fill-rule:nonzero;stroke:#008080;stroke-width:0.90430796;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-             inkscape:connector-curvature="0"
-             sodipodi:nodetypes="cccccc" />
-          <path
-             d="m 872.95035,697.6455 c -1.7376,7.60687 -11.11981,10.91288 -15.1609,0.46986 -2.78207,-7.18963 -2.11182,-16.41135 -2.11182,-16.41135 l 19.2063,0 c 0,0 -0.6142,10.1648 -1.93358,15.94149 z"
-             id="path13000"
-             inkscape:connector-curvature="0"
-             style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:url(#linearGradient13656);fill-opacity:1;fill-rule:nonzero;stroke:#008080;stroke-width:0.90430796;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-             sodipodi:nodetypes="csccc" />
-          <path
-             d="m 874.94154,681.7258 c -0.34906,0.54921 -4.42373,1.073 -9.77385,1.073 -5.34993,0 -9.43631,-0.52392 -9.60013,-1.073 -0.24251,-0.81302 4.33705,-1.59679 9.68699,-1.59679 5.35012,9e-5 10.10466,0.93975 9.68699,1.59679 z"
-             id="path13002"
-             inkscape:connector-curvature="0"
-             style="fill:#5eaba8;stroke:#008080;stroke-width:0.90430796;stroke-miterlimit:4;stroke-dasharray:none" />
-          <path
-             d="m 875.05208,674.62615 c 0,5.07602 -3.49834,6.62421 -9.00538,6.62421 -5.50686,-10e-5 -10.93703,-1.54819 -10.93703,-6.62421 0,-5.07603 4.4643,-9.19099 9.97116,-9.19099 5.50686,0 9.97125,4.11496 9.97125,9.19099 z"
-             id="path13004"
-             style="fill:url(#linearGradient13658);fill-opacity:1;stroke:#008080;stroke-width:0.90430796;stroke-miterlimit:4;stroke-dasharray:none"
-             inkscape:connector-curvature="0" />
-          <path
-             d="m 872.979,675.42714 c -0.0712,2.73768 -3.7631,3.41974 -7.20979,3.41974 -3.44688,0 -6.89485,-0.90869 -6.98679,-3.64574 -0.10937,-3.25075 3.28351,-6.51339 6.7303,-6.51339 3.87309,0 7.59425,1.81675 7.46628,6.73939 z"
-             id="path13006"
-             inkscape:connector-curvature="0"
-             style="fill:#000000" />
-          <ellipse
-             id="ellipse13008"
-             cx="863.22919"
-             cy="670.77997"
-             rx="0.54746401"
-             ry="0.20157784"
-             style="fill:#b2d3bd" />
-          <path
-             id="path13010"
-             d="m 865.30216,669.96257 c 0,0.17144 -0.42086,0.24133 -0.92948,0.31031 -0.66172,0.0898 -0.92938,-0.13896 -0.92938,-0.31031 0,-0.17135 0.55419,-0.36867 1.06571,-0.41088 0.63105,-0.0521 0.79315,0.23962 0.79315,0.41088 z"
-             inkscape:connector-curvature="0"
-             style="fill:#b2d3bd" />
-          <ellipse
-             transform="matrix(0.02319825,-0.08774673,0.08774673,0.02319825,852.59106,681.98058)"
-             cx="115.154"
-             cy="97.246002"
-             rx="16.163"
-             ry="23.257"
-             id="ellipse13012"
-             style="fill:#5eaba8;fill-opacity:1;stroke:#3771c8;filter:url(#filter1112-9-2-8)" />
-          <path
-             d="m 139.55158,100.12435 c 2.072,7.838 12.896,11.775 24.171,8.793 11.279,-2.982 18.742,-11.751998 16.672,-19.590998 -2.074,-7.838 -12.896,-11.774 -24.176,-8.793 -11.278,2.982 -18.738,11.754 -16.667,19.590998 z"
-             id="path13014"
-             inkscape:connector-curvature="0"
-             style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#5eaba8;fill-opacity:1;fill-rule:nonzero;stroke:#3771c8;stroke-width:1.00001681;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;filter:url(#filter1112-2-6-2-2);enable-background:accumulate"
-             transform="matrix(0.09075995,0,0,0.09075995,855.01891,665.43516)" />
-          <path
-             id="path13016"
-             d="m 855.41973,682.09047 c 0,0 -3.2726,8.4577 -2.58714,15.8638 0.3202,0.99249 0.87077,1.60096 0.75469,0.19992 0,0 5.42631,-15.46538 4.55652,-15.56999 -0.8697,-0.10458 -2.72407,-0.49373 -2.72407,-0.49373 z"
-             inkscape:connector-curvature="0"
-             style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#f6f6ff;fill-opacity:1;fill-rule:nonzero;stroke:#008080;stroke-width:0.90430796;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-             sodipodi:nodetypes="ccccc" />
-          <g
-             id="g13018"
-             transform="matrix(0.09075995,0,0,0.09075995,853.40832,665.30631)"
-             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-            <g
-               id="g13020"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13022">
-                <ellipse
-                   id="ellipse13024"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13026">
-                <use
-                   xlink:href="#SVGID_1_-2-8-3"
-                   overflow="visible"
-                   id="use13028"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_2_-02-6-4)"
-                 x1="134.56599"
-                 y1="110.939"
-                 x2="101.642"
-                 y2="110.939"
-                 id="line13030"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g13032"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13034">
-                <ellipse
-                   id="ellipse13036"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13038">
-                <use
-                   xlink:href="#SVGID_3_-5-4-9"
-                   overflow="visible"
-                   id="use13040"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_4_-6-8-6)"
-                 x1="94.551003"
-                 y1="107.122"
-                 x2="143.25101"
-                 y2="107.122"
-                 id="line13042"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g13044"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13046">
-                <ellipse
-                   id="ellipse13048"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13050">
-                <use
-                   xlink:href="#SVGID_5_-0-90-3"
-                   overflow="visible"
-                   id="use13052"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_6_-2-8-3)"
-                 x1="146.22501"
-                 y1="102.973"
-                 x2="90.208"
-                 y2="102.973"
-                 id="line13054"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g13056"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13058">
-                <ellipse
-                   id="ellipse13060"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13062">
-                <use
-                   xlink:href="#SVGID_7_-6-3-1"
-                   overflow="visible"
-                   id="use13064"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_8_-8-0-6)"
-                 x1="85.634003"
-                 y1="99.487"
-                 x2="146.22501"
-                 y2="99.487"
-                 id="line13066"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g13068"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13070">
-                <ellipse
-                   id="ellipse13072"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13074">
-                <use
-                   xlink:href="#SVGID_9_-2-9-1"
-                   overflow="visible"
-                   id="use13076"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_10_-50-2-8)"
-                 x1="144.164"
-                 y1="95.667999"
-                 x2="84.489998"
-                 y2="95.667999"
-                 id="line13078"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g13080"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13082">
-                <ellipse
-                   id="ellipse13084"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13086">
-                <use
-                   xlink:href="#SVGID_11_-3-7-3"
-                   overflow="visible"
-                   id="use13088"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_12_-0-2-0)"
-                 x1="83.577003"
-                 y1="91.353996"
-                 x2="140.964"
-                 y2="91.353996"
-                 id="line13090"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g13092"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13094">
-                <ellipse
-                   id="ellipse13096"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13098">
-                <use
-                   xlink:href="#SVGID_13_-0-3-3"
-                   overflow="visible"
-                   id="use13100"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_14_-6-4-5)"
-                 x1="133.64799"
-                 y1="87.204002"
-                 x2="85.634003"
-                 y2="87.204002"
-                 id="line13102"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g13104"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13106">
-                <ellipse
-                   id="ellipse13108"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13110">
-                <use
-                   xlink:href="#SVGID_15_-7-7-5"
-                   overflow="visible"
-                   id="use13112"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_16_-3-3-6)"
-                 x1="92.950996"
-                 y1="83.552002"
-                 x2="126.559"
-                 y2="83.552002"
-                 id="line13114"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-          </g>
-          <g
-             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-             transform="matrix(-0.08199096,0,0,0.08199096,878.93636,666.03021)"
-             id="g13116">
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13118">
-              <defs
-                 id="defs13120">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13122" />
-              </defs>
-              <clipPath
-                 id="clipPath13124">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13126"
-                   overflow="visible"
-                   xlink:href="#SVGID_1_-2-8-3" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13128"
-                 y2="110.939"
-                 x2="101.642"
-                 y1="110.939"
-                 x1="134.56599"
-                 clip-path="url(#SVGID_2_-02-6-4)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13130">
-              <defs
-                 id="defs13132">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13134" />
-              </defs>
-              <clipPath
-                 id="clipPath13136">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13138"
-                   overflow="visible"
-                   xlink:href="#SVGID_3_-5-4-9" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13140"
-                 y2="107.122"
-                 x2="143.25101"
-                 y1="107.122"
-                 x1="94.551003"
-                 clip-path="url(#SVGID_4_-6-8-6)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13142">
-              <defs
-                 id="defs13144">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13146" />
-              </defs>
-              <clipPath
-                 id="clipPath13148">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13150"
-                   overflow="visible"
-                   xlink:href="#SVGID_5_-0-90-3" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13152"
-                 y2="102.973"
-                 x2="90.208"
-                 y1="102.973"
-                 x1="146.22501"
-                 clip-path="url(#SVGID_6_-2-8-3)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13154">
-              <defs
-                 id="defs13156">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13158" />
-              </defs>
-              <clipPath
-                 id="clipPath13160">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13162"
-                   overflow="visible"
-                   xlink:href="#SVGID_7_-6-3-1" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13164"
-                 y2="99.487"
-                 x2="146.22501"
-                 y1="99.487"
-                 x1="85.634003"
-                 clip-path="url(#SVGID_8_-8-0-6)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13166">
-              <defs
-                 id="defs13168">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13170" />
-              </defs>
-              <clipPath
-                 id="clipPath13172">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13174"
-                   overflow="visible"
-                   xlink:href="#SVGID_9_-2-9-1" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13176"
-                 y2="95.667999"
-                 x2="84.489998"
-                 y1="95.667999"
-                 x1="144.164"
-                 clip-path="url(#SVGID_10_-50-2-8)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13178">
-              <defs
-                 id="defs13180">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13182" />
-              </defs>
-              <clipPath
-                 id="clipPath13184">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13186"
-                   overflow="visible"
-                   xlink:href="#SVGID_11_-3-7-3" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13188"
-                 y2="91.353996"
-                 x2="140.964"
-                 y1="91.353996"
-                 x1="83.577003"
-                 clip-path="url(#SVGID_12_-0-2-0)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13190">
-              <defs
-                 id="defs13192">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13194" />
-              </defs>
-              <clipPath
-                 id="clipPath13196">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13198"
-                   overflow="visible"
-                   xlink:href="#SVGID_13_-0-3-3" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13200"
-                 y2="87.204002"
-                 x2="85.634003"
-                 y1="87.204002"
-                 x1="133.64799"
-                 clip-path="url(#SVGID_14_-6-4-5)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13202">
-              <defs
-                 id="defs13204">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13206" />
-              </defs>
-              <clipPath
-                 id="clipPath13208">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13210"
-                   overflow="visible"
-                   xlink:href="#SVGID_15_-7-7-5" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13212"
-                 y2="83.552002"
-                 x2="126.559"
-                 y1="83.552002"
-                 x1="92.950996"
-                 clip-path="url(#SVGID_16_-3-3-6)" />
-            </g>
-          </g>
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1"
+           id="g31-1-5-7">
+          <defs
+             id="defs33-3-8-3">
+            <ellipse
+               ry="23.257999"
+               rx="16.164"
+               cy="97.245003"
+               cx="114.954"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               id="SVGID_3_-5-4-9" />
+          </defs>
+          <clipPath
+             id="clipPath1662-7-7">
+            <use
+               height="434"
+               width="240"
+               y="0"
+               x="0"
+               style="overflow:visible"
+               id="use1664-3-2"
+               overflow="visible"
+               xlink:href="#SVGID_3_-5-4-9" />
+          </clipPath>
+          <line
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1"
+             id="line39-9-9-9"
+             y2="107.122"
+             x2="143.25101"
+             y1="107.122"
+             x1="94.551003"
+             clip-path="url(#SVGID_4_-6-8-6)" />
         </g>
         <g
-           transform="matrix(0.32637589,0,0,0.32637589,-271.09834,-214.28641)"
-           style="display:inline"
-           id="g13214">
-          <path
-             sodipodi:nodetypes="cccccc"
-             inkscape:connector-curvature="0"
-             style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#acacd8;fill-opacity:1;fill-rule:nonzero;stroke:#008080;stroke-width:0.90430796;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-             id="path13216"
-             d="m 875.06604,682.09952 c 0,0 2.01113,8.84297 0.2586,16.0713 -0.0887,0.75924 -1.03946,1.68056 -0.77571,0.0883 0,0 -3.03108,-15.42106 -2.15532,-15.39838 0.87568,0.0227 2.67243,-0.76126 2.67243,-0.76126 z" />
-          <path
-             sodipodi:nodetypes="csccc"
-             style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:url(#linearGradient13660);fill-opacity:1;fill-rule:nonzero;stroke:#008080;stroke-width:0.90430796;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-             inkscape:connector-curvature="0"
-             id="path13218"
-             d="m 872.95035,697.6455 c -1.7376,7.60687 -11.11981,10.91288 -15.1609,0.46986 -2.78207,-7.18963 -2.11182,-16.41135 -2.11182,-16.41135 l 19.2063,0 c 0,0 -0.6142,10.1648 -1.93358,15.94149 z" />
-          <path
-             style="fill:#5eaba8;stroke:#008080;stroke-width:0.90430796;stroke-miterlimit:4;stroke-dasharray:none"
-             inkscape:connector-curvature="0"
-             id="path13220"
-             d="m 874.94154,681.7258 c -0.34906,0.54921 -4.42373,1.073 -9.77385,1.073 -5.34993,0 -9.43631,-0.52392 -9.60013,-1.073 -0.24251,-0.81302 4.33705,-1.59679 9.68699,-1.59679 5.35012,9e-5 10.10466,0.93975 9.68699,1.59679 z" />
-          <path
-             inkscape:connector-curvature="0"
-             style="fill:url(#linearGradient13662);fill-opacity:1;stroke:#008080;stroke-width:0.90430796;stroke-miterlimit:4;stroke-dasharray:none"
-             id="path13222"
-             d="m 875.05208,674.62615 c 0,5.07602 -3.49834,6.62421 -9.00538,6.62421 -5.50686,-10e-5 -10.93703,-1.54819 -10.93703,-6.62421 0,-5.07603 4.4643,-9.19099 9.97116,-9.19099 5.50686,0 9.97125,4.11496 9.97125,9.19099 z" />
-          <path
-             style="fill:#000000"
-             inkscape:connector-curvature="0"
-             id="path13224"
-             d="m 872.979,675.42714 c -0.0712,2.73768 -3.7631,3.41974 -7.20979,3.41974 -3.44688,0 -6.89485,-0.90869 -6.98679,-3.64574 -0.10937,-3.25075 3.28351,-6.51339 6.7303,-6.51339 3.87309,0 7.59425,1.81675 7.46628,6.73939 z" />
-          <ellipse
-             style="fill:#b2d3bd"
-             ry="0.20157784"
-             rx="0.54746401"
-             cy="670.77997"
-             cx="863.22919"
-             id="ellipse13226" />
-          <path
-             style="fill:#b2d3bd"
-             inkscape:connector-curvature="0"
-             d="m 865.30216,669.96257 c 0,0.17144 -0.42086,0.24133 -0.92948,0.31031 -0.66172,0.0898 -0.92938,-0.13896 -0.92938,-0.31031 0,-0.17135 0.55419,-0.36867 1.06571,-0.41088 0.63105,-0.0521 0.79315,0.23962 0.79315,0.41088 z"
-             id="path13228" />
-          <ellipse
-             style="fill:#5eaba8;fill-opacity:1;stroke:#3771c8;filter:url(#filter1112-9-2-8)"
-             id="ellipse13230"
-             ry="23.257"
-             rx="16.163"
-             cy="97.246002"
-             cx="115.154"
-             transform="matrix(0.02319825,-0.08774673,0.08774673,0.02319825,852.59106,681.98058)" />
-          <path
-             transform="matrix(0.09075995,0,0,0.09075995,855.01891,665.43516)"
-             style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#5eaba8;fill-opacity:1;fill-rule:nonzero;stroke:#3771c8;stroke-width:1.00001681;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;filter:url(#filter1112-2-6-2-2);enable-background:accumulate"
-             inkscape:connector-curvature="0"
-             id="path13232"
-             d="m 139.55158,100.12435 c 2.072,7.838 12.896,11.775 24.171,8.793 11.279,-2.982 18.742,-11.751998 16.672,-19.590998 -2.074,-7.838 -12.896,-11.774 -24.176,-8.793 -11.278,2.982 -18.738,11.754 -16.667,19.590998 z" />
-          <path
-             sodipodi:nodetypes="ccccc"
-             style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:#f6f6ff;fill-opacity:1;fill-rule:nonzero;stroke:#008080;stroke-width:0.90430796;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;enable-background:accumulate"
-             inkscape:connector-curvature="0"
-             d="m 855.41973,682.09047 c 0,0 -3.2726,8.4577 -2.58714,15.8638 0.3202,0.99249 0.87077,1.60096 0.75469,0.19992 0,0 5.42631,-15.46538 4.55652,-15.56999 -0.8697,-0.10458 -2.72407,-0.49373 -2.72407,-0.49373 z"
-             id="path13234" />
-          <g
-             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-             transform="matrix(0.09075995,0,0,0.09075995,853.40832,665.30631)"
-             id="g13236">
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13238">
-              <defs
-                 id="defs13240">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13242" />
-              </defs>
-              <clipPath
-                 id="clipPath13244">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13246"
-                   overflow="visible"
-                   xlink:href="#SVGID_1_-2-8-3" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13248"
-                 y2="110.939"
-                 x2="101.642"
-                 y1="110.939"
-                 x1="134.56599"
-                 clip-path="url(#SVGID_2_-02-6-4)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13250">
-              <defs
-                 id="defs13252">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13254" />
-              </defs>
-              <clipPath
-                 id="clipPath13256">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13258"
-                   overflow="visible"
-                   xlink:href="#SVGID_3_-5-4-9" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13260"
-                 y2="107.122"
-                 x2="143.25101"
-                 y1="107.122"
-                 x1="94.551003"
-                 clip-path="url(#SVGID_4_-6-8-6)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13262">
-              <defs
-                 id="defs13264">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13266" />
-              </defs>
-              <clipPath
-                 id="clipPath13268">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13270"
-                   overflow="visible"
-                   xlink:href="#SVGID_5_-0-90-3" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13272"
-                 y2="102.973"
-                 x2="90.208"
-                 y1="102.973"
-                 x1="146.22501"
-                 clip-path="url(#SVGID_6_-2-8-3)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13274">
-              <defs
-                 id="defs13276">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13278" />
-              </defs>
-              <clipPath
-                 id="clipPath13280">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13282"
-                   overflow="visible"
-                   xlink:href="#SVGID_7_-6-3-1" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13284"
-                 y2="99.487"
-                 x2="146.22501"
-                 y1="99.487"
-                 x1="85.634003"
-                 clip-path="url(#SVGID_8_-8-0-6)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13286">
-              <defs
-                 id="defs13288">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13290" />
-              </defs>
-              <clipPath
-                 id="clipPath13292">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13294"
-                   overflow="visible"
-                   xlink:href="#SVGID_9_-2-9-1" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13296"
-                 y2="95.667999"
-                 x2="84.489998"
-                 y1="95.667999"
-                 x1="144.164"
-                 clip-path="url(#SVGID_10_-50-2-8)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13298">
-              <defs
-                 id="defs13300">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13302" />
-              </defs>
-              <clipPath
-                 id="clipPath13304">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13306"
-                   overflow="visible"
-                   xlink:href="#SVGID_11_-3-7-3" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13308"
-                 y2="91.353996"
-                 x2="140.964"
-                 y1="91.353996"
-                 x1="83.577003"
-                 clip-path="url(#SVGID_12_-0-2-0)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13310">
-              <defs
-                 id="defs13312">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13314" />
-              </defs>
-              <clipPath
-                 id="clipPath13316">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13318"
-                   overflow="visible"
-                   xlink:href="#SVGID_13_-0-3-3" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13320"
-                 y2="87.204002"
-                 x2="85.634003"
-                 y1="87.204002"
-                 x1="133.64799"
-                 clip-path="url(#SVGID_14_-6-4-5)" />
-            </g>
-            <g
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1"
-               id="g13322">
-              <defs
-                 id="defs13324">
-                <ellipse
-                   ry="23.257999"
-                   rx="16.164"
-                   cy="97.245003"
-                   cx="114.954"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   id="ellipse13326" />
-              </defs>
-              <clipPath
-                 id="clipPath13328">
-                <use
-                   height="434"
-                   width="240"
-                   y="0"
-                   x="0"
-                   style="overflow:visible"
-                   id="use13330"
-                   overflow="visible"
-                   xlink:href="#SVGID_15_-7-7-5" />
-              </clipPath>
-              <line
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1"
-                 id="line13332"
-                 y2="83.552002"
-                 x2="126.559"
-                 y1="83.552002"
-                 x1="92.950996"
-                 clip-path="url(#SVGID_16_-3-3-6)" />
-            </g>
-          </g>
-          <g
-             id="g13334"
-             transform="matrix(-0.08199096,0,0,0.08199096,878.93636,666.03021)"
-             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-            <g
-               id="g13336"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13338">
-                <ellipse
-                   id="ellipse13340"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13342">
-                <use
-                   xlink:href="#SVGID_1_-2-8-3"
-                   overflow="visible"
-                   id="use13344"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_2_-02-6-4)"
-                 x1="134.56599"
-                 y1="110.939"
-                 x2="101.642"
-                 y2="110.939"
-                 id="line13346"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g13348"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13350">
-                <ellipse
-                   id="ellipse13352"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13354">
-                <use
-                   xlink:href="#SVGID_3_-5-4-9"
-                   overflow="visible"
-                   id="use13356"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_4_-6-8-6)"
-                 x1="94.551003"
-                 y1="107.122"
-                 x2="143.25101"
-                 y2="107.122"
-                 id="line13358"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g13360"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13362">
-                <ellipse
-                   id="ellipse13364"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13366">
-                <use
-                   xlink:href="#SVGID_5_-0-90-3"
-                   overflow="visible"
-                   id="use13368"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_6_-2-8-3)"
-                 x1="146.22501"
-                 y1="102.973"
-                 x2="90.208"
-                 y2="102.973"
-                 id="line13370"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g13372"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13374">
-                <ellipse
-                   id="ellipse13376"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13378">
-                <use
-                   xlink:href="#SVGID_7_-6-3-1"
-                   overflow="visible"
-                   id="use13380"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_8_-8-0-6)"
-                 x1="85.634003"
-                 y1="99.487"
-                 x2="146.22501"
-                 y2="99.487"
-                 id="line13382"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g13384"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13386">
-                <ellipse
-                   id="ellipse13388"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13390">
-                <use
-                   xlink:href="#SVGID_9_-2-9-1"
-                   overflow="visible"
-                   id="use13392"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_10_-50-2-8)"
-                 x1="144.164"
-                 y1="95.667999"
-                 x2="84.489998"
-                 y2="95.667999"
-                 id="line13394"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g13396"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13398">
-                <ellipse
-                   id="ellipse13400"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13402">
-                <use
-                   xlink:href="#SVGID_11_-3-7-3"
-                   overflow="visible"
-                   id="use13404"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_12_-0-2-0)"
-                 x1="83.577003"
-                 y1="91.353996"
-                 x2="140.964"
-                 y2="91.353996"
-                 id="line13406"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g13408"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13410">
-                <ellipse
-                   id="ellipse13412"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13414">
-                <use
-                   xlink:href="#SVGID_13_-0-3-3"
-                   overflow="visible"
-                   id="use13416"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_14_-6-4-5)"
-                 x1="133.64799"
-                 y1="87.204002"
-                 x2="85.634003"
-                 y2="87.204002"
-                 id="line13418"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-            <g
-               id="g13420"
-               style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-opacity:1">
-              <defs
-                 id="defs13422">
-                <ellipse
-                   id="ellipse13424"
-                   transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
-                   cx="114.954"
-                   cy="97.245003"
-                   rx="16.164"
-                   ry="23.257999" />
-              </defs>
-              <clipPath
-                 id="clipPath13426">
-                <use
-                   xlink:href="#SVGID_15_-7-7-5"
-                   overflow="visible"
-                   id="use13428"
-                   style="overflow:visible"
-                   x="0"
-                   y="0"
-                   width="240"
-                   height="434" />
-              </clipPath>
-              <line
-                 clip-path="url(#SVGID_16_-3-3-6)"
-                 x1="92.950996"
-                 y1="83.552002"
-                 x2="126.559"
-                 y2="83.552002"
-                 id="line13430"
-                 style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2;stroke-opacity:1" />
-            </g>
-          </g>
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1"
+           id="g41-8-5-0">
+          <defs
+             id="defs43-4-1-4">
+            <ellipse
+               ry="23.257999"
+               rx="16.164"
+               cy="97.245003"
+               cx="114.954"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               id="SVGID_5_-0-90-3" />
+          </defs>
+          <clipPath
+             id="clipPath1670-2-0">
+            <use
+               height="434"
+               width="240"
+               y="0"
+               x="0"
+               style="overflow:visible"
+               id="use1672-8-2"
+               overflow="visible"
+               xlink:href="#SVGID_5_-0-90-3" />
+          </clipPath>
+          <line
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1"
+             id="line49-7-3-6"
+             y2="102.973"
+             x2="90.208"
+             y1="102.973"
+             x1="146.22501"
+             clip-path="url(#SVGID_6_-2-8-3)" />
+        </g>
+        <g
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1"
+           id="g51-6-1-0">
+          <defs
+             id="defs53-3-4-0">
+            <ellipse
+               ry="23.257999"
+               rx="16.164"
+               cy="97.245003"
+               cx="114.954"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               id="SVGID_7_-6-3-1" />
+          </defs>
+          <clipPath
+             id="clipPath1678-1-1">
+            <use
+               height="434"
+               width="240"
+               y="0"
+               x="0"
+               style="overflow:visible"
+               id="use1680-0-5"
+               overflow="visible"
+               xlink:href="#SVGID_7_-6-3-1" />
+          </clipPath>
+          <line
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1"
+             id="line59-1-4-8"
+             y2="99.487"
+             x2="146.22501"
+             y1="99.487"
+             x1="85.634003"
+             clip-path="url(#SVGID_8_-8-0-6)" />
+        </g>
+        <g
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1"
+           id="g61-5-0-1">
+          <defs
+             id="defs63-4-7-8">
+            <ellipse
+               ry="23.257999"
+               rx="16.164"
+               cy="97.245003"
+               cx="114.954"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               id="SVGID_9_-2-9-1" />
+          </defs>
+          <clipPath
+             id="clipPath1686-0-5">
+            <use
+               height="434"
+               width="240"
+               y="0"
+               x="0"
+               style="overflow:visible"
+               id="use1688-8-4"
+               overflow="visible"
+               xlink:href="#SVGID_9_-2-9-1" />
+          </clipPath>
+          <line
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1"
+             id="line69-0-1-5"
+             y2="95.667999"
+             x2="84.489998"
+             y1="95.667999"
+             x1="144.164"
+             clip-path="url(#SVGID_10_-50-2-8)" />
+        </g>
+        <g
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1"
+           id="g71-9-4-2">
+          <defs
+             id="defs73-7-0-8">
+            <ellipse
+               ry="23.257999"
+               rx="16.164"
+               cy="97.245003"
+               cx="114.954"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               id="SVGID_11_-3-7-3" />
+          </defs>
+          <clipPath
+             id="clipPath1694-9-4">
+            <use
+               height="434"
+               width="240"
+               y="0"
+               x="0"
+               style="overflow:visible"
+               id="use1696-5-5"
+               overflow="visible"
+               xlink:href="#SVGID_11_-3-7-3" />
+          </clipPath>
+          <line
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1"
+             id="line79-7-3-1"
+             y2="91.353996"
+             x2="140.964"
+             y1="91.353996"
+             x1="83.577003"
+             clip-path="url(#SVGID_12_-0-2-0)" />
+        </g>
+        <g
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1"
+           id="g81-2-8-1">
+          <defs
+             id="defs83-6-2-4">
+            <ellipse
+               ry="23.257999"
+               rx="16.164"
+               cy="97.245003"
+               cx="114.954"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               id="SVGID_13_-0-3-3" />
+          </defs>
+          <clipPath
+             id="clipPath1702-2-4">
+            <use
+               height="434"
+               width="240"
+               y="0"
+               x="0"
+               style="overflow:visible"
+               id="use1704-1-5"
+               overflow="visible"
+               xlink:href="#SVGID_13_-0-3-3" />
+          </clipPath>
+          <line
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1"
+             id="line89-1-0-1"
+             y2="87.204002"
+             x2="85.634003"
+             y1="87.204002"
+             x1="133.64799"
+             clip-path="url(#SVGID_14_-6-4-5)" />
+        </g>
+        <g
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1"
+           id="g91-6-4-2">
+          <defs
+             id="defs93-5-0-0">
+            <ellipse
+               ry="23.257999"
+               rx="16.164"
+               cy="97.245003"
+               cx="114.954"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               id="SVGID_15_-7-7-5" />
+          </defs>
+          <clipPath
+             id="clipPath1710-5-4">
+            <use
+               height="434"
+               width="240"
+               y="0"
+               x="0"
+               style="overflow:visible"
+               id="use1712-90-8"
+               overflow="visible"
+               xlink:href="#SVGID_15_-7-7-5" />
+          </clipPath>
+          <line
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1"
+             id="line99-5-5-7"
+             y2="83.552002"
+             x2="126.559"
+             y1="83.552002"
+             x1="92.950996"
+             clip-path="url(#SVGID_16_-3-3-6)" />
         </g>
       </g>
-      <rect
-         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;enable-background:accumulate"
-         id="rect13432"
-         width="16"
-         height="16"
-         x="0"
-         y="0" />
+      <g
+         id="g1316-4-1-3"
+         transform="matrix(-0.08199096,0,0,0.08199096,878.93636,666.03021)"
+         style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1">
+        <g
+           id="g1318-1-2-3"
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1">
+          <defs
+             id="defs1320-2-0-2">
+            <ellipse
+               id="ellipse1322-0-9-5"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               cx="114.954"
+               cy="97.245003"
+               rx="16.164"
+               ry="23.257999" />
+          </defs>
+          <clipPath
+             id="clipPath1324-0-89-2">
+            <use
+               xlink:href="#SVGID_1_-2-8-3"
+               overflow="visible"
+               id="use1326-1-1-2"
+               style="overflow:visible"
+               x="0"
+               y="0"
+               width="240"
+               height="434" />
+          </clipPath>
+          <line
+             clip-path="url(#SVGID_2_-02-6-4)"
+             x1="134.56599"
+             y1="110.939"
+             x2="101.642"
+             y2="110.939"
+             id="line1328-4-7-4"
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1" />
+        </g>
+        <g
+           id="g1330-6-3-0"
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1">
+          <defs
+             id="defs1332-0-3-9">
+            <ellipse
+               id="ellipse1334-7-0-1"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               cx="114.954"
+               cy="97.245003"
+               rx="16.164"
+               ry="23.257999" />
+          </defs>
+          <clipPath
+             id="clipPath1336-1-7-9">
+            <use
+               xlink:href="#SVGID_3_-5-4-9"
+               overflow="visible"
+               id="use1338-7-6-7"
+               style="overflow:visible"
+               x="0"
+               y="0"
+               width="240"
+               height="434" />
+          </clipPath>
+          <line
+             clip-path="url(#SVGID_4_-6-8-6)"
+             x1="94.551003"
+             y1="107.122"
+             x2="143.25101"
+             y2="107.122"
+             id="line1340-7-6-8"
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1" />
+        </g>
+        <g
+           id="g1342-7-0-4"
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1">
+          <defs
+             id="defs1344-7-2-3">
+            <ellipse
+               id="ellipse1346-3-8-2"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               cx="114.954"
+               cy="97.245003"
+               rx="16.164"
+               ry="23.257999" />
+          </defs>
+          <clipPath
+             id="clipPath1348-3-9-8">
+            <use
+               xlink:href="#SVGID_5_-0-90-3"
+               overflow="visible"
+               id="use1350-5-8-4"
+               style="overflow:visible"
+               x="0"
+               y="0"
+               width="240"
+               height="434" />
+          </clipPath>
+          <line
+             clip-path="url(#SVGID_6_-2-8-3)"
+             x1="146.22501"
+             y1="102.973"
+             x2="90.208"
+             y2="102.973"
+             id="line1352-9-9-7"
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1" />
+        </g>
+        <g
+           id="g1354-9-9-2"
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1">
+          <defs
+             id="defs1356-8-9-2">
+            <ellipse
+               id="ellipse1358-1-4-3"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               cx="114.954"
+               cy="97.245003"
+               rx="16.164"
+               ry="23.257999" />
+          </defs>
+          <clipPath
+             id="clipPath1360-8-20-1">
+            <use
+               xlink:href="#SVGID_7_-6-3-1"
+               overflow="visible"
+               id="use1362-2-8-8"
+               style="overflow:visible"
+               x="0"
+               y="0"
+               width="240"
+               height="434" />
+          </clipPath>
+          <line
+             clip-path="url(#SVGID_8_-8-0-6)"
+             x1="85.634003"
+             y1="99.487"
+             x2="146.22501"
+             y2="99.487"
+             id="line1364-6-7-1"
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1" />
+        </g>
+        <g
+           id="g1366-6-8-5"
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1">
+          <defs
+             id="defs1368-0-7-4">
+            <ellipse
+               id="ellipse1370-3-3-8"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               cx="114.954"
+               cy="97.245003"
+               rx="16.164"
+               ry="23.257999" />
+          </defs>
+          <clipPath
+             id="clipPath1372-8-0-0">
+            <use
+               xlink:href="#SVGID_9_-2-9-1"
+               overflow="visible"
+               id="use1374-0-7-0"
+               style="overflow:visible"
+               x="0"
+               y="0"
+               width="240"
+               height="434" />
+          </clipPath>
+          <line
+             clip-path="url(#SVGID_10_-50-2-8)"
+             x1="144.164"
+             y1="95.667999"
+             x2="84.489998"
+             y2="95.667999"
+             id="line1376-1-6-4"
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1" />
+        </g>
+        <g
+           id="g1378-2-4-7"
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1">
+          <defs
+             id="defs1380-5-21-3">
+            <ellipse
+               id="ellipse1382-0-9-6"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               cx="114.954"
+               cy="97.245003"
+               rx="16.164"
+               ry="23.257999" />
+          </defs>
+          <clipPath
+             id="clipPath1384-9-16-3">
+            <use
+               xlink:href="#SVGID_11_-3-7-3"
+               overflow="visible"
+               id="use1386-4-0-9"
+               style="overflow:visible"
+               x="0"
+               y="0"
+               width="240"
+               height="434" />
+          </clipPath>
+          <line
+             clip-path="url(#SVGID_12_-0-2-0)"
+             x1="83.577003"
+             y1="91.353996"
+             x2="140.964"
+             y2="91.353996"
+             id="line1388-7-3-5"
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1" />
+        </g>
+        <g
+           id="g1390-8-3-5"
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1">
+          <defs
+             id="defs1392-3-6-6">
+            <ellipse
+               id="ellipse1394-5-2-9"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               cx="114.954"
+               cy="97.245003"
+               rx="16.164"
+               ry="23.257999" />
+          </defs>
+          <clipPath
+             id="clipPath1396-1-2-6">
+            <use
+               xlink:href="#SVGID_13_-0-3-3"
+               overflow="visible"
+               id="use1398-2-1-1"
+               style="overflow:visible"
+               x="0"
+               y="0"
+               width="240"
+               height="434" />
+          </clipPath>
+          <line
+             clip-path="url(#SVGID_14_-6-4-5)"
+             x1="133.64799"
+             y1="87.204002"
+             x2="85.634003"
+             y2="87.204002"
+             id="line1400-0-4-7"
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1" />
+        </g>
+        <g
+           id="g1402-1-3-5"
+           style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:1.04008996;stroke-opacity:1">
+          <defs
+             id="defs1404-6-2-6">
+            <ellipse
+               id="ellipse1406-4-6-0"
+               transform="matrix(0.2556,-0.9668,0.9668,0.2556,-8.4427,183.5253)"
+               cx="114.954"
+               cy="97.245003"
+               rx="16.164"
+               ry="23.257999" />
+          </defs>
+          <clipPath
+             id="clipPath1408-0-0-9">
+            <use
+               xlink:href="#SVGID_15_-7-7-5"
+               overflow="visible"
+               id="use1410-6-5-4"
+               style="overflow:visible"
+               x="0"
+               y="0"
+               width="240"
+               height="434" />
+          </clipPath>
+          <line
+             clip-path="url(#SVGID_16_-3-3-6)"
+             x1="92.950996"
+             y1="83.552002"
+             x2="126.559"
+             y2="83.552002"
+             id="line1412-1-4-8"
+             style="fill:#386b68;fill-opacity:1;stroke:#386b68;stroke-width:2.08017993;stroke-opacity:1" />
+        </g>
+      </g>
     </g>
+    <rect
+       y="0"
+       x="0"
+       height="16"
+       width="16"
+       id="rect13432"
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;color-interpolation:sRGB;color-interpolation-filters:linearRGB;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;enable-background:accumulate" />
   </g>
 </svg>
