@@ -120,7 +120,7 @@ class SlideEditorController{
 	}
 
 	private JButton createSetSelectedNodeButton() {
-		JButton btnSetSelectedNode = createButtonWithIcon("SetFilterSlideContent.icon", "slide.set.tooltip");
+		JButton btnSetSelectedNode = createButtonWithIcon("SetSlideContent.icon", "slide.set.tooltip");
 		btnSetSelectedNode.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSetSelectedNode.addActionListener(new ActionListener() {
 			
