@@ -19,11 +19,14 @@ import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
 
 class CollectionBoxController <T extends NamedElement<T>> {
+	private static final String PRESENTATION_MAX_DROP_BOX_ROW_COUNT_PROPERTY = "presentation.maxDropBoxRowCount";
 	private NamedElementCollection<T> collection;
 	private JComboBox<Stringifyed<T>> comboBoxCollectionNames;
 	private final JComponent[] components;
@@ -60,6 +63,16 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		comboBoxCollectionNames.setEditable(false);
 		Dimension comboBoxPreferredSize = comboBoxCollectionNames.getPreferredSize();
 		comboBoxCollectionNames.setMaximumSize(new Dimension(Integer.MAX_VALUE, comboBoxPreferredSize.height));
+		final ResourceController resourceController = ResourceController.getResourceController();
+		comboBoxCollectionNames.setMaximumRowCount(resourceController.getIntProperty(PRESENTATION_MAX_DROP_BOX_ROW_COUNT_PROPERTY, 9));
+		resourceController.addPropertyChangeListener(new IFreeplanePropertyListener() {
+			
+			@Override
+			public void propertyChanged(String propertyName, String newValue, String oldValue) {
+				if(PRESENTATION_MAX_DROP_BOX_ROW_COUNT_PROPERTY.equals(propertyName))
+					comboBoxCollectionNames.setMaximumRowCount(resourceController.getIntProperty(PRESENTATION_MAX_DROP_BOX_ROW_COUNT_PROPERTY, 9));
+			}
+		});
 		lblElementCounter = new JLabel("XXX/XXX ");
 		lblElementCounter.setHorizontalAlignment(SwingConstants.CENTER);
 		lblElementCounter.setPreferredSize(lblElementCounter.getPreferredSize());
