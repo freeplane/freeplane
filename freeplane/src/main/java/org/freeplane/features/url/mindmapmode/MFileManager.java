@@ -371,7 +371,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 */
 	private String getFileNameProposal(final MapModel map) {
 		String rootText = TextController.getController().getPlainTextContent((map.getRootNode()));
-		rootText = rootText.replaceAll("[&:/\\\\\0%$#~\\?\\*]+", "");
+		rootText = FileUtils.validFileNameOf(rootText);
 		return rootText;
 	}
 

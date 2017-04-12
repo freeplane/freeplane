@@ -19,7 +19,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
 
 public class Slide implements NamedElement<Slide>{
-	private static final String PRESENTATION_SLOW_MOTION_KEY = "presentation.slowMotion";
+	static final String PRESENTATION_SLOW_MOTION_KEY = "presentation.slowMotion";
 	public static final Slide ALL_NODES = new Slide("All nodes");
 	private static final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 	private String name;

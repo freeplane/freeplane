@@ -309,6 +309,7 @@
 				<number name="presentation_dimmer_transparency" min="0" max="255" />
 				<boolean name="presentation.slowMotion"/>
 				<number name="presentation.maxDropBoxRowCount" min="3" max="999" /> 
+				<string name="presentation.exportDirectory" />
 			</separator>
 			
 		</tab>

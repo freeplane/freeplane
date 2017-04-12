@@ -41,6 +41,7 @@ public class PresentationController implements IExtension{
 
 	public static void install(final ModeController modeController) {
 		final PresentationController presentationController = new PresentationController(modeController);
+		modeController.addExtension(PresentationController.class, presentationController);
 		presentationController.registerActions();
 		presentationController.addMapSelectionListener();
 		new PresentationBuilder().register(modeController.getMapController(), presentationController);
@@ -82,6 +83,7 @@ public class PresentationController implements IExtension{
 				PresentationKeyEventDispatcher.of(navigationKeyEventDispatcher, PROCESS_NAVIGATION_KEYS_PROPERTY),
 				PresentationKeyEventDispatcher.of(escapeKeyEventDispatcher, PROCESS_ESCAPE_KEY_PROPERTY));
 		presentationState.addPresentationStateListener(presentationKeyHandler);
+		new PresentationPngExporter.ActionInstaller().installActions(modeController, presentationState);
 	}
 
 	private void registerActions() {

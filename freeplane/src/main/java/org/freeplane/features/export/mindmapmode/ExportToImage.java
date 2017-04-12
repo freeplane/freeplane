@@ -52,6 +52,10 @@ public class ExportToImage implements IExportEngine {
 	private final String imageDescripton;
 	private final String imageType;
 
+	public static ExportToImage toPNG(){
+		return new ExportToImage("png", "to png");
+	}
+	
 	ExportToImage( final String imageType, final String imageDescripton) {
 		this.imageType = imageType;
 		this.imageDescripton = imageDescripton;
