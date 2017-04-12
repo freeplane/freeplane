@@ -237,4 +237,16 @@ public class PresentationState {
 			firePresentationStateChangedEvent(SLIDE_CHANGED);
 		}
 	}
+
+	public void restore() {
+		if(isPresentationRunning())
+			currentSlide.apply(zoomFactor);
+		else
+			Slide.ALL_NODES.apply(1f);
+	}
+
+	NamedElementCollection<Presentation> getPresentations() {
+		return presentations;
+	}
+
 }
