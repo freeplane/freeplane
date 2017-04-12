@@ -314,7 +314,7 @@ public class TextController implements IExtension {
 			        Font detailFont = style.getFont(detailStyleNode);
 			        Color detailBackground = style.getBackgroundColor(detailStyleNode);
 			        Color detailForeground = style.getColor(detailStyleNode);
-			        final int alignment = style.getTextAlign(detailStyleNode).swingConstant;
+			        final int alignment = style.getHorizontalTextAlignment(detailStyleNode).swingConstant;
 					
 					final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
 							.append(new CssRuleBuilder()

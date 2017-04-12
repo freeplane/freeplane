@@ -26,11 +26,11 @@ import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
+import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 
 @SelectableAction(checkOnNodeChange = true)
-class TextAlignAction extends AMultipleNodeAction {
-	private final TextAlign textAlign;
+class HorizontalTextAlignmentAction extends AMultipleNodeAction {
+	private final HorizontalTextAlignment textAlignment;
 	/**
 	 * 
 	 */
@@ -39,29 +39,29 @@ class TextAlignAction extends AMultipleNodeAction {
 
 	/**
 	 */
-	public TextAlignAction(TextAlign textAlign) {
-		super("TextAlignAction." + textAlign);
-		this.textAlign =textAlign;
+	public HorizontalTextAlignmentAction(HorizontalTextAlignment textAlignment) {
+		super("TextAlignAction." + textAlignment);
+		this.textAlignment =textAlignment;
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		textAlignSet = !isTextAlignSet();
+		textAlignSet = !isTextAlignmentSet();
 		super.actionPerformed(e);
 	}
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel selected) {
-		((MNodeStyleController) NodeStyleController.getController()).setTextAlign(selected, textAlignSet ? textAlign : null);
+		((MNodeStyleController) NodeStyleController.getController()).setHorizontalTextAlignment(selected, textAlignSet ? textAlignment : null);
 	}
 
-	boolean isTextAlignSet() {
+	boolean isTextAlignmentSet() {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-		return textAlign.equals(NodeStyleController.getController().getTextAlign(node));
+		return textAlignment.equals(NodeStyleController.getController().getHorizontalTextAlignment(node));
 	}
 
 	@Override
 	public void setSelected() {
-		setSelected(isTextAlignSet());
+		setSelected(isTextAlignmentSet());
 	}
 }

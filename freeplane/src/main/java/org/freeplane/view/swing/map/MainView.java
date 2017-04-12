@@ -68,7 +68,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
+import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
@@ -109,7 +109,7 @@ public abstract class MainView extends ZoomableLabel {
 		setHorizontalAlignment(SwingConstants.LEFT);
 		setVerticalAlignment(SwingConstants.CENTER);
 		setHorizontalTextPosition(SwingConstants.TRAILING);
-		setVerticalTextPosition(SwingConstants.CENTER);
+		setVerticalTextPosition(SwingConstants.TOP);
 	}
 
 	protected void convertPointFromMap(final Point p) {
@@ -502,10 +502,10 @@ public abstract class MainView extends ZoomableLabel {
 		setForeground(color);
 	}
 	
-	void updateTextAlign(NodeView node) {
-		final TextAlign textAlign = NodeStyleController.getController(node.getMap().getModeController()).getTextAlign(node.getModel());
-		final boolean isCenteredByDefault = textAlign == TextAlign.DEFAULT && node.isRoot();
-		setHorizontalAlignment(isCenteredByDefault ? TextAlign.CENTER.swingConstant : textAlign.swingConstant);
+	void updateTextAlignment(NodeView node) {
+		final HorizontalTextAlignment textAlignment = NodeStyleController.getController(node.getMap().getModeController()).getHorizontalTextAlignment(node.getModel());
+		final boolean isCenteredByDefault = textAlignment == HorizontalTextAlignment.DEFAULT && node.isRoot();
+		setHorizontalAlignment(isCenteredByDefault ? HorizontalTextAlignment.CENTER.swingConstant : textAlignment.swingConstant);
 	}
 
 

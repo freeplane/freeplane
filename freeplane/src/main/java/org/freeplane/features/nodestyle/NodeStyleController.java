@@ -39,7 +39,7 @@ import org.freeplane.features.mode.ExclusivePropertyChain;
 import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
-import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
+import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -69,7 +69,7 @@ public class NodeStyleController implements IExtension {
  	final private ModeController modeController;
 	final private ExclusivePropertyChain<ShapeConfigurationModel, NodeModel> shapeHandlers;
 	final private ExclusivePropertyChain<Color, NodeModel> textColorHandlers;
-	final private ExclusivePropertyChain<TextAlign, NodeModel> textAlignHandlers;
+	final private ExclusivePropertyChain<HorizontalTextAlignment, NodeModel> horizontalTextAlignmentHandlers;
 	public static final String NODE_NUMBERING = "NodeNumbering";
 	
 	private static final Quantity<LengthUnits> DEFAULT_MINIMUM_WIDTH = new Quantity<LengthUnits>(0, LengthUnits.cm);
@@ -83,7 +83,7 @@ public class NodeStyleController implements IExtension {
 		textColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		backgroundColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		shapeHandlers = new ExclusivePropertyChain<ShapeConfigurationModel, NodeModel>();
-		textAlignHandlers = new ExclusivePropertyChain<TextAlign, NodeModel>();
+		horizontalTextAlignmentHandlers = new ExclusivePropertyChain<HorizontalTextAlignment, NodeModel>();
 		
 		addFontGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Font, NodeModel>() {
 			public Font getProperty(final NodeModel node, final Font currentValue) {
@@ -127,15 +127,15 @@ public class NodeStyleController implements IExtension {
 			}
 		});
 		
-		addTextAlignGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<TextAlign, NodeModel>() {
-			public TextAlign getProperty(final NodeModel node, final TextAlign currentValue) {
-				return TextAlign.DEFAULT;
+		addTextAlignGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<HorizontalTextAlignment, NodeModel>() {
+			public HorizontalTextAlignment getProperty(final NodeModel node, final HorizontalTextAlignment currentValue) {
+				return HorizontalTextAlignment.DEFAULT;
 			}
 		});
 		
-		addTextAlignGetter(IPropertyHandler.STYLE, new IPropertyHandler<TextAlign, NodeModel>() {
-			public TextAlign getProperty(final NodeModel node, final TextAlign currentValue) {
-				return getTextAlign(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
+		addTextAlignGetter(IPropertyHandler.STYLE, new IPropertyHandler<HorizontalTextAlignment, NodeModel>() {
+			public HorizontalTextAlignment getProperty(final NodeModel node, final HorizontalTextAlignment currentValue) {
+				return getHorizontalTextAlignment(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
 		
@@ -156,9 +156,9 @@ public class NodeStyleController implements IExtension {
 		return textColorHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyHandler<TextAlign, NodeModel> addTextAlignGetter(final Integer key,
-            final IPropertyHandler<TextAlign, NodeModel> getter) {
-		return textAlignHandlers.addGetter(key, getter);
+	public IPropertyHandler<HorizontalTextAlignment, NodeModel> addTextAlignGetter(final Integer key,
+            final IPropertyHandler<HorizontalTextAlignment, NodeModel> getter) {
+		return horizontalTextAlignmentHandlers.addGetter(key, getter);
 	}
 
 	public IPropertyHandler<Font, NodeModel> addFontGetter(final Integer key,
@@ -412,8 +412,8 @@ public class NodeStyleController implements IExtension {
 		return createFont(baseFont, fontFamilyName, fontSize, bold, italic);
 	}
 
-	public TextAlign getTextAlign(final NodeModel node) {
-		return textAlignHandlers.getProperty(node);
+	public HorizontalTextAlignment getHorizontalTextAlignment(final NodeModel node) {
+		return horizontalTextAlignmentHandlers.getProperty(node);
 	}
 
 	private Font createFont(final Font baseFont, String family, Integer size, Boolean bold, Boolean italic) {
@@ -482,7 +482,7 @@ public class NodeStyleController implements IExtension {
 		return null;
 	}
 
-	private TextAlign getTextAlign(final MapModel map, final Collection<IStyle> style) {
+	private HorizontalTextAlignment getHorizontalTextAlignment(final MapModel map, final Collection<IStyle> style) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : style){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -493,11 +493,11 @@ public class NodeStyleController implements IExtension {
 			if (styleModel == null) {
 				continue;
 			}
-			final TextAlign textAlign = styleModel.getTextAlign();
-			if (textAlign == null) {
+			final HorizontalTextAlignment textAlignment = styleModel.getHorizontalTextAlignment();
+			if (textAlignment == null) {
 				continue;
 			}
-			return textAlign;
+			return textAlignment;
 		}
 		return null;
 	}

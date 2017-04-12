@@ -168,7 +168,7 @@ public class NoteController implements IExtension {
 		    final Font noteFont = style.getFont(noteStyleNode);
 		    Color noteBackground = style.getBackgroundColor(noteStyleNode);
 		    Color noteForeground = style.getColor(noteStyleNode);
-		    final int alignment = style.getTextAlign(noteStyleNode).swingConstant;
+		    final int alignment = style.getHorizontalTextAlignment(noteStyleNode).swingConstant;
 		    final CssRuleBuilder cssRuleBuilder = new CssRuleBuilder();
 		    if(asHtmlFragment)
 		    	cssRuleBuilder.withHTMLFont(noteFont);

@@ -31,7 +31,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
+import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -43,7 +43,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 class NodeTextAlignmentControlGroup implements ControlGroup {
 	private static final String TEXT_ALIGNMENT = "textalignment";
 	
-	private static final String[] TEXT_ALIGNMENTS = EnumToStringMapper.getStringValuesOf(TextAlign.class);
+	private static final String[] TEXT_ALIGNMENTS = EnumToStringMapper.getStringValuesOf(HorizontalTextAlignment.class);
 	private BooleanProperty mSetNodeTextAlignment;
 	private ComboProperty mNodeTextAlignment;
 
@@ -58,14 +58,14 @@ class NodeTextAlignmentControlGroup implements ControlGroup {
 		void applyValue(final boolean enabled, final NodeModel node, final PropertyChangeEvent evt) {
 			final MNodeStyleController styleController = (MNodeStyleController) Controller
 					.getCurrentModeController().getExtension(NodeStyleController.class);
-			styleController.setTextAlign(node, enabled ? TextAlign.valueOf(mNodeTextAlignment.getValue()) : null);
+			styleController.setHorizontalTextAlignment(node, enabled ? HorizontalTextAlignment.valueOf(mNodeTextAlignment.getValue()) : null);
 }
 
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
-			final TextAlign style = NodeStyleModel.getTextAlign(node);
-			final TextAlign viewStyle = styleController.getTextAlign(node);
+			final HorizontalTextAlignment style = NodeStyleModel.getHorizontalTextAlignment(node);
+			final HorizontalTextAlignment viewStyle = styleController.getHorizontalTextAlignment(node);
 			mSetNodeTextAlignment.setValue(style != null);
 			mNodeTextAlignment.setValue(viewStyle.toString());
 		}
