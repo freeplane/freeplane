@@ -40,7 +40,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  * @author Joe Berry
  * Nov 27, 2016
  */
-class NodeTextAlignmentControlGroup implements ControlGroup {
+class NodeHorizontalTextAlignmentControlGroup implements ControlGroup {
 	private static final String TEXT_ALIGNMENT = "textalignment";
 	
 	private static final String[] TEXT_ALIGNMENTS = EnumToStringMapper.getStringValuesOf(HorizontalTextAlignment.class);
