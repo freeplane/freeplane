@@ -109,7 +109,7 @@ public abstract class MainView extends ZoomableLabel {
 		setHorizontalAlignment(SwingConstants.LEFT);
 		setVerticalAlignment(SwingConstants.CENTER);
 		setHorizontalTextPosition(SwingConstants.TRAILING);
-		setVerticalTextPosition(SwingConstants.CENTER);
+		setVerticalTextPosition(SwingConstants.TOP);
 	}
 
 	protected void convertPointFromMap(final Point p) {
