@@ -46,7 +46,7 @@ class HorizontalTextAlignmentAction extends AMultipleNodeAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		textAlignSet = !isTextAlignmentSet();
+		textAlignSet = !isHorizontalTextAlignmentSet();
 		super.actionPerformed(e);
 	}
 
@@ -55,13 +55,13 @@ class HorizontalTextAlignmentAction extends AMultipleNodeAction {
 		((MNodeStyleController) NodeStyleController.getController()).setHorizontalTextAlignment(selected, textAlignSet ? textAlignment : null);
 	}
 
-	boolean isTextAlignmentSet() {
+	boolean isHorizontalTextAlignmentSet() {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		return textAlignment.equals(NodeStyleController.getController().getHorizontalTextAlignment(node));
 	}
 
 	@Override
 	public void setSelected() {
-		setSelected(isTextAlignmentSet());
+		setSelected(isHorizontalTextAlignmentSet());
 	}
 }
