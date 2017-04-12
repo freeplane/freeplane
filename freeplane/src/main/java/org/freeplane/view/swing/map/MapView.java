@@ -1243,13 +1243,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         detailFont = UITools.scale(style.getFont(detailStyleNode));
         detailBackground = style.getBackgroundColor(detailStyleNode);
         detailForeground = style.getColor(detailStyleNode);
-        detailHorizontalAlignment = style.getTextAlign(detailStyleNode).swingConstant;
+        detailHorizontalAlignment = style.getHorizontalTextAlignment(detailStyleNode).swingConstant;
         
         final NodeModel noteStyleNode = model.getStyleNodeSafe(MapStyleModel.NOTE_STYLE);
         noteFont = UITools.scale(style.getFont(noteStyleNode));
         noteBackground = style.getBackgroundColor(noteStyleNode);
         noteForeground = style.getColor(noteStyleNode);
-        noteHorizontalAlignment = style.getTextAlign(noteStyleNode).swingConstant;
+        noteHorizontalAlignment = style.getHorizontalTextAlignment(noteStyleNode).swingConstant;
 
     }
 

@@ -43,7 +43,7 @@ import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeWriter;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
-import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
+import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, IExtensionAttributeWriter,
@@ -262,7 +262,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		final IAttributeHandler textAlignHandler = new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
-				NodeStyleModel.setTextAlign(node, TextAlign.valueOf(value));
+				NodeStyleModel.setHorizontalTextAlignment(node, HorizontalTextAlignment.valueOf(value));
 			}
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "TEXT_ALIGN", textAlignHandler);
@@ -421,9 +421,9 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (format != null) {
 			writer.addAttribute("FORMAT", format);
 		}
-		final TextAlign textAlign = forceFormatting ? nsc.getTextAlign(node) : style.getTextAlign();
-		if (textAlign != null) {
-			writer.addAttribute("TEXT_ALIGN", textAlign.toString());
+		final HorizontalTextAlignment textAlignment = forceFormatting ? nsc.getHorizontalTextAlignment(node) : style.getHorizontalTextAlignment();
+		if (textAlignment != null) {
+			writer.addAttribute("TEXT_ALIGN", textAlignment.toString());
 		}
 
 	}
