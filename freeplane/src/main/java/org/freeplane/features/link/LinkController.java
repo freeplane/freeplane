@@ -857,7 +857,7 @@ public class LinkController extends SelectionController implements IExtension {
 	    	    Icon icon = menuItemCache.get(menuItemKey);
                 if (icon == null) {
                     final Icon menuItemIcon = MenuUtils.getMenuItemIcon(menuItemKey);
-                    icon = (menuItemIcon == null) ? ICON_STORE.getUIIcon(MENUITEM_ICON).getIcon() : menuItemIcon;
+                    icon = (menuItemIcon == null) ? LinkType.MENU.icon : menuItemIcon;
                     menuItemCache.put(menuItemKey, icon);
                 }
 	    	    return icon;
