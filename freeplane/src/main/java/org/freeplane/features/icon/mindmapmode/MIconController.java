@@ -80,7 +80,6 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.LogicalStyleController;
-import org.freeplane.features.text.NodeItemRelation;
 import org.freeplane.features.ui.CollapseableBoxBuilder;
 import org.freeplane.features.ui.FrameController;
 
@@ -88,6 +87,7 @@ import org.freeplane.features.ui.FrameController;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
+	private static final Insets ICON_SUBMENU_INSETS = new Insets(3, 0, 3, 0);
 	private static final int ARROW_SIZE = Math.round(UITools.getUIFontSize(0.8));
 	private static final Font ARROW_FONT = new Font("SansSerif", 0, ARROW_SIZE);
 	private static final ConditionPredicate DEPENDS_ON_ICON = new ConditionPredicate() {
@@ -377,7 +377,7 @@ public class MIconController extends IconController {
 			}
 		};
 		menu.setFont(ARROW_FONT);
-		menu.setMargin(new Insets(0, 0, 0, 0));
+		menu.setMargin(ICON_SUBMENU_INSETS);
 		menu.setIcon(group.getGroupIcon().getIcon());
 		for (final MindIcon icon : group.getIcons()) {
 			addActionToIconSubmenu(menu, icon, icon.getFileName());
