@@ -200,7 +200,7 @@ class SlideEditorController{
 		return btnSetsZoom;
 	}
 	private JToggleButton createPlacesSelectedNodeToggleButton() {
-		final JToggleButton checkBoxOnlySpecificNodes = createToggleButtonWithIconAndLabel("PlaceSelectedNodeSlideContent.icon", "slide.placenode");
+		final JToggleButton checkBoxOnlySpecificNodes = createToggleButtonWithIconAndLabel("PlaceSelectedNodeOnSlide.icon", "slide.placenode");
 		checkBoxOnlySpecificNodes.setAlignmentX(Component.CENTER_ALIGNMENT);
 		checkBoxOnlySpecificNodes.addActionListener(new ActionListener() {
 			@Override
