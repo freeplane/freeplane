@@ -3,6 +3,9 @@
 ===============================
 Bug fixes
 Export for java web start
+Security fix related to scripts and formulas
+Security fix related to loading of mind map files
+Change short cuts for MacOS to avoid collisions
 
 ===============================
 1.5.18
