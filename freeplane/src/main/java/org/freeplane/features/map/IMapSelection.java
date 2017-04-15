@@ -28,9 +28,18 @@ import java.util.Set;
  * 04.01.2009
  */
 public interface IMapSelection {
+
+	public enum NodePosition {
+		WEST, CENTER, EAST;
+	}
+	
 	public void centerNode(final NodeModel node);
 	
 	public void centerNodeSlowly(final NodeModel node);
+
+	public void moveNodeTo(final NodeModel node, NodePosition position);
+	
+	public void slowlyMoveNodeTo(final NodeModel node, NodePosition position);
 
 	public NodeModel getSelected();
 

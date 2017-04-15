@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import org.freeplane.core.resources.ResourceController;
@@ -15,6 +16,7 @@ import org.freeplane.features.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
 
@@ -24,7 +26,8 @@ public class Slide implements NamedElement<Slide>{
 	private static final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 	private String name;
 	private boolean changesZoom;
-	private String centeredNodeId;
+	private String placedNodeId;
+	private NodePosition placedNodePosition;
 	private float zoom;
 	private boolean showsOnlySpecificNodes;
 	private boolean showsAncestors;
@@ -46,22 +49,23 @@ public class Slide implements NamedElement<Slide>{
 
 	@Override
 	public Slide saveAs(String name) {
-		return new Slide(name, new LinkedHashSet<String>(), centeredNodeId != null ? "" : null,
+		return new Slide(name, new LinkedHashSet<String>(), placedNodeId != null ? "" : null, placedNodePosition,
 		    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, null);
 	}
 
 	public Slide(String name){
-		this(name, new LinkedHashSet<String>(), null, false, 1f, false, false, false, null);
+		this(name, new LinkedHashSet<String>(), null, NodePosition.CENTER, false, 1f, false, false, false, null);
 	}
 	
-	private Slide(String name, Set<String> selectedNodeIds, String centeredNodeId,
+	private Slide(String name, Set<String> selectedNodeIds, String centeredNodeId, NodePosition placedNodePosition,
 	                  boolean changeZoom,
 			float zoom, boolean showOnlySpecificNodes, boolean showAncestors, boolean showDescendants,
 			ASelectableCondition filterCondition) {
 		super();
 		this.name = name;
 		this.selectedNodeIds = selectedNodeIds;
-		this.centeredNodeId = centeredNodeId;
+		this.placedNodeId = centeredNodeId;
+		this.placedNodePosition = placedNodePosition;
 		this.changesZoom = changeZoom;
 		this.zoom = zoom;
 		this.showsOnlySpecificNodes = showOnlySpecificNodes;
@@ -188,12 +192,26 @@ public class Slide implements NamedElement<Slide>{
 		return selectedNodeIds.contains(node.getID());
 	}
 
-	public String getCenteredNodeId() {
-		return centeredNodeId;
+	public String getPlacedNodeId() {
+		return placedNodeId;
 	}
 
-	public void setCenteredNodeId(String centeredNodeId) {
-		this.centeredNodeId = centeredNodeId;
+	public void setPlacedNodeId(String placedNodeId) {
+		if(this.placedNodeId != placedNodeId) {
+			this.placedNodeId = placedNodeId;
+			fireSlideChangeEvent();
+		}
+	}
+	
+	public NodePosition getPlacedNodePosition() {
+		return placedNodePosition;
+	}
+
+	public void setPlacedNodePosition(NodePosition placedNodePosition) {
+		if(this.placedNodePosition != placedNodePosition) {
+			this.placedNodePosition = Objects.requireNonNull(placedNodePosition);
+			fireSlideChangeEvent();
+		}
 	}
 
 	public boolean changesZoom() {
@@ -301,12 +319,12 @@ public class Slide implements NamedElement<Slide>{
 		applySelection();
 		foldNodes();
 		applyZoom(zoomFactor);
-		centerSelectedNode();
+		placeSelectedNode();
 		scrollMapToSelectedNode();
 	}
 
 	private void scrollMapToSelectedNode() {
-		if(centeredNodeId == null){
+		if(placedNodeId == null){
 			final Controller controller = Controller.getCurrentController();
 			final NodeModel selected = controller.getSelection().getSelected();
 			controller.getMapViewManager().scrollNodeToVisible(selected);
@@ -372,10 +390,10 @@ public class Slide implements NamedElement<Slide>{
 		}
 	}
 
-	private void centerSelectedNode() {
+	private void placeSelectedNode() {
 		MapModel map = getMap();
-		if (centeredNodeId != null) {
-			NodeModel centeredNode = map.getNodeForID(centeredNodeId);
+		if (placedNodeId != null) {
+			NodeModel centeredNode = map.getNodeForID(placedNodeId);
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			if(centeredNode != null && centeredNode.hasVisibleContent()) {
 				displayOnCurrentView(centeredNode);
@@ -384,9 +402,9 @@ public class Slide implements NamedElement<Slide>{
 			}
 			final boolean slowMotion = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_SLOW_MOTION_KEY, false);
 			if(slowMotion)
-				selection.centerNodeSlowly(centeredNode);
+				selection.slowlyMoveNodeTo(centeredNode, placedNodePosition);
 			else
-				selection.centerNode(centeredNode);
+				selection.moveNodeTo(centeredNode, placedNodePosition);
 		}
 	}
 

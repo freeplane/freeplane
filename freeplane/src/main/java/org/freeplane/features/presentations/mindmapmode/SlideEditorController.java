@@ -2,7 +2,7 @@ package org.freeplane.features.presentations.mindmapmode;
 
 import static org.freeplane.core.ui.textchanger.TranslatedElementFactory.createButtonWithIcon;
 import static org.freeplane.core.ui.textchanger.TranslatedElementFactory.createCheckBox;
-import static org.freeplane.core.ui.textchanger.TranslatedElementFactory.createToggleButtonWithIcon;
+import static org.freeplane.core.ui.textchanger.TranslatedElementFactory.createToggleButtonWithIconAndLabel;
 import static org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType.PLAYING_STATE_CHANGED;
 
 import java.awt.Color;
@@ -15,6 +15,7 @@ import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -28,6 +29,7 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.mode.Controller;
 
 class SlideEditorController{
@@ -38,7 +40,10 @@ class SlideEditorController{
 	private final JButton btnSetSelectedNodes;
 	private final JButton btnAddSelectedNodes;
 	private final JButton btnRemoveSelectedNodes;
-	private final JToggleButton tglBtnCenterSelectedNode;
+	private final JToggleButton tglBtnPlaceSelectedNode;
+	private final JToggleButton btnAtCenter;
+	private final JToggleButton btnOnTheLeft;
+	private final JToggleButton btnOnTheRight;
 	private final JToggleButton tglbtnChangeZoom;
 	private final JLabel lblZoomFactor;
 	private final JCheckBox checkBoxShowOnlySelectedNodes;
@@ -73,7 +78,12 @@ class SlideEditorController{
 		btnAddSelectedNodes = createAddSelectedNodeButton();
 		btnRemoveSelectedNodes = createRemoveSelectedNodeButton();
 		btnSelectNodes = createSelectNodesButton();
-		tglBtnCenterSelectedNode = createCentersSelectedNodeToggleButton();
+		tglBtnPlaceSelectedNode = createPlacesSelectedNodeToggleButton();
+		nodePositions = new ButtonGroup();
+		btnOnTheLeft = createNodePositionToggleButton("slide.on_the_left", NodePosition.WEST);
+		btnAtCenter = createNodePositionToggleButton("slide.at_center", NodePosition.CENTER);
+		btnOnTheRight = createNodePositionToggleButton("slide.on_the_right", NodePosition.EAST);
+		positionButtons = new JToggleButton[]{btnOnTheLeft, btnAtCenter, btnOnTheRight};
 		tglbtnChangeZoom = createSetZoomToggleButton();
 		lblZoomFactor = new JLabel("100 %");
 		lblZoomFactor.setPreferredSize(lblZoomFactor.getPreferredSize());
@@ -101,7 +111,7 @@ class SlideEditorController{
 		tglbtnSetFoldingState = createSetFoldingStateToggleButton();
 		
 		allButtons = new JComponent[] { btnSelectNodes, btnSetSelectedNodes, btnAddSelectedNodes,
-		        btnRemoveSelectedNodes, tglBtnCenterSelectedNode,
+		        btnRemoveSelectedNodes, tglBtnPlaceSelectedNode,
 		        tglbtnChangeZoom, lblZoomFactor, 
 		        checkBoxShowOnlySelectedNodes, checkBoxShowAncestors, checkBoxShowDescendants, tglbtnSetFilter, 
 		        tglbtnSetFoldingState};
@@ -119,6 +129,19 @@ class SlideEditorController{
 		disableUI();
 	}
 
+	private JToggleButton createNodePositionToggleButton(String key, final NodePosition position) {
+		final JToggleButton btn = TranslatedElementFactory.createToggleButtonWithIcon(key + ".icon", key + ".tooltip");
+		btn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				UndoableSlide.of(slide).setPlacedNodePosition(position);
+			}
+		});
+		nodePositions.add(btn);
+		return btn;
+	}
+	
 	private JButton createSetSelectedNodeButton() {
 		JButton btnSetSelectedNode = createButtonWithIcon("SetSlideContent.icon", "slide.set.tooltip");
 		btnSetSelectedNode.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -163,7 +186,7 @@ class SlideEditorController{
 	}
 
 	private JToggleButton createSetZoomToggleButton() {
-		final JToggleButton btnSetsZoom = createToggleButtonWithIcon("SetZoomSlideContent.icon", "slide.setzoom");
+		final JToggleButton btnSetsZoom = createToggleButtonWithIconAndLabel("SetZoomSlideContent.icon", "slide.setzoom");
 		btnSetsZoom.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -176,28 +199,32 @@ class SlideEditorController{
 		});
 		return btnSetsZoom;
 	}
-	private JToggleButton createCentersSelectedNodeToggleButton() {
-		final JToggleButton checkBoxOnlySpecificNodes = createToggleButtonWithIcon("CenterSelectedNodeSlideContent.icon", "slide.centernode");
+	private JToggleButton createPlacesSelectedNodeToggleButton() {
+		final JToggleButton checkBoxOnlySpecificNodes = createToggleButtonWithIconAndLabel("PlaceSelectedNodeSlideContent.icon", "slide.placenode");
 		checkBoxOnlySpecificNodes.setAlignmentX(Component.CENTER_ALIGNMENT);
 		checkBoxOnlySpecificNodes.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final String centeredNodeId = slide.getCenteredNodeId();
+				final String centeredNodeId = slide.getPlacedNodeId();
 				final IMapSelection selection = Controller.getCurrentController().getSelection();
 				if(centeredNodeId == null) {
 					final NodeModel selected = selection.getSelected();
-					if(selected != null)
-						UndoableSlide.of(slide).setCenteredNodeId(selected.getID());
-					else
-						UndoableSlide.of(slide).setCenteredNodeId(null);
+					if(selected != null) {
+						UndoableSlide.of(slide).setPlacedNodeId(selected.getID());
+						setNodePlacementControlsEnabled(true, slide.getPlacedNodePosition());
+					} else {
+						UndoableSlide.of(slide).setPlacedNodeId(null);
+						setNodePlacementControlsEnabled(false, slide.getPlacedNodePosition());
+					}
 				} else {
-					UndoableSlide.of(slide).setCenteredNodeId(null);
+					UndoableSlide.of(slide).setPlacedNodeId(null);
+					setNodePlacementControlsEnabled(false, slide.getPlacedNodePosition());
 					final MapModel map = Controller.getCurrentController().getMap();
 					final NodeModel node = map.getNodeForID(centeredNodeId);
 					if(node != null)
 						selection.selectAsTheOnlyOneSelected(node);
 				}
-				checkBoxOnlySpecificNodes.setSelected(slide.getCenteredNodeId() != null);
+				checkBoxOnlySpecificNodes.setSelected(slide.getPlacedNodeId() != null);
 			}
 		});
 		return checkBoxOnlySpecificNodes;
@@ -243,8 +270,12 @@ class SlideEditorController{
 
 	
 	private FilterComposerDialog filterComposerDialog = null;
+
+	private final ButtonGroup nodePositions;
+	private final JToggleButton[] positionButtons;
+	
 	private JToggleButton createSetFilterToggleButton() {
-		final JToggleButton tglbtnSetFilter = createToggleButtonWithIcon("SetFilterSlideContent.icon", "slide.setfilter");
+		final JToggleButton tglbtnSetFilter = createToggleButtonWithIconAndLabel("SetFilterSlideContent.icon", "slide.setfilter");
 		tglbtnSetFilter.setAlignmentX(Component.CENTER_ALIGNMENT);
 		tglbtnSetFilter.addActionListener(new ActionListener() {
 
@@ -284,7 +315,7 @@ class SlideEditorController{
 		return btnHighlightSlideContent;
 	}
 	private JToggleButton createSetFoldingStateToggleButton() {
-		JToggleButton tglbtnSetFilter = createToggleButtonWithIcon("SetFoldingSlideContent.icon", "slide.setfoldingstate");
+		JToggleButton tglbtnSetFilter = createToggleButtonWithIconAndLabel("SetFoldingSlideContent.icon", "slide.setfoldingstate");
 		tglbtnSetFilter.setAlignmentX(Component.CENTER_ALIGNMENT);
 		tglbtnSetFilter.addActionListener(new ActionListener() {
 			
@@ -311,7 +342,14 @@ class SlideEditorController{
 		selectionBox.add(btnRemoveSelectedNodes);
 		selectionBox.add(btnSelectNodes);
 		content.add(selectionBox);
-		content.add(tglBtnCenterSelectedNode);
+		content.add(Box.createVerticalStrut(10));
+		content.add(tglBtnPlaceSelectedNode);
+		Box positionBox = Box.createHorizontalBox();
+		positionBox.add(btnOnTheLeft);
+		positionBox.add(btnAtCenter);
+		positionBox.add(btnOnTheRight);
+		content.add(positionBox);
+		content.add(Box.createVerticalStrut(10));
 		Box zoomBox = Box.createHorizontalBox();
 		zoomBox.add(tglbtnChangeZoom);
 		zoomBox.add(lblZoomFactor);
@@ -357,7 +395,7 @@ class SlideEditorController{
 		if (slide == null) {
 			disableUI();
 			checkBoxShowOnlySelectedNodes.setSelected(false);
-			tglBtnCenterSelectedNode.setSelected(false);
+			tglBtnPlaceSelectedNode.setSelected(false);
 			tglbtnChangeZoom.setSelected(false);
 			lblZoomFactor.setText("");
 			checkBoxShowOnlySelectedNodes.setSelected(false);
@@ -370,8 +408,9 @@ class SlideEditorController{
 				c.setEnabled(true);
 			final boolean showsOnlySpecificNodes = slide.showsOnlySpecificNodes();
 			checkBoxShowOnlySelectedNodes.setSelected(showsOnlySpecificNodes);
-			final boolean centersSelectedNode = slide.getCenteredNodeId() != null;
-			tglBtnCenterSelectedNode.setSelected(centersSelectedNode);
+			final boolean placesSelectedNode = slide.getPlacedNodeId() != null;
+			tglBtnPlaceSelectedNode.setSelected(placesSelectedNode);
+			setNodePlacementControlsEnabled(placesSelectedNode, slide.getPlacedNodePosition());
 			final ASelectableCondition filterCondition = slide.getFilterCondition();
 			if (! presentationState.isPresentationRunning())
 				for(JComponent c : filterRelatedButtons)
@@ -406,7 +445,13 @@ class SlideEditorController{
 		while(filterConditionComponentBox.getComponentCount() > 0)
 			filterConditionComponentBox.remove(0);
 	}
-	
-	
 
+	private void setNodePlacementControlsEnabled(boolean placesSelectedNode, NodePosition nodePosition) {
+		for(JToggleButton btn : positionButtons)
+			btn.setEnabled(placesSelectedNode);
+		if(placesSelectedNode)
+			positionButtons[nodePosition.ordinal()].setSelected(true);
+		else
+			nodePositions.clearSelection();
+	}
 }

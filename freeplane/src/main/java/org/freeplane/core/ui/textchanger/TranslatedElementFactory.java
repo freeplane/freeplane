@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 
 import org.freeplane.core.resources.ResourceController;
@@ -92,8 +93,14 @@ public class TranslatedElementFactory {
 		return createButtonWithIcon(null, iconKey, tooltipKey);
 	}
 	
-	public static JToggleButton createToggleButtonWithIcon(final String iconKey, String labelKey) {
+	public static JToggleButton createToggleButtonWithIconAndLabel(final String iconKey, String labelKey) {
 		JToggleButton button = createToggleButton(labelKey);
+		return addIcon(button, iconKey);
+	}
+
+	public static JToggleButton createToggleButtonWithIcon(final String iconKey, String tooltipKey) {
+		final JToggleButton button = new JAutoToggleButton();
+		createTooltip(button, tooltipKey);
 		return addIcon(button, iconKey);
 	}
 
@@ -101,6 +108,15 @@ public class TranslatedElementFactory {
 		final ImageIcon icon = ResourceController.getResourceController().getIcon(iconKey, ImageIconFactory.DEFAULT_UI_ICON_HEIGHT);
 		button.setIcon(icon);
 		return button;
+	}
+
+	public static JRadioButton createRadioButton(String labelKey) {
+		final JRadioButton component = new JRadioButton();
+		final String text = TextUtils.getRawText(labelKey);
+		LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
+		TranslatedElement.TEXT.setKey(component, labelKey);
+		createTooltip(component, labelKey + ".tooltip");
+		return component;
 	}
 
 

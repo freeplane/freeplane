@@ -169,6 +169,23 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		}
 
+		public void moveNodeTo(final NodeModel node, NodePosition position) {
+			final boolean slowScroll = false;
+			moveNodeTo(node, position, slowScroll);
+		}
+
+		public void slowlyMoveNodeTo(final NodeModel node, NodePosition position) {
+			final boolean slowScroll = true;
+			moveNodeTo(node, position, slowScroll);
+		}
+		
+		private void moveNodeTo(final NodeModel node, NodePosition position, final boolean slowScroll) {
+			final NodeView nodeView = getNodeView(node);
+			if (nodeView != null) {
+				mapScroller.scrollNode(nodeView, ScrollingDirective.of(position), slowScroll);
+			}
+		}
+		
 		public NodeModel getSelected() {
 			final NodeView selected = MapView.this.getSelected();
 			return selected.getModel();

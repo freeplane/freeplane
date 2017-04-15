@@ -10,6 +10,7 @@ import javax.swing.JViewport;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.ui.ViewController;
 
 class MapScroller {
@@ -92,6 +93,14 @@ class MapScroller {
 				contentLocation.y + content.getHeight() / 2 - extentSize.height
 				/ 2, extentSize.width, extentSize.height);
 		
+		final boolean outlineLayoutSet = map.isOutlineLayoutSet();
+		final int distanceToMargin = (extentSize.width - content.getWidth()) / 2 - 10;
+		if(scrollingDirective == ScrollingDirective.SCROLL_NODE_TO_LEFT_MARGIN){
+			rect.x += distanceToMargin;
+		}
+		if(scrollingDirective == ScrollingDirective.SCROLL_NODE_TO_RIGHT_MARGIN){
+			rect.x -= distanceToMargin;
+		}
 		if(scrollingDirective == ScrollingDirective.SCROLL_TO_BEST_ROOT_POSITION){
 			final Rectangle innerBounds = map.getInnerBounds();
 			if(innerBounds.width <= extentSize.width && map.getModeController().shouldCenterCompactMaps()){
@@ -105,7 +114,6 @@ class MapScroller {
 					final List<NodeModel> children = root.getModel().getChildren();
 					if(! children.isEmpty()){
 						scrollToTheLeft = true;
-						final boolean outlineLayoutSet = map.isOutlineLayoutSet();
 						for(NodeModel node :children) {
 							if(! outlineLayoutSet && node.isLeft()){
 								scrollToTheLeft = false;
@@ -281,4 +289,10 @@ class MapScroller {
 
 }
 
-enum ScrollingDirective {SCROLL_NODE_TO_CENTER, SCROLL_TO_BEST_ROOT_POSITION, MAKE_NODE_VISIBLE, DONE, ANCHOR}
+enum ScrollingDirective {
+	SCROLL_NODE_TO_CENTER, SCROLL_NODE_TO_LEFT_MARGIN, SCROLL_NODE_TO_RIGHT_MARGIN, SCROLL_TO_BEST_ROOT_POSITION, MAKE_NODE_VISIBLE, DONE, ANCHOR;
+	private static ScrollingDirective positionDirective[] = {SCROLL_NODE_TO_LEFT_MARGIN, SCROLL_NODE_TO_CENTER, SCROLL_NODE_TO_RIGHT_MARGIN};
+	public static ScrollingDirective of(NodePosition position) {
+		return positionDirective[position.ordinal()];
+	}
+}

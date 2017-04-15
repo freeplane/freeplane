@@ -30,6 +30,7 @@ import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class PresentationBuilder {
@@ -41,6 +42,8 @@ class PresentationBuilder {
 	static final String SLIDE_CONDITION = "SlideCondition";
 	static final String ZOOM = "zoom";
 	static final String CENTERED_NODE_ID = "centeredNodeId";
+	static final String PLACED_NODE_ID = "placedNodeId";
+	static final String PLACED_NODE_POSITION = "placedNodePosition";
 	static final String CHANGES_ZOOM = "changesZoom";
 	static final String SHOWS_ONLY_SPECIFIC_NODES = "showsOnlySpecificNodes";
 	static final String SHOWS_DESCENDANTS = "showsDescendants";
@@ -100,7 +103,16 @@ class PresentationBuilder {
 				s.setShowsDescendants(toBoolean(xmlSlide, SHOWS_DESCENDANTS));
 				s.setShowsOnlySpecificNodes(toBoolean(xmlSlide, SHOWS_ONLY_SPECIFIC_NODES));
 				s.setChangesZoom(toBoolean(xmlSlide, CHANGES_ZOOM));
-				s.setCenteredNodeId(toString(xmlSlide, CENTERED_NODE_ID));
+				final String centeredNodeId = toString(xmlSlide, CENTERED_NODE_ID);
+				if(centeredNodeId != null) {
+					s.setPlacedNodeId(centeredNodeId);
+				}
+				final String placedNodeId = toString(xmlSlide, PLACED_NODE_ID);
+				if(placedNodeId != null) {
+					s.setPlacedNodeId(placedNodeId);
+				}
+				final String nodePosition = xmlSlide.getAttribute(PLACED_NODE_POSITION, NodePosition.CENTER.name());
+				s.setPlacedNodePosition(NodePosition.valueOf(nodePosition));
 				s.setZoom(toFloat(xmlSlide, ZOOM));
 				Enumeration<XMLElement> childAttributes = xmlSlide.enumerateChildren();
 				while(childAttributes.hasMoreElements()) {
@@ -205,9 +217,13 @@ class PresentationWriter {
 			xmlSlide.setAttribute(SHOWS_ONLY_SPECIFIC_NODES, TRUE);
 		if (s.changesZoom())
 			xmlSlide.setAttribute(CHANGES_ZOOM, TRUE);
-		final String centeredNodeId = s.getCenteredNodeId();
-		if (centeredNodeId != null){
-			xmlSlide.setAttribute(CENTERED_NODE_ID, centeredNodeId);
+		final String placedNodeId = s.getPlacedNodeId();
+		if (placedNodeId != null){
+			xmlSlide.setAttribute(PLACED_NODE_ID, placedNodeId);
+		}
+		final NodePosition placedNodePosition = s.getPlacedNodePosition();
+		if (placedNodePosition != NodePosition.CENTER){
+			xmlSlide.setAttribute(PLACED_NODE_POSITION, placedNodePosition.name());
 		}
 		float zoom = s.getZoom();
 		if (zoom != 1f)

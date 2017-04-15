@@ -7,6 +7,7 @@ import java.util.Set;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
@@ -129,31 +130,57 @@ class UndoableSlide {
 	}
 	
 	
-	public void setCenteredNodeId(final String centeredNodeId) {
-		final String oldCenteredNodeId = slide.getCenteredNodeId();
-		if(centeredNodeId == oldCenteredNodeId ||centeredNodeId != null && centeredNodeId.equals(oldCenteredNodeId))
+	public void setPlacedNodeId(final String placedNodeId) {
+		final String oldPlacedNodeId = slide.getPlacedNodeId();
+		if(placedNodeId == oldPlacedNodeId ||placedNodeId != null && placedNodeId.equals(oldPlacedNodeId))
 			return;
 		IActor actor = new IActor() {
 			
 			@Override
 			public String getDescription() {
-				return "setCenteredNodeId";
+				return "setPlacedNodeId";
 			}
 			
 			@Override
 			public void act() {
-				slide.setCenteredNodeId(centeredNodeId);
+				slide.setPlacedNodeId(placedNodeId);
 			}
 			
 			@Override
 			public void undo() {
-				slide.setCenteredNodeId(oldCenteredNodeId);
+				slide.setPlacedNodeId(oldPlacedNodeId);
 			}
 			
 		};
 		controller.execute(actor, mapModel);
 	}
-	public void setChangesZoom(final boolean changeZoom) {
+
+	public void setPlacedNodePosition(final NodePosition placedNodePosition) {
+		final NodePosition oldPlacedNodePosition = slide.getPlacedNodePosition();
+		if(oldPlacedNodePosition == placedNodePosition)
+			return;
+		IActor actor = new IActor() {
+			
+			@Override
+			public String getDescription() {
+				return "setPlacesNodeAtMargin";
+			}
+			
+			@Override
+			public void act() {
+				slide.setPlacedNodePosition(placedNodePosition);
+			}
+			
+			@Override
+			public void undo() {
+				slide.setPlacedNodePosition(oldPlacedNodePosition);
+			}
+			
+		};
+		controller.execute(actor, mapModel);
+	}
+	
+    public void setChangesZoom(final boolean changeZoom) {
 		final boolean oldChangesZoom = slide.changesZoom();
 		if(changeZoom == oldChangesZoom)
 			return;
