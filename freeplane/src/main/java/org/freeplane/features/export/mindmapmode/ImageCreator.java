@@ -21,7 +21,9 @@ package org.freeplane.features.export.mindmapmode;
 
 import java.awt.image.RenderedImage;
 
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -41,6 +43,14 @@ class ImageCreator{
 			return null;
         }
         return controller.getMapViewManager().createImage(imageResolutionInDpi);
+	}
+
+	public RenderedImage createBufferedImage(MapModel map, NodeModel placedNode, NodePosition placedNodePosition) {
+		final Controller controller = Controller.getCurrentController();
+		if(! map.equals(controller.getMap())) {
+			return null;
+        }
+        return controller.getMapViewManager().createImage(imageResolutionInDpi, placedNode, placedNodePosition);
 	}
 
 	public int getImageResolutionDPI() {

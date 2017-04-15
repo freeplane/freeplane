@@ -93,7 +93,6 @@ class MapScroller {
 				contentLocation.y + content.getHeight() / 2 - extentSize.height
 				/ 2, extentSize.width, extentSize.height);
 		
-		final boolean outlineLayoutSet = map.isOutlineLayoutSet();
 		final int distanceToMargin = (extentSize.width - content.getWidth()) / 2 - 10;
 		if(scrollingDirective == ScrollingDirective.SCROLL_NODE_TO_LEFT_MARGIN){
 			rect.x += distanceToMargin;
@@ -108,14 +107,14 @@ class MapScroller {
 			}
 			else {
 				NodeView root = map.getRoot();
-				if(!map.isOutlineLayoutSet()) {
+				final boolean outlineLayoutSet = map.isOutlineLayoutSet();
+				if(!outlineLayoutSet) {
 					boolean scrollToTheLeft = false;
-
 					final List<NodeModel> children = root.getModel().getChildren();
 					if(! children.isEmpty()){
 						scrollToTheLeft = true;
 						for(NodeModel node :children) {
-							if(! outlineLayoutSet && node.isLeft()){
+							if(node.isLeft()){
 								scrollToTheLeft = false;
 								break;
 							}

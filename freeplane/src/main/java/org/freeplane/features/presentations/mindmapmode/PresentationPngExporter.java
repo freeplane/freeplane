@@ -186,6 +186,16 @@ class PresentationPngExporter {
 		slide.apply(1f);
 		mapViewComponent.validate();
 		File exportFile = new File(presentationDirectory, FileUtils.validFileNameOf(slide.getName()) + ".png");
-		ExportToImage.toPNG().export(Controller.getCurrentController().getMap(), exportFile);
+		final ExportToImage exporter = ExportToImage.toPNG();
+		final MapModel map = Controller.getCurrentController().getMap();
+		final String placedNodeId = slide.getPlacedNodeId();
+		if(placedNodeId != null ) {
+			final NodeModel placedNode = map.getNodeForID(placedNodeId);
+			if(placedNode != null) {
+				exporter.export(map, placedNode, slide.getPlacedNodePosition(), exportFile);
+				return;
+			}
+		}
+		exporter.export(map, exportFile);
 	}
 }

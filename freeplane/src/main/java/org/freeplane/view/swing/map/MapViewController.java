@@ -21,10 +21,12 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -43,8 +45,10 @@ import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.FocusManager;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
+import javax.swing.JViewport;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataEvent;
@@ -61,6 +65,7 @@ import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
@@ -326,7 +331,45 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 		view.preparePrinting();
 		final Rectangle innerBounds = view.getInnerBounds();
+		final BufferedImage myImage = printToImage(dpi, view, innerBounds);
+		view.endPrinting();
+		return myImage;
+	}
 
+	public RenderedImage createImage(int dpi, NodeModel placedNode, NodePosition placedNodePosition) {
+		final MapView view = getMapView();
+		if (view == null) {
+			return null;
+		}
+		final NodeView placedNodeView = view.getNodeView(placedNode);
+		if (placedNodeView == null) {
+			return createImage(dpi);
+		}
+
+		final JViewport viewPort = (JViewport) view.getParent();
+		final Dimension extentSize = viewPort.getExtentSize();
+		final JComponent content = placedNodeView.getContent();
+		Point contentLocation = new Point();
+		UITools.convertPointToAncestor(content, contentLocation, view);
+		final Rectangle printedGraphicsBounds = new Rectangle(contentLocation.x + content.getWidth() / 2 - extentSize.width / 2, 
+				contentLocation.y + content.getHeight() / 2 - extentSize.height
+				/ 2, extentSize.width, extentSize.height);
+		
+		final int distanceToMargin = (extentSize.width - content.getWidth()) / 2 - 10;
+		if(placedNodePosition == NodePosition.WEST){
+			printedGraphicsBounds.x += distanceToMargin;
+		}
+		if(placedNodePosition == NodePosition.EAST){
+			printedGraphicsBounds.x -= distanceToMargin;
+		}
+
+		view.preparePrinting();
+		final BufferedImage myImage = printToImage(dpi, view, printedGraphicsBounds);
+		view.endPrinting();
+		return myImage;
+	}
+
+	private BufferedImage printToImage(int dpi, final MapView view, final Rectangle innerBounds) {
 		double scaleFactor = (double) dpi / (double) (UITools.FONT_SCALE_FACTOR * 72);
 
 		int imageWidth = (int) Math.ceil(innerBounds.width * scaleFactor);
@@ -337,7 +380,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		g.scale(scaleFactor, scaleFactor);
 		g.translate(-innerBounds.x, -innerBounds.y);
 		view.print(g);
-		view.endPrinting();
 		return myImage;
 	}
 

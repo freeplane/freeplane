@@ -40,7 +40,9 @@ import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -73,6 +75,17 @@ public class ExportToImage implements IExportEngine {
 		}
 	}
 
+	public void export(MapModel map, NodeModel placedNode, NodePosition placedNodePosition, File toFile) {
+		try {
+			final RenderedImage image = new ImageCreator(getImageResolutionDPI()).createBufferedImage(map, placedNode, placedNodePosition);
+			if (image != null) {
+				exportToImage(image, toFile);
+			}
+		}
+		catch (final OutOfMemoryError ex) {
+			UITools.errorMessage(TextUtils.getText("out_of_memory"));
+		}
+	}
 	/**
 	 * Export image.
 	 * @param toFile 

@@ -41,6 +41,7 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
@@ -127,6 +128,10 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	public RenderedImage createImage(int dpi) {
+		throw new RuntimeException("Method not implemented");
+	}
+
+	public RenderedImage createImage(int dpi, NodeModel placedNode, NodePosition placedNodePosition) {
 		throw new RuntimeException("Method not implemented");
 	}
 

@@ -32,6 +32,7 @@ import java.util.Map;
 import javax.swing.JComboBox;
 
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -81,6 +82,8 @@ public interface IMapViewManager {
 
 	public RenderedImage createImage(int dpi);
 
+	public RenderedImage createImage(int imageResolutionInDpi, NodeModel placedNode, NodePosition placedNodePosition);
+	
 	public Color getBackgroundColor(NodeModel node);
 
 	public Component getComponent(NodeModel node);
@@ -164,4 +167,5 @@ public interface IMapViewManager {
 	public boolean showHiddenNode(NodeModel child);
 	
 	public boolean isPresentationModeEnabled();
+
 }
