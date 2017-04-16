@@ -275,10 +275,12 @@ public class UITools {
 	    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	      GraphicsDevice[] gs = ge.getScreenDevices();
 	      for (int j = 0; j < gs.length; j++) {
+	    	  LogUtils.info("graphic device " + j);
 	          GraphicsDevice gd = gs[j];
 	          GraphicsConfiguration[] gc = gd.getConfigurations();
 	          for (int i=0; i < gc.length; i++) {
 	              final Rectangle screenBounds = gc[i].getBounds();
+	              LogUtils.info("screen " + i + " bounds " + screenBounds);
 	              if(screenBounds.contains(x, y))
 	            	  return gc[i];
 	          }
@@ -642,10 +644,14 @@ public class UITools {
 			final ResourceController resourceController = ResourceController.getResourceController();
 			int windowX = resourceController.getIntProperty("appwindow_x", 0);
 			int windowY = resourceController.getIntProperty("appwindow_y", 0);
+			LogUtils.info("appwindow_x=" + windowX + ", appwindow_y=" +windowY);
 			final GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(windowX, windowY);
+			if(graphicsConfiguration == null)
+				LogUtils.info("graphicsConfiguration is null");
 			final int userDefinedScreenResolution; 
 			if(graphicsConfiguration != null) {
 				final Rectangle screenBounds = graphicsConfiguration.getBounds();
+				LogUtils.info("screenBounds: " + screenBounds);
 				final int w = screenBounds.width;
 				final int h = screenBounds.height;
 				final double diagonalPixels = Math.sqrt(w*w + h*h);
@@ -664,6 +670,7 @@ public class UITools {
 				userDefinedScreenResolution = resourceController.getIntProperty("user_defined_screen_resolution", 96);
 				resourceController.setDefaultProperty("monitor_size_inches", Double.toString(0));
 			}
+			LogUtils.info("calculated userDefinedScreenResolution=" + userDefinedScreenResolution);
 			return userDefinedScreenResolution  / 72f;
     }
 
