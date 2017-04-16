@@ -496,22 +496,6 @@ public class UITools {
 
 	public static final Dimension MAX_BUTTON_DIMENSION = new Dimension(1000, 1000);
 
-// FIXME: not used - can we remove it? -- Volker
-//	public static Controller getController(Component c) {
-//		if(c == null){
-//			return null;
-//		}
-//	    final JRootPane rootPane = SwingUtilities.getRootPane(c);
-//		if(rootPane == null){
-//			return null;
-//		}
-//	    Controller controller = (Controller) rootPane.getClientProperty(Controller.class);
-//	    if(controller != null){
-//	    	return controller;
-//	    }
-//	    return getController(JOptionPane.getFrameForComponent(rootPane));
-//    }
-
 	public static void focusOn(JComponent component) {
 		component.addAncestorListener(new AncestorListener() {
 			public void ancestorRemoved(AncestorEvent event) {
