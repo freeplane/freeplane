@@ -2,6 +2,7 @@ package org.freeplane.core.util;
 
 import java.awt.Dimension;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -103,7 +104,13 @@ public class FreeplaneIconUtils {
 			icon = new SVGIcon();
 			URI svgUri;
 			try {
-				svgUri = svgUniverse.loadSVG(url.openStream(), url.getPath());
+				try {
+					new URI(url.toString());
+					svgUri = svgUniverse.loadSVG(url);
+				}
+				catch (URISyntaxException ex){
+					svgUri = svgUniverse.loadSVG(url.openStream(), url.getPath());
+				}
 				icon.setSvgUniverse(svgUniverse);
 				icon.setSvgURI(svgUri);
 				final SVGDiagram diagram = svgUniverse.getDiagram(svgUri);
