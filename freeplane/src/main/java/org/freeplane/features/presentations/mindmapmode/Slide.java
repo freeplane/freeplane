@@ -391,21 +391,34 @@ public class Slide implements NamedElement<Slide>{
 	}
 
 	private void placeSelectedNode() {
-		MapModel map = getMap();
 		if (placedNodeId != null) {
-			NodeModel centeredNode = map.getNodeForID(placedNodeId);
+			NodeModel placedNode = getCurrentPlacedNode();
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
-			if(centeredNode != null && centeredNode.hasVisibleContent()) {
-				displayOnCurrentView(centeredNode);
-			} else {
-				centeredNode = selection.getSelected();
+			if(placedNode != null && placedNode != selection.getSelected()) {
+				displayOnCurrentView(placedNode);
 			}
 			final boolean slowMotion = ResourceController.getResourceController().getBooleanProperty(PRESENTATION_SLOW_MOTION_KEY, false);
 			if(slowMotion)
-				selection.slowlyMoveNodeTo(centeredNode, placedNodePosition);
+				selection.slowlyMoveNodeTo(placedNode, placedNodePosition);
 			else
-				selection.moveNodeTo(centeredNode, placedNodePosition);
+				selection.moveNodeTo(placedNode, placedNodePosition);
 		}
+	}
+
+	public NodeModel getCurrentPlacedNode() {
+		if (placedNodeId != null) {
+			MapModel map = getMap();
+			NodeModel currentPlacedNode = map.getNodeForID(placedNodeId);
+			final IMapSelection selection = Controller.getCurrentController().getSelection();
+			if(currentPlacedNode != null && currentPlacedNode.hasVisibleContent()) {
+				return currentPlacedNode;
+			} else {
+				return selection.getSelected();
+			}
+		}
+		else
+			return null;
+
 	}
 
 	private MapModel getMap() {

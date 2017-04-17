@@ -61,6 +61,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.image.BigBufferedImage;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
@@ -349,24 +350,22 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			return createImage(dpi);
 		}
 
-		final JViewport viewPort = (JViewport) view.getParent();
-		final Dimension extentSize = viewPort.getExtentSize();
+		view.preparePrinting();
 		final JComponent content = placedNodeView.getContent();
+		final Dimension windowSize = SwingUtilities.getWindowAncestor(view).getSize();
 		Point contentLocation = new Point();
 		UITools.convertPointToAncestor(content, contentLocation, view);
-		final Rectangle printedGraphicsBounds = new Rectangle(contentLocation.x + content.getWidth() / 2 - extentSize.width / 2, 
-				contentLocation.y + content.getHeight() / 2 - extentSize.height
-				/ 2, extentSize.width, extentSize.height);
+		final Rectangle printedGraphicsBounds = new Rectangle(contentLocation.x + content.getWidth() / 2 - windowSize.width / 2, 
+				contentLocation.y + content.getHeight() / 2 - windowSize.height
+				/ 2, windowSize.width, windowSize.height);
 		
-		final int distanceToMargin = (extentSize.width - content.getWidth()) / 2 - 10;
+		final int distanceToMargin = (windowSize.width - content.getWidth()) / 2 - 10;
 		if(placedNodePosition == NodePosition.WEST){
 			printedGraphicsBounds.x += distanceToMargin;
 		}
 		if(placedNodePosition == NodePosition.EAST){
 			printedGraphicsBounds.x -= distanceToMargin;
 		}
-
-		view.preparePrinting();
 		final BufferedImage myImage = printToImage(dpi, view, printedGraphicsBounds);
 		view.endPrinting();
 		return myImage;

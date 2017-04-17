@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.export.mindmapmode.ExportToImage;
 import org.freeplane.features.map.MapModel;
@@ -185,17 +186,15 @@ class PresentationPngExporter {
 	private void exportSlide(File presentationDirectory, Slide slide) {
 		slide.apply(1f);
 		mapViewComponent.validate();
+		mapViewComponent.setSize(mapViewComponent.getPreferredSize());
 		File exportFile = new File(presentationDirectory, FileUtils.validFileNameOf(slide.getName()) + ".png");
 		final ExportToImage exporter = ExportToImage.toPNG();
-		final MapModel map = Controller.getCurrentController().getMap();
-		final String placedNodeId = slide.getPlacedNodeId();
-		if(placedNodeId != null ) {
-			final NodeModel placedNode = map.getNodeForID(placedNodeId);
-			if(placedNode != null) {
-				exporter.export(map, placedNode, slide.getPlacedNodePosition(), exportFile);
-				return;
-			}
-		}
-		exporter.export(map, exportFile);
+		final Controller controller = Controller.getCurrentController();
+		final MapModel map = controller.getMap();
+		final NodeModel placedNode = slide.getCurrentPlacedNode();
+		if(placedNode != null) 
+			exporter.export(map, placedNode, slide.getPlacedNodePosition(), exportFile);
+		else
+			exporter.export(map, exportFile);
 	}
 }
