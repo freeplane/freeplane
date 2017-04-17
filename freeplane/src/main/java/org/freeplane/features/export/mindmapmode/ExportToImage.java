@@ -38,6 +38,7 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.image.BigBufferedImage;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelection.NodePosition;
@@ -64,26 +65,23 @@ public class ExportToImage implements IExportEngine {
 	}
 
 	public void export(MapModel map, File toFile) {
-		try {
-			final RenderedImage image = new ImageCreator(getImageResolutionDPI()).createBufferedImage(map);
-			if (image != null) {
-				exportToImage(image, toFile);
-			}
-		}
-		catch (final OutOfMemoryError ex) {
-			UITools.errorMessage(TextUtils.getText("out_of_memory"));
-		}
+		export(map, null, null, toFile);
 	}
 
 	public void export(MapModel map, NodeModel placedNode, NodePosition placedNodePosition, File toFile) {
+		RenderedImage image = null;
 		try {
-			final RenderedImage image = new ImageCreator(getImageResolutionDPI()).createBufferedImage(map, placedNode, placedNodePosition);
+			image = placedNode != null ? new ImageCreator(getImageResolutionDPI()).createBufferedImage(map, placedNode, placedNodePosition) : new ImageCreator(getImageResolutionDPI()).createBufferedImage(map);
 			if (image != null) {
 				exportToImage(image, toFile);
 			}
 		}
 		catch (final OutOfMemoryError ex) {
 			UITools.errorMessage(TextUtils.getText("out_of_memory"));
+		}
+		finally {
+			if (image != null)
+				BigBufferedImage.dispose(image);
 		}
 	}
 	/**

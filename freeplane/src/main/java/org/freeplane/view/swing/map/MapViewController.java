@@ -25,10 +25,12 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.SystemColor;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -58,6 +60,7 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.image.BigBufferedImage;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
@@ -375,8 +378,15 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		int imageWidth = (int) Math.ceil(innerBounds.width * scaleFactor);
 		int imageHeight = (int) Math.ceil(innerBounds.height * scaleFactor);
 
-		final BufferedImage myImage = (BufferedImage) view.createImage(imageWidth, imageHeight);
+		final BufferedImage myImage = BigBufferedImage.create(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
 		final Graphics2D g = (Graphics2D) myImage.getGraphics();
+		Color background = view.getBackground();
+        if(background == null) {
+            background = SystemColor.window;
+        }
+
+		g.setBackground(background);
+		g.clearRect(0, 0, imageWidth, imageHeight);
 		g.scale(scaleFactor, scaleFactor);
 		g.translate(-innerBounds.x, -innerBounds.y);
 		view.print(g);
