@@ -41,6 +41,8 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicButtonUI;
 
+import org.freeplane.core.ui.components.UITools;
+
 /**
  * JDayChooser is a bean for choosing a day.
  *
@@ -1010,7 +1012,7 @@ public class JDayChooser extends JPanel implements ActionListener, KeyListener, 
 	@Override
 	public void updateUI() {
 		super.updateUI();
-		setFont(Font.decode("Dialog Plain 11"));
+		setFont(UITools.scale(Font.decode("Dialog Plain 11")));
 		if (weekPanel != null) {
 			weekPanel.updateUI();
 		}
