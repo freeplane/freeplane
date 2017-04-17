@@ -251,7 +251,7 @@
 			<Entry name="menu_viewmode">
 				<Entry name="ViewLayoutTypeAction.OUTLINE" />
 				<Entry name="ToggleFullScreenAction" accelerator="F11" />
-				<Entry name="SetBooleanMapViewPropertyAction.presentation_mode" />
+				<Entry name="SetBooleanMapViewPropertyAction.spotlight" />
 				<Entry name="SetBooleanPropertyAction.hide_single_end_connectors" />
 				<Entry name="ShowSelectionAsRectangleAction" />
 				<Entry name="SetBooleanPropertyAction.highlight_formulas" />

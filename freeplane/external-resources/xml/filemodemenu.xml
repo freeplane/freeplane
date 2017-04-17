@@ -25,7 +25,7 @@
 				<Entry name="ToggleToolbarAction" />
 				<Entry name="ShowFilterToolbarAction" accelerator="control F" />
 				<Entry name="ToggleScrollbarsAction" />
-				<Entry name="SetBooleanPropertyAction.presentation_mode" />
+				<Entry name="SetBooleanPropertyAction.spotlight" />
 			</Entry>
 			<Entry name="zoom">
 				<Entry accelerator="alt UP" name="ZoomInAction" />

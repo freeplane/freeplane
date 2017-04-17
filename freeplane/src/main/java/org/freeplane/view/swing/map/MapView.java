@@ -511,7 +511,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static int transparency;
 	final private ComponentAdapter backgroundImageResizer;
 	private INodeChangeListener connectorChangeListener;
-	public static final String PRESENTATION_MODE_ENABLED = "presentation_mode";
+	public static final String SPOTLIGHT_ENABLED = "spotlight";
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -577,7 +577,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		};
 		
-		addPropertyChangeListener(MapView.PRESENTATION_MODE_ENABLED, repaintOnClientPropertyChangeListener);
+		addPropertyChangeListener(MapView.SPOTLIGHT_ENABLED, repaintOnClientPropertyChangeListener);
 	}
 
 	public void replaceSelection(NodeView[] views) {
@@ -1489,14 +1489,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    		};
 	    Graphics2D g2 = (Graphics2D) g;
 	    paintChildren(g2, paintModes);
-	    if(isPresentationModeEnabled())
+	    if(isSpotlightEnabled())
 	    	paintDimmer(g2, paintModes);
 		paintSelecteds(g2);
 		highlightEditor(g2);
     }
 
-	public boolean isPresentationModeEnabled() {
-		return Boolean.TRUE == getClientProperty(MapView.PRESENTATION_MODE_ENABLED);
+	public boolean isSpotlightEnabled() {
+		return Boolean.TRUE == getClientProperty(MapView.SPOTLIGHT_ENABLED);
 	}
 
 	private void paintChildren(Graphics2D g2, final PaintingMode[] paintModes) {

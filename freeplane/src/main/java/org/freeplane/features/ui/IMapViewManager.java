@@ -166,6 +166,6 @@ public interface IMapViewManager {
 
 	public boolean showHiddenNode(NodeModel child);
 	
-	public boolean isPresentationModeEnabled();
+	public boolean isSpotlightEnabled();
 
 }

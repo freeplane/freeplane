@@ -1052,8 +1052,8 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	}
 
 	@Override
-	public boolean isPresentationModeEnabled() {
-		return selectedMapView != null && selectedMapView.isPresentationModeEnabled();
+	public boolean isSpotlightEnabled() {
+		return selectedMapView != null && selectedMapView.isSpotlightEnabled();
 	}
 
 }

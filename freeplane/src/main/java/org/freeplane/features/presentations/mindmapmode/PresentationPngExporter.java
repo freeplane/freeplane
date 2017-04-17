@@ -116,7 +116,7 @@ class PresentationPngExporter {
 	private final float zoom;
 	private final NodeModel[] selection;
 	private boolean presentationSlowMotionEnabled;
-	private boolean presentationModeEnabledForExport;
+	private boolean spotlightEnabledForExport;
 	private final JComponent mapViewComponent;
 
 	private PresentationPngExporter(PresentationState presentationState, File exportDirectory) {
@@ -140,10 +140,10 @@ class PresentationPngExporter {
 	private void prepareExport() {
 		presentationSlowMotionEnabled = ResourceController.getResourceController().getBooleanProperty(Slide.PRESENTATION_SLOW_MOTION_KEY, false);
 		ResourceController.getResourceController().setProperty(Slide.PRESENTATION_SLOW_MOTION_KEY, false);
-		if(ResourceController.getResourceController().getBooleanProperty(PresentationAutomation.SWITCH_TO_PRESENTATION_MODE_PROPERTY)) {
-			if (! Boolean.TRUE.equals(mapViewComponent.getClientProperty(MapView.PRESENTATION_MODE_ENABLED))) {
-					mapViewComponent.putClientProperty(MapView.PRESENTATION_MODE_ENABLED, true);
-					presentationModeEnabledForExport = true;
+		if(ResourceController.getResourceController().getBooleanProperty(PresentationAutomation.SWITCH_TO_SPOTLIGHT_PROPERTY)) {
+			if (! Boolean.TRUE.equals(mapViewComponent.getClientProperty(MapView.SPOTLIGHT_ENABLED))) {
+					mapViewComponent.putClientProperty(MapView.SPOTLIGHT_ENABLED, true);
+					spotlightEnabledForExport = true;
 			}
 		}
 	}
@@ -162,8 +162,8 @@ class PresentationPngExporter {
 		if(! presentationState.isPresentationRunning())
 			Controller.getCurrentController().getMapViewManager().setZoom(zoom);
 		ResourceController.getResourceController().setProperty(Slide.PRESENTATION_SLOW_MOTION_KEY, presentationSlowMotionEnabled);
-		if(presentationModeEnabledForExport)
-			mapViewComponent.putClientProperty(MapView.PRESENTATION_MODE_ENABLED, null);
+		if(spotlightEnabledForExport)
+			mapViewComponent.putClientProperty(MapView.SPOTLIGHT_ENABLED, null);
 	}
 
 	public void exportPresentation(Presentation p) {

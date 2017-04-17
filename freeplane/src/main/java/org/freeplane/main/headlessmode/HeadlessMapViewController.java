@@ -338,7 +338,7 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	@Override
-	public boolean isPresentationModeEnabled() {
+	public boolean isSpotlightEnabled() {
 		return false;
 	}
 

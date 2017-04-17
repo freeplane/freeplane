@@ -10,7 +10,7 @@ import org.freeplane.view.swing.map.MapView;
 class PresentationAutomation implements PresentationStateChangeListener{
 
 	static final String SWITCH_TO_FULL_SCREEN_PROPERTY = "presentation.switchToFullScreen";
-	static final String SWITCH_TO_PRESENTATION_MODE_PROPERTY = "presentation.switchToPresentationMode";
+	static final String SWITCH_TO_SPOTLIGHT_PROPERTY = "presentation.switchToSpotlight";
 	private boolean isPresentationRunning;
 	private final PresentationKeyEventDispatcher[] dispatchers;
 	
@@ -27,7 +27,7 @@ class PresentationAutomation implements PresentationStateChangeListener{
 			isPresentationRunning = presentationStateChangeEvent.presentationState.isPresentationRunning();
 			updateDispatcherState();
 			updateFullScreenMode();
-			updatePresentationMode();
+			updateSpotlight();
 		}
 	}
 
@@ -39,11 +39,11 @@ class PresentationAutomation implements PresentationStateChangeListener{
 		}
 	}
 	
-	private void updatePresentationMode() {
-		if(ResourceController.getResourceController().getBooleanProperty(SWITCH_TO_PRESENTATION_MODE_PROPERTY)){
+	private void updateSpotlight() {
+		if(ResourceController.getResourceController().getBooleanProperty(SWITCH_TO_SPOTLIGHT_PROPERTY)){
 			final JComponent mapViewComponent = getMapViewComponent();
 			if(mapViewComponent != null) {
-				mapViewComponent.putClientProperty(MapView.PRESENTATION_MODE_ENABLED, isPresentationRunning);
+				mapViewComponent.putClientProperty(MapView.SPOTLIGHT_ENABLED, isPresentationRunning);
 			}
 		}
 	}

@@ -355,7 +355,7 @@ public class Slide implements NamedElement<Slide>{
 			return;
 		ArrayList<NodeModel> selectedNodes = getSelectedNodes(true);
 		final boolean displaysAllSlideNodes = displaysAllSlideNodes();
-		final boolean selectsAllVisibleNodes = displaysAllSlideNodes && showsOnlySpecificNodes && mapViewManager.isPresentationModeEnabled();
+		final boolean selectsAllVisibleNodes = displaysAllSlideNodes && showsOnlySpecificNodes && mapViewManager.isSpotlightEnabled();
 		final boolean replacesSelectionBySelectedNodes = ! (selectsAllVisibleNodes || showsOnlySpecificNodes || selectedNodes.isEmpty());
 		if(! replacesSelectionBySelectedNodes && ! foldsNodes() && displaysAllSlideNodes){
 			for (NodeModel node : selectedNodes) {
