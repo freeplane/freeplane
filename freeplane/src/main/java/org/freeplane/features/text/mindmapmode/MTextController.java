@@ -20,6 +20,7 @@
 package org.freeplane.features.text.mindmapmode;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
@@ -1018,7 +1019,10 @@ public class MTextController extends TextController {
 		});
     	final SHTMLPanel shtmlPanel = SHTMLPanel.createSHTMLPanel();
     	final JEditorPane sourceEditorPane = shtmlPanel.getSourceEditorPane();
-    	sourceEditorPane.setFont(UITools.scale(sourceEditorPane.getFont()));
+    	final Font originalFont = sourceEditorPane.getFont();
+		final Font scaledFont = UITools.scale(originalFont);
+		sourceEditorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+		sourceEditorPane.setFont(scaledFont);
     	shtmlPanel.setOpenHyperlinkHandler(new ActionListener(){
 
 			public void actionPerformed(ActionEvent pE) {
