@@ -342,14 +342,15 @@ class SlideEditorController{
 		selectionBox.add(btnRemoveSelectedNodes);
 		selectionBox.add(btnSelectNodes);
 		content.add(selectionBox);
-		content.add(Box.createVerticalStrut(10));
+		final int gap = tglBtnPlaceSelectedNode.getPreferredSize().height / 2;
+		content.add(Box.createVerticalStrut(gap));
 		content.add(tglBtnPlaceSelectedNode);
 		Box positionBox = Box.createHorizontalBox();
 		positionBox.add(btnOnTheLeft);
 		positionBox.add(btnAtCenter);
 		positionBox.add(btnOnTheRight);
 		content.add(positionBox);
-		content.add(Box.createVerticalStrut(10));
+		content.add(Box.createVerticalStrut(gap));
 		Box zoomBox = Box.createHorizontalBox();
 		zoomBox.add(tglbtnChangeZoom);
 		zoomBox.add(lblZoomFactor);

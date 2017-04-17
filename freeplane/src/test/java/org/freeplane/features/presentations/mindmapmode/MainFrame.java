@@ -7,7 +7,7 @@ public class MainFrame {
 		final JFrame frame = new JFrame("Freeplane presentation editor");
 		final PresentationState presentationStateModel = new PresentationState();
 		final PresentationEditorController presentationEditorController = new PresentationEditorController(presentationStateModel);
-		frame.getContentPane().add(presentationEditorController.createPanel());
+		frame.getContentPane().add(presentationEditorController.createPanel(null));
 		final NamedElementFactory<Slide> slideFactory = new NamedElementFactory<Slide>(){
 
 			@Override

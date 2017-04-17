@@ -45,10 +45,11 @@ public class PresentationController implements IExtension{
 		presentationController.registerActions();
 		presentationController.addMapSelectionListener();
 		new PresentationBuilder().register(modeController.getMapController(), presentationController);
-		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
-		tabs.add("Presentations", presentationController.createPanel());
 		HighlightController highlightController = modeController.getController().getExtension(HighlightController.class);
 		final PresentationState presentationState = presentationController.presentationState;
+		new PresentationPngExporter.ActionInstaller().installActions(modeController, presentationState);
+		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
+		tabs.add("Presentations", presentationController.createPanel());
 		highlightController.addNodeHighlighter(new NodeHighlighter() {
 			
 			@Override
@@ -83,7 +84,6 @@ public class PresentationController implements IExtension{
 				PresentationKeyEventDispatcher.of(navigationKeyEventDispatcher, PROCESS_NAVIGATION_KEYS_PROPERTY),
 				PresentationKeyEventDispatcher.of(escapeKeyEventDispatcher, PROCESS_ESCAPE_KEY_PROPERTY));
 		presentationState.addPresentationStateListener(presentationKeyHandler);
-		new PresentationPngExporter.ActionInstaller().installActions(modeController, presentationState);
 	}
 
 	private void registerActions() {
@@ -212,7 +212,7 @@ public class PresentationController implements IExtension{
 	}
 
 	private Component createPanel() {
-		final Component presentationEditor = presentationEditorController.createPanel();
+		final Component presentationEditor = presentationEditorController.createPanel(modeController);
 		presentationEditor.addHierarchyListener(new HierarchyListener() {
 			@Override
 			public void hierarchyChanged(HierarchyEvent e) {

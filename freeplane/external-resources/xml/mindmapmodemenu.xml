@@ -395,9 +395,6 @@
 				<Entry name="ShowNextSlideAction" />
 				<Entry name="ShowLastSlideAction"/>
 				<Entry name="ShowLastSlideAction"/>
-				<Entry builder="separator" />
-				<Entry name="ExportPresentationAction"/>
-				<Entry name="ExportAllPresentationsAction"/>
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="SelectAllAction" accelerator="control A" />

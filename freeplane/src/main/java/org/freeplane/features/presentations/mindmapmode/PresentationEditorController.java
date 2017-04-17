@@ -1,6 +1,8 @@
 package org.freeplane.features.presentations.mindmapmode;
 
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -21,7 +23,6 @@ public class PresentationEditorController {
 	private final NavigationPanelController navigationPanelController;
 	private NamedElementCollection<Presentation> presentations;
 	private CollectionChangeListener<Presentation> presentationChangeListener;
-	private AFreeplaneAction configureAction;
 
 	public PresentationEditorController(final PresentationState presentationState) {
 		presentationPanelController = new CollectionBoxController<>("presentation");
@@ -93,7 +94,7 @@ public class PresentationEditorController {
 		presentationChangeListener.onCollectionChange(CollectionChangedEvent.EventType.SELECTION_CHANGED.of(presentations));
 	}
 
-	public Component createPanel() {
+	Component createPanel(ModeController modeController) {
 		Box panel = Box.createVerticalBox();
 		final JComponent presentationBox = presentationPanelController.createCollectionBox();
 		TranslatedElementFactory.createTitledBorder(presentationBox, "slide.presentations");
@@ -105,17 +106,42 @@ public class PresentationEditorController {
 		panel.add(content);
 		JComponent navigation = navigationPanelController.createNavigationBox();
 		panel.add(navigation);
+		
+		if(modeController != null){
+			JComponent controlBox = createActionPanel(modeController);
+			panel.add(controlBox);
+		}
+		return panel;
+	}
+
+	private JComponent createActionPanel(ModeController modeController) {
+		AFreeplaneAction exportPresentationAction = modeController.getAction("ExportPresentationAction");
+		AFreeplaneAction exportAllPresentationsAction = modeController.getAction("ExportAllPresentationsAction");
+		
+		JPanel controlButtons = new JPanel(new GridLayout(3, 1));
+		
+		JButton btnExportPresentation = new JButton(exportPresentationAction);
+		btnExportPresentation.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		controlButtons.add(btnExportPresentation);
+
+		JButton btnExportAllPresentations = new JButton(exportAllPresentationsAction);
+		btnExportAllPresentations.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		controlButtons.add(btnExportAllPresentations);
+		
+		AFreeplaneAction configureAction = modeController.getAction("PropertyAction");
 		JButton btnConfigure = new JButton(configureAction);
 		btnConfigure.setActionCommand(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + "Presentation");
 		btnConfigure.setAlignmentX(JButton.CENTER_ALIGNMENT);
-		panel.add(Box.createVerticalStrut(btnConfigure.getPreferredSize().height / 2));
-		panel.add(btnConfigure);
-		return panel;
+		controlButtons.add(btnConfigure);
+		
+		final Dimension maximumSize = new Dimension(controlButtons.getPreferredSize());
+		maximumSize.width = Integer.MAX_VALUE;
+		controlButtons.setMaximumSize(maximumSize);
+		return controlButtons;
 	}
 
 	void registerActions(ModeController modeController) {
 		navigationPanelController.registerActions(modeController);
-		configureAction = modeController.getAction("PropertyAction");
 	}
 
 }
