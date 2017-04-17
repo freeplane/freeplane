@@ -1226,11 +1226,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				return;
 			}
 			((ScalableComponent) backgroundComponent).setCenter(true);
-			((ScalableComponent)backgroundComponent).setImageLoadingListener(new ImageLoadingListener() {
-				public void imageLoaded() {
-					repaint();
-				}
-			});
 		}
 		catch (final FileNotFoundException e1) {
 			LogUtils.warn(e1);
