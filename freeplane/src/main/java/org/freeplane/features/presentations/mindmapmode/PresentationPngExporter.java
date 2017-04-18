@@ -3,7 +3,6 @@ package org.freeplane.features.presentations.mindmapmode;
 import static org.freeplane.features.presentations.mindmapmode.PresentationAutomation.SWITCH_TO_FULL_SCREEN_PROPERTY;
 
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.List;
@@ -173,12 +172,14 @@ class PresentationPngExporter {
 	private void restorePreviousPresentation() {
 		presentationState.restore();
 		presentationZoomFactor = 1f;
-		Controller.getCurrentController().getSelection().replaceSelection(selection);
+		final IMapSelection selectionController = Controller.getCurrentController().getSelection();
+		selectionController.replaceSelection(selection);
 		if(! presentationState.isPresentationRunning())
 			Controller.getCurrentController().getMapViewManager().setZoom(zoom);
 		ResourceController.getResourceController().setProperty(Slide.PRESENTATION_SLOW_MOTION_KEY, presentationSlowMotionEnabled);
 		if(spotlightEnabledForExport)
 			mapViewComponent.putClientProperty(MapView.SPOTLIGHT_ENABLED, null);
+		selectionController.scrollNodeToVisible(selectionController.getSelected());
 	}
 
 	public void exportPresentation(Presentation p) {
