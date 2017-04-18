@@ -151,6 +151,7 @@ class PresentationPngExporter {
 	
 
 	private void exportSinglePresentation() {
+		prepareExport();
 		NamedElementCollection<Presentation> presentations = presentationState.getPresentations();
 		exportPresentation(presentations.getCurrentElement());
 		restorePreviousPresentation();
