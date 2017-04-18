@@ -14,12 +14,12 @@ public class HighlightController implements IExtension{
 		this.nodeHighlighters = new ArrayList<>();
 	} 
 	
-	public List<NodeHighlighter> getHighlightingColors(NodeModel node){
-		final ArrayList<NodeHighlighter> colors = new ArrayList<>();
+	public List<NodeHighlighter> getHighlighters(NodeModel node, boolean isPrinting){
+		final ArrayList<NodeHighlighter> highlighters = new ArrayList<>();
 		for(NodeHighlighter highlighter : nodeHighlighters)
-			if(highlighter.isNodeHighlighted(node))
-				colors.add(highlighter);
-		return colors;
+			if(highlighter.isNodeHighlighted(node, isPrinting))
+				highlighters.add(highlighter);
+		return highlighters;
 	}
 	
 	public void addNodeHighlighter(NodeHighlighter highlighter){

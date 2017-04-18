@@ -53,12 +53,12 @@ public class PresentationController implements IExtension{
 		highlightController.addNodeHighlighter(new NodeHighlighter() {
 			
 			@Override
-			public boolean isNodeHighlighted(NodeModel node) {
-				return presentationState.shouldHighlightNodeContainedOnSlide(node);
+			public boolean isNodeHighlighted(NodeModel node, boolean isPrinting) {
+				return !isPrinting && presentationState.shouldHighlightNodeContainedOnSlide(node);
 			}
 			
 			@Override
-			public void configure(Graphics2D g) {
+			public void configure(Graphics2D g, boolean isPrinting) {
 				g.setColor(NODE_HIGHLIGHTING_COLOR);
 			}
 
@@ -66,12 +66,12 @@ public class PresentationController implements IExtension{
 		highlightController.addNodeHighlighter(new NodeHighlighter() {
 			
 			@Override
-			public boolean isNodeHighlighted(NodeModel node) {
-				return presentationState.shouldHighlightNodeFoldedOnSlide(node);
+			public boolean isNodeHighlighted(NodeModel node, boolean isPrinting) {
+				return !isPrinting && presentationState.shouldHighlightNodeFoldedOnSlide(node);
 			}
 			
 			@Override
-			public void configure(Graphics2D g) {
+			public void configure(Graphics2D g, boolean isPrinting) {
 				g.setColor(NODE_HIGHLIGHTING_COLOR);
 				g.setStroke(FOLDED_NODE_STROKE);
 			}

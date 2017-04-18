@@ -1166,7 +1166,8 @@ public class NodeView extends JComponent implements INodeView {
 		g.translate(origin.x, origin.y);
 		mainView.paintDecoration(this, g);
 		g.translate(-origin.x, -origin.y);
-		final List<NodeHighlighter> highlighters = getMap().getModeController().getController().getExtension(HighlightController.class).getHighlightingColors(model);
+		final HighlightController highlightController = getMap().getModeController().getController().getExtension(HighlightController.class);
+		final List<NodeHighlighter> highlighters = highlightController.getHighlighters(model, map.isPrinting());
 		int margin = HIGHLIGHTED_NODE_ARC_MARGIN;
 		for(NodeHighlighter highlighter : highlighters){
 			margin += HIGHLIGHTED_NODE_ARC_MARGIN;
@@ -1179,7 +1180,7 @@ public class NodeView extends JComponent implements INodeView {
 		final Color oldColor = g.getColor();
 		final Stroke oldStroke = g.getStroke();
 		g.setStroke(NodeHighlighter.DEFAULT_STROKE);
-		highlighter.configure(g);
+		highlighter.configure(g, map.isPrinting());
 		final JComponent content = getContent();
 		Point contentLocation = content.getLocation();
 		final int arcWidth = 15;

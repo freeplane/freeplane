@@ -8,6 +8,6 @@ import org.freeplane.features.map.NodeModel;
 
 public interface NodeHighlighter {
 	public Stroke DEFAULT_STROKE = new BasicStroke(2.0f);
-	public boolean isNodeHighlighted(NodeModel node);
-	public void configure(Graphics2D g);
+	public boolean isNodeHighlighted(NodeModel node, boolean isPrinting);
+	public void configure(Graphics2D g, boolean isPrinting);
 }

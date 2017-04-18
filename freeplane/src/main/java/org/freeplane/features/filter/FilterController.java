@@ -178,12 +178,12 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		controller.addExtension(FilterController.class, extension);
 		controller.getExtension(HighlightController.class).addNodeHighlighter(new NodeHighlighter() {
 			@Override
-			public boolean isNodeHighlighted(NodeModel node) {
-				return FilterController.getController(controller).isNodeHighlighted(node);
+			public boolean isNodeHighlighted(NodeModel node, boolean isPrinting) {
+				return !isPrinting && FilterController.getController(controller).isNodeHighlighted(node);
 			}
 			
 			@Override
-			public void configure(Graphics2D g) {
+			public void configure(Graphics2D g, boolean isPrinting) {
 				g.setColor(Color.MAGENTA);
 			}
 		});
