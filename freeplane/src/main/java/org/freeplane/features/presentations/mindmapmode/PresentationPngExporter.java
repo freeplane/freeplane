@@ -3,6 +3,7 @@ package org.freeplane.features.presentations.mindmapmode;
 import static org.freeplane.features.presentations.mindmapmode.PresentationAutomation.SWITCH_TO_FULL_SCREEN_PROPERTY;
 
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.List;
@@ -13,10 +14,10 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.export.mindmapmode.ExportToImage;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -123,6 +124,7 @@ class PresentationPngExporter {
 	private boolean presentationSlowMotionEnabled;
 	private boolean spotlightEnabledForExport;
 	private final JComponent mapViewComponent;
+	private float presentationZoomFactor;
 
 	private PresentationPngExporter(PresentationState presentationState, File exportDirectory) {
 		this.presentationState = presentationState;
@@ -144,6 +146,12 @@ class PresentationPngExporter {
 
 	private void prepareExport() {
 		presentationSlowMotionEnabled = ResourceController.getResourceController().getBooleanProperty(Slide.PRESENTATION_SLOW_MOTION_KEY, false);
+		if (presentationState.isPresentationRunning())
+			presentationZoomFactor = presentationState.getPresentationZoomFactor();
+		else if(presentationState.usesMapZoom())
+			presentationZoomFactor = Controller.getCurrentController().getMapViewManager().getZoom();
+		else
+			presentationZoomFactor = 1f;
 		ResourceController.getResourceController().setProperty(Slide.PRESENTATION_SLOW_MOTION_KEY, false);
 		if(ResourceController.getResourceController().getBooleanProperty(PresentationAutomation.SWITCH_TO_SPOTLIGHT_PROPERTY)) {
 			if (! Boolean.TRUE.equals(mapViewComponent.getClientProperty(MapView.SPOTLIGHT_ENABLED))) {
@@ -164,6 +172,7 @@ class PresentationPngExporter {
 
 	private void restorePreviousPresentation() {
 		presentationState.restore();
+		presentationZoomFactor = 1f;
 		Controller.getCurrentController().getSelection().replaceSelection(selection);
 		if(! presentationState.isPresentationRunning())
 			Controller.getCurrentController().getMapViewManager().setZoom(zoom);
@@ -189,14 +198,17 @@ class PresentationPngExporter {
 	}
 
 	private void exportSlide(File presentationDirectory, Slide slide) {
-		slide.apply(1f);
+		final NodeModel placedNode = slide.getCurrentPlacedNode();
+		if(placedNode != null)
+			slide.apply(presentationZoomFactor);
+		else
+			slide.apply(1f);
 		mapViewComponent.validate();
 		mapViewComponent.setSize(mapViewComponent.getPreferredSize());
 		File exportFile = new File(presentationDirectory, FileUtils.validFileNameOf(slide.getName()) + ".png");
 		final ExportToImage exporter = ExportToImage.toPNG();
 		final Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
-		final NodeModel placedNode = slide.getCurrentPlacedNode();
 		if(placedNode != null) {
 			final Dimension slideSize;
 			if(ResourceController.getResourceController().getBooleanProperty(SWITCH_TO_FULL_SCREEN_PROPERTY))
