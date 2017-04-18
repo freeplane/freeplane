@@ -1,16 +1,20 @@
 package org.freeplane.features.presentations.mindmapmode;
 
+import static org.freeplane.features.presentations.mindmapmode.PresentationAutomation.SWITCH_TO_FULL_SCREEN_PROPERTY;
+
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.export.mindmapmode.ExportToImage;
 import org.freeplane.features.map.MapModel;
@@ -193,9 +197,14 @@ class PresentationPngExporter {
 		final Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
 		final NodeModel placedNode = slide.getCurrentPlacedNode();
-		if(placedNode != null) 
-			exporter.export(map, placedNode, slide.getPlacedNodePosition(), exportFile);
-		else
+		if(placedNode != null) {
+			final Dimension slideSize;
+			if(ResourceController.getResourceController().getBooleanProperty(SWITCH_TO_FULL_SCREEN_PROPERTY))
+				slideSize = mapViewComponent.getGraphicsConfiguration().getBounds().getSize();
+			else
+				slideSize = SwingUtilities.getWindowAncestor(mapViewComponent).getSize();
+			exporter.export(map, slideSize, placedNode, slide.getPlacedNodePosition(), exportFile);
+		} else
 			exporter.export(map, exportFile);
 	}
 }

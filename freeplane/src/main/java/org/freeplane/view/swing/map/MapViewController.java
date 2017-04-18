@@ -25,7 +25,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -50,7 +49,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
-import javax.swing.JViewport;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataEvent;
@@ -61,15 +59,14 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.image.BigBufferedImage;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
@@ -335,12 +332,10 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 		view.preparePrinting();
 		final Rectangle innerBounds = view.getInnerBounds();
-		final BufferedImage myImage = printToImage(dpi, view, innerBounds);
-		view.endPrinting();
-		return myImage;
+		return createImage(dpi, innerBounds);
 	}
 
-	public RenderedImage createImage(int dpi, NodeModel placedNode, NodePosition placedNodePosition) {
+	public RenderedImage createImage(final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int dpi) {
 		final MapView view = getMapView();
 		if (view == null) {
 			return null;
@@ -352,21 +347,26 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 		view.preparePrinting();
 		final JComponent content = placedNodeView.getContent();
-		final Dimension windowSize = SwingUtilities.getWindowAncestor(view).getSize();
 		Point contentLocation = new Point();
 		UITools.convertPointToAncestor(content, contentLocation, view);
-		final Rectangle printedGraphicsBounds = new Rectangle(contentLocation.x + content.getWidth() / 2 - windowSize.width / 2, 
-				contentLocation.y + content.getHeight() / 2 - windowSize.height
-				/ 2, windowSize.width, windowSize.height);
+		final Rectangle printedGraphicsBounds = new Rectangle(contentLocation.x + content.getWidth() / 2 - slideSize.width / 2, 
+				contentLocation.y + content.getHeight() / 2 - slideSize.height
+				/ 2, slideSize.width, slideSize.height);
 		
-		final int distanceToMargin = (windowSize.width - content.getWidth()) / 2 - 10;
+		final int distanceToMargin = (slideSize.width - content.getWidth()) / 2 - 10;
 		if(placedNodePosition == NodePosition.WEST){
 			printedGraphicsBounds.x += distanceToMargin;
 		}
 		if(placedNodePosition == NodePosition.EAST){
 			printedGraphicsBounds.x -= distanceToMargin;
 		}
-		final BufferedImage myImage = printToImage(dpi, view, printedGraphicsBounds);
+		return createImage(dpi, printedGraphicsBounds);
+	}
+
+	public RenderedImage createImage(int dpi, final Rectangle printedArea) {
+		final MapView view = getMapView();
+		view.preparePrinting();
+		final BufferedImage myImage = printToImage(dpi, view, printedArea);
 		view.endPrinting();
 		return myImage;
 	}

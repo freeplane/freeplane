@@ -22,6 +22,7 @@ package org.freeplane.main.headlessmode;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.RenderedImage;
@@ -131,7 +132,7 @@ public class HeadlessMapViewController implements IMapViewManager {
 		throw new RuntimeException("Method not implemented");
 	}
 
-	public RenderedImage createImage(int dpi, NodeModel placedNode, NodePosition placedNodePosition) {
+	public RenderedImage createImage(final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int dpi) {
 		throw new RuntimeException("Method not implemented");
 	}
 
