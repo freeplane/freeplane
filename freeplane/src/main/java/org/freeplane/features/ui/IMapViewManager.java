@@ -21,6 +21,7 @@ package org.freeplane.features.ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.RenderedImage;
@@ -82,7 +83,7 @@ public interface IMapViewManager {
 
 	public RenderedImage createImage(int dpi);
 
-	public RenderedImage createImage(int imageResolutionInDpi, NodeModel placedNode, NodePosition placedNodePosition);
+	public RenderedImage createImage(final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int imageResolutionInDpi);
 	
 	public Color getBackgroundColor(NodeModel node);
 

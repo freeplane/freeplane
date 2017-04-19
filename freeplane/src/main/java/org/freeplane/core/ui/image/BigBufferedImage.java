@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.HashSet;
 import java.util.Hashtable;
 
 import sun.nio.ch.DirectBuffer;
@@ -28,7 +29,7 @@ import sun.nio.ch.DirectBuffer;
 public class BigBufferedImage extends BufferedImage {
 
     private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
-	private static final int MAX_PIXELS_IN_MEMORY = 50 * 1024 * 1024;
+	public static final int MAX_PIXELS_IN_MEMORY = 50 * 1024 * 1024;
 
     public static BufferedImage create(int width, int height, int imageType){
     	if(width * height > MAX_PIXELS_IN_MEMORY)
@@ -102,8 +103,20 @@ public class BigBufferedImage extends BufferedImage {
 
     }
     
+	private static final class FileDataBufferDeleterHook extends Thread {
+		static {
+			Runtime.getRuntime().addShutdownHook(new FileDataBufferDeleterHook());
+		}
+		private static final HashSet<FileDataBuffer> undisposedBuffers = new HashSet<>();
+		@Override
+		public void run() {
+			final FileDataBuffer[] buffers = undisposedBuffers.toArray(new FileDataBuffer[0]);
+			for(FileDataBuffer b :buffers)
+				b.disposeNow();
+		}
+	}
+	
     private static class FileDataBuffer extends DataBuffer {
-
         private final String id = "buffer-" + System.currentTimeMillis() + "-" + ((int) (Math.random() * 1000));
         private File dir;
         private String path;
@@ -123,23 +136,8 @@ public class BigBufferedImage extends BufferedImage {
             init();
         }
 
-        public void dispose() {
-        	try {
-        		for(MappedByteBuffer b : buffer) {
-        			((DirectBuffer) b).cleaner().clean();
-        		}
-        		for(RandomAccessFile file : accessFiles) {
-        			file.close();
-        		}
-        		for(File file : files) {
-        			file.delete();
-        		}
-				new File(path).delete();
-			} catch (IOException e) {
-			}
-		}
-
         private void init() throws FileNotFoundException, IOException {
+        	FileDataBufferDeleterHook.undisposedBuffers.add(this);
             if (dir == null) {
                 dir = new File(".");
             }
@@ -152,13 +150,11 @@ public class BigBufferedImage extends BufferedImage {
             path = dir.getPath() + "/" + id;
             File subDir = new File(path);
             subDir.mkdir();
-            subDir.deleteOnExit();
             buffer = new MappedByteBuffer[banks];
             accessFiles = new RandomAccessFile[banks];
             files = new File[banks];
             for (int i = 0; i < banks; i++) {
                 File file = files[i] = new File(path + "/bank" + i + ".dat");
-                file.deleteOnExit();
 				final RandomAccessFile randomAccessFile = accessFiles[i] = new RandomAccessFile(file, "rw");
                 buffer[i] = randomAccessFile.getChannel().map(FileChannel.MapMode.READ_WRITE, 0, getSize());
             }
@@ -173,6 +169,57 @@ public class BigBufferedImage extends BufferedImage {
         public void setElem(int bank, int i, int val) {
             buffer[bank].put(i, (byte) val);
         }
+        
+		@Override
+		protected void finalize() throws Throwable {
+			dispose();
+		}
 
+		private void disposeNow() {
+			final MappedByteBuffer[] disposedBuffer = this.buffer;
+			this.buffer = null;
+			disposeNow(disposedBuffer);
+		}
+		
+		public void dispose() {
+			final MappedByteBuffer[] disposedBuffer = this.buffer;
+			this.buffer = null;
+			new Thread() {
+				@Override
+				public void run() {
+					disposeNow(disposedBuffer);
+				}
+			}.start();
+		}
+
+		private void disposeNow(final MappedByteBuffer[] disposedBuffer) {
+			FileDataBufferDeleterHook.undisposedBuffers.remove(this);
+			if(disposedBuffer != null) {
+				for(MappedByteBuffer b : disposedBuffer) {
+					((DirectBuffer) b).cleaner().clean();
+				}
+			}
+			if(accessFiles != null) {
+				for(RandomAccessFile file : accessFiles) {
+					try {
+						file.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				accessFiles = null;
+			}
+			if(files != null) {
+				for(File file : files) {
+					file.delete();
+				}
+				files = null;
+			}
+			if(path != null) {
+				new File(path).delete();
+				path = null;
+			}
+		}
+		
     }
 }

@@ -17,6 +17,7 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -65,13 +66,13 @@ public class ExportToImage implements IExportEngine {
 	}
 
 	public void export(MapModel map, File toFile) {
-		export(map, null, null, toFile);
+		export(map, null, null, null, toFile);
 	}
 
-	public void export(MapModel map, NodeModel placedNode, NodePosition placedNodePosition, File toFile) {
+	public void export(MapModel map, final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, File toFile) {
 		RenderedImage image = null;
 		try {
-			image = placedNode != null ? new ImageCreator(getImageResolutionDPI()).createBufferedImage(map, placedNode, placedNodePosition) : new ImageCreator(getImageResolutionDPI()).createBufferedImage(map);
+			image = placedNode != null ? new ImageCreator(getImageResolutionDPI()).createBufferedImage(map, slideSize, placedNode, placedNodePosition) : new ImageCreator(getImageResolutionDPI()).createBufferedImage(map);
 			if (image != null) {
 				exportToImage(image, toFile);
 			}

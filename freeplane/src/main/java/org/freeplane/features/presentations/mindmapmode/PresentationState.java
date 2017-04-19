@@ -11,6 +11,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.presentations.mindmapmode.PresentationStateChangeEvent.EventType;
 
 public class PresentationState {
+	private static final String USES_PRESENTATION_ZOOM_PROPERTY = "presentation.zoom";
 	private NamedElementCollection<Presentation> presentations;
 	private Presentation currentPresentation;
 	private final ArrayList<PresentationStateChangeListener> presentationStateChangeListeners;
@@ -63,12 +64,12 @@ public class PresentationState {
 		}
 	}
 
-	private float getPresentationZoomFactor() {
+	float getPresentationZoomFactor() {
 		return usesMapZoom() ? zoomFactor : 1f;
 	}
 
-	private boolean usesMapZoom() {
-		return ResourceController.getResourceController().getBooleanProperty("presentation.zoom");
+	boolean usesMapZoom() {
+		return ResourceController.getResourceController().getBooleanProperty(USES_PRESENTATION_ZOOM_PROPERTY);
 	}
 
 	public void stopPresentation() {
