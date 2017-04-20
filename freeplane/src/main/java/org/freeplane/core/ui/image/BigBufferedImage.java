@@ -198,8 +198,6 @@ public class BigBufferedImage extends BufferedImage {
 				for(MappedByteBuffer b : disposedBuffer) {
 					((DirectBuffer) b).cleaner().clean();
 				}
-			}
-			if(accessFiles != null) {
 				for(RandomAccessFile file : accessFiles) {
 					try {
 						file.close();
@@ -208,14 +206,10 @@ public class BigBufferedImage extends BufferedImage {
 					}
 				}
 				accessFiles = null;
-			}
-			if(files != null) {
 				for(File file : files) {
 					file.delete();
 				}
 				files = null;
-			}
-			if(path != null) {
 				new File(path).delete();
 				path = null;
 			}
