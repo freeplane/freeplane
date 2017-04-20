@@ -53,6 +53,7 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -600,8 +601,8 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		elementaryConditionList.setCellRenderer(cellRenderer);
 	}
 
-	private JButton addAction(Action action, boolean enabled) {
-	    JButton button = new JButton(action);
+	private JButton addAction(AFreeplaneAction action, boolean enabled) {
+	    JButton button = TranslatedElementFactory.createButtonWithIcon(action, action.getIconKey(), action.getTextKey());
 		button.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		conditionButtonBox.add(Box.createVerticalStrut(GAP_BETWEEN_BUTTONS));
 		conditionButtonBox.add(button);
