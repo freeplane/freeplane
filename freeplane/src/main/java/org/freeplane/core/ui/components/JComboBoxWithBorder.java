@@ -12,10 +12,11 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 
 import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.ui.MenuSplitterConfiguration;
 import org.freeplane.core.util.Quantity;
 
 @SuppressWarnings("serial")
-public class JComboBoxWithBorder extends JComboBox{
+public class JComboBoxWithBorder<T> extends JComboBox<T>{
 	static private final int MARGIN = new Quantity<LengthUnits>(2, LengthUnits.pt).toBaseUnitsRounded();
 	static private final EmptyBorder STANDARD_BORDER = new EmptyBorder(0, MARGIN, 0, MARGIN);  
 	private RendererWithBorder rendererWithBorder;
@@ -39,26 +40,27 @@ public class JComboBoxWithBorder extends JComboBox{
 
 	public JComboBoxWithBorder() {
 		super();
-		initializeRenderer();
+		initialize();
 	}
 
 	public JComboBoxWithBorder(ComboBoxModel aModel) {
 		super(aModel);
-		initializeRenderer();
+		initialize();
 	}
 
-	public JComboBoxWithBorder(Object[] items) {
+	public JComboBoxWithBorder(T[] items) {
 		super(items);
-		initializeRenderer();
+		initialize();
 	}
 
-	public JComboBoxWithBorder(Vector<?> items) {
+	public JComboBoxWithBorder(Vector<T> items) {
 		super(items);
-		initializeRenderer();
+		initialize();
 	}
 
-	private void initializeRenderer() {
+	private void initialize() {
 		rendererWithBorder = new RendererWithBorder();
+		MenuSplitterConfiguration.setMaximumRowCount(this);
 		updateUI();
 	}
 

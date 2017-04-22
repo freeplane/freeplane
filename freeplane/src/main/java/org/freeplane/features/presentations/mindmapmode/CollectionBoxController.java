@@ -22,6 +22,7 @@ import javax.swing.SwingConstants;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
+import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
 
@@ -59,7 +60,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	}
 
 	public CollectionBoxController(final String elementName) {
-		comboBoxCollectionNames = new JComboBox<Stringifyed<T>>();
+		comboBoxCollectionNames = new JComboBoxWithBorder<Stringifyed<T>>();
 		comboBoxCollectionNames.setEditable(false);
 		Dimension comboBoxPreferredSize = comboBoxCollectionNames.getPreferredSize();
 		comboBoxCollectionNames.setMaximumSize(new Dimension(Integer.MAX_VALUE, comboBoxPreferredSize.height));
