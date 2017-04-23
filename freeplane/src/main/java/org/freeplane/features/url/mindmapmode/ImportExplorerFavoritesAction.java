@@ -74,8 +74,8 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 
 	public boolean importExplorerFavorites(final File folder, final NodeModel target, final boolean redisplay) {
 		boolean favoritesFound = false;
-		if (folder.isDirectory()) {
-			final File[] list = folder.listFiles();
+		final File[] list = folder.listFiles();
+		if (list != null) {
 			for (int i = 0; i < list.length; i++) {
 				if (list[i].isDirectory()) {
 					final String nodeContent = list[i].getName();
