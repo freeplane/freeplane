@@ -82,6 +82,7 @@ import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
@@ -768,15 +769,18 @@ public class MTextController extends TextController {
 
 	public void edit(final FirstAction action, final boolean editLong) {
 		final Controller controller = Controller.getCurrentController();
-		final NodeModel selectedNode = controller.getSelection().getSelected();
-		if (selectedNode != null) {
-			if (FirstAction.EDIT_CURRENT.equals(action)) {
-				edit(selectedNode, selectedNode, false, false, editLong);
-			}
-			else if (!Controller.getCurrentModeController().isBlocked()) {
-				final int mode = FirstAction.ADD_CHILD.equals(action) ? MMapController.NEW_CHILD : MMapController.NEW_SIBLING_BEHIND;
-				((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(mode);
-			}
+		final IMapSelection selection = controller.getSelection();
+		if(selection == null)
+			return;
+		final NodeModel selectedNode = selection.getSelected();
+		if (selectedNode == null)
+			return;
+		if (FirstAction.EDIT_CURRENT.equals(action)) {
+			edit(selectedNode, selectedNode, false, false, editLong);
+		}
+		else if (!Controller.getCurrentModeController().isBlocked()) {
+			final int mode = FirstAction.ADD_CHILD.equals(action) ? MMapController.NEW_CHILD : MMapController.NEW_SIBLING_BEHIND;
+			((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(mode);
 		}
 	}
 	
