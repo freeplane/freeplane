@@ -24,7 +24,7 @@
 			<Entry name="zoom">
 				<Entry accelerator="alt UP" name="ZoomInAction" />
 				<Entry accelerator="alt DOWN" name="ZoomOutAction" />
-				<Entry accelerator="control PERIOD" name="CenterSelectedNodeAction" />
+				<Entry accelerator="alt C" name="MoveSelectedNodeAction.CENTER" />
 			</Entry>
 			<Entry name="menu_viewmode">
 				<Entry name="ViewLayoutTypeAction.OUTLINE" />
@@ -97,7 +97,7 @@
 		<Entry name="ShowFilterToolbarAction" />
 		<Entry name="ToggleScrollbarsAction" />
 		<Entry name="ViewLayoutTypeAction.OUTLINE" />
-		<Entry name="CenterSelectedNodeAction" />
+		<Entry name="MoveSelectedNodeAction.CENTER" />
 		<Entry name="MoveToRootAction" accelerator="ESCAPE" />
 		<Entry name="GotoNodeAction" />
 	</Entry>
