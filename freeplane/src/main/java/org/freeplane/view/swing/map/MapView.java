@@ -110,7 +110,6 @@ import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.filepreview.IViewerFactory;
-import org.freeplane.view.swing.features.filepreview.ImageLoadingListener;
 import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.map.link.ConnectorView;
@@ -469,6 +468,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
 	private static final String PRESENTATION_DIMMER_TRANSPARENCY = "presentation_dimmer_transparency";
 	private static final String HIDE_SINGLE_END_CONNECTORS = "hide_single_end_connectors";
+	private static final String SHOW_CONNECTORS_PROPERTY = "show_connectors";
 	static private final PropertyChangeListener repaintOnClientPropertyChangeListener = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
@@ -506,6 +506,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private int noteHorizontalAlignment;
     private Color noteForeground;
     private Color noteBackground;
+	private static boolean showConnectors;
 	private static boolean hideSingleEndConnectors;
 	private boolean fitToViewport;
 	private static int transparency;
@@ -535,6 +536,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
 			MapView.transparency = 255 - ResourceController.getResourceController().getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
 			MapView.hideSingleEndConnectors = ResourceController.getResourceController().getBooleanProperty(HIDE_SINGLE_END_CONNECTORS);
+			MapView.showConnectors = ResourceController.getResourceController().getBooleanProperty(SHOW_CONNECTORS_PROPERTY);
 
 			createPropertyChangeListener();
 		}
@@ -676,6 +678,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					((MapView) mapView).repaint();
 					return;
 				}
+				if (propertyName.equals(SHOW_CONNECTORS_PROPERTY)) {
+					MapView.showConnectors = ResourceController.getResourceController().getBooleanProperty(SHOW_CONNECTORS_PROPERTY);
+					((MapView) mapView).repaint();
+					return;
+				}
+				
 			}
 		};
 		ResourceController.getResourceController().addPropertyChangeListener(MapView.propertyChangeListener);
@@ -688,7 +696,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public Object detectCollision(final Point p) {
-		if (arrowLinkViews == null) {
+		if (arrowLinkViews == null && ! showConnectors) {
 			return null;
 		}
 		for (int i = 0; i < arrowLinkViews.size(); ++i) {
@@ -2126,6 +2134,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return;
 		display(parentNode);
 		getNodeView(parentNode).setFolded(false);
+	}
+
+	public boolean showsConnectors() {
+		return showConnectors;
 	}
 
 }

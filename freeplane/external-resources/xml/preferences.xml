@@ -143,6 +143,7 @@
 					max="32" />
 				<font name="label_font_family" />
 				<number name="label_font_size" min="4" max="216" />
+				<boolean name="show_connectors" />
 				<boolean name="paint_connectors_behind" />
 			</separator>
 			<separator name="clones">
