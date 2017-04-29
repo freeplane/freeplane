@@ -65,6 +65,7 @@ public class NodeModel{
 	public final static int UNKNOWN_POSITION = 0;
 	static public final Object UNKNOWN_PROPERTY = new Object();
 	public static final String NODE_ICON = "icon";
+	public static final String NODE_ICON_SIZE = "icon_size";
 	static public final Object HYPERLINK_CHANGED = "hyperlink_changed";
 
 	private final List<NodeModel> children;

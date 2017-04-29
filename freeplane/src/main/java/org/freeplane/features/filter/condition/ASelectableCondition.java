@@ -8,6 +8,7 @@ import java.security.PrivilegedExceptionAction;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 
@@ -68,15 +69,24 @@ public abstract class ASelectableCondition  implements ICondition{
     }
 	protected abstract String createDescription();
 	
+	public boolean checkNodeInFormulaContext(NodeModel node){
+		return checkNode(node);
+	}
+	
 	final public JComponent getListCellRendererComponent() {
 		if (renderer == null) {
-			renderer = createRendererComponent();
-			if(userName != null){
-				final JCondition jCondition = new JCondition();
-				jCondition.add(new JLabel(userName + " : "));
-				jCondition.add(renderer);
-				renderer = jCondition;
-			}
+			this.renderer = createGraphicComponent();
+		}
+		return renderer;
+	}
+
+	public JComponent createGraphicComponent() {
+		JComponent renderer = createRendererComponent();
+		if(userName != null){
+			final JCondition jCondition = new JCondition();
+			jCondition.add(new JLabel(userName + " : "));
+			jCondition.add(renderer);
+			renderer = jCondition;
 		}
 		return renderer;
 	}

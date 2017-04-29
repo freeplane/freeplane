@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="32.017" width="32" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 31.999999 32.016566" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<radialGradient id="b" gradientUnits="userSpaceOnUse" cy="264.23" cx="536.24" gradientTransform="matrix(-1.7071 -2.3772 1.0271 -.7085 1180.2 1726.3)" r="3.8484">
+<stop stop-color="#000d68" stop-opacity=".85841" offset="0"/>
+<stop stop-color="#00f" offset="1"/>
+</radialGradient>
+<linearGradient id="a" y2="232.5" gradientUnits="userSpaceOnUse" y1="241.86" gradientTransform="matrix(1.0114 0 0 .90319 -272.19 75.264)" x2="549.7" x1="532.35">
+<stop stop-color="#000080" offset="0"/>
+<stop stop-color="#8afbf9" offset="1"/>
+</linearGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-31.612 -34.324)">
+<g transform="translate(-220.7,-248.7)">
+<g stroke-linejoin="round" stroke-linecap="round" stroke="#000">
+<path d="m538.71 264.85a3.2882 2.9594 0 0 1 -3.2882 2.9594 3.2882 2.9594 0 0 1 -3.2882 -2.9594 3.2882 2.9594 0 0 1 3.2882 -2.9594 3.2882 2.9594 0 0 1 3.2882 2.9594z" stroke-opacity=".99419" transform="matrix(.66685 0 0 .71834 -89.987 122.26)" stroke-width="1.1205" fill="url(#b)"/>
+<path d="m266.96 308.37c-0.9234-0.24184-1.3784-0.80089-1.5662-1.5011-0.0343-0.96617-0.13636-1.9706 1.2029-3.3269 1.4516-1.4701 3.7746-3.3412 5.082-5.3305s2.0762-2.9774 1.721-5.3751c-0.4097-1.8726-1.4077-3.7167-4.3783-4.2937-3.1263-0.35508-6.4167-0.15378-7.3005 2.9911 0.0725 0.97846 0.2638 1.6211 1.3708 3.1578 0.55071 0.77652 0.13596 1.7352-1.1463 1.6768-1.8296-0.65854-2.2793-1.184-3.295-2.2401-1.0184-1.2272-1.4692-2.8344-1.0598-4.4101 0.67124-2.1121 2.1221-3.9861 6.0845-5.4393 3.851-1.2219 7.6132-0.90048 11.257 1.2114 2.0811 1.1716 3.5983 3.5425 4.1411 5.7773 0.2663 2.1605 0.0129 3.717-0.83865 5.0212-0.71798 1.0931-1.8909 2.1444-3.1099 3.2059-1.531 1.2267-2.3241 1.9355-3.591 3.1227-2.3934 2.1372-2.8028 2.7758-2.7883 4.1244 0.009 0.92894-0.85741 1.6713-1.7856 1.6282z" fill-rule="evenodd" stroke-width="1.0982" fill="url(#a)"/>
+</g>
+</g>
+<rect rx=".16552" ry=".18513" height="32" width="32" y="34.33" x="31.612" fill="none"/>
+</g>
+</svg>

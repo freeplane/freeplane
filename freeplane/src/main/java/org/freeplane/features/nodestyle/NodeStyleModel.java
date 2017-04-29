@@ -45,7 +45,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 
 	}
 
-	public enum TextAlign {
+	public enum HorizontalTextAlignment {
 		DEFAULT(SwingConstants.LEFT), 
 		LEFT(SwingConstants.LEFT), 
 		RIGHT(SwingConstants.RIGHT), 
@@ -53,7 +53,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		
 		final public int swingConstant;
 
-		TextAlign(int swingConstant){
+		HorizontalTextAlignment(int swingConstant){
 			this.swingConstant = swingConstant;}
 	};
 
@@ -121,9 +121,9 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return styleModel == null ? null : styleModel.isItalic();
 	}
 
-	public static TextAlign getTextAlign(final NodeModel node) {
+	public static HorizontalTextAlignment getHorizontalTextAlignment(final NodeModel node) {
 		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
-		return styleModel == null ? null : styleModel.getTextAlign();
+		return styleModel == null ? null : styleModel.getHorizontalTextAlignment();
 	}
 
 	public static void setBackgroundColor(final NodeModel node, final Color color) {
@@ -176,9 +176,9 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		styleModel.setShapeConfiguration(shape);
 	}
 	
-	public static void setTextAlign(final NodeModel node, final TextAlign textAlign) {
+	public static void setHorizontalTextAlignment(final NodeModel node, final HorizontalTextAlignment textAlignment) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
-		styleModel.setTextAlign(textAlign);
+		styleModel.setHorizontalTextAlignment(textAlignment);
 	}
 
 	private Color backgroundColor;
@@ -190,35 +190,35 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	private ShapeConfigurationModel shapeConfiguration = ShapeConfigurationModel.NULL_SHAPE;
 	private Boolean nodeNumbering = null;
 	private String nodeFormat = null;
-	private  TextAlign textAlign = null;
+	private  HorizontalTextAlignment horizontalTextAlignment = null;
 
 	@Override
 	protected NodeStyleModel clone() {
 		return copyTo(new NodeStyleModel());
 	}
 
-	public NodeStyleModel copyTo(final NodeStyleModel nodeStyleModel) {
+	public NodeStyleModel copyTo(final NodeStyleModel to) {
 	    if(color != null)
-	        nodeStyleModel.setColor(color);
+	        to.setColor(color);
 	    if(backgroundColor != null)
-	        nodeStyleModel.setBackgroundColor(backgroundColor);
+	        to.setBackgroundColor(backgroundColor);
 	    if(isBold != null)
-	        nodeStyleModel.setBold(isBold);
+	        to.setBold(isBold);
 	    if(fontFamilyName != null)
-	        nodeStyleModel.setFontFamilyName(fontFamilyName);
+	        to.setFontFamilyName(fontFamilyName);
 	    if(fontSize != null)
-	        nodeStyleModel.setFontSize(fontSize);
+	        to.setFontSize(fontSize);
 	    if(isItalic != null)
-	        nodeStyleModel.setItalic(isItalic);
+	        to.setItalic(isItalic);
 	    if(getShapeConfiguration() != null)
-			nodeStyleModel.setShapeConfiguration(getShapeConfiguration());
+			to.setShapeConfiguration(getShapeConfiguration());
 	    if(nodeFormat != null)
-	            nodeStyleModel.setNodeFormat(nodeFormat);
+	            to.setNodeFormat(nodeFormat);
 	    if(nodeNumbering != null)
-	        nodeStyleModel.setNodeNumbering(nodeNumbering);
-	    if(textAlign != null)
-	    	nodeStyleModel.setTextAlign(textAlign);
-		return nodeStyleModel;
+	        to.setNodeNumbering(nodeNumbering);
+	    if(horizontalTextAlignment != null)
+	    	to.setHorizontalTextAlignment(horizontalTextAlignment);
+		return to;
     }
 
 	public Color getBackgroundColor() {
@@ -257,8 +257,8 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return isItalic;
 	}
 
-	public TextAlign getTextAlign() {
-		return textAlign;
+	public HorizontalTextAlignment getHorizontalTextAlignment() {
+		return horizontalTextAlignment;
 	}
 
 	public void setBackgroundColor(final Color color) {
@@ -305,8 +305,8 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		this.setShapeConfiguration(getShapeConfiguration().withShape(shape));
 	}
 	
-	public void setTextAlign(final TextAlign textAlign) {
-		this.textAlign = textAlign;
+	public void setHorizontalTextAlignment(final HorizontalTextAlignment textAlignment) {
+		this.horizontalTextAlignment = textAlignment;
 	}
 
 	public ShapeConfigurationModel getShapeConfiguration() {
@@ -318,4 +318,5 @@ public class NodeStyleModel implements IExtension, Cloneable {
 			throw new RuntimeException("Null pointer as shapeConfiguration");
 		this.shapeConfiguration = shapeConfiguration;
 	}
+
 }

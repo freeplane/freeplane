@@ -154,7 +154,7 @@ public class NodeHistory implements IExtension {
 			newView = currentNodeHolder.getHoldMapView();
 		}
 		if (!toBeSelected.isRoot()) {
-			newView.getModeController().getMapController().setFolded(toBeSelected.getParentNode(), false);
+			newView.getModeController().getMapController().unfold(toBeSelected.getParentNode());
 		}
 		newView.getModeController().getMapController().select(toBeSelected);
 	}

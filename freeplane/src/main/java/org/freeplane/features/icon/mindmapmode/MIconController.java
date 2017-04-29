@@ -21,6 +21,7 @@ package org.freeplane.features.icon.mindmapmode;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
@@ -49,6 +50,7 @@ import org.freeplane.core.resources.components.KeyProperty;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
@@ -59,17 +61,25 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.util.Quantity;
+import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.IIconInformation;
+import org.freeplane.features.icon.IconContainedCondition;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.IconExistsCondition;
 import org.freeplane.features.icon.IconGroup;
 import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.IExtensionCopier;
+import org.freeplane.features.map.INodeChangeListener;
+import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.styles.ConditionPredicate;
+import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.ui.CollapseableBoxBuilder;
 import org.freeplane.features.ui.FrameController;
 
@@ -77,6 +87,18 @@ import org.freeplane.features.ui.FrameController;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
+	private static final Insets ICON_SUBMENU_INSETS = new Insets(3, 0, 3, 0);
+	private static final int ARROW_SIZE = Math.round(UITools.getUIFontSize(0.8));
+	private static final Font ARROW_FONT = new Font("SansSerif", 0, ARROW_SIZE);
+	private static final ConditionPredicate DEPENDS_ON_ICON = new ConditionPredicate() {
+		
+		@Override
+		public boolean test(ICondition condition) {
+			return condition instanceof IconContainedCondition 
+					|| condition instanceof IconExistsCondition;
+		}
+	};
+
 	private final class IconActionBuilder implements EntryVisitor {
 		private final HashMap<String, Entry> submenuEntries = new HashMap<String, Entry>();
 		final private ModeController modeController;
@@ -191,7 +213,7 @@ public class MIconController extends IconController {
 	}
 
 	private final Map<MindIcon, AFreeplaneAction> iconActions = new LinkedHashMap<MindIcon, AFreeplaneAction>();
-	private final IconStore STORE = IconStoreFactory.create();
+	private final IconStore STORE = IconStoreFactory.ICON_STORE;
 	private final JToolBar iconToolBar;
 	private final Box iconBox;
 
@@ -211,6 +233,23 @@ public class MIconController extends IconController {
 		createPreferences();
 		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconActionBuilder(modeController));
 	}
+	
+	@Override
+	public void install(final ModeController modeController) {
+		super.install(modeController);
+		modeController.getMapController().addNodeChangeListener(new INodeChangeListener() {
+			
+			@Override
+			public void nodeChanged(NodeChangeEvent event) {
+				final NodeModel node = event.getNode();
+				if(event.getProperty().equals(NodeModel.NODE_ICON)
+						&& LogicalStyleController.getController().conditionalStylesOf(node).dependOnCondition(DEPENDS_ON_ICON)){
+					modeController.getMapController().delayedNodeRefresh(node, NodeModel.UNKNOWN_PROPERTY, null, null);
+				}
+			}
+		});
+	}
+
 
 	public void addIcon(final NodeModel node, final MindIcon icon) {
 		final IActor actor = new IActor() {
@@ -245,6 +284,30 @@ public class MIconController extends IconController {
 			public void undo() {
 				node.removeIcon(position);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, icon, null);
+			}
+		};
+		Controller.getCurrentModeController().execute(actor, node.getMap());
+	}
+
+	public void changeIconSize(final NodeModel node, final Quantity<LengthUnits> iconSize)
+	{
+		final IActor actor = new IActor() {
+
+			private Quantity<LengthUnits> oldIconSize;
+
+			public void act() {
+				oldIconSize = node.getSharedData().getIcons().getIconSize();
+				node.getSharedData().getIcons().setIconSize(iconSize);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON_SIZE, null, iconSize);
+			}
+
+			public String getDescription() {
+				return "changeIconSize";
+			}
+
+			public void undo() {
+				node.getSharedData().getIcons().setIconSize(oldIconSize);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON_SIZE, oldIconSize, null);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());
@@ -313,8 +376,8 @@ public class MIconController extends IconController {
 				return new Point(getWidth(), 0);
 			}
 		};
-		menu.setFont(menu.getFont().deriveFont(8F));
-		menu.setMargin(new Insets(0, 0, 0, 0));
+		menu.setFont(ARROW_FONT);
+		menu.setMargin(ICON_SUBMENU_INSETS);
 		menu.setIcon(group.getGroupIcon().getIcon());
 		for (final MindIcon icon : group.getIcons()) {
 			addActionToIconSubmenu(menu, icon, icon.getFileName());

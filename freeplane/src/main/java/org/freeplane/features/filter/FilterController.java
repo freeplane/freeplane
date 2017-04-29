@@ -19,8 +19,10 @@
  */
 package org.freeplane.features.filter;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -50,6 +52,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.io.xml.XMLLocalParserFactory;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ButtonModelStateChangeListenerForProperty;
@@ -68,6 +71,8 @@ import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.condition.NoFilteringCondition;
 import org.freeplane.features.filter.condition.SelectedViewCondition;
+import org.freeplane.features.highlight.HighlightController;
+import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.map.CloneOfSelectedViewCondition;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController.Direction;
@@ -83,7 +88,6 @@ import org.freeplane.n3.nanoxml.IXMLParser;
 import org.freeplane.n3.nanoxml.IXMLReader;
 import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.n3.nanoxml.XMLParserFactory;
 import org.freeplane.n3.nanoxml.XMLWriter;
 
 /**
@@ -169,7 +173,21 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	public static void install() {
-		Controller.getCurrentController().addExtension(FilterController.class, new FilterController());
+		final Controller controller = Controller.getCurrentController();
+		final FilterController extension = new FilterController();
+		controller.addExtension(FilterController.class, extension);
+		controller.getExtension(HighlightController.class).addNodeHighlighter(new NodeHighlighter() {
+			@Override
+			public boolean isNodeHighlighted(NodeModel node, boolean isPrinting) {
+				return !isPrinting && FilterController.getController(controller).isNodeHighlighted(node);
+			}
+			
+			@Override
+			public void configure(Graphics2D g, boolean isPrinting) {
+				g.setColor(Color.MAGENTA);
+			}
+		});
+
 	}
 
 	private final ButtonModel applyToVisibleNodeOnly;
@@ -496,7 +514,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			final boolean showPopupOnError)
 	        throws IOException {
 		try {
-			final IXMLParser parser = XMLParserFactory.createDefaultXMLParser();
+			final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();
 			File filterFile = new File(pathToFilterFile);
 			final IXMLReader reader = new StdXMLReader(new BufferedInputStream(new FileInputStream(filterFile)));
 			parser.setReader(reader);
@@ -654,4 +672,5 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final ASelectableCondition selectedCondition = getSelectedCondition();
 		return NO_FILTERING != selectedCondition && null != selectedCondition;
 	}
+
 }

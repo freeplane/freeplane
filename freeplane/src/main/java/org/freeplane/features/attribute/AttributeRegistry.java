@@ -35,6 +35,7 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -47,7 +48,7 @@ public class AttributeRegistry implements IExtension {
 		AttributeRegistry registry = (AttributeRegistry) map.getExtension(AttributeRegistry.class);
 		if (registry == null) {
 			final AttributeController attributeController = AttributeController.getController();
-			registry = new AttributeRegistry(attributeController);
+			registry = new AttributeRegistry(attributeController, TextController.getController());
 			map.addExtension(AttributeRegistry.class, registry);
 			final NodeModel rootNode = map.getRootNode();
 			if(rootNode != null)
@@ -69,16 +70,11 @@ public class AttributeRegistry implements IExtension {
 	private AttributeRegistryTableModel myTableModel = null;
 	private Boolean restrictionModel;
 	protected int visibleElementsNumber;
+	private final TextController textController;
 
-	/**
-	 *
-	 */
-	public AttributeRegistry() {
+	public AttributeRegistry(final AttributeController attributeController, final TextController textController) {
 		super();
-	}
-
-	public AttributeRegistry(final AttributeController attributeController) {
-		super();
+		this.textController = textController;
 		attributeListeners = new HashSet<IAttributesListener>();
 		changeListeners = new HashSet<ChangeListener>();
 		isAttributeLayoutChanged = false;

@@ -20,6 +20,7 @@
 package org.freeplane.features.text.mindmapmode;
 
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
@@ -40,6 +41,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -52,6 +55,7 @@ import javax.swing.text.html.HTMLEditorKit;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.components.BitmapImagePreview;
@@ -67,6 +71,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
+import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
@@ -77,6 +82,7 @@ import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
@@ -90,8 +96,11 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.styles.ConditionPredicate;
+import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.IContentTransformer;
+import org.freeplane.features.text.NodeItemRelation;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
@@ -104,7 +113,7 @@ import com.jgoodies.common.base.Objects;
 import com.lightdev.app.shtm.ActionBuilder;
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.SHTMLPanelImpl;
-import com.lightdev.app.shtm.TextResources;
+import com.lightdev.app.shtm.UIResources;
 
 
 /**
@@ -115,9 +124,43 @@ public class MTextController extends TextController {
 	private static final String PARSE_DATA_PROPERTY = "parse_data";
     public static final String NODE_TEXT = "NodeText";
 	private static Pattern FORMATTING_PATTERN = null;
-	private EditNodeBase mCurrentEditDialog = null;
+	private EditNodeBase mCurrentEditor = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
 	private final EventBuffer eventQueue;
+	
+	static{
+		final UIResources defaultResources = SHTMLPanel.getResources();
+    	SHTMLPanel.setResources(new UIResources() {
+    		public String getString(final String key) {
+    			if (key.equals("approximate_search_threshold"))
+    			{
+    				return new Double(StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB).toString();
+    			}
+    			String freeplaneKey = "simplyhtml." + key;
+    			String resourceString = ResourceController.getResourceController().getText(freeplaneKey, null);
+    			if (resourceString == null) {
+    				resourceString = ResourceController.getResourceController().getProperty(freeplaneKey);
+    			}
+    			return resourceString;
+    		}
+    		
+    		public Icon getIcon(String name){
+    			String freeplaneKey = "simplyhtml." + name;
+    			final ImageIcon freeplaneIcon = ResourceController.getResourceController().getIcon(freeplaneKey);
+    			return freeplaneIcon != null ? freeplaneIcon : defaultResources.getIcon(name);
+    		}
+    	});
+		
+	}
+	
+	private static final ConditionPredicate DEPENDS_ON_PARENT = new ConditionPredicate() {
+		
+		@Override
+		public boolean test(ICondition condition) {
+			return condition instanceof NodeItemRelation && 
+					FILTER_PARENT.equals(((NodeItemRelation)condition).getNodeItem());
+		}
+	};
 
 	public static MTextController getController() {
 		return (MTextController) TextController.getController();
@@ -201,6 +244,26 @@ public class MTextController extends TextController {
 			@Override
 			public boolean shouldSkipChildren(Entry entry) {
 				return true;
+			}
+		});
+	}
+	
+	
+
+	@Override
+	public void install(final ModeController modeController) {
+		super.install(modeController);
+		modeController.getMapController().addNodeChangeListener(new INodeChangeListener() {
+			
+			@Override
+			public void nodeChanged(NodeChangeEvent event) {
+				if(event.getProperty().equals(NodeModel.NODE_TEXT)) {
+					NodeModel node = event.getNode();
+					if (LogicalStyleController.getController().conditionalStylesOf(node).dependOnCondition(DEPENDS_ON_PARENT)){
+						for (NodeModel child : node.getChildren())
+							modeController.getMapController().delayedNodeRefresh(child, NodeModel.UNKNOWN_PROPERTY, null, null);
+					}
+				}
 			}
 		});
 	}
@@ -578,7 +641,7 @@ public class MTextController extends TextController {
 			}
 			private void stop() {
 				Controller.getCurrentModeController().setBlocked(false);
-				mCurrentEditDialog = null;
+				mCurrentEditor = null;
 			}
 			public boolean canSplit() {
                 return false;
@@ -588,9 +651,9 @@ public class MTextController extends TextController {
                 return EditedComponent.DETAIL;
             }
 		};
-		mCurrentEditDialog = createEditor(nodeModel, editControl, text, false, editLong, true);
+		mCurrentEditor = createEditor(nodeModel, editControl, text, false, editLong, true);
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
-		mCurrentEditDialog.show(frame);
+		mCurrentEditor.show(frame);
     }
 
 
@@ -706,15 +769,18 @@ public class MTextController extends TextController {
 
 	public void edit(final FirstAction action, final boolean editLong) {
 		final Controller controller = Controller.getCurrentController();
-		final NodeModel selectedNode = controller.getSelection().getSelected();
-		if (selectedNode != null) {
-			if (FirstAction.EDIT_CURRENT.equals(action)) {
-				edit(selectedNode, selectedNode, false, false, editLong);
-			}
-			else if (!Controller.getCurrentModeController().isBlocked()) {
-				final int mode = FirstAction.ADD_CHILD.equals(action) ? MMapController.NEW_CHILD : MMapController.NEW_SIBLING_BEHIND;
-				((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(mode);
-			}
+		final IMapSelection selection = controller.getSelection();
+		if(selection == null)
+			return;
+		final NodeModel selectedNode = selection.getSelected();
+		if (selectedNode == null)
+			return;
+		if (FirstAction.EDIT_CURRENT.equals(action)) {
+			edit(selectedNode, selectedNode, false, false, editLong);
+		}
+		else if (!Controller.getCurrentModeController().isBlocked()) {
+			final int mode = FirstAction.ADD_CHILD.equals(action) ? MMapController.NEW_CHILD : MMapController.NEW_SIBLING_BEHIND;
+			((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(mode);
 		}
 	}
 	
@@ -766,15 +832,14 @@ public class MTextController extends TextController {
 	    }
 
 		private boolean isMenuEvent(KeyEvent e) {
-	        if(! editLong){
-	    		final String editLongKeyStrokeProperty = ResourceController.getResourceController().getProperty("acceleratorForMindMap/$EditLongAction$0", null);
-	    		if(editLongKeyStrokeProperty != null){
-	    			final KeyStroke editLongKeyStroke = UITools.getKeyStroke(editLongKeyStrokeProperty);
-	    			if(editLongKeyStroke != null){
-	    				final KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
-	    				if(editLongKeyStroke.equals(keyStroke)){
-	    					return true;
-	    				}
+			if (!editLong) {
+				AFreeplaneAction editLongAcction = modeController.getAction("EditLongAction");
+				KeyStroke accelerator = ResourceController.getResourceController().getAcceleratorManager()
+				    .getAccelerator(editLongAcction);
+				if (accelerator != null) {
+					final KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
+					if (accelerator.equals(keyStroke)) {
+						return true;
 	    			}
 	    		}
 	    	}
@@ -811,7 +876,7 @@ public class MTextController extends TextController {
 
 	public void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel, final boolean isNewNode,
 	          final boolean parentFolded, final boolean editLong) {
-		if (nodeModel == null || mCurrentEditDialog != null) {
+		if (nodeModel == null || mCurrentEditor != null) {
 			return;
 		}
 		final Controller controller = Controller.getCurrentController();
@@ -845,7 +910,7 @@ public class MTextController extends TextController {
 				    }
 					final MapController mapController = Controller.getCurrentModeController().getMapController();
 					if (parentFolded) {
-						mapController.setFolded(prevSelectedModel, true);
+						mapController.fold(prevSelectedModel);
 					}
 				}
 				stop();
@@ -854,7 +919,7 @@ public class MTextController extends TextController {
 			private void stop() {
 				Controller.getCurrentModeController().setBlocked(false);
 				viewController.obtainFocusForSelected();
-				mCurrentEditDialog = null;
+				mCurrentEditor = null;
 			}
 
 			public void ok(final String text) {
@@ -883,9 +948,9 @@ public class MTextController extends TextController {
                 return EditedComponent.TEXT;
             }
 		};
-		mCurrentEditDialog = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editLong, true);
+		mCurrentEditor = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editLong, true);
 		final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
-		mCurrentEditDialog.show(frame);
+		mCurrentEditor.show(frame);
 	}
 
 	private EditNodeBase createEditor(final NodeModel nodeModel, final IEditControl editControl,
@@ -919,12 +984,12 @@ public class MTextController extends TextController {
 		if(keyEventDispatcher != null){
 			keyEventDispatcher.uninstall();
 		}
-		if (mCurrentEditDialog != null) {
+		if (mCurrentEditor != null) {
 			// Ensure that setText from the edit and the next action 
 			// are parts of different transactions
-			mCurrentEditDialog.closeEdit();
+			mCurrentEditor.closeEdit();
 			modeController.forceNewTransaction();
-			mCurrentEditDialog = null;
+			mCurrentEditor = null;
 		}
 	}
 	public void addEditorPaneListener(IEditorPaneListener l){
@@ -948,20 +1013,6 @@ public class MTextController extends TextController {
 	 * @return
 	 */
 	public SHTMLPanel createSHTMLPanel(String purpose) {
-    	SHTMLPanel.setResources(new TextResources() {
-    		public String getString(String pKey) {
-    			if (pKey.equals("approximate_search_threshold"))
-    			{
-    				return new Double(StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB).toString();
-    			}
-    			pKey = "simplyhtml." + pKey;
-    			String resourceString = ResourceController.getResourceController().getText(pKey, null);
-    			if (resourceString == null) {
-    				resourceString = ResourceController.getResourceController().getProperty(pKey);
-    			}
-    			return resourceString;
-    		}
-    	});
     	com.lightdev.app.shtm.ScaledStyleSheet.FONT_SCALE_FACTOR = UITools.FONT_SCALE_FACTOR;
     	SHTMLPanel.setActionBuilder(new ActionBuilder() {
 			
@@ -971,6 +1022,11 @@ public class MTextController extends TextController {
 			}
 		});
     	final SHTMLPanel shtmlPanel = SHTMLPanel.createSHTMLPanel();
+    	final JEditorPane sourceEditorPane = shtmlPanel.getSourceEditorPane();
+    	final Font originalFont = sourceEditorPane.getFont();
+		final Font scaledFont = UITools.scale(originalFont);
+		sourceEditorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
+		sourceEditorPane.setFont(scaledFont);
     	shtmlPanel.setOpenHyperlinkHandler(new ActionListener(){
 
 			public void actionPerformed(ActionEvent pE) {

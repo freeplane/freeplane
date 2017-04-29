@@ -34,7 +34,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 @NodeHookDescriptor(hookName = "accessories/plugins/AutomaticLayout.properties")
 public class AutomaticLayoutController extends PersistentNodeHook implements IExtension{
-	private static final int FIRST_CYCLIC_STYLE_LEVEL = 1;
 	private static final String AUTOMATIC_LAYOUT_LEVEL = "AutomaticLayout.level,";
 	private static final String AUTOMATIC_LAYOUT_LEVEL_ROOT = "AutomaticLayout.level.root";
 
@@ -66,10 +65,10 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 		if(layout == null || node.isLeaf() && ! layout.applyToLeaves)
 			return null;
 		final int depth = node.depth();
-		return getStyle(node.getMap(), depth, false);
+		return getStyle(node.getMap(), depth);
 	}
 
-	public IStyle getStyle(final MapModel map, final int depth, boolean cyclic) {
+	public IStyle getStyle(final MapModel map, final int depth) {
 		final MapStyleModel extension = MapStyleModel.getExtension(map);
 		final String name = depth == 0 ? AUTOMATIC_LAYOUT_LEVEL_ROOT : AUTOMATIC_LAYOUT_LEVEL + depth;
 		final TranslatedObject styleKey = TranslatedObject.format(name);
@@ -77,24 +76,12 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
 		if (extension.getStyleNode(style) != null) {
 			return style;
 		}
-		if(! cyclic)
-			return null;
-		
-		final TranslatedObject rootKey = TranslatedObject.format(AUTOMATIC_LAYOUT_LEVEL_ROOT);
-		final IStyle rootStyle = StyleFactory.create(rootKey);
-		NodeModel rootStyleNode = extension.getStyleNode(rootStyle);
-		if(rootStyleNode == null)
-			return null;
-		final NodeModel automaticStylesParentNode = rootStyleNode.getParentNode();
-		final int cycledLevelStyleCount = automaticStylesParentNode.getChildCount() - FIRST_CYCLIC_STYLE_LEVEL;
-		if(cycledLevelStyleCount <= 0)
-			return null;
 		else
-			return getStyle(map, FIRST_CYCLIC_STYLE_LEVEL + ((depth - FIRST_CYCLIC_STYLE_LEVEL) % cycledLevelStyleCount), false);
+			return null;
 	}
 	
-	public NodeModel getStyleNode(MapModel map, int depth, boolean cyclic) {
-		IStyle style = getStyle(map, depth, cyclic);
+	public NodeModel getStyleNode(MapModel map, int depth) {
+		IStyle style = getStyle(map, depth);
 		if(style != null){
 			final MapStyleModel extension = MapStyleModel.getExtension(map);
 			return extension.getStyleNode(style);

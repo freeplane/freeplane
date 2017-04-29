@@ -20,7 +20,6 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MouseArea;
@@ -75,8 +74,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				UIIcon uiIcon = component.getUIIconAt(e.getPoint());
 				if(uiIcon != null){
 					final IconController iconController = mc.getExtension(IconController.class);
-					final NodeModel model = component.getNodeView().getModel();
-					if(iconController.onIconClicked(model, uiIcon))
+					if(iconController.onIconClicked(node, uiIcon))
 						return;
 				}
 				else if (component.isClickableLink(e.getX())) {
@@ -90,7 +88,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				if (link != null) {
 					doubleClickTimer.start(new Runnable() {
 						public void run() {
-							loadLink(link);
+							loadLink(node, link);
 						}
 					});
 					e.consume();
@@ -98,11 +96,10 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 
 				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
-					final boolean fold = ! node.isFolded();
 					if (!nodeSelector.shouldSelectOnClick(e)) {
 						doubleClickTimer.start(new Runnable() {
 							public void run() {
-								mapController.setFolded(node, fold);
+								mapController.toggleFolded(node);
 							}
 						});
 					}
@@ -111,7 +108,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			else if(Compat.isShiftEvent(e)){
 				if (isInFoldingRegion(e)) {
 					if (! mapController.showNextChild(node))
-						mapController.setFolded(node, true);
+						mapController.fold(node);
 					e.consume();
 				}
 			}
@@ -120,20 +117,22 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if ((plainEvent && inFoldingRegion
 				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e))
 		        && !nodeSelector.shouldSelectOnClick(e)) {
-			final boolean fold = ! node.isFolded();
 			doubleClickTimer.cancel();
-			mapController.setFolded(node, fold);
+			mapController.toggleFolded(node);
 			e.consume();
 			return;
 		}
 		if(inside && e.getButton() == 1 &&  ! e.isAltDown())
 			nodeSelector.extendSelection(e);
 	}
+	private boolean isFoldedOnCurrentView(final NodeModel node) {
+		return Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node);
+	}
 
 
-	protected void loadLink(final String link) {
+	private void loadLink(NodeModel node, final String link) {
 		try {
-			UrlManager.getController().loadURL(new URI(link));
+			LinkController.getController().loadURI(node, new URI(link));
 		} catch (Exception ex) {
 			LogUtils.warn(ex);
 		}

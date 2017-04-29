@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="19"
+   width="19"
+   version="1.1"
+   id="svg3093"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="kword.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview3114"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.22424933"
+     inkscape:cx="343.36101"
+     inkscape:cy="-312.04999"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3093" />
+  <defs
+     id="defs3095">
+    <linearGradient
+       id="a"
+       y2="377.60001"
+       gradientUnits="userSpaceOnUse"
+       y1="388.92001"
+       gradientTransform="matrix(-0.44755,0,0,0.27373,182.85,603.09)"
+       x2="142.38"
+       x1="160.7">
+      <stop
+         stop-color="#0d56c0"
+         offset="0"
+         id="stop3098" />
+      <stop
+         stop-color="#fff"
+         offset="1"
+         id="stop3100" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata3102">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-108.55,-703.96002)"
+     id="g3104">
+    <text
+       transform="scale(0.81043,1.2339)"
+       line-height="125%"
+       xml:space="preserve"
+       font-size="9.1135px"
+       y="583.85767"
+       x="133.98459"
+       id="text3106"
+       sodipodi:linespacing="125%"
+       style="font-size:9.11349964px;line-height:125%;fill:#ff2a2a;stroke:#1a1a1a;stroke-width:0.18091001;font-family:Digital Readout ExpUpright"><tspan
+         font-size="9.1135px"
+         line-height="125%"
+         dx="0 0.38516894"
+         dy="0 -1.2914487 1.2914487"
+         y="583.85767"
+         x="133.98459"
+         id="tspan3108"
+         style="font-size:9.11349964px;line-height:125%;fill:#ff2a2a;stroke:#1a1a1a;stroke-width:0.18091001;font-family:Digital Readout ExpUpright">9:20</tspan></text>
+    <rect
+       style="color:#000000;fill:none"
+       height="19"
+       width="19"
+       y="703.96002"
+       x="108.55"
+       id="rect3110" />
+    <path
+       d="m 120.66,708.72 -5.1902,-3.3957 -0.0211,2.0148 -5.3561,-0.0613 v 2.8313 l 5.3561,0.0382 v 1.9614 l 5.2123,-3.3886 z"
+       id="path3112"
+       inkscape:connector-curvature="0"
+       style="fill:url(#a);fill-rule:evenodd;stroke:#002277;stroke-width:0.35001001px;stroke-opacity:0.72673998" />
+  </g>
+</svg>

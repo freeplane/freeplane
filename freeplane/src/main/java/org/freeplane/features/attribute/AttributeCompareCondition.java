@@ -96,7 +96,7 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 				continue;
 			}
 			final Object originalContent = attributes.getValueAt(i, 1);
-			final Object content = textController.getTransformedObjectNoThrow(originalContent, node, null);
+			final Object content = textController.getTransformedObjectNoFormattingNoThrow(originalContent, node, null);
 			if (checkContent(content))
 				return true;
 		}

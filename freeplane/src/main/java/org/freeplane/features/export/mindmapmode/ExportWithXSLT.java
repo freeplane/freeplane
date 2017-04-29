@@ -28,6 +28,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -291,8 +292,10 @@ public class ExportWithXSLT implements IExportEngine {
 		try {
 			final TransformerFactory transFact = TransformerFactory.newInstance();
 			final Transformer trans = transFact.newTransformer(xsltSource);
-			final URI uri = new URI(null, null, saveFile.getName() + "_files/", null);
-			trans.setParameter("destination_dir", uri.toString());
+			trans.setParameter("file_ref", saveFile.getAbsoluteFile().toURI().toString());
+			final String fileName = saveFile.getName();
+			final String fileNameEncoded = toRelativeUri(fileName);
+			trans.setParameter("destination_dir", fileNameEncoded + "_files/");
 			trans.setParameter("area_code", areaCode);
 			trans.setParameter("folding_type", resourceController.getProperty(
 			"html_export_folding"));
@@ -319,6 +322,10 @@ public class ExportWithXSLT implements IExportEngine {
 		}
 		return true;
     }
+
+	private String toRelativeUri(final String fileName) throws URISyntaxException {
+		return new URI(null, null, fileName, null).toString();
+	}
 
 	public FileFilter getFileFilter() {
 		return new ExampleFileFilter(getProperty("file_type"), TextUtils.getText(name + ".text"));

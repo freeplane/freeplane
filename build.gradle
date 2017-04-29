@@ -13,6 +13,7 @@ allprojects {
         flatDir name: 'localGitDepsRepository',
                 dirs: [rootDir.path + "/freeplane/lib",
                        rootDir.path + "/freeplane_plugin_jsyntaxpane/lib",
+                       rootDir.path + "/freeplane_plugin_latex/lib",
                        rootDir.path + "/freeplane_plugin_svg/lib"]
     }
 
@@ -83,7 +84,8 @@ subprojects {
     }
 
     dependencies {
-        testCompile group: 'junit', name: 'junit', version: '4.11'
+        testCompile 'junit:junit:4.11'
+        testCompile 'org.assertj:assertj-core:2.6.0'
     }
 
     task copyEclipseSettings(type: Copy) {
@@ -201,8 +203,14 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
         into(globalBuild + '/plugins/' + pluginid + '/META-INF/')
     }
 
+    task copyOSGiConfig(type: Copy) {
+        from ("OSGI-INF")
+        into(globalBuild + '/plugins/' + pluginid + '/OSGI-INF/')
+    }
+	
     build.dependsOn copyOSGiJars
     build.dependsOn copyOSGiManifest
+	build.dependsOn copyOSGiConfig
 
     // create a separate non-OSGi(!) jar for each plugin!
     task pluginJar(type: Jar) {

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="16.006804"
+   width="16.007999"
+   version="1.1"
+   viewBox="0 0 16.008 16.006804"
+   id="svg3080"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="moveto_prevnode.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview3107"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.22425739"
+     inkscape:cx="335.53524"
+     inkscape:cy="-451.7743"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3080" />
+  <defs
+     id="defs3082">
+    <linearGradient
+       id="a"
+       y2="838.97998"
+       gradientUnits="userSpaceOnUse"
+       x2="56.047001"
+       gradientTransform="matrix(-1,0,0,1,783.51,-380.02)"
+       y1="834.12"
+       x1="56.425999">
+      <stop
+         stop-color="#fff"
+         stop-opacity=".54615"
+         offset="0"
+         id="stop3085" />
+      <stop
+         stop-color="#fff"
+         stop-opacity="0"
+         offset="1"
+         id="stop3087" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata3089">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-654.992,-485.98999)"
+     id="g3091">
+    <rect
+       style="opacity:0.92510998;color:#000000;fill:none"
+       rx="0.070384003"
+       ry="0.092563003"
+       height="16"
+       width="16"
+       y="485.98999"
+       x="655"
+       id="rect3093" />
+    <rect
+       style="color:#000000;fill:none"
+       height="16"
+       width="16"
+       y="485.98999"
+       x="655"
+       id="rect3095" />
+    <g
+       transform="translate(-22.758,0.83061)"
+       id="g3097"
+       style="fill-rule:evenodd">
+      <rect
+         height="7.3909001"
+         rx="1.7122"
+         ry="1.6299"
+         width="15.142"
+         y="489.47"
+         x="678.17999"
+         id="rect3099"
+         style="fill:#ffffff;stroke:#000080;stroke-width:0.85776001;stroke-linejoin:round" />
+      <g
+         transform="matrix(-0.96232,0,0,0.99737,1391.1,35.1)"
+         id="g3101">
+        <path
+           style="color:#000000;fill:#00aad4;stroke:#0044aa;stroke-width:1.09809995;stroke-linejoin:round"
+           d="m 735.54,459.12 -10.263,-7.3107 -0.0314,14.924 z"
+           id="path3103"
+           inkscape:connector-curvature="0" />
+        <path
+           style="color:#000000;fill:url(#a)"
+           d="m 725.28,451.81 c 0,0 -0.0314,10.499 -0.0314,14.924 l 10.113,-7.5231 z"
+           id="path3105"
+           inkscape:connector-curvature="0" />
+      </g>
+    </g>
+  </g>
+</svg>

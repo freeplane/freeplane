@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<linearGradient id="a" y2="377.6" gradientUnits="userSpaceOnUse" x2="142.38" gradientTransform="matrix(-.00036318 -.40809 .31921 -.00042146 -608.54 544.47)" y1="388.92" x1="160.7">
+<stop stop-color="#36d200" offset="0"/>
+<stop stop-color="#fff" offset="1"/>
+</linearGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-36.305 -207.1)">
+<g transform="translate(533.3 -243.26)">
+<rect style="color:#000000" height="16" width="16" y="450.36" x="-497" fill="none"/>
+<g transform="translate(0 -24)">
+<rect style="color:#000000" height="16" width="16" y="474.36" x="-497" fill="none"/>
+<g font-size="9.3699px" transform="translate(16.162 -9)" stroke="#000000" font-family="Arial" stroke-width=".29281" fill="#000000">
+<text style="word-spacing:0px;letter-spacing:0px" line-height="125%" y="490.21576" x="-513.00195" xml:space="preserve"><tspan y="490.21576" x="-513.00195" stroke-width=".29281">A</tspan></text>
+<text style="word-spacing:0px;letter-spacing:0px" line-height="125%" y="499.21579" x="-512.64642" xml:space="preserve"><tspan y="499.21579" x="-512.64642" stroke-width=".29281">Z</tspan></text>
+</g>
+<g transform="matrix(.53276 0 0 .53276 -348.31 24.428)">
+<rect stroke-linejoin="round" height="7.3909" stroke="#000080" stroke-width=".85776" fill="#fff" fill-rule="evenodd" rx="1.7122" ry="1.6299" width="15.142" y="864.46" x="-264.93"/>
+</g>
+<rect stroke-linejoin="round" height="3.9375" stroke="#000080" stroke-width=".45698" fill="#fff" fill-rule="evenodd" rx=".91220" ry=".86833" width="8.0671" y="475.93" x="-489.45"/>
+<path d="m-485.41 487.61-3.9642-4.7273 2.3496-0.0234-0.076-4.8838 3.3017-0.004 0.049 4.8838 2.2873-0.003-3.9474 4.758z" fill-rule="evenodd" stroke="#005200" stroke-width=".36092px" fill="url(#a)"/>
+</g>
+</g>
+</g>
+</svg>

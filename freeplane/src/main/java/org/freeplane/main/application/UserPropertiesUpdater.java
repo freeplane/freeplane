@@ -59,6 +59,9 @@ public class UserPropertiesUpdater {
 			try {
 				parentDirectory.mkdirs();
 				org.apache.commons.io.FileUtils.copyDirectory(sourceDirectory, targetDirectory);
+				final File templateDirectory = new File(targetDirectory, "templates");
+				org.apache.commons.io.FileUtils.deleteDirectory(templateDirectory);
+				templateDirectory.mkdir();
 			}
 			catch (IOException e) {
 			}

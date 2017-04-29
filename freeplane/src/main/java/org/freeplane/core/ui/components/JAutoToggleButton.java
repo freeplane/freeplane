@@ -42,6 +42,10 @@ public class JAutoToggleButton extends JToggleButton implements PropertyChangeLi
 		super(a);
 	}
 
+	public JAutoToggleButton() {
+		super();
+	}
+
 	public JAutoToggleButton(final IFreeplaneAction a, final ButtonModel model) {
 		super(a);
 		model.addChangeListener(this);

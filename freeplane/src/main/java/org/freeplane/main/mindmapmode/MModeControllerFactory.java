@@ -21,7 +21,6 @@ package org.freeplane.main.mindmapmode;
 
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Box;
@@ -95,6 +94,7 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.RevisionPlugin;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.mindmapmode.MNoteController;
+import org.freeplane.features.presentations.mindmapmode.PresentationController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.LogicalStyleController;
@@ -102,7 +102,7 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
 import org.freeplane.features.styles.mindmapmode.ShowFormatPanelAction;
-import org.freeplane.features.styles.mindmapmode.StyleEditorPanel;
+import org.freeplane.features.styles.mindmapmode.styleeditorpanel.StyleEditorPanel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.text.mindmapmode.SortNodes;
@@ -180,6 +180,7 @@ public class MModeControllerFactory {
 		modeController.addExtension(ReminderHook.class, new ReminderHook(modeController));
 		new AutomaticEdgeColorHook();
 		new ViewerController();
+		PresentationController.install(modeController);
 		modeController.addAction(new AddAttributeAction());
 		modeController.addAction(new RemoveFirstAttributeAction());
 		modeController.addAction(new RemoveLastAttributeAction());
@@ -227,7 +228,7 @@ public class MModeControllerFactory {
 		UrlManager.install(fileManager);
 		MMapIO.install(modeController);
 		controller.getMapViewManager().addMapViewChangeListener(fileManager);
-		IconController.install(new MIconController(modeController));
+		new MIconController(modeController).install(modeController);
 		new ProgressFactory().installActions(modeController);
 		final MapController mapController = modeController.getMapController();
 		EdgeController.install(new MEdgeController(modeController));
@@ -235,7 +236,7 @@ public class MModeControllerFactory {
 		NoteController.install(new MNoteController(modeController));
 		userInputListenerFactory.setMapMouseListener(new MMapMouseListener());
 		final MTextController textController = new MTextController(modeController);
-		TextController.install(textController);
+		textController.install(modeController);
 		LinkController.install(new MLinkController(modeController));
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		ClipboardController.install(new MClipboardController());

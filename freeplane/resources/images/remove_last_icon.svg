@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 15.773 16" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<radialGradient id="b" gradientUnits="userSpaceOnUse" cy="230.15" cx="267.6" gradientTransform="matrix(-1.2041 -.80860 .97364 -1.4498 368.7 779.61)" r="54.705">
+<stop stop-color="#4d0033" offset="0"/>
+<stop stop-color="#fff2ff" offset="1"/>
+</radialGradient>
+<radialGradient id="a" gradientUnits="userSpaceOnUse" cy="230.15" cx="267.6" gradientTransform="matrix(-1.3772 -1.014 1.5479 -2.1022 282.85 984.73)" r="54.705">
+<stop stop-color="#625b18" offset="0"/>
+<stop stop-color="#fff" offset="1"/>
+</radialGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-102.55 -142.81)">
+<g transform="translate(-18.555 -651.23)">
+<rect opacity=".92511" style="color:#000000" rx=".066851" ry=".092563" height="16" width="15.197" y="794.04" x="121.39" fill="none"/>
+<g transform="matrix(1.0765 0 0 1.1334 -66.812 -142.77)">
+<circle stroke-width="6.8381" cy="219.91" fill-rule="evenodd" transform="matrix(.064073 0 0 .064073 161.57 820.22)" stroke="#590059" cx="257.44" r="51.206" fill="url(#b)"/>
+<text xml:space="preserve" font-size="6.8663px" y="836.77893" x="176.09413" font-family="Arial" fill="#ffffff"><tspan font-size="6.8663px" y="836.77893" x="176.09413" font-family="Arial" fill="#ffffff">1</tspan></text>
+</g>
+<g transform="matrix(1.6271 0 0 1.7131 -172.43 -629.23)">
+<circle stroke-width="6.8381" cy="219.91" fill-rule="evenodd" transform="matrix(.064073 0 0 .064073 170.11 820.49)" stroke="#82792b" cx="257.44" r="51.206" fill="url(#a)"/>
+<text xml:space="preserve" font-size="6.2779px" y="836.83807" x="184.93179" font-family="Arial" fill="#ffffff"><tspan font-size="6.2779px" y="836.83807" x="184.93179" font-family="Arial" fill="#ffffff">2</tspan></text>
+</g>
+<g transform="matrix(.64580 0 0 .74226 231 147.48)" fill="#f00">
+<path style="color:#000000" d="m-161.28 889.17c0.59165-6.8804 5.7208-14.856 13.736-16l1.3818 2.3683c-7.776 1.6244-12.057 5.7928-15.118 13.632z"/>
+<path style="color:#000000" d="m-164.97 874.34c6.9053 0.0759 15.242 4.5947 16.982 12.502l-2.2584 1.555c-2.2009-7.6329-6.6776-11.591-14.723-14.057z"/>
+</g>
+</g>
+</g>
+</svg>

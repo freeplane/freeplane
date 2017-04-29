@@ -33,7 +33,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class IconContainedCondition extends ASelectableCondition {
-	private static final IconStore STORE = IconStoreFactory.create();
+	private static final IconStore STORE = IconStoreFactory.ICON_STORE;
 	static final String ICON = "ICON";
 	static final String NAME = "icon_contained_condition";
 

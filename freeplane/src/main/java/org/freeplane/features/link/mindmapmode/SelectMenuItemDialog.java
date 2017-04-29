@@ -94,7 +94,7 @@ public class SelectMenuItemDialog extends JDialog {
 			setOpenIcon(null);
 			setClosedIcon(null);
 			// set default
-			setLeafIcon(MindIconFactory.create(DEFAULT_ICON).getIcon());
+			setLeafIcon(MindIconFactory.createIcon(DEFAULT_ICON).getIcon());
 		}
 
 		@Override

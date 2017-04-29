@@ -15,7 +15,7 @@
 			<Entry name="FindPreviousAction" />
 		</Entry>
 		<Entry name="view">
-			<Entry name="toolbars">
+			<Entry name="controls">
 				<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
 				<Entry name="ToggleToolbarAction" />
 				<Entry name="ShowFilterToolbarAction" accelerator="control F" />
@@ -55,9 +55,10 @@
 			<Entry name="GotoNodeAction" />
 			<Entry accelerator="control alt LEFT" name="NextNodeAction.BACK" />
 			<Entry accelerator="control alt RIGHT" name="NextNodeAction.FORWARD" />
+			<Entry name="NotFoldingNextPresentationItemAction" accelerator="control alt SPACE" />
 			<Entry accelerator="control alt shift LEFT" name="NextNodeAction.BACK_N_FOLD" />
 			<Entry accelerator="control alt shift RIGHT" name="NextNodeAction.FORWARD_N_FOLD" />
-			<Entry name="NextPresentationItemAction" />
+			<Entry name="NextPresentationItemAction" accelerator="control shift SPACE" />
 			<Entry name="links">
 			<Entry accelerator="control ENTER" name="FollowLinkAction" />
 			</Entry>
@@ -83,12 +84,14 @@
 		<Entry name="extras">
 				<Entry name="EnterPassword" />
 		</Entry>
+		<Entry name="help">
+				<Entry name="OpenFreeplaneSiteAction" />
+				<Entry name="AboutAction"/>
+		</Entry>
 	</Entry>
-	<Entry name="help">
-			<Entry name="OpenFreeplaneSiteAction" />
-			<Entry name="AboutAction"/>
-	</Entry>
-	<Entry name="map_popup" builder="map_popup">
+	<Entry name="map_popup" builder="map_popup" processOnPopup="true">
+		<Entry builder="navigate_maps,radio_button_group" />
+		<Entry builder="separator" />
 		<Entry name="ToggleMenubarAction"/>
 		<Entry name="ToggleToolbarAction" />
 		<Entry name="ShowFilterToolbarAction" />
@@ -105,6 +108,7 @@
 		<Entry name="CopySingleAction" accelerator="control shift C" />
 	</Entry>
 	<Entry name="main_toolbar" builder="toolbar,ignore">
+		<Entry name="url" builder="main_toolbar_url" />
 		<Entry builder="main_toolbar_zoom" name="zoom" />
 		<Entry name="open">
 			<Entry name="PrintAction" />

@@ -40,7 +40,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.browsemode.BModeController;
 import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
@@ -98,9 +97,10 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 		getController().selectMode(BModeController.MODENAME);
 		String initialMapName = ResourceController.getResourceController().getProperty("browsemode_initial_map");
 		if (initialMapName != null && initialMapName.startsWith(".")) {
-			final String locationUrl = applet.getParameter("location_href");
+			String locationUrl = applet.getParameter("location_href");
 			try {
-				URI uri = new URI(locationUrl).resolve(new URI(null, null, initialMapName, null));
+				final URI codebase = locationUrl != null ?  new URI(locationUrl):applet.getCodeBase().toURI();
+				URI uri = codebase.resolve(new URI(null, null, initialMapName, null));
 				URL documentBase = new URL(uri.getScheme(), uri.getHost(),  uri.getPort(), uri.getPath());
 				initialMapName = documentBase.toString();
 			}
@@ -166,7 +166,7 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 
 	@Override
 	public void openDocument(final URL doc) {
-		applet.getAppletContext().showDocument(doc, "_blank");
+		applet.showDocument(doc);
 	}
 
 	@Override

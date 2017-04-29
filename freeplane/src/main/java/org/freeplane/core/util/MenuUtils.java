@@ -44,7 +44,7 @@ import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.mode.ModeController;
 
 /** Utilities for dealing with the Freeplane menu: In scripts available as "global variable" menuUtils. */
 public class MenuUtils {
@@ -96,7 +96,8 @@ public class MenuUtils {
 				// but only for a few of these Icons are available
 				return null;
 			}
-			return new MindIcon(resource.replaceAll("/images/(.*).png", "../$1"));
+			final String name = resource.replaceAll("/images/(.*).png", "../$1");
+			return new MindIcon(name);
 		}
 
 		@Override
@@ -314,7 +315,7 @@ public class MenuUtils {
 	}
 
 	private static IUserInputListenerFactory userInputFactory() {
-		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+		ModeController  modeController = Controller.getCurrentModeController();
 		return modeController.getUserInputListenerFactory();
 	}
 

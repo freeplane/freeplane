@@ -82,11 +82,13 @@
 		<tab name="Appearance">
 			<separator name="look_and_feel">
 				<group name="lookandfeel" />
-				<number name="user_defined_screen_resolution" min="36" max="1200" />
+				<number name="monitor_size_inches" min="1" max="200" step="0.1" />
 				<boolean name="lookandfeel.scaleuifonts" />
 				<boolean name="resources_use_default_font_for_notes_too" />
 				<boolean name="resources_use_margin_top_zero_for_notes" />
 				<number name="max_menu_item_count" min="10" />
+				<number name="menuItemFontSize" min="3" />
+				<length name="toolbar_icon_height" defaultUnit = "pt" min="0" max = "1000" step = "0.1"/>
 			</separator>
 			<separator name="status">
 				<boolean name="display_node_id" />
@@ -94,8 +96,6 @@
 			<separator name="default_colors">
 				<color name="revision_color" />
 				<boolean name="printonwhitebackground" />
-				<color name="standardcloudcolor" />
-				<number name="presentation_dimmer_transparency" min="0" max="255" />
 			</separator>
 			<separator name="selection_colors">
 				<boolean name="standarddrawrectangleforselection" />
@@ -112,6 +112,10 @@
 					<choice value="antialias_none" />
 				</combo>
 			</separator>
+			<separator name="svg_icons">
+				<boolean name="use_svg_icons" />
+				<boolean name="antialias_svg" />
+			</separator>
 			<separator name="size_limits">
 				<number name="max_shortened_text_length" />
 				<number name="max_image_width" />
@@ -124,6 +128,8 @@
 				
 			</separator>
 			<separator name="connectors">
+				<combo name="connector_arrows" enum="org.freeplane.features.link.ConnectorArrows"/>
+				<combo name="connector_dash" enum="org.freeplane.features.DashVariant"/>
 				<color name="standardlinkcolor" />
 				<number name="connector_alpha" text="edit_transparency_label"
 					min="20" max="255" />
@@ -138,6 +144,10 @@
 				<font name="label_font_family" />
 				<number name="label_font_size" min="4" max="216" />
 				<boolean name="paint_connectors_behind" />
+			</separator>
+			<separator name="clones">
+				<boolean name="markClones"/>
+				<boolean name="markSelectedClones"/>
 			</separator>
 			<separator name="edit_long_node_window">
 				<boolean name="el__buttons_above" />
@@ -155,11 +165,11 @@
 				<boolean name="structured_icon_toolbar" />
 			</separator>
 		</tab>
-		<tab name="Keystrokes"
-			layout="right:max(40dlu;p), 4dlu, 80dlu, 7dlu,right:max(40dlu;p), 4dlu, 80dlu, 7dlu">
-			<separator name="commands_for_the_program" />
-			<text name="use_ctrl_key" />
-			<separator name="icons" />
+		<tab name="Defaults">
+			<separator name="cloud">
+				<color name="standardcloudcolor" />
+				<combo name="standardcloudshape" enum="org.freeplane.features.cloud.CloudModel$Shape"/>
+			</separator>				
 		</tab>
 		<tab name="Behaviour">
 			<separator name="behaviour">
@@ -184,6 +194,7 @@
 				<boolean name="copyFormatToNewSiblingIncludesIcons"/>
 				<boolean name="scrollOnUnfold"/>
 				<boolean name="shouldCenterSmallMaps"/>
+				<boolean name="pasteImagesFromFiles"/>
 			</separator>
 			<separator name="reminderOptions">
 				<boolean name="remindersBlink" />
@@ -283,7 +294,30 @@
 			</separator>
 			<separator name="html_import">
 				<boolean name="structured_html_import" />
+				<boolean name="cut_out_pictures_when_pasting_html"/>
 			</separator>
+		</tab>
+		<tab name="Presentation">
+			<separator name="presentation">
+				<boolean name="presentation.slideDisplaysAllNodes"/>
+				<boolean name="presentation.processesNavigationKeys"/>
+				<boolean name="presentation.processesEscapeKey"/>
+				<boolean name="presentation.switchToFullScreen"/>
+				<boolean name="presentation.switchToSpotlight"/>
+				<boolean name="presentation.zoom"/>
+				<boolean name="presentation.combineAll"/>
+				<number name="presentation_dimmer_transparency" min="0" max="255" />
+				<boolean name="presentation.slowMotion"/>
+				<number name="presentation.maxDropBoxRowCount" min="3" max="999" /> 
+				<string name="presentation.exportDirectory" />
+			</separator>
+			
+		</tab>
+		<tab name="Keystrokes"
+			layout="right:max(40dlu;p), 4dlu, 80dlu, 7dlu,right:max(40dlu;p), 4dlu, 80dlu, 7dlu">
+			<separator name="commands_for_the_program" />
+			<text name="use_ctrl_key" />
+			<separator name="icons" />
 		</tab>
 		<tab name="plugins" />
 	</tabbed_pane>

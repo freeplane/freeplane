@@ -2,6 +2,7 @@ package org.freeplane.core.ui;
 
 import java.awt.Event;
 import java.awt.event.KeyEvent;
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -77,7 +79,11 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
  	}
 
 	private void loadDefaultAccelerators(String resource){
-		try (final InputStream resourceStream = ResourceController.getResourceController().getResourceStream(resource)) {
+		final ResourceController resourceController = ResourceController.getResourceController();
+		final URL resourceUrl = resourceController.getResource(resource);
+		if(resourceUrl == null)
+			return;
+		try (final InputStream resourceStream = new BufferedInputStream(resourceUrl.openStream())) {
 			overwritttenDefaultProps.load(resourceStream);
 		}
 		catch (Exception e) {
@@ -493,7 +499,11 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 
 	private static String replaceModifiersForMac(String accelerator) {
 		if (Compat.isMacOsX()) {
-			accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
+			if(accelerator.length() == 5 
+					&& (accelerator.startsWith("alt ") || accelerator.startsWith("ALT ")))
+				accelerator = "control " + accelerator.charAt(4);
+			else
+				accelerator = accelerator.replaceFirst("CONTROL", "META").replaceFirst("control", "meta");
 		}
 		return accelerator;
 	}

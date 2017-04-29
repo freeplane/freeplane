@@ -45,7 +45,7 @@ public class FilterInfo {
 		info |= flag;
 	}
 
-	int get() {
+	private int get() {
 		return info;
 	}
 
@@ -79,5 +79,10 @@ public class FilterInfo {
 
 	public boolean isUnset() {
 		return info == FilterInfo.FILTER_INITIAL_VALUE;
+	}
+
+	boolean isVisible(final int filterOptions) {
+		return ((filterOptions & FilterInfo.FILTER_SHOW_ANCESTOR) != 0 || (filterOptions & FilterInfo.FILTER_SHOW_ECLIPSED) >= (info & FilterInfo.FILTER_SHOW_ECLIPSED))
+		        && ((filterOptions & info & ~FilterInfo.FILTER_SHOW_ECLIPSED) != 0);
 	}
 }

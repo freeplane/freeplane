@@ -29,6 +29,7 @@ import java.util.List;
 import javax.swing.Icon;
 
 import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.map.NodeModel;
 
 public class MultipleImage implements Icon {
 	final private List<Icon> mIcons = new ArrayList<Icon>();
@@ -39,6 +40,11 @@ public class MultipleImage implements Icon {
 
 	public void addIcon(final UIIcon uiIcon) {
 		mIcons.add(uiIcon.getIcon());
+		mUIIcons.add(uiIcon);
+	}
+
+	public void addIcon(final UIIcon uiIcon, final NodeModel node) {
+		mIcons.add(uiIcon.getIcon(node));
 		mUIIcons.add(uiIcon);
 	}
 

@@ -21,6 +21,7 @@ package org.freeplane.features.ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.RenderedImage;
@@ -32,6 +33,7 @@ import java.util.Map;
 import javax.swing.JComboBox;
 
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -81,11 +83,17 @@ public interface IMapViewManager {
 
 	public RenderedImage createImage(int dpi);
 
+	public RenderedImage createImage(final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int imageResolutionInDpi);
+	
 	public Color getBackgroundColor(NodeModel node);
 
 	public Component getComponent(NodeModel node);
 	
 	public boolean isFoldedOnCurrentView(NodeModel node);
+
+	public void displayOnCurrentView(NodeModel node);
+	
+	public void setFoldedOnCurrentView(NodeModel node, boolean folded);
 
 	public Font getFont(NodeModel node);
 
@@ -146,5 +154,19 @@ public interface IMapViewManager {
 	public void onQuitApplication();
 
 	public void closeWithoutSaving();
+
+	public void moveFocusFromDescendantToSelection(Component ancestor);
+
+	public boolean isChildHidden(NodeModel nodeOnPath);
+
+	public boolean hasHiddenChildren(NodeModel selected);
+
+	public boolean unfoldHiddenChildren(NodeModel node);
+
+	public void hideChildren(NodeModel node);
+
+	public boolean showHiddenNode(NodeModel child);
+	
+	public boolean isSpotlightEnabled();
 
 }

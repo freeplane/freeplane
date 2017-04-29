@@ -55,18 +55,20 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.DashVariant;
+import org.freeplane.features.edge.EdgeController;
+import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
-import org.freeplane.features.map.HideChildSubtree;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
+import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
@@ -93,6 +95,10 @@ public abstract class MainView extends ZoomableLabel {
 	private MouseArea mouseArea = MouseArea.OUT;
 	final static Stroke DEF_STROKE = new BasicStroke();
 	private static final int DRAG_OVAL_WIDTH = 10;
+	private float unzoomedBorderWidth = 1f;
+	private DashVariant dash = DashVariant.DEFAULT;
+	private Color borderColor = EdgeController.STANDARD_EDGE_COLOR;
+	private Boolean borderColorMatchesEdgeColor = true;
 
 	boolean isShortened() {
     	return isShortened;
@@ -103,7 +109,7 @@ public abstract class MainView extends ZoomableLabel {
 		setHorizontalAlignment(SwingConstants.LEFT);
 		setVerticalAlignment(SwingConstants.CENTER);
 		setHorizontalTextPosition(SwingConstants.TRAILING);
-		setVerticalTextPosition(JLabel.TOP);
+		setVerticalTextPosition(SwingConstants.TOP);
 	}
 
 	protected void convertPointFromMap(final Point p) {
@@ -265,7 +271,7 @@ public abstract class MainView extends ZoomableLabel {
 			return FoldingMark.ITSELF_FOLDED;
 		}
 		for (final NodeModel child : mapController.childrenUnfolded(node)) {
-			if (child.hasVisibleContent() && child.containsExtension(HideChildSubtree.class)) {
+			if (child.hasVisibleContent() && nodeView.isChildHidden(child)) {
 				return FoldingMark.ITSELF_FOLDED;
 			}
 		}
@@ -283,11 +289,17 @@ public abstract class MainView extends ZoomableLabel {
 		paintFoldingMark(nodeView, g);
         if (isShortened()) {
         	FoldingMark.SHORTENED.draw(g, nodeView, decorationMarkBounds(nodeView, 7./3, 5./3));
-        }
-        else if (nodeView.getModel().isCloneTreeRoot())
-        	FoldingMark.CLONE.draw(g, nodeView, decorationMarkBounds(nodeView, 2, 2.5));
-        else if (nodeView.getModel().isCloneTreeNode())
-        	FoldingMark.CLONE.draw(g, nodeView, decorationMarkBounds(nodeView, 1.5, 2.5));
+        } else if (shouldPaintCloneMarker(nodeView)){
+			if (nodeView.getModel().isCloneTreeRoot())
+				FoldingMark.CLONE.draw(g, nodeView, decorationMarkBounds(nodeView, 2, 2.5));
+			else if (nodeView.getModel().isCloneTreeNode())
+				FoldingMark.CLONE.draw(g, nodeView, decorationMarkBounds(nodeView, 1.5, 2.5));
+		}
+	}
+
+	private boolean shouldPaintCloneMarker(final NodeView nodeView) {
+		final ResourceController resourceController = ResourceController.getResourceController();
+		return resourceController.getBooleanProperty("markClones") || nodeView.isSelected() && resourceController.getBooleanProperty("markSelectedClones");
 	}
 
 	private Rectangle decorationMarkBounds(final NodeView nodeView, double widthFactor, double heightFactor) {
@@ -324,7 +336,7 @@ public abstract class MainView extends ZoomableLabel {
 			final FoldingMark foldingCircle;
 			if(markType.equals(FoldingMark.UNFOLDED)) {
 				final NodeModel node = nodeView.getModel();
-				if(mapController.hasHiddenChildren(node))
+				if(nodeView.hasHiddenChildren())
 					foldingCircle = FoldingMark.FOLDING_CIRCLE_HIDDEN_CHILD;
 				else
 					foldingCircle = FoldingMark.FOLDING_CIRCLE_UNFOLDED;
@@ -466,12 +478,12 @@ public abstract class MainView extends ZoomableLabel {
 		/* fc, 06.10.2003: images? */
 		final NodeModel model = node.getModel();
 		for (final UIIcon icon : IconController.getController().getStateIcons(model)) {
-			iconImages.addIcon(icon);
+			iconImages.addIcon(icon, model);
 		}
 		final ModeController modeController = getNodeView().getMap().getModeController();
 		final Collection<MindIcon> icons = IconController.getController(modeController).getIcons(model);
 		for (final MindIcon myIcon : icons) {
-			iconImages.addIcon(myIcon);
+			iconImages.addIcon(myIcon, model);
 		}
 		addOwnIcons(iconImages, model);
 		setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
@@ -490,10 +502,10 @@ public abstract class MainView extends ZoomableLabel {
 		setForeground(color);
 	}
 	
-	void updateTextAlign(NodeView node) {
-		final TextAlign textAlign = NodeStyleController.getController(node.getMap().getModeController()).getTextAlign(node.getModel());
-		final boolean isCenteredByDefault = textAlign == TextAlign.DEFAULT && node.isRoot();
-		setHorizontalAlignment(isCenteredByDefault ? TextAlign.CENTER.swingConstant : textAlign.swingConstant);
+	void updateHorizontalTextAlignment(NodeView node) {
+		final HorizontalTextAlignment textAlignment = NodeStyleController.getController(node.getMap().getModeController()).getHorizontalTextAlignment(node.getModel());
+		final boolean isCenteredByDefault = textAlignment == HorizontalTextAlignment.DEFAULT && node.isRoot();
+		setHorizontalAlignment(isCenteredByDefault ? HorizontalTextAlignment.CENTER.swingConstant : textAlignment.swingConstant);
 	}
 
 
@@ -782,5 +794,52 @@ public abstract class MainView extends ZoomableLabel {
 	
 	public int getSingleChildShift() {
 		return 0;
+	}
+
+	public float getUnzoomedEdgeWidth() {
+		final NodeView nodeView = getNodeView();
+		final int edgeWidth = nodeView.getEdgeWidth();
+		final EdgeStyle style = nodeView.getEdgeStyle();
+		final float nodeLineWidth = style.getNodeLineWidth(edgeWidth);
+		return nodeLineWidth;
+	}
+	
+	public float getPaintedBorderWidth() {
+		final float zoomedLineWidth = getNodeView().getMap().getZoom() * unzoomedBorderWidth;
+		return Math.max(zoomedLineWidth, 1);
+	}
+
+	public float getUnzoomedBorderWidth() {
+		return Math.max(unzoomedBorderWidth, 1);
+	}
+
+	public DashVariant getDash() {
+		return dash;
+	}
+
+	public Color getBorderColor() {
+		return borderColorMatchesEdgeColor ? getNodeView().getEdgeColor() : borderColor;
+	}
+
+	public void updateBorder(NodeView nodeView) {
+		final NodeStyleController controller = NodeStyleController.getController(nodeView.getMap().getModeController());
+		final NodeModel node = nodeView.getModel();
+		final Boolean borderWidthMatchesEdgeWidth = controller.getBorderWidthMatchesEdgeWidth(node);
+		if(borderWidthMatchesEdgeWidth)
+			unzoomedBorderWidth = getUnzoomedEdgeWidth();
+		else
+			unzoomedBorderWidth = (float) controller.getBorderWidth(node).toBaseUnits();
+		
+		final Boolean borderDashMatchesEdgeDash = controller.getBorderDashMatchesEdgeDash(node);
+		if(borderDashMatchesEdgeDash)
+			dash = nodeView.getEdgeDash();
+		else
+			dash = controller.getBorderDash(node);
+		
+		borderColorMatchesEdgeColor = controller.getBorderColorMatchesEdgeColor(node);
+		if(borderColorMatchesEdgeColor)
+			borderColor = nodeView.getEdgeColor();
+		else
+			borderColor = controller.getBorderColor(node);
 	}
 }

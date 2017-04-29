@@ -19,7 +19,6 @@
  */
 package org.freeplane.view.swing.map.link;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -76,6 +75,6 @@ public class OutlineLinkView extends EdgeView {
 
 	@Override
 	protected Stroke getStroke() {
-		return new BasicStroke(getWidth());
+		return getStroke(getWidth());
 	}
 }

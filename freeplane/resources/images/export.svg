@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16.093" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<linearGradient id="b" y2="-2104.9" gradientUnits="userSpaceOnUse" x2="-2596.4" gradientTransform="matrix(.37028 0 0 .36654 1011.7 985.36)" y1="-2128.6" x1="-2585.9">
+<stop stop-color="#dcdcdc" offset="0"/>
+<stop stop-color="#fff" offset="1"/>
+</linearGradient>
+<filter id="d" style="color-interpolation-filters:sRGB" height="1.3315" width="1.3481" y="-.16576" x="-.17407">
+<feGaussianBlur stdDeviation="0.82320991"/>
+</filter>
+<linearGradient id="a" y2="-2125.2" gradientUnits="userSpaceOnUse" x2="-2589.3" gradientTransform="matrix(.33386 0 0 .33049 917.56 908.65)" y1="-2130.1" x1="-2584.4">
+<stop stop-color="#fff" offset="0"/>
+<stop stop-color="#dcdcdc" offset="1"/>
+</linearGradient>
+<linearGradient id="c" y2="373.15" gradientUnits="userSpaceOnUse" x2="151.09" gradientTransform="matrix(-.41430 .00030670 -.00042788 -.26957 116.51 298.43)" y1="386.85" x1="150.88">
+<stop stop-color="#289c00" offset="0"/>
+<stop stop-color="#fff" offset="1"/>
+</linearGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-95.692 -197.63)">
+<g transform="translate(52.661 11.687)">
+<g fill-rule="evenodd" transform="translate(-1.1829 -16.623)" stroke="#666">
+<path d="m44.481 203.1h7.8035l3.9268 4.0816-0.0887 11.207h-11.642v-15.288z" stroke-width=".53351" fill="url(#b)"/>
+<path stroke-linejoin="round" d="m-2829.3-1828.3c1.0683 4.7916 0.3837 8.5401-0.06 10.889 2.6346-0.6545 5.7398-1.3853 10.35 0.03-4.9699-5.5487-6.9971-7.2565-10.29-10.919z" transform="matrix(.33386 0 0 .33049 996.91 807.89)" filter="url(#d)" stroke-width="1.6061" fill="#d3d3d3"/>
+<path stroke-linejoin="round" d="m52.517 203.34c0.35669 1.5836 0.12812 2.8224-0.02 3.5988 0.8796-0.21633 1.9163-0.45787 3.4556 0.009-1.6593-1.8338-2.3361-2.3982-3.4356-3.6086z" stroke-width=".53351" fill="url(#a)"/>
+</g>
+<rect style="color:#000000" height="16" width="16" y="185.94" x="43.031" fill="none"/>
+<path stroke-linejoin="round" d="m58.781 194.45-4.7993 3.3477-0.02372-1.9842-4.9581 0.0641-0.0044-2.7882 4.9581-0.0414-0.0029-1.9316 4.8305 3.3335z" fill-rule="evenodd" stroke="#005200" stroke-linecap="round" stroke-width=".5" fill="url(#c)"/>
+</g>
+</g>
+</svg>

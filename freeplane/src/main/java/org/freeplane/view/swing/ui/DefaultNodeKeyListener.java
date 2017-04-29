@@ -11,6 +11,7 @@ import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IEditHandler;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -120,7 +121,7 @@ public class DefaultNodeKeyListener implements KeyListener {
 	}
 
 	public void keyTyped(final KeyEvent e) {
-		if ((e.isAltDown() || e.isControlDown() || e.isMetaDown()) || AltCodeChecker.isAltCode(e.getKeyChar())) {
+		if ((e.isAltDown() && ! Compat.isMacOsX() || e.isControlDown() || e.isMetaDown()) || AltCodeChecker.isAltCode(e.getKeyChar())) {
 			return;
 		}
 		final String keyTypeActionString = ResourceController.getResourceController().getProperty("key_type_action",

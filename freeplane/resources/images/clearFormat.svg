@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg:svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   id="svg17645"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   viewBox="0 0 16 16">
+  <svg:defs
+     id="defs17647">
+    <svg:linearGradient
+       id="linearGradient18569">
+      <svg:stop
+         id="stop18571"
+         offset="0.0000000"
+         style="stop-color:#ffffff;stop-opacity:0.99342108" />
+      <svg:stop
+         id="stop18573"
+         offset="1.0000000"
+         style="stop-color:#ffffff;stop-opacity:0.11842106" />
+    </svg:linearGradient>
+    <svg:linearGradient
+       gradientUnits="userSpaceOnUse"
+       id="XMLID_11_"
+       y2="11.573135"
+       x2="128.00047"
+       y1="244.42773"
+       x1="128.00049">
+      <svg:stop
+         offset="0.005615"
+         style="stop-color: rgb(0, 53, 237); stop-opacity: 1;"
+         id="stop120" />
+      <svg:stop
+         offset="0.54494399"
+         style="stop-color: rgb(0, 0, 141); stop-opacity: 1;"
+         id="stop122" />
+      <svg:stop
+         offset="1"
+         style="stop-color: rgb(0, 83, 189); stop-opacity: 1;"
+         id="stop124" />
+      <midPointStop
+         offset="0.005615"
+         style="stop-color:#0035ED"
+         id="midPointStop126" />
+      <midPointStop
+         offset="0.5"
+         style="stop-color:#0035ED"
+         id="midPointStop128" />
+      <midPointStop
+         offset="0.544944"
+         style="stop-color:#00008D"
+         id="midPointStop130" />
+      <midPointStop
+         offset="0.5"
+         style="stop-color:#00008D"
+         id="midPointStop132" />
+      <midPointStop
+         offset="1"
+         style="stop-color:#0053BD"
+         id="midPointStop134" />
+    </svg:linearGradient>
+    <svg:linearGradient
+       gradientUnits="userSpaceOnUse"
+       id="XMLID_12_"
+       y2="11.546326"
+       x2="127.9995"
+       y1="244.40723"
+       x1="127.99951">
+      <svg:stop
+         offset="0.005615"
+         style="stop-color: rgb(66, 138, 255); stop-opacity: 1;"
+         id="stop141" />
+      <svg:stop
+         offset="0.57303399"
+         style="stop-color: rgb(148, 202, 255); stop-opacity: 1;"
+         id="stop143" />
+      <svg:stop
+         offset="1"
+         style="stop-color: rgb(220, 240, 255); stop-opacity: 1;"
+         id="stop145" />
+      <midPointStop
+         offset="0.005615"
+         style="stop-color:#428AFF"
+         id="midPointStop147" />
+      <midPointStop
+         offset="0.5"
+         style="stop-color:#428AFF"
+         id="midPointStop149" />
+      <midPointStop
+         offset="0.573034"
+         style="stop-color:#94CAFF"
+         id="midPointStop151" />
+      <midPointStop
+         offset="0.5"
+         style="stop-color:#94CAFF"
+         id="midPointStop153" />
+      <midPointStop
+         offset="1"
+         style="stop-color:#DCF0FF"
+         id="midPointStop155" />
+    </svg:linearGradient>
+    <svg:linearGradient
+       id="linearGradient4568-1">
+      <svg:stop
+         style="stop-color:#e12b1c;stop-opacity:1;"
+         offset="0"
+         id="stop4570-9" />
+      <svg:stop
+         style="stop-color:#980b00;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop4572-8" />
+    </svg:linearGradient>
+    <svg:linearGradient
+       id="linearGradient4738-4">
+      <svg:stop
+         style="stop-color:#ffffff;stop-opacity:0.72656250;"
+         offset="0.0000000"
+         id="stop4740-8" />
+      <svg:stop
+         style="stop-color:#ffffff;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop4742-6" />
+    </svg:linearGradient>
+  </svg:defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="19.41517"
+     inkscape:cx="10.603036"
+     inkscape:cy="6.7352621"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:grid-bbox="true"
+     inkscape:document-units="px"
+     inkscape:window-width="1310"
+     inkscape:window-height="912"
+     inkscape:window-x="101"
+     inkscape:window-y="22"
+     inkscape:window-maximized="0" />
+  <svg:metadata
+     id="metadata17650">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </svg:metadata>
+  <svg:g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     transform="translate(0,-16)">
+    <svg:rect
+       style="fill:#aa0000;fill-opacity:1;stroke:#aa0000;stroke-width:0.90643662"
+       id="rect234"
+       transform="matrix(0.50024975,0.86588116,-0.86624539,0.49961879,0,0)"
+       y="-5.9568191"
+       x="13.175798"
+       height="0"
+       width="0.9126758" />
+    <svg:g
+       id="g19561"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <svg:rect
+         y="15.999999"
+         x="1.5234375e-006"
+         height="16"
+         width="16"
+         id="rect9508"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;stroke:none;stroke-width:0.25143504;marker:none;enable-background:accumulate" />
+      <svg:circle
+         r="6.9936538"
+         cy="2.0768454"
+         cx="-25.212828"
+         transform="matrix(-0.23727853,-0.97144166,0.97144166,-0.23727853,0,0)"
+         id="path9404"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:none;fill-opacity:1;stroke:#ff0000;stroke-width:2.00944281;marker:none;enable-background:accumulate" />
+      <svg:g
+         transform="matrix(0.91352254,0,0,0.91352254,214.46946,-821.93346)"
+         id="text14641-5-1"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:20.01333427px;line-height:125%;font-family:'Microsoft Himalaya';-inkscape-font-specification:'Microsoft Himalaya';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.43312895;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1">
+        <svg:path
+           inkscape:connector-curvature="0"
+           id="path26477-4"
+           style="line-height:125%;font-family:'Microsoft Himalaya';-inkscape-font-specification:'Microsoft Himalaya';fill:#000000;stroke-width:0.43312895"
+           d="m -224.03577,925.91983 c 0.3583,0.0782 0.66612,0.18568 0.92346,0.32248 0.25733,0.13681 0.4658,0.29643 0.62542,0.47884 0.1596,0.18241 0.27687,0.38437 0.3518,0.60587 0.0749,0.2215 0.11237,0.45278 0.11238,0.69382 -1e-5,0.2215 -0.0358,0.43975 -0.1075,0.65473 -0.0717,0.21499 -0.17428,0.41858 -0.30782,0.61076 -0.13356,0.19219 -0.29806,0.36483 -0.49349,0.51792 -0.19545,0.1531 -0.41695,0.27851 -0.66451,0.37623 -0.46907,0.18242 -1.20849,0.27362 -2.21827,0.27362 l -4.19225,0 0,-0.2443 0.33225,0 c 0.14984,0 0.28339,-0.013 0.40066,-0.0391 0.11727,-0.0261 0.21662,-0.0847 0.29805,-0.1759 0.0814,-0.0912 0.14332,-0.22476 0.18567,-0.40066 0.0423,-0.17589 0.0635,-0.41368 0.0635,-0.71336 l 0,-5.73625 c 0,-0.3127 -0.0228,-0.557 -0.0684,-0.73291 -0.0456,-0.17589 -0.11076,-0.30781 -0.19545,-0.39577 -0.0847,-0.0879 -0.18567,-0.14331 -0.30293,-0.16612 -0.11727,-0.0228 -0.24431,-0.0342 -0.38112,-0.0342 l -0.33225,0 0,-0.2443 3.83068,0 c 1.23128,10e-6 2.16452,0.20848 2.79972,0.62542 0.63518,0.41695 0.95277,1.00002 0.95278,1.74921 -10e-6,0.44952 -0.13682,0.84855 -0.41043,1.19709 -0.27363,0.34854 -0.67429,0.6075 -1.20197,0.77688 z m -3.43002,3.88931 c 0.49511,0.11727 0.99349,0.1759 1.49513,0.1759 0.3974,0 0.7492,-0.0489 1.05539,-0.14658 0.30619,-0.0977 0.56027,-0.22965 0.76223,-0.39577 0.20195,-0.16613 0.35505,-0.36157 0.45929,-0.58633 0.10423,-0.22476 0.15635,-0.46418 0.15636,-0.71825 -1e-5,-0.28014 -0.0554,-0.54398 -0.16613,-0.79155 -0.11076,-0.24756 -0.28177,-0.46254 -0.51304,-0.64496 -0.23128,-0.18241 -0.52118,-0.32573 -0.86972,-0.42997 -0.34854,-0.10423 -0.75734,-0.15635 -1.2264,-0.15636 -0.27362,10e-6 -0.5049,0.003 -0.69382,0.01 -0.18893,0.007 -0.34203,0.0228 -0.45929,0.0489 z m 0,-4.24111 c 0.16286,0.0326 0.3469,0.057 0.55212,0.0733 0.20521,0.0163 0.4316,0.0244 0.67917,0.0244 0.86645,10e-6 1.48861,-0.15634 1.86647,-0.46906 0.37785,-0.3127 0.56678,-0.74593 0.56679,-1.29969 -1e-5,-0.25407 -0.0538,-0.49674 -0.16124,-0.72803 -0.1075,-0.23126 -0.26549,-0.43159 -0.47395,-0.60098 -0.20848,-0.16938 -0.46744,-0.30456 -0.77689,-0.40555 -0.30945,-0.10097 -0.66939,-0.15146 -1.07982,-0.15146 -0.443,0 -0.83389,0.0489 -1.17265,0.14658 z" />
+      </svg:g>
+      <svg:rect
+         inkscape:transform-center-y="-1.5505848"
+         inkscape:transform-center-x="-8.9420035"
+         transform="matrix(0.6071811,-0.79456347,0.79481871,0.60684695,0,0)"
+         y="19.928394"
+         x="-20.211678"
+         height="2.0008943"
+         width="11.981611"
+         id="rect9406"
+         style="color:#000000;display:inline;overflow:visible;visibility:visible;fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.5;marker:none;enable-background:accumulate" />
+    </svg:g>
+  </svg:g>
+</svg:svg>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="31.995" width="32.007" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32.007132 31.994796" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<linearGradient id="a" y2="457.28" gradientUnits="userSpaceOnUse" y1="453.71" gradientTransform="matrix(.58638 .058042 -.059923 .56798 184.18 -7.3309)" x2="307.24" x1="302.76">
+<stop stop-color="#4d4d4d" offset="0"/>
+<stop stop-color="#fff" offset="1"/>
+</linearGradient>
+<linearGradient id="b" y2="440.88" gradientUnits="userSpaceOnUse" y1="440.09" gradientTransform="matrix(.55936 .055367 -.057162 .5418 191.24 5.2196)" x2="317.68" x1="316.32">
+<stop stop-color="#999" offset="0"/>
+<stop stop-color="#fff" offset="1"/>
+</linearGradient>
+<linearGradient id="c" y2="542.92" gradientUnits="userSpaceOnUse" y1="523.05" x2="327.26" x1="351.04">
+<stop stop-color="#ff0" offset="0"/>
+<stop stop-color="#fff" offset="1"/>
+</linearGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-150.57 -107.12)">
+<g fill-rule="evenodd" transform="translate(-178.97,-135.44)" stroke="#000">
+<path d="m338.82 263.12c0.97332-0.1844 2.642 1.3268 2.296 2.7715" stroke-linecap="round" stroke-width=".61568" fill="#858585"/>
+<path stroke-width=".58011px" fill="url(#a)" d="m329.88 270.91c-0.24645 1.4633 0.45691 3.3844 2.9366 3.3525l8.0946-8.1259c-0.96923-0.43622-1.9298-0.89762-2.4005-2.7886l-8.6307 7.562z"/>
+<path stroke-width=".55338px" fill="url(#b)" d="m339.55 263.73 6.2233-5.4051c0.41526 0.74684 0.36295 0.52567 0.66781 0.79412l-5.8868 5.8054c-0.73806-0.34182-0.94459-0.75785-1.0044-1.1944z"/>
+<path stroke-linejoin="round" d="m375.45 551.77-24.487-6.4998-13.595 21.378-6.6144-24.456-25.311-1.0847 17.872-17.956-11.716-22.463 24.487 6.4998 13.595-21.378 6.6144 24.456 25.311 1.0847-17.872 17.956z" stroke-opacity=".8" transform="matrix(.275 .020074 -.02006 .27518 266.18 102.54)" stroke-linecap="round" stroke-width="4.9779" fill="url(#c)"/>
+</g>
+</g>
+</svg>

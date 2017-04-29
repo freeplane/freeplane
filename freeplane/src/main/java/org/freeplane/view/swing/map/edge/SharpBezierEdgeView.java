@@ -42,7 +42,7 @@ public class SharpBezierEdgeView extends SharpEdgeView {
 
 	@Override
 	public Stroke getStroke() {
-		return EdgeView.DEF_STROKE;
+		return getStroke(0);
 	}
 
 	@Override

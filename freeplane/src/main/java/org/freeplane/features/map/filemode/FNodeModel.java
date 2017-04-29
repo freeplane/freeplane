@@ -32,12 +32,21 @@ import org.freeplane.features.map.NodeModel;
  */
 class FNodeModel extends NodeModel {
 	final private File file;
+	final private File[] directoryFiles;
 
 	public FNodeModel(final File file, final MapModel map) {
 		super(map);
 		this.file = file;
+		directoryFiles = null;
 		final String[] children = file.list();
 		setFolded(children != null && children.length > 0);
+	}
+
+	public FNodeModel(final File[] directoryFiles, final MapModel map) {
+		super(map);
+		this.file = null;
+		this.directoryFiles = directoryFiles;
+		setFolded(directoryFiles.length > 0);
 	}
 
 	@Override
@@ -46,12 +55,10 @@ class FNodeModel extends NodeModel {
 			return super.getChildren();
 		}
 		try {
-			final String[] files = file.list();
+			final File[] files = file != null ? file.listFiles() : directoryFiles;
 			if (files != null) {
-				final String path = file.getPath();
-				for (int i = 0; i < files.length; i++) {
-					final File childFile = new File(path, files[i]);
-					if (!childFile.isHidden()) {
+				for (File childFile : files) {
+					if (!childFile.isHidden() || file == null) {
 						final FNodeModel fileNodeModel = new FNodeModel(childFile, getMap());
 						NodeLinks.createLinkExtension(fileNodeModel).setHyperLink(childFile.toURI());
 						fileNodeModel.setLeft(isNewChildLeft());
@@ -72,21 +79,23 @@ class FNodeModel extends NodeModel {
 
 	@Override
     public Object getUserObject() {
+		if(file == null)
+			return "Files";
         String name = file.getName();
         if (name.equals("")) {
-            name = "Root";
+            name = file.getPath();
         }
         return name;
     }
 
     @Override
 	public boolean hasChildren() {
-		return !file.isFile() && !getChildren().isEmpty();
+		return directoryFiles != null || !file.isFile() && !getChildren().isEmpty();
 	}
 
 	@Override
 	public boolean isLeaf() {
-		return file.isFile();
+		return directoryFiles == null && file.isFile();
 	}
 
 	@Override

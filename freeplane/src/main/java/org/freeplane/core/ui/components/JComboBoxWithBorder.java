@@ -1,6 +1,7 @@
 package org.freeplane.core.ui.components;
 
 import java.awt.Component;
+import java.awt.Insets;
 import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
@@ -8,17 +9,18 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.ui.MenuSplitterConfiguration;
 import org.freeplane.core.util.Quantity;
 
 @SuppressWarnings("serial")
-public class JComboBoxWithBorder extends JComboBox{
-	private RendererWithBorder rendererWithBorder;
+public class JComboBoxWithBorder<T> extends JComboBox<T>{
 	static private final int MARGIN = new Quantity<LengthUnits>(2, LengthUnits.pt).toBaseUnitsRounded();
-	static private final Border STANDARD_BORDER = new EmptyBorder(0, MARGIN, 0, MARGIN);  
+	static private final EmptyBorder STANDARD_BORDER = new EmptyBorder(0, MARGIN, 0, MARGIN);  
+	private RendererWithBorder rendererWithBorder;
+	private EmptyBorder border = STANDARD_BORDER;  
 	class RendererWithBorder implements ListCellRenderer{
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
@@ -29,7 +31,7 @@ public class JComboBoxWithBorder extends JComboBox{
 			final Component listCellRendererComponent = baseRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			if(listCellRendererComponent instanceof JComponent) {
 				final JComponent borderOwner = (JComponent) listCellRendererComponent;
-				borderOwner.setBorder(STANDARD_BORDER);
+				borderOwner.setBorder(border);
 			}
 			return listCellRendererComponent;
 		}
@@ -38,26 +40,27 @@ public class JComboBoxWithBorder extends JComboBox{
 
 	public JComboBoxWithBorder() {
 		super();
-		initializeRenderer();
+		initialize();
 	}
 
 	public JComboBoxWithBorder(ComboBoxModel aModel) {
 		super(aModel);
-		initializeRenderer();
+		initialize();
 	}
 
-	public JComboBoxWithBorder(Object[] items) {
+	public JComboBoxWithBorder(T[] items) {
 		super(items);
-		initializeRenderer();
+		initialize();
 	}
 
-	public JComboBoxWithBorder(Vector<?> items) {
+	public JComboBoxWithBorder(Vector<T> items) {
 		super(items);
-		initializeRenderer();
+		initialize();
 	}
 
-	private void initializeRenderer() {
+	private void initialize() {
 		rendererWithBorder = new RendererWithBorder();
+		MenuSplitterConfiguration.setMaximumRowCount(this);
 		updateUI();
 	}
 
@@ -75,4 +78,9 @@ public class JComboBoxWithBorder extends JComboBox{
 		return super.getRenderer();
 	}
 
+	public void setVerticalMargin(int verticalMargin) {
+		final Insets borderInsets = border.getBorderInsets();
+		if(borderInsets.top != verticalMargin || borderInsets.bottom != verticalMargin)
+			border= new EmptyBorder(verticalMargin, MARGIN, verticalMargin, MARGIN);  
+	}
 }

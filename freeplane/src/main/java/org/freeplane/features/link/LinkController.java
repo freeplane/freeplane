@@ -71,9 +71,9 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.DashVariant;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconStore;
-import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.IMapSelection;
@@ -113,10 +113,6 @@ public class LinkController extends SelectionController implements IExtension {
 		modeController.addExtension(LinkController.class, linkController);
 		linkController.init();
 	}
-
-	public static final String LINK_ICON = ResourceController.getResourceController().getProperty("link_icon");
-	private static final String MAIL_ICON = ResourceController.getResourceController().getProperty("mail_icon");
-	public static final String LINK_LOCAL_ICON = ResourceController.getResourceController().getProperty("link_local_icon");
 
  	final protected ModeController modeController;
 
@@ -240,7 +236,7 @@ public class LinkController extends SelectionController implements IExtension {
 	    		final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, target);
 	    		gotoLinkNodeAction.configureText("follow_graphical_link", target);
 	    		if (!(link instanceof ConnectorModel)) {
-	    			gotoLinkNodeAction.putValue(Action.SMALL_ICON, ICON_STORE.getUIIcon(LINK_LOCAL_ICON).getIcon());
+	    			gotoLinkNodeAction.putValue(Action.SMALL_ICON, LinkType.LOCAL.icon);
 	    		}
 	    		if (firstAction) {
 	    			entry.addChild(new Entry().setBuilders("separator"));
@@ -443,6 +439,8 @@ public class LinkController extends SelectionController implements IExtension {
 
 	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
 	private static final String RESOURCES_CONNECTOR_SHAPE = "connector_shape";
+	private static final String RESOURCES_CONNECTOR_ARROWS = "connector_arrows";
+	private static final String RESOURCES_DASH_VARIANT = "connector_dash";
 	private static final String RESOURCES_CONNECTOR_COLOR_ALPHA = "connector_alpha";
 	private static final String RESOURCES_CONNECTOR_WIDTH = "connector_width";
 
@@ -792,20 +790,22 @@ public class LinkController extends SelectionController implements IExtension {
 		return width;
 	}
 
-	public void setStandardConnectorWidth(final int width) {
-		final String value = Integer.toString(width);
-		ResourceController.getResourceController().setProperty(RESOURCES_CONNECTOR_WIDTH, value);
-	}
-
 	public Color getStandardConnectorColor() {
         final String standardColor = ResourceController.getResourceController().getProperty(RESOURCES_LINK_COLOR);
 		final Color color = ColorUtils.stringToColor(standardColor);
         return color;
     }
 
-	public void setStandardConnectorColor(final Color color) {
-		String value = ColorUtils.colorToString(color);
-		ResourceController.getResourceController().setProperty(RESOURCES_LINK_COLOR, value);
+	public ConnectorArrows getStandardConnectorArrows() {
+		final String standard = ResourceController.getResourceController().getProperty(RESOURCES_CONNECTOR_ARROWS);
+		final ConnectorArrows arrows = ConnectorArrows.valueOf(standard);
+		return arrows;
+	}
+	
+	public DashVariant getStandardDashVariant() {
+		final String standard = ResourceController.getResourceController().getProperty(RESOURCES_DASH_VARIANT);
+		final DashVariant variant = DashVariant.valueOf(standard);
+		return variant;
 	}
 
 	public Shape getStandardConnectorShape() {
@@ -814,21 +814,10 @@ public class LinkController extends SelectionController implements IExtension {
 		return shape;
 	}
 
-	public void setStandardConnectorShape(final Shape shape) {
-		String value = shape.toString();
-		ResourceController.getResourceController().setProperty(RESOURCES_CONNECTOR_SHAPE, value);
-	}
-
-
 	public int getStandardConnectorAlpha() {
 		final String standardAlpha = ResourceController.getResourceController().getProperty(RESOURCES_CONNECTOR_COLOR_ALPHA);
 		final int alpha = Integer.valueOf(standardAlpha);
 		return alpha;
-	}
-
-	public void setStandardAlpha(final int alpha) {
-		final String value = Integer.toString(alpha);
-		ResourceController.getResourceController().setProperty(RESOURCES_CONNECTOR_COLOR_ALPHA, value);
 	}
 
 	public int getAlpha(ConnectorModel connectorModel) {
@@ -843,17 +832,16 @@ public class LinkController extends SelectionController implements IExtension {
 	    return ResourceController.getResourceController().getProperty("label_font_family");
     }
 
-	private static final String MENUITEM_ICON = "icons/button.png";
-	private static final String EXECUTABLE_ICON = ResourceController.getResourceController().getProperty("executable_icon");
-	private static final IconStore ICON_STORE = IconStoreFactory.create();
+	private static final String MENUITEM_ICON = "menuitem_icon";
+	private static final String EXECUTABLE_ICON = "executable_icon";
+	private static final String LINK_ICON = "link_icon";
+	private static final String MAIL_ICON = "mail_icon";
+	private static final String LINK_LOCAL_ICON = "link_local_icon";
+
 	public static enum LinkType{
 		LOCAL(LINK_LOCAL_ICON), MAIL(MAIL_ICON), EXECUTABLE(EXECUTABLE_ICON), MENU(MENUITEM_ICON), DEFAULT(LINK_ICON);
-		LinkType(String iconPath){
-			final UIIcon uiIcon = ICON_STORE.getUIIcon(iconPath);
-			if(uiIcon == null)
-				this.icon =  null;
-			else
-				this.icon =  uiIcon.getIcon();
+		LinkType(String iconKey){
+			this.icon =  ResourceController.getResourceController().getIcon(iconKey);
 		}
 		final public Icon icon;
 	}
@@ -868,7 +856,7 @@ public class LinkController extends SelectionController implements IExtension {
 	    	    Icon icon = menuItemCache.get(menuItemKey);
                 if (icon == null) {
                     final Icon menuItemIcon = MenuUtils.getMenuItemIcon(menuItemKey);
-                    icon = (menuItemIcon == null) ? ICON_STORE.getUIIcon(MENUITEM_ICON).getIcon() : menuItemIcon;
+                    icon = (menuItemIcon == null) ? LinkType.MENU.icon : menuItemIcon;
                     menuItemCache.put(menuItemKey, icon);
                 }
 	    	    return icon;
@@ -936,5 +924,9 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		final Boolean formatNodeAsHyperlink = linkModel.formatNodeAsHyperlink();
 		return formatNodeAsHyperlink;
+	}
+
+	public void loadURI(NodeModel node, URI uri) {
+		loadURI(uri);
 	}
 }

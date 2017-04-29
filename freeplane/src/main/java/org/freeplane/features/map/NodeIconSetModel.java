@@ -22,14 +22,28 @@ package org.freeplane.features.map;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.MindIcon;
 
 /**
  * @author Dimitry Polivaev 20.11.2008
  */
-class NodeIconSetModel {
+public class NodeIconSetModel {
 	/** stores the icons associated with this node. */
 	protected List<MindIcon> icons;
+	protected Quantity<LengthUnits> iconSize = null;
+
+	public void setIconSize(final Quantity<LengthUnits> iconSize)
+	{
+		this.iconSize = iconSize;
+	}
+
+	public Quantity<LengthUnits> getIconSize()
+	{
+		return iconSize;
+	}
 
 	void addIcon(final MindIcon icon) {
 		createIcons();

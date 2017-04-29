@@ -27,7 +27,7 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Stroke;
 
-import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
 class ForkMainView extends MainView {
@@ -37,23 +37,10 @@ class ForkMainView extends MainView {
 	@Override
     public
 	Point getLeftPoint() {
-		int edgeWidth = getEdgeWidth();
+		int edgeWidth = (int)getPaintedBorderWidth();
 		final Point in = new Point(0, getHeight() - edgeWidth / 2);
 		return in;
 	}
-
-	public int getEdgeWidth() {
-	    final NodeView nodeView = getNodeView();
-	    final int edgeWidth = nodeView.getEdgeWidth();
-		final EdgeStyle style = nodeView.getEdgeStyle();
-		final int nodeLineWidth = style.getNodeLineWidth(edgeWidth);
-		if(edgeWidth == 0)
-			return nodeLineWidth;
-		else{
-			final int zoomedLineWidth = nodeView.getMap().getZoomed(nodeLineWidth);
-			return zoomedLineWidth;
-		}
-    }
 
 	@Override
 	protected int getMainViewHeightWithFoldingMark() {
@@ -68,7 +55,7 @@ class ForkMainView extends MainView {
 	@Override
     public
 	Point getRightPoint() {
-		int edgeWidth = getEdgeWidth();
+		int edgeWidth = (int)getPaintedBorderWidth();
 		final Point in = new Point(getWidth() - 1, getHeight() - edgeWidth / 2);
 		return in;
 	}
@@ -88,16 +75,15 @@ class ForkMainView extends MainView {
 	@Override
 	protected void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fillRect(0, 0, getWidth(), getHeight() - getEdgeWidth());
+		graphics.fillRect(0, 0, getWidth(), getHeight() - (int)getPaintedBorderWidth());
 	}
 
 	@Override
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
 		final Stroke oldStroke = g.getStroke();
-		float edgeWidth  = getEdgeWidth();
-		g.setStroke(new BasicStroke(edgeWidth, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER));
+		g.setStroke(UITools.createStroke(getPaintedBorderWidth(), getDash().variant, BasicStroke.JOIN_MITER));
 		final Color oldColor = g.getColor();
-		g.setColor(nodeView.getEdgeColor());
+		g.setColor(getBorderColor());
 		Point leftLinePoint = getLeftPoint();
 		g.drawLine(leftLinePoint.x, leftLinePoint.y, leftLinePoint.x + getWidth(), leftLinePoint.y);
 		g.setColor(oldColor);
@@ -114,8 +100,7 @@ class ForkMainView extends MainView {
     public Insets getInsets(Insets insets) {
     	final NodeView nodeView = getNodeView();
         int edgeWidth = nodeView.getEdgeWidth();
-        final EdgeStyle style = nodeView.getEdgeStyle();
-        edgeWidth = style.getNodeLineWidth(edgeWidth);
+        edgeWidth = Math.round(getUnzoomedBorderWidth());
 		if(insets == null)
     		insets = new Insets(0, 2, edgeWidth, 2);
     	else

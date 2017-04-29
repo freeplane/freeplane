@@ -51,22 +51,10 @@ public class IconStoreFactory {
 	private static final String GROUP_KEY = "icons.group.%s";
 	private static final String GROUP_ICON_KEY = "IconGroupPopupAction.%s.icon";
 	private static final String GROUP_DESC_KEY = "IconGroupPopupAction.%s.text";
-	private static IconStore groups;
-
-	/**
-	 * 
-	 * Creates an IconStore from the property file. If one was already
-	 * constructed it will be returned without creating a new one.
-	 * 
-	 * @return
-	 */
-	public static IconStore create() {
-		if (groups != null) {
-			return groups;
-		}
-		groups = new IconStore();
-		IconStoreFactory.setIconGroups(groups);
-		return groups;
+	public static IconStore ICON_STORE;
+	static {
+		ICON_STORE = new IconStore();
+		IconStoreFactory.setIconGroups(ICON_STORE);
 	}
 
 	private static void setIconGroups(final IconStore iconStore) {
@@ -77,7 +65,7 @@ public class IconStoreFactory {
 			UIIcon groupIcon = null;
 			if ("user".equals(groupName)) {
 				icons = IconStoreFactory.getUserIcons();
-				groupIcon = MindIconFactory.create("user_icon");
+				groupIcon = MindIconFactory.createIcon("user_icon");
 			}
 			else {
 				final String groupIconName = RESOURCE_CONTROLLER.getProperty(String.format(GROUP_ICON_KEY, groupName));
@@ -97,7 +85,7 @@ public class IconStoreFactory {
 		    .split(SEPARATOR);
 		final Map<String, MindIcon> icons = new LinkedHashMap<String, MindIcon>(iconNames.length);
 		for (final String iconName : iconNames) {
-			final MindIcon icon = MindIconFactory.create(iconName);
+			final MindIcon icon = MindIconFactory.createIcon(iconName);
 			icons.put(iconName, icon);
 		}
 		return icons;
@@ -120,8 +108,7 @@ public class IconStoreFactory {
 	private static List<MindIcon> getUserIcons(final File iconDir, final String dir) {
 		final String[] userIconArray = iconDir.list(new FilenameFilter() {
 			public boolean accept(final File dir, final String name) {
-				final int nameLength = name.length();
-				return nameLength > 4 && name.substring(nameLength - 4).equalsIgnoreCase(".png") || new File(dir, name).isDirectory();
+				return name.matches("(?i).*\\.(svg|png)$") || new File(dir, name).isDirectory();
 			}
 		});
 		if (userIconArray == null) {

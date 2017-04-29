@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="8.5069mm" width="9.1917mm" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32.56907 30.142396" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<radialGradient id="a" gradientUnits="userSpaceOnUse" cy="364.23" cx="47.078" gradientTransform="matrix(1.2428 -1.8254 .91217 .71579 -21.829 278.85)" r="16.1">
+<stop stop-color="#05dc05" offset="0"/>
+<stop stop-color="#fff" offset="1"/>
+</radialGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-355.14 -428.72)">
+<path stroke-linejoin="round" d="m371.03 458.25c-4.3437-5.6562-7.8231-11.595-15.274-17.829 1.9323-0.041 4.8813-0.67624 13.794 6.6308 4.1269-8.0921 5.5036-9.4803 10.042-16.336l7.5081-1.3831c-10.62 10.344-15.25 26.27-16.07 28.917z" stroke-opacity=".72093" fill-rule="evenodd" stroke="#004800" stroke-width="1.2252" fill="url(#a)"/>
+</g>
+</svg>

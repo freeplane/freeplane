@@ -23,7 +23,7 @@ abstract class DrawableShape implements Drawable{
 	}
 	public void draw(Graphics2D g, NodeView nodeView, Rectangle r) {
 		final Color color = g.getColor(); 
-		final Color edgeColor = nodeView.getEdgeColor();
+		final Color edgeColor = nodeView.getMainView().getBorderColor();
 		final Shape shape = getShape(r);
 		g.setColor(getFillColor(nodeView));
 		g.fill(shape);
@@ -64,8 +64,9 @@ class FoldingCircle extends DrawableEllipse{
 		super.drawShape(g, shape, r, nodeView);
 		if(nodeView.isRoot() & ! folded)
 			return;
-		if(! nodeView.getMainView().getMouseArea().equals(MouseArea.FOLDING))
-			g.setColor(nodeView.getEdgeColor());
+		final MainView mainView = nodeView.getMainView();
+		if(! mainView.getMouseArea().equals(MouseArea.FOLDING))
+			g.setColor(mainView.getBorderColor());
 		else
 			g.setColor(super.getFillColor(nodeView));
 		if(! hiddenChild)

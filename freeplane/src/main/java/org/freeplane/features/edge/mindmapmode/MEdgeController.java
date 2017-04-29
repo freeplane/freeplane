@@ -20,12 +20,24 @@
 package org.freeplane.features.edge.mindmapmode;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.util.List;
+
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.ObjectRule;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.DashVariant;
+import org.freeplane.features.edge.EdgeColorConfiguration;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.map.IExtensionCopier;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -113,6 +125,7 @@ public class MEdgeController extends EdgeController {
 			}
 			resolveColor(to);
 			resolveWidth(to);
+			resolveDash(to);
 			resolveStyle(to);
         }
 
@@ -146,6 +159,22 @@ public class MEdgeController extends EdgeController {
 
 		private Integer getWidth(NodeModel node) {
 			return modeController.getExtension(EdgeController.class).getWidth(node, false);
+		}
+
+		private void resolveDash(NodeModel to) {
+	        if (null != getDash(to))
+				return;
+			for(NodeModel source = to.getParentNode(); source != null; source = source.getParentNode() ){
+				final DashVariant width = getDash(source);
+				if(width != null){
+					EdgeModel.createEdgeModel(to).setDash(width);
+					return;
+				}
+			}
+        }
+
+		private DashVariant getDash(NodeModel node) {
+			return modeController.getExtension(EdgeController.class).getDash(node, false);
 		}
 
 		private void resolveStyle(NodeModel to) {
@@ -291,5 +320,64 @@ public class MEdgeController extends EdgeController {
 			}
 		};
 		modeController.execute(actor, node.getMap());
+	}
+
+	public void setDash(final NodeModel node, final DashVariant dash) {
+		final ModeController modeController = Controller.getCurrentModeController();
+		final DashVariant oldDash = EdgeModel.createEdgeModel(node).getDash();
+		if (dash == oldDash) {
+			return;
+		}
+		final IActor actor = new IActor() {
+			public void act() {
+				EdgeModel.createEdgeModel(node).setDash(dash);
+				modeController.getMapController().nodeChanged(node);
+				edgeWidthRefresh(node);
+			}
+
+			private void edgeWidthRefresh(final NodeModel node) {
+				for (final NodeModel child : modeController.getMapController().childrenUnfolded(node)) {
+					if(child.getViewers().isEmpty())
+						continue;
+					final EdgeModel edge = EdgeModel.getModel(child);
+					if (edge == null || edge.getWidth() == EdgeModel.WIDTH_PARENT) {
+						modeController.getMapController().nodeRefresh(child);
+						edgeWidthRefresh(child);
+					}
+				}
+			}
+
+			public String getDescription() {
+				return "setDash";
+			}
+
+			public void undo() {
+				EdgeModel.createEdgeModel(node).setDash(oldDash);
+				modeController.getMapController().nodeChanged(node);
+				edgeWidthRefresh(node);
+			}
+		};
+		modeController.execute(actor, node.getMap());
+	}
+
+	public void editEdgeColorConfiguration(MapModel map) {
+		final List<Color> oldColors = edgeColorsConfigurationFactory.create(map).colors;
+		final ColorListEditorPanelBuilder colorListEditorPanelBuilder = new ColorListEditorPanelBuilder(oldColors);
+		final JComponent panel = colorListEditorPanelBuilder.getPanel();
+		JScrollPane jscrollpane = new JRestrictedSizeScrollPane(panel);
+		UITools.setScrollbarIncrement(jscrollpane);
+		jscrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		jscrollpane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		jscrollpane.setMaximumSize(new Dimension(Integer.MAX_VALUE, 600));
+		String title = TextUtils.getText("editEdgeColors");
+		final int status = JOptionPane.showConfirmDialog(UITools.getCurrentFrame(), jscrollpane, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		switch(status)
+		{
+		case JOptionPane.OK_OPTION:
+			final List<Color> newColors = colorListEditorPanelBuilder.getColors();
+			edgeColorsConfigurationFactory.setConfiguration(map, new EdgeColorConfiguration(newColors));
+			break;
+		default:
+		}
 	}
 }

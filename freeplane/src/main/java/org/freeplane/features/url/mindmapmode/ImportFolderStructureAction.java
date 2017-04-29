@@ -94,6 +94,6 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 				addNode(target, list[i].getName(), list[i].toURI().toString());
 			}
 		}
-		Controller.getCurrentModeController().getMapController().setFolded(target, true);
+		Controller.getCurrentModeController().getMapController().fold(target);
 	}
 }

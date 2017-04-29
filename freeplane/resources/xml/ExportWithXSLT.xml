@@ -33,7 +33,24 @@
             file_type="html"
             xslt_file="/xslt/freeplane2applet.xsl"
             create_dir="true"
-            files_to_copy="${org.freeplane.core.dir.lib}freeplaneviewer.jar,/html/freeplane_applet.jnlp"
+            files_to_copy="${org.freeplane.core.dir.lib}freeplaneviewer.jar,${org.freeplane.core.dir.lib}kitfox-svg-salamander-1.1.1-p1.jar,/html/freeplane_applet.jnlp"
+            file_prefix=""
+            copy_map="true"
+            copymode="FILE"
+            mode="FILE"
+            load_file="true" 
+            set_properties="show_note_icons,
+            				show_icon_for_attributes,
+            				use_common_out_point_for_root_node"/>
+    </action>
+    <action
+        name="accessories/plugins/Export_JavaWebStart"
+    >
+        <properties
+            file_type="jnlp"
+            xslt_file="/xslt/freeplane2ws.xsl"
+            create_dir="true"
+            files_to_copy="${org.freeplane.core.dir.lib}freeplaneviewer.jar,${org.freeplane.core.dir.lib}kitfox-svg-salamander-1.1.1-p1.jar,"
             file_prefix=""
             copy_map="true"
             copymode="FILE"

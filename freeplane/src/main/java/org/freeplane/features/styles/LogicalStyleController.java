@@ -390,4 +390,9 @@ public class LogicalStyleController implements IExtension {
 	public String getMapStyleNames(NodeModel node, String separator) {
 		return getStyleNames(getConditionalMapStyles(node), separator);
     }
+
+	public ConditionalStyleChecker conditionalStylesOf(NodeModel node) {
+		final MapStyleModel styleModel = MapStyleModel.getExtension(node.getMap());
+		return new ConditionalStyleChecker(styleModel.getConditionalStyleModel(), node.getExtension(ConditionalStyleModel.class));
+	}
 }

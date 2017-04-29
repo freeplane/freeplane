@@ -20,12 +20,12 @@
 			</Entry>
 		</Entry>
 		<Entry name="view">
-			<Entry name="toolbars">
+			<Entry name="controls">
 				<Entry name="ToggleMenubarAction" builder="MB_ToggleMenubarAction" />
 				<Entry name="ToggleToolbarAction" />
 				<Entry name="ShowFilterToolbarAction" accelerator="control F" />
 				<Entry name="ToggleScrollbarsAction" />
-				<Entry name="SetBooleanPropertyAction.presentation_mode" />
+				<Entry name="SetBooleanPropertyAction.spotlight" />
 			</Entry>
 			<Entry name="zoom">
 				<Entry accelerator="alt UP" name="ZoomInAction" />
@@ -103,13 +103,12 @@
 	<Entry name="node_popup" builder="node_popup">
 		<Entry name="CenterAction" />
 	</Entry>
-	<Entry name="main_toolbar">
+	<Entry name="main_toolbar" builder="toolbar,ignore">
 		<Entry builder="main_toolbar_update" />
+		<Entry name="CenterAction" />
 		<Entry name="NavigationPreviousMapAction" />
 		<Entry name="NavigationNextMapAction" />
-		<Entry builder="main_toolbar_zoom" name="zoom">
-			<Entry name="CenterAction" />
-		</Entry>
+		<Entry builder="main_toolbar_zoom" name="zoom"/>
 		<Entry name="open">
 			<Entry name="PrintAction" />
 			<Entry name="CloseAction" />

@@ -28,6 +28,8 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
+import org.freeplane.features.DashVariant;
+import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -37,7 +39,7 @@ import org.freeplane.features.mode.ExclusivePropertyChain;
 import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
-import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
+import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -67,11 +69,12 @@ public class NodeStyleController implements IExtension {
  	final private ModeController modeController;
 	final private ExclusivePropertyChain<ShapeConfigurationModel, NodeModel> shapeHandlers;
 	final private ExclusivePropertyChain<Color, NodeModel> textColorHandlers;
-	final private ExclusivePropertyChain<TextAlign, NodeModel> textAlignHandlers;
+	final private ExclusivePropertyChain<HorizontalTextAlignment, NodeModel> horizontalTextAlignmentHandlers;
 	public static final String NODE_NUMBERING = "NodeNumbering";
 	
 	private static final Quantity<LengthUnits> DEFAULT_MINIMUM_WIDTH = new Quantity<LengthUnits>(0, LengthUnits.cm);
 	private static final Quantity<LengthUnits> DEFAULT_MAXIMUM_WIDTH = new Quantity<LengthUnits>(10, LengthUnits.cm);
+	private static final Quantity<LengthUnits> DEFAULT_BORDER_WIDTH = new Quantity<LengthUnits>(1, LengthUnits.px);
 
 	public NodeStyleController(final ModeController modeController) {
 		this.modeController = modeController;
@@ -80,7 +83,7 @@ public class NodeStyleController implements IExtension {
 		textColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		backgroundColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		shapeHandlers = new ExclusivePropertyChain<ShapeConfigurationModel, NodeModel>();
-		textAlignHandlers = new ExclusivePropertyChain<TextAlign, NodeModel>();
+		horizontalTextAlignmentHandlers = new ExclusivePropertyChain<HorizontalTextAlignment, NodeModel>();
 		
 		addFontGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Font, NodeModel>() {
 			public Font getProperty(final NodeModel node, final Font currentValue) {
@@ -124,15 +127,15 @@ public class NodeStyleController implements IExtension {
 			}
 		});
 		
-		addTextAlignGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<TextAlign, NodeModel>() {
-			public TextAlign getProperty(final NodeModel node, final TextAlign currentValue) {
-				return TextAlign.DEFAULT;
+		addTextAlignGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<HorizontalTextAlignment, NodeModel>() {
+			public HorizontalTextAlignment getProperty(final NodeModel node, final HorizontalTextAlignment currentValue) {
+				return HorizontalTextAlignment.DEFAULT;
 			}
 		});
 		
-		addTextAlignGetter(IPropertyHandler.STYLE, new IPropertyHandler<TextAlign, NodeModel>() {
-			public TextAlign getProperty(final NodeModel node, final TextAlign currentValue) {
-				return getTextAlign(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
+		addTextAlignGetter(IPropertyHandler.STYLE, new IPropertyHandler<HorizontalTextAlignment, NodeModel>() {
+			public HorizontalTextAlignment getProperty(final NodeModel node, final HorizontalTextAlignment currentValue) {
+				return getHorizontalTextAlignment(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
 		
@@ -153,9 +156,9 @@ public class NodeStyleController implements IExtension {
 		return textColorHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyHandler<TextAlign, NodeModel> addTextAlignGetter(final Integer key,
-            final IPropertyHandler<TextAlign, NodeModel> getter) {
-		return textAlignHandlers.addGetter(key, getter);
+	public IPropertyHandler<HorizontalTextAlignment, NodeModel> addTextAlignGetter(final Integer key,
+            final IPropertyHandler<HorizontalTextAlignment, NodeModel> getter) {
+		return horizontalTextAlignmentHandlers.addGetter(key, getter);
 	}
 
 	public IPropertyHandler<Font, NodeModel> addFontGetter(final Integer key,
@@ -196,7 +199,7 @@ public class NodeStyleController implements IExtension {
 		return null;
 	}
 
-	private Quantity<LengthUnits> getStyleMaxNodeWidth(final MapModel map, final Collection<IStyle> styleKeys) {
+	private Quantity<LengthUnits> getMaxNodeWidth(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -234,6 +237,128 @@ public class NodeStyleController implements IExtension {
 			return minWidth;
 		}
 		return DEFAULT_MINIMUM_WIDTH;
+	}
+	
+	private Boolean getBorderWidthMatchesEdgeWidth(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeBorderModel borderModel = NodeBorderModel.getModel(styleNode);
+			if (borderModel == null) {
+				continue;
+			}
+			final Boolean borderWidthMatchesEdgeWidth = borderModel.getBorderWidthMatchesEdgeWidth();
+			if (borderWidthMatchesEdgeWidth == null) {
+				continue;
+			}
+			return borderWidthMatchesEdgeWidth;
+		}
+		return false;
+	}
+	
+	private Quantity<LengthUnits> getBorderWidth(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeBorderModel borderModel = NodeBorderModel.getModel(styleNode);
+			if (borderModel == null) {
+				continue;
+			}
+			final Quantity<LengthUnits> borderWidth = borderModel.getBorderWidth();
+			if (borderWidth == null) {
+				continue;
+			}
+			return borderWidth;
+		}
+		return DEFAULT_BORDER_WIDTH;
+	}
+	
+	
+	private Boolean getBorderDashMatchesEdgeDash(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeBorderModel borderModel = NodeBorderModel.getModel(styleNode);
+			if (borderModel == null) {
+				continue;
+			}
+			final Boolean borderDashMatchesEdgeDash = borderModel.getBorderDashMatchesEdgeDash();
+			if (borderDashMatchesEdgeDash == null) {
+				continue;
+			}
+			return borderDashMatchesEdgeDash;
+		}
+		return false;
+	}
+	
+	private DashVariant getBorderDash(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeBorderModel borderModel = NodeBorderModel.getModel(styleNode);
+			if (borderModel == null) {
+				continue;
+			}
+			final DashVariant borderDash = borderModel.getBorderDash();
+			if (borderDash == null) {
+				continue;
+			}
+			return borderDash;
+		}
+		return DashVariant.DEFAULT;
+	}
+	
+	
+	private Boolean getBorderColorMatchesEdgeColor(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeBorderModel borderModel = NodeBorderModel.getModel(styleNode);
+			if (borderModel == null) {
+				continue;
+			}
+			final Boolean borderColorMatchesEdgeColor = borderModel.getBorderColorMatchesEdgeColor();
+			if (borderColorMatchesEdgeColor == null) {
+				continue;
+			}
+			return borderColorMatchesEdgeColor;
+		}
+		return true;
+	}
+	
+	private Color getBorderColor(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final NodeBorderModel borderModel = NodeBorderModel.getModel(styleNode);
+			if (borderModel == null) {
+				continue;
+			}
+			final Color borderColor = borderModel.getBorderColor();
+			if (borderColor == null) {
+				continue;
+			}
+			return borderColor;
+		}
+		return EdgeController.STANDARD_EDGE_COLOR;
 	}
 	
 	public static Font getDefaultFont() {
@@ -287,8 +412,8 @@ public class NodeStyleController implements IExtension {
 		return createFont(baseFont, fontFamilyName, fontSize, bold, italic);
 	}
 
-	public TextAlign getTextAlign(final NodeModel node) {
-		return textAlignHandlers.getProperty(node);
+	public HorizontalTextAlignment getHorizontalTextAlignment(final NodeModel node) {
+		return horizontalTextAlignmentHandlers.getProperty(node);
 	}
 
 	private Font createFont(final Font baseFont, String family, Integer size, Boolean bold, Boolean italic) {
@@ -357,7 +482,7 @@ public class NodeStyleController implements IExtension {
 		return null;
 	}
 
-	private TextAlign getTextAlign(final MapModel map, final Collection<IStyle> style) {
+	private HorizontalTextAlignment getHorizontalTextAlignment(final MapModel map, final Collection<IStyle> style) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : style){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -368,11 +493,11 @@ public class NodeStyleController implements IExtension {
 			if (styleModel == null) {
 				continue;
 			}
-			final TextAlign textAlign = styleModel.getTextAlign();
-			if (textAlign == null) {
+			final HorizontalTextAlignment textAlignment = styleModel.getHorizontalTextAlignment();
+			if (textAlignment == null) {
 				continue;
 			}
-			return textAlign;
+			return textAlignment;
 		}
 		return null;
 	}
@@ -427,19 +552,67 @@ public class NodeStyleController implements IExtension {
 		final MapModel map = node.getMap();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 		final Collection<IStyle> style = styleController.getStyles(node);
-		final Quantity<LengthUnits> maxTextWidth = getStyleMaxNodeWidth(map, style);
+		final Quantity<LengthUnits> maxTextWidth = getMaxNodeWidth(map, style);
 		return maxTextWidth;
     }
 
 	public Quantity<LengthUnits> getMinWidth(NodeModel node) {
 		final MapModel map = node.getMap();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
-		final Collection<IStyle> style = styleController.getStyles(node);
-		final Quantity<LengthUnits> minWidth = getStyleMinWidth(map, style);
+		final Collection<IStyle> styles = styleController.getStyles(node);
+		final Quantity<LengthUnits> minWidth = getStyleMinWidth(map, styles);
 		return minWidth;
     }
 
 	public ModeController getModeController() {
 	    return modeController;
     }
+
+	public Boolean getBorderWidthMatchesEdgeWidth(NodeModel node) {
+		final MapModel map = node.getMap();
+		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+		final Collection<IStyle> style = styleController.getStyles(node);
+		final Boolean borderWidthMatchesEdgeWidth = getBorderWidthMatchesEdgeWidth(map, style);
+		return borderWidthMatchesEdgeWidth;
+	}
+
+	public Boolean getBorderDashMatchesEdgeDash(NodeModel node) {
+		final MapModel map = node.getMap();
+		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+		final Collection<IStyle> style = styleController.getStyles(node);
+		final Boolean borderDashMatchesEdgeDash = getBorderDashMatchesEdgeDash(map, style);
+		return borderDashMatchesEdgeDash;
+	}
+
+	public Quantity<LengthUnits> getBorderWidth(NodeModel node) {
+		final MapModel map = node.getMap();
+		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+		final Collection<IStyle> style = styleController.getStyles(node);
+		final Quantity<LengthUnits> borderWidth = getBorderWidth(map, style);
+		return borderWidth;
+	}
+
+	public DashVariant getBorderDash(NodeModel node) {
+		final MapModel map = node.getMap();
+		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+		final Collection<IStyle> style = styleController.getStyles(node);
+		final DashVariant borderDash = getBorderDash(map, style);
+		return borderDash;
+	}
+
+	public Boolean getBorderColorMatchesEdgeColor(NodeModel node) {
+		final MapModel map = node.getMap();
+		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+		final Collection<IStyle> style = styleController.getStyles(node);
+		final Boolean borderColorMatchesEdgeColor = getBorderColorMatchesEdgeColor(map, style);
+		return borderColorMatchesEdgeColor;
+	}
+
+	public Color getBorderColor(NodeModel node) {
+		final MapModel map = node.getMap();
+		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+		final Collection<IStyle> style = styleController.getStyles(node);
+		final Color borderColor = getBorderColor(map, style);
+		return borderColor;
+	}
 }

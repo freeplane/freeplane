@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="32.679" width="32.361" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32.361396 32.678828" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<radialGradient id="b" gradientUnits="userSpaceOnUse" cy="251.73" cx="390.42" gradientTransform="matrix(.17606 .53787 -.47702 .15567 440.12 3.1593)" r="13.897">
+<stop stop-color="#14b7e9" offset="0"/>
+<stop stop-color="#040f31" offset="1"/>
+</radialGradient>
+<linearGradient id="a" y2="301.33" gradientUnits="userSpaceOnUse" y1="299.54" gradientTransform="matrix(1.4215,0,0,1.16,-223.8,-40.572)" x2="396.47" x1="397.21">
+<stop stop-color="#d40000" offset="0"/>
+<stop stop-color="#e93d00" offset="1"/>
+</linearGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-35.157 -106.42)">
+<g transform="translate(-279,-197.19)">
+<g stroke-linecap="round">
+<path stroke-linejoin="round" d="m406.18 256.41a13.323 13.323 0 0 1 -13.323 13.323 13.323 13.323 0 0 1 -13.323 -13.323 13.323 13.323 0 0 1 13.323 -13.323 13.323 13.323 0 0 1 13.323 13.323z" stroke-opacity=".81395" transform="matrix(1.137,0,0,1.1294,-116.72,31.008)" stroke="#501644" stroke-width="1.149" fill="url(#b)"/>
+<path d="m338.63 312.62 2.4597-2.9945" stroke="#000" stroke-width="1.3568" fill="none"/>
+<path d="m338.71 310.25c0.74294-0.0821 1.7637-1.3018 2.46-0.74738 1.0695 0.85163 0.74937 4.909 1.1862 2.969 0.16803-0.74623 3.0096-2.1885 3.4818-2.8249 0.28186-0.37991-1.0688-1.888-1.2877-2.6121-0.18525-0.61284 0.74736-1.944 0.35186-2.2746-0.69541-0.58117-2.3114 0.48791-3.2998 0.52606-0.61994 0.024-2.1634-1.3-2.5859-0.97971-0.55231 0.41864-0.5386 0.79932-0.0551 3.0797 0.0136 0.064-1.5862 0.42873-1.5862 1.1941 0 0.41105-0.18272 0.63085 1.3348 1.6698z" fill-rule="evenodd" stroke="url(#a)" stroke-width="1.2841px" fill="#ed843a"/>
+</g>
+<rect rx=".14086" ry=".14991" height="32" width="32" y="303.96" x="314.33" fill="none"/>
+</g>
+</g>
+</svg>

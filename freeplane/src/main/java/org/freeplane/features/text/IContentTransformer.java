@@ -7,6 +7,7 @@ import org.freeplane.features.map.NodeModel;
 public interface IContentTransformer extends Comparable<IContentTransformer> {
 
 	Object transformContent(TextController textController, Object content, NodeModel node, Object transformedExtension) throws TransformationException;
+	boolean isFormula(TextController textController, Object content, NodeModel node, Object transformedExtension);
 	Icon getIcon(TextController textController, Object content, NodeModel node, Object transformedExtension);
 
 	/** used for determining the transformer sequence when more than one transformer is present.

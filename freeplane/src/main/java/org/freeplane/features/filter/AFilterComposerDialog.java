@@ -42,6 +42,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -52,6 +53,7 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -162,15 +164,24 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
             else {
             	btnUp.setEnabled(true);
             	btnDown.setEnabled(true);
-            	btnDelete.setEnabled(true);
+            	final boolean areValuesOnlySelected = !isNullSelected();
+            	btnDelete.setEnabled(areValuesOnlySelected);
 	            final int maxSelectionIndex = elementaryConditionList.getMaxSelectionIndex();
 				final boolean oneElementChosen = minSelectionIndex == maxSelectionIndex;
-				btnNot.setEnabled(oneElementChosen);
-				btnName.setEnabled(oneElementChosen);
-				btnAnd.setEnabled(! oneElementChosen);
-				btnOr.setEnabled(! oneElementChosen);
+				btnNot.setEnabled(oneElementChosen && areValuesOnlySelected);
+				btnName.setEnabled(oneElementChosen && areValuesOnlySelected);
+				btnAnd.setEnabled(! oneElementChosen && areValuesOnlySelected);
+				btnOr.setEnabled(! oneElementChosen && areValuesOnlySelected);
 				btnSplit.setEnabled(oneElementChosen && elementaryConditionList.getSelectedValue() instanceof ICombinedCondition);
             }
+		}
+
+		private boolean isNullSelected() {
+			for(Object selectedValue : elementaryConditionList.getSelectedValuesList()){
+				if(selectedValue == null)
+					return true;
+			}
+			return false;
 		}
 	}
 
@@ -583,9 +594,15 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		UITools.addEscapeActionToDialog(this);
 		pack();
 	}
+	
+	
 
-	private JButton addAction(Action action, boolean enabled) {
-	    JButton button = new JButton(action);
+	public void setConditionRenderer(ListCellRenderer cellRenderer) {
+		elementaryConditionList.setCellRenderer(cellRenderer);
+	}
+
+	private JButton addAction(AFreeplaneAction action, boolean enabled) {
+	    JButton button = TranslatedElementFactory.createButtonWithIcon(action, action.getIconKey(), action.getTextKey());
 		button.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		conditionButtonBox.add(Box.createVerticalStrut(GAP_BETWEEN_BUTTONS));
 		conditionButtonBox.add(button);
@@ -628,7 +645,6 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 			int selectedIndex = internalConditionsModel.getIndexOf(selectedItem);
 			if (selectedIndex >= 0) {
 				elementaryConditionList.setSelectedIndex(selectedIndex);
-				return;
 			}
 		}
 	}

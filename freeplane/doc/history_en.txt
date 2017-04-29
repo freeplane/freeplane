@@ -1,4 +1,46 @@
 ===============================
+1.6.1
+===============================
+SVG icons for map and UI
+Configurable map icon size
+Configurable UI icon size
+Paint clone node markers only on selected nodes
+Image in node without black border (no border)
+Option to hide connectors when filtering hides other connector end
+Independent presentation mode for different map views
+Configurable clone marks
+Configurable standard cloud shape
+Action for showing next presentation item without folding other nodes
+Improved presentation panel
+Optional presentation automatics "processesUpDownKeys", "switchToFullScreen", "switchToPresentationMode"
+Increased sensitive area for image scaling
+No special treatment for white space nodes when content is copied to text
+Option to paste images from files
+Dragged and dropped files are copied into directory mindmap_files/ if CONTROL key is pressed
+
+===============================
+1.6.0
+===============================
+Configurable node border widths
+Configurable node border colors
+Configurable edge line type
+Configurable node border line type
+Configurable standard for connector arrows
+Configurable standard for connector line types 
+Presentations
+Export for java web start
+Editor dialog for automatic edge colors
+
+===============================
+1.5.20
+===============================
+Bug fixes
+Export for java web start
+Security fix related to scripts and formulas
+Security fix related to loading of mind map files
+Change short cuts for MacOS to avoid collisions
+
+===============================
 1.5.18
 ===============================
 Bug fixes
@@ -54,6 +96,7 @@ Restore old default map template
 1.5.10
 ===============================
 Stable release
+
 ===============================
 1.5.9
 ===============================

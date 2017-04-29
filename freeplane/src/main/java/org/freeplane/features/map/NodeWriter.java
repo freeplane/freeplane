@@ -29,6 +29,9 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
+import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkBuilder;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -139,10 +142,24 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 			}
 		}
 		if(! isNodeAlreadyWritten || Mode.EXPORT.equals(mode)) {
+			writeIconSize(writer, node);
 			linkBuilder.writeAttributes(writer, node);
 			writer.addExtensionAttributes(node, node.getSharedExtensions().values());
 		}
 		writer.addExtensionAttributes(node, node.getIndividualExtensionValues());
+	}
+
+	private void writeIconSize(final ITreeWriter writer, final NodeModel node) {
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
+		Quantity<LengthUnits> iconSize = null;
+		if (forceFormatting) {
+			final IconController iconController = IconController.getController();
+			iconSize = iconController.getIconSize(node);
+		} else
+			iconSize = node.getSharedData().getIcons().getIconSize();
+		if (iconSize != null) {
+			writer.addAttribute("ICON_SIZE", iconSize.toString());
+		}
 	}
 
 	private void writeReferenceNodeId(ITreeWriter writer, NodeModel node) {

@@ -22,7 +22,10 @@ package org.freeplane.features.note;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.net.MalformedURLException;
 import java.net.URL;
+
+import javax.swing.Icon;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.WriteManager;
@@ -32,6 +35,7 @@ import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
+import org.freeplane.features.icon.factory.ImageIconFactory;
 import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -47,13 +51,19 @@ import org.freeplane.features.text.TextController;
  * @author Dimitry Polivaev
  */
 public class NoteController implements IExtension {
-	private static boolean firstRun = true;
 	/**
 	 *
 	 */
 	public static final String NODE_NOTE_ICON = "accessories.plugins.NodeNoteIcon";
-	private static UIIcon noteIcon;
-	public static URL bwNoteIconUrl;
+	private static final UIIcon noteIcon= IconStoreFactory.ICON_STORE.getUIIcon("knotes.png");
+	public static final String bwNoteIconUrl;
+	public static final Icon bwNoteIcon;
+	
+	static {
+			String bwNoteIconName = "note_black_and_transp.png";
+			bwNoteIconUrl = "freeplaneresource:/images/" + bwNoteIconName;
+			bwNoteIcon = IconStoreFactory.ICON_STORE.getUIIcon(bwNoteIconName).getIcon();
+	}
 	public static final String SHOW_NOTE_ICONS = "show_note_icons";
 	private static final Integer NOTE_TOOLTIP = 9;
 	public static final String SHOW_NOTES_IN_MAP = "show_notes_in_map";
@@ -70,11 +80,6 @@ public class NoteController implements IExtension {
 	public static void install( final NoteController noteController) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(NoteController.class, noteController);
-		if (firstRun) {
-			noteIcon = IconStoreFactory.create().getUIIcon("knotes.png");
-			bwNoteIconUrl = ResourceController.getResourceController().getResource("/images/note_black_and_transp.png");
-			firstRun = false;
-		}
 	}
 
  	final private ModeController modeController;
@@ -151,7 +156,7 @@ public class NoteController implements IExtension {
 		return Boolean.parseBoolean(property);
 	}
 
-	protected String getNoteCSSStyle(ModeController modeController, NodeModel node, boolean withWidth) {
+	protected String getNoteCSSStyle(ModeController modeController, NodeModel node, boolean asHtmlFragment) {
 		final StringBuilder rule = new StringBuilder();
 		// set default font for notes:
 		final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
@@ -163,13 +168,16 @@ public class NoteController implements IExtension {
 		    final Font noteFont = style.getFont(noteStyleNode);
 		    Color noteBackground = style.getBackgroundColor(noteStyleNode);
 		    Color noteForeground = style.getColor(noteStyleNode);
-		    final int alignment = style.getTextAlign(noteStyleNode).swingConstant;
-		    final CssRuleBuilder cssRuleBuilder = new CssRuleBuilder()
-		    		.withFont(noteFont)
-		    		.withColor(noteForeground)
+		    final int alignment = style.getHorizontalTextAlignment(noteStyleNode).swingConstant;
+		    final CssRuleBuilder cssRuleBuilder = new CssRuleBuilder();
+		    if(asHtmlFragment)
+		    	cssRuleBuilder.withHTMLFont(noteFont);
+		    else
+			    cssRuleBuilder.withCSSFont(noteFont);
+		    cssRuleBuilder.withColor(noteForeground)
 					.withBackground(noteBackground)
 					.withAlignment(alignment);
-		    if(withWidth)
+		    if(asHtmlFragment)
 		    	cssRuleBuilder.withMaxWidthAsPt(NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node));
 			rule.append(cssRuleBuilder);
 		}
