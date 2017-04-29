@@ -120,8 +120,9 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 		if (input == null) {
 			input = Color.WHITE;
 		}
-		mButton.setBackground(ColorUtils.alphaToColor(255, input));
-		final Color textColor = UITools.getTextColorForBackground(input);
+		final Color nonTransparent = ColorUtils.makeNonTransparent(input);
+		mButton.setBackground(nonTransparent);
+		final Color textColor = UITools.getTextColorForBackground(nonTransparent);
 		mButton.setForeground(textColor);
 		mButton.setText(ColorUtils.colorToString(input));
 	}

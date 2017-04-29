@@ -19,6 +19,7 @@
  */
 package org.freeplane.core.resources;
 
+import java.awt.Color;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.IOException;
@@ -42,6 +43,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.TimePeriodUnits;
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
@@ -214,6 +216,12 @@ public abstract class ResourceController {
 		}
 	}
 
+
+	public Color getColorProperty(String name) {
+		String string = getProperty(name);
+		return ColorUtils.stringToColor(string);
+	}
+	
 	abstract public Properties getProperties();
 
 	abstract public String getProperty(final String key);

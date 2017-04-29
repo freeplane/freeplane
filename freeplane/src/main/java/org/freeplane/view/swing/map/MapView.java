@@ -466,6 +466,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	static private IFreeplanePropertyListener propertyChangeListener;
 	public static final String RESOURCES_SELECTED_NODE_COLOR = "standardselectednodecolor";
 	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
+	private static final String PRESENTATION_DIMMER_TRANSPARENCY_COLOR = "presentation_dimmer_transparency_color";
 	private static final String PRESENTATION_DIMMER_TRANSPARENCY = "presentation_dimmer_transparency";
 	private static final String HIDE_SINGLE_END_CONNECTORS = "hide_single_end_connectors";
 	private static final String SHOW_CONNECTORS_PROPERTY = "show_connectors";
@@ -511,10 +512,34 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static boolean showIcons;
 	private static boolean hideSingleEndConnectors;
 	private boolean fitToViewport;
-	private static int transparency;
+	private static Color transparency;
 	final private ComponentAdapter backgroundImageResizer;
 	private INodeChangeListener connectorChangeListener;
 	public static final String SPOTLIGHT_ENABLED = "spotlight";
+	
+	static {
+		final ResourceController resourceController = ResourceController.getResourceController();
+		final String stdcolor = resourceController.getProperty(
+			    MapView.RESOURCES_SELECTED_NODE_COLOR);
+			MapView.standardSelectColor = ColorUtils.stringToColor(stdcolor);
+			final String stdtextcolor = resourceController.getProperty(
+			    MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
+			MapView.standardSelectRectangleColor = ColorUtils.stringToColor(stdtextcolor);
+			final String drawCircle = resourceController.getProperty(
+			    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
+			MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
+			final String printOnWhite = resourceController
+			    .getProperty("printonwhitebackground");
+			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
+			int alpha = 255 - resourceController.getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
+			resourceController.setDefaultProperty(PRESENTATION_DIMMER_TRANSPARENCY_COLOR, ColorUtils.colorToRGBAString(new Color(0, 0, 0, alpha)));
+			transparency = resourceController.getColorProperty(PRESENTATION_DIMMER_TRANSPARENCY_COLOR);
+			hideSingleEndConnectors = resourceController.getBooleanProperty(HIDE_SINGLE_END_CONNECTORS);
+			showConnectors = resourceController.getBooleanProperty(SHOW_CONNECTORS_PROPERTY);
+			showIcons = resourceController.getBooleanProperty(SHOW_ICONS_PROPERTY);
+
+			createPropertyChangeListener();
+	}
 
 	public MapView(final MapModel model, final ModeController modeController) {
 		super();
@@ -523,26 +548,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		mapScroller = new MapScroller(this);
 		final String name = model.getTitle();
 		setName(name);
-		if (MapView.standardSelectColor == null) {
-			final String stdcolor = ResourceController.getResourceController().getProperty(
-			    MapView.RESOURCES_SELECTED_NODE_COLOR);
-			MapView.standardSelectColor = ColorUtils.stringToColor(stdcolor);
-			final String stdtextcolor = ResourceController.getResourceController().getProperty(
-			    MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
-			MapView.standardSelectRectangleColor = ColorUtils.stringToColor(stdtextcolor);
-			final String drawCircle = ResourceController.getResourceController().getProperty(
-			    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
-			MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
-			final String printOnWhite = ResourceController.getResourceController()
-			    .getProperty("printonwhitebackground");
-			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
-			MapView.transparency = 255 - ResourceController.getResourceController().getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
-			MapView.hideSingleEndConnectors = ResourceController.getResourceController().getBooleanProperty(HIDE_SINGLE_END_CONNECTORS);
-			MapView.showConnectors = ResourceController.getResourceController().getBooleanProperty(SHOW_CONNECTORS_PROPERTY);
-			MapView.showIcons = ResourceController.getResourceController().getBooleanProperty(SHOW_ICONS_PROPERTY);
-
-			createPropertyChangeListener();
-		}
 		this.setAutoscrolls(true);
 		this.setLayout(new MindMapLayout());
 		final NoteController noteController = NoteController.getController(getModeController());
@@ -672,8 +677,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(newValue);
 					return;
 				}
-				if (propertyName.equals(PRESENTATION_DIMMER_TRANSPARENCY)) {
-					MapView.transparency = 255 - ResourceController.getResourceController().getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
+				if (propertyName.equals(PRESENTATION_DIMMER_TRANSPARENCY_COLOR)) {
+					MapView.transparency = ColorUtils.stringToColor(newValue);
 					mapView.repaint();
 					return;
 				}
@@ -1529,7 +1534,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void paintDimmer(Graphics2D g2, PaintingMode[] paintModes) {
 		final Color color = g2.getColor();
 		try{
-			Color dimmer = new Color(0, 0, 0, transparency);
+			Color dimmer = transparency;
 			g2.setColor(dimmer);
 			g2.fillRect(0, 0, getWidth(), getHeight());
 		}
