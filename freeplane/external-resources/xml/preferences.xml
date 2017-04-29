@@ -164,6 +164,7 @@
 			</separator>
 			<separator name="icon_properties">
 				<boolean name="structured_icon_toolbar" />
+				<boolean name="show_icons" />
 			</separator>
 		</tab>
 		<tab name="Defaults">

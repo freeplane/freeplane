@@ -473,6 +473,10 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	void updateIcons(final NodeView node) {
+		if(! node.getMap().showsIcons()) {
+			setIcon(null);
+			return;
+		}
 //		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
 		final MultipleImage iconImages = new MultipleImage();
 		/* fc, 06.10.2003: images? */
