@@ -714,8 +714,9 @@ abstract public class FrameController implements ViewController {
 	}
 
 	public boolean quit() {
-		Controller.getCurrentController().selectMode(MModeController.MODENAME);
-		final boolean allMapsClosed = Controller.getCurrentModeController().getMapController().closeAllMaps();
+		final Controller controller = Controller.getCurrentController();
+		controller.selectMode(MModeController.MODENAME);
+		final boolean allMapsClosed = controller.closeAllMaps();
 	    if(allMapsClosed)
 	    	getController().getMapViewManager().onQuitApplication();
 	    return allMapsClosed;

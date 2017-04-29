@@ -341,12 +341,9 @@ public class MMapController extends MapController {
 		Controller.getCurrentModeController().execute(actor, map);
     }
 
-	/**
-	 * Return false if user has canceled.
-	 */
-	@Override
 	public boolean close(final MapModel map) {
 		if (!map.isSaved()) {
+			Controller.getCurrentController().getMapViewManager().changeToMap(map);
 			final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
 			final String title = TextUtils.getText("SaveAction.text");
 			Component dialogParent;

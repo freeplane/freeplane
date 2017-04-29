@@ -520,23 +520,6 @@ public class MapController extends SelectionController implements IExtension{
 		return node.getChildren();
 	}
 
-	public boolean close(final MapModel map) {
-		closeWithoutSaving(map);
-		return true;
-	}
-	
-	public boolean closeAllMaps() {
-		final Controller controller = getModeController().getController();
-		for (MapModel map = controller.getMap(); map != null; map = controller.getMap()){
-			final boolean closingNotCancelled = close(map);
-			if (!closingNotCancelled) {
-				return false;
-			}
-			
-		}
-		return true;
-	}
-
 	public void closeWithoutSaving(final MapModel map) {
 		fireMapRemoved(map);
 		map.destroy();
