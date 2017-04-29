@@ -1469,10 +1469,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	@Override
 	protected void paintChildren(final Graphics g) {
-	    final boolean paintLinksBehind = ResourceController.getResourceController().getBooleanProperty(
+	    final boolean paintConnectorsBehind = ResourceController.getResourceController().getBooleanProperty(
 	    	    "paint_connectors_behind");
 	    final PaintingMode paintModes[];
-	    if(paintLinksBehind)
+	    if(paintConnectorsBehind)
 	    	paintModes = new PaintingMode[]{
 	    		PaintingMode.CLOUDS,
 	    		PaintingMode.LINKS, PaintingMode.NODES, PaintingMode.SELECTED_NODES
@@ -1499,7 +1499,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    	this.paintingMode = paintingMode;
 			switch(paintingMode){
 	    		case LINKS:
-	    			paintLinks(g2);
+	    			paintConnectors(g2);
 	    			break;
 				default:
 					super.paintChildren(g2);
@@ -1542,7 +1542,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return paintingMode;
 	}
 
-	private void paintLinks(final Collection<NodeLinkModel> links, final Graphics2D graphics,
+	private void paintConnectors(final Collection<NodeLinkModel> links, final Graphics2D graphics,
 	                        final HashSet<ConnectorModel> alreadyPaintedLinks) {
 		final Font font = graphics.getFont();
 		try {
@@ -1579,22 +1579,22 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 	}
 
-	private void paintLinks(final Graphics2D graphics) {
+	private void paintConnectors(final Graphics2D graphics) {
 		arrowLinkViews = new Vector<ILinkView>();
 		final Object renderingHint = getModeController().getController().getMapViewManager().setEdgesRenderingHint(
 		    graphics);
 		if(MapLinks.hasLinks(model))
-			paintLinks(rootView, graphics, new HashSet<ConnectorModel>());
+			paintConnectors(rootView, graphics, new HashSet<ConnectorModel>());
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
 
-	private void paintLinks(final NodeView source, final Graphics2D graphics, final HashSet<ConnectorModel> alreadyPaintedLinks) {
+	private void paintConnectors(final NodeView source, final Graphics2D graphics, final HashSet<ConnectorModel> alreadyPaintedConnectors) {
 		final LinkController linkController = LinkController.getController(getModeController());
 		final NodeModel node = source.getModel();
 		final Collection<NodeLinkModel> outLinks = linkController.getLinksFrom(node);
-		paintLinks(outLinks, graphics, alreadyPaintedLinks);
+		paintConnectors(outLinks, graphics, alreadyPaintedConnectors);
 		final Collection<NodeLinkModel> inLinks = linkController.getLinksTo(node);
-		paintLinks(inLinks, graphics, alreadyPaintedLinks);
+		paintConnectors(inLinks, graphics, alreadyPaintedConnectors);
 		final int nodeViewCount = source.getComponentCount();
 		for (int i = 0; i < nodeViewCount; i++) {
 			final Component component = source.getComponent(i);
@@ -1616,7 +1616,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					continue;
 				}
 			}
-			paintLinks(child, graphics, alreadyPaintedLinks);
+			paintConnectors(child, graphics, alreadyPaintedConnectors);
 		}
 	}
 
