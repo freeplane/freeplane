@@ -117,19 +117,25 @@ public class CssRuleBuilderShould {
 
 	@Test
 	public void addWidth() throws Exception {
-		cssRuleBuilder.withMaxWidthAsPt(new Quantity<Metrics>(1000, Metrics.cm));
+		cssRuleBuilder.withMaxWidthAsPt(1, new Quantity<Metrics>(1000, Metrics.cm));
 		assertRule("width: 10pt;");
 	}
 
 	@Test
+	public void considerZoomCalculatingWidth() throws Exception {
+		cssRuleBuilder.withMaxWidthAsPt(2, new Quantity<Metrics>(1000, Metrics.cm));
+		assertRule("width: 20pt;");
+	}
+
+	@Test
 	public void addMaxWidth() throws Exception {
-		cssRuleBuilder.withMaxWidthAsPt(new Quantity<Metrics>(2, Metrics.m), new Quantity<Metrics>(1, Metrics.m));
+		cssRuleBuilder.withMaxWidthAsPt(1, new Quantity<Metrics>(2, Metrics.m), new Quantity<Metrics>(1, Metrics.m));
 		assertRule("width: 2pt;");
 	}
 
 	@Test
 	public void ignoreNullWidth() throws Exception {
-		cssRuleBuilder.withMaxWidthAsPt((Quantity<Metrics>) null);
+		cssRuleBuilder.withMaxWidthAsPt(1, (Quantity<Metrics>) null);
 		assertRule("");
 	}
 }

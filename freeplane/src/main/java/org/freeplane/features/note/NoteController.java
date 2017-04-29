@@ -42,6 +42,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
+import org.freeplane.view.swing.map.MainView;
 
 /**
  * @author Dimitry Polivaev
@@ -110,14 +111,18 @@ public class NoteController implements IExtension {
 
 	private void registerNoteTooltipProvider(ModeController modeController) {
 		modeController.addToolTipProvider(NOTE_TOOLTIP, new ITooltipProvider() {
-			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
+			public String getTooltip(final ModeController modeController, NodeModel node, Component view){
+				return getTooltip(modeController, node, (MainView)view);
+			}
+			private String getTooltip(final ModeController modeController, NodeModel node, MainView view) {
 				if(showNotesInMap(node.getMap()) && ! TextController.getController(modeController).isMinimized(node)){
 					return null;
 				}
 				final String noteText = NoteModel.getNoteText(node);
 				if (noteText == null)
 					return null;
-				final String rule = getNoteCSSStyle(modeController, node, true);
+				float zoom = view.getNodeView().getMap().getZoom();
+				final String rule = getNoteCSSStyle(modeController, node, zoom, true);
 				final StringBuilder tooltipBodyBegin = new StringBuilder("<body><div style=\"");
 				tooltipBodyBegin.append(rule);
 				tooltipBodyBegin.append("\">");
@@ -151,7 +156,7 @@ public class NoteController implements IExtension {
 		return Boolean.parseBoolean(property);
 	}
 
-	protected String getNoteCSSStyle(ModeController modeController, NodeModel node, boolean asHtmlFragment) {
+	protected String getNoteCSSStyle(ModeController modeController, NodeModel node, float zoom, boolean asHtmlFragment) {
 		final StringBuilder rule = new StringBuilder();
 		// set default font for notes:
 		final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
@@ -173,7 +178,7 @@ public class NoteController implements IExtension {
 					.withBackground(noteBackground)
 					.withAlignment(alignment);
 		    if(asHtmlFragment)
-		    	cssRuleBuilder.withMaxWidthAsPt(NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node));
+		    	cssRuleBuilder.withMaxWidthAsPt(zoom, NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node));
 			rule.append(cssRuleBuilder);
 		}
 		return rule.toString();

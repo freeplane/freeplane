@@ -91,11 +91,13 @@ public class CssRuleBuilder {
 		return rule.toString();
 	}
 
-	public CssRuleBuilder withMaxWidthAsPt(Quantity<?>... widths) {
+	public CssRuleBuilder withMaxWidthAsPt(float zoom, Quantity<?>... widths) {
 		int maxBaseUnits = -1;
 		for(Quantity<?> width : widths)
-			if(width != null)
-				maxBaseUnits = Math.max(maxBaseUnits, width.toBaseUnitsRounded());
+			if(width != null) {
+				final int zoomedBaseUnits = (int) (zoom * width.toBaseUnits() + 0.5d);
+				maxBaseUnits = Math.max(maxBaseUnits, zoomedBaseUnits);
+			}
 		if(maxBaseUnits >= 0)
 	   		rule.append("width: ")
 			.append(maxBaseUnits).append("pt")
