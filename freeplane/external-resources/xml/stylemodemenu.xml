@@ -56,6 +56,10 @@
 			<Entry name="menu_viewmode">
 				<Entry name="ViewLayoutTypeAction.OUTLINE" />
 				<Entry name="ShowSelectionAsRectangleAction" />
+				<Entry name="SetBooleanPropertyAction.show_icons" />
+				<Entry name="SetBooleanPropertyAction.show_connectors" />
+				<Entry name="SetBooleanPropertyAction.hide_single_end_connectors" />
+				<Entry name="SetBooleanPropertyAction.show_note_icon_in_tooltip" />
 			</Entry>
 			<Entry name="menu_hoverView">
 				<Entry accelerator="alt F2" name="ToggleDetailsAction" />
