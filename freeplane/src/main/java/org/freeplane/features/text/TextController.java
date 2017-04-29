@@ -303,7 +303,10 @@ public class TextController implements IExtension {
 
 	private void registerDetailsTooltip() {
 		modeController.addToolTipProvider(DETAILS_TOOLTIP, new ITooltipProvider() {
-				public String getTooltip(ModeController modeController, NodeModel node, Component view) {
+			public String getTooltip(final ModeController modeController, NodeModel node, Component view){
+				return getTooltip(modeController, node, (MainView)view);
+			}
+			private String getTooltip(final ModeController modeController, NodeModel node, MainView view) {
 					final DetailTextModel detailText = DetailTextModel.getDetailText(node);
 					if (detailText == null || ! (detailText.isHidden() || ShortenedTextModel.isShortened(node)) ){
 						 return null;
@@ -315,6 +318,8 @@ public class TextController implements IExtension {
 			        Color detailBackground = style.getBackgroundColor(detailStyleNode);
 			        Color detailForeground = style.getColor(detailStyleNode);
 			        final int alignment = style.getHorizontalTextAlignment(detailStyleNode).swingConstant;
+			        
+			        float zoom = view.getNodeView().getMap().getZoom();
 					
 					final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
 							.append(new CssRuleBuilder()
@@ -322,7 +327,7 @@ public class TextController implements IExtension {
 							.withColor(detailForeground)
 							.withBackground(detailBackground)
 							.withAlignment(alignment)
-							.withMaxWidthAsPt(NodeSizeModel.getMaxNodeWidth(detailStyleNode), style.getMaxWidth(node)))
+							.withMaxWidthAsPt(zoom, NodeSizeModel.getMaxNodeWidth(detailStyleNode), style.getMaxWidth(node)))
 							.append("\">");
 					
 					String noteText= detailText.getHtml();
@@ -344,12 +349,13 @@ public class TextController implements IExtension {
 				    }
 				    final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
 				    final Font font = style.getFont(node);
+				    float zoom = view.getNodeView().getMap().getZoom();
 					final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
 							.append(new CssRuleBuilder().withHTMLFont(font)
 							.withColor(view.getForeground())
 							.withBackground(view.getNodeView().getTextBackground())
 							.withAlignment(view.getHorizontalAlignment())
-							.withMaxWidthAsPt(style.getMaxWidth(node)));
+							.withMaxWidthAsPt(zoom, style.getMaxWidth(node)));
 				    final Object data = node.getUserObject();
 				    String text;
 				    try {
