@@ -8,8 +8,14 @@ import java.awt.LayoutManager;
 import javax.swing.JToolBar.Separator;
 
 class ToolbarLayout implements LayoutManager {
-	private static final ToolbarLayout instance = new ToolbarLayout();
 
+	private BlockEndPosition blockEndPosition;
+
+	enum BlockEndPosition{ON_SEPARATOR, ANYWHERE};
+	ToolbarLayout(BlockEndPosition blockEndPosition){
+		this.blockEndPosition = blockEndPosition;
+		
+	}
 	public void addLayoutComponent(final String name, final Component comp) {
 	}
 
@@ -26,8 +32,12 @@ class ToolbarLayout implements LayoutManager {
 		int lastBlockFinish = 0;
 		for (int i = 0;; i++) {
 			final Component component = i < container.getComponentCount() ? container.getComponent(i) : null;
-			if (component == null || component instanceof Separator) {
-				if (i > container.getComponentCount() || lastBlockWidth + blockWidth > maxWidth) {
+			if (component == null || component instanceof Separator || blockEndPosition == BlockEndPosition.ANYWHERE) {
+				if (i > container.getComponentCount() || lastBlockWidth + blockWidth > maxWidth || component instanceof Separator && blockEndPosition == BlockEndPosition.ANYWHERE) {
+					if(lastBlockFinish < i && i < container.getComponentCount() && lastBlockWidth + blockWidth <= maxWidth){
+						lastBlockFinish = i;
+						lastBlockHeight = Math.max(lastBlockHeight, blockHeight);
+					}
 					int x = 0;
 					for (int j = lastBlockStart; j < lastBlockFinish; j++) {
 						final Component c = container.getComponent(j);
@@ -44,9 +54,23 @@ class ToolbarLayout implements LayoutManager {
 					lastBlockWidth += blockWidth;
 					lastBlockHeight = Math.max(blockHeight, lastBlockHeight);
 				}
+				if(component instanceof Separator && blockEndPosition == BlockEndPosition.ANYWHERE){
+					if(lastBlockFinish == i) {
+						final Dimension separatorPreferredSize = component.getPreferredSize();
+						component.setBounds(0, heigth, maxWidth, separatorPreferredSize.height);
+						heigth += separatorPreferredSize.height;
+						lastBlockStart = i + 1;
+						blockWidth = blockHeight = lastBlockHeight = lastBlockWidth = 0;
+						continue;
+					}
+					else{
+						lastBlockFinish = i;
+						i--;
+						continue;
+					}
+				}
 				lastBlockFinish = i;
-				blockWidth = 0;
-				blockHeight = 0;
+				blockWidth = blockHeight = 0;
 			}
 			if (component == null) {
 				if (lastBlockStart == container.getComponentCount()) {
@@ -73,26 +97,49 @@ class ToolbarLayout implements LayoutManager {
 		int blockHeight = 0;
 		int lastBlockWidth = 0;
 		int lastBlockHeight = 0;
+		int lastBlockStart = 0;
+		int lastBlockFinish = 0;
 		for (int i = 0;; i++) {
 			final Component component = i < container.getComponentCount() ? container.getComponent(i) : null;
-			if (component == null || component instanceof Separator) {
-				if (lastBlockWidth + blockWidth > maxWidth) {
-					width = Math.max(width, lastBlockWidth);
+			if (component == null || component instanceof Separator || blockEndPosition == BlockEndPosition.ANYWHERE) {
+				if (i > container.getComponentCount() || lastBlockWidth + blockWidth > maxWidth || component instanceof Separator && blockEndPosition == BlockEndPosition.ANYWHERE) {
+					if(lastBlockFinish < i && i < container.getComponentCount() && lastBlockWidth + blockWidth <= maxWidth){
+						lastBlockFinish = i;
+						lastBlockHeight = Math.max(lastBlockHeight, blockHeight);
+					}
 					heigth += lastBlockHeight;
 					lastBlockWidth = blockWidth;
 					lastBlockHeight = blockHeight;
+					lastBlockStart = lastBlockFinish;
 				}
 				else {
 					lastBlockWidth += blockWidth;
 					lastBlockHeight = Math.max(blockHeight, lastBlockHeight);
 				}
-				blockWidth = 0;
-				blockHeight = 0;
+				width = Math.max(width, lastBlockWidth);
+				if(component instanceof Separator && blockEndPosition == BlockEndPosition.ANYWHERE){
+					if(lastBlockFinish == i) {
+						final Dimension separatorPreferredSize = component.getPreferredSize();
+						heigth += separatorPreferredSize.height;
+						lastBlockStart = i + 1;
+						blockWidth = blockHeight = lastBlockHeight = lastBlockWidth = 0;
+						continue;
+					}
+					else{
+						lastBlockFinish = i;
+						i--;
+						continue;
+					}
+				}
+				lastBlockFinish = i;
+				blockWidth = blockHeight = 0;
 			}
 			if (component == null) {
-				width = Math.max(width, lastBlockWidth);
-				heigth += lastBlockHeight;
-				break;
+				if (lastBlockStart == container.getComponentCount()) {
+					break;
+				}
+				lastBlockFinish = container.getComponentCount();
+				continue;
 			}
 			final Dimension compPreferredSize = component.getPreferredSize();
 			blockWidth += compPreferredSize.width;
@@ -104,7 +151,11 @@ class ToolbarLayout implements LayoutManager {
 	public void removeLayoutComponent(final Component comp) {
 	}
 
-	public static LayoutManager getInstance() {
-		return instance;
+	public static LayoutManager horizontal() {
+		return new ToolbarLayout(BlockEndPosition.ON_SEPARATOR);
+	}
+
+	public static LayoutManager vertical() {
+		return new ToolbarLayout(BlockEndPosition.ANYWHERE);
 	}
 }
