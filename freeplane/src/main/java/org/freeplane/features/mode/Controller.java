@@ -42,6 +42,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.main.application.ApplicationLifecycleListener;
@@ -77,7 +78,9 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		this.optionPanelController = new OptionPanelController();
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		addAction(new MoveToRootAction());
-		addAction(new CenterSelectedNodeAction());
+		addAction(new MoveSelectedNodeAction(NodePosition.EAST));
+		addAction(new MoveSelectedNodeAction(NodePosition.CENTER));
+		addAction(new MoveSelectedNodeAction(NodePosition.WEST));
 	}
 
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {

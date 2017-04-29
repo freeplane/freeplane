@@ -141,8 +141,6 @@
 		<Entry name="ToggleMenubarAction" builder="MP_ToggleMenubarAction" />
 		<Entry name="ToggleToolbarAction" />
 		<Entry name="ToggleLeftToolbarAction" />
-		<Entry name="ViewLayoutTypeAction.OUTLINE" />
-		<Entry name="CenterSelectedNodeAction" />
 	</Entry>
 	<Entry name="node_popup"  builder="node_popup">
 		<Entry accelerator="alt shift C" name="FormatCopy" />
