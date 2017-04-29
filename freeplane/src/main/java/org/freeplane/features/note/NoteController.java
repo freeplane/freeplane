@@ -68,6 +68,7 @@ public class NoteController implements IExtension {
 	public static final String SHOW_NOTE_ICONS = "show_note_icons";
 	private static final Integer NOTE_TOOLTIP = 9;
 	public static final String SHOW_NOTES_IN_MAP = "show_notes_in_map";
+	protected static final String SHOW_NOTE_ICON_IN_TOOLTIP = "show_note_icon_in_tooltip";
 
 	public static NoteController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -131,9 +132,11 @@ public class NoteController implements IExtension {
 				final StringBuilder tooltipBodyBegin = new StringBuilder("<body><div style=\"");
 				tooltipBodyBegin.append(rule);
 				tooltipBodyBegin.append("\">");
-				tooltipBodyBegin.append("<img src =\"");
-				tooltipBodyBegin.append(bwNoteIconUrl.toString());
-				tooltipBodyBegin.append("\">");
+				if(ResourceController.getResourceController().getBooleanProperty(SHOW_NOTE_ICON_IN_TOOLTIP)) {
+					tooltipBodyBegin.append("<img src =\"");
+					tooltipBodyBegin.append(bwNoteIconUrl.toString());
+					tooltipBodyBegin.append("\">");
+				}
 				final String tooltipText = noteText.replaceFirst("<body>", 
 					tooltipBodyBegin.toString()).replaceFirst("</body>", "</div></body>");
 				return tooltipText;

@@ -265,6 +265,7 @@
 				<boolean name="show_node_tooltips" />
 				<number name="toolTipManager.initialDelay" min="0" />
 				<boolean name="show_styles_in_tooltip" />
+				<boolean name="show_note_icon_in_tooltip" />
 			</separator>
 			<separator name="undo">
 				<number name="undo_levels" />
