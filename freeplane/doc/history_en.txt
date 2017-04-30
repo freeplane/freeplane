@@ -1,4 +1,15 @@
 ===============================
+1.6.2
+===============================
+Multi-columns icons tool bar
+"Close all maps" and "close all other maps" actions added to file menu
+Options to hide icons and connectors
+Option note icon in notes tool-tip
+Aligning current node on the left side, on the right side or on the center, hot keys alt+W (west), alt+E (east), alt+C (center)
+Option to move aligned node smoothly
+Option to define spotlight background color
+
+===============================
 1.6.1
 ===============================
 SVG icons for map and UI

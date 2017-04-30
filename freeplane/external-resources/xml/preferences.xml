@@ -309,7 +309,7 @@
 				<boolean name="presentation.switchToSpotlight"/>
 				<boolean name="presentation.zoom"/>
 				<boolean name="presentation.combineAll"/>
-				<color name= "presentation_dimmer_transparency_color"/>
+				<color name= "spotlight_background_color"/>
 				<boolean name="presentation.slowMotion"/>
 				<number name="presentation.maxDropBoxRowCount" min="3" max="999" /> 
 				<string name="presentation.exportDirectory" />

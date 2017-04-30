@@ -466,7 +466,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	static private IFreeplanePropertyListener propertyChangeListener;
 	public static final String RESOURCES_SELECTED_NODE_COLOR = "standardselectednodecolor";
 	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
-	private static final String PRESENTATION_DIMMER_TRANSPARENCY_COLOR = "presentation_dimmer_transparency_color";
+	private static final String SPOTLIGHT_BACKGROUND_COLOR = "spotlight_background_color";
 	private static final String PRESENTATION_DIMMER_TRANSPARENCY = "presentation_dimmer_transparency";
 	private static final String HIDE_SINGLE_END_CONNECTORS = "hide_single_end_connectors";
 	private static final String SHOW_CONNECTORS_PROPERTY = "show_connectors";
@@ -512,7 +512,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static boolean showIcons;
 	private static boolean hideSingleEndConnectors;
 	private boolean fitToViewport;
-	private static Color transparency;
+	private static Color spotlightBackgroundColor;
 	final private ComponentAdapter backgroundImageResizer;
 	private INodeChangeListener connectorChangeListener;
 	public static final String SPOTLIGHT_ENABLED = "spotlight";
@@ -532,8 +532,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			    .getProperty("printonwhitebackground");
 			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
 			int alpha = 255 - resourceController.getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
-			resourceController.setDefaultProperty(PRESENTATION_DIMMER_TRANSPARENCY_COLOR, ColorUtils.colorToRGBAString(new Color(0, 0, 0, alpha)));
-			transparency = resourceController.getColorProperty(PRESENTATION_DIMMER_TRANSPARENCY_COLOR);
+			resourceController.setDefaultProperty(SPOTLIGHT_BACKGROUND_COLOR, ColorUtils.colorToRGBAString(new Color(0, 0, 0, alpha)));
+			spotlightBackgroundColor = resourceController.getColorProperty(SPOTLIGHT_BACKGROUND_COLOR);
 			hideSingleEndConnectors = resourceController.getBooleanProperty(HIDE_SINGLE_END_CONNECTORS);
 			showConnectors = resourceController.getBooleanProperty(SHOW_CONNECTORS_PROPERTY);
 			showIcons = resourceController.getBooleanProperty(SHOW_ICONS_PROPERTY);
@@ -677,8 +677,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(newValue);
 					return;
 				}
-				if (propertyName.equals(PRESENTATION_DIMMER_TRANSPARENCY_COLOR)) {
-					MapView.transparency = ColorUtils.stringToColor(newValue);
+				if (propertyName.equals(SPOTLIGHT_BACKGROUND_COLOR)) {
+					MapView.spotlightBackgroundColor = ColorUtils.stringToColor(newValue);
 					mapView.repaint();
 					return;
 				}
@@ -1534,7 +1534,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void paintDimmer(Graphics2D g2, PaintingMode[] paintModes) {
 		final Color color = g2.getColor();
 		try{
-			Color dimmer = transparency;
+			Color dimmer = spotlightBackgroundColor;
 			g2.setColor(dimmer);
 			g2.fillRect(0, 0, getWidth(), getHeight());
 		}

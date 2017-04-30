@@ -296,4 +296,9 @@ public class MapModel {
 			nodes.put(id, null);
 		}
 	}
+
+	public boolean close() {
+		Controller.getCurrentModeController().getMapController().closeWithoutSaving(this);
+		return true;
+	}
 }

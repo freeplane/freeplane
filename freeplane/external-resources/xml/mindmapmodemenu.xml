@@ -95,6 +95,8 @@
 			<Entry builder="separator" />
 			<Entry name="FilePropertiesAction" />
 			<Entry builder="separator" />
+			<Entry name="CloseAllMapsAction" />
+			<Entry name="CloseAllOtherMapsAction" />
 			<Entry name="CloseAction" accelerator="control W" />
 			<Entry builder="separator" />
 			<Entry name="QuitAction" accelerator="control Q" builder="removeOnMac" />
