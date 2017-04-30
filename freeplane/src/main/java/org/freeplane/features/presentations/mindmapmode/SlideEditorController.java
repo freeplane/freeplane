@@ -388,6 +388,7 @@ class SlideEditorController{
 	private void disableUI() {
 		for(JComponent c : allButtons)
 			c.setEnabled(false);
+		setNodePlacementControlsEnabled(false, null);
 		updateFilter();
 	}
 
