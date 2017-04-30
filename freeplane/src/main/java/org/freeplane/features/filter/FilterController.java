@@ -161,7 +161,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		}
 	}
 
-	static final String FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
+	public static final String FREEPLANE_FILTER_EXTENSION_WITHOUT_DOT = "mmfilter";
 	private static final ASelectableCondition NO_FILTERING = NoFilteringCondition.createCondition();
 
 	public static FilterController getController(Controller controller) {

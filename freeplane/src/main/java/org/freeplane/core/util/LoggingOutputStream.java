@@ -30,6 +30,7 @@ class LoggingOutputStream extends ByteArrayOutputStream {
 	final private Level level;
 	final private String lineSeparator;
 	final private Logger logger;
+	private int availableSpace;
 
 	/**
 	 * Constructor
@@ -39,10 +40,11 @@ class LoggingOutputStream extends ByteArrayOutputStream {
 	 * @param level
 	 *            Level at which to write the log message
 	 */
-	public LoggingOutputStream(final Logger logger, final Level level) {
+	public LoggingOutputStream(final Logger logger, final Level level, int maximumLogSize) {
 		super();
 		this.logger = logger;
 		this.level = level;
+		this.availableSpace = maximumLogSize;
 		lineSeparator = System.getProperty("line.separator");
 	}
 
@@ -66,4 +68,22 @@ class LoggingOutputStream extends ByteArrayOutputStream {
 		}
 		logger.logp(level, "", "", record);
 	}
+
+	@Override
+	public synchronized void write(int b) {
+		if(availableSpace > 0) {
+			availableSpace--;
+			super.write(b);
+		}
+	}
+
+	@Override
+	public synchronized void write(byte[] b, int off, int len) {
+		if(availableSpace > 0) {
+			availableSpace-=len;
+			super.write(b, off, len);
+		}
+	}
+	
+	
 }
