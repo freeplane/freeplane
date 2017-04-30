@@ -19,17 +19,22 @@
  */
 package org.freeplane.core.resources;
 
+import java.awt.Color;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.swing.ImageIcon;
+
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Vector;
@@ -38,10 +43,12 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.TimePeriodUnits;
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.mode.AController.IActionOnChange;
+import org.freeplane.features.icon.factory.ImageIconFactory;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -209,6 +216,12 @@ public abstract class ResourceController {
 		}
 	}
 
+
+	public Color getColorProperty(String name) {
+		String string = getProperty(name);
+		return ColorUtils.stringToColor(string);
+	}
+	
 	abstract public Properties getProperties();
 
 	abstract public String getProperty(final String key);
@@ -222,8 +235,8 @@ public abstract class ResourceController {
 		return Collections.unmodifiableCollection(propertyChangeListeners);
 	}
 
-	public URL getResource(final String name) {
-		return getClass().getResource(name);
+	public URL getResource(final String resourcePath) {
+		return getClass().getResource(resourcePath);
 	}
 
 	public InputStream getResourceStream(final String resFileName) throws IOException {
@@ -340,5 +353,48 @@ public abstract class ResourceController {
 		if(acceleratorManager == null)
 			acceleratorManager = new ActionAcceleratorManager();
 		return acceleratorManager;
+	}
+
+	private Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>();
+	public ImageIcon getIcon(final String iconKey) {
+		return getIcon(iconKey, ImageIconFactory.DEFAULT_UI_ICON_HEIGHT);
+	}
+
+	public ImageIcon getIcon(String iconKey, Quantity<LengthUnits> height) {
+		ImageIcon icon = iconCache.get(iconKey);
+		if(icon == null){
+			final String iconResource = iconKey.startsWith("/") ? iconKey : getProperty(iconKey, null);
+			icon = loadIcon(height, iconResource);
+		}
+		if(icon != null)
+			iconCache.put(iconKey, icon);
+		return icon;
+	}
+
+	private ImageIcon loadIcon(Quantity<LengthUnits> height, final String resourcePath) {
+		if (resourcePath != null) {
+			URL url = getFirstResource(ImageIconFactory.getAlternativePaths(resourcePath));
+			if (url != null) {
+				return ImageIconFactory.getInstance().getImageIcon(url, height);
+			} else {
+				LogUtils.severe("can not load icon '" + resourcePath + "'");
+			}
+		}
+		return null;
+	}
+
+	public URL getFirstResource(String... resourcePaths) {
+		for(String path : resourcePaths){
+			final URL url = getResource(path);
+			if(url != null)
+				return url;
+		}
+		return null;
+	}
+
+
+	public URL getIconResource(String resourcePath) {
+		final String[] alternativePaths = ImageIconFactory.getAlternativePaths(resourcePath);
+		return getFirstResource(alternativePaths);
 	}
 }

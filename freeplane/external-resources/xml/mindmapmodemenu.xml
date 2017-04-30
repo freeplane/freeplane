@@ -28,9 +28,9 @@
 		</Entry>
 		<Entry builder="separator" />
 		<Entry name="font">
-			<Entry name="toolbar_styles" builder="main_toolbar_style" />
-			<Entry name="toolbar_fonts" builder="main_toolbar_font_name" />
-			<Entry name="toolbar_fonts" builder="main_toolbar_font_size" />
+			<Entry builder="main_toolbar_style" />
+			<Entry builder="main_toolbar_font_name" />
+			<Entry builder="main_toolbar_font_size" />
 			<Entry name="BoldAction" />
 			<Entry name="ItalicAction" />
 		</Entry>
@@ -95,6 +95,8 @@
 			<Entry builder="separator" />
 			<Entry name="FilePropertiesAction" />
 			<Entry builder="separator" />
+			<Entry name="CloseAllMapsAction" />
+			<Entry name="CloseAllOtherMapsAction" />
 			<Entry name="CloseAction" accelerator="control W" />
 			<Entry builder="separator" />
 			<Entry name="QuitAction" accelerator="control Q" builder="removeOnMac" />
@@ -140,7 +142,7 @@
 			</Entry>
 			<Entry name="icons">
 				<Entry name="IconSelectionPlugin" accelerator="control F2" />
-				<Entry name="icons">
+				<Entry name="menu_iconByCategory">
 					<Entry builder="icon_actions" />
 				</Entry>
 				<Entry name="progress">
@@ -232,7 +234,7 @@
 		</Entry>
 		<Entry name="view">
 			<Entry name="NewMapViewAction" />
-			<Entry name="toolbars">
+			<Entry name="controls">
 				<Entry name="ToggleMenubarAction" builder="removeOnMac" />
 				<Entry name="ToggleToolbarAction" />
 				<Entry name="ShowFilterToolbarAction" accelerator="control F" />
@@ -251,10 +253,17 @@
 			<Entry name="menu_viewmode">
 				<Entry name="ViewLayoutTypeAction.OUTLINE" />
 				<Entry name="ToggleFullScreenAction" accelerator="F11" />
-				<Entry name="SetBooleanPropertyAction.presentation_mode" />
+				<Entry name="SetBooleanMapViewPropertyAction.spotlight" />
+				<Entry name="SetBooleanPropertyAction.show_icons" />
+				<Entry name="SetBooleanPropertyAction.show_connectors" />
+				<Entry name="SetBooleanPropertyAction.hide_single_end_connectors" />
+				<Entry name="SetBooleanPropertyAction.show_note_icon_in_tooltip" />
 				<Entry name="ShowSelectionAsRectangleAction" />
 				<Entry name="SetBooleanPropertyAction.highlight_formulas" />
-				<Entry name="CenterSelectedNodeAction" accelerator="alt C" />
+				<Entry accelerator="alt W" name="MoveSelectedNodeAction.WEST" />
+				<Entry accelerator="alt C" name="MoveSelectedNodeAction.CENTER" />
+				<Entry accelerator="alt E" name="MoveSelectedNodeAction.EAST" />
+				<Entry name="SetBooleanPropertyAction.slow_scroll_selected_node" />
 				<Entry name="SetBooleanPropertyAction.center_selected_node" />
 			</Entry>
 			<Entry builder="separator" />
@@ -384,6 +393,17 @@
 				<Entry name="RemoveAllAlwaysUnfoldedNodeFlagsAction" />
 				<Entry name="AlwaysUnfoldedNodeAction" />
 			</Entry>
+			<Entry name="presentation">
+				<Entry name="StartPresentationOrShowNextSlideAction" accelerator="F5"/>
+				<Entry name="ShowFirstSlideAndStartPresentationAction"/>
+				<Entry name="StartPresentationAction" />
+				<Entry name="StopPresentationAction" accelerator="shift F5" />
+				<Entry name="ShowFirstSlideAction"/>
+				<Entry name="ShowPreviousSlideAction" accelerator="control F5"/>
+				<Entry name="ShowNextSlideAction" />
+				<Entry name="ShowLastSlideAction"/>
+				<Entry name="ShowLastSlideAction"/>
+			</Entry>
 			<Entry builder="separator" />
 			<Entry name="SelectAllAction" accelerator="control A" />
 			<Entry name="SelectBranchAction" accelerator="control shift A" />
@@ -394,6 +414,7 @@
 			<Entry name="NextNodeAction.FORWARD" accelerator="control alt RIGHT" />
 			<Entry name="NextNodeAction.BACK_N_FOLD" accelerator="control shift LEFT" />
 			<Entry name="NextNodeAction.FORWARD_N_FOLD" accelerator="control shift RIGHT" />
+			<Entry name="NotFoldingNextPresentationItemAction" accelerator="control alt SPACE" />
 			<Entry name="NextPresentationItemAction" accelerator="control shift SPACE" />
 			<Entry name="BackAction" accelerator="alt LEFT" />
 			<Entry name="ForwardAction" accelerator="alt RIGHT" />
@@ -506,7 +527,7 @@
 		<Entry builder="separator" />
 		<Entry name="ViewLayoutTypeAction.OUTLINE" />
 		<Entry name="FitToPage" />
-		<Entry name="CenterSelectedNodeAction" />
+		<Entry name="MoveSelectedNodeAction.CENTER" />
 		<Entry name="MoveToRootAction" accelerator="ESCAPE" />
 		<Entry name="GotoNodeAction" />
 	</Entry>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 15.999 15.873" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<radialGradient id="d" xlink:href="#a" gradientUnits="userSpaceOnUse" cy="718.77" cx="160.44" gradientTransform="matrix(.19981 .17870 -.15894 .16574 241.58 572.22)" r="6.9383"/>
+<linearGradient id="a">
+<stop stop-color="#fff" offset="0"/>
+<stop stop-color="#b9150a" offset="1"/>
+</linearGradient>
+<radialGradient id="b" xlink:href="#a" gradientUnits="userSpaceOnUse" cy="718.77" cx="160.44" gradientTransform="matrix(.19981 .17871 -.14353 .14931 230.51 584.03)" r="6.9383"/>
+<radialGradient id="c" xlink:href="#a" gradientUnits="userSpaceOnUse" cy="718.77" cx="160.44" gradientTransform="matrix(.19980 .17871 -.15040 .15662 235.45 578.78)" r="6.9383"/>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-37.414 -188.1)">
+<g transform="matrix(.96975 0 0 .96975 392.09 12.019)">
+<g transform="matrix(.46366 .045272 0 .43177 -122.99 -96.5)">
+<rect transform="matrix(.92114 -.38924 0 1 0 0)" height="29.416" width="24.606" stroke="#d40000" y="485.68" x="-567.88" fill="#ff0"/>
+<g>
+<circle cx="160.79" transform="matrix(.64502 -.27257 0 .67601 -623.02 266.93)" cy="721.26" r="2.962" fill="url(#d)"/>
+<rect ry=".18629" rx=".12231" transform="matrix(.92114 -.38924 0 1 0 0)" height="2.0194" width="13.971" y="490.23" x="-560.16"/>
+<circle cx="160.79" transform="matrix(.64502 -.27257 0 .67601 -623.02 278.47)" cy="721.26" r="2.962" fill="url(#b)"/>
+<rect ry=".18629" rx=".12231" transform="matrix(.92114 -.38924 0 1 0 0)" height="2.0194" width="13.971" y="501.77" x="-560.16"/>
+<circle cx="160.79" transform="matrix(.64502 -.27257 0 .67601 -623.02 272.7)" cy="721.26" r="2.962" fill="url(#c)"/>
+<g transform="matrix(1 -.42257 0 1 -640.34 117.66)">
+<rect rx=".11266" ry=".18629" height="2.0194" width="12.869" y="648.93" x="124.36"/>
+</g>
+<circle cx="160.79" transform="matrix(.64502 -.27257 0 .67601 -623.02 284.24)" cy="721.26" r="2.962" fill="url(#b)"/>
+<rect ry=".18629" rx=".12231" transform="matrix(.92114 -.38924 0 1 0 0)" height="2.0194" width="13.971" y="507.54" x="-560.16"/>
+</g>
+</g>
+<g transform="matrix(.76724 0 0 .80498 -237.1 -520.76)" fill="#d20000">
+<path style="color:#000000" d="m-161.28 889.17c0.59165-6.8804 5.7208-14.856 13.736-16l1.3818 2.3683c-7.776 1.6244-12.057 5.7928-15.118 13.632z"/>
+<path style="color:#000000" d="m-164.97 874.34c6.9053 0.0759 15.242 4.5947 16.982 12.502l-2.2584 1.555c-2.2009-7.6329-6.6776-11.591-14.723-14.057z"/>
+</g>
+</g>
+</g>
+</svg>

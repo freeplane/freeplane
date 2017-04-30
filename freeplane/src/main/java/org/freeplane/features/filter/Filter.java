@@ -20,6 +20,8 @@
 package org.freeplane.features.filter;
 
 import java.util.Collection;
+import java.util.HashMap;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -39,15 +41,54 @@ public class Filter {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		return new Filter(null, resourceController.getBooleanProperty("filter.showAncestors"), resourceController.getBooleanProperty("filter.showDescendants"), false);
 	}
+	
+	public interface FilterInfoAccessor{
+		public FilterInfo getFilterInfo(NodeModel node);
+	}
+	
+	static public FilterInfoAccessor DEFAULT_FILTER_INFO_ACCESSOR = new FilterInfoAccessor() {
+		
+		@Override
+		public FilterInfo getFilterInfo(NodeModel node) {
+			return node.getFilterInfo();
+		}
+	};
+	
+	static public Filter createOneTimeFilter(final ICondition condition, final boolean areAncestorsShown,
+            final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly) {
+		
+		FilterInfoAccessor oneTimeFilterAccessor = new FilterInfoAccessor() {
+			HashMap<NodeModel, FilterInfo> filterInfos = new HashMap<>();
+			
+			@Override
+			public FilterInfo getFilterInfo(NodeModel node) {
+				FilterInfo filterInfo = filterInfos.get(node);
+				if(filterInfo == null) {
+					filterInfo = new FilterInfo();
+					filterInfos.put(node, filterInfo);
+				}
+				return filterInfo;
+			}
+		};
+		return new Filter(condition, areAncestorsShown, areDescendantsShown, applyToVisibleNodesOnly, oneTimeFilterAccessor);
+	}
 
 	final private boolean appliesToVisibleNodesOnly;
 	final private ICondition condition;
-	final private int options;
+	final int options;
+
+	final private FilterInfoAccessor accessor;
 
 	public Filter(final ICondition condition, final boolean areAncestorsShown,
-	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly) {
+            final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly) {
+		this(condition, areAncestorsShown, areDescendantsShown, applyToVisibleNodesOnly, DEFAULT_FILTER_INFO_ACCESSOR);
+	}
+	public Filter(final ICondition condition, final boolean areAncestorsShown,
+	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly,
+	              FilterInfoAccessor accessor) {
 		super();
 		this.condition = condition;
+		this.accessor = accessor;
 		int options = FilterInfo.FILTER_INITIAL_VALUE | FilterInfo.FILTER_SHOW_MATCHED;
 		if (areAncestorsShown) {
 			options += FilterInfo.FILTER_SHOW_ANCESTOR;
@@ -61,7 +102,7 @@ public class Filter {
 	}
 
 	void addFilterResult(final NodeModel node, final int flag) {
-		node.getFilterInfo().add(flag);
+		getFilterInfo(node).add(flag);
 	}
 
 	protected boolean appliesToVisibleNodesOnly() {
@@ -72,7 +113,7 @@ public class Filter {
 
 	void displayFilterStatus() {
 		if (filterIcon == null) {
-			filterIcon = new ImageIcon(ResourceController.getResourceController().getResource("/images/filter.png"));
+			filterIcon = ResourceController.getResourceController().getIcon("/images/filter.png");
 		}
 		if (getCondition() != null) {
 			Controller.getCurrentController().getViewController().addStatusInfo("filter", null, filterIcon);
@@ -97,11 +138,7 @@ public class Filter {
 			final Filter oldFilter = map.getFilter();
 			map.setFilter(this);
 			if (force || !isConditionStronger(oldFilter)) {
-				final NodeModel root = map.getRootNode();
-				resetFilter(root);
-				if (filterChildren(root, checkNode(root), false)) {
-					addFilterResult(root, FilterInfo.FILTER_SHOW_ANCESTOR);
-				}
+				calculateFilterResults(map);
 			}
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			final NodeModel selected = selection.getSelected();
@@ -112,6 +149,13 @@ public class Filter {
 		}
 		finally {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
+		}
+	}
+	public void calculateFilterResults(final MapModel map) {
+		final NodeModel root = map.getRootNode();
+		resetFilter(root);
+		if (filterChildren(root, checkNode(root), false)) {
+			addFilterResult(root, FilterInfo.FILTER_SHOW_ANCESTOR);
 		}
 	}
 
@@ -196,17 +240,18 @@ public class Filter {
 		if (condition == null) {
 			return true;
 		}
-		final int filterResult = node.getFilterInfo().get();
-		return ((options & FilterInfo.FILTER_SHOW_ANCESTOR) != 0 || (options & FilterInfo.FILTER_SHOW_ECLIPSED) >= (filterResult & FilterInfo.FILTER_SHOW_ECLIPSED))
-		        && ((options & filterResult & ~FilterInfo.FILTER_SHOW_ECLIPSED) != 0);
+		return getFilterInfo(node).isVisible(this.options);
 	}
-
 	private void refreshMap(Object source, MapModel map) {
 		Controller.getCurrentModeController().getMapController().fireMapChanged(new MapChangeEvent(source, map, Filter.class, null, this));
 	}
 
 	private void resetFilter(final NodeModel node) {
-		node.getFilterInfo().reset();
+		getFilterInfo(node).reset();
+	}
+
+	private FilterInfo getFilterInfo(final NodeModel node) {
+		return accessor.getFilterInfo(node);
 	}
 
 	private void selectVisibleNode() {
@@ -232,9 +277,5 @@ public class Filter {
 				mapSelection.selectAsTheOnlyOneSelected(selected.getVisibleAncestorOrSelf());
 		}
 		mapSelection.setSiblingMaxLevel(mapSelection.getSelected().getNodeLevel(false));
-	}
-
-	public boolean matches(NodeModel nodeModel) {
-		return 0 != (nodeModel.getFilterInfo().get() & FilterInfo.FILTER_SHOW_MATCHED);
 	}
 }

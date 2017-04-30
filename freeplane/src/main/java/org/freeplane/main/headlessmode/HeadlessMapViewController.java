@@ -22,6 +22,7 @@ package org.freeplane.main.headlessmode;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.RenderedImage;
@@ -41,6 +42,7 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
@@ -127,6 +129,10 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	public RenderedImage createImage(int dpi) {
+		throw new RuntimeException("Method not implemented");
+	}
+
+	public RenderedImage createImage(final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int dpi) {
 		throw new RuntimeException("Method not implemented");
 	}
 
@@ -290,6 +296,51 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	@Override
+	public void setFoldedOnCurrentView(NodeModel node, boolean folded) {
+		throw new RuntimeException("Method not implemented");
+	}
+	
+	@Override
 	public void onQuitApplication() {
 	}
+
+	@Override
+	public void moveFocusFromDescendantToSelection(Component ancestor) {
+		throw new RuntimeException("Method not implemented");
+	}
+
+	@Override
+	public void displayOnCurrentView(NodeModel node) {
+		throw new RuntimeException("Method not implemented");
+	}
+
+	@Override
+	public boolean isChildHidden(NodeModel nodeOnPath) {
+		return false;
+	}
+
+	@Override
+	public boolean hasHiddenChildren(NodeModel selected) {
+		return false;
+	}
+
+	@Override
+	public boolean unfoldHiddenChildren(NodeModel node) {
+		return false;
+	}
+
+	@Override
+	public void hideChildren(NodeModel node) {
+	}
+
+	@Override
+	public boolean showHiddenNode(NodeModel child) {
+		return false;
+	}
+
+	@Override
+	public boolean isSpotlightEnabled() {
+		return false;
+	}
+
 }

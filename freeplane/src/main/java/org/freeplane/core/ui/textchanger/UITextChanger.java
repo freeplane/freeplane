@@ -35,7 +35,6 @@ import javax.swing.text.JTextComponent;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
@@ -43,8 +42,9 @@ import org.freeplane.features.mode.Controller;
 class UITextChanger implements KeyEventDispatcher {
 	private static final String REPLACE_TEXT = "uiTextChanger.replaceText";
 	private static final String ORIGINAL_TEXT_IS_NOT_DEFINED = "uiTextChanger.originalTextIsNotDefined";
-	private static final ImageIcon WEBLATE_ICON = FreeplaneIconUtils.createImageIcon("/images/weblate-32.png");
+	private static final ImageIcon WEBLATE_ICON = ResourceController.getResourceController().getIcon("/images/weblate-32.png");
 	private static final String TEXT_FIELD_TRANSLATION_KEY = TranslatedElement.class.getName() + ".translationKey";
+	private static final float BORDER_TITLE_FONT_SIZE = UITools.getUIFontSize(1.0);
 	private TextChangeHotKeyAction textChangeAcceleratorAction;
 
 	public UITextChanger(TextChangeHotKeyAction textChangeAcceleratorAction) {
@@ -275,7 +275,7 @@ class UITextChanger implements KeyEventDispatcher {
 			textField.setToolTipText(originalRawText);
 		textField.addFocusListener(textFieldTextSelector);
 		String titleKey = element.getTitleKey();
-		UITools.addTitledBorder(textField, TextUtils.getRawText(titleKey), Math.round(UITools.FONT_SCALE_FACTOR*10));
+		UITools.addTitledBorder(textField, TextUtils.getRawText(titleKey), BORDER_TITLE_FONT_SIZE);
 		textField.putClientProperty(TranslatedElement.class, element);
 		textField.putClientProperty(TEXT_FIELD_TRANSLATION_KEY, translationKey);
 		TranslatedElement.BORDER.setKey(textField, titleKey);

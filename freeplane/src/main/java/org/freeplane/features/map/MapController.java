@@ -51,6 +51,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.DelayedRunner;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -64,6 +65,7 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
+import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Dimitry Polivaev
@@ -247,6 +249,8 @@ public class MapController extends SelectionController implements IExtension{
 			actionSelectorOnChange.remove(action);
 		}
 	}
+	
+	
 
 	/**
 	 * This class sortes nodes by ascending depth of their paths to root. This
@@ -289,6 +293,7 @@ public class MapController extends SelectionController implements IExtension{
 	public MapController(ModeController modeController) {
 		super();
 		modeController.setMapController(this);
+		refresher = new Refresher();
 		this.modeController = modeController;
 		mapLifeCycleListeners = new LinkedList<IMapLifeCycleListener>();
 		addMapLifeCycleListener(modeController.getController());
@@ -324,42 +329,75 @@ public class MapController extends SelectionController implements IExtension{
 		createActions(modeController);
 	}
 
-	public void setFoldedAndScroll(final NodeModel node, final boolean folded){
-		if(node.isFolded() != folded){
-			setFolded(node, folded);
-			if(! folded && ResourceController.getResourceController().getBooleanProperty("scrollOnUnfold")){
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						Controller.getCurrentController().getSelection().scrollNodeTreeToVisible(node);
-					}
-				});
-				
-			}
+	public void unfoldAndScroll(final NodeModel node) {
+		final boolean wasFoldedOnCurrentView = canBeUnfoldedOnCurrentView(node);
+		unfold(node);
+		if (wasFoldedOnCurrentView && ResourceController.getResourceController().getBooleanProperty("scrollOnUnfold")) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					Controller.getCurrentController().getSelection().scrollNodeTreeToVisible(node);
+				}
+			});
+			
 		}
 	}
 	
-	public void setFolded(final NodeModel node, final boolean folded) {
-		if (node == null) {
-			throw new IllegalArgumentException("setFolded was called with a null node.");
+	public void setFolded(final NodeModel node, final boolean fold) {
+		if(!fold || node.isRoot())
+			unfold(node);
+		else
+			fold(node);
+	}
+
+	public void toggleFolded(final NodeModel node) {
+		if (canBeUnfoldedOnCurrentView(node)) {
+			unfold(node);
 		}
+		else{
+			fold(node);
+		}
+	}
+
+	public void toggleFoldedAndScroll(final NodeModel node){
+		if(canBeUnfoldedOnCurrentView(node))
+			unfoldAndScroll(node);
+		else
+			fold(node);
+	}
+
+	public void unfold(final NodeModel node) {
 		if (node.getChildCount() == 0)
 			return;
-		final boolean unfold = ! folded;
-		final boolean childShown = unfoldHiddenChildren(node);
+		final boolean hiddenChildShown = unfoldHiddenChildren(node);
 		boolean mapChanged = false;
-	    if (unfold && unfoldInvisibleChildren(node, true))
-	        mapChanged = true;
-	    if (!(node.isRoot() && folded)) {
-	    	if (node.isFolded() != folded) {
-	    		mapChanged = true;
-	    	}
-	    	setFoldingState(node, folded);
-	    }
+	    if (canBeUnfoldedOnCurrentView(node)) {
+	    	unfoldUpToVisibleChild(node);
+			mapChanged = true;
+		} else if (node.isFolded()) {
+			mapChanged = true;
+			setFoldingState(node, false);
+		}
 		if(mapChanged){
 			fireFoldingChanged(node);
 		}
-		if(childShown)
+		if(hiddenChildShown)
+	        fireNodeUnfold(node);
+	}
+	
+	public void fold(final NodeModel node) {
+		if (node.getChildCount() == 0|| node.isRoot())
+			return;
+		final boolean hiddenChildShown = unfoldHiddenChildren(node);
+		boolean mapChanged = false;
+	    if (!node.isFolded()) {
+			mapChanged = true;
+		}
+	    setFoldingState(node, true);
+		if(mapChanged){
+			fireFoldingChanged(node);
+		}
+		if(hiddenChildShown)
 	        fireNodeUnfold(node);
 	}
 
@@ -371,41 +409,36 @@ public class MapController extends SelectionController implements IExtension{
 	public boolean showNextChild(final NodeModel node) {
 		if (node.getChildCount() == 0)
 			return false;
-		final boolean unfold = Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node);
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		final boolean unfold = mapViewManager.isFoldedOnCurrentView(node);
 		if (unfold){
-			for(NodeModel child:childrenUnfolded(node)){
-				child.addExtension(HideChildSubtree.instance);
-			}
+			mapViewManager.hideChildren(node);
 			setFoldingState(node, false);
 		}
-		boolean childMadeVisible = false;
+		boolean childShown = false;
 		for(NodeModel child:childrenUnfolded(node)){
-			if (child.removeExtension(HideChildSubtree.instance) &&
-					(child.hasVisibleContent() || unfoldInvisibleChildren(child, true))){
-				childMadeVisible = true;
-				break;
+			if (mapViewManager.showHiddenNode(child)) {
+				if (child.hasVisibleContent()) {
+					childShown = true;
+					break;
+				} else if (canBeUnfoldedOnCurrentView(child)) {
+					unfoldUpToVisibleChild(child);
+					childShown = true;
+					break;
+				}
 			}
 		}
-		if(childMadeVisible){
+		if(childShown){
 			fireNodeUnfold(node);
 		}
-		return childMadeVisible;
+		return childShown;
 	}
 
 
 	private void fireNodeUnfold(final NodeModel node) {
-		node.fireNodeChanged(new NodeChangeEvent(node, HideChildSubtree.instance, null,
+		node.fireNodeChanged(new NodeChangeEvent(node, NodeView.Properties.HIDDEN_CHILDREN, null,
 				null));
     }
-
-	public boolean hasHiddenChildren(final NodeModel node){
-		for(NodeModel child:childrenUnfolded(node)){
-			if (child.containsExtension(HideChildSubtree.class)){
-				return true;
-			}
-		}
-		return false;
-	}
 
 	private void fireFoldingChanged(final NodeModel node) {
 	    if (isFoldingPersistentAlways()) {
@@ -422,32 +455,36 @@ public class MapController extends SelectionController implements IExtension{
 
 
 	protected boolean unfoldHiddenChildren(NodeModel node) {
-		final List<NodeModel> children = childrenFolded(node);
-		boolean changed = false;
-		for (NodeModel child : children){
-			if(child.removeExtension(HideChildSubtree.class) != null)
-				changed = true;
-		}
-		return changed;
-    }
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		return ! mapViewManager.isFoldedOnCurrentView(node) 
+				&& mapViewManager.unfoldHiddenChildren(node);
+	}
 
 
-	private boolean unfoldInvisibleChildren(final NodeModel node, final boolean reportUnfolded) {
-		boolean visibleFound = false;
-		boolean unfolded = false;
+	public boolean canBeUnfoldedOnCurrentView(final NodeModel node) {
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		final boolean isFolded = mapViewManager.isFoldedOnCurrentView(node) ||  mapViewManager.hasHiddenChildren(node);
 		for(int i = 0; i < node.getChildCount(); i++){
 			final NodeModel child = node.getChildAt(i);
-			if(child.hasVisibleContent())
-				visibleFound = true;
-			else if(unfoldInvisibleChildren(child, false) && child.isFolded()){
-				visibleFound = unfolded = true;
-				setFoldingState(node, false);
+			if(child.hasVisibleContent()){
+				if (isFolded)
+					return true;
+			} else if (node.getFilterInfo().isAncestor() && canBeUnfoldedOnCurrentView(child)) {
+				return true;
 			}
 		}
-		if(reportUnfolded)
-			return unfolded;
-		else
-			return visibleFound;
+		return false;
+	}
+
+	private void unfoldUpToVisibleChild(final NodeModel node) {
+		for(int i = 0; i < node.getChildCount(); i++){
+			final NodeModel child = node.getChildAt(i);
+			if (!child.hasVisibleContent() && canBeUnfoldedOnCurrentView(child)) {
+				unfoldUpToVisibleChild(child);
+			}
+		}
+		setFoldingState(node, false);
+
 	}
 
 	public void addMapChangeListener(final IMapChangeListener listener) {
@@ -481,23 +518,6 @@ public class MapController extends SelectionController implements IExtension{
 			return empty;
 		}
 		return node.getChildren();
-	}
-
-	public boolean close(final MapModel map) {
-		closeWithoutSaving(map);
-		return true;
-	}
-	
-	public boolean closeAllMaps() {
-		final Controller controller = getModeController().getController();
-		for (MapModel map = controller.getMap(); map != null; map = controller.getMap()){
-			final boolean closingNotCancelled = close(map);
-			if (!closingNotCancelled) {
-				return false;
-			}
-			
-		}
-		return true;
 	}
 
 	public void closeWithoutSaving(final MapModel map) {
@@ -536,7 +556,7 @@ public class MapController extends SelectionController implements IExtension{
 			if (nodesUnfoldedByDisplay != null && isFolded(nodeOnPath)) {
             	nodesUnfoldedByDisplay.add(nodeOnPath);
             }
-			setFolded(nodeOnPath, false);
+			unfold(nodeOnPath);
 		}
 	}
 
@@ -614,29 +634,6 @@ public class MapController extends SelectionController implements IExtension{
 	public void getFilteredXml(final MapModel map, final Writer fileout, final Mode mode, final boolean forceFormat)
 	        throws IOException {
 		getMapWriter().writeMapAsXml(map, fileout, mode, false, forceFormat);
-	}
-
-	private Boolean getCommonFoldingState(final Collection<NodeModel> list) {
-		Boolean state = null;
-		for(final NodeModel node : list){
-			if (node.getChildCount() == 0) {
-				continue;
-			}
-			if (state == null) {
-				state = canBeUnfolded(node);
-			}
-			else {
-				if (canBeUnfolded(node) != state) {
-					return null;
-				}
-			}
-		}
-		return state;
-	}
-
-
-	private boolean canBeUnfolded(final NodeModel node) {
-		return Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node) ||  hasHiddenChildren(node);
 	}
 
 	public MapReader getMapReader() {
@@ -860,11 +857,11 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	// nodes may only be refreshed by their own ModeController, so we have to store that too
-	private final ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue> nodesToRefresh = new ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue>();
 	private final ActionEnablerOnChange actionEnablerOnChange;
 	private final ActionSelectorOnChange actionSelectorOnChange;
+	private final Refresher refresher;
 
-	private static class NodeRefreshKey{
+	static class NodeRefreshKey{
 		final NodeModel node;
 		final Object property;
 		public NodeRefreshKey(NodeModel node, Object property) {
@@ -888,7 +885,7 @@ public class MapController extends SelectionController implements IExtension{
 		}
 	}
 
-	private static class NodeRefreshValue{
+	static class NodeRefreshValue{
 		final ModeController controller;
 		Object oldValue;
 		Object newValue;
@@ -901,38 +898,57 @@ public class MapController extends SelectionController implements IExtension{
 		}
 
 	}
+	
+	static class Refresher { 
+		private final ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue> nodesToRefresh = new ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue>();
+		private boolean refreshRunning;
 
-	/** optimization of nodeRefresh() as it handles multiple nodes in one Runnable, even nodes that weren't on the
-	 * list when the thread was started.*/
-	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
-	                               final Object newValue) {
-	    final boolean startThread = nodesToRefresh.isEmpty();
-	    final NodeRefreshValue value = new NodeRefreshValue(Controller.getCurrentModeController(), oldValue, newValue);
-		final NodeRefreshKey key = new NodeRefreshKey(node, property);
-		final NodeRefreshValue old = nodesToRefresh.put(key, value);
-		if(old != null && old.newValue != value.newValue){
-			old.newValue = value.newValue;
-			nodesToRefresh.put(key, old);
-		}
-        if (startThread) {
-			final Runnable refresher = new Runnable() {
-				public void run() {
-					final ModeController currentModeController = Controller.getCurrentModeController();
-					final Iterator<Entry<NodeRefreshKey, NodeRefreshValue>> it = nodesToRefresh.entrySet().iterator();
-					while (it.hasNext()) {
-					    final Entry<NodeRefreshKey, NodeRefreshValue> entry = it.next();
-					    final NodeRefreshValue info = entry.getValue();
-					    if (info.controller == currentModeController){
-					        final NodeRefreshKey key = entry.getKey();
-							currentModeController.getMapController().nodeRefresh(key.node, key.property, info.oldValue, info.newValue);
-					    }
-					    it.remove();
+		/** optimization of nodeRefresh() as it handles multiple nodes in one Runnable, even nodes that weren't on the
+		 * list when the thread was started.*/
+		void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
+				final Object newValue) {
+			if(refreshRunning){
+				LogUtils.severe("delayedNodeRefresh already running, property change ignored", new RuntimeException());
+				return;
+			}
+			final boolean startThread = nodesToRefresh.isEmpty();
+			final NodeRefreshValue value = new NodeRefreshValue(Controller.getCurrentModeController(), oldValue, newValue);
+			final NodeRefreshKey key = new NodeRefreshKey(node, property);
+			final NodeRefreshValue old = nodesToRefresh.put(key, value);
+			if(old != null && old.newValue != value.newValue){
+				old.newValue = value.newValue;
+				nodesToRefresh.put(key, old);
+			}
+			if (startThread) {
+				final Runnable refresher = new Runnable() {
+					public void run() {
+						final ModeController currentModeController = Controller.getCurrentModeController();
+						@SuppressWarnings("unchecked")
+						final Entry<NodeRefreshKey, NodeRefreshValue>[] entries = nodesToRefresh.entrySet().toArray(new Entry[]{} );
+						nodesToRefresh.clear();
+						refreshRunning = true;
+						try {
+							for (Entry<NodeRefreshKey, NodeRefreshValue> entry : entries) {
+								final NodeRefreshValue info = entry.getValue();
+								if (info.controller == currentModeController){
+									final NodeRefreshKey key = entry.getKey();
+									currentModeController.getMapController().nodeRefresh(key.node, key.property, info.oldValue, info.newValue);
+								}
+							}
+						} finally {
+							refreshRunning = false;
+						}
 					}
-				}
-			};
-			EventQueue.invokeLater(refresher);
+				};
+				EventQueue.invokeLater(refresher);
+			}
 		}
 	}
+	public void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
+			final Object newValue){
+		refresher.delayedNodeRefresh(node, property, oldValue, newValue);
+	}
+	
 
 	public void removeMapChangeListener(final IMapChangeListener listener) {
 		mapChangeListeners.remove(listener);
@@ -1021,13 +1037,25 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public void toggleFolded(final Collection<NodeModel> collection) {
-		Boolean isFolded = getCommonFoldingState(collection);
-		final boolean shouldBeFolded = isFolded != null ?  ! isFolded : true;
+		Boolean shouldBeFolded = ! canBeUnfoldedOnCurrentView(collection);
 		final NodeModel nodes[] = collection.toArray(new NodeModel[]{});
 		for (final NodeModel node:nodes) {
 			setFolded(node, shouldBeFolded);
 		}
 	}
+
+	private boolean canBeUnfoldedOnCurrentView(Collection<NodeModel> collection) {
+		for(NodeModel node : collection){
+			if(node.isRoot())
+				return false;
+		}
+		for(NodeModel node : collection){
+			if(canBeUnfoldedOnCurrentView(node))
+				return true;
+		}
+		return false;
+	}
+
 
 	public ModeController getModeController() {
 		return modeController;

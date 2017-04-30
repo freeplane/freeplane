@@ -197,7 +197,7 @@ public class MMapController extends MapController {
 			case MMapController.NEW_CHILD: {
 				final boolean parentFolded = isFolded(targetNode);
 				if (parentFolded) {
-					setFolded(targetNode, false);
+					unfold(targetNode);
 				}
 				final int position = ResourceController.getResourceController().getProperty("placenewbranches").equals(
 				    "last") ? targetNode.getChildCount() : 0;
@@ -341,12 +341,9 @@ public class MMapController extends MapController {
 		Controller.getCurrentModeController().execute(actor, map);
     }
 
-	/**
-	 * Return false if user has canceled.
-	 */
-	@Override
 	public boolean close(final MapModel map) {
 		if (!map.isSaved()) {
+			Controller.getCurrentController().getMapViewManager().changeToMap(map);
 			final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
 			final String title = TextUtils.getText("SaveAction.text");
 			Component dialogParent;
@@ -829,7 +826,7 @@ public class MMapController extends MapController {
 		final NodeModel targetNode = target;
 		final boolean parentFolded = isFolded(targetNode);
 		if (parentFolded) {
-			setFolded(targetNode, false);
+			unfold(targetNode);
 		}
 		if (!isWriteable(target)) {
 			UITools.errorMessage(TextUtils.getText("node_is_write_protected"));

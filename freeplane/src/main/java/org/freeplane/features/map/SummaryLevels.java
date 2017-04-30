@@ -16,7 +16,7 @@ public class SummaryLevels{
 	public SummaryLevels(NodeModel parentNode) {
 		this.parentNode = parentNode;
 		int highestSummaryLevel = 0;
-		int childCount = parentNode.getChildCount();
+		int childCount = parentNode.isFolded() ? 0 : parentNode.getChildCount();
 		this.summaryLevels = new int[childCount];
 		this.sides = sidesOf(parentNode);
 		for(boolean isLeft : sides){

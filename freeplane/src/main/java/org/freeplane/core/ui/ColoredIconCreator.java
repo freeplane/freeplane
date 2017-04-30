@@ -4,12 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -17,22 +14,11 @@ public class ColoredIconCreator{
 	final private Map<Color, Icon> coloredNoteIcons;
 	private final int replacedColorRGB;
 	private final Image originalImage;
-	public ColoredIconCreator(URL iconUrl, Color replacedColor) {
-		this(read(iconUrl), replacedColor);
-	}
 	public ColoredIconCreator(Image originalImage, Color replacedColor) {
 		super();
 		replacedColorRGB = 0xffffff & replacedColor.getRGB();
 		coloredNoteIcons  = new HashMap<Color, Icon>();
 		this.originalImage = originalImage;
-	}
-	
-	private static BufferedImage read(URL iconUrl){
-		try {
-			return ImageIO.read(iconUrl);
-		} catch (IOException e) {
-			return null;
-		}
 	}
 	
 	private BufferedImage copy(Image img)

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16.052 16.189" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<radialGradient id="d" gradientUnits="userSpaceOnUse" cy="235.85" cx="-1490.8" gradientTransform="matrix(-1.0088 1.5906 -.51887 -.32907 -2866.2 2679.4)" r="12.631">
+<stop stop-color="#ed0000" offset="0"/>
+<stop stop-color="#f68686" offset="1"/>
+</radialGradient>
+<linearGradient id="g" y2="229.36" xlink:href="#a" gradientUnits="userSpaceOnUse" x2="-1508.5" gradientTransform="matrix(1.1724 0 0 1.1724 1474.7 15.739)" y1="210.75" x1="-1498.6"/>
+<linearGradient id="a">
+<stop stop-color="#fff" offset="0"/>
+<stop stop-color="#fff" stop-opacity="0" offset="1"/>
+</linearGradient>
+<radialGradient id="c" gradientUnits="userSpaceOnUse" cy="235.85" cx="-1490.8" gradientTransform="matrix(-1.0088 1.5906 -.51887 -.32907 -2866.2 2679.4)" r="12.631">
+<stop stop-color="#2840d5" offset="0"/>
+<stop stop-color="#99a5eb" offset="1"/>
+</radialGradient>
+<linearGradient id="f" y2="229.36" xlink:href="#a" gradientUnits="userSpaceOnUse" x2="-1508.5" gradientTransform="matrix(1.1724 0 0 1.1724 1296.5 -15.143)" y1="210.75" x1="-1498.6"/>
+<radialGradient id="b" gradientUnits="userSpaceOnUse" cy="235.85" cx="-1490.8" gradientTransform="matrix(-1.0088 1.5906 -.51887 -.32907 -2866.2 2679.4)" r="12.631">
+<stop stop-color="#eda701" offset="0"/>
+<stop stop-color="#fee806" offset="1"/>
+</radialGradient>
+<linearGradient id="e" y2="229.36" gradientUnits="userSpaceOnUse" x2="-1508.5" y1="210.75" x1="-1498.6">
+<stop stop-color="#fff" offset="0"/>
+<stop stop-color="#fff" stop-opacity="0" offset="1"/>
+</linearGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-33.679 -81.583)">
+<g transform="translate(181.06 -716.47)">
+<g transform="translate(-89.793 -68.005)">
+<path d="m-44.105 871.1c-0.58873 0.51848-1.6403 1.4955-1.4664 2.0452 0.17388 0.54969 0.62338 0.93118 1.0351 1.4544 0.6286 0.79875 0.97983 2.2526 0.60381 3.0451-0.37602 0.79248-0.6363 0.89776-1.4233 1.318" stroke="#000080" stroke-width="1.017px" fill="none"/>
+<path d="m-46.046 869.42c-0.60494 0.0923-1.3681 0.0147-2.0074 0.10367-2.2034 0.30677-0.4245 2.349-1.5343 3.8178-0.5731 0.75849-2.968 0.80879-3.9128 0.94034" stroke="#a00" stroke-width="1px" fill="none"/>
+<g fill-rule="evenodd" transform="matrix(.18846 -.015387 .015387 .18846 3.9494 811.59)">
+<path transform="matrix(1.0656 .48876 -.48876 1.0656 1424.6 755.24)" stroke="#c60000" stroke-width="2.2554" fill="url(#d)" d="m-1480.3 247.22-12.13 5.5765-10.895-7.717 1.2358-13.294 12.13-5.5765 10.895 7.7171z"/>
+<path d="m-274.75 269.39-13.932 0.0937-7.9414 12.494 2.8385 3.7254c9.079-12.581 14.154-14.927 19.035-16.313z" fill="url(#g)"/>
+</g>
+<g fill-rule="evenodd" transform="matrix(.18649 -.031227 .031227 .18649 33.125 818.09)">
+<path transform="matrix(1.0656 .48876 -.48876 1.0656 1246.4 724.36)" stroke="#17257c" stroke-width="2.2554" fill="url(#c)" d="m-1480.3 247.22-12.13 5.5765-10.895-7.717 1.2358-13.294 12.13-5.5765 10.895 7.7171z"/>
+<path d="m-452.82 238.46-13.755 0.45519-8.2587 12.183 2.8385 3.7254c9.079-12.581 14.294-14.978 19.175-16.364z" fill="url(#f)"/>
+</g>
+<g fill-rule="evenodd" transform="matrix(.22019 -.025734 .025734 .22019 269.64 785.65)">
+<path transform="matrix(.90896 .41689 -.41689 .90896 -42.729 630.77)" stroke="#ce6209" stroke-width="2.2554" fill="url(#b)" d="m-1480.3 247.22-12.13 5.5765-10.895-7.717 1.2358-13.294 12.13-5.5765 10.895 7.7171z" stroke-opacity=".91860"/>
+<path d="m-1492.1 216.54-12.036-0.29892-6.7618 10.848 2.4211 3.1776c7.744-10.731 12.214-12.545 16.377-13.727z" fill="url(#e)"/>
+</g>
+</g>
+<rect style="color:#000000" height="16" width="16" y="798.15" x="-147.36" fill="none"/>
+</g>
+</g>
+</svg>

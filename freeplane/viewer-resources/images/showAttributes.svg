@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   id="svg2"
+   viewBox="0 0 16 16.147"
+   version="1.1">
+  <defs
+     id="defs44" />
+  <metadata
+     id="metadata4">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <rect
+     style="color:#000000;opacity:0.93720003;fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:0.5000034"
+     height="15.646773"
+     width="14.362469"
+     y="0.25612867"
+     x="0.82313555"
+     id="rect12" />
+  <path
+     style="color:#000000;opacity:0.93720003;fill:#b1b1b1;fill-rule:evenodd;stroke:#000000;stroke-width:0.11799508;stroke-linecap:round;stroke-linejoin:round"
+     d="m 8.0043695,3.581619 -7.14663805,0 0,-3.30911514 7.14663805,0 m 0,3.30911514 7.1466385,0 0,-3.30911514 -7.1466385,0 -0.024507,3.31419874"
+     id="path14" />
+  <path
+     style="color:#000000;opacity:0.93720003;fill:none;stroke:#000000;stroke-width:0.24999818;stroke-linecap:round;stroke-linejoin:round"
+     d="m 8.0043695,7.013022 -7.14663805,0 0,-3.3091151 7.14663805,0 m 0,3.3091151 7.1466385,0 0,-3.3091151 -7.1466385,0 -0.024507,3.3141987"
+     id="path16" />
+  <path
+     style="color:#000000;opacity:0.93720003;fill:none;stroke:#000000;stroke-width:0.24999818;stroke-linecap:round;stroke-linejoin:round"
+     d="m 8.0043695,10.444425 -7.14663805,0 0,-3.3091151 7.14663805,0 m 0,3.3091151 7.1466385,0 0,-3.3091151 -7.1466385,0 -0.024507,3.3141991"
+     id="path18" />
+  <path
+     style="color:#000000;opacity:0.93720003;fill:none;stroke:#000000;stroke-width:0.24999818;stroke-linecap:round;stroke-linejoin:round"
+     d="m 8.0043695,13.875828 -7.14663805,0 0,-3.309115 7.14663805,0 m 0,3.309115 7.1466385,0 0,-3.309115 -7.1466385,0 -0.024507,3.314199"
+     id="path20" />
+  <path
+     style="color:#000000;opacity:0.93720003;fill:#cccccc;stroke:#000000;stroke-width:0.03117987;stroke-linecap:round;stroke-linejoin:round"
+     d="m 1.0511891,14.850177 0,-0.873031 6.9530392,0 6.9530397,0 0,0.873031 0,0.873031 -6.9530397,0 -6.9530392,0 0,-0.873031 z"
+     id="path22" />
+  <rect
+     id="rect40"
+     x="0.0040026247"
+     y="0.080026858"
+     width="16"
+     height="16"
+     style="color:#000000;fill:none" />
+  <text
+     id="text4219"
+     y="6.4314318"
+     x="1.4210041"
+     style="font-style:normal;font-weight:normal;font-size:2.5px;line-height:125%;font-family:sans-serif;letter-spacing:1px;fill:#0000ff;"
+     xml:space="preserve"><tspan
+       y="6.4314318"
+       x="1.4210041"
+       id="tspan4221">AAA</tspan></text>
+  <text
+     id="text4223"
+     y="6.4314318"
+     x="8.7576942"
+     style="font-style:normal;font-weight:normal;font-size:2.5px;line-height:125%;font-family:sans-serif;letter-spacing:1px;fill:#008000;"
+     xml:space="preserve"><tspan
+       y="6.4314318"
+       x="8.7576942"
+       id="tspan4225">BBB</tspan></text>
+  <text
+     id="text4219-4"
+     y="9.6689501"
+     x="1.4210041"
+     style="font-style:normal;font-weight:normal;font-size:2.5px;line-height:125%;font-family:sans-serif;letter-spacing:1px;fill:#ff0000;"
+     xml:space="preserve"><tspan
+       y="9.6689501"
+       x="1.4210041"
+       id="tspan4253">CCC</tspan></text>
+  <text
+     id="text4219-8"
+     y="9.6689501"
+     x="8.7576942"
+     style="font-style:normal;font-weight:normal;font-size:2.5px;line-height:125%;font-family:sans-serif;letter-spacing:1px;fill:#ff6600;"
+     xml:space="preserve"><tspan
+       id="tspan4255">123</tspan></text>
+</svg>

@@ -6,16 +6,17 @@ configurations{
 dependencies {
 	
 	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.5'
+	mergedViewerDependencies ':kitfox-svg-salamander-1.1.1-p1'
 	
     compile project(':JOrtho_0.4_freeplane')
 
     compile 'commons-lang:commons-lang:2.6',
             'commons-io:commons-io:2.4',
             'commons-codec:commons-codec:1.7',
-            'com.jgoodies:jgoodies-forms:1.6.0',
-            'com.jgoodies:jgoodies-common:1.4.0'
+            'com.jgoodies:jgoodies-forms:1.9.0',
+            'com.jgoodies:jgoodies-common:1.8.1'
 
-	compile  ('com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.16.18') {
+	compile  ('com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.17.3') {
 		exclude module: 'javahelp'
 		exclude module: 'mnemonicsetter'
 	}

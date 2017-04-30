@@ -16,7 +16,7 @@ class FormatContentTransformer extends AbstractContentTransformer {
 	}
 
 	public Object transformContent(TextController textController, Object obj, final NodeModel node, Object transformedExtension) {
-		if (obj == null || node.getUserObject() != transformedExtension)
+		if (obj == null || node == null || node.getUserObject() != transformedExtension)
 			return obj;
 		final String format = textController.getNodeFormat(node);
 		final boolean nodeNumbering = textController.getNodeNumbering(node);

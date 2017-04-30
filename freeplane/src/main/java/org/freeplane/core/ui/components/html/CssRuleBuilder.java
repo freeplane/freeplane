@@ -14,27 +14,45 @@ public class CssRuleBuilder {
 		return rule.toString();
 	}
 
-	public CssRuleBuilder withFont(Font font) {
-		return withFont(font, 1f);
+	public CssRuleBuilder withHTMLFont(Font font) {
+		return withHTMLFont(font, 1f);
 	}
 
-	public CssRuleBuilder withFont(Font font, float fontScaleFactor) {
+	public CssRuleBuilder withCSSFont(Font font) {
+		return withCSSFont(font, 1f);
+	}
+
+	public CssRuleBuilder withHTMLFont(Font font, float fontScaleFactor) {
 		if (font != null) {
-			rule.append(" font-family: \"");
-			rule.append(font.getFamily());
-			rule.append("\"; ");
-			rule.append(" font-size: ");
-			final int fontSize = Math.round(font.getSize() / fontScaleFactor);
-			rule.append(fontSize);
-			rule.append("pt;");
-			if (font.isBold()) {
-				rule.append(" font-weight: bold;");
-			}
-			if (font.isItalic()) {
-				rule.append(" font-style: italic;");
-			}
+			withFontFamily(font.getFamily(), "&quot;");
+			withFontConfiguration(font, fontScaleFactor);
 		}
 		return this;
+	}
+
+	public CssRuleBuilder withCSSFont(Font font, float fontScaleFactor) {
+		if (font != null) {
+			withFontFamily(font.getFamily(), "\"");
+			withFontConfiguration(font, fontScaleFactor);
+		}
+		return this;
+	}
+
+	private void withFontConfiguration(Font font, float fontScaleFactor) {
+		rule.append(" font-size: ");
+		final int fontSize = Math.round(font.getSize() / fontScaleFactor);
+		rule.append(fontSize);
+		rule.append("pt;");
+		if (font.isBold()) {
+			rule.append(" font-weight: bold;");
+		}
+		if (font.isItalic()) {
+			rule.append(" font-style: italic;");
+		}
+	}
+
+	private void withFontFamily(String family, String quote) {
+		rule.append(" font-family: ").append(quote).append(family).append(quote).append("; ");
 	}
 
 	public CssRuleBuilder withColor(Color color) {
@@ -73,11 +91,13 @@ public class CssRuleBuilder {
 		return rule.toString();
 	}
 
-	public CssRuleBuilder withMaxWidthAsPt(Quantity<?>... widths) {
+	public CssRuleBuilder withMaxWidthAsPt(float zoom, Quantity<?>... widths) {
 		int maxBaseUnits = -1;
 		for(Quantity<?> width : widths)
-			if(width != null)
-				maxBaseUnits = Math.max(maxBaseUnits, width.toBaseUnitsRounded());
+			if(width != null) {
+				final int zoomedBaseUnits = (int) (zoom * width.toBaseUnits() + 0.5d);
+				maxBaseUnits = Math.max(maxBaseUnits, zoomedBaseUnits);
+			}
 		if(maxBaseUnits >= 0)
 	   		rule.append("width: ")
 			.append(maxBaseUnits).append("pt")

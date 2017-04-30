@@ -37,7 +37,7 @@ import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
-import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
+import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.styles.LogicalStyleKeys;
 
@@ -68,6 +68,10 @@ public class MNodeStyleController extends NodeStyleController {
 			if (fromSize != null) {
 				fromSize.copyTo(NodeSizeModel.createNodeSizeModel(to));
 			}
+			final NodeBorderModel fromBorder = from.getExtension(NodeBorderModel.class);
+			if (fromBorder != null) {
+				fromBorder.copyTo(NodeBorderModel.createNodeBorderModel(to));
+			}
 			
 		}
 
@@ -77,6 +81,7 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 			from.removeExtension(NodeStyleModel.class);
 			from.removeExtension(NodeSizeModel.class);
+			from.removeExtension(NodeBorderModel.class);
 		}
 
 		public void remove(final Object key, final NodeModel from, final NodeModel which) {
@@ -170,8 +175,8 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichStyle.getNodeNumbering()) {
 				fromStyle.setNodeNumbering(null);
 			}
-			if (null != whichStyle.getTextAlign()) {
-				fromStyle.setTextAlign(null);
+			if (null != whichStyle.getHorizontalTextAlignment()) {
+				fromStyle.setHorizontalTextAlignment(null);
 			}
        }
 
@@ -211,9 +216,9 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(new CopyFormat());
 		modeController.addAction(new PasteFormat());
 		modeController.addAction(new RemoveFormatAction());
-		modeController.addAction(new TextAlignAction(TextAlign.LEFT));
-		modeController.addAction(new TextAlignAction(TextAlign.CENTER));
-		modeController.addAction(new TextAlignAction(TextAlign.RIGHT));
+		modeController.addAction(new HorizontalTextAlignmentAction(HorizontalTextAlignment.LEFT));
+		modeController.addAction(new HorizontalTextAlignmentAction(HorizontalTextAlignment.CENTER));
+		modeController.addAction(new HorizontalTextAlignmentAction(HorizontalTextAlignment.RIGHT));
 		final AMultipleNodeAction increaseNodeFont = new AMultipleNodeAction("IncreaseNodeFontAction") {
 			private static final long serialVersionUID = 1L;
 
@@ -260,7 +265,7 @@ public class MNodeStyleController extends NodeStyleController {
 			setItalic(target, sourceStyleModel.isItalic());
 			setNodeFormat(target, sourceStyleModel.getNodeFormat());
 			setNodeNumbering(target, sourceStyleModel.getNodeNumbering());
-			setTextAlign(target, sourceStyleModel.getTextAlign());
+			setHorizontalTextAlignment(target, sourceStyleModel.getHorizontalTextAlignment());
 		}
     }
 	
@@ -687,21 +692,21 @@ public class MNodeStyleController extends NodeStyleController {
     }
 
 
-	public void setTextAlign(final NodeModel node, final TextAlign textAlign) {
-		final TextAlign oldTextAlign = NodeStyleModel.getTextAlign(node);
+	public void setHorizontalTextAlignment(final NodeModel node, final HorizontalTextAlignment textAlignment) {
+		final HorizontalTextAlignment oldTextAlignment = NodeStyleModel.getHorizontalTextAlignment(node);
 		final IActor actor = new IActor() {
 			public void act() {
-				NodeStyleModel.setTextAlign(node, textAlign);
+				NodeStyleModel.setHorizontalTextAlignment(node, textAlignment);
 				final MapController mapController = getModeController().getMapController();
 				mapController.nodeChanged(node);
 			}
 
 			public String getDescription() {
-				return "setTextAlign";
+				return "setHorizontalTextAlignment";
 			}
 
 			public void undo() {
-				NodeStyleModel.setTextAlign(node, oldTextAlign);
+				NodeStyleModel.setHorizontalTextAlignment(node, oldTextAlignment);
 				final MapController mapController = getModeController().getMapController();
 				mapController.nodeChanged(node);
 			}

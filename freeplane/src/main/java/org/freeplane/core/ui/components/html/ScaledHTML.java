@@ -46,7 +46,7 @@ public class ScaledHTML extends BasicHTML{
      * string of html.
      */
     public static View createHTMLView(JLabel c, String html) {
-	ScaledEditorKit kit = ScaledEditorKit.create();
+	ScaledEditorKit kit = SynchronousScaledEditorKit.create();
 	Document doc = kit.createDefaultDocument(c);
 	Object base = c.getClientProperty(documentBaseKey);
 	if (base instanceof URL) {

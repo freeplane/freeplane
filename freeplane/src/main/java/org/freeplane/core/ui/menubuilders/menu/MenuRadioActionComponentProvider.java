@@ -53,6 +53,7 @@ public class MenuRadioActionComponentProvider implements ComponentProvider {
 			buttonGroup.add(actionComponent);
 			final KeyStroke accelerator = accelerators.getAccelerator(action);
 			actionComponent.setAccelerator(accelerator);
+			MenuIconScaling.scaleIcon(actionComponent);
 			return actionComponent;
 		}
 		else if(entry.builders().contains("separator")){

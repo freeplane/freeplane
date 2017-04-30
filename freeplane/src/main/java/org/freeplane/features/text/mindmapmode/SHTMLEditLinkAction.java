@@ -27,7 +27,7 @@ public class SHTMLEditLinkAction extends AFreeplaneAction implements SHTMLAction
    public SHTMLEditLinkAction(final SHTMLPanelImpl panel) {
        super("SetLinkByTextFieldAction");
        this.panel = panel;
-       SHTMLPanelImpl.getActionProperties(this, "setLinkByTextField");
+       SHTMLPanelImpl.configureActionProperties(this, "setLinkByTextField");
    }
 
    public void actionPerformed(final ActionEvent ae) {

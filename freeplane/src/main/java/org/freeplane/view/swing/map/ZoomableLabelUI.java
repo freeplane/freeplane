@@ -441,8 +441,6 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	
 	private void layout(ZoomableLabel label) {
 		String text = label.getText();
-		if(text == null || text.equals(""))
-			text = "!";
 		Icon icon = (label.isEnabled()) ? label.getIcon() :
 			label.getDisabledIcon();
 		boolean wasPainting = isPainting;

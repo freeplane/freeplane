@@ -46,7 +46,7 @@ class ToggleFoldedAction extends AFreeplaneAction {
 			r.toggleFolded(selectedNodes);
 		else {
 			final NodeModel selectedNode = r.getSelectedNode();
-			r.setFoldedAndScroll(selectedNode, ! selectedNode.isFolded());
+			r.toggleFoldedAndScroll(selectedNode);
 		}
 	}
 }

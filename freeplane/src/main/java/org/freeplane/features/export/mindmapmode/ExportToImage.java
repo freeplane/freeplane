@@ -17,6 +17,7 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -38,9 +39,12 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.image.BigBufferedImage;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -52,14 +56,23 @@ public class ExportToImage implements IExportEngine {
 	private final String imageDescripton;
 	private final String imageType;
 
+	public static ExportToImage toPNG(){
+		return new ExportToImage("png", "to png");
+	}
+	
 	ExportToImage( final String imageType, final String imageDescripton) {
 		this.imageType = imageType;
 		this.imageDescripton = imageDescripton;
 	}
 
 	public void export(MapModel map, File toFile) {
+		export(map, null, null, null, toFile);
+	}
+
+	public void export(MapModel map, final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, File toFile) {
+		RenderedImage image = null;
 		try {
-			final RenderedImage image = new ImageCreator(getImageResolutionDPI()).createBufferedImage(map);
+			image = placedNode != null ? new ImageCreator(getImageResolutionDPI()).createBufferedImage(map, slideSize, placedNode, placedNodePosition) : new ImageCreator(getImageResolutionDPI()).createBufferedImage(map);
 			if (image != null) {
 				exportToImage(image, toFile);
 			}
@@ -67,8 +80,11 @@ public class ExportToImage implements IExportEngine {
 		catch (final OutOfMemoryError ex) {
 			UITools.errorMessage(TextUtils.getText("out_of_memory"));
 		}
+		finally {
+			if (image != null)
+				BigBufferedImage.dispose(image);
+		}
 	}
-
 	/**
 	 * Export image.
 	 * @param toFile 

@@ -74,14 +74,14 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
         }
         MainView mainView = (MainView) component;
         NodeView nodeView = mainView.getNodeView();
-		final NodeModel model = nodeView.getModel();
+		final NodeModel node = nodeView.getModel();
         switch(e.getClickCount()){
         	case 1:
         		final MapController mapController = Controller.getCurrentModeController().getMapController();
-				mapController.setFolded(model, ! nodeView.isFolded());
+				mapController.toggleFolded(node);
         		break;
         	case 2:
-    	        nodeSelector.nodeSelected(model);
+    	        nodeSelector.nodeSelected(node);
         		break;
         }
     }

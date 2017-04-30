@@ -400,7 +400,7 @@ class ApplicationViewController extends FrameController {
 	}
 
 	@Override
-	protected void setFullScreen(boolean fullScreen) {
+	public void setFullScreen(boolean fullScreen) {
 		super.setFullScreen(fullScreen);
 		if(fullScreen)
 			mapViewWindows.setTabAreaInvisiblePolicy((JFrame) UITools.getCurrentRootComponent());

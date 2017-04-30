@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="31.956" width="31.956" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 31.955807 31.955808" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<radialGradient id="a" gradientUnits="userSpaceOnUse" cy="229.55" cx="268.68" gradientTransform="matrix(-1.2041 -.81777 1.0542 -1.5523 350.2 805.59)" r="54.705">
+<stop stop-color="#2d2e7e" offset="0"/>
+<stop stop-color="#fff" offset="1"/>
+</radialGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-233.67 -265.64)">
+<g transform="translate(19.849,23.656)">
+<g transform="translate(-1.6634 -.36964)">
+<path font-size="61.543px" d="m308.65 219.91a51.206 51.206 0 0 1 -51.21 51.21 51.206 51.206 0 0 1 -51.21 -51.21 51.206 51.206 0 0 1 51.21 -51.21 51.206 51.206 0 0 1 51.21 51.21z" stroke-opacity=".69677" fill-rule="evenodd" transform="matrix(.29248 0 0 .29248 156.17 194.01)" stroke="#2d2e7e" stroke-width="6.8381" fill="url(#a)"/>
+<text font-size="30px" space="preserve" y="268.7749" x="222.85426" font-family="Arial" fill="#ffffff">
+<tspan font-size="30px" y="268.7749" x="222.85426" font-family="Arial" fill="#ffffff">5</tspan>
+</text>
+</g>
+</g>
+</g>
+</svg>

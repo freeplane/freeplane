@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="31.995" width="31.35" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 31.349999 31.994626" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<radialGradient id="c" gradientUnits="userSpaceOnUse" cy="602.05" cx="50.237" gradientTransform="matrix(1.2638 .57269 -.39157 .86413 222.49 53.521)" r="9.493">
+<stop stop-color="#2ad4ff" offset="0"/>
+<stop stop-color="#006680" offset="1"/>
+</radialGradient>
+<linearGradient id="b" y2="596.5" gradientUnits="userSpaceOnUse" y1="591.89" x2="34.085" x1="28.851">
+<stop stop-color="#fcc362" offset="0"/>
+<stop stop-color="#cb923a" offset="1"/>
+</linearGradient>
+<radialGradient id="a" gradientUnits="userSpaceOnUse" cy="587.32" cx="48.061" gradientTransform="matrix(-.21675 1.1894 -.81691 -.1393 539.57 612.17)" r="9.2659">
+<stop stop-color="#bc830a" offset="0"/>
+<stop stop-color="#85510a" offset="1"/>
+</radialGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-178.42 -658.01)">
+<g transform="translate(83.714,144.89)">
+<g transform="translate(61.092,-2.5222)">
+<g transform="matrix(-1,0,0,1.0597,104.2,-101.01)">
+<path fill-rule="evenodd" fill="#fff" d="m57.746 605.85-7.7588-8.0132c7.7008-0.66485 7.1398-0.17854 10.684-0.38158l-1.6535 1.2719c0.55907 2.4637 0.03335 4.8287-1.2719 7.1229z"/>
+<path d="m57.79 605.94c-1.2321-2.1074-3.4345-5.2685-7.8591-8.1614-1.8955 1.1506-3.364 2.304-3.854 4.7608l0.07557 6.65c2.732 2.1497 6.5631 2.358 9.8995 2.4182 5.0237-0.61895 6.362-2.1462 7.9347-3.6273 0.08611-2.0983 0.23606-3.4857-0.45341-6.5744-0.46374-1.5638-1.9521-3.4539-2.796-4.0051-1.2035 0.84618-1.2922 0.81697-1.6625 1.2846-0.16578 2.5852-0.72558 5.2594-1.2847 7.2546z" fill-rule="evenodd" stroke="#045" stroke-width="1px" fill="url(#c)"/>
+<path d="m37.935 591.89a6.6122 6.6122 0 0 1 -6.6107 6.6122 6.6122 6.6122 0 0 1 -6.6138 -6.6091 6.6122 6.6122 0 0 1 6.6075 -6.6154 6.6122 6.6122 0 0 1 6.6169 6.606" stroke-opacity=".72674" transform="matrix(1.0913,0,0,1.0614,20.916,-35.618)" stroke="#62340a" fill="url(#b)"/>
+<path stroke-linejoin="round" d="m63.139 591.53-1.5186-2.6026-1.7262 2.0843c-3.8382 1.0955-6.5335 0.90128-9.3442 0.83735l-1.266-1.3777c-0.56496 2.4766 0.95041 5.213-1.4143 5.6888-1.4958-1.5569-1.78-3.2859-2.0882-5.2819 0.02852-2.7803 0.29215-3.9009 2.0783-5.9941 1.5178-1.3282 3.1044-2.1723 6.3298-2.4492 5.2391-0.13522 9.1222 3.0967 8.9494 9.095z" fill-rule="evenodd" stroke="#6e3d0b" stroke-linecap="round" stroke-width="1.0298px" fill="url(#a)"/>
+</g>
+<path d="m46.38 540.78c-0.23094 2.1926-0.39211 4.3155-0.07006 5.9551" fill-rule="evenodd" stroke="#045" stroke-width="1px"/>
+</g>
+<rect rx=".134" ry=".13557" height="31.35" width="31.35" y="513.47" x="94.703" fill="none"/>
+</g>
+</g>
+</svg>

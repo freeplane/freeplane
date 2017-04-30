@@ -34,8 +34,10 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
+import org.freeplane.securegroovy.GroovyPatcher;
 
 import groovy.lang.Binding;
+import groovy.lang.GroovyObject;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.Script;
 
@@ -132,6 +134,7 @@ public class GroovyScript implements IScript {
             ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             try {
                 trustedCompileAndCache();
+                Thread.currentThread().setContextClassLoader(scriptClassLoader);
                 final Binding binding = createBinding(node);
                 compiledScript.setBinding(binding);
                 System.setOut(outStream);
@@ -161,12 +164,13 @@ public class GroovyScript implements IScript {
     }
 
     private void trustedCompileAndCache() throws Throwable {
+    	final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
     	AccessController.doPrivileged(new PrivilegedExceptionAction<Void>() {
 
 			@Override
 			public Void run() throws PrivilegedActionException {
 				try {
-					compileAndCache();
+					compileAndCache(scriptingSecurityManager);
 				} catch (Exception e) {
 					throw new PrivilegedActionException(e);
 				} catch (Error e) {
@@ -179,9 +183,13 @@ public class GroovyScript implements IScript {
 		});
 	}
 
-    private Script compileAndCache() throws Throwable {
-		final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
-        if (compileTimeStrategy.canUseOldCompiledScript()) {
+    private static boolean groovyPatched = false; 
+    private Script compileAndCache(final ScriptingSecurityManager scriptingSecurityManager) throws Throwable {
+    	if(! groovyPatched){
+    		GroovyPatcher.apply(GroovyObject.class);
+    		groovyPatched = true;
+    	}
+    	if (compileTimeStrategy.canUseOldCompiledScript()) {
 			scriptClassLoader.setSecurityManager(scriptingSecurityManager);
             return compiledScript;
         }

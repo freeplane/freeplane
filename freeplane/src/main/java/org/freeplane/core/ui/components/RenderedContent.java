@@ -6,7 +6,11 @@ import java.util.Vector;
 import javax.swing.Action;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JList;
+
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.TextUtils;
 
 public class RenderedContent<T> {
 	public final T value;
@@ -51,4 +55,10 @@ public class RenderedContent<T> {
 		return vector;
 	}
 	
+	public static <T extends Enum<T>> RenderedContent<T> of(final T enumValue) {
+		final String name = enumValue.name();
+		String text = TextUtils.getText("OptionPanel." + name);
+		final ImageIcon icon = ResourceController.getResourceController().getIcon("OptionPanel." + name + ".icon");
+		return new RenderedContent<T>(enumValue, text, icon);
+	}
 }

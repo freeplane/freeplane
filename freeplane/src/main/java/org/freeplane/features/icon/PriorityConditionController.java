@@ -40,7 +40,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 class PriorityConditionController implements IElementaryConditionController {
 	static final String FILTER_PRIORITY = "filter_priority";
-	private static final IconStore STORE = IconStoreFactory.create();
+	private static final IconStore STORE = IconStoreFactory.ICON_STORE;
 
 	public PriorityConditionController() {
 		super();

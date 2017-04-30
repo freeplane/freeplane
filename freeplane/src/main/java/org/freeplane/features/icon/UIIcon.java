@@ -26,8 +26,11 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.factory.ImageIconFactory;
+import org.freeplane.features.map.NodeModel;
 
 /**
  * Base class for all icons used in FreePlane.
@@ -90,6 +93,11 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		return ImageIconFactory.getInstance().getImageIcon(this);
 	}
 
+	public Icon getIcon(final NodeModel node) {
+		final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(node);
+		return ImageIconFactory.getInstance().getImageIcon(this, iconHeight);
+	}
+
 	public KeyStroke getKeyStroke() {
 		return null;
 	}
@@ -103,7 +111,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 			return resourceURL;
 		}
 		final String path = getPath();
-		resourceURL = RESOURCE_CONTROLLER.getResource(path);
+		resourceURL = RESOURCE_CONTROLLER.getIconResource(path);
 		return resourceURL;
 	}
 

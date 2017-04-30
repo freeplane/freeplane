@@ -26,10 +26,13 @@ import java.util.List;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.CombinedPropertyChain;
 import org.freeplane.features.mode.Controller;
@@ -44,6 +47,9 @@ import org.freeplane.features.styles.StyleNode;
  * @author Dimitry Polivaev
  */
 public class IconController implements IExtension {
+
+	private static final Quantity<LengthUnits> DEFAULT_ICON_SIZE = new Quantity<LengthUnits>(12, LengthUnits.pt);
+
 	final private CombinedPropertyChain<Collection<MindIcon>, NodeModel> iconHandlers;
 	public static IconController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -59,9 +65,8 @@ public class IconController implements IExtension {
 		conditionFactory.addConditionController(50, new PriorityConditionController());
 	}
 
-	public static void install( final IconController iconController) {
-		final ModeController modeController = Controller.getCurrentModeController();
-		modeController.addExtension(IconController.class, iconController);
+	public void install(final ModeController modeController) {
+		modeController.addExtension(IconController.class, this);
 	}
 
 // 	final private ModeController modeController;
@@ -87,7 +92,7 @@ public class IconController implements IExtension {
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
-		final IconBuilder textBuilder = new IconBuilder(this, IconStoreFactory.create());
+		final IconBuilder textBuilder = new IconBuilder(this, IconStoreFactory.ICON_STORE);
 		textBuilder.registerBy(readManager, writeManager);
 		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<Collection<MindIcon>, NodeModel>() {
 			public Collection<MindIcon> getProperty(final NodeModel node, final Collection<MindIcon> currentValue) {
@@ -148,6 +153,32 @@ public class IconController implements IExtension {
 			}
 		}
 		return processed;
+	}
+
+	private Quantity<LengthUnits> getStyleIconSize(final MapModel map, final Collection<IStyle> styleKeys) {
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		for(IStyle styleKey : styleKeys){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final Quantity<LengthUnits> iconSize = styleNode.getSharedData().getIcons().getIconSize();
+			if (iconSize == null) {
+				continue;
+			}
+			return iconSize;
+		}
+		return DEFAULT_ICON_SIZE;
+	}
+
+	public Quantity<LengthUnits> getIconSize(NodeModel node)
+	{
+		final MapModel map = node.getMap();
+		final ModeController modeController = Controller.getCurrentModeController();
+		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
+		final Collection<IStyle> styles = styleController.getStyles(node);
+		final Quantity<LengthUnits> minWidth = getStyleIconSize(map, styles);
+		return minWidth;
 	}
 
 }

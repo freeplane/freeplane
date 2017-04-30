@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 public class CenterAction extends AFreeplaneAction {
@@ -36,9 +37,11 @@ public class CenterAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		if (Controller.getCurrentModeController().getMapController().getSelectedNode() != null) {
-			final File file = ((FNodeModel) Controller.getCurrentModeController().getMapController().getSelectedNode()).getFile();
-			((FMapController) Controller.getCurrentModeController().getMapController()).newMap(file);
+		final NodeModel selectedNode = Controller.getCurrentModeController().getMapController().getSelectedNode();
+		if (selectedNode != null && ! selectedNode.isRoot()) {
+			final File file = ((FNodeModel) selectedNode).getFile();
+			if(file != null)
+				((FMapController) Controller.getCurrentModeController().getMapController()).newMap(file);
 		}
 	}
 }

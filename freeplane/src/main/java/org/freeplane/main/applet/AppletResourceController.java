@@ -23,8 +23,6 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Properties;
 
-import javax.swing.JApplet;
-
 import org.freeplane.core.resources.ResourceController;
 
 /**
@@ -44,7 +42,7 @@ class AppletResourceController extends ResourceController {
 		final Enumeration<?> allKeys = userProps.propertyNames();
 		while (allKeys.hasMoreElements()) {
 			final String key = (String) allKeys.nextElement();
-			setPropertyByParameter(freeplaneApplet, key);
+			freeplaneApplet.setPropertyByParameter(this, key);
 		}
 	}
 
@@ -101,13 +99,6 @@ class AppletResourceController extends ResourceController {
 	@Override
 	public void setProperty(final String key, final String value) {
 		userProps.setProperty(key, value);
-	}
-
-	void setPropertyByParameter(JApplet applet, final String key) {
-		final String val = applet.getParameter(key);
-		if (val != null && val != "") {
-			userProps.setProperty(key, val);
-		}
 	}
 
 	@Override

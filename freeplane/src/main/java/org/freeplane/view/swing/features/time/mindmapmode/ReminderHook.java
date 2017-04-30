@@ -160,7 +160,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
  new ReminderConditionController());
 		createTimePanel();
 	}
-	private static final IconStore STORE = IconStoreFactory.create();
+	private static final IconStore STORE = IconStoreFactory.ICON_STORE;
 	private static UIIcon bellIcon;
 	private static UIIcon clockIcon;
 	private static UIIcon flagIcon;

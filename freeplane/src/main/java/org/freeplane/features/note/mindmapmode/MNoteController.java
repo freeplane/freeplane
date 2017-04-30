@@ -44,6 +44,7 @@ import javax.swing.text.html.StyleSheet;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -57,8 +58,6 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
 import org.freeplane.features.text.mindmapmode.FreeplaneToSHTMLPropertyChangeAdapter;
 import org.freeplane.features.text.mindmapmode.MTextController;
-import org.freeplane.features.url.UrlManager;
-
 import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
 
@@ -266,7 +265,7 @@ public class MNoteController extends NoteController {
 			public void actionPerformed(final ActionEvent pE) {
 				try {
 					String uriText = pE.getActionCommand();
-					UrlManager.getController().loadURL(new URI(uriText));
+					LinkController.getController().loadURI(noteManager.getNode(), new URI(uriText));
 				}
 				catch (final Exception e) {
 					LogUtils.severe(e);
@@ -298,7 +297,7 @@ public class MNoteController extends NoteController {
 	    styleSheet.removeStyle("p");
 	    // set default font for notes:
 	    final ModeController modeController = Controller.getCurrentModeController();
-	    String noteCssRule = getNoteCSSStyle(modeController, node, false);
+	    String noteCssRule = getNoteCSSStyle(modeController, node, 1f, false);
 		String bodyRule = new StringBuilder( "body {").append(noteCssRule).append("}\n").toString();
 		styleSheet.addRule(bodyRule);
 	    if (ResourceController.getResourceController().getBooleanProperty(

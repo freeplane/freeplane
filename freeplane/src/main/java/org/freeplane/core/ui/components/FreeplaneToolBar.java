@@ -21,6 +21,7 @@ package org.freeplane.core.ui.components;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.HierarchyBoundsListener;
@@ -29,6 +30,7 @@ import java.awt.event.HierarchyEvent;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 
 /**
  * @author Stefan Zechmeister
@@ -47,26 +49,25 @@ public class FreeplaneToolBar extends JToolBar {
 		this.setMargin(FreeplaneToolBar.nullInsets);
 		setFloatable(false);
 		setRollover(true);
-		if (orientation == HORIZONTAL) {
-			super.setLayout(ToolbarLayout.getInstance());
-			addHierarchyBoundsListener(new HierarchyBoundsListener() {
-				public void ancestorResized(final HierarchyEvent e) {
-					revalidate();
-					repaint();
-				}
+		if(orientation == SwingConstants.HORIZONTAL)
+			super.setLayout(ToolbarLayout.horizontal());
+		else
+			super.setLayout(ToolbarLayout.vertical());
+		addHierarchyBoundsListener(new HierarchyBoundsListener() {
+			public void ancestorResized(final HierarchyEvent e) {
+				revalidate();
+				repaint();
+			}
 
-				public void ancestorMoved(final HierarchyEvent e) {
-				}
-			});
-		}
+			public void ancestorMoved(final HierarchyEvent e) {
+			}
+		});
 	}
 	
 	
 
 	@Override
     public void setLayout(LayoutManager mgr) {
-		if (getOrientation() != HORIZONTAL)
-			super.setLayout(mgr);
     }
 
 

@@ -39,6 +39,7 @@ public class SetBooleanPropertyAction extends AFreeplaneAction{
 	    	TextUtils.getRawText("OptionPanel." + propertyName),
 	    	null);
 	    this.propertyName = propertyName;
+	    setIcon(propertyName + ".icon");
 	    setTooltip(getTooltipKey());
     }
 

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   viewBox="0 0 16 16"
+   id="svg2"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="font.svg"
+   width="16"
+   height="16"
+   inkscape:export-filename="F:\Freeplane\freeplane\resources\images\fontColor.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1018"
+     id="namedview47"
+     showgrid="false"
+     inkscape:zoom="14.75"
+     inkscape:cx="10.826979"
+     inkscape:cy="8"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs4">
+    <radialGradient
+       id="a"
+       gradientUnits="userSpaceOnUse"
+       cy="315.41"
+       cx="298.10001"
+       gradientTransform="matrix(1.131,0,0,1.1312,-22.1,-17.655)"
+       r="149.3">
+      <stop
+         stop-color="#007fff"
+         offset="0"
+         id="stop7" />
+      <stop
+         stop-color="#1c8eff"
+         offset=".39286"
+         id="stop9" />
+      <stop
+         stop-color="#1a4a7a"
+         offset="1"
+         id="stop11" />
+    </radialGradient>
+    <radialGradient
+       id="b"
+       spreadMethod="reflect"
+       gradientUnits="userSpaceOnUse"
+       cy="249.47"
+       cx="317.85999"
+       gradientTransform="matrix(0.92255,0.54994,-0.61282,1.0614,218.04,-49.879)"
+       r="141.81">
+      <stop
+         stop-color="#b8ff71"
+         offset="0"
+         id="stop14" />
+      <stop
+         stop-color="#6c0"
+         offset="1"
+         id="stop16" />
+    </radialGradient>
+    <radialGradient
+       id="c"
+       gradientUnits="userSpaceOnUse"
+       cx="298.67001"
+       cy="309.10999"
+       r="130.08"
+       gradientTransform="matrix(0.24362,0.87764,-1.1344,0.31491,586.41,-25.658)">
+      <stop
+         stop-color="#fff"
+         stop-opacity=".86735"
+         offset="0"
+         id="stop19" />
+      <stop
+         stop-color="#fff"
+         stop-opacity="0"
+         offset="1"
+         id="stop21" />
+    </radialGradient>
+    <linearGradient
+       id="linearGradient4568-1-4">
+      <stop
+         style="stop-color:#e12b1c;stop-opacity:1;"
+         offset="0"
+         id="stop4570-9-2" />
+      <stop
+         style="stop-color:#980b00;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop4572-8-0" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4554-5-4">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop4556-0-0" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0.0000000;"
+         offset="1.0000000"
+         id="stop4558-9-7" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata23">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.41699409px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.66928107;stroke-opacity:1"
+     id="text14029">
+    <path
+       d="m 7.1686274,0.7058822 1.7254903,0 4.5281043,12.1934648 q 0.334641,0.920261 0.669281,1.223529 0.345098,0.292811 0.920262,0.292811 l 0.230065,0 0,0.878431 -5.197386,0 0,-0.878431 q 0.250981,-0.02092 0.491504,-0.02092 0.501961,0 0.658823,-0.104575 0.303268,-0.198692 0.303268,-0.50196 0,-0.219608 -0.29281,-1.077125 l -0.962092,-2.8235292 -5.2915031,0 -1.1294118,3.1581702 q -0.1777778,0.491503 -0.1777778,0.679738 0,0.209151 0.1045752,0.366014 0.1150327,0.156862 0.303268,0.240522 0.1882353,0.0732 0.6065359,0.0732 0.282353,0 0.4601308,0.01046 l 0,0.878431 -4.36078449,0 0,-0.878431 q 0.60653599,0 0.86797389,-0.115033 0.2718954,-0.12549 0.4705882,-0.386928 0.1986929,-0.271896 0.5228759,-1.129412 L 7.1686274,0.7058822 Z m -1.8300654,8.156863 4.5071897,0 -2.2588236,-6.27451 -2.2483661,6.27451 z"
+       style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-family:'Bookman Old Style';-inkscape-font-specification:'Bookman Old Style Light';stroke-width:0.66928107"
+       id="path4432" />
+  </g>
+</svg>

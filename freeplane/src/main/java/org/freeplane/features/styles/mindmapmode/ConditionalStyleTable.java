@@ -20,6 +20,7 @@ import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.filter.FilterComposerDialog;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.styles.IStyle;
@@ -58,8 +59,14 @@ class ConditionalStyleTable extends JTable {
 		public Component getTableCellEditorComponent(final JTable table, final Object value, boolean isSelected, int row, int column) {
 			btn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-				    final MLogicalStyleController styleController = MLogicalStyleController.getController();
-					cellEditorValue = styleController.editCondition((ASelectableCondition) value);
+					final FilterComposerDialog filterComposerDialog = new FilterComposerDialog();
+					filterComposerDialog.addCondition(null);
+					filterComposerDialog.setConditionRenderer(ConditionalStyleTable.createConditionRenderer());
+					for(int i = 0; i < table.getRowCount(); i++){
+						final ASelectableCondition condition = (ASelectableCondition)table.getValueAt(i, 1);
+						filterComposerDialog.addCondition(condition);
+					}
+					cellEditorValue = filterComposerDialog.editCondition((ASelectableCondition) value);
 				    btn.removeActionListener(this);
 				    fireEditingStopped();
 				}
@@ -89,7 +96,7 @@ class ConditionalStyleTable extends JTable {
 	    setAutoResizeMode(JTable.AUTO_RESIZE_OFF); 
 //	    setSelectionBackground(DefaultConditionRenderer.SELECTED_BACKGROUND);
 	    setRowHeight(20);
-		conditionRenderer = new DefaultConditionRenderer(TextUtils.getText("always"), true);
+		conditionRenderer = createConditionRenderer();
 		columnModel.getColumn(1).setCellRenderer(conditionRenderer);
 		columnModel.getColumn(1).setCellEditor(new ConditionEditor());
 		final JComboBox styleBox = new JComboBoxWithBorder();
@@ -118,6 +125,10 @@ class ConditionalStyleTable extends JTable {
 		columnModel.getColumn(2).setPreferredWidth(180);
 		columnModel.getColumn(2).setCellRenderer(new DefaultStyleRenderer());
     }
+
+	static DefaultConditionRenderer  createConditionRenderer() {
+		return new DefaultConditionRenderer(TextUtils.getText("always"), true);
+	}
 
 	public MapStyleModel getStyles() {
 	    return styleModel;

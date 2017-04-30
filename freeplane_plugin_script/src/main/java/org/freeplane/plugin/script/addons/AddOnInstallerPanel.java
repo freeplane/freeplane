@@ -28,7 +28,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
-import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
@@ -211,7 +210,7 @@ public class AddOnInstallerPanel extends JPanel {
 
 	private JButton createFileChooser(final JTextField urlField) {
 		final JButton selectFile = new JButton(getText("search.file"),
-		    FreeplaneIconUtils.createImageIconByResourceKey("OpenAction.icon"));
+		    ResourceController.getResourceController().getIcon("OpenAction.icon"));
 		final JFileChooser fileChooser = new JFileChooser();
 		selectFile.setToolTipText(getText("select.tooltip"));
 		selectFile.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);

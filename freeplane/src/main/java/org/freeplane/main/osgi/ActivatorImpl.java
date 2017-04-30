@@ -78,6 +78,9 @@ class ActivatorImpl implements BundleActivator {
 
 	public void start(final BundleContext context) throws Exception {
 		try {
+			final String userDirectory = System.getProperty("org.freeplane.user.dir");
+			if(userDirectory != null)
+				System.setProperty("user.dir", userDirectory);
 			startFramework(context);
 		}
 		catch (final Exception e) {

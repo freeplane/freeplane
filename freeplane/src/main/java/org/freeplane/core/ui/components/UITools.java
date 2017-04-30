@@ -88,6 +88,9 @@ import org.freeplane.main.application.FreeplaneSplashModern;
  * @since 29.12.2008
  */
 public class UITools {
+	public static final String MENU_ITEM_FONT_SIZE_PROPERTY = "menuItemFontSize";
+	public static final String MAIN_FREEPLANE_FRAME = "mainFreeplaneFrame";
+
 	@SuppressWarnings("serial")
     public static final class InsertEolAction extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
@@ -96,7 +99,6 @@ public class UITools {
         }
     }
 
-	public static final String MAIN_FREEPLANE_FRAME = "mainFreeplaneFrame";
 
 	public static void addEscapeActionToDialog(final JDialog dialog) {
 		class EscapeAction extends AbstractAction {
@@ -492,22 +494,6 @@ public class UITools {
 
 	public static final Dimension MAX_BUTTON_DIMENSION = new Dimension(1000, 1000);
 
-// FIXME: not used - can we remove it? -- Volker
-//	public static Controller getController(Component c) {
-//		if(c == null){
-//			return null;
-//		}
-//	    final JRootPane rootPane = SwingUtilities.getRootPane(c);
-//		if(rootPane == null){
-//			return null;
-//		}
-//	    Controller controller = (Controller) rootPane.getClientProperty(Controller.class);
-//	    if(controller != null){
-//	    	return controller;
-//	    }
-//	    return getController(JOptionPane.getFrameForComponent(rootPane));
-//    }
-
 	public static void focusOn(JComponent component) {
 		component.addAncestorListener(new AncestorListener() {
 			public void ancestorRemoved(AncestorEvent event) {
@@ -637,8 +623,41 @@ public class UITools {
 	}
 
 	private static float getScaleFactor() {
-			return ResourceController.getResourceController().getIntProperty("user_defined_screen_resolution", 96)  / 72f;
+			final ResourceController resourceController = ResourceController.getResourceController();
+			int windowX = resourceController.getIntProperty("appwindow_x", 0);
+			int windowY = resourceController.getIntProperty("appwindow_y", 0);
+			final GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(windowX, windowY);
+			final int userDefinedScreenResolution; 
+			if(graphicsConfiguration != null) {
+				final Rectangle screenBounds = graphicsConfiguration.getBounds();
+				final int w = screenBounds.width;
+				final int h = screenBounds.height;
+				final double diagonalPixels = Math.sqrt(w*w + h*h);
+				final double monitorSize = resourceController.getDoubleProperty("monitor_size_inches", 0);
+				if(monitorSize >= 1 && diagonalPixels >= 1){
+					userDefinedScreenResolution = (int) Math.round(diagonalPixels / monitorSize);
+					resourceController.setProperty("user_defined_screen_resolution", userDefinedScreenResolution);
+				}
+				else{
+					userDefinedScreenResolution = resourceController.getIntProperty("user_defined_screen_resolution", 96);
+					final double effectiveMonitorSize = Math.round(diagonalPixels / userDefinedScreenResolution * 10) / 10;
+					resourceController.setDefaultProperty("monitor_size_inches", Double.toString(effectiveMonitorSize));
+				}
+			}
+			else {
+				userDefinedScreenResolution = resourceController.getIntProperty("user_defined_screen_resolution", 96);
+				resourceController.setDefaultProperty("monitor_size_inches", Double.toString(0));
+			}
+			return userDefinedScreenResolution  / 72f;
     }
+
+	private static GraphicsConfiguration findGraphicsConfiguration(int windowX, int windowY) {
+		final GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(null, windowX, windowY);
+		if(graphicsConfiguration != null || windowX == 0 && windowY == 0)
+			return graphicsConfiguration;
+		else
+			return findGraphicsConfiguration(null, 0, 0);
+	}
 	
 	public static Font scale(Font font) {
 		return font.deriveFont(font.getSize2D()*FONT_SCALE_FACTOR);
@@ -696,6 +715,10 @@ public class UITools {
 		}
 		else
 			runnable.run();
+	}
+
+	public static float getUIFontSize(double scalingFactor) {
+		return (int)Math.round(FONT_SCALE_FACTOR*scalingFactor * ResourceController.getResourceController().getIntProperty(MENU_ITEM_FONT_SIZE_PROPERTY, 10));
 	}
 
 }

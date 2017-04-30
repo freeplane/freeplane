@@ -20,7 +20,7 @@
 			<xsl:if test="not(ancestor::*)">
 				<hook NAME="MapStyle" background="#ffffff">
 					<properties show_icon_for_attributes="false"
-						fit_to_viewport="false;" />
+						fit_to_viewport="false" />
 
 					<map_styles>
 						<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval"

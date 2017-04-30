@@ -27,11 +27,14 @@ import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 
+import javax.swing.SwingUtilities;
+
 import org.freeplane.core.ui.AMouseListener;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.url.UrlManager;
+import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.ZoomableLabel;
 
 public class LinkNavigatorMouseListener extends AMouseListener {
@@ -65,7 +68,8 @@ public class LinkNavigatorMouseListener extends AMouseListener {
     			if(link != null){
     				if (link != null) {
     					try {
-    						UrlManager.getController().loadURL(new URI(link));
+    						NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
+    						LinkController.getController().loadURI(nodeView.getModel(), new URI(link));
     					} catch (Exception ex) {
     						LogUtils.warn(ex);
     					}

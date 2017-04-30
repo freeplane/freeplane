@@ -21,7 +21,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="MapStyle">
     <conditional_styles>
@@ -154,7 +153,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -182,7 +180,58 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1341130602702" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200.0 px" HGAP_QUANTITY="22.0 px" VSHIFT_QUANTITY="16.0 px">
+<node TEXT="Introduction" STYLE_REF="Beginner" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1341130602702" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200.0 px" HGAP_QUANTITY="22.0 px" VSHIFT_QUANTITY="16.0 px">
+<node ID="ID_131498432" CREATED="1479208899084" MODIFIED="1479210525907"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Basically, you just start typing to write text into a node, and end with an
+    </p>
+    <p>
+      ENTER.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To create a new node press INSERT (on MacOS press TAB) or ENTER.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To navigate nodes use ARROW-KEYS.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      To fold/unfold press SPACE.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      And to write formatted text you press ALT-ENTER
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      These are the basics and should give you a feeling of what Freeplane is for
+    </p>
+    <p>
+      in its core. Have fun, and ask your questions in the <a href="https://sourceforge.net/p/freeplane/discussion/758437/">freeplane-forum</a>
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
 <node TEXT="Goal" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1335300198070">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -205,7 +254,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -251,7 +299,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -311,7 +358,7 @@
 <arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1485150857" STARTINCLINATION="40;0;" ENDINCLINATION="40;0;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
 <font BOLD="true" ITALIC="true"/>
 <hook URI="Images/doc/BackgroundContextMenu.png" SIZE="1.0" NAME="ExternalObject"/>
-<node TEXT="Open/close&#xa;Properties panel" ID="ID_724121688" CREATED="1333267051623" MODIFIED="1341130818119" HGAP_QUANTITY="56.0 px">
+<node TEXT="Open/close&#xa;Tool panel" ID="ID_724121688" CREATED="1333267051623" MODIFIED="1341130818119" HGAP_QUANTITY="56.0 px">
 <arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_724121688" STARTINCLINATION="97;-188;" ENDINCLINATION="97;-188;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
 <edge STYLE="hide_edge"/>
 <font BOLD="true" ITALIC="true"/>
@@ -358,7 +405,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -405,7 +451,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -459,7 +504,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -595,7 +639,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -629,7 +672,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -648,7 +690,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="bezier"/>
 <node ID="ID_265318117" CREATED="1323437723250" MODIFIED="1341131023466" HGAP_QUANTITY="-95.0 px" VSHIFT_QUANTITY="150.0 px" STYLE="fork"><richcontent TYPE="NODE">
@@ -683,7 +724,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge"/>
 <hook NAME="NodeConditionalStyles">
@@ -870,7 +910,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <node ID="ID_1433249332" CREATED="1323438495734" MODIFIED="1341131039869" HGAP_QUANTITY="-100.0 px" VSHIFT_QUANTITY="114.0 px" STYLE="fork"><richcontent TYPE="NODE">
 
@@ -895,7 +934,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge"/>
 <hook NAME="NodeConditionalStyles">
@@ -929,7 +967,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge"/>
 <hook NAME="NodeConditionalStyles">
@@ -1012,7 +1049,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1032,7 +1068,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -1076,7 +1111,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1116,7 +1150,7 @@
     </p>
     <ol>
       <li>
-        The bar of icons which is showing at the side of the screen. If it is not showing, select <i>View &gt; Toolbars &gt; Icons toolbar.</i>
+        The bar of icons which is showing at the side of the screen. If it is not showing, select <i>View &gt; Controls &gt; Icons toolbar.</i>
       </li>
       <li>
         A table of icons which is displayed when you select <i>Edit&#160;&gt; Icons &gt; Icon from table.</i>
@@ -1147,7 +1181,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge"/>
 </node>
@@ -1177,7 +1210,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <edge STYLE="hide_edge"/>
 </node>
@@ -1221,7 +1253,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1245,7 +1276,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1272,7 +1302,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1311,7 +1340,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1349,7 +1377,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1398,7 +1425,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1438,7 +1464,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1471,7 +1496,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1496,7 +1520,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1521,7 +1544,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1544,7 +1566,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1574,7 +1595,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1622,7 +1642,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1654,7 +1673,6 @@
     </ol>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1674,7 +1692,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -1695,7 +1712,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1720,7 +1736,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1771,7 +1786,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1815,7 +1829,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1844,11 +1857,10 @@
   </head>
   <body>
     <p>
-      It is possible to visually group a whole branch of nodes with a common background called <b>cloud</b>. Right-click the parent of the branch and choose <i>Nodes &gt; Add cloud. </i>You can modify<i>&#160;</i>the color and style of the cloud in the <i>Properties panel </i>described below. To prevent the nodes in the node group from folding, select<i>&#160;Edit &gt; Node group &gt; All unfolded nodes.</i>
+      It is possible to visually group a whole branch of nodes with a common background called <b>cloud</b>. Right-click the parent of the branch and choose <i>Nodes &gt; Add cloud. </i>You can modify<i>&#160;</i>the color and style of the cloud in the <i>Tool panel </i>described below. To prevent the nodes in the node group from folding, select<i>&#160;Edit &gt; Node group &gt; All unfolded nodes.</i>
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -1877,7 +1889,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -1950,7 +1961,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -2006,7 +2016,7 @@
     </p>
     <ul>
       <li>
-        The appearance of the arrow-hyperlink can be changed in Properties panel, to show the whole node core as underlined text. This is only possible if no other underlined hyperlink(s) is active,
+        The appearance of the arrow-hyperlink can be changed in Tool panel, to show the whole node core as underlined text. This is only possible if no other underlined hyperlink(s) is active,
       </li>
       <li>
         If dropping an image file on a node, the image may be shown in stead of the hyperlink. For this keep Ctrl pressed while dropping.
@@ -2014,7 +2024,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2052,7 +2061,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2098,7 +2106,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2117,7 +2124,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -2178,7 +2184,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2215,7 +2220,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2238,7 +2242,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2272,7 +2275,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2285,7 +2287,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
 <node TEXT="Properties" STYLE_REF="Advanced" FOLDED="true" ID="ID_873516196" CREATED="1314162578896" MODIFIED="1335300487421" NUMBERED="true" MIN_WIDTH="90.0 px">
-<node TEXT="Properties panel" STYLE_REF="Advanced" FOLDED="true" ID="ID_1812601804" CREATED="1314162700896" MODIFIED="1323807343250" HGAP_QUANTITY="32.0 px" VSHIFT_QUANTITY="457.0 px" MAX_WIDTH="550.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Tool panel" STYLE_REF="Advanced" FOLDED="true" ID="ID_1812601804" CREATED="1314162700896" MODIFIED="1323807343250" HGAP_QUANTITY="32.0 px" VSHIFT_QUANTITY="457.0 px" MAX_WIDTH="550.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
 <icon BUILTIN="info"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -2298,7 +2300,7 @@
   </head>
   <body>
     <p>
-      Freeplane has many possibilities to to set or change properties which apply to a whole node or all nodes. You can think of the basic color of a node, enclosing a node in a bubble, the size of the text, the width of the node core and much more. The most versatile method to edit properties is in the <b>Properties panel</b>. To open or close the Properties panel, right-click in an empty space of the background and select <i>Properties panel</i>.
+      Freeplane has many possibilities to to set or change properties which apply to a whole node or all nodes. You can think of the basic color of a node, enclosing a node in a bubble, the size of the text, the width of the node core and much more. The most versatile method to edit properties is in the <b>Tool panel</b>. To open or close the Tool panel, right-click in an empty space of the background and select <i>Tool panel</i>.
     </p>
     <p>
       
@@ -2308,7 +2310,7 @@
     </p>
     <ul>
       <li>
-        An alternative way to open or close the panel, choose <i>View &gt; Properties panel</i>.
+        An alternative way to open or close the panel, choose <i>View &gt; Tool panel</i>.
       </li>
       <li>
         An alternative way to change properties, use menu <i>Format.</i>
@@ -2316,7 +2318,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2335,7 +2336,7 @@
   </head>
   <body>
     <p>
-      The <i>Properties panel</i>&#160;shows the properties of the node which has the focus. Only the properties of the selected node can be changed. (Generally you select one node, but with some properties it is possible to select and change more than one node at a time.) While the panel is showing, you can select a different node to give it the focus. To change a property, change the value of the property. This will also set a check indicating the changed value applies. Uncheck if you want to return to the default behaviour. Also uncheck if you want conditional styles affect (set) the property.
+      The <i>Tool panel</i>&#160;shows the properties of the node which has the focus. Only the properties of the selected node can be changed. (Generally you select one node, but with some properties it is possible to select and change more than one node at a time.) While the panel is showing, you can select a different node to give it the focus. To change a property, change the value of the property. This will also set a check indicating the changed value applies. Uncheck if you want to return to the default behaviour. Also uncheck if you want conditional styles affect (set) the property.
     </p>
     <p>
       
@@ -2347,11 +2348,10 @@
       
     </p>
     <p>
-      As a second example, find node group <i>Edges&#160;</i>and check the box for <i>Edge style</i>. Clicking next to <i>Edge style</i>&#160;will drop down a menu with possible styles like <i>Linear</i>, <i>Smoothly curved</i>, <i>Hidden</i>,&#160;and others. Try these to know which styles are possible. Or cselect me to see a few examples of changed properties in the <i>Properties panel.</i>
+      As a second example, find node group <i>Edges&#160;</i>and check the box for <i>Edge style</i>. Clicking next to <i>Edge style</i>&#160;will drop down a menu with possible styles like <i>Linear</i>, <i>Smoothly curved</i>, <i>Hidden</i>,&#160;and others. Try these to know which styles are possible. Or cselect me to see a few examples of changed properties in the <i>Tool panel.</i>
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2382,11 +2382,10 @@
   </head>
   <body>
     <p>
-      By default each new map in Freeplane will generate a different color for each new branch. This supports one of the principles held by the inventor of the mind map, which states that colors help the brain to structure and memorize information more easily. This property is called&#160;<b>Automatic edge color.</b>&#160;This property can be disabled in the Propertieds panel. To disable automatic edge color, open the Properties panel and find the properties group <i>Node style</i>, at the top of the <i>Properties&#160;&#160;panel</i>. Uncheck &#160;<i>Automatic edge color</i>, like I did for the the mind map of this tutorial.
+      By default each new map in Freeplane will generate a different color for each new branch. This supports one of the principles held by the inventor of the mind map, which states that colors help the brain to structure and memorize information more easily. This property is called&#160;<b>Automatic edge color.</b>&#160;This property can be disabled in the Propertieds panel. To disable automatic edge color, open the Tool panel and find the properties group <i>Node style</i>, at the top of the <i>Properties&#160;&#160;panel</i>. Uncheck &#160;<i>Automatic edge color</i>, like I did for the the mind map of this tutorial.
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2409,7 +2408,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2433,7 +2431,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -2453,7 +2450,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2516,7 +2512,7 @@
   </head>
   <body>
     <p>
-      Some of the properties in the<i>&#160;Properties panel</i>&#160;are also available as <b>icons</b>&#160;in the <b>tool bar</b>&#160;which is below the main menu bar.&#160;Examples are <i>italic</i>&#160;and <b>bold</b>.
+      Some of the properties in the<i>&#160;Tool panel</i>&#160;are also available as <b>icons</b>&#160;in the <b>tool bar</b>&#160;which is below the main menu bar.&#160;Examples are <i>italic</i>&#160;and <b>bold</b>.
     </p>
     <p>
       
@@ -2526,7 +2522,7 @@
     </p>
     <ul>
       <li>
-        Bold and italic set&#160;&#160;in the <i>Properties panel</i>, menu <i>Format </i>or with the toolbar, are applied (forced) to the whole node core.
+        Bold and italic set&#160;&#160;in the <i>Tool panel</i>, menu <i>Format </i>or with the toolbar, are applied (forced) to the whole node core.
       </li>
       <li>
         To apply bold and italic to a part of the node core, use the method described above in node <i>Beginner map</i>.
@@ -2537,7 +2533,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2563,7 +2558,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2601,12 +2595,11 @@
         In menu<i>&#160;Format &gt; Apply style</i>
       </li>
       <li>
-        <font color="#000000" face="SansSerif, sans-serif">In the Properties panel, in properties group <i>Node Style,</i>&#160;in field&#160;<i>Style. </i>N.B. To open the Properties panel, right-click in an empty space in the background and select Properties panel.</font>
+        <font color="#000000" face="SansSerif, sans-serif">In the Tool panel, in properties group <i>Node Style,</i>&#160;in field&#160;<i>Style. </i>N.B. To open the Tool panel, right-click in an empty space in the background and select Tool panel.</font>
       </li>
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2626,7 +2619,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -2657,7 +2649,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2677,7 +2668,7 @@
   </head>
   <body>
     <p>
-      Styles can indicate that a node contains specific information. As an example, the parent node &quot;&#196;pply multiple styles&quot; of the node you are reading&#160;&#160;is made up of two styles: Advanced, and Example. Advanced makes the yellow color and Example adds the eye-icon. To implement this example, first define the two styles and then apply them as node conditional styles by opening the<i>&#160;Properties panel </i>and clicking below <i>Node conditional styles for node. </i>Now a dialog opens and in this<i>&#160;</i>dialog:
+      Styles can indicate that a node contains specific information. As an example, the parent node &quot;&#196;pply multiple styles&quot; of the node you are reading&#160;&#160;is made up of two styles: Advanced, and Example. Advanced makes the yellow color and Example adds the eye-icon. To implement this example, first define the two styles and then apply them as node conditional styles by opening the<i>&#160;Tool panel </i>and clicking below <i>Node conditional styles for node. </i>Now a dialog opens and in this<i>&#160;</i>dialog:
     </p>
     <ul>
       <li>
@@ -2707,7 +2698,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2736,7 +2726,7 @@
       <b>Example: Revisions</b>
     </p>
     <p>
-      First a style <i>Revision </i>was defined&#160;with a special revision R-icon (see the styles list). Then in the<i>&#160;Properties panel</i>&#160;&#160;I clicked below<i>&#160;Conditional map styles </i>to open its dialog<i>.</i>&#160;I pressed <i>New</i>&#160;to add a filter. I clicked the new rule and defined a filter (Modified after, date). I selected this filter rule and pressed <i>OK</i>.&#160;&#160;
+      First a style <i>Revision </i>was defined&#160;with a special revision R-icon (see the styles list). Then in the<i>&#160;Tool panel</i>&#160;&#160;I clicked below<i>&#160;Conditional map styles </i>to open its dialog<i>.</i>&#160;I pressed <i>New</i>&#160;to add a filter. I clicked the new rule and defined a filter (Modified after, date). I selected this filter rule and pressed <i>OK</i>.&#160;&#160;
     </p>
     <p>
       
@@ -2755,7 +2745,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2774,7 +2763,7 @@
   </head>
   <body>
     <p>
-      One possible application of conditional node styles is to give each node level a different appearance automatically. Say you need five node levels. Then you define 5 styles, one for each level. Next you define 5 conditional style rules. To make it easy Freeplane has predefined this case for you. In <i>Properties panel</i>&#160;you can check&#160; <b>Apply level styles </b>in the properties group Node Style. If checked each&#160;node level will get a different appearance automatically. The style for the root node is called style Title. The styles for the other levels are called Header 1, Header 2, Header 3 and Header 4.
+      One possible application of conditional node styles is to give each node level a different appearance automatically. Say you need five node levels. Then you define 5 styles, one for each level. Next you define 5 conditional style rules. To make it easy Freeplane has predefined this case for you. In <i>Tool panel</i>&#160;you can check&#160; <b>Apply level styles </b>in the properties group Node Style. If checked each&#160;node level will get a different appearance automatically. The style for the root node is called style Title. The styles for the other levels are called Header 1, Header 2, Header 3 and Header 4.
     </p>
     <p>
       
@@ -2813,7 +2802,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2836,7 +2824,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2857,7 +2844,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <node FOLDED="true" ID="ID_357953420" CREATED="1323613544023" MODIFIED="1335095694181" HGAP_QUANTITY="-583.0 px" VSHIFT_QUANTITY="137.0 px"><richcontent TYPE="NODE">
 
@@ -2897,7 +2883,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <node TEXT="My Example" STYLE_REF="MyTemplate" ID="ID_679492060" CREATED="1323614118804" MODIFIED="1323615655812">
 <attribute NAME="birth date" VALUE=""/>
@@ -2949,7 +2934,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -2975,7 +2959,7 @@
         <i>Format &gt; Set node width limits</i>; or see
       </li>
       <li>
-        Properties panel
+        Tool panel
       </li>
     </ul>
     <p>
@@ -2986,7 +2970,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3009,7 +2992,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3046,7 +3028,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3075,7 +3056,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3095,7 +3075,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -3151,7 +3130,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3189,7 +3167,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3219,7 +3196,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <richcontent TYPE="DETAILS">
 
@@ -3318,7 +3294,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3364,7 +3339,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="Internal source" STYLE_REF="Advanced" FOLDED="true" ID="ID_1322185425" CREATED="1318936419394" MODIFIED="1336383756945" MAX_WIDTH="550.0 px" STYLE="combined">
@@ -3423,7 +3397,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3469,7 +3442,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -3496,7 +3468,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -3546,7 +3517,7 @@
     </p>
     <ul>
       <li>
-        <i>Properties panel &gt; Calendar &amp; Attributes</i>
+        <i>Tool panel &gt; Calendar &amp; Attributes</i>
       </li>
       <li>
         <i>Edit &gt; Node extensions</i>
@@ -3627,7 +3598,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3665,7 +3635,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -3694,7 +3663,7 @@
         <i>Tools &gt; Time management , </i>with submenu's for<i>&#160;Managing time </i>and for<i>&#160;managing tasks</i>
       </li>
       <li>
-        <i>Properties panel &gt; Calendar and Attribute</i>s, NOT for managing task
+        <i>Tool panel &gt; Calendar and Attribute</i>s, NOT for managing task
       </li>
     </ul>
   </body>
@@ -3732,7 +3701,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
@@ -3797,7 +3765,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3835,7 +3802,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -3934,7 +3900,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -4574,14 +4539,13 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
 </node>
 </node>
-<node TEXT="Loading and using filter set for this Quick reference" STYLE_REF="Professional" FOLDED="true" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1335301113247" LINK="http://www.kioo.nl/freeplane/tutorial_en/filterSet" MIN_WIDTH="1.0 px">
+<node TEXT="Loading and using filter set for this Quick reference" STYLE_REF="Professional" FOLDED="true" ID="ID_1284293100" CREATED="1316177216317" MODIFIED="1335301113247" MIN_WIDTH="1.0 px">
 <node TEXT="Consider using a powerfull feature of Freeplane, filtering, to present to you only the information of&#xa;one of these 3 levels (Beginner, Advanced, Professional) at a time.&#xa;&#xa;The procedure for filtering is described below. If you click on the red arrow in my parent node, the instruction is illustrated in an animation." ID="ID_352888342" CREATED="1323529491351" MODIFIED="1329857586148"/>
 <node TEXT="Load filter set for this Quick reference" ID="ID_551050917" CREATED="1317234746190" MODIFIED="1323808520350">
 <icon BUILTIN="full-0"/>
@@ -4645,7 +4609,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="SubWidth" LAST="false"/>
 </hook>
 </node>
-<node TEXT="Unfold to make visible" ID="ID_1451237301" CREATED="1316176206878" MODIFIED="1323808558352" LINK="FilterExampleEnd.jpg" HGAP_QUANTITY="15.0 px" VSHIFT_QUANTITY="-8.0 px">
+<node TEXT="Unfold to make visible" ID="ID_1451237301" CREATED="1316176206878" MODIFIED="1323808558352" HGAP_QUANTITY="15.0 px" VSHIFT_QUANTITY="-8.0 px">
 <icon BUILTIN="full-2"/>
 <richcontent TYPE="DETAILS">
 
@@ -4732,7 +4696,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -4755,7 +4718,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -4776,7 +4738,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="All nodes a bubble, particular edge,.." STYLE_REF="Advanced" FOLDED="true" ID="ID_210892586" CREATED="1321645917041" MODIFIED="1335301155197" TEXT_SHORTENED="true" MIN_WIDTH="1.0 px" STYLE="combined"><richcontent TYPE="DETAILS">
@@ -4804,7 +4765,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -4818,7 +4778,7 @@
   </head>
   <body>
     <p>
-      Map <i>standard.mm</i>&#160;in&#160; <i>Tools &gt; Open user directory &gt; Templates</i>&#160;serves as a map template for each new mind map. Consider adapting the style &quot;default&quot; of this template map to your personal favourites, e.g.
+      Map <i>standard-1.6.mm</i>&#160;in&#160; <i>Tools &gt; Open user directory &gt; Templates</i>&#160;serves as a map template for each new mind map. Consider adapting the style &quot;default&quot; of this template map to your personal favourites, e.g.
     </p>
     <ul>
       <li>
@@ -4836,7 +4796,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -4867,7 +4826,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -4914,7 +4872,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -5126,7 +5083,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -5155,7 +5111,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -5212,7 +5167,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -5245,7 +5199,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
@@ -5268,7 +5221,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -5287,7 +5239,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -5317,7 +5268,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="The making of this mind map" STYLE_REF="Advanced" FOLDED="true" ID="ID_1394424447" CREATED="1329890506053" MODIFIED="1335301176959">
@@ -5592,7 +5542,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <font ITALIC="false"/>
 </node>
@@ -5610,7 +5559,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>
@@ -5635,7 +5583,6 @@
     </ul>
   </body>
 </html>
-
 </richcontent>
 </node>
 </node>

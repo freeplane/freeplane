@@ -157,7 +157,7 @@
 </node>
 </node>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      LaTeX equations in Freeplane &amp;gt;= 1.3.x are&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      created by either using a &amp;quot;\latex &amp;quot; prefix or by using &lt;i&gt;Format=LaTeX&lt;/i&gt;&amp;#160; (in &lt;i&gt;View-&amp;gt;Properties panel&lt;/i&gt;)&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" POSITION="right" ID="ID_1563783701" CREATED="1356719071901" MODIFIED="1356729579399">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      LaTeX equations in Freeplane &amp;gt;= 1.3.x are&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      created by either using a &amp;quot;\latex &amp;quot; prefix or by using &lt;i&gt;Format=LaTeX&lt;/i&gt;&amp;#160; (in &lt;i&gt;View-&amp;gt;Tool panel&lt;/i&gt;)&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" POSITION="right" ID="ID_1563783701" CREATED="1356719071901" MODIFIED="1356729579399">
 <node TEXT="http://freeplane.sourceforge.net/wiki/index.php/LaTeX_in_Freeplane" ID="ID_749593148" CREATED="1356719154745" MODIFIED="1356719154745" LINK="http://freeplane.sourceforge.net/wiki/index.php/LaTeX_in_Freeplane"/>
 <node TEXT="\latex example with prefix: $x_2=\frac{1}{3}$" ID="ID_866456539" CREATED="1356719164791" MODIFIED="1357649767422">
 <font SIZE="24"/>

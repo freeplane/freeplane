@@ -2132,7 +2132,7 @@
   <body>
     <ul>
       <li>
-        Deselect <i>View &gt; Properties panel &gt; Automatic edge color</i>
+        Deselect <i>View &gt; Tool panel &gt; Automatic edge color</i>
       </li>
     </ul>
   </body>
@@ -8136,7 +8136,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Properties panel" FOLDED="true" ID="ID_1783882978" CREATED="1455910904026" MODIFIED="1455910904026" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
+<node TEXT="Tool panel" FOLDED="true" ID="ID_1783882978" CREATED="1455910904026" MODIFIED="1455910904026" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
@@ -8153,7 +8153,7 @@
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
 <attribute NAME="Chapter" VALUE="3,4,5"/>
-<node TEXT="Properties panel" FOLDED="true" ID="ID_125269399" CREATED="1455910904026" MODIFIED="1455910904026" TEXT_SHORTENED="true">
+<node TEXT="Tool panel" FOLDED="true" ID="ID_125269399" CREATED="1455910904026" MODIFIED="1455910904026" TEXT_SHORTENED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Definition" LAST="false"/>
 </hook>
@@ -8452,7 +8452,7 @@
     </p>
     <ul>
       <li>
-        View &gt; Properties panel
+        View &gt; Tool panel
       </li>
     </ul>
   </body>
@@ -8477,7 +8477,7 @@
     </p>
     <ul>
       <li>
-        View &gt; Properties panel
+        View &gt; Tool panel
       </li>
     </ul>
   </body>
@@ -9235,7 +9235,7 @@
 </hook>
 </node>
 <node TEXT="Center selected node" ID="ID_1435118166" CREATED="1455910904036" MODIFIED="1455910904036" TEXT_SHORTENED="true">
-<icon BUILTIN="../CenterSelectedNodeAction"/>
+<icon BUILTIN="../MoveSelectedNodeAction.CENTER"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
@@ -9930,7 +9930,7 @@
 
     </p>
     <p>
-      Properties that can be changed in the <i>Properties panel</i>&#160;are:
+      Properties that can be changed in the <i>Tool panel</i>&#160;are:
     </p>
     <ul>
       <li>
@@ -10034,7 +10034,7 @@
         <i>Styles &gt; User defined styles</i>
       </li>
       <li>
-        <i>View &gt; Properties panel&#160;: Styles, Conditional Node styles, Conditional map styles</i>
+        <i>View &gt; Tool panel&#160;: Styles, Conditional Node styles, Conditional map styles</i>
       </li>
       <li>
         <i>Styles &gt; Manage Conditional Node Styles</i>
@@ -10186,7 +10186,7 @@
         <i>Styles &gt; predefined styles</i>
       </li>
       <li>
-        <i>View &gt; Properties panel&#160;</i>
+        <i>View &gt; Tool panel&#160;</i>
       </li>
       <li>
         <i>Styles &gt; Manage Conditional Styles</i>
@@ -11068,7 +11068,7 @@ elements from the styles activated by conditions are copied.</pre>
     </p>
     <ul>
       <li>
-        <i>File &gt; New map</i>&#160;uses the style <i>standard.mm</i>. You can define a user map as standard.mm by naming it that way and putting it in the directory that opens by selecting <i>Tools &gt; Open user directory &gt; templates. </i>
+        <i>File &gt; New map</i>&#160;uses the style <i>standard-1.6.mm</i>. You can define a user map as standard-1.6.mm by naming it that way and putting it in the directory that opens by selecting <i>Tools &gt; Open user directory &gt; templates. </i>
       </li>
       <li>
         <i>In Tools &gt; Preferences</i>&#160;can be defined that the standard mind map should have a different name.
@@ -12074,7 +12074,7 @@ elements from the styles activated by conditions are copied.</pre>
   </head>
   <body>
     <p>
-      An edge is a lineage between parent and child. The flow of the edge can be altered by clicking on it and drawing it to a different location. Technically an edge belongs to the child and edge properties like color can be changed in the child node. See <i>View &gt; Properties panel. </i>An edge can be hidden, see Egde style.
+      An edge is a lineage between parent and child. The flow of the edge can be altered by clicking on it and drawing it to a different location. Technically an edge belongs to the child and edge properties like color can be changed in the child node. See <i>View &gt; Tool panel. </i>An edge can be hidden, see Egde style.
     </p>
   </body>
 </html>
@@ -12102,10 +12102,10 @@ elements from the styles activated by conditions are copied.</pre>
     </p>
     <ul>
       <li>
-        View &gt; Properties panel &gt; Min node width
+        View &gt; Tool panel &gt; Min node width
       </li>
       <li>
-        View &gt; Properties panel &gt; Max node width
+        View &gt; Tool panel &gt; Max node width
       </li>
     </ul>
     <p>
@@ -13843,7 +13843,7 @@ elements from the styles activated by conditions are copied.</pre>
         <i>Node features &gt; Time management </i>
       </li>
       <li>
-        <i>View &gt; Properties panel &gt; Calendar and Attribute</i>s
+        <i>View &gt; Tool panel &gt; Calendar and Attribute</i>s
       </li>
     </ul>
   </body>
@@ -15075,7 +15075,7 @@ elements from the styles activated by conditions are copied.</pre>
 </hook>
 </node>
 <node TEXT="Standard Template File" STYLE_REF="Method" FOLDED="true" ID="ID_1036795471" CREATED="1455910904107" MODIFIED="1455910904107">
-<node TEXT="standard.mm" ID="ID_706234894" CREATED="1455910904108" MODIFIED="1455910904108">
+<node TEXT="standard-1.6.mm" ID="ID_706234894" CREATED="1455910904108" MODIFIED="1455910904108">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="OptionalValue" LAST="false"/>
 </hook>
@@ -15907,7 +15907,7 @@ elements from the styles activated by conditions are copied.</pre>
     </p>
     <ul>
       <li>
-        <i>Properties panel . Calendar &amp; Attributes .&gt; Date/time and number formatting</i>
+        <i>Tool panel . Calendar &amp; Attributes .&gt; Date/time and number formatting</i>
       </li>
     </ul>
   </body>
@@ -16874,7 +16874,7 @@ elements from the styles activated by conditions are copied.</pre>
   </head>
   <body>
     <p>
-      <i>View-&gt;Properties panel</i>, then <i>Core text-&gt;Format-&gt;LaTeX</i>&#160;:
+      <i>View-&gt;Tool panel</i>, then <i>Core text-&gt;Format-&gt;LaTeX</i>&#160;:
     </p>
   </body>
 </html>

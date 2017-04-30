@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="34.878" width="34.878" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 34.878104 34.878104" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<filter id="a" style="color-interpolation-filters:sRGB">
+<feGaussianBlur stdDeviation="0.51517956"/>
+</filter>
+<radialGradient id="b" gradientUnits="userSpaceOnUse" cy="609.34" cx="320.47" gradientTransform="matrix(1.0365 .72435 -.84887 1.2147 505.55 -362.95)" r="54.518">
+<stop stop-color="#fcd9af" offset="0"/>
+<stop stop-color="#fff" offset="1"/>
+</radialGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-30.442 -598.77)">
+<g transform="translate(-490.12,198.85)">
+<g transform="matrix(.29348 0 0 .29348 443.95 238.53)">
+<rect ry="9.5841" height="99.036" width="99.036" stroke="#90cffb" stroke-linecap="round" y="559.82" x="270.95" stroke-width="10" fill="url(#b)"/>
+<rect ry="9.5841" height="99.036" filter="url(#a)" width="99.036" stroke="#0055d4" stroke-linecap="round" y="559.82" x="270.95" stroke-width="4" fill="none"/>
+<text font-size="19.278px" space="preserve" line-height="125%" y="582.0556" x="309.20508" font-family="Arial" fill="#000000">
+<tspan y="582.0556" x="309.20508">12</tspan>
+</text>
+<text font-size="19.278px" space="preserve" line-height="125%" y="651.14349" x="315.19174" font-family="Arial" fill="#000000">
+<tspan y="651.14349" x="315.19174">6</tspan>
+</text>
+<text font-size="19.278px" space="preserve" line-height="125%" y="616.26984" x="278.7316" font-family="Arial" fill="#000000">
+<tspan y="616.26984" x="278.7316">9</tspan>
+</text>
+<text font-size="19.278px" space="preserve" line-height="125%" y="616.26984" x="351.6149" font-family="Arial" fill="#000000">
+<tspan y="616.26984" x="351.6149">3</tspan>
+</text>
+<path d="m341.01 581.33-20.827 27.87 19.337 14.652" stroke="#000080" stroke-linecap="round" stroke-width="4" fill="none"/>
+<path d="m320.31 609.12-33.313 22.111" stroke="#f00" stroke-linecap="round" stroke-width="2" fill="none"/>
+<path d="m76.719 629.64a9.2063 9.2063 0 0 1 -9.2063 9.2063 9.2063 9.2063 0 0 1 -9.2063 -9.2063 9.2063 9.2063 0 0 1 9.2063 -9.2063 9.2063 9.2063 0 0 1 9.2063 9.2063z" transform="matrix(.5419 0 0 .5419 283.89 268.14)" stroke="#000080" stroke-linecap="round" stroke-width="4" fill="#f00"/>
+<path d="m167.45 704.49a11.792 11.792 0 0 1 -11.792 11.792 11.792 11.792 0 0 1 -11.792 -11.792 11.792 11.792 0 0 1 11.792 -11.792 11.792 11.792 0 0 1 11.792 11.792z" transform="matrix(.17035 0 0 .17035 258.86 470.09)" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+<path d="m167.45 704.49a11.792 11.792 0 0 1 -11.792 11.792 11.792 11.792 0 0 1 -11.792 -11.792 11.792 11.792 0 0 1 11.792 -11.792 11.792 11.792 0 0 1 11.792 11.792z" transform="matrix(.17035 0 0 .17035 270.49 457.33)" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+<path d="m167.45 704.49a11.792 11.792 0 0 1 -11.792 11.792 11.792 11.792 0 0 1 -11.792 -11.792 11.792 11.792 0 0 1 11.792 -11.792 11.792 11.792 0 0 1 11.792 11.792z" transform="matrix(.17035 0 0 .17035 316.96 457.17)" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+<path d="m167.45 704.49a11.792 11.792 0 0 1 -11.792 11.792 11.792 11.792 0 0 1 -11.792 -11.792 11.792 11.792 0 0 1 11.792 -11.792 11.792 11.792 0 0 1 11.792 11.792z" transform="matrix(.17035 0 0 .17035 328.86 470.52)" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+<path d="m167.45 704.49a11.792 11.792 0 0 1 -11.792 11.792 11.792 11.792 0 0 1 -11.792 -11.792 11.792 11.792 0 0 1 11.792 -11.792 11.792 11.792 0 0 1 11.792 11.792z" transform="matrix(.17035 0 0 .17035 327.74 509.92)" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+<path d="m167.45 704.49a11.792 11.792 0 0 1 -11.792 11.792 11.792 11.792 0 0 1 -11.792 -11.792 11.792 11.792 0 0 1 11.792 -11.792 11.792 11.792 0 0 1 11.792 11.792z" transform="matrix(.17035 0 0 .17035 311.01 525.03)" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+<path d="m167.45 704.49a11.792 11.792 0 0 1 -11.792 11.792 11.792 11.792 0 0 1 -11.792 -11.792 11.792 11.792 0 0 1 11.792 -11.792 11.792 11.792 0 0 1 11.792 11.792z" transform="matrix(.17035 0 0 .17035 273.06 522.78)" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+<path d="m167.45 704.49a11.792 11.792 0 0 1 -11.792 11.792 11.792 11.792 0 0 1 -11.792 -11.792 11.792 11.792 0 0 1 11.792 -11.792 11.792 11.792 0 0 1 11.792 11.792z" transform="matrix(.17035 0 0 .17035 258.91 507.99)" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+</g>
+<rect rx=".085455" ry=".094007" height="30.976" width="30.976" y="401.87" x="522.51" fill="none"/>
+</g>
+</g>
+</svg>

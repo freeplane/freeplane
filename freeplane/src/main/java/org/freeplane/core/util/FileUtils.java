@@ -346,4 +346,8 @@ public class FileUtils {
 	    }
 	}
 
+	public static String validFileNameOf(String proposal) {
+		return proposal.replaceAll("[&:/\\\\\0%$#~\\?\\*]+", "");
+	}
+
 }

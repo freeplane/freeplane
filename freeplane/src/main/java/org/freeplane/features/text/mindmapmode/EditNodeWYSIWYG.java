@@ -48,7 +48,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.TextAlign;
+import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 
 import com.lightdev.app.shtm.SHTMLEditorPane;
@@ -193,7 +193,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	private Color textColor = Color.BLACK;
 	private Dimension preferredSize = PREFERRED_SIZE;
 
-	private int horizontalAlignment = TextAlign.DEFAULT.swingConstant;
+	private int horizontalAlignment = HorizontalTextAlignment.DEFAULT.swingConstant;
 
 	public String getTitle() {
     	return title;
@@ -243,7 +243,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			final StringBuilder ruleBuilder = new StringBuilder(100);
 			ruleBuilder.append("body {");
 			ruleBuilder.append(new CssRuleBuilder()
-					.withFont(font, UITools.FONT_SCALE_FACTOR)
+					.withCSSFont(font, UITools.FONT_SCALE_FACTOR)
 					.withColor(textColor)
 					.withBackground(getBackground())
 					.withAlignment(horizontalAlignment));

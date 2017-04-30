@@ -24,9 +24,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -43,11 +41,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class PersistentNodeHook {
-	static private Set<Class<? extends IExtension>> mapExtensionClasses = new HashSet<Class<? extends IExtension>>();
-
-	public static boolean isMapExtension(final Class<? extends IExtension> clazz) {
-		return mapExtensionClasses.contains(clazz);
-	}
 
 	public abstract class HookAction extends AFreeplaneAction {
 		private static final long serialVersionUID = 1L;
@@ -179,7 +172,7 @@ public abstract class PersistentNodeHook {
 		super();
 		final Class<? extends IExtension> extensionClass = getExtensionClass();
         if (getHookAnnotation().onceForMap()) {
-			mapExtensionClasses.add(extensionClass);
+			MapExtensions.registerMapExtension(extensionClass);
 		}
 		//		this.modeController = modeController;
 		//		controller = modeController.getController();
@@ -426,7 +419,7 @@ public abstract class PersistentNodeHook {
 	public static void removeMapExtensions(NodeModel node) {
 		final IExtension[] extensionArray = node.getSharedExtensions().values().toArray(new IExtension[]{});
 		for(IExtension extension : extensionArray){
-			if(PersistentNodeHook.isMapExtension(extension.getClass())){
+			if(MapExtensions.isMapExtension(extension.getClass())){
 				node.removeExtension(extension);
 			}
 		}

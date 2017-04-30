@@ -19,6 +19,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.IMapViewManager;
 
 /**
  *
@@ -35,6 +37,7 @@ public class OneTouchCollapseResizer extends JResizer {
 	private Integer resizeComponentIndex;
 
 	private final Set<ComponentCollapseListener> collapseListener = new LinkedHashSet<ComponentCollapseListener>();
+	private Dimension lastPreferredSize = null;
 
 
 
@@ -152,22 +155,27 @@ public class OneTouchCollapseResizer extends JResizer {
 		}
 	}
 
-	public void setExpanded(boolean enabled) {
-		if(this.expanded != enabled) {
-			this.expanded = enabled;
+	public void setExpanded(boolean expanded) {
+		if(this.expanded != expanded) {
+			this.expanded = expanded;
 			try {
 				Component resizedComponent = getResizedComponent();
 				if(resizedComponent instanceof JComponent) {
-					((JComponent) resizedComponent).putClientProperty(COLLAPSED, (enabled ? null : "true"));
+					((JComponent) resizedComponent).putClientProperty(COLLAPSED, (expanded ? null : "true"));
 				}
-				if(enabled) {
-					resizedComponent.setPreferredSize(null);
+				if(expanded) {
+					resizedComponent.setPreferredSize(lastPreferredSize);
 				}
 				else {
+					lastPreferredSize = resizedComponent.isPreferredSizeSet() ?  resizedComponent.getPreferredSize() : null;
 					resizedComponent.setPreferredSize(new Dimension(0,0));
 				}
+				IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+				mapViewManager.moveFocusFromDescendantToSelection(resizedComponent);
+				resizedComponent.setVisible(expanded);
 
-				fireCollapseStateChanged(resizedComponent, enabled);
+				if (!expanded)
+					fireCollapseStateChanged(resizedComponent, expanded);
 
 				recalibrate();
 			}

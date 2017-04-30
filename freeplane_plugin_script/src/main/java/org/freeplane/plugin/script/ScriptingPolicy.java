@@ -22,11 +22,8 @@ package org.freeplane.plugin.script;
 import java.awt.AWTPermission;
 import java.io.File;
 import java.io.FilePermission;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.AllPermission;
-import java.security.BasicPermission;
 import java.security.CodeSource;
 import java.security.Permission;
 import java.security.Permissions;
@@ -84,6 +81,8 @@ class ScriptingPolicy extends Policy {
 		permissions.add(new AWTPermission("accessClipboard"));
 		permissions.add(new AWTPermission("accessEventQueue"));
 		permissions.add(new AWTPermission("setWindowAlwaysOnTop"));
+		permissions.add(new FilePermission(Compat.getApplicationUserDirectory() + "/resources/-", "read"));
+		permissions.add(new FilePermission(Compat.getApplicationUserDirectory() + "/icons/-", "read"));
 	}
 
 

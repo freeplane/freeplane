@@ -233,7 +233,7 @@
       even <i>centered</i>&#160;can be set at
     </p>
     <p>
-      <i>Properties panel&#8594;&quot;Format&quot;-Tab&#8594; </i>
+      <i>Tool panel&#8594;&quot;Format&quot;-Tab&#8594; </i>
     </p>
     <p>
       <i>Font of whole core&#8594;Text Alignment</i>
@@ -267,7 +267,7 @@
 </node>
 </node>
 <node TEXT="Make data formatting, formula processing and&#xa;LaTeX rendering independently configurable" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" ID="ID_856820716" CREATED="1462715833432" MODIFIED="1463415982669"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Distance between child nodes can be set in&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;Properties panel&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_1931822867" CREATED="1462715833364" MODIFIED="1464625570007" VGAP_QUANTITY="1.0 pt">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Distance between child nodes can be set in&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      &lt;i&gt;Tool panel&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_1931822867" CREATED="1462715833364" MODIFIED="1464625570007" VGAP_QUANTITY="1.0 pt">
 <edge WIDTH="1"/>
 <node TEXT="child 1" ID="ID_701167941" CREATED="1462806840153" MODIFIED="1464625618545"/>
 <node LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1372995988" CREATED="1462806854891" MODIFIED="1463594171391" VGAP_QUANTITY="20.0 pt"><richcontent TYPE="NODE">
@@ -281,7 +281,7 @@
       the gap between childs can be set at
     </p>
     <p>
-      <i>Properties panel&#8594;Node shape&#8594;Child gap</i>
+      <i>Tool panel&#8594;Node shape&#8594;Child gap</i>
     </p>
     <p>
       
@@ -374,7 +374,7 @@
   </head>
   <body>
     <p>
-      Freeplane now offers several options to automate the edge coloring! See the <i>Properties panel</i>&#160;for more!
+      Freeplane now offers several options to automate the edge coloring! See the <i>Tool panel</i>&#160;for more!
     </p>
   </body>
 </html>
@@ -383,7 +383,7 @@
 </node>
 </node>
 <node TEXT="Column based edge colors" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_1357352160" CREATED="1462715833408" MODIFIED="1463415941407">
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      ...can be set in the &lt;i&gt;Properties panel&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_520840991" CREATED="1462807191385" MODIFIED="1463594294193">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      ...can be set in the &lt;i&gt;Tool panel&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_520840991" CREATED="1462807191385" MODIFIED="1463594294193">
 <hook NAME="AlwaysUnfoldedNode"/>
 <node TEXT="Every column (count of shapes and distance from root) can have its own colors.&#xa; &#xa;Try it out:&#xa;Play with the different options offered. You also can manually change it, like it did happen for this node." LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_1808930284" CREATED="1462807205113" MODIFIED="1463413022153" TEXT_ALIGN="LEFT" MAX_WIDTH="216.0 pt" MIN_WIDTH="216.0 pt">
 <edge WIDTH="13"/>
@@ -401,7 +401,7 @@
       New Node shapes can be set in the
     </p>
     <p>
-      <i>Properties panel</i>
+      <i>Tool panel</i>
     </p>
   </body>
 </html>
@@ -427,7 +427,7 @@
       To get in size uniformly shaped nodes, switch ON &quot;<i>Uniform</i>&quot; option on the&#160;
     </p>
     <p>
-      <i>Properties panel&#8594;Node shape</i>&#160;section
+      <i>Tool panel&#8594;Node shape</i>&#160;section
     </p>
     <p>
       
@@ -467,7 +467,7 @@
       To edit the &quot;<i>attribute</i>&quot;-style, press CTRL+F11 or head to the <i>Format&#8594;Manage styles</i>&#160;menu and click on <i>Edit styles</i>.
     </p>
     <p>
-      There, choose the node &quot;<i>attributes</i>&quot; and adjust this style as you like in the <i>Properties panel</i>
+      There, choose the node &quot;<i>attributes</i>&quot; and adjust this style as you like in the <i>Tool panel</i>
     </p>
   </body>
 </html>
@@ -505,7 +505,7 @@
   </head>
   <body>
     <p>
-      When you define a custom Node style for a single node and then create a sibling, the new sibling will have the Node style which is defined at <i>Properties panel</i>&#160;and not your freshly defined one.
+      When you define a custom Node style for a single node and then create a sibling, the new sibling will have the Node style which is defined at <i>Tool panel</i>&#160;and not your freshly defined one.
     </p>
     <p>
       

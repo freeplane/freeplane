@@ -86,6 +86,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -97,7 +98,6 @@ import org.freeplane.features.text.mindmapmode.EventBuffer;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 import org.freeplane.view.swing.map.ZoomableLabel;
@@ -400,7 +400,7 @@ public class EditNodeTextField extends EditNodeBase {
 
 		protected boolean isSplitActionTriggered(final KeyEvent e) {
 			final int keyCode = e.getKeyCode();
-			if (keyCode == SPLIT_KEY_CODE && keyCode != -1 && e.isAltDown() && ! Compat.isMacOsX())
+			if (keyCode == SPLIT_KEY_CODE && keyCode != -1 && e.isAltDown()&& !e.isAltGraphDown()&& !e.isControlDown() && ! Compat.isMacOsX())
 				return true;
 			final KeyStroke splitNodeHotKey = ResourceController.getResourceController().getAcceleratorManager().getAccelerator("SplitNode");
 			return splitNodeHotKey != null && splitNodeHotKey.getKeyCode() == keyCode  &&  
@@ -418,7 +418,7 @@ public class EditNodeTextField extends EditNodeBase {
 				final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) textfield.getDocument(), textfield.viewToModel(ev.getPoint()));
 				if (linkURL != null) {
 					try {
-						UrlManager.getController().loadURL(new URI(linkURL));
+						LinkController.getController().loadURI(nodeView.getModel(), new URI(linkURL));
 					} catch (Exception e) {
 						LogUtils.warn(e);
 					}
@@ -672,7 +672,7 @@ public class EditNodeTextField extends EditNodeBase {
 		ruleBuilder.append("body {");
 		final int labelHorizontalAlignment = parent.getHorizontalAlignment();
 		ruleBuilder.append(new CssRuleBuilder()
-				.withFont(font, UITools.FONT_SCALE_FACTOR)
+				.withCSSFont(font, UITools.FONT_SCALE_FACTOR)
 				.withColor(nodeTextColor)
 				.withBackground(getBackground())
 				.withAlignment(labelHorizontalAlignment));
@@ -693,7 +693,6 @@ public class EditNodeTextField extends EditNodeBase {
 		}
 		Insets parentInsets = parent.getZoomedInsets();
 		maxWidth -= parentInsets.left + parentInsets.right;
-		maxWidth = mapView.getZoomed(maxWidth);
 		extraWidth = ResourceController.getResourceController().getIntProperty("editor_extra_width", 80);
 		extraWidth = mapView.getZoomed(extraWidth);
 		final TextFieldListener textFieldListener = new TextFieldListener();
@@ -747,11 +746,12 @@ public class EditNodeTextField extends EditNodeBase {
 		textFieldMinimumSize.width = Math.max(textFieldMinimumSize.width, nodeWidth - textFieldX - (parentInsets.right - textFieldBorderWidth));
 		textFieldMinimumSize.height = Math.max(textFieldMinimumSize.height, textR.height);
 		textfield.setSize(textFieldMinimumSize.width, textFieldMinimumSize.height);
-		final Dimension newParentSize = new Dimension(textFieldX + textFieldMinimumSize.width + parentInsets.right,  2 * textR.y + textFieldMinimumSize.height);
+		final int textY = Math.max(textR.y - (textFieldMinimumSize.height - textR.height) / 2, 0);
+		final Dimension newParentSize = new Dimension(textFieldX + textFieldMinimumSize.width + parentInsets.right,  2 * textY + textFieldMinimumSize.height);
 		horizontalSpace = newParentSize.width - textFieldMinimumSize.width;
-		verticalSpace = 2 * textR.y;
+		verticalSpace = 2 * textY;
 		final int widthAddedToParent = newParentSize.width - parent.getWidth();
-		final Point location = new Point(textR.x - textFieldBorderWidth, textR.y);
+		final Point location = new Point(textR.x - textFieldBorderWidth, textY);
 		
 		final int widthAddedToTextField = textFieldMinimumSize.width - (textR.width + 2 * textFieldBorderWidth);
 		if(widthAddedToTextField > 0){

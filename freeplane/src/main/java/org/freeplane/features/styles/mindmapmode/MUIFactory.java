@@ -27,6 +27,7 @@ import java.util.Collection;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
@@ -191,14 +192,15 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 
 	public Container createStyleBox() {
 		final JComboBox stylesBox = new JComboBoxWithBorder(styles);
+		stylesBox.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXX");
 		stylesBox.setRenderer(new ComboBoxRendererWithTooltip(stylesBox));
 		return stylesBox;
 	}
 
 	public Container createSizeBox() {
 		final JComboBox sizeBox = new JComboBoxWithBorder(size);
-		final Dimension preferredSize = sizeBox.getPreferredSize();
-		sizeBox.setPreferredSize(new Dimension(50, preferredSize.height));
+		sizeBox.setPrototypeDisplayValue("88888");
+		sizeBox.setPreferredSize(sizeBox.getPreferredSize());
 		sizeBox.setEditor(new FixedBasicComboBoxEditor());
 		sizeBox.setEditable(true);
 		return sizeBox;
@@ -206,11 +208,8 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 
 	public Container createFontBox() {
 		final JComboBox fontsBox = new JComboBoxWithBorder();
-		fontsBox.setMaximumRowCount(9);
 		fontsBox.setRenderer(new ComboBoxRendererWithTooltip(fontsBox));
 		final Dimension preferredSize = fontsBox.getPreferredSize();
-		preferredSize.width = Math.round(150 * UITools.FONT_SCALE_FACTOR);
-		fontsBox.setPreferredSize(preferredSize);
 		fontsBox.setModel(fonts);
 		return fontsBox;
 	}

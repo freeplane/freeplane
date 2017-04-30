@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 16 16" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-86.418 -461.41)">
+<g transform="matrix(.029754 0 0 .029754 112.19 460.91)">
+<path d="m-430.08 17.019z" stroke="#000" stroke-width="1px" fill="none"/>
+<rect stroke-linejoin="round" style="color:#000000" fill-rule="evenodd" stroke-dashoffset="4.503" height="179" width="179" stroke="#050" stroke-linecap="round" y="16.644" x="-866" stroke-width=".25" fill="#250"/>
+<rect stroke-linejoin="round" style="color:#000000" fill-rule="evenodd" stroke-dashoffset="4.503" height="179" width="179" stroke="#050" stroke-linecap="round" y="16.644" x="-686.75" stroke-width=".25" fill="#338000"/>
+<rect stroke-linejoin="round" style="color:#000000" fill-rule="evenodd" stroke-dashoffset="4.503" height="179" width="179" stroke="#050" stroke-linecap="round" y="16.644" x="-507.5" stroke-width=".25" fill="#4a0"/>
+<path d="m-430.08 196.27z" stroke="#000" stroke-width="1px" fill="none"/>
+<rect stroke-linejoin="round" style="color:#000000" fill-rule="evenodd" stroke-dashoffset="4.503" height="179" width="179" stroke="#050" stroke-linecap="round" y="195.89" x="-866" stroke-width=".25" fill="#55d400"/>
+<rect stroke-linejoin="round" style="color:#000000" fill-rule="evenodd" stroke-dashoffset="4.503" height="179" width="179" stroke="#050" stroke-linecap="round" y="195.89" x="-686.75" stroke-width=".25" fill="#6f0"/>
+<rect stroke-linejoin="round" style="color:#000000" fill-rule="evenodd" stroke-dashoffset="4.503" height="179" width="179" stroke="#050" stroke-linecap="round" y="195.89" x="-507.5" stroke-width=".25" fill="#9f5"/>
+<path d="m-430.08 375.52z" stroke="#000" stroke-width="1px" fill="none"/>
+<rect stroke-linejoin="round" style="color:#000000" fill-rule="evenodd" stroke-dashoffset="4.503" height="179" width="179" stroke="#050" stroke-linecap="round" y="375.14" x="-866" stroke-width=".25" fill="#b3ff80"/>
+<rect stroke-linejoin="round" style="color:#000000" fill-rule="evenodd" stroke-dashoffset="4.503" height="179" width="179" stroke="#050" stroke-linecap="round" y="375.14" x="-686.75" stroke-width=".25" fill="#cfa"/>
+<rect stroke-linejoin="round" style="color:#000000" fill-rule="evenodd" stroke-dashoffset="4.503" height="179" width="179" stroke="#050" stroke-linecap="round" y="375.14" x="-507.5" stroke-width=".25" fill="#e5ffd5"/>
+</g>
+</g>
+</svg>

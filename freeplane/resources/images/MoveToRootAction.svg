@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg:svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   height="32"
+   width="32"
+   version="1.1"
+   viewBox="0 0 32.000244 32.000332"
+   id="svg2"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="MoveToRootAction.svg"
+   inkscape:export-filename="F:\Freeplane\freeplane\resources\images\MoveToRootAction.png"
+   inkscape:export-xdpi="45"
+   inkscape:export-ydpi="45">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1222"
+     inkscape:window-height="830"
+     id="namedview55"
+     showgrid="false"
+     inkscape:zoom="10.809612"
+     inkscape:cx="7.6279904"
+     inkscape:cy="11.755111"
+     inkscape:window-x="497"
+     inkscape:window-y="70"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <svg:defs
+     id="defs4">
+    <svg:linearGradient
+       id="a"
+       y2="124.52"
+       gradientUnits="userSpaceOnUse"
+       y1="238.03"
+       x2="219.96001"
+       x1="268.63"
+       gradientTransform="matrix(0.10362572,0,0,0.10395711,-54.143103,-29.289398)">
+      <svg:stop
+         stop-color="#fff"
+         offset="0"
+         id="stop7" />
+      <svg:stop
+         stop-color="#fff"
+         stop-opacity=".99225"
+         offset="1"
+         id="stop9" />
+    </svg:linearGradient>
+    <svg:linearGradient
+       id="linearGradient18569">
+      <svg:stop
+         style="stop-color:#ffffff;stop-opacity:0.99342108"
+         offset="0.0000000"
+         id="stop18571" />
+      <svg:stop
+         style="stop-color:#ffffff;stop-opacity:0.11842106"
+         offset="1.0000000"
+         id="stop18573" />
+    </svg:linearGradient>
+    <svg:linearGradient
+       x1="128.00049"
+       y1="244.42773"
+       x2="128.00047"
+       y2="11.573135"
+       id="XMLID_11_"
+       gradientUnits="userSpaceOnUse">
+      <svg:stop
+         id="stop120"
+         style="stop-color: rgb(0, 53, 237); stop-opacity: 1;"
+         offset="0.005615" />
+      <svg:stop
+         id="stop122"
+         style="stop-color: rgb(0, 0, 141); stop-opacity: 1;"
+         offset="0.54494399" />
+      <svg:stop
+         id="stop124"
+         style="stop-color: rgb(0, 83, 189); stop-opacity: 1;"
+         offset="1" />
+      <midPointStop
+         id="midPointStop126"
+         style="stop-color:#0035ED"
+         offset="0.005615" />
+      <midPointStop
+         id="midPointStop128"
+         style="stop-color:#0035ED"
+         offset="0.5" />
+      <midPointStop
+         id="midPointStop130"
+         style="stop-color:#00008D"
+         offset="0.544944" />
+      <midPointStop
+         id="midPointStop132"
+         style="stop-color:#00008D"
+         offset="0.5" />
+      <midPointStop
+         id="midPointStop134"
+         style="stop-color:#0053BD"
+         offset="1" />
+    </svg:linearGradient>
+    <svg:linearGradient
+       x1="127.99951"
+       y1="244.40723"
+       x2="127.9995"
+       y2="11.546326"
+       id="XMLID_12_"
+       gradientUnits="userSpaceOnUse">
+      <svg:stop
+         id="stop141"
+         style="stop-color: rgb(66, 138, 255); stop-opacity: 1;"
+         offset="0.005615" />
+      <svg:stop
+         id="stop143"
+         style="stop-color: rgb(148, 202, 255); stop-opacity: 1;"
+         offset="0.57303399" />
+      <svg:stop
+         id="stop145"
+         style="stop-color: rgb(220, 240, 255); stop-opacity: 1;"
+         offset="1" />
+      <midPointStop
+         id="midPointStop147"
+         style="stop-color:#428AFF"
+         offset="0.005615" />
+      <midPointStop
+         id="midPointStop149"
+         style="stop-color:#428AFF"
+         offset="0.5" />
+      <midPointStop
+         id="midPointStop151"
+         style="stop-color:#94CAFF"
+         offset="0.573034" />
+      <midPointStop
+         id="midPointStop153"
+         style="stop-color:#94CAFF"
+         offset="0.5" />
+      <midPointStop
+         id="midPointStop155"
+         style="stop-color:#DCF0FF"
+         offset="1" />
+    </svg:linearGradient>
+    <svg:linearGradient
+       id="linearGradient4568-1">
+      <svg:stop
+         id="stop4570-9"
+         offset="0"
+         style="stop-color:#e12b1c;stop-opacity:1;" />
+      <svg:stop
+         id="stop4572-8"
+         offset="1.0000000"
+         style="stop-color:#980b00;stop-opacity:1.0000000;" />
+    </svg:linearGradient>
+  </svg:defs>
+  <svg:metadata
+     id="metadata11">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </svg:metadata>
+  <svg:rect
+     style="fill:#aa0000;fill-opacity:1;stroke:#aa0000;stroke-width:0.90644604"
+     id="rect234"
+     transform="matrix(0.50024975,0.86588116,-0.86624538,0.49961879,0,0)"
+     y="16.045546"
+     x="9.1682196"
+     height="0"
+     width="0.91268528" />
+  <svg:g
+     id="g4490"
+     transform="matrix(1.0567728,0,0,1.0567728,-1.1000732,0.62134203)">
+    <svg:g
+       id="g4477">
+      <svg:path
+         inkscape:connector-curvature="0"
+         id="path19"
+         font-size="xx-small"
+         line-height="normal"
+         d="m 17.307869,15.04005 c 1.825638,-0.582481 2.801966,-1.398483 3.644403,-2.52993 0.842433,-1.131413 1.739701,-1.922978 3.330409,-2.270789 -1.327567,0.298021 -2.301756,1.392962 -3.06712,2.641286 -0.779232,1.27377 -1.67023,2.776006 -3.534667,3.370877 l -0.372339,-1.211713 z"
+         style="color:#000000;font-size:xx-small;line-height:normal;text-indent:0;text-transform:none;block-progression:tb;fill:#ff6600;stroke:#ff6600;stroke-width:0.48450235" />
+      <svg:rect
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#ff6600;stroke-width:0.61622119;stroke-linejoin:round"
+         id="rect21"
+         x="23.005928"
+         y="6.8296099"
+         width="6.9702287"
+         height="3.9080865"
+         ry="0.86183417"
+         rx="0.788167"
+         transform="matrix(0.99991921,0.01271147,-0.01271148,0.99991921,0,0)" />
+      <svg:g
+         transform="matrix(-2.0041377,0,0,-1.9239564,387.77993,698.85332)"
+         id="g35">
+        <svg:path
+           style="color:#000000;font-size:xx-small;line-height:normal;text-indent:0;text-transform:none;block-progression:tb;fill:#ff0000"
+           d="m 185.44,355.37 c 1.394,0.0397 2.2445,0.763 3.0672,1.9818 0.82275,1.2188 1.613,1.9415 2.7944,1.7538 -0.98756,0.14576 -1.8946,-0.96653 -2.6879,-2.3806 -0.80833,-1.4436 -1.7421,-3.158 -3.1657,-3.1985 l -0.008,1.8435 z"
+           line-height="normal"
+           font-size="xx-small"
+           id="path37"
+           inkscape:connector-curvature="0" />
+        <svg:rect
+           rx="0.36471"
+           ry="0.40876001"
+           height="1.8536"
+           width="3.2253001"
+           y="357.38"
+           x="188.87"
+           id="rect39"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:#ff0000;stroke-width:0.27259001;stroke-linejoin:round" />
+      </svg:g>
+      <svg:path
+         inkscape:connector-curvature="0"
+         id="path43"
+         font-size="xx-small"
+         line-height="normal"
+         d="m 16.549274,19.209053 c 2.485381,0.05842 4.00182,1.119675 5.468596,2.908182 1.466894,1.788589 2.875908,2.849148 4.982329,2.573661 -1.760769,0.213892 -3.377931,-1.418362 -4.79245,-3.493588 -1.441226,-2.118413 -3.106077,-4.634272 -5.644313,-4.693715 l -0.01397,2.705256 z"
+         style="color:#000000;font-size:xx-small;line-height:normal;text-indent:0;text-transform:none;block-progression:tb;fill:#008000;stroke:#008000;stroke-width:0.19058546" />
+      <svg:rect
+         style="fill:#ffffff;fill-rule:evenodd;stroke:#008000;stroke-width:0.63906389;stroke-linejoin:round"
+         id="rect45"
+         x="23.265255"
+         y="-26.738615"
+         width="7.3123703"
+         height="4.1000438"
+         ry="0.9041701"
+         rx="0.82685649"
+         transform="scale(1,-1)" />
+      <svg:g
+         transform="matrix(1.9984482,0,0,1.9403252,-355.13366,-669.16044)"
+         id="g47">
+        <svg:path
+           style="color:#000000;font-size:xx-small;line-height:normal;text-indent:0;text-transform:none;block-progression:tb;fill:#d400aa"
+           d="m 185.76,355.22 c -1.5092,0.0318 -2.4299,0.61046 -3.3206,1.5856 -0.89073,0.97513 -1.7463,1.5533 -3.0253,1.4032 1.0692,0.11661 2.0512,-0.77329 2.91,-1.9046 0.87511,-1.155 1.886,-2.5266 3.4273,-2.559 l 0.008,1.4749 z"
+           line-height="normal"
+           font-size="xx-small"
+           id="path49"
+           inkscape:connector-curvature="0" />
+        <svg:rect
+           ry="0.40876001"
+           rx="0.36471"
+           transform="scale(-1,1)"
+           height="1.8536"
+           width="3.2253001"
+           y="356.48001"
+           x="-181.85001"
+           id="rect51"
+           style="fill:#ffffff;fill-rule:evenodd;stroke:#d400aa;stroke-width:0.27259001;stroke-linejoin:round" />
+      </svg:g>
+      <svg:rect
+         style="fill:#b0ffff;fill-opacity:1;fill-rule:evenodd;stroke:#000080;stroke-width:0.57731026;stroke-linejoin:round"
+         id="rect33"
+         x="10.215945"
+         y="14.286035"
+         width="11.745936"
+         height="6.5859432"
+         ry="1.452378"
+         rx="1.3281881" />
+    </svg:g>
+    <svg:g
+       transform="matrix(0.87309154,0,0,0.87309154,29.267113,-17.037267)"
+       id="g4473">
+      <svg:path
+         style="opacity:1;fill:#080088;fill-opacity:1;stroke:none;stroke-width:0.75;stroke-opacity:1"
+         inkscape:transform-center-x="0.022858851"
+         inkscape:transform-center-y="2.6604092"
+         d="m -14.903382,34.141338 -3.871764,-5.692778 7.689867,-0.03098 z"
+         id="path19166"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc" />
+      <svg:path
+         style="fill:none;fill-rule:evenodd;stroke:#080088;stroke-width:1.55552113;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+         d="m -14.930158,21.808892 0,7.927934"
+         id="path19168"
+         inkscape:connector-curvature="0" />
+    </svg:g>
+  </svg:g>
+</svg:svg>

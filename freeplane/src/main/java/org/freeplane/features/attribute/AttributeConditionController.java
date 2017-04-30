@@ -31,6 +31,7 @@ import javax.swing.ListModel;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.DoubleListModel;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
@@ -41,6 +42,9 @@ import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.link.LinkTransformer;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.text.TextController;
+import org.freeplane.features.text.TransformationException;
 import org.freeplane.features.ui.FrameController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -147,8 +151,15 @@ static final TranslatedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new Translate
             SortedComboBoxModel linkedList = new SortedComboBoxModel();
             for(int i = 0; i < list.getSize();i++){
             	final Object value = list.getElementAt(i);
-            	final Object transformedValue = new LinkTransformer(Controller.getCurrentModeController(), 1).transformContent(value, map);
-            	linkedList.add(transformedValue);
+            	final TextController textController = TextController.getController();
+            	if (! textController.isFormula(value, null, null)) {
+					try {
+						final Object transformedValue = textController.getTransformedObject(value, map.getRootNode(), null);
+						linkedList.add(transformedValue);
+					} catch (TransformationException e) {
+						LogUtils.severe(e);
+					}
+            	}
             }
             values.setExtensionList(linkedList);
         }

@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -57,6 +58,7 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 			 */
 			private static final long serialVersionUID = 1L;
 			{
+				setBorder(BorderFactory.createEtchedBorder());
 				setUI(BasicButtonUI.createUI(this));
 			}
 		};
@@ -118,8 +120,9 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 		if (input == null) {
 			input = Color.WHITE;
 		}
-		mButton.setBackground(ColorUtils.alphaToColor(255, input));
-		final Color textColor = UITools.getTextColorForBackground(input);
+		final Color nonTransparent = ColorUtils.makeNonTransparent(input);
+		mButton.setBackground(nonTransparent);
+		final Color textColor = UITools.getTextColorForBackground(nonTransparent);
 		mButton.setForeground(textColor);
 		mButton.setText(ColorUtils.colorToString(input));
 	}

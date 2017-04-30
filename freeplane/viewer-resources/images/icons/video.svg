@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" height="32" width="32" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 31.999999 31.999999" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<defs>
+<linearGradient id="a" y2="265.88" gradientUnits="userSpaceOnUse" y1="264.4" gradientTransform="translate(.42293 -.21145)" x2="33.197" x1="31.006">
+<stop stop-color="#f7f7f7" offset="0"/>
+<stop stop-color="#f7f7f7" stop-opacity="0" offset="1"/>
+</linearGradient>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(-111.06 -458.37)">
+<g transform="matrix(2,0,0,2,51.469,-16.493)">
+<g fill-rule="evenodd" transform="translate(1.9457,-20.43)">
+<rect style="color:#000000" ry="0" height="16" width="16" y="257.86" x="27.849" fill="#083e3e"/>
+<g fill="#fff" transform="matrix(.94328 0 0 .94328 1.3986 14.403)">
+<rect style="color:#000000" ry="0" height="1.9813" width="2.1051" y="258.89" x="29.101"/>
+<rect style="color:#000000" ry="0" height="1.9813" width="2.1051" y="258.89" x="41.838"/>
+<rect style="color:#000000" ry="0" height="1.9813" width="2.1051" y="258.89" x="38.654"/>
+<rect style="color:#000000" ry="0" height="1.9813" width="2.1051" y="258.89" x="35.469"/>
+<rect style="color:#000000" ry="0" height="1.9813" width="2.1051" y="258.89" x="32.285"/>
+</g>
+<g fill="#fff" transform="matrix(.94328 0 0 .94328 1.3986 15.741)">
+<rect style="color:#000000" ry="0" height="1.9813" width="2.1051" y="270.9" x="29.101"/>
+<rect style="color:#000000" ry="0" height="1.9813" width="2.1051" y="270.9" x="41.838"/>
+<rect style="color:#000000" ry="0" height="1.9813" width="2.1051" y="270.9" x="38.654"/>
+<rect style="color:#000000" ry="0" height="1.9813" width="2.1051" y="270.9" x="35.469"/>
+<rect style="color:#000000" ry="0" height="1.9813" width="2.1051" y="270.9" x="32.285"/>
+</g>
+<rect opacity=".52273" style="color:#000000" ry="1.0775" height="9.2666" width="13.187" stroke="#1a1a1a" y="261.24" x="29.315" stroke-width=".25" fill="#f7f7f7"/>
+<rect opacity=".52273" style="color:#000000" ry="1.0775" height="9.2666" width="13.187" y="261.24" x="29.315" fill="url(#a)"/>
+<path style="color:#000000" d="m203.69 798.36-2.1202-66.673 58.8 31.5z" transform="matrix(.068683 .003793 -.002858 .091155 23.049 195.3)"/>
+</g>
+</g>
+</g>
+</svg>

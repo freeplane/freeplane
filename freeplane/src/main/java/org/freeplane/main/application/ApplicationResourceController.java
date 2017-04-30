@@ -28,7 +28,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -130,18 +129,12 @@ public class ApplicationResourceController extends ResourceController {
 	}
 
 	@Override
-	public URL getResource(final String name) {
+	public URL getResource(final String resourcePath) {
 		return AccessController.doPrivileged(new PrivilegedAction<URL>() {
 
 			@Override
 			public URL run() {
-				final String relName;
-				if (name.startsWith("/")) {
-					relName = name.substring(1);
-				}
-				else {
-					relName = name;
-				}
+				final String relName = removeSlashAtStart(resourcePath);
 				for(File directory : resourceDirectories) {
 					File fileResource = new File(directory, relName);
 					if (fileResource.exists()) {
@@ -152,11 +145,11 @@ public class ApplicationResourceController extends ResourceController {
 						}
 					}
 				}
-				URL resource = ApplicationResourceController.super.getResource(name);
+				URL resource = ApplicationResourceController.super.getResource(resourcePath);
 				if (resource != null) {
 					return resource;
 				}
-				if ("/lib/freeplaneviewer.jar".equals(name)) {
+				if ("/lib/freeplaneviewer.jar".equals(resourcePath)) {
 					final String rootDir = new File(getResourceBaseDir()).getAbsoluteFile().getParent();
 					try {
 						final File try1 = new File(rootDir + "/plugins/org.freeplane.core/lib/freeplaneviewer.jar");
@@ -175,6 +168,47 @@ public class ApplicationResourceController extends ResourceController {
 				return null;
 			}
 		});
+	}
+
+	@Override
+	public URL getFirstResource(final String... resourcePaths) {
+		final URL url = AccessController.doPrivileged(new PrivilegedAction<URL>() {
+			@Override
+			public URL run() {
+				for(final File directory : resourceDirectories) {
+					for(final String path : resourcePaths){
+						final String relName = removeSlashAtStart(path);
+						File fileResource = new File(directory, relName);
+						if (fileResource.exists()) {
+							try {
+								return Compat.fileToUrl(fileResource);
+							} catch (MalformedURLException e) {
+								throw new RuntimeException(e);
+							}
+						}
+					}
+				}
+				for(final String path : resourcePaths){
+					final URL url = ApplicationResourceController.super.getResource(path);
+					if(url  != null)
+						return url;
+				}
+				return null;
+			}
+		});
+		return url;
+
+	}
+
+	private String removeSlashAtStart(final String name) {
+		final String relName;
+		if (name.startsWith("/")) {
+			relName = name.substring(1);
+		}
+		else {
+			relName = name;
+		}
+		return relName;
 	}
 
 	@Override

@@ -2,6 +2,7 @@
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node TEXT="New Concept Map" STYLE="oval">
 <hook NAME="MapStyle" max_node_width="600">
+<properties edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff"/>
     <conditional_styles>
         <conditional_style ACTIVE="true" LOCALIZED_STYLE_REF="styles.connection">
             <node_periodic_level_condition PERIOD="2" REMAINDER="1"/>
@@ -19,7 +20,7 @@
 	<map_styles>
 		<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="circle" >
 		<stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
-		<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork">
+		<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork" ICON_SIZE="12.0 pt">
 		<font NAME="Arial" SIZE="10" BOLD="false" ITALIC="false"/>
 		</stylenode>
 		<stylenode LOCALIZED_TEXT="defaultstyle.details"/>

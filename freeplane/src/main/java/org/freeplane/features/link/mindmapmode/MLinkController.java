@@ -69,6 +69,7 @@ import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.link.ArrowType;
+import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.HyperTextLinkModel;
@@ -89,7 +90,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.LogicalStyleKeys;
-import org.freeplane.features.url.UrlManager;
 
 /**
  * @author Dimitry Polivaev
@@ -419,10 +419,10 @@ public class MLinkController extends LinkController {
 
 
 		AFreeplaneAction[] arrowActions = new AFreeplaneAction[]{
-                new ChangeConnectorArrowsAction(this, "none", link, ArrowType.NONE, ArrowType.NONE),
-                new ChangeConnectorArrowsAction(this, "forward", link, ArrowType.NONE, ArrowType.DEFAULT),
-                new ChangeConnectorArrowsAction(this, "backward", link, ArrowType.DEFAULT, ArrowType.NONE),
-                new ChangeConnectorArrowsAction(this, "both", link, ArrowType.DEFAULT, ArrowType.DEFAULT)
+                new ChangeConnectorArrowsAction(this, ConnectorArrows.NONE, link),
+                new ChangeConnectorArrowsAction(this, ConnectorArrows.FORWARD, link),
+                new ChangeConnectorArrowsAction(this, ConnectorArrows.BACKWARD, link),
+                new ChangeConnectorArrowsAction(this, ConnectorArrows.BOTH, link)
 		};
         JComboBoxWithBorder connectorArrows = createActionBox(arrowActions);
 		addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_arrows"), connectorArrows);
@@ -990,12 +990,6 @@ public class MLinkController extends LinkController {
 	}
 
 	@Override
-    @SuppressWarnings("deprecation")
-    public void loadURI(URI uri) {
-		UrlManager.getController().loadURL(uri);
-    }
-
-	@Override
 	protected void loadURL(final NodeModel node, final ActionEvent e) {
 		// load as documentation map if the node belongs to a documentation map
 		boolean addDocuMapAttribute = node.getMap().containsExtension(DocuMapAttribute.class)
@@ -1013,6 +1007,22 @@ public class MLinkController extends LinkController {
 		}
 	}
 
+	public void loadURI(NodeModel node, URI uri) {
+		// load as documentation map if the node belongs to a documentation map
+		boolean addDocuMapAttribute = node.getMap().containsExtension(DocuMapAttribute.class)
+				&& ! modeController.containsExtension(DocuMapAttribute.class);
+		if(addDocuMapAttribute){
+			modeController.addExtension(DocuMapAttribute.class, DocuMapAttribute.instance);
+		}
+		try{
+			loadURI(uri);
+		}
+		finally{
+			if(addDocuMapAttribute){
+				modeController.removeExtension(DocuMapAttribute.class);
+			}
+		}
+	}
 	public String getAnchorID() {
 		return anchorID;
 	}

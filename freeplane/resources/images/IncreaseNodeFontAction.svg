@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   viewBox="0 0 16 16"
+   id="svg2"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="ExtractLinkFromTextAction.svg"
+   width="16"
+   height="16"
+   inkscape:export-filename="J:\Freeplane\editor\images\ExtractLinkFromTextAction.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1113"
+     inkscape:window-height="843"
+     id="namedview47"
+     showgrid="false"
+     inkscape:zoom="14.75"
+     inkscape:cx="12.759182"
+     inkscape:cy="8"
+     inkscape:window-x="720"
+     inkscape:window-y="96"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
+  <defs
+     id="defs4">
+    <radialGradient
+       id="a"
+       gradientUnits="userSpaceOnUse"
+       cy="315.41"
+       cx="298.10001"
+       gradientTransform="matrix(1.131,0,0,1.1312,-22.1,-17.655)"
+       r="149.3">
+      <stop
+         stop-color="#007fff"
+         offset="0"
+         id="stop7" />
+      <stop
+         stop-color="#1c8eff"
+         offset=".39286"
+         id="stop9" />
+      <stop
+         stop-color="#1a4a7a"
+         offset="1"
+         id="stop11" />
+    </radialGradient>
+    <radialGradient
+       id="b"
+       spreadMethod="reflect"
+       gradientUnits="userSpaceOnUse"
+       cy="249.47"
+       cx="317.85999"
+       gradientTransform="matrix(0.92255,0.54994,-0.61282,1.0614,218.04,-49.879)"
+       r="141.81">
+      <stop
+         stop-color="#b8ff71"
+         offset="0"
+         id="stop14" />
+      <stop
+         stop-color="#6c0"
+         offset="1"
+         id="stop16" />
+    </radialGradient>
+    <radialGradient
+       id="c"
+       gradientUnits="userSpaceOnUse"
+       cx="298.67001"
+       cy="309.10999"
+       r="130.08"
+       gradientTransform="matrix(0.24362,0.87764,-1.1344,0.31491,586.41,-25.658)">
+      <stop
+         stop-color="#fff"
+         stop-opacity=".86735"
+         offset="0"
+         id="stop19" />
+      <stop
+         stop-color="#fff"
+         stop-opacity="0"
+         offset="1"
+         id="stop21" />
+    </radialGradient>
+    <linearGradient
+       id="linearGradient4568-1-4">
+      <stop
+         style="stop-color:#e12b1c;stop-opacity:1;"
+         offset="0"
+         id="stop4570-9-2" />
+      <stop
+         style="stop-color:#980b00;stop-opacity:1.0000000;"
+         offset="1.0000000"
+         id="stop4572-8-0" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4554-5-4">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1.0000000;"
+         offset="0.0000000"
+         id="stop4556-0-0" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0.0000000;"
+         offset="1.0000000"
+         id="stop4558-9-7" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata23">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.41699409px;line-height:125%;font-family:Arial;-inkscape-font-specification:Arial;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.66928107;stroke-opacity:1"
+     x="0.85751611"
+     y="15.665359"
+     id="text14029"
+     sodipodi:linespacing="125%"
+     inkscape:export-filename="F:\LiberKey\MyDocuments\Freeplane\FreePlane_radna_mapa\Sys_icons\IncreaseNodeFontAction.png"
+     inkscape:export-xdpi="90"
+     inkscape:export-ydpi="90"><tspan
+       sodipodi:role="line"
+       id="tspan14031"
+       x="0.85751611"
+       y="15.665359"
+       style="stroke-width:0.66928107">A</tspan></text>
+</svg>
