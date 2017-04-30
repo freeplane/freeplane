@@ -80,9 +80,10 @@ class LoggingOutputStream extends ByteArrayOutputStream {
 	@Override
 	public synchronized void write(byte[] b, int off, int len) {
 		if(availableSpace > 0) {
-			if(availableSpace < len)
-				len = availableSpace;
-			availableSpace-=len;
+			if(availableSpace >= len)
+				availableSpace-=len;
+			else
+				availableSpace = 0;
 			super.write(b, off, len);
 		}
 	}
