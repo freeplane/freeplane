@@ -45,7 +45,7 @@ public class AutomaticEdgeStyle {
 		}
 		else {
 			if(origin.x < coordinate.x ){
-				distance = coordinate.x + nodeContent.getWidth() - origin.x - rootContent.getWidth();
+				distance = Math.max(0, coordinate.x  - origin.x + nodeContent.getWidth() - rootContent.getWidth());
 			}
 			else{
 				distance = origin.x - coordinate.x;
