@@ -28,6 +28,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.nodelocation.LocationModel;
 
@@ -88,7 +89,8 @@ class VerticalNodeViewLayoutStrategy {
 		}
 	}
 	public void calculateLayoutData() {
-		viewLevels = new SummaryLevels(view.getModel());
+		final NodeModel node = view.getModel();
+		viewLevels = view.isFolded() ? SummaryLevels.ignoringChildNodes(node) : SummaryLevels.of(node);
 		for(boolean isLeft : viewLevels.sides)
 			calculateLayoutData(isLeft);
 		applyLayoutToChildComponents();
