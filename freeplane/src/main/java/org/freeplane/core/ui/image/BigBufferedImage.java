@@ -194,8 +194,8 @@ public class BigBufferedImage extends BufferedImage {
 
 		/**
 		 * There appears to be a bug in the Java code associated with MappedByteBuffer instances (maybe other
-		 * related classes as well?) in that closing them generates a FileNotFoundException.  For details about
-		 * attempts to get around this problem, see the following  
+		 * related classes as well?) in that the file.delete() does not delete the file.  
+         * For more details about the problem and various attempts to get around this problem, see the following  
 		 * <a href="http://stackoverflow.com/questions/2972986/how-to-unmap-a-file-from-memory-mapped-using-filechannel-in-java/5036003#5036003">link.</a>
 		 * 
 		 * The only solution that appears to work requires the use of interface DirectBuffer 
