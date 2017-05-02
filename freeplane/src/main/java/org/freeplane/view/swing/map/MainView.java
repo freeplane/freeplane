@@ -495,9 +495,9 @@ public abstract class MainView extends ZoomableLabel {
 
 	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
 		final URI link = NodeLinks.getLink(model);
-			final Icon icon = getNodeView().getMap().getModeController().getExtension(LinkController.class).getLinkIcon(link, model);
-			if(icon != null)
-				iconImages.addLinkIcon(icon);
+		final Icon icon = getNodeView().getMap().getModeController().getExtension(LinkController.class).getLinkIcon(link, model);
+		if(icon != null)
+			iconImages.addLinkIcon(icon, model);
 	}
 
 	void updateTextColor(final NodeView node) {
