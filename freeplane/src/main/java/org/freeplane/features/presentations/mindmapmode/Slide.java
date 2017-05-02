@@ -326,8 +326,11 @@ public class Slide implements NamedElement<Slide>{
 	private void scrollMapToSelectedNode() {
 		if(placedNodeId == null){
 			final Controller controller = Controller.getCurrentController();
-			final NodeModel selected = controller.getSelection().getSelected();
-			controller.getMapViewManager().scrollNodeToVisible(selected);
+			final IMapSelection selection = controller.getSelection();
+			if(selection != null) {
+				final NodeModel selected = selection.getSelected();
+				controller.getMapViewManager().scrollNodeToVisible(selected);
+			}
 		}
 	}
 
