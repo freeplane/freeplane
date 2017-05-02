@@ -275,7 +275,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
                 return;
             ArrayList<NodeView> views = new ArrayList<NodeView>(nodes.length);
             for(NodeModel node : nodes) {
-            	if(node.isVisible()){
+            	if(node != null && node.isVisible()){
             		display(node);
             		final NodeView nodeView = getNodeView(node);
             		if (nodeView != null) {
@@ -2148,7 +2148,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if(parentNode == null)
 			return;
 		display(parentNode);
-		getNodeView(parentNode).setFolded(false);
+		final NodeView parentView = getNodeView(parentNode);
+		if(parentView == null)
+			return;
+		parentView.setFolded(false);
 	}
 
 	public boolean showsConnectors() {
