@@ -71,11 +71,13 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ClassLoaderFactory;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.format.ScannerController;
@@ -89,6 +91,9 @@ import org.freeplane.features.time.TimeComboBoxEditor;
  * @author Dimitry Polivaev
  */
 abstract public class FrameController implements ViewController {
+
+	private static final Quantity<LengthUnits> ICON_SIZE = new Quantity<LengthUnits>(12, LengthUnits.pt);
+
 
 	private final class HorizontalToolbarPanel extends JPanel {
 		/**
@@ -144,12 +149,20 @@ abstract public class FrameController implements ViewController {
 	final private JComponent toolbarPanel[];
 
 	final private String propertyKeyPrefix;
-	public static Icon textIcon;
-	public static Icon numberIcon;
-	public static Icon dateIcon;
-	public static Icon dateTimeIcon;
-	public static Icon linkIcon;
-	public static Icon localLinkIcon;
+	private static Icon textIcon;
+	private static Icon numberIcon;
+	private static Icon dateIcon;
+	private static Icon dateTimeIcon;
+	private static Icon linkIcon;
+	
+	static {
+		final ResourceController resourceController = ResourceController.getResourceController();
+		textIcon = resourceController.getIcon("text_icon", ICON_SIZE);
+		numberIcon = resourceController.getIcon("number_icon", ICON_SIZE);
+		dateIcon = resourceController.getIcon("date_icon", ICON_SIZE);
+		dateTimeIcon = resourceController.getIcon("date_time_icon", ICON_SIZE);
+		linkIcon = resourceController.getIcon("link_icon", ICON_SIZE);
+	}
 	private final IMapViewManager mapViewManager;
 
 	public FrameController(Controller controller,  final IMapViewManager mapViewManager,
@@ -157,15 +170,6 @@ abstract public class FrameController implements ViewController {
 		super();
 		this.controller = controller;
 		this.mapViewManager = mapViewManager;
-		final ResourceController resourceController = ResourceController.getResourceController();
-		if(textIcon == null){
-			FrameController.textIcon = resourceController.getIcon("text_icon");
-			FrameController.numberIcon = resourceController.getIcon("number_icon");
-			FrameController.dateIcon = resourceController.getIcon("date_icon");
-			FrameController.dateTimeIcon = resourceController.getIcon("date_time_icon");
-			FrameController.linkIcon = resourceController.getIcon("link_icon");
-			FrameController.localLinkIcon = resourceController.getIcon("link_local_icon");
-		}
 		this.propertyKeyPrefix = propertyKeyPrefix;
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
 		UIComponentVisibilityDispatcher.install(this, statusPanel, "toolbarVisible");
@@ -626,22 +630,22 @@ abstract public class FrameController implements ViewController {
 			value = ((FormattedObject) value).getObject();
 		}
 		if (value instanceof String || value instanceof StyleTranslatedObject) {
-			addStatusInfo(ResourceController.OBJECT_TYPE, null, FrameController.textIcon);
+			addStatusInfo(ResourceController.OBJECT_TYPE, null, textIcon);
 		}
 		else if (value instanceof FormattedDate) {
 			final FormattedDate fd = (FormattedDate) value;
 			if (fd.containsTime()) {
-				addStatusInfo(ResourceController.OBJECT_TYPE, null, FrameController.dateTimeIcon);
+				addStatusInfo(ResourceController.OBJECT_TYPE, null, dateTimeIcon);
 			}
 			else {
-				addStatusInfo(ResourceController.OBJECT_TYPE, null, FrameController.dateIcon);
+				addStatusInfo(ResourceController.OBJECT_TYPE, null, dateIcon);
 			}
 		}
 		else if (value instanceof Number) {
-			addStatusInfo(ResourceController.OBJECT_TYPE, null, FrameController.numberIcon);
+			addStatusInfo(ResourceController.OBJECT_TYPE, null, numberIcon);
 		}
 		else if (value instanceof URI) {
-			addStatusInfo(ResourceController.OBJECT_TYPE, null, FrameController.linkIcon);
+			addStatusInfo(ResourceController.OBJECT_TYPE, null, linkIcon);
 		}
 		else {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, null);
