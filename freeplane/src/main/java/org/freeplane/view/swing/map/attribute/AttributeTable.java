@@ -600,9 +600,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		final DefaultComboBoxModel currentModel = new DefaultComboBoxModel(items);
 		comboBox.setModel(currentModel);
-		updateComponentColors(comboBox);
+		updateComponentFontAndColors(comboBox);
 		final JComponent editorComponent = (JComponent) comboBox.getEditor().getEditorComponent();
-		updateComponentColors(editorComponent);
+		updateComponentFontAndColors(editorComponent);
 		editorComponent.setOpaque(true);
 		final Font font = editorComponent.getFont();
 		editorComponent.setFont(font.deriveFont(font.getSize2D() * getZoom()));
@@ -785,7 +785,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	void updateAttributeTable() {
-		updateComponentColors(this);
+		updateComponentFontAndColors(this);
 		updateGridColor();
 		updateRowHeights();
 		updateColumnWidths();
@@ -829,12 +829,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 	}
 
-	private void updateComponentColors(final JComponent c) {
+	private void updateComponentFontAndColors(final JComponent c) {
 		final NodeView nodeView = attributeView.getNodeView();
-		if(! SwingUtilities.isDescendingFrom(this, nodeView)) {
-			c.setFont(c.getFont().deriveFont(12f));
-			return;
-		}
 		final MapView mapView = nodeView.getMap();
 		final ModeController modeController = mapView.getModeController();
 		final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
@@ -842,6 +838,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
         final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
         final Font font = style.getFont(attributeStyleNode);
         c.setFont(font.deriveFont(UITools.FONT_SCALE_FACTOR * font.getSize2D()));
+        if(! SwingUtilities.isDescendingFrom(this, nodeView)) {
+        	return;
+        }
         final Color backgroundColor = NodeStyleModel.getBackgroundColor(attributeStyleNode);
         if(backgroundColor!= null) {
         	c.setOpaque(true);
