@@ -9,10 +9,14 @@ ant.taskdef(
     onerror: "report"
 )
 
-def build4mac = globalDist + '/build4mac'
-def macappfullpath = new File(build4mac, 'Freeplane.app')
+task macDist {}
 
-task macosxapp {
+def defineMacBuildTasks = {boolean includeJavaRuntime -> 
+    def taskName = {base -> includeJavaRuntime ? base + '_jre' : base}
+    def build4mac = taskName(rootDir.path + '/BUILD4mac')
+    def macappfullpath = new File(build4mac, 'Freeplane.app').absoluteFile
+    
+    def macosxapp = tasks.create (taskName('macosxapp')) {
     doFirst {
         delete build4mac + '/Freeplane.app'
         mkdir build4mac
@@ -28,6 +32,11 @@ task macosxapp {
             icon: 'freeplane_framework/mac-appbundler/freeplane.icns',
             signature: '????'
         ) {
+            if (includeJavaRuntime) {
+                def javaHomeJre = System.properties['java.home']
+                def javaHome = javaHomeJre - ~/\/jre$/
+                runtime(dir: javaHome)
+            }
             classpath(dir: globalBuild, includes: '*.jar')
             option(value: "-Xmx512m")
             option(value: "-Dapple.laf.useScreenMenuBar=true")
@@ -60,43 +69,52 @@ task macosxapp {
              }
              into(macresourcesfullpath)
         }
+        }
+        for (p in subprojects) {
+            dependsOn p.tasks.getByPath("build")
+        }
     }
-    for (p in subprojects) {
-        dependsOn p.tasks.getByPath("build")
+
+    def dmg4mac= tasks.create (taskName('dmg4mac'), Exec) {
+        onlyIf { Os.isFamily(Os.FAMILY_MAC) }
+        def dmgPath = globalDist + taskName('/freeplane_app') + '-' + distVersion + '.dmg';
+        doFirst { 
+            mkdir globalDist 
+            file(dmgPath).delete()
+        } 
+
+        commandLine 'hdiutil', 'create', '-srcfolder', macappfullpath.path,
+            dmgPath
+
+        dependsOn macosxapp
     }
+
+    def zip4mac = tasks.create (taskName('zip4mac'), Zip) {
+        destinationDir = new File(globalDist)
+        archiveName = taskName('freeplane_macos_bin') + '-' + distVersion + '.zip'
+
+        from(build4mac) {
+            exclude('**/JavaAppLauncher')
+        }
+        from(build4mac) {
+            include('**/JavaAppLauncher')
+            fileMode = 0775
+        }
+
+        into('freeplane-' + distVersion)
+        dependsOn macosxapp
+    }
+    
+    def cleanMac = tasks.create (taskName('cleanMac'), Delete) {
+        delete build4mac
+    }
+
+    macDist.dependsOn dmg4mac, zip4mac
+    
+    clean.dependsOn cleanMac
 }
 
-task dmg4mac(type: Exec) {
-    onlyIf { Os.isFamily(Os.FAMILY_MAC) }
-
-    commandLine 'hdiutil', 'create', '-srcfolder', macappfullpath.path,
-        globalDist + '/freeplane_app-' + distVersion + '.dmg' 
-
-    dependsOn macosxapp
+if (Os.isFamily(Os.FAMILY_MAC)) {
+    defineMacBuildTasks(true)
 }
-
-task zip4mac(type: Zip) {
-    destinationDir = new File(globalDist)
-    archiveName = 'freeplane_macos_bin-' + distVersion + '.zip'
-
-    from(build4mac) {
-        exclude('**/JavaAppLauncher')
-    }
-    from(build4mac) {
-        include('**/JavaAppLauncher')
-        fileMode = 0775
-    }
-
-    into('freeplane-' + distVersion)
-    dependsOn macosxapp
-}
-
-// this grouping task is necessary so that we can clean up build4mac!
-task macDist {
-    dependsOn dmg4mac
-    dependsOn zip4mac
-
-    doLast {
-        delete(build4mac)
-    }
-}
+defineMacBuildTasks(false)
