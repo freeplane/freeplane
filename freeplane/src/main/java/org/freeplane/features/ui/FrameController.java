@@ -566,6 +566,9 @@ abstract public class FrameController implements ViewController {
 			}
 		}
 		
+		// Workaround for https://bugs.openjdk.java.net/browse/JDK-8179014
+		UIManager.put("FileChooser.useSystemExtensionHiding", false); 
+		
 		final Color color = UIManager.getColor("control");
 		if(color != null && color.getAlpha() < 255)
 			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
