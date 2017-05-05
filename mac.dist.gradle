@@ -33,9 +33,14 @@ def defineMacBuildTasks = {boolean includeJavaRuntime ->
             signature: '????'
         ) {
             if (includeJavaRuntime) {
-                def javaHomeJre = System.properties['java.home']
-                def javaHome = javaHomeJre - ~/\/jre$/
-                runtime(dir: javaHome)
+                if(System.properties['appbundler.runtime.dir'] != null) {
+                    runtime(dir: System.properties['appbundler.runtime.dir'])
+                }
+                else {
+                    def javaHomeJre = System.properties['java.home']
+                    def javaHome = javaHomeJre - ~/\/jre$/
+                    runtime(dir: javaHome)
+                }
             }
             classpath(dir: globalBuild, includes: '*.jar')
             option(value: "-Xmx512m")
@@ -90,6 +95,7 @@ def defineMacBuildTasks = {boolean includeJavaRuntime ->
     }
 
     def zip4mac = tasks.create (taskName('zip4mac'), Zip) {
+        onlyIf { ! Os.isFamily(Os.FAMILY_MAC) }
         destinationDir = new File(globalDist)
         archiveName = taskName('freeplane_macos_bin') + '-' + distVersion + '.zip'
 
