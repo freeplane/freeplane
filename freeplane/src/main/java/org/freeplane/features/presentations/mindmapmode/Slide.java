@@ -53,6 +53,13 @@ public class Slide implements NamedElement<Slide>{
 		    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, null);
 	}
 
+
+	@Override
+	public Slide saveAs(String name) {
+		return new Slide(name, new LinkedHashSet<String>(selectedNodeIds), placedNodeId, placedNodePosition,
+			    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, filterCondition);
+	}
+	
 	public Slide(String name){
 		this(name, new LinkedHashSet<String>(), null, NodePosition.CENTER, false, 1f, false, false, false, null);
 	}

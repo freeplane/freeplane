@@ -5,13 +5,17 @@ import static org.freeplane.features.presentations.mindmapmode.CollectionChanged
 import static org.freeplane.features.presentations.mindmapmode.CollectionChangedEvent.EventType.SELECTION_INDEX_CHANGED;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-public class NamedElementCollection<T extends NamedElement<T>> {
+import org.freeplane.core.util.TextUtils;
+
+public class NamedElementCollection<T extends NamedElement<T>> implements Iterable<T>{
 	final private DefaultComboBoxModel<Stringifyed<T>> elements;
 	private int currentIndex;
 	private ArrayList<CollectionChangeListener<T>> collectionChangeListeners;
@@ -145,5 +149,31 @@ public class NamedElementCollection<T extends NamedElement<T>> {
 
 	public T getElement(int i) {
 		return elements.getElementAt(i).element;
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new Iterator<T>() {
+			private int index = 0;
+			@Override
+			public boolean hasNext() {
+				return index < getSize();
+			}
+
+			@Override
+			public T next() {
+				if(hasNext())
+					return getElement(index++);
+				else
+					throw new NoSuchElementException();
+			}
+		};
+	}
+
+	public void copyCurrentElement() {
+		final T currentElement = getCurrentElement();
+		String newName = TextUtils.format("copy_name", currentElement.getName());
+		final T newInstance = currentElement.saveAs(newName);
+		add(newInstance);
 	}
 }

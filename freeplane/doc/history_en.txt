@@ -8,6 +8,7 @@ Option note icon in notes tool-tip
 Aligning current node on the left side, on the right side or on the center, hot keys alt+W (west), alt+E (east), alt+C (center)
 Option to move aligned node smoothly
 Option to define spotlight background color
+Copy single slides and complete presentations
 
 ===============================
 1.6.1

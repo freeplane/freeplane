@@ -125,6 +125,30 @@ public class UndoableNamedElementCollection<T extends NamedElement<T>> {
 		};
 		controller.execute(actor, mapModel);
 	}
+
+	public void copyCurrentElement() {
+		final int currentElementIndex = collection.getCurrentElementIndex();
+		IActor actor = new IActor() {
+			@Override
+			public String getDescription() {
+				return "copy";
+			}
+
+			@Override
+			public void act() {
+				collection.selectCurrentElement(currentElementIndex);
+				collection.copyCurrentElement();
+			}
+			
+			@Override
+			public void undo() {
+				collection.selectCurrentElement(currentElementIndex + 1);
+				collection.removeCurrentElement();
+				collection.selectCurrentElement(currentElementIndex);
+			}
+		};
+		controller.execute(actor, mapModel);
+	}
 	
 	
 }
