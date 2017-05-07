@@ -3,7 +3,7 @@
 
 #Build System files
 /DIST/
-/BUILD/
+/BUILD*/
 
 #Ignore everything form IntelliJ
 .idea/
