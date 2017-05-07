@@ -17,7 +17,7 @@ public class MainFrame {
 
 			@Override
 			public Slide create(Slide prototype, String newName) {
-				return prototype.saveAs(newName);
+				return prototype.create(newName);
 			}
 			
 		};
@@ -30,7 +30,7 @@ public class MainFrame {
 
 			@Override
 			public Presentation create(Presentation prototype, String newName) {
-				return prototype.saveAs(newName);
+				return prototype.create(newName);
 			}
 		};
 		presentationEditorController.setPresentations(new NamedElementCollection<>(presentationFactory));

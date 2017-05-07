@@ -20,7 +20,7 @@ public class Presentation implements NamedElement<Presentation>{
 		slides = new NamedElementCollection<>(slideFactory);
 	}
 	
-	public Presentation saveAs(String name) {
+	public Presentation create(String name) {
 		return new Presentation(name, slideFactory);
 	}
 }
