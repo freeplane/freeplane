@@ -95,7 +95,6 @@ def defineMacBuildTasks = {boolean includeJavaRuntime ->
     }
 
     def zip4mac = tasks.create (taskName('zip4mac'), Zip) {
-        onlyIf { ! Os.isFamily(Os.FAMILY_MAC) }
         destinationDir = new File(globalDist)
         archiveName = taskName('freeplane_macos_bin') + '-' + distVersion + '.zip'
 
@@ -115,7 +114,12 @@ def defineMacBuildTasks = {boolean includeJavaRuntime ->
         delete build4mac
     }
 
-    macDist.dependsOn dmg4mac, zip4mac
+    if (Os.isFamily(Os.FAMILY_MAC)) {
+        macDist.dependsOn dmg4mac
+    }
+    else {
+        macDist.dependsOn zip4mac
+    }
     
     clean.dependsOn cleanMac
 }
