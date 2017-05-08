@@ -76,6 +76,7 @@ import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ClassLoaderFactory;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.format.FormattedDate;
@@ -588,7 +589,9 @@ abstract public class FrameController implements ViewController {
 		final UIDefaults lookAndFeelDefaults = UIManager.getLookAndFeel().getDefaults();
 		
 		double scalingFactor = calculateFontSizeScalingFactor();
-		
+		boolean javaSupportsHiDpi = !Compat.JAVA_VERSION.startsWith("1.");
+		if(javaSupportsHiDpi)
+			scalingFactor /= UITools.FONT_SCALE_FACTOR;
 		for (Object key : keys) {
 		    if (isFontKey(key)) {
 				Font font = uiDefaults.getFont(key);
