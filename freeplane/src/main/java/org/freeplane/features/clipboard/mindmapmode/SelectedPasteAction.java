@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 
+import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
@@ -56,8 +57,8 @@ class SelectedPasteAction extends AFreeplaneAction {
 			return;
 		}
 		final JPanel options = createPane(flavorHandlers);
-		if (JOptionPane.CANCEL_OPTION == JOptionPane.showConfirmDialog((Component) e.getSource(), options, e
-		    .getActionCommand(), JOptionPane.OK_CANCEL_OPTION)) {
+		if (JOptionPane.CANCEL_OPTION == JOptionPane.showConfirmDialog((Component) e.getSource(), options, 
+				(String) getValue(Action.NAME), JOptionPane.OK_CANCEL_OPTION)) {
 			return;
 		}
 		final NodeModel parent = Controller.getCurrentController().getSelection().getSelected();
