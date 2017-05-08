@@ -19,6 +19,7 @@ class TargetFileCreator {
 			String fileNameTemplate = sourceFileName + "_";
 			while (fileNameTemplate.length() < 3)
 				fileNameTemplate = fileNameTemplate + '_';
+			mapFilesDirectory.mkdir();
 			File targetFile = File.createTempFile(fileNameTemplate, "."+ getExtension(prototypeName), mapFilesDirectory);
 			return targetFile;
 			
