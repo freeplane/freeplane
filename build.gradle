@@ -7,7 +7,8 @@ allprojects {
     ext.globalBuild = rootDir.path + '/BUILD'
 
     repositories {
-		maven { url "http://dl.bintray.com/freeplane/freeplane" } 
+		maven { url "http://dl.bintray.com/freeplane/freeplane" }
+		maven { url "http://www.knopflerfish.org/releases/6.1.0/maven2" }
         // this is necessary to grab both binary and source jars
         // for local (git) dependencies
         flatDir name: 'localGitDepsRepository',
@@ -112,7 +113,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ |
     }
 
     dependencies {
-        compile group: 'org.knopflerfish', name:'framework', version: '7.1.2'
+        compile group: 'org.knopflerfish.kf6', name:'framework', version: '8.0.4'
     }
 }
 
