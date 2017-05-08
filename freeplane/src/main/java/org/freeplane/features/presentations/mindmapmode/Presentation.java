@@ -20,7 +20,15 @@ public class Presentation implements NamedElement<Presentation>{
 		slides = new NamedElementCollection<>(slideFactory);
 	}
 	
-	public Presentation saveAs(String name) {
+	public Presentation create(String name) {
 		return new Presentation(name, slideFactory);
+	}
+	
+	public Presentation saveAs(String name) {
+		final Presentation presentation = new Presentation(name, slideFactory);
+		for(Slide slide : slides)
+			presentation.slides.add(slide.saveAs(slide.getName()));
+		presentation.slides.selectCurrentElement(slides.getCurrentElementIndex());
+		return presentation;
 	}
 }

@@ -177,8 +177,8 @@ public class IconController implements IExtension {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 		final Collection<IStyle> styles = styleController.getStyles(node);
-		final Quantity<LengthUnits> minWidth = getStyleIconSize(map, styles);
-		return minWidth;
+		final Quantity<LengthUnits> size = getStyleIconSize(map, styles);
+		return size;
 	}
 
 }

@@ -37,6 +37,7 @@ public class OneTouchCollapseResizer extends JResizer {
 	private Integer resizeComponentIndex;
 
 	private final Set<ComponentCollapseListener> collapseListener = new LinkedHashSet<ComponentCollapseListener>();
+	private Dimension lastPreferredSize = null;
 
 
 
@@ -163,9 +164,10 @@ public class OneTouchCollapseResizer extends JResizer {
 					((JComponent) resizedComponent).putClientProperty(COLLAPSED, (expanded ? null : "true"));
 				}
 				if(expanded) {
-					resizedComponent.setPreferredSize(null);
+					resizedComponent.setPreferredSize(lastPreferredSize);
 				}
 				else {
+					lastPreferredSize = resizedComponent.isPreferredSizeSet() ?  resizedComponent.getPreferredSize() : null;
 					resizedComponent.setPreferredSize(new Dimension(0,0));
 				}
 				IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();

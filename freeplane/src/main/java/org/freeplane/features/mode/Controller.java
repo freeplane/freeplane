@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,6 +42,7 @@ import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
@@ -77,7 +79,11 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		this.optionPanelController = new OptionPanelController();
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		addAction(new MoveToRootAction());
-		addAction(new CenterSelectedNodeAction());
+		addAction(new MoveSelectedNodeAction(NodePosition.EAST));
+		addAction(new MoveSelectedNodeAction(NodePosition.CENTER));
+		addAction(new MoveSelectedNodeAction(NodePosition.WEST));
+		addAction(new CloseAllMapsAction());
+		addAction(new CloseAllOtherMapsAction());
 	}
 
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
@@ -327,6 +333,25 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		for (ApplicationLifecycleListener listener : applicationLifecycleListeners) {
 			listener.onApplicationStopped();
 		}
+	}
+
+	public boolean closeAllMaps(){
+		return closeAllMaps(null);
+	}
+	
+	boolean closeAllMaps(MapModel mapToKeepOpen) {
+		boolean closingNotCancelled = true;
+		for (MapModel map = getMap(); map != null && map != mapToKeepOpen && closingNotCancelled; map = getMap()){
+			closingNotCancelled = map.close();
+		}
+		HashSet<MapModel> otherMaps = new HashSet(getMapViewManager().getMaps().values());
+		otherMaps.remove(mapToKeepOpen);
+		otherMaps.remove(getMap());
+		for (MapModel map : otherMaps){
+			closingNotCancelled = map.close() && closingNotCancelled;
+		}
+		
+		return closingNotCancelled;
 	}
 
 }

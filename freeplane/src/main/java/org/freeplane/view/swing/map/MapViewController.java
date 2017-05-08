@@ -292,7 +292,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 				return true;
 			}
 			else
-				return mapController.close(map);
+				return map.close();
 			
 		}
 		map.removeMapChangeListener(mapView);

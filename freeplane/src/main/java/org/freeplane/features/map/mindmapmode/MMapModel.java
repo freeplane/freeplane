@@ -30,6 +30,9 @@ import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.DoAutomaticSave;
 import org.freeplane.features.url.mindmapmode.DummyLockManager;
@@ -133,5 +136,13 @@ public class MMapModel extends MapModel {
 
 	void setTimerForAutomaticSaving(final Timer timerForAutomaticSaving) {
 		this.timerForAutomaticSaving = timerForAutomaticSaving;
+	}
+
+	@Override
+	public boolean close() {
+		final Controller controller = Controller.getCurrentController();
+		final ModeController modeController = controller.getModeController(MModeController.MODENAME);
+		final MMapController mapController = (MMapController) modeController.getMapController();
+		return mapController.close(this);
 	}
 }

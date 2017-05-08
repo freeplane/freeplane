@@ -13,10 +13,24 @@ public class SummaryLevels{
 	public  final int highestSummaryLevel;
 	public  final boolean[] sides;
 	private final NodeModel parentNode;
+	
 	public SummaryLevels(NodeModel parentNode) {
+		this(parentNode, false);
+	}
+	
+	public static SummaryLevels of(NodeModel parentNode) {
+		return new SummaryLevels(parentNode, false);
+	}
+
+	
+	public static SummaryLevels ignoringChildNodes(NodeModel parentNode) {
+		return new SummaryLevels(parentNode, true);
+	}
+	
+	private SummaryLevels(NodeModel parentNode, boolean ignoreChildNodes) {
 		this.parentNode = parentNode;
 		int highestSummaryLevel = 0;
-		int childCount = parentNode.getChildCount();
+		int childCount = ignoreChildNodes ? 0 : parentNode.getChildCount();
 		this.summaryLevels = new int[childCount];
 		this.sides = sidesOf(parentNode);
 		for(boolean isLeft : sides){

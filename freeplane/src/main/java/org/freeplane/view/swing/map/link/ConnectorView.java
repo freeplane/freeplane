@@ -35,6 +35,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.link.ArrowType;
@@ -319,14 +320,15 @@ public class ConnectorView extends AConnectorView{
 				endPoint = target.getLinkPoint(connectorModel.getEndInclination());
 			}
 		}
+		final MapView map = getMap();
 		if (startPoint != null) {
 			startPoint2 = new Point(startPoint);
 			Point startInclination = connectorModel.getStartInclination();
 			if(endPoint == null){
 				normalizeLength(NORMAL_LENGTH, startInclination);
 			}
-			startPoint2.translate(((sourceIsLeft) ? -1 : 1) * getMap().getZoomed(startInclination.x),
-				getMap().getZoomed(startInclination.y));
+			startPoint2.translate(((sourceIsLeft) ? -1 : 1) * map.getZoomed(startInclination.x),
+				map.getZoomed(startInclination.y));
 
 		}
 		if (endPoint != null) {
@@ -335,11 +337,14 @@ public class ConnectorView extends AConnectorView{
 			if(startPoint == null){
 				normalizeLength(NORMAL_LENGTH, endInclination);
 			}
-			endPoint2.translate(((targetIsLeft) ? -1 : 1) * getMap().getZoomed(endInclination.x), getMap()
+			endPoint2.translate(((targetIsLeft) ? -1 : 1) * map.getZoomed(endInclination.x), map
 				.getZoomed(endInclination.y));
 		}
-		paintCurve(g, startPoint, startPoint2, endPoint2, endPoint);
-		drawLabels(g, startPoint, startPoint2, endPoint2, endPoint);
+		final boolean showsConnectors = map.showsConnectors();
+		paintCurve(g, startPoint, startPoint2, endPoint2, endPoint, showsConnectors);
+		if(showsConnectors) {
+			drawLabels(g, startPoint, startPoint2, endPoint2, endPoint);
+		}
 		g.setColor(oldColor);
 	}
 
@@ -362,35 +367,36 @@ public class ConnectorView extends AConnectorView{
 		return generalPath;
     }
 
-	private void paintCurve(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
+	private void paintCurve(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint, boolean showsConnectors) {
 		final boolean selfLink = getSource() == getTarget();
 		final boolean isLine = ConnectorModel.Shape.LINE.equals(connectorModel.getShape());
-		if (startPoint != null && endPoint != null) {
-			if(isLine) {
-                            if (selfLink) {
-				arrowLinkCurve = createLine(startPoint, startPoint2);
-                            }
-                            else {
-				arrowLinkCurve = createLine(startPoint, endPoint);
-                            }
-                        }
-                        else if (ConnectorModel.Shape.LINEAR_PATH.equals(connectorModel.getShape()))
-                            arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
-                        else
-                            arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
-		}
-		else
-			arrowLinkCurve = null;
-	    if (arrowLinkCurve != null) {
-			g.draw(arrowLinkCurve);
-		}
-		if (isSourceVisible() && !connectorModel.getStartArrow().equals(ArrowType.NONE)) {
+		arrowLinkCurve = null;
+		if (showsConnectors) {
+			if (startPoint != null && endPoint != null) {
+				if(isLine) {
+			                    if (selfLink) {
+					arrowLinkCurve = createLine(startPoint, startPoint2);
+			                    }
+			                    else {
+					arrowLinkCurve = createLine(startPoint, endPoint);
+			                    }
+			                }
+			                else if (ConnectorModel.Shape.LINEAR_PATH.equals(connectorModel.getShape()))
+			                    arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
+			                else
+			                    arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
+			} 
+			if (arrowLinkCurve != null) {
+				g.draw(arrowLinkCurve);
+			}
+		} 
+		if (isSourceVisible() && !(showsConnectors && connectorModel.getStartArrow().equals(ArrowType.NONE))) {
 			if(!selfLink && isLine && endPoint != null)
 				paintArrow(g, endPoint, startPoint);
 			else
 				paintArrow(g, startPoint2, startPoint);
 		}
-		if (isTargetVisible() && !connectorModel.getEndArrow().equals(ArrowType.NONE)) {
+		if (isTargetVisible() && !(showsConnectors && connectorModel.getEndArrow().equals(ArrowType.NONE))) {
 			if(isLine && startPoint != null) {
                             if (selfLink)
 				paintArrow(g, startPoint, startPoint2);
@@ -398,25 +404,27 @@ public class ConnectorView extends AConnectorView{
 				paintArrow(g, startPoint, endPoint);
                         }
 			else
-			paintArrow(g, endPoint2, endPoint);
+				paintArrow(g, endPoint2, endPoint);
 		}
-		if (connectorModel.getShowControlPointsFlag()) {
-			g.setColor(textColor);
-			g.setStroke(new BasicStroke(stroke.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, DOTTED_DASH, 0));
-		}
-		if (connectorModel.getShowControlPointsFlag() || !isSourceVisible() || !isTargetVisible()) {
-			if (startPoint != null) {
-				g.drawLine(startPoint.x, startPoint.y, startPoint2.x, startPoint2.y);
-				drawCircle(g, startPoint2, source.getZoomedFoldingSymbolHalfWidth());
-			    if (arrowLinkCurve == null) {
-			    	arrowLinkCurve = createLine(startPoint, startPoint2);
-				}
+		if(showsConnectors) {
+			if (connectorModel.getShowControlPointsFlag()) {
+				g.setColor(textColor);
+				g.setStroke(new BasicStroke(stroke.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, DOTTED_DASH, 0));
 			}
-			if (endPoint != null && !(selfLink && isLine)) {
-				g.drawLine(endPoint.x, endPoint.y, endPoint2.x, endPoint2.y);
-				drawCircle(g, endPoint2, target.getZoomedFoldingSymbolHalfWidth());
-			    if (arrowLinkCurve == null) {
-			    	arrowLinkCurve = createLine(endPoint, endPoint2);
+			if (connectorModel.getShowControlPointsFlag() || !isSourceVisible() || !isTargetVisible()) {
+				if (startPoint != null) {
+					g.drawLine(startPoint.x, startPoint.y, startPoint2.x, startPoint2.y);
+					drawCircle(g, startPoint2, source.getZoomedFoldingSymbolHalfWidth());
+					if (arrowLinkCurve == null) {
+						arrowLinkCurve = createLine(startPoint, startPoint2);
+					}
+				}
+				if (endPoint != null && !(selfLink && isLine)) {
+					g.drawLine(endPoint.x, endPoint.y, endPoint2.x, endPoint2.y);
+					drawCircle(g, endPoint2, target.getZoomedFoldingSymbolHalfWidth());
+					if (arrowLinkCurve == null) {
+						arrowLinkCurve = createLine(endPoint, endPoint2);
+					}
 				}
 			}
 		}

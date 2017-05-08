@@ -39,7 +39,7 @@ class CopySingleAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
-		final Collection<NodeModel> selection = controller.getSelection().getSelection();
+		final Collection<NodeModel> selection = controller.getSelection().getSortedSelection(false);
 		final ModeController modeController = Controller.getCurrentModeController();
 		final Transferable copy = ((ClipboardController) modeController.getExtension(ClipboardController.class))
 		    .copySingle(selection);

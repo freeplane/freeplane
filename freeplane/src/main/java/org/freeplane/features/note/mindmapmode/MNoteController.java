@@ -297,7 +297,7 @@ public class MNoteController extends NoteController {
 	    styleSheet.removeStyle("p");
 	    // set default font for notes:
 	    final ModeController modeController = Controller.getCurrentModeController();
-	    String noteCssRule = getNoteCSSStyle(modeController, node, false);
+	    String noteCssRule = getNoteCSSStyle(modeController, node, 1f, false);
 		String bodyRule = new StringBuilder( "body {").append(noteCssRule).append("}\n").toString();
 		styleSheet.addRule(bodyRule);
 	    if (ResourceController.getResourceController().getBooleanProperty(

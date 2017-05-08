@@ -9235,7 +9235,7 @@
 </hook>
 </node>
 <node TEXT="Center selected node" ID="ID_1435118166" CREATED="1455910904036" MODIFIED="1455910904036" TEXT_SHORTENED="true">
-<icon BUILTIN="../CenterSelectedNodeAction"/>
+<icon BUILTIN="../MoveSelectedNodeAction.CENTER"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>

@@ -169,7 +169,7 @@ public class PresentationController implements IExtension{
 			
 			@Override
 			public Presentation create(Presentation prototype, String newName) {
-				final Presentation presentation = prototype.saveAs(newName);
+				final Presentation presentation = prototype.create(newName);
 				presentation.slides.addCollectionChangeListener(slideCollectionChangeListener);
 				return presentation;
 			}
@@ -196,7 +196,7 @@ public class PresentationController implements IExtension{
 			
 			@Override
 			public Slide create(Slide prototype, String newName) {
-				final Slide slide = prototype.saveAs(newName);
+				final Slide slide = prototype.create(newName);
 				slide.addSlideChangeListener(slideChangeListener);
 				return slide;
 			}

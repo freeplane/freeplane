@@ -192,6 +192,18 @@ public class BigBufferedImage extends BufferedImage {
 			}.start();
 		}
 
+		/**
+		 * There appears to be a bug in the Java code associated with MappedByteBuffer instances (maybe other
+		 * related classes as well?) in that the file.delete() does not delete the file.  
+		 * For more details about the problem and various attempts to get around this problem, see the following  
+		 * <a href="http://stackoverflow.com/questions/2972986/how-to-unmap-a-file-from-memory-mapped-using-filechannel-in-java/5036003#5036003">link.</a>
+		 * 
+		 * The only solution that appears to work requires the use of interface DirectBuffer 
+		 * which is an internal interface. In the future, this interface might disappear or the referenced methods
+		 * might change their signatures.  This is why Eclipse creates the error messages labeled "Access restriction".
+		 * 
+		 * @param disposedBuffer Array of MappedByteBuffer instances that are to be disposed of
+		 */
 		private void disposeNow(final MappedByteBuffer[] disposedBuffer) {
 			FileDataBufferDeleterHook.undisposedBuffers.remove(this);
 			if(disposedBuffer != null) {

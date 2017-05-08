@@ -25,21 +25,25 @@ import java.awt.event.ActionEvent;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 
 /**
  * @author foltin
  */
-class CenterSelectedNodeAction extends AFreeplaneAction {
-	static final String NAME = "center_selected";
+class MoveSelectedNodeAction extends AFreeplaneAction {
+	private static final String MOVE_SLOWLY_PROPERTY = "slow_scroll_selected_node";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private final NodePosition nodePosition;
 
-	public CenterSelectedNodeAction() {
-		super("CenterSelectedNodeAction");
+	public MoveSelectedNodeAction(NodePosition nodePosition) {
+		super("MoveSelectedNodeAction." + nodePosition.name());
+		this.nodePosition = nodePosition;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -49,6 +53,9 @@ class CenterSelectedNodeAction extends AFreeplaneAction {
 		if (!rootPane.isValid()) {
 			rootPane.revalidate();
 		}
-		selection.centerNode(selection.getSelected());
+		if(ResourceController.getResourceController().getBooleanProperty(MOVE_SLOWLY_PROPERTY))
+			selection.slowlyMoveNodeTo(selection.getSelected(), nodePosition);
+		else
+			selection.moveNodeTo(selection.getSelected(), nodePosition);
 	}
 }

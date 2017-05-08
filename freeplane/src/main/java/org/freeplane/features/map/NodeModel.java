@@ -487,8 +487,7 @@ public class NodeModel{
 	public void setLeft(final boolean isLeft) {
 		position = isLeft ? NodeModel.LEFT_POSITION : NodeModel.RIGHT_POSITION;
 		if (!isRoot()) {
-			for (int i = 0; i < getChildCount(); i++) {
-				final NodeModel child = getChildAt(i);
+			for (final NodeModel child : children) {
 				if (child.position != position) {
 					child.setLeft(isLeft);
 				}
@@ -500,7 +499,7 @@ public class NodeModel{
 	 */
 	public void setMap(final MapModel map) {
 		this.map = map;
-		for (final NodeModel child : getChildrenInternal()) {
+		for (final NodeModel child : children) {
 			child.setMap(map);
 		}
 	}

@@ -48,11 +48,18 @@ public class Slide implements NamedElement<Slide>{
 	}
 
 	@Override
-	public Slide saveAs(String name) {
+	public Slide create(String name) {
 		return new Slide(name, new LinkedHashSet<String>(), placedNodeId != null ? "" : null, placedNodePosition,
 		    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, null);
 	}
 
+
+	@Override
+	public Slide saveAs(String name) {
+		return new Slide(name, new LinkedHashSet<String>(selectedNodeIds), placedNodeId, placedNodePosition,
+			    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, filterCondition);
+	}
+	
 	public Slide(String name){
 		this(name, new LinkedHashSet<String>(), null, NodePosition.CENTER, false, 1f, false, false, false, null);
 	}
@@ -326,8 +333,11 @@ public class Slide implements NamedElement<Slide>{
 	private void scrollMapToSelectedNode() {
 		if(placedNodeId == null){
 			final Controller controller = Controller.getCurrentController();
-			final NodeModel selected = controller.getSelection().getSelected();
-			controller.getMapViewManager().scrollNodeToVisible(selected);
+			final IMapSelection selection = controller.getSelection();
+			if(selection != null) {
+				final NodeModel selected = selection.getSelected();
+				controller.getMapViewManager().scrollNodeToVisible(selected);
+			}
 		}
 	}
 

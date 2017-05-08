@@ -42,6 +42,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.net.URI;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -55,6 +56,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.RepaintManager;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -155,6 +157,8 @@ public class UITools {
 			p.y += y;
 		};
 	}
+	
+	static private final AtomicBoolean errorMessageQueued = new AtomicBoolean(false);
 
 	static public void errorMessage(final Object message) {
 		final String myMessage;
@@ -165,11 +169,26 @@ public class UITools {
 			myMessage = TextUtils.getText("undefined_error");
 		}
 		LogUtils.warn(myMessage);
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				JOptionPane.showMessageDialog(UITools.getCurrentRootComponent(), myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
-			}
-		});
+		if(! errorMessageQueued.getAndSet(true))
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					final Component currentRootComponent = UITools.getCurrentRootComponent();
+					if(currentRootComponent != null) {
+						try {
+							currentRootComponent.validate();
+							JOptionPane.showMessageDialog(currentRootComponent, myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+						}
+						catch (Exception e) {
+							currentRootComponent.setVisible(false);
+							UITools.getFrame().setVisible(false);
+							JOptionPane.showMessageDialog(null, myMessage, "Freeplane", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, TextUtils.getText("program_terminates"), "Freeplane", JOptionPane.ERROR_MESSAGE);
+							System.exit(-1);
+						}
+					}
+					errorMessageQueued.set(false);
+				}
+			});
 	}
 	
 	static public Component getCurrentRootComponent(){

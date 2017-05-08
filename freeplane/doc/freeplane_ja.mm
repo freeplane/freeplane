@@ -7072,7 +7072,7 @@
 <edge COLOR="#00ffff"/>
 </node>
 <node TEXT="&#x9078;&#x629e;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x4e2d;&#x592e;&#x3078;" FOLDED="true" ID="ID_1924496837" CREATED="1455910949015" MODIFIED="1455910949015" TEXT_SHORTENED="true">
-<icon BUILTIN="../CenterSelectedNodeAction"/>
+<icon BUILTIN="../MoveSelectedNodeAction.CENTER"/>
 <richcontent TYPE="DETAILS">
 
 <html>

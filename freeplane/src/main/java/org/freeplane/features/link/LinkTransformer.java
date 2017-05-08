@@ -23,6 +23,7 @@ import java.net.URI;
 
 import javax.swing.Icon;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.ObjectAndIcon;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.MapModel;
@@ -30,13 +31,14 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.TextController;
-import org.freeplane.features.ui.FrameController;
 
 /**
  * @author Dimitry Polivaev
  * Mar 3, 2011
  */
 public class LinkTransformer extends AbstractContentTransformer {
+	
+	private static Icon localLinkIcon = ResourceController.getResourceController().getIcon("link_local_icon");
 	private ModeController modeController;
 
 	public LinkTransformer(ModeController modeController, int priority) {
@@ -67,8 +69,7 @@ public class LinkTransformer extends AbstractContentTransformer {
 		final NodeModel target = map.getNodeForID(nodeID);
 		if(target != null){
 			final String shortText = TextController.getController(modeController).getShortPlainText(target);
-			final Icon icon = FrameController.localLinkIcon;
-			return new ObjectAndIcon(shortText, icon);
+			return new ObjectAndIcon(shortText, localLinkIcon);
 		}
 		else
 			return content;

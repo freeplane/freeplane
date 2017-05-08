@@ -35,7 +35,6 @@ import org.freeplane.core.ui.components.ResizerListener;
  * 01.02.2014
  */
 public class CollapseableBoxBuilder {
-	private static final int DEFAULT_SIZE = 350;
 	private final FrameController frameController;
 	private String propertyNameBase;
 	private boolean resizeable = true;
@@ -73,11 +72,10 @@ public class CollapseableBoxBuilder {
 		}
 		if(resizeable){
 			try {
-				int size = ResourceController.getResourceController().getIntProperty(sizePropertyName, DEFAULT_SIZE);
-				if(size <= 10) {
-					size = DEFAULT_SIZE;
+				int size = ResourceController.getResourceController().getIntProperty(sizePropertyName, 0);
+				if(size > 10) {
+					direction.setPreferredSize(component, size);
 				}
-				direction.setPreferredSize(component, size);
 			}
 			catch (Exception e) {
 				// blindly accept

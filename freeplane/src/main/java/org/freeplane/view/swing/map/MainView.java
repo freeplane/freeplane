@@ -473,6 +473,10 @@ public abstract class MainView extends ZoomableLabel {
 	}
 
 	void updateIcons(final NodeView node) {
+		if(! node.getMap().showsIcons()) {
+			setIcon(null);
+			return;
+		}
 //		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
 		final MultipleImage iconImages = new MultipleImage();
 		/* fc, 06.10.2003: images? */
@@ -491,9 +495,9 @@ public abstract class MainView extends ZoomableLabel {
 
 	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
 		final URI link = NodeLinks.getLink(model);
-			final Icon icon = getNodeView().getMap().getModeController().getExtension(LinkController.class).getLinkIcon(link, model);
-			if(icon != null)
-				iconImages.addLinkIcon(icon);
+		final Icon icon = getNodeView().getMap().getModeController().getExtension(LinkController.class).getLinkIcon(link, model);
+		if(icon != null)
+			iconImages.addLinkIcon(icon, model);
 	}
 
 	void updateTextColor(final NodeView node) {

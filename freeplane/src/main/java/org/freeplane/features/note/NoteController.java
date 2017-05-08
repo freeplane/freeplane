@@ -46,6 +46,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
+import org.freeplane.view.swing.map.MainView;
 
 /**
  * @author Dimitry Polivaev
@@ -67,6 +68,7 @@ public class NoteController implements IExtension {
 	public static final String SHOW_NOTE_ICONS = "show_note_icons";
 	private static final Integer NOTE_TOOLTIP = 9;
 	public static final String SHOW_NOTES_IN_MAP = "show_notes_in_map";
+	protected static final String SHOW_NOTE_ICON_IN_TOOLTIP = "show_note_icon_in_tooltip";
 
 	public static NoteController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -115,20 +117,26 @@ public class NoteController implements IExtension {
 
 	private void registerNoteTooltipProvider(ModeController modeController) {
 		modeController.addToolTipProvider(NOTE_TOOLTIP, new ITooltipProvider() {
-			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
+			public String getTooltip(final ModeController modeController, NodeModel node, Component view){
+				return getTooltip(modeController, node, (MainView)view);
+			}
+			private String getTooltip(final ModeController modeController, NodeModel node, MainView view) {
 				if(showNotesInMap(node.getMap()) && ! TextController.getController(modeController).isMinimized(node)){
 					return null;
 				}
 				final String noteText = NoteModel.getNoteText(node);
 				if (noteText == null)
 					return null;
-				final String rule = getNoteCSSStyle(modeController, node, true);
+				float zoom = view.getNodeView().getMap().getZoom();
+				final String rule = getNoteCSSStyle(modeController, node, zoom, true);
 				final StringBuilder tooltipBodyBegin = new StringBuilder("<body><div style=\"");
 				tooltipBodyBegin.append(rule);
 				tooltipBodyBegin.append("\">");
-				tooltipBodyBegin.append("<img src =\"");
-				tooltipBodyBegin.append(bwNoteIconUrl.toString());
-				tooltipBodyBegin.append("\">");
+				if(ResourceController.getResourceController().getBooleanProperty(SHOW_NOTE_ICON_IN_TOOLTIP)) {
+					tooltipBodyBegin.append("<img src =\"");
+					tooltipBodyBegin.append(bwNoteIconUrl.toString());
+					tooltipBodyBegin.append("\">");
+				}
 				final String tooltipText = noteText.replaceFirst("<body>", 
 					tooltipBodyBegin.toString()).replaceFirst("</body>", "</div></body>");
 				return tooltipText;
@@ -156,7 +164,7 @@ public class NoteController implements IExtension {
 		return Boolean.parseBoolean(property);
 	}
 
-	protected String getNoteCSSStyle(ModeController modeController, NodeModel node, boolean asHtmlFragment) {
+	protected String getNoteCSSStyle(ModeController modeController, NodeModel node, float zoom, boolean asHtmlFragment) {
 		final StringBuilder rule = new StringBuilder();
 		// set default font for notes:
 		final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
@@ -178,7 +186,7 @@ public class NoteController implements IExtension {
 					.withBackground(noteBackground)
 					.withAlignment(alignment);
 		    if(asHtmlFragment)
-		    	cssRuleBuilder.withMaxWidthAsPt(NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node));
+		    	cssRuleBuilder.withMaxWidthAsPt(zoom, NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node));
 			rule.append(cssRuleBuilder);
 		}
 		return rule.toString();

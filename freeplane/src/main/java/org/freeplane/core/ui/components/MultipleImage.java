@@ -28,7 +28,11 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
+import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.factory.ImageIconFactory;
 import org.freeplane.features.map.NodeModel;
 
 public class MultipleImage implements Icon {
@@ -48,8 +52,11 @@ public class MultipleImage implements Icon {
 		mUIIcons.add(uiIcon);
 	}
 
-	public void addLinkIcon(Icon icon) {
-		mIcons.add(icon);
+	public void addLinkIcon(Icon icon, NodeModel node) {
+		final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(node);
+		final ImageIconFactory iconFactory = ImageIconFactory.getInstance();
+		final Icon scaledIcon = iconFactory.canScaleIcon(icon) ? iconFactory.getScaledIcon(icon, iconHeight) : icon;
+		mIcons.add(scaledIcon);
 		mUIIcons.add(null);
 	};
 

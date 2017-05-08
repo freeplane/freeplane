@@ -30,11 +30,18 @@
 			<Entry name="zoom">
 				<Entry accelerator="alt UP" name="ZoomInAction" />
 				<Entry accelerator="alt DOWN" name="ZoomOutAction" />
-				<Entry accelerator="alt C" name="CenterSelectedNodeAction" />
 			</Entry>
 			<Entry name="menu_viewmode">
 				<Entry name="ViewLayoutTypeAction.OUTLINE" />
 				<Entry name="ShowSelectionAsRectangleAction" />
+				<Entry name="SetBooleanPropertyAction.show_icons" />
+				<Entry name="SetBooleanPropertyAction.show_connectors" />
+				<Entry name="SetBooleanPropertyAction.hide_single_end_connectors" />
+				<Entry name="SetBooleanPropertyAction.show_note_icon_in_tooltip" />
+				<Entry accelerator="alt W" name="MoveSelectedNodeAction.WEST" />
+				<Entry accelerator="alt C" name="MoveSelectedNodeAction.CENTER" />
+				<Entry accelerator="alt E" name="MoveSelectedNodeAction.EAST" />
+				<Entry name="SetBooleanPropertyAction.slow_scroll_selected_node" />
 			</Entry>
 		</Entry>
 		<Entry name="navigate">
@@ -97,7 +104,6 @@
 		<Entry name="ShowFilterToolbarAction" />
 		<Entry name="ToggleScrollbarsAction" />
 		<Entry name="ViewLayoutTypeAction.OUTLINE" />
-		<Entry name="CenterSelectedNodeAction" />
 		<Entry accelerator="ESCAPE" name="MoveToRootAction" />
 	</Entry>
 	<Entry name="node_popup" builder="node_popup">

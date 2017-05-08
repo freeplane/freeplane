@@ -48,6 +48,7 @@ import org.freeplane.core.resources.ResourceController;
  */
 public class LogUtils {
     private static final Logger LOGGER = Logger.global;
+	private static final int MAX_LOG_SIZE = 1 * 1024 * 1024;
 	static private boolean loggerCreated = false;
 
 	public static void createLogger() {
@@ -83,10 +84,10 @@ public class LogUtils {
 			parentLogger.addHandler(stdConsoleHandler);
 			LoggingOutputStream los;
 			Logger logger = Logger.getLogger(StdFormatter.STDOUT.getName());
-			los = new LoggingOutputStream(logger, StdFormatter.STDOUT);
+			los = new LoggingOutputStream(logger, StdFormatter.STDOUT, MAX_LOG_SIZE);
 			System.setOut(new PrintStream(los, true));
 			logger = Logger.getLogger(StdFormatter.STDERR.getName());
-			los = new LoggingOutputStream(logger, StdFormatter.STDERR);
+			los = new LoggingOutputStream(logger, StdFormatter.STDERR, MAX_LOG_SIZE);
 			System.setErr(new PrintStream(los, true));
 		}
 		catch (final Exception e) {

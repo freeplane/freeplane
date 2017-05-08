@@ -36,6 +36,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 	private final JButton btnMoveDown;
 	private final JButton btnMove;
 	private final JButton btnNewElement;
+	private final JButton btnCopy;
 	private final JButton btnDeleteElement;
 	private final CollectionChangeListener<T> collectionChangeListener;
 	private JComponent collectionComponent;
@@ -54,6 +55,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		collectionButtons.add(btnMoveUp);
 		collectionButtons.add(btnMoveDown);                       
 		collectionButtons.add(btnMove);
+		collectionButtons.add(btnCopy);
 		collectionButtons.add(Box.createHorizontalGlue());
 		collectionComponent.add(collectionButtons);
 		return collectionComponent;
@@ -77,17 +79,16 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		lblElementCounter = new JLabel("XXX/XXX ");
 		lblElementCounter.setHorizontalAlignment(SwingConstants.CENTER);
 		lblElementCounter.setPreferredSize(lblElementCounter.getPreferredSize());
-		btnNewElement = createNewElementButton(elementName);
-		
-		btnDeleteElement = createDeleteElementButton(elementName);
-		
-		btnMoveUp = createMoveUpButton(elementName);
 
+		btnNewElement = createNewElementButton(elementName);
+		btnDeleteElement = createDeleteElementButton(elementName);
+		btnMoveUp = createMoveUpButton(elementName);
 		btnMoveDown = createMoveDownButton(elementName);
-		
 		btnMove = createMoveButton(elementName);
+		btnCopy = createCopyButton(elementName);
+
 		components = new JComponent[]{comboBoxCollectionNames, lblElementCounter, btnNewElement, btnDeleteElement, btnMoveUp, btnMoveDown, btnMove};
-		editingComponents = new JComponent[] { btnNewElement, btnDeleteElement, btnMoveUp, btnMoveDown, btnMove };
+		editingComponents = new JComponent[] { btnNewElement, btnDeleteElement, btnMoveUp, btnMoveDown, btnMove, btnCopy };
 		disableUiElements();
 		collectionChangeListener = new CollectionChangeListener<T>() {
 			@Override
@@ -136,6 +137,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		btnMoveUp.setEnabled(currentElementIndex > 0);
 		btnMoveDown.setEnabled(currentElementIndex >= 0 && currentElementIndex < collectionSize-1);
 		btnMove.setEnabled(collectionSize > 1);
+		btnCopy.setEnabled(collectionSize > 1);
 	}
 
 	private void disableUiElements() {
@@ -210,6 +212,22 @@ class CollectionBoxController <T extends NamedElement<T>> {
 			}
 		});
 		return btnNewElement;
+	}
+
+	private JButton createCopyButton(final String elementName) {
+		final JButton btnCopyElement = TranslatedElementFactory.createButtonWithIcon(elementName + ".copy.icon", "collection.copy." + elementName);
+		btnCopyElement.addActionListener(new ActionListener() {
+			
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				UndoableNamedElementCollection.of(collection).copyCurrentElement();
+				final ComboBoxEditor editor = comboBoxCollectionNames.getEditor();
+				editor.selectAll();
+				editor.getEditorComponent().requestFocusInWindow();
+			}
+		});
+		return btnCopyElement;
 	}
 
 	void disableEditing() {
