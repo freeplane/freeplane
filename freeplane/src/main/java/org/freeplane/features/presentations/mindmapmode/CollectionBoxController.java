@@ -137,7 +137,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		btnMoveUp.setEnabled(currentElementIndex > 0);
 		btnMoveDown.setEnabled(currentElementIndex >= 0 && currentElementIndex < collectionSize-1);
 		btnMove.setEnabled(collectionSize > 1);
-		btnCopy.setEnabled(collectionSize > 1);
+		btnCopy.setEnabled(collectionSize > 0);
 	}
 
 	private void disableUiElements() {
