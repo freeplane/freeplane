@@ -39,19 +39,16 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
-import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.PatternFormat;
-import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -416,6 +413,8 @@ public class TextController implements IExtension {
     }
 
     public boolean getNodeNumbering(NodeModel node) {
+    	if(SummaryNode.isFirstGroupNode(node) || SummaryNode.isSummaryNode(node))
+    		return false;
 		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
 		final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
 		for(IStyle styleKey : collection){
