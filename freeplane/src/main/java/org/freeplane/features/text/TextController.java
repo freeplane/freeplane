@@ -39,19 +39,16 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
-import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.PatternFormat;
-import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -393,43 +390,18 @@ public class TextController implements IExtension {
 		Controller.getCurrentModeController().getMapController().nodeChanged(node, "SHORTENER", oldState, shortened);   
 	}
 
-	public String getNodeFormat(NodeModel node) {
-		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
-		final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
-		for(IStyle styleKey : collection){
-			final NodeModel styleNode = model.getStyleNode(styleKey);
-			if (styleNode == null) {
-				continue;
-			}
-			final String format = NodeStyleModel.getNodeFormat(styleNode);
-			if (format != null) {
-				return format;
-			}
-        } 
-		// do not return PatternFormat.IDENTITY_PATTERN if parse_data=false because that would
-		// automatically disable all IContentTransformers!
-		return PatternFormat.STANDARD_FORMAT_PATTERN;
-    }
-
 	public boolean parseData() {
         return false;
     }
 
-    public boolean getNodeNumbering(NodeModel node) {
-		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
-		final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
-		for(IStyle styleKey : collection){
-			final NodeModel styleNode = model.getStyleNode(styleKey);
-			if (styleNode == null) {
-				continue;
-			}
-			final Boolean numbering = NodeStyleModel.getNodeNumbering(styleNode);
-			if (numbering != null) {
-				return numbering;
-			}
-		}
-		return false;
+	public String getNodeFormat(NodeModel node) {
+		return modeController.getExtension(NodeStyleController.class).getNodeFormat(node);
     }
+
+    public boolean getNodeNumbering(NodeModel node) {
+    	return modeController.getExtension(NodeStyleController.class).getNodeNumbering(node);    
+    }
+    
 	public ModeController getModeController() {
     	return modeController;
     }
