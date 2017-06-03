@@ -413,7 +413,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (uniformShape) {
 			writer.addAttribute("UNIFORM_SHAPE", "true");
 		}
-		final Boolean numbered = forceFormatting ? nsc.getNodeNumbering(node) : style.getNodeNumbering();
+		final Boolean numbered = forceFormatting ? Boolean.valueOf(nsc.getNodeNumbering(node)) : style.getNodeNumbering();
 		if (numbered != null && numbered) {
 			writer.addAttribute("NUMBERED", numbered.toString());
 		}

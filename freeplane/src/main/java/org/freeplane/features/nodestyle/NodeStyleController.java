@@ -30,9 +30,11 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeController;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.CombinedPropertyChain;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ExclusivePropertyChain;
@@ -535,18 +537,41 @@ public class NodeStyleController implements IExtension {
 		return getFont(node).isItalic();
 	}
 
-	public Boolean getNodeNumbering(NodeModel node) {
-		final NodeStyleModel style = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
-		if (style == null)
-			return false;
-		final Boolean nodeNumbering = style.getNodeNumbering();
-		return nodeNumbering == null ? false : nodeNumbering.booleanValue();
-	}
-
 	public String getNodeFormat(NodeModel node) {
-		final NodeStyleModel style = (NodeStyleModel) node.getExtension(NodeStyleModel.class);
-		return style == null ? null : style.getNodeFormat();
-	}
+		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
+		final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+		for(IStyle styleKey : collection){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final String format = NodeStyleModel.getNodeFormat(styleNode);
+			if (format != null) {
+				return format;
+			}
+        } 
+		// do not return PatternFormat.IDENTITY_PATTERN if parse_data=false because that would
+		// automatically disable all IContentTransformers!
+		return PatternFormat.STANDARD_FORMAT_PATTERN;
+    }
+
+    public boolean getNodeNumbering(NodeModel node) {
+    	if(SummaryNode.isFirstGroupNode(node) || SummaryNode.isSummaryNode(node))
+    		return false;
+		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
+		final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+		for(IStyle styleKey : collection){
+			final NodeModel styleNode = model.getStyleNode(styleKey);
+			if (styleNode == null) {
+				continue;
+			}
+			final Boolean numbering = NodeStyleModel.getNodeNumbering(styleNode);
+			if (numbering != null) {
+				return numbering;
+			}
+		}
+		return false;
+    }
 
 	public Quantity<LengthUnits> getMaxWidth(NodeModel node) {
 		final MapModel map = node.getMap();

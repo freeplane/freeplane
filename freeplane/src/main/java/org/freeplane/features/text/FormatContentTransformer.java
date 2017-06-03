@@ -83,13 +83,7 @@ class FormatContentTransformer extends AbstractContentTransformer {
 		final NodeModel parentNode = node.getParentNode();
 		if(parentNode == null)
 			return;
-		if(SummaryNode.isSummaryNode(parentNode)) {
-			final NodeModel summaryParentNode = parentNode.getParentNode();
-			if(summaryParentNode == null)
-				return;
-			addMajorNumbers(summaryParentNode, builder);
-		} else
-			addMajorNumbers(parentNode, builder);
+		addMajorNumbers(parentNode, builder);
 		final List<NodeModel> children = parentNode.getChildren();
 		int counter = 1;
 		for (NodeModel child : children) {
@@ -102,7 +96,13 @@ class FormatContentTransformer extends AbstractContentTransformer {
 	}
 
 	private void addMajorNumbers(final NodeModel node, StringBuilder builder) {
-		if( textController.getNodeNumbering(node)){
+		if(SummaryNode.isSummaryNode(node)) {
+			final NodeModel summaryParentNode = node.getParentNode();
+			if(summaryParentNode == null)
+				return;
+			addMajorNumbers(summaryParentNode, builder);
+		} 
+		else if( textController.getNodeNumbering(node)){
 			addNumbers(builder, node);
 			if (builder.length() > 0)
 				builder.append('.');

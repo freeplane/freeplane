@@ -390,45 +390,18 @@ public class TextController implements IExtension {
 		Controller.getCurrentModeController().getMapController().nodeChanged(node, "SHORTENER", oldState, shortened);   
 	}
 
-	public String getNodeFormat(NodeModel node) {
-		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
-		final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
-		for(IStyle styleKey : collection){
-			final NodeModel styleNode = model.getStyleNode(styleKey);
-			if (styleNode == null) {
-				continue;
-			}
-			final String format = NodeStyleModel.getNodeFormat(styleNode);
-			if (format != null) {
-				return format;
-			}
-        } 
-		// do not return PatternFormat.IDENTITY_PATTERN if parse_data=false because that would
-		// automatically disable all IContentTransformers!
-		return PatternFormat.STANDARD_FORMAT_PATTERN;
-    }
-
 	public boolean parseData() {
         return false;
     }
 
-    public boolean getNodeNumbering(NodeModel node) {
-    	if(SummaryNode.isFirstGroupNode(node) || SummaryNode.isSummaryNode(node))
-    		return false;
-		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
-		final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
-		for(IStyle styleKey : collection){
-			final NodeModel styleNode = model.getStyleNode(styleKey);
-			if (styleNode == null) {
-				continue;
-			}
-			final Boolean numbering = NodeStyleModel.getNodeNumbering(styleNode);
-			if (numbering != null) {
-				return numbering;
-			}
-		}
-		return false;
+	public String getNodeFormat(NodeModel node) {
+		return modeController.getExtension(NodeStyleController.class).getNodeFormat(node);
     }
+
+    public boolean getNodeNumbering(NodeModel node) {
+    	return modeController.getExtension(NodeStyleController.class).getNodeNumbering(node);    
+    }
+    
 	public ModeController getModeController() {
     	return modeController;
     }
