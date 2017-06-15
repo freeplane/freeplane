@@ -45,10 +45,6 @@ public class FilterInfo {
 		info |= flag;
 	}
 
-	private int get() {
-		return info;
-	}
-
 	/**
 	 */
 	public boolean isAncestor() {
