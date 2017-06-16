@@ -136,10 +136,10 @@ public class Filter {
 			displayFilterStatus();
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			final Filter oldFilter = map.getFilter();
+			map.setFilter(this);
 			if (force || !isConditionStronger(oldFilter)) {
 				calculateFilterResults(map);
 			}
-			map.setFilter(this);
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			final NodeModel selected = selection.getSelected();
 			final NodeModel selectedVisible = selected.getVisibleAncestorOrSelf();
