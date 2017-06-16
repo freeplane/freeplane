@@ -136,10 +136,10 @@ public class Filter {
 			displayFilterStatus();
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			final Filter oldFilter = map.getFilter();
-			map.setFilter(this);
 			if (force || !isConditionStronger(oldFilter)) {
 				calculateFilterResults(map);
 			}
+			map.setFilter(this);
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			final NodeModel selected = selection.getSelected();
 			final NodeModel selectedVisible = selected.getVisibleAncestorOrSelf();
@@ -162,9 +162,10 @@ public class Filter {
 	private boolean applyFilter(final NodeModel node,
 	                            final boolean isAncestorSelected, final boolean isAncestorEclipsed,
 	                            boolean isDescendantSelected) {
-		final boolean conditionSatisfied = checkNode(node);
+		final boolean canBeShown = ! shouldRemainInvisible(node);
+		final boolean conditionSatisfied = canBeShown && checkNode(node);
 		resetFilter(node);
-		if (isAncestorSelected) {
+		if (isAncestorSelected && canBeShown) {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_DESCENDANT);
 		}
 		if (conditionSatisfied) {
@@ -174,12 +175,13 @@ public class Filter {
 		else {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_HIDDEN);
 		}
-		if (isAncestorEclipsed) {
+		if (isAncestorEclipsed && canBeShown) {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_ECLIPSED);
 		}
 		if (filterChildren(node, conditionSatisfied || isAncestorSelected, !conditionSatisfied
 		        || isAncestorEclipsed)) {
-			addFilterResult(node, FilterInfo.FILTER_SHOW_ANCESTOR);
+			if(canBeShown)
+				addFilterResult(node, FilterInfo.FILTER_SHOW_ANCESTOR);
 			isDescendantSelected = true;
 		}
 		return isDescendantSelected;
@@ -205,10 +207,14 @@ public class Filter {
 		if (condition == null) {
 			return true;
 		}
-		if (appliesToVisibleNodesOnly && !node.hasVisibleContent()) {
+		if (shouldRemainInvisible(node)) {
 			return false;
 		}
 		return condition.checkNode(node);
+	}
+	
+	private boolean shouldRemainInvisible(final NodeModel node) {
+		return condition != null && appliesToVisibleNodesOnly && !node.hasVisibleContent();
 	}
 
 	private boolean filterChildren(final NodeModel node,

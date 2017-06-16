@@ -78,7 +78,8 @@ public class FilterInfo {
 	}
 
 	boolean isVisible(final int filterOptions) {
-		return ((filterOptions & FilterInfo.FILTER_SHOW_ANCESTOR) != 0 || (filterOptions & FilterInfo.FILTER_SHOW_ECLIPSED) >= (info & FilterInfo.FILTER_SHOW_ECLIPSED))
+		final boolean showAsAncestor = (filterOptions & FilterInfo.FILTER_SHOW_ANCESTOR) != 0;
+		return (showAsAncestor || (filterOptions & FilterInfo.FILTER_SHOW_ECLIPSED) >= (info & FilterInfo.FILTER_SHOW_ECLIPSED))
 		        && ((filterOptions & info & ~FilterInfo.FILTER_SHOW_ECLIPSED) != 0);
 	}
 }
