@@ -15,6 +15,7 @@
 */dist
 backups
 .backup
+/macapp.properties
 freeplane/lib/jortho.jar
 freeplane_framework/windows-icons/build
 freeplane_framework/windows-icons/*.layout
@@ -30,8 +31,6 @@ freeplane_plugin_script/build-nodehighlighter
 freeplane_plugin_script/lib/jsyntaxpane/nodehighlighter.jar
 freeplane_framework/temp
 freeplane/resources/xml/mindmapmodemenu.xml
-
-
 
 # Created by https://www.gitignore.io/api/gradle,intellij,eclipse,macos,windows,linux,vim
 
