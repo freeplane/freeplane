@@ -9,6 +9,14 @@ ant.taskdef(
     onerror: "report"
 )
 
+def macAppPropertiesFile = file('macapp.properties')
+
+Properties macAppProperties = new Properties()
+if (macAppPropertiesFile.exists())
+{
+    macAppProperties.load(new FileInputStream(macAppPropertiesFile))
+}
+
 task macDist {}
 
 def defineMacBuildTasks = {boolean includeJavaRuntime -> 
@@ -33,8 +41,8 @@ def defineMacBuildTasks = {boolean includeJavaRuntime ->
             signature: '????'
         ) {
             if (includeJavaRuntime) {
-                if(System.properties['appbundler.runtime.dir'] != null) {
-                    runtime(dir: System.properties['appbundler.runtime.dir'])
+                if(macAppProperties['macapp.jdk.home'] != null) {
+                    runtime(dir: macAppProperties['macapp.jdk.home'])
                 }
                 else {
                     def javaHomeJre = System.properties['java.home']
@@ -80,7 +88,15 @@ def defineMacBuildTasks = {boolean includeJavaRuntime ->
         }
     }
 
-    def dmg4mac= tasks.create (taskName('dmg4mac'), Exec) {
+    def signMacApp= tasks.create (taskName('signMacApp'), Exec) {
+        onlyIf { Os.isFamily(Os.FAMILY_MAC) && macAppProperties['macapp.codesign.identity'] != null}
+ 
+        commandLine 'codesign', '--deep', '-s', macAppProperties['macapp.codesign.identity'], '-v', macappfullpath.path
+
+        dependsOn macosxapp
+    }
+
+   def dmg4mac= tasks.create (taskName('dmg4mac'), Exec) {
         onlyIf { Os.isFamily(Os.FAMILY_MAC) }
         def dmgPath = globalDist + taskName('/freeplane_app') + '-' + distVersion + '.dmg';
         doFirst { 
@@ -91,7 +107,7 @@ def defineMacBuildTasks = {boolean includeJavaRuntime ->
         commandLine 'hdiutil', 'create', '-srcfolder', macappfullpath.path,
             dmgPath
 
-        dependsOn macosxapp
+        dependsOn macosxapp, signMacApp
     }
 
     def zip4mac = tasks.create (taskName('zip4mac'), Zip) {
