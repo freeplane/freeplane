@@ -1,6 +1,5 @@
 package org.freeplane.features.presentations.mindmapmode;
 
-import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.CENTERED_NODE_ID;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.CHANGES_ZOOM;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.NAME;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.*;

@@ -40,7 +40,6 @@ import java.util.Collection;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;

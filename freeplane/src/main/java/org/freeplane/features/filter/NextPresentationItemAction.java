@@ -1,9 +1,6 @@
 package org.freeplane.features.filter;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
-
-import javax.swing.JComponent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.MapController;
@@ -11,7 +8,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
-import org.freeplane.view.swing.map.NodeView;
 
 public class NextPresentationItemAction extends AFreeplaneAction {
 	/**

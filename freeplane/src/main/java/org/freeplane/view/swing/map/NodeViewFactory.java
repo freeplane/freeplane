@@ -19,18 +19,11 @@
  */
 package org.freeplane.view.swing.map;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
-import java.awt.Graphics;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
-import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
-
-import org.freeplane.core.ui.ColoredIconCreator;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;

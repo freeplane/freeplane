@@ -23,7 +23,6 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.filter.condition.ICondition;

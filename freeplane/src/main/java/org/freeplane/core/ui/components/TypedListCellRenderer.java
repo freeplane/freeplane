@@ -31,7 +31,6 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.icon.factory.ImageIconFactory;
-import org.freeplane.features.ui.FrameController;
 
 /**
  * @author Dimitry Polivaev

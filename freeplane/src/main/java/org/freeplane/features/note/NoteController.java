@@ -22,9 +22,6 @@ package org.freeplane.features.note;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import javax.swing.Icon;
 
 import org.freeplane.core.extension.IExtension;
@@ -35,7 +32,6 @@ import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
-import org.freeplane.features.icon.factory.ImageIconFactory;
 import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
