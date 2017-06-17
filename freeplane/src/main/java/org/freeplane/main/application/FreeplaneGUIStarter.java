@@ -35,6 +35,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
@@ -189,7 +190,12 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			viewController = new ApplicationViewController(controller, mapViewController, frame);
 			splash = new FreeplaneSplashModern(frame);
 			if (!System.getProperty("org.freeplane.nosplash", "false").equals("true")) {
-				splash.setVisible(true);
+				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
+					public void run() {
+						splash.setVisible(true);
+					}
+				});
 			}
 			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
 			controller.addExtension(HighlightController.class, new HighlightController());
