@@ -1,10 +1,10 @@
-<map version="freeplane 1.5.9">
+<map version="freeplane 1.6.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <attribute_registry>
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node LOCALIZED_STYLE_REF="default" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1334247734742" BACKGROUND_COLOR="#00ff66">
+<node LOCALIZED_STYLE_REF="default" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1498338733343" BACKGROUND_COLOR="#00ff66">
 <icon BUILTIN="bee"/>
 <richcontent TYPE="NODE">
 
@@ -17,10 +17,11 @@
       <b>Tutorial </b>
     </p>
     <p>
-      <b>Freeplane 1.2</b>
+      <b>Freeplane 1.6</b>
     </p>
   </body>
 </html>
+
 </richcontent>
 <hook NAME="MapStyle">
     <conditional_styles>
@@ -93,6 +94,26 @@
 <stylenode TEXT="Revision">
 <icon BUILTIN="revision"/>
 </stylenode>
+<stylenode TEXT="Purpose" BACKGROUND_COLOR="#ffcccc" TEXT_ALIGN="CENTER" MAX_WIDTH="110.0 pt" MIN_WIDTH="110.0 pt">
+<font BOLD="true"/>
+<edge COLOR="#ff3333"/>
+</stylenode>
+<stylenode TEXT="Actions" BACKGROUND_COLOR="#99ff99" TEXT_ALIGN="CENTER" MAX_WIDTH="110.0 pt" MIN_WIDTH="110.0 pt">
+<font BOLD="true"/>
+<edge COLOR="#009900"/>
+</stylenode>
+<stylenode TEXT="Notes and explanations" BACKGROUND_COLOR="#ccffff" TEXT_ALIGN="CENTER" MAX_WIDTH="110.0 pt" MIN_WIDTH="110.0 pt">
+<font BOLD="true"/>
+<edge COLOR="#0066ff"/>
+</stylenode>
+<stylenode TEXT="Tips and tricks" BACKGROUND_COLOR="#ffcc99" TEXT_ALIGN="CENTER" MAX_WIDTH="110.0 pt" MIN_WIDTH="110.0 pt">
+<font BOLD="true"/>
+<edge COLOR="#ff9900"/>
+</stylenode>
+<stylenode TEXT="Old documentation" BACKGROUND_COLOR="#eaeaea" TEXT_ALIGN="CENTER" MAX_WIDTH="110.0 pt" MIN_WIDTH="110.0 pt">
+<font BOLD="true"/>
+<edge COLOR="#666666"/>
+</stylenode>
 <stylenode TEXT="MyTemplate">
 <icon BUILTIN="females"/>
 <richcontent TYPE="DETAILS">
@@ -116,6 +137,7 @@
   </body>
 </html>
 </richcontent>
+<attribute_layout NAME_WIDTH="666.0 pt" VALUE_WIDTH="666.0 pt"/>
 <attribute NAME="birth date" VALUE=""/>
 <attribute NAME="e-mail" VALUE=""/>
 </stylenode>
@@ -141,46 +163,9 @@
 </map_styles>
 </hook>
 <hook NAME="FirstGroupNode"/>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="left" ID="ID_232622736" CREATED="1320005728532" MODIFIED="1334522518454" LINK="freeplaneFunctions.mm" HGAP_QUANTITY="0.0 px" VSHIFT_QUANTITY="-94.0 px" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p style="text-align: center">
-      <font size="3"><a href="freeplaneFunctions.mm"><b>Functions index</b></a></font>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-
-  </head>
-  <body>
-    <p>
-      Click the link to open a mind map with the main functions of Freeplane. Hover the text to reveal hidden links to the descriptions of the functions you see in this <i>Quick reference</i>&#160;and in <i>Help &gt; Documentation. </i>
-    </p>
-    <p>
-
-    </p>
-    <p>
-      <b>Note </b>
-    </p>
-    <ul>
-      <li>
-        To return from the index map to this map: select <i>Navigate &gt;Go to previous map </i>(icon in tool bar)
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Introduction" STYLE_REF="Beginner" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1341130602702" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200.0 px" HGAP_QUANTITY="22.0 px" VSHIFT_QUANTITY="16.0 px">
+<attribute_layout NAME_WIDTH="666.0 pt" VALUE_WIDTH="666.0 pt"/>
+<node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1341130602702" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200.0 px" HGAP_QUANTITY="22.0 px" VSHIFT_QUANTITY="16.0 px">
+<attribute_layout NAME_WIDTH="666.0 pt" VALUE_WIDTH="666.0 pt"/>
 <node ID="ID_131498432" CREATED="1479208899084" MODIFIED="1479210525907"><richcontent TYPE="NODE">
 
 <html>
@@ -229,7 +214,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 </node>
 <node TEXT="Goal" STYLE_REF="Beginner" FOLDED="true" ID="ID_1074607965" CREATED="1314422854653" MODIFIED="1335300198070">
@@ -303,6 +287,7 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
+<attribute_layout NAME_WIDTH="666.0 pt" VALUE_WIDTH="666.0 pt"/>
 </node>
 </node>
 <node TEXT="Main menu&apos;s" STYLE_REF="Beginner" FOLDED="true" ID="ID_767122736" CREATED="1333268936129" MODIFIED="1335300198085">
@@ -644,6 +629,7 @@
 </node>
 </node>
 <node TEXT="Core map" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1335300531741" NUMBERED="true" MIN_WIDTH="200.0 px">
+<attribute_layout NAME_WIDTH="666.0 pt" VALUE_WIDTH="666.0 pt"/>
 <node TEXT="Node core" STYLE_REF="Beginner" FOLDED="true" ID="ID_1370298116" CREATED="1315860175003" MODIFIED="1335300258084" MIN_WIDTH="115.0 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -1135,10 +1121,378 @@
 </node>
 </node>
 </node>
-<node TEXT="Icons" STYLE_REF="Advanced" FOLDED="true" ID="ID_222393549" CREATED="1323433444639" MODIFIED="1335300258068" STYLE="combined" MIN_WIDTH="80.0 px">
+<node TEXT="Icons" STYLE_REF="Advanced" FOLDED="true" ID="ID_115453444" CREATED="1323433444639" MODIFIED="1498336163563">
 <icon BUILTIN="bookmark"/>
 <icon BUILTIN="idea"/>
-<node ID="ID_715025500" CREATED="1323437305973" MODIFIED="1335982080280" HGAP_QUANTITY="-56.0 px" VSHIFT_QUANTITY="153.0 px" STYLE="fork"><richcontent TYPE="NODE">
+<node TEXT="Purpose" STYLE_REF="Purpose" FOLDED="true" ID="ID_1928023050" CREATED="1483416459506" MODIFIED="1486862695292">
+<node TEXT="Icons visually add meaning and interest to nodes." FOLDED="true" ID="ID_403306484" CREATED="1484847817993" MODIFIED="1498334000056" VGAP_QUANTITY="6.0 pt">
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+<node STYLE_REF="Idea" ID="ID_1861850051" CREATED="1483838122037" MODIFIED="1498334000055"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <img src="Images/examples.png" width="32" height="32"/>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="The checkmark icon could symbolize a completed task." ID="ID_1724715305" CREATED="1484847880233" MODIFIED="1486862695292">
+<icon BUILTIN="button_ok"/>
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+</node>
+<node TEXT="Numbers could indicate a list or steps in a process." ID="ID_671452795" CREATED="1484848042166" MODIFIED="1486862695293">
+<icon BUILTIN="full-1"/>
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+<node TEXT="start with this" ID="ID_887176285" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
+<icon BUILTIN="full-1"/>
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+</node>
+<node TEXT="then do this" ID="ID_154353827" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
+<icon BUILTIN="full-2"/>
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+</node>
+<node TEXT="end with this" ID="ID_87037087" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
+<icon BUILTIN="full-3"/>
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+</node>
+</node>
+<node TEXT="Icons can show a task&apos;s degree of completion." ID="ID_887282665" CREATED="1484849003212" MODIFIED="1486862695293">
+<icon BUILTIN="75%"/>
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+</node>
+<node TEXT="A phone icon could represent a phone call you need to make." ID="ID_1030256041" CREATED="1484848073190" MODIFIED="1486862695293">
+<icon BUILTIN="kaddressbook"/>
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+<node TEXT="Sally .  sales report" ID="ID_893054637" CREATED="1484849125570" MODIFIED="1486862695293">
+<icon BUILTIN="kaddressbook"/>
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+</node>
+</node>
+<node TEXT="Multiple icons could simultaneously signify a task&apos;s priority, degree of completion, and assignment." ID="ID_607802171" CREATED="1484852960936" MODIFIED="1486862695293">
+<icon BUILTIN="yes"/>
+<icon BUILTIN="75%"/>
+<icon BUILTIN="female2"/>
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+</node>
+<node ID="ID_1884866034" CREATED="1484848626112" MODIFIED="1487472506476" MAX_WIDTH="197.99999427795427 pt" MIN_WIDTH="197.99999427795427 pt"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/eyes.png" width="50" height="24"/>
+    &#160;Icons add interest to a node.
+  </body>
+</html>
+</richcontent>
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+</node>
+<node TEXT="The list of possible uses is limited only by your imagination and image resources." ID="ID_493437171" CREATED="1484848833077" MODIFIED="1486862695293">
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="How to" STYLE_REF="Actions" FOLDED="true" ID="ID_1740754887" CREATED="1484432866260" MODIFIED="1486862695293">
+<node TEXT="Add icons" STYLE_REF="Title" FOLDED="true" ID="ID_1979910783" CREATED="1484486158310" MODIFIED="1484952561070">
+<node TEXT="Select the node(s) to add the icon(s)" ID="ID_603157997" CREATED="1484869372420" MODIFIED="1486864071453" NUMBERED="true"/>
+<node TEXT="Select the icon(s)" FOLDED="true" ID="ID_1528031964" CREATED="1484869449348" MODIFIED="1486864073660" NUMBERED="true">
+<node FOLDED="true" ID="ID_734895998" CREATED="1485686718725" MODIFIED="1486866650180"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      from <b>icons toolbar </b>on the left of the Freeplane window
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="To view or hide the icons toolbar" ID="ID_1024374565" CREATED="1484855525954" MODIFIED="1486866644413">
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+<node ID="ID_1997248528" CREATED="1484880867431" MODIFIED="1485686966172"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      select menubar <font color="#ff0000">View &gt; Toolbars &gt; Icons toolbar.</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="or click narrow bar on the side of the screen" ID="ID_1867932072" CREATED="1484882923124" MODIFIED="1485686901310">
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+<node ID="ID_1702416864" CREATED="1487472087749" MODIFIED="1487472149424"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p style="text-align: center">
+      .<img src="Images/icons%20toolbar%20-%20collapsed.png" width="13" height="96"/>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node ID="ID_1759148731" CREATED="1484492380951" MODIFIED="1486863191016"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      or right-click in an empty space of the background and select <font color="#ff0000">Icons toolbar</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+<node FOLDED="true" ID="ID_998441331" CREATED="1485686764133" MODIFIED="1486905873892"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      or from <b>icon table</b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node ID="ID_256379169" CREATED="1484885264854" MODIFIED="1485686636613"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To open, go to menubar <font color="#ff0000">Edit &gt; Icons&#160;&#160;&gt; Icons from table...</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node FOLDED="true" ID="ID_237427971" CREATED="1485686781337" MODIFIED="1486863730582"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      or from <b>icon by category</b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node ID="ID_487423767" CREATED="1484885332628" MODIFIED="1487724130007"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To open, go to menubar <font color="#ff0000">Edit &gt; Icons &gt; Icon by category...</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Remove icons" STYLE_REF="Title" FOLDED="true" ID="ID_1769644727" CREATED="1484485144258" MODIFIED="1486906267401">
+<node TEXT="Select the node(s) to remove the icon(s)" ID="ID_1372774021" CREATED="1484869955163" MODIFIED="1486863539704" NUMBERED="true"/>
+<node TEXT="Select the removing icon buttons from the icon lists" FOLDED="true" ID="ID_1737181500" CREATED="1484870282803" MODIFIED="1486863543645" NUMBERED="true">
+<node TEXT="" ID="ID_1994437896" CREATED="1486863644047" MODIFIED="1486863644049">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Remove first icon" ID="ID_595165340" CREATED="1455910903990" MODIFIED="1485686636628">
+<icon BUILTIN="../remove_first_icon"/>
+<node TEXT="Removes first icon from the left" ID="ID_1926988541" CREATED="1484486682135" MODIFIED="1485686636628"/>
+</node>
+<node TEXT="Remove last icon" ID="ID_1343573819" CREATED="1455910903992" MODIFIED="1485686636628">
+<icon BUILTIN="../remove_last_icon"/>
+<node TEXT="Removes last icon from the left" ID="ID_1253940352" CREATED="1484486733151" MODIFIED="1485686636628"/>
+</node>
+<node TEXT="Remove all icons" ID="ID_707885594" CREATED="1455910903993" MODIFIED="1485686636628">
+<icon BUILTIN="../icon_trash"/>
+</node>
+<node TEXT="" ID="ID_522487787" CREATED="1486863644042" MODIFIED="1486863644046">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node ID="ID_1232719756" CREATED="1484870370290" MODIFIED="1486863785503"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The removing icon buttons are available in the <b>Icons toolbar</b>, <b>Icon from table</b>&#160;and in menubar <font color="#ff0000">Edit &gt; Icons &gt; Remove icons</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Notes and explanations" STYLE_REF="Notes and explanations" FOLDED="true" ID="ID_1855530959" CREATED="1483416064359" MODIFIED="1484886273867">
+<node TEXT="Icons will always be to the left side of the text in the node core." ID="ID_767968557" CREATED="1484487645846" MODIFIED="1486862695296"/>
+<node TEXT="Icons cannot be added to node details or note fields." ID="ID_1846658795" CREATED="1484446117867" MODIFIED="1486862695296"/>
+<node TEXT="You can add your own icons to the icons tool bar." ID="ID_517979860" CREATED="1484446117872" MODIFIED="1486862695296">
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+<node ID="ID_13517895" CREATED="1484851987636" MODIFIED="1487729231707"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Put the file myicon.png in the <font color="#ff0000">icons</font>&#160;sub directory of the user directory which opens by going in the menubar <font color="#ff0000">Tools &gt; Open user directory.</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+</node>
+<node TEXT="The standard size for icons is 16x16 pixels." ID="ID_1542261268" CREATED="1484852652195" MODIFIED="1486862695297">
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+</node>
+</node>
+<node TEXT="Icons can be part of the formatting defined in styles." ID="ID_1134429850" CREATED="1484850910815" MODIFIED="1486862695297">
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+<node TEXT="See Styles" ID="ID_1700278070" CREATED="1484851109621" MODIFIED="1486912161682">
+<icon BUILTIN="mindmap"/>
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+</node>
+</node>
+<node ID="ID_1561678657" CREATED="1484849720612" MODIFIED="1486920314751"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The <b>icons toolbar</b>&#160;can be configured to show the icons grouped by category
+    </p>
+  </body>
+</html>
+</richcontent>
+<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+<node ID="ID_369858222" CREATED="1484849797821" MODIFIED="1486920839842"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To configure, go to menubar&#160;&#160;<font color="#ff0000">Tools&#160;&gt; Preferences &gt; Appearance tab &gt; Icons &gt; Structured icon toolbar</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<attribute_layout NAME_WIDTH="666.0 pt" VALUE_WIDTH="666.0 pt"/>
+</node>
+</node>
+</node>
+<node TEXT="Tips and tricks" STYLE_REF="Tips and tricks" FOLDED="true" ID="ID_193410620" CREATED="1485134404008" MODIFIED="1485646510769">
+<node ID="ID_1940730613" CREATED="1485134467974" MODIFIED="1486910131145"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The <b>Icon from table</b><font color="#ff0000">&#160;</font>can be accessed by creating a keyboard shortcut.
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="When the table is open" ID="ID_59151044" CREATED="1486909623235" MODIFIED="1486910137715">
+<node ID="ID_779439716" CREATED="1486909639512" MODIFIED="1486920902306"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      use keyboard arrow keys to select the desired icon and press <font color="#ff0000">Enter</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="or press keyboard key associated to the icon" ID="ID_227444843" CREATED="1486909613775" MODIFIED="1487724775330">
+<node ID="ID_1756914943" CREATED="1484849797821" MODIFIED="1487724837253"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To configure icon with keyboard key, go to menubar&#160;&#160;<font color="#ff0000">Tools&#160;&gt; Preferences &gt; Keystrokes tab. </font>Select the icon and press the desired&#160;&#160;keyboard key.
+    </p>
+  </body>
+</html>
+</richcontent>
+<attribute_layout NAME_WIDTH="666.0 pt" VALUE_WIDTH="666.0 pt"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="An icon can be added directly to a node by creating a keyboard shortcut." ID="ID_108466633" CREATED="1486910473258" MODIFIED="1486910728949">
+<node ID="ID_1227654490" CREATED="1484885332628" MODIFIED="1487724209915"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Create shortcut from <b>icon by category</b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="See Keyboard shortcuts" ID="ID_586369838" CREATED="1486911451158" MODIFIED="1486912166441">
+<icon BUILTIN="mindmap"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Old documentation" STYLE_REF="Old documentation" ID="ID_544454992" CREATED="1323433444639" MODIFIED="1498338269965" VGAP_QUANTITY="6.0 pt">
+<node ID="ID_1808643266" CREATED="1323437305973" MODIFIED="1498336146535" HGAP_QUANTITY="-32.0 px" VSHIFT_QUANTITY="273.0 px" STYLE="fork"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1183,6 +1537,7 @@
 </html>
 </richcontent>
 <edge STYLE="hide_edge"/>
+</node>
 </node>
 </node>
 <node TEXT="Images" STYLE_REF="Advanced" FOLDED="true" ID="ID_1795262306" CREATED="1323469507087" MODIFIED="1335300258068" MIN_WIDTH="80.0 px">
@@ -2324,7 +2679,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Editing a property" STYLE_REF="Advanced" FOLDED="true" ID="ID_1707940964" CREATED="1314163244315" MODIFIED="1323519043605" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="1.0 px" MAX_WIDTH="500.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Editing a property" STYLE_REF="Advanced" ID="ID_1707940964" CREATED="1314163244315" MODIFIED="1323519043605" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="1.0 px" MAX_WIDTH="500.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -2392,7 +2747,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Automatic node numbering" STYLE_REF="Advanced" FOLDED="true" ID="ID_1861361284" CREATED="1314283445398" MODIFIED="1323518950816" HGAP_QUANTITY="30.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Automatic node numbering" STYLE_REF="Advanced" ID="ID_1861361284" CREATED="1314283445398" MODIFIED="1323518950816" HGAP_QUANTITY="30.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -2914,7 +3269,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Other" STYLE_REF="Advanced" ID="ID_429763637" CREATED="1323251384433" MODIFIED="1335300487437" NUMBERED="true" MIN_WIDTH="90.0 px">
+<node TEXT="Other" STYLE_REF="Advanced" FOLDED="true" ID="ID_429763637" CREATED="1323251384433" MODIFIED="1335300487437" NUMBERED="true" MIN_WIDTH="90.0 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainWidth" LAST="false"/>
 </hook>
@@ -3036,7 +3391,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Publishing &amp; sharing" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_1613405030" CREATED="1314258163054" MODIFIED="1337158975198" NUMBERED="true" MIN_WIDTH="200.0 px" HGAP_QUANTITY="19.0 px" VSHIFT_QUANTITY="-17.0 px">
+<node TEXT="Publishing &amp; sharing" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_1613405030" CREATED="1314258163054" MODIFIED="1498338726866" NUMBERED="true" MIN_WIDTH="200.0 px">
 <node TEXT="Printing" STYLE_REF="Advanced" FOLDED="true" ID="ID_1344283469" CREATED="1314352873779" MODIFIED="1335300511773" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -3184,46 +3539,7 @@
 </node>
 </node>
 </node>
-<node LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_766584529" CREATED="1320005728532" MODIFIED="1334247867982" LINK="freeplaneApplications.mm" HGAP_QUANTITY="-4.0 px" VSHIFT_QUANTITY="158.0 px" TEXT_SHORTENED="true"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p style="text-align: center">
-      Applications index
-    </p>
-  </body>
-</html>
-</richcontent>
-<richcontent TYPE="DETAILS">
-
-<html>
-  <head>
-
-  </head>
-  <body>
-    <p>
-      Click the link to open a mind map with the main applications of Freeplane. An Internet connection is needed to follow the links in the index.<i>&#160;</i>
-    </p>
-    <p>
-
-    </p>
-    <p>
-      <b>Note </b>
-    </p>
-    <ul>
-      <li>
-        To return from the index map to this map: select <i>Navigate &gt;Go to previous map </i>(icon in tool bar)
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-</node>
-<node TEXT="Node extensions" STYLE_REF="Advanced" FOLDED="true" POSITION="left" ID="ID_143196514" CREATED="1314206563418" MODIFIED="1335300552660" NUMBERED="true" MIN_WIDTH="180.0 px">
+<node TEXT="Node extensions" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_143196514" CREATED="1314206563418" MODIFIED="1498338725473" NUMBERED="true" MIN_WIDTH="180.0 px">
 <node TEXT="Edit text in node details" STYLE_REF="Advanced" ID="ID_898889730" CREATED="1314197390735" MODIFIED="1335301078849"><richcontent TYPE="DETAILS">
 
 <html>
@@ -3605,7 +3921,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Notes of nodes" STYLE_REF="Advanced" FOLDED="true" POSITION="left" ID="ID_274601394" CREATED="1314208248182" MODIFIED="1335300552676" NUMBERED="true" MIN_WIDTH="180.0 px">
+<node TEXT="Notes of nodes" STYLE_REF="Advanced" FOLDED="true" POSITION="right" ID="ID_274601394" CREATED="1314208248182" MODIFIED="1335300552676" NUMBERED="true" MIN_WIDTH="180.0 px">
 <node ID="ID_1960771486" CREATED="1323524664411" MODIFIED="1329839626607"><richcontent TYPE="NODE">
 
 <html>
@@ -3638,7 +3954,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Date &amp; time actions" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_1959496513" CREATED="1303932101749" MODIFIED="1335300552676" NUMBERED="true" MIN_WIDTH="180.0 px">
+<node TEXT="Date &amp; time actions" STYLE_REF="Professional" FOLDED="true" POSITION="right" ID="ID_1959496513" CREATED="1303932101749" MODIFIED="1335300552676" NUMBERED="true" MIN_WIDTH="180.0 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
 </hook>
@@ -3835,7 +4151,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Filtering &amp; finding nodes" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_828862571" CREATED="1314109608813" MODIFIED="1335300552676" NUMBERED="true" MIN_WIDTH="180.0 px">
+<node TEXT="Filtering &amp; finding nodes" STYLE_REF="Professional" FOLDED="true" POSITION="right" ID="ID_828862571" CREATED="1314109608813" MODIFIED="1335300552676" NUMBERED="true" MIN_WIDTH="180.0 px">
 <node TEXT="Why filtering ?" STYLE_REF="Professional" FOLDED="true" ID="ID_887149959" CREATED="1314362530273" MODIFIED="1335301113247" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -4665,7 +4981,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Protecting map or nodes" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_1232153769" CREATED="1314339453691" MODIFIED="1335300552676" NUMBERED="true" MIN_WIDTH="180.0 px">
+<node TEXT="Protecting map or nodes" STYLE_REF="Professional" FOLDED="true" POSITION="right" ID="ID_1232153769" CREATED="1314339453691" MODIFIED="1335300552676" NUMBERED="true" MIN_WIDTH="180.0 px">
 <node TEXT="Protecting child nodes with a password" STYLE_REF="Professional" FOLDED="true" ID="ID_1433157907" CREATED="1314362016509" MODIFIED="1335301133075" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -4725,7 +5041,7 @@
 </node>
 </node>
 </node>
-<node TEXT="Fine tuning Freeplane" STYLE_REF="Professional" FOLDED="true" POSITION="left" ID="ID_1746471823" CREATED="1314215326284" MODIFIED="1335300552676" NUMBERED="true" MIN_WIDTH="180.0 px">
+<node TEXT="Fine tuning Freeplane" STYLE_REF="Professional" FOLDED="true" POSITION="right" ID="ID_1746471823" CREATED="1314215326284" MODIFIED="1335300552676" NUMBERED="true" MIN_WIDTH="180.0 px">
 <node ID="ID_931065203" CREATED="1323095428935" MODIFIED="1335301155181"><richcontent TYPE="NODE">
 
 <html>
@@ -5225,37 +5541,7 @@
 </node>
 </node>
 </node>
-<node LOCALIZED_STYLE_REF="default" POSITION="left" ID="ID_871432906" CREATED="1335301290823" MODIFIED="1335301474192" HGAP_QUANTITY="39.0 px" VSHIFT_QUANTITY="105.0 px">
-<icon BUILTIN="idea"/>
-<richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <a href="freeplane.mm#ID_1040911735">FAQ</a>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="FreeNode"/>
-<richcontent TYPE="DETAILS" HIDDEN="true">
-
-<html>
-  <head>
-
-  </head>
-  <body>
-    <p>
-      Frequently Asked Questions
-    </p>
-  </body>
-</html>
-</richcontent>
-</node>
-<node TEXT="Best practices" STYLE_REF="Beginner" FOLDED="true" POSITION="left" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1335300552676" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="180.0 px">
+<node TEXT="Best practices" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_722085722" CREATED="1314363768463" MODIFIED="1335300552676" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="180.0 px">
 <node STYLE_REF="Beginner" ID="ID_163805859" CREATED="1314422714136" MODIFIED="1335301176959"><richcontent TYPE="NODE">
 
 <html>
@@ -5483,7 +5769,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Map with all Freeplane Functions (index)" ID="ID_1680872369" CREATED="1329896383911" MODIFIED="1329897008344" LINK="#ID_232622736"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Map with all Freeplane Functions (index)" ID="ID_1680872369" CREATED="1329896383911" MODIFIED="1329897008344"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
@@ -5505,7 +5791,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="Map with example applications (index)" ID="ID_311616726" CREATED="1329896409752" MODIFIED="1329896989686" LINK="#ID_766584529"><richcontent TYPE="DETAILS" HIDDEN="true">
+<node TEXT="Map with example applications (index)" ID="ID_311616726" CREATED="1329896409752" MODIFIED="1329896989686"><richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>
   <head>
