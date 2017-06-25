@@ -57,10 +57,6 @@ class UpdateCheckAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private static final int ONE_DAY = 1 * 24 * 60 * 60 * 1000;
 	private static final String UPDATE_BUTTON_LOCATION = "main_toolbar_update";
-//	/**
-//	 * the url where to download the newest version
-//	 */
-//	private static final String WEB_DOWNLOAD_LOCATION_KEY = "webDownloadLocation";
 	/**
 	 * the url to check the local version against
 	 */

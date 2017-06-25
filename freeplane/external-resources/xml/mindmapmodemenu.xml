@@ -492,7 +492,6 @@
 			<Entry builder="separator" />
 			<Entry name="web_resources">
 				<Entry name="OpenFreeplaneSiteAction" />
-				<Entry name="WebDocuAction" />
 				<Entry name="AskForHelp" />
 				<Entry name="ReportBugAction" />
 				<Entry name="RequestFeatureAction" />
