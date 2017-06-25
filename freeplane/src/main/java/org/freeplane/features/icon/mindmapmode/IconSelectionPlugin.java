@@ -21,16 +21,12 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import javax.swing.Action;
-import javax.swing.ListModel;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconController;
-import org.freeplane.features.icon.IconRegistry;
-import org.freeplane.features.icon.MindIcon;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -50,24 +46,15 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 		ArrayList<IIconInformation> actions = new ArrayList<IIconInformation>();
 		
 		final Controller controller = Controller.getCurrentController();
-		final MapModel map = controller.getMap();
-		final IconRegistry iconRegistry = map.getIconRegistry();
-		final ListModel usedIcons = iconRegistry.getIconsAsListModel();
-		for(int i = 0; i < usedIcons.getSize(); i++){
-			final Object icon = usedIcons.getElementAt(i);
-			if(icon instanceof MindIcon){
-				actions.add(new IconAction((MindIcon) icon));
-			}
-		}
+
+		actions.add((IIconInformation) modeController.getAction("RemoveIcon_0_Action"));
+		actions.add((IIconInformation) modeController.getAction("RemoveIconAction"));
+		actions.add((IIconInformation) modeController.getAction("RemoveAllIconsAction"));
 
 		final MIconController mIconController = (MIconController) IconController.getController();
 		for (AFreeplaneAction aFreeplaneAction : mIconController.getIconActions())
 			actions.add((IIconInformation) aFreeplaneAction);
 		
-		actions.add((IIconInformation) modeController.getAction("RemoveIcon_0_Action"));
-		actions.add((IIconInformation) modeController.getAction("RemoveIconAction"));
-		actions.add((IIconInformation) modeController.getAction("RemoveAllIconsAction"));
-
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(UITools.getCurrentFrame(), actions);
 		final NodeModel selected = controller.getSelection().getSelected();
 		controller.getMapViewManager().scrollNodeToVisible(selected);
