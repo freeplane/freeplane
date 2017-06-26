@@ -1120,44 +1120,34 @@
 <icon BUILTIN="idea"/>
 <node TEXT="Purpose" STYLE_REF="Purpose" FOLDED="true" ID="ID_1191713608" CREATED="1483416459506" MODIFIED="1486862695292">
 <node TEXT="Icons, small images, visually add meaning and interest to nodes. Icons are stored in a library." ID="ID_1802196286" CREATED="1484847817993" MODIFIED="1498399225958" VGAP_QUANTITY="6.0 pt">
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 <node TEXT="The checkmark icon could symbolize a completed task." ID="ID_1383430036" CREATED="1484847880233" MODIFIED="1486862695292">
 <icon BUILTIN="button_ok"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 <node TEXT="Numbers could indicate a list or steps in a process." FOLDED="true" ID="ID_274182351" CREATED="1484848042166" MODIFIED="1486862695293">
 <icon BUILTIN="full-1"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 <node TEXT="start with this" ID="ID_1973884951" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
 <icon BUILTIN="full-1"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 <node TEXT="then do this" ID="ID_858036391" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
 <icon BUILTIN="full-2"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 <node TEXT="end with this" ID="ID_295495697" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
 <icon BUILTIN="full-3"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 </node>
 <node TEXT="Icons can show a task&apos;s degree of completion." ID="ID_1248120020" CREATED="1484849003212" MODIFIED="1486862695293">
 <icon BUILTIN="75%"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 <node TEXT="A phone icon could represent a phone call you need to make." FOLDED="true" ID="ID_22524611" CREATED="1484848073190" MODIFIED="1486862695293">
 <icon BUILTIN="kaddressbook"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 <node TEXT="Sally .  sales report" ID="ID_741182272" CREATED="1484849125570" MODIFIED="1486862695293">
 <icon BUILTIN="kaddressbook"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 </node>
 <node TEXT="Multiple icons could simultaneously signify a task&apos;s priority, degree of completion, and assignment." ID="ID_1400635179" CREATED="1484852960936" MODIFIED="1486862695293">
 <icon BUILTIN="yes"/>
 <icon BUILTIN="75%"/>
 <icon BUILTIN="female2"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 <node ID="ID_1146167776" CREATED="1484848626112" MODIFIED="1498404378714" MAX_WIDTH="197.99999427795427 pt" MIN_WIDTH="197.99999427795427 pt"><richcontent TYPE="NODE">
 
@@ -1171,10 +1161,8 @@
   </body>
 </html>
 </richcontent>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 <node TEXT="The list of possible uses is limited only by your imagination and image resources." ID="ID_1331259786" CREATED="1484848833077" MODIFIED="1486862695293">
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 </node>
 </node>
@@ -1196,7 +1184,6 @@
 </html>
 </richcontent>
 <node TEXT="To view or hide the icons toolbar" FOLDED="true" ID="ID_1070049060" CREATED="1484855525954" MODIFIED="1486866644413">
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 <node ID="ID_589325908" CREATED="1484880867431" MODIFIED="1485686966172"><richcontent TYPE="NODE">
 
 <html>
@@ -1212,7 +1199,6 @@
 </richcontent>
 </node>
 <node TEXT="or click narrow bar on the side of the screen" FOLDED="true" ID="ID_692093956" CREATED="1484882923124" MODIFIED="1485686901310">
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 <node ID="ID_671938622" CREATED="1487472087749" MODIFIED="1487472149424"><richcontent TYPE="NODE">
 
 <html>
@@ -1344,7 +1330,6 @@
 <node TEXT="Icons will always be to the left side of the text in the node core." ID="ID_1357575160" CREATED="1484487645846" MODIFIED="1486862695296"/>
 <node TEXT="Icons cannot be added to node details or note fields." ID="ID_895906040" CREATED="1484446117867" MODIFIED="1486862695296"/>
 <node TEXT="You can add your own icons to the icons tool bar." FOLDED="true" ID="ID_1645542217" CREATED="1484446117872" MODIFIED="1486862695296">
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 <node ID="ID_554800168" CREATED="1484851987636" MODIFIED="1487729231707"><richcontent TYPE="NODE">
 
 <html>
@@ -1358,17 +1343,13 @@
   </body>
 </html>
 </richcontent>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 <node TEXT="The standard size for icons is 16x16 pixels." ID="ID_1247642941" CREATED="1484852652195" MODIFIED="1486862695297">
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 </node>
 <node TEXT="Icons can be part of the formatting defined in styles." FOLDED="true" ID="ID_1539044466" CREATED="1484850910815" MODIFIED="1486862695297">
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 <node TEXT="See Styles" ID="ID_28365425" CREATED="1484851109621" MODIFIED="1486912161682">
 <icon BUILTIN="mindmap"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 </node>
 <node ID="ID_167245263" CREATED="1498400069883" MODIFIED="1498400177407"><richcontent TYPE="NODE">
@@ -1398,7 +1379,6 @@
   </body>
 </html>
 </richcontent>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 <node ID="ID_1329762567" CREATED="1484849797821" MODIFIED="1486920839842"><richcontent TYPE="NODE">
 
 <html>
@@ -2524,7 +2504,6 @@
 </node>
 </node>
 <node TEXT="External link" STYLE_REF="Beginner" FOLDED="true" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1335300461119" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" STYLE="combined">
-<attribute_layout NAME_WIDTH="61.5 pt" VALUE_WIDTH="120.75 pt"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3994,7 +3973,6 @@
 </node>
 <node TEXT="Attributes (node extension)" STYLE_REF="Professional" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1335301078849" MIN_WIDTH="1.0 px">
 <node TEXT="Attributes in node extensions" STYLE_REF="Professional" ID="ID_1657366174" CREATED="1314209542018" MODIFIED="1335096051051" HGAP_QUANTITY="-160.0 px" VSHIFT_QUANTITY="84.0 px" MAX_WIDTH="550.0 px">
-<attribute_layout NAME_WIDTH="25.5 pt" VALUE_WIDTH="69.0 pt"/>
 <attribute NAME="Name" VALUE="John"/>
 <attribute NAME="email" VALUE="john@gmail.com"/>
 <richcontent TYPE="DETAILS">
@@ -4073,7 +4051,6 @@
 </html>
 </richcontent>
 <node TEXT="Hyperlink (arrow) in attribute" STYLE_REF="Professional" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1323091000613" HGAP_QUANTITY="-550.0 px" VSHIFT_QUANTITY="80.0 px" MAX_WIDTH="550.0 px">
-<attribute_layout NAME_WIDTH="36.0 pt" VALUE_WIDTH="75.75 pt"/>
 <richcontent TYPE="DETAILS">
 
 <html>
@@ -4712,7 +4689,6 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<attribute_layout NAME_WIDTH="51.0 pt" VALUE_WIDTH="51.0 pt"/>
 </node>
 <node TEXT="Select all matching" STYLE_REF="ProfessionalTopic" ID="ID_164487469" CREATED="1310134532663" MODIFIED="1316165694652" TEXT_SHORTENED="true">
 <icon BUILTIN="../select_all_found_nodes"/>

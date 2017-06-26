@@ -2114,7 +2114,6 @@
 </node>
 </node>
 <node TEXT="&#x5916;&#x90e8;&#x30ea;&#x30f3;&#x30af;" STYLE_REF="Beginner" FOLDED="true" ID="ID_640110372" CREATED="1455910883508" MODIFIED="1455910883508" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" STYLE="combined">
-<attribute_layout NAME_WIDTH="61.5 pt" VALUE_WIDTH="120.75 pt"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3698,7 +3697,6 @@
 </node>
 <node TEXT="&#x5c5e;&#x6027;&#xff08;&#x30ce;&#x30fc;&#x30c9;&#x62e1;&#x5f35;&#x60c5;&#x5831;&#xff09;" STYLE_REF="Professional" FOLDED="true" ID="ID_1324773677" CREATED="1455910883522" MODIFIED="1455910883522" MIN_WIDTH="1.0 px">
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x62e1;&#x5f35;&#x60c5;&#x5831;&#x306e;&#x5c5e;&#x6027;" STYLE_REF="Professional" FOLDED="true" ID="ID_1657366174" CREATED="1455910883523" MODIFIED="1455910883523" HGAP_QUANTITY="-128.0 px" VSHIFT_QUANTITY="80.0 px" MAX_WIDTH="550.0 px">
-<attribute_layout NAME_WIDTH="24.75 pt" VALUE_WIDTH="61.5 pt"/>
 <attribute NAME="Name" VALUE="John"/>
 <attribute NAME="email" VALUE="john@gmail.com"/>
 <richcontent TYPE="DETAILS">
@@ -3780,7 +3778,6 @@
 </html>
 </richcontent>
 <node TEXT="&#x5c5e;&#x6027;&#x4e2d;&#x306e;&#x30cf;&#x30a4;&#x30d1;&#x30fc;&#x30ea;&#x30f3;&#x30af;&#xff08;&#x77e2;&#x5370;&#x578b;&#xff09;" STYLE_REF="Professional" ID="ID_457929879" CREATED="1455910883523" MODIFIED="1455910883523" HGAP_QUANTITY="-550.0 px" VSHIFT_QUANTITY="80.0 px" MAX_WIDTH="550.0 px">
-<attribute_layout NAME_WIDTH="36.0 pt" VALUE_WIDTH="75.75 pt"/>
 <richcontent TYPE="DETAILS">
 
 <html>
@@ -4503,7 +4500,6 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<attribute_layout NAME_WIDTH="51.0 pt" VALUE_WIDTH="51.0 pt"/>
 </node>
 <node TEXT="&#x8a72;&#x5f53;&#x30ce;&#x30fc;&#x30c9;&#x3092;&#x5168;&#x3066;&#x9078;&#x629e;" STYLE_REF="ProfessionalTopic" ID="ID_164487469" CREATED="1455910883534" MODIFIED="1455910883534" TEXT_SHORTENED="true">
 <icon BUILTIN="../select_all_found_nodes"/>
