@@ -449,7 +449,6 @@
 </node>
 </node>
 <node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;    &#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      Use new style &amp;quot;&lt;i&gt;attributes&lt;/i&gt;&amp;quot; for&#xa;    &lt;/p&gt;&#xa;    &lt;p&gt;&#xa;      attribute formatting&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="AutomaticLayout.level,2" FOLDED="true" ID="ID_698058179" CREATED="1462715806875" MODIFIED="1463594352254">
-<attribute_layout NAME_WIDTH="58.8 pt" VALUE_WIDTH="58.8 pt"/>
 <node LOCALIZED_STYLE_REF="AutomaticLayout.level,3" ID="ID_574796375" CREATED="1462715723949" MODIFIED="1464026364006" TEXT_ALIGN="LEFT"><richcontent TYPE="NODE">
 
 <html>
@@ -473,7 +472,6 @@
 </html>
 
 </richcontent>
-<attribute_layout NAME_WIDTH="108.6 pt" VALUE_WIDTH="151.79999999999998 pt"/>
 <attribute NAME="Edge Color is set to" VALUE="808080" OBJECT="org.freeplane.features.format.FormattedNumber|808080"/>
 <attribute NAME="Text Color is set to" VALUE="CCCCCC"/>
 </node>

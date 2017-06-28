@@ -21,7 +21,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <hook NAME="MapStyle">
     <conditional_styles>
@@ -137,7 +136,6 @@
   </body>
 </html>
 </richcontent>
-<attribute_layout NAME_WIDTH="666.0 pt" VALUE_WIDTH="666.0 pt"/>
 <attribute NAME="birth date" VALUE=""/>
 <attribute NAME="e-mail" VALUE=""/>
 </stylenode>
@@ -163,9 +161,7 @@
 </map_styles>
 </hook>
 <hook NAME="FirstGroupNode"/>
-<attribute_layout NAME_WIDTH="666.0 pt" VALUE_WIDTH="666.0 pt"/>
 <node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1341130602702" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200.0 px" HGAP_QUANTITY="22.0 px" VSHIFT_QUANTITY="16.0 px">
-<attribute_layout NAME_WIDTH="666.0 pt" VALUE_WIDTH="666.0 pt"/>
 <node ID="ID_131498432" CREATED="1479208899084" MODIFIED="1479210525907"><richcontent TYPE="NODE">
 
 <html>
@@ -287,7 +283,6 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
 </hook>
-<attribute_layout NAME_WIDTH="666.0 pt" VALUE_WIDTH="666.0 pt"/>
 </node>
 </node>
 <node TEXT="Main menu&apos;s" STYLE_REF="Beginner" FOLDED="true" ID="ID_767122736" CREATED="1333268936129" MODIFIED="1335300198085">
@@ -629,7 +624,6 @@
 </node>
 </node>
 <node TEXT="Core map" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_1337127972" CREATED="1314109409850" MODIFIED="1335300531741" NUMBERED="true" MIN_WIDTH="200.0 px">
-<attribute_layout NAME_WIDTH="666.0 pt" VALUE_WIDTH="666.0 pt"/>
 <node TEXT="Node core" STYLE_REF="Beginner" FOLDED="true" ID="ID_1370298116" CREATED="1315860175003" MODIFIED="1335300258084" MIN_WIDTH="115.0 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -1121,64 +1115,41 @@
 </node>
 </node>
 </node>
-<node TEXT="Icons" STYLE_REF="Advanced" FOLDED="true" ID="ID_115453444" CREATED="1323433444639" MODIFIED="1498336163563">
+<node TEXT="Icons" STYLE_REF="Advanced" FOLDED="true" ID="ID_1431316370" CREATED="1323433444639" MODIFIED="1498336163563">
 <icon BUILTIN="bookmark"/>
 <icon BUILTIN="idea"/>
-<node TEXT="Purpose" STYLE_REF="Purpose" FOLDED="true" ID="ID_1928023050" CREATED="1483416459506" MODIFIED="1486862695292">
-<node TEXT="Icons visually add meaning and interest to nodes." FOLDED="true" ID="ID_403306484" CREATED="1484847817993" MODIFIED="1498334000056" VGAP_QUANTITY="6.0 pt">
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
-<node STYLE_REF="Idea" ID="ID_1861850051" CREATED="1483838122037" MODIFIED="1498334000055"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      <img src="Images/examples.png" width="32" height="32"/>
-    </p>
-  </body>
-</html>
-</richcontent>
-<node TEXT="The checkmark icon could symbolize a completed task." ID="ID_1724715305" CREATED="1484847880233" MODIFIED="1486862695292">
+<node TEXT="Purpose" STYLE_REF="Purpose" FOLDED="true" ID="ID_1191713608" CREATED="1483416459506" MODIFIED="1486862695292">
+<node TEXT="Icons, small images, visually add meaning and interest to nodes. Icons are stored in a library." ID="ID_1802196286" CREATED="1484847817993" MODIFIED="1498399225958" VGAP_QUANTITY="6.0 pt">
+<node TEXT="The checkmark icon could symbolize a completed task." ID="ID_1383430036" CREATED="1484847880233" MODIFIED="1486862695292">
 <icon BUILTIN="button_ok"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
-<node TEXT="Numbers could indicate a list or steps in a process." ID="ID_671452795" CREATED="1484848042166" MODIFIED="1486862695293">
+<node TEXT="Numbers could indicate a list or steps in a process." FOLDED="true" ID="ID_274182351" CREATED="1484848042166" MODIFIED="1486862695293">
 <icon BUILTIN="full-1"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
-<node TEXT="start with this" ID="ID_887176285" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
+<node TEXT="start with this" ID="ID_1973884951" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
 <icon BUILTIN="full-1"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
-<node TEXT="then do this" ID="ID_154353827" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
+<node TEXT="then do this" ID="ID_858036391" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
 <icon BUILTIN="full-2"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
-<node TEXT="end with this" ID="ID_87037087" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
+<node TEXT="end with this" ID="ID_295495697" CREATED="1484848908293" MODIFIED="1486862695293" MAX_WIDTH="86.99999758601196 pt" MIN_WIDTH="86.99999758601196 pt">
 <icon BUILTIN="full-3"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 </node>
-<node TEXT="Icons can show a task&apos;s degree of completion." ID="ID_887282665" CREATED="1484849003212" MODIFIED="1486862695293">
+<node TEXT="Icons can show a task&apos;s degree of completion." ID="ID_1248120020" CREATED="1484849003212" MODIFIED="1486862695293">
 <icon BUILTIN="75%"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
-<node TEXT="A phone icon could represent a phone call you need to make." ID="ID_1030256041" CREATED="1484848073190" MODIFIED="1486862695293">
+<node TEXT="A phone icon could represent a phone call you need to make." FOLDED="true" ID="ID_22524611" CREATED="1484848073190" MODIFIED="1486862695293">
 <icon BUILTIN="kaddressbook"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
-<node TEXT="Sally .  sales report" ID="ID_893054637" CREATED="1484849125570" MODIFIED="1486862695293">
+<node TEXT="Sally .  sales report" ID="ID_741182272" CREATED="1484849125570" MODIFIED="1486862695293">
 <icon BUILTIN="kaddressbook"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 </node>
-<node TEXT="Multiple icons could simultaneously signify a task&apos;s priority, degree of completion, and assignment." ID="ID_607802171" CREATED="1484852960936" MODIFIED="1486862695293">
+<node TEXT="Multiple icons could simultaneously signify a task&apos;s priority, degree of completion, and assignment." ID="ID_1400635179" CREATED="1484852960936" MODIFIED="1486862695293">
 <icon BUILTIN="yes"/>
 <icon BUILTIN="75%"/>
 <icon BUILTIN="female2"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
-<node ID="ID_1884866034" CREATED="1484848626112" MODIFIED="1487472506476" MAX_WIDTH="197.99999427795427 pt" MIN_WIDTH="197.99999427795427 pt"><richcontent TYPE="NODE">
+<node ID="ID_1146167776" CREATED="1484848626112" MODIFIED="1498404378714" MAX_WIDTH="197.99999427795427 pt" MIN_WIDTH="197.99999427795427 pt"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1186,23 +1157,20 @@
   </head>
   <body>
     <img src="Images/eyes.png" width="50" height="24"/>
-    &#160;Icons add interest to a node.
+    &#160;User-created icons add interest to a node.
   </body>
 </html>
 </richcontent>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
-<node TEXT="The list of possible uses is limited only by your imagination and image resources." ID="ID_493437171" CREATED="1484848833077" MODIFIED="1486862695293">
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+<node TEXT="The list of possible uses is limited only by your imagination and image resources." ID="ID_1331259786" CREATED="1484848833077" MODIFIED="1486862695293">
 </node>
 </node>
 </node>
-</node>
-<node TEXT="How to" STYLE_REF="Actions" FOLDED="true" ID="ID_1740754887" CREATED="1484432866260" MODIFIED="1486862695293">
-<node TEXT="Add icons" STYLE_REF="Title" FOLDED="true" ID="ID_1979910783" CREATED="1484486158310" MODIFIED="1484952561070">
-<node TEXT="Select the node(s) to add the icon(s)" ID="ID_603157997" CREATED="1484869372420" MODIFIED="1486864071453" NUMBERED="true"/>
-<node TEXT="Select the icon(s)" FOLDED="true" ID="ID_1528031964" CREATED="1484869449348" MODIFIED="1486864073660" NUMBERED="true">
-<node FOLDED="true" ID="ID_734895998" CREATED="1485686718725" MODIFIED="1486866650180"><richcontent TYPE="NODE">
+<node TEXT="How to" STYLE_REF="Actions" FOLDED="true" ID="ID_986224846" CREATED="1484432866260" MODIFIED="1486862695293">
+<node TEXT="Add icons" STYLE_REF="Title" FOLDED="true" ID="ID_847488926" CREATED="1484486158310" MODIFIED="1484952561070">
+<node TEXT="Select the node(s) to add the icon(s)" ID="ID_923625819" CREATED="1484869372420" MODIFIED="1486864071453" NUMBERED="true"/>
+<node TEXT="Select the icon(s)" FOLDED="true" ID="ID_1472563474" CREATED="1484869449348" MODIFIED="1486864073660" NUMBERED="true">
+<node FOLDED="true" ID="ID_479891300" CREATED="1485686718725" MODIFIED="1486866650180"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1215,9 +1183,8 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="To view or hide the icons toolbar" ID="ID_1024374565" CREATED="1484855525954" MODIFIED="1486866644413">
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
-<node ID="ID_1997248528" CREATED="1484880867431" MODIFIED="1485686966172"><richcontent TYPE="NODE">
+<node TEXT="To view or hide the icons toolbar" FOLDED="true" ID="ID_1070049060" CREATED="1484855525954" MODIFIED="1486866644413">
+<node ID="ID_589325908" CREATED="1484880867431" MODIFIED="1485686966172"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1231,9 +1198,8 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="or click narrow bar on the side of the screen" ID="ID_1867932072" CREATED="1484882923124" MODIFIED="1485686901310">
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
-<node ID="ID_1702416864" CREATED="1487472087749" MODIFIED="1487472149424"><richcontent TYPE="NODE">
+<node TEXT="or click narrow bar on the side of the screen" FOLDED="true" ID="ID_692093956" CREATED="1484882923124" MODIFIED="1485686901310">
+<node ID="ID_671938622" CREATED="1487472087749" MODIFIED="1487472149424"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1248,7 +1214,7 @@
 </richcontent>
 </node>
 </node>
-<node ID="ID_1759148731" CREATED="1484492380951" MODIFIED="1486863191016"><richcontent TYPE="NODE">
+<node ID="ID_1561609221" CREATED="1484492380951" MODIFIED="1486863191016"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1264,7 +1230,7 @@
 </node>
 </node>
 </node>
-<node FOLDED="true" ID="ID_998441331" CREATED="1485686764133" MODIFIED="1486905873892"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1068764451" CREATED="1485686764133" MODIFIED="1486905873892"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1277,7 +1243,7 @@
   </body>
 </html>
 </richcontent>
-<node ID="ID_256379169" CREATED="1484885264854" MODIFIED="1485686636613"><richcontent TYPE="NODE">
+<node ID="ID_1442062176" CREATED="1484885264854" MODIFIED="1485686636613"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1292,7 +1258,7 @@
 </richcontent>
 </node>
 </node>
-<node FOLDED="true" ID="ID_237427971" CREATED="1485686781337" MODIFIED="1486863730582"><richcontent TYPE="NODE">
+<node FOLDED="true" ID="ID_1805114168" CREATED="1485686781337" MODIFIED="1486863730582"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1305,7 +1271,7 @@
   </body>
 </html>
 </richcontent>
-<node ID="ID_487423767" CREATED="1484885332628" MODIFIED="1487724130007"><richcontent TYPE="NODE">
+<node ID="ID_152116552" CREATED="1484885332628" MODIFIED="1487724130007"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1322,27 +1288,27 @@
 </node>
 </node>
 </node>
-<node TEXT="Remove icons" STYLE_REF="Title" FOLDED="true" ID="ID_1769644727" CREATED="1484485144258" MODIFIED="1486906267401">
-<node TEXT="Select the node(s) to remove the icon(s)" ID="ID_1372774021" CREATED="1484869955163" MODIFIED="1486863539704" NUMBERED="true"/>
-<node TEXT="Select the removing icon buttons from the icon lists" FOLDED="true" ID="ID_1737181500" CREATED="1484870282803" MODIFIED="1486863543645" NUMBERED="true">
-<node TEXT="" ID="ID_1994437896" CREATED="1486863644047" MODIFIED="1486863644049">
+<node TEXT="Remove icons" STYLE_REF="Title" FOLDED="true" ID="ID_1494420829" CREATED="1484485144258" MODIFIED="1486906267401">
+<node TEXT="Select the node(s) to remove the icon(s)" ID="ID_1263056057" CREATED="1484869955163" MODIFIED="1486863539704" NUMBERED="true"/>
+<node TEXT="Select the removing icon buttons from the icon lists" FOLDED="true" ID="ID_126519800" CREATED="1484870282803" MODIFIED="1498342497665" NUMBERED="true">
+<node TEXT="" ID="ID_60341091" CREATED="1486863644047" MODIFIED="1486863644049">
 <hook NAME="FirstGroupNode"/>
 </node>
-<node TEXT="Remove first icon" ID="ID_595165340" CREATED="1455910903990" MODIFIED="1485686636628">
+<node TEXT="Remove first icon" FOLDED="true" ID="ID_455258285" CREATED="1455910903990" MODIFIED="1485686636628">
 <icon BUILTIN="../remove_first_icon"/>
-<node TEXT="Removes first icon from the left" ID="ID_1926988541" CREATED="1484486682135" MODIFIED="1485686636628"/>
+<node TEXT="Removes first icon from the left" ID="ID_1987360523" CREATED="1484486682135" MODIFIED="1485686636628"/>
 </node>
-<node TEXT="Remove last icon" ID="ID_1343573819" CREATED="1455910903992" MODIFIED="1485686636628">
+<node TEXT="Remove last icon" FOLDED="true" ID="ID_1703739854" CREATED="1455910903992" MODIFIED="1485686636628">
 <icon BUILTIN="../remove_last_icon"/>
-<node TEXT="Removes last icon from the left" ID="ID_1253940352" CREATED="1484486733151" MODIFIED="1485686636628"/>
+<node TEXT="Removes last icon from the left" ID="ID_880182010" CREATED="1484486733151" MODIFIED="1485686636628"/>
 </node>
-<node TEXT="Remove all icons" ID="ID_707885594" CREATED="1455910903993" MODIFIED="1485686636628">
+<node TEXT="Remove all icons" ID="ID_530100091" CREATED="1455910903993" MODIFIED="1485686636628">
 <icon BUILTIN="../icon_trash"/>
 </node>
-<node TEXT="" ID="ID_522487787" CREATED="1486863644042" MODIFIED="1486863644046">
+<node TEXT="" ID="ID_695306571" CREATED="1486863644042" MODIFIED="1486863644046">
 <hook NAME="SummaryNode"/>
 <hook NAME="AlwaysUnfoldedNode"/>
-<node ID="ID_1232719756" CREATED="1484870370290" MODIFIED="1486863785503"><richcontent TYPE="NODE">
+<node ID="ID_1982056949" CREATED="1484870370290" MODIFIED="1486863785503"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1360,12 +1326,11 @@
 </node>
 </node>
 </node>
-<node TEXT="Notes and explanations" STYLE_REF="Notes and explanations" FOLDED="true" ID="ID_1855530959" CREATED="1483416064359" MODIFIED="1484886273867">
-<node TEXT="Icons will always be to the left side of the text in the node core." ID="ID_767968557" CREATED="1484487645846" MODIFIED="1486862695296"/>
-<node TEXT="Icons cannot be added to node details or note fields." ID="ID_1846658795" CREATED="1484446117867" MODIFIED="1486862695296"/>
-<node TEXT="You can add your own icons to the icons tool bar." ID="ID_517979860" CREATED="1484446117872" MODIFIED="1486862695296">
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
-<node ID="ID_13517895" CREATED="1484851987636" MODIFIED="1487729231707"><richcontent TYPE="NODE">
+<node TEXT="Notes and explanations" STYLE_REF="Notes and explanations" FOLDED="true" ID="ID_775665519" CREATED="1483416064359" MODIFIED="1484886273867">
+<node TEXT="Icons will always be to the left side of the text in the node core." ID="ID_1357575160" CREATED="1484487645846" MODIFIED="1486862695296"/>
+<node TEXT="Icons cannot be added to node details or note fields." ID="ID_895906040" CREATED="1484446117867" MODIFIED="1486862695296"/>
+<node TEXT="You can add your own icons to the icons tool bar." FOLDED="true" ID="ID_1645542217" CREATED="1484446117872" MODIFIED="1486862695296">
+<node ID="ID_554800168" CREATED="1484851987636" MODIFIED="1487729231707"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1378,20 +1343,30 @@
   </body>
 </html>
 </richcontent>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
-<node TEXT="The standard size for icons is 16x16 pixels." ID="ID_1542261268" CREATED="1484852652195" MODIFIED="1486862695297">
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
+<node TEXT="The standard size for icons is 16x16 pixels." ID="ID_1247642941" CREATED="1484852652195" MODIFIED="1486862695297">
 </node>
 </node>
-<node TEXT="Icons can be part of the formatting defined in styles." ID="ID_1134429850" CREATED="1484850910815" MODIFIED="1486862695297">
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
-<node TEXT="See Styles" ID="ID_1700278070" CREATED="1484851109621" MODIFIED="1486912161682">
+<node TEXT="Icons can be part of the formatting defined in styles." FOLDED="true" ID="ID_1539044466" CREATED="1484850910815" MODIFIED="1486862695297">
+<node TEXT="See Styles" ID="ID_28365425" CREATED="1484851109621" MODIFIED="1486912161682">
 <icon BUILTIN="mindmap"/>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
 </node>
 </node>
-<node ID="ID_1561678657" CREATED="1484849720612" MODIFIED="1486920314751"><richcontent TYPE="NODE">
+<node ID="ID_167245263" CREATED="1498400069883" MODIFIED="1498400177407"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Icons size can be defined in <font color="#ff0000">Tool panel &gt; Format tab</font>.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node FOLDED="true" ID="ID_244625014" CREATED="1484849720612" MODIFIED="1486920314751"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1404,8 +1379,7 @@
   </body>
 </html>
 </richcontent>
-<attribute_layout NAME_WIDTH="111.0 pt" VALUE_WIDTH="111.0 pt"/>
-<node ID="ID_369858222" CREATED="1484849797821" MODIFIED="1486920839842"><richcontent TYPE="NODE">
+<node ID="ID_1329762567" CREATED="1484849797821" MODIFIED="1486920839842"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1418,12 +1392,26 @@
   </body>
 </html>
 </richcontent>
-<attribute_layout NAME_WIDTH="666.0 pt" VALUE_WIDTH="666.0 pt"/>
 </node>
 </node>
+<node FOLDED="true" ID="ID_809234500" CREATED="1498399333704" MODIFIED="1498399665913"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      To hide or show icons in Freeplane, go to menubar <font color="#ff0000">View &gt; View settings &gt; Show icons</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Icons defined in styles are not affected by this command and will always be visible." ID="ID_1740089631" CREATED="1498399574745" MODIFIED="1498400047761"/>
 </node>
-<node TEXT="Tips and tricks" STYLE_REF="Tips and tricks" FOLDED="true" ID="ID_193410620" CREATED="1485134404008" MODIFIED="1485646510769">
-<node ID="ID_1940730613" CREATED="1485134467974" MODIFIED="1486910131145"><richcontent TYPE="NODE">
+</node>
+<node TEXT="Tips and tricks" STYLE_REF="Tips and tricks" FOLDED="true" ID="ID_1486114448" CREATED="1485134404008" MODIFIED="1485646510769">
+<node ID="ID_1063135647" CREATED="1485134467974" MODIFIED="1486910131145"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1436,8 +1424,8 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="When the table is open" ID="ID_59151044" CREATED="1486909623235" MODIFIED="1486910137715">
-<node ID="ID_779439716" CREATED="1486909639512" MODIFIED="1486920902306"><richcontent TYPE="NODE">
+<node TEXT="When the table is open" ID="ID_1102406095" CREATED="1486909623235" MODIFIED="1486910137715">
+<node ID="ID_1850097041" CREATED="1486909639512" MODIFIED="1486920902306"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1451,8 +1439,8 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="or press keyboard key associated to the icon" ID="ID_227444843" CREATED="1486909613775" MODIFIED="1487724775330">
-<node ID="ID_1756914943" CREATED="1484849797821" MODIFIED="1487724837253"><richcontent TYPE="NODE">
+<node TEXT="or press keyboard key associated to the icon" ID="ID_1722243233" CREATED="1486909613775" MODIFIED="1487724775330">
+<node ID="ID_1324069885" CREATED="1484849797821" MODIFIED="1487724837253"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1465,14 +1453,13 @@
   </body>
 </html>
 </richcontent>
-<attribute_layout NAME_WIDTH="666.0 pt" VALUE_WIDTH="666.0 pt"/>
 <hook NAME="AlwaysUnfoldedNode"/>
 </node>
 </node>
 </node>
 </node>
-<node TEXT="An icon can be added directly to a node by creating a keyboard shortcut." ID="ID_108466633" CREATED="1486910473258" MODIFIED="1486910728949">
-<node ID="ID_1227654490" CREATED="1484885332628" MODIFIED="1487724209915"><richcontent TYPE="NODE">
+<node TEXT="An icon can be added directly to a node by creating a keyboard shortcut." ID="ID_13536085" CREATED="1486910473258" MODIFIED="1486910728949">
+<node ID="ID_1355972436" CREATED="1484885332628" MODIFIED="1487724209915"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1485,58 +1472,10 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="See Keyboard shortcuts" ID="ID_586369838" CREATED="1486911451158" MODIFIED="1486912166441">
+<node TEXT="See Keyboard shortcuts" ID="ID_162060797" CREATED="1486911451158" MODIFIED="1486912166441">
 <icon BUILTIN="mindmap"/>
 </node>
 </node>
-</node>
-</node>
-<node TEXT="Old documentation" STYLE_REF="Old documentation" ID="ID_544454992" CREATED="1323433444639" MODIFIED="1498338269965" VGAP_QUANTITY="6.0 pt">
-<node ID="ID_1808643266" CREATED="1323437305973" MODIFIED="1498336146535" HGAP_QUANTITY="-32.0 px" VSHIFT_QUANTITY="273.0 px" STYLE="fork"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      An icon is a small picture. Freeplane has a library with icons. There are several menu's to select and an icon:
-    </p>
-    <ol>
-      <li>
-        The bar of icons which is showing at the side of the screen. If it is not showing, select <i>View &gt; Controls &gt; Icons toolbar.</i>
-      </li>
-      <li>
-        A table of icons which is displayed when you select <i>Edit&#160;&gt; Icons &gt; Icon from table.</i>
-      </li>
-      <li>
-        The structured menu of icons showing when you select <i>Edit &gt; Icons&#160;&#160;&gt; Icons by category. </i>
-      </li>
-    </ol>
-    <p>
-      To add an icon to a node, select the node, then select the icon. To delete an icon, select the icon-remove first/last icon. These icons have a red cross
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Note</b>
-    </p>
-    <ul>
-      <li>
-        You can add more icons to the same node core.
-      </li>
-      <li>
-        Icons cannot be added to node details or note fields.
-      </li>
-      <li>
-        It is possible to define and add your own icons to the tool bar.
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<edge STYLE="hide_edge"/>
 </node>
 </node>
 </node>
@@ -1702,11 +1641,12 @@
 </node>
 </node>
 </node>
-<node TEXT="Joining nodes" STYLE_REF="Professional" FOLDED="true" ID="ID_998103410" CREATED="1316668137651" MODIFIED="1335300258068" MAX_WIDTH="600.0 px" MIN_WIDTH="100.0 px" STYLE="combined">
+<node TEXT="Joining nodes" STYLE_REF="Professional" FOLDED="true" ID="ID_814086601" CREATED="1316668137651" MODIFIED="1485047368602">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_795220191" CREATED="1323468276180" MODIFIED="1335095126221" HGAP_QUANTITY="-84.0 px" VSHIFT_QUANTITY="80.0 px"><richcontent TYPE="NODE">
+<node TEXT="Purpose" STYLE_REF="Purpose" FOLDED="true" ID="ID_689755140" CREATED="1483416459506" MODIFIED="1487726279172">
+<node ID="ID_55050823" CREATED="1483416448677" MODIFIED="1487726279178"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -1714,28 +1654,272 @@
   </head>
   <body>
     <p>
-      The text of different node cores can be combined by selecting the nodes and choosing menu <i>Edit &gt; Node core &gt; Join nodes. </i>Child nodes of the joind nodes become childs of the new joined node.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Note</b>
+      To combine the text of two or more node cores. The default separators are:
     </p>
     <ul>
       <li>
-        This only works well if the node doesn't contain other node components like node details.
+        Joining with line breaks
       </li>
       <li>
-        Hot key: <i>Ctrl + J</i>
+        Joining with blank space
+      </li>
+      <li>
+        Joining with comma and blank space
       </li>
     </ul>
   </body>
 </html>
 </richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
-</hook>
+</node>
+</node>
+<node TEXT="How to" STYLE_REF="Actions" FOLDED="true" ID="ID_77345376" CREATED="1484432866260" MODIFIED="1487726279179">
+<node TEXT="Join with line breaks" STYLE_REF="Title" ID="ID_823920383" CREATED="1483417620673" MODIFIED="1484957599293">
+<node TEXT="" ID="ID_309710236" CREATED="1484870176142" MODIFIED="1484870176145">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Select the nodes to join" ID="ID_1095567996" CREATED="1484693466826" MODIFIED="1487726279186" NUMBERED="true"/>
+<node ID="ID_1622448351" CREATED="1484693487626" MODIFIED="1487726279187" NUMBERED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Press <font color="#ff0000">ALT + J</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node ID="ID_984019961" CREATED="1483417662303" MODIFIED="1487726279188"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      or go to menubar
+    </p>
+    <p>
+      <font color="#ff0000">Edit &gt; Node core &gt; Join nodes with &quot;/n&quot;</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="" ID="ID_1356926959" CREATED="1484870176136" MODIFIED="1484870176141">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Joining nodes A, B and C" ID="ID_1357475978" CREATED="1485025797446" MODIFIED="1487726279189">
+<node TEXT="A" ID="ID_944587770" CREATED="1483837176198" MODIFIED="1487726279190">
+<node TEXT="B" ID="ID_904135208" CREATED="1483837178563" MODIFIED="1487726279191" VGAP_QUANTITY="6.0 pt">
+<node TEXT="C" ID="ID_1686214765" CREATED="1484436785819" MODIFIED="1487726279192">
+<node TEXT="becomes" ID="ID_1072413837" CREATED="1487726121544" MODIFIED="1487726123195">
+<node TEXT="A&#xa;B&#xa;C" ID="ID_947222609" CREATED="1483837176198" MODIFIED="1487726279192"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="" ID="ID_461843294" CREATED="1483837393556" MODIFIED="1483837393584">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="A" ID="ID_1638063314" CREATED="1484436818315" MODIFIED="1487726279200"/>
+<node TEXT="B" ID="ID_414439227" CREATED="1484436820347" MODIFIED="1487726279201"/>
+<node TEXT="C" ID="ID_1094078492" CREATED="1484436822066" MODIFIED="1487726279202"/>
+<node TEXT="" ID="ID_1200189072" CREATED="1483837393498" MODIFIED="1483837393549">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="becomes" ID="ID_1989777097" CREATED="1487726121544" MODIFIED="1487726123195">
+<node TEXT="A&#xa;B&#xa;C" ID="ID_566794397" CREATED="1483837176198" MODIFIED="1487726279203"/>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Join with blank space" STYLE_REF="Title" ID="ID_1830677552" CREATED="1483417620673" MODIFIED="1484957603634">
+<node TEXT="" ID="ID_630275069" CREATED="1484870198006" MODIFIED="1484870198009">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Select the nodes to join" ID="ID_614831548" CREATED="1484693466826" MODIFIED="1487726279209" NUMBERED="true"/>
+<node ID="ID_332438887" CREATED="1483417662303" MODIFIED="1487726279210" NUMBERED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Go to menubar
+    </p>
+    <p>
+      <font color="#ff0000">Edit &gt; Node core &gt; Join nodes with &quot; &quot;</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="" ID="ID_58127252" CREATED="1484870197996" MODIFIED="1484870198005">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Joining nodes A, B and C" ID="ID_185956720" CREATED="1485025797446" MODIFIED="1487726279211">
+<node TEXT="A" ID="ID_496862064" CREATED="1483837176198" MODIFIED="1487726279212">
+<node TEXT="B" ID="ID_86263605" CREATED="1483837178563" MODIFIED="1487726279213" VGAP_QUANTITY="6.0 pt">
+<node TEXT="C" ID="ID_919592341" CREATED="1484436785819" MODIFIED="1487726279214">
+<node TEXT="becomes" ID="ID_609286541" CREATED="1487726121544" MODIFIED="1487726123195">
+<node TEXT="A B C" ID="ID_121989495" CREATED="1483837176198" MODIFIED="1487726279215"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="" ID="ID_185335784" CREATED="1483837393556" MODIFIED="1483837393584">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="A" ID="ID_1199748496" CREATED="1484436818315" MODIFIED="1487726279215"/>
+<node TEXT="B" ID="ID_24013156" CREATED="1484436820347" MODIFIED="1487726279217"/>
+<node TEXT="C" ID="ID_1573367934" CREATED="1484436822066" MODIFIED="1487726279217"/>
+<node TEXT="" ID="ID_1461781234" CREATED="1483837393498" MODIFIED="1483837393549">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="becomes" ID="ID_1737353920" CREATED="1487726121544" MODIFIED="1487726123195">
+<node TEXT="A B C" ID="ID_1505752164" CREATED="1483837176198" MODIFIED="1487726279218"/>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Join with comma and blank space" STYLE_REF="Title" ID="ID_922691588" CREATED="1483417620673" MODIFIED="1484957610008">
+<node TEXT="" ID="ID_1864471857" CREATED="1484870212236" MODIFIED="1484870212238">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Select the nodes to join" ID="ID_771240835" CREATED="1484693466826" MODIFIED="1487726279219" NUMBERED="true"/>
+<node ID="ID_93510070" CREATED="1483417662303" MODIFIED="1487726279220" NUMBERED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Go to menubar
+    </p>
+    <p>
+      <font color="#ff0000">Edit &gt; Node core &gt; Join nodes with &quot;, &quot;</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="" ID="ID_950336731" CREATED="1484870212229" MODIFIED="1484870212235">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Joining nodes A, B and C" ID="ID_459463810" CREATED="1485025797446" MODIFIED="1487726279221">
+<node TEXT="A" ID="ID_696732484" CREATED="1483837176198" MODIFIED="1487726279222">
+<node TEXT="B" ID="ID_1629821935" CREATED="1483837178563" MODIFIED="1487726279223" VGAP_QUANTITY="6.0 pt">
+<node TEXT="C" ID="ID_1181763331" CREATED="1484436785819" MODIFIED="1487726279224">
+<node TEXT="becomes" ID="ID_1916280882" CREATED="1487726121544" MODIFIED="1487726123195">
+<node TEXT="A, B, C" ID="ID_1243347679" CREATED="1483837176198" MODIFIED="1487726279225"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="" ID="ID_1439622475" CREATED="1483837393556" MODIFIED="1483837393584">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="A" ID="ID_1705498375" CREATED="1484436818315" MODIFIED="1487726279225"/>
+<node TEXT="B" ID="ID_1871084949" CREATED="1484436820347" MODIFIED="1487726279227"/>
+<node TEXT="C" ID="ID_848933378" CREATED="1484436822066" MODIFIED="1487726279227"/>
+<node TEXT="" ID="ID_1551557139" CREATED="1483837393498" MODIFIED="1483837393549">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="becomes" ID="ID_1837330280" CREATED="1487726121544" MODIFIED="1487726123195">
+<node TEXT="A, B, C" ID="ID_306306591" CREATED="1483837176198" MODIFIED="1487726279228"/>
+</node>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Notes and explanations" STYLE_REF="Notes and explanations" FOLDED="true" ID="ID_1394935735" CREATED="1483416064359" MODIFIED="1484869816859">
+<node TEXT="Nodes will be joined following an order from top to bottom. The order of node selection will not determine the joining order." ID="ID_105498186" CREATED="1483486745522" MODIFIED="1498411060822"/>
+<node TEXT="Child nodes of the selected nodes to join will become children nodes of the new joined node." ID="ID_1264602690" CREATED="1483419689931" MODIFIED="1487726279244">
+<node ID="ID_1252211151" CREATED="1484437260206" MODIFIED="1498411119841"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Joining node &quot;A&quot; and node &quot;1&quot; using the command &quot;<b>Joining with blank space&quot;</b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="" ID="ID_1236367519" CREATED="1484437206434" MODIFIED="1484437206436">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="A" ID="ID_527302135" CREATED="1483837176198" MODIFIED="1487726279255">
+<node TEXT="B" ID="ID_516281758" CREATED="1483837178563" MODIFIED="1487726279256" VGAP_QUANTITY="6.0 pt">
+<node TEXT="C" ID="ID_191576178" CREATED="1484436785819" MODIFIED="1487726279257"/>
+<node TEXT="D" ID="ID_1800336580" CREATED="1484437130982" MODIFIED="1487726279259">
+<node TEXT="E" ID="ID_1559269563" CREATED="1484437140408" MODIFIED="1487726279260"/>
+</node>
+</node>
+</node>
+<node TEXT="1" ID="ID_178711661" CREATED="1484437167654" MODIFIED="1487726279260">
+<node TEXT="2" ID="ID_1625670450" CREATED="1484437171832" MODIFIED="1487726279261">
+<node TEXT="3" ID="ID_1168372199" CREATED="1484437172512" MODIFIED="1487726279262">
+<node TEXT="4" ID="ID_1320926659" CREATED="1484437174414" MODIFIED="1487726279262"/>
+</node>
+</node>
+</node>
+<node TEXT="" ID="ID_266108770" CREATED="1484437206429" MODIFIED="1484437206433">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="becomes" ID="ID_1261308493" CREATED="1487726121544" MODIFIED="1487726123195">
+<node TEXT="A 1" ID="ID_1760066374" CREATED="1483837178563" MODIFIED="1487726279263" VGAP_QUANTITY="6.0 pt">
+<node TEXT="B" ID="ID_614855328" CREATED="1484439534439" MODIFIED="1487726279264">
+<node TEXT="C" ID="ID_1845867902" CREATED="1484436785819" MODIFIED="1487726279265"/>
+<node TEXT="D" ID="ID_809296389" CREATED="1484437130982" MODIFIED="1487726279265">
+<node TEXT="E" ID="ID_206671460" CREATED="1484437140408" MODIFIED="1487726279266"/>
+</node>
+</node>
+<node TEXT="2" ID="ID_703968223" CREATED="1484437171832" MODIFIED="1487726279267">
+<node TEXT="3" ID="ID_1103892878" CREATED="1484437172512" MODIFIED="1487726279267">
+<node TEXT="4" ID="ID_1963345462" CREATED="1484437174414" MODIFIED="1487726279268"/>
+</node>
+</node>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Joining nodes works best if the nodes selected do not contain other node components like node details, notes and attributes." ID="ID_262182822" CREATED="1483419527385" MODIFIED="1487726279269">
+<node TEXT="These components will be preserved only in the node in which all others will be joined into." ID="ID_1962604429" CREATED="1487725497106" MODIFIED="1487725497109"/>
+</node>
+<node ID="ID_1678415541" CREATED="1487725785765" MODIFIED="1498417557001" MAX_WIDTH="560.9999834597115 pt" MIN_WIDTH="560.9999834597115 pt"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      It is possible to configure other types of text separators by going into menubar&#160; <font color="#ff0000">Tools &gt; Preferences &gt; Behavior tab </font>and adding the desired separator between double brackets in the Text separator box. For example, adding {{-}} will add the new command in the menubar <font color="#ff0000">Edit &gt; Node core &gt; Join nodes with &quot;-&quot;. </font>
+    </p>
+    <p>
+      
+    </p>
+    <img src="Images/Preferences_Joining%20nodes.png" width="736" height="59"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Tips and tricks" STYLE_REF="Tips and tricks" FOLDED="true" ID="ID_347117512" CREATED="1485134404008" MODIFIED="1498419016831">
+<node TEXT="This command can be hotkey configurable." ID="ID_49447036" CREATED="1498418406461" MODIFIED="1498418421626"/>
 </node>
 </node>
 <node TEXT="Splitting a node" STYLE_REF="Professional" FOLDED="true" ID="ID_247213553" CREATED="1316668117473" MODIFIED="1335300258084" MAX_WIDTH="600.0 px" MIN_WIDTH="100.0 px" STYLE="combined">
@@ -2320,7 +2504,6 @@
 </node>
 </node>
 <node TEXT="External link" STYLE_REF="Beginner" FOLDED="true" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1335300461119" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" STYLE="combined">
-<attribute_layout NAME_WIDTH="61.5 pt" VALUE_WIDTH="120.75 pt"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3790,7 +3973,6 @@
 </node>
 <node TEXT="Attributes (node extension)" STYLE_REF="Professional" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1335301078849" MIN_WIDTH="1.0 px">
 <node TEXT="Attributes in node extensions" STYLE_REF="Professional" ID="ID_1657366174" CREATED="1314209542018" MODIFIED="1335096051051" HGAP_QUANTITY="-160.0 px" VSHIFT_QUANTITY="84.0 px" MAX_WIDTH="550.0 px">
-<attribute_layout NAME_WIDTH="25.5 pt" VALUE_WIDTH="69.0 pt"/>
 <attribute NAME="Name" VALUE="John"/>
 <attribute NAME="email" VALUE="john@gmail.com"/>
 <richcontent TYPE="DETAILS">
@@ -3869,7 +4051,6 @@
 </html>
 </richcontent>
 <node TEXT="Hyperlink (arrow) in attribute" STYLE_REF="Professional" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1323091000613" HGAP_QUANTITY="-550.0 px" VSHIFT_QUANTITY="80.0 px" MAX_WIDTH="550.0 px">
-<attribute_layout NAME_WIDTH="36.0 pt" VALUE_WIDTH="75.75 pt"/>
 <richcontent TYPE="DETAILS">
 
 <html>
@@ -4508,7 +4689,6 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<attribute_layout NAME_WIDTH="51.0 pt" VALUE_WIDTH="51.0 pt"/>
 </node>
 <node TEXT="Select all matching" STYLE_REF="ProfessionalTopic" ID="ID_164487469" CREATED="1310134532663" MODIFIED="1316165694652" TEXT_SHORTENED="true">
 <icon BUILTIN="../select_all_found_nodes"/>

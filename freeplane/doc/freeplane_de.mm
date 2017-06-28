@@ -383,7 +383,6 @@
 </node>
 <node TEXT="Knoten k&#xf6;nnen Attribute haben" ID="ID_1044646484" CREATED="1270893318566" MODIFIED="1274817881371" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<attribute_layout NAME_WIDTH="30.0 pt" VALUE_WIDTH="36.75 pt"/>
 <attribute NAME="x" VALUE="10"/>
 <attribute NAME="y" VALUE="20"/>
 </node>
@@ -2470,7 +2469,6 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Ein Knoten kann Attribute haben" ID="ID_1293545211" CREATED="1270893318566" MODIFIED="1275062896518">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<attribute_layout NAME_WIDTH="30.0 pt" VALUE_WIDTH="36.75 pt"/>
 <attribute NAME="x" VALUE="10"/>
 <attribute NAME="y" VALUE="20"/>
 </node>

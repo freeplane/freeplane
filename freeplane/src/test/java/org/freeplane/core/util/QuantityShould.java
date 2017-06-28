@@ -112,6 +112,12 @@ public class QuantityShould {
 		assertThat(first.add(second), equalTo(new Quantity<Metrics>(300, Metrics.cm)));
 	}
 
+	
+	@Test
+	public void zoomQuantity() throws Exception {
+		Quantity<Metrics> q = new Quantity<Metrics>(100, Metrics.cm);
+		assertThat(q.zoomBy(0.5), equalTo(new Quantity<Metrics>(50, Metrics.cm)));
+	}
 	@Test
 	public void addQuantitiesGivenAsPrimitives() throws Exception {
 		Quantity<Metrics> first = new Quantity<Metrics>(100, Metrics.cm);
