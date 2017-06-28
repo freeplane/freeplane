@@ -392,7 +392,6 @@
 </node>
 <node TEXT="Les noeuds peuvent avoir des attributs" ID="ID_1044646484" CREATED="1270893318566" MODIFIED="1275421927062" COLOR="#407000">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<attribute_layout NAME_WIDTH="30.0 pt" VALUE_WIDTH="36.75 pt"/>
 <attribute NAME="x" VALUE="10"/>
 <attribute NAME="y" VALUE="20"/>
 </node>
@@ -749,7 +748,6 @@
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 <node TEXT="Les noeuds peuvent poss&#xe9;der des attributs" ID="ID_1293545211" CREATED="1270893318566" MODIFIED="1277229590453">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-<attribute_layout NAME_WIDTH="30.0 pt" VALUE_WIDTH="36.75 pt"/>
 <attribute NAME="x" VALUE="10"/>
 <attribute NAME="y" VALUE="20"/>
 </node>

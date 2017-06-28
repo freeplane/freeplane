@@ -50,7 +50,6 @@ public class HelpController implements IExtension {
 		controller.addAction(new OpenSourceForgeURLAction("ReportBugAction",  resourceController.getProperty("bugTrackerLocation")));
 		controller.addAction(new OpenSourceForgeURLAction("RequestFeatureAction",  resourceController.getProperty("featureTrackerLocation")));
 		controller.addAction(new OpenSourceForgeURLAction("AskForHelp",  resourceController.getProperty("helpForumLocation")));
-		controller.addAction(new OpenURLAction("WebDocuAction",  resourceController.getProperty("webDocuLocation")));
 		final String defaultMap = resourceController.getProperty("docu_map");
 		controller.addAction(new DocumentationAction("DocumentationAction", defaultMap));
 		final String tutorialMap = resourceController.getProperty("tutorial_map");
@@ -61,10 +60,4 @@ public class HelpController implements IExtension {
 		controller.addAction(new OnlineDocumentationAction("OnlineReference", "docu-online"));
 	}
 
-	/**
-	 * @param e
-	 */
-	public void webDocu(final ActionEvent e) {
-	    Controller.getCurrentController().getAction("WebDocuAction").actionPerformed(e);
-	}
 }

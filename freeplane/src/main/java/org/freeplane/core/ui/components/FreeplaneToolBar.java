@@ -21,7 +21,6 @@ package org.freeplane.core.ui.components;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.event.HierarchyBoundsListener;

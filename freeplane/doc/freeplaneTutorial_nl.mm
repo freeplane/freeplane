@@ -1844,7 +1844,6 @@
 </node>
 </node>
 <node TEXT="Externe koppeling" STYLE_REF="Beginner" FOLDED="true" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1336125011738" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" STYLE="combined">
-<attribute_layout NAME_WIDTH="82" VALUE_WIDTH="161"/>
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3391,7 +3390,6 @@
 </node>
 <node TEXT="Attributen (knoopuitbreiding)" STYLE_REF="Professional" FOLDED="true" ID="ID_1324773677" CREATED="1314208168037" MODIFIED="1323706758395" MIN_WIDTH="1">
 <node TEXT="Wat zijn attributen ?" STYLE_REF="Professional" ID="ID_1657366174" CREATED="1314209542018" MODIFIED="1336118227857" HGAP="-170" VSHIFT="83" MAX_WIDTH="550">
-<attribute_layout NAME_WIDTH="34" VALUE_WIDTH="92"/>
 <attribute NAME="Name" VALUE="John"/>
 <attribute NAME="email" VALUE="john@gmail.com"/>
 <richcontent TYPE="DETAILS">
@@ -3477,7 +3475,6 @@
 </html>
 </richcontent>
 <node TEXT="Hyperlink (pijl) in attribuutwaarde" STYLE_REF="Professional" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1336118261522" HGAP="-550" VSHIFT="80" MAX_WIDTH="550">
-<attribute_layout NAME_WIDTH="48" VALUE_WIDTH="101"/>
 <richcontent TYPE="DETAILS">
 
 <html>
@@ -3995,7 +3992,6 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
 </hook>
-<attribute_layout NAME_WIDTH="68" VALUE_WIDTH="68"/>
 <edge STYLE="horizontal"/>
 </node>
 <node TEXT="Filteren en selecteren" STYLE_REF="ProfessionalOnderwerp" ID="ID_164487469" CREATED="1310134532663" MODIFIED="1330166218726" TEXT_SHORTENED="true">

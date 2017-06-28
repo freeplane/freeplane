@@ -27,6 +27,7 @@ import java.util.List;
 import javax.swing.Icon;
 
 import org.freeplane.core.ui.components.MultipleImage;
+import org.freeplane.features.map.NodeModel;
 
 public class UIIconSet extends UIIcon {
 	final Collection<UIIcon> uiIcons;
@@ -58,10 +59,15 @@ public class UIIconSet extends UIIcon {
 
 	@Override
 	public Icon getIcon() {
+		throw new RuntimeException(new NoSuchMethodException());
+	}
+	
+	@Override
+	public Icon getIcon(final NodeModel node) {
 		if (compoundIcon == null) {
 			compoundIcon = new MultipleImage();
 			for (final UIIcon icon : imageIcons) {
-				compoundIcon.addIcon(icon);
+				compoundIcon.addIcon(icon, node);
 			}
 		}
 		return compoundIcon;

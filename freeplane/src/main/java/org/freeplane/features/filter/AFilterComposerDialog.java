@@ -31,7 +31,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Collection;
 
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.DefaultComboBoxModel;

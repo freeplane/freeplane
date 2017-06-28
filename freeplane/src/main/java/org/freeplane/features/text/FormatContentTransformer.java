@@ -6,6 +6,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.SummaryNode;
 
 class FormatContentTransformer extends AbstractContentTransformer {
 	final private TextController textController;
@@ -43,7 +44,7 @@ class FormatContentTransformer extends AbstractContentTransformer {
 			obj = FormatController.format(obj, format);
 		if (nodeNumbering && !node.isRoot()){
 			StringBuilder builder = new StringBuilder(node.getNodeLevel(true) * 2);
-			getPathToRoot(builder, node);
+			addNumbers(builder, node);
 			builder.append(' ');
 			if (isHtml) {
 				obj = insertPrefix(obj.toString(), builder.toString());
@@ -78,15 +79,11 @@ class FormatContentTransformer extends AbstractContentTransformer {
 		return sb.toString();
     }
 
-	private void getPathToRoot(StringBuilder builder, NodeModel node) {
+	private void addNumbers(StringBuilder builder, NodeModel node) {
 		final NodeModel parentNode = node.getParentNode();
 		if(parentNode == null)
 			return;
-		if( textController.getNodeNumbering(parentNode)){
-			getPathToRoot(builder, parentNode);
-			if (builder.length() > 0)
-				builder.append('.');
-		}
+		addMajorNumbers(parentNode, builder);
 		final List<NodeModel> children = parentNode.getChildren();
 		int counter = 1;
 		for (NodeModel child : children) {
@@ -96,5 +93,19 @@ class FormatContentTransformer extends AbstractContentTransformer {
 				counter++;
 		}
 		builder.append(counter);
+	}
+
+	private void addMajorNumbers(final NodeModel node, StringBuilder builder) {
+		if(SummaryNode.isSummaryNode(node)) {
+			final NodeModel summaryParentNode = node.getParentNode();
+			if(summaryParentNode == null)
+				return;
+			addMajorNumbers(summaryParentNode, builder);
+		} 
+		else if( textController.getNodeNumbering(node)){
+			addNumbers(builder, node);
+			if (builder.length() > 0)
+				builder.append('.');
+		}
 	}
 }
