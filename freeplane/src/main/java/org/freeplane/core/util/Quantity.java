@@ -1,5 +1,7 @@
 package org.freeplane.core.util;
 
+import org.freeplane.core.ui.LengthUnits;
+
 public class Quantity <U extends Enum<U> & Convertible >{
 	
 	public static <U extends Enum<U> & Convertible>  Quantity<U> fromString(String valueString, U defaultUnit) {
@@ -96,5 +98,9 @@ public class Quantity <U extends Enum<U> & Convertible >{
 
 	public Quantity<U> add(double value, U unit) {
 		return add(new Quantity<U>(value, unit));
+	}
+
+	public Quantity<U> zoomBy(double zoom) {
+		return new Quantity<U>(value * zoom, unit);
 	}
 }
