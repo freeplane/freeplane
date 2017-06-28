@@ -29,8 +29,13 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
+import org.freeplane.features.icon.factory.ImageIconFactory;
+import org.freeplane.features.map.NodeModel;
+
 public class ZoomedIcon extends UIIcon {
-	final static private Map<UIIcon, Map<Float, ImageIcon>> zoomedIcons = new HashMap<UIIcon, Map<Float, ImageIcon>>();
+	final static private Map<UIIcon, Map<Float, ImageIcon>> zoomedBitmapIcons = new HashMap<UIIcon, Map<Float, ImageIcon>>();
 	private final UIIcon uiIcon;
 	private final float zoom;
 	private ImageIcon zoomedIcon;
@@ -43,11 +48,26 @@ public class ZoomedIcon extends UIIcon {
 
 	@Override
 	public Icon getIcon() {
+		throw new RuntimeException(new NoSuchMethodException());
+	}
+	
+	@Override
+	public Icon getIcon(final NodeModel node) {
+		if(uiIcon.getUrl().getPath().endsWith(".svg")) {
+			final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(node);
+			return ImageIconFactory.getInstance().getImageIcon(this, iconHeight.zoomBy(zoom));
+		}
+		else {
+			return getZoomedBitmapIcon();
+		}
+	}
+
+	private Icon getZoomedBitmapIcon() {
 		if (zoomedIcon == null) {
-			Map<Float, ImageIcon> icons = zoomedIcons.get(uiIcon);
+			Map<Float, ImageIcon> icons = zoomedBitmapIcons.get(uiIcon);
 			if (icons == null) {
 				icons = new HashMap<Float, ImageIcon>();
-				zoomedIcons.put(uiIcon, icons);
+				zoomedBitmapIcons.put(uiIcon, icons);
 			}
 			zoomedIcon = icons.get(zoom);
 			if (zoomedIcon != null) {
