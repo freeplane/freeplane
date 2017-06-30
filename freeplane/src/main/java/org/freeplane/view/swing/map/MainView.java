@@ -841,7 +841,7 @@ public abstract class MainView extends ZoomableLabel {
 		
 		borderColorMatchesEdgeColor = controller.getBorderColorMatchesEdgeColor(node);
 		if(borderColorMatchesEdgeColor)
-			borderColor = nodeView.getEdgeColor();
+			borderColor = null;
 		else
 			borderColor = controller.getBorderColor(node);
 	}
