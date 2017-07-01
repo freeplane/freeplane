@@ -58,14 +58,18 @@ task copyLauncherStuff(type: Copy) {
      dependsOn jar
 }
 
-task makeKnopflerfischPermissionDirs << {
-	new File(globalBuild, 'fwdir/perms').mkdirs()
-	new File(globalBuild, 'fwdir/condperm').mkdirs()
+task makeKnopflerfischPermissionDirs {
+    doLast {
+        new File(globalBuild, 'fwdir/perms').mkdirs()
+        new File(globalBuild, 'fwdir/condperm').mkdirs()
+    }
 }
 
-eclipseJdt << {
-    File f = file('.settings/org.eclipse.core.resources.prefs')
-    f.append('encoding/windows-installer=ISO-8859-1\n')
+eclipseJdt {
+    doLast {
+        File f = file('.settings/org.eclipse.core.resources.prefs')
+        f.append('encoding/windows-installer=ISO-8859-1\n')
+    }
 }
 
 build.dependsOn (copyLauncherStuff, makeKnopflerfischPermissionDirs)

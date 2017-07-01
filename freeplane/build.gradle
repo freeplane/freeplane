@@ -268,11 +268,13 @@ task editorJar(type: Jar) {
 
 
 
-eclipseJdt << {
-    File f = file('.settings/org.eclipse.core.resources.prefs')
-    f.append('''encoding//resources/translations=ISO-8859-1
+eclipseJdt {
+    doLast {
+        File f = file('.settings/org.eclipse.core.resources.prefs')
+        f.append('''encoding//resources/translations=ISO-8859-1
 encoding//viewer-resources/translations=ISO-8859-1
 ''')
+    }
 }
 
 
