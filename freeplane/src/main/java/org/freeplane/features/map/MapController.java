@@ -907,10 +907,6 @@ public class MapController extends SelectionController implements IExtension{
 		 * list when the thread was started.*/
 		void delayedNodeRefresh(final NodeModel node, final Object property, final Object oldValue,
 				final Object newValue) {
-			if(refreshRunning){
-				LogUtils.severe("delayedNodeRefresh already running, property change ignored", new RuntimeException());
-				return;
-			}
 			final boolean startThread = nodesToRefresh.isEmpty();
 			final NodeRefreshValue value = new NodeRefreshValue(Controller.getCurrentModeController(), oldValue, newValue);
 			final NodeRefreshKey key = new NodeRefreshKey(node, property);
