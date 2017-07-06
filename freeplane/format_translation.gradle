@@ -6,44 +6,48 @@ dependencies {
     ant_tasks project(':freeplane_ant')
 }
 
-task format_translation(dependsOn: configurations.ant_tasks) << {
-    ant.taskdef(
-        name: "format_translation",
-        classname: "org.freeplane.ant.FormatTranslation",
-        classpath: configurations.ant_tasks.asPath,
-        onerror: "report"
-    )
+task format_translation(dependsOn: configurations.ant_tasks) {
+    doLast {
+        ant.taskdef(
+            name: "format_translation",
+            classname: "org.freeplane.ant.FormatTranslation",
+            classpath: configurations.ant_tasks.asPath,
+            onerror: "report"
+        )
 
-    ant.format_translation(
-        dir: file("./resources/translations"),
-        includes: "*.properties",
-        eolstyle: "unix"
-    )
-    ant.format_translation(
-        dir: file("./viewer-resources/translations"),
-        includes: "*.properties",
-        eolstyle: "unix"
-    )
+        ant.format_translation(
+            dir: file("./resources/translations"),
+            includes: "*.properties",
+            eolstyle: "unix"
+        )
+        ant.format_translation(
+            dir: file("./viewer-resources/translations"),
+            includes: "*.properties",
+            eolstyle: "unix"
+        )
+    }
 }
 
-task check_translation(dependsOn: configurations.ant_tasks) << {
-    ant.taskdef(
-        name: "check_translation",
-        classname: "org.freeplane.ant.FormatTranslationCheck",
-        classpath: configurations.ant_tasks.asPath,
-        onerror: "report"
-    )
+task check_translation(dependsOn: configurations.ant_tasks) {
+    doLast {
+        ant.taskdef(
+            name: "check_translation",
+            classname: "org.freeplane.ant.FormatTranslationCheck",
+            classpath: configurations.ant_tasks.asPath,
+            onerror: "report"
+        )
 
-    ant.check_translation(
-        dir: file('./resources/translations'),
-        includes: '*.properties',
-        eolstyle: 'unix'
-    )
-    ant.check_translation(
-        dir: file('./viewer-resources/translations'),
-        includes: '*.properties',
-        eolstyle: 'unix'
-    )
+        ant.check_translation(
+            dir: file('./resources/translations'),
+            includes: '*.properties',
+            eolstyle: 'unix'
+        )
+        ant.check_translation(
+            dir: file('./viewer-resources/translations'),
+            includes: '*.properties',
+            eolstyle: 'unix'
+        )
+    }
 }
 
 void update(File resourceFile){
@@ -62,13 +66,15 @@ void update(File resourceFile){
    }
 }
 
-task update_translation << {
-	fileTree(dir: './viewer-resources/translations', include: 'Resources_*.properties').each{ 
-		File resourceFile -> update(resourceFile)
-	}
-	fileTree(dir: './resources/translations', include: 'Resources_*.properties').each{ 
-		File resourceFile -> update(resourceFile)
-	}
+task update_translation {
+    doLast {
+        fileTree(dir: './viewer-resources/translations', include: 'Resources_*.properties').each{
+            File resourceFile -> update(resourceFile)
+        }
+        fileTree(dir: './resources/translations', include: 'Resources_*.properties').each{
+            File resourceFile -> update(resourceFile)
+        }
+    }
 }
 
 update_translation.finalizedBy format_translation
