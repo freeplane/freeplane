@@ -160,6 +160,16 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		getAttributeController().setAttribute(getDelegate(), index, new Attribute(name, ProxyUtils.transformObject(value, oldPattern)));
 	}
 
+	public void set(final int index, final String name, final Object value, String pattern) {
+		getAttributeController().setAttribute(getDelegate(), index, new Attribute(name, ProxyUtils.transformObject(value, pattern)));
+	}
+
+	public void setFormat(final int index, String pattern) {
+		final NodeAttributeTableModel attributeTableModel = getAndCheckNodeAttributeTableModelForIndex(index, "set1:");
+		final Object value = attributeTableModel.getAttribute(index).getValue();
+		getAttributeController().performSetValueAt(attributeTableModel, ProxyUtils.transformObject(value, pattern), index, 1);
+	}
+
 	public int findFirst(final String name) {
 		final List<String> attributeNames = getAttributeNames();
 		for (int i = 0; i < attributeNames.size(); i++) {
@@ -237,6 +247,11 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 
     public void add(final String name, final Object value) {
 		final Attribute attribute = new Attribute(name, ProxyUtils.transformObject(value, null));
+		getAttributeController().addAttribute(getDelegate(), attribute);
+	}
+
+    public void add(final String name, final Object value, String pattern) {
+		final Attribute attribute = new Attribute(name, ProxyUtils.transformObject(value, pattern));
 		getAttributeController().addAttribute(getDelegate(), attribute);
 	}
 
