@@ -317,7 +317,9 @@ public class AttributeView implements ChangeListener, TableModelListener {
     }
 	
 	public void setOptimalColumnWidths() {
-		attributeTable.setOptimalColumnWidths();
+		syncronizeAttributeView();
+		if(attributeTable != null)
+			attributeTable.setOptimalColumnWidths();
 	}
 
 	public AttributeTable getAttributeTable() {
