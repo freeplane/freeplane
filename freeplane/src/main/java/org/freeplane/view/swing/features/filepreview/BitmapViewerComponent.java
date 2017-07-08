@@ -33,6 +33,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Iterator;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
@@ -245,10 +246,10 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 
 	private void logImageReadingException(final IOException e) {
 		final Throwable cause = e.getCause();
-		if(! (cause instanceof FileNotFoundException))
-			LogUtils.severe(e);
-		else
+		if((cause instanceof FileNotFoundException) || (cause instanceof IIOException))
 			LogUtils.warn(cause.getMessage());
+		else
+			LogUtils.severe(e);
 	}
 
 	private void flushImage() {
