@@ -8,6 +8,10 @@ dependencies {
     compile 'net.bytebuddy:byte-buddy:1.6.9'
 }
 
+tasks.withType(JavaCompile) {
+	options.compilerArgs << '-parameters'
+}
+
 jar {
     manifest {
         name = pluginid

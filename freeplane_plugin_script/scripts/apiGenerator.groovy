@@ -7,6 +7,7 @@
 // (at your option) any later version.
 
 import java.lang.reflect.Method
+import java.lang.reflect.TypeVariable
 
 import org.freeplane.core.ui.components.UITools
 import org.freeplane.core.util.FreeplaneVersion
@@ -63,8 +64,6 @@ def makeApi(Proxy.Node node, Class clazz) {
     classNode.style.font.bold = true
     clazz.getMethods().findAll {
         it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO')
-    }.sort {
-        a,b -> b.name <=> a.name
     }.each {
         if (!addProperty(memberMap, it))
             addMethod(memberMap, it);
@@ -155,7 +154,7 @@ def addProperty(Map<String, Map<String, Object>> memberMap, Method method) {
 }
 
 def addMethod(Map<String, Map<String, Object>> memberMap, Method method) {
-    def propertyMap = getOrCreatePropertiesMap(memberMap, method.name)
+    def propertyMap = getOrCreatePropertiesMap(memberMap, formatMethodKey(method))
     propertyMap['types'] = method.parameterTypes
     propertyMap['method'] = formatMethod(method)
     propertyMap['return_type'] = method.returnType
@@ -167,20 +166,33 @@ def formatProperty(String property, String type, String mode) {
     //	return "${property}: ${type} (${mode})"
 }
 
-def formatParameter(Class clazz) {
+def formatMethodKey(Method method) {
+		return method.name + '/' + method.parameterCount
+			'(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
+
+}
+
+def formatParameterType(Class clazz) {
     def uri = getApiLink(clazz)
     if (uri)
         "<a href='${uri.toURL()}'>${typeToString(clazz)}</a>"
 }
 
+
+def formatParameter(parameter) {
+	def parameterType = formatParameterType(parameter.type)
+	if(parameterType)
+		parameterType + ' ' + parameter.name;
+	else
+		parameter.name;
+}
+
+
 def formatMethod(Method method) {
+	def parameters =  method.metaClass.respondsTo(method, "getParameters") ? method.getParameters().collect{ formatParameter(it) } : method.parameterTypes.collect{ formatParameterType(it) }
     return '<html><body>' + typeToString(method.returnType) +
     ' <b>' + method.name + '</b>' +
-    '(' + method.parameterTypes.collect{ formatParameter(it) }.join(', ') + ')'
-    // Plain text:
-    //	return typeToString(method.returnType) +
-    //		' ' + method.name +
-    //		'(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
+    '(' + parameters.join(', ') + ')'
 }
 
 def isGetter(Method method) {
