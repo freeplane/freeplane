@@ -44,6 +44,8 @@ import java.net.URL;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -584,14 +586,20 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	/**@deprecated -- use MMapIO*/
 	@Deprecated
 	public MapModel newMapFromDefaultTemplate() {
-		final File file = chosenTemplateFile();
-		if (file != null) {
-			return newMapFromTemplate(file);
-		}
-		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		final MapModel map = mapController.newMap();
-		mapController.setSaved(map, true);
-		return map;
+		return AccessController.doPrivileged(new PrivilegedAction<MapModel>() {
+
+			@Override
+			public MapModel run() {
+				final File file = chosenTemplateFile();
+				if (file != null) {
+					return newMapFromTemplate(file);
+				}
+				final MapController mapController = Controller.getCurrentModeController().getMapController();
+				final MapModel map = mapController.newMap();
+				mapController.setSaved(map, true);
+				return map;
+			}
+		});
 	}
 
 	protected File chosenTemplateFile() {
@@ -667,38 +675,45 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	/**@deprecated -- use MMapIO*/
 	@Deprecated
 	public MapModel newMapFromTemplate(final File startFile) {
-		final File file;
-		if (startFile == null) {
-			file = getLastCurrentDir();
-		}
-		else if (startFile.isDirectory()) {
-			final JFileChooser chooser = getFileChooser(true);
-			chooser.setCurrentDirectory(startFile);
-			final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent());
-			if (returnVal != JFileChooser.APPROVE_OPTION) {
+		return AccessController.doPrivileged(new PrivilegedAction<MapModel>() {
+
+			@Override
+			public MapModel run() {
+				final File file;
+				if (startFile == null) {
+					file = getLastCurrentDir();
+				}
+				else if (startFile.isDirectory()) {
+					final JFileChooser chooser = getFileChooser(true);
+					chooser.setCurrentDirectory(startFile);
+					final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent());
+					if (returnVal != JFileChooser.APPROVE_OPTION) {
+						return null;
+					}
+					file = chooser.getSelectedFile();
+				}
+				else {
+					file = startFile;
+				}
+				try {
+					final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+					mapController.newUntitledMap(Compat.fileToUrl(file));
+					final Controller controller = Controller.getCurrentController();
+					final MapModel map = controller.getMap();
+					final Object rootText = map.getRootNode().getUserObject();
+					if(rootText instanceof TranslatedObject){
+						map.getRootNode().setText(rootText.toString());
+					}
+					controller.getModeController().getMapController().setSaved(map, true);
+					return map;
+				}
+				catch (Exception e) {
+					handleLoadingException(e);
+				}
 				return null;
 			}
-			file = chooser.getSelectedFile();
-		}
-		else {
-			file = startFile;
-		}
-		try {
-			final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-			mapController.newUntitledMap(Compat.fileToUrl(file));
-			final Controller controller = Controller.getCurrentController();
-			final MapModel map = controller.getMap();
-			final Object rootText = map.getRootNode().getUserObject();
-			if(rootText instanceof TranslatedObject){
-				map.getRootNode().setText(rootText.toString());
-			}
-			controller.getModeController().getMapController().setSaved(map, true);
-			return map;
-		}
-		catch (Exception e) {
-			handleLoadingException(e);
-		}
-		return null;
+			
+		});
 	}
 
 	/**@deprecated -- use MMapIO*/
