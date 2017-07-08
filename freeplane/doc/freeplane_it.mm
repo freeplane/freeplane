@@ -178,9 +178,6 @@
 <node TEXT="L&apos;applet di Freeplane, consente solo la visualizzazione delle mappe. Non &#xe8; possibile modificarle. Premendo su un nodo, per commutare la visualizzazione di Espansione/Collassamento. Per spostare la mappa, cliccare e trascinare lo sfondo. Per cercare nella mappa, usare il menu contestuale del nodo." ID="_Freeplane_Link_514864900" CREATED="1124560950701" MODIFIED="1280837258123" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </node>
-<node TEXT="Piccole mappe possono anche essere esportate come &quot;Flash&quot;, che offre per&#xf2; funzionalit&#xe0; limitate  per l&apos;esplorazione" ID="ID_74116190" CREATED="1280837118793" MODIFIED="1280837258139" COLOR="#006666">
-<font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
-</node>
 <node TEXT="I componenti LaTeX e le immagini SVG, non sono visualizzate nell&apos;applet di Freeplane e nemmeno nella modalit&#xe0; Flash" ID="ID_1756113383" CREATED="1280837189060" MODIFIED="1280837258154" COLOR="#006666">
 <font NAME="SansSerif" SIZE="12" BOLD="false" ITALIC="false"/>
 </node>

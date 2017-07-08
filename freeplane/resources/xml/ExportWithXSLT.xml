@@ -61,20 +61,6 @@
             				use_common_out_point_for_root_node"/>
     </action>
     <action
-        name="accessories/plugins/ExportWithXSLT_Flash"
-    >
-        <properties
-            file_type="html"
-            xslt_file="/xslt/freeplane2flash.xsl"
-            create_dir="true"
-            files_to_copy="visorFreeplane.swf,flashobject.js"
-            file_prefix="/flash/"
-            copy_map="true"
-            copymode="EXPORT"
-            mode="FILE"
-            load_file="true" />
-    </action>
-    <action
         name="accessories/plugins/ExportWithXSLT_TASKSTJI"
     >
         <properties

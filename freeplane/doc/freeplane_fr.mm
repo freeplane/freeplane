@@ -1247,7 +1247,6 @@
 <font NAME="Dialog" SIZE="12"/>
 </node>
 <node TEXT="Avec l&apos;applet Java Freeplane, les cartes sont en lecture seule. Aucune modification n&apos;est possible. Cliquez sur un noeud pour l&apos;ouvrir ou suivre un lien. D&#xe9;placez la carte en cliquant sur le fond de la carte. Un menu contextuel est accessible d&apos;un clic droit de la souris, ce qui permet par exemple d&apos;effectuer une recherche dans la carte." ID="Freeplane_Link_1948548375" CREATED="1275400917568" MODIFIED="1277392249468"/>
-<node TEXT="L&apos;exportation de petites cartes est envisageable en Flash, qui offre, comme l &apos;export en applet Java, des fonctions de manipulations de la carte mais celles-ci sont plus limit&#xe9;es." ID="ID_996038672" CREATED="1275774133046" MODIFIED="1277392296796"/>
 <node TEXT="LaTeX et les fichiers SVG ne sont pas visibles via les exportations Flash et Java" ID="ID_1688517766" CREATED="1275774318671" MODIFIED="1275774358390"/>
 </node>
 <node TEXT="Cr&#xe9;dits" FOLDED="true" POSITION="left" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1275774493609" COLOR="#006666">

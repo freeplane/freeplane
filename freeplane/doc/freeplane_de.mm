@@ -3798,7 +3798,6 @@
 <node TEXT="Im Freeplane Applet kannst Du MindMaps nur betrachten und nicht bearbeiten. Durch klicken auf einen Knoten kannst Du den Zweig aber ein- und ausfalten. Auch das Umherschieben mit gedr&#xfc;ckter linker Maustaste und das Durchsuchen (mit Kontext-Men&#xfc;) funktioniert" ID="_Freeplane_Link_514864900" CREATED="1270892460645" MODIFIED="1275340105130">
 <font NAME="SansSerif" SIZE="12"/>
 </node>
-<node TEXT="Kleinere Maps kannst Du auch als Flash-Applet exportieren, was aber weniger Navigationsm&#xf6;glichkeiten bietet." ID="ID_814739863" CREATED="1270895588942" MODIFIED="1275340135154"/>
 <node TEXT="LaTeX und SVG Bilder werden in den Applets nicht dargestellt." ID="ID_1798905971" CREATED="1271097701298" MODIFIED="1275340146193"/>
 </node>
 <node TEXT="Das Team" POSITION="left" ID="_Freeplane_Link_784043927" CREATED="1270892460645" MODIFIED="1275340221218" COLOR="#006666">

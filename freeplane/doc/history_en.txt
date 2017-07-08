@@ -3,6 +3,7 @@
 ===============================
 Bug fixes
 Java 9 support
+REmoved broken export to flash 
 
 ===============================
 1.6.2

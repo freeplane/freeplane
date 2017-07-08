@@ -17830,7 +17830,6 @@
 <node TEXT="&#x5236;&#x9650;&#x4e8b;&#x9805;&#x3068;&#x65e2;&#x77e5;&#x306e;&#x30d0;&#x30b0;" FOLDED="true" ID="ID_1288924719" CREATED="1455910949150" MODIFIED="1455910949150">
 <edge STYLE="horizontal"/>
 <node TEXT="&#x30ce;&#x30fc;&#x30c9;&#x304c;&#x4ed6;&#x306e;&#x30ce;&#x30fc;&#x30c9;&#x306e;&#x30c6;&#x30ad;&#x30b9;&#x30c8;&#x306b;&#x91cd;&#x8907;&#x8868;&#x793a;" ID="ID_416103426" CREATED="1455910949150" MODIFIED="1455910949150" LINK="https://sourceforge.net/apps/mantisbt/freeplane/view.php?id=1210" TEXT_SHORTENED="true"/>
-<node TEXT="Flash player &#x306b;&#x3064;&#x3044;&#x3066;" ID="ID_470970220" CREATED="1455910949150" MODIFIED="1455910949150" LINK="https://sourceforge.net/projects/freeplane/forums/forum/758437/topic/4668966" TEXT_SHORTENED="true"/>
 </node>
 <node TEXT="&#x30de;&#x30c3;&#x30d7;&#xff0f;&#x30ce;&#x30fc;&#x30c9;&#x304c;&#x7de8;&#x96c6;&#x3067;&#x304d;&#x306a;&#x3044;" ID="ID_138844829" CREATED="1455910949150" MODIFIED="1455910949150" TEXT_SHORTENED="true"><richcontent TYPE="DETAILS">
 

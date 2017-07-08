@@ -227,14 +227,6 @@
 <edge WIDTH="thin"/>
 </node>
 </node>
-<node TEXT="David Butt" FOLDED="true" ID="ID_583760673" CREATED="1465678964149" MODIFIED="1465678964149" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="&#x420;&#x443;&#x43a;&#x43e;&#x432;&#x43e;&#x434;&#x441;&#x442;&#x432;&#x43e; &#x43f;&#x43e; flash" ID="ID_1034653997" CREATED="1465678964149" MODIFIED="1465678964149" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-<edge WIDTH="thin"/>
-</node>
-</node>
 <node TEXT="David Low" FOLDED="true" ID="ID_318141163" CREATED="1465678964149" MODIFIED="1465678964149" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>

@@ -16555,9 +16555,6 @@ elements from the styles activated by conditions are copied.</pre>
         </p>
       </li>
       <li>
-        <font face="SansSerif, sans-serif" color="#000000">Small maps can also use Export as Flash which also offers limited browsing functionality.</font>
-      </li>
-      <li>
         <font face="SansSerif, sans-serif" color="#000000">LaTeX and SVG images are not displayed in the Freeplane Applet nor in the Flash browser.</font>
       </li>
     </ul>

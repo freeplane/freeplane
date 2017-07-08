@@ -259,14 +259,6 @@
 <edge WIDTH="thin"/>
 </node>
 </node>
-<node TEXT="David Butt" ID="Freeplane_Link_1024053399" CREATED="1124560950701" MODIFIED="1216272352345" COLOR="#996600">
-<font NAME="SansSerif" SIZE="12"/>
-<edge WIDTH="thin"/>
-<node TEXT="Flash-i &#xf5;petus" ID="ID_49661074" CREATED="1124560950701" MODIFIED="1216187545261" COLOR="#999999">
-<font NAME="Dialog" SIZE="10"/>
-<edge WIDTH="thin"/>
-</node>
-</node>
 <node TEXT="David Low" ID="ID_1167712813" CREATED="1124560950701" MODIFIED="1216272353298" COLOR="#996600">
 <font NAME="SansSerif" SIZE="12"/>
 <edge WIDTH="thin"/>
