@@ -1094,8 +1094,8 @@ public interface Proxy {
 		 * @deprecated since 1.2 - use getPlainText() or getTo().getPlain() instead. */
 		String getPlainTextContent();
 
-		/** Plain text after removal of possible HTML markup.
-		 * Possible transformations (formula evaluation, formatting, ...) are not applied.
+		/** The node text as HTML markup. Returns the same as {@link NodeProxy#getText()} if the node text
+		 * already is HTML or converts the plain text to HTML otherwise.
 		 * @since 1.2 */
 		String getHtmlText();
 
