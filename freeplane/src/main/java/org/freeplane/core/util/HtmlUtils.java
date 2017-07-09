@@ -216,7 +216,10 @@ public class HtmlUtils {
 					result.append("</p>\n<p>");
 					break;
 				default:
-					result.append(myChar);
+					if (myChar < 32 || myChar > 126)
+						result.append("&#").append(Integer.toString(myChar)).append(';');
+					else
+						result.append(myChar);
 			}
 		}
 		result.append("</p></body></html>");
@@ -375,7 +378,7 @@ public class HtmlUtils {
 					 result = new StringBuilder((int) (text.length() * 1.2));
 					 result.append(text.subSequence(0, i));
 				}
-				result.append("&#x").append(Integer.toString(intValue, 16)).append(';');
+				result.append("&#").append(Integer.toString(intValue)).append(';');
 			}
 			else if(result != null){
 				result.append(myChar);
@@ -572,26 +575,6 @@ public class HtmlUtils {
 			}
 		}
 	}
-
-	/**
-	 * @return true, if well formed XML.
-	 */
-	public static boolean isWellformedXml(final String xml) {
-		try {
-			final SAXParserFactory factory = SAXParserFactory.newInstance();
-			factory.setValidating(false);
-			factory.newSAXParser().parse(new InputSource(new StringReader(xml)), new DefaultHandler());
-			return true;
-		}
-		catch (final SAXParseException e) {
-			LogUtils.warn("XmlParseError on line " + e.getLineNumber() + " of " + xml, e);
-		}
-		catch (final Exception e) {
-			LogUtils.severe("XmlParseError", e);
-		}
-		return false;
-	}
-
 	public static String toHtml(final String xhtmlText) {
 		return HtmlUtils.SLASHED_TAGS_PATTERN.matcher(xhtmlText).replaceAll("<$1>");
 	}
@@ -605,9 +588,6 @@ public class HtmlUtils {
 		try {
 			XHTMLWriter.html2xhtml(reader, writer);
 			final String resultXml = writer.toString();
-			if (!HtmlUtils.isWellformedXml(resultXml)) {
-				return HtmlUtils.toXMLEscapedText(htmlText);
-			}
 			return resultXml;
 		}
 		catch (final IOException e) {
