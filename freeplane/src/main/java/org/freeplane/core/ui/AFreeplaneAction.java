@@ -85,6 +85,10 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	protected void setIcon(final String iconKey) {
 		ImageIcon icon = ResourceController.getResourceController().getIcon(iconKey);
+		setIcon(icon);
+	}
+
+	protected void setIcon(Icon icon) {
 		putValue(SMALL_ICON, icon);
 	}
 
