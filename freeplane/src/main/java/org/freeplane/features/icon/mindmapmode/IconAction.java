@@ -31,28 +31,33 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.factory.ImageIconFactory;
 import org.freeplane.features.map.NodeModel;
 
 class IconAction extends AMultipleNodeAction implements IIconInformation {
 
 	private static final long serialVersionUID = 1L;
-	final private MindIcon icon;
+	final private MindIcon mindIcon;
 
 	public IconAction( final MindIcon _icon) {
-		super("IconAction." + _icon.getName(), _icon.getTranslationValueLabel(), ImageIconFactory.getInstance()
-		    .getImageIcon(_icon));
-		icon = _icon;
+		super("IconAction." + _icon.getName(), _icon.getTranslationValueLabel(), null);
+		mindIcon = _icon;
+		setIcon(getIcon());
 		putValue(Action.SHORT_DESCRIPTION, getTranslationValueLabel());
+	}
+
+	private MindIcon replaceByUserDefinedIcon() {
+		return IconStoreFactory.ICON_STORE.getMindIcon(mindIcon.getName());
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MIconController) IconController.getController()).addIcon(node, icon);
+		((MIconController) IconController.getController()).addIcon(node, replaceByUserDefinedIcon());
 	}
 	
 	public String getTranslationKeyLabel() {
-		return icon.getTranslationKeyLabel();
+		return mindIcon.getTranslationKeyLabel();
 	}
 
 	@Override
@@ -61,24 +66,24 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 	}
 
 	public String getTranslationValueLabel() {
-		return icon.getTranslationValueLabel();
+		return mindIcon.getTranslationValueLabel();
 	}
 
 	public Icon getIcon() {
-		return ImageIconFactory.getInstance().getImageIcon(icon);
+		return ImageIconFactory.getInstance().getImageIcon(replaceByUserDefinedIcon());
 	}
 
 	public KeyStroke getKeyStroke() {
-		final String keystrokeResourceName = icon.getShortcutKey();
+		final String keystrokeResourceName = mindIcon.getShortcutKey();
 		final String keyStrokeDescription = ResourceController.getResourceController().getProperty(keystrokeResourceName);
 		return UITools.getKeyStroke(keyStrokeDescription);
 	}
 
 	public MindIcon getMindIcon() {
-		return icon;
+		return replaceByUserDefinedIcon();
 	}
 
 	public String getShortcutKey() {
-		return icon.getShortcutKey();
+		return mindIcon.getShortcutKey();
 	}
 }
