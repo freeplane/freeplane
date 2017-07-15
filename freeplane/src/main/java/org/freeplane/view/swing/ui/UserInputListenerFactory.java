@@ -379,6 +379,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			modeController.addActionIfNotAlreadySet(modesMenuAction);
 			Entry actionEntry = new Entry();
 			entryAccessor.setAction(actionEntry, modesMenuAction);
+			actionEntry.setName(modesMenuAction.getKey());
 			final ModeController modeController = controller.getModeController();
 			if (modeController != null && modeController.getModeName().equals(key)) {
 				actionEntry.setAttribute("selected", true);
@@ -400,6 +401,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final String displayName = mapView.getName();
 			Entry actionEntry = new Entry();
 			final MapsMenuAction action = new MapsMenuAction(displayName);
+			actionEntry.setName(action.getKey());
 			modeController.addActionIfNotAlreadySet(action);
 			entryAccessor.setAction(actionEntry, action);
 			final MapView currentMapView = (MapView) mapViewManager.getMapViewComponent();
