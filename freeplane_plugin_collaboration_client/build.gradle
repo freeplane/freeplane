@@ -1,5 +1,6 @@
 dependencies {
     compile project(':freeplane')
+	compile 'com.fasterxml.jackson.jr:jackson-jr-objects:2.8.5'
 }
 
 jar {
