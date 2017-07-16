@@ -1,22 +1,20 @@
 package org.freeplane.plugin.collaboration.client;
 
-import java.util.List;
-
 class UpdateBean {
 	enum ContentType {
 		CHILDREN, CLONES, TEXT, NOTE, DETAILS, ATTRIBUTES, ICONS, OTHER_CONTENT
 	}
 	
-	private List<String> nodeIds;
+	private String nodeId;
 	private ContentType contentType;
-	public List<String> getNodeIds() {
-		return nodeIds;
-	}
-	public void setNodeIds(List<String> nodeIds) {
-		this.nodeIds = nodeIds;
-	}
 	private String content;
 	
+	public String getNodeId() {
+		return nodeId;
+	}
+	public void setNodeId(String nodeId) {
+		this.nodeId = nodeId;
+	}
 	public ContentType getContentType() {
 		return contentType;
 	}
@@ -32,7 +30,7 @@ class UpdateBean {
 	
 	@Override
 	public String toString() {
-		return "UpdateBean [nodeIds=" + nodeIds + ", contentType=" + contentType + ", content=" + content + "]";
+		return "UpdateBean [nodeIds" + nodeId + ", contentType=" + contentType + ", content=" + content + "]";
 	}
 	
 	
