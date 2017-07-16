@@ -9,5 +9,6 @@ include 'freeplane',
         'freeplane_plugin_script',
         'freeplane_plugin_svg',
         'freeplane_plugin_jsyntaxpane',
+        'freeplane_plugin_collaboration_client',
 
         'JOrtho_0.4_freeplane'
