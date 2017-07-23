@@ -102,14 +102,16 @@ class ControllerProxy implements Proxy.Controller {
     }
 
 	public void select(final Collection<Node> toSelect) {
-		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		final Iterator<Node> it = toSelect.iterator();
 		if (!it.hasNext()) {
 			return;
 		}
-		selection.selectAsTheOnlyOneSelected(((NodeProxy) it.next()).getDelegate());
+		final Node firstNode = it.next();
+		select(firstNode);
 		while (it.hasNext()) {
-			final NodeModel nodeModel = ((NodeProxy) it.next()).getDelegate();
+			final Node nextNode = it.next();
+			final NodeModel nodeModel = ((NodeProxy) nextNode).getDelegate();
+			Controller.getCurrentModeController().getMapController().displayNode(nodeModel);
 			Controller.getCurrentController().getSelection().toggleSelected(nodeModel);
 		}
 	}
