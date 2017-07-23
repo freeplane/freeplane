@@ -161,8 +161,8 @@
 </map_styles>
 </hook>
 <hook NAME="FirstGroupNode"/>
-<node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1341130602702" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200.0 px" HGAP_QUANTITY="22.0 px" VSHIFT_QUANTITY="16.0 px">
-<node ID="ID_131498432" CREATED="1479208899084" MODIFIED="1479210525907"><richcontent TYPE="NODE">
+<node TEXT="Introduction" STYLE_REF="Beginner" FOLDED="true" POSITION="right" ID="ID_86446891" CREATED="1314121556502" MODIFIED="1500801075908" BACKGROUND_COLOR="#00cc33" NUMBERED="true" MIN_WIDTH="200.0 px" HGAP_QUANTITY="22.0 px" VSHIFT_QUANTITY="16.0 px">
+<node ID="ID_131498432" CREATED="1479208899084" MODIFIED="1500801075908"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -604,6 +604,1535 @@
 <edge STYLE="horizontal"/>
 </node>
 <node TEXT="Edit &gt; Node group &gt; Always unfolded" STYLE_REF="Method" ID="ID_64183058" CREATED="1337203492981" MODIFIED="1337203523932"/>
+</node>
+</node>
+<node TEXT="Freeplane workspace" STYLE_REF="Advanced" FOLDED="true" ID="ID_222393549" CREATED="1323433444639" MODIFIED="1489244376074">
+<node TEXT="Purpose" STYLE_REF="Purpose" FOLDED="true" ID="ID_1359525886" CREATED="1483416459506" MODIFIED="1486862695287">
+<node TEXT="The Freeplane workspace is the area in which your map and program controls appear." ID="ID_516511911" CREATED="1489245157723" MODIFIED="1500212664713">
+<node TEXT="Workspace elements help you create, format, navigate, and manipulate your map." FOLDED="true" ID="ID_1338861606" CREATED="1489244487039" MODIFIED="1500801089971"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      to display / hide details (such as this and following nodes) select node then press Alt+F2
+    </p>
+  </body>
+</html>
+
+</richcontent>
+<node TEXT="" ID="ID_748597006" CREATED="1500213151013" MODIFIED="1500213151015">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="screenshot (without annotations)" STYLE_REF="image in details" ID="ID_1712284942" CREATED="1489245806679" MODIFIED="1500213083783"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <img src="Images/other/workspace/Freeplane%20workspace.png" width="1000" height="563"/>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="screenshot (annotated)" STYLE_REF="image in details" ID="ID_1360309384" CREATED="1489246977880" MODIFIED="1500213185847"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <img src="Images/other/workspace/Freeplane%20workspace%20(annotated).png" width="1000" height="563"/>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="" ID="ID_907526987" CREATED="1500213151006" MODIFIED="1500213151013">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="nodes contain details.  To view, select node then press Alt+f2" ID="ID_1450367192" CREATED="1500213151016" MODIFIED="1500213202879"/>
+</node>
+</node>
+<node TEXT="Elements of the workspace (e.g. toolbars, status line) appear around the edges of the workspace." FOLDED="true" ID="ID_429878063" CREATED="1489245179124" MODIFIED="1489599615535" VGAP_QUANTITY="20.999999374151248 pt">
+<node TEXT="top" FOLDED="true" ID="ID_1523745182" CREATED="1489245254483" MODIFIED="1489324983054" MAX_WIDTH="57.749998100102005 pt" MIN_WIDTH="57.749998100102005 pt">
+<node TEXT="Menubar" ID="ID_83343843" CREATED="1489245078100" MODIFIED="1489333883429" LINK="#ID_179323467" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
+<node TEXT="Toolbar" ID="ID_1377496715" CREATED="1489245083635" MODIFIED="1489333883434" LINK="#ID_833229080" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
+<node TEXT="Filter toolbar" ID="ID_1007394435" CREATED="1489245087252" MODIFIED="1489333883436" LINK="#ID_1735660338" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
+<node TEXT="F-Bar" ID="ID_343234837" CREATED="1489245094715" MODIFIED="1489333883438" LINK="#ID_1658271207" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
+</node>
+<node TEXT="bottom" FOLDED="true" ID="ID_50275597" CREATED="1489245257218" MODIFIED="1489324983054" MAX_WIDTH="57.749998100102005 pt" MIN_WIDTH="57.749998100102005 pt">
+<node TEXT="Status line" ID="ID_917851633" CREATED="1489245285530" MODIFIED="1489333883440" LINK="#ID_741945176" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
+<node TEXT="Scroll bar (horizontal)" ID="ID_1274826999" CREATED="1489333851241" MODIFIED="1489333883441" LINK="#ID_1432333445" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
+</node>
+<node TEXT="left side" FOLDED="true" ID="ID_90269899" CREATED="1489245259450" MODIFIED="1489324983055" MAX_WIDTH="57.749998100102005 pt" MIN_WIDTH="57.749998100102005 pt">
+<node TEXT="Icons toolbar" ID="ID_1594635729" CREATED="1489245280019" MODIFIED="1489333883443" LINK="#ID_655489570" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
+</node>
+<node TEXT="right side" FOLDED="true" ID="ID_1513022284" CREATED="1489245265250" MODIFIED="1489324983056" MAX_WIDTH="57.749998100102005 pt" MIN_WIDTH="57.749998100102005 pt">
+<node TEXT="Properties panel" FOLDED="true" ID="ID_1902351042" CREATED="1489245271210" MODIFIED="1489333883446" LINK="#ID_236707457" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt">
+<node TEXT="Note: in Freeplane 1.6.x, Properties Panel was renamed &quot;Tool Panel&quot;" ID="ID_869088340" CREATED="1493475551404" MODIFIED="1493475588261"/>
+</node>
+<node TEXT="Scroll bar (vertical)" ID="ID_1894634754" CREATED="1489333893416" MODIFIED="1489333917179" LINK="#ID_1432333445" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt"/>
+</node>
+<node TEXT="dockable" FOLDED="true" ID="ID_560007157" CREATED="1489333935432" MODIFIED="1489599615534" MAX_WIDTH="57.749998100102005 pt" MIN_WIDTH="57.749998100102005 pt">
+<node TEXT="Note panel" FOLDED="true" ID="ID_1931415683" CREATED="1489333945224" MODIFIED="1489333975631" LINK="#ID_1377583638" MAX_WIDTH="117.74999666959057 pt" MIN_WIDTH="117.74999666959057 pt">
+<node TEXT="Can be positioned to any of the above locations." ID="ID_191769421" CREATED="1493475439126" MODIFIED="1493475469478"/>
+</node>
+</node>
+</node>
+<node TEXT="Please note: this is meant to be an overview of the workspace.  While it includes some &quot;how to&quot; information, more complete details can be found in other branches of the map." FOLDED="true" ID="ID_627094326" CREATED="1493477160817" MODIFIED="1493477281337" VGAP_QUANTITY="20.999999374151248 pt">
+<node TEXT="Links are provided here to those more detailed branches." ID="ID_1288068090" CREATED="1493477250712" MODIFIED="1493477272648"/>
+</node>
+</node>
+<node TEXT="workspace elements (purpose overview)" FOLDED="true" ID="ID_497653862" CREATED="1489245793739" MODIFIED="1500800927042"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Accessed by
+    </p>
+    <ul>
+      <li>
+        menubar &gt; <font color="#ff0000">View</font>&#160;(mostly Toolbars or View settings)
+      </li>
+      <li>
+        right-click &gt; click element (right-click on <b><u><font color="#0000c0">blank</font></u></b>&#160; spot in workspace, NOT on a node)
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Menubar" FOLDED="true" ID="ID_179323467" CREATED="1489245078100" MODIFIED="1493490654353" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Access to most Freeplane functionality." FOLDED="true" ID="ID_660314093" CREATED="1489589994670" MODIFIED="1489590040456">
+<node TEXT="Appears to top of workspace" ID="ID_863511295" CREATED="1489592384061" MODIFIED="1489592397446"/>
+</node>
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1879801720" CREATED="1489246271412" MODIFIED="1490650502462"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <img src="Images/other/workspace/menubar.png" width="450" height="50"/>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Toolbar" FOLDED="true" ID="ID_833229080" CREATED="1489245083635" MODIFIED="1493490654359" LINK="#ID_1768620172" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="The toolbar allows easy, one-click access to common Freeplane functionality" ID="ID_401265028" CREATED="1489599647567" MODIFIED="1489599672248"/>
+<node TEXT="screenshot (on 1 line in Freeplane - here : split to minimize space)" STYLE_REF="image in details" ID="ID_213137953" CREATED="1490650843311" MODIFIED="1490651389937" MAX_WIDTH="405.4999877959493 pt" MIN_WIDTH="405.4999877959493 pt"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/toolbar%20-%20split.png" width="529" height="96"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Filter toolbar" FOLDED="true" ID="ID_1735660338" CREATED="1489245087252" MODIFIED="1493490654363" LINK="#ID_1577175787" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="The filter toolbar lets you create, save, and use criteria to limit the map content displayed." ID="ID_1329804604" CREATED="1489599819325" MODIFIED="1489599943552">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="This lets you manage large maps by restricting, based on your current activity, what is seen." ID="ID_1048144443" CREATED="1489599883612" MODIFIED="1489599933580"/>
+</node>
+<node TEXT="screenshot  (on 1 line in Freeplane - here : split to minimize space)" STYLE_REF="image in details" ID="ID_1062055828" CREATED="1489328236617" MODIFIED="1490651377209" MAX_WIDTH="657.9999805092817 pt" MIN_WIDTH="657.9999805092817 pt"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/filter%20toolbar%20-%20split.png" width="852" height="54"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="F-Bar" FOLDED="true" ID="ID_1658271207" CREATED="1489245094715" MODIFIED="1493490654366" LINK="#ID_1364416620" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="The F-bar show how the function keys are currently assigned." FOLDED="true" ID="ID_839712673" CREATED="1489600099562" MODIFIED="1489600131922">
+<node TEXT="Located on top of workspace" ID="ID_558516299" CREATED="1490651725412" MODIFIED="1490651739398"/>
+<node TEXT="The F-bar shows keyboard assignments for functions and also for function keys used with Ctrl, Alt, Shift or any combination." FOLDED="true" ID="ID_1848158425" CREATED="1489600137985" MODIFIED="1489600342289">
+<node TEXT="Examples: Ctrl+Alt+F1 , Shift+Alt+F5" ID="ID_1663207491" CREATED="1489600303456" MODIFIED="1489600337920"/>
+</node>
+</node>
+<node TEXT="screenshot    (on 1 line in Freeplane - here : split to minimize space)" STYLE_REF="image in details" ID="ID_224100440" CREATED="1489328931158" MODIFIED="1490651671452" MAX_WIDTH="777.9999769330032 pt" MIN_WIDTH="777.9999769330032 pt"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/f%20bar%20-%20split.png" width="1018" height="62"/>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Note" LOCALIZED_STYLE_REF="defaultstyle.note" FOLDED="true" ID="ID_55257225" CREATED="1489600163720" MODIFIED="1489600238818">
+<node TEXT="Keyboard shortcuts can be assigned to other keys or key combinations besides function keys.  The F-bar does not reflect shortcut assignments to those non-function keys." ID="ID_359682769" CREATED="1489600166327" MODIFIED="1493481415815"/>
+</node>
+</node>
+<node TEXT="Icons toolbar" FOLDED="true" ID="ID_655489570" CREATED="1489245098507" MODIFIED="1493490654372" LINK="#ID_970426412" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="The icons toolbar is a convenient respository of icons you can use to enhance nodes." ID="ID_1205606813" CREATED="1493476613111" MODIFIED="1493476968597"/>
+<node TEXT="located on left of workspace" FOLDED="true" ID="ID_1946428755" CREATED="1489330348938" MODIFIED="1489330361678">
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_264999644" CREATED="1489329098141" MODIFIED="1493482067294"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/icons%20toolbar.png" width="50" height="409"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Status line" FOLDED="true" ID="ID_741945176" CREATED="1489245104475" MODIFIED="1493490654377" LINK="#ID_1438513260" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="The Status line shows, at a glance, some aspects of the node on which you hover." ID="ID_1904459435" CREATED="1493477958950" MODIFIED="1493482568666"/>
+<node TEXT="Located on bottom-left of workspace" FOLDED="true" ID="ID_1359468735" CREATED="1489330328701" MODIFIED="1493475739134">
+<node TEXT="Screenshot" STYLE_REF="image in details" ID="ID_862325455" CREATED="1489329729489" MODIFIED="1493475739139"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <img src="Images/other/workspace/status%20line.png" width="324" height="24"/>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Information shown on status line" LOCALIZED_STYLE_REF="default" FOLDED="true" ID="ID_1080188187" CREATED="1489420302695" MODIFIED="1500800978247"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      see <a href="freeplane:/%20/D:/GoogleDrive/Freeplane%20documentation%20project/mind%20maps/Freeplane%20workspace.mm#ID_862325455">screenshot</a>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="" ID="ID_1915295181" CREATED="1493482391645" MODIFIED="1493482391647">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Node ID" ID="ID_799017331" CREATED="1489420306602" MODIFIED="1489591903629" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt"/>
+<node TEXT="Node content type" ID="ID_46925450" CREATED="1489420397998" MODIFIED="1489591903632" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt"/>
+<node TEXT="Filtering" ID="ID_785722919" CREATED="1489420423406" MODIFIED="1489591903633" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt"/>
+<node TEXT="Link destination" ID="ID_1937438334" CREATED="1489420528982" MODIFIED="1489591903633" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt"/>
+<node TEXT="" ID="ID_1897522544" CREATED="1493482391642" MODIFIED="1493482391645">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="for more details see the &quot;how to access&quot; branch" ID="ID_938346648" CREATED="1493482391648" MODIFIED="1493482422714" LINK="#ID_1438513260"/>
+</node>
+</node>
+</node>
+<node TEXT="Scrollbars" FOLDED="true" ID="ID_1432333445" CREATED="1489245111763" MODIFIED="1493490654381" LINK="#ID_511421073" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Scrollbars allow you to pan the map within the workspace, allowing you to bring into view map areas that are initially outside the workspace view." ID="ID_1402428214" CREATED="1493478635766" MODIFIED="1493478702183"/>
+<node TEXT="located on right &amp; bottom of workspace" FOLDED="true" ID="ID_1725497930" CREATED="1489330308382" MODIFIED="1489330319550">
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_645673562" CREATED="1489329729489" MODIFIED="1489591127077"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/scroll%20bars.png" width="550" height="294"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Properties panel" FOLDED="true" ID="ID_236707457" CREATED="1489245117491" MODIFIED="1493490654383" LINK="#ID_342720357" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="The Properties Panel allows you to change properties of a node or multiple selected nodes, Calendar reminders, and &quot;attributes&quot; which you can optionally apply to nodes." FOLDED="true" ID="ID_18662208" CREATED="1493482914372" MODIFIED="1493483107428">
+<node TEXT="" ID="ID_885342025" CREATED="1493483443361" MODIFIED="1493483443365">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="The Format tab controls node properties (e.g. font, font size, node width, node background color, many more)." ID="ID_41125511" CREATED="1493483019691" MODIFIED="1493483165138"/>
+<node TEXT="The Calendar and attributes tab controls reminders as well as &quot;attributes&quot;." ID="ID_116731937" CREATED="1493483171848" MODIFIED="1493483227433"/>
+<node TEXT="" ID="ID_299097972" CREATED="1493483443358" MODIFIED="1493483443361">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="for more details, see &quot;how to access&quot;" ID="ID_1505447405" CREATED="1493483443369" MODIFIED="1493483473245" LINK="#ID_342720357"/>
+</node>
+</node>
+<node TEXT="located on right side of workspace" FOLDED="true" ID="ID_1060385352" CREATED="1489330284126" MODIFIED="1489330294381">
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_106953503" CREATED="1489329729489" MODIFIED="1493475783761"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/properties%20panel.png" width="363" height="499"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Note" FOLDED="true" ID="ID_1956511390" CREATED="1489336765335" MODIFIED="1489336769432">
+<node TEXT="Beginning with version 1.6.1" FOLDED="true" ID="ID_1397007996" CREATED="1489336769438" MODIFIED="1493475819367">
+<node TEXT="Properties Panel includes an additional tab for managing presentations." ID="ID_843330248" CREATED="1493475819369" MODIFIED="1493475824763"/>
+<node TEXT="Properties Panel was renamed &quot;Tool Panel&quot;" ID="ID_1442640562" CREATED="1493475825289" MODIFIED="1493475839050"/>
+</node>
+</node>
+</node>
+<node TEXT="Note panel" LOCALIZED_STYLE_REF="styles.important" FOLDED="true" ID="ID_1377583638" CREATED="1489330633219" MODIFIED="1493490654385" LINK="#ID_68046350" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Notes let you include larger, more detailed, more document-like information in your maps." FOLDED="true" ID="ID_309204504" CREATED="1493479713050" MODIFIED="1493480164503">
+<node TEXT="Nodes typically contain a few keywords only." ID="ID_500263262" CREATED="1493480179861" MODIFIED="1493480210790"/>
+</node>
+</node>
+<node TEXT="background color" FOLDED="true" ID="ID_1291906898" CREATED="1489245147739" MODIFIED="1493490654386" LINK="#ID_217694395" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Background color lets you pick the color of the workspace.  The default is white, but you have the full range of colors to choose from." FOLDED="true" ID="ID_177717705" CREATED="1493485210416" MODIFIED="1493485257168">
+<node TEXT="Some users like to stick with the white background and default black text.  While others prefer a darker background or even an image." ID="ID_614916239" CREATED="1493485673131" MODIFIED="1493485728883"/>
+</node>
+</node>
+<node TEXT="Outline view" FOLDED="true" ID="ID_366861344" CREATED="1493485781625" MODIFIED="1493490654387" LINK="#ID_66647782" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Freeplane defaults to a map, where branches radiate outward from the root node.  Outline view lets you see the information in your map in a more traditional outline, with the root node at the top with branches below." FOLDED="true" ID="ID_1317531430" CREATED="1493485817609" MODIFIED="1493485920936">
+<node TEXT="Think of Outline view as a Roman numeral outline -- without the letters and numerals." ID="ID_150391611" CREATED="1493485921584" MODIFIED="1493487211625"/>
+<node TEXT="Map view, generally, tends to spread out horizontally, particularly for small maps and maps with branches only on one side of the root node." ID="ID_1582763577" CREATED="1493486152453" MODIFIED="1493486198389"/>
+<node TEXT="Outline view always is vertical." ID="ID_1110557104" CREATED="1493486198868" MODIFIED="1493486227493"/>
+</node>
+<node TEXT="Here is a sample" FOLDED="true" ID="ID_1500210077" CREATED="1493486633647" MODIFIED="1493486644464">
+<node TEXT="image: map view vs outline view" ID="ID_58869847" CREATED="1493486645247" MODIFIED="1493487169871"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/doc/mapView%20v%20outlineView.png" width="991" height="448"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Miscellaneous" FOLDED="true" ID="ID_1903666170" CREATED="1493487284831" MODIFIED="1493490654388" LINK="#ID_1649950531" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="The remaining options on the right-click menu can be helpful for display and navigation.  These options also have related menu items and, in some cases, default keyboard shortcuts." FOLDED="true" ID="ID_892532777" CREATED="1493487324958" MODIFIED="1493488219182">
+<node TEXT="Full screen mode" FOLDED="true" ID="ID_789115752" CREATED="1493490773869" MODIFIED="1493490779222">
+<node TEXT="Lets you maximize your workspace, with no toolbars and other workspace elements visible.  This gives you the maximum room to work on your map.  It also is useful for sharing your map with others as a presentation." ID="ID_143144089" CREATED="1493490936700" MODIFIED="1493491041971"/>
+<node TEXT="Here is how" ID="ID_1637856399" CREATED="1493491047041" MODIFIED="1493491056131" LINK="#ID_671026272"/>
+</node>
+<node TEXT="Zoom to fit to page" FOLDED="true" ID="ID_460202687" CREATED="1493487484333" MODIFIED="1493488702248">
+<node TEXT="Fits all visible nodes within the workspace.  Nodes or branches that are not visible, either because of folding or filtering, will remain hidden." ID="ID_147860061" CREATED="1493488322579" MODIFIED="1493488450618"/>
+<node TEXT="This may be useful if you have zoomed in or out to see one part of the map but now want to see the whole map." ID="ID_63104077" CREATED="1493488458561" MODIFIED="1493488491538"/>
+<node TEXT="The more visible nodes a map has, the smaller each node is when you zoom to fit the map to the workspace." ID="ID_1821687007" CREATED="1493488499968" MODIFIED="1493488567881"/>
+<node TEXT="See how" ID="ID_524433115" CREATED="1493488751501" MODIFIED="1493488756646" LINK="#ID_1041694622"/>
+</node>
+<node TEXT="Center selected node" FOLDED="true" ID="ID_1704231229" CREATED="1493488135637" MODIFIED="1493488142566">
+<node TEXT="Positions the current node to the center of the workspace, both horizontally and vertically." FOLDED="true" ID="ID_187963795" CREATED="1493488802269" MODIFIED="1493488869694">
+<node TEXT="Note: if multiple nodes are selected, only the first node that was selected is centered." ID="ID_1955958556" CREATED="1493488894460" MODIFIED="1493488919182"/>
+</node>
+<node TEXT="Here is how" ID="ID_755306605" CREATED="1493489054322" MODIFIED="1493489068730" LINK="#ID_821639211"/>
+</node>
+<node TEXT="Goto root" FOLDED="true" ID="ID_1343222096" CREATED="1493488145038" MODIFIED="1493488149070">
+<node TEXT="Lets you quickly navigate to the root node.  Since the root node is the map&apos;s subject, to which everything in the map is related, it is often necessary to leave a branch, return to the root, and find a different branch.  Goto root gets you back to the root node from wherever you are in the map." ID="ID_1919363246" CREATED="1493489089513" MODIFIED="1493489285416"/>
+<node TEXT="Here is how" ID="ID_322379804" CREATED="1493489503444" MODIFIED="1493489508645" LINK="#ID_1570396934"/>
+</node>
+<node TEXT="Goto node with ID..." FOLDED="true" ID="ID_662714505" CREATED="1493488149708" MODIFIED="1493488157022">
+<node TEXT="Lets you quickly navigate to a node -- if you have that node&apos;s unique ID." ID="ID_1182384025" CREATED="1493489657010" MODIFIED="1493489685540"/>
+<node TEXT="Here is how" ID="ID_157430255" CREATED="1493489692474" MODIFIED="1493489701931" LINK="#ID_1350954187"/>
+</node>
+<node TEXT="Open maps" FOLDED="true" ID="ID_1973421781" CREATED="1493493001707" MODIFIED="1493493694246">
+<node TEXT="Lets you quickly make any open map the currently-active map for viewing or editing." ID="ID_1551960424" CREATED="1493493631234" MODIFIED="1493493825762"/>
+<node TEXT="Here is how" ID="ID_1856571656" CREATED="1493493676562" MODIFIED="1493493689547" LINK="#ID_750416001"/>
+</node>
+<node TEXT="Split views" FOLDED="true" ID="ID_1763778081" CREATED="1493493728178" MODIFIED="1493493736867">
+<node TEXT="You can see multiple maps at once by dragging them, by their tabs, onto the workspace." ID="ID_1856646469" CREATED="1493497057803" MODIFIED="1493497134890"/>
+<node TEXT="This is very useful if you want to examine two (or more) different maps or if you want to examine two (or more) different parts of the same map." ID="ID_1891284058" CREATED="1493497146168" MODIFIED="1493497188729"/>
+<node TEXT="Here is how" ID="ID_731342791" CREATED="1493497231455" MODIFIED="1493497241544" LINK="#ID_1386370819"/>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="How to" STYLE_REF="Actions" FOLDED="true" ID="ID_1558965103" CREATED="1484432866260" MODIFIED="1486862695289">
+<node TEXT="To view or hide workspace elements" FOLDED="true" ID="ID_811833472" CREATED="1484855525954" MODIFIED="1489592147020">
+<node TEXT="You have control over which workspace elements are visible and which are hidden.  This gives you flexibility to make your workspace look the way you want." FOLDED="true" ID="ID_1121617333" CREATED="1493490533000" MODIFIED="1493490609064">
+<node TEXT="Note: In the descriptions below, keyboard shortcuts (if assigned) appear next to menu items." ID="ID_1004253431" CREATED="1489245557313" MODIFIED="1493479341089"/>
+</node>
+<node STYLE_REF="image in details" ID="ID_1604070684" CREATED="1489279409657" MODIFIED="1493490622791"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Go to menubar <font color="#ff0000">View &gt; Toolbars </font>and select/deselect the toolbars
+    </p>
+  </body>
+</html>
+</richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/view%20-%20toolbars.png" width="790" height="440"/>
+  </body>
+</html>
+</richcontent>
+</node>
+<node STYLE_REF="image in details" ID="ID_1666879143" CREATED="1489325637704" MODIFIED="1493490626895"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Go to menubar <font color="#ff0000">View &gt; View Settings </font><font color="#000000">and select/deselect options</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/view%20-%20view%20settings.png" width="760" height="458"/>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="or right-click on any non-node spot on the map and select/deselect the toolbars in the context menu" STYLE_REF="image in details" ID="ID_223680460" CREATED="1489244915821" MODIFIED="1493490629703"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/right-click%20menu.png" width="257" height="377"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="workspace elements (how to access)" STYLE_REF="Bible" FOLDED="true" ID="ID_1889681567" CREATED="1489245793739" MODIFIED="1500800930214"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Accessed by
+    </p>
+    <ul>
+      <li>
+        menubar &gt; <font color="#ff0000">View</font>&#160;(mostly Toolbars or View settings)
+      </li>
+      <li>
+        right-click &gt; click element (right-click on <b><u><font color="#0000c0">blank</font></u></b>&#160; spot in workspace, NOT on a node)
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Menubar" FOLDED="true" ID="ID_1228783654" CREATED="1489245078100" MODIFIED="1493490669669" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="can be accessed by" FOLDED="true" ID="ID_49694405" CREATED="1489590055173" MODIFIED="1489590065175">
+<node TEXT="Keyboard" FOLDED="true" ID="ID_143635411" CREATED="1489590065181" MODIFIED="1489592410187" MAX_WIDTH="49.49999834597116 pt" MIN_WIDTH="49.49999834597116 pt">
+<node TEXT="Press (and continue to hold down) Alt key" FOLDED="true" ID="ID_860037740" CREATED="1489590071158" MODIFIED="1489592445606">
+<node TEXT="(menubar hotkey options will be underlined)" ID="ID_676530459" CREATED="1489590102470" MODIFIED="1489590119319"/>
+</node>
+<node TEXT="press letter corresponding to underlined option on menubar" FOLDED="true" ID="ID_1175847331" CREATED="1489590158788" MODIFIED="1489590180534">
+<node TEXT="(a submenu will open)" STYLE_REF="image in details" ID="ID_1215685226" CREATED="1489590276147" MODIFIED="1489592539570"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/submenu%20flyouts%20(basic).png" width="386" height="236"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="release Alt key" ID="ID_1332496300" CREATED="1489590181324" MODIFIED="1489590195685"/>
+<node TEXT="navigate through menubar submenu using arrow keys" ID="ID_764038443" CREATED="1489590197204" MODIFIED="1489590227694"/>
+</node>
+<node TEXT="Mouse" FOLDED="true" ID="ID_1149117372" CREATED="1489590067589" MODIFIED="1489592410190" MAX_WIDTH="49.49999834597116 pt" MIN_WIDTH="49.49999834597116 pt">
+<node TEXT="Click on menubar option you want" FOLDED="true" ID="ID_1347337331" CREATED="1489590231092" MODIFIED="1489590252885">
+<node TEXT="(a submenu will open)" STYLE_REF="image in details" ID="ID_66834632" CREATED="1489590276147" MODIFIED="1489592541788"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/submenu%20flyouts%20(basic).png" width="386" height="236"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="click your way through the submenu that opens" ID="ID_1551122663" CREATED="1489590253147" MODIFIED="1489590274661"/>
+</node>
+<node TEXT="Note" FOLDED="true" ID="ID_200488388" CREATED="1489590297859" MODIFIED="1489590304588">
+<node TEXT="Submenus can have flyout menus" FOLDED="true" ID="ID_516052282" CREATED="1489590316571" MODIFIED="1489590343509">
+<node TEXT="indicated by right-pointing arrow head" STYLE_REF="image in details" ID="ID_1092315070" CREATED="1489590343514" MODIFIED="1489592566179"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/submenu%20flyouts.png" width="386" height="236"/>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Flyout menus offer more specific options" ID="ID_620129270" CREATED="1489591465527" MODIFIED="1489591480448"/>
+</node>
+</node>
+</node>
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1678107159" CREATED="1489246271412" MODIFIED="1489591842971"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <img src="Images/other/workspace/menubar.png" width="450" height="50"/>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Note" FOLDED="true" ID="ID_499168836" CREATED="1489592583963" MODIFIED="1489592588740">
+<node TEXT="The menubar can be hidden" FOLDED="true" ID="ID_1173743642" CREATED="1489592588745" MODIFIED="1489592626410">
+<node FOLDED="true" ID="ID_275486371" CREATED="1489592626412" MODIFIED="1489592656956"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Menubar &gt; <b><font color="#ff0000">View &gt; Toolbars</font></b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="uncheck Menubar" ID="ID_237682635" CREATED="1489592660162" MODIFIED="1489592670739"/>
+</node>
+<node TEXT="On blank area of workspace" FOLDED="true" ID="ID_591411088" CREATED="1489592674538" MODIFIED="1489592697362">
+<node TEXT="Right-click &gt; uncheck Menubar" ID="ID_425313187" CREATED="1489592697373" MODIFIED="1489592712170"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Toolbar" FOLDED="true" ID="ID_1768620172" CREATED="1489245083635" MODIFIED="1493490669672" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="To display/hide the Toolbar" FOLDED="true" ID="ID_255873740" CREATED="1489599647567" MODIFIED="1493480516529">
+<node ID="ID_1685604225" CREATED="1493480392754" MODIFIED="1493480496235"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      menubar&#160;&#160;<font color="#ff0000">View &gt; Toolbars &gt; Toolbar</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="On a clear spot (not on a node)," FOLDED="true" ID="ID_676307996" CREATED="1493480454841" MODIFIED="1493480476122">
+<node TEXT="right-click &gt; Toolbar" ID="ID_1456763342" CREATED="1493480478225" MODIFIED="1493480487226"/>
+</node>
+</node>
+<node TEXT="Screenshots" FOLDED="true" ID="ID_1107591673" CREATED="1493480287011" MODIFIED="1493480294037">
+<node TEXT="screenshot (as it appears in the Freeplane workspace" STYLE_REF="image in details" ID="ID_1327701405" CREATED="1489246472851" MODIFIED="1493480338530" MAX_WIDTH="405.4999877959493 pt" MIN_WIDTH="411.0 px"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <img src="Images/other/workspace/toolbar.png" width="1455" height="36"/>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="screenshot (on 1 line in Freeplane - here : split to minimize space)" STYLE_REF="image in details" ID="ID_1693966464" CREATED="1490650843311" MODIFIED="1493480338533" MAX_WIDTH="405.4999877959493 pt" MIN_WIDTH="411.0 px"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/toolbar%20-%20split.png" width="529" height="96"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Filter toolbar" FOLDED="true" ID="ID_1577175787" CREATED="1489245087252" MODIFIED="1493490669674" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="To display/hide the Filters toolbar" FOLDED="true" ID="ID_60226794" CREATED="1493480857973" MODIFIED="1493480959460">
+<node TEXT="menubar" FOLDED="true" ID="ID_180616353" CREATED="1493480961012" MODIFIED="1493480964724">
+<node ID="ID_989668794" CREATED="1493480964729" MODIFIED="1493481001597"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">View &gt; Toolbars &gt; Filter toolbar</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="right-click (on a non-node spot on the workspace)" FOLDED="true" ID="ID_892989809" CREATED="1493481005362" MODIFIED="1493481041468">
+<node TEXT="right-click &gt; Filter toolbar" ID="ID_1595118023" CREATED="1493481042899" MODIFIED="1493481055882"/>
+</node>
+<node TEXT="keyboard shortcut" FOLDED="true" ID="ID_384721732" CREATED="1493481071690" MODIFIED="1493481077435">
+<node TEXT="Ctrl-F (default)" ID="ID_963944294" CREATED="1493481077439" MODIFIED="1493481088451"/>
+</node>
+</node>
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1662182563" CREATED="1489328236617" MODIFIED="1489591127081"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <img src="Images/other/workspace/filter%20toolbar.png" width="1679" height="30"/>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="F-Bar" FOLDED="true" ID="ID_1364416620" CREATED="1489245094715" MODIFIED="1493490669676" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="To display/hide the F-Bar" FOLDED="true" ID="ID_1491222891" CREATED="1493481365934" MODIFIED="1493481590877">
+<node TEXT="menubar" FOLDED="true" ID="ID_1516423165" CREATED="1493481592900" MODIFIED="1493481595221">
+<node ID="ID_1107665202" CREATED="1493481595987" MODIFIED="1493481620077"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">View &gt; Toolbars &gt; F-Bar</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="right-click (on a non-node spot on the workspace)" FOLDED="true" ID="ID_415575948" CREATED="1493481005362" MODIFIED="1493481751210">
+<edge COLOR="#acacac"/>
+<node TEXT="right-click &gt; F-Bar" ID="ID_175427773" CREATED="1493481800979" MODIFIED="1493481812650"/>
+</node>
+</node>
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1440130977" CREATED="1489328931158" MODIFIED="1489591127082"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/f%20bar.png" width="1679" height="22"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Icons toolbar" FOLDED="true" ID="ID_970426412" CREATED="1489245098507" MODIFIED="1493490669677" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="located on left of workspace" FOLDED="true" ID="ID_1872991750" CREATED="1489330348938" MODIFIED="1489330361678">
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1436907444" CREATED="1489329098141" MODIFIED="1493482173356"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/icons%20toolbar.png" width="50" height="409"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="To display/hide the Icons toolbar" FOLDED="true" ID="ID_781993089" CREATED="1493481365934" MODIFIED="1493482146822">
+<edge COLOR="#acacac"/>
+<node TEXT="menubar" FOLDED="true" ID="ID_1958155705" CREATED="1493481592900" MODIFIED="1493481595221">
+<node ID="ID_440900188" CREATED="1493481595987" MODIFIED="1493481620077"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">View &gt; Toolbars &gt; F-Bar</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="right-click (on a non-node spot on the workspace)" FOLDED="true" ID="ID_1426217832" CREATED="1493481005362" MODIFIED="1493481751210">
+<edge COLOR="#acacac"/>
+<node TEXT="right-click &gt; Icons toolbar" ID="ID_1214757225" CREATED="1493481800979" MODIFIED="1493482155429"/>
+</node>
+<node TEXT="Clicking arrow on left of workspace minimizes/maximizes icons toolbar" FOLDED="true" ID="ID_1119106796" CREATED="1489329327421" MODIFIED="1493477681595">
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1057914695" CREATED="1493482177479" MODIFIED="1493482249600"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/icons%20toolbar%20-%20collapsed.png" width="13" height="96"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Note" FOLDED="true" ID="ID_1106537764" CREATED="1489329321610" MODIFIED="1493477454917">
+<node ID="ID_1298792237" CREATED="1493477479773" MODIFIED="1493477595174"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Much more information about Icons toolbar is available <b><font color="#ff0000">HERE</font></b>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Status line" FOLDED="true" ID="ID_1438513260" CREATED="1489245104475" MODIFIED="1493490669679" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="located on bottom-left of workspace" FOLDED="true" ID="ID_325023698" CREATED="1489330328701" MODIFIED="1489330345318">
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_869545538" CREATED="1489329729489" MODIFIED="1489591870811"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <img src="Images/other/workspace/status%20line.png" width="324" height="24"/>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Information shown on Status line" LOCALIZED_STYLE_REF="default" FOLDED="true" ID="ID_1783124829" CREATED="1489420302695" MODIFIED="1493482470587"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      see <a href="freeplane:/%20/D:/GoogleDrive/Freeplane%20documentation%20project/mind%20maps/Freeplane%20workspace.mm#ID_862325455">screenshot</a>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Node ID" FOLDED="true" ID="ID_1830722611" CREATED="1489420306602" MODIFIED="1489591903629" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt">
+<node TEXT="Whether Node ID displays in the Status line is controlled in Preferences &gt; Appearance (tab) &gt; Status line (section)" ID="ID_703964671" CREATED="1489420311921" MODIFIED="1493477821218"/>
+</node>
+<node TEXT="Node content type" FOLDED="true" ID="ID_1313541678" CREATED="1489420397998" MODIFIED="1489591903632" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt">
+<node TEXT="text" ID="ID_1437484626" CREATED="1489420412161" MODIFIED="1489591912953" MAX_WIDTH="40.49999861419205 pt" MIN_WIDTH="40.49999861419205 pt"/>
+<node TEXT="" ID="ID_376277404" CREATED="1489421415262" MODIFIED="1489421415264">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="number" ID="ID_1793403716" CREATED="1489420415870" MODIFIED="1489591912956" MAX_WIDTH="40.49999861419205 pt" MIN_WIDTH="40.49999861419205 pt"/>
+<node TEXT="date" ID="ID_271331474" CREATED="1489420417950" MODIFIED="1489591912956" MAX_WIDTH="40.49999861419205 pt" MIN_WIDTH="40.49999861419205 pt"/>
+<node TEXT="" ID="ID_1644832452" CREATED="1489421415258" MODIFIED="1489421415261">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="must check checkbox in preferences &gt; behavior &gt; data formatting and parsing &gt; recognize input of numbers and date-time" FOLDED="true" ID="ID_1859033376" CREATED="1489421415265" MODIFIED="1489421471106">
+<node ID="ID_407869765" CREATED="1489591939698" MODIFIED="1489591979203"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Preferences is accessed by menubar &gt; <font color="#ff0000"><b>Tools &gt; Preferences</b></font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Filtering" FOLDED="true" ID="ID_1590988753" CREATED="1489420423406" MODIFIED="1489591903633" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt">
+<node TEXT="Filtering is on if a funnel icon displays" ID="ID_1640127845" CREATED="1489420430831" MODIFIED="1489420449239"/>
+</node>
+<node TEXT="Hyperlink destination" FOLDED="true" ID="ID_361414550" CREATED="1489420528982" MODIFIED="1493477874137" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt">
+<node TEXT="When hovering over a node which contains a hyperlink." ID="ID_1642645129" CREATED="1493477843969" MODIFIED="1493477867009"/>
+</node>
+<node TEXT="Errors" FOLDED="true" ID="ID_132909201" CREATED="1493477983158" MODIFIED="1493477998256" MAX_WIDTH="87.74999720603236 pt" MIN_WIDTH="87.74999720603236 pt">
+<icon BUILTIN="messagebox_warning"/>
+<node TEXT="Sometimes, errors may occur.  If so, you will see a triangle icon with an exclamation mark inside (like the icon in this node.)" FOLDED="true" ID="ID_578909456" CREATED="1493478004607" MODIFIED="1493478096893">
+<icon BUILTIN="messagebox_warning"/>
+<node TEXT="If you want to view a log file, click on the errors section of the Status line.  The log file will open in your system&apos;s default text editor." ID="ID_1483473732" CREATED="1493478102974" MODIFIED="1493478166166"/>
+<node ID="ID_1309573240" CREATED="1493478379017" MODIFIED="1493478529319"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Please consider letting Freeplane automatically alert developers when you experience errors.&#160;&#160;menubar <font color="#ff0000">Tools &gt; Preferences &gt; Environment (tab) &gt; Automatic bug report (section) &gt; Policy (dropdown)</font>.&#160;&#160;Set to either &quot;Always send&quot; or &quot;Show report dialog&quot;.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Scrollbars" FOLDED="true" ID="ID_511421073" CREATED="1489245111763" MODIFIED="1493490669680" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="located on right &amp; bottom of workspace" FOLDED="true" ID="ID_489211139" CREATED="1489330308382" MODIFIED="1489330319550">
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_131057881" CREATED="1489329729489" MODIFIED="1493478729063"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/scroll%20bars.png" width="550" height="294"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="To display/hide the Scrollbars" FOLDED="true" ID="ID_845248614" CREATED="1493481365934" MODIFIED="1493482770304">
+<edge COLOR="#acacac"/>
+<node TEXT="menubar" FOLDED="true" ID="ID_828438729" CREATED="1493481592900" MODIFIED="1493481595221">
+<node ID="ID_962245491" CREATED="1493481595987" MODIFIED="1493482712544"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">View &gt; Toolbars &gt; Scrollbars</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="right-click (on a non-node spot on the workspace)" FOLDED="true" ID="ID_1592890127" CREATED="1493481005362" MODIFIED="1493481751210">
+<edge COLOR="#acacac"/>
+<node TEXT="right-click &gt; Scrollbars" ID="ID_1972296594" CREATED="1493481800979" MODIFIED="1493482770305"/>
+</node>
+</node>
+<node TEXT="Note: you also can pan by hovering over a blank (non-node) spot, holding your left mouse button, and dragging." ID="ID_130260007" CREATED="1493478739613" MODIFIED="1493478795862"/>
+</node>
+<node TEXT="Properties panel" FOLDED="true" ID="ID_342720357" CREATED="1489245117491" MODIFIED="1493490669681" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="located on right side of workspace" FOLDED="true" ID="ID_445239308" CREATED="1489330284126" MODIFIED="1489330294381">
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1037901778" CREATED="1489329729489" MODIFIED="1489591127078"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/properties%20panel.png" width="363" height="499"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="To display/hide the Properties panel" FOLDED="true" ID="ID_517494390" CREATED="1493481365934" MODIFIED="1493483314342">
+<edge COLOR="#acacac"/>
+<node TEXT="menubar" FOLDED="true" ID="ID_29500935" CREATED="1493481592900" MODIFIED="1493481595221">
+<node ID="ID_15664796" CREATED="1493481595987" MODIFIED="1493483314375"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">View &gt; Toolbars &gt; Properties panel</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="right-click (on a non-node spot on the workspace)" FOLDED="true" ID="ID_1162591358" CREATED="1493481005362" MODIFIED="1493481751210">
+<edge COLOR="#acacac"/>
+<node TEXT="right-click &gt; Properties panel" ID="ID_1637412603" CREATED="1493481800979" MODIFIED="1493483314375"/>
+</node>
+<node TEXT="keyboard shortcut" FOLDED="true" ID="ID_497415852" CREATED="1493483343630" MODIFIED="1493483349862">
+<edge COLOR="#acacac"/>
+<node TEXT="Alt+P (default)" ID="ID_788765336" CREATED="1493483349864" MODIFIED="1493483361408"/>
+</node>
+</node>
+<node TEXT="The Properties panel tabs" FOLDED="true" ID="ID_1274600777" CREATED="1493478853861" MODIFIED="1493483510710">
+<node TEXT="Format tab" FOLDED="true" ID="ID_836542924" CREATED="1493478894964" MODIFIED="1493483909506" MAX_WIDTH="225.0 px" MIN_WIDTH="225.0 px"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      For a detailed discussion see <b><font color="#ff0000">HERE</font></b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="gives you easy, convenient access to all of a node&apos;s properties, where you can change the properties." FOLDED="true" ID="ID_1647506341" CREATED="1493479001386" MODIFIED="1493479001388">
+<node TEXT="(e.g. font, font size, node width, node background color, many more)." ID="ID_471080488" CREATED="1493483019691" MODIFIED="1493483583813"/>
+</node>
+</node>
+<node TEXT="Calendar and attributes tab" FOLDED="true" ID="ID_861913293" CREATED="1493478970731" MODIFIED="1493483924762" MAX_WIDTH="225.0 px" MIN_WIDTH="225.0 px"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      For a detailed discussion see <b><font color="#ff0000">HERE</font></b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Calendar tab allows you to" FOLDED="true" ID="ID_1510748401" CREATED="1493479014195" MODIFIED="1493483675334">
+<node TEXT="Insert a date into the core of a node or multiple selected nodes." ID="ID_1678828882" CREATED="1493483675341" MODIFIED="1493483741355"/>
+<node TEXT="Attach a reminder to a node or multiple selected nodes." ID="ID_1575208467" CREATED="1493483746930" MODIFIED="1493483784457"/>
+</node>
+<node TEXT="Attributes" FOLDED="true" ID="ID_1411897906" CREATED="1493483614667" MODIFIED="1493483619644">
+<node ID="ID_1074143712" CREATED="1493483820033" MODIFIED="1493483843011"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      For a detailed discussion of attributes see <b><font color="#ff0000">HERE</font></b>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Presentations tab (in Freeplane 1.6.x and newer)" FOLDED="true" ID="ID_847363101" CREATED="1493479047034" MODIFIED="1493483928746" MAX_WIDTH="225.0 px" MIN_WIDTH="225.0 px"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      For a detailed discussion see <b><font color="#ff0000">HERE</font></b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="lets you organize your map into presentations and slides to show your map&apos;s information in a pre-planned presentation." FOLDED="true" ID="ID_968628392" CREATED="1493479081858" MODIFIED="1493479466334">
+<node ID="ID_1155390727" CREATED="1493479468214" MODIFIED="1493479483823"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      For more information see <b><font color="#ff0000">HERE</font></b>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Note" FOLDED="true" ID="ID_396515716" CREATED="1489336765335" MODIFIED="1489336769432">
+<node TEXT="Beginning with version 1.6.1" FOLDED="true" ID="ID_1063877542" CREATED="1489336769438" MODIFIED="1493475819367">
+<node TEXT="Properties Panel includes an additional tab for managing presentations." ID="ID_961341651" CREATED="1493475819369" MODIFIED="1493475824763"/>
+<node TEXT="Properties Panel was renamed &quot;Tool Panel&quot;" ID="ID_395014690" CREATED="1493475825289" MODIFIED="1493475839050"/>
+</node>
+</node>
+</node>
+<node TEXT="Note panel" FOLDED="true" ID="ID_68046350" CREATED="1489330633219" MODIFIED="1493490669682" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Notes let you include larger, more detailed, more document-like information in your maps." ID="ID_705705993" CREATED="1493479713050" MODIFIED="1493480164505"/>
+<node TEXT="can be docked in several locations..." FOLDED="true" ID="ID_1201183220" CREATED="1489330828538" MODIFIED="1489331464455">
+<node TEXT="" ID="ID_1329223806" CREATED="1489330877990" MODIFIED="1489330877993">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="top" ID="ID_765153187" CREATED="1489330841466" MODIFIED="1489330856225" MAX_WIDTH="60.0 px" MIN_WIDTH="60.0 px"/>
+<node TEXT="bottom" ID="ID_1895090603" CREATED="1489330844154" MODIFIED="1489330856224" MAX_WIDTH="60.0 px" MIN_WIDTH="60.0 px"/>
+<node TEXT="left" ID="ID_580470853" CREATED="1489330846338" MODIFIED="1489330856223" MAX_WIDTH="60.0 px" MIN_WIDTH="60.0 px"/>
+<node TEXT="right" ID="ID_63040419" CREATED="1489330847914" MODIFIED="1489330856221" MAX_WIDTH="60.0 px" MIN_WIDTH="60.0 px"/>
+<node TEXT="" ID="ID_152209806" CREATED="1489330877939" MODIFIED="1489330877989">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node ID="ID_1292927872" CREATED="1489330877994" MODIFIED="1489330932151" MAX_WIDTH="206.2499940320851 pt" MIN_WIDTH="206.2499940320851 pt"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      menubar <font color="#ff0000">View &gt; Notes &gt; Note panel position</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Resize by" FOLDED="true" ID="ID_282691784" CREATED="1489331477798" MODIFIED="1489331510223">
+<node TEXT="hover over separator between map area and note panel." FOLDED="true" ID="ID_1456082883" CREATED="1489331510228" MODIFIED="1489331637647">
+<node TEXT="a double-arrow cursor displays when resizing is active" FOLDED="true" ID="ID_1313194494" CREATED="1489331530895" MODIFIED="1489331603399">
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_637741576" CREATED="1489331759965" MODIFIED="1489591313108"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/resize%20arrows.png" width="190" height="118"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Drag the double-arrow cursor to increase or decrease note panel size." ID="ID_1115479346" CREATED="1489331575494" MODIFIED="1489331631719"/>
+</node>
+<node TEXT="screenshot" STYLE_REF="image in details" ID="ID_1060179331" CREATED="1489330754010" MODIFIED="1489591127075"><richcontent TYPE="DETAILS" HIDDEN="true">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/notes%20panel.png" width="739" height="258"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="background color" FOLDED="true" ID="ID_217694395" CREATED="1489245147739" MODIFIED="1493490669683" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="To display/hide the background color" FOLDED="true" ID="ID_823484574" CREATED="1493481365934" MODIFIED="1493485382173">
+<edge COLOR="#acacac"/>
+<node TEXT="menubar" FOLDED="true" ID="ID_150196214" CREATED="1493481592900" MODIFIED="1493481595221">
+<node FOLDED="true" ID="ID_736252514" CREATED="1493481595987" MODIFIED="1493485531796"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">Format &gt; Map background</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node ID="ID_1892150574" CREATED="1493485531800" MODIFIED="1493485531804"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">&gt; background color</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Note: additional options" FOLDED="true" ID="ID_826400603" CREATED="1493485537012" MODIFIED="1493485552333">
+<node TEXT="Background image" ID="ID_1712636120" CREATED="1493485555084" MODIFIED="1493485601164"/>
+<node TEXT="Fit background image to window" ID="ID_1049336436" CREATED="1493485601939" MODIFIED="1493485613324"/>
+<node TEXT="Clear" ID="ID_1360707009" CREATED="1493485614411" MODIFIED="1493485619836"/>
+</node>
+</node>
+</node>
+<node TEXT="right-click (on a non-node spot on the workspace)" FOLDED="true" ID="ID_311869845" CREATED="1493481005362" MODIFIED="1493481751210">
+<edge COLOR="#acacac"/>
+<node TEXT="right-click &gt; background color" ID="ID_471005451" CREATED="1493481800979" MODIFIED="1493485382175"/>
+</node>
+</node>
+</node>
+<node TEXT="Outline view" FOLDED="true" ID="ID_66647782" CREATED="1493485781625" MODIFIED="1493490669684" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="To display/hide the Outline view" FOLDED="true" ID="ID_1520448653" CREATED="1493481365934" MODIFIED="1493486874885">
+<edge COLOR="#acacac"/>
+<node TEXT="menubar" FOLDED="true" ID="ID_711208384" CREATED="1493481592900" MODIFIED="1493481595221">
+<node ID="ID_1115205538" CREATED="1493481595987" MODIFIED="1493486862959"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">View &gt; View settings &gt; Outline view</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="right-click (on a non-node spot on the workspace)" FOLDED="true" ID="ID_878074297" CREATED="1493481005362" MODIFIED="1493481751210">
+<edge COLOR="#acacac"/>
+<node TEXT="right-click &gt; Outline view" ID="ID_1967868640" CREATED="1493481800979" MODIFIED="1493486868501"/>
+</node>
+</node>
+<node TEXT="Note" FOLDED="true" ID="ID_1796343659" CREATED="1493487078865" MODIFIED="1493487081291">
+<node TEXT="Vertical and horizontal spacing between nodes in Outline view is controlled in Preferences" FOLDED="true" ID="ID_884449573" CREATED="1493486897052" MODIFIED="1493487088091">
+<edge COLOR="#acacac"/>
+<node TEXT="menubar" FOLDED="true" ID="ID_781621524" CREATED="1493486949611" MODIFIED="1493486953004">
+<node ID="ID_811292743" CREATED="1493486953419" MODIFIED="1493486999517"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">Tools &gt; Preferences &gt; Appearance (tab) &gt; Outline view (section)</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Miscellaneous" FOLDED="true" ID="ID_1649950531" CREATED="1493487284831" MODIFIED="1493490669684" MAX_WIDTH="127.0 px" MIN_WIDTH="127.0 px">
+<node TEXT="Full screen mode" FOLDED="true" ID="ID_671026272" CREATED="1493490773869" MODIFIED="1493490779222">
+<node TEXT="To enter full screen mode..." FOLDED="true" ID="ID_539004628" CREATED="1493491940311" MODIFIED="1493491967872">
+<node TEXT="menubar" FOLDED="true" ID="ID_1551631938" CREATED="1493481592900" MODIFIED="1493481595221">
+<node ID="ID_119688425" CREATED="1493481595987" MODIFIED="1493492334901" LINK="ID_892881649"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">View &gt; View settings &gt; Full screen mode</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="right-click (on a non-node spot on the workspace)" FOLDED="true" ID="ID_1469526179" CREATED="1493481005362" MODIFIED="1493481751210">
+<edge COLOR="#acacac"/>
+<node TEXT="right-click &gt; Full screen mode" ID="ID_1421282182" CREATED="1493481800979" MODIFIED="1493492346563" LINK="ID_892881649"/>
+</node>
+<node TEXT="keyboard shortcut" FOLDED="true" ID="ID_292787154" CREATED="1493492347730" MODIFIED="1493492354659">
+<edge COLOR="#acacac"/>
+<node TEXT="F11 (default)" ID="ID_551549344" CREATED="1493492354664" MODIFIED="1493492363866"/>
+</node>
+</node>
+<node TEXT="Note" FOLDED="true" ID="ID_1582195960" CREATED="1493491107321" MODIFIED="1493491110417">
+<node TEXT="The &quot;full screen&quot; menu item, right-click item, or hotkey act as a toggle.  If you are in full screen mode, you turn it off.  If you are not in full screen mode, you turn it on." ID="ID_308125292" CREATED="1493491977247" MODIFIED="1493492066775"/>
+<node TEXT="You can still make workspace elements display while in full screen mode by using keyboard shortcuts." FOLDED="true" ID="ID_856395092" CREATED="1493491110422" MODIFIED="1493491144057">
+<node TEXT="For example, the filter toolbar (Ctrl+F) and properties panel (Alt+P) and note panel (Ctrl+Greater) ship with default hotkeys.  Pressing these hotkeys while in full screen mode with toggle these workspace elements between being displayed or hidden." ID="ID_254829597" CREATED="1493491144897" MODIFIED="1493491326351"/>
+<node TEXT="You can assign any workspace element to any key or key combination, which then can be used in full screen mode." FOLDED="true" ID="ID_950203404" CREATED="1493491329126" MODIFIED="1493491396047">
+<node TEXT="Key mapping can only be done using the menubar (not right-click context menus)." ID="ID_1315501707" CREATED="1493491396702" MODIFIED="1493491472374"/>
+<node FOLDED="true" ID="ID_436251085" CREATED="1493491480868" MODIFIED="1493491595405"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Expose any menu item (e.g. <font color="#ff0000">Navigate &gt; Goto node with ID...</font>) and hold the Ctrl key down while you click the menu item.
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="the &quot;Enter new key&quot; dialog will appear" ID="ID_1428031062" CREATED="1493491646139" MODIFIED="1493491740131"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <a href="Images/doc/key%20mapping%20dialog.png"><img src="Images/doc/key%20mapping%20dialog.png" width="309" height="117"/>
+</a>  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1661572768" CREATED="1493491745585" MODIFIED="1493491904683"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      press the key(s) you want to assign for this menu item.&#160; <font color="#ff0000">Important</font>: do not press &quot;Enter&quot; or &quot;Return&quot; thinking that is the equivalent of the &quot;OK&quot; button.&#160;&#160;You must <b><u>click the OK button</u></b>&#160;to complete your hotkey assignment.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Zoom to fit to page" FOLDED="true" ID="ID_1041694622" CREATED="1493487484333" MODIFIED="1493488709127">
+<node TEXT="To fit the map to the workspace..." FOLDED="true" ID="ID_545620046" CREATED="1493481365934" MODIFIED="1493488602121">
+<edge COLOR="#acacac"/>
+<node TEXT="menubar" FOLDED="true" ID="ID_340316805" CREATED="1493481592900" MODIFIED="1493481595221">
+<node ID="ID_1855840720" CREATED="1493481595987" MODIFIED="1493488638488"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">View &gt; Zoom &gt; Zoom to fit to page</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="right-click (on a non-node spot on the workspace)" FOLDED="true" ID="ID_977693354" CREATED="1493481005362" MODIFIED="1493481751210">
+<edge COLOR="#acacac"/>
+<node TEXT="right-click &gt; Zoom to fit map to page" ID="ID_148068463" CREATED="1493481800979" MODIFIED="1493488670279"/>
+</node>
+</node>
+</node>
+<node TEXT="Center selected node" FOLDED="true" ID="ID_821639211" CREATED="1493488135637" MODIFIED="1493488142566">
+<node TEXT="To center the selected node on the workspace.." FOLDED="true" ID="ID_1108171573" CREATED="1493481365934" MODIFIED="1493488960572">
+<edge COLOR="#acacac"/>
+<node TEXT="menubar" FOLDED="true" ID="ID_1877253568" CREATED="1493481592900" MODIFIED="1493481595221">
+<node ID="ID_570943971" CREATED="1493481595987" MODIFIED="1493488993789"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">View &gt; View settings &gt; Center selected node</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="right-click (on a non-node spot on the workspace)" FOLDED="true" ID="ID_1412600420" CREATED="1493481005362" MODIFIED="1493481751210">
+<edge COLOR="#acacac"/>
+<node TEXT="right-click &gt; Center selected node" ID="ID_280754916" CREATED="1493481800979" MODIFIED="1493488999019"/>
+</node>
+<node TEXT="keyboard shortcut" FOLDED="true" ID="ID_55471708" CREATED="1493489009042" MODIFIED="1493489015427">
+<edge COLOR="#acacac"/>
+<node TEXT="Alt+C (default)" ID="ID_431331679" CREATED="1493489015431" MODIFIED="1493489031011"/>
+</node>
+</node>
+</node>
+<node TEXT="Goto root" FOLDED="true" ID="ID_1570396934" CREATED="1493488145038" MODIFIED="1493488149070">
+<node TEXT="To return to the root node from anywhere in the map..." FOLDED="true" ID="ID_698577511" CREATED="1493481365934" MODIFIED="1493489316016">
+<edge COLOR="#acacac"/>
+<node TEXT="menubar" FOLDED="true" ID="ID_1892013563" CREATED="1493481592900" MODIFIED="1493481595221">
+<node ID="ID_1019197616" CREATED="1493481595987" MODIFIED="1493489467064"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">Navigate &gt; Goto root</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="right-click (on a non-node spot on the workspace)" FOLDED="true" ID="ID_1453490313" CREATED="1493481005362" MODIFIED="1493481751210">
+<edge COLOR="#acacac"/>
+<node TEXT="right-click &gt; Goto root" ID="ID_1093806739" CREATED="1493481800979" MODIFIED="1493489399734"/>
+</node>
+<node TEXT="keyboard shortcut" FOLDED="true" ID="ID_874635808" CREATED="1493489410973" MODIFIED="1493489416982">
+<edge COLOR="#acacac"/>
+<node TEXT="Escape (default)" ID="ID_305926579" CREATED="1493489416986" MODIFIED="1493489425447"/>
+</node>
+</node>
+</node>
+<node TEXT="Goto node with ID..." FOLDED="true" ID="ID_1350954187" CREATED="1493488149708" MODIFIED="1493488157022">
+<node TEXT="To navigate to a node for which you know the ID..." FOLDED="true" ID="ID_1192540705" CREATED="1493481365934" MODIFIED="1493489726619">
+<edge COLOR="#acacac"/>
+<node TEXT="" ID="ID_1301989849" CREATED="1493490168072" MODIFIED="1493490168075">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="menubar" FOLDED="true" ID="ID_289848019" CREATED="1493481592900" MODIFIED="1493481595221">
+<node ID="ID_750369247" CREATED="1493481595987" MODIFIED="1493489790451"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">Navigate &gt; Goto node with ID...</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="right-click (on a non-node spot on the workspace)" FOLDED="true" ID="ID_1069177510" CREATED="1493481005362" MODIFIED="1493481751210">
+<edge COLOR="#acacac"/>
+<node TEXT="Goto node with ID..." ID="ID_1468293511" CREATED="1493481800979" MODIFIED="1493489798474"/>
+</node>
+<node TEXT="" ID="ID_690810575" CREATED="1493490168070" MODIFIED="1493490168072">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="(A dialog, titled &quot;Goto node with ID...&quot;) will display." FOLDED="true" ID="ID_1837317222" CREATED="1493489964207" MODIFIED="1493489996080">
+<node TEXT="screenshot" ID="ID_615582079" CREATED="1493490051102" MODIFIED="1493490091062"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <a href="Images/doc/goto%20node%20with%20ID.png"><img src="Images/doc/goto%20node%20with%20ID.png" width="277" height="129"/>
+</a>  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="type or paste (from clipboard) the target node&apos;s ID;  press &quot;OK&quot; button." ID="ID_262572679" CREATED="1493489929072" MODIFIED="1493490126271"/>
+</node>
+</node>
+<node TEXT="Note: you must know (or have in the clipboard, so you can paste) the desired node&apos;s ID." FOLDED="true" ID="ID_573218066" CREATED="1493489814401" MODIFIED="1493489853642">
+<edge COLOR="#acacac"/>
+<node TEXT="To aquire the ID of a node..." FOLDED="true" ID="ID_735922627" CREATED="1493489854169" MODIFIED="1493489881665">
+<node TEXT="Hover over the node" ID="ID_810636828" CREATED="1493489882512" MODIFIED="1493489887321"/>
+<node TEXT="Right-click" FOLDED="true" ID="ID_1819890345" CREATED="1493489887912" MODIFIED="1493489894544">
+<node TEXT="Copy node ID" ID="ID_789213317" CREATED="1493489917184" MODIFIED="1493489922208"/>
+</node>
+<node TEXT="Note:" FOLDED="true" ID="ID_1147663864" CREATED="1493490336210" MODIFIED="1493490339916">
+<node TEXT="Node ID is distinct from node URI.  If you want to insert a hyperlink into a node, use node URI." ID="ID_435650045" CREATED="1493490340458" MODIFIED="1493490395275"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Open maps" FOLDED="true" ID="ID_750416001" CREATED="1493493001707" MODIFIED="1493493006771">
+<node TEXT="To quickly navigate to another map." FOLDED="true" ID="ID_187562700" CREATED="1493496568695" MODIFIED="1493496580776">
+<node TEXT="right-click (on a non-node spot on the workspace)" FOLDED="true" ID="ID_642228291" CREATED="1493481005362" MODIFIED="1493481751210">
+<edge COLOR="#acacac"/>
+<node TEXT="When you right-click on a non-node spot in the workspace, you can see your open maps and quickly navigate to them.  (The current map is indicated by a bullet.)" FOLDED="true" ID="ID_966714182" CREATED="1493493030004" MODIFIED="1493493461999">
+<node TEXT="image: right-click context menu (at top)" ID="ID_1477197155" CREATED="1493493333680" MODIFIED="1493493404367"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <a href="Images/doc/right-click%20menu%20-%20open%20maps.png"><img src="Images/doc/right-click%20menu%20-%20open%20maps.png" width="340" height="125"/>
+</a>  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Click on the map to which you want to switch.  That map becomes the currently focused-on map." ID="ID_1615849897" CREATED="1493493514364" MODIFIED="1493493571517"/>
+</node>
+<node TEXT="menubar" FOLDED="true" ID="ID_1957716711" CREATED="1493496591959" MODIFIED="1493496594184">
+<edge COLOR="#acacac"/>
+<node FOLDED="true" ID="ID_152260268" CREATED="1493496611184" MODIFIED="1493496622112"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <font color="#ff0000">Maps &gt; Maps</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Click on the map to which you want to switch.  That map becomes the currently focused-on map." ID="ID_570481613" CREATED="1493493514364" MODIFIED="1493493571517"/>
+</node>
+</node>
+<node TEXT="moving between tabs" FOLDED="true" ID="ID_237222699" CREATED="1493496639742" MODIFIED="1493496650135">
+<edge COLOR="#acacac"/>
+<node TEXT="Each open map is represented by a tab, like the tabs on file folders in a filing cabinet.  The currently focused-on map&apos;s tab is colored, while the rest are gray." FOLDED="true" ID="ID_242655555" CREATED="1493496651047" MODIFIED="1493496952980">
+<node TEXT="image" ID="ID_1527855255" CREATED="1493496794021" MODIFIED="1493496831343"><richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/doc/tabs%20in%20workspace.png" width="446" height="94"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Click on the map you want to edit." FOLDED="true" ID="ID_1310462292" CREATED="1493496854067" MODIFIED="1493496864956">
+<node TEXT="alternatively, you can press Ctrl+Tab to navigate to the next tab to the right of the current tab.  To navigate to the next tab to the left of the current tab, press Ctrl+Shift+Tab." ID="ID_1401040951" CREATED="1493496869948" MODIFIED="1493496999164"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Split views" FOLDED="true" ID="ID_1386370819" CREATED="1493493728178" MODIFIED="1493493736867">
+<node TEXT="The basic technique is simple -- much easier to do than to explain." ID="ID_974767862" CREATED="1493497394765" MODIFIED="1493498239628"/>
+<node TEXT="Hover over the tab of one map, press and hold the left mouse button, and drag the tab onto the workspace -- indicated by bounding boxes, previewing a valid position to which you can drop the map." ID="ID_1017237024" CREATED="1493498223896" MODIFIED="1493498228221"/>
+<node TEXT="Maps can be docked to one of four positions on the workspace or, if you already have dragged a tab." ID="ID_650052617" CREATED="1493497524587" MODIFIED="1493497648485"/>
+<node TEXT="When you see the bounding box in the desired position, remove your finger from the mouse button.  The map will remain where the bounding box was." ID="ID_619211657" CREATED="1493497843336" MODIFIED="1493497901360"/>
+<node TEXT="In effect, this creates a new map view, showing two maps simultaneously.  This is similar to a window which has two panes." ID="ID_1362762323" CREATED="1493497905143" MODIFIED="1493498003767"/>
+<node TEXT="different sections of the same map" FOLDED="true" ID="ID_1467569986" CREATED="1493498040726" MODIFIED="1493498049182">
+<node TEXT="To simultaneously display sections of the same maps in the workspace you must first create a copy of the map." ID="ID_532944420" CREATED="1493497286559" MODIFIED="1493498097079"/>
+<node ID="ID_265487768" CREATED="1493498118788" MODIFIED="1493498199694"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Click on the map tab you want to copy, making it the current map.&#160;&#160;Then access the menubar <font color="#ff0000">View &gt; New map view</font>.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="A copy of the map is created to the right of the node you selected." ID="ID_1452898757" CREATED="1493498303530" MODIFIED="1493521903221"/>
+<node TEXT="Then you can drag and dock it as described above." ID="ID_1901194841" CREATED="1493521903931" MODIFIED="1493521940164"/>
+</node>
+<node TEXT="If, in the process of dragging a map&apos;s tab onto the workspace, you decide you do not want to complete the operation -- press the Escape key." ID="ID_356114307" CREATED="1493497730585" MODIFIED="1493497769026"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Notes and explanations" STYLE_REF="Notes and explanations" FOLDED="true" ID="ID_420165783" CREATED="1483416064359" MODIFIED="1486862695290">
+<node TEXT="Screenshots in map" LOCALIZED_STYLE_REF="default" FOLDED="true" ID="ID_1182530512" CREATED="1489246530884" MODIFIED="1489591205756">
+<node TEXT="Screenshots are contained in node details." LOCALIZED_STYLE_REF="default" FOLDED="true" ID="ID_646773965" CREATED="1489246536016" MODIFIED="1489591198437">
+<node TEXT="Node details can be visible or hidden.  If hidden, you need to make them visible to see them.  Hidden node details have an arrow on the bottom left corner of the node." ID="ID_1038085669" CREATED="1493522894719" MODIFIED="1493522989827">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="like this..." ID="ID_1024247540" CREATED="1493523007582" MODIFIED="1493523029221" STYLE="fork">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node ID="ID_1478849309" CREATED="1489327295807" MODIFIED="1489327550983"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <img src="Images/other/workspace/details%20arrow_.png" width="110" height="39"/>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+<node TEXT="To show or hide node details" FOLDED="true" ID="ID_1289741991" CREATED="1493523045693" MODIFIED="1493523056998">
+<node ID="ID_788177810" CREATED="1489246558147" MODIFIED="1493523080672"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Menubar &gt; <font color="#ff0000">View &gt; Hide details</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Keyboard shortcut : Alt+F2" ID="ID_1694221035" CREATED="1489246735241" MODIFIED="1489246775827"/>
+</node>
+</node>
+</node>
+<node TEXT="Hiding workspace elements" LOCALIZED_STYLE_REF="default" FOLDED="true" ID="ID_146682932" CREATED="1489592748729" MODIFIED="1489592761457">
+<node FOLDED="true" ID="ID_572505988" CREATED="1489592626412" MODIFIED="1489592656956"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Menubar &gt; <b><font color="#ff0000">View &gt; Toolbars</font></b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="uncheck workspace element to hide" ID="ID_492149232" CREATED="1489592660162" MODIFIED="1489592784306"/>
+</node>
+<node TEXT="On blank area of workspace" FOLDED="true" ID="ID_168756113" CREATED="1489592674538" MODIFIED="1489592697362">
+<node TEXT="Right-click &gt; uncheck workspace element to hide" ID="ID_1179336680" CREATED="1489592697373" MODIFIED="1489592788161"/>
+</node>
+</node>
+</node>
+<node TEXT="Tips and tricks" STYLE_REF="Tips and tricks" FOLDED="true" ID="ID_1772859470" CREATED="1485134404008" MODIFIED="1486862695292">
+<node TEXT="youtube video (workspace overview)" ID="ID_1009597901" CREATED="1489325016077" MODIFIED="1489592179039" LINK="https://www.youtube.com/watch?v=wK1on8ipCVA"/>
 </node>
 </node>
 <node TEXT="Open map on Internet" STYLE_REF="Advanced" FOLDED="true" ID="ID_794559549" CREATED="1329413644062" MODIFIED="1335300198085">
@@ -1162,8 +2691,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="The list of possible uses is limited only by your imagination and image resources." ID="ID_1331259786" CREATED="1484848833077" MODIFIED="1486862695293">
-</node>
+<node TEXT="The list of possible uses is limited only by your imagination and image resources." ID="ID_1331259786" CREATED="1484848833077" MODIFIED="1486862695293"/>
 </node>
 </node>
 <node TEXT="How to" STYLE_REF="Actions" FOLDED="true" ID="ID_986224846" CREATED="1484432866260" MODIFIED="1486862695293">
@@ -1344,8 +2872,7 @@
 </html>
 </richcontent>
 </node>
-<node TEXT="The standard size for icons is 16x16 pixels." ID="ID_1247642941" CREATED="1484852652195" MODIFIED="1486862695297">
-</node>
+<node TEXT="The standard size for icons is 16x16 pixels." ID="ID_1247642941" CREATED="1484852652195" MODIFIED="1486862695297"/>
 </node>
 <node TEXT="Icons can be part of the formatting defined in styles." FOLDED="true" ID="ID_1539044466" CREATED="1484850910815" MODIFIED="1486862695297">
 <node TEXT="See Styles" ID="ID_28365425" CREATED="1484851109621" MODIFIED="1486912161682">
@@ -2824,225 +4351,127 @@
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainMenu" LAST="false"/>
 </hook>
-<node TEXT="Properties" STYLE_REF="Advanced" FOLDED="true" ID="ID_873516196" CREATED="1314162578896" MODIFIED="1335300487421" NUMBERED="true" MIN_WIDTH="90.0 px">
-<node TEXT="Tool panel" STYLE_REF="Advanced" FOLDED="true" ID="ID_1812601804" CREATED="1314162700896" MODIFIED="1323807343250" HGAP_QUANTITY="32.0 px" VSHIFT_QUANTITY="457.0 px" MAX_WIDTH="550.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
-<icon BUILTIN="info"/>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
-</hook>
-<node ID="ID_503272481" CREATED="1323517943396" MODIFIED="1335095486775" HGAP_QUANTITY="-105.0 px" VSHIFT_QUANTITY="105.0 px"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Freeplane has many possibilities to to set or change properties which apply to a whole node or all nodes. You can think of the basic color of a node, enclosing a node in a bubble, the size of the text, the width of the node core and much more. The most versatile method to edit properties is in the <b>Tool panel</b>. To open or close the Tool panel, right-click in an empty space of the background and select <i>Tool panel</i>.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      <b>Note</b>
-    </p>
-    <ul>
-      <li>
-        An alternative way to open or close the panel, choose <i>View &gt; Tool panel</i>.
-      </li>
-      <li>
-        An alternative way to change properties, use menu <i>Format.</i>
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
-</hook>
+<node TEXT="Formatting nodes" STYLE_REF="Advanced" FOLDED="true" ID="ID_215836627" CREATED="1484492723173" MODIFIED="1499027394252" NUMBERED="true">
+<node TEXT="Purpose" STYLE_REF="Purpose" FOLDED="true" ID="ID_1048626295" CREATED="1483416459506" MODIFIED="1490394239065">
+<node TEXT="Freeplane has many possibilities to set or change node format" ID="ID_1063739575" CREATED="1484494250195" MODIFIED="1499027398248"/>
+<node TEXT="You have control of ..." FOLDED="true" ID="ID_1508685009" CREATED="1490394278457" MODIFIED="1499020568549" VGAP_QUANTITY="10.0 pt">
+<node TEXT="Background color of a node" ID="ID_890431801" CREATED="1490394341387" MODIFIED="1490394460259" BACKGROUND_COLOR="#ccccff"/>
+<node TEXT="Shape of a node" ID="ID_516458905" CREATED="1490394377219" MODIFIED="1490394702351" STYLE="oval" SHAPE_HORIZONTAL_MARGIN="4.0 pt"/>
+<node TEXT="Size of the text" ID="ID_938799585" CREATED="1490394401896" MODIFIED="1499020568549">
+<font SIZE="20"/>
 </node>
+<node TEXT="Edge width, color and style" ID="ID_1430859807" CREATED="1490394413340" MODIFIED="1499011138634" HGAP_QUANTITY="37.999999284744284 pt" VSHIFT_QUANTITY="0.7499999776482589 pt">
+<edge STYLE="horizontal" COLOR="#009900" WIDTH="4" DASH="DASHES"/>
 </node>
-<node TEXT="Editing a property" STYLE_REF="Advanced" ID="ID_1707940964" CREATED="1314163244315" MODIFIED="1323519043605" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="1.0 px" MAX_WIDTH="500.0 px" MIN_WIDTH="1.0 px" STYLE="combined">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
-</hook>
-<node ID="ID_676577574" CREATED="1323518049125" MODIFIED="1335095498771" HGAP_QUANTITY="-101.0 px" VSHIFT_QUANTITY="159.0 px"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      The <i>Tool panel</i>&#160;shows the properties of the node which has the focus. Only the properties of the selected node can be changed. (Generally you select one node, but with some properties it is possible to select and change more than one node at a time.) While the panel is showing, you can select a different node to give it the focus. To change a property, change the value of the property. This will also set a check indicating the changed value applies. Uncheck if you want to return to the default behaviour. Also uncheck if you want conditional styles affect (set) the property.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      As a first example, find the properties group named <i>Node Shape</i>&#160;and click on <i>Node style</i>. A menu drops down with options like <i>Bubble</i>, <i>Fork</i>&#160;&#160;and <i>As parent</i>. Try these options and see what happens. For the node you are reading now option <i>Bubble</i>&#160;was chosen. As you may notice, this option only applies to the core.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      As a second example, find node group <i>Edges&#160;</i>and check the box for <i>Edge style</i>. Clicking next to <i>Edge style</i>&#160;will drop down a menu with possible styles like <i>Linear</i>, <i>Smoothly curved</i>, <i>Hidden</i>,&#160;and others. Try these to know which styles are possible. Or cselect me to see a few examples of changed properties in the <i>Tool panel.</i>
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
-</hook>
-<node TEXT="linear" STYLE_REF="AdvancedTopic" ID="ID_34702829" CREATED="1314172753397" MODIFIED="1323518514233" HGAP_QUANTITY="14.0 px" VSHIFT_QUANTITY="-26.0 px">
-<edge STYLE="linear"/>
-</node>
-<node TEXT="curved" STYLE_REF="AdvancedTopic" ID="ID_1333040751" CREATED="1314172748460" MODIFIED="1323518517665" HGAP_QUANTITY="35.0 px" VSHIFT_QUANTITY="-27.0 px">
-<edge STYLE="bezier"/>
-</node>
-<node TEXT="hidden" STYLE_REF="AdvancedTopic" ID="ID_1968961455" CREATED="1314172761269" MODIFIED="1323518014549" HGAP_QUANTITY="40.0 px" VSHIFT_QUANTITY="-5.0 px">
-<edge STYLE="hide_edge"/>
-</node>
-<node TEXT="horizontal" STYLE_REF="AdvancedTopic" ID="ID_494591913" CREATED="1314172936705" MODIFIED="1323518524951" HGAP_QUANTITY="39.0 px" VSHIFT_QUANTITY="25.0 px">
+<node TEXT="... and much more." ID="ID_1932084403" CREATED="1490394430292" MODIFIED="1490394675978">
 <edge STYLE="horizontal"/>
 </node>
 </node>
+<node TEXT="You can also copy the formatting of a node, and paste it to other nodes by using" FOLDED="true" ID="ID_1287880664" CREATED="1491434054085" MODIFIED="1499020975246" VGAP_QUANTITY="6.0 pt">
+<node TEXT="Copy format" STYLE_REF="Title" ID="ID_1501116501" CREATED="1491434139735" MODIFIED="1499020975246">
+<icon BUILTIN="../colorpicker"/>
 </node>
-<node TEXT="Automatic edge color" STYLE_REF="Advanced" FOLDED="true" ID="ID_1005719714" CREATED="1314164029738" MODIFIED="1323519032435" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="-2.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
-</hook>
-<node ID="ID_1565463565" CREATED="1323518106869" MODIFIED="1335095510596" HGAP_QUANTITY="-125.0 px" VSHIFT_QUANTITY="67.0 px"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      By default each new map in Freeplane will generate a different color for each new branch. This supports one of the principles held by the inventor of the mind map, which states that colors help the brain to structure and memorize information more easily. This property is called&#160;<b>Automatic edge color.</b>&#160;This property can be disabled in the Propertieds panel. To disable automatic edge color, open the Tool panel and find the properties group <i>Node style</i>, at the top of the <i>Properties&#160;&#160;panel</i>. Uncheck &#160;<i>Automatic edge color</i>, like I did for the the mind map of this tutorial.
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
-</hook>
+<node TEXT="Paste format" STYLE_REF="Title" ID="ID_1886111683" CREATED="1491434142436" MODIFIED="1491434226347">
+<icon BUILTIN="../color_fill"/>
 </node>
 </node>
-<node TEXT="Automatic node numbering" STYLE_REF="Advanced" ID="ID_1861361284" CREATED="1314283445398" MODIFIED="1323518950816" HGAP_QUANTITY="30.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
-</hook>
-<node ID="ID_1531819965" CREATED="1323518137156" MODIFIED="1335095522187" HGAP_QUANTITY="-163.0 px" VSHIFT_QUANTITY="42.0 px"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      The <i>Properties Panel </i>contains the property&#160;automatic <b>node numbering </b>to give a node a number.&#160;You can set node numbering for a group of nodes by first selecting the group (keep Shift or Control pressed when you click nodes) and then checking this option in the <i>Properties Panel</i>.
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
-</hook>
 </node>
+<node TEXT="How to" STYLE_REF="Actions" FOLDED="true" ID="ID_554181153" CREATED="1484432866260" MODIFIED="1490495170291">
+<node TEXT="Change formatting" STYLE_REF="Title" FOLDED="true" ID="ID_1165590804" CREATED="1483417620673" MODIFIED="1499027406140" VGAP_QUANTITY="6.0 pt">
+<node TEXT="Select the node(s) to change the property" ID="ID_631072212" CREATED="1490495372597" MODIFIED="1490495483386" NUMBERED="true"/>
+<node TEXT="Use one of these formatting options" FOLDED="true" ID="ID_1243040393" CREATED="1498409877688" MODIFIED="1498421316312" NUMBERED="true">
+<node TEXT="Formatting using the Toolbar" STYLE_REF="Title" FOLDED="true" ID="ID_583841334" CREATED="1484492723173" MODIFIED="1499027717141">
+<node TEXT="How to" STYLE_REF="Actions" FOLDED="true" ID="ID_1983897449" CREATED="1484432866260" MODIFIED="1491354052976">
+<node TEXT="Select from a drop down list or select icon in the Toolbar to change the format property." ID="ID_524446865" CREATED="1490393892009" MODIFIED="1499027422367"/>
 </node>
-<node TEXT="Other properties" STYLE_REF="Advanced" FOLDED="true" ID="ID_457725429" CREATED="1314167397870" MODIFIED="1323807323251" HGAP_QUANTITY="31.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
-<font ITALIC="false"/>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
-</hook>
-<node STYLE_REF="TitlesContent" ID="ID_1014522598" CREATED="1323518167241" MODIFIED="1335095532420" HGAP_QUANTITY="-92.0 px" VSHIFT_QUANTITY="42.0 px"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Scan the options of the panel. The properties in the group <i>Node Style</i>&#160; will be described in a moment. Most other properties are self-explaining. All properties are described in detail in the Freeplane documentation.
-    </p>
-  </body>
-</html>
-</richcontent>
+<node TEXT="Notes and explanations" STYLE_REF="Notes and explanations" FOLDED="true" ID="ID_1953175101" CREATED="1483416064359" MODIFIED="1490394239095">
+<node TEXT="Format properties that can be modified from Toolbar" FOLDED="true" ID="ID_1828711192" CREATED="1491431973624" MODIFIED="1491433134455">
+<node TEXT="Style" STYLE_REF="Title" FOLDED="true" ID="ID_150359732" CREATED="1491432021844" MODIFIED="1491432292117">
+<node TEXT="Defines the style of the node" ID="ID_466831239" CREATED="1491432596618" MODIFIED="1491433828453"/>
 </node>
+<node TEXT="Font family" STYLE_REF="Title" FOLDED="true" ID="ID_1682898632" CREATED="1491432030251" MODIFIED="1491432292131">
+<node TEXT="Selects font to use for node core text" ID="ID_494400990" CREATED="1490318652897" MODIFIED="1491432817437"/>
 </node>
-<node TEXT="Menu Format" STYLE_REF="Advanced" FOLDED="true" ID="ID_1128382958" CREATED="1314167687616" MODIFIED="1323807329819" HGAP_QUANTITY="29.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
-</hook>
-<node ID="ID_1716769321" CREATED="1323518205453" MODIFIED="1335095546772" HGAP_QUANTITY="-67.0 px" VSHIFT_QUANTITY="41.0 px"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      The properties in the properties panel are also available through <b>menu Format</b>. Menu Format contains some properties which cannot be set in the properties panel as well. Examples are <i>map background</i>&#160;an <i>blinking node</i>&#160;(in Core).
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
-</hook>
-<node TEXT="Bold" STYLE_REF="AdvancedTopic" ID="ID_25890496" CREATED="1266251692562" MODIFIED="1323519139108" TEXT_SHORTENED="true" HGAP_QUANTITY="25.0 px" STYLE="as_parent">
+<node TEXT="Font size" STYLE_REF="Title" FOLDED="true" ID="ID_1310596257" CREATED="1491432039434" MODIFIED="1491432292136">
+<node TEXT="Selects font size for node core text" ID="ID_344352991" CREATED="1490318708672" MODIFIED="1491432824999"/>
+</node>
+<node TEXT="Bold" STYLE_REF="Title" FOLDED="true" ID="ID_271108670" CREATED="1491359643081" MODIFIED="1491432292143">
 <icon BUILTIN="../Bold16"/>
-<font NAME="SansSerif" SIZE="12" BOLD="true" ITALIC="false"/>
-<richcontent TYPE="DETAILS">
+<node ID="ID_1084594116" CREATED="1491353564941" MODIFIED="1491433083507"><richcontent TYPE="NODE">
 
 <html>
   <head>
-
+    
   </head>
   <body>
     <p>
-      This icon-button in the toolbar affects thee whole node text.
+      Changes font to <b>Bold&#160;</b>of<b>&#160;</b>all text in the node core
     </p>
   </body>
 </html>
 </richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-<edge STYLE="horizontal"/>
 </node>
-<node TEXT="Italic" STYLE_REF="AdvancedTopic" ID="ID_408787243" CREATED="1266251689531" MODIFIED="1323519147984" TEXT_SHORTENED="true">
+</node>
+<node TEXT="Italic" STYLE_REF="Title" FOLDED="true" ID="ID_414517597" CREATED="1491359657554" MODIFIED="1491432292148">
 <icon BUILTIN="../Italic16"/>
 <font ITALIC="true"/>
-<richcontent TYPE="DETAILS">
+<node ID="ID_836443696" CREATED="1491353691846" MODIFIED="1491433087333"><richcontent TYPE="NODE">
 
 <html>
   <head>
-
+    
   </head>
   <body>
-    <ul>
-      <li>
-        This icon-button in the toolbar affects the whole node text
-      </li>
-    </ul>
+    <p>
+      Changes font to <i>Italic of </i>all text in the node core
+    </p>
   </body>
 </html>
 </richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
-</hook>
-<edge STYLE="horizontal"/>
+</node>
+</node>
+<node TEXT="" ID="ID_1564629897" CREATED="1491362657953" MODIFIED="1491362657957">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Left aligned text" STYLE_REF="Title" ID="ID_152951343" CREATED="1490318750470" MODIFIED="1490481039438" TEXT_ALIGN="LEFT" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
+<node TEXT="Centered text" STYLE_REF="Title" ID="ID_1778235391" CREATED="1490318782838" MODIFIED="1490481039451" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
+<node TEXT="Right aligned text" STYLE_REF="Title" ID="ID_1905118489" CREATED="1490318770776" MODIFIED="1490481039445" TEXT_ALIGN="RIGHT" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
+<node TEXT="" ID="ID_1371288150" CREATED="1491362657941" MODIFIED="1491362657951">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Defines text alignment in node core" ID="ID_804262503" CREATED="1490318723184" MODIFIED="1491362680481"/>
+</node>
+<node TEXT="Cloud shape" STYLE_REF="Title" FOLDED="true" ID="ID_1450078566" CREATED="1491432245746" MODIFIED="1491432262350">
+<node TEXT="Add or removes the default cloud" FOLDED="true" ID="ID_1569256234" CREATED="1491432430186" MODIFIED="1491432463527">
+<node ID="ID_1627761662" CREATED="1491432921680" MODIFIED="1499024985191"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      You can define the default cloud in menu <font color="#ff0000">Tools &gt; Preferences &gt; Defaults tab</font>
+    </p>
+  </body>
+</html>
+</richcontent>
 </node>
 </node>
 </node>
-<node TEXT="Tool bar" STYLE_REF="Advanced" FOLDED="true" ID="ID_1235607524" CREATED="1314167879005" MODIFIED="1323807334296" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="-456.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Cloud color" STYLE_REF="Title" FOLDED="true" ID="ID_874568511" CREATED="1484505159213" MODIFIED="1491432220771">
+<icon BUILTIN="../Colors24"/>
+<node TEXT="Selects cloud color using a color chooser dialog" ID="ID_95635256" CREATED="1491432382794" MODIFIED="1491433104191"/>
+</node>
+</node>
+</node>
+<node TEXT="Tips and tricks" STYLE_REF="Tips and tricks" ID="ID_704222362" CREATED="1485134404008" MODIFIED="1485646510769"/>
+<node TEXT="Old documentation" STYLE_REF="Old documentation" FOLDED="true" ID="ID_1967057370" CREATED="1485134404008" MODIFIED="1498408669009" VGAP_QUANTITY="6.0 pt">
+<node TEXT="Tool bar" STYLE_REF="Advanced" FOLDED="true" ID="ID_8679357" CREATED="1314167879005" MODIFIED="1498408691023">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_158808063" CREATED="1323518244867" MODIFIED="1335095560220" HGAP_QUANTITY="-38.0 px" VSHIFT_QUANTITY="123.0 px"><richcontent TYPE="NODE">
+<node ID="ID_1218576189" CREATED="1323518244867" MODIFIED="1498408326060"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3078,8 +4507,1359 @@
 </node>
 </node>
 </node>
+</node>
+<node TEXT="Formatting using Format menu" STYLE_REF="Title" FOLDED="true" ID="ID_1382142303" CREATED="1484492723173" MODIFIED="1499027717185">
+<node TEXT="Purpose" STYLE_REF="Purpose" FOLDED="true" ID="ID_184523797" CREATED="1483416459506" MODIFIED="1490394239065">
+<node FOLDED="true" ID="ID_603173143" CREATED="1491350920590" MODIFIED="1499012816166"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Format<b>&#160;</b>menu<b>&#160;</b>contains also some properties of a node which cannot be set in the Format tab in the Tool panel.
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Blinking node" ID="ID_4776371" CREATED="1491353051984" MODIFIED="1491361677291">
+<icon BUILTIN="../xeyes"/>
+<hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
+</node>
+<node TEXT="Blend color" ID="ID_554765439" CREATED="1491353064536" MODIFIED="1491361682872">
+<icon BUILTIN="../NodeColorBlendAction"/>
+</node>
+</node>
+</node>
+<node TEXT="How to" STYLE_REF="Actions" FOLDED="true" ID="ID_45909216" CREATED="1484432866260" MODIFIED="1491354052976">
+<node TEXT="Change a format property" STYLE_REF="Title" FOLDED="true" ID="ID_1032261444" CREATED="1483417620673" MODIFIED="1499022188945" VGAP_QUANTITY="6.0 pt">
+<node FOLDED="true" ID="ID_1265623412" CREATED="1490393892009" MODIFIED="1499027464619"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Go to menu <font color="#ff0000">Format</font>&#160;and select the format property to modify.
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Node core" STYLE_REF="Title" FOLDED="true" ID="ID_218736920" CREATED="1491353597983" MODIFIED="1491361578353">
+<node TEXT="Bold" FOLDED="true" ID="ID_1880045383" CREATED="1491359643081" MODIFIED="1491359930881">
+<icon BUILTIN="../Bold16"/>
+<font BOLD="true"/>
+<node ID="ID_50889201" CREATED="1491353564941" MODIFIED="1491360020174"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Changes font to <b>Bold&#160;of </b>all text in the node
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Italic" FOLDED="true" ID="ID_1803206631" CREATED="1491359657554" MODIFIED="1491359919627">
+<icon BUILTIN="../Italic16"/>
+<font ITALIC="true"/>
+<node ID="ID_1779804913" CREATED="1491353691846" MODIFIED="1491359359626"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Changes font to <i>Italic of </i>all text in the node
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Larger font" FOLDED="true" ID="ID_390981923" CREATED="1491359667018" MODIFIED="1491359911248">
+<icon BUILTIN="../IncreaseNodeFontAction"/>
+<node TEXT="Increases font size of all text in the node" ID="ID_964459132" CREATED="1491353708829" MODIFIED="1491360007684"/>
+</node>
+<node TEXT="Smaller font" FOLDED="true" ID="ID_751578987" CREATED="1491359676129" MODIFIED="1491359903671">
+<icon BUILTIN="../DecreaseNodeFontAction"/>
+<node TEXT="Decreases font size of all text in the node" ID="ID_976863729" CREATED="1491353751334" MODIFIED="1491360014743"/>
+</node>
+<node TEXT="" ID="ID_664169116" CREATED="1491362657953" MODIFIED="1491362657957">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Left aligned text" STYLE_REF="Title" ID="ID_905805466" CREATED="1490318750470" MODIFIED="1490481039438" TEXT_ALIGN="LEFT" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
+<node TEXT="Centered text" STYLE_REF="Title" ID="ID_1331377073" CREATED="1490318782838" MODIFIED="1490481039451" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
+<node TEXT="Right aligned text" STYLE_REF="Title" ID="ID_579931512" CREATED="1490318770776" MODIFIED="1490481039445" TEXT_ALIGN="RIGHT" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
+<node TEXT="" ID="ID_1152676203" CREATED="1491362657941" MODIFIED="1491362657951">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Defines text alignment in node core" ID="ID_896931937" CREATED="1490318723184" MODIFIED="1491362680481"/>
+</node>
+<node TEXT="Node color" FOLDED="true" ID="ID_1695059297" CREATED="1491359685322" MODIFIED="1491359894279" COLOR="#ff0000">
+<node TEXT="Select text color using a color chooser dialog. The color is applied to all text in the node." FOLDED="true" ID="ID_1886499030" CREATED="1491353782933" MODIFIED="1491361044327">
+<node ID="ID_215748826" CREATED="1491358825767" MODIFIED="1491361791787" COLOR="#000000"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Reset the default color of the text by selecting <font color="#ff0000">Use default</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Blinking node" FOLDED="true" ID="ID_1415812131" CREATED="1491359696657" MODIFIED="1491359885059">
+<icon BUILTIN="../xeyes"/>
+<hook NAME="accessories/plugins/BlinkingNodeHook.properties"/>
+<node TEXT="Causes the node to blink. The node cycles through different colors while blinking." ID="ID_991377803" CREATED="1491353789590" MODIFIED="1491361904351"/>
+</node>
+<node TEXT="Blend color" FOLDED="true" ID="ID_1897045023" CREATED="1491359709185" MODIFIED="1491359872218">
+<icon BUILTIN="../NodeColorBlendAction"/>
+<node TEXT="Changes the text color to be closer to its background color." ID="ID_1889872302" CREATED="1491353802469" MODIFIED="1491359728007"/>
+</node>
+<node TEXT="Node background color..." FOLDED="true" ID="ID_1312584075" CREATED="1491359741353" MODIFIED="1491359851011" BACKGROUND_COLOR="#ffcc99">
+<icon BUILTIN="../NodeBackgroundColorAction"/>
+<node TEXT="Sets the background color using a color chooser dialog." ID="ID_693491248" CREATED="1491353841710" MODIFIED="1491361877292"/>
+</node>
+<node TEXT="Fork" FOLDED="true" ID="ID_1501272049" CREATED="1491359786465" MODIFIED="1491360349435" STYLE="fork">
+<node TEXT="Defines the node shape as fork" ID="ID_1920749609" CREATED="1491359599030" MODIFIED="1491360349425" STYLE="fork"/>
+</node>
+<node TEXT="Bubble" FOLDED="true" ID="ID_1992745197" CREATED="1491359798312" MODIFIED="1491359800327">
+<node TEXT="Defines the node shape as bubble" ID="ID_1385596913" CREATED="1491359599030" MODIFIED="1491360373394"/>
+</node>
+<node TEXT="Use plain text" FOLDED="true" ID="ID_1219330391" CREATED="1491359805369" MODIFIED="1491359811511">
+<node TEXT="When only parts of text and not the entire node core format is modified, this command brings all text to the default text style for the node." ID="ID_599814090" CREATED="1491360408928" MODIFIED="1491361360563"/>
+</node>
+</node>
+<node TEXT="Cloud shapes" STYLE_REF="Title" FOLDED="true" ID="ID_1728409143" CREATED="1491353597986" MODIFIED="1491361578366">
+<node TEXT="" ID="ID_1953644574" CREATED="1491361509888" MODIFIED="1491361509891">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Arc" FOLDED="true" ID="ID_672703222" CREATED="1484505315988" MODIFIED="1490320559891">
+<cloud COLOR="#ffcccc" SHAPE="ARC"/>
+<node TEXT="child" ID="ID_1229686653" CREATED="1499047786216" MODIFIED="1499051593239">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="grandchild" ID="ID_706979462" CREATED="1499047786216" MODIFIED="1499051589843"/>
+<node TEXT="grandchild" ID="ID_1891074445" CREATED="1499047786216" MODIFIED="1499051589834"/>
+</node>
+<node TEXT="child" ID="ID_1715163263" CREATED="1499047786216" MODIFIED="1499047879617"/>
+<node TEXT="child" ID="ID_1990003970" CREATED="1499047786216" MODIFIED="1499047879617"/>
+</node>
+<node TEXT="Star" FOLDED="true" ID="ID_448124047" CREATED="1484505272644" MODIFIED="1490320564935" HGAP_QUANTITY="43.99999910593036 pt" VSHIFT_QUANTITY="2.2499999329447764 pt">
+<cloud COLOR="#ccccff" SHAPE="STAR"/>
+<node TEXT="child" ID="ID_1222142902" CREATED="1499047786216" MODIFIED="1499051631172">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="grandchild" ID="ID_425735107" CREATED="1499047786216" MODIFIED="1499047869332"/>
+<node TEXT="grandchild" ID="ID_373425130" CREATED="1499047786216" MODIFIED="1499047873810"/>
+</node>
+</node>
+<node TEXT="Rectangle" FOLDED="true" ID="ID_183770431" CREATED="1484505308517" MODIFIED="1490320556140">
+<cloud COLOR="#ccffcc" SHAPE="RECT"/>
+<node TEXT="child" ID="ID_108117600" CREATED="1499047786216" MODIFIED="1499051641058">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="grandchild" ID="ID_1131054015" CREATED="1499047786216" MODIFIED="1499047869332"/>
+</node>
+</node>
+<node TEXT="Round rectangle" FOLDED="true" ID="ID_1926327236" CREATED="1484505296961" MODIFIED="1490320577709">
+<cloud COLOR="#ffcc00" SHAPE="ROUND_RECT"/>
+<node TEXT="child" ID="ID_1899711161" CREATED="1499047786216" MODIFIED="1499051656683">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="grandchild" ID="ID_551258868" CREATED="1499047786216" MODIFIED="1499047869332"/>
+</node>
+<node TEXT="child" ID="ID_290617404" CREATED="1499047786216" MODIFIED="1499047879617"/>
+<node TEXT="child" ID="ID_411133332" CREATED="1499047786216" MODIFIED="1499051659690">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="grandchild" ID="ID_1393792644" CREATED="1499047786216" MODIFIED="1499047873810"/>
+</node>
+</node>
+<node TEXT="" ID="ID_144223462" CREATED="1491361509883" MODIFIED="1499051710061" VGAP_QUANTITY="6.0 pt">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="A cloud surrounds the node it is applied to and all its descendants." ID="ID_1053651579" CREATED="1490396885182" MODIFIED="1499051710072"/>
+</node>
+<node TEXT="Cloud color" STYLE_REF="Title" FOLDED="true" ID="ID_1625707485" CREATED="1484505159213" MODIFIED="1490321689375">
+<node TEXT="Changes the color of cloud." ID="ID_1376245777" CREATED="1490319725760" MODIFIED="1491362415410"/>
+</node>
+</node>
+<node TEXT="Edge properties" STYLE_REF="Title" FOLDED="true" ID="ID_1149082348" CREATED="1491353597989" MODIFIED="1491361578369">
+<node TEXT="Styles" STYLE_REF="Title" FOLDED="true" ID="ID_344522247" CREATED="1491362275610" MODIFIED="1491362964800">
+<node TEXT="As parent" FOLDED="true" ID="ID_1838085656" CREATED="1491362990532" MODIFIED="1491362994850">
+<node TEXT="Edge style will be the same as its parent node edge style" ID="ID_1601230879" CREATED="1491363586412" MODIFIED="1491363619014"/>
+</node>
+<node TEXT="Linear" ID="ID_572246152" CREATED="1490319373001" MODIFIED="1491362941037" HGAP_QUANTITY="55.999998748302495 pt" VSHIFT_QUANTITY="-31.499999061226873 pt">
+<edge STYLE="linear" COLOR="#00cc33" WIDTH="2"/>
+</node>
+<node TEXT="Smoothly curved (bezier)" ID="ID_659928825" CREATED="1490319321099" MODIFIED="1491362956015" HGAP_QUANTITY="63.499998524785084 pt" VSHIFT_QUANTITY="-9.749999709427364 pt"/>
+<node TEXT="Sharp linear" ID="ID_545560801" CREATED="1490319396297" MODIFIED="1491362958253" HGAP_QUANTITY="109.24999716132888 pt" VSHIFT_QUANTITY="33.74999899417165 pt">
+<edge STYLE="sharp_linear" COLOR="#ff6600" WIDTH="4"/>
+</node>
+<node TEXT="Sharply curved (bezier)" ID="ID_821912393" CREATED="1490319379817" MODIFIED="1491362964797" HGAP_QUANTITY="48.4999989718199 pt" VSHIFT_QUANTITY="37.499998882412946 pt">
+<edge STYLE="sharp_bezier" COLOR="#00cccc" WIDTH="4"/>
+</node>
+<node TEXT="Hide edge" ID="ID_540947272" CREATED="1490319355809" MODIFIED="1491362934162" HGAP_QUANTITY="67.99999839067465 pt" VSHIFT_QUANTITY="14.249999575316918 pt">
+<edge STYLE="hide_edge"/>
+</node>
+<node TEXT="Horizontal" ID="ID_1358390844" CREATED="1490319363569" MODIFIED="1491362937432" HGAP_QUANTITY="72.4999982565642 pt" VSHIFT_QUANTITY="11.999999642372142 pt">
+<edge STYLE="horizontal" COLOR="#cc00cc" WIDTH="3"/>
+</node>
+</node>
+<node TEXT="Edge Widths" STYLE_REF="Title" FOLDED="true" ID="ID_1629133980" CREATED="1491362288087" MODIFIED="1491362434775">
+<node TEXT="Parent" FOLDED="true" ID="ID_1841485488" CREATED="1491363022037" MODIFIED="1491363023528">
+<node TEXT="Edge width will be the same as its parent node edge width" ID="ID_1889215484" CREATED="1491363586412" MODIFIED="1491363789539"/>
+</node>
+<node TEXT="Thin" FOLDED="true" ID="ID_174371598" CREATED="1491363024018" MODIFIED="1491363027873">
+<node TEXT="The difference between &quot;Thin&quot; and &quot;1&quot; may not be apparent at lower zoom percentages." ID="ID_458274817" CREATED="1491363850431" MODIFIED="1491363850431"/>
+</node>
+<node TEXT="" ID="ID_319207823" CREATED="1499013903730" MODIFIED="1499013903734">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="1" ID="ID_1909443612" CREATED="1491363029449" MODIFIED="1491363030216"/>
+<node TEXT="2" ID="ID_1160984983" CREATED="1491363031785" MODIFIED="1491363032550"/>
+<node TEXT="4" ID="ID_1028770233" CREATED="1491363033729" MODIFIED="1491363034485"/>
+<node TEXT="8" ID="ID_663201197" CREATED="1491363035137" MODIFIED="1491363035958"/>
+<node TEXT="" ID="ID_1297839265" CREATED="1499013903719" MODIFIED="1499013903730">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Levels of thickness" ID="ID_300765166" CREATED="1499013903737" MODIFIED="1499013915801"/>
+</node>
+</node>
+<node TEXT="Edge color..." STYLE_REF="Title" FOLDED="true" ID="ID_1367624943" CREATED="1491362305967" MODIFIED="1491362434777">
+<node TEXT="Set the color of the edge using a color chooser dialog." ID="ID_1772999510" CREATED="1491353841710" MODIFIED="1491363149600"/>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Old documentation" STYLE_REF="Old documentation" FOLDED="true" ID="ID_76671619" CREATED="1485134404008" MODIFIED="1498338421309">
+<node TEXT="Menu Format" STYLE_REF="Advanced" FOLDED="true" ID="ID_308746343" CREATED="1314167687616" MODIFIED="1498408889676" HGAP_QUANTITY="29.0 px">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node FOLDED="true" ID="ID_1843912290" CREATED="1323518205453" MODIFIED="1498407449286"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The properties in the properties panel are also available through <b>menu Format</b>. Menu Format contains some properties which cannot be set in the properties panel as well. Examples are <i>map background</i>&#160;an <i>blinking node</i>&#160;(in Core).
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="Bold" STYLE_REF="AdvancedTopic" ID="ID_121573450" CREATED="1266251692562" MODIFIED="1323519139108" TEXT_SHORTENED="true" HGAP_QUANTITY="25.0 px" STYLE="as_parent">
+<icon BUILTIN="../Bold16"/>
+<font NAME="SansSerif" SIZE="12" BOLD="true" ITALIC="false"/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+
+  </head>
+  <body>
+    <p>
+      This icon-button in the toolbar affects thee whole node text.
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<edge STYLE="horizontal"/>
+</node>
+<node TEXT="Italic" STYLE_REF="AdvancedTopic" ID="ID_313105065" CREATED="1266251689531" MODIFIED="1323519147984" TEXT_SHORTENED="true">
+<icon BUILTIN="../Italic16"/>
+<font ITALIC="true"/>
+<richcontent TYPE="DETAILS">
+
+<html>
+  <head>
+
+  </head>
+  <body>
+    <ul>
+      <li>
+        This icon-button in the toolbar affects the whole node text
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="Method" LAST="false"/>
+</hook>
+<edge STYLE="horizontal"/>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Formatting using Format tab" STYLE_REF="Title" FOLDED="true" ID="ID_113967254" CREATED="1316668137651" MODIFIED="1499027717201">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="Purpose" STYLE_REF="Purpose" FOLDED="true" ID="ID_973634813" CREATED="1483416459506" MODIFIED="1490313934016">
+<node ID="ID_1868517480" CREATED="1484502030267" MODIFIED="1490490578905"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The <b>format&#160;tab </b>is the most versatile method to change properties of a node.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1879589683" CREATED="1490309405065" MODIFIED="1499013536733"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The tab<b>&#160;</b>is in the <b>Tool&#160;panel </b>which is visible on the right side of Freeplane window.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="How to" STYLE_REF="Actions" FOLDED="true" ID="ID_1282910488" CREATED="1484432866260" MODIFIED="1490495102114">
+<node FOLDED="true" ID="ID_947457883" CREATED="1483485768372" MODIFIED="1498406087803" NUMBERED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Open the <font color="#ff0000">Tool panel</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node ID="ID_669965515" CREATED="1490478752169" MODIFIED="1490478763647"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Press <font color="#ff0000">ALT + P</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_451547386" CREATED="1484492138834" MODIFIED="1499027333323"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      or select in menubar <font color="#ff0000">View &gt; Toolbars &gt; Tool panel</font>.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="or click narrow bar on the right side of Freeplane window" FOLDED="true" ID="ID_1724249204" CREATED="1484882923124" MODIFIED="1490392611489">
+<node ID="ID_511444276" CREATED="1490392458662" MODIFIED="1490392502856"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <img src="Images/properties%20toolbar%20-%20collapsed.png" width="13" height="96"/>
+      .
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node ID="ID_452809988" CREATED="1484492380951" MODIFIED="1499013747058"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      or right-click in a&#160;blank area of the mindmap&#160;and select <font color="#ff0000">Tool&#160;panel</font>.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node ID="ID_789235112" CREATED="1485686718725" MODIFIED="1498406144736" NUMBERED="true"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Select the <font color="#ff0000">Format tab</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node TEXT="Change the value of the properties by selecting the option from the drop down menu or typing the value of the property." ID="ID_1587546358" CREATED="1484691804971" MODIFIED="1490394239088" NUMBERED="true"/>
+</node>
+<node TEXT="Notes and explanations" STYLE_REF="Notes and explanations" FOLDED="true" ID="ID_1512156" CREATED="1483416064359" MODIFIED="1490313934037">
+<node FOLDED="true" ID="ID_51883983" CREATED="1484492875430" MODIFIED="1490490292479"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The <b>format&#160;tab</b>&#160;shows the format properties of the node which has the focus.
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="By selecting more than one node, the first one selected will have the focus." ID="ID_1383941408" CREATED="1498414824110" MODIFIED="1498414865146"/>
+<node TEXT="It is possible to select and change more than one node at a time." ID="ID_1366560516" CREATED="1484493882465" MODIFIED="1498414893983"/>
+</node>
+<node TEXT="While the tab is showing, you can select a different node to give it the focus." ID="ID_634553406" CREATED="1484493903487" MODIFIED="1490490285054"/>
+<node TEXT="The change takes effect immediately. There is no need to press an OK button or leave the panel. Just select other node(s) and change the property." ID="ID_243057475" CREATED="1484501660798" MODIFIED="1490396835460"/>
+<node FOLDED="true" ID="ID_1958981167" CREATED="1484497650795" MODIFIED="1490490267937" VGAP_QUANTITY="6.0 pt"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The groups of format properties that can be changed are:
+    </p>
+    <ul>
+      <li>
+        Node style
+      </li>
+      <li>
+        Node conditional styles applied to node
+      </li>
+      <li>
+        Map conditional styles applied to node
+      </li>
+      <li>
+        Color of whole core
+      </li>
+      <li>
+        Core text
+      </li>
+      <li>
+        Node shape
+      </li>
+      <li>
+        Node border
+      </li>
+      <li>
+        Font of whole core
+      </li>
+      <li>
+        Icons
+      </li>
+      <li>
+        Edges
+      </li>
+      <li>
+        Clouds
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Node style" STYLE_REF="Title" FOLDED="true" ID="ID_1000178007" CREATED="1484497773239" MODIFIED="1490313934055">
+<node TEXT="Apply level styles" STYLE_REF="Title" FOLDED="true" ID="ID_1173015425" CREATED="1484503469096" MODIFIED="1490313934066">
+<node FOLDED="true" ID="ID_809752624" CREATED="1490312227953" MODIFIED="1490312445012"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Applies a style defined as <b>level styles </b>that depends on the level (or hierarchy) in which a node is in the map.
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="for non leave nodes" STYLE_REF="Title" FOLDED="true" ID="ID_473831407" CREATED="1484514322364" MODIFIED="1490313934068">
+<node TEXT="Apply a level style to all nodes except for the last node in the hierarchy of the branch" ID="ID_1569064090" CREATED="1490310254841" MODIFIED="1490531059622"/>
+</node>
+<node TEXT="for all nodes" STYLE_REF="Title" FOLDED="true" ID="ID_1815488017" CREATED="1484514341803" MODIFIED="1490313934069">
+<node TEXT="Apply a level style to all nodes" ID="ID_10677081" CREATED="1490470211127" MODIFIED="1490470231452"/>
+</node>
+<node TEXT="disabled" STYLE_REF="Title" FOLDED="true" ID="ID_1737336545" CREATED="1484514347050" MODIFIED="1490313934070">
+<node TEXT="Level style will be disabled and branches and nodes will have edge colors defined in the properties panel." ID="ID_1472380797" CREATED="1490311022347" MODIFIED="1490531213179"/>
+</node>
+</node>
+<node TEXT="The predefined number of level styles depend on the template file." ID="ID_475744328" CREATED="1490310433310" MODIFIED="1490471346561"/>
+<node ID="ID_422084831" CREATED="1490471346573" MODIFIED="1490530289742"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      It is possible to increase or decrease this number by adding or removing styles in the window that opens in menu <font color="#ff0000">Format &gt; Manage styles &gt; Edit styles </font>and defining<font color="#ff0000">&#160;&#160;Apply level styles</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Automatic edge color" STYLE_REF="Title" FOLDED="true" ID="ID_544577955" CREATED="1484503503502" MODIFIED="1490313934071">
+<node TEXT="The color of branches and  nodes will be automatically generated following a defined scheme." FOLDED="true" ID="ID_1842209256" CREATED="1490310918412" MODIFIED="1490472697805">
+<node TEXT="for branches" STYLE_REF="Title" FOLDED="true" ID="ID_1751046584" CREATED="1484507180262" MODIFIED="1490313934072">
+<node TEXT="Each main branch starting from the Root node will have specific colors." ID="ID_215747519" CREATED="1490310882652" MODIFIED="1490310882652"/>
+</node>
+<node TEXT="for levels" STYLE_REF="Title" FOLDED="true" ID="ID_645801806" CREATED="1484507191612" MODIFIED="1490313934074">
+<node TEXT="Nodes will have colors depending on the level  they belong to." ID="ID_1209806157" CREATED="1490310937756" MODIFIED="1490472715007"/>
+</node>
+<node TEXT="for columns" STYLE_REF="Title" FOLDED="true" ID="ID_870329368" CREATED="1484507205174" MODIFIED="1490313934075">
+<node TEXT="Nodes will have colors depending on horizontal distance from the root node." ID="ID_556141426" CREATED="1490310944259" MODIFIED="1490472721080"/>
+<node TEXT="This option works only when all nodes of the mindmap have a fixed width." FOLDED="true" ID="ID_29403502" CREATED="1490392099518" MODIFIED="1490493477157">
+<node TEXT="Nodes and summary nodes will always have alternating colors along the horizontal distance from the root node." ID="ID_1631154198" CREATED="1490472828405" MODIFIED="1490493625542"/>
+</node>
+<node ID="ID_1765422792" CREATED="1490471044383" MODIFIED="1490471253234"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Template file <b>Bigmap.mm</b>&#160;uses automatic edge color for columns.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="on branch creation" STYLE_REF="Title" FOLDED="true" ID="ID_504439219" CREATED="1484507220756" MODIFIED="1490313934076">
+<node ID="ID_1392651166" CREATED="1490311005232" MODIFIED="1490311005232"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Each main branch starting from the Root node will have specific colors. These colors will be kept by the branches even when disabling <font color="#ff0000">Automatic edge color</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="disabled" STYLE_REF="Title" FOLDED="true" ID="ID_202638910" CREATED="1484507229547" MODIFIED="1490313934078">
+<node TEXT="Automatic edge color will be disabled and branches and nodes will have edge colors defined in the properties panel." ID="ID_532971778" CREATED="1490311022347" MODIFIED="1490531177257"/>
+</node>
+</node>
+</node>
+<node TEXT="Edit edge colors" STYLE_REF="Title" FOLDED="true" ID="ID_889684573" CREATED="1490311046128" MODIFIED="1490311632804">
+<node ID="ID_1698241216" CREATED="1490311200886" MODIFIED="1490311312101"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Opens a dialogue box to configure the scheme of colors used by <font color="#ff0000">Automatic edge color</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Style" STYLE_REF="Title" FOLDED="true" ID="ID_1523486972" CREATED="1491433879374" MODIFIED="1491433887744">
+<node TEXT="Defines the style of the node" ID="ID_37766303" CREATED="1491432596618" MODIFIED="1491433828453"/>
+</node>
+</node>
+<node TEXT="Node conditional styles applied to node" STYLE_REF="Title" FOLDED="true" ID="ID_1757691762" CREATED="1484503542445" MODIFIED="1490313934079">
+<node TEXT="Manage conditional styles applied to the selected node(s)" ID="ID_124546519" CREATED="1490311499936" MODIFIED="1490311880985"/>
+</node>
+<node TEXT="Map conditional styles applied to node" STYLE_REF="Title" FOLDED="true" ID="ID_376453017" CREATED="1484503555501" MODIFIED="1490313934090">
+<node TEXT="Manage conditional styles applied to map" ID="ID_807813761" CREATED="1490311524296" MODIFIED="1490311539308"/>
+</node>
+<node TEXT="Color of whole core" STYLE_REF="Title" FOLDED="true" ID="ID_1539236706" CREATED="1484497788174" MODIFIED="1490313934096">
+<node TEXT="Text" STYLE_REF="Title" FOLDED="true" ID="ID_912386471" CREATED="1484503584448" MODIFIED="1490313934098">
+<node TEXT="Define the color of the text in the node core" FOLDED="true" ID="ID_1301547194" CREATED="1490311433252" MODIFIED="1490313139402">
+<node TEXT="Red" ID="ID_619754945" CREATED="1490481499432" MODIFIED="1490481522855" COLOR="#ff0033"/>
+<node TEXT="Blue" ID="ID_615092476" CREATED="1490481504740" MODIFIED="1490481530070" COLOR="#0000ff"/>
+<node TEXT="Green" ID="ID_1304030291" CREATED="1490481511740" MODIFIED="1490481567324" COLOR="#00cc33"/>
+</node>
+</node>
+<node TEXT="Background" STYLE_REF="Title" FOLDED="true" ID="ID_1345564487" CREATED="1484503587893" MODIFIED="1490313934099">
+<node TEXT="Define the color of the background of the node core" FOLDED="true" ID="ID_1813906066" CREATED="1490311448146" MODIFIED="1490313146870">
+<node TEXT="Red" ID="ID_65339864" CREATED="1490481499432" MODIFIED="1490481624067" BACKGROUND_COLOR="#ff9999"/>
+<node TEXT="Blue" ID="ID_704575692" CREATED="1490481504740" MODIFIED="1490481635021" BACKGROUND_COLOR="#99ccff"/>
+<node TEXT="Green" ID="ID_1823902540" CREATED="1490481511740" MODIFIED="1490481643691" BACKGROUND_COLOR="#99ff99"/>
+</node>
+</node>
+</node>
+<node TEXT="Core text" STYLE_REF="Title" FOLDED="true" ID="ID_1774124613" CREATED="1484497800150" MODIFIED="1490481712190" FORMAT="NO_FORMAT">
+<node TEXT="Format" STYLE_REF="Title" FOLDED="true" ID="ID_989771730" CREATED="1484503631535" MODIFIED="1490313934101">
+<node TEXT="Define the format of the text in the node core" ID="ID_1116936727" CREATED="1490313199988" MODIFIED="1490313232424"/>
+</node>
+<node TEXT="Node numbering" STYLE_REF="Title" FOLDED="true" ID="ID_434774429" CREATED="1484503636269" MODIFIED="1490313934102">
+<node TEXT="Automatically numbers the node core" ID="ID_901295174" CREATED="1490312953758" MODIFIED="1490313240616"/>
+<node TEXT="Selecting a node, its siblings and descendents will number ascending the family tree." FOLDED="true" ID="ID_1528438291" CREATED="1490476914462" MODIFIED="1498407860239">
+<node STYLE_REF="Idea" FOLDED="true" ID="ID_1423889297" CREATED="1483838122037" MODIFIED="1487471952760"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      <img src="Images/examples.png" width="32" height="32"/>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Without automatic numbering" FOLDED="true" ID="ID_1285519836" CREATED="1490477056926" MODIFIED="1490479792737">
+<edge COLOR="#ff9900"/>
+<node TEXT="Node" FOLDED="true" ID="ID_1321082768" CREATED="1490479489247" MODIFIED="1490479490352">
+<node TEXT="Node" FOLDED="true" ID="ID_1455218133" CREATED="1490479489247" MODIFIED="1490479490352">
+<node TEXT="Node" ID="ID_1075815155" CREATED="1490479524437" MODIFIED="1490479525528"/>
+</node>
+<node TEXT="Node" ID="ID_1924920783" CREATED="1490479496987" MODIFIED="1490479500416"/>
+<node TEXT="Node" FOLDED="true" ID="ID_1334300302" CREATED="1490479501074" MODIFIED="1490479502376">
+<node TEXT="Node" ID="ID_93780120" CREATED="1490479508453" MODIFIED="1490479514729"/>
+<node TEXT="Node" FOLDED="true" ID="ID_1617766807" CREATED="1490479515450" MODIFIED="1490479516952">
+<node TEXT="Node" ID="ID_769070462" CREATED="1490479518749" MODIFIED="1490479519544"/>
+</node>
+</node>
+</node>
+<node TEXT="Node" FOLDED="true" ID="ID_112876972" CREATED="1490479501074" MODIFIED="1490479502376">
+<node TEXT="Node" ID="ID_351463149" CREATED="1490479508453" MODIFIED="1490479514729"/>
+<node TEXT="Node" FOLDED="true" ID="ID_656431672" CREATED="1490479515450" MODIFIED="1490479516952">
+<node TEXT="Node" ID="ID_570198457" CREATED="1490479518749" MODIFIED="1490479519544"/>
+</node>
+</node>
+</node>
+<node TEXT="With automatic numbering" FOLDED="true" ID="ID_1812934414" CREATED="1490477056926" MODIFIED="1490479814667">
+<edge COLOR="#666600"/>
+<node TEXT="Node" FOLDED="true" ID="ID_577166468" CREATED="1490479489247" MODIFIED="1490479490352" NUMBERED="true">
+<node TEXT="Node" FOLDED="true" ID="ID_432923465" CREATED="1490479489247" MODIFIED="1490479490352" NUMBERED="true">
+<node TEXT="Node" ID="ID_1560346383" CREATED="1490479524437" MODIFIED="1490479525528" NUMBERED="true"/>
+</node>
+<node TEXT="Node" ID="ID_727421537" CREATED="1490479496987" MODIFIED="1490479500416" NUMBERED="true"/>
+<node TEXT="Node" FOLDED="true" ID="ID_1685368136" CREATED="1490479501074" MODIFIED="1490479502376" NUMBERED="true">
+<node TEXT="Node" ID="ID_267193652" CREATED="1490479508453" MODIFIED="1490479514729" NUMBERED="true"/>
+<node TEXT="Node" FOLDED="true" ID="ID_1429619024" CREATED="1490479515450" MODIFIED="1490479516952" NUMBERED="true">
+<node TEXT="Node" ID="ID_875838504" CREATED="1490479518749" MODIFIED="1490479519544" NUMBERED="true"/>
+</node>
+</node>
+</node>
+<node TEXT="Node" FOLDED="true" ID="ID_457686219" CREATED="1490479501074" MODIFIED="1490479502376" NUMBERED="true">
+<node TEXT="Node" ID="ID_249740843" CREATED="1490479508453" MODIFIED="1490479514729" NUMBERED="true"/>
+<node TEXT="Node" FOLDED="true" ID="ID_1627562984" CREATED="1490479515450" MODIFIED="1490479516952" NUMBERED="true">
+<node TEXT="Node" ID="ID_373895161" CREATED="1490479518749" MODIFIED="1490479519544" NUMBERED="true"/>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="The numbering is placed on the left side of the node core." ID="ID_1183792059" CREATED="1490479683634" MODIFIED="1490481435647"/>
+</node>
+</node>
+<node TEXT="Node shape" STYLE_REF="Title" FOLDED="true" ID="ID_1278873512" CREATED="1484497650795" MODIFIED="1490313934103">
+<node TEXT="Node shape" STYLE_REF="Title" FOLDED="true" ID="ID_109750690" CREATED="1484503655943" MODIFIED="1490313934006">
+<node TEXT="Define the node shape" FOLDED="true" ID="ID_1009941017" CREATED="1490313264270" MODIFIED="1490313267985">
+<node TEXT="Fork" STYLE_REF="Title" ID="ID_1130465908" CREATED="1490313298572" MODIFIED="1490314448825" STYLE="fork" SHAPE_HORIZONTAL_MARGIN="4.0 pt"/>
+<node TEXT="Bubble" STYLE_REF="Title" ID="ID_748450462" CREATED="1490313302235" MODIFIED="1490313364912"/>
+<node TEXT="Oval" STYLE_REF="Title" ID="ID_1049503373" CREATED="1490313309153" MODIFIED="1490313375501" STYLE="oval" SHAPE_HORIZONTAL_MARGIN="4.0 pt"/>
+<node TEXT="Rectangle" STYLE_REF="Title" ID="ID_1214294194" CREATED="1490313312396" MODIFIED="1490313378485" STYLE="rectangle" SHAPE_HORIZONTAL_MARGIN="4.0 pt"/>
+<node TEXT="Wide hexagon" STYLE_REF="Title" ID="ID_82816065" CREATED="1490313321232" MODIFIED="1490314282984" STYLE="wide_hexagon" SHAPE_HORIZONTAL_MARGIN="4.0 pt"/>
+<node TEXT="Narrow hexagon" STYLE_REF="Title" ID="ID_1434607100" CREATED="1490313324977" MODIFIED="1490313385356" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="4.0 pt"/>
+<node TEXT="As parent" STYLE_REF="Title" FOLDED="true" ID="ID_1242128051" CREATED="1490313342657" MODIFIED="1490313391690" STYLE="as_parent" SHAPE_HORIZONTAL_MARGIN="4.0 pt">
+<node TEXT="Node has same node shape as its parent" ID="ID_1518537303" CREATED="1490313440578" MODIFIED="1490313454160"/>
+</node>
+<node TEXT="Combined" STYLE_REF="Title" FOLDED="true" ID="ID_1725601135" CREATED="1490313355424" MODIFIED="1490313398095" STYLE="combined" SHAPE_HORIZONTAL_MARGIN="4.0 pt">
+<node FOLDED="true" ID="ID_633912998" CREATED="1490313457266" MODIFIED="1490313788071" STYLE="combined" SHAPE_HORIZONTAL_MARGIN="4.0 pt"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      When node is unfolded, the shape of the node is <b>fork</b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Unfolded" ID="ID_517208644" CREATED="1490313814552" MODIFIED="1490313816787"/>
+</node>
+<node FOLDED="true" ID="ID_1599287676" CREATED="1490313457266" MODIFIED="1490318113907" STYLE="combined" SHAPE_HORIZONTAL_MARGIN="4.0 pt"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      When node is folded, the shape of the node is <b>bubble</b>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Unfolded" ID="ID_618014394" CREATED="1490313814552" MODIFIED="1490313816787"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Horizontal margin" STYLE_REF="Title" FOLDED="true" ID="ID_1761214190" CREATED="1484503660173" MODIFIED="1490313934105">
+<node TEXT="Set the horizontal margin (spacing) between the text in the core and the node border" FOLDED="true" ID="ID_1410328805" CREATED="1490314056557" MODIFIED="1490494887036" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="4.0 pt">
+<node TEXT="Text with horizontal margin 2 pt" ID="ID_1256570209" CREATED="1490481151810" MODIFIED="1490481303237" STYLE="bubble"/>
+<node TEXT="Text with horizontal margin 20 pt" ID="ID_578747155" CREATED="1490481151810" MODIFIED="1490481329659" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="20.0 pt"/>
+</node>
+<node TEXT="Set unit of measure in" FOLDED="true" ID="ID_112687934" CREATED="1490317947710" MODIFIED="1490318073372">
+<node TEXT="px" FOLDED="true" ID="ID_1325261602" CREATED="1490317967389" MODIFIED="1490317973825">
+<node TEXT="pixels" ID="ID_1689522964" CREATED="1490317998301" MODIFIED="1490318000536"/>
+</node>
+<node TEXT="in" FOLDED="true" ID="ID_1232132236" CREATED="1490317980275" MODIFIED="1490317981281">
+<node TEXT="inches" ID="ID_1624173045" CREATED="1490318004053" MODIFIED="1490318006816"/>
+</node>
+<node TEXT="mm" FOLDED="true" ID="ID_502173901" CREATED="1490317985443" MODIFIED="1490317986368">
+<node TEXT="millimeters" ID="ID_80888553" CREATED="1490318009181" MODIFIED="1490318011960"/>
+</node>
+<node TEXT="cm" FOLDED="true" ID="ID_321522943" CREATED="1490317992027" MODIFIED="1490317993167">
+<node TEXT="centimeters" ID="ID_470777784" CREATED="1490318015124" MODIFIED="1490318017978"/>
+</node>
+<node TEXT="pt" FOLDED="true" ID="ID_951849031" CREATED="1490317994610" MODIFIED="1490317995525">
+<node TEXT="points" ID="ID_262690012" CREATED="1490318020445" MODIFIED="1490318037402"/>
+</node>
+</node>
+</node>
+<node TEXT="Vertical margin" STYLE_REF="Title" FOLDED="true" ID="ID_632164522" CREATED="1484503666631" MODIFIED="1490313934106">
+<node TEXT="Set the vertical margin (spacing) between the text in the core and the node border" FOLDED="true" ID="ID_1273181893" CREATED="1490314056557" MODIFIED="1490494904403">
+<node TEXT="Text with vertical margin 2 pt" ID="ID_1874613867" CREATED="1490481151810" MODIFIED="1490481252718" STYLE="bubble"/>
+<node TEXT="Text with vertical margin 10 pt" ID="ID_37128828" CREATED="1490481151810" MODIFIED="1490481271484" STYLE="bubble" SHAPE_VERTICAL_MARGIN="10.0 pt"/>
+</node>
+<node TEXT="Set unit of measure in" FOLDED="true" ID="ID_1289525366" CREATED="1490317947710" MODIFIED="1490318073372">
+<node TEXT="px" FOLDED="true" ID="ID_291262380" CREATED="1490317967389" MODIFIED="1490317973825">
+<node TEXT="pixels" ID="ID_1718509555" CREATED="1490317998301" MODIFIED="1490318000536"/>
+</node>
+<node TEXT="in" FOLDED="true" ID="ID_1552729706" CREATED="1490317980275" MODIFIED="1490317981281">
+<node TEXT="inches" ID="ID_855989535" CREATED="1490318004053" MODIFIED="1490318006816"/>
+</node>
+<node TEXT="mm" FOLDED="true" ID="ID_33341712" CREATED="1490317985443" MODIFIED="1490317986368">
+<node TEXT="millimeters" ID="ID_1920271580" CREATED="1490318009181" MODIFIED="1490318011960"/>
+</node>
+<node TEXT="cm" FOLDED="true" ID="ID_1757759680" CREATED="1490317992027" MODIFIED="1490317993167">
+<node TEXT="centimeters" ID="ID_1068081950" CREATED="1490318015124" MODIFIED="1490318017978"/>
+</node>
+<node TEXT="pt" FOLDED="true" ID="ID_1631803221" CREATED="1490317994610" MODIFIED="1490317995525">
+<node TEXT="points" ID="ID_634292254" CREATED="1490318020445" MODIFIED="1490318037402"/>
+</node>
+</node>
+</node>
+<node TEXT="Uniform" STYLE_REF="Title" FOLDED="true" ID="ID_1520714242" CREATED="1484503678054" MODIFIED="1490313934108">
+<node TEXT="Select to make height of the node the same as its width." ID="ID_330274987" CREATED="1490474002670" MODIFIED="1490494932682"/>
+<node TEXT="Non-uniform Bubble" STYLE_REF="Title" FOLDED="true" ID="ID_1600307155" CREATED="1490313302235" MODIFIED="1490473432364" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="4.0 pt" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
+<node TEXT="Non-uniform Oval" STYLE_REF="Title" FOLDED="true" ID="ID_974475602" CREATED="1490313309153" MODIFIED="1490473565465" STYLE="oval" SHAPE_HORIZONTAL_MARGIN="4.0 pt" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
+<node TEXT="Non-uniform Rectangle" STYLE_REF="Title" FOLDED="true" ID="ID_1371838379" CREATED="1490313312396" MODIFIED="1490473579497" STYLE="rectangle" SHAPE_HORIZONTAL_MARGIN="4.0 pt" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
+<node TEXT="Non-uniform Wide hexagon" STYLE_REF="Title" FOLDED="true" ID="ID_59142121" CREATED="1490313321232" MODIFIED="1490473897220" STYLE="wide_hexagon" SHAPE_HORIZONTAL_MARGIN="4.0 pt" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
+<node TEXT="Non-uniform Narrow hexagon" STYLE_REF="Title" ID="ID_161318977" CREATED="1490313324977" MODIFIED="1490473864603" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="4.0 pt" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Uniform Bubble" STYLE_REF="Title" FOLDED="true" ID="ID_701036451" CREATED="1490313302235" MODIFIED="1490474254178" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="4.0 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
+<node TEXT="Uniform oval" STYLE_REF="Title" FOLDED="true" ID="ID_1232132080" CREATED="1490313309153" MODIFIED="1490473418068" STYLE="oval" SHAPE_HORIZONTAL_MARGIN="4.0 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
+<node TEXT="Uniform Rectangle" STYLE_REF="Title" FOLDED="true" ID="ID_1617679558" CREATED="1490313312396" MODIFIED="1490468395695" STYLE="rectangle" SHAPE_HORIZONTAL_MARGIN="4.0 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
+<node TEXT="Uniform Wide hexagon" STYLE_REF="Title" FOLDED="true" ID="ID_85043285" CREATED="1490313321232" MODIFIED="1490468395701" STYLE="wide_hexagon" SHAPE_HORIZONTAL_MARGIN="4.0 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt">
+<node TEXT="Uniform Narrow hexagon" STYLE_REF="Title" ID="ID_1912995771" CREATED="1490313324977" MODIFIED="1490468395703" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="4.0 pt" UNIFORM_SHAPE="true" MAX_WIDTH="80.0 pt" MIN_WIDTH="80.0 pt"/>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="" ID="ID_1847028781" CREATED="1490316921721" MODIFIED="1490316921726">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="" ID="ID_911249122" CREATED="1490320162616" MODIFIED="1490320162623">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="" ID="ID_1314571518" CREATED="1490320202737" MODIFIED="1490320202740">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Node width" STYLE_REF="Title" FOLDED="true" ID="ID_1380994862" CREATED="1490321999775" MODIFIED="1490322014501">
+<node TEXT="" ID="ID_1076042307" CREATED="1490322065172" MODIFIED="1490322065175">
+<hook NAME="FirstGroupNode"/>
+</node>
+<node TEXT="Min node width" STYLE_REF="Title" FOLDED="true" ID="ID_277964074" CREATED="1484503683924" MODIFIED="1490314644980">
+<node TEXT="Set the minimum node width" ID="ID_1992258809" CREATED="1490314587942" MODIFIED="1490316756667"/>
+</node>
+<node TEXT="Max node width" STYLE_REF="Title" FOLDED="true" ID="ID_1460439723" CREATED="1484503689653" MODIFIED="1490314644993">
+<node TEXT="Set the maximum node width" ID="ID_1324996721" CREATED="1490314599851" MODIFIED="1490316762684"/>
+</node>
+<node TEXT="" ID="ID_1529635094" CREATED="1490322065166" MODIFIED="1490322065171">
+<hook NAME="SummaryNode"/>
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="Set unit of measure in" FOLDED="true" ID="ID_666696835" CREATED="1490317947710" MODIFIED="1490318073372">
+<node TEXT="px" FOLDED="true" ID="ID_1253633214" CREATED="1490317967389" MODIFIED="1490317973825">
+<node TEXT="pixels" ID="ID_761380187" CREATED="1490317998301" MODIFIED="1490318000536"/>
+</node>
+<node TEXT="in" FOLDED="true" ID="ID_523553659" CREATED="1490317980275" MODIFIED="1490317981281">
+<node TEXT="inches" ID="ID_982372905" CREATED="1490318004053" MODIFIED="1490318006816"/>
+</node>
+<node TEXT="mm" FOLDED="true" ID="ID_589332287" CREATED="1490317985443" MODIFIED="1490317986368">
+<node TEXT="millimeters" ID="ID_1335733805" CREATED="1490318009181" MODIFIED="1490318011960"/>
+</node>
+<node TEXT="cm" FOLDED="true" ID="ID_1557388557" CREATED="1490317992027" MODIFIED="1490317993167">
+<node TEXT="centimeters" ID="ID_628776635" CREATED="1490318015124" MODIFIED="1490318017978"/>
+</node>
+<node TEXT="pt" FOLDED="true" ID="ID_1749565787" CREATED="1490317994610" MODIFIED="1490317995525">
+<node TEXT="points" ID="ID_734760153" CREATED="1490318020445" MODIFIED="1490318037402"/>
+</node>
+</node>
+<node TEXT="By setting the same value for minimum and maximum node width, a fixed node width will be used regardless of the amount of text in the node core." ID="ID_1372175477" CREATED="1490316921728" MODIFIED="1490320419461"/>
+</node>
+</node>
+<node TEXT="Child gap" STYLE_REF="Title" FOLDED="true" ID="ID_822643295" CREATED="1484503695060" MODIFIED="1490314644994">
+<node TEXT="Set the spacing between child nodes" FOLDED="true" ID="ID_990143548" CREATED="1490316619063" MODIFIED="1490316770049">
+<node TEXT="Child gap 1 pt" FOLDED="true" ID="ID_1957152892" CREATED="1490320976580" MODIFIED="1490321061283" VGAP_QUANTITY="1.0 pt">
+<node TEXT="A" ID="ID_1220674571" CREATED="1490321002631" MODIFIED="1490321003877"/>
+<node TEXT="B" ID="ID_1117112513" CREATED="1490321009070" MODIFIED="1490321011427"/>
+<node TEXT="C" ID="ID_429680728" CREATED="1490321012406" MODIFIED="1490321013532"/>
+<node TEXT="D" ID="ID_1911968222" CREATED="1490321014005" MODIFIED="1490321015084"/>
+<node TEXT="E" ID="ID_763930929" CREATED="1490321015805" MODIFIED="1490321017316"/>
+</node>
+<node TEXT="Child gap 10 pt" FOLDED="true" ID="ID_1370519144" CREATED="1490320976580" MODIFIED="1490321058150" VGAP_QUANTITY="10.0 pt">
+<node TEXT="A" ID="ID_1145537875" CREATED="1490321002631" MODIFIED="1490321003877"/>
+<node TEXT="B" ID="ID_1183782424" CREATED="1490321009070" MODIFIED="1490321011427"/>
+<node TEXT="C" ID="ID_534757195" CREATED="1490321012406" MODIFIED="1490321013532"/>
+<node TEXT="D" ID="ID_79722788" CREATED="1490321014005" MODIFIED="1490321015084"/>
+<node TEXT="E" ID="ID_909600402" CREATED="1490321015805" MODIFIED="1490321017316"/>
+</node>
+</node>
+<node TEXT="Set unit of measure in" FOLDED="true" ID="ID_445399376" CREATED="1490317947710" MODIFIED="1490320937159" VGAP_QUANTITY="1.0 pt">
+<node TEXT="px" FOLDED="true" ID="ID_1074016350" CREATED="1490317967389" MODIFIED="1490317973825">
+<node TEXT="pixels" ID="ID_1029453220" CREATED="1490317998301" MODIFIED="1490318000536"/>
+</node>
+<node TEXT="in" FOLDED="true" ID="ID_956163677" CREATED="1490317980275" MODIFIED="1490317981281">
+<node TEXT="inches" ID="ID_981117856" CREATED="1490318004053" MODIFIED="1490318006816"/>
+</node>
+<node TEXT="mm" FOLDED="true" ID="ID_1417094468" CREATED="1490317985443" MODIFIED="1490317986368">
+<node TEXT="millimeters" ID="ID_69602340" CREATED="1490318009181" MODIFIED="1490318011960"/>
+</node>
+<node TEXT="cm" FOLDED="true" ID="ID_536547760" CREATED="1490317992027" MODIFIED="1490317993167">
+<node TEXT="centimeters" ID="ID_1724969493" CREATED="1490318015124" MODIFIED="1490318017978"/>
+</node>
+<node TEXT="pt" FOLDED="true" ID="ID_1778612105" CREATED="1490317994610" MODIFIED="1490317995525">
+<node TEXT="points" ID="ID_274705987" CREATED="1490318020445" MODIFIED="1490318037402"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Node border" STYLE_REF="Title" FOLDED="true" ID="ID_449535647" CREATED="1490312033562" MODIFIED="1490312039721">
+<node TEXT="Line width" STYLE_REF="Title" FOLDED="true" ID="ID_125296083" CREATED="1490316668274" MODIFIED="1490318199201">
+<node TEXT="Set the border line width" FOLDED="true" ID="ID_1624385254" CREATED="1490317610328" MODIFIED="1490321906786">
+<node TEXT="Border line width 2 px" ID="ID_1403240434" CREATED="1490321909337" MODIFIED="1490494040668" BORDER_WIDTH="2.0 px"/>
+<node TEXT="Border line width 4 px" ID="ID_889364323" CREATED="1490321909337" MODIFIED="1490494049059" BORDER_WIDTH="4.0 px"/>
+<node TEXT="Border line width 8 px" ID="ID_1039588182" CREATED="1490321909337" MODIFIED="1490494054509" BORDER_WIDTH="8.0 px"/>
+</node>
+<node TEXT="Set unit of measure in" FOLDED="true" ID="ID_1230400599" CREATED="1490317947710" MODIFIED="1490318073372">
+<node TEXT="px" FOLDED="true" ID="ID_1267422600" CREATED="1490317967389" MODIFIED="1490317973825">
+<node TEXT="pixels" ID="ID_494853125" CREATED="1490317998301" MODIFIED="1490318000536"/>
+</node>
+<node TEXT="in" FOLDED="true" ID="ID_1208050643" CREATED="1490317980275" MODIFIED="1490317981281">
+<node TEXT="inches" ID="ID_160015579" CREATED="1490318004053" MODIFIED="1490318006816"/>
+</node>
+<node TEXT="mm" FOLDED="true" ID="ID_1619788019" CREATED="1490317985443" MODIFIED="1490317986368">
+<node TEXT="millimeters" ID="ID_283565221" CREATED="1490318009181" MODIFIED="1490318011960"/>
+</node>
+<node TEXT="cm" FOLDED="true" ID="ID_802052797" CREATED="1490317992027" MODIFIED="1490317993167">
+<node TEXT="centimeters" ID="ID_1610149320" CREATED="1490318015124" MODIFIED="1490318017978"/>
+</node>
+<node TEXT="pt" FOLDED="true" ID="ID_473186314" CREATED="1490317994610" MODIFIED="1490317995525">
+<node TEXT="points" ID="ID_203083367" CREATED="1490318020445" MODIFIED="1490318037402"/>
+</node>
+</node>
+</node>
+<node TEXT="Use edge width" STYLE_REF="Title" FOLDED="true" ID="ID_1844478307" CREATED="1490316683012" MODIFIED="1490317115084">
+<node TEXT="Use the edge width to set line width of node border" ID="ID_1512697032" CREATED="1490317721159" MODIFIED="1490318477841"/>
+</node>
+<node TEXT="Use edge line type" STYLE_REF="Title" FOLDED="true" ID="ID_1144471037" CREATED="1490316694460" MODIFIED="1490317115089">
+<node TEXT="Use the edge line type to set line type of node border" ID="ID_286919931" CREATED="1490317721159" MODIFIED="1490318462041"/>
+</node>
+<node TEXT="Border line type" STYLE_REF="Title" FOLDED="true" ID="ID_695681718" CREATED="1490316706132" MODIFIED="1490321819971" VGAP_QUANTITY="10.0 pt">
+<node TEXT="Border line type 1" ID="ID_746184052" CREATED="1490317853275" MODIFIED="1490321775693" BORDER_WIDTH="2.0 px" BORDER_DASH="SOLID"/>
+<node TEXT="Border line type 2" ID="ID_1083570670" CREATED="1490317853275" MODIFIED="1490321809309" BORDER_WIDTH="2.0 px" BORDER_DASH="CLOSE_DOTS"/>
+<node TEXT="Border line type 3" ID="ID_1237826248" CREATED="1490317853275" MODIFIED="1490321806485" BORDER_WIDTH="2.0 px" BORDER_DASH="DASHES"/>
+<node TEXT="Border line type 4" ID="ID_1494300969" CREATED="1490317853275" MODIFIED="1490321803431" BORDER_WIDTH="2.0 px" BORDER_DASH="DISTANT_DOTS"/>
+<node TEXT="Border line type 5" ID="ID_980524683" CREATED="1490317853275" MODIFIED="1490321800253" BORDER_WIDTH="2.0 px" BORDER_DASH="DOTS_AND_DASHES"/>
+</node>
+<node TEXT="Use edge color" STYLE_REF="Title" FOLDED="true" ID="ID_683869336" CREATED="1490316713867" MODIFIED="1490317115095">
+<node TEXT="By default, the color of node border is set as edge color" ID="ID_1457385649" CREATED="1490318221443" MODIFIED="1490318428543"/>
+<node TEXT="Deselect to choose a different color" ID="ID_289085647" CREATED="1490318288233" MODIFIED="1490318321519"/>
+</node>
+<node TEXT="Color" STYLE_REF="Title" FOLDED="true" ID="ID_1056909101" CREATED="1490316722548" MODIFIED="1490317115098">
+<node TEXT="Set the color of node border independently from edge color" ID="ID_583923348" CREATED="1490318323950" MODIFIED="1490320820912" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#ff0000"/>
+</node>
+</node>
+<node TEXT="Font of whole core" STYLE_REF="Title" FOLDED="true" ID="ID_1320322796" CREATED="1484497650800" MODIFIED="1490313934112">
+<node TEXT="Font family" STYLE_REF="Title" FOLDED="true" ID="ID_504363388" CREATED="1484503909613" MODIFIED="1490493794606" FORMAT="NO_FORMAT">
+<node TEXT="Select font to use for node core text" ID="ID_1300260159" CREATED="1490318652897" MODIFIED="1490318672382"/>
+</node>
+<node TEXT="Font size" STYLE_REF="Title" FOLDED="true" ID="ID_1816820010" CREATED="1484503922339" MODIFIED="1490317120621">
+<node TEXT="Select font size" ID="ID_1542253406" CREATED="1490318708672" MODIFIED="1490318713996"/>
+</node>
+<node TEXT="Bold" STYLE_REF="Title" ID="ID_633297510" CREATED="1484503928029" MODIFIED="1490472262966">
+<font SIZE="10"/>
+</node>
+<node TEXT="Italic" STYLE_REF="Title" ID="ID_593095636" CREATED="1484503930740" MODIFIED="1490472268802" FORMAT_AS_HYPERLINK="true">
+<font ITALIC="true"/>
+</node>
+<node TEXT="Text Alignment" STYLE_REF="Title" FOLDED="true" ID="ID_676563679" CREATED="1484503938123" MODIFIED="1490317120628">
+<node TEXT="Select text alignment in node core" FOLDED="true" ID="ID_581673430" CREATED="1490318723184" MODIFIED="1490318734076">
+<node TEXT="Default" STYLE_REF="Title" FOLDED="true" ID="ID_1214747054" CREATED="1490318747296" MODIFIED="1490481039424" TEXT_ALIGN="DEFAULT" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt">
+<node TEXT="Left aligned text" ID="ID_1722982300" CREATED="1490318750470" MODIFIED="1490318869493"/>
+</node>
+<node TEXT="Left aligned text" STYLE_REF="Title" ID="ID_1347786239" CREATED="1490318750470" MODIFIED="1490481039438" TEXT_ALIGN="LEFT" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
+<node TEXT="Right aligned text" STYLE_REF="Title" ID="ID_612108527" CREATED="1490318770776" MODIFIED="1490481039445" TEXT_ALIGN="RIGHT" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
+<node TEXT="Centered text" STYLE_REF="Title" ID="ID_1591411488" CREATED="1490318782838" MODIFIED="1490481039451" MAX_WIDTH="120.0 pt" MIN_WIDTH="120.0 pt"/>
+</node>
+</node>
+<node TEXT="Hyperlink" STYLE_REF="Title" FOLDED="true" ID="ID_205209514" CREATED="1484503947075" MODIFIED="1490317120630">
+<node TEXT="Sets the whole node core to an underlined hyperlink." FOLDED="true" ID="ID_409945778" CREATED="1490472023450" MODIFIED="1490472290079">
+<node TEXT="So the user does not have to click the arrow icon, but can click on the whole core to follow the link." ID="ID_1769631020" CREATED="1490472290100" MODIFIED="1490472300976"/>
+</node>
+<node TEXT="Works only for a node with an arrow-link and when no underlined hyperlink in the core text." ID="ID_123672270" CREATED="1490396197459" MODIFIED="1490474492763"/>
+</node>
+</node>
+<node TEXT="Icons" STYLE_REF="Title" FOLDED="true" ID="ID_1454947934" CREATED="1490312050706" MODIFIED="1490312057099">
+<node TEXT="Icon size" STYLE_REF="Title" FOLDED="true" ID="ID_36052313" CREATED="1490317128395" MODIFIED="1490317137963">
+<node TEXT="Define the size of icons in the node" FOLDED="true" ID="ID_1614596991" CREATED="1490319773400" MODIFIED="1490481004063">
+<node TEXT="  12pt" ID="ID_838022492" CREATED="1490320677952" MODIFIED="1490320760414">
+<icon BUILTIN="button_ok"/>
+</node>
+<node TEXT=" 16pt" ID="ID_1629605663" CREATED="1490320677952" MODIFIED="1490320766357" ICON_SIZE="16.0 pt">
+<icon BUILTIN="button_ok"/>
+</node>
+<node TEXT=" 8pt" ID="ID_1558579758" CREATED="1490320677952" MODIFIED="1490320773460" ICON_SIZE="8.0 pt">
+<icon BUILTIN="button_ok"/>
+</node>
+</node>
+<node TEXT="Set unit of measure in" FOLDED="true" ID="ID_1137808193" CREATED="1490317947710" MODIFIED="1490318073372">
+<node TEXT="px" FOLDED="true" ID="ID_726544530" CREATED="1490317967389" MODIFIED="1490317973825">
+<node TEXT="pixels" ID="ID_1130585311" CREATED="1490317998301" MODIFIED="1490318000536"/>
+</node>
+<node TEXT="in" FOLDED="true" ID="ID_1486101741" CREATED="1490317980275" MODIFIED="1490317981281">
+<node TEXT="inches" ID="ID_1159086290" CREATED="1490318004053" MODIFIED="1490318006816"/>
+</node>
+<node TEXT="mm" FOLDED="true" ID="ID_644466595" CREATED="1490317985443" MODIFIED="1490317986368">
+<node TEXT="millimeters" ID="ID_1887939300" CREATED="1490318009181" MODIFIED="1490318011960"/>
+</node>
+<node TEXT="cm" FOLDED="true" ID="ID_495398822" CREATED="1490317992027" MODIFIED="1490317993167">
+<node TEXT="centimeters" ID="ID_1857895636" CREATED="1490318015124" MODIFIED="1490318017978"/>
+</node>
+<node TEXT="pt" FOLDED="true" ID="ID_766825140" CREATED="1490317994610" MODIFIED="1490317995525">
+<node TEXT="points" ID="ID_810461637" CREATED="1490318020445" MODIFIED="1490318037402"/>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Edges" STYLE_REF="Title" FOLDED="true" ID="ID_1414163711" CREATED="1484497650810" MODIFIED="1490313934120">
+<node TEXT="Edge width" STYLE_REF="Title" FOLDED="true" ID="ID_911449255" CREATED="1484497650819" MODIFIED="1490318964666">
+<node TEXT="Set edge width" FOLDED="true" ID="ID_45892567" CREATED="1490318561020" MODIFIED="1490473216366" VGAP_QUANTITY="6.0 pt">
+<node TEXT="Edge width 0" ID="ID_361678207" CREATED="1490321573861" MODIFIED="1490473166056" HGAP_QUANTITY="29.749999530613437 pt" VSHIFT_QUANTITY="-9.749999709427366 pt"/>
+<node TEXT="Edge width 2" ID="ID_414687193" CREATED="1490321573861" MODIFIED="1490473170478" HGAP_QUANTITY="44.749999083578615 pt" VSHIFT_QUANTITY="1.4999999552965178 pt">
+<edge WIDTH="2"/>
+</node>
+<node TEXT="Edge width 4" ID="ID_325154008" CREATED="1490321573861" MODIFIED="1490473177569" HGAP_QUANTITY="46.99999901652339 pt" VSHIFT_QUANTITY="7.499999776482589 pt">
+<edge WIDTH="4"/>
+</node>
+<node TEXT="Edge width 8" ID="ID_822944717" CREATED="1490321573861" MODIFIED="1490473181965" HGAP_QUANTITY="38.74999926239254 pt" VSHIFT_QUANTITY="17.249999485909953 pt">
+<edge WIDTH="8"/>
+</node>
+</node>
+</node>
+<node TEXT="Edge line type" STYLE_REF="Title" FOLDED="true" ID="ID_1376187402" CREATED="1490318993764" MODIFIED="1490319027144">
+<node TEXT="Select line type" FOLDED="true" ID="ID_1268295632" CREATED="1490319036799" MODIFIED="1490321391633" VGAP_QUANTITY="10.0 pt">
+<node TEXT="Edge line type 1" ID="ID_1405886633" CREATED="1490321281965" MODIFIED="1490321406338" HGAP_QUANTITY="38.74999926239254 pt" VSHIFT_QUANTITY="2.2499999329447764 pt">
+<edge WIDTH="2"/>
+</node>
+<node TEXT="Edge line type 2" ID="ID_398463052" CREATED="1490321281965" MODIFIED="1490321417976" HGAP_QUANTITY="65.74999845772986 pt" VSHIFT_QUANTITY="8.249999754130847 pt">
+<edge WIDTH="2" DASH="CLOSE_DOTS"/>
+</node>
+<node TEXT="Edge line type 3" ID="ID_1192163546" CREATED="1490321281965" MODIFIED="1490321423131" HGAP_QUANTITY="66.49999843537813 pt" VSHIFT_QUANTITY="1.4999999552965178 pt">
+<edge WIDTH="2" DASH="DASHES"/>
+</node>
+<node TEXT="Edge line type 4" ID="ID_765788335" CREATED="1490321281965" MODIFIED="1490321428152" HGAP_QUANTITY="67.99999839067465 pt" VSHIFT_QUANTITY="14.249999575316918 pt">
+<edge WIDTH="2" DASH="DISTANT_DOTS"/>
+</node>
+<node TEXT="Edge line type 5" ID="ID_1675104796" CREATED="1490321281965" MODIFIED="1490321433728" HGAP_QUANTITY="48.499998971819906 pt" VSHIFT_QUANTITY="0.7499999776482589 pt">
+<edge WIDTH="2" DASH="DOTS_AND_DASHES"/>
+</node>
+</node>
+</node>
+<node TEXT="Edge style" STYLE_REF="Title" FOLDED="true" ID="ID_666399637" CREATED="1484497650814" MODIFIED="1490318964677">
+<node TEXT="Select edge style" FOLDED="true" ID="ID_544107889" CREATED="1490318944191" MODIFIED="1499025299866" VGAP_QUANTITY="6.0 pt">
+<node TEXT="Smoothly curved (bezier)" ID="ID_22779030" CREATED="1490319321099" MODIFIED="1490319331851"/>
+<node TEXT="Hide edge" ID="ID_359729621" CREATED="1490319355809" MODIFIED="1490319573778" HGAP_QUANTITY="115.9999969601632 pt" VSHIFT_QUANTITY="-26.249999217689062 pt">
+<edge STYLE="hide_edge"/>
+</node>
+<node TEXT="Horizontal" ID="ID_535911346" CREATED="1490319363569" MODIFIED="1490321533146" HGAP_QUANTITY="96.49999754130847 pt" VSHIFT_QUANTITY="-5.249999843537812 pt">
+<edge STYLE="horizontal" COLOR="#cc00cc" WIDTH="3"/>
+</node>
+<node TEXT="Linear" ID="ID_1072333071" CREATED="1490319373001" MODIFIED="1490321511787" HGAP_QUANTITY="139.24999626725923 pt" VSHIFT_QUANTITY="55.49999834597116 pt">
+<edge STYLE="linear" COLOR="#00cc33" WIDTH="2"/>
+</node>
+<node TEXT="Sharply curved (bezier)" ID="ID_1152337607" CREATED="1490319379817" MODIFIED="1499025299862" HGAP_QUANTITY="127.99999660253533 pt" VSHIFT_QUANTITY="26.999999195337324 pt">
+<edge STYLE="sharp_bezier" COLOR="#00cccc" WIDTH="4"/>
+</node>
+<node TEXT="Sharp linear" ID="ID_1368042269" CREATED="1490319396297" MODIFIED="1490321477787" HGAP_QUANTITY="63.499998524785084 pt" VSHIFT_QUANTITY="0.7499999776482618 pt">
+<edge STYLE="sharp_linear" COLOR="#ff6600" WIDTH="4"/>
+</node>
+</node>
+</node>
+<node TEXT="Edge color" STYLE_REF="Title" FOLDED="true" ID="ID_107891534" CREATED="1484504690765" MODIFIED="1490318964679">
+<node TEXT="Set color of edge" ID="ID_745193861" CREATED="1490319636129" MODIFIED="1490468637066"/>
+</node>
+</node>
+<node TEXT="Clouds" STYLE_REF="Title" FOLDED="true" ID="ID_1303716109" CREATED="1484497650821" MODIFIED="1490313934124">
+<node TEXT="A cloud surrounds the node it is applied to and all its descendants." FOLDED="true" ID="ID_349113859" CREATED="1490396885182" MODIFIED="1499048161076">
+<node TEXT="Cloud color" STYLE_REF="Title" FOLDED="true" ID="ID_1228013104" CREATED="1484505159213" MODIFIED="1490321689375">
+<node TEXT="Change the background color of cloud." ID="ID_1007181608" CREATED="1490319725760" MODIFIED="1490468675006"/>
+</node>
+<node TEXT="Cloud shape" STYLE_REF="Title" FOLDED="true" ID="ID_1766305225" CREATED="1484497650823" MODIFIED="1499051539446" VGAP_QUANTITY="6.0 pt">
+<node TEXT="Arc" STYLE_REF="Title" FOLDED="true" ID="ID_1799950749" CREATED="1484505315988" MODIFIED="1499047984476">
+<cloud COLOR="#ffcccc" SHAPE="ARC"/>
+<node TEXT="child" ID="ID_872866412" CREATED="1499047786216" MODIFIED="1499051626479">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="grandchild" ID="ID_876483030" CREATED="1499047786216" MODIFIED="1499047869332"/>
+<node TEXT="grandchild" ID="ID_1897057856" CREATED="1499047786216" MODIFIED="1499047873810"/>
+</node>
+<node TEXT="child" ID="ID_1920986166" CREATED="1499047786216" MODIFIED="1499047879617"/>
+<node TEXT="child" ID="ID_36973622" CREATED="1499047786216" MODIFIED="1499047879617"/>
+</node>
+<node TEXT="Star" STYLE_REF="Title" FOLDED="true" ID="ID_887127520" CREATED="1484505272644" MODIFIED="1499048050764">
+<cloud COLOR="#ccccff" SHAPE="STAR"/>
+<node TEXT="child" ID="ID_1860361059" CREATED="1499047786216" MODIFIED="1499051631172">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="grandchild" ID="ID_1663332469" CREATED="1499047786216" MODIFIED="1499047869332"/>
+<node TEXT="grandchild" ID="ID_1568776690" CREATED="1499047786216" MODIFIED="1499047873810"/>
+</node>
+</node>
+<node TEXT="Rectangle" STYLE_REF="Title" FOLDED="true" ID="ID_570534042" CREATED="1484505308517" MODIFIED="1499047984493">
+<cloud COLOR="#ccffcc" SHAPE="RECT"/>
+<node TEXT="child" ID="ID_1785274149" CREATED="1499047786216" MODIFIED="1499051641058">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="grandchild" ID="ID_216104353" CREATED="1499047786216" MODIFIED="1499047869332"/>
+</node>
+</node>
+<node TEXT="Round rectangle" STYLE_REF="Title" FOLDED="true" ID="ID_747786348" CREATED="1484505296961" MODIFIED="1499047984495">
+<cloud COLOR="#ffcc00" SHAPE="ROUND_RECT"/>
+<node TEXT="child" ID="ID_730314269" CREATED="1499047786216" MODIFIED="1499051656683">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="grandchild" ID="ID_1224543193" CREATED="1499047786216" MODIFIED="1499047869332"/>
+</node>
+<node TEXT="child" ID="ID_1971847724" CREATED="1499047786216" MODIFIED="1499047879617"/>
+<node TEXT="child" ID="ID_1975833534" CREATED="1499047786216" MODIFIED="1499051659690">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node TEXT="grandchild" ID="ID_31911930" CREATED="1499047786216" MODIFIED="1499047873810"/>
+</node>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node ID="ID_174288554" CREATED="1484691905388" MODIFIED="1490394239100"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Changing a property will set a check in the <font color="#ff0000">Change </font>value, indicating that the specific property has changed.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+<node ID="ID_1413039456" CREATED="1484521556497" MODIFIED="1490396673865"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Uncheck <font color="#ff0000">Change</font>&#160;value if you want to return to defined style for the node. Also uncheck <font color="#ff0000">Change</font>&#160;value if you want conditional styles to affect (set) the property.
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Old documentation" STYLE_REF="Old documentation" FOLDED="true" ID="ID_392739037" CREATED="1485134404008" MODIFIED="1499021341034" VGAP_QUANTITY="6.0 pt">
+<node TEXT="Editing a property" STYLE_REF="Advanced" FOLDED="true" ID="ID_740451427" CREATED="1314163244315" MODIFIED="1498415215562">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node FOLDED="true" ID="ID_261259888" CREATED="1323518049125" MODIFIED="1498415183186"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The <i>Tool panel</i>&#160;shows the properties of the node which has the focus. Only the properties of the selected node can be changed. (Generally you select one node, but with some properties it is possible to select and change more than one node at a time.) While the panel is showing, you can select a different node to give it the focus. To change a property, change the value of the property. This will also set a check indicating the changed value applies. Uncheck if you want to return to the default behaviour. Also uncheck if you want conditional styles affect (set) the property.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      As a first example, find the properties group named <i>Node Shape</i>&#160;and click on <i>Node style</i>. A menu drops down with options like <i>Bubble</i>, <i>Fork</i>&#160;&#160;and <i>As parent</i>. Try these options and see what happens. For the node you are reading now option <i>Bubble</i>&#160;was chosen. As you may notice, this option only applies to the core.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      As a second example, find node group <i>Edges&#160;</i>and check the box for <i>Edge style</i>. Clicking next to <i>Edge style</i>&#160;will drop down a menu with possible styles like <i>Linear</i>, <i>Smoothly curved</i>, <i>Hidden</i>,&#160;and others. Try these to know which styles are possible. Or select me to see a few examples of changed properties in the <i>Tool panel.</i>
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+<node TEXT="linear" STYLE_REF="AdvancedTopic" ID="ID_1775517582" CREATED="1314172753397" MODIFIED="1323518514233" HGAP_QUANTITY="14.0 px" VSHIFT_QUANTITY="-26.0 px">
+<edge STYLE="linear"/>
+</node>
+<node TEXT="curved" STYLE_REF="AdvancedTopic" ID="ID_1317923820" CREATED="1314172748460" MODIFIED="1323518517665" HGAP_QUANTITY="35.0 px" VSHIFT_QUANTITY="-27.0 px">
+<edge STYLE="bezier"/>
+</node>
+<node TEXT="hidden" STYLE_REF="AdvancedTopic" ID="ID_1790298981" CREATED="1314172761269" MODIFIED="1323518014549" HGAP_QUANTITY="40.0 px" VSHIFT_QUANTITY="-5.0 px">
+<edge STYLE="hide_edge"/>
+</node>
+<node TEXT="horizontal" STYLE_REF="AdvancedTopic" ID="ID_1854825442" CREATED="1314172936705" MODIFIED="1323518524951" HGAP_QUANTITY="39.0 px" VSHIFT_QUANTITY="25.0 px">
+<edge STYLE="horizontal"/>
+</node>
+</node>
+</node>
+<node TEXT="Tool panel" STYLE_REF="Advanced" FOLDED="true" ID="ID_429040611" CREATED="1314162700896" MODIFIED="1498408295680">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1242458312" CREATED="1323517943396" MODIFIED="1498407455166"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Freeplane has many possibilities to to set or change properties which apply to a whole node or all nodes. You can think of the basic color of a node, enclosing a node in a bubble, the size of the text, the width of the node core and much more. The most versatile method to edit properties is in the <b>Tool panel</b>. To open or close the Tool panel, right-click in an empty space of the background and select <i>Tool panel</i>.
+    </p>
+    <p>
+      
+    </p>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        An alternative way to open or close the panel, choose <i>View &gt; Tool panel</i>.
+      </li>
+      <li>
+        An alternative way to change properties, use menu <i>Format.</i>
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Automatic edge color" STYLE_REF="Advanced" FOLDED="true" ID="ID_1843870131" CREATED="1314164029738" MODIFIED="1499021341034">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1584997985" CREATED="1323518106869" MODIFIED="1498407568685"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      By default each new map in Freeplane will generate a different color for each new branch. This supports one of the principles held by the inventor of the mind map, which states that colors help the brain to structure and memorize information more easily. This property is called&#160;<b>Automatic edge color.</b>&#160;This property can be disabled in the Propertieds panel. To disable automatic edge color, open the Tool panel and find the properties group <i>Node style</i>, at the top of the <i>Properties&#160;&#160;panel</i>. Uncheck &#160;<i>Automatic edge color</i>, like I did for the the mind map of this tutorial.
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+<node TEXT="Automatic node numbering" STYLE_REF="Advanced" FOLDED="true" ID="ID_80905537" CREATED="1314283445398" MODIFIED="1498408625628">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node ID="ID_1916225082" CREATED="1323518137156" MODIFIED="1498407432400"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The <i>Properties Panel </i>contains the property&#160;automatic <b>node numbering </b>to give a node a number.&#160;You can set node numbering for a group of nodes by first selecting the group (keep Shift or Control pressed when you click nodes) and then checking this option in the <i>Properties Panel</i>.
+    </p>
+  </body>
+</html>
+</richcontent>
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
+</hook>
+</node>
+</node>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Copy and Paste a format" STYLE_REF="Title" FOLDED="true" ID="ID_1701827639" CREATED="1491434001797" MODIFIED="1499015250189">
+<node TEXT="Select the node from which to copy the format" ID="ID_564524415" CREATED="1499052489068" MODIFIED="1499052509153" NUMBERED="true"/>
+<node TEXT="" ID="ID_307587777" CREATED="1499015710873" MODIFIED="1499027497623" NUMBERED="true">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node FOLDED="true" ID="ID_1831599264" CREATED="1491434542562" MODIFIED="1499015473430"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Go to menubar <font color="#ff0000">Format &gt; Copy format</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Copy format" STYLE_REF="Title" ID="ID_357736777" CREATED="1491434139735" MODIFIED="1491434219585">
+<icon BUILTIN="../colorpicker"/>
+</node>
+</node>
+<node ID="ID_1222830648" CREATED="1499015492975" MODIFIED="1499015516768"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      or press <font color="#ff0000">ALT + SHIFT + C</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Select the node(s) to paste the format" ID="ID_346287774" CREATED="1491434581225" MODIFIED="1491434611318" NUMBERED="true"/>
+<node TEXT="" ID="ID_980890694" CREATED="1499015753508" MODIFIED="1499027484005" NUMBERED="true">
+<hook NAME="AlwaysUnfoldedNode"/>
+<node FOLDED="true" ID="ID_1206641102" CREATED="1491434613696" MODIFIED="1499027598869"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Go to menubar <font color="#ff0000">Format &gt; Paste format</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+<node TEXT="Paste format" STYLE_REF="Title" ID="ID_1248195549" CREATED="1491434142436" MODIFIED="1491434226347">
+<icon BUILTIN="../color_fill"/>
+</node>
+</node>
+<node ID="ID_1812080321" CREATED="1499015492975" MODIFIED="1499015768762"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      or press <font color="#ff0000">ALT + SHIFT + V</font>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+</node>
+<node TEXT="Notes and explanations" STYLE_REF="Notes and explanations" FOLDED="true" ID="ID_827629733" CREATED="1483416064359" MODIFIED="1490394239095">
+<node TEXT="Some text format properties can also be set for a part of the node core." FOLDED="true" ID="ID_1641932173" CREATED="1336465141192" MODIFIED="1499103530952">
+<node ID="ID_338212128" CREATED="1499103459032" MODIFIED="1499104002560"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      For this you have to be in core text edit mode by using commands <b>Edit node core in-line </b>or <b>Edit node core in dialog.</b>
+    </p>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+</node>
 <node TEXT="Styles" STYLE_REF="Advanced" FOLDED="true" ID="ID_1838680824" CREATED="1314646406529" MODIFIED="1335300487437" NUMBERED="true" MIN_WIDTH="90.0 px">
-<node TEXT="Why styles ?" FOLDED="true" ID="ID_539515158" CREATED="1323521177251" MODIFIED="1323807405276" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="138.0 px" STYLE="combined">
+<node TEXT="Why styles ?" ID="ID_539515158" CREATED="1323521177251" MODIFIED="1323807405276" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="138.0 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Advanced" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -3102,7 +5882,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Find &amp; apply a style" STYLE_REF="Advanced" FOLDED="true" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1323807409160" HGAP_QUANTITY="29.0 px" VSHIFT_QUANTITY="-1.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Find &amp; apply a style" STYLE_REF="Advanced" ID="ID_512501370" CREATED="1291199304490" MODIFIED="1323807409160" HGAP_QUANTITY="29.0 px" VSHIFT_QUANTITY="-1.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3144,7 +5924,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Removing an applied style" STYLE_REF="Advanced" FOLDED="true" ID="ID_1937448981" CREATED="1335278263350" MODIFIED="1335278358664" HGAP_QUANTITY="28.0 px">
+<node TEXT="Removing an applied style" STYLE_REF="Advanced" ID="ID_1937448981" CREATED="1335278263350" MODIFIED="1335278358664" HGAP_QUANTITY="28.0 px">
 <node STYLE_REF="TitlesContent" ID="ID_1278689402" CREATED="1335278278365" MODIFIED="1335278541211" HGAP_QUANTITY="-157.0 px" VSHIFT_QUANTITY="43.0 px"><richcontent TYPE="NODE">
 
 <html>
@@ -3160,7 +5940,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Edit styles in node dialog" STYLE_REF="Advanced" FOLDED="true" ID="ID_1277682010" CREATED="1291196100290" MODIFIED="1323807416508" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="2.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Edit styles in node dialog" STYLE_REF="Advanced" ID="ID_1277682010" CREATED="1291196100290" MODIFIED="1323807416508" HGAP_QUANTITY="30.0 px" VSHIFT_QUANTITY="2.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3193,7 +5973,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Apply multiple styles" FOLDED="true" ID="ID_270284358" CREATED="1314342119553" MODIFIED="1329821005551" HGAP_QUANTITY="31.0 px" VSHIFT_QUANTITY="1.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Apply multiple styles" ID="ID_270284358" CREATED="1314342119553" MODIFIED="1329821005551" HGAP_QUANTITY="31.0 px" VSHIFT_QUANTITY="1.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="Advanced" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
@@ -3242,7 +6022,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Conditional styles" STYLE_REF="Professional" FOLDED="true" ID="ID_1632551821" CREATED="1314343996581" MODIFIED="1329858287410" HGAP_QUANTITY="31.0 px" VSHIFT_QUANTITY="-1.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Conditional styles" STYLE_REF="Professional" ID="ID_1632551821" CREATED="1314343996581" MODIFIED="1329858287410" HGAP_QUANTITY="31.0 px" VSHIFT_QUANTITY="-1.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="Example" LAST="false"/>
@@ -3289,7 +6069,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Hierarchical level styles" STYLE_REF="Professional" FOLDED="true" ID="ID_521918713" CREATED="1314344484933" MODIFIED="1323807439362" HGAP_QUANTITY="30.0 px" MAX_WIDTH="550.0 px">
+<node TEXT="Hierarchical level styles" STYLE_REF="Professional" ID="ID_521918713" CREATED="1314344484933" MODIFIED="1323807439362" HGAP_QUANTITY="30.0 px" MAX_WIDTH="550.0 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3346,7 +6126,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Map style" STYLE_REF="Professional" FOLDED="true" ID="ID_13843990" CREATED="1291196992351" MODIFIED="1323807434292" HGAP_QUANTITY="31.0 px" VSHIFT_QUANTITY="-130.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
+<node TEXT="Map style" STYLE_REF="Professional" ID="ID_13843990" CREATED="1291196992351" MODIFIED="1323807434292" HGAP_QUANTITY="31.0 px" VSHIFT_QUANTITY="-130.0 px" MAX_WIDTH="550.0 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3383,7 +6163,7 @@
   </body>
 </html>
 </richcontent>
-<node FOLDED="true" ID="ID_357953420" CREATED="1323613544023" MODIFIED="1335095694181" HGAP_QUANTITY="-583.0 px" VSHIFT_QUANTITY="137.0 px"><richcontent TYPE="NODE">
+<node ID="ID_357953420" CREATED="1323613544023" MODIFIED="1335095694181" HGAP_QUANTITY="-583.0 px" VSHIFT_QUANTITY="137.0 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3452,15 +6232,15 @@
 </node>
 </node>
 </node>
-<node TEXT="Other" STYLE_REF="Advanced" FOLDED="true" ID="ID_429763637" CREATED="1323251384433" MODIFIED="1335300487437" NUMBERED="true" MIN_WIDTH="90.0 px">
+<node TEXT="Other" STYLE_REF="Advanced" FOLDED="true" ID="ID_429763637" CREATED="1323251384433" MODIFIED="1500800025211" NUMBERED="true" MIN_WIDTH="90.0 px">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MainWidth" LAST="false"/>
 </hook>
-<node TEXT="Pasting unformatted text from your browser" STYLE_REF="Advanced" FOLDED="true" ID="ID_1745656146" CREATED="1323251632079" MODIFIED="1335300487437" STYLE="combined">
+<node TEXT="Pasting unformatted text from your browser" STYLE_REF="Advanced" ID="ID_1745656146" CREATED="1323251632079" MODIFIED="1500800034730" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
-<node ID="ID_885396924" CREATED="1323522491275" MODIFIED="1335095704602" HGAP_QUANTITY="-264.0 px" VSHIFT_QUANTITY="32.0 px"><richcontent TYPE="NODE">
+<node ID="ID_885396924" CREATED="1323522491275" MODIFIED="1500800034730" HGAP_QUANTITY="-240.0 px" VSHIFT_QUANTITY="38.0 px"><richcontent TYPE="NODE">
 
 <html>
   <head>
@@ -3478,7 +6258,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Fixed node width" STYLE_REF="Advanced" FOLDED="true" ID="ID_1709254927" CREATED="1321975856238" MODIFIED="1335300487437" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Fixed node width" STYLE_REF="Advanced" ID="ID_1709254927" CREATED="1321975856238" MODIFIED="1335300487437" MIN_WIDTH="1.0 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3514,7 +6294,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Copying format (node core)" STYLE_REF="Advanced" FOLDED="true" ID="ID_1195279427" CREATED="1316670043816" MODIFIED="1335300487437" STYLE="combined">
+<node TEXT="Copying format (node core)" STYLE_REF="Advanced" ID="ID_1195279427" CREATED="1316670043816" MODIFIED="1335300487437" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3536,7 +6316,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Paste options" STYLE_REF="Advanced" FOLDED="true" ID="ID_506336466" CREATED="1322990524257" MODIFIED="1335300487437" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Paste options" STYLE_REF="Advanced" ID="ID_506336466" CREATED="1322990524257" MODIFIED="1335300487437" MIN_WIDTH="1.0 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -4050,8 +6830,7 @@
   </body>
 </html>
 </richcontent>
-<node TEXT="Hyperlink (arrow) in attribute" STYLE_REF="Professional" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1323091000613" HGAP_QUANTITY="-550.0 px" VSHIFT_QUANTITY="80.0 px" MAX_WIDTH="550.0 px">
-<richcontent TYPE="DETAILS">
+<node TEXT="Hyperlink (arrow) in attribute" STYLE_REF="Professional" ID="ID_457929879" CREATED="1312540477537" MODIFIED="1323091000613" HGAP_QUANTITY="-550.0 px" VSHIFT_QUANTITY="80.0 px" MAX_WIDTH="550.0 px"><richcontent TYPE="DETAILS">
 
 <html>
   <head>
