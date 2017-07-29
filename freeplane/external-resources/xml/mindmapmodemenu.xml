@@ -502,7 +502,6 @@
 			<Entry name="GettingStartedAction" accelerator="F1" />
 			<Entry name="WhatsNewAction" />
 			<Entry name="DocumentationAction" />
-			<Entry name="OnlineReference" />
 			<Entry name="HotKeyInfoAction" />
 			<Entry builder="separator" />
 		</Entry>

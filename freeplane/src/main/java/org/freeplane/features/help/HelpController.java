@@ -57,7 +57,6 @@ public class HelpController implements IExtension {
 		final String whatsNewMap = resourceController.getProperty("whatsnew_map");
 		controller.addAction(new DocumentationAction("WhatsNewAction", whatsNewMap));
 		controller.addAction(new HotKeyInfoAction());
-		controller.addAction(new OnlineDocumentationAction("OnlineReference", "docu-online"));
 	}
 
 }

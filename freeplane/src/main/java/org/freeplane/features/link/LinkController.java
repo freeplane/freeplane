@@ -528,7 +528,9 @@ public class LinkController extends SelectionController implements IExtension {
 			else {
 				loadURI(link);
 			}
-			onSelect(modeController.getController().getSelection().getSelected());
+			final IMapSelection selection = modeController.getController().getSelection();
+			if(selection != null)
+				onSelect(selection.getSelected());
 		}
     }
 

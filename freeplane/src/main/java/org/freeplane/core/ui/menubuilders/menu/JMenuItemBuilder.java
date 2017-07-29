@@ -22,6 +22,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
+import org.freeplane.core.util.LogUtils;
 
 public class JMenuItemBuilder implements EntryVisitor{
 
@@ -65,6 +66,14 @@ public class JMenuItemBuilder implements EntryVisitor{
 	}
 
 	private Component createActionComponent(Entry entry) {
+		
+		// FIXME actually not possible
+		final Object alreadyExistingComponent = entryAccessor.getComponent(entry);
+		if(alreadyExistingComponent != null) {
+			LogUtils.severe("BUG : component already exists at " + entry.getPath());
+			return null;
+		}
+		
 	    final Component component = menuActionComponentProvider.createComponent(entry);
 		final AFreeplaneAction action = entryAccessor.getAction(entry);
 		if (action != null) {
