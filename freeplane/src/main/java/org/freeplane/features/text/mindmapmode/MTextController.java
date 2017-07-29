@@ -136,11 +136,14 @@ public class MTextController extends TextController {
     			{
     				return new Double(StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB).toString();
     			}
+    			
     			String freeplaneKey = "simplyhtml." + key;
     			String resourceString = ResourceController.getResourceController().getText(freeplaneKey, null);
     			if (resourceString == null) {
     				resourceString = ResourceController.getResourceController().getProperty(freeplaneKey);
     			}
+    			if (resourceString == null && key.equals("splashImage"))
+    				return defaultResources.getString(key);
     			return resourceString;
     		}
     		
