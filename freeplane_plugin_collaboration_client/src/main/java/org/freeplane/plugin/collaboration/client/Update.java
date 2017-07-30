@@ -6,9 +6,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Value.Immutable
-@JsonSerialize(as = ImmutableUpdateBean.class)
-@JsonDeserialize(as = ImmutableUpdateBean.class)
-interface UpdateBean {
+@JsonSerialize(as = ImmutableUpdate.class)
+@JsonDeserialize(as = ImmutableUpdate.class)
+interface Update {
 	enum ContentType {
 		CHILDREN, TEXT, NOTE, DETAILS, ATTRIBUTES, ICONS, OTHER_CONTENT, CLONES
 	}

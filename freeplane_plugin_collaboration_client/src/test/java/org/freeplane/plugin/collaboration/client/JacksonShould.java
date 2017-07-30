@@ -2,7 +2,7 @@ package org.freeplane.plugin.collaboration.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.freeplane.plugin.collaboration.client.UpdateBean.ContentType;
+import org.freeplane.plugin.collaboration.client.Update.ContentType;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,33 +11,33 @@ public class JacksonShould {
 	ObjectMapper objectMapper = new ObjectMapper();
 
 	@Test
-	public void serializeAndDeserializeUpdateBean() throws Exception
+	public void serializeAndDeserializeUpdate() throws Exception
 	{
-		UpdateBean uut = createUpdateBean();
+		Update uut = createUpdate();
 		String json = objectMapper.writeValueAsString(uut);
 
-		UpdateBean bean = objectMapper.readValue(json, UpdateBean.class);
+		Update bean = objectMapper.readValue(json, Update.class);
 
 		assertThat(bean).isEqualTo(uut);
 	}
 
-	protected ImmutableUpdateBean createUpdateBean() {
-		return ImmutableUpdateBean.builder()
+	protected ImmutableUpdate createUpdate() {
+		return ImmutableUpdate.builder()
 				.nodeId("id").contentType(ContentType.TEXT)
 				.content("content").build();
 	}
 
 	@Test
-	public void serializeAndDeserializeUpdateBatchBean() throws Exception
+	public void serializeAndDeserializeUpdateBatch() throws Exception
 	{
-		UpdateBatchBean uut = ImmutableUpdateBatchBean.builder()
+		UpdateBatch uut = ImmutableUpdateBatch.builder()
 				.mapId("mapId")
 				.mapRevision(1000L)
-				.addUpdates(createUpdateBean())
+				.addUpdates(createUpdate())
 				.build();
 		String json = objectMapper.writeValueAsString(uut);
 
-		UpdateBatchBean bean = objectMapper.readValue(json, UpdateBatchBean.class);
+		UpdateBatch bean = objectMapper.readValue(json, UpdateBatch.class);
 
 		assertThat(bean).isEqualTo(uut);
 	}
