@@ -1,6 +1,12 @@
+plugins {
+	id "net.ltgt.apt" version "0.10"
+  }
+  
 dependencies {
     compile project(':freeplane')
-	compile 'com.fasterxml.jackson.jr:jackson-jr-objects:2.8.5'
+	compileOnly "org.immutables:value:2.2.10:annotations"
+	apt         "org.immutables:value:2.2.10"
+	compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0'
 }
 
 jar {
