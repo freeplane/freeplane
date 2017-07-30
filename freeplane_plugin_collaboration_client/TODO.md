@@ -24,5 +24,5 @@ In the next step not adding some updates to undo buffer can be considered.
 nodeID : attached nodeID, content: resulting list of clone node ids
 
 
-##for detached single clones and cloned subtrees
+## for detached single clones and cloned subtrees
 nodeID : detached nodeID, content: resulting list of remaining clone node ids
