@@ -15,6 +15,8 @@ Submit and update all nodes with all kinds of content recursively
 ## collect Update objects in UpdateBatch
 
 ## integrate websockets
+for the beginning everything goes through undo buffer.
+In the next step not adding some updates to undo buffer can be considered.
 
 # support clones
 
