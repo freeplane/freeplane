@@ -1,10 +1,10 @@
 # Start without clones
 
 ## for single node: 
-Submit and update CHILDREN, TEXT, NOTE, DETAILS, ATTRIBUTES, ICONS, OTHER_CONTENT
+Generate and apply Update objects for CHILDREN, TEXT, NOTE, DETAILS, ATTRIBUTES, ICONS, OTHER_CONTENT
 
 ## for whole map and for inserted subtree:
-Submit and update all nodes with all kinds of content recursively
+Generate Update objects recursively for maps and subtrees
 
 ## process events to create Update objects
 * onNodeInserted
