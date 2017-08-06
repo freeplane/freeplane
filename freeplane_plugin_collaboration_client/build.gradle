@@ -1,6 +1,8 @@
 plugins {
-	id "net.ltgt.apt" version "0.10"
+	id "net.ltgt.apt" version "0.11"
   }
+  
+apply plugin: "net.ltgt.apt-eclipse"
   
 dependencies {
     compile project(':freeplane')
@@ -12,6 +14,14 @@ dependencies {
 	'org.hamcrest:hamcrest-all:1.3',
 	'org.mockito:mockito-all:1.10.19'
 
+}
+
+eclipse {
+  jdt {
+    apt {
+      genSrcDir = file('apt_generated')
+    }
+  }
 }
 
 jar {
