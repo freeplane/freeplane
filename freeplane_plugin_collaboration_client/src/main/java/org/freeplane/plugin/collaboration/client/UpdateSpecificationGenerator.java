@@ -1,9 +1,9 @@
 package org.freeplane.plugin.collaboration.client;
 
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.collaboration.client.Update.ContentType;
+import org.freeplane.plugin.collaboration.client.UpdateSpecification.ContentType;
 
-public class UpdateGenerator {
+public class UpdateSpecificationGenerator {
 
 	public ImmutableUpdate createChildrenUpdate(final NodeModel parent) {
 		StringBuilder children = new StringBuilder();

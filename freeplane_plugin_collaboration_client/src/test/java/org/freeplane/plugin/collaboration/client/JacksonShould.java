@@ -2,7 +2,7 @@ package org.freeplane.plugin.collaboration.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.freeplane.plugin.collaboration.client.Update.ContentType;
+import org.freeplane.plugin.collaboration.client.UpdateSpecification.ContentType;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,10 +13,10 @@ public class JacksonShould {
 	@Test
 	public void serializeAndDeserializeUpdate() throws Exception
 	{
-		Update uut = createUpdate();
+		UpdateSpecification uut = createUpdate();
 		String json = objectMapper.writeValueAsString(uut);
 
-		Update bean = objectMapper.readValue(json, Update.class);
+		UpdateSpecification bean = objectMapper.readValue(json, UpdateSpecification.class);
 
 		assertThat(bean).isEqualTo(uut);
 	}
@@ -30,14 +30,14 @@ public class JacksonShould {
 	@Test
 	public void serializeAndDeserializeUpdateBatch() throws Exception
 	{
-		UpdateBatch uut = ImmutableUpdateBatch.builder()
+		UpdateBatchSpecification uut = ImmutableUpdateBatch.builder()
 				.mapId("mapId")
 				.mapRevision(1000L)
 				.addUpdates(createUpdate())
 				.build();
 		String json = objectMapper.writeValueAsString(uut);
 
-		UpdateBatch bean = objectMapper.readValue(json, UpdateBatch.class);
+		UpdateBatchSpecification bean = objectMapper.readValue(json, UpdateBatchSpecification.class);
 
 		assertThat(bean).isEqualTo(uut);
 	}

@@ -321,7 +321,7 @@ public class MMapController extends MapController {
 		}
     }
 
-	private void insertSingleNewNode(final NodeModel newNode, final NodeModel parent, final int index,
+	void insertSingleNewNode(final NodeModel newNode, final NodeModel parent, final int index,
                                   final boolean newNodeIsLeft) {
 	    final MapModel map = parent.getMap();
 		newNode.setLeft(newNodeIsLeft);
@@ -453,7 +453,7 @@ public class MMapController extends MapController {
 		deleteSingleNode(summaryParent, groupBeginNodeIndex);
 	}
 
-	private void deleteSingleNode(final NodeModel parentNode, final int index) {
+	void deleteSingleNode(final NodeModel parentNode, final int index) {
 		final NodeModel node = parentNode.getChildAt(index);
 		final IActor actor = new IActor() {
         	public void act() {
@@ -604,7 +604,7 @@ public class MMapController extends MapController {
 		return shortestPath;
 	}
 
-	private void moveSingleNode(final NodeModel child, final NodeModel newParent, final int newIndex,
+	void moveSingleNode(final NodeModel child, final NodeModel newParent, final int newIndex,
                                 final boolean isLeft, final boolean changeSide) {
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getIndex(child);

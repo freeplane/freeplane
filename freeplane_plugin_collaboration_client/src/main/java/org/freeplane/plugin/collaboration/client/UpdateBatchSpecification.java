@@ -8,10 +8,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Value.Immutable
-@JsonSerialize(as = ImmutableUpdateBatch.class)
-@JsonDeserialize(as = ImmutableUpdateBatch.class)
-interface  UpdateBatch {
+@JsonSerialize(as = ImmutableUpdateBatchSpecification.class)
+@JsonDeserialize(as = ImmutableUpdateBatchSpecification.class)
+interface  UpdateBatchSpecification {
 	String mapId();
 	Long mapRevision();
-	List<Update> updates();
+	List<UpdateSpecification> updates();
 }
