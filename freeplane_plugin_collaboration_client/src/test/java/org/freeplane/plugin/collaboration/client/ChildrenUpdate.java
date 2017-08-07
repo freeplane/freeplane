@@ -21,16 +21,22 @@ public class ChildrenUpdate{
 	public void apply() {
 		NodeModel parent = map.getNodeForID(specification.nodeId());
 		String content = specification.content();
-		String[] nodeIds = content.split(",");
 		int nodeIndex = 0;
-		for(String nodeId : nodeIds) {
-			NodeModel existingNode = map.getNodeForID(nodeId);
-			if(existingNode != null)
-				manipulator.moveNode(existingNode, parent, nodeIndex, false, false);
-			else {
-				NodeModel child = nodeFactory.createNode(map, nodeId);
-				manipulator.insertNode(child, parent, nodeIndex++, false);
+		if(! content.isEmpty()) {
+			String[] nodeIds = content.split(",");
+			for(String nodeId : nodeIds) {
+				NodeModel existingNode = map.getNodeForID(nodeId);
+				if(existingNode != null)
+					manipulator.moveNode(existingNode, parent, nodeIndex, false, false);
+				else {
+					NodeModel child = nodeFactory.createNode(map, nodeId);
+					manipulator.insertNode(child, parent, nodeIndex, false);
+				}
+				nodeIndex++;
 			}
+		}
+		for(int i = parent.getChildCount() - 1; i >= nodeIndex ; i--) {
+			manipulator.deleteNode(parent, nodeIndex);
 		}
 	}
 }

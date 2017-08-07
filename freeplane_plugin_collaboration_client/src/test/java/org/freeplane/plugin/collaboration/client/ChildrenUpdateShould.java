@@ -88,10 +88,34 @@ public class ChildrenUpdateShould {
 		
 		NodeModel child = new NodeModel(map);
 		when(map.getNodeForID( CHILD_NODE_ID)).thenReturn(child);
+		parent.insert(child);
 
 		new ChildrenUpdate(manipulator, map, nodeFactory, specification).apply();
 		
 		verify(manipulator).moveNode(child, parent, 0, false, false);
+		verifyNoMoreInteractions(manipulator, nodeFactory);
+	}
+	
+	@Test
+	public void removeExistingNode() throws Exception {
+		final NodeModel parent = new NodeModel(map);
+		parent.setID(PARENT_NODE_ID);
+		NodeModel child = new NodeModel(map);
+		when(map.getNodeForID( CHILD_NODE_ID)).thenReturn(child);
+		
+		parent.insert(child);
+		
+		when(map.getNodeForID(PARENT_NODE_ID)).thenReturn(parent);
+
+		UpdateSpecification specification = ImmutableUpdateSpecification.builder()
+				.contentType(ContentType.CHILDREN)
+				.nodeId(PARENT_NODE_ID).
+				content("").build();
+		
+
+		new ChildrenUpdate(manipulator, map, nodeFactory, specification).apply();
+		
+		verify(manipulator).deleteNode(parent, 0);
 		verifyNoMoreInteractions(manipulator, nodeFactory);
 	}
 }
