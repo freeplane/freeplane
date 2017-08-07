@@ -40,4 +40,22 @@ public class UpdateSpecificationGeneratorShould {
 		UpdateSpecification expected = ImmutableUpdate.builder().contentType(ContentType.CHILDREN).nodeId(parent.getID()).content("childId").build();
 		assertThat(result).isEqualTo(expected);
 	}
+	
+	@Test
+	public void createsUpdateForNodeWithTwoChildren() throws Exception {
+		final NodeModel parent = new NodeModel(map);
+		parent.setID("nodeId");
+		final NodeModel child = new NodeModel(map);
+		child.setID("childId");
+		parent.insert(child);
+		
+		final NodeModel child2 = new NodeModel(map);
+		child2.setID("childId2");
+		parent.insert(child2);
+		
+		UpdateSpecification result = uut.createChildrenUpdate(parent);
+		
+		UpdateSpecification expected = ImmutableUpdate.builder().contentType(ContentType.CHILDREN).nodeId(parent.getID()).content("childId,childId2").build();
+		assertThat(result).isEqualTo(expected);
+	}
 }
