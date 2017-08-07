@@ -11,7 +11,6 @@ import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
 import org.freeplane.plugin.collaboration.client.UpdateSpecification.ContentType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -73,5 +72,26 @@ public class ChildrenUpdateShould {
 		verify(manipulator).insertNode(child2, parent, 1, false);
 		
 		verifyNoMoreInteractions(manipulator);
+	}
+	
+	@Test
+	public void movesExistingNode() throws Exception {
+		final NodeModel parent = new NodeModel(map);
+		parent.setID(PARENT_NODE_ID);
+		
+		when(map.getNodeForID(PARENT_NODE_ID)).thenReturn(parent);
+
+		UpdateSpecification specification = ImmutableUpdateSpecification.builder()
+				.contentType(ContentType.CHILDREN)
+				.nodeId(PARENT_NODE_ID).
+				content(CHILD_NODE_ID).build();
+		
+		NodeModel child = new NodeModel(map);
+		when(map.getNodeForID( CHILD_NODE_ID)).thenReturn(child);
+
+		new ChildrenUpdate(manipulator, map, nodeFactory, specification).apply();
+		
+		verify(manipulator).moveNode(child, parent, 0, false, false);
+		verifyNoMoreInteractions(manipulator, nodeFactory);
 	}
 }

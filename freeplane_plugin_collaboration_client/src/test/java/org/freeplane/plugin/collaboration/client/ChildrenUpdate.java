@@ -1,7 +1,5 @@
 package org.freeplane.plugin.collaboration.client;
 
-import java.util.List;
-
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
@@ -26,8 +24,13 @@ public class ChildrenUpdate{
 		String[] nodeIds = content.split(",");
 		int nodeIndex = 0;
 		for(String nodeId : nodeIds) {
-			NodeModel child = nodeFactory.createNode(map, nodeId);
-			manipulator.insertNode(child, parent, nodeIndex++, false);
+			NodeModel existingNode = map.getNodeForID(nodeId);
+			if(existingNode != null)
+				manipulator.moveNode(existingNode, parent, nodeIndex, false, false);
+			else {
+				NodeModel child = nodeFactory.createNode(map, nodeId);
+				manipulator.insertNode(child, parent, nodeIndex++, false);
+			}
 		}
 	}
 }
