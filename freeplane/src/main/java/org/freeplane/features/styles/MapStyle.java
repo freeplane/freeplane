@@ -154,7 +154,6 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			);
 
 		}
-		modeController.getMapController().addMapLifeCycleListener(this);
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapLifeCycleListener(this);
 	}
