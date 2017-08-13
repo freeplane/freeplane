@@ -21,8 +21,8 @@ public class JacksonShould {
 		assertThat(bean).isEqualTo(uut);
 	}
 
-	protected ImmutableUpdate createUpdate() {
-		return ImmutableUpdate.builder()
+	protected ImmutableUpdateSpecification createUpdate() {
+		return ImmutableUpdateSpecification.builder()
 				.nodeId("id").contentType(ContentType.TEXT)
 				.content("content").build();
 	}
@@ -30,7 +30,7 @@ public class JacksonShould {
 	@Test
 	public void serializeAndDeserializeUpdateBatch() throws Exception
 	{
-		UpdateBatchSpecification uut = ImmutableUpdateBatch.builder()
+		UpdateBatchSpecification uut = ImmutableUpdateBatchSpecification.builder()
 				.mapId("mapId")
 				.mapRevision(1000L)
 				.addUpdates(createUpdate())
