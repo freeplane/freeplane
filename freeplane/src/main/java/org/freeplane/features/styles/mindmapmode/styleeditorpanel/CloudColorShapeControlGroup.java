@@ -67,8 +67,10 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 			public void propertyChanged(String propertyName, String newValue, String oldValue) {
 				if(propertyName.equals(CloudController.RESOURCES_CLOUD_COLOR) || propertyName.equals(CloudController.RESOURCES_CLOUD_SHAPE)) {
 					final IMapSelection selection = Controller.getCurrentController().getSelection();
-					final NodeModel selected = selection.getSelected();
-					mPropertyListener.setStyle(selected);
+					if(selection != null) {
+						final NodeModel selected = selection.getSelected();
+						mPropertyListener.setStyle(selected);
+					}
 				}
 			}
 		});
