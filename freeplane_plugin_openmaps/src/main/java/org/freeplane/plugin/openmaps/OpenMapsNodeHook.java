@@ -186,6 +186,11 @@ public class OpenMapsNodeHook extends PersistentNodeHook implements LocationChoo
 					return IconStoreFactory.ICON_STORE.getUIIcon(ICON_NAME);
 				else 
 					return null;
+			}
+
+			@Override
+			public boolean mustIncludeInIconRegistry() {
+				return true;
 			}	
 		});
 	}

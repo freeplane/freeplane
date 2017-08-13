@@ -42,6 +42,8 @@ public class Handler extends URLStreamHandler {
     @Override
     public URLConnection openConnection(URL url) throws IOException {
         final URL resourceUrl = ResourceController.getResourceController().getResource(url.getPath());
+        if(resourceUrl == null)
+        	throw new IOException("Unable to connect to: " + url.toExternalForm());
         final URLConnection connection = resourceUrl.openConnection();
 		return new WrappedConnection(url, connection);
     }

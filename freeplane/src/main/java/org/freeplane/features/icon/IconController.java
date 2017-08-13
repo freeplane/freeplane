@@ -137,8 +137,10 @@ public class IconController implements IExtension {
 			final UIIcon stateIcon = provider.getStateIcon(node);
 			if(stateIcon != null){
 				icons.add(stateIcon);
-				final IconRegistry iconRegistry = node.getMap().getIconRegistry();
-				iconRegistry.addIcon(stateIcon);
+				if(provider.mustIncludeInIconRegistry()) {
+					final IconRegistry iconRegistry = node.getMap().getIconRegistry();
+					iconRegistry.addIcon(stateIcon);
+				}
 			}
 		}
 		return icons;
