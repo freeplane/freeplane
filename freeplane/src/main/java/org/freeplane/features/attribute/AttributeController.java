@@ -241,6 +241,11 @@ public class AttributeController implements IExtension {
 				else
 					return null;
 			}
+
+			@Override
+			public boolean mustIncludeInIconRegistry() {
+				return true;
+			}
 		});
     }
 	

@@ -67,6 +67,11 @@ public class EncryptionController implements IExtension {
 				}
 				return null;
 			}
+
+			@Override
+			public boolean mustIncludeInIconRegistry() {
+				return true;
+			}
 		});
     }
 

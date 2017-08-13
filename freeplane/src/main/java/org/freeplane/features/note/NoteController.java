@@ -152,6 +152,11 @@ public class NoteController implements IExtension {
 				}
 				return null;
 			}
+
+			@Override
+			public boolean mustIncludeInIconRegistry() {
+				return true;
+			}
 		});
     }
 

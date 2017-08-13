@@ -187,6 +187,11 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 				}
 				return null;
 			}
+
+			@Override
+			public boolean mustIncludeInIconRegistry() {
+				return true;
+			}
 		});
 	}
 	private UIIcon getBellIcon() {

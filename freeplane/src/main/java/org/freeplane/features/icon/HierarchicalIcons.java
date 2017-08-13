@@ -58,6 +58,11 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 				else
 					return null;
 			}
+
+			@Override
+			public boolean mustIncludeInIconRegistry() {
+				return false;
+			}
 		});
 		new HierarchicalIcons2();
 	}

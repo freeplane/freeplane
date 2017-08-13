@@ -27,4 +27,5 @@ import org.freeplane.features.map.NodeModel;
  */
 public interface IStateIconProvider {
 	UIIcon getStateIcon(NodeModel node);
+	boolean mustIncludeInIconRegistry();
 }
