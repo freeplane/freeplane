@@ -13,7 +13,7 @@ public class JacksonShould {
 	@Test
 	public void serializeAndDeserializeUpdate() throws Exception
 	{
-		UpdateSpecification uut = createUpdate();
+		ChildrenUpdateSpecification uut = createUpdate();
 		String json = objectMapper.writeValueAsString(uut);
 
 		UpdateSpecification bean = objectMapper.readValue(json, UpdateSpecification.class);
@@ -21,8 +21,8 @@ public class JacksonShould {
 		assertThat(bean).isEqualTo(uut);
 	}
 
-	protected ImmutableUpdateSpecification createUpdate() {
-		return ImmutableUpdateSpecification.builder()
+	protected ImmutableChildrenUpdateSpecification createUpdate() {
+		return ImmutableChildrenUpdateSpecification.builder()
 				.nodeId("id").contentType(ContentType.TEXT)
 				.content("content").build();
 	}

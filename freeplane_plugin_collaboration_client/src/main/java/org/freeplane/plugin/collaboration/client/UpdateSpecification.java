@@ -1,13 +1,16 @@
 package org.freeplane.plugin.collaboration.client;
 
-import org.immutables.value.Value;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-@Value.Immutable
-@JsonSerialize(as = ImmutableUpdateSpecification.class)
-@JsonDeserialize(as = ImmutableUpdateSpecification.class)
+@JsonTypeInfo(
+		  use = JsonTypeInfo.Id.NAME, 
+		  include = JsonTypeInfo.As.PROPERTY, 
+		  property = "contentType")
+		@JsonSubTypes({ 
+		  @Type(value = ImmutableChildrenUpdateSpecification.class, name = "CHILDREN"), 
+		})
 interface UpdateSpecification {
 	enum ContentType {
 		CHILDREN, TEXT, NOTE, DETAILS, ATTRIBUTES, ICONS, OTHER_CONTENT, CLONES
@@ -15,6 +18,4 @@ interface UpdateSpecification {
 	
 	String nodeId();
 	ContentType contentType();
-	String content();
-	
 }

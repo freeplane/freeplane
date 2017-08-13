@@ -8,10 +8,10 @@ public class ChildrenUpdate{
 
 	private SingleNodeStructureManipulator manipulator;
 	private MapModel map;
-	private UpdateSpecification specification;
+	private ChildrenUpdateSpecification specification;
 	private NodeFactory nodeFactory;
 
-	public ChildrenUpdate(SingleNodeStructureManipulator manipulator , MapModel map, NodeFactory nodeFactory, UpdateSpecification specification) {
+	public ChildrenUpdate(SingleNodeStructureManipulator manipulator , MapModel map, NodeFactory nodeFactory, ChildrenUpdateSpecification specification) {
 		this.manipulator = manipulator;
 		this.map = map;
 		this.nodeFactory = nodeFactory;
