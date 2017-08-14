@@ -17,5 +17,4 @@ interface UpdateSpecification {
 	}
 	
 	String nodeId();
-	ContentType contentType();
 }

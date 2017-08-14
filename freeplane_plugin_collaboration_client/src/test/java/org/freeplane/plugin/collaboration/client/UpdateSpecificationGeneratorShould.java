@@ -27,7 +27,7 @@ public class UpdateSpecificationGeneratorShould {
 		UpdateSpecification result = uut.createChildrenUpdate(parent);
 
 		UpdateSpecification expected = ImmutableChildrenUpdateSpecification.builder()
-				.contentType(ContentType.CHILDREN).nodeId(parent.getID())
+				.nodeId(parent.getID())
 				.content(Collections.<String>emptyList())
 				.build();
 		assertThat(result).isEqualTo(expected);
@@ -43,8 +43,8 @@ public class UpdateSpecificationGeneratorShould {
 		
 		UpdateSpecification result = uut.createChildrenUpdate(parent);
 		
-		UpdateSpecification expected = ImmutableChildrenUpdateSpecification.builder().
-				contentType(ContentType.CHILDREN).nodeId(parent.getID())
+		UpdateSpecification expected = ImmutableChildrenUpdateSpecification.builder()
+				.nodeId(parent.getID())
 				.content(asList("childId")).build();
 		assertThat(result).isEqualTo(expected);
 	}
@@ -64,7 +64,7 @@ public class UpdateSpecificationGeneratorShould {
 		UpdateSpecification result = uut.createChildrenUpdate(parent);
 		
 		UpdateSpecification expected = ImmutableChildrenUpdateSpecification.builder()
-				.contentType(ContentType.CHILDREN).nodeId(parent.getID())
+				.nodeId(parent.getID())
 				.content(asList("childId","childId2")).build();
 		assertThat(result).isEqualTo(expected);
 	}

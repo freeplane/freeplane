@@ -14,7 +14,7 @@ public class UpdateSpecificationGenerator {
 		for (NodeModel child : childNodes) {
 			childIds.add(child.getID());
 		}
-		return ImmutableChildrenUpdateSpecification.builder().contentType(ContentType.CHILDREN).nodeId(parent.getID()).content(childIds).build();
+		return ImmutableChildrenUpdateSpecification.builder().nodeId(parent.getID()).content(childIds).build();
 	}
 
 }
