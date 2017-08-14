@@ -1,6 +1,9 @@
 package org.freeplane.plugin.collaboration.client;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Collections;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -23,7 +26,10 @@ public class UpdateSpecificationGeneratorShould {
 		parent.setID("nodeId");
 		UpdateSpecification result = uut.createChildrenUpdate(parent);
 
-		UpdateSpecification expected = ImmutableChildrenUpdateSpecification.builder().contentType(ContentType.CHILDREN).nodeId(parent.getID()).content("").build();
+		UpdateSpecification expected = ImmutableChildrenUpdateSpecification.builder()
+				.contentType(ContentType.CHILDREN).nodeId(parent.getID())
+				.content(Collections.<String>emptyList())
+				.build();
 		assertThat(result).isEqualTo(expected);
 	}
 	
@@ -37,7 +43,9 @@ public class UpdateSpecificationGeneratorShould {
 		
 		UpdateSpecification result = uut.createChildrenUpdate(parent);
 		
-		UpdateSpecification expected = ImmutableChildrenUpdateSpecification.builder().contentType(ContentType.CHILDREN).nodeId(parent.getID()).content("childId").build();
+		UpdateSpecification expected = ImmutableChildrenUpdateSpecification.builder().
+				contentType(ContentType.CHILDREN).nodeId(parent.getID())
+				.content(asList("childId")).build();
 		assertThat(result).isEqualTo(expected);
 	}
 	
@@ -55,7 +63,9 @@ public class UpdateSpecificationGeneratorShould {
 		
 		UpdateSpecification result = uut.createChildrenUpdate(parent);
 		
-		UpdateSpecification expected = ImmutableChildrenUpdateSpecification.builder().contentType(ContentType.CHILDREN).nodeId(parent.getID()).content("childId,childId2").build();
+		UpdateSpecification expected = ImmutableChildrenUpdateSpecification.builder()
+				.contentType(ContentType.CHILDREN).nodeId(parent.getID())
+				.content(asList("childId","childId2")).build();
 		assertThat(result).isEqualTo(expected);
 	}
 }

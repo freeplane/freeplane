@@ -1,9 +1,13 @@
 package org.freeplane.plugin.collaboration.client;
 
+import static java.util.Arrays.asList;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -39,7 +43,7 @@ public class ChildrenUpdateShould {
 		ChildrenUpdateSpecification specification = ImmutableChildrenUpdateSpecification.builder()
 				.contentType(ContentType.CHILDREN)
 				.nodeId(PARENT_NODE_ID).
-				content(CHILD_NODE_ID).build();
+				content(asList(CHILD_NODE_ID)).build();
 		
 		NodeModel child = new NodeModel(map);
 		when(nodeFactory.createNode(map, CHILD_NODE_ID)).thenReturn(child);
@@ -59,7 +63,7 @@ public class ChildrenUpdateShould {
 		ChildrenUpdateSpecification specification = ImmutableChildrenUpdateSpecification.builder()
 				.contentType(ContentType.CHILDREN)
 				.nodeId(PARENT_NODE_ID).
-				content(CHILD_NODE_ID + ',' + CHILD_NODE_ID2).build();
+				content(asList(CHILD_NODE_ID, CHILD_NODE_ID2)).build();
 		
 		NodeModel child = new NodeModel(map);
 		NodeModel child2 = new NodeModel(map);
@@ -84,7 +88,7 @@ public class ChildrenUpdateShould {
 		ChildrenUpdateSpecification specification = ImmutableChildrenUpdateSpecification.builder()
 				.contentType(ContentType.CHILDREN)
 				.nodeId(PARENT_NODE_ID).
-				content(CHILD_NODE_ID).build();
+				content(asList(CHILD_NODE_ID)).build();
 		
 		NodeModel child = new NodeModel(map);
 		when(map.getNodeForID( CHILD_NODE_ID)).thenReturn(child);
@@ -110,7 +114,7 @@ public class ChildrenUpdateShould {
 		ChildrenUpdateSpecification specification = ImmutableChildrenUpdateSpecification.builder()
 				.contentType(ContentType.CHILDREN)
 				.nodeId(PARENT_NODE_ID).
-				content("").build();
+				content(Collections.<String>emptyList()).build();
 		
 
 		new ChildrenUpdate(manipulator, map, nodeFactory, specification).apply();

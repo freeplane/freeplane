@@ -1,6 +1,9 @@
 package org.freeplane.plugin.collaboration.client;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Arrays;
 
 import org.freeplane.plugin.collaboration.client.UpdateSpecification.ContentType;
 import org.junit.Test;
@@ -24,7 +27,7 @@ public class JacksonShould {
 	protected ImmutableChildrenUpdateSpecification createUpdate() {
 		return ImmutableChildrenUpdateSpecification.builder()
 				.nodeId("id").contentType(ContentType.TEXT)
-				.content("content").build();
+				.content(asList("content")).build();
 	}
 
 	@Test
