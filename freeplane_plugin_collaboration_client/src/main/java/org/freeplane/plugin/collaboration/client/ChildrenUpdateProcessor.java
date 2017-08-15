@@ -6,23 +6,21 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
 
-public class ChildrenUpdate{
+public class ChildrenUpdateProcessor{
 
 	private SingleNodeStructureManipulator manipulator;
 	private MapModel map;
-	private ChildrenUpdated specification;
 	private NodeFactory nodeFactory;
 
-	public ChildrenUpdate(SingleNodeStructureManipulator manipulator , MapModel map, NodeFactory nodeFactory, ChildrenUpdated specification) {
+	public ChildrenUpdateProcessor(SingleNodeStructureManipulator manipulator , MapModel map, NodeFactory nodeFactory) {
 		this.manipulator = manipulator;
 		this.map = map;
 		this.nodeFactory = nodeFactory;
-		this.specification = specification;
 	}
 
-	public void apply() {
-		NodeModel parent = map.getNodeForID(specification.nodeId());
-		List<String> nodeIds = specification.content();
+	public void onMapUpdated(ChildrenUpdated event) {
+		NodeModel parent = map.getNodeForID(event.nodeId());
+		List<String> nodeIds = event.content();
 		int nodeIndex = 0;
 		for(String nodeId : nodeIds) {
 			NodeModel existingNode = map.getNodeForID(nodeId);

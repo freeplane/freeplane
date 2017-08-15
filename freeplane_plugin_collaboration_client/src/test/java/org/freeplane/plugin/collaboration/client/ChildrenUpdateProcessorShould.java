@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ChildrenUpdateShould {
+public class ChildrenUpdateProcessorShould {
 	private static final String PARENT_NODE_ID = "id_parent";
 	private static final String CHILD_NODE_ID = "id_child";
 	private static final String CHILD_NODE_ID2 = "id_child2";
@@ -37,14 +37,14 @@ public class ChildrenUpdateShould {
 		
 		when(map.getNodeForID(PARENT_NODE_ID)).thenReturn(parent);
 
-		ChildrenUpdated specification = ImmutableChildrenUpdated.builder()
+		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(PARENT_NODE_ID).
 				content(asList(CHILD_NODE_ID)).build();
 		
 		NodeModel child = new NodeModel(map);
 		when(nodeFactory.createNode(map, CHILD_NODE_ID)).thenReturn(child);
 
-		new ChildrenUpdate(manipulator, map, nodeFactory, specification).apply();
+		new ChildrenUpdateProcessor(manipulator, map, nodeFactory).onMapUpdated(event);
 		
 		verify(manipulator).insertNode(child, parent, 0, false);
 	}
@@ -56,7 +56,7 @@ public class ChildrenUpdateShould {
 		
 		when(map.getNodeForID(PARENT_NODE_ID)).thenReturn(parent);
 
-		ChildrenUpdated specification = ImmutableChildrenUpdated.builder()
+		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(PARENT_NODE_ID).
 				content(asList(CHILD_NODE_ID, CHILD_NODE_ID2)).build();
 		
@@ -65,7 +65,7 @@ public class ChildrenUpdateShould {
 		when(nodeFactory.createNode(map, CHILD_NODE_ID)).thenReturn(child);
 		when(nodeFactory.createNode(map, CHILD_NODE_ID2)).thenReturn(child2);
 
-		new ChildrenUpdate(manipulator, map, nodeFactory, specification).apply();
+		new ChildrenUpdateProcessor(manipulator, map, nodeFactory).onMapUpdated(event);
 		
 		verify(manipulator).insertNode(child, parent, 0, false);
 		verify(manipulator).insertNode(child2, parent, 1, false);
@@ -80,7 +80,7 @@ public class ChildrenUpdateShould {
 		
 		when(map.getNodeForID(PARENT_NODE_ID)).thenReturn(parent);
 
-		ChildrenUpdated specification = ImmutableChildrenUpdated.builder()
+		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(PARENT_NODE_ID).
 				content(asList(CHILD_NODE_ID)).build();
 		
@@ -88,7 +88,7 @@ public class ChildrenUpdateShould {
 		when(map.getNodeForID( CHILD_NODE_ID)).thenReturn(child);
 		parent.insert(child);
 
-		new ChildrenUpdate(manipulator, map, nodeFactory, specification).apply();
+		new ChildrenUpdateProcessor(manipulator, map, nodeFactory).onMapUpdated(event);
 		
 		verify(manipulator).moveNode(child, parent, 0, false, false);
 		verifyNoMoreInteractions(manipulator, nodeFactory);
@@ -105,12 +105,12 @@ public class ChildrenUpdateShould {
 		
 		when(map.getNodeForID(PARENT_NODE_ID)).thenReturn(parent);
 
-		ChildrenUpdated specification = ImmutableChildrenUpdated.builder()
+		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(PARENT_NODE_ID).
 				content(Collections.<String>emptyList()).build();
 		
 
-		new ChildrenUpdate(manipulator, map, nodeFactory, specification).apply();
+		new ChildrenUpdateProcessor(manipulator, map, nodeFactory).onMapUpdated(event);
 		
 		verify(manipulator).deleteNode(parent, 0);
 		verifyNoMoreInteractions(manipulator, nodeFactory);
