@@ -9,6 +9,7 @@ dependencies {
 	compileOnly "org.immutables:value:2.2.10:annotations"
 	apt         "org.immutables:value:2.2.10"
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0'
+	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.0'
 	
 	testCompile 'junit:junit:4.12',
 	'org.hamcrest:hamcrest-all:1.3',
