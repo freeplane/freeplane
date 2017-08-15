@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UpdateEventFactoryShould {
+public class UpdateEventFactorySpec {
 	@Mock 
 	private MapModel map;
 	

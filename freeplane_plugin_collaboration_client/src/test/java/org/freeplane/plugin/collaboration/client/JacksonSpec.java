@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JacksonShould {
+public class JacksonSpec {
 	ObjectMapper objectMapper = new ObjectMapper();
 
 	@Test

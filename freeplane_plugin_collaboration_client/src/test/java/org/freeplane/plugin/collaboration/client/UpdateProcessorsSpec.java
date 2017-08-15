@@ -5,7 +5,7 @@ import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
 
-public class UpdateProcessorsShould {
+public class UpdateProcessorsSpec {
 
 	@Test
 	public void returnsRegisteredProcessorForUpdateEvent() throws Exception {

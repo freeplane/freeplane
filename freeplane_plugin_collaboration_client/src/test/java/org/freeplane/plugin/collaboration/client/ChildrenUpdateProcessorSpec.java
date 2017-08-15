@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ChildrenUpdateProcessorShould {
+public class ChildrenUpdateProcessorSpec {
 	private static final String PARENT_NODE_ID = "id_parent";
 	private static final String CHILD_NODE_ID = "id_child";
 	private static final String CHILD_NODE_ID2 = "id_child2";
