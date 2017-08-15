@@ -1,7 +1,7 @@
 package org.freeplane.plugin.collaboration.client;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
 
@@ -10,12 +10,12 @@ public class UpdateProcessorsSpec {
 	@Test
 	public void returnsRegisteredProcessorForUpdateEvent() throws Exception {
 		final UpdateProcessors updateProcessors = new UpdateProcessors();
-		updateProcessors.addProcessor(ChildrenUpdated.class, mock(ChildrenUpdateProcessor.class));
+		final ChildrenUpdateProcessor processor = mock(ChildrenUpdateProcessor.class);
+		updateProcessors.addProcessor(ChildrenUpdated.class, processor);
 
 		MapUpdated event = mock(ChildrenUpdated.class);
-		UpdateProcessor updateProcessor = updateProcessors.getProcessor(event);
-
-		assertThat(updateProcessor).isInstanceOf(ChildrenUpdateProcessor.class);
+		updateProcessors.onMapUpdated(event);
+		verify(processor).onMapUpdated(event);
 	}
 
 
@@ -25,6 +25,6 @@ public class UpdateProcessorsSpec {
 		updateProcessors.addProcessor(ChildrenUpdated.class, mock(ChildrenUpdateProcessor.class));
 
 		MapUpdated event = mock(MapUpdated.class);
-		updateProcessors.getProcessor(event);
+		updateProcessors.onMapUpdated(event);
 	}
 }

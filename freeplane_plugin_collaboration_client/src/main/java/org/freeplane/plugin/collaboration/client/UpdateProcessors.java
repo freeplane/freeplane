@@ -2,7 +2,7 @@ package org.freeplane.plugin.collaboration.client;
 
 import java.util.HashMap;
 
-public class UpdateProcessors {
+public class UpdateProcessors implements UpdateProcessor {
 	
 	private final HashMap<Class<?>, UpdateProcessor > processors = new HashMap<>();
 
@@ -11,14 +11,18 @@ public class UpdateProcessors {
 		return this;
 	}
 	
-	public UpdateProcessor getProcessor(MapUpdated event) {
+
+	@Override
+	public void onMapUpdated(MapUpdated event) {
 		final Class<?>[] interfaces = event.getClass().getInterfaces();
 		for(Class<?> eventClassCandidate : interfaces) {
 			final UpdateProcessor updateProcessor = processors.get(eventClassCandidate);
-			if(updateProcessor != null)
-				return updateProcessor;
+			if(updateProcessor != null) {
+				updateProcessor.onMapUpdated(event);
+				return;
+			}
+			
 		}
 		throw new IllegalArgumentException("No processor available for " + event);
-			
 	}
 }
