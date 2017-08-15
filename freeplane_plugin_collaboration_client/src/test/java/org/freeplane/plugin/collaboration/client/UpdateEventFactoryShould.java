@@ -13,17 +13,17 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UpdateSpecificationGeneratorShould {
+public class UpdateEventFactoryShould {
 	@Mock 
 	private MapModel map;
 	
-	private UpdateSpecificationGenerator uut = new UpdateSpecificationGenerator();
+	private UpdateEventFactory uut = new UpdateEventFactory();
 	
 	@Test
 	public void createsUpdateForLeafNode() throws Exception {
 		final NodeModel parent = new NodeModel(map);
 		parent.setID("nodeId");
-		MapUpdated result = uut.createChildrenUpdate(parent);
+		MapUpdated result = uut.createChildrenUpdatedEvent(parent);
 
 		MapUpdated expected = ImmutableChildrenUpdated.builder()
 				.nodeId(parent.getID())
@@ -40,7 +40,7 @@ public class UpdateSpecificationGeneratorShould {
 		child.setID("childId");
 		parent.insert(child);
 		
-		MapUpdated result = uut.createChildrenUpdate(parent);
+		MapUpdated result = uut.createChildrenUpdatedEvent(parent);
 		
 		MapUpdated expected = ImmutableChildrenUpdated.builder()
 				.nodeId(parent.getID())
@@ -60,7 +60,7 @@ public class UpdateSpecificationGeneratorShould {
 		child2.setID("childId2");
 		parent.insert(child2);
 		
-		MapUpdated result = uut.createChildrenUpdate(parent);
+		MapUpdated result = uut.createChildrenUpdatedEvent(parent);
 		
 		MapUpdated expected = ImmutableChildrenUpdated.builder()
 				.nodeId(parent.getID())

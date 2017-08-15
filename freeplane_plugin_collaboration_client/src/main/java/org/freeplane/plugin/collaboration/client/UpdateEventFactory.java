@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.freeplane.features.map.NodeModel;
 
-public class UpdateSpecificationGenerator {
+public class UpdateEventFactory {
 
-	public ChildrenUpdated createChildrenUpdate(final NodeModel parent) {
+	public ChildrenUpdated createChildrenUpdatedEvent(final NodeModel parent) {
 		final List<NodeModel> childNodes = parent.getChildren();
 		List<String> childIds = new ArrayList<>(childNodes.size());
 		for (NodeModel child : childNodes) {

@@ -11,7 +11,7 @@ public class JacksonShould {
 	ObjectMapper objectMapper = new ObjectMapper();
 
 	@Test
-	public void serializeAndDeserializeUpdate() throws Exception
+	public void serializeAndDeserializeUpdateEvent() throws Exception
 	{
 		ChildrenUpdated uut = createUpdateEvents();
 		String json = objectMapper.writeValueAsString(uut);
@@ -23,7 +23,7 @@ public class JacksonShould {
 
 
 	@Test
-	public void serializeAndDeserializeGenericUpdate() throws Exception
+	public void serializeAndDeserializeGenericUpdateEvent() throws Exception
 	{
 		ChildrenUpdated uut = createUpdateEvents();
 		String json = objectMapper.writeValueAsString(uut);
@@ -41,7 +41,7 @@ public class JacksonShould {
 	}
 
 	@Test
-	public void serializeAndDeserializeUpdateBatch() throws Exception
+	public void serializeAndDeserializeUpdatesCompletedEvent() throws Exception
 	{
 		UpdatesCompleted uut = ImmutableUpdatesCompleted.builder()
 				.mapId("mapId")
