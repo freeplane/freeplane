@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.collaboration.client.UpdateSpecification.ContentType;
 
 public class UpdateSpecificationGenerator {
 

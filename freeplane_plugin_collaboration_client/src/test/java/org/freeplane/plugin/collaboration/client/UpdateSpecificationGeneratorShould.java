@@ -7,7 +7,6 @@ import java.util.Collections;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.collaboration.client.UpdateSpecification.ContentType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

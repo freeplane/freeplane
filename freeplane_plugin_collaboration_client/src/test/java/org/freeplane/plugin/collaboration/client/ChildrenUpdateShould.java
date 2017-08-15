@@ -1,18 +1,15 @@
 package org.freeplane.plugin.collaboration.client;
 
 import static java.util.Arrays.asList;
-import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
-import org.freeplane.plugin.collaboration.client.UpdateSpecification.ContentType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;

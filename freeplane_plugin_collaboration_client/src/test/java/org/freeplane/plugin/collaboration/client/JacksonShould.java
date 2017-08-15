@@ -3,7 +3,6 @@ package org.freeplane.plugin.collaboration.client;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.freeplane.plugin.collaboration.client.UpdateSpecification.ContentType;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
