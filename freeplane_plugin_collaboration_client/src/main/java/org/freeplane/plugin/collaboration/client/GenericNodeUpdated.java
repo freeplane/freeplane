@@ -1,5 +1,7 @@
 package org.freeplane.plugin.collaboration.client;
 
+import java.util.Optional;
+
 import org.immutables.value.Value;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -11,7 +13,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonSerialize(as = ImmutableGenericNodeUpdated.class)
 @JsonDeserialize(as = ImmutableGenericNodeUpdated.class)
 @JsonTypeInfo( use = JsonTypeInfo.Id.NONE)
-public interface GenericNodeUpdated extends NodeUpdated{
+public interface GenericNodeUpdated extends MapUpdated{
 	String contentType();
 	JsonNode content();
+	Optional<String> nodeId();
 }
