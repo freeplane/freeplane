@@ -8,10 +8,10 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Value.Immutable
-@JsonSerialize(as = ImmutableGenericUpdateSpecification.class)
-@JsonDeserialize(as = ImmutableGenericUpdateSpecification.class)
+@JsonSerialize(as = ImmutableGenericNodeUpdated.class)
+@JsonDeserialize(as = ImmutableGenericNodeUpdated.class)
 @JsonTypeInfo( use = JsonTypeInfo.Id.NONE)
-public interface GenericUpdateSpecification extends UpdateSpecification{
+public interface GenericNodeUpdated extends NodeUpdated{
 	String contentType();
 	JsonNode content();
 }

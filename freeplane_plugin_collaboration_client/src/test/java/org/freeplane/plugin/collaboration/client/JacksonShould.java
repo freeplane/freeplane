@@ -13,10 +13,10 @@ public class JacksonShould {
 	@Test
 	public void serializeAndDeserializeUpdate() throws Exception
 	{
-		ChildrenUpdateSpecification uut = createUpdate();
+		ChildrenUpdated uut = createUpdateEvents();
 		String json = objectMapper.writeValueAsString(uut);
 
-		UpdateSpecification bean = objectMapper.readValue(json, UpdateSpecification.class);
+		MapUpdated bean = objectMapper.readValue(json, MapUpdated.class);
 
 		assertThat(bean).isEqualTo(uut);
 	}
@@ -25,17 +25,17 @@ public class JacksonShould {
 	@Test
 	public void serializeAndDeserializeGenericUpdate() throws Exception
 	{
-		ChildrenUpdateSpecification uut = createUpdate();
+		ChildrenUpdated uut = createUpdateEvents();
 		String json = objectMapper.writeValueAsString(uut);
 
-		UpdateSpecification bean = objectMapper.readValue(json, GenericUpdateSpecification.class);
+		MapUpdated bean = objectMapper.readValue(json, GenericNodeUpdated.class);
 
 		final String genericJson = objectMapper.writeValueAsString(bean);
 		assertThat(genericJson).isEqualTo(json);
 	}
 	
-	protected ImmutableChildrenUpdateSpecification createUpdate() {
-		return ImmutableChildrenUpdateSpecification.builder()
+	protected ImmutableChildrenUpdated createUpdateEvents() {
+		return ImmutableChildrenUpdated.builder()
 				.nodeId("id")
 				.content(asList("content")).build();
 	}
@@ -43,14 +43,14 @@ public class JacksonShould {
 	@Test
 	public void serializeAndDeserializeUpdateBatch() throws Exception
 	{
-		UpdateBatchSpecification uut = ImmutableUpdateBatchSpecification.builder()
+		UpdatesCompleted uut = ImmutableUpdatesCompleted.builder()
 				.mapId("mapId")
 				.mapRevision(1000L)
-				.addUpdates(createUpdate())
+				.addUpdateEvents(createUpdateEvents())
 				.build();
 		String json = objectMapper.writeValueAsString(uut);
 
-		UpdateBatchSpecification bean = objectMapper.readValue(json, UpdateBatchSpecification.class);
+		UpdatesCompleted bean = objectMapper.readValue(json, UpdatesCompleted.class);
 
 		assertThat(bean).isEqualTo(uut);
 	}

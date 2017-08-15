@@ -37,7 +37,7 @@ public class ChildrenUpdateShould {
 		
 		when(map.getNodeForID(PARENT_NODE_ID)).thenReturn(parent);
 
-		ChildrenUpdateSpecification specification = ImmutableChildrenUpdateSpecification.builder()
+		ChildrenUpdated specification = ImmutableChildrenUpdated.builder()
 				.nodeId(PARENT_NODE_ID).
 				content(asList(CHILD_NODE_ID)).build();
 		
@@ -56,7 +56,7 @@ public class ChildrenUpdateShould {
 		
 		when(map.getNodeForID(PARENT_NODE_ID)).thenReturn(parent);
 
-		ChildrenUpdateSpecification specification = ImmutableChildrenUpdateSpecification.builder()
+		ChildrenUpdated specification = ImmutableChildrenUpdated.builder()
 				.nodeId(PARENT_NODE_ID).
 				content(asList(CHILD_NODE_ID, CHILD_NODE_ID2)).build();
 		
@@ -80,7 +80,7 @@ public class ChildrenUpdateShould {
 		
 		when(map.getNodeForID(PARENT_NODE_ID)).thenReturn(parent);
 
-		ChildrenUpdateSpecification specification = ImmutableChildrenUpdateSpecification.builder()
+		ChildrenUpdated specification = ImmutableChildrenUpdated.builder()
 				.nodeId(PARENT_NODE_ID).
 				content(asList(CHILD_NODE_ID)).build();
 		
@@ -105,7 +105,7 @@ public class ChildrenUpdateShould {
 		
 		when(map.getNodeForID(PARENT_NODE_ID)).thenReturn(parent);
 
-		ChildrenUpdateSpecification specification = ImmutableChildrenUpdateSpecification.builder()
+		ChildrenUpdated specification = ImmutableChildrenUpdated.builder()
 				.nodeId(PARENT_NODE_ID).
 				content(Collections.<String>emptyList()).build();
 		

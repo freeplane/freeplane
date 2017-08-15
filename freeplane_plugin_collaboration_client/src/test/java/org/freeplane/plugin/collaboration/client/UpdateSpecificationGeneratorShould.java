@@ -23,9 +23,9 @@ public class UpdateSpecificationGeneratorShould {
 	public void createsUpdateForLeafNode() throws Exception {
 		final NodeModel parent = new NodeModel(map);
 		parent.setID("nodeId");
-		UpdateSpecification result = uut.createChildrenUpdate(parent);
+		MapUpdated result = uut.createChildrenUpdate(parent);
 
-		UpdateSpecification expected = ImmutableChildrenUpdateSpecification.builder()
+		MapUpdated expected = ImmutableChildrenUpdated.builder()
 				.nodeId(parent.getID())
 				.content(Collections.<String>emptyList())
 				.build();
@@ -40,9 +40,9 @@ public class UpdateSpecificationGeneratorShould {
 		child.setID("childId");
 		parent.insert(child);
 		
-		UpdateSpecification result = uut.createChildrenUpdate(parent);
+		MapUpdated result = uut.createChildrenUpdate(parent);
 		
-		UpdateSpecification expected = ImmutableChildrenUpdateSpecification.builder()
+		MapUpdated expected = ImmutableChildrenUpdated.builder()
 				.nodeId(parent.getID())
 				.content(asList("childId")).build();
 		assertThat(result).isEqualTo(expected);
@@ -60,9 +60,9 @@ public class UpdateSpecificationGeneratorShould {
 		child2.setID("childId2");
 		parent.insert(child2);
 		
-		UpdateSpecification result = uut.createChildrenUpdate(parent);
+		MapUpdated result = uut.createChildrenUpdate(parent);
 		
-		UpdateSpecification expected = ImmutableChildrenUpdateSpecification.builder()
+		MapUpdated expected = ImmutableChildrenUpdated.builder()
 				.nodeId(parent.getID())
 				.content(asList("childId","childId2")).build();
 		assertThat(result).isEqualTo(expected);

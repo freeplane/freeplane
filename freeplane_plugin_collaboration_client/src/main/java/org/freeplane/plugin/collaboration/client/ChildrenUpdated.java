@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Value.Immutable
-@JsonSerialize(as = ImmutableChildrenUpdateSpecification.class)
-@JsonDeserialize(as = ImmutableChildrenUpdateSpecification.class)
-public interface ChildrenUpdateSpecification extends UpdateSpecification{
+@JsonSerialize(as = ImmutableChildrenUpdated.class)
+@JsonDeserialize(as = ImmutableChildrenUpdated.class)
+public interface ChildrenUpdated extends NodeUpdated{
 	List<String> content();
 }
