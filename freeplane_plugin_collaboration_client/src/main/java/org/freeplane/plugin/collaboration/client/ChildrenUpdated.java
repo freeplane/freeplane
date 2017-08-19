@@ -11,5 +11,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonSerialize(as = ImmutableChildrenUpdated.class)
 @JsonDeserialize(as = ImmutableChildrenUpdated.class)
 public interface ChildrenUpdated extends NodeUpdated{
+	static ImmutableChildrenUpdated.Builder builder() {
+		return ImmutableChildrenUpdated.builder();
+	}
+	
 	List<String> content();
 }

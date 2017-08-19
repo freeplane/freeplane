@@ -11,6 +11,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonSerialize(as = ImmutableUpdatesCompleted.class)
 @JsonDeserialize(as = ImmutableUpdatesCompleted.class)
 interface  UpdatesCompleted {
+	static ImmutableUpdatesCompleted.Builder builder() {
+		return ImmutableUpdatesCompleted.builder();
+	}
 	String mapId();
 	Long mapRevision();
 	List<MapUpdated> updateEvents();
