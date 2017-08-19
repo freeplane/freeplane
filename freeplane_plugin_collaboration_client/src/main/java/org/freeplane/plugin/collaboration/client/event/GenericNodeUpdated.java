@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client;
+package org.freeplane.plugin.collaboration.client.event;
 
 import java.util.Optional;
 

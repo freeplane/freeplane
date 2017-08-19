@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client;
+package org.freeplane.plugin.collaboration.client.event.batch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -13,6 +13,11 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.collaboration.client.TestData;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateEventGenerator;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
+import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

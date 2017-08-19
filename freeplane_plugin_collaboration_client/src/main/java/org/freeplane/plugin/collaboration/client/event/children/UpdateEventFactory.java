@@ -1,9 +1,10 @@
-package org.freeplane.plugin.collaboration.client;
+package org.freeplane.plugin.collaboration.client.event.children;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.collaboration.client.event.ImmutableChildrenUpdated;
 
 public class UpdateEventFactory {
 

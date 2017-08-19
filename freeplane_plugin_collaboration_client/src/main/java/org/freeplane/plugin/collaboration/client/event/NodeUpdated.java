@@ -1,6 +1,6 @@
-package org.freeplane.plugin.collaboration.client;
+package org.freeplane.plugin.collaboration.client.event;
 
-interface NodeUpdated extends MapUpdated {
+public interface NodeUpdated extends MapUpdated {
 	enum ContentType {
 		CHILDREN, TEXT, NOTE, DETAILS, ATTRIBUTES, ICONS, OTHER_CONTENT, CLONES
 	}

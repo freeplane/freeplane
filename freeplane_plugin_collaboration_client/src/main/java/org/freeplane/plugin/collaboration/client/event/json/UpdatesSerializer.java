@@ -1,6 +1,9 @@
-package org.freeplane.plugin.collaboration.client;
+package org.freeplane.plugin.collaboration.client.event.json;
 
 import java.util.function.Consumer;
+
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesProcessor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

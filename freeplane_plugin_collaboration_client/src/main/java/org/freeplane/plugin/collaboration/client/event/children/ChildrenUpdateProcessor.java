@@ -1,10 +1,12 @@
-package org.freeplane.plugin.collaboration.client;
+package org.freeplane.plugin.collaboration.client.event.children;
 
 import java.util.List;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
+import org.freeplane.plugin.collaboration.client.event.MapUpdated;
+import org.freeplane.plugin.collaboration.client.event.UpdateProcessor;
 
 public class ChildrenUpdateProcessor implements UpdateProcessor {
 

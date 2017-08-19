@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client;
+package org.freeplane.plugin.collaboration.client.event.children;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;

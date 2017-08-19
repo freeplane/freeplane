@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client;
+package org.freeplane.plugin.collaboration.client.event.batch;
 
 import java.util.LinkedHashSet;
 
@@ -11,7 +11,9 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
-import org.freeplane.plugin.collaboration.client.ImmutableUpdatesFinished.Builder;
+import org.freeplane.plugin.collaboration.client.event.ImmutableUpdatesFinished;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
+import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
 
 public class UpdateEventGenerator implements IMapChangeListener, INodeChangeListener{
 	
@@ -60,7 +62,7 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 	}
 
 	private void generateStructureChangedEvent() {
-		final Builder builder = builder();
+		final ImmutableUpdatesFinished.Builder builder = builder();
 		for(NodeModel parent : changedParents) {
 			final ChildrenUpdated childrenUpdated = eventFactory.createChildrenUpdatedEvent(parent);
 			builder.addUpdateEvents(childrenUpdated);
@@ -70,7 +72,7 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 		consumer.onUpdates(event);
 	}
 	
-	protected Builder builder() {
+	protected ImmutableUpdatesFinished.Builder builder() {
 		return UpdatesFinished.builder()
 				.mapId("")
 				.mapRevision(0L);

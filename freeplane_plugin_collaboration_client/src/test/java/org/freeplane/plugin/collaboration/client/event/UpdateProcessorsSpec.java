@@ -1,8 +1,10 @@
-package org.freeplane.plugin.collaboration.client;
+package org.freeplane.plugin.collaboration.client.event;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateProcessor;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
 import org.junit.Test;
 
 public class UpdateProcessorsSpec {

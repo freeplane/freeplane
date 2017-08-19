@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client;
+package org.freeplane.plugin.collaboration.client.event.batch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesProcessor;
 
 class UpdatesEventCaptor implements UpdatesProcessor {
 	private final CountDownLatch lock;
