@@ -87,6 +87,9 @@ local.properties
 # External tool builders
 .externalToolBuilders/
 
+# Eclipse apt generated java files
+apt_generated
+
 # Locally stored "Eclipse launch configurations"
 *.launch
 
