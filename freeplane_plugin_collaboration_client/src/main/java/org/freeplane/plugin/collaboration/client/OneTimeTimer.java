@@ -5,7 +5,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.Timer;
 import javax.swing.event.EventListenerList;
 
-@SuppressWarnings("serial") class OneTimeTimer extends Timer {
+@SuppressWarnings("serial") 
+class OneTimeTimer extends Timer {
 	OneTimeTimer(int delay) {
 		super(delay, null);
 		setRepeats(false);
