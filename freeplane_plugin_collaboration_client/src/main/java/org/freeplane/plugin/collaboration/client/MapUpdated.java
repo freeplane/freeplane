@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 		  use = JsonTypeInfo.Id.NAME, 
 		  include = JsonTypeInfo.As.PROPERTY, 
 		  property = "contentType")
-		@JsonSubTypes({ 
+@JsonSubTypes({ 
 		  @Type(value = ImmutableChildrenUpdated.class, name = "CHILDREN"), 
 		})
 public interface MapUpdated {
