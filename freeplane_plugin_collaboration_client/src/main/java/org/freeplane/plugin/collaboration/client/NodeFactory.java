@@ -5,8 +5,9 @@ import org.freeplane.features.map.NodeModel;
 
 class NodeFactory {
 
-	public NodeModel createNode(MapModel map, String childNodeId) {
-		// TODO Auto-generated method stub
-		return null;
+	public NodeModel createNode(MapModel map, String nodeId) {
+		final NodeModel nodeModel = new NodeModel(map);
+		nodeModel.setID(nodeId);
+		return nodeModel;
 	}
 }
