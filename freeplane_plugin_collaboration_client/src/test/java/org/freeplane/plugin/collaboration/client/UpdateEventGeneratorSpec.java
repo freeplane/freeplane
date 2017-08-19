@@ -1,0 +1,135 @@
+package org.freeplane.plugin.collaboration.client;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.SwingUtilities;
+
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
+public class UpdateEventGeneratorSpec {
+	
+	private static final int DELAY_MILLIS = 10;
+
+	@Mock
+	private MapModel map;
+	
+	@Mock
+	private UpdateEventFactory eventFactory;
+
+	@BeforeClass
+	static public void setup() throws InterruptedException, InvocationTargetException {
+		SwingUtilities.invokeAndWait(new Runnable() {
+			
+			@Override
+			public void run() {
+			}
+		});
+	}
+	
+	@Test
+	public void generatesEventOnNodeInsertion() throws Exception {
+		final NodeModel parent = new NodeModel(map);
+		parent.setID(TestData.PARENT_NODE_ID);
+		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
+		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
+		
+		UpdateEventGenerator uut = new UpdateEventGenerator(consumer, eventFactory, DELAY_MILLIS);
+		uut.onNodeInserted(parent, null, 0);
+		
+		final UpdatesCompleted event = consumer.getEvent(DELAY_MILLIS + 50, TimeUnit.MILLISECONDS);
+		assertThat(event.updateEvents()).containsExactly(childrenUpdated);
+	}
+
+	@Test
+	public void generatesOneUpdateEventPerParent() throws Exception {
+		final NodeModel parent = new NodeModel(map);
+		parent.setID(TestData.PARENT_NODE_ID);
+		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
+		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
+		
+		UpdateEventGenerator uut = new UpdateEventGenerator(consumer, eventFactory, DELAY_MILLIS);
+		
+		uut.onNodeInserted(parent, null, 0);
+		uut.onNodeInserted(parent, null, 0);
+		
+		Thread.sleep(DELAY_MILLIS + 50);
+		final UpdatesCompleted event = consumer.getEvent(0, TimeUnit.MILLISECONDS);
+		assertThat(event.updateEvents()).containsExactly(childrenUpdated);
+	}
+	
+	@Test
+	public void generatesEventOnNodeInsertionAfterDelay() throws Exception {
+		final NodeModel parent = new NodeModel(map);
+		parent.setID(TestData.PARENT_NODE_ID);
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
+		UpdateEventGenerator uut = new UpdateEventGenerator(consumer, eventFactory, DELAY_MILLIS);
+		uut.onNodeInserted(parent, null, 0);
+		
+		verifyZeroInteractions(eventFactory);
+	}
+
+	@Test
+	public void generatesMultipleEventsOnNodeInsertionToDifferentParents() throws Exception {
+		final NodeModel parent = new NodeModel(map);
+		parent.setID(TestData.PARENT_NODE_ID);
+		final NodeModel parent2 = new NodeModel(map);
+		parent2.setID(TestData.PARENT_NODE_ID2);
+		
+		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
+		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+
+		final ChildrenUpdated childrenUpdated2 = mock(ChildrenUpdated.class);
+		when(eventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
+
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
+		UpdateEventGenerator uut = new UpdateEventGenerator(consumer, eventFactory, DELAY_MILLIS);
+		uut.onNodeInserted(parent, null, 0);
+		uut.onNodeInserted(parent2, null, 0);
+		final UpdatesCompleted event = consumer.getEvent(DELAY_MILLIS + 100, TimeUnit.MILLISECONDS);
+		assertThat(event.updateEvents()).containsExactly(childrenUpdated, childrenUpdated2);
+	}
+
+
+	@Test
+	public void generatesMultipleBatchesOnNodeInsertionToDifferentParentsWithPause() throws Exception {
+		final NodeModel parent = new NodeModel(map);
+		parent.setID(TestData.PARENT_NODE_ID);
+		final NodeModel parent2 = new NodeModel(map);
+		parent2.setID(TestData.PARENT_NODE_ID2);
+		
+		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
+		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+
+		final ChildrenUpdated childrenUpdated2 = mock(ChildrenUpdated.class);
+		when(eventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
+
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(2);
+		UpdateEventGenerator uut = new UpdateEventGenerator(consumer, eventFactory, DELAY_MILLIS);
+		uut.onNodeInserted(parent, null, 0);
+		Thread.sleep(DELAY_MILLIS + 100);
+		uut.onNodeInserted(parent2, null, 0);
+		final List<UpdatesCompleted> events = consumer.getEvents(DELAY_MILLIS + 100, TimeUnit.MILLISECONDS);
+		assertThat(events).hasSize(2);
+		assertThat(events.get(0).updateEvents()).containsExactly(childrenUpdated);
+		assertThat(events.get(1).updateEvents()).containsExactly(childrenUpdated2);
+	}
+
+}

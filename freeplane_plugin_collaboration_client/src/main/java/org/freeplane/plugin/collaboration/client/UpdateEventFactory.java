@@ -11,9 +11,9 @@ public class UpdateEventFactory {
 		final List<NodeModel> childNodes = parent.getChildren();
 		List<String> childIds = new ArrayList<>(childNodes.size());
 		for (NodeModel child : childNodes) {
-			childIds.add(child.getID());
+			childIds.add(child.createID());
 		}
-		return ImmutableChildrenUpdated.builder().nodeId(parent.getID()).content(childIds).build();
+		return ImmutableChildrenUpdated.builder().nodeId(parent.createID()).content(childIds).build();
 	}
 
 }
