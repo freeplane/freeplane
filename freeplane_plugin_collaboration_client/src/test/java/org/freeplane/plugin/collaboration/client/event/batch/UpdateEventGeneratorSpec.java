@@ -12,7 +12,9 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.plugin.collaboration.client.TestData;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
@@ -137,4 +139,41 @@ public class UpdateEventGeneratorSpec {
 		assertThat(events.get(1).updateEvents()).containsExactly(childrenUpdated2);
 	}
 
+	
+	@Test
+	public void generatesEventOnNodeDeletion() throws Exception {
+		final NodeModel parent = new NodeModel(map);
+		parent.setID(TestData.PARENT_NODE_ID);
+		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
+		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
+		
+		UpdateEventGenerator uut = new UpdateEventGenerator(consumer, eventFactory, DELAY_MILLIS);
+		uut.onNodeDeleted(new NodeDeletionEvent(parent, null, 0));
+		
+		final UpdatesFinished event = consumer.getEvent(DELAY_MILLIS + 50, TimeUnit.MILLISECONDS);
+		assertThat(event.updateEvents()).containsExactly(childrenUpdated);
+	}
+
+	
+	@Test
+	public void generatesEventOnNodeMove() throws Exception {
+		final NodeModel parent = new NodeModel(map);
+		parent.setID(TestData.PARENT_NODE_ID);
+		final NodeModel parent2 = new NodeModel(map);
+		parent2.setID(TestData.PARENT_NODE_ID2);
+		
+		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
+		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+
+		final ChildrenUpdated childrenUpdated2 = mock(ChildrenUpdated.class);
+		when(eventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
+
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
+		UpdateEventGenerator uut = new UpdateEventGenerator(consumer, eventFactory, DELAY_MILLIS);
+		uut.onNodeMoved(new NodeMoveEvent(parent, 0, false, parent2, null, 0, false));
+		final UpdatesFinished event = consumer.getEvent(DELAY_MILLIS + 100, TimeUnit.MILLISECONDS);
+		assertThat(event.updateEvents()).containsExactly(childrenUpdated, childrenUpdated2);
+	}
 }

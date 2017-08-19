@@ -32,21 +32,8 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 	}
 
 	@Override
-	public void nodeChanged(NodeChangeEvent event) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Method not implemented");
-	}
-
-	@Override
-	public void mapChanged(MapChangeEvent event) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Method not implemented");
-	}
-
-	@Override
 	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Method not implemented");
+		onChangedStructure(nodeDeletionEvent.parent);	
 	}
 
 	@Override
@@ -80,20 +67,25 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 
 	@Override
 	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Method not implemented");
+		onChangedStructure(nodeMoveEvent.oldParent);		
+		onChangedStructure(nodeMoveEvent.newParent);
 	}
 
 	@Override
 	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Method not implemented");
 	}
 
 	@Override
 	public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
+	public void nodeChanged(NodeChangeEvent event) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void mapChanged(MapChangeEvent event) {
+		// TODO Auto-generated method stub
+	}
 }
