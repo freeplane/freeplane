@@ -11,7 +11,7 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
-import org.freeplane.plugin.collaboration.client.ImmutableUpdatesCompleted.Builder;
+import org.freeplane.plugin.collaboration.client.ImmutableUpdatesFinished.Builder;
 
 public class UpdateEventGenerator implements IMapChangeListener, INodeChangeListener{
 	
@@ -66,12 +66,12 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 			builder.addUpdateEvents(childrenUpdated);
 		}
 		changedParents.clear();
-		UpdatesCompleted event = builder.build();
-		consumer.onUpdatesCompleted(event);
+		UpdatesFinished event = builder.build();
+		consumer.onUpdates(event);
 	}
 	
 	protected Builder builder() {
-		return UpdatesCompleted.builder()
+		return UpdatesFinished.builder()
 				.mapId("")
 				.mapRevision(0L);
 	}

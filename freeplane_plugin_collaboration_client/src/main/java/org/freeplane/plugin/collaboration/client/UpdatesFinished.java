@@ -8,11 +8,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Value.Immutable
-@JsonSerialize(as = ImmutableUpdatesCompleted.class)
-@JsonDeserialize(as = ImmutableUpdatesCompleted.class)
-interface  UpdatesCompleted {
-	static ImmutableUpdatesCompleted.Builder builder() {
-		return ImmutableUpdatesCompleted.builder();
+@JsonSerialize(as = ImmutableUpdatesFinished.class)
+@JsonDeserialize(as = ImmutableUpdatesFinished.class)
+interface  UpdatesFinished {
+	static ImmutableUpdatesFinished.Builder builder() {
+		return ImmutableUpdatesFinished.builder();
 	}
 	String mapId();
 	Long mapRevision();

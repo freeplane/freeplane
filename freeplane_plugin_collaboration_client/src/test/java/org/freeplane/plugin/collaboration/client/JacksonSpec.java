@@ -47,14 +47,14 @@ public class JacksonSpec {
 	@Test
 	public void serializeAndDeserializeUpdatesCompletedEvent() throws Exception
 	{
-		UpdatesCompleted uut = ImmutableUpdatesCompleted.builder()
+		UpdatesFinished uut = UpdatesFinished.builder()
 				.mapId("mapId")
 				.mapRevision(1000L)
 				.addUpdateEvents(createUpdateEvents())
 				.build();
 		String json = objectMapper.writeValueAsString(uut);
 
-		UpdatesCompleted bean = objectMapper.readValue(json, UpdatesCompleted.class);
+		UpdatesFinished bean = objectMapper.readValue(json, UpdatesFinished.class);
 
 		assertThat(bean).isEqualTo(uut);
 	}

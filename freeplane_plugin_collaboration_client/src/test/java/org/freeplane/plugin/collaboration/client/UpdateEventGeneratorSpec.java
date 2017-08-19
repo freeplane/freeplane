@@ -52,7 +52,7 @@ public class UpdateEventGeneratorSpec {
 		UpdateEventGenerator uut = new UpdateEventGenerator(consumer, eventFactory, DELAY_MILLIS);
 		uut.onNodeInserted(parent, null, 0);
 		
-		final UpdatesCompleted event = consumer.getEvent(DELAY_MILLIS + 50, TimeUnit.MILLISECONDS);
+		final UpdatesFinished event = consumer.getEvent(DELAY_MILLIS + 50, TimeUnit.MILLISECONDS);
 		assertThat(event.updateEvents()).containsExactly(childrenUpdated);
 	}
 
@@ -71,7 +71,7 @@ public class UpdateEventGeneratorSpec {
 		uut.onNodeInserted(parent, null, 0);
 		
 		Thread.sleep(DELAY_MILLIS + 50);
-		final UpdatesCompleted event = consumer.getEvent(0, TimeUnit.MILLISECONDS);
+		final UpdatesFinished event = consumer.getEvent(0, TimeUnit.MILLISECONDS);
 		assertThat(event.updateEvents()).containsExactly(childrenUpdated);
 	}
 	
@@ -103,7 +103,7 @@ public class UpdateEventGeneratorSpec {
 		UpdateEventGenerator uut = new UpdateEventGenerator(consumer, eventFactory, DELAY_MILLIS);
 		uut.onNodeInserted(parent, null, 0);
 		uut.onNodeInserted(parent2, null, 0);
-		final UpdatesCompleted event = consumer.getEvent(DELAY_MILLIS + 100, TimeUnit.MILLISECONDS);
+		final UpdatesFinished event = consumer.getEvent(DELAY_MILLIS + 100, TimeUnit.MILLISECONDS);
 		assertThat(event.updateEvents()).containsExactly(childrenUpdated, childrenUpdated2);
 	}
 
@@ -126,7 +126,7 @@ public class UpdateEventGeneratorSpec {
 		uut.onNodeInserted(parent, null, 0);
 		Thread.sleep(DELAY_MILLIS + 100);
 		uut.onNodeInserted(parent2, null, 0);
-		final List<UpdatesCompleted> events = consumer.getEvents(DELAY_MILLIS + 100, TimeUnit.MILLISECONDS);
+		final List<UpdatesFinished> events = consumer.getEvents(DELAY_MILLIS + 100, TimeUnit.MILLISECONDS);
 		assertThat(events).hasSize(2);
 		assertThat(events.get(0).updateEvents()).containsExactly(childrenUpdated);
 		assertThat(events.get(1).updateEvents()).containsExactly(childrenUpdated2);

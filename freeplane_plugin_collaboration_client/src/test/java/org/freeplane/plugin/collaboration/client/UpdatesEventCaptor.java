@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 class UpdatesEventCaptor implements UpdatesProcessor {
 	private final CountDownLatch lock;
-	private ArrayList<UpdatesCompleted> events;
+	private ArrayList<UpdatesFinished> events;
 
 	UpdatesEventCaptor(int expectedEventCount) {
 		this.lock = new CountDownLatch(expectedEventCount);
@@ -17,18 +17,18 @@ class UpdatesEventCaptor implements UpdatesProcessor {
 	}
 
 	@Override
-	public void onUpdatesCompleted(UpdatesCompleted event) {
+	public void onUpdates(UpdatesFinished event) {
 		events.add(event);
 		assertThat(lock.getCount() > 0);
 		lock.countDown();
 	}
 
-	public List<UpdatesCompleted> getEvents(long timeout, TimeUnit unit)  throws InterruptedException {
+	public List<UpdatesFinished> getEvents(long timeout, TimeUnit unit)  throws InterruptedException {
 		await(timeout, unit);
 		return events;
 	}
 
-	public UpdatesCompleted getEvent(long timeout, TimeUnit unit)  throws InterruptedException {
+	public UpdatesFinished getEvent(long timeout, TimeUnit unit)  throws InterruptedException {
 		await(timeout, unit);
 		assertThat(events).hasSize(1);
 		return events.get(0);
