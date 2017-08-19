@@ -1,7 +1,7 @@
 allprojects {
     // in a multi-project setup, all projects must have the same version number!
     // the real (specific) version number is in freeplane/viewer-resources/version.properties!
-    version = '1.5'
+    version = '1.6'
 	
     // WARNING: this is removed with "gradle clean"!!
     ext.globalBuild = rootDir.path + '/BUILD'
@@ -65,8 +65,8 @@ subprojects {
     apply plugin: 'eclipse'
     apply plugin: 'idea'
 	
-	targetCompatibility='1.7'
-	sourceCompatibility='1.7'
+	targetCompatibility='1.8'
+	sourceCompatibility='1.8'
 
 
     tasks.withType(JavaCompile) {
