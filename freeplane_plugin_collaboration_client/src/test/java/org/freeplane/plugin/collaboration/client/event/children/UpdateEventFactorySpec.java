@@ -5,10 +5,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
 
+import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.SummaryNode;
+import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.event.ImmutableChildrenUpdated;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
+import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeUpdated.SpecialNodeType;
 import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,6 +72,50 @@ public class UpdateEventFactorySpec {
 		MapUpdated expected = ImmutableChildrenUpdated.builder()
 				.nodeId(parent.getID())
 				.content(asList("childId","childId2")).build();
+		assertThat(result).isEqualTo(expected);
+	}
+
+	@Test
+	public void createsUpdateForSummaryEndNode() throws Exception {
+		final NodeModel node = new NodeModel(map);
+		node.setID("nodeId");
+		node.addExtension(SummaryNodeFlag.SUMMARY);
+		MapUpdated result = uut.createSpecialNodeTypeUpdatedEvent(node);
+
+		MapUpdated expected = ImmutableSpecialNodeTypeUpdated.builder()
+				.nodeId(node.getID())
+				.content(SpecialNodeType.SUMMARY_END)
+				.build();
+		assertThat(result).isEqualTo(expected);
+	}
+
+
+	@Test
+	public void createsUpdateForSummaryBeginNode() throws Exception {
+		final NodeModel node = new NodeModel(map);
+		node.setID("nodeId");
+		node.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
+		MapUpdated result = uut.createSpecialNodeTypeUpdatedEvent(node);
+
+		MapUpdated expected = ImmutableSpecialNodeTypeUpdated.builder()
+				.nodeId(node.getID())
+				.content(SpecialNodeType.SUMMARY_BEGIN)
+				.build();
+		assertThat(result).isEqualTo(expected);
+	}
+
+	@Test
+	public void createsUpdateForSummaryBeginEndNode() throws Exception {
+		final NodeModel node = new NodeModel(map);
+		node.setID("nodeId");
+		node.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
+		node.addExtension(SummaryNodeFlag.SUMMARY);
+		MapUpdated result = uut.createSpecialNodeTypeUpdatedEvent(node);
+
+		MapUpdated expected = ImmutableSpecialNodeTypeUpdated.builder()
+				.nodeId(node.getID())
+				.content(SpecialNodeType.SUMMARY_BEGIN_END)
+				.build();
 		assertThat(result).isEqualTo(expected);
 	}
 }

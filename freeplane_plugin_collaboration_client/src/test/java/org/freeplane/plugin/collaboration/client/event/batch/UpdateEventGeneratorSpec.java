@@ -1,6 +1,7 @@
 package org.freeplane.plugin.collaboration.client.event.batch;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -21,6 +22,7 @@ import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
 import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -175,5 +177,22 @@ public class UpdateEventGeneratorSpec {
 		uut.onNodeMoved(new NodeMoveEvent(parent, 0, false, parent2, null, 0, false));
 		final UpdatesFinished event = consumer.getEvent(DELAY_MILLIS + 100, TimeUnit.MILLISECONDS);
 		assertThat(event.updateEvents()).containsExactly(childrenUpdated, childrenUpdated2);
+	}
+
+	@Ignore("todo")
+	@Test
+	public void generatesSpecialNodeTypeEventOnNodeInsertion() throws Exception {
+		final NodeModel parent = new NodeModel(map);
+		parent.setID(TestData.PARENT_NODE_ID);
+		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
+		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
+		
+		UpdateEventGenerator uut = new UpdateEventGenerator(consumer, eventFactory, DELAY_MILLIS);
+		uut.onNodeInserted(parent, null, 0);
+		
+		final UpdatesFinished event = consumer.getEvent(DELAY_MILLIS + 50, TimeUnit.MILLISECONDS);
+		assertThat(event.updateEvents()).containsExactly(childrenUpdated);
 	}
 }

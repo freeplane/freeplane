@@ -20,6 +20,7 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 	final private UpdatesProcessor consumer;
 	final private UpdateEventFactory eventFactory;
 	final private LinkedHashSet<NodeModel> changedParents;
+	final private LinkedHashSet<NodeModel> specialNodes;
 
 	final private Timer timer;
 	
@@ -29,6 +30,7 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 		this.eventFactory = eventFactory;
 		timer = new OneTimeTimer(delay);
 		changedParents = new LinkedHashSet<>();
+		specialNodes = new LinkedHashSet<>();
 	}
 
 	@Override
