@@ -71,7 +71,8 @@ public class ColorListEditorPanelBuilder {
 				r.updatePickColorButton();
 				
 			}
-			buttons.get(colors.size() - 2).updateMoveColorDownButton();
+			if(colors.size() >= 2)
+				buttons.get(colors.size() - 2).updateMoveColorDownButton();
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
