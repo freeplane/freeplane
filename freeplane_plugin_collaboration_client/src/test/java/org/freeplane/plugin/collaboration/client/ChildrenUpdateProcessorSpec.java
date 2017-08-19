@@ -17,10 +17,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChildrenUpdateProcessorSpec {
-	private static final String PARENT_NODE_ID = "id_parent";
-	private static final String CHILD_NODE_ID = "id_child";
-	private static final String CHILD_NODE_ID2 = "id_child2";
-
 	@Mock
 	private MapModel map;
 	
@@ -33,16 +29,16 @@ public class ChildrenUpdateProcessorSpec {
 	@Test
 	public void insertsNewNode() throws Exception {
 		final NodeModel parent = new NodeModel(map);
-		parent.setID(PARENT_NODE_ID);
+		parent.setID(TestData.PARENT_NODE_ID);
 		
-		when(map.getNodeForID(PARENT_NODE_ID)).thenReturn(parent);
+		when(map.getNodeForID(TestData.PARENT_NODE_ID)).thenReturn(parent);
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
-				.nodeId(PARENT_NODE_ID).
-				content(asList(CHILD_NODE_ID)).build();
+				.nodeId(TestData.PARENT_NODE_ID).
+				content(asList(TestData.CHILD_NODE_ID)).build();
 		
 		NodeModel child = new NodeModel(map);
-		when(nodeFactory.createNode(map, CHILD_NODE_ID)).thenReturn(child);
+		when(nodeFactory.createNode(map, TestData.CHILD_NODE_ID)).thenReturn(child);
 
 		new ChildrenUpdateProcessor(manipulator, map, nodeFactory).onMapUpdated(event);
 		
@@ -52,18 +48,18 @@ public class ChildrenUpdateProcessorSpec {
 	@Test
 	public void insertsNewNodes() throws Exception {
 		final NodeModel parent = new NodeModel(map);
-		parent.setID(PARENT_NODE_ID);
+		parent.setID(TestData.PARENT_NODE_ID);
 		
-		when(map.getNodeForID(PARENT_NODE_ID)).thenReturn(parent);
+		when(map.getNodeForID(TestData.PARENT_NODE_ID)).thenReturn(parent);
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
-				.nodeId(PARENT_NODE_ID).
-				content(asList(CHILD_NODE_ID, CHILD_NODE_ID2)).build();
+				.nodeId(TestData.PARENT_NODE_ID).
+				content(asList(TestData.CHILD_NODE_ID, TestData.CHILD_NODE_ID2)).build();
 		
 		NodeModel child = new NodeModel(map);
 		NodeModel child2 = new NodeModel(map);
-		when(nodeFactory.createNode(map, CHILD_NODE_ID)).thenReturn(child);
-		when(nodeFactory.createNode(map, CHILD_NODE_ID2)).thenReturn(child2);
+		when(nodeFactory.createNode(map, TestData.CHILD_NODE_ID)).thenReturn(child);
+		when(nodeFactory.createNode(map, TestData.CHILD_NODE_ID2)).thenReturn(child2);
 
 		new ChildrenUpdateProcessor(manipulator, map, nodeFactory).onMapUpdated(event);
 		
@@ -76,16 +72,16 @@ public class ChildrenUpdateProcessorSpec {
 	@Test
 	public void movesExistingNode() throws Exception {
 		final NodeModel parent = new NodeModel(map);
-		parent.setID(PARENT_NODE_ID);
+		parent.setID(TestData.PARENT_NODE_ID);
 		
-		when(map.getNodeForID(PARENT_NODE_ID)).thenReturn(parent);
+		when(map.getNodeForID(TestData.PARENT_NODE_ID)).thenReturn(parent);
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
-				.nodeId(PARENT_NODE_ID).
-				content(asList(CHILD_NODE_ID)).build();
+				.nodeId(TestData.PARENT_NODE_ID).
+				content(asList(TestData.CHILD_NODE_ID)).build();
 		
 		NodeModel child = new NodeModel(map);
-		when(map.getNodeForID( CHILD_NODE_ID)).thenReturn(child);
+		when(map.getNodeForID( TestData.CHILD_NODE_ID)).thenReturn(child);
 		parent.insert(child);
 
 		new ChildrenUpdateProcessor(manipulator, map, nodeFactory).onMapUpdated(event);
@@ -97,16 +93,16 @@ public class ChildrenUpdateProcessorSpec {
 	@Test
 	public void removeExistingNode() throws Exception {
 		final NodeModel parent = new NodeModel(map);
-		parent.setID(PARENT_NODE_ID);
+		parent.setID(TestData.PARENT_NODE_ID);
 		NodeModel child = new NodeModel(map);
-		when(map.getNodeForID( CHILD_NODE_ID)).thenReturn(child);
+		when(map.getNodeForID( TestData.CHILD_NODE_ID)).thenReturn(child);
 		
 		parent.insert(child);
 		
-		when(map.getNodeForID(PARENT_NODE_ID)).thenReturn(parent);
+		when(map.getNodeForID(TestData.PARENT_NODE_ID)).thenReturn(parent);
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
-				.nodeId(PARENT_NODE_ID).
+				.nodeId(TestData.PARENT_NODE_ID).
 				content(Collections.<String>emptyList()).build();
 		
 
