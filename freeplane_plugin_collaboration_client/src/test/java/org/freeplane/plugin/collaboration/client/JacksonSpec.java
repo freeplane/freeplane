@@ -6,14 +6,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 
 public class JacksonSpec {
-	ObjectMapper objectMapper = new ObjectMapper(); 
-	{
-		objectMapper.registerModule(new Jdk8Module());
-	}
-
+	static ObjectMapper objectMapper = Jackson.objectMapper;
+	
 	@Test
 	public void serializeAndDeserializeUpdateEvent() throws Exception
 	{
