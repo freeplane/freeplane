@@ -11,9 +11,9 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Value.Immutable
-@JsonSerialize(as = ImmutableChildrenUpdated.class)
-@JsonDeserialize(as = ImmutableChildrenUpdated.class)
-public interface SpecialNodeTypeUpdated extends NodeUpdated{
+@JsonSerialize(as = ImmutableSpecialNodeTypeSet.class)
+@JsonDeserialize(as = ImmutableSpecialNodeTypeSet.class)
+public interface SpecialNodeTypeSet extends NodeUpdated{
 	
 	enum SpecialNodeType {
 		SUMMARY_BEGIN, SUMMARY_END, SUMMARY_BEGIN_END;
@@ -35,8 +35,8 @@ public interface SpecialNodeTypeUpdated extends NodeUpdated{
 
 	}
 	
-	static ImmutableChildrenUpdated.Builder builder() {
-		return ImmutableChildrenUpdated.builder();
+	static ImmutableSpecialNodeTypeSet.Builder builder() {
+		return ImmutableSpecialNodeTypeSet.builder();
 	}
 	
 	SpecialNodeType content();

@@ -1,8 +1,13 @@
 package org.freeplane.plugin.collaboration.client.event.batch;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map.Entry;
 
 import javax.swing.Timer;
+import javax.swing.event.EventListenerList;
 
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeChangeListener;
@@ -12,14 +17,53 @@ import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
+import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet;
+import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
 import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
 
 public class UpdateEventGenerator implements IMapChangeListener, INodeChangeListener{
+	@SuppressWarnings("serial") 
+	class OneTimeTimer extends Timer {
+
+		OneTimeTimer(int delay) {
+			super(delay, null);
+			setRepeats(false);
+		}
+
+		@Override
+		protected void fireActionPerformed(ActionEvent e) {		
+			builder = createBuilder();
+			notifyListeners(e);
+			listenerList = new EventListenerList();
+			UpdatesFinished event = builder.build();
+			builder = null;
+			consumer.onUpdates(event);
+		}
+		
+		private ImmutableUpdatesFinished.Builder createBuilder() {
+			return UpdatesFinished.builder()
+					.mapId("")
+					.mapRevision(0L);
+		}
+
+
+		private void notifyListeners(ActionEvent e) {
+	        Object[] listeners = listenerList.getListenerList();
+
+	        for (int i=0; i<=listeners.length-2; i+=2) {
+	            if (listeners[i]==ActionListener.class) {
+	                ((ActionListener)listeners[i+1]).actionPerformed(e);
+	            }
+	        }
+
+		}
+	}
 	
 	final private UpdatesProcessor consumer;
 	final private UpdateEventFactory eventFactory;
 	final private LinkedHashSet<NodeModel> changedParents;
-	final private LinkedHashSet<NodeModel> specialNodes;
+	final private LinkedHashMap<NodeModel, SpecialNodeType> specialNodes;
+	private ImmutableUpdatesFinished.Builder builder;
 
 	final private Timer timer;
 	
@@ -29,7 +73,7 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 		this.eventFactory = eventFactory;
 		timer = new OneTimeTimer(delay);
 		changedParents = new LinkedHashSet<>();
-		specialNodes = new LinkedHashSet<>();
+		specialNodes = new LinkedHashMap<>();
 	}
 
 	@Override
@@ -40,6 +84,9 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 	@Override
 	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
 		onChangedStructure(parent);
+		if(specialNodes.isEmpty())
+			timer.addActionListener(e -> generateSpecialNodeTypeSetEvent());
+		SpecialNodeTypeSet.SpecialNodeType.of(child).ifPresent(t -> specialNodes.put(child, t));
 	}
 
 	private void onChangedStructure(NodeModel parent) {
@@ -49,23 +96,23 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 		timer.restart();
 	}
 
+	private void generateSpecialNodeTypeSetEvent() {
+		for( Entry<NodeModel, SpecialNodeType> e : specialNodes.entrySet()) {
+			builder.addUpdateEvents(SpecialNodeTypeSet.builder()
+					.nodeId(e.getKey().createID())
+					.content(e.getValue()).build());
+		}
+		specialNodes.clear();
+	}
+	
 	private void generateStructureChangedEvent() {
-		final ImmutableUpdatesFinished.Builder builder = builder();
 		for(NodeModel parent : changedParents) {
 			final ChildrenUpdated childrenUpdated = eventFactory.createChildrenUpdatedEvent(parent);
 			builder.addUpdateEvents(childrenUpdated);
 		}
 		changedParents.clear();
-		UpdatesFinished event = builder.build();
-		consumer.onUpdates(event);
 	}
 	
-	protected ImmutableUpdatesFinished.Builder builder() {
-		return UpdatesFinished.builder()
-				.mapId("")
-				.mapRevision(0L);
-	}
-
 	@Override
 	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 		onChangedStructure(nodeMoveEvent.oldParent);		
