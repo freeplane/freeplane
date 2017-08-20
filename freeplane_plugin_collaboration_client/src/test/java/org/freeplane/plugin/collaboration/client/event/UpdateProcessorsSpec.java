@@ -10,7 +10,7 @@ import org.junit.Test;
 public class UpdateProcessorsSpec {
 
 	@Test
-	public void returnsRegisteredProcessorForUpdateEvent() throws Exception {
+	public void callsRegisteredProcessorForUpdateEvent() throws Exception {
 		final UpdateProcessors updateProcessors = new UpdateProcessors();
 		final ChildrenUpdateProcessor processor = mock(ChildrenUpdateProcessor.class);
 		updateProcessors.addProcessor(ChildrenUpdated.class, processor);
