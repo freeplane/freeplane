@@ -2,11 +2,11 @@ package org.freeplane.plugin.collaboration.client.event.children;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.SummaryNode;
-import org.freeplane.plugin.collaboration.client.event.ImmutableChildrenUpdated;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
+import org.freeplane.plugin.collaboration.client.event.children.ImmutableSpecialNodeTypeUpdated.Builder;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeUpdated.SpecialNodeType;
 
 public class UpdateEventFactory {
@@ -20,20 +20,13 @@ public class UpdateEventFactory {
 		return ImmutableChildrenUpdated.builder().nodeId(parent.createID()).content(childIds).build();
 	}
 
-	public MapUpdated createSpecialNodeTypeUpdatedEvent(NodeModel node) {
-		final SpecialNodeType content;
-		final boolean isFirstGroupNode = SummaryNode.isFirstGroupNode(node);
-		final boolean isSummaryNode = SummaryNode.isSummaryNode(node);
-		if(isSummaryNode && isFirstGroupNode)
-			content = SpecialNodeType.SUMMARY_BEGIN_END;
-		else if(isFirstGroupNode)
-			content = SpecialNodeType.SUMMARY_BEGIN;
-		else if(isSummaryNode)
-			content = SpecialNodeType.SUMMARY_END;
-		else
-			throw new IllegalArgumentException();
-		
-		return ImmutableSpecialNodeTypeUpdated.builder().nodeId(node.createID()).content(content).build();
+	public Optional<MapUpdated> createSpecialNodeTypeUpdatedEvent(NodeModel node) {
+		final Optional<SpecialNodeType> type = SpecialNodeType.of(node);
+		return type.map(t -> createEvent(node, t).build());
+	}
+
+	private Builder createEvent(NodeModel node, SpecialNodeType type) {
+		return ImmutableSpecialNodeTypeUpdated.builder().nodeId(node.createID()).content(type);
 	}
 
 }

@@ -4,6 +4,7 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapModel;
@@ -77,13 +78,13 @@ public class UpdateEventFactorySpec {
 		final NodeModel node = new NodeModel(map);
 		node.setID("nodeId");
 		node.addExtension(SummaryNodeFlag.SUMMARY);
-		MapUpdated result = uut.createSpecialNodeTypeUpdatedEvent(node);
+		Optional<MapUpdated> result = uut.createSpecialNodeTypeUpdatedEvent(node);
 
 		MapUpdated expected = ImmutableSpecialNodeTypeUpdated.builder()
 				.nodeId(node.getID())
 				.content(SpecialNodeType.SUMMARY_END)
 				.build();
-		assertThat(result).isEqualTo(expected);
+		assertThat(result).contains(expected);
 	}
 
 
@@ -92,13 +93,13 @@ public class UpdateEventFactorySpec {
 		final NodeModel node = new NodeModel(map);
 		node.setID("nodeId");
 		node.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
-		MapUpdated result = uut.createSpecialNodeTypeUpdatedEvent(node);
+		Optional<MapUpdated> result = uut.createSpecialNodeTypeUpdatedEvent(node);
 
 		MapUpdated expected = ImmutableSpecialNodeTypeUpdated.builder()
 				.nodeId(node.getID())
 				.content(SpecialNodeType.SUMMARY_BEGIN)
 				.build();
-		assertThat(result).isEqualTo(expected);
+		assertThat(result).contains(expected);
 	}
 
 	@Test
@@ -107,12 +108,12 @@ public class UpdateEventFactorySpec {
 		node.setID("nodeId");
 		node.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
 		node.addExtension(SummaryNodeFlag.SUMMARY);
-		MapUpdated result = uut.createSpecialNodeTypeUpdatedEvent(node);
+		Optional<MapUpdated> result = uut.createSpecialNodeTypeUpdatedEvent(node);
 
 		MapUpdated expected = ImmutableSpecialNodeTypeUpdated.builder()
 				.nodeId(node.getID())
 				.content(SpecialNodeType.SUMMARY_BEGIN_END)
 				.build();
-		assertThat(result).isEqualTo(expected);
+		assertThat(result).contains(expected);
 	}
 }
