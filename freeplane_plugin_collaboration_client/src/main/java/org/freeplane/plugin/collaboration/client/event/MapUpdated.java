@@ -1,5 +1,7 @@
 package org.freeplane.plugin.collaboration.client.event;
 
+import org.freeplane.plugin.collaboration.client.event.children.ImmutableChildrenUpdated;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

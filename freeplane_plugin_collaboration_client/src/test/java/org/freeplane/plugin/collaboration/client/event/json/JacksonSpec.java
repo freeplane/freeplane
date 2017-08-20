@@ -4,11 +4,10 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.freeplane.plugin.collaboration.client.event.GenericNodeUpdated;
-import org.freeplane.plugin.collaboration.client.event.ImmutableChildrenUpdated;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
-import org.freeplane.plugin.collaboration.client.event.json.Jackson;
+import org.freeplane.plugin.collaboration.client.event.children.ImmutableChildrenUpdated;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

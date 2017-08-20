@@ -11,7 +11,6 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
-import org.freeplane.plugin.collaboration.client.event.ImmutableUpdatesFinished;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
 import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
 

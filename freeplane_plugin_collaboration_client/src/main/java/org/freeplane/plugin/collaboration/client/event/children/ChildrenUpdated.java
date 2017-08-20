@@ -2,7 +2,6 @@ package org.freeplane.plugin.collaboration.client.event.children;
 
 import java.util.List;
 
-import org.freeplane.plugin.collaboration.client.event.ImmutableChildrenUpdated;
 import org.freeplane.plugin.collaboration.client.event.NodeUpdated;
 import org.immutables.value.Value;
 

@@ -11,7 +11,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
 import org.freeplane.plugin.collaboration.client.TestData;
-import org.freeplane.plugin.collaboration.client.event.ImmutableChildrenUpdated;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
