@@ -16,6 +16,6 @@ public interface  UpdatesFinished {
 		return ImmutableUpdatesFinished.builder();
 	}
 	String mapId();
-	Long mapRevision();
+	long mapRevision();
 	List<MapUpdated> updateEvents();
 }

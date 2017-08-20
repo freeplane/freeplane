@@ -1,77 +1,36 @@
 package org.freeplane.plugin.collaboration.client.event.batch;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map.Entry;
-
-import javax.swing.Timer;
-import javax.swing.event.EventListenerList;
+import java.util.WeakHashMap;
 
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
-import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet;
-import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
 import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
 
 public class UpdateEventGenerator implements IMapChangeListener, INodeChangeListener{
-	@SuppressWarnings("serial") 
-	class OneTimeTimer extends Timer {
+	WeakHashMap<MapModel, MapUpdateTimer> timers = new WeakHashMap<>();
+	private MapUpdateTimerFactory timerFactory;
+	
+	public UpdateEventGenerator(MapUpdateTimerFactory timerFactory) {
+		super();
+		this.timerFactory = timerFactory;
+	}
 
-		OneTimeTimer(int delay) {
-			super(delay, null);
-			setRepeats(false);
-		}
-
-		@Override
-		protected void fireActionPerformed(ActionEvent e) {		
-			builder = createBuilder();
-			notifyListeners(e);
-			listenerList = new EventListenerList();
-			UpdatesFinished event = builder.build();
-			builder = null;
-			consumer.onUpdates(event);
-		}
-		
-		private ImmutableUpdatesFinished.Builder createBuilder() {
-			return UpdatesFinished.builder()
-					.mapId("")
-					.mapRevision(0L);
-		}
-
-
-		private void notifyListeners(ActionEvent e) {
-	        Object[] listeners = listenerList.getListenerList();
-	        for (int i=0; i<=listeners.length-2; i+=2) {
-	            if (listeners[i]==ActionListener.class) {
-	                ((ActionListener)listeners[i+1]).actionPerformed(e);
-	            }
-	        }
-		}
+	private MapUpdateTimer getTimer(MapModel map) {
+		if(timers.containsKey(map))
+			return timers.get(map);
+		final MapUpdateTimer timer = this.timerFactory.create(map);
+		timers.put(map, timer);
+		return timer;
 	}
 	
-	final private UpdatesProcessor consumer;
-	final private UpdateEventFactory eventFactory;
-	final private LinkedHashSet<NodeModel> changedParents;
-	final private LinkedHashMap<NodeModel, SpecialNodeType> specialNodes;
-	private ImmutableUpdatesFinished.Builder builder;
-
-	final private Timer timer;
-	
 	public UpdateEventGenerator(UpdatesProcessor consumer, UpdateEventFactory eventFactory, int delay) {
-		super();
-		this.consumer = consumer;
-		this.eventFactory = eventFactory;
-		timer = new OneTimeTimer(delay);
-		changedParents = new LinkedHashSet<>();
-		specialNodes = new LinkedHashMap<>();
+		this(new MapUpdateTimerFactory(consumer, eventFactory, delay));
 	}
 
 	@Override
@@ -81,40 +40,21 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 
 	@Override
 	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-		onChangedStructure(parent);
-		if(specialNodes.isEmpty())
-			timer.addActionListener(e -> generateSpecialNodeTypeSetEvent());
-		SpecialNodeTypeSet.SpecialNodeType.of(child).ifPresent(t -> specialNodes.put(child, t));
+		final MapUpdateTimer timer = getTimer(parent.getMap());
+		timer.onNodeInserted(parent, child);
 	}
 
 	private void onChangedStructure(NodeModel parent) {
-		if(changedParents.isEmpty())
-			timer.addActionListener(e -> generateStructureChangedEvent());
-		changedParents.add(parent);
-		timer.restart();
+		final MapUpdateTimer timer = getTimer(parent.getMap());
+		timer.onChangedStructure(parent);
 	}
 
-	private void generateSpecialNodeTypeSetEvent() {
-		for( Entry<NodeModel, SpecialNodeType> e : specialNodes.entrySet()) {
-			builder.addUpdateEvents(SpecialNodeTypeSet.builder()
-					.nodeId(e.getKey().createID())
-					.content(e.getValue()).build());
-		}
-		specialNodes.clear();
-	}
-	
-	private void generateStructureChangedEvent() {
-		for(NodeModel parent : changedParents) {
-			final ChildrenUpdated childrenUpdated = eventFactory.createChildrenUpdatedEvent(parent);
-			builder.addUpdateEvents(childrenUpdated);
-		}
-		changedParents.clear();
-	}
-	
 	@Override
 	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-		onChangedStructure(nodeMoveEvent.oldParent);		
-		onChangedStructure(nodeMoveEvent.newParent);
+		final MapUpdateTimer oldMapTimer = getTimer(nodeMoveEvent.oldParent.getMap());
+		oldMapTimer.onChangedStructure(nodeMoveEvent.oldParent);		
+		final MapUpdateTimer newMapTimer = getTimer(nodeMoveEvent.newParent.getMap());
+		newMapTimer.onChangedStructure(nodeMoveEvent.newParent);
 	}
 
 	@Override
