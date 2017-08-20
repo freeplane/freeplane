@@ -15,7 +15,8 @@ import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeS
 import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
 
-@SuppressWarnings("serial") class MapUpdateTimer extends Timer {
+@SuppressWarnings("serial") 
+class MapUpdateTimer extends Timer {
 	final private ModifiableUpdateHeaderExtension header;
 	final private UpdatesProcessor consumer;
 	final private UpdateEventFactory eventFactory;
