@@ -49,13 +49,11 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 
 		private void notifyListeners(ActionEvent e) {
 	        Object[] listeners = listenerList.getListenerList();
-
 	        for (int i=0; i<=listeners.length-2; i+=2) {
 	            if (listeners[i]==ActionListener.class) {
 	                ((ActionListener)listeners[i+1]).actionPerformed(e);
 	            }
 	        }
-
 		}
 	}
 	
@@ -121,10 +119,12 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 
 	@Override
 	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
+		// continue
 	}
 
 	@Override
 	public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
+		// continue
 	}
 
 	@Override
