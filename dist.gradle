@@ -33,6 +33,7 @@ apply from: './mac.dist.gradle'
 apply from: './win.dist.gradle'
 apply from: './bin.dist.gradle'
 apply from: './src.dist.gradle'
+apply from: './linux-packages.gradle'
 
 // meta task
 task dist {
@@ -43,7 +44,8 @@ task dist {
     dependsOn windowsPortableInstaller
     dependsOn macDist
     dependsOn gitinfoDist
-	dependsOn historyDist
+    dependsOn historyDist
+    dependsOn freeplaneDeb
 }
 
 // clean

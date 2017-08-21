@@ -1,3 +1,7 @@
+plugins {
+  id "nebula.ospackage" version "4.4.0"
+}
+
 allprojects {
     // in a multi-project setup, all projects must have the same version number!
     // the real (specific) version number is in freeplane/viewer-resources/version.properties!
