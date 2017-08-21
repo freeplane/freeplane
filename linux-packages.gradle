@@ -1,6 +1,7 @@
 task freeplaneDeb(type: Deb) {
     destinationDir = new File(globalDist)
 
+    packageName = 'freeplane'
     version = distVersion
     release = 1
     
