@@ -36,6 +36,13 @@ task freeplaneDeb(type: Deb) {
 
     from(globalBin) {
         include('**')
+        exclude('freeplane.sh')
+        into('/usr/share/freeplane')
+    }
+
+    from(globalBin) {
+        include('freeplane.sh')
+        fileMode = 0755
      	into('/usr/share/freeplane')
     }
 
