@@ -2,7 +2,7 @@ import org.apache.tools.ant.filters.*
 
 task freeplanelauncherJar(type: Jar) {
      archiveName = 'freeplanelauncher.jar'
-     destinationDir = new File(globalBuild)
+     destinationDir = new File(globalBin)
 
      dependsOn classes
      from (sourceSets.main.output) {
@@ -24,7 +24,7 @@ task copyFreeplaneShellScript(type: Copy) {
          include('freeplane.sh')
          fileMode = 0755
      }
-	 into(globalBuild)
+	 into(globalBin)
 	 filter(FixCrLfFilter.class, eol:FixCrLfFilter.CrLf.newInstance("lf"))
 }	 
 
@@ -54,14 +54,14 @@ task copyLauncherStuff(type: Copy) {
          include('*.exe')
          include('*.ini')
      }
-     into(globalBuild)
+     into(globalBin)
      dependsOn jar
 }
 
 task makeKnopflerfischPermissionDirs {
     doLast {
-        new File(globalBuild, 'fwdir/perms').mkdirs()
-        new File(globalBuild, 'fwdir/condperm').mkdirs()
+        new File(globalBin, 'fwdir/perms').mkdirs()
+        new File(globalBin, 'fwdir/condperm').mkdirs()
     }
 }
 

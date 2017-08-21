@@ -34,14 +34,14 @@ task freeplaneDeb(type: Deb) {
       rename("freeplane.mime", "freeplane")
     }
 
-    from(globalBuild) {
+    from(globalBin) {
         include('**')
      	into('/usr/share/freeplane')
     }
 
     link('/usr/bin/freeplane', '/usr/share/freeplane/freeplane.sh')
 
-    //for (p in subprojects) {
-    //    dependsOn p.tasks.getByPath("build")
-    //}
+    for (p in subprojects) {
+        dependsOn p.tasks.getByPath("build")
+    }
 }

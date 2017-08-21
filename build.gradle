@@ -8,7 +8,7 @@ allprojects {
     version = '1.5'
 	
     // WARNING: this is removed with "gradle clean"!!
-    ext.globalBuild = rootDir.path + '/BUILD'
+    ext.globalBin = rootDir.path + '/BIN'
 
     repositories {
 		maven { url "http://dl.bintray.com/freeplane/freeplane" }
@@ -198,19 +198,19 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
             include("*.jar")
             exclude('*-sources.jar')
         }
-        into(globalBuild + '/plugins/' + pluginid + '/lib/')
+        into(globalBin + '/plugins/' + pluginid + '/lib/')
     }
 
     task copyOSGiManifest(type: Copy) {
         from ("$buildDir/tmp/jar/") {
             include("MANIFEST.MF")
         }
-        into(globalBuild + '/plugins/' + pluginid + '/META-INF/')
+        into(globalBin + '/plugins/' + pluginid + '/META-INF/')
     }
 
     task copyOSGiConfig(type: Copy) {
         from ("OSGI-INF")
-        into(globalBuild + '/plugins/' + pluginid + '/OSGI-INF/')
+        into(globalBin + '/plugins/' + pluginid + '/OSGI-INF/')
     }
 	
     build.dependsOn copyOSGiJars
@@ -245,9 +245,9 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
 
 apply plugin: 'base' // necessary to get the global 'clean' task
 
-// remove globalBuild/**
+// remove globalBin/**
 task cleanBUILD(type: Delete) {
-    delete globalBuild
+    delete globalBin
 }
 clean.dependsOn(cleanBUILD)
 

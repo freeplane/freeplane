@@ -9,10 +9,10 @@ ext.minorVersion = System.getProperty('minor', '')
 ext.distVersion = "$majorVersion${versionStatus.empty?'':'-'+versionStatus}${minorVersion.empty?'':'-pre' + minorVersion}"
 
 task gitinfoDist(type: Copy) {
-    from(globalBuild) {
+    from(globalBin) {
         include('gitinfo.txt')
     }
-    from(globalBuild + '/resources') {
+    from(globalBin + '/resources') {
         include('gitinfo.properties')
     }
     into(globalDist)

@@ -66,10 +66,10 @@ task srcTarGz(type: Tar) {
 
     // these two files must be included because they are generated from git info
     // and git info is not available int src/srcpure distribs!
-    from(globalBuild) {
+    from(globalBin) {
         include('gitinfo.txt')
     }
-    from(globalBuild + '/resources') {
+    from(globalBin + '/resources') {
         include('gitinfo.properties')
     }
 
@@ -135,10 +135,10 @@ task srcpureTarGz(type: Tar) {
 
     // these two files must be included because they are generated from git info
     // and git info is not available int src/srcpure distribs!
-    from(globalBuild) {
+    from(globalBin) {
         include('gitinfo.txt')
     }
-    from(globalBuild + '/resources') {
+    from(globalBin + '/resources') {
         include('gitinfo.properties')
     }
 

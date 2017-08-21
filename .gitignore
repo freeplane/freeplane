@@ -4,6 +4,8 @@
 #Build System files
 /DIST/
 /BUILD*/
+/build/
+/BIN*/
 
 #Ignore everything form IntelliJ
 .idea/

@@ -55,7 +55,7 @@ task copyScripts(type: Copy) {
     from('scripts/') {
         include('**')
     }
-    into(globalBuild + '/scripts')
+    into(globalBin + '/scripts')
 }
 
 javadoc {
@@ -78,17 +78,17 @@ javadoc {
       .include('**/MenuUtils.java')
 
     source = ext.javadocInputFromThisProject + ext.javadocInputFromFreeplaneProject
-    destinationDir = new File(globalBuild + '/doc/api/')
+    destinationDir = new File(globalBin + '/doc/api/')
 }
 
 // TODO: this doesn't work yet!
 /*
 task zipJavadoc(type: Zip) {
   baseName = 'scripting-api'
-  from (globalBuild + '/doc/api/') {
+  from (globalBin + '/doc/api/') {
       include('**')
   }
-  destinationDir = new File(globalBuild)
+  destinationDir = new File(globalBin)
   dependsOn javadoc
 }
 */
