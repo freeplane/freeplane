@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=Freeplane
+Exec=/usr/bin/freeplane %F
+Terminal=false
+Icon=freeplane
+Type=Application
+MimeType=application/x-freeplane;
+Categories=Office;
+GenericName=Freeplane
+Comment=A free tool to structure and organise your information with mind mapping
+Keywords=Mindmaps; Knowledge management; Organize information; Brainstorming; ...;

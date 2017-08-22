@@ -21,16 +21,16 @@ task macDist {}
 
 def defineMacBuildTasks = {boolean includeJavaRuntime -> 
     def taskName = {base -> includeJavaRuntime ? base + '_jre' : base}
-    def build4mac = taskName(rootDir.path + '/BUILD4mac')
-    def macappfullpath = new File(build4mac, 'Freeplane.app').absoluteFile
+    def bin4mac = taskName(rootDir.path + '/BIN4mac')
+    def macappfullpath = new File(bin4mac, 'Freeplane.app').absoluteFile
     
     def macosxapp = tasks.create (taskName('macosxapp')) {
     doFirst {
-        delete build4mac + '/Freeplane.app'
-        mkdir build4mac
+        delete bin4mac + '/Freeplane.app'
+        mkdir bin4mac
 
         ant.appbundler(
-            outputdirectory: build4mac,
+            outputdirectory: bin4mac,
             name: 'Freeplane',
             displayname: 'Freeplane',
             mainclassname: 'org.freeplane.launcher.Launcher',
@@ -50,7 +50,7 @@ def defineMacBuildTasks = {boolean includeJavaRuntime ->
                     runtime(dir: javaHome)
                 }
             }
-            classpath(dir: globalBuild, includes: '*.jar')
+            classpath(dir: globalBin, includes: '*.jar')
             option(value: "-Xmx512m")
             option(value: "-Dapple.laf.useScreenMenuBar=true")
             option(value: "-Xdock:name=Freeplane")
@@ -67,7 +67,7 @@ def defineMacBuildTasks = {boolean includeJavaRuntime ->
 
         def macjavafullpath = macappfullpath.path + '/Contents/Java'
         copy {
-            from(globalBuild) {
+            from(globalBin) {
                  exclude('**/*.bat')
                  exclude('**/*.exe')
                  exclude('*.jar')
@@ -114,10 +114,10 @@ def defineMacBuildTasks = {boolean includeJavaRuntime ->
         destinationDir = new File(globalDist)
         archiveName = taskName('freeplane_macos_bin') + '-' + distVersion + '.zip'
 
-        from(build4mac) {
+        from(bin4mac) {
             exclude('**/JavaAppLauncher')
         }
-        from(build4mac) {
+        from(bin4mac) {
             include('**/JavaAppLauncher')
             fileMode = 0775
         }
@@ -127,7 +127,7 @@ def defineMacBuildTasks = {boolean includeJavaRuntime ->
     }
     
     def cleanMac = tasks.create (taskName('cleanMac'), Delete) {
-        delete build4mac
+        delete bin4mac
     }
 
     if (Os.isFamily(Os.FAMILY_MAC)) {

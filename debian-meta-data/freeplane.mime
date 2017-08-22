@@ -1,0 +1,11 @@
+# The problem is: /etc/mime.types used by /etc/mailcap (which this file is compiled to) does not
+# support magic information (i.e. an XML prefix that distinguishes Freeplane from FreeMind),
+# so we cannot define application/x-freeplane in /etc/mime.types...
+# That's why we have to decide globally for one program if both (FreeMind, Freeplane)  are installed.
+# But since /etc/mailcap is only used for old-style mime programs (see, edit, compose, print),
+# NOT by GNOME/KDE/Xfce/... (freedesktop.org), we don't care too much!
+# Freedesktop.org uses "debian/freeplane.sharedmimeinfo" which supports
+# magic, and so if both programs are installed, the correct program is used
+# for the correct magic (i.e. <map version="freeplane... vs <map>) in GNOME/KDE/Xfce!
+
+application/x-freemind; /usr/bin/freeplane '%s'; test=test -n "$DISPLAY"; description="Freeplane/FreeMind MindMap file"; textualnewlines; nametemplate=%s.mm; priority=7

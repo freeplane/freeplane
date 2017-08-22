@@ -192,14 +192,14 @@ task copyOSGiJars(type: Copy) {
           include("*.jar")
           exclude('*-sources.jar')
      }
-     into(globalBuild + '/core/' + pluginid + '/lib/')
+     into(globalBin + '/core/' + pluginid + '/lib/')
 }
 
 task copyOSGiManifest(type: Copy) {
      from ("$buildDir/tmp/jar/") {
           include("MANIFEST.MF")
      }
-     into(globalBuild + '/core/' + pluginid + '/META-INF/')
+     into(globalBin + '/core/' + pluginid + '/META-INF/')
 }
 
 task viewerJar(type: Jar) {
@@ -297,7 +297,7 @@ task copyExternalResources(type: Copy) {
     from('external-resources') {
         include('**')
     }
-    into(globalBuild + '/resources')
+    into(globalBin + '/resources')
 
     // (exactly) one of these two groups (copy vs. create) is always disabled!
     dependsOn copyGitTxt
@@ -309,7 +309,7 @@ task copyDoc(type: Copy) {
     from('doc/') {
         include('**')
     }
-    into(globalBuild + '/doc')
+    into(globalBin + '/doc')
 }
 
 jar.dependsOn viewerJar

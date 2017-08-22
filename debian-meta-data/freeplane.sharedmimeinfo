@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+
+  <!-- register FreeMind files, but with a lower priority than
+       FreeMind uses, if that is installed -->
+    <mime-type type="application/x-freeplane">
+	<comment xml:lang="cs">FreeMind Mapa</comment>
+	<comment xml:lang="de">FreeMind Map</comment>
+	<comment xml:lang="dk">FreeMind Map</comment>
+	<comment xml:lang="en">FreeMind Map</comment>
+	<comment xml:lang="es">FreeMind Mapa</comment>
+	<comment xml:lang="fr">FreeMind Carte Mentale</comment>
+	<comment xml:lang="hu">FreeMind Térkép</comment>
+	<comment xml:lang="it">FreeMind Mappa</comment>
+	<comment xml:lang="ja">FreeMind マップ</comment>
+	<comment xml:lang="kr">FreeMind 맵</comment>
+	<comment xml:lang="lt">FreeMind Žemėlapis</comment>
+	<comment xml:lang="nl">FreeMind Map</comment>
+	<comment xml:lang="no">FreeMind Map</comment>
+	<comment xml:lang="pl">FreeMind Mapa</comment>
+	<comment xml:lang="pt">FreeMind Mapa</comment>
+	<comment xml:lang="pt">FreeMind Mapa</comment>
+	<comment xml:lang="ru">FreeMind Ассоциативная арта</comment>
+	<comment xml:lang="sl">FreeMind Miselni vzorec</comment>
+	<comment xml:lang="zh_CN">FreeMind 思维导图</comment>
+	<comment xml:lang="zh">FreeMind 心智圖</comment>
+	<!--<icon name="/usr/share/icons/hicolor/scalable/apps/freeplane.svg" />-->
+  <icon name="freeplane"/>
+	<glob pattern="*.mm" />
+	<!-- freemind.xml uses prority 65, and we don't want to override it! -->
+	<magic priority="60">
+		<match type="string" value="&lt;map" offset="0" />
+	</magic>
+	<sub-class-of type="text/plain" />
+    </mime-type>
+
+    <mime-type type="application/x-freeplane">
+	<comment xml:lang="cs">Freeplane Mapa</comment>
+	<comment xml:lang="de">Freeplane Map</comment>
+	<comment xml:lang="dk">Freeplane Map</comment>
+	<comment xml:lang="en">Freeplane Map</comment>
+	<comment xml:lang="es">Freeplane Mapa</comment>
+	<comment xml:lang="fr">Freeplane Carte Mentale</comment>
+	<comment xml:lang="hu">Freeplane Térkép</comment>
+	<comment xml:lang="it">Freeplane Mappa</comment>
+	<comment xml:lang="ja">Freeplane マップ</comment>
+	<comment xml:lang="kr">Freeplane 맵</comment>
+	<comment xml:lang="lt">Freeplane Žemėlapis</comment>
+	<comment xml:lang="nl">Freeplane Map</comment>
+	<comment xml:lang="no">Freeplane Map</comment>
+	<comment xml:lang="pl">Freeplane Mapa</comment>
+	<comment xml:lang="pt">Freeplane Mapa</comment>
+	<comment xml:lang="pt">Freeplane Mapa</comment>
+	<comment xml:lang="ru">Freeplane Ассоциативная арта</comment>
+	<comment xml:lang="sl">Freeplane Miselni vzorec</comment>
+	<comment xml:lang="zh_CN">Freeplane 思维导图</comment>
+	<comment xml:lang="zh">Freeplane 心智圖</comment>
+  <!--	<icon name="/usr/share/icons/hicolor/scalable/apps/freeplane.svg" /> -->
+  <icon name="freeplane"/>
+	<glob pattern="*.mm" />
+	<magic priority="66">
+		<match type="string" value="&lt;map version=&quot;freeplane" offset="0" />
+	</magic>
+	<sub-class-of type="text/plain" />
+    </mime-type>
+</mime-info>
+

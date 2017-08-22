@@ -65,7 +65,7 @@ task copyWindowsPortableInstallerFiles(type: Copy) {
     }
 
     // copy all other files
-    from (globalBuild) {
+    from (globalBin) {
         exclude('*.bat', '*.ini', '*.sh')
         exclude('doc/api/**')
     }

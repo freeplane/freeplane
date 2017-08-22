@@ -1,0 +1,54 @@
+task freeplaneDeb(type: Deb) {
+    destinationDir = new File(globalDist)
+
+    packageName = 'freeplane'
+    version = distVersion + "+upstream"
+    release = 1
+    
+    requires('default-jre | java7-runtime')
+
+    from(rootDir.path + "/freeplane_framework/script/") {
+      include("freeplane.svg")
+      into("/usr/share/icons/hicolor/scalable/apps")
+    }
+
+    from(rootDir.path + "/freeplane_framework/script/") {
+      include("freeplane.png")
+      into("/usr/share/icons/hicolor/32x32/apps")
+    }
+
+    from(rootDir.path + "/debian-meta-data") {
+      include('freeplane.desktop')
+      into('/usr/share/applications')
+    }
+
+    from(rootDir.path + "/debian-meta-data/") {
+      include("freeplane.sharedmimeinfo")
+      into('/usr/share/mime/packages')
+      rename('freeplane.sharedmimeinfo', 'freeplane.xml')
+    }
+
+    from(rootDir.path + "/debian-meta-data/") {
+      include("freeplane.mime")
+      into('/usr/lib/mime/packages')
+      rename("freeplane.mime", "freeplane")
+    }
+
+    from(globalBin) {
+        include('**')
+        exclude('freeplane.sh')
+        into('/usr/share/freeplane')
+    }
+
+    from(globalBin) {
+        include('freeplane.sh')
+        fileMode = 0755
+     	into('/usr/share/freeplane')
+    }
+
+    link('/usr/bin/freeplane', '/usr/share/freeplane/freeplane.sh')
+
+    for (p in subprojects) {
+        dependsOn p.tasks.getByPath("build")
+    }
+}
