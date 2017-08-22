@@ -172,7 +172,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			g.drawImage(cachedImage, imageX, imageY, null);
 		}
 		catch (ClassCastException e) {
-			LogUtils.severe("Disabled bitmap image painting due to java bug. Modify freeplane.sh to run java with option '-Dsun.java2d.xrender=false'");
+			LogUtils.severe("Disabled bitmap image painting due to java bug https://bugs.openjdk.java.net/browse/JDK-8160328. Modify freeplane.sh to run java with option '-Dsun.java2d.xrender=false'");
 			disabledDueToJavaBug = true;
 		}
 		flushImage();
