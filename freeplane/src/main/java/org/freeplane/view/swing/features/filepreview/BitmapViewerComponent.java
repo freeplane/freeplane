@@ -67,6 +67,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	private Dimension maximumSize = null;
 	private boolean center;
 	private final static Object LOCK = new Object();
+	private static boolean disabledDueToJavaBug = false;
 
 	public BitmapViewerComponent(final URI uri) throws MalformedURLException, IOException {
 		url = uri.toURL();
@@ -129,7 +130,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 
 	@Override
 	protected void paintComponent(final Graphics g) {
-		if (componentHasNoArea()) {
+		if (componentHasNoArea() || disabledDueToJavaBug) {
 			return;
 		}
 		if (cachedImage == null && cachedImageWeakRef != null) {
@@ -167,7 +168,13 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 				writeCacheFile();
 			}
 		}
-		g.drawImage(cachedImage, imageX, imageY, null);
+		try {
+			g.drawImage(cachedImage, imageX, imageY, null);
+		}
+		catch (ClassCastException e) {
+			LogUtils.severe("Disabled bitmap image painting due to java bug. Modify freeplane.sh to run java with option '-Dsun.java2d.xrender=false'");
+			disabledDueToJavaBug = true;
+		}
 		flushImage();
 	}
 
