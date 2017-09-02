@@ -11,7 +11,6 @@ import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.view.swing.map.MainView;
@@ -24,7 +23,6 @@ public class AutomaticEdgeStyle {
 	public AutomaticEdgeStyle(NodeView node){
 		MapView map = node.getMap();
 		ModeController modeController = map.getModeController();
-		AutomaticLayoutController automaticLayoutController = modeController.getExtension(AutomaticLayoutController.class);
 		modeController.getExtension(NodeStyleController.class);
 		
 		final NodeView rootView = map.getRoot();
@@ -39,9 +37,9 @@ public class AutomaticEdgeStyle {
 		final int distance;
 		final int nodeColumnWidth;
 		if(map.getLayoutType() == MapViewLayout.OUTLINE){
-			distance = coordinate.x - origin.x;
+			distance = Math.max(0, coordinate.x - origin.x);
 			final int hgapProperty = ResourceController.getResourceController().getLengthProperty("outline_hgap");
-			nodeColumnWidth = map.getZoomed(hgapProperty);
+			nodeColumnWidth = Math.max(1, map.getZoomed(hgapProperty));
 		}
 		else {
 			if(origin.x < coordinate.x ){
