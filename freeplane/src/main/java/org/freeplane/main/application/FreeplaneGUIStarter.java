@@ -164,7 +164,6 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		try {
 			Controller controller = new Controller(applicationResourceController);
 			Controller.setCurrentController(controller);
-			Compat.macAppChanges();
 			controller.addAction(new QuitAction());
 			applicationResourceController.init();
 			LogUtils.createLogger();
@@ -227,6 +226,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			if(freeplaneSurveyProperties.mayAskUserToFillSurveys()) {
 				controller.addApplicationLifecycleListener(new SurveyStarter(freeplaneSurveyProperties, new SurveyRunner(freeplaneSurveyProperties), Math.random()));
 			}
+			Compat.macAppChanges();
 			return controller;
 		}
 		catch (final Exception e) {

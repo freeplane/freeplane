@@ -599,7 +599,7 @@ public class MClipboardController extends ClipboardController {
 	}
 
 	private boolean shouldIgnoreFileListFlavor(final List<File> fileList) {
-		if(fileList.isEmpty())
+		if(fileList == null || fileList.isEmpty())
 			return true;
 		final File file = fileList.get(0);
 		if(file.isDirectory())

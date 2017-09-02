@@ -507,7 +507,8 @@ public class NodeModel{
 	public void setParent(final NodeModel newParent) {
 		if(parent == null && newParent != null && newParent.isAttached())
 	        attach();
-		else if(parent != null && parent.isAttached() &&  (newParent == null || !newParent.isAttached()))
+		else if(parent != null && parent.isAttached() &&  (newParent == null || !newParent.isAttached())
+				|| newParent == null && isAttached())
 	        detach();
 		parent = newParent;
 	}
