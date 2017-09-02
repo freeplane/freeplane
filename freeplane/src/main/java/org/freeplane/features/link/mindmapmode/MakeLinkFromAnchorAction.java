@@ -70,8 +70,10 @@ public class MakeLinkFromAnchorAction extends AFreeplaneAction {
 			final String sourceNodeID = sourceID.substring( sourceID.indexOf("#")+1 );
 			
 			final NodeModel sourceNode = modeControllerForSelectedMap.getMapController().getNodeFromID(sourceNodeID);
-
-			linkController.setLinkTypeDependantLink(sourceNode, targetID.substring(targetID.indexOf("#")));
+			
+			if(sourceNode != null) {
+				linkController.setLinkTypeDependantLink(sourceNode, targetID.substring(targetID.indexOf("#")));
+			}
 			
 		} else {
 		
