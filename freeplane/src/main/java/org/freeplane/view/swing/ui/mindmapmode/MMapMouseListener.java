@@ -56,37 +56,41 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 
 	public void mouseDragged(final MouseEvent e) {
 		final MapView mapView = (MapView) e.getComponent();
-		if (draggedLink != null && mapView.getLayoutType().equals(MapViewLayout.MAP)) {
-			final int deltaX = (int) ((e.getX() - originX) / mapView.getZoom());
-			final int deltaY = (int) ((e.getY() - originY) / mapView.getZoom());
-			double distSqToTarget = 0;
-			double distSqToSource = 0;
-			final NodeModel target = draggedLink.getTarget();
-			final NodeView targetView = mapView.getNodeView(target);
-			final NodeView sourceView = mapView.getNodeView(draggedLink.getSource());
-			if (targetView != null && sourceView != null) {
-				final Point targetLinkPoint = targetView.getLinkPoint(draggedLink.getEndInclination());
-				final Point sourceLinkPoint = sourceView.getLinkPoint(draggedLink.getStartInclination());
-				distSqToTarget = targetLinkPoint.distanceSq(originX, originY);
-				distSqToSource = sourceLinkPoint.distanceSq(originX, originY);
-			}
-			if ((targetView == null || sourceView != null) && distSqToSource <= distSqToTarget * 2.25) {
-				final Point changedInclination = draggedLink.getStartInclination();
-				draggedLink.changeInclination(deltaX, deltaY, draggedLink.getSource(), changedInclination);
-				draggedLink.setStartInclination(changedInclination);
-			}
-			if ((sourceView == null || targetView != null) && distSqToTarget <= distSqToSource * 2.25) {
-				final Point changedInclination = draggedLink.getEndInclination();
-				draggedLink.changeInclination(deltaX, deltaY, target, changedInclination);
-				draggedLink.setEndInclination(changedInclination);
-			}
-			originX = e.getX();
-			originY = e.getY();
-			mapView.repaintVisible();
-		}
-		else {
+		if (draggedLink == null || !mapView.getLayoutType().equals(MapViewLayout.MAP)) {
 			super.mouseDragged(e);
+			return;
 		}
+		final NodeModel target = draggedLink.getTarget();
+		if(target == null) {
+			super.mouseDragged(e);
+			return;
+		}
+		final int deltaX = (int) ((e.getX() - originX) / mapView.getZoom());
+		final int deltaY = (int) ((e.getY() - originY) / mapView.getZoom());
+		double distSqToTarget = 0;
+		double distSqToSource = 0;
+		final NodeView targetView = mapView.getNodeView(target);
+		final NodeView sourceView = mapView.getNodeView(draggedLink.getSource());
+		if (targetView != null && sourceView != null) {
+			final Point targetLinkPoint = targetView.getLinkPoint(draggedLink.getEndInclination());
+			final Point sourceLinkPoint = sourceView.getLinkPoint(draggedLink.getStartInclination());
+			distSqToTarget = targetLinkPoint.distanceSq(originX, originY);
+			distSqToSource = sourceLinkPoint.distanceSq(originX, originY);
+		}
+		if ((targetView == null || sourceView != null) && distSqToSource <= distSqToTarget * 2.25) {
+			final Point changedInclination = draggedLink.getStartInclination();
+			draggedLink.changeInclination(deltaX, deltaY, draggedLink.getSource(), changedInclination);
+			draggedLink.setStartInclination(changedInclination);
+		}
+		if ((sourceView == null || targetView != null) && distSqToTarget <= distSqToSource * 2.25) {
+			final Point changedInclination = draggedLink.getEndInclination();
+			draggedLink.changeInclination(deltaX, deltaY, target, changedInclination);
+			draggedLink.setEndInclination(changedInclination);
+		}
+		originX = e.getX();
+		originY = e.getY();
+		mapView.repaintVisible();
+
 	}
 
 	public void mousePressed(final MouseEvent e) {
