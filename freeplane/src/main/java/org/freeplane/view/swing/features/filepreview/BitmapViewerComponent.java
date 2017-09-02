@@ -252,11 +252,17 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	}
 
 	private void logImageReadingException(final IOException e) {
+		if((e instanceof FileNotFoundException) || (e instanceof IIOException)) {
+			LogUtils.warn(e.getMessage());
+			return;
+		}
 		final Throwable cause = e.getCause();
-		if((cause instanceof FileNotFoundException) || (cause instanceof IIOException))
+		if((cause instanceof FileNotFoundException) || (cause instanceof IIOException)) {
 			LogUtils.warn(cause.getMessage());
-		else
-			LogUtils.severe(e);
+			return;
+		}
+		
+		LogUtils.severe(e);
 	}
 
 	private void flushImage() {
