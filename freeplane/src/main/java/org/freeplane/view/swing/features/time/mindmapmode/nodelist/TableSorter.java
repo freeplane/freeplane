@@ -145,8 +145,8 @@ class TableSorter extends AbstractTableModel {
 			final JTableHeader h = (JTableHeader) e.getSource();
 			final TableColumnModel columnModel = h.getColumnModel();
 			final int viewColumn = columnModel.getColumnIndexAtX(e.getX());
-			final int column = columnModel.getColumn(viewColumn).getModelIndex();
-			if (column != -1) {
+			if (viewColumn != -1) {
+				final int column = columnModel.getColumn(viewColumn).getModelIndex();
 				int status = getSortingStatus(column);
 				if (!e.isControlDown()) {
 					cancelSorting();
