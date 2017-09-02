@@ -662,6 +662,11 @@ public abstract class MainView extends ZoomableLabel {
 			final NodeView nodeView = getNodeView();
 			if(nodeView.isRoot())
 				return false;
+			final NodeModel node = nodeView.getModel();
+			if(node.getParentNode() == null ) {
+				LogUtils.severe("Node" + node + " has lost parent");
+				return false;
+			}
 			if (MapViewLayout.OUTLINE.equals(nodeView.getMap().getLayoutType()))
 				return false;
 			final int draggingWidth = getDraggingWidth();

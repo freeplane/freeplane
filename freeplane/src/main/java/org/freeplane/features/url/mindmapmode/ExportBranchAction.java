@@ -139,15 +139,14 @@ class ExportBranchAction extends AFreeplaneAction {
 					}
 
 					public void act() {
-						existingNode.setParent(null);
 						existingNode.setFolded(false);
-						mMapController.newModel(existingNode);
 					}
 				};
 				Controller.getCurrentModeController().execute(actor, parentMap);
 			}
-			final MapModel map = existingNode.getMap();
-			IExtension[] oldExtensions = map.getRootNode().getSharedExtensions().values().toArray(new IExtension[]{});
+			mMapController.newModel(existingNode);
+			final MapModel newMap = existingNode.getMap();
+			IExtension[] oldExtensions = newMap.getRootNode().getSharedExtensions().values().toArray(new IExtension[]{});
 			for(final IExtension extension : oldExtensions){
 				final Class<? extends IExtension> clazz = extension.getClass();
 				if(MapExtensions.isMapExtension(clazz)){
@@ -161,13 +160,15 @@ class ExportBranchAction extends AFreeplaneAction {
 					existingNode.addExtension(extension);
 				}
 			}
-			((MFileManager) UrlManager.getController()).save(map, chosenFile);
+			((MFileManager) UrlManager.getController()).save(newMap, chosenFile);
 			final NodeModel newNode = mMapController.addNewNode(parent, nodePosition, existingNode.isLeft());
 			((MTextController) TextController.getController()).setNodeText(newNode, existingNode.getText());
 			modeController.undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, existingNode, newNode);
-			map.getFile();
+			newMap.getFile();
 			((MLinkController) LinkController.getController()).setLink(newNode, newUri, LinkController.LINK_ABSOLUTE);
-			map.destroy();
+			newMap.destroy();
+			existingNode.setParent(null);
+			mMapController.select(newNode);
 		}
 	}
 

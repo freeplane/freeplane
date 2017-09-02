@@ -87,7 +87,7 @@ class CollectionBoxController <T extends NamedElement<T>> {
 		btnMove = createMoveButton(elementName);
 		btnCopy = createCopyButton(elementName);
 
-		components = new JComponent[]{comboBoxCollectionNames, lblElementCounter, btnNewElement, btnDeleteElement, btnMoveUp, btnMoveDown, btnMove};
+		components = new JComponent[]{comboBoxCollectionNames, lblElementCounter, btnNewElement, btnDeleteElement, btnMoveUp, btnMoveDown, btnMove, btnCopy};
 		editingComponents = new JComponent[] { btnNewElement, btnDeleteElement, btnMoveUp, btnMoveDown, btnMove, btnCopy };
 		disableUiElements();
 		collectionChangeListener = new CollectionChangeListener<T>() {
