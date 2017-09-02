@@ -210,7 +210,12 @@ public class UrlManager implements IExtension {
 			LogUtils.warn(ex);
 		}
 		catch (final RuntimeException ex) {
-			LogUtils.severe(ex);
+			try {
+				final String urlString = url.toString();
+				LogUtils.severe("Can not load url " + urlString, ex);
+			} catch (Exception e) {
+				LogUtils.severe("Can not load url", ex);
+			}
 		}
 		finally {
 			FileUtils.silentlyClose(urlStreamReader);
