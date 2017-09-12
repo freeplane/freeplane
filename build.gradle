@@ -18,7 +18,6 @@ allprojects {
         flatDir name: 'localGitDepsRepository',
                 dirs: [rootDir.path + "/freeplane/lib",
                        rootDir.path + "/freeplane_plugin_jsyntaxpane/lib",
-                       rootDir.path + "/freeplane_plugin_latex/lib",
                        rootDir.path + "/freeplane_plugin_svg/lib"]
     }
 
