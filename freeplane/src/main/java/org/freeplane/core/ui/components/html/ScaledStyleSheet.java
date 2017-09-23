@@ -40,6 +40,8 @@ public class ScaledStyleSheet extends StyleSheet{
     }
 
 	private float getFontScaleFactor(AttributeSet a) {
+		if(a == null)
+			return UITools.FONT_SCALE_FACTOR;
 		final Object attribute = a.getAttribute(CSS.Attribute.FONT_SIZE);
 		if(attribute == null)
 			return UITools.FONT_SCALE_FACTOR;
