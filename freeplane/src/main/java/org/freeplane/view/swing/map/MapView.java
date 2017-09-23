@@ -711,7 +711,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public Object detectCollision(final Point p) {
-		if (arrowLinkViews == null && ! showConnectors) {
+		if (arrowLinkViews == null) {
 			return null;
 		}
 		for (int i = 0; i < arrowLinkViews.size(); ++i) {
