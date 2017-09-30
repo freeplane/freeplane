@@ -23,12 +23,12 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.net.URI;
 
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.ui.ViewController;
 
 import com.apple.eawt.*;
 import com.apple.eawt.AppEvent.AboutEvent;
@@ -79,7 +79,8 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 	
 	public void handleQuitRequestWith(QuitEvent event, QuitResponse response) {
 		try {
-			controller.quit();
+			if(! isStarting())
+				controller.quit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -91,8 +92,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		URI uri = event.getURI();
 		
 		try {
-			ViewController viewController = controller.getViewController();
-			if(viewController == null) {
+			if(isStarting()) {
 				// restore at startup:
 				loadedMapCounter++;
 				System.setProperty("org.freeplane.param" + loadedMapCounter, uri.toString());				
@@ -107,7 +107,9 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 
 	
 	public void handlePreferences(PreferencesEvent event) {
-		getModeController().getAction("ShowPreferencesAction").actionPerformed(null);
+		AFreeplaneAction action = getModeController().getAction("ShowPreferencesAction");
+		if(action != null)
+			action.actionPerformed(null);
 		
 	}
 
@@ -121,8 +123,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 
 	private void openFile(String filePath) {
 		try {
-			ViewController viewController = controller.getViewController();
-			if(viewController == null) {
+			if(isStarting()) {
 				// restore at startup:
 				loadedMapCounter++;
 				System.setProperty("org.freeplane.param" + loadedMapCounter, filePath);				
@@ -135,9 +136,15 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		}
 	}
 
+	private boolean isStarting() {
+		return controller.getViewController() == null;
+	}
+
 	
 	public void handleAbout(AboutEvent event) {
-		getModeController().getController().getAction("AboutAction").actionPerformed(null);
+		AFreeplaneAction action = getModeController().getController().getAction("AboutAction");
+		if(action != null)
+			action.actionPerformed(null);
 		
 	}
 }
