@@ -2,6 +2,7 @@
 1.6.8
 ===============================
 Fix opening maps on start for mac os
+Drag and drop of image file holding Ctrl+Shift creates a link without inserting the image into the map
 
 ===============================
 1.6.7
