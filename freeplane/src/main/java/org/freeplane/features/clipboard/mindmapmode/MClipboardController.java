@@ -136,7 +136,7 @@ public class MClipboardController extends ClipboardController {
 				}
 				else
 					file = sourceFile;
-				if(! pasteImagesFromFiles || !viewerController.paste(file, target, PasteMode.valueOf(asSibling), isLeft)) {
+				if(! pasteImagesFromFiles || dropAction == DnDConstants.ACTION_LINK || !viewerController.paste(file, target, PasteMode.valueOf(asSibling), isLeft)) {
 					final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 					final NodeModel node = mapController.newNode(file.getName(), target.getMap());
 					((MLinkController) LinkController.getController()).setLinkTypeDependantLink(node, file);
