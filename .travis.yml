@@ -1,6 +1,9 @@
 language: java
 jdk:
+  - openjdk7
+  - openjdk8
   - oraclejdk8
+  - oraclejdk9
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
