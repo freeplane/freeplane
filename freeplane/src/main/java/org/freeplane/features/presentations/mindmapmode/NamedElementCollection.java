@@ -167,6 +167,10 @@ public class NamedElementCollection<T extends NamedElement<T>> implements Iterab
 				else
 					throw new NoSuchElementException();
 			}
+			
+			public void remove() {
+			        throw new UnsupportedOperationException("remove");
+			}
 		};
 	}
 
