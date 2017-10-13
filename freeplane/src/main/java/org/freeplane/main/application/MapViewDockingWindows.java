@@ -223,7 +223,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		contentPaneComponentProperties.setInsets(null);
 		contentPaneComponentProperties.setBorder(null);
 
-		Font tabFont = new Font("Dialog", 0, 10);
+		Font tabFont = new Font(Font.DIALOG, 0, 10);
 		tabFont = UITools.scaleFontInt(tabFont, 0.8);
 		TitledTabProperties titledTabProperties = overwrittenProperties.getTabWindowProperties().getTabProperties().getTitledTabProperties();
 		titledTabProperties.getHighlightedProperties().getComponentProperties().setFont(tabFont);

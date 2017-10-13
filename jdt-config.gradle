@@ -10,6 +10,7 @@ subprojects {
             file {
                 withProperties { properties ->
                     properties.setProperty('org.eclipse.jdt.core.compiler.problem.invalidJavadocTags', 'disabled')
+                    properties.setProperty('org.eclipse.jdt.core.compiler.problem.forbiddenReference', 'warning')
                 }
             }
         }

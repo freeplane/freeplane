@@ -45,6 +45,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -91,6 +92,7 @@ import org.freeplane.features.time.TimeComboBoxEditor;
  */
 abstract public class FrameController implements ViewController {
 
+	private static final double DEFAULT_SCALING_FACTOR = 0.8;
 	private static final Quantity<LengthUnits> ICON_SIZE = new Quantity<LengthUnits>(12, LengthUnits.pt);
 
 
@@ -547,8 +549,23 @@ abstract public class FrameController implements ViewController {
 
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
 		
-		if(supportHidpi)
-			scaleDefaultUIFonts();
+		final ResourceController resourceController = ResourceController.getResourceController();
+
+		if (!resourceController.getBooleanProperty("hugeFontsFixed", false)) {
+			if ("100".equals(resourceController.getProperties().get(UITools.MENU_ITEM_FONT_SIZE_PROPERTY))) {
+				resourceController.getProperties().remove(UITools.MENU_ITEM_FONT_SIZE_PROPERTY);
+			}
+			resourceController.setProperty("hugeFontsFixed", true);
+		}
+
+		int lookAndFeelDefaultMenuItemFontSize = getLookAndFeelDefaultMenuItemFontSize();
+		final long defaultMenuItemSize = Math.round(lookAndFeelDefaultMenuItemFontSize * DEFAULT_SCALING_FACTOR);
+		resourceController.setDefaultProperty(UITools.MENU_ITEM_FONT_SIZE_PROPERTY, Long.toString(defaultMenuItemSize));
+
+		if(supportHidpi) {
+			double scalingFactor = calculateFontSizeScalingFactor(lookAndFeelDefaultMenuItemFontSize);
+			scaleDefaultUIFonts(scalingFactor);
+		}
 
 		// Workaround for https://bugs.openjdk.java.net/browse/JDK-8134828
 		// Scrollbar thumb disappears with Nimbus L&F
@@ -580,13 +597,36 @@ abstract public class FrameController implements ViewController {
 			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
 	}
 	
-	private static void scaleDefaultUIFonts() {
-        Set<Object> keySet = UIManager.getLookAndFeelDefaults().keySet();
+	private static int getLookAndFeelDefaultMenuItemFontSize() {
+		int lookAndFeelDefaultMenuItemFontSize = 10;
+		Font uiDefaultMenuItemFont = UIManager.getDefaults().getFont("MenuItem.font");
+		if(uiDefaultMenuItemFont != null) {
+			lookAndFeelDefaultMenuItemFontSize = uiDefaultMenuItemFont.getSize();
+		}
+		return lookAndFeelDefaultMenuItemFontSize;
+	}
+
+	final private static int UNKNOWN = -1;
+
+	private static double calculateFontSizeScalingFactor(int lookAndFeelDefaultMenuItemFontSize) {
+		final ResourceController resourceController = ResourceController.getResourceController();
+		final int userDefinedMenuItemFontSize = resourceController.getIntProperty(UITools.MENU_ITEM_FONT_SIZE_PROPERTY, UNKNOWN);
+
+		final double scalingFactor;
+		if(userDefinedMenuItemFontSize == UNKNOWN){
+			scalingFactor = DEFAULT_SCALING_FACTOR;
+		}
+		else{
+			scalingFactor = ((double)userDefinedMenuItemFontSize) / lookAndFeelDefaultMenuItemFontSize;
+		}
+		return scalingFactor;
+	}
+
+	private static void scaleDefaultUIFonts(double scalingFactor) {
+		Set<Object> keySet = UIManager.getLookAndFeelDefaults().keySet();
 		Object[] keys = keySet.toArray(new Object[keySet.size()]);
 		final UIDefaults uiDefaults = UIManager.getDefaults();
 		final UIDefaults lookAndFeelDefaults = UIManager.getLookAndFeel().getDefaults();
-		
-		double scalingFactor = calculateFontSizeScalingFactor();
 		
 		for (Object key : keys) {
 		    if (isFontKey(key)) {
@@ -599,28 +639,8 @@ abstract public class FrameController implements ViewController {
 		    }
 		
 		}
-    }
-
-	private static double calculateFontSizeScalingFactor() {
-		final int unknown = -1;
-		final int userDefinedMenuItemFontSize = ResourceController.getResourceController().getIntProperty(UITools.MENU_ITEM_FONT_SIZE_PROPERTY, unknown);
-		double scalingFactor = 0.8;
-		
-		int lookAndFeelDefaultMenuItemFontSize = 10;
-		Font uiDefaultMenuItemFont = UIManager.getDefaults().getFont("MenuItem.font");
-		if(uiDefaultMenuItemFont != null) {
-			lookAndFeelDefaultMenuItemFontSize = uiDefaultMenuItemFont.getSize();
-		}
-		
-		if(userDefinedMenuItemFontSize == unknown){
-			final long defaultMenuItemSize = Math.round(lookAndFeelDefaultMenuItemFontSize * scalingFactor);
-			ResourceController.getResourceController().setDefaultProperty(UITools.MENU_ITEM_FONT_SIZE_PROPERTY, Long.toString(defaultMenuItemSize));
-		}
-		else{
-			scalingFactor = ((double)userDefinedMenuItemFontSize) / lookAndFeelDefaultMenuItemFontSize;
-		}
-		return scalingFactor;
 	}
+
 
 	private static boolean isFontKey(Object key) {
 		return key != null && key.toString().toLowerCase().endsWith("font");

@@ -163,9 +163,13 @@ public class NamedElementCollection<T extends NamedElement<T>> implements Iterab
 			@Override
 			public T next() {
 				if(hasNext())
-					return getElement(index++);
+					return NamedElementCollection.this.getElement(index++);
 				else
 					throw new NoSuchElementException();
+			}
+			
+			public void remove() {
+			        throw new UnsupportedOperationException("remove");
 			}
 		};
 	}

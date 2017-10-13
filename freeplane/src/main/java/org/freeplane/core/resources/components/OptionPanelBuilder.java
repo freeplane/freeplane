@@ -64,7 +64,6 @@ public class OptionPanelBuilder {
 		private final Vector<?> displayedItems;
 		private final String name;
 		private int verticalMargin;
-		private ListCellRenderer<?> renderer;
 		@SuppressWarnings("rawtypes")
 		private Class enumClass;
 
@@ -73,7 +72,6 @@ public class OptionPanelBuilder {
 			this.displayedItems = displayedItems;
 			this.name = name;
 			verticalMargin = 0;
-			renderer = null;
 		}
 
 		public IPropertyControl createControl() {
@@ -81,18 +79,11 @@ public class OptionPanelBuilder {
 			final ComboProperty comboProperty = enumClass != null ? ComboProperty.of(name, enumClass) : new ComboProperty(name, choices, displayedItems);
 			if(verticalMargin > 0)
 				comboProperty.setVerticalMargin(verticalMargin);
-			if(renderer != null)
-				comboProperty.setRenderer(renderer);
 			return comboProperty;
 		}
 
 		public ComboPropertyCreator withVerticalMargin(int verticalMargin) {
 			this.verticalMargin = verticalMargin;
-			return this;
-		}
-
-		public ComboPropertyCreator withListCellRenderer(ListCellRenderer<?> createRenderer) {
-			this.renderer = createRenderer;
 			return this;
 		}
 

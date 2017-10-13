@@ -254,7 +254,7 @@ class FileRevisionsDialog extends JDialog {
 		final String html = HtmlUtils.plainToHTML(text);
 		final JLabel textArea = new JLabel(html);
 		textArea.setAlignmentX(0.5f);
-		textArea.setFont(new Font("Dialog", Font.BOLD, 12));
+		textArea.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
 		textArea.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		return textArea;
 	}
