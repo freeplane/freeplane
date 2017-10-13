@@ -9,7 +9,8 @@ dependencies {
 }
 
 tasks.withType(JavaCompile) {
-	options.compilerArgs << '-parameters'
+	if (JavaVersion.current().isJava8Compatible())
+		options.compilerArgs << '-parameters'
 }
 
 jar {
