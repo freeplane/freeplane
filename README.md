@@ -1,6 +1,8 @@
 Freeplane
 =========
 
+[![Build Status](https://travis-ci.org/inglor/freeplane.svg?branch=add-travis-ci)](https://travis-ci.org/inglor/freeplane)
+
 [Freeplane](http://freeplane.sourceforge.net) is a free and open source software application that supports thinking, sharing information and getting things done at work, in school and at home. The core of the software is tools for mind mapping (also known as concept mapping or information mapping) and using mapped information. Freeplane is written in Java using OSGi and Java Swing. It runs on any operating system that has a current version of Java installed. It can be run locally or portably from removable storage like a USB drive. 
 
 We use github only as the main code repository, all other project parts are hosted at the [source forge](https://sourceforge.net/projects/freeplane/). So all bugs and feature requests are managed in a [separate issue tracker](https://sourceforge.net/p/freeplane/_list/tickets). There is a drop-down box for selecting different types of issues. Another source of inspiration are our [new forum](https://sourceforge.net/p/freeplane/discussion/758437/) and [old forum](https://sourceforge.net/p/freeplane/oldforum/). Some users write their ideas there. Every contributor and every team member freely decides what task he is going to work on, but for making the best decision we can communicate our self set goals in the above forum. It is supposed to enable early discussions and community feedback and also to motivate you and other people. 
