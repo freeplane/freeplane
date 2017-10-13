@@ -1,7 +1,7 @@
 Freeplane
 =========
 
-[![Build Status](https://travis-ci.org/freeplane/freeplane.svg)](https://travis-ci.org/freeplane/freeplane)
+[![Build Status](https://api.travis-ci.org/freeplane/freeplane.svg?branch=1.6.x)](https://travis-ci.org/freeplane/freeplane)
 
 [Freeplane](http://freeplane.sourceforge.net) is a free and open source software application that supports thinking, sharing information and getting things done at work, in school and at home. The core of the software is tools for mind mapping (also known as concept mapping or information mapping) and using mapped information. Freeplane is written in Java using OSGi and Java Swing. It runs on any operating system that has a current version of Java installed. It can be run locally or portably from removable storage like a USB drive. 
 
