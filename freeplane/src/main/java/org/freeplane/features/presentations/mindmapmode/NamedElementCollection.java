@@ -167,12 +167,9 @@ public class NamedElementCollection<T extends NamedElement<T>> implements Iterab
 				else
 					throw new NoSuchElementException();
 			}
-
-			@Override
+			
 			public void remove() {
-				if (index > getSize())
-					throw new NoSuchElementException();
-				NamedElementCollection.this.removeCurrentElement();
+			        throw new UnsupportedOperationException("remove");
 			}
 		};
 	}

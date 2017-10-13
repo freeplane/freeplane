@@ -551,12 +551,11 @@ abstract public class FrameController implements ViewController {
 		
 		final ResourceController resourceController = ResourceController.getResourceController();
 
-		@SuppressWarnings("unused")
-		boolean removeBadValueForABugFix = false;
-		if (resourceController.getProperties().containsKey(UITools.MENU_ITEM_FONT_SIZE_PROPERTY)
-				&& Objects.equals(resourceController.getProperties().get(UITools.MENU_ITEM_FONT_SIZE_PROPERTY), "100")) {
-			resourceController.getProperties().remove(UITools.MENU_ITEM_FONT_SIZE_PROPERTY);
-			removeBadValueForABugFix = true;
+		if (!resourceController.getBooleanProperty("hugeFontsFixed", false)) {
+			if ("100".equals(resourceController.getProperties().get(UITools.MENU_ITEM_FONT_SIZE_PROPERTY))) {
+				resourceController.getProperties().remove(UITools.MENU_ITEM_FONT_SIZE_PROPERTY);
+			}
+			resourceController.setProperty("hugeFontsFixed", true);
 		}
 
 		int lookAndFeelDefaultMenuItemFontSize = getLookAndFeelDefaultMenuItemFontSize();

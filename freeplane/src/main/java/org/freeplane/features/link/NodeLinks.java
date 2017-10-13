@@ -217,11 +217,11 @@ public class NodeLinks implements IExtension {
 			final NodeModel linkSource = link.getSource();
 			if(linkSource.equals(node)) {
 				mapLinks.remove(link);
-				linkIterator.remove();
 				for(NodeModel newSource : node.subtreeClones()){
 					if(node != newSource && ! newSource.isDescendantOf(deletionRoot)) {
 						final NodeLinkModel cloneForSource = link.cloneForSource(newSource);
 						if(cloneForSource != null){
+							linkIterator.remove();
 							linkIterator.add(cloneForSource);
 							mapLinks.add(cloneForSource);
 							continue LINKS;
