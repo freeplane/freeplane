@@ -16,13 +16,22 @@ public class MapUpdateTimerFactorySpec {
 
 	@Test
 	public void setsTimerHeaderToMapExtension() throws Exception {
-		MapUpdateTimerFactory uut = new MapUpdateTimerFactory(null, null, 0);
+		MapUpdateTimerFactory uut = new MapUpdateTimerFactory(null, 0);
 		final ModifiableUpdateHeaderExtension header = ModifiableUpdateHeaderExtension.create()
 				.setMapId("mapId").setMapRevision(1L);
 		when(map.getExtension(ModifiableUpdateHeaderExtension.class)).thenReturn(header);
 
-		final MapUpdateTimer timer = uut.create(map);
+		MapUpdateTimer timer = uut.createTimer(map);
 		
 		assertThat(timer).hasFieldOrPropertyWithValue("header", header);
+	}
+
+	@Test
+	public void createsOnlyOneTimerForAGivenMap() throws Exception {
+		MapUpdateTimerFactory uut = new MapUpdateTimerFactory(null, 0);
+		MapUpdateTimer timer1 = uut.createTimer(map);
+		MapUpdateTimer timer2 = uut.createTimer(map);
+		
+		assertThat(timer1).isSameAs(timer2);
 	}
 }

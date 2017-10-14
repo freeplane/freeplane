@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.batch;
+package org.freeplane.plugin.collaboration.client.event.children;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -15,6 +15,10 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.TestData;
+import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
+import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
@@ -26,7 +30,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MapUpdateTimerSpec {
+public class ChildrenUpdateGeneratorSpec {
 	
 	private static final int TIMEOUT = 100;
 
@@ -67,7 +71,8 @@ public class MapUpdateTimerSpec {
 
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
 		
-		MapUpdateTimer uut = new MapUpdateTimer(consumer, eventFactory, DELAY_MILLIS, header);
+		MapUpdateTimer uut1 = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
+		ChildrenUpdateGenerator uut = new ChildrenUpdateGenerator(uut1, eventFactory);
 		uut.onNodeInserted(parent, child);
 		
 		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
@@ -88,7 +93,8 @@ public class MapUpdateTimerSpec {
 
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
 		
-		MapUpdateTimer uut = new MapUpdateTimer(consumer, eventFactory, DELAY_MILLIS, header);
+		MapUpdateTimer uut1 = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
+		ChildrenUpdateGenerator uut = new ChildrenUpdateGenerator(uut1, eventFactory);
 		
 		uut.onNodeInserted(parent, child);
 		uut.onNodeInserted(parent, child);
@@ -105,7 +111,8 @@ public class MapUpdateTimerSpec {
 		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
 		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
-		MapUpdateTimer uut = new MapUpdateTimer(consumer, eventFactory, DELAY_MILLIS, header);
+		MapUpdateTimer uut1 = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
+		ChildrenUpdateGenerator uut = new ChildrenUpdateGenerator(uut1, eventFactory);
 		uut.onNodeInserted(parent, child);
 		verifyZeroInteractions(eventFactory);
 		consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
@@ -124,7 +131,8 @@ public class MapUpdateTimerSpec {
 		when(eventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
 
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
-		MapUpdateTimer uut = new MapUpdateTimer(consumer, eventFactory, DELAY_MILLIS, header);
+		MapUpdateTimer uut1 = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
+		ChildrenUpdateGenerator uut = new ChildrenUpdateGenerator(uut1, eventFactory);
 		uut.onNodeInserted(parent, child);
 		uut.onNodeInserted(parent2, child2);
 		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
@@ -145,7 +153,8 @@ public class MapUpdateTimerSpec {
 		when(eventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
 
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(2);
-		MapUpdateTimer uut = new MapUpdateTimer(consumer, eventFactory, DELAY_MILLIS, header);
+		MapUpdateTimer uut1 = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
+		ChildrenUpdateGenerator uut = new ChildrenUpdateGenerator(uut1, eventFactory);
 		uut.onNodeInserted(parent, child);
 		Thread.sleep(TIMEOUT);
 		uut.onNodeInserted(parent2, child2);
@@ -171,7 +180,8 @@ public class MapUpdateTimerSpec {
 
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
 		
-		MapUpdateTimer uut = new MapUpdateTimer(consumer, eventFactory, DELAY_MILLIS, header);
+		MapUpdateTimer uut1 = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
+		ChildrenUpdateGenerator uut = new ChildrenUpdateGenerator(uut1, eventFactory);
 		uut.onNodeInserted(parent, child);
 		uut.onNodeInserted(parent2, child2);
 		

@@ -1,24 +1,31 @@
 package org.freeplane.plugin.collaboration.client.event.batch;
 
-import org.freeplane.features.map.MapModel;
-import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
+import java.util.WeakHashMap;
 
-class MapUpdateTimerFactory {
+import org.freeplane.features.map.MapModel;
+
+public class MapUpdateTimerFactory {
+	WeakHashMap<MapModel, MapUpdateTimer> timers = new WeakHashMap<>();
 	private UpdatesProcessor consumer;
-	private UpdateEventFactory eventFactory;
 	private int delay;
 
-	MapUpdateTimerFactory(UpdatesProcessor consumer, UpdateEventFactory eventFactory, int delay) {
+	MapUpdateTimerFactory(UpdatesProcessor consumer, int delay) {
 		super();
 		this.consumer = consumer;
-		this.eventFactory = eventFactory;
 		this.delay = delay;
 	}
 	
-	MapUpdateTimer create(MapModel map) {
-		final ModifiableUpdateHeaderExtension header = map.getExtension(ModifiableUpdateHeaderExtension.class);
-		MapUpdateTimer timer = new MapUpdateTimer(consumer, eventFactory, delay, header);
+	public MapUpdateTimer createTimer(MapModel map) {
+		MapUpdateTimer timer;
+		if(timers.containsKey(map))
+			timer = timers.get(map);
+		else {
+			final ModifiableUpdateHeaderExtension header = map.getExtension(ModifiableUpdateHeaderExtension.class);
+			timer = new MapUpdateTimer(consumer, delay, header);
+			timers.put(map, timer);
+		}
 		return timer;
+
 	}
 
 }

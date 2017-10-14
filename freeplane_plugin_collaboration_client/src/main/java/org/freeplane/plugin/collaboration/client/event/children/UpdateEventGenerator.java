@@ -1,6 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.batch;
-
-import java.util.WeakHashMap;
+package org.freeplane.plugin.collaboration.client.event.children;
 
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeChangeListener;
@@ -10,29 +8,24 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
-import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
+import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
 
 public class UpdateEventGenerator implements IMapChangeListener, INodeChangeListener{
-	WeakHashMap<MapModel, MapUpdateTimer> timers = new WeakHashMap<>();
 	private MapUpdateTimerFactory timerFactory;
+	private ChildrenUpdateGeneratorFactory generatorFactory;
 	
-	public UpdateEventGenerator(MapUpdateTimerFactory timerFactory) {
+	public UpdateEventGenerator(MapUpdateTimerFactory timerFactory, ChildrenUpdateGeneratorFactory generatorFactory) {
 		super();
 		this.timerFactory = timerFactory;
+		this.generatorFactory = generatorFactory;
 	}
 
-	private MapUpdateTimer getTimer(MapModel map) {
-		if(timers.containsKey(map))
-			return timers.get(map);
-		final MapUpdateTimer timer = this.timerFactory.create(map);
-		timers.put(map, timer);
-		return timer;
+	private ChildrenUpdateGenerator getTimer(MapModel map) {
+		final MapUpdateTimer timer = timerFactory.createTimer(map);
+		return generatorFactory.create(timer);
 	}
 	
-	public UpdateEventGenerator(UpdatesProcessor consumer, UpdateEventFactory eventFactory, int delay) {
-		this(new MapUpdateTimerFactory(consumer, eventFactory, delay));
-	}
-
 	@Override
 	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 		onChangedStructure(nodeDeletionEvent.parent);	
@@ -40,20 +33,20 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 
 	@Override
 	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-		final MapUpdateTimer timer = getTimer(parent.getMap());
+		final ChildrenUpdateGenerator timer = getTimer(parent.getMap());
 		timer.onNodeInserted(parent, child);
 	}
 
 	private void onChangedStructure(NodeModel parent) {
-		final MapUpdateTimer timer = getTimer(parent.getMap());
+		final ChildrenUpdateGenerator timer = getTimer(parent.getMap());
 		timer.onChangedStructure(parent);
 	}
 
 	@Override
 	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-		final MapUpdateTimer oldMapTimer = getTimer(nodeMoveEvent.oldParent.getMap());
+		final ChildrenUpdateGenerator oldMapTimer = getTimer(nodeMoveEvent.oldParent.getMap());
 		oldMapTimer.onChangedStructure(nodeMoveEvent.oldParent);		
-		final MapUpdateTimer newMapTimer = getTimer(nodeMoveEvent.newParent.getMap());
+		final ChildrenUpdateGenerator newMapTimer = getTimer(nodeMoveEvent.newParent.getMap());
 		newMapTimer.onChangedStructure(nodeMoveEvent.newParent);
 	}
 
