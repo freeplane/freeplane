@@ -20,6 +20,7 @@ public class ChildrenUpdateProcessor implements UpdateProcessor {
 		this.nodeFactory = nodeFactory;
 	}
 
+	@Override
 	public void onMapUpdated(MapUpdated event) {
 		onMapUpdated((ChildrenUpdated)event);
 	}

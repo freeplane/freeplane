@@ -46,6 +46,7 @@ public class MapUpdateTimerSpec {
 			
 			@Override
 			public void run() {
+				// intentionally left blank
 			}
 		});
 	}

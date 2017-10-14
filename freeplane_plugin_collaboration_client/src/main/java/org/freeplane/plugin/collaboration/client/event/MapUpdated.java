@@ -14,5 +14,5 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 		  @Type(value = ImmutableChildrenUpdated.class, name = "CHILDREN"), 
 		})
 public interface MapUpdated {
-
+	// intentionally left blank
 }
