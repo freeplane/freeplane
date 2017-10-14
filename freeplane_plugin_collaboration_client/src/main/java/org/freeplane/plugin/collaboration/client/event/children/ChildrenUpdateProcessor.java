@@ -10,17 +10,15 @@ import org.freeplane.plugin.collaboration.client.event.UpdateProcessor;
 public class ChildrenUpdateProcessor implements UpdateProcessor<ChildrenUpdated> {
 
 	private SingleNodeStructureManipulator manipulator;
-	private MapModel map;
 	private NodeFactory nodeFactory;
 
-	public ChildrenUpdateProcessor(SingleNodeStructureManipulator manipulator , MapModel map, NodeFactory nodeFactory) {
+	public ChildrenUpdateProcessor(SingleNodeStructureManipulator manipulator , NodeFactory nodeFactory) {
 		this.manipulator = manipulator;
-		this.map = map;
 		this.nodeFactory = nodeFactory;
 	}
 
 	@Override
-	public void onUpdate(ChildrenUpdated event) {
+	public void onUpdate(MapModel map, ChildrenUpdated event) {
 		NodeModel parent = map.getNodeForID(event.nodeId());
 		List<String> nodeIds = event.content();
 		int nodeIndex = 0;

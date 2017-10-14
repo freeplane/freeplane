@@ -3,6 +3,7 @@ package org.freeplane.plugin.collaboration.client.event;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import org.freeplane.features.map.MapModel;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
 import org.junit.Test;
@@ -15,9 +16,10 @@ public class UpdateProcessorsSpec {
 		final ChildrenUpdateProcessor processor = mock(ChildrenUpdateProcessor.class);
 		updateProcessors.addProcessor(ChildrenUpdated.class, processor);
 
+		MapModel map = mock(MapModel.class);
 		ChildrenUpdated event = mock(ChildrenUpdated.class);
-		updateProcessors.onUpdate(event);
-		verify(processor).onMapUpdated(event);
+		updateProcessors.onUpdate(map, event);
+		verify(processor).onMapUpdated(map, event);
 	}
 
 
@@ -27,6 +29,7 @@ public class UpdateProcessorsSpec {
 		updateProcessors.addProcessor(ChildrenUpdated.class, mock(ChildrenUpdateProcessor.class));
 
 		MapUpdated event = mock(MapUpdated.class);
-		updateProcessors.onUpdate(event);
+		MapModel map = mock(MapModel.class);
+		updateProcessors.onUpdate(map, event);
 	}
 }

@@ -41,7 +41,7 @@ public class ChildrenUpdateProcessorSpec {
 		NodeModel child = new NodeModel(map);
 		when(nodeFactory.createNode(map, TestData.CHILD_NODE_ID)).thenReturn(child);
 
-		new ChildrenUpdateProcessor(manipulator, map, nodeFactory).onUpdate(event);
+		new ChildrenUpdateProcessor(manipulator, nodeFactory).onUpdate(map, event);
 		
 		verify(manipulator).insertNode(child, parent, 0, false);
 	}
@@ -62,7 +62,7 @@ public class ChildrenUpdateProcessorSpec {
 		when(nodeFactory.createNode(map, TestData.CHILD_NODE_ID)).thenReturn(child);
 		when(nodeFactory.createNode(map, TestData.CHILD_NODE_ID2)).thenReturn(child2);
 
-		new ChildrenUpdateProcessor(manipulator, map, nodeFactory).onUpdate(event);
+		new ChildrenUpdateProcessor(manipulator, nodeFactory).onUpdate(map, event);
 		
 		verify(manipulator).insertNode(child, parent, 0, false);
 		verify(manipulator).insertNode(child2, parent, 1, false);
@@ -85,7 +85,7 @@ public class ChildrenUpdateProcessorSpec {
 		when(map.getNodeForID( TestData.CHILD_NODE_ID)).thenReturn(child);
 		parent.insert(child);
 
-		new ChildrenUpdateProcessor(manipulator, map, nodeFactory).onUpdate(event);
+		new ChildrenUpdateProcessor(manipulator, nodeFactory).onUpdate(map, event);
 		
 		verify(manipulator).moveNode(child, parent, 0, false, false);
 		verifyNoMoreInteractions(manipulator, nodeFactory);
@@ -107,7 +107,7 @@ public class ChildrenUpdateProcessorSpec {
 				content(Collections.<String>emptyList()).build();
 		
 
-		new ChildrenUpdateProcessor(manipulator, map, nodeFactory).onUpdate(event);
+		new ChildrenUpdateProcessor(manipulator, nodeFactory).onUpdate(map, event);
 		
 		verify(manipulator).deleteNode(parent, 0);
 		verifyNoMoreInteractions(manipulator, nodeFactory);
