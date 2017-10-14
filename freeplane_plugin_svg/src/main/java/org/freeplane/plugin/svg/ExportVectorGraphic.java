@@ -68,6 +68,7 @@ abstract class ExportVectorGraphic implements IExportEngine {
 			final GraphicContextDefaults defaults = new GraphicContextDefaults();
 			defaults.setFont(new Font("Arial", Font.PLAIN, 12));
 			ctx.setGraphicContextDefaults(defaults);
+			ctx.setExtensionHandler(new GradientExtensionHandler());
 			ctx.setPrecision(12);
 			final SVGGraphics2D g2d = new SVGGraphics2D(ctx, false);
 			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
