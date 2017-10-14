@@ -13,6 +13,6 @@ public class UpdateEventFactory {
 		for (NodeModel child : childNodes) {
 			childIds.add(child.createID());
 		}
-		return ImmutableChildrenUpdated.builder().nodeId(parent.createID()).content(childIds).build();
+		return ChildrenUpdated.builder().nodeId(parent.createID()).content(childIds).build();
 	}
 }
