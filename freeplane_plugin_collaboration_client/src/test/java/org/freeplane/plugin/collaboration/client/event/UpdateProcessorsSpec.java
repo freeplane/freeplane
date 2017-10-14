@@ -15,8 +15,8 @@ public class UpdateProcessorsSpec {
 		final ChildrenUpdateProcessor processor = mock(ChildrenUpdateProcessor.class);
 		updateProcessors.addProcessor(ChildrenUpdated.class, processor);
 
-		MapUpdated event = mock(ChildrenUpdated.class);
-		updateProcessors.onMapUpdated(event);
+		ChildrenUpdated event = mock(ChildrenUpdated.class);
+		updateProcessors.onUpdate(event);
 		verify(processor).onMapUpdated(event);
 	}
 
@@ -27,6 +27,6 @@ public class UpdateProcessorsSpec {
 		updateProcessors.addProcessor(ChildrenUpdated.class, mock(ChildrenUpdateProcessor.class));
 
 		MapUpdated event = mock(MapUpdated.class);
-		updateProcessors.onMapUpdated(event);
+		updateProcessors.onUpdate(event);
 	}
 }

@@ -2,21 +2,21 @@ package org.freeplane.plugin.collaboration.client.event;
 
 import java.util.HashMap;
 
-public class UpdateProcessors implements UpdateProcessor {
+public class UpdateProcessors implements UpdateProcessor<MapUpdated> {
 	
-	private final HashMap<Class<?>, UpdateProcessor > processors = new HashMap<>();
+	private final HashMap<Class<? extends MapUpdated>, UpdateProcessor<? extends MapUpdated> > processors = new HashMap<>();
 
-	public UpdateProcessors addProcessor(Class<? extends MapUpdated> eventClass, UpdateProcessor processor) {
+	public <T extends MapUpdated> UpdateProcessors addProcessor(Class<T> eventClass, UpdateProcessor<T> processor) {
 		processors.put(eventClass, processor);
 		return this;
 	}
 	
 
 	@Override
-	public void onMapUpdated(MapUpdated event) {
+	public void onUpdate(MapUpdated event) {
 		final Class<?>[] interfaces = event.getClass().getInterfaces();
 		for(Class<?> eventClassCandidate : interfaces) {
-			final UpdateProcessor updateProcessor = processors.get(eventClassCandidate);
+			final UpdateProcessor<?> updateProcessor = processors.get(eventClassCandidate);
 			if(updateProcessor != null) {
 				updateProcessor.onMapUpdated(event);
 				return;

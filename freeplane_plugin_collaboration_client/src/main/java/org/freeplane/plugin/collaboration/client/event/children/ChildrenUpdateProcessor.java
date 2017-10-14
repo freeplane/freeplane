@@ -5,10 +5,9 @@ import java.util.List;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
-import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessor;
 
-public class ChildrenUpdateProcessor implements UpdateProcessor {
+public class ChildrenUpdateProcessor implements UpdateProcessor<ChildrenUpdated> {
 
 	private SingleNodeStructureManipulator manipulator;
 	private MapModel map;
@@ -21,11 +20,7 @@ public class ChildrenUpdateProcessor implements UpdateProcessor {
 	}
 
 	@Override
-	public void onMapUpdated(MapUpdated event) {
-		onMapUpdated((ChildrenUpdated)event);
-	}
-	
-	private void onMapUpdated(ChildrenUpdated event) {
+	public void onUpdate(ChildrenUpdated event) {
 		NodeModel parent = map.getNodeForID(event.nodeId());
 		List<String> nodeIds = event.content();
 		int nodeIndex = 0;
