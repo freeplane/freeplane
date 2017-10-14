@@ -10,11 +10,11 @@ import java.util.concurrent.TimeUnit;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesProcessor;
 
-class UpdatesEventCaptor implements UpdatesProcessor {
+public class UpdatesEventCaptor implements UpdatesProcessor {
 	private final CountDownLatch lock;
 	private ArrayList<UpdatesFinished> events;
 
-	UpdatesEventCaptor(int expectedEventCount) {
+	public UpdatesEventCaptor(int expectedEventCount) {
 		this.lock = new CountDownLatch(expectedEventCount);
 		events = new ArrayList<>();
 	}
