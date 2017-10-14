@@ -21,7 +21,7 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 		this.generatorFactory = generatorFactory;
 	}
 
-	private ChildrenUpdateGenerator getTimer(MapModel map) {
+	private ChildrenUpdateGenerator getGenerator(MapModel map) {
 		final MapUpdateTimer timer = timerFactory.createTimer(map);
 		return generatorFactory.create(timer);
 	}
@@ -33,20 +33,20 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 
 	@Override
 	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-		final ChildrenUpdateGenerator timer = getTimer(parent.getMap());
+		final ChildrenUpdateGenerator timer = getGenerator(parent.getMap());
 		timer.onNodeInserted(parent, child);
 	}
 
 	private void onChangedStructure(NodeModel parent) {
-		final ChildrenUpdateGenerator timer = getTimer(parent.getMap());
+		final ChildrenUpdateGenerator timer = getGenerator(parent.getMap());
 		timer.onChangedStructure(parent);
 	}
 
 	@Override
 	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-		final ChildrenUpdateGenerator oldMapTimer = getTimer(nodeMoveEvent.oldParent.getMap());
+		final ChildrenUpdateGenerator oldMapTimer = getGenerator(nodeMoveEvent.oldParent.getMap());
 		oldMapTimer.onChangedStructure(nodeMoveEvent.oldParent);		
-		final ChildrenUpdateGenerator newMapTimer = getTimer(nodeMoveEvent.newParent.getMap());
+		final ChildrenUpdateGenerator newMapTimer = getGenerator(nodeMoveEvent.newParent.getMap());
 		newMapTimer.onChangedStructure(nodeMoveEvent.newParent);
 	}
 
