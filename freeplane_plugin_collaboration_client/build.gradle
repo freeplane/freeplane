@@ -9,6 +9,8 @@ dependencies {
 	compileOnly "org.immutables:value:2.2.10:annotations"
 	apt         "org.immutables:value:2.2.10"
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0'
+	compile 'com.fasterxml.jackson.core:jackson-core:2.9.0'
+	compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.0'
 	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.0'
 }
 
@@ -33,7 +35,7 @@ jar {
         attributes 'Bundle-ClassPath': '., ' + deps.join(', ')
 
         instruction 'Bundle-Vendor', 'Freeplane Project'
-        instruction 'Bundle-Activator', pluginid + ".Activator"
+        instruction 'Bundle-Activator', 'org.freeplane.plugin.collaboration.client.Activator'
         instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
 
         def imports = """\

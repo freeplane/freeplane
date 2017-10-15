@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UpdatesSerializerSpec {
@@ -22,6 +23,9 @@ public class UpdatesSerializerSpec {
 	
 	@Mock
 	private ObjectMapper objectMapper;
+	
+	@Mock
+	private ObjectWriter writer;
 
 	@InjectMocks
 	private UpdatesSerializer uut;
@@ -30,8 +34,9 @@ public class UpdatesSerializerSpec {
 	private UpdatesFinished event;
 	
 	@Test
-	public void testName() throws Exception {
-		when(objectMapper.writeValueAsString(event)).thenReturn("json");
+	public void usesObjectMapper() throws Exception {
+		when(objectMapper.writer()).thenReturn(writer);
+		when(writer.writeValueAsString(event)).thenReturn("json");
 		uut.onUpdates(event);
 		verify(consumer).accept("json");
 	}
