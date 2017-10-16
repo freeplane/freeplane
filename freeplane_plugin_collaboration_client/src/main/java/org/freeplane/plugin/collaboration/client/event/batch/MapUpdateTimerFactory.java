@@ -9,7 +9,7 @@ public class MapUpdateTimerFactory {
 	private UpdatesProcessor consumer;
 	private int delay;
 
-	MapUpdateTimerFactory(UpdatesProcessor consumer, int delay) {
+	public MapUpdateTimerFactory(UpdatesProcessor consumer, int delay) {
 		super();
 		this.consumer = consumer;
 		this.delay = delay;

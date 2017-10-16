@@ -16,7 +16,14 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
+import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.children.UpdateEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
 
 public class EventStreamDialog {
@@ -38,15 +45,27 @@ public class EventStreamDialog {
 		map2json.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				UpdatesSerializer.of(t -> text.setText(t)).prettyPrint(UpdatesFinished.builder()
-				.mapId("id").mapRevision(1)
-				.addUpdateEvents().build());
+				MapUpdateTimerFactory f = new MapUpdateTimerFactory(ev -> {
+					UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(t));
+					printer.prettyPrint(ev);
+				}, 100);
+				UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(f, new ChildrenUpdateGeneratorFactory(new UpdateEventFactory()));
+				MapModel map = Controller.getCurrentController().getMap();
+				if(! map.containsExtension(ModifiableUpdateHeaderExtension.class))
+					map.addExtension(ModifiableUpdateHeaderExtension.create().setMapId("id").setMapRevision(1));
+				NodeModel rootNode = map.getRootNode();
+				if(rootNode.getChildCount() > 0)
+					updateEventGenerator.onNodeInserted(rootNode, rootNode.getChildAt(0), 0);
+				
 			}
 		});
 		buttons.add(map2json);
 		contentPane.add(buttons, BorderLayout.WEST);
 		dialog.pack();
-		dialog.setVisible(true);
 		
-	};
+	}
+
+	public void show() {
+		dialog.setVisible(true);
+	}
 }

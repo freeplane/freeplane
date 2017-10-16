@@ -23,7 +23,7 @@ public class Activator implements BundleActivator {
 			@Override
 			public void installExtension(Controller controller) {
 				Component menuComponent = controller.getViewController().getMenuComponent();
-				new EventStreamDialog((Window)menuComponent);
+				new EventStreamDialog((Window)menuComponent).show();
 			}
 		}, null);
 
