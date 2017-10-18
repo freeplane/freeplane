@@ -2,23 +2,7 @@ dependencies {
     compile project(':freeplane')
 
 	// libbatik-java / batik-*.jar:
-	compile 'org.apache.xmlgraphics:batik-svggen:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-swing:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-util:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-constants:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-awt-util:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-gvt:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-bridge:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-css:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-anim:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-svg-dom:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-dom:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-i18n:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-script:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-xml:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-gui-util:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-parser:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-transcoder:1.9.1' // [PDF]
+	compile 'org.apache.xmlgraphics:batik-all:1.9.1'
 	
 	// libxml-commons-external-java 1.4.01:
 	// org.w3c.dom.svg.SVGDocument
