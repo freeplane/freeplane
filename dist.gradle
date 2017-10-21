@@ -29,9 +29,9 @@ task historyDist(type:Copy) {
 	into(globalDist)
 }
 
-apply from: './mac.dist.gradle'
-apply from: './win.dist.gradle'
 apply from: './bin.dist.gradle'
+apply from: './win.dist.gradle'
+apply from: './mac.dist.gradle'
 apply from: './src.dist.gradle'
 apply from: './linux-packages.gradle'
 
@@ -42,7 +42,6 @@ task dist {
     dependsOn srcpureTarGz
     dependsOn windowsInstaller
     dependsOn windowsPortableInstaller
-    dependsOn macDist
     dependsOn gitinfoDist
     dependsOn historyDist
     dependsOn freeplaneDeb
