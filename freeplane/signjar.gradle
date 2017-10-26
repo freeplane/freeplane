@@ -12,6 +12,7 @@ task signViewerJar(type: Exec) {
 	commandLine 'jarsigner', '-keystore',  'NONE', '-tsa', props['signjar.tsaurl'],
 		'-storetype', 'PKCS11', '-providerClass', 'sun.security.pkcs11.SunPKCS11',
 		'-providerArg', props['signjar.cfg'], '-storepass',  props['signjar.cardpass'], 
+		'-certchain', props['signjar.certchain'],
 		freeplaneViewerJar, props['signjar.owner']
     dependsOn viewerJar
 }
@@ -22,6 +23,7 @@ task signSvgJar(type: Exec) {
 	commandLine 'jarsigner', '-keystore',  'NONE', '-tsa', props['signjar.tsaurl'],
 		'-storetype', 'PKCS11', '-providerClass', 'sun.security.pkcs11.SunPKCS11',
 		'-providerArg', props['signjar.cfg'], '-storepass',  props['signjar.cardpass'], 
+		'-certchain', props['signjar.certchain'],
 		svgJar, props['signjar.owner']
 }
 
