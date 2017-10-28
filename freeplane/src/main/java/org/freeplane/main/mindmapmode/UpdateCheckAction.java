@@ -20,6 +20,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.Border;
@@ -151,13 +153,25 @@ class UpdateCheckAction extends AFreeplaneAction {
 		}
 	}
 
+	final static private String DEFAULT_LANGUAGE = "en";
+	enum ConnectionStatus {
+		TRANSLATED("new_version_available", Locale.getDefault().getLanguage()), 
+		DEFAULT("new_version_available", DEFAULT_LANGUAGE), 
+		FAILURE("can_not_connect_to_info_server", DEFAULT_LANGUAGE);
+
+		public final String statusKey;
+		public final String language;
+		private ConnectionStatus(String statusKey, String language) {
+			this.statusKey = statusKey;
+			this.language = language;
+		}
+
+	};
+
 	private void checkForUpdates(final boolean autoRun) {
 		final Date now = new Date();
 		ResourceController.getResourceController().setProperty(LAST_UPDATE_CHECK_TIME, Long.toString(now.getTime()));
-		final Locale defaultLocale = Locale.getDefault();
-		final String language = defaultLocale.getLanguage();
-		final String DEFAULT_LANGUAGE = "en";
-		final String translatedWebUpdate = getWebUpdateUrl(language);
+		final String translatedWebUpdate = getWebUpdateUrl(ConnectionStatus.TRANSLATED.language);
 		final FreeplaneVersion localVersion = FreeplaneVersion.getVersion();
 		final HttpVersionClient translatedVersionClient = new HttpVersionClient(translatedWebUpdate, localVersion);
 		FreeplaneVersion lastTranslatedVersion = translatedVersionClient.getRemoteVersion();
@@ -166,19 +180,20 @@ class UpdateCheckAction extends AFreeplaneAction {
 		}
 		final String history;
 		final FreeplaneVersion lastVersion;
-		final boolean connectSuccessfull;
-		if (!language.equals(DEFAULT_LANGUAGE)) {
+		final ConnectionStatus connectionStatus;
+		if (!ConnectionStatus.TRANSLATED.language.equals(DEFAULT_LANGUAGE)) {
 			final String defaultWebUpdate = getWebUpdateUrl(DEFAULT_LANGUAGE);
 			final HttpVersionClient defaultVersionClient = new HttpVersionClient(defaultWebUpdate,
 			    lastTranslatedVersion);
 			lastVersion = defaultVersionClient.getRemoteVersion();
 			history = defaultVersionClient.getHistory() + translatedVersionClient.getHistory();
-			connectSuccessfull = defaultVersionClient.isSuccessful();
+			connectionStatus = translatedVersionClient.isSuccessful() ? ConnectionStatus.TRANSLATED 
+					: defaultVersionClient.isSuccessful() ? ConnectionStatus.DEFAULT : ConnectionStatus.FAILURE;
 		}
 		else {
 			lastVersion = lastTranslatedVersion;
 			history = translatedVersionClient.getHistory();
-			connectSuccessfull = translatedVersionClient.isSuccessful();
+			connectionStatus = translatedVersionClient.isSuccessful()  ? ConnectionStatus.DEFAULT : ConnectionStatus.FAILURE;
 		}
 		
 		checkForAddonsUpdates();
@@ -188,7 +203,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 				if (autoRun) {
 					return;
 				}
-				showUpdateDialog(connectSuccessfull, localVersion, lastVersion, history);
+				showUpdateDialog(connectionStatus.statusKey, lastVersion, history, connectionStatus.language);
 			}
 		});
 	}
@@ -283,18 +298,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 	}
 
 
-	private void showUpdateDialog(final boolean connectSuccesfull, final FreeplaneVersion localVersion,
-	                              final FreeplaneVersion newVersion, final String history) {
-		if (connectSuccesfull == false) {
-			showUpdateDialog("can_not_connect_to_info_server", newVersion, history);
-		} else {
-			showUpdateDialog("new_version_available", newVersion, history);
-		}
-		
-		return;
-	}
-
-	private int showUpdateDialog(final String info, final FreeplaneVersion freeplaneLatestVersion, final String history) {
+	private int showUpdateDialog(final String info, final FreeplaneVersion freeplaneLatestVersion, final String history, String language) {
 		
 		// dialog layout
 		// - messagePane (verticalBox)
@@ -305,6 +309,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 		// |- checkbox for automatic update
 		
 		final Box messagePane = Box.createVerticalBox();
+		
 		final JLabel emptyLabel = new JLabel("");
 		
 		// grid setup
@@ -359,8 +364,6 @@ class UpdateCheckAction extends AFreeplaneAction {
 
 		JButton updateButton;
 		JButton changelogButton;
-		final Locale defaultLocale = Locale.getDefault();
-		final String language = defaultLocale.getLanguage();
 		final String translatedWebUpdate = getWebUpdateUrl(language);
 		
 		changelogButton = new JButton(TextUtils.getText("updater.viewChangelog"));
@@ -462,6 +465,13 @@ class UpdateCheckAction extends AFreeplaneAction {
 		}
 		messagePane.add(gridPane);
 		
+		if(! history.isEmpty()) {
+			final JTextArea text = new JTextArea(history);
+			text.setRows(10);
+			final JScrollPane scrollPane = new JScrollPane(text, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+			scrollPane.setBorder(BorderFactory.createEtchedBorder());
+			messagePane.add(scrollPane);
+		}
 		
 		final JLabel confLabel = new JLabel(TextUtils.getText("preferences"));
 		confLabel.setFont(boldFont);
@@ -471,6 +481,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 			    .getBooleanProperty(CHECK_UPDATES_AUTOMATICALLY));
 			updateAutomatically.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 		messagePane.add(updateAutomatically);
+		
 		final Object[] options;
 		options = new Object[] { TextUtils.getText("simplyhtml.closeBtnName") };
 
