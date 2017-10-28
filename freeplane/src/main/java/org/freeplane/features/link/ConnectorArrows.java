@@ -31,7 +31,7 @@ public enum ConnectorArrows implements RenderedContentSupplier<ConnectorArrows>{
 		this.start = start;
 		this.end = end;
 		final URL url = ResourceController.getResourceController().getResource("/images/" + iconName);
-		icon = FreeplaneIconUtils.createSVGIcon(url);
+		icon = url != null ? FreeplaneIconUtils.createSVGIcon(url) : null;
 		text = TextUtils.getText("ChangeConnectorArrowsAction." + description + ".text");
 	}
 

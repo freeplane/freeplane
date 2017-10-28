@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
+import javax.net.ssl.SSLHandshakeException;
+
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 
@@ -38,12 +40,25 @@ class HttpVersionClient {
 		remoteVersion = null;
 		history = "";
 		successful = false;
+		initialize(url, currentVersion);
+	}
 
+	private void initialize(final URL url, final FreeplaneVersion currentVersion) {
 		try {
 			if (isPropertyUrl(url))
 			    parseProperties(url, currentVersion);
 			else
 				parseHistory(url, currentVersion);
+		}
+		catch (SSLHandshakeException ex) {
+			if (url.getProtocol().equalsIgnoreCase("https")) {
+				try {
+					URL httpUrl = new URL(url.toString().replaceFirst(url.getProtocol(), "http"));
+					initialize(httpUrl, currentVersion);
+				} catch (MalformedURLException e) {
+					LogUtils.severe(e);
+				}
+			}
 		}
 		catch (final NullPointerException e) {
 		    LogUtils.warn("problem with update check for url (" + url + ")", e);
