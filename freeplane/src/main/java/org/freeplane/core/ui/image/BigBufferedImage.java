@@ -18,13 +18,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.lang.reflect.Method;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.HashSet;
 import java.util.Hashtable;
 
-import sun.nio.ch.DirectBuffer;
-
+import org.freeplane.core.util.LogUtils;
 
 public class BigBufferedImage extends BufferedImage {
 
@@ -32,7 +32,7 @@ public class BigBufferedImage extends BufferedImage {
 	public static final int MAX_PIXELS_IN_MEMORY = 50 * 1024 * 1024;
 
     public static BufferedImage create(int width, int height, int imageType){
-    	if(width * height > MAX_PIXELS_IN_MEMORY)
+    	if(width * height > 0)
 			try {
 				final File tempDir = new File(TMP_DIR);
 				return createBigBufferedImage(tempDir, width, height, imageType);
@@ -207,25 +207,34 @@ public class BigBufferedImage extends BufferedImage {
 		private void disposeNow(final MappedByteBuffer[] disposedBuffer) {
 			FileDataBufferDeleterHook.undisposedBuffers.remove(this);
 			if(disposedBuffer != null) {
-				for(MappedByteBuffer b : disposedBuffer) {
-					((DirectBuffer) b).cleaner().clean();
-				}
-				for(RandomAccessFile file : accessFiles) {
-					try {
-						file.close();
-					} catch (IOException e) {
-						e.printStackTrace();
+				try {
+					for(MappedByteBuffer b : disposedBuffer) {
+						final Method method = b.getClass().getMethod("cleaner");
+						method.setAccessible(true);
+						final Object cleaner = method.invoke(b);
+						final Method method2 = cleaner.getClass().getMethod("clean");
+						method2.setAccessible(true);
+						method2.invoke(cleaner);
 					}
-				}
-				accessFiles = null;
-				for(File file : files) {
-					file.delete();
+					for(RandomAccessFile file : accessFiles) {
+						try {
+							file.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					accessFiles = null;
+					for(File file : files) {
+						file.delete();
+					}
+				} catch (Exception e) {
+					LogUtils.severe(e);	
 				}
 				files = null;
 				new File(path).delete();
 				path = null;
 			}
 		}
-		
+
     }
 }

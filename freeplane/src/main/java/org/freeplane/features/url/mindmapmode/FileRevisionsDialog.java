@@ -159,8 +159,8 @@ class FileRevisionsDialog extends JDialog {
 			}
 
 			private boolean containsOriginalFile(JTable table, int row) {
-				FileWrapper fileHolder = (FileWrapper) table.getValueAt(row, 0);
-				return fileHolder.getFile().equals(file);
+				final Object value = table.getValueAt(row, 0);
+				return value instanceof FileWrapper && ((FileWrapper) value).getFile().equals(file);
             }
 		};
 
