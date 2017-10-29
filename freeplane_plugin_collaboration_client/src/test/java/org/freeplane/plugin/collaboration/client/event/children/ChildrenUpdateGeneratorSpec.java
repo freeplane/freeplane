@@ -190,4 +190,32 @@ public class ChildrenUpdateGeneratorSpec {
 				.nodeId(TestData.CHILD_NODE_ID).content(SpecialNodeType.SUMMARY_END).build();
 		assertThat(event.updateEvents()).containsExactly(childrenUpdated, childrenUpdated2, specialNodeTypeUpdated);
 	}
+
+	@Test
+	public void generatesEventsForInsertedChildOnNodeInsertion() throws Exception {
+		final NodeModel parent = createNode(TestData.PARENT_NODE_ID);
+		final NodeModel child = createNode(TestData.CHILD_NODE_ID);
+		final NodeModel innerChild = createNode(TestData.CHILD_NODE_ID2);
+		child.insert(innerChild);
+		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
+		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+		final ChildrenUpdated childrenUpdated2 = mock(ChildrenUpdated.class);
+		when(eventFactory.createChildrenUpdatedEvent(child)).thenReturn(childrenUpdated2);
+
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
+		
+		MapUpdateTimer uut1 = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
+		ChildrenUpdateGenerator uut = new ChildrenUpdateGenerator(uut1, eventFactory);
+		parent.insert(child);
+		uut.onNodeInserted(parent, child);
+		
+		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		UpdatesFinished expected = UpdatesFinished.builder()
+				.mapId(header.mapId()).mapRevision(1)
+				.addUpdateEvents(childrenUpdated, childrenUpdated2).build();
+		
+		assertThat(event).isEqualTo(expected);
+		assertThat(header.mapRevision()).isEqualTo(1);
+	}
+
 }
