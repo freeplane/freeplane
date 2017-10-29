@@ -36,4 +36,9 @@ public class ChildrenUpdateProcessor implements UpdateProcessor<ChildrenUpdated>
 			manipulator.deleteNode(parent, nodeIndex);
 		}
 	}
+
+	@Override
+	public Class<ChildrenUpdated> eventClass() {
+		return ChildrenUpdated.class;
+	}
 }

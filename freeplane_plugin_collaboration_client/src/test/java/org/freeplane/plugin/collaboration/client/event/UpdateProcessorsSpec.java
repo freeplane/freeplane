@@ -2,6 +2,7 @@ package org.freeplane.plugin.collaboration.client.event;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateProcessor;
@@ -14,7 +15,8 @@ public class UpdateProcessorsSpec {
 	public void callsRegisteredProcessorForUpdateEvent() throws Exception {
 		final UpdateProcessors updateProcessors = new UpdateProcessors();
 		final ChildrenUpdateProcessor processor = mock(ChildrenUpdateProcessor.class);
-		updateProcessors.addProcessor(ChildrenUpdated.class, processor);
+		when(processor.eventClass()).thenReturn(ChildrenUpdated.class);
+		updateProcessors.addProcessor(processor);
 
 		MapModel map = mock(MapModel.class);
 		ChildrenUpdated event = mock(ChildrenUpdated.class);
@@ -26,7 +28,9 @@ public class UpdateProcessorsSpec {
 	@Test(expected = IllegalArgumentException.class)
 	public void throwsExceptionIfNoProcessorIsFound() throws Exception {
 		final UpdateProcessors updateProcessors = new UpdateProcessors();
-		updateProcessors.addProcessor(ChildrenUpdated.class, mock(ChildrenUpdateProcessor.class));
+		final ChildrenUpdateProcessor processor = mock(ChildrenUpdateProcessor.class);
+		when(processor.eventClass()).thenReturn(ChildrenUpdated.class);
+		updateProcessors.addProcessor(processor);
 
 		MapUpdated event = mock(MapUpdated.class);
 		MapModel map = mock(MapModel.class);

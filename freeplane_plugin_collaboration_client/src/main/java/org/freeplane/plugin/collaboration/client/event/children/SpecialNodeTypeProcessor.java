@@ -19,4 +19,9 @@ public class SpecialNodeTypeProcessor implements UpdateProcessor<SpecialNodeType
 			node.addExtension(SummaryNodeFlag.SUMMARY);
 		
 	}
+
+	@Override
+	public Class<SpecialNodeTypeSet> eventClass() {
+		return SpecialNodeTypeSet.class;
+	}
 }

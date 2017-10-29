@@ -27,6 +27,30 @@ import org.freeplane.plugin.collaboration.client.event.children.UpdateEventGener
 import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
 
 public class EventStreamDialog {
+	private class Map2Json implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			MapUpdateTimerFactory f = new MapUpdateTimerFactory(ev -> {
+				UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(t));
+				printer.prettyPrint(ev);
+			}, 100);
+			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(f, new ChildrenUpdateGeneratorFactory(new UpdateEventFactory()));
+			MapModel map = Controller.getCurrentController().getMap();
+			if(! map.containsExtension(ModifiableUpdateHeaderExtension.class))
+				map.addExtension(ModifiableUpdateHeaderExtension.create().setMapId("id").setMapRevision(1));
+			NodeModel rootNode = map.getRootNode();
+			for (int i = 0; i < rootNode.getChildCount(); i++)
+				updateEventGenerator.onNodeInserted(rootNode, rootNode.getChildAt(i), i);
+		}
+	}
+
+	private class Json2Map implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+	
 	final private JDialog dialog;
 	private JTextArea text;
 
@@ -42,23 +66,7 @@ public class EventStreamDialog {
 		contentPane.add(textPane, BorderLayout.CENTER);
 		Box buttons = Box.createVerticalBox();
 		JButton map2json = new JButton("map2json");
-		map2json.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				MapUpdateTimerFactory f = new MapUpdateTimerFactory(ev -> {
-					UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(t));
-					printer.prettyPrint(ev);
-				}, 100);
-				UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(f, new ChildrenUpdateGeneratorFactory(new UpdateEventFactory()));
-				MapModel map = Controller.getCurrentController().getMap();
-				if(! map.containsExtension(ModifiableUpdateHeaderExtension.class))
-					map.addExtension(ModifiableUpdateHeaderExtension.create().setMapId("id").setMapRevision(1));
-				NodeModel rootNode = map.getRootNode();
-				for (int i = 0; i < rootNode.getChildCount(); i++)
-					updateEventGenerator.onNodeInserted(rootNode, rootNode.getChildAt(i), i);
-				
-			}
-		});
+		map2json.addActionListener(new Map2Json());
 		buttons.add(map2json);
 		contentPane.add(buttons, BorderLayout.WEST);
 		dialog.pack();

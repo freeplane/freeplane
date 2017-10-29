@@ -4,17 +4,16 @@ import java.util.HashMap;
 
 import org.freeplane.features.map.MapModel;
 
-public class UpdateProcessors implements UpdateProcessor<MapUpdated> {
+public class UpdateProcessors{
 	
 	private final HashMap<Class<? extends MapUpdated>, UpdateProcessor<? extends MapUpdated> > processors = new HashMap<>();
 
-	public <T extends MapUpdated> UpdateProcessors addProcessor(Class<T> eventClass, UpdateProcessor<T> processor) {
-		processors.put(eventClass, processor);
+	public <T extends MapUpdated> UpdateProcessors addProcessor(UpdateProcessor<T> processor) {
+		processors.put(processor.eventClass(), processor);
 		return this;
 	}
 	
 
-	@Override
 	public void onUpdate(MapModel map, MapUpdated event) {
 		final Class<?>[] interfaces = event.getClass().getInterfaces();
 		for(Class<?> eventClassCandidate : interfaces) {
