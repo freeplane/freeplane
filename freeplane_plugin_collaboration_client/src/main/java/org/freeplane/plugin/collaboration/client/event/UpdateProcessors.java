@@ -8,7 +8,7 @@ public class UpdateProcessors{
 	
 	private final HashMap<Class<? extends MapUpdated>, UpdateProcessor<? extends MapUpdated> > processors = new HashMap<>();
 
-	public <T extends MapUpdated> UpdateProcessors addProcessor(UpdateProcessor<T> processor) {
+	public <T extends MapUpdated> UpdateProcessors add(UpdateProcessor<T> processor) {
 		processors.put(processor.eventClass(), processor);
 		return this;
 	}

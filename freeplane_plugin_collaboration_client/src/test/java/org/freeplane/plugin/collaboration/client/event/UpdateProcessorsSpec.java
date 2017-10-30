@@ -16,7 +16,7 @@ public class UpdateProcessorsSpec {
 		final UpdateProcessors updateProcessors = new UpdateProcessors();
 		final ChildrenUpdateProcessor processor = mock(ChildrenUpdateProcessor.class);
 		when(processor.eventClass()).thenReturn(ChildrenUpdated.class);
-		updateProcessors.addProcessor(processor);
+		updateProcessors.add(processor);
 
 		MapModel map = mock(MapModel.class);
 		ChildrenUpdated event = mock(ChildrenUpdated.class);
@@ -30,7 +30,7 @@ public class UpdateProcessorsSpec {
 		final UpdateProcessors updateProcessors = new UpdateProcessors();
 		final ChildrenUpdateProcessor processor = mock(ChildrenUpdateProcessor.class);
 		when(processor.eventClass()).thenReturn(ChildrenUpdated.class);
-		updateProcessors.addProcessor(processor);
+		updateProcessors.add(processor);
 
 		MapUpdated event = mock(MapUpdated.class);
 		MapModel map = mock(MapModel.class);

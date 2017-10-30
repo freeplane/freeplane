@@ -1,10 +1,10 @@
 package org.freeplane.plugin.collaboration.client.event.children;
 
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map.Entry;
 
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
@@ -22,6 +22,12 @@ class ChildrenUpdateGenerator {
 		changedParents = new LinkedHashSet<>();
 		insertedChildren = new LinkedHashSet<>();
 		specialNodes = new LinkedHashMap<>();
+	}
+	
+	void onNewMap(MapModel map) {
+		timer.addActionListener(e -> 
+			timer.addUpdateEvents(RootNodeIdUpdated.builder().nodeId(map.getRootNode().getID()).build()));
+		timer.restart();
 	}
 
 	
