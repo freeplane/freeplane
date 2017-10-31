@@ -1,7 +1,6 @@
 package org.freeplane.plugin.collaboration.client.event.children;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -19,11 +18,7 @@ import org.freeplane.plugin.collaboration.client.TestData;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerator;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
-import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
-import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -50,6 +45,18 @@ public class ChildrenUpdateGeneratorSpec {
 
 	private ChildrenUpdateGenerator uut;
 
+	private NodeModel parent;
+
+	private NodeModel child;
+
+	private ChildrenUpdated childrenUpdated;
+
+	private NodeModel parent2;
+
+	private NodeModel child2;
+
+	private ChildrenUpdated childrenUpdated2;
+
 	@BeforeClass
 	static public void setupClass() throws InterruptedException, InvocationTargetException {
 		SwingUtilities.invokeAndWait(new Runnable() {
@@ -70,11 +77,19 @@ public class ChildrenUpdateGeneratorSpec {
 	
 	@Before
 	public void setup() {
-		setup(1);
+		createTestedInstance(1);
+		parent = createNode(TestData.PARENT_NODE_ID);
+		child = createNode(TestData.CHILD_NODE_ID);
+		childrenUpdated = mock(ChildrenUpdated.class);
+		
+		parent2 = createNode(TestData.PARENT_NODE_ID2);
+		child2 = createNode(TestData.CHILD_NODE_ID2);
+		childrenUpdated2 = mock(ChildrenUpdated.class);
+
 	}
 
 
-	private void setup(final int expectedEventCount) {
+	private void createTestedInstance(final int expectedEventCount) {
 		consumer = new UpdatesEventCaptor(expectedEventCount);
 		MapUpdateTimer timer = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
 		uut = new ChildrenUpdateGenerator(timer, eventFactory);
@@ -83,9 +98,6 @@ public class ChildrenUpdateGeneratorSpec {
 	@Test
 	public void generatesEventOnNodeInsertion() throws Exception {
 		
-		final NodeModel parent = createNode(TestData.PARENT_NODE_ID);
-		final NodeModel child = createNode(TestData.CHILD_NODE_ID);
-		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
 		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 		uut.onNodeInserted(parent, child);
 		
@@ -100,11 +112,7 @@ public class ChildrenUpdateGeneratorSpec {
 
 	@Test
 	public void generatesOneUpdateEventPerParent() throws Exception {
-		final NodeModel parent = createNode(TestData.PARENT_NODE_ID);
-		final NodeModel child = createNode(TestData.CHILD_NODE_ID);
-		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
 		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
-
 		
 		uut.onNodeInserted(parent, child);
 		uut.onNodeInserted(parent, child);
@@ -116,25 +124,18 @@ public class ChildrenUpdateGeneratorSpec {
 	
 	@Test
 	public void generatesEventOnNodeInsertionAfterDelay() throws Exception {
-		final NodeModel parent = createNode(TestData.PARENT_NODE_ID);
-		final NodeModel child = createNode(TestData.CHILD_NODE_ID);
-		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
 		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+
 		uut.onNodeInserted(parent, child);
+
 		verifyZeroInteractions(eventFactory);
 		consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
 	}
 
 	@Test
 	public void generatesMultipleEventsOnNodeInsertionToDifferentParents() throws Exception {
-		final NodeModel parent = createNode(TestData.PARENT_NODE_ID);
-		final NodeModel child = createNode(TestData.CHILD_NODE_ID);
-		final NodeModel parent2 = createNode(TestData.PARENT_NODE_ID2);
-		final NodeModel child2 = createNode(TestData.CHILD_NODE_ID2);
-		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
 		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 
-		final ChildrenUpdated childrenUpdated2 = mock(ChildrenUpdated.class);
 		when(eventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
 
 		uut.onNodeInserted(parent, child);
@@ -146,16 +147,9 @@ public class ChildrenUpdateGeneratorSpec {
 
 	@Test
 	public void generatesMultipleBatchesOnNodeInsertionToDifferentParentsWithPause() throws Exception {
-		setup(2);
+		createTestedInstance(2);
 		
-		final NodeModel parent = createNode(TestData.PARENT_NODE_ID);
-		final NodeModel child = createNode(TestData.CHILD_NODE_ID);
-		final NodeModel parent2 = createNode(TestData.PARENT_NODE_ID2);
-		final NodeModel child2 = createNode(TestData.CHILD_NODE_ID2);
-		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
 		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
-
-		final ChildrenUpdated childrenUpdated2 = mock(ChildrenUpdated.class);
 		when(eventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
 
 		uut.onNodeInserted(parent, child);
@@ -170,15 +164,8 @@ public class ChildrenUpdateGeneratorSpec {
 
 	@Test
 	public void generatesSpecialNodeTypeEventOnNodeInsertion() throws Exception {
-		final NodeModel parent = createNode(TestData.PARENT_NODE_ID);
-		final NodeModel child = createNode(TestData.CHILD_NODE_ID);
 		child.addExtension(SummaryNodeFlag.SUMMARY);
-		final NodeModel parent2 = createNode(TestData.PARENT_NODE_ID2);
-		final NodeModel child2 = createNode(TestData.CHILD_NODE_ID2);
-		
-		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
 		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
-		final ChildrenUpdated childrenUpdated2 = mock(ChildrenUpdated.class);
 		when(eventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
 
 		uut.onNodeInserted(parent, child);
@@ -192,13 +179,8 @@ public class ChildrenUpdateGeneratorSpec {
 
 	@Test
 	public void generatesEventsForInsertedChildOnNodeInsertion() throws Exception {
-		final NodeModel parent = createNode(TestData.PARENT_NODE_ID);
-		final NodeModel child = createNode(TestData.CHILD_NODE_ID);
-		final NodeModel innerChild = createNode(TestData.CHILD_NODE_ID2);
-		child.insert(innerChild);
-		final ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
+		child.insert(child2);
 		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
-		final ChildrenUpdated childrenUpdated2 = mock(ChildrenUpdated.class);
 		when(eventFactory.createChildrenUpdatedEvent(child)).thenReturn(childrenUpdated2);
 
 		parent.insert(child);
@@ -215,7 +197,6 @@ public class ChildrenUpdateGeneratorSpec {
 	
 	@Test
 	public void generatesEventOnNewMap() throws Exception {
-		final NodeModel parent = createNode(TestData.PARENT_NODE_ID);
 		when(map.getRootNode()).thenReturn(parent);
 		uut.onNewMap(map);
 		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
