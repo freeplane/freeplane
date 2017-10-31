@@ -5,9 +5,8 @@ import org.freeplane.features.map.NodeModel;
 
 public class NodeFactory {
 
-	public NodeModel createNode(MapModel map, String nodeId) {
+	public NodeModel createNode(MapModel map) {
 		final NodeModel nodeModel = new NodeModel(map);
-		nodeModel.setID(nodeId);
 		return nodeModel;
 	}
 }

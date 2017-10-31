@@ -13,7 +13,7 @@ public class NodeFactorySpec {
 public void createsNodeWithGivenMapAndId() throws Exception {
 	NodeFactory uut = new NodeFactory();
 	MapModel map = mock(MapModel.class);
-	final NodeModel node = uut.createNode(map, "id");
-	assertThat(node.getID()).isEqualTo("id");
+	final NodeModel node = uut.createNode(map);
+	assertThat(node).isNotNull();
 }
 }
