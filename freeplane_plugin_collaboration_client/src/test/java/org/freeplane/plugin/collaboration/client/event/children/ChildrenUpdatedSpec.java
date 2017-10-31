@@ -2,7 +2,6 @@ package org.freeplane.plugin.collaboration.client.event.children;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 import java.util.Optional;

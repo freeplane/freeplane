@@ -47,7 +47,7 @@ public class UpdateEventGeneratorSpec {
 		final NodeModel parent = createNode(map, TestData.PARENT_NODE_ID);
 		final NodeModel child = createNode(map, TestData.CHILD_NODE_ID);
 		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
-		when(generatorFactory.create(updateTimer)).thenReturn(updateGenerator);
+		when(generatorFactory.create(map, updateTimer)).thenReturn(updateGenerator);
 		UpdateEventGenerator uut = new UpdateEventGenerator(updateTimerFactory, generatorFactory);
 
 		uut.onNodeInserted(parent, child, 0);
@@ -60,7 +60,7 @@ public class UpdateEventGeneratorSpec {
 		final NodeModel parent = createNode(map, TestData.PARENT_NODE_ID);
 		final NodeModel child = createNode(map, TestData.CHILD_NODE_ID);
 		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
-		when(generatorFactory.create(updateTimer)).thenReturn(updateGenerator);
+		when(generatorFactory.create(map, updateTimer)).thenReturn(updateGenerator);
 		UpdateEventGenerator uut = new UpdateEventGenerator(updateTimerFactory, generatorFactory);
 
 		uut.onNodeDeleted(new NodeDeletionEvent(parent, child, 0));
@@ -73,7 +73,7 @@ public class UpdateEventGeneratorSpec {
 		final NodeModel parent = createNode(map, TestData.PARENT_NODE_ID);
 		final NodeModel parent2 = createNode(map, TestData.PARENT_NODE_ID2);
 		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
-		when(generatorFactory.create(updateTimer)).thenReturn(updateGenerator);
+		when(generatorFactory.create(map, updateTimer)).thenReturn(updateGenerator);
 		UpdateEventGenerator uut = new UpdateEventGenerator(updateTimerFactory, generatorFactory);
 
 		uut.onNodeMoved(new NodeMoveEvent(parent, 0, false, parent2, null, 0, false));
@@ -94,9 +94,9 @@ public class UpdateEventGeneratorSpec {
 		ChildrenUpdateGenerator updateGenerator2 = mock(ChildrenUpdateGenerator.class);
 		
 		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
-		when(generatorFactory.create(updateTimer)).thenReturn(updateGenerator);
+		when(generatorFactory.create(map, updateTimer)).thenReturn(updateGenerator);
 		when(updateTimerFactory.createTimer(map2)).thenReturn(updateTimer2);
-		when(generatorFactory.create(updateTimer2)).thenReturn(updateGenerator2);
+		when(generatorFactory.create(map2, updateTimer2)).thenReturn(updateGenerator2);
 		
 		UpdateEventGenerator uut = new UpdateEventGenerator(updateTimerFactory, generatorFactory);
 
