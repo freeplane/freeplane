@@ -7,6 +7,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.event.NodeUpdated;
 import org.immutables.value.Value;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -18,6 +20,7 @@ public interface ChildrenUpdated extends NodeUpdated{
 	@Value.Immutable
 	@JsonSerialize(as = ImmutableChild.class)
 	@JsonDeserialize(as = ImmutableChild.class)
+	@JsonInclude(value=Include.NON_ABSENT)
 	interface Child {
 		static public ImmutableChild.Builder builder() { return ImmutableChild.builder();}
 		String id();
