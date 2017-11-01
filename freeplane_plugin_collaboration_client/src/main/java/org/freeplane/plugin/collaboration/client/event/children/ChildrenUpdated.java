@@ -14,6 +14,17 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonSerialize(as = ImmutableChildrenUpdated.class)
 @JsonDeserialize(as = ImmutableChildrenUpdated.class)
 public interface ChildrenUpdated extends NodeUpdated{
+	
+	@Value.Immutable
+	@JsonSerialize(as = ImmutableChild.class)
+	@JsonDeserialize(as = ImmutableChild.class)
+	interface Child {
+		static public ImmutableChild.Builder builder() { return ImmutableChild.builder();}
+		String id();
+		Optional<Side> side();
+	}
+
+	
 	public enum Side{
 		LEFT, RIGHT;
 
@@ -28,11 +39,15 @@ public interface ChildrenUpdated extends NodeUpdated{
 				return Optional.empty();
 			}
 		}
+		
+		public boolean isLeft() {
+			return this == Side.LEFT;
+		}
 	}
 
 	static ImmutableChildrenUpdated.Builder builder() {
 		return ImmutableChildrenUpdated.builder();
 	}
 	
-	List<String> content();
+	List<Child> content();
 }

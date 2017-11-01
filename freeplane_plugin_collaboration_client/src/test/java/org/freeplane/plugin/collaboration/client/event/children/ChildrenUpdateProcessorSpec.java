@@ -53,7 +53,7 @@ public class ChildrenUpdateProcessorSpec {
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(TestData.PARENT_NODE_ID).
-				content(asList(TestData.CHILD_NODE_ID)).build();
+				content(asList(TestData.CHILD)).build();
 		
 		when(nodeFactory.createNode(map)).thenReturn(child);
 
@@ -68,7 +68,7 @@ public class ChildrenUpdateProcessorSpec {
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(TestData.PARENT_NODE_ID).
-				content(asList("RIGHT", TestData.CHILD_NODE_ID)).build();
+				content(asList(TestData.RIGHT_CHILD)).build();
 		
 		child.setLeft(true);
 		
@@ -86,7 +86,7 @@ public class ChildrenUpdateProcessorSpec {
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(TestData.PARENT_NODE_ID).
-				content(asList(TestData.CHILD_NODE_ID)).build();
+				content(asList(TestData.CHILD)).build();
 		
 		parent.setLeft(true);
 		when(nodeFactory.createNode(map)).thenReturn(child);
@@ -104,7 +104,7 @@ public class ChildrenUpdateProcessorSpec {
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(TestData.PARENT_NODE_ID).
-				content(asList(TestData.CHILD_NODE_ID)).build();
+				content(asList(TestData.CHILD)).build();
 		
 		when(nodeFactory.createNode(map)).thenReturn(child);
 
@@ -119,7 +119,7 @@ public class ChildrenUpdateProcessorSpec {
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(TestData.PARENT_NODE_ID).
-				content(asList(TestData.CHILD_NODE_ID, TestData.CHILD_NODE_ID2)).build();
+				content(asList(TestData.CHILD, TestData.CHILD2)).build();
 		
 		when(nodeFactory.createNode(map)).thenReturn(child).thenReturn(child2);
 
@@ -138,7 +138,7 @@ public class ChildrenUpdateProcessorSpec {
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(TestData.PARENT_NODE_ID).
-				content(asList(TestData.CHILD_NODE_ID)).build();
+				content(asList(TestData.CHILD)).build();
 		
 		when(map.getNodeForID( TestData.CHILD_NODE_ID)).thenReturn(child);
 		parent.insert(child);
@@ -156,7 +156,7 @@ public class ChildrenUpdateProcessorSpec {
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(TestData.PARENT_NODE_ID).
-				content(asList("LEFT", TestData.CHILD_NODE_ID)).build();
+				content(asList(TestData.LEFT_CHILD)).build();
 		
 		when(map.getNodeForID( TestData.CHILD_NODE_ID)).thenReturn(child);
 		parent.insert(child);
@@ -177,7 +177,7 @@ public class ChildrenUpdateProcessorSpec {
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(TestData.PARENT_NODE_ID).
-				content(Collections.<String>emptyList()).build();
+				content(Collections.emptyList()).build();
 		
 
 		new ChildrenUpdateProcessor(manipulator, nodeFactory).onUpdate(map, event);

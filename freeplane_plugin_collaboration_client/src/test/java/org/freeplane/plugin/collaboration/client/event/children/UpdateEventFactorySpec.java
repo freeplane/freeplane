@@ -8,7 +8,9 @@ import java.util.Collections;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.collaboration.client.TestData;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated.Child;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,11 +33,11 @@ public class UpdateEventFactorySpec {
 	@Before
 	public void setup() {
 		parent = new NodeModel(map);
-		parent.setID("nodeId");
+		parent.setID(TestData.PARENT_NODE_ID);
 		child = new NodeModel(map);
-		child.setID("childId");
+		child.setID(TestData.CHILD_NODE_ID);
 		child2 = new NodeModel(map);
-		child2.setID("childId2");
+		child2.setID(TestData.CHILD_NODE_ID2);
 
 	}
 	
@@ -45,7 +47,7 @@ public class UpdateEventFactorySpec {
 
 		MapUpdated expected = ImmutableChildrenUpdated.builder()
 				.nodeId(parent.getID())
-				.content(Collections.<String>emptyList())
+				.content(Collections.<Child>emptyList())
 				.build();
 		assertThat(result).isEqualTo(expected);
 	}
@@ -58,7 +60,7 @@ public class UpdateEventFactorySpec {
 		
 		MapUpdated expected = ImmutableChildrenUpdated.builder()
 				.nodeId(parent.getID())
-				.content(asList("childId")).build();
+				.content(asList(TestData.CHILD)).build();
 		assertThat(result).isEqualTo(expected);
 	}
 	
@@ -71,7 +73,7 @@ public class UpdateEventFactorySpec {
 		
 		MapUpdated expected = ImmutableChildrenUpdated.builder()
 				.nodeId(parent.getID())
-				.content(asList("childId","childId2")).build();
+				.content(asList(TestData.CHILD,TestData.CHILD2)).build();
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -84,7 +86,7 @@ public class UpdateEventFactorySpec {
 		
 		MapUpdated expected = ImmutableChildrenUpdated.builder()
 				.nodeId(parent.getID())
-				.content(asList("RIGHT", "childId")).build();
+				.content(asList(TestData.RIGHT_CHILD)).build();
 		assertThat(result).isEqualTo(expected);
 	}
 
@@ -99,7 +101,7 @@ public class UpdateEventFactorySpec {
 		
 		MapUpdated expected = ImmutableChildrenUpdated.builder()
 				.nodeId(parent.getID())
-				.content(asList("LEFT", "childId")).build();
+				.content(asList(TestData.LEFT_CHILD)).build();
 		assertThat(result).isEqualTo(expected);
 	}
 }

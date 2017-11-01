@@ -3,11 +3,14 @@ package org.freeplane.plugin.collaboration.client.event.json;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.freeplane.plugin.collaboration.client.TestData;
 import org.freeplane.plugin.collaboration.client.event.GenericNodeUpdated;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
 import org.freeplane.plugin.collaboration.client.event.children.ImmutableChildrenUpdated;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated.Child;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated.Side;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,7 +45,7 @@ public class JacksonSpec {
 	protected ImmutableChildrenUpdated createUpdateEvents() {
 		return ImmutableChildrenUpdated.builder()
 				.nodeId("id")
-				.content(asList("content")).build();
+				.content(asList(TestData.RIGHT_CHILD)).build();
 	}
 
 	@Test
