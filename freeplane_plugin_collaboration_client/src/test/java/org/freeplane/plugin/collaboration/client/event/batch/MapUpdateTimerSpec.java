@@ -17,7 +17,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 public class MapUpdateTimerSpec {
-	private static final int TIMEOUT = 100;
+	private static final int TIMEOUT = 200;
 
 	private static final int DELAY_MILLIS = 10;
 
