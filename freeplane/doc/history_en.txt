@@ -1,4 +1,9 @@
 ===============================
+1.6.11
+===============================
+Sorting nodes does not break summary nodes
+
+===============================
 1.6.10
 ===============================
 Reenable and fix exports to PDF and SVG
