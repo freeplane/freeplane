@@ -1,4 +1,6 @@
 language: java
+sudo: false # Use container based builds. They are faster and we do not need sudo.
+dist: trusty
 jdk:
   - openjdk7
   - openjdk8
