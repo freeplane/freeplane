@@ -857,7 +857,7 @@ public class MNodeStyleController extends NodeStyleController {
 		
     }
 
-	public void setStrikedThrough(NodeModel node, Boolean strikedThrough) {
+	public void setStrikedThrough(final NodeModel node, final Boolean strikedThrough) {
 		final Boolean oldStrikedThrough = NodeStyleModel.isStrikedThrough(node);
 		if (oldStrikedThrough == strikedThrough || oldStrikedThrough != null && oldStrikedThrough.equals(strikedThrough)) {
 			return;
