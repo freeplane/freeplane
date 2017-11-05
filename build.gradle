@@ -103,6 +103,15 @@ subprojects {
         delete(project.file(".settings"))
     }
     cleanEclipseJdt.dependsOn cleanEclipseSettings
+	
+	if (project.hasProperty('TestLoggingFull')) {
+		test {
+			testLogging {
+				events "failed"
+				exceptionFormat "full"
+			}
+		}
+	}
 }
 
 // OSGi projects (/plugin/, freeplane) need this for compilation (e.g. resolve Bundle),
