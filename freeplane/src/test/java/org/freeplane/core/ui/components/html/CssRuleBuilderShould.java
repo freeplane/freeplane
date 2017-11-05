@@ -1,6 +1,8 @@
 package org.freeplane.core.ui.components.html;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -50,7 +52,7 @@ public class CssRuleBuilderShould {
 	}
 
 	@Test
-	public void addStrikeThoughFont() throws Exception {
+	public void addStrikeThroughCSSFont() throws Exception {
 		final Font font = new Font("Times New Roman", Font.PLAIN, 10);
 		cssRuleBuilder.withCSSFont(FontUtils.strikeThrough(font));
 		assertRule(" font-family: \"Times New Roman\";  font-size: 10pt; text-decoration: line-through;");
