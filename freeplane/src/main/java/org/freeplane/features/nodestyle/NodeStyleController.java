@@ -21,7 +21,9 @@ package org.freeplane.features.nodestyle;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.font.TextAttribute;
 import java.util.Collection;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -393,6 +395,7 @@ public class NodeStyleController implements IExtension {
 	private Font getStyleFont(final Font baseFont, final MapModel map, final Collection<IStyle> collection) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		Boolean bold = null;
+		Boolean strikedThrough = null;
         Boolean italic = null;
         String fontFamilyName = null;
         Integer fontSize = null;
@@ -406,19 +409,20 @@ public class NodeStyleController implements IExtension {
 				continue;
 			}
 			if (bold == null) bold = styleModel.isBold();
+			if (strikedThrough == null) strikedThrough = styleModel.isStrikedThrough();
 			if (italic == null) italic = styleModel.isItalic();
 			if (fontFamilyName == null) fontFamilyName = styleModel.getFontFamilyName();
 			if (fontSize == null) fontSize = styleModel.getFontSize();
-			if(bold != null && italic != null && fontFamilyName != null && fontSize != null) break;
+			if(bold != null && italic != null && fontFamilyName != null && fontSize != null && strikedThrough == null) break;
 		}
-		return createFont(baseFont, fontFamilyName, fontSize, bold, italic);
+		return createFont(baseFont, fontFamilyName, fontSize, bold, italic, strikedThrough);
 	}
 
 	public HorizontalTextAlignment getHorizontalTextAlignment(final NodeModel node) {
 		return horizontalTextAlignmentHandlers.getProperty(node);
 	}
 
-	private Font createFont(final Font baseFont, String family, Integer size, Boolean bold, Boolean italic) {
+	private Font createFont(final Font baseFont, String family, Integer size, Boolean bold, Boolean italic, Boolean strikedThrough) {
 		if (family == null && size == null && bold == null && italic == null) {
 			return baseFont;
 		}
@@ -441,7 +445,12 @@ public class NodeStyleController implements IExtension {
 		if (italic) {
 			style += Font.ITALIC;
 		}
-		return new Font(family, style, size);
+		final Font font = new Font(family, style, size);
+		if(strikedThrough == TextAttribute.STRIKETHROUGH_ON) {
+			return FontUtils.strikeThrough(font);
+		}
+		else
+			return font;
 	}
 
 	private ShapeConfigurationModel getStyleShape(final MapModel map, final Collection<IStyle> style) {
@@ -639,5 +648,9 @@ public class NodeStyleController implements IExtension {
 		final Collection<IStyle> style = styleController.getStyles(node);
 		final Color borderColor = getBorderColor(map, style);
 		return borderColor;
+	}
+
+	public boolean isStrikedThrough(NodeModel node) {
+		return FontUtils.isStrikedThrough(getFont(node));
 	}
 }
