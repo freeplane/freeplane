@@ -2,7 +2,7 @@
 1.6.11
 ===============================
 Sorting nodes does not break summary nodes
-
+Strike through formatting for nodes added
 ===============================
 1.6.10
 ===============================

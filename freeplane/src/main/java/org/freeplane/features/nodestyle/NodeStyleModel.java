@@ -116,6 +116,11 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return styleModel == null ? null : styleModel.isBold();
 	}
 
+	public static Boolean isStrikedThrough(NodeModel node) {
+		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
+		return styleModel == null ? null : styleModel.isStrikedThrough();
+	}
+
 	public static Boolean isItalic(final NodeModel node) {
 		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.isItalic();
@@ -186,6 +191,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	private String fontFamilyName = null;
 	private Integer fontSize = null;
 	private Boolean isBold = null;
+	private Boolean isStrikedThrough = null;
 	private Boolean isItalic = null;
 	private ShapeConfigurationModel shapeConfiguration = ShapeConfigurationModel.NULL_SHAPE;
 	private Boolean nodeNumbering = null;
@@ -252,6 +258,10 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	public Boolean isBold() {
 		return isBold;
 	}
+	
+	public Boolean isStrikedThrough() {
+		return isStrikedThrough;
+	}
 
 	public Boolean isItalic() {
 		return isItalic;
@@ -267,6 +277,10 @@ public class NodeStyleModel implements IExtension, Cloneable {
 
 	public void setBold(final Boolean isBold) {
 		this.isBold = isBold;
+	}
+
+	public void setStrikedThrough(final Boolean isStrikedThrough) {
+		this.isStrikedThrough = isStrikedThrough;
 	}
 
 	public void setColor(final Color color) {

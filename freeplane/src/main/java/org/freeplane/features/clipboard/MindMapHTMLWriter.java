@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.clipboard;
 
+import static org.freeplane.features.nodestyle.FontUtils.isStrikedThrough;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
@@ -35,6 +37,7 @@ import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.nodestyle.FontUtils;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.styles.MapStyleModel;
@@ -156,6 +159,10 @@ class MindMapHTMLWriter {
 			if ((defaultFont == null || ! defaultFont.isBold()) && font.isBold()) {
 				fontStyle.append("font-weight: bold; ");
 			}
+			if ((defaultFont == null || ! isStrikedThrough(defaultFont)) && isStrikedThrough(font)) {
+				fontStyle.append("text-decoration: line-through; ");
+			}
+			
 		}
 		return fontStyle.toString();
 	}
