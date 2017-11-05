@@ -55,7 +55,7 @@ public class CssRuleBuilderShould {
 	public void addStrikeThroughCSSFont() throws Exception {
 		final Font font = new Font("Times New Roman", Font.PLAIN, 10);
 		cssRuleBuilder.withCSSFont(FontUtils.strikeThrough(font));
-		assertRule(" font-family: \"Times New Roman\";  font-size: 10pt; text-decoration: line-through;");
+		assertRule(" font-family: \"" + font.getFamily() + "\";  font-size: 10pt; text-decoration: line-through;");
 	}
 
 	@Test
