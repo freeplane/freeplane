@@ -705,7 +705,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void deselect(final NodeView newSelected) {
-		if (selection.contains(newSelected) && selection.deselect(newSelected)) {
+		if (selection.contains(newSelected) && selection.deselect(newSelected) && newSelected.getParent() != null) {
 			newSelected.repaintSelected();
 		}
 	}
