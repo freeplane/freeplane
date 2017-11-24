@@ -151,6 +151,9 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichStyle.isBold()) {
 				fromStyle.setBold(null);
 			}
+			if (null != whichStyle.isStrikedThrough()) {
+				fromStyle.setStrikedThrough(null);
+			}
 			if (null != whichStyle.isItalic()) {
 				fromStyle.setItalic(null);
 			}
@@ -212,6 +215,7 @@ public class MNodeStyleController extends NodeStyleController {
 		super(modeController);
 		modeController.registerExtensionCopier(new StyleCopier(modeController));
 		modeController.addAction(new BoldAction());
+		modeController.addAction(new StrikeThroughAction());
 		modeController.addAction(new ItalicAction());
 		modeController.addAction(new CopyFormat());
 		modeController.addAction(new PasteFormat());
@@ -262,6 +266,7 @@ public class MNodeStyleController extends NodeStyleController {
 			setFontFamily(target, sourceStyleModel.getFontFamilyName());
 			setFontSize(target, sourceStyleModel.getFontSize());
 			setBold(target, sourceStyleModel.isBold());
+			setStrikedThrough(target, sourceStyleModel.isStrikedThrough());
 			setItalic(target, sourceStyleModel.isItalic());
 			setNodeFormat(target, sourceStyleModel.getNodeFormat());
 			setNodeNumbering(target, sourceStyleModel.getNodeNumbering());
@@ -851,4 +856,31 @@ public class MNodeStyleController extends NodeStyleController {
 		getModeController().execute(actor, node.getMap());
 		
     }
+
+	public void setStrikedThrough(final NodeModel node, final Boolean strikedThrough) {
+		final Boolean oldStrikedThrough = NodeStyleModel.isStrikedThrough(node);
+		if (oldStrikedThrough == strikedThrough || oldStrikedThrough != null && oldStrikedThrough.equals(strikedThrough)) {
+			return;
+		}
+		createOwnStyleModel(node);
+		final ModeController modeController = Controller.getCurrentModeController();
+		final IActor actor = new IActor() {
+			public void act() {
+				final NodeStyleModel styleModel = NodeStyleModel.getModel(node);
+				styleModel.setStrikedThrough(strikedThrough);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			}
+
+			public String getDescription() {
+				return "setStrikedThrough";
+			}
+
+			public void undo() {
+				final NodeStyleModel styleModel = NodeStyleModel.getModel(node);
+				styleModel.setStrikedThrough(oldStrikedThrough);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node);
+			}
+		};
+		modeController.execute(actor, node.getMap());
+	}
 }

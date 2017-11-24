@@ -1199,13 +1199,13 @@ public class NodeView extends JComponent implements INodeView {
 		for (final ListIterator<NodeView> e = getChildrenViews().listIterator(); e.hasNext();) {
 			e.next().remove();
 		}
-		getMap().deselect(this);
 		getMap().getModeController().onViewRemoved(this);
 		removeFromMap();
 		if (attributeView != null) {
 			attributeView.viewRemoved();
 		}
 		getModel().removeViewer(this);
+		getMap().deselect(this);
 	}
 
 	protected void removeFromMap() {

@@ -1,6 +1,8 @@
 package org.freeplane.core.ui.components.html;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -9,6 +11,7 @@ import javax.swing.SwingConstants;
 
 import org.freeplane.core.util.Convertible;
 import org.freeplane.core.util.Quantity;
+import org.freeplane.features.nodestyle.FontUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,6 +51,12 @@ public class CssRuleBuilderShould {
 		assertRule(" font-family: \"" + font.getFamily() + "\";  font-size: 10pt; font-weight: bold; font-style: italic;");
 	}
 
+	@Test
+	public void addStrikeThroughCSSFont() throws Exception {
+		final Font font = new Font("Times New Roman", Font.PLAIN, 10);
+		cssRuleBuilder.withCSSFont(FontUtils.strikeThrough(font));
+		assertRule(" font-family: \"" + font.getFamily() + "\";  font-size: 10pt; text-decoration: line-through;");
+	}
 
 	@Test
 	public void addFontScaleSize() throws Exception {

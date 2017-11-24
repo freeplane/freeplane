@@ -52,6 +52,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		String fontName;
 		Integer fontSize;
 		Boolean isBold;
+		Boolean isStrikedThrough;
 		Boolean isItalic;
 	}
 
@@ -82,6 +83,7 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 				nodeStyleModel.setFontSize(fp.fontSize);
 				nodeStyleModel.setItalic(fp.isItalic);
 				nodeStyleModel.setBold(fp.isBold);
+				nodeStyleModel.setStrikedThrough(fp.isStrikedThrough);
 				return;
 			}
 			return;
@@ -174,6 +176,12 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			public void setAttribute(final Object userObject, final String value) {
 				final FontProperties fp = (FontProperties) userObject;
 				fp.isBold = value.equals("true");
+			}
+		});
+		reader.addAttributeHandler("font", "STRIKETHROUGH", new IAttributeHandler() {
+			public void setAttribute(final Object userObject, final String value) {
+				final FontProperties fp = (FontProperties) userObject;
+				fp.isStrikedThrough = value.equals("true");
 			}
 		});
 		reader.addAttributeHandler("font", "ITALIC", new IAttributeHandler() {
@@ -509,6 +517,11 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			final Boolean bold = forceFormatting ? Boolean.valueOf(nsc.isBold(node)) : style.isBold();
 			if (bold != null) {
 				fontElement.setAttribute("BOLD", bold ? "true" : "false");
+				isRelevant = true;
+			}
+			final Boolean strikedThrough = forceFormatting ? Boolean.valueOf(nsc.isStrikedThrough(node)) : style.isStrikedThrough();
+			if (strikedThrough != null) {
+				fontElement.setAttribute("STRIKETHROUGH", strikedThrough ? "true" : "false");
 				isRelevant = true;
 			}
 			final Boolean italic = forceFormatting ? Boolean.valueOf(nsc.isItalic(node)) : style.isItalic();
