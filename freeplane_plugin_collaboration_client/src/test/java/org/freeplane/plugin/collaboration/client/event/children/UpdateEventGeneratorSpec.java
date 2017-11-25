@@ -22,9 +22,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class UpdateEventGeneratorSpec {
 	@Mock
-	private MapModel map;
-	
-	@Mock
 	private MapUpdateTimerFactory updateTimerFactory;
 
 	@Mock
@@ -36,16 +33,14 @@ public class UpdateEventGeneratorSpec {
 	@Mock
 	private MapUpdateTimer updateTimer;
 	
-	private NodeModel createNode(MapModel map, String nodeId) {
-		NodeModel node = new NodeModel(map);
-		node.setID(nodeId);
-		return node;
-	}
-	
+	final private TestObjects testObjects = new TestObjects();
+	final private MapModel map = testObjects.map;
+	final private NodeModel parent = testObjects.parent;
+	final private NodeModel child = testObjects.child;
+	final private NodeModel parent2 = testObjects.parent2;
+
 	@Test
 	public void generatesEventOnNodeInsertion() throws Exception {
-		final NodeModel parent = createNode(map, TestData.PARENT_NODE_ID);
-		final NodeModel child = createNode(map, TestData.CHILD_NODE_ID);
 		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
 		when(generatorFactory.create(map, updateTimer)).thenReturn(updateGenerator);
 		UpdateEventGenerator uut = new UpdateEventGenerator(updateTimerFactory, generatorFactory);
@@ -57,8 +52,6 @@ public class UpdateEventGeneratorSpec {
 
 	@Test
 	public void generatesEventOnNodeDeletion() throws Exception {
-		final NodeModel parent = createNode(map, TestData.PARENT_NODE_ID);
-		final NodeModel child = createNode(map, TestData.CHILD_NODE_ID);
 		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
 		when(generatorFactory.create(map, updateTimer)).thenReturn(updateGenerator);
 		UpdateEventGenerator uut = new UpdateEventGenerator(updateTimerFactory, generatorFactory);
@@ -70,8 +63,6 @@ public class UpdateEventGeneratorSpec {
 	
 	@Test
 	public void generatesEventOnNodeMove() throws Exception {
-		final NodeModel parent = createNode(map, TestData.PARENT_NODE_ID);
-		final NodeModel parent2 = createNode(map, TestData.PARENT_NODE_ID2);
 		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
 		when(generatorFactory.create(map, updateTimer)).thenReturn(updateGenerator);
 		UpdateEventGenerator uut = new UpdateEventGenerator(updateTimerFactory, generatorFactory);
@@ -83,12 +74,9 @@ public class UpdateEventGeneratorSpec {
 
 	@Test
 	public void generatesEventsOnNodeInsertionToDifferentMaps() throws Exception {
-		final NodeModel parent = createNode(map, TestData.PARENT_NODE_ID);
-		final NodeModel child = createNode(map, TestData.CHILD_NODE_ID);
-		
 		MapModel map2 = mock(MapModel.class);
-		final NodeModel parent2 = createNode(map2, TestData.PARENT_NODE_ID2);
-		final NodeModel child2 = createNode(map2, TestData.CHILD_NODE_ID2);
+		final NodeModel parent2 = testObjects.createNode(map2, TestData.PARENT_NODE_ID2);
+		final NodeModel child2 = testObjects.createNode(map2, TestData.CHILD_NODE_ID2);
 		
 		MapUpdateTimer updateTimer2 = mock(MapUpdateTimer.class);
 		ChildrenUpdateGenerator updateGenerator2 = mock(ChildrenUpdateGenerator.class);

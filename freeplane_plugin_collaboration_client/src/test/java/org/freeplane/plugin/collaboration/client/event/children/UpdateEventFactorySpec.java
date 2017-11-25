@@ -11,35 +11,19 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.TestData;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated.Child;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UpdateEventFactorySpec {
-	@Mock 
-	private MapModel map;
-	
 	private UpdateEventFactory uut = new UpdateEventFactory();
-
-	private NodeModel parent;
-
-	private NodeModel child;
-
-	private NodeModel child2;
 	
-	@Before
-	public void setup() {
-		parent = new NodeModel(map);
-		parent.setID(TestData.PARENT_NODE_ID);
-		child = new NodeModel(map);
-		child.setID(TestData.CHILD_NODE_ID);
-		child2 = new NodeModel(map);
-		child2.setID(TestData.CHILD_NODE_ID2);
-
-	}
+	final private TestObjects testObjects = new TestObjects();
+	final private MapModel map = testObjects.map;
+	final private NodeModel parent = testObjects.parent;
+	final private NodeModel child = testObjects.child;
+	final private NodeModel child2 = testObjects.child2;
 	
 	@Test
 	public void createsUpdateForLeafNode() throws Exception {

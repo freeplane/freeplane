@@ -1,7 +1,6 @@
 package org.freeplane.plugin.collaboration.client.event.children;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.freeplane.features.map.MapModel;
@@ -11,11 +10,14 @@ import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeS
 import org.junit.Test;
 
 public class SpecialNodeTypeProcessorSpec {
+	final private TestObjects testObjects = new TestObjects();
+	final private MapModel map = testObjects.map;
+	final private NodeModel node = testObjects.parent;
+
+	
 	@Test
 	public void setsOnlySummaryBeginNodeFlag() throws Exception {
 		SpecialNodeTypeSet event = SpecialNodeTypeSet.builder().nodeId("id").content(SpecialNodeType.SUMMARY_BEGIN).build();
-		MapModel map = mock(MapModel.class);
-		NodeModel node = new NodeModel(map);
 		when(map.getNodeForID("id")).thenReturn(node);
 		SpecialNodeTypeProcessor uut = new SpecialNodeTypeProcessor();
 
@@ -27,8 +29,6 @@ public class SpecialNodeTypeProcessorSpec {
 	@Test
 	public void setsSummaryEndNodeFlag() throws Exception {
 		SpecialNodeTypeSet event = SpecialNodeTypeSet.builder().nodeId("id").content(SpecialNodeType.SUMMARY_END).build();
-		MapModel map = mock(MapModel.class);
-		NodeModel node = new NodeModel(map);
 		when(map.getNodeForID("id")).thenReturn(node);
 		SpecialNodeTypeProcessor uut = new SpecialNodeTypeProcessor();
 		
@@ -39,8 +39,6 @@ public class SpecialNodeTypeProcessorSpec {
 	@Test
 	public void setsBothSummaryFlags() throws Exception {
 		SpecialNodeTypeSet event = SpecialNodeTypeSet.builder().nodeId("id").content(SpecialNodeType.SUMMARY_BEGIN_END).build();
-		MapModel map = mock(MapModel.class);
-		NodeModel node = new NodeModel(map);
 		when(map.getNodeForID("id")).thenReturn(node);
 		SpecialNodeTypeProcessor uut = new SpecialNodeTypeProcessor();
 

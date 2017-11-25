@@ -1,7 +1,6 @@
 package org.freeplane.plugin.collaboration.client.event.children;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -32,9 +31,8 @@ public class ChildrenUpdateGeneratorSpec {
 	private static final int TIMEOUT = 100;
 
 	private static final int DELAY_MILLIS = 10;
+	
 
-	@Mock
-	private MapModel map;
 	
 	@Mock
 	private UpdateEventFactory eventFactory;
@@ -45,17 +43,14 @@ public class ChildrenUpdateGeneratorSpec {
 
 	private ChildrenUpdateGenerator uut;
 
-	private NodeModel parent;
-
-	private NodeModel child;
-
-	private ChildrenUpdated childrenUpdated;
-
-	private NodeModel parent2;
-
-	private NodeModel child2;
-
-	private ChildrenUpdated childrenUpdated2;
+	final private TestObjects testObjects = new TestObjects();
+	final private MapModel map = testObjects.map;
+	final private NodeModel parent = testObjects.parent;
+	final private NodeModel child = testObjects.child;
+	final private ChildrenUpdated childrenUpdated = testObjects.childrenUpdated;
+	final private NodeModel parent2 = testObjects.parent2;
+	final private NodeModel child2 = testObjects.child2;
+	final private ChildrenUpdated childrenUpdated2 = testObjects.childrenUpdated2;
 
 	@BeforeClass
 	static public void setupClass() throws InterruptedException, InvocationTargetException {
@@ -69,22 +64,9 @@ public class ChildrenUpdateGeneratorSpec {
 	}
 	
 
-	private NodeModel createNode(String id) {
-		NodeModel node = new NodeModel(map);
-		node.setID(id);
-		return node;
-	}
-	
 	@Before
 	public void setup() {
 		createTestedInstance(1);
-		parent = createNode(TestData.PARENT_NODE_ID);
-		child = createNode(TestData.CHILD_NODE_ID);
-		childrenUpdated = mock(ChildrenUpdated.class);
-		
-		parent2 = createNode(TestData.PARENT_NODE_ID2);
-		child2 = createNode(TestData.CHILD_NODE_ID2);
-		childrenUpdated2 = mock(ChildrenUpdated.class);
 
 	}
 
