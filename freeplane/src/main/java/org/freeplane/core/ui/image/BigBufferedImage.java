@@ -33,7 +33,7 @@ public class BigBufferedImage extends BufferedImage {
     private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 	public static final int MAX_PIXELS_IN_MEMORY = 50 * 1024 * 1024;
 
-    public static BufferedImage create(int width, int height, int imageType){
+    public static BufferedImage create(final int width, final int height, final int imageType){
     	if(width * height > 0)
 			return AccessController.doPrivileged(new PrivilegedAction<BufferedImage>() {
 				@Override
