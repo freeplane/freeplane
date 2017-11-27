@@ -57,7 +57,7 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 	 *
 	 */
 	public ShowPreferencesAction( final DefaultMutableTreeNode controls) {
-		super("PropertyAction");
+		super("ShowPreferencesAction");
 		this.controls = controls;
 	}
 
@@ -104,7 +104,7 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 		}
 		options.buildPanel(controls);
 		options.setProperties();
-		final String title = TextUtils.getText("PropertyAction.dialog");
+		final String title = TextUtils.getText("ShowPreferencesAction.dialog");
 		dialog.setTitle(title);
 		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {
