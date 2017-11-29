@@ -22,6 +22,7 @@ package org.freeplane.features.icon.factory;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -111,6 +112,7 @@ public class IconStoreFactory {
 				return name.matches("(?i).*\\.(svg|png)$") || new File(dir, name).isDirectory();
 			}
 		});
+		Arrays.sort(userIconArray);
 		if (userIconArray == null) {
 			return Collections.emptyList();
 		}
