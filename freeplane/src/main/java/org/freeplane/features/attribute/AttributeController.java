@@ -117,7 +117,7 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performRemoveAttributeValue(final String name, final String value) {
+	public void performRemoveAttributeValue(final String name, final Object value) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -129,7 +129,7 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performReplaceAttributeValue(final String name, final String oldValue, final String newValue) {
+	public void performReplaceAttributeValue(final String name, final Object oldO, final Object newO) {
 		throw new UnsupportedOperationException();
 	}
 
