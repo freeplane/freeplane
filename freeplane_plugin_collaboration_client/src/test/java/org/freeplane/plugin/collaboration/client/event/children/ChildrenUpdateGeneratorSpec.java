@@ -150,7 +150,9 @@ public class ChildrenUpdateGeneratorSpec {
 		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 		when(eventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
 
+		parent.insert(child);
 		uut.onNodeInserted(parent, child);
+		parent2.insert(child2);
 		uut.onNodeInserted(parent2, child2);
 		
 		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
@@ -175,6 +177,25 @@ public class ChildrenUpdateGeneratorSpec {
 		
 		assertThat(event).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);
+	}
+	
+	@Test
+	public void generatesSpecialTypeEventsForInsertedChildOnNodeInsertion() throws Exception {
+		child.insert(child2);
+		child2.addExtension(SummaryNodeFlag.SUMMARY);
+		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+		when(eventFactory.createChildrenUpdatedEvent(child)).thenReturn(childrenUpdated2);
+
+		parent.insert(child);
+		uut.onNodeInserted(parent, child);
+		
+		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		
+		final SpecialNodeTypeSet specialNodeTypeUpdated = SpecialNodeTypeSet.builder()
+				.nodeId(TestData.CHILD_NODE_ID2).content(SpecialNodeType.SUMMARY_END).build();
+		assertThat(event.updateEvents()).containsExactly(childrenUpdated, childrenUpdated2, specialNodeTypeUpdated);
+
+	
 	}
 	
 	@Test

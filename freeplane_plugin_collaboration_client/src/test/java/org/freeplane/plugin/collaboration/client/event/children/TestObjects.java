@@ -43,6 +43,7 @@ class TestObjects {
 	 final NodeModel child2;
 
 	 final ChildrenUpdated childrenUpdated2;
+	 private int counter = 0;
 	
 	
 
@@ -62,6 +63,7 @@ class TestObjects {
 	NodeModel createNode(MapModel map, String nodeId) {
 		NodeModel node = new NodeModel(map);
 		node.setID(nodeId);
+		node.setText(Integer.toString(counter++));
 		return node;
 	}
 	

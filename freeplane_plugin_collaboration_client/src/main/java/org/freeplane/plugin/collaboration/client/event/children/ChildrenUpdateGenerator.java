@@ -31,13 +31,10 @@ class ChildrenUpdateGenerator implements IExtension{
 		timer.restart();
 	}
 
-	
+
 	void onNodeInserted(NodeModel parent, NodeModel child) {
 		onChangedStructure(parent);
 		insertedChildren.add(child);
-		if(specialNodes.isEmpty())
-			timer.addActionListener(e -> generateSpecialNodeTypeSetEvent());
-		SpecialNodeTypeSet.SpecialNodeType.of(child).ifPresent(t -> specialNodes.put(child, t));
 	}
 
 	void onChangedStructure(NodeModel parent) {
@@ -71,11 +68,18 @@ class ChildrenUpdateGenerator implements IExtension{
 	}
 
 
-	private void generateStructureChangedEventForSubtree(NodeModel parent) {
-		if(parent.getParentNode() != null && parent.hasChildren()) {
-			final ChildrenUpdated childrenUpdated = eventFactory.createChildrenUpdatedEvent(parent);
+	private void generateStructureChangedEventForSubtree(NodeModel node) {
+		if(specialNodes.isEmpty())
+			timer.addActionListener(e -> generateSpecialNodeTypeSetEvent());
+		SpecialNodeTypeSet.SpecialNodeType.of(node).ifPresent(
+			t -> 
+			specialNodes.put(node, t)
+				);
+
+		if(node.getParentNode() != null && node.hasChildren()) {
+			final ChildrenUpdated childrenUpdated = eventFactory.createChildrenUpdatedEvent(node);
 			timer.addUpdateEvents(childrenUpdated);
-			for(NodeModel parent1 : parent.getChildren()) {
+			for(NodeModel parent1 : node.getChildren()) {
 				generateStructureChangedEventForSubtree(parent1);
 			}
 		}

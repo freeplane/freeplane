@@ -47,6 +47,7 @@ public class MapUpdateTimer extends Timer {
             if (listeners[i]==ActionListener.class) {
                 ((ActionListener)listeners[i+1]).actionPerformed(e);
             }
+            listeners = listenerList.getListenerList();
         }
 	}
 	

@@ -61,4 +61,27 @@ public class MapUpdateTimerSpec {
 		assertThat(header.mapRevision()).isEqualTo(1);
 	}
 
+	
+	@Test
+	public void supportsAddingNewListenerDuringActionExecution() throws Exception {
+		final MapUpdated childrenUpdated = mock(MapUpdated.class);
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
+		
+		MapUpdateTimer uut = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
+		
+		uut.addActionListener(
+			e1 -> uut.addActionListener(
+				e2 -> uut.addUpdateEvents(childrenUpdated)
+			));
+		uut.restart();
+		
+		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		UpdatesFinished expected = UpdatesFinished.builder()
+				.mapId(header.mapId()).mapRevision(1)
+				.addUpdateEvents(childrenUpdated).build();
+		
+		assertThat(event).isEqualTo(expected);
+		assertThat(header.mapRevision()).isEqualTo(1);
+	}
+
 }
