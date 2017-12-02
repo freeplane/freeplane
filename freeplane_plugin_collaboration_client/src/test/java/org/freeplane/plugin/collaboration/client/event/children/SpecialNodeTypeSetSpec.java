@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
+import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
 import org.junit.Test;
 import org.junit.runner.RunWith;

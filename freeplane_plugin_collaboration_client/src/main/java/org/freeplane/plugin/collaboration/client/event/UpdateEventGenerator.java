@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.children;
+package org.freeplane.plugin.collaboration.client.event;
 
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeChangeListener;
@@ -10,6 +10,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerator;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGeneratorFactory;
 
 public class UpdateEventGenerator implements IMapChangeListener, INodeChangeListener{
 	private MapUpdateTimerFactory timerFactory;

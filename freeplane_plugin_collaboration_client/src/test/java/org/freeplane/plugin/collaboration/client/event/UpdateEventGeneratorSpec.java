@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.children;
+package org.freeplane.plugin.collaboration.client.event;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -9,11 +9,11 @@ import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.plugin.collaboration.client.TestData;
+import org.freeplane.plugin.collaboration.client.event.UpdateEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGeneratorFactory;
-import org.freeplane.plugin.collaboration.client.event.children.UpdateEventGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -75,8 +75,8 @@ public class UpdateEventGeneratorSpec {
 	@Test
 	public void generatesEventsOnNodeInsertionToDifferentMaps() throws Exception {
 		MapModel map2 = mock(MapModel.class);
-		final NodeModel parent2 = testObjects.createNode(map2, TestData.PARENT_NODE_ID2);
-		final NodeModel child2 = testObjects.createNode(map2, TestData.CHILD_NODE_ID2);
+		final NodeModel parent2 = testObjects.createNode(map2, TestData.PARENT_NODE_ID2, "parent2");
+		final NodeModel child2 = testObjects.createNode(map2, TestData.CHILD_NODE_ID2, "child2");
 		
 		MapUpdateTimer updateTimer2 = mock(MapUpdateTimer.class);
 		ChildrenUpdateGenerator updateGenerator2 = mock(ChildrenUpdateGenerator.class);

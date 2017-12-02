@@ -10,14 +10,14 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
 
-class ChildrenUpdateGenerator implements IExtension{
+public class ChildrenUpdateGenerator implements IExtension{
 	final private MapUpdateTimer timer;
 	final private UpdateEventFactory eventFactory;
 	final private LinkedHashSet<NodeModel> changedParents;
 	final private LinkedHashSet<NodeModel> insertedChildren;
 	final private LinkedHashMap<NodeModel, SpecialNodeType> specialNodes;
 
-	ChildrenUpdateGenerator(MapUpdateTimer timer, UpdateEventFactory eventFactory) {
+	public ChildrenUpdateGenerator(MapUpdateTimer timer, UpdateEventFactory eventFactory) {
 		this.timer = timer;
 		this.eventFactory = eventFactory;
 		changedParents = new LinkedHashSet<>();
@@ -25,19 +25,19 @@ class ChildrenUpdateGenerator implements IExtension{
 		specialNodes = new LinkedHashMap<>();
 	}
 	
-	void onNewMap(MapModel map) {
+	public void onNewMap(MapModel map) {
 		timer.addActionListener(e -> 
 			timer.addUpdateEvents(RootNodeIdUpdated.builder().nodeId(map.getRootNode().getID()).build()));
 		timer.restart();
 	}
 
 
-	void onNodeInserted(NodeModel parent, NodeModel child) {
+	public void onNodeInserted(NodeModel parent, NodeModel child) {
 		onChangedStructure(parent);
 		insertedChildren.add(child);
 	}
 
-	void onChangedStructure(NodeModel parent) {
+	public void onChangedStructure(NodeModel parent) {
 		if(changedParents.isEmpty())
 			timer.addActionListener(e -> generateStructureChangedEvent());
 		changedParents.add(parent);

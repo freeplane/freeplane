@@ -24,6 +24,7 @@ import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
+import org.freeplane.plugin.collaboration.client.event.UpdateEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessors;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
@@ -34,7 +35,6 @@ import org.freeplane.plugin.collaboration.client.event.children.NodeFactory;
 import org.freeplane.plugin.collaboration.client.event.children.RootNodeIdUpdatedProcessor;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeProcessor;
 import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
-import org.freeplane.plugin.collaboration.client.event.children.UpdateEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.json.Jackson;
 import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
 

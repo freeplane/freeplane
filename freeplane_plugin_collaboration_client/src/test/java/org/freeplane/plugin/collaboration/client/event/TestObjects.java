@@ -17,58 +17,55 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.plugin.collaboration.client.event.children;
+package org.freeplane.plugin.collaboration.client.event;
 
 import static org.mockito.Mockito.mock;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.TestData;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
 import org.mockito.Mockito;
 
 /**
  * @author Dimitry Polivaev
  * Nov 25, 2017
  */
-class TestObjects {
-	 final MapModel map;
-	 final NodeModel parent;
+public class TestObjects {
+	public final MapModel map;
+	public final NodeModel parent;
 
-	 final NodeModel child;
+	public final NodeModel child;
 
-	 final ChildrenUpdated childrenUpdated;
+	public final ChildrenUpdated childrenUpdated;
 
-	 final NodeModel parent2;
+	public final NodeModel parent2;
 
-	 final NodeModel child2;
+	public final NodeModel child2;
 
-	 final ChildrenUpdated childrenUpdated2;
-	 private int counter = 0;
-	
-	
+	public final ChildrenUpdated childrenUpdated2;
 
 	public TestObjects() {
 		map = Mockito.mock(MapModel.class);
-		parent = createNode(TestData.PARENT_NODE_ID);
-		child = createNode(TestData.CHILD_NODE_ID);
+		parent = createNode(TestData.PARENT_NODE_ID, "parent");
+		child = createNode(TestData.CHILD_NODE_ID, "child");
 		childrenUpdated = mock(ChildrenUpdated.class);
 		
-		parent2 = createNode(TestData.PARENT_NODE_ID2);
-		child2 = createNode(TestData.CHILD_NODE_ID2);
+		parent2 = createNode(TestData.PARENT_NODE_ID2, "parent2");
+		child2 = createNode(TestData.CHILD_NODE_ID2, "child2");
 		childrenUpdated2 = mock(ChildrenUpdated.class);
 	}
 
 
-
-	NodeModel createNode(MapModel map, String nodeId) {
+	public NodeModel createNode(MapModel map, String nodeId, String text) {
 		NodeModel node = new NodeModel(map);
 		node.setID(nodeId);
-		node.setText(Integer.toString(counter++));
+		node.setText(text);
 		return node;
 	}
 	
-	NodeModel createNode(String id) {
-		return createNode(map, id);
+	private NodeModel createNode(String id, String text) {
+		return createNode(map, id, text);
 	}
 	
 }
