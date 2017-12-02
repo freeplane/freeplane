@@ -69,12 +69,13 @@ public class ChildrenUpdateGenerator implements IExtension{
 
 
 	private void generateStructureChangedEventForSubtree(NodeModel node) {
-		if(specialNodes.isEmpty())
-			timer.addActionListener(e -> generateSpecialNodeTypeSetEvent());
 		SpecialNodeTypeSet.SpecialNodeType.of(node).ifPresent(
-			t -> 
-			specialNodes.put(node, t)
-				);
+			t -> {
+				if(specialNodes.isEmpty())
+					timer.addActionListener(e -> generateSpecialNodeTypeSetEvent());
+				specialNodes.put(node, t);
+			}
+		);
 
 		if(node.getParentNode() != null && node.hasChildren()) {
 			final ChildrenUpdated childrenUpdated = eventFactory.createChildrenUpdatedEvent(node);
