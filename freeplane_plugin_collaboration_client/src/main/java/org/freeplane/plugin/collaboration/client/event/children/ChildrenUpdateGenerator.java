@@ -1,5 +1,6 @@
 package org.freeplane.plugin.collaboration.client.event.children;
 
+import java.awt.event.ActionEvent;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map.Entry;
@@ -8,6 +9,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
+import org.freeplane.plugin.collaboration.client.event.children.ImmutableRootNodeIdUpdated.Builder;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
 
 public class ChildrenUpdateGenerator implements IExtension{
@@ -27,8 +29,12 @@ public class ChildrenUpdateGenerator implements IExtension{
 	
 	public void onNewMap(MapModel map) {
 		timer.addActionListener(e -> 
-			timer.addUpdateEvents(RootNodeIdUpdated.builder().nodeId(map.getRootNode().getID()).build()));
+			timer.addUpdateEvents(createRootNodeIdUpdatedEvent(map)));
 		timer.restart();
+	}
+
+	private RootNodeIdUpdated createRootNodeIdUpdatedEvent(MapModel map) {
+		return RootNodeIdUpdated.builder().nodeId(map.getRootNode().getID()).build();
 	}
 
 
@@ -39,22 +45,22 @@ public class ChildrenUpdateGenerator implements IExtension{
 
 	public void onChangedStructure(NodeModel parent) {
 		if(changedParents.isEmpty())
-			timer.addActionListener(e -> generateStructureChangedEvent());
+			timer.addActionListener(this::generateStructureChangedEvent);
 		changedParents.add(parent);
 		timer.restart();
 	}
 
 	
-	private void generateSpecialNodeTypeSetEvent() {
-		for( Entry<NodeModel, SpecialNodeType> e : specialNodes.entrySet()) {
+	private void generateSpecialNodeTypeSetEvent(ActionEvent e) {
+		for( Entry<NodeModel, SpecialNodeType> nodeTypePair : specialNodes.entrySet()) {
 			timer.addUpdateEvents(SpecialNodeTypeSet.builder()
-					.nodeId(e.getKey().createID())
-					.content(e.getValue()).build());
+					.nodeId(nodeTypePair.getKey().createID())
+					.content(nodeTypePair.getValue()).build());
 		}
 		specialNodes.clear();
 	}
 	
-	private void generateStructureChangedEvent() {
+	private void generateStructureChangedEvent(ActionEvent e) {
 		for(NodeModel parent : changedParents) {
 			final ChildrenUpdated childrenUpdated = eventFactory.createChildrenUpdatedEvent(parent);
 			timer.addUpdateEvents(childrenUpdated);
@@ -72,7 +78,7 @@ public class ChildrenUpdateGenerator implements IExtension{
 		SpecialNodeTypeSet.SpecialNodeType.of(node).ifPresent(
 			t -> {
 				if(specialNodes.isEmpty())
-					timer.addActionListener(e -> generateSpecialNodeTypeSetEvent());
+					timer.addActionListener(this::generateSpecialNodeTypeSetEvent);
 				specialNodes.put(node, t);
 			}
 		);
