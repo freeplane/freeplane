@@ -8,29 +8,19 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerator;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
 
 public class UpdateEventGenerator implements IMapChangeListener, INodeChangeListener{
-	private MapUpdateTimerFactory timerFactory;
-	private ChildrenUpdateGeneratorFactory generatorFactory;
+	private ChildrenUpdateGenerators generators;
 	
-	public UpdateEventGenerator(MapUpdateTimerFactory timerFactory, ChildrenUpdateGeneratorFactory generatorFactory) {
+	public UpdateEventGenerator(ChildrenUpdateGenerators generatorFactory) {
 		super();
-		this.timerFactory = timerFactory;
-		this.generatorFactory = generatorFactory;
+		this.generators = generatorFactory;
 	}
 
 	private ChildrenUpdateGenerator getGenerator(MapModel map) {
-		ChildrenUpdateGenerator generator = map.getExtension(ChildrenUpdateGenerator.class);
-		if(generator == null) {
-			final MapUpdateTimer timer = timerFactory.createTimer(map);
-			generator = generatorFactory.create(map, timer);
-			map.addExtension(generator);
-		}
-		return generator;
+			return generators.of(map);
 	}
 	
 	

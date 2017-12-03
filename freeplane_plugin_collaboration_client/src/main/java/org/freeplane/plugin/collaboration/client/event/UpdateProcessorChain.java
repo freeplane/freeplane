@@ -4,11 +4,11 @@ import java.util.HashMap;
 
 import org.freeplane.features.map.MapModel;
 
-public class UpdateProcessors{
+public class UpdateProcessorChain{
 	
 	private final HashMap<Class<? extends MapUpdated>, UpdateProcessor<? extends MapUpdated> > processors = new HashMap<>();
 
-	public <T extends MapUpdated> UpdateProcessors add(UpdateProcessor<T> processor) {
+	public <T extends MapUpdated> UpdateProcessorChain add(UpdateProcessor<T> processor) {
 		processors.put(processor.eventClass(), processor);
 		return this;
 	}

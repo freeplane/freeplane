@@ -25,11 +25,11 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.UpdateEventGenerator;
-import org.freeplane.plugin.collaboration.client.event.UpdateProcessors;
+import org.freeplane.plugin.collaboration.client.event.UpdateProcessorChain;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.children.NodeFactory;
 import org.freeplane.plugin.collaboration.client.event.children.RootNodeIdUpdatedProcessor;
@@ -46,7 +46,7 @@ public class EventStreamDialog {
 				UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(t));
 				printer.prettyPrint(ev);
 			}, 100);
-			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(f, new ChildrenUpdateGeneratorFactory(new UpdateEventFactory()));
+			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(new ChildrenUpdateGenerators(f, new UpdateEventFactory()));
 			MapModel map = Controller.getCurrentController().getMap();
 			if(! map.containsExtension(ModifiableUpdateHeaderExtension.class))
 				map.addExtension(ModifiableUpdateHeaderExtension.create().setMapId("id").setMapRevision(1));
@@ -59,7 +59,7 @@ public class EventStreamDialog {
 
 	private class Json2Map implements ActionListener {
 		
-		private final UpdateProcessors processor;
+		private final UpdateProcessorChain processor;
 		private MMapController mapController;
 
 		public Json2Map() {
@@ -68,7 +68,7 @@ public class EventStreamDialog {
 			final SingleNodeStructureManipulator singleNodeStructureManipulator = new SingleNodeStructureManipulator(mapController);
 			final ChildrenUpdateProcessor childrenUpdateProcessor = new ChildrenUpdateProcessor(singleNodeStructureManipulator, nodeFactory);
 			final SpecialNodeTypeProcessor specialNodeTypeProcessor = new SpecialNodeTypeProcessor();
-			processor = new UpdateProcessors().add(new RootNodeIdUpdatedProcessor()).add(childrenUpdateProcessor).add(specialNodeTypeProcessor);
+			processor = new UpdateProcessorChain().add(new RootNodeIdUpdatedProcessor()).add(childrenUpdateProcessor).add(specialNodeTypeProcessor);
 		}
 
 		@Override
