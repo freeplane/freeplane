@@ -39,7 +39,7 @@ public class ContentUpdateGenerator implements IExtension {
 
 	public void onContentUpdate(NodeModel node) {
 		timer.addActionListener(e -> 
-			timer.addUpdateEvents(eventFactory.createContentUpdatedEvent(node)));
+			timer.addUpdateEvent(eventFactory.createContentUpdatedEvent(node)));
 		timer.restart();
 
 	}

@@ -21,6 +21,8 @@ import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdated;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -38,7 +40,10 @@ public class ChildrenUpdateGeneratorSpec {
 
 	
 	@Mock
-	private StructureUpdateEventFactory eventFactory;
+	private StructureUpdateEventFactory structuralEventFactory;
+	
+	@Mock
+	private ContentUpdateEventFactory contentEventFactory;
 	
 	private ModifiableUpdateHeaderExtension header = ModifiableUpdateHeaderExtension.create().setMapId("mapId").setMapRevision(0);
 
@@ -51,9 +56,12 @@ public class ChildrenUpdateGeneratorSpec {
 	final private NodeModel parent = testObjects.parent;
 	final private NodeModel child = testObjects.child;
 	final private ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
+	final private ContentUpdated childContentUpdated = mock(ContentUpdated.class);
+	
 	final private NodeModel parent2 = testObjects.parent2;
 	final private NodeModel child2 = testObjects.child2;
 	final private ChildrenUpdated childrenUpdated2 = mock(ChildrenUpdated.class);
+	final private ContentUpdated child2ContentUpdated = mock(ContentUpdated.class);
 
 	@BeforeClass
 	static public void setupClass() throws InterruptedException, InvocationTargetException {
@@ -77,13 +85,13 @@ public class ChildrenUpdateGeneratorSpec {
 	private void createTestedInstance(final int expectedEventCount) {
 		consumer = new UpdatesEventCaptor(expectedEventCount);
 		MapUpdateTimer timer = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
-		uut = new ChildrenUpdateGenerator(timer, eventFactory);
+		uut = new ChildrenUpdateGenerator(timer, structuralEventFactory, contentEventFactory);
 	}
 	
 	@Test
 	public void generatesEventOnNodeInsertion() throws Exception {
 		
-		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 		uut.onNodeInserted(parent, child);
 		
 		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
@@ -97,7 +105,7 @@ public class ChildrenUpdateGeneratorSpec {
 
 	@Test
 	public void generatesOneUpdateEventPerParent() throws Exception {
-		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 		
 		uut.onNodeInserted(parent, child);
 		uut.onNodeInserted(parent, child);
@@ -109,19 +117,19 @@ public class ChildrenUpdateGeneratorSpec {
 	
 	@Test
 	public void generatesEventOnNodeInsertionAfterDelay() throws Exception {
-		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 
 		uut.onNodeInserted(parent, child);
 
-		verifyZeroInteractions(eventFactory);
+		verifyZeroInteractions(structuralEventFactory);
 		consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
 	}
 
 	@Test
 	public void generatesMultipleEventsOnNodeInsertionToDifferentParents() throws Exception {
-		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 
-		when(eventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
+		when(structuralEventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
 
 		uut.onNodeInserted(parent, child);
 		uut.onNodeInserted(parent2, child2);
@@ -134,8 +142,8 @@ public class ChildrenUpdateGeneratorSpec {
 	public void generatesMultipleBatchesOnNodeInsertionToDifferentParentsWithPause() throws Exception {
 		createTestedInstance(2);
 		
-		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
-		when(eventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
+		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+		when(structuralEventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
 
 		uut.onNodeInserted(parent, child);
 		Thread.sleep(TIMEOUT);
@@ -150,8 +158,10 @@ public class ChildrenUpdateGeneratorSpec {
 	@Test
 	public void generatesSpecialNodeTypeEventOnNodeInsertion() throws Exception {
 		child.addExtension(SummaryNodeFlag.SUMMARY);
-		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
-		when(eventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
+		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+		when(structuralEventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
+		when(contentEventFactory.createContentUpdatedEvent(child)).thenReturn(childContentUpdated);
+		when(contentEventFactory.createContentUpdatedEvent(child2)).thenReturn(child2ContentUpdated);
 
 		parent.insert(child);
 		uut.onNodeInserted(parent, child);
@@ -161,14 +171,17 @@ public class ChildrenUpdateGeneratorSpec {
 		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
 		final SpecialNodeTypeSet specialNodeTypeUpdated = SpecialNodeTypeSet.builder()
 				.nodeId(TestData.CHILD_NODE_ID).content(SpecialNodeType.SUMMARY_END).build();
-		assertThat(event.updateEvents()).containsExactly(childrenUpdated, childrenUpdated2, specialNodeTypeUpdated);
+		assertThat(event.updateEvents()).containsExactly(childrenUpdated, specialNodeTypeUpdated, childContentUpdated, 
+			childrenUpdated2, child2ContentUpdated);
 	}
 
 	@Test
 	public void generatesEventsForInsertedChildOnNodeInsertion() throws Exception {
 		child.insert(child2);
-		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
-		when(eventFactory.createChildrenUpdatedEvent(child)).thenReturn(childrenUpdated2);
+		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+		when(structuralEventFactory.createChildrenUpdatedEvent(child)).thenReturn(childrenUpdated2);
+		when(contentEventFactory.createContentUpdatedEvent(child)).thenReturn(childContentUpdated);
+		when(contentEventFactory.createContentUpdatedEvent(child2)).thenReturn(child2ContentUpdated);
 
 		parent.insert(child);
 		uut.onNodeInserted(parent, child);
@@ -176,7 +189,8 @@ public class ChildrenUpdateGeneratorSpec {
 		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
 		UpdatesFinished expected = UpdatesFinished.builder()
 				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateEvents(childrenUpdated, childrenUpdated2).build();
+				.addUpdateEvents(childrenUpdated, childContentUpdated, 
+					childrenUpdated2, child2ContentUpdated).build();
 		
 		assertThat(event).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);
@@ -186,8 +200,10 @@ public class ChildrenUpdateGeneratorSpec {
 	public void generatesSpecialTypeEventsForInsertedChildOnNodeInsertion() throws Exception {
 		child.insert(child2);
 		child2.addExtension(SummaryNodeFlag.SUMMARY);
-		when(eventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
-		when(eventFactory.createChildrenUpdatedEvent(child)).thenReturn(childrenUpdated2);
+		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
+		when(structuralEventFactory.createChildrenUpdatedEvent(child)).thenReturn(childrenUpdated2);
+		when(contentEventFactory.createContentUpdatedEvent(child)).thenReturn(childContentUpdated);
+		when(contentEventFactory.createContentUpdatedEvent(child2)).thenReturn(child2ContentUpdated);
 
 		parent.insert(child);
 		uut.onNodeInserted(parent, child);
@@ -196,7 +212,8 @@ public class ChildrenUpdateGeneratorSpec {
 		
 		final SpecialNodeTypeSet specialNodeTypeUpdated = SpecialNodeTypeSet.builder()
 				.nodeId(TestData.CHILD_NODE_ID2).content(SpecialNodeType.SUMMARY_END).build();
-		assertThat(event.updateEvents()).containsExactly(childrenUpdated, childrenUpdated2, specialNodeTypeUpdated);
+		assertThat(event.updateEvents()).containsExactly(childrenUpdated, childContentUpdated, 
+			childrenUpdated2, specialNodeTypeUpdated, child2ContentUpdated);
 
 	
 	}

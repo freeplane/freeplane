@@ -49,7 +49,7 @@ public class MapUpdateTimerSpec {
 		
 		MapUpdateTimer uut = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
 		
-		uut.addActionListener(e -> uut.addUpdateEvents(childrenUpdated));
+		uut.addActionListener(e -> uut.addUpdateEvent(childrenUpdated));
 		uut.restart();
 		
 		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
@@ -71,7 +71,7 @@ public class MapUpdateTimerSpec {
 		
 		uut.addActionListener(
 			e1 -> uut.addActionListener(
-				e2 -> uut.addUpdateEvents(childrenUpdated)
+				e2 -> uut.addUpdateEvent(childrenUpdated)
 			));
 		uut.restart();
 		

@@ -48,8 +48,10 @@ public class EventStreamDialog {
 				UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(t));
 				printer.prettyPrint(ev);
 			}, 100);
-			ChildrenUpdateGenerators childrenUpdateGenerators = new ChildrenUpdateGenerators(f, new StructureUpdateEventFactory());
-			ContentUpdateGenerators contentGenerators = new ContentUpdateGenerators(f, new ContentUpdateEventFactory());
+			ContentUpdateEventFactory contentEventFactory = new ContentUpdateEventFactory();
+			StructureUpdateEventFactory structuralEventFactory = new StructureUpdateEventFactory();
+			ChildrenUpdateGenerators childrenUpdateGenerators = new ChildrenUpdateGenerators(f, structuralEventFactory, contentEventFactory);
+			ContentUpdateGenerators contentGenerators = new ContentUpdateGenerators(f, contentEventFactory);
 			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(childrenUpdateGenerators,  contentGenerators);
 			MapModel map = Controller.getCurrentController().getMap();
 			if(! map.containsExtension(ModifiableUpdateHeaderExtension.class))

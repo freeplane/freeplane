@@ -23,6 +23,6 @@ public class ContentUpdateEventFactory {
 			LogUtils.severe(e);
 		}
 
-		return ContentUpdated.builder().content(writer.toString()).build();
+		return ContentUpdated.builder().nodeId(node.createID()).content(writer.toString()).build();
 	}
 }

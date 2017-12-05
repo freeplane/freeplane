@@ -24,4 +24,6 @@ package org.freeplane.plugin.collaboration.client.event.content;
  * Dec 4, 2017
  */
 public class ContentUpdateEventFactorySpec {
+	
+	// TODO
 }
