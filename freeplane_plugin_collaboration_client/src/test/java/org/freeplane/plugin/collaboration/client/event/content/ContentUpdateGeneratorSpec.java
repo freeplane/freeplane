@@ -1,0 +1,86 @@
+/*
+ *  Freeplane - mind map editor
+ *  Copyright (C) 2017 dimitry
+ *
+ *  This file author is dimitry
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.freeplane.plugin.collaboration.client.event.content;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.util.concurrent.TimeUnit;
+
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.collaboration.client.event.TestObjects;
+import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
+import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
+import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+
+/**
+ * @author Dimitry Polivaev
+ * Dec 4, 2017
+ */
+@RunWith(MockitoJUnitRunner.class)
+public class ContentUpdateGeneratorSpec {
+	
+	
+	private static final int TIMEOUT = 100;
+
+	private static final int DELAY_MILLIS = 10;
+
+	private ModifiableUpdateHeaderExtension header = ModifiableUpdateHeaderExtension.create().setMapId("mapId").setMapRevision(0);
+	
+	@Mock
+	private ContentUpdateEventFactory eventFactory;
+
+	
+	final private TestObjects testObjects = new TestObjects();
+	final private NodeModel node = testObjects.parent;
+	private UpdatesEventCaptor consumer;
+	private ContentUpdateGenerator uut;
+	
+	@Before
+	public void createTestedInstance() {
+		consumer = new UpdatesEventCaptor(1);
+		MapUpdateTimer timer = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
+		uut = new ContentUpdateGenerator(timer, eventFactory);
+	}
+
+
+	@Test
+	public void generatesEventOnContentUpdate() throws Exception {
+		ContentUpdated contentUpdated = mock(ContentUpdated.class);
+		when(eventFactory.createContentUpdatedEvent(node)).thenReturn(contentUpdated);
+		uut.onContentUpdate(node);
+		
+		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		UpdatesFinished expected = UpdatesFinished.builder()
+				.mapId(header.mapId()).mapRevision(1)
+				.addUpdateEvents(contentUpdated).build();
+		
+		assertThat(event).isEqualTo(expected);
+		assertThat(header.mapRevision()).isEqualTo(1);
+
+	}
+}

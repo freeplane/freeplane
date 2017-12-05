@@ -19,12 +19,9 @@
  */
 package org.freeplane.plugin.collaboration.client.event;
 
-import static org.mockito.Mockito.mock;
-
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.TestData;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
 import org.mockito.Mockito;
 
 /**
@@ -37,23 +34,17 @@ public class TestObjects {
 
 	public final NodeModel child;
 
-	public final ChildrenUpdated childrenUpdated;
-
 	public final NodeModel parent2;
 
 	public final NodeModel child2;
-
-	public final ChildrenUpdated childrenUpdated2;
 
 	public TestObjects() {
 		map = Mockito.mock(MapModel.class);
 		parent = createNode(TestData.PARENT_NODE_ID, "parent");
 		child = createNode(TestData.CHILD_NODE_ID, "child");
-		childrenUpdated = mock(ChildrenUpdated.class);
 		
 		parent2 = createNode(TestData.PARENT_NODE_ID2, "parent2");
 		child2 = createNode(TestData.CHILD_NODE_ID2, "child2");
-		childrenUpdated2 = mock(ChildrenUpdated.class);
 	}
 
 

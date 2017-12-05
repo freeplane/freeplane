@@ -10,17 +10,25 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerator;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 
 public class UpdateEventGenerator implements IMapChangeListener, INodeChangeListener{
-	private ChildrenUpdateGenerators generators;
+	final private ChildrenUpdateGenerators structureGenerators;
+	final private ContentUpdateGenerators contentGenerators;
 	
-	public UpdateEventGenerator(ChildrenUpdateGenerators generatorFactory) {
+
+	public UpdateEventGenerator(ChildrenUpdateGenerators structureGenerators,
+	                            ContentUpdateGenerators contentGenerators) {
 		super();
-		this.generators = generatorFactory;
+		this.structureGenerators = structureGenerators;
+		this.contentGenerators = contentGenerators;
 	}
 
+
+
 	private ChildrenUpdateGenerator getGenerator(MapModel map) {
-			return generators.of(map);
+			return structureGenerators.of(map);
 	}
 	
 	
@@ -65,11 +73,15 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 
 	@Override
 	public void nodeChanged(NodeChangeEvent event) {
-		// TODO Auto-generated method stub
+		NodeModel node = event.getNode();
+		final ContentUpdateGenerator generator = contentGenerators.of(node.getMap());
+		generator.onContentUpdate(node);
 	}
 
 	@Override
 	public void mapChanged(MapChangeEvent event) {
-		// TODO Auto-generated method stub
+		MapModel map = event.getMap();
+		final ContentUpdateGenerator generator = contentGenerators.of(map);
+		generator.onContentUpdate(map.getRootNode());
 	}
 }

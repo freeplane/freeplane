@@ -43,10 +43,6 @@ public class MapChangeEvent extends AWTEvent {
 		this.property = property;
 	}
 
-	public MapChangeEvent(final Object source, final Object property, final Object oldValue, final Object newValue) {
-		this(source, null, property, oldValue, newValue);
-	}
-
 	public MapModel getMap() {
 		return map;
 	}

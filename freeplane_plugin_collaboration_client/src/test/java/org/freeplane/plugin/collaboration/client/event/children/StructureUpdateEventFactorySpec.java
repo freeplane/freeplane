@@ -17,8 +17,8 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UpdateEventFactorySpec {
-	private UpdateEventFactory uut = new UpdateEventFactory();
+public class StructureUpdateEventFactorySpec {
+	private StructureUpdateEventFactory uut = new StructureUpdateEventFactory();
 	
 	final private TestObjects testObjects = new TestObjects();
 	final private MapModel map = testObjects.map;

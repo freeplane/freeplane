@@ -34,7 +34,9 @@ import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdatePr
 import org.freeplane.plugin.collaboration.client.event.children.NodeFactory;
 import org.freeplane.plugin.collaboration.client.event.children.RootNodeIdUpdatedProcessor;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeProcessor;
-import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.children.StructureUpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 import org.freeplane.plugin.collaboration.client.event.json.Jackson;
 import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
 
@@ -46,7 +48,9 @@ public class EventStreamDialog {
 				UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(t));
 				printer.prettyPrint(ev);
 			}, 100);
-			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(new ChildrenUpdateGenerators(f, new UpdateEventFactory()));
+			ChildrenUpdateGenerators childrenUpdateGenerators = new ChildrenUpdateGenerators(f, new StructureUpdateEventFactory());
+			ContentUpdateGenerators contentGenerators = new ContentUpdateGenerators(f, new ContentUpdateEventFactory());
+			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(childrenUpdateGenerators,  contentGenerators);
 			MapModel map = Controller.getCurrentController().getMap();
 			if(! map.containsExtension(ModifiableUpdateHeaderExtension.class))
 				map.addExtension(ModifiableUpdateHeaderExtension.create().setMapId("id").setMapRevision(1));

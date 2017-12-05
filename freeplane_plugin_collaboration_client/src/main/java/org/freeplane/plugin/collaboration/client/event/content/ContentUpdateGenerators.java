@@ -1,24 +1,24 @@
-package org.freeplane.plugin.collaboration.client.event.children;
+package org.freeplane.plugin.collaboration.client.event.content;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
 
-public class ChildrenUpdateGenerators{
-	final private StructureUpdateEventFactory eventFactory;
+public class ContentUpdateGenerators{
+	final private ContentUpdateEventFactory eventFactory;
 	final private MapUpdateTimerFactory timerFactory;
 	
-	public ChildrenUpdateGenerators(MapUpdateTimerFactory timerFactory, StructureUpdateEventFactory eventFactory) {
+	public ContentUpdateGenerators(MapUpdateTimerFactory timerFactory, ContentUpdateEventFactory eventFactory) {
 		super();
 		this.timerFactory = timerFactory;
 		this.eventFactory = eventFactory;
 	}
 
-	public ChildrenUpdateGenerator of(MapModel map) {
-		ChildrenUpdateGenerator generator = map.getExtension(ChildrenUpdateGenerator.class);
+	public ContentUpdateGenerator of(MapModel map) {
+		ContentUpdateGenerator generator = map.getExtension(ContentUpdateGenerator.class);
 		if(generator == null) {
 			final MapUpdateTimer timer = timerFactory.createTimer(map);
-			generator = new ChildrenUpdateGenerator(timer,  eventFactory);
+			generator = new ContentUpdateGenerator(timer,  eventFactory);
 			map.addExtension(generator);
 		}
 		return generator;

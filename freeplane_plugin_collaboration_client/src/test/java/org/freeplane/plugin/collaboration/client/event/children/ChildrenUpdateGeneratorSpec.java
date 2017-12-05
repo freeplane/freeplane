@@ -1,6 +1,7 @@
 package org.freeplane.plugin.collaboration.client.event.children;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -15,6 +16,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.TestData;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
+import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
@@ -36,7 +38,7 @@ public class ChildrenUpdateGeneratorSpec {
 
 	
 	@Mock
-	private UpdateEventFactory eventFactory;
+	private StructureUpdateEventFactory eventFactory;
 	
 	private ModifiableUpdateHeaderExtension header = ModifiableUpdateHeaderExtension.create().setMapId("mapId").setMapRevision(0);
 
@@ -48,10 +50,10 @@ public class ChildrenUpdateGeneratorSpec {
 	final private MapModel map = testObjects.map;
 	final private NodeModel parent = testObjects.parent;
 	final private NodeModel child = testObjects.child;
-	final private ChildrenUpdated childrenUpdated = testObjects.childrenUpdated;
+	final private ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
 	final private NodeModel parent2 = testObjects.parent2;
 	final private NodeModel child2 = testObjects.child2;
-	final private ChildrenUpdated childrenUpdated2 = testObjects.childrenUpdated2;
+	final private ChildrenUpdated childrenUpdated2 = mock(ChildrenUpdated.class);
 
 	@BeforeClass
 	static public void setupClass() throws InterruptedException, InvocationTargetException {
