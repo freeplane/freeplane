@@ -47,10 +47,11 @@ public class MapUpdateTimer extends Timer {
             if (listeners[i]==ActionListener.class) {
                 ((ActionListener)listeners[i+1]).actionPerformed(e);
             }
+            listeners = listenerList.getListenerList();
         }
 	}
 	
-	public void addUpdateEvents(MapUpdated event) {
+	public void addUpdateEvent(MapUpdated event) {
 		builder.addUpdateEvents(event);
 	}
 	

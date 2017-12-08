@@ -8,7 +8,7 @@ import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated.
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated.Side;
 import org.freeplane.plugin.collaboration.client.event.children.ImmutableChild.Builder;
 
-public class UpdateEventFactory {
+public class StructureUpdateEventFactory {
 	public ChildrenUpdated createChildrenUpdatedEvent(final NodeModel parent) {
 		final List<NodeModel> childNodes = parent.getChildren();
 		List<Child> childIds = new ArrayList<>(childNodes.size());

@@ -12,7 +12,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
 import org.freeplane.plugin.collaboration.client.TestData;
-import org.junit.Before;
+import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -20,8 +20,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChildrenUpdateProcessorSpec {
-	@Mock
-	private MapModel map;
+	final private TestObjects testObjects = new TestObjects();
+	final private MapModel map = testObjects.map;
+	final private NodeModel parent = testObjects.parent;
+	final private NodeModel child = testObjects.child;
+	final private NodeModel child2 = testObjects.child2;
 	
 	@Mock
 	private SingleNodeStructureManipulator manipulator;
@@ -29,23 +32,6 @@ public class ChildrenUpdateProcessorSpec {
 	@Mock
 	private NodeFactory nodeFactory;
 
-	private NodeModel parent;
-
-	private NodeModel child;
-
-	private NodeModel child2;
-	
-	@Before
-	public void setup() {
-		parent = new NodeModel(map);
-		parent.setText("parent");
-		parent.setID(TestData.PARENT_NODE_ID);
-		child = new NodeModel(map);
-		child.setText("child");
-		child2 = new NodeModel(map);
-		child2.setText("child2");
-
-	}
 
 	@Test
 	public void insertsRightNodeWithoutSideChange() throws Exception {

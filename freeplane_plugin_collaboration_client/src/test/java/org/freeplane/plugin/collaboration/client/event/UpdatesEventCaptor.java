@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.children;
+package org.freeplane.plugin.collaboration.client.event;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

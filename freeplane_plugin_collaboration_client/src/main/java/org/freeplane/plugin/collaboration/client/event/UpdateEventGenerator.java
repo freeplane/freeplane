@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.children;
+package org.freeplane.plugin.collaboration.client.event;
 
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeChangeListener;
@@ -8,27 +8,27 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerator;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerator;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 
 public class UpdateEventGenerator implements IMapChangeListener, INodeChangeListener{
-	private MapUpdateTimerFactory timerFactory;
-	private ChildrenUpdateGeneratorFactory generatorFactory;
+	final private ChildrenUpdateGenerators structureGenerators;
+	final private ContentUpdateGenerators contentGenerators;
 	
-	public UpdateEventGenerator(MapUpdateTimerFactory timerFactory, ChildrenUpdateGeneratorFactory generatorFactory) {
+
+	public UpdateEventGenerator(ChildrenUpdateGenerators structureGenerators,
+	                            ContentUpdateGenerators contentGenerators) {
 		super();
-		this.timerFactory = timerFactory;
-		this.generatorFactory = generatorFactory;
+		this.structureGenerators = structureGenerators;
+		this.contentGenerators = contentGenerators;
 	}
 
+
+
 	private ChildrenUpdateGenerator getGenerator(MapModel map) {
-		ChildrenUpdateGenerator generator = map.getExtension(ChildrenUpdateGenerator.class);
-		if(generator == null) {
-			final MapUpdateTimer timer = timerFactory.createTimer(map);
-			generator = generatorFactory.create(map, timer);
-			map.addExtension(generator);
-		}
-		return generator;
+			return structureGenerators.of(map);
 	}
 	
 	
@@ -73,11 +73,15 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 
 	@Override
 	public void nodeChanged(NodeChangeEvent event) {
-		// TODO Auto-generated method stub
+		NodeModel node = event.getNode();
+		final ContentUpdateGenerator generator = contentGenerators.of(node.getMap());
+		generator.onContentUpdate(node);
 	}
 
 	@Override
 	public void mapChanged(MapChangeEvent event) {
-		// TODO Auto-generated method stub
+		MapModel map = event.getMap();
+		final ContentUpdateGenerator generator = contentGenerators.of(map);
+		generator.onContentUpdate(map.getRootNode());
 	}
 }

@@ -24,17 +24,19 @@ import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
-import org.freeplane.plugin.collaboration.client.event.UpdateProcessors;
+import org.freeplane.plugin.collaboration.client.event.UpdateEventGenerator;
+import org.freeplane.plugin.collaboration.client.event.UpdateProcessorChain;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.children.NodeFactory;
 import org.freeplane.plugin.collaboration.client.event.children.RootNodeIdUpdatedProcessor;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeProcessor;
-import org.freeplane.plugin.collaboration.client.event.children.UpdateEventFactory;
-import org.freeplane.plugin.collaboration.client.event.children.UpdateEventGenerator;
+import org.freeplane.plugin.collaboration.client.event.children.StructureUpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 import org.freeplane.plugin.collaboration.client.event.json.Jackson;
 import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
 
@@ -46,7 +48,11 @@ public class EventStreamDialog {
 				UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(t));
 				printer.prettyPrint(ev);
 			}, 100);
-			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(f, new ChildrenUpdateGeneratorFactory(new UpdateEventFactory()));
+			ContentUpdateEventFactory contentEventFactory = new ContentUpdateEventFactory();
+			StructureUpdateEventFactory structuralEventFactory = new StructureUpdateEventFactory();
+			ChildrenUpdateGenerators childrenUpdateGenerators = new ChildrenUpdateGenerators(f, structuralEventFactory, contentEventFactory);
+			ContentUpdateGenerators contentGenerators = new ContentUpdateGenerators(f, contentEventFactory);
+			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(childrenUpdateGenerators,  contentGenerators);
 			MapModel map = Controller.getCurrentController().getMap();
 			if(! map.containsExtension(ModifiableUpdateHeaderExtension.class))
 				map.addExtension(ModifiableUpdateHeaderExtension.create().setMapId("id").setMapRevision(1));
@@ -59,7 +65,7 @@ public class EventStreamDialog {
 
 	private class Json2Map implements ActionListener {
 		
-		private final UpdateProcessors processor;
+		private final UpdateProcessorChain processor;
 		private MMapController mapController;
 
 		public Json2Map() {
@@ -68,7 +74,7 @@ public class EventStreamDialog {
 			final SingleNodeStructureManipulator singleNodeStructureManipulator = new SingleNodeStructureManipulator(mapController);
 			final ChildrenUpdateProcessor childrenUpdateProcessor = new ChildrenUpdateProcessor(singleNodeStructureManipulator, nodeFactory);
 			final SpecialNodeTypeProcessor specialNodeTypeProcessor = new SpecialNodeTypeProcessor();
-			processor = new UpdateProcessors().add(new RootNodeIdUpdatedProcessor()).add(childrenUpdateProcessor).add(specialNodeTypeProcessor);
+			processor = new UpdateProcessorChain().add(new RootNodeIdUpdatedProcessor()).add(childrenUpdateProcessor).add(specialNodeTypeProcessor);
 		}
 
 		@Override

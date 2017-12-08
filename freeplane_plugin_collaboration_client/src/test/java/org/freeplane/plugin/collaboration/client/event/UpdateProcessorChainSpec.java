@@ -9,11 +9,11 @@ import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdatePr
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
 import org.junit.Test;
 
-public class UpdateProcessorsSpec {
+public class UpdateProcessorChainSpec {
 
 	@Test
 	public void callsRegisteredProcessorForUpdateEvent() throws Exception {
-		final UpdateProcessors updateProcessors = new UpdateProcessors();
+		final UpdateProcessorChain updateProcessors = new UpdateProcessorChain();
 		final ChildrenUpdateProcessor processor = mock(ChildrenUpdateProcessor.class);
 		when(processor.eventClass()).thenReturn(ChildrenUpdated.class);
 		updateProcessors.add(processor);
@@ -27,7 +27,7 @@ public class UpdateProcessorsSpec {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void throwsExceptionIfNoProcessorIsFound() throws Exception {
-		final UpdateProcessors updateProcessors = new UpdateProcessors();
+		final UpdateProcessorChain updateProcessors = new UpdateProcessorChain();
 		final ChildrenUpdateProcessor processor = mock(ChildrenUpdateProcessor.class);
 		when(processor.eventClass()).thenReturn(ChildrenUpdated.class);
 		updateProcessors.add(processor);
