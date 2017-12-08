@@ -37,6 +37,7 @@ import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeP
 import org.freeplane.plugin.collaboration.client.event.children.StructureUpdateEventFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.json.Jackson;
 import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
 
@@ -69,9 +70,11 @@ public class EventStreamDialog {
 			final NodeFactory nodeFactory = new NodeFactory();
 			mapController = (MMapController) Controller.getCurrentController().getModeController(MModeController.MODENAME).getMapController();
 			final SingleNodeStructureManipulator singleNodeStructureManipulator = new SingleNodeStructureManipulator(mapController);
+			final RootNodeIdUpdatedProcessor rootNodeIdUpdatedProcessor = new RootNodeIdUpdatedProcessor();
 			final ChildrenUpdateProcessor childrenUpdateProcessor = new ChildrenUpdateProcessor(singleNodeStructureManipulator, nodeFactory);
 			final SpecialNodeTypeProcessor specialNodeTypeProcessor = new SpecialNodeTypeProcessor();
-			processor = new UpdateProcessorChain().add(new RootNodeIdUpdatedProcessor()).add(childrenUpdateProcessor).add(specialNodeTypeProcessor);
+			processor = new UpdateProcessorChain().add(rootNodeIdUpdatedProcessor)
+					.add(childrenUpdateProcessor).add(specialNodeTypeProcessor).add(new ContentUpdateProcessor());
 		}
 
 		@Override
