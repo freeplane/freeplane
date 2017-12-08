@@ -54,7 +54,7 @@ public class IconStoreFactory {
 	private static final String GROUP_KEY = "icons.group.%s";
 	private static final String GROUP_ICON_KEY = "IconGroupPopupAction.%s.icon";
 	private static final String GROUP_DESC_KEY = "IconGroupPopupAction.%s.text";
-	private static final Pattern iconFileNamePattern = Pattern.compile(".*\\\\.(svg|png)$", Pattern.CASE_INSENSITIVE);
+	private static final Pattern iconFileNamePattern = Pattern.compile(".*\\.(svg|png)$", Pattern.CASE_INSENSITIVE);
 
 	public static IconStore ICON_STORE;
 	static {
