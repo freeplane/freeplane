@@ -56,6 +56,7 @@ public class ChildrenUpdateGeneratorSpec {
 	final private NodeModel parent = testObjects.parent;
 	final private NodeModel child = testObjects.child;
 	final private ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
+	final private ContentUpdated parentContentUpdated = mock(ContentUpdated.class);
 	final private ContentUpdated childContentUpdated = mock(ContentUpdated.class);
 	
 	final private NodeModel parent2 = testObjects.parent2;
@@ -220,12 +221,17 @@ public class ChildrenUpdateGeneratorSpec {
 	
 	@Test
 	public void generatesEventOnNewMap() throws Exception {
+		parent.insert(child);
 		when(map.getRootNode()).thenReturn(parent);
+		when(contentEventFactory.createContentUpdatedEvent(parent)).thenReturn(parentContentUpdated);
+		when(contentEventFactory.createContentUpdatedEvent(child)).thenReturn(childContentUpdated);
+		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 		uut.onNewMap(map);
 		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		final ImmutableRootNodeIdUpdated rootNodeSet = RootNodeIdUpdated.builder().nodeId(TestData.PARENT_NODE_ID).build();
 		UpdatesFinished expected = UpdatesFinished.builder()
 				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateEvents(RootNodeIdUpdated.builder().nodeId(TestData.PARENT_NODE_ID).build()).build();
+				.addUpdateEvents(rootNodeSet, parentContentUpdated, childrenUpdated, childContentUpdated).build();
 		
 		assertThat(event).isEqualTo(expected);
 	}

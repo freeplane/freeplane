@@ -55,4 +55,8 @@ public class MapUpdateTimer extends Timer {
 		builder.addUpdateEvents(event);
 	}
 	
+	public void addUpdateEvents(MapUpdated... events) {
+		builder.addUpdateEvents(events);
+	}
+	
 }

@@ -26,7 +26,10 @@ public class ChildrenUpdateGenerator implements IExtension{
 	
 	public void onNewMap(MapModel map) {
 		timer.addActionListener(e -> 
-			timer.addUpdateEvent(createRootNodeIdUpdatedEvent(map)));
+			{
+				timer.addUpdateEvent(createRootNodeIdUpdatedEvent(map));
+				generateStructureChangedEventForSubtree(map.getRootNode());
+			});
 		timer.restart();
 	}
 
@@ -67,11 +70,11 @@ public class ChildrenUpdateGenerator implements IExtension{
 			timer.addUpdateEvent(SpecialNodeTypeSet.builder().nodeId(node.createID()).content(c).build());
 		});
 		timer.addUpdateEvent(contentUpdateEventFactory.createContentUpdatedEvent(node));
-		if(node.getParentNode() != null && node.hasChildren()) {
+		if(node.hasChildren()) {
 			final ChildrenUpdated childrenUpdated = structuralEventFactory.createChildrenUpdatedEvent(node);
 			timer.addUpdateEvent(childrenUpdated);
-			for(NodeModel parent1 : node.getChildren()) {
-				generateStructureChangedEventForSubtree(parent1);
+			for(NodeModel child : node.getChildren()) {
+				generateStructureChangedEventForSubtree(child);
 			}
 		}
 	}

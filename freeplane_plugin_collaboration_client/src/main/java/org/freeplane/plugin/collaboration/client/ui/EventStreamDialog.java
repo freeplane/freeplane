@@ -57,9 +57,6 @@ public class EventStreamDialog {
 			if(! map.containsExtension(ModifiableUpdateHeaderExtension.class))
 				map.addExtension(ModifiableUpdateHeaderExtension.create().setMapId("id").setMapRevision(1));
 			updateEventGenerator.onNewMap(map);
-			NodeModel rootNode = map.getRootNode();
-			for (int i = 0; i < rootNode.getChildCount(); i++)
-				updateEventGenerator.onNodeInserted(rootNode, rootNode.getChildAt(i), i);
 		}
 	}
 
