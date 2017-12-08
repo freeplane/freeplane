@@ -1,8 +1,10 @@
 dependencies {
-    compile project(':freeplane')
+    compileOnly project(':freeplane')
 
 	// libbatik-java / batik-*.jar:
-	compile 'org.apache.xmlgraphics:batik-all:1.9.1'
+	compile ('org.apache.xmlgraphics:batik-all:1.9.1') {
+		transitive = false
+	}
 	
 	// libxml-commons-external-java 1.4.01:
 	// org.w3c.dom.svg.SVGDocument
@@ -12,14 +14,17 @@ dependencies {
 	
 	// org.apache.xmlgraphics.java2d.color.NamedColorSpace
 	// libxmlgraphics-commons-java / xmlgraphics-commons.jar:
-	compile group: 'org.apache.xmlgraphics', name: 'xmlgraphics-commons', version: '2.2'
+	compile (group: 'org.apache.xmlgraphics', name: 'xmlgraphics-commons', version: '2.2') {
+		transitive = false
+	}
 
 	// libfop-java / fop.jar:
-	compile group: 'org.apache.xmlgraphics', name: 'fop', version: '2.1'
+	compile (group: 'org.apache.xmlgraphics', name: 'fop', version: '2.1') {
+		transitive = false
+	}
 
 	// libavalon-framework-java / avalon-framework.jar:
 	// PDF problem: org.apache.avalon.framework.configuration.Configurable
-	compile group: 'org.apache.avalon.framework', name: 'avalon-framework-api', version: '4.3.1'
 	// PDF problem: org.apache.avalon.framework.configuration.DefaultConfiguration
 	compile group: 'org.apache.avalon.framework', name: 'avalon-framework-impl', version: '4.3.1'
 
@@ -38,8 +43,7 @@ jar {
         name = pluginid
         symbolicName = pluginid 
 
-        configurations.runtime.transitive = false
-        def deps = filterAndExternalizePluginDependencies(configurations.runtime.files)
+        def deps = filterAndExternalizePluginDependencies(configurations.runtimeClasspath.files)
         deps.add(0, "lib/plugin-" + project.version + '.jar')
 
         attributes 'Class-Path': deps.join(', ')
