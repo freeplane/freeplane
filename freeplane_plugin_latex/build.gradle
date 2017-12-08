@@ -1,6 +1,8 @@
 dependencies {
     compileOnly project(':freeplane')
+	testCompile project(':freeplane')
     compileOnly project(':freeplane_plugin_jsyntaxpane')
+	testCompile project(':freeplane_plugin_jsyntaxpane')
     compile 'org.scilab.forge:jlatexmath:1.0.6'
     compile 'org.scilab.forge:jlatexmath-font-greek:1.0.6'
     compile 'org.scilab.forge:jlatexmath-font-cyrillic:1.0.6'

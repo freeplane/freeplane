@@ -1,5 +1,6 @@
 dependencies {
     compileOnly project(':freeplane')
+	testCompile project(':freeplane')
 
 	// libbatik-java / batik-*.jar:
 	compile ('org.apache.xmlgraphics:batik-all:1.9.1') {
