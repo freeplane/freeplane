@@ -301,12 +301,12 @@ public class MAttributeController extends AttributeController {
 
 	private static class ReplaceAttributeValueActor implements IActor {
 		private final String name;
-		private final String newValue;
-		private final String oldValue;
+		private final Object   newValue;
+		private final Object oldValue;
 		private final AttributeRegistry registry;
 
-		private ReplaceAttributeValueActor(final AttributeRegistry registry, final String name, final String oldValue,
-		                                   final String newValue) {
+		private ReplaceAttributeValueActor(final AttributeRegistry registry, final String name, final Object oldValue,
+		                                   final Object newValue) {
 			this.registry = registry;
 			this.name = name;
 			this.oldValue = oldValue;
@@ -498,7 +498,7 @@ public class MAttributeController extends AttributeController {
 	private static class UnregistryAttributeValueActor implements IActor {
 		final private RegistryAttributeValueActor registryActor;
 
-		private UnregistryAttributeValueActor(final AttributeRegistryElement element, final String newValue) {
+		private UnregistryAttributeValueActor(final AttributeRegistryElement element, final Object newValue) {
 			registryActor = new RegistryAttributeValueActor(element, newValue, element.isManual());
 		}
 
@@ -665,7 +665,7 @@ public class MAttributeController extends AttributeController {
 	}
 
 	@Override
-	public void performRemoveAttributeValue(final String name, final String value) {
+	public void performRemoveAttributeValue(final String name, final Object value) {
 		final IVisitor remover = new AttributeValueRemover(name, value);
 		final Iterator iterator = new Iterator(remover);
 		ModeController modeController = Controller.getCurrentModeController();
@@ -715,7 +715,7 @@ public class MAttributeController extends AttributeController {
 	}
 
 	@Override
-	public void performReplaceAttributeValue(final String name, final String oldValue, final String newValue) {
+	public void performReplaceAttributeValue(final String name, final Object oldValue, final Object newValue) {
 		Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
 		ModeController modeController = controller.getModeController();

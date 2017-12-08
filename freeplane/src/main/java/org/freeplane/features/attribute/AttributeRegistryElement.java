@@ -56,12 +56,12 @@ public class AttributeRegistryElement {
 
 		@Override
 		public void remove(final Object element) {
-			registry.getAttributeController().performRemoveAttributeValue(getKey(), element.toString());
+			registry.getAttributeController().performRemoveAttributeValue(getKey(), element);
 		}
 
 		@Override
 		public void replace(final Object oldO, final Object newO) {
-			registry.getAttributeController().performReplaceAttributeValue(getKey(), oldO.toString(), newO.toString());
+			registry.getAttributeController().performReplaceAttributeValue(getKey(), oldO, newO);
 		}
 	}
 
@@ -129,7 +129,7 @@ public class AttributeRegistryElement {
 		registry.fireAttributesChanged();
 	}
 
-	public void replaceValue(final String oldValue, final String newValue) {
+	public void replaceValue(final Object oldValue, final Object newValue) {
 		values._replace(oldValue, newValue);
 		registry.fireAttributesChanged();
 	}
