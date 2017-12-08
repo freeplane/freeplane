@@ -15,6 +15,7 @@ import org.freeplane.plugin.collaboration.client.TestData;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -32,7 +33,14 @@ public class ChildrenUpdateProcessorSpec {
 	@Mock
 	private NodeFactory nodeFactory;
 
-
+	@InjectMocks
+	private ChildrenUpdateProcessor uut;
+	
+	@Test
+	public void returnsEventClass_ChildrenUpdated() throws Exception {
+		assertThat(uut.eventClass()).isEqualTo(ChildrenUpdated.class);
+	}
+	
 	@Test
 	public void insertsRightNodeWithoutSideChange() throws Exception {
 		when(map.getNodeForID(TestData.PARENT_NODE_ID)).thenReturn(parent);
@@ -43,7 +51,7 @@ public class ChildrenUpdateProcessorSpec {
 		
 		when(nodeFactory.createNode(map)).thenReturn(child);
 
-		new ChildrenUpdateProcessor(manipulator, nodeFactory).onUpdate(map, event);
+		uut.onUpdate(map, event);
 		
 		verify(manipulator).insertNode(child, parent, 0, false);
 	}
@@ -60,7 +68,7 @@ public class ChildrenUpdateProcessorSpec {
 		
 		when(nodeFactory.createNode(map)).thenReturn(child);
 
-		new ChildrenUpdateProcessor(manipulator, nodeFactory).onUpdate(map, event);
+		uut.onUpdate(map, event);
 		
 		verify(manipulator).insertNode(child, parent, 0, false);
 	}
@@ -77,7 +85,7 @@ public class ChildrenUpdateProcessorSpec {
 		parent.setLeft(true);
 		when(nodeFactory.createNode(map)).thenReturn(child);
 
-		new ChildrenUpdateProcessor(manipulator, nodeFactory).onUpdate(map, event);
+		uut.onUpdate(map, event);
 		
 		verify(manipulator).insertNode(child, parent, 0, true);
 	}
@@ -94,7 +102,7 @@ public class ChildrenUpdateProcessorSpec {
 		
 		when(nodeFactory.createNode(map)).thenReturn(child);
 
-		new ChildrenUpdateProcessor(manipulator, nodeFactory).onUpdate(map, event);
+		uut.onUpdate(map, event);
 		
 		assertThat(child.getID()).isEqualTo(TestData.CHILD_NODE_ID);
 	}
@@ -109,7 +117,7 @@ public class ChildrenUpdateProcessorSpec {
 		
 		when(nodeFactory.createNode(map)).thenReturn(child).thenReturn(child2);
 
-		new ChildrenUpdateProcessor(manipulator, nodeFactory).onUpdate(map, event);
+		uut.onUpdate(map, event);
 		
 		verify(manipulator).insertNode(child, parent, 0, false);
 		verify(manipulator).insertNode(child2, parent, 1, false);
@@ -129,7 +137,7 @@ public class ChildrenUpdateProcessorSpec {
 		when(map.getNodeForID( TestData.CHILD_NODE_ID)).thenReturn(child);
 		parent.insert(child);
 
-		new ChildrenUpdateProcessor(manipulator, nodeFactory).onUpdate(map, event);
+		uut.onUpdate(map, event);
 		
 		verify(manipulator).moveNode(child, parent, 0, false, false);
 		verifyNoMoreInteractions(manipulator, nodeFactory);
@@ -147,7 +155,7 @@ public class ChildrenUpdateProcessorSpec {
 		when(map.getNodeForID( TestData.CHILD_NODE_ID)).thenReturn(child);
 		parent.insert(child);
 
-		new ChildrenUpdateProcessor(manipulator, nodeFactory).onUpdate(map, event);
+		uut.onUpdate(map, event);
 		
 		verify(manipulator).moveNode(child, parent, 0, true, true);
 		verifyNoMoreInteractions(manipulator, nodeFactory);
@@ -166,7 +174,7 @@ public class ChildrenUpdateProcessorSpec {
 				content(Collections.emptyList()).build();
 		
 
-		new ChildrenUpdateProcessor(manipulator, nodeFactory).onUpdate(map, event);
+		uut.onUpdate(map, event);
 		
 		verify(manipulator).deleteNode(parent, 0);
 		verifyNoMoreInteractions(manipulator, nodeFactory);

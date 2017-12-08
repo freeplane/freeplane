@@ -1,6 +1,7 @@
 package org.freeplane.plugin.collaboration.client.event.children;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 import org.freeplane.features.map.MapModel;
@@ -14,13 +15,18 @@ public class SpecialNodeTypeProcessorSpec {
 	final private TestObjects testObjects = new TestObjects();
 	final private MapModel map = testObjects.map;
 	final private NodeModel node = testObjects.parent;
+	SpecialNodeTypeProcessor uut = new SpecialNodeTypeProcessor();
 
+	
+	@Test
+	public void returnsEventClass_SpecialNodeTypeSet() throws Exception {
+		assertThat(uut.eventClass()).isEqualTo(SpecialNodeTypeSet.class);
+	}
 	
 	@Test
 	public void setsOnlySummaryBeginNodeFlag() throws Exception {
 		SpecialNodeTypeSet event = SpecialNodeTypeSet.builder().nodeId("id").content(SpecialNodeType.SUMMARY_BEGIN).build();
 		when(map.getNodeForID("id")).thenReturn(node);
-		SpecialNodeTypeProcessor uut = new SpecialNodeTypeProcessor();
 
 		uut.onUpdate(map, event);
 		
@@ -31,9 +37,9 @@ public class SpecialNodeTypeProcessorSpec {
 	public void setsSummaryEndNodeFlag() throws Exception {
 		SpecialNodeTypeSet event = SpecialNodeTypeSet.builder().nodeId("id").content(SpecialNodeType.SUMMARY_END).build();
 		when(map.getNodeForID("id")).thenReturn(node);
-		SpecialNodeTypeProcessor uut = new SpecialNodeTypeProcessor();
 		
 		uut.onUpdate(map, event);
+		
 		assertThat(SummaryNode.isFirstGroupNode(node)).isFalse();
 		assertThat(SummaryNode.isSummaryNode(node)).isTrue();
 	}
@@ -41,7 +47,6 @@ public class SpecialNodeTypeProcessorSpec {
 	public void setsBothSummaryFlags() throws Exception {
 		SpecialNodeTypeSet event = SpecialNodeTypeSet.builder().nodeId("id").content(SpecialNodeType.SUMMARY_BEGIN_END).build();
 		when(map.getNodeForID("id")).thenReturn(node);
-		SpecialNodeTypeProcessor uut = new SpecialNodeTypeProcessor();
 
 		uut.onUpdate(map, event);
 		
