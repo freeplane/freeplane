@@ -1,6 +1,8 @@
 dependencies {
     compileOnly project(':freeplane')
+	testCompile project(':freeplane')
     compileOnly project(':freeplane_plugin_script')
+	testCompile project(':freeplane_plugin_script')
 }
 
 jar {
