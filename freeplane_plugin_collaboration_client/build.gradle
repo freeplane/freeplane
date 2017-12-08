@@ -5,7 +5,8 @@ plugins {
 apply plugin: "net.ltgt.apt-eclipse"
   
 dependencies {
-    compile project(':freeplane')
+    compileOnly project(':freeplane')
+    testCompile project(':freeplane')
 	compileOnly "org.immutables:value:2.2.10:annotations"
 	apt         "org.immutables:value:2.2.10"
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.9.0'
