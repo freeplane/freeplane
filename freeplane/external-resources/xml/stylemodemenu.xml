@@ -83,6 +83,7 @@
 			<Entry name="menu_coreFormat">
 				<Entry accelerator="control B" name="BoldAction" />
 				<Entry accelerator="control I" name="ItalicAction" />
+				<Entry name="StrikeThroughAction"/>
 				<Entry accelerator="control PLUS" name="IncreaseNodeFontAction" />
 				<Entry accelerator="control MINUS" name="DecreaseNodeFontAction" />
 				<Entry builder="separator" />
@@ -163,6 +164,7 @@
 			<Entry name="toolbar_fonts" builder="main_toolbar_font_size" />
 			<Entry name="BoldAction" />
 			<Entry name="ItalicAction" />
+			<Entry name="StrikeThroughAction"/>
 		</Entry>
 		<Entry builder="separator" />
 		<Entry>

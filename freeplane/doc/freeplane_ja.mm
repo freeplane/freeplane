@@ -12830,7 +12830,7 @@
 </node>
 </node>
 <node TEXT="&#x74b0;&#x5883;&#x8a2d;&#x5b9a;..." FOLDED="true" ID="ID_45903753" CREATED="1455910949097" MODIFIED="1455910949097">
-<icon BUILTIN="../PropertyAction"/>
+<icon BUILTIN="../ShowPreferencesAction"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
 <html>

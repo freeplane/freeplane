@@ -642,7 +642,9 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 		catch (final Exception e) {
 			final String info = HtmlUtils.combineTextWithExceptionInfo(uri.toString(), e);
-			return new JLabel(info);
+			final JLabel errorLabel = new JLabel(info);
+			errorLabel.addMouseListener(mouseListener);
+			return errorLabel;
 		}
 		if (viewer == null) {
 			return new JLabel(uri.toString());

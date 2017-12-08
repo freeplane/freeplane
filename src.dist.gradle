@@ -49,7 +49,7 @@ task srcTarGz(type: Tar) {
         exclude(miscExcludedFilesSpec())
 
         filter(FixCrLfFilter.class,
-            eol:FixCrLfFilter.CrLf.newInstance("lf"))
+            eol:FixCrLfFilter.CrLf.newInstance("lf"), fixlast:false)
     }
 
     // all other (source) files
@@ -116,7 +116,7 @@ task srcpureTarGz(type: Tar) {
         exclude(srcpureAdditionalExcludeSpec())
 
         filter(FixCrLfFilter.class,
-            eol:FixCrLfFilter.CrLf.newInstance("lf"))
+            eol:FixCrLfFilter.CrLf.newInstance("lf"), fixlast:false)
     }
 
     // all other (source) files

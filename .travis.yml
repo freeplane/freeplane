@@ -1,4 +1,6 @@
 language: java
+sudo: false # Use container based builds. They are faster and we do not need sudo.
+dist: trusty
 jdk:
   - openjdk8
   - oraclejdk8
@@ -7,6 +9,8 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
+script: 
+  - gradle -PTestLoggingFull=true check
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/

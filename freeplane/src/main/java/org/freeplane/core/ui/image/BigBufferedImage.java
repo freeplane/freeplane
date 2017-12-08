@@ -21,6 +21,8 @@ import java.io.RandomAccessFile;
 import java.lang.reflect.Method;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.HashSet;
 import java.util.Hashtable;
 
@@ -31,14 +33,19 @@ public class BigBufferedImage extends BufferedImage {
     private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 	public static final int MAX_PIXELS_IN_MEMORY = 50 * 1024 * 1024;
 
-    public static BufferedImage create(int width, int height, int imageType){
+    public static BufferedImage create(final int width, final int height, final int imageType){
     	if(width * height > 0)
-			try {
-				final File tempDir = new File(TMP_DIR);
-				return createBigBufferedImage(tempDir, width, height, imageType);
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
+			return AccessController.doPrivileged(new PrivilegedAction<BufferedImage>() {
+				@Override
+				public BufferedImage run() {
+					try {
+						final File tempDir = new File(TMP_DIR);
+						return createBigBufferedImage(tempDir, width, height, imageType);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			});
 		else
     		return new BufferedImage(width, height, imageType);
     }

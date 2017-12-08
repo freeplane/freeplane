@@ -6,7 +6,7 @@ repositories {
 }
 
 dependencies {
-    compile project(':freeplane')
+    compileOnly project(':freeplane')
 
     compile 'org.openstreetmap.jmapviewer:jmapviewer:1.14'
 }
@@ -16,8 +16,8 @@ jar {
         name = pluginid
         symbolicName = pluginid
 
-        configurations.runtime.transitive = false
-        def deps = filterAndExternalizePluginDependencies(configurations.runtime.files)
+        
+        def deps = filterAndExternalizePluginDependencies(configurations.runtimeClasspath.files)
         deps.add(0, "lib/plugin-" + project.version + '.jar')
 
         attributes 'Class-Path': deps.join(', ')

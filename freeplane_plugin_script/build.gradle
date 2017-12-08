@@ -1,6 +1,6 @@
 dependencies {
-    compile project(':freeplane')
-    compile project(':freeplane_plugin_jsyntaxpane')
+    compileOnly project(':freeplane')
+    compileOnly project(':freeplane_plugin_jsyntaxpane')
     compile 'org.codehaus.groovy:groovy-all:2.3.1'
 	compile ('org.freeplane.securegroovy:groovy-patcher:0.0.2') {
 		transitive = false
@@ -18,8 +18,8 @@ jar {
         name = pluginid
         symbolicName = pluginid
 
-        configurations.runtime.transitive = false
-        def deps = filterAndExternalizePluginDependencies(configurations.runtime.files)
+        
+        def deps = filterAndExternalizePluginDependencies(configurations.runtimeClasspath.files)
         deps.add(0, "lib/plugin-" + project.version + '.jar')
 
         attributes 'Class-Path': deps.join(', ')

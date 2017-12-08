@@ -127,7 +127,7 @@ public class PresentationEditorController {
 		btnExportAllPresentations.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		controlButtons.add(btnExportAllPresentations);
 		
-		AFreeplaneAction configureAction = modeController.getAction("PropertyAction");
+		AFreeplaneAction configureAction = modeController.getAction("ShowPreferencesAction");
 		JButton btnConfigure = new JButton(configureAction);
 		btnConfigure.setActionCommand(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + "Presentation");
 		btnConfigure.setAlignmentX(JButton.CENTER_ALIGNMENT);

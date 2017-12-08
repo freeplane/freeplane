@@ -7,6 +7,7 @@ import javax.swing.SwingConstants;
 
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Quantity;
+import org.freeplane.features.nodestyle.FontUtils;
 
 public class CssRuleBuilder {
 	private StringBuilder rule = new StringBuilder();
@@ -48,6 +49,9 @@ public class CssRuleBuilder {
 		}
 		if (font.isItalic()) {
 			rule.append(" font-style: italic;");
+		}
+		if(FontUtils.isStrikedThrough(font)) {
+			rule.append(" text-decoration: line-through;");
 		}
 	}
 

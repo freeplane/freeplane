@@ -33,6 +33,7 @@
 			<Entry builder="main_toolbar_font_size" />
 			<Entry name="BoldAction" />
 			<Entry name="ItalicAction" />
+			<Entry name="StrikeThroughAction"/>
 		</Entry>
 		<Entry builder="separator" />
 		<Entry>
@@ -327,6 +328,7 @@
 			<Entry name="menu_coreFormat">
 				<Entry name="BoldAction" accelerator="control B" />
 				<Entry name="ItalicAction" accelerator="control I" />
+				<Entry name="StrikeThroughAction"/>
 				<Entry name="IncreaseNodeFontAction" accelerator="control PLUS" />
 				<Entry name="DecreaseNodeFontAction" accelerator="control MINUS" />
 				<Entry builder="separator" />
@@ -473,7 +475,7 @@
 			<Entry builder="separator" />
 			<Entry name="OpenUserDirAction" />
 			<Entry builder="separator" />
-			<Entry name="PropertyAction" accelerator="control COMMA" builder="removeOnMac"/>
+			<Entry name="ShowPreferencesAction" accelerator="control COMMA" builder="removeOnMac"/>
 			<Entry builder="conditionalActionBuilder" property="enableUserDefinedInterfaceStrings" 
 				actionKey="TextChangeHotKeyAction" 
 				actionClass="org.freeplane.core.ui.textchanger.TextChangeHotKeyAction" 
