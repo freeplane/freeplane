@@ -1,5 +1,6 @@
 dependencies {
-    compile project(':freeplane')
+    compileOnly project(':freeplane')
+	testCompile project(':freeplane')
 
     // from flatDir "localGitDepsRepository":
     compile ':jsyntaxpane-0.9.6~r156-5' // from the Debian "libjsyntaxpane-java" package
@@ -10,8 +11,8 @@ jar {
         name = pluginid
         symbolicName = pluginid
 
-        configurations.runtime.transitive = false
-        def deps = filterAndExternalizePluginDependencies(configurations.runtime.files)
+        
+        def deps = filterAndExternalizePluginDependencies(configurations.runtimeClasspath.files)
         deps.add(0, "lib/plugin-" + project.version + '.jar')
 
         attributes 'Class-Path': deps.join(', ')
