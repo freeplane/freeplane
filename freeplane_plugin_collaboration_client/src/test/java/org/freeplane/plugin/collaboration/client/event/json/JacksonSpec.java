@@ -9,8 +9,6 @@ import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
 import org.freeplane.plugin.collaboration.client.event.children.ImmutableChildrenUpdated;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated.Child;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated.Side;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

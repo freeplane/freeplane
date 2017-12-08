@@ -1,15 +1,11 @@
 package org.freeplane.plugin.collaboration.client.event.children;
 
 import java.awt.event.ActionEvent;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.Map.Entry;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
-import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
 
 public class ChildrenUpdateGenerator implements IExtension{
