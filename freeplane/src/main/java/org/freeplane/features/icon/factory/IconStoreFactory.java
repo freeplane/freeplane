@@ -24,9 +24,11 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
@@ -109,10 +111,16 @@ public class IconStoreFactory {
 	private static List<MindIcon> getUserIcons(final File iconDir, final String dir) {
 		final String[] userIconArray = iconDir.list(new FilenameFilter() {
 			public boolean accept(final File dir, final String name) {
-				return name.matches("(?i).*\\.(svg|png)$") || new File(dir, name).isDirectory();
+				return hasValidIconFileExtension(name) || new File(dir, name).isDirectory();
 			}
 		});
-		Arrays.sort(userIconArray);
+		Arrays.sort(userIconArray, new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				return getIconFileNameWithoutExtension(o1).compareTo(getIconFileNameWithoutExtension(o2));
+			}
+		});
+
 		if (userIconArray == null) {
 			return Collections.emptyList();
 		}
@@ -140,5 +148,15 @@ public class IconStoreFactory {
 			icons.add(icon);
 		}
 		return icons;
+	}
+
+	static final private Pattern iconFileNamePattern = Pattern.compile(".*\\\\.(svg|png)$", Pattern.CASE_INSENSITIVE);
+	private static boolean hasValidIconFileExtension(final String name) {
+		return iconFileNamePattern.matcher(name).matches();
+	}
+
+	private static String getIconFileNameWithoutExtension(final String fileNameWithExtension) {
+		return hasValidIconFileExtension(fileNameWithExtension) ?
+				fileNameWithExtension.substring(0, fileNameWithExtension.length() - 4) : fileNameWithExtension;
 	}
 }
