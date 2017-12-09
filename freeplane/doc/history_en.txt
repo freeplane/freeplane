@@ -3,6 +3,8 @@
 ===============================
 Sorting nodes does not break summary nodes
 Strike through formatting for nodes added
+Bug fixes
+
 ===============================
 1.6.10
 ===============================
