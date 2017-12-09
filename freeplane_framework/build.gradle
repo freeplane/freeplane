@@ -35,7 +35,7 @@ task copyLauncherStuff(type: Copy) {
          exclude('freeplane.sh')
      }
 
-     def knopflerfishJarFile = project.configurations.runtimeClasspath.files.find {
+     def knopflerfishJarFile = project.configurations.runtime.files.find {
          isKnopflerfishJar(it.name)
      }
      from(knopflerfishJarFile)
