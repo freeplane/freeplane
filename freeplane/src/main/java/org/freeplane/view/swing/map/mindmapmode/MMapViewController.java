@@ -56,21 +56,18 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 		}
 		if (editInternalWysiwyg) {
 			final EditNodeWYSIWYG editNodeWYSIWYG = new EditNodeWYSIWYG(node, text, editControl, true);
-			final ViewController viewController = Controller.getCurrentModeController().getController().getViewController();
-			if(EditedComponent.TEXT.equals(editControl.getEditType())){ 
-				int preferredHeight = (int) (getComponent(node).getHeight() * 1.2);
-				preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
+			int preferredHeight = (int) (getComponent(node).getHeight() * 1.2);
+			preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
 					.getProperty("el__min_default_window_height")));
-				preferredHeight = Math.min(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
+			preferredHeight = Math.min(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
 					.getProperty("el__max_default_window_height")));
-				int preferredWidth = (int) (getComponent(node).getWidth() * 1.2);
-				preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
+			int preferredWidth = (int) (getComponent(node).getWidth() * 1.2);
+			preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
 					.getProperty("el__min_default_window_width")));
-				preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
+			preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
 					.getProperty("el__max_default_window_width")));
-				final Dimension preferredSize = new Dimension(preferredWidth, preferredHeight);
-				editNodeWYSIWYG.setPreferredSize(preferredSize);
-			}
+			final Dimension preferredSize = new Dimension(preferredWidth, preferredHeight);
+			editNodeWYSIWYG.setPreferredSize(preferredSize);
 			final MainView mainView = (MainView) getComponent(node);
 	        final NodeView nodeView = mainView.getNodeView();
 			if(EditedComponent.TEXT.equals(editControl.getEditType())){
