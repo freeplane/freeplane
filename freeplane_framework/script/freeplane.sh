@@ -53,14 +53,7 @@ findjava() {
 		if [ -n "${DEBUG}" ]; then
 			"$JAVACMD" -version >&2
 		fi
-		if (! "${JAVACMD}" -version 2>&1 | grep -qe 'Java(TM)' -e OpenJDK); then
-			_error "Your Java is not a derivative from Sun's code," \
-			       "========================================" \
-			       "FREEPLANE WILL MOST PROBABLY *NOT* WORK," \
-			       "========================================" \
-			       "define JAVACMD, JAVA_BINDIR, JAVA_HOME or PATH" \
-			       "in order to point to such a VM." \
-			       "See the manpage of freeplane(1) for details."
+		if "${JAVACMD}" -version 2>&1 | grep -qe OpenJDK; then
 			JAVA_TYPE=other
 		else
 			JAVA_TYPE=sun
@@ -165,7 +158,11 @@ if [ "${JAVA_TYPE}" != "sun" ]; then
   # OpenJDK(7) fixes (don't use OpenJDK6!!)
   JAVA_OPTS="-Dgnu.java.awt.peer.gtk.Graphics=Graphics2D $JAVA_OPTS"
 
-  # this sometimes helps with visual mindmap distortions
+  # this fixes font rendering for some people, see:
+  # http://www.freeplane.org/wiki/index.php/Rendering_Issues
+  JAVA_OPTS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true $JAVA_OPTS"
+
+  # this sometimes helps with visual mindmap distortions (default in openjdk>=8!)
   # (but it can also create trouble so it's disabled by default):
   #JAVA_OPTS="-Dsun.java2d.xrender=True $JAVA_OPTS"
 fi
