@@ -14,7 +14,7 @@ jar {
         symbolicName = pluginid
 
         
-        def deps = filterAndExternalizePluginDependencies(configurations.runtimeClasspath.files)
+        def deps = filterAndExternalizePluginDependencies(configurations.runtime.files)
         deps.add(0, "lib/plugin-" + project.version + '.jar')
 
         attributes 'Class-Path': deps.join(', ')

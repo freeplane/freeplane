@@ -46,7 +46,7 @@ jar {
         name = pluginid
         symbolicName = pluginid
 
-        def deps = configurations.runtimeClasspath.files.collect {
+        def deps = configurations.runtime.files.collect {
             externalizeJar(it)
         }
         deps.add(0, "lib/freeplaneosgi-${project.version}.jar")
