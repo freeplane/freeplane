@@ -78,8 +78,8 @@ class ApplicationViewController extends FrameController {
 	final private NavigationNextMapAction navigationNextMap;
 	final private NavigationPreviousMapAction navigationPreviousMap;
 	final private ApplicationResourceController resourceController;
-	private JComponent mapPane;
-	private MapViewDockingWindows mapViewWindows;
+	final private JComponent mapPane;
+	final private MapViewDockingWindows mapViewWindows;
 	@SuppressWarnings("serial")
     public ApplicationViewController( Controller controller, final IMapViewManager mapViewController,
 	                                 final JFrame frame) {
