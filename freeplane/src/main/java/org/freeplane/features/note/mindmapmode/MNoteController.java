@@ -164,6 +164,7 @@ public class MNoteController extends NoteController {
 				if(! e.isTemporary()){
 					spellCheckerController.enableAutoSpell(editorPane, false);
 					enabled = false;
+					noteManager.saveNote();
 				}
 			}
 
@@ -184,6 +185,21 @@ public class MNoteController extends NoteController {
 				spellCheckerController.enableShortKey(editorPane, true);
 			}
 		});
+		
+		htmlEditorPanel.getSourceEditorPane().addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(! e.isTemporary()){
+					noteManager.saveNote();
+				}
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+			}
+		});
+		
 		return htmlEditorPanel;
 	}
 
