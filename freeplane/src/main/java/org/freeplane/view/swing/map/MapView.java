@@ -19,6 +19,8 @@
  */
 package org.freeplane.view.swing.map;
 
+import static java.lang.Boolean.TRUE;
+
 import java.awt.AWTKeyStroke;
 import java.awt.Color;
 import java.awt.Component;
@@ -130,7 +132,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	protected void setLayoutType(final MapViewLayout layoutType) {
-		this.layoutType = layoutType;
+		if(this.layoutType != layoutType) {
+			this.layoutType = layoutType;
+			if(outlineViewFitsWindowWidth())
+				rootView.updateAll();
+		}
 	}
 
 	private boolean showNotes;
@@ -471,10 +477,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final String HIDE_SINGLE_END_CONNECTORS = "hide_single_end_connectors";
 	private static final String SHOW_CONNECTORS_PROPERTY = "show_connectors";
 	private static final String SHOW_ICONS_PROPERTY = "show_icons";
+	private static final String OUTLINE_VIEW_FITS_WINDOW_WIDTH = "outline_view_fits_window_width";
+	private static final String OUTLINE_HGAP_PROPERTY = "outline_hgap";
+
 	static private final PropertyChangeListener repaintOnClientPropertyChangeListener = new PropertyChangeListener() {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			Component source = (Component) evt.getSource();
+			MapView source = (MapView) evt.getSource();
 			source.repaint();
 		}
 	};
@@ -513,7 +522,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static boolean hideSingleEndConnectors;
 	private boolean fitToViewport;
 	private static Color spotlightBackgroundColor;
-	final private ComponentAdapter backgroundImageResizer;
+	private static int outlineHGap;
+	private static boolean outlineViewFitsWindowWidth;
+
+	final private ComponentAdapter viewportSizeChangeListener;
 	private INodeChangeListener connectorChangeListener;
 	public static final String SPOTLIGHT_ENABLED = "spotlight";
 	
@@ -537,6 +549,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			hideSingleEndConnectors = resourceController.getBooleanProperty(HIDE_SINGLE_END_CONNECTORS);
 			showConnectors = resourceController.getBooleanProperty(SHOW_CONNECTORS_PROPERTY);
 			showIcons = resourceController.getBooleanProperty(SHOW_ICONS_PROPERTY);
+			outlineHGap = resourceController.getLengthProperty(OUTLINE_HGAP_PROPERTY);
+			outlineViewFitsWindowWidth = resourceController.getBooleanProperty(OUTLINE_VIEW_FITS_WINDOW_WIDTH);
 
 			createPropertyChangeListener();
 	}
@@ -565,16 +579,20 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, emptyNodeViewSet());
 		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptyNodeViewSet());
 		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, emptyNodeViewSet());
-		disableMoveCursor = ResourceController.getResourceController().getBooleanProperty("disable_cursor_move_paper");
-		backgroundImageResizer = new ComponentAdapter() {
+		final ResourceController resourceController = ResourceController.getResourceController();
+		disableMoveCursor = resourceController.getBooleanProperty("disable_cursor_move_paper");
+		viewportSizeChangeListener = new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
 				if (fitToViewport) {
 					adjustBackgroundComponentScale();
 					repaint();
 				}
+				if(usesLayoutSpecificMaxNodeWidth()) {
+					rootView.updateAll();
+					repaint();
+				}
 			}
 		};
-		addComponentListener(backgroundImageResizer);
 		final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
 		    MapStyle.FIT_TO_VIEWPORT);
 		fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
@@ -586,8 +604,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					repaint();
 			}
 		};
-		
-		addPropertyChangeListener(MapView.SPOTLIGHT_ENABLED, repaintOnClientPropertyChangeListener);
+		addPropertyChangeListener(SPOTLIGHT_ENABLED, repaintOnClientPropertyChangeListener);
 	}
 
 	public void replaceSelection(NodeView[] views) {
@@ -625,7 +642,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     public void addNotify() {
 	    super.addNotify();
 	    modeController.getMapController().addNodeChangeListener(connectorChangeListener);
-	    getParent().addComponentListener(backgroundImageResizer);
+	    getParent().addComponentListener(viewportSizeChangeListener);
 		adjustViewportScrollMode();
     }
 
@@ -640,7 +657,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	@Override
     public void removeNotify() {
 		modeController.getMapController().removeNodeChangeListener(connectorChangeListener);
-		getParent().removeComponentListener(backgroundImageResizer);
+		getParent().removeComponentListener(viewportSizeChangeListener);
 	    super.removeNotify();
     }
 
@@ -698,7 +715,23 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					mapView.repaint();
 					return;
 				}
+				if (propertyName.equals(OUTLINE_HGAP_PROPERTY)) {
+					MapView.outlineHGap = ResourceController.getResourceController().getLengthProperty(OUTLINE_HGAP_PROPERTY);
+					if (mapView.isOutlineLayoutSet()) {
+						mapView.getRoot().updateAll();
+						mapView.repaint();
+					}
+					return;
+				}
 				
+				if(propertyName.equals(OUTLINE_VIEW_FITS_WINDOW_WIDTH)) {
+					outlineViewFitsWindowWidth = ResourceController.getResourceController().getBooleanProperty(OUTLINE_VIEW_FITS_WINDOW_WIDTH);
+					if (mapView.isOutlineLayoutSet()) {
+						mapView.getRoot().updateAll();
+						mapView.repaint();
+					}
+					return;
+				}
 			}
 		};
 		ResourceController.getResourceController().addPropertyChangeListener(MapView.propertyChangeListener);
@@ -2160,6 +2193,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public boolean showsIcons() {
 		return showIcons;
+	}
+
+	int getLayoutSpecificMaxNodeWidth() {
+		return usesLayoutSpecificMaxNodeWidth() ? Math.max(0, getViewportSize().width - 10 * getZoomed(outlineHGap)) : 0;
+	}
+
+	public boolean usesLayoutSpecificMaxNodeWidth() {
+		return isOutlineLayoutSet() && outlineViewFitsWindowWidth();
+	}
+
+	private boolean outlineViewFitsWindowWidth() {
+		return outlineViewFitsWindowWidth;
 	}
 
 }

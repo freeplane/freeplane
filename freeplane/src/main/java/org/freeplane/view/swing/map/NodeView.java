@@ -1392,7 +1392,7 @@ public class NodeView extends JComponent implements INodeView {
 		final ModeController modeController = map.getModeController();
         final NodeStyleController nsc = NodeStyleController.getController(modeController);
         final int minNodeWidth = map.getZoomed(nsc.getMinWidth(getModel()).toBaseUnits());
-        final int maxNodeWidth = map.getZoomed(nsc.getMaxWidth(getModel()).toBaseUnits());
+        final int maxNodeWidth = Math.max(map.getLayoutSpecificMaxNodeWidth(), map.getZoomed(nsc.getMaxWidth(getModel()).toBaseUnits()));
         mainView.setMinimumWidth(minNodeWidth);
         mainView.setMaximumWidth(maxNodeWidth);
 

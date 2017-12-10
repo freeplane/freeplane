@@ -253,6 +253,7 @@
 			<Entry builder="separator" />
 			<Entry name="menu_viewmode">
 				<Entry name="ViewLayoutTypeAction.OUTLINE" />
+				<Entry name="SetBooleanPropertyAction.outline_view_fits_window_width" />
 				<Entry name="ToggleFullScreenAction" accelerator="F11" />
 				<Entry name="SetBooleanMapViewPropertyAction.spotlight" />
 				<Entry name="SetBooleanPropertyAction.show_icons" />
