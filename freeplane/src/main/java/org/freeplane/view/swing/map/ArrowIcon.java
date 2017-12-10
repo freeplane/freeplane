@@ -74,16 +74,12 @@ class ArrowIcon implements Icon{
 			ys[0] = 1;
 			ys[1] = ys[2] = 1 + ARROW_HEIGTH;
 		}
-		final Color oldColor = g.getColor();
-		final Color color = nodeView.getMainView().getBorderColor();
-		g.setColor(color);
 		Graphics2D g2= (Graphics2D) g;
 		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 		ModeController modeController = this.nodeView.getMap().getModeController();
 		modeController.getController().getMapViewManager().setEdgesRenderingHint(g2);
 		g.drawPolygon(xs, ys, 3); 
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
-		g.setColor(oldColor);
     }
 	
 }

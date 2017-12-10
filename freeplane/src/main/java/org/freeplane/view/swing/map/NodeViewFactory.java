@@ -228,7 +228,6 @@ class NodeViewFactory {
 		if (detailText.isHidden()) {
 			final ArrowIcon icon = new ArrowIcon(nodeView, true);
 			detailContent.setIcon(icon);
-			detailContent.setBackground(null);
 			detailContent.updateText("");
 		}
 		else {
@@ -236,9 +235,9 @@ class NodeViewFactory {
 			detailContent.setHorizontalAlignment(map.getDetailHorizontalAlignment());
 			detailContent.setIcon(new ArrowIcon(nodeView, false));
 			detailContent.updateText(detailText.getHtml());
-			detailContent.setForeground(map.getDetailForeground());
-			detailContent.setBackground(map.getDetailBackground());
 		}
+		detailContent.setForeground(map.getDetailForeground());
+		detailContent.setBackground(map.getDetailBackground());
 		detailContent.setMinimumWidth(minNodeWidth);
 		detailContent.setMaximumWidth(maxNodeWidth);
 		detailContent.revalidate();
