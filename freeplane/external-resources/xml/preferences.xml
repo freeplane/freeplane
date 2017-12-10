@@ -161,6 +161,7 @@
 			<separator name="outline_view">
 				<length defaultUnit = "px" name="outline_vgap" min="0" max = "1000" step = "0.1"/>
 				<length defaultUnit = "px" name="outline_hgap" min="0" max = "1000" step = "0.1" />
+				<boolean name="outline_view_fits_window_width"/>
 			</separator>
 			<separator name="icon_properties">
 				<boolean name="structured_icon_toolbar" />
