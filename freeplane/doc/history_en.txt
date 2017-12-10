@@ -1,4 +1,10 @@
 ===============================
+1.6.12
+===============================
+Outline view fits window width (option)
+Save note when note editor looses focus
+
+===============================
 1.6.11
 ===============================
 Sorting nodes does not break summary nodes
