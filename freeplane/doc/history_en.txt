@@ -1,4 +1,11 @@
 ===============================
+1.6.12
+===============================
+Outline view fits window width (option)
+Save note when note editor looses focus
+Detail icon color matches detail color instead of node border color
+
+===============================
 1.6.11
 ===============================
 Sorting nodes does not break summary nodes
