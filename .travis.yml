@@ -5,7 +5,11 @@ jdk:
   - openjdk7
   - openjdk8
   - oraclejdk8
-  - oraclejdk9
+#fails on because because java 9.0.1 is not compatible with gradle 4.0 currently used by travis
+# https://github.com/travis-ci/travis-ci/issues/8975
+# therefore disabled until travis fixes it.
+# - oraclejdk9
+
 # Fix for openjdk7 which fails because of
 #   java.security.ProviderException: java.security.InvalidKeyException: EC parameters error
 install:
