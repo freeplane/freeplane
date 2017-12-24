@@ -389,7 +389,8 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	@Override
     public void propertyChange(PropertyChangeEvent e) {
 	    	String name = e.getPropertyName();
-	    	if (name == "text" || "font" == name || "foreground" == name) {
+	    	if (name == "text" || "font" == name || "foreground" == name 
+	    			|| "ancestor" == name || "graphicsConfiguration" == name) {
 	    		JLabel lbl = ((JLabel) e.getSource());
 	    		if(getTextRenderingIcon(lbl) !=  null){
 	    			ScaledHTML.updateRenderer(lbl, "");
