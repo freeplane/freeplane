@@ -4,7 +4,11 @@ dist: trusty
 jdk:
   - openjdk8
   - oraclejdk8
-  - oraclejdk9
+#fails on because because java 9.0.1 is not compatible with gradle 4.0 currently used by travis
+# https://github.com/travis-ci/travis-ci/issues/8975
+# therefore disabled until travis fixes it.
+# - oraclejdk9
+
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
