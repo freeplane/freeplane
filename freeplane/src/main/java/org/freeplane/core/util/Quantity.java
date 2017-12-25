@@ -1,7 +1,5 @@
 package org.freeplane.core.util;
 
-import org.freeplane.core.ui.LengthUnits;
-
 public class Quantity <U extends Enum<U> & Convertible >{
 	
 	public static <U extends Enum<U> & Convertible>  Quantity<U> fromString(String valueString, U defaultUnit) {

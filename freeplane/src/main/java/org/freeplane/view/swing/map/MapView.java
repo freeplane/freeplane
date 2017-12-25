@@ -19,8 +19,6 @@
  */
 package org.freeplane.view.swing.map;
 
-import static java.lang.Boolean.TRUE;
-
 import java.awt.AWTKeyStroke;
 import java.awt.Color;
 import java.awt.Component;

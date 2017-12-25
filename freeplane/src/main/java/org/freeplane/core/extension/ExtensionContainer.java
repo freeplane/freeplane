@@ -1,7 +1,5 @@
 package org.freeplane.core.extension;
 
-import static org.assertj.core.api.Assertions.entry;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;

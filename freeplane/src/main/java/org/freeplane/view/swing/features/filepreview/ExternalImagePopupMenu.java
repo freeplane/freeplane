@@ -25,19 +25,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URI;
-import java.util.Collection;
-
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.progress.mindmapmode.ProgressUtilities;
 import org.freeplane.view.swing.map.MainView;
-import org.freeplane.view.swing.map.NodeView;
 
 /**
  * @author Stefan Ott

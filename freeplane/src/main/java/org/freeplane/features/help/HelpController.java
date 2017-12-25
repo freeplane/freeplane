@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.help;
 
-import java.awt.event.ActionEvent;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mode.Controller;

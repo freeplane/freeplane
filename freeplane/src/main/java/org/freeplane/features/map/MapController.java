@@ -51,7 +51,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.DelayedRunner;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.MapWriter.Mode;
