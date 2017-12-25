@@ -63,4 +63,19 @@ public class ExtensionContainer {
 	public boolean removeExtension(final IExtension extension) {
 		return getExtensions().remove(extension.getClass()) != null;
 	}
+
+	public static void swapExtensions(ExtensionContainer firstContent, ExtensionContainer secondContent,
+			Class<? extends IExtension> clazz) {
+		final IExtension firstExtension = firstContent.getExtension(clazz);
+		final IExtension secondExtension = secondContent.getExtension(clazz);
+		if(secondExtension != null)
+			firstContent.putExtension(secondExtension);
+		else if(firstExtension != null)
+			firstContent.removeExtension(clazz);
+
+		if(firstExtension != null)
+			secondContent.putExtension(firstExtension);
+		else if(secondExtension != null)
+			secondContent.removeExtension(clazz);
+}
 }

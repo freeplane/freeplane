@@ -20,6 +20,7 @@ import javax.swing.JTextArea;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.map.mindmapmode.NodeContentManipulator;
 import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -74,7 +75,8 @@ public class EventStreamDialog {
 			final ChildrenUpdateProcessor childrenUpdateProcessor = new ChildrenUpdateProcessor(singleNodeStructureManipulator, nodeFactory);
 			final SpecialNodeTypeProcessor specialNodeTypeProcessor = new SpecialNodeTypeProcessor();
 			processor = new UpdateProcessorChain().add(rootNodeIdUpdatedProcessor)
-					.add(childrenUpdateProcessor).add(specialNodeTypeProcessor).add(new ContentUpdateProcessor());
+					.add(childrenUpdateProcessor).add(specialNodeTypeProcessor)
+					.add(new ContentUpdateProcessor(new NodeContentManipulator(mapController)));
 		}
 
 		@Override

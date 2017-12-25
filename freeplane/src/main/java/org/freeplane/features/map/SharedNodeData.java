@@ -28,9 +28,9 @@ import org.freeplane.core.util.XmlUtils;
  * @author  Dimitry Polivaev 05.02.2014
  */
 public class SharedNodeData {
-	final private ExtensionContainer extensionContainer;
+	private ExtensionContainer extensionContainer;
 	private HistoryInformationModel historyInformation;
-	final private NodeIconSetModel icons;
+	private NodeIconSetModel icons;
 	private Object userObject;
 	private String xmlText;
 	private boolean folded;
@@ -41,8 +41,12 @@ public class SharedNodeData {
 		folded = false;
 	}
 
-	public ExtensionContainer getExtensionContainer() {
+	ExtensionContainer getExtensionContainer() {
 		return extensionContainer;
+	}
+	
+	void setExtensionContainer(ExtensionContainer extensionContainer) {
+		this.extensionContainer = extensionContainer;
 	}
 
 	public HistoryInformationModel getHistoryInformation() {
@@ -55,6 +59,10 @@ public class SharedNodeData {
 
 	public NodeIconSetModel getIcons() {
 		return icons;
+	}
+	
+	void setIcons(NodeIconSetModel icons) {
+		this.icons = icons;
 	}
 
 	public Object getUserObject() {

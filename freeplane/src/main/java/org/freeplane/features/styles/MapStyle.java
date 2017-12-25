@@ -166,15 +166,17 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			if (styleMap == null) {
 				return;
 			}
-			final MapWriter mapWriter = Controller.getCurrentModeController().getMapController().getMapWriter();
+			if(Mode.ADDITIONAL_CONTENT.equals(writer.getHint(MapWriter.Hint.MODE)))
+				return;
+			final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 			final StringWriter sw = new StringWriter();
 			final String el = System.getProperty("line.separator");
 			sw.append(el);
 			sw.append("<map_styles>");
 			sw.append(el);
 			final NodeModel rootNode = styleMap.getRootNode();
-			final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 			try {
+				final MapWriter mapWriter = Controller.getCurrentModeController().getMapController().getMapWriter();
 				mapWriter.writeNodeAsXml(sw, rootNode, Mode.STYLE, true, true, forceFormatting);
 			}
 			catch (final IOException e) {

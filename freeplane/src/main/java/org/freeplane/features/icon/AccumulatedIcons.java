@@ -32,7 +32,7 @@ import org.freeplane.features.mode.Controller;
  * @author Dimitry Polivaev
  * Dec 10, 2011
  */
-class AccumulatedIcons  implements IExtension{
+public class AccumulatedIcons  implements IExtension{
 	private final TreeSet<UIIcon> childIcons ;
 	private final Collection<? extends UIIcon> ownIcons;
 

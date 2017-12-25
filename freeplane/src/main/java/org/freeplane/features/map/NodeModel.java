@@ -720,4 +720,31 @@ public class NodeModel{
 
 		this.attachClones();
 	}
+
+
+	static public void swapUserObjects(NodeModel first, NodeModel second) {
+		final Object firstObject = first.getUserObject();
+		final Object secondObject = second.getUserObject();
+		first.setUserObject(secondObject);
+		second.setUserObject(firstObject);
+	}
+
+	static public void swapIcons(NodeModel first, NodeModel second) {
+		final NodeIconSetModel firstIconModel = first.getIconModel();
+		final NodeIconSetModel secondIconModel = second.getIconModel();
+		first.sharedData.setIcons(secondIconModel);
+		second.sharedData.setIcons(firstIconModel);
+	}
+
+
+	static public void swapExtensions(NodeModel first, NodeModel second, 
+			Collection<Class<? extends IExtension>> exclusions) {
+		final ExtensionContainer firstContent = first.getExtensionContainer();
+		final ExtensionContainer secondContent = second.getExtensionContainer();
+		first.sharedData.setExtensionContainer(secondContent);
+		second.sharedData.setExtensionContainer(firstContent);
+		for(Class<? extends IExtension> exclusion : exclusions)
+			ExtensionContainer.swapExtensions(firstContent, secondContent, exclusion);
+		
+	}
 }
