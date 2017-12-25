@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.features.icon.AccumulatedIcons;
+import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -38,7 +38,7 @@ public class ContentUpdateProcessorSpec {
 	@Test
 	public void callsNodeContentManipulator() throws Exception {
 		final Collection<Class<? extends IExtension>> exclusions = 
-				Arrays.asList(AccumulatedIcons.class, 
+				Arrays.asList(HierarchicalIcons.ACCUMULATED_ICONS_EXTENSION_CLASS, 
 						SummaryNodeFlag.class, 
 						FirstGroupNodeFlag.class,
 						MapStyleModel.class);

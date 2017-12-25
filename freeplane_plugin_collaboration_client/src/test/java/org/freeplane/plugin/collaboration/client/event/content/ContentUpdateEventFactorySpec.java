@@ -19,11 +19,79 @@
  */
 package org.freeplane.plugin.collaboration.client.event.content;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.same;
+import static org.mockito.Mockito.verify;
+
+import java.io.Writer;
+
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.MapWriter;
+import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.SummaryNodeFlag;
+import org.freeplane.features.nodestyle.NodeBorderModel;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatcher;
+import org.mockito.InjectMocks;
+import org.mockito.Matchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
+
 /**
  * @author Dimitry Polivaev
  * Dec 4, 2017
  */
+@RunWith(MockitoJUnitRunner.class)
 public class ContentUpdateEventFactorySpec {
+	@Mock
+	private MapWriter mapWriter;
+	@InjectMocks
+	private ContentUpdateEventFactory uut;
 	
-	// TODO
+	@Mock
+	private MapModel map;
+
+	@Test
+	public void createsEventUsingContentFromWriterCall() throws Exception {
+		final NodeModel node = new NodeModel(map);
+		node.setID("id");
+		Mockito.doAnswer(new Answer<Void>() {
+
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				invocation.getArgumentAt(0, Writer.class).append("content");
+				return null;
+			}
+		}).when(mapWriter).writeNodeAsXml(any(), same(node), same(Mode.ADDITIONAL_CONTENT), eq(true), eq(false), eq(false));
+		final ContentUpdated event = uut.createContentUpdatedEvent(node);
+		assertThat(event).isEqualTo(ContentUpdated.builder().nodeId("id").content("content").build());
+	}
+	
+	@Test
+	public void excludesSpecificNodeExtensionsDuringTheWriterCall() throws Exception {
+		final NodeModel node = new NodeModel(map);
+		node.setID("id");
+		node.addExtension(SummaryNodeFlag.SUMMARY);
+		Mockito.doAnswer(new Answer<Void>() {
+
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				final NodeModel node = invocation.getArgumentAt(1, NodeModel.class);
+				assertThat(node.containsExtension(SummaryNodeFlag.class)).isFalse();
+				invocation.getArgumentAt(0, Writer.class).append("content");
+				return null;
+			}
+		}).when(mapWriter).writeNodeAsXml(any(), same(node), same(Mode.ADDITIONAL_CONTENT), eq(true), eq(false), eq(false));
+		final ContentUpdated event = uut.createContentUpdatedEvent(node);
+		assertThat(event).isEqualTo(ContentUpdated.builder().nodeId("id").content("content").build());
+		assertThat(node.containsExtension(SummaryNodeFlag.class)).isTrue();
+	}
 }

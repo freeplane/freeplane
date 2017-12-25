@@ -1,7 +1,12 @@
 package org.freeplane.core.extension;
 
+import static org.assertj.core.api.Assertions.entry;
+
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Contains an extension map and utility methods to handle them.
@@ -60,6 +65,23 @@ public class ExtensionContainer {
 		return (T) getExtensions().remove(clazz);
 	}
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
+	public Map<Class<? extends IExtension>, ? extends IExtension> removeAll(final Collection<Class<? extends IExtension>> classes) {
+    	Map removedExtensions = new HashMap();
+    	for(Class c : classes) {
+    		final IExtension removed = extensions.remove(c);
+    		if(removed != null)
+    			removedExtensions.put(c, removed);
+    	}
+		return removedExtensions;
+	}
+    
+	public void addAll(Map<Class<? extends IExtension>, ? extends IExtension> extensions) {
+    	for(Entry<Class<? extends IExtension>, ? extends IExtension> еntry : extensions.entrySet()) {
+    		addExtension(еntry.getKey(), еntry.getValue());
+    	}
+	}
+    
 	public boolean removeExtension(final IExtension extension) {
 		return getExtensions().remove(extension.getClass()) != null;
 	}

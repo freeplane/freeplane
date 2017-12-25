@@ -18,7 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.NodeContentManipulator;
 import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
@@ -50,7 +50,8 @@ public class EventStreamDialog {
 				UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(t));
 				printer.prettyPrint(ev);
 			}, 100);
-			ContentUpdateEventFactory contentEventFactory = new ContentUpdateEventFactory();
+			final MapWriter mapWriter = Controller.getCurrentModeController().getMapController().getMapWriter();
+			ContentUpdateEventFactory contentEventFactory = new ContentUpdateEventFactory(mapWriter);
 			StructureUpdateEventFactory structuralEventFactory = new StructureUpdateEventFactory();
 			ChildrenUpdateGenerators childrenUpdateGenerators = new ChildrenUpdateGenerators(f, structuralEventFactory, contentEventFactory);
 			ContentUpdateGenerators contentGenerators = new ContentUpdateGenerators(f, contentEventFactory);

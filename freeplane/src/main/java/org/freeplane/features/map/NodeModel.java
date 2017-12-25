@@ -745,6 +745,13 @@ public class NodeModel{
 		second.sharedData.setExtensionContainer(firstContent);
 		for(Class<? extends IExtension> exclusion : exclusions)
 			ExtensionContainer.swapExtensions(firstContent, secondContent, exclusion);
-		
+	}
+	
+	public Map<Class<? extends IExtension>, ? extends IExtension> removeAll(final Collection<Class<? extends IExtension>> classes) {
+		return getExtensionContainer().removeAll(classes);
+	}
+	
+	public void addAll(Map<Class<? extends IExtension>, ? extends IExtension> extensions) {
+		getExtensionContainer().addAll(extensions);
 	}
 }

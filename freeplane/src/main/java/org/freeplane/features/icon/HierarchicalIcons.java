@@ -46,8 +46,10 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "accessories/plugins/HierarchicalIcons.properties")
 public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
         IReadCompletionListener, IExtension {
+	public static final Class<AccumulatedIcons> ACCUMULATED_ICONS_EXTENSION_CLASS = AccumulatedIcons.class;
 	public static final String ICONS = "hierarchical_icons";
 
+	
 	public HierarchicalIcons() {
 		this(Mode.OR);
 		final ModeController modeController = Controller.getCurrentModeController();
