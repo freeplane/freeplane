@@ -1,5 +1,5 @@
 plugins {
-	id "net.ltgt.apt" version "0.12"
+	id "net.ltgt.apt" version "0.13"
   }
   
 apply plugin: "net.ltgt.apt-eclipse"
