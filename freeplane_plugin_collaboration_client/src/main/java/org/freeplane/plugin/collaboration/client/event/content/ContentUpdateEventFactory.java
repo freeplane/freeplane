@@ -10,7 +10,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.collaboration.client.VisibleForTesting;
 
 public class ContentUpdateEventFactory {
 	final MapWriter mapWriter;
