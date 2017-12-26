@@ -177,11 +177,6 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
                        entry.path = "build/libs/" + jarName
                    }
                }
-			   // work around for new gradle bug if subproject name equals to root dir name
-			   if (entry.kind.equals('src') && entry.path.equals('/freeplane-freeplane'))
-			   {
-				   entry.path = '/freeplane'
-			   }
            }
            return classpath
         }
