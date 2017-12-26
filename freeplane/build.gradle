@@ -39,7 +39,13 @@ sourceSets {
     }
 }
 
-
+// work around for new gradle bug if subproject name equals to root dir name
+eclipse {
+  project {
+    name = 'freeplane'
+	}
+}
+	
 jar {
     manifest {
 
