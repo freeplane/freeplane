@@ -18,9 +18,9 @@ public class ContentUpdateEventFactory {
 		this.mapWriter = mapWriter;
 	}
 	
-	public ContentUpdated createContentUpdatedEvent(final NodeModel node) {
+	public NodeContentUpdated createContentUpdatedEvent(final NodeModel node) {
 		Writer writer = new StringWriter();
-		final Map<Class<? extends IExtension>, ? extends IExtension> exclusions = node.removeAll(ContentUpdated.EXCLUSIONS);
+		final Map<Class<? extends IExtension>, ? extends IExtension> exclusions = node.removeAll(NodeContentUpdated.EXCLUSIONS);
 		try {
 			mapWriter.writeNodeAsXml(writer, node, Mode.ADDITIONAL_CONTENT, true, false, false);
 		}
@@ -30,6 +30,6 @@ public class ContentUpdateEventFactory {
 		finally {
 			node.addAll(exclusions);
 		}
-		return ContentUpdated.builder().nodeId(node.createID()).content(writer.toString()).build();
+		return NodeContentUpdated.builder().nodeId(node.createID()).content(writer.toString()).build();
 	}
 }

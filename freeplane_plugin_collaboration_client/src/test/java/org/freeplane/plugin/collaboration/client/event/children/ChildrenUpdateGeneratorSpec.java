@@ -22,7 +22,7 @@ import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHea
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
-import org.freeplane.plugin.collaboration.client.event.content.ContentUpdated;
+import org.freeplane.plugin.collaboration.client.event.content.NodeContentUpdated;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -56,13 +56,13 @@ public class ChildrenUpdateGeneratorSpec {
 	final private NodeModel parent = testObjects.parent;
 	final private NodeModel child = testObjects.child;
 	final private ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
-	final private ContentUpdated parentContentUpdated = mock(ContentUpdated.class);
-	final private ContentUpdated childContentUpdated = mock(ContentUpdated.class);
+	final private NodeContentUpdated parentContentUpdated = mock(NodeContentUpdated.class);
+	final private NodeContentUpdated childContentUpdated = mock(NodeContentUpdated.class);
 	
 	final private NodeModel parent2 = testObjects.parent2;
 	final private NodeModel child2 = testObjects.child2;
 	final private ChildrenUpdated childrenUpdated2 = mock(ChildrenUpdated.class);
-	final private ContentUpdated child2ContentUpdated = mock(ContentUpdated.class);
+	final private NodeContentUpdated child2ContentUpdated = mock(NodeContentUpdated.class);
 
 	@BeforeClass
 	static public void setupClass() throws InterruptedException, InvocationTargetException {

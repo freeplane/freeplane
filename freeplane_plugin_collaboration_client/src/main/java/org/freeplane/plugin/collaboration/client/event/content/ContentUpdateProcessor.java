@@ -4,7 +4,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.NodeContentManipulator;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessor;
 
-public class ContentUpdateProcessor implements UpdateProcessor<ContentUpdated> {
+public class ContentUpdateProcessor implements UpdateProcessor<NodeContentUpdated> {
 
 	private final NodeContentManipulator updater;
 
@@ -14,12 +14,12 @@ public class ContentUpdateProcessor implements UpdateProcessor<ContentUpdated> {
 	}
 
 	@Override
-	public void onUpdate(MapModel map, ContentUpdated event) {
-		updater.updateContent(map.getNodeForID(event.nodeId()), event.content(), ContentUpdated.EXCLUSIONS);
+	public void onUpdate(MapModel map, NodeContentUpdated event) {
+		updater.updateContent(map.getNodeForID(event.nodeId()), event.content(), NodeContentUpdated.EXCLUSIONS);
 	}
 
 	@Override
-	public Class<ContentUpdated> eventClass() {
-		return ContentUpdated.class;
+	public Class<NodeContentUpdated> eventClass() {
+		return NodeContentUpdated.class;
 	}
 }

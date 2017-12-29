@@ -66,8 +66,8 @@ public class ContentUpdateEventFactorySpec {
 				return null;
 			}
 		}).when(mapWriter).writeNodeAsXml(any(), same(node), same(Mode.ADDITIONAL_CONTENT), eq(true), eq(false), eq(false));
-		final ContentUpdated event = uut.createContentUpdatedEvent(node);
-		assertThat(event).isEqualTo(ContentUpdated.builder().nodeId("id").content("content").build());
+		final NodeContentUpdated event = uut.createContentUpdatedEvent(node);
+		assertThat(event).isEqualTo(NodeContentUpdated.builder().nodeId("id").content("content").build());
 	}
 	
 	@Test
@@ -85,8 +85,8 @@ public class ContentUpdateEventFactorySpec {
 				return null;
 			}
 		}).when(mapWriter).writeNodeAsXml(any(), same(node), same(Mode.ADDITIONAL_CONTENT), eq(true), eq(false), eq(false));
-		final ContentUpdated event = uut.createContentUpdatedEvent(node);
-		assertThat(event).isEqualTo(ContentUpdated.builder().nodeId("id").content("content").build());
+		final NodeContentUpdated event = uut.createContentUpdatedEvent(node);
+		assertThat(event).isEqualTo(NodeContentUpdated.builder().nodeId("id").content("content").build());
 		assertThat(node.containsExtension(SummaryNodeFlag.class)).isTrue();
 	}
 }

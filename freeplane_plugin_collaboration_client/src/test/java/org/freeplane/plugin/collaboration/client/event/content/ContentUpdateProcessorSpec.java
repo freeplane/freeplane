@@ -32,7 +32,7 @@ public class ContentUpdateProcessorSpec {
 
 	@Test
 	public void returnsEventClassContentUpdated() throws Exception {
-		assertThat(uut.eventClass()).isEqualTo(ContentUpdated.class);
+		assertThat(uut.eventClass()).isEqualTo(NodeContentUpdated.class);
 	}
 	
 	@Test
@@ -44,7 +44,7 @@ public class ContentUpdateProcessorSpec {
 						MapStyleModel.class);
 		final NodeModel node = new NodeModel(null);
 		when(map.getNodeForID("nodeId")).thenReturn(node);
-		uut.onUpdate(map, ContentUpdated.builder().nodeId("nodeId").content("content").build());
+		uut.onUpdate(map, NodeContentUpdated.builder().nodeId("nodeId").content("content").build());
 		
 		verify(nodeContentManipulator).updateContent(node, "content", exclusions);
 	}

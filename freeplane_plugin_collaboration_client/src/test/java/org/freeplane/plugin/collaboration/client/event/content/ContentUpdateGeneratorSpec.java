@@ -70,7 +70,7 @@ public class ContentUpdateGeneratorSpec {
 
 	@Test
 	public void generatesEventOnContentUpdate() throws Exception {
-		ContentUpdated contentUpdated = mock(ContentUpdated.class);
+		NodeContentUpdated contentUpdated = mock(NodeContentUpdated.class);
 		when(eventFactory.createContentUpdatedEvent(node)).thenReturn(contentUpdated);
 		uut.onContentUpdate(node);
 		
