@@ -1,5 +1,7 @@
 package org.freeplane.features.mode;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,5 +15,9 @@ public class MapExtensions {
 	}
 	public static void registerMapExtension(final Class<? extends IExtension> extensionClass){
 		mapExtensionClasses.add(extensionClass);
+	}
+	
+	public static Collection<Class<? extends IExtension>> getAll() {
+		return new ArrayList<>(mapExtensionClasses);
 	}
 }

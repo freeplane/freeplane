@@ -68,7 +68,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * Mar 9, 2009
  */
-@NodeHookDescriptor(hookName = "MapStyle")
+@NodeHookDescriptor(hookName = "MapStyle", onceForMap = true)
 public class MapStyle extends PersistentNodeHook implements IExtension, IMapLifeCycleListener {
 	private static final String NODE_CONDITIONAL_STYLES = "NodeConditionalStyles";
 	public static final String RESOURCES_BACKGROUND_COLOR = "standardbackgroundcolor";

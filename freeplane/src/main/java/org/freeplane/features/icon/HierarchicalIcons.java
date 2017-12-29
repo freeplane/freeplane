@@ -43,7 +43,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Foltin
  */
-@NodeHookDescriptor(hookName = "accessories/plugins/HierarchicalIcons.properties")
+@NodeHookDescriptor(hookName = "accessories/plugins/HierarchicalIcons.properties", onceForMap = true)
 public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
         IReadCompletionListener, IExtension {
 	public static final Class<AccumulatedIcons> ACCUMULATED_ICONS_EXTENSION_CLASS = AccumulatedIcons.class;
@@ -218,7 +218,7 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	
 }
 
-@NodeHookDescriptor(hookName = "accessories/plugins/HierarchicalIcons2.properties")
+@NodeHookDescriptor(hookName = "accessories/plugins/HierarchicalIcons2.properties", onceForMap = true)
 class HierarchicalIcons2 extends HierarchicalIcons{
 	public HierarchicalIcons2() {
 	    super(Mode.AND);

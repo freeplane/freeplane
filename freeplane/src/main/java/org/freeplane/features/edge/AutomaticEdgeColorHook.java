@@ -43,7 +43,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * Nov 28, 2010
  */
 
-@NodeHookDescriptor(hookName = "AutomaticEdgeColor")
+@NodeHookDescriptor(hookName = "AutomaticEdgeColor", onceForMap = true)
 public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExtension{
 	private ModeController modeController;
 

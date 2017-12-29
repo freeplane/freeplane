@@ -29,5 +29,5 @@ import java.lang.annotation.RetentionPolicy;
 public @interface NodeHookDescriptor {
 	String hookName();
 
-	boolean onceForMap() default true;
+	boolean onceForMap();
 }

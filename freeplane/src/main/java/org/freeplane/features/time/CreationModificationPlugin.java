@@ -36,7 +36,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author foltin
  */
-@NodeHookDescriptor(hookName = "accessories/plugins/CreationModificationPlugin.properties")
+@NodeHookDescriptor(hookName = "accessories/plugins/CreationModificationPlugin.properties", onceForMap = true)
 public class CreationModificationPlugin extends PersistentNodeHook implements IExtension {
 	private static final Integer CREATION_TOOLTIP = 14;
 	private String tooltipFormat = null;

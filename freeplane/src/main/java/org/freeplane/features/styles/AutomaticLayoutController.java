@@ -32,7 +32,7 @@ import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-@NodeHookDescriptor(hookName = "accessories/plugins/AutomaticLayout.properties")
+@NodeHookDescriptor(hookName = "accessories/plugins/AutomaticLayout.properties", onceForMap = true)
 public class AutomaticLayoutController extends PersistentNodeHook implements IExtension{
 	private static final String AUTOMATIC_LAYOUT_LEVEL = "AutomaticLayout.level,";
 	private static final String AUTOMATIC_LAYOUT_LEVEL_ROOT = "AutomaticLayout.level.root";

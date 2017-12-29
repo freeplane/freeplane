@@ -37,7 +37,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author foltin
  */
-@NodeHookDescriptor(hookName = "accessories/plugins/RevisionPlugin.properties")
+@NodeHookDescriptor(hookName = "accessories/plugins/RevisionPlugin.properties", onceForMap = true)
 public class RevisionPlugin extends PersistentNodeHook implements INodeChangeListener, IExtension {
 	public RevisionPlugin() {
 		super();
