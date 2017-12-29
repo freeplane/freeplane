@@ -19,8 +19,15 @@
  */
 package org.freeplane.plugin.collaboration.client.event.content;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.features.icon.HierarchicalIcons;
+import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.SummaryNodeFlag;
+import org.freeplane.features.mode.MapExtensions;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
 
 /**
@@ -31,6 +38,7 @@ public class ContentUpdateGenerator implements IExtension {
 
 	private MapUpdateTimer timer;
 	private ContentUpdateEventFactory eventFactory;
+	private static Collection<Class<? extends IExtension>> EXCLUSIONS =  null;
 
 	public ContentUpdateGenerator(MapUpdateTimer timer, ContentUpdateEventFactory eventFactory) {
 		this.timer = timer;
@@ -42,5 +50,17 @@ public class ContentUpdateGenerator implements IExtension {
 			timer.addUpdateEvent(eventFactory.createContentUpdatedEvent(node)));
 		timer.restart();
 
+	}
+
+	public static Collection<Class<? extends IExtension>> getExclusions() {
+		if(EXCLUSIONS == null) {
+			EXCLUSIONS =  MapExtensions.getAll();
+			Collections.addAll(EXCLUSIONS, 
+				HierarchicalIcons.ACCUMULATED_ICONS_EXTENSION_CLASS, 
+				SummaryNodeFlag.class, 
+				FirstGroupNodeFlag.class
+				);
+		}
+		return EXCLUSIONS;
 	}
 }

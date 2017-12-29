@@ -25,7 +25,12 @@ import static org.mockito.Mockito.when;
 
 import java.util.concurrent.TimeUnit;
 
+import org.freeplane.features.icon.HierarchicalIcons;
+import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.SummaryNodeFlag;
+import org.freeplane.features.mode.MapExtensions;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
@@ -82,5 +87,13 @@ public class ContentUpdateGeneratorSpec {
 		assertThat(event).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);
 
+	}
+	
+	@Test
+	public void exclusionsContain() {
+		assertThat(ContentUpdateGenerator.getExclusions()).contains(
+			HierarchicalIcons.ACCUMULATED_ICONS_EXTENSION_CLASS, 
+			SummaryNodeFlag.class, 
+			FirstGroupNodeFlag.class);
 	}
 }

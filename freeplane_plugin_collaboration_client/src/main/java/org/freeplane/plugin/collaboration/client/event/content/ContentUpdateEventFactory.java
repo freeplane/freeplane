@@ -20,7 +20,7 @@ public class ContentUpdateEventFactory {
 	
 	public NodeContentUpdated createContentUpdatedEvent(final NodeModel node) {
 		Writer writer = new StringWriter();
-		final Map<Class<? extends IExtension>, ? extends IExtension> exclusions = node.removeAll(NodeContentUpdated.EXCLUSIONS);
+		final Map<Class<? extends IExtension>, ? extends IExtension> exclusions = node.removeAll(ContentUpdateGenerator.getExclusions());
 		try {
 			mapWriter.writeNodeAsXml(writer, node, Mode.ADDITIONAL_CONTENT, true, false, false);
 		}

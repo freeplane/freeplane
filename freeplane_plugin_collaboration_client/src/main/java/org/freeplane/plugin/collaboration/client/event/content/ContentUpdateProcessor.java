@@ -15,7 +15,7 @@ public class ContentUpdateProcessor implements UpdateProcessor<NodeContentUpdate
 
 	@Override
 	public void onUpdate(MapModel map, NodeContentUpdated event) {
-		updater.updateContent(map.getNodeForID(event.nodeId()), event.content(), NodeContentUpdated.EXCLUSIONS);
+		updater.updateContent(map.getNodeForID(event.nodeId()), event.content(), ContentUpdateGenerator.getExclusions());
 	}
 
 	@Override
