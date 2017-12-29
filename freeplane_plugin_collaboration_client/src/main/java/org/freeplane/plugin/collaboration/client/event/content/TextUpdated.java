@@ -17,5 +17,5 @@ public interface TextUpdated extends NodeUpdated{
 
 	String content();
 	
-	ContentType contentType();
+	TextMediaType mediaType();
 }

@@ -23,6 +23,6 @@ package org.freeplane.plugin.collaboration.client.event.content;
  * @author Dimitry Polivaev
  * Dec 4, 2017
  */
-public enum ContentType {
+public enum TextMediaType {
 	PLAIN_TEXT, HTML
 }
