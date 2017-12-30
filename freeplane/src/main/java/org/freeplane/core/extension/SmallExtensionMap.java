@@ -20,6 +20,7 @@
 package org.freeplane.core.extension;
 
 import java.util.AbstractMap;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SmallExtensionMap implements Map<Class<? extends IExtension>, IExtension> {
 	private static final int INITIAL_CAPACITY = 5;
@@ -75,14 +77,13 @@ public class SmallExtensionMap implements Map<Class<? extends IExtension>, IExte
 		return collection;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Set<java.util.Map.Entry<Class<? extends IExtension>, IExtension>> entrySet() {
 		if (collection == null) {
 			return Collections.emptySet();
 		}
-		return collection.stream()
-					.map(e -> new AbstractMap.SimpleEntry(e.getClass(), e))
-					.collect(Collectors.toSet());
+		Stream<SimpleEntry<Class<? extends IExtension>, IExtension > >  entries = collection
+				.stream().map(e -> new AbstractMap.SimpleEntry<>(e.getClass(), e));
+		return  entries.collect(Collectors.toSet());
 
 	}
 
