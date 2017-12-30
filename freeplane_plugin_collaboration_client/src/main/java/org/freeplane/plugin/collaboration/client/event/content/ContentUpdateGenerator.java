@@ -25,6 +25,7 @@ import java.util.Collections;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.map.FirstGroupNodeFlag;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.features.mode.MapExtensions;
@@ -38,29 +39,36 @@ public class ContentUpdateGenerator implements IExtension {
 
 	private MapUpdateTimer timer;
 	private ContentUpdateEventFactory eventFactory;
-	private static Collection<Class<? extends IExtension>> EXCLUSIONS =  null;
+	private static Collection<Class<? extends IExtension>> NODE_CONTENT_EXCLUSIONS =  null;
 
 	public ContentUpdateGenerator(MapUpdateTimer timer, ContentUpdateEventFactory eventFactory) {
 		this.timer = timer;
 		this.eventFactory = eventFactory;
 	}
 
-	public void onContentUpdate(NodeModel node) {
+	public void onNodeContentUpdate(NodeModel node) {
 		timer.addActionListener(e -> 
-			timer.addUpdateEvent(eventFactory.createContentUpdatedEvent(node)));
+			timer.addUpdateEvent(eventFactory.createNodeContentUpdatedEvent(node)));
 		timer.restart();
 
 	}
 
-	public static Collection<Class<? extends IExtension>> getExclusions() {
-		if(EXCLUSIONS == null) {
-			EXCLUSIONS =  MapExtensions.getAll();
-			Collections.addAll(EXCLUSIONS, 
+	public void onMapContentUpdate(MapModel map) {
+		timer.addActionListener(e -> 
+			timer.addUpdateEvent(eventFactory.createMapContentUpdatedEvent(map)));
+		timer.restart();
+
+	}
+
+	public static Collection<Class<? extends IExtension>> getNodeContentExclusions() {
+		if(NODE_CONTENT_EXCLUSIONS == null) {
+			NODE_CONTENT_EXCLUSIONS =  MapExtensions.getAll();
+			Collections.addAll(NODE_CONTENT_EXCLUSIONS, 
 				HierarchicalIcons.ACCUMULATED_ICONS_EXTENSION_CLASS, 
 				SummaryNodeFlag.class, 
 				FirstGroupNodeFlag.class
 				);
 		}
-		return EXCLUSIONS;
+		return NODE_CONTENT_EXCLUSIONS;
 	}
 }

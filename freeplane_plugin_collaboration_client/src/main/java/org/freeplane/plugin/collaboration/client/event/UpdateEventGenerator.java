@@ -75,13 +75,13 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 	public void nodeChanged(NodeChangeEvent event) {
 		NodeModel node = event.getNode();
 		final ContentUpdateGenerator generator = contentGenerators.of(node.getMap());
-		generator.onContentUpdate(node);
+		generator.onNodeContentUpdate(node);
 	}
 
 	@Override
 	public void mapChanged(MapChangeEvent event) {
 		MapModel map = event.getMap();
 		final ContentUpdateGenerator generator = contentGenerators.of(map);
-		generator.onContentUpdate(map.getRootNode());
+		generator.onNodeContentUpdate(map.getRootNode());
 	}
 }

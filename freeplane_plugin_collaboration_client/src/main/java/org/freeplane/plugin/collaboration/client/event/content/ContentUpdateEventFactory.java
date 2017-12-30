@@ -7,9 +7,12 @@ import java.util.Map;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.MapExtensions;
+import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 
 public class ContentUpdateEventFactory {
 	final MapWriter mapWriter;
@@ -18,9 +21,9 @@ public class ContentUpdateEventFactory {
 		this.mapWriter = mapWriter;
 	}
 	
-	public NodeContentUpdated createContentUpdatedEvent(final NodeModel node) {
+	public NodeContentUpdated createNodeContentUpdatedEvent(final NodeModel node) {
 		Writer writer = new StringWriter();
-		final Map<Class<? extends IExtension>, ? extends IExtension> exclusions = node.removeAll(ContentUpdateGenerator.getExclusions());
+		final Map<Class<? extends IExtension>, ? extends IExtension> exclusions = node.removeAll(ContentUpdateGenerator.getNodeContentExclusions());
 		try {
 			mapWriter.writeNodeAsXml(writer, node, Mode.ADDITIONAL_CONTENT, true, false, false);
 		}
@@ -31,5 +34,21 @@ public class ContentUpdateEventFactory {
 			node.addAll(exclusions);
 		}
 		return NodeContentUpdated.builder().nodeId(node.createID()).content(writer.toString()).build();
+	}
+
+	public MapUpdated createMapContentUpdatedEvent(MapModel map) {
+		Writer writer = new StringWriter();
+		NodeModel node = map.getRootNode();
+		final Map<Class<? extends IExtension>, ? extends IExtension> exclusions = node.retainAll(MapExtensions.getAll());
+		try {
+			mapWriter.writeNodeAsXml(writer, node, Mode.ADDITIONAL_CONTENT, true, false, false);
+		}
+		catch (IOException e) {
+			LogUtils.severe(e);
+		}
+		finally {
+			node.addAll(exclusions);
+		}
+		return MapContentUpdated.builder().content(writer.toString()).build();
 	}
 }

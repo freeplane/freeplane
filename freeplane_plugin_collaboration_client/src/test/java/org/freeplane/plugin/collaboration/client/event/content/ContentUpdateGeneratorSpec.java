@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.map.FirstGroupNodeFlag;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.features.mode.MapExtensions;
@@ -64,6 +65,8 @@ public class ContentUpdateGeneratorSpec {
 	final private NodeModel node = testObjects.parent;
 	private UpdatesEventCaptor consumer;
 	private ContentUpdateGenerator uut;
+
+	private MapModel map = testObjects.map;
 	
 	@Before
 	public void createTestedInstance() {
@@ -74,10 +77,26 @@ public class ContentUpdateGeneratorSpec {
 
 
 	@Test
-	public void generatesEventOnContentUpdate() throws Exception {
+	public void generatesEventOnNodeContentUpdate() throws Exception {
 		NodeContentUpdated contentUpdated = mock(NodeContentUpdated.class);
-		when(eventFactory.createContentUpdatedEvent(node)).thenReturn(contentUpdated);
-		uut.onContentUpdate(node);
+		when(eventFactory.createNodeContentUpdatedEvent(node)).thenReturn(contentUpdated);
+		uut.onNodeContentUpdate(node);
+		
+		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		UpdatesFinished expected = UpdatesFinished.builder()
+				.mapId(header.mapId()).mapRevision(1)
+				.addUpdateEvents(contentUpdated).build();
+		
+		assertThat(event).isEqualTo(expected);
+		assertThat(header.mapRevision()).isEqualTo(1);
+
+	}
+	
+	@Test
+	public void generatesEventOnMapContentUpdate() throws Exception {
+		MapContentUpdated contentUpdated = mock(MapContentUpdated.class);
+		when(eventFactory.createMapContentUpdatedEvent(map)).thenReturn(contentUpdated);
+		uut.onMapContentUpdate(map);
 		
 		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
 		UpdatesFinished expected = UpdatesFinished.builder()
@@ -91,7 +110,7 @@ public class ContentUpdateGeneratorSpec {
 	
 	@Test
 	public void exclusionsContain() {
-		assertThat(ContentUpdateGenerator.getExclusions()).contains(
+		assertThat(ContentUpdateGenerator.getNodeContentExclusions()).contains(
 			HierarchicalIcons.ACCUMULATED_ICONS_EXTENSION_CLASS, 
 			SummaryNodeFlag.class, 
 			FirstGroupNodeFlag.class);

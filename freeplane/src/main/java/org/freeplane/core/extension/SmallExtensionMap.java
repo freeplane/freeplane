@@ -19,12 +19,15 @@
  */
 package org.freeplane.core.extension;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class SmallExtensionMap implements Map<Class<? extends IExtension>, IExtension> {
 	private static final int INITIAL_CAPACITY = 5;
@@ -72,8 +75,15 @@ public class SmallExtensionMap implements Map<Class<? extends IExtension>, IExte
 		return collection;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Set<java.util.Map.Entry<Class<? extends IExtension>, IExtension>> entrySet() {
-		throw new NoSuchMethodError();
+		if (collection == null) {
+			return Collections.emptySet();
+		}
+		return collection.stream()
+					.map(e -> new AbstractMap.SimpleEntry(e.getClass(), e))
+					.collect(Collectors.toSet());
+
 	}
 
 	private int find(final Class<? extends IExtension> clazz) {
@@ -105,7 +115,11 @@ public class SmallExtensionMap implements Map<Class<? extends IExtension>, IExte
 	}
 
 	public Set<Class<? extends IExtension>> keySet() {
-		throw new NoSuchMethodError();
+		if (collection == null) {
+			return Collections.emptySet();
+		}
+
+		return collection.stream().map(IExtension::getClass).collect(Collectors.toSet());
 	}
 
 	public IExtension put(final Class<? extends IExtension> key, final IExtension value) {

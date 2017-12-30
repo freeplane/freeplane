@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Contains an extension map and utility methods to handle them.
@@ -74,6 +75,20 @@ public class ExtensionContainer {
 		return removedExtensions;
 	}
     
+    @SuppressWarnings({"unchecked", "rawtypes"})
+	public Map<Class<? extends IExtension>, ? extends IExtension> retainAll(Collection<Class<? extends IExtension>> classes) {
+    	Map removedExtensions = new HashMap();
+    	Set<Class<? extends IExtension>> knownExtensionClasses = extensions.keySet();
+    	for(Class<?> c : knownExtensionClasses) {
+    		if(! classes.contains(c)) {
+    			final IExtension removed = extensions.remove(c);
+    			removedExtensions.put(c, removed);
+    		}
+    	}
+		return removedExtensions;
+	}
+
+    
 	public void addAll(Map<Class<? extends IExtension>, ? extends IExtension> extensions) {
     	for(Entry<Class<? extends IExtension>, ? extends IExtension> еntry : extensions.entrySet()) {
     		addExtension(еntry.getKey(), еntry.getValue());
@@ -98,4 +113,5 @@ public class ExtensionContainer {
 		else if(secondExtension != null)
 			secondContent.removeExtension(clazz);
 }
+
 }

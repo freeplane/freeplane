@@ -33,6 +33,6 @@ public class ContentUpdateProcessorSpec {
 		when(map.getNodeForID("nodeId")).thenReturn(node);
 		uut.onUpdate(map, NodeContentUpdated.builder().nodeId("nodeId").content("content").build());
 		
-		verify(nodeContentManipulator).updateContent(node, "content", ContentUpdateGenerator.getExclusions());
+		verify(nodeContentManipulator).updateContent(node, "content", ContentUpdateGenerator.getNodeContentExclusions());
 	}
 }

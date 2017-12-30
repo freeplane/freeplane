@@ -161,8 +161,8 @@ public class ChildrenUpdateGeneratorSpec {
 		child.addExtension(SummaryNodeFlag.SUMMARY);
 		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 		when(structuralEventFactory.createChildrenUpdatedEvent(parent2)).thenReturn(childrenUpdated2);
-		when(contentEventFactory.createContentUpdatedEvent(child)).thenReturn(childContentUpdated);
-		when(contentEventFactory.createContentUpdatedEvent(child2)).thenReturn(child2ContentUpdated);
+		when(contentEventFactory.createNodeContentUpdatedEvent(child)).thenReturn(childContentUpdated);
+		when(contentEventFactory.createNodeContentUpdatedEvent(child2)).thenReturn(child2ContentUpdated);
 
 		parent.insert(child);
 		uut.onNodeInserted(parent, child);
@@ -181,8 +181,8 @@ public class ChildrenUpdateGeneratorSpec {
 		child.insert(child2);
 		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 		when(structuralEventFactory.createChildrenUpdatedEvent(child)).thenReturn(childrenUpdated2);
-		when(contentEventFactory.createContentUpdatedEvent(child)).thenReturn(childContentUpdated);
-		when(contentEventFactory.createContentUpdatedEvent(child2)).thenReturn(child2ContentUpdated);
+		when(contentEventFactory.createNodeContentUpdatedEvent(child)).thenReturn(childContentUpdated);
+		when(contentEventFactory.createNodeContentUpdatedEvent(child2)).thenReturn(child2ContentUpdated);
 
 		parent.insert(child);
 		uut.onNodeInserted(parent, child);
@@ -203,8 +203,8 @@ public class ChildrenUpdateGeneratorSpec {
 		child2.addExtension(SummaryNodeFlag.SUMMARY);
 		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 		when(structuralEventFactory.createChildrenUpdatedEvent(child)).thenReturn(childrenUpdated2);
-		when(contentEventFactory.createContentUpdatedEvent(child)).thenReturn(childContentUpdated);
-		when(contentEventFactory.createContentUpdatedEvent(child2)).thenReturn(child2ContentUpdated);
+		when(contentEventFactory.createNodeContentUpdatedEvent(child)).thenReturn(childContentUpdated);
+		when(contentEventFactory.createNodeContentUpdatedEvent(child2)).thenReturn(child2ContentUpdated);
 
 		parent.insert(child);
 		uut.onNodeInserted(parent, child);
@@ -223,8 +223,8 @@ public class ChildrenUpdateGeneratorSpec {
 	public void generatesEventOnNewMap() throws Exception {
 		parent.insert(child);
 		when(map.getRootNode()).thenReturn(parent);
-		when(contentEventFactory.createContentUpdatedEvent(parent)).thenReturn(parentContentUpdated);
-		when(contentEventFactory.createContentUpdatedEvent(child)).thenReturn(childContentUpdated);
+		when(contentEventFactory.createNodeContentUpdatedEvent(parent)).thenReturn(parentContentUpdated);
+		when(contentEventFactory.createNodeContentUpdatedEvent(child)).thenReturn(childContentUpdated);
 		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 		uut.onNewMap(map);
 		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);

@@ -3,6 +3,7 @@ package org.freeplane.plugin.collaboration.client.event;
 import org.freeplane.plugin.collaboration.client.event.children.ImmutableChildrenUpdated;
 import org.freeplane.plugin.collaboration.client.event.children.ImmutableRootNodeIdUpdated;
 import org.freeplane.plugin.collaboration.client.event.children.ImmutableSpecialNodeTypeSet;
+import org.freeplane.plugin.collaboration.client.event.content.ImmutableMapContentUpdated;
 import org.freeplane.plugin.collaboration.client.event.content.ImmutableNodeContentUpdated;
 import org.freeplane.plugin.collaboration.client.event.content.ImmutableTextUpdated;
 
@@ -18,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 	  @Type(value = ImmutableChildrenUpdated.class, name = "CHILDREN"), 
 	  @Type(value = ImmutableTextUpdated.class, name = "TEXT"),
 	  @Type(value = ImmutableNodeContentUpdated.class, name = "OTHER_CONTENT"), 
+	  @Type(value = ImmutableMapContentUpdated.class, name = "OTHER_MAP_CONTENT"), 
 		  @Type(value = ImmutableRootNodeIdUpdated.class, name = "ROOT_ID"),
 		  @Type(value = ImmutableSpecialNodeTypeSet.class, name = "SPECIAL_NODE"),
 		})

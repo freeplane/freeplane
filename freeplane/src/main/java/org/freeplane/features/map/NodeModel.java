@@ -751,6 +751,10 @@ public class NodeModel{
 		return getExtensionContainer().removeAll(classes);
 	}
 	
+	public Map<Class<? extends IExtension>, ? extends IExtension> retainAll(final Collection<Class<? extends IExtension>> classes) {
+		return getExtensionContainer().retainAll(classes);
+	}
+	
 	public void addAll(Map<Class<? extends IExtension>, ? extends IExtension> extensions) {
 		getExtensionContainer().addAll(extensions);
 	}

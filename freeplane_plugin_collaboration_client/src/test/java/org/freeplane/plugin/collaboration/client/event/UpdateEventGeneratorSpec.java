@@ -113,7 +113,7 @@ public class UpdateEventGeneratorSpec {
 
 		uut.nodeChanged(new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null));
 		
-		verify(contentUpdateGenerator).onContentUpdate(parent);
+		verify(contentUpdateGenerator).onNodeContentUpdate(parent);
 	}
 
 	@Test
@@ -125,6 +125,6 @@ public class UpdateEventGeneratorSpec {
 
 		uut.mapChanged(new MapChangeEvent(this, map, NodeModel.UNKNOWN_PROPERTY, null, null));
 		
-		verify(contentUpdateGenerator).onContentUpdate(parent);
+		verify(contentUpdateGenerator).onNodeContentUpdate(parent);
 	}
 }
