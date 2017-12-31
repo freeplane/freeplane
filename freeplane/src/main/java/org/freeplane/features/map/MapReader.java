@@ -100,7 +100,7 @@ public class MapReader implements IElementDOMHandler {
 			return createdMap;
 		}
 
-		Object getHint(final Object key) {
+		public Object getHint(final Object key) {
 			return hints.get(key);
 		}
 

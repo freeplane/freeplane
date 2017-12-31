@@ -16,7 +16,7 @@ public class MapContentUpdateProcessor implements UpdateProcessor<MapContentUpda
 	@Override
 	public void onUpdate(MapModel map, MapContentUpdated mapContentUpdated) {
 		updater.updateMapContent(map, mapContentUpdated.content(), 
-			ContentUpdateGenerator.getNodeContentExclusions());
+			ContentUpdateGenerator.getMapContentExtensions());
 	}
 
 	@Override

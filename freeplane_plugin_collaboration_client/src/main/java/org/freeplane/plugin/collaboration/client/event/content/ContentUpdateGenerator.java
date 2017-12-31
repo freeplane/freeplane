@@ -19,6 +19,7 @@
  */
 package org.freeplane.plugin.collaboration.client.event.content;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -40,6 +41,7 @@ public class ContentUpdateGenerator implements IExtension {
 	private MapUpdateTimer timer;
 	private ContentUpdateEventFactory eventFactory;
 	private static Collection<Class<? extends IExtension>> NODE_CONTENT_EXCLUSIONS =  null;
+	private static Collection<Class<? extends IExtension>> MAP_CONTENT =  null;
 
 	public ContentUpdateGenerator(MapUpdateTimer timer, ContentUpdateEventFactory eventFactory) {
 		this.timer = timer;
@@ -62,7 +64,7 @@ public class ContentUpdateGenerator implements IExtension {
 
 	public static Collection<Class<? extends IExtension>> getNodeContentExclusions() {
 		if(NODE_CONTENT_EXCLUSIONS == null) {
-			NODE_CONTENT_EXCLUSIONS =  MapExtensions.getAll();
+			NODE_CONTENT_EXCLUSIONS =  new ArrayList<>(MapExtensions.getAll());
 			Collections.addAll(NODE_CONTENT_EXCLUSIONS, 
 				HierarchicalIcons.ACCUMULATED_ICONS_EXTENSION_CLASS, 
 				SummaryNodeFlag.class, 
@@ -70,5 +72,12 @@ public class ContentUpdateGenerator implements IExtension {
 				);
 		}
 		return NODE_CONTENT_EXCLUSIONS;
+	}
+
+	public static Collection<Class<? extends IExtension>> getMapContentExtensions() {
+		if(MAP_CONTENT == null) {
+			MAP_CONTENT =  new ArrayList<>(MapExtensions.getAll());
+		}
+		return MAP_CONTENT;
 	}
 }

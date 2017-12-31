@@ -33,6 +33,6 @@ public class MapContentUpdateProcessorSpec {
 		when(map.getNodeForID("nodeId")).thenReturn(node);
 		uut.onUpdate(map, MapContentUpdated.builder().content("content").build());
 		
-		verify(nodeContentManipulator).updateMapContent(map, "content", ContentUpdateGenerator.getNodeContentExclusions());
+		verify(nodeContentManipulator).updateMapContent(map, "content", ContentUpdateGenerator.getMapContentExtensions());
 	}
 }

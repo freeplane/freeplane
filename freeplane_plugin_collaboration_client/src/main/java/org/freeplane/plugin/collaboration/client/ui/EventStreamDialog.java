@@ -38,6 +38,7 @@ import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeP
 import org.freeplane.plugin.collaboration.client.event.children.StructureUpdateEventFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
+import org.freeplane.plugin.collaboration.client.event.content.MapContentUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.content.NodeContentUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.json.Jackson;
 import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
@@ -75,9 +76,11 @@ public class EventStreamDialog {
 			final RootNodeIdUpdatedProcessor rootNodeIdUpdatedProcessor = new RootNodeIdUpdatedProcessor();
 			final ChildrenUpdateProcessor childrenUpdateProcessor = new ChildrenUpdateProcessor(singleNodeStructureManipulator, nodeFactory);
 			final SpecialNodeTypeProcessor specialNodeTypeProcessor = new SpecialNodeTypeProcessor();
+			NodeContentManipulator updater = new NodeContentManipulator(mapController);
 			processor = new UpdateProcessorChain().add(rootNodeIdUpdatedProcessor)
 					.add(childrenUpdateProcessor).add(specialNodeTypeProcessor)
-					.add(new NodeContentUpdateProcessor(new NodeContentManipulator(mapController)));
+					.add(new MapContentUpdateProcessor(updater))
+					.add(new NodeContentUpdateProcessor(updater));
 		}
 
 		@Override
@@ -99,6 +102,7 @@ public class EventStreamDialog {
 	public EventStreamDialog(Window owner) {
 		super();
 		this.dialog = new JDialog(owner, MODELESS);
+		dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 		dialog.setTitle("freeplane collaboration events");
 		text = new JTextArea();
 		JScrollPane textPane = new JScrollPane(text, VERTICAL_SCROLLBAR_ALWAYS, HORIZONTAL_SCROLLBAR_ALWAYS);

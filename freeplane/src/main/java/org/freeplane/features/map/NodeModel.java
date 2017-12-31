@@ -737,14 +737,22 @@ public class NodeModel{
 	}
 
 
-	static public void swapExtensions(NodeModel first, NodeModel second, 
+	static public void swapExtensionsExcluding(NodeModel first, NodeModel second, 
 			Collection<Class<? extends IExtension>> exclusions) {
 		final ExtensionContainer firstContent = first.getExtensionContainer();
 		final ExtensionContainer secondContent = second.getExtensionContainer();
 		first.sharedData.setExtensionContainer(secondContent);
 		second.sharedData.setExtensionContainer(firstContent);
 		for(Class<? extends IExtension> exclusion : exclusions)
-			ExtensionContainer.swapExtensions(firstContent, secondContent, exclusion);
+			ExtensionContainer.swapExtension(firstContent, secondContent, exclusion);
+	}
+	
+	static public void swapExtensions(NodeModel first, NodeModel second, 
+	                                  Collection<Class<? extends IExtension>> extensions) {
+		final ExtensionContainer firstContent = first.getExtensionContainer();
+		final ExtensionContainer secondContent = second.getExtensionContainer();
+		for(Class<? extends IExtension> extension : extensions)
+			ExtensionContainer.swapExtension(firstContent, secondContent, extension);
 	}
 	
 	public Map<Class<? extends IExtension>, ? extends IExtension> removeAll(final Collection<Class<? extends IExtension>> classes) {

@@ -38,9 +38,13 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.MapWriter.Hint;
+import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class PersistentNodeHook {
+
+	private final MapController mapController;
 
 	public abstract class HookAction extends AFreeplaneAction {
 		private static final long serialVersionUID = 1L;
@@ -138,7 +142,8 @@ public abstract class PersistentNodeHook {
 			if (getHookAnnotation().onceForMap()) {
 				final XMLElement parentNodeElement = lastBuiltElement.getParent().getParent();
 				if (parentNodeElement == null || !parentNodeElement.getName().equals("map")) {
-					return;
+					if(! loadsAdditionalContent())
+						return;
 				}
 			}
 			final NodeModel node = (NodeModel) userObject;
@@ -150,6 +155,11 @@ public abstract class PersistentNodeHook {
 				return;
 			}
 			add(node, extension);
+		}
+		
+		protected boolean loadsAdditionalContent() {
+			return Mode.ADDITIONAL_CONTENT.equals(
+				mapController.getMapReader().getCurrentNodeTreeCreator().getHint(Hint.MODE));
 		}
 	}
 
@@ -179,7 +189,7 @@ public abstract class PersistentNodeHook {
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (modeController.supportsHookActions())
 			registerActions();
-		final MapController mapController = modeController.getMapController();
+		mapController = modeController.getMapController();
 		mapController.getReadManager().addElementHandler("hook", createXmlReader());
 		final IExtensionElementWriter xmlWriter = createXmlWriter();
 		if (xmlWriter != null) {

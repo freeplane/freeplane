@@ -54,6 +54,7 @@ import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
+import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -75,6 +76,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
 	public static final String MAP_STYLES = "MAP_STYLES";
 	public static final String FIT_TO_VIEWPORT = "fit_to_viewport";
+	private final MapController mapController;
 	
 	public static void install(boolean persistent){
 		new MapStyle(persistent);
@@ -83,8 +85,8 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	protected MapStyle( final boolean persistent) {
 		super();
 		ModeController modeController = Controller.getCurrentModeController();
+		mapController = modeController.getMapController();
 		if (persistent) {
-			final MapController mapController = modeController.getMapController();
 			mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(),
 				new XmlWriter());
 			mapController.getReadManager().addElementHandler("conditional_styles", new IElementDOMHandler() {
@@ -194,24 +196,28 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	protected class MyXmlReader extends XmlReader{
-		public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
-			if (null == super.createElement(parent, tag, attributes)){
+		public Object createElement(final Object parent, final String tag, final XMLElement xml) {
+			if (null == super.createElement(parent, tag, xml)){
 				return null;
 			}
-			super.endElement(parent, tag, parent, attributes);
+			final XMLElement parentNodeElement = xml.getParent().getParent();
+			if (parentNodeElement != null && parentNodeElement.getName().equals("map") 
+					||loadsAdditionalContent()) {
+				NodeModel node = (NodeModel) parent;
+				MapStyleModel extension = (MapStyleModel) createExtension(node, xml);
+				add(node, extension);
+			}
 			return parent;
 		}
 
 		@Override
         public void endElement(Object parent, String tag, Object userObject, XMLElement xml) {
-			// do nothing for not root nodes
-			final XMLElement parentNodeElement = xml.getParent().getParent();
-			if (parentNodeElement == null || !parentNodeElement.getName().equals("map")) {
-				return;
-			}
-			NodeModel node = (NodeModel) userObject;
-			loadMapStyleProperties(MapStyleModel.getExtension(node), xml);
+			MapStyleModel extension = MapStyleModel.getExtension((NodeModel) userObject);
+			if(extension != null)
+				loadMapStyleProperties(extension, xml);
+			
        }
+
 
 		private void loadMapStyleProperties(MapStyleModel model, XMLElement xml) {
 			final Vector<XMLElement> propertyXml = xml.getChildrenNamed("properties");

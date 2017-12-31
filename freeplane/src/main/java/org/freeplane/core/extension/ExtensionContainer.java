@@ -99,7 +99,7 @@ public class ExtensionContainer {
 		return getExtensions().remove(extension.getClass()) != null;
 	}
 
-	public static void swapExtensions(ExtensionContainer firstContent, ExtensionContainer secondContent,
+	public static void swapExtension(ExtensionContainer firstContent, ExtensionContainer secondContent,
 			Class<? extends IExtension> clazz) {
 		final IExtension firstExtension = firstContent.getExtension(clazz);
 		final IExtension secondExtension = secondContent.getExtension(clazz);

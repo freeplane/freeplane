@@ -6,8 +6,11 @@ import java.util.Collection;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLException;
 
@@ -39,7 +42,7 @@ public class NodeContentManipulator {
 				public void act() {
 					NodeModel.swapUserObjects(node, newNode);				
 					NodeModel.swapIcons(node, newNode);
-					NodeModel.swapExtensions(node, newNode, exclusions);
+					NodeModel.swapExtensionsExcluding(node, newNode, exclusions);
 					mapController.nodeRefresh(node);
 				}
 			};
@@ -50,7 +53,7 @@ public class NodeContentManipulator {
 		}
 	}
 
-	public void updateMapContent(MapModel map, String newContent, Collection<Class<? extends IExtension>> exclusions) {
+	public void updateMapContent(MapModel map, String newContent, Collection<Class<? extends IExtension>> extensions) {
 		try {
 			final NodeModel newNode =  mapController.getMapReader().createNodeTreeFromXml(map, 
 					new StringReader(newContent), Mode.ADDITIONAL_CONTENT);
@@ -68,6 +71,9 @@ public class NodeContentManipulator {
 
 				@Override
 				public void act() {
+					NodeModel.swapExtensions(map.getRootNode(), newNode, extensions);
+					mapController.fireMapChanged(
+					    new MapChangeEvent(this, map, MapStyle.MAP_STYLES, null, null));
 				}
 			};
 			mapController.getMModeController().execute(actor, map);
