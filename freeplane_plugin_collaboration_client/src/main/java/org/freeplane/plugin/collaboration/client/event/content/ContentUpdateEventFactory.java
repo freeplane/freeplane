@@ -41,7 +41,9 @@ public class ContentUpdateEventFactory {
 		NodeModel node = map.getRootNode();
 		final Map<Class<? extends IExtension>, ? extends IExtension> exclusions = node.retainAll(MapExtensions.getAll());
 		try {
+			writer.append("<map>");
 			mapWriter.writeNodeAsXml(writer, node, Mode.ADDITIONAL_CONTENT, true, false, false);
+			writer.append("</map>");
 		}
 		catch (IOException e) {
 			LogUtils.severe(e);

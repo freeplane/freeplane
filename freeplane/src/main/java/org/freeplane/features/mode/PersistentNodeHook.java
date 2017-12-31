@@ -142,8 +142,7 @@ public abstract class PersistentNodeHook {
 			if (getHookAnnotation().onceForMap()) {
 				final XMLElement parentNodeElement = lastBuiltElement.getParent().getParent();
 				if (parentNodeElement == null || !parentNodeElement.getName().equals("map")) {
-					if(! loadsAdditionalContent())
-						return;
+					return;
 				}
 			}
 			final NodeModel node = (NodeModel) userObject;
@@ -157,10 +156,6 @@ public abstract class PersistentNodeHook {
 			add(node, extension);
 		}
 		
-		protected boolean loadsAdditionalContent() {
-			return Mode.ADDITIONAL_CONTENT.equals(
-				mapController.getMapReader().getCurrentNodeTreeCreator().getHint(Hint.MODE));
-		}
 	}
 
 	protected class XmlWriter implements IExtensionElementWriter {

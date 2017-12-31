@@ -201,8 +201,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				return null;
 			}
 			final XMLElement parentNodeElement = xml.getParent().getParent();
-			if (parentNodeElement != null && parentNodeElement.getName().equals("map") 
-					||loadsAdditionalContent()) {
+			if (parentNodeElement != null && parentNodeElement.getName().equals("map")) {
 				NodeModel node = (NodeModel) parent;
 				MapStyleModel extension = (MapStyleModel) createExtension(node, xml);
 				add(node, extension);
