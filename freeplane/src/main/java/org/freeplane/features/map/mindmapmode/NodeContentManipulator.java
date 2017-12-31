@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLException;
@@ -18,7 +19,7 @@ public class NodeContentManipulator {
 		this.mapController = mapController;
 	}
 	
-	public void updateContent(NodeModel node, String newContent, Collection<Class<? extends IExtension>> exclusions) {
+	public void updateNodeContent(NodeModel node, String newContent, Collection<Class<? extends IExtension>> exclusions) {
 		try {
 			final NodeModel newNode =  mapController.getMapReader().createNodeTreeFromXml(node.getMap(), 
 					new StringReader(newContent), Mode.ADDITIONAL_CONTENT);
@@ -49,4 +50,30 @@ public class NodeContentManipulator {
 		}
 	}
 
+	public void updateMapContent(MapModel map, String newContent, Collection<Class<? extends IExtension>> exclusions) {
+		try {
+			final NodeModel newNode =  mapController.getMapReader().createNodeTreeFromXml(map, 
+					new StringReader(newContent), Mode.ADDITIONAL_CONTENT);
+			final IActor actor = new IActor() {
+
+				@Override
+				public void undo() {
+					act();
+				}
+
+				@Override
+				public String getDescription() {
+					return "updateContent";
+				}
+
+				@Override
+				public void act() {
+				}
+			};
+			mapController.getMModeController().execute(actor, map);
+
+		} catch (IOException | XMLException e) {
+			e.printStackTrace();
+		}
+	}
 }
