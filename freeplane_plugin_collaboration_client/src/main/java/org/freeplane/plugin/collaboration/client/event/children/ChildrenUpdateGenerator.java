@@ -28,6 +28,7 @@ public class ChildrenUpdateGenerator implements IExtension{
 		timer.addActionListener(e -> 
 			{
 				timer.addUpdateEvent(createRootNodeIdUpdatedEvent(map));
+				timer.addUpdateEvent(contentUpdateEventFactory.createMapContentUpdatedEvent(map));
 				generateStructureChangedEventForSubtree(map.getRootNode());
 			});
 		timer.restart();

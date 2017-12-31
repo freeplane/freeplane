@@ -112,7 +112,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
         		mayWriteChildren = false;
         	}
         }
-		if (mayWriteChildren && (writeFolded || !mode(writer).equals(Mode.FILE))) {
+		if (mayWriteChildren && !mode.equals(Mode.ADDITIONAL_CONTENT) && (writeFolded || !mode.equals(Mode.FILE))) {
 			if(mapController.isFolded(node) && ! isNodeAlreadyWritten){
 				writer.addAttribute("FOLDED", "true");
 			}
@@ -124,7 +124,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 		if (parentNode != null && parentNode.isRoot()) {
 			writer.addAttribute("POSITION", node.isLeft() ? "left" : "right");
 		}
-		final boolean saveID = !mode.equals(Mode.STYLE);
+		final boolean saveID = !mode.equals(Mode.STYLE) && !mode.equals(Mode.ADDITIONAL_CONTENT);
 		if (saveID) {
 			final String id = node.createID();
 			writer.addAttribute("ID", id);

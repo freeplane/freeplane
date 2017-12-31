@@ -22,6 +22,7 @@ import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHea
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.content.MapContentUpdated;
 import org.freeplane.plugin.collaboration.client.event.content.NodeContentUpdated;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -58,6 +59,7 @@ public class ChildrenUpdateGeneratorSpec {
 	final private ChildrenUpdated childrenUpdated = mock(ChildrenUpdated.class);
 	final private NodeContentUpdated parentContentUpdated = mock(NodeContentUpdated.class);
 	final private NodeContentUpdated childContentUpdated = mock(NodeContentUpdated.class);
+	final private MapContentUpdated mapContentUpdated = mock(MapContentUpdated.class);
 	
 	final private NodeModel parent2 = testObjects.parent2;
 	final private NodeModel child2 = testObjects.child2;
@@ -223,6 +225,7 @@ public class ChildrenUpdateGeneratorSpec {
 	public void generatesEventOnNewMap() throws Exception {
 		parent.insert(child);
 		when(map.getRootNode()).thenReturn(parent);
+		when(contentEventFactory.createMapContentUpdatedEvent(map)).thenReturn(mapContentUpdated);
 		when(contentEventFactory.createNodeContentUpdatedEvent(parent)).thenReturn(parentContentUpdated);
 		when(contentEventFactory.createNodeContentUpdatedEvent(child)).thenReturn(childContentUpdated);
 		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
@@ -231,7 +234,7 @@ public class ChildrenUpdateGeneratorSpec {
 		final ImmutableRootNodeIdUpdated rootNodeSet = RootNodeIdUpdated.builder().nodeId(TestData.PARENT_NODE_ID).build();
 		UpdatesFinished expected = UpdatesFinished.builder()
 				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateEvents(rootNodeSet, parentContentUpdated, childrenUpdated, childContentUpdated).build();
+				.addUpdateEvents(rootNodeSet, mapContentUpdated, parentContentUpdated, childrenUpdated, childContentUpdated).build();
 		
 		assertThat(event).isEqualTo(expected);
 	}
