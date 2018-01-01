@@ -53,4 +53,9 @@ public class ContentUpdateEventFactory {
 		}
 		return MapContentUpdated.builder().content(writer.toString()).build();
 	}
+
+	public MapUpdated createCoreContentUpdatedEvent(NodeModel node) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

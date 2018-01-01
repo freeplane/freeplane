@@ -62,6 +62,12 @@ public class ContentUpdateGenerator implements IExtension {
 
 	}
 
+	public void onNodeCoreContentUpdate(NodeModel node) {
+		timer.addActionListener(e -> 
+			timer.addUpdateEvent(eventFactory.createCoreContentUpdatedEvent(node)));
+		timer.restart();
+
+	}
 	public static Collection<Class<? extends IExtension>> getNodeContentExclusions() {
 		if(NODE_CONTENT_EXCLUSIONS == null) {
 			NODE_CONTENT_EXCLUSIONS =  new ArrayList<>(MapExtensions.getAll());

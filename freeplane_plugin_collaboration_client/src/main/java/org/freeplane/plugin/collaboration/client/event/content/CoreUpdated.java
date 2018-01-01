@@ -7,15 +7,15 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Value.Immutable
-@JsonSerialize(as = ImmutableTextUpdated.class)
-@JsonDeserialize(as = ImmutableTextUpdated.class)
-public interface TextUpdated extends NodeUpdated{
+@JsonSerialize(as = ImmutableCoreUpdated.class)
+@JsonDeserialize(as = ImmutableCoreUpdated.class)
+public interface CoreUpdated extends NodeUpdated{
 
-	static ImmutableTextUpdated.Builder builder() {
-		return ImmutableTextUpdated.builder();
+	static ImmutableCoreUpdated.Builder builder() {
+		return ImmutableCoreUpdated.builder();
 	}
 
 	String content();
 	
-	TextMediaType mediaType();
+	CoreMediaType mediaType();
 }
