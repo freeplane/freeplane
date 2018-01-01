@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Supplier;
 import java.util.Set;
 
 /**
@@ -32,6 +33,15 @@ public class ExtensionContainer {
 	public void addExtension(final IExtension extension) {
 		addExtension(extension.getClass(), extension);
 	}
+	
+	public <T extends IExtension> T addExtensionIfAbsent(final Class<T> clazz, final Supplier<? extends T> supplier) {
+		if(containsExtension(clazz))
+			return getExtension(clazz);
+		T extension = supplier.get();
+		addExtension(extension);
+		return extension;
+	}
+
 
 	public IExtension putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
         final IExtension oldExtension = getExtensions().put(clazz, extension);

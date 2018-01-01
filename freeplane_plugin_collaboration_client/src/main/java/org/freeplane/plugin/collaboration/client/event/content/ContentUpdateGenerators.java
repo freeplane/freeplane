@@ -1,7 +1,6 @@
 package org.freeplane.plugin.collaboration.client.event.content;
 
 import org.freeplane.features.map.MapModel;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
 
 public class ContentUpdateGenerators{
@@ -15,12 +14,7 @@ public class ContentUpdateGenerators{
 	}
 
 	public ContentUpdateGenerator of(MapModel map) {
-		ContentUpdateGenerator generator = map.getExtension(ContentUpdateGenerator.class);
-		if(generator == null) {
-			final MapUpdateTimer timer = timerFactory.createTimer(map);
-			generator = new ContentUpdateGenerator(timer,  eventFactory);
-			map.addExtension(generator);
-		}
-		return generator;
+		return map.addExtensionIfAbsent(ContentUpdateGenerator.class,
+			() -> new ContentUpdateGenerator(timerFactory.createTimer(map),  eventFactory));
 	}
 }

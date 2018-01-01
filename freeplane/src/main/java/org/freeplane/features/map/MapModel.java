@@ -28,7 +28,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Supplier;
 
+import org.assertj.core.util.VisibleForTesting;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.Compat;
@@ -58,16 +60,20 @@ public class MapModel {
 	private URL url;
 
 	public MapModel() {
+		this(FilterController.getCurrentFilterController(), Controller.getCurrentModeController());
+	}
+
+	// visible for testing
+	public MapModel(FilterController filterController, final ModeController modeController) {
+		super();
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		this.root = null;
 		listeners = new LinkedList<IMapChangeListener>();
 		nodes = new HashMap<String, NodeModel>();
-		final FilterController filterController = FilterController.getCurrentFilterController();
 		if (filterController != null) {
 			filter = filterController.createTransparentFilter();
 		}
-		final ModeController modeController = Controller.getCurrentModeController();
-		iconRegistry = new IconRegistry(modeController.getMapController(), this);
+		iconRegistry = modeController != null ? new IconRegistry(modeController.getMapController(), this) : null;
 	}
 
 	public void createNewRoot() {
@@ -81,6 +87,10 @@ public class MapModel {
 
 	public void addExtension(final IExtension extension) {
 		extensionContainer.addExtension(extension);
+	}
+
+	public <T extends IExtension> T addExtensionIfAbsent(final Class<T> clazz, final Supplier<? extends T> supplier) {
+		return extensionContainer.addExtensionIfAbsent(clazz, supplier);
 	}
 
 	public IExtension putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
