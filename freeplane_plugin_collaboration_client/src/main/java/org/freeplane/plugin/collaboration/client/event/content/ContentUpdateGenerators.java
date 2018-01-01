@@ -14,7 +14,6 @@ public class ContentUpdateGenerators{
 	}
 
 	public ContentUpdateGenerator of(MapModel map) {
-		return map.addExtensionIfAbsent(ContentUpdateGenerator.class,
-			() -> new ContentUpdateGenerator(timerFactory.createTimer(map),  eventFactory));
+		return new ContentUpdateGenerator(timerFactory.createTimer(map),  eventFactory);
 	}
 }

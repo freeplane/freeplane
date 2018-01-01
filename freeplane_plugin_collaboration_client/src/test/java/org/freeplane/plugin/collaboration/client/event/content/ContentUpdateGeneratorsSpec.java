@@ -54,12 +54,4 @@ public class ContentUpdateGeneratorsSpec {
 		ContentUpdateGenerator expected = new ContentUpdateGenerator(timer, eventFactory);
 		assertThat(uut.of(map)).isEqualToComparingFieldByField(expected);
 	}
-
-	@Test
-	public void returnsExistingContentUpdateGenerator() throws Exception {
-		MapModel map = new MapModel(null, null);
-		when(timerFactory.createTimer(map)).thenReturn(timer);
-		ContentUpdateGenerator createdBefore = uut.of(map);
-		assertThat(uut.of(map)).isSameAs(createdBefore);
-	}
 }

@@ -36,7 +36,7 @@ import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
  * @author Dimitry Polivaev
  * Dec 4, 2017
  */
-public class ContentUpdateGenerator implements IExtension {
+public class ContentUpdateGenerator {
 
 	private MapUpdateTimer timer;
 	private ContentUpdateEventFactory eventFactory;
