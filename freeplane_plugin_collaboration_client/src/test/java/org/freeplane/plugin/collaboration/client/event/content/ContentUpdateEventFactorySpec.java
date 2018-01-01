@@ -112,7 +112,7 @@ public class ContentUpdateEventFactorySpec {
 			}
 		}).when(mapWriter).writeNodeAsXml(any(), same(node), same(Mode.ADDITIONAL_CONTENT), eq(true), eq(false), eq(false));
 		final MapUpdated event = uut.createMapContentUpdatedEvent(map);
-		assertThat(event).isEqualTo(MapContentUpdated.builder().content("content").build());
+		assertThat(event).isEqualTo(MapContentUpdated.builder().content("<map>content</map>").build());
 	}
 	
 	@Test
@@ -134,7 +134,7 @@ public class ContentUpdateEventFactorySpec {
 		
 		final MapUpdated event = uut.createMapContentUpdatedEvent(map);
 		
-		assertThat(event).isEqualTo(MapContentUpdated.builder().content("content").build());
+		assertThat(event).isEqualTo(MapContentUpdated.builder().content("<map>content</map>").build());
 		assertThat(node.containsExtension(nodeExtension.getClass())).isTrue();
 	}
 	
