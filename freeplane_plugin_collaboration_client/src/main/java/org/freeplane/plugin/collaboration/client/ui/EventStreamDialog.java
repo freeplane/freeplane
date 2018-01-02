@@ -27,7 +27,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.UpdateEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessorChain;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
@@ -48,7 +48,7 @@ public class EventStreamDialog {
 	private class Map2Json implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			MapUpdateTimerFactory f = new MapUpdateTimerFactory(ev -> {
+			UpdateBlockGeneratorFactory f = new UpdateBlockGeneratorFactory(ev -> {
 				UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(t));
 				printer.prettyPrint(ev);
 			}, 100);

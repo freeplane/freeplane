@@ -30,7 +30,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.features.mode.MapExtensions;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
+import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 
 /**
  * @author Dimitry Polivaev
@@ -38,34 +38,28 @@ import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
  */
 public class ContentUpdateGenerator {
 
-	private MapUpdateTimer timer;
+	private Updates updates;
 	private ContentUpdateEventFactory eventFactory;
 	private static Collection<Class<? extends IExtension>> NODE_CONTENT_EXCLUSIONS =  null;
 	private static Collection<Class<? extends IExtension>> MAP_CONTENT =  null;
 
-	public ContentUpdateGenerator(MapUpdateTimer timer, ContentUpdateEventFactory eventFactory) {
-		this.timer = timer;
+	public ContentUpdateGenerator(Updates updates, ContentUpdateEventFactory eventFactory) {
+		this.updates = updates;
 		this.eventFactory = eventFactory;
 	}
 
 	public void onNodeContentUpdate(NodeModel node) {
-		timer.addActionListener(e -> 
-			timer.addUpdateBlock(eventFactory.createNodeContentUpdatedEvent(node)));
-		timer.restart();
+		updates.addUpdateEvent(() -> eventFactory.createNodeContentUpdatedEvent(node));
 
 	}
 
 	public void onMapContentUpdate(MapModel map) {
-		timer.addActionListener(e -> 
-			timer.addUpdateBlock(eventFactory.createMapContentUpdatedEvent(map)));
-		timer.restart();
+			updates.addUpdateEvent(() -> eventFactory.createMapContentUpdatedEvent(map));
 
 	}
 
 	public void onNodeCoreContentUpdate(NodeModel node) {
-		timer.addActionListener(e -> 
-			timer.addUpdateBlock(eventFactory.createCoreContentUpdatedEvent(node)));
-		timer.restart();
+			updates.addUpdateEvent(() -> eventFactory.createCoreContentUpdatedEvent(node));
 
 	}
 	public static Collection<Class<? extends IExtension>> getNodeContentExclusions() {

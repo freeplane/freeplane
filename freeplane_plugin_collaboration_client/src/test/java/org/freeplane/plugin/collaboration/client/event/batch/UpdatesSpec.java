@@ -16,7 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mock;
 
-public class MapUpdateTimerSpec {
+public class UpdatesSpec {
 	private static final int TIMEOUT = 500;
 
 	private static final int DELAY_MILLIS = 10;
@@ -47,10 +47,9 @@ public class MapUpdateTimerSpec {
 		final MapUpdated childrenUpdated = mock(MapUpdated.class);
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
 		
-		MapUpdateTimer uut = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
+		Updates uut = new Updates(consumer, DELAY_MILLIS, header);
 		
-		uut.addActionListener(e -> uut.addUpdateBlock(childrenUpdated));
-		uut.restart();
+		uut.addUpdateEvent(() -> childrenUpdated);
 		
 		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
@@ -67,13 +66,11 @@ public class MapUpdateTimerSpec {
 		final MapUpdated childrenUpdated = mock(MapUpdated.class);
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
 		
-		MapUpdateTimer uut = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
+		Updates uut = new Updates(consumer, DELAY_MILLIS, header);
 		
-		uut.addActionListener(
-			e1 -> uut.addActionListener(
-				e2 -> uut.addUpdateBlock(childrenUpdated)
+		uut.addUpdateEvents(() -> uut.addUpdateEvents(
+				() -> uut.addUpdateEvent(childrenUpdated)
 			));
-		uut.restart();
 		
 		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()

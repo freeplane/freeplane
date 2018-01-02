@@ -10,27 +10,27 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MapUpdateTimerFactorySpec {
+public class UpdateBlockGeneratorFactorySpec {
 	@Mock
 	private MapModel map;
 
 	@Test
 	public void setsTimerHeaderToMapExtension() throws Exception {
-		MapUpdateTimerFactory uut = new MapUpdateTimerFactory(null, 0);
+		UpdateBlockGeneratorFactory uut = new UpdateBlockGeneratorFactory(null, 0);
 		final ModifiableUpdateHeaderExtension header = ModifiableUpdateHeaderExtension.create()
 				.setMapId("mapId").setMapRevision(1L);
 		when(map.getExtension(ModifiableUpdateHeaderExtension.class)).thenReturn(header);
 
-		MapUpdateTimer timer = uut.createTimer(map);
+		Updates updates = uut.of(map);
 		
-		assertThat(timer).hasFieldOrPropertyWithValue("header", header);
+		assertThat(updates).hasFieldOrPropertyWithValue("header", header);
 	}
 
 	@Test
 	public void createsOnlyOneTimerForAGivenMap() throws Exception {
-		MapUpdateTimerFactory uut = new MapUpdateTimerFactory(null, 0);
-		MapUpdateTimer timer1 = uut.createTimer(map);
-		MapUpdateTimer timer2 = uut.createTimer(map);
+		UpdateBlockGeneratorFactory uut = new UpdateBlockGeneratorFactory(null, 0);
+		Updates timer1 = uut.of(map);
+		Updates timer2 = uut.of(map);
 		
 		assertThat(timer1).isSameAs(timer2);
 	}

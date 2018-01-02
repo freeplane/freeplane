@@ -1,23 +1,23 @@
 package org.freeplane.plugin.collaboration.client.event.children;
 
-import java.awt.event.ActionEvent;
 import java.util.LinkedHashSet;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
+import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
 
 public class ChildrenUpdateGenerator implements IExtension{
-	final private MapUpdateTimer timer;
+	final private Updates updates;
 	final private StructureUpdateEventFactory structuralEventFactory;
 	final private ContentUpdateEventFactory contentUpdateEventFactory;
 	final private LinkedHashSet<NodeModel> changedParents;
 	final private LinkedHashSet<NodeModel> insertedChildren;
 
-	public ChildrenUpdateGenerator(MapUpdateTimer timer, StructureUpdateEventFactory eventFactory,
+	public ChildrenUpdateGenerator(Updates updates, StructureUpdateEventFactory eventFactory,
 	                               ContentUpdateEventFactory contentUpdateEventFactory) {
-		this.timer = timer;
+		this.updates = updates;
 		this.structuralEventFactory = eventFactory;
 		this.contentUpdateEventFactory = contentUpdateEventFactory;
 		changedParents = new LinkedHashSet<>();
@@ -25,13 +25,12 @@ public class ChildrenUpdateGenerator implements IExtension{
 	}
 	
 	public void onNewMap(MapModel map) {
-		timer.addActionListener(e -> 
+		updates.addUpdateEvents(() -> 
 			{
-				timer.addUpdateBlock(createRootNodeIdUpdatedEvent(map));
-				timer.addUpdateBlock(contentUpdateEventFactory.createMapContentUpdatedEvent(map));
+				updates.addUpdateEvents(createRootNodeIdUpdatedEvent(map),
+					contentUpdateEventFactory.createMapContentUpdatedEvent(map));
 				generateStructureChangedEventForSubtree(map.getRootNode());
 			});
-		timer.restart();
 	}
 
 	private RootNodeIdUpdated createRootNodeIdUpdatedEvent(MapModel map) {
@@ -46,16 +45,15 @@ public class ChildrenUpdateGenerator implements IExtension{
 
 	public void onChangedStructure(NodeModel parent) {
 		if(changedParents.isEmpty())
-			timer.addActionListener(this::generateStructureChangedEvent);
+			updates.addUpdateEvents(this::generateStructureChangedEvent);
 		changedParents.add(parent);
-		timer.restart();
 	}
 
 	
-	private void generateStructureChangedEvent(ActionEvent e) {
+	private void generateStructureChangedEvent() {
 		for(NodeModel parent : changedParents) {
 			final ChildrenUpdated childrenUpdated = structuralEventFactory.createChildrenUpdatedEvent(parent);
-			timer.addUpdateBlock(childrenUpdated);
+			updates.addUpdateEvent(childrenUpdated);
 			for(NodeModel child : parent.getChildren()) {
 				if(insertedChildren.contains(child))
 					generateStructureChangedEventForSubtree(child);
@@ -68,12 +66,12 @@ public class ChildrenUpdateGenerator implements IExtension{
 
 	private void generateStructureChangedEventForSubtree(final NodeModel node) {
 		SpecialNodeTypeSet.SpecialNodeType.of(node).ifPresent((c) -> {
-			timer.addUpdateBlock(SpecialNodeTypeSet.builder().nodeId(node.createID()).content(c).build());
+			updates.addUpdateEvent(SpecialNodeTypeSet.builder().nodeId(node.createID()).content(c).build());
 		});
-		timer.addUpdateBlock(contentUpdateEventFactory.createNodeContentUpdatedEvent(node));
+		updates.addUpdateEvent(contentUpdateEventFactory.createNodeContentUpdatedEvent(node));
 		if(node.hasChildren()) {
 			final ChildrenUpdated childrenUpdated = structuralEventFactory.createChildrenUpdatedEvent(node);
-			timer.addUpdateBlock(childrenUpdated);
+			updates.addUpdateEvent(childrenUpdated);
 			for(NodeModel child : node.getChildren()) {
 				generateStructureChangedEventForSubtree(child);
 			}

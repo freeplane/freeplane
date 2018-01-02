@@ -32,7 +32,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
+import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.junit.Before;
@@ -69,8 +69,8 @@ public class ContentUpdateGeneratorSpec {
 	@Before
 	public void createTestedInstance() {
 		consumer = new UpdatesEventCaptor(1);
-		MapUpdateTimer timer = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
-		uut = new ContentUpdateGenerator(timer, eventFactory);
+		Updates updates = new Updates(consumer, DELAY_MILLIS, header);
+		uut = new ContentUpdateGenerator(updates, eventFactory);
 	}
 
 

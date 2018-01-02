@@ -23,8 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import org.freeplane.features.map.MapModel;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
+import org.freeplane.plugin.collaboration.client.event.batch.Updates;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -40,19 +40,19 @@ public class ContentUpdateGeneratorFactorySpec {
 	@Mock
 	private ContentUpdateEventFactory eventFactory;
 	@Mock
-	private MapUpdateTimerFactory timerFactory;
+	private UpdateBlockGeneratorFactory timerFactory;
 	
 	@InjectMocks
 	private ContentUpdateGeneratorFactory uut;
 	
 	@Mock
-	private MapUpdateTimer timer;
+	private Updates updates;
 
 	@Test
 	public void createsContentUpdateGenerator() throws Exception {
 		MapModel map = new MapModel(null, null);
-		when(timerFactory.createTimer(map)).thenReturn(timer);
-		ContentUpdateGenerator expected = new ContentUpdateGenerator(timer, eventFactory);
+		when(timerFactory.of(map)).thenReturn(updates);
+		ContentUpdateGenerator expected = new ContentUpdateGenerator(updates, eventFactory);
 		assertThat(uut.contentUpdateGeneratorOf(map)).isEqualToComparingFieldByField(expected);
 	}
 }

@@ -21,7 +21,7 @@ package org.freeplane.plugin.collaboration.client.event.content;
 
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
+import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 
 /**
  * @author Dimitry Polivaev
@@ -29,16 +29,14 @@ import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
  */
 public class CoreUpdateGenerator {
 
-	private MapUpdateTimer timer;
+	private Updates updates;
 
-	public CoreUpdateGenerator(MapUpdateTimer timer) {
-		this.timer = timer;
+	public CoreUpdateGenerator(Updates updates) {
+		this.updates = updates;
 	}
 
 	public void onCoreUpdate(NodeModel node) {
-		timer.addActionListener(e -> 
-			timer.addUpdateBlock(createCoreUpdatedEvent(node)));
-		timer.restart();
+			updates.addUpdateEvent(() -> createCoreUpdatedEvent(node));
 	}
 
 	private MapUpdated createCoreUpdatedEvent(NodeModel node) {

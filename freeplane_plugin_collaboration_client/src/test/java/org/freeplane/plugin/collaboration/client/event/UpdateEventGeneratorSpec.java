@@ -11,8 +11,8 @@ import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.plugin.collaboration.client.TestData;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
+import org.freeplane.plugin.collaboration.client.event.batch.Updates;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerator;
@@ -27,7 +27,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class UpdateEventGeneratorSpec {
 	@Mock
-	private MapUpdateTimerFactory updateTimerFactory;
+	private UpdateBlockGeneratorFactory updateTimerFactory;
 
 	@Mock
 	private ChildrenUpdateGenerators childrenUpdateGenerators;
@@ -43,7 +43,7 @@ public class UpdateEventGeneratorSpec {
 	private ContentUpdateGenerator contentUpdateGenerator;
 
 	@Mock
-	private MapUpdateTimer updateTimer;
+	private Updates updateTimer;
 	
 	final private TestObjects testObjects = new TestObjects();
 	final private MapModel map = testObjects.map;
@@ -62,7 +62,7 @@ public class UpdateEventGeneratorSpec {
 	
 	@Test
 	public void generatesEventOnNodeInsertion() throws Exception {
-		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
+		when(updateTimerFactory.of(map)).thenReturn(updateTimer);
 		when(childrenUpdateGenerators.of(map)).thenReturn(updateGenerator);
 
 		uut.onNodeInserted(parent, child, 0);
@@ -72,7 +72,7 @@ public class UpdateEventGeneratorSpec {
 
 	@Test
 	public void generatesEventOnNodeDeletion() throws Exception {
-		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
+		when(updateTimerFactory.of(map)).thenReturn(updateTimer);
 		when(childrenUpdateGenerators.of(map)).thenReturn(updateGenerator);
 
 		uut.onNodeDeleted(new NodeDeletionEvent(parent, child, 0));
@@ -82,7 +82,7 @@ public class UpdateEventGeneratorSpec {
 	
 	@Test
 	public void generatesEventOnNodeMove() throws Exception {
-		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
+		when(updateTimerFactory.of(map)).thenReturn(updateTimer);
 		when(childrenUpdateGenerators.of(map)).thenReturn(updateGenerator);
 
 		uut.onNodeMoved(new NodeMoveEvent(parent, 0, false, parent2, null, 0, false));
@@ -96,12 +96,12 @@ public class UpdateEventGeneratorSpec {
 		final NodeModel parent2 = testObjects.createNode(map2, TestData.PARENT_NODE_ID2, "parent2");
 		final NodeModel child2 = testObjects.createNode(map2, TestData.CHILD_NODE_ID2, "child2");
 		
-		MapUpdateTimer updateTimer2 = mock(MapUpdateTimer.class);
+		Updates updateTimer2 = mock(Updates.class);
 		ChildrenUpdateGenerator updateGenerator2 = mock(ChildrenUpdateGenerator.class);
 		
-		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
+		when(updateTimerFactory.of(map)).thenReturn(updateTimer);
 		when(childrenUpdateGenerators.of(map)).thenReturn(updateGenerator);
-		when(updateTimerFactory.createTimer(map2)).thenReturn(updateTimer2);
+		when(updateTimerFactory.of(map2)).thenReturn(updateTimer2);
 		when(childrenUpdateGenerators.of(map2)).thenReturn(updateGenerator2);
 
 		uut.onNodeInserted(parent, child, 0);
@@ -113,7 +113,7 @@ public class UpdateEventGeneratorSpec {
 
 	@Test
 	public void generatesEventOnNodeChange() throws Exception {
-		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
+		when(updateTimerFactory.of(map)).thenReturn(updateTimer);
 		when(contentUpdateGeneratorFactory.contentUpdateGeneratorOf(map)).thenReturn(contentUpdateGenerator);
 
 		uut.nodeChanged(new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null));
@@ -123,7 +123,7 @@ public class UpdateEventGeneratorSpec {
 
 	@Test
 	public void generatesEventOnMapChange() throws Exception {
-		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
+		when(updateTimerFactory.of(map)).thenReturn(updateTimer);
 		when(contentUpdateGeneratorFactory.contentUpdateGeneratorOf(map)).thenReturn(contentUpdateGenerator);
 		when(map.getRootNode()).thenReturn(parent);
 

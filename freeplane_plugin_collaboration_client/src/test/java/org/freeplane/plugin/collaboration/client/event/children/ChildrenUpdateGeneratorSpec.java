@@ -17,7 +17,7 @@ import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.TestData;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
+import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
@@ -87,8 +87,8 @@ public class ChildrenUpdateGeneratorSpec {
 
 	private void createTestedInstance(final int expectedEventCount) {
 		consumer = new UpdatesEventCaptor(expectedEventCount);
-		MapUpdateTimer timer = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
-		uut = new ChildrenUpdateGenerator(timer, structuralEventFactory, contentEventFactory);
+		Updates updates = new Updates(consumer, DELAY_MILLIS, header);
+		uut = new ChildrenUpdateGenerator(updates, structuralEventFactory, contentEventFactory);
 	}
 	
 	@Test

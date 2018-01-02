@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
+import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.junit.Before;
@@ -61,8 +61,8 @@ public class CoreUpdateGeneratorSpec {
 	@Before
 	public void createTestedInstance() {
 		consumer = new UpdatesEventCaptor(1);
-		MapUpdateTimer timer = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
-		uut = new CoreUpdateGenerator(timer);
+		Updates updates = new Updates(consumer, DELAY_MILLIS, header);
+		uut = new CoreUpdateGenerator(updates);
 	}
 
 

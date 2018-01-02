@@ -20,22 +20,22 @@
 package org.freeplane.plugin.collaboration.client.event.content;
 
 import org.freeplane.features.map.MapModel;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 
 /**
  * @author Dimitry Polivaev
  * Jan 2, 2018
  */
 public class ContentUpdateGeneratorFactory {
-	public ContentUpdateGeneratorFactory(MapUpdateTimerFactory timerFactory, ContentUpdateEventFactory eventFactory) {
+	public ContentUpdateGeneratorFactory(UpdateBlockGeneratorFactory timerFactory, ContentUpdateEventFactory eventFactory) {
 		super();
 		this.timerFactory = timerFactory;
 		this.eventFactory = eventFactory;
 	}
 	final private ContentUpdateEventFactory eventFactory;
-	final private MapUpdateTimerFactory timerFactory;
+	final private UpdateBlockGeneratorFactory timerFactory;
 	public ContentUpdateGenerator contentUpdateGeneratorOf(MapModel map) {
-		return new ContentUpdateGenerator(timerFactory.createTimer(map),  eventFactory);
+		return new ContentUpdateGenerator(timerFactory.of(map),  eventFactory);
 	}
 	public CoreUpdateGenerator coreUpdateGeneratorOf(MapModel map) {
 		// TODO Auto-generated method stub

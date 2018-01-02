@@ -19,7 +19,6 @@
  */
 package org.freeplane.plugin.collaboration.client.event.content;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
