@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import org.assertj.core.util.VisibleForTesting;
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.Compat;
