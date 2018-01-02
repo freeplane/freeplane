@@ -19,26 +19,32 @@
  */
 package org.freeplane.plugin.collaboration.client.event.content;
 
-import org.freeplane.features.map.MapModel;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.collaboration.client.event.MapUpdated;
+import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
 
 /**
  * @author Dimitry Polivaev
  * Jan 2, 2018
  */
-public class ContentUpdateGeneratorFactory {
-	public ContentUpdateGeneratorFactory(MapUpdateTimerFactory timerFactory, ContentUpdateEventFactory eventFactory) {
-		super();
-		this.timerFactory = timerFactory;
-		this.eventFactory = eventFactory;
+public class CoreUpdateGenerator {
+
+	private MapUpdateTimer timer;
+
+	public CoreUpdateGenerator(MapUpdateTimer timer) {
+		this.timer = timer;
 	}
-	final private ContentUpdateEventFactory eventFactory;
-	final private MapUpdateTimerFactory timerFactory;
-	public ContentUpdateGenerator contentUpdateGeneratorOf(MapModel map) {
-		return new ContentUpdateGenerator(timerFactory.createTimer(map),  eventFactory);
+
+	public void onCoreUpdate(NodeModel node) {
+		timer.addActionListener(e -> 
+			timer.addUpdateBlock(createCoreUpdatedEvent(node)));
+		timer.restart();
 	}
-	public CoreUpdateGenerator coreUpdateGeneratorOf(MapModel map) {
-		// TODO Auto-generated method stub
-		return null;
+
+	private MapUpdated createCoreUpdatedEvent(NodeModel node) {
+		return CoreUpdated.builder() //
+				.nodeId(node.getID()).mediaType(CoreMediaType.PLAIN_TEXT).content(node.getText()).build();
 	}
+	
+	
 }

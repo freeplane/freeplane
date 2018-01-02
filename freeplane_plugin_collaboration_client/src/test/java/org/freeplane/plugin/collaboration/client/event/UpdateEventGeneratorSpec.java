@@ -114,7 +114,7 @@ public class UpdateEventGeneratorSpec {
 	@Test
 	public void generatesEventOnNodeChange() throws Exception {
 		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
-		when(contentUpdateGeneratorFactory.generatorOf(map)).thenReturn(contentUpdateGenerator);
+		when(contentUpdateGeneratorFactory.contentUpdateGeneratorOf(map)).thenReturn(contentUpdateGenerator);
 
 		uut.nodeChanged(new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null));
 		
@@ -124,7 +124,7 @@ public class UpdateEventGeneratorSpec {
 	@Test
 	public void generatesEventOnMapChange() throws Exception {
 		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
-		when(contentUpdateGeneratorFactory.generatorOf(map)).thenReturn(contentUpdateGenerator);
+		when(contentUpdateGeneratorFactory.contentUpdateGeneratorOf(map)).thenReturn(contentUpdateGenerator);
 		when(map.getRootNode()).thenReturn(parent);
 
 		uut.mapChanged(new MapChangeEvent(this, map, NodeModel.UNKNOWN_PROPERTY, null, null));

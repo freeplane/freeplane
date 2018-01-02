@@ -15,13 +15,16 @@ public class ContentUpdateGenerators{
 
 	public void onNodeContentUpdate(NodeChangeEvent event) {
 		NodeModel node = event.getNode();
-		final ContentUpdateGenerator generator = generatorFactory.generatorOf(node.getMap());
-		generator.onNodeContentUpdate(node);
+		if(NodeModel.NODE_TEXT.equals(event.getProperty())) {
+			generatorFactory.coreUpdateGeneratorOf(node.getMap()).onCoreUpdate(node);
+		}
+		else
+			generatorFactory.contentUpdateGeneratorOf(node.getMap()).onNodeContentUpdate(node);
 	}
 
 	public void onMapContentUpdate(MapChangeEvent event) {
 		MapModel map = event.getMap();
-		final ContentUpdateGenerator generator = generatorFactory.generatorOf(map);
+		final ContentUpdateGenerator generator = generatorFactory.contentUpdateGeneratorOf(map);
 		generator.onMapContentUpdate(map);
 	}
 

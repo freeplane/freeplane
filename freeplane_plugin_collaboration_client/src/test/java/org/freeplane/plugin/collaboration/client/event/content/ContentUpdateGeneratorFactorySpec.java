@@ -53,6 +53,6 @@ public class ContentUpdateGeneratorFactorySpec {
 		MapModel map = new MapModel(null, null);
 		when(timerFactory.createTimer(map)).thenReturn(timer);
 		ContentUpdateGenerator expected = new ContentUpdateGenerator(timer, eventFactory);
-		assertThat(uut.generatorOf(map)).isEqualToComparingFieldByField(expected);
+		assertThat(uut.contentUpdateGeneratorOf(map)).isEqualToComparingFieldByField(expected);
 	}
 }
