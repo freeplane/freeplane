@@ -34,7 +34,7 @@ public class ContentUpdateGeneratorFactory {
 	}
 	final private ContentUpdateEventFactory eventFactory;
 	final private MapUpdateTimerFactory timerFactory;
-	public ContentUpdateGenerator of(MapModel map) {
+	public ContentUpdateGenerator generatorOf(MapModel map) {
 		return new ContentUpdateGenerator(timerFactory.createTimer(map),  eventFactory);
 	}
 }
