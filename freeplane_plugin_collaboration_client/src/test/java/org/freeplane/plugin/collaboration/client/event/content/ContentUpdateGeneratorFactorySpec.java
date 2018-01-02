@@ -36,13 +36,14 @@ import org.mockito.runners.MockitoJUnitRunner;
  * Jan 1, 2018
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ContentUpdateGeneratorsSpec {
+public class ContentUpdateGeneratorFactorySpec {
 	@Mock
 	private ContentUpdateEventFactory eventFactory;
 	@Mock
 	private MapUpdateTimerFactory timerFactory;
+	
 	@InjectMocks
-	private ContentUpdateGenerators uut;
+	private ContentUpdateGeneratorFactory uut;
 	
 	@Mock
 	private MapUpdateTimer timer;

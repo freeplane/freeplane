@@ -1,19 +1,28 @@
 package org.freeplane.plugin.collaboration.client.event.content;
 
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
+import org.freeplane.features.map.NodeChangeEvent;
+import org.freeplane.features.map.NodeModel;
 
 public class ContentUpdateGenerators{
-	final private ContentUpdateEventFactory eventFactory;
-	final private MapUpdateTimerFactory timerFactory;
-	
-	public ContentUpdateGenerators(MapUpdateTimerFactory timerFactory, ContentUpdateEventFactory eventFactory) {
+	final private ContentUpdateGeneratorFactory generatorFactory;
+
+	public ContentUpdateGenerators(ContentUpdateGeneratorFactory generatorFactory) {
 		super();
-		this.timerFactory = timerFactory;
-		this.eventFactory = eventFactory;
+		this.generatorFactory = generatorFactory;
 	}
 
-	public ContentUpdateGenerator of(MapModel map) {
-		return new ContentUpdateGenerator(timerFactory.createTimer(map),  eventFactory);
+	public void onNodeContentUpdate(NodeChangeEvent event) {
+		NodeModel node = event.getNode();
+		final ContentUpdateGenerator generator = generatorFactory.of(node.getMap());
+		generator.onNodeContentUpdate(node);
 	}
+
+	public void onMapContentUpdate(MapChangeEvent event) {
+		MapModel map = event.getMap();
+		final ContentUpdateGenerator generator = generatorFactory.of(map);
+		generator.onMapContentUpdate(map);
+	}
+
 }

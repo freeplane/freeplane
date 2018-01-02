@@ -16,7 +16,9 @@ import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFacto
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerator;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -30,9 +32,10 @@ public class UpdateEventGeneratorSpec {
 	@Mock
 	private ChildrenUpdateGenerators childrenUpdateGenerators;
 
-	@Mock
 	private ContentUpdateGenerators contentUpdateGenerators;
 
+	@Mock
+	private ContentUpdateGeneratorFactory contentUpdateGeneratorFactory;
 	@Mock
 	private ChildrenUpdateGenerator updateGenerator;
 
@@ -48,12 +51,19 @@ public class UpdateEventGeneratorSpec {
 	final private NodeModel child = testObjects.child;
 	final private NodeModel parent2 = testObjects.parent2;
 
+	private UpdateEventGenerator uut;
 
+
+	@Before
+	public void setup() {
+		contentUpdateGenerators = new ContentUpdateGenerators(contentUpdateGeneratorFactory);
+		uut = new UpdateEventGenerator(childrenUpdateGenerators, contentUpdateGenerators);
+	}
+	
 	@Test
 	public void generatesEventOnNodeInsertion() throws Exception {
 		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
 		when(childrenUpdateGenerators.of(map)).thenReturn(updateGenerator);
-		UpdateEventGenerator uut = new UpdateEventGenerator(childrenUpdateGenerators, contentUpdateGenerators);
 
 		uut.onNodeInserted(parent, child, 0);
 		
@@ -64,7 +74,6 @@ public class UpdateEventGeneratorSpec {
 	public void generatesEventOnNodeDeletion() throws Exception {
 		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
 		when(childrenUpdateGenerators.of(map)).thenReturn(updateGenerator);
-		UpdateEventGenerator uut = new UpdateEventGenerator(childrenUpdateGenerators, contentUpdateGenerators);
 
 		uut.onNodeDeleted(new NodeDeletionEvent(parent, child, 0));
 		
@@ -75,7 +84,6 @@ public class UpdateEventGeneratorSpec {
 	public void generatesEventOnNodeMove() throws Exception {
 		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
 		when(childrenUpdateGenerators.of(map)).thenReturn(updateGenerator);
-		UpdateEventGenerator uut = new UpdateEventGenerator(childrenUpdateGenerators, contentUpdateGenerators);
 
 		uut.onNodeMoved(new NodeMoveEvent(parent, 0, false, parent2, null, 0, false));
 		
@@ -95,8 +103,6 @@ public class UpdateEventGeneratorSpec {
 		when(childrenUpdateGenerators.of(map)).thenReturn(updateGenerator);
 		when(updateTimerFactory.createTimer(map2)).thenReturn(updateTimer2);
 		when(childrenUpdateGenerators.of(map2)).thenReturn(updateGenerator2);
-		
-		UpdateEventGenerator uut = new UpdateEventGenerator(childrenUpdateGenerators, contentUpdateGenerators);
 
 		uut.onNodeInserted(parent, child, 0);
 		uut.onNodeInserted(parent2, child2, 0);
@@ -108,8 +114,7 @@ public class UpdateEventGeneratorSpec {
 	@Test
 	public void generatesEventOnNodeChange() throws Exception {
 		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
-		when(contentUpdateGenerators.of(map)).thenReturn(contentUpdateGenerator);
-		UpdateEventGenerator uut = new UpdateEventGenerator(childrenUpdateGenerators, contentUpdateGenerators);
+		when(contentUpdateGeneratorFactory.of(map)).thenReturn(contentUpdateGenerator);
 
 		uut.nodeChanged(new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null));
 		
@@ -119,12 +124,11 @@ public class UpdateEventGeneratorSpec {
 	@Test
 	public void generatesEventOnMapChange() throws Exception {
 		when(updateTimerFactory.createTimer(map)).thenReturn(updateTimer);
-		when(contentUpdateGenerators.of(map)).thenReturn(contentUpdateGenerator);
+		when(contentUpdateGeneratorFactory.of(map)).thenReturn(contentUpdateGenerator);
 		when(map.getRootNode()).thenReturn(parent);
-		UpdateEventGenerator uut = new UpdateEventGenerator(childrenUpdateGenerators, contentUpdateGenerators);
 
 		uut.mapChanged(new MapChangeEvent(this, map, NodeModel.UNKNOWN_PROPERTY, null, null));
 		
-		verify(contentUpdateGenerator).onNodeContentUpdate(parent);
+		verify(contentUpdateGenerator).onMapContentUpdate(map);
 	}
 }

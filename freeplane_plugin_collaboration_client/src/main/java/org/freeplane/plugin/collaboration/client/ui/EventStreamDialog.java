@@ -37,6 +37,7 @@ import org.freeplane.plugin.collaboration.client.event.children.RootNodeIdUpdate
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeProcessor;
 import org.freeplane.plugin.collaboration.client.event.children.StructureUpdateEventFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 import org.freeplane.plugin.collaboration.client.event.content.MapContentUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.content.NodeContentUpdateProcessor;
@@ -55,7 +56,8 @@ public class EventStreamDialog {
 			ContentUpdateEventFactory contentEventFactory = new ContentUpdateEventFactory(mapWriter);
 			StructureUpdateEventFactory structuralEventFactory = new StructureUpdateEventFactory();
 			ChildrenUpdateGenerators childrenUpdateGenerators = new ChildrenUpdateGenerators(f, structuralEventFactory, contentEventFactory);
-			ContentUpdateGenerators contentGenerators = new ContentUpdateGenerators(f, contentEventFactory);
+			ContentUpdateGeneratorFactory contentUpdateGeneratorFactory = new ContentUpdateGeneratorFactory(f, contentEventFactory);
+			ContentUpdateGenerators contentGenerators = new ContentUpdateGenerators(contentUpdateGeneratorFactory);
 			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(childrenUpdateGenerators,  contentGenerators);
 			MapModel map = Controller.getCurrentController().getMap();
 			if(! map.containsExtension(ModifiableUpdateHeaderExtension.class))
