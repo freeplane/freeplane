@@ -9,8 +9,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.SwingUtilities;
-
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
@@ -68,15 +66,9 @@ public class ChildrenUpdateGeneratorSpec {
 
 	@BeforeClass
 	static public void setupClass() throws InterruptedException, InvocationTargetException {
-		SwingUtilities.invokeAndWait(new Runnable() {
-			
-			@Override
-			public void run() {
-				// intentionally left blank
-			}
-		});
+		AwtThreadStarter.await();
 	}
-	
+
 
 	@Before
 	public void setup() {

@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
+import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
 import org.freeplane.plugin.collaboration.client.event.children.StructureUpdateEventFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,15 +34,8 @@ public class UpdatesSpec {
 
 	@BeforeClass
 	static public void setupClass() throws InterruptedException, InvocationTargetException {
-		SwingUtilities.invokeAndWait(new Runnable() {
-			
-			@Override
-			public void run() {
-				// intentionally left blank
-			}
-		});
+		AwtThreadStarter.await();
 	}
-	
 
 	
 	@Test

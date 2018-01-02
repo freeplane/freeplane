@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
 
 import org.freeplane.features.icon.HierarchicalIcons;
@@ -33,9 +34,11 @@ import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
+import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -65,6 +68,11 @@ public class ContentUpdateGeneratorSpec {
 	private ContentUpdateGenerator uut;
 
 	private MapModel map = testObjects.map;
+	
+	@BeforeClass
+	static public void setupClass() throws InterruptedException, InvocationTargetException {
+		AwtThreadStarter.await();
+	}
 	
 	@Before
 	public void createTestedInstance() {

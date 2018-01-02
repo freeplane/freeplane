@@ -21,15 +21,18 @@ package org.freeplane.plugin.collaboration.client.event.content;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.TimeUnit;
 
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
+import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -57,6 +60,11 @@ public class CoreUpdateGeneratorSpec {
 	final private NodeModel node = testObjects.parent;
 	private UpdatesEventCaptor consumer;
 
+	
+	@BeforeClass
+	static public void setupClass() throws InterruptedException, InvocationTargetException {
+		AwtThreadStarter.await();
+	}
 	
 	@Before
 	public void createTestedInstance() {
