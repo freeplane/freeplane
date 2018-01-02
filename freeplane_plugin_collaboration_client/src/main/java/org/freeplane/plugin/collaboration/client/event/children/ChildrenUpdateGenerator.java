@@ -25,7 +25,7 @@ public class ChildrenUpdateGenerator implements IExtension{
 	}
 	
 	public void onNewMap(MapModel map) {
-		updates.addUpdateEvents(() -> 
+		updates.addUpdateEvents("map", () -> 
 			{
 				updates.addUpdateEvents(createRootNodeIdUpdatedEvent(map),
 					contentUpdateEventFactory.createMapContentUpdatedEvent(map));
@@ -45,7 +45,7 @@ public class ChildrenUpdateGenerator implements IExtension{
 
 	public void onChangedStructure(NodeModel parent) {
 		if(changedParents.isEmpty())
-			updates.addUpdateEvents(this::generateStructureChangedEvent);
+			updates.addUpdateEvents(parent.createID(), this::generateStructureChangedEvent);
 		changedParents.add(parent);
 	}
 

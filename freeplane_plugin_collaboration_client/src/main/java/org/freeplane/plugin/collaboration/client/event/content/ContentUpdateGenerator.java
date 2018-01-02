@@ -49,17 +49,17 @@ public class ContentUpdateGenerator {
 	}
 
 	public void onNodeContentUpdate(NodeModel node) {
-		updates.addUpdateEvent(() -> eventFactory.createNodeContentUpdatedEvent(node));
+		updates.addUpdateEvent(node.createID(), () -> eventFactory.createNodeContentUpdatedEvent(node));
 
 	}
 
 	public void onMapContentUpdate(MapModel map) {
-			updates.addUpdateEvent(() -> eventFactory.createMapContentUpdatedEvent(map));
+			updates.addUpdateEvent("map", () -> eventFactory.createMapContentUpdatedEvent(map));
 
 	}
 
 	public void onNodeCoreContentUpdate(NodeModel node) {
-			updates.addUpdateEvent(() -> eventFactory.createCoreContentUpdatedEvent(node));
+			updates.addUpdateEvent(node.createID(), () -> eventFactory.createCoreContentUpdatedEvent(node));
 
 	}
 	public static Collection<Class<? extends IExtension>> getNodeContentExclusions() {

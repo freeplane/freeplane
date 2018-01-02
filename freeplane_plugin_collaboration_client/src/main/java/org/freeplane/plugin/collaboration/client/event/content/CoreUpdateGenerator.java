@@ -36,7 +36,7 @@ public class CoreUpdateGenerator {
 	}
 
 	public void onCoreUpdate(NodeModel node) {
-			updates.addUpdateEvent(() -> createCoreUpdatedEvent(node));
+			updates.addUpdateEvent(node.createID(), () -> createCoreUpdatedEvent(node));
 	}
 
 	private MapUpdated createCoreUpdatedEvent(NodeModel node) {

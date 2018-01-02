@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 import javax.swing.SwingUtilities;
 
@@ -43,13 +45,13 @@ public class UpdatesSpec {
 
 	
 	@Test
-	public void generatesEventOnNodeInsertion() throws Exception {
+	public void generatesBlockContainingSingleEvent() throws Exception {
 		final MapUpdated childrenUpdated = mock(MapUpdated.class);
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
 		
 		Updates uut = new Updates(consumer, DELAY_MILLIS, header);
 		
-		uut.addUpdateEvent(() -> childrenUpdated);
+		uut.addUpdateEvent("id", () -> childrenUpdated);
 		
 		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
@@ -62,14 +64,74 @@ public class UpdatesSpec {
 
 	
 	@Test
+	public void generatesBlockContainingTwoEvents() throws Exception {
+		final MapUpdated childrenUpdated = mock(MapUpdated.class);
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
+		
+		Updates uut = new Updates(consumer, DELAY_MILLIS, header);
+		
+		uut.addUpdateEvent("id", () -> childrenUpdated);
+		uut.addUpdateEvent("id", () -> childrenUpdated);
+		
+		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+				.mapId(header.mapId()).mapRevision(1)
+				.addUpdateBlock(childrenUpdated, childrenUpdated).build();
+		
+		assertThat(event).isEqualTo(expected);
+		assertThat(header.mapRevision()).isEqualTo(1);
+	}
+	
+	@Test
+	public void generatesBlockContainingSingleEventIfCalledTwiceForSameElementAndSameSupplier() throws Exception {
+		final MapUpdated childrenUpdated = mock(MapUpdated.class);
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
+		
+		Updates uut = new Updates(consumer, DELAY_MILLIS, header);
+		
+		Supplier<MapUpdated> eventSupplier = () -> childrenUpdated;
+		uut.addUpdateEvent("id", eventSupplier);
+		uut.addUpdateEvent("id", eventSupplier);
+		
+		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+				.mapId(header.mapId()).mapRevision(1)
+				.addUpdateBlock(childrenUpdated).build();
+		
+		assertThat(event).isEqualTo(expected);
+		assertThat(header.mapRevision()).isEqualTo(1);
+	}
+
+	
+	
+	@Test
+	public void generatesBlockContainingTwoEventsForDifferentElementsAndSameSupplier() throws Exception {
+		final MapUpdated childrenUpdated = mock(MapUpdated.class);
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
+		
+		Updates uut = new Updates(consumer, DELAY_MILLIS, header);
+		
+		uut.addUpdateEvent("id", () -> childrenUpdated);
+		uut.addUpdateEvent("id2", () -> childrenUpdated);
+		
+		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+				.mapId(header.mapId()).mapRevision(1)
+				.addUpdateBlock(childrenUpdated, childrenUpdated).build();
+		
+		assertThat(event).isEqualTo(expected);
+		assertThat(header.mapRevision()).isEqualTo(1);
+	}
+
+	@Test
 	public void supportsAddingNewListenerDuringActionExecution() throws Exception {
 		final MapUpdated childrenUpdated = mock(MapUpdated.class);
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
 		
 		Updates uut = new Updates(consumer, DELAY_MILLIS, header);
 		
-		uut.addUpdateEvents(() -> uut.addUpdateEvents(
-				() -> uut.addUpdateEvent(childrenUpdated)
+		uut.addUpdateEvents("id", () -> uut.addUpdateEvents(
+				"id", () -> uut.addUpdateEvent(childrenUpdated)
 			));
 		
 		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
@@ -79,6 +141,32 @@ public class UpdatesSpec {
 		
 		assertThat(event).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);
+	}
+
+	
+	@Test
+	public void generatesTwoBlocksContainingSingleEvent() throws Exception {
+		final MapUpdated childrenUpdated = mock(MapUpdated.class);
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(2);
+		
+		Updates uut = new Updates(consumer, DELAY_MILLIS, header);
+		
+		Supplier<MapUpdated> eventSupplier = () -> childrenUpdated;
+		uut.addUpdateEvent("id", eventSupplier);
+		Thread.sleep(DELAY_MILLIS * 2);
+		uut.addUpdateEvent("id", eventSupplier);
+		
+		final List<UpdateBlockCompleted> event = consumer.getEvents(TIMEOUT, TimeUnit.MILLISECONDS);
+		UpdateBlockCompleted expected1 = UpdateBlockCompleted.builder()
+				.mapId(header.mapId()).mapRevision(1)
+				.addUpdateBlock(childrenUpdated).build();
+		
+		UpdateBlockCompleted expected2 = UpdateBlockCompleted.builder()
+				.mapId(header.mapId()).mapRevision(2)
+				.addUpdateBlock(childrenUpdated).build();
+		
+		assertThat(event).containsExactly(expected1, expected2);
+		assertThat(header.mapRevision()).isEqualTo(2);
 	}
 
 }
