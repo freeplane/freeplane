@@ -13,7 +13,7 @@ import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 public class MapUpdateTimer extends Timer {
 	final private ModifiableUpdateHeaderExtension header;
 	final private UpdatesProcessor consumer;
-	private ImmutableUpdatesFinished.Builder builder;
+	private ImmutableUpdateBlockCompleted.Builder builder;
 
 	@VisibleForTesting
 	public MapUpdateTimer(UpdatesProcessor consumer, int delay, ModifiableUpdateHeaderExtension header) {
@@ -28,14 +28,14 @@ public class MapUpdateTimer extends Timer {
 		builder = createBuilder();
 		notifyListeners(e);
 		listenerList = new EventListenerList();
-		UpdatesFinished event = builder.build();
+		UpdateBlockCompleted event = builder.build();
 		builder = null;
 		header.setMapRevision(header.mapRevision() + 1);
 		consumer.onUpdates(event);
 	}
 	
-	private ImmutableUpdatesFinished.Builder createBuilder() {
-		return UpdatesFinished.builder()
+	private ImmutableUpdateBlockCompleted.Builder createBuilder() {
+		return UpdateBlockCompleted.builder()
 				.mapId(header.mapId())
 				.mapRevision(header.mapRevision() + 1);
 	}
@@ -51,12 +51,12 @@ public class MapUpdateTimer extends Timer {
         }
 	}
 	
-	public void addUpdateEvent(MapUpdated event) {
-		builder.addUpdateEvents(event);
+	public void addUpdateBlock(MapUpdated event) {
+		builder.addUpdateBlock(event);
 	}
 	
-	public void addUpdateEvents(MapUpdated... events) {
-		builder.addUpdateEvents(events);
+	public void addUpdateBlock(MapUpdated... events) {
+		builder.addUpdateBlock(events);
 	}
 	
 }

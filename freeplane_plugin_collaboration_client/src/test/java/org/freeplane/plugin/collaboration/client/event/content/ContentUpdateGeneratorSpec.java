@@ -34,7 +34,7 @@ import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimer;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,10 +80,10 @@ public class ContentUpdateGeneratorSpec {
 		when(eventFactory.createNodeContentUpdatedEvent(node)).thenReturn(contentUpdated);
 		uut.onNodeContentUpdate(node);
 		
-		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-		UpdatesFinished expected = UpdatesFinished.builder()
+		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateEvents(contentUpdated).build();
+				.addUpdateBlock(contentUpdated).build();
 		
 		assertThat(event).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);
@@ -96,10 +96,10 @@ public class ContentUpdateGeneratorSpec {
 		when(eventFactory.createMapContentUpdatedEvent(map)).thenReturn(contentUpdated);
 		uut.onMapContentUpdate(map);
 		
-		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-		UpdatesFinished expected = UpdatesFinished.builder()
+		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateEvents(contentUpdated).build();
+				.addUpdateBlock(contentUpdated).build();
 		
 		assertThat(event).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);

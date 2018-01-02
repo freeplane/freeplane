@@ -2,7 +2,7 @@ package org.freeplane.plugin.collaboration.client.event.json;
 
 import java.util.function.Consumer;
 
-import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesProcessor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,14 +23,14 @@ public class UpdatesSerializer implements UpdatesProcessor {
 		this.objectMapper = objectMapper;
 	}
 	@Override
-	public void onUpdates(UpdatesFinished event) {
+	public void onUpdates(UpdateBlockCompleted event) {
 		write(event, objectMapper.writer());
 	}
 	
-	public void prettyPrint(UpdatesFinished event) {
+	public void prettyPrint(UpdateBlockCompleted event) {
 		write(event, objectMapper.writerWithDefaultPrettyPrinter());
 	}
-	private void write(UpdatesFinished event, ObjectWriter writer) {
+	private void write(UpdateBlockCompleted event, ObjectWriter writer) {
 		try {
 			final String json = writer.writeValueAsString(event);
 			consumer.accept(json);

@@ -27,8 +27,8 @@ public class ChildrenUpdateGenerator implements IExtension{
 	public void onNewMap(MapModel map) {
 		timer.addActionListener(e -> 
 			{
-				timer.addUpdateEvent(createRootNodeIdUpdatedEvent(map));
-				timer.addUpdateEvent(contentUpdateEventFactory.createMapContentUpdatedEvent(map));
+				timer.addUpdateBlock(createRootNodeIdUpdatedEvent(map));
+				timer.addUpdateBlock(contentUpdateEventFactory.createMapContentUpdatedEvent(map));
 				generateStructureChangedEventForSubtree(map.getRootNode());
 			});
 		timer.restart();
@@ -55,7 +55,7 @@ public class ChildrenUpdateGenerator implements IExtension{
 	private void generateStructureChangedEvent(ActionEvent e) {
 		for(NodeModel parent : changedParents) {
 			final ChildrenUpdated childrenUpdated = structuralEventFactory.createChildrenUpdatedEvent(parent);
-			timer.addUpdateEvent(childrenUpdated);
+			timer.addUpdateBlock(childrenUpdated);
 			for(NodeModel child : parent.getChildren()) {
 				if(insertedChildren.contains(child))
 					generateStructureChangedEventForSubtree(child);
@@ -68,12 +68,12 @@ public class ChildrenUpdateGenerator implements IExtension{
 
 	private void generateStructureChangedEventForSubtree(final NodeModel node) {
 		SpecialNodeTypeSet.SpecialNodeType.of(node).ifPresent((c) -> {
-			timer.addUpdateEvent(SpecialNodeTypeSet.builder().nodeId(node.createID()).content(c).build());
+			timer.addUpdateBlock(SpecialNodeTypeSet.builder().nodeId(node.createID()).content(c).build());
 		});
-		timer.addUpdateEvent(contentUpdateEventFactory.createNodeContentUpdatedEvent(node));
+		timer.addUpdateBlock(contentUpdateEventFactory.createNodeContentUpdatedEvent(node));
 		if(node.hasChildren()) {
 			final ChildrenUpdated childrenUpdated = structuralEventFactory.createChildrenUpdatedEvent(node);
-			timer.addUpdateEvent(childrenUpdated);
+			timer.addUpdateBlock(childrenUpdated);
 			for(NodeModel child : node.getChildren()) {
 				generateStructureChangedEventForSubtree(child);
 			}

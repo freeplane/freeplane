@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.freeplane.plugin.collaboration.client.TestData;
 import org.freeplane.plugin.collaboration.client.event.GenericNodeUpdated;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
 import org.freeplane.plugin.collaboration.client.event.children.ImmutableChildrenUpdated;
 import org.junit.Test;
@@ -49,14 +49,14 @@ public class JacksonSpec {
 	@Test
 	public void serializeAndDeserializeUpdatesCompletedEvent() throws Exception
 	{
-		UpdatesFinished uut = UpdatesFinished.builder()
+		UpdateBlockCompleted uut = UpdateBlockCompleted.builder()
 				.mapId("mapId")
 				.mapRevision(1000L)
-				.addUpdateEvents(createUpdateEvents())
+				.addUpdateBlock(createUpdateEvents())
 				.build();
 		String json = objectMapper.writeValueAsString(uut);
 
-		UpdatesFinished bean = objectMapper.readValue(json, UpdatesFinished.class);
+		UpdateBlockCompleted bean = objectMapper.readValue(json, UpdateBlockCompleted.class);
 
 		assertThat(bean).isEqualTo(uut);
 	}

@@ -49,13 +49,13 @@ public class MapUpdateTimerSpec {
 		
 		MapUpdateTimer uut = new MapUpdateTimer(consumer, DELAY_MILLIS, header);
 		
-		uut.addActionListener(e -> uut.addUpdateEvent(childrenUpdated));
+		uut.addActionListener(e -> uut.addUpdateBlock(childrenUpdated));
 		uut.restart();
 		
-		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-		UpdatesFinished expected = UpdatesFinished.builder()
+		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateEvents(childrenUpdated).build();
+				.addUpdateBlock(childrenUpdated).build();
 		
 		assertThat(event).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);
@@ -71,14 +71,14 @@ public class MapUpdateTimerSpec {
 		
 		uut.addActionListener(
 			e1 -> uut.addActionListener(
-				e2 -> uut.addUpdateEvent(childrenUpdated)
+				e2 -> uut.addUpdateBlock(childrenUpdated)
 			));
 		uut.restart();
 		
-		final UpdatesFinished event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-		UpdatesFinished expected = UpdatesFinished.builder()
+		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateEvents(childrenUpdated).build();
+				.addUpdateBlock(childrenUpdated).build();
 		
 		assertThat(event).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);

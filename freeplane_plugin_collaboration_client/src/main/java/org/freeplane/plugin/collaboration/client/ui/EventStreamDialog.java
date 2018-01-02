@@ -29,7 +29,7 @@ import org.freeplane.plugin.collaboration.client.event.UpdateEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessorChain;
 import org.freeplane.plugin.collaboration.client.event.batch.MapUpdateTimerFactory;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.children.NodeFactory;
@@ -88,9 +88,9 @@ public class EventStreamDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-				final UpdatesFinished updates = Jackson.objectMapper.readValue(text.getText(), UpdatesFinished.class);
+				final UpdateBlockCompleted updates = Jackson.objectMapper.readValue(text.getText(), UpdateBlockCompleted.class);
 				final MapModel map = mapController.newMap();
-				for(MapUpdated event: updates.updateEvents())
+				for(MapUpdated event: updates.updateBlock())
 					processor.onUpdate(map, event);
 			} catch (IOException e1) {
 				e1.printStackTrace();

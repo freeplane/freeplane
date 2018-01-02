@@ -50,21 +50,21 @@ public class ContentUpdateGenerator {
 
 	public void onNodeContentUpdate(NodeModel node) {
 		timer.addActionListener(e -> 
-			timer.addUpdateEvent(eventFactory.createNodeContentUpdatedEvent(node)));
+			timer.addUpdateBlock(eventFactory.createNodeContentUpdatedEvent(node)));
 		timer.restart();
 
 	}
 
 	public void onMapContentUpdate(MapModel map) {
 		timer.addActionListener(e -> 
-			timer.addUpdateEvent(eventFactory.createMapContentUpdatedEvent(map)));
+			timer.addUpdateBlock(eventFactory.createMapContentUpdatedEvent(map)));
 		timer.restart();
 
 	}
 
 	public void onNodeCoreContentUpdate(NodeModel node) {
 		timer.addActionListener(e -> 
-			timer.addUpdateEvent(eventFactory.createCoreContentUpdatedEvent(node)));
+			timer.addUpdateBlock(eventFactory.createCoreContentUpdatedEvent(node)));
 		timer.restart();
 
 	}

@@ -10,7 +10,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
-import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 
 public class UpdateEventGenerator implements IMapChangeListener, INodeChangeListener{

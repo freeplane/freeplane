@@ -5,7 +5,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.function.Consumer;
 
-import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,7 +31,7 @@ public class UpdatesSerializerSpec {
 	private UpdatesSerializer uut;
 
 	@Mock
-	private UpdatesFinished event;
+	private UpdateBlockCompleted event;
 	
 	@Test
 	public void usesObjectMapper() throws Exception {

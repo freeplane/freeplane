@@ -9,13 +9,13 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Value.Immutable
-@JsonSerialize(as = ImmutableUpdatesFinished.class)
-@JsonDeserialize(as = ImmutableUpdatesFinished.class)
-public interface  UpdatesFinished {
-	static ImmutableUpdatesFinished.Builder builder() {
-		return ImmutableUpdatesFinished.builder();
+@JsonSerialize(as = ImmutableUpdateBlockCompleted.class)
+@JsonDeserialize(as = ImmutableUpdateBlockCompleted.class)
+public interface  UpdateBlockCompleted {
+	static ImmutableUpdateBlockCompleted.Builder builder() {
+		return ImmutableUpdateBlockCompleted.builder();
 	}
 	String mapId();
 	long mapRevision();
-	List<MapUpdated> updateEvents();
+	List<MapUpdated> updateBlock();
 }

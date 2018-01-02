@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.freeplane.plugin.collaboration.client.event.batch.UpdatesFinished;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesProcessor;
 
 public class UpdatesEventCaptor implements UpdatesProcessor {
 	private final CountDownLatch lock;
-	private ArrayList<UpdatesFinished> events;
+	private ArrayList<UpdateBlockCompleted> events;
 
 	public UpdatesEventCaptor(int expectedEventCount) {
 		this.lock = new CountDownLatch(expectedEventCount);
@@ -20,18 +20,18 @@ public class UpdatesEventCaptor implements UpdatesProcessor {
 	}
 
 	@Override
-	public void onUpdates(UpdatesFinished event) {
+	public void onUpdates(UpdateBlockCompleted event) {
 		events.add(event);
 		assertThat(lock.getCount() > 0);
 		lock.countDown();
 	}
 
-	public List<UpdatesFinished> getEvents(long timeout, TimeUnit unit)  throws InterruptedException {
+	public List<UpdateBlockCompleted> getEvents(long timeout, TimeUnit unit)  throws InterruptedException {
 		await(timeout, unit);
 		return events;
 	}
 
-	public UpdatesFinished getEvent(long timeout, TimeUnit unit)  throws InterruptedException {
+	public UpdateBlockCompleted getEvent(long timeout, TimeUnit unit)  throws InterruptedException {
 		await(timeout, unit);
 		assertThat(events).hasSize(1);
 		return events.get(0);
