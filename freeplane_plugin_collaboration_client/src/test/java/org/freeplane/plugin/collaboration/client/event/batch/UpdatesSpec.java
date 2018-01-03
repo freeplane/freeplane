@@ -5,10 +5,7 @@ import static org.mockito.Mockito.mock;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-
-import javax.swing.SwingUtilities;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
@@ -20,8 +17,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 public class UpdatesSpec {
-	private static final int TIMEOUT = 500;
-
 	private static final int DELAY_MILLIS = 10;
 
 	@Mock
@@ -47,7 +42,7 @@ public class UpdatesSpec {
 		
 		uut.addUpdateEvent("id", () -> childrenUpdated);
 		
-		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
 				.addUpdateBlock(childrenUpdated).build();
@@ -67,7 +62,7 @@ public class UpdatesSpec {
 		uut.addUpdateEvent("id", () -> childrenUpdated);
 		uut.addUpdateEvent("id", () -> childrenUpdated);
 		
-		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
 				.addUpdateBlock(childrenUpdated, childrenUpdated).build();
@@ -87,7 +82,7 @@ public class UpdatesSpec {
 		uut.addUpdateEvent("id", eventSupplier);
 		uut.addUpdateEvent("id", eventSupplier);
 		
-		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
 				.addUpdateBlock(childrenUpdated).build();
@@ -108,7 +103,7 @@ public class UpdatesSpec {
 		uut.addUpdateEvent("id", () -> childrenUpdated);
 		uut.addUpdateEvent("id2", () -> childrenUpdated);
 		
-		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
 				.addUpdateBlock(childrenUpdated, childrenUpdated).build();
@@ -128,7 +123,7 @@ public class UpdatesSpec {
 				"id", () -> uut.addUpdateEvent(childrenUpdated)
 			));
 		
-		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
 				.addUpdateBlock(childrenUpdated).build();
@@ -150,7 +145,7 @@ public class UpdatesSpec {
 		Thread.sleep(DELAY_MILLIS * 2);
 		uut.addUpdateEvent("id", eventSupplier);
 		
-		final List<UpdateBlockCompleted> event = consumer.getEvents(TIMEOUT, TimeUnit.MILLISECONDS);
+		final List<UpdateBlockCompleted> event = consumer.getEvents();
 		UpdateBlockCompleted expected1 = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
 				.addUpdateBlock(childrenUpdated).build();

@@ -24,5 +24,5 @@ package org.freeplane.plugin.collaboration.client.event.content;
  * Dec 4, 2017
  */
 public enum CoreMediaType {
-	PLAIN_TEXT, HTML, LOCALIZED_TEXT, LOCALIZED_HTML, OBJECT
+	PLAIN_TEXT, HTML, LOCALIZED_TEXT, OBJECT
 }

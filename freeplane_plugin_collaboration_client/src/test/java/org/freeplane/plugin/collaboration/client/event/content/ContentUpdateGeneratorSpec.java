@@ -24,8 +24,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.TimeUnit;
-
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapModel;
@@ -52,8 +50,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class ContentUpdateGeneratorSpec {
 	
 	
-	private static final int TIMEOUT = 100;
-
 	private static final int DELAY_MILLIS = 10;
 
 	private ModifiableUpdateHeaderExtension header = ModifiableUpdateHeaderExtension.create().setMapId("mapId").setMapRevision(0);
@@ -88,7 +84,7 @@ public class ContentUpdateGeneratorSpec {
 		when(eventFactory.createNodeContentUpdatedEvent(node)).thenReturn(contentUpdated);
 		uut.onNodeContentUpdate(node);
 		
-		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
 				.addUpdateBlock(contentUpdated).build();
@@ -104,7 +100,7 @@ public class ContentUpdateGeneratorSpec {
 		when(eventFactory.createMapContentUpdatedEvent(map)).thenReturn(contentUpdated);
 		uut.onMapContentUpdate(map);
 		
-		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
 				.addUpdateBlock(contentUpdated).build();

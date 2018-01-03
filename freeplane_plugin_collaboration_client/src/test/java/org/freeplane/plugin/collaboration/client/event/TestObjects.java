@@ -56,7 +56,9 @@ public class TestObjects {
 	}
 	
 	private NodeModel createNode(String id, String text) {
-		return createNode(map, id, text);
+		final NodeModel node = createNode(map, id, text);
+		Mockito.when(map.getNodeForID(id)).thenReturn(node);
+		return node;
 	}
 	
 }

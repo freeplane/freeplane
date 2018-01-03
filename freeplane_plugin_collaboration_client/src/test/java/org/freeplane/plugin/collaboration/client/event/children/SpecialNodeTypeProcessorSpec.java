@@ -24,8 +24,7 @@ public class SpecialNodeTypeProcessorSpec {
 	
 	@Test
 	public void setsOnlySummaryBeginNodeFlag() throws Exception {
-		SpecialNodeTypeSet event = SpecialNodeTypeSet.builder().nodeId("id").content(SpecialNodeType.SUMMARY_BEGIN).build();
-		when(map.getNodeForID("id")).thenReturn(node);
+		SpecialNodeTypeSet event = SpecialNodeTypeSet.builder().nodeId(node.getID()).content(SpecialNodeType.SUMMARY_BEGIN).build();
 
 		uut.onUpdate(map, event);
 		
@@ -34,8 +33,7 @@ public class SpecialNodeTypeProcessorSpec {
 	}
 	@Test
 	public void setsSummaryEndNodeFlag() throws Exception {
-		SpecialNodeTypeSet event = SpecialNodeTypeSet.builder().nodeId("id").content(SpecialNodeType.SUMMARY_END).build();
-		when(map.getNodeForID("id")).thenReturn(node);
+		SpecialNodeTypeSet event = SpecialNodeTypeSet.builder().nodeId(node.getID()).content(SpecialNodeType.SUMMARY_END).build();
 		
 		uut.onUpdate(map, event);
 		
@@ -44,8 +42,7 @@ public class SpecialNodeTypeProcessorSpec {
 	}
 	@Test
 	public void setsBothSummaryFlags() throws Exception {
-		SpecialNodeTypeSet event = SpecialNodeTypeSet.builder().nodeId("id").content(SpecialNodeType.SUMMARY_BEGIN_END).build();
-		when(map.getNodeForID("id")).thenReturn(node);
+		SpecialNodeTypeSet event = SpecialNodeTypeSet.builder().nodeId(node.getID()).content(SpecialNodeType.SUMMARY_BEGIN_END).build();
 
 		uut.onUpdate(map, event);
 		

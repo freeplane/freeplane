@@ -43,7 +43,7 @@ public class ChildrenUpdateProcessorSpec {
 	
 	@Test
 	public void insertsRightNodeWithoutSideChange() throws Exception {
-		when(map.getNodeForID(TestData.PARENT_NODE_ID)).thenReturn(parent);
+		when(map.getNodeForID(TestData.CHILD_NODE_ID)).thenReturn(null);
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(TestData.PARENT_NODE_ID).
@@ -58,7 +58,7 @@ public class ChildrenUpdateProcessorSpec {
 
 	@Test
 	public void insertsRightNodeWithSideChange() throws Exception {
-		when(map.getNodeForID(TestData.PARENT_NODE_ID)).thenReturn(parent);
+		when(map.getNodeForID(TestData.CHILD_NODE_ID)).thenReturn(null);
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(TestData.PARENT_NODE_ID).
@@ -76,7 +76,7 @@ public class ChildrenUpdateProcessorSpec {
 
 	@Test
 	public void insertsLeftNodeWithoutSideChange() throws Exception {
-		when(map.getNodeForID(TestData.PARENT_NODE_ID)).thenReturn(parent);
+		when(map.getNodeForID(TestData.CHILD_NODE_ID)).thenReturn(null);
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(TestData.PARENT_NODE_ID).
@@ -109,7 +109,8 @@ public class ChildrenUpdateProcessorSpec {
 	@Test
 	public void insertsNewNodes() throws Exception {
 		
-		when(map.getNodeForID(TestData.PARENT_NODE_ID)).thenReturn(parent);
+		when(map.getNodeForID(TestData.CHILD_NODE_ID)).thenReturn(null);
+		when(map.getNodeForID(TestData.CHILD_NODE_ID2)).thenReturn(null);
 
 		ChildrenUpdated event = ImmutableChildrenUpdated.builder()
 				.nodeId(TestData.PARENT_NODE_ID).

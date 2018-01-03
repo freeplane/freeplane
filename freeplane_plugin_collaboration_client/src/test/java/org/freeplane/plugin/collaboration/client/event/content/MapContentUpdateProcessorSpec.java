@@ -2,7 +2,6 @@ package org.freeplane.plugin.collaboration.client.event.content;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -30,7 +29,6 @@ public class MapContentUpdateProcessorSpec {
 	@Test
 	public void callsMapContentManipulator() throws Exception {
 		final NodeModel node = new NodeModel(null);
-		when(map.getNodeForID("nodeId")).thenReturn(node);
 		uut.onUpdate(map, MapContentUpdated.builder().content("content").build());
 		
 		verify(nodeContentManipulator).updateMapContent(map, "content", ContentUpdateGenerator.getMapContentExtensions());

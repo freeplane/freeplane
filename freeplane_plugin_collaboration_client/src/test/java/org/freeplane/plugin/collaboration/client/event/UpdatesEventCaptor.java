@@ -11,6 +11,10 @@ import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockComplete
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesProcessor;
 
 public class UpdatesEventCaptor implements UpdatesProcessor {
+	
+	private static final int EVENT_TIMEOUT_MILLISECONDS = 500;
+
+	
 	private final CountDownLatch lock;
 	private ArrayList<UpdateBlockCompleted> events;
 
@@ -24,6 +28,14 @@ public class UpdatesEventCaptor implements UpdatesProcessor {
 		events.add(event);
 		assertThat(lock.getCount() > 0);
 		lock.countDown();
+	}
+
+	public List<UpdateBlockCompleted> getEvents()  throws InterruptedException {
+		return getEvents(EVENT_TIMEOUT_MILLISECONDS * lock.getCount(), TimeUnit.MILLISECONDS);
+	}
+
+	public UpdateBlockCompleted getEvent()  throws InterruptedException {
+		return getEvent(EVENT_TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS);
 	}
 
 	public List<UpdateBlockCompleted> getEvents(long timeout, TimeUnit unit)  throws InterruptedException {

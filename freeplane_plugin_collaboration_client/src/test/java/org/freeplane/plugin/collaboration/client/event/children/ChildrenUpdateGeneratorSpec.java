@@ -7,8 +7,6 @@ import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
@@ -89,7 +87,7 @@ public class ChildrenUpdateGeneratorSpec {
 		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 		uut.onNodeInserted(parent, child);
 		
-		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
 				.addUpdateBlock(childrenUpdated).build();
@@ -106,7 +104,7 @@ public class ChildrenUpdateGeneratorSpec {
 		uut.onNodeInserted(parent, child);
 		
 		Thread.sleep(TIMEOUT);
-		final UpdateBlockCompleted event = consumer.getEvent(0, TimeUnit.MILLISECONDS);
+		final UpdateBlockCompleted event = consumer.getEvent();
 		assertThat(event.updateBlock()).containsExactly(childrenUpdated);
 	}
 	
@@ -117,7 +115,7 @@ public class ChildrenUpdateGeneratorSpec {
 		uut.onNodeInserted(parent, child);
 
 		verifyZeroInteractions(structuralEventFactory);
-		consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		consumer.getEvent();
 	}
 
 	@Test
@@ -128,7 +126,7 @@ public class ChildrenUpdateGeneratorSpec {
 
 		uut.onNodeInserted(parent, child);
 		uut.onNodeInserted(parent2, child2);
-		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		final UpdateBlockCompleted event = consumer.getEvent();
 		assertThat(event.updateBlock()).containsExactly(childrenUpdated, childrenUpdated2);
 	}
 
@@ -143,7 +141,7 @@ public class ChildrenUpdateGeneratorSpec {
 		uut.onNodeInserted(parent, child);
 		Thread.sleep(TIMEOUT);
 		uut.onNodeInserted(parent2, child2);
-		final List<UpdateBlockCompleted> events = consumer.getEvents(TIMEOUT, TimeUnit.MILLISECONDS);
+		final List<UpdateBlockCompleted> events = consumer.getEvents();
 		assertThat(events).hasSize(2);
 		assertThat(events.get(0).updateBlock()).containsExactly(childrenUpdated);
 		assertThat(events.get(1).updateBlock()).containsExactly(childrenUpdated2);
@@ -163,7 +161,7 @@ public class ChildrenUpdateGeneratorSpec {
 		parent2.insert(child2);
 		uut.onNodeInserted(parent2, child2);
 		
-		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		final UpdateBlockCompleted event = consumer.getEvent();
 		final SpecialNodeTypeSet specialNodeTypeUpdated = SpecialNodeTypeSet.builder()
 				.nodeId(TestData.CHILD_NODE_ID).content(SpecialNodeType.SUMMARY_END).build();
 		assertThat(event.updateBlock()).containsExactly(childrenUpdated, specialNodeTypeUpdated, childContentUpdated, 
@@ -181,7 +179,7 @@ public class ChildrenUpdateGeneratorSpec {
 		parent.insert(child);
 		uut.onNodeInserted(parent, child);
 		
-		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
 				.addUpdateBlock(childrenUpdated, childContentUpdated, 
@@ -203,7 +201,7 @@ public class ChildrenUpdateGeneratorSpec {
 		parent.insert(child);
 		uut.onNodeInserted(parent, child);
 		
-		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		final UpdateBlockCompleted event = consumer.getEvent();
 		
 		final SpecialNodeTypeSet specialNodeTypeUpdated = SpecialNodeTypeSet.builder()
 				.nodeId(TestData.CHILD_NODE_ID2).content(SpecialNodeType.SUMMARY_END).build();
@@ -222,7 +220,7 @@ public class ChildrenUpdateGeneratorSpec {
 		when(contentEventFactory.createNodeContentUpdatedEvent(child)).thenReturn(childContentUpdated);
 		when(structuralEventFactory.createChildrenUpdatedEvent(parent)).thenReturn(childrenUpdated);
 		uut.onNewMap(map);
-		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+		final UpdateBlockCompleted event = consumer.getEvent();
 		final ImmutableRootNodeIdUpdated rootNodeSet = RootNodeIdUpdated.builder().nodeId(TestData.PARENT_NODE_ID).build();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)

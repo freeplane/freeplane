@@ -22,9 +22,10 @@ package org.freeplane.plugin.collaboration.client.event.content;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.TimeUnit;
 
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
@@ -47,8 +48,6 @@ public class CoreUpdateGeneratorSpec {
 	private CoreUpdateGenerator uut;
 	
 	
-	private static final int TIMEOUT = 100;
-
 	private static final int DELAY_MILLIS = 10;
 
 	private ModifiableUpdateHeaderExtension header = ModifiableUpdateHeaderExtension.create().setMapId("mapId").setMapRevision(0);
@@ -61,6 +60,16 @@ public class CoreUpdateGeneratorSpec {
 	private UpdatesEventCaptor consumer;
 
 	
+	private UpdateBlockCompleted updateBlock(CoreMediaType mediaType, String content) {
+		CoreUpdated coreUpdated= CoreUpdated.builder() //
+				.nodeId(node.getID()).mediaType(mediaType).content(content).build();
+		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+				.mapId(header.mapId()).mapRevision(1)
+				.addUpdateBlock(coreUpdated).build();
+		return expected;
+	}
+
+
 	@BeforeClass
 	static public void setupClass() throws InterruptedException, InvocationTargetException {
 		AwtThreadStarter.await();
@@ -75,20 +84,57 @@ public class CoreUpdateGeneratorSpec {
 
 
 	@Test
-	public void testName() throws Exception {
-		node.setID("id");
-		node.setText("content");
+	public void plainText() throws Exception {
+		node.setUserObject("content");
 
 		uut.onCoreUpdate(node);
+		final UpdateBlockCompleted event = consumer.getEvent();
 
-		CoreUpdated coreUpdated= CoreUpdated.builder() //
-				.nodeId("id").mediaType(CoreMediaType.PLAIN_TEXT).content("content").build();
-		final UpdateBlockCompleted event = consumer.getEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateBlock(coreUpdated).build();
-		
+		UpdateBlockCompleted expected = updateBlock(CoreMediaType.PLAIN_TEXT, "content");
+
 		assertThat(event).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);
-}
+	}
+
+	@Test
+	public void translatedObject() throws Exception {
+		node.setUserObject(new TranslatedObject("key", "value"));
+
+		uut.onCoreUpdate(node);
+		final UpdateBlockCompleted event = consumer.getEvent();
+		
+		UpdateBlockCompleted expected = updateBlock(CoreMediaType.LOCALIZED_TEXT, "key");
+
+		assertThat(event).isEqualTo(expected);
+		assertThat(header.mapRevision()).isEqualTo(1);
+	}
+
+	@Test
+	public void html() throws Exception {
+		node.setUserObject("<html>content</html>");
+
+		uut.onCoreUpdate(node);
+		final UpdateBlockCompleted event = consumer.getEvent();
+
+		UpdateBlockCompleted expected = updateBlock(CoreMediaType.HTML, "<html>content</html>");
+
+		assertThat(event).isEqualTo(expected);
+		assertThat(header.mapRevision()).isEqualTo(1);
+	}
+	
+
+	@Test
+	public void object() throws Exception {
+		node.setUserObject(Integer.valueOf(3));
+
+		uut.onCoreUpdate(node);
+		final UpdateBlockCompleted event = consumer.getEvent();
+
+		UpdateBlockCompleted expected = updateBlock(CoreMediaType.OBJECT, "java.lang.Integer|3");
+
+		assertThat(event).isEqualTo(expected);
+		assertThat(header.mapRevision()).isEqualTo(1);
+	}
+
+
 }
