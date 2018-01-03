@@ -12,7 +12,7 @@ import org.freeplane.plugin.collaboration.client.event.batch.UpdatesProcessor;
 
 public class UpdatesEventCaptor implements UpdatesProcessor {
 	
-	private static final int EVENT_TIMEOUT_MILLISECONDS = 500;
+	public static final int EVENT_TIMEOUT_MILLISECONDS = 500;
 
 	
 	private final CountDownLatch lock;
