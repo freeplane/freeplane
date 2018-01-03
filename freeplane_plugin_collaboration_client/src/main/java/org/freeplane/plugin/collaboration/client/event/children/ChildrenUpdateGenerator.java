@@ -68,7 +68,10 @@ public class ChildrenUpdateGenerator implements IExtension{
 		SpecialNodeTypeSet.SpecialNodeType.of(node).ifPresent((c) -> {
 			updates.addUpdateEvent(SpecialNodeTypeSet.builder().nodeId(node.createID()).content(c).build());
 		});
-		updates.addUpdateEvent(contentUpdateEventFactory.createNodeContentUpdatedEvent(node));
+		updates.addUpdateEvents(
+				contentUpdateEventFactory.createCoreUpdatedEvent(node),
+				contentUpdateEventFactory.createNodeContentUpdatedEvent(node)
+				);
 		if(node.hasChildren()) {
 			final ChildrenUpdated childrenUpdated = structuralEventFactory.createChildrenUpdatedEvent(node);
 			updates.addUpdateEvent(childrenUpdated);

@@ -71,7 +71,7 @@ public class ContentUpdateEventFactorySpec {
 				return null;
 			}
 		}).when(mapWriter).writeNodeAsXml(any(), same(node), same(Mode.ADDITIONAL_CONTENT), eq(true), eq(false), eq(false));
-		final NodeContentUpdated event = uut.createNodeContentUpdatedEvent(node);
+		final MapUpdated event = uut.createNodeContentUpdatedEvent(node);
 		assertThat(event).isEqualTo(NodeContentUpdated.builder().nodeId(node.getID()).content("content").build());
 	}
 	
@@ -89,7 +89,7 @@ public class ContentUpdateEventFactorySpec {
 				return null;
 			}
 		}).when(mapWriter).writeNodeAsXml(any(), same(node), same(Mode.ADDITIONAL_CONTENT), eq(true), eq(false), eq(false));
-		final NodeContentUpdated event = uut.createNodeContentUpdatedEvent(node);
+		final MapUpdated event = uut.createNodeContentUpdatedEvent(node);
 		assertThat(event).isEqualTo(NodeContentUpdated.builder().nodeId(node.getID()).content("content").build());
 		assertThat(node.containsExtension(SummaryNodeFlag.class)).isTrue();
 	}
