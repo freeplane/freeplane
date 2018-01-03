@@ -23,7 +23,10 @@ import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.NodeContentManipulator;
 import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.text.TextController;
+import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.UpdateEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessorChain;
@@ -39,6 +42,7 @@ import org.freeplane.plugin.collaboration.client.event.children.StructureUpdateE
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
+import org.freeplane.plugin.collaboration.client.event.content.CoreUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.content.MapContentUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.content.NodeContentUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.json.Jackson;
@@ -73,7 +77,8 @@ public class EventStreamDialog {
 
 		public Json2Map() {
 			final NodeFactory nodeFactory = new NodeFactory();
-			mapController = (MMapController) Controller.getCurrentController().getModeController(MModeController.MODENAME).getMapController();
+			final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
+			mapController = (MMapController) modeController.getMapController();
 			final SingleNodeStructureManipulator singleNodeStructureManipulator = new SingleNodeStructureManipulator(mapController);
 			final RootNodeIdUpdatedProcessor rootNodeIdUpdatedProcessor = new RootNodeIdUpdatedProcessor();
 			final ChildrenUpdateProcessor childrenUpdateProcessor = new ChildrenUpdateProcessor(singleNodeStructureManipulator, nodeFactory);
@@ -82,7 +87,8 @@ public class EventStreamDialog {
 			processor = new UpdateProcessorChain().add(rootNodeIdUpdatedProcessor)
 					.add(childrenUpdateProcessor).add(specialNodeTypeProcessor)
 					.add(new MapContentUpdateProcessor(updater))
-					.add(new NodeContentUpdateProcessor(updater));
+					.add(new NodeContentUpdateProcessor(updater))
+					.add(new CoreUpdateProcessor((MTextController)TextController.getController(modeController)));
 		}
 
 		@Override

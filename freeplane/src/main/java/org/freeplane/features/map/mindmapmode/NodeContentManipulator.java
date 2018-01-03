@@ -40,7 +40,6 @@ public class NodeContentManipulator {
 
 				@Override
 				public void act() {
-					NodeModel.swapUserObjects(node, newNode);				
 					NodeModel.swapIcons(node, newNode);
 					NodeModel.swapExtensionsExcluding(node, newNode, exclusions);
 					mapController.nodeRefresh(node);
