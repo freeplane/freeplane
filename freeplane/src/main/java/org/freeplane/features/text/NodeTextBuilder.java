@@ -38,6 +38,8 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.MapWriter;
+import org.freeplane.features.map.MapWriter.Hint;
+import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeWriter;
@@ -174,7 +176,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
         }
 	}
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
-		if(! NodeWriter.shouldWriteSharedContent(writer))
+		if(! NodeWriter.shouldWriteSharedContent(writer) || Mode.ADDITIONAL_CONTENT.equals(writer.getHint(Hint.MODE)))
 			return;
 		final NodeModel node = (NodeModel) userObject;
 		final Object data = node.getUserObject();
@@ -211,7 +213,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	}
 
 	public void writeContent(final ITreeWriter writer, final Object element, final String tag) throws IOException {
-		if(! NodeWriter.shouldWriteSharedContent(writer))
+		if(! NodeWriter.shouldWriteSharedContent(writer) || Mode.ADDITIONAL_CONTENT.equals(writer.getHint(Hint.MODE)))
 			return;
 		final NodeModel node = (NodeModel) element;
 		final TransformedXMLExtension transformedXML = node.getExtension(TransformedXMLExtension.class);

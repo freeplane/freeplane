@@ -58,10 +58,6 @@ public class ContentUpdateGenerator {
 
 	}
 
-	public void onNodeCoreContentUpdate(NodeModel node) {
-			updates.addUpdateEvent(node.createID(), () -> eventFactory.createCoreContentUpdatedEvent(node));
-
-	}
 	public static Collection<Class<? extends IExtension>> getNodeContentExclusions() {
 		if(NODE_CONTENT_EXCLUSIONS == null) {
 			NODE_CONTENT_EXCLUSIONS =  new ArrayList<>(MapExtensions.getAll());

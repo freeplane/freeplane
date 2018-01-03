@@ -6,12 +6,16 @@ import java.io.Writer;
 import java.util.Map;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.TranslatedObject;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.MapExtensions;
+import org.freeplane.features.styles.StyleString;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 
 public class ContentUpdateEventFactory {
@@ -53,9 +57,27 @@ public class ContentUpdateEventFactory {
 		}
 		return MapContentUpdated.builder().content(writer.toString()).build();
 	}
-
-	public MapUpdated createCoreContentUpdatedEvent(NodeModel node) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public MapUpdated createCoreUpdatedEvent(NodeModel node) {
+		final Object data = node.getUserObject();
+		final CoreMediaType mediaType;
+		final String content;
+		final Class<? extends Object> dataClass = data.getClass();
+		if (dataClass.equals(TranslatedObject.class)) {
+			mediaType = CoreMediaType.LOCALIZED_TEXT;
+			content = ((TranslatedObject) data).getObject().toString();
+		}
+		else if(! (data instanceof String || data instanceof StyleString)){
+			mediaType = CoreMediaType.OBJECT;
+			content = TypeReference.toSpec(data);
+		}
+		else {
+			content = node.getText();
+			mediaType = HtmlUtils.isHtmlNode(content) ? CoreMediaType.HTML : CoreMediaType.PLAIN_TEXT;
+		}
+		return CoreUpdated.builder() //
+				.nodeId(node.getID()).mediaType(mediaType).content(content).build();
 	}
+	
+
 }

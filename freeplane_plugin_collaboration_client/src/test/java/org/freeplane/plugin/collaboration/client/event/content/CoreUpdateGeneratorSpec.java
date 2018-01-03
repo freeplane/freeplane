@@ -20,16 +20,20 @@
 package org.freeplane.plugin.collaboration.client.event.content;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
 
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.StyleTranslatedObject;
+import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
+import org.freeplane.plugin.collaboration.client.event.batch.ImmutableUpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.junit.Before;
@@ -59,16 +63,11 @@ public class CoreUpdateGeneratorSpec {
 	final private NodeModel node = testObjects.parent;
 	private UpdatesEventCaptor consumer;
 
-	
-	private UpdateBlockCompleted updateBlock(CoreMediaType mediaType, String content) {
-		CoreUpdated coreUpdated= CoreUpdated.builder() //
-				.nodeId(node.getID()).mediaType(mediaType).content(content).build();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+	private ImmutableUpdateBlockCompleted updateBlock(final MapUpdated event) {
+		return UpdateBlockCompleted.builder()
 				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateBlock(coreUpdated).build();
-		return expected;
+				.addUpdateBlock(event).build();
 	}
-
 
 	@BeforeClass
 	static public void setupClass() throws InterruptedException, InvocationTargetException {
@@ -79,62 +78,21 @@ public class CoreUpdateGeneratorSpec {
 	public void createTestedInstance() {
 		consumer = new UpdatesEventCaptor(1);
 		Updates updates = new Updates(consumer, DELAY_MILLIS, header);
-		uut = new CoreUpdateGenerator(updates);
+		uut = new CoreUpdateGenerator(updates, eventFactory);
 	}
 
 
 	@Test
-	public void plainText() throws Exception {
-		node.setUserObject("content");
+	public void createsUpdateBlock() throws Exception {
+		final MapUpdated event = mock(MapUpdated.class);
+		when(eventFactory.createCoreUpdatedEvent(node)).thenReturn(event);
 
 		uut.onCoreUpdate(node);
-		final UpdateBlockCompleted event = consumer.getEvent();
-
-		UpdateBlockCompleted expected = updateBlock(CoreMediaType.PLAIN_TEXT, "content");
-
-		assertThat(event).isEqualTo(expected);
-		assertThat(header.mapRevision()).isEqualTo(1);
-	}
-
-	@Test
-	public void translatedObject() throws Exception {
-		node.setUserObject(new TranslatedObject("key", "value"));
-
-		uut.onCoreUpdate(node);
-		final UpdateBlockCompleted event = consumer.getEvent();
 		
-		UpdateBlockCompleted expected = updateBlock(CoreMediaType.LOCALIZED_TEXT, "key");
-
-		assertThat(event).isEqualTo(expected);
+		UpdateBlockCompleted expected = updateBlock(event);
+		
+		assertThat(consumer.getEvent()).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);
 	}
-
-	@Test
-	public void html() throws Exception {
-		node.setUserObject("<html>content</html>");
-
-		uut.onCoreUpdate(node);
-		final UpdateBlockCompleted event = consumer.getEvent();
-
-		UpdateBlockCompleted expected = updateBlock(CoreMediaType.HTML, "<html>content</html>");
-
-		assertThat(event).isEqualTo(expected);
-		assertThat(header.mapRevision()).isEqualTo(1);
-	}
-	
-
-	@Test
-	public void object() throws Exception {
-		node.setUserObject(Integer.valueOf(3));
-
-		uut.onCoreUpdate(node);
-		final UpdateBlockCompleted event = consumer.getEvent();
-
-		UpdateBlockCompleted expected = updateBlock(CoreMediaType.OBJECT, "java.lang.Integer|3");
-
-		assertThat(event).isEqualTo(expected);
-		assertThat(header.mapRevision()).isEqualTo(1);
-	}
-
 
 }

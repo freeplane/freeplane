@@ -28,6 +28,7 @@ import static org.mockito.Mockito.when;
 import java.io.Writer;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -35,6 +36,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.features.mode.MapExtensions;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
+import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -54,14 +56,13 @@ public class ContentUpdateEventFactorySpec {
 	private MapWriter mapWriter;
 	@InjectMocks
 	private ContentUpdateEventFactory uut;
-	
-	@Mock
-	private MapModel map;
+
+	TestObjects testObjects = new TestObjects();
+	MapModel map = testObjects.map;
+	NodeModel node = testObjects.parent;
 
 	@Test
 	public void createsNodeContentUpdatedEventUsingContentFromWriterCall() throws Exception {
-		final NodeModel node = new NodeModel(map);
-		node.setID("id");
 		Mockito.doAnswer(new Answer<Void>() {
 
 			@Override
@@ -71,14 +72,12 @@ public class ContentUpdateEventFactorySpec {
 			}
 		}).when(mapWriter).writeNodeAsXml(any(), same(node), same(Mode.ADDITIONAL_CONTENT), eq(true), eq(false), eq(false));
 		final NodeContentUpdated event = uut.createNodeContentUpdatedEvent(node);
-		assertThat(event).isEqualTo(NodeContentUpdated.builder().nodeId("id").content("content").build());
+		assertThat(event).isEqualTo(NodeContentUpdated.builder().nodeId(node.getID()).content("content").build());
 	}
 	
 
 	@Test
 	public void excludesSpecificNodeExtensionsDuringTheWriterCall() throws Exception {
-		final NodeModel node = new NodeModel(map);
-		node.setID("id");
 		node.addExtension(SummaryNodeFlag.SUMMARY);
 		Mockito.doAnswer(new Answer<Void>() {
 
@@ -91,13 +90,12 @@ public class ContentUpdateEventFactorySpec {
 			}
 		}).when(mapWriter).writeNodeAsXml(any(), same(node), same(Mode.ADDITIONAL_CONTENT), eq(true), eq(false), eq(false));
 		final NodeContentUpdated event = uut.createNodeContentUpdatedEvent(node);
-		assertThat(event).isEqualTo(NodeContentUpdated.builder().nodeId("id").content("content").build());
+		assertThat(event).isEqualTo(NodeContentUpdated.builder().nodeId(node.getID()).content("content").build());
 		assertThat(node.containsExtension(SummaryNodeFlag.class)).isTrue();
 	}
 
 	@Test
 	public void createsMapContentUpdatedEventUsingContentFromWriterCall() throws Exception {
-		final NodeModel node = new NodeModel(map);
 		when(map.getRootNode()).thenReturn(node);
 		IExtension mapExtension = new IExtension() {};
 		node.addExtension(mapExtension);
@@ -117,7 +115,6 @@ public class ContentUpdateEventFactorySpec {
 	
 	@Test
 	public void excludesNodeExtensionsDuringTheWriterCall() throws Exception {
-		final NodeModel node = new NodeModel(map);
 		when(map.getRootNode()).thenReturn(node);
 		IExtension nodeExtension = new IExtension() {};
 		node.addExtension(nodeExtension);
@@ -138,4 +135,54 @@ public class ContentUpdateEventFactorySpec {
 		assertThat(node.containsExtension(nodeExtension.getClass())).isTrue();
 	}
 	
+	private CoreUpdated event(CoreMediaType mediaType, String content) {
+		CoreUpdated coreUpdated= CoreUpdated.builder() //
+				.nodeId(node.getID()).mediaType(mediaType).content(content).build();
+		return coreUpdated;
+	}
+
+
+	@Test
+	public void plainText() throws Exception {
+		node.setUserObject("content");
+		
+		final MapUpdated event = uut.createCoreUpdatedEvent(node);
+
+		MapUpdated expected = event(CoreMediaType.PLAIN_TEXT, "content");
+
+		assertThat(event).isEqualTo(expected);
+	}
+
+	@Test
+	public void translatedObject() throws Exception {
+		node.setUserObject(new TranslatedObject("key", "value"));
+
+		final MapUpdated event = uut.createCoreUpdatedEvent(node);
+		
+		MapUpdated expected = event(CoreMediaType.LOCALIZED_TEXT, "key");
+
+		assertThat(event).isEqualTo(expected);
+	}
+
+	@Test
+	public void html() throws Exception {
+		node.setUserObject("<html>content</html>");
+
+		final MapUpdated event = uut.createCoreUpdatedEvent(node);
+		MapUpdated expected = event(CoreMediaType.HTML, "<html>content</html>");
+		assertThat(event).isEqualTo(expected);
+	}
+	
+
+	@Test
+	public void object() throws Exception {
+		node.setUserObject(Integer.valueOf(3));
+
+		final MapUpdated event = uut.createCoreUpdatedEvent(node);
+
+		MapUpdated expected = event(CoreMediaType.OBJECT, "java.lang.Integer|3");
+
+		assertThat(event).isEqualTo(expected);
+	}
+
 }
