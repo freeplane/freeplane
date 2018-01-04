@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.freeplane.features.map.MapModel;
@@ -158,4 +159,25 @@ public class UpdatesSpec {
 		assertThat(header.mapRevision()).isEqualTo(2);
 	}
 
+
+	@Test
+	public void generatesBlockContainingOptionalSingleEvent() throws Exception {
+		final Optional<MapUpdated> childrenUpdated = Optional.of(mock(MapUpdated.class));
+		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
+		
+		Updates uut = new Updates(consumer, DELAY_MILLIS, header);
+		
+		uut.addOptionalUpdateEvent("id", () -> childrenUpdated);
+		uut.addOptionalUpdateEvent("id", () -> Optional.empty());
+		
+		final UpdateBlockCompleted event = consumer.getEvent();
+		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+				.mapId(header.mapId()).mapRevision(1)
+				.addUpdateBlock(childrenUpdated.get()).build();
+		
+		assertThat(event).isEqualTo(expected);
+		assertThat(header.mapRevision()).isEqualTo(1);
+	}
+
+	
 }

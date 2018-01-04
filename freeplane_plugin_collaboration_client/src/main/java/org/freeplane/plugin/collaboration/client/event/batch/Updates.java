@@ -3,6 +3,7 @@ package org.freeplane.plugin.collaboration.client.event.batch;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -99,6 +100,12 @@ public class Updates {
 	public void addUpdateEvent(String updatedElementId, Supplier<MapUpdated> eventSupplier ) {
 		if(registeredUpdates.add(new UpdateKey(eventSupplier.getClass(), updatedElementId)))
 			timer.addActionListener(e -> builder.addUpdateBlock(eventSupplier.get()));
+		timer.restart();
+	}
+
+	public void addOptionalUpdateEvent(String updatedElementId, Supplier<Optional<MapUpdated>> eventSupplier ) {
+		if(registeredUpdates.add(new UpdateKey(eventSupplier.getClass(), updatedElementId)))
+			timer.addActionListener(e -> eventSupplier.get().ifPresent(builder::addUpdateBlock));
 		timer.restart();
 	}
 
