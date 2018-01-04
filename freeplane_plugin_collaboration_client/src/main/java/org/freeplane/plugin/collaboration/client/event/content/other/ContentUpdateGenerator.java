@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.plugin.collaboration.client.event.content;
+package org.freeplane.plugin.collaboration.client.event.content.other;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,6 +31,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.features.mode.MapExtensions;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
 
 /**
  * @author Dimitry Polivaev

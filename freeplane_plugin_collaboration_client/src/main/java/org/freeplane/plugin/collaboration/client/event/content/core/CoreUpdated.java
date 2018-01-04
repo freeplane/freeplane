@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.content;
+package org.freeplane.plugin.collaboration.client.event.content.core;
 
 import org.freeplane.plugin.collaboration.client.event.NodeUpdated;
 import org.immutables.value.Value;

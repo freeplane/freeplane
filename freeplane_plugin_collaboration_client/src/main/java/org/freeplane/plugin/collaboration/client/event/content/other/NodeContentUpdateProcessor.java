@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.content;
+package org.freeplane.plugin.collaboration.client.event.content.other;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.NodeContentManipulator;

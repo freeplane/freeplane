@@ -27,6 +27,10 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
+import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateGenerator;
+import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
+import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGeneratorFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -43,7 +47,9 @@ public class ContentUpdateGeneratorsSpec {
 	private MapModel map = testObjects.map;
 	private NodeModel node = testObjects.parent;
 	@Mock
-	private ContentUpdateGeneratorFactory generatorFactory;
+	private ContentUpdateGeneratorFactory contentUpdateGeneratorFactory;
+	@Mock
+	private CoreUpdateGeneratorFactory coreUpdateGeneratorFactory;
 	@InjectMocks
 	private ContentUpdateGenerators uut;
 	
@@ -56,7 +62,7 @@ public class ContentUpdateGeneratorsSpec {
 
 	@Test
 	public void onNodeContentUpdate() throws Exception {
-		when(generatorFactory.contentUpdateGeneratorOf(map)).thenReturn(contentUpdateGenerator);
+		when(contentUpdateGeneratorFactory.contentUpdateGeneratorOf(map)).thenReturn(contentUpdateGenerator);
 		NodeChangeEvent event = new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null);
 		uut.onNodeContentUpdate(event);
 		
@@ -67,7 +73,7 @@ public class ContentUpdateGeneratorsSpec {
 
 	@Test
 	public void onMapContentUpdate() throws Exception {
-		when(generatorFactory.contentUpdateGeneratorOf(map)).thenReturn(contentUpdateGenerator);
+		when(contentUpdateGeneratorFactory.contentUpdateGeneratorOf(map)).thenReturn(contentUpdateGenerator);
 		MapChangeEvent event = new MapChangeEvent(this, map, NodeModel.UNKNOWN_PROPERTY, null, null);
 		uut.onMapContentUpdate(event);
 		
@@ -78,7 +84,7 @@ public class ContentUpdateGeneratorsSpec {
 
 	@Test
 	public void onCoreContentUpdate() throws Exception {
-		when(generatorFactory.coreUpdateGeneratorOf(map)).thenReturn(coreUpdateGenerator);
+		when(coreUpdateGeneratorFactory.generatorOf(map)).thenReturn(coreUpdateGenerator);
 		NodeChangeEvent event = new NodeChangeEvent(node, NodeModel.NODE_TEXT, "1", "2");
 		uut.onNodeContentUpdate(event);
 		

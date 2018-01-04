@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.plugin.collaboration.client.event.content;
+package org.freeplane.plugin.collaboration.client.event.content.other;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -33,6 +33,8 @@ import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.junit.Before;

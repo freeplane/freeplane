@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.content;
+package org.freeplane.plugin.collaboration.client.event.content.core;
 
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.TypeReference;

@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.content;
+package org.freeplane.plugin.collaboration.client.event.content.other;
 
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.immutables.value.Value;

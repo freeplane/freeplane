@@ -3,9 +3,9 @@ package org.freeplane.plugin.collaboration.client.event;
 import org.freeplane.plugin.collaboration.client.event.children.ImmutableChildrenUpdated;
 import org.freeplane.plugin.collaboration.client.event.children.ImmutableRootNodeIdUpdated;
 import org.freeplane.plugin.collaboration.client.event.children.ImmutableSpecialNodeTypeSet;
-import org.freeplane.plugin.collaboration.client.event.content.ImmutableCoreUpdated;
-import org.freeplane.plugin.collaboration.client.event.content.ImmutableMapContentUpdated;
-import org.freeplane.plugin.collaboration.client.event.content.ImmutableNodeContentUpdated;
+import org.freeplane.plugin.collaboration.client.event.content.core.ImmutableCoreUpdated;
+import org.freeplane.plugin.collaboration.client.event.content.other.ImmutableMapContentUpdated;
+import org.freeplane.plugin.collaboration.client.event.content.other.ImmutableNodeContentUpdated;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;

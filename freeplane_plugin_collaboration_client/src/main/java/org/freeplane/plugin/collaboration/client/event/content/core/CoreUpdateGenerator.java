@@ -1,6 +1,6 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2017 dimitry
+ *  Copyright (C) 2018 dimitry
  *
  *  This file author is dimitry
  *
@@ -17,12 +17,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.plugin.collaboration.client.event.content;
+package org.freeplane.plugin.collaboration.client.event.content.core;
+
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.collaboration.client.event.batch.Updates;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
 
 /**
  * @author Dimitry Polivaev
- * Dec 4, 2017
+ * Jan 2, 2018
  */
-public enum CoreMediaType {
-	PLAIN_TEXT, HTML, LOCALIZED_TEXT, OBJECT
+public class CoreUpdateGenerator {
+
+	private final Updates updates;
+	private final ContentUpdateEventFactory factory;
+
+	public CoreUpdateGenerator(Updates updates, ContentUpdateEventFactory factory) {
+		this.updates = updates;
+		this.factory = factory;
+	}
+
+	public void onCoreUpdate(NodeModel node) {
+			updates.addUpdateEvent(node.createID(), () -> factory.createCoreUpdatedEvent(node));
+	}
 }

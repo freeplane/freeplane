@@ -15,9 +15,10 @@ import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
-import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerator;
-import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
+import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
+import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGeneratorFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +37,8 @@ public class UpdateEventGeneratorSpec {
 
 	@Mock
 	private ContentUpdateGeneratorFactory contentUpdateGeneratorFactory;
+	@Mock
+	private CoreUpdateGeneratorFactory coreUpdateGeneratorFactory;
 	@Mock
 	private ChildrenUpdateGenerator updateGenerator;
 
@@ -56,7 +59,7 @@ public class UpdateEventGeneratorSpec {
 
 	@Before
 	public void setup() {
-		contentUpdateGenerators = new ContentUpdateGenerators(contentUpdateGeneratorFactory);
+		contentUpdateGenerators = new ContentUpdateGenerators(contentUpdateGeneratorFactory, coreUpdateGeneratorFactory);
 		uut = new UpdateEventGenerator(childrenUpdateGenerators, contentUpdateGenerators);
 	}
 	

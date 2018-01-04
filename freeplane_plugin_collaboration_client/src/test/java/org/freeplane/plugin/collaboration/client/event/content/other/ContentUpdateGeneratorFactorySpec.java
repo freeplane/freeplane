@@ -17,13 +17,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.plugin.collaboration.client.event.content;
+package org.freeplane.plugin.collaboration.client.event.content.other;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
+import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;

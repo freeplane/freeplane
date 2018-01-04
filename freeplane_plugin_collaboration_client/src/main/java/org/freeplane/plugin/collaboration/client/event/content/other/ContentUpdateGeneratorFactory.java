@@ -17,26 +17,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.plugin.collaboration.client.event.content;
+package org.freeplane.plugin.collaboration.client.event.content.other;
 
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.collaboration.client.event.batch.Updates;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
 
 /**
  * @author Dimitry Polivaev
  * Jan 2, 2018
  */
-public class CoreUpdateGenerator {
-
-	private final Updates updates;
-	private final ContentUpdateEventFactory factory;
-
-	public CoreUpdateGenerator(Updates updates, ContentUpdateEventFactory factory) {
-		this.updates = updates;
-		this.factory = factory;
+public class ContentUpdateGeneratorFactory {
+	public ContentUpdateGeneratorFactory(UpdateBlockGeneratorFactory timerFactory, ContentUpdateEventFactory eventFactory) {
+		super();
+		this.timerFactory = timerFactory;
+		this.eventFactory = eventFactory;
 	}
-
-	public void onCoreUpdate(NodeModel node) {
-			updates.addUpdateEvent(node.createID(), () -> factory.createCoreUpdatedEvent(node));
+	final private ContentUpdateEventFactory eventFactory;
+	final private UpdateBlockGeneratorFactory timerFactory;
+	public ContentUpdateGenerator contentUpdateGeneratorOf(MapModel map) {
+		return new ContentUpdateGenerator(timerFactory.of(map),  eventFactory);
 	}
 }
