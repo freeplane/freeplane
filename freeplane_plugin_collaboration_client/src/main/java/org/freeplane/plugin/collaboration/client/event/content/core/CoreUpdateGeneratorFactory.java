@@ -28,14 +28,14 @@ import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEven
  * Jan 2, 2018
  */
 public class CoreUpdateGeneratorFactory {
-	public CoreUpdateGeneratorFactory(UpdateBlockGeneratorFactory timerFactory, ContentUpdateEventFactory eventFactory) {
+	public CoreUpdateGeneratorFactory(UpdateBlockGeneratorFactory updateBlockGeneratorFactory, ContentUpdateEventFactory eventFactory) {
 		super();
-		this.timerFactory = timerFactory;
+		this.updateBlockGeneratorFactory = updateBlockGeneratorFactory;
 		this.eventFactory = eventFactory;
 	}
 	final private ContentUpdateEventFactory eventFactory;
-	final private UpdateBlockGeneratorFactory timerFactory;
+	final private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
 	public CoreUpdateGenerator generatorOf(MapModel map) {
-		return new CoreUpdateGenerator(timerFactory.of(map),  eventFactory);
+		return new CoreUpdateGenerator(updateBlockGeneratorFactory.of(map),  eventFactory);
 	}
 }

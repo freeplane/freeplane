@@ -43,7 +43,7 @@ public class ContentUpdateGeneratorFactorySpec {
 	@Mock
 	private ContentUpdateEventFactory eventFactory;
 	@Mock
-	private UpdateBlockGeneratorFactory timerFactory;
+	private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
 	
 	@InjectMocks
 	private ContentUpdateGeneratorFactory uut;
@@ -54,7 +54,7 @@ public class ContentUpdateGeneratorFactorySpec {
 	@Test
 	public void createsContentUpdateGenerator() throws Exception {
 		MapModel map = new MapModel(null, null);
-		when(timerFactory.of(map)).thenReturn(updates);
+		when(updateBlockGeneratorFactory.of(map)).thenReturn(updates);
 		ContentUpdateGenerator expected = new ContentUpdateGenerator(updates, eventFactory);
 		assertThat(uut.contentUpdateGeneratorOf(map)).isEqualToComparingFieldByField(expected);
 	}

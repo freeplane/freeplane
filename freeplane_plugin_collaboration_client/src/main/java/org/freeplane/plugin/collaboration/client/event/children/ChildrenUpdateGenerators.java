@@ -6,20 +6,20 @@ import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEven
 
 public class ChildrenUpdateGenerators{
 	final private StructureUpdateEventFactory eventFactory;
-	final private UpdateBlockGeneratorFactory timerFactory;
+	final private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
 	final private ContentUpdateEventFactory contentUpdateEventFactory;
 	
-	public ChildrenUpdateGenerators(UpdateBlockGeneratorFactory timerFactory, StructureUpdateEventFactory eventFactory,
+	public ChildrenUpdateGenerators(UpdateBlockGeneratorFactory updateBlockGeneratorFactory, StructureUpdateEventFactory eventFactory,
 	                                ContentUpdateEventFactory contentUpdateEventFactory) {
 		super();
-		this.timerFactory = timerFactory;
+		this.updateBlockGeneratorFactory = updateBlockGeneratorFactory;
 		this.eventFactory = eventFactory;
 		this.contentUpdateEventFactory = contentUpdateEventFactory;
 	}
 
 	public ChildrenUpdateGenerator of(MapModel map) {
 		ChildrenUpdateGenerator generator = map.addExtensionIfAbsent(ChildrenUpdateGenerator.class, 
-			() -> new ChildrenUpdateGenerator(timerFactory.of(map),  eventFactory, contentUpdateEventFactory));
+			() -> new ChildrenUpdateGenerator(updateBlockGeneratorFactory.of(map),  eventFactory, contentUpdateEventFactory));
 		return generator;
 	}
 }
