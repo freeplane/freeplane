@@ -29,14 +29,9 @@ public class ChildrenUpdateGenerator implements IExtension{
 			{
 				updates.addUpdateEvents(createRootNodeIdUpdatedEvent(map),
 					contentUpdateEventFactory.createMapContentUpdatedEvent(map));
-				generateStructureChangedEventForSubtree(map.getRootNode());
+				generateEventsForSubtree(map.getRootNode());
 			});
 	}
-
-	private RootNodeIdUpdated createRootNodeIdUpdatedEvent(MapModel map) {
-		return RootNodeIdUpdated.builder().nodeId(map.getRootNode().getID()).build();
-	}
-
 
 	public void onNodeInserted(NodeModel parent, NodeModel child) {
 		onChangedStructure(parent);
@@ -45,18 +40,23 @@ public class ChildrenUpdateGenerator implements IExtension{
 
 	public void onChangedStructure(NodeModel parent) {
 		if(changedParents.isEmpty())
-			updates.addUpdateEvents(parent.createID(), this::generateStructureChangedEvent);
+			updates.addUpdateEvents(parent.createID(), this::generateStructureChangedEvents);
 		changedParents.add(parent);
 	}
 
 	
-	private void generateStructureChangedEvent() {
+	private RootNodeIdUpdated createRootNodeIdUpdatedEvent(MapModel map) {
+		return RootNodeIdUpdated.builder().nodeId(map.getRootNode().getID()).build();
+	}
+
+
+	private void generateStructureChangedEvents() {
 		for(NodeModel parent : changedParents) {
 			final ChildrenUpdated childrenUpdated = structuralEventFactory.createChildrenUpdatedEvent(parent);
 			updates.addUpdateEvent(childrenUpdated);
 			for(NodeModel child : parent.getChildren()) {
 				if(insertedChildren.contains(child))
-					generateStructureChangedEventForSubtree(child);
+					generateEventsForSubtree(child);
 			}
 		}
 		insertedChildren.clear();
@@ -64,22 +64,39 @@ public class ChildrenUpdateGenerator implements IExtension{
 	}
 
 
-	private void generateStructureChangedEventForSubtree(final NodeModel node) {
-		SpecialNodeTypeSet.SpecialNodeType.of(node).ifPresent((c) -> {
-			updates.addUpdateEvent(SpecialNodeTypeSet.builder().nodeId(node.createID()).content(c).build());
-		});
-		updates.addUpdateEvents(
-				contentUpdateEventFactory.createCoreUpdatedEvent(node),
-				contentUpdateEventFactory.createNodeContentUpdatedEvent(node)
-				);
+	private void generateEventsForSubtree(NodeModel node) {
+		generateStructureChangedEventsForSubtree(node);
+	}
+
+	private void generateStructureChangedEventsForSubtree(final NodeModel node) {
+		generateSpecialTypeEvent(node);
+		generateContentUpdateEvents(node);
+		generateChildrenUpdateEvent(node);
 		if(node.hasChildren()) {
-			final ChildrenUpdated childrenUpdated = structuralEventFactory.createChildrenUpdatedEvent(node);
-			updates.addUpdateEvent(childrenUpdated);
 			for(NodeModel child : node.getChildren()) {
-				generateStructureChangedEventForSubtree(child);
+				generateStructureChangedEventsForSubtree(child);
 			}
 		}
 	}
-	
+
+	private void generateContentUpdateEvents(final NodeModel node) {
+		updates.addUpdateEvents(contentUpdateEventFactory.createCoreUpdatedEvent(node),
+				contentUpdateEventFactory.createNodeContentUpdatedEvent(node));
+	}
+
+	private void generateChildrenUpdateEvent(final NodeModel node) {
+		if(node.hasChildren()) {
+			final ChildrenUpdated childrenUpdated = structuralEventFactory.createChildrenUpdatedEvent(node);
+			updates.addUpdateEvent(childrenUpdated);
+		}
+	}
+
+	private void generateSpecialTypeEvent(final NodeModel node) {
+		SpecialNodeTypeSet.SpecialNodeType.of(node).ifPresent((c) -> {
+			updates.addUpdateEvent(SpecialNodeTypeSet.builder().nodeId(node.createID()).content(c).build());
+		});
+	}
+
+
 
 }
