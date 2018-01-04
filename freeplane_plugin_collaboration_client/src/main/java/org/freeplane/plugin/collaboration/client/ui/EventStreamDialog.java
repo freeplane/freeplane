@@ -10,6 +10,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -41,9 +42,9 @@ import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeP
 import org.freeplane.plugin.collaboration.client.event.children.StructureUpdateEventFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
-import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateProcessor;
-import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.other.MapContentUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.content.other.NodeContentUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.json.Jackson;
@@ -61,9 +62,11 @@ public class EventStreamDialog {
 			ContentUpdateEventFactory contentEventFactory = new ContentUpdateEventFactory(mapWriter);
 			StructureUpdateEventFactory structuralEventFactory = new StructureUpdateEventFactory();
 			ChildrenUpdateGenerators childrenUpdateGenerators = new ChildrenUpdateGenerators(f, structuralEventFactory, contentEventFactory);
-			ContentUpdateGeneratorFactory contentUpdateGeneratorFactory = new ContentUpdateGeneratorFactory(f, contentEventFactory);
-			CoreUpdateGeneratorFactory coreUpdateGeneratorFactory = new CoreUpdateGeneratorFactory(f, contentEventFactory);
-			ContentUpdateGenerators contentGenerators = new ContentUpdateGenerators(contentUpdateGeneratorFactory, coreUpdateGeneratorFactory);
+			ContentUpdateGenerator contentUpdateGenerator = new ContentUpdateGenerator(f, contentEventFactory);
+			CoreUpdateGenerator coreUpdateGenerator = new CoreUpdateGenerator(f, contentEventFactory);
+			ContentUpdateGenerators contentGenerators = new ContentUpdateGenerators(
+				Arrays.asList(contentUpdateGenerator), 
+				Arrays.asList(coreUpdateGenerator, contentUpdateGenerator));
 			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(childrenUpdateGenerators,  contentGenerators);
 			MapModel map = Controller.getCurrentController().getMap();
 			if(! map.containsExtension(ModifiableUpdateHeaderExtension.class))

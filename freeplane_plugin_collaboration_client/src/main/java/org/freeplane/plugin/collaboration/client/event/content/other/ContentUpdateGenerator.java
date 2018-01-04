@@ -1,6 +1,6 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2017 dimitry
+ *  Copyright (C) 2018 dimitry
  *
  *  This file author is dimitry
  *
@@ -26,36 +26,57 @@ import java.util.Collections;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.map.FirstGroupNodeFlag;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.features.mode.MapExtensions;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.content.MapUpdateGenerator;
+import org.freeplane.plugin.collaboration.client.event.content.NodeUpdateGenerator;
 
 /**
  * @author Dimitry Polivaev
- * Dec 4, 2017
+ * Jan 2, 2018
  */
-public class ContentUpdateGenerator {
+public class ContentUpdateGenerator implements NodeUpdateGenerator, MapUpdateGenerator {
+	public ContentUpdateGenerator(UpdateBlockGeneratorFactory updateBlockGeneratorFactory, ContentUpdateEventFactory eventFactory) {
+		super();
+		this.updateBlockGeneratorFactory = updateBlockGeneratorFactory;
+		this.eventFactory = eventFactory;
+	}
+	final private ContentUpdateEventFactory eventFactory;
+	final private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
+	
+	public boolean handles(NodeChangeEvent event) {
+		return true;
+	}
+	
+	public boolean handles(MapChangeEvent event) {
+		return true;
+	}
+	
+	public void onNodeChange(NodeModel node) {
+		onNodeContentUpdate(node);		
+	}
 
-	private Updates updates;
-	private ContentUpdateEventFactory eventFactory;
+	public void onMapChange(MapModel map) {
+		onMapContentUpdate(map);		
+	}
+	
 	private static Collection<Class<? extends IExtension>> NODE_CONTENT_EXCLUSIONS =  null;
 	private static Collection<Class<? extends IExtension>> MAP_CONTENT =  null;
 
-	public ContentUpdateGenerator(Updates updates, ContentUpdateEventFactory eventFactory) {
-		this.updates = updates;
-		this.eventFactory = eventFactory;
-	}
-
 	public void onNodeContentUpdate(NodeModel node) {
-		updates.addUpdateEvent(node.createID(), () -> eventFactory.createNodeContentUpdatedEvent(node));
+		getUpdates(node.getMap()).addUpdateEvent(node.createID(), () -> eventFactory.createNodeContentUpdatedEvent(node));
 
 	}
 
 	public void onMapContentUpdate(MapModel map) {
-			updates.addUpdateEvent("map", () -> eventFactory.createMapContentUpdatedEvent(map));
+			getUpdates(map).addUpdateEvent("map", () -> eventFactory.createMapContentUpdatedEvent(map));
 
 	}
 
@@ -77,4 +98,9 @@ public class ContentUpdateGenerator {
 		}
 		return MAP_CONTENT;
 	}
+
+	private Updates getUpdates(MapModel map) {
+		return updateBlockGeneratorFactory.of(map);
+	}
+
 }

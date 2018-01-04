@@ -4,6 +4,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
+
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
@@ -11,14 +13,12 @@ import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.plugin.collaboration.client.TestData;
-import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
-import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
-import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGeneratorFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,14 +36,9 @@ public class UpdateEventGeneratorSpec {
 	private ContentUpdateGenerators contentUpdateGenerators;
 
 	@Mock
-	private ContentUpdateGeneratorFactory contentUpdateGeneratorFactory;
-	@Mock
-	private CoreUpdateGeneratorFactory coreUpdateGeneratorFactory;
+	private ContentUpdateGenerator contentUpdateGenerator;
 	@Mock
 	private ChildrenUpdateGenerator updateGenerator;
-
-	@Mock
-	private ContentUpdateGenerator contentUpdateGenerator;
 
 	@Mock
 	private Updates updateTimer;
@@ -59,7 +54,9 @@ public class UpdateEventGeneratorSpec {
 
 	@Before
 	public void setup() {
-		contentUpdateGenerators = new ContentUpdateGenerators(contentUpdateGeneratorFactory, coreUpdateGeneratorFactory);
+		contentUpdateGenerators = new ContentUpdateGenerators(
+			Arrays.asList(contentUpdateGenerator), 
+			Arrays.asList(contentUpdateGenerator));
 		uut = new UpdateEventGenerator(childrenUpdateGenerators, contentUpdateGenerators);
 	}
 	
@@ -116,22 +113,19 @@ public class UpdateEventGeneratorSpec {
 
 	@Test
 	public void generatesEventOnNodeChange() throws Exception {
-		when(updateTimerFactory.of(map)).thenReturn(updateTimer);
-		when(contentUpdateGeneratorFactory.contentUpdateGeneratorOf(map)).thenReturn(contentUpdateGenerator);
-
-		uut.nodeChanged(new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null));
-		
-		verify(contentUpdateGenerator).onNodeContentUpdate(parent);
+		NodeChangeEvent event = new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null);
+		when(contentUpdateGenerator.handles(event)).thenReturn(true);
+		uut.nodeChanged(event);
+		verify(contentUpdateGenerator).onNodeChange(parent);
 	}
 
 	@Test
 	public void generatesEventOnMapChange() throws Exception {
-		when(updateTimerFactory.of(map)).thenReturn(updateTimer);
-		when(contentUpdateGeneratorFactory.contentUpdateGeneratorOf(map)).thenReturn(contentUpdateGenerator);
 		when(map.getRootNode()).thenReturn(parent);
-
-		uut.mapChanged(new MapChangeEvent(this, map, NodeModel.UNKNOWN_PROPERTY, null, null));
+		MapChangeEvent event = new MapChangeEvent(this, map, NodeModel.UNKNOWN_PROPERTY, null, null);
+		when(contentUpdateGenerator.handles(event)).thenReturn(true);
+		uut.mapChanged(event);
 		
-		verify(contentUpdateGenerator).onMapContentUpdate(map);
+		verify(contentUpdateGenerator).onMapChange(map);
 	}
 }

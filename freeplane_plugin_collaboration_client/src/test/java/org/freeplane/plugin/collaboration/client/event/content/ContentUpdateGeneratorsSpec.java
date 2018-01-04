@@ -22,18 +22,17 @@ package org.freeplane.plugin.collaboration.client.event.content;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
+
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
-import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateGenerator;
-import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
-import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGeneratorFactory;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -47,48 +46,30 @@ public class ContentUpdateGeneratorsSpec {
 	private MapModel map = testObjects.map;
 	private NodeModel node = testObjects.parent;
 	@Mock
-	private ContentUpdateGeneratorFactory contentUpdateGeneratorFactory;
-	@Mock
-	private CoreUpdateGeneratorFactory coreUpdateGeneratorFactory;
-	@InjectMocks
+	private ContentUpdateGenerator contentUpdateGenerator;
 	private ContentUpdateGenerators uut;
 	
-	@Mock
-	private ContentUpdateGenerator contentUpdateGenerator;
-	
-	
-	@Mock
-	private CoreUpdateGenerator coreUpdateGenerator;
-
+	@Before
+	public void setup() {
+		uut = new ContentUpdateGenerators(Arrays.asList(contentUpdateGenerator), Arrays.asList(contentUpdateGenerator));
+	}
 	@Test
 	public void onNodeContentUpdate() throws Exception {
-		when(contentUpdateGeneratorFactory.contentUpdateGeneratorOf(map)).thenReturn(contentUpdateGenerator);
 		NodeChangeEvent event = new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null);
+		when(contentUpdateGenerator.handles(event)).thenReturn(true);
 		uut.onNodeContentUpdate(event);
-		
-		verify(contentUpdateGenerator).onNodeContentUpdate(node);
+		verify(contentUpdateGenerator).onNodeChange(node);
 		
 	}
 
 
 	@Test
 	public void onMapContentUpdate() throws Exception {
-		when(contentUpdateGeneratorFactory.contentUpdateGeneratorOf(map)).thenReturn(contentUpdateGenerator);
 		MapChangeEvent event = new MapChangeEvent(this, map, NodeModel.UNKNOWN_PROPERTY, null, null);
+		when(contentUpdateGenerator.handles(event)).thenReturn(true);
 		uut.onMapContentUpdate(event);
 		
-		verify(contentUpdateGenerator).onMapContentUpdate(map);
-		
-	}
-
-
-	@Test
-	public void onCoreContentUpdate() throws Exception {
-		when(coreUpdateGeneratorFactory.generatorOf(map)).thenReturn(coreUpdateGenerator);
-		NodeChangeEvent event = new NodeChangeEvent(node, NodeModel.NODE_TEXT, "1", "2");
-		uut.onNodeContentUpdate(event);
-		
-		verify(coreUpdateGenerator).onCoreUpdate(node);
+		verify(contentUpdateGenerator).onMapChange(map);
 		
 	}
 }

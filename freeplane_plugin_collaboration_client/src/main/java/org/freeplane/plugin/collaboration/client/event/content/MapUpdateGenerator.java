@@ -17,25 +17,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.plugin.collaboration.client.event.content.core;
+package org.freeplane.plugin.collaboration.client.event.content;
 
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
-import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
 
 /**
  * @author Dimitry Polivaev
- * Jan 2, 2018
+ * Jan 4, 2018
  */
-public class CoreUpdateGeneratorFactory {
-	public CoreUpdateGeneratorFactory(UpdateBlockGeneratorFactory updateBlockGeneratorFactory, ContentUpdateEventFactory eventFactory) {
-		super();
-		this.updateBlockGeneratorFactory = updateBlockGeneratorFactory;
-		this.eventFactory = eventFactory;
-	}
-	final private ContentUpdateEventFactory eventFactory;
-	final private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
-	public CoreUpdateGenerator generatorOf(MapModel map) {
-		return new CoreUpdateGenerator(updateBlockGeneratorFactory.of(map),  eventFactory);
-	}
+public interface MapUpdateGenerator {
+	boolean handles(MapChangeEvent event);
+	void onMapChange(MapModel node);
 }

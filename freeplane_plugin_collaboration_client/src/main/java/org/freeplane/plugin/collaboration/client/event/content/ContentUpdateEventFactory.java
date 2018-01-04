@@ -20,6 +20,7 @@ import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.content.core.CoreMediaType;
 import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdated;
 import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
+import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.other.MapContentUpdated;
 import org.freeplane.plugin.collaboration.client.event.content.other.NodeContentUpdated;
 

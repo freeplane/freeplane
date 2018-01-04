@@ -25,19 +25,18 @@ import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.freeplane.core.resources.TranslatedObject;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
-import org.freeplane.plugin.collaboration.client.event.batch.Updates;
-import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
-import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
-import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.batch.ImmutableUpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.batch.Updates;
+import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -60,10 +59,17 @@ public class CoreUpdateGeneratorSpec {
 	
 	@Mock
 	private ContentUpdateEventFactory eventFactory;
+	@Mock
+	private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
 	
 	final private TestObjects testObjects = new TestObjects();
+	private MapModel map = testObjects.map;
 	final private NodeModel node = testObjects.parent;
 	private UpdatesEventCaptor consumer;
+
+
+
+
 
 	private ImmutableUpdateBlockCompleted updateBlock(final MapUpdated event) {
 		return UpdateBlockCompleted.builder()
@@ -80,7 +86,8 @@ public class CoreUpdateGeneratorSpec {
 	public void createTestedInstance() {
 		consumer = new UpdatesEventCaptor(1);
 		Updates updates = new Updates(consumer, DELAY_MILLIS, header);
-		uut = new CoreUpdateGenerator(updates, eventFactory);
+		when(updateBlockGeneratorFactory.of(map)).thenReturn(updates);
+		uut = new CoreUpdateGenerator(updateBlockGeneratorFactory, eventFactory);
 	}
 
 
@@ -89,7 +96,7 @@ public class CoreUpdateGeneratorSpec {
 		final MapUpdated event = mock(MapUpdated.class);
 		when(eventFactory.createCoreUpdatedEvent(node)).thenReturn(event);
 
-		uut.onCoreUpdate(node);
+		uut.onNodeChange(node);
 		
 		UpdateBlockCompleted expected = updateBlock(event);
 		

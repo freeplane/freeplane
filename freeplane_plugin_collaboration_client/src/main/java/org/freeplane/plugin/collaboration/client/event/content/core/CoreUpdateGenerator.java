@@ -19,25 +19,32 @@
  */
 package org.freeplane.plugin.collaboration.client.event.content.core;
 
+import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.collaboration.client.event.batch.Updates;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.content.NodeUpdateGenerator;
 
 /**
  * @author Dimitry Polivaev
  * Jan 2, 2018
  */
-public class CoreUpdateGenerator {
-
-	private final Updates updates;
-	private final ContentUpdateEventFactory factory;
-
-	public CoreUpdateGenerator(Updates updates, ContentUpdateEventFactory factory) {
+public class CoreUpdateGenerator implements NodeUpdateGenerator {
+	public CoreUpdateGenerator(UpdateBlockGeneratorFactory updates, ContentUpdateEventFactory eventFactory) {
+		super();
 		this.updates = updates;
-		this.factory = factory;
+		this.eventFactory = eventFactory;
 	}
-
-	public void onCoreUpdate(NodeModel node) {
-			updates.addUpdateEvent(node.createID(), () -> factory.createCoreUpdatedEvent(node));
+	final private ContentUpdateEventFactory eventFactory;
+	final private UpdateBlockGeneratorFactory updates;
+	
+	public boolean handles(NodeChangeEvent event) {
+		return NodeModel.NODE_TEXT.equals(event.getProperty());
+	}
+	
+	public void onNodeChange(NodeModel node) {
+		updates.of(node.getMap())
+			.addUpdateEvent(node.createID(), () -> eventFactory.createCoreUpdatedEvent(node));
+		
 	}
 }

@@ -1,6 +1,6 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2017 dimitry
+ *  Copyright (C) 2018 dimitry
  *
  *  This file author is dimitry
  *
@@ -24,6 +24,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
+
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapModel;
@@ -31,12 +32,12 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
+import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
-import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
-import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,7 +47,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 /**
  * @author Dimitry Polivaev
- * Dec 4, 2017
+ * Jan 1, 2018
  */
 @RunWith(MockitoJUnitRunner.class)
 public class ContentUpdateGeneratorSpec {
@@ -59,6 +60,8 @@ public class ContentUpdateGeneratorSpec {
 	@Mock
 	private ContentUpdateEventFactory eventFactory;
 
+	@Mock
+	private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
 	
 	final private TestObjects testObjects = new TestObjects();
 	final private NodeModel node = testObjects.parent;
@@ -66,6 +69,7 @@ public class ContentUpdateGeneratorSpec {
 	private ContentUpdateGenerator uut;
 
 	private MapModel map = testObjects.map;
+
 	
 	@BeforeClass
 	static public void setupClass() throws InterruptedException, InvocationTargetException {
@@ -76,7 +80,8 @@ public class ContentUpdateGeneratorSpec {
 	public void createTestedInstance() {
 		consumer = new UpdatesEventCaptor(1);
 		Updates updates = new Updates(consumer, DELAY_MILLIS, header);
-		uut = new ContentUpdateGenerator(updates, eventFactory);
+		when(updateBlockGeneratorFactory.of(map)).thenReturn(updates);
+		uut = new ContentUpdateGenerator(updateBlockGeneratorFactory, eventFactory);
 	}
 
 

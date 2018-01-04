@@ -1,36 +1,38 @@
 package org.freeplane.plugin.collaboration.client.event.content;
 
+import java.util.List;
+
 import org.freeplane.features.map.MapChangeEvent;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateGeneratorFactory;
-import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
-import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGeneratorFactory;
 
 public class ContentUpdateGenerators{
-	final private ContentUpdateGeneratorFactory contentUpdateGeneratorFactory;
-	final private CoreUpdateGeneratorFactory coreUpdateGeneratorFactory;
 
-	public ContentUpdateGenerators(ContentUpdateGeneratorFactory generatorFactory,  CoreUpdateGeneratorFactory coreUpdateGeneratorFactory) {
+	private final List<MapUpdateGenerator> mapUpdateGenerators;
+	private final List<NodeUpdateGenerator> nodeUpdateGenerators;
+
+	public ContentUpdateGenerators(List<MapUpdateGenerator> mapUpdateGenerators, 
+	                               List<NodeUpdateGenerator> nodeUpdateGenerators) {
 		super();
-		this.contentUpdateGeneratorFactory = generatorFactory;
-		this.coreUpdateGeneratorFactory = coreUpdateGeneratorFactory;
+		this.mapUpdateGenerators = mapUpdateGenerators;
+		this.nodeUpdateGenerators = nodeUpdateGenerators;
 	}
 
 	public void onNodeContentUpdate(NodeChangeEvent event) {
-		NodeModel node = event.getNode();
-		if(NodeModel.NODE_TEXT.equals(event.getProperty())) {
-			coreUpdateGeneratorFactory.generatorOf(node.getMap()).onCoreUpdate(node);
+		for(NodeUpdateGenerator g : nodeUpdateGenerators) {
+			if(g.handles(event)) {
+				g.onNodeChange(event.getNode());
+				break;
+			}
 		}
-		else
-			contentUpdateGeneratorFactory.contentUpdateGeneratorOf(node.getMap()).onNodeContentUpdate(node);
 	}
 
 	public void onMapContentUpdate(MapChangeEvent event) {
-		MapModel map = event.getMap();
-		final ContentUpdateGenerator generator = contentUpdateGeneratorFactory.contentUpdateGeneratorOf(map);
-		generator.onMapContentUpdate(map);
+		for(MapUpdateGenerator g : mapUpdateGenerators) {
+			if(g.handles(event)) {
+				g.onMapChange(event.getMap());
+				break;
+			}
+		}
 	}
 
 }
