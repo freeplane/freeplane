@@ -36,7 +36,6 @@ import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockComplete
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
-import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -58,7 +57,7 @@ public class CoreUpdateGeneratorSpec {
 	private ModifiableUpdateHeaderExtension header = ModifiableUpdateHeaderExtension.create().setMapId("mapId").setMapRevision(0);
 	
 	@Mock
-	private ContentUpdateEventFactory eventFactory;
+	private CoreUpdateEventFactory eventFactory;
 	@Mock
 	private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
 	

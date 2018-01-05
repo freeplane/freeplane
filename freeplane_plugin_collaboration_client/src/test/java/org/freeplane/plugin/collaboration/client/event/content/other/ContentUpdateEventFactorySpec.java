@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.plugin.collaboration.client.event.content;
+package org.freeplane.plugin.collaboration.client.event.content.other;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -28,7 +28,6 @@ import static org.mockito.Mockito.when;
 import java.io.Writer;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -37,10 +36,6 @@ import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.features.mode.MapExtensions;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
-import org.freeplane.plugin.collaboration.client.event.content.core.CoreMediaType;
-import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdated;
-import org.freeplane.plugin.collaboration.client.event.content.other.MapContentUpdated;
-import org.freeplane.plugin.collaboration.client.event.content.other.NodeContentUpdated;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -138,55 +133,4 @@ public class ContentUpdateEventFactorySpec {
 		assertThat(event).isEqualTo(MapContentUpdated.builder().content("<map>content</map>").build());
 		assertThat(node.containsExtension(nodeExtension.getClass())).isTrue();
 	}
-	
-	private CoreUpdated event(CoreMediaType mediaType, String content) {
-		CoreUpdated coreUpdated= CoreUpdated.builder() //
-				.nodeId(node.getID()).mediaType(mediaType).content(content).build();
-		return coreUpdated;
-	}
-
-
-	@Test
-	public void plainText() throws Exception {
-		node.setUserObject("content");
-		
-		final MapUpdated event = uut.createCoreUpdatedEvent(node);
-
-		MapUpdated expected = event(CoreMediaType.PLAIN_TEXT, "content");
-
-		assertThat(event).isEqualTo(expected);
-	}
-
-	@Test
-	public void translatedObject() throws Exception {
-		node.setUserObject(new TranslatedObject("key", "value"));
-
-		final MapUpdated event = uut.createCoreUpdatedEvent(node);
-		
-		MapUpdated expected = event(CoreMediaType.LOCALIZED_TEXT, "key");
-
-		assertThat(event).isEqualTo(expected);
-	}
-
-	@Test
-	public void html() throws Exception {
-		node.setUserObject("<html>content</html>");
-
-		final MapUpdated event = uut.createCoreUpdatedEvent(node);
-		MapUpdated expected = event(CoreMediaType.HTML, "<html>content</html>");
-		assertThat(event).isEqualTo(expected);
-	}
-	
-
-	@Test
-	public void object() throws Exception {
-		node.setUserObject(Integer.valueOf(3));
-
-		final MapUpdated event = uut.createCoreUpdatedEvent(node);
-
-		MapUpdated expected = event(CoreMediaType.OBJECT, "java.lang.Integer|3");
-
-		assertThat(event).isEqualTo(expected);
-	}
-
 }

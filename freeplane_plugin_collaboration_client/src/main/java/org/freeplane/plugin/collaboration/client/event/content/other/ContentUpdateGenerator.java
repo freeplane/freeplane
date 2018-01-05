@@ -28,13 +28,13 @@ import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.features.mode.MapExtensions;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
-import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
 import org.freeplane.plugin.collaboration.client.event.content.MapUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.NodeUpdateGenerator;
 
@@ -43,7 +43,11 @@ import org.freeplane.plugin.collaboration.client.event.content.NodeUpdateGenerat
  * Jan 2, 2018
  */
 public class ContentUpdateGenerator implements NodeUpdateGenerator, MapUpdateGenerator {
-	public ContentUpdateGenerator(UpdateBlockGeneratorFactory updateBlockGeneratorFactory, ContentUpdateEventFactory eventFactory) {
+	public ContentUpdateGenerator(UpdateBlockGeneratorFactory updateBlockGeneratorFactory, MapWriter writer) {
+		this(updateBlockGeneratorFactory, new ContentUpdateEventFactory(writer));
+	}
+	
+	ContentUpdateGenerator(UpdateBlockGeneratorFactory updateBlockGeneratorFactory, ContentUpdateEventFactory eventFactory) {
 		super();
 		this.updateBlockGeneratorFactory = updateBlockGeneratorFactory;
 		this.eventFactory = eventFactory;

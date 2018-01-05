@@ -31,16 +31,15 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.UpdateEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessorChain;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
 import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.children.NodeFactory;
 import org.freeplane.plugin.collaboration.client.event.children.RootNodeIdUpdatedProcessor;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeProcessor;
 import org.freeplane.plugin.collaboration.client.event.children.StructureUpdateEventFactory;
-import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateProcessor;
@@ -59,9 +58,8 @@ public class EventStreamDialog {
 				printer.prettyPrint(ev);
 			}, 100);
 			final MapWriter mapWriter = Controller.getCurrentModeController().getMapController().getMapWriter();
-			ContentUpdateEventFactory contentEventFactory = new ContentUpdateEventFactory(mapWriter);
-			ContentUpdateGenerator contentUpdateGenerator = new ContentUpdateGenerator(f, contentEventFactory);
-			CoreUpdateGenerator coreUpdateGenerator = new CoreUpdateGenerator(f, contentEventFactory);
+			ContentUpdateGenerator contentUpdateGenerator = new ContentUpdateGenerator(f, mapWriter);
+			CoreUpdateGenerator coreUpdateGenerator = new CoreUpdateGenerator(f, mapWriter);
 			ContentUpdateGenerators contentGenerators = new ContentUpdateGenerators(
 				Arrays.asList(contentUpdateGenerator), 
 				Arrays.asList(coreUpdateGenerator, contentUpdateGenerator));
