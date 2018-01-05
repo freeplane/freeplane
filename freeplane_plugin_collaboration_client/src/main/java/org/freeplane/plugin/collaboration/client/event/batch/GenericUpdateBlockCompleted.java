@@ -2,20 +2,20 @@ package org.freeplane.plugin.collaboration.client.event.batch;
 
 import java.util.List;
 
-import org.freeplane.plugin.collaboration.client.event.GenericNodeUpdated;
 import org.immutables.value.Value;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Value.Immutable
 @JsonSerialize(as = ImmutableServerUpdatesFinished.class)
 @JsonDeserialize(as = ImmutableServerUpdatesFinished.class)
-public interface  ServerUpdatesFinished {
-	static ImmutableServerUpdatesFinished.Builder builder() {
-		return ImmutableServerUpdatesFinished.builder();
+public interface  GenericUpdateBlockCompleted {
+	static ImmutableGenericUpdateBlockCompleted.Builder builder() {
+		return ImmutableGenericUpdateBlockCompleted.builder();
 	}
 	String mapId();
 	long mapRevision();
-	List<GenericNodeUpdated> updateEvents();
+	List<ObjectNode> updateBlock();
 }

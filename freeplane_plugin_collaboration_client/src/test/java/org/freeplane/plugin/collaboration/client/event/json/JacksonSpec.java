@@ -1,16 +1,15 @@
 package org.freeplane.plugin.collaboration.client.event.json;
 
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.freeplane.plugin.collaboration.client.TestData;
-import org.freeplane.plugin.collaboration.client.event.GenericNodeUpdated;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
+import org.freeplane.plugin.collaboration.client.event.batch.GenericUpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
-import org.freeplane.plugin.collaboration.client.event.children.ImmutableChildrenUpdated;
+import org.freeplane.plugin.collaboration.client.event.content.core.CoreMediaType;
+import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdated;
 import org.junit.Test;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JacksonSpec {
@@ -19,7 +18,7 @@ public class JacksonSpec {
 	@Test
 	public void serializeAndDeserializeUpdateEvent() throws Exception
 	{
-		ChildrenUpdated uut = createUpdateEvents();
+		MapUpdated uut = createUpdateEvents();
 		String json = objectMapper.writeValueAsString(uut);
 
 		MapUpdated bean = objectMapper.readValue(json, MapUpdated.class);
@@ -31,19 +30,17 @@ public class JacksonSpec {
 	@Test
 	public void serializeAndDeserializeGenericUpdateEvent() throws Exception
 	{
-		ChildrenUpdated uut = createUpdateEvents();
-		String json = objectMapper.writeValueAsString(uut);
-
-		MapUpdated bean = objectMapper.readValue(json, GenericNodeUpdated.class);
-
-		final String genericJson = objectMapper.writeValueAsString(bean);
-		assertThat(genericJson).isEqualTo(json);
+		MapUpdated uut = createUpdateEvents();
+		String jsonString = objectMapper.writeValueAsString(uut);
+		final JsonNode jsonTree = objectMapper.readTree(jsonString);
+		final String genericJson = objectMapper.writeValueAsString(jsonTree);
+		assertThat(genericJson).isEqualTo(jsonString);
 	}
 	
-	protected ImmutableChildrenUpdated createUpdateEvents() {
-		return ImmutableChildrenUpdated.builder()
+	private MapUpdated createUpdateEvents() {
+		return CoreUpdated.builder()
 				.nodeId("id")
-				.content(asList(TestData.RIGHT_CHILD)).build();
+				.mediaType(CoreMediaType.PLAIN_TEXT).content("text").build();
 	}
 
 	@Test
@@ -58,6 +55,23 @@ public class JacksonSpec {
 
 		UpdateBlockCompleted bean = objectMapper.readValue(json, UpdateBlockCompleted.class);
 
+		assertThat(bean).isEqualTo(uut);
+	}
+
+
+	@Test
+	public void serializeAndDeserializeUpdatesCompletedEventAsServerObject() throws Exception
+	{
+		UpdateBlockCompleted uut = UpdateBlockCompleted.builder()
+				.mapId("mapId")
+				.mapRevision(1000L)
+				.addUpdateBlock(createUpdateEvents())
+				.build();
+		String json = objectMapper.writeValueAsString(uut);
+
+		GenericUpdateBlockCompleted serverBean = objectMapper.readValue(json, GenericUpdateBlockCompleted.class);
+		String serverJson = objectMapper.writeValueAsString(serverBean);
+		UpdateBlockCompleted bean = objectMapper.readValue(serverJson, UpdateBlockCompleted.class);
 		assertThat(bean).isEqualTo(uut);
 	}
 }
