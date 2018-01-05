@@ -9,8 +9,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Value.Immutable
-@JsonSerialize(as = ImmutableServerUpdatesFinished.class)
-@JsonDeserialize(as = ImmutableServerUpdatesFinished.class)
+@JsonSerialize(as = ImmutableGenericUpdateBlockCompleted.class)
+@JsonDeserialize(as = ImmutableGenericUpdateBlockCompleted.class)
 public interface  GenericUpdateBlockCompleted {
 	static ImmutableGenericUpdateBlockCompleted.Builder builder() {
 		return ImmutableGenericUpdateBlockCompleted.builder();
