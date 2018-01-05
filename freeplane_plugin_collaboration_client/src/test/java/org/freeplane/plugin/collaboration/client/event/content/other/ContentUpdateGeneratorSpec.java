@@ -89,7 +89,39 @@ public class ContentUpdateGeneratorSpec {
 	public void generatesEventOnNodeContentUpdate() throws Exception {
 		NodeContentUpdated contentUpdated = mock(NodeContentUpdated.class);
 		when(eventFactory.createNodeContentUpdatedEvent(node)).thenReturn(contentUpdated);
-		uut.onNodeContentUpdate(node);
+		uut.onNodeChange(node);
+		
+		final UpdateBlockCompleted event = consumer.getEvent();
+		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+				.mapId(header.mapId()).mapRevision(1)
+				.addUpdateBlock(contentUpdated).build();
+		
+		assertThat(event).isEqualTo(expected);
+		assertThat(header.mapRevision()).isEqualTo(1);
+
+	}
+	
+
+	@Test
+	public void generatesEventOnNewNode() throws Exception {
+		NodeContentUpdated contentUpdated = mock(NodeContentUpdated.class);
+		when(eventFactory.createNodeContentUpdatedEvent(node)).thenReturn(contentUpdated);
+		uut.onNewNode(node);
+		
+		final UpdateBlockCompleted event = consumer.getEvent();
+		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+				.mapId(header.mapId()).mapRevision(1)
+				.addUpdateBlock(contentUpdated).build();
+		
+		assertThat(event).isEqualTo(expected);
+		assertThat(header.mapRevision()).isEqualTo(1);
+
+	}
+	@Test
+	public void generatesEventOnMapContentUpdate() throws Exception {
+		MapContentUpdated contentUpdated = mock(MapContentUpdated.class);
+		when(eventFactory.createMapContentUpdatedEvent(map)).thenReturn(contentUpdated);
+		uut.onMapChange(map);
 		
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
@@ -102,10 +134,10 @@ public class ContentUpdateGeneratorSpec {
 	}
 	
 	@Test
-	public void generatesEventOnMapContentUpdate() throws Exception {
+	public void generatesEventOnNewMap() throws Exception {
 		MapContentUpdated contentUpdated = mock(MapContentUpdated.class);
 		when(eventFactory.createMapContentUpdatedEvent(map)).thenReturn(contentUpdated);
-		uut.onMapContentUpdate(map);
+		uut.onNewMap(map);
 		
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
@@ -116,7 +148,6 @@ public class ContentUpdateGeneratorSpec {
 		assertThat(header.mapRevision()).isEqualTo(1);
 
 	}
-	
 	@Test
 	public void exclusionsContain() {
 		assertThat(ContentUpdateGenerator.getNodeContentExclusions()).contains(

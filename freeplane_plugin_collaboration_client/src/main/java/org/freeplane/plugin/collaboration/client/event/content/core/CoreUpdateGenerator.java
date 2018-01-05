@@ -47,4 +47,9 @@ public class CoreUpdateGenerator implements NodeUpdateGenerator {
 			.addUpdateEvent(node.createID(), () -> eventFactory.createCoreUpdatedEvent(node));
 		
 	}
+
+	@Override
+	public void onNewNode(NodeModel node) {
+		onNodeChange(node);
+	}
 }

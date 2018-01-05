@@ -60,25 +60,15 @@ public class ContentUpdateGenerator implements NodeUpdateGenerator, MapUpdateGen
 	}
 	
 	public void onNodeChange(NodeModel node) {
-		onNodeContentUpdate(node);		
+		getUpdates(node.getMap()).addUpdateEvent(node.createID(), () -> eventFactory.createNodeContentUpdatedEvent(node));		
 	}
 
 	public void onMapChange(MapModel map) {
-		onMapContentUpdate(map);		
+		getUpdates(map).addUpdateEvent("map", () -> eventFactory.createMapContentUpdatedEvent(map));		
 	}
 	
 	private static Collection<Class<? extends IExtension>> NODE_CONTENT_EXCLUSIONS =  null;
 	private static Collection<Class<? extends IExtension>> MAP_CONTENT =  null;
-
-	public void onNodeContentUpdate(NodeModel node) {
-		getUpdates(node.getMap()).addUpdateEvent(node.createID(), () -> eventFactory.createNodeContentUpdatedEvent(node));
-
-	}
-
-	public void onMapContentUpdate(MapModel map) {
-			getUpdates(map).addUpdateEvent("map", () -> eventFactory.createMapContentUpdatedEvent(map));
-
-	}
 
 	public static Collection<Class<? extends IExtension>> getNodeContentExclusions() {
 		if(NODE_CONTENT_EXCLUSIONS == null) {
@@ -101,6 +91,17 @@ public class ContentUpdateGenerator implements NodeUpdateGenerator, MapUpdateGen
 
 	private Updates getUpdates(MapModel map) {
 		return updateBlockGeneratorFactory.of(map);
+	}
+
+	@Override
+	public void onNewMap(MapModel map) {
+		onMapChange(map);
+		
+	}
+
+	@Override
+	public void onNewNode(NodeModel node) {
+		onNodeChange(node);		
 	}
 
 }

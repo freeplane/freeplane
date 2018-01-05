@@ -4,11 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.NodeContentManipulator;
-import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
-import org.freeplane.plugin.collaboration.client.event.content.other.MapContentUpdateProcessor;
-import org.freeplane.plugin.collaboration.client.event.content.other.MapContentUpdated;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -31,7 +27,6 @@ public class MapContentUpdateProcessorSpec {
 	
 	@Test
 	public void callsMapContentManipulator() throws Exception {
-		final NodeModel node = new NodeModel(null);
 		uut.onUpdate(map, MapContentUpdated.builder().content("content").build());
 		
 		verify(nodeContentManipulator).updateMapContent(map, "content", ContentUpdateGenerator.getMapContentExtensions());

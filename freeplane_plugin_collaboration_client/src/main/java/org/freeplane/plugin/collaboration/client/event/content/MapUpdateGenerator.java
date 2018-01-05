@@ -28,5 +28,6 @@ import org.freeplane.features.map.MapModel;
  */
 public interface MapUpdateGenerator {
 	boolean handles(MapChangeEvent event);
-	void onMapChange(MapModel node);
+	void onNewMap(MapModel map);
+	void onMapChange(MapModel map);
 }

@@ -3,7 +3,9 @@ package org.freeplane.plugin.collaboration.client.event.content;
 import java.util.List;
 
 import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
+import org.freeplane.features.map.NodeModel;
 
 public class ContentUpdateGenerators{
 
@@ -26,6 +28,12 @@ public class ContentUpdateGenerators{
 		}
 	}
 
+	public void onNewNode(NodeModel node) {
+		for(NodeUpdateGenerator g : nodeUpdateGenerators) {
+			g.onNewNode(node);
+		}
+	}
+	
 	public void onMapContentUpdate(MapChangeEvent event) {
 		for(MapUpdateGenerator g : mapUpdateGenerators) {
 			if(g.handles(event)) {
@@ -35,4 +43,10 @@ public class ContentUpdateGenerators{
 		}
 	}
 
+	public void onNewMap(MapModel map) {
+		for(MapUpdateGenerator g : mapUpdateGenerators) {
+			g.onNewMap(map);
+		}
+	}
 }
+
