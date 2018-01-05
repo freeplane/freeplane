@@ -60,13 +60,13 @@ public class EventStreamDialog {
 			}, 100);
 			final MapWriter mapWriter = Controller.getCurrentModeController().getMapController().getMapWriter();
 			ContentUpdateEventFactory contentEventFactory = new ContentUpdateEventFactory(mapWriter);
-			StructureUpdateEventFactory structuralEventFactory = new StructureUpdateEventFactory();
-			ChildrenUpdateGenerators childrenUpdateGenerators = new ChildrenUpdateGenerators(f, structuralEventFactory, contentEventFactory);
 			ContentUpdateGenerator contentUpdateGenerator = new ContentUpdateGenerator(f, contentEventFactory);
 			CoreUpdateGenerator coreUpdateGenerator = new CoreUpdateGenerator(f, contentEventFactory);
 			ContentUpdateGenerators contentGenerators = new ContentUpdateGenerators(
 				Arrays.asList(contentUpdateGenerator), 
 				Arrays.asList(coreUpdateGenerator, contentUpdateGenerator));
+			StructureUpdateEventFactory structuralEventFactory = new StructureUpdateEventFactory();
+			ChildrenUpdateGenerators childrenUpdateGenerators = new ChildrenUpdateGenerators(f, structuralEventFactory, contentGenerators);
 			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(childrenUpdateGenerators,  contentGenerators);
 			MapModel map = Controller.getCurrentController().getMap();
 			if(! map.containsExtension(ModifiableUpdateHeaderExtension.class))

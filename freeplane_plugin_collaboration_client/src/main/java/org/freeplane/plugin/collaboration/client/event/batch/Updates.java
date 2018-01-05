@@ -16,20 +16,28 @@ import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 @SuppressWarnings("serial") 
 public class Updates {
 	private final class TimerExtension extends Timer {
+		private ActionEvent currentEvent;
+
 		private TimerExtension(int delay, ActionListener listener) {
 			super(delay, listener);
 		}
 		
 		@Override
 		protected void fireActionPerformed(ActionEvent e) {		
-			builder = createBuilder();
-			notifyListeners(e);
-			registeredUpdates.clear();
-			listenerList = new EventListenerList();
-			UpdateBlockCompleted event = builder.build();
-			builder = null;
-			header.setMapRevision(header.mapRevision() + 1);
-			consumer.onUpdates(event);
+			this.currentEvent = e;
+			try {
+				builder = createBuilder();
+				notifyListeners(e);
+				registeredUpdates.clear();
+				listenerList = new EventListenerList();
+				UpdateBlockCompleted event = builder.build();
+				builder = null;
+				header.setMapRevision(header.mapRevision() + 1);
+				consumer.onUpdates(event);
+			}
+			finally {
+				this.currentEvent = null;
+			}
 		}
 		
 		private void notifyListeners(ActionEvent e) {
@@ -38,9 +46,18 @@ public class Updates {
 	            if (listeners[i]==ActionListener.class) {
 	                ((ActionListener)listeners[i+1]).actionPerformed(e);
 	            }
-	            listeners = listenerList.getListenerList();
 	        }
 		}
+
+		@Override
+		public void addActionListener(ActionListener listener) {
+			if(currentEvent != null)
+				listener.actionPerformed(currentEvent);
+			else
+				super.addActionListener(listener);
+		}
+		
+		
 	}
 	
 	private static class UpdateKey {
@@ -98,20 +115,23 @@ public class Updates {
 	}
 
 	public void addUpdateEvent(String updatedElementId, Supplier<MapUpdated> eventSupplier ) {
-		if(registeredUpdates.add(new UpdateKey(eventSupplier.getClass(), updatedElementId)))
+		if(registeredUpdates.add(new UpdateKey(eventSupplier.getClass(), updatedElementId))) {
 			timer.addActionListener(e -> builder.addUpdateBlock(eventSupplier.get()));
+		}
 		timer.restart();
 	}
 
 	public void addOptionalUpdateEvent(String updatedElementId, Supplier<Optional<MapUpdated>> eventSupplier ) {
-		if(registeredUpdates.add(new UpdateKey(eventSupplier.getClass(), updatedElementId)))
+		if(registeredUpdates.add(new UpdateKey(eventSupplier.getClass(), updatedElementId))) {
 			timer.addActionListener(e -> eventSupplier.get().ifPresent(builder::addUpdateBlock));
+		}
 		timer.restart();
 	}
 
 	public void addUpdateEvents(String updatedElementId, Supplier<MapUpdated[]> eventSupplier ) {
-		if(registeredUpdates.add(new UpdateKey(eventSupplier.getClass(), updatedElementId)))
+		if(registeredUpdates.add(new UpdateKey(eventSupplier.getClass(), updatedElementId))) {
 			timer.addActionListener(e -> builder.addUpdateBlock(eventSupplier.get()));
+		}
 		timer.restart();
 	}
 

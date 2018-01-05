@@ -114,7 +114,7 @@ public class UpdatesSpec {
 	}
 
 	@Test
-	public void supportsAddingNewListenerDuringActionExecution() throws Exception {
+	public void supportsAddingNewEventsDuringActionExecution() throws Exception {
 		final MapUpdated childrenUpdated = mock(MapUpdated.class);
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
 		

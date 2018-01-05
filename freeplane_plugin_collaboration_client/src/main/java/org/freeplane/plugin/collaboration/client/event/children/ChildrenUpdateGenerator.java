@@ -6,20 +6,20 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
-import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 
 public class ChildrenUpdateGenerator implements IExtension{
 	final private Updates updates;
 	final private StructureUpdateEventFactory structuralEventFactory;
-	final private ContentUpdateEventFactory contentUpdateEventFactory;
+	final private ContentUpdateGenerators contentUpdateGenerators;
 	final private LinkedHashSet<NodeModel> changedParents;
 	final private LinkedHashSet<NodeModel> insertedChildren;
 
 	public ChildrenUpdateGenerator(Updates updates, StructureUpdateEventFactory eventFactory,
-	                               ContentUpdateEventFactory contentUpdateEventFactory) {
+	                               ContentUpdateGenerators contentUpdateGenerators) {
 		this.updates = updates;
 		this.structuralEventFactory = eventFactory;
-		this.contentUpdateEventFactory = contentUpdateEventFactory;
+		this.contentUpdateGenerators = contentUpdateGenerators;
 		changedParents = new LinkedHashSet<>();
 		insertedChildren = new LinkedHashSet<>();
 	}
@@ -27,8 +27,8 @@ public class ChildrenUpdateGenerator implements IExtension{
 	public void onNewMap(MapModel map) {
 		updates.addUpdateEvents("map", () -> 
 			{
-				updates.addUpdateEvents(createRootNodeIdUpdatedEvent(map),
-					contentUpdateEventFactory.createMapContentUpdatedEvent(map));
+				updates.addUpdateEvent(createRootNodeIdUpdatedEvent(map));
+				contentUpdateGenerators.onNewMap(map);
 				generateEventsForSubtree(map.getRootNode());
 			});
 	}
@@ -80,8 +80,7 @@ public class ChildrenUpdateGenerator implements IExtension{
 	}
 
 	private void generateContentUpdateEvents(final NodeModel node) {
-		updates.addUpdateEvents(contentUpdateEventFactory.createCoreUpdatedEvent(node),
-				contentUpdateEventFactory.createNodeContentUpdatedEvent(node));
+		contentUpdateGenerators.onNewNode(node);
 	}
 
 	private void generateChildrenUpdateEvent(final NodeModel node) {
