@@ -1,8 +1,10 @@
 package org.freeplane.plugin.collaboration.client.event;
 
-import org.freeplane.plugin.collaboration.client.event.children.ImmutableChildrenUpdated;
 import org.freeplane.plugin.collaboration.client.event.children.ImmutableRootNodeIdUpdated;
 import org.freeplane.plugin.collaboration.client.event.children.ImmutableSpecialNodeTypeSet;
+import org.freeplane.plugin.collaboration.client.event.children.ImmutableNodeInserted;
+import org.freeplane.plugin.collaboration.client.event.children.ImmutableNodeMoved;
+import org.freeplane.plugin.collaboration.client.event.children.ImmutableNodeRemoved;
 import org.freeplane.plugin.collaboration.client.event.content.core.ImmutableCoreUpdated;
 import org.freeplane.plugin.collaboration.client.event.content.other.ImmutableMapContentUpdated;
 import org.freeplane.plugin.collaboration.client.event.content.other.ImmutableNodeContentUpdated;
@@ -16,7 +18,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 		  include = JsonTypeInfo.As.PROPERTY, 
 		  property = "contentType")
 @JsonSubTypes({ 
-	  @Type(value = ImmutableChildrenUpdated.class, name = "CHILDREN"), 
+	  @Type(value = ImmutableNodeInserted.class, name = "INSERTED"), 
+	  @Type(value = ImmutableNodeMoved.class, name = "MOVED"), 
+	  @Type(value = ImmutableNodeRemoved.class, name = "REMOVED"), 
 	  @Type(value = ImmutableCoreUpdated.class, name = "CORE"),
 	  @Type(value = ImmutableNodeContentUpdated.class, name = "OTHER_CONTENT"), 
 	  @Type(value = ImmutableMapContentUpdated.class, name = "OTHER_MAP_CONTENT"), 

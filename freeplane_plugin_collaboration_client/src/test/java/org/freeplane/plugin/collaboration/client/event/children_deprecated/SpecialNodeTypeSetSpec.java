@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.children;
+package org.freeplane.plugin.collaboration.client.event.children_deprecated;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -8,7 +8,7 @@ import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
-import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.SpecialNodeTypeSet.SpecialNodeType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;

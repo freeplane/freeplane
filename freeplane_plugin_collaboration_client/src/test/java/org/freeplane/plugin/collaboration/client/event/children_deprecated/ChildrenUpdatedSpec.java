@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.children;
+package org.freeplane.plugin.collaboration.client.event.children_deprecated;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated.Side;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.ChildrenUpdated.Side;
 import org.junit.Before;
 import org.junit.Test;
 

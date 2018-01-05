@@ -1,8 +1,8 @@
 package org.freeplane.plugin.collaboration.client;
 
-import org.freeplane.plugin.collaboration.client.event.children.ImmutableChild;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated.Child;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated.Side;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.ImmutableChild;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.ChildrenUpdated.Child;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.ChildrenUpdated.Side;
 
 public interface TestData {
 

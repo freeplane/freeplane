@@ -34,12 +34,13 @@ import org.freeplane.plugin.collaboration.client.event.UpdateProcessorChain;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateProcessor;
+import org.freeplane.plugin.collaboration.client.event.children.MapStructureEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.children.NodeFactory;
+import org.freeplane.plugin.collaboration.client.event.children.NodeInsertedProcessor;
+import org.freeplane.plugin.collaboration.client.event.children.NodeMovedProcessor;
+import org.freeplane.plugin.collaboration.client.event.children.NodeRemovedProcessor;
 import org.freeplane.plugin.collaboration.client.event.children.RootNodeIdUpdatedProcessor;
 import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeProcessor;
-import org.freeplane.plugin.collaboration.client.event.children.StructureUpdateEventFactory;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateProcessor;
@@ -63,9 +64,8 @@ public class EventStreamDialog {
 			ContentUpdateGenerators contentGenerators = new ContentUpdateGenerators(
 				Arrays.asList(contentUpdateGenerator), 
 				Arrays.asList(coreUpdateGenerator, contentUpdateGenerator));
-			StructureUpdateEventFactory structuralEventFactory = new StructureUpdateEventFactory();
-			ChildrenUpdateGenerators childrenUpdateGenerators = new ChildrenUpdateGenerators(f, structuralEventFactory, contentGenerators);
-			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(childrenUpdateGenerators,  contentGenerators);
+			MapStructureEventGenerator mapStructureEventGenerator = new MapStructureEventGenerator(f, contentGenerators);
+			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(mapStructureEventGenerator,  contentGenerators);
 			MapModel map = Controller.getCurrentController().getMap();
 			if(! map.containsExtension(ModifiableUpdateHeaderExtension.class))
 				map.addExtension(ModifiableUpdateHeaderExtension.create().setMapId("id").setMapRevision(1));
@@ -84,11 +84,13 @@ public class EventStreamDialog {
 			mapController = (MMapController) modeController.getMapController();
 			final SingleNodeStructureManipulator singleNodeStructureManipulator = new SingleNodeStructureManipulator(mapController);
 			final RootNodeIdUpdatedProcessor rootNodeIdUpdatedProcessor = new RootNodeIdUpdatedProcessor();
-			final ChildrenUpdateProcessor childrenUpdateProcessor = new ChildrenUpdateProcessor(singleNodeStructureManipulator, nodeFactory);
 			final SpecialNodeTypeProcessor specialNodeTypeProcessor = new SpecialNodeTypeProcessor();
 			NodeContentManipulator updater = new NodeContentManipulator(mapController);
 			processor = new UpdateProcessorChain().add(rootNodeIdUpdatedProcessor)
-					.add(childrenUpdateProcessor).add(specialNodeTypeProcessor)
+					.add(specialNodeTypeProcessor)
+					.add(new NodeInsertedProcessor(singleNodeStructureManipulator, nodeFactory))
+					.add(new NodeMovedProcessor(singleNodeStructureManipulator))
+					.add(new NodeRemovedProcessor(singleNodeStructureManipulator))
 					.add(new MapContentUpdateProcessor(updater))
 					.add(new NodeContentUpdateProcessor(updater))
 					.add(new CoreUpdateProcessor((MTextController)TextController.getController(modeController)));

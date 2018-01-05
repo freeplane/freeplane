@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.children;
+package org.freeplane.plugin.collaboration.client.event.children_deprecated;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;

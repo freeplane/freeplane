@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.children;
+package org.freeplane.plugin.collaboration.client.event.children_deprecated;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,6 +13,9 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
 import org.freeplane.plugin.collaboration.client.TestData;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.ChildrenUpdateProcessor;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.ChildrenUpdated;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.NodeFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

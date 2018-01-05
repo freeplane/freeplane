@@ -3,6 +3,7 @@ package org.freeplane.plugin.collaboration.client.event.batch;
 import java.util.WeakHashMap;
 
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 
 public class UpdateBlockGeneratorFactory {
 	WeakHashMap<MapModel, Updates> generators = new WeakHashMap<>();
@@ -26,6 +27,10 @@ public class UpdateBlockGeneratorFactory {
 		}
 		return generator;
 
+	}
+
+	public Updates of(NodeModel node) {
+		return of(node.getMap());
 	}
 
 }

@@ -5,8 +5,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.freeplane.features.map.MapModel;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateProcessor;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.ChildrenUpdateProcessor;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.ChildrenUpdated;
 import org.junit.Test;
 
 public class UpdateProcessorChainSpec {

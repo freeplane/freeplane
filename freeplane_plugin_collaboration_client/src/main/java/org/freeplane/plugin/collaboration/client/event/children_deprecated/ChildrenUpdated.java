@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.children;
+package org.freeplane.plugin.collaboration.client.event.children_deprecated;
 
 import java.util.List;
 import java.util.Optional;

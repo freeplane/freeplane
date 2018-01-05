@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.children;
+package org.freeplane.plugin.collaboration.client.event.children_deprecated;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -18,7 +18,13 @@ import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
 import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
-import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
+import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.ChildrenUpdateGenerator;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.ChildrenUpdated;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.RootNodeIdUpdated;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.SpecialNodeTypeSet;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.StructureUpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.SpecialNodeTypeSet.SpecialNodeType;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 import org.junit.Before;
 import org.junit.BeforeClass;

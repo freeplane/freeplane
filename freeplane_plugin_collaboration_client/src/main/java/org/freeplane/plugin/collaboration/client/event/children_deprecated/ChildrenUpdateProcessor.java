@@ -1,4 +1,4 @@
-package org.freeplane.plugin.collaboration.client.event.children;
+package org.freeplane.plugin.collaboration.client.event.children_deprecated;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessor;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated.Child;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdated.Side;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.ChildrenUpdated.Child;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.ChildrenUpdated.Side;
 
 public class ChildrenUpdateProcessor implements UpdateProcessor<ChildrenUpdated> {
 

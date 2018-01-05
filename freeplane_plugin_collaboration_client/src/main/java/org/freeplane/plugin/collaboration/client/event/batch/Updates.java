@@ -3,7 +3,6 @@ package org.freeplane.plugin.collaboration.client.event.batch;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -121,23 +120,26 @@ public class Updates {
 		timer.restart();
 	}
 
-	public void addOptionalUpdateEvent(String updatedElementId, Supplier<Optional<MapUpdated>> eventSupplier ) {
-		if(registeredUpdates.add(new UpdateKey(eventSupplier.getClass(), updatedElementId))) {
-			timer.addActionListener(e -> eventSupplier.get().ifPresent(builder::addUpdateBlock));
-		}
-		timer.restart();
+	public void addUpdateEvents(String updatedElementId, Supplier<MapUpdated[]> eventSupplier ) {
+		if(registeredUpdates.add(new UpdateKey(eventSupplier.getClass(), updatedElementId)))
+			addUpdateEvents(eventSupplier);
+		else
+			timer.restart();
 	}
 
-	public void addUpdateEvents(String updatedElementId, Supplier<MapUpdated[]> eventSupplier ) {
-		if(registeredUpdates.add(new UpdateKey(eventSupplier.getClass(), updatedElementId))) {
-			timer.addActionListener(e -> builder.addUpdateBlock(eventSupplier.get()));
-		}
-		timer.restart();
+	public void addUpdateEvents(Supplier<MapUpdated[]> eventSupplier) {
+		timer.addActionListener(e -> builder.addUpdateBlock(eventSupplier.get()));
 	}
 
 	public void addUpdateEvents(String updatedElementId, Runnable eventSupplier) {
 		if(registeredUpdates.add(new UpdateKey(eventSupplier.getClass(), updatedElementId)))
-			timer.addActionListener(e -> eventSupplier.run());
+			addUpdateEvents(eventSupplier);
+		else
+			timer.restart();
+	}
+
+	public void addUpdateEvents(Runnable eventSupplier) {
+		timer.addActionListener(e -> eventSupplier.run());
 		timer.restart();
 	}
 	public void addUpdateEvent(MapUpdated event) {
@@ -147,6 +149,5 @@ public class Updates {
 	public void addUpdateEvents(MapUpdated... events) {
 		builder.addUpdateBlock(events);
 	}
-
 	
 }

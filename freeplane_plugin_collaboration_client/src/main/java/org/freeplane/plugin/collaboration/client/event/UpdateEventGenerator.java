@@ -8,56 +8,39 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerator;
-import org.freeplane.plugin.collaboration.client.event.children.ChildrenUpdateGenerators;
+import org.freeplane.plugin.collaboration.client.event.children.MapStructureEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 
 public class UpdateEventGenerator implements IMapChangeListener, INodeChangeListener{
-	final private ChildrenUpdateGenerators structureGenerators;
+	final private MapStructureEventGenerator structureGenerator;
 	final private ContentUpdateGenerators contentGenerators;
 	
 
-	public UpdateEventGenerator(ChildrenUpdateGenerators structureGenerators,
+	public UpdateEventGenerator(MapStructureEventGenerator mapStructureEventGenerator,
 	                            ContentUpdateGenerators contentGenerators) {
 		super();
-		this.structureGenerators = structureGenerators;
+		this.structureGenerator = mapStructureEventGenerator;
 		this.contentGenerators = contentGenerators;
 	}
 
-
-
-	private ChildrenUpdateGenerator getGenerator(MapModel map) {
-			return structureGenerators.of(map);
-	}
-	
-	
-	
 	@Override
 	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-		onChangedStructure(nodeDeletionEvent.parent);	
+		structureGenerator.onNodeRemoved(nodeDeletionEvent.node);	
 	}
 
 	@Override
 	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-		final ChildrenUpdateGenerator generator = getGenerator(parent.getMap());
-		generator.onNodeInserted(parent, child);
+		structureGenerator.onNodeInserted(child);
 	}
 
-	private void onChangedStructure(NodeModel parent) {
-		final ChildrenUpdateGenerator generator = getGenerator(parent.getMap());
-		generator.onChangedStructure(parent);
-	}
 
 	@Override
 	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-		final ChildrenUpdateGenerator oldMapGenerator = getGenerator(nodeMoveEvent.oldParent.getMap());
-		oldMapGenerator.onChangedStructure(nodeMoveEvent.oldParent);		
-		final ChildrenUpdateGenerator newMapGenerator = getGenerator(nodeMoveEvent.newParent.getMap());
-		newMapGenerator.onChangedStructure(nodeMoveEvent.newParent);
+		structureGenerator.onNodeMoved(nodeMoveEvent.child);
 	}
 	
 	public void onNewMap(MapModel map) {
-		getGenerator(map).onNewMap(map);
+		structureGenerator.onNewMap(map);
 	}
 
 	@Override

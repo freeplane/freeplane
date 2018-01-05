@@ -5,14 +5,13 @@ import static org.mockito.Mockito.mock;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
 import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
-import org.freeplane.plugin.collaboration.client.event.children.StructureUpdateEventFactory;
+import org.freeplane.plugin.collaboration.client.event.children_deprecated.StructureUpdateEventFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -158,26 +157,5 @@ public class UpdatesSpec {
 		assertThat(event).containsExactly(expected1, expected2);
 		assertThat(header.mapRevision()).isEqualTo(2);
 	}
-
-
-	@Test
-	public void generatesBlockContainingOptionalSingleEvent() throws Exception {
-		final Optional<MapUpdated> childrenUpdated = Optional.of(mock(MapUpdated.class));
-		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
-		
-		Updates uut = new Updates(consumer, DELAY_MILLIS, header);
-		
-		uut.addOptionalUpdateEvent("id", () -> childrenUpdated);
-		uut.addOptionalUpdateEvent("id", () -> Optional.empty());
-		
-		final UpdateBlockCompleted event = consumer.getEvent();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateBlock(childrenUpdated.get()).build();
-		
-		assertThat(event).isEqualTo(expected);
-		assertThat(header.mapRevision()).isEqualTo(1);
-	}
-
 	
 }

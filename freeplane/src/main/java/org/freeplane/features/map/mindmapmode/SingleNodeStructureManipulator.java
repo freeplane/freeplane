@@ -22,6 +22,11 @@ public class SingleNodeStructureManipulator {
 	public void moveNode(final NodeModel child, final NodeModel newParent, final int newIndex,
                         final boolean isLeft, final boolean changeSide) {
 		mapController.moveSingleNode(child, newParent, newIndex, isLeft, changeSide);
+	}
+
+	public void deleteNode(NodeModel child) {
+		deleteNode(child.getParentNode(), child.getIndex());
+		
 	}	
 	
 }
