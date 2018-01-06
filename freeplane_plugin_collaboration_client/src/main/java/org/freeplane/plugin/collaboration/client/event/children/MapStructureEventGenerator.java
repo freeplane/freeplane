@@ -9,16 +9,24 @@ import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGene
 public class MapStructureEventGenerator{
 	final private UpdateBlockGeneratorFactory updates;
 	final private ContentUpdateGenerators contentUpdateGenerators;
+	final private MapStructureEventFactory mapStructureEventFactory;
+	public MapStructureEventGenerator(UpdateBlockGeneratorFactory updateBlockGeneratorFactory, 
+	                                  ContentUpdateGenerators contentUpdateGenerators) {
+		this(updateBlockGeneratorFactory, contentUpdateGenerators, new MapStructureEventFactory());	
+	}
 
-	public MapStructureEventGenerator(UpdateBlockGeneratorFactory updateBlockGeneratorFactory, ContentUpdateGenerators contentUpdateGenerators) {
+	MapStructureEventGenerator(UpdateBlockGeneratorFactory updateBlockGeneratorFactory, 
+		ContentUpdateGenerators contentUpdateGenerators,
+		final MapStructureEventFactory mapStructureEventFactory) {
 		this.updates = updateBlockGeneratorFactory;
 		this.contentUpdateGenerators = contentUpdateGenerators;
+		this.mapStructureEventFactory = mapStructureEventFactory;
 	}
-	
+
 	public void onNewMap(MapModel map) {
 		final Updates updates = this.updates.of(map);
-		updates.addUpdateEvents("map", () -> 
-			updates.addUpdateEvent(createRootNodeIdUpdatedEvent(map)));
+		updates.addUpdateEvent("map", 
+			() -> mapStructureEventFactory.createRootNodeIdUpdatedEvent(map));
 		contentUpdateGenerators.onNewMap(map);
 		generateEventsForSubtree(map.getRootNode());
 	}
@@ -29,38 +37,20 @@ public class MapStructureEventGenerator{
 	}
 
 	public void onNodeMoved(NodeModel node) {
-		String nodeId = node.createID();
 		final Updates updates = this.updates.of(node);
-		updates.addUpdateEvents(() -> {
-			updates.addUpdateEvents(NodeMoved.builder()
-				.nodeId(nodeId)
-				.position(nodePositionOf(node)).build());
-		});
+		updates.addUpdateEvent(() -> mapStructureEventFactory.createNodeMovedEvent(node));
 	}
 
 	public void onNodeRemoved(NodeModel child) {
-		String nodeId = child.createID();
 		final Updates updates = this.updates.of(child);
-		updates.addUpdateEvents(() -> {
-			updates.addUpdateEvents(NodeRemoved.builder()
-				.nodeId(nodeId).build());
-		});
+		updates.addUpdateEvent(() -> 
+		mapStructureEventFactory.createNodeRemovedEvent(child)
+				);
 	}
 
-	public ImmutableNodePosition nodePositionOf(NodeModel node) {
-		NodeModel parent = node.getParentNode();
-		ImmutableNodePosition.Builder builder = NodePosition.builder()
-				.parentId(parent.createID())
-				.position(node.getIndex());
-		if(parent.isRoot())
-			builder.side(Side.of(node));
-		ImmutableNodePosition position = builder.build();
-		return position;
-	}
-
-	
-	private RootNodeIdUpdated createRootNodeIdUpdatedEvent(MapModel map) {
-		return RootNodeIdUpdated.builder().nodeId(map.getRootNode().getID()).build();
+	private void generateNodeInsertedEvent(final NodeModel node) {
+		final Updates updates = this.updates.of(node);
+		updates.addUpdateEvent(() -> mapStructureEventFactory.createNodeInsertedEvent(node));
 	}
 
 
@@ -75,28 +65,16 @@ public class MapStructureEventGenerator{
 		}
 	}
 
-	private void generateNodeInsertedEvent(final NodeModel node) {
-		String nodeId = node.createID();
-		final Updates updates = this.updates.of(node);
-		updates.addUpdateEvents(() -> {
-			updates.addUpdateEvents(NodeInserted.builder()
-				.nodeId(nodeId)
-				.position(nodePositionOf(node)).build());
-		});
-	}
-
 	private void generateContentUpdateEvents(final NodeModel node) {
 		contentUpdateGenerators.onNewNode(node);
 	}
 
 
 	private void generateSpecialTypeEvent(final NodeModel node) {
-		SpecialNodeTypeSet.SpecialNodeType.of(node).ifPresent((c) -> {
+		SpecialNodeTypeSet.SpecialNodeType.of(node).ifPresent(c -> {
 			final Updates updates = this.updates.of(node);
-			updates.addUpdateEvent(SpecialNodeTypeSet.builder().nodeId(node.createID()).content(c).build());
+			updates.addUpdateEvent(() -> mapStructureEventFactory.createSpecialNodeTypeSetEvent(node, c));
 		});
 	}
-
-
 
 }

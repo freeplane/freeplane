@@ -11,7 +11,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
 import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
-import org.freeplane.plugin.collaboration.client.event.children_deprecated.StructureUpdateEventFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -21,10 +20,7 @@ public class UpdatesSpec {
 
 	@Mock
 	private MapModel map;
-	
-	@Mock
-	private StructureUpdateEventFactory eventFactory;
-	
+		
 	private ModifiableUpdateHeaderExtension header = ModifiableUpdateHeaderExtension.create().setMapId("mapId").setMapRevision(0);
 
 	@BeforeClass

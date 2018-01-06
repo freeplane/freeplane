@@ -1,11 +1,10 @@
-package org.freeplane.plugin.collaboration.client.event.children_deprecated;
+package org.freeplane.plugin.collaboration.client.event.children;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.collaboration.client.event.children_deprecated.NodeFactory;
 import org.junit.Test;
 
 public class NodeFactorySpec {

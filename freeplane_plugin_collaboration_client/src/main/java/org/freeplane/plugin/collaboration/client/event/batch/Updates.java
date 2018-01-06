@@ -114,21 +114,15 @@ public class Updates {
 	}
 
 	public void addUpdateEvent(String updatedElementId, Supplier<MapUpdated> eventSupplier ) {
-		if(registeredUpdates.add(new UpdateKey(eventSupplier.getClass(), updatedElementId))) {
-			timer.addActionListener(e -> builder.addUpdateBlock(eventSupplier.get()));
-		}
-		timer.restart();
-	}
-
-	public void addUpdateEvents(String updatedElementId, Supplier<MapUpdated[]> eventSupplier ) {
 		if(registeredUpdates.add(new UpdateKey(eventSupplier.getClass(), updatedElementId)))
-			addUpdateEvents(eventSupplier);
+			addUpdateEvent(eventSupplier);
 		else
 			timer.restart();
 	}
 
-	public void addUpdateEvents(Supplier<MapUpdated[]> eventSupplier) {
+	public void addUpdateEvent(Supplier<MapUpdated> eventSupplier) {
 		timer.addActionListener(e -> builder.addUpdateBlock(eventSupplier.get()));
+		timer.restart();
 	}
 
 	public void addUpdateEvents(String updatedElementId, Runnable eventSupplier) {
@@ -144,10 +138,6 @@ public class Updates {
 	}
 	public void addUpdateEvent(MapUpdated event) {
 		builder.addUpdateBlock(event);
-	}
-	
-	public void addUpdateEvents(MapUpdated... events) {
-		builder.addUpdateBlock(events);
 	}
 	
 }

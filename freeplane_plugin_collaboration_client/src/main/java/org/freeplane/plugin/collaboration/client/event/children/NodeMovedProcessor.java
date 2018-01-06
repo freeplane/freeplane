@@ -41,7 +41,7 @@ public class NodeMovedProcessor implements UpdateProcessor<NodeMoved>{
 		NodeModel parent = map.getNodeForID(position.parentId());
 		NodeModel child = map.getNodeForID(event.nodeId());
 		boolean isLeft = position.side().map(Side::isLeft).orElse(parent.isLeft());
-		manipulator.insertNode(child, parent, position.position(), isLeft);
+		manipulator.moveNode(child, parent, position.position(), isLeft, isLeft != child.isLeft());
 	}
 
 	@Override
