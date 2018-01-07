@@ -13,8 +13,7 @@
 	<xsl:template match='body'>
 		<node>
 			<xsl:attribute name='COLOR'>#006633</xsl:attribute>
-			<xsl:attribute name='TEXT'><xsl:value-of
-				select='//title' /></xsl:attribute>
+			<xsl:attribute name='TEXT'><xsl:value-of select='//title' /></xsl:attribute>
 			<xsl:attribute name='FOLDED'>true</xsl:attribute>
 			<font Name='SansSerif' SIZE='18' />
 			<xsl:apply-templates select='outline' />
@@ -39,28 +38,36 @@
 							<xsl:attribute name='COLOR'>#006633</xsl:attribute>
 							<xsl:attribute name='TEXT'><xsl:value-of
 								select='@text' /></xsl:attribute>
-							<xsl:attribute name='LINK'><xsl:choose><xsl:when
-								test='contains(@url,&apos;.opml&apos;) or contains(@url,&apos;.OPML&apos;)'><xsl:value-of
-								select='concat(@url,&apos;.mm&apos;)' /></xsl:when><xsl:otherwise><xsl:value-of
-								select='@url' /></xsl:otherwise>
-</xsl:choose>
-</xsl:attribute>
+							<xsl:attribute name='LINK'>
+							<xsl:choose>
+							<xsl:when
+								test='contains(@url,&apos;.opml&apos;) or contains(@url,&apos;.OPML&apos;)'>
+								<xsl:value-of select='concat(@url,&apos;.mm&apos;)' />
+								</xsl:when>
+								<xsl:otherwise>
+								<xsl:value-of select='@url' />
+								</xsl:otherwise> 
+								</xsl:choose>
+								</xsl:attribute>
 							<font Name='SansSerif' SIZE='16' />
 							<xsl:apply-templates select='outline' />
 						</node>
 					</xsl:when>
 					<xsl:when test='@type=&apos;img&apos;'>
 						<node>
-							<xsl:attribute name='TEXT'><xsl:value-of
-								select='concat(&apos;&lt;html&gt;&lt;img src=&quot;&apos;,@url,&apos;&quot;&gt;&apos;)' /></xsl:attribute>
+							<xsl:attribute name='TEXT'>
+							<xsl:value-of
+								select='concat(&apos;&lt;html&gt;&lt;img src=&quot;&apos;,@url,&apos;&quot;&gt;&apos;)' />
+							</xsl:attribute>
 							<font Name='SansSerif' SIZE='16' />
 							<xsl:apply-templates select='outline' />
 						</node>
 					</xsl:when>
 					<xsl:otherwise>
 						<node>
-							<xsl:attribute name='TEXT'><xsl:value-of
-								select='@text' /></xsl:attribute>
+							<xsl:attribute name='TEXT'>
+							<xsl:value-of select='@text' />
+							</xsl:attribute>
 							<font Name='SansSerif' SIZE='16' BOLD='true' />
 							<xsl:apply-templates select='outline' />
 						</node>

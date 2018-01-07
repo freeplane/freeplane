@@ -31,29 +31,23 @@
 		<xsl:apply-templates select="node"/>
 	</xsl:template>
 	
-	<xsl:template match="richcontent">
+	<xsl:template match="richcontent[normalize-space(.) != '']">
 		<xsl:if test="@TYPE='DETAILS'">
-			<xsl:text>&#xA;DETAILS: </xsl:text>
+			<xsl:text>DETAILS: </xsl:text>
 		</xsl:if>
 		<xsl:if test="@TYPE='NOTE'">
-			<xsl:text>&#xA;NOTE: </xsl:text>
+			<xsl:text>NOTE: </xsl:text>
 		</xsl:if>
-		<xsl:apply-templates/>
+		<xsl:value-of select="normalize-space(.)" />
 		<xsl:text>&#xA;</xsl:text>
 	</xsl:template>
 
-	<xsl:template match="child::text()">
-		<xsl:value-of select="normalize-space(.)" />
-	</xsl:template>
 
-	<xsl:template match="p|br|tr|div|li|pre">
-		<xsl:if test="preceding-sibling::*">
-			<xsl:text>&#xA;</xsl:text>
-		</xsl:if>
-		<xsl:apply-templates/>
+	<xsl:template match='node[hook[@NAME="FirstGroupNode" or @NAME="SummaryNode"]]'>
+		<xsl:apply-templates select='node' />
 	</xsl:template>
-
-	<xsl:template match="node">
+	
+	<xsl:template match='node'>
 		<xsl:variable name="thisid" select="@ID" />
 		<xsl:variable name="target" select="arrowlink/@DESTINATION" />
 		<xsl:number level="multiple" count="node" format="1" />
