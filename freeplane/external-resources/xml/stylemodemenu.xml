@@ -138,8 +138,8 @@
 			<Entry name="AboutAction" builder="removeOnMac"/>
 		</Entry>
 	</Entry>
-	<Entry name="map_popup">
-		<Entry name="ToggleMenubarAction" builder="MP_ToggleMenubarAction" />
+	<Entry name="map_popup" builder="map_popup">
+		<Entry name="ToggleMenubarAction" />
 		<Entry name="ToggleToolbarAction" />
 		<Entry name="ToggleLeftToolbarAction" />
 	</Entry>
