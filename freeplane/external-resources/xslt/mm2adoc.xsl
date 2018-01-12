@@ -39,7 +39,7 @@
 	</xsl:template>
 
 	<xsl:template match="child::text()">
-		<xsl:value-of select="normalize-space(.)" />
+		<xsl:value-of select="translate(., '&#160;&#xA;&#xD;', '  ')" />
 	</xsl:template>
 
 	<xsl:template match="p|br|tr|div|li|pre">
@@ -55,7 +55,11 @@
 	</xsl:template>
 
 
-	<xsl:template match="node">
+	<xsl:template match='node[hook[@NAME="FirstGroupNode" or @NAME="SummaryNode"]]'>
+		<xsl:apply-templates select='node' />
+	</xsl:template>
+	
+	<xsl:template match='node'>
 		<xsl:variable name="thisid" select="@ID" />
 
 		<xsl:variable name="depth">
