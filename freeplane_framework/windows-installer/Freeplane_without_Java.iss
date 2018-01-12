@@ -11,7 +11,7 @@
 ; Predrag Cuklin 18/06/2009 - Universial Version
 ;****************************************************************************
 
-#define MyVersion "1.6.12"
+#define MyVersion "1.6.13"
 #define MyStatus ""
 #define MyAppName "Freeplane"
 #define MyAppPublisher "Open source"
@@ -23,7 +23,7 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{D3941722-C4DD-4509-88C4-0E87F675A859}
-AppCopyright=Copyright © 2000-2017 Freeplane team and others
+AppCopyright=Copyright © 2000-2018 Freeplane team and others
 AppName={#MyAppName}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
