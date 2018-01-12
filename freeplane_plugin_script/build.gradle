@@ -7,7 +7,7 @@ dependencies {
 	compile ('org.freeplane.securegroovy:groovy-patcher:0.0.2') {
 		transitive = false
 	}
-    compile 'net.bytebuddy:byte-buddy:1.6.9'
+    compile 'net.bytebuddy:byte-buddy:1.7.9'
 }
 
 tasks.withType(JavaCompile) {
