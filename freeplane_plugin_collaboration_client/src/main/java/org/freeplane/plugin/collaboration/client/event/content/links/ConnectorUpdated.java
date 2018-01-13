@@ -10,5 +10,5 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonSerialize(as = ImmutableConnectorUpdated.class)
 @JsonDeserialize(as = ImmutableConnectorUpdated.class)
 public interface ConnectorUpdated extends NodeUpdated{
-
+	ConnectorData getConnectorData(); 
 }

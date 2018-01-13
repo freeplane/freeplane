@@ -28,6 +28,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
@@ -88,7 +89,7 @@ public class ContentUpdateGeneratorSpec {
 	public void generatesEventOnNodeContentUpdate() throws Exception {
 		NodeContentUpdated contentUpdated = mock(NodeContentUpdated.class);
 		when(eventFactory.createNodeContentUpdatedEvent(node)).thenReturn(contentUpdated);
-		uut.onNodeChange(node);
+		uut.onNodeChange(new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null));
 		
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()

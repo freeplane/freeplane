@@ -93,6 +93,7 @@ import org.freeplane.features.url.UrlManager;
 public class LinkController extends SelectionController implements IExtension {
 	public static final String MENUITEM_SCHEME = "menuitem";
 	public static final String EXECUTE_APP_SCHEME = "execute";
+
 	public static LinkController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		return getController(modeController);
@@ -103,16 +104,17 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public static void install() {
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(30, new LinkConditionController());
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(30,
+		    new LinkConditionController());
 	}
 
-	public static void install( final LinkController linkController) {
+	public static void install(final LinkController linkController) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(LinkController.class, linkController);
 		linkController.init();
 	}
 
- 	final protected ModeController modeController;
+	final protected ModeController modeController;
 
 	public LinkController(ModeController modeController) {
 		this.modeController = modeController;
@@ -124,18 +126,17 @@ public class LinkController extends SelectionController implements IExtension {
 		final ReadManager readManager = mapController.getReadManager();
 		LinkBuilder linkBuilder = new LinkBuilder(this);
 		linkBuilder.registerBy(readManager);
-		
 		// this IContentTransformer is unconditional because the outcome
 		// (#ID_1698830792 -> Nodename) is usually wanted
 		final LinkTransformer textTransformer = new LinkTransformer(modeController, 10);
 		TextController.getController(modeController).addTextTransformer(textTransformer);
-		
 		textTransformer.registerListeners(modeController);
-
 		final INodeSelectionListener listener = new INodeSelectionListener() {
+			@Override
 			public void onDeselect(final NodeModel node) {
 			}
 
+			@Override
 			public void onSelect(final NodeModel node) {
 				final URI link = NodeLinks.getValidLink(node);
 				final String linkString = (link != null ? link.toString() : null);
@@ -153,40 +154,41 @@ public class LinkController extends SelectionController implements IExtension {
 		return addAction(arrowLinkPopup, gotoLinkNodeAction);
 	}
 
-    protected void addPopupComponent(final JComponent arrowLinkPopup, final String label, final JComponent component) {
-        final JComponent componentBox;
-        if(label != null){
-            componentBox = Box.createHorizontalBox();
-            componentBox.add(Box.createHorizontalStrut(10));
-            final JLabel jlabel = new JLabel(label);
-            componentBox.add(jlabel);
-            componentBox.add(Box.createHorizontalStrut(10));
-            componentBox.add(component);
-        }
-        else {
-            componentBox = component;
-        }
-        componentBox.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-        componentBox.setMinimumSize(new Dimension());
-        componentBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
-        arrowLinkPopup.add(componentBox);
-    }
+	protected void addPopupComponent(final JComponent arrowLinkPopup, final String label, final JComponent component) {
+		final JComponent componentBox;
+		if (label != null) {
+			componentBox = Box.createHorizontalBox();
+			componentBox.add(Box.createHorizontalStrut(10));
+			final JLabel jlabel = new JLabel(label);
+			componentBox.add(jlabel);
+			componentBox.add(Box.createHorizontalStrut(10));
+			componentBox.add(component);
+		}
+		else {
+			componentBox = component;
+		}
+		componentBox.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+		componentBox.setMinimumSize(new Dimension());
+		componentBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+		arrowLinkPopup.add(componentBox);
+	}
 
-    protected void addClosingAction(final JComponent arrowLinkPopup, Action action) {
-        JButton comp = addAction(arrowLinkPopup, action);
-        comp.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		SwingUtilities.getWindowAncestor(arrowLinkPopup).setVisible(false);
-        	}
-        });
-    }
+	protected void addClosingAction(final JComponent arrowLinkPopup, Action action) {
+		JButton comp = addAction(arrowLinkPopup, action);
+		comp.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SwingUtilities.getWindowAncestor(arrowLinkPopup).setVisible(false);
+			}
+		});
+	}
 
-    protected JButton addAction(final JComponent arrowLinkPopup, Action action) {
-	    JButton comp = new JButton(action);
-        comp.setHorizontalAlignment(JButton.LEFT);
-        addPopupComponent (arrowLinkPopup, null, comp);
-	    return comp;
-    }
+	protected JButton addAction(final JComponent arrowLinkPopup, Action action) {
+		JButton comp = new JButton(action);
+		comp.setHorizontalAlignment(JButton.LEFT);
+		addPopupComponent(arrowLinkPopup, null, comp);
+		return comp;
+	}
 
 	/**
 	 *
@@ -195,71 +197,69 @@ public class LinkController extends SelectionController implements IExtension {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addAction(new FollowLinkAction());
 		modeController.addUiBuilder(Phase.ACTIONS, "clone_actions", new ClonesMenuBuilder(modeController),
-				new ChildActionEntryRemover(modeController));
-		modeController.addUiBuilder(Phase.ACTIONS, "link_actions", new LinkMenuBuilder(modeController), 
-				new ChildActionEntryRemover(modeController));
+		    new ChildActionEntryRemover(modeController));
+		modeController.addUiBuilder(Phase.ACTIONS, "link_actions", new LinkMenuBuilder(modeController),
+		    new ChildActionEntryRemover(modeController));
 	}
 
 	final class LinkMenuBuilder implements EntryVisitor {
-	    private final ModeController modeController;
+		private final ModeController modeController;
 
-	    LinkMenuBuilder(ModeController modeController) {
-		    this.modeController = modeController;
-	    }
+		LinkMenuBuilder(ModeController modeController) {
+			this.modeController = modeController;
+		}
 
-	    @Override
-	    public void visit(Entry entry) {
-	    	final IMapSelection selection = modeController.getController().getSelection();
-	    	if (selection == null)
-	    		return;
-	    	final NodeModel node = selection.getSelected();
-	    	Set<NodeLinkModel> links = new LinkedHashSet<NodeLinkModel>(NodeLinks.getLinks(node));
-	    	links.addAll(getLinksTo(node));
-	    	boolean firstAction = true;
-	    	for (NodeLinkModel link : links) {
-	    		final String targetID = link.getTargetID();
-	    		final NodeModel target;
-	    		if (node.getID().equals(targetID)) {
-	    			if (link instanceof ConnectorModel) {
-	    				ConnectorModel cm = (ConnectorModel) link;
-	    				target = cm.getSource();
-	    				if (node.equals(target))
-	    					continue;
-	    			}
-	    			else
-	    				continue;
-	    		}
-	    		else
-	    			target = node.getMap().getNodeForID(targetID);
-	    		final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, target);
-	    		gotoLinkNodeAction.configureText("follow_graphical_link", target);
-	    		if (!(link instanceof ConnectorModel)) {
-	    			gotoLinkNodeAction.putValue(Action.SMALL_ICON, LinkType.LOCAL.icon);
-	    		}
-	    		if (firstAction) {
-	    			entry.addChild(new Entry().setBuilders("separator"));
-	    			firstAction = false;
-	    		}
-	    		modeController.addActionIfNotAlreadySet(gotoLinkNodeAction);
+		@Override
+		public void visit(Entry entry) {
+			final IMapSelection selection = modeController.getController().getSelection();
+			if (selection == null)
+				return;
+			final NodeModel node = selection.getSelected();
+			Set<NodeLinkModel> links = new LinkedHashSet<NodeLinkModel>(NodeLinks.getLinks(node));
+			links.addAll(getLinksTo(node));
+			boolean firstAction = true;
+			for (NodeLinkModel link : links) {
+				final String targetID = link.getTargetID();
+				final NodeModel target;
+				if (node.getID().equals(targetID)) {
+					if (link instanceof ConnectorModel) {
+						ConnectorModel cm = (ConnectorModel) link;
+						target = cm.getSource();
+						if (node.equals(target))
+							continue;
+					}
+					else
+						continue;
+				}
+				else
+					target = node.getMap().getNodeForID(targetID);
+				final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, target);
+				gotoLinkNodeAction.configureText("follow_graphical_link", target);
+				if (!(link instanceof ConnectorModel)) {
+					gotoLinkNodeAction.putValue(Action.SMALL_ICON, LinkType.LOCAL.icon);
+				}
+				if (firstAction) {
+					entry.addChild(new Entry().setBuilders("separator"));
+					firstAction = false;
+				}
+				modeController.addActionIfNotAlreadySet(gotoLinkNodeAction);
 				new EntryAccessor().addChildAction(entry, gotoLinkNodeAction);
-	    	}
-	    }
+			}
+		}
 
-	    @Override
-	    public boolean shouldSkipChildren(Entry entry) {
-	    	return true;
-	    }
-    }
-
+		@Override
+		public boolean shouldSkipChildren(Entry entry) {
+			return true;
+		}
+	}
 
 	private class ClonesMenuBuilder implements EntryVisitor {
 		final private ModeController modeController;
 
 		public ClonesMenuBuilder(ModeController modeController) {
-	        super();
+			super();
 			this.modeController = modeController;
-        }
-
+		}
 
 		@Override
 		public void visit(Entry target) {
@@ -272,7 +272,8 @@ public class LinkController extends SelectionController implements IExtension {
 			if (parentNode != null) {
 				for (NodeModel clone : node.allClones()) {
 					if (!clone.equals(node)) {
-						final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, clone);
+						final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this,
+						    clone);
 						NodeModel subtreeRootParentNode = clone.getSubtreeRoot().getParentNode();
 						gotoLinkNodeAction.configureText("follow_clone", subtreeRootParentNode);
 						if (firstAction) {
@@ -284,35 +285,35 @@ public class LinkController extends SelectionController implements IExtension {
 					}
 				}
 			}
-
 		}
 
 		@Override
 		public boolean shouldSkipChildren(Entry entry) {
 			return true;
 		}
-    }
-    @SuppressWarnings("serial")
-    public static final class ClosePopupAction extends AbstractAction {
-        final private String reason;
+	}
 
-        public ClosePopupAction(String reason) {
-            this.reason = reason;
-        }
+	@SuppressWarnings("serial")
+	public static final class ClosePopupAction extends AbstractAction {
+		final private String reason;
 
-        public void actionPerformed(ActionEvent e) {
-            JComponent src = (JComponent) e.getSource();
-            src.putClientProperty(reason, Boolean.TRUE);
-            SwingUtilities.getWindowAncestor(src).setVisible(false);
-        }
-    }
+		public ClosePopupAction(String reason) {
+			this.reason = reason;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JComponent src = (JComponent) e.getSource();
+			src.putClientProperty(reason, Boolean.TRUE);
+			SwingUtilities.getWindowAncestor(src).setVisible(false);
+		}
+	}
 
 	protected static final String CANCEL = "CANCEL";
 	protected static final String CLOSE = "CLOSE";
+
 	protected void createArrowLinkPopup(final ConnectorModel link, final JComponent arrowLinkPopup) {
-
 		registerCloseActions(arrowLinkPopup);
-
 		final NodeModel source = link.getSource();
 		final NodeModel target = link.getTarget();
 		final IMapSelection selection = Controller.getCurrentModeController().getController().getSelection();
@@ -320,7 +321,6 @@ public class LinkController extends SelectionController implements IExtension {
 		sourceButton.setEnabled(!selection.isSelected(source));
 		final JButton targetButton = addLinks(arrowLinkPopup, target);
 		targetButton.setEnabled(!selection.isSelected(target));
-		
 		sourceButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -328,7 +328,6 @@ public class LinkController extends SelectionController implements IExtension {
 				targetButton.setEnabled(true);
 			}
 		});
-
 		targetButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -340,10 +339,9 @@ public class LinkController extends SelectionController implements IExtension {
 
 	private void registerCloseActions(final JComponent arrowLinkPopup) {
 		arrowLinkPopup.addHierarchyListener(new HierarchyListener() {
-			
 			@Override
 			public void hierarchyChanged(HierarchyEvent e) {
-				if(arrowLinkPopup.isDisplayable()) {
+				if (arrowLinkPopup.isDisplayable()) {
 					arrowLinkPopup.removeHierarchyListener(this);
 					final JRootPane rootPane = arrowLinkPopup.getRootPane();
 					final InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
@@ -353,13 +351,18 @@ public class LinkController extends SelectionController implements IExtension {
 					inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelAction);
 					actionMap.put(cancelAction, cancelAction);
 					inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.ALT_DOWN_MASK), closeAction);
-					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
-					if(enterConfirms)
+					final boolean enterConfirms = ResourceController.getResourceController()
+					    .getBooleanProperty("el__enter_confirms_by_default");
+					if (enterConfirms)
 						inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), closeAction);
 					actionMap.put(closeAction, closeAction);
 				}
 			}
 		});
+	}
+
+	public URI getLink(NodeModel node) {
+		return NodeLinks.getLink(node);
 	}
 
 	public Color getColor(final ConnectorModel model) {
@@ -390,7 +393,16 @@ public class LinkController extends SelectionController implements IExtension {
 	public Collection<NodeLinkModel> getLinksFrom(NodeModel node) {
 		return NodeLinks.getLinks(node);
 	}
-	
+
+	public ConnectorModel getConnector(NodeModel node, String targetId) {
+		final Collection<NodeLinkModel> links = NodeLinks.getLinks(node);
+		for (NodeLinkModel link : links) {
+			if (link instanceof ConnectorModel && link.cloneForSource(node).getTargetID().equals(targetId))
+				return (ConnectorModel) link;
+		}
+		return null;
+	}
+
 	public Collection<NodeLinkModel> getLinksTo(final NodeModel target) {
 		if (target.hasID() == false) {
 			return Collections.emptySet();
@@ -399,25 +411,24 @@ public class LinkController extends SelectionController implements IExtension {
 		if (links == null) {
 			return Collections.emptySet();
 		}
-		
 		ArrayList<NodeLinkModel> clonedLinks = null;
-		for(NodeModel targetClone : target.subtreeClones()){
+		for (NodeModel targetClone : target.subtreeClones()) {
 			final Set<NodeLinkModel> set = links.get(targetClone.createID());
 			if (set == null) {
 				continue;
 			}
-			if(target.subtreeClones().size() == 1)
+			if (target.subtreeClones().size() == 1)
 				return set;
 			if (clonedLinks == null)
 				clonedLinks = new ArrayList<NodeLinkModel>(10);
-			for(NodeLinkModel sharedLink : set){
+			for (NodeLinkModel sharedLink : set) {
 				final Collection<NodeLinkModel> linkClones = sharedLink.clones();
-				for(NodeLinkModel linkClone : linkClones)
-					if(target.equals(linkClone.getTarget()))
+				for (NodeLinkModel linkClone : linkClones)
+					if (target.equals(linkClone.getTarget()))
 						clonedLinks.add(linkClone);
 			}
 		}
-		return clonedLinks != null  ? clonedLinks : Collections.<NodeLinkModel>emptySet();
+		return clonedLinks != null ? clonedLinks : Collections.<NodeLinkModel> emptySet();
 	}
 
 	/**
@@ -471,9 +482,8 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	void loadLinkFormat(NodeModel node, boolean enabled) {
-	    NodeLinks.createLinkExtension(node).setFormatNodeAsHyperlink(enabled);
-    }
-
+		NodeLinks.createLinkExtension(node).setFormatNodeAsHyperlink(enabled);
+	}
 
 	public void loadURL(final NodeModel node, final MouseEvent e) {
 		loadURL(node, new ActionEvent(e.getSource(), e.getID(), null));
@@ -485,12 +495,11 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	@SuppressWarnings("deprecation")
-    public void loadURI(URI uri) {
+	public void loadURI(URI uri) {
 		UrlManager.getController().loadURL(uri);
-    }
+	}
 
-	public void loadMap(String map)
-			throws URISyntaxException {
+	public void loadMap(String map) throws URISyntaxException {
 		UrlManager.getController().loadMap(map);
 	}
 
@@ -498,8 +507,8 @@ public class LinkController extends SelectionController implements IExtension {
 		loadURL(selectedNode, e, NodeLinks.getValidLink(selectedNode));
 	}
 
-    public void loadURL(final NodeModel selectedNode, final ActionEvent e, final URI link) {
-        if (link != null) {
+	public void loadURL(final NodeModel selectedNode, final ActionEvent e, final URI link) {
+		if (link != null) {
 			onDeselect(selectedNode);
 			ModeController modeController = Controller.getCurrentModeController();
 			if (LinkController.isMenuItemLink(link)) {
@@ -508,12 +517,12 @@ public class LinkController extends SelectionController implements IExtension {
 				}
 				final String actionKey = LinkController.parseSpecialLink(link);
 				final Action action = modeController.getAction(actionKey);
-
 				if (action != null) {
 					action.actionPerformed(e);
-				} else {
+				}
+				else {
 					LogUtils.warn("Trying to call a menu hyperlink action with key '" //
-						+ actionKey + "'that doesn't exist.");
+					        + actionKey + "'that doesn't exist.");
 				}
 			}
 			else if (LinkController.isSpecialLink(LinkController.EXECUTE_APP_SCHEME, link)) {
@@ -529,16 +538,16 @@ public class LinkController extends SelectionController implements IExtension {
 				loadURI(link);
 			}
 			final IMapSelection selection = modeController.getController().getSelection();
-			if(selection != null)
+			if (selection != null)
 				onSelect(selection.getSelected());
 		}
-    }
+	}
 
-    public static int getLinkType() {
+	public static int getLinkType() {
 		return getController().linkType();
 	}
 
-    public static final int LINK_ABSOLUTE = 0;
+	public static final int LINK_ABSOLUTE = 0;
 	public static final int LINK_RELATIVE_TO_MINDMAP = 1;
 
 	public int linkType() {
@@ -565,15 +574,18 @@ public class LinkController extends SelectionController implements IExtension {
 		return getController().createRelativeURI(map, input, linkType);
 	}
 
-	public static URI normalizeURI(URI uri){
+	public static URI normalizeURI(URI uri) {
 		final String UNC_PREFIX = "//";
 		URI normalizedUri = uri.normalize();
 		//Fix UNC paths that are incorrectly normalized by URI#resolve (see Java bug 4723726)
 		String normalizedPath = normalizedUri.getPath();
-		if ("file".equalsIgnoreCase(uri.getScheme()) && uri.getPath() != null && uri.getPath().startsWith(UNC_PREFIX) && (normalizedPath == null || !normalizedPath.startsWith(UNC_PREFIX))){
-		try {
-				normalizedUri = new URI(normalizedUri.getScheme(), ensureUNCPath(normalizedUri.getSchemeSpecificPart()), normalizedUri.getFragment());
-			} catch (URISyntaxException e) {
+		if ("file".equalsIgnoreCase(uri.getScheme()) && uri.getPath() != null && uri.getPath().startsWith(UNC_PREFIX)
+		        && (normalizedPath == null || !normalizedPath.startsWith(UNC_PREFIX))) {
+			try {
+				normalizedUri = new URI(normalizedUri.getScheme(), ensureUNCPath(normalizedUri.getSchemeSpecificPart()),
+				    normalizedUri.getFragment());
+			}
+			catch (URISyntaxException e) {
 				LogUtils.warn(e);
 			}
 		}
@@ -609,10 +621,10 @@ public class LinkController extends SelectionController implements IExtension {
 			return targetUri;
 	}
 
-	public URI createRelativeURI(URI mapUri, final URI targetUri){
+	public URI createRelativeURI(URI mapUri, final URI targetUri) {
 		boolean isUNCinput = targetUri.getPath().startsWith("//");
 		boolean isUNCmap = mapUri.getPath().startsWith("//");
-		if((isUNCinput != isUNCmap)) {
+		if ((isUNCinput != isUNCmap)) {
 			return targetUri;
 		}
 		final String filePathAsString = targetUri.getRawPath();
@@ -639,7 +651,7 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 		relativePath.append(filePathAsString.substring(lastCommonSeparatorPos + 1));
 		final String rawFragment = targetUri.getRawFragment();
-		if(rawFragment != null)
+		if (rawFragment != null)
 			relativePath.append("#" + rawFragment);
 		try {
 			return new URI(relativePath.toString());
@@ -647,7 +659,6 @@ public class LinkController extends SelectionController implements IExtension {
 		catch (final URISyntaxException e) {
 			return null;
 		}
-
 	}
 
 	// patterns only need to be compiled once
@@ -720,7 +731,7 @@ public class LinkController extends SelectionController implements IExtension {
 
 	private static final Pattern urlPattern = Pattern.compile("file://[^\\s\"'<>]+|(:?https?|ftp)://[^\\s\"|<>{}]+");
 	private static final Pattern mailPattern = Pattern.compile("([!+\\-/=~.\\w#]+@[\\w.\\-+?&=%]+)");
-    private static final HashMap<String, Icon> menuItemCache = new HashMap<String, Icon>();
+	private static final HashMap<String, Icon> menuItemCache = new HashMap<String, Icon>();
 
 	static public String findLink(final String text) {
 		final Matcher urlMatcher = urlPattern.matcher(text);
@@ -791,17 +802,17 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public Color getStandardConnectorColor() {
-        final String standardColor = ResourceController.getResourceController().getProperty(RESOURCES_LINK_COLOR);
+		final String standardColor = ResourceController.getResourceController().getProperty(RESOURCES_LINK_COLOR);
 		final Color color = ColorUtils.stringToColor(standardColor);
-        return color;
-    }
+		return color;
+	}
 
 	public ConnectorArrows getStandardConnectorArrows() {
 		final String standard = ResourceController.getResourceController().getProperty(RESOURCES_CONNECTOR_ARROWS);
 		final ConnectorArrows arrows = ConnectorArrows.valueOf(standard);
 		return arrows;
 	}
-	
+
 	public DashVariant getStandardDashVariant() {
 		final String standard = ResourceController.getResourceController().getProperty(RESOURCES_DASH_VARIANT);
 		final DashVariant variant = DashVariant.valueOf(standard);
@@ -815,22 +826,23 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public int getStandardConnectorAlpha() {
-		final String standardAlpha = ResourceController.getResourceController().getProperty(RESOURCES_CONNECTOR_COLOR_ALPHA);
+		final String standardAlpha = ResourceController.getResourceController()
+		    .getProperty(RESOURCES_CONNECTOR_COLOR_ALPHA);
 		final int alpha = Integer.valueOf(standardAlpha);
 		return alpha;
 	}
 
 	public int getAlpha(ConnectorModel connectorModel) {
 		return connectorModel.getAlpha();
-    }
+	}
 
 	public int getStandardLabelFontSize() {
 		return ResourceController.getResourceController().getIntProperty("label_font_size", 12);
-    }
+	}
 
 	public String getStandardLabelFontFamily() {
-	    return ResourceController.getResourceController().getProperty("label_font_family");
-    }
+		return ResourceController.getResourceController().getProperty("label_font_family");
+	}
 
 	private static final String MENUITEM_ICON = "menuitem_icon";
 	private static final String EXECUTABLE_ICON = "executable_icon";
@@ -838,88 +850,87 @@ public class LinkController extends SelectionController implements IExtension {
 	private static final String MAIL_ICON = "mail_icon";
 	private static final String LINK_LOCAL_ICON = "link_local_icon";
 
-	public static enum LinkType{
+	public static enum LinkType {
 		LOCAL(LINK_LOCAL_ICON), MAIL(MAIL_ICON), EXECUTABLE(EXECUTABLE_ICON), MENU(MENUITEM_ICON), DEFAULT(LINK_ICON);
-		LinkType(String iconKey){
-			this.icon =  ResourceController.getResourceController().getIcon(iconKey);
+		LinkType(String iconKey) {
+			this.icon = ResourceController.getResourceController().getIcon(iconKey);
 		}
+
 		final public Icon icon;
 	}
 
 	public Icon getLinkIcon(final URI link, final NodeModel model) {
 		final LinkType linkType = getLinkType(link, model);
-	    if(linkType == null)
-	    	return null;
-	    if(linkType.equals(LinkType.MENU)){
-	    	final String menuItemKey = parseSpecialLink(link);
-	    	synchronized (menuItemCache) {
-	    	    Icon icon = menuItemCache.get(menuItemKey);
-                if (icon == null) {
-                    final Icon menuItemIcon = MenuUtils.getMenuItemIcon(menuItemKey);
-                    icon = (menuItemIcon == null) ? LinkType.MENU.icon : menuItemIcon;
-                    menuItemCache.put(menuItemKey, icon);
-                }
-	    	    return icon;
-	    	}
-	    }
-	    if(LinkType.DEFAULT == linkType && formatNodeAsHyperlink(model))
-	    	return null;
-	    return linkType.icon;
-
+		if (linkType == null)
+			return null;
+		if (linkType.equals(LinkType.MENU)) {
+			final String menuItemKey = parseSpecialLink(link);
+			synchronized (menuItemCache) {
+				Icon icon = menuItemCache.get(menuItemKey);
+				if (icon == null) {
+					final Icon menuItemIcon = MenuUtils.getMenuItemIcon(menuItemKey);
+					icon = (menuItemIcon == null) ? LinkType.MENU.icon : menuItemIcon;
+					menuItemCache.put(menuItemKey, icon);
+				}
+				return icon;
+			}
+		}
+		if (LinkType.DEFAULT == linkType && formatNodeAsHyperlink(model))
+			return null;
+		return linkType.icon;
 	}
 
 	public static LinkType getLinkType(final URI link, final NodeModel model) {
 		if (link == null)
 			return null;
-	    final String linkText = link.toString();
-	    if (linkText.startsWith("#")) {
-	    	final String id = linkText.substring(1);
-	    	if (model == null || model.getMap().getNodeForID(id) == null) {
-	    		return null;
-	    	}
-	    	else{
-	    		return LinkType.LOCAL;
-	    	}
-	    }
-	    else if (linkText.startsWith("mailto:")) {
-	    	return LinkType.MAIL;
-	    }
-	    else if (isMenuItemLink(link)) {
-	    	return LinkType.MENU;
-	    }
+		final String linkText = link.toString();
+		if (linkText.startsWith("#")) {
+			final String id = linkText.substring(1);
+			if (model == null || model.getMap().getNodeForID(id) == null) {
+				return null;
+			}
+			else {
+				return LinkType.LOCAL;
+			}
+		}
+		else if (linkText.startsWith("mailto:")) {
+			return LinkType.MAIL;
+		}
+		else if (isMenuItemLink(link)) {
+			return LinkType.MENU;
+		}
 		else if (isSpecialLink(EXECUTE_APP_SCHEME, link) || Compat.isWindowsExecutable(link)) {
-	    	return LinkType.EXECUTABLE;
-	    }
-	    else{
-	    	return LinkType.DEFAULT;
-	    }
+			return LinkType.EXECUTABLE;
+		}
+		else {
+			return LinkType.DEFAULT;
+		}
 	}
 
-	public boolean formatNodeAsHyperlink(final NodeModel node){
+	public boolean formatNodeAsHyperlink(final NodeModel node) {
 		String text = node.getText();
 		if (text.isEmpty() || HtmlUtils.isHtmlNode(text))
 			return false;
 		final Boolean ownFlag = ownFormatNodeAsHyperlink(node);
-		if(ownFlag != null)
+		if (ownFlag != null)
 			return ownFlag;
 		Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
 		final MapStyleModel mapStyles = MapStyleModel.getExtension(node.getMap());
-		for(IStyle styleKey : collection){
+		for (IStyle styleKey : collection) {
 			final NodeModel styleNode = mapStyles.getStyleNode(styleKey);
 			if (styleNode == null) {
 				continue;
 			}
 			final Boolean styleFlag = ownFormatNodeAsHyperlink(styleNode);
-			if(styleFlag != null)
+			if (styleFlag != null)
 				return styleFlag;
-
 		}
 		return false;
 	}
 
-	private Boolean ownFormatNodeAsHyperlink(final NodeModel node){
+	private Boolean ownFormatNodeAsHyperlink(final NodeModel node) {
 		final NodeLinks linkModel = NodeLinks.getLinkExtension(node);
-		if(linkModel == null){
+		if (linkModel == null) {
 			return null;
 		}
 		final Boolean formatNodeAsHyperlink = linkModel.formatNodeAsHyperlink();

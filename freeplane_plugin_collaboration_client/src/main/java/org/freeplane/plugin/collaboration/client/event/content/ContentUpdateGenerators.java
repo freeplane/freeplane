@@ -22,7 +22,7 @@ public class ContentUpdateGenerators{
 	public void onNodeContentUpdate(NodeChangeEvent event) {
 		for(NodeUpdateGenerator g : nodeUpdateGenerators) {
 			if(g.handles(event)) {
-				g.onNodeChange(event.getNode());
+				g.onNodeChange(event);
 				break;
 			}
 		}

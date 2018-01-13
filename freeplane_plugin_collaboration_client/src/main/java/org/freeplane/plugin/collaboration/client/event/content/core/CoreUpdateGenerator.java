@@ -46,10 +46,15 @@ public class CoreUpdateGenerator implements NodeUpdateGenerator {
 		return NodeModel.NODE_TEXT.equals(event.getProperty());
 	}
 	
-	public void onNodeChange(NodeModel node) {
+	public void onNodeChange(NodeChangeEvent event) {
+		final NodeModel node = event.getNode();
+		onNodeChange(node);
+		
+	}
+
+	private void onNodeChange(final NodeModel node) {
 		updates.of(node.getMap())
 			.addUpdateEvent(node.createID(), () -> eventFactory.createCoreUpdatedEvent(node));
-		
 	}
 
 	@Override

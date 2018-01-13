@@ -25,6 +25,7 @@ import java.util.Collections;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.icon.HierarchicalIcons;
+import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
@@ -46,49 +47,58 @@ public class ContentUpdateGenerator implements NodeUpdateGenerator, MapUpdateGen
 	public ContentUpdateGenerator(UpdateBlockGeneratorFactory updateBlockGeneratorFactory, MapWriter writer) {
 		this(updateBlockGeneratorFactory, new ContentUpdateEventFactory(writer));
 	}
-	
-	ContentUpdateGenerator(UpdateBlockGeneratorFactory updateBlockGeneratorFactory, ContentUpdateEventFactory eventFactory) {
+
+	ContentUpdateGenerator(UpdateBlockGeneratorFactory updateBlockGeneratorFactory,
+	                       ContentUpdateEventFactory eventFactory) {
 		super();
 		this.updateBlockGeneratorFactory = updateBlockGeneratorFactory;
 		this.eventFactory = eventFactory;
 	}
+
 	final private ContentUpdateEventFactory eventFactory;
 	final private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
-	
+
+	@Override
 	public boolean handles(NodeChangeEvent event) {
 		return true;
 	}
-	
+
+	@Override
 	public boolean handles(MapChangeEvent event) {
 		return true;
 	}
-	
-	public void onNodeChange(NodeModel node) {
-		getUpdates(node.getMap()).addUpdateEvent(node.createID(), () -> eventFactory.createNodeContentUpdatedEvent(node));		
+
+	@Override
+	public void onNodeChange(NodeChangeEvent event) {
+		final NodeModel node = event.getNode();
+		onNodeChange(node);
 	}
 
-	public void onMapChange(MapModel map) {
-		getUpdates(map).addUpdateEvent("map", () -> eventFactory.createMapContentUpdatedEvent(map));		
+	private void onNodeChange(final NodeModel node) {
+		getUpdates(node.getMap()).addUpdateEvent(node.createID(),
+		    () -> eventFactory.createNodeContentUpdatedEvent(node));
 	}
-	
-	private static Collection<Class<? extends IExtension>> NODE_CONTENT_EXCLUSIONS =  null;
-	private static Collection<Class<? extends IExtension>> MAP_CONTENT =  null;
+
+	@Override
+	public void onMapChange(MapModel map) {
+		getUpdates(map).addUpdateEvent("map", () -> eventFactory.createMapContentUpdatedEvent(map));
+	}
+
+	private static Collection<Class<? extends IExtension>> NODE_CONTENT_EXCLUSIONS = null;
+	private static Collection<Class<? extends IExtension>> MAP_CONTENT = null;
 
 	public static Collection<Class<? extends IExtension>> getNodeContentExclusions() {
-		if(NODE_CONTENT_EXCLUSIONS == null) {
-			NODE_CONTENT_EXCLUSIONS =  new ArrayList<>(MapExtensions.getAll());
-			Collections.addAll(NODE_CONTENT_EXCLUSIONS, 
-				HierarchicalIcons.ACCUMULATED_ICONS_EXTENSION_CLASS, 
-				SummaryNodeFlag.class, 
-				FirstGroupNodeFlag.class
-				);
+		if (NODE_CONTENT_EXCLUSIONS == null) {
+			NODE_CONTENT_EXCLUSIONS = new ArrayList<>(MapExtensions.getAll());
+			Collections.addAll(NODE_CONTENT_EXCLUSIONS, HierarchicalIcons.ACCUMULATED_ICONS_EXTENSION_CLASS,
+			    SummaryNodeFlag.class, FirstGroupNodeFlag.class, NodeLinks.class);
 		}
 		return NODE_CONTENT_EXCLUSIONS;
 	}
 
 	public static Collection<Class<? extends IExtension>> getMapContentExtensions() {
-		if(MAP_CONTENT == null) {
-			MAP_CONTENT =  new ArrayList<>(MapExtensions.getAll());
+		if (MAP_CONTENT == null) {
+			MAP_CONTENT = new ArrayList<>(MapExtensions.getAll());
 		}
 		return MAP_CONTENT;
 	}
@@ -100,12 +110,10 @@ public class ContentUpdateGenerator implements NodeUpdateGenerator, MapUpdateGen
 	@Override
 	public void onNewMap(MapModel map) {
 		onMapChange(map);
-		
 	}
 
 	@Override
 	public void onNewNode(NodeModel node) {
-		onNodeChange(node);		
+		onNodeChange(node);
 	}
-
 }

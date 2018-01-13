@@ -28,6 +28,6 @@ import org.freeplane.features.map.NodeModel;
  */
 public interface NodeUpdateGenerator {
 	boolean handles(NodeChangeEvent event);
-	void onNodeChange(NodeModel node);
+	void onNodeChange(NodeChangeEvent event);
 	void onNewNode(NodeModel node);
 }

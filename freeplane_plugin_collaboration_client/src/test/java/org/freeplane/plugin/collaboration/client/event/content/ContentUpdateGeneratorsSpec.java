@@ -64,7 +64,7 @@ public class ContentUpdateGeneratorsSpec {
 		when(contentUpdateGenerator1.handles(event)).thenReturn(true);
 		uut.onNodeContentUpdate(event);
 		verify(contentUpdateGenerator1).handles(event);
-		verify(contentUpdateGenerator1).onNodeChange(node);
+		verify(contentUpdateGenerator1).onNodeChange(event);
 		verifyNoMoreInteractions(contentUpdateGenerator1, contentUpdateGenerator2);
 		
 	}
@@ -76,7 +76,7 @@ public class ContentUpdateGeneratorsSpec {
 		uut.onNodeContentUpdate(event);
 		verify(contentUpdateGenerator1).handles(event);
 		verify(contentUpdateGenerator2).handles(event);
-		verify(contentUpdateGenerator2).onNodeChange(node);
+		verify(contentUpdateGenerator2).onNodeChange(event);
 		verifyNoMoreInteractions(contentUpdateGenerator1, contentUpdateGenerator2);
 		
 	}

@@ -18,6 +18,8 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -44,6 +46,11 @@ import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeP
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateProcessor;
+import org.freeplane.plugin.collaboration.client.event.content.links.ConnectorAdditionProcessor;
+import org.freeplane.plugin.collaboration.client.event.content.links.ConnectorRemovalProcessor;
+import org.freeplane.plugin.collaboration.client.event.content.links.ConnectorUpdateProcessor;
+import org.freeplane.plugin.collaboration.client.event.content.links.HyperlinkUpdateProcessor;
+import org.freeplane.plugin.collaboration.client.event.content.links.LinkUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.other.MapContentUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.content.other.NodeContentUpdateProcessor;
@@ -58,57 +65,68 @@ public class EventStreamDialog {
 				UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(t));
 				printer.prettyPrint(ev);
 			}, 100);
-			final MapWriter mapWriter = Controller.getCurrentModeController().getMapController().getMapWriter();
+			final ModeController modeController = Controller.getCurrentModeController();
+			final MapWriter mapWriter = modeController.getMapController().getMapWriter();
 			ContentUpdateGenerator contentUpdateGenerator = new ContentUpdateGenerator(f, mapWriter);
 			CoreUpdateGenerator coreUpdateGenerator = new CoreUpdateGenerator(f, mapWriter);
+			LinkUpdateGenerator linkUpdateGenerator = new LinkUpdateGenerator(f,
+			    modeController.getExtension(LinkController.class));
 			ContentUpdateGenerators contentGenerators = new ContentUpdateGenerators(
-				Arrays.asList(contentUpdateGenerator), 
-				Arrays.asList(coreUpdateGenerator, contentUpdateGenerator));
-			MapStructureEventGenerator mapStructureEventGenerator = new MapStructureEventGenerator(f, contentGenerators);
-			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(mapStructureEventGenerator,  contentGenerators);
+			    Arrays.asList(contentUpdateGenerator),
+			    Arrays.asList(coreUpdateGenerator, contentUpdateGenerator, linkUpdateGenerator));
+			MapStructureEventGenerator mapStructureEventGenerator = new MapStructureEventGenerator(f,
+			    contentGenerators);
+			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(mapStructureEventGenerator,
+			    contentGenerators);
 			MapModel map = Controller.getCurrentController().getMap();
-			if(! map.containsExtension(ModifiableUpdateHeaderExtension.class))
+			if (!map.containsExtension(ModifiableUpdateHeaderExtension.class))
 				map.addExtension(ModifiableUpdateHeaderExtension.create().setMapId("id").setMapRevision(1));
 			updateEventGenerator.onNewMap(map);
 		}
 	}
 
 	private class Json2Map implements ActionListener {
-		
 		private final UpdateProcessorChain processor;
 		private MMapController mapController;
 
 		public Json2Map() {
 			final NodeFactory nodeFactory = new NodeFactory();
-			final ModeController modeController = Controller.getCurrentController().getModeController(MModeController.MODENAME);
+			final ModeController modeController = Controller.getCurrentController()
+			    .getModeController(MModeController.MODENAME);
 			mapController = (MMapController) modeController.getMapController();
-			final SingleNodeStructureManipulator singleNodeStructureManipulator = new SingleNodeStructureManipulator(mapController);
+			final SingleNodeStructureManipulator singleNodeStructureManipulator = new SingleNodeStructureManipulator(
+			    mapController);
 			final RootNodeIdUpdatedProcessor rootNodeIdUpdatedProcessor = new RootNodeIdUpdatedProcessor();
 			final SpecialNodeTypeProcessor specialNodeTypeProcessor = new SpecialNodeTypeProcessor();
 			NodeContentManipulator updater = new NodeContentManipulator(mapController);
-			processor = new UpdateProcessorChain().add(rootNodeIdUpdatedProcessor)
-					.add(specialNodeTypeProcessor)
-					.add(new NodeInsertedProcessor(singleNodeStructureManipulator, nodeFactory))
-					.add(new NodeMovedProcessor(singleNodeStructureManipulator))
-					.add(new NodeRemovedProcessor(singleNodeStructureManipulator))
-					.add(new MapContentUpdateProcessor(updater))
-					.add(new NodeContentUpdateProcessor(updater))
-					.add(new CoreUpdateProcessor((MTextController)TextController.getController(modeController)));
+			final MLinkController linkController = (MLinkController) MLinkController.getController(modeController);
+			processor = new UpdateProcessorChain().add(rootNodeIdUpdatedProcessor).add(specialNodeTypeProcessor)
+			    .add(new NodeInsertedProcessor(singleNodeStructureManipulator, nodeFactory))
+			    .add(new NodeMovedProcessor(singleNodeStructureManipulator))
+			    .add(new NodeRemovedProcessor(singleNodeStructureManipulator))
+			    .add(new MapContentUpdateProcessor(updater)).add(new NodeContentUpdateProcessor(updater))
+			    .add(new CoreUpdateProcessor((MTextController) TextController.getController(modeController)))
+			    .add(new ConnectorAdditionProcessor(linkController))
+			    .add(new ConnectorUpdateProcessor(linkController))
+			    .add(new ConnectorRemovalProcessor(linkController))
+			    .add(new HyperlinkUpdateProcessor(linkController));
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-				final UpdateBlockCompleted updates = Jackson.objectMapper.readValue(text.getText(), UpdateBlockCompleted.class);
+				final UpdateBlockCompleted updates = Jackson.objectMapper.readValue(text.getText(),
+				    UpdateBlockCompleted.class);
 				final MapModel map = mapController.newMap();
-				for(MapUpdated event: updates.updateBlock())
+				for (MapUpdated event : updates.updateBlock())
 					processor.onUpdate(map, event);
-			} catch (IOException e1) {
+			}
+			catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		}
 	}
-	
+
 	final private JDialog dialog;
 	private JTextArea text;
 
@@ -132,7 +150,6 @@ public class EventStreamDialog {
 		buttons.add(json2map);
 		contentPane.add(buttons, BorderLayout.WEST);
 		dialog.pack();
-		
 	}
 
 	public void show() {

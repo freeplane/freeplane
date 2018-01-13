@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
 import java.lang.reflect.InvocationTargetException;
 
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
@@ -94,8 +95,7 @@ public class CoreUpdateGeneratorSpec {
 	public void createsUpdateBlockOnNodeChange() throws Exception {
 		final MapUpdated event = mock(MapUpdated.class);
 		when(eventFactory.createCoreUpdatedEvent(node)).thenReturn(event);
-
-		uut.onNodeChange(node);
+		uut.onNodeChange(new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null));
 		
 		UpdateBlockCompleted expected = updateBlock(event);
 		

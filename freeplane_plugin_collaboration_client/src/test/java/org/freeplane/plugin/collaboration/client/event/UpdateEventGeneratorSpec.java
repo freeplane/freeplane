@@ -85,7 +85,7 @@ public class UpdateEventGeneratorSpec {
 		NodeChangeEvent event = new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null);
 		when(contentUpdateGenerator.handles(event)).thenReturn(true);
 		uut.nodeChanged(event);
-		verify(contentUpdateGenerator).onNodeChange(parent);
+		verify(contentUpdateGenerator).onNodeChange(event);
 	}
 
 	@Test

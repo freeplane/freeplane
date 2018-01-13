@@ -97,6 +97,7 @@ import org.freeplane.features.styles.LogicalStyleKeys;
 public class MLinkController extends LinkController {
 	private static class StyleCopier implements IExtensionCopier {
 
+		@Override
 		public void copy(Object key, NodeModel from, NodeModel to) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
@@ -111,6 +112,7 @@ public class MLinkController extends LinkController {
 
         }
 
+		@Override
 		public void remove(Object key, NodeModel from) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
@@ -120,10 +122,12 @@ public class MLinkController extends LinkController {
 				model.setFormatNodeAsHyperlink(null);
         }
 
+		@Override
 		public void remove(Object key, NodeModel from, NodeModel which) {
 	        if(NodeLinks.formatNodeAsHyperlink(which) != null)
 	        	remove(key, from);
         }
+		@Override
 		public void resolveParentExtensions(Object key, NodeModel to) {
         }
 	}
@@ -141,6 +145,7 @@ public class MLinkController extends LinkController {
 			this.source = source;
 		}
 
+		@Override
 		public void act() {
 			NodeLinks nodeLinks = NodeLinks.createLinkExtension(source);
 			arrowLink = new ConnectorModel(source, targetID,
@@ -152,10 +157,12 @@ public class MLinkController extends LinkController {
 			fireNodeConnectorChange(source, null, arrowLink);
 		}
 
+		@Override
 		public String getDescription() {
 			return "addLink";
 		}
 
+		@Override
 		public void undo() {
 			final NodeLinks nodeLinks = NodeLinks.getLinkExtension(source);
 			nodeLinks.removeArrowlink(arrowLink);
@@ -174,15 +181,18 @@ public class MLinkController extends LinkController {
 			this.model = model;
 		}
 
+		@Override
 		public void act() {
 			model.setTargetLabel(label);
 			fireNodeConnectorChange(model.getSource(), model, model);
 		}
 
+		@Override
 		public String getDescription() {
 			return "setTargetLabel";
 		}
 
+		@Override
 		public void undo() {
 			model.setTargetLabel(oldLabel);
 			fireNodeConnectorChange(model.getSource(), model, model);
@@ -200,15 +210,18 @@ public class MLinkController extends LinkController {
 			this.oldLabel = oldLabel;
 		}
 
+		@Override
 		public void act() {
 			model.setSourceLabel(label);
 			fireNodeConnectorChange(model.getSource(), model, model);
 		}
 
+		@Override
 		public String getDescription() {
 			return "setSourceLabel";
 		}
 
+		@Override
 		public void undo() {
 			model.setSourceLabel(oldLabel);
 			fireNodeConnectorChange(model.getSource(), model, model);
@@ -226,15 +239,18 @@ public class MLinkController extends LinkController {
 			this.label = label;
 		}
 
+		@Override
 		public void act() {
 			model.setMiddleLabel(label);
 			fireNodeConnectorChange(model.getSource(), model, model);
 		}
 
+		@Override
 		public String getDescription() {
 			return "setMiddleLabel";
 		}
 
+		@Override
 		public void undo() {
 			model.setMiddleLabel(oldLabel);
 			fireNodeConnectorChange(model.getSource(), model, model);
@@ -246,14 +262,18 @@ public class MLinkController extends LinkController {
 	 */
 	private final class MapLinkChanger implements IMapChangeListener {
 
+		@Override
 		public void mapChanged(final MapChangeEvent event) {
 		}
 
+		@Override
 		public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 		}
 
+		@Override
 		public void onNodeInserted(final NodeModel parent, final NodeModel model, final int newIndex) {
 			EventQueue.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					final MapModel map = model.getMap();
 					final MapLinks links = map.getExtension(MapLinks.class);
@@ -265,9 +285,11 @@ public class MLinkController extends LinkController {
 			});
 		}
 
+		@Override
 		public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 		}
 
+		@Override
 		public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 			NodeModel model = nodeDeletionEvent.node;
 			final MapModel map = model.getMap();
@@ -331,6 +353,7 @@ public class MLinkController extends LinkController {
 			}
 		}
 
+		@Override
 		public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 		}
 	}
@@ -363,16 +386,19 @@ public class MLinkController extends LinkController {
 			final private ArrowType oldEndArrow = link.getEndArrow();
 			final private ArrowType oldStartArrow = link.getStartArrow();
 
+			@Override
 			public void act() {
 				link.setStartArrow(startArrow);
 				link.setEndArrow(endArrow);
 				fireNodeConnectorChange(link.getSource(), link, link);
 			}
 
+			@Override
 			public String getDescription() {
 				return "changeArrowsOfArrowLink";
 			}
 
+			@Override
 			public void undo() {
 				link.setStartArrow(oldStartArrow);
 				link.setEndArrow(oldEndArrow);
@@ -449,7 +475,7 @@ public class MLinkController extends LinkController {
             final JComboBoxWithBorder connectorShapes = createActionBox(shapeActions);
             addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_shapes"), connectorShapes);
 
-            
+
         ArrayList<AFreeplaneAction> dashActions = new ArrayList<AFreeplaneAction>();
         for (DashVariant  variant : DashVariant.values())
         	dashActions.add(new ChangeConnectorDashAction(this, link, variant));
@@ -473,6 +499,7 @@ public class MLinkController extends LinkController {
 			fontBox.setEditable(false);
 			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_family"), fontBox);
 			fontBox.addItemListener(new ItemListener() {
+				@Override
 				public void itemStateChanged(ItemEvent e) {
 					final Object item = e.getItem();
 					if(item != null)
@@ -488,6 +515,7 @@ public class MLinkController extends LinkController {
 			sizesBox.setEditable(true);
 			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_size"), sizesBox);
 			sizesBox.addItemListener(new ItemListener() {
+				@Override
 				public void itemStateChanged(ItemEvent e) {
 					final Object item = e.getItem();
 					if(item != null){
@@ -524,7 +552,8 @@ public class MLinkController extends LinkController {
 		arrowLinkPopup.addHierarchyListener(new HierarchyListener() {
             private Component focusOwner;
             private Window dialog;
-            public void hierarchyChanged(HierarchyEvent e) {
+            @Override
+			public void hierarchyChanged(HierarchyEvent e) {
                 final JComponent component = (JComponent) e.getComponent();
                 if(component.isShowing()){
                     if(dialog == null){
@@ -575,7 +604,8 @@ public class MLinkController extends LinkController {
         }
         box.setRenderer(RenderedContent.createRenderer());
         box.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
+            @Override
+			public void itemStateChanged(ItemEvent e) {
             	RenderedContent<AFreeplaneAction> item = (RenderedContent<AFreeplaneAction>)e.getItem();
                 final JComboBox box = (JComboBox) e.getSource();
                 item.value.actionPerformed(new ActionEvent(box, ActionEvent.ACTION_PERFORMED, null));
@@ -640,16 +670,19 @@ public class MLinkController extends LinkController {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				arrowLink.setColor(color);
 				final NodeModel node = arrowLink.getSource();
 				fireNodeConnectorChange(node, arrowLink, arrowLink);
 			}
 
+			@Override
 			public String getDescription() {
 				return "setConnectorColor";
 			}
 
+			@Override
 			public void undo() {
 				arrowLink.setColor(oldColor);
 				final NodeModel node = arrowLink.getSource();
@@ -665,16 +698,19 @@ public class MLinkController extends LinkController {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				arrowLink.setDash(dash);
 				final NodeModel node = arrowLink.getSource();
 				fireNodeConnectorChange(node, arrowLink, arrowLink);
 			}
 
+			@Override
 			public String getDescription() {
 				return "setConnectorDash";
 			}
 
+			@Override
 			public void undo() {
 				arrowLink.setDash(oldDash);
 				final NodeModel node = arrowLink.getSource();
@@ -689,16 +725,19 @@ public class MLinkController extends LinkController {
 			final private Point oldEndPoint = link.getEndInclination();
 			final private Point oldStartPoint = link.getStartInclination();
 
+			@Override
 			public void act() {
 				link.setStartInclination(startPoint);
 				link.setEndInclination(endPoint);
 				fireNodeConnectorChange(link.getSource(), link, link);
 			}
 
+			@Override
 			public String getDescription() {
 				return "setArrowLinkEndPoints";
 			}
 
+			@Override
 			public void undo() {
 				link.setStartInclination(oldStartPoint);
 				link.setEndInclination(oldEndPoint);
@@ -753,6 +792,7 @@ public class MLinkController extends LinkController {
 			private URI oldlink;
 			private String oldTargetID;
 
+			@Override
 			public void act() {
 				NodeLinks links = NodeLinks.getLinkExtension(node);
 				if (links != null) {
@@ -771,10 +811,12 @@ public class MLinkController extends LinkController {
 
 			}
 
+			@Override
 			public String getDescription() {
 				return "setLink";
 			}
 
+			@Override
 			public void undo() {
 				final NodeLinks links = NodeLinks.getLinkExtension(node);
 				URI undoneLink = links.getHyperLink(node);
@@ -843,6 +885,7 @@ public class MLinkController extends LinkController {
 
 	public void removeArrowLink(final ConnectorModel arrowLink) {
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				final NodeModel source = arrowLink.getSource();
 				final NodeLinks nodeLinks = NodeLinks.getLinkExtension(source);
@@ -850,10 +893,12 @@ public class MLinkController extends LinkController {
 				fireNodeConnectorChange(source, arrowLink, null);
 			}
 
+			@Override
 			public String getDescription() {
 				return "removeArrowLink";
 			}
 
+			@Override
 			public void undo() {
 				final NodeModel source = arrowLink.getSource();
 				NodeLinks nodeLinks = NodeLinks.createLinkExtension(source);
@@ -870,16 +915,19 @@ public class MLinkController extends LinkController {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				connector.setShape(shape);
 				final NodeModel node = connector.getSource();
 				fireNodeConnectorChange(node, connector, connector);
 			}
 
+			@Override
 			public String getDescription() {
 				return "setConnectorShape";
 			}
 
+			@Override
 			public void undo() {
 				connector.setShape(oldShape);
 				final NodeModel node = connector.getSource();
@@ -895,16 +943,19 @@ public class MLinkController extends LinkController {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				connector.setWidth(width);
 				final NodeModel node = connector.getSource();
 				fireNodeConnectorChange(node, connector, connector);
 			}
 
+			@Override
 			public String getDescription() {
 				return "setConnectorWidth";
 			}
 
+			@Override
 			public void undo() {
 				connector.setWidth(oldWidth);
 				final NodeModel node = connector.getSource();
@@ -921,16 +972,19 @@ public class MLinkController extends LinkController {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				connector.setLabelFontSize(width);
 				final NodeModel node = connector.getSource();
 				fireNodeConnectorChange(node, connector, connector);
 			}
 
+			@Override
 			public String getDescription() {
 				return "setConnectorWidth";
 			}
 
+			@Override
 			public void undo() {
 				connector.setLabelFontSize(oldWidth);
 				final NodeModel node = connector.getSource();
@@ -947,16 +1001,19 @@ public class MLinkController extends LinkController {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				connector.setLabelFontFamily(family);
 				final NodeModel node = connector.getSource();
 				fireNodeConnectorChange(node, connector, connector);
 			}
 
+			@Override
 			public String getDescription() {
 				return "setConnectorWidth";
 			}
 
+			@Override
 			public void undo() {
 				connector.setLabelFontFamily(oldFamily);
 				final NodeModel node = connector.getSource();
@@ -972,16 +1029,19 @@ public class MLinkController extends LinkController {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				connector.setAlpha(alpha);
 				final NodeModel node = connector.getSource();
 				fireNodeConnectorChange(node, connector, connector);
 			}
 
+			@Override
 			public String getDescription() {
 				return "setConnectorAlpha";
 			}
 
+			@Override
 			public void undo() {
 				connector.setAlpha(oldAlpha);
 				final NodeModel node = connector.getSource();
@@ -1009,6 +1069,7 @@ public class MLinkController extends LinkController {
 		}
 	}
 
+	@Override
 	public void loadURI(NodeModel node, URI uri) {
 		// load as documentation map if the node belongs to a documentation map
 		boolean addDocuMapAttribute = node.getMap().containsExtension(DocuMapAttribute.class)
@@ -1089,17 +1150,20 @@ public class MLinkController extends LinkController {
 		final NodeLinks links = NodeLinks.createLinkExtension(node);
 		IActor actor = new IActor() {
 			final Boolean old = links.formatNodeAsHyperlink();
+			@Override
 			public void act() {
 				links.setFormatNodeAsHyperlink(enabled);
 				modeController.getMapController().nodeChanged(node);
 			}
 
+			@Override
 			public void undo() {
 				links.setFormatNodeAsHyperlink(old);
 				modeController.getMapController().nodeChanged(node);
 			}
 
 
+			@Override
 			public String getDescription() {
 				return "setFormatNodeAsHyperlink";
 			}
@@ -1110,7 +1174,7 @@ public class MLinkController extends LinkController {
 	private void fireNodeConnectorChange(NodeModel source, ConnectorModel before, ConnectorModel after) {
 	    Controller.getCurrentModeController().getMapController().nodeChanged(source, NodeLinks.CONNECTOR, before, after);
     }
-	
+
 	public void deleteMapLinksForClone(final NodeModel model){
 		final MapModel map = model.getMap();
 		final MapLinks mapLinks = map.getExtension(MapLinks.class);
@@ -1120,12 +1184,12 @@ public class MLinkController extends LinkController {
 				public void undo() {
 					mapLinkChanger.insertMapLinks(mapLinks, model);
 				}
-				
+
 				@Override
 				public String getDescription() {
 					return "deleteMapLinks";
 				}
-				
+
 				@Override
 				public void act() {
 					mapLinkChanger.deleteMapLinks(mapLinks, model, model);
@@ -1135,7 +1199,7 @@ public class MLinkController extends LinkController {
 		}
 	}
 
-	
+
 	public void insertMapLinksForClone(final NodeModel model){
 		final MapModel map = model.getMap();
 		final MapLinks mapLinks = map.getExtension(MapLinks.class);
@@ -1145,12 +1209,12 @@ public class MLinkController extends LinkController {
 				public void undo() {
 					mapLinkChanger.deleteMapLinks(mapLinks, model, model);
 				}
-				
+
 				@Override
 				public String getDescription() {
 					return "deleteMapLinks";
 				}
-				
+
 				@Override
 				public void act() {
 					mapLinkChanger.insertMapLinks(mapLinks, model);
@@ -1159,4 +1223,28 @@ public class MLinkController extends LinkController {
 			modeController.execute(actor, map);
 		}
 	}
+
+	public void swapProperties(ConnectorModel otherConnector) {
+		final NodeModel source = otherConnector.getSource();
+		final ConnectorModel oldConnector = getConnector(source, otherConnector.getTargetID());
+		IActor actor = new IActor() {
+			@Override
+			public void undo() {
+				act();
+			}
+
+			@Override
+			public String getDescription() {
+				return "swapConnectorProperties";
+			}
+
+			@Override
+			public void act() {
+				oldConnector.swapProperties(otherConnector);
+				fireNodeConnectorChange(oldConnector.getSource(), oldConnector, oldConnector);
+			}
+		};
+		modeController.execute(actor, source.getMap());
+	}
+
 }
