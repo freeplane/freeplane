@@ -1,5 +1,6 @@
 package org.freeplane.plugin.collaboration.client.event.content.other;
 
+import org.freeplane.collaboration.event.content.other.NodeContentUpdated;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.NodeContentManipulator;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessor;

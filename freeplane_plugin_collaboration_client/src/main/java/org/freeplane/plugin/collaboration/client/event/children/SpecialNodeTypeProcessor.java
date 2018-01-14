@@ -1,11 +1,12 @@
 package org.freeplane.plugin.collaboration.client.event.children;
 
+import org.freeplane.collaboration.event.children.SpecialNodeTypeSet;
+import org.freeplane.collaboration.event.children.SpecialNodeTypeSet.SpecialNodeType;
 import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessor;
-import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
 
 public class SpecialNodeTypeProcessor implements UpdateProcessor<SpecialNodeTypeSet> {
 

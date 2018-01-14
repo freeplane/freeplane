@@ -1,5 +1,6 @@
 package org.freeplane.plugin.collaboration.client.event;
 
+import org.freeplane.collaboration.event.MapUpdated;
 import org.freeplane.features.map.MapModel;
 
 public interface UpdateProcessor<T extends MapUpdated> {

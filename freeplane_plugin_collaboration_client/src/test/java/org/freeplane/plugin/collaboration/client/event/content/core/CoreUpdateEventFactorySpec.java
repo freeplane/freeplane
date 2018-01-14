@@ -21,15 +21,15 @@ package org.freeplane.plugin.collaboration.client.event.content.core;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.freeplane.collaboration.event.MapUpdated;
+import org.freeplane.collaboration.event.content.core.CoreMediaType;
+import org.freeplane.collaboration.event.content.core.CoreUpdated;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
-import org.freeplane.plugin.collaboration.client.event.content.core.CoreMediaType;
 import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateEventFactory;
-import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdated;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

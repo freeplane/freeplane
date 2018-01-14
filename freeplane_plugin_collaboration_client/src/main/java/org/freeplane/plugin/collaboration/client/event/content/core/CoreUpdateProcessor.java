@@ -1,5 +1,6 @@
 package org.freeplane.plugin.collaboration.client.event.content.core;
 
+import org.freeplane.collaboration.event.content.core.CoreUpdated;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.map.MapModel;

@@ -5,6 +5,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
 
+import org.freeplane.collaboration.event.MapUpdated;
+import org.freeplane.collaboration.event.content.other.MapContentUpdated;
+import org.freeplane.collaboration.event.content.other.NodeContentUpdated;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
@@ -12,7 +15,6 @@ import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.MapExtensions;
-import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 
 class ContentUpdateEventFactory {
 	final MapWriter mapWriter;

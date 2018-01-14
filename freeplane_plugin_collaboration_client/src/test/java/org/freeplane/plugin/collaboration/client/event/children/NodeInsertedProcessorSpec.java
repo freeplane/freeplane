@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.freeplane.collaboration.event.children.NodeInserted;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
@@ -45,15 +46,13 @@ public class NodeInsertedProcessorSpec {
 	private NodeFactory nodeFactory;
 	@InjectMocks
 	private NodeInsertedProcessor uut;
-	
 	MapStructureEventFactory factory = new MapStructureEventFactory();
-	
 	final private TestObjects testObjects = new TestObjects();
 	final private MapModel map = testObjects.map;
 	final private NodeModel parent = testObjects.parent;
 	final private NodeModel child = testObjects.child;
 	final private NodeModel child2 = testObjects.child2;
-	
+
 	@Test
 	public void eventClass() throws Exception {
 		assertThat(uut.eventClass()).isEqualTo(NodeInserted.class);
@@ -67,7 +66,7 @@ public class NodeInsertedProcessorSpec {
 		uut.onUpdate(map, factory.createNodeInsertedEvent(child));
 		verify(manipulator).insertNode(child2, parent, 0, false);
 	}
-	
+
 	@Test
 	public void insertsLeftFirstLevelNode() throws Exception {
 		child.setLeft(true);
@@ -85,7 +84,7 @@ public class NodeInsertedProcessorSpec {
 		uut.onUpdate(map, factory.createNodeInsertedEvent(child));
 		verify(manipulator).insertNode(child2, parent, 0, false);
 	}
-	
+
 	@Test
 	public void insertsLeftNonFirstLevelNode() throws Exception {
 		parent.setLeft(true);

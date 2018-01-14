@@ -2,6 +2,7 @@ package org.freeplane.plugin.collaboration.client.event;
 
 import java.util.HashMap;
 
+import org.freeplane.collaboration.event.MapUpdated;
 import org.freeplane.features.map.MapModel;
 
 public class UpdateProcessorChain{

@@ -13,6 +13,7 @@ dependencies {
 	compile 'com.fasterxml.jackson.core:jackson-core:2.9.0'
 	compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.0'
 	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.0'
+	compile 'org.freeplane.collaboration:freeplane-events:0.0.1-SNAPSHOT'
 }
 
 eclipse {

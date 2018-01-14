@@ -4,12 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.freeplane.collaboration.event.content.other.NodeContentUpdated;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.NodeContentManipulator;
 import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.other.NodeContentUpdateProcessor;
-import org.freeplane.plugin.collaboration.client.event.content.other.NodeContentUpdated;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;

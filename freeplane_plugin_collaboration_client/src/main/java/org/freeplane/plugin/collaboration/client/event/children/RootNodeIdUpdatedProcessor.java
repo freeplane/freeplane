@@ -1,5 +1,6 @@
 package org.freeplane.plugin.collaboration.client.event.children;
 
+import org.freeplane.collaboration.event.children.RootNodeIdUpdated;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessor;
 

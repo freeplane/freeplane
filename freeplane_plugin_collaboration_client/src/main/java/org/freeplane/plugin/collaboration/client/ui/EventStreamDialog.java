@@ -18,6 +18,9 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import org.freeplane.collaboration.event.MapUpdated;
+import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
+import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.MapModel;
@@ -30,11 +33,9 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
-import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.UpdateEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessorChain;
-import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
+import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderWrapper;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.children.MapStructureEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.children.NodeFactory;
@@ -79,8 +80,9 @@ public class EventStreamDialog {
 			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(mapStructureEventGenerator,
 			    contentGenerators);
 			MapModel map = Controller.getCurrentController().getMap();
-			if (!map.containsExtension(ModifiableUpdateHeaderExtension.class))
-				map.addExtension(ModifiableUpdateHeaderExtension.create().setMapId("id").setMapRevision(1));
+			if (!map.containsExtension(ModifiableUpdateHeaderWrapper.class))
+				map.addExtension(new ModifiableUpdateHeaderWrapper(
+				    ModifiableUpdateHeader.create().setMapId("id").setMapRevision(1)));
 			updateEventGenerator.onNewMap(map);
 		}
 	}

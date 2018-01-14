@@ -25,6 +25,10 @@ import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
+import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
+import org.freeplane.collaboration.event.content.other.MapContentUpdated;
+import org.freeplane.collaboration.event.content.other.NodeContentUpdated;
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapModel;
@@ -33,8 +37,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
-import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
@@ -51,31 +53,23 @@ import org.mockito.runners.MockitoJUnitRunner;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class ContentUpdateGeneratorSpec {
-	
-	
 	private static final int DELAY_MILLIS = 10;
-
-	private ModifiableUpdateHeaderExtension header = ModifiableUpdateHeaderExtension.create().setMapId("mapId").setMapRevision(0);
-	
+	private ModifiableUpdateHeader header = ModifiableUpdateHeader.create().setMapId("mapId").setMapRevision(0);
 	@Mock
 	private ContentUpdateEventFactory eventFactory;
-
 	@Mock
 	private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
-	
 	final private TestObjects testObjects = new TestObjects();
 	final private NodeModel node = testObjects.parent;
 	private UpdatesEventCaptor consumer;
 	private ContentUpdateGenerator uut;
-
 	private MapModel map = testObjects.map;
 
-	
 	@BeforeClass
 	static public void setupClass() throws InterruptedException, InvocationTargetException {
 		AwtThreadStarter.await();
 	}
-	
+
 	@Before
 	public void createTestedInstance() {
 		consumer = new UpdatesEventCaptor(1);
@@ -84,75 +78,63 @@ public class ContentUpdateGeneratorSpec {
 		uut = new ContentUpdateGenerator(updateBlockGeneratorFactory, eventFactory);
 	}
 
-
 	@Test
 	public void generatesEventOnNodeContentUpdate() throws Exception {
 		NodeContentUpdated contentUpdated = mock(NodeContentUpdated.class);
 		when(eventFactory.createNodeContentUpdatedEvent(node)).thenReturn(contentUpdated);
 		uut.onNodeChange(new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null));
-		
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateBlock(contentUpdated).build();
-		
+		    .mapId(header.mapId()).mapRevision(1)
+		    .addUpdateBlock(contentUpdated).build();
 		assertThat(event).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);
-
 	}
-	
 
 	@Test
 	public void generatesEventOnNewNode() throws Exception {
 		NodeContentUpdated contentUpdated = mock(NodeContentUpdated.class);
 		when(eventFactory.createNodeContentUpdatedEvent(node)).thenReturn(contentUpdated);
 		uut.onNewNode(node);
-		
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateBlock(contentUpdated).build();
-		
+		    .mapId(header.mapId()).mapRevision(1)
+		    .addUpdateBlock(contentUpdated).build();
 		assertThat(event).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);
-
 	}
+
 	@Test
 	public void generatesEventOnMapContentUpdate() throws Exception {
 		MapContentUpdated contentUpdated = mock(MapContentUpdated.class);
 		when(eventFactory.createMapContentUpdatedEvent(map)).thenReturn(contentUpdated);
 		uut.onMapChange(map);
-		
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateBlock(contentUpdated).build();
-		
+		    .mapId(header.mapId()).mapRevision(1)
+		    .addUpdateBlock(contentUpdated).build();
 		assertThat(event).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);
-
 	}
-	
+
 	@Test
 	public void generatesEventOnNewMap() throws Exception {
 		MapContentUpdated contentUpdated = mock(MapContentUpdated.class);
 		when(eventFactory.createMapContentUpdatedEvent(map)).thenReturn(contentUpdated);
 		uut.onNewMap(map);
-		
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateBlock(contentUpdated).build();
-		
+		    .mapId(header.mapId()).mapRevision(1)
+		    .addUpdateBlock(contentUpdated).build();
 		assertThat(event).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);
-
 	}
+
 	@Test
 	public void exclusionsContain() {
 		assertThat(ContentUpdateGenerator.getNodeContentExclusions()).contains(
-			HierarchicalIcons.ACCUMULATED_ICONS_EXTENSION_CLASS, 
-			SummaryNodeFlag.class, 
-			FirstGroupNodeFlag.class);
+		    HierarchicalIcons.ACCUMULATED_ICONS_EXTENSION_CLASS,
+		    SummaryNodeFlag.class,
+		    FirstGroupNodeFlag.class);
 	}
 }

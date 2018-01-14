@@ -1,12 +1,14 @@
 package org.freeplane.plugin.collaboration.client.event.content.core;
 
+import org.freeplane.collaboration.event.MapUpdated;
+import org.freeplane.collaboration.event.content.core.CoreMediaType;
+import org.freeplane.collaboration.event.content.core.CoreUpdated;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.StyleString;
-import org.freeplane.plugin.collaboration.client.event.MapUpdated;
 
 class CoreUpdateEventFactory {
 	final MapWriter mapWriter;

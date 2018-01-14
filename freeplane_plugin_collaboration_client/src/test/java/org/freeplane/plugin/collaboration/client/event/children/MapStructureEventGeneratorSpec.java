@@ -25,16 +25,22 @@ import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
+import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
+import org.freeplane.collaboration.event.children.NodeInserted;
+import org.freeplane.collaboration.event.children.NodeMoved;
+import org.freeplane.collaboration.event.children.NodeRemoved;
+import org.freeplane.collaboration.event.children.RootNodeIdUpdated;
+import org.freeplane.collaboration.event.children.SpecialNodeTypeSet;
+import org.freeplane.collaboration.event.children.SpecialNodeTypeSet.SpecialNodeType;
+import org.freeplane.features.map.FirstGroupNodeFlag;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
-import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderExtension;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
-import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeSet.SpecialNodeType;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -50,57 +56,39 @@ import org.mockito.runners.MockitoJUnitRunner;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class MapStructureEventGeneratorSpec {
-	
 	private static final int DELAY_MILLIS = 10;
-	
-
-	
 	@Mock
 	private MapStructureEventFactory structuralEventFactory;
-
 	@Mock
 	private ContentUpdateGenerators contentUpdateGenerators;
-	
 	@Mock
 	private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
-	
-	private ModifiableUpdateHeaderExtension header = ModifiableUpdateHeaderExtension.create().setMapId("mapId").setMapRevision(0);
-
+	private ModifiableUpdateHeader header = ModifiableUpdateHeader.create().setMapId("mapId")
+	    .setMapRevision(0);
 	private UpdatesEventCaptor consumer;
-
 	private MapStructureEventGenerator uut;
-
 	final private TestObjects testObjects = new TestObjects();
 	final private MapModel map = testObjects.map;
 	final private NodeModel parent = testObjects.parent;
 	final private NodeModel child = testObjects.child;
 	final private NodeModel child2 = testObjects.child2;
-
 	@Mock
 	private NodeInserted childInserted;
-
 	@Mock
 	private NodeInserted child2Inserted;
-	
 	@Mock
 	private NodeMoved childMoved;
-	
 	@Mock
 	private NodeRemoved childRemoved;
-
 	@Mock
 	private SpecialNodeTypeSet specialTypeSet;
-
 	@Mock
 	private RootNodeIdUpdated rootNodeSet;
-
-
 
 	@BeforeClass
 	static public void setupClass() throws InterruptedException, InvocationTargetException {
 		AwtThreadStarter.await();
 	}
-
 
 	@Before
 	public void setup() {
@@ -112,36 +100,32 @@ public class MapStructureEventGeneratorSpec {
 		Updates updates = new Updates(consumer, DELAY_MILLIS, header);
 		when(updateBlockGeneratorFactory.of(map)).thenReturn(updates);
 		when(updateBlockGeneratorFactory.of(Mockito.any(NodeModel.class))).thenReturn(updates);
-		uut = new MapStructureEventGenerator(updateBlockGeneratorFactory, contentUpdateGenerators, structuralEventFactory);
+		uut = new MapStructureEventGenerator(updateBlockGeneratorFactory, contentUpdateGenerators,
+		    structuralEventFactory);
 	}
-	
+
 	@Test
 	public void generatesEventOnNodeInsertion() throws Exception {
-		
 		when(structuralEventFactory.createNodeInsertedEvent(child)).thenReturn(childInserted);
 		uut.onNodeInserted(child);
-		
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateBlock(childInserted).build();
-		
+		    .mapId(header.mapId()).mapRevision(1)
+		    .addUpdateBlock(childInserted).build();
 		assertThat(event).isEqualTo(expected);
-		
 	}
-	
+
 	@Test
 	public void generatesSpecialNodeTypeEventOnNodeInsertion() throws Exception {
 		child.addExtension(SummaryNodeFlag.SUMMARY);
 		when(structuralEventFactory.createNodeInsertedEvent(child)).thenReturn(childInserted);
-		when(structuralEventFactory.createSpecialNodeTypeSetEvent(child, SpecialNodeType.SUMMARY_END)).thenReturn(specialTypeSet);
+		when(structuralEventFactory.createSpecialNodeTypeSetEvent(child, SpecialNodeType.SUMMARY_END))
+		    .thenReturn(specialTypeSet);
 		uut.onNodeInserted(child);
-		
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateBlock(childInserted, specialTypeSet).build();
-		
+		    .mapId(header.mapId()).mapRevision(1)
+		    .addUpdateBlock(childInserted, specialTypeSet).build();
 		assertThat(event).isEqualTo(expected);
 	}
 
@@ -151,19 +135,16 @@ public class MapStructureEventGeneratorSpec {
 		child.insert(child2);
 		when(structuralEventFactory.createNodeInsertedEvent(child)).thenReturn(childInserted);
 		when(structuralEventFactory.createNodeInsertedEvent(child2)).thenReturn(child2Inserted);
-
 		uut.onNodeInserted(child);
-		
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateBlock(childInserted,
-					child2Inserted).build();
-		
+		    .mapId(header.mapId()).mapRevision(1)
+		    .addUpdateBlock(childInserted,
+		        child2Inserted)
+		    .build();
 		assertThat(event).isEqualTo(expected);
-		
 	}
-	
+
 	@Test
 	public void generatesContentEventsForInsertedChildOnNodeInsertion() throws Exception {
 		parent.insert(child);
@@ -171,29 +152,61 @@ public class MapStructureEventGeneratorSpec {
 		when(structuralEventFactory.createNodeInsertedEvent(child)).thenReturn(childInserted);
 		when(structuralEventFactory.createNodeInsertedEvent(child2)).thenReturn(child2Inserted);
 		parent.insert(child);
-
 		uut.onNodeInserted(child);
 		consumer.getEvent();
-		
 		verify(contentUpdateGenerators).onNewNode(child);
 		verify(contentUpdateGenerators).onNewNode(child2);
 	}
-	
+
 	@Test
-	public void generatesSpecialTypeEventsForInsertedChildOnNodeInsertion() throws Exception {
+	public void generatesSummaryBeginEventsForInsertedChildOnNodeInsertion() throws Exception {
+		parent.insert(child);
+		child.insert(child2);
+		child2.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
+		when(structuralEventFactory.createNodeInsertedEvent(child)).thenReturn(childInserted);
+		when(structuralEventFactory.createNodeInsertedEvent(child2)).thenReturn(child2Inserted);
+		when(structuralEventFactory.createSpecialNodeTypeSetEvent(child2, SpecialNodeType.SUMMARY_BEGIN))
+		    .thenReturn(specialTypeSet);
+		uut.onNodeInserted(child);
+		final UpdateBlockCompleted event = consumer.getEvent();
+		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+		    .mapId(header.mapId()).mapRevision(1)
+		    .addUpdateBlock(childInserted, child2Inserted, specialTypeSet).build();
+		assertThat(event).isEqualTo(expected);
+	}
+
+	@Test
+	public void generatesSummaryEndEventsForInsertedChildOnNodeInsertion() throws Exception {
 		parent.insert(child);
 		child.insert(child2);
 		child2.addExtension(SummaryNodeFlag.SUMMARY);
 		when(structuralEventFactory.createNodeInsertedEvent(child)).thenReturn(childInserted);
 		when(structuralEventFactory.createNodeInsertedEvent(child2)).thenReturn(child2Inserted);
-		when(structuralEventFactory.createSpecialNodeTypeSetEvent(child2, SpecialNodeType.SUMMARY_END)).thenReturn(specialTypeSet);
+		when(structuralEventFactory.createSpecialNodeTypeSetEvent(child2, SpecialNodeType.SUMMARY_END))
+		    .thenReturn(specialTypeSet);
 		uut.onNodeInserted(child);
-		
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateBlock(childInserted, child2Inserted, specialTypeSet).build();
-		
+		    .mapId(header.mapId()).mapRevision(1)
+		    .addUpdateBlock(childInserted, child2Inserted, specialTypeSet).build();
+		assertThat(event).isEqualTo(expected);
+	}
+
+	@Test
+	public void generatesSummaryBeginEndEndEventsForInsertedChildOnNodeInsertion() throws Exception {
+		parent.insert(child);
+		child.insert(child2);
+		child2.addExtension(FirstGroupNodeFlag.FIRST_GROUP);
+		child2.addExtension(SummaryNodeFlag.SUMMARY);
+		when(structuralEventFactory.createNodeInsertedEvent(child)).thenReturn(childInserted);
+		when(structuralEventFactory.createNodeInsertedEvent(child2)).thenReturn(child2Inserted);
+		when(structuralEventFactory.createSpecialNodeTypeSetEvent(child2, SpecialNodeType.SUMMARY_BEGIN_END))
+		    .thenReturn(specialTypeSet);
+		uut.onNodeInserted(child);
+		final UpdateBlockCompleted event = consumer.getEvent();
+		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+		    .mapId(header.mapId()).mapRevision(1)
+		    .addUpdateBlock(childInserted, child2Inserted, specialTypeSet).build();
 		assertThat(event).isEqualTo(expected);
 	}
 
@@ -205,14 +218,11 @@ public class MapStructureEventGeneratorSpec {
 		when(structuralEventFactory.createRootNodeIdUpdatedEvent(map)).thenReturn(rootNodeSet);
 		uut.onNewMap(map);
 		final UpdateBlockCompleted event = consumer.getEvent();
-		
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateBlock(rootNodeSet, childInserted).build();
-		
+		    .mapId(header.mapId()).mapRevision(1)
+		    .addUpdateBlock(rootNodeSet, childInserted).build();
 		assertThat(event).isEqualTo(expected);
 	}
-
 
 	@Test
 	public void generatesContentEventsOnNewMap() throws Exception {
@@ -222,7 +232,6 @@ public class MapStructureEventGeneratorSpec {
 		when(structuralEventFactory.createRootNodeIdUpdatedEvent(map)).thenReturn(rootNodeSet);
 		uut.onNewMap(map);
 		consumer.getEvent();
-		
 		verify(contentUpdateGenerators).onNewMap(map);
 		verify(contentUpdateGenerators).onNewNode(parent);
 		verify(contentUpdateGenerators).onNewNode(child);
@@ -230,32 +239,23 @@ public class MapStructureEventGeneratorSpec {
 
 	@Test
 	public void generatesEventOnNodeMovement() throws Exception {
-		
 		when(structuralEventFactory.createNodeMovedEvent(child)).thenReturn(childMoved);
 		uut.onNodeMoved(child);
-		
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateBlock(childMoved).build();
-		
+		    .mapId(header.mapId()).mapRevision(1)
+		    .addUpdateBlock(childMoved).build();
 		assertThat(event).isEqualTo(expected);
-		
 	}
-
 
 	@Test
 	public void generatesEventOnNodeRemoval() throws Exception {
-		
 		when(structuralEventFactory.createNodeRemovedEvent(child)).thenReturn(childRemoved);
 		uut.onNodeRemoved(child);
-		
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-				.mapId(header.mapId()).mapRevision(1)
-				.addUpdateBlock(childRemoved).build();
-		
+		    .mapId(header.mapId()).mapRevision(1)
+		    .addUpdateBlock(childRemoved).build();
 		assertThat(event).isEqualTo(expected);
-		
 	}
 }

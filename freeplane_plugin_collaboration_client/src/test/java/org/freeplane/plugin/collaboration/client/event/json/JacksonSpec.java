@@ -2,11 +2,11 @@ package org.freeplane.plugin.collaboration.client.event.json;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.freeplane.plugin.collaboration.client.event.MapUpdated;
-import org.freeplane.plugin.collaboration.client.event.batch.GenericUpdateBlockCompleted;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
-import org.freeplane.plugin.collaboration.client.event.content.core.CoreMediaType;
-import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdated;
+import org.freeplane.collaboration.event.MapUpdated;
+import org.freeplane.collaboration.event.batch.GenericUpdateBlockCompleted;
+import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
+import org.freeplane.collaboration.event.content.core.CoreMediaType;
+import org.freeplane.collaboration.event.content.core.CoreUpdated;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.JsonNode;

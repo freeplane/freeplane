@@ -19,11 +19,13 @@
  */
 package org.freeplane.plugin.collaboration.client.event.children;
 
+import org.freeplane.collaboration.event.children.NodeInserted;
+import org.freeplane.collaboration.event.children.NodePosition;
+import org.freeplane.collaboration.event.children.Side;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessor;
-import org.freeplane.plugin.collaboration.client.event.children.Side;
 
 /**
  * @author Dimitry Polivaev

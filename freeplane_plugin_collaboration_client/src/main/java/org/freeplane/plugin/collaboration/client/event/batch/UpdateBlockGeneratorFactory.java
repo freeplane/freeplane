@@ -15,22 +15,21 @@ public class UpdateBlockGeneratorFactory {
 		this.consumer = consumer;
 		this.delay = delay;
 	}
-	
+
 	public Updates of(MapModel map) {
 		Updates generator;
-		if(generators.containsKey(map))
+		if (generators.containsKey(map))
 			generator = generators.get(map);
 		else {
-			final ModifiableUpdateHeaderExtension header = map.getExtension(ModifiableUpdateHeaderExtension.class);
-			generator = new Updates(consumer, delay, header);
+			final ModifiableUpdateHeaderWrapper headerExtension = map
+			    .getExtension(ModifiableUpdateHeaderWrapper.class);
+			generator = new Updates(consumer, delay, headerExtension.header);
 			generators.put(map, generator);
 		}
 		return generator;
-
 	}
 
 	public Updates of(NodeModel node) {
 		return of(node.getMap());
 	}
-
 }

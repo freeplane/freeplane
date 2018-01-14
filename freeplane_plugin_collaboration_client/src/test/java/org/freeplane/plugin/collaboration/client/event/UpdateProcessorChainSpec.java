@@ -4,6 +4,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.freeplane.collaboration.event.MapUpdated;
+import org.freeplane.collaboration.event.NodeUpdated;
 import org.freeplane.features.map.MapModel;
 import org.junit.Test;
 

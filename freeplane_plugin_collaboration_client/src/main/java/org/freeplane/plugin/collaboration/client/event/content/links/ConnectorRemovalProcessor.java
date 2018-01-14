@@ -1,5 +1,6 @@
 package org.freeplane.plugin.collaboration.client.event.content.links;
 
+import org.freeplane.collaboration.event.content.links.ConnectorRemoved;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;

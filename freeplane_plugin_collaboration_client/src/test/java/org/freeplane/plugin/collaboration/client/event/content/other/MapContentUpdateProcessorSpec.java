@@ -3,6 +3,7 @@ package org.freeplane.plugin.collaboration.client.event.content.other;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
+import org.freeplane.collaboration.event.content.other.MapContentUpdated;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.NodeContentManipulator;
 import org.junit.Test;

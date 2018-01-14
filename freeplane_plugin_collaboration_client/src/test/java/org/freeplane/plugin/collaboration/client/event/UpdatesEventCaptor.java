@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockCompleted;
+import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesProcessor;
 
 public class UpdatesEventCaptor implements UpdatesProcessor {
