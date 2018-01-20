@@ -21,15 +21,17 @@ package org.freeplane.features.icon;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 
 /**
- * 
+ *
  * Represents all icons used in Freeplane
- * 
+ *
  * @author Tamas Eppel
  *
  */
@@ -67,6 +69,16 @@ public class UserIcon extends MindIcon {
 	public String getTranslationValueLabel() {
 		return getTranslationKeyLabel();
 	}
-	
-	
+
+	@Override
+	public String getSource() {
+		final String path = getUrl().getPath();
+		final String iconName = getName();
+		try {
+			return new URI("file", iconName, null).getRawSchemeSpecificPart() + path.substring(path.length() - 4);
+		}
+		catch (URISyntaxException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

@@ -59,7 +59,8 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		this(name, fileName, translationKeyLabel, "?");
 	}
 
-	public UIIcon(final String name, final String fileName, final String translationKeyLabel, final String shortcutKey) {
+	public UIIcon(final String name, final String fileName, final String translationKeyLabel,
+	              final String shortcutKey) {
 		this.name = name;
 		this.fileName = fileName;
 		this.translationKeyLabel = translationKeyLabel;
@@ -73,14 +74,17 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	/**
 	 * @return key for the shortcut in the property file
 	 */
+	@Override
 	public String getShortcutKey() {
 		return shortcutKey;
 	}
 
+	@Override
 	public String getTranslationKeyLabel() {
 		return translationKeyLabel;
 	}
-	
+
+	@Override
 	public String getTranslationValueLabel() {
 		return TextUtils.getText(translationKeyLabel, "");
 	}
@@ -89,6 +93,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		return name;
 	}
 
+	@Override
 	public Icon getIcon() {
 		return ImageIconFactory.getInstance().getImageIcon(this);
 	}
@@ -98,6 +103,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		return ImageIconFactory.getInstance().getImageIcon(this, iconHeight);
 	}
 
+	@Override
 	public KeyStroke getKeyStroke() {
 		return null;
 	}
@@ -184,6 +190,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		return true;
 	}
 
+	@Override
 	public int compareTo(final UIIcon uiIcon) {
 		return this.getPath().compareTo(uiIcon.getPath());
 	}
@@ -192,5 +199,4 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	public String toString() {
 		return name;
 	}
-
 }
