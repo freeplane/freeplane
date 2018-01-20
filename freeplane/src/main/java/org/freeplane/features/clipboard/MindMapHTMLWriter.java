@@ -28,9 +28,11 @@ import java.io.Writer;
 import java.util.Collection;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.link.NodeLinks;
@@ -44,13 +46,12 @@ import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
 
-
 class MindMapHTMLWriter {
 	private static String lf = System.getProperty("line.separator");
 
 	private static String convertSpecialChar(final char c) {
 		String cvt;
-		switch ((int) c) {
+		switch (c) {
 			case 0xe4:
 				cvt = "&auml;";
 				break;
@@ -73,7 +74,7 @@ class MindMapHTMLWriter {
 				cvt = "&szlig;";
 				break;
 			default:
-				cvt = "&#" + Integer.toString((int) c) + ";";
+				cvt = "&#" + Integer.toString(c) + ";";
 				break;
 		}
 		return cvt;
@@ -88,7 +89,7 @@ class MindMapHTMLWriter {
 		boolean spaceOccured = false;
 		for (int i = 0; i < len; ++i) {
 			myChar = text.charAt(i);
-			intValue = (int) text.charAt(i);
+			intValue = text.charAt(i);
 			if (intValue >= 128) {
 				result.append(MindMapHTMLWriter.convertSpecialChar(myChar));
 			}
@@ -143,25 +144,24 @@ class MindMapHTMLWriter {
 
 	private String fontStyle(Color color, Font font) throws IOException {
 		StringBuilder fontStyle = new StringBuilder();
-		if(color != null && (defaultColor == null || ! color.equals(defaultColor)))
-			fontStyle.append("color: ").append(ColorUtils.colorToString(color)).append( "; ");
-		if(font != null){
+		if (color != null && (defaultColor == null || !color.equals(defaultColor)))
+			fontStyle.append("color: ").append(ColorUtils.colorToString(color)).append("; ");
+		if (font != null) {
 			final int fontSize = font.getSize();
 			if (defaultFont == null || fontSize != defaultFont.getSize())
-				fontStyle.append("font-size: ").append(fontSize).append( "pt; ");
+				fontStyle.append("font-size: ").append(fontSize).append("pt; ");
 			final String fontFamily = font.getFamily();
-			if (defaultFont == null || ! fontFamily.equals(defaultFont.getFamily()))
-				fontStyle.append("font-family: \"").append(fontFamily).append( "\", sans-serif; ");
-			if ((defaultFont == null || ! defaultFont.isItalic()) && font.isItalic()) {
+			if (defaultFont == null || !fontFamily.equals(defaultFont.getFamily()))
+				fontStyle.append("font-family: \"").append(fontFamily).append("\", sans-serif; ");
+			if ((defaultFont == null || !defaultFont.isItalic()) && font.isItalic()) {
 				fontStyle.append("font-style: italic; ");
 			}
-			if ((defaultFont == null || ! defaultFont.isBold()) && font.isBold()) {
+			if ((defaultFont == null || !defaultFont.isBold()) && font.isBold()) {
 				fontStyle.append("font-weight: bold; ");
 			}
-			if ((defaultFont == null || ! isStrikedThrough(defaultFont)) && isStrikedThrough(font)) {
+			if ((defaultFont == null || !isStrikedThrough(defaultFont)) && isStrikedThrough(font)) {
 				fontStyle.append("text-decoration: line-through; ");
 			}
-			
 		}
 		return fontStyle.toString();
 	}
@@ -175,7 +175,7 @@ class MindMapHTMLWriter {
 		fileout.write("<SPAN class=\"foldspecial\" onclick=\"unfold_document()\">All +</SPAN>" + lf);
 		fileout.write("<SPAN class=\"foldspecial\" onclick=\"fold_document()\">All -</SPAN>" + lf);
 		writeHTML(rootNodeOfBranch, "1", 0, /* isRoot */true, true, /* depth */
-		1);
+		    1);
 		fileout.write("<SCRIPT type=\"text/javascript\">" + lf);
 		fileout.write("fold_document();" + lf);
 		fileout.write("</SCRIPT>" + lf);
@@ -190,7 +190,7 @@ class MindMapHTMLWriter {
 
 	void writeHTML(final Collection<NodeModel> selectedNodes) throws IOException {
 		fileout.write("<html>" + lf + "<head>" + lf);
-		if(! selectedNodes.isEmpty()){
+		if (!selectedNodes.isEmpty()) {
 			final MapModel map = selectedNodes.iterator().next().getMap();
 			setDefaultsFrom(map);
 			writeStyle();
@@ -211,11 +211,11 @@ class MindMapHTMLWriter {
 	}
 
 	private void setDefaultsFrom(MapModel map) {
-	    final MapStyleModel model = MapStyleModel.getExtension(map);
-        final NodeModel styleNode = model.getStyleNodeSafe(MapStyleModel.DEFAULT_STYLE);
-        defaultFont = nodeStyleController.getFont(styleNode);
-        defaultColor =  nodeStyleController.getColor(styleNode);
-    }
+		final MapStyleModel model = MapStyleModel.getExtension(map);
+		final NodeModel styleNode = model.getStyleNodeSafe(MapStyleModel.DEFAULT_STYLE);
+		defaultFont = nodeStyleController.getFont(styleNode);
+		defaultColor = nodeStyleController.getColor(styleNode);
+	}
 
 	void writeHTML(final NodeModel rootNodeOfBranch) throws IOException {
 		setDefaultsFrom(rootNodeOfBranch.getMap());
@@ -225,10 +225,12 @@ class MindMapHTMLWriter {
 		        || htmlExportFoldingOption.equals("html_export_fold_all");
 		ResourceController.getResourceController().getBooleanProperty("export_icons_in_html");
 		fileout
-		    .write("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"
+		    .write(
+		        "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">"
 		                + lf + "<html>" + lf + "<head>" + lf);
 		fileout.write("<title>"
-		        + MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(TextController.getController().getPlainTextContent(rootNodeOfBranch)
+		        + MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(
+		            TextController.getController().getPlainTextContent(rootNodeOfBranch)
 		                .replace('\n', ' '))
 		        + "</title>" + lf);
 		writeStyle();
@@ -244,7 +246,7 @@ class MindMapHTMLWriter {
 		}
 		else {
 			writeHTML(rootNodeOfBranch, "1", 0, /* isRoot */true, true, /* depth */
-			1);
+			    1);
 		}
 		fileout.write("</body>" + lf);
 		fileout.write("</html>" + lf);
@@ -253,15 +255,16 @@ class MindMapHTMLWriter {
 	}
 
 	private int writeHTML(final NodeModel model, final String parentID, int lastChildNumber, final boolean isRoot,
-	                      final boolean treatAsParagraph, final int depth) throws IOException {
-		if (! model.hasVisibleContent()) {
+	                      final boolean treatAsParagraph, final int depth)
+	        throws IOException {
+		if (!model.hasVisibleContent()) {
 			for (final NodeModel child : mapController.childrenUnfolded(model)) {
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber, false, false, depth);
 			}
 			return lastChildNumber;
 		}
 		boolean createFolding = false;
-		if(writeFoldingCode){
+		if (writeFoldingCode) {
 			createFolding = mapController.isFolded(model);
 			if (getProperty("html_export_folding").equals("html_export_fold_all")) {
 				createFolding = mapController.hasChildren(model);
@@ -302,7 +305,7 @@ class MindMapHTMLWriter {
 			if (link.endsWith(UrlManager.FREEPLANE_FILE_EXTENSION)) {
 				link += ".html";
 			}
-            fileout.write("<a href=\"" + link + "\" target=\"_blank\">");
+			fileout.write("<a href=\"" + link + "\" target=\"_blank\">");
 		}
 		if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
 			writeIcons(model);
@@ -310,24 +313,24 @@ class MindMapHTMLWriter {
 		writeModelContent(text);
 		if (link != null) {
 			fileout.write("</a>" + lf);
-        }
+		}
 		if (shouldOutputFontStyle) {
 			fileout.write("</span>");
 		}
-        final String detailText = DetailTextModel.getDetailTextText(model);
-        if(detailText != null){
-        	writeModelContent(detailText);
-        }
-        final String noteContent = NoteModel.getNoteText(model);
-        if(noteContent != null){
-        	writeModelContent(noteContent);
-            }
+		final String detailText = DetailTextModel.getDetailTextText(model);
+		if (detailText != null) {
+			writeModelContent(detailText);
+		}
+		final String noteContent = NoteModel.getNoteText(model);
+		if (noteContent != null) {
+			writeModelContent(noteContent);
+		}
 		if (heading) {
 			fileout.write("</h" + depth + ">" + lf);
 		}
 		if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
 			for (final NodeModel child : mapController.childrenUnfolded(model)) {
-				lastChildNumber = writeHTML(child, parentID, lastChildNumber,/*isRoot=*/false,
+				lastChildNumber = writeHTML(child, parentID, lastChildNumber, /*isRoot=*/false,
 				    false, depth + 1);
 			}
 			return lastChildNumber;
@@ -336,7 +339,7 @@ class MindMapHTMLWriter {
 			if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
 				for (final NodeModel child : mapController.childrenUnfolded(model)) {
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
-					/*isRoot=*/false, false, depth + 1);
+					    /*isRoot=*/false, false, depth + 1);
 				}
 			}
 			else if (createFolding) {
@@ -345,14 +348,14 @@ class MindMapHTMLWriter {
 				int localLastChildNumber = 0;
 				for (final NodeModel child : mapController.childrenUnfolded(model)) {
 					localLastChildNumber = writeHTML(child, localParentID, localLastChildNumber,
-					/* isRoot=*/false, false, depth + 1);
+					    /* isRoot=*/false, false, depth + 1);
 				}
 			}
 			else {
 				fileout.write(lf + "<ul>" + lf);
 				for (final NodeModel child : mapController.childrenUnfolded(model)) {
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
-					/* isRoot= */false, false, depth + 1);
+					    /* isRoot= */false, false, depth + 1);
 				}
 			}
 			fileout.write("</ul>" + lf);
@@ -364,10 +367,16 @@ class MindMapHTMLWriter {
 	}
 
 	private void writeIcons(final NodeModel model) throws IOException {
-		final Collection<MindIcon> icons = IconController.getController().getIcons(model);
+		final IconController iconController = IconController.getController();
+		final Collection<MindIcon> icons = iconController.getIcons(model);
 		for (MindIcon icon : icons) {
-			final String iconFileName = icon.getFileName();
-			fileout.write("<img src=\"" + iconFileName + "\" alt=\"" + icon.getTranslationValueLabel() + "\">");
+			final String iconFileName = icon.getExportedUrl();
+			fileout.write("<img src=\"icons/" + iconFileName + "\" alt=\"" + icon.getTranslationValueLabel() + "\"");
+			if (iconFileName.endsWith(".svg")) {
+				final Quantity<LengthUnits> iconSize = iconController.getIconSize(model);
+				fileout.write(" height = \"" + iconSize.toBaseUnitsRounded() + "\"");
+			}
+			fileout.write(">");
 		}
 	}
 
@@ -378,7 +387,7 @@ class MindMapHTMLWriter {
 	}
 
 	private void writeModelContent(final String string) throws IOException {
-	    if (string.matches(" +")) {
+		if (string.matches(" +")) {
 			fileout.write("&nbsp;");
 		}
 		else if (string.startsWith("<html")) {
@@ -403,26 +412,27 @@ class MindMapHTMLWriter {
 		else {
 			fileout.write(HtmlUtils.unicodeToHTMLUnicodeEntity(string));
 		}
-    }
+	}
+
 	private void writeStyle() throws IOException {
 		fileout.write("<style type=\"text/css\">" + lf);
 		fileout.write("    body {");
 		writeDefaultFontStyle();
 		fileout.write("}" + lf);
 		fileout.write(FileUtils.slurpResource("/html/freeplane.css"));
-		if(writeFoldingCode)
+		if (writeFoldingCode)
 			fileout.write(FileUtils.slurpResource("/html/folding.css"));
 		fileout.write(lf + "</style>" + lf //
-			      + "<!-- ^ Position is not set to relative / absolute here because of Mozilla -->");
+		        + "<!-- ^ Position is not set to relative / absolute here because of Mozilla -->");
 	}
 
 	private void writeDefaultFontStyle() throws IOException {
-	    Font font = defaultFont;
+		Font font = defaultFont;
 		defaultFont = null;
 		Color color = defaultColor;
 		defaultColor = null;
-        fileout.write(fontStyle(color, font));
+		fileout.write(fontStyle(color, font));
 		defaultFont = font;
 		defaultColor = color;
-    }
+	}
 }

@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ public class FileUtils {
 	public static void copyFromURL(final URL resource, final File destinationDirectory) {
 		final String path = resource.getPath();
 		final int index = path.lastIndexOf('/');
-		final String fileName = index > -1 ? path.substring(index + 1) : path;
+		final String fileName = URLDecoder.decode(index > -1 ? path.substring(index + 1) : path);
 		InputStream in = null;
 		OutputStream out = null;
 		try {
@@ -136,7 +137,6 @@ public class FileUtils {
 		return props;
 	}
 
-
 	private static String slurp(final Reader reader) throws IOException {
 		/* read data into a string */
 		final StringBuilder builder = new StringBuilder();
@@ -163,11 +163,11 @@ public class FileUtils {
 			}
 		}
 	}
-	
+
 	final private static Map<String, String> cachedResources = new HashMap<>();
 
 	public static String slurpResource(final String fileName) throws IOException {
-		if(cachedResources.containsKey(fileName))
+		if (cachedResources.containsKey(fileName))
 			return cachedResources.get(fileName);
 		/* read the resource `fileName` into s atring */
 		final URL resource = ResourceController.getResourceController().getResource(fileName);
@@ -224,12 +224,12 @@ public class FileUtils {
 		if (s == null) {
 			return null;
 		}
-		for(int i = s.length() - 1; i >= 0; i--){
+		for (int i = s.length() - 1; i >= 0; i--) {
 			final char c = s.charAt(i);
-			if(c == File.separatorChar || c == '/' )
+			if (c == File.separatorChar || c == '/')
 				return "";
-			if(c == '.'){
-				return s.substring(i+1).trim().toLowerCase();
+			if (c == '.') {
+				return s.substring(i + 1).trim().toLowerCase();
 			}
 		}
 		return "";
@@ -320,34 +320,34 @@ public class FileUtils {
 					LogUtils.severe(e);
 				}
 			}
-        }
-    }
-	
+		}
+	}
+
 	public static void copyFile(File in, File out) throws IOException {
-	    FileChannel inChannel = new FileInputStream(in).getChannel();
-	    FileChannel outChannel = new FileOutputStream(out).getChannel();
-	    try {
-	        // inChannel.transferTo(0, inChannel.size(), outChannel); 
-	    	// original -- apparently has trouble copying large files on Windows
-	        // magic number for Windows, (64Mb - 32Kb)
-	        int maxCount = (64 * 1024 * 1024) - (32 * 1024);
-	        long size = inChannel.size();
-	        long position = 0;
-	        while (position < size) {
-	            position += inChannel.transferTo(position, maxCount, outChannel);
-	        }
-	    } finally {
-	        if (inChannel != null) {
-	            inChannel.close();
-	        }
-	        if (outChannel != null) {
-	            outChannel.close();
-	        }
-	    }
+		FileChannel inChannel = new FileInputStream(in).getChannel();
+		FileChannel outChannel = new FileOutputStream(out).getChannel();
+		try {
+			// inChannel.transferTo(0, inChannel.size(), outChannel);
+			// original -- apparently has trouble copying large files on Windows
+			// magic number for Windows, (64Mb - 32Kb)
+			int maxCount = (64 * 1024 * 1024) - (32 * 1024);
+			long size = inChannel.size();
+			long position = 0;
+			while (position < size) {
+				position += inChannel.transferTo(position, maxCount, outChannel);
+			}
+		}
+		finally {
+			if (inChannel != null) {
+				inChannel.close();
+			}
+			if (outChannel != null) {
+				outChannel.close();
+			}
+		}
 	}
 
 	public static String validFileNameOf(String proposal) {
 		return proposal.replaceAll("[&:/\\\\\0%$#~\\?\\*]+", "");
 	}
-
 }
