@@ -71,7 +71,7 @@ public class UserIcon extends MindIcon {
 	}
 
 	@Override
-	public String getExportedUrl() {
+	public String getSource() {
 		final String path = getUrl().getPath();
 		final String iconName = getName();
 		try {

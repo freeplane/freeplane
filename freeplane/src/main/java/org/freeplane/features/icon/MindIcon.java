@@ -46,7 +46,7 @@ public class MindIcon extends UIIcon {
 		return DEFAULT_IMAGE_PATH;
 	}
 
-	public String getExportedUrl() {
+	public String getSource() {
 		final String path = getUrl().getPath();
 		final String fileName = path.substring(path.lastIndexOf('/') + 1);
 		return fileName;

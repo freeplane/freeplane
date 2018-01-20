@@ -371,9 +371,12 @@ Todo:
 		<xsl:for-each select="icon">
 			<xsl:element name="img">
 				<xsl:attribute name="src">
-					<xsl:value-of select="$destination_dir"/>icons/<xsl:value-of select="@BUILTIN" />.png</xsl:attribute>
+					<xsl:value-of select="$destination_dir"/>icons/<xsl:value-of select="@src" /></xsl:attribute>
 				<xsl:attribute name="alt">
 					<xsl:value-of select="@BUILTIN" />
+				</xsl:attribute>
+				<xsl:attribute name="height">
+					<xsl:value-of select="@height" />
 				</xsl:attribute>
 			</xsl:element>
 			<xsl:text> </xsl:text>
