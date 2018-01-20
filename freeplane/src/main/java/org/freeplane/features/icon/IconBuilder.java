@@ -36,6 +36,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 
 class IconBuilder implements IElementDOMHandler, IElementWriter {
 	private final IconStore store;
+
 	public IconBuilder(final IconController iconController, final IconStore icons) {
 		store = icons;
 	}
@@ -44,6 +45,7 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
 		String iconName;
 	}
 
+	@Override
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (tag.equals("icon")) {
 			return new IconProperties();
@@ -51,12 +53,13 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
 		return null;
 	}
 
+	@Override
 	public void endElement(final Object parent, final String tag, final Object userObject, final XMLElement dom) {
 		if (parent instanceof NodeModel && tag.equals("icon")) {
 			final NodeModel node = (NodeModel) parent;
 			final IconProperties ip = (IconProperties) userObject;
 			final String iconName = ip.iconName;
-			if(iconName != null)
+			if (iconName != null)
 				node.addIcon(store.getMindIcon(iconName));
 			return;
 		}
@@ -64,6 +67,7 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
 
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler("icon", "BUILTIN", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final IconProperties ip = (IconProperties) userObject;
 				ip.iconName = value;
@@ -83,16 +87,24 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
 	public void setAttributes(final String tag, final Object node, final XMLElement attributes) {
 	}
 
+	@Override
 	public void writeContent(final ITreeWriter writer, final Object element, final String tag) throws IOException {
-		if(! NodeWriter.shouldWriteSharedContent(writer))
+		if (!NodeWriter.shouldWriteSharedContent(writer))
 			return;
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		final NodeModel node = (NodeModel) element;
-		final Collection<MindIcon> icons = forceFormatting ? IconController.getController().getIcons(node) : node.getIcons();
+		final IconController iconController = IconController.getController();
+		final Collection<MindIcon> icons = forceFormatting ? iconController.getIcons(node)
+		        : node.getIcons();
 		for (MindIcon icon : icons) {
 			final XMLElement iconElement = new XMLElement();
 			iconElement.setName("icon");
 			iconElement.setAttribute("BUILTIN", icon.getName());
+			if (forceFormatting) {
+				iconElement.setAttribute("src", icon.getSource());
+				iconElement.setAttribute("height",
+				    Integer.toString(iconController.getIconSize(node).toBaseUnitsRounded()));
+			}
 			writer.addElement(node, iconElement);
 		}
 	}

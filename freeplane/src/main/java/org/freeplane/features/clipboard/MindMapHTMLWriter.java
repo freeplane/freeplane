@@ -370,7 +370,7 @@ class MindMapHTMLWriter {
 		final IconController iconController = IconController.getController();
 		final Collection<MindIcon> icons = iconController.getIcons(model);
 		for (MindIcon icon : icons) {
-			final String iconFileName = icon.getExportedUrl();
+			final String iconFileName = icon.getSource();
 			fileout.write("<img src=\"icons/" + iconFileName + "\" alt=\"" + icon.getTranslationValueLabel() + "\"");
 			if (iconFileName.endsWith(".svg")) {
 				final Quantity<LengthUnits> iconSize = iconController.getIconSize(model);
