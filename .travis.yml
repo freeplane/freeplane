@@ -9,14 +9,15 @@ jdk:
 # therefore disabled until travis fixes it.
 # - oraclejdk9
 
+before_install:
+  - wget https://github.com/freeplane/freeplane-events/archive/master.zip -O /tmp/freeplane-events.zip
+  - unzip /tmp/freeplane-events.zip /tmp
+  - bash -c "cd /tmp/freeplane-events &&  gradle clean publishToMavenLocal"
+
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
-
-  - wget https://github.com/freeplane/freeplane-events/archive/master.zip -O /tmp/freeplane-events.zip
-  - unzip /tmp/freeplane-events.zip /tmp
-  - bash -c "cd /tmp/freeplane-events &&  gradle clean publishToMavenLocal"
 
 script:
   - gradle -PTestLoggingFull=true check
