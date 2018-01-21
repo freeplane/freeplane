@@ -14,7 +14,7 @@ before_install:
   - unzip freeplane-events.zip .
   - bash -c "cd freeplane-events &&  gradle clean publishToMavenLocal"
   - rm -f freeplane-events.zip
-  -rm -rf freeplane-events
+  - rm -rf freeplane-events
 
 before_script:
   - "export DISPLAY=:99.0"
