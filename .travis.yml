@@ -12,9 +12,9 @@ jdk:
 before_install:
   - wget https://github.com/freeplane/freeplane-events/archive/master.zip -O freeplane-events.zip
   - unzip freeplane-events.zip
-  - bash -c "cd freeplane-events &&  gradle clean publishToMavenLocal"
+  - bash -c "cd freeplane-events-master &&  gradle clean publishToMavenLocal"
   - rm -f freeplane-events.zip
-  - rm -rf freeplane-events
+  - rm -rf freeplane-events-master
 
 before_script:
   - "export DISPLAY=:99.0"
