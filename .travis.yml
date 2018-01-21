@@ -13,7 +13,12 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
-script: 
+
+  - wget https://github.com/freeplane/freeplane-events/archive/master.zip -O /tmp/freeplane-events.zip
+  - unzip /tmp/freeplane-events.zip /tmp
+  - bash -c "cd /tmp/freeplane-events &&  gradle clean publishToMavenLocal"
+
+script:
   - gradle -PTestLoggingFull=true check
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
