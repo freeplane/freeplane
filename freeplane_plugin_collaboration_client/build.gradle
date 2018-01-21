@@ -3,6 +3,13 @@ plugins {
   }
   
 apply plugin: "net.ltgt.apt-eclipse"
+
+if( !project.hasProperty('skipMavenLocal') ) {
+	repositories {
+		mavenLocal()
+	}
+}
+
   
 dependencies {
     compileOnly project(':freeplane')
