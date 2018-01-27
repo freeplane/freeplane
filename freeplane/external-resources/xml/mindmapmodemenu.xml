@@ -242,6 +242,7 @@
 				<Entry name="ToggleFBarAction" />
 				<Entry name="ToggleLeftToolbarAction" />
 				<Entry name="ToggleStatusAction" />
+				<Entry name="SetBooleanPropertyAction.show_creation_modification_in_status" />
 				<Entry name="ToggleScrollbarsAction" />
 				<Entry name="ShowFormatPanel" accelerator="alt P" />
 			</Entry>
@@ -274,7 +275,7 @@
 			<Entry name="menu_hoverView">
 				<Entry name="SetBooleanPropertyAction.show_node_tooltips" />
 				<Entry name="SetBooleanPropertyAction.show_styles_in_tooltip" />
-				<Entry name="CreationModificationPluginAction" />
+				<Entry name="SetBooleanPropertyAction.show_creation_modification_in_tooltip" />
 			</Entry>
 			<Entry name="menu_displayAttributes">
 				<Entry builder="radio_button_group">

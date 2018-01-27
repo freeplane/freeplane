@@ -106,7 +106,7 @@ import org.freeplane.features.styles.mindmapmode.styleeditorpanel.StyleEditorPan
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.text.mindmapmode.SortNodes;
 import org.freeplane.features.text.mindmapmode.SplitNode;
-import org.freeplane.features.time.CreationModificationPlugin;
+import org.freeplane.features.time.CreationModificationDatePresenter;
 import org.freeplane.features.ui.CollapseableBoxBuilder;
 import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.ToggleToolbarAction;
@@ -175,7 +175,7 @@ public class MModeControllerFactory {
 		modeController.addAction(new SetAlwaysUnfoldedNodeFlagsAction(alwaysUnfoldedNode));
 		modeController.addAction(new RemoveAllAlwaysUnfoldedNodeFlagsAction(alwaysUnfoldedNode));
 		FreeNode.install();
-		new CreationModificationPlugin();
+		new CreationModificationDatePresenter();
 		modeController.addExtension(ReminderHook.class, new ReminderHook(modeController));
 		new AutomaticEdgeColorHook();
 		new ViewerController();

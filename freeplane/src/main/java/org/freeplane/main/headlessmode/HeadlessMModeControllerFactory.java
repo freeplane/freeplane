@@ -57,7 +57,6 @@ import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
 import org.freeplane.features.text.mindmapmode.MTextController;
-import org.freeplane.features.time.CreationModificationPlugin;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.view.swing.features.BlinkingNodeHook;
@@ -84,8 +83,8 @@ public class HeadlessMModeControllerFactory {
 		return instance;
 	}
 
-// // 	private Controller controller;
- 	private MModeController modeController;
+	// // 	private Controller controller;
+	private MModeController modeController;
 
 	private void createAddIns() {
 		new HierarchicalIcons();
@@ -94,7 +93,6 @@ public class HeadlessMModeControllerFactory {
 		SummaryNode.install();
 		new AlwaysUnfoldedNode();
 		FreeNode.install();
-		new CreationModificationPlugin();
 		new AutomaticEdgeColorHook();
 		new ViewerController();
 		MEncryptionController.install(new MEncryptionController(modeController));
@@ -104,7 +102,7 @@ public class HeadlessMModeControllerFactory {
 	}
 
 	private MModeController createModeControllerImpl() {
-//		this.controller = controller;
+		//		this.controller = controller;
 		createStandardControllers();
 		createAddIns();
 		return modeController;
