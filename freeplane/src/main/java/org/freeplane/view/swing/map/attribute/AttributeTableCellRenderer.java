@@ -36,7 +36,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.IAttributeTableModel;
-import org.freeplane.features.icon.factory.ImageIconFactory;
+import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
 
@@ -104,7 +104,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 			icon = null;
 		}
 		final Icon scaledIcon;
-		final ImageIconFactory iconFactory = ImageIconFactory.getInstance();
+		final IconFactory iconFactory = IconFactory.getInstance();
 		if(icon != null && iconFactory.canScaleIcon(icon)){
 			final int fontSize = getFont().getSize();
 			scaledIcon = iconFactory.getScaledIcon(icon, new Quantity<LengthUnits>(fontSize, LengthUnits.px));

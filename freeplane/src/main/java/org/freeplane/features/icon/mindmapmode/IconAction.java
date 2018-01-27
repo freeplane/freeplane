@@ -32,7 +32,7 @@ import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
-import org.freeplane.features.icon.factory.ImageIconFactory;
+import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.map.NodeModel;
 
 class IconAction extends AMultipleNodeAction implements IIconInformation {
@@ -70,7 +70,7 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 	}
 
 	public Icon getIcon() {
-		return ImageIconFactory.getInstance().getImageIcon(replaceByUserDefinedIcon());
+		return IconFactory.getInstance().getImageIcon(replaceByUserDefinedIcon());
 	}
 
 	public KeyStroke getKeyStroke() {

@@ -24,13 +24,12 @@ import com.kitfox.svg.app.beans.SVGIcon;
 
 /** utility methods to access Freeplane's (builtin and user) icons. */
 public class FreeplaneIconUtils {
-
 	private static final String ANTIALIAS_SVG = "antialias_svg";
 	private static SVGUniverse svgUniverse;
 
 	public static Icon createStandardIcon(String iconKey) {
-        return MindIconFactory.createIcon(iconKey).getIcon();
-    }
+		return MindIconFactory.createIcon(iconKey).getIcon();
+	}
 
 	/** lists all icons that are available in the icon selection dialog. This may include user icons
 	 * if there are some installed. */
@@ -43,21 +42,21 @@ public class FreeplaneIconUtils {
 		return result;
 	}
 
-	public static ImageIcon createImageIcon(final String resourcePath) {
+	public static Icon createImageIcon(final String resourcePath) {
 		final URL resourceUrl = ResourceController.getResourceController().getResource(resourcePath);
 		return createImageIcon(resourceUrl);
 	}
-	
-	public static ImageIcon createImageIconPrivileged(final URL resourceUrl) {
-		return AccessController.doPrivileged(new PrivilegedAction<ImageIcon>() {
+
+	public static Icon createImageIconPrivileged(final URL resourceUrl) {
+		return AccessController.doPrivileged(new PrivilegedAction<Icon>() {
 			@Override
-			public ImageIcon run() {
-				return  createImageIcon(resourceUrl);
+			public Icon run() {
+				return createImageIcon(resourceUrl);
 			}
 		});
 	}
 
-	private static ImageIcon createImageIcon(final URL resourceUrl) {
+	private static Icon createImageIcon(final URL resourceUrl) {
 		return new ImageIcon(resourceUrl);
 	}
 
@@ -65,7 +64,7 @@ public class FreeplaneIconUtils {
 		return ResourceController.getResourceController().getBooleanProperty(ANTIALIAS_SVG);
 	}
 
-	public static SVGIcon createSVGIcon(final URL url, final int heightPixels) {
+	public static Icon createSVGIcon(final URL url, final int heightPixels) {
 		return AccessController.doPrivileged(new PrivilegedAction<SVGIcon>() {
 			@Override
 			public SVGIcon run() {
@@ -74,7 +73,7 @@ public class FreeplaneIconUtils {
 		});
 	}
 
-	public static SVGIcon createSVGIconHavingWidth(final URL url, final int widthPixels) {
+	public static Icon createSVGIconHavingWidth(final URL url, final int widthPixels) {
 		return AccessController.doPrivileged(new PrivilegedAction<SVGIcon>() {
 			@Override
 			public SVGIcon run() {
@@ -83,8 +82,7 @@ public class FreeplaneIconUtils {
 		});
 	}
 
-
-	public static SVGIcon createSVGIcon(final URL url) {
+	public static Icon createSVGIcon(final URL url) {
 		return AccessController.doPrivileged(new PrivilegedAction<SVGIcon>() {
 			@Override
 			public SVGIcon run() {
@@ -92,15 +90,14 @@ public class FreeplaneIconUtils {
 			}
 		});
 	}
-	
+
 	private static class SVGIconCreator {
 		private float aspectRatio;
 		private SVGIcon icon;
-		
-		SVGIconCreator (URL url) {
+
+		SVGIconCreator(URL url) {
 			if (svgUniverse == null)
 				svgUniverse = new SVGUniverse();
-
 			icon = new SVGIcon();
 			URI svgUri;
 			try {
@@ -108,31 +105,32 @@ public class FreeplaneIconUtils {
 					new URI(url.toString());
 					svgUri = svgUniverse.loadSVG(url);
 				}
-				catch (URISyntaxException ex){
+				catch (URISyntaxException ex) {
 					svgUri = svgUniverse.loadSVG(url.openStream(), url.getPath());
 				}
 				icon.setSvgUniverse(svgUniverse);
 				icon.setSvgURI(svgUri);
 				final SVGDiagram diagram = svgUniverse.getDiagram(svgUri);
-				aspectRatio = diagram.getHeight()/diagram.getWidth();
+				aspectRatio = diagram.getHeight() / diagram.getWidth();
 				icon.setAutosize(SVGIcon.AUTOSIZE_STRETCH);
 				icon.setAntiAlias(isSvgAntialiasEnabled());
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}
-		
+
 		public SVGIcon create() {
 			return icon;
 		}
-		
+
 		SVGIconCreator setHeight(final int heightPixels) {
-			icon.setPreferredSize(new Dimension((int)(heightPixels / aspectRatio), heightPixels));
+			icon.setPreferredSize(new Dimension((int) (heightPixels / aspectRatio), heightPixels));
 			return this;
 		}
-		
+
 		SVGIconCreator setWidth(final int widthPixels) {
-			icon.setPreferredSize(new Dimension(widthPixels, (int)(widthPixels * aspectRatio)));
+			icon.setPreferredSize(new Dimension(widthPixels, (int) (widthPixels * aspectRatio)));
 			return this;
 		}
 	}

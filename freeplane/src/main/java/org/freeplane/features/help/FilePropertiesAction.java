@@ -43,7 +43,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.condition.ICondition;
-import org.freeplane.features.icon.factory.ImageIconFactory;
+import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -156,7 +156,7 @@ class FilePropertiesAction extends AFreeplaneAction {
 		c.anchor = GridBagConstraints.FIRST_LINE_START;
 		//fileNamePath
 		final URL imageURL = ResourceController.getResourceController().getIconResource("/images/filenew.png");
-		final JLabel fileIcon = new JLabel(ImageIconFactory.getInstance().getImageIcon(imageURL));
+		final JLabel fileIcon = new JLabel(IconFactory.getInstance().getImageIcon(imageURL));
 		gridbag.setConstraints(fileIcon, c);
 		panel.add(fileIcon);
 		c.gridx = 1;
@@ -217,7 +217,7 @@ class FilePropertiesAction extends AFreeplaneAction {
 		c.gridwidth = 1;
 		c.gridx = 0;
 		final URL imageURL2 = ResourceController.getResourceController().getIconResource("/images/MapStats.png");
-		final JLabel MapStatsIcon = new JLabel(ImageIconFactory.getInstance().getImageIcon(imageURL2));
+		final JLabel MapStatsIcon = new JLabel(IconFactory.getInstance().getImageIcon(imageURL2));
 		gridbag.setConstraints(MapStatsIcon, c);
 		panel.add(MapStatsIcon);
 		c.gridx = 1;
@@ -281,7 +281,7 @@ class FilePropertiesAction extends AFreeplaneAction {
 		c.gridwidth = 1;
 		c.gridx = 0;
 		final URL imageURL3 = ResourceController.getResourceController().getIconResource("/images/BranchStats.png");
-		final JLabel BranchStatsIcon = new JLabel(ImageIconFactory.getInstance().getImageIcon(imageURL3));
+		final JLabel BranchStatsIcon = new JLabel(IconFactory.getInstance().getImageIcon(imageURL3));
 		gridbag.setConstraints(BranchStatsIcon, c);
 		panel.add(BranchStatsIcon);
 		c.gridx = 1;

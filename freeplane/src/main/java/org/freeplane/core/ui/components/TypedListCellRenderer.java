@@ -30,7 +30,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.format.FormattedDate;
-import org.freeplane.features.icon.factory.ImageIconFactory;
+import org.freeplane.features.icon.factory.IconFactory;
 
 /**
  * @author Dimitry Polivaev
@@ -92,7 +92,7 @@ public class TypedListCellRenderer extends DefaultListCellRenderer{
 		}
 		else
 			icon = null;
-		final ImageIconFactory iconFactory = ImageIconFactory.getInstance();
+		final IconFactory iconFactory = IconFactory.getInstance();
 		if(icon != null && iconFactory.canScaleIcon(icon)){
 			final int fontSize = getFont().getSize();
 			setIcon(iconFactory.getScaledIcon(icon, new Quantity<LengthUnits>(fontSize, LengthUnits.px)));
