@@ -3,6 +3,7 @@ package org.freeplane.core.ui.svgicons;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -22,7 +23,14 @@ class CachingIcon implements Icon {
 	}
 
 	public void paintIcon(Component c, Graphics g, int x, int y) {
-		final AffineTransform transform = ((Graphics2D) g).getTransform();
+		final Graphics2D g2 = (Graphics2D) g;
+		if(g2.getRenderingHint(GraphicsHints.CACHE_ICONS) != Boolean.TRUE) {
+			icon.paintIcon(c, g, x, y);
+			return;
+		}
+		
+		
+		final AffineTransform transform = g2.getTransform();
 		final double scaleX = transform.getScaleX();
 		final double scaleY = transform.getScaleY();
 		if(scaleX != this.scaleX || scaleY != this.scaleY || cachedImage == null) {
