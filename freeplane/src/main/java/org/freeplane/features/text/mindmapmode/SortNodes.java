@@ -33,8 +33,10 @@ public class SortNodes extends AMultipleNodeAction {
 				final NodeModel node1 = pArg0;
 				if (pArg1 instanceof NodeModel) {
 					final NodeModel node2 = pArg1;
-					final String nodeText1 = TextController.getController().getPlainTextContent(node1);
-					final String nodeText2 = TextController.getController().getPlainTextContent(node2);
+					final String nodeText1 = TextController.getController()
+					    .getPlainTransformedTextWithoutNodeNumber(node1);
+					final String nodeText2 = TextController.getController()
+					    .getPlainTransformedTextWithoutNodeNumber(node2);
 					return nodeText1.compareToIgnoreCase(nodeText2);
 				}
 			}

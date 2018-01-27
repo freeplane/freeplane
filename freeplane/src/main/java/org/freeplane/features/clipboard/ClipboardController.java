@@ -400,7 +400,7 @@ public class ClipboardController implements IExtension {
 		}
 		pre += "{}";
 		fileout.write("\\li" + depth * 350 + level + "{}");
-		final String nodeText = TextController.getController().getPlainTextContent(mindMapNodeModel);
+		final String nodeText = TextController.getController().getPlainTransformedText(mindMapNodeModel);
 		if (nodeText.matches(" *")) {
 			fileout.write("o");
 		}
@@ -432,7 +432,7 @@ public class ClipboardController implements IExtension {
 	}
 
 	private void writeTXT(final NodeModel mindMapNodeModel, final Writer fileout, final int depth, String indentation) throws IOException {
-		String plainTextContent = TextController.getController().getPlainTextContent(mindMapNodeModel).replace('\n', ' ');
+		String plainTextContent = TextController.getController().getPlainTransformedText(mindMapNodeModel).replace('\n', ' ');
 		for (int i = 0; i < depth; ++i) {
 			fileout.write(indentation);
 		}

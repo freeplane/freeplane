@@ -231,7 +231,7 @@ class MindMapHTMLWriter {
 		                + lf + "<html>" + lf + "<head>" + lf);
 		fileout.write("<title>"
 		        + MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(
-		            TextController.getController().getPlainTextContent(rootNodeOfBranch)
+		            TextController.getController().getPlainTransformedTextWithoutNodeNumber(rootNodeOfBranch)
 		                .replace('\n', ' '))
 		        + "</title>" + lf);
 		writeStyle();
