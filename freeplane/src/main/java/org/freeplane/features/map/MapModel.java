@@ -50,14 +50,14 @@ public class MapModel {
 	protected int changesPerformedSinceLastSave = 0;
 	private final ExtensionContainer extensionContainer;
 	private Filter filter = null;
-	final private IconRegistry iconRegistry;
+	private IconRegistry iconRegistry;
 	final private List<IMapChangeListener> listeners;
 	final private Map<String, NodeModel> nodes;
 	private boolean readOnly = false;
 	private NodeModel root;
 	private URL url;
 
-	public MapModel() {
+	public MapModel(IconRegistry iconRegistry) {
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		this.root = null;
 		listeners = new LinkedList<IMapChangeListener>();
@@ -66,14 +66,19 @@ public class MapModel {
 		if (filterController != null) {
 			filter = filterController.createTransparentFilter();
 		}
+		this.iconRegistry = iconRegistry;
+	}
+
+	public MapModel() {
+		this(null);
 		final ModeController modeController = Controller.getCurrentModeController();
 		iconRegistry = new IconRegistry(modeController.getMapController(), this);
 	}
 
 	public void createNewRoot() {
-	    root = new NodeModel(TextUtils.getText("new_mindmap"), this);
-	    root.attach();
-    }
+		root = new NodeModel(TextUtils.getText("new_mindmap"), this);
+		root.attach();
+	}
 
 	public void addExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
 		extensionContainer.addExtension(clazz, extension);
@@ -92,8 +97,8 @@ public class MapModel {
 	}
 
 	public boolean containsExtension(Class<? extends IExtension> clazz) {
-	    return extensionContainer.containsExtension(clazz);
-    }
+		return extensionContainer.containsExtension(clazz);
+	}
 
 	public void addMapChangeListener(final IMapChangeListener listener) {
 		listeners.add(listener);
@@ -137,11 +142,11 @@ public class MapModel {
 	 */
 	public File getFile() {
 		try {
-	        return url != null  && url.getProtocol().equals("file") ? Compat.urlToFile(url) : null;
-        }
-        catch (URISyntaxException e) {
-        	return null;
-        }
+			return url != null && url.getProtocol().equals("file") ? Compat.urlToFile(url) : null;
+		}
+		catch (URISyntaxException e) {
+			return null;
+		}
 	}
 
 	public Filter getFilter() {

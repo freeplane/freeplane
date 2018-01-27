@@ -20,6 +20,8 @@
 package org.freeplane.features.styles;
 
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.map.MapModel;
 
 /**
@@ -28,12 +30,14 @@ import org.freeplane.features.map.MapModel;
  */
 class StyleMapModel extends MapModel {
 	private static final String STYLES = "styles";
-    StyleMapModel() {
-	    super();
-    }
 
-    @Override
-    public String getTitle() {
-    	return TextUtils.getText(STYLES);
-    }
+	StyleMapModel(IconRegistry iconRegistry, AttributeRegistry attributeRegistry) {
+		super(iconRegistry);
+		addExtension(attributeRegistry);
+	}
+
+	@Override
+	public String getTitle() {
+		return TextUtils.getText(STYLES);
+	}
 }
