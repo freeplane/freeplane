@@ -55,7 +55,7 @@ public class ZoomedIcon extends UIIcon {
 	public Icon getIcon(final NodeModel node) {
 		if(uiIcon.getUrl().getPath().endsWith(".svg")) {
 			final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(node);
-			return IconFactory.getInstance().getImageIcon(this, iconHeight.zoomBy(zoom));
+			return IconFactory.getInstance().getIcon(this, iconHeight.zoomBy(zoom));
 		}
 		else {
 			return getZoomedBitmapIcon();

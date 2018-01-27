@@ -95,12 +95,12 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 
 	@Override
 	public Icon getIcon() {
-		return IconFactory.getInstance().getImageIcon(this);
+		return IconFactory.getInstance().getIcon(this);
 	}
 
 	public Icon getIcon(final NodeModel node) {
 		final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(node);
-		return IconFactory.getInstance().getImageIcon(this, iconHeight);
+		return IconFactory.getInstance().getIcon(this, iconHeight);
 	}
 
 	@Override

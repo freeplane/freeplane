@@ -102,7 +102,7 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 		mButton.setEnabled(pEnabled);
 	}
 
-	public void setImageIcon(final Icon icon) {
+	public void setIcon(final Icon icon) {
 		this.icon = icon;
 	}
 

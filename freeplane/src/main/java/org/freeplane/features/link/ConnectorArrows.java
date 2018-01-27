@@ -7,7 +7,7 @@ import javax.swing.Icon;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.RenderedContent;
 import org.freeplane.core.ui.components.RenderedContentSupplier;
-import org.freeplane.core.util.FreeplaneIconUtils;
+import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.util.TextUtils;
 
 public enum ConnectorArrows implements RenderedContentSupplier<ConnectorArrows>{
@@ -31,7 +31,7 @@ public enum ConnectorArrows implements RenderedContentSupplier<ConnectorArrows>{
 		this.start = start;
 		this.end = end;
 		final URL url = ResourceController.getResourceController().getResource("/images/" + iconName);
-		icon = url != null ? FreeplaneIconUtils.createSVGIcon(url) : null;
+		icon = url != null ? FreeplaneIconFactory.createSVGIcon(url) : null;
 		text = TextUtils.getText("ChangeConnectorArrowsAction." + description + ".text");
 	}
 

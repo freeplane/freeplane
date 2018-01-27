@@ -70,7 +70,7 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 	}
 
 	public Icon getIcon() {
-		return IconFactory.getInstance().getImageIcon(replaceByUserDefinedIcon());
+		return IconFactory.getInstance().getIcon(replaceByUserDefinedIcon());
 	}
 
 	public KeyStroke getKeyStroke() {

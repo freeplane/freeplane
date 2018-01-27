@@ -371,7 +371,7 @@ public abstract class ResourceController {
 		if (resourcePath != null) {
 			URL url = getFirstResource(IconFactory.getAlternativePaths(resourcePath));
 			if (url != null) {
-				return IconFactory.getInstance().getImageIcon(url, height);
+				return IconFactory.getInstance().getIcon(url, height);
 			}
 			else {
 				LogUtils.severe("can not load icon '" + resourcePath + "'");

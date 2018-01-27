@@ -1,4 +1,4 @@
-package org.freeplane.core.util;
+package org.freeplane.core.ui.svgicons;
 
 import java.awt.Dimension;
 import java.net.URI;
@@ -6,57 +6,36 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.icon.IconController;
-import org.freeplane.features.icon.MindIcon;
-import org.freeplane.features.icon.factory.MindIconFactory;
-import org.freeplane.features.icon.mindmapmode.MIconController;
 
 import com.kitfox.svg.SVGDiagram;
 import com.kitfox.svg.SVGUniverse;
 import com.kitfox.svg.app.beans.SVGIcon;
 
 /** utility methods to access Freeplane's (builtin and user) icons. */
-public class FreeplaneIconUtils {
+public class FreeplaneIconFactory {
 	private static final String ANTIALIAS_SVG = "antialias_svg";
 	private static SVGUniverse svgUniverse;
 
-	public static Icon createStandardIcon(String iconKey) {
-		return MindIconFactory.createIcon(iconKey).getIcon();
-	}
-
-	/** lists all icons that are available in the icon selection dialog. This may include user icons
-	 * if there are some installed. */
-	public static List<String> listStandardIconKeys() {
-		// the source of this list is the property "icons.list" in freeplane.properties
-		ArrayList<String> result = new ArrayList<String>();
-		final MIconController mIconController = (MIconController) IconController.getController();
-		for (MindIcon mindIcon : mIconController.getMindIcons())
-			result.add(mindIcon.getName());
-		return result;
-	}
-
-	public static Icon createImageIcon(final String resourcePath) {
+	public static Icon createIcon(final String resourcePath) {
 		final URL resourceUrl = ResourceController.getResourceController().getResource(resourcePath);
-		return createImageIcon(resourceUrl);
+		return createIcon(resourceUrl);
 	}
 
-	public static Icon createImageIconPrivileged(final URL resourceUrl) {
+	public static Icon createIconPrivileged(final URL resourceUrl) {
 		return AccessController.doPrivileged(new PrivilegedAction<Icon>() {
 			@Override
 			public Icon run() {
-				return createImageIcon(resourceUrl);
+				return createIcon(resourceUrl);
 			}
 		});
 	}
 
-	private static Icon createImageIcon(final URL resourceUrl) {
+	private static Icon createIcon(final URL resourceUrl) {
 		return new ImageIcon(resourceUrl);
 	}
 
@@ -65,27 +44,27 @@ public class FreeplaneIconUtils {
 	}
 
 	public static Icon createSVGIcon(final URL url, final int heightPixels) {
-		return AccessController.doPrivileged(new PrivilegedAction<SVGIcon>() {
+		return AccessController.doPrivileged(new PrivilegedAction<Icon>() {
 			@Override
-			public SVGIcon run() {
+			public Icon run() {
 				return new SVGIconCreator(url).setHeight(heightPixels).create();
 			}
 		});
 	}
 
 	public static Icon createSVGIconHavingWidth(final URL url, final int widthPixels) {
-		return AccessController.doPrivileged(new PrivilegedAction<SVGIcon>() {
+		return AccessController.doPrivileged(new PrivilegedAction<Icon>() {
 			@Override
-			public SVGIcon run() {
+			public Icon run() {
 				return new SVGIconCreator(url).setWidth(widthPixels).create();
 			}
 		});
 	}
 
 	public static Icon createSVGIcon(final URL url) {
-		return AccessController.doPrivileged(new PrivilegedAction<SVGIcon>() {
+		return AccessController.doPrivileged(new PrivilegedAction<Icon>() {
 			@Override
-			public SVGIcon run() {
+			public Icon run() {
 				return new SVGIconCreator(url).create();
 			}
 		});
@@ -120,8 +99,8 @@ public class FreeplaneIconUtils {
 			}
 		}
 
-		public SVGIcon create() {
-			return icon;
+		public Icon create() {
+			return new CachingIcon(icon);
 		}
 
 		SVGIconCreator setHeight(final int heightPixels) {
