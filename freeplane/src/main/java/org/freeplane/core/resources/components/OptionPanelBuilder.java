@@ -33,7 +33,6 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
-import javax.swing.ListCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.io.IElementDOMHandler;

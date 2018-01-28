@@ -34,7 +34,6 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.text.mindmapmode.EditNodeWYSIWYG;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
-import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MapViewController;

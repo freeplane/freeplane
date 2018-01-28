@@ -3,7 +3,6 @@ package org.freeplane.core.ui.svgicons;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
