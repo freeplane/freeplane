@@ -10,10 +10,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.Filter;
+import org.freeplane.features.icon.factory.MindIconFactory;
+import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.NodeContainsCondition;
 import org.freeplane.features.text.TextController;
@@ -486,17 +487,17 @@ public class ScriptApiTest {
 
 	@SuppressWarnings("deprecation")
 	public void test_Controller_setStatusInfo_String_infoPanelKey_Icon_icon() {
-		final List<String> keys = FreeplaneIconUtils.listStandardIconKeys();
+		final List<String> keys = MIconController.listStandardIconKeys();
 		assertTrue("find out about the available icons with FreeplaneIconUtils.listStandardIconKeys() -> " + keys,
 		    keys.contains("button_ok"));
 		// no actual test
-		c.setStatusInfo("standard", FreeplaneIconUtils.createStandardIcon("button_ok"));
+		c.setStatusInfo("standard", MindIconFactory.createStandardIcon("button_ok"));
 		// no actual test - info should be removed
 		c.setStatusInfo(null);
 	}
 
 	public void test_Controller_setStatusInfo_String_infoPanelKey_String_info_String_iconKey() {
-		final List<String> keys = FreeplaneIconUtils.listStandardIconKeys();
+		final List<String> keys = MIconController.listStandardIconKeys();
 		final String iconKey = "button_ok";
 		assertTrue("check if FreeplaneIconUtils.listStandardIconKeys() contains '" + iconKey + "'; list content: "
 		        + keys, keys.contains(iconKey));

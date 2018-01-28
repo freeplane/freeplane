@@ -12,7 +12,7 @@ import java.util.List;
 import javax.swing.Icon;
 
 import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.FreeplaneIconUtils;
+import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.Quantity;
@@ -536,7 +536,7 @@ public interface Proxy {
 		 *   println("all available icon keys: " + FreeplaneIconUtils.listStandardIconKeys())
 		 *   c.setStatusInfo("standard", "hi there!", "button_ok");
 		 * </pre>
-		 * @see FreeplaneIconUtils
+		 * @see FreeplaneIconFactory
 		 * @since 1.2 */
 		void setStatusInfo(String infoPanelKey, String info, String iconKey);
 
@@ -705,7 +705,7 @@ public interface Proxy {
 		 *   println("all available icon keys: " + FreeplaneIconUtils.listStandardIconKeys())
 		 *   node.icons.addIcon("button_ok")
 		 * </pre>
-		 * @see FreeplaneIconUtils */
+		 * @see FreeplaneIconFactory */
 		void add(String name);
 
 		/** @since 1.4 */

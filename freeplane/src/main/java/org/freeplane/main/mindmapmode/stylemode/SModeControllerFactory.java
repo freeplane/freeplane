@@ -127,10 +127,12 @@ public class SModeControllerFactory {
 		modeController.addAction(new SetAcceleratorOnNextClickAction());
 		final UserInputListenerFactory userInputListenerFactory = new UserInputListenerFactory(modeController);
 		userInputListenerFactory.setNodeMouseMotionListener(new DefaultNodeMouseMotionListener());
-		userInputListenerFactory.setNodeMouseWheelListener(new MNodeMouseWheelListener(userInputListenerFactory.getMapMouseWheelListener()));
+		userInputListenerFactory.setNodeMouseWheelListener(
+		    new MNodeMouseWheelListener(userInputListenerFactory.getMapMouseWheelListener()));
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addExtension(ModelessAttributeController.class, new ModelessAttributeController());
 		new MMapController(modeController);
+		ModelessAttributeController.installConditions();
 		new MTextController(modeController).install(modeController);
 		SpellCheckerController.install(modeController);
 		new MIconController(modeController).install(modeController);
@@ -147,9 +149,10 @@ public class SModeControllerFactory {
 		LogicalStyleController.install(logicalStyleController);
 		AttributeController.install(new MAttributeController(modeController));
 		FormatController.install(new FormatController());
+		IconController.installConditionControllers();
 		final ScannerController scannerController = new ScannerController();
-        ScannerController.install(scannerController);
-        scannerController.addParsersForStandardFormats();
+		ScannerController.install(scannerController);
+		scannerController.addParsersForStandardFormats();
 		modeController.addAction(new EditAttributesAction());
 		userInputListenerFactory.setMapMouseListener(new MMapMouseListener());
 		final JPopupMenu popupmenu = new JPopupMenu();
@@ -165,13 +168,14 @@ public class SModeControllerFactory {
 		MapStyle.install(false);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
-		if(extentionInstaller != null)
+		if (extentionInstaller != null)
 			extentionInstaller.installExtensions(controller);
 		final SModeController modeController = this.modeController;
 		final StyleEditorPanel styleEditorPanel = new StyleEditorPanel(modeController, null, false);
 		modeController.addAction(new ShowFormatPanelAction());
 		final MapController mapController = modeController.getMapController();
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
+			@Override
 			public void onSelect(final NodeModel node) {
 				final IMapSelection selection = controller.getSelection();
 				if (selection == null) {
@@ -183,37 +187,37 @@ public class SModeControllerFactory {
 				final NodeModel nextSelection;
 				if (node.depth() < 2) {
 					if (node.depth() == 1 && node.hasChildren()) {
-						nextSelection = (NodeModel) node.getChildAt(0);
+						nextSelection = node.getChildAt(0);
 					}
 					else {
-						nextSelection = (NodeModel) (node.getMap().getRootNode().getChildAt(0).getChildAt(0));
+						nextSelection = (node.getMap().getRootNode().getChildAt(0).getChildAt(0));
 					}
 				}
 				else {
 					nextSelection = node;
 				}
 				EventQueue.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						selection.selectAsTheOnlyOneSelected(nextSelection);
 					}
 				});
 			}
 
-
+			@Override
 			public void onDeselect(final NodeModel node) {
 			}
 		});
-
 		mapController.addNodeChangeListener(new INodeChangeListener() {
+			@Override
 			public void nodeChanged(NodeChangeEvent event) {
 				final NodeModel node = event.getNode();
-				if(node.getUserObject().equals(MapStyleModel.DEFAULT_STYLE)){
-					mapController.fireMapChanged(new MapChangeEvent(this, node.getMap(), MapStyle.MAP_STYLES, null, null));
+				if (node.getUserObject().equals(MapStyleModel.DEFAULT_STYLE)) {
+					mapController
+					    .fireMapChanged(new MapChangeEvent(this, node.getMap(), MapStyle.MAP_STYLES, null, null));
 				}
 			}
 		});
-
-
 		final JScrollPane styleScrollPane = new JScrollPane(styleEditorPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		UITools.setScrollbarIncrement(styleScrollPane);

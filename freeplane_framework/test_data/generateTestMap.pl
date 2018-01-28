@@ -1,8 +1,8 @@
 #=================== Configuration ===================
 
 # $max_node_number - approximate number of nodes to generate
-our $max_node_number = 1000;
-# our $max_node_number = 10000;
+#our $max_node_number = 1000;
+our $max_node_number = 10000;
 # our $max_node_number = 100000;
 #our $max_node_number = 200000;
 
@@ -24,6 +24,8 @@ our $linkNumber = 0;
 #$richcontent: 0 - use plain text, 1 - use rich content
 our $richcontent = 0;
 
+#$notes: 0 - use plain text, 1 - use notes
+our $notes = 1;
 
 #=================== Script ==========================
 use strict;
@@ -33,7 +35,7 @@ our $rest = 1;
 my $mmfile;
 
 open($mmfile,
-">map_$max_node_number-$max_level-$max_number-$attributeNumber-$linkNumber-$richcontent.mm");
+">map_$max_node_number-$max_level-$max_number-$attributeNumber-$linkNumber-$richcontent-$notes.mm");
 
 sub attributes($)
 {
@@ -77,6 +79,27 @@ ENDARROW=\"Default\" ENDINCLINATION=\"49;0;\" STARTARROW=\"None\"
 STARTINCLINATION=\"49;0;\"/>\n";
  }
 }
+
+sub print_richcontent($$$)
+{
+    my $contentType = shift;
+    my $content = shift;
+	my $space = shift;
+ 	print $mmfile <<END;
+$space<richcontent TYPE=\"$contentType\">
+$space<html>
+$space  <head>
+$space  </head>
+$space  <body>
+$space    <p>
+$space      $content
+$space    </p>
+$space  </body>
+$space</html>
+$space</richcontent>
+END
+}
+
 sub nodes($)
 {
  if($counter + $rest > $max_node_number)
@@ -111,19 +134,11 @@ sub nodes($)
  print $mmfile "$folded>\n";
  if($richcontent)
  {
-       print $mmfile <<END;
-$space<richcontent TYPE=\"NODE\">
-$space<html>
-$space  <head>
-$space  </head>
-$space  <body>
-$space    <p>
-$space      testnode $level $i $counter
-$space    </p>
-$space  </body>
-$space</html>
-$space</richcontent>
-END
+	print_richcontent("NODE", "testnode $level $i $counter", $space);
+ }
+ if($notes)
+ {
+	print_richcontent("NOTE", "note $level $i $counter", $space);
  }
  attributes($level + 1);
  links($level + 1);
@@ -135,16 +150,12 @@ END
  }
 my $rootNodeText = "our \$max_node_number = $max_node_number; # approximate
 number of nodes to generate&#xa;"
-       ."our \$max_level = $max_level; # number of node levels, root node
-has level 0&#xa;"
-       ."our \$max_number = $max_level; # number of child nodes for each
-node&#xa;"
-       ."our \$attributeNumber = $attributeNumber; # number of attributes
-added to each node&#xa;"
-       ."our \$linkNumber = $linkNumber; #number of links added to each
-node&#xa;"
-       ."our \$richcontent = $richcontent; # 0 - use plain text, 1 - use
-rich content";
+       ."our \$max_level = $max_level; # number of node levels, root node has level 0&#xa;"
+       ."our \$max_number = $max_level; # number of child nodes for each node&#xa;"
+       ."our \$attributeNumber = $attributeNumber; # number of attributes added to each node&#xa;"
+       ."our \$linkNumber = $linkNumber; #number of links added to each node&#xa;"
+       ."our \$richcontent = $richcontent; # 0 - use plain text, 1 - use rich content&#xa;"
+       ."our \$notes = $notes; # 0 - no notes, 1 - generate notes";
 print $mmfile <<ENDOFMAP;
 <map version="0.9.0">
 <!-- To view this file, download free mind mapping software FreeMind from

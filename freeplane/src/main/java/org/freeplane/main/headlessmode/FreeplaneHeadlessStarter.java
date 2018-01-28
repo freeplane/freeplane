@@ -77,7 +77,7 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 			TextController.install();
 			TimeController.install();
 			LinkController.install();
-			IconController.install();
+			IconController.installConditionControllers();
 			HelpController.install();
 			FilterController.getCurrentFilterController().getConditionFactory().addConditionController(70,
 			    new LogicalStyleFilterController());

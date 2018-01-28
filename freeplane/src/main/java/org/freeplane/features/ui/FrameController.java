@@ -90,10 +90,8 @@ import org.freeplane.features.time.TimeComboBoxEditor;
  * @author Dimitry Polivaev
  */
 abstract public class FrameController implements ViewController {
-
 	private static final double DEFAULT_SCALING_FACTOR = 0.8;
 	private static final Quantity<LengthUnits> ICON_SIZE = new Quantity<LengthUnits>(12, LengthUnits.pt);
-
 
 	private final class HorizontalToolbarPanel extends JPanel {
 		/**
@@ -120,8 +118,8 @@ abstract public class FrameController implements ViewController {
 			final Dimension oldPreferredSize = getPreferredSize();
 			final Dimension preferredSize;
 			int maxHeight = 0;
-			for(Component component : getComponents()){
-				if(component.isVisible())
+			for (Component component : getComponents()) {
+				if (component.isVisible())
 					maxHeight = Math.max(maxHeight, component.getY() + component.getHeight());
 			}
 			if (maxHeight > 0) {
@@ -133,9 +131,10 @@ abstract public class FrameController implements ViewController {
 			if (oldPreferredSize.height != preferredSize.height) {
 				setPreferredSize(preferredSize);
 				EventQueue.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						getParent().invalidate();
-						((JComponent) getMainContentPane()).revalidate();
+						getMainContentPane().revalidate();
 					}
 				});
 			}
@@ -147,14 +146,12 @@ abstract public class FrameController implements ViewController {
 	final private Map<String, Component> statusInfos;
 	final private JPanel statusPanel;
 	final private JComponent toolbarPanel[];
-
 	final private String propertyKeyPrefix;
 	private static Icon textIcon;
 	private static Icon numberIcon;
 	private static Icon dateIcon;
 	private static Icon dateTimeIcon;
 	private static Icon linkIcon;
-	
 	static {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		textIcon = resourceController.getIcon("text_icon", ICON_SIZE);
@@ -165,8 +162,8 @@ abstract public class FrameController implements ViewController {
 	}
 	private final IMapViewManager mapViewManager;
 
-	public FrameController(Controller controller,  final IMapViewManager mapViewManager,
-	                      final String propertyKeyPrefix) {
+	public FrameController(Controller controller, final IMapViewManager mapViewManager,
+	                       final String propertyKeyPrefix) {
 		super();
 		this.controller = controller;
 		this.mapViewManager = mapViewManager;
@@ -181,30 +178,32 @@ abstract public class FrameController implements ViewController {
 		statusTextCleaner = new Timer(10000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				status.setVisible(false);
 				status.setText(null);
 			}
 		});
 		statusTextCleaner.setRepeats(false);
-//		this.controller = controller;
+		//		this.controller = controller;
 		controller.setViewController(this);
 		controller.addAction(new ToggleFullScreenAction(this));
 		controller.addAction(new CloseAction());
-
 		controller.addAction(new ToggleMenubarAction(this));
 		controller.addAction(new ToggleScrollbarsAction(this));
 		controller.addAction(new ToggleToolbarAction("ToggleToolbarAction", "/main_toolbar"));
 		controller.addAction(new ToggleToolbarAction("ToggleStatusAction", "/status"));
+		addStatusInfo(ResourceController.OBJECT_TYPE, null, null);
 		toolbarPanel = new JComponent[4];
-
 		toolbarPanel[TOP] = new HorizontalToolbarPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		toolbarPanel[BOTTOM] = Box.createVerticalBox();
 		toolbarPanel[LEFT] = Box.createHorizontalBox();
 		toolbarPanel[RIGHT] = Box.createVerticalBox();
 	}
 
+	@Override
 	public void changeNoteWindowLocation() {
 	}
 
+	@Override
 	public void err(final String msg) {
 		status.setText(msg);
 	}
@@ -213,14 +212,17 @@ abstract public class FrameController implements ViewController {
 		return Controller.getCurrentController();
 	}
 
+	@Override
 	abstract public FreeplaneMenuBar getFreeplaneMenuBar();
 
 	/**
 	 */
+	@Override
 	public JComponent getStatusBar() {
 		return statusPanel;
 	}
 
+	@Override
 	public void init(Controller controller) {
 		final JComponent mainContentPane = getMainContentPane();
 		mainContentPane.add(toolbarPanel[TOP], BorderLayout.NORTH);
@@ -228,74 +230,86 @@ abstract public class FrameController implements ViewController {
 		mainContentPane.add(toolbarPanel[RIGHT], BorderLayout.EAST);
 		mainContentPane.add(toolbarPanel[BOTTOM], BorderLayout.SOUTH);
 		status.setText("");
+		status.setVisible(false);
 		mainContentPane.getRootPane().putClientProperty(Controller.class, controller);
 	}
 
 	private JComponent getMainContentPane() {
-		return (JComponent) ((RootPaneContainer)getMenuComponent()).getContentPane();
+		return (JComponent) ((RootPaneContainer) getMenuComponent()).getContentPane();
 	}
 
+	@Override
 	abstract public void insertComponentIntoSplitPane(JComponent noteViewerComponent);
 
+	@Override
 	abstract public boolean isApplet();
 
+	@Override
 	public boolean isMenubarVisible() {
 		return isComponentVisible("menubar");
 	}
 
+	@Override
 	public boolean areScrollbarsVisible() {
 		return isComponentVisible("scrollbars");
 	}
 
 	private boolean isComponentVisible(String component) {
-	    final String property;
+		final String property;
 		if (isMenuComponentInFullScreenMode()) {
-			property = component+"Visible.fullscreen";
+			property = component + "Visible.fullscreen";
 		}
 		else {
-			property = component +"Visible";
+			property = component + "Visible";
 		}
 		final boolean booleanProperty = ResourceController.getResourceController().getBooleanProperty(
 		    getPropertyKeyPrefix() + property);
 		return booleanProperty;
-    }
+	}
 
 	protected boolean isMenuComponentInFullScreenMode() {
 		return isFullScreenEnabled(getMenuComponent());
 	}
-	
+
 	boolean isFullScreenEnabled() {
 		return isFullScreenEnabled(getCurrentRootComponent());
 	}
 
 	boolean isFullScreenEnabled(final Component currentRootComponent) {
-		return currentRootComponent instanceof Frame && !((Frame)currentRootComponent).isResizable();
+		return currentRootComponent instanceof Frame && !((Frame) currentRootComponent).isResizable();
 	}
 
-
+	@Override
 	abstract public void openDocument(URI uri) throws IOException;
 
+	@Override
 	abstract public void openDocument(URL fileToUrl) throws Exception;
 
 	final private Timer statusTextCleaner;
 
+	@Override
 	public void out(final String msg) {
 		status.setText(msg);
+		status.setVisible(msg != null && !msg.isEmpty());
 		statusTextCleaner.restart();
 	}
 
+	@Override
 	public void addStatusInfo(final String key, final String info) {
 		addStatusInfo(key, info, null, null);
 	}
 
+	@Override
 	public void addStatusInfo(final String key, Icon icon) {
 		addStatusInfo(key, null, icon, null);
 	}
 
+	@Override
 	public void addStatusInfo(final String key, final String info, Icon icon) {
 		addStatusInfo(key, info, icon, null);
 	}
 
+	@Override
 	public void addStatusInfo(final String key, final String info, Icon icon, final String tooltip) {
 		JLabel label = (JLabel) statusInfos.get(key);
 		if (label == null) {
@@ -311,9 +325,10 @@ abstract public class FrameController implements ViewController {
 		}
 		label.setIcon(icon);
 		label.setToolTipText(tooltip);
-		label.setVisible(info != null || icon != null);
+		label.setVisible(info != null && !info.isEmpty() || icon != null);
 	}
 
+	@Override
 	public void addStatusComponent(final String key, Component component) {
 		Component oldComponent = statusInfos.put(key, component);
 		if (oldComponent == null) {
@@ -326,6 +341,7 @@ abstract public class FrameController implements ViewController {
 		}
 	}
 
+	@Override
 	public void removeStatus(final String key) {
 		final Component oldComponent = statusInfos.remove(key);
 		if (oldComponent == null) {
@@ -337,12 +353,15 @@ abstract public class FrameController implements ViewController {
 	/**
 	 *
 	 */
+	@Override
 	abstract public void removeSplitPane();
 
+	@Override
 	public void saveProperties() {
 	}
 
-	public void selectMode( final ModeController oldModeController,  final ModeController newModeController) {
+	@Override
+	public void selectMode(final ModeController oldModeController, final ModeController newModeController) {
 		if (oldModeController == newModeController) {
 			return;
 		}
@@ -365,7 +384,7 @@ abstract public class FrameController implements ViewController {
 				int i = 0;
 				for (final JComponent toolBar : newToolBars) {
 					UIComponentVisibilityDispatcher dispatcher = UIComponentVisibilityDispatcher.dispatcher(toolBar);
-					if(dispatcher != null) {
+					if (dispatcher != null) {
 						dispatcher.resetVisible();
 						toolbarPanel[j].add(toolBar, i++);
 					}
@@ -376,59 +395,62 @@ abstract public class FrameController implements ViewController {
 		}
 		setFreeplaneMenuBar(newUserInputListenerFactory.getMenuBar());
 		setUIComponentsVisible(newModeController.getController().getMapViewManager(), isMenubarVisible());
-
 	}
 
 	private void setUIComponentsVisible(IMapViewManager iMapViewManager, boolean visible) {
-	    setMenubarVisible(visible);
-    }
+		setMenubarVisible(visible);
+	}
 
 	abstract protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar);
 
+	@Override
 	public void setMenubarVisible(final boolean visible) {
 		setComponentVisibleProperty("menubar", visible);
 		final Component freeplaneMenuBar = getFreeplaneMenuBar();
 		freeplaneMenuBar.setVisible(visible);
 	}
 
+	@Override
 	public void setScrollbarsVisible(final boolean visible) {
 		setComponentVisibleProperty("scrollbars", visible);
 	}
 
 	private void setComponentVisibleProperty(final String componentName, final boolean visible) {
-	    final String property;
+		final String property;
 		if (isMenuComponentInFullScreenMode()) {
-			property = componentName+"Visible.fullscreen";
+			property = componentName + "Visible.fullscreen";
 		}
 		else {
-			property = componentName+"Visible";
+			property = componentName + "Visible";
 		}
 		ResourceController.getResourceController().setProperty(getPropertyKeyPrefix() + property, visible);
-    }
+	}
 
 	/**
 	 * Set the Frame title with mode and file if exist
 	 */
-
+	@Override
 	abstract public void setTitle(String frameTitle);
 
 	/**
 	 * @param b
 	 */
+	@Override
 	abstract public void setWaitingCursor(boolean b);
 
+	@Override
 	public void viewNumberChanged(final int number) {
 	}
-	
-	static class FrameState{
+
+	static class FrameState {
 		final Rectangle bounds;
 		final int winState;
+
 		public FrameState(Rectangle bounds, int winState) {
 			super();
 			this.bounds = bounds;
 			this.winState = winState;
 		}
-		
 	}
 
 	public void setFullScreen(final boolean fullScreen) {
@@ -439,12 +461,14 @@ abstract public class FrameController implements ViewController {
 		}
 		ToolTipManager.sharedInstance().setEnabled(false);
 		final Controller controller = getController();
-		ResourceController.getResourceController().firePropertyChanged(FULLSCREEN_ENABLED_PROPERTY, Boolean.toString(!fullScreen),Boolean.toString(fullScreen));
+		ResourceController.getResourceController().firePropertyChanged(FULLSCREEN_ENABLED_PROPERTY,
+		    Boolean.toString(!fullScreen), Boolean.toString(fullScreen));
 		Iterable<Window> visibleFrames = collectVisibleFrames(frame);
 		if (fullScreen) {
 			final GraphicsConfiguration graphicsConfiguration = frame.getGraphicsConfiguration();
 			final Rectangle bounds = graphicsConfiguration.getBounds();
-			frame.getRootPane().putClientProperty(FrameState.class, new FrameState(frame.getBounds(), frame.getExtendedState())); 
+			frame.getRootPane().putClientProperty(FrameState.class,
+			    new FrameState(frame.getBounds(), frame.getExtendedState()));
 			frame.getExtendedState();
 			frame.dispose();
 			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -479,29 +503,30 @@ abstract public class FrameController implements ViewController {
 			showWindows(visibleFrames);
 		}
 		ToolTipManager.sharedInstance().setEnabled(true);
-		if(focusOwner != null)
-		    focusOwner.requestFocus();
+		if (focusOwner != null)
+			focusOwner.requestFocus();
 	}
 
 	private Collection<Window> collectVisibleFrames(Window window) {
-		if(! window.isVisible())
+		if (!window.isVisible())
 			return Collections.emptyList();
 		Window[] ownedWindows = window.getOwnedWindows();
-		ArrayList<Window> visibleWindows = new ArrayList(ownedWindows.length+ 1);
+		ArrayList<Window> visibleWindows = new ArrayList(ownedWindows.length + 1);
 		visibleWindows.add(window);
-		for(Window child : ownedWindows){
+		for (Window child : ownedWindows) {
 			visibleWindows.addAll(collectVisibleFrames(child));
 		}
 		return visibleWindows;
-    }
+	}
 
 	protected void showWindows(final Iterable<Window> windows) {
-	    for(Window child : windows)
-	    	child.setVisible(true);
-    }
+		for (Window child : windows)
+			child.setVisible(true);
+	}
 
+	@Override
 	public String completeVisiblePropertyKey(final JComponent toolBar) {
-		if(toolBar == null) {
+		if (toolBar == null) {
 			return null;
 		}
 		return UIComponentVisibilityDispatcher.dispatcher(toolBar).completeVisiblePropertyKey();
@@ -519,23 +544,24 @@ abstract public class FrameController implements ViewController {
 			else {
 				LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
 				boolean setLnF = false;
-				for(LookAndFeelInfo lafInfo : lafInfos){
-					if(lafInfo.getName().equalsIgnoreCase(lookAndFeel)){
+				for (LookAndFeelInfo lafInfo : lafInfos) {
+					if (lafInfo.getName().equalsIgnoreCase(lookAndFeel)) {
 						UIManager.setLookAndFeel(lafInfo.getClassName());
 						setLnF = true;
 						break;
 					}
 				}
-				if(!setLnF){
+				if (!setLnF) {
 					final URLClassLoader userLibClassLoader = ClassLoaderFactory.getClassLoaderForUserLib();
-					try{
+					try {
 						final Class<?> lookAndFeelClass = userLibClassLoader.loadClass(lookAndFeel);
-						UIManager.setLookAndFeel((LookAndFeel)lookAndFeelClass.newInstance());
+						UIManager.setLookAndFeel((LookAndFeel) lookAndFeelClass.newInstance());
 						final ClassLoader uiClassLoader = lookAndFeelClass.getClassLoader();
-						if(userLibClassLoader != uiClassLoader)
+						if (userLibClassLoader != uiClassLoader)
 							userLibClassLoader.close();
 						UIManager.getDefaults().put("ClassLoader", uiClassLoader);
-					} catch (ClassNotFoundException | ClassCastException | InstantiationException e) {
+					}
+					catch (ClassNotFoundException | ClassCastException | InstantiationException e) {
 						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 						Controller.getCurrentController().getResourceController().setProperty("lookandfeel", "default");
 					}
@@ -545,61 +571,51 @@ abstract public class FrameController implements ViewController {
 		catch (final Exception ex) {
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
 		}
-
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
-		
 		final ResourceController resourceController = ResourceController.getResourceController();
-
 		if (!resourceController.getBooleanProperty("hugeFontsFixed", false)) {
 			if ("100".equals(resourceController.getProperties().get(UITools.MENU_ITEM_FONT_SIZE_PROPERTY))) {
 				resourceController.getProperties().remove(UITools.MENU_ITEM_FONT_SIZE_PROPERTY);
 			}
 			resourceController.setProperty("hugeFontsFixed", true);
 		}
-
 		int lookAndFeelDefaultMenuItemFontSize = getLookAndFeelDefaultMenuItemFontSize();
 		final long defaultMenuItemSize = Math.round(lookAndFeelDefaultMenuItemFontSize * DEFAULT_SCALING_FACTOR);
 		resourceController.setDefaultProperty(UITools.MENU_ITEM_FONT_SIZE_PROPERTY, Long.toString(defaultMenuItemSize));
-
-		if(supportHidpi) {
+		if (supportHidpi) {
 			double scalingFactor = calculateFontSizeScalingFactor(lookAndFeelDefaultMenuItemFontSize);
 			scaleDefaultUIFonts(scalingFactor);
 		}
-
 		// Workaround for https://bugs.openjdk.java.net/browse/JDK-8134828
 		// Scrollbar thumb disappears with Nimbus L&F
 		// http://stackoverflow.com/questions/32857372/jscrollbar-dont-show-thumb-in-nimbus-lf
-
 		final Dimension minimumThumbSize = new Dimension(30, 30);
 		UIManager.getLookAndFeelDefaults().put("ScrollBar.minimumThumbSize", minimumThumbSize);
 		UIManager.put("ScrollBar.minimumThumbSize", minimumThumbSize);
-
 		// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7077418
 		// NullPointerException in WindowsFileChooserUI when system icons missing/invalid
 		// set FileChooserUI to MetalFileChooserUI if no JFileChooser can be created
-		try{
+		try {
 			new JFileChooser();
 		}
-		catch (Throwable t){
-			try{
+		catch (Throwable t) {
+			try {
 				UIManager.getLookAndFeelDefaults().put("FileChooserUI", MetalFileChooserUI.class.getName());
 			}
-			catch (Throwable t1){
+			catch (Throwable t1) {
 			}
 		}
-		
 		// Workaround for https://bugs.openjdk.java.net/browse/JDK-8179014
-		UIManager.put("FileChooser.useSystemExtensionHiding", false); 
-		
+		UIManager.put("FileChooser.useSystemExtensionHiding", false);
 		final Color color = UIManager.getColor("control");
-		if(color != null && color.getAlpha() < 255)
+		if (color != null && color.getAlpha() < 255)
 			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
 	}
-	
+
 	private static int getLookAndFeelDefaultMenuItemFontSize() {
 		int lookAndFeelDefaultMenuItemFontSize = 10;
 		Font uiDefaultMenuItemFont = UIManager.getDefaults().getFont("MenuItem.font");
-		if(uiDefaultMenuItemFont != null) {
+		if (uiDefaultMenuItemFont != null) {
 			lookAndFeelDefaultMenuItemFontSize = uiDefaultMenuItemFont.getSize();
 		}
 		return lookAndFeelDefaultMenuItemFontSize;
@@ -609,14 +625,14 @@ abstract public class FrameController implements ViewController {
 
 	private static double calculateFontSizeScalingFactor(int lookAndFeelDefaultMenuItemFontSize) {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		final int userDefinedMenuItemFontSize = resourceController.getIntProperty(UITools.MENU_ITEM_FONT_SIZE_PROPERTY, UNKNOWN);
-
+		final int userDefinedMenuItemFontSize = resourceController.getIntProperty(UITools.MENU_ITEM_FONT_SIZE_PROPERTY,
+		    UNKNOWN);
 		final double scalingFactor;
-		if(userDefinedMenuItemFontSize == UNKNOWN){
+		if (userDefinedMenuItemFontSize == UNKNOWN) {
 			scalingFactor = DEFAULT_SCALING_FACTOR;
 		}
-		else{
-			scalingFactor = ((double)userDefinedMenuItemFontSize) / lookAndFeelDefaultMenuItemFontSize;
+		else {
+			scalingFactor = ((double) userDefinedMenuItemFontSize) / lookAndFeelDefaultMenuItemFontSize;
 		}
 		return scalingFactor;
 	}
@@ -626,26 +642,23 @@ abstract public class FrameController implements ViewController {
 		Object[] keys = keySet.toArray(new Object[keySet.size()]);
 		final UIDefaults uiDefaults = UIManager.getDefaults();
 		final UIDefaults lookAndFeelDefaults = UIManager.getLookAndFeel().getDefaults();
-		
 		for (Object key : keys) {
-		    if (isFontKey(key)) {
+			if (isFontKey(key)) {
 				Font font = uiDefaults.getFont(key);
 				if (font != null) {
-				    font = UITools.scaleFontInt(font, scalingFactor);
-				    UIManager.put(key, font);
-				    lookAndFeelDefaults.put(key, font);
+					font = UITools.scaleFontInt(font, scalingFactor);
+					UIManager.put(key, font);
+					lookAndFeelDefaults.put(key, font);
 				}
-		    }
-		
+			}
 		}
 	}
-
 
 	private static boolean isFontKey(Object key) {
 		return key != null && key.toString().toLowerCase().endsWith("font");
 	}
 
-
+	@Override
 	public void addObjectTypeInfo(Object value) {
 		if (value instanceof FormattedObject) {
 			value = ((FormattedObject) value).getObject();
@@ -674,95 +687,94 @@ abstract public class FrameController implements ViewController {
 	}
 
 	public static ComboBoxEditor getTextDateTimeEditor() {
-	    final ContainerComboBoxEditor editor = new ContainerComboBoxEditor();
+		final ContainerComboBoxEditor editor = new ContainerComboBoxEditor();
 		final TranslatedObject keyText = new TranslatedObject("text", "1Ab");
-		final BasicComboBoxEditor textEditor = new FixedBasicComboBoxEditor(){
+		final BasicComboBoxEditor textEditor = new FixedBasicComboBoxEditor() {
 			private Object oldItem;
 
 			@Override
-	        public void setItem(Object object) {
+			public void setItem(Object object) {
 				oldItem = object;
-				if(object instanceof FormattedDate)
+				if (object instanceof FormattedDate)
 					super.setItem("");
 				else
 					super.setItem(object);
-	        }
+			}
 
 			@Override
-	        public Object getItem() {
-	            final Object item = super.getItem();
+			public Object getItem() {
+				final Object item = super.getItem();
 				final Object oldItem = this.oldItem;
 				this.oldItem = null;
-	            if(item != null && oldItem != null && item.toString().equals(oldItem.toString()))
-	            	return oldItem;
-	            if(ResourceController.getResourceController().getBooleanProperty("parse_data")
-	            		&& item instanceof String){
-	                final Object scannedObject = ScannerController.getController().parse((String)item);
-	                return scannedObject;
-	            }
+				if (item != null && oldItem != null && item.toString().equals(oldItem.toString()))
+					return oldItem;
+				if (ResourceController.getResourceController().getBooleanProperty("parse_data")
+				        && item instanceof String) {
+					final Object scannedObject = ScannerController.getController().parse((String) item);
+					return scannedObject;
+				}
 				return item;
-	        }
-
+			}
 		};
 		editor.put(keyText, textEditor);
-
 		final TranslatedObject keyDate = new TranslatedObject("date", "");
 		keyDate.setIcon(dateIcon);
-		final TimeComboBoxEditor dateComboBoxEditor = new TimeComboBoxEditor(false){
+		final TimeComboBoxEditor dateComboBoxEditor = new TimeComboBoxEditor(false) {
 			@Override
-	        public void setItem(Object object) {
-				if(object instanceof FormattedDate && !((FormattedDate)object).containsTime())
+			public void setItem(Object object) {
+				if (object instanceof FormattedDate && !((FormattedDate) object).containsTime())
 					super.setItem(object);
 				else
 					super.setItem(null);
-	        }
+			}
 		};
-
 		dateComboBoxEditor.setItem();
 		editor.put(keyDate, dateComboBoxEditor);
-
 		final TranslatedObject keyDateTime = new TranslatedObject("date_time", "");
 		keyDateTime.setIcon(dateTimeIcon);
-		final TimeComboBoxEditor dateTimeComboBoxEditor = new TimeComboBoxEditor(true){
+		final TimeComboBoxEditor dateTimeComboBoxEditor = new TimeComboBoxEditor(true) {
 			@Override
-	        public void setItem(Object object) {
-				if(object instanceof FormattedDate && ((FormattedDate)object).containsTime())
+			public void setItem(Object object) {
+				if (object instanceof FormattedDate && ((FormattedDate) object).containsTime())
 					super.setItem(object);
 				else
 					super.setItem(null);
-	        }
+			}
 		};
 		dateTimeComboBoxEditor.setItem();
 		editor.put(keyDateTime, dateTimeComboBoxEditor);
-
 		return editor;
 	}
 
+	@Override
 	public boolean quit() {
 		final Controller controller = Controller.getCurrentController();
 		controller.selectMode(MModeController.MODENAME);
 		final boolean allMapsClosed = controller.closeAllMaps();
-	    if(allMapsClosed)
-	    	getController().getMapViewManager().onQuitApplication();
-	    return allMapsClosed;
-    }
+		if (allMapsClosed)
+			getController().getMapViewManager().onQuitApplication();
+		return allMapsClosed;
+	}
 
+	@Override
 	public boolean isDispatchThread() {
-	    return EventQueue.isDispatchThread();
-    }
+		return EventQueue.isDispatchThread();
+	}
 
+	@Override
 	public void invokeLater(Runnable runnable) {
-	   EventQueue.invokeLater(runnable);
-    }
+		EventQueue.invokeLater(runnable);
+	}
 
+	@Override
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
 		EventQueue.invokeAndWait(runnable);
-    }
+	}
 
+	@Override
 	public boolean isHeadless() {
-	    return false;
-    }
-
+		return false;
+	}
 
 	@Override
 	public List<? extends Component> getMapViewVector() {

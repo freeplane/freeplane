@@ -61,4 +61,8 @@ public class HistoryInformationModel {
 	public void setLastModifiedAt(final Date lastModifiedAt) {
 		this.lastModifiedAt = lastModifiedAt.getTime();
 	}
+
+	public boolean isSet() {
+		return createdAt != 0 || lastModifiedAt != 0;
+	}
 }

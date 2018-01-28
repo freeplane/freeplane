@@ -7,13 +7,13 @@ import javax.swing.Icon;
 
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
-import org.freeplane.features.icon.factory.ImageIconFactory;
+import org.freeplane.features.icon.factory.IconFactory;
 
 class MenuIconScaling {
 	
 	static void scaleIcon(final AbstractButton actionComponent) {
 		final Icon icon = actionComponent.getIcon();
-		final ImageIconFactory imageIconFactory = ImageIconFactory.getInstance();
+		final IconFactory imageIconFactory = IconFactory.getInstance();
 		if (icon != null && imageIconFactory.canScaleIcon(icon)) {
 			final Font font = actionComponent.getFont();
 			final int fontHeight = actionComponent.getFontMetrics(font).getHeight();

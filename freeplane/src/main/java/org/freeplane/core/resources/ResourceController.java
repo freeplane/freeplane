@@ -21,8 +21,8 @@ package org.freeplane.core.resources;
 
 import java.awt.Color;
 import java.io.BufferedInputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,12 +32,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.swing.ImageIcon;
-
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Vector;
+
+import javax.swing.Icon;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionAcceleratorManager;
@@ -47,8 +46,8 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
+import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.mode.AController.IActionOnChange;
-import org.freeplane.features.icon.factory.ImageIconFactory;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -67,10 +66,10 @@ public abstract class ResourceController {
 
 	final private List<IFreeplanePropertyListener> propertyChangeListeners = new Vector<IFreeplanePropertyListener>();
 	static private ActionAcceleratorManager acceleratorManager;
-
 	private ResourceBundles resources;
-    public static final String FREEPLANE_RESOURCE_URL_PROTOCOL = "freeplaneresource";
+	public static final String FREEPLANE_RESOURCE_URL_PROTOCOL = "freeplaneresource";
 	public static final String OBJECT_TYPE = "ObjectType";
+
 	public ResourceController() {
 		super();
 	}
@@ -81,9 +80,7 @@ public abstract class ResourceController {
 
 	public void addLanguageResources(final String language, final Map<String, String> resources) {
 		this.resources.addResources(language, resources);
-    }
-	
-	
+	}
 
 	public void putUserResourceString(String key, String value) {
 		resources.putUserResourceString(key, value);
@@ -123,24 +120,23 @@ public abstract class ResourceController {
 	public boolean getBooleanProperty(final String key) {
 		return Boolean.parseBoolean(getProperty(key));
 	}
-	
+
 	public boolean getBooleanProperty(final String key, final boolean defaultValue) {
 		final String value = getProperty(key, null);
 		return value != null ? Boolean.parseBoolean(value) : defaultValue;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public <T extends Enum<T>> T getEnumProperty(String propertyName, Enum<T>  defaultValue) {
-		try{
+	public <T extends Enum<T>> T getEnumProperty(String propertyName, Enum<T> defaultValue) {
+		try {
 			final String cacheProptertyValue = getProperty(propertyName).toUpperCase(Locale.ENGLISH);
 			defaultValue = Enum.valueOf(defaultValue.getClass(), cacheProptertyValue);
 		}
 		catch (Exception e) {
 			LogUtils.severe(e);
 		}
-		return (T)defaultValue;
+		return (T) defaultValue;
 	}
-
 
 	/**
 	 * @param resourcesNodeTextColor
@@ -175,7 +171,6 @@ public abstract class ResourceController {
 		}
 	}
 
-
 	public int getLengthProperty(String name) {
 		final Quantity<LengthUnits> quantity = getLengthQuantityProperty(name);
 		return quantity.toBaseUnitsRounded();
@@ -186,7 +181,7 @@ public abstract class ResourceController {
 		final Quantity<LengthUnits> quantity = Quantity.fromString(property, LengthUnits.px);
 		return quantity;
 	}
-	
+
 	public int getTimeProperty(String name) {
 		final Quantity<TimePeriodUnits> quantity = getTimeQuantityProperty(name);
 		return quantity.toBaseUnitsRounded();
@@ -200,11 +195,11 @@ public abstract class ResourceController {
 
 	public int getIntProperty(String key) {
 		return Integer.parseInt(getProperty(key));
-    }
+	}
 
 	public double getDoubleProperty(String key) {
 		return Double.parseDouble(getProperty(key));
-    }
+	}
 
 	/** register defaults in freeplane.properties respectively defaults.properties instead. */
 	public long getLongProperty(final String key, final long defaultValue) {
@@ -216,12 +211,11 @@ public abstract class ResourceController {
 		}
 	}
 
-
 	public Color getColorProperty(String name) {
 		String string = getProperty(name);
 		return ColorUtils.stringToColor(string);
 	}
-	
+
 	abstract public Properties getProperties();
 
 	abstract public String getProperty(final String key);
@@ -254,7 +248,7 @@ public abstract class ResourceController {
 
 	public String getInstallationBaseDir() {
 		return "";
-    }
+	}
 
 	/** Returns the ResourceBundle with the current language */
 	public ResourceBundle getResources() {
@@ -265,9 +259,9 @@ public abstract class ResourceController {
 	}
 
 	public String getLanguageCode() {
-	    return resources.getLanguageCode();
-    }
-	
+		return resources.getLanguageCode();
+	}
+
 	public String getDefaultLanguageCode() {
 		return resources.getDefaultLanguageCode();
 	}
@@ -300,7 +294,7 @@ public abstract class ResourceController {
 	}
 
 	abstract public void setProperty(final String property, final String value);
-	
+
 	/** adds properties from url to properties. Existing properties in resultProps will be overridden.
 	 * @return false if anything went wrong. */
 	protected static boolean loadProperties(Properties resultProps, final URL url) {
@@ -314,9 +308,9 @@ public abstract class ResourceController {
 		catch (final Exception ex) {
 			System.err.println("Could not load properties from " + url);
 		}
-        finally {
-        	FileUtils.silentlyClose(in);
-        }
+		finally {
+			FileUtils.silentlyClose(in);
+		}
 		return false;
 	}
 
@@ -325,20 +319,21 @@ public abstract class ResourceController {
 		Properties props = new Properties();
 		loadProperties(props, propertiesUrl);
 		addDefaults(props);
-    }
+	}
 
 	/** use generic to make it useable with Properties. KT and VT must be of type String. */
 	public <KT, VT> void addDefaults(Map<KT, VT> defaultProperties) {
 		for (Entry<KT, VT> entry : defaultProperties.entrySet()) {
 			setDefaultProperty((String) entry.getKey(), (String) entry.getValue());
 		}
-    }
+	}
 
 	public boolean isApplet() {
 		return false;
 	}
 
-	public void removePropertyChangeListener(final Class<? extends IActionOnChange> clazz, final AFreeplaneAction action) {
+	public void removePropertyChangeListener(final Class<? extends IActionOnChange> clazz,
+	                                         final AFreeplaneAction action) {
 		final Iterator<IFreeplanePropertyListener> iterator = propertyChangeListeners.iterator();
 		while (iterator.hasNext()) {
 			final IFreeplanePropertyListener next = iterator.next();
@@ -350,33 +345,35 @@ public abstract class ResourceController {
 	}
 
 	public ActionAcceleratorManager getAcceleratorManager() {
-		if(acceleratorManager == null)
+		if (acceleratorManager == null)
 			acceleratorManager = new ActionAcceleratorManager();
 		return acceleratorManager;
 	}
 
-	private Map<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>();
-	public ImageIcon getIcon(final String iconKey) {
-		return getIcon(iconKey, ImageIconFactory.DEFAULT_UI_ICON_HEIGHT);
+	private Map<String, Icon> iconCache = new HashMap<String, Icon>();
+
+	public Icon getIcon(final String iconKey) {
+		return getIcon(iconKey, IconFactory.DEFAULT_UI_ICON_HEIGHT);
 	}
 
-	public ImageIcon getIcon(String iconKey, Quantity<LengthUnits> height) {
-		ImageIcon icon = iconCache.get(iconKey);
-		if(icon == null){
+	public Icon getIcon(String iconKey, Quantity<LengthUnits> height) {
+		Icon icon = iconCache.get(iconKey);
+		if (icon == null) {
 			final String iconResource = iconKey.startsWith("/") ? iconKey : getProperty(iconKey, null);
 			icon = loadIcon(height, iconResource);
 		}
-		if(icon != null)
+		if (icon != null)
 			iconCache.put(iconKey, icon);
 		return icon;
 	}
 
-	private ImageIcon loadIcon(Quantity<LengthUnits> height, final String resourcePath) {
+	private Icon loadIcon(Quantity<LengthUnits> height, final String resourcePath) {
 		if (resourcePath != null) {
-			URL url = getFirstResource(ImageIconFactory.getAlternativePaths(resourcePath));
+			URL url = getFirstResource(IconFactory.getAlternativePaths(resourcePath));
 			if (url != null) {
-				return ImageIconFactory.getInstance().getImageIcon(url, height);
-			} else {
+				return IconFactory.getInstance().getIcon(url, height);
+			}
+			else {
 				LogUtils.severe("can not load icon '" + resourcePath + "'");
 			}
 		}
@@ -384,17 +381,16 @@ public abstract class ResourceController {
 	}
 
 	public URL getFirstResource(String... resourcePaths) {
-		for(String path : resourcePaths){
+		for (String path : resourcePaths) {
 			final URL url = getResource(path);
-			if(url != null)
+			if (url != null)
 				return url;
 		}
 		return null;
 	}
 
-
 	public URL getIconResource(String resourcePath) {
-		final String[] alternativePaths = ImageIconFactory.getAlternativePaths(resourcePath);
+		final String[] alternativePaths = IconFactory.getAlternativePaths(resourcePath);
 		return getFirstResource(alternativePaths);
 	}
 }

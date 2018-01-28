@@ -42,7 +42,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -115,53 +114,47 @@ import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.SHTMLPanelImpl;
 import com.lightdev.app.shtm.UIResources;
 
-
 /**
  * @author Dimitry Polivaev
  */
 public class MTextController extends TextController {
-	
 	private static final String PARSE_DATA_PROPERTY = "parse_data";
-    public static final String NODE_TEXT = "NodeText";
+	public static final String NODE_TEXT = "NodeText";
 	private static Pattern FORMATTING_PATTERN = null;
 	private EditNodeBase mCurrentEditor = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
 	private final EventBuffer eventQueue;
-	
-	static{
+	static {
 		final UIResources defaultResources = SHTMLPanel.getResources();
-    	SHTMLPanel.setResources(new UIResources() {
-    		public String getString(final String key) {
-    			if (key.equals("approximate_search_threshold"))
-    			{
-    				return new Double(StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB).toString();
-    			}
-    			
-    			String freeplaneKey = "simplyhtml." + key;
-    			String resourceString = ResourceController.getResourceController().getText(freeplaneKey, null);
-    			if (resourceString == null) {
-    				resourceString = ResourceController.getResourceController().getProperty(freeplaneKey);
-    			}
-    			if (resourceString == null && key.equals("splashImage"))
-    				return defaultResources.getString(key);
-    			return resourceString;
-    		}
-    		
-    		public Icon getIcon(String name){
-    			String freeplaneKey = "simplyhtml." + name;
-    			final ImageIcon freeplaneIcon = ResourceController.getResourceController().getIcon(freeplaneKey);
-    			return freeplaneIcon != null ? freeplaneIcon : defaultResources.getIcon(name);
-    		}
-    	});
-		
+		SHTMLPanel.setResources(new UIResources() {
+			@Override
+			public String getString(final String key) {
+				if (key.equals("approximate_search_threshold")) {
+					return new Double(StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB).toString();
+				}
+				String freeplaneKey = "simplyhtml." + key;
+				String resourceString = ResourceController.getResourceController().getText(freeplaneKey, null);
+				if (resourceString == null) {
+					resourceString = ResourceController.getResourceController().getProperty(freeplaneKey);
+				}
+				if (resourceString == null && key.equals("splashImage"))
+					return defaultResources.getString(key);
+				return resourceString;
+			}
+
+			@Override
+			public Icon getIcon(String name) {
+				String freeplaneKey = "simplyhtml." + name;
+				final Icon freeplaneIcon = ResourceController.getResourceController().getIcon(freeplaneKey);
+				return freeplaneIcon != null ? freeplaneIcon : defaultResources.getIcon(name);
+			}
+		});
 	}
-	
 	private static final ConditionPredicate DEPENDS_ON_PARENT = new ConditionPredicate() {
-		
 		@Override
 		public boolean test(ICondition condition) {
-			return condition instanceof NodeItemRelation && 
-					FILTER_PARENT.equals(((NodeItemRelation)condition).getNodeItem());
+			return condition instanceof NodeItemRelation &&
+			        FILTER_PARENT.equals(((NodeItemRelation) condition).getNodeItem());
 		}
 	};
 
@@ -175,14 +168,15 @@ public class MTextController extends TextController {
 		editorPaneListeners = new LinkedList<IEditorPaneListener>();
 		createActions();
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
-            public void propertyChanged(String propertyName, String newValue, String oldValue) {
-                if (PARSE_DATA_PROPERTY.equals(propertyName)) {
-                    parseData = null;
-                    @SuppressWarnings("unused")
-                    boolean dummy = parseData();
-                }
-            }
-        });
+			@Override
+			public void propertyChanged(String propertyName, String newValue, String oldValue) {
+				if (PARSE_DATA_PROPERTY.equals(propertyName)) {
+					parseData = null;
+					@SuppressWarnings("unused")
+					boolean dummy = parseData();
+				}
+			}
+		});
 	}
 
 	private void createActions() {
@@ -191,47 +185,47 @@ public class MTextController extends TextController {
 		modeController.addAction(new UsePlainTextAction());
 		modeController.addAction(new EditLongAction());
 		modeController.addAction(new SetImageByFileChooserAction());
-        modeController.addAction(new EditDetailsAction(false));
-        modeController.addAction(new EditDetailsAction(true));
+		modeController.addAction(new EditDetailsAction(false));
+		modeController.addAction(new EditDetailsAction(true));
 		modeController.addAction(new DeleteDetailsAction());
 		modeController.addUiBuilder(Phase.ACTIONS, "splitToWordsActions", new EntryVisitor() {
-			
 			@Override
 			public void visit(Entry target) {
-				final String[] nodeNumbersInLine = ResourceController.getResourceController().getProperty("SplitToWordsAction.nodeNumbersInLine").split("[^\\d]+");
-				for(String nodeNumberInLineAsString : nodeNumbersInLine){
+				final String[] nodeNumbersInLine = ResourceController.getResourceController()
+				    .getProperty("SplitToWordsAction.nodeNumbersInLine").split("[^\\d]+");
+				for (String nodeNumberInLineAsString : nodeNumbersInLine) {
 					try {
 						final int nodeNumberInLine = Integer.parseInt(nodeNumberInLineAsString);
-						if(nodeNumberInLine > 0) {
+						if (nodeNumberInLine > 0) {
 							final SplitToWordsAction action = new SplitToWordsAction(nodeNumberInLine);
 							new EntryAccessor().addChildAction(target, action);
 							modeController.addAction(action);
 						}
-					} catch (NumberFormatException e) {
+					}
+					catch (NumberFormatException e) {
 					}
 				}
 			}
-			
+
 			@Override
 			public boolean shouldSkipChildren(Entry entry) {
 				return true;
 			}
 		});
-			
 		modeController.addUiBuilder(Phase.ACTIONS, "joinNodesActions", new EntryVisitor() {
-			
 			@Override
 			public void visit(Entry target) {
 				final String textSeparators = ResourceController.getResourceController()
-						.getProperty("JoinNodesAction.textSeparators");
+				    .getProperty("JoinNodesAction.textSeparators");
 				final Pattern JOIN_NODES_ACTION_SEPARATORS = Pattern.compile("\\{\\{.*?\\}\\}");
 				final Matcher matcher = JOIN_NODES_ACTION_SEPARATORS.matcher(textSeparators);
-				if(matcher.find()) {
-					do{
+				if (matcher.find()) {
+					do {
 						String textSeparator = textSeparators.substring(matcher.start() + 2, matcher.end() - 2);
 						addAction(modeController, target, textSeparator);
-					} while(matcher.find());
-				} else {
+					} while (matcher.find());
+				}
+				else {
 					addAction(modeController, target, textSeparators);
 				}
 			}
@@ -240,31 +234,31 @@ public class MTextController extends TextController {
 				final JoinNodesAction action = new JoinNodesAction(textSeparator);
 				new EntryAccessor().addChildAction(target, action);
 				modeController.addAction(action);
-				if(target.getChildCount() == 1)
-					target.getChild(0).setAttribute(EntryAccessor.ACCELERATOR, target.getAttribute(EntryAccessor.ACCELERATOR));
+				if (target.getChildCount() == 1)
+					target.getChild(0).setAttribute(EntryAccessor.ACCELERATOR,
+					    target.getAttribute(EntryAccessor.ACCELERATOR));
 			}
-			
+
 			@Override
 			public boolean shouldSkipChildren(Entry entry) {
 				return true;
 			}
 		});
 	}
-	
-	
 
 	@Override
 	public void install(final ModeController modeController) {
 		super.install(modeController);
 		modeController.getMapController().addNodeChangeListener(new INodeChangeListener() {
-			
 			@Override
 			public void nodeChanged(NodeChangeEvent event) {
-				if(event.getProperty().equals(NodeModel.NODE_TEXT)) {
+				if (event.getProperty().equals(NodeModel.NODE_TEXT)) {
 					NodeModel node = event.getNode();
-					if (LogicalStyleController.getController().conditionalStylesOf(node).dependOnCondition(DEPENDS_ON_PARENT)){
+					if (LogicalStyleController.getController().conditionalStylesOf(node)
+					    .dependOnCondition(DEPENDS_ON_PARENT)) {
 						for (NodeModel child : node.getChildren())
-							modeController.getMapController().delayedNodeRefresh(child, NodeModel.UNKNOWN_PROPERTY, null, null);
+							modeController.getMapController().delayedNodeRefresh(child, NodeModel.UNKNOWN_PROPERTY,
+							    null, null);
 					}
 				}
 			}
@@ -293,7 +287,7 @@ public class MTextController extends TextController {
 				}
 				int secondStart = 0;
 				int secondLen = doc.getLength() - pos;
-				if(secondLen <= 0)
+				if (secondLen <= 0)
 					return null;
 				final char[] secondText = doc.getText(pos, secondLen).toCharArray();
 				while ((secondStart < secondLen) && (secondText[secondStart] <= ' ')) {
@@ -330,7 +324,8 @@ public class MTextController extends TextController {
 		return strings;
 	}
 
-	private String addContent(String joinedContent, final boolean isHtml, String nodeContent, final boolean isHtmlNode, String separator) {
+	private String addContent(String joinedContent, final boolean isHtml, String nodeContent, final boolean isHtmlNode,
+	                          String separator) {
 		if (isHtml) {
 			final String joinedContentParts[] = JoinNodesAction.BODY_END.split(joinedContent, 2);
 			joinedContent = joinedContentParts[0];
@@ -339,7 +334,8 @@ public class MTextController extends TextController {
 				if (end.length == 1) {
 					end[0] = "<html>";
 				}
-				nodeContent = end[0] + "<body><p>" + HtmlUtils.toXMLEscapedTextExpandingWhitespace(nodeContent) + "</p>";
+				nodeContent = end[0] + "<body><p>" + HtmlUtils.toXMLEscapedTextExpandingWhitespace(nodeContent)
+				        + "</p>";
 			}
 		}
 		if (isHtmlNode & !joinedContent.equals("")) {
@@ -353,7 +349,8 @@ public class MTextController extends TextController {
 				nodeContent = nodeContentParts[1];
 			}
 			if (!isHtml) {
-				joinedContent = nodeContentParts[0] + "<body><p>" +  HtmlUtils.toXMLEscapedTextExpandingWhitespace(joinedContent) + "</p>";
+				joinedContent = nodeContentParts[0] + "<body><p>"
+				        + HtmlUtils.toXMLEscapedTextExpandingWhitespace(joinedContent) + "</p>";
 			}
 		}
 		if (joinedContent.equals("")) {
@@ -363,13 +360,13 @@ public class MTextController extends TextController {
 		joinedContent += nodeContent;
 		return joinedContent;
 	}
-	
+
 	public void joinNodes(final List<NodeModel> selectedNodes, final String separator) {
-		if(selectedNodes.isEmpty())
+		if (selectedNodes.isEmpty())
 			return;
 		final NodeModel selectedNode = selectedNodes.get(0);
-		for (final NodeModel node: selectedNodes) {
-			if(node != selectedNode && node.subtreeContainsCloneOf(selectedNode)){
+		for (final NodeModel node : selectedNodes) {
+			if (node != selectedNode && node.subtreeContainsCloneOf(selectedNode)) {
 				UITools.errorMessage(TextUtils.getText("cannot_move_into_child_node"));
 				return;
 			}
@@ -378,13 +375,14 @@ public class MTextController extends TextController {
 		final Controller controller = Controller.getCurrentController();
 		boolean isHtml = false;
 		final LinkedHashSet<MindIcon> icons = new LinkedHashSet<MindIcon>();
-		for (final NodeModel node: selectedNodes) {
+		for (final NodeModel node : selectedNodes) {
 			final String nodeContent = node.getText();
 			icons.addAll(node.getIcons());
 			final boolean isHtmlNode = HtmlUtils.isHtmlNode(nodeContent);
 			joinedContent = addContent(joinedContent, isHtml, nodeContent, isHtmlNode, separator);
 			if (node != selectedNode) {
-				final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+				final MMapController mapController = (MMapController) Controller.getCurrentModeController()
+				    .getMapController();
 				mapController.moveNodes(node.getChildren(), selectedNode, selectedNode.getChildCount());
 				mapController.deleteNode(node);
 			}
@@ -412,7 +410,8 @@ public class MTextController extends TextController {
 					picturesAmongSelecteds = true;
 					final String encodedLinkString = HtmlUtils.unicodeToHTMLUnicodeEntity(linkString);
 					final String strText = "<html><img src=\"" + encodedLinkString + "\">";
-					((MLinkController) LinkController.getController()).setLink(node, (URI) null, LinkController.LINK_ABSOLUTE);
+					((MLinkController) LinkController.getController()).setLink(node, (URI) null,
+					    LinkController.LINK_ABSOLUTE);
 					setNodeText(node, strText);
 				}
 			}
@@ -436,7 +435,7 @@ public class MTextController extends TextController {
 		filter.addExtension("png");
 		filter.addExtension("gif");
 		filter.setDescription(TextUtils.getText("bitmaps"));
-		final UrlManager urlManager = (UrlManager) modeController.getExtension(UrlManager.class);
+		final UrlManager urlManager = modeController.getExtension(UrlManager.class);
 		final JFileChooser chooser = urlManager.getFileChooser(null, false);
 		chooser.setFileFilter(filter);
 		chooser.setAcceptAllFileFilterUsed(false);
@@ -451,9 +450,9 @@ public class MTextController extends TextController {
 			return;
 		}
 		// bad hack: try to interpret file as http link
-		if(! input.exists()){
+		if (!input.exists()) {
 			uri = LinkController.toRelativeURI(map.getFile(), input, LinkController.LINK_RELATIVE_TO_MINDMAP);
-			if(uri == null || ! "http".equals(uri.getScheme())){
+			if (uri == null || !"http".equals(uri.getScheme())) {
 				UITools.errorMessage(TextUtils.format("file_not_found", input.toString()));
 				return;
 			}
@@ -462,7 +461,7 @@ public class MTextController extends TextController {
 			uri = LinkController.toLinkTypeDependantURI(map.getFile(), input);
 		}
 		String uriString = uri.toString();
-		if(uriString.startsWith("http:/")){
+		if (uriString.startsWith("http:/")) {
 			uriString = "http://" + uriString.substring("http:/".length());
 		}
 		final String strText = "<html><img src=\"" + uriString + "\">";
@@ -471,40 +470,41 @@ public class MTextController extends TextController {
 
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
 	private EditEventDispatcher keyEventDispatcher;
-    private Boolean parseData;
+	private Boolean parseData;
 
-    public void setGuessedNodeObject(final NodeModel node, final String newText) {
+	public void setGuessedNodeObject(final NodeModel node, final String newText) {
 		if (HtmlUtils.isHtmlNode(newText))
 			setNodeObject(node, newText);
-        else {
-	        final Object guessedObject = guessObject(newText, NodeStyleModel.getNodeFormat(node));
-	        if(guessedObject instanceof IFormattedObject)
-	        	setNodeObject(node, ((IFormattedObject) guessedObject).getObject());
-	        else
-	        	setNodeObject(node, newText);
-        }
+		else {
+			final Object guessedObject = guessObject(newText, NodeStyleModel.getNodeFormat(node));
+			if (guessedObject instanceof IFormattedObject)
+				setNodeObject(node, ((IFormattedObject) guessedObject).getObject());
+			else
+				setNodeObject(node, newText);
+		}
 	}
 
-    public Object guessObject(final Object text, final String oldFormat) {
-        if (parseData() && text instanceof String) {
-            if (PatternFormat.getIdentityPatternFormat().getPattern().equals(oldFormat))
-                return text;
-            final Object parseResult = ScannerController.getController().parse((String) text);
-            if (oldFormat != null) {
-                final Object formatted = FormatController.format(parseResult, oldFormat, null);
-                return (formatted == null) ? text : formatted;
-            }
-            return parseResult;
-        }
-        return text;
-    }
+	public Object guessObject(final Object text, final String oldFormat) {
+		if (parseData() && text instanceof String) {
+			if (PatternFormat.getIdentityPatternFormat().getPattern().equals(oldFormat))
+				return text;
+			final Object parseResult = ScannerController.getController().parse((String) text);
+			if (oldFormat != null) {
+				final Object formatted = FormatController.format(parseResult, oldFormat, null);
+				return (formatted == null) ? text : formatted;
+			}
+			return parseResult;
+		}
+		return text;
+	}
 
-    public boolean parseData() {
-        if (parseData == null)
-            parseData = ResourceController.getResourceController().getBooleanProperty(PARSE_DATA_PROPERTY);
-        return parseData;
-    }
-	
+	@Override
+	public boolean parseData() {
+		if (parseData == null)
+			parseData = ResourceController.getResourceController().getBooleanProperty(PARSE_DATA_PROPERTY);
+		return parseData;
+	}
+
 	/** converts strings to date, number or URI if possible. All other data types are left unchanged. */
 	public Object guessObjectOrURI(final Object object, final String oldFormat) {
 		Object guessedObject = guessObject(object, oldFormat);
@@ -519,44 +519,47 @@ public class MTextController extends TextController {
 		}
 		return guessedObject;
 	}
-	
-	private boolean matchUriPattern(Object object) {
-        if (!(object instanceof String))
-            return false;
-        return TextUtils.matchUriPattern((String) object);
-    }
 
-    public void setNodeText(final NodeModel node, final String newText) {
+	private boolean matchUriPattern(Object object) {
+		if (!(object instanceof String))
+			return false;
+		return TextUtils.matchUriPattern((String) object);
+	}
+
+	public void setNodeText(final NodeModel node, final String newText) {
 		setNodeObject(node, newText);
 	}
 
 	public void setNodeObject(final NodeModel node, final Object newObject) {
-		if(newObject == null){
+		if (newObject == null) {
 			setNodeObject(node, "");
 			return;
 		}
-			
 		final Object oldText = node.getUserObject();
 		if (oldText.equals(newObject)) {
 			return;
 		}
-		
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				if (!oldText.equals(newObject)) {
 					node.setUserObject(newObject);
-					Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT, oldText, newObject);
+					Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT,
+					    oldText, newObject);
 				}
 			}
 
+			@Override
 			public String getDescription() {
 				return "setNodeText";
 			}
 
+			@Override
 			public void undo() {
 				if (!oldText.equals(newObject)) {
 					node.setUserObject(oldText);
-					Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT, newObject, oldText);
+					Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_TEXT,
+					    newObject, oldText);
 				}
 			}
 		};
@@ -572,7 +575,7 @@ public class MTextController extends TextController {
 		final String[] strings = getContent(futureText, caretPosition);
 		if (strings == null) {
 			final String mayBePlainText = makePlainIfNoFormattingFound(futureText);
-			if(! Objects.equals(mayBePlainText, oldText))
+			if (!Objects.equals(mayBePlainText, oldText))
 				setNodeObject(node, mayBePlainText);
 			return;
 		}
@@ -581,7 +584,8 @@ public class MTextController extends TextController {
 		setNodeObject(node, newUpperContent);
 		final NodeModel parent = node.getParentNode();
 		final ModeController modeController = Controller.getCurrentModeController();
-		final NodeModel lowerNode = ((MMapController) modeController.getMapController()).addNewNode(parent, parent.getIndex(node) + 1, node.isLeft());
+		final NodeModel lowerNode = ((MMapController) modeController.getMapController()).addNewNode(parent,
+		    parent.getIndex(node) + 1, node.isLeft());
 		final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 		    .getController();
 		nodeStyleController.copyStyle(node, lowerNode);
@@ -590,36 +594,38 @@ public class MTextController extends TextController {
 
 	public boolean useRichTextInEditor(String key) {
 		final int showResult = OptionalDontShowMeAgainDialog.show(
-			"OptionPanel." + key, "edit.decision", key,
+		    "OptionPanel." + key, "edit.decision", key,
 		    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
 		return showResult == JOptionPane.OK_OPTION;
 	}
 
 	public void editDetails(final NodeModel nodeModel, InputEvent e, final boolean editLong) {
 		final Controller controller = Controller.getCurrentController();
-	    stopEditing();
+		stopEditing();
 		Controller.getCurrentModeController().setBlocked(true);
 		String text = DetailTextModel.getDetailTextText(nodeModel);
-		final boolean isNewNode = text ==  null;
-		if(isNewNode){
-			final MTextController textController = (MTextController) MTextController.getController();
-	        textController.setDetails(nodeModel, "<html>");
-	        text = "";
+		final boolean isNewNode = text == null;
+		if (isNewNode) {
+			final MTextController textController = MTextController.getController();
+			textController.setDetails(nodeModel, "<html>");
+			text = "";
 		}
 		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
+			@Override
 			public void cancel() {
 				if (isNewNode) {
 					final String detailText = DetailTextModel.getDetailTextText(nodeModel);
 					final MModeController modeController = (MModeController) Controller.getCurrentModeController();
-					if(detailText != null)
-	                    modeController.undo();
+					if (detailText != null)
+						modeController.undo();
 					modeController.resetRedo();
 				}
 				stop();
 			}
 
+			@Override
 			public void ok(final String newText) {
-				if(HtmlUtils.isEmpty(newText))
+				if (HtmlUtils.isEmpty(newText))
 					if (isNewNode) {
 						final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 						modeController.undo();
@@ -629,8 +635,8 @@ public class MTextController extends TextController {
 						keepNodePosition();
 						setDetailsHtmlText(nodeModel, null);
 					}
-				else{
-					keepNodePosition();					
+				else {
+					keepNodePosition();
 					setDetailsHtmlText(nodeModel, newText);
 				}
 				stop();
@@ -640,30 +646,35 @@ public class MTextController extends TextController {
 				Controller.getCurrentController().getSelection().keepNodePosition(nodeModel, 0, 0);
 			}
 
+			@Override
 			public void split(final String newText, final int position) {
 			}
+
 			private void stop() {
 				Controller.getCurrentModeController().setBlocked(false);
 				mCurrentEditor = null;
 			}
-			public boolean canSplit() {
-                return false;
-            }
 
+			@Override
+			public boolean canSplit() {
+				return false;
+			}
+
+			@Override
 			public EditedComponent getEditType() {
-                return EditedComponent.DETAIL;
-            }
+				return EditedComponent.DETAIL;
+			}
 		};
 		mCurrentEditor = createEditor(nodeModel, editControl, text, false, editLong, true);
-		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
+		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities
+		    .getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
 		mCurrentEditor.show(frame);
-    }
-
+	}
 
 	private void setDetailsHtmlText(final NodeModel node, final String newText) {
-		if(newText != null){
-		final String body = removeHtmlHead(newText);
-        setDetails(node, body.replaceFirst("\\s+$", ""));
+		if (newText != null) {
+			final String body = removeHtmlHead(newText);
+			setDetails(node, body.replaceFirst("\\s+$", ""));
 		}
 		else
 			setDetails(node, null);
@@ -676,10 +687,13 @@ public class MTextController extends TextController {
 		}
 		final IActor actor = new IActor() {
 			boolean hidden = false;
+
+			@Override
 			public void act() {
 				setText(newText);
 			}
 
+			@Override
 			public String getDescription() {
 				return "setDetailText";
 			}
@@ -693,15 +707,17 @@ public class MTextController extends TextController {
 					node.addExtension(details);
 				}
 				else {
-					final DetailTextModel details = (DetailTextModel) node.getExtension(DetailTextModel.class);
-					if (null != details ) {
+					final DetailTextModel details = node.getExtension(DetailTextModel.class);
+					if (null != details) {
 						hidden = details.isHidden();
 						node.removeExtension(DetailTextModel.class);
 					}
 				}
-				Controller.getCurrentModeController().getMapController().nodeChanged(node, DetailTextModel.class, oldText, text);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, DetailTextModel.class,
+				    oldText, text);
 			}
 
+			@Override
 			public void undo() {
 				setText(oldText);
 			}
@@ -709,17 +725,20 @@ public class MTextController extends TextController {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
+	@Override
 	public void setDetailsHidden(final NodeModel node, final boolean isHidden) {
 		stopEditing();
-		DetailTextModel details = (DetailTextModel) node.getExtension(DetailTextModel.class);
+		DetailTextModel details = node.getExtension(DetailTextModel.class);
 		if (details == null || details.isHidden() == isHidden) {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				setHidden(isHidden);
 			}
 
+			@Override
 			public String getDescription() {
 				return "setDetailsHidden";
 			}
@@ -728,43 +747,50 @@ public class MTextController extends TextController {
 				final DetailTextModel details = DetailTextModel.createDetailText(node);
 				details.setHidden(isHidden);
 				node.addExtension(details);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node, DETAILS_HIDDEN, ! isHidden, isHidden);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, DETAILS_HIDDEN, !isHidden,
+				    isHidden);
 			}
 
+			@Override
 			public void undo() {
-				setHidden(! isHidden);
+				setHidden(!isHidden);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
+	@Override
 	public void setIsMinimized(final NodeModel node, final boolean state) {
-		ShortenedTextModel details = (ShortenedTextModel) node.getExtension(ShortenedTextModel.class);
+		ShortenedTextModel details = node.getExtension(ShortenedTextModel.class);
 		if (details == null && state == false || details != null && state == true) {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				setShortener(state);
 			}
 
+			@Override
 			public String getDescription() {
 				return "setShortener";
 			}
 
 			private void setShortener(final boolean state) {
-				if(state){
+				if (state) {
 					final ShortenedTextModel details = ShortenedTextModel.createShortenedTextModel(node);
 					node.addExtension(details);
 				}
-				else{
+				else {
 					node.removeExtension(ShortenedTextModel.class);
 				}
-				Controller.getCurrentModeController().getMapController().nodeChanged(node, ShortenedTextModel.SHORTENER, ! state, state);
+				Controller.getCurrentModeController().getMapController().nodeChanged(node, ShortenedTextModel.SHORTENER,
+				    !state, state);
 			}
 
+			@Override
 			public void undo() {
-				setShortener(! state);
+				setShortener(!state);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());
@@ -773,7 +799,7 @@ public class MTextController extends TextController {
 	public void edit(final FirstAction action, final boolean editLong) {
 		final Controller controller = Controller.getCurrentController();
 		final IMapSelection selection = controller.getSelection();
-		if(selection == null)
+		if (selection == null)
 			return;
 		final NodeModel selectedNode = selection.getSelected();
 		if (selectedNode == null)
@@ -782,57 +808,60 @@ public class MTextController extends TextController {
 			edit(selectedNode, selectedNode, false, false, editLong);
 		}
 		else if (!Controller.getCurrentModeController().isBlocked()) {
-			final int mode = FirstAction.ADD_CHILD.equals(action) ? MMapController.NEW_CHILD : MMapController.NEW_SIBLING_BEHIND;
+			final int mode = FirstAction.ADD_CHILD.equals(action) ? MMapController.NEW_CHILD
+			        : MMapController.NEW_SIBLING_BEHIND;
 			((MMapController) Controller.getCurrentModeController().getMapController()).addNewNode(mode);
 		}
 	}
-	
-	public boolean containsFormatting(final String text){
-		if(FORMATTING_PATTERN == null){
-			FORMATTING_PATTERN = Pattern.compile("<(?!/|html>|head|body|p/?>|!--|style type=\"text/css\">)", Pattern.CASE_INSENSITIVE);
+
+	public boolean containsFormatting(final String text) {
+		if (FORMATTING_PATTERN == null) {
+			FORMATTING_PATTERN = Pattern.compile("<(?!/|html>|head|body|p/?>|!--|style type=\"text/css\">)",
+			    Pattern.CASE_INSENSITIVE);
 		}
 		final Matcher matcher = FORMATTING_PATTERN.matcher(text);
 		return matcher.find();
 	}
 
-	private class EditEventDispatcher implements KeyEventDispatcher, INodeChangeListener, INodeSelectionListener{
+	private class EditEventDispatcher implements KeyEventDispatcher, INodeChangeListener, INodeSelectionListener {
 		private final boolean editLong;
-	    private final boolean parentFolded;
-	    private final boolean isNewNode;
-	    private final NodeModel prevSelectedModel;
-	    private final NodeModel nodeModel;
+		private final boolean parentFolded;
+		private final boolean isNewNode;
+		private final NodeModel prevSelectedModel;
+		private final NodeModel nodeModel;
 		private final ModeController modeController;
 
-	    private EditEventDispatcher(ModeController modeController, NodeModel nodeModel, NodeModel prevSelectedModel, boolean isNewNode,
-	                                boolean parentFolded, boolean editLong) {
-	    	this.modeController = modeController;
-		    this.editLong = editLong;
-		    this.parentFolded = parentFolded;
-		    this.isNewNode = isNewNode;
-		    this.prevSelectedModel = prevSelectedModel;
-		    this.nodeModel = nodeModel;
-	    }
+		private EditEventDispatcher(ModeController modeController, NodeModel nodeModel, NodeModel prevSelectedModel,
+		                            boolean isNewNode,
+		                            boolean parentFolded, boolean editLong) {
+			this.modeController = modeController;
+			this.editLong = editLong;
+			this.parentFolded = parentFolded;
+			this.isNewNode = isNewNode;
+			this.prevSelectedModel = prevSelectedModel;
+			this.nodeModel = nodeModel;
+		}
 
-	    public boolean dispatchKeyEvent(KeyEvent e) {
-	    	if(e.getID() == KeyEvent.KEY_RELEASED || e.getID() == KeyEvent.KEY_TYPED)
-	    		return false;
-	    	switch(e.getKeyCode()){
-	    		case KeyEvent.VK_SHIFT:
-	    		case KeyEvent.VK_CONTROL:
-	    		case KeyEvent.VK_CAPS_LOCK:
-	    		case KeyEvent.VK_ALT:
-	    		case KeyEvent.VK_ALT_GRAPH:
-	    			return false;
-	    	}
-	    	
-	    	uninstall();
-	    	if (isMenuEvent(e)){
-	    		return false;
-	    	}
-	    	eventQueue.activate(e);
-	    	edit(nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
-	    	return true;
-	    }
+		@Override
+		public boolean dispatchKeyEvent(KeyEvent e) {
+			if (e.getID() == KeyEvent.KEY_RELEASED || e.getID() == KeyEvent.KEY_TYPED)
+				return false;
+			switch (e.getKeyCode()) {
+				case KeyEvent.VK_SHIFT:
+				case KeyEvent.VK_CONTROL:
+				case KeyEvent.VK_CAPS_LOCK:
+				case KeyEvent.VK_ALT:
+				case KeyEvent.VK_ALT_GRAPH:
+					return false;
+			}
+			uninstall();
+			if (isMenuEvent(e)) {
+				return false;
+			}
+			eventQueue.activate(e);
+			edit(nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
+			return true;
+		}
 
 		private boolean isMenuEvent(KeyEvent e) {
 			if (!editLong) {
@@ -843,42 +872,45 @@ public class MTextController extends TextController {
 					final KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
 					if (accelerator.equals(keyStroke)) {
 						return true;
-	    			}
-	    		}
-	    	}
-	        return false;
-        }
+					}
+				}
+			}
+			return false;
+		}
 
 		public void uninstall() {
-	        KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(this);
+			KeyboardFocusManager.getCurrentKeyboardFocusManager().removeKeyEventDispatcher(this);
 			MapController mapController = modeController.getMapController();
 			mapController.removeNodeChangeListener(this);
 			mapController.removeNodeSelectionListener(this);
 			keyEventDispatcher = null;
-        }
+		}
 
 		public void install() {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 			MapController mapController = modeController.getMapController();
 			mapController.addNodeChangeListener(this);
 			mapController.addNodeSelectionListener(this);
-        }
+		}
 
+		@Override
 		public void onDeselect(NodeModel node) {
 			uninstall();
-        }
+		}
 
+		@Override
 		public void onSelect(NodeModel node) {
 			uninstall();
-        }
+		}
 
+		@Override
 		public void nodeChanged(NodeChangeEvent event) {
 			uninstall();
-        }
-    }
+		}
+	}
 
 	public void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel, final boolean isNewNode,
-	          final boolean parentFolded, final boolean editLong) {
+	                 final boolean parentFolded, final boolean editLong) {
 		if (nodeModel == null || mCurrentEditor != null) {
 			return;
 		}
@@ -896,21 +928,24 @@ public class MTextController extends TextController {
 		}
 		node.requestFocus();
 		stopEditing();
-		if(isNewNode && ! eventQueue.isActive() 
-				&& ! ResourceController.getResourceController().getBooleanProperty("display_inline_editor_for_all_new_nodes")){
-			keyEventDispatcher = new EditEventDispatcher(Controller.getCurrentModeController(), nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
+		if (isNewNode && !eventQueue.isActive()
+		        && !ResourceController.getResourceController()
+		            .getBooleanProperty("display_inline_editor_for_all_new_nodes")) {
+			keyEventDispatcher = new EditEventDispatcher(Controller.getCurrentModeController(), nodeModel,
+			    prevSelectedModel, isNewNode, parentFolded, editLong);
 			keyEventDispatcher.install();
 			return;
-		};
+		} ;
 		final IEditControl editControl = new IEditControl() {
+			@Override
 			public void cancel() {
 				if (isNewNode && nodeModel.getMap().equals(controller.getMap())) {
-				    if(nodeModel.getParentNode() != null){
-				        controller.getSelection().selectAsTheOnlyOneSelected(nodeModel);
-				        final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+					if (nodeModel.getParentNode() != null) {
+						controller.getSelection().selectAsTheOnlyOneSelected(nodeModel);
+						final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 						modeController.undo();
 						modeController.resetRedo();
-				    }
+					}
 					final MapController mapController = Controller.getCurrentModeController().getMapController();
 					if (parentFolded) {
 						mapController.fold(prevSelectedModel);
@@ -925,31 +960,35 @@ public class MTextController extends TextController {
 				mCurrentEditor = null;
 			}
 
+			@Override
 			public void ok(final String text) {
 				String processedText = makePlainIfNoFormattingFound(text);
 				keepNodePosition();
 				setGuessedNodeObject(nodeModel, processedText);
 				stop();
 			}
-			
+
 			private void keepNodePosition() {
 				Controller.getCurrentController().getSelection().keepNodePosition(nodeModel, 0, 0);
 			}
 
-
+			@Override
 			public void split(final String text, final int position) {
 				String processedText = HtmlUtils.isHtmlNode(text) ? removeHtmlHead(text) : text;
 				splitNode(nodeModel, position, processedText);
 				viewController.obtainFocusForSelected();
 				stop();
 			}
-			public boolean canSplit() {
-                return true;
-            }
 
+			@Override
+			public boolean canSplit() {
+				return true;
+			}
+
+			@Override
 			public EditedComponent getEditType() {
-                return EditedComponent.TEXT;
-            }
+				return EditedComponent.TEXT;
+			}
 		};
 		mCurrentEditor = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editLong, true);
 		final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
@@ -957,54 +996,55 @@ public class MTextController extends TextController {
 	}
 
 	private EditNodeBase createEditor(final NodeModel nodeModel, final IEditControl editControl,
-                                      String text, final boolean isNewNode, final boolean editLong,
-                                      boolean internal) {
-	    Controller.getCurrentModeController().setBlocked(true);
+	                                  String text, final boolean isNewNode, final boolean editLong,
+	                                  boolean internal) {
+		Controller.getCurrentModeController().setBlocked(true);
 		EditNodeBase base = getEditNodeBase(nodeModel, text, editControl, editLong);
-		if(base != null || ! internal){
+		if (base != null || !internal) {
 			return base;
 		}
-		final IEditBaseCreator textFieldCreator = (IEditBaseCreator) Controller.getCurrentController().getMapViewManager();
+		final IEditBaseCreator textFieldCreator = (IEditBaseCreator) Controller.getCurrentController()
+		    .getMapViewManager();
 		return textFieldCreator.createEditor(nodeModel, editControl, text, editLong);
-    }
+	}
 
-
-	public EditNodeBase getEditNodeBase(final NodeModel nodeModel, final String text, final IEditControl editControl, final boolean editLong) {
-	    final List<IContentTransformer> textTransformers = getTextTransformers();
-		for(IContentTransformer t : textTransformers){
-			if(t instanceof IEditBaseCreator){
+	public EditNodeBase getEditNodeBase(final NodeModel nodeModel, final String text, final IEditControl editControl,
+	                                    final boolean editLong) {
+		final List<IContentTransformer> textTransformers = getTextTransformers();
+		for (IContentTransformer t : textTransformers) {
+			if (t instanceof IEditBaseCreator) {
 				final EditNodeBase base = ((IEditBaseCreator) t).createEditor(nodeModel, editControl, text, editLong);
-				if(base != null){
+				if (base != null) {
 					return base;
 				}
 			}
 		}
 		return null;
-    }
-
+	}
 
 	public void stopEditing() {
-		if(keyEventDispatcher != null){
+		if (keyEventDispatcher != null) {
 			keyEventDispatcher.uninstall();
 		}
 		if (mCurrentEditor != null) {
-			// Ensure that setText from the edit and the next action 
+			// Ensure that setText from the edit and the next action
 			// are parts of different transactions
 			mCurrentEditor.closeEdit();
 			modeController.forceNewTransaction();
 			mCurrentEditor = null;
 		}
 	}
-	public void addEditorPaneListener(IEditorPaneListener l){
+
+	public void addEditorPaneListener(IEditorPaneListener l) {
 		editorPaneListeners.add(l);
 	}
-	
-	public void removeEditorPaneListener(IEditorPaneListener l){
+
+	public void removeEditorPaneListener(IEditorPaneListener l) {
 		editorPaneListeners.remove(l);
 	}
-	
-	private void fireEditorPaneCreated(JEditorPane editor, Object purpose){
-		for(IEditorPaneListener l :editorPaneListeners){
+
+	private void fireEditorPaneCreated(JEditorPane editor, Object purpose) {
+		for (IEditorPaneListener l : editorPaneListeners) {
 			l.editorPaneCreated(editor, purpose);
 		}
 	}
@@ -1016,41 +1056,40 @@ public class MTextController extends TextController {
 	 * @return
 	 */
 	public SHTMLPanel createSHTMLPanel(String purpose) {
-    	com.lightdev.app.shtm.ScaledStyleSheet.FONT_SCALE_FACTOR = UITools.FONT_SCALE_FACTOR;
-    	SHTMLPanel.setActionBuilder(new ActionBuilder() {
-			
+		com.lightdev.app.shtm.ScaledStyleSheet.FONT_SCALE_FACTOR = UITools.FONT_SCALE_FACTOR;
+		SHTMLPanel.setActionBuilder(new ActionBuilder() {
+			@Override
 			public void initActions(SHTMLPanel panel) {
 				panel.addAction("editLink", new SHTMLEditLinkAction((SHTMLPanelImpl) panel));
 				panel.addAction("setLinkByFileChooser", new SHTMLSetLinkByFileChooserAction((SHTMLPanelImpl) panel));
 			}
 		});
-    	final SHTMLPanel shtmlPanel = SHTMLPanel.createSHTMLPanel();
-    	final JEditorPane sourceEditorPane = shtmlPanel.getSourceEditorPane();
-    	final Font originalFont = sourceEditorPane.getFont();
+		final SHTMLPanel shtmlPanel = SHTMLPanel.createSHTMLPanel();
+		final JEditorPane sourceEditorPane = shtmlPanel.getSourceEditorPane();
+		final Font originalFont = sourceEditorPane.getFont();
 		final Font scaledFont = UITools.scale(originalFont);
 		sourceEditorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
 		sourceEditorPane.setFont(scaledFont);
-    	shtmlPanel.setOpenHyperlinkHandler(new ActionListener(){
-
+		shtmlPanel.setOpenHyperlinkHandler(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent pE) {
 				try {
 					UrlManager.getController().loadURL(new URI(pE.getActionCommand()));
-				} catch (Exception e) {
+				}
+				catch (Exception e) {
 					LogUtils.warn(e);
 				}
-			}});
-
-    	final JEditorPane editorPane = shtmlPanel.getEditorPane();
-    	editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
-    	fireEditorPaneCreated(editorPane, purpose);
-    	    	
+			}
+		});
+		final JEditorPane editorPane = shtmlPanel.getEditorPane();
+		editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
+		fireEditorPaneCreated(editorPane, purpose);
 		return shtmlPanel;
-    }
+	}
 
 	public JEditorPane createEditorPane(Object purpose) {
-     	@SuppressWarnings("serial")
-        final JEditorPane editorPane = new JEditorPane(){
-
+		@SuppressWarnings("serial")
+		final JEditorPane editorPane = new JEditorPane() {
 			@Override
 			public String getSelectedText() {
 				final String selectedText = super.getSelectedText();
@@ -1058,29 +1097,28 @@ public class MTextController extends TextController {
 			}
 
 			@Override
-            protected void paintComponent(Graphics g) {
-	            try {
-	                super.paintComponent(g);
-                }
-                catch (Exception e) {
-	                LogUtils.warn(e);
-                }
-            }
-     		
-     	};
-     	editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
-    	fireEditorPaneCreated(editorPane, purpose);
+			protected void paintComponent(Graphics g) {
+				try {
+					super.paintComponent(g);
+				}
+				catch (Exception e) {
+					LogUtils.warn(e);
+				}
+			}
+		};
+		editorPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
+		fireEditorPaneCreated(editorPane, purpose);
 		return editorPane;
-    }
+	}
 
 	public EventBuffer getEventQueue() {
-    	return eventQueue;
-    }
+		return eventQueue;
+	}
 
 	private String makePlainIfNoFormattingFound(String text) {
-		if(HtmlUtils.isHtmlNode(text)){
+		if (HtmlUtils.isHtmlNode(text)) {
 			text = removeHtmlHead(text);
-			if(! containsFormatting(text)){
+			if (!containsFormatting(text)) {
 				text = HtmlUtils.htmlToPlain(text);
 			}
 		}
@@ -1096,5 +1134,4 @@ public class MTextController extends TextController {
 	public boolean canEdit() {
 		return true;
 	}
-
 }

@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -37,7 +38,7 @@ import org.freeplane.main.addons.AddOnsController;
 public class ManageAddOnsPanel extends JPanel {
 	public final static class AddOnTableModel extends AbstractTableModel {
 		private final List<AddOnProperties> addOns;
-        private HashMap<AddOnProperties, ImageIcon> icons = new HashMap<AddOnProperties, ImageIcon>();
+        private HashMap<AddOnProperties, Icon> icons = new HashMap<AddOnProperties, Icon>();
 
 		private AddOnTableModel(List<AddOnProperties> addOns) {
 			this.addOns = new ArrayList<AddOnProperties>(addOns);
@@ -65,8 +66,8 @@ public class ManageAddOnsPanel extends JPanel {
 			}
 		}
 
-		private ImageIcon createIcon(final AddOnProperties addOn) {
-		    ImageIcon icon = icons.get(addOn);
+		private Icon createIcon(final AddOnProperties addOn) {
+			Icon icon = icons.get(addOn);
 	        if (icon != null)
 	            return icon;
 	        icon = IconNotFound.createIconOrReturnNotFoundIcon(addOn.getName() + "-icon.png");

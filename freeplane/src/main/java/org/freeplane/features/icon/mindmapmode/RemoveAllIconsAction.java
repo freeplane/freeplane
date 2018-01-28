@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.resources.ResourceController;
@@ -60,7 +59,7 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformati
 	}
 
 	public Icon getIcon() {
-		return (ImageIcon) getValue(Action.SMALL_ICON);
+		return (Icon) getValue(Action.SMALL_ICON);
 	}
 
 	public KeyStroke getKeyStroke() {

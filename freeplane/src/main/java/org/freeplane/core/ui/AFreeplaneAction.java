@@ -22,7 +22,6 @@ package org.freeplane.core.ui;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
@@ -32,7 +31,7 @@ import org.freeplane.core.util.TextUtils;
  */
 public abstract class AFreeplaneAction extends AbstractAction implements IFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -60,7 +59,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		return !"".equals(annotation.checkOnPropertyChange());
 	}
 
-	public boolean checkSelectionOnPopup(){
+	public boolean checkSelectionOnPopup() {
 		final SelectableAction annotation = getClass().getAnnotation(SelectableAction.class);
 		if (annotation == null) {
 			return false;
@@ -70,7 +69,6 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	final private String key;
 	private boolean selected = false;
-	
 	final private String rawText;
 
 	public AFreeplaneAction(final String key) {
@@ -84,14 +82,13 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	}
 
 	protected void setIcon(final String iconKey) {
-		ImageIcon icon = ResourceController.getResourceController().getIcon(iconKey);
+		Icon icon = ResourceController.getResourceController().getIcon(iconKey);
 		setIcon(icon);
 	}
 
 	protected void setIcon(Icon icon) {
 		putValue(SMALL_ICON, icon);
 	}
-
 
 	protected void setTooltip(String tooltipKey) {
 		final String tooltip = TextUtils.getRawText(tooltipKey, null);
@@ -110,7 +107,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	//	}
 	//
 	public AFreeplaneAction(final String key, final String title, final Icon icon) {
-//		this.controller = controller;
+		//		this.controller = controller;
 		putValue(SMALL_ICON, icon);
 		if (title != null && !title.equals("")) {
 			LabelAndMnemonicSetter.setLabelAndMnemonic(this, title);
@@ -119,6 +116,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		this.key = key;
 	}
 
+	@Override
 	public void afterMapChange(final Object newMap) {
 		if (newMap == null) {
 			if (super.isEnabled()) {
@@ -133,6 +131,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		}
 	}
 
+	@Override
 	public final String getIconKey() {
 		return key + ".icon";
 	}
@@ -149,16 +148,18 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		return key + ".tooltip";
 	}
 
+	@Override
 	public boolean isSelected() {
 		return selected;
 	}
 
 	public void setEnabled() {
 	}
-	
+
 	public void setSelected() {
 	}
 
+	@Override
 	public void setSelected(final boolean newValue) {
 		final boolean oldValue = selected;
 		if (oldValue != newValue) {
@@ -178,5 +179,4 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	public String getRawText() {
 		return rawText;
 	}
-
 }

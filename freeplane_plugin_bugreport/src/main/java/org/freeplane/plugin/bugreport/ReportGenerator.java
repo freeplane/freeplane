@@ -25,7 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
 
-import javax.swing.ImageIcon;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -46,13 +46,13 @@ public class ReportGenerator extends StreamHandler {
 	static final String LAST_BUG_REPORT_INFO = "last_bug_report_info";
 
 	private class SubmitRunner implements Runnable {
-
 		public SubmitRunner() {
 		}
 
+		@Override
 		public void run() {
 			AccessController.doPrivileged(new PrivilegedAction<Void>() {
-			@Override
+				@Override
 				public Void run() {
 					runSubmit();
 					return null;
@@ -114,8 +114,7 @@ public class ReportGenerator extends StreamHandler {
 		for (int i = 0; i < lines.length; i++) {
 			final String s = lines[i];
 			if (s.startsWith("\tat org.freeplane.")
-					 || s.startsWith("missing key ")
-					) {
+			        || s.startsWith("missing key ")) {
 				hashInput.append(s);
 			}
 		}
@@ -154,10 +153,8 @@ public class ReportGenerator extends StreamHandler {
 			sb.append(version);
 			sb.append("; freeplane_xml_version = ");
 			sb.append(FreeplaneVersion.XML_VERSION);
-			
 			revision = FreeplaneVersion.getVersion().getRevision();
-			
-			if(! revision.equals("")){
+			if (!revision.equals("")) {
 				sb.append("\ngit revision = ");
 				sb.append(revision);
 			}
@@ -188,32 +185,35 @@ public class ReportGenerator extends StreamHandler {
 		}
 	}
 
-	private static class LogOpener implements ActionListener{
+	private static class LogOpener implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			final String freeplaneLogDirectoryPath = LogUtils.getLogDirectory();
 			final File file = new File(freeplaneLogDirectoryPath);
-			if(file.isDirectory()){
+			if (file.isDirectory()) {
 				final ViewController viewController = Controller.getCurrentController().getViewController();
 				try {
-	                viewController.openDocument(file.toURL());
-                }
-                catch (Exception ex) {
-                }
+					viewController.openDocument(file.toURL());
+				}
+				catch (Exception ex) {
+				}
 			}
-        }
+		}
 	}
+
 	private JButton logButton;
+
 	@Override
 	public synchronized void publish(final LogRecord record) {
 		final Controller controller = Controller.getCurrentController();
 		if (controller == null) {
-		    // ReportGenerator is not available during controller initialization
-		    return;
+			// ReportGenerator is not available during controller initialization
+			return;
 		}
-        final ViewController viewController = controller.getViewController();
+		final ViewController viewController = controller.getViewController();
 		if (viewController == null) {
-		    // ReportGenerator is not available during controller initialization
-		    return;
+			// ReportGenerator is not available during controller initialization
+			return;
 		}
 		if (out == null) {
 			out = new ByteArrayOutputStream();
@@ -231,15 +231,18 @@ public class ReportGenerator extends StreamHandler {
 		if (!(isReportGenerationInProgress)) {
 			isReportGenerationInProgress = true;
 			viewController.invokeLater(new Runnable() {
+				@Override
 				@SuppressWarnings("serial")
 				public void run() {
 					try {
 						errorCounter++;
-						if(TextUtils.getRawText("internal_error_tooltip", null) != null){
-							if(logButton == null){
-								final ImageIcon errorIcon = ResourceController.getResourceController().getIcon("messagebox_warning_icon");
-								logButton = new JButton(){
-									@Override public Dimension getPreferredSize(){
+						if (TextUtils.getRawText("internal_error_tooltip", null) != null) {
+							if (logButton == null) {
+								final Icon errorIcon = ResourceController.getResourceController()
+								    .getIcon("messagebox_warning_icon");
+								logButton = new JButton() {
+									@Override
+									public Dimension getPreferredSize() {
 										Dimension preferredSize = super.getPreferredSize();
 										preferredSize.height = Math.max(getIcon().getIconHeight(), getFont().getSize());
 										return preferredSize;
@@ -253,8 +256,8 @@ public class ReportGenerator extends StreamHandler {
 							}
 							logButton.setText(TextUtils.format("errornumber", errorCounter));
 							final JComponent statusBar = viewController.getStatusBar();
-							if(! statusBar.isVisible())
-								UIComponentVisibilityDispatcher.dispatcher(statusBar).setVisible(true); 
+							if (!statusBar.isVisible())
+								UIComponentVisibilityDispatcher.dispatcher(statusBar).setVisible(true);
 						}
 					}
 					catch (Exception e) {
@@ -263,7 +266,7 @@ public class ReportGenerator extends StreamHandler {
 				}
 			});
 		}
-		if(! isDisabled)
+		if (!isDisabled)
 			super.publish(record);
 	}
 
@@ -284,16 +287,16 @@ public class ReportGenerator extends StreamHandler {
 			final String reportHeader = createReportHeader();
 			StringBuilder sb = new StringBuilder();
 			sb.append(reportHeader).append('\n').append("previous report : ");
-			String lastReportInfo = ResourceController.getResourceController().getProperty(LAST_BUG_REPORT_INFO, NO_REPORTS_SENT_BEFORE);
+			String lastReportInfo = ResourceController.getResourceController().getProperty(LAST_BUG_REPORT_INFO,
+			    NO_REPORTS_SENT_BEFORE);
 			sb.append(lastReportInfo).append('\n');
 			final String userId = ResourceController.getResourceController().getProperty(BUGREPORT_USER_ID);
-			if (userId.length() > 0){
+			if (userId.length() > 0) {
 				sb.append("user : ").append(userId).append('\n');
 			}
 			sb.append(info);
 			sb.append(errorMessage);
-			log = sb.toString(); 
-			
+			log = sb.toString();
 			if (log.equals("")) {
 				return;
 			}
@@ -319,7 +322,6 @@ public class ReportGenerator extends StreamHandler {
 				if (bugReportListener != null && status != null) {
 					bugReportListener.onReportSent(report, status);
 				}
-
 			}
 		}
 		catch (final UnsupportedEncodingException e) {
@@ -331,20 +333,19 @@ public class ReportGenerator extends StreamHandler {
 		}
 	}
 
-
 	private String createReportHeader() {
-	    SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
 		String time = dateFormatGmt.format(new Date());
-		final String currentReportInfo = "at "  + time +  " CMT,  hash " + hash;
-	    return currentReportInfo;
-    }
+		final String currentReportInfo = "at " + time + " CMT,  hash " + hash;
+		return currentReportInfo;
+	}
 
 	private String showBugReportDialog() {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		String option = resourceController.getProperty(OPTION, BugReportDialogManager.ASK);
 		if (option.equals(BugReportDialogManager.ASK)) {
-			if(resourceController.getBooleanProperty("org.freeplane.plugin.bugreport.dialog.disabled"))
+			if (resourceController.getBooleanProperty("org.freeplane.plugin.bugreport.dialog.disabled"))
 				return BugReportDialogManager.DENIED;
 			String question = TextUtils.getText("org.freeplane.plugin.bugreport.question");
 			if (!question.startsWith("<html>")) {
@@ -417,16 +418,17 @@ public class ReportGenerator extends StreamHandler {
 
 	private void runSubmitAfterTimeout() {
 		new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
 				try {
 					Thread.sleep(1000);
-				} catch (InterruptedException e) {
+				}
+				catch (InterruptedException e) {
 				}
 				Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
+					@Override
 					public void run() {
-						if (! isDisabled) {
+						if (!isDisabled) {
 							final Thread submitterThread = new Thread(new SubmitRunner(), REMOTE_LOG);
 							submitterThread.start();
 						}
@@ -436,6 +438,5 @@ public class ReportGenerator extends StreamHandler {
 				});
 			}
 		}).start();
-		
 	}
 }

@@ -34,6 +34,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -44,19 +45,19 @@ import org.freeplane.features.ui.IMapViewManager;
  * @author Dimitry Polivaev
  * 24.12.2012
  */
-public class HeadlessUIController extends FrameController {	
-	
+public class HeadlessUIController extends FrameController {
 	final private AtomicLong workingThreadId = new AtomicLong();
 	final private ExecutorService worker = Executors.newSingleThreadExecutor(new ThreadFactory() {
+		@Override
 		public Thread newThread(Runnable r) {
 			final Thread thread = Executors.defaultThreadFactory().newThread(r);
 			workingThreadId.set(thread.getId());
 			return thread;
 		}
-	}) ;
-	
+	});
+
 	public HeadlessUIController(Controller controller, IMapViewManager mapViewManager, String propertyKeyPrefix) {
-		super(controller, mapViewManager, propertyKeyPrefix);		
+		super(controller, mapViewManager, propertyKeyPrefix);
 	}
 
 	public Rectangle getFrameSize() {
@@ -67,14 +68,17 @@ public class HeadlessUIController extends FrameController {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void changeNoteWindowLocation() {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void err(String msg) {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public FreeplaneMenuBar getFreeplaneMenuBar() {
 		throw methodNotImplementedException();
 	}
@@ -83,142 +87,168 @@ public class HeadlessUIController extends FrameController {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public JComponent getStatusBar() {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void init(Controller controller) {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void insertComponentIntoSplitPane(JComponent noteViewerComponent) {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public boolean isApplet() {
 		return false;
 	}
 
+	@Override
 	public boolean isMenubarVisible() {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void openDocument(URI uri) throws IOException {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void openDocument(URL fileToUrl) throws Exception {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void out(String msg) {
-		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void addStatusInfo(String key, String info) {
-		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void addStatusInfo(String key, Icon icon) {
-		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void addStatusInfo(String key, String info, Icon icon) {
-		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void addStatusInfo(String key, String info, Icon icon, String tooltip) {
-		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void addStatusComponent(String key, Component component) {
-		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void removeStatus(String key) {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void removeSplitPane() {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void saveProperties() {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void selectMode(ModeController oldModeController, ModeController newModeController) {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void setMenubarVisible(boolean visible) {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void setTitle(String frameTitle) {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void setWaitingCursor(boolean b) {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void viewNumberChanged(int number) {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public String completeVisiblePropertyKey(JComponent toolBar) {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void addObjectTypeInfo(Object value) {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public boolean quit() {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public boolean isDispatchThread() {
 		return workingThreadId.get() == Thread.currentThread().getId();
-    }
+	}
 
+	@Override
 	public void invokeLater(Runnable runnable) {
 		worker.execute(runnable);
-    }
+	}
 
+	@Override
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
-	    try {
+		try {
 			worker.submit(runnable).get();
-		} catch (ExecutionException e) {			
-		}	    
-    }
+		}
+		catch (ExecutionException e) {
+		}
+	}
 
+	@Override
 	public boolean isHeadless() {
-	    return true;
-    }
+		return true;
+	}
 
+	@Override
 	public boolean areScrollbarsVisible() {
-	    return false;
-    }
+		return false;
+	}
 
+	@Override
 	public void setScrollbarsVisible(boolean b) {
-    }
+	}
 
 	public boolean isFullScreenEnabled() {
-	    return false;
-    }
+		return false;
+	}
 
 	@Override
 	protected void setFreeplaneMenuBar(FreeplaneMenuBar menuBar) {
 		throw methodNotImplementedException();
 	}
 
+	@Override
 	public void previousMapView() {
 		throw methodNotImplementedException();
-		
 	}
 
+	@Override
 	public void nextMapView() {
 		throw methodNotImplementedException();
 	}
@@ -232,7 +262,7 @@ public class HeadlessUIController extends FrameController {
 	public Component getMenuComponent() {
 		throw methodNotImplementedException();
 	}
-	
+
 	@Override
 	protected boolean isMenuComponentInFullScreenMode() {
 		return false;
@@ -240,6 +270,5 @@ public class HeadlessUIController extends FrameController {
 
 	private RuntimeException methodNotImplementedException() {
 		return new RuntimeException("Method not implemented");
-	}	
-	
+	}
 }

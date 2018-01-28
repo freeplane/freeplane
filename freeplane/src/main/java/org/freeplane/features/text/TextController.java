@@ -49,7 +49,6 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.view.swing.map.MainView;
 
-
 /**
  * @author Dimitry Polivaev
  */
@@ -64,13 +63,12 @@ public class TextController implements IExtension {
 	private static final Integer DETAILS_TOOLTIP = 2;
 	private final List<IContentTransformer> textTransformers;
 	protected final ModeController modeController;
+	private boolean nodeNumberingEnabled = true;
 	public static final String MARK_TRANSFORMED_TEXT = "highlight_formulas";
-
-
 
 	public static boolean isMarkTransformedTextSet() {
 		return Controller.getCurrentController().getResourceController().getBooleanProperty(MARK_TRANSFORMED_TEXT);
-    }
+	}
 
 	public static TextController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -78,8 +76,8 @@ public class TextController implements IExtension {
 	}
 
 	public static TextController getController(ModeController modeController) {
-		return (TextController) modeController.getExtension(TextController.class);
-    }
+		return modeController.getExtension(TextController.class);
+	}
 
 	public static void install() {
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(5,
@@ -101,40 +99,39 @@ public class TextController implements IExtension {
 		textBuilder.registerBy(readManager, writeManager);
 		writeManager.addExtensionElementWriter(DetailTextModel.class, textBuilder);
 		writeManager.addExtensionAttributeWriter(ShortenedTextModel.class, textBuilder);
-
 		modeController.addAction(new ToggleDetailsAction());
 		modeController.addAction(new SetShortenerStateAction());
-//		modeController.addAction(new ToggleNodeNumberingAction());
-		
+		//		modeController.addAction(new ToggleNodeNumberingAction());
 		// this IContentTransformer is unconditional because its outcome
 		// is explicitly defined by the user (assigning a format)!
 		addTextTransformer(new FormatContentTransformer(this, 50));
-		
 		registerDetailsTooltip();
 		registerNodeTextTooltip();
 	}
 
 	public void addTextTransformer(IContentTransformer textTransformer) {
-	    textTransformers.add(textTransformer);
-	    Collections.sort(textTransformers);
-    }
+		textTransformers.add(textTransformer);
+		Collections.sort(textTransformers);
+	}
 
 	public List<IContentTransformer> getTextTransformers() {
-	    return textTransformers;
+		return textTransformers;
 	}
+
 	public void removeTextTransformer(IContentTransformer textTransformer) {
-	    textTransformers.remove(textTransformer);
-    }
+		textTransformers.remove(textTransformer);
+	}
 
 	public String getText(NodeModel nodeModel) {
 		return nodeModel.getText();
 	}
-	
-	public Object getTransformedObject(Object object, final NodeModel nodeModel, Object extension) throws TransformationException{
-		if(object instanceof String){
+
+	public Object getTransformedObject(Object object, final NodeModel nodeModel, Object extension)
+	        throws TransformationException {
+		if (object instanceof String) {
 			String string = (String) object;
-			if(string.length() > 0 && string.charAt(0) == '\''){
-				if(nodeModel != null && extension == nodeModel.getUserObject() && isTextFormattingDisabled(nodeModel))
+			if (string.length() > 0 && string.charAt(0) == '\'') {
+				if (nodeModel != null && extension == nodeModel.getUserObject() && isTextFormattingDisabled(nodeModel))
 					return string;
 				else
 					return string.substring(1);
@@ -144,40 +141,40 @@ public class TextController implements IExtension {
 		for (IContentTransformer textTransformer : getTextTransformers()) {
 			try {
 				Object in = object;
-	            object = textTransformer.transformContent(this, in, nodeModel, extension);
-	            markTransformation = markTransformation || textTransformer.markTransformation() && ! in.equals(object); 
-            }
-            catch (RuntimeException e) {
-            	throw new TransformationException(e);
-            }
+				object = textTransformer.transformContent(this, in, nodeModel, extension);
+				markTransformation = markTransformation || textTransformer.markTransformation() && !in.equals(object);
+			}
+			catch (RuntimeException e) {
+				throw new TransformationException(e);
+			}
 		}
-		if(markTransformation)
+		if (markTransformation)
 			return new HighlightedTransformedObject(object);
 		else
 			return object;
 	}
-	
+
 	public boolean isFormula(Object object, final NodeModel nodeModel, Object extension) {
-		if(object instanceof String){
+		if (object instanceof String) {
 			String string = (String) object;
-			if(string.length() > 0 && string.charAt(0) == '\''){
+			if (string.length() > 0 && string.charAt(0) == '\'') {
 				return false;
 			}
 		}
 		for (IContentTransformer textTransformer : getTextTransformers()) {
-			if(textTransformer.isFormula(this, object, nodeModel, extension))
+			if (textTransformer.isFormula(this, object, nodeModel, extension))
 				return true;
 		}
 		return false;
 	}
 
-	public Icon getIcon(Object object, final NodeModel nodeModel, Object extension){
-		if(object instanceof HighlightedTransformedObject){
-			return getIcon(((HighlightedTransformedObject)object).getObject(), nodeModel, extension);
+	public Icon getIcon(Object object, final NodeModel nodeModel, Object extension) {
+		if (object instanceof HighlightedTransformedObject) {
+			return getIcon(((HighlightedTransformedObject) object).getObject(), nodeModel, extension);
 		}
 		for (IContentTransformer textTransformer : getTextTransformers()) {
 			Icon icon = textTransformer.getIcon(this, object, nodeModel, extension);
-			if( icon != null)
+			if (icon != null)
 				return icon;
 		}
 		return null;
@@ -186,13 +183,13 @@ public class TextController implements IExtension {
 	public boolean isTextFormattingDisabled(final NodeModel nodeModel) {
 		return PatternFormat.IDENTITY_PATTERN.equals(getNodeFormat(nodeModel));
 	}
-	
+
 	/** returns an error message instead of a normal result if something goes wrong. */
 	public Object getTransformedObjectNoFormattingNoThrow(Object data, final NodeModel node, Object extension) {
 		try {
 			final Object transformedObject = getTransformedObject(data, node, extension);
-			if(transformedObject  instanceof HighlightedTransformedObject)
-				return ((HighlightedTransformedObject)transformedObject).getObject();
+			if (transformedObject instanceof HighlightedTransformedObject)
+				return ((HighlightedTransformedObject) transformedObject).getObject();
 			else
 				return transformedObject;
 		}
@@ -202,207 +199,217 @@ public class TextController implements IExtension {
 		}
 	}
 
-	
-	public Object getTransformedObject(NodeModel node)  throws TransformationException{
+	public Object getTransformedObject(NodeModel node) throws TransformationException {
 		final Object userObject = node.getUserObject();
 		return getTransformedObject(userObject, node, userObject);
 	}
-	
+
 	public Object getTransformedObjectNoThrow(NodeModel node) {
 		final Object userObject = node.getUserObject();
 		return getTransformedObjectNoFormattingNoThrow(userObject, node, userObject);
 	}
 
 	/** convenience method for getTransformedText().toString. */
-	public String getTransformedText(Object text, final NodeModel nodeModel, Object extension)  throws TransformationException{
+	public String getTransformedText(Object text, final NodeModel nodeModel, Object extension)
+	        throws TransformationException {
 		text = getTransformedObject(text, nodeModel, extension);
 		return text.toString();
 	}
-	
+
 	public String getTransformedTextNoThrow(Object text, final NodeModel nodeModel, Object extension) {
 		text = getTransformedObjectNoFormattingNoThrow(text, nodeModel, extension);
 		return text.toString();
 	}
 
-	public boolean isMinimized(NodeModel node){
+	public boolean isMinimized(NodeModel node) {
 		final ShortenedTextModel shortened = ShortenedTextModel.getShortenedTextModel(node);
 		return shortened != null;
 	}
 
-	// FIXME: This should be getPlainTransformedText() since getText() does not transform too
 	/** returns transformed text converted to plain text. */
-	public String getPlainTextContent(NodeModel nodeModel) {
+	public String getPlainTransformedText(NodeModel nodeModel) {
 		final String text = getTransformedTextNoThrow(nodeModel);
-		return HtmlUtils.htmlToPlain(text);    
+		return HtmlUtils.htmlToPlain(text);
+	}
+
+	public String getPlainTransformedTextWithoutNodeNumber(NodeModel node) {
+		final boolean nodeNumberingWasEnabled = nodeNumberingEnabled;
+		nodeNumberingEnabled = false;
+		try {
+			return getPlainTransformedText(node);
+		}
+		finally {
+			nodeNumberingEnabled = nodeNumberingWasEnabled;
+		}
 	}
 
 	public String getTransformedTextNoThrow(NodeModel nodeModel) {
-	    final Object userObject = nodeModel.getUserObject();
+		final Object userObject = nodeModel.getUserObject();
 		final Object input;
-		if(userObject instanceof String &&  HtmlUtils.isHtmlNode((String) userObject))
+		if (userObject instanceof String && HtmlUtils.isHtmlNode((String) userObject))
 			input = HtmlUtils.htmlToPlain((String) userObject);
 		else
 			input = userObject;
 		final String text = getTransformedTextNoThrow(input, nodeModel, userObject);
-	    return text;
-    }
+		return text;
+	}
 
 	public String getShortPlainText(NodeModel nodeModel) {
-		String adaptedText = getPlainTextContent(nodeModel);
+		String adaptedText = getPlainTransformedTextWithoutNodeNumber(nodeModel);
 		if (adaptedText.length() > 40) {
 			adaptedText = adaptedText.substring(0, 40) + " ...";
 		}
 		return adaptedText;
 	}
-	
+
 	public String getShortText(String longText) {
 		String text;
-	    final boolean isHtml = HtmlUtils.isHtmlNode(longText);
-		if(isHtml){
-	    	text = HtmlUtils.htmlToPlain(longText).trim();
-	    }
-	    else{
-	    	text = longText;
-	    }
-	    int length = text.length();
-	    final int eolPosition = text.indexOf('\n');
-	    final int maxShortenedNodeWidth = ResourceController.getResourceController().getIntProperty("max_shortened_text_length");
-		if(eolPosition == -1 || eolPosition >= length || eolPosition >= maxShortenedNodeWidth){
-	    	if(length <= maxShortenedNodeWidth){
-	    		return longText;
-	    	}
-	    	length = maxShortenedNodeWidth;
-	    }
-	    else{
-	    	length = eolPosition;
-	    }
-		if(isHtml)
+		final boolean isHtml = HtmlUtils.isHtmlNode(longText);
+		if (isHtml) {
+			text = HtmlUtils.htmlToPlain(longText).trim();
+		}
+		else {
+			text = longText;
+		}
+		int length = text.length();
+		final int eolPosition = text.indexOf('\n');
+		final int maxShortenedNodeWidth = ResourceController.getResourceController()
+		    .getIntProperty("max_shortened_text_length");
+		if (eolPosition == -1 || eolPosition >= length || eolPosition >= maxShortenedNodeWidth) {
+			if (length <= maxShortenedNodeWidth) {
+				return longText;
+			}
+			length = maxShortenedNodeWidth;
+		}
+		else {
+			length = eolPosition;
+		}
+		if (isHtml)
 			return new HtmlProcessor(longText).htmlSubstring(0, length);
 		else
 			return text.substring(0, length);
 	}
 
-
 	public void setDetailsHidden(NodeModel node, boolean isHidden) {
 		final DetailTextModel details = DetailTextModel.createDetailText(node);
-		if(isHidden == details.isHidden()){
+		if (isHidden == details.isHidden()) {
 			return;
 		}
 		details.setHidden(isHidden);
 		node.addExtension(details);
-		Controller.getCurrentModeController().getMapController().nodeChanged(node, DETAILS_HIDDEN, ! isHidden, isHidden);    
+		Controller.getCurrentModeController().getMapController().nodeChanged(node, DETAILS_HIDDEN, !isHidden, isHidden);
 	}
 
 	private void registerDetailsTooltip() {
 		modeController.addToolTipProvider(DETAILS_TOOLTIP, new ITooltipProvider() {
-			public String getTooltip(final ModeController modeController, NodeModel node, Component view){
-				return getTooltip(modeController, node, (MainView)view);
+			@Override
+			public String getTooltip(final ModeController modeController, NodeModel node, Component view) {
+				return getTooltip(modeController, node, (MainView) view);
 			}
+
 			private String getTooltip(final ModeController modeController, NodeModel node, MainView view) {
-					final DetailTextModel detailText = DetailTextModel.getDetailText(node);
-					if (detailText == null || ! (detailText.isHidden() || ShortenedTextModel.isShortened(node)) ){
-						 return null;
-					 }
-					final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
-			        final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
-			        final NodeModel detailStyleNode = model.getStyleNodeSafe(MapStyleModel.DETAILS_STYLE);
-			        Font detailFont = style.getFont(detailStyleNode);
-			        Color detailBackground = style.getBackgroundColor(detailStyleNode);
-			        Color detailForeground = style.getColor(detailStyleNode);
-			        final int alignment = style.getHorizontalTextAlignment(detailStyleNode).swingConstant;
-			        
-			        float zoom = view.getNodeView().getMap().getZoom();
-					
-					final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
-							.append(new CssRuleBuilder()
-							.withHTMLFont(detailFont)
-							.withColor(detailForeground)
-							.withBackground(detailBackground)
-							.withAlignment(alignment)
-							.withMaxWidthAsPt(zoom, NodeSizeModel.getMaxNodeWidth(detailStyleNode), style.getMaxWidth(node)))
-							.append("\">");
-					
-					String noteText= detailText.getHtml();
-					final String tooltipText = noteText.replaceFirst("<body>",  htmlBodyStyle.toString())
-					    .replaceFirst("</body>", "</div></body>");
-					return tooltipText;
+				final DetailTextModel detailText = DetailTextModel.getDetailText(node);
+				if (detailText == null || !(detailText.isHidden() || ShortenedTextModel.isShortened(node))) {
+					return null;
 				}
-			});
-		}
+				final NodeStyleController style = modeController.getExtension(NodeStyleController.class);
+				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+				final NodeModel detailStyleNode = model.getStyleNodeSafe(MapStyleModel.DETAILS_STYLE);
+				Font detailFont = style.getFont(detailStyleNode);
+				Color detailBackground = style.getBackgroundColor(detailStyleNode);
+				Color detailForeground = style.getColor(detailStyleNode);
+				final int alignment = style.getHorizontalTextAlignment(detailStyleNode).swingConstant;
+				float zoom = view.getNodeView().getMap().getZoom();
+				final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
+				    .append(new CssRuleBuilder()
+				        .withHTMLFont(detailFont)
+				        .withColor(detailForeground)
+				        .withBackground(detailBackground)
+				        .withAlignment(alignment)
+				        .withMaxWidthAsPt(zoom, NodeSizeModel.getMaxNodeWidth(detailStyleNode),
+				            style.getMaxWidth(node)))
+				    .append("\">");
+				String noteText = detailText.getHtml();
+				final String tooltipText = noteText.replaceFirst("<body>", htmlBodyStyle.toString())
+				    .replaceFirst("</body>", "</div></body>");
+				return tooltipText;
+			}
+		});
+	}
 
 	private void registerNodeTextTooltip() {
 		modeController.addToolTipProvider(NODE_TOOLTIP, new ITooltipProvider() {
-			public String getTooltip(final ModeController modeController, NodeModel node, Component view){
-				return getTooltip(modeController, node, (MainView)view);
+			@Override
+			public String getTooltip(final ModeController modeController, NodeModel node, Component view) {
+				return getTooltip(modeController, node, (MainView) view);
 			}
-			private String getTooltip(final ModeController modeController, NodeModel node, MainView view) {
-				    if (!ShortenedTextModel.isShortened(node)) {
-					    return null;
-				    }
-				    final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
-				    final Font font = style.getFont(node);
-				    float zoom = view.getNodeView().getMap().getZoom();
-					final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
-							.append(new CssRuleBuilder().withHTMLFont(font)
-							.withColor(view.getForeground())
-							.withBackground(view.getNodeView().getTextBackground())
-							.withAlignment(view.getHorizontalAlignment())
-							.withMaxWidthAsPt(zoom, style.getMaxWidth(node)));
-				    final Object data = node.getUserObject();
-				    String text;
-				    try {
-					    text = getTransformedText(data, node, data);
-					    if(text.equals(getShortText(text)))
-					    	return null;
-				    }
-				    catch (Exception e) {
-					    text = TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
-					    htmlBodyStyle.append("color:red;");
-				    }
 
-				    htmlBodyStyle.append("\">");
-				    if (!HtmlUtils.isHtmlNode(text)) {
-					    text = HtmlUtils.plainToHTML(text);
-				    }
-				    final String tooltipText = text.replaceFirst("<body>", htmlBodyStyle.toString())
-				        .replaceFirst("</body>", "</div></body>");
-				    return tooltipText;
-			    }
+			private String getTooltip(final ModeController modeController, NodeModel node, MainView view) {
+				if (!ShortenedTextModel.isShortened(node)) {
+					return null;
+				}
+				final NodeStyleController style = modeController.getExtension(NodeStyleController.class);
+				final Font font = style.getFont(node);
+				float zoom = view.getNodeView().getMap().getZoom();
+				final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
+				    .append(new CssRuleBuilder().withHTMLFont(font)
+				        .withColor(view.getForeground())
+				        .withBackground(view.getNodeView().getTextBackground())
+				        .withAlignment(view.getHorizontalAlignment())
+				        .withMaxWidthAsPt(zoom, style.getMaxWidth(node)));
+				final Object data = node.getUserObject();
+				String text;
+				try {
+					text = getTransformedText(data, node, data);
+					if (text.equals(getShortText(text)))
+						return null;
+				}
+				catch (Exception e) {
+					text = TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
+					htmlBodyStyle.append("color:red;");
+				}
+				htmlBodyStyle.append("\">");
+				if (!HtmlUtils.isHtmlNode(text)) {
+					text = HtmlUtils.plainToHTML(text);
+				}
+				final String tooltipText = text.replaceFirst("<body>", htmlBodyStyle.toString())
+				    .replaceFirst("</body>", "</div></body>");
+				return tooltipText;
+			}
 		});
 	}
 
 	public void setIsMinimized(NodeModel node, boolean shortened) {
 		boolean oldState = ShortenedTextModel.getShortenedTextModel(node) != null;
-		if(oldState == shortened){
+		if (oldState == shortened) {
 			return;
 		}
-		if(shortened){
+		if (shortened) {
 			ShortenedTextModel.createShortenedTextModel(node);
 		}
-		else{
+		else {
 			node.removeExtension(ShortenedTextModel.class);
 		}
-		Controller.getCurrentModeController().getMapController().nodeChanged(node, "SHORTENER", oldState, shortened);   
+		Controller.getCurrentModeController().getMapController().nodeChanged(node, "SHORTENER", oldState, shortened);
 	}
 
 	public boolean parseData() {
-        return false;
-    }
+		return false;
+	}
 
 	public String getNodeFormat(NodeModel node) {
 		return modeController.getExtension(NodeStyleController.class).getNodeFormat(node);
-    }
+	}
 
-    public boolean getNodeNumbering(NodeModel node) {
-    	return modeController.getExtension(NodeStyleController.class).getNodeNumbering(node);    
-    }
-    
+	public boolean getNodeNumbering(NodeModel node) {
+		return nodeNumberingEnabled && modeController.getExtension(NodeStyleController.class).getNodeNumbering(node);
+	}
+
 	public ModeController getModeController() {
-    	return modeController;
-    }
+		return modeController;
+	}
 
 	public boolean canEdit() {
 		return false;
 	}
-
 }

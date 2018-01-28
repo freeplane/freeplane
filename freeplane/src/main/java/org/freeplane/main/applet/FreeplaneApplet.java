@@ -157,7 +157,7 @@ public class FreeplaneApplet extends JApplet {
 
 					TimeController.install();
 					LinkController.install();
-					IconController.install();
+					IconController.installConditionControllers();
 					FilterController.getCurrentFilterController().getConditionFactory().addConditionController(70,
 					    new LogicalStyleFilterController());
 					final BModeController browseController = BModeControllerFactory.createModeController();

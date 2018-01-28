@@ -338,7 +338,7 @@ public class MIconController extends IconController {
 			optionPanelBuilder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {
 				public IPropertyControl createControl() {
 					final KeyProperty keyProperty = new KeyProperty(info.getShortcutKey(), info.getTranslationValueLabel());
-					keyProperty.setImageIcon(info.getIcon());
+					keyProperty.setIcon(info.getIcon());
 					keyProperty.disableModifiers();
 					return keyProperty;
 				}
@@ -490,6 +490,17 @@ public class MIconController extends IconController {
 			final AFreeplaneAction iconAction = iconActions.get(icon);
 			iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		}
+	}
+
+	/** lists all icons that are available in the icon selection dialog. This may include user icons
+	 * if there are some installed. */
+	public static List<String> listStandardIconKeys() {
+		// the source of this list is the property "icons.list" in freeplane.properties
+		ArrayList<String> result = new ArrayList<String>();
+		final MIconController mIconController = (MIconController) IconController.getController();
+		for (MindIcon mindIcon : mIconController.getMindIcons())
+			result.add(mindIcon.getName());
+		return result;
 	}
 
 }

@@ -59,6 +59,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.image.BigBufferedImage;
+import org.freeplane.core.ui.svgicons.GraphicsHints;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
@@ -388,6 +389,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		g.clearRect(0, 0, imageWidth, imageHeight);
 		g.scale(scaleFactor, scaleFactor);
 		g.translate(-innerBounds.x, -innerBounds.y);
+		g.setRenderingHint(GraphicsHints.CACHE_ICONS, Boolean.TRUE); 
 		view.print(g);
 		return myImage;
 	}
