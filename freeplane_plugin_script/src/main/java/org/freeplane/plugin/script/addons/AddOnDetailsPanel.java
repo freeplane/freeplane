@@ -2,12 +2,11 @@ package org.freeplane.plugin.script.addons;
 
 import java.awt.Dimension;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.Box;
-import javax.swing.ImageIcon;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -141,7 +140,7 @@ public class AddOnDetailsPanel extends JPanel {
 		text.append("</body></html>");
 		final JLabel label = new JLabel(text.toString());
 		label.setAutoscrolls(true);
-		final ImageIcon icon = IconNotFound.createIconOrReturnNull(addOn.getName() + "-screenshot-1.png");
+		final Icon icon = IconNotFound.createIconOrReturnNull(addOn.getName() + "-screenshot-1.png");
 		if (icon != null)
 			label.setIcon(icon);
 		return label;

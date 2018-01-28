@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -42,7 +41,8 @@ import org.freeplane.features.mode.Controller;
 class UITextChanger implements KeyEventDispatcher {
 	private static final String REPLACE_TEXT = "uiTextChanger.replaceText";
 	private static final String ORIGINAL_TEXT_IS_NOT_DEFINED = "uiTextChanger.originalTextIsNotDefined";
-	private static final ImageIcon WEBLATE_ICON = ResourceController.getResourceController().getIcon("/images/weblate-32.png");
+	private static final Icon WEBLATE_ICON = ResourceController.getResourceController()
+	    .getIcon("/images/weblate-32.png");
 	private static final String TEXT_FIELD_TRANSLATION_KEY = TranslatedElement.class.getName() + ".translationKey";
 	private static final float BORDER_TITLE_FONT_SIZE = UITools.getUIFontSize(1.0);
 	private TextChangeHotKeyAction textChangeAcceleratorAction;
@@ -64,12 +64,13 @@ class UITextChanger implements KeyEventDispatcher {
 
 	private void replaceComponentText() {
 		for (Window window : Window.getWindows()) {
-	        final Point mousePosition = window.getMousePosition(true);
+			final Point mousePosition = window.getMousePosition(true);
 			if (mousePosition != null) {
-				final Component componentUnderMouse = SwingUtilities.getDeepestComponentAt(window, mousePosition.x, mousePosition.y);
+				final Component componentUnderMouse = SwingUtilities.getDeepestComponentAt(window, mousePosition.x,
+				    mousePosition.y);
 				replaceComponentTexts(componentUnderMouse);
 			}
-	    }
+		}
 	}
 
 	private void replaceComponentTexts(Component component) {
@@ -109,14 +110,14 @@ class UITextChanger implements KeyEventDispatcher {
 	private Component[] createDisplayedComponents(ArrayList<JTextField> textFields) {
 		final Box[] components = new Box[textFields.size()];
 		final UrlCreator urlCreator = new UrlCreator();
-		for(int i = 0; i < textFields.size(); i++) {
+		for (int i = 0; i < textFields.size(); i++) {
 			final Box box = Box.createHorizontalBox();
 			final JTextField textField = textFields.get(i);
 			box.add(textField);
-			final String textKey = (String)textField.getClientProperty(TEXT_FIELD_TRANSLATION_KEY);
+			final String textKey = (String) textField.getClientProperty(TEXT_FIELD_TRANSLATION_KEY);
 			final boolean isTranslationKeyDefined = TextUtils.getRawText(textKey, null) != null;
 			final JComponent weblateButton;
-			if(isTranslationKeyDefined) {
+			if (isTranslationKeyDefined) {
 				final String url = urlCreator.createWeblateUrl(textKey);
 				weblateButton = createGoToUrlButton(url, WEBLATE_ICON);
 			}
@@ -126,7 +127,7 @@ class UITextChanger implements KeyEventDispatcher {
 				weblateButton.setToolTipText(TextUtils.getText(ORIGINAL_TEXT_IS_NOT_DEFINED));
 				weblateButton.setEnabled(false);
 				final ResourceController resourceController = ResourceController.getResourceController();
-				if(! resourceController.getDefaultLanguageCode().equals(resourceController.getLanguageCode()))
+				if (!resourceController.getDefaultLanguageCode().equals(resourceController.getLanguageCode()))
 					textField.setEnabled(false);
 			}
 			box.add(weblateButton);
@@ -134,14 +135,15 @@ class UITextChanger implements KeyEventDispatcher {
 		}
 		return components;
 	}
-	
-	static class UrlCreator{
+
+	static class UrlCreator {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		String weblateUrlFormat = resourceController.getProperty("weblateUrlFormat");
 		final MessageFormat urlCreator = new MessageFormat(weblateUrlFormat);
 		final String languageCode = resourceController.getLanguageCode();
+
 		public String createWeblateUrl(String key) {
-			return urlCreator.format(new String[]{languageCode, key});
+			return urlCreator.format(new String[] { languageCode, key });
 		}
 	}
 
@@ -149,12 +151,12 @@ class UITextChanger implements KeyEventDispatcher {
 		final JButton button = new JButton(icon);
 		button.setToolTipText(url);
 		button.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				try {
 					Controller.getCurrentController().getViewController().openDocument(new URL(url));
-				} catch (Exception e) {
+				}
+				catch (Exception e) {
 					LogUtils.severe(e);
 				}
 			}
@@ -169,21 +171,21 @@ class UITextChanger implements KeyEventDispatcher {
 				if (focusOwner.isShowing()) {
 					final Window windowAncestor = SwingUtilities.getWindowAncestor(focusOwner);
 					if (windowAncestor.isFocused()) {
-					focusOwner.requestFocusInWindow();
+						focusOwner.requestFocusInWindow();
 					}
 					else {
 						windowAncestor.addWindowFocusListener(new WindowFocusListener() {
-			                @Override
-			                public void windowLostFocus(WindowEvent e) {
-				                // intentionally left blank
-			                }
+							@Override
+							public void windowLostFocus(WindowEvent e) {
+								// intentionally left blank
+							}
 
-			                @Override
-			                public void windowGainedFocus(WindowEvent e) {
-				                focusOwner.requestFocusInWindow();
-				                windowAncestor.removeWindowFocusListener(this);
-			                }
-		                });
+							@Override
+							public void windowGainedFocus(WindowEvent e) {
+								focusOwner.requestFocusInWindow();
+								windowAncestor.removeWindowFocusListener(this);
+							}
+						});
 					}
 					focusOwner.removeHierarchyListener(this);
 				}
@@ -255,23 +257,21 @@ class UITextChanger implements KeyEventDispatcher {
 	}
 
 	private static FocusAdapter textFieldTextSelector = new FocusAdapter() {
-		
 		@Override
 		public void focusGained(FocusEvent e) {
 			((JTextComponent) e.getComponent()).selectAll();
 		}
-		
 	};
 
 	private JTextField createTextField(TranslatedElement element, final String translationKey) {
 		final String rawText = TextUtils.getRawText(translationKey, "");
 		final JTextField textField = new JTextField(rawText);
 		final String originalRawText = TextUtils.getOriginalRawText(translationKey);
-		if(originalRawText == null) {
+		if (originalRawText == null) {
 			TranslatedElement.TOOLTIP.setKey(textField, ORIGINAL_TEXT_IS_NOT_DEFINED);
 			textField.setToolTipText(TextUtils.getText(ORIGINAL_TEXT_IS_NOT_DEFINED));
 		}
-		else if(!( originalRawText.isEmpty() || rawText.equals(originalRawText)))
+		else if (!(originalRawText.isEmpty() || rawText.equals(originalRawText)))
 			textField.setToolTipText(originalRawText);
 		textField.addFocusListener(textFieldTextSelector);
 		String titleKey = element.getTitleKey();
@@ -282,4 +282,3 @@ class UITextChanger implements KeyEventDispatcher {
 		return textField;
 	}
 }
-

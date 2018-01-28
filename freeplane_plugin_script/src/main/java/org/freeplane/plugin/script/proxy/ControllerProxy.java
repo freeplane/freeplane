@@ -18,12 +18,12 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.util.FreeplaneIconUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.export.mindmapmode.IExportEngine;
 import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.icon.factory.MindIconFactory;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -160,7 +160,7 @@ class ControllerProxy implements Proxy.Controller {
 
 	public void setStatusInfo(final String infoPanelKey, final String info, final String iconKey) {
 		final ViewController viewController = getViewController();
-		viewController.addStatusInfo(infoPanelKey, info, FreeplaneIconUtils.createStandardIcon(iconKey));
+		viewController.addStatusInfo(infoPanelKey, info, MindIconFactory.createStandardIcon(iconKey));
 	}
 
 	@Deprecated

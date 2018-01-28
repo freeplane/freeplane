@@ -75,6 +75,7 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.svgicons.GraphicsHints;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeController;
@@ -1469,6 +1470,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final Graphics2D g2 = (Graphics2D) g.create();
 		try {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+			if(! isPrinting) {
+				g2.setRenderingHint(GraphicsHints.CACHE_ICONS, Boolean.TRUE); 
+			}
 			Controller.getCurrentController().getMapViewManager().setTextRenderingHint(g2);
 			super.paint(g2);
 		}

@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.icon.factory;
 
+import javax.swing.Icon;
+
 import org.freeplane.features.icon.MindIcon;
 
 /**
@@ -34,5 +36,9 @@ public class MindIconFactory {
 	public static MindIcon createIcon(final String name) {
 		final String translationKeyLabel = name.indexOf('/') > 0 ? "" : String.format(DESC_KEY, name);
 		return new MindIcon(name, name + ".png", translationKeyLabel);
+	}
+
+	public static Icon createStandardIcon(String iconKey) {
+		return createIcon(iconKey).getIcon();
 	}
 }

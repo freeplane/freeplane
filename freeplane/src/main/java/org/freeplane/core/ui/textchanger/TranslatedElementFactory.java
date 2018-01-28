@@ -3,7 +3,7 @@ package org.freeplane.core.ui.textchanger;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -15,10 +15,9 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.icon.factory.ImageIconFactory;
+import org.freeplane.features.icon.factory.IconFactory;
 
 public class TranslatedElementFactory {
-	
 	public static JButton createButton(Action action, String labelKey) {
 		final JButton component = action != null ? new JButton(action) : new JButton();
 		final String text = TextUtils.getRawText(labelKey);
@@ -31,7 +30,7 @@ public class TranslatedElementFactory {
 	public static JButton createButton(String labelKey) {
 		return createButton(null, labelKey);
 	}
-	
+
 	public static JToggleButton createToggleButton(Action action, String labelKey) {
 		final JToggleButton component = action != null ? new JAutoToggleButton(action) : new JAutoToggleButton();
 		final String text = TextUtils.getRawText(labelKey);
@@ -44,7 +43,7 @@ public class TranslatedElementFactory {
 	public static JToggleButton createToggleButton(String labelKey) {
 		return createToggleButton(null, labelKey);
 	}
-	
+
 	public static JCheckBox createCheckBox(String labelKey) {
 		final String text = TextUtils.getText(labelKey);
 		final JCheckBox component = new JCheckBox();
@@ -70,14 +69,15 @@ public class TranslatedElementFactory {
 
 	public static void createTooltip(JComponent component, String labelKey) {
 		final String text = TextUtils.getOptionalText(labelKey, null);
-		if(text != null){
+		if (text != null) {
 			component.setToolTipText(text);
 		}
 		TranslatedElement.TOOLTIP.setKey(component, labelKey);
 	}
 
-	public static JButton createButtonWithIcon(Action action, final String iconKey, final String tooltipKey ) {
-		final ImageIcon icon = ResourceController.getResourceController().getIcon(iconKey, ImageIconFactory.DEFAULT_UI_ICON_HEIGHT);
+	public static JButton createButtonWithIcon(Action action, final String iconKey, final String tooltipKey) {
+		final Icon icon = ResourceController.getResourceController().getIcon(iconKey,
+		    IconFactory.DEFAULT_UI_ICON_HEIGHT);
 		final JButton button;
 		if (action == null)
 			button = new JButton(icon);
@@ -89,10 +89,11 @@ public class TranslatedElementFactory {
 		createTooltip(button, tooltipKey);
 		return button;
 	}
-	public static JButton createButtonWithIcon(final String iconKey, final String tooltipKey ) {
+
+	public static JButton createButtonWithIcon(final String iconKey, final String tooltipKey) {
 		return createButtonWithIcon(null, iconKey, tooltipKey);
 	}
-	
+
 	public static JToggleButton createToggleButtonWithIconAndLabel(final String iconKey, String labelKey) {
 		JToggleButton button = createToggleButton(labelKey);
 		return addIcon(button, iconKey);
@@ -105,7 +106,8 @@ public class TranslatedElementFactory {
 	}
 
 	public static <T extends AbstractButton> T addIcon(T button, final String iconKey) {
-		final ImageIcon icon = ResourceController.getResourceController().getIcon(iconKey, ImageIconFactory.DEFAULT_UI_ICON_HEIGHT);
+		final Icon icon = ResourceController.getResourceController().getIcon(iconKey,
+		    IconFactory.DEFAULT_UI_ICON_HEIGHT);
 		button.setIcon(icon);
 		return button;
 	}
@@ -118,6 +120,4 @@ public class TranslatedElementFactory {
 		createTooltip(component, labelKey + ".tooltip");
 		return component;
 	}
-
-
 }

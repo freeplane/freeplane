@@ -63,7 +63,7 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 	}
 
 	public Icon getIcon() {
-		return (ImageIcon) getValue(Action.SMALL_ICON);
+		return (Icon) getValue(Action.SMALL_ICON);
 	}
 
 	public KeyStroke getKeyStroke() {

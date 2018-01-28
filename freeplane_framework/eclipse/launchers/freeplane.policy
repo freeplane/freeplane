@@ -6,6 +6,10 @@ grant codeBase "file:${org.freeplane.basedirectory}/../freeplane_framework/bin/*
         permission java.security.AllPermission;
 };
 
+grant codeBase "file:${org.freeplane.basedirectory}/../freeplane_framework/bin/main/*" {
+        permission java.security.AllPermission;
+};
+
 grant codeBase "file:${framework.home}/-" {
         permission java.security.AllPermission;
 };

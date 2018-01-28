@@ -60,7 +60,7 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformati
 	}
 
 	public Icon getIcon() {
-		return (ImageIcon) getValue(Action.SMALL_ICON);
+		return (Icon) getValue(Action.SMALL_ICON);
 	}
 
 	public KeyStroke getKeyStroke() {
