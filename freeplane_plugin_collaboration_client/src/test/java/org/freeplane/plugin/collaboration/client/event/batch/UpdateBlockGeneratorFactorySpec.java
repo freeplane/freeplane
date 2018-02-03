@@ -14,10 +14,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class UpdateBlockGeneratorFactorySpec {
 	@Mock
 	private MapModel map;
+	
+	static final private String USER_ID="userID";
 
 	@Test
 	public void setsTimerHeaderToMapExtension() throws Exception {
-		UpdateBlockGeneratorFactory uut = new UpdateBlockGeneratorFactory(null, 0);
+		UpdateBlockGeneratorFactory uut = new UpdateBlockGeneratorFactory(USER_ID, null, 0);
 		final ModifiableUpdateHeaderWrapper headerExtension = new ModifiableUpdateHeaderWrapper(
 		    ModifiableUpdateHeader.create()
 		        .setMapId("mapId").setMapRevision(1L));
@@ -28,7 +30,7 @@ public class UpdateBlockGeneratorFactorySpec {
 
 	@Test
 	public void createsOnlyOneTimerForAGivenMap() throws Exception {
-		UpdateBlockGeneratorFactory uut = new UpdateBlockGeneratorFactory(null, 0);
+		UpdateBlockGeneratorFactory uut = new UpdateBlockGeneratorFactory(USER_ID, null, 0);
 		final ModifiableUpdateHeaderWrapper headerExtension = new ModifiableUpdateHeaderWrapper(
 		    ModifiableUpdateHeader.create()
 		        .setMapId("mapId").setMapRevision(1L));

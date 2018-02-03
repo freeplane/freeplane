@@ -80,7 +80,7 @@ public class EventStreamDialog {
 		}
 
 		private UpdateEventGenerator createUpdateEventGenerator() {
-			UpdateBlockGeneratorFactory f = new UpdateBlockGeneratorFactory(ev -> {
+			UpdateBlockGeneratorFactory f = new UpdateBlockGeneratorFactory("userId", ev -> {
 				if(ev.mapId().equals(SENDER_MAP_ID)) {
 					UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(text.getText() + '\n' + t));
 					printer.prettyPrint(ev);

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JacksonSpec {
+	private static final String USER_ID = "userId";
 	static ObjectMapper objectMapper = Jackson.objectMapper;
 	
 	@Test
@@ -47,6 +48,7 @@ public class JacksonSpec {
 	public void serializeAndDeserializeUpdatesCompletedEvent() throws Exception
 	{
 		UpdateBlockCompleted uut = UpdateBlockCompleted.builder()
+				.userId(USER_ID)
 				.mapId("mapId")
 				.mapRevision(1000L)
 				.addUpdateBlock(createUpdateEvents())
@@ -63,6 +65,7 @@ public class JacksonSpec {
 	public void serializeAndDeserializeUpdatesCompletedEventAsServerObject() throws Exception
 	{
 		UpdateBlockCompleted uut = UpdateBlockCompleted.builder()
+				.userId(USER_ID)
 				.mapId("mapId")
 				.mapRevision(1000L)
 				.addUpdateBlock(createUpdateEvents())

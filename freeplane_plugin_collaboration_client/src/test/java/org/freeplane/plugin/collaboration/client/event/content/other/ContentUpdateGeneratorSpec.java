@@ -54,6 +54,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ContentUpdateGeneratorSpec {
 	private static final int DELAY_MILLIS = 10;
+	private static final String USER_ID="userID";
 	private ModifiableUpdateHeader header = ModifiableUpdateHeader.create().setMapId("mapId").setMapRevision(0);
 	@Mock
 	private ContentUpdateEventFactory eventFactory;
@@ -73,7 +74,7 @@ public class ContentUpdateGeneratorSpec {
 	@Before
 	public void createTestedInstance() {
 		consumer = new UpdatesEventCaptor(1);
-		Updates updates = new Updates(consumer, DELAY_MILLIS, header);
+		Updates updates = new Updates(USER_ID, consumer, DELAY_MILLIS, header);
 		when(updateBlockGeneratorFactory.of(map)).thenReturn(updates);
 		uut = new ContentUpdateGenerator(updateBlockGeneratorFactory, eventFactory);
 	}
@@ -85,6 +86,7 @@ public class ContentUpdateGeneratorSpec {
 		uut.onNodeChange(new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null, true));
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+			.userId(USER_ID)
 		    .mapId(header.mapId()).mapRevision(1)
 		    .addUpdateBlock(contentUpdated).build();
 		assertThat(event).isEqualTo(expected);
@@ -98,6 +100,7 @@ public class ContentUpdateGeneratorSpec {
 		uut.onNewNode(node);
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+			.userId(USER_ID)
 		    .mapId(header.mapId()).mapRevision(1)
 		    .addUpdateBlock(contentUpdated).build();
 		assertThat(event).isEqualTo(expected);
@@ -111,6 +114,7 @@ public class ContentUpdateGeneratorSpec {
 		uut.onMapChange(map);
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+			.userId(USER_ID)
 		    .mapId(header.mapId()).mapRevision(1)
 		    .addUpdateBlock(contentUpdated).build();
 		assertThat(event).isEqualTo(expected);
@@ -124,6 +128,7 @@ public class ContentUpdateGeneratorSpec {
 		uut.onNewMap(map);
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+			.userId(USER_ID)
 		    .mapId(header.mapId()).mapRevision(1)
 		    .addUpdateBlock(contentUpdated).build();
 		assertThat(event).isEqualTo(expected);

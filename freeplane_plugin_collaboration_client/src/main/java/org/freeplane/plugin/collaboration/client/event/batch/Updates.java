@@ -94,6 +94,7 @@ public class Updates {
 		}
 	}
 
+	private final String userId;
 	final private ModifiableUpdateHeader header;
 	final private UpdatesProcessor consumer;
 	private ImmutableUpdateBlockCompleted.Builder builder;
@@ -101,7 +102,8 @@ public class Updates {
 	private final Set<UpdateKey> registeredUpdates;
 
 	@VisibleForTesting
-	public Updates(UpdatesProcessor consumer, int delay, ModifiableUpdateHeader header) {
+	public Updates(String userId, UpdatesProcessor consumer, int delay, ModifiableUpdateHeader header) {
+		this.userId = userId;
 		timer = new TimerExtension(delay, null);
 		timer.setRepeats(false);
 		registeredUpdates = new HashSet<>();
@@ -111,6 +113,7 @@ public class Updates {
 
 	private ImmutableUpdateBlockCompleted.Builder createBuilder() {
 		return UpdateBlockCompleted.builder()
+				.userId(userId)
 		    .mapId(header.mapId())
 		    .mapRevision(header.mapRevision() + 1);
 	}

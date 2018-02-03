@@ -52,6 +52,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class CoreUpdateGeneratorSpec {
 	private CoreUpdateGenerator uut;
 	private static final int DELAY_MILLIS = 10;
+	private static final String USER_ID="userID";
 	private ModifiableUpdateHeader header = ModifiableUpdateHeader.create().setMapId("mapId")
 	    .setMapRevision(0);
 	@Mock
@@ -65,6 +66,7 @@ public class CoreUpdateGeneratorSpec {
 
 	private ImmutableUpdateBlockCompleted updateBlock(final MapUpdated event) {
 		return UpdateBlockCompleted.builder()
+			.userId(USER_ID)
 		    .mapId(header.mapId()).mapRevision(1)
 		    .addUpdateBlock(event).build();
 	}
@@ -77,7 +79,7 @@ public class CoreUpdateGeneratorSpec {
 	@Before
 	public void createTestedInstance() {
 		consumer = new UpdatesEventCaptor(1);
-		Updates updates = new Updates(consumer, DELAY_MILLIS, header);
+		Updates updates = new Updates(USER_ID, consumer, DELAY_MILLIS, header);
 		when(updateBlockGeneratorFactory.of(map)).thenReturn(updates);
 		uut = new CoreUpdateGenerator(updateBlockGeneratorFactory, eventFactory);
 	}

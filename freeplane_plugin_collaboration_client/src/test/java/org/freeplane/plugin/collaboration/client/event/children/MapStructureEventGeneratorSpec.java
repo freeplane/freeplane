@@ -57,6 +57,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MapStructureEventGeneratorSpec {
 	private static final int DELAY_MILLIS = 10;
+	private static final String USER_ID = "userId";
 	@Mock
 	private MapStructureEventFactory structuralEventFactory;
 	@Mock
@@ -97,7 +98,7 @@ public class MapStructureEventGeneratorSpec {
 
 	private void createTestedInstance(final int expectedEventCount) {
 		consumer = new UpdatesEventCaptor(expectedEventCount);
-		Updates updates = new Updates(consumer, DELAY_MILLIS, header);
+		Updates updates = new Updates(USER_ID, consumer, DELAY_MILLIS, header);
 		when(updateBlockGeneratorFactory.of(map)).thenReturn(updates);
 		when(updateBlockGeneratorFactory.of(Mockito.any(NodeModel.class))).thenReturn(updates);
 		uut = new MapStructureEventGenerator(updateBlockGeneratorFactory, contentUpdateGenerators,
@@ -110,6 +111,7 @@ public class MapStructureEventGeneratorSpec {
 		uut.onNodeInserted(child);
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+			.userId(USER_ID)
 		    .mapId(header.mapId()).mapRevision(1)
 		    .addUpdateBlock(childInserted).build();
 		assertThat(event).isEqualTo(expected);
@@ -124,6 +126,7 @@ public class MapStructureEventGeneratorSpec {
 		uut.onNodeInserted(child);
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+			.userId(USER_ID)
 		    .mapId(header.mapId()).mapRevision(1)
 		    .addUpdateBlock(childInserted, specialTypeSet).build();
 		assertThat(event).isEqualTo(expected);
@@ -138,6 +141,7 @@ public class MapStructureEventGeneratorSpec {
 		uut.onNodeInserted(child);
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+			.userId(USER_ID)
 		    .mapId(header.mapId()).mapRevision(1)
 		    .addUpdateBlock(childInserted,
 		        child2Inserted)
@@ -170,6 +174,7 @@ public class MapStructureEventGeneratorSpec {
 		uut.onNodeInserted(child);
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+			.userId(USER_ID)
 		    .mapId(header.mapId()).mapRevision(1)
 		    .addUpdateBlock(childInserted, child2Inserted, specialTypeSet).build();
 		assertThat(event).isEqualTo(expected);
@@ -187,6 +192,7 @@ public class MapStructureEventGeneratorSpec {
 		uut.onNodeInserted(child);
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+			.userId(USER_ID)
 		    .mapId(header.mapId()).mapRevision(1)
 		    .addUpdateBlock(childInserted, child2Inserted, specialTypeSet).build();
 		assertThat(event).isEqualTo(expected);
@@ -205,6 +211,7 @@ public class MapStructureEventGeneratorSpec {
 		uut.onNodeInserted(child);
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+			.userId(USER_ID)
 		    .mapId(header.mapId()).mapRevision(1)
 		    .addUpdateBlock(childInserted, child2Inserted, specialTypeSet).build();
 		assertThat(event).isEqualTo(expected);
@@ -219,6 +226,7 @@ public class MapStructureEventGeneratorSpec {
 		uut.onNewMap(map);
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+			.userId(USER_ID)
 		    .mapId(header.mapId()).mapRevision(1)
 		    .addUpdateBlock(rootNodeSet, childInserted).build();
 		assertThat(event).isEqualTo(expected);
@@ -243,6 +251,7 @@ public class MapStructureEventGeneratorSpec {
 		uut.onNodeMoved(child);
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+			.userId(USER_ID)
 		    .mapId(header.mapId()).mapRevision(1)
 		    .addUpdateBlock(childMoved).build();
 		assertThat(event).isEqualTo(expected);
@@ -254,6 +263,7 @@ public class MapStructureEventGeneratorSpec {
 		uut.onNodeRemoved(child);
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
+			.userId(USER_ID)
 		    .mapId(header.mapId()).mapRevision(1)
 		    .addUpdateBlock(childRemoved).build();
 		assertThat(event).isEqualTo(expected);
