@@ -55,7 +55,8 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 
 	@Override
 	public void nodeChanged(NodeChangeEvent event) {
-		contentGenerators.onNodeContentUpdate(event);
+		if(event.isPersistent())
+			contentGenerators.onNodeContentUpdate(event);
 	}
 
 	@Override

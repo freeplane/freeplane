@@ -83,7 +83,7 @@ public class NodeModel{
 	void setClones(Clones clones) {
 		this.clones[clones.getCloneType().ordinal()] = clones;
 		for(NodeModel clone : clones)
-			clone.fireNodeChanged(new NodeChangeEvent(this, NodeModel.UNKNOWN_PROPERTY, null, null));
+			clone.fireNodeChanged(new NodeChangeEvent(this, NodeModel.UNKNOWN_PROPERTY, null, null, true));
 	}
 
 	public Object getUserObject() {
@@ -472,7 +472,7 @@ public class NodeModel{
 			final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
 			sharedData.setFolded(encryptionModel != null && !encryptionModel.isAccessible() || folded && ! AlwaysUnfoldedNode.isConnectorNode(this));
 		}
-		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(folded)));
+		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(folded), true));
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {

@@ -1,6 +1,7 @@
 package org.freeplane.plugin.collaboration.client.event;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -82,10 +83,17 @@ public class UpdateEventGeneratorSpec {
 
 	@Test
 	public void generatesEventOnNodeChange() throws Exception {
-		NodeChangeEvent event = new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null);
+		NodeChangeEvent event = new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null, true);
 		when(contentUpdateGenerator.handles(event)).thenReturn(true);
 		uut.nodeChanged(event);
 		verify(contentUpdateGenerator).onNodeChange(event);
+	}
+
+	@Test
+	public void generatesNoEventOnNonPersistentNodeChange() throws Exception {
+		NodeChangeEvent event = new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null, false);
+		uut.nodeChanged(event);
+		verifyZeroInteractions(contentUpdateGenerator);
 	}
 
 	@Test

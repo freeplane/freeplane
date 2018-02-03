@@ -60,7 +60,7 @@ public class ContentUpdateGeneratorsSpec {
 
 	@Test
 	public void onNodeContentUpdateHandledByGenerator1() throws Exception {
-		NodeChangeEvent event = new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null);
+		NodeChangeEvent event = new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null, true);
 		when(contentUpdateGenerator1.handles(event)).thenReturn(true);
 		uut.onNodeContentUpdate(event);
 		verify(contentUpdateGenerator1).handles(event);
@@ -71,7 +71,7 @@ public class ContentUpdateGeneratorsSpec {
 	
 	@Test
 	public void onNodeContentUpdateHandledByGenerator2() throws Exception {
-		NodeChangeEvent event = new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null);
+		NodeChangeEvent event = new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null, true);
 		when(contentUpdateGenerator2.handles(event)).thenReturn(true);
 		uut.onNodeContentUpdate(event);
 		verify(contentUpdateGenerator1).handles(event);

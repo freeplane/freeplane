@@ -436,7 +436,7 @@ public class MapController extends SelectionController implements IExtension{
 
 	private void fireNodeUnfold(final NodeModel node) {
 		node.fireNodeChanged(new NodeChangeEvent(node, NodeView.Properties.HIDDEN_CHILDREN, null,
-				null));
+				null, false));
     }
 
 	private void fireFoldingChanged(final NodeModel node) {
@@ -836,7 +836,7 @@ public class MapController extends SelectionController implements IExtension{
 						final Date oldLastModifiedAt = historyInformation.getLastModifiedAt();
 						historyInformation.setLastModifiedAt(lastModifiedAt);
 						final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node,
-						    HistoryInformationModel.class, oldLastModifiedAt, lastModifiedAt);
+						    HistoryInformationModel.class, oldLastModifiedAt, lastModifiedAt, false);
 						fireNodeChanged(node, nodeChangeEvent);
 					}
 
@@ -851,7 +851,7 @@ public class MapController extends SelectionController implements IExtension{
 				Controller.getCurrentModeController().execute(historyActor, node.getMap());
 			}
 		}
-		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue, newValue);
+		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue, newValue, isUpdate);
 		fireNodeChanged(node, nodeChangeEvent);
 	}
 

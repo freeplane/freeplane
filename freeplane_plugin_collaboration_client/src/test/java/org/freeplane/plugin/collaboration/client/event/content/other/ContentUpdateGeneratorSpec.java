@@ -82,7 +82,7 @@ public class ContentUpdateGeneratorSpec {
 	public void generatesEventOnNodeContentUpdate() throws Exception {
 		NodeContentUpdated contentUpdated = mock(NodeContentUpdated.class);
 		when(eventFactory.createNodeContentUpdatedEvent(node)).thenReturn(contentUpdated);
-		uut.onNodeChange(new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null));
+		uut.onNodeChange(new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null, true));
 		final UpdateBlockCompleted event = consumer.getEvent();
 		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
 		    .mapId(header.mapId()).mapRevision(1)

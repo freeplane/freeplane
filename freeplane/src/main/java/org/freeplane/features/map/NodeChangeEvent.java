@@ -32,15 +32,22 @@ public class NodeChangeEvent extends AWTEvent {
 	final private Object newValue;
 	final private Object oldValue;
 	final private Object property;
+	final private boolean persistent;
 // 	final private ModeController modeController;
 
+	public boolean isPersistent() {
+		return persistent;
+	}
+
 	public NodeChangeEvent(final NodeModel node, final Object property,
-	                       final Object oldValue, final Object newValue) {
+	                       final Object oldValue, final Object newValue,
+	                       boolean persistent) {
 		super(node, 0);
 //		this.modeController = modeController;
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.property = property;
+		this.persistent = persistent;
 	}
 
 	public Object getNewValue() {
@@ -60,6 +67,6 @@ public class NodeChangeEvent extends AWTEvent {
 	}
 
 	public NodeChangeEvent forNode(NodeModel node) {
-		return new NodeChangeEvent(node, getProperty(), getOldValue(), getNewValue());
+		return new NodeChangeEvent(node, property, oldValue, newValue, persistent);
     }
 }

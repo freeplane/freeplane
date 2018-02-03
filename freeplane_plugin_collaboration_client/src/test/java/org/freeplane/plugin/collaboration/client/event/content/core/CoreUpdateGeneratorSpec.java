@@ -86,7 +86,7 @@ public class CoreUpdateGeneratorSpec {
 	public void createsUpdateBlockOnNodeChange() throws Exception {
 		final MapUpdated event = mock(MapUpdated.class);
 		when(eventFactory.createCoreUpdatedEvent(node)).thenReturn(event);
-		uut.onNodeChange(new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null));
+		uut.onNodeChange(new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null, true));
 		UpdateBlockCompleted expected = updateBlock(event);
 		assertThat(consumer.getEvent()).isEqualTo(expected);
 		assertThat(header.mapRevision()).isEqualTo(1);

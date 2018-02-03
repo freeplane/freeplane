@@ -6,7 +6,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
 public class UpdateBlockGeneratorFactory {
-	WeakHashMap<MapModel, Updates> generators = new WeakHashMap<>();
+	WeakHashMap<MapModel, Updates> updates = new WeakHashMap<>();
 	private UpdatesProcessor consumer;
 	private int delay;
 
@@ -17,16 +17,16 @@ public class UpdateBlockGeneratorFactory {
 	}
 
 	public Updates of(MapModel map) {
-		Updates generator;
-		if (generators.containsKey(map))
-			generator = generators.get(map);
+		Updates mapUpdates;
+		if (updates.containsKey(map))
+			mapUpdates = updates.get(map);
 		else {
 			final ModifiableUpdateHeaderWrapper headerExtension = map
 			    .getExtension(ModifiableUpdateHeaderWrapper.class);
-			generator = new Updates(consumer, delay, headerExtension.header);
-			generators.put(map, generator);
+			mapUpdates = new Updates(consumer, delay, headerExtension.header);
+			updates.put(map, mapUpdates);
 		}
-		return generator;
+		return mapUpdates;
 	}
 
 	public Updates of(NodeModel node) {

@@ -89,7 +89,12 @@ public class MLocationController extends LocationController {
 		final ModeController currentModeController = Controller.getCurrentModeController();
 		MapModel map = node.getMap();
 		ArrayList<IActor> actors = new ArrayList<IActor>(3);
-		actors.add(new ChangeShiftXActor(node, hGap));
+		final LocationModel locationModel = LocationModel.getModel(node);
+		Quantity<LengthUnits> oldHGap = locationModel.getHGap();
+		if(! hGap.equals(oldHGap))
+			actors.add(new ChangeShiftXActor(node, hGap));
+		Quantity<LengthUnits> oldVerticalShift = locationModel.getShiftY();
+		if(! shiftY.equals(oldVerticalShift))
 		actors.add(new ChangeShiftYActor(node, shiftY));
 		for (final IActor actor : actors) {
 			currentModeController.execute(actor, map);
@@ -97,20 +102,32 @@ public class MLocationController extends LocationController {
 	}
 
 	public void setHorizontalShift(NodeModel node, final Quantity<LengthUnits> horizontalShift){
-		final IActor actor = new ChangeShiftXActor(node, horizontalShift);
-		Controller.getCurrentModeController().execute(actor, node.getMap());
+		final LocationModel locationModel = LocationModel.getModel(node);
+		Quantity<LengthUnits> oldHGap = locationModel.getHGap();
+		if(! horizontalShift.equals(oldHGap)) {
+			final IActor actor = new ChangeShiftXActor(node, horizontalShift);
+			Controller.getCurrentModeController().execute(actor, node.getMap());
+		}
 	}
 
 	public void setVerticalShift(NodeModel node, final Quantity<LengthUnits> verticalShift){
-		final IActor actor = new ChangeShiftYActor(node, verticalShift);
-		Controller.getCurrentModeController().execute(actor, node.getMap());
+		final LocationModel locationModel = LocationModel.getModel(node);
+		Quantity<LengthUnits> oldVerticalShift = locationModel.getShiftY();
+		if(! verticalShift.equals(oldVerticalShift)) {
+			final IActor actor = new ChangeShiftYActor(node, verticalShift);
+			Controller.getCurrentModeController().execute(actor, node.getMap());
+		}
 	}
 
 	public void setMinimalDistanceBetweenChildren(NodeModel node, final Quantity<LengthUnits> minimalDistanceBetweenChildren){
 		if(node != null){
 			Quantity.assertNonNegativeOrNull(minimalDistanceBetweenChildren);
-			final IActor actor = new ChangeVGapActor(node, minimalDistanceBetweenChildren);
-			Controller.getCurrentModeController().execute(actor, node.getMap());
+			final LocationModel locationModel = LocationModel.getModel(node);
+			Quantity<LengthUnits> oldVgap = locationModel.getVGap();
+			if(! minimalDistanceBetweenChildren.equals(oldVgap)) {
+				final IActor actor = new ChangeVGapActor(node, minimalDistanceBetweenChildren);
+				Controller.getCurrentModeController().execute(actor, node.getMap());
+			}
 		}
 
 	}

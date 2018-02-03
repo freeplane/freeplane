@@ -21,8 +21,10 @@ import javax.swing.JTextArea;
 import org.freeplane.collaboration.event.MapUpdated;
 import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
 import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
+import org.freeplane.collaboration.event.children.RootNodeIdUpdated;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -60,14 +62,33 @@ import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
 
 public class EventStreamDialog {
 	private class Map2Json implements ActionListener {
+		private static final String SENDER_MAP_ID = "sender";
+		private UpdateEventGenerator updateEventGenerator;
+		private MapModel map;
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			text.setText("");
+			if(updateEventGenerator == null)
+				updateEventGenerator = createUpdateEventGenerator();
+			map = Controller.getCurrentController().getMap();
+			if (!map.containsExtension(ModifiableUpdateHeaderWrapper.class))
+				map.addExtension(new ModifiableUpdateHeaderWrapper(
+				    ModifiableUpdateHeader.create().setMapId(SENDER_MAP_ID).setMapRevision(1)));
+			updateEventGenerator.onNewMap(map);
+			
+		}
+
+		private UpdateEventGenerator createUpdateEventGenerator() {
 			UpdateBlockGeneratorFactory f = new UpdateBlockGeneratorFactory(ev -> {
-				UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(t));
-				printer.prettyPrint(ev);
+				if(ev.mapId().equals(SENDER_MAP_ID)) {
+					UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(text.getText() + '\n' + t));
+					printer.prettyPrint(ev);
+				}
 			}, 100);
 			final ModeController modeController = Controller.getCurrentModeController();
-			final MapWriter mapWriter = modeController.getMapController().getMapWriter();
+			final MapController mapController = modeController.getMapController();
+			final MapWriter mapWriter = mapController.getMapWriter();
 			ContentUpdateGenerator contentUpdateGenerator = new ContentUpdateGenerator(f, mapWriter);
 			CoreUpdateGenerator coreUpdateGenerator = new CoreUpdateGenerator(f, mapWriter);
 			LinkUpdateGenerator linkUpdateGenerator = new LinkUpdateGenerator(f,
@@ -79,17 +100,17 @@ public class EventStreamDialog {
 			    contentGenerators);
 			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(mapStructureEventGenerator,
 			    contentGenerators);
-			MapModel map = Controller.getCurrentController().getMap();
-			if (!map.containsExtension(ModifiableUpdateHeaderWrapper.class))
-				map.addExtension(new ModifiableUpdateHeaderWrapper(
-				    ModifiableUpdateHeader.create().setMapId("id").setMapRevision(1)));
-			updateEventGenerator.onNewMap(map);
+			mapController.addMapChangeListener(updateEventGenerator);
+			mapController.addNodeChangeListener(updateEventGenerator);
+			return updateEventGenerator;
 		}
 	}
 
 	private class Json2Map implements ActionListener {
+		private static final String RECEIVER_MAP_ID = "receiver";
 		private final UpdateProcessorChain processor;
 		private MMapController mapController;
+		private MapModel map;
 
 		public Json2Map() {
 			final NodeFactory nodeFactory = new NodeFactory();
@@ -119,7 +140,13 @@ public class EventStreamDialog {
 			try {
 				final UpdateBlockCompleted updates = Jackson.objectMapper.readValue(text.getText(),
 				    UpdateBlockCompleted.class);
-				final MapModel map = mapController.newMap();
+				text.setText("");
+				if(map == null || updates.updateBlock().get(0) instanceof RootNodeIdUpdated) {
+					map = mapController.newMap();
+					map.addExtension(new ModifiableUpdateHeaderWrapper(
+						ModifiableUpdateHeader.create().setMapId(RECEIVER_MAP_ID).setMapRevision(1)));
+					
+				}
 				for (MapUpdated event : updates.updateBlock())
 					processor.onUpdate(map, event);
 			}
