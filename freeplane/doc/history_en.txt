@@ -1,7 +1,12 @@
 ===============================
 1.6.13
 ===============================
-Update byte buddy for Java 9
+Update byte buddy (fix scripts execution under Java 9)
+Add icon and attribute conditions to style editor
+Skip node numbers on node sort and in some other cases
+Show creation modification in the status line
+Improve performance for many with many SVG icons
+Fix Java applet
 
 ===============================
 1.6.12
