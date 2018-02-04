@@ -19,8 +19,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.freeplane.collaboration.event.MapUpdated;
+import org.freeplane.collaboration.event.batch.ImmutableMapId;
+import org.freeplane.collaboration.event.batch.ImmutableUserId;
+import org.freeplane.collaboration.event.batch.MapId;
 import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
 import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
+import org.freeplane.collaboration.event.batch.UserId;
 import org.freeplane.collaboration.event.children.RootNodeIdUpdated;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -62,7 +66,7 @@ import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
 
 public class EventStreamDialog {
 	private class Map2Json implements ActionListener {
-		private static final String SENDER_MAP_ID = "sender";
+		private final MapId SENDER_MAP_ID =  ImmutableMapId.of("sender");
 		private UpdateEventGenerator updateEventGenerator;
 		private MapModel map;
 
@@ -80,7 +84,8 @@ public class EventStreamDialog {
 		}
 
 		private UpdateEventGenerator createUpdateEventGenerator() {
-			UpdateBlockGeneratorFactory f = new UpdateBlockGeneratorFactory("userId", ev -> {
+			final UserId userId = ImmutableUserId.of("userId");
+			UpdateBlockGeneratorFactory f = new UpdateBlockGeneratorFactory(userId, ev -> {
 				if(ev.mapId().equals(SENDER_MAP_ID)) {
 					UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(text.getText() + '\n' + t));
 					printer.prettyPrint(ev);
@@ -107,7 +112,7 @@ public class EventStreamDialog {
 	}
 
 	private class Json2Map implements ActionListener {
-		private static final String RECEIVER_MAP_ID = "receiver";
+		private final MapId RECEIVER_MAP_ID = ImmutableMapId.of("receiver");
 		private final UpdateProcessorChain processor;
 		private MMapController mapController;
 		private MapModel map;

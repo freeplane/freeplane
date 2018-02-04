@@ -25,8 +25,12 @@ import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.freeplane.collaboration.event.batch.ImmutableMapId;
+import org.freeplane.collaboration.event.batch.ImmutableUserId;
+import org.freeplane.collaboration.event.batch.MapId;
 import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
 import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
+import org.freeplane.collaboration.event.batch.UserId;
 import org.freeplane.collaboration.event.children.NodeInserted;
 import org.freeplane.collaboration.event.children.NodeMoved;
 import org.freeplane.collaboration.event.children.NodeRemoved;
@@ -57,14 +61,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MapStructureEventGeneratorSpec {
 	private static final int DELAY_MILLIS = 10;
-	private static final String USER_ID = "userId";
+	private static final UserId USER_ID = ImmutableUserId.of("userId");
+	private static final MapId MAP_ID = ImmutableMapId.of("mapId");
 	@Mock
 	private MapStructureEventFactory structuralEventFactory;
 	@Mock
 	private ContentUpdateGenerators contentUpdateGenerators;
 	@Mock
 	private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
-	private ModifiableUpdateHeader header = ModifiableUpdateHeader.create().setMapId("mapId")
+	private ModifiableUpdateHeader header = ModifiableUpdateHeader.create().setMapId(MAP_ID)
 	    .setMapRevision(0);
 	private UpdatesEventCaptor consumer;
 	private MapStructureEventGenerator uut;

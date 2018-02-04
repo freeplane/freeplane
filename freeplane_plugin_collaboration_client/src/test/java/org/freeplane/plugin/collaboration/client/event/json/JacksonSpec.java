@@ -4,7 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.freeplane.collaboration.event.MapUpdated;
 import org.freeplane.collaboration.event.batch.GenericUpdateBlockCompleted;
+import org.freeplane.collaboration.event.batch.ImmutableMapId;
+import org.freeplane.collaboration.event.batch.ImmutableUserId;
+import org.freeplane.collaboration.event.batch.MapId;
 import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
+import org.freeplane.collaboration.event.batch.UserId;
 import org.freeplane.collaboration.event.content.core.CoreMediaType;
 import org.freeplane.collaboration.event.content.core.CoreUpdated;
 import org.junit.Test;
@@ -13,7 +17,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JacksonSpec {
-	private static final String USER_ID = "userId";
+	private static final UserId USER_ID = ImmutableUserId.of("userId");
+	private static final MapId MAP_ID = ImmutableMapId.of("mapId");
+	
 	static ObjectMapper objectMapper = Jackson.objectMapper;
 	
 	@Test
@@ -49,7 +55,7 @@ public class JacksonSpec {
 	{
 		UpdateBlockCompleted uut = UpdateBlockCompleted.builder()
 				.userId(USER_ID)
-				.mapId("mapId")
+				.mapId(MAP_ID)
 				.mapRevision(1000L)
 				.addUpdateBlock(createUpdateEvents())
 				.build();
@@ -66,7 +72,7 @@ public class JacksonSpec {
 	{
 		UpdateBlockCompleted uut = UpdateBlockCompleted.builder()
 				.userId(USER_ID)
-				.mapId("mapId")
+				.mapId(MAP_ID)
 				.mapRevision(1000L)
 				.addUpdateBlock(createUpdateEvents())
 				.build();

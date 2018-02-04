@@ -13,6 +13,7 @@ import org.freeplane.collaboration.event.MapUpdated;
 import org.freeplane.collaboration.event.batch.ImmutableUpdateBlockCompleted;
 import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
 import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
+import org.freeplane.collaboration.event.batch.UserId;
 import org.freeplane.plugin.collaboration.client.VisibleForTesting;
 
 @SuppressWarnings("serial")
@@ -94,7 +95,7 @@ public class Updates {
 		}
 	}
 
-	private final String userId;
+	private final UserId userId;
 	final private ModifiableUpdateHeader header;
 	final private UpdatesProcessor consumer;
 	private ImmutableUpdateBlockCompleted.Builder builder;
@@ -102,7 +103,7 @@ public class Updates {
 	private final Set<UpdateKey> registeredUpdates;
 
 	@VisibleForTesting
-	public Updates(String userId, UpdatesProcessor consumer, int delay, ModifiableUpdateHeader header) {
+	public Updates(UserId userId, UpdatesProcessor consumer, int delay, ModifiableUpdateHeader header) {
 		this.userId = userId;
 		timer = new TimerExtension(delay, null);
 		timer.setRepeats(false);

@@ -8,8 +8,12 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.freeplane.collaboration.event.MapUpdated;
+import org.freeplane.collaboration.event.batch.ImmutableMapId;
+import org.freeplane.collaboration.event.batch.ImmutableUserId;
+import org.freeplane.collaboration.event.batch.MapId;
 import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
 import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
+import org.freeplane.collaboration.event.batch.UserId;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
 import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
@@ -19,10 +23,11 @@ import org.mockito.Mock;
 
 public class UpdatesSpec {
 	private static final int DELAY_MILLIS = 10;
-	private static final String USER_ID="userID";
+	private static final UserId USER_ID = ImmutableUserId.of("userId");
+	private static final MapId MAP_ID = ImmutableMapId.of("mapId");
 	@Mock
 	private MapModel map;
-	private ModifiableUpdateHeader header = ModifiableUpdateHeader.create().setMapId("mapId").setMapRevision(0);
+	private ModifiableUpdateHeader header = ModifiableUpdateHeader.create().setMapId(MAP_ID).setMapRevision(0);
 
 	@BeforeClass
 	static public void setupClass() throws InterruptedException, InvocationTargetException {

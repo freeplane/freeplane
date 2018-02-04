@@ -2,6 +2,7 @@ package org.freeplane.plugin.collaboration.client.event.batch;
 
 import java.util.WeakHashMap;
 
+import org.freeplane.collaboration.event.batch.UserId;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
@@ -9,9 +10,9 @@ public class UpdateBlockGeneratorFactory {
 	WeakHashMap<MapModel, Updates> updates = new WeakHashMap<>();
 	private final UpdatesProcessor consumer;
 	private final int delay;
-	private final String userId;
+	private final UserId userId;
 
-	public UpdateBlockGeneratorFactory(String userId, UpdatesProcessor consumer, int delay) {
+	public UpdateBlockGeneratorFactory(UserId userId, UpdatesProcessor consumer, int delay) {
 		super();
 		this.userId = userId;
 		this.consumer = consumer;
