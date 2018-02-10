@@ -1,0 +1,25 @@
+[Desktop Entry]
+Name=Freeplane
+GenericName=Freeplane
+GenericName[ru]=Интеллект-карты
+GenericName[de]=Mind Mapping
+GenericName[ca]=Mapa mental
+GenericName[cs]=Tvorba myšlenkových map
+GenericName[es]=Mapa de Mente
+GenericName[eu]=Gogoeta-mapak
+GenericName[fr]=Cartographie d'idées
+GenericName[pl]=Mapowanie myśli
+GenericName[sv]=Tankekartor
+GenericName[zh_CN]=思维导图
+Comment=Mind mapping, knowledge management and project management tool
+Comment[ru]=Программа для создания диаграмм связей
+Comment[de]=Mind-Map-, Wissensmanagement- und Projektmanagement-Tool
+Encoding=UTF-8
+Terminal=false
+Categories=Office;Mind Mapping;Diagram;Application
+Keywords=Mind Map; Knowledge management; Organize information; Brainstorming;
+Exec=freeplane %F
+Type=Application
+MimeType=application/x-freemind;text/x-troff-mm;application/x-freeplane;
+StartupNotify=true
+Icon=freeplane

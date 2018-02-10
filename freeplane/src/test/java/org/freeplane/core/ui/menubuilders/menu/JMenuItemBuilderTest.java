@@ -10,12 +10,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.awt.Container;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AccelerateableAction;
@@ -235,7 +237,7 @@ public class JMenuItemBuilderTest {
 	}
 
 	@Test
-	public void whenPopupMenuBecomesInvisible_popupListenerIsCalled() {
+	public void whenPopupMenuBecomesInvisible_popupListenerIsCalled() throws Exception {
 		Entry parentMenuEntry = new Entry();
 		final JMenu parentMenu = new JMenu();
 		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
@@ -247,6 +249,13 @@ public class JMenuItemBuilderTest {
 		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
 		item.getPopupMenu().setVisible(true);
 		item.getPopupMenu().setVisible(false);
+		
+		SwingUtilities.invokeAndWait(new Runnable() {
+			@Override
+			public void run() {
+			}
+		});
+		
 		verify(popupListener).childEntriesHidden(menuEntry);
 	}
 }
