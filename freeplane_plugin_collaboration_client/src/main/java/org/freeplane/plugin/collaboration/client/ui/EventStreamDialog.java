@@ -55,31 +55,31 @@ public class EventStreamDialog {
 		@Override
 		public UpdateStatus update(Credentials credentials, UpdateBlockCompleted ev) {
 			if(ev.mapId().equals(SENDER_MAP_ID)) {
-				UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(text.getText() + '\n' + t));
+				UpdatesSerializer printer = UpdatesSerializer.of(this::updateTextArea);
 				printer.prettyPrint(ev);
 			}
 			return UpdateStatus.ACCEPTED;
+		}
+
+		private void updateTextArea(String addedText) {
+			final String oldText = text.getText();
+			final String newText = oldText.isEmpty()  ? addedText : oldText + ",\n" + addedText;
+			text.setText(newText);
 		}
 
 		@Override
 		public void subscribe(Subscription subscription) {
 			if(subscription.mapId().equals(RECEIVER_MAP_ID)) {
 				this.recieverSubscription = subscription;
-				try {
-					updateReceiver();
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-				text.setText("");
-
 			}
 		}
 
-		private void updateReceiver() throws IOException, JsonParseException, JsonMappingException {
+		void updateReceiver() throws IOException, JsonParseException, JsonMappingException {
 			if(recieverSubscription != null) {
-				final UpdateBlockCompleted updates = Jackson.objectMapper.readValue(text.getText(), UpdateBlockCompleted.class);
-				recieverSubscription.consumer().accept(updates);
+				final UpdateBlockCompleted[] updates = Jackson.objectMapper.readValue("[" + text.getText() + "]", UpdateBlockCompleted[].class);
+				for(UpdateBlockCompleted u : updates)
+					recieverSubscription.consumer().accept(u);
+				text.setText("");
 			}
 		}
 
@@ -118,12 +118,13 @@ public class EventStreamDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-				final UpdateBlockCompleted updates = Jackson.objectMapper.readValue(text.getText(),
-				    UpdateBlockCompleted.class);
-				if(map == null || updates.updateBlock().get(0) instanceof RootNodeIdUpdated) {
+				if(map == null || ! text.getText().trim().isEmpty() 
+						&& Jackson.objectMapper.readValue(text.getText(),UpdateBlockCompleted.class)
+							.updateBlock().get(0) instanceof RootNodeIdUpdated) {
 					map = (MMapModel) mapController.newMap();
 					sessionController.joinSession(server, credentials, map, RECEIVER_MAP_ID);
 				}
+				server.updateReceiver();
 			}
 			catch (IOException e1) {
 				e1.printStackTrace();
