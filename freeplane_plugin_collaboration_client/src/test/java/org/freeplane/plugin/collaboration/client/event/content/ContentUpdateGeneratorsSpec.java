@@ -50,6 +50,7 @@ public class ContentUpdateGeneratorsSpec {
 	private ContentUpdateGenerator contentUpdateGenerator1;
 	@Mock
 	private ContentUpdateGenerator contentUpdateGenerator2;
+	
 	private ContentUpdateGenerators uut;
 	
 	@Before

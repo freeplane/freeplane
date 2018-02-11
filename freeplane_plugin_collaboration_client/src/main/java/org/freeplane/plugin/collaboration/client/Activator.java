@@ -2,9 +2,11 @@ package org.freeplane.plugin.collaboration.client;
 
 import java.awt.Component;
 import java.awt.Window;
+import java.util.Hashtable;
 
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IControllerExtensionProvider;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.freeplane.plugin.collaboration.client.ui.EventStreamDialog;
@@ -22,17 +24,18 @@ public class Activator implements BundleActivator {
 		context.registerService(IControllerExtensionProvider.class.getName(), new IControllerExtensionProvider() {
 			@Override
 			public void installExtension(Controller controller) {
-				Component menuComponent = controller.getViewController().getMenuComponent();
-				new EventStreamDialog((Window)menuComponent).show();
 			}
 		}, null);
 
+		final Hashtable<String, String[]> props = new Hashtable<String, String[]>();
+		props.put("mode", new String[] { MModeController.MODENAME });
 		context.registerService(IModeControllerExtensionProvider.class.getName(), new IModeControllerExtensionProvider() {
 			@Override
 			public void installExtension(ModeController modeController) {
-				// TODO
+				Component menuComponent = modeController.getController().getViewController().getMenuComponent();
+				new EventStreamDialog((Window)menuComponent).show();
 			}
-		}, null);
+		}, props);
 		
 	}
 

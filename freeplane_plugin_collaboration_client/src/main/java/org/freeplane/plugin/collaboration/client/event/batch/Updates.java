@@ -14,10 +14,11 @@ import org.freeplane.collaboration.event.batch.ImmutableUpdateBlockCompleted;
 import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
 import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
 import org.freeplane.collaboration.event.batch.UserId;
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.plugin.collaboration.client.VisibleForTesting;
 
 @SuppressWarnings("serial")
-public class Updates {
+public class Updates implements IExtension{
 	private final class TimerExtension extends Timer {
 		private ActionEvent currentEvent;
 
@@ -97,6 +98,10 @@ public class Updates {
 
 	private final UserId userId;
 	final private ModifiableUpdateHeader header;
+	public ModifiableUpdateHeader getHeader() {
+		return header;
+	}
+
 	final private UpdatesProcessor consumer;
 	private ImmutableUpdateBlockCompleted.Builder builder;
 	private final Timer timer;

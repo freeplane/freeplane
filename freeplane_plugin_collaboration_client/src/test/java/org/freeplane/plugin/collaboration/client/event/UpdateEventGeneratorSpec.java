@@ -12,8 +12,8 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesAccessor;
 import org.freeplane.plugin.collaboration.client.event.children.MapStructureEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
@@ -26,7 +26,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class UpdateEventGeneratorSpec {
 	@Mock
-	private UpdateBlockGeneratorFactory updateTimerFactory;
+	private UpdatesAccessor updateTimerFactory;
 
 	@Mock
 	private MapStructureEventGenerator updateGenerator;
@@ -58,6 +58,7 @@ public class UpdateEventGeneratorSpec {
 	
 	@Test
 	public void generatesEventOnNodeInsertion() throws Exception {
+		when(map.containsExtension(Updates.class)).thenReturn(true);
 		when(updateTimerFactory.of(map)).thenReturn(updateTimer);
 
 		uut.onNodeInserted(parent, child, 0);
@@ -67,6 +68,7 @@ public class UpdateEventGeneratorSpec {
 
 	@Test
 	public void generatesEventOnNodeDeletion() throws Exception {
+		when(map.containsExtension(Updates.class)).thenReturn(true);
 		when(updateTimerFactory.of(map)).thenReturn(updateTimer);
 
 		uut.onNodeDeleted(new NodeDeletionEvent(parent, child, 0));
@@ -76,6 +78,7 @@ public class UpdateEventGeneratorSpec {
 	
 	@Test
 	public void generatesEventOnNodeMove() throws Exception {
+		when(map.containsExtension(Updates.class)).thenReturn(true);
 		when(updateTimerFactory.of(map)).thenReturn(updateTimer);
 		uut.onNodeMoved(new NodeMoveEvent(parent, 0, false, parent2, child, 0, false));
 		verify(updateGenerator).onNodeMoved(child);
@@ -84,6 +87,7 @@ public class UpdateEventGeneratorSpec {
 	@Test
 	public void generatesEventOnNodeChange() throws Exception {
 		NodeChangeEvent event = new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null, true);
+		when(map.containsExtension(Updates.class)).thenReturn(true);
 		when(contentUpdateGenerator.handles(event)).thenReturn(true);
 		uut.nodeChanged(event);
 		verify(contentUpdateGenerator).onNodeChange(event);
@@ -92,6 +96,7 @@ public class UpdateEventGeneratorSpec {
 	@Test
 	public void generatesNoEventOnNonPersistentNodeChange() throws Exception {
 		NodeChangeEvent event = new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null, false);
+		when(map.containsExtension(Updates.class)).thenReturn(true);
 		uut.nodeChanged(event);
 		verifyZeroInteractions(contentUpdateGenerator);
 	}
@@ -99,6 +104,7 @@ public class UpdateEventGeneratorSpec {
 	@Test
 	public void generatesEventOnMapChange() throws Exception {
 		when(map.getRootNode()).thenReturn(parent);
+		when(map.containsExtension(Updates.class)).thenReturn(true);
 		MapChangeEvent event = new MapChangeEvent(this, map, NodeModel.UNKNOWN_PROPERTY, null, null);
 		when(contentUpdateGenerator.handles(event)).thenReturn(true);
 		uut.mapChanged(event);

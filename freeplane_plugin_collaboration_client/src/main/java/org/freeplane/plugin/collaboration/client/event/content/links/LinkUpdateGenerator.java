@@ -29,7 +29,7 @@ import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesAccessor;
 import org.freeplane.plugin.collaboration.client.event.content.NodeUpdateGenerator;
 
 /**
@@ -37,18 +37,18 @@ import org.freeplane.plugin.collaboration.client.event.content.NodeUpdateGenerat
  * Jan 2, 2018
  */
 public class LinkUpdateGenerator implements NodeUpdateGenerator {
-	public LinkUpdateGenerator(UpdateBlockGeneratorFactory updates, LinkController linkController) {
+	public LinkUpdateGenerator(UpdatesAccessor updates, LinkController linkController) {
 		this(updates, linkController, new LinkUpdateEventFactory());
 	}
 	
-	LinkUpdateGenerator(UpdateBlockGeneratorFactory updates, LinkController linkController, LinkUpdateEventFactory eventFactory) {
+	LinkUpdateGenerator(UpdatesAccessor updates, LinkController linkController, LinkUpdateEventFactory eventFactory) {
 		super();
 		this.linkController = linkController;
 		this.updates = updates;
 		this.eventFactory = eventFactory;
 	}
 	final private LinkUpdateEventFactory eventFactory;
-	final private UpdateBlockGeneratorFactory updates;
+	final private UpdatesAccessor updates;
 	final private LinkController linkController;
 	
 	public boolean handles(NodeChangeEvent event) {

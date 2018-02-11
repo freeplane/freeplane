@@ -10,7 +10,6 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Arrays;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -18,126 +17,102 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.freeplane.collaboration.event.MapUpdated;
 import org.freeplane.collaboration.event.batch.ImmutableMapId;
 import org.freeplane.collaboration.event.batch.ImmutableUserId;
 import org.freeplane.collaboration.event.batch.MapId;
-import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
 import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
-import org.freeplane.collaboration.event.batch.UserId;
 import org.freeplane.collaboration.event.children.RootNodeIdUpdated;
-import org.freeplane.features.link.LinkController;
-import org.freeplane.features.link.mindmapmode.MLinkController;
-import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.mindmapmode.MMapController;
-import org.freeplane.features.map.mindmapmode.NodeContentManipulator;
-import org.freeplane.features.map.mindmapmode.SingleNodeStructureManipulator;
+import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.text.TextController;
-import org.freeplane.features.text.mindmapmode.MTextController;
-import org.freeplane.plugin.collaboration.client.event.UpdateEventGenerator;
-import org.freeplane.plugin.collaboration.client.event.UpdateProcessorChain;
-import org.freeplane.plugin.collaboration.client.event.batch.ModifiableUpdateHeaderWrapper;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
-import org.freeplane.plugin.collaboration.client.event.children.MapStructureEventGenerator;
-import org.freeplane.plugin.collaboration.client.event.children.NodeFactory;
-import org.freeplane.plugin.collaboration.client.event.children.NodeInsertedProcessor;
-import org.freeplane.plugin.collaboration.client.event.children.NodeMovedProcessor;
-import org.freeplane.plugin.collaboration.client.event.children.NodeRemovedProcessor;
-import org.freeplane.plugin.collaboration.client.event.children.RootNodeIdUpdatedProcessor;
-import org.freeplane.plugin.collaboration.client.event.children.SpecialNodeTypeProcessor;
-import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
-import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateGenerator;
-import org.freeplane.plugin.collaboration.client.event.content.core.CoreUpdateProcessor;
-import org.freeplane.plugin.collaboration.client.event.content.links.ConnectorAdditionProcessor;
-import org.freeplane.plugin.collaboration.client.event.content.links.ConnectorRemovalProcessor;
-import org.freeplane.plugin.collaboration.client.event.content.links.ConnectorUpdateProcessor;
-import org.freeplane.plugin.collaboration.client.event.content.links.HyperlinkUpdateProcessor;
-import org.freeplane.plugin.collaboration.client.event.content.links.LinkUpdateGenerator;
-import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
-import org.freeplane.plugin.collaboration.client.event.content.other.MapContentUpdateProcessor;
-import org.freeplane.plugin.collaboration.client.event.content.other.NodeContentUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.json.Jackson;
 import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
+import org.freeplane.plugin.collaboration.client.server.Credentials;
+import org.freeplane.plugin.collaboration.client.server.Server;
+import org.freeplane.plugin.collaboration.client.server.Subscription;
+import org.freeplane.plugin.collaboration.client.session.Session;
+import org.freeplane.plugin.collaboration.client.session.SessionController;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 public class EventStreamDialog {
-	private class Map2Json implements ActionListener {
+
+	SessionController sessionController = new SessionController();
+	
+	private class MyServer implements Server {
 		private final MapId SENDER_MAP_ID =  ImmutableMapId.of("sender");
-		private UpdateEventGenerator updateEventGenerator;
-		private MapModel map;
+		private Subscription recieverSubscription;
+		
+		@Override
+		public MapId createNewMap(Credentials credentials, String name) {
+			text.setText("");
+			return SENDER_MAP_ID;
+		}
+
+		@Override
+		public UpdateStatus update(Credentials credentials, UpdateBlockCompleted ev) {
+			if(ev.mapId().equals(SENDER_MAP_ID)) {
+				UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(text.getText() + '\n' + t));
+				printer.prettyPrint(ev);
+			}
+			return UpdateStatus.ACCEPTED;
+		}
+
+		@Override
+		public void subscribe(Subscription subscription) {
+			if(subscription.mapId().equals(RECEIVER_MAP_ID)) {
+				this.recieverSubscription = subscription;
+				try {
+					updateReceiver();
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				text.setText("");
+
+			}
+		}
+
+		private void updateReceiver() throws IOException, JsonParseException, JsonMappingException {
+			if(recieverSubscription != null) {
+				final UpdateBlockCompleted updates = Jackson.objectMapper.readValue(text.getText(), UpdateBlockCompleted.class);
+				recieverSubscription.consumer().accept(updates);
+			}
+		}
+
+		@Override
+		public void unsubscribe(Subscription subscription) {
+		}
+		
+	}
+	
+	MyServer server = new MyServer();
+	Credentials credentials = Credentials.of(ImmutableUserId.of("user-id"));
+	
+	private class Map2Json implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			text.setText("");
-			if(updateEventGenerator == null)
-				updateEventGenerator = createUpdateEventGenerator();
-			map = Controller.getCurrentController().getMap();
-			if (!map.containsExtension(ModifiableUpdateHeaderWrapper.class))
-				map.addExtension(new ModifiableUpdateHeaderWrapper(
-				    ModifiableUpdateHeader.create().setMapId(SENDER_MAP_ID).setMapRevision(1)));
-			updateEventGenerator.onNewMap(map);
-			
-		}
-
-		private UpdateEventGenerator createUpdateEventGenerator() {
-			final UserId userId = ImmutableUserId.of("userId");
-			UpdateBlockGeneratorFactory f = new UpdateBlockGeneratorFactory(userId, ev -> {
-				if(ev.mapId().equals(SENDER_MAP_ID)) {
-					UpdatesSerializer printer = UpdatesSerializer.of(t -> text.setText(text.getText() + '\n' + t));
-					printer.prettyPrint(ev);
-				}
-			}, 100);
-			final ModeController modeController = Controller.getCurrentModeController();
-			final MapController mapController = modeController.getMapController();
-			final MapWriter mapWriter = mapController.getMapWriter();
-			ContentUpdateGenerator contentUpdateGenerator = new ContentUpdateGenerator(f, mapWriter);
-			CoreUpdateGenerator coreUpdateGenerator = new CoreUpdateGenerator(f, mapWriter);
-			LinkUpdateGenerator linkUpdateGenerator = new LinkUpdateGenerator(f,
-			    modeController.getExtension(LinkController.class));
-			ContentUpdateGenerators contentGenerators = new ContentUpdateGenerators(
-			    Arrays.asList(contentUpdateGenerator),
-			    Arrays.asList(coreUpdateGenerator, contentUpdateGenerator, linkUpdateGenerator));
-			MapStructureEventGenerator mapStructureEventGenerator = new MapStructureEventGenerator(f,
-			    contentGenerators);
-			UpdateEventGenerator updateEventGenerator = new UpdateEventGenerator(mapStructureEventGenerator,
-			    contentGenerators);
-			mapController.addMapChangeListener(updateEventGenerator);
-			mapController.addNodeChangeListener(updateEventGenerator);
-			return updateEventGenerator;
+			MMapModel map = (MMapModel) Controller.getCurrentController().getMap();
+			if(map.containsExtension(Session.class)) {
+				sessionController.stopSession(map.getExtension(Session.class));
+			}
+			sessionController.startSession(server, credentials, map, "sender-map");
 		}
 	}
 
-	private class Json2Map implements ActionListener {
-		private final MapId RECEIVER_MAP_ID = ImmutableMapId.of("receiver");
-		private final UpdateProcessorChain processor;
+	private final MapId RECEIVER_MAP_ID = ImmutableMapId.of("receiver");
+	public class Json2Map implements ActionListener {
 		private MMapController mapController;
-		private MapModel map;
+		public MMapModel map;
 
 		public Json2Map() {
-			final NodeFactory nodeFactory = new NodeFactory();
 			final ModeController modeController = Controller.getCurrentController()
 			    .getModeController(MModeController.MODENAME);
 			mapController = (MMapController) modeController.getMapController();
-			final SingleNodeStructureManipulator singleNodeStructureManipulator = new SingleNodeStructureManipulator(
-			    mapController);
-			final RootNodeIdUpdatedProcessor rootNodeIdUpdatedProcessor = new RootNodeIdUpdatedProcessor();
-			final SpecialNodeTypeProcessor specialNodeTypeProcessor = new SpecialNodeTypeProcessor();
-			NodeContentManipulator updater = new NodeContentManipulator(mapController);
-			final MLinkController linkController = (MLinkController) MLinkController.getController(modeController);
-			processor = new UpdateProcessorChain().add(rootNodeIdUpdatedProcessor).add(specialNodeTypeProcessor)
-			    .add(new NodeInsertedProcessor(singleNodeStructureManipulator, nodeFactory))
-			    .add(new NodeMovedProcessor(singleNodeStructureManipulator))
-			    .add(new NodeRemovedProcessor(singleNodeStructureManipulator))
-			    .add(new MapContentUpdateProcessor(updater)).add(new NodeContentUpdateProcessor(updater))
-			    .add(new CoreUpdateProcessor((MTextController) TextController.getController(modeController)))
-			    .add(new ConnectorAdditionProcessor(linkController))
-			    .add(new ConnectorUpdateProcessor(linkController))
-			    .add(new ConnectorRemovalProcessor(linkController))
-			    .add(new HyperlinkUpdateProcessor(linkController));
 		}
 
 		@Override
@@ -145,15 +120,10 @@ public class EventStreamDialog {
 			try {
 				final UpdateBlockCompleted updates = Jackson.objectMapper.readValue(text.getText(),
 				    UpdateBlockCompleted.class);
-				text.setText("");
 				if(map == null || updates.updateBlock().get(0) instanceof RootNodeIdUpdated) {
-					map = mapController.newMap();
-					map.addExtension(new ModifiableUpdateHeaderWrapper(
-						ModifiableUpdateHeader.create().setMapId(RECEIVER_MAP_ID).setMapRevision(1)));
-					
+					map = (MMapModel) mapController.newMap();
+					sessionController.joinSession(server, credentials, map, RECEIVER_MAP_ID);
 				}
-				for (MapUpdated event : updates.updateBlock())
-					processor.onUpdate(map, event);
 			}
 			catch (IOException e1) {
 				e1.printStackTrace();

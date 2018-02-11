@@ -8,6 +8,7 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
+import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.children.MapStructureEventGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 
@@ -25,22 +26,29 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 
 	@Override
 	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-		structureGenerator.onNodeRemoved(nodeDeletionEvent.node);	
+		final MapModel map = nodeDeletionEvent.node.getMap();
+		if(map.containsExtension(Updates.class))
+			structureGenerator.onNodeRemoved(nodeDeletionEvent.node);	
 	}
 
 	@Override
 	public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-		structureGenerator.onNodeInserted(child);
+		final MapModel map = parent.getMap();
+		if(map.containsExtension(Updates.class))
+			structureGenerator.onNodeInserted(child);
 	}
 
 
 	@Override
 	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-		structureGenerator.onNodeMoved(nodeMoveEvent.child);
+		final MapModel map = nodeMoveEvent.child.getMap();
+		if(map.containsExtension(Updates.class))
+			structureGenerator.onNodeMoved(nodeMoveEvent.child);
 	}
 	
 	public void onNewMap(MapModel map) {
-		structureGenerator.onNewMap(map);
+		if(map.containsExtension(Updates.class))
+			structureGenerator.onNewMap(map);
 	}
 
 	@Override
@@ -55,12 +63,15 @@ public class UpdateEventGenerator implements IMapChangeListener, INodeChangeList
 
 	@Override
 	public void nodeChanged(NodeChangeEvent event) {
-		if(event.isPersistent())
+		final MapModel map = event.getNode().getMap();
+		if(event.isPersistent() && map.containsExtension(Updates.class))
 			contentGenerators.onNodeContentUpdate(event);
 	}
 
 	@Override
 	public void mapChanged(MapChangeEvent event) {
+		final MapModel map = event.getMap();
+		if(map.containsExtension(Updates.class))
 		contentGenerators.onMapContentUpdate(event);
 	}
 }

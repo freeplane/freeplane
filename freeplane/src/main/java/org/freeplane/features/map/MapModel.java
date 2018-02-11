@@ -250,7 +250,7 @@ public class MapModel {
 		}
 	}
 
-	public IExtension removeExtension(final Class<? extends IExtension> clazz) {
+	public <T extends IExtension> T  removeExtension(final Class<T> clazz) {
 		return extensionContainer.removeExtension(clazz);
 	}
 

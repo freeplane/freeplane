@@ -43,7 +43,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesAccessor;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 import org.junit.Before;
@@ -68,7 +68,7 @@ public class MapStructureEventGeneratorSpec {
 	@Mock
 	private ContentUpdateGenerators contentUpdateGenerators;
 	@Mock
-	private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
+	private UpdatesAccessor updateBlockGeneratorFactory;
 	private ModifiableUpdateHeader header = ModifiableUpdateHeader.create().setMapId(MAP_ID)
 	    .setMapRevision(0);
 	private UpdatesEventCaptor consumer;

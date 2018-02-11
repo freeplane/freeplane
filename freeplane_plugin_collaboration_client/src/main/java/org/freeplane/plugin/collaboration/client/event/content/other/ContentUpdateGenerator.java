@@ -34,7 +34,7 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.features.mode.MapExtensions;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesAccessor;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.content.MapUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.NodeUpdateGenerator;
@@ -44,19 +44,19 @@ import org.freeplane.plugin.collaboration.client.event.content.NodeUpdateGenerat
  * Jan 2, 2018
  */
 public class ContentUpdateGenerator implements NodeUpdateGenerator, MapUpdateGenerator {
-	public ContentUpdateGenerator(UpdateBlockGeneratorFactory updateBlockGeneratorFactory, MapWriter writer) {
-		this(updateBlockGeneratorFactory, new ContentUpdateEventFactory(writer));
+	public ContentUpdateGenerator(UpdatesAccessor updates, MapWriter writer) {
+		this(updates, new ContentUpdateEventFactory(writer));
 	}
 
-	ContentUpdateGenerator(UpdateBlockGeneratorFactory updateBlockGeneratorFactory,
+	ContentUpdateGenerator(UpdatesAccessor updates,
 	                       ContentUpdateEventFactory eventFactory) {
 		super();
-		this.updateBlockGeneratorFactory = updateBlockGeneratorFactory;
+		this.updates = updates;
 		this.eventFactory = eventFactory;
 	}
 
 	final private ContentUpdateEventFactory eventFactory;
-	final private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
+	final private UpdatesAccessor updates;
 
 	@Override
 	public boolean handles(NodeChangeEvent event) {
@@ -104,7 +104,7 @@ public class ContentUpdateGenerator implements NodeUpdateGenerator, MapUpdateGen
 	}
 
 	private Updates getUpdates(MapModel map) {
-		return updateBlockGeneratorFactory.of(map);
+		return updates.of(map);
 	}
 
 	@Override

@@ -6,24 +6,24 @@ import org.freeplane.collaboration.event.children.SpecialNodeTypeSet.SpecialNode
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNode;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesAccessor;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 
 public class MapStructureEventGenerator {
-	final private UpdateBlockGeneratorFactory updates;
+	final private UpdatesAccessor updates;
 	final private ContentUpdateGenerators contentUpdateGenerators;
 	final private MapStructureEventFactory mapStructureEventFactory;
 
-	public MapStructureEventGenerator(UpdateBlockGeneratorFactory updateBlockGeneratorFactory,
+	public MapStructureEventGenerator(UpdatesAccessor updates,
 	                                  ContentUpdateGenerators contentUpdateGenerators) {
-		this(updateBlockGeneratorFactory, contentUpdateGenerators, new MapStructureEventFactory());
+		this(updates, contentUpdateGenerators, new MapStructureEventFactory());
 	}
 
-	MapStructureEventGenerator(UpdateBlockGeneratorFactory updateBlockGeneratorFactory,
+	MapStructureEventGenerator(UpdatesAccessor updates,
 	                           ContentUpdateGenerators contentUpdateGenerators,
 	                           final MapStructureEventFactory mapStructureEventFactory) {
-		this.updates = updateBlockGeneratorFactory;
+		this.updates = updates;
 		this.contentUpdateGenerators = contentUpdateGenerators;
 		this.mapStructureEventFactory = mapStructureEventFactory;
 	}

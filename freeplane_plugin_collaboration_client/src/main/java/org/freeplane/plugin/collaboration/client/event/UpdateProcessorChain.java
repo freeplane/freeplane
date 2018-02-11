@@ -3,6 +3,7 @@ package org.freeplane.plugin.collaboration.client.event;
 import java.util.HashMap;
 
 import org.freeplane.collaboration.event.MapUpdated;
+import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
 import org.freeplane.features.map.MapModel;
 
 public class UpdateProcessorChain{
@@ -26,5 +27,11 @@ public class UpdateProcessorChain{
 			
 		}
 		throw new IllegalArgumentException("No processor available for " + event);
+	}
+
+
+	public void onUpdate(MapModel map, final UpdateBlockCompleted updates) {
+		for (MapUpdated event : updates.updateBlock())
+			onUpdate(map, event);
 	}
 }

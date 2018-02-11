@@ -22,7 +22,7 @@ package org.freeplane.plugin.collaboration.client.event.content.core;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesAccessor;
 import org.freeplane.plugin.collaboration.client.event.content.NodeUpdateGenerator;
 
 /**
@@ -30,17 +30,17 @@ import org.freeplane.plugin.collaboration.client.event.content.NodeUpdateGenerat
  * Jan 2, 2018
  */
 public class CoreUpdateGenerator implements NodeUpdateGenerator {
-	public CoreUpdateGenerator(UpdateBlockGeneratorFactory updates, MapWriter writer) {
+	public CoreUpdateGenerator(UpdatesAccessor updates, MapWriter writer) {
 		this(updates, new CoreUpdateEventFactory(writer));
 	}
 	
-	CoreUpdateGenerator(UpdateBlockGeneratorFactory updates, CoreUpdateEventFactory eventFactory) {
+	CoreUpdateGenerator(UpdatesAccessor updates, CoreUpdateEventFactory eventFactory) {
 		super();
 		this.updates = updates;
 		this.eventFactory = eventFactory;
 	}
 	final private CoreUpdateEventFactory eventFactory;
-	final private UpdateBlockGeneratorFactory updates;
+	final private UpdatesAccessor updates;
 	
 	public boolean handles(NodeChangeEvent event) {
 		return NodeModel.NODE_TEXT.equals(event.getProperty());

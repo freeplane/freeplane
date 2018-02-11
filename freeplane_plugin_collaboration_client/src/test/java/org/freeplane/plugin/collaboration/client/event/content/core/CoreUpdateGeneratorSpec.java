@@ -38,7 +38,7 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdateBlockGeneratorFactory;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesAccessor;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
 import org.junit.Before;
@@ -63,7 +63,7 @@ public class CoreUpdateGeneratorSpec {
 	@Mock
 	private CoreUpdateEventFactory eventFactory;
 	@Mock
-	private UpdateBlockGeneratorFactory updateBlockGeneratorFactory;
+	private UpdatesAccessor updateBlockGeneratorFactory;
 	final private TestObjects testObjects = new TestObjects();
 	private MapModel map = testObjects.map;
 	final private NodeModel node = testObjects.parent;
