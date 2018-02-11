@@ -3,6 +3,7 @@ package org.freeplane.plugin.collaboration.client.event.json;
 import java.util.function.Consumer;
 
 import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
+import org.freeplane.collaboration.event.json.Jackson;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesProcessor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;

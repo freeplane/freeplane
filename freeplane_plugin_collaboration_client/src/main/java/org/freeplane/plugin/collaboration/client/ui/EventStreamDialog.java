@@ -17,19 +17,22 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import org.freeplane.collaboration.event.batch.Credentials;
+import org.freeplane.collaboration.event.batch.ImmutableMapDescription;
 import org.freeplane.collaboration.event.batch.ImmutableMapId;
 import org.freeplane.collaboration.event.batch.ImmutableUserId;
+import org.freeplane.collaboration.event.batch.MapCreateRequest;
 import org.freeplane.collaboration.event.batch.MapId;
+import org.freeplane.collaboration.event.batch.MapUpdateRequest;
 import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
 import org.freeplane.collaboration.event.children.RootNodeIdUpdated;
+import org.freeplane.collaboration.event.json.Jackson;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.plugin.collaboration.client.event.json.Jackson;
 import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
-import org.freeplane.plugin.collaboration.client.server.Credentials;
 import org.freeplane.plugin.collaboration.client.server.Server;
 import org.freeplane.plugin.collaboration.client.server.Subscription;
 import org.freeplane.plugin.collaboration.client.session.Session;
@@ -47,13 +50,14 @@ public class EventStreamDialog {
 		private Subscription recieverSubscription;
 		
 		@Override
-		public MapId createNewMap(Credentials credentials, String name) {
+		public MapId createNewMap(MapCreateRequest request) {
 			text.setText("");
 			return SENDER_MAP_ID;
 		}
 
 		@Override
-		public UpdateStatus update(Credentials credentials, UpdateBlockCompleted ev) {
+		public UpdateStatus update(MapUpdateRequest request) {
+			UpdateBlockCompleted ev = request.update();
 			if(ev.mapId().equals(SENDER_MAP_ID)) {
 				UpdatesSerializer printer = UpdatesSerializer.of(this::updateTextArea);
 				printer.prettyPrint(ev);
@@ -100,7 +104,7 @@ public class EventStreamDialog {
 			if(map.containsExtension(Session.class)) {
 				sessionController.stopSession(map.getExtension(Session.class));
 			}
-			sessionController.startSession(server, credentials, map, "sender-map");
+			sessionController.startSession(server, credentials, map, ImmutableMapDescription.of("sender-map"));
 		}
 	}
 

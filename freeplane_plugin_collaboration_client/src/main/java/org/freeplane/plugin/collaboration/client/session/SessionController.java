@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.freeplane.collaboration.event.batch.Credentials;
+import org.freeplane.collaboration.event.batch.ImmutableMapCreateRequest;
+import org.freeplane.collaboration.event.batch.MapDescription;
 import org.freeplane.collaboration.event.batch.MapId;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -42,7 +45,6 @@ import org.freeplane.plugin.collaboration.client.event.content.links.LinkUpdateG
 import org.freeplane.plugin.collaboration.client.event.content.other.ContentUpdateGenerator;
 import org.freeplane.plugin.collaboration.client.event.content.other.MapContentUpdateProcessor;
 import org.freeplane.plugin.collaboration.client.event.content.other.NodeContentUpdateProcessor;
-import org.freeplane.plugin.collaboration.client.server.Credentials;
 import org.freeplane.plugin.collaboration.client.server.Server;
 
 public class SessionController {
@@ -135,8 +137,8 @@ public class SessionController {
 	}
 	
 
-	public void startSession(Server server, Credentials credentials, MMapModel map, String name) {
-		final MapId mapId = server.createNewMap(credentials, name);
+	public void startSession(Server server, Credentials credentials, MMapModel map, MapDescription mapDescription) {
+		final MapId mapId = server.createNewMap(ImmutableMapCreateRequest.of(credentials, mapDescription));
 		joinSession(server, credentials, map, mapId);
 		updateEventGenerator.onNewMap(map);
 	}

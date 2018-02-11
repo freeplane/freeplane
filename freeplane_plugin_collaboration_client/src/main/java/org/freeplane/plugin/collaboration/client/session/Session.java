@@ -1,5 +1,7 @@
 package org.freeplane.plugin.collaboration.client.session;
 
+import org.freeplane.collaboration.event.batch.Credentials;
+import org.freeplane.collaboration.event.batch.ImmutableMapUpdateRequest;
 import org.freeplane.collaboration.event.batch.MapId;
 import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
 import org.freeplane.collaboration.event.batch.UserId;
@@ -7,7 +9,6 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessorChain;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
-import org.freeplane.plugin.collaboration.client.server.Credentials;
 import org.freeplane.plugin.collaboration.client.server.ImmutableSubscription;
 import org.freeplane.plugin.collaboration.client.server.Server;
 import org.freeplane.plugin.collaboration.client.server.Subscription;
@@ -30,7 +31,7 @@ public class Session implements IExtension{
 		map.addExtension(this);
 		final UserId userId = credentials.userId();
 		Updates updates = new Updates(userId, ev -> {
-			server.update(credentials, ev);
+			server.update(ImmutableMapUpdateRequest.of(credentials, ev));
 		}, DELAY, ModifiableUpdateHeader.create().setMapId(mapId).setMapRevision(1));
 		map.addExtension(this);
 		map.addExtension(updates);
