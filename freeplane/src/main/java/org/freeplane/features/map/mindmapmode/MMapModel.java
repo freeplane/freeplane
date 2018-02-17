@@ -26,7 +26,6 @@ import java.util.Timer;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
@@ -51,7 +50,7 @@ public class MMapModel extends MapModel {
 	 */
 	public MMapModel() {
 		super();
-		addExtension(IUndoHandler.class, new UndoHandler(this));
+		addExtension(IUndoHandler.class, IUndoHandler.create(this));
 		this.setLockManager(ResourceController.getResourceController().getBooleanProperty(
 		    "experimental_file_locking_on") ? new LockManager() : new DummyLockManager());
 		EventQueue.invokeLater(new Runnable() {

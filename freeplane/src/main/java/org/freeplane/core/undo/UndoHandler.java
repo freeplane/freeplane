@@ -35,7 +35,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.ViewController;
 
-public class UndoHandler implements IUndoHandler {
+class UndoHandler implements IUndoHandler {
 	final private List<ChangeListener> listeners;
 
 	private class RedoAction implements ActionListener {
@@ -72,10 +72,16 @@ public class UndoHandler implements IUndoHandler {
 	final private LinkedList<ListIterator<CompoundActor>> transactionIteratorList;
 	final private ActionListener undoAction;
 	private boolean deactivated;
-	private final ChangeEvent event;
+	private ChangeEvent event;
+	
+	@Override
+	public void setChangeEventSource(IUndoHandler source) {
+		event = new ChangeEvent(source);
+	}
+
 	final private MapModel map;
 
-	public UndoHandler(MapModel map) {
+	UndoHandler(MapModel map) {
 		this.map = map;
 		actionFrameStarted = false;
 		deactivated = false;
@@ -126,9 +132,8 @@ public class UndoHandler implements IUndoHandler {
 		}
 		else {
 			CompoundActor compoundActor = new CompoundActor();
-			final Controller controller = Controller.getCurrentController();
-			if(map == controller.getMap()){
-				final IMapSelection selection = controller.getSelection();
+			if(controlsCurrentMap()){
+				final IMapSelection selection = Controller.getCurrentController().getSelection();
 				final SelectionActor selectionActor = SelectionActor.create(selection);
 				compoundActor.add(selectionActor);
 			}
@@ -143,6 +148,10 @@ public class UndoHandler implements IUndoHandler {
 		startActionFrame();
 		timeOfLastAdd = currentTime;
 		fireStateChanged();
+	}
+
+	public boolean controlsCurrentMap() {
+		return map == Controller.getCurrentController().getMap();
 	}
 
 	private void fireStateChanged() {

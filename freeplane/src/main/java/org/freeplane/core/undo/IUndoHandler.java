@@ -24,8 +24,14 @@ import java.awt.event.ActionListener;
 import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.features.map.mindmapmode.MMapModel;
 
 public interface IUndoHandler extends IExtension {
+	
+	boolean controlsCurrentMap();
+	
+	void setChangeEventSource(IUndoHandler source);
+	
 	void addActor(IActor actor);
 
 	boolean canRedo();
@@ -65,5 +71,9 @@ public interface IUndoHandler extends IExtension {
 	public void delayedRollback();
 	
 	public int getTransactionLevel();
+	
+	static IUndoHandler create(MMapModel map) {
+		return new UndoHandler(map);
+	}
 
 }

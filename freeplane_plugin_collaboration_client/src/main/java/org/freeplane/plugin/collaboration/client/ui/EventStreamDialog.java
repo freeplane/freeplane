@@ -12,10 +12,13 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.Timer;
 
 import org.freeplane.collaboration.event.batch.Credentials;
 import org.freeplane.collaboration.event.batch.ImmutableMapDescription;
@@ -34,6 +37,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
 import org.freeplane.plugin.collaboration.client.server.Server;
+import org.freeplane.plugin.collaboration.client.server.Server.UpdateStatus;
 import org.freeplane.plugin.collaboration.client.server.Subscription;
 import org.freeplane.plugin.collaboration.client.session.Session;
 import org.freeplane.plugin.collaboration.client.session.SessionController;
@@ -45,9 +49,22 @@ public class EventStreamDialog {
 
 	SessionController sessionController = new SessionController();
 	
+	private final class JRadioButtonExtension extends JRadioButton {
+		private JRadioButtonExtension(String text, Server.UpdateStatus updateStatus) {
+			super(text);
+			addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					EventStreamDialog.this.updateStatus = updateStatus;
+				}
+			});
+		}
+	}
+
 	private class MyServer implements Server {
 		private final MapId SENDER_MAP_ID =  ImmutableMapId.of("sender");
 		private Subscription recieverSubscription;
+		private Subscription senderSubscription;
 		
 		@Override
 		public MapId createNewMap(MapCreateRequest request) {
@@ -59,8 +76,22 @@ public class EventStreamDialog {
 		public UpdateStatus update(MapUpdateRequest request) {
 			UpdateBlockCompleted ev = request.update();
 			if(ev.mapId().equals(SENDER_MAP_ID)) {
-				UpdatesSerializer printer = UpdatesSerializer.of(this::updateTextArea);
-				printer.prettyPrint(ev);
+				final boolean isNewMapUpdate = ev.updateBlock().get(0) instanceof RootNodeIdUpdated;
+				final UpdateStatus currentUpdateStatus =
+						isNewMapUpdate ? UpdateStatus.ACCEPTED : updateStatus;
+				if (currentUpdateStatus != UpdateStatus.REJECTED) {
+					UpdatesSerializer printer = UpdatesSerializer.of(this::updateTextArea);
+					printer.prettyPrint(ev);
+				}
+				if (currentUpdateStatus == UpdateStatus.MERGED) {
+					new Timer(2000, new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							senderSubscription.consumer().accept(ev);
+						}
+					});
+				}
+				return currentUpdateStatus;
 			}
 			return UpdateStatus.ACCEPTED;
 		}
@@ -75,6 +106,9 @@ public class EventStreamDialog {
 		public void subscribe(Subscription subscription) {
 			if(subscription.mapId().equals(RECEIVER_MAP_ID)) {
 				this.recieverSubscription = subscription;
+			}
+			if(subscription.mapId().equals(SENDER_MAP_ID)) {
+				this.senderSubscription = subscription;
 			}
 		}
 
@@ -138,6 +172,8 @@ public class EventStreamDialog {
 
 	final private JDialog dialog;
 	private JTextArea text;
+	
+	private Server.UpdateStatus updateStatus = Server.UpdateStatus.ACCEPTED;
 
 	public EventStreamDialog(Window owner) {
 		super();
@@ -154,9 +190,24 @@ public class EventStreamDialog {
 		JButton map2json = new JButton("map2json");
 		map2json.addActionListener(new Map2Json());
 		buttons.add(map2json);
+		
+		ButtonGroup strategy = new ButtonGroup();
+		JRadioButton acceptSubmissions = new JRadioButtonExtension("accept", UpdateStatus.ACCEPTED);
+		buttons.add(acceptSubmissions);
+		strategy.add(acceptSubmissions);
+		JRadioButton rejectSubmissions = new JRadioButtonExtension("reject", UpdateStatus.REJECTED);
+		buttons.add(rejectSubmissions);
+		strategy.add(rejectSubmissions);
+		JRadioButton delaySubmissions = new JRadioButtonExtension("delay", UpdateStatus.MERGED);
+		buttons.add(delaySubmissions);
+		strategy.add(delaySubmissions);
+		acceptSubmissions.setSelected(true);
+
+		
 		JButton json2map = new JButton("json2map");
 		json2map.addActionListener(new Json2Map());
 		buttons.add(json2map);
+		
 		contentPane.add(buttons, BorderLayout.WEST);
 		dialog.pack();
 	}
