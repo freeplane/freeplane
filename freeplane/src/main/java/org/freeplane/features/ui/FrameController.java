@@ -154,11 +154,11 @@ abstract public class FrameController implements ViewController {
 	private static Icon linkIcon;
 	static {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		textIcon = resourceController.getIcon("text_icon", ICON_SIZE);
-		numberIcon = resourceController.getIcon("number_icon", ICON_SIZE);
-		dateIcon = resourceController.getIcon("date_icon", ICON_SIZE);
-		dateTimeIcon = resourceController.getIcon("date_time_icon", ICON_SIZE);
-		linkIcon = resourceController.getIcon("link_icon", ICON_SIZE);
+		textIcon = resourceController.getIcon("text_icon");
+		numberIcon = resourceController.getIcon("number_icon");
+		dateIcon = resourceController.getIcon("date_icon");
+		dateTimeIcon = resourceController.getIcon("date_time_icon");
+		linkIcon = resourceController.getIcon("link_icon");
 	}
 	private final IMapViewManager mapViewManager;
 

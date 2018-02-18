@@ -7,16 +7,17 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 class CachingIcon implements Icon {
 	
-	final private Icon icon;
+	final private ImageIcon icon;
 	private double scaleX = 0;
 	private double scaleY = 0;
 	private BufferedImage cachedImage;
 	
 
-	public CachingIcon(Icon icon) {
+	public CachingIcon(ImageIcon icon) {
 		super();
 		this.icon = icon;
 	}
@@ -58,6 +59,10 @@ class CachingIcon implements Icon {
         graphics.scale(scaleX, scaleY);
 		icon.paintIcon(null, graphics, 0, 0);
     }
+
+	public ImageIcon getImageIcon() {
+		return icon;
+	}
 
 	
 }

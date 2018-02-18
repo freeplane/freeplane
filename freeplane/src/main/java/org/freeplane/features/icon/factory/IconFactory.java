@@ -24,6 +24,7 @@ import java.util.Locale;
 import java.util.WeakHashMap;
 
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LengthUnits;
@@ -80,11 +81,13 @@ public final class IconFactory {
 			else {
 				if (url.getPath().toLowerCase(Locale.ENGLISH).endsWith(".svg")) {
 					result = FreeplaneIconFactory.createSVGIcon(url, heightPixels);
+					ICON_URLS.put(FreeplaneIconFactory.toImageIcon(result), url);
 				}
 				else {
 					result = FreeplaneIconFactory.createIconPrivileged(url);
 				}
 				ICON_CACHE.put(cacheKey, result);
+				ICON_URLS.put(result, url);
 				ICON_URLS.put(result, url);
 			}
 		}
