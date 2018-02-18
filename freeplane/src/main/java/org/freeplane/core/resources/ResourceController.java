@@ -20,6 +20,9 @@
 package org.freeplane.core.resources;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,11 +40,13 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.TimePeriodUnits;
+import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
@@ -353,25 +358,21 @@ public abstract class ResourceController {
 	private Map<String, Icon> iconCache = new HashMap<String, Icon>();
 
 	public Icon getIcon(final String iconKey) {
-		return getIcon(iconKey, IconFactory.DEFAULT_UI_ICON_HEIGHT);
-	}
-
-	public Icon getIcon(String iconKey, Quantity<LengthUnits> height) {
 		Icon icon = iconCache.get(iconKey);
 		if (icon == null) {
 			final String iconResource = iconKey.startsWith("/") ? iconKey : getProperty(iconKey, null);
-			icon = loadIcon(height, iconResource);
+			icon = loadIcon(iconResource);
+			if (icon != null)
+				iconCache.put(iconKey, icon);
 		}
-		if (icon != null)
-			iconCache.put(iconKey, icon);
 		return icon;
 	}
 
-	private Icon loadIcon(Quantity<LengthUnits> height, final String resourcePath) {
+	private Icon loadIcon(final String resourcePath) {
 		if (resourcePath != null) {
 			URL url = getFirstResource(IconFactory.getAlternativePaths(resourcePath));
 			if (url != null) {
-				return IconFactory.getInstance().getIcon(url, height);
+				return IconFactory.getInstance().getIcon(url, IconFactory.DEFAULT_UI_ICON_HEIGHT);
 			}
 			else {
 				LogUtils.severe("can not load icon '" + resourcePath + "'");
@@ -392,5 +393,9 @@ public abstract class ResourceController {
 	public URL getIconResource(String resourcePath) {
 		final String[] alternativePaths = IconFactory.getAlternativePaths(resourcePath);
 		return getFirstResource(alternativePaths);
+	}
+
+	public Icon getImageIcon(String iconKey) {
+		return FreeplaneIconFactory.toImageIcon(getIcon(iconKey));
 	}
 }

@@ -76,8 +76,7 @@ public class TranslatedElementFactory {
 	}
 
 	public static JButton createButtonWithIcon(Action action, final String iconKey, final String tooltipKey) {
-		final Icon icon = ResourceController.getResourceController().getIcon(iconKey,
-		    IconFactory.DEFAULT_UI_ICON_HEIGHT);
+		final Icon icon = ResourceController.getResourceController().getImageIcon(iconKey);
 		final JButton button;
 		if (action == null)
 			button = new JButton(icon);
@@ -106,8 +105,7 @@ public class TranslatedElementFactory {
 	}
 
 	public static <T extends AbstractButton> T addIcon(T button, final String iconKey) {
-		final Icon icon = ResourceController.getResourceController().getIcon(iconKey,
-		    IconFactory.DEFAULT_UI_ICON_HEIGHT);
+		final Icon icon = ResourceController.getResourceController().getIcon(iconKey);
 		button.setIcon(icon);
 		return button;
 	}

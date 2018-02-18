@@ -37,6 +37,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
@@ -186,7 +187,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		}
 	}
 
-	static final Icon editButtonImage = IconStoreFactory.ICON_STORE.getUIIcon("edit12.png").getIcon();
+	static final Icon editButtonImage = ResourceController.getResourceController().getIcon("/images/edit12.png");
 	private static final long serialVersionUID = 1L;
 // // 	final private Controller controller;
 	private ImportAttributesDialog importDialog = null;

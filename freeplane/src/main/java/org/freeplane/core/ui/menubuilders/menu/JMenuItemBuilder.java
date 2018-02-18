@@ -21,6 +21,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
+import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
 import org.freeplane.core.util.LogUtils;
 
@@ -98,7 +99,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 		LabelAndMnemonicSetter.setLabelAndMnemonic(menu, rawText);
 		final Icon icon = entryAccessor.getIcon(entry);
 		if (icon != null) {
-			menu.setIcon(icon);
+			menu.setIcon(FreeplaneIconFactory.toImageIcon(icon));
 		}
 		addComponent(entry, menu);
 		if(actionComponent != null){

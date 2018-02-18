@@ -19,11 +19,14 @@
  */
 package org.freeplane.core.ui;
 
+import static org.freeplane.core.ui.svgicons.FreeplaneIconFactory.toImageIcon;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.util.TextUtils;
 
 /**
@@ -87,7 +90,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	}
 
 	protected void setIcon(Icon icon) {
-		putValue(SMALL_ICON, icon);
+		putValue(SMALL_ICON, toImageIcon(icon));
 	}
 
 	protected void setTooltip(String tooltipKey) {
@@ -108,7 +111,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	//
 	public AFreeplaneAction(final String key, final String title, final Icon icon) {
 		//		this.controller = controller;
-		putValue(SMALL_ICON, icon);
+		putValue(SMALL_ICON, toImageIcon(icon));
 		if (title != null && !title.equals("")) {
 			LabelAndMnemonicSetter.setLabelAndMnemonic(this, title);
 		}

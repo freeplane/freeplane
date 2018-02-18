@@ -19,6 +19,8 @@
  */
 package org.freeplane.core.ui.components;
 
+import static org.freeplane.core.ui.svgicons.FreeplaneIconFactory.toImageIcon;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -126,7 +128,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		final JButton[] buttons = new JButton[BUTTON_NUMBER];
 		for (int i = 0; i < BUTTON_NUMBER; i++) {
 			final String name = "f" + (i + 1) + ".png";
-			final JButton button = buttons[i] = new JButton(IconStoreFactory.ICON_STORE.getUIIcon(name).getIcon()) {
+			final JButton button = buttons[i] = new JButton(toImageIcon(IconStoreFactory.ICON_STORE.getUIIcon(name).getIcon())) {
 				/**
 				 * 
 				 */

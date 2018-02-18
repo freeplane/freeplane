@@ -11,6 +11,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
 
 import com.kitfox.svg.SVGDiagram;
 import com.kitfox.svg.SVGUniverse;
@@ -112,5 +113,13 @@ public class FreeplaneIconFactory {
 			icon.setPreferredSize(new Dimension(widthPixels, (int) (widthPixels * aspectRatio)));
 			return this;
 		}
+	}
+
+	public static Icon toImageIcon(Icon icon) {
+		if(icon instanceof ImageIcon)
+			return (ImageIcon) icon;
+		if(icon instanceof CachingIcon)
+			return ((CachingIcon)icon).getImageIcon();
+		return icon;
 	}
 }
