@@ -1,6 +1,8 @@
 package org.freeplane.core.ui.svgicons;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -115,11 +117,18 @@ public class FreeplaneIconFactory {
 		}
 	}
 
-	public static Icon toImageIcon(Icon icon) {
+	public static ImageIcon toImageIcon(Icon icon) {
 		if(icon instanceof ImageIcon)
 			return (ImageIcon) icon;
 		if(icon instanceof CachingIcon)
 			return ((CachingIcon)icon).getImageIcon();
-		return icon;
+		else {
+	      int width = icon.getIconWidth();
+	      int height = icon.getIconHeight();
+	      BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+	      Graphics g = image.getGraphics();
+	      icon.paintIcon(null, g, 0, 0);
+	      return new ImageIcon(image);
+		}
 	}
 }
