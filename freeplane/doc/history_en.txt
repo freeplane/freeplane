@@ -1,4 +1,9 @@
 ===============================
+1.6.14
+===============================
+Fix inactive action icons on buttons and menus
+
+===============================
 1.6.13
 ===============================
 Update byte buddy (fix scripts execution under Java 9)
