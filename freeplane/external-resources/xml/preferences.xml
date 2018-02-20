@@ -143,7 +143,12 @@
 					max="32" />
 				<font name="label_font_family" />
 				<number name="label_font_size" min="4" max="216" />
-				<boolean name="show_connectors" />
+				<combo name="show_connectors" >
+					<choice value="true" text="OptionPanel.show_connectors.true" />
+					<choice value="false" text="OptionPanel.show_connectors.false" />
+					<choice value="for_selection" text="OptionPanel.show_connectors.for_selection" />
+					<choice value="never" text="OptionPanel.show_connectors.never" />
+				</combo>
 				<boolean name="paint_connectors_behind" />
 			</separator>
 			<separator name="clones">

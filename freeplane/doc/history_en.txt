@@ -2,6 +2,8 @@
 1.6.14
 ===============================
 Fix inactive action icons on buttons and menus
+Option to hide connectors
+Option to show connectors only for selected nodes
 
 ===============================
 1.6.13

@@ -320,7 +320,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			selectedNode = node;
 			selectionEnd = selectionStart = node;
 			addSelectionForHooks(node);
-			node.repaintSelected();
+			onSelectionChange(node);
 		}
 
 		private boolean add(final NodeView node) {
@@ -331,7 +331,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			else{
 				if(selectedSet.add(node)){
 					selectedList.add(node);
-					node.repaintSelected();
+					onSelectionChange(node);
 					return true;
 				}
 				return false;
@@ -380,7 +380,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					selectedList.remove(last);
 				else
 					selectedList.remove(node);
-				node.repaintSelected();
+				onSelectionChange(node);
 				if(selectedChanged) {
 	                if (size() > 0) {
 	                	selectedNode = selectedSet.iterator().next();
@@ -417,7 +417,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             }
             for(NodeView view : newSelection)
                 if (!selectedSet.contains(view))
-                	view.repaintSelected();
+                	onSelectionChange(view);
             final NodeView[] oldSelection = selectedSet.toArray(new NodeView[selectedSet.size()]);
             selectedSet.clear();
             selectedList.clear();
@@ -434,7 +434,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
             }
             for(NodeView view : oldSelection)
                 if (!selectedSet.contains(view))
-                	view.repaintSelected();
+                	onSelectionChange(view);
         }
 
 		public NodeView[] toArray() {
@@ -473,8 +473,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	public static final String RESOURCES_SELECTED_NODE_RECTANGLE_COLOR = "standardselectednoderectanglecolor";
 	private static final String SPOTLIGHT_BACKGROUND_COLOR = "spotlight_background_color";
 	private static final String PRESENTATION_DIMMER_TRANSPARENCY = "presentation_dimmer_transparency";
-	private static final String HIDE_SINGLE_END_CONNECTORS = "hide_single_end_connectors";
-	private static final String SHOW_CONNECTORS_PROPERTY = "show_connectors";
+	private static final String HIDE_SINGLE_END_CONNECTORS = "hide_single_end_connectors".intern();
+	private static final String SHOW_CONNECTORS_PROPERTY = "show_connectors".intern();
+	private static final String SHOW_CONNECTOR_LINES = "true".intern();
+	private static final String HIDE_CONNECTOR_LINES = "false".intern();
+	private static final String HIDE_CONNECTORS = "never".intern();
+	private static final String SHOW_CONNECTORS_FOR_SELECTION = "for_selection".intern();
 	private static final String SHOW_ICONS_PROPERTY = "show_icons";
 	private static final String OUTLINE_VIEW_FITS_WINDOW_WIDTH = "outline_view_fits_window_width";
 	private static final String OUTLINE_HGAP_PROPERTY = "outline_hgap";
@@ -516,7 +520,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private int noteHorizontalAlignment;
     private Color noteForeground;
     private Color noteBackground;
-	private static boolean showConnectors;
+	private static String showConnectors;
 	private static boolean showIcons;
 	private static boolean hideSingleEndConnectors;
 	private boolean fitToViewport;
@@ -546,7 +550,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			resourceController.setDefaultProperty(SPOTLIGHT_BACKGROUND_COLOR, ColorUtils.colorToRGBAString(new Color(0, 0, 0, alpha)));
 			spotlightBackgroundColor = resourceController.getColorProperty(SPOTLIGHT_BACKGROUND_COLOR);
 			hideSingleEndConnectors = resourceController.getBooleanProperty(HIDE_SINGLE_END_CONNECTORS);
-			showConnectors = resourceController.getBooleanProperty(SHOW_CONNECTORS_PROPERTY);
+			showConnectors = resourceController.getProperty(SHOW_CONNECTORS_PROPERTY).intern();
 			showIcons = resourceController.getBooleanProperty(SHOW_ICONS_PROPERTY);
 			outlineHGap = resourceController.getLengthProperty(OUTLINE_HGAP_PROPERTY);
 			outlineViewFitsWindowWidth = resourceController.getBooleanProperty(OUTLINE_VIEW_FITS_WINDOW_WIDTH);
@@ -704,7 +708,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					return;
 				}
 				if (propertyName.equals(SHOW_CONNECTORS_PROPERTY)) {
-					MapView.showConnectors = ResourceController.getResourceController().getBooleanProperty(SHOW_CONNECTORS_PROPERTY);
+					MapView.showConnectors = ResourceController.getResourceController().getProperty(SHOW_CONNECTORS_PROPERTY).intern();
 					mapView.repaint();
 					return;
 				}
@@ -738,8 +742,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	public void deselect(final NodeView newSelected) {
 		if (selection.contains(newSelected) && selection.deselect(newSelected) && newSelected.getParent() != null) {
-			newSelected.repaintSelected();
+			onSelectionChange(newSelected);
 		}
+	}
+
+	private void onSelectionChange(final NodeView node) {
+		if(SHOW_CONNECTORS_FOR_SELECTION == showConnectors)
+			repaint(getVisibleRect());
+		else
+			node.repaintSelected();
 	}
 
 	public Object detectCollision(final Point p) {
@@ -1557,7 +1568,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	    	this.paintingMode = paintingMode;
 			switch(paintingMode){
 	    		case LINKS:
-	    			paintConnectors(g2);
+	    			if(HIDE_CONNECTORS != showConnectors)
+	    				paintConnectors(g2);
 	    			break;
 				default:
 					super.paintChildren(g2);
@@ -1621,14 +1633,20 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					final NodeView targetView = getNodeView(target);
 					final ILinkView arrowLink;
 					final boolean areBothNodesVisible = sourceView != null && targetView != null && source.hasVisibleContent() && target.hasVisibleContent();
-					if (areBothNodesVisible && (Shape.EDGE_LIKE.equals(ref.getShape()) || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE)) 
-						arrowLink = new EdgeLinkView(ref, getModeController(), sourceView, targetView);
-					else if(areBothNodesVisible || ! hideSingleEndConnectors)
-						arrowLink = new ConnectorView(ref, sourceView, targetView, getBackground());
-					else
-						break;
-					arrowLink.paint(graphics);
-					arrowLinkViews.add(arrowLink);
+					final boolean showConnector = SHOW_CONNECTOR_LINES == showConnectors
+							|| HIDE_CONNECTOR_LINES == showConnectors
+							|| SHOW_CONNECTORS_FOR_SELECTION == showConnectors && (sourceView != null && sourceView.isSelected() 
+							|| targetView != null && targetView.isSelected());
+					if(showConnector) {
+						if (areBothNodesVisible && (Shape.EDGE_LIKE.equals(ref.getShape()) || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE)) 
+							arrowLink = new EdgeLinkView(ref, getModeController(), sourceView, targetView);
+						else if(areBothNodesVisible || ! hideSingleEndConnectors)
+							arrowLink = new ConnectorView(ref, sourceView, targetView, getBackground());
+						else
+							break;
+						arrowLink.paint(graphics);
+						arrowLinkViews.add(arrowLink);
+					}
 				}
 			}
 		}
@@ -1863,7 +1881,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private void repaintSelecteds() {
 		for (final NodeView selected : getSelection()) {
-			selected.repaintSelected();
+			onSelectionChange(selected);
 		}
 	}
 
@@ -1907,10 +1925,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (newSelected.getModel().getParentNode() != null) {
 			((NodeView) newSelected.getParent()).setPreferredChild(newSelected);
 		}
-		newSelected.repaintSelected();
+		onSelectionChange(newSelected);
 		for (final NodeView oldSelected : oldSelecteds) {
 			if (oldSelected != null) {
-				oldSelected.repaintSelected();
+				onSelectionChange(oldSelected);
 			}
 		}
 	}
@@ -2189,8 +2207,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		parentView.setFolded(false);
 	}
 
-	public boolean showsConnectors() {
-		return showConnectors;
+	public boolean showsConnectorLines() {
+		return HIDE_CONNECTOR_LINES != showConnectors;
 	}
 
 	public boolean showsIcons() {
