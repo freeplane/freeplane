@@ -3,6 +3,7 @@ package org.freeplane.core.ui.menubuilders.action;
 import java.util.Arrays;
 
 import org.freeplane.core.resources.SetBooleanPropertyAction;
+import org.freeplane.core.resources.SetStringPropertyAction;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
@@ -26,7 +27,8 @@ public class ActionFinder implements EntryVisitor{
 		if (!actionName.isEmpty() && new EntryAccessor().getAction(target) == null) {
 			AFreeplaneAction action = freeplaneActions.getAction(actionName);
 			if(action == null) {
-				for (final Class<? extends AFreeplaneAction> actionClass : Arrays.asList(SetBooleanPropertyAction.class, SetBooleanMapPropertyAction.class, SetBooleanMapViewPropertyAction.class)){
+				for (final Class<? extends AFreeplaneAction> actionClass : Arrays.asList(SetBooleanPropertyAction.class, SetBooleanMapPropertyAction.class, SetBooleanMapViewPropertyAction.class,
+					SetStringPropertyAction.class)){
 					final String setBooleanPropertyActionPrefix = actionClass.getSimpleName() + ".";
 					if (actionName.startsWith(setBooleanPropertyActionPrefix)) {
 						String propertyName = actionName.substring(setBooleanPropertyActionPrefix.length());

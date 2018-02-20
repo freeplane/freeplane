@@ -258,7 +258,12 @@
 				<Entry name="ToggleFullScreenAction" accelerator="F11" />
 				<Entry name="SetBooleanMapViewPropertyAction.spotlight" />
 				<Entry name="SetBooleanPropertyAction.show_icons" />
-				<Entry name="SetBooleanPropertyAction.show_connectors" />
+				<Entry builder="radio_button_group" name="show_connectors" textKey="OptionPanel.show_connectors">
+					<Entry name="SetStringPropertyAction.show_connectors.true" />
+					<Entry name="SetStringPropertyAction.show_connectors.false" />
+					<Entry name="SetStringPropertyAction.show_connectors.for_selection" />
+					<Entry name="SetStringPropertyAction.show_connectors.never" />
+				</Entry>
 				<Entry name="SetBooleanPropertyAction.hide_single_end_connectors" />
 				<Entry name="SetBooleanPropertyAction.show_note_icon_in_tooltip" />
 				<Entry name="ShowSelectionAsRectangleAction" />
