@@ -84,12 +84,14 @@ public class EventStreamDialog {
 					printer.prettyPrint(ev);
 				}
 				if (currentUpdateStatus == UpdateStatus.MERGED) {
-					new Timer(2000, new ActionListener() {
+					final Timer timer = new Timer(2000, new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							senderSubscription.consumer().accept(ev);
 						}
 					});
+					timer.setRepeats(false);
+					timer.start();
 				}
 				return currentUpdateStatus;
 			}

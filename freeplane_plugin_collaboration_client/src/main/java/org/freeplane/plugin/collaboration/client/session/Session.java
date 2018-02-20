@@ -61,7 +61,6 @@ public class Session implements IExtension{
 		subscription = ImmutableSubscription.builder().credentials(credentials).mapId(mapId).consumer(
 			ev -> {
 				final Updates extension = map.removeExtension(Updates.class);
-				undoHandler.startTransaction();
 				try {
 					updateProcessor.onUpdate(map, ev);
 					undoHandler.commit();
