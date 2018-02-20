@@ -118,9 +118,11 @@ public class FreeplaneIconFactory {
 	}
 
 	public static ImageIcon toImageIcon(Icon icon) {
-		if(icon instanceof ImageIcon)
+		if(icon == null)
+			return null;
+		else if(icon instanceof ImageIcon)
 			return (ImageIcon) icon;
-		if(icon instanceof CachingIcon)
+		else if(icon instanceof CachingIcon)
 			return ((CachingIcon)icon).getImageIcon();
 		else {
 	      int width = icon.getIconWidth();
