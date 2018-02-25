@@ -24,12 +24,12 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.transcoder.SVGAbstractTranscoder;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.ImageTranscoder;
-import org.apache.fop.svg.AbstractFOPTranscoder;
 import org.apache.fop.svg.PDFTranscoder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.export.mindmapmode.ExportController;
@@ -67,8 +67,8 @@ class ExportPdf extends ExportVectorGraphic {
 			pdfTranscoder.addTranscodingHint(SVGAbstractTranscoder.KEY_MAX_HEIGHT, new Float(19200));
 			pdfTranscoder.addTranscodingHint(SVGAbstractTranscoder.KEY_MAX_WIDTH, new Float(19200));
 			pdfTranscoder.addTranscodingHint(ImageTranscoder.KEY_PIXEL_UNIT_TO_MILLIMETER, 25.4f/72f/UITools.FONT_SCALE_FACTOR);
-			pdfTranscoder.addTranscodingHint(AbstractFOPTranscoder.KEY_AUTO_FONTS, Boolean.FALSE);
-			pdfTranscoder.addTranscodingHint(AbstractFOPTranscoder.KEY_STROKE_TEXT, Boolean.TRUE);
+//			pdfTranscoder.addTranscodingHint(AbstractFOPTranscoder.KEY_AUTO_FONTS, Boolean.FALSE);
+//			pdfTranscoder.addTranscodingHint(AbstractFOPTranscoder.KEY_STROKE_TEXT, Boolean.TRUE);
 			/* end patch */
 			final Document doc = g2d.getDOMFactory();
 			final Element rootE = doc.getDocumentElement();
@@ -88,6 +88,11 @@ class ExportPdf extends ExportVectorGraphic {
 		finally{
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
+	}
+
+	protected SVGGeneratorContext createGeneratorContext(final Document domFactory) {
+		final SVGGeneratorContext ctx = super.createGeneratorContext(domFactory);
+		return ctx;
 	}
 
 }
