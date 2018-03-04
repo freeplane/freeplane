@@ -1,7 +1,9 @@
 package org.freeplane.plugin.collaboration.client.event.batch;
 
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
@@ -36,7 +38,7 @@ public class Updates implements IExtension{
 				listenerList = new EventListenerList();
 				UpdateBlockCompleted event = builder.build();
 				builder = null;
-				header.setMapRevision(header.mapRevision() + 1);
+				incrementMapRevision();
 				consumer.onUpdates(event);
 			}
 			finally {
@@ -59,6 +61,32 @@ public class Updates implements IExtension{
 				listener.actionPerformed(currentEvent);
 			else
 				super.addActionListener(listener);
+		}
+
+		public void runNow() {
+			ActionEvent event = new ActionEvent(this, 0, getActionCommand(),
+				System.currentTimeMillis(),
+				0);
+			if(! EventQueue.isDispatchThread())
+				try {
+					EventQueue.invokeAndWait(new Runnable() {
+						@Override
+						public void run() {
+							fireActionPerformed(event);
+						}
+					});
+				}
+				catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+				catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			else {
+				fireActionPerformed(event);
+			}
+			stop();
+			
 		}
 	}
 
@@ -104,7 +132,7 @@ public class Updates implements IExtension{
 
 	final private UpdatesProcessor consumer;
 	private ImmutableUpdateBlockCompleted.Builder builder;
-	private final Timer timer;
+	private final TimerExtension timer;
 	private final Set<UpdateKey> registeredUpdates;
 
 	@VisibleForTesting
@@ -150,5 +178,13 @@ public class Updates implements IExtension{
 
 	public void addUpdateEvent(MapUpdated event) {
 		builder.addUpdateBlock(event);
+	}
+	
+	public void flush() {
+		timer.runNow();
+	}
+
+	public void incrementMapRevision() {
+		header.setMapRevision(header.mapRevision() + 1);
 	}
 }

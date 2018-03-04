@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.freeplane.collaboration.event.MapUpdated;
 import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 
 public class UpdateProcessorChain{
 	

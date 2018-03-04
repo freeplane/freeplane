@@ -38,18 +38,6 @@ import org.freeplane.features.ui.ViewController;
 class UndoHandler implements IUndoHandler {
 	final private List<ChangeListener> listeners;
 
-	private class RedoAction implements ActionListener {
-		public void actionPerformed(final ActionEvent e) {
-			redo();
-		}
-	}
-
-	private class UndoAction implements ActionListener {
-		public void actionPerformed(final ActionEvent e) {
-			undo();
-		}
-	}
-
 	public static final int COMMIT_DELAY = 2;
 
 	private static class ActorList extends LinkedList<CompoundActor> {
@@ -66,11 +54,9 @@ class UndoHandler implements IUndoHandler {
 	private ListIterator<CompoundActor> actorIterator;
 	private ActorList actorList;
 	private boolean isUndoActionRunning = false;
-	final private ActionListener redoAction;
 	private long timeOfLastAdd;
 	final private LinkedList<ActorList> transactionList;
 	final private LinkedList<ListIterator<CompoundActor>> transactionIteratorList;
-	final private ActionListener undoAction;
 	private boolean deactivated;
 	private ChangeEvent event;
 	
@@ -90,9 +76,7 @@ class UndoHandler implements IUndoHandler {
 		transactionList = new LinkedList<ActorList>();
 		transactionIteratorList = new LinkedList<ListIterator<CompoundActor>>();
 		actorIterator = actorList.listIterator();
-		redoAction = new RedoAction();
 		timeOfLastAdd = 0;
-		undoAction = new UndoAction();
 		event = new ChangeEvent(this);
 	}
 
@@ -131,13 +115,19 @@ class UndoHandler implements IUndoHandler {
 			actorIterator.next();
 		}
 		else {
-			CompoundActor compoundActor = new CompoundActor();
-			if(controlsCurrentMap()){
-				final IMapSelection selection = Controller.getCurrentController().getSelection();
-				final SelectionActor selectionActor = SelectionActor.create(selection);
-				compoundActor.add(selectionActor);
+			CompoundActor compoundActor;
+			if(actor instanceof CompoundActor) {
+				compoundActor =(CompoundActor) actor;
 			}
-			compoundActor.add(actor);
+			else {
+				compoundActor = new CompoundActor();
+				if(controlsCurrentMap()){
+					final IMapSelection selection = Controller.getCurrentController().getSelection();
+					final SelectionActor selectionActor = SelectionActor.create(selection);
+					compoundActor.add(selectionActor);
+				}
+				compoundActor.add(actor);
+			}
 			actorIterator.add(compoundActor);
 			final int maxEntries = UndoHandler.MAX_ENTRIES;
 			while (actorList.size() > maxEntries) {
@@ -227,21 +217,6 @@ class UndoHandler implements IUndoHandler {
 		return description;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.base.undo.UndoHandler#getRedoAction()
-	 */
-	public ActionListener getRedoAction() {
-		return redoAction;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see freeplane.base.undo.UndoHandler#getUndoAction()
-	 */
-	public ActionListener getUndoAction() {
-		return undoAction;
-	}
 
 	public boolean isUndoActionRunning() {
 		return isUndoActionRunning;

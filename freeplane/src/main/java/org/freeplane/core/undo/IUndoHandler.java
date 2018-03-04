@@ -46,10 +46,6 @@ public interface IUndoHandler extends IExtension {
 
 	String getLastDescription();
 
-	ActionListener getRedoAction();
-
-	ActionListener getUndoAction();
-
 	boolean isUndoActionRunning();
 
 	void redo();

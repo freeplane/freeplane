@@ -47,7 +47,7 @@ class RedoAction extends AFreeplaneAction{
 		final Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
-		undoHandler.getRedoAction().actionPerformed(e);
+		undoHandler.redo();
 		undo.setEnabled(undoHandler.canUndo());
 		setEnabled(undoHandler.canRedo());
 	}
