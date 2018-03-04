@@ -33,7 +33,7 @@ public class Session implements IExtension{
 	private final LinkedTransferQueue<UpdateBlockCompleted> incomingEvents;
 	private AtomicReference<UpdateStatus> updateStatus;
 	private boolean isRunning;
-	private int mapRevision;
+	private long mapRevision;
 	public MapId getMapId() {
 		return mapId;
 	}
@@ -78,9 +78,8 @@ public class Session implements IExtension{
 		map.removeExtension(Updates.class);
 		try {
 			updateProcessor.onUpdate(map, incomingEvent.updateBlock());
-
+			mapRevision = incomingEvent.mapRevision();
 			if(undoHandler.getTransactionLevel() == 1) {
-				mapRevision++;
 				undoHandler.commit();
 			}
 		}
@@ -133,7 +132,7 @@ public class Session implements IExtension{
 			while( ! incomingEvents.isEmpty()){
 				incomingEvent = incomingEvents.poll();
 				updateProcessor.onUpdate(map, incomingEvent.updateBlock());
-				mapRevision++;
+				mapRevision = incomingEvent.mapRevision();
 				undoHandler.commit();
 			} 
 			updateProcessor.onUpdate(map, ev);
