@@ -14,7 +14,6 @@ import javax.swing.Timer;
 import javax.swing.event.EventListenerList;
 
 import org.freeplane.collaboration.event.MapUpdated;
-import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.plugin.collaboration.client.VisibleForTesting;
 
@@ -123,22 +122,20 @@ public class Updates implements IExtension{
 	}
 
 	private List<MapUpdated> eventList;
-	final private ModifiableUpdateHeader header;
-	public ModifiableUpdateHeader getHeader() {
-		return header;
-	}
 
 	final private UpdatesProcessor consumer;
 	private final TimerExtension timer;
 	private final Set<UpdateKey> registeredUpdates;
 
+	private int mapRevision;
+
 	@VisibleForTesting
-	public Updates(UpdatesProcessor consumer, int delay, ModifiableUpdateHeader header) {
+	public Updates(UpdatesProcessor consumer, int delay, int mapRevision) {
+		this.mapRevision = mapRevision;
 		timer = new TimerExtension(delay, null);
 		timer.setRepeats(false);
 		registeredUpdates = new HashSet<>();
 		this.consumer = consumer;
-		this.header = header;
 	}
 
 	public void addUpdateEvent(String updatedElementId, Supplier<MapUpdated> eventSupplier) {
@@ -174,6 +171,10 @@ public class Updates implements IExtension{
 	}
 
 	public void incrementMapRevision() {
-		header.setMapRevision(header.mapRevision() + 1);
+		mapRevision++;
+	}
+
+	public int mapRevision() {
+		return mapRevision;
 	}
 }

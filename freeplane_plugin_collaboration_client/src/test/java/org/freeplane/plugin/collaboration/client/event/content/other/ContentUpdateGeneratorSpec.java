@@ -27,9 +27,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import org.freeplane.collaboration.event.MapUpdated;
-import org.freeplane.collaboration.event.batch.ImmutableMapId;
-import org.freeplane.collaboration.event.batch.MapId;
-import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
 import org.freeplane.collaboration.event.content.other.MapContentUpdated;
 import org.freeplane.collaboration.event.content.other.NodeContentUpdated;
 import org.freeplane.features.icon.HierarchicalIcons;
@@ -57,8 +54,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ContentUpdateGeneratorSpec {
 	private static final int DELAY_MILLIS = 10;
-	private static final MapId MAP_ID = ImmutableMapId.of("mapId");
-	private ModifiableUpdateHeader header = ModifiableUpdateHeader.create().setMapId(MAP_ID).setMapRevision(0);
 	@Mock
 	private ContentUpdateEventFactory eventFactory;
 	@Mock
@@ -77,7 +72,7 @@ public class ContentUpdateGeneratorSpec {
 	@Before
 	public void createTestedInstance() {
 		consumer = new UpdatesEventCaptor(1);
-		Updates updates = new Updates(consumer, DELAY_MILLIS, header);
+		Updates updates = new Updates(consumer, DELAY_MILLIS, 0);
 		when(updateBlockGeneratorFactory.of(map)).thenReturn(updates);
 		uut = new ContentUpdateGenerator(updateBlockGeneratorFactory, eventFactory);
 	}

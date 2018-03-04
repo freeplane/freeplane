@@ -9,7 +9,6 @@ import org.freeplane.collaboration.event.MapUpdated;
 import org.freeplane.collaboration.event.batch.Credentials;
 import org.freeplane.collaboration.event.batch.ImmutableMapUpdateRequest;
 import org.freeplane.collaboration.event.batch.MapId;
-import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
 import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.mindmapmode.MMapModel;
@@ -32,7 +31,6 @@ public class Session implements IExtension{
 	private final Credentials credentials;
 	private final UpdateProcessorChain updateProcessor;
 	private final LinkedTransferQueue<UpdateBlockCompleted> incomingEvents;
-	private ModifiableUpdateHeader header;
 	private AtomicReference<UpdateStatus> updateStatus;
 	private boolean isRunning;
 	
@@ -49,8 +47,7 @@ public class Session implements IExtension{
 		updateStatus = new AtomicReference<>(UpdateStatus.ACCEPTED);
 		map.addExtension(this);
 		undoHandler = new SessionUndoHandler(map);
-		header = ModifiableUpdateHeader.create().setMapId(mapId).setMapRevision(1);
-		updates = new Updates(this::sendUpdate, DELAY, header);
+		updates = new Updates(this::sendUpdate, DELAY, 0);
 		map.addExtension(this);
 		map.addExtension(updates);
 		subscription = ImmutableSubscription.builder().credentials(credentials).mapId(mapId).consumer(this::consumeUpdate).build();
@@ -98,7 +95,7 @@ public class Session implements IExtension{
 		UpdateBlockCompleted event = UpdateBlockCompleted.builder()
 				.userId(credentials.userId())
 				.mapId(mapId)
-				.updateBlock(events).mapRevision(header.mapRevision() + 1).build();
+				.updateBlock(events).mapRevision(updates.mapRevision() + 1).build();
 		UpdateStatus updateStatus = this.server.update(ImmutableMapUpdateRequest.of(this.credentials, event));
 		switch(updateStatus) {
 			case ACCEPTED:

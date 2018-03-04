@@ -26,9 +26,6 @@ import static org.mockito.Mockito.when;
 import java.lang.reflect.InvocationTargetException;
 
 import org.freeplane.collaboration.event.MapUpdated;
-import org.freeplane.collaboration.event.batch.ImmutableMapId;
-import org.freeplane.collaboration.event.batch.MapId;
-import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
@@ -52,9 +49,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class CoreUpdateGeneratorSpec {
 	private CoreUpdateGenerator uut;
 	private static final int DELAY_MILLIS = 10;
-	private static final MapId MAP_ID = ImmutableMapId.of("mapId");
-	private ModifiableUpdateHeader header = ModifiableUpdateHeader.create().setMapId(MAP_ID)
-	    .setMapRevision(0);
 	@Mock
 	private CoreUpdateEventFactory eventFactory;
 	@Mock
@@ -72,7 +66,7 @@ public class CoreUpdateGeneratorSpec {
 	@Before
 	public void createTestedInstance() {
 		consumer = new UpdatesEventCaptor(1);
-		Updates updates = new Updates(consumer, DELAY_MILLIS, header);
+		Updates updates = new Updates(consumer, DELAY_MILLIS, 0);
 		when(updateBlockGeneratorFactory.of(map)).thenReturn(updates);
 		uut = new CoreUpdateGenerator(updateBlockGeneratorFactory, eventFactory);
 	}
