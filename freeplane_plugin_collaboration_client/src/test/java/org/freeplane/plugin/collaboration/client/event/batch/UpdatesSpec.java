@@ -30,7 +30,7 @@ public class UpdatesSpec {
 	public void generatesBlockContainingSingleEvent() throws Exception {
 		final MapUpdated childrenUpdated = mock(MapUpdated.class);
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
-		Updates uut = new Updates(consumer, DELAY_MILLIS, 0);
+		Updates uut = new Updates(consumer, DELAY_MILLIS);
 		uut.addUpdateEvent("id", () -> childrenUpdated);
 		final List<MapUpdated> eventList = consumer.getEventList();
 		assertThat(eventList).containsExactly(childrenUpdated);
@@ -40,7 +40,7 @@ public class UpdatesSpec {
 	public void generatesBlockContainingTwoEvents() throws Exception {
 		final MapUpdated childrenUpdated = mock(MapUpdated.class);
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
-		Updates uut = new Updates(consumer, DELAY_MILLIS, 0);
+		Updates uut = new Updates(consumer, DELAY_MILLIS);
 		uut.addUpdateEvent("id", () -> childrenUpdated);
 		uut.addUpdateEvent("id", () -> childrenUpdated);
 		final List<MapUpdated> eventList = consumer.getEventList();
@@ -51,7 +51,7 @@ public class UpdatesSpec {
 	public void generatesBlockContainingSingleEventIfCalledTwiceForSameElementAndSameSupplier() throws Exception {
 		final MapUpdated childrenUpdated = mock(MapUpdated.class);
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
-		Updates uut = new Updates(consumer, DELAY_MILLIS, 0);
+		Updates uut = new Updates(consumer, DELAY_MILLIS);
 		Supplier<MapUpdated> eventSupplier = () -> childrenUpdated;
 		uut.addUpdateEvent("id", eventSupplier);
 		uut.addUpdateEvent("id", eventSupplier);
@@ -63,7 +63,7 @@ public class UpdatesSpec {
 	public void generatesBlockContainingTwoEventsForDifferentElementsAndSameSupplier() throws Exception {
 		final MapUpdated childrenUpdated = mock(MapUpdated.class);
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
-		Updates uut = new Updates(consumer, DELAY_MILLIS, 0);
+		Updates uut = new Updates(consumer, DELAY_MILLIS);
 		uut.addUpdateEvent("id", () -> childrenUpdated);
 		uut.addUpdateEvent("id2", () -> childrenUpdated);
 		final List<MapUpdated> eventList = consumer.getEventList();
@@ -74,7 +74,7 @@ public class UpdatesSpec {
 	public void supportsAddingNewEventsDuringActionExecution() throws Exception {
 		final MapUpdated childrenUpdated = mock(MapUpdated.class);
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(1);
-		Updates uut = new Updates(consumer, DELAY_MILLIS, 0);
+		Updates uut = new Updates(consumer, DELAY_MILLIS);
 		uut.addUpdateEvents("id", () -> uut.addUpdateEvents(
 		    "id", () -> uut.addUpdateEvent(childrenUpdated)));
 		final List<MapUpdated> eventList = consumer.getEventList();
@@ -85,7 +85,7 @@ public class UpdatesSpec {
 	public void generatesTwoBlocksContainingSingleEvent() throws Exception {
 		final MapUpdated childrenUpdated = mock(MapUpdated.class);
 		UpdatesEventCaptor consumer = new UpdatesEventCaptor(2);
-		Updates uut = new Updates(consumer, DELAY_MILLIS, 0);
+		Updates uut = new Updates(consumer, DELAY_MILLIS);
 		Supplier<MapUpdated> eventSupplier = () -> childrenUpdated;
 		uut.addUpdateEvent("id", eventSupplier);
 		Thread.sleep(DELAY_MILLIS * 2);

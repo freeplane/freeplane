@@ -95,7 +95,7 @@ public class MapStructureEventGeneratorSpec {
 
 	private void createTestedInstance(final int expectedEventCount) {
 		consumer = new UpdatesEventCaptor(expectedEventCount);
-		Updates updates = new Updates(consumer, DELAY_MILLIS, 0);
+		Updates updates = new Updates(consumer, DELAY_MILLIS);
 		when(updateBlockGeneratorFactory.of(map)).thenReturn(updates);
 		when(updateBlockGeneratorFactory.of(Mockito.any(NodeModel.class))).thenReturn(updates);
 		uut = new MapStructureEventGenerator(updateBlockGeneratorFactory, contentUpdateGenerators,

@@ -127,11 +127,8 @@ public class Updates implements IExtension{
 	private final TimerExtension timer;
 	private final Set<UpdateKey> registeredUpdates;
 
-	private int mapRevision;
-
 	@VisibleForTesting
-	public Updates(UpdatesProcessor consumer, int delay, int mapRevision) {
-		this.mapRevision = mapRevision;
+	public Updates(UpdatesProcessor consumer, int delay) {
 		timer = new TimerExtension(delay, null);
 		timer.setRepeats(false);
 		registeredUpdates = new HashSet<>();
@@ -170,11 +167,4 @@ public class Updates implements IExtension{
 		timer.runNow();
 	}
 
-	public void incrementMapRevision() {
-		mapRevision++;
-	}
-
-	public int mapRevision() {
-		return mapRevision;
-	}
 }

@@ -33,7 +33,7 @@ public class Session implements IExtension{
 	private final LinkedTransferQueue<UpdateBlockCompleted> incomingEvents;
 	private AtomicReference<UpdateStatus> updateStatus;
 	private boolean isRunning;
-	
+	private int mapRevision;
 	public MapId getMapId() {
 		return mapId;
 	}
@@ -47,7 +47,8 @@ public class Session implements IExtension{
 		updateStatus = new AtomicReference<>(UpdateStatus.ACCEPTED);
 		map.addExtension(this);
 		undoHandler = new SessionUndoHandler(map);
-		updates = new Updates(this::sendUpdate, DELAY, 0);
+		updates = new Updates(this::sendUpdate, DELAY);
+		mapRevision = 0;
 		map.addExtension(this);
 		map.addExtension(updates);
 		subscription = ImmutableSubscription.builder().credentials(credentials).mapId(mapId).consumer(this::consumeUpdate).build();
@@ -79,7 +80,7 @@ public class Session implements IExtension{
 			updateProcessor.onUpdate(map, incomingEvent.updateBlock());
 
 			if(undoHandler.getTransactionLevel() == 1) {
-				updates.incrementMapRevision();
+				mapRevision++;
 				undoHandler.commit();
 			}
 		}
@@ -95,11 +96,11 @@ public class Session implements IExtension{
 		UpdateBlockCompleted event = UpdateBlockCompleted.builder()
 				.userId(credentials.userId())
 				.mapId(mapId)
-				.updateBlock(events).mapRevision(updates.mapRevision() + 1).build();
+				.updateBlock(events).mapRevision(mapRevision + 1).build();
 		UpdateStatus updateStatus = this.server.update(ImmutableMapUpdateRequest.of(this.credentials, event));
 		switch(updateStatus) {
 			case ACCEPTED:
-					updates.incrementMapRevision();
+				mapRevision++;
 					undoHandler.commit();
 					this.updateStatus.set(updateStatus);
 				break;
@@ -132,7 +133,7 @@ public class Session implements IExtension{
 			while( ! incomingEvents.isEmpty()){
 				incomingEvent = incomingEvents.poll();
 				updateProcessor.onUpdate(map, incomingEvent.updateBlock());
-				updates.incrementMapRevision();
+				mapRevision++;
 				undoHandler.commit();
 			} 
 			updateProcessor.onUpdate(map, ev);

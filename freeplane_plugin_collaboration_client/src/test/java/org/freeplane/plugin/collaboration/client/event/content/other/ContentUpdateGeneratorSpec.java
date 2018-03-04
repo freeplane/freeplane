@@ -72,7 +72,7 @@ public class ContentUpdateGeneratorSpec {
 	@Before
 	public void createTestedInstance() {
 		consumer = new UpdatesEventCaptor(1);
-		Updates updates = new Updates(consumer, DELAY_MILLIS, 0);
+		Updates updates = new Updates(consumer, DELAY_MILLIS);
 		when(updateBlockGeneratorFactory.of(map)).thenReturn(updates);
 		uut = new ContentUpdateGenerator(updateBlockGeneratorFactory, eventFactory);
 	}
