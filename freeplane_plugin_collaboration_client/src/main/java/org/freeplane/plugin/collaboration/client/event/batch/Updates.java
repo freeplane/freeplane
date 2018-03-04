@@ -4,7 +4,9 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -12,10 +14,7 @@ import javax.swing.Timer;
 import javax.swing.event.EventListenerList;
 
 import org.freeplane.collaboration.event.MapUpdated;
-import org.freeplane.collaboration.event.batch.ImmutableUpdateBlockCompleted;
 import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
-import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
-import org.freeplane.collaboration.event.batch.UserId;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.plugin.collaboration.client.VisibleForTesting;
 
@@ -32,19 +31,18 @@ public class Updates implements IExtension{
 		protected void fireActionPerformed(ActionEvent e) {
 			this.currentEvent = e;
 			try {
-				builder = createBuilder();
+				eventList = new ArrayList<>();
 				notifyListeners(e);
 				registeredUpdates.clear();
 				listenerList = new EventListenerList();
-				UpdateBlockCompleted event = builder.build();
-				builder = null;
-				incrementMapRevision();
-				consumer.onUpdates(event);
+				List<MapUpdated> consumedEvents = eventList;
+				eventList = null;
+				consumer.onUpdates(consumedEvents);
 			}
 			finally {
 				this.currentEvent = null;
 			}
-		}
+		}		
 
 		private void notifyListeners(ActionEvent e) {
 			Object[] listeners = listenerList.getListenerList();
@@ -124,32 +122,23 @@ public class Updates implements IExtension{
 		}
 	}
 
-	private final UserId userId;
+	private List<MapUpdated> eventList;
 	final private ModifiableUpdateHeader header;
 	public ModifiableUpdateHeader getHeader() {
 		return header;
 	}
 
 	final private UpdatesProcessor consumer;
-	private ImmutableUpdateBlockCompleted.Builder builder;
 	private final TimerExtension timer;
 	private final Set<UpdateKey> registeredUpdates;
 
 	@VisibleForTesting
-	public Updates(UserId userId, UpdatesProcessor consumer, int delay, ModifiableUpdateHeader header) {
-		this.userId = userId;
+	public Updates(UpdatesProcessor consumer, int delay, ModifiableUpdateHeader header) {
 		timer = new TimerExtension(delay, null);
 		timer.setRepeats(false);
 		registeredUpdates = new HashSet<>();
 		this.consumer = consumer;
 		this.header = header;
-	}
-
-	private ImmutableUpdateBlockCompleted.Builder createBuilder() {
-		return UpdateBlockCompleted.builder()
-				.userId(userId)
-		    .mapId(header.mapId())
-		    .mapRevision(header.mapRevision() + 1);
 	}
 
 	public void addUpdateEvent(String updatedElementId, Supplier<MapUpdated> eventSupplier) {
@@ -160,7 +149,7 @@ public class Updates implements IExtension{
 	}
 
 	public void addUpdateEvent(Supplier<MapUpdated> eventSupplier) {
-		timer.addActionListener(e -> builder.addUpdateBlock(eventSupplier.get()));
+		timer.addActionListener(e -> eventList.add(eventSupplier.get()));
 		timer.restart();
 	}
 
@@ -177,7 +166,7 @@ public class Updates implements IExtension{
 	}
 
 	public void addUpdateEvent(MapUpdated event) {
-		builder.addUpdateBlock(event);
+		eventList.add(event);
 	}
 	
 	public void flush() {

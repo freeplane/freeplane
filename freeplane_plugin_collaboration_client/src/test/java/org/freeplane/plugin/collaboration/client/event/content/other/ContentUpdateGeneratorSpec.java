@@ -24,13 +24,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
+import org.freeplane.collaboration.event.MapUpdated;
 import org.freeplane.collaboration.event.batch.ImmutableMapId;
-import org.freeplane.collaboration.event.batch.ImmutableUserId;
 import org.freeplane.collaboration.event.batch.MapId;
 import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
-import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
-import org.freeplane.collaboration.event.batch.UserId;
 import org.freeplane.collaboration.event.content.other.MapContentUpdated;
 import org.freeplane.collaboration.event.content.other.NodeContentUpdated;
 import org.freeplane.features.icon.HierarchicalIcons;
@@ -41,8 +40,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdatesAccessor;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesAccessor;
 import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -58,7 +57,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class ContentUpdateGeneratorSpec {
 	private static final int DELAY_MILLIS = 10;
-	private static final UserId USER_ID = ImmutableUserId.of("userID");
 	private static final MapId MAP_ID = ImmutableMapId.of("mapId");
 	private ModifiableUpdateHeader header = ModifiableUpdateHeader.create().setMapId(MAP_ID).setMapRevision(0);
 	@Mock
@@ -79,7 +77,7 @@ public class ContentUpdateGeneratorSpec {
 	@Before
 	public void createTestedInstance() {
 		consumer = new UpdatesEventCaptor(1);
-		Updates updates = new Updates(USER_ID, consumer, DELAY_MILLIS, header);
+		Updates updates = new Updates(consumer, DELAY_MILLIS, header);
 		when(updateBlockGeneratorFactory.of(map)).thenReturn(updates);
 		uut = new ContentUpdateGenerator(updateBlockGeneratorFactory, eventFactory);
 	}
@@ -89,13 +87,8 @@ public class ContentUpdateGeneratorSpec {
 		NodeContentUpdated contentUpdated = mock(NodeContentUpdated.class);
 		when(eventFactory.createNodeContentUpdatedEvent(node)).thenReturn(contentUpdated);
 		uut.onNodeChange(new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null, true));
-		final UpdateBlockCompleted event = consumer.getEvent();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-			.userId(USER_ID)
-		    .mapId(header.mapId()).mapRevision(1)
-		    .addUpdateBlock(contentUpdated).build();
-		assertThat(event).isEqualTo(expected);
-		assertThat(header.mapRevision()).isEqualTo(1);
+		final List<MapUpdated> eventList = consumer.getEventList();
+		assertThat(eventList).containsExactly(contentUpdated);
 	}
 
 	@Test
@@ -103,13 +96,8 @@ public class ContentUpdateGeneratorSpec {
 		NodeContentUpdated contentUpdated = mock(NodeContentUpdated.class);
 		when(eventFactory.createNodeContentUpdatedEvent(node)).thenReturn(contentUpdated);
 		uut.onNewNode(node);
-		final UpdateBlockCompleted event = consumer.getEvent();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-			.userId(USER_ID)
-		    .mapId(header.mapId()).mapRevision(1)
-		    .addUpdateBlock(contentUpdated).build();
-		assertThat(event).isEqualTo(expected);
-		assertThat(header.mapRevision()).isEqualTo(1);
+		final List<MapUpdated> eventList = consumer.getEventList();
+		assertThat(eventList).containsExactly(contentUpdated);
 	}
 
 	@Test
@@ -117,13 +105,8 @@ public class ContentUpdateGeneratorSpec {
 		MapContentUpdated contentUpdated = mock(MapContentUpdated.class);
 		when(eventFactory.createMapContentUpdatedEvent(map)).thenReturn(contentUpdated);
 		uut.onMapChange(map);
-		final UpdateBlockCompleted event = consumer.getEvent();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-			.userId(USER_ID)
-		    .mapId(header.mapId()).mapRevision(1)
-		    .addUpdateBlock(contentUpdated).build();
-		assertThat(event).isEqualTo(expected);
-		assertThat(header.mapRevision()).isEqualTo(1);
+		final List<MapUpdated> eventList = consumer.getEventList();
+		assertThat(eventList).containsExactly(contentUpdated);
 	}
 
 	@Test
@@ -131,13 +114,8 @@ public class ContentUpdateGeneratorSpec {
 		MapContentUpdated contentUpdated = mock(MapContentUpdated.class);
 		when(eventFactory.createMapContentUpdatedEvent(map)).thenReturn(contentUpdated);
 		uut.onNewMap(map);
-		final UpdateBlockCompleted event = consumer.getEvent();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-			.userId(USER_ID)
-		    .mapId(header.mapId()).mapRevision(1)
-		    .addUpdateBlock(contentUpdated).build();
-		assertThat(event).isEqualTo(expected);
-		assertThat(header.mapRevision()).isEqualTo(1);
+		final List<MapUpdated> eventList = consumer.getEventList();
+		assertThat(eventList).containsExactly(contentUpdated);
 	}
 
 	@Test

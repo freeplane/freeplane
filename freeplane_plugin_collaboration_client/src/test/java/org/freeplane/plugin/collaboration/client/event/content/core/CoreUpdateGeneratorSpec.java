@@ -27,19 +27,15 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.freeplane.collaboration.event.MapUpdated;
 import org.freeplane.collaboration.event.batch.ImmutableMapId;
-import org.freeplane.collaboration.event.batch.ImmutableUpdateBlockCompleted;
-import org.freeplane.collaboration.event.batch.ImmutableUserId;
 import org.freeplane.collaboration.event.batch.MapId;
 import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
-import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
-import org.freeplane.collaboration.event.batch.UserId;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdatesAccessor;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesAccessor;
 import org.freeplane.plugin.collaboration.client.event.children.AwtThreadStarter;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -56,7 +52,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 public class CoreUpdateGeneratorSpec {
 	private CoreUpdateGenerator uut;
 	private static final int DELAY_MILLIS = 10;
-	private static final UserId USER_ID = ImmutableUserId.of("userId");
 	private static final MapId MAP_ID = ImmutableMapId.of("mapId");
 	private ModifiableUpdateHeader header = ModifiableUpdateHeader.create().setMapId(MAP_ID)
 	    .setMapRevision(0);
@@ -69,13 +64,6 @@ public class CoreUpdateGeneratorSpec {
 	final private NodeModel node = testObjects.parent;
 	private UpdatesEventCaptor consumer;
 
-	private ImmutableUpdateBlockCompleted updateBlock(final MapUpdated event) {
-		return UpdateBlockCompleted.builder()
-			.userId(USER_ID)
-		    .mapId(header.mapId()).mapRevision(1)
-		    .addUpdateBlock(event).build();
-	}
-
 	@BeforeClass
 	static public void setupClass() throws InterruptedException, InvocationTargetException {
 		AwtThreadStarter.await();
@@ -84,7 +72,7 @@ public class CoreUpdateGeneratorSpec {
 	@Before
 	public void createTestedInstance() {
 		consumer = new UpdatesEventCaptor(1);
-		Updates updates = new Updates(USER_ID, consumer, DELAY_MILLIS, header);
+		Updates updates = new Updates(consumer, DELAY_MILLIS, header);
 		when(updateBlockGeneratorFactory.of(map)).thenReturn(updates);
 		uut = new CoreUpdateGenerator(updateBlockGeneratorFactory, eventFactory);
 	}
@@ -94,9 +82,7 @@ public class CoreUpdateGeneratorSpec {
 		final MapUpdated event = mock(MapUpdated.class);
 		when(eventFactory.createCoreUpdatedEvent(node)).thenReturn(event);
 		uut.onNodeChange(new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null, true));
-		UpdateBlockCompleted expected = updateBlock(event);
-		assertThat(consumer.getEvent()).isEqualTo(expected);
-		assertThat(header.mapRevision()).isEqualTo(1);
+		assertThat(consumer.getEventList()).containsExactly(event);
 	}
 
 	@Test
@@ -104,8 +90,6 @@ public class CoreUpdateGeneratorSpec {
 		final MapUpdated event = mock(MapUpdated.class);
 		when(eventFactory.createCoreUpdatedEvent(node)).thenReturn(event);
 		uut.onNewNode(node);
-		UpdateBlockCompleted expected = updateBlock(event);
-		assertThat(consumer.getEvent()).isEqualTo(expected);
-		assertThat(header.mapRevision()).isEqualTo(1);
+		assertThat(consumer.getEventList()).containsExactly(event);
 	}
 }

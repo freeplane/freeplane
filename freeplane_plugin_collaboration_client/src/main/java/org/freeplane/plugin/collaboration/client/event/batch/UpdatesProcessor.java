@@ -1,7 +1,9 @@
 package org.freeplane.plugin.collaboration.client.event.batch;
 
-import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
+import java.util.List;
+
+import org.freeplane.collaboration.event.MapUpdated;
 
 public interface UpdatesProcessor {
-	void onUpdates(UpdateBlockCompleted event);
+	void onUpdates(List<MapUpdated> updateBlock);
 }

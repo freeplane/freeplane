@@ -1,15 +1,16 @@
 package org.freeplane.plugin.collaboration.client.session;
 
 import java.awt.EventQueue;
+import java.util.List;
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.freeplane.collaboration.event.MapUpdated;
 import org.freeplane.collaboration.event.batch.Credentials;
 import org.freeplane.collaboration.event.batch.ImmutableMapUpdateRequest;
 import org.freeplane.collaboration.event.batch.MapId;
 import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
 import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
-import org.freeplane.collaboration.event.batch.UserId;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessorChain;
@@ -48,9 +49,8 @@ public class Session implements IExtension{
 		updateStatus = new AtomicReference<>(UpdateStatus.ACCEPTED);
 		map.addExtension(this);
 		undoHandler = new SessionUndoHandler(map);
-		final UserId userId = credentials.userId();
 		header = ModifiableUpdateHeader.create().setMapId(mapId).setMapRevision(1);
-		updates = new Updates(userId, this::sendUpdate, DELAY, header);
+		updates = new Updates(this::sendUpdate, DELAY, header);
 		map.addExtension(this);
 		map.addExtension(updates);
 		subscription = ImmutableSubscription.builder().credentials(credentials).mapId(mapId).consumer(this::consumeUpdate).build();
@@ -79,7 +79,7 @@ public class Session implements IExtension{
 			return;
 		map.removeExtension(Updates.class);
 		try {
-			updateProcessor.onUpdate(map, incomingEvent);
+			updateProcessor.onUpdate(map, incomingEvent.updateBlock());
 
 			if(undoHandler.getTransactionLevel() == 1) {
 				updates.incrementMapRevision();
@@ -91,14 +91,18 @@ public class Session implements IExtension{
 		}
 	}
 
-	void sendUpdate(UpdateBlockCompleted ev) {
+	void sendUpdate(List<MapUpdated> events) {
 		if(! incomingEvents.isEmpty()) {
-			mergeUpdates(ev);
-			ev = UpdateBlockCompleted.builder().from(ev).mapRevision(updates.getHeader().mapRevision()).build();
+			mergeUpdates(events);
 		}
-		UpdateStatus updateStatus = this.server.update(ImmutableMapUpdateRequest.of(this.credentials, ev));
+		UpdateBlockCompleted event = UpdateBlockCompleted.builder()
+				.userId(credentials.userId())
+				.mapId(mapId)
+				.updateBlock(events).mapRevision(header.mapRevision() + 1).build();
+		UpdateStatus updateStatus = this.server.update(ImmutableMapUpdateRequest.of(this.credentials, event));
 		switch(updateStatus) {
 			case ACCEPTED:
+					updates.incrementMapRevision();
 					undoHandler.commit();
 					this.updateStatus.set(updateStatus);
 				break;
@@ -123,14 +127,14 @@ public class Session implements IExtension{
 		}
 	}
 
-	private void mergeUpdates(UpdateBlockCompleted ev) {
+	private void mergeUpdates(List<MapUpdated>  ev) {
 		final Updates extension = map.removeExtension(Updates.class);
 		try {
 			undoHandler.rollback();
 			UpdateBlockCompleted incomingEvent;
 			while( ! incomingEvents.isEmpty()){
 				incomingEvent = incomingEvents.poll();
-				updateProcessor.onUpdate(map, incomingEvent);
+				updateProcessor.onUpdate(map, incomingEvent.updateBlock());
 				updates.incrementMapRevision();
 				undoHandler.commit();
 			} 
