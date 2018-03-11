@@ -142,7 +142,6 @@ public class ChangeNodeLevelController {
 				((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
 			}
 			mapController.moveNodes(selectedNodes, directSibling, directSibling.getChildCount());
-			Controller.getCurrentModeController().getMapController().selectMultipleNodes(selectedNode, selectedNodes);
 		}
 	}
 
@@ -182,6 +181,5 @@ public class ChangeNodeLevelController {
 		for (final NodeModel node : selectedNodes)
 			((FreeNode)Controller.getCurrentModeController().getExtension(FreeNode.class)).undoableDeactivateHook(node);
 		mapController.moveNodes(selectedNodes, selectedParent, position, leftSide, changeSide);
-		mapController.selectMultipleNodes(selectedNode, selectedNodes);
 	}
 }

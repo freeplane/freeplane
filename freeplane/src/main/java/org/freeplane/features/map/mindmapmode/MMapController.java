@@ -51,6 +51,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.core.undo.SelectionActor;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
@@ -65,7 +66,6 @@ import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FirstGroupNode;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.IMapChangeListener;
-import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
@@ -110,6 +110,7 @@ public class MMapController extends MapController {
 		super(modeController);
 		createActions(modeController);
 			addNodeSelectionListener(new INodeSelectionListener() {
+				@Override
 				public void onSelect(final NodeModel node) {
 					final ViewController viewController = Controller.getCurrentController().getViewController();
 					if (ResourceController.getResourceController().getBooleanProperty("display_node_id")) {
@@ -117,31 +118,32 @@ public class MMapController extends MapController {
 					}
 				}
 
+				@Override
 				public void onDeselect(final NodeModel node) {
 					final ViewController viewController = Controller.getCurrentController().getViewController();
 					viewController.addStatusInfo("display_node_id", null, null);
 				}
 			});
 			addMapChangeListener(new IMapChangeListener() {
-				
+
 				@Override
 				public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 				}
-				
+
 				@Override
 				public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 				}
-				
+
 				@Override
 				public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 					if(! nodeMoveEvent.oldParent.equals(nodeMoveEvent.newParent))
 						onNodeDeleted(nodeMoveEvent.oldParent);
 				}
-				
+
 				@Override
 				public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
 				}
-				
+
 				@Override
 				public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 					final NodeModel parent = nodeDeletionEvent.parent;
@@ -153,12 +155,12 @@ public class MMapController extends MapController {
 						deleteSingleSummaryNode(node);
 					}
 				}
-				
+
 				@Override
 				public void mapChanged(MapChangeEvent event) {
 				}
 			});
-	
+
 	}
 
 	public NodeModel addNewNode(int newNodeMode) {
@@ -220,9 +222,11 @@ public class MMapController extends MapController {
 		if(component == null)
 			return;
 		component.addFocusListener(new FocusListener() {
+			@Override
 			public void focusLost(FocusEvent e) {
 			}
 
+			@Override
 			public void focusGained(FocusEvent e) {
 				e.getComponent().removeFocusListener(this);
 				final TextController textController = TextController.getController();
@@ -326,14 +330,17 @@ public class MMapController extends MapController {
 	    final MapModel map = parent.getMap();
 		newNode.setLeft(newNodeIsLeft);
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				insertNodeIntoWithoutUndo(newNode, parent, index);
 			}
 
+			@Override
 			public String getDescription() {
 				return "addNewNode";
 			}
 
+			@Override
 			public void undo() {
 				deleteWithoutUndo(parent, index);
 			}
@@ -369,6 +376,7 @@ public class MMapController extends MapController {
 		return true;
 	}
 
+	@Override
 	public void closeWithoutSaving(final MapModel map) {
 		super.closeWithoutSaving(map);
 	}
@@ -389,14 +397,14 @@ public class MMapController extends MapController {
 	public void deleteNode(NodeModel node) {
 		deleteNodes(Arrays.asList(node));
 	}
-	
+
 	public void deleteNodes(final List<NodeModel> nodes) {
 		final List<NodeModel> deletedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(nodes).addSummaryEdgeNodes();
 		for(NodeModel node : deletedNodesWithSummaryGroupIndicators){
 		    deleteSingleNodeWithClones(node);
 		}
 	}
-	
+
 	public void convertClonesToIndependentNodes(final NodeModel node){
 		final MLinkController linkController = (MLinkController) MLinkController.getController();
 		if(node.isCloneTreeRoot()){
@@ -411,24 +419,24 @@ public class MMapController extends MapController {
 		final ClipboardController clipboardController = mModeController.getExtension(ClipboardController.class);
 		final NodeModel duplicate = clipboardController.duplicate(node, false);
 		IActor converter = new IActor() {
-			
+
 			@Override
 			public void act() {
 				node.swapData(duplicate);
 				nodeChanged(node);
 			}
-			
+
 			@Override
 			public void undo() {
 				node.swapData(duplicate);
 				nodeChanged(node);
 			}
-			
+
 			@Override
 			public String getDescription() {
 				return "convertClonesToIndependentNodes";
 			}
-			
+
 		};
 		final boolean shouldConvertChildNodes = node.subtreeClones().size() > 1;
 		mModeController.execute(converter, node.getMap());
@@ -456,15 +464,18 @@ public class MMapController extends MapController {
 	void deleteSingleNode(final NodeModel parentNode, final int index) {
 		final NodeModel node = parentNode.getChildAt(index);
 		final IActor actor = new IActor() {
-        	public void act() {
+        	@Override
+			public void act() {
         		deleteWithoutUndo(parentNode, index);
         	}
 
-        	public String getDescription() {
+        	@Override
+			public String getDescription() {
         		return "delete";
         	}
 
-        	public void undo() {
+        	@Override
+			public void undo() {
 				(Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
         	}
         };
@@ -555,13 +566,15 @@ public class MMapController extends MapController {
 			moveNodeAndItsClones(child, oldParent, newIndex, newParent.isLeft(), false);
 			return;
 		}
-			
+
 		final NodeModel childNode = child;
 		final int oldIndex = oldParent.getIndex(childNode);
 		final int childCount = newParent.getChildCount();
 		newIndex = newIndex >= childCount ? oldParent == newParent ? childCount - 1 : childCount : newIndex;
 
 		if (oldParent != newParent || oldIndex != newIndex || changeSide != false) {
+			final Controller controller = Controller.getCurrentController();
+			final SelectionActor selectionActor = oldParent.getMap() == controller.getMap() ? SelectionActor.createForActOnly(controller.getSelection()) : null;
 			final NodeRelativePath nodeRelativePath = getPathToNearestTargetClone(oldParent, newParent);
 
 			final Set<NodeModel> oldParentClones = new HashSet<NodeModel>(oldParent.subtreeClones().toCollection());
@@ -582,6 +595,9 @@ public class MMapController extends MapController {
 
 			for(NodeModel oldParentClone : oldParentClones)
 					deleteSingleNode(oldParentClone, oldIndex);
+
+			if(selectionActor != null)
+				Controller.getCurrentModeController().execute(selectionActor, oldParent.getMap());
 		}
 	}
 
@@ -608,17 +624,20 @@ public class MMapController extends MapController {
                                 final boolean isLeft, final boolean changeSide) {
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getIndex(child);
-		
+
 		final boolean wasLeft = child.isLeft();
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				moveNodeToWithoutUndo(child, newParent, newIndex, isLeft, changeSide);
 			}
 
+			@Override
 			public String getDescription() {
 				return "moveNode";
 			}
 
+			@Override
 			public void undo() {
 				moveNodeToWithoutUndo(child, oldParent, oldIndex, wasLeft, changeSide);
 			}
@@ -661,9 +680,10 @@ public class MMapController extends MapController {
 	public void moveNodesInGivenDirection(NodeModel selected, Collection<NodeModel> movedNodes, final int direction) {
 		final List<NodeModel> movedNodesWithEdges = new SummaryGroupEdgeListAdder(movedNodes).addSummaryEdgeNodes();
 		final Collection<NodeModel> movedNodeSet = new HashSet<NodeModel>(movedNodesWithEdges);
-		
+
         final Comparator<Object> comparator = (direction == -1) ? null : new Comparator<Object>() {
-            public int compare(final Object o1, final Object o2) {
+            @Override
+			public int compare(final Object o1, final Object o2) {
                 final int i1 = ((Integer) o1).intValue();
                 final int i2 = ((Integer) o2).intValue();
                 return i2 - i1;
@@ -691,15 +711,9 @@ public class MMapController extends MapController {
                 }
                 last = newInt;
             }
-            Collection<NodeModel> selectedNodes = new ArrayList<NodeModel>(getSelectedNodes());
             for (final Integer position : range) {
                 final NodeModel node = sortedChildren.get(position.intValue());
                 moveSingleNodeInGivenDirection(node, direction);
-            }
-            final IMapSelection selection = Controller.getCurrentController().getSelection();
-            selection.selectAsTheOnlyOneSelected(selected);
-			for (NodeModel selectedNode : selectedNodes) {
-				selection.makeTheSelected(selectedNode);
             }
         }
     }
@@ -740,7 +754,8 @@ public class MMapController extends MapController {
         }
 
         Collections.sort(nodes, new Comparator<Object>() {
-            public int compare(final Object o1, final Object o2) {
+            @Override
+			public int compare(final Object o1, final Object o2) {
                 if (o1 instanceof NodeModel) {
                     final NodeModel n1 = (NodeModel) o1;
                     if (o2 instanceof NodeModel) {
@@ -844,9 +859,11 @@ public class MMapController extends MapController {
 		if (component == null)
 			return newNode;
 		component.addFocusListener(new FocusListener() {
+			@Override
 			public void focusLost(FocusEvent e) {
 			}
 
+			@Override
 			public void focusGained(FocusEvent e) {
 				e.getComponent().removeFocusListener(this);
 				((MTextController) textController).edit(newNode, targetNode, true, false, false);
@@ -933,7 +950,7 @@ public class MMapController extends MapController {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
     }
-	
+
 	public void newDocumentationMap(final String file) {
 		final NodeAndMapReference nodeAndMapReference = new NodeAndMapReference(file);
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -968,7 +985,7 @@ public class MMapController extends MapController {
 			LogUtils.warn(e1);
 		}
 	}
-	
+
 
 
 	/**@throws XMLException
@@ -1029,7 +1046,7 @@ public class MMapController extends MapController {
 			controller.getViewController().setWaitingCursor(false);
 		}
 	}
-	
+
 	@Override
 	protected void setFoldingState(final NodeModel node, final boolean folded) {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
@@ -1043,12 +1060,12 @@ public class MMapController extends MapController {
 					unfoldHiddenChildren(node);
 					MMapController.super.setFoldingState(node, wasFolded);
 				}
-				
+
 				@Override
 				public String getDescription() {
 					return "setFoldingState";
 				}
-				
+
 				@Override
 				public void act() {
 					unfoldHiddenChildren(node);
@@ -1060,9 +1077,9 @@ public class MMapController extends MapController {
 		else
 			super.setFoldingState(node, folded);
 	}
-	
+
 	static private final List<String> foldingSavedOptions = Arrays.asList(NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING, NodeBuilder.RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED);
-	
+
 	private boolean isFoldingPersistent() {
 	    final ResourceController resourceController = ResourceController.getResourceController();
 		return foldingSavedOptions.contains(resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING));

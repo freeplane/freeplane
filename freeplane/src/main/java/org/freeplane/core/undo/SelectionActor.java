@@ -12,16 +12,26 @@ public class SelectionActor implements IActor {
 	private final String[] nodeIDs;
 	final private MapModel map;
 	static private SelectionActor lastSelectionActor = null;
-	
-	static SelectionActor create(IMapSelection selection){
-		final SelectionActor selectionActor = new SelectionActor(selection);
-		if(!selectionActor.equals(lastSelectionActor))
+	static private SelectionActor lastSelectionActorOnAct = null;
+	private final boolean onlyOnAct;
+
+	public static SelectionActor createForActOnly(IMapSelection selection) {
+		final SelectionActor selectionActor = new SelectionActor(selection, true);
+		if(!selectionActor.containsSameSelection(lastSelectionActorOnAct))
+			lastSelectionActorOnAct = selectionActor;
+		return lastSelectionActorOnAct;
+	}
+
+	public static SelectionActor create(IMapSelection selection) {
+		final SelectionActor selectionActor = new SelectionActor(selection, false);
+		if(!selectionActor.containsSameSelection(lastSelectionActor))
 			lastSelectionActor = selectionActor;
 		return lastSelectionActor;
 	}
-	
-	private SelectionActor(IMapSelection selection) {
+
+	private SelectionActor(IMapSelection selection, boolean onlyOnAct) {
 		super();
+		this.onlyOnAct = onlyOnAct;
 		map = selection.getSelected().getMap();
 		final List<NodeModel> nodes = selection.getOrderedSelection();
 		this.nodeIDs = new String[nodes.size()];
@@ -29,32 +39,11 @@ public class SelectionActor implements IActor {
 		for(NodeModel node : nodes)
 			nodeIDs[index++] = node.createID();
 	}
-	
-	
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + map.hashCode();
-		result = prime * result + Arrays.hashCode(nodeIDs);
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SelectionActor other = (SelectionActor) obj;
-		if (!map.equals(other.map))
-			return false;
-		if (!Arrays.equals(nodeIDs, other.nodeIDs))
-			return false;
-		return true;
+	private boolean containsSameSelection(SelectionActor other) {
+		return other != null
+				&& map.equals(other.map)
+				&& Arrays.equals(nodeIDs, other.nodeIDs);
 	}
 
 	@Override
@@ -66,9 +55,9 @@ public class SelectionActor implements IActor {
 		final Controller controller = Controller.getCurrentController();
 		if(! map.equals(controller.getMap()))
 			return;
-		
+
 		final IMapSelection selection = controller.getSelection();
-		if(this.equals(new SelectionActor(selection)))
+		if(this.containsSameSelection(new SelectionActor(selection, onlyOnAct)))
 			return;
 		NodeModel[] nodes = new NodeModel[nodeIDs.length];
 		int index = 0;
@@ -84,6 +73,7 @@ public class SelectionActor implements IActor {
 
 	@Override
 	public void undo() {
-		restoreSelection();
+		if(! onlyOnAct)
+			restoreSelection();
 	}
 }
