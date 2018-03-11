@@ -25,18 +25,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 
+import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
+import org.w3c.dom.Document;
 
 class ExportSvg extends ExportVectorGraphic {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final String SVG_EMBED_FONTS = "org.freeplane.plugin.svg.export.svg.embed_fonts";
 
 	public void export(MapModel map, File chosenFile) {
 		if (!ExportController.getContoller().checkCurrentMap(map)){
@@ -64,6 +64,14 @@ class ExportSvg extends ExportVectorGraphic {
 		finally{
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
+	}
+
+	protected SVGGeneratorContext createGeneratorContext(final Document domFactory) {
+		final SVGGeneratorContext ctx = super.createGeneratorContext(domFactory);
+		if(ResourceController.getResourceController().getBooleanProperty(SVG_EMBED_FONTS)) {
+			ctx.setEmbeddedFontsOn(true);
+		}
+		return ctx;
 	}
 
 }

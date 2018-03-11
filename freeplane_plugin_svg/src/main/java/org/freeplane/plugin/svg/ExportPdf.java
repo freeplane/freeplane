@@ -24,6 +24,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.transcoder.SVGAbstractTranscoder;
 import org.apache.batik.transcoder.TranscoderInput;
@@ -31,6 +32,7 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.ImageTranscoder;
 import org.apache.fop.svg.AbstractFOPTranscoder;
 import org.apache.fop.svg.PDFTranscoder;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.map.MapModel;
@@ -44,6 +46,7 @@ import org.w3c.dom.Element;
  */
 class ExportPdf extends ExportVectorGraphic {
 
+	private static final String PDF_CONVERT_TEXT_TO_SHAPES = "org.freeplane.plugin.svg.export.pdf.convert_text_to_shapes";
 	public ExportPdf() {
 	}
 
@@ -66,10 +69,11 @@ class ExportPdf extends ExportVectorGraphic {
 			 */
 			pdfTranscoder.addTranscodingHint(SVGAbstractTranscoder.KEY_MAX_HEIGHT, new Float(19200));
 			pdfTranscoder.addTranscodingHint(SVGAbstractTranscoder.KEY_MAX_WIDTH, new Float(19200));
-			pdfTranscoder.addTranscodingHint(ImageTranscoder.KEY_PIXEL_UNIT_TO_MILLIMETER, 25.4f/72f/UITools.FONT_SCALE_FACTOR);
-			pdfTranscoder.addTranscodingHint(AbstractFOPTranscoder.KEY_AUTO_FONTS, Boolean.FALSE);
-			pdfTranscoder.addTranscodingHint(AbstractFOPTranscoder.KEY_STROKE_TEXT, Boolean.TRUE);
 			/* end patch */
+			pdfTranscoder.addTranscodingHint(ImageTranscoder.KEY_PIXEL_UNIT_TO_MILLIMETER, 25.4f/72f/UITools.FONT_SCALE_FACTOR);
+			if(ResourceController.getResourceController().getBooleanProperty(PDF_CONVERT_TEXT_TO_SHAPES)) {
+				pdfTranscoder.addTranscodingHint(AbstractFOPTranscoder.KEY_AUTO_FONTS, Boolean.FALSE);
+			}
 			final Document doc = g2d.getDOMFactory();
 			final Element rootE = doc.getDocumentElement();
 			g2d.getRoot(rootE);
@@ -88,6 +92,15 @@ class ExportPdf extends ExportVectorGraphic {
 		finally{
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
+	}
+	
+	
+
+	protected SVGGeneratorContext createGeneratorContext(final Document domFactory) {
+		final SVGGeneratorContext ctx = super.createGeneratorContext(domFactory);
+		if(ResourceController.getResourceController().getBooleanProperty(PDF_CONVERT_TEXT_TO_SHAPES))
+			ctx.setEmbeddedFontsOn(true);
+		return ctx;
 	}
 
 }

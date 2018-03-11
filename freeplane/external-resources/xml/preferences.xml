@@ -50,6 +50,8 @@
 			<separator name="export">
 				<number name="exported_image_resolution_dpi" min="72" max="2400" />
 				<boolean name="indentationUsesTabsInTextOutput" />
+				<boolean name="org.freeplane.plugin.svg.export.pdf.convert_text_to_shapes"/>
+				<boolean name="org.freeplane.plugin.svg.export.svg.embed_fonts"/>
 			</separator>
 			<separator name="hyperlink_types">
 				<combo name="links">

@@ -63,8 +63,7 @@ abstract class ExportVectorGraphic implements IExportEngine {
 			final DOMImplementation impl = GenericDOMImplementation.getDOMImplementation();
 			final String namespaceURI = SVGConstants.SVG_NAMESPACE_URI;
 			final Document domFactory = impl.createDocument(namespaceURI, "svg", null);
-			final SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(domFactory);
-			ctx.setEmbeddedFontsOn(true);
+			final SVGGeneratorContext ctx = createGeneratorContext(domFactory);
 			final GraphicContextDefaults defaults = new GraphicContextDefaults();
 			defaults.setFont(new Font("Arial", Font.PLAIN, 12));
 			ctx.setGraphicContextDefaults(defaults);
@@ -85,6 +84,11 @@ abstract class ExportVectorGraphic implements IExportEngine {
 		{
 			setLnF(view, previousLnF);
 		}
+	}
+
+	protected SVGGeneratorContext createGeneratorContext(final Document domFactory) {
+		final SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(domFactory);
+		return ctx;
 	}
 
 	private void setLnF(final MapView view, final String LnF)
