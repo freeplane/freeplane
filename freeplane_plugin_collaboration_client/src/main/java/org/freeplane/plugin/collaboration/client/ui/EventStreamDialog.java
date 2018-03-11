@@ -10,6 +10,8 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
@@ -18,7 +20,6 @@ import javax.swing.JDialog;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.Timer;
 
 import org.freeplane.collaboration.event.batch.Credentials;
 import org.freeplane.collaboration.event.batch.ImmutableMapDescription;
@@ -42,13 +43,11 @@ import org.freeplane.plugin.collaboration.client.server.Subscription;
 import org.freeplane.plugin.collaboration.client.session.Session;
 import org.freeplane.plugin.collaboration.client.session.SessionController;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 public class EventStreamDialog {
 
 	SessionController sessionController = new SessionController();
 	
+	@SuppressWarnings("serial")
 	private final class JRadioButtonExtension extends JRadioButton {
 		private JRadioButtonExtension(String text, Server.UpdateStatus updateStatus) {
 			super(text);
@@ -61,9 +60,9 @@ public class EventStreamDialog {
 		}
 	}
 
+	private static final MapId SENDER_MAP_ID =  ImmutableMapId.of("sender");
 	private class MyServer implements Server {
-		private final MapId SENDER_MAP_ID =  ImmutableMapId.of("sender");
-		private Subscription recieverSubscription;
+		private Subscription receiverSubscription;
 		private Subscription senderSubscription;
 		
 		@Override
@@ -75,7 +74,7 @@ public class EventStreamDialog {
 		@Override
 		public UpdateStatus update(MapUpdateRequest request) {
 			UpdateBlockCompleted ev = request.update();
-			if(ev.mapId().equals(SENDER_MAP_ID)) {
+			if(ev.userId().equals(SENDER_USER_ID)) {
 				final boolean isNewMapUpdate = ev.updateBlock().get(0) instanceof RootNodeIdUpdated;
 				final UpdateStatus currentUpdateStatus =
 						isNewMapUpdate ? UpdateStatus.ACCEPTED : updateStatus;
@@ -83,19 +82,25 @@ public class EventStreamDialog {
 					UpdatesSerializer printer = UpdatesSerializer.of(this::updateTextArea);
 					printer.prettyPrint(ev);
 				}
-				if (currentUpdateStatus == UpdateStatus.MERGED) {
-					final Timer timer = new Timer(2000, new ActionListener() {
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							senderSubscription.consumer().accept(ev);
-						}
-					});
-					timer.setRepeats(false);
-					timer.start();
-				}
+				final int delay;
+				delay = currentUpdateStatus == UpdateStatus.MERGED ? 2000 : 100;
+				callBack(senderSubscription, ev, delay);
+				if(receiverSubscription != null)
+					callBack(receiverSubscription, ev, 0);
 				return currentUpdateStatus;
 			}
 			return UpdateStatus.ACCEPTED;
+		}
+
+		private void callBack(Subscription subscription, UpdateBlockCompleted ev, final int delay) {
+			Timer timer = new Timer();
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					subscription.consumer().accept(ev);
+					timer.cancel();
+				}
+			}, delay);
 		}
 
 		private void updateTextArea(String addedText) {
@@ -106,45 +111,59 @@ public class EventStreamDialog {
 
 		@Override
 		public void subscribe(Subscription subscription) {
-			if(subscription.mapId().equals(RECEIVER_MAP_ID)) {
-				this.recieverSubscription = subscription;
-			}
-			if(subscription.mapId().equals(SENDER_MAP_ID)) {
+			if(subscription.credentials().userId().equals(SENDER_USER_ID)) {
 				this.senderSubscription = subscription;
+			}
+			if(subscription.credentials().userId().equals(RECEIVER_USER_ID)) {
+				this.receiverSubscription = subscription;
 			}
 		}
 
-		void updateReceiver() throws IOException, JsonParseException, JsonMappingException {
-			if(recieverSubscription != null) {
-				final UpdateBlockCompleted[] updates = Jackson.objectMapper.readValue("[" + text.getText() + "]", UpdateBlockCompleted[].class);
+		void updateReceiver() {
+			if(receiverSubscription != null) {
+				UpdateBlockCompleted[] updates;
+				try {
+					updates = Jackson.objectMapper.readValue("[" + text.getText() + "]", UpdateBlockCompleted[].class);
+				}
+				catch (Exception e) {
+					throw new RuntimeException(e);
+				}
 				for(UpdateBlockCompleted u : updates)
-					recieverSubscription.consumer().accept(u);
+					receiverSubscription.consumer().accept(u);
 				text.setText("");
 			}
 		}
 
 		@Override
 		public void unsubscribe(Subscription subscription) {
+			if(subscription == senderSubscription)
+				senderSubscription = null;
+			if(subscription == receiverSubscription)
+				receiverSubscription = null;
 		}
 		
 	}
 	
 	MyServer server = new MyServer();
-	Credentials credentials = Credentials.of(ImmutableUserId.of("user-id"));
 	
+	private static final ImmutableMapDescription MAP_DESCRIPTION = ImmutableMapDescription.of("map");
+	private static final ImmutableUserId SENDER_USER_ID = ImmutableUserId.of("sender-user-id");
+	private static final ImmutableUserId RECEIVER_USER_ID = ImmutableUserId.of("receiver-user-id");
 	private class Map2Json implements ActionListener {
 
+
+
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) { 
 			MMapModel map = (MMapModel) Controller.getCurrentController().getMap();
 			if(map.containsExtension(Session.class)) {
 				sessionController.stopSession(map.getExtension(Session.class));
 			}
-			sessionController.startSession(server, credentials, map, ImmutableMapDescription.of("sender-map"));
+			Credentials credentials = Credentials.of(SENDER_USER_ID);
+			sessionController.startSession(server, credentials, map, MAP_DESCRIPTION);
 		}
 	}
 
-	private final MapId RECEIVER_MAP_ID = ImmutableMapId.of("receiver");
 	public class Json2Map implements ActionListener {
 		private MMapController mapController;
 		public MMapModel map;
@@ -162,9 +181,10 @@ public class EventStreamDialog {
 						&& Jackson.objectMapper.readValue(text.getText(),UpdateBlockCompleted.class)
 							.updateBlock().get(0) instanceof RootNodeIdUpdated) {
 					map = (MMapModel) mapController.newMap();
-					sessionController.joinSession(server, credentials, map, RECEIVER_MAP_ID);
+					Credentials credentials = Credentials.of(RECEIVER_USER_ID);
+					sessionController.joinSession(server, credentials, map, SENDER_MAP_ID);
+					server.updateReceiver();
 				}
-				server.updateReceiver();
 			}
 			catch (IOException e1) {
 				e1.printStackTrace();

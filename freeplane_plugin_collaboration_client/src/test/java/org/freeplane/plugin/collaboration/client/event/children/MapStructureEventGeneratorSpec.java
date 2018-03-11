@@ -24,13 +24,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
-import org.freeplane.collaboration.event.batch.ImmutableMapId;
-import org.freeplane.collaboration.event.batch.ImmutableUserId;
-import org.freeplane.collaboration.event.batch.MapId;
-import org.freeplane.collaboration.event.batch.ModifiableUpdateHeader;
-import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
-import org.freeplane.collaboration.event.batch.UserId;
+import org.freeplane.collaboration.event.MapUpdated;
 import org.freeplane.collaboration.event.children.NodeInserted;
 import org.freeplane.collaboration.event.children.NodeMoved;
 import org.freeplane.collaboration.event.children.NodeRemoved;
@@ -43,8 +39,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.plugin.collaboration.client.event.TestObjects;
 import org.freeplane.plugin.collaboration.client.event.UpdatesEventCaptor;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdatesAccessor;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
+import org.freeplane.plugin.collaboration.client.event.batch.UpdatesAccessor;
 import org.freeplane.plugin.collaboration.client.event.content.ContentUpdateGenerators;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -61,16 +57,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class MapStructureEventGeneratorSpec {
 	private static final int DELAY_MILLIS = 10;
-	private static final UserId USER_ID = ImmutableUserId.of("userId");
-	private static final MapId MAP_ID = ImmutableMapId.of("mapId");
 	@Mock
 	private MapStructureEventFactory structuralEventFactory;
 	@Mock
 	private ContentUpdateGenerators contentUpdateGenerators;
 	@Mock
 	private UpdatesAccessor updateBlockGeneratorFactory;
-	private ModifiableUpdateHeader header = ModifiableUpdateHeader.create().setMapId(MAP_ID)
-	    .setMapRevision(0);
 	private UpdatesEventCaptor consumer;
 	private MapStructureEventGenerator uut;
 	final private TestObjects testObjects = new TestObjects();
@@ -103,7 +95,7 @@ public class MapStructureEventGeneratorSpec {
 
 	private void createTestedInstance(final int expectedEventCount) {
 		consumer = new UpdatesEventCaptor(expectedEventCount);
-		Updates updates = new Updates(USER_ID, consumer, DELAY_MILLIS, header);
+		Updates updates = new Updates(consumer, DELAY_MILLIS);
 		when(updateBlockGeneratorFactory.of(map)).thenReturn(updates);
 		when(updateBlockGeneratorFactory.of(Mockito.any(NodeModel.class))).thenReturn(updates);
 		uut = new MapStructureEventGenerator(updateBlockGeneratorFactory, contentUpdateGenerators,
@@ -114,12 +106,8 @@ public class MapStructureEventGeneratorSpec {
 	public void generatesEventOnNodeInsertion() throws Exception {
 		when(structuralEventFactory.createNodeInsertedEvent(child)).thenReturn(childInserted);
 		uut.onNodeInserted(child);
-		final UpdateBlockCompleted event = consumer.getEvent();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-			.userId(USER_ID)
-		    .mapId(header.mapId()).mapRevision(1)
-		    .addUpdateBlock(childInserted).build();
-		assertThat(event).isEqualTo(expected);
+		final List<MapUpdated> eventList = consumer.getEventList();
+		assertThat(eventList).containsExactly(childInserted);
 	}
 
 	@Test
@@ -129,12 +117,8 @@ public class MapStructureEventGeneratorSpec {
 		when(structuralEventFactory.createSpecialNodeTypeSetEvent(child, SpecialNodeType.SUMMARY_END))
 		    .thenReturn(specialTypeSet);
 		uut.onNodeInserted(child);
-		final UpdateBlockCompleted event = consumer.getEvent();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-			.userId(USER_ID)
-		    .mapId(header.mapId()).mapRevision(1)
-		    .addUpdateBlock(childInserted, specialTypeSet).build();
-		assertThat(event).isEqualTo(expected);
+		final List<MapUpdated> eventList = consumer.getEventList();
+		assertThat(eventList).containsExactly(childInserted, specialTypeSet);
 	}
 
 	@Test
@@ -144,14 +128,9 @@ public class MapStructureEventGeneratorSpec {
 		when(structuralEventFactory.createNodeInsertedEvent(child)).thenReturn(childInserted);
 		when(structuralEventFactory.createNodeInsertedEvent(child2)).thenReturn(child2Inserted);
 		uut.onNodeInserted(child);
-		final UpdateBlockCompleted event = consumer.getEvent();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-			.userId(USER_ID)
-		    .mapId(header.mapId()).mapRevision(1)
-		    .addUpdateBlock(childInserted,
-		        child2Inserted)
-		    .build();
-		assertThat(event).isEqualTo(expected);
+		final List<MapUpdated> eventList = consumer.getEventList();
+		assertThat(eventList).containsExactly(childInserted,
+	        child2Inserted);
 	}
 
 	@Test
@@ -162,7 +141,7 @@ public class MapStructureEventGeneratorSpec {
 		when(structuralEventFactory.createNodeInsertedEvent(child2)).thenReturn(child2Inserted);
 		parent.insert(child);
 		uut.onNodeInserted(child);
-		consumer.getEvent();
+		consumer.getEventList();
 		verify(contentUpdateGenerators).onNewNode(child);
 		verify(contentUpdateGenerators).onNewNode(child2);
 	}
@@ -177,12 +156,8 @@ public class MapStructureEventGeneratorSpec {
 		when(structuralEventFactory.createSpecialNodeTypeSetEvent(child2, SpecialNodeType.SUMMARY_BEGIN))
 		    .thenReturn(specialTypeSet);
 		uut.onNodeInserted(child);
-		final UpdateBlockCompleted event = consumer.getEvent();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-			.userId(USER_ID)
-		    .mapId(header.mapId()).mapRevision(1)
-		    .addUpdateBlock(childInserted, child2Inserted, specialTypeSet).build();
-		assertThat(event).isEqualTo(expected);
+		final List<MapUpdated> eventList = consumer.getEventList();
+		assertThat(eventList).containsExactly(childInserted, child2Inserted, specialTypeSet);
 	}
 
 	@Test
@@ -195,12 +170,8 @@ public class MapStructureEventGeneratorSpec {
 		when(structuralEventFactory.createSpecialNodeTypeSetEvent(child2, SpecialNodeType.SUMMARY_END))
 		    .thenReturn(specialTypeSet);
 		uut.onNodeInserted(child);
-		final UpdateBlockCompleted event = consumer.getEvent();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-			.userId(USER_ID)
-		    .mapId(header.mapId()).mapRevision(1)
-		    .addUpdateBlock(childInserted, child2Inserted, specialTypeSet).build();
-		assertThat(event).isEqualTo(expected);
+		final List<MapUpdated> eventList = consumer.getEventList();
+		assertThat(eventList).containsExactly(childInserted, child2Inserted, specialTypeSet);
 	}
 
 	@Test
@@ -214,12 +185,8 @@ public class MapStructureEventGeneratorSpec {
 		when(structuralEventFactory.createSpecialNodeTypeSetEvent(child2, SpecialNodeType.SUMMARY_BEGIN_END))
 		    .thenReturn(specialTypeSet);
 		uut.onNodeInserted(child);
-		final UpdateBlockCompleted event = consumer.getEvent();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-			.userId(USER_ID)
-		    .mapId(header.mapId()).mapRevision(1)
-		    .addUpdateBlock(childInserted, child2Inserted, specialTypeSet).build();
-		assertThat(event).isEqualTo(expected);
+		final List<MapUpdated> eventList = consumer.getEventList();
+		assertThat(eventList).containsExactly(childInserted, child2Inserted, specialTypeSet);
 	}
 
 	@Test
@@ -229,12 +196,8 @@ public class MapStructureEventGeneratorSpec {
 		when(structuralEventFactory.createNodeInsertedEvent(child)).thenReturn(childInserted);
 		when(structuralEventFactory.createRootNodeIdUpdatedEvent(map)).thenReturn(rootNodeSet);
 		uut.onNewMap(map);
-		final UpdateBlockCompleted event = consumer.getEvent();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-			.userId(USER_ID)
-		    .mapId(header.mapId()).mapRevision(1)
-		    .addUpdateBlock(rootNodeSet, childInserted).build();
-		assertThat(event).isEqualTo(expected);
+		final List<MapUpdated> eventList = consumer.getEventList();
+		assertThat(eventList).containsExactly(rootNodeSet, childInserted);
 	}
 
 	@Test
@@ -244,7 +207,7 @@ public class MapStructureEventGeneratorSpec {
 		when(structuralEventFactory.createNodeInsertedEvent(child)).thenReturn(childInserted);
 		when(structuralEventFactory.createRootNodeIdUpdatedEvent(map)).thenReturn(rootNodeSet);
 		uut.onNewMap(map);
-		consumer.getEvent();
+		consumer.getEventList();
 		verify(contentUpdateGenerators).onNewMap(map);
 		verify(contentUpdateGenerators).onNewNode(parent);
 		verify(contentUpdateGenerators).onNewNode(child);
@@ -254,23 +217,15 @@ public class MapStructureEventGeneratorSpec {
 	public void generatesEventOnNodeMovement() throws Exception {
 		when(structuralEventFactory.createNodeMovedEvent(child)).thenReturn(childMoved);
 		uut.onNodeMoved(child);
-		final UpdateBlockCompleted event = consumer.getEvent();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-			.userId(USER_ID)
-		    .mapId(header.mapId()).mapRevision(1)
-		    .addUpdateBlock(childMoved).build();
-		assertThat(event).isEqualTo(expected);
+		final List<MapUpdated> eventList = consumer.getEventList();
+		assertThat(eventList).containsExactly(childMoved);
 	}
 
 	@Test
 	public void generatesEventOnNodeRemoval() throws Exception {
 		when(structuralEventFactory.createNodeRemovedEvent(child)).thenReturn(childRemoved);
 		uut.onNodeRemoved(child);
-		final UpdateBlockCompleted event = consumer.getEvent();
-		UpdateBlockCompleted expected = UpdateBlockCompleted.builder()
-			.userId(USER_ID)
-		    .mapId(header.mapId()).mapRevision(1)
-		    .addUpdateBlock(childRemoved).build();
-		assertThat(event).isEqualTo(expected);
+		final List<MapUpdated> eventList = consumer.getEventList();
+		assertThat(eventList).containsExactly(childRemoved);
 	}
 }

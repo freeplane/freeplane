@@ -1,9 +1,9 @@
 package org.freeplane.plugin.collaboration.client.event;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.freeplane.collaboration.event.MapUpdated;
-import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
 import org.freeplane.features.map.MapModel;
 
 public class UpdateProcessorChain{
@@ -30,8 +30,8 @@ public class UpdateProcessorChain{
 	}
 
 
-	public void onUpdate(MapModel map, final UpdateBlockCompleted updates) {
-		for (MapUpdated event : updates.updateBlock())
+	public void onUpdate(MapModel map, List<MapUpdated> events ) {
+		for (MapUpdated event : events)
 			onUpdate(map, event);
 	}
 }

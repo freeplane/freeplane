@@ -4,13 +4,11 @@ import java.util.function.Consumer;
 
 import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
 import org.freeplane.collaboration.event.json.Jackson;
-import org.freeplane.plugin.collaboration.client.event.batch.UpdatesProcessor;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-public class UpdatesSerializer implements UpdatesProcessor {
+public class UpdatesSerializer {
 	private final Consumer<String> consumer;
 	private final ObjectMapper objectMapper;
 	
@@ -23,7 +21,6 @@ public class UpdatesSerializer implements UpdatesProcessor {
 		this.consumer = consumer;
 		this.objectMapper = objectMapper;
 	}
-	@Override
 	public void onUpdates(UpdateBlockCompleted event) {
 		write(event, objectMapper.writer());
 	}

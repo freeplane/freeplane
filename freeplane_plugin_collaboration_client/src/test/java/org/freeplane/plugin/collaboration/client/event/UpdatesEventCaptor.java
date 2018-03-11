@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
+import org.freeplane.collaboration.event.MapUpdated;
 import org.freeplane.plugin.collaboration.client.event.batch.UpdatesProcessor;
 
 public class UpdatesEventCaptor implements UpdatesProcessor {
@@ -16,7 +16,7 @@ public class UpdatesEventCaptor implements UpdatesProcessor {
 
 	
 	private final CountDownLatch lock;
-	private ArrayList<UpdateBlockCompleted> events;
+	private ArrayList<List<MapUpdated>> events;
 
 	public UpdatesEventCaptor(int expectedEventCount) {
 		this.lock = new CountDownLatch(expectedEventCount);
@@ -24,26 +24,26 @@ public class UpdatesEventCaptor implements UpdatesProcessor {
 	}
 
 	@Override
-	public void onUpdates(UpdateBlockCompleted event) {
-		events.add(event);
+	public void onUpdates(List<MapUpdated> updateBlock) {
+		events.add(updateBlock);
 		assertThat(lock.getCount() > 0);
 		lock.countDown();
 	}
 
-	public List<UpdateBlockCompleted> getEvents()  throws InterruptedException {
-		return getEvents(EVENT_TIMEOUT_MILLISECONDS * lock.getCount(), TimeUnit.MILLISECONDS);
+	public List<List<MapUpdated>> getEvents()  throws InterruptedException {
+		return getEventLists(EVENT_TIMEOUT_MILLISECONDS * lock.getCount(), TimeUnit.MILLISECONDS);
 	}
 
-	public UpdateBlockCompleted getEvent()  throws InterruptedException {
-		return getEvent(EVENT_TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS);
+	public List<MapUpdated> getEventList()  throws InterruptedException {
+		return getEventList(EVENT_TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS);
 	}
 
-	public List<UpdateBlockCompleted> getEvents(long timeout, TimeUnit unit)  throws InterruptedException {
+	public List<List<MapUpdated>> getEventLists(long timeout, TimeUnit unit)  throws InterruptedException {
 		await(timeout, unit);
 		return events;
 	}
 
-	public UpdateBlockCompleted getEvent(long timeout, TimeUnit unit)  throws InterruptedException {
+	public List<MapUpdated> getEventList(long timeout, TimeUnit unit)  throws InterruptedException {
 		await(timeout, unit);
 		assertThat(events).hasSize(1);
 		return events.get(0);

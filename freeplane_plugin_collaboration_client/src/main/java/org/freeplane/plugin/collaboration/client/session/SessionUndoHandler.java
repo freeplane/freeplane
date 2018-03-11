@@ -1,12 +1,11 @@
 package org.freeplane.plugin.collaboration.client.session;
 
-import java.awt.event.ActionListener;
-
 import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 
 public class SessionUndoHandler implements IUndoHandler{
 	
@@ -15,14 +14,9 @@ public class SessionUndoHandler implements IUndoHandler{
 	}
 
 	private IUndoHandler delegate;
-	private MapModel map;
+	private final MapModel map;
 
-	public SessionUndoHandler() {
-	}
-
-	public void addToMap(MapModel map) {
-		if(this.map != null)
-			throw new IllegalStateException();
+	public SessionUndoHandler(MapModel map) {
 		this.map = map;
 		this.delegate = map.removeExtension(IUndoHandler.class);
 		delegate.setChangeEventSource(this);
@@ -80,20 +74,14 @@ public class SessionUndoHandler implements IUndoHandler{
 		return delegate.getLastDescription();
 	}
 
-	public ActionListener getRedoAction() {
-		return delegate.getRedoAction();
-	}
-
-	public ActionListener getUndoAction() {
-		return delegate.getUndoAction();
-	}
-
 	public boolean isUndoActionRunning() {
 		return delegate.isUndoActionRunning();
 	}
 
 	public void redo() {
+		flush();
 		delegate.redo();
+		flush();
 	}
 
 	public void resetRedo() {
@@ -113,7 +101,18 @@ public class SessionUndoHandler implements IUndoHandler{
 	}
 
 	public void undo() {
+			flush();
 		delegate.undo();
+			flush();
+	}
+
+	private void flush() {
+		if(map == null || getTransactionLevel() != 1)
+			return;
+		Updates updates = map.getExtension(Updates.class);
+		if(updates == null)
+			return;
+		updates.flush();
 	}
 
 	public void deactivate() {
