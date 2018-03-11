@@ -24,7 +24,8 @@ class CachingIcon implements Icon {
 
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		final Graphics2D g2 = (Graphics2D) g;
-		if(g2.getRenderingHint(GraphicsHints.CACHE_ICONS) != Boolean.TRUE) {
+		if(g2.getRenderingHint(GraphicsHints.CACHE_ICONS) != Boolean.TRUE
+				|| icon.getIconHeight() <= 0 || icon.getIconWidth() <= 0) {
 			icon.paintIcon(c, g, x, y);
 			return;
 		}
