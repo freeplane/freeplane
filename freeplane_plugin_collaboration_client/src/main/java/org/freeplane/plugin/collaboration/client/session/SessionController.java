@@ -57,11 +57,11 @@ public class SessionController {
 //	From the beginning
 //	From given map revision
 //	Optimize: server skips overwritten updates of the same element (later)
-	
+
 	private final UpdateProcessorChain updateProcessor;
 	private final Map<MapId, Session> sessions;
 	private final UpdateEventGenerator updateEventGenerator;
-	
+
 	@VisibleForTesting
 	SessionController(UpdateEventGenerator updateEventGenerator, UpdateProcessorChain processor,
 	                Map<MapId, Session> sessions) {
@@ -84,7 +84,7 @@ public class SessionController {
 					sessions.remove(session.getMapId());
 				}
 			}
-			
+
 			@Override
 			public void onCreate(MapModel map) {
 			}
@@ -114,7 +114,8 @@ public class SessionController {
 
 	static private UpdateProcessorChain createUpdateProcessor() {
 		final NodeFactory nodeFactory = new NodeFactory();
-		final ModeController modeController = Controller.getCurrentController()
+		final Controller controller = Controller.getCurrentController();
+		final ModeController modeController = controller
 		    .getModeController(MModeController.MODENAME);
 		MMapController mapController = (MMapController) modeController.getMapController();
 		final SingleNodeStructureManipulator singleNodeStructureManipulator = new SingleNodeStructureManipulator(
@@ -123,7 +124,7 @@ public class SessionController {
 		final SpecialNodeTypeProcessor specialNodeTypeProcessor = new SpecialNodeTypeProcessor();
 		NodeContentManipulator updater = new NodeContentManipulator(mapController);
 		final MLinkController linkController = (MLinkController) MLinkController.getController(modeController);
-		UpdateProcessorChain processor = new UpdateProcessorChain().add(rootNodeIdUpdatedProcessor).add(specialNodeTypeProcessor)
+		UpdateProcessorChain processor = new UpdateProcessorChain(controller).add(rootNodeIdUpdatedProcessor).add(specialNodeTypeProcessor)
 		    .add(new NodeInsertedProcessor(singleNodeStructureManipulator, nodeFactory))
 		    .add(new NodeMovedProcessor(singleNodeStructureManipulator))
 		    .add(new NodeRemovedProcessor(singleNodeStructureManipulator))
@@ -135,19 +136,19 @@ public class SessionController {
 		    .add(new HyperlinkUpdateProcessor(linkController));
 		return processor;
 	}
-	
+
 
 	public void startSession(Server server, Credentials credentials, MMapModel map, MapDescription mapDescription) {
 		final MapId mapId = server.createNewMap(ImmutableMapCreateRequest.of(credentials, mapDescription));
 		joinSession(server, credentials, map, mapId);
 		updateEventGenerator.onNewMap(map);
 	}
-	
+
 	public void joinSession(Server server, Credentials credentials, MMapModel map, MapId mapId) {
 		Session session = new Session(server, credentials, updateProcessor, mapId, map);
 		sessions.put(mapId, session);
 	}
-	
+
 	public void stopSession(Session session) {
 		session.terminate();
 		sessions.remove(session.getMapId());
