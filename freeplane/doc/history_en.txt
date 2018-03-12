@@ -1,9 +1,10 @@
 ===============================
 1.6.14
 ===============================
-Fix inactive action icons on buttons and menus
 Option to hide connectors
 Option to show connectors only for selected nodes
+Options for handling texts and fonts in exported PDF and SVG
+Fix icons on buttons and menus available only as svg images
 
 ===============================
 1.6.13
