@@ -57,7 +57,7 @@ class UndoHandler implements IUndoHandler {
 	final private LinkedList<ListIterator<CompoundActor>> transactionIteratorList;
 	private boolean deactivated;
 	private ChangeEvent event;
-	
+
 	@Override
 	public void setChangeEventSource(IUndoHandler source) {
 		event = new ChangeEvent(source);
@@ -78,6 +78,7 @@ class UndoHandler implements IUndoHandler {
 		event = new ChangeEvent(this);
 	}
 
+	@Override
 	public void deactivate() {
 		deactivated = true;
 		fireStateChanged();
@@ -90,6 +91,7 @@ class UndoHandler implements IUndoHandler {
 	 * freeplane.base.undo.UndoHandler#addActor(freeplane.base.undo.UndoableActor
 	 * )
 	 */
+	@Override
 	public void addActor(final IActor actor) {
 		resetRedo();
 		actorList.commitDelay = COMMIT_DELAY;
@@ -108,7 +110,7 @@ class UndoHandler implements IUndoHandler {
 		}
 		if ((actorList.size() > 0)
 		        && (actionFrameStarted || currentTime - timeOfLastAdd < UndoHandler.TIME_TO_BEGIN_NEW_ACTION)) {
-			CompoundActor compoundActor = (CompoundActor) actorIterator.previous();
+			CompoundActor compoundActor = actorIterator.previous();
 			compoundActor.add(actor);
 			actorIterator.next();
 		}
@@ -138,24 +140,28 @@ class UndoHandler implements IUndoHandler {
 		fireStateChanged();
 	}
 
+	@Override
 	public boolean controlsCurrentMap() {
 		return map == Controller.getCurrentController().getMap();
 	}
 
-	private void fireStateChanged() {
+	public void fireStateChanged() {
 		for (final ChangeListener listener : listeners) {
 			listener.stateChanged(event);
 		}
 	}
 
+	@Override
 	public boolean canRedo() {
 		return actorIterator.hasNext();
 	}
 
+	@Override
 	public boolean canUndo() {
 		return actorIterator.hasPrevious();
 	}
 
+	@Override
 	public void commit() {
 		resetRedo();
 		final CompoundActor compoundActor = new CompoundActor(actorList);
@@ -178,12 +184,14 @@ class UndoHandler implements IUndoHandler {
 		}
 	}
 
+	@Override
 	public void delayedCommit() {
 		if (actorList.commitDelay == 0) {
 			commit();
 			return;
 		}
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				actorList.commitDelay--;
 				delayedCommit();
@@ -191,12 +199,14 @@ class UndoHandler implements IUndoHandler {
 		});
 	}
 
+	@Override
 	public void delayedRollback() {
 		if (actorList.commitDelay == 0) {
 			rollback();
 			return;
 		}
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				actorList.commitDelay--;
 				delayedRollback();
@@ -204,6 +214,7 @@ class UndoHandler implements IUndoHandler {
 		});
 	}
 
+	@Override
 	public String getLastDescription() {
 		final String description;
 		if (canUndo()) {
@@ -216,6 +227,7 @@ class UndoHandler implements IUndoHandler {
 	}
 
 
+	@Override
 	public boolean isUndoActionRunning() {
 		return isUndoActionRunning;
 	}
@@ -224,6 +236,7 @@ class UndoHandler implements IUndoHandler {
 	 * (non-Javadoc)
 	 * @see freeplane.base.undo.UndoHandler#redo()
 	 */
+	@Override
 	public void redo() {
 		if (canRedo()) {
 			final IActor redoActor = actorIterator.next();
@@ -234,6 +247,7 @@ class UndoHandler implements IUndoHandler {
 		}
 	}
 
+	@Override
 	public void resetRedo() {
 		while (canRedo()) {
 			actorIterator.next();
@@ -242,6 +256,7 @@ class UndoHandler implements IUndoHandler {
 		fireStateChanged();
 	}
 
+	@Override
 	public void rollback() {
 		try {
 			isUndoActionRunning = true;
@@ -269,7 +284,8 @@ class UndoHandler implements IUndoHandler {
 			if (viewController.isDispatchThread()) {
 	        	actionFrameStarted = true;
 	        	viewController.invokeLater(new Runnable() {
-	        		public void run() {
+	        		@Override
+					public void run() {
 	        			actionFrameStarted = false;
 	        		}
 	        	});
@@ -277,11 +293,13 @@ class UndoHandler implements IUndoHandler {
         }
 	}
 
+	@Override
 	public void forceNewTransaction() {
 		timeOfLastAdd = 0;
 		actionFrameStarted = false;
     }
-	
+
+	@Override
 	public void startTransaction() {
 		transactionList.addLast(actorList);
 		transactionIteratorList.addLast(actorIterator);
@@ -294,6 +312,7 @@ class UndoHandler implements IUndoHandler {
 	 * (non-Javadoc)
 	 * @see freeplane.base.undo.UndoHandler#undo()
 	 */
+	@Override
 	public void undo() {
 		if (canUndo()) {
 			final IActor actor = actorIterator.previous();
@@ -308,15 +327,18 @@ class UndoHandler implements IUndoHandler {
 		}
 	}
 
+	@Override
 	public void addChangeListener(final ChangeListener listener) {
 		listeners.add(listener);
 	}
 
+	@Override
 	public void removeChangeListener(final ChangeListener listener) {
 		listeners.remove(listener);
 	}
 
-    public int getTransactionLevel() {
+    @Override
+	public int getTransactionLevel() {
         return transactionList.size();
     }
 }

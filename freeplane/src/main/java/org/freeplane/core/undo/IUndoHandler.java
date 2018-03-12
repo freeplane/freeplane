@@ -19,19 +19,17 @@
  */
 package org.freeplane.core.undo;
 
-import java.awt.event.ActionListener;
-
 import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 
 public interface IUndoHandler extends IExtension {
-	
+
 	boolean controlsCurrentMap();
-	
+
 	void setChangeEventSource(IUndoHandler source);
-	
+
 	void addActor(IActor actor);
 
 	boolean canRedo();
@@ -43,6 +41,8 @@ public interface IUndoHandler extends IExtension {
 	void removeChangeListener(ChangeListener listener);
 
 	void commit();
+
+	void fireStateChanged();
 
 	String getLastDescription();
 
@@ -65,9 +65,9 @@ public interface IUndoHandler extends IExtension {
 	public void delayedCommit();
 
 	public void delayedRollback();
-	
+
 	public int getTransactionLevel();
-	
+
 	static IUndoHandler create(MMapModel map) {
 		return new UndoHandler(map);
 	}
