@@ -32,15 +32,18 @@ public class NodeChangeEvent extends AWTEvent {
 	final private Object newValue;
 	final private Object oldValue;
 	final private Object property;
-// 	final private ModeController modeController;
+	final private boolean setsDirtyFlag;
+	final private boolean updatesModificationTime;
 
 	public NodeChangeEvent(final NodeModel node, final Object property,
-	                       final Object oldValue, final Object newValue) {
+	                       final Object oldValue, final Object newValue, boolean setsDirtyFlag, boolean updatesModificationTime) {
 		super(node, 0);
 //		this.modeController = modeController;
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.property = property;
+		this.setsDirtyFlag = setsDirtyFlag;
+		this.updatesModificationTime = updatesModificationTime;
 	}
 
 	public Object getNewValue() {
@@ -60,6 +63,14 @@ public class NodeChangeEvent extends AWTEvent {
 	}
 
 	public NodeChangeEvent forNode(NodeModel node) {
-		return new NodeChangeEvent(node, getProperty(), getOldValue(), getNewValue());
+		return new NodeChangeEvent(node, getProperty(), getOldValue(), getNewValue(), setsDirtyFlag, updatesModificationTime);
     }
+
+	public boolean setsDirtyFlag() {
+		return setsDirtyFlag;
+	}
+
+	public boolean updatesModificationTime() {
+		return updatesModificationTime;
+	}
 }
