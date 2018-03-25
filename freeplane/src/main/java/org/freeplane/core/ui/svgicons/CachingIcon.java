@@ -10,18 +10,19 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 class CachingIcon implements Icon {
-	
+
 	final private ImageIcon icon;
 	private double scaleX = 0;
 	private double scaleY = 0;
 	private BufferedImage cachedImage;
-	
+
 
 	public CachingIcon(ImageIcon icon) {
 		super();
 		this.icon = icon;
 	}
 
+	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		final Graphics2D g2 = (Graphics2D) g;
 		if(g2.getRenderingHint(GraphicsHints.CACHE_ICONS) != Boolean.TRUE
@@ -29,15 +30,19 @@ class CachingIcon implements Icon {
 			icon.paintIcon(c, g, x, y);
 			return;
 		}
-		
-		
+
+
 		final AffineTransform transform = g2.getTransform();
 		final double scaleX = transform.getScaleX();
 		final double scaleY = transform.getScaleY();
 		if(scaleX != this.scaleX || scaleY != this.scaleY || cachedImage == null) {
+			final int scaledWidth = (int) (getIconWidth() * scaleX);
+			final int scaledHeight = (int) (getIconHeight() * scaleY);
+			if(scaledHeight <= 0 || scaledWidth <= 0)
+				return;
 			this.scaleX = scaleX;
 			this.scaleY = scaleY;
-			updateImage();
+			updateImage(scaledWidth, scaledHeight);
 		}
 		Graphics2D gg = (Graphics2D)g.create();
 		gg.setTransform(AffineTransform.getTranslateInstance(x * scaleX + transform.getTranslateX(), y * scaleY  + transform.getTranslateY()));
@@ -45,25 +50,26 @@ class CachingIcon implements Icon {
 		gg.dispose();
 	}
 
+	@Override
 	public int getIconWidth() {
 		return icon.getIconWidth();
 	}
 
+	@Override
 	public int getIconHeight() {
 		return icon.getIconHeight();
 	}
-	
-    private void  updateImage()
-    {
-        cachedImage = new BufferedImage((int) (getIconWidth() * scaleX), (int) (getIconHeight() * scaleY), BufferedImage.TYPE_INT_ARGB);
+
+    private void updateImage(final int scaledWidth, final int scaledHeight) {
+		cachedImage = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB);
         final Graphics2D graphics = cachedImage.createGraphics();
         graphics.scale(scaleX, scaleY);
 		icon.paintIcon(null, graphics, 0, 0);
-    }
+	}
 
 	public ImageIcon getImageIcon() {
 		return icon;
 	}
 
-	
+
 }
