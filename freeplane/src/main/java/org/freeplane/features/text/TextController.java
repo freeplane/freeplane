@@ -41,6 +41,7 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -297,7 +298,11 @@ public class TextController implements IExtension {
 		}
 		details.setHidden(isHidden);
 		node.addExtension(details);
-		Controller.getCurrentModeController().getMapController().nodeChanged(node, DETAILS_HIDDEN, !isHidden, isHidden);
+		final MapController mapController = Controller.getCurrentModeController().getMapController();
+		final NodeModel node1 = node;
+		final Object newValue = isHidden;
+		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node1, DETAILS_HIDDEN, !isHidden, newValue, true, false);
+		mapController.nodeRefresh(nodeChangeEvent);
 	}
 
 	private void registerDetailsTooltip() {
