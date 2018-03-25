@@ -298,11 +298,8 @@ public class TextController implements IExtension {
 		}
 		details.setHidden(isHidden);
 		node.addExtension(details);
-		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		final NodeModel node1 = node;
-		final Object newValue = isHidden;
-		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node1, DETAILS_HIDDEN, !isHidden, newValue, true, false);
-		mapController.nodeRefresh(nodeChangeEvent);
+		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, DETAILS_HIDDEN, !isHidden, (Object) isHidden, true, false);
+		Controller.getCurrentModeController().getMapController().nodeRefresh(nodeChangeEvent);
 	}
 
 	private void registerDetailsTooltip() {
