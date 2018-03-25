@@ -62,6 +62,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	private final class CombiFactory implements IViewerFactory {
 		private IViewerFactory factory;
 
+		@Override
 		public ScalableComponent createViewer(final URI uri,
 				final Dimension preferredSize) throws MalformedURLException,
 				IOException {
@@ -71,6 +72,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return component;
 		}
 
+		@Override
 		public ScalableComponent createViewer(final ExternalResource resource,
 				final URI absoluteUri, final int maximumWidth)
 		        throws MalformedURLException, IOException {
@@ -80,6 +82,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return component;
 		}
 
+		@Override
 		public String getDescription() {
 			final StringBuilder sb = new StringBuilder();
 			for (final IViewerFactory factory : factories) {
@@ -91,10 +94,12 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return sb.toString();
 		}
 
+		@Override
 		public boolean accept(final URI uri) {
 			return getViewerFactory(uri) != null;
 		}
 
+		@Override
 		public ScalableComponent createViewer(URI uri, float zoom)
 				throws MalformedURLException, IOException {
 			factory = getViewerFactory(uri);
@@ -139,6 +144,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			this.basePoint = basePoint;
 		}
 
+		@Override
 		public void mouseClicked(final MouseEvent e) {
 			if (resetSize(e)) {
 				return;
@@ -180,6 +186,8 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 				return false;
 			}
 			final ExternalResource activeView = getModel(e);
+			if(activeView ==  null)
+				return false;
 			NodeModel node = null;
 			//get node from mouse click
 			for (int i = 0; i < e.getComponent().getParent().getComponentCount(); i++) {
@@ -246,6 +254,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return true;
 		}
 
+		@Override
 		public void mouseEntered(final MouseEvent e) {
 			if (isActive()) {
 				return;
@@ -264,6 +273,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return model;
 		}
 
+		@Override
 		public void mouseExited(final MouseEvent e) {
 			if (isActive()) {
 				return;
@@ -298,6 +308,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			ViewerBorder.repaintBorder((JComponent) component);
 		}
 
+		@Override
 		public void mousePressed(final MouseEvent e) {
 			final JComponent component = (JComponent) e.getComponent();
 			final int cursorType = component.getCursor().getType();
@@ -316,6 +327,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			}
 		}
 
+		@Override
 		public void mouseReleased(final MouseEvent e) {
 			if (sizeChanged) {
 				final JComponent component = (JComponent) e.getComponent();
@@ -340,6 +352,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			setCursor(e);
 		}
 
+		@Override
 		public void mouseDragged(final MouseEvent e) {
 			if (!isActive()) {
 				return;
@@ -378,6 +391,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return;
 		}
 
+		@Override
 		public void mouseMoved(final MouseEvent e) {
 			if (isActive()) {
 				return;
@@ -400,12 +414,12 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		modeController.addExtension(this.getClass(), this);
 		factories.add(new BitmapViewerFactory());
 	}
-	
+
 	@Override
 	protected HookAction createHookAction() {
 		return null;
 	}
-	
+
 	public void setZoom(final ModeController modeController, final MapModel map, final ExternalResource model,
 	                    final float size) {
 		final float oldSize = model.getZoom();
@@ -413,15 +427,18 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				model.setZoom(size);
 				modeController.getMapController().setSaved(map, false);
 			}
 
+			@Override
 			public String getDescription() {
 				return "setModelSize";
 			}
 
+			@Override
 			public void undo() {
 				model.setZoom(oldSize);
 				modeController.getMapController().setSaved(map, false);
@@ -452,7 +469,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		ProgressIcons.updateExtendedProgressIcons(node, input.getName());
 		return preview;
 	}
-	
+
 	protected URI createURI(final NodeModel node) {
 		final Controller controller = Controller.getCurrentController();
 		final ViewController viewController = controller.getViewController();
@@ -583,6 +600,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		return ExternalResource.class;
 	}
 
+	@Override
 	public void onViewCreated(final Container container) {
 		final NodeView nodeView = (NodeView) container;
 		final ExternalResource previewUri = nodeView.getModel().getExtension(ExternalResource.class);
@@ -592,6 +610,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		createViewer(previewUri, nodeView);
 	}
 
+	@Override
 	public void onViewRemoved(final Container container) {
 		final NodeView nodeView = (NodeView) container;
 		final ExternalResource previewUri = nodeView.getModel().getExtension(ExternalResource.class);
