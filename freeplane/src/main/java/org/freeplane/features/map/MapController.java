@@ -73,7 +73,7 @@ public class MapController extends SelectionController implements IExtension{
 	public enum Direction {
 		BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD
 	}
-	
+
 	private static boolean hasValidSelection() {
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		return selection != null && selection.getSelected() != null;
@@ -95,13 +95,16 @@ public class MapController extends SelectionController implements IExtension{
 			});
 		}
 
+		@Override
 		public void nodeChanged(final NodeChangeEvent event) {
 			setActionEnabled();
 		}
 
+		@Override
 		public void onDeselect(final NodeModel node) {
 		}
 
+		@Override
 		public void onSelect(final NodeModel node) {
 			runner.runLater();
 		}
@@ -112,26 +115,32 @@ public class MapController extends SelectionController implements IExtension{
 					action.setEnabled();
 		}
 
+		@Override
 		public void mapChanged(MapChangeEvent event) {
 			setActionEnabled();
 		}
 
+		@Override
 		public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 			setActionEnabled();
 		}
 
+		@Override
 		public void onNodeInserted(NodeModel parent, NodeModel child,
 				int newIndex) {
 			setActionEnabled();
 		}
 
+		@Override
 		public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 			setActionEnabled();
 		}
 
+		@Override
 		public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 		}
 
+		@Override
 		public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 			setActionEnabled();
 		}
@@ -166,6 +175,7 @@ public class MapController extends SelectionController implements IExtension{
 			});
 		}
 
+		@Override
 		public void nodeChanged(final NodeChangeEvent event) {
 			if (NodeChangeType.REFRESH.equals(event.getProperty())) {
 				return;
@@ -184,33 +194,41 @@ public class MapController extends SelectionController implements IExtension{
 					action.setSelected();
 		}
 
+		@Override
 		public void onDeselect(final NodeModel node) {
 		}
 
+		@Override
 		public void onSelect(final NodeModel node) {
 			setActionsSelected();
 		}
 
+		@Override
 		public void mapChanged(final MapChangeEvent event) {
 			setActionsSelected();
 		}
 
+		@Override
 		public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 			setActionsSelected();
 		}
 
+		@Override
 		public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
 			setActionsSelected();
 		}
 
+		@Override
 		public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 			setActionsSelected();
 		}
 
+		@Override
 		public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 			setActionsSelected();
 		}
 
+		@Override
 		public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 			setActionsSelected();
 		}
@@ -248,8 +266,8 @@ public class MapController extends SelectionController implements IExtension{
 			actionSelectorOnChange.remove(action);
 		}
 	}
-	
-	
+
+
 
 	/**
 	 * This class sortes nodes by ascending depth of their paths to root. This
@@ -262,6 +280,7 @@ public class MapController extends SelectionController implements IExtension{
 		}
 
 		/* the < relation. */
+		@Override
 		public int compare(final NodeModel n1, final NodeModel n2) {
 			final NodeModel[] path1 = n1.getPathToRoot();
 			final NodeModel[] path2 = n2.getPathToRoot();
@@ -302,10 +321,12 @@ public class MapController extends SelectionController implements IExtension{
 		mapReader = new MapReader(readManager);
 		readManager.addElementHandler("map", mapReader);
 		readManager.addAttributeHandler("map", "version", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object node, final String value) {
 			}
 		});
 		readManager.addAttributeHandler("map", "dialect", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object node, final String value) {
 			}
 		});
@@ -338,10 +359,10 @@ public class MapController extends SelectionController implements IExtension{
 					Controller.getCurrentController().getSelection().scrollNodeTreeToVisible(node);
 				}
 			});
-			
+
 		}
 	}
-	
+
 	public void setFolded(final NodeModel node, final boolean fold) {
 		if(!fold || node.isRoot())
 			unfold(node);
@@ -383,7 +404,7 @@ public class MapController extends SelectionController implements IExtension{
 		if(hiddenChildShown)
 	        fireNodeUnfold(node);
 	}
-	
+
 	public void fold(final NodeModel node) {
 		if (node.getChildCount() == 0|| node.isRoot())
 			return;
@@ -436,7 +457,7 @@ public class MapController extends SelectionController implements IExtension{
 
 	private void fireNodeUnfold(final NodeModel node) {
 		node.fireNodeChanged(new NodeChangeEvent(node, NodeView.Properties.HIDDEN_CHILDREN, null,
-				null));
+				null, false, false));
     }
 
 	private void fireFoldingChanged(final NodeModel node) {
@@ -455,7 +476,7 @@ public class MapController extends SelectionController implements IExtension{
 
 	protected boolean unfoldHiddenChildren(NodeModel node) {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		return ! mapViewManager.isFoldedOnCurrentView(node) 
+		return ! mapViewManager.isFoldedOnCurrentView(node)
 				&& mapViewManager.unfoldHiddenChildren(node);
 	}
 
@@ -525,7 +546,7 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	/**
-	 * @param modeController 
+	 * @param modeController
 	 * @param modeController
 	 *
 	 */
@@ -803,8 +824,8 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public void nodeChanged(final NodeModel node, final Object property, final Object oldValue, final Object newValue) {
-		setSaved(node.getMap(), false);
-		nodeRefresh(node, property, oldValue, newValue, true);
+		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue, newValue, true, true);
+		nodeRefresh(nodeChangeEvent);
 	}
 
 	@Deprecated
@@ -813,21 +834,25 @@ public class MapController extends SelectionController implements IExtension{
 	}
 
 	public void nodeRefresh(final NodeModel node, final Object property, final Object oldValue, final Object newValue) {
-		nodeRefresh(node, property, oldValue, newValue, false);
+		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue, newValue, false, false);
+		nodeRefresh(nodeChangeEvent);
 	}
 
-	private void nodeRefresh(final NodeModel node, final Object property, final Object oldValue, final Object newValue,
-	                         final boolean isUpdate) {
+	public void nodeRefresh(final NodeChangeEvent nodeChangeEvent) {
 		if (mapReader.isMapLoadingInProcess()) {
 			return;
 		}
-		if (isUpdate && !Controller.getCurrentModeController().isUndoAction()) {
+		final NodeModel node = nodeChangeEvent.getNode();
+		if(nodeChangeEvent.setsDirtyFlag())
+			setSaved(node.getMap(), false);
+		if (nodeChangeEvent.updatesModificationTime() && !Controller.getCurrentModeController().isUndoAction()) {
 			final HistoryInformationModel historyInformation = node.getHistoryInformation();
 			if (historyInformation != null) {
 				final IActor historyActor = new IActor() {
 					private final Date lastModifiedAt = historyInformation.getLastModifiedAt();
 					private final Date now = new Date();
 
+					@Override
 					public void undo() {
 						setDate(historyInformation, lastModifiedAt);
 					}
@@ -836,14 +861,16 @@ public class MapController extends SelectionController implements IExtension{
 						final Date oldLastModifiedAt = historyInformation.getLastModifiedAt();
 						historyInformation.setLastModifiedAt(lastModifiedAt);
 						final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node,
-						    HistoryInformationModel.class, oldLastModifiedAt, lastModifiedAt);
+						    HistoryInformationModel.class, oldLastModifiedAt, lastModifiedAt, false, false);
 						fireNodeChanged(node, nodeChangeEvent);
 					}
 
+					@Override
 					public String getDescription() {
 						return null;
 					}
 
+					@Override
 					public void act() {
 						setDate(historyInformation, now);
 					}
@@ -851,9 +878,9 @@ public class MapController extends SelectionController implements IExtension{
 				Controller.getCurrentModeController().execute(historyActor, node.getMap());
 			}
 		}
-		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue, newValue);
 		fireNodeChanged(node, nodeChangeEvent);
 	}
+
 
 	// nodes may only be refreshed by their own ModeController, so we have to store that too
 	private final ActionEnablerOnChange actionEnablerOnChange;
@@ -897,8 +924,8 @@ public class MapController extends SelectionController implements IExtension{
 		}
 
 	}
-	
-	static class Refresher { 
+
+	static class Refresher {
 		private final ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue> nodesToRefresh = new ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue>();
 		private boolean refreshRunning;
 
@@ -916,6 +943,7 @@ public class MapController extends SelectionController implements IExtension{
 			}
 			if (startThread) {
 				final Runnable refresher = new Runnable() {
+					@Override
 					public void run() {
 						final ModeController currentModeController = Controller.getCurrentModeController();
 						@SuppressWarnings("unchecked")
@@ -943,7 +971,7 @@ public class MapController extends SelectionController implements IExtension{
 			final Object newValue){
 		refresher.delayedNodeRefresh(node, property, oldValue, newValue);
 	}
-	
+
 
 	public void removeMapChangeListener(final IMapChangeListener listener) {
 		mapChangeListeners.remove(listener);

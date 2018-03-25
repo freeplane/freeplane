@@ -52,7 +52,7 @@ public class NodeModel{
 	public enum NodeChangeType {
 		FOLDING, REFRESH
 	}
-	
+
 	public enum CloneType{TREE, CONTENT}
 	final static int TREE_CLONE_INDEX = CloneType.TREE.ordinal();
 	final static int CONTENT_CLONE_INDEX = CloneType.CONTENT.ordinal();
@@ -83,7 +83,7 @@ public class NodeModel{
 	void setClones(Clones clones) {
 		this.clones[clones.getCloneType().ordinal()] = clones;
 		for(NodeModel clone : clones)
-			clone.fireNodeChanged(new NodeChangeEvent(this, NodeModel.UNKNOWN_PROPERTY, null, null));
+			clone.fireNodeChanged(new NodeChangeEvent(this, NodeModel.UNKNOWN_PROPERTY, null, null, false, false));
 	}
 
 	public Object getUserObject() {
@@ -160,10 +160,12 @@ public class NodeModel{
 	public Enumeration<NodeModel> children() {
 		final Iterator<NodeModel> i = getChildrenInternal().iterator();
 		return new Enumeration<NodeModel>() {
+			@Override
 			public boolean hasMoreElements() {
 				return i.hasNext();
 			}
 
+			@Override
 			public NodeModel nextElement() {
 				return i.next();
 			}
@@ -217,7 +219,7 @@ public class NodeModel{
 	};
 
 	public NodeModel getChildAt(final int childIndex) {
-		return childIndex >= 0 ? getChildrenInternal().get(childIndex) : null; 
+		return childIndex >= 0 ? getChildrenInternal().get(childIndex) : null;
 	}
 
 	public int getChildCount() {
@@ -472,7 +474,7 @@ public class NodeModel{
 			final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
 			sharedData.setFolded(encryptionModel != null && !encryptionModel.isAccessible() || folded && ! AlwaysUnfoldedNode.isConnectorNode(this));
 		}
-		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(folded)));
+		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(folded), false, false));
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {
@@ -598,7 +600,7 @@ public class NodeModel{
 		}
 		fireNodeChanged(nodeChangeEvent);
     }
-	
+
     public NodeModel cloneTree(){
 		final NodeModel clone = new Cloner(this).cloneTree();
 		return clone;
@@ -661,22 +663,22 @@ public class NodeModel{
 			return this;
 		else
 			return getParentNode().getSubtreeRoot();
-			
+
     }
 
 	private boolean isSubtreeRoot() {
 	    return parent == null || isCloneTreeRoot();
     }
-	
+
 	public boolean isCloneTreeRoot(){
 		return parent != null && parent.clones[TREE_CLONE_INDEX].size() < clones[TREE_CLONE_INDEX].size()
 				|| clones[TREE_CLONE_INDEX].size() == 1 && clones[CONTENT_CLONE_INDEX].size() > 1;
 	}
-	
+
 	public boolean isCloneTreeNode(){
 		return parent != null && clones[TREE_CLONE_INDEX].size() > 1 && parent.clones[TREE_CLONE_INDEX].size() == clones[TREE_CLONE_INDEX].size();
 	}
-	
+
 	public int nextNodeIndex(int index, final boolean leftSide) {
 		return nextNodeIndex(index, leftSide, +1);
 	}
@@ -716,7 +718,7 @@ public class NodeModel{
 		for(CloneType cloneType : CloneType.values()) {
 			final DetachedNodeList detachedClone = (DetachedNodeList) clones[cloneType.ordinal()];
 			clones[cloneType.ordinal()] = detachedClone.forClone(this);
-		} 
+		}
 
 		this.attachClones();
 	}
