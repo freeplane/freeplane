@@ -247,7 +247,7 @@ public class BigBufferedImage extends BufferedImage {
 		}
 	    private static final boolean JRE_IS_MINIMUM_JAVA9 = ! System.getProperty("java.version").startsWith("1.");
 
-		private void invokeCleaner(MappedByteBuffer b)
+		private void invokeCleaner(final MappedByteBuffer b)
 		        throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 	        // TODO avoid reflection on every call
 	        try {
