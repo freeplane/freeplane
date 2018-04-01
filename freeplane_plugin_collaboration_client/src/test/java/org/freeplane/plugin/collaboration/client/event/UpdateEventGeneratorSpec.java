@@ -38,7 +38,7 @@ public class UpdateEventGeneratorSpec {
 
 	@Mock
 	private Updates updateTimer;
-	
+
 	final private TestObjects testObjects = new TestObjects();
 	final private MapModel map = testObjects.map;
 	final private NodeModel parent = testObjects.parent;
@@ -51,18 +51,18 @@ public class UpdateEventGeneratorSpec {
 	@Before
 	public void setup() {
 		contentUpdateGenerators = new ContentUpdateGenerators(
-			Arrays.asList(contentUpdateGenerator), 
+			Arrays.asList(contentUpdateGenerator),
 			Arrays.asList(contentUpdateGenerator));
 		uut = new UpdateEventGenerator(updateGenerator, contentUpdateGenerators);
 	}
-	
+
 	@Test
 	public void generatesEventOnNodeInsertion() throws Exception {
 		when(map.containsExtension(Updates.class)).thenReturn(true);
 		when(updateTimerFactory.of(map)).thenReturn(updateTimer);
 
 		uut.onNodeInserted(parent, child, 0);
-		
+
 		verify(updateGenerator).onNodeInserted(child);
 	}
 
@@ -72,10 +72,10 @@ public class UpdateEventGeneratorSpec {
 		when(updateTimerFactory.of(map)).thenReturn(updateTimer);
 
 		uut.onNodeDeleted(new NodeDeletionEvent(parent, child, 0));
-		
+
 		verify(updateGenerator).onNodeRemoved(child);
 	}
-	
+
 	@Test
 	public void generatesEventOnNodeMove() throws Exception {
 		when(map.containsExtension(Updates.class)).thenReturn(true);
@@ -86,7 +86,7 @@ public class UpdateEventGeneratorSpec {
 
 	@Test
 	public void generatesEventOnNodeChange() throws Exception {
-		NodeChangeEvent event = new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null, true);
+		NodeChangeEvent event = new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null, true, true, true);
 		when(map.containsExtension(Updates.class)).thenReturn(true);
 		when(contentUpdateGenerator.handles(event)).thenReturn(true);
 		uut.nodeChanged(event);
@@ -95,7 +95,7 @@ public class UpdateEventGeneratorSpec {
 
 	@Test
 	public void generatesNoEventOnNonPersistentNodeChange() throws Exception {
-		NodeChangeEvent event = new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null, false);
+		NodeChangeEvent event = new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null, true, true, true);
 		when(map.containsExtension(Updates.class)).thenReturn(true);
 		uut.nodeChanged(event);
 		verifyZeroInteractions(contentUpdateGenerator);
@@ -108,7 +108,7 @@ public class UpdateEventGeneratorSpec {
 		MapChangeEvent event = new MapChangeEvent(this, map, NodeModel.UNKNOWN_PROPERTY, null, null);
 		when(contentUpdateGenerator.handles(event)).thenReturn(true);
 		uut.mapChanged(event);
-		
+
 		verify(contentUpdateGenerator).onMapChange(map);
 	}
 }

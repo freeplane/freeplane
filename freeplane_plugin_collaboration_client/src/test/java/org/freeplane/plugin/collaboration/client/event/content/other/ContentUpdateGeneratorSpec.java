@@ -81,7 +81,7 @@ public class ContentUpdateGeneratorSpec {
 	public void generatesEventOnNodeContentUpdate() throws Exception {
 		NodeContentUpdated contentUpdated = mock(NodeContentUpdated.class);
 		when(eventFactory.createNodeContentUpdatedEvent(node)).thenReturn(contentUpdated);
-		uut.onNodeChange(new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null, true));
+		uut.onNodeChange(new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null, true, true, true));
 		final List<MapUpdated> eventList = consumer.getEventList();
 		assertThat(eventList).containsExactly(contentUpdated);
 	}

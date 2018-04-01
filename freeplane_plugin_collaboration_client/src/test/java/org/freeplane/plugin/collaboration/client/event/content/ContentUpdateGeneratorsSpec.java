@@ -50,45 +50,45 @@ public class ContentUpdateGeneratorsSpec {
 	private ContentUpdateGenerator contentUpdateGenerator1;
 	@Mock
 	private ContentUpdateGenerator contentUpdateGenerator2;
-	
+
 	private ContentUpdateGenerators uut;
-	
+
 	@Before
 	public void setup() {
-		uut = new ContentUpdateGenerators(Arrays.asList(contentUpdateGenerator1, contentUpdateGenerator2), 
+		uut = new ContentUpdateGenerators(Arrays.asList(contentUpdateGenerator1, contentUpdateGenerator2),
 			Arrays.asList(contentUpdateGenerator1, contentUpdateGenerator2));
 	}
 
 	@Test
 	public void onNodeContentUpdateHandledByGenerator1() throws Exception {
-		NodeChangeEvent event = new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null, true);
+		NodeChangeEvent event = new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null, true, true, true);
 		when(contentUpdateGenerator1.handles(event)).thenReturn(true);
 		uut.onNodeContentUpdate(event);
 		verify(contentUpdateGenerator1).handles(event);
 		verify(contentUpdateGenerator1).onNodeChange(event);
 		verifyNoMoreInteractions(contentUpdateGenerator1, contentUpdateGenerator2);
-		
+
 	}
-	
+
 	@Test
 	public void onNodeContentUpdateHandledByGenerator2() throws Exception {
-		NodeChangeEvent event = new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null, true);
+		NodeChangeEvent event = new NodeChangeEvent(node, NodeModel.UNKNOWN_PROPERTY, null, null, true, true, true);
 		when(contentUpdateGenerator2.handles(event)).thenReturn(true);
 		uut.onNodeContentUpdate(event);
 		verify(contentUpdateGenerator1).handles(event);
 		verify(contentUpdateGenerator2).handles(event);
 		verify(contentUpdateGenerator2).onNodeChange(event);
 		verifyNoMoreInteractions(contentUpdateGenerator1, contentUpdateGenerator2);
-		
+
 	}
-	
+
 	@Test
 	public void onNewNodeContentUpdateHandledByAllGenerators() throws Exception {
 		uut.onNewNode(node);
 		verify(contentUpdateGenerator1).onNewNode(node);
 		verify(contentUpdateGenerator2).onNewNode(node);
 		verifyNoMoreInteractions(contentUpdateGenerator1, contentUpdateGenerator2);
-		
+
 	}
 
 	@Test
@@ -99,9 +99,9 @@ public class ContentUpdateGeneratorsSpec {
 		verify(contentUpdateGenerator1).handles(event);
 		verify(contentUpdateGenerator1).onMapChange(map);
 		verifyNoMoreInteractions(contentUpdateGenerator1, contentUpdateGenerator2);
-		
+
 	}
-	
+
 	@Test
 	public void onMapContentUpdateHandledByGenerator2() throws Exception {
 		MapChangeEvent event = new MapChangeEvent(this, map, NodeModel.UNKNOWN_PROPERTY, null, null);
@@ -111,7 +111,7 @@ public class ContentUpdateGeneratorsSpec {
 		verify(contentUpdateGenerator2).handles(event);
 		verify(contentUpdateGenerator2).onMapChange(map);
 		verifyNoMoreInteractions(contentUpdateGenerator1, contentUpdateGenerator2);
-		
+
 	}
 
 	@Test
@@ -120,6 +120,6 @@ public class ContentUpdateGeneratorsSpec {
 		verify(contentUpdateGenerator1).onNewMap((map));
 		verify(contentUpdateGenerator2).onNewMap((map));
 		verifyNoMoreInteractions(contentUpdateGenerator1, contentUpdateGenerator2);
-		
+
 	}
 }
