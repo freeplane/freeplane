@@ -42,6 +42,7 @@ import org.freeplane.plugin.collaboration.client.server.Server.UpdateStatus;
 import org.freeplane.plugin.collaboration.client.server.Subscription;
 import org.freeplane.plugin.collaboration.client.session.Session;
 import org.freeplane.plugin.collaboration.client.session.SessionController;
+import org.freeplane.plugin.collaboration.client.websocketserver.WebSocketServer;
 
 public class EventStreamDialog {
 
@@ -61,7 +62,38 @@ public class EventStreamDialog {
 	}
 
 	private static final MapId SENDER_MAP_ID =  ImmutableMapId.of("sender");
-	private class MyServer implements Server {
+	
+	private class CompoundServer implements Server {
+		
+		GuiServer guiServer = new GuiServer();
+		Server webServer = new WebSocketServer();
+		
+		Server subscriptionServer = guiServer;
+		
+		public MapId createNewMap(MapCreateRequest request) {
+			webServer.createNewMap(request);
+			return guiServer.createNewMap(request);
+		}
+		public UpdateStatus update(MapUpdateRequest request) {
+			webServer.update(request);
+			return guiServer.update(request);
+		}
+		
+		public void subscribe(Subscription subscription) {
+			subscriptionServer.subscribe(subscription);
+		}
+		public void unsubscribe(Subscription subscription) {
+			subscriptionServer.unsubscribe(subscription);
+		}
+		public void updateReceiver() {
+			guiServer.updateReceiver();
+		}
+		
+		
+		
+	}
+	
+	private class GuiServer implements Server {
 		private Subscription receiverSubscription;
 		private Subscription senderSubscription;
 		
@@ -144,7 +176,7 @@ public class EventStreamDialog {
 		
 	}
 	
-	MyServer server = new MyServer();
+	CompoundServer  guiServer = new CompoundServer();
 	
 	private static final ImmutableMapDescription MAP_DESCRIPTION = ImmutableMapDescription.of("map");
 	private static final ImmutableUserId SENDER_USER_ID = ImmutableUserId.of("sender-user-id");
@@ -160,7 +192,7 @@ public class EventStreamDialog {
 				sessionController.stopSession(map.getExtension(Session.class));
 			}
 			Credentials credentials = Credentials.of(SENDER_USER_ID);
-			sessionController.startSession(server, credentials, map, MAP_DESCRIPTION);
+			sessionController.startSession(guiServer, credentials, map, MAP_DESCRIPTION);
 		}
 	}
 
@@ -182,8 +214,8 @@ public class EventStreamDialog {
 							.updateBlock().get(0) instanceof RootNodeIdUpdated) {
 					map = (MMapModel) mapController.newMap();
 					Credentials credentials = Credentials.of(RECEIVER_USER_ID);
-					sessionController.joinSession(server, credentials, map, SENDER_MAP_ID);
-					server.updateReceiver();
+					sessionController.joinSession(guiServer, credentials, map, SENDER_MAP_ID);
+					guiServer.updateReceiver();
 				}
 			}
 			catch (IOException e1) {
