@@ -22,6 +22,7 @@ package org.freeplane.features.note.mindmapmode;
 import java.net.URL;
 import java.util.regex.Pattern;
 
+import javax.swing.SwingUtilities;
 import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.util.HtmlUtils;
@@ -49,6 +50,7 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		this.noteController = noteController;
 	}
 
+	@Override
 	public void onDeselect(final NodeModel node) {
 		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
 		if (noteViewerComponent == null) {
@@ -59,6 +61,7 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		this.node = null;
 	}
 
+	@Override
 	public void onSelect(final NodeModel nodeView) {
 		node = nodeView;
 		updateEditor();
@@ -84,7 +87,14 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 					noteController.setNoteText(node, null);
 				}
 				else {
-					noteController.setNoteText(node, documentText);
+					final String oldText = noteController.getNoteText(node);
+					if (null == oldText)
+						noteController.setNoteText(node, documentText);
+					else {
+						final String oldTextWithoutHead = HEAD.matcher(oldText).replaceFirst("");
+						if (!oldTextWithoutHead.trim().equals(documentText.trim()))
+							noteController.setNoteText(node, documentText);
+					}
 				}
 			}
 			finally {
@@ -126,9 +136,14 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		final String note = node != null ? NoteModel.getNoteText(node) : null;
 		if (note != null)
 			noteViewerComponent.setCurrentDocumentContent(note);
-		else 
+		else
 			noteViewerComponent.setCurrentDocumentContent("");
-		document.addDocumentListener(mNoteDocumentListener);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				document.addDocumentListener(mNoteDocumentListener);
+			}
+		});
 	}
 
 	@Override
