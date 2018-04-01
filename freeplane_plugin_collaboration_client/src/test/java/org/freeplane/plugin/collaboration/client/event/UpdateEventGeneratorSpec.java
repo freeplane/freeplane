@@ -95,7 +95,7 @@ public class UpdateEventGeneratorSpec {
 
 	@Test
 	public void generatesNoEventOnNonPersistentNodeChange() throws Exception {
-		NodeChangeEvent event = new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null, true, true, true);
+		NodeChangeEvent event = new NodeChangeEvent(parent, NodeModel.UNKNOWN_PROPERTY, null, null, false, true, true);
 		when(map.containsExtension(Updates.class)).thenReturn(true);
 		uut.nodeChanged(event);
 		verifyZeroInteractions(contentUpdateGenerator);
