@@ -6,6 +6,7 @@ dependencies {
 	compile ('org.apache.xmlgraphics:batik-transcoder:1.9.1')
 	
 	compile 'org.apache.xmlgraphics:batik-swing:1.9.1'
+	compile 'org.apache.xmlgraphics:batik-codec:1.9.1'
 	compile 'org.apache.xmlgraphics:fop:2.1'
 	compile 'commons-logging:commons-logging:1.2'
 }
