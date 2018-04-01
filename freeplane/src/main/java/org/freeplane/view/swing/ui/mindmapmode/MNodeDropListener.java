@@ -71,6 +71,7 @@ private Timer timer;
 	 * where in dropAcceptable, you tell if your really willing to accept the
 	 * item.
 	 */
+	@Override
 	public void dragEnter(final DropTargetDragEvent dtde) {
 		if (isDragAcceptable(dtde)) {
 			supportFolding(dtde);
@@ -98,6 +99,7 @@ private Timer timer;
 		return node.isInFoldingRegion(dtde.getLocation());
 	}
 
+	@Override
 	public void dragExit(final DropTargetEvent e) {
 		getNode(e).setMouseArea(MouseArea.OUT);
 		stopUnfoldTimer();
@@ -112,6 +114,7 @@ private Timer timer;
 	    return mainView;
     }
 
+	@Override
 	public void dragOver(final DropTargetDragEvent dtde) {
 		if(isDragAcceptable(dtde)) {
 			supportFolding(dtde);
@@ -130,6 +133,7 @@ private Timer timer;
 	private void startUnfoldTimer(final MainView mainView) {
 		if(timer == null){
 			timer = new Timer(UNFOLD_DELAY_MILLISECONDS, new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					if(mainView.isDisplayable()){
 						NodeView nodeView = mainView.getNodeView();
@@ -155,49 +159,49 @@ private Timer timer;
 	}
 
 	private boolean isDropAcceptable(final DropTargetDropEvent event, int dropAction) {
+		if (! event.isDataFlavorSupported(MindMapNodesSelection.mindMapNodeObjectsFlavor))
+			 return dropAction != DnDConstants.ACTION_LINK;
+		final List<NodeModel> droppedNodes;
+		try {
+			final Transferable t = event.getTransferable();
+			droppedNodes = getNodeObjects(t);
+		}
+		catch (Exception e) {
+			return dropAction != DnDConstants.ACTION_LINK;
+		}
+		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
 		if (dropAction == DnDConstants.ACTION_LINK) {
-			return isFromSameMap(event);
+			return isFromSameMap(node, droppedNodes);
 		}
 
 		if (dropAction == DnDConstants.ACTION_MOVE) {
-			return !isFromDescencantNode(event);
+			return !isFromDescencantNode(node, droppedNodes);
 		}
-		return true;
+		return ! droppedNodesContainTargetNode(node, droppedNodes);
 	}
 
-	private boolean isFromSameMap(final DropTargetDropEvent event) {
-		final Transferable t = event.getTransferable();
-		final List<NodeModel> transferData;
-		try {
-			transferData = getNodeObjects(t);
+	private boolean droppedNodesContainTargetNode(final NodeModel targetNode, final List<NodeModel> droppedNodes) {
+		for (final NodeModel selected : droppedNodes) {
+			if (targetNode == selected)
+				return true;
 		}
-		catch (Exception e) {
-			return false;
-		}
-		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
-		for (final NodeModel selected : transferData) {
-			if (selected.getMap() != node.getMap())
+		return false;
+	}
+
+	private boolean isFromSameMap(final NodeModel targetNode, final Collection<NodeModel> droppedNodes) {
+		for (final NodeModel selected : droppedNodes) {
+			if (selected.getMap() != targetNode.getMap())
 				return false;
 		}
 		return true;
 	}
 
-	private boolean isFromDescencantNode(final DropTargetDropEvent event) {
-		final Transferable t = event.getTransferable();
-		final List<NodeModel> transferData;
-		try {
-			transferData = getNodeObjects(t);
-		}
-		catch (Exception e) {
-			return false;
-		}
-		final NodeModel node = ((MainView) event.getDropTargetContext().getComponent()).getNodeView().getModel();
-		for (final NodeModel selected : transferData) {
-			if ((node == selected) || node.isDescendantOf(selected))
+	private boolean isFromDescencantNode(final NodeModel targetNode, final List<NodeModel> droppedNodes) {
+		for (final NodeModel selected : droppedNodes) {
+			if ((targetNode == selected) || targetNode.isDescendantOf(selected))
 				return true;
 		}
 		return false;
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -205,6 +209,7 @@ private Timer timer;
 	    return (List<NodeModel>) t.getTransferData(MindMapNodesSelection.mindMapNodeObjectsFlavor);
     }
 
+	@Override
 	public void drop(final DropTargetDropEvent dtde) {
 		try {
 			final MainView mainView = (MainView) dtde.getDropTargetContext().getComponent();
@@ -250,7 +255,7 @@ private Timer timer;
 				}
 				if (yesorno == JOptionPane.YES_OPTION) {
 					for (final NodeModel sourceNodeModel : getNodeObjects(t)) {
-						
+
 						((MLinkController) LinkController.getController(modeController)).addConnector(
 						    sourceNodeModel, targetNode);
 					}
@@ -258,10 +263,10 @@ private Timer timer;
 			}
 			else {
 				final Collection<NodeModel> selecteds = mapController.getSelectedNodes();
-				if (DnDConstants.ACTION_MOVE == dropAction && isFromSameMap(dtde)) {
+				if (DnDConstants.ACTION_MOVE == dropAction && isFromSameMap(targetNode, selecteds)) {
 	                final NodeModel[] array = selecteds.toArray(new NodeModel[selecteds.size()]);
 					moveNodes(mapController, targetNode, t, dropAsSibling, isLeft);
-					
+
 					if(dropAsSibling || ! targetNodeView.isFolded())
 					    controller.getSelection().replaceSelection(array);
 					else
@@ -309,11 +314,12 @@ private Timer timer;
 		}
 	}
 
+	@Override
 	public void dropActionChanged(final DropTargetDragEvent e) {
 	}
 
 	private boolean isDragAcceptable(final DropTargetDragEvent ev) {
-		return ev.isDataFlavorSupported(DataFlavor.stringFlavor) 
+		return ev.isDataFlavorSupported(DataFlavor.stringFlavor)
 				||ev.isDataFlavorSupported(MindMapNodesSelection.fileListFlavor)
 				||ev.isDataFlavorSupported(DataFlavor.imageFlavor);
 	}
