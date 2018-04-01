@@ -18,11 +18,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.HashSet;
 import java.util.Hashtable;
 
@@ -91,7 +99,7 @@ public class BigBufferedImage extends BufferedImage {
     public void dispose(){
     	((SimpleRaster) getRaster()).dispose();
     }
-    
+
     static public void dispose(RenderedImage image){
     	if(image instanceof BigBufferedImage){
     		((BigBufferedImage) image).dispose();
@@ -109,7 +117,7 @@ public class BigBufferedImage extends BufferedImage {
 		}
 
     }
-    
+
 	private static final class FileDataBufferDeleterHook extends Thread {
 		static {
 			Runtime.getRuntime().addShutdownHook(new FileDataBufferDeleterHook());
@@ -122,7 +130,7 @@ public class BigBufferedImage extends BufferedImage {
 				b.disposeNow();
 		}
 	}
-	
+
     private static class FileDataBuffer extends DataBuffer {
         private final String id = "buffer-" + System.currentTimeMillis() + "-" + ((int) (Math.random() * 1000));
         private File dir;
@@ -176,7 +184,7 @@ public class BigBufferedImage extends BufferedImage {
         public void setElem(int bank, int i, int val) {
             buffer[bank].put(i, (byte) val);
         }
-        
+
 		@Override
 		protected void finalize() throws Throwable {
 			dispose();
@@ -187,7 +195,7 @@ public class BigBufferedImage extends BufferedImage {
 			this.buffer = null;
 			disposeNow(disposedBuffer);
 		}
-		
+
 		public void dispose() {
 			final MappedByteBuffer[] disposedBuffer = this.buffer;
 			this.buffer = null;
@@ -201,14 +209,14 @@ public class BigBufferedImage extends BufferedImage {
 
 		/**
 		 * There appears to be a bug in the Java code associated with MappedByteBuffer instances (maybe other
-		 * related classes as well?) in that the file.delete() does not delete the file.  
-		 * For more details about the problem and various attempts to get around this problem, see the following  
+		 * related classes as well?) in that the file.delete() does not delete the file.
+		 * For more details about the problem and various attempts to get around this problem, see the following
 		 * <a href="http://stackoverflow.com/questions/2972986/how-to-unmap-a-file-from-memory-mapped-using-filechannel-in-java/5036003#5036003">link.</a>
-		 * 
-		 * The only solution that appears to work requires the use of interface DirectBuffer 
+		 *
+		 * The only solution that appears to work requires the use of interface DirectBuffer
 		 * which is an internal interface. In the future, this interface might disappear or the referenced methods
 		 * might change their signatures.  This is why Eclipse creates the error messages labeled "Access restriction".
-		 * 
+		 *
 		 * @param disposedBuffer Array of MappedByteBuffer instances that are to be disposed of
 		 */
 		private void disposeNow(final MappedByteBuffer[] disposedBuffer) {
@@ -216,12 +224,7 @@ public class BigBufferedImage extends BufferedImage {
 			if(disposedBuffer != null) {
 				try {
 					for(MappedByteBuffer b : disposedBuffer) {
-						final Method method = b.getClass().getMethod("cleaner");
-						method.setAccessible(true);
-						final Object cleaner = method.invoke(b);
-						final Method method2 = cleaner.getClass().getMethod("clean");
-						method2.setAccessible(true);
-						method2.invoke(cleaner);
+						invokeCleaner(b);
 					}
 					for(RandomAccessFile file : accessFiles) {
 						try {
@@ -235,13 +238,56 @@ public class BigBufferedImage extends BufferedImage {
 						file.delete();
 					}
 				} catch (Exception e) {
-					LogUtils.severe(e);	
+					LogUtils.severe(e);
 				}
 				files = null;
 				new File(path).delete();
 				path = null;
 			}
 		}
+	    private static final boolean JRE_IS_MINIMUM_JAVA9 = ! System.getProperty("java.version").startsWith("1.");
+
+		private void invokeCleaner(final MappedByteBuffer b)
+		        throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	        // TODO avoid reflection on every call
+	        try {
+	            AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
+	                @Override
+	                public Object run() throws Exception {
+	                    if (JRE_IS_MINIMUM_JAVA9) {
+	                        final Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
+	                        // we do not need to check for a specific class, we can call the Unsafe method with any buffer class
+	                        MethodHandle unmapper = MethodHandles.lookup().findVirtual(unsafeClass, "invokeCleaner",
+	                            MethodType.methodType(void.class, ByteBuffer.class));
+	                        // fetch the unsafe instance and bind it to the virtual MethodHandle
+	                        final Field f = unsafeClass.getDeclaredField("theUnsafe");
+	                        f.setAccessible(true);
+	                        final Object theUnsafe = f.get(null);
+	                        try {
+	                            unmapper.bindTo(theUnsafe).invokeExact(buffer);
+	                            return null;
+	                        } catch (Throwable t) {
+	                            throw new RuntimeException(t);
+	                        }
+
+	                    } else {
+	                        // <=JDK8 class DirectByteBuffer { sun.misc.Cleaner cleaner(Buffer buf) }
+	                        //        then call sun.misc.Cleaner.clean
+							final Method method = b.getClass().getMethod("cleaner");
+							method.setAccessible(true);
+							final Object cleaner = method.invoke(b);
+							final Method method2 = cleaner.getClass().getMethod("clean");
+							method2.setAccessible(true);
+							method2.invoke(cleaner);
+	                    }
+
+	                    return null;
+	                }
+	            });
+	        } catch (PrivilegedActionException e) {
+	            throw new RuntimeException("Unable to unmap the mapped buffer", e);
+	        }
+	    }
 
     }
 }

@@ -747,8 +747,8 @@ public class MTextController extends TextController {
 				final DetailTextModel details = DetailTextModel.createDetailText(node);
 				details.setHidden(isHidden);
 				node.addExtension(details);
-				Controller.getCurrentModeController().getMapController().nodeChanged(node, DETAILS_HIDDEN, !isHidden,
-				    isHidden);
+				final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, DETAILS_HIDDEN, !isHidden, isHidden, true, false);
+				Controller.getCurrentModeController().getMapController().nodeRefresh(nodeChangeEvent);
 			}
 
 			@Override

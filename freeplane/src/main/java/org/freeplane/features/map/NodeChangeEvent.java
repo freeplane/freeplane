@@ -33,7 +33,8 @@ public class NodeChangeEvent extends AWTEvent {
 	final private Object oldValue;
 	final private Object property;
 	final private boolean persistent;
-// 	final private ModeController modeController;
+	final private boolean setsDirtyFlag;
+	final private boolean updatesModificationTime;
 
 	public boolean isPersistent() {
 		return persistent;
@@ -41,13 +42,14 @@ public class NodeChangeEvent extends AWTEvent {
 
 	public NodeChangeEvent(final NodeModel node, final Object property,
 	                       final Object oldValue, final Object newValue,
-	                       boolean persistent) {
+	                       boolean persistent, boolean setsDirtyFlag, boolean updatesModificationTime) {
 		super(node, 0);
-//		this.modeController = modeController;
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.property = property;
 		this.persistent = persistent;
+		this.setsDirtyFlag = setsDirtyFlag;
+		this.updatesModificationTime = updatesModificationTime;
 	}
 
 	public Object getNewValue() {
@@ -67,6 +69,14 @@ public class NodeChangeEvent extends AWTEvent {
 	}
 
 	public NodeChangeEvent forNode(NodeModel node) {
-		return new NodeChangeEvent(node, property, oldValue, newValue, persistent);
+		return new NodeChangeEvent(node, getProperty(), getOldValue(), getNewValue(), persistent, setsDirtyFlag, updatesModificationTime);
     }
+
+	public boolean setsDirtyFlag() {
+		return setsDirtyFlag;
+	}
+
+	public boolean updatesModificationTime() {
+		return updatesModificationTime;
+	}
 }

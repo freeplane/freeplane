@@ -124,6 +124,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		this.hint = hint;
 	}
 
+	@Override
 	public Dimension getOriginalSize() {
 		return new Dimension(originalSize);
 	}
@@ -194,7 +195,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			}
 		}
 	}
-	
+
 	private boolean componentHasNoArea() {
 		return getWidth() == 0 || getHeight() == 0;
 	}
@@ -261,7 +262,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			LogUtils.warn(cause.getMessage());
 			return;
 		}
-		
+
 		LogUtils.severe(e);
 	}
 
@@ -291,13 +292,15 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 					cacheFile.delete();
 					cacheFile.createNewFile();
 				}
-				
+
 			}
 			ImageIO.write(cachedImage, "jpg", cacheFile);
 		}
 		catch (final IOException e) {
-			cacheFile.delete();
-			cacheFile = null;
+			if(cacheFile != null) {
+				cacheFile.delete();
+				cacheFile = null;
+			}
 		}
 	}
 
@@ -310,6 +313,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		}
 	}
 
+	@Override
 	public void setFinalViewerSize(final Dimension size) {
 		final Dimension sizeWithScaleCorrection = fitToMaximumSize(size);
 		setPreferredSize(sizeWithScaleCorrection);
@@ -317,18 +321,21 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		setScaleEnabled(true);
 	}
 
+	@Override
 	public void setFinalViewerSize(final float zoom) {
 		final int scaledWidth = (int) (originalSize.width * zoom);
 		final int scaledHeight = (int) (originalSize.height * zoom);
 		setFinalViewerSize(new Dimension(scaledWidth, scaledHeight));
 	}
 
+	@Override
 	public void setDraftViewerSize(final Dimension size) {
 		setPreferredSize(size);
 		setSize(size);
 		setScaleEnabled(false);
 	}
 
+	@Override
 	public void setMaximumComponentSize(final Dimension size) {
 		maximumSize = size;
 	}
@@ -346,6 +353,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		return maximumSize.getWidth() >= size.width || maximumSize.getHeight() >= size.height;
 	}
 
+	@Override
 	public void setCenter(boolean center) {
 		this.center = center;
 	}

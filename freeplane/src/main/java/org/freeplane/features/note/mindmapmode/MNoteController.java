@@ -58,6 +58,7 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
 import org.freeplane.features.text.mindmapmode.FreeplaneToSHTMLPropertyChangeAdapter;
 import org.freeplane.features.text.mindmapmode.MTextController;
+
 import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
 
@@ -66,6 +67,7 @@ import com.lightdev.app.shtm.SHTMLPanel;
  */
 public class MNoteController extends NoteController {
 	final class NoteDocumentListener implements DocumentListener {
+		@Override
 		public void changedUpdate(final DocumentEvent arg0) {
 			docEvent();
 		}
@@ -78,13 +80,15 @@ public class MNoteController extends NoteController {
 			final ModeController modeController = Controller.getCurrentModeController();
 			final MapController mapController = modeController.getMapController();
 			final MapModel map = modeController.getController().getMap();
-			mapController.setSaved(map, false);
+			 mapController.setSaved(map, false);
 		}
 
+		@Override
 		public void insertUpdate(final DocumentEvent arg0) {
 			docEvent();
 		}
 
+		@Override
 		public void removeUpdate(final DocumentEvent arg0) {
 			docEvent();
 		}
@@ -160,6 +164,7 @@ public class MNoteController extends NoteController {
 		editorPane.addFocusListener(new FocusListener() {
 			private SpellCheckerController spellCheckerController = null;
 			private boolean enabled = false;
+			@Override
 			public void focusLost(final FocusEvent e) {
 				if(! e.isTemporary()){
 					spellCheckerController.enableAutoSpell(editorPane, false);
@@ -168,6 +173,7 @@ public class MNoteController extends NoteController {
 				}
 			}
 
+			@Override
 			public void focusGained(final FocusEvent e) {
 				if(! enabled){
 					initSpellChecker();
@@ -185,21 +191,21 @@ public class MNoteController extends NoteController {
 				spellCheckerController.enableShortKey(editorPane, true);
 			}
 		});
-		
+
 		htmlEditorPanel.getSourceEditorPane().addFocusListener(new FocusListener() {
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
 				if(! e.isTemporary()){
 					noteManager.saveNote();
 				}
 			}
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
 			}
 		});
-		
+
 		return htmlEditorPanel;
 	}
 
@@ -232,10 +238,12 @@ public class MNoteController extends NoteController {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				setText(newText);
 			}
 
+			@Override
 			public String getDescription() {
 				return "setNoteText";
 			}
@@ -257,6 +265,7 @@ public class MNoteController extends NoteController {
 					noteManager.updateEditor();
 			}
 
+			@Override
 			public void undo() {
 				setText(oldText);
 			}
@@ -278,6 +287,7 @@ public class MNoteController extends NoteController {
 		southPanel.add(noteViewerComponent, BorderLayout.CENTER);
 //		setDefaultFont();
 		noteViewerComponent.setOpenHyperlinkHandler(new ActionListener() {
+			@Override
 			public void actionPerformed(final ActionEvent pE) {
 				try {
 					String uriText = pE.getActionCommand();
@@ -294,6 +304,7 @@ public class MNoteController extends NoteController {
 		if (requestFocus) {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
 			EventQueue.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					final SHTMLPanel htmlEditorPanel = getHtmlEditorPanel();
 					htmlEditorPanel.getMostRecentFocusOwner().requestFocus();
@@ -369,7 +380,7 @@ public class MNoteController extends NoteController {
 	public void setShowNotesInMap(final MapModel model, final boolean show) {
 		MapStyle.getController().setProperty(model, SHOW_NOTES_IN_MAP, Boolean.toString(show));
 	}
-	
+
 	public void editNoteInDialog(final NodeModel nodeModel) {
 		new NoteDialogStarter().editNoteInDialog(nodeModel);
 	}

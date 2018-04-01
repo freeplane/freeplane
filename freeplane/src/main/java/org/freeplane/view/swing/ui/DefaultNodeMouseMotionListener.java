@@ -52,6 +52,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		return ((MainView)e.getComponent()).isInDragRegion(e.getPoint());
 	}
 
+	@Override
 	public void mouseClicked(final MouseEvent e) {
 		final ModeController mc = Controller.getCurrentController().getModeController();
 		if(Compat.isMacOsX()){
@@ -82,11 +83,12 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					e.consume();
 					return;
 				}
-				
-				
+
+
 				final String link = component.getLink(e.getPoint());
 				if (link != null) {
 					doubleClickTimer.start(new Runnable() {
+						@Override
 						public void run() {
 							loadLink(node, link);
 						}
@@ -98,6 +100,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				if(inside && e.getClickCount() == 1 && ResourceController.getResourceController().getBooleanProperty(FOLD_ON_CLICK_INSIDE)){
 					if (!nodeSelector.shouldSelectOnClick(e)) {
 						doubleClickTimer.start(new Runnable() {
+							@Override
 							public void run() {
 								mapController.toggleFolded(node);
 							}
@@ -125,10 +128,6 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		if(inside && e.getButton() == 1 &&  ! e.isAltDown())
 			nodeSelector.extendSelection(e);
 	}
-	private boolean isFoldedOnCurrentView(final NodeModel node) {
-		return Controller.getCurrentController().getMapViewManager().isFoldedOnCurrentView(node);
-	}
-
 
 	private void loadLink(NodeModel node, final String link) {
 		try {
@@ -142,13 +141,15 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 	 * Invoked when a mouse button is pressed on a component and then
 	 * dragged.
 	 */
+	@Override
 	public void mouseDragged(final MouseEvent e) {
 		if (!nodeSelector.isInside(e))
 			return;
 		nodeSelector.stopTimerForDelayedSelection();
-		nodeSelector.selectSingleNode(e);
+		nodeSelector.extendSelection(e);
 	}
 
+	@Override
 	public void mouseEntered(final MouseEvent e) {
 		if (nodeSelector.isRelevant(e)) {
 			nodeSelector.createTimer(e);
@@ -156,6 +157,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		}
 	}
 
+	@Override
 	public void mouseExited(final MouseEvent e) {
 		nodeSelector.stopTimerForDelayedSelection();
 		final MainView v = (MainView) e.getSource();
@@ -163,6 +165,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		nodeSelector.trackWindowForComponent(v);
 	}
 
+	@Override
 	public void mouseMoved(final MouseEvent e) {
 		if (!nodeSelector.isRelevant(e))
 			return;
@@ -196,6 +199,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		nodeSelector.createTimer(e);
 	}
 
+	@Override
 	public void mousePressed(final MouseEvent e) {
 		final MapView mapView = MapView.getMapView(e.getComponent());
 		mapView.select();
@@ -203,6 +207,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		showPopupMenu(e);
 	}
 
+	@Override
 	public void mouseReleased(final MouseEvent e) {
 		nodeSelector.stopTimerForDelayedSelection();
 		showPopupMenu(e);

@@ -194,8 +194,10 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	@Override
     public void mouseDragged(final MouseEvent e) {
-		if (!isDragActive())
+		if (!isDragActive()) {
+			super.mouseDragged(e);
 			return;
+		}
 		if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
 			final MainView mainView = (MainView) e.getSource();
 			final NodeView nodeV = getNodeView(e);
@@ -235,6 +237,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				mapController.nodeRefresh(nodeV.getModel());
 			}
 			EventQueue.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					final Rectangle r = mainView.getBounds();
 					UITools.convertRectangleToAncestor(mainView.getParent(), r, mapView);

@@ -31,6 +31,7 @@ import java.security.Policy;
 import java.security.ProtectionDomain;
 import java.security.cert.Certificate;
 import java.util.PropertyPermission;
+import java.util.logging.LoggingPermission;
 
 import org.freeplane.core.util.Compat;
 import org.freeplane.main.application.ApplicationResourceController;
@@ -83,6 +84,7 @@ class ScriptingPolicy extends Policy {
 		permissions.add(new AWTPermission("setWindowAlwaysOnTop"));
 		permissions.add(new FilePermission(Compat.getApplicationUserDirectory() + "/resources/-", "read"));
 		permissions.add(new FilePermission(Compat.getApplicationUserDirectory() + "/icons/-", "read"));
+		permissions.add(new LoggingPermission("control", ""));
 	}
 
 
@@ -94,11 +96,11 @@ class ScriptingPolicy extends Policy {
 			return true;
 		}
 		final Permission requiredPermission = permissionBlackList.implies(permission) ? ALL_PERMISSION : permission;
-		
+
 		if (permissions.implies(requiredPermission)) {
 			return true;
 		}
-		
+
 		for (ClassLoader classLoader = domain.getClassLoader(); classLoader != null; //
 		classLoader = classLoader.getParent()) {
 			if (classLoader instanceof ScriptClassLoader) {
