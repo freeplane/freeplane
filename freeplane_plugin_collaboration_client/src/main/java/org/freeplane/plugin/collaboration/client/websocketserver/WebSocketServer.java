@@ -23,51 +23,25 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.collaboration.client.server.Server;
 import org.freeplane.plugin.collaboration.client.server.Subscription;
 
-@ClientEndpoint
 public class WebSocketServer implements Server{
 	
-	// TODO: use Encoder/Decoder to automatically convert JSON
-	
-	Session userSession = null;
+	final BasicClientEndpoint basicClientEndpoint;
 	
 	final static String SERVER = "ws://localhost:8080/freeplane";
 	
 	public WebSocketServer()
 	{
 		try {
+			basicClientEndpoint = new BasicClientEndpoint();
+			
 			WebSocketContainer container = 
 					javax.websocket.ContainerProvider.getWebSocketContainer();
-			container.connectToServer(WebSocketServer.class, new URI(SERVER));
+			container.connectToServer(basicClientEndpoint, new URI(SERVER));
 		} catch (URISyntaxException | DeploymentException | IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-    @OnOpen
-    public void onOpen(Session userSession) {
-    	LogUtils.info("opening websocket");
-        this.userSession = userSession;
-        sendMessage("hello world from WebSocketServer.onOpen()!!");
-    }
-
-    @OnClose
-    public void onClose(Session userSession, CloseReason reason) {
-    	LogUtils.info("closing websocket");
-        this.userSession = null;
-    }
-
-    /**
-     * Message is received!
-     * 
-     * @param message
-     */
-    @OnMessage
-    public void onMessage(String message) {
-    }
-
-    public void sendMessage(String message) {
-        this.userSession.getAsyncRemote().sendText(message);
-    }
 
 	private Consumer<UpdateBlockCompleted> consumer;
 
@@ -89,6 +63,39 @@ public class WebSocketServer implements Server{
 	@Override
 	public void unsubscribe(Subscription subscription) {
 		consumer = null;
+	}
+	
+	// TODO: use Encoder/Decoder to automatically convert JSON
+	@ClientEndpoint
+	public class BasicClientEndpoint
+	{
+		Session userSession = null;
+		
+	    @OnOpen
+	    public void onOpen(Session userSession) {
+	    	LogUtils.info("opening websocket");
+	        this.userSession = userSession;
+	        sendMessage("hello world from BasicClientEndpoint.onOpen()!!");
+	    }
+
+	    @OnClose
+	    public void onClose(Session userSession, CloseReason reason) {
+	    	LogUtils.info("closing websocket");
+	        this.userSession = null;
+	    }
+
+	    /**
+	     * Message is received!
+	     * 
+	     * @param message
+	     */
+	    @OnMessage
+	    public void onMessage(String message) {
+	    }
+
+	    public void sendMessage(String message) {
+	        this.userSession.getAsyncRemote().sendText(message);
+	    }
 	}
 
 }
