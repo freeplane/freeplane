@@ -37,7 +37,7 @@ public class UpdatesSerializerSpec {
 	public void usesObjectMapper() throws Exception {
 		when(objectMapper.writer()).thenReturn(writer);
 		when(writer.writeValueAsString(event)).thenReturn("json");
-		uut.onUpdates(event);
+		uut.write(event);
 		verify(consumer).accept("json");
 	}
 }

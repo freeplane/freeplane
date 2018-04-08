@@ -21,7 +21,7 @@ public class UpdatesSerializer {
 		this.consumer = consumer;
 		this.objectMapper = objectMapper;
 	}
-	public void onUpdates(UpdateBlockCompleted event) {
+	public void write(UpdateBlockCompleted event) {
 		write(event, objectMapper.writer());
 	}
 	
