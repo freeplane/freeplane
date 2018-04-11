@@ -12,25 +12,28 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CompletableFuture;
 
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.freeplane.collaboration.event.batch.Credentials;
-import org.freeplane.collaboration.event.batch.ImmutableMapDescription;
-import org.freeplane.collaboration.event.batch.ImmutableMapId;
-import org.freeplane.collaboration.event.batch.ImmutableUserId;
-import org.freeplane.collaboration.event.batch.MapCreateRequest;
-import org.freeplane.collaboration.event.batch.MapId;
-import org.freeplane.collaboration.event.batch.MapUpdateRequest;
-import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
 import org.freeplane.collaboration.event.children.RootNodeIdUpdated;
 import org.freeplane.collaboration.event.json.Jackson;
+import org.freeplane.collaboration.event.messages.Credentials;
+import org.freeplane.collaboration.event.messages.ImmutableMapDescription;
+import org.freeplane.collaboration.event.messages.ImmutableMapId;
+import org.freeplane.collaboration.event.messages.ImmutableUserId;
+import org.freeplane.collaboration.event.messages.MapCreateRequested;
+import org.freeplane.collaboration.event.messages.MapId;
+import org.freeplane.collaboration.event.messages.MapUpdateProcessed.UpdateStatus;
+import org.freeplane.collaboration.event.messages.MapUpdateRequested;
+import org.freeplane.collaboration.event.messages.UpdateBlockCompleted;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
@@ -38,18 +41,18 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
 import org.freeplane.plugin.collaboration.client.server.Server;
-import org.freeplane.plugin.collaboration.client.server.Server.UpdateStatus;
 import org.freeplane.plugin.collaboration.client.server.Subscription;
 import org.freeplane.plugin.collaboration.client.session.Session;
 import org.freeplane.plugin.collaboration.client.session.SessionController;
+import org.freeplane.plugin.collaboration.client.websocketserver.WebSocketServer;
 
 public class EventStreamDialog {
 
 	SessionController sessionController = new SessionController();
-	
+
 	@SuppressWarnings("serial")
 	private final class JRadioButtonExtension extends JRadioButton {
-		private JRadioButtonExtension(String text, Server.UpdateStatus updateStatus) {
+		private JRadioButtonExtension(String text, UpdateStatus updateStatus) {
 			super(text);
 			addActionListener(new ActionListener() {
 				@Override
@@ -61,18 +64,55 @@ public class EventStreamDialog {
 	}
 
 	private static final MapId SENDER_MAP_ID =  ImmutableMapId.of("sender");
-	private class MyServer implements Server {
-		private Subscription receiverSubscription;
-		private Subscription senderSubscription;
-		
+
+	private class CompoundServer implements Server {
+
+		GuiServer guiServer = new GuiServer();
+		Server webServer = new WebSocketServer();
+
+		Server subscriptionServer = guiServer;
+
 		@Override
-		public MapId createNewMap(MapCreateRequest request) {
-			text.setText("");
-			return SENDER_MAP_ID;
+		public CompletableFuture<MapId> createNewMap(MapCreateRequested request) {
+			if(useWebSockets.isSelected())
+				webServer.createNewMap(request);
+			return guiServer.createNewMap(request);
+		}
+		@Override
+		public CompletableFuture<UpdateStatus> update(MapUpdateRequested request) {
+			if(useWebSockets.isSelected())
+				webServer.update(request);
+			return guiServer.update(request);
 		}
 
 		@Override
-		public UpdateStatus update(MapUpdateRequest request) {
+		public void subscribe(Subscription subscription) {
+			subscriptionServer.subscribe(subscription);
+		}
+		@Override
+		public void unsubscribe(Subscription subscription) {
+			subscriptionServer.unsubscribe(subscription);
+		}
+		public void updateReceiver() {
+			guiServer.updateReceiver();
+		}
+
+
+
+	}
+
+	private class GuiServer implements Server {
+		private Subscription receiverSubscription;
+		private Subscription senderSubscription;
+
+		@Override
+		public CompletableFuture<MapId> createNewMap(MapCreateRequested request) {
+			text.setText("");
+			return CompletableFuture.completedFuture(SENDER_MAP_ID);
+		}
+
+		@Override
+		public CompletableFuture<UpdateStatus> update(MapUpdateRequested request) {
 			UpdateBlockCompleted ev = request.update();
 			if(ev.userId().equals(SENDER_USER_ID)) {
 				final boolean isNewMapUpdate = ev.updateBlock().get(0) instanceof RootNodeIdUpdated;
@@ -87,9 +127,9 @@ public class EventStreamDialog {
 				callBack(senderSubscription, ev, delay);
 				if(receiverSubscription != null)
 					callBack(receiverSubscription, ev, 0);
-				return currentUpdateStatus;
+				return  CompletableFuture.completedFuture(currentUpdateStatus);
 			}
-			return UpdateStatus.ACCEPTED;
+			return  CompletableFuture.completedFuture(UpdateStatus.ACCEPTED);
 		}
 
 		private void callBack(Subscription subscription, UpdateBlockCompleted ev, final int delay) {
@@ -141,11 +181,11 @@ public class EventStreamDialog {
 			if(subscription == receiverSubscription)
 				receiverSubscription = null;
 		}
-		
+
 	}
-	
-	MyServer server = new MyServer();
-	
+
+	CompoundServer  guiServer = new CompoundServer();
+
 	private static final ImmutableMapDescription MAP_DESCRIPTION = ImmutableMapDescription.of("map");
 	private static final ImmutableUserId SENDER_USER_ID = ImmutableUserId.of("sender-user-id");
 	private static final ImmutableUserId RECEIVER_USER_ID = ImmutableUserId.of("receiver-user-id");
@@ -154,13 +194,13 @@ public class EventStreamDialog {
 
 
 		@Override
-		public void actionPerformed(ActionEvent e) { 
+		public void actionPerformed(ActionEvent e) {
 			MMapModel map = (MMapModel) Controller.getCurrentController().getMap();
 			if(map.containsExtension(Session.class)) {
 				sessionController.stopSession(map.getExtension(Session.class));
 			}
 			Credentials credentials = Credentials.of(SENDER_USER_ID);
-			sessionController.startSession(server, credentials, map, MAP_DESCRIPTION);
+			sessionController.startSession(guiServer, credentials, map, MAP_DESCRIPTION);
 		}
 	}
 
@@ -177,13 +217,13 @@ public class EventStreamDialog {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-				if(map == null || ! text.getText().trim().isEmpty() 
+				if(map == null || ! text.getText().trim().isEmpty()
 						&& Jackson.objectMapper.readValue(text.getText(),UpdateBlockCompleted.class)
 							.updateBlock().get(0) instanceof RootNodeIdUpdated) {
 					map = (MMapModel) mapController.newMap();
 					Credentials credentials = Credentials.of(RECEIVER_USER_ID);
-					sessionController.joinSession(server, credentials, map, SENDER_MAP_ID);
-					server.updateReceiver();
+					sessionController.joinSession(guiServer, credentials, map, SENDER_MAP_ID);
+					guiServer.updateReceiver();
 				}
 			}
 			catch (IOException e1) {
@@ -194,8 +234,10 @@ public class EventStreamDialog {
 
 	final private JDialog dialog;
 	private JTextArea text;
-	
-	private Server.UpdateStatus updateStatus = Server.UpdateStatus.ACCEPTED;
+
+	private UpdateStatus updateStatus = UpdateStatus.ACCEPTED;
+
+	private final JCheckBox useWebSockets;
 
 	public EventStreamDialog(Window owner) {
 		super();
@@ -209,10 +251,14 @@ public class EventStreamDialog {
 		Container contentPane = dialog.getContentPane();
 		contentPane.add(textPane, BorderLayout.CENTER);
 		Box buttons = Box.createVerticalBox();
+
+		useWebSockets = new JCheckBox("use web sockets");
+		buttons.add(useWebSockets);
+
 		JButton map2json = new JButton("map2json");
 		map2json.addActionListener(new Map2Json());
 		buttons.add(map2json);
-		
+
 		ButtonGroup strategy = new ButtonGroup();
 		JRadioButton acceptSubmissions = new JRadioButtonExtension("accept", UpdateStatus.ACCEPTED);
 		buttons.add(acceptSubmissions);
@@ -225,11 +271,11 @@ public class EventStreamDialog {
 		strategy.add(delaySubmissions);
 		acceptSubmissions.setSelected(true);
 
-		
+
 		JButton json2map = new JButton("json2map");
 		json2map.addActionListener(new Json2Map());
 		buttons.add(json2map);
-		
+
 		contentPane.add(buttons, BorderLayout.WEST);
 		dialog.pack();
 	}

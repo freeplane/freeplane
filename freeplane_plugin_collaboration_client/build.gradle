@@ -21,6 +21,11 @@ dependencies {
 	compile 'com.fasterxml.jackson.core:jackson-annotations:2.9.0'
 	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.0'
 	compile 'org.freeplane.collaboration:freeplane-events:0.0.1-SNAPSHOT'
+
+	compile 'javax.websocket:javax.websocket-api:1.0'
+	// websocket (reference) implementation:
+	compile 'org.glassfish.tyrus.bundles:tyrus-standalone-client-jdk:1.13.1'
+	//compile 'org.glassfish.tyrus.bundles:tyrus-standalone-client:1.11.1'
 }
 
 eclipse {

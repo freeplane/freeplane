@@ -1,13 +1,14 @@
 package org.freeplane.plugin.collaboration.client.session;
 
+import java.awt.EventQueue;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.freeplane.collaboration.event.batch.Credentials;
-import org.freeplane.collaboration.event.batch.ImmutableMapCreateRequest;
-import org.freeplane.collaboration.event.batch.MapDescription;
-import org.freeplane.collaboration.event.batch.MapId;
+import org.freeplane.collaboration.event.messages.Credentials;
+import org.freeplane.collaboration.event.messages.ImmutableMapCreateRequested;
+import org.freeplane.collaboration.event.messages.MapDescription;
+import org.freeplane.collaboration.event.messages.MapId;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.IMapLifeCycleListener;
@@ -138,10 +139,15 @@ public class SessionController {
 	}
 
 
-	public void startSession(Server server, Credentials credentials, MMapModel map, MapDescription mapDescription) {
-		final MapId mapId = server.createNewMap(ImmutableMapCreateRequest.of(credentials, mapDescription));
-		joinSession(server, credentials, map, mapId);
-		updateEventGenerator.onNewMap(map);
+	public void startSession(Server server, Credentials credentials, final MMapModel map, MapDescription mapDescription) {
+		final ImmutableMapCreateRequested request = ImmutableMapCreateRequested.of(credentials, mapDescription);
+		server.createNewMap(request).thenAccept(mapId -> EventQueue.invokeLater( new Runnable() {
+			@Override
+			public void run() {
+				joinSession(server, credentials, map, mapId);
+				updateEventGenerator.onNewMap(map);
+			}
+		}));
 	}
 
 	public void joinSession(Server server, Credentials credentials, MMapModel map, MapId mapId) {
