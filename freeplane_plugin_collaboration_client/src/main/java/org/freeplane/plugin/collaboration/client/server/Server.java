@@ -1,13 +1,15 @@
 package org.freeplane.plugin.collaboration.client.server;
 
-import org.freeplane.collaboration.event.batch.MapCreateRequest;
-import org.freeplane.collaboration.event.batch.MapId;
-import org.freeplane.collaboration.event.batch.MapUpdateRequest;
+import java.util.concurrent.CompletableFuture;
+
+import org.freeplane.collaboration.event.messages.MapCreateRequested;
+import org.freeplane.collaboration.event.messages.MapId;
+import org.freeplane.collaboration.event.messages.MapUpdateProcessed.UpdateStatus;
+import org.freeplane.collaboration.event.messages.MapUpdateRequested;
 
 public interface Server {
-	enum UpdateStatus{ACCEPTED, REJECTED, MERGED};
-	MapId createNewMap(MapCreateRequest request);
-	UpdateStatus update(MapUpdateRequest request);
+	CompletableFuture<MapId> createNewMap(MapCreateRequested request);
+	CompletableFuture<UpdateStatus> update(MapUpdateRequested request);
 	void subscribe(Subscription subscription);
 	void unsubscribe(Subscription subscription);
 }

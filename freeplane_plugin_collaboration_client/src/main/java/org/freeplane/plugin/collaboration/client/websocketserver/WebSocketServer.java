@@ -3,6 +3,7 @@ package org.freeplane.plugin.collaboration.client.websocketserver;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import javax.websocket.ClientEndpoint;
@@ -14,26 +15,26 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
-import org.freeplane.collaboration.event.batch.ImmutableMapId;
-import org.freeplane.collaboration.event.batch.MapCreateRequest;
-import org.freeplane.collaboration.event.batch.MapId;
-import org.freeplane.collaboration.event.batch.MapUpdateRequest;
-import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
 import org.freeplane.collaboration.event.json.Jackson;
+import org.freeplane.collaboration.event.messages.ImmutableMapId;
+import org.freeplane.collaboration.event.messages.MapCreateRequested;
+import org.freeplane.collaboration.event.messages.MapId;
+import org.freeplane.collaboration.event.messages.MapUpdateProcessed.UpdateStatus;
+import org.freeplane.collaboration.event.messages.MapUpdateRequested;
+import org.freeplane.collaboration.event.messages.UpdateBlockCompleted;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.collaboration.client.server.Server;
 import org.freeplane.plugin.collaboration.client.server.Subscription;
-import org.freeplane.plugin.collaboration.client.websocketserver.WebSocketServer.BasicClientEndpoint;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class WebSocketServer implements Server{
-	
+
 	BasicClientEndpoint basicClientEndpoint;
 	private final ObjectMapper objectMapper;
 	final static String SERVER = "ws://localhost:8080/freeplane";
-	
+
 	public WebSocketServer()
 	{
 		objectMapper = Jackson.objectMapper;
@@ -42,27 +43,32 @@ public class WebSocketServer implements Server{
 	/*
 	 * - client connects
 	 * - client subscribes [and authenticates]
-	 * - client sends update, receives status, 
+	 * - client sends update, receives status,
 	 * - [client merges changes from others]
 	 */
 
 	private Consumer<UpdateBlockCompleted> consumer;
 
 	@Override
-	public MapId createNewMap(MapCreateRequest request) {
-		return ImmutableMapId.of("MapId");
+	public CompletableFuture<MapId> createNewMap(MapCreateRequested request) {
+		final CompletableFuture<MapId> completableFuture = new CompletableFuture<>();
+		completableFuture.complete(ImmutableMapId.of("MapId"));
+		return completableFuture;
 	}
 
 	@Override
-	public UpdateStatus update(MapUpdateRequest request) {
+	public CompletableFuture<UpdateStatus> update(MapUpdateRequested request) {
+		final CompletableFuture<UpdateStatus> completableFuture = new CompletableFuture<>();
 		try {
 			String json = objectMapper.writeValueAsString(request.update());
 			basicClientEndpoint.sendMessage(json);
+			// call when MapUpdateAccepted comes with requestId() == request.messageId()
+			completableFuture.complete(UpdateStatus.ACCEPTED);
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			completableFuture.complete(UpdateStatus.REJECTED);
 		}
-		return UpdateStatus.ACCEPTED;
+		return completableFuture;
 	}
 
 	// needed for receiving msgs from server!
@@ -77,8 +83,8 @@ public class WebSocketServer implements Server{
 		try {
 			if(basicClientEndpoint == null) {
 				basicClientEndpoint = new BasicClientEndpoint();
-			
-				WebSocketContainer container = 
+
+				WebSocketContainer container =
 						javax.websocket.ContainerProvider.getWebSocketContainer();
 				container.connectToServer(basicClientEndpoint, new URI(SERVER));
 			}
@@ -91,13 +97,13 @@ public class WebSocketServer implements Server{
 	public void unsubscribe(Subscription subscription) {
 		consumer = null;
 	}
-	
+
 	// TODO: use Encoder/Decoder to automatically convert JSON
 	@ClientEndpoint
 	public class BasicClientEndpoint
 	{
 		Session userSession = null;
-		
+
 	    @OnOpen
 	    public void onOpen(Session userSession) {
 	    	LogUtils.info("opening websocket");
@@ -113,7 +119,7 @@ public class WebSocketServer implements Server{
 
 	    /**
 	     * Message is received!
-	     * 
+	     *
 	     * @param message
 	     */
 	    @OnMessage

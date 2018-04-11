@@ -6,17 +6,17 @@ import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.freeplane.collaboration.event.MapUpdated;
-import org.freeplane.collaboration.event.batch.Credentials;
-import org.freeplane.collaboration.event.batch.ImmutableMapUpdateRequest;
-import org.freeplane.collaboration.event.batch.MapId;
-import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
+import org.freeplane.collaboration.event.messages.Credentials;
+import org.freeplane.collaboration.event.messages.ImmutableMapUpdateRequested;
+import org.freeplane.collaboration.event.messages.MapId;
+import org.freeplane.collaboration.event.messages.MapUpdateProcessed.UpdateStatus;
+import org.freeplane.collaboration.event.messages.UpdateBlockCompleted;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.plugin.collaboration.client.event.UpdateProcessorChain;
 import org.freeplane.plugin.collaboration.client.event.batch.Updates;
 import org.freeplane.plugin.collaboration.client.server.ImmutableSubscription;
 import org.freeplane.plugin.collaboration.client.server.Server;
-import org.freeplane.plugin.collaboration.client.server.Server.UpdateStatus;
 import org.freeplane.plugin.collaboration.client.server.Subscription;
 
 public class Session implements IExtension{
@@ -96,22 +96,28 @@ public class Session implements IExtension{
 				.userId(credentials.userId())
 				.mapId(mapId)
 				.updateBlock(events).mapRevision(mapRevision + 1).build();
-		UpdateStatus updateStatus = this.server.update(ImmutableMapUpdateRequest.of(this.credentials, event));
-		switch(updateStatus) {
-			case ACCEPTED:
-				mapRevision++;
-					undoHandler.commit();
-					this.updateStatus.set(updateStatus);
-				break;
-			case REJECTED:{
-				rollback();
+		this.updateStatus.set(UpdateStatus.MERGED);
+		this.server.update(ImmutableMapUpdateRequested.of(this.credentials, event))
+		.thenAccept(updateStatus -> EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				switch(updateStatus) {
+					case ACCEPTED:
+						mapRevision++;
+							undoHandler.commit();
+							Session.this.updateStatus.set(updateStatus);
+						break;
+					case REJECTED:{
+						rollback();
+					}
+					Session.this.updateStatus.set(UpdateStatus.ACCEPTED);
+						break;
+					case MERGED:
+						Session.this.updateStatus.set(UpdateStatus.MERGED);
+						break;
+				}
 			}
-			this.updateStatus.set(UpdateStatus.ACCEPTED);
-				break;
-			case MERGED:
-				this.updateStatus.set(updateStatus);
-				break;
-		}
+		}));
 	}
 
 	private void rollback() {
@@ -134,7 +140,7 @@ public class Session implements IExtension{
 				updateProcessor.onUpdate(map, incomingEvent.updateBlock());
 				mapRevision = incomingEvent.mapRevision();
 				undoHandler.commit();
-			} 
+			}
 			updateProcessor.onUpdate(map, ev);
 		}
 		finally {

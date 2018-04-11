@@ -5,7 +5,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.function.Consumer;
 
-import org.freeplane.collaboration.event.batch.UpdateBlockCompleted;
+import org.freeplane.collaboration.event.messages.UpdateBlockCompleted;
 import org.freeplane.plugin.collaboration.client.event.json.UpdatesSerializer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
