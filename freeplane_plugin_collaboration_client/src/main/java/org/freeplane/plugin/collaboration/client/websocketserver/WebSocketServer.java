@@ -3,6 +3,9 @@ package org.freeplane.plugin.collaboration.client.websocketserver;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -16,7 +19,6 @@ import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
 import org.freeplane.collaboration.event.json.Jackson;
-import org.freeplane.collaboration.event.messages.ImmutableMapId;
 import org.freeplane.collaboration.event.messages.MapCreateRequested;
 import org.freeplane.collaboration.event.messages.MapCreated;
 import org.freeplane.collaboration.event.messages.MapId;
@@ -36,7 +38,7 @@ public class WebSocketServer implements Server{
 	BasicClientEndpoint basicClientEndpoint;
 	private final ObjectMapper objectMapper;
 	final static String SERVER = "ws://localhost:8080/freeplane";
-	
+
 	CompletableFuture<MapId> requestedMapIdCompletableFuture;
 
 	public WebSocketServer()
@@ -136,7 +138,13 @@ public class WebSocketServer implements Server{
 	    public void onMessage(String message) {
 	    	try {
 				LogUtils.warn("Msg received from server: " + message);
-				Message msg = objectMapper.readValue(message, Message.class);
+				Message msg = AccessController.doPrivileged(new PrivilegedExceptionAction<Message>() {
+
+					@Override
+					public Message run() throws Exception {
+						return objectMapper.readValue(message, Message.class);
+					}
+				});
 				LogUtils.warn("Msg parsed: " + msg);
 				if (msg instanceof MapCreated)
 				{
@@ -144,7 +152,9 @@ public class WebSocketServer implements Server{
 					MapCreated msgMapCreated = (MapCreated)msg;
 					requestedMapIdCompletableFuture.complete(msgMapCreated.id());
 				}
-			} catch (IOException e) {
+			}
+			catch (PrivilegedActionException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	    }
