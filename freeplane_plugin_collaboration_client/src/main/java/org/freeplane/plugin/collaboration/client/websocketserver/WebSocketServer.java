@@ -18,9 +18,11 @@ import javax.websocket.WebSocketContainer;
 import org.freeplane.collaboration.event.json.Jackson;
 import org.freeplane.collaboration.event.messages.ImmutableMapId;
 import org.freeplane.collaboration.event.messages.MapCreateRequested;
+import org.freeplane.collaboration.event.messages.MapCreated;
 import org.freeplane.collaboration.event.messages.MapId;
 import org.freeplane.collaboration.event.messages.MapUpdateProcessed.UpdateStatus;
 import org.freeplane.collaboration.event.messages.MapUpdateRequested;
+import org.freeplane.collaboration.event.messages.Message;
 import org.freeplane.collaboration.event.messages.UpdateBlockCompleted;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.collaboration.client.server.Server;
@@ -34,10 +36,13 @@ public class WebSocketServer implements Server{
 	BasicClientEndpoint basicClientEndpoint;
 	private final ObjectMapper objectMapper;
 	final static String SERVER = "ws://localhost:8080/freeplane";
+	
+	CompletableFuture<MapId> requestedMapIdCompletableFuture;
 
 	public WebSocketServer()
 	{
 		objectMapper = Jackson.objectMapper;
+		connectToFreeplaneServer();
 	}
 
 	/*
@@ -51,13 +56,19 @@ public class WebSocketServer implements Server{
 
 	@Override
 	public CompletableFuture<MapId> createNewMap(MapCreateRequested request) {
-		final CompletableFuture<MapId> completableFuture = new CompletableFuture<>();
-		completableFuture.complete(ImmutableMapId.of("MapId"));
-		return completableFuture;
+		LogUtils.warn("WebSocketServer.createNewMap()");
+		requestedMapIdCompletableFuture = new CompletableFuture<MapId>();
+		try {
+			basicClientEndpoint.sendMessage(objectMapper.writeValueAsString(request));
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return requestedMapIdCompletableFuture;
 	}
 
 	@Override
 	public CompletableFuture<UpdateStatus> update(MapUpdateRequested request) {
+		/*
 		final CompletableFuture<UpdateStatus> completableFuture = new CompletableFuture<>();
 		try {
 			String json = objectMapper.writeValueAsString(request.update());
@@ -69,13 +80,13 @@ public class WebSocketServer implements Server{
 			completableFuture.complete(UpdateStatus.REJECTED);
 		}
 		return completableFuture;
+		*/
+		return new CompletableFuture<UpdateStatus>();
 	}
 
 	// needed for receiving msgs from server!
 	@Override
 	public void subscribe(Subscription subscription) {
-		connectToFreeplaneServer();
-
 		consumer = subscription.consumer();
 	}
 
@@ -108,7 +119,6 @@ public class WebSocketServer implements Server{
 	    public void onOpen(Session userSession) {
 	    	LogUtils.info("opening websocket");
 	        this.userSession = userSession;
-	        sendMessage("hello world from BasicClientEndpoint.onOpen()!!");
 	    }
 
 	    @OnClose
@@ -124,6 +134,19 @@ public class WebSocketServer implements Server{
 	     */
 	    @OnMessage
 	    public void onMessage(String message) {
+	    	try {
+				LogUtils.warn("Msg received from server: " + message);
+				Message msg = objectMapper.readValue(message, Message.class);
+				LogUtils.warn("Msg parsed: " + msg);
+				if (msg instanceof MapCreated)
+				{
+					LogUtils.warn("MapCreated received!");
+					MapCreated msgMapCreated = (MapCreated)msg;
+					requestedMapIdCompletableFuture.complete(msgMapCreated.id());
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 	    }
 
 	    public void sendMessage(String message) {
