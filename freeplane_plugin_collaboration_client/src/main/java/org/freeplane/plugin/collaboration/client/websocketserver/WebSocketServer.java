@@ -60,11 +60,7 @@ public class WebSocketServer implements Server{
 	public CompletableFuture<MapId> createNewMap(MapCreateRequested request) {
 		LogUtils.warn("WebSocketServer.createNewMap()");
 		requestedMapIdCompletableFuture = new CompletableFuture<MapId>();
-		try {
-			basicClientEndpoint.sendMessage(objectMapper.writeValueAsString(request));
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
+		basicClientEndpoint.sendMessage(request);
 		return requestedMapIdCompletableFuture;
 	}
 
@@ -111,8 +107,7 @@ public class WebSocketServer implements Server{
 		consumer = null;
 	}
 
-	// TODO: use Encoder/Decoder to automatically convert JSON
-	@ClientEndpoint
+	@ClientEndpoint(encoders = { MessageTextEncoder.class }, decoders = { MessageTextDecoder.class })
 	public class BasicClientEndpoint
 	{
 		Session userSession = null;
@@ -128,39 +123,20 @@ public class WebSocketServer implements Server{
 	    	LogUtils.info("closing websocket");
 	        this.userSession = null;
 	    }
-
-	    /**
-	     * Message is received!
-	     *
-	     * @param message
-	     */
+	    
 	    @OnMessage
-	    public void onMessage(String message) {
-	    	try {
-				LogUtils.warn("Msg received from server: " + message);
-				Message msg = AccessController.doPrivileged(new PrivilegedExceptionAction<Message>() {
-
-					@Override
-					public Message run() throws Exception {
-						return objectMapper.readValue(message, Message.class);
-					}
-				});
-				LogUtils.warn("Msg parsed: " + msg);
-				if (msg instanceof MapCreated)
-				{
-					LogUtils.warn("MapCreated received!");
-					MapCreated msgMapCreated = (MapCreated)msg;
-					requestedMapIdCompletableFuture.complete(msgMapCreated.id());
-				}
-			}
-			catch (PrivilegedActionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	    public void onMessage(Session session, Message message) {
+			if (message instanceof MapCreated)
+			{
+				LogUtils.warn("MapCreated received!");
+				MapCreated msgMapCreated = (MapCreated)message;
+				requestedMapIdCompletableFuture.complete(msgMapCreated.id());
 			}
 	    }
 
-	    public void sendMessage(String message) {
-	        this.userSession.getAsyncRemote().sendText(message);
+	    public void sendMessage(Message message)
+	    {
+	    	this.userSession.getAsyncRemote().sendObject(message);
 	    }
 	}
 
