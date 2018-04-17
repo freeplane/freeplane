@@ -3,9 +3,6 @@ package org.freeplane.plugin.collaboration.client.websocketserver;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -22,6 +19,7 @@ import org.freeplane.collaboration.event.json.Jackson;
 import org.freeplane.collaboration.event.messages.MapCreateRequested;
 import org.freeplane.collaboration.event.messages.MapCreated;
 import org.freeplane.collaboration.event.messages.MapId;
+import org.freeplane.collaboration.event.messages.MapUpdateProcessed;
 import org.freeplane.collaboration.event.messages.MapUpdateProcessed.UpdateStatus;
 import org.freeplane.collaboration.event.messages.MapUpdateRequested;
 import org.freeplane.collaboration.event.messages.Message;
@@ -30,20 +28,16 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.collaboration.client.server.Server;
 import org.freeplane.plugin.collaboration.client.server.Subscription;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class WebSocketServer implements Server{
 
 	BasicClientEndpoint basicClientEndpoint;
-	private final ObjectMapper objectMapper;
 	final static String SERVER = "ws://localhost:8080/freeplane";
 
 	CompletableFuture<MapId> requestedMapIdCompletableFuture;
+	CompletableFuture<UpdateStatus> requestedUpdateStatusCompletableFuture;
 
 	public WebSocketServer()
 	{
-		objectMapper = Jackson.objectMapper;
 		connectToFreeplaneServer();
 	}
 
@@ -66,20 +60,10 @@ public class WebSocketServer implements Server{
 
 	@Override
 	public CompletableFuture<UpdateStatus> update(MapUpdateRequested request) {
-		/*
-		final CompletableFuture<UpdateStatus> completableFuture = new CompletableFuture<>();
-		try {
-			String json = objectMapper.writeValueAsString(request.update());
-			basicClientEndpoint.sendMessage(json);
-			// call when MapUpdateAccepted comes with requestId() == request.messageId()
-			completableFuture.complete(UpdateStatus.ACCEPTED);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-			completableFuture.complete(UpdateStatus.REJECTED);
-		}
-		return completableFuture;
-		*/
-		return new CompletableFuture<UpdateStatus>();
+		LogUtils.warn("WebSocketServer.update()");
+		requestedUpdateStatusCompletableFuture = new CompletableFuture<UpdateStatus>();
+		basicClientEndpoint.sendMessage(request);
+		return requestedUpdateStatusCompletableFuture;
 	}
 
 	// needed for receiving msgs from server!
@@ -128,9 +112,15 @@ public class WebSocketServer implements Server{
 	    public void onMessage(Session session, Message message) {
 			if (message instanceof MapCreated)
 			{
-				LogUtils.warn("MapCreated received!");
 				MapCreated msgMapCreated = (MapCreated)message;
+				LogUtils.warn("MapCreated received -> mapId=" + msgMapCreated.id());
 				requestedMapIdCompletableFuture.complete(msgMapCreated.id());
+			}
+			else if (message instanceof MapUpdateProcessed)
+			{				
+				MapUpdateProcessed msgMapUpdateProcessed = (MapUpdateProcessed)message;
+				LogUtils.warn("MapUpdateProcessed received -> " + msgMapUpdateProcessed.status());
+				requestedUpdateStatusCompletableFuture.complete(msgMapUpdateProcessed.status());
 			}
 	    }
 
