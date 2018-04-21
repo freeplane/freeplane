@@ -70,6 +70,8 @@ public class WebSocketServer implements Server{
 	@Override
 	public void subscribe(Subscription subscription) {
 		consumer = subscription.consumer();
+		// send message to server with mapid to receive updates for this map
+		// TODO: add Message for this!!
 	}
 
 	private void connectToFreeplaneServer() {
