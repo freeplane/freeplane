@@ -15,10 +15,12 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
+import org.freeplane.collaboration.event.MapUpdated;
 import org.freeplane.collaboration.event.json.Jackson;
 import org.freeplane.collaboration.event.messages.MapCreateRequested;
 import org.freeplane.collaboration.event.messages.MapCreated;
 import org.freeplane.collaboration.event.messages.MapId;
+import org.freeplane.collaboration.event.messages.MapUpdateDistributed;
 import org.freeplane.collaboration.event.messages.MapUpdateProcessed;
 import org.freeplane.collaboration.event.messages.MapUpdateProcessed.UpdateStatus;
 import org.freeplane.collaboration.event.messages.MapUpdateRequested;
@@ -36,6 +38,8 @@ public class WebSocketServer implements Server{
 	CompletableFuture<MapId> requestedMapIdCompletableFuture;
 	CompletableFuture<UpdateStatus> requestedUpdateStatusCompletableFuture;
 
+	private Consumer<UpdateBlockCompleted> consumer;
+
 	public WebSocketServer()
 	{
 		connectToFreeplaneServer();
@@ -47,8 +51,6 @@ public class WebSocketServer implements Server{
 	 * - client sends update, receives status,
 	 * - [client merges changes from others]
 	 */
-
-	private Consumer<UpdateBlockCompleted> consumer;
 
 	@Override
 	public CompletableFuture<MapId> createNewMap(MapCreateRequested request) {
@@ -118,11 +120,22 @@ public class WebSocketServer implements Server{
 				LogUtils.warn("MapCreated received -> mapId=" + msgMapCreated.id());
 				requestedMapIdCompletableFuture.complete(msgMapCreated.id());
 			}
-			else if (message instanceof MapUpdateProcessed)
+			else if (message instanceof MapUpdateProcessed) // rename MapUpdatedStatusReceived
 			{				
 				MapUpdateProcessed msgMapUpdateProcessed = (MapUpdateProcessed)message;
 				LogUtils.warn("MapUpdateProcessed received -> " + msgMapUpdateProcessed.status());
 				requestedUpdateStatusCompletableFuture.complete(msgMapUpdateProcessed.status());
+			}
+			else if (message instanceof MapUpdateDistributed)
+			{
+				MapUpdateDistributed msgMapUpdateDistributed = (MapUpdateDistributed)message;
+				LogUtils.warn("MapUpdateDistributed received");
+				for (MapUpdated mapUpdated : msgMapUpdateDistributed.update().updateBlock())
+				{
+//					LogUtils.warn("MapUpdateDistributed::MapUpdated: " + mapUpdated.toString());
+				}
+				// TODO: why is consumer null here?
+//				consumer.accept(msgMapUpdateDistributed.update());
 			}
 	    }
 
