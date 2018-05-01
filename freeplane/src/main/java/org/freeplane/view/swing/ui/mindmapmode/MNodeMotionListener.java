@@ -194,13 +194,14 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	@Override
     public void mouseDragged(final MouseEvent e) {
+		final NodeView nodeV = getNodeView(e);
 		if (!isDragActive()) {
-			super.mouseDragged(e);
+			if(! nodeV.isSelected())
+				super.mouseDragged(e);
 			return;
 		}
 		if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
 			final MainView mainView = (MainView) e.getSource();
-			final NodeView nodeV = getNodeView(e);
 			final MapView mapView = nodeV.getMap();
 			final Point point = e.getPoint();
 			UITools.convertPointToAncestor(nodeV, point, JScrollPane.class);

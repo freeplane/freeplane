@@ -3,7 +3,9 @@ dependencies {
 	testCompile project(':freeplane')
 
     // from flatDir "localGitDepsRepository":
-    compile ':jsyntaxpane-0.9.6~r156-5' // from the Debian "libjsyntaxpane-java" package
+    // from the Debian "libjsyntaxpane-java" package:
+    // https://anonscm.debian.org/cgit/pkg-java/libjsyntaxpane-java.git
+    compile ':jsyntaxpane-0.9.6~r156-7' 
 }
 
 jar {
