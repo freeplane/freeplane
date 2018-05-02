@@ -19,7 +19,7 @@ def textFilesIncludeSpec(dir) {
 }
 
 def buildFiles() {
-    return ['*/build/**', '*/bin/**', '*/apt_generated/**']
+    return ['*/build/**', '**/bin/**', '*/apt_generated/**']
 }
 
 def miscExcludedFilesSpec() {

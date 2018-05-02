@@ -56,7 +56,7 @@ jar {
 
 task copyScripts(type: Copy) {
     from('scripts/') {
-        include('**')
+        include('*.groovy')
     }
     into(globalBin + '/scripts')
 }
