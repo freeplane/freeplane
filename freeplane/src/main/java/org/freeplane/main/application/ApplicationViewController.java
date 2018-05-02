@@ -238,6 +238,7 @@ class ApplicationViewController extends FrameController {
 		}
 		final NodeModel node = selection.getSelected();
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				final Component component = controller.getMapViewManager().getComponent(node);
 				if (component != null) {
@@ -257,6 +258,8 @@ class ApplicationViewController extends FrameController {
 
 	@Override
 	public void saveProperties() {
+		if(mapViewWindows == null)
+			return;
 		saveSplitPanePosition();
 		if (frame.isResizable()) {
 			final int winState = frame.getExtendedState() & ~Frame.ICONIFIED;
@@ -359,13 +362,13 @@ class ApplicationViewController extends FrameController {
 		final int win_y = ResourceController.getResourceController().getIntProperty("appwindow_y", -1);
 		UITools.setBounds(frame, win_x, win_y, win_width, win_height);
 		applyFrameSize(frame, win_x, win_y);
-		
+
 		int win_state = Integer
 		    .parseInt(ResourceController.getResourceController().getProperty("appwindow_state", "0"));
 		win_state = ((win_state & Frame.ICONIFIED) != 0) ? Frame.NORMAL : win_state;
 		frame.setExtendedState(win_state);
 	}
- 
+
 	private void applyFrameSize(final JFrame frame, int win_x, int win_y) {
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		Rectangle r = env.getMaximumWindowBounds();
@@ -390,11 +393,13 @@ class ApplicationViewController extends FrameController {
 
     }
 
+	@Override
 	public void previousMapView() {
 		mapViewWindows.selectPreviousMapView();
-		
+
 	}
 
+	@Override
 	public void nextMapView() {
 		mapViewWindows.selectNextMapView();
 	}
