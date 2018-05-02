@@ -9,8 +9,8 @@ import javax.swing.JComponent;
 import javax.swing.JViewport;
 
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.IMapSelection.NodePosition;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.ui.ViewController;
 
 class MapScroller {
@@ -24,8 +24,8 @@ class MapScroller {
 	private boolean slowScroll;
 	private int extraWidth;
 	final private MapView map;
-	
-	
+
+
 
 	public MapScroller(MapView map) {
 		this.map = map;
@@ -89,10 +89,10 @@ class MapScroller {
 		final JComponent content = scrolledNode.getContent();
 		Point contentLocation = new Point();
 		UITools.convertPointToAncestor(content, contentLocation, map);
-		final Rectangle rect = new Rectangle(contentLocation.x + content.getWidth() / 2 - extentSize.width / 2, 
+		final Rectangle rect = new Rectangle(contentLocation.x + content.getWidth() / 2 - extentSize.width / 2,
 				contentLocation.y + content.getHeight() / 2 - extentSize.height
 				/ 2, extentSize.width, extentSize.height);
-		
+
 		final int distanceToMargin = (extentSize.width - content.getWidth()) / 2 - 10;
 		if(scrollingDirective == ScrollingDirective.SCROLL_NODE_TO_LEFT_MARGIN){
 			rect.x += distanceToMargin;
@@ -127,7 +127,7 @@ class MapScroller {
 		}
 		return rect;
 	}
-	
+
 	private void scrollNodeNow(boolean slowScroll) {
 		final JViewport viewPort = (JViewport) map.getParent();
 		if(slowScroll)
@@ -246,7 +246,7 @@ class MapScroller {
 		anchorHorizontalPoint = anchorVerticalPoint = 0;
 		this.anchorContentLocation = getAnchorCenterPoint();
 	}
-	
+
 	void setAnchorContentLocation(){
 		anchorContentLocation = getAnchorCenterPoint();
 	}
@@ -258,7 +258,7 @@ class MapScroller {
 		int spaceToCut = node.getSpaceAround() - margin;
 		requiredRectangle.x += spaceToCut;
 		requiredRectangle.y += spaceToCut;
-		requiredRectangle.width -= 2*spaceToCut; 
+		requiredRectangle.width -= 2*spaceToCut;
 		requiredRectangle.height -= 2*spaceToCut;
 		final Rectangle contentBounds = node.getContent().getBounds();
 		int lackingWidth = requiredRectangle.width - visibleRect.width;
@@ -271,9 +271,11 @@ class MapScroller {
 		int lackingHeight = requiredRectangle.height - visibleRect.height;
 		if(lackingHeight > 0){
 			int topGap = contentBounds.y - requiredRectangle.y - margin;
-			int bottomGap = requiredRectangle.y + requiredRectangle. height  - contentBounds.y - contentBounds.height - margin;
-			requiredRectangle.height  = visibleRect.height;
-			requiredRectangle.y += lackingHeight * topGap /  (topGap + bottomGap);
+			if(topGap != 0) {
+				int bottomGap = requiredRectangle.y + requiredRectangle. height  - contentBounds.y - contentBounds.height - margin;
+				requiredRectangle.height  = visibleRect.height;
+				requiredRectangle.y += lackingHeight * topGap /  (topGap + bottomGap);
+			}
 		}
 		if(! node.getVisibleRect().contains(requiredRectangle)){
 			node.scrollRectToVisible(requiredRectangle);
