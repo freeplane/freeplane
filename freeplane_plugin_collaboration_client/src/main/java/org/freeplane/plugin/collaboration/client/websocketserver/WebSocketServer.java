@@ -30,6 +30,8 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.plugin.collaboration.client.server.Server;
 import org.freeplane.plugin.collaboration.client.server.Subscription;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 public class WebSocketServer implements Server{
 
 	BasicClientEndpoint basicClientEndpoint;
@@ -130,7 +132,7 @@ public class WebSocketServer implements Server{
 			{
 				MapUpdateDistributed msgMapUpdateDistributed = (MapUpdateDistributed)message;
 				LogUtils.warn("MapUpdateDistributed received");
-				for (MapUpdated mapUpdated : msgMapUpdateDistributed.update().updateBlock())
+				for (ObjectNode mapUpdated : msgMapUpdateDistributed.update().updateBlock())
 				{
 //					LogUtils.warn("MapUpdateDistributed::MapUpdated: " + mapUpdated.toString());
 				}
