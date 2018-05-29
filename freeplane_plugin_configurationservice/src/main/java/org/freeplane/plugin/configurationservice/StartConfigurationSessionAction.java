@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogUtils;
@@ -28,8 +31,14 @@ class StartConfigurationSessionAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
+		
 		configurationSession.start(mindMapFile);
-		/*
+		//startTCPListener();
+		
+	}
+	
+	private void startTCPListener() {
+		
 		ServerSocket welcomeSocket;
 		try {
 			welcomeSocket = new ServerSocket(6789);
@@ -39,11 +48,27 @@ class StartConfigurationSessionAction extends AFreeplaneAction {
 				   DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
 				   clientSentence = inFromClient.readLine();
 				   LogUtils.info("Received: " + clientSentence);
-				   outToClient.writeBytes("DONE");
+				   
+				   if(clientSentence == "DOIT") {
+						configurationSession.update("ID_1053277958", "a", 45);
+						List<String> attributesList = new ArrayList<>();
+						attributesList.add("a");
+						attributesList.add("b");
+						attributesList.add("area");
+						
+						Map<String, Object> attributeMap = configurationSession.readValues("ID_1053277958", attributesList);
+	
+						for (Map.Entry<String, Object> entry : attributeMap.entrySet()) {
+							LogUtils.info(entry.getKey() + " " + entry.getValue());
+						}
+						
+				   }
+				   LogUtils.info("Sending respone");
+				   //outToClient.writeBytes("DONE");
+				   
 				  }
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}*/
+			LogUtils.info(e1.getMessage());
+		}
 	}
 }
