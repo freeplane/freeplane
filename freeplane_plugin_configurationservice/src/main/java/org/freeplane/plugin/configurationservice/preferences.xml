@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><preferences_structure xmlns="http://freeplane.sf.net/ui/preferences/1.0">s
+<tabbed_pane>
+<tab name="plugins">
+<separator name="configurationservice">
+<string name="configurationservice.url"/>
+</separator>
+</tab>
+</tabbed_pane>
+</preferences_structure>
