@@ -1,6 +1,8 @@
 package org.freeplane.plugin.configurationservice;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.freeplane.plugin.script.proxy.Proxy.Controller;
@@ -26,8 +28,17 @@ public class ConfigurationSession {
 
 	public void update(String nodeId, String attributeName, int attributeValue) {
 		newHiddenMapFromTemplate.node(nodeId).getAttributes().set(attributeName, attributeValue);
-
 	}
 
+	public Map<String, Object> readValues(String nodeId, List<String> attributesList) {
+		Map<String, Object> attributeMap = new HashMap<String, Object>();
+
+		for (String attributeName : attributesList) {
+			//Attributes attr = c.getSelected().getMap().node(nodeId).getAttributes().get(attributeName);
+			Object attributeValue =  c.getSelected().getMap().node(nodeId).getAttributes().get(attributeName);
+			attributeMap.put(attributeName, attributeValue);
+		}
+		return attributeMap;
+	}
 
 }
