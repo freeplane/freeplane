@@ -62,6 +62,8 @@
 	<Entry name="main_menu" builder="main_menu">
 		<Entry name="file">
 			<Entry name="NewMapAction" accelerator="control N" />
+			<Entry name="StartConfigurationSessionAction" plugin="org.freeplane.plugin.configurationservice" />
+			<Entry name="UpdateConfigurationAction" plugin="org.freeplane.plugin.configurationservice" />
 			<Entry name="new_map_from_user_templates" />
 			<Entry name="EncryptedMap" />
 			<Entry builder="separator" />

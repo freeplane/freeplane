@@ -3,6 +3,8 @@ package org.freeplane.plugin.configurationservice;
 import java.net.URL;
 import java.util.Hashtable;
 
+import javax.swing.Icon;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -28,10 +30,14 @@ public class Activator implements BundleActivator {
 			addPluginDefaults();
 			addPreferencesToOptionPanel();
 			final String serviceurl = ResourceController.getResourceController().getProperty(CONFIGURATIONSERVICE_URL);
-			ConfigurationEngine engine = new ConfigurationEngine(serviceurl);
-			final StartConfigurationSessionAction evaluateAllAction = new StartConfigurationSessionAction(engine);
-			modeController.addAction(evaluateAllAction);
-		
+			
+			
+			ConfigurationSession configurationSession = new ConfigurationSession();
+			final StartConfigurationSessionAction startAction = new StartConfigurationSessionAction(configurationSession);
+			final UpdateConfigurationAction updateAction = new UpdateConfigurationAction(configurationSession);
+			modeController.addAction(startAction);
+			modeController.addAction(updateAction);
+
 		}
 
 		private void addPreferencesToOptionPanel() {

@@ -27,7 +27,8 @@ jar {
                       org.freeplane.features.*,
                       org.freeplane.main.*,
                       org.freeplane.n3.*,
-                      org.freeplane.view.*
+                      org.freeplane.view.*,
+                      org.freeplane.plugin.script.proxy.*
                       """
         instruction 'Import-Package', imports.replaceAll("\\s+", "")
         instruction 'Export-Package', ''
