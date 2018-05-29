@@ -54,15 +54,17 @@ public class MMapIO extends MapIO{
 		final MMapIO mapIO = new MMapIO(urlManager, mapController);
 		modeController.addExtension(MapIO.class, mapIO);
 	}
-    public void load(URL url, MapModel map) throws FileNotFoundException, IOException, XMLException, XMLParseException,
+    @Override
+	public void load(URL url, MapModel map) throws FileNotFoundException, IOException, XMLException, XMLParseException,
     URISyntaxException {
     	fileManager.load(url, map);
     }
-    public boolean loadCatchExceptions(URL url, MapModel map)
+    @Override
+	public boolean loadCatchExceptions(URL url, MapModel map)
     {
     	return fileManager.loadCatchExceptions(url, map);
     }
-    
+
     public void loadSafeAndLock(URL url, MapModel map) throws FileNotFoundException, IOException, XMLParseException,
     URISyntaxException {
     	fileManager.loadAndLock(url, map);
@@ -104,11 +106,21 @@ public class MMapIO extends MapIO{
 		return fileManager.newMapFromDefaultTemplate();
     }
 	public boolean newUntitledMap(URL url) throws FileNotFoundException, IOException,
-            URISyntaxException, XMLException {
-	    return mapController.newUntitledMap(url);
-    }
+	URISyntaxException, XMLException {
+		return mapController.newUntitledMap(url);
+	}
+	public MapModel newHiddenUntitledMap(URL url){
+		try {
+			return mapController.newHiddenUntitledMap(url);
+		}
+		catch (Exception e) {
+			fileManager.handleLoadingException(e);
+			return null;
+		}
+	}
+	@Override
 	public boolean newMap(URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
-	    return mapController.newMap(url);
+		return mapController.newMap(url);
     }
 	public boolean newDocumentationMap(URL url) throws FileNotFoundException, IOException,
             URISyntaxException, XMLException {
@@ -117,5 +129,5 @@ public class MMapIO extends MapIO{
 	public boolean restoreCurrentMap() throws FileNotFoundException, IOException, URISyntaxException, XMLException {
 	    return mapController.restoreCurrentMap();
     }
-	
+
 }
