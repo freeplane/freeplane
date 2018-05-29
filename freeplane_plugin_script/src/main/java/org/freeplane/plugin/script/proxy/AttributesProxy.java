@@ -61,7 +61,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		final ArrayList<Object> result = new ArrayList<Object>();
 		for (final Attribute attribute : attributeTableModel.getAttributes()) {
 			if (attribute.getName().equals(name)) {
-				result.add(getAttributeValue(attribute));
+				result.add(getTransformedAttributeValue(attribute));
 			}
 		}
 		return result;
@@ -94,12 +94,12 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		final ArrayList<Convertible> result = new ArrayList<Convertible>(attributeTableModel.getRowCount());
 		for (final Attribute a : attributeTableModel.getAttributes()) {
-			result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), getAttributeValue(a)));
+			result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), getTransformedAttributeValue(a)));
 		}
 		return result;
 	}
 
-	private Object getAttributeValue(final Attribute a) {
+	private Object getTransformedAttributeValue(final Attribute a) {
 		final Object value = a.getValue();
 		final Object content = TextController.getController().getTransformedObjectNoFormattingNoThrow(value, getDelegate(), null);
 		return content;
@@ -113,7 +113,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		final LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>(attributeTableModel.getRowCount());
 		for (final Attribute a : attributeTableModel.getAttributes()) {
-			result.put(a.getName(), getAttributeValue(a));
+			result.put(a.getName(), getTransformedAttributeValue(a));
 		}
 		return result;
     }
@@ -128,12 +128,13 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 			final ArrayList<Convertible> result = new ArrayList<Convertible>(
 			    attributeTableModel.getRowCount());
 			for (final Attribute a : attributeTableModel.getAttributes()) {
-				final Object bool = closure.call(new Object[] { a.getName(), getAttributeValue(a) });
+				final Object transformedAttributeValue = getTransformedAttributeValue(a);
+				final Object bool = closure.call(new Object[] { a.getName(), transformedAttributeValue });
 				if (result == null) {
 					throw new RuntimeException("findValues(): closure returned null instead of boolean/Boolean");
 				}
 				if ((Boolean) bool)
-					result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), getAttributeValue(a)));
+					result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), transformedAttributeValue));
 			}
 			return result;
 		}
@@ -350,12 +351,12 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 
                     @Override
                     public Object getValue() {
-                        return getAttributeValue(attribute);
+                        return getTransformedAttributeValue(attribute);
                     }
 
                     @Override
                     public Object setValue(Object value) {
-                        final Object oldValue = getAttributeValue(attribute);
+                        final Object oldValue = getValue();
                         attribute.setValue(value);
                         return oldValue;
                     }
