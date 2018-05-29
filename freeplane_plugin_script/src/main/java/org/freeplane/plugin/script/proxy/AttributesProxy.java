@@ -49,7 +49,8 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 			return null;
 		}
 		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
-		return attributeTableModel.getAttribute(index).getValue();
+		final Attribute attribute = attributeTableModel.getAttribute(index);
+		return getTransformedAttributeValue(attribute);
 	}
 
 	@Override
