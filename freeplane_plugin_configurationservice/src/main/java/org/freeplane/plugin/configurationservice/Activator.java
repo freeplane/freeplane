@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import javax.swing.Icon;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -27,17 +28,21 @@ public class Activator implements BundleActivator {
 		private static final String PREFERENCES_RESOURCE = "preferences.xml";
 
 		public void installExtension(ModeController modeController) {
+			
+			int port =  Integer.parseInt(System.getProperty("freeplane.configurationservice.port", "0"));
+			
 			addPluginDefaults();
 			addPreferencesToOptionPanel();
-			final String serviceurl = ResourceController.getResourceController().getProperty(CONFIGURATIONSERVICE_URL);
-			
 			
 			ConfigurationSession configurationSession = new ConfigurationSession();
 			final StartConfigurationSessionAction startAction = new StartConfigurationSessionAction(configurationSession);
 			final UpdateConfigurationAction updateAction = new UpdateConfigurationAction(configurationSession);
 			modeController.addAction(startAction);
 			modeController.addAction(updateAction);
-
+			
+			TCPServer srv = new TCPServer(port, configurationSession);
+	        Thread t = new Thread(srv);
+	        t.start();
 		}
 
 		private void addPreferencesToOptionPanel() {

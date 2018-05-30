@@ -34,7 +34,6 @@ public class ConfigurationSession {
 		Map<String, Object> attributeMap = new HashMap<String, Object>();
 
 		for (String attributeName : attributesList) {
-			//Attributes attr = c.getSelected().getMap().node(nodeId).getAttributes().get(attributeName);
 			Object attributeValue =  newHiddenMapFromTemplate.node(nodeId).getAttributes().get(attributeName);
 			attributeMap.put(attributeName, attributeValue);
 		}

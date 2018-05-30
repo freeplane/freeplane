@@ -18,12 +18,8 @@ class StartConfigurationSessionAction extends AFreeplaneAction {
 	private static final String ACTION_NAME = "StartConfigurationSessionAction";
 	private static final long serialVersionUID = 1L;
 
-	private static final String mindMapFile = "C:\\Users\\Dimitry\\Desktop\\Files\\HelloWorld.mm";
-//	private static final String mindMapFile = "C:\\neri\\mappementali\\HelloWorld.mm";
-	private static int port =0;
 	private ConfigurationSession configurationSession;
 
-	private String clientSentence;
 
 	public StartConfigurationSessionAction(ConfigurationSession configurationSession) {
 		super(ACTION_NAME);
@@ -32,44 +28,8 @@ class StartConfigurationSessionAction extends AFreeplaneAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		
+		String mindMapFile = System.getProperty("freeplane.configurationservice.mindMapFile");
+		System.out.println("MM: " + mindMapFile);
 		configurationSession.start(mindMapFile);
-		//startTCPListener();
-		
-	}
-	
-	private void startTCPListener() {
-		
-		ServerSocket welcomeSocket;
-		try {
-			welcomeSocket = new ServerSocket(6789);
-			  while (true) {
-				   Socket connectionSocket = welcomeSocket.accept();
-				   BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-				   DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
-				   clientSentence = inFromClient.readLine();
-				   LogUtils.info("Received: " + clientSentence);
-				   
-				   if(clientSentence == "DOIT") {
-						configurationSession.update("ID_1053277958", "a", 45);
-						List<String> attributesList = new ArrayList<>();
-						attributesList.add("a");
-						attributesList.add("b");
-						attributesList.add("area");
-						
-						Map<String, Object> attributeMap = configurationSession.readValues("ID_1053277958", attributesList);
-	
-						for (Map.Entry<String, Object> entry : attributeMap.entrySet()) {
-							LogUtils.info(entry.getKey() + " " + entry.getValue());
-						}
-						
-				   }
-				   LogUtils.info("Sending respone");
-				   //outToClient.writeBytes("DONE");
-				   
-				  }
-		} catch (IOException e1) {
-			LogUtils.info(e1.getMessage());
-		}
 	}
 }
