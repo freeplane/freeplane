@@ -20,14 +20,18 @@ import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.proxy.Proxy.Attributes;
 import org.freeplane.view.swing.map.NodeView;
 
 import groovy.lang.Closure;
 import groovy.lang.MissingMethodException;
 
 class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attributes {
-	AttributesProxy(final NodeModel delegate, final ScriptContext scriptContext) {
+	private boolean transformsValues;
+
+	AttributesProxy(final NodeModel delegate, final ScriptContext scriptContext, final boolean transformsValues) {
 		super(delegate, scriptContext);
+		this.transformsValues = transformsValues;
 	}
 
     @Override
@@ -50,7 +54,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
 		final Attribute attribute = attributeTableModel.getAttribute(index);
-		return getTransformedAttributeValue(attribute);
+		return getAttributeValue(attribute);
 	}
 
 	@Override
@@ -62,7 +66,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		final ArrayList<Object> result = new ArrayList<Object>();
 		for (final Attribute attribute : attributeTableModel.getAttributes()) {
 			if (attribute.getName().equals(name)) {
-				result.add(getTransformedAttributeValue(attribute));
+				result.add(getAttributeValue(attribute));
 			}
 		}
 		return result;
@@ -95,15 +99,19 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		final ArrayList<Convertible> result = new ArrayList<Convertible>(attributeTableModel.getRowCount());
 		for (final Attribute a : attributeTableModel.getAttributes()) {
-			result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), getTransformedAttributeValue(a)));
+			result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), getAttributeValue(a)));
 		}
 		return result;
 	}
 
-	private Object getTransformedAttributeValue(final Attribute a) {
+	private Object getAttributeValue(final Attribute a) {
 		final Object value = a.getValue();
-		final Object content = TextController.getController().getTransformedObjectNoFormattingNoThrow(value, getDelegate(), null);
-		return content;
+		if(transformsValues) {
+			final Object content = TextController.getController().getTransformedObjectNoFormattingNoThrow(value, getDelegate(), null);
+			return content;
+		}
+		else
+			return value;
 	}
 
 	@Override
@@ -114,7 +122,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		final LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>(attributeTableModel.getRowCount());
 		for (final Attribute a : attributeTableModel.getAttributes()) {
-			result.put(a.getName(), getTransformedAttributeValue(a));
+			result.put(a.getName(), getAttributeValue(a));
 		}
 		return result;
     }
@@ -129,7 +137,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 			final ArrayList<Convertible> result = new ArrayList<Convertible>(
 			    attributeTableModel.getRowCount());
 			for (final Attribute a : attributeTableModel.getAttributes()) {
-				final Object transformedAttributeValue = getTransformedAttributeValue(a);
+				final Object transformedAttributeValue = getAttributeValue(a);
 				final Object bool = closure.call(new Object[] { a.getName(), transformedAttributeValue });
 				if (result == null) {
 					throw new RuntimeException("findValues(): closure returned null instead of boolean/Boolean");
@@ -352,7 +360,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 
                     @Override
                     public Object getValue() {
-                        return getTransformedAttributeValue(attribute);
+                        return getAttributeValue(attribute);
                     }
 
                     @Override
@@ -371,4 +379,12 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
             }
         };
     }
+
+	static Attributes withRawValues(NodeModel delegate, ScriptContext scriptContext) {
+		return new AttributesProxy(delegate, scriptContext, false);
+	}
+
+	static Attributes withTransformedValues(NodeModel delegate, ScriptContext scriptContext) {
+		return new AttributesProxy(delegate, scriptContext, true);
+	}
 }
