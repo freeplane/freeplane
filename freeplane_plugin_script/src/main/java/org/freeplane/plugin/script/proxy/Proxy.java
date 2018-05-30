@@ -571,6 +571,10 @@ public interface Proxy {
 		 * @since 1.5 */
 		List<Map> getOpenMaps();
 
+		/** creates an new unsaved map from given template without an associated view.
+		 *
+		 * This map can be processed by scripts and any other clients of scripting API.
+		 * @since 1.6.16 */
 		Map newHiddenMapFromTemplate(File templateFile);
 	}
 
