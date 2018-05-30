@@ -124,18 +124,18 @@ public class LinkController extends SelectionController implements IExtension {
 		final ReadManager readManager = mapController.getReadManager();
 		LinkBuilder linkBuilder = new LinkBuilder(this);
 		linkBuilder.registerBy(readManager);
-		
+
 		// this IContentTransformer is unconditional because the outcome
 		// (#ID_1698830792 -> Nodename) is usually wanted
 		final LinkTransformer textTransformer = new LinkTransformer(modeController, 10);
 		TextController.getController(modeController).addTextTransformer(textTransformer);
-		
-		textTransformer.registerListeners(modeController);
 
 		final INodeSelectionListener listener = new INodeSelectionListener() {
+			@Override
 			public void onDeselect(final NodeModel node) {
 			}
 
+			@Override
 			public void onSelect(final NodeModel node) {
 				final URI link = NodeLinks.getValidLink(node);
 				final String linkString = (link != null ? link.toString() : null);
@@ -175,7 +175,8 @@ public class LinkController extends SelectionController implements IExtension {
     protected void addClosingAction(final JComponent arrowLinkPopup, Action action) {
         JButton comp = addAction(arrowLinkPopup, action);
         comp.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
+        	@Override
+			public void actionPerformed(ActionEvent e) {
         		SwingUtilities.getWindowAncestor(arrowLinkPopup).setVisible(false);
         	}
         });
@@ -196,7 +197,7 @@ public class LinkController extends SelectionController implements IExtension {
 		modeController.addAction(new FollowLinkAction());
 		modeController.addUiBuilder(Phase.ACTIONS, "clone_actions", new ClonesMenuBuilder(modeController),
 				new ChildActionEntryRemover(modeController));
-		modeController.addUiBuilder(Phase.ACTIONS, "link_actions", new LinkMenuBuilder(modeController), 
+		modeController.addUiBuilder(Phase.ACTIONS, "link_actions", new LinkMenuBuilder(modeController),
 				new ChildActionEntryRemover(modeController));
 	}
 
@@ -300,7 +301,8 @@ public class LinkController extends SelectionController implements IExtension {
             this.reason = reason;
         }
 
-        public void actionPerformed(ActionEvent e) {
+        @Override
+		public void actionPerformed(ActionEvent e) {
             JComponent src = (JComponent) e.getSource();
             src.putClientProperty(reason, Boolean.TRUE);
             SwingUtilities.getWindowAncestor(src).setVisible(false);
@@ -320,7 +322,7 @@ public class LinkController extends SelectionController implements IExtension {
 		sourceButton.setEnabled(!selection.isSelected(source));
 		final JButton targetButton = addLinks(arrowLinkPopup, target);
 		targetButton.setEnabled(!selection.isSelected(target));
-		
+
 		sourceButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -340,7 +342,7 @@ public class LinkController extends SelectionController implements IExtension {
 
 	private void registerCloseActions(final JComponent arrowLinkPopup) {
 		arrowLinkPopup.addHierarchyListener(new HierarchyListener() {
-			
+
 			@Override
 			public void hierarchyChanged(HierarchyEvent e) {
 				if(arrowLinkPopup.isDisplayable()) {
@@ -390,7 +392,7 @@ public class LinkController extends SelectionController implements IExtension {
 	public Collection<NodeLinkModel> getLinksFrom(NodeModel node) {
 		return NodeLinks.getLinks(node);
 	}
-	
+
 	public Collection<NodeLinkModel> getLinksTo(final NodeModel target) {
 		if (target.hasID() == false) {
 			return Collections.emptySet();
@@ -399,7 +401,7 @@ public class LinkController extends SelectionController implements IExtension {
 		if (links == null) {
 			return Collections.emptySet();
 		}
-		
+
 		ArrayList<NodeLinkModel> clonedLinks = null;
 		for(NodeModel targetClone : target.subtreeClones()){
 			final Set<NodeLinkModel> set = links.get(targetClone.createID());
@@ -801,7 +803,7 @@ public class LinkController extends SelectionController implements IExtension {
 		final ConnectorArrows arrows = ConnectorArrows.valueOf(standard);
 		return arrows;
 	}
-	
+
 	public DashVariant getStandardDashVariant() {
 		final String standard = ResourceController.getResourceController().getProperty(RESOURCES_DASH_VARIANT);
 		final DashVariant variant = DashVariant.valueOf(standard);
