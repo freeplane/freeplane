@@ -562,6 +562,8 @@ public interface Proxy {
 		/** a list of all opened maps.
 		 * @since 1.5 */
 		List<Map> getOpenMaps();
+
+		Map newHiddenMapFromTemplate(File templateFile);
 	}
 
 	/** Edge to parent node: <code>node.style.edge</code> - read-only. */
