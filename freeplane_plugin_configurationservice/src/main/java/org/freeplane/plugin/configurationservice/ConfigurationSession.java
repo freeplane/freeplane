@@ -10,7 +10,7 @@ import org.freeplane.plugin.script.proxy.ScriptUtils;
 
 public class ConfigurationSession {
 
-	private Controller c;
+	private final Controller c;
 	private org.freeplane.plugin.script.proxy.Proxy.Map newHiddenMapFromTemplate;
 
 	public ConfigurationSession() {
@@ -27,14 +27,14 @@ public class ConfigurationSession {
 	}
 
 	public void update(String nodeId, String attributeName, int attributeValue) {
-		newHiddenMapFromTemplate.node(nodeId).getAttributes().set(attributeName, attributeValue);
+		newHiddenMapFromTemplate.node(nodeId).getTransformedAttributes().set(attributeName, attributeValue);
 	}
 
 	public Map<String, Object> readValues(String nodeId, List<String> attributesList) {
 		Map<String, Object> attributeMap = new HashMap<String, Object>();
 
 		for (String attributeName : attributesList) {
-			Object attributeValue =  newHiddenMapFromTemplate.node(nodeId).getAttributes().get(attributeName);
+			Object attributeValue =  newHiddenMapFromTemplate.node(nodeId).getTransformedAttributes().getFirst(attributeName);
 			attributeMap.put(attributeName, attributeValue);
 		}
 		return attributeMap;

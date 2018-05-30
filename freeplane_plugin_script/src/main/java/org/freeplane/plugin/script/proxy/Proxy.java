@@ -571,6 +571,10 @@ public interface Proxy {
 		 * @since 1.5 */
 		List<Map> getOpenMaps();
 
+		/** creates an new unsaved map from given template without an associated view.
+		 *
+		 * This map can be processed by scripts and any other clients of scripting API.
+		 * @since 1.6.16 */
 		Map newHiddenMapFromTemplate(File templateFile);
 	}
 
@@ -945,6 +949,9 @@ public interface Proxy {
 	interface NodeRO {
 		Attributes getAttributes();
 
+		/**@since 1.6.16 */
+		Attributes getTransformedAttributes();
+
 		/** allows to access attribute values like array elements. Note that the returned type is a
 		 * {@link Convertible}, not a String. Nevertheless it behaves like a String in almost all respects,
 		 * that is, in Groovy scripts it understands all String methods like lenght(), matches() etc.
@@ -965,6 +972,9 @@ public interface Proxy {
 		 * @since 1.2
 		 */
 		Convertible getAt(String attributeName);
+
+		/**@since 1.6.16 */
+		Convertible getTransformedAt(String attributeName);
 
 		/** a reference to an accessor object for cloud properties of this node. This property is never null.
 		 * @since 1.2
