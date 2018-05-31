@@ -56,8 +56,9 @@ public class MapModel {
 	private boolean readOnly = false;
 	private NodeModel root;
 	private URL url;
+	private NodeChangeAnnouncer nodeChangeAnnouncer;
 
-	public MapModel(IconRegistry iconRegistry) {
+	public MapModel(IconRegistry iconRegistry, NodeChangeAnnouncer nodeChangeAnnouncer) {
 		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		this.root = null;
 		listeners = new LinkedList<IMapChangeListener>();
@@ -67,12 +68,15 @@ public class MapModel {
 			filter = filterController.createTransparentFilter();
 		}
 		this.iconRegistry = iconRegistry;
+		this.nodeChangeAnnouncer = nodeChangeAnnouncer;
 	}
 
 	public MapModel() {
-		this(null);
+		this(null, null);
 		final ModeController modeController = Controller.getCurrentModeController();
-		iconRegistry = new IconRegistry(modeController.getMapController(), this);
+		final MapController mapController = modeController.getMapController();
+		iconRegistry = new IconRegistry(mapController, this);
+		this.nodeChangeAnnouncer = mapController;
 	}
 
 	public void createNewRoot() {
@@ -300,6 +304,11 @@ public class MapModel {
 		if (id != null) {
 			nodes.put(id, null);
 		}
+	}
+
+
+	public NodeChangeAnnouncer getNodeChangeAnnouncer() {
+		return nodeChangeAnnouncer;
 	}
 
 	public boolean close() {

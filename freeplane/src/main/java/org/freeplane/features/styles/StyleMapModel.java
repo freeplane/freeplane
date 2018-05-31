@@ -23,6 +23,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeChangeAnnouncer;
 
 /**
  * @author Dimitry Polivaev
@@ -31,8 +32,8 @@ import org.freeplane.features.map.MapModel;
 class StyleMapModel extends MapModel {
 	private static final String STYLES = "styles";
 
-	StyleMapModel(IconRegistry iconRegistry, AttributeRegistry attributeRegistry) {
-		super(iconRegistry);
+	StyleMapModel(IconRegistry iconRegistry, AttributeRegistry attributeRegistry, NodeChangeAnnouncer nodeChangeAnnouncer) {
+		super(iconRegistry, nodeChangeAnnouncer);
 		addExtension(attributeRegistry);
 	}
 

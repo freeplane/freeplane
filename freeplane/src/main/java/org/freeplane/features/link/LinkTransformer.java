@@ -37,7 +37,7 @@ import org.freeplane.features.text.TextController;
  * Mar 3, 2011
  */
 public class LinkTransformer extends AbstractContentTransformer {
-	
+
 	private static Icon localLinkIcon = ResourceController.getResourceController().getIcon("link_local_icon");
 	private ModeController modeController;
 
@@ -46,12 +46,7 @@ public class LinkTransformer extends AbstractContentTransformer {
 	    this.modeController = modeController;
     }
 
-	public void registerListeners(ModeController modeController) {
-	    final NodeUpdateChangeListener listener = new NodeUpdateChangeListener();
-		modeController.getMapController().addNodeChangeListener(listener);
-		modeController.getMapController().addMapChangeListener(listener);
-    }
-
+	@Override
 	public Object transformContent(TextController textController, Object content, NodeModel node, Object transformedExtension) {
 		if(PatternFormat.IDENTITY_PATTERN.equals(textController.getNodeFormat(node)))
 			return content;

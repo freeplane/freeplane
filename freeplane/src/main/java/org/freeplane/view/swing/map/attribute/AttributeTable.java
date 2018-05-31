@@ -75,13 +75,11 @@ import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.ColumnWidthChangeEvent;
 import org.freeplane.features.attribute.IAttributeTableModel;
 import org.freeplane.features.attribute.IColumnWidthChangeListener;
-import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.link.LinkController;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -110,6 +108,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		TableHeaderRendererImpl(TableCellRenderer renderer){
 			this.delegate = renderer;
 		}
+		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
 			final Component c = delegate.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
@@ -159,6 +158,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		 * @see
 		 * java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
 		 */
+		@Override
 		public void focusGained(final FocusEvent event) {
 			final Component source = (Component) event.getSource();
 			event.getOppositeComponent();
@@ -172,6 +172,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			    focusedTable.setSelectedCellTypeInfo();
 			}
 			EventQueue.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					if (focusedTable != null) {
 						final Component newNodeViewInFocus = SwingUtilities.getAncestorOfClass(NodeView.class,
@@ -192,6 +193,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		 * @see
 		 * java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
 		 */
+		@Override
 		public void focusLost(final FocusEvent event) {
 			if (event.isTemporary()) {
 				return;
@@ -270,7 +272,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
 		setShowGrid(true);
 	}
-	
+
 	@Override
 	protected JTableHeader createDefaultTableHeader() {
 		return new TableHeader(columnModel);
@@ -303,6 +305,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		super.changeSelection(rowIndex, columnIndex, toggle, extend);
 	}
 
+	@Override
 	public void columnWidthChanged(final ColumnWidthChangeEvent event) {
 		final float zoom = getZoom();
 		final int col = event.getColumnNumber();
@@ -324,8 +327,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	public AttributeView getAttributeView() {
 		return attributeView;
 	}
-	
-	
+
+
 
 	@Override
     public boolean editCellAt(int row, int column, EventObject e) {
@@ -369,32 +372,37 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	    final Icon linkIcon =  Controller.getCurrentModeController().getExtension(LinkController.class).getLinkIcon(uri, nodeModel);
 	    return linkIcon;
     }
-	
+
 	@SuppressWarnings("serial")
     private class DialogTableCellEditor extends AbstractCellEditor implements TableCellEditor{
-		
+
 		final private IEditControl editControl;
 		private Object value;
 		private EditNodeBase editBase;
 		public DialogTableCellEditor() {
 			super();
 			editControl = new IEditControl() {
+				@Override
 				public void split(String newText, int position) {
 				}
-				
+
+				@Override
 				public void ok(String newText) {
 					value = newText;
 					stopCellEditing();
 				}
-				
+
+				@Override
 				public void cancel() {
 					stopCellEditing();
 				}
 
+				@Override
 				public boolean canSplit() {
 	                return false;
                 }
 
+				@Override
 				public EditedComponent getEditType() {
 	                return EditedComponent.TEXT;
                 }
@@ -408,7 +416,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		public void setEditBase(EditNodeBase editBase) {
         	this.editBase = editBase;
         }
-		
+
+		@Override
 		public Object getCellEditorValue() {
 	        return value;
         }
@@ -421,12 +430,14 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			editBase.show(frame);
 		}
 
+		@Override
 		public boolean isCellEditable(EventObject anEvent) {
-			if (anEvent instanceof MouseEvent) { 
+			if (anEvent instanceof MouseEvent) {
 				return ((MouseEvent)anEvent).getClickCount() >= CLICK_COUNT_TO_START;
 			}
 			return true;
 		}
+		@Override
 		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 	        return new AttributeTableCellRenderer().getTableCellRendererComponent(table, value, true, true, row, column);
         }
@@ -470,13 +481,14 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					else
 						super.actionPerformed(e);
 				}
-				
+
 			};
 			comboBox.addFocusListener(AttributeTable.focusListener);
 			comboBox.getEditor().getEditorComponent().addFocusListener(AttributeTable.focusListener);
 			comboBox.setRenderer(new TypedListCellRenderer());
 			dce = new DefaultCellEditor(comboBox) {
-		        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int col) {
+		        @Override
+				public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int col) {
 		            return super.getTableCellEditorComponent(table, ((AttributeTable)table).getValueForEdit(row, col), isSelected, row, col);
 		        }
 			};
@@ -611,29 +623,29 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	@Override
     public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 	    Object value = getValueAt(row, column);
-        
+
             boolean isSelected = false;
             boolean hasFocus = false;
-        
+
             // Only indicate the selection and focused cell if not printing
             MapView map = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
             if (map == null || ! map.isPrinting()) {
                 isSelected = isCellSelected(row, column);
-        
+
                 boolean rowIsLead =
                     (selectionModel.getLeadSelectionIndex() == row);
                 boolean colIsLead =
                     (columnModel.getSelectionModel().getLeadSelectionIndex() == column);
-        
+
                 final Window windowAncestor = SwingUtilities.getWindowAncestor(this);
 				hasFocus = (rowIsLead && colIsLead) && windowAncestor != null && equals(windowAncestor.getMostRecentFocusOwner());
             }
-        
+
         return renderer.getTableCellRendererComponent(this, value,
                                                       isSelected, hasFocus,
                                                       row, column);
     }
-	
+
 	@Override
 	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
 		if (ks.getKeyCode() == KeyEvent.VK_TAB && e.getModifiers() == 0 && pressed && getSelectedColumn() == 1
@@ -648,7 +660,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			}
 			else
 				return super.processKeyBinding(ks, e, condition, pressed);
-				
+
 		}
 		boolean retValue = super.processKeyBinding(ks, e, condition, pressed);
 		if (!retValue && condition == JComponent.WHEN_FOCUSED && isFocusOwner() && ks.getKeyCode() != KeyEvent.VK_TAB
@@ -689,8 +701,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	public void removeEditor() {
 		final Component editorComponent = getEditorComponent();
 		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-		boolean requestFocus = editorComponent != null && focusOwner != null && 
-		(focusOwner == editorComponent || SwingUtilities.isDescendingFrom(focusOwner, editorComponent)); 
+		boolean requestFocus = editorComponent != null && focusOwner != null &&
+		(focusOwner == editorComponent || SwingUtilities.isDescendingFrom(focusOwner, editorComponent));
 		getAttributeTableModel().editingCanceled();
 		final boolean focusCycleRoot = isFocusCycleRoot();
 		setFocusCycleRoot(true);
@@ -781,9 +793,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					}
 			}
 		getParent().getParent().invalidate();
-		final NodeModel node = attributeView.getNode();
-		MapController mapController = attributeView.getMapView().getModeController().getMapController();
-		mapController.nodeChanged(node, NodeAttributeTableModel.class, null, null);
 	}
 
 	void updateAttributeTable() {
@@ -835,7 +844,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		final NodeView nodeView = attributeView.getNodeView();
 		final MapView mapView = nodeView.getMap();
 		final ModeController modeController = mapView.getModeController();
-		final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
+		final NodeStyleController style = modeController.getExtension(NodeStyleController.class);
         final MapStyleModel model = MapStyleModel.getExtension(mapView.getModel());
         final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
         final Font font = style.getFont(attributeStyleNode);
@@ -857,6 +866,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private void updateRowHeights() {
 		if(! isDisplayable()){
 			addHierarchyListener(new HierarchyListener() {
+				@Override
 				public void hierarchyChanged(HierarchyEvent e) {
 					if(isDisplayable()){
 						updateRowHeights();
@@ -937,8 +947,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	    super.valueChanged(e);
 	    setSelectedCellTypeInfo();
     }
-	
-	
+
+
 
 	@Override
     public void columnSelectionChanged(ListSelectionEvent e) {
@@ -966,6 +976,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		super.paintComponent(g);
 	}
 
-	
+
 
 }
