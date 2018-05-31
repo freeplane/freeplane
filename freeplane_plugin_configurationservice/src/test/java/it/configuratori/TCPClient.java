@@ -16,6 +16,10 @@ public class TCPClient {
         
         try {
         	Socket clientSocket = new Socket("localhost", 4004);
+        	
+            DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+            outToServer.writeBytes("C:\\neri\\mappementali\\HelloWorld.mm" + '\n');
+            
             while (true) {
                 System.out.println("Ready for new command ...");
                 String line = scanner.nextLine();

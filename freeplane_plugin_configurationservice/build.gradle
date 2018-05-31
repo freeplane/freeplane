@@ -24,6 +24,7 @@ jar {
                       org.osgi.framework;version="1.3.0",
                       org.freeplane.plugin.script.*,
                       org.freeplane.core.*,
+                      org.freeplane.features.ui.*,
                       org.freeplane.features.*,
                       org.freeplane.main.*,
                       org.freeplane.n3.*,

@@ -25,6 +25,7 @@ public class Activator implements BundleActivator {
 	private static final String TOGGLE_PARSE_FORMULAS = "parse_formulas";
 
 	private final class ConfigurationServicePluginRegistration implements IModeControllerExtensionProvider {
+		private static final String TEXT_EN = "/text_en.properties";
 		private static final String PREFERENCES_RESOURCE = "preferences.xml";
 
 		public void installExtension(ModeController modeController) {
@@ -32,6 +33,7 @@ public class Activator implements BundleActivator {
 			int port =  Integer.parseInt(System.getProperty("freeplane.configurationservice.port", "0"));
 			
 			addPluginDefaults();
+			addTranslations();
 			addPreferencesToOptionPanel();
 			
 			ConfigurationSession configurationSession = new ConfigurationSession();
@@ -43,6 +45,12 @@ public class Activator implements BundleActivator {
 			TCPServer srv = new TCPServer(port, configurationSession);
 	        Thread t = new Thread(srv);
 	        t.start();
+		}
+
+		private void addTranslations() {
+			ResourceController resourceController = ResourceController.getResourceController();
+			URL resource = Activator.class.getResource(TEXT_EN);
+			resourceController.addLanguageResources("en", resource);
 		}
 
 		private void addPreferencesToOptionPanel() {

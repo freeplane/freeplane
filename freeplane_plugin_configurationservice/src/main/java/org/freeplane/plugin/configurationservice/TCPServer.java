@@ -5,15 +5,16 @@ import java.net.*;
 import java.util.*;
 
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.mode.Controller;
 
 public class TCPServer implements Runnable {
 	private int port;
 	private List<Client> clients = new ArrayList<Client>();
-	private ConfigurationSession configurationSession;
+	private ThreadConfigurationSession configurationSession;
 
 	public TCPServer(int port, ConfigurationSession configurationSession) {
 		this.port = port;
-		this.configurationSession = configurationSession;
+		this.configurationSession = new ThreadConfigurationSession(Controller.getCurrentController().getViewController(), configurationSession);
 	}
 
 	public void run() {
@@ -48,16 +49,14 @@ public class TCPServer implements Runnable {
 				String line = null;
 				while ((line = input.readLine()) != null) {
 					line = line.trim();
-					int a_value = Integer.parseInt(line);
-					String response = testCommand(a_value);
-					write(response+ "\r\n");
-					if (line == "DOIT") {
-						//String response = testCommand();
-						//write(response+ "\r\n");
-					} else {
-						write("Command NOT MAPPED" + "\r\n");
+					if(! configurationSession.isStarted())
+						configurationSession.start(line);
+					else {	
+						int a_value = Integer.parseInt(line);
+						String response = updateMindMap(a_value);
+						write(response+ "\r\n");
+						continue;
 					}
-					continue;
 				}
 			} catch (Exception e) {
 			} finally {
@@ -75,7 +74,7 @@ public class TCPServer implements Runnable {
 			output.flush();
 		}
 
-		public String testCommand(int value) {
+		public String updateMindMap(int value) {
 
 			String response = "";
 			configurationSession.update("ID_1053277958", "a", value);
@@ -93,6 +92,11 @@ public class TCPServer implements Runnable {
 
 			return response;
 		}
+		
+		public void startSession(String mindMapFile) {
+			configurationSession.start(mindMapFile);
+		}
+		
 
 		public boolean equals(Client client) {
 			return (client != null) && (client instanceof Client) && (clientName != null) && (client.clientName != null)

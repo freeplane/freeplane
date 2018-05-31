@@ -17,9 +17,13 @@ public class ConfigurationSession {
 		c = ScriptUtils.c();
 	}
 
-	void start(String mindmapfile) {
+	public void start(String mindmapfile) {
 		File templateFile = new File(mindmapfile);
-		newHiddenMapFromTemplate = c.newHiddenMapFromTemplate(templateFile);
+		newHiddenMapFromTemplate = c.newMapFromTemplate(templateFile);
+	}
+	
+	public boolean isStarted() {
+		return newHiddenMapFromTemplate != null;
 	}
 
 	public void CreateAttributes(String nodeId, Map<String, Object> attributesMap) {
