@@ -69,7 +69,8 @@ import org.freeplane.view.swing.map.NodeView;
 /**
  * @author Dimitry Polivaev
  */
-public class MapController extends SelectionController implements IExtension{
+public class MapController extends SelectionController
+implements IExtension, NodeChangeAnnouncer{
 	public enum Direction {
 		BACK, BACK_N_FOLD, FORWARD, FORWARD_N_FOLD
 	}
@@ -818,26 +819,31 @@ public class MapController extends SelectionController implements IExtension{
 		return new NodeModel(userObject, map);
 	}
 
+	@Override
 	@Deprecated
 	public void nodeChanged(final NodeModel node) {
 		nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);
 	}
 
+	@Override
 	public void nodeChanged(final NodeModel node, final Object property, final Object oldValue, final Object newValue) {
 		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue, newValue, true, true);
 		nodeRefresh(nodeChangeEvent);
 	}
 
+	@Override
 	@Deprecated
 	public void nodeRefresh(final NodeModel node) {
 		nodeRefresh(node, NodeModel.UNKNOWN_PROPERTY, null, null);
 	}
 
+	@Override
 	public void nodeRefresh(final NodeModel node, final Object property, final Object oldValue, final Object newValue) {
 		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, property, oldValue, newValue, false, false);
 		nodeRefresh(nodeChangeEvent);
 	}
 
+	@Override
 	public void nodeRefresh(final NodeChangeEvent nodeChangeEvent) {
 		if (mapReader.isMapLoadingInProcess()) {
 			return;
