@@ -10,11 +10,11 @@ import org.freeplane.features.mode.Controller;
 public class TCPServer implements Runnable {
 	private int port;
 	private List<Client> clients = new ArrayList<Client>();
-	private ThreadConfigurationSession configurationSession;
+	private ConfigurationSession configurationSession;
 
 	public TCPServer(int port, ConfigurationSession configurationSession) {
 		this.port = port;
-		this.configurationSession = new ThreadConfigurationSession(Controller.getCurrentController().getViewController(), configurationSession);
+		this.configurationSession = configurationSession;
 	}
 
 	public void run() {
