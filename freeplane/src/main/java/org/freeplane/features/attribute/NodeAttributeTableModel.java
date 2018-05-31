@@ -85,43 +85,30 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	}
 
 	public void fireTableCellUpdated(final int row, final int column) {
-		if (listeners == null) {
-			return;
-		}
 		fireTableChanged(new TableModelEvent(this, row, row, column));
 	}
 
 	private void fireTableChanged(final TableModelEvent e) {
-		if (listeners == null) {
-			return;
-		}
-		final ArrayList<TableModelListener> arrayList = new ArrayList<TableModelListener>(listeners);
-		for (final TableModelListener listener : arrayList) {
-			listener.tableChanged(e);
+		if (listeners != null) {
+			final ArrayList<TableModelListener> arrayList = new ArrayList<TableModelListener>(listeners);
+			for (final TableModelListener listener : arrayList) {
+				listener.tableChanged(e);
+			}
 		}
 		node.getMap().getNodeChangeAnnouncer().nodeChanged(node, NodeAttributeTableModel.class, null, null);
 	}
 
 	public void fireTableRowsDeleted(final int firstRow, final int lastRow) {
-		if (listeners == null) {
-			return;
-		}
 		fireTableChanged(new TableModelEvent(this, firstRow, lastRow, TableModelEvent.ALL_COLUMNS,
 		    TableModelEvent.DELETE));
 	}
 
 	public void fireTableRowsInserted(final int firstRow, final int lastRow) {
-		if (listeners == null) {
-			return;
-		}
 		fireTableChanged(new TableModelEvent(this, firstRow, lastRow, TableModelEvent.ALL_COLUMNS,
 		    TableModelEvent.INSERT));
 	}
 
 	public void fireTableRowsUpdated(final int firstRow, final int lastRow) {
-		if (listeners == null) {
-			return;
-		}
 		fireTableChanged(new TableModelEvent(this, firstRow, lastRow, TableModelEvent.ALL_COLUMNS,
 		    TableModelEvent.UPDATE));
 	}
