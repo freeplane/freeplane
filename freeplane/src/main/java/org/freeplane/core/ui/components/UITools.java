@@ -94,7 +94,8 @@ public class UITools {
 
 	@SuppressWarnings("serial")
     public static final class InsertEolAction extends AbstractAction {
-        public void actionPerformed(ActionEvent e) {
+        @Override
+		public void actionPerformed(ActionEvent e) {
         	JTextComponent c = (JTextComponent) e.getSource();
         	c.replaceSelection("\n");
         }
@@ -105,6 +106,7 @@ public class UITools {
 		class EscapeAction extends AbstractAction {
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public void actionPerformed(final ActionEvent e) {
 				dialog.dispose();
 			};
@@ -156,7 +158,7 @@ public class UITools {
 			p.y += y;
 		};
 	}
-	
+
 	static private final AtomicBoolean errorMessageQueued = new AtomicBoolean(false);
 
 	static public void errorMessage(final Object message) {
@@ -170,6 +172,7 @@ public class UITools {
 		LogUtils.warn(myMessage);
 		if(! errorMessageQueued.getAndSet(true))
 			EventQueue.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					final Component currentRootComponent = UITools.getCurrentRootComponent();
 					if(currentRootComponent != null) {
@@ -189,7 +192,7 @@ public class UITools {
 				}
 			});
 	}
-	
+
 	static public Component getCurrentRootComponent(){
 		return Controller.getCurrentController().getViewController().getCurrentRootComponent();
 	}
@@ -207,7 +210,7 @@ public class UITools {
 	static public Component getMenuComponent(){
 		return Controller.getCurrentController().getViewController().getMenuComponent();
 	}
-	
+
 	/** returns a KeyStroke if possible and null otherwise. */
 	public static KeyStroke getKeyStroke(final String keyStrokeDescription) {
 		if (keyStrokeDescription == null) {
@@ -492,6 +495,7 @@ public class UITools {
 
 	public static void addScrollbarIncrementPropertyListener(final JScrollPane scrollPane) {
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+			@Override
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (!propertyName.equals(SCROLLBAR_INCREMENT)) {
 					return;
@@ -514,15 +518,19 @@ public class UITools {
 
 	public static void focusOn(JComponent component) {
 		component.addAncestorListener(new AncestorListener() {
+			@Override
 			public void ancestorRemoved(AncestorEvent event) {
 			}
 
+			@Override
 			public void ancestorMoved(AncestorEvent event) {
 			}
 
+			@Override
 			public void ancestorAdded(AncestorEvent event) {
 				final JComponent component = event.getComponent();
 				EventQueue.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						component.requestFocus();					}
 				});
@@ -608,7 +616,8 @@ public class UITools {
     	button.setFocusable(false);
     	button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     	button.addActionListener(new ActionListener() {
-    		public void actionPerformed(ActionEvent e) {
+    		@Override
+			public void actionPerformed(ActionEvent e) {
     			final ModeController modeController = Controller.getCurrentModeController();
     			final UrlManager urlManager = modeController.getExtension(UrlManager.class);
     			urlManager.loadURL(uri);
@@ -645,7 +654,7 @@ public class UITools {
 			int windowX = resourceController.getIntProperty("appwindow_x", 0);
 			int windowY = resourceController.getIntProperty("appwindow_y", 0);
 			final GraphicsConfiguration graphicsConfiguration = findGraphicsConfiguration(windowX, windowY);
-			final int userDefinedScreenResolution; 
+			final int userDefinedScreenResolution;
 			if(graphicsConfiguration != null) {
 				final Rectangle screenBounds = graphicsConfiguration.getBounds();
 				final int w = screenBounds.width;
@@ -676,16 +685,23 @@ public class UITools {
 		else
 			return findGraphicsConfiguration(null, 0, 0);
 	}
-	
+
 	public static Font scale(Font font) {
 		return font.deriveFont(font.getSize2D()*FONT_SCALE_FACTOR);
 	}
-	
+
+	public static Font scaleUI(Font font) {
+		if(shouldScaleUIFonts())
+			return scale(font);
+		else
+			return font;
+	}
+
 	public static Font scaleFontInt(Font font, double additionalFactor) {
 		return font.deriveFont(font.getStyle(), Math.round(font.getSize2D()*UITools.FONT_SCALE_FACTOR * additionalFactor));
 	}
-	
-	
+
+
 	public static Font invertScale(Font font) {
 		return font.deriveFont(font.getSize2D()/FONT_SCALE_FACTOR);
 	}
@@ -718,11 +734,11 @@ public class UITools {
 		final Component selectedComponent = Controller.getCurrentController().getMapViewManager().getSelectedComponent();
 		if(selectedComponent != null && ! selectedComponent.hasFocus()){
 			selectedComponent.addFocusListener(new  FocusListener() {
-	
+
 				@Override
 				public void focusLost(FocusEvent e) {
 				}
-	
+
 				@Override
 				public void focusGained(FocusEvent e) {
 					selectedComponent.removeFocusListener(this);
@@ -737,6 +753,13 @@ public class UITools {
 
 	public static float getUIFontSize(double scalingFactor) {
 		return (int)Math.round(FONT_SCALE_FACTOR*scalingFactor * ResourceController.getResourceController().getIntProperty(MENU_ITEM_FONT_SIZE_PROPERTY, 10));
+	}
+
+	public static boolean shouldScaleUIFonts() {
+		final String configuredValue = ResourceController.getResourceController()
+			    .getProperty("lookandfeel.scaleuifonts");
+		final boolean supportHidpi = Boolean.valueOf(System.getProperty("lookandfeel.scaleuifonts", configuredValue));
+		return supportHidpi;
 	}
 
 }
