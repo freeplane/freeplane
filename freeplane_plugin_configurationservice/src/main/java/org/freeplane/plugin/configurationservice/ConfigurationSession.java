@@ -27,14 +27,14 @@ public class ConfigurationSession {
 	}
 
 	public void update(String nodeId, String attributeName, int attributeValue) {
-		newHiddenMapFromTemplate.node(nodeId).getTransformedAttributes().set(attributeName, attributeValue);
+		newHiddenMapFromTemplate.node(nodeId).getAttributes().set(attributeName, attributeValue);
 	}
 
 	public Map<String, Object> readValues(String nodeId, List<String> attributesList) {
 		Map<String, Object> attributeMap = new HashMap<String, Object>();
 
 		for (String attributeName : attributesList) {
-			Object attributeValue =  newHiddenMapFromTemplate.node(nodeId).getTransformedAttributes().getFirst(attributeName);
+			Object attributeValue =  newHiddenMapFromTemplate.node(nodeId).getAttributes().getTransformed().getFirst(attributeName);
 			attributeMap.put(attributeName, attributeValue);
 		}
 		return attributeMap;
