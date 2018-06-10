@@ -28,11 +28,9 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
 import java.util.Set;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -407,30 +405,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		}
     }
 
-    /**
-	 */
-	@Override
-	public void run(final String[] args) {
-		try {
-			if (null == System.getProperty("org.freeplane.core.dir.lib", null)) {
-				System.setProperty("org.freeplane.core.dir.lib", "/lib/");
-			}
-			final Controller controller = createController();
-			createModeControllers(controller);
-			FilterController.getController(controller).loadDefaultConditions();
-			final Set<String> emptySet = Collections.emptySet();
-			buildMenus(controller, emptySet);
-			createFrame(args);
-		}
-		catch (final Exception e) {
-			LogUtils.severe(e);
-			JOptionPane.showMessageDialog(UITools.getMenuComponent(), "freeplane.main.Freeplane can't be started",
-			    "Startup problem", JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		}
-	}
-
-	@Override
+   @Override
 	public void stop() {
 		try {
 			if (EventQueue.isDispatchThread()) {

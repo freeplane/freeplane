@@ -19,7 +19,6 @@
  */
 package org.freeplane.main.headlessmode;
 
-import java.util.Collections;
 import java.util.Set;
 
 import org.freeplane.core.resources.ResourceController;
@@ -54,9 +53,11 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 		applicationResourceController = new ApplicationResourceController();
 	}
 
+	@Override
 	public void setDontLoadLastMaps() {
     }
 
+	@Override
 	public Controller createController() {
 		try {
 			Controller controller = new Controller(applicationResourceController);
@@ -92,51 +93,38 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 		}
 	}
 
+	@Override
 	public void createModeControllers(final Controller controller) {
 		HeadlessMModeControllerFactory.createModeController();
 		controller.getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(
 			applicationResourceController.getLastOpenedList());
     }
 
+	@Override
 	public void buildMenus(final Controller controller, final Set<String> plugins) {
     }
 
 
+	@Override
 	public void createFrame(final String[] args) {
 		Controller controller = Controller.getCurrentController();
 		ModeController modeController = controller.getModeController(MModeController.MODENAME);
 		controller.selectModeForBuild(modeController);
-	}
-	
-	/**
-	 */
-	public void run(final String[] args) {
-		try {
-			if (null == System.getProperty("org.freeplane.core.dir.lib", null)) {
-				System.setProperty("org.freeplane.core.dir.lib", "/lib/");
-			}
-			final Controller controller = createController();
-			createModeControllers(controller);
-			FilterController.getController(controller).loadDefaultConditions();
-			final Set<String> emptySet = Collections.emptySet();
-			buildMenus(controller, emptySet);
-			createFrame(args);
-		}
-		catch (final Exception e) {
-			LogUtils.severe(e);
-			System.exit(1);
-		}
+		Controller.getCurrentController().fireStartupFinished();
 	}
 
+	@Override
 	public void stop() {
 	}
 
+	@Override
 	public ResourceController getResourceController() {
 	    return applicationResourceController;
     }
 
+	@Override
 	public void loadMapsLater(String[] args) {
 	    // TODO Auto-generated method stub
-	    
+
     }
 }
