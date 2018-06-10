@@ -1,14 +1,18 @@
 package org.freeplane.plugin.configurationservice;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-
-import org.freeplane.core.util.LogUtils;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class TCPServer implements Runnable {
 	private int port;
-	private List<Client> clients = new ArrayList<Client>();
 	private ConfigurationSession configurationSession;
 
 	public TCPServer(int port, ConfigurationSession configurationSession) {
@@ -16,9 +20,10 @@ public class TCPServer implements Runnable {
 		this.configurationSession = configurationSession;
 	}
 
+	@Override
 	public void run() {
-		try {
-			ServerSocket ss = new ServerSocket(port);
+		try (ServerSocket ss = new ServerSocket(port)){
+
 			System.out.println("TCP ServerSocket started @port: " + port);
 			while (true) {
 				Socket s = ss.accept();
@@ -38,6 +43,7 @@ public class TCPServer implements Runnable {
 			this.socket = socket;
 		}
 
+		@Override
 		public void run() {
 			try {
 				socket.setSendBufferSize(16384);
