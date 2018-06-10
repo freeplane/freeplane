@@ -185,7 +185,7 @@ class ActivatorImpl implements BundleActivator {
 		loadPlugins(context);
 		final Controller controller = starter.createController();
 		starter.createModeControllers(controller);
-		executeControllerExtensions(context, controller);
+		installControllerExtensions(context, controller);
 		if ("true".equals(System.getProperty("org.freeplane.exit_on_start", null))) {
 			controller.getViewController().invokeLater(new Runnable() {
 				@Override
@@ -222,35 +222,37 @@ class ActivatorImpl implements BundleActivator {
 
 		@Override
 		public void installExtensions(Controller controller) {
-			runServiceOnce(null, IControllerExtensionProvider.class,
-				service -> service.installExtension(controller));
-			runModeServiceOnce(controller, IModeControllerExtensionProvider.class, (s, m) -> s.installExtension(m));
-		}
-
-		private <T>void runModeServiceOnce(Controller controller, Class<T> serviceClass,
-		                               BiConsumer<T, ModeController> f) {
-			final Set<String> modes = controller.getModes();
-			for (final String modeName : modes) {
-				final ModeController modeController = controller.getModeController(modeName);
-				Controller.getCurrentController().selectModeForBuild(modeController);
-				final String filter = "(mode=" + modeName + ")";
-				runServiceOnce(filter, serviceClass,
-					service -> f.accept(service, modeController));
-			}
-		}
-
-		private <T> void runServiceOnce(final String filter,
-		                           Class<T> serviceClass, Consumer<T> runner) {
 			try {
-				final ServiceReference[] serviceReferences = context.getServiceReferences(
-					serviceClass.getName(), filter);
-				if (serviceReferences != null) {
-					for (int i = 0; i < serviceReferences.length; i++) {
-						final ServiceReference reference = serviceReferences[i];
-						final T service = (T) context
-								.getService(reference);
-						runner.accept(service);
-						context.ungetService(reference);
+				final ServiceReference[] controllerProviders = context.getServiceReferences(
+				    IControllerExtensionProvider.class.getName(), null);
+				if (controllerProviders != null) {
+					for (int i = 0; i < controllerProviders.length; i++) {
+						final ServiceReference controllerProvider = controllerProviders[i];
+						final IControllerExtensionProvider service = (IControllerExtensionProvider) context
+						    .getService(controllerProvider);
+						service.installExtension(controller);
+						context.ungetService(controllerProvider);
+					}
+				}
+			}
+			catch (final InvalidSyntaxException e) {
+				e.printStackTrace();
+			}
+			try {
+				final Set<String> modes = controller.getModes();
+				for (final String modeName : modes) {
+					final ServiceReference[] modeControllerProviders = context.getServiceReferences(
+					    IModeControllerExtensionProvider.class.getName(), "(mode=" + modeName + ")");
+					if (modeControllerProviders != null) {
+						final ModeController modeController = controller.getModeController(modeName);
+						Controller.getCurrentController().selectModeForBuild(modeController);
+						for (int i = 0; i < modeControllerProviders.length; i++) {
+							final ServiceReference modeControllerProvider = modeControllerProviders[i];
+							final IModeControllerExtensionProvider service = (IModeControllerExtensionProvider) context
+							    .getService(modeControllerProvider);
+							service.installExtension(modeController);
+							context.ungetService(modeControllerProvider);
+						}
 					}
 				}
 			}
@@ -261,8 +263,8 @@ class ActivatorImpl implements BundleActivator {
 
 	}
 
-	private void executeControllerExtensions(final BundleContext context, final Controller controller) {
-		final  OsgiExtentionInstaller osgiExtentionInstaller = new OsgiExtentionInstaller(context);
+	private void installControllerExtensions(final BundleContext context, final Controller controller) {
+		final ExtensionInstaller osgiExtentionInstaller = new OsgiExtentionInstaller(context);
 		SModeControllerFactory.getInstance().setExtensionInstaller(osgiExtentionInstaller);
 		osgiExtentionInstaller.installExtensions(controller);
 	}
