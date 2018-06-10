@@ -28,6 +28,8 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.jar.Manifest;
 
 import org.freeplane.core.resources.ResourceController;
@@ -76,6 +78,7 @@ class ActivatorImpl implements BundleActivator {
 		return array;
 	}
 
+	@Override
 	public void start(final BundleContext context) throws Exception {
 		try {
 			final String userDirectory = System.getProperty("org.freeplane.user.dir");
@@ -182,21 +185,19 @@ class ActivatorImpl implements BundleActivator {
 		loadPlugins(context);
 		final Controller controller = starter.createController();
 		starter.createModeControllers(controller);
-		installControllerExtensions(context, controller);
+		executeControllerExtensions(context, controller);
 		if ("true".equals(System.getProperty("org.freeplane.exit_on_start", null))) {
 			controller.getViewController().invokeLater(new Runnable() {
+				@Override
 				public void run() {
-					try {
-						Thread.sleep(1000);
-					}
-					catch (final InterruptedException e) {
-					}
+					Controller.getCurrentController().fireStartupFinished();
 					System.exit(0);
 				}
 			});
 			return;
 		}
 		controller.getViewController().invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				final Bundle[] bundles = context.getBundles();
 				final HashSet<String> plugins = new HashSet<String>();
@@ -210,10 +211,10 @@ class ActivatorImpl implements BundleActivator {
 			}
 		});
 	}
-	
+
 	private static class OsgiExtentionInstaller implements ExtensionInstaller{
 		private final BundleContext context;
-		
+
 		public OsgiExtentionInstaller(BundleContext context) {
 			super();
 			this.context = context;
@@ -221,37 +222,35 @@ class ActivatorImpl implements BundleActivator {
 
 		@Override
 		public void installExtensions(Controller controller) {
-			try {
-				final ServiceReference[] controllerProviders = context.getServiceReferences(
-				    IControllerExtensionProvider.class.getName(), null);
-				if (controllerProviders != null) {
-					for (int i = 0; i < controllerProviders.length; i++) {
-						final ServiceReference controllerProvider = controllerProviders[i];
-						final IControllerExtensionProvider service = (IControllerExtensionProvider) context
-						    .getService(controllerProvider);
-						service.installExtension(controller);
-						context.ungetService(controllerProvider);
-					}
-				}
+			runServiceOnce(null, IControllerExtensionProvider.class,
+				service -> service.installExtension(controller));
+			runModeServiceOnce(controller, IModeControllerExtensionProvider.class, (s, m) -> s.installExtension(m));
+		}
+
+		private <T>void runModeServiceOnce(Controller controller, Class<T> serviceClass,
+		                               BiConsumer<T, ModeController> f) {
+			final Set<String> modes = controller.getModes();
+			for (final String modeName : modes) {
+				final ModeController modeController = controller.getModeController(modeName);
+				Controller.getCurrentController().selectModeForBuild(modeController);
+				final String filter = "(mode=" + modeName + ")";
+				runServiceOnce(filter, serviceClass,
+					service -> f.accept(service, modeController));
 			}
-			catch (final InvalidSyntaxException e) {
-				e.printStackTrace();
-			}
+		}
+
+		private <T> void runServiceOnce(final String filter,
+		                           Class<T> serviceClass, Consumer<T> runner) {
 			try {
-				final Set<String> modes = controller.getModes();
-				for (final String modeName : modes) {
-					final ServiceReference[] modeControllerProviders = context.getServiceReferences(
-					    IModeControllerExtensionProvider.class.getName(), "(mode=" + modeName + ")");
-					if (modeControllerProviders != null) {
-						final ModeController modeController = controller.getModeController(modeName);
-						Controller.getCurrentController().selectModeForBuild(modeController);
-						for (int i = 0; i < modeControllerProviders.length; i++) {
-							final ServiceReference modeControllerProvider = modeControllerProviders[i];
-							final IModeControllerExtensionProvider service = (IModeControllerExtensionProvider) context
-							    .getService(modeControllerProvider);
-							service.installExtension(modeController);
-							context.ungetService(modeControllerProvider);
-						}
+				final ServiceReference[] serviceReferences = context.getServiceReferences(
+					serviceClass.getName(), filter);
+				if (serviceReferences != null) {
+					for (int i = 0; i < serviceReferences.length; i++) {
+						final ServiceReference reference = serviceReferences[i];
+						final T service = (T) context
+								.getService(reference);
+						runner.accept(service);
+						context.ungetService(reference);
 					}
 				}
 			}
@@ -259,11 +258,11 @@ class ActivatorImpl implements BundleActivator {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
 
-	private void installControllerExtensions(final BundleContext context, final Controller controller) {
-		final ExtensionInstaller osgiExtentionInstaller = new OsgiExtentionInstaller(context);
+	private void executeControllerExtensions(final BundleContext context, final Controller controller) {
+		final  OsgiExtentionInstaller osgiExtentionInstaller = new OsgiExtentionInstaller(context);
 		SModeControllerFactory.getInstance().setExtensionInstaller(osgiExtentionInstaller);
 		osgiExtentionInstaller.installExtensions(controller);
 	}
@@ -281,6 +280,7 @@ class ActivatorImpl implements BundleActivator {
         context.registerService(URLStreamHandlerService.class.getName(), new ResourcesUrlHandler(), properties);
     }
 
+	@Override
 	public void stop(final BundleContext context) throws Exception {
 		starter.stop();
 		final Bundle[] bundles = context.getBundles();

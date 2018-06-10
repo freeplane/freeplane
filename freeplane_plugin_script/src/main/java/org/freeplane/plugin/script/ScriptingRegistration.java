@@ -169,9 +169,10 @@ class ScriptingRegistration {
 			}
 		});
 		registerScriptAddOns();
+		new ScriptingConfiguration();
+		ScriptCompiler.compileScriptsOnPath(ScriptResources.getClasspath());
 		if(! modeController.getController().getViewController().isHeadless()){
 			registerGuiStuff(modeController);
-			ScriptCompiler.compileScriptsOnPath(ScriptResources.getClasspath());
 			createUserScriptsDirectory();
 			createInitScriptsDirectory();
 			createUserLibDirectory();
@@ -196,7 +197,7 @@ class ScriptingRegistration {
         		dialog.install(url);
         	}
         });
-        ScriptingConfiguration configuration = new ScriptingConfiguration();
+        ScriptingGuiConfiguration configuration = new ScriptingGuiConfiguration();
 		updateMenus(modeController, configuration);
 		registerInitScripts(configuration);
     }
@@ -230,10 +231,10 @@ class ScriptingRegistration {
         modeController.getOptionPanelBuilder().load(preferences);
     }
 
-    private void updateMenus(ModeController modeController, final ScriptingConfiguration configuration) {
+    private void updateMenus(ModeController modeController, final ScriptingGuiConfiguration configuration) {
 		ScriptingMenuEntryVisitor builder = new ScriptingMenuEntryVisitor(configuration, modeController);
 		modeController.addUiBuilder(Phase.ACTIONS, "userScripts", builder, EntryVisitor.ILLEGAL);
-		modeController.getUserInputListenerFactory().addBuildPhaseListener(builder); 
+		modeController.getUserInputListenerFactory().addBuildPhaseListener(builder);
     }
 
     private void registerScriptAddOns() {
@@ -263,7 +264,7 @@ class ScriptingRegistration {
 		}
 	}
 
-	private void registerInitScripts(ScriptingConfiguration configuration) {
+	private void registerInitScripts(ScriptingGuiConfiguration configuration) {
 		final List<IScript> initScripts = configuration.getInitScripts();
 		if (!initScripts.isEmpty())
 		Controller.getCurrentController().addApplicationLifecycleListener(new ApplicationLifecycleListener() {
@@ -284,7 +285,7 @@ class ScriptingRegistration {
 	private void createUserScriptsDirectory() {
 		createDirIfNotExists(ScriptResources.getUserScriptsDir(), "user scripts");
 	}
-	
+
 	private void createInitScriptsDirectory() {
 		createDirIfNotExists(ScriptResources.getInitScriptsDir(), "init scripts");
 	}

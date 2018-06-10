@@ -19,7 +19,6 @@
  */
 package org.freeplane.main.osgi;
 
-import org.freeplane.main.application.FreeplaneMain;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -30,12 +29,13 @@ import org.osgi.framework.BundleContext;
 public class Activator implements BundleActivator {
 	private BundleActivator activatorImpl;
 
+	@Override
 	public void start(final BundleContext context) throws Exception {
-		FreeplaneMain.checkJavaVersion();
 		activatorImpl = new ActivatorImpl();
 		activatorImpl.start(context);
 	}
 
+	@Override
 	public void stop(final BundleContext context) throws Exception {
 		activatorImpl.stop(context);
 	}

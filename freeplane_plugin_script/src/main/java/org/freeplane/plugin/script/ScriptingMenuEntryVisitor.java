@@ -20,15 +20,15 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
-import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
+import org.freeplane.plugin.script.ScriptingGuiConfiguration.ScriptMetaData;
 
 public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListener {
-	private ScriptingConfiguration configuration;
+	private ScriptingGuiConfiguration configuration;
 	private final HashSet<String> registeredLocations = new HashSet<String>();
 	private EntryNavigator entryNavigator;
 	private ModeController modeController;
 
-	public ScriptingMenuEntryVisitor(ScriptingConfiguration configuration, ModeController modeController) {
+	public ScriptingMenuEntryVisitor(ScriptingGuiConfiguration configuration, ModeController modeController) {
 		this.configuration = configuration;
 		this.modeController = modeController;
 	}
