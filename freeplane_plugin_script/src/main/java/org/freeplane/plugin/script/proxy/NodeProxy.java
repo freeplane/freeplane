@@ -145,21 +145,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	@Override
-	public Proxy.Attributes getTransformedAttributes() {
-		return AttributesProxy.withTransformedValues(getDelegate(), getScriptContext());
-	}
-
-	// NodeRO: R
-	@Override
 	public Convertible getAt(final String attributeName) {
 		final Object value = getAttributes().getFirst(attributeName);
-		return ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), value);
-	}
-
-	// NodeRO: R
-	@Override
-	public Convertible getTransformedAt(final String attributeName) {
-		final Object value = getTransformedAttributes().getFirst(attributeName);
 		return ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), value);
 	}
 

@@ -32,31 +32,32 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 	private static final String LATEX_EDITOR_DISABLE = "latex_disable_editor";
 	private static final String LATEX = "\\latex";
 	private static final String UNPARSED_LATEX = "\\unparsedlatex";
-	
-	
+
+
 	public LatexRenderer() {
 		super(20);
 	}
 
+	@Override
 	public Object transformContent(TextController textController,
 			Object content, NodeModel node, Object transformedExtension)
 			throws TransformationException {
 		return content;
 	}
-	
+
 	private static boolean checkForLatexPrefix(final String nodeText, final String prefix)
 	{
-		int startLength = prefix.length() + 1; 
+		int startLength = prefix.length() + 1;
 		return nodeText.length() > startLength && nodeText.startsWith(prefix) &&
 			 Character.isWhitespace(nodeText.charAt(startLength - 1));
 	}
-	
+
 	private static enum TargetMode { FOR_ICON, FOR_EDITOR };
 
 	private String getLatexNode(final String nodeText, final String nodeFormat, final TargetMode mode)
 	{
 		boolean includePrefix = mode == TargetMode.FOR_EDITOR;
-		
+
 		if(checkForLatexPrefix(nodeText, LATEX)){
 			return includePrefix ? nodeText : nodeText.substring(LATEX.length() + 1);
 		}
@@ -93,6 +94,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		return null;
 	}
 
+	@Override
 	public EditNodeBase createEditor(NodeModel node,
 			IEditControl editControl, String text, boolean editLong) {
 		MTextController textController = MTextController.getController();
@@ -101,11 +103,11 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
 		String nodeFormat = textController.getNodeFormat(node);
 		final String latexText = getLatexNode(text, nodeFormat, TargetMode.FOR_EDITOR);
-		
+
 		// this option has been added to work around bugs in JSyntaxPane with Chinese characters
 		if (ResourceController.getResourceController().getBooleanProperty(LATEX_EDITOR_DISABLE))
 			return null;
-		
+
 		if(latexText != null){
 			JEditorPane textEditor = new JEditorPane();
 			textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
@@ -117,7 +119,8 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 
 			final String fontName = ResourceController.getResourceController().getProperty(LATEX_EDITOR_FONT);
 			final int fontSize = ResourceController.getResourceController().getIntProperty(LATEX_EDITOR_FONT_SIZE);
-			textEditor.setFont(new Font(fontName, Font.PLAIN, fontSize));
+			final Font font = UITools.scaleUI(new Font(fontName, Font.PLAIN, fontSize));
+			textEditor.setFont(font);
 
 			return editNodeDialog;
 		}
