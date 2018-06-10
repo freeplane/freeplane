@@ -17,9 +17,13 @@ public class ConfigurationSession {
 		c = ScriptUtils.c();
 	}
 
-	void start(String mindmapfile) {
+	public void start(String mindmapfile) {
 		File templateFile = new File(mindmapfile);
 		newHiddenMapFromTemplate = c.newHiddenMapFromTemplate(templateFile);
+	}
+
+	public boolean isStarted() {
+		return newHiddenMapFromTemplate != null;
 	}
 
 	public void CreateAttributes(String nodeId, Map<String, Object> attributesMap) {
@@ -34,8 +38,9 @@ public class ConfigurationSession {
 		Map<String, Object> attributeMap = new HashMap<String, Object>();
 
 		for (String attributeName : attributesList) {
+			Object attributeFormula =  newHiddenMapFromTemplate.node(nodeId).getAttributes().getFirst(attributeName);
 			Object attributeValue =  newHiddenMapFromTemplate.node(nodeId).getAttributes().getTransformed().getFirst(attributeName);
-			attributeMap.put(attributeName, attributeValue);
+			attributeMap.put(attributeName, attributeFormula + " => " + attributeValue);
 		}
 		return attributeMap;
 	}
