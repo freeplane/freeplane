@@ -104,6 +104,13 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		return result;
 	}
 
+	@Override
+	public Proxy.Attributes getTransformed() {
+		return withTransformedValues(getDelegate(), getScriptContext());
+	}
+
+
+
 	private Object getAttributeValue(final Attribute a) {
 		final Object value = a.getValue();
 		if(transformsValues) {
