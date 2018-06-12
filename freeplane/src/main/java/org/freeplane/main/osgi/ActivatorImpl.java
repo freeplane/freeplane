@@ -171,7 +171,7 @@ class ActivatorImpl implements BundleActivator {
 		}
 		// initialize ApplicationController - SingleInstanceManager needs the configuration
 		starter =  createStarter();
-		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager(starter);
+		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager(starter, runsHeadless());
 		singleInstanceManager.start(getCallParameters());
 		if (singleInstanceManager.isSlave()) {
 			LogUtils.info("opened files in master - exiting now");
@@ -268,11 +268,15 @@ class ActivatorImpl implements BundleActivator {
 	}
 
 	public FreeplaneStarter createStarter() {
-		if(Boolean.getBoolean(HEADLESS_RUN_PROPERTY_NAME))
+		if(runsHeadless())
 			return new FreeplaneHeadlessStarter();
 		else
 			return new FreeplaneGUIStarter(getCallParameters());
     }
+
+	private boolean runsHeadless() {
+		return Boolean.getBoolean(HEADLESS_RUN_PROPERTY_NAME);
+	}
 
     private void registerClasspathUrlHandler(final BundleContext context) {
         Hashtable<String, String[]> properties = new Hashtable<String, String[]>();
