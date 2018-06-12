@@ -25,11 +25,11 @@ public class SingleInstanceManager {
 	private boolean isMasterPresent;
     final private FreeplaneStarter starter;
 
-	public SingleInstanceManager(FreeplaneStarter starter) {
+	public SingleInstanceManager(FreeplaneStarter starter, boolean runsHeadless) {
 	    this.starter = starter;
 	    final ResourceController resourceController = starter.getResourceController();
-		isSingleInstanceMode = resourceController.getBooleanProperty("single_instance");
-		isSingleInstanceForceMode = resourceController.getBooleanProperty("single_instance_force");
+		isSingleInstanceMode = !runsHeadless && resourceController.getBooleanProperty("single_instance");
+		isSingleInstanceForceMode =!runsHeadless && resourceController.getBooleanProperty("single_instance_force");
 	}
 
 	public void start(String[] args) {
@@ -39,16 +39,16 @@ public class SingleInstanceManager {
 			initLockFile();
 			if (filesToLoad.length == 0 && !isSingleInstanceForceMode && checkIsMasterPresent()) {
 				isMasterPresent = true;
-				startStandAlone(filesToLoad);
+				startStandAlone();
 			}
 			else if (!startAsSlave(filesToLoad)) {
-				if (!startAsMaster(filesToLoad)) {
-					startStandAlone(filesToLoad);
+				if (!startAsMaster()) {
+					startStandAlone();
 				}
 			}
 		}
 		else {
-			startStandAlone(filesToLoad);
+			startStandAlone();
 		}
 	}
 
@@ -106,7 +106,7 @@ public class SingleInstanceManager {
 		}
 	}
 
-	private boolean startAsMaster(String[] filesToLoad) {
+	private boolean startAsMaster() {
 		try {
 			// port number 0: use any free socket
 			final ServerSocket socket = new ServerSocket(0, 10);
@@ -114,6 +114,7 @@ public class SingleInstanceManager {
 			LogUtils.info("Listening for application instances on socket " + port);
 			createLockFile();
 			Thread filesToOpenListenerThread = new Thread(new Runnable() {
+				@Override
 				public void run() {
 					boolean socketClosed = false;
 					while (!socketClosed) {
@@ -165,6 +166,7 @@ public class SingleInstanceManager {
 		randomAccessLockFile.writeBytes(port.toString());
 		randomAccessLockFile.close();
 		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
 			public void run() {
 				try {
 					lockFile.delete();
@@ -176,7 +178,7 @@ public class SingleInstanceManager {
 		});
 	}
 
-	private void startStandAlone(String[] filesToLoad) {
+	private void startStandAlone() {
 		// do nothing - whatever is needed will happen later
 	}
 
