@@ -26,21 +26,28 @@ import java.awt.AWTEvent;
  */
 public class MapChangeEvent extends AWTEvent {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	final private MapModel map;
 	final private Object newValue;
 	final private Object oldValue;
 	final private Object property;
+	final private boolean setsDirtyFlag;
 
 	public MapChangeEvent(final Object source, final MapModel map, final Object property, final Object oldValue,
-	                      final Object newValue) {
+	                      final Object newValue, boolean setsDirtyFlag) {
 		super(source, 0);
 		this.map = map;
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.property = property;
+		this.setsDirtyFlag = setsDirtyFlag;
+	}
+
+	public MapChangeEvent(final Object source, final MapModel map, final Object property, final Object oldValue,
+	                      final Object newValue) {
+		this(source, map, property, oldValue, newValue, true);
 	}
 
 	public MapChangeEvent(final Object source, final Object property, final Object oldValue, final Object newValue) {
@@ -61,5 +68,9 @@ public class MapChangeEvent extends AWTEvent {
 
 	public Object getProperty() {
 		return property;
+	}
+
+	public boolean setsDirtyFlag() {
+		return setsDirtyFlag;
 	}
 }
