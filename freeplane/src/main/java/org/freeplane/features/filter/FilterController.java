@@ -118,13 +118,16 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	    private void changeFocusWhenVisibilityChanges(final JComponent toolBar) {
 	    	quickEditor.addAncestorListener(new AncestorListener() {
-	    		public void ancestorAdded(final AncestorEvent event) {
+	    		@Override
+				public void ancestorAdded(final AncestorEvent event) {
 	    			quickEditor.focusInputField(true);
 	    			quickEditor.removeAncestorListener(this);
 	    		}
-	    		public void ancestorMoved(final AncestorEvent event) {
+	    		@Override
+				public void ancestorMoved(final AncestorEvent event) {
 	    		}
-	    		public void ancestorRemoved(final AncestorEvent event) {
+	    		@Override
+				public void ancestorRemoved(final AncestorEvent event) {
 	    			final Component selectedComponent = Controller.getCurrentController().getMapViewManager().getSelectedComponent();
 	    			if(selectedComponent != null)
 	    				selectedComponent.requestFocusInWindow();
@@ -144,18 +147,22 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		public FilterChangeListener() {
 		}
 
+		@Override
 		public void contentsChanged(final ListDataEvent e) {
 			if (e.getIndex0() == -1) {
 				applyFilter(false);
 			}
 		}
 
+		@Override
 		public void intervalAdded(final ListDataEvent e) {
 		}
 
+		@Override
 		public void intervalRemoved(final ListDataEvent e) {
 		}
 
+		@Override
 		public void stateChanged(final ChangeEvent e) {
 			applyFilter(false);
 		}
@@ -181,7 +188,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			public boolean isNodeHighlighted(NodeModel node, boolean isPrinting) {
 				return !isPrinting && FilterController.getController(controller).isNodeHighlighted(node);
 			}
-			
+
 			@Override
 			public void configure(Graphics2D g, boolean isPrinting) {
 				g.setColor(Color.MAGENTA);
@@ -213,6 +220,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private final FilterConditionEditor quickEditor;
 	static final int USER_DEFINED_CONDITION_START_INDEX = 3;
 	final private QuickFilterAction quickFilterAction;
+	private int mapChangeCounter;
 
 	public FilterController() {
 		Controller controller = Controller.getCurrentController();
@@ -242,6 +250,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		quickEditor = new FilterConditionEditor(this, 0, true);
 		quickEditor.setEnterKeyActionListener( new ActionListener()  {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				((QuickFindAction)Controller.getCurrentController().getAction("QuickFindAction.FORWARD")).executeAction(true);
 				if(getHighlightNodes().isSelected()){
@@ -294,17 +303,35 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	/**
 	 */
+	@Override
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		if(filterToolbar == null){
 			return;
 		}
 		history.clear();
-		if (newMap != null) {
+		updateUILater();
+	}
+
+	private void updateUILater() {
+		mapChangeCounter++;
+		Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				mapChangeCounter--;
+				if (0 == mapChangeCounter)
+					updateUI();
+			}
+		});
+	}
+
+	private void updateUI() {
+		final MapModel map = Controller.getCurrentController().getMap();
+		if (map != null) {
 			filterToolbar.setEnabled(true);
 			activeFilterConditionComboBox.setEnabled(true);
 			quickEditor.setEnabled(true);
-			quickEditor.mapChanged(newMap);
-			final Filter filter = newMap.getFilter();
+			quickEditor.mapChanged(map);
+			final Filter filter = map.getFilter();
 			updateSettingsFromFilter(filter);
 			quickFilterAction.setSelected(isFilterActive());
 
@@ -346,6 +373,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		}
 	}
 
+	@Override
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
