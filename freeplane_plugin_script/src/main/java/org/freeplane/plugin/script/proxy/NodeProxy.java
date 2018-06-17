@@ -979,7 +979,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		sortChildrenBy(comparator);
 	}
 
-	private Comparator<NodeModel> comparatorByMapper(NodeToComparableMapper mapper) {
+	private Comparator<NodeModel> comparatorByMapper(final NodeToComparableMapper mapper) {
 		return new Comparator<NodeModel>() {
 			@Override
 			public int compare(NodeModel o1, NodeModel o2) {
