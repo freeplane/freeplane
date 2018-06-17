@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.freeplane.plugin.script.proxy;
 
@@ -10,19 +10,20 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.freeplane.api.Proxy.IconsRO;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ScriptContext;
-import org.freeplane.plugin.script.proxy.Proxy.IconsRO;
 
 class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 	IconsProxy(final NodeModel delegate, final ScriptContext scriptContext) {
 		super(delegate, scriptContext);
 	}
 
+	@Override
 	public void add(final String name) {
 		getIconController().addIcon(getDelegate(), IconStoreFactory.ICON_STORE.getMindIcon(name));
 	}
@@ -41,6 +42,7 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
         }
     }
 
+	@Override
 	@Deprecated
 	public void addIcon(final String name) {
 		add(name);
@@ -60,16 +62,19 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 		return (MIconController) IconController.getController();
 	}
 
+	@Override
 	public String getAt(int index) {
 		final List<MindIcon> icons = getDelegate().getIcons();
 		return icons.size() <= index ? null : icons.get(index).getName();
 	}
 
+	@Override
 	public String getFirst() {
 		final List<MindIcon> icons = getDelegate().getIcons();
 		return icons.isEmpty() ? null : icons.get(0).getName();
 	}
 
+	@Override
 	public boolean contains(String name) {
 		final List<MindIcon> icons = getDelegate().getIcons();
 		for (final MindIcon icon : icons) {
@@ -79,11 +84,13 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 		return false;
 	}
 
+	@Override
 	public int size() {
 		final List<MindIcon> icons = getDelegate().getIcons();
 		return icons.size();
 	}
 
+	@Override
 	public List<String> getIcons() {
 		final List<MindIcon> icons = getDelegate().getIcons();
 		final int size = icons.size();
@@ -97,6 +104,7 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 		return Collections.unmodifiableList(list);
 	}
 
+	@Override
 	public List<URL> getUrls() {
 	    final List<MindIcon> icons = getDelegate().getIcons();
 	    final int size = icons.size();
@@ -110,7 +118,8 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 	    return Collections.unmodifiableList(list);
 	}
 
-    public Iterator<String> iterator() {
+    @Override
+	public Iterator<String> iterator() {
         return new Iterator<String>() {
             final Iterator<String> iterator = getIcons().iterator();
 
@@ -131,6 +140,7 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
         };
     }
 
+	@Override
 	public boolean remove(final int index) {
 		if (index >= size()) {
 			return false;
@@ -138,7 +148,8 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 		getIconController().removeIcon(getDelegate(), index);
 		return true;
 	}
-	
+
+	@Override
 	public boolean remove(final String iconID) {
 		final int index = findIcon(iconID);
 		if (index == -1) {
@@ -148,11 +159,13 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 		return true;
 	}
 
+	@Override
 	@Deprecated
 	public boolean removeIcon(final String iconID) {
 		return remove(iconID);
 	}
-	
+
+	@Override
 	public void clear() {
 	    getIconController().removeAllIcons(getDelegate());
 	}

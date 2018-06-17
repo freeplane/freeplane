@@ -1,11 +1,5 @@
 package org.freeplane.plugin.script;
 
-import groovy.lang.Binding;
-import groovy.lang.MetaClass;
-import groovy.lang.MissingMethodException;
-import groovy.lang.MissingPropertyException;
-import groovy.lang.Script;
-
 import java.net.URI;
 import java.util.Date;
 import java.util.Map;
@@ -16,6 +10,7 @@ import java.util.regex.Pattern;
 
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.InvokerHelper;
+import org.freeplane.api.Proxy;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FreeplaneVersion;
@@ -28,7 +23,12 @@ import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.plugin.script.proxy.Convertible;
-import org.freeplane.plugin.script.proxy.Proxy;
+
+import groovy.lang.Binding;
+import groovy.lang.MetaClass;
+import groovy.lang.MissingMethodException;
+import groovy.lang.MissingPropertyException;
+import groovy.lang.Script;
 
 /** All methods of this class are available as "global" methods in every script.
  * Only documented methods are meant to be used in scripts.
@@ -88,11 +88,11 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 		public String getAt(final String name) {
             return getProperty(name);
 		}
-		
+
 		public ResourceBundle getResources() {
 		    return ResourceController.getResourceController().getResources();
 		}
-		
+
 		public String getFreeplaneUserDirectory() {
 			return ResourceController.getResourceController().getFreeplaneUserDirectory();
 		}
@@ -104,7 +104,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	private Proxy.NodeRO node;
 	private Proxy.ControllerRO controller;
 
-	
+
     public FreeplaneScriptBaseClass() {
 	    super();
 	    nodeMetaClass = InvokerHelper.getMetaClass(Proxy.NodeRO.class);
@@ -139,14 +139,15 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	 * <li> "imports" node's methods into the script's namespace
 	 * </ul>
 	 */
+	@Override
 	public Object getProperty(String property) {
 		// shortcuts for the most usual cases
 		if (property.equals("node")) {
 			return node;
-		}			
+		}
 		if (property.equals("c")) {
 			return controller;
-		}			
+		}
 		if (nodeIdPattern.matcher(property).matches()) {
 			return N(property);
 		}
@@ -169,7 +170,8 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	/*
 	 * extends super class version by node instance methods.
 	 */
-    public Object invokeMethod(String methodName, Object args) {
+    @Override
+	public Object invokeMethod(String methodName, Object args) {
         try {
             return super.invokeMethod(methodName, args);
         }
@@ -217,7 +219,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
                     return null;
             return Math.round(d);
     }
-    
+
     /** round to the given number of decimal places: <code>round(0.1234, 2) &rarr; 0.12</code> */
     public Double round(final Double d, final int precision) {
             if (d == null)
@@ -236,7 +238,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
      * assert parse('1.22') instanceof Number
      * // if parsing fails the original string is returned
      * assert parse('2012XX11-30') == '2012XX11-30'
-     * 
+     *
      * def d = parse('2012-10-30')
      * c.statusInfo = "${d} is ${new Date() - d} days ago"
      * </pre> */
@@ -280,7 +282,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
         LinkController.getController().loadURI(uri);
     }
 
-//	/** Shortcut for new {@link org.freeplane.plugin.script.proxy.Convertible}. */
+//	/** Shortcut for new {@link org.freeplane.api.Convertible}. */
 //	public Convertible convertible(String string) {
 //		return new Convertible(FormulaUtils.eval string, node.get);
 //	}

@@ -14,6 +14,9 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.api.NodeCondition;
+import org.freeplane.api.Proxy.Map;
+import org.freeplane.api.Proxy.Node;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.undo.IUndoHandler;
@@ -36,8 +39,6 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.plugin.script.ScriptContext;
-import org.freeplane.plugin.script.proxy.Proxy.Map;
-import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 import groovy.lang.Closure;
 
@@ -78,14 +79,14 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	@Override
-	public List<Node> getSelecteds() {
+	public List<? extends Node> getSelecteds() {
 		if (scriptContext != null)
 			scriptContext.accessAll();
 		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection().getOrderedSelection(), scriptContext);
 	}
 
 	@Override
-	public List<Node> getSortedSelection(final boolean differentSubtrees) {
+	public List<? extends Node> getSortedSelection(final boolean differentSubtrees) {
 		if (scriptContext != null)
 			scriptContext.accessAll();
 		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection()
@@ -111,8 +112,8 @@ class ControllerProxy implements Proxy.Controller {
     }
 
 	@Override
-	public void select(final Collection<Node> toSelect) {
-		final Iterator<Node> it = toSelect.iterator();
+	public void select(final Collection<? extends Node> toSelect) {
+		final Iterator<? extends Node> it = toSelect.iterator();
 		if (!it.hasNext()) {
 			return;
 		}
@@ -127,7 +128,7 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
     @Override
-	public void selectMultipleNodes(final Collection<Node> toSelect) {
+	public void selectMultipleNodes(final Collection<? extends Node> toSelect) {
 	    select(toSelect);
 	}
 
@@ -199,33 +200,43 @@ class ControllerProxy implements Proxy.Controller {
 
 	@Override
 	@Deprecated
-	public List<Node> find(final ICondition condition) {
+	public List<? extends Node> find(final ICondition condition) {
 		if (scriptContext != null)
 			scriptContext.accessAll();
-		return ProxyUtils.find(condition, Controller.getCurrentController().getMap().getRootNode(), scriptContext);
+		return ProxyUtils.find(condition, currentMapRootNode(), scriptContext);
 	}
 
 	@Override
-	public List<Node> find(final Closure<Boolean> closure) {
+	public List<? extends Node> find(NodeCondition condition) {
 		if (scriptContext != null)
 			scriptContext.accessAll();
-		return ProxyUtils.find(closure, Controller.getCurrentController().getMap().getRootNode(), scriptContext);
+		return ProxyUtils.find(condition, currentMapRootNode(), scriptContext);
+	}
+
+	private NodeModel currentMapRootNode() {
+		return Controller.getCurrentController().getMap().getRootNode();
+	}
+	@Override
+	public List<? extends Node> find(final Closure<Boolean> closure) {
+		if (scriptContext != null)
+			scriptContext.accessAll();
+		return ProxyUtils.find(closure, currentMapRootNode(), scriptContext);
 	}
 
 	// NodeRO: R
 	@Override
-	public List<Node> findAll() {
+	public List<? extends Node> findAll() {
 		if (scriptContext != null)
 			scriptContext.accessAll();
-		return ProxyUtils.findAll(Controller.getCurrentController().getMap().getRootNode(), scriptContext, true);
+		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, true);
     }
 
 	// NodeRO: R
 	@Override
-	public List<Node> findAllDepthFirst() {
+	public List<? extends Node> findAllDepthFirst() {
 		if (scriptContext != null)
 			scriptContext.accessAll();
-		return ProxyUtils.findAll(Controller.getCurrentController().getMap().getRootNode(), scriptContext, false);
+		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, false);
     }
 
 	@Override

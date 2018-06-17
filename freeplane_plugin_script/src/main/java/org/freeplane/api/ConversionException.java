@@ -1,6 +1,6 @@
-package org.freeplane.plugin.script.proxy;
+package org.freeplane.api;
 
-public class ConversionException extends org.freeplane.api.ConversionException {
+public class ConversionException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public ConversionException(String message, Throwable cause) {
@@ -10,7 +10,7 @@ public class ConversionException extends org.freeplane.api.ConversionException {
 	public ConversionException(String message) {
 	    super(message);
     }
-
+	
 	public ConversionException(Throwable cause) {
 		super(cause);
 	}
