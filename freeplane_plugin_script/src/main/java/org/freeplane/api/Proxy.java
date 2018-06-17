@@ -495,8 +495,16 @@ public interface Proxy {
         void export(Map map, File destinationFile, String exportTypeDescription, boolean overwriteExisting);
 	}
 
+	interface HeadlessMapCreator {
+		/** creates an new unsaved map from given template without an associated view.
+		 *
+		 * This map can be processed by scripts and any other clients of scripting API.
+		 * @since 1.6.16 */
+		Map newHiddenMapFromTemplate(File templateFile);
+	}
+
 	/** Access to global state: in scripts, this is available as global variable <code>c</code> - read-write. */
-	interface Controller extends ControllerRO {
+	interface Controller extends ControllerRO, HeadlessMapCreator {
 		void centerOnNode(Node center);
 
 		/** Starts editing node, normally in the inline editor. Does not block until edit has finished.
@@ -574,11 +582,6 @@ public interface Proxy {
 		 * @since 1.5 */
 		List<? extends Map> getOpenMaps();
 
-		/** creates an new unsaved map from given template without an associated view.
-		 *
-		 * This map can be processed by scripts and any other clients of scripting API.
-		 * @since 1.6.16 */
-		Map newHiddenMapFromTemplate(File templateFile);
 	}
 
 	/** Edge to parent node: <code>node.style.edge</code> - read-only. */
