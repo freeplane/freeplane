@@ -68,12 +68,12 @@ javadoc {
     //  source = sourceSets.main.allJava
 
     ext.javadocInputFromThisProject = fileTree(dir: 'src/main/java')
-      .include('**/api/*.java')
       .include('**/Proxy.java')
       .include('**/Convertible.java')
       .include('**/FreeplaneScriptBaseClass.java')
       .include('**/ScriptUtils.java')
     ext.javadocInputFromFreeplaneProject = fileTree(dir: '../freeplane/src/main/java')
+      .include('**/api/*.java')
       .include('**/UITools.java')
       .include('**/TextUtils.java')
       .include('**/FreeplaneVersion.java')

@@ -24,8 +24,6 @@ import java.net.URL;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
-import org.freeplane.core.resources.ResourceController;
-
 /** provides access to the current Freeplane version. In scripts use <code>c.freeplaneVersion</code>.
  * For usage instructions see {@link #compareTo(FreeplaneVersion)}. */
 public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
@@ -43,7 +41,7 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	private final int mNum;
 	/** release type e.g. "", "rc", "beta", "alpha" or "nightly_build". */
 	private String mType;
-	
+
 	private final String revision;
 
 	public static FreeplaneVersion getVersion() {
@@ -108,7 +106,7 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	public String getType() {
 		return mType;
 	}
-	
+
 	public String getRevision(){
 		return revision;
 	}
@@ -136,6 +134,7 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	 *           + " not supported - update to at least ${required}")
 	 * </pre>
 	 */
+	@Override
 	public int compareTo(final FreeplaneVersion o) {
 		if (mMaj < o.mMaj) {
 			return -1;
@@ -198,17 +197,17 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	public boolean isOlderThan(FreeplaneVersion freeplaneVersion) {
 	    return compareTo(freeplaneVersion) < 0;
     }
-	
+
 	public boolean isNewerThan(FreeplaneVersion freeplaneVersion) {
 		return compareTo(freeplaneVersion) > 0;
 	}
-	
+
 	public boolean isFinal(){
 		return "".equals(mType);
 	}
 
 	private static String loadRevision() {
-		final URL gitInfo = ResourceController.getResourceController().getResource("/gitinfo.properties");
+		final URL gitInfo = FreeplaneVersion.class.getResource("/gitinfo.properties");
 		final String revision;
 		if(gitInfo != null){
 			Properties gitProps = new Properties();

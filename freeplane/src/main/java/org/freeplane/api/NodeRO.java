@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.format.IFormattedObject;
-import org.freeplane.plugin.script.ExecuteScriptException;
 
 /** The currently selected node: <code>node</code> - read-only. */
 public interface NodeRO {
