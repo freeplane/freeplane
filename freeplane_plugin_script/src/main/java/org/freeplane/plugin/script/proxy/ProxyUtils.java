@@ -13,8 +13,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
-import org.freeplane.api.Proxy.Node;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.FormatController;

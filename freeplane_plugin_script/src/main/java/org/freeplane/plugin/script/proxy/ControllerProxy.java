@@ -14,9 +14,9 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.api.Map;
+import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
-import org.freeplane.api.Proxy.Map;
-import org.freeplane.api.Proxy.Node;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.undo.IUndoHandler;

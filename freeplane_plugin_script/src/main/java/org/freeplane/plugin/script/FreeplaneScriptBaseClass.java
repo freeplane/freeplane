@@ -10,7 +10,8 @@ import java.util.regex.Pattern;
 
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.freeplane.api.Proxy;
+import org.freeplane.api.ControllerRO;
+import org.freeplane.api.NodeRO;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FreeplaneVersion;
@@ -101,13 +102,13 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	private final Pattern nodeIdPattern = Pattern.compile("ID_\\d+");
 	private final MetaClass nodeMetaClass;
 	private Map<Object, Object> boundVariables;
-	private Proxy.NodeRO node;
-	private Proxy.ControllerRO controller;
+	private NodeRO node;
+	private ControllerRO controller;
 
 
     public FreeplaneScriptBaseClass() {
 	    super();
-	    nodeMetaClass = InvokerHelper.getMetaClass(Proxy.NodeRO.class);
+	    nodeMetaClass = InvokerHelper.getMetaClass(NodeRO.class);
 	    // Groovy rocks!
 	    DefaultGroovyMethods.mixin(Number.class, NodeArithmeticsCategory.class);
 	    initBinding();
@@ -117,8 +118,8 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	public void initBinding() {
 	    boundVariables = super.getBinding().getVariables();
 	    // this is important: we need this reference no matter if "node" is overridden later by the user
-	    node = (Proxy.NodeRO) boundVariables.get("node");
-	    controller = (Proxy.ControllerRO) boundVariables.get("c");
+	    node = (NodeRO) boundVariables.get("node");
+	    controller = (ControllerRO) boundVariables.get("c");
     }
 
 	@Override
@@ -186,20 +187,20 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     }
 
 	/** Shortcut for node.map.node(id) - necessary for ids to other maps. */
-	public Proxy.NodeRO N(String id) {
-		final Proxy.NodeRO node = (Proxy.NodeRO) getBinding().getVariable("node");
+	public NodeRO N(String id) {
+		final NodeRO node = (NodeRO) getBinding().getVariable("node");
 		return node.getMap().node(id);
 	}
 
 	/** Shortcut for node.map.node(id).text. */
 	public String T(String id) {
-		final Proxy.NodeRO n = N(id);
+		final NodeRO n = N(id);
 		return n == null ? null : n.getText();
 	}
 
 	/** Shortcut for node.map.node(id).value. */
 	public Object V(String id) {
-		final Proxy.NodeRO n = N(id);
+		final NodeRO n = N(id);
 		try {
 	        return n == null ? null : n.getValue();
         }

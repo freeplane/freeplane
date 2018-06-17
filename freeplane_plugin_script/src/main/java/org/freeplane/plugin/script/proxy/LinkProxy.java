@@ -7,7 +7,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.freeplane.api.Proxy.Node;
+import org.freeplane.api.Node;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;

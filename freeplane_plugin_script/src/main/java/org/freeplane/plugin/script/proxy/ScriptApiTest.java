@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.freeplane.api.Proxy.Map;
-import org.freeplane.api.Proxy.Node;
+import org.freeplane.api.Map;
+import org.freeplane.api.Node;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.Filter;

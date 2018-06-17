@@ -8,8 +8,24 @@ import org.freeplane.features.filter.condition.ICondition;
 
 import groovy.lang.Closure;
 
+/**
+ * This interface alone defines the api for accessing the internal state of the Freeplane. All read-write methods
+ * and properties (with rare, documented exceptions in {@link Controller} and {@link Map}) support undo and
+ * rollback on exceptions.
+ * <p>
+ * Every Proxy subinterface comes in two variants:
+ * <ul>
+ * <li>A read-only interface, like {@link NodeRO}. This collects only the methods that don't change the
+ *     underlying object (in case of <code>NodeRO</code> this would be <code>NodeModel</code>.
+ * <li>A read-write interface, like {@link Node}. This inherits from the respective read-only interface all its
+ *     methods and properties and adds write access to the underlying object.
+ * </ul>
+ * The main point of this distinction are formulas: <em>Only the methods defined in the read-only interfaces are
+ * supported in Formulas!</em>. Changing values in a Formula are against the Formula concept and lead to corruption
+ * of the caching mechanism for Formulas.
+ */
 public interface Proxy {
-	interface AttributesRO extends org.freeplane.api.Proxy.AttributesRO{
+	interface AttributesRO extends org.freeplane.api.AttributesRO{
 		/** returns the values of all attributes for which the closure returns true. The fact that the values are
 		 * returned as a list of {@link Convertible} enables conversion. The following formula sums all attributes
 		 * whose names are not equal to 'TOTAL':
@@ -20,14 +36,14 @@ public interface Proxy {
 		 * @since 1.2 */
 		List<? extends Convertible> findValues(Closure<Boolean> closure);
 	}
-	interface Attributes extends AttributesRO, org.freeplane.api.Proxy.Attributes { }
-    interface Cloud extends org.freeplane.api.Proxy.Cloud { }
+	interface Attributes extends AttributesRO, org.freeplane.api.Attributes { }
+    interface Cloud extends org.freeplane.api.Cloud { }
 
-	interface ConnectorRO extends org.freeplane.api.Proxy.ConnectorRO {	}
+	interface ConnectorRO extends org.freeplane.api.ConnectorRO {	}
 
-	interface Connector extends ConnectorRO, org.freeplane.api.Proxy.Connector { }
+	interface Connector extends ConnectorRO, org.freeplane.api.Connector { }
 
-	interface ControllerRO extends org.freeplane.api.Proxy.ControllerRO {
+	interface ControllerRO extends org.freeplane.api.ControllerRO {
 		/**
 		 * Starting from the root node, recursively searches for nodes (in breadth-first sequence) for which
 		 * <code>closure.call(node)</code> returns true.
@@ -49,58 +65,58 @@ public interface Proxy {
 		 *        a NodeModel as an argument which can be tested for a match.
 		 * @return all nodes for which <code>closure.call(NodeModel)</code> returns true.
 		 */
-		List<? extends org.freeplane.api.Proxy.Node> find(Closure<Boolean> closure);
+		List<? extends org.freeplane.api.Node> find(Closure<Boolean> closure);
 
 		/** Starting from the root node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
 		 * @deprecated since 1.2 use {@link #find(NodeCondition)} instead. */
 		@Deprecated
-		List<? extends org.freeplane.api.Proxy.Node> find(ICondition condition);
+		List<? extends org.freeplane.api.Node> find(ICondition condition);
 
 	}
 
-	interface Controller extends ControllerRO , org.freeplane.api.Proxy.Controller{	}
+	interface Controller extends ControllerRO , org.freeplane.api.Controller{	}
 
-	interface EdgeRO extends org.freeplane.api.Proxy.EdgeRO { }
+	interface EdgeRO extends org.freeplane.api.EdgeRO { }
 
-	interface Edge extends EdgeRO, org.freeplane.api.Proxy.Edge { }
+	interface Edge extends EdgeRO, org.freeplane.api.Edge { }
 
-	interface ExternalObjectRO extends org.freeplane.api.Proxy.ExternalObjectRO { }
+	interface ExternalObjectRO extends org.freeplane.api.ExternalObjectRO { }
 
-	interface ExternalObject extends ExternalObjectRO, org.freeplane.api.Proxy.ExternalObject { }
+	interface ExternalObject extends ExternalObjectRO, org.freeplane.api.ExternalObject { }
 
-	interface FontRO extends org.freeplane.api.Proxy.FontRO { }
+	interface FontRO extends org.freeplane.api.FontRO { }
 
-	interface Font extends FontRO, org.freeplane.api.Proxy.Font { }
+	interface Font extends FontRO, org.freeplane.api.Font { }
 
-	interface IconsRO extends org.freeplane.api.Proxy.IconsRO {
+	interface IconsRO extends org.freeplane.api.IconsRO {
 	}
 
-	interface Icons extends IconsRO, org.freeplane.api.Proxy.Icons { }
+	interface Icons extends IconsRO, org.freeplane.api.Icons { }
 
-	interface LinkRO extends org.freeplane.api.Proxy.LinkRO { }
+	interface LinkRO extends org.freeplane.api.LinkRO { }
 
-	interface Link extends LinkRO, org.freeplane.api.Proxy.Link { }
+	interface Link extends LinkRO, org.freeplane.api.Link { }
 
-	interface MapRO extends org.freeplane.api.Proxy.MapRO {	}
+	interface MapRO extends org.freeplane.api.MapRO {	}
 
-	interface Map extends MapRO , org.freeplane.api.Proxy.Map {	}
+	interface Map extends MapRO , org.freeplane.api.Map {	}
 
-	interface NodeRO extends org.freeplane.api.Proxy.NodeRO {
+	interface NodeRO extends org.freeplane.api.NodeRO {
 
 		/** Starting from this node, recursively searches for nodes for which <code>closure.call(node)</code>
 		 * returns true. See {@link Controller#find(Closure)} for details. */
-		List<? extends org.freeplane.api.Proxy.Node> find(Closure<Boolean> closure);
+		List<? extends org.freeplane.api.Node> find(Closure<Boolean> closure);
 
 		/** Starting from this node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
 		 * @deprecated since 1.2 use {@link #find(NodeCondition)} instead. */
 		@Deprecated
-		List<? extends org.freeplane.api.Proxy.Node> find(ICondition condition);
+		List<? extends org.freeplane.api.Node> find(ICondition condition);
 
 	}
 
-	interface Node extends NodeRO, org.freeplane.api.Proxy.Node {
+	interface Node extends NodeRO, org.freeplane.api.Node {
 
     	/**
     	 * A sort method that uses the result of the Groovy closure ("block") for comparison. As this closure
@@ -121,14 +137,14 @@ public interface Proxy {
 		void sortChildrenBy(Closure<Comparable<Object>> closure);
 	}
 
-	interface NodeStyleRO extends org.freeplane.api.Proxy.NodeStyleRO { }
+	interface NodeStyleRO extends org.freeplane.api.NodeStyleRO { }
 
-	interface NodeStyle extends NodeStyleRO, org.freeplane.api.Proxy.NodeStyle { }
+	interface NodeStyle extends NodeStyleRO, org.freeplane.api.NodeStyle { }
 
-    public interface Properties extends org.freeplane.api.Proxy.Properties { }
-    interface ReminderRO extends org.freeplane.api.Proxy.ReminderRO { }
+    public interface Properties extends org.freeplane.api.Properties { }
+    interface ReminderRO extends org.freeplane.api.ReminderRO { }
 
-    interface Reminder extends ReminderRO, org.freeplane.api.Proxy.Reminder {
+    interface Reminder extends ReminderRO, org.freeplane.api.Reminder {
 
     }
 }
