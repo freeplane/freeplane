@@ -68,6 +68,7 @@ javadoc {
     //  source = sourceSets.main.allJava
 
     ext.javadocInputFromThisProject = fileTree(dir: 'src/main/java')
+      .include('**/api/*.java')
       .include('**/Proxy.java')
       .include('**/Convertible.java')
       .include('**/FreeplaneScriptBaseClass.java')
