@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
 
 /** provides access to the current Freeplane version. In scripts use <code>c.freeplaneVersion</code>.
  * For usage instructions see {@link #compareTo(FreeplaneVersion)}. */
-public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
+public class FreeplaneVersion implements org.freeplane.api.FreeplaneVersion {
 	private static final FreeplaneVersion VERSION = FreeplaneVersion.loadVersion();
 	public static final String VERSION_KEY = "freeplane_version";
 	public static final String VERSION_PROPERTIES = "/version.properties";
@@ -87,26 +87,32 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 		return version;
 	}
 
+	@Override
 	public int getMaj() {
 		return mMaj;
 	}
 
+	@Override
 	public int getMid() {
 		return mMid;
 	}
 
+	@Override
 	public int getMin() {
 		return mMin;
 	}
 
+	@Override
 	public int getNum() {
 		return mNum;
 	}
 
+	@Override
 	public String getType() {
 		return mType;
 	}
 
+	@Override
 	public String getRevision(){
 		return revision;
 	}
@@ -135,29 +141,29 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	 * </pre>
 	 */
 	@Override
-	public int compareTo(final FreeplaneVersion o) {
-		if (mMaj < o.mMaj) {
+	public int compareTo(final org.freeplane.api.FreeplaneVersion o) {
+		if (mMaj < o.getMaj()) {
 			return -1;
 		}
-		if (mMaj > o.mMaj) {
+		if (mMaj > o.getMaj()) {
 			return 1;
 		}
-		if (mMid < o.mMid) {
+		if (mMid < o.getMid()) {
 			return -1;
 		}
-		if (mMid > o.mMid) {
+		if (mMid > o.getMid()) {
 			return 1;
 		}
-		if (mMin < o.mMin) {
+		if (mMin < o.getMin()) {
 			return -1;
 		}
-		if (mMin > o.mMin) {
+		if (mMin > o.getMin()) {
 			return 1;
 		}
-		if (mNum < o.mNum) {
+		if (mNum < o.getNum()) {
 			return -1;
 		}
-		if (mNum > o.mNum) {
+		if (mNum > o.getNum()) {
 			return 1;
 		}
 		return 0;
@@ -184,6 +190,7 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 	}
 
 	/** returns the version number only, e.g. "1.0.38". */
+	@Override
 	public String numberToString() {
 		final StringBuilder buf = new StringBuilder();
 		buf.append(mMaj);
@@ -194,14 +201,17 @@ public class FreeplaneVersion implements Comparable<FreeplaneVersion> {
 		return buf.toString();
 	}
 
-	public boolean isOlderThan(FreeplaneVersion freeplaneVersion) {
+	@Override
+	public boolean isOlderThan(org.freeplane.api.FreeplaneVersion freeplaneVersion) {
 	    return compareTo(freeplaneVersion) < 0;
     }
 
-	public boolean isNewerThan(FreeplaneVersion freeplaneVersion) {
+	@Override
+	public boolean isNewerThan(org.freeplane.api.FreeplaneVersion freeplaneVersion) {
 		return compareTo(freeplaneVersion) > 0;
 	}
 
+	@Override
 	public boolean isFinal(){
 		return "".equals(mType);
 	}

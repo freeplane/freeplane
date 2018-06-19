@@ -25,7 +25,11 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.freeplane.api.Controller;
 import org.knopflerfish.framework.Main;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+import org.osgi.framework.launch.Framework;
 
 public class Launcher {
 	private File frameworkDir;
@@ -74,10 +78,10 @@ public class Launcher {
 			System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
 	}
 
-	private void launch(String[] args) {
+	public Controller launch(String[] args) {
 		setDefines();
 		setArgProperties(args);
-		run();
+		return run();
 	}
 
 	private void setDefines() {
@@ -98,7 +102,7 @@ public class Launcher {
 				else
 					super.checkConnect(pHost, pPort);
 			}
-			
+
 		});
 	}
 
@@ -117,14 +121,23 @@ public class Launcher {
 		return System.setProperty(name, value);
 	}
 
-	private void run() {
+	private Controller run() {
 		String[] args = new String[]{
 				"-xargs",
 				getAbsolutePath("props.xargs"),
 				"-xargs",
-				getAbsolutePath("init.xargs")
+				getAbsolutePath("init.xargs"),
+				"-bg"
 		};
-		Main.main(args);
+		Main main = new Main();
+
+		System.out.println(main.bootText);
+
+		final Framework framework = main.start(args);
+		final BundleContext bundleContext = framework.getBundleContext();
+		final ServiceReference<Controller> controller = bundleContext.getServiceReference(Controller.class);
+		final Controller service = bundleContext.getService(controller);
+		return service;
 	}
 
 	private String getAbsolutePath() {

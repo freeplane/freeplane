@@ -2,11 +2,10 @@ package org.freeplane.api;
 
 import java.awt.Color;
 
-import org.freeplane.features.styles.IStyle;
+
 
 /** Node's style: <code>node.style</code> - read-only. */
 public interface NodeStyleRO {
-	IStyle getStyle();
 
 	/** Returns the name of the node's style if set or null otherwise. For styles with translated names the
 	 * translation key is returned to make the process robust against language setting changes.

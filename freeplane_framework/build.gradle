@@ -1,5 +1,9 @@
 import org.apache.tools.ant.filters.*
 
+dependencies {
+	compile project(':freeplane')
+}
+
 task freeplanelauncherJar(type: Jar) {
      archiveName = 'freeplanelauncher.jar'
      destinationDir = new File(globalBin)

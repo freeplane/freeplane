@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.swing.Icon;
 
-import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
+
 
 /** Access to global state: in scripts, this is available as global variable <code>c</code> - read-write. */
 public interface Controller extends ControllerRO, HeadlessMapCreator {

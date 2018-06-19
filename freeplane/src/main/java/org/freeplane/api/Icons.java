@@ -2,7 +2,7 @@ package org.freeplane.api;
 
 import java.util.Collection;
 
-import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
+
 
 /** Node's icons: <code>node.icons</code> - read-write. */
 public interface Icons extends IconsRO {

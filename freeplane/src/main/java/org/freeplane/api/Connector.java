@@ -3,7 +3,7 @@ package org.freeplane.api;
 import java.awt.Color;
 import java.util.List;
 
-import org.freeplane.features.link.ArrowType;
+
 
 /** Graphical connector between nodes:<code>node.connectorsIn</code> / <code>node.connectorsOut</code>
  * - read-write. */
@@ -21,10 +21,6 @@ public interface Connector extends ConnectorRO {
 	/** @since 1.2 */
 	void setEndArrow(boolean showArrow);
 
-    /** @deprecated since 1.2 - use {@link #setEndArrow(boolean)} instead */
-	@Deprecated
-	void setEndArrow(ArrowType arrowType);
-
 	void setMiddleLabel(String label);
 
 	void setSimulatesEdge(boolean simulatesEdge);
@@ -33,10 +29,6 @@ public interface Connector extends ConnectorRO {
 
     /** @since 1.2 */
     void setStartArrow(boolean showArrow);
-
-    /** @deprecated since 1.2 - use {@link #setStartArrow(boolean)} instead */
-	@Deprecated
-	void setStartArrow(ArrowType arrowType);
 
 	void setTargetLabel(String label);
 

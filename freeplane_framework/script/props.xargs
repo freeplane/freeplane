@@ -45,3 +45,4 @@
 
 -Dorg.knopflerfish.framework.bundlestorage.file.unpack=false
 
+-Dorg.osgi.framework.system.packages.extra=org.freeplane.api

@@ -2,14 +2,8 @@ package org.freeplane.api;
 
 import java.awt.Color;
 
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
-import org.freeplane.features.styles.IStyle;
-
 /** Node's style: <code>node.style</code> - read-write. */
 public interface NodeStyle extends NodeStyleRO {
-	void setStyle(IStyle style);
-
 	/** Selects a style by name, see menu Styles &rarr; Pre/Userdefined styles for valid style names or use
 	 * {@link #getName()} to display the name of a node's style.
 	 * It's guaranteed that <code>node.style.name = node.style.name</code> does not change the style.
@@ -46,10 +40,6 @@ public interface NodeStyle extends NodeStyleRO {
      * @since 1.2.20 */
     void setMinNodeWidth(int width);
 
-    /** Set to null to restore default
-     * @since 1.5.6 */
-    void setMinNodeWidth(Quantity<LengthUnits> width);
-
     /** use length units like "1 cm" or "6 pt"
      * @since 1.5.6 */
     void setMinNodeWidth(String width);
@@ -57,10 +47,6 @@ public interface NodeStyle extends NodeStyleRO {
     /** minNodeWidth in px - set to -1 to restore default.
      * @since 1.2.20 */
     void setMaxNodeWidth(int width);
-
-    /** Set to null to restore default
-     * @since 1.5.6 */
-    void setMaxNodeWidth(Quantity<LengthUnits> width);
 
     /** use length units like "1 cm" or "6 pt"
      * @since 1.5.6 */

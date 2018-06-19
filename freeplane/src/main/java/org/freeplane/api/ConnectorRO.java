@@ -3,7 +3,7 @@ package org.freeplane.api;
 import java.awt.Color;
 import java.util.List;
 
-import org.freeplane.features.link.ArrowType;
+
 
 /** Graphical connector between nodes:<code>node.connectorsIn</code> / <code>node.connectorsOut</code>
  * - read-only. */
@@ -19,10 +19,6 @@ public interface ConnectorRO {
     /**  @since 1.2 */
 	boolean hasEndArrow();
 
-	/**@deprecated since 1.2 - use {@link #hasEndArrow()} instead */
-	@Deprecated
-	ArrowType getEndArrow();
-
 	String getMiddleLabel();
 
 	/** The node without the arrow. On connectors with arrows at both ends one of the ends. */
@@ -32,10 +28,6 @@ public interface ConnectorRO {
 
     /** @since 1.2 */
 	boolean hasStartArrow();
-
-	/** @deprecated since 1.2 - use {@link #hasStartArrow()} instead */
-	@Deprecated
-	ArrowType getStartArrow();
 
 	/** The node with the arrow. On connectors with arrows at both ends one of the ends. */
 	Node getTarget();

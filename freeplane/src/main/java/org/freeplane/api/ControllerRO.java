@@ -3,7 +3,7 @@ package org.freeplane.api;
 import java.io.File;
 import java.util.List;
 
-import org.freeplane.core.util.FreeplaneVersion;
+
 
 /** Access to global state: in scripts, this is available as global variable <code>c</code> - read-only. */
 public interface ControllerRO {
@@ -25,8 +25,8 @@ public interface ControllerRO {
 	 * returns Freeplane version.
 	 * Use it like this:
 	 * <pre>{@code
-	 *   import org.freeplane.core.util.FreeplaneVersion
-	 *   import org.freeplane.core.ui.components.UITools
+	 *   
+	 *   
 	 *
 	 *   def required = FreeplaneVersion.getVersion("1.1.2");
 	 *   if (c.freeplaneVersion < required)

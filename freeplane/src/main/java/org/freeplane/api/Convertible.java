@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.freeplane.core.util.HtmlUtils;
+
 
 /** Utility wrapper class around a String that is used to convert node texts to different types.
  * It's especially important for Formulas. */

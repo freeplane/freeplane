@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.features.format.IFormattedObject;
+
+
 
 /** The currently selected node: <code>node</code> - read-only. */
 public interface NodeRO {

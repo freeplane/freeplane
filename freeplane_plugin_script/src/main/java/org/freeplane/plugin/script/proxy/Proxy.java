@@ -4,7 +4,12 @@ import java.util.List;
 
 import org.freeplane.api.Convertible;
 import org.freeplane.api.NodeCondition;
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
+import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.link.ArrowType;
+import org.freeplane.features.styles.IStyle;
 
 import groovy.lang.Closure;
 
@@ -39,9 +44,25 @@ public interface Proxy {
 	interface Attributes extends AttributesRO, org.freeplane.api.Attributes { }
     interface Cloud extends org.freeplane.api.Cloud { }
 
-	interface ConnectorRO extends org.freeplane.api.ConnectorRO {	}
+	interface ConnectorRO extends org.freeplane.api.ConnectorRO {
+		/**@deprecated since 1.2 - use {@link #hasEndArrow()} instead */
+		@Deprecated
+		ArrowType getEndArrow();
 
-	interface Connector extends ConnectorRO, org.freeplane.api.Connector { }
+		/** @deprecated since 1.2 - use {@link #hasStartArrow()} instead */
+		@Deprecated
+		ArrowType getStartArrow();
+	}
+
+	interface Connector extends ConnectorRO, org.freeplane.api.Connector {
+	    /** @deprecated since 1.2 - use {@link #setEndArrow(boolean)} instead */
+		@Deprecated
+		void setEndArrow(ArrowType arrowType);
+
+	    /** @deprecated since 1.2 - use {@link #setStartArrow(boolean)} instead */
+		@Deprecated
+		void setStartArrow(ArrowType arrowType);
+	}
 
 	interface ControllerRO extends org.freeplane.api.ControllerRO {
 		/**
@@ -77,9 +98,14 @@ public interface Proxy {
 
 	interface Controller extends ControllerRO , org.freeplane.api.Controller{	}
 
-	interface EdgeRO extends org.freeplane.api.EdgeRO { }
+	interface EdgeRO extends org.freeplane.api.EdgeRO {
+		@Override
+		EdgeStyle getType();
+	}
 
-	interface Edge extends EdgeRO, org.freeplane.api.Edge { }
+	interface Edge extends EdgeRO, org.freeplane.api.Edge {
+		void setType(EdgeStyle type);
+	}
 
 	interface ExternalObjectRO extends org.freeplane.api.ExternalObjectRO { }
 
@@ -135,11 +161,34 @@ public interface Proxy {
     	 * @since 1.4.1
     	 */
 		void sortChildrenBy(Closure<Comparable<Object>> closure);
+
+	    /**@since 1.5.6 */
+		void setVerticalShift(Quantity<LengthUnits> verticalShift);
+
+	    /**@since 1.5.6 */
+		void setMinimalDistanceBetweenChildren(Quantity<LengthUnits> verticalShift);
+
+	    /**@since 1.5.6 */
+		void setHorizontalShift(Quantity<LengthUnits> verticalShift);
+
+
 	}
 
-	interface NodeStyleRO extends org.freeplane.api.NodeStyleRO { }
+	interface NodeStyleRO extends org.freeplane.api.NodeStyleRO {
+		IStyle getStyle();
+	}
 
-	interface NodeStyle extends NodeStyleRO, org.freeplane.api.NodeStyle { }
+	interface NodeStyle extends NodeStyleRO, org.freeplane.api.NodeStyle {
+		void setStyle(IStyle style);
+
+	    /** Set to null to restore default
+	     * @since 1.5.6 */
+	    void setMinNodeWidth(Quantity<LengthUnits> width);
+
+	    /** Set to null to restore default
+	     * @since 1.5.6 */
+	    void setMaxNodeWidth(Quantity<LengthUnits> width);
+	}
 
     public interface Properties extends org.freeplane.api.Properties { }
     interface ReminderRO extends org.freeplane.api.ReminderRO { }

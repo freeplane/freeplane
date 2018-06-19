@@ -271,15 +271,6 @@ task apiJar(type: PartialJar) {
 				include(includedClasses)
     }
 	
-    from (sourceSets.main.output) {
-        include("org/freeplane/features/link/ArrowType.class") 
-        include("org/freeplane/core/util/FreeplaneVersion.class") 
-        include("org/freeplane/core/util/HtmlUtils.class")
-        include("org/freeplane/features/edge/EdgeStyle.class") 
-        include("org/freeplane/core/ui/LengthUnits.class") 
-        include("org/freeplane/core/util/Quantity.class") 
-        include("org/freeplane/features/styles/IStyle.class") 
-	}
     includeEmptyDirs = false
 }
 
