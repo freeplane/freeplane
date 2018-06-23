@@ -23,9 +23,9 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.freeplane.api.Controller;
+import org.freeplane.api.HeadlessMapCreator;
 import org.knopflerfish.framework.Main;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -51,9 +51,9 @@ public class Launcher {
 		return new Launcher(freeplaneInstallationDirectory);
 	}
 	
-	public Launcher headless() {
+	public HeadlessMapCreator launchHeadless() {
 		System.setProperty(HEADLESS_PROPERTY, "true");
-		return this;
+		return launchWithUI(new String[] {});
 	}
 
 	public Launcher disableSecurityManager() {
@@ -62,7 +62,7 @@ public class Launcher {
 	}
 
 	private Launcher(final File freeplaneInstallationDirectory) {
-		if (! launcherCreated.compareAndExchange(false, true)) 
+		if (! launcherCreated.compareAndSet(false, true)) 
 			throw new IllegalStateException("Launcher instance already created");
 		this.freeplaneInstallationDirectory = freeplaneInstallationDirectory;
 		argCount = 0;
@@ -103,7 +103,7 @@ public class Launcher {
 	public static void main(String[] args) {
 		fixX11AppName();
 		workAroundForDataFlavorComparator_JDK8130242();
-		new Launcher().launch(args);
+		new Launcher().launchWithoutUICheck(args);
 	}
 
 
@@ -113,7 +113,12 @@ public class Launcher {
 			System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
 	}
 
-	public Controller launch(String[] args) {
+	public Controller launchWithUI(String[] args) {
+		System.setProperty(HEADLESS_PROPERTY, "false");
+		return launchWithoutUICheck(args);
+	}
+
+	private Controller launchWithoutUICheck(String[] args) {
 		if(freeplaneLaunched)
 			throw new IllegalStateException("Freeplane already launched");
 		freeplaneLaunched = true;
