@@ -1,7 +1,7 @@
 import org.apache.tools.ant.filters.*
 
 dependencies {
-	compile project(':freeplane')
+	compile project(':freeplane_api')
 }
 
 task freeplanelauncherJar(type: Jar) {
@@ -17,7 +17,7 @@ task freeplanelauncherJar(type: Jar) {
      manifest {
           attributes("Manifest-Version": "1.0",
                      "Main-Class": "org.freeplane.launcher.Launcher",
-                     "Class-Path": "framework.jar")
+                     "Class-Path": "framework.jar core/org.freeplane.core/lib/freeplane_api-1.5.jar")
      }
 }
 
