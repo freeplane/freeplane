@@ -22,8 +22,8 @@ package org.freeplane.launcher;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.freeplane.api.Controller;
 import org.knopflerfish.framework.Main;
@@ -32,22 +32,57 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.launch.Framework;
 
 public class Launcher {
-	private File frameworkDir;
+	private static final String DISABLE_SECURITY_MANAGER_PROPERTY = "org.freeplane.main.application.FreeplaneSecurityManager.disable";
+	private static final String HEADLESS_PROPERTY = "org.freeplane.main.application.FreeplaneStarter.headless";
+	private static final String BASEDIRECTORY_PROPERTY = "org.freeplane.basedirectory";
+	private final File freeplaneInstallationDirectory;
 	private int argCount;
+	private boolean disableSecurityManager;
+	private boolean freeplaneLaunched;
+	
+	private static AtomicBoolean launcherCreated = new AtomicBoolean(false);
 
-	public Launcher() {
-		if (isDefineNotSet("org.freeplane.basedirectory")) {
-			frameworkDir = getPathToJar();
+	private Launcher() {
+		this(getFreeplaneInstallationDirectory());
+	}
+	
+	public static Launcher forInstallation(final File freeplaneInstallationDirectory) {
+		System.setProperty(BASEDIRECTORY_PROPERTY, freeplaneInstallationDirectory.getPath());
+		return new Launcher(freeplaneInstallationDirectory);
+	}
+	
+	public Launcher headless() {
+		System.setProperty(HEADLESS_PROPERTY, "true");
+		return this;
+	}
+
+	public Launcher disableSecurityManager() {
+		disableSecurityManager = true;
+		return this;
+	}
+
+	private Launcher(final File freeplaneInstallationDirectory) {
+		if (! launcherCreated.compareAndExchange(false, true)) 
+			throw new IllegalStateException("Launcher instance already created");
+		this.freeplaneInstallationDirectory = freeplaneInstallationDirectory;
+		argCount = 0;
+		disableSecurityManager = Boolean.getBoolean(DISABLE_SECURITY_MANAGER_PROPERTY);
+	}
+	
+	static private File getFreeplaneInstallationDirectory() {
+		final File frameworkDir;
+		if (Utils.isDefineNotSet(BASEDIRECTORY_PROPERTY)) {
+			frameworkDir = Utils.getPathToJar(Main.class);
 		}
 		else {
 			try {
-				frameworkDir = new File(System.getProperty("org.freeplane.basedirectory")).getCanonicalFile();
+				frameworkDir = new File(System.getProperty(BASEDIRECTORY_PROPERTY)).getCanonicalFile();
 			}
 			catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
-		argCount = 0;
+		return frameworkDir;
 	}
 
 	private static void fixX11AppName() {
@@ -79,49 +114,38 @@ public class Launcher {
 	}
 
 	public Controller launch(String[] args) {
+		if(freeplaneLaunched)
+			throw new IllegalStateException("Freeplane already launched");
+		freeplaneLaunched = true;
 		setDefines();
+		if (! disableSecurityManager)
+			System.setSecurityManager(new SecurityManager(){
+
+				@Override
+				public void checkConnect(String pHost, int pPort, Object pContext) {
+					if(pContext != null)
+						super.checkConnect(pHost, pPort, pContext);
+					else
+						super.checkConnect(pHost, pPort);
+				}
+
+			});
 		setArgProperties(args);
-		return run();
+		return startFramework();
 	}
 
 	private void setDefines() {
-		setDefine("org.knopflerfish.framework.readonly", "true");
-		setDefine("org.knopflerfish.gosg.jars", "reference:file:" + getAbsolutePath("core") + '/');
-		setDefine("org.freeplane.user.dir", System.getProperty("user.dir"));
-		setDefine("org.freeplane.basedirectory", getAbsolutePath());
+		Utils.setDefine("org.knopflerfish.framework.readonly", "true");
+		Utils.setDefine("org.knopflerfish.gosg.jars", "reference:file:" + getAbsolutePath("core") + '/');
+		Utils.setDefine("org.freeplane.user.dir", System.getProperty("user.dir"));
+		Utils.setDefine(BASEDIRECTORY_PROPERTY, getAbsolutePath());
 		System.setProperty("user.dir", getAbsolutePath());
-		setDefineIfNeeded("org.freeplane.globalresourcedir", getAbsolutePath("resources"));
-		setDefineIfNeeded("java.security.policy", getAbsolutePath("freeplane.policy"));
-		setDefine("org.osgi.framework.storage", getAbsolutePath("fwdir"));
-		System.setSecurityManager(new SecurityManager(){
-
-			@Override
-			public void checkConnect(String pHost, int pPort, Object pContext) {
-				if(pContext != null)
-					super.checkConnect(pHost, pPort, pContext);
-				else
-					super.checkConnect(pHost, pPort);
-			}
-
-		});
+		Utils.setDefineIfNeeded("org.freeplane.globalresourcedir", getAbsolutePath("resources"));
+		Utils.setDefineIfNeeded("java.security.policy", getAbsolutePath("freeplane.policy"));
+		Utils.setDefine("org.osgi.framework.storage", getAbsolutePath("fwdir"));
 	}
 
-	private void setDefineIfNeeded(String name, String value) {
-		if (isDefineNotSet(name)) {
-			setDefine(name, value);
-		}
-	}
-
-	private boolean isDefineNotSet(String name) {
-		return System.getProperty(name, null) == null;
-	}
-
-	private String setDefine(String name, String value) {
-		System.out.println(name + "=" + value);
-		return System.setProperty(name, value);
-	}
-
-	private Controller run() {
+	private Controller startFramework() {
 		String[] args = new String[]{
 				"-xargs",
 				getAbsolutePath("props.xargs"),
@@ -141,21 +165,11 @@ public class Launcher {
 	}
 
 	private String getAbsolutePath() {
-		return frameworkDir.getAbsolutePath();
+		return freeplaneInstallationDirectory.getAbsolutePath();
 	}
 
 	private String getAbsolutePath(String relativePath) {
-		return new File(frameworkDir, relativePath).getAbsolutePath();
-	}
-
-	private File getPathToJar() {
-		URL frameworkUrl = Main.class.getProtectionDomain().getCodeSource().getLocation();
-		try {
-			return new File(frameworkUrl.toURI()).getCanonicalFile().getParentFile();
-		}
-		catch (URISyntaxException | IOException e) {
-			throw new RuntimeException(e);
-		}
+		return new File(freeplaneInstallationDirectory, relativePath).getAbsolutePath();
 	}
 
 	private void setArgProperties(String[] args) {
