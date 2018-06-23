@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-public class Utils {
+class Utils {
 
 	static File getPathToJar(Class<?> clazz) {
 		URL frameworkUrl = clazz.getProtectionDomain().getCodeSource().getLocation();
