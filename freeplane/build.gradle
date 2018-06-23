@@ -193,6 +193,7 @@ task copyOSGiJars(type: Copy) {
           include("*.jar")
 		  exclude('framework-*.jar')
 		  exclude('freeplane-*.jar')
+		  exclude('freeplane_api*.jar')
 		  exclude('mnemonicsetter-*.jar')
 		  
      }
