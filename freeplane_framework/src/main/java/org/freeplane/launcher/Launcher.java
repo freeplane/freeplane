@@ -46,9 +46,13 @@ public class Launcher {
 		this(getFreeplaneInstallationDirectory());
 	}
 	
-	public static Launcher forInstallation(final File freeplaneInstallationDirectory) {
+	public static Launcher createForInstallation(final File freeplaneInstallationDirectory) {
 		System.setProperty(BASEDIRECTORY_PROPERTY, freeplaneInstallationDirectory.getPath());
 		return new Launcher(freeplaneInstallationDirectory);
+	}
+	
+	public static Launcher create() {
+		return new Launcher();
 	}
 	
 	public HeadlessMapCreator launchHeadless() {
@@ -62,11 +66,15 @@ public class Launcher {
 	}
 
 	private Launcher(final File freeplaneInstallationDirectory) {
-		if (! launcherCreated.compareAndSet(false, true)) 
-			throw new IllegalStateException("Launcher instance already created");
+		ensureSingleInstance();
 		this.freeplaneInstallationDirectory = freeplaneInstallationDirectory;
 		argCount = 0;
 		disableSecurityManager = Boolean.getBoolean(DISABLE_SECURITY_MANAGER_PROPERTY);
+	}
+
+	static private void ensureSingleInstance() {
+		if (! launcherCreated.compareAndSet(false, true)) 
+			throw new IllegalStateException("Launcher instance already created");
 	}
 	
 	static private File getFreeplaneInstallationDirectory() {
