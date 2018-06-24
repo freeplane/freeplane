@@ -214,6 +214,7 @@ public class HeadlessUIController extends FrameController {
 	@Override
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
 		try {
+			if(! worker.isShutdown())
 			worker.submit(runnable).get();
 		}
 		catch (ExecutionException e) {
