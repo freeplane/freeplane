@@ -64,14 +64,14 @@ public class Slide implements NamedElement<Slide>{
 		this(name, new LinkedHashSet<String>(), null, NodePosition.CENTER, false, 1f, false, false, false, null);
 	}
 	
-	private Slide(String name, Set<String> selectedNodeIds, String centeredNodeId, NodePosition placedNodePosition,
+	private Slide(String name, Set<String> selectedNodeIds, String placesNodeId, NodePosition placedNodePosition,
 	                  boolean changeZoom,
 			float zoom, boolean showOnlySpecificNodes, boolean showAncestors, boolean showDescendants,
 			ASelectableCondition filterCondition) {
 		super();
 		this.name = name;
 		this.selectedNodeIds = selectedNodeIds;
-		this.placedNodeId = centeredNodeId;
+		this.placedNodeId = placesNodeId;
 		this.placedNodePosition = placedNodePosition;
 		this.changesZoom = changeZoom;
 		this.zoom = zoom;

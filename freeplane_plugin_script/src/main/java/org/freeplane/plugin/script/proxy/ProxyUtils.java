@@ -1,7 +1,5 @@
 package org.freeplane.plugin.script.proxy;
 
-import groovy.lang.Closure;
-
 import java.net.URI;
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -15,7 +13,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.freeplane.core.util.TextUtils;
+import org.freeplane.api.Node;
+import org.freeplane.api.NodeCondition;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.FormatController;
@@ -26,10 +25,11 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.plugin.script.ScriptContext;
-import org.freeplane.plugin.script.proxy.Proxy.Node;
+
+import groovy.lang.Closure;
 
 public class ProxyUtils {
-	static List<Node> createNodeList(final List<NodeModel> list, final ScriptContext scriptContext) {
+	static List<? extends Node> createNodeList(final List<NodeModel> list, final ScriptContext scriptContext) {
 		return new AbstractList<Node>() {
 			final private List<NodeModel> nodeModels = list;
 
@@ -46,20 +46,21 @@ public class ProxyUtils {
 		};
 	}
 
-	static List<Node> find(final ICondition condition, final NodeModel node, final ScriptContext scriptContext) {
+	static List<? extends Node> find(final ICondition condition, final NodeModel node, final ScriptContext scriptContext) {
 		return ProxyUtils.createNodeList(ProxyUtils.findImpl(condition, node, true), scriptContext);
 	}
-	
-	static List<Node> findAll(final NodeModel node, final ScriptContext scriptContext, boolean breadthFirst) {
+
+	static List<? extends Node> findAll(final NodeModel node, final ScriptContext scriptContext, boolean breadthFirst) {
 		return ProxyUtils.createNodeList(ProxyUtils.findImpl(null, node, breadthFirst), scriptContext);
 	}
 
-	static List<Node> find(final Closure<Boolean> closure, final NodeModel node, final ScriptContext scriptContext) {
+	static List<? extends Node> find(final Closure<Boolean> closure, final NodeModel node, final ScriptContext scriptContext) {
 		return ProxyUtils.find(createCondition(closure, scriptContext), node, scriptContext);
 	}
 
 	static ICondition createCondition(final Closure<Boolean> closure, final ScriptContext scriptContext) {
-	    final ICondition condition = new ASelectableCondition() {
+	    final ICondition condition = closure == null ? null : new ASelectableCondition() {
+			@Override
 			public boolean checkNode(final NodeModel node) {
 				try {
 					final Boolean result = closure
@@ -88,6 +89,29 @@ public class ProxyUtils {
 	    return condition;
     }
 
+	static List<? extends Node> find(final NodeCondition condition, final NodeModel node, final ScriptContext scriptContext) {
+		return ProxyUtils.find(createCondition(condition, scriptContext), node, scriptContext);
+	}
+
+	static ICondition createCondition(final NodeCondition condition, final ScriptContext scriptContext) {
+		final ICondition filterCondition = condition == null ? null : new ASelectableCondition() {
+			@Override
+			public boolean checkNode(final NodeModel node) {
+				return condition.check(new NodeProxy(node, scriptContext));
+			}
+
+			@Override
+			protected String createDescription() {
+				return "<Code>";
+			}
+
+			@Override
+			protected String getName() {
+				return  "Code";
+			}
+		};
+	    return filterCondition;
+    }
 	/** finds from any node downwards.
 	 * @param condition if null every node will match. */
 	@SuppressWarnings("unchecked")
@@ -116,10 +140,10 @@ public class ProxyUtils {
         return new ArrayList<Proxy.Node>(new AbstractList<Proxy.Node>() {
     		@Override
     		public Proxy.Node get(final int index) {
-    			final NodeModel child = (NodeModel) nodeModel.getChildAt(index);
+    			final NodeModel child = nodeModel.getChildAt(index);
     			return new NodeProxy(child, scriptContext);
     		}
-    
+
     		@Override
     		public int size() {
     			return nodeModel.getChildCount();
@@ -149,7 +173,7 @@ public class ProxyUtils {
     		return new ConvertibleDate((Date) value);
     	return new ConvertibleNodeText(nodeModel, scriptContext);
     }
-	
+
 	public static <T>  List<T> createList(final Collection<T> collection) {
 		return new AbstractList<T>() {
 			private int lastIndex;
@@ -213,7 +237,7 @@ public class ProxyUtils {
             public int size() {
 	            return collection.size();
             }
-		};		
+		};
     }
 
 	/** used for node core texts and for attribute values. Note that it would lead to an error on reopening of a map

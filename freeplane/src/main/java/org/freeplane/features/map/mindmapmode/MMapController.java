@@ -871,7 +871,7 @@ public class MMapController extends MapController {
 	}
 
 	public MapModel newHiddenUntitledMap(final URL url) throws IOException, XMLException {
-		final MapModel newModel = new MMapModel();
+		final MapModel newModel = MMapModel.withoutAutosave();
 		UrlManager.getController().load(url, newModel);
 		newModel.setURL(null);
 		fireMapCreated(newModel);

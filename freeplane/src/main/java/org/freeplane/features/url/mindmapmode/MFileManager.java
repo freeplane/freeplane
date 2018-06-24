@@ -799,7 +799,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		map.setReadOnly(false);
 		final URL urlAfter = map.getURL();
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-		mapController.fireMapChanged(new MapChangeEvent(this, map, UrlManager.MAP_URL, urlBefore, urlAfter));
+		mapController.fireMapChanged(new MapChangeEvent(this, map, UrlManager.MAP_URL, urlBefore, urlAfter, false));
 		mapController.setSaved(map, true);
 		return true;
 	}

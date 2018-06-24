@@ -583,7 +583,7 @@ implements IExtension, NodeChangeAnnouncer{
 
 	public void fireMapChanged(final MapChangeEvent event) {
 		final MapModel map = event.getMap();
-		if (map != null) {
+		if (map != null && event.setsDirtyFlag()) {
 			setSaved(map, false);
 		}
 		final IMapChangeListener[] list = mapChangeListeners.toArray(new IMapChangeListener[]{});

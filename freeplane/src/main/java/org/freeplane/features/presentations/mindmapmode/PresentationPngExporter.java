@@ -25,7 +25,7 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.map.MapView;
 
 class PresentationPngExporter {
-	
+
 	static void exportPresentation(PresentationState presentationState) {
 		final PresentationPngExporterFactory presentationPngExporterFactory = new PresentationPngExporterFactory(presentationState);
 		final PresentationPngExporter exporter = presentationPngExporterFactory.exporter;
@@ -33,23 +33,23 @@ class PresentationPngExporter {
 			exporter.exportSinglePresentation();
 		}
 	}
-	
+
 	static void exportPresentations(PresentationState presentationState) {
 		final PresentationPngExporterFactory presentationPngExporterFactory = new PresentationPngExporterFactory(presentationState);
 		final PresentationPngExporter exporter = presentationPngExporterFactory.exporter;
 		if(exporter != null) {
 			exporter.exportAllPresentations();
 		}
-		
+
 	}
-	
+
 	static class ActionInstaller {
 		public void installActions(ModeController modeController, PresentationState state){
 			modeController.addAction(new ExportAllPresentationsAction(state));
 			modeController.addAction(new ExportPresentationAction(state));
 		}
 	}
-	
+
 	@SuppressWarnings("serial")
 	private static class ExportAllPresentationsAction extends AFreeplaneAction{
 
@@ -64,7 +64,7 @@ class PresentationPngExporter {
 		public void actionPerformed(ActionEvent e) {
 			PresentationPngExporter.exportPresentations(state);
 		}
-		
+
 	}
 
 	@SuppressWarnings("serial")
@@ -81,9 +81,9 @@ class PresentationPngExporter {
 		public void actionPerformed(ActionEvent e) {
 			PresentationPngExporter.exportPresentation(state);
 		}
-		
+
 	}
-	
+
 	private static class PresentationPngExporterFactory{
 
 		private NamedElementCollection<Presentation> presentations;
@@ -113,9 +113,9 @@ class PresentationPngExporter {
 
 			exporter = new PresentationPngExporter(presentationState, exportDirectory);
 		}
-		
+
 	}
-	
+
 	private final File exportDirectory;
 	private final PresentationState presentationState;
 	private final float zoom;
@@ -133,7 +133,7 @@ class PresentationPngExporter {
 		this.selection = selection.toArray(new NodeModel[selection.size()]);
 		mapViewComponent = (JComponent) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 	}
-	
+
 	private void exportAllPresentations() {
 		prepareExport();
 		NamedElementCollection<Presentation> presentations = presentationState.getPresentations();
@@ -159,7 +159,7 @@ class PresentationPngExporter {
 			}
 		}
 	}
-	
+
 
 	private void exportSinglePresentation() {
 		prepareExport();
@@ -216,7 +216,7 @@ class PresentationPngExporter {
 				slideSize = mapViewComponent.getGraphicsConfiguration().getBounds().getSize();
 			else
 				slideSize = SwingUtilities.getWindowAncestor(mapViewComponent).getSize();
-			exporter.export(map, slideSize, placedNode, slide.getPlacedNodePosition(), exportFile);
+			exporter.export(map, slideSize, slide.getCurrentPlacedNode(), slide.getPlacedNodePosition(), exportFile);
 		} else
 			exporter.export(map, exportFile);
 	}

@@ -64,23 +64,23 @@ task copyScripts(type: Copy) {
 javadoc {
     enabled = true
 
-    // we need source from both this and the freeplane project!
-    //  source = sourceSets.main.allJava
-
-    ext.javadocInputFromThisProject = fileTree(dir: 'src/main/java')
+    source = fileTree(dir: 'src/main/java')
       .include('**/Proxy.java')
       .include('**/Convertible.java')
       .include('**/FreeplaneScriptBaseClass.java')
-      .include('**/ScriptUtils.java')
-    ext.javadocInputFromFreeplaneProject = fileTree(dir: '../freeplane/src/main/java')
-      .include('**/UITools.java')
-      .include('**/TextUtils.java')
-      .include('**/FreeplaneVersion.java')
-      .include('**/HtmlUtils.java')
-      .include('**/LogUtils.java')
-      .include('**/MenuUtils.java')
+      .include('**/ScriptUtils.java') +
+		fileTree(dir: '../freeplane_api/src/main/java')
+		  .include('**/api/*.java') +
+		fileTree(dir: '../freeplane/src/main/java')
+		  .include('**/UITools.java')
+		  .include('**/TextUtils.java')
+		  .include('**/FreeplaneVersion.java')
+		  .include('**/HtmlUtils.java')
+		  .include('**/LogUtils.java')
+		  .include('**/MenuUtils.java') + fileTree(dir: '../freeplane_framework/src/main/java')
+		  .include('**/Launcher.java')
+  
 
-    source = ext.javadocInputFromThisProject + ext.javadocInputFromFreeplaneProject
     destinationDir = new File(globalBin + '/doc/api/')
 }
 

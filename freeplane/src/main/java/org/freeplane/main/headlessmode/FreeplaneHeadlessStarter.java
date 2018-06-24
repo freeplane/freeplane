@@ -46,6 +46,7 @@ import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 
 	private ApplicationResourceController applicationResourceController;
+	private HeadlessUIController viewController;
 // // 	private Controller controller;
 	/** allows to disable loadLastMap(s) if there already is a second instance running. */
 	public FreeplaneHeadlessStarter() {
@@ -67,7 +68,8 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 			FreeplaneGUIStarter.showSysInfo();
 			final HeadlessMapViewController mapViewController = new HeadlessMapViewController();
 			controller.setMapViewManager(mapViewController);
-			controller.setViewController(new HeadlessUIController(controller, mapViewController, ""));
+			viewController = new HeadlessUIController(controller, mapViewController, "");
+			controller.setViewController(viewController);
 			controller.addExtension(HighlightController.class, new HighlightController());
 			FilterController.install();
 			FormatController.install(new FormatController());
@@ -115,6 +117,8 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 
 	@Override
 	public void stop() {
+		if(viewController != null)
+			viewController.shutdown();
 	}
 
 	@Override

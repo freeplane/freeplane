@@ -383,4 +383,9 @@ public class HeadlessMapViewController implements IMapViewManager {
 		return false;
 	}
 
+	@Override
+	public boolean isHeadless() {
+		return true;
+	}
+
 }

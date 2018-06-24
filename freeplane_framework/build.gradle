@@ -1,5 +1,14 @@
 import org.apache.tools.ant.filters.*
 
+configurations{
+	mergedApiDependency
+	compile.extendsFrom(mergedApiDependency)
+}
+
+dependencies {
+	mergedApiDependency project(':freeplane_api')
+}
+
 task freeplanelauncherJar(type: Jar) {
      archiveName = 'freeplanelauncher.jar'
      destinationDir = new File(globalBin)
@@ -15,6 +24,12 @@ task freeplanelauncherJar(type: Jar) {
                      "Main-Class": "org.freeplane.launcher.Launcher",
                      "Class-Path": "framework.jar")
      }
+	 
+	 configurations.mergedApiDependency.files.each {
+    	from(zipTree(it.path)) {
+    		exclude('META-INF/MANIFEST.MF')
+    	}
+    }
 }
 
 jar.dependsOn freeplanelauncherJar

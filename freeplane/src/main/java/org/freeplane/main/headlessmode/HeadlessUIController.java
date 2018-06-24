@@ -214,6 +214,7 @@ public class HeadlessUIController extends FrameController {
 	@Override
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
 		try {
+			if(! worker.isShutdown())
 			worker.submit(runnable).get();
 		}
 		catch (ExecutionException e) {
@@ -270,5 +271,9 @@ public class HeadlessUIController extends FrameController {
 
 	private RuntimeException methodNotImplementedException() {
 		return new RuntimeException("Method not implemented");
+	}
+
+	public void shutdown() {
+		worker.shutdown();
 	}
 }

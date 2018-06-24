@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.freeplane.plugin.script.proxy;
 
@@ -17,10 +17,12 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 		super(delegate, scriptContext);
 	}
 
+	@Override
 	public Color getColor() {
 		return getEdgeController().getColor(getDelegate());
 	}
-	
+
+	@Override
 	public String getColorCode() {
 		return ColorUtils.colorToString(getColor());
 	}
@@ -29,26 +31,42 @@ class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
 		return (MEdgeController) EdgeController.getController();
 	}
 
+	@Override
 	public EdgeStyle getType() {
 		return getEdgeController().getStyle(getDelegate());
 	}
 
+	@Override
 	public int getWidth() {
 		return getEdgeController().getWidth(getDelegate());
 	}
 
+	@Override
 	public void setColor(final Color color) {
 		getEdgeController().setColor(getDelegate(), color);
 	}
 
+	@Override
 	public void setColorCode(final String rgbString) {
 		setColor(ColorUtils.stringToColor(rgbString));
 	}
 
+	@Override
+	public void setType(final String type) {
+		setType(EdgeStyle.getStyle(type));
+	}
+
+	@Override
 	public void setType(final EdgeStyle type) {
 		getEdgeController().setStyle(getDelegate(), type);
 	}
 
+	@Override
+	public void setType(final org.freeplane.api.EdgeStyle type) {
+		setType(type.name());
+	}
+
+	@Override
 	public void setWidth(final int width) {
 		getEdgeController().setWidth(getDelegate(), width);
 	}
