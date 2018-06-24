@@ -37,13 +37,19 @@ import org.osgi.framework.launch.Framework;
  * To run a headless Freeplane instance use {@code Launcher.create().launchHeadless()},
  * to run a freeplane with complete user UI use {@code Launcher.create().launch()}
  * 
- * Code Example: 
 * <pre>
+* 
+* Code Example: 
 * {@code
-	final HeadlessMapCreator mapCreator = Launcher.create().launchHeadless();
-	final Map map = mapCreator.newHiddenMapFromTemplate(new File("templateFile.mm"));
-	map.getRoot().setText("hello world");
-	map.saveAs(new File("helloWorld.mm"));
+	public static void createNewMindMap(File freeplaneInstallationDirectory, final File newMapFile) {
+		final Launcher launcher = Launcher.createForInstallation(freeplaneInstallationDirectory).disableSecurityManager();
+		HeadlessMapCreator mapCreator = launcher.launchHeadless();
+		final Map map = mapCreator.newHiddenMapFromTemplate(TestApp.class.getResource("/templateFile.mm"));
+		map.getRoot().createChild().setText("hello world");
+		map.saveAs(newMapFile);
+		System.out.println("Saved file " + newMapFile.getAbsolutePath());
+		launcher.shutdown();
+	}
 * }
 * </pre>
  * 
@@ -58,27 +64,75 @@ public class Launcher {
 	private boolean freeplaneLaunched;
 	private static AtomicBoolean launcherCreated = new AtomicBoolean(false);
 	private Framework framework;
+	
+	public static void main(String[] args) {
+		fixX11AppName();
+		workAroundForDataFlavorComparator_JDK8130242();
+		new Launcher().launchWithoutUICheck(args);
+	}
+	
+	/**
+	 * Creates Launcher for starting embedded Freeplane instance.
+	 * 
+	 * @param freeplaneInstallationDirectory Path to freeplane installation directory 
+	 * 
+	 *  Only one Launcher per JVM can be created.
+	 *  
+	 * @throws IllegalStateException is launcher already was created.
+	 * 
+	 */
+	public static Launcher createForInstallation(final File freeplaneInstallationDirectory) {
+		System.setProperty(BASEDIRECTORY_PROPERTY, freeplaneInstallationDirectory.getPath());
+		return new Launcher(freeplaneInstallationDirectory);
+	}
+
+
+	/**
+	 * Creates Launcher for starting embedded Freeplane instance.
+	 * 
+	 * Freeplane installation directory is defined by location of jar file containing this class. 
+	 * 
+	 * Only one Launcher per JVM can be created.
+	 * 
+	 * @throws IllegalStateException is launcher already was created.
+	 */
+	public static Launcher create() {
+		return new Launcher();
+	}
 
 	private Launcher() {
 		this(getFreeplaneInstallationDirectory());
 	}
 	
-	public static Launcher createForInstallation(final File freeplaneInstallationDirectory) {
-		System.setProperty(BASEDIRECTORY_PROPERTY, freeplaneInstallationDirectory.getPath());
-		return new Launcher(freeplaneInstallationDirectory);
-	}
 	
-	public static Launcher create() {
-		return new Launcher();
-	}
-	
+	/**
+	 * Launchs Freeplane without UI and returns HeadlessMapCreator instance.
+	 * 
+	 * @throws IllegalStateException is Freeplane was already launched.
+	 * 
+	 */
 	public HeadlessMapCreator launchHeadless() {
 		System.setProperty(HEADLESS_PROPERTY, "true");
 		return launchWithoutUICheck(new String[] {});
 	}
+	
+	/**
+	 * Launchs Freeplane with UI and returns Controller instance.
+	 * 
+	 * All API methods should be called from the swing event thread to avoid race conditions.
+	 * 
+	 * @throws IllegalStateException is Freeplane was already launched.
+	 * 
+	 */
+	public Controller launchWithUI(String[] args) {
+		System.setProperty(HEADLESS_PROPERTY, "false");
+		return launchWithoutUICheck(args);
+	}
 
 
-
+    /**
+     * This method can be used to shutdown embedded Freeplane instance.
+     */
 	public void shutdown(){
 		if(framework != null)
 			try {
@@ -89,6 +143,10 @@ public class Launcher {
 		}
 	}
 
+	
+    /**
+     * Disables security manager for launched Freeplane instance.
+     */
 	public Launcher disableSecurityManager() {
 		disableSecurityManager = true;
 		return this;
@@ -137,22 +195,10 @@ public class Launcher {
 		}
 	}
 
-	public static void main(String[] args) {
-		fixX11AppName();
-		workAroundForDataFlavorComparator_JDK8130242();
-		new Launcher().launchWithoutUICheck(args);
-	}
-
-
 	private static void workAroundForDataFlavorComparator_JDK8130242() {
 		final String javaVersion = System.getProperty("java.version");
 		if(javaVersion.startsWith("1.7.") || javaVersion.startsWith("1.8."))
 			System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
-	}
-
-	public Controller launchWithUI(String[] args) {
-		System.setProperty(HEADLESS_PROPERTY, "false");
-		return launchWithoutUICheck(args);
 	}
 
 	private Controller launchWithoutUICheck(String[] args) {
