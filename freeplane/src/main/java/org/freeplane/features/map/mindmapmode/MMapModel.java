@@ -106,7 +106,8 @@ public class MMapModel extends MapModel {
 	}
 
 	public void scheduleTimerForAutomaticSaving() {
-		if (!(UrlManager.getController() instanceof MFileManager)) {
+		if (!(UrlManager.getController() instanceof MFileManager)
+				|| Controller.getCurrentController().getMapViewManager().isHeadless()) {
 			return;
 		}
 		final int numberOfTempFiles = Integer.parseInt(ResourceController.getResourceController().getProperty(

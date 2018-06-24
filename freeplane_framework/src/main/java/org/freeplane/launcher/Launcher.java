@@ -28,9 +28,26 @@ import org.freeplane.api.Controller;
 import org.freeplane.api.HeadlessMapCreator;
 import org.knopflerfish.framework.Main;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.launch.Framework;
-
+/**
+ * This class can be used to run freeplane instance from an application and to obtain its {@link Controller} object.
+ * 
+ * To run a headless Freeplane instance use {@code Launcher.create().launchHeadless()},
+ * to run a freeplane with complete user UI use {@code Launcher.create().launch()}
+ * 
+ * Code Example: 
+* <pre>
+* {@code
+	final HeadlessMapCreator mapCreator = Launcher.create().launchHeadless();
+	final Map map = mapCreator.newHiddenMapFromTemplate(new File("templateFile.mm"));
+	map.getRoot().setText("hello world");
+	map.saveAs(new File("helloWorld.mm"));
+* }
+* </pre>
+ * 
+ */
 public class Launcher {
 	private static final String DISABLE_SECURITY_MANAGER_PROPERTY = "org.freeplane.main.application.FreeplaneSecurityManager.disable";
 	private static final String HEADLESS_PROPERTY = "org.freeplane.main.application.FreeplaneStarter.headless";
@@ -39,8 +56,8 @@ public class Launcher {
 	private int argCount;
 	private boolean disableSecurityManager;
 	private boolean freeplaneLaunched;
-	
 	private static AtomicBoolean launcherCreated = new AtomicBoolean(false);
+	private Framework framework;
 
 	private Launcher() {
 		this(getFreeplaneInstallationDirectory());
@@ -57,7 +74,19 @@ public class Launcher {
 	
 	public HeadlessMapCreator launchHeadless() {
 		System.setProperty(HEADLESS_PROPERTY, "true");
-		return launchWithUI(new String[] {});
+		return launchWithoutUICheck(new String[] {});
+	}
+
+
+
+	public void shutdown(){
+		if(framework != null)
+			try {
+				framework.stop();
+			}
+		catch (BundleException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public Launcher disableSecurityManager() {
@@ -80,7 +109,7 @@ public class Launcher {
 	static private File getFreeplaneInstallationDirectory() {
 		final File frameworkDir;
 		if (Utils.isDefineNotSet(BASEDIRECTORY_PROPERTY)) {
-			frameworkDir = Utils.getPathToJar(Main.class);
+			frameworkDir = Utils.getPathToJar(Launcher.class);
 		}
 		else {
 			try {
@@ -144,7 +173,8 @@ public class Launcher {
 
 			});
 		setArgProperties(args);
-		return startFramework();
+		final Controller controller = startFramework();
+		return controller;
 	}
 
 	private void setDefines() {
@@ -170,7 +200,7 @@ public class Launcher {
 
 		System.out.println(main.bootText);
 
-		final Framework framework = main.start(args);
+		framework = main.start(args);
 		final BundleContext bundleContext = framework.getBundleContext();
 		final ServiceReference<Controller> controller = bundleContext.getServiceReference(Controller.class);
 		final Controller service = bundleContext.getService(controller);
@@ -195,5 +225,7 @@ public class Launcher {
 		String propertyName = "org.freeplane.param" + ++argCount;
 		System.setProperty(propertyName, arg);
 	}
+	
+	
 
 }

@@ -259,15 +259,21 @@ class ControllerProxy implements Proxy.Controller {
 
 	@Override
 	public Map newHiddenMapFromTemplate(File templateFile) {
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
-		MapModel newMap;
+		final URL url;
 		try {
-			newMap = mapIO.newHiddenUntitledMap(Compat.fileToUrl(templateFile));
-			return new MapProxy(newMap, scriptContext);
+			url = Compat.fileToUrl(templateFile);
 		}
 		catch (MalformedURLException e) {
 			return null;
 		}
+		return newHiddenMapFromTemplate(url);
+	}
+
+	@Override
+	public Map newHiddenMapFromTemplate(final URL template) {
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
+		MapModel newMap = mapIO.newHiddenUntitledMap(template);
+		return new MapProxy(newMap, scriptContext);
 	}
 
 	@Override
@@ -362,4 +368,5 @@ class ControllerProxy implements Proxy.Controller {
         }
     	return mapProxies;
     }
+
 }

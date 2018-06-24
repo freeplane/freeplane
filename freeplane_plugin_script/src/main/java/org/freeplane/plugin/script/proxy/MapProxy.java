@@ -16,6 +16,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
@@ -109,10 +110,12 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 	}
 
 	private void changeToThisMap(final IMapViewManager mapViewManager) {
-		String mapKey = findMapViewKey(mapViewManager);
-		if (mapKey == null)
-			throw new RuntimeException("map " + getDelegate() + " does not seem to be opened");
-		mapViewManager.changeToMapView(mapKey);
+		if (! mapViewManager.isHeadless()) {
+			String mapKey = findMapViewKey(mapViewManager);
+			if (mapKey == null)
+				throw new RuntimeException("map " + getDelegate() + " does not seem to be opened");
+			mapViewManager.changeToMapView(mapKey);
+		}
 	}
 
 	private IMapViewManager getMapViewManager() {
@@ -135,6 +138,13 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 			throw new RuntimeException("no url set for map " + getDelegate());
 		changeToThisMap(getMapViewManager());
 		return getModeController().save();
+	}
+
+	// Map: R/W
+	@Override
+	public boolean saveAs(File file) {
+		changeToThisMap(getMapViewManager());
+		return MFileManager.getController(getModeController()).save(getDelegate(), file);
 	}
 
 	// Map: R/W

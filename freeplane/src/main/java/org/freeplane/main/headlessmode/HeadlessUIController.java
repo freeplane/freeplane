@@ -271,4 +271,8 @@ public class HeadlessUIController extends FrameController {
 	private RuntimeException methodNotImplementedException() {
 		return new RuntimeException("Method not implemented");
 	}
+
+	public void shutdown() {
+		worker.shutdown();
+	}
 }

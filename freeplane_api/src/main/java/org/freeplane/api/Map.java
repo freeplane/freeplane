@@ -1,6 +1,7 @@
 package org.freeplane.api;
 
 import java.awt.Color;
+import java.io.File;
 
 
 /** The map a node belongs to: <code>node.map</code> - read-write. */
@@ -24,6 +25,15 @@ public interface Map extends MapRO {
 	 * @since 1.2
 	 */
 	boolean save(boolean allowInteraction);
+
+	/**
+	 * saves the map to disk. Note that there is <em>no undo</em> for this method.
+	 * @param allowInteraction if a saveAs dialog should be opened if the map has no assigned URL so far.
+	 * @return false if the saveAs was cancelled by the user and true otherwise.
+	 * @throws RuntimeException if the map has no assigned URL and parameter allowInteraction is false.
+	 * @since 1.2
+	 */
+	boolean saveAs(File file);
 
 	/** @since 1.2 */
 	void setSaved(boolean isSaved);
