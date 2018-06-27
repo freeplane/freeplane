@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import org.freeplane.api.AttributeCondition;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -135,24 +136,18 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
     }
 
 	@Override
-	public List<? extends Convertible> findValues(Closure<Boolean> closure) {
+	public List<? extends Convertible> findValues(final Closure<Boolean> closure) {
 		try {
-			final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
-			if (attributeTableModel == null) {
-				return Collections.emptyList();
-			}
-			final ArrayList<Convertible> result = new ArrayList<Convertible>(
-			    attributeTableModel.getRowCount());
-			for (final Attribute a : attributeTableModel.getAttributes()) {
-				final Object transformedAttributeValue = getAttributeValue(a);
-				final Object bool = closure.call(new Object[] { a.getName(), transformedAttributeValue });
-				if (result == null) {
-					throw new RuntimeException("findValues(): closure returned null instead of boolean/Boolean");
+			return findValues(new AttributeCondition() {
+				@Override
+				public boolean check(String attributeName, Object attributeValue) {
+					final Object result = closure.call(attributeName, attributeValue);
+					if (result == null) {
+						throw new RuntimeException("findValues(): closure returned null instead of boolean/Boolean");
+					}
+					return (Boolean) result;
 				}
-				if ((Boolean) bool)
-					result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), transformedAttributeValue));
-			}
-			return result;
+			});
 		}
 		catch (final MissingMethodException e) {
 			throw new RuntimeException("findValues(): closure needs to accept two args and must return boolean/Boolean"
@@ -162,6 +157,22 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 			throw new RuntimeException("findValues(): closure returned " + e.getMessage()
 			        + " instead of boolean/Boolean");
 		}
+	}
+
+	@Override
+	public List<? extends Convertible> findValues(AttributeCondition condition) {
+		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
+		if (attributeTableModel == null) {
+			return Collections.emptyList();
+		}
+		final ArrayList<Convertible> result = new ArrayList<Convertible>(
+				attributeTableModel.getRowCount());
+		for (final Attribute a : attributeTableModel.getAttributes()) {
+			final Object transformedAttributeValue = getAttributeValue(a);
+			if (condition.check(a.getName(), transformedAttributeValue))
+				result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), transformedAttributeValue));
+		}
+		return result;
 	}
 
 	@Override

@@ -9,7 +9,8 @@ dependencies {
 	compile ':kitfox-svg-salamander-1.1.1-p1'
 	
     compile project(':JOrtho_0.4_freeplane')
-
+	compile project(':freeplane_api')
+	
     compile 'commons-lang:commons-lang:2.6',
             'commons-io:commons-io:2.4',
             'commons-codec:commons-codec:1.7',
@@ -67,6 +68,7 @@ jar {
         // Export-Package:, that's why we bypass bnd for now!
         def exports = """\
                     com.inet.jortho,
+                    org.freeplane.api,
                     org.freeplane.core.extension,
                     org.freeplane.core.io,
                     org.freeplane.core.io.xml,
@@ -191,6 +193,7 @@ task copyOSGiJars(type: Copy) {
           include("*.jar")
 		  exclude('framework-*.jar')
 		  exclude('freeplane-*.jar')
+		  exclude('freeplane_api*.jar')
 		  exclude('mnemonicsetter-*.jar')
 		  
      }
@@ -208,6 +211,51 @@ task copyOSGiManifest(type: Copy) {
      into(globalBin + '/core/' + pluginid + '/META-INF/')
 }
 
+class PartialJar extends Jar {
+	String[] includedClasses
+}
+
+task editorJar(type: PartialJar) {
+    // use '= project.manifest' to avoid that an OSGi manifest is created!
+    manifest = project.manifest {
+        attributes("Manifest-Version": "1.0",
+                   "Main-Class": "org.freeplane.main.application.FreeplaneMain")
+    }
+    baseName = 'freeplaneeditor'
+    dependsOn classes
+	includedClasses = [
+				"**/application/**",
+				"**/mindmapmode/**",
+				"**/ortho/**",
+				"**/filemode/**",
+				"**/core/resources/ui/**",
+				"translations/**"
+	]
+	
+    from (sourceSets.main.output) {
+				include(includedClasses)
+    }
+    from ('./resources')
+    includeEmptyDirs = false
+}
+
+task osgiJar(type: PartialJar) {
+	// use '= project.manifest' to avoid that an OSGi manifest is created!
+	manifest = project.manifest {
+		attributes("Manifest-Version": "1.0")
+	}
+	baseName = 'freeplaneosgi'
+	dependsOn classes
+	includedClasses = [
+				"**/osgi/**"
+	]
+    from (sourceSets.main.output) {
+				include(includedClasses)
+    }
+    includeEmptyDirs = false
+}
+
+
 task viewerJar(type: Jar) {
     // use '= project.manifest' to avoid that an OSGi manifest is created!
     manifest = project.manifest {
@@ -222,17 +270,10 @@ task viewerJar(type: Jar) {
     archiveName = 'freeplaneviewer.jar'
     dependsOn classes
     from (sourceSets.main.output) {
-        exclude('**/application/**')
-        exclude('**/osgi/**')
-        exclude('**/mindmapmode/**')
-        exclude('**/filemode/**')
-        exclude('**/ortho/**')
-        exclude('**/core/resources/ui/**')
-        exclude('translations/**')
+        exclude (editorJar.includedClasses)
+        exclude (osgiJar.includedClasses )
     }
-    from ('./viewer-resources') {
-        exclude('**/appletMenu.mm')
-    }
+    from ('./viewer-resources')
     
     configurations.mergedViewerDependencies.files.each {
     	from(zipTree(it.path)) {
@@ -245,35 +286,6 @@ task viewerJar(type: Jar) {
 
 apply from: './signjar.gradle'
 
-task editorJar(type: Jar) {
-    // use '= project.manifest' to avoid that an OSGi manifest is created!
-    manifest = project.manifest {
-        attributes("Manifest-Version": "1.0",
-                   "Main-Class": "org.freeplane.main.application.FreeplaneMain")
-    }
-    baseName = 'freeplaneeditor'
-    dependsOn classes
-    from (sourceSets.main.output) {
-				include("**/application/**")
-				include("**/mindmapmode/**")
-				include("**/ortho/**")
-				include("**/filemode/**")
-				include("**/core/resources/ui/**")
-				include("translations/**")
-				exclude("**/*.jar") // probably not necessary
-    }
-    from ('./resources') {
-				exclude("**/preferences.mm")
-				exclude("**/browsemodemenu.mm")
-				exclude("**/mindmapmodemenu.mm")
-				exclude("**/filemodemenu.mm")
-				exclude("**/stylemodemenu.mm")
-    }
-    includeEmptyDirs = false
-}
-
-
-
 eclipseJdt {
     doLast {
         File f = file('.settings/org.eclipse.core.resources.prefs')
@@ -283,19 +295,6 @@ encoding//viewer-resources/translations=ISO-8859-1
     }
 }
 
-
-task osgiJar(type: Jar) {
-    // use '= project.manifest' to avoid that an OSGi manifest is created!
-    manifest = project.manifest {
-        attributes("Manifest-Version": "1.0")
-    }
-    baseName = 'freeplaneosgi'
-    dependsOn classes
-    from (sourceSets.main.output) {
-         include("**/osgi/**")         
-    }
-    includeEmptyDirs = false
-}
 
 apply from: './git.gradle'
 

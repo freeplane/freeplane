@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.freeplane.api.Map;
+import org.freeplane.api.Node;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.Filter;
@@ -19,14 +21,13 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.NodeContainsCondition;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.ViewController;
-import org.freeplane.plugin.script.proxy.Proxy.Map;
-import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 public class ScriptApiTest {
 	ControllerProxy c;
 	NodeProxy node;
 	private Map map;
 	private Comparator<NodeProxy> nodeComparator = new Comparator<NodeProxy>() {
+		@Override
 		public int compare(NodeProxy o1, NodeProxy o2) {
 			return new Integer(System.identityHashCode(o1.getDelegate())).compareTo(System.identityHashCode(o2
 			    .getDelegate()));
@@ -311,67 +312,67 @@ public class ScriptApiTest {
 
 	//
 	//	public void test_ConnectorRO_getColor() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_ConnectorRO_getEndArrow() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_ConnectorRO_getMiddleLabel() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_ConnectorRO_getSource() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_ConnectorRO_getSourceLabel() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_ConnectorRO_getStartArrow() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_ConnectorRO_getTarget() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_ConnectorRO_getTargetLabel() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_ConnectorRO_simulatesEdge() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Connector_setColor_Color_color() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Connector_setEndArrow_ArrowType_arrowType() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Connector_setMiddleLabel_String_label() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Connector_setSimulatesEdge_boolean_simulatesEdge() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Connector_setSourceLabel_String_label() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Connector_setStartArrow_ArrowType_arrowType() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Connector_setTargetLabel_String_label() {
-	//		
+	//
 	//	}
 	public void test_ControllerRO_getSelected() {
 		map = c.newMap();
@@ -398,7 +399,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_ControllerRO_getSortedSelection_boolean_differentSubtrees() {
-		
+
 	}
 
 	@SuppressWarnings("deprecation")
@@ -407,12 +408,8 @@ public class ScriptApiTest {
 		@SuppressWarnings("unused")
 		final Node firstChild = map.getRoot().createChild("child 1");
 		final Node secondChild = map.getRoot().createChild("child 2");
-		final List<Node> found = c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 2", false));
+		final List<? extends Node> found = c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 2", false));
 		assertEquals("one matching node should be found", list(secondChild), found);
-	}
-
-	public void test_ControllerRO_find_Closure_closure() {
-		
 	}
 
 	public void test_Controller_centerOnNode_Node_center() {
@@ -429,7 +426,7 @@ public class ScriptApiTest {
 		final Node thirdChild = map.getRoot().createChild("child 3");
 		c.select(secondChild);
 		final Set<Node> set = set(secondChild);
-		final Set<Node> selected = set(c.getSelecteds());
+		final Set<? extends Node> selected = set(c.getSelecteds());
 		assertEquals("one node should be selected", set, selected);
 		c.select(firstChild);
 		assertEquals("one node should be selected", set(firstChild), set(c.getSelecteds()));
@@ -514,127 +511,127 @@ public class ScriptApiTest {
 
 	//
 	//	public void test_EdgeRO_getColor() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_EdgeRO_getType() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_EdgeRO_getWidth() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Edge_setColor_Color_color() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Edge_setType_EdgeStyle_type() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Edge_setWidth_int_width() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_ExternalObjectRO_getURI() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_ExternalObjectRO_getZoom() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_ExternalObject_setURI_String_uri() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_ExternalObject_setZoom_float_zoom() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_FontRO_getName() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_FontRO_getSize() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_FontRO_isBold() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_FontRO_isBoldSet() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_FontRO_isItalic() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_FontRO_isItalicSet() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_FontRO_isNameSet() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_FontRO_isSizeSet() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Font_resetBold() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Font_resetItalic() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Font_resetName() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Font_resetSize() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Font_setBold_boolean_bold() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Font_setItalic_boolean_italic() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Font_setName_String_name() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Font_setSize_int_size() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_IconsRO_getIcons() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Icons_addIcon_String_name() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Icons_removeIcon_String_iconID() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_LinkRO_get() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Link_set_String_target() {
-	//		
+	//
 	//	}
 	public void test_MapRO_getRoot() {
 		map = c.newMap();
@@ -666,7 +663,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_Map_save() {
-		
+
 	}
 
 	public void test_NodeRO_getAttributes() {
@@ -687,7 +684,7 @@ public class ScriptApiTest {
 		map = c.newMap();
 		final Node child1 = map.getRoot().createChild("child 1");
 		final Node child2 = map.getRoot().createChild("child 2");
-		final List<Node> children = map.getRoot().getChildren();
+		final List<? extends Node> children = map.getRoot().getChildren();
 		assertEquals("wrong children count", 2, children.size());
 		assertEquals("wrong order", child1, children.get(0));
 		assertEquals("wrong order", child2, children.get(1));
@@ -695,15 +692,15 @@ public class ScriptApiTest {
 
 	//
 	//	public void test_NodeRO_getConnectorsIn() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_NodeRO_getConnectorsOut() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_NodeRO_getExternalObject() {
-	//		
+	//
 	//	}
 	public void test_NodeRO_getIcons() {
 		map = c.newMap();
@@ -733,7 +730,7 @@ public class ScriptApiTest {
 		final Node root = map.getRoot();
 		assertTrue("unknown node id pattern in '" + root.getId() + "'", root.getId().matches("ID_[1-9]\\d+"));
 	}
-	
+
 	@SuppressWarnings("deprecation")
     public void test_NodeRO_getNodeID() {
 		map = c.newMap();
@@ -794,7 +791,7 @@ public class ScriptApiTest {
 	}
 
 	//	public void test_NodeRO_getStyle() {
-	//		
+	//
 	//	}
 	//
 	public void test_NodeRO_getPlainText() {
@@ -875,7 +872,7 @@ public class ScriptApiTest {
 
 	//
 	//	public void test_NodeRO_isLeft() {
-	//		
+	//
 	//	}
 	//
 	public void test_NodeRO_isRoot() {
@@ -902,12 +899,12 @@ public class ScriptApiTest {
 		@SuppressWarnings("unused")
 		final Node firstChild = map.getRoot().createChild("child 1");
 		final Node secondChild = map.getRoot().createChild("child 2");
-		final List<Node> found = c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 2", false));
+		final List<? extends Node> found = c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 2", false));
 		assertEquals("one matching node should be found", list(secondChild), found);
 	}
 
 	//	public void test_NodeRO_find_Closure_closure() {
-	//		
+	//
 	//	}
 	public void test_NodeRO_getLastModifiedAt() {
 		map = c.newMap();
@@ -946,11 +943,11 @@ public class ScriptApiTest {
 	}
 
 	//	public void test_Node_addConnectorTo_Node_target() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_Node_addConnectorTo_String_targetNodeID() {
-	//		
+	//
 	//	}
 	public void test_Node_createChild() {
 		map = c.newMap();
@@ -1025,7 +1022,7 @@ public class ScriptApiTest {
 
 	//
 	//	public void test_Node_removeConnector_Connector_connectorToBeRemoved() {
-	//		
+	//
 	//	}
 	//
 	public void test_Node_setFolded_boolean_folded() {
@@ -1058,38 +1055,38 @@ public class ScriptApiTest {
 		// see test_NodeRO_getCreatedAt()
 	}
 	//	public void test_NodeStyleRO_getStyle() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_NodeStyleRO_getStyleNode() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_NodeStyleRO_getBackgroundColor() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_NodeStyleRO_getEdge() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_NodeStyleRO_getFont() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_NodeStyleRO_getNodeTextColor() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_NodeStyle_setStyle_Object_key() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_NodeStyle_setBackgroundColor_Color_color() {
-	//		
+	//
 	//	}
 	//
 	//	public void test_NodeStyle_setNodeTextColor_Color_color() {
-	//		
+	//
 	//	}
 }

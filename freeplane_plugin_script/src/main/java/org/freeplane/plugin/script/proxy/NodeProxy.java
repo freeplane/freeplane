@@ -15,6 +15,15 @@ import java.util.Map.Entry;
 
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.typehandling.NumberMath;
+import org.freeplane.api.Attributes;
+import org.freeplane.api.Cloud;
+import org.freeplane.api.Connector;
+import org.freeplane.api.Node;
+import org.freeplane.api.NodeCondition;
+import org.freeplane.api.NodeRO;
+import org.freeplane.api.NodeStyle;
+import org.freeplane.api.NodeToComparableMapper;
+import org.freeplane.api.Reminder;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
@@ -52,15 +61,10 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.plugin.script.ScriptContext;
-import org.freeplane.plugin.script.proxy.Proxy.Attributes;
-import org.freeplane.plugin.script.proxy.Proxy.Cloud;
-import org.freeplane.plugin.script.proxy.Proxy.Node;
-import org.freeplane.plugin.script.proxy.Proxy.NodeRO;
-import org.freeplane.plugin.script.proxy.Proxy.Reminder;
 
 import groovy.lang.Closure;
 
-class NodeProxy extends AbstractProxy<NodeModel> implements Node {
+class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	private static final Integer ONE = 1;
 	private static final Integer ZERO = 0;
 
@@ -72,7 +76,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	@Override
-	public Proxy.Connector addConnectorTo(final Proxy.Node target) {
+	public Proxy.Connector addConnectorTo(final Node target) {
 		return addConnectorTo(target.getId());
 	}
 
@@ -86,7 +90,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	@Override
-	public Proxy.Node createChild() {
+	public Node createChild() {
 		final NodeModel newNodeModel = new NodeModel(getDelegate().getMap());
 		getMapController().insertNode(newNodeModel, getDelegate());
 		return new NodeProxy(newNodeModel, getScriptContext());
@@ -98,7 +102,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	@Override
-	public Proxy.Node createChild(final Object value) {
+	public Node createChild(final Object value) {
 		final Node child = createChild();
 		child.setObject(value);
 		return child;
@@ -106,7 +110,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	@Override
-	public Proxy.Node createChild(final int position) {
+	public Node createChild(final int position) {
 		final NodeModel newNodeModel = new NodeModel(getDelegate().getMap());
 		getMapController().insertNode(newNodeModel, getDelegate(), position);
 		return new NodeProxy(newNodeModel, getScriptContext());
@@ -114,17 +118,17 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	@Override
-	public Proxy.Node appendChild(Proxy.NodeRO node) {
+	public Node appendChild(NodeRO node) {
 		return appendBranchImpl(node, false);
 	}
 
 	// Node: R/W
 	@Override
-	public Proxy.Node appendBranch(Proxy.NodeRO node) {
+	public Node appendBranch(NodeRO node) {
 		return appendBranchImpl(node, true);
 	}
 
-	private Proxy.Node appendBranchImpl(Proxy.NodeRO node, boolean withChildren) {
+	private Node appendBranchImpl(NodeRO node, boolean withChildren) {
 	    final MClipboardController clipboardController = (MClipboardController) ClipboardController.getController();
 		final NodeModel newNodeModel = clipboardController.duplicate(((NodeProxy) node).getDelegate(), withChildren);
 		getMapController().insertNode(newNodeModel, getDelegate());
@@ -204,7 +208,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	@Override
-	public int getChildPosition(final Proxy.Node childNode) {
+	public int getChildPosition(final Node childNode) {
 		final NodeModel childNodeModel = ((NodeProxy) childNode).getDelegate();
 		return getDelegate().getIndex(childNodeModel);
 	}
@@ -317,7 +321,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	@Override
-	public Proxy.Node getParent() {
+	public Node getParent() {
 		final NodeModel parentNode = getDelegate().getParentNode();
 		return parentNode != null ? new NodeProxy(parentNode, getScriptContext()) : null;
 	}
@@ -325,13 +329,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// NodeRO: R
 	@Override
 	@Deprecated
-	public Proxy.Node getParentNode() {
+	public Node getParentNode() {
 		return getParent();
 	}
 
     // NodeRO: R
     @Override
-	public List<Node> getPathToRoot() {
+	public List<? extends Node> getPathToRoot() {
         return ProxyUtils.createNodeList(Arrays.asList(getDelegate().getPathToRoot()), getScriptContext());
     }
 
@@ -374,7 +378,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	@Override
-	public Proxy.NodeStyle getStyle() {
+	public NodeStyle getStyle() {
 		return new NodeStyleProxy(getDelegate(), getScriptContext());
 	}
 
@@ -459,7 +463,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	@Override
-	public boolean isDescendantOf(final Proxy.Node otherNode) {
+	public boolean isDescendantOf(final Node otherNode) {
 		// no need to trace this since it's already logged
 		final NodeModel otherNodeModel = ((NodeProxy) otherNode).getDelegate();
 		NodeModel node = this.getDelegate();
@@ -511,7 +515,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	@Override
-	public void moveTo(final Proxy.Node parentNodeProxy) {
+	public void moveTo(final Node parentNodeProxy) {
 		final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
         final NodeModel movedNode = getDelegate();
 		boolean oldSide = movedNode.isLeft();
@@ -521,7 +525,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	@Override
-	public void moveTo(final Proxy.Node parentNodeProxy, final int position) {
+	public void moveTo(final Node parentNodeProxy, final int position) {
         final NodeModel parentNode = ((NodeProxy) parentNodeProxy).getDelegate();
         final NodeModel movedNode = getDelegate();
 		Controller.getCurrentModeController().getExtension(FreeNode.class).undoableDeactivateHook(movedNode);
@@ -532,7 +536,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// Node: R/W
 	@Override
-	public void removeConnector(final Proxy.Connector connectorToBeRemoved) {
+	public void removeConnector(final Connector connectorToBeRemoved) {
 		final ConnectorProxy connectorProxy = (ConnectorProxy) connectorToBeRemoved;
 		final ConnectorModel link = connectorProxy.getConnector();
 		final MLinkController linkController = (MLinkController) LinkController.getController();
@@ -638,7 +642,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	// NodeRO: R
 	@Override
 	@Deprecated
-	public List<Node> find(final ICondition condition) {
+	public List<? extends Node> find(final ICondition condition) {
 		final NodeModel delegate = getDelegate();
 		if (getScriptContext() != null)
 			getScriptContext().accessBranch(delegate);
@@ -647,16 +651,24 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	@Override
-	public List<Node> find(final Closure<Boolean> closure) {
+	public List<? extends Node> find(final Closure<Boolean> closure) {
 		final NodeModel delegate = getDelegate();
 		if (getScriptContext() != null)
 			getScriptContext().accessBranch(delegate);
 		return ProxyUtils.find(closure, delegate, getScriptContext());
 	}
 
+	@Override
+	public List<? extends Node> find(NodeCondition condition) {
+		final NodeModel delegate = getDelegate();
+		if (getScriptContext() != null)
+			getScriptContext().accessBranch(delegate);
+		return ProxyUtils.find(condition, delegate, getScriptContext());
+	}
+
 	// NodeRO: R
 	@Override
-	public List<Node> findAll() {
+	public List<? extends Node> findAll() {
 		final NodeModel delegate = getDelegate();
 		if (getScriptContext() != null)
 			getScriptContext().accessBranch(delegate);
@@ -665,7 +677,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	// NodeRO: R
 	@Override
-	public List<Node> findAllDepthFirst() {
+	public List<? extends Node> findAllDepthFirst() {
 		final NodeModel delegate = getDelegate();
 		if (getScriptContext() != null)
 			getScriptContext().accessBranch(delegate);
@@ -741,7 +753,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return NumberMath.and(this.getTo().getNum0(), number);
 	}
 
-	public Number and(final Proxy.Node node) {
+	public Number and(final Node node) {
 		return NumberMath.and(this.getTo().getNum0(), node.getTo().getNum0());
 	}
 
@@ -749,7 +761,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return NumberMath.divide(this.getTo().getNum0(), number);
 	}
 
-	public Number div(final Proxy.Node node) {
+	public Number div(final Node node) {
 		return NumberMath.divide(this.getTo().getNum0(), node.getTo().getNum0());
 	}
 
@@ -757,7 +769,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return NumberMath.subtract(this.getTo().getNum0(), number);
 	}
 
-	public Number minus(final Proxy.Node node) {
+	public Number minus(final Node node) {
 		return NumberMath.subtract(this.getTo().getNum0(), node.getTo().getNum0());
 	}
 
@@ -765,7 +777,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return NumberMath.mod(this.getTo().getNum0(), number);
 	}
 
-	public Number mod(final Proxy.Node node) {
+	public Number mod(final Node node) {
 		return NumberMath.mod(this.getTo().getNum0(), node.getTo().getNum0());
 	}
 
@@ -773,7 +785,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return NumberMath.multiply(this.getTo().getNum0(), number);
 	}
 
-	public Number multiply(final Proxy.Node node) {
+	public Number multiply(final Node node) {
 		return NumberMath.multiply(this.getTo().getNum0(), node.getTo().getNum0());
 	}
 
@@ -781,7 +793,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return NumberMath.or(this.getTo().getNum0(), number);
 	}
 
-	public Number or(final Proxy.Node node) {
+	public Number or(final Node node) {
 		return NumberMath.or(this.getTo().getNum0(), node.getTo().getNum0());
 	}
 
@@ -789,7 +801,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return NumberMath.add(this.getTo().getNum0(), number);
 	}
 
-	public Number plus(final Proxy.Node node) {
+	public Number plus(final Node node) {
 		return NumberMath.add(this.getTo().getNum0(), node.getTo().getNum0());
 	}
 
@@ -797,7 +809,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return DefaultGroovyMethods.power(this.getTo().getNum0(), number);
 	}
 
-	public Number power(final Proxy.Node node) {
+	public Number power(final Node node) {
 		return DefaultGroovyMethods.power(this.getTo().getNum0(), node.getTo().getNum0());
 	}
 
@@ -805,7 +817,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		return NumberMath.xor(this.getTo().getNum0(), number);
 	}
 
-	public Number xor(final Proxy.Node node) {
+	public Number xor(final Node node) {
 		return NumberMath.xor(this.getTo().getNum0(), node.getTo().getNum0());
 	}
 
@@ -957,10 +969,31 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 
 	@Override
 	public void sortChildrenBy(Closure<Comparable<Object>> closure) {
+		final Comparator<NodeModel> comparator = comparatorByClosureResult(closure);
+		sortChildrenBy(comparator);
+	}
+
+	@Override
+	public void sortChildrenBy(NodeToComparableMapper mapper) {
+		final Comparator<NodeModel> comparator = comparatorByMapper(mapper);
+		sortChildrenBy(comparator);
+	}
+
+	private Comparator<NodeModel> comparatorByMapper(final NodeToComparableMapper mapper) {
+		return new Comparator<NodeModel>() {
+			@Override
+			public int compare(NodeModel o1, NodeModel o2) {
+				final NodeProxy p1 = new NodeProxy(o1, getScriptContext());
+				final NodeProxy p2 = new NodeProxy(o1, getScriptContext());
+				return mapper.toComparable(p1).compareTo(mapper.toComparable(p2));
+			}
+		};
+	}
+	private void sortChildrenBy(final Comparator<NodeModel> comparator) {
 		getScriptContext().accessNode(getDelegate());
 		NodeModel node = getDelegate();
 		final ArrayList<NodeModel> children = new ArrayList<NodeModel>(node.getChildren());
-		Collections.sort(children, comparatorByClosureResult(closure));
+		Collections.sort(children, comparator);
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		int i = 0;
 		for (final NodeModel child : children) {
@@ -970,11 +1003,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 		}
 	}
 
+
 	private Comparator<NodeModel> comparatorByClosureResult(final Closure<Comparable<Object>> closure) {
 		return new Comparator<NodeModel>() {
 			@Override
 			public int compare(NodeModel o1, NodeModel o2) {
-				return closure.call(o1).compareTo(closure.call(o2));
+				final NodeProxy p1 = new NodeProxy(o1, getScriptContext());
+				final NodeProxy p2 = new NodeProxy(o1, getScriptContext());
+				return closure.call(p1).compareTo(closure.call(p2));
 			}
 		};
 	}
@@ -990,14 +1026,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 	}
 
 	@Override
-	public List<Node> getNodesSharingContent() {
+	public List<? extends Node> getNodesSharingContent() {
 		final ArrayList<NodeModel> nodeModels = new ArrayList<NodeModel>(getDelegate().allClones().toCollection());
 		nodeModels.remove(getDelegate());
 		return ProxyUtils.createNodeList(nodeModels, getScriptContext());
 	}
 
 	@Override
-	public List<Node> getNodesSharingContentAndSubtree() {
+	public List<? extends Node> getNodesSharingContentAndSubtree() {
 		final ArrayList<NodeModel> nodeModels = new ArrayList<NodeModel>(getDelegate().subtreeClones().toCollection());
 		nodeModels.remove(getDelegate());
 		return ProxyUtils.createNodeList(nodeModels, getScriptContext());
@@ -1033,4 +1069,5 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Node {
 			    .getController();
 		clipboardController.addClone(clipboardController.getClipboardContents(), getDelegate());
 	}
+
 }
