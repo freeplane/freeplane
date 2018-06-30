@@ -170,7 +170,7 @@ class ScriptingRegistration {
 		});
 		registerScriptAddOns();
 		new ScriptingConfiguration();
-		ScriptCompiler.compileScriptsOnPath(ScriptResources.getClasspath());
+		new ScriptCompiler().compileScriptsOnPath(ScriptResources.getClasspath());
 		if(! modeController.getController().getViewController().isHeadless()){
 			registerGuiStuff(modeController);
 			createUserScriptsDirectory();
