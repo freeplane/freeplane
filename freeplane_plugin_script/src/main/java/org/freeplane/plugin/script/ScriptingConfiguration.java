@@ -133,6 +133,7 @@ class ScriptingConfiguration {
             }
         }
         classpathElements.add(ScriptResources.getUserLibDir());
+        classpathElements.add(ScriptResources.getCompiledScriptsDir());
         return classpathElements;
     }
 
