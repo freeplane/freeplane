@@ -2,12 +2,19 @@ package org.freeplane.plugin.script;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -77,7 +84,7 @@ class CompiledFiles {
 
 	private void writeThrowExceptions(File output)
 			throws FactoryConfigurationError, XMLStreamException, IOException, FileNotFoundException {
-		try (final BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(output))) {
+		try (final Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(output), UTF_8))) {
 			XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 			XMLEventWriter eventWriter = outputFactory
 					.createXMLEventWriter(out);
@@ -173,6 +180,9 @@ class CompiledFiles {
 		}
 		catch (FileNotFoundException e) {
 		}
+		catch (XMLStreamException e) {
+			LogUtils.warn(e);
+		}
 		catch (Exception e) {
 			LogUtils.severe(e);
 		}
@@ -181,7 +191,7 @@ class CompiledFiles {
 
 
 	public static CompiledFiles readThrowExceptions(File input) throws XMLStreamException, IOException {
-        try (InputStream in = new BufferedInputStream(new FileInputStream(input))) {
+        try (Reader in = new BufferedReader(new InputStreamReader(new FileInputStream(input), UTF_8))) {
         	XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         	XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
         	return readThrowExceptions(eventReader);
