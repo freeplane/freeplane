@@ -38,8 +38,8 @@ public class CompiledFilesSpec {
 	
 	@Test
 	public void filteringRemovesOlderFile() throws Exception {
-		final CompiledFiles uut = new CompiledFiles(2, Collections.singleton("file"));
 		final File file = file("file", 1);
+		final CompiledFiles uut = new CompiledFiles(2, Collections.singleton(file.getAbsolutePath()));
 		Collection<File> files = Collections.singleton(file);
 		assertThat(uut.filterNewAndNewer(files)).containsExactly();
 	}
@@ -47,10 +47,11 @@ public class CompiledFilesSpec {
 	
 	@Test
 	public void filteringKeepsNewFile() throws Exception {
-		final CompiledFiles uut = new CompiledFiles(2, Collections.singleton("file"));
-		final File newfile = file("newFile", 1);
-		Collection<File> files = Collections.singleton(newfile);
-		assertThat(uut.filterNewAndNewer(files)).containsExactly(newfile);
+		final File file = file("file", 1);
+		final CompiledFiles uut = new CompiledFiles(2, Collections.singleton(file.getAbsolutePath()));
+		final File newFile = file("newFile", 1);
+		Collection<File> files = Collections.singleton(newFile);
+		assertThat(uut.filterNewAndNewer(files)).containsExactly(newFile);
 	}
 	
 	@Test
