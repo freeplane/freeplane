@@ -4,19 +4,25 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.runtime.DefaultGroovyStaticMethods;
 import org.codehaus.groovy.tools.FileSystemCompiler;
+import org.codehaus.groovy.tools.javac.JavaAwareCompilationUnit;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 
 import groovy.lang.GroovyClassLoader;
 
 public class ScriptCompiler {
-    private static final String COMPILED_SCRIPTS_FILE = ".compiledscripts";
+    private static final String GROOVY = "groovy";
+    private static final String JAVA = "java";
+	private static final String COMPILED_SCRIPTS_FILE = ".compiledscripts";
 	private static final String COMPILE_ONLY_CHANGED_SCRIPT_FILES = "compile_only_changed_script_files";
 	private final CompilerConfiguration compilerConfiguration;
 	private final GroovyClassLoader compilerClassLoader;
@@ -28,8 +34,15 @@ public class ScriptCompiler {
 	public ScriptCompiler() {
 		final ScriptClassLoader scriptClassLoader = ScriptClassLoader.createClassLoader();
 		compilerClassLoader = new GroovyClassLoader(scriptClassLoader);
-		compilerConfiguration = GroovyScript.createCompilerConfiguration();
-		compilerConfiguration.setTargetDirectory(ScriptResources.getCompiledScriptsDir());
+		compilerConfiguration = createCompilerConfiguration();
+	}
+
+	CompilerConfiguration createCompilerConfiguration() {
+		final CompilerConfiguration configuration = GroovyScript.createCompilerConfiguration();
+		configuration.setTargetDirectory(ScriptResources.getCompiledScriptsDir());
+		Map<String, Object> jointOptions = new HashMap<>();
+		configuration.setJointCompilationOptions(jointOptions);
+		return configuration;
 	}
 
 	public  void compileScriptsOnPath(List<String> pathElements) {
@@ -51,10 +64,11 @@ public class ScriptCompiler {
 
 	private  Collection<File> compileScriptsInDirectory(File dir) {
 		// FIXME: compile .js and the like too
-		final Collection<File> allScriptFiles = FileUtils.listFiles(dir, new String[] { "groovy" }, true);
+		final Collection<File> allScriptFiles = FileUtils.listFiles(dir, new String[] { GROOVY, JAVA }, true);
 		final Collection<File> compiledScriptFiles = compileOnlyChangedScriptFiles ? filterNewFiles(allScriptFiles) : allScriptFiles ;
 		if (!compiledScriptFiles.isEmpty()) {
 			try {
+				GroovyScript.patchGroovyObject();
 				compile(dir, compiledScriptFiles);
 				LogUtils.info("compiled in " + dir + ": " + createNameList(allScriptFiles));
 			}
@@ -66,9 +80,21 @@ public class ScriptCompiler {
 		return allScriptFiles;
 	}
 
-    private  void compile(File dir, Collection<File> files) throws Exception {
-		compile(dir, toArray(files));
-    }
+	private  void compile(File dir, Collection<File> files) throws Exception {
+		File tmpDir = null;
+		try {
+			tmpDir = DefaultGroovyStaticMethods.createTempDir(null, "groovy-generated-", "-java-source");
+			compilerConfiguration.getJointCompilationOptions().put("stubDir", tmpDir);
+			compile(dir, toArray(files));
+		} finally {
+			try {
+				if (tmpDir != null) FileSystemCompiler.deleteRecursive(tmpDir);
+			} catch (Throwable t) {
+				LogUtils.severe("error: could not delete temp files - " + tmpDir.getPath());
+			}
+		}
+
+	}
 
 	private Collection<File> filterNewFiles(Collection<File> files) {
 		return oldCompiledFiles.filterNewAndNewer(files);
@@ -79,7 +105,7 @@ public class ScriptCompiler {
 	}
 
     private  void compile(File dir, File[] files) throws Exception {
-    	final CompilationUnit unit = new CompilationUnit(compilerConfiguration, null, compilerClassLoader);
+    	final CompilationUnit unit = new JavaAwareCompilationUnit(compilerConfiguration, compilerClassLoader, null);
     	new FileSystemCompiler(compilerConfiguration, unit).compile(files);
     }
 
