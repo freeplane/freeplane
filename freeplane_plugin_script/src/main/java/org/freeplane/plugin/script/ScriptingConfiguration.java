@@ -24,10 +24,10 @@ import java.io.FilenameFilter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -100,6 +100,7 @@ class ScriptingConfiguration {
 	}
 	private ArrayList<String> buildClasspath() {
 	    final ArrayList<String> classpath = new ArrayList<String>();
+	    classpath.add(ScriptResources.getCompiledScriptsDir().getAbsolutePath());
 	    addClasspathForAddOns(classpath);
         addClasspathForConfiguredEntries(classpath);
         return classpath;
@@ -126,14 +127,13 @@ class ScriptingConfiguration {
 
     private Set<File> uniqueClassPathElements(final ResourceController resourceController) {
         final String classpathString = resourceController.getProperty(ScriptResources.RESOURCES_SCRIPT_CLASSPATH);
-        final TreeSet<File> classpathElements = new TreeSet<File>();
+        final Set<File> classpathElements = new LinkedHashSet<File>();
         if (classpathString != null) {
             for (String string : ConfigurationUtils.decodeListValue(classpathString, false)) {
                 classpathElements.add(createFile(string));
             }
         }
         classpathElements.add(ScriptResources.getUserLibDir());
-        classpathElements.add(ScriptResources.getCompiledScriptsDir());
         return classpathElements;
     }
 
