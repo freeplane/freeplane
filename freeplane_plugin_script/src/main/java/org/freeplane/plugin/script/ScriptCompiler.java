@@ -39,7 +39,9 @@ public class ScriptCompiler {
 
 	CompilerConfiguration createCompilerConfiguration() {
 		final CompilerConfiguration configuration = GroovyScript.createCompilerConfiguration();
-		configuration.setTargetDirectory(ScriptResources.getCompiledScriptsDir());
+		final File compiledScriptsDir = ScriptResources.getCompiledScriptsDir();
+		compiledScriptsDir.mkdirs();
+		configuration.setTargetDirectory(compiledScriptsDir);
 		Map<String, Object> jointOptions = new HashMap<>();
 		configuration.setJointCompilationOptions(jointOptions);
 		return configuration;
