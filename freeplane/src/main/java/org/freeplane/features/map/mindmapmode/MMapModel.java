@@ -56,7 +56,6 @@ public class MMapModel extends MapModel {
 		addExtension(IUndoHandler.class, new UndoHandler(this));
 		this.setLockManager(ResourceController.getResourceController().getBooleanProperty(
 		    "experimental_file_locking_on") ? new LockManager() : new DummyLockManager());
-		enableAutosave();
 	}
 
 	public void enableAutosave() {
@@ -83,6 +82,7 @@ public class MMapModel extends MapModel {
 		if (getTimerForAutomaticSaving() != null) {
 			getTimerForAutomaticSaving().cancel();
 		}
+		autosaveEnabled = false;
 		super.destroy();
 	}
 
