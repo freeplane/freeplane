@@ -23,6 +23,7 @@ import java.awt.Component;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -188,9 +189,13 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 	private void ensureSelectLastVisitedNodeOnOpen(final MapModel map, final RecentFile recentFile) {
 	    final MapController mapController = Controller.getCurrentModeController().getMapController();
 		if (recentFile != null && recentFile.lastVisitedNodeId != null) {
+			final WeakReference<MapModel> mapReference = new WeakReference<>(map);
 			mapController.addNodeSelectionListener(new INodeSelectionListener() {
 				public void onSelect(NodeModel node) {
-					if (node.getMap() == map) {
+					MapModel map = mapReference.get();
+					if(map == null)
+						mapController.removeNodeSelectionListener(this);
+					else if (node.getMap() == map) {
 						// only once
 						mapController.removeNodeSelectionListener(this);
 						final NodeModel toSelect = map.getNodeForID(recentFile.lastVisitedNodeId);
