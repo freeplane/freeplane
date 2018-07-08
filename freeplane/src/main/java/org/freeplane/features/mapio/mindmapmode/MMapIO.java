@@ -41,6 +41,14 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  */
 @SuppressWarnings("deprecation")
 public class MMapIO extends MapIO{
+	
+	
+	private static MMapIO INSTANCE;
+	
+	public static MMapIO getInstance() {
+		return INSTANCE;
+	}
+	
 	final private MFileManager fileManager;
 	final private MMapController mapController;
 	private MMapIO(MFileManager urlManager, MMapController mapController) {
@@ -48,11 +56,15 @@ public class MMapIO extends MapIO{
 	    this.fileManager = urlManager;
 	    this.mapController = mapController;
     }
+	
 	public static void install(MModeController modeController){
+		if(INSTANCE != null) {
+			throw new IllegalStateException("Should be used only in one mode");			
+		}
 		MFileManager urlManager = (MFileManager) modeController.getExtension(UrlManager.class);
 		MMapController mapController = (MMapController) modeController.getMapController();
-		final MMapIO mapIO = new MMapIO(urlManager, mapController);
-		modeController.addExtension(MapIO.class, mapIO);
+		INSTANCE = new MMapIO(urlManager, mapController);
+		modeController.addExtension(MapIO.class, INSTANCE);
 	}
     @Override
 	public void load(URL url, MapModel map) throws FileNotFoundException, IOException, XMLException, XMLParseException,
@@ -112,6 +124,15 @@ public class MMapIO extends MapIO{
 	public MapModel newHiddenUntitledMap(URL url){
 		try {
 			return mapController.newHiddenUntitledMap(url);
+		}
+		catch (Exception e) {
+			fileManager.handleLoadingException(e);
+			return null;
+		}
+	}
+	public MapModel hiddenMap(URL url){
+		try {
+			return mapController.hiddenMap(url);
 		}
 		catch (Exception e) {
 			fileManager.handleLoadingException(e);

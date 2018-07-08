@@ -242,7 +242,7 @@ class ControllerProxy implements Proxy.Controller {
 	@Override
 	public Map newMap() {
 		final MapModel oldMap = Controller.getCurrentController().getMap();
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
+		final MMapIO mapIO = MMapIO.getInstance();
 		final MapModel newMap = mapIO.newMapFromDefaultTemplate();
 		restartTransaction(oldMap, newMap);
 		return new MapProxy(newMap, scriptContext);
@@ -251,29 +251,53 @@ class ControllerProxy implements Proxy.Controller {
 	@Override
 	public Map newMapFromTemplate(File templateFile) {
 		final MapModel oldMap = Controller.getCurrentController().getMap();
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
+		final MMapIO mapIO = MMapIO.getInstance();
 		final MapModel newMap = mapIO.newMapFromTemplate(templateFile);
 		restartTransaction(oldMap, newMap);
 		return new MapProxy(newMap, scriptContext);
 	}
 
+
 	@Override
-	public Map newHiddenMapFromTemplate(File templateFile) {
-		final URL url;
+	public Map hiddenMap(File file) {
+		final URL url = fileToUrlOrNull(file);
+		return url != null ? hiddenMap(url) : null;
+	}
+
+	@Override
+	public Map hiddenMap(URL url) {
+		final MMapIO mapIO = MMapIO.getInstance();
+		MapModel newMap = mapIO.hiddenMap(url);
+		return new MapProxy(newMap, scriptContext);
+		
+	}
+
+	static URL fileToUrlOrNull(final File file) {
 		try {
-			url = Compat.fileToUrl(templateFile);
+			return Compat.fileToUrl(file);
 		}
 		catch (MalformedURLException e) {
 			return null;
 		}
-		return newHiddenMapFromTemplate(url);
+	}
+	
+	@Override
+	public Map newHiddenMapFromTemplate(File templateFile) {
+		final URL url = fileToUrlOrNull(templateFile);
+		return url != null ? newHiddenMapFromTemplate(url) : null;
 	}
 
 	@Override
 	public Map newHiddenMapFromTemplate(final URL template) {
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
+		final MMapIO mapIO = MMapIO.getInstance();
 		MapModel newMap = mapIO.newHiddenUntitledMap(template);
 		return new MapProxy(newMap, scriptContext);
+	}
+
+	@Override
+	public Map newMap(File file) {
+		final URL url = fileToUrlOrNull(file);
+		return url != null ? newMap(url) : null;
 	}
 
 	@Override

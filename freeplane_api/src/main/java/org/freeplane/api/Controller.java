@@ -76,6 +76,10 @@ public interface Controller extends ControllerRO, HeadlessMapCreator {
 	 * @since 1.2 */
 	Map newMap(URL url);
 
+	/** opens a new map for url in the foreground if it isn't opened already.
+	 * @since 1.6.16 */
+	Map newMap(File file);
+
 	/** opens a new map based on given template.
 	 * @since 1.5 */
 	public Map newMapFromTemplate(File templateFile);

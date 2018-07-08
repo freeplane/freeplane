@@ -42,6 +42,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.WeakHashMap;
 
 import javax.swing.JOptionPane;
 
@@ -96,6 +97,7 @@ import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.n3.nanoxml.XMLException;
+import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * @author Dimitry Polivaev
@@ -869,12 +871,30 @@ public class MMapController extends MapController {
         	Controller.getCurrentController().getViewController().setWaitingCursor(false);
         }
 	}
+	
+	private WeakHashMap<MapModel, Void> hiddenMaps = new WeakHashMap<>();
 
 	public MapModel newHiddenUntitledMap(final URL url) throws IOException, XMLException {
 		final MapModel newModel = MMapModel.withoutAutosave();
 		UrlManager.getController().load(url, newModel);
 		newModel.setURL(null);
 		fireMapCreated(newModel);
+		hiddenMaps.put(newModel, null);
+		return newModel;
+	}
+
+	public MapModel hiddenMap(URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
+		for(MapModel hiddenMap : hiddenMaps.keySet()) {
+			if(url.equals(hiddenMap.getURL()))
+				return hiddenMap;
+		}
+		final MapModel newModel = MMapModel.withoutAutosave();
+		final MFileManager fileManager = MFileManager.getController(getMModeController());
+		fileManager.loadAndLock(url, newModel);
+		newModel.setURL(url);
+		newModel.setSaved(true);
+		fireMapCreated(newModel);
+		hiddenMaps.put(newModel, null);
 		return newModel;
 	}
 
