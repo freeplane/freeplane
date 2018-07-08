@@ -84,8 +84,8 @@ public class MMapIO extends MapIO{
 	public void open() {
 	    fileManager.open();
     }
-	public MapModel newMapFromTemplate(File startFile) {
-	    return fileManager.newMapFromTemplate(startFile);
+	public MapModel openUntitledMap(File startFile) {
+	    return fileManager.openUntitledMap(startFile);
     }
 	public void saveAsUserTemplate() {
 	    fileManager.saveAsUserTemplate();
@@ -114,25 +114,25 @@ public class MMapIO extends MapIO{
 	public NodeModel loadTree(MapModel map, File file) throws XMLParseException, IOException {
 		return fileManager.loadTree(map, file);
     }
-	public MapModel newMapFromDefaultTemplate() {
-		return fileManager.newMapFromDefaultTemplate();
+	public MapModel openUntitledMap() {
+		return fileManager.openUntitledMap();
     }
-	public boolean newUntitledMap(URL url) throws FileNotFoundException, IOException,
+	public boolean openUntitledMap(URL url) throws FileNotFoundException, IOException,
 	URISyntaxException, XMLException {
-		return mapController.newUntitledMap(url);
+		return mapController.openUntitledMap(url);
 	}
-	public MapModel newHiddenUntitledMap(URL url){
+	public MapModel createUntitledMap(URL url){
 		try {
-			return mapController.newHiddenUntitledMap(url);
+			return mapController.createUntitledMap(url);
 		}
 		catch (Exception e) {
 			fileManager.handleLoadingException(e);
 			return null;
 		}
 	}
-	public MapModel hiddenMap(URL url){
+	public MapModel readMap(URL url){
 		try {
-			return mapController.hiddenMap(url);
+			return mapController.readMap(url);
 		}
 		catch (Exception e) {
 			fileManager.handleLoadingException(e);
@@ -140,12 +140,12 @@ public class MMapIO extends MapIO{
 		}
 	}
 	@Override
-	public boolean newMap(URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
-		return mapController.newMap(url);
+	public boolean openMap(URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
+		return mapController.openMap(url);
     }
-	public boolean newDocumentationMap(URL url) throws FileNotFoundException, IOException,
+	public boolean openDocumentationMap(URL url) throws FileNotFoundException, IOException,
             URISyntaxException, XMLException {
-	    return mapController.newDocumentationMap(url);
+	    return mapController.openDocumentationMap(url);
     }
 	public boolean restoreCurrentMap() throws FileNotFoundException, IOException, URISyntaxException, XMLException {
 	    return mapController.restoreCurrentMap();

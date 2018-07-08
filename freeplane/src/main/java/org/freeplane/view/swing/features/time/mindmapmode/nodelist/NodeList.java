@@ -458,7 +458,7 @@ public class NodeList {
 			selectedNodes.add(getMindMapNode(row));
 		}
 		final ModeController mindMapController = Controller.getCurrentModeController();
-		MFileManager.getController(mindMapController).newMapFromDefaultTemplate();
+		MFileManager.getController(mindMapController).openUntitledMap();
 		final MapModel newMap = Controller.getCurrentController().getMap();
 		for (final NodeModel node : selectedNodes) {
 			final NodeModel copy = ClipboardController.getController().duplicate(node, false);

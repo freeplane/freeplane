@@ -297,7 +297,7 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
         File file = createFileFromRestorable(tokens);
         final URL url = Compat.fileToUrl(file);
         if (!tryToChangeToMapView(url))
-			Controller.getCurrentModeController().getMapController().newMap(url);
+			Controller.getCurrentModeController().getMapController().openMap(url);
     }
 
 	public File createFileFromRestorable(StringTokenizer tokens) {

@@ -68,21 +68,37 @@ public interface Controller extends ControllerRO, HeadlessMapCreator {
 	@Deprecated
 	void setStatusInfo(String infoPanelKey, Icon icon);
 
-	/** opens a new map with a default name in the foreground.
+	/** 
+	 * @deprecated since 1.6.16 - use {@link #openMap()}
 	 * @since 1.2 */
+	@Deprecated
 	Map newMap();
 
-	/** opens a new map for url in the foreground if it isn't opened already.
+	/** @deprecated since 1.6.16 - use {@link #openMap(URL)}
 	 * @since 1.2 */
+	@Deprecated
 	Map newMap(URL url);
+
+	/**  @deprecated since 1.6.16 - use {@link #openUntitledMap(file)}
+	 * @since 1.5 */
+	@Deprecated
+	public Map newMapFromTemplate(File templateFile);
+
+	/** opens a new map with a default name in the foreground.
+	 * @since 1.6.16 */
+	Map openMap();
 
 	/** opens a new map for url in the foreground if it isn't opened already.
 	 * @since 1.6.16 */
-	Map newMap(File file);
+	Map openMap(URL url);
+
+	/** opens a new map for url in the foreground if it isn't opened already.
+	 * @since 1.6.16 */
+	Map openMap(File file);
 
 	/** opens a new map based on given template.
 	 * @since 1.5 */
-	public Map newMapFromTemplate(File templateFile);
+	public Map openUntitledMap(File templateFile);
 
 	/** a value of 1 means 100%.
 	 * @since 1.2 */

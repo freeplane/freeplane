@@ -55,7 +55,7 @@ class OnlineDocumentationAction extends AFreeplaneAction {
 						if (nodeAndMapReference.hasFreeplaneFileExtension()) {
 							Controller.getCurrentController().selectMode(MModeController.MODENAME);
 							MMapController mapController = (MMapController)Controller.getCurrentModeController().getMapController();
-							mapController.newDocumentationMap(url);
+							mapController.openDocumentationMap(url);
 							if(nodeAndMapReference.hasNodeReference())
 								mapController.select(nodeAndMapReference.getNodeReference());
 						}

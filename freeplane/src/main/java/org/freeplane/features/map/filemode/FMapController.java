@@ -42,7 +42,7 @@ public class FMapController extends MapController {
 	public MapModel newMap(final File[] roots) {
 		final FMapModel fileMapModel = new FMapModel(roots);
 		fireMapCreated(fileMapModel);
-		newMapView(fileMapModel);
+		createMapView(fileMapModel);
 		return fileMapModel;
 	}
 

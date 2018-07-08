@@ -77,7 +77,7 @@ public class XmlImporter	{
 		map.setURL(mapUrl);
 		map.setSaved(false);
 		mapController.fireMapCreated(map);
-		mapController.newMapView(map);
+		mapController.createMapView(map);
 	}
 
 }

@@ -335,7 +335,7 @@ public class UrlManager implements IExtension {
 					FreeplaneUriConverter freeplaneUriConverter = new FreeplaneUriConverter();
 					final URL url = freeplaneUriConverter.freeplaneUrl(uri);
 					final ModeController modeController = Controller.getCurrentModeController();
-					modeController.getMapController().newMap(url);
+					modeController.getMapController().openMap(url);
 					return;
 				}
 				Controller.getCurrentController().getViewController().openDocument(uri);

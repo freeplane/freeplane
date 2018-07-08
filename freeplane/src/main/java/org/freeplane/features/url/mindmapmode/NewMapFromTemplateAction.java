@@ -38,7 +38,7 @@ class NewMapFromTemplateAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		((MFileManager) UrlManager.getController()).newMapFromTemplate(startFile);
+		((MFileManager) UrlManager.getController()).openUntitledMap(startFile);
 	}
 
 	@Override

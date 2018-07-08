@@ -50,7 +50,7 @@ class BToolbarContributor implements EntryVisitor, IMapViewChangeListener {
 					return;
 				}
 				try {
-					Controller.getCurrentModeController().getMapController().newMap(new URL(urlText));
+					Controller.getCurrentModeController().getMapController().openMap(new URL(urlText));
 				}
 				catch (final Exception e1) {
 					LogUtils.warn(e1);

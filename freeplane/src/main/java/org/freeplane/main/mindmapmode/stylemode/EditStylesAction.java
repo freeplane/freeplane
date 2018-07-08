@@ -75,7 +75,7 @@ public class EditStylesAction extends AFreeplaneAction {
 		undoHandler.startTransaction();
 		init();
 		SModeController modeController = getModeController();
-		modeController.getMapController().newMapView(styleMap);
+		modeController.getMapController().createMapView(styleMap);
 		Controller controller = modeController.getController();
 		Component mapViewComponent = controller.getMapViewManager().getMapViewComponent();
 		((DialogController) controller.getViewController()).setMapView(mapViewComponent);
