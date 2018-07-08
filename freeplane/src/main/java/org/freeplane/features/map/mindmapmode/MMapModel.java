@@ -44,29 +44,28 @@ public class MMapModel extends MapModel {
 	private LockManager lockManager;
 	private Timer timerForAutomaticSaving;
 	private int titleNumber = 0;
-	private final boolean enableAutosave;
+	private boolean autosaveEnabled;
 
 	/**
 	 * The current version and all other version that don't need XML update for
 	 * sure.
 	 */
 	public MMapModel() {
-		this(true);
-	}
-	
-	public static MMapModel withoutAutosave() {
-		return new MMapModel(false);
-	}
-	
-	private MMapModel(boolean enableAutosave) {
 		super();
-		this.enableAutosave = enableAutosave;
+		this.autosaveEnabled = false;
 		addExtension(IUndoHandler.class, new UndoHandler(this));
 		this.setLockManager(ResourceController.getResourceController().getBooleanProperty(
 		    "experimental_file_locking_on") ? new LockManager() : new DummyLockManager());
+		enableAutosave();
+	}
+
+	public void enableAutosave() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				scheduleTimerForAutomaticSaving();
+				if(! autosaveEnabled) {
+					autosaveEnabled = true;
+					scheduleTimerForAutomaticSaving();
+				}
 			}
 		});
 	}
@@ -118,7 +117,7 @@ public class MMapModel extends MapModel {
 	public void scheduleTimerForAutomaticSaving() {
 		if (!(UrlManager.getController() instanceof MFileManager)
 				|| Controller.getCurrentController().getMapViewManager().isHeadless()
-				|| ! enableAutosave) {
+				|| ! autosaveEnabled) {
 			return;
 		}
 		final int numberOfTempFiles = Integer.parseInt(ResourceController.getResourceController().getProperty(

@@ -796,12 +796,20 @@ public class MMapController extends MapController {
     }
 
 	@Override
-	public MapModel newModel() {
+	public MMapModel newModel() {
 		final MMapModel mindMapMapModel = new MMapModel();
 		mindMapMapModel.createNewRoot();
 		fireMapCreated(mindMapMapModel);
 		return mindMapMapModel;
 	}
+	
+	@Override
+	public MapModel newMap() {
+		final MMapModel map = (MMapModel) super.newMap();
+		map.enableAutosave();
+		return map;
+	}
+
 
 
 	@Override
@@ -872,30 +880,19 @@ public class MMapController extends MapController {
         }
 	}
 	
-	private WeakHashMap<MapModel, Void> hiddenMaps = new WeakHashMap<>();
+	private WeakHashMap<MMapModel, Void> loadedMaps = new WeakHashMap<>();
 
-	public MapModel newHiddenUntitledMap(final URL url) throws IOException, XMLException {
-		final MapModel newModel = MMapModel.withoutAutosave();
+	public MMapModel newHiddenUntitledMap(final URL url) throws IOException, XMLException {
+		final MMapModel newModel = new MMapModel();
 		UrlManager.getController().load(url, newModel);
 		newModel.setURL(null);
 		fireMapCreated(newModel);
-		hiddenMaps.put(newModel, null);
+		loadedMaps.put(newModel, null);
 		return newModel;
 	}
 
 	public MapModel hiddenMap(URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
-		for(MapModel hiddenMap : hiddenMaps.keySet()) {
-			if(url.equals(hiddenMap.getURL()))
-				return hiddenMap;
-		}
-		final MapModel newModel = MMapModel.withoutAutosave();
-		final MFileManager fileManager = MFileManager.getController(getMModeController());
-		fileManager.loadAndLock(url, newModel);
-		newModel.setURL(url);
-		newModel.setSaved(true);
-		fireMapCreated(newModel);
-		hiddenMaps.put(newModel, null);
-		return newModel;
+		return loadMap(url, url);
 	}
 
 	/**@throws XMLException
@@ -945,12 +942,8 @@ public class MMapController extends MapController {
 			return false;
 		Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try{
-			final MapModel newModel = new MMapModel();
-    		final MFileManager fileManager = MFileManager.getController(getMModeController());
-    		fileManager.loadAndLock(alternativeURL, newModel);
-			newModel.setURL(url);
-			newModel.setSaved(alternativeURL.equals(url));
-			fireMapCreated(newModel);
+			final MMapModel newModel = loadMap(url, alternativeURL);
+			newModel.enableAutosave();
 			newMapView(newModel);
 			return true;
 		}
@@ -958,6 +951,23 @@ public class MMapController extends MapController {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
     }
+	
+	private MMapModel loadMap(URL url, URL requiredVersionURL)
+			throws FileNotFoundException, IOException, XMLParseException, URISyntaxException {
+		for(MMapModel hiddenMap : loadedMaps.keySet()) {
+			if(url.equals(hiddenMap.getURL()))
+				return hiddenMap;
+		}
+
+		final MMapModel newModel = new MMapModel();
+		final MFileManager fileManager = MFileManager.getController(getMModeController());
+		fileManager.loadAndLock(requiredVersionURL, newModel);
+		newModel.setURL(url);
+		newModel.setSaved(requiredVersionURL.equals(url));
+		fireMapCreated(newModel);
+		loadedMaps.put(newModel, null);
+		return newModel;
+	}
 	
 	public void newDocumentationMap(final String file) {
 		final NodeAndMapReference nodeAndMapReference = new NodeAndMapReference(file);
@@ -1041,12 +1051,15 @@ public class MMapController extends MapController {
 			return false;
 		controller.getViewController().setWaitingCursor(true);
 		try{
-			final MapModel newModel = new MMapModel();
+			final MMapModel newModel = new MMapModel();
 			((MFileManager)MFileManager.getController()).loadAndLock(alternativeURL, newModel);
 			newModel.setURL(url);
 			newModel.setSaved(alternativeURL.equals(url));
 			fireMapCreated(newModel);
+			loadedMaps.remove(map);
 			closeWithoutSaving(map);
+			newModel.enableAutosave();
+			loadedMaps.put(newModel, null);
 			newMapView(newModel);
 			return true;
 		}
