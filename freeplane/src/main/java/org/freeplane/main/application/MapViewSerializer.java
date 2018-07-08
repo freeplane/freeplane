@@ -76,11 +76,11 @@ class MapViewSerializer implements ViewSerializer {
     			controller.selectMode(modeName);
     			ModeController modeController = Controller.getCurrentModeController();
     			MapController mapController = modeController.getMapController();
-    			boolean newMapLoaded = mapController.newMap(mapUrl);
+    			boolean newMapLoaded = mapController.openMap(mapUrl);
     			if (!newMapLoaded){
     				MapModel map = controller.getMap();
     				if(map.getURL().equals(mapUrl)){
-    					mapController.newMapView(map);
+    					mapController.createMapView(map);
     				}
     			}
     			Component mapViewComponent = controller.getMapViewManager().getMapViewComponent();

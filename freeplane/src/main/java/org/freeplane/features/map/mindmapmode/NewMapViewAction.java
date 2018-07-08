@@ -40,6 +40,6 @@ class NewMapViewAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final MapModel map = Controller.getCurrentController().getMap();
-		Controller.getCurrentModeController().getMapController().newMapView(map);
+		Controller.getCurrentModeController().getMapController().createMapView(map);
 	}
 }

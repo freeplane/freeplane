@@ -119,7 +119,7 @@ public class FormulaUtils {
 		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
 		for (int i = 0; i < nodes.length; i++) {
 			final LinkedHashSet<NodeModel> nodeDependencies = new LinkedHashSet<NodeModel>(0);
-			getEvaluationDependencies(nodes[i].getMap()).getDependencies(nodeDependencies, nodes[i]);
+			EvaluationDependencies.of(nodes[i].getMap()).getDependencies(nodeDependencies, nodes[i]);
 			if (nodeDependencies != null)
 				dependencies.addAll(nodeDependencies);
 			if (includeChanged)
@@ -142,25 +142,16 @@ public class FormulaUtils {
 		return formulaCache;
 	}
 
-	private static EvaluationDependencies getEvaluationDependencies(MapModel map) {
-		EvaluationDependencies dependencies = (EvaluationDependencies) map.getExtension(EvaluationDependencies.class);
-		if (dependencies == null) {
-			dependencies = new EvaluationDependencies();
-			map.addExtension(dependencies);
-		}
-		return dependencies;
-	}
-
 	public static void accessNode(NodeModel accessingNode, NodeModel accessedNode) {
-			getEvaluationDependencies(accessingNode.getMap()).accessNode(accessingNode, accessedNode);
+		EvaluationDependencies.of(accessedNode.getMap()).accessNode(accessingNode, accessedNode);
 	}
 
 	public static void accessBranch(NodeModel accessingNode, NodeModel accessedNode) {
-		getEvaluationDependencies(accessingNode.getMap()).accessBranch(accessingNode, accessingNode);
+		EvaluationDependencies.of(accessedNode.getMap()).accessBranch(accessingNode, accessedNode);
 	}
 
 	public static void accessAll(NodeModel accessingNode) {
-		getEvaluationDependencies(accessingNode.getMap()).accessAll(accessingNode);
+		EvaluationDependencies.of(accessingNode.getMap()).accessAll(accessingNode);
 	}
 
 	public static void clearCache(MapModel map) {

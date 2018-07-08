@@ -114,7 +114,7 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 		if (initialMapName != "") {
 			try {
 				final URL mapUrl = new URL(initialMapName);
-				getController().getModeController().getMapController().newMap(mapUrl);
+				getController().getModeController().getMapController().openMap(mapUrl);
 			}
 			catch (final Exception e) {
 				LogUtils.severe(e);

@@ -585,7 +585,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final File theFile = selectedFiles[i];
 			try {
 				setLastCurrentDir(theFile.getParentFile());
-				Controller.getCurrentModeController().getMapController().newMap(Compat.fileToUrl(theFile));
+				Controller.getCurrentModeController().getMapController().openMap(Compat.fileToUrl(theFile));
 			}
 			catch (final Exception ex) {
 				handleLoadingException(ex);
@@ -597,16 +597,16 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	/**@deprecated -- use MMapIO*/
 	@Deprecated
-	public MapModel newMapFromDefaultTemplate() {
+	public MapModel openUntitledMap() {
 		return AccessController.doPrivileged(new PrivilegedAction<MapModel>() {
 			@Override
 			public MapModel run() {
 				final File file = chosenTemplateFile();
 				if (file != null) {
-					return newMapFromTemplate(file);
+					return openUntitledMap(file);
 				}
 				final MapController mapController = Controller.getCurrentModeController().getMapController();
-				final MapModel map = mapController.newMap();
+				final MapModel map = mapController.openMap();
 				mapController.setSaved(map, true);
 				return map;
 			}
@@ -685,7 +685,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	/**@deprecated -- use MMapIO*/
 	@Deprecated
-	public MapModel newMapFromTemplate(final File startFile) {
+	public MapModel openUntitledMap(final File startFile) {
 		return AccessController.doPrivileged(new PrivilegedAction<MapModel>() {
 			@Override
 			public MapModel run() {
@@ -709,7 +709,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				try {
 					final MMapController mapController = (MMapController) Controller.getCurrentModeController()
 					    .getMapController();
-					mapController.newUntitledMap(Compat.fileToUrl(file));
+					mapController.openUntitledMap(Compat.fileToUrl(file));
 					final Controller controller = Controller.getCurrentController();
 					final MapModel map = controller.getMap();
 					final Object rootText = map.getRootNode().getUserObject();

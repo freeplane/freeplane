@@ -41,6 +41,14 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  */
 @SuppressWarnings("deprecation")
 public class MMapIO extends MapIO{
+	
+	
+	private static MMapIO INSTANCE;
+	
+	public static MMapIO getInstance() {
+		return INSTANCE;
+	}
+	
 	final private MFileManager fileManager;
 	final private MMapController mapController;
 	private MMapIO(MFileManager urlManager, MMapController mapController) {
@@ -48,11 +56,15 @@ public class MMapIO extends MapIO{
 	    this.fileManager = urlManager;
 	    this.mapController = mapController;
     }
+	
 	public static void install(MModeController modeController){
+		if(INSTANCE != null) {
+			throw new IllegalStateException("Should be used only in one mode");			
+		}
 		MFileManager urlManager = (MFileManager) modeController.getExtension(UrlManager.class);
 		MMapController mapController = (MMapController) modeController.getMapController();
-		final MMapIO mapIO = new MMapIO(urlManager, mapController);
-		modeController.addExtension(MapIO.class, mapIO);
+		INSTANCE = new MMapIO(urlManager, mapController);
+		modeController.addExtension(MapIO.class, INSTANCE);
 	}
     @Override
 	public void load(URL url, MapModel map) throws FileNotFoundException, IOException, XMLException, XMLParseException,
@@ -72,8 +84,8 @@ public class MMapIO extends MapIO{
 	public void open() {
 	    fileManager.open();
     }
-	public MapModel newMapFromTemplate(File startFile) {
-	    return fileManager.newMapFromTemplate(startFile);
+	public MapModel openUntitledMap(File startFile) {
+	    return fileManager.openUntitledMap(startFile);
     }
 	public void saveAsUserTemplate() {
 	    fileManager.saveAsUserTemplate();
@@ -102,16 +114,25 @@ public class MMapIO extends MapIO{
 	public NodeModel loadTree(MapModel map, File file) throws XMLParseException, IOException {
 		return fileManager.loadTree(map, file);
     }
-	public MapModel newMapFromDefaultTemplate() {
-		return fileManager.newMapFromDefaultTemplate();
+	public MapModel openUntitledMap() {
+		return fileManager.openUntitledMap();
     }
-	public boolean newUntitledMap(URL url) throws FileNotFoundException, IOException,
+	public boolean openUntitledMap(URL url) throws FileNotFoundException, IOException,
 	URISyntaxException, XMLException {
-		return mapController.newUntitledMap(url);
+		return mapController.openUntitledMap(url);
 	}
-	public MapModel newHiddenUntitledMap(URL url){
+	public MapModel createUntitledMap(URL url){
 		try {
-			return mapController.newHiddenUntitledMap(url);
+			return mapController.createUntitledMap(url);
+		}
+		catch (Exception e) {
+			fileManager.handleLoadingException(e);
+			return null;
+		}
+	}
+	public MapModel readMap(URL url){
+		try {
+			return mapController.readMap(url);
 		}
 		catch (Exception e) {
 			fileManager.handleLoadingException(e);
@@ -119,12 +140,12 @@ public class MMapIO extends MapIO{
 		}
 	}
 	@Override
-	public boolean newMap(URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
-		return mapController.newMap(url);
+	public boolean openMap(URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
+		return mapController.openMap(url);
     }
-	public boolean newDocumentationMap(URL url) throws FileNotFoundException, IOException,
+	public boolean openDocumentationMap(URL url) throws FileNotFoundException, IOException,
             URISyntaxException, XMLException {
-	    return mapController.newDocumentationMap(url);
+	    return mapController.openDocumentationMap(url);
     }
 	public boolean restoreCurrentMap() throws FileNotFoundException, IOException, URISyntaxException, XMLException {
 	    return mapController.restoreCurrentMap();

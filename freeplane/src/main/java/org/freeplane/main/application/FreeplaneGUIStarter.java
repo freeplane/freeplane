@@ -346,7 +346,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			return;
 		}
 		controller.selectMode(MModeController.MODENAME);
-		MFileManager.getController(modeController).newMapFromDefaultTemplate();
+		MFileManager.getController(modeController).openUntitledMap();
 	}
 
 	private void loadLastMaps() {

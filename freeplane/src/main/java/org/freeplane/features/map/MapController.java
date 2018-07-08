@@ -763,7 +763,7 @@ implements IExtension, NodeChangeAnnouncer{
 	/**@throws XMLException
 	 * @deprecated -- use MapIO*/
 	@Deprecated
-	public boolean newMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException, XMLException{
+	public boolean openMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException, XMLException{
         	final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
         	if (mapViewManager.tryToChangeToMapView(url))
         		return false;
@@ -776,7 +776,7 @@ implements IExtension, NodeChangeAnnouncer{
         	newModel.setReadOnly(true);
         	newModel.setSaved(true);
         	fireMapCreated(newModel);
-        	newMapView(newModel);
+        	createMapView(newModel);
         	return true;
         }
         finally {
@@ -789,26 +789,26 @@ implements IExtension, NodeChangeAnnouncer{
 	        XMLParseException, IOException, URISyntaxException, XMLException, MalformedURLException {
 	    String nodeReference = url.getRef();
 	    if(nodeReference != null){
-	    	newMap(new URL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath()));
+	    	openMap(new URL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath()));
 	    	select(getNodeFromID(nodeReference));
 	    }
 	    else{
-	    	newMap(url);
+	    	openMap(url);
 	    }
 	}
 
-	public void newMapView(final MapModel mapModel) {
+	public void createMapView(final MapModel mapModel) {
 		Controller.getCurrentController().getMapViewManager().newMapView(mapModel, Controller.getCurrentModeController());
 	}
 
-	public MapModel newMap() {
-		final MapModel newModel = newModel();
+	public MapModel openMap() {
+		final MapModel newModel = createModel();
 		fireMapCreated(newModel);
-		newMapView(newModel);
+		createMapView(newModel);
 		return newModel;
 	}
 
-	public MapModel newModel() {
+	public MapModel createModel() {
 		final MapModel mindMapMapModel = new MapModel();
 		mindMapMapModel.createNewRoot();
 		fireMapCreated(mindMapMapModel);

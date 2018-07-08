@@ -30,7 +30,6 @@ import org.freeplane.features.icon.factory.MindIconFactory;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
-import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -240,47 +239,19 @@ class ControllerProxy implements Proxy.Controller {
     }
 
 	@Override
-	public Map newMap() {
+	public Map openMap() {
 		final MapModel oldMap = Controller.getCurrentController().getMap();
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
-		final MapModel newMap = mapIO.newMapFromDefaultTemplate();
+		final MMapIO mapIO = MMapIO.getInstance();
+		final MapModel newMap = mapIO.openUntitledMap();
 		restartTransaction(oldMap, newMap);
 		return new MapProxy(newMap, scriptContext);
 	}
 
 	@Override
-	public Map newMapFromTemplate(File templateFile) {
-		final MapModel oldMap = Controller.getCurrentController().getMap();
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
-		final MapModel newMap = mapIO.newMapFromTemplate(templateFile);
-		restartTransaction(oldMap, newMap);
-		return new MapProxy(newMap, scriptContext);
-	}
-
-	@Override
-	public Map newHiddenMapFromTemplate(File templateFile) {
-		final URL url;
-		try {
-			url = Compat.fileToUrl(templateFile);
-		}
-		catch (MalformedURLException e) {
-			return null;
-		}
-		return newHiddenMapFromTemplate(url);
-	}
-
-	@Override
-	public Map newHiddenMapFromTemplate(final URL template) {
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
-		MapModel newMap = mapIO.newHiddenUntitledMap(template);
-		return new MapProxy(newMap, scriptContext);
-	}
-
-	@Override
-	public Map newMap(URL url) {
+	public Map openMap(URL url) {
 		try {
 			final MapModel oldMap = Controller.getCurrentController().getMap();
-			Controller.getCurrentModeController().getMapController().newMap(url);
+			Controller.getCurrentModeController().getMapController().openMap(url);
 			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 			final String key = mapViewManager.checkIfFileIsAlreadyOpened(url);
 			// make the map the current map even if it was already opened
@@ -294,6 +265,74 @@ class ControllerProxy implements Proxy.Controller {
 			throw new RuntimeException("error on newMap", e);
 		}
 	}
+
+	@Override
+	public Map openMap(File file) {
+		final URL url = fileToUrlOrNull(file);
+		return url != null ? openMap(url) : null;
+	}
+
+	@Override
+	public Map openUntitledMap(File templateFile) {
+		final MapModel oldMap = Controller.getCurrentController().getMap();
+		final MMapIO mapIO = MMapIO.getInstance();
+		final MapModel newMap = mapIO.openUntitledMap(templateFile);
+		restartTransaction(oldMap, newMap);
+		return new MapProxy(newMap, scriptContext);
+	}
+
+	@Override
+	public Map newMap() {
+		return openMap();
+	}
+
+	@Override
+	public Map newMapFromTemplate(File templateFile) {
+		return openUntitledMap(templateFile);
+	}
+
+
+	@Override
+	public Map newMap(URL url) {
+		return openMap(url);
+	}
+	
+	@Override
+	public Map readMap(File file) {
+		final URL url = fileToUrlOrNull(file);
+		return url != null ? readMap(url) : null;
+	}
+
+	@Override
+	public Map readMap(URL url) {
+		final MMapIO mapIO = MMapIO.getInstance();
+		MapModel newMap = mapIO.readMap(url);
+		return new MapProxy(newMap, scriptContext);
+		
+	}
+
+	static URL fileToUrlOrNull(final File file) {
+		try {
+			return Compat.fileToUrl(file);
+		}
+		catch (MalformedURLException e) {
+			return null;
+		}
+	}
+	
+	@Override
+	public Map createUntitledMap(File templateFile) {
+		final URL url = fileToUrlOrNull(templateFile);
+		return url != null ? createUntitledMap(url) : null;
+	}
+
+	@Override
+	public Map createUntitledMap(final URL template) {
+		final MMapIO mapIO = MMapIO.getInstance();
+		MapModel newMap = mapIO.createUntitledMap(template);
+		return new MapProxy(newMap, scriptContext);
+	}
+
 
 	private void restartTransaction(final MapModel oldMap, final MapModel newmap) {
 		final IUndoHandler oldUndoHandler = oldMap.getExtension(IUndoHandler.class);
