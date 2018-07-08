@@ -8,6 +8,10 @@ dependencies {
 		transitive = false
 	}
     compile 'net.bytebuddy:byte-buddy:1.7.9'
+	
+	testCompile 'junit:junit:4.12',
+	'org.hamcrest:hamcrest-all:1.3',
+	'org.mockito:mockito-all:1.10.19'
 }
 
 tasks.withType(JavaCompile) {

@@ -185,10 +185,7 @@ public class GroovyScript implements IScript {
 
     private static boolean groovyPatched = false; 
     private Script compileAndCache(final ScriptingSecurityManager scriptingSecurityManager) throws Throwable {
-    	if(! groovyPatched){
-    		GroovyPatcher.apply(GroovyObject.class);
-    		groovyPatched = true;
-    	}
+    	patchGroovyObject();
     	if (compileTimeStrategy.canUseOldCompiledScript()) {
 			scriptClassLoader.setSecurityManager(scriptingSecurityManager);
             return compiledScript;
@@ -220,6 +217,13 @@ public class GroovyScript implements IScript {
             }
         }
     }
+
+	static void patchGroovyObject() {
+		if(! groovyPatched){
+    		GroovyPatcher.apply(GroovyObject.class);
+    		groovyPatched = true;
+    	}
+	}
 
     private void removeOldScript() {
         if (compiledScript != null) {

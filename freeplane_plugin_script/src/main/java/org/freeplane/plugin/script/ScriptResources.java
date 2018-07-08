@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 
 public class ScriptResources {
@@ -22,11 +23,13 @@ public class ScriptResources {
     private static final String INIT_SCRIPTS_DIR = "scripts/init";
     private static final String USER_LIB_DIR = "lib";
     private static final String BUILTIN_SCRIPTS_DIR = "scripts";
+    private static final String COMPILED_SCRIPTS_DIRECTORY = "compiledscripts";
     private static List<String> classpath;
     private static final File builtinScriptsDir = buildBuiltinScriptsDir();
     private static final File userScriptsDir = buildUserScriptsDir(ScriptResources.USER_SCRIPTS_DIR);
     private static final File initScriptsDir = buildUserScriptsDir(ScriptResources.INIT_SCRIPTS_DIR);
     private static final File userLibDir = buildUserScriptsDir(ScriptResources.USER_LIB_DIR);
+
 
     /** @deprecated use {@link #getUserScriptDir()} instead. */
     public static File getUserScriptDir() {
@@ -71,4 +74,9 @@ public class ScriptResources {
         return new File(ResourceController.getResourceController().getFreeplaneUserDirectory(),
             userDir);
     }
+
+	static File getCompiledScriptsDir() {
+		return buildUserScriptsDir(COMPILED_SCRIPTS_DIRECTORY);
+	}
+
 }
