@@ -19,7 +19,7 @@ public class TestApp {
 	private static void createNewMindMap(File freeplaneInstallationDirectory, final File newMapFile) {
 		final Launcher launcher = Launcher.createForInstallation(freeplaneInstallationDirectory).disableSecurityManager();
 		HeadlessMapCreator mapCreator = launcher.launchHeadless();
-		final Map map = mapCreator.createUntitledMap(TestApp.class.getResource("/templateFile.mm"));
+		final Map map = mapCreator.load(TestApp.class.getResource("/templateFile.mm")).unsaved().getMap();
 		map.getRoot().createChild().setText("hello world");
 		map.saveAs(newMapFile);
 		System.out.println("Saved file " + newMapFile.getAbsolutePath());
