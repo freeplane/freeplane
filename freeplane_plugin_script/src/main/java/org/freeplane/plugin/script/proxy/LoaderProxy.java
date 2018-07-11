@@ -140,32 +140,32 @@ class LoaderProxy implements Loader {
 		return new MapProxy(newMap, scriptContext);
 	}
 
-	public Map newMap() {
+	private Map newMap() {
 		return openMap();
 	}
 
-	public Map newMapFromTemplate(File templateFile) {
+	private Map newMapFromTemplate(File templateFile) {
 		return openUntitledMap(templateFile);
 	}
 
 
-	public Map newMap(URL url) {
+	private Map newMap(URL url) {
 		return openMap(url);
 	}
 	
-	public Map readMap(File file) {
+	private Map readMap(File file) {
 		final URL url = fileToUrlOrNull(file);
 		return url != null ? readMap(url) : null;
 	}
 
-	public Map readMap(URL url) {
+	private Map readMap(URL url) {
 		final MMapIO mapIO = MMapIO.getInstance();
 		MapModel newMap = mapIO.readMap(url);
 		return new MapProxy(newMap, scriptContext);
 		
 	}
 
-	static URL fileToUrlOrNull(final File file) {
+	private static URL fileToUrlOrNull(final File file) {
 		try {
 			return Compat.fileToUrl(file);
 		}
@@ -174,12 +174,12 @@ class LoaderProxy implements Loader {
 		}
 	}
 	
-	public Map createUntitledMap(File templateFile) {
+	private Map createUntitledMap(File templateFile) {
 		final URL url = fileToUrlOrNull(templateFile);
 		return url != null ? createUntitledMap(url) : null;
 	}
 
-	public Map createUntitledMap(final URL template) {
+	private Map createUntitledMap(final URL template) {
 		final MMapIO mapIO = MMapIO.getInstance();
 		MapModel newMap = mapIO.createUntitledMap(template);
 		return new MapProxy(newMap, scriptContext);
