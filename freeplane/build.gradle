@@ -3,12 +3,6 @@ configurations{
 	compile.extendsFrom(mergedViewerDependencies)
 }
 
-repositories {
-	maven { url "${project.gradle.gradleUserHomeDir}/local-artifacts" }
-	maven { url "http://dl.bintray.com/freeplane/freeplane" }
-}
-
-
 dependencies {
 	
 	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.5'
