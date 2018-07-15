@@ -5,6 +5,7 @@ configurations{
 
 repositories {
 	maven { url "${project.gradle.gradleUserHomeDir}/local-artifacts" }
+	maven { url "http://dl.bintray.com/freeplane/freeplane" }
 }
 
 
