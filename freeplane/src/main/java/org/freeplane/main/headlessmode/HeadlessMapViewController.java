@@ -39,10 +39,10 @@ import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.IMapViewManager;
@@ -53,18 +53,21 @@ import org.freeplane.features.ui.IMapViewManager;
  */
 public class HeadlessMapViewController implements IMapViewManager {
 	final private Map<String, MapModel> maps = new HashMap<String, MapModel>();
-	Collection<IMapSelectionListener> mapSelectionListeners = new ArrayList<IMapSelectionListener>(); 
+	Collection<IMapSelectionListener> mapSelectionListeners = new ArrayList<IMapSelectionListener>();
 	private MapModel currentMap = null;
 	private String currentKey = null;
 
+	@Override
 	public void addMapSelectionListener(IMapSelectionListener pListener) {
 		mapSelectionListeners.add(pListener);
 	}
 
+	@Override
 	public void addMapViewChangeListener(IMapViewChangeListener pListener) {
-		
+
 	}
 
+	@Override
 	public boolean changeToMapView(Component newMapView) {
 		throw new RuntimeException("Method not implemented");
 	}
@@ -78,7 +81,8 @@ public class HeadlessMapViewController implements IMapViewManager {
 				return;
 			}
 	}
-	
+
+	@Override
 	public boolean changeToMapView(String mapViewDisplayName) {
 		if(mapViewDisplayName != null && maps.containsKey(mapViewDisplayName)) {
 			final MapModel nextMap = maps.get(mapViewDisplayName);
@@ -99,10 +103,12 @@ public class HeadlessMapViewController implements IMapViewManager {
 			mapSelectionListener.afterMapChange(oldMap, nextMap);
 	}
 
+	@Override
 	public boolean changeToMode(String modeName) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public String checkIfFileIsAlreadyOpened(URL urlToCheck) throws MalformedURLException {
 		final String key = urlToCheck.toString();
 		if(maps.containsKey(key))
@@ -111,11 +117,13 @@ public class HeadlessMapViewController implements IMapViewManager {
 			return null;
 	}
 
+	@Override
 	public boolean close() {
 		closeWithoutSaving();
 		return true;
 	}
-	
+
+	@Override
 	public void closeWithoutSaving() {
 		if(currentMap != null) {
 			maps.remove(currentKey);
@@ -124,74 +132,92 @@ public class HeadlessMapViewController implements IMapViewManager {
 		}
 	}
 
+	@Override
 	public String createHtmlMap() {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public RenderedImage createImage(int dpi) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public RenderedImage createImage(final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int dpi) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public Color getBackgroundColor(NodeModel node) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public Component getComponent(NodeModel node) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public Font getFont(NodeModel node) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public List<String> getMapKeys() {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public Map<String, MapModel> getMaps() {
 		return maps;
 	}
 
+	@Override
 	public IMapSelection getMapSelection() {
-		throw new RuntimeException("Method not implemented");
+		return null;
 	}
 
+	@Override
 	public Component getMapViewComponent() {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public List<? extends Component> getMapViewVector() {
 		return Collections.emptyList();
 	}
 
+	@Override
 	public ModeController getModeController(Component newMap) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public MapModel getModel() {
 		return currentMap;
 	}
 
+	@Override
 	public MapModel getModel(Component mapView) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public Component getSelectedComponent() {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public Color getTextColor(NodeModel node) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public float getZoom() {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public void newMapView(MapModel map, ModeController modeController) {
 		final String key = map.getURL().toString();
 		if(key.equals(currentKey))
@@ -208,44 +234,54 @@ public class HeadlessMapViewController implements IMapViewManager {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public void removeMapSelectionListener(IMapSelectionListener pListener) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public void removeMapViewChangeListener(IMapViewChangeListener pListener) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public void scrollNodeToVisible(NodeModel node) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public void setZoom(float zoom) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public boolean tryToChangeToMapView(String mapView) {
 		return changeToMapView(mapView);
 	}
 
+	@Override
 	public boolean tryToChangeToMapView(URL url) throws MalformedURLException {
 		if(url == null)
 			return false;
 		return tryToChangeToMapView(url.toString());
 	}
 
+	@Override
 	public void updateMapViewName() {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public boolean isLeftTreeSupported(Component mapViewComponent) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public Map<String, MapModel> getMaps(String modename) {
 		return maps;
 	}
 
+	@Override
 	public List<Component> getViews(MapModel map) {
 		return Collections.emptyList();
 	}
@@ -258,18 +294,21 @@ public class HeadlessMapViewController implements IMapViewManager {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public void obtainFocusForSelected() {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public void setMapTitles() {
-		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public Object setEdgesRenderingHint(Graphics2D g) {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public void setTextRenderingHint(Graphics2D g) {
 		throw new RuntimeException("Method not implemented");
 	}
@@ -281,6 +320,7 @@ public class HeadlessMapViewController implements IMapViewManager {
 		return true;
 	}
 
+	@Override
 	public boolean close(Component mapViewComponent) {
 		throw new RuntimeException("Method not implemented");
     }
@@ -299,7 +339,7 @@ public class HeadlessMapViewController implements IMapViewManager {
 	public void setFoldedOnCurrentView(NodeModel node, boolean folded) {
 		throw new RuntimeException("Method not implemented");
 	}
-	
+
 	@Override
 	public void onQuitApplication() {
 	}

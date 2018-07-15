@@ -21,28 +21,17 @@ package org.freeplane.plugin.script;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import javax.script.ScriptEngineFactory;
-
-import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ConfigurationUtils;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
@@ -51,83 +40,21 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.main.addons.AddOnProperties;
 import org.freeplane.main.addons.AddOnProperties.AddOnType;
 import org.freeplane.main.addons.AddOnsController;
-import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties;
-import org.freeplane.plugin.script.addons.ScriptAddOnProperties.Script;
 
 /**
  * scans for scripts to be registered via {@link ScriptingRegistration}.
- * 
+ *
  * @author Volker Boerchers
  */
 class ScriptingConfiguration {
-	private static final ExecutionMode DEFAULT_EXECUTION_MODE = ExecutionMode.ON_SELECTED_NODE;
-	static class ScriptMetaData {
-		private final TreeMap<ExecutionMode, String> executionModeLocationMap = new TreeMap<ExecutionMode, String>();
-		private final TreeMap<ExecutionMode, String> executionModeTitleKeyMap = new TreeMap<ExecutionMode, String>();
-		private final String scriptName;
-		private ScriptingPermissions permissions;
-
-		ScriptMetaData(final String scriptName) {
-			this.scriptName = scriptName;
-		}
-
-		public Set<ExecutionMode> getExecutionModes() {
-			return executionModeLocationMap.keySet();
-		}
-
-		public void addExecutionMode(final ExecutionMode executionMode, final String location, final String titleKey) {
-			executionModeLocationMap.put(executionMode, location);
-			if (titleKey != null)
-				executionModeTitleKeyMap.put(executionMode, titleKey);
-		}
-
-		protected String getMenuLocation(final ExecutionMode executionMode) {
-			return executionModeLocationMap.get(executionMode);
-		}
-
-		public String getTitleKey(final ExecutionMode executionMode) {
-			final String key = executionModeTitleKeyMap.get(executionMode);
-			return key == null ? getExecutionModeKey(executionMode) : key;
-		}
-
-		public String getScriptName() {
-			return scriptName;
-		}
-
-		public void setPermissions(ScriptingPermissions permissions) {
-			this.permissions = permissions;
-        }
-
-		public ScriptingPermissions getPermissions() {
-        	return permissions;
-        }
-
-		public boolean hasMenuLocation() {
-			for (String location : executionModeLocationMap.values()) {
-				if (location != null)
-					return true;
-			}
-			return false;
-		}
-
-		@Override
-		public String toString() {
-			return "ScriptMetaData(" + scriptName + ", locations: " + executionModeLocationMap + ", titles: "
-			        + executionModeTitleKeyMap + ")";
-		}
-	}
 
 	private static final String JAR_REGEX = ".+\\.jar$";
-	private final TreeMap<String, String> menuTitleToPathMap = new TreeMap<String, String>();
-	private final TreeMap<String, ScriptMetaData> menuTitleToMetaDataMap = new TreeMap<String, ScriptMetaData>();
-	private List<IScript> initScripts;
     private static Map<String, Object> staticProperties = createStaticProperties();
 
 	ScriptingConfiguration() {
 	    ScriptResources.setClasspath(buildClasspath());
 		addPluginDefaults();
-		initMenuTitleToPathMap();
 	}
 
 	private void addPluginDefaults() {
@@ -136,50 +63,6 @@ class ScriptingConfiguration {
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		Controller.getCurrentController().getResourceController().addDefaults(defaults);
 	}
-
-	private void initMenuTitleToPathMap() {
-		final Map<File, Script> addOnScriptMap = createAddOnScriptMap();
-		addAddOnScripts(addOnScriptMap);
-		addNonAddOnScripts(addOnScriptMap);
-	}
-
-    private void addAddOnScripts(Map<File, Script> addOnScriptMap) {
-        for (File file : addOnScriptMap.keySet()) {
-            addScript(file, addOnScriptMap);
-        }
-    }
-
-    private void addNonAddOnScripts(final Map<File, Script> addOnScriptMap) {
-        final FilenameFilter scriptFilenameFilter = createFilenameFilter(createScriptRegExp());
-		for (File dir : getScriptDirs()) {
-            addNonAddOnScripts(dir, addOnScriptMap, scriptFilenameFilter);
-		}
-		this.initScripts = findInitScripts(scriptFilenameFilter);
-    }
-
-	private List<IScript> findInitScripts(final FilenameFilter scriptFilenameFilter) {
-		final List<IScript> initScripts = new ArrayList<IScript>(0);
-		if (ScriptResources.getInitScriptsDir().isDirectory()) {
-			ScriptingPermissions standardPermissions = null;
-			File[] list = ScriptResources.getInitScriptsDir().listFiles(scriptFilenameFilter);
-			for (File file : list) {
-				initScripts.add(ScriptingEngine.createScriptForFile(file, standardPermissions));
-			}
-		}
-		return initScripts;
-	}
-
-	private Map<File, Script> createAddOnScriptMap() {
-		Map<File, Script> result = new LinkedHashMap<File, Script>();
-		for (ScriptAddOnProperties scriptAddOnProperties : getInstalledScriptAddOns()) {
-            final List<Script> scripts = scriptAddOnProperties.getScripts();
-            for (Script script : scripts) {
-                script.active = scriptAddOnProperties.isActive();
-                result.put(findScriptFile(scriptAddOnProperties, script), script);
-            }
-		}
-		return result;
-    }
 
     private List<ScriptAddOnProperties> getInstalledScriptAddOns() {
         final List<ScriptAddOnProperties> installedAddOns = new ArrayList<ScriptAddOnProperties>();
@@ -191,36 +74,9 @@ class ScriptingConfiguration {
         return installedAddOns;
     }
 
-    private File findScriptFile(AddOnProperties addOnProperties, Script script) {
-        final File dir = new File(getPrivateAddOnDirectory(addOnProperties), "scripts");
-        final File result = new File(dir, script.name);
-        return result.exists() ? result : findScriptFile_pre_1_3_x_final(script);
-    }
-
     private File getPrivateAddOnDirectory(AddOnProperties addOnProperties) {
         return new File(AddOnsController.getController().getAddOnsDir(), addOnProperties.getName());
     }
-
-    // add-on scripts are installed in a add-on-private directory since 1.3.x_beta
-    @Deprecated
-    private File findScriptFile_pre_1_3_x_final(Script script) {
-        return new File(ScriptResources.getUserScriptsDir(), script.name);
-    }
-
-	private TreeSet<File> getScriptDirs() {
-		final ResourceController resourceController = ResourceController.getResourceController();
-		final String dirsString = resourceController.getProperty(ScriptResources.RESOURCES_SCRIPT_DIRECTORIES);
-		final TreeSet<File> dirs = new TreeSet<File>(); // remove duplicates -> Set
-		if (dirsString != null) {
-			for (String dir : ConfigurationUtils.decodeListValue(dirsString, false)) {
-			    dirs.add(createFile(dir));
-            }
-		}
-		dirs.add(ScriptResources.getBuiltinScriptsDir());
-		dirs.add(ScriptResources.getUserScriptsDir());
-		return dirs;
-	}
-
 	/**
 	 * if <code>path</code> is not an absolute path, prepends the freeplane user
 	 * directory to it.
@@ -233,147 +89,15 @@ class ScriptingConfiguration {
 		return file;
 	}
 
-    /** scans <code>dir</code> for script files matching a given rexgex. */
-    private void addNonAddOnScripts(final File dir, final Map<File, Script> addOnScriptMap,
-                            FilenameFilter filenameFilter) {
-        // add all addOn scripts
-        // find further scripts in configured directories
-        if (dir.isDirectory()) {
-            final File[] files = dir.listFiles(filenameFilter);
-            if (files != null) {
-                for (final File file : files) {
-                    if (addOnScriptMap.get(file) == null)
-                        addScript(file, addOnScriptMap);
-                }
-            }
-        }
-        else {
-            LogUtils.warn("not a (script) directory: " + dir);
-        }
-    }
-
-    private String createScriptRegExp() {
-        final ArrayList<String> extensions = new ArrayList<String>();
-//        extensions.add("clj");
-		for (ScriptEngineFactory scriptEngineFactory : GenericScript.createScriptEngineFactories()) {
-            extensions.addAll(scriptEngineFactory.getExtensions());
-        }
-        LogUtils.info("looking for scripts with the following endings: " + extensions);
-        return ".+\\.(" + StringUtils.join(extensions, "|") + ")$";
-    }
-
 	private FilenameFilter createFilenameFilter(final String regexp) {
 		final FilenameFilter filter = new FilenameFilter() {
+			@Override
 			public boolean accept(final File dir, final String name) {
 				return name.matches(regexp);
 			}
 		};
 		return filter;
 	}
-
-	private void addScript(final File file, final Map<File, Script> addOnScriptMap) {
-		final Script scriptConfig = addOnScriptMap.get(file);
-		if (scriptConfig != null && !scriptConfig.active) {
-			LogUtils.info("skipping deactivated " + scriptConfig);
-			return;
-		}
-		final String menuTitle = disambiguateMenuTitle(getOrCreateMenuTitle(file, scriptConfig));
-		try {
-			menuTitleToPathMap.put(menuTitle, file.getAbsolutePath());
-			final ScriptMetaData metaData = createMetaData(file, menuTitle, scriptConfig);
-			menuTitleToMetaDataMap.put(menuTitle, metaData);
-			final File parentFile = file.getParentFile();
-			if (parentFile.equals(ScriptResources.getBuiltinScriptsDir())) {
-				metaData.setPermissions(ScriptingPermissions.getPermissiveScriptingPermissions());
-			}
-		}
-		catch (final IOException e) {
-			LogUtils.warn("problems with script " + file.getAbsolutePath(), e);
-			menuTitleToPathMap.remove(menuTitle);
-			menuTitleToMetaDataMap.remove(menuTitle);
-		}
-	}
-
-    private String disambiguateMenuTitle(final String menuTitleOrig) {
-        String menuTitle = menuTitleOrig;
-		// add suffix if the same script exists in multiple dirs
-		for (int i = 2; menuTitleToPathMap.containsKey(menuTitle); ++i) {
-			menuTitle = menuTitleOrig + i;
-		}
-        return menuTitle;
-    }
-
-    private ScriptMetaData createMetaData(final File file, final String scriptName,
-                                          final Script scriptConfig) throws IOException {
-        return scriptConfig == null ? analyseScriptContent(FileUtils.slurpFile(file), scriptName) //
-                : createMetaData(scriptName, scriptConfig);
-    }
-
-	// not private to enable tests
-	ScriptMetaData analyseScriptContent(final String content, final String scriptName) {
-		final ScriptMetaData metaData = new ScriptMetaData(scriptName);
-		setExecutionModes(content, metaData);
-		return metaData;
-	}
-	
-	private ScriptMetaData createMetaData(final String scriptName, final Script scriptConfig) {
-		final ScriptMetaData metaData = new ScriptMetaData(scriptName);
-		metaData.addExecutionMode(scriptConfig.executionMode, scriptConfig.menuLocation, scriptConfig.menuTitleKey);
-		metaData.setPermissions(scriptConfig.permissions);
-		return metaData;
-	}
-
-	public static void setExecutionModes(final String content, final ScriptMetaData metaData) {
-		final String modeName = StringUtils.join(ExecutionMode.values(), "|");
-		final String modeDef = "(?:ExecutionMode\\.)?(" + modeName + ")(?:=\"([^]\"]+)(?:\\[([^]\"]+)\\])?\")?";
-		final String modeDefs = "(?:" + modeDef + ",?)+";
-		final Pattern pOuter = makeCaseInsensitivePattern("@ExecutionModes\\(\\{(" + modeDefs + ")\\}\\)");
-		final Matcher mOuter = pOuter.matcher(content.replaceAll("\\s+", ""));
-		if (!mOuter.find()) {
-			metaData.addExecutionMode(DEFAULT_EXECUTION_MODE, null, null);
-//			System.err.println(metaData.getScriptName() + ": '" + pOuter + "' did not match "
-//			        + content.replaceAll("\\s+", ""));
-			return;
-		}
-		final Pattern pattern = makeCaseInsensitivePattern(modeDef);
-		final String[] locations = mOuter.group(1).split(",");
-		for (String match : locations) {
-			final Matcher m = pattern.matcher(match);
-			if (m.matches()) {
-//				System.err.println(metaData.getScriptName() + ":" + m.group(1) + "->" + m.group(2) + "->" + m.group(3));
-                metaData.addExecutionMode(ExecutionMode.valueOf(m.group(1).toUpperCase(Locale.ENGLISH)), m.group(2),
-                    m.group(3));
-			}
-			else {
-				LogUtils.severe("script " + metaData.getScriptName() + ": not a menu location: '" + match + "'");
-				continue;
-			}
-		}
-	}
-
-	/** some beautification: remove directory and suffix + make first letter uppercase. */
-	private String getOrCreateMenuTitle(final File file, Script scriptConfig) {
-		if (scriptConfig != null)
-			return scriptConfig.menuTitleKey;
-		// TODO: we could add mnemonics handling here! (e.g. by reading '_' as '&')
-		String string = file.getName().replaceFirst("\\.[^.]+", "");
-		// fixup characters that might cause problems in menus
-		string = string.replaceAll("\\s+", "_");
-		return string.length() < 2 ? string : string.substring(0, 1).toUpperCase() + string.substring(1);
-	}
-
-	private static Pattern makeCaseInsensitivePattern(final String regexp) {
-		return Pattern.compile(regexp, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-	}
-
-	SortedMap<String, String> getMenuTitleToPathMap() {
-		return Collections.unmodifiableSortedMap(menuTitleToPathMap);
-	}
-
-	SortedMap<String, ScriptMetaData> getMenuTitleToMetaDataMap() {
-		return Collections.unmodifiableSortedMap(menuTitleToMetaDataMap);
-	}
-
 	private ArrayList<String> buildClasspath() {
 	    final ArrayList<String> classpath = new ArrayList<String>();
 	    addClasspathForAddOns(classpath);
@@ -447,25 +171,4 @@ class ScriptingConfiguration {
     	properties.put("config", new FreeplaneScriptBaseClass.ConfigProperties());
         return properties;
     }
-
-    static String getExecutionModeKey(final ExecuteScriptAction.ExecutionMode executionMode) {
-		switch (executionMode) {
-			case ON_SINGLE_NODE:
-				return "ExecuteScriptOnSingleNode.text";
-			case ON_SELECTED_NODE:
-				return "ExecuteScriptOnSelectedNode.text";
-			case ON_SELECTED_NODE_RECURSIVELY:
-				return "ExecuteScriptOnSelectedNodeRecursively.text";
-			default:
-				throw new AssertionError("unknown ExecutionMode " + executionMode);
-		}
-	}
-
-	public static String getScriptsLocation(String parentKey) {
-		return  parentKey + "/scripts";
-	}
-
-	public List<IScript> getInitScripts() {
-		return initScripts;
-	}
 }

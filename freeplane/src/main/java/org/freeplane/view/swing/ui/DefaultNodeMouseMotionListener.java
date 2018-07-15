@@ -116,10 +116,8 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 				}
 			}
 		}
-		final boolean inFoldingRegion = isInFoldingRegion(e);
-		if ((plainEvent && inFoldingRegion
-				|| (inFoldingRegion || inside) && Compat.isCtrlShiftEvent(e))
-		        && !nodeSelector.shouldSelectOnClick(e)) {
+
+		if (inside && Compat.isCtrlShiftEvent(e) && !nodeSelector.shouldSelectOnClick(e)) {
 			doubleClickTimer.cancel();
 			mapController.toggleFolded(node);
 			e.consume();
@@ -147,6 +145,15 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 			return;
 		nodeSelector.stopTimerForDelayedSelection();
 		nodeSelector.extendSelection(e);
+	}
+
+
+	private void toggleFolded(final MouseEvent e) {
+		final NodeView nodeView = nodeSelector.getRelatedNodeView(e);
+		if(nodeView!= null) {
+			doubleClickTimer.cancel();
+			nodeView.getMap().getModeController().getMapController().toggleFolded(nodeView.getModel());
+		}
 	}
 
 	@Override
@@ -204,7 +211,10 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final MapView mapView = MapView.getMapView(e.getComponent());
 		mapView.select();
 		doubleClickTimer.cancel();
-		showPopupMenu(e);
+		if (e.isPopupTrigger())
+			showPopupMenu(e);
+		else if(isInFoldingRegion(e))
+			toggleFolded(e);
 	}
 
 	@Override

@@ -106,7 +106,7 @@ public class NodeList {
 		public MapChangeListener() {
 			super();
 			this.runner = new DelayedRunner(new Runnable() {
-				
+
 				@Override
 				public void run() {
 					tableModel.fireTableDataChanged();
@@ -115,38 +115,47 @@ public class NodeList {
 		}
 
 		final private DelayedRunner runner;
-	    public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
+	    @Override
+		public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	    	disposeDialog();
 	    }
 
+		@Override
 		public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 	    	disposeDialog();
 	    }
 
-	    public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
+	    @Override
+		public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	    	disposeDialog();
 	    }
 
-	    public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
+	    @Override
+		public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
 	    	disposeDialog();
 	    }
 
-	    public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
+	    @Override
+		public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 	    	disposeDialog();
 	    }
 
-	    public void mapChanged(MapChangeEvent event) {
+	    @Override
+		public void mapChanged(MapChangeEvent event) {
 	    	disposeDialog();
 	    }
 
+		@Override
 		public void nodeChanged(NodeChangeEvent event) {
 			if(hasTableFieldValueChanged(event.getProperty()))
 				runner.runLater();
         }
 
+		@Override
 		public void afterMapChange(MapModel oldMap, MapModel newMap) {
        }
 
+		@Override
 		public void beforeMapChange(MapModel oldMap, MapModel newMap) {
 			disposeDialog();
         }
@@ -161,6 +170,7 @@ public class NodeList {
 		private synchronized void delayedChange() {
 			stopTimer();
 			mTypeDelayTimer = new Timer(500, new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					change();
 				}
@@ -173,14 +183,17 @@ public class NodeList {
 				mTypeDelayTimer = null;
 			}
         }
+		@Override
 		public void changedUpdate(final DocumentEvent event) {
 			delayedChange();
 		}
 
+		@Override
 		public void insertUpdate(final DocumentEvent event) {
 			delayedChange();
 		}
 
+		@Override
 		public void removeUpdate(final DocumentEvent event) {
 			delayedChange();
 		}
@@ -198,6 +211,7 @@ public class NodeList {
 			}
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			change();
         }
@@ -247,9 +261,11 @@ public class NodeList {
 	}
 
 	final private class FlatNodeTableKeyListener implements KeyListener {
+		@Override
 		public void keyPressed(final KeyEvent arg0) {
 		}
 
+		@Override
 		public void keyReleased(final KeyEvent arg0) {
 			if (arg0.getKeyCode() == KeyEvent.VK_ESCAPE) {
 				disposeDialog();
@@ -260,6 +276,7 @@ public class NodeList {
 			}
 		}
 
+		@Override
 		public void keyTyped(final KeyEvent arg0) {
 		}
 	}
@@ -584,6 +601,7 @@ public class NodeList {
 			 */
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog();
 			}
@@ -672,6 +690,7 @@ public class NodeList {
 			     */
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				exportSelectedRowsAndClose();
 			}
@@ -684,6 +703,7 @@ public class NodeList {
 			     */
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				replace(new HolderAccessor(), false);
 			}
@@ -696,6 +716,7 @@ public class NodeList {
 			     */
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				replace(new HolderAccessor(), true);
 			}
@@ -707,6 +728,7 @@ public class NodeList {
 			     */
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				selectSelectedRows();
 			}
@@ -718,6 +740,7 @@ public class NodeList {
 			     */
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog();
 			}
@@ -750,6 +773,7 @@ public class NodeList {
 		dialog.setJMenuBar(menuBar);
 		final ListSelectionModel rowSM = tableView.getSelectionModel();
 		rowSM.addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(final ListSelectionEvent e) {
 				if (e.getValueIsAdjusting()) {
 					return;
@@ -770,6 +794,7 @@ public class NodeList {
 					return getNodeText(node.getParentNode()) + " -> " + nodeText;
 			}
 
+			@Override
 			public void valueChanged(final ListSelectionEvent e) {
 				if (e.getValueIsAdjusting()) {
 					return;
@@ -848,8 +873,11 @@ public class NodeList {
 		model.addColumn(NodeList.COLUMN_DETAILS);
 		model.addColumn(NodeList.COLUMN_NOTES);
 		if (searchInAllMaps == false) {
-			final NodeModel node = Controller.getCurrentController().getMap().getRootNode();
-			updateModel(model, node);
+			final MapModel map = Controller.getCurrentController().getMap();
+			if(map != null) {
+				final NodeModel node = map.getRootNode();
+				updateModel(model, node);
+			}
 		}
 		else {
 			final Map<String, MapModel> maps = Controller.getCurrentController().getMapViewManager().getMaps(MModeController.MODENAME);
@@ -884,7 +912,7 @@ public class NodeList {
 	static private HashSet<Object> changeableProperties = new HashSet<Object>(
 			Arrays.asList(NodeModel.NODE_TEXT, NodeModel.NODE_ICON, DetailTextModel.class, NodeModel.NOTE_TEXT)
 			);
-	
+
 	private boolean hasTableFieldValueChanged(Object property) {
 		return changeableProperties.contains(property);
 	}

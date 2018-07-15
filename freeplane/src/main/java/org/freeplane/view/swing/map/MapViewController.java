@@ -115,15 +115,19 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		resourceController.addPropertyChangeListener(this);
 		zoomModel.setSelectedItem("100%");
 		zoomModel.addListDataListener(new  ListDataListener() {
+			@Override
 			public void intervalRemoved(ListDataEvent e) {
 			}
 
+			@Override
 			public void intervalAdded(ListDataEvent e) {
 			}
 
+			@Override
 			public void contentsChanged(ListDataEvent e) {
 				if (!setZoomComboBoxRun && e.getIndex0() == -1) {
 					EventQueue.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							setZoomByItem(zoomModel.getSelectedItem());
 						}
@@ -138,6 +142,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#addMapChangeListener(org.freeplane.core.frame.IMapChangeListener)
 	 */
+	@Override
 	public void addMapSelectionListener(final IMapSelectionListener pListener) {
 		mapViewChangeListeners.addListener(pListener);
 	}
@@ -145,6 +150,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#addMapViewChangeListener(org.freeplane.core.frame.IMapViewChangeListener)
 	 */
+	@Override
 	public void addMapViewChangeListener(final IMapViewChangeListener pListener) {
 		mapViewChangeListeners.addListener(pListener);
 	}
@@ -171,10 +177,11 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			}
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#changeToMapView(org.freeplane.view.swing.map.MapView)
 	 */
+	@Override
 	public boolean changeToMapView(final Component newMapViewComponent) {
 		final MapView newMapView = (MapView) newMapViewComponent;
 		final MapView oldMapView = selectedMapView;
@@ -200,6 +207,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#changeToMapView(java.lang.String)
 	 */
+	@Override
 	public boolean changeToMapView(final String mapViewDisplayName) {
 		MapView mapViewCandidate = null;
 		for (final MapView mapView : mapViewVector) {
@@ -218,6 +226,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#changeToMode(java.lang.String)
 	 */
+	@Override
 	public boolean changeToMode(final String modeName) {
 		if (modeName.equals(lastModeName)) {
 			return true;
@@ -244,6 +253,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#checkIfFileIsAlreadyOpened(java.net.URL)
 	 */
+	@Override
 	public String checkIfFileIsAlreadyOpened(final URL urlToCheck) throws MalformedURLException {
 		for (final MapView mapView : mapViewVector) {
 			if (getModel(mapView) != null) {
@@ -259,11 +269,12 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#close(boolean)
 	 */
+	@Override
 	public boolean close() {
 		final MapView mapView = getMapView();
 		return close(mapView);
 	}
-	
+
 	@Override
 	public void closeWithoutSaving() {
 		final MapView mapView = getMapView();
@@ -271,14 +282,15 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	}
 
 
+	@Override
 	public boolean close(final Component mapViewComponent) {
 		return close(mapViewComponent, false);
 	}
-	
+
 	public boolean closeWithoutSaving(final Component mapViewComponent) {
 		return close(mapViewComponent, true);
 	}
-	
+
 	private boolean close(final Component mapViewComponent, boolean forceCloseWithoutSaving) {
 	    if (mapViewComponent == null) {
 			return false;
@@ -294,7 +306,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			}
 			else
 				return map.close();
-			
+
 		}
 		map.removeMapChangeListener(mapView);
 		remove(mapView);
@@ -319,6 +331,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		mapViewChangeListeners.afterMapViewClose(mapView);
 	}
 
+	@Override
 	public String createHtmlMap() {
 		final MapModel model = getModel();
 		final ClickableImageCreator creator = new ClickableImageCreator(model.getRootNode(), getMapView()
@@ -326,6 +339,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		return creator.generateHtml();
 	}
 
+	@Override
 	public RenderedImage createImage(int dpi) {
 		final MapView view = getMapView();
 		if (view == null) {
@@ -336,6 +350,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		return createImage(dpi, innerBounds);
 	}
 
+	@Override
 	public RenderedImage createImage(final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int dpi) {
 		final MapView view = getMapView();
 		if (view == null) {
@@ -350,10 +365,9 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		final JComponent content = placedNodeView.getContent();
 		Point contentLocation = new Point();
 		UITools.convertPointToAncestor(content, contentLocation, view);
-		final Rectangle printedGraphicsBounds = new Rectangle(contentLocation.x + content.getWidth() / 2 - slideSize.width / 2, 
-				contentLocation.y + content.getHeight() / 2 - slideSize.height
-				/ 2, slideSize.width, slideSize.height);
-		
+		final Rectangle printedGraphicsBounds = new Rectangle(contentLocation.x + content.getWidth() / 2 - slideSize.width / 2,
+				contentLocation.y + content.getHeight() / 2 - slideSize.height / 2, slideSize.width, slideSize.height);
+
 		final int distanceToMargin = (slideSize.width - content.getWidth()) / 2 - 10;
 		if(placedNodePosition == NodePosition.WEST){
 			printedGraphicsBounds.x += distanceToMargin;
@@ -389,7 +403,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		g.clearRect(0, 0, imageWidth, imageHeight);
 		g.scale(scaleFactor, scaleFactor);
 		g.translate(-innerBounds.x, -innerBounds.y);
-		g.setRenderingHint(GraphicsHints.CACHE_ICONS, Boolean.TRUE); 
+		g.setRenderingHint(GraphicsHints.CACHE_ICONS, Boolean.TRUE);
 		view.print(g);
 		return myImage;
 	}
@@ -397,6 +411,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getBackgroundColor(org.freeplane.core.model.NodeModel)
 	 */
+	@Override
 	public Color getBackgroundColor(final NodeModel node) {
 		final MapView mapView = getMapView();
 		if (mapView == null) {
@@ -412,6 +427,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getComponent(org.freeplane.core.model.NodeModel)
 	 */
+	@Override
 	public Component getComponent(final NodeModel node) {
 		if(selectedMapView == null)
 			return null;
@@ -420,7 +436,8 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			return null;
 		return nodeView.getMainView();
 	}
-	
+
+	@Override
 	public boolean isFoldedOnCurrentView(NodeModel node){
 		if(selectedMapView == null)
 			return node.isFolded();
@@ -429,14 +446,15 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			return node.isFolded();
 		return nodeView.isFolded();
 	}
-	
+
 
 	@Override
 	public void displayOnCurrentView(NodeModel node) {
 		if(selectedMapView != null)
 			selectedMapView.display(node);
 	}
-	
+
+	@Override
 	public void setFoldedOnCurrentView(NodeModel node, boolean folded){
 		if(selectedMapView == null || ! node.hasChildren())
 			return;
@@ -444,12 +462,13 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		if(nodeView == null)
 			return;
 		nodeView.setFolded(folded);
-		
+
 	}
 
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getFont(org.freeplane.core.model.NodeModel)
 	 */
+	@Override
 	public Font getFont(final NodeModel node) {
 		final MapView mapView = getMapView();
 		if (mapView == null) {
@@ -465,6 +484,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getMapKeys()
 	 */
+	@Override
 	public List<String> getMapKeys() {
 		final LinkedList<String> returnValue = new LinkedList<String>();
 		for (final MapView mapView : mapViewVector) {
@@ -476,6 +496,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getMaps()
 	 */
+	@Override
 	public Map<String, MapModel> getMaps() {
 		final HashMap<String, MapModel> returnValue = new HashMap<String, MapModel>(mapViewVector.size());
 		for (final MapView mapView : mapViewVector) {
@@ -487,6 +508,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getMapSelection()
 	 */
+	@Override
 	public IMapSelection getMapSelection() {
 		final MapView mapView = getMapView();
 		return mapView == null ? null : mapView.getMapSelection();
@@ -499,6 +521,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getMapViewComponent()
 	 */
+	@Override
 	public Component getMapViewComponent() {
 		return getMapView();
 	}
@@ -506,10 +529,12 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getMapViewVector()
 	 */
+	@Override
 	public List<MapView> getMapViewVector() {
 		return Collections.unmodifiableList(mapViewVector);
 	}
 
+	@Override
 	public ModeController getModeController(final Component mapView) {
 		return ((MapView) mapView).getModeController();
 	}
@@ -517,11 +542,13 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getModel()
 	 */
+	@Override
 	public MapModel getModel() {
 		final MapView mapView = getMapView();
 		return mapView == null ? null : getModel(mapView);
 	}
 
+	@Override
 	public MapModel getModel(final Component mapView) {
 		return ((MapView) mapView).getModel();
 	}
@@ -533,6 +560,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getSelectedComponent()
 	 */
+	@Override
 	public Component getSelectedComponent() {
 		final MapView mapView = getMapView();
 		return mapView == null ? null : mapView.getSelected();
@@ -541,6 +569,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getTextColor(org.freeplane.core.model.NodeModel)
 	 */
+	@Override
 	public Color getTextColor(final NodeModel node) {
 		final MapView mapView = getMapView();
 		if (mapView == null) {
@@ -563,6 +592,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#getZoom()
 	 */
+	@Override
 	public float getZoom() {
 		return zoom;
 	}
@@ -570,6 +600,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#newMapView(org.freeplane.core.model.MapModel, org.freeplane.core.modecontroller.ModeController)
 	 */
+	@Override
 	public void newMapView(final MapModel map, final ModeController modeController) {
 		final MapView mapView = new MapView(map, modeController);
 		addToOrChangeInMapViews(mapView.getName(), mapView);
@@ -624,6 +655,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#removeIMapViewChangeListener(org.freeplane.core.frame.IMapChangeListener)
 	 */
+	@Override
 	public void removeMapSelectionListener(final IMapSelectionListener pListener) {
 		mapViewChangeListeners.removeListener(pListener);
 	}
@@ -631,6 +663,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#removeMapViewChangeListener(org.freeplane.core.frame.IMapViewChangeListener)
 	 */
+	@Override
 	public void removeMapViewChangeListener(final IMapViewChangeListener pListener) {
 		mapViewChangeListeners.removeListener(pListener);
 	}
@@ -648,6 +681,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#scrollNodeToVisible(org.freeplane.core.model.NodeModel)
 	 */
+	@Override
 	public void scrollNodeToVisible(final NodeModel node) {
 		final NodeView nodeView = selectedMapView.getNodeView(node);
 		if (nodeView != null) {
@@ -658,6 +692,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#setZoom(float)
 	 */
+	@Override
 	public void setZoom(final float zoom) {
 		this.zoom = zoom;
 		final MapView mapView = getMapView();
@@ -681,6 +716,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#tryToChangeToMapView(java.lang.String)
 	 */
+	@Override
 	public boolean tryToChangeToMapView(final String mapView) {
 		if (mapView != null && getMapKeys().contains(mapView)) {
 			changeToMapView(mapView);
@@ -691,6 +727,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 	}
 
+	@Override
 	public boolean tryToChangeToMapView(URL url) throws MalformedURLException {
 		final MapModel currentMap = getModel();
 		if(currentMap != null && url.equals(currentMap.getURL()))
@@ -706,6 +743,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	/* (non-Javadoc)
 	 * @see org.freeplane.core.frame.IMapViewController#updateMapViewName()
 	 */
+	@Override
 	public void updateMapViewName() {
 		final MapView r = getMapView();
 		final String name = r.getModel().getTitle();
@@ -713,10 +751,12 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		changeToMapView(getMapView());
 	}
 
+	@Override
 	public boolean isLeftTreeSupported(final Component mapViewComponent) {
 		return ((MapView) mapViewComponent).getLayoutType() != MapViewLayout.OUTLINE;
 	}
 
+	@Override
 	public Map<String, MapModel> getMaps(final String modename) {
 		final HashMap<String, MapModel> returnValue = new HashMap<String, MapModel>(mapViewVector.size());
 		for (final MapView mapView : mapViewVector) {
@@ -727,6 +767,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		return Collections.unmodifiableMap(returnValue);
 	}
 
+	@Override
 	public List<Component> getViews(final MapModel map) {
 		final LinkedList<Component> list = new LinkedList<Component>();
 		for (final MapView view : mapViewVector) {
@@ -736,6 +777,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 		return list;
 	}
+	@Override
 	public void afterViewChange(final Component oldMap, final Component pNewMap) {
 		Controller controller = Controller.getCurrentController();
 		final ModeController oldModeController = controller.getModeController();
@@ -759,14 +801,17 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 	}
 
+	@Override
 	public void afterViewClose(final Component oldView) {
 		ModeController newModeController = getModeController(oldView);
 		newModeController.getUserInputListenerFactory().updateMapList();
 	}
 
+	@Override
 	public void afterViewCreated(final Component mapView) {
 	}
 
+	@Override
 	public void beforeViewChange(final Component oldMap, final Component newMap) {
 		Controller controller = Controller.getCurrentController();
 		final ModeController modeController = controller.getModeController();
@@ -842,6 +887,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 	}
 
+	@Override
 	public JComboBox createZoomBox() {
 		if(zoomBox == null) {
 			zoomBox = new JComboBoxWithBorder(zoomModel);
@@ -860,10 +906,12 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		return zoomValue;
 	}
 
-	private static final String[] zooms = { "25%", "50%", "75%", "100%", 
+	private static final String[] zooms = { "25%", "50%", "75%", "100%",
 			"150%", "200%", "300%", "400%", "600%", "800%", "1200%", "1600%" , "2400%", "3200%" };
+	@Override
 	public void obtainFocusForSelected() {
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				if (getMapView() != null) {
 					final Component selectedComponent = getSelectedComponent();
@@ -894,6 +942,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		this.antialiasEdges = antialiasEdges;
 	}
 
+	@Override
 	public Object setEdgesRenderingHint(final Graphics2D g) {
 		final Object renderingHint = g.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 		if (getAntialiasEdges()) {
@@ -906,6 +955,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	}
 
 
+	@Override
 	public void setTextRenderingHint(final Graphics2D g) {
 		if (getAntialiasAll()) {
 			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -939,11 +989,13 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	}
 
 
+	@Override
 	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 		if (propertyName.equals(ViewController.RESOURCE_ANTIALIAS)) {
 			changeAntialias(newValue);
 		}
 	}
+	@Override
 	public void setMapTitles() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (modeController == null) {
@@ -1032,10 +1084,10 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	@Override
 	public void hideChildren(NodeModel node) {
 		if(selectedMapView == null)
-			return; 
+			return;
 		final NodeView nodeView = selectedMapView.getNodeView(node);
 		if(nodeView == null)
-			return; 
+			return;
 		nodeView.hideChildren(node);
 	}
 

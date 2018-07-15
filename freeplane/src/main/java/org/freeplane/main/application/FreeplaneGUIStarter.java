@@ -28,11 +28,9 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
 import java.util.Set;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -99,7 +97,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		} catch (IOException e) {
 		}
 	}
-	
+
 
 	static{
 		Compat.fixMousePointerForLinux();
@@ -155,10 +153,12 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		applicationResourceController = new ApplicationResourceController();
 	}
 
+	@Override
 	public void setDontLoadLastMaps() {
 		dontLoadLastMaps = true;
     }
 
+	@Override
 	@SuppressWarnings("serial")
 	public Controller createController() {
 		try {
@@ -171,8 +171,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			FreeplaneGUIStarter.showSysInfo();
 			final String lookandfeel = System.getProperty("lookandfeel", applicationResourceController
 			    .getProperty("lookandfeel"));
-			final boolean supportHidpi = Boolean.valueOf(System.getProperty("lookandfeel.scaleuifonts", applicationResourceController
-				    .getProperty("lookandfeel.scaleuifonts")));
+			final boolean supportHidpi = UITools.shouldScaleUIFonts();
 			FrameController.setLookAndFeel(lookandfeel, supportHidpi);
 			final JFrame frame;
 			frame = new JFrame("Freeplane");
@@ -180,10 +179,10 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 
 				@Override
 				protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
-					return super.processKeyBinding(ks, e, condition, pressed) 
+					return super.processKeyBinding(ks, e, condition, pressed)
 							|| MenuKeyProcessor.INSTANCE.processKeyBinding(ks, e, condition, pressed);
 				}
-				
+
 			});
 			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
 			final MMapViewController mapViewController = new MMapViewController(controller);
@@ -235,6 +234,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		}
 	}
 
+	@Override
 	public void createModeControllers(final Controller controller) {
 		MModeControllerFactory.createModeController();
 		final ModeController mindMapModeController = controller.getModeController(MModeController.MODENAME);
@@ -247,6 +247,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		FModeControllerFactory.createModeController();
     }
 
+	@Override
 	public void buildMenus(final Controller controller, final Set<String> plugins) {
 		LoadAcceleratorPresetsAction.install(controller.getModeController(MModeController.MODENAME));
 	    buildMenus(controller, plugins, MModeController.MODENAME, "/xml/mindmapmodemenu.xml");
@@ -263,11 +264,13 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		controller.selectModeForBuild(null);
 	}
 
+	@Override
 	public void createFrame(final String[] args) {
 		Controller controller = Controller.getCurrentController();
 		ModeController modeController = controller.getModeController(MModeController.MODENAME);
 		controller.selectModeForBuild(modeController);
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				viewController.init(Controller.getCurrentController());
 				splash.toBack();
@@ -294,7 +297,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
                 catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-		        
+
 		        UITools.executeWhenNodeHasFocus(new Runnable() {
 					@Override
 					public void run() {
@@ -355,10 +358,12 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	    	applicationResourceController.getLastOpenedList().openLastMapOnStart();
     }
 
+	@Override
 	public void loadMapsLater(final String[] args){
 	    EventQueue.invokeLater(new Runnable() {
 
-            public void run() {
+            @Override
+			public void run() {
                 if(startupFinished && EventQueue.isDispatchThread()){
                     loadMaps(Controller.getCurrentController(), args);
                     toFront();
@@ -400,28 +405,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		}
     }
 
-    /**
-	 */
-	public void run(final String[] args) {
-		try {
-			if (null == System.getProperty("org.freeplane.core.dir.lib", null)) {
-				System.setProperty("org.freeplane.core.dir.lib", "/lib/");
-			}
-			final Controller controller = createController();
-			createModeControllers(controller);
-			FilterController.getController(controller).loadDefaultConditions();
-			final Set<String> emptySet = Collections.emptySet();
-			buildMenus(controller, emptySet);
-			createFrame(args);
-		}
-		catch (final Exception e) {
-			LogUtils.severe(e);
-			JOptionPane.showMessageDialog(UITools.getMenuComponent(), "freeplane.main.Freeplane can't be started",
-			    "Startup problem", JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		}
-	}
-
+   @Override
 	public void stop() {
 		try {
 			if (EventQueue.isDispatchThread()) {
@@ -429,6 +413,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				return;
 			}
 			EventQueue.invokeAndWait(new Runnable() {
+				@Override
 				public void run() {
 					Controller.getCurrentController().shutdown();
 				}
@@ -442,6 +427,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		}
 	}
 
+	@Override
 	public ResourceController getResourceController() {
 	    return applicationResourceController;
     }

@@ -40,25 +40,25 @@ public class Filter {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		return new Filter(null, resourceController.getBooleanProperty("filter.showAncestors"), resourceController.getBooleanProperty("filter.showDescendants"), false);
 	}
-	
+
 	public interface FilterInfoAccessor{
 		public FilterInfo getFilterInfo(NodeModel node);
 	}
-	
+
 	static public FilterInfoAccessor DEFAULT_FILTER_INFO_ACCESSOR = new FilterInfoAccessor() {
-		
+
 		@Override
 		public FilterInfo getFilterInfo(NodeModel node) {
 			return node.getFilterInfo();
 		}
 	};
-	
+
 	static public Filter createOneTimeFilter(final ICondition condition, final boolean areAncestorsShown,
             final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly) {
-		
+
 		FilterInfoAccessor oneTimeFilterAccessor = new FilterInfoAccessor() {
 			HashMap<NodeModel, FilterInfo> filterInfos = new HashMap<>();
-			
+
 			@Override
 			public FilterInfo getFilterInfo(NodeModel node) {
 				FilterInfo filterInfo = filterInfos.get(node);
@@ -211,7 +211,7 @@ public class Filter {
 		}
 		return condition.checkNode(node);
 	}
-	
+
 	private boolean shouldRemainInvisible(final NodeModel node) {
 		return condition != null && appliesToVisibleNodesOnly && !node.hasVisibleContent();
 	}
@@ -248,7 +248,7 @@ public class Filter {
 		return getFilterInfo(node).isVisible(this.options);
 	}
 	private void refreshMap(Object source, MapModel map) {
-		Controller.getCurrentModeController().getMapController().fireMapChanged(new MapChangeEvent(source, map, Filter.class, null, this));
+		Controller.getCurrentModeController().getMapController().fireMapChanged(new MapChangeEvent(source, map, Filter.class, null, this, false));
 	}
 
 	private void resetFilter(final NodeModel node) {

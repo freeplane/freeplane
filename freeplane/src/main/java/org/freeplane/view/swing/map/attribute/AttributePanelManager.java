@@ -70,7 +70,8 @@ public class AttributePanelManager{
         private AttributeView attributeView;
         private JComboBox formatChooser;
 
-        public void onDeselect(NodeModel node) {
+        @Override
+		public void onDeselect(NodeModel node) {
             removeOldView();
         }
 
@@ -84,7 +85,8 @@ public class AttributePanelManager{
             }
         }
 
-        public void onSelect(NodeModel node) {
+        @Override
+		public void onSelect(NodeModel node) {
             removeOldView();
             final NodeView nodeView = (NodeView) Controller.getCurrentController()
             		.getMapViewManager().getSelectedComponent();
@@ -99,7 +101,8 @@ public class AttributePanelManager{
             {
                 final JButton newAttributeButton = new JButton(TextUtils.getText("attributes_popup_new"));
                 newAttributeButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(final ActionEvent arg0) {
+                    @Override
+					public void actionPerformed(final ActionEvent arg0) {
                         attributeView.addRow();
                     }
                 });
@@ -109,7 +112,8 @@ public class AttributePanelManager{
             {
                 final JButton optimalWidthButton = new JButton(TextUtils.getText("attributes_popup_optimal_width"));
                 optimalWidthButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(final ActionEvent arg0) {
+                    @Override
+					public void actionPerformed(final ActionEvent arg0) {
                         attributeView.setOptimalColumnWidths();
                     }
                 });
@@ -128,7 +132,8 @@ public class AttributePanelManager{
             formatChooser.addItemListener(new ItemListener() {
                 boolean handlingEvent = false;
 
-                public void itemStateChanged(final ItemEvent e) {
+                @Override
+				public void itemStateChanged(final ItemEvent e) {
                     if (handlingEvent || !formatChooser.isEnabled() || e.getStateChange() != ItemEvent.SELECTED)
                         return;
                     handlingEvent = true;
@@ -179,7 +184,8 @@ public class AttributePanelManager{
             });
 
             attributeView.addTableSelectionListener(new ListSelectionListener() {
-                public void valueChanged(final ListSelectionEvent event) {
+                @Override
+				public void valueChanged(final ListSelectionEvent event) {
                     // update format chooser
                     if (!event.getValueIsAdjusting()) {
                         setSelectedFormatItem();
@@ -198,9 +204,11 @@ public class AttributePanelManager{
 
     	private void setSelectedFormatItem() {
     	    final AttributeTable table = attributeView.getAttributeTable();
-    	    if (table.getSelectedColumn() == 1 && table.getSelectedRow() != -1) {
+    	    final int selectedColumn = table.getSelectedColumn();
+			final int selectedRow = table.getSelectedRow();
+			if (selectedColumn == 1 && selectedRow >= 0 && selectedRow < table.getRowCount()) {
     	        formatChooser.setEnabled(true);
-    	        final Object value = table.getValueAt(table.getSelectedRow(), table.getSelectedColumn());
+    	        final Object value = table.getValueAt(selectedRow, selectedColumn);
     	        if (value instanceof IFormattedObject) {
     	            final String format = ((IFormattedObject) value).getPattern();
     	            formatChooser.setSelectedItem(PatternFormat.guessPatternFormat(format));
@@ -213,7 +221,7 @@ public class AttributePanelManager{
     	        formatChooser.setEnabled(false);
     	    }
         }
-    	
+
         private JComboBox createFormatChooser() {
             final List<PatternFormat> formats = FormatController.getController().getAllFormats();
             Vector<PatternFormat> items = new Vector<PatternFormat>(formats);
@@ -237,6 +245,7 @@ public class AttributePanelManager{
             btnSize.height =  Math.max(btnSize.height, preferredSize.height);
         }
 
+		@Override
 		public void nodeChanged(NodeChangeEvent event) {
 			if(attributeView != null && event.getProperty().equals(NodeAttributeTableModel.class)){
 				setSelectedFormatItem();

@@ -878,16 +878,21 @@ public class MMapController extends MapController {
 	public boolean newUntitledMap(final URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException{
         try {
         	Controller.getCurrentController().getViewController().setWaitingCursor(true);
-        	final MapModel newModel = new MMapModel();
-        	UrlManager.getController().load(url, newModel);
-        	newModel.setURL(null);
-        	fireMapCreated(newModel);
+        	final MapModel newModel = newHiddenUntitledMap(url);
         	newMapView(newModel);
         	return true;
         }
         finally {
         	Controller.getCurrentController().getViewController().setWaitingCursor(false);
         }
+	}
+
+	public MapModel newHiddenUntitledMap(final URL url) throws IOException, XMLException {
+		final MapModel newModel = new MMapModel();
+		UrlManager.getController().load(url, newModel);
+		newModel.setURL(null);
+		fireMapCreated(newModel);
+		return newModel;
 	}
 
 	/**@throws XMLException

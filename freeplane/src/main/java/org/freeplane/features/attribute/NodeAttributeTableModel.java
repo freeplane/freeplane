@@ -41,7 +41,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel(null);
 
 	public static NodeAttributeTableModel getModel(final NodeModel node) {
-		final NodeAttributeTableModel attributes = (NodeAttributeTableModel) node
+		final NodeAttributeTableModel attributes = node
 		    .getExtension(NodeAttributeTableModel.class);
 		return attributes != null ? attributes : NodeAttributeTableModel.EMTPY_ATTRIBUTES;
 	}
@@ -70,6 +70,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		fireTableRowsInserted(index, index);
 	}
 
+	@Override
 	public void addTableModelListener(final TableModelListener listener) {
 		if (listeners == null) {
 			listeners = new HashSet<TableModelListener>();
@@ -84,42 +85,30 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	}
 
 	public void fireTableCellUpdated(final int row, final int column) {
-		if (listeners == null) {
-			return;
-		}
 		fireTableChanged(new TableModelEvent(this, row, row, column));
 	}
 
 	private void fireTableChanged(final TableModelEvent e) {
-		if (listeners == null) {
-			return;
+		if (listeners != null) {
+			final ArrayList<TableModelListener> arrayList = new ArrayList<TableModelListener>(listeners);
+			for (final TableModelListener listener : arrayList) {
+				listener.tableChanged(e);
+			}
 		}
-		final ArrayList<TableModelListener> arrayList = new ArrayList<TableModelListener>(listeners);
-		for (final TableModelListener listener : arrayList) {
-			listener.tableChanged(e);
-		}
+		node.getMap().getNodeChangeAnnouncer().nodeChanged(node, NodeAttributeTableModel.class, null, null);
 	}
 
 	public void fireTableRowsDeleted(final int firstRow, final int lastRow) {
-		if (listeners == null) {
-			return;
-		}
 		fireTableChanged(new TableModelEvent(this, firstRow, lastRow, TableModelEvent.ALL_COLUMNS,
 		    TableModelEvent.DELETE));
 	}
 
 	public void fireTableRowsInserted(final int firstRow, final int lastRow) {
-		if (listeners == null) {
-			return;
-		}
 		fireTableChanged(new TableModelEvent(this, firstRow, lastRow, TableModelEvent.ALL_COLUMNS,
 		    TableModelEvent.INSERT));
 	}
 
 	public void fireTableRowsUpdated(final int firstRow, final int lastRow) {
-		if (listeners == null) {
-			return;
-		}
 		fireTableChanged(new TableModelEvent(this, firstRow, lastRow, TableModelEvent.ALL_COLUMNS,
 		    TableModelEvent.UPDATE));
 	}
@@ -166,6 +155,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		return getRowCount();
 	}
 
+	@Override
 	public Class<Object> getColumnClass(final int col) {
 		return Object.class;
 	}
@@ -174,14 +164,17 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	 * (non-Javadoc)
 	 * @see javax.swing.table.TableModel#getColumnCount()
 	 */
+	@Override
 	public int getColumnCount() {
 		return 2;
 	}
 
+	@Override
 	public String getColumnName(final int col) {
 		return " ";
 	}
 
+	@Override
 	public Quantity<LengthUnits> getColumnWidth(final int col) {
 		return getLayout().getColumnWidth(col);
 	}
@@ -198,6 +191,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		return attr.getName();
 	}
 
+	@Override
 	public NodeModel getNode() {
 		return node;
 	}
@@ -206,6 +200,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	 * (non-Javadoc)
 	 * @see javax.swing.table.TableModel#getRowCount()
 	 */
+	@Override
 	public int getRowCount() {
 		return attributes == null ? 0 : attributes.size();
 	}
@@ -219,6 +214,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	 * (non-Javadoc)
 	 * @see javax.swing.table.TableModel#getValueAt(int, int)
 	 */
+	@Override
 	public Object getValueAt(final int row, final int col) {
 		if (attributes != null) {
 			switch (col) {
@@ -231,10 +227,12 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		return null;
 	}
 
+	@Override
 	public boolean isCellEditable(final int arg0, final int arg1) {
 		return false;
 	}
 
+	@Override
 	public void removeTableModelListener(final TableModelListener listener) {
 		if (listeners == null) {
 			return;
@@ -254,6 +252,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		fireTableRowsUpdated(row, row);
 	}
 
+	@Override
 	public void setValueAt(final Object value, final int rowIndex, final int columnIndex) {
 		switch (columnIndex) {
 			case 0:

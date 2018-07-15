@@ -8,6 +8,7 @@ import javax.swing.JEditorPane;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.FormattedFormula;
@@ -27,7 +28,8 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 		super(priority);
 	}
 
-    public Object transformContent(TextController textController, final Object obj, final NodeModel node,
+    @Override
+	public Object transformContent(TextController textController, final Object obj, final NodeModel node,
                                    Object transformedExtension) {
         if (obj instanceof FormattedFormula) {
             final FormattedFormula formattedFormula = (FormattedFormula) obj;
@@ -54,7 +56,8 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
         return result;
     }
 
-    public boolean isFormula(TextController textController, final Object obj, final NodeModel node,
+    @Override
+	public boolean isFormula(TextController textController, final Object obj, final NodeModel node,
     		Object transformedExtension) {
     	if (obj instanceof FormattedFormula) {
     		final FormattedFormula formattedFormula = (FormattedFormula) obj;
@@ -71,13 +74,14 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
     	}
     	return true;
     }
-    
+
+	@Override
 	public EditNodeBase createEditor(final NodeModel node, final EditNodeBase.IEditControl editControl,
 	                                 String text, final boolean editLong) {
 		MTextController textController = MTextController.getController();
 		if (textController.isTextFormattingDisabled(node))
 			return null;
-		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent(); 
+		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
 		if(firstKeyEvent != null){
 			if (firstKeyEvent.getKeyChar() == '='){
 				text = "=";
@@ -97,13 +101,15 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 
 			final String fontName = ResourceController.getResourceController().getProperty(FormulaEditor.GROOVY_EDITOR_FONT);
 			final int fontSize = ResourceController.getResourceController().getIntProperty(FormulaEditor.GROOVY_EDITOR_FONT_SIZE);
-			textEditor.setFont(new Font(fontName, Font.PLAIN, fontSize));
+			final Font font = UITools.scaleUI(new Font(fontName, Font.PLAIN, fontSize));
+			textEditor.setFont(font);
 
 			return editNodeDialog;
 		}
 		return null;
     }
-	
+
+	@Override
 	public boolean markTransformation() {
 	    return true;
     }

@@ -41,10 +41,6 @@ public interface FreeplaneStarter {
 
 	public void loadMapsLater(final String[] args);
 
-	/**
-	 */
-	public void run(final String[] args);
-
 	public void stop();
 
 	public ResourceController getResourceController();

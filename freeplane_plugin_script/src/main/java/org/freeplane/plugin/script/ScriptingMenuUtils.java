@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
-import org.freeplane.plugin.script.ScriptingConfiguration.ScriptMetaData;
+import org.freeplane.plugin.script.ScriptingGuiConfiguration.ScriptMetaData;
 
 public class ScriptingMenuUtils {
     static final String LABEL_AVAILABLE_MODES_TOOLTIP = "ExecuteScript.available_modes_tooltip";

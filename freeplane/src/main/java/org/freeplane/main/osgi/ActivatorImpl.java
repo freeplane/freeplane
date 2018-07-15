@@ -76,6 +76,7 @@ class ActivatorImpl implements BundleActivator {
 		return array;
 	}
 
+	@Override
 	public void start(final BundleContext context) throws Exception {
 		try {
 			final String userDirectory = System.getProperty("org.freeplane.user.dir");
@@ -170,7 +171,7 @@ class ActivatorImpl implements BundleActivator {
 		}
 		// initialize ApplicationController - SingleInstanceManager needs the configuration
 		starter =  createStarter();
-		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager(starter);
+		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager(starter, runsHeadless());
 		singleInstanceManager.start(getCallParameters());
 		if (singleInstanceManager.isSlave()) {
 			LogUtils.info("opened files in master - exiting now");
@@ -185,18 +186,16 @@ class ActivatorImpl implements BundleActivator {
 		installControllerExtensions(context, controller);
 		if ("true".equals(System.getProperty("org.freeplane.exit_on_start", null))) {
 			controller.getViewController().invokeLater(new Runnable() {
+				@Override
 				public void run() {
-					try {
-						Thread.sleep(1000);
-					}
-					catch (final InterruptedException e) {
-					}
+					Controller.getCurrentController().fireStartupFinished();
 					System.exit(0);
 				}
 			});
 			return;
 		}
 		controller.getViewController().invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				final Bundle[] bundles = context.getBundles();
 				final HashSet<String> plugins = new HashSet<String>();
@@ -210,10 +209,10 @@ class ActivatorImpl implements BundleActivator {
 			}
 		});
 	}
-	
+
 	private static class OsgiExtentionInstaller implements ExtensionInstaller{
 		private final BundleContext context;
-		
+
 		public OsgiExtentionInstaller(BundleContext context) {
 			super();
 			this.context = context;
@@ -259,7 +258,7 @@ class ActivatorImpl implements BundleActivator {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
 
 	private void installControllerExtensions(final BundleContext context, final Controller controller) {
@@ -269,11 +268,15 @@ class ActivatorImpl implements BundleActivator {
 	}
 
 	public FreeplaneStarter createStarter() {
-		if(Boolean.getBoolean(HEADLESS_RUN_PROPERTY_NAME))
+		if(runsHeadless())
 			return new FreeplaneHeadlessStarter();
 		else
 			return new FreeplaneGUIStarter(getCallParameters());
     }
+
+	private boolean runsHeadless() {
+		return Boolean.getBoolean(HEADLESS_RUN_PROPERTY_NAME);
+	}
 
     private void registerClasspathUrlHandler(final BundleContext context) {
         Hashtable<String, String[]> properties = new Hashtable<String, String[]>();
@@ -281,6 +284,7 @@ class ActivatorImpl implements BundleActivator {
         context.registerService(URLStreamHandlerService.class.getName(), new ResourcesUrlHandler(), properties);
     }
 
+	@Override
 	public void stop(final BundleContext context) throws Exception {
 		starter.stop();
 		final Bundle[] bundles = context.getBundles();

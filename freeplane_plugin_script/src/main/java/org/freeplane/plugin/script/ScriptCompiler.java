@@ -14,7 +14,18 @@ import org.codehaus.groovy.tools.FileSystemCompiler;
 import org.freeplane.core.util.LogUtils;
 
 public class ScriptCompiler {
-    public static void compileScriptsOnPath(List<String> pathElements) {
+    private final CompilerConfiguration compilerConfiguration;
+	private final GroovyClassLoader compilerClassLoader;
+	
+
+
+	public ScriptCompiler() {
+		final ScriptClassLoader scriptClassLoader = ScriptClassLoader.createClassLoader();
+		compilerClassLoader = new GroovyClassLoader(scriptClassLoader);
+		compilerConfiguration = GroovyScript.createCompilerConfiguration();
+	}
+
+	public  void compileScriptsOnPath(List<String> pathElements) {
         for (String pathElement : pathElements) {
             final File dir = new File(pathElement);
             if (dir.isDirectory())
@@ -22,24 +33,21 @@ public class ScriptCompiler {
         }
     }
 
-    private static void compileScriptsInDirectory(File dir) {
+    private  void compileScriptsInDirectory(File dir) {
         // FIXME: compile .js and the like too
         final Collection<File> files = FileUtils.listFiles(dir, new String[] { "groovy" }, true);
         if (!files.isEmpty())
             compile(dir, files);
     }
 
-    private static void compile(File dir, Collection<File> files) {
+    private  void compile(File dir, Collection<File> files) {
         compile(dir, toArray(files));
     }
 
-    private static void compile(File dir, File[] files) {
+    private  void compile(File dir, File[] files) {
         try {
-			final CompilerConfiguration compilerConfiguration = GroovyScript
-			    .createCompilerConfiguration();
-            compilerConfiguration.setTargetDirectory(dir);
-            final CompilationUnit unit = new CompilationUnit(compilerConfiguration, null, new GroovyClassLoader(
-                ScriptingEngine.class.getClassLoader()));
+			compilerConfiguration.setTargetDirectory(dir);
+			final CompilationUnit unit = new CompilationUnit(compilerConfiguration, null, compilerClassLoader);
             new FileSystemCompiler(compilerConfiguration, unit).compile(files);
             LogUtils.info("compiled in " + dir + ": " + createNameList(files));
         }
@@ -48,11 +56,11 @@ public class ScriptCompiler {
         }
     }
 
-    private static File[] toArray(Collection<File> groovyFiles) {
+    private  File[] toArray(Collection<File> groovyFiles) {
         return groovyFiles.toArray(new File[groovyFiles.size()]);
     }
 
-    private static ArrayList<String> createNameList(File[] files) {
+    private  ArrayList<String> createNameList(File[] files) {
         final ArrayList<String> names = new ArrayList<String>(files.length);
         for (File file : files) {
             names.add(file.getName());

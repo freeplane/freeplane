@@ -48,7 +48,7 @@ public interface Proxy {
 	/** Node's attribute table: <code>node.attributes</code> - read-only.
 	 * <p>
 	 * Attributes are name - value pairs assigned to a node. A node may have multiple attributes
-	 * with the same name. 
+	 * with the same name.
 	 */
 	interface AttributesRO {
 		/** alias for {@link #getFirst(String)}.
@@ -63,7 +63,7 @@ public interface Proxy {
 		/** returns true if there is any attribute with key <a>name</a>.
 		 * @since 1.4 */
 		boolean containsKey(final String name);
-		
+
 		/** returns all values for the attribute name. */
 		List<Object> getAll(final String name);
 
@@ -81,6 +81,7 @@ public interface Proxy {
 		List<String> getNames();
 
 		/** @deprecated since 1.2 use #getNames() instead. */
+		@Deprecated
 		List<String> getAttributeNames();
 
 		/** returns all values as a list of {@link Convertible}.
@@ -95,12 +96,13 @@ public interface Proxy {
 		/** returns the attribute value at the given index.
 		 * @throws IndexOutOfBoundsException if index is out of range, i. e. {@code index < 0 || index >= size()}.*/
 		Object get(final int index);
-		
+
 		/** returns the attribute key at the given index.
 		 * @throws IndexOutOfBoundsException if index is out of range, i. e. {@code index < 0 || index >= size()}.*/
 		String getKey(final int index);
 
 		/** @deprecated since 1.2 - use {@link #findFirst(String)} instead. */
+		@Deprecated
 		int findAttribute(final String name);
 
 		/** returns the index of the first attribute with the given name if one exists or -1 otherwise.
@@ -115,16 +117,19 @@ public interface Proxy {
 		 * <pre>{@code
 		 *  = attributes.findValues{key, val -> key != 'TOTAL'}.sum(0){it.num0}
 		 * }</pre>
-		 * @param closure A closure that accepts two arguments (String key, Object value) and returns boolean/Boolean. 
+		 * @param closure A closure that accepts two arguments (String key, Object value) and returns boolean/Boolean.
 		 * @since 1.2 */
 		List<? extends Convertible> findValues(Closure<Boolean> closure);
 
 		/** the number of attributes. It is <code>size() == getAttributeNames().size()</code>. */
 		int size();
-		
+
 		/** returns <code>getAttributeNames().isEmpty()</code>.
          * @since 1.2 */
 		boolean isEmpty();
+
+		/** @since 1.6.16 */
+		Attributes getTransformed();
 	}
 
 	/** Node's attribute table: <code>node.attributes</code> - read-write.
@@ -185,11 +190,11 @@ public interface Proxy {
 		/** sets name and value of the attribute at the given index. This method will not create new attributes.
 		 * @throws IndexOutOfBoundsException if index is out of range, i. e. {@code index < 0 || index >= size()}.*/
 		void set(final int index, final String name, final Object value);
-		
+
 		/** sets name, value and format pattern of the attribute at the given index. This method will not create new attributes.
 		 * @throws IndexOutOfBoundsException if index is out of range, i. e. {@code index < 0 || index >= size()}.*/
 		public void set(final int index, final String name, final Object value, String format);
-		
+
 		/** sets format pattern to  the attribute at the given index.
 		 * @throws IndexOutOfBoundsException if index is out of range, i. e. {@code index < 0 || index >= size()}.*/
 		public void setFormat(final int index, String format);
@@ -214,7 +219,7 @@ public interface Proxy {
 
 		/** adds an attribute no matter if an attribute with the given name already exists. */
 		void add(final String name, final Object value);
-		
+
 		/** adds an attribute with formatting pattern no matter if an attribute with the given name already exists. */
 		public void add(final String name, final Object value, String format);
 
@@ -234,7 +239,7 @@ public interface Proxy {
 		 * @since 1.3.2 */
 		Iterator<java.util.Map.Entry<String, Object>> iterator();
 
-		/** optimize widths of attribute view columns according to contents. 
+		/** optimize widths of attribute view columns according to contents.
 		 * @since 1.4 */
 		void optimizeWidths();
 	}
@@ -242,14 +247,14 @@ public interface Proxy {
     /** Here are four ways to enable a cloud on the current node and switch it off again:
      * <pre>
      *   node.cloud.enabled = true
-     *   node.cloud.enabled = false 
-     *   
+     *   node.cloud.enabled = false
+     *
      *   node.cloud.shape = 'ROUND_RECT' // either 'ARC', 'STAR', 'RECT' or 'ROUND_RECT'
      *   node.cloud.shape = null
-     *   
+     *
      *   node.cloud.color = java.awt.Color.YELLOW
      *   node.cloud.color = null
-     *   
+     *
      *   node.cloud.colorCode = '#00FF66'
      *   node.cloud.color = null
      * </pre>
@@ -280,7 +285,7 @@ public interface Proxy {
          *  @since 1.3 */
         void setColorCode(String rgbString);
     }
-    
+
     /** Graphical connector between nodes:<code>node.connectorsIn</code> / <code>node.connectorsOut</code>
 	 * - read-only. */
 	interface ConnectorRO {
@@ -296,6 +301,7 @@ public interface Proxy {
 		boolean hasEndArrow();
 
 		/**@deprecated since 1.2 - use {@link #hasEndArrow()} instead */
+		@Deprecated
 		ArrowType getEndArrow();
 
 		String getMiddleLabel();
@@ -307,10 +313,11 @@ public interface Proxy {
 
         /** @since 1.2 */
 		boolean hasStartArrow();
-		
+
 		/** @deprecated since 1.2 - use {@link #hasStartArrow()} instead */
+		@Deprecated
 		ArrowType getStartArrow();
-		
+
 		/** The node with the arrow. On connectors with arrows at both ends one of the ends. */
 		Node getTarget();
 
@@ -321,7 +328,7 @@ public interface Proxy {
 		/** returns a Point.
 		 * @since 1.3.3 */
 		List<Integer> getStartInclination();
-		
+
 		/** returns a Point.
 		 * @since 1.3.3 */
 		List<Integer> getEndInclination();
@@ -344,6 +351,7 @@ public interface Proxy {
 		void setEndArrow(boolean showArrow);
 
         /** @deprecated since 1.2 - use {@link #setEndArrow(boolean)} instead */
+		@Deprecated
 		void setEndArrow(ArrowType arrowType);
 
 		void setMiddleLabel(String label);
@@ -356,6 +364,7 @@ public interface Proxy {
         void setStartArrow(boolean showArrow);
 
         /** @deprecated since 1.2 - use {@link #setStartArrow(boolean)} instead */
+		@Deprecated
 		void setStartArrow(ArrowType arrowType);
 
 		void setTargetLabel(String label);
@@ -387,7 +396,7 @@ public interface Proxy {
 		 * <pre>{@code
 		 *   import org.freeplane.core.util.FreeplaneVersion
 		 *   import org.freeplane.core.ui.components.UITools
-		 * 
+		 *
 		 *   def required = FreeplaneVersion.getVersion("1.1.2");
 		 *   if (c.freeplaneVersion < required)
 		 *       UITools.errorMessage("Freeplane version " + c.freeplaneVersion
@@ -403,6 +412,7 @@ public interface Proxy {
 		/** Starting from the root node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
 		 * @deprecated since 1.2 use {@link #find(Closure)} instead. */
+		@Deprecated
 		List<Node> find(ICondition condition);
 
 		/**
@@ -416,7 +426,7 @@ public interface Proxy {
 		 * Examples:
 		 * <pre>
 		 *    def nodesWithNotes = c.find{ it.noteText != null }
-		 *    
+		 *
 		 *    def matchingNodes = c.find{ it.text.matches(".*\\d.*") }
 		 *    def texts = matchingNodes.collect{ it.text }
 		 *    print "node texts containing numbers:\n " + texts.join("\n ")
@@ -462,7 +472,7 @@ public interface Proxy {
 		/** returns the current zoom factor. A value of 1 means 100%.
 		 * @since 1.2 */
 		float getZoom();
-		
+
 		/** returns false if the system 'nonInteractive' is set. This can be used in actions to not open dialogs etc.
 		 * @since 1.2 */
 		boolean isInteractive();
@@ -496,9 +506,9 @@ public interface Proxy {
 		/** opens the appropriate popup text editor. Does not block until edit has finished.
 		 * @since 1.2.2 */
 		void editInPopup(Node node);
-		
+
 		void select(Node toSelect);
-		
+
 		/** selects multiple Nodes.
 		 * @since 1.4 */
 		void select(Collection<Node> toSelect);
@@ -541,6 +551,7 @@ public interface Proxy {
 		void setStatusInfo(String infoPanelKey, String info, String iconKey);
 
 		/** @deprecated since 1.2 - use {@link #setStatusInfo(String, String, String)} */
+		@Deprecated
 		void setStatusInfo(String infoPanelKey, Icon icon);
 
 		/** opens a new map with a default name in the foreground.
@@ -550,7 +561,7 @@ public interface Proxy {
 		/** opens a new map for url in the foreground if it isn't opened already.
 		 * @since 1.2 */
 		Map newMap(URL url);
-		
+
 		/** opens a new map based on given template.
 		 * @since 1.5 */
 		public Map newMapFromTemplate(File templateFile);
@@ -562,6 +573,12 @@ public interface Proxy {
 		/** a list of all opened maps.
 		 * @since 1.5 */
 		List<Map> getOpenMaps();
+
+		/** creates an new unsaved map from given template without an associated view.
+		 *
+		 * This map can be processed by scripts and any other clients of scripting API.
+		 * @since 1.6.16 */
+		Map newHiddenMapFromTemplate(File templateFile);
 	}
 
 	/** Edge to parent node: <code>node.style.edge</code> - read-only. */
@@ -598,8 +615,9 @@ public interface Proxy {
 		/** returns the current zoom level as ratio, i.e. 1.0 is returned for 100%.
 		 * If there is no external object 1.0 is returned. */
 		float getZoom();
-		
+
 		/** @deprecated since 1.2 - use {@link #getUri()} instead. */
+		@Deprecated
 		String getURI();
 	}
 
@@ -610,14 +628,15 @@ public interface Proxy {
          * URI and URL arguments.
          * @since 1.2 */
 		void setUri(String target);
-		
+
 		/** setting null uri means remove external object. */
 		void setFile(File target);
-		
+
 		/** set to 1.0 to set it to 100%. If the node has no object assigned this method does nothing. */
 		void setZoom(float zoom);
-		
+
 		/** @deprecated since 1.2 - use {@link #setUri(String)} instead. */
+		@Deprecated
 		void setURI(String uri);
 	}
 
@@ -684,7 +703,7 @@ public interface Proxy {
 		 * since it leads to ugly code, e.g. use <code>node.icons.first</code> or <code>node.icons[0]</code> instead of
 		 * <code>node.icons.icons[0]</code>. Perhaps you could also use iteration over icons, see. */
 		List<String> getIcons();
-		
+
 		/** returns a list of the urls of the icons the node has. */
 		List<URL> getUrls();
 
@@ -715,17 +734,19 @@ public interface Proxy {
 		void addAll(IconsRO icons);
 
 		/** @deprecated since 1.2 - use {@link #add(String)} instead. */
+		@Deprecated
 		void addIcon(String name);
 
 		/** deletes the icon at the given index, returns true if success (icon existed). */
 		boolean remove(int index);
-		
+
 		/** deletes first occurence of icon with the given name, returns true if success (icon existed). */
 		boolean remove(String name);
 
 		/** @deprecated since 1.2 - use {@link #remove(String)} instead. */
+		@Deprecated
 		boolean removeIcon(String name);
-		
+
 		/** removes all icons.
 		 * @since 1.2 */
 		void clear();
@@ -755,13 +776,14 @@ public interface Proxy {
 		Node getNode();
 
 		/** @deprecated since 1.2 - use {@link #getText()} instead. */
+		@Deprecated
 		String get();
 	}
 
 	/** Node's link: <code>node.link</code> - read-write.
 	 * To set links use the attributes of the {@link Link} and {@link LinkRO} object:
 	 * <pre>
-	 * // a normal href 
+	 * // a normal href
 	 * node.link.text = 'http://www.google.com'
 	 * // create a node to the parent node
 	 * node.link.node = node.parent
@@ -794,6 +816,7 @@ public interface Proxy {
 
 		/** @deprecated since 1.2 - use {@link #setText(String)} instead.
 		 * @return true if target could be converted to an URI and false otherwise. */
+		@Deprecated
 		boolean set(String target);
 
 		/** removes the link. Same as <code>node.link.text = null</code>.
@@ -808,6 +831,7 @@ public interface Proxy {
 		Node getRoot();
 
 		/** @deprecated since 1.2 - use {@link #getRoot()} instead. */
+		@Deprecated
 		Node getRootNode();
 
 		/** get node by id.
@@ -867,7 +891,7 @@ public interface Proxy {
         /** @param rgbString a HTML color spec like #ff0000 (red) or #222222 (darkgray).
          *  @since 1.2 */
         void setBackgroundColorCode(String rgbString);
-		
+
 		/** install a Groovy closure as the current filter in this map. If <code>closure</code> is null then filtering will
 		 * be disabled. The filter state of a node can be checked by {@link Node#isVisible()}. <br>
 		 * To undo filtering use <em>Tools &rarr; Undo</em>. After execution of the following you have to use it seven times to
@@ -877,17 +901,17 @@ public interface Proxy {
 		 * node.map.filter{ it.text.contains("todo") }
 		 * // equivalent:
 		 * node.map.filter = { it.text.contains("todo") }
-		 * 
+		 *
 		 * // show ancestors of matching nodes
 		 * node.map.filter(true, false){ it.text.contains("todo") }
 		 * // equivalent:
 		 * node.map.setFilter(true, false, { it.text.contains("todo") })
-		 * 
+		 *
 		 * // show descendants of matching nodes
 		 * node.map.filter(false, true){ it.text.contains("todo") }
 		 * // equivalent:
 		 * node.map.setFilter(false, true, { it.text.contains("todo") })
-		 * 
+		 *
 		 * // remove filter
 		 * node.map.filter = null
 		 * </pre>
@@ -897,7 +921,7 @@ public interface Proxy {
 		/** alias for {@link #filter(Closure)}. Enables assignment to the <code>filter</code> property.
 		 * @since 1.2 */
 		public void setFilter(final Closure<Boolean> closure);
-		
+
 		/** With {@link #filter(Closure)} neither ancestors not descendants of the visible nodes are shown. Use this
 		 * method to control these options.
 		 * @see #filter(Closure)
@@ -944,7 +968,7 @@ public interface Proxy {
 		 *   if (node["unknown attribute"])
 		 *      // surprise: the node has an attribute with key "unknown attribute"
 		 * </pre>
-		 * @throws ExecuteScriptException 
+		 * @throws ExecuteScriptException
 		 * @since 1.2
 		 */
 		Convertible getAt(String attributeName);
@@ -1000,6 +1024,7 @@ public interface Proxy {
 		Map getMap();
 
 		/** @deprecated since 1.2 - use Node.getId() instead. */
+		@Deprecated
 		String getNodeID();
 
 		/** @since 1.2 */
@@ -1021,12 +1046,12 @@ public interface Proxy {
          * </ul>
 		 * @return Convertible getString(), getText() and toString() will return plain text instead of the HTML.
 		 *         Use {@link #getNoteText()} to get the HTML text.
-		 * @throws ExecuteScriptException 
+		 * @throws ExecuteScriptException
 		 * @since 1.2
 		 */
 		Convertible getNote();
 
-		/** Returns the HTML text of the node. (Notes always contain HTML text.) 
+		/** Returns the HTML text of the node. (Notes always contain HTML text.)
 		 * @throws ExecuteScriptException */
 		String getNoteText();
 
@@ -1034,6 +1059,7 @@ public interface Proxy {
 		Node getParent();
 
 		/** @deprecated since 1.2 - use {@link #getParent()} instead. */
+		@Deprecated
 		Node getParentNode();
 
         /** a list of all nodes starting from this node upto (and including) the root node.
@@ -1092,6 +1118,7 @@ public interface Proxy {
 
 		/** Plain text after removal of possible HTML markup. Formulas are not evaluated.
 		 * @deprecated since 1.2 - use getPlainText() or getTo().getPlain() instead. */
+		@Deprecated
 		String getPlainTextContent();
 
 		/** The node text as HTML markup. Returns the same as {@link NodeProxy#getText()} if the node text
@@ -1108,7 +1135,7 @@ public interface Proxy {
 		 * See {@link #isMinimized()} for node shortening.
 		 * @since 1.2 */
 		String getDisplayedText();
-		
+
 		/** Plain text of this node after possible transformation and forced text shortening.
 		 * @since 1.2 */
 		String getShortText();
@@ -1172,14 +1199,14 @@ public interface Proxy {
 		/** if this node is visible or not (due to filtering). Node folding is not considered.
 		 * See {@link #isFolded()} for folding state. */
 		boolean isVisible();
-		
+
 		/** if this node's text is shortened for display. */
 		boolean isMinimized();
 
 		/** The count of node sharing their content with this node. Use {@code if (node.countNodesSharingContent() > 0)}
 		 * to check if a node has any clones.
 		 * <br><em>Note:</em> {@link #getCountNodesSharingContent()} &ge; {@link #getCountNodesSharingContentAndSubtree()}.
-		 * @return 0 if this node is standalone or the number of other nodes sharing content otherwise. 
+		 * @return 0 if this node is standalone or the number of other nodes sharing content otherwise.
 		 * @see #getNodesSharingContent()
 		 * @see Proxy.Node#appendAsCloneWithSubtree(Proxy.NodeRO)
 		 * @see Proxy.Node#appendAsCloneWithoutSubtree(Proxy.NodeRO)
@@ -1188,24 +1215,24 @@ public interface Proxy {
 
 		/** The count of nodes sharing their content and subtree with this node.
 		 * <br><em>Note:</em> {@link #getCountNodesSharingContent()} &ge; {@link #getCountNodesSharingContentAndSubtree()}.
-		 * @return 0 if this node has no other nodes it is sharing its content and subtree with or its count otherwise. 
+		 * @return 0 if this node has no other nodes it is sharing its content and subtree with or its count otherwise.
 		 * @see #getNodesSharingContentAndSubtree()
 		 * @see Proxy.Node#appendAsCloneWithSubtree(Proxy.NodeRO)
 		 * @see Proxy.Node#appendAsCloneWithoutSubtree(Proxy.NodeRO)
 		 * @since 1.5 */
 		int getCountNodesSharingContentAndSubtree();
-		
+
 		/** The count of nodes sharing their content with this node.
 		 * <br><em>Note:</em> {@link #getCountNodesSharingContent()} &ge; {@link #getCountNodesSharingContentAndSubtree()}.
-		 * @return 0 if this node is standalone or the number of other nodes sharing content otherwise. 
+		 * @return 0 if this node is standalone or the number of other nodes sharing content otherwise.
 		 * @see #getCountNodesSharingContent()
 		 * @see Proxy.Node#appendAsCloneWithSubtree(Proxy.NodeRO)
 		 * @see Proxy.Node#appendAsCloneWithoutSubtree(Proxy.NodeRO)
 		 * @since 1.5 */
 		List<Node> getNodesSharingContent();
-		
+
 		/** The nodes sharing their content and subtree with this node.
-		 * @return 0 if this node has no other nodes it is sharing its content and subtree with or its count otherwise. 
+		 * @return 0 if this node has no other nodes it is sharing its content and subtree with or its count otherwise.
 		 * @see #getCountNodesSharingContentAndSubtree()
 		 * @see Proxy.Node#appendAsCloneWithSubtree(Proxy.NodeRO)
 		 * @see Proxy.Node#appendAsCloneWithoutSubtree(Proxy.NodeRO)
@@ -1215,6 +1242,7 @@ public interface Proxy {
 		/** Starting from this node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
 		 * @deprecated since 1.2 use {@link #find(Closure)} instead. */
+		@Deprecated
 		List<Node> find(ICondition condition);
 
 		/** Starting from this node, recursively searches for nodes for which <code>closure.call(node)</code>
@@ -1225,7 +1253,7 @@ public interface Proxy {
 		 * See {@link Controller#findAll()} for map-global searches.
 		 * @since 1.2 */
 		List<Node> findAll();
-		
+
 		/** Returns all nodes of the branch that starts with this node in depth-first order.
 		 * See {@link Controller#findAllDepthFirst()} for map-global searches.
 		 * @since 1.2 */
@@ -1262,7 +1290,7 @@ public interface Proxy {
 
 		/** like {@link #createChild()} but sets the node text to the given text.
 		 * <pre>
-		 * // instead of 
+		 * // instead of
 		 * def child = node.createChild(); child.setObject(value);
 		 * // use
 		 * def child = node.createChild(value);
@@ -1281,7 +1309,7 @@ public interface Proxy {
 		/** inserts a copy of the branch starting with node as a new child branch.
 		 * @since 1.2 */
 		Node appendBranch(NodeRO node);
-		
+
 		/** inserts the node as a clone of toBeCloned <em>including</em> its current and/or future
 		 * subtree. That is all changes of descendent nodes of toBeCloned are reflected in the subtree
 		 * of the new node <em>and vice versa</em>.
@@ -1289,19 +1317,19 @@ public interface Proxy {
 		 * shared nodes instead of clone and cloned since none of both is privileged.
 		 * @return the new child node
 		 * @throws IllegalArgumentException if
-		 *     a) this node (the to-be-parent) is contained in the subtree of toBeCloned,  
+		 *     a) this node (the to-be-parent) is contained in the subtree of toBeCloned,
 		 *     b) toBeCloned is the root node,
 		 *     c) toBeCloned comes from a different map.
 		 * @since 1.5 */
 		Node appendAsCloneWithSubtree(NodeRO toBeCloned);
-		
+
 		/** inserts the node as a clone of toBeCloned <em>without</em> its current and/or future
-		 * subtree. That is toBeCloned and the new node have children of their own. 
+		 * subtree. That is toBeCloned and the new node have children of their own.
 		 * <br><em>Note:</em> Cloning works symmetrically so we could better speak of two
 		 * shared nodes instead of clone and cloned since none of both is privileged.
 		 * @return the new child node
 		 * @throws IllegalArgumentException if
-		 *     a) this node (the to-be-parent) is contained in the subtree of toBeCloned,  
+		 *     a) this node (the to-be-parent) is contained in the subtree of toBeCloned,
 		 *     b) toBeCloned is the root node,
 		 *     c) toBeCloned comes from a different map.
 		 * @since 1.5 */
@@ -1327,9 +1355,9 @@ public interface Proxy {
 		 * A node's text is String valued. This methods provides automatic conversion to String in the same way as
 		 * for {@link #setText(Object)}, that is special conversion is provided for dates and calendars, other
 		 * types are converted via value.toString().
-		 * 
+		 *
 		 * If the conversion result is not valid HTML it will be automatically converted to HTML.
-		 * 
+		 *
 		 * @param details An object for conversion to String. Use null to unset the details. Works well for all types
 		 *        that {@link Convertible} handles, particularly {@link Convertible}s itself.
 		 * @since 1.2
@@ -1407,7 +1435,7 @@ public interface Proxy {
 		 * @see #setObject(Object)
 		 * @since 1.2, semantics changed for Strings with 1.2.17 */
 		void setText(Object value);
-		
+
 		/**
 		 * A node's text object is normally String valued but it can be of any type since every Object can be converted
 		 * to String for display. This methods provides automatic conversion to String in a way that node.to.getXyz()
@@ -1514,7 +1542,7 @@ public interface Proxy {
 		 * <pre>
 		 *   node.attributes = [:] // clear the attributes
 		 *   assert node.attributes.size() == 0
-		 *   node.attributes = ["1st" : "a value", "2nd" : "another value"] // create 2 attributes 
+		 *   node.attributes = ["1st" : "a value", "2nd" : "another value"] // create 2 attributes
 		 *   assert node.attributes.size() == 2
 		 *   node.attributes = ["one attrib" : new Double(1.22)] // replace all attributes
 		 *   assert node.attributes.size() == 1
@@ -1529,15 +1557,15 @@ public interface Proxy {
         /** Returns true if the node is password protected, no matter if currently accessible (password entered) or not.
          * @since 1.3.6 */
 		boolean hasEncryption();
-        
+
         /** decrypts a node and remove the password protection.
          * @since 1.3.6 */
         void removeEncryption(String password);
-		
+
 		/** Returns true if the node has password protection and is currently unaccessible (password has to be entered).
 		 * @since 1.3.6 */
 		boolean isEncrypted();
-		
+
 		/** encrypts a node. If the node has child nodes the branch is folded.
 		 * @since 1.3.6 */
 		void encrypt(String password);
@@ -1575,7 +1603,7 @@ public interface Proxy {
         /** use length units like "1 cm" or "6 pt"
          * @since 1.5.6 */
     	void setMinimalDistanceBetweenChildren(String verticalShift);
-    	
+
     	/**
     	 * A sort method that uses the result of the Groovy closure ("block") for comparison. As this closure
     	 * will be called with a node as an argument (to be referenced by <code>it</code>) the search can
@@ -1604,7 +1632,7 @@ public interface Proxy {
 		 * It's guaranteed that <code>node.style.name = node.style.name</code> does not change the style.
 		 * @since 1.2.2 */
 		String getName();
-		
+
 		Node getStyleNode();
 
 		Color getBackgroundColor();
@@ -1618,6 +1646,7 @@ public interface Proxy {
 		Font getFont();
 
 		/** @deprecated since 1.2 - use {@link #getTextColor()} instead. */
+		@Deprecated
 		Color getNodeTextColor();
 
 		/** @since 1.2 */
@@ -1630,7 +1659,7 @@ public interface Proxy {
 
         /** @since 1.2.20 */
         int getMinNodeWidth();
-        
+
         /** @since 1.2.20 */
         int getMaxNodeWidth();
 
@@ -1659,6 +1688,7 @@ public interface Proxy {
 		void setBackgroundColorCode(String rgbString);
 
 		/** @deprecated since 1.2 - use {@link #setTextColor(Color)} instead. */
+		@Deprecated
 		void setNodeTextColor(Color color);
 
 		/** @since 1.2 */
@@ -1676,27 +1706,27 @@ public interface Proxy {
         /** minNodeWidth in px - set to -1 to restore default.
          * @since 1.2.20 */
         void setMinNodeWidth(int width);
-        
-        /** Set to null to restore default 
+
+        /** Set to null to restore default
          * @since 1.5.6 */
         void setMinNodeWidth(Quantity<LengthUnits> width);
 
         /** use length units like "1 cm" or "6 pt"
          * @since 1.5.6 */
         void setMinNodeWidth(String width);
-        
+
         /** minNodeWidth in px - set to -1 to restore default.
          * @since 1.2.20 */
         void setMaxNodeWidth(int width);
-        
-        /** Set to null to restore default 
+
+        /** Set to null to restore default
          * @since 1.5.6 */
         void setMaxNodeWidth(Quantity<LengthUnits> width);
 
         /** use length units like "1 cm" or "6 pt"
          * @since 1.5.6 */
         void setMaxNodeWidth(String width);
-        
+
         /** @since 1.3.8 */
         void setNumberingEnabled(boolean enabled);
 	}
@@ -1749,7 +1779,7 @@ public interface Proxy {
      *      c.statusInfo = "node has no reminder"
      *  else
      *      c.statusInfo = "node has a reminder: $reminder"
-     *  
+     *
      *  def inAMinute = new Date(System.currentTimeMillis() + 60*1000)
      *  node.reminder.createOrReplace(inAMinute, "WEEK", 2)
      *  if (node.map.file) {

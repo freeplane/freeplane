@@ -1,11 +1,10 @@
 /**
- * 
+ *
  */
 package org.freeplane.plugin.script.proxy;
 
-import groovy.lang.Closure;
-
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,13 +17,13 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.export.mindmapmode.IExportEngine;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.factory.MindIconFactory;
-import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
@@ -40,6 +39,8 @@ import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
+import groovy.lang.Closure;
+
 class ControllerProxy implements Proxy.Controller {
 	private final ScriptContext scriptContext;
 
@@ -47,15 +48,18 @@ class ControllerProxy implements Proxy.Controller {
 		this.scriptContext = scriptContext;
 	}
 
+	@Override
 	public void centerOnNode(final Node center) {
 		final NodeModel nodeModel = ((NodeProxy) center).getDelegate();
 		Controller.getCurrentController().getSelection().centerNode(nodeModel);
 	}
 
+	@Override
 	public void edit(Node node) {
 		editImpl(node, true);
 	}
 
+	@Override
 	public void editInPopup(Node node) {
 		editImpl(node, false);
 	}
@@ -66,18 +70,21 @@ class ControllerProxy implements Proxy.Controller {
 		((MTextController) TextController.getController()).edit(FirstAction.EDIT_CURRENT, !editInline);
     }
 
+	@Override
 	public Node getSelected() {
 		if (scriptContext != null)
 			scriptContext.accessAll();
 		return new NodeProxy(Controller.getCurrentController().getSelection().getSelected(), scriptContext);
 	}
 
+	@Override
 	public List<Node> getSelecteds() {
 		if (scriptContext != null)
 			scriptContext.accessAll();
 		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection().getOrderedSelection(), scriptContext);
 	}
 
+	@Override
 	public List<Node> getSortedSelection(final boolean differentSubtrees) {
 		if (scriptContext != null)
 			scriptContext.accessAll();
@@ -85,7 +92,8 @@ class ControllerProxy implements Proxy.Controller {
 		    .getSortedSelection(differentSubtrees), scriptContext);
 	}
 
-    public void select(final Node toSelect) {
+    @Override
+	public void select(final Node toSelect) {
         if (toSelect != null) {
             final NodeModel nodeModel = ((NodeProxy) toSelect).getDelegate();
             Controller.getCurrentModeController().getMapController().displayNode(nodeModel);
@@ -93,7 +101,8 @@ class ControllerProxy implements Proxy.Controller {
         }
     }
 
-    public void selectBranch(final Node branchRoot) {
+    @Override
+	public void selectBranch(final Node branchRoot) {
         if (branchRoot != null) {
             final NodeModel nodeModel = ((NodeProxy) branchRoot).getDelegate();
             Controller.getCurrentModeController().getMapController().displayNode(nodeModel);
@@ -101,6 +110,7 @@ class ControllerProxy implements Proxy.Controller {
         }
     }
 
+	@Override
 	public void select(final Collection<Node> toSelect) {
 		final Iterator<Node> it = toSelect.iterator();
 		if (!it.hasNext()) {
@@ -115,11 +125,13 @@ class ControllerProxy implements Proxy.Controller {
 			Controller.getCurrentController().getSelection().toggleSelected(nodeModel);
 		}
 	}
-	
-    public void selectMultipleNodes(final Collection<Node> toSelect) {
+
+    @Override
+	public void selectMultipleNodes(final Collection<Node> toSelect) {
 	    select(toSelect);
 	}
 
+	@Override
 	public void deactivateUndo() {
 		final MapModel map = Controller.getCurrentController().getMap();
 		if (map instanceof MapModel) {
@@ -128,18 +140,21 @@ class ControllerProxy implements Proxy.Controller {
 		}
 	}
 
+	@Override
 	public void undo() {
 		final MapModel map = Controller.getCurrentController().getMap();
-		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
 		undoHandler.undo();
 	}
 
+	@Override
 	public void redo() {
 		final MapModel map = Controller.getCurrentController().getMap();
-		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
 		undoHandler.redo();
 	}
 
+	@Override
 	public void setStatusInfo(final String info) {
 		final ViewController viewController = getViewController();
 		viewController.out(info);
@@ -153,30 +168,36 @@ class ControllerProxy implements Proxy.Controller {
 		return Controller.getCurrentController().getMapViewManager();
 	}
 
+	@Override
 	public void setStatusInfo(final String infoPanelKey, final String info) {
 		final ViewController viewController = getViewController();
 		viewController.addStatusInfo(infoPanelKey, info, null);
 	}
 
+	@Override
 	public void setStatusInfo(final String infoPanelKey, final String info, final String iconKey) {
 		final ViewController viewController = getViewController();
 		viewController.addStatusInfo(infoPanelKey, info, MindIconFactory.createStandardIcon(iconKey));
 	}
 
+	@Override
 	@Deprecated
 	public void setStatusInfo(final String infoPanelKey, final Icon icon) {
 		final ViewController viewController = getViewController();
 		viewController.addStatusInfo(infoPanelKey, null, icon);
 	}
 
+	@Override
 	public FreeplaneVersion getFreeplaneVersion() {
 		return FreeplaneVersion.getVersion();
 	}
 
+	@Override
 	public File getUserDirectory() {
 	    return new File(ResourceController.getResourceController().getFreeplaneUserDirectory());
     }
 
+	@Override
 	@Deprecated
 	public List<Node> find(final ICondition condition) {
 		if (scriptContext != null)
@@ -184,6 +205,7 @@ class ControllerProxy implements Proxy.Controller {
 		return ProxyUtils.find(condition, Controller.getCurrentController().getMap().getRootNode(), scriptContext);
 	}
 
+	@Override
 	public List<Node> find(final Closure<Boolean> closure) {
 		if (scriptContext != null)
 			scriptContext.accessAll();
@@ -191,6 +213,7 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	// NodeRO: R
+	@Override
 	public List<Node> findAll() {
 		if (scriptContext != null)
 			scriptContext.accessAll();
@@ -198,12 +221,14 @@ class ControllerProxy implements Proxy.Controller {
     }
 
 	// NodeRO: R
+	@Override
 	public List<Node> findAllDepthFirst() {
 		if (scriptContext != null)
 			scriptContext.accessAll();
 		return ProxyUtils.findAll(Controller.getCurrentController().getMap().getRootNode(), scriptContext, false);
     }
 
+	@Override
 	public Map newMap() {
 		final MapModel oldMap = Controller.getCurrentController().getMap();
 		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
@@ -212,6 +237,7 @@ class ControllerProxy implements Proxy.Controller {
 		return new MapProxy(newMap, scriptContext);
 	}
 
+	@Override
 	public Map newMapFromTemplate(File templateFile) {
 		final MapModel oldMap = Controller.getCurrentController().getMap();
 		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
@@ -220,6 +246,20 @@ class ControllerProxy implements Proxy.Controller {
 		return new MapProxy(newMap, scriptContext);
 	}
 
+	@Override
+	public Map newHiddenMapFromTemplate(File templateFile) {
+		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
+		MapModel newMap;
+		try {
+			newMap = mapIO.newHiddenUntitledMap(Compat.fileToUrl(templateFile));
+			return new MapProxy(newMap, scriptContext);
+		}
+		catch (MalformedURLException e) {
+			return null;
+		}
+	}
+
+	@Override
 	public Map newMap(URL url) {
 		try {
 			final MapModel oldMap = Controller.getCurrentController().getMap();
@@ -239,8 +279,8 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	private void restartTransaction(final MapModel oldMap, final MapModel newmap) {
-		final IUndoHandler oldUndoHandler = (IUndoHandler) oldMap.getExtension(IUndoHandler.class);
-		final IUndoHandler newUndoHandler = (IUndoHandler) newmap.getExtension(IUndoHandler.class);
+		final IUndoHandler oldUndoHandler = oldMap.getExtension(IUndoHandler.class);
+		final IUndoHandler newUndoHandler = newmap.getExtension(IUndoHandler.class);
 		final int transactionLevel = oldUndoHandler.getTransactionLevel();
         if(transactionLevel == 0){
             return;
@@ -253,19 +293,23 @@ class ControllerProxy implements Proxy.Controller {
 		throw new RuntimeException("can not create map inside transaction");
 	}
 
-    public float getZoom() {
+    @Override
+	public float getZoom() {
 	    return getMapViewManager().getZoom();
     }
-    
-    public void setZoom(float ratio) {
+
+    @Override
+	public void setZoom(float ratio) {
     	getMapViewManager().setZoom(ratio);
     }
 
-    public boolean isInteractive() {
+    @Override
+	public boolean isInteractive() {
         return !Boolean.parseBoolean(System.getProperty("nonInteractive"));
     }
 
-    public List<String> getExportTypeDescriptions() {
+    @Override
+	public List<String> getExportTypeDescriptions() {
         final ArrayList<String> list = new ArrayList<String>();
         for (FileFilter fileFilter : ExportController.getContoller().getFileFilters()) {
             list.add(fileFilter.getDescription());
@@ -273,7 +317,8 @@ class ControllerProxy implements Proxy.Controller {
         return list;
     }
 
-    public void export(Map map, File destFile, String exportTypeDescription, boolean overwriteExisting) {
+    @Override
+	public void export(Map map, File destFile, String exportTypeDescription, boolean overwriteExisting) {
         final FileFilter filter = findExportFileFilterByDescription(exportTypeDescription);
         if (filter == null) {
             throw new IllegalArgumentException("no export defined for '" + exportTypeDescription + "'");
@@ -297,7 +342,8 @@ class ControllerProxy implements Proxy.Controller {
         return null;
     }
 
-    public List<Map> getOpenMaps() {
+    @Override
+	public List<Map> getOpenMaps() {
     	Collection<MapModel> mapModels = getMapViewManager().getMaps().values();
     	ArrayList<Map> mapProxies = new ArrayList<Map>(mapModels.size());
     	for (MapModel mapModel : mapModels) {

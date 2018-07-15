@@ -130,7 +130,6 @@ public class LinkController extends SelectionController implements IExtension {
 		// (#ID_1698830792 -> Nodename) is usually wanted
 		final LinkTransformer textTransformer = new LinkTransformer(modeController, 10);
 		TextController.getController(modeController).addTextTransformer(textTransformer);
-		textTransformer.registerListeners(modeController);
 		final INodeSelectionListener listener = new INodeSelectionListener() {
 			@Override
 			public void onDeselect(final NodeModel node) {

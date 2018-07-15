@@ -125,7 +125,7 @@ public class MapStyleModel implements IExtension {
 	void createStyleMap(final MapModel parentMap, MapStyleModel mapStyleModel, final String styleMapStr) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		MapModel styleMap = new StyleMapModel(parentMap.getIconRegistry(),
-		    AttributeRegistry.getRegistry(parentMap));
+		    AttributeRegistry.getRegistry(parentMap), modeController.getMapController());
 		styleMap.createNewRoot();
 		final MapReader mapReader = modeController.getMapController().getMapReader();
 		final Reader styleReader = new StringReader(styleMapStr);
