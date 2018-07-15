@@ -10,6 +10,10 @@ dependencies {
     compile 'net.bytebuddy:byte-buddy:1.7.9'
 }
 
+repositories {
+	maven { url "${project.gradle.gradleUserHomeDir}/local-artifacts" }
+}
+
 tasks.withType(JavaCompile) {
 	if (JavaVersion.current().isJava8Compatible())
 		options.compilerArgs << '-parameters'
