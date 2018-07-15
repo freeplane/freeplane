@@ -67,21 +67,21 @@ public class EventStreamDialog {
 
 	private class CompoundServer implements Server {
 
-		GuiServer guiServer = new GuiServer();
-		Server webServer = new WebSocketServer();
+		private GuiServer guiServer = new GuiServer();
+		private Server webServer = null;
 
 		Server subscriptionServer = guiServer;
 
 		@Override
 		public CompletableFuture<MapId> createNewMap(MapCreateRequested request) {
 			if(useWebSockets.isSelected())
-				webServer.createNewMap(request);
+				getWebServer().createNewMap(request);
 			return guiServer.createNewMap(request);
 		}
 		@Override
 		public CompletableFuture<UpdateStatus> update(MapUpdateRequested request) {
 			if(useWebSockets.isSelected())
-				webServer.update(request);
+				getWebServer().update(request);
 			return guiServer.update(request);
 		}
 
@@ -95,6 +95,11 @@ public class EventStreamDialog {
 		}
 		public void updateReceiver() {
 			guiServer.updateReceiver();
+		}
+		private Server getWebServer() {
+			if(webServer == null)
+				webServer = new WebSocketServer();
+			return webServer;
 		}
 
 
