@@ -4,10 +4,8 @@ plugins {
   
 apply plugin: "net.ltgt.apt-eclipse"
 
-if( !project.hasProperty('skipMavenLocal') ) {
-	repositories {
-		mavenLocal()
-	}
+repositories {
+	maven { url "${project.gradle.gradleUserHomeDir}/local-artifacts" }
 }
 
   
