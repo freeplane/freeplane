@@ -96,7 +96,7 @@ public class MapLoader{
 
 		try {
 			MMapModel map = null;
-			if (withView) {
+			if (withView && sourceLocation != null) {
 				assertNoTransaction(oldMap);
 				map = selectMapViewByUrl();
 			}
@@ -116,6 +116,8 @@ public class MapLoader{
 			if (withView) {
 				selectNode();
 			}
+			if(withView)
+				restartTransaction(oldMap, map);
 			return map;
 		}
 		catch (RuntimeException e) {
@@ -169,16 +171,6 @@ public class MapLoader{
 		}
 	}
 
-	private void assertNoTransaction(final MapModel oldMap) {
-		if(oldMap == null)
-			return;
-		final IUndoHandler oldUndoHandler = oldMap.getExtension(IUndoHandler.class);
-		final int transactionLevel = oldUndoHandler.getTransactionLevel();
-        if(transactionLevel != 0)
-			throw new RuntimeException("can not create map inside transaction");
-	}
-
-
 	private MMapModel loadMap()
 			throws FileNotFoundException, IOException, XMLParseException, URISyntaxException {
 		if(newMapLocation != null) {
@@ -205,20 +197,24 @@ public class MapLoader{
 				fileManager.lock(map, newFile);
 		}
 
-		final File file = Compat.urlToFile(sourceLocation);
-		if (file == null) {
-			fileManager.loadCatchExceptions(sourceLocation, map);
-		}
-		else {
-			if (file.length() != 0) {
-				//DOCEAR - fixed: set the file for the map before parsing the xml, necessary for some events
-				fileManager.setFile(map, file);
-				NodeModel root = fileManager.loadTree(map, file);
-				assert (map.getRootNode() == root);
+		if(sourceLocation != null) {
+			final File file = Compat.urlToFile(sourceLocation);
+			if (file == null) {
+				fileManager.loadCatchExceptions(sourceLocation, map);
 			}
-			if (map.getRootNode() == null)
-				map.createNewRoot();
+			else {
+				if (file.length() != 0) {
+					//DOCEAR - fixed: set the file for the map before parsing the xml, necessary for some events
+					fileManager.setFile(map, file);
+					NodeModel root = fileManager.loadTree(map, file);
+					assert (map.getRootNode() == root);
+				}
+			}
 		}
+
+		if (map.getRootNode() == null)
+			map.createNewRoot();
+
 		if (sourceLocation == null || ! sourceLocation.equals(newMapLocation)) {
 			final Object rootText = map.getRootNode().getUserObject();
 			if (rootText instanceof TranslatedObject) {
@@ -282,4 +278,25 @@ public class MapLoader{
 		return modeController.getController();
 	}
 
+	private void assertNoTransaction(final MapModel oldMap) {
+		if(oldMap == null)
+			return;
+		final IUndoHandler oldUndoHandler = oldMap.getExtension(IUndoHandler.class);
+		final int transactionLevel = oldUndoHandler.getTransactionLevel();
+        if( ! (transactionLevel == 0 || withView && transactionLevel == 1))
+			throw new IllegalStateException("can not create map inside transaction");
+	}
+
+	private void restartTransaction(final MapModel oldMap, final MapModel newmap) {
+		if(oldMap == null)
+			return;
+		final IUndoHandler oldUndoHandler = oldMap.getExtension(IUndoHandler.class);
+		final IUndoHandler newUndoHandler = newmap.getExtension(IUndoHandler.class);
+		final int transactionLevel = oldUndoHandler.getTransactionLevel();
+		if(transactionLevel == 1){
+		    oldUndoHandler.commit();
+		    newUndoHandler.startTransaction();
+		    return;
+		}
+	}
 }

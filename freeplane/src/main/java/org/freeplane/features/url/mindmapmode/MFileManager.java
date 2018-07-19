@@ -596,7 +596,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		Controller.getCurrentController().getMapViewManager().setMapTitles();
 	}
 
-	public MapModel openUntitledMap() {
+	public MapModel newMapFromDefaultTemplate() {
 		return AccessController.doPrivileged(new PrivilegedAction<MapModel>() {
 			@Override
 			public MapModel run() {
@@ -605,8 +605,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 					return openUntitledMap(file);
 				}
 				final MapController mapController = Controller.getCurrentModeController().getMapController();
-				final MapModel map = mapController.openMap();
-				mapController.setSaved(map, true);
+				final MapModel map = mapController.newMap();
 				return map;
 			}
 		});
@@ -706,7 +705,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				try {
 					final MMapController mapController = (MMapController) Controller.getCurrentModeController()
 					    .getMapController();
-					mapController.openUntitledMap(Compat.fileToUrl(file));
+					mapController.newMap(Compat.fileToUrl(file));
 					final Controller controller = Controller.getCurrentController();
 					final MapModel map = controller.getMap();
 					return map;

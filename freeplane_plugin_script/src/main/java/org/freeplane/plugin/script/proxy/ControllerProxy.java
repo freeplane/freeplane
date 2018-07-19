@@ -4,7 +4,6 @@
 package org.freeplane.plugin.script.proxy;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +20,6 @@ import org.freeplane.api.NodeCondition;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.export.mindmapmode.ExportController;
@@ -239,6 +237,12 @@ class ControllerProxy implements Proxy.Controller {
 		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, false);
     }
 
+	@Override
+	public Map newMap() {
+		final MMapIO mapIO = MMapIO.getInstance();
+		final MapModel newMap = mapIO.newMapFromDefaultTemplate();
+		return new MapProxy(newMap, scriptContext);
+	}
 
 
     @Override
@@ -313,15 +317,6 @@ class ControllerProxy implements Proxy.Controller {
 	@Override
 	public Loader load(String file) {
 		return LoaderProxy.of(file, scriptContext);
-	}
-
-	@Override
-	public Map newMap() {
-		return load().getMap();
-	}
-
-	private Loader load() {
-		return LoaderProxy.of(scriptContext);
 	}
 
 	@Override

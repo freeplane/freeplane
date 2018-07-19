@@ -812,7 +812,7 @@ public class MMapController extends MapController {
     }
 
 	@Override
-	public MapModel openMap() {
+	public MapModel newMap() {
 		return new MapLoader(getMModeController()).withView().getMap();
 	}
 
@@ -876,7 +876,7 @@ public class MMapController extends MapController {
 
 	/**@deprecated -- use MMapIO*/
 	@Deprecated
-	public void openUntitledMap(final URL url){
+	public void newMap(final URL url){
 		new MapLoader(getMModeController()).load(url).unsetMapLocation().withView().getMap();
 	}
 
