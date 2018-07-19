@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedActionException;
+import java.security.PrivilegedExceptionAction;
 
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.undo.IUndoHandler;
@@ -172,7 +175,7 @@ public class MapLoader{
 	}
 
 	private MMapModel loadMap()
-			throws FileNotFoundException, IOException, XMLParseException, URISyntaxException {
+			throws PrivilegedActionException {
 		if(newMapLocation != null) {
 			final MMapModel loadedMap = mapController().getMap(newMapLocation);
 			if(loadedMap != null) {
@@ -183,8 +186,37 @@ public class MapLoader{
 			}
 		}
 
-		URL sourceLocation = asDocumentation ? this.sourceLocation : alternativeSourceLocation();
+		final URL actualSourceLocation = asDocumentation ? sourceLocation : alternativeSourceLocation();
 
+		final MMapModel map = AccessController.doPrivileged(new PrivilegedExceptionAction<MMapModel>() {
+
+			@Override
+			public MMapModel run() throws FileNotFoundException, XMLParseException, URISyntaxException, IOException {
+				return  loadMap(actualSourceLocation);
+			}
+		});
+
+		if (map.getRootNode() == null)
+			map.createNewRoot();
+
+		if (actualSourceLocation == null || ! actualSourceLocation.equals(newMapLocation)) {
+			final Object rootText = map.getRootNode().getUserObject();
+			if (rootText instanceof TranslatedObject) {
+				map.getRootNode().setText(rootText.toString());
+			}
+		}
+		map.setURL(newMapLocation);
+		if(saveAfterLoading && ! newMapLocation.equals(actualSourceLocation)) {
+			fileManager().save(map, map.getFile());
+		}
+		map.setSaved(actualSourceLocation != null && actualSourceLocation.equals(newMapLocation));
+		mapController().addLoadedMap(map);
+		mapController().fireMapCreated(map);
+		return map;
+	}
+
+	private MMapModel loadMap(URL sourceLocation)
+			throws URISyntaxException, FileNotFoundException, XMLParseException, IOException {
 		final MMapModel map = new MMapModel();
 		MFileManager fileManager = fileManager();
 		if(asDocumentation) {
@@ -211,23 +243,6 @@ public class MapLoader{
 				}
 			}
 		}
-
-		if (map.getRootNode() == null)
-			map.createNewRoot();
-
-		if (sourceLocation == null || ! sourceLocation.equals(newMapLocation)) {
-			final Object rootText = map.getRootNode().getUserObject();
-			if (rootText instanceof TranslatedObject) {
-				map.getRootNode().setText(rootText.toString());
-			}
-		}
-		map.setURL(newMapLocation);
-		if(saveAfterLoading && ! newMapLocation.equals(sourceLocation)) {
-			fileManager().save(map, map.getFile());
-		}
-		map.setSaved(sourceLocation != null && sourceLocation.equals(newMapLocation));
-		mapController().addLoadedMap(map);
-		mapController().fireMapCreated(map);
 		return map;
 	}
 
