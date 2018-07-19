@@ -147,7 +147,7 @@ public interface Proxy {
 		Proxy.Loader load(String file);
 	}
 
-	public interface Loader extends org.freeplane.api.Loader{
+	interface Loader extends org.freeplane.api.Loader{
 
 		@Override
 		Proxy.Map getMap();
