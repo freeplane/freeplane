@@ -78,7 +78,8 @@ public class MapLoader{
 		return this;
 	}
 
-	public MapLoader selectNodeId(String nodeId) {
+	public MapLoader selectNodeById(String nodeId) {
+		withView = true;
 		selectedNodeId = nodeId;
 		return this;
 	}
