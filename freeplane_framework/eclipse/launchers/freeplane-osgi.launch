@@ -24,6 +24,5 @@
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
-<stringAttribute key="workspace_bundles" value="org.freeplane.core@2:default"/>
 <stringAttribute key="yk-options" value="&#10;snapshots-dir=&#10;additional-options2=onexit\=snapshot&#10;startup=0&#10;"/>
 </launchConfiguration>
