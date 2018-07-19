@@ -77,8 +77,8 @@ class LoaderProxy implements Loader {
 	}
 
 	@Override
-	public LoaderProxy selectNodeId(String nodeId) {
-		mapLoader.selectNodeId(nodeId);
+	public LoaderProxy selectNodeById(String nodeId) {
+		mapLoader.selectNodeById(nodeId);
 		return this;
 	}
 
