@@ -14,6 +14,7 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.api.Loader;
 import org.freeplane.api.Map;
 import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
@@ -238,116 +239,7 @@ class ControllerProxy implements Proxy.Controller {
 		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, false);
     }
 
-	@Override
-	public Map openMap() {
-		final MapModel oldMap = Controller.getCurrentController().getMap();
-		final MMapIO mapIO = MMapIO.getInstance();
-		final MapModel newMap = mapIO.openUntitledMap();
-		restartTransaction(oldMap, newMap);
-		return new MapProxy(newMap, scriptContext);
-	}
 
-	@Override
-	public Map openMap(URL url) {
-		try {
-			final MapModel oldMap = Controller.getCurrentController().getMap();
-			Controller.getCurrentModeController().getMapController().openMap(url);
-			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-			final String key = mapViewManager.checkIfFileIsAlreadyOpened(url);
-			// make the map the current map even if it was already opened
-			if (key == null || !mapViewManager.tryToChangeToMapView(key))
-				throw new RuntimeException("map " + url + " does not seem to be opened");
-			final MapModel newMap = mapViewManager.getModel();
-			restartTransaction(oldMap, newMap);
-			return new MapProxy(newMap, scriptContext);
-		}
-		catch (Exception e) {
-			throw new RuntimeException("error on newMap", e);
-		}
-	}
-
-	@Override
-	public Map openMap(File file) {
-		final URL url = fileToUrlOrNull(file);
-		return url != null ? openMap(url) : null;
-	}
-
-	@Override
-	public Map openUntitledMap(File templateFile) {
-		final MapModel oldMap = Controller.getCurrentController().getMap();
-		final MMapIO mapIO = MMapIO.getInstance();
-		final MapModel newMap = mapIO.openUntitledMap(templateFile);
-		restartTransaction(oldMap, newMap);
-		return new MapProxy(newMap, scriptContext);
-	}
-
-	@Override
-	public Map newMap() {
-		return openMap();
-	}
-
-	@Override
-	public Map newMapFromTemplate(File templateFile) {
-		return openUntitledMap(templateFile);
-	}
-
-
-	@Override
-	public Map newMap(URL url) {
-		return openMap(url);
-	}
-	
-	@Override
-	public Map readMap(File file) {
-		final URL url = fileToUrlOrNull(file);
-		return url != null ? readMap(url) : null;
-	}
-
-	@Override
-	public Map readMap(URL url) {
-		final MMapIO mapIO = MMapIO.getInstance();
-		MapModel newMap = mapIO.readMap(url);
-		return new MapProxy(newMap, scriptContext);
-		
-	}
-
-	static URL fileToUrlOrNull(final File file) {
-		try {
-			return Compat.fileToUrl(file);
-		}
-		catch (MalformedURLException e) {
-			return null;
-		}
-	}
-	
-	@Override
-	public Map createUntitledMap(File templateFile) {
-		final URL url = fileToUrlOrNull(templateFile);
-		return url != null ? createUntitledMap(url) : null;
-	}
-
-	@Override
-	public Map createUntitledMap(final URL template) {
-		final MMapIO mapIO = MMapIO.getInstance();
-		MapModel newMap = mapIO.createUntitledMap(template);
-		return new MapProxy(newMap, scriptContext);
-	}
-
-
-	private void restartTransaction(final MapModel oldMap, final MapModel newmap) {
-		final IUndoHandler oldUndoHandler = oldMap.getExtension(IUndoHandler.class);
-		final IUndoHandler newUndoHandler = newmap.getExtension(IUndoHandler.class);
-		final int transactionLevel = oldUndoHandler.getTransactionLevel();
-        if(transactionLevel == 0){
-            return;
-        }
-		if(transactionLevel == 1){
-		    oldUndoHandler.commit();
-		    newUndoHandler.startTransaction();
-		    return;
-		}
-		throw new RuntimeException("can not create map inside transaction");
-	}
 
     @Override
 	public float getZoom() {
@@ -407,5 +299,39 @@ class ControllerProxy implements Proxy.Controller {
         }
     	return mapProxies;
     }
+
+	@Override
+	public Loader load(File file) {
+		return LoaderProxy.of(file, scriptContext);
+	}
+
+	@Override
+	public Loader load(URL url) {
+		return LoaderProxy.of(url, scriptContext);
+	}
+
+	@Override
+	public Loader load(String file) {
+		return LoaderProxy.of(file, scriptContext);
+	}
+
+	@Override
+	public Map newMap() {
+		return load().getMap();
+	}
+
+	private Loader load() {
+		return LoaderProxy.of(scriptContext);
+	}
+
+	@Override
+	public Map newMap(URL url) {
+		return load(url).getMap();
+	}
+
+	@Override
+	public Map newMapFromTemplate(File templateFile) {
+		return load(templateFile).saveAfterLoading().getMap();
+	}
 
 }

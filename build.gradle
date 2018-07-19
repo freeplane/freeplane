@@ -11,8 +11,10 @@ allprojects {
     ext.globalBin = rootDir.path + '/BIN'
 
     repositories {
-		maven { url "http://dl.bintray.com/freeplane/freeplane" }
 		maven { url "http://www.knopflerfish.org/releases/6.1.0/maven2" }
+		maven { url "${project.gradle.gradleUserHomeDir}/local-artifacts" }
+		maven { url "http://dl.bintray.com/freeplane/freeplane" }
+
         // this is necessary to grab both binary and source jars
         // for local (git) dependencies
         flatDir name: 'localGitDepsRepository',

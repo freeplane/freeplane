@@ -58,7 +58,6 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.n3.nanoxml.XMLException;
@@ -133,7 +132,8 @@ public class UrlManager implements IExtension {
 	            ActionMap aMap = dialog.getRootPane().getActionMap();
 	            aMap.put("escape", new AbstractAction()
 	            		{
-	            		public void actionPerformed (ActionEvent e)
+	            		@Override
+						public void actionPerformed (ActionEvent e)
 	            		{
 	            			dialog.dispose();
 	            		}
@@ -195,8 +195,6 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	/**@deprecated -- use {@link MapIO#loadCatchExceptions(URL url, MapModel map)} */
-	@Deprecated
 	public boolean loadCatchExceptions(final URL url, final MapModel map){
 		InputStreamReader urlStreamReader = null;
 		try {
@@ -225,8 +223,6 @@ public class UrlManager implements IExtension {
 	}
 
 
-	/**@deprecated -- use {@link MapIO#load(URL url, MapModel map)} */
-	@Deprecated
 	public InputStreamReader load(final URL url, final MapModel map)
 			throws IOException, XMLException {
 		InputStreamReader urlStreamReader;
@@ -252,8 +248,6 @@ public class UrlManager implements IExtension {
 		return url;
 	}
 
-    /**@deprecated -- use {@link MapIO#load(URL url, MapModel map)} */
-    @Deprecated
     public boolean loadImpl(final URL url, final MapModel map){
         return loadCatchExceptions(url, map);
     }
@@ -366,7 +360,7 @@ public class UrlManager implements IExtension {
 			loadURL(new URI(fixedUri));
 			return;
 		}
-		
+
 		if(map.startsWith("http://") || map.startsWith("https://")|| map.startsWith("file:")) {
 			loadURL(new URI(map));
 		}
@@ -380,7 +374,7 @@ public class UrlManager implements IExtension {
 			loadURL(uriWithNodeReference);
 		}
 	}
-	
+
 	private URI getAbsoluteUri(final URI uri) throws MalformedURLException {
 		if (uri.isAbsolute()) {
 			return uri;
