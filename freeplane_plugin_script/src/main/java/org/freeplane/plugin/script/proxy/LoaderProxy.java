@@ -3,28 +3,26 @@ package org.freeplane.plugin.script.proxy;
 import java.io.File;
 import java.net.URL;
 
-import org.freeplane.api.Loader;
-import org.freeplane.api.Map;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.mindmapmode.MapLoader;
 import org.freeplane.plugin.script.ScriptContext;
 
-class LoaderProxy implements Loader {
+class LoaderProxy implements Proxy.Loader {
 
-	static Loader of(ScriptContext scriptContext) {
+	static Proxy.Loader of(ScriptContext scriptContext) {
 		return new LoaderProxy(scriptContext);
 	}
 
-	static Loader of(File file, ScriptContext scriptContext) {
+	static Proxy.Loader of(File file, ScriptContext scriptContext) {
 		return new LoaderProxy(scriptContext).load(file);
 	}
 
-	static Loader of(URL url, ScriptContext scriptContext) {
+	static Proxy.Loader of(URL url, ScriptContext scriptContext) {
 		return new LoaderProxy(scriptContext).load(url);
 	}
 
-	static Loader of(String file, ScriptContext scriptContext) {
+	static Proxy.Loader of(String file, ScriptContext scriptContext) {
 		return new LoaderProxy(scriptContext).load(file);
 	}
 
@@ -37,17 +35,17 @@ class LoaderProxy implements Loader {
 		this.scriptContext = scriptContext;
 	}
 
-	private Loader load(File file) {
+	private LoaderProxy load(File file) {
 		mapLoader.load(file);
 		return this;
 	}
 
-	private Loader load(URL url) {
+	private LoaderProxy load(URL url) {
 		mapLoader.load(url);
 		return this;
 	}
 
-	private Loader load(String file) {
+	private LoaderProxy load(String file) {
 		mapLoader.load(new File(file));
 		return this;
 	}
@@ -89,7 +87,7 @@ class LoaderProxy implements Loader {
 	}
 
 	@Override
-	public Map getMap() {
+	public Proxy.Map getMap() {
 		MapModel newMap = mapLoader.getMap();
 		return new MapProxy(newMap, scriptContext);
 	}

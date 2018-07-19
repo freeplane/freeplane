@@ -13,7 +13,6 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.filechooser.FileFilter;
 
-import org.freeplane.api.Loader;
 import org.freeplane.api.Map;
 import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
@@ -305,17 +304,17 @@ class ControllerProxy implements Proxy.Controller {
     }
 
 	@Override
-	public Loader load(File file) {
+	public Proxy.Loader load(File file) {
 		return LoaderProxy.of(file, scriptContext);
 	}
 
 	@Override
-	public Loader load(URL url) {
+	public Proxy.Loader load(URL url) {
 		return LoaderProxy.of(url, scriptContext);
 	}
 
 	@Override
-	public Loader load(String file) {
+	public Proxy.Loader load(String file) {
 		return LoaderProxy.of(file, scriptContext);
 	}
 

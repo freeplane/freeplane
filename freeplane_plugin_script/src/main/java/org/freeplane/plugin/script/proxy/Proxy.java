@@ -1,8 +1,11 @@
 package org.freeplane.plugin.script.proxy;
 
+import java.io.File;
+import java.net.URL;
 import java.util.List;
 
 import org.freeplane.api.Convertible;
+import org.freeplane.api.FreeplaneVersion;
 import org.freeplane.api.NodeCondition;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
@@ -96,7 +99,61 @@ public interface Proxy {
 
 	}
 
-	interface Controller extends ControllerRO , org.freeplane.api.Controller{	}
+	interface Controller extends ControllerRO , org.freeplane.api.Controller{
+		@Override
+		org.freeplane.api.Node getSelected();
+
+		@Override
+		List<? extends org.freeplane.api.Node> getSelecteds();
+
+		@Override
+		List<? extends org.freeplane.api.Node> getSortedSelection(boolean differentSubtrees);
+
+		@Override
+		FreeplaneVersion getFreeplaneVersion();
+
+		@Override
+		File getUserDirectory();
+
+		@Override
+		List<? extends org.freeplane.api.Node> find(NodeCondition condition);
+
+		@Override
+		List<? extends org.freeplane.api.Node> findAll();
+
+		@Override
+		List<? extends org.freeplane.api.Node> findAllDepthFirst();
+
+		@Override
+		float getZoom();
+
+		@Override
+		boolean isInteractive();
+
+		@Override
+		List<String> getExportTypeDescriptions();
+
+		@Override
+		void export(org.freeplane.api.Map map, File destinationFile, String exportTypeDescription,
+					boolean overwriteExisting);
+
+		@Override
+		Proxy.Loader load(File file);
+
+		@Override
+		Proxy.Loader load(URL file);
+
+		@Override
+		Proxy.Loader load(String file);
+	}
+
+	public interface Loader extends org.freeplane.api.Loader{
+
+		@Override
+		Proxy.Map getMap();
+
+	}
+
 
 	interface EdgeRO extends org.freeplane.api.EdgeRO {
 		@Override
