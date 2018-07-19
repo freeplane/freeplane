@@ -7,8 +7,9 @@
 // (at your option) any later version.
 
 import java.lang.reflect.Method
-import java.lang.reflect.TypeVariable
 
+import org.freeplane.api.Loader
+import org.freeplane.core.resources.ResourceController
 import org.freeplane.core.ui.components.UITools
 import org.freeplane.core.util.FreeplaneVersion
 import org.freeplane.core.util.HtmlUtils
@@ -18,7 +19,6 @@ import org.freeplane.plugin.script.FreeplaneScriptBaseClass
 import org.freeplane.plugin.script.proxy.Convertible
 import org.freeplane.plugin.script.proxy.Proxy
 import org.freeplane.plugin.script.proxy.ScriptUtils
-import org.freeplane.core.resources.ResourceController
 
 
 // FIXME: api is installed locally but is there a portable way to find it?
@@ -160,7 +160,7 @@ def formatProperty(String property, String type, String mode) {
 }
 
 def formatMethodKey(Method method) {
-		return method.name + 
+		return method.name +
 			'(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
 
 }
@@ -257,6 +257,7 @@ makeApi(proxy, Proxy.Attributes.class)
 makeApi(proxy, Proxy.Cloud.class)
 makeApi(proxy, Proxy.Connector.class)
 makeApi(proxy, Proxy.Controller.class)
+makeApi(proxy, Loader.class)
 makeApi(proxy, Proxy.Edge.class)
 makeApi(proxy, Proxy.ExternalObject.class)
 makeApi(proxy, Proxy.Font.class)

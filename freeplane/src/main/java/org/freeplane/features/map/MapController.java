@@ -800,7 +800,7 @@ implements IExtension, NodeChangeAnnouncer{
 		Controller.getCurrentController().getMapViewManager().newMapView(mapModel, Controller.getCurrentModeController());
 	}
 
-	public MapModel openMap() {
+	public MapModel newMap() {
 		final MapModel mindMapMapModel = new MapModel();
 		mindMapMapModel.createNewRoot();
 		fireMapCreated(mindMapMapModel);

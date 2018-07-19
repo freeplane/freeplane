@@ -67,7 +67,7 @@ class EncryptedMap extends AFreeplaneAction {
 			return;
 		}
 		final ModeController modeController = Controller.getCurrentModeController();
-		MFileManager.getController(modeController).openUntitledMap();
+		MFileManager.getController(modeController).newMapFromDefaultTemplate();
 		NodeModel node = Controller.getCurrentController().getMap().getRootNode();
 		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node);
 		encryptedMindMapNode.setEncrypter(new SingleDesEncrypter(password));
