@@ -52,7 +52,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
@@ -95,6 +94,7 @@ import org.freeplane.features.url.NodeAndMapReference;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
+import org.freeplane.features.url.mindmapmode.MapLoader;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
@@ -112,6 +112,7 @@ public class MMapController extends MapController {
 		super(modeController);
 		createActions(modeController);
 			addNodeSelectionListener(new INodeSelectionListener() {
+				@Override
 				public void onSelect(final NodeModel node) {
 					final ViewController viewController = Controller.getCurrentController().getViewController();
 					if (ResourceController.getResourceController().getBooleanProperty("display_node_id")) {
@@ -119,31 +120,32 @@ public class MMapController extends MapController {
 					}
 				}
 
+				@Override
 				public void onDeselect(final NodeModel node) {
 					final ViewController viewController = Controller.getCurrentController().getViewController();
 					viewController.addStatusInfo("display_node_id", null, null);
 				}
 			});
 			addMapChangeListener(new IMapChangeListener() {
-				
+
 				@Override
 				public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 				}
-				
+
 				@Override
 				public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 				}
-				
+
 				@Override
 				public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 					if(! nodeMoveEvent.oldParent.equals(nodeMoveEvent.newParent))
 						onNodeDeleted(nodeMoveEvent.oldParent);
 				}
-				
+
 				@Override
 				public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
 				}
-				
+
 				@Override
 				public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 					final NodeModel parent = nodeDeletionEvent.parent;
@@ -155,12 +157,12 @@ public class MMapController extends MapController {
 						deleteSingleSummaryNode(node);
 					}
 				}
-				
+
 				@Override
 				public void mapChanged(MapChangeEvent event) {
 				}
 			});
-	
+
 	}
 
 	public NodeModel addNewNode(int newNodeMode) {
@@ -222,9 +224,11 @@ public class MMapController extends MapController {
 		if(component == null)
 			return;
 		component.addFocusListener(new FocusListener() {
+			@Override
 			public void focusLost(FocusEvent e) {
 			}
 
+			@Override
 			public void focusGained(FocusEvent e) {
 				e.getComponent().removeFocusListener(this);
 				final TextController textController = TextController.getController();
@@ -328,14 +332,17 @@ public class MMapController extends MapController {
 	    final MapModel map = parent.getMap();
 		newNode.setLeft(newNodeIsLeft);
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				insertNodeIntoWithoutUndo(newNode, parent, index);
 			}
 
+			@Override
 			public String getDescription() {
 				return "addNewNode";
 			}
 
+			@Override
 			public void undo() {
 				deleteWithoutUndo(parent, index);
 			}
@@ -344,7 +351,7 @@ public class MMapController extends MapController {
     }
 
 	public boolean close(final MapModel map) {
-		if (!map.isSaved()) {
+		if (!(map.isSaved() || map.isDocumentation())) {
 			Controller.getCurrentController().getMapViewManager().changeToMap(map);
 			final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
 			final String title = TextUtils.getText("SaveAction.text");
@@ -371,6 +378,7 @@ public class MMapController extends MapController {
 		return true;
 	}
 
+	@Override
 	public void closeWithoutSaving(final MapModel map) {
 		super.closeWithoutSaving(map);
 	}
@@ -391,14 +399,14 @@ public class MMapController extends MapController {
 	public void deleteNode(NodeModel node) {
 		deleteNodes(Arrays.asList(node));
 	}
-	
+
 	public void deleteNodes(final List<NodeModel> nodes) {
 		final List<NodeModel> deletedNodesWithSummaryGroupIndicators = new SummaryGroupEdgeListAdder(nodes).addSummaryEdgeNodes();
 		for(NodeModel node : deletedNodesWithSummaryGroupIndicators){
 		    deleteSingleNodeWithClones(node);
 		}
 	}
-	
+
 	public void convertClonesToIndependentNodes(final NodeModel node){
 		final MLinkController linkController = (MLinkController) MLinkController.getController();
 		if(node.isCloneTreeRoot()){
@@ -413,24 +421,24 @@ public class MMapController extends MapController {
 		final ClipboardController clipboardController = mModeController.getExtension(ClipboardController.class);
 		final NodeModel duplicate = clipboardController.duplicate(node, false);
 		IActor converter = new IActor() {
-			
+
 			@Override
 			public void act() {
 				node.swapData(duplicate);
 				nodeChanged(node);
 			}
-			
+
 			@Override
 			public void undo() {
 				node.swapData(duplicate);
 				nodeChanged(node);
 			}
-			
+
 			@Override
 			public String getDescription() {
 				return "convertClonesToIndependentNodes";
 			}
-			
+
 		};
 		final boolean shouldConvertChildNodes = node.subtreeClones().size() > 1;
 		mModeController.execute(converter, node.getMap());
@@ -458,15 +466,18 @@ public class MMapController extends MapController {
 	private void deleteSingleNode(final NodeModel parentNode, final int index) {
 		final NodeModel node = parentNode.getChildAt(index);
 		final IActor actor = new IActor() {
-        	public void act() {
+        	@Override
+			public void act() {
         		deleteWithoutUndo(parentNode, index);
         	}
 
-        	public String getDescription() {
+        	@Override
+			public String getDescription() {
         		return "delete";
         	}
 
-        	public void undo() {
+        	@Override
+			public void undo() {
 				(Controller.getCurrentModeController().getMapController()).insertNodeIntoWithoutUndo(node, parentNode, index);
         	}
         };
@@ -557,7 +568,7 @@ public class MMapController extends MapController {
 			moveNodeAndItsClones(child, oldParent, newIndex, newParent.isLeft(), false);
 			return;
 		}
-			
+
 		final NodeModel childNode = child;
 		final int oldIndex = oldParent.getIndex(childNode);
 		final int childCount = newParent.getChildCount();
@@ -610,17 +621,20 @@ public class MMapController extends MapController {
                                 final boolean isLeft, final boolean changeSide) {
 		final NodeModel oldParent = child.getParentNode();
 		final int oldIndex = oldParent.getIndex(child);
-		
+
 		final boolean wasLeft = child.isLeft();
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				moveNodeToWithoutUndo(child, newParent, newIndex, isLeft, changeSide);
 			}
 
+			@Override
 			public String getDescription() {
 				return "moveNode";
 			}
 
+			@Override
 			public void undo() {
 				moveNodeToWithoutUndo(child, oldParent, oldIndex, wasLeft, changeSide);
 			}
@@ -663,9 +677,10 @@ public class MMapController extends MapController {
 	public void moveNodesInGivenDirection(NodeModel selected, Collection<NodeModel> movedNodes, final int direction) {
 		final List<NodeModel> movedNodesWithEdges = new SummaryGroupEdgeListAdder(movedNodes).addSummaryEdgeNodes();
 		final Collection<NodeModel> movedNodeSet = new HashSet<NodeModel>(movedNodesWithEdges);
-		
+
         final Comparator<Object> comparator = (direction == -1) ? null : new Comparator<Object>() {
-            public int compare(final Object o1, final Object o2) {
+            @Override
+			public int compare(final Object o1, final Object o2) {
                 final int i1 = ((Integer) o1).intValue();
                 final int i2 = ((Integer) o2).intValue();
                 return i2 - i1;
@@ -742,7 +757,8 @@ public class MMapController extends MapController {
         }
 
         Collections.sort(nodes, new Comparator<Object>() {
-            public int compare(final Object o1, final Object o2) {
+            @Override
+			public int compare(final Object o1, final Object o2) {
                 if (o1 instanceof NodeModel) {
                     final NodeModel n1 = (NodeModel) o1;
                     if (o2 instanceof NodeModel) {
@@ -796,18 +812,8 @@ public class MMapController extends MapController {
     }
 
 	@Override
-	public MMapModel createModel() {
-		final MMapModel mindMapMapModel = new MMapModel();
-		mindMapMapModel.createNewRoot();
-		fireMapCreated(mindMapMapModel);
-		return mindMapMapModel;
-	}
-	
-	@Override
 	public MapModel openMap() {
-		final MMapModel map = (MMapModel) super.openMap();
-		map.enableAutosave();
-		return map;
+		return new MapLoader(getMModeController()).withView().getMap();
 	}
 
 
@@ -854,9 +860,11 @@ public class MMapController extends MapController {
 		if (component == null)
 			return newNode;
 		component.addFocusListener(new FocusListener() {
+			@Override
 			public void focusLost(FocusEvent e) {
 			}
 
+			@Override
 			public void focusGained(FocusEvent e) {
 				e.getComponent().removeFocusListener(this);
 				((MTextController) textController).edit(newNode, targetNode, true, false, false);
@@ -868,107 +876,46 @@ public class MMapController extends MapController {
 
 	/**@deprecated -- use MMapIO*/
 	@Deprecated
-	public boolean openUntitledMap(final URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException{
-        try {
-        	Controller.getCurrentController().getViewController().setWaitingCursor(true);
-        	final MapModel newModel = createUntitledMap(url);
-        	createMapView(newModel);
-        	return true;
-        }
-        finally {
-        	Controller.getCurrentController().getViewController().setWaitingCursor(false);
-        }
+	public void openUntitledMap(final URL url){
+		new MapLoader(getMModeController()).load(url).unsetMapLocation().withView().getMap();
 	}
-	
+
 	private WeakHashMap<MMapModel, Void> loadedMaps = new WeakHashMap<>();
 
+
+	public MMapModel getMap(URL url) {
+		for(MMapModel hiddenMap : loadedMaps.keySet()) {
+			if(url.equals(hiddenMap.getURL()))
+				return hiddenMap;
+		}
+		return null;
+	}
+
+
+	public void addLoadedMap(MMapModel map) {
+		loadedMaps.put(map, null);
+	}
+
+
+
 	public MMapModel createUntitledMap(final URL url) throws IOException, XMLException {
-		final MMapModel newModel = new MMapModel();
-		UrlManager.getController().load(url, newModel);
-		newModel.setURL(null);
-		fireMapCreated(newModel);
-		loadedMaps.put(newModel, null);
-		return newModel;
+		return (MMapModel) new MapLoader(getMModeController()).load(url).unsetMapLocation().withView().getMap();
 	}
 
 	public MapModel readMap(URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
-		return loadMap(url, url);
+		return new MapLoader(getMModeController()).load(url).getMap();
 	}
 
 	/**@throws XMLException
 	 * @deprecated -- use MMapIO*/
 	@Deprecated
 	@Override
-    public boolean openMap(URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
-		// load as documentation map if necessary
-		if(getMModeController().containsExtension(DocuMapAttribute.class)){
-			return openDocumentationMap(url);
-		}
-		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		if (mapViewManager.tryToChangeToMapView(url))
-			return false;
+	public void openMap(URL url) {
 		if (AddOnsController.getController().installIfAppropriate(url))
-			return false;
-		URL alternativeURL = null;
-		try {
-			final File file = Compat.urlToFile(url);
-			if(file == null){
-				alternativeURL =  url;
-			}
-			else{
-				if(file.exists()){
-					final MFileManager fileManager = MFileManager.getController(getMModeController());
-					File alternativeFile = fileManager.getAlternativeFile(file, AlternativeFileMode.AUTOSAVE);
-					if(alternativeFile != null){
-						if (alternativeFile.getAbsoluteFile().equals(file.getAbsoluteFile()) )
-							alternativeURL =  url;
-						else
-							alternativeURL = Compat.fileToUrl(alternativeFile);
-					}
-					else
-						return false;
-				}
-				else{
-					alternativeURL = url;
-				}
-			}
-		}
-		catch (MalformedURLException e) {
-		}
-		catch (URISyntaxException e) {
-		}
-
-		if(alternativeURL == null)
-			return false;
-		Controller.getCurrentController().getViewController().setWaitingCursor(true);
-		try{
-			final MMapModel newModel = loadMap(url, alternativeURL);
-			newModel.enableAutosave();
-			createMapView(newModel);
-			return true;
-		}
-		finally {
-			Controller.getCurrentController().getViewController().setWaitingCursor(false);
-		}
-    }
-	
-	private MMapModel loadMap(URL url, URL requiredVersionURL)
-			throws FileNotFoundException, IOException, XMLParseException, URISyntaxException {
-		for(MMapModel hiddenMap : loadedMaps.keySet()) {
-			if(url.equals(hiddenMap.getURL()))
-				return hiddenMap;
-		}
-
-		final MMapModel newModel = new MMapModel();
-		final MFileManager fileManager = MFileManager.getController(getMModeController());
-		fileManager.loadAndLock(requiredVersionURL, newModel);
-		newModel.setURL(url);
-		newModel.setSaved(requiredVersionURL.equals(url));
-		fireMapCreated(newModel);
-		loadedMaps.put(newModel, null);
-		return newModel;
+			return;
+		new MapLoader(getMModeController()).load(url).withView().getMap();
 	}
-	
+
 	public void newDocumentationMap(final String file) {
 		final NodeAndMapReference nodeAndMapReference = new NodeAndMapReference(file);
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -1003,52 +950,37 @@ public class MMapController extends MapController {
 			LogUtils.warn(e1);
 		}
 	}
-	
+
 
 
 	/**@throws XMLException
 	 * @deprecated -- use MMapIO*/
 	@Deprecated
-	public boolean openDocumentationMap(final URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException{
-		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		if (mapViewManager.tryToChangeToMapView(url))
-			return false;
-        try {
-        	Controller.getCurrentController().getViewController().setWaitingCursor(true);
-        	final MapModel newModel = new MMapModel();
-        	newModel.addExtension(DocuMapAttribute.instance);
-        	UrlManager.getController().load(url, newModel);
-        	newModel.setReadOnly(true);
-        	fireMapCreated(newModel);
-        	createMapView(newModel);
-        	newModel.setSaved(true);
-        	return true;
-        }
-        finally {
-        	Controller.getCurrentController().getViewController().setWaitingCursor(false);
-        }
+	public void openDocumentationMap(final URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException{
+		new MapLoader(getMModeController()).load(url).withView().asDocumentation().getMap();
 	}
 
 	/**@throws XMLException
 	 * @deprecated -- use MMapIO*/
 	@Deprecated
-    public boolean restoreCurrentMap() throws FileNotFoundException, IOException, URISyntaxException, XMLException {
+    public void restoreCurrentMap() throws FileNotFoundException, IOException, URISyntaxException, XMLException {
 	    final Controller controller = Controller.getCurrentController();
         final MapModel map = controller.getMap();
         final URL url = map.getURL();
         if(url == null){
         	UITools.errorMessage(TextUtils.getText("map_not_saved"));
-        	return false;
+        	return;
         }
 
 		if(map.containsExtension(DocuMapAttribute.class)){
 			closeWithoutSaving(map);
-			return openDocumentationMap(url);
+			openDocumentationMap(url);
+			return;
 		}
 
 		final URL alternativeURL = MFileManager.getController(getMModeController()).getAlternativeURL(url, AlternativeFileMode.ALL);
 		if(alternativeURL == null)
-			return false;
+			return;
 		controller.getViewController().setWaitingCursor(true);
 		try{
 			final MMapModel newModel = new MMapModel();
@@ -1061,13 +993,13 @@ public class MMapController extends MapController {
 			newModel.enableAutosave();
 			loadedMaps.put(newModel, null);
 			createMapView(newModel);
-			return true;
+			return;
 		}
 		finally {
 			controller.getViewController().setWaitingCursor(false);
 		}
 	}
-	
+
 	@Override
 	protected void setFoldingState(final NodeModel node, final boolean folded) {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
@@ -1081,12 +1013,12 @@ public class MMapController extends MapController {
 					unfoldHiddenChildren(node);
 					MMapController.super.setFoldingState(node, wasFolded);
 				}
-				
+
 				@Override
 				public String getDescription() {
 					return "setFoldingState";
 				}
-				
+
 				@Override
 				public void act() {
 					unfoldHiddenChildren(node);
@@ -1098,9 +1030,9 @@ public class MMapController extends MapController {
 		else
 			super.setFoldingState(node, folded);
 	}
-	
+
 	static private final List<String> foldingSavedOptions = Arrays.asList(NodeBuilder.RESOURCES_ALWAYS_SAVE_FOLDING, NodeBuilder.RESOURCES_SAVE_FOLDING_IF_MAP_IS_CHANGED);
-	
+
 	private boolean isFoldingPersistent() {
 	    final ResourceController resourceController = ResourceController.getResourceController();
 		return foldingSavedOptions.contains(resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING));

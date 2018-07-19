@@ -331,7 +331,7 @@ class ControllerProxy implements Proxy.Controller {
 
 	@Override
 	public Map newMapFromTemplate(File templateFile) {
-		return load(templateFile).unsaved().getMap();
+		return load(templateFile).saveAfterLoading().getMap();
 	}
 
 }

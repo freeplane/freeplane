@@ -3,11 +3,11 @@ package org.freeplane.api;
 import java.io.File;
 
 public interface HeadlessLoader {
-	Loader associatedWith(File file);
-	Loader associatedWith(String file);
-	Loader savedAs(File file);
-	Loader savedAs(String file);
-	Loader unsaved();
+	Loader newMapLocation(File file);
+	Loader newMapLocation(String file);
+	Loader unsetMapLocation();
+	Loader saveAfterLoading();
+	Loader selectNodeId(String nodeId);
 	Map getMap();
 
 }

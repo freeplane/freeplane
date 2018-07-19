@@ -178,7 +178,7 @@ public class HeadlessUIController extends FrameController {
 
 	@Override
 	public void setWaitingCursor(boolean b) {
-		throw methodNotImplementedException();
+		// do nothing
 	}
 
 	@Override

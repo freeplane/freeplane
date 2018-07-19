@@ -197,7 +197,11 @@ public class MapModel {
 	}
 
 	public boolean isReadOnly() {
-		return readOnly || containsExtension(DocuMapAttribute.class);
+		return readOnly || isDocumentation();
+	}
+
+	public boolean isDocumentation() {
+		return containsExtension(DocuMapAttribute.class);
 	}
 
 	public boolean isSaved() {

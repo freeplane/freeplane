@@ -59,7 +59,7 @@ public class MapIO implements IExtension{
 	URISyntaxException {
 		urlManager.load(url, map);
 	}
-	public boolean openMap(URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
-	    return mapController.openMap(url);
+	public void openMap(URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
+	    mapController.openMap(url);
     }
 }
