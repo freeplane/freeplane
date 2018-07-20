@@ -24,6 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+
 import org.freeplane.api.Controller;
 import org.freeplane.api.HeadlessMapCreator;
 import org.knopflerfish.framework.Main;
@@ -33,13 +36,13 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.launch.Framework;
 /**
  * This class can be used to run freeplane instance from an application and to obtain its {@link Controller} object.
- * 
+ *
  * To run a headless Freeplane instance use {@code Launcher.create().launchHeadless()},
  * to run a freeplane with complete user UI use {@code Launcher.create().launch()}
- * 
+ *
 * <pre>
-* 
-* Code Example: 
+*
+* Code Example:
 * {@code
 	public static void createNewMindMap(File freeplaneInstallationDirectory, final File newMapFile) {
 		final Launcher launcher = Launcher.createForInstallation(freeplaneInstallationDirectory).disableSecurityManager();
@@ -52,7 +55,7 @@ import org.osgi.framework.launch.Framework;
 	}
 * }
 * </pre>
- * 
+ *
  */
 public class Launcher {
 	private static final String DISABLE_SECURITY_MANAGER_PROPERTY = "org.freeplane.main.application.FreeplaneSecurityManager.disable";
@@ -64,22 +67,36 @@ public class Launcher {
 	private boolean freeplaneLaunched;
 	private static AtomicBoolean launcherCreated = new AtomicBoolean(false);
 	private Framework framework;
-	
+
 	public static void main(String[] args) {
 		fixX11AppName();
+		checkForCompatibleJavaVersion();
 		workAroundForDataFlavorComparator_JDK8130242();
 		new Launcher().launchWithoutUICheck(args);
 	}
-	
+
+	private static void checkForCompatibleJavaVersion() {
+		String javaVersion = System.getProperty("java.version");
+		if(javaVersion.startsWith("10.") || javaVersion.startsWith("10-")) {
+			JOptionPane optionPane = new JOptionPane(
+				"Freeplane is not compatible with java 10, exiting",
+				JOptionPane.ERROR_MESSAGE);
+			JDialog dialog = optionPane.createDialog("Incompatible JRE version");
+			dialog.setAlwaysOnTop(true);
+			dialog.setVisible(true);
+			System.exit(0);
+		}
+	}
+
 	/**
 	 * Creates Launcher for starting embedded Freeplane instance.
-	 * 
-	 * @param freeplaneInstallationDirectory Path to freeplane installation directory 
-	 * 
+	 *
+	 * @param freeplaneInstallationDirectory Path to freeplane installation directory
+	 *
 	 *  Only one Launcher per JVM can be created.
-	 *  
+	 *
 	 * @throws IllegalStateException is launcher already was created.
-	 * 
+	 *
 	 */
 	public static Launcher createForInstallation(final File freeplaneInstallationDirectory) {
 		System.setProperty(BASEDIRECTORY_PROPERTY, freeplaneInstallationDirectory.getPath());
@@ -89,11 +106,11 @@ public class Launcher {
 
 	/**
 	 * Creates Launcher for starting embedded Freeplane instance.
-	 * 
-	 * Freeplane installation directory is defined by location of jar file containing this class. 
-	 * 
+	 *
+	 * Freeplane installation directory is defined by location of jar file containing this class.
+	 *
 	 * Only one Launcher per JVM can be created.
-	 * 
+	 *
 	 * @throws IllegalStateException is launcher already was created.
 	 */
 	public static Launcher create() {
@@ -103,26 +120,26 @@ public class Launcher {
 	private Launcher() {
 		this(getFreeplaneInstallationDirectory());
 	}
-	
-	
+
+
 	/**
 	 * Launchs Freeplane without UI and returns HeadlessMapCreator instance.
-	 * 
+	 *
 	 * @throws IllegalStateException is Freeplane was already launched.
-	 * 
+	 *
 	 */
 	public HeadlessMapCreator launchHeadless() {
 		System.setProperty(HEADLESS_PROPERTY, "true");
 		return launchWithoutUICheck(new String[] {});
 	}
-	
+
 	/**
 	 * Launchs Freeplane with UI and returns Controller instance.
-	 * 
+	 *
 	 * All API methods should be called from the swing event thread to avoid race conditions.
-	 * 
+	 *
 	 * @throws IllegalStateException is Freeplane was already launched.
-	 * 
+	 *
 	 */
 	public Controller launchWithUI(String[] args) {
 		System.setProperty(HEADLESS_PROPERTY, "false");
@@ -143,7 +160,7 @@ public class Launcher {
 		}
 	}
 
-	
+
     /**
      * Disables security manager for launched Freeplane instance.
      */
@@ -160,10 +177,10 @@ public class Launcher {
 	}
 
 	static private void ensureSingleInstance() {
-		if (! launcherCreated.compareAndSet(false, true)) 
+		if (! launcherCreated.compareAndSet(false, true))
 			throw new IllegalStateException("Launcher instance already created");
 	}
-	
+
 	static private File getFreeplaneInstallationDirectory() {
 		final File frameworkDir;
 		if (Utils.isDefineNotSet(BASEDIRECTORY_PROPERTY)) {
@@ -271,7 +288,7 @@ public class Launcher {
 		String propertyName = "org.freeplane.param" + ++argCount;
 		System.setProperty(propertyName, arg);
 	}
-	
-	
+
+
 
 }
