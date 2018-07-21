@@ -88,6 +88,8 @@ public class FormulaUtils {
 				if (value == null) {
 					try {
 						value = ScriptingEngine.executeScript(nodeModel, text, scriptContext, restrictedPermissions);
+						if(value == null)
+							throw new ExecuteScriptException("Null pointer returned by formula");
 						formulaCache.put(nodeModel, text, value);
 						if (DEBUG_FORMULA_EVALUATION)
 						    System.err.println("eval: cache miss: recalculated: " + text);
