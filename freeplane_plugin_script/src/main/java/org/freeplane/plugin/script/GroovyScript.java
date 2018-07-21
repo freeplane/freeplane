@@ -138,7 +138,8 @@ public class GroovyScript implements IScript {
                 final Binding binding = createBinding(node);
                 compiledScript.setBinding(binding);
                 System.setOut(outStream);
-				return compiledScript.run();
+				final Object result = compiledScript.run();
+				return result;
             } finally {
                 System.setOut(oldOut);
                 Thread.currentThread().setContextClassLoader(contextClassLoader);
