@@ -1,6 +1,11 @@
 ===============================
 1.6.16
 ===============================
+Freeplane API for Java applications
+References to other mind maps from formulas and scripts
+Library scripts compiled only when changed
+New API for loading mind maps from scripts
+
 Bug fixes
 
 ===============================
