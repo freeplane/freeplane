@@ -20,7 +20,6 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
 import org.freeplane.features.text.mindmapmode.MTextController;
-import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.FormulaUtils;
 
 class FormulaTextTransformer extends AbstractContentTransformer implements IEditBaseCreator{
@@ -50,8 +49,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
         // starting a new ScriptContext in evalIfScript
         final Object result = FormulaUtils.evalIfScript(node, null, plainText);
         if (result == null) {
-            throw new ExecuteScriptException("got null result from evaluating " + node.getID() + ", text='"
-                    + plainText.substring(1) + "'");
+            return NullObject.INSTANCE;
         }
         return result;
     }

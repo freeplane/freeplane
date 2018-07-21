@@ -22,11 +22,11 @@ public class FormulaUtils {
     static final boolean DEBUG_FORMULA_EVALUATION = false;
 
 	/** evaluate text as a script if it starts with '='.
-	 * @return the evaluation result for script and the original text otherwise 
+	 * @return the evaluation result for script and the original text otherwise
 	 * @throws ExecuteScriptException */
 	public static Object evalIfScript(final NodeModel nodeModel, ScriptContext scriptContext, final String text){
 		if (containsFormula(text)) {
-			scriptContext = (scriptContext == null) ? new ScriptContext() : scriptContext;
+			scriptContext = (scriptContext == null) ? new ScriptContext(nodeModel.getMap().getURL()) : scriptContext;
 			return eval(nodeModel, scriptContext, text.substring(1));
 		}
 		else {
@@ -63,7 +63,7 @@ public class FormulaUtils {
 	    else
 	    	return containsFormula(text);
     }
-	
+
 	private static Pattern FIRST_CHARACTER_IN_HTML = Pattern.compile("(?m)>\\s*[^<\\s]");
 	private static boolean htmlContainsFormula(String text) {
 	    final Matcher matcher = FIRST_CHARACTER_IN_HTML.matcher(text);
@@ -71,7 +71,7 @@ public class FormulaUtils {
     }
 
 	/** evaluate text as a script.
-	 * @return the evaluation result. 
+	 * @return the evaluation result.
 	 * @throws ExecuteScriptException */
 	public static Object eval(final NodeModel nodeModel, final ScriptContext scriptContext, final String text) {
 	    if (DEBUG_FORMULA_EVALUATION)
@@ -85,7 +85,7 @@ public class FormulaUtils {
 			if (ENABLE_CACHING) {
 				final FormulaCache formulaCache = getFormulaCache(nodeModel.getMap());
 				Object value = formulaCache.get(nodeModel, text);
-				if (value == null) {
+				if (! formulaCache.containsCachedValue(nodeModel, text)) {
 					try {
 						value = ScriptingEngine.executeScript(nodeModel, text, scriptContext, restrictedPermissions);
 						formulaCache.put(nodeModel, text, value);
@@ -134,7 +134,7 @@ public class FormulaUtils {
 	}
 
 	private static FormulaCache getFormulaCache(MapModel map) {
-		FormulaCache formulaCache = (FormulaCache) map.getExtension(FormulaCache.class);
+		FormulaCache formulaCache = map.getExtension(FormulaCache.class);
 		if (formulaCache == null) {
 			formulaCache = new FormulaCache();
 			map.addExtension(formulaCache);
