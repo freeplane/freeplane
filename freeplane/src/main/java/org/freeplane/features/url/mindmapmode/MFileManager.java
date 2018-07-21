@@ -475,8 +475,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 		catch (MalformedURLException e) {
 		}
-		catch (URISyntaxException e) {
-		}
 		return null;
 	}
 

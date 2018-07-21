@@ -8,7 +8,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -109,7 +108,7 @@ public class Compat {
 		}
 	}
 
-	public static File urlToFile(final URL pUrl) throws URISyntaxException {
+	public static File urlToFile(final URL pUrl) {
 		final String path = Compat.urlGetFile(pUrl);
 		if(path != null)
 			return new File(path);
@@ -153,10 +152,10 @@ public class Compat {
 	public static boolean isX11WindowManager() {
 	    return Arrays.asList("gnome-shell", "mate", "other...").contains(System.getenv("DESKTOP_SESSION"));
     }
-	
+
 	final public static String CURRENT_VERSION_DIR= File.separatorChar + "1.6.x";
 	final public static String PREVIOUS_VERSION_DIR_NAME = "1.5.x";
-	
+
 	private static String userFpDir = null;
 
 
