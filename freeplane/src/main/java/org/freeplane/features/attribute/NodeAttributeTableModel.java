@@ -89,13 +89,13 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	}
 
 	private void fireTableChanged(final TableModelEvent e) {
+		node.getMap().getNodeChangeAnnouncer().nodeChanged(node, NodeAttributeTableModel.class, null, null);
 		if (listeners != null) {
 			final ArrayList<TableModelListener> arrayList = new ArrayList<TableModelListener>(listeners);
 			for (final TableModelListener listener : arrayList) {
 				listener.tableChanged(e);
 			}
 		}
-		node.getMap().getNodeChangeAnnouncer().nodeChanged(node, NodeAttributeTableModel.class, null, null);
 	}
 
 	public void fireTableRowsDeleted(final int firstRow, final int lastRow) {
