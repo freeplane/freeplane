@@ -85,7 +85,7 @@ public class FormulaUtils {
 			if (ENABLE_CACHING) {
 				final FormulaCache formulaCache = getFormulaCache(nodeModel.getMap());
 				Object value = formulaCache.get(nodeModel, text);
-				if (! formulaCache.containsCachedValue(nodeModel, text)) {
+				if (value == null) {
 					try {
 						value = ScriptingEngine.executeScript(nodeModel, text, scriptContext, restrictedPermissions);
 						formulaCache.put(nodeModel, text, value);

@@ -40,9 +40,4 @@ public class FormulaCache implements IExtension{
 			entry.clear();
 		}
 	}
-
-	public boolean containsCachedValue(NodeModel nodeModel, String text) {
-		final LinkedHashMap<String, Object> nodeCache = cache.get(nodeModel.getID());
-		return nodeCache != null && nodeCache.containsKey(text);
-	}
 }
