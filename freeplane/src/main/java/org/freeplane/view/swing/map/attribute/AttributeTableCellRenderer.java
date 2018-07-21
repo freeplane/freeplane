@@ -19,7 +19,6 @@
  */
 package org.freeplane.view.swing.map.attribute;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -46,7 +45,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	static final float ZOOM_CORRECTION_FACTOR = 0.97F;
@@ -86,12 +85,12 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 				Object transformedObject = textController.getTransformedObject(value, attributeTableModel.getNode(), null);
 				text = transformedObject.toString();
 				if (transformedObject instanceof HighlightedTransformedObject && TextController.isMarkTransformedTextSet()) {
-					setBorder(BorderFactory.createLineBorder(Color.GREEN));
+					setBorder(BorderFactory.createLineBorder(HighlightedTransformedObject.OK_COLOR));
 				}
 			}
 			catch (Exception e) {
 				text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
-				setBorder(BorderFactory.createLineBorder(Color.RED));
+				setBorder(BorderFactory.createLineBorder(HighlightedTransformedObject.FAILURE_COLOR));
 			}
 			if(value instanceof URI){
 	                icon = ((AttributeTable)table).getLinkIcon((URI) value);
@@ -174,6 +173,6 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	public void setOpaque(boolean opaque) {
 		this.opaque = opaque;
 	}
-	
-	
+
+
 }

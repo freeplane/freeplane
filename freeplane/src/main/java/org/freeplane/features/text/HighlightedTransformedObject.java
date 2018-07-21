@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.text;
 
+import java.awt.Color;
+
 /**
  * @author Dimitry Polivaev
  * 04.05.2012
@@ -26,6 +28,8 @@ package org.freeplane.features.text;
 public class HighlightedTransformedObject {
 
 	final private Object object;
+	public static final Color OK_COLOR = Color.GREEN;
+	public static final Color FAILURE_COLOR = Color.RED;
 	public Object getObject() {
     	return object;
     }
