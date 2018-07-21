@@ -1,8 +1,12 @@
 package org.freeplane.plugin.script;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
@@ -59,8 +63,44 @@ public class ScriptContext {
 	}
 
 	private final UniqueStack<NodeWrapper> stack = new UniqueStack<NodeWrapper>();
+	private final URL baseUrl;
 
-	public ScriptContext() {
+	public URL getBaseUrl() {
+		return baseUrl;
+	}
+
+	public ScriptContext(URL baseUrl) {
+		this.baseUrl = baseUrl;
+	}
+
+	public File toAbsoluteFile(File file) {
+		final File absoluteFile;
+		if(file.isAbsolute())
+			absoluteFile = file;
+		else if (baseUrl == null)
+			throw new IllegalStateException("Can not use relative files without base URL");
+		else {
+			final File parentFile = Compat.urlToFile(baseUrl).getAbsoluteFile().getParentFile();
+			absoluteFile = new File(parentFile, file.getPath());
+		}
+		return absoluteFile;
+	}
+
+	public URL toUrl(String path) {
+		try {
+			File file = new File(path);
+			if(file.isAbsolute()) {
+				return file.toURL();
+			}
+			else if (baseUrl != null){
+				return new URL(baseUrl, path);
+			}
+			else
+				throw new IllegalStateException("Can not use relative URL without base URL");
+		}
+		catch (MalformedURLException e) {
+			throw new IllegalArgumentException(e);
+		}
 	}
 
     public void accessNode(final NodeModel accessedNode) {
@@ -105,7 +145,7 @@ public class ScriptContext {
 	public NodeModel getStackFront() {
 		return stack.first().getNodeModel();
 	}
-	
+
 	public String stackTrace(NodeModel nodeModel, String script) {
 		ArrayList<String> entries = new ArrayList<String>(stack.size());
 		for (NodeWrapper node : stack) {

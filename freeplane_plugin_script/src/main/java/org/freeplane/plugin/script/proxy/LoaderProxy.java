@@ -2,6 +2,8 @@ package org.freeplane.plugin.script.proxy;
 
 import java.io.File;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -36,7 +38,10 @@ class LoaderProxy implements Proxy.Loader {
 	}
 
 	private LoaderProxy load(File file) {
-		mapLoader.load(file);
+		if(file.isAbsolute() || scriptContext == null)
+			mapLoader.load(file);
+		else
+			load(file.getPath().replace('\\', '/'));
 		return this;
 	}
 
@@ -45,14 +50,24 @@ class LoaderProxy implements Proxy.Loader {
 		return this;
 	}
 
-	private LoaderProxy load(String file) {
-		mapLoader.load(new File(file));
+	private LoaderProxy load(String path) {
+			mapLoader.load(provideScriptContext().toUrl(path));
 		return this;
 	}
 
+	private ScriptContext provideScriptContext() {
+		return scriptContext != null ? scriptContext : new ScriptContext(null);
+	}
+
 	@Override
-	public LoaderProxy newMapLocation(File file) {
-		mapLoader.newMapLocation(file);
+	public LoaderProxy newMapLocation(final File file) {
+		final File absoluteFile = AccessController.doPrivileged(new PrivilegedAction<File>() {
+			@Override
+			public File run() {
+				 return provideScriptContext().toAbsoluteFile(file);
+			}
+		});
+		mapLoader.newMapLocation(absoluteFile);
 		return this;
 	}
 
