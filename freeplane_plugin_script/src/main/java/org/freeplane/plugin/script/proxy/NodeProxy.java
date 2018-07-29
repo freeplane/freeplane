@@ -36,6 +36,8 @@ import org.freeplane.features.encrypt.Base64Coding;
 import org.freeplane.features.encrypt.EncryptionController;
 import org.freeplane.features.encrypt.PasswordStrategy;
 import org.freeplane.features.encrypt.mindmapmode.MEncryptionController;
+import org.freeplane.features.explorer.mindmapmode.AccessedNodes;
+import org.freeplane.features.explorer.mindmapmode.MapExplorer;
 import org.freeplane.features.explorer.mindmapmode.MapExplorerController;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.IFormattedObject;
@@ -1074,15 +1076,22 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
 	public Node call(String path) {
 		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
-		final NodeModel node = explorer.getNodeByPath(getDelegate(), path);
-		return new NodeProxy(node, getScriptContext());
+		final MapExplorer mapExplorer = explorer.getMapExplorer(getDelegate(), path, accessedNodes());
+		final NodeModel node = mapExplorer.getNode();
+		final ScriptContext scriptContext = getScriptContext();
+		return new NodeProxy(node, scriptContext);
+	}
+
+	private AccessedNodes accessedNodes() {
+		return getScriptContext() != null ? getScriptContext() : AccessedNodes.IGNORE;
 	}
 
 	@Override
 	public List<? extends Node> all(String path) {
 		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
-		final ArrayList<NodeModel> nodeModels = new ArrayList<NodeModel>(explorer.getAllNodesByPath(getDelegate(), path));
-		return ProxyUtils.createNodeList(nodeModels, getScriptContext());
+		final MapExplorer mapExplorer = explorer.getMapExplorer(getDelegate(), path, accessedNodes());
+		final ArrayList<NodeModel> nodeModels = new ArrayList<NodeModel>(mapExplorer.getNodes());
+		final ScriptContext scriptContext = getScriptContext();
+		return ProxyUtils.createNodeList(nodeModels, scriptContext);
 	}
-
 }

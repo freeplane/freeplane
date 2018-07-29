@@ -9,9 +9,10 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.explorer.mindmapmode.AccessedNodes;
 import org.freeplane.features.map.NodeModel;
 
-public class ScriptContext {
+public class ScriptContext implements AccessedNodes{
 	private static final class NodeWrapper {
 		private final NodeModel nodeModel;
 		private final String script;

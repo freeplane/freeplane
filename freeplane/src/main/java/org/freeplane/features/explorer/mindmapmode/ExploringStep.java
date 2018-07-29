@@ -11,6 +11,9 @@ import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.freeplane.features.filter.Searcher;
+import org.freeplane.features.filter.Searcher.Algorithm;
+import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.map.NodeModel;
 
 enum ExploringStep {
@@ -20,8 +23,10 @@ enum ExploringStep {
 			assertEmpty(searchedString);
 		}
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel node, NodeMatcher nodeMatcher, Cardinality cardinality) {
-			return Collections.singletonList(node.getMap().getRootNode());
+		List<? extends NodeModel> getNodes(NodeModel node, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
+			final NodeModel rootNode = node.getMap().getRootNode();
+			accessedNodes.accessNode(rootNode);
+			return Collections.singletonList(rootNode);
 		}
 
 	},
@@ -32,9 +37,9 @@ enum ExploringStep {
 			assertNonEmpty(searchedString);
 		}
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality) {
+		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
 			final Iterable<NodeModel> nodes = GlobalNodes.readableOf(start.getMap());
-			return getNodes(start, nodeMatcher, nodes, cardinality);
+			return getNodes(start, nodeMatcher, nodes, cardinality, accessedNodes);
 		}
 	},
 
@@ -45,7 +50,7 @@ enum ExploringStep {
 		}
 
 		@Override
-		List<? extends NodeModel> getNodes(final NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality) {
+		List<? extends NodeModel> getNodes(final NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
 			final Iterable<NodeModel> nodes = new Iterable<NodeModel>() {
 				NodeModel current = start;
 				@Override
@@ -64,10 +69,15 @@ enum ExploringStep {
 								throw new NoSuchElementException();
 							return current;
 						}
+
+						@Override
+						public void remove() {
+					        throw new UnsupportedOperationException("remove");
+					    }
 					};
 				}
 			};
-			return getNodes(start, nodeMatcher, nodes, Cardinality.FIRST);
+			return getNodes(start, nodeMatcher, nodes, Cardinality.FIRST, accessedNodes);
 		}
 
 	},
@@ -79,10 +89,11 @@ enum ExploringStep {
 		}
 
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality) {
+		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
 			final NodeModel parent = start.getParentNode();
+			accessedNodes.accessNode(parent);
 			final Iterable<NodeModel> nodes = parent == null ? Collections.<NodeModel>emptyList() : parent.getChildren();
-			return getNodes(start, nodeMatcher, nodes, cardinality);
+			return getNodes(start, nodeMatcher, nodes, cardinality, accessedNodes);
 		}
 
 	},
@@ -94,8 +105,10 @@ enum ExploringStep {
 		}
 
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel node, NodeMatcher nodeMatcher, Cardinality cardinality) {
-			return Collections.singletonList(node.getParentNode());
+		List<? extends NodeModel> getNodes(NodeModel node, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
+			final NodeModel parentNode = node.getParentNode();
+			accessedNodes.accessNode(parentNode);
+			return Collections.singletonList(parentNode);
 		}
 
 	},
@@ -107,14 +120,33 @@ enum ExploringStep {
 		}
 
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality) {
+		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
 			final Iterable<NodeModel> nodes = start.getChildren();
-			return getNodes(start, nodeMatcher, nodes, cardinality);
+			return getNodes(start, nodeMatcher, nodes, cardinality, accessedNodes);
 		}
 
+	},
+
+	DESCENDANT("-->"){
+		@Override
+		public void assertValidString(String searchedString) {
+			assertNonEmpty(searchedString);
+		}
+
+		@Override
+		List<? extends NodeModel> getNodes(NodeModel start, final NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
+			accessedNodes.accessBranch(start);
+			final ICondition condition = new ICondition() {
+				@Override
+				public boolean checkNode(NodeModel node) {
+					return nodeMatcher.matches(node);
+				}
+			};
+			return new Searcher(Algorithm.DEPTH_FIRST).condition(condition).find(start.getChildren());
+		}
 	};
 
-	enum Cardinality {
+	public enum Cardinality {
 		SINGLE, FIRST, ALL;
 
 		public List<NodeModel> createList(NodeModel node) {
@@ -127,6 +159,7 @@ enum ExploringStep {
 			}
 		}
 	}
+
 
 	static final Pattern operatorRegex = createOperatorRegex();
 
@@ -179,51 +212,56 @@ enum ExploringStep {
 
 	private static Pattern createOperatorRegex(){
 		final ExploringStep[] operators = ExploringStep.values();
-		String[] patterns = new String[operators.length];
+		StringBuilder patterns = new StringBuilder();
 		for (int i = 0; i < operators.length; i++) {
-			patterns[i] = operators[i].pattern;
+			if(i > 0)
+				patterns.append('|');
+			patterns.append(operators[i].pattern);
 		}
-		return Pattern.compile(String.join("|", patterns));
+		return Pattern.compile(patterns.toString());
 	}
 
 	public static Matcher matcher(String path) {
 		return operatorRegex.matcher(toOperator(path));
 	}
 
-	abstract List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality);
-
-	public NodeModel getSingleNode(NodeModel start, NodeMatcher nodeMatcher) {
-		return getNodes(start, nodeMatcher, Cardinality.SINGLE).get(0);
-	}
-
-	public Collection<? extends NodeModel> getAllNodes(NodeModel start, NodeMatcher nodeMatcher) {
-		return getNodes(start, nodeMatcher, Cardinality.ALL);
-	}
+	abstract List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes);
 
 	protected List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Iterable<NodeModel> iterable,
-											   Cardinality cardinality) {
-		int counter = 0;
-		List<NodeModel> nodes = null;
-		for (NodeModel node : iterable) {
-			if(nodeMatcher.matches(node)) {
-				counter++;
-				if(counter == 1) {
-					nodes = cardinality.createList(node);
-					if(cardinality == Cardinality.FIRST)
-						return nodes;
-				}
-				else {
-					assertValidNodeCount(cardinality, counter);
-					nodes.add(node);
+												   Cardinality cardinality, AccessedNodes accessedNodes) {
+			int counter = 0;
+			List<NodeModel> nodes = null;
+			for (NodeModel node : iterable) {
+				accessedNodes.accessNode(node);
+				if(nodeMatcher.matches(node)) {
+					counter++;
+					if(counter == 1) {
+						nodes = cardinality.createList(node);
+						if(cardinality == Cardinality.FIRST)
+							return nodes;
+					}
+					else {
+						assertValidNodeCount(cardinality, counter);
+						nodes.add(node);
+					}
 				}
 			}
+			assertValidNodeCount(cardinality, counter);
+			return nodes;
 		}
-		assertValidNodeCount(cardinality, counter);
-		return nodes;
+
+		private void assertValidNodeCount(Cardinality cardinality, int counter) {
+			if(counter != 1 && cardinality != Cardinality.SINGLE)
+				throw new IllegalStateException("One and only one node matching giving string expected, " + counter + " nodes found");
+		}
+
+
+	NodeModel getSingleNode(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
+		return getNodes(start, nodeMatcher, Cardinality.SINGLE, accessedNodes).get(0);
 	}
 
-	private void assertValidNodeCount(Cardinality cardinality, int counter) {
-		if(counter != 1 && cardinality != Cardinality.SINGLE)
-			throw new IllegalStateException("One and only one node matching giving string expected, " + counter + " nodes found");
+	Collection<? extends NodeModel> getAllNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
+		return getNodes(start, nodeMatcher, Cardinality.ALL, accessedNodes);
 	}
+
 }

@@ -11,12 +11,10 @@ import org.freeplane.features.text.TextController;
 
 public class MapExplorer {
 
-	private final TextController textController;
-
 	private final NodeModel start;
 	private final List<Command> path;
 
-	private List<Command> split(String path) {
+	private static List<Command> split(TextController textController, NodeModel start, String path, AccessedNodes accessedNodes) {
 		if(path.isEmpty())
 			return Collections.emptyList();
 
@@ -31,7 +29,7 @@ public class MapExplorer {
 			if(lastAddedCharacterPosition < operatorStart) {
 				final String operatorSubstring = path.substring(lastAddedCharacterPosition, lastOperatorEnd);
 				final String searchedString = path.substring(lastOperatorEnd, operatorStart);
-				commands.add(new Command(textController, start, ExploringStep.of(operatorSubstring), searchedString));
+				commands.add(new Command(textController, ExploringStep.of(operatorSubstring), searchedString, accessedNodes));
 			}
 			lastAddedCharacterPosition = operatorStart;
 			lastOperatorEnd = matcher.end();
@@ -40,23 +38,20 @@ public class MapExplorer {
 		if(lastAddedCharacterPosition < path.length()) {
 			final String operatorSubstring = path.substring(lastAddedCharacterPosition, lastOperatorEnd);
 			final String searchedString = path.substring(lastOperatorEnd);
-			commands.add(new Command(textController, start, ExploringStep.of(operatorSubstring), searchedString));
+			commands.add(new Command(textController, ExploringStep.of(operatorSubstring), searchedString, accessedNodes));
 		}
 
 		return commands;
 
 	}
 
-	public MapExplorer(TextController textController, NodeModel start, String path) {
-		this.textController = textController;
-		this.start = start;
-		this.path = split(path);
+	public MapExplorer(TextController textController, NodeModel start, String path, AccessedNodes accessedNodes) {
+		this(textController, start, split(textController, start, path, accessedNodes));
 	}
 
 
 
 	MapExplorer(TextController textController, NodeModel start, List<Command> path) {
-		this.textController = textController;
 		this.start = start;
 		this.path = path;
 	}

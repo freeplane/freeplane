@@ -139,10 +139,12 @@ public interface NodeRO {
         finds ancestor node starting with 'dining'and its child node 'chears' and returns node '1'
     node(':->house->bedroom->bed')
         goes from the root node to 'bed' and returns it
-    node(':bedroom->bed')
-        goes from global node 'bedroom' to 'bed' and returns it
     node('::')
         returns map root node
+    node('::-->bed')
+        goes from the root node to 'bed' and returns it
+    node(':bedroom->bed')
+        goes from global node 'bedroom' to 'bed' and returns it
 
         </pre>
 	 * @since 1.6.16 */
@@ -151,7 +153,7 @@ public interface NodeRO {
 	/**
 	 * Access all matching nodes by relative path.
 	 *
-	 * Examples:
+	 * Path syntax is like in  {@link #call()}
 	 *
 	 * @since 1.6.16 */
 	List<? extends Node> all(String path);

@@ -4,12 +4,11 @@ package org.freeplane.features.explorer.mindmapmode;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
 
 import java.util.List;
 
 import org.assertj.core.api.ThrowableAssert;
-import org.freeplane.features.explorer.mindmapmode.ExploringStep;
-import org.freeplane.features.explorer.mindmapmode.MapExplorer;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.TextController;
 import org.junit.Test;
@@ -17,19 +16,23 @@ import org.mockito.Mockito;
 
 public class MapExplorerSpec {
 
+	static TextController textController = mock(TextController.class);
+	static AccessedNodes accessedNodes = mock(AccessedNodes.class);
+
+
 	static class ReferenceMapExplorer {
-		final TextController textController;
 		NodeModel start;
 		List<TestCommand> path;
 		public ReferenceMapExplorer(NodeModel start, List<TestCommand> commands) {
 			this.start = start;
 			this.path = commands;
-			textController = null;
 		}
 
 	}
 
 	static class TestCommand {
+			TextController textController = MapExplorerSpec.textController;
+			AccessedNodes accessedNodes = MapExplorerSpec.accessedNodes;
 			String searchedString;
 			ExploringStep operator;
 			public TestCommand(ExploringStep operator, String searchedString) {
@@ -45,7 +48,7 @@ public class MapExplorerSpec {
 
 	NodeModel node = Mockito.mock(NodeModel.class);
 	private void assertPath(String path, TestCommand... commands) {
-		 assertThat(new MapExplorer(null, node, path)).isEqualToComparingFieldByFieldRecursively(
+		 assertThat(new MapExplorer(textController, node, path, accessedNodes)).isEqualToComparingFieldByFieldRecursively(
 			new ReferenceMapExplorer(node, asList(commands)));
 	}
 
@@ -53,7 +56,7 @@ public class MapExplorerSpec {
 		 assertThatThrownBy(new ThrowableAssert.ThrowingCallable() {
 			@Override
 			public void call() throws Throwable {
-				new MapExplorer(null, node, path);
+				new MapExplorer(null, node, path, null);
 			}
 		}).isInstanceOf(IllegalArgumentException.class);
 	}
@@ -65,6 +68,7 @@ public class MapExplorerSpec {
 		assertPath("->a", command(ExploringStep.CHILD, "a"));
 		assertPath("<->a", command(ExploringStep.SIBLING, "a"));
 		assertPath("->a->b", command(ExploringStep.CHILD, "a"), command(ExploringStep.CHILD, "b"));
+		assertPath("-->a", command(ExploringStep.DESCENDANT, "a"));
 		assertPath("<-", command(ExploringStep.PARENT, ""));
 
 		assertIllegalPath("<-a");

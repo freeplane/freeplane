@@ -10,11 +10,11 @@ class Command {
 	private final ExploringStep operator;
 	private final String searchedString;
 	private final TextController textController;
-	private NodeModel start;
-	public Command(TextController textController, NodeModel start, ExploringStep operator, String searchedString) {
+	private final AccessedNodes accessedNodes;
+	public Command(TextController textController, ExploringStep operator, String searchedString, AccessedNodes accessedNodes) {
 		super();
 		this.textController = textController;
-		this.start = start;
+		this.accessedNodes = accessedNodes;
 		operator.assertValidString(searchedString);
 		this.operator = operator;
 		this.searchedString = searchedString;
@@ -22,17 +22,17 @@ class Command {
 
 	public NodeModel getSingleNode(NodeModel start) {
 		final NodeMatcher nodeMatcher = createMatcher();
-		return operator.getSingleNode(start, nodeMatcher);
+		return operator.getSingleNode(start, nodeMatcher, accessedNodes);
 	}
 
-	public Collection<? extends NodeModel> getAllNodes(NodeModel from) {
+	public Collection<? extends NodeModel> getAllNodes(NodeModel start) {
 		final NodeMatcher nodeMatcher = createMatcher();
-		return operator.getAllNodes(start, nodeMatcher);
+		return operator.getAllNodes(start, nodeMatcher, accessedNodes);
 	}
 
 	private NodeMatcher createMatcher() {
 		boolean matchStart = searchedString.endsWith(REST_CHARACTERS);
-		String matchedString = matchStart ? searchedString.substring(searchedString.length() - REST_CHARACTERS.length()) : searchedString;
+		String matchedString = matchStart ? searchedString.substring(0, searchedString.length() - REST_CHARACTERS.length()) : searchedString;
 		final NodeMatcher nodeMatcher = new NodeMatcher(textController, matchedString, matchStart);
 		return nodeMatcher;
 	}

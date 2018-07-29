@@ -1,8 +1,5 @@
 package org.freeplane.features.explorer.mindmapmode;
 
-import java.util.List;
-
-import org.assertj.core.util.Objects;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
@@ -98,7 +95,7 @@ public class MapExplorerController implements IExtension{
 
 	public void setAlias(final NodeModel node, final String alias) {
 		final String oldAlias = NodeAlias.getAlias(node);
-		if(Objects.areEqual(oldAlias, alias))
+		if(oldAlias == alias || oldAlias != null && oldAlias.equals(alias))
 			return;
 		final IActor actor = new IActor() {
 			@Override
@@ -124,12 +121,8 @@ public class MapExplorerController implements IExtension{
 		return GlobalNodes.isGlobal(node);
 	}
 
-	public NodeModel getNodeByPath(NodeModel start, String path) {
-		return new MapExplorer(textController, start, path).getNode();
-	}
-
-	public List<? extends NodeModel> getAllNodesByPath(NodeModel start, String path) {
-		return new MapExplorer(textController, start, path).getNodes();
+	public MapExplorer getMapExplorer(NodeModel start, String path, AccessedNodes accessedNodes) {
+		return new MapExplorer(textController, start, path, accessedNodes);
 	}
 
 }

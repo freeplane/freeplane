@@ -96,6 +96,7 @@ jar {
                     org.freeplane.features.edge.mindmapmode,
                     org.freeplane.features.encrypt,
                     org.freeplane.features.encrypt.mindmapmode,
+        			org.freeplane.features.explorer.mindmapmode,
                     org.freeplane.features.export.mindmapmode,
                     org.freeplane.features.filter,
                     org.freeplane.features.filter.condition,
