@@ -121,6 +121,42 @@ public interface NodeRO {
 	@Deprecated
 	Node getParentNode();
 
+	/**
+	 * Access single node by relative path.
+	 *
+	 * If no node or more than one node is available on the path, an exception is thrown.
+	 *
+	 * Examples:
+	 *
+	 *  <pre>
+    node('<--dining room->chears->1')
+        finds ancestor node named 'dining room', its child node 'chears' and returns node '1'
+    node('<-<-->chears->1')
+        goes to parent node named 'tables' and its parent node named 'dining room', its child node 'chears' and returns its child node '1' too
+    node('<-<->chears->1')
+        goes to parent node named 'tables' and its sibling node 'chears' and returns child node '1' too
+    node('<--dining...->ch...->1')
+        finds ancestor node starting with 'dining'and its child node 'chears' and returns node '1'
+    node(':->house->bedroom->bed')
+        goes from the root node to 'bed' and returns it
+    node(':bedroom->bed')
+        goes from global node 'bedroom' to 'bed' and returns it
+    node('::')
+        returns map root node
+
+        </pre>
+	 * @since 1.6.16 */
+	Node call(String path);
+
+	/**
+	 * Access all matching nodes by relative path.
+	 *
+	 * Examples:
+	 *
+	 * @since 1.6.16 */
+	List<? extends Node> all(String path);
+
+
     /** a list of all nodes starting from this node upto (and including) the root node.
      * <pre>
      *   def path = pathToRoot.collect{ it.plainText }.join('.')

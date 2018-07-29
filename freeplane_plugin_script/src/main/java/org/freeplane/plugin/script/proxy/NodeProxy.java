@@ -36,6 +36,7 @@ import org.freeplane.features.encrypt.Base64Coding;
 import org.freeplane.features.encrypt.EncryptionController;
 import org.freeplane.features.encrypt.PasswordStrategy;
 import org.freeplane.features.encrypt.mindmapmode.MEncryptionController;
+import org.freeplane.features.explorer.mindmapmode.MapExplorerController;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.link.ConnectorModel;
@@ -1068,6 +1069,20 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		final MClipboardController clipboardController = (MClipboardController) ClipboardController
 			    .getController();
 		clipboardController.addClone(clipboardController.getClipboardContents(), getDelegate());
+	}
+
+	@Override
+	public Node call(String path) {
+		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+		final NodeModel node = explorer.getNodeByPath(getDelegate(), path);
+		return new NodeProxy(node, getScriptContext());
+	}
+
+	@Override
+	public List<? extends Node> all(String path) {
+		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+		final ArrayList<NodeModel> nodeModels = new ArrayList<NodeModel>(explorer.getAllNodesByPath(getDelegate(), path));
+		return ProxyUtils.createNodeList(nodeModels, getScriptContext());
 	}
 
 }
