@@ -73,11 +73,13 @@ public class MapExplorerController implements IExtension{
 			@Override
 			public void act() {
 				GlobalNodes.writeableOf(node.getMap()).makeGlobal(node, isGlobal);
+				modeController.getMapController().nodeChanged(node);
 			}
 
 			@Override
 			public void undo() {
 				GlobalNodes.writeableOf(node.getMap()).makeGlobal(node, !isGlobal);
+				modeController.getMapController().nodeChanged(node);
 			}
 
 			@Override
@@ -101,11 +103,13 @@ public class MapExplorerController implements IExtension{
 			@Override
 			public void act() {
 				NodeAlias.setAlias(node, alias);
+				modeController.getMapController().nodeChanged(node);
 			}
 
 			@Override
 			public void undo() {
 				NodeAlias.setAlias(node, oldAlias);
+				modeController.getMapController().nodeChanged(node);
 			}
 
 			@Override

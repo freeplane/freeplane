@@ -813,7 +813,6 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	@Override
-	@Deprecated
 	public void nodeChanged(final NodeModel node) {
 		nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);
 	}
@@ -825,7 +824,6 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	@Override
-	@Deprecated
 	public void nodeRefresh(final NodeModel node) {
 		nodeRefresh(node, NodeModel.UNKNOWN_PROPERTY, null, null);
 	}
