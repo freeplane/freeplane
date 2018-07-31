@@ -340,4 +340,17 @@ public interface Node extends NodeRO {
 	 * @since 1.4.1
 	 */
 	void sortChildrenBy(NodeToComparableMapper comparable);
+
+	 /**
+	  * Sets alias of the node
+	  *
+	  *
+	  *  @since 1.6.16 */
+	void setAlias(String alias);
+
+	 /**
+	  * Sets if the node can be accessed using global accessor, see {@link NodeRO#call()}
+	  *
+	  *  @since 1.6.16 */
+	void setIsGlobal(boolean value);
 }

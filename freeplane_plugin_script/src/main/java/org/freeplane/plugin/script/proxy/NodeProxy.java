@@ -1094,4 +1094,28 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		final ScriptContext scriptContext = getScriptContext();
 		return ProxyUtils.createNodeList(nodeModels, scriptContext);
 	}
+
+	@Override
+	public String getAlias() {
+		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+		return explorer.getAlias(getDelegate());
+	}
+
+	@Override
+	public boolean getIsGlobal() {
+		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+		return explorer.isGlobal(getDelegate());
+	}
+
+	@Override
+	public void setAlias(String alias) {
+		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+		explorer.setAlias(getDelegate(), alias);
+	}
+
+	@Override
+	public void setIsGlobal(boolean value) {
+		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+		explorer.makeGlobal(getDelegate(), value);
+	}
 }

@@ -158,6 +158,17 @@ public interface NodeRO {
 	 * @since 1.6.16 */
 	List<? extends Node> all(String path);
 
+	 /**
+	  * Alias of the node
+	  *
+	  *  @since 1.6.16 */
+	String getAlias();
+
+	 /**
+	  * True if the node can be accessed using global accessor, see {@link #call()}
+	  *
+	  *  @since 1.6.16 */
+	boolean getIsGlobal();
 
     /** a list of all nodes starting from this node upto (and including) the root node.
      * <pre>
