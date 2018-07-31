@@ -147,7 +147,7 @@ public interface NodeRO {
         goes from global node 'bedroom' to 'bed' and returns it
 
         </pre>
-	 * @since 1.6.16 */
+	 * @since 1.7.1 */
 	Node call(String path);
 
 	/**
@@ -155,19 +155,19 @@ public interface NodeRO {
 	 *
 	 * Path syntax is like in  {@link #call()}
 	 *
-	 * @since 1.6.16 */
+	 * @since 1.7.1 */
 	List<? extends Node> all(String path);
 
 	 /**
 	  * Alias of the node
 	  *
-	  *  @since 1.6.16 */
+	  *  @since 1.7.1 */
 	String getAlias();
 
 	 /**
 	  * True if the node can be accessed using global accessor, see {@link #call()}
 	  *
-	  *  @since 1.6.16 */
+	  *  @since 1.7.1 */
 	boolean getIsGlobal();
 
     /** a list of all nodes starting from this node upto (and including) the root node.

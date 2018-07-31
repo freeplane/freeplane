@@ -71,7 +71,7 @@ public interface Controller extends ControllerRO, HeadlessMapCreator {
 	/**
 	 * Returns {@link Loader} for accessing or loading map from file.
 	 *
-	 * @since 1.6.16
+	 * @since 1.7.1
 	 */
 	@Override
 	Loader load(File file);
@@ -79,7 +79,7 @@ public interface Controller extends ControllerRO, HeadlessMapCreator {
 	/**
 	 * Returns {@link Loader} for accessing or loading map from URL.
 	 *
-	 * @since 1.6.16
+	 * @since 1.7.1
 	 */
 	@Override
 	Loader load(URL file);
@@ -87,7 +87,7 @@ public interface Controller extends ControllerRO, HeadlessMapCreator {
 	/**
 	 * Returns {@link Loader} for accessing or loading map from file.
 	 *
-	 * @since 1.6.16
+	 * @since 1.7.1
 	 */
 	@Override
 	Loader load(String file);

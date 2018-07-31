@@ -85,6 +85,6 @@ public interface AttributesRO {
      * @since 1.2 */
 	boolean isEmpty();
 
-	/** @since 1.6.16 */
+	/** @since 1.7.1 */
 	Attributes getTransformed();
 }

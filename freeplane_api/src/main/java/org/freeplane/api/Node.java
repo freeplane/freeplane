@@ -345,12 +345,12 @@ public interface Node extends NodeRO {
 	  * Sets alias of the node
 	  *
 	  *
-	  *  @since 1.6.16 */
+	  *  @since 1.7.1 */
 	void setAlias(String alias);
 
 	 /**
 	  * Sets if the node can be accessed using global accessor, see {@link NodeRO#call()}
 	  *
-	  *  @since 1.6.16 */
+	  *  @since 1.7.1 */
 	void setIsGlobal(boolean value);
 }
