@@ -27,7 +27,11 @@ public class MapExplorerController implements IExtension{
 	private final ModeController modeController;
 
 	public static void install(ModeController modeController, TextController textController) {
-		modeController.addExtension(MapExplorerController.class, new MapExplorerController(modeController, textController));
+		final MapExplorerController explorer = new MapExplorerController(modeController, textController);
+		modeController.addExtension(MapExplorerController.class, explorer);
+		modeController.addAction(new GloballyAccessibleNodeAction(explorer));
+		modeController.addAction(new AssignAliasAction(explorer));
+		modeController.addAction(new CopySuggestedReferenceAction(explorer));
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
@@ -35,7 +39,7 @@ public class MapExplorerController implements IExtension{
 		readManager.addAttributeHandler(NodeBuilder.XML_NODE, ALIAS, new IAttributeHandler() {
 			@Override
 			public void setAttribute(final Object node, final String value) {
-				((NodeModel) node).addExtension(new NodeAlias(value));
+				NodeAlias.setAlias((NodeModel) node, value);
 			}
 		});
 		readManager.addAttributeHandler(NodeBuilder.XML_NODE, GLOBALLY_VISIBLE, new IAttributeHandler() {
@@ -74,17 +78,20 @@ public class MapExplorerController implements IExtension{
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
-				GlobalNodes.writeableOf(node.getMap()).makeGlobal(node, isGlobal);
-				modeController.getMapController().nodeChanged(node);
+				set(node, isGlobal);
 			}
 
 			@Override
 			public void undo() {
+				set(node, !isGlobal);
+			}
+
+			private void set(final NodeModel node, final boolean newValue) {
 				final MapModel map = node.getMap();
-				GlobalNodes.writeableOf(map).makeGlobal(node, !isGlobal);
+				GlobalNodes.writeableOf(map).makeGlobal(node, newValue);
 				final MapController mapController = modeController.getMapController();
 				mapController.nodeChanged(node);
-				mapController.fireMapChanged(new MapChangeEvent(this, map, GLOBAL_NODES, null, null, false));
+				fireGlobalNodeChangedEvent(map, mapController);
 			}
 
 			@Override
@@ -96,6 +103,9 @@ public class MapExplorerController implements IExtension{
 		modeController.execute(actor, node.getMap());
 	}
 
+	private void fireGlobalNodeChangedEvent(final MapModel map, final MapController mapController) {
+		mapController.fireMapChanged(new MapChangeEvent(this, map, GLOBAL_NODES, null, null, false));
+	}
 	public String getAlias(final NodeModel node) {
 		return NodeAlias.getAlias(node);
 	}
@@ -108,7 +118,10 @@ public class MapExplorerController implements IExtension{
 			@Override
 			public void act() {
 				NodeAlias.setAlias(node, alias);
-				modeController.getMapController().nodeChanged(node);
+				final MapController mapController = modeController.getMapController();
+				mapController.nodeChanged(node);
+				if(isGlobal(node))
+					fireGlobalNodeChangedEvent(node.getMap(), mapController);
 			}
 
 			@Override
@@ -136,7 +149,7 @@ public class MapExplorerController implements IExtension{
 
 	public String getNodeReferenceSuggestion(NodeModel node) {
 		final String alias = getAlias(node);
-		if(alias != null)
+		if(!alias.isEmpty())
 			return alias;
 		final String shortPlainText = textController.getShortPlainText(node, 10, "...");
 		return shortPlainText;

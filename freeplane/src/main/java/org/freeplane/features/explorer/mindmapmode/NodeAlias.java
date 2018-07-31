@@ -12,10 +12,16 @@ class NodeAlias implements IExtension {
 	}
 	static String getAlias(final NodeModel node) {
 		final NodeAlias alias = node.getExtension(NodeAlias.class);
-		return alias == null ? null : alias.value;
+		return alias == null ? "" : alias.value;
 	}
 	static void setAlias(NodeModel node, String alias) {
-		node.putExtension(new NodeAlias(alias));
+		if(alias == null || alias.isEmpty())
+			removeAlias(node);
+		else
+			node.putExtension(new NodeAlias(alias));
+	}
+	static void removeAlias(NodeModel node) {
+		node.removeExtension(NodeAlias.class);
 	}
 
 }
