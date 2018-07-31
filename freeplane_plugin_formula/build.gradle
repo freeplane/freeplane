@@ -3,6 +3,8 @@ dependencies {
 	testCompile project(':freeplane')
     compileOnly project(':freeplane_plugin_script')
 	testCompile project(':freeplane_plugin_script')
+    compileOnly project(':freeplane_plugin_jsyntaxpane')
+	testCompile project(':freeplane_plugin_jsyntaxpane')
 }
 
 jar {
@@ -27,7 +29,8 @@ jar {
                       org.freeplane.features.*,
                       org.freeplane.main.*,
                       org.freeplane.n3.*,
-                      org.freeplane.view.*
+                      org.freeplane.view.*,
+                      jsyntaxpane
                       """
         instruction 'Import-Package', imports.replaceAll("\\s+", "")
         instruction 'Export-Package', ''

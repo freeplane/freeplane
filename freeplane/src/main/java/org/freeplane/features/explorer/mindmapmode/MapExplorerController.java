@@ -129,4 +129,12 @@ public class MapExplorerController implements IExtension{
 		return new MapExplorer(textController, start, path, accessedNodes);
 	}
 
+	public String getNodeReferenceSuggestion(NodeModel node) {
+		final String alias = getAlias(node);
+		if(alias != null)
+			return alias;
+		final String shortPlainText = textController.getShortPlainText(node, 10, "...");
+		return shortPlainText;
+	}
+
 }

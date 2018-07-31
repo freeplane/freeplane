@@ -24,25 +24,32 @@ import java.awt.event.KeyEvent;
 import javax.swing.JEditorPane;
 import javax.swing.RootPaneContainer;
 
+import org.freeplane.features.explorer.mindmapmode.MapExplorerController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
 import org.freeplane.view.swing.ui.mindmapmode.GlassPaneManager;
 import org.freeplane.view.swing.ui.mindmapmode.INodeSelector;
+
+import jsyntaxpane.SyntaxDocument;
+import jsyntaxpane.Token;
+import jsyntaxpane.TokenType;
 
 /**
  * @author Dimitry Polivaev
  * Nov 20, 2010
  */
 class FormulaEditor extends EditNodeDialog implements INodeSelector {
-	
+
 	static final String GROOVY_EDITOR_FONT = "groovy_editor_font";
 	static final String GROOVY_EDITOR_FONT_SIZE = "groovy_editor_font_size";
 
 	private JEditorPane textEditor;
+	private MapExplorerController mapExplorer;
 
-	FormulaEditor(NodeModel nodeModel, String text, KeyEvent firstEvent, IEditControl editControl,
+	FormulaEditor(MapExplorerController mapExplorer, NodeModel nodeModel, String text, KeyEvent firstEvent, IEditControl editControl,
                           boolean enableSplit, JEditorPane textEditor) {
 	    super(nodeModel, text, firstEvent, editControl, enableSplit, textEditor);
+		this.mapExplorer = mapExplorer;
 	    super.setModal(false);
 	    this.textEditor = textEditor;
     }
@@ -53,9 +60,17 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 	    super.show(frame);
     }
 
-	public void nodeSelected(final NodeModel model) {
-		final String id = model.getID();
-		textEditor.replaceSelection(id);
+	@Override
+	public void nodeSelected(final NodeModel node) {
+		final int caretPosition = textEditor.getCaretPosition();
+		SyntaxDocument document =  (SyntaxDocument) textEditor.getDocument();
+		final Token token = document.getTokenAt(caretPosition);
+		final String replacement;
+		if(TokenType.isString(token))
+			replacement = mapExplorer.getNodeReferenceSuggestion(node);
+		else
+			replacement = node.getID();
+		textEditor.replaceSelection(replacement);
 	    textEditor.requestFocus();
     }
 }
