@@ -1,4 +1,11 @@
 ===============================
+1.7.1
+===============================
+API for referencing nodes from formulas and scripts
+Node aliases
+Global nodes 
+
+===============================
 1.6.16
 ===============================
 Freeplane API for Java applications

@@ -78,11 +78,9 @@ public class UserPropertiesUpdater {
 			Properties userProp = loadProperties(userPreferencesFile);
 			for(String name : new String[]{
 					"lastOpened_1.0.20",
-					"openedNow_1.0.20",
 					"openedNow_1.3.04",
 					"browse_url_storage",
-					"single_backup_directory_path",
-			"standard_template"})
+					"single_backup_directory_path"})
 				userProp.remove(name);
 
 			saveProperties(userProp, userPreferencesFile);
