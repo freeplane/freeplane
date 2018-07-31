@@ -118,6 +118,26 @@ public class FormulaUtils {
 	}
 
 	public static List<NodeModel> manageChangeAndReturnDependencies(boolean includeChanged, final NodeModel... nodes) {
+		final ArrayList<NodeModel> dependencies = getAllDependencies(includeChanged, nodes);
+		manageChange(dependencies);
+		return dependencies;
+	}
+
+	public static List<NodeModel> manageChangeAndReturnGlobalDependencies(MapModel map) {
+		final ArrayList<NodeModel> dependencies = getGlobalDependencies(map);
+		manageChange(dependencies);
+		return dependencies;
+	}
+
+	private static void manageChange(final ArrayList<NodeModel> dependencies) {
+		if (ENABLE_CACHING) {
+			for (NodeModel nodeModel : dependencies) {
+				getFormulaCache(nodeModel.getMap()).markAsDirtyIfFormulaNode(nodeModel);
+			}
+		}
+	}
+
+	private static ArrayList<NodeModel> getAllDependencies(boolean includeChanged, final NodeModel... nodes) {
 		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
 		for (int i = 0; i < nodes.length; i++) {
 			final LinkedHashSet<NodeModel> nodeDependencies = new LinkedHashSet<NodeModel>(0);
@@ -127,11 +147,16 @@ public class FormulaUtils {
 			if (includeChanged)
 				dependencies.add(nodes[i]);
 		}
-		if (ENABLE_CACHING) {
-			for (NodeModel nodeModel : dependencies) {
-				getFormulaCache(nodeModel.getMap()).markAsDirtyIfFormulaNode(nodeModel);
-			}
-		}
+		return dependencies;
+	}
+
+
+	private static ArrayList<NodeModel> getGlobalDependencies(MapModel map) {
+		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
+		final LinkedHashSet<NodeModel> nodeDependencies = new LinkedHashSet<NodeModel>(0);
+		EvaluationDependencies.of(map).getGlobalDependencies(nodeDependencies);
+		if (nodeDependencies != null)
+			dependencies.addAll(nodeDependencies);
 		return dependencies;
 	}
 
@@ -155,6 +180,11 @@ public class FormulaUtils {
 	public static void accessAll(NodeModel accessingNode) {
 		EvaluationDependencies.of(accessingNode.getMap()).accessAll(accessingNode);
 	}
+
+	public static void accessGlobalNode(NodeModel accessingNode) {
+		EvaluationDependencies.of(accessingNode.getMap()).accessGlobalNode(accessingNode);
+	}
+
 
 	public static void clearCache(MapModel map) {
         if (DEBUG_FORMULA_EVALUATION)

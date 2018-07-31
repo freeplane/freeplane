@@ -12,9 +12,13 @@ public interface AccessedNodes {
 
 		@Override
 		public void accessAll() {}
+
+		@Override
+		public void accessGlobalNode() {}
 	};
 
 	void accessNode(final NodeModel accessedNode);
 	void accessBranch(final NodeModel accessedNode);
 	void accessAll();
+	void accessGlobalNode();
 }

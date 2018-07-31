@@ -39,6 +39,7 @@ enum ExploringStep {
 		@Override
 		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
 			final Iterable<NodeModel> nodes = GlobalNodes.readableOf(start.getMap());
+			accessedNodes.accessGlobalNode();
 			return getNodes(start, nodeMatcher, nodes, cardinality, accessedNodes);
 		}
 	},

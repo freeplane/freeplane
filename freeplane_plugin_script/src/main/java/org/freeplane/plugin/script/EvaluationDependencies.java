@@ -12,7 +12,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
 public class EvaluationDependencies implements IExtension{
-	
+
 	static class DependantNodeReferences implements Iterable<NodeModel>{
 		final private WeakHashMap<NodeModel, Void> references = new WeakHashMap<>();
 		public void add(NodeModel node) {
@@ -22,18 +22,19 @@ public class EvaluationDependencies implements IExtension{
 		@Override
 		public Iterator<NodeModel> iterator() {
 			return references.keySet().iterator();
-		}} 
-	
+		}}
+
 	public enum Access {
 		NODE, BRANCH, ALL
 	}
-	
-	private final HashSet<MapModel> referencedMaps = new HashSet<>(); 
+
+	private final HashSet<MapModel> referencedMaps = new HashSet<>();
 
 	private final HashMap<NodeModel, DependantNodeReferences> onNodeDependencies = new HashMap<>();
 	// FIXME: organize node and branch dependencies in a tree?
 	private final HashMap<NodeModel, DependantNodeReferences> onBranchDependencies = new HashMap<>();
 	private final HashSet<NodeModel> onAnyNodeDependencies = new HashSet<NodeModel>();
+	private final HashSet<NodeModel> onGlobalNodeDependencies = new HashSet<NodeModel>();
 
 	public Set<NodeModel> getDependencies(Set<NodeModel> result, final NodeModel node) {
 		final Iterable<NodeModel> onNode = onNodeDependencies.get(node);
@@ -44,6 +45,12 @@ public class EvaluationDependencies implements IExtension{
 				addRecursively(result, entry.getValue());
 		}
 		addRecursively(result, onAnyNodeDependencies);
+//		System.out.println("dependencies on(" + node + "): " + result);
+		return result;
+	}
+
+	public Set<NodeModel> getGlobalDependencies(Set<NodeModel> result) {
+		addRecursively(result, onGlobalNodeDependencies);
 //		System.out.println("dependencies on(" + node + "): " + result);
 		return result;
 	}
@@ -90,6 +97,10 @@ public class EvaluationDependencies implements IExtension{
 //		System.out.println(accessingNode + " accesses all nodes. current dependencies:\n" + this);
 	}
 
+	public void accessGlobalNode(NodeModel accessingNode) {
+		onGlobalNodeDependencies.add(accessingNode);
+	}
+
 	private DependantNodeReferences getDependencySet(final NodeModel accessedNode,
 	                                            final HashMap<NodeModel, DependantNodeReferences> dependenciesMap) {
 		DependantNodeReferences set = dependenciesMap.get(accessedNode);
@@ -125,11 +136,12 @@ public class EvaluationDependencies implements IExtension{
 	}
 
 	static EvaluationDependencies of(MapModel map) {
-		EvaluationDependencies dependencies = (EvaluationDependencies) map.getExtension(EvaluationDependencies.class);
+		EvaluationDependencies dependencies = map.getExtension(EvaluationDependencies.class);
 		if (dependencies == null) {
 			dependencies = new EvaluationDependencies();
 			map.addExtension(dependencies);
 		}
 		return dependencies;
 	}
+
 }

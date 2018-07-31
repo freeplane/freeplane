@@ -7,6 +7,7 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
@@ -18,6 +19,7 @@ import org.freeplane.features.text.TextController;
 public class MapExplorerController implements IExtension{
 
 
+	public static final String GLOBAL_NODES = "GLOBAL_NODES";
 	private static final String TRUE = "true";
 	private static final String GLOBALLY_VISIBLE = "GLOBALLY_VISIBLE";
 	private static final String ALIAS = "ALIAS";
@@ -78,8 +80,11 @@ public class MapExplorerController implements IExtension{
 
 			@Override
 			public void undo() {
-				GlobalNodes.writeableOf(node.getMap()).makeGlobal(node, !isGlobal);
-				modeController.getMapController().nodeChanged(node);
+				final MapModel map = node.getMap();
+				GlobalNodes.writeableOf(map).makeGlobal(node, !isGlobal);
+				final MapController mapController = modeController.getMapController();
+				mapController.nodeChanged(node);
+				mapController.fireMapChanged(new MapChangeEvent(this, map, GLOBAL_NODES, null, null, false));
 			}
 
 			@Override
