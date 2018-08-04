@@ -6,18 +6,17 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.TextController;
 
 class Command {
-	private static final String REST_CHARACTERS = "...";
 	private final ExploringStep operator;
-	private final String searchedString;
 	private final TextController textController;
 	private final AccessedNodes accessedNodes;
+	private final String searchedString;
 	public Command(TextController textController, ExploringStep operator, String searchedString, AccessedNodes accessedNodes) {
 		super();
+		this.searchedString = searchedString;
+		operator.assertValidString(searchedString);
 		this.textController = textController;
 		this.accessedNodes = accessedNodes;
-		operator.assertValidString(searchedString);
 		this.operator = operator;
-		this.searchedString = searchedString;
 	}
 
 	public NodeModel getSingleNode(NodeModel start) {
@@ -31,10 +30,7 @@ class Command {
 	}
 
 	private NodeMatcher createMatcher() {
-		boolean matchStart = searchedString.endsWith(REST_CHARACTERS);
-		String matchedString = matchStart ? searchedString.substring(0, searchedString.length() - REST_CHARACTERS.length()) : searchedString;
-		final NodeMatcher nodeMatcher = new NodeMatcher(textController, matchedString, matchStart);
-		return nodeMatcher;
+		return new NodeMatcher(textController, searchedString);
 	}
 
 }

@@ -129,22 +129,27 @@ public interface NodeRO {
 	 * Examples:
 	 *
 	 *  <pre>
-    node('<--dining room->chears->1')
-        finds ancestor node named 'dining room', its child node 'chears' and returns node '1'
-    node('<-<-->chears->1')
-        goes to parent node named 'tables' and its parent node named 'dining room', its child node 'chears' and returns its child node '1' too
-    node('<-<->chears->1')
-        goes to parent node named 'tables' and its sibling node 'chears' and returns child node '1' too
-    node('<--dining...->ch...->1')
-        finds ancestor node starting with 'dining'and its child node 'chears' and returns node '1'
-    node(':->house->bedroom->bed')
-        goes from the root node to 'bed' and returns it
-    node('::')
+    node("<--'dining room'->'chears'->'1'")
+    In groovy also node('<--"dining room"->"chears"->"1"')
+        finds ancestor node with text "dining room", its child node with text "chears" and returns node "1"
+    node('<--#dining room->#chears->#1')
+        finds ancestor node with alias "dining room", its child node with alias "chears" and returns its first child node
+    node("<-<-->'chears'->'1'")
+        goes to parent node named "tables" and its parent node named "dining room", its child node "chears" and returns its child node "1" too
+    node("<-<->'chears'->'1'")
+        goes to parent node named "tables" and its sibling node "chears" and returns child node "1" too
+    node("<--'dining...'->''ch...'->'1'")
+        finds ancestor node starting with "dining"and its child node "chears" and returns node "1"
+    node(":->'house'->'bedroom'->'bed'")
+        goes from the root node to "bed" and returns it
+    node("::")
         returns map root node
-    node('::-->bed')
-        goes from the root node to 'bed' and returns it
-    node(':bedroom->bed')
-        goes from global node 'bedroom' to 'bed' and returns it
+    node("::-->'bed'")
+        goes from the root node to "bed" and returns it
+    node(":'bedroom'->'bed'")
+        goes from global node "bedroom" to "bed" and returns it
+    node(":#bedroom->'bed'")
+        goes from global node with alias "bedroom" to "bed" and returns it
 
         </pre>
 	 * @since 1.7.1 */

@@ -40,7 +40,7 @@ enum ExploringStep {
 		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
 			final Iterable<NodeModel> nodes = GlobalNodes.readableOf(start.getMap());
 			accessedNodes.accessGlobalNode();
-			return getNodes(start, nodeMatcher, nodes, cardinality, accessedNodes);
+			return nodeMatcher.filterMatchingNodes(nodes, cardinality, accessedNodes);
 		}
 	},
 
@@ -78,7 +78,7 @@ enum ExploringStep {
 					};
 				}
 			};
-			return getNodes(start, nodeMatcher, nodes, Cardinality.FIRST, accessedNodes);
+			return nodeMatcher.filterMatchingNodes(nodes, Cardinality.FIRST, accessedNodes);
 		}
 
 	},
@@ -94,7 +94,7 @@ enum ExploringStep {
 			final NodeModel parent = start.getParentNode();
 			accessedNodes.accessNode(parent);
 			final Iterable<NodeModel> nodes = parent == null ? Collections.<NodeModel>emptyList() : parent.getChildren();
-			return getNodes(start, nodeMatcher, nodes, cardinality, accessedNodes);
+			return nodeMatcher.filterMatchingNodes(nodes, cardinality, accessedNodes);
 		}
 
 	},
@@ -123,7 +123,7 @@ enum ExploringStep {
 		@Override
 		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
 			final Iterable<NodeModel> nodes = start.getChildren();
-			return getNodes(start, nodeMatcher, nodes, cardinality, accessedNodes);
+			return nodeMatcher.filterMatchingNodes(nodes, cardinality, accessedNodes);
 		}
 
 	},
@@ -227,34 +227,6 @@ enum ExploringStep {
 	}
 
 	abstract List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes);
-
-	protected List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Iterable<NodeModel> iterable,
-												   Cardinality cardinality, AccessedNodes accessedNodes) {
-			int counter = 0;
-			List<NodeModel> nodes = null;
-			for (NodeModel node : iterable) {
-				accessedNodes.accessNode(node);
-				if(nodeMatcher.matches(node)) {
-					counter++;
-					if(counter == 1) {
-						nodes = cardinality.createList(node);
-						if(cardinality == Cardinality.FIRST)
-							return nodes;
-					}
-					else {
-						assertValidNodeCount(cardinality, counter);
-						nodes.add(node);
-					}
-				}
-			}
-			assertValidNodeCount(cardinality, counter);
-			return nodes;
-		}
-
-		private void assertValidNodeCount(Cardinality cardinality, int counter) {
-			if(counter != 1 && cardinality != Cardinality.SINGLE)
-				throw new IllegalStateException("One and only one node matching giving string expected, " + counter + " nodes found");
-		}
 
 
 	NodeModel getSingleNode(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
