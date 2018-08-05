@@ -2,6 +2,7 @@ package org.freeplane.features.explorer.mindmapmode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -29,7 +30,7 @@ public class MapExplorer {
 			if(lastAddedCharacterPosition < operatorStart) {
 				final String operatorSubstring = path.substring(lastAddedCharacterPosition, lastOperatorEnd);
 				final String searchedString = path.substring(lastOperatorEnd, operatorStart);
-				commands.add(new Command(textController, ExploringStep.of(operatorSubstring), searchedString, accessedNodes));
+				commands.add(new Command(textController, ExploringStep.of(operatorSubstring, searchedString), searchedString, accessedNodes));
 			}
 			lastAddedCharacterPosition = operatorStart;
 			lastOperatorEnd = matcher.end();
@@ -38,7 +39,7 @@ public class MapExplorer {
 		if(lastAddedCharacterPosition < path.length()) {
 			final String operatorSubstring = path.substring(lastAddedCharacterPosition, lastOperatorEnd);
 			final String searchedString = path.substring(lastOperatorEnd);
-			commands.add(new Command(textController, ExploringStep.of(operatorSubstring), searchedString, accessedNodes));
+			commands.add(new Command(textController, ExploringStep.of(operatorSubstring, searchedString), searchedString, accessedNodes));
 		}
 
 		return commands;
@@ -57,11 +58,13 @@ public class MapExplorer {
 	}
 
 	public NodeModel getNode() {
-		NodeModel node = start;
-		for(Command command : path) {
-			node = command.getSingleNode(node);
-		}
-		return node;
+		final List<? extends NodeModel> nodes = getNodes();
+		final int nodeCount = nodes.size();
+		if(nodeCount == 1)
+			return nodes.get(0);
+		else
+			throw new IllegalStateException("One and only one node matching giving string expected, " + nodeCount + " nodes found");
+
 	}
 
 	public List<? extends NodeModel> getNodes() {
@@ -71,7 +74,8 @@ public class MapExplorer {
 				return nodes;
 			List<NodeModel> nextNodes = new ArrayList<>();
 			for(NodeModel from:nodes) {
-				nextNodes.addAll(command.getAllNodes(from));
+				final Collection<? extends NodeModel> elementNodes = command.getNodes(from);
+				nextNodes.addAll(elementNodes);
 			}
 			nodes = nextNodes;
 		}

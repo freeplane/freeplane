@@ -19,12 +19,7 @@ class Command {
 		this.operator = operator;
 	}
 
-	public NodeModel getSingleNode(NodeModel start) {
-		final NodeMatcher nodeMatcher = createMatcher();
-		return operator.getSingleNode(start, nodeMatcher, accessedNodes);
-	}
-
-	public Collection<? extends NodeModel> getAllNodes(NodeModel start) {
+	public Collection<? extends NodeModel> getNodes(NodeModel start) {
 		final NodeMatcher nodeMatcher = createMatcher();
 		return operator.getAllNodes(start, nodeMatcher, accessedNodes);
 	}
