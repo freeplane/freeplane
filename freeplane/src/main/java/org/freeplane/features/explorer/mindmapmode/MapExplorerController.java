@@ -150,7 +150,7 @@ public class MapExplorerController implements IExtension{
 	public String getNodeReferenceSuggestion(NodeModel node) {
 		final String alias = getAlias(node);
 		if(!alias.isEmpty())
-			return alias;
+			return '#' + alias;
 		final String shortPlainText = textController.getShortPlainText(node, 10, "...");
 		return shortPlainText;
 	}
