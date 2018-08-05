@@ -186,6 +186,9 @@
 				</Entry>
 				<Entry name="ShowAttributeDialogAction" />
 				<Entry builder="separator" />
+				<Entry name="GloballyAccessibleNodeAction" />
+				<Entry name="AssignAliasAction" />
+				<Entry builder="separator" />
 				<Entry name="LatexInsertLatexAction" plugin="org.freeplane.plugin.latex" />
 				<Entry name="LatexEditLatexAction" plugin="org.freeplane.plugin.latex" />
 				<Entry name="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex" />
