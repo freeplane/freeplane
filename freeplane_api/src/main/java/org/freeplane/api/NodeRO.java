@@ -77,7 +77,7 @@ public interface NodeRO {
 
 	/**
 	 * Returns a list of all nodes matching given path.
-	 * It contain arbitrary node number or be empty.
+	 * It can contain arbitrary node number or be empty.
 	 *
 	 * Path syntax is described in the {@link #at(String) at} method.
 	 *
