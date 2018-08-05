@@ -153,7 +153,7 @@ public interface NodeRO {
 
         </pre>
 	 * @since 1.7.1 */
-	Node call(String path);
+	Node at(String path);
 
 	/**
 	 * Access all matching nodes by relative path.
@@ -161,7 +161,7 @@ public interface NodeRO {
 	 * Path syntax is like in  {@link #call()}
 	 *
 	 * @since 1.7.1 */
-	List<? extends Node> all(String path);
+	List<? extends Node> allAt(String path);
 
 	 /**
 	  * Alias of the node

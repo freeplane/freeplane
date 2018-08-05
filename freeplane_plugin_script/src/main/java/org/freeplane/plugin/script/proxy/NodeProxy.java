@@ -1074,7 +1074,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	}
 
 	@Override
-	public Node call(String path) {
+	public Node at(String path) {
 		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
 		final MapExplorer mapExplorer = explorer.getMapExplorer(getDelegate(), path, accessedNodes());
 		final NodeModel node = mapExplorer.getNode();
@@ -1087,7 +1087,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	}
 
 	@Override
-	public List<? extends Node> all(String path) {
+	public List<? extends Node> allAt(String path) {
 		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
 		final MapExplorer mapExplorer = explorer.getMapExplorer(getDelegate(), path, accessedNodes());
 		final ArrayList<NodeModel> nodeModels = new ArrayList<NodeModel>(mapExplorer.getNodes());
