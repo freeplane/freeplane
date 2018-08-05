@@ -1,10 +1,10 @@
 package org.freeplane.features.explorer.mindmapmode;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.features.explorer.mindmapmode.ExploringStep.Cardinality;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.TextController;
 
@@ -27,20 +27,20 @@ class NodeMatcher {
 			String matchedStringOf(String searchedString) {
 				return searchedString.substring(1, searchedString.length() - 1);
 			}
-		}, 
+		},
 		START {
 			@Override
 			String matchedStringOf(String searchedString) {
 				return searchedString.substring(1, searchedString.length() - REST_CHARACTERS.length() - 1);
 			}
-		}, 
+		},
 		NO_CONTENT {
 			@Override
 			String matchedStringOf(String searchedString) {
 				return "";
 			}
 		};
-		
+
 
 		static MatchedElement of(String searchedString) {
 			if(searchedString.isEmpty())
@@ -66,16 +66,16 @@ class NodeMatcher {
 			}
 			throw new IllegalArgumentException("invalid search string "  + searchedString);
 		}
-		
+
 		abstract String matchedStringOf(String searchedString);
 	}
-	
+
 	private final String matchedString;
 	private final MatchedElement matchedElement;
 	private final TextController textController;
 	private static final String REST_CHARACTERS = "...";
 
-	
+
 
 	public NodeMatcher(TextController textController, String searchedString) {
 		this.textController = textController;
@@ -88,7 +88,7 @@ class NodeMatcher {
 			throw new IllegalArgumentException("Can not match nodes by index");
 		if(matchedElement == MatchedElement.ALIAS)
 			return matches(node.getExtension(NodeAlias.class));
-		else 
+		else
 			return matches(textController.getPlainTransformedTextWithoutNodeNumber(node));
 	}
 
@@ -97,22 +97,21 @@ class NodeMatcher {
 	}
 
 	private boolean matches(final String text) {
-		if(matchedElement == MatchedElement.START) 
+		if(matchedElement == MatchedElement.START)
 			return text.startsWith(matchedString) ;
-		else 
+		else
 			return text.equals(matchedString);
 	}
 
-	public List<? extends NodeModel> filterMatchingNodes(Iterable<NodeModel> iterable, Cardinality cardinality, AccessedNodes accessedNodes) {
+	public List<? extends NodeModel> filterMatchingNodes(Iterable<NodeModel> iterable, AccessedNodes accessedNodes) {
 		if(matchedElement == MatchedElement.COUNTER) {
-			return getNodeByCounter(iterable, cardinality, accessedNodes);
+			return getNodeByCounter(iterable, accessedNodes);
 		}
 		else
-			return getNodesByContent(iterable, cardinality, accessedNodes);
+			return getNodesByContent(iterable, accessedNodes);
 	}
 
-	private List<? extends NodeModel> getNodesByContent(Iterable<NodeModel> iterable, Cardinality cardinality,
-	                                                    AccessedNodes accessedNodes) {
+	private List<? extends NodeModel> getNodesByContent(Iterable<NodeModel> iterable, AccessedNodes accessedNodes) {
 		int counter = 0;
 		List<NodeModel> nodes = null;
 		for (NodeModel node : iterable) {
@@ -120,21 +119,17 @@ class NodeMatcher {
 			if(matches(node)) {
 				counter++;
 				if(counter == 1) {
-					nodes = cardinality.createList(node);
-					if(cardinality == Cardinality.FIRST)
-						return nodes;
+					nodes = new ArrayList<>();
 				}
 				else {
-					assertValidNodeCount(cardinality, counter);
 					nodes.add(node);
 				}
 			}
 		}
-		assertValidNodeCount(cardinality, counter);
-		return nodes;
+		return nodes != null ? nodes : Collections.<NodeModel>emptyList();
 	}
-	
-	private List<? extends NodeModel> getNodeByCounter(Iterable<NodeModel> iterable, Cardinality cardinality, AccessedNodes accessedNodes) {
+
+	private List<? extends NodeModel> getNodeByCounter(Iterable<NodeModel> iterable, AccessedNodes accessedNodes) {
 		int counter = 1;
 		int requiredCounter = Integer.valueOf(matchedString);
 		for(NodeModel node : iterable) {
@@ -142,14 +137,9 @@ class NodeMatcher {
 				return Collections.singletonList(node);
 			counter++;
 		}
-		assertValidNodeCount(cardinality, 0);
 		return Collections.emptyList();
 	}
 
-	private void assertValidNodeCount(Cardinality cardinality, int counter) {
-		if(counter != 1 && cardinality != Cardinality.SINGLE)
-			throw new IllegalStateException("One and only one node matching giving string expected, " + counter + " nodes found");
-	}
 
 
 }

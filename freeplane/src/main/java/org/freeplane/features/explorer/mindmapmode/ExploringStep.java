@@ -1,6 +1,5 @@
 package org.freeplane.features.explorer.mindmapmode;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,13 +16,13 @@ import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.map.NodeModel;
 
 enum ExploringStep {
-	ROOT("^::"){
+	ROOT("^:"){
 		@Override
 		public void assertValidString(String searchedString) {
 			assertEmpty(searchedString);
 		}
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel node, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
+		List<? extends NodeModel> getNodes(NodeModel node, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 			final NodeModel rootNode = node.getMap().getRootNode();
 			accessedNodes.accessNode(rootNode);
 			return Collections.singletonList(rootNode);
@@ -37,10 +36,10 @@ enum ExploringStep {
 			assertNonEmpty(searchedString);
 		}
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
+		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 			final Iterable<NodeModel> nodes = GlobalNodes.readableOf(start.getMap());
 			accessedNodes.accessGlobalNode();
-			return nodeMatcher.filterMatchingNodes(nodes, cardinality, accessedNodes);
+			return nodeMatcher.filterMatchingNodes(nodes, accessedNodes);
 		}
 	},
 
@@ -51,7 +50,7 @@ enum ExploringStep {
 		}
 
 		@Override
-		List<? extends NodeModel> getNodes(final NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
+		List<? extends NodeModel> getNodes(final NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 			final Iterable<NodeModel> nodes = new Iterable<NodeModel>() {
 				NodeModel current = start;
 				@Override
@@ -78,7 +77,7 @@ enum ExploringStep {
 					};
 				}
 			};
-			return nodeMatcher.filterMatchingNodes(nodes, Cardinality.FIRST, accessedNodes);
+			return nodeMatcher.filterMatchingNodes(nodes, accessedNodes);
 		}
 
 	},
@@ -90,11 +89,11 @@ enum ExploringStep {
 		}
 
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
+		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 			final NodeModel parent = start.getParentNode();
 			accessedNodes.accessNode(parent);
 			final Iterable<NodeModel> nodes = parent == null ? Collections.<NodeModel>emptyList() : parent.getChildren();
-			return nodeMatcher.filterMatchingNodes(nodes, cardinality, accessedNodes);
+			return nodeMatcher.filterMatchingNodes(nodes, accessedNodes);
 		}
 
 	},
@@ -106,7 +105,7 @@ enum ExploringStep {
 		}
 
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel node, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
+		List<? extends NodeModel> getNodes(NodeModel node, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 			final NodeModel parentNode = node.getParentNode();
 			accessedNodes.accessNode(parentNode);
 			return Collections.singletonList(parentNode);
@@ -121,9 +120,9 @@ enum ExploringStep {
 		}
 
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
+		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 			final Iterable<NodeModel> nodes = start.getChildren();
-			return nodeMatcher.filterMatchingNodes(nodes, cardinality, accessedNodes);
+			return nodeMatcher.filterMatchingNodes(nodes, accessedNodes);
 		}
 
 	},
@@ -135,7 +134,7 @@ enum ExploringStep {
 		}
 
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel start, final NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes) {
+		List<? extends NodeModel> getNodes(NodeModel start, final NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 			accessedNodes.accessBranch(start);
 			final ICondition condition = new ICondition() {
 				@Override
@@ -149,16 +148,6 @@ enum ExploringStep {
 
 	public enum Cardinality {
 		SINGLE, FIRST, ALL;
-
-		public List<NodeModel> createList(NodeModel node) {
-			if(this != ALL)
-				return Collections.singletonList(node);
-			else {
-				final ArrayList<NodeModel> list = new ArrayList<>();
-				list.add(node);
-				return list;
-			}
-		}
 	}
 
 
@@ -166,7 +155,9 @@ enum ExploringStep {
 
 	static private Map<String, ExploringStep> operatorByPattern = mapPatternsToOperators();
 
-	static ExploringStep of(String pattern) {
+	static ExploringStep of(String pattern, String searchedString) {
+		if(pattern.equals(":"))
+			return searchedString.isEmpty() ? ROOT : GLOBAL;
 		final ExploringStep operator = operatorByPattern.get(toOperator(pattern));
 		if(operator == null)
 			throw new IllegalArgumentException("Invalid operator value " + toOperator(pattern));
@@ -198,7 +189,8 @@ enum ExploringStep {
 		final ExploringStep[] operators = ExploringStep.values();
 		for(ExploringStep o : operators) {
 			final String pattern = o.pattern;
-			map.put(toOperator(pattern) , o);
+			if(! pattern.equals("^:"))
+				map.put(pattern , o);
 		}
 		map.put("" , ExploringStep.CHILD);
 		return map;
@@ -226,15 +218,16 @@ enum ExploringStep {
 		return operatorRegex.matcher(toOperator(path));
 	}
 
-	abstract List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, Cardinality cardinality, AccessedNodes accessedNodes);
+	abstract List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes);
 
 
 	NodeModel getSingleNode(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
-		return getNodes(start, nodeMatcher, Cardinality.SINGLE, accessedNodes).get(0);
+		final List<? extends NodeModel> nodes = getNodes(start, nodeMatcher, accessedNodes);
+		return nodes.get(0);
 	}
 
 	Collection<? extends NodeModel> getAllNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
-		return getNodes(start, nodeMatcher, Cardinality.ALL, accessedNodes);
+		return getNodes(start, nodeMatcher, accessedNodes);
 	}
 
 }
