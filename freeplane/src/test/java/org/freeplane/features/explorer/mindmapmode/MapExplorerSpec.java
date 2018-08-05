@@ -77,7 +77,7 @@ public class MapExplorerSpec {
 		assertIllegalPath("->");
 
 		assertPath("<--a", command(ExploringStep.ANCESTOR, "a"));
-		assertPath("::", command(ExploringStep.ROOT, ""));
+		assertPath(":", command(ExploringStep.ROOT, ""));
 		assertPath(":a", command(ExploringStep.GLOBAL, "a"));
 	}
 
