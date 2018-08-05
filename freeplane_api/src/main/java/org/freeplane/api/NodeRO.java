@@ -9,6 +9,80 @@ import java.util.List;
 
 /** The currently selected node: <code>node</code> - read-only. */
 public interface NodeRO {
+	/**
+	 * Returns a single node located by path given as a string argument.
+	 *
+	 * <p>If no node or more than one node is available at the specified position, IllegalArgumentException is thrown.
+	 *
+	 * <p>The path is a concatenation of path elements described below.
+	 *
+	 *  <h2> Path examples:</h2>
+	 *  <pre>{@code
+	 *  node.at(":'house'-->'kitchen'->#chairs->#2")
+	 *     - take first level node with text 'house',
+	 *     - in its subtree node find with text 'kitchen'
+	 *     - find its child node with alias 'chairs'
+	 *     - return the second child node of the chairs
+	 *
+	 *  node.at("<--'house'-->#dog")
+	 *      -- return node with alias 'dog' within subtree of ancestor node with text 'house'
+	 *  }</pre>
+	 *
+	 * Following path elements are defined:
+	 *
+	 * <h2>Child node:</h2>
+	 * <pre>{@code
+	 * ->'node text' or ->"node text" : child node with text 'node text'
+	 * ->'node...' : child node containing text starting with 'node'
+	 * ->'...' : any child node
+	 * ->#1 : child node at position 1 ( any positive number is allowed)
+	 * ->#nodeAlias : child node with alias 'nodeAlias', node alias may not be a number
+	 * }</pre>
+	 *
+	 * If element starts the path, prefix <b>{@code -> }</b> can be omitted.
+	 *
+	 * <h2>Descendant node:</h2>
+	 * <pre>{@code
+	 * -->'node text' or -->"node text" : descendant node with text 'node text'
+	 * -->'node...' : descendant node containing text starting with 'node'
+	 * -->'...' : any descendant node
+	 * -->#nodeAlias descendant node with alias 'nodeAlias', node alias may not be a number
+	 * }</pre>
+	 *
+	 * <h2>Parent node:</h2>
+	 * <pre>{@code <-}</pre>
+	 *
+	 * <h2>Ancestor node:</h2>
+	 * <pre>{@code
+	 * <--'node text' or "node text" : the closest ancestor node with text 'node text'
+	 * <--'node...' : the closest ancestor node containing text starting with 'node'
+	 * <--#2  : second ancestor node also the parent node of the parent node (any positive number is allowed)
+	 * <--#nodeAlias : the closest ancestor node with alias 'nodeAlias', node alias may not be a number
+	 * }</pre>
+
+	 * <h2>Root or global node</h2>
+	 * (they allowed only as the first path element).
+	 * Here global node is a node carrying global flag which can be set using menu or by script.
+	 *
+	 * <pre>{@code
+	 * : (colon character) : map root node
+	 * :'node text' or :"node text" : global node with text 'node text'
+	 * :'node...' : global node containing text starting with 'node'
+	 * :#nodeAlias : global node with alias 'nodeAlias', node alias may not be a number
+	 * }</pre>
+
+	 * @since 1.7.1 */
+	Node at(String path);
+
+	/**
+	 * Returns a list of all nodes matching given path.
+	 * It contain arbitrary node number or be empty.
+	 *
+	 * Path syntax is described in the {@link #at(String) at} method.
+	 *
+	 * @since 1.7.1 */
+	List<? extends Node> allAt(String path);
+
 	Attributes getAttributes();
 
 	/** allows to access attribute values like array elements. Note that the returned type is a
@@ -120,48 +194,6 @@ public interface NodeRO {
 	/** @deprecated since 1.2 - use {@link #getParent()} instead. */
 	@Deprecated
 	Node getParentNode();
-
-	/**
-	 * Access single node by relative path.
-	 *
-	 * If no node or more than one node is available on the path, an exception is thrown.
-	 *
-	 * Examples:
-	 *
-	 *  <pre>
-    node("<--'dining room'->'chears'->'1'")
-    In groovy also node('<--"dining room"->"chears"->"1"')
-        finds ancestor node with text "dining room", its child node with text "chears" and returns node "1"
-    node('<--#dining room->#chears->#1')
-        finds ancestor node with alias "dining room", its child node with alias "chears" and returns its first child node
-    node("<-<-->'chears'->'1'")
-        goes to parent node named "tables" and its parent node named "dining room", its child node "chears" and returns its child node "1" too
-    node("<-<->'chears'->'1'")
-        goes to parent node named "tables" and its sibling node "chears" and returns child node "1" too
-    node("<--'dining...'->''ch...'->'1'")
-        finds ancestor node starting with "dining"and its child node "chears" and returns node "1"
-    node(":->'house'->'bedroom'->'bed'")
-        goes from the root node to "bed" and returns it
-    node("::")
-        returns map root node
-    node("::-->'bed'")
-        goes from the root node to "bed" and returns it
-    node(":'bedroom'->'bed'")
-        goes from global node "bedroom" to "bed" and returns it
-    node(":#bedroom->'bed'")
-        goes from global node with alias "bedroom" to "bed" and returns it
-
-        </pre>
-	 * @since 1.7.1 */
-	Node at(String path);
-
-	/**
-	 * Access all matching nodes by relative path.
-	 *
-	 * Path syntax is like in  {@link #call()}
-	 *
-	 * @since 1.7.1 */
-	List<? extends Node> allAt(String path);
 
 	 /**
 	  * Alias of the node
