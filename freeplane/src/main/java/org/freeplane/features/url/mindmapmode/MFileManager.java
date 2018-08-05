@@ -504,8 +504,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		catch (final Exception ex) {
 			final String errorMessage = "Error while parsing file:" + file;
 			LogUtils.warn(errorMessage, ex);
-			UITools.errorMessage(errorMessage);
 			final NodeModel result = new NodeModel(map);
+			map.setRoot(result);
 			result.setText(errorMessage);
 			return result;
 		}
