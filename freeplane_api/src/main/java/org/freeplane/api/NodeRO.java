@@ -36,7 +36,8 @@ public interface NodeRO {
 	 * ->'node...' : child node containing text starting with 'node'
 	 * ->'...' : any child node
 	 * ->#1 : child node at position 1 ( any positive number is allowed)
-	 * ->#nodeAlias : child node with alias 'nodeAlias', node alias may not be a number
+	 * ->#nodeAlias : child node with alias 'nodeAlias', node alias can not be a number
+	 * because numbers are reserved for the previous selector.
 	 * }</pre>
 	 *
 	 * If element starts the path, prefix <b>{@code -> }</b> can be omitted.
@@ -46,7 +47,7 @@ public interface NodeRO {
 	 * -->'node text' or -->"node text" : descendant node with text 'node text'
 	 * -->'node...' : descendant node containing text starting with 'node'
 	 * -->'...' : any descendant node
-	 * -->#nodeAlias descendant node with alias 'nodeAlias', node alias may not be a number
+	 * -->#nodeAlias descendant node with alias 'nodeAlias', node alias can not be a number
 	 * }</pre>
 	 *
 	 * <h2>Parent node:</h2>
@@ -57,7 +58,7 @@ public interface NodeRO {
 	 * <--'node text' or "node text" : the closest ancestor node with text 'node text'
 	 * <--'node...' : the closest ancestor node containing text starting with 'node'
 	 * <--#2  : second ancestor node also the parent node of the parent node (any positive number is allowed)
-	 * <--#nodeAlias : the closest ancestor node with alias 'nodeAlias', node alias may not be a number
+	 * <--#nodeAlias : the closest ancestor node with alias 'nodeAlias', node alias can not be a number
 	 * }</pre>
 
 	 * <h2>Root or global node</h2>
@@ -68,7 +69,7 @@ public interface NodeRO {
 	 * : (colon character) : map root node
 	 * :'node text' or :"node text" : global node with text 'node text'
 	 * :'node...' : global node containing text starting with 'node'
-	 * :#nodeAlias : global node with alias 'nodeAlias', node alias may not be a number
+	 * :#nodeAlias : global node with alias 'nodeAlias', node alias can not be a number
 	 * }</pre>
 
 	 * @since 1.7.1 */
