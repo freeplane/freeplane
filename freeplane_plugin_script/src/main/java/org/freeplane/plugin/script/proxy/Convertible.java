@@ -1,8 +1,5 @@
 package org.freeplane.plugin.script.proxy;
 
-import groovy.lang.GroovyObjectSupport;
-import groovy.lang.MissingMethodException;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Calendar;
@@ -15,13 +12,16 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.FormattedDate;
 
+import groovy.lang.GroovyObjectSupport;
+import groovy.lang.MissingMethodException;
+
 /** Utility wrapper class around a String that is used to convert node texts to different types.
  * It's especially important for Formulas. */
 // Unfortunately it seems impossible to implement Comparable<Object> since in this case
 // TypeTransformation.compareToWithEqualityCheck() is called and will return false for
 //   assert new Comparable(2) == "2"
 // instead of just calling equals, which is correctly defined
-public class Convertible extends GroovyObjectSupport /*implements Comparable<Object>*/ {
+public class Convertible extends GroovyObjectSupport /*implements Comparable<Object>*/ implements org.freeplane.api.Convertible {
 	private final String text;
 
 	/** Use the {@code text} unchanged, i. e. oesn't evaluate formulas since this would require
@@ -40,6 +40,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	/** Convert to Number. All Java number literals are allowed as described by {@link Long#decode(String)}
 	 * @return a Long or a Double, whatever fits best.
 	 * @throws ConversionException if text is not a number. */
+	@Override
 	public Number getNum() throws ConversionException {
 		try {
 			return TextUtils.toNumber(text);
@@ -52,6 +53,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 
 	/** Safe variant of {@link #getNum()}, throws nothing - on any error (long) 0 is returned.
 	 * @return a Long or a Double if text is convertible to it or 0 otherwise (even if text is null). */
+	@Override
 	public Number getNum0() {
 	    try {
 	        final Number result = getNum();
@@ -64,26 +66,30 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 
 	/** No conversion.
 	 * @return The original string. */
+	@Override
 	public String getString() {
 		return text;
 	}
 
 	/** No conversion.
 	 * @return The original string. */
+	@Override
 	public String getText() {
 		return text;
 	}
 
 	/** Removes HTML markup if necessary.
 	 * @return The result of {@link HtmlUtils#htmlToPlain(String)} */
+	@Override
 	public String getPlain() {
 		return text == null ? null : HtmlUtils.htmlToPlain(text);
 	}
 
 	/** Converts to Date if possible. The valid date patterns are "yyyy-MM-dd HH:dd:ss.SSSZ"
-	 * with optional '-', ':'. ' ' may be replaced by 'T'. 
+	 * with optional '-', ':'. ' ' may be replaced by 'T'.
 	 * @return a Date for the parsed text
 	 * @throws ConversionException if the text is not convertible to a Date. */
+	@Override
 	public Date getDate() throws ConversionException {
 		return text == null ? null : parseDate(text);
 	}
@@ -96,8 +102,9 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	}
 
 	/** Converts to Calendar if possible. See {@link #getDate()} for recognized patterns.
-	 * @return a Calendar for the parsed text. 
+	 * @return a Calendar for the parsed text.
 	 * @throws ConversionException if the text is not convertible to a Date. */
+	@Override
 	public Calendar getCalendar() throws ConversionException {
 		if (text == null)
 			return null;
@@ -108,9 +115,10 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	}
 
 	/** Converts to URI if possible.
-	 * @return a URI 
+	 * @return a URI
 	 * @throws ConversionException if the text is not convertible to a URI. */
-    public URI getUri() throws ConversionException {
+    @Override
+	public URI getUri() throws ConversionException {
         if (text == null)
             return null;
         try {
@@ -132,6 +140,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	 * <li>String
 	 * </ol>
 	 * @return Object - the type that fits best. */
+	@Override
 	public Object getObject() {
 		if (text == null)
 			return null;
@@ -161,6 +170,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 
 	/** Type check.
 	 * @return true if the text is convertible to number. */
+	@Override
 	public boolean isNum() {
 		// handles null -> false
 		return TextUtils.isNumber(text);
@@ -168,6 +178,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 
 	/** Type check.
 	 * @return true if the text is convertible to date. */
+	@Override
 	public boolean isDate() {
 		return FormattedDate.isDate(text);
 	}
@@ -175,6 +186,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	/** pretend we are a String if we don't provide a property for ourselves.
 	 * @param property a property of {@link String}, e. g. "bytes".
 	 * @return the property of the original string. */
+	@Override
 	public Object getProperty(String property) {
 		// called methods should handle null values
 		try {
@@ -200,6 +212,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	 * @param name method name
 	 * @param args method args
 	 * @return the result of the method invocation on the original string. */
+	@Override
 	public Object invokeMethod(String name, Object args) {
 		try {
 			// called methods should handle null values
@@ -238,6 +251,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	// TypeTransformation.compareToWithEqualityCheck() is called and will return false for
 	//   assert new Comparable(2) == "2"
 	// instead of just calling equals, which is correctly defined
+	@Override
 	public int compareTo(Object string) {
 		if (string == null)
 		    return text == null ? 0 : 1;
@@ -246,8 +260,9 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 		else
 			return 1;
 	}
-	
-	public int compareTo(Convertible convertible) {
+
+	@Override
+	public int compareTo(org.freeplane.api.Convertible convertible) {
 	    if (convertible == null || convertible.getText() == null)
 	        return text == null ? 0 : 1;
 		return text.compareTo(convertible.getText());
@@ -293,12 +308,14 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 
 	/** parses the text (case insensitive) as boolean via {@link Boolean#parseBoolean(String)}.
 	 * @return boolean */
+	@Override
 	public boolean getBool() {
 	    return Boolean.parseBoolean(text);
 	}
 
 	/** For implicit conversion to boolean: true if the text is not empty.
 	 * @return boolean */
+	@Override
 	public boolean asBoolean() {
 	    return text != null && text.length() > 0;
 	}

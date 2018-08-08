@@ -7,8 +7,8 @@
 // (at your option) any later version.
 
 import java.lang.reflect.Method
-import java.lang.reflect.TypeVariable
 
+import org.freeplane.core.resources.ResourceController
 import org.freeplane.core.ui.components.UITools
 import org.freeplane.core.util.FreeplaneVersion
 import org.freeplane.core.util.HtmlUtils
@@ -18,13 +18,10 @@ import org.freeplane.plugin.script.FreeplaneScriptBaseClass
 import org.freeplane.plugin.script.proxy.Convertible
 import org.freeplane.plugin.script.proxy.Proxy
 import org.freeplane.plugin.script.proxy.ScriptUtils
-import org.freeplane.core.resources.ResourceController
 
-
-// FIXME: api is installed locally but is there a portable way to find it?
 URI getApiLink(String path) {
     try {
-        def apiBase = path.startsWith('org/freeplane') ? 'http://freeplane.sourceforge.net/doc/api'
+        def apiBase = path.startsWith('org/freeplane') ? freeplaneApiBase
                 : 'http://groovy.codehaus.org/groovy-jdk'
         return new URI(apiBase + '/' + path)
     } catch (Exception e) {
@@ -63,7 +60,8 @@ def makeApi(Proxy.Node node, Class clazz) {
     classNode.link.uri = getApiLink(clazz)
     classNode.style.font.bold = true
     clazz.getMethods().findAll {
-        it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO')
+        it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO') ||
+		 it.declaringClass.getPackage().name == org.freeplane.api.Node.class.getPackage().name
     }.each {
         if (!addProperty(memberMap, it))
             addMethod(memberMap, it);
@@ -110,24 +108,15 @@ def createMemberNode(String memberName, Map<String, Object> attribs, Proxy.Node 
         //	if (mode == 'rw' && attribs['type_read'] != attribs['type_write']) {
         //		logger.severe("property ${memberName} has differing getter and setter types")
         //	}
-        memberNode = classNode.createChild(formatProperty(memberName, typeToString(type), mode))
+        memberNode = classNode.createChild(formatProperty(memberName, formatReturnType(type), mode))
         memberNode.icons.add('wizard')
         [ 'method_read', 'method_write' ].each {
             if (attribs[it]) {
                 Proxy.Node methodNode = memberNode.createChild(formatMethod(attribs[it]))
                 methodNode.icons.add('bookmark')
-                methodNode.link.uri = getApiLink(attribs['return_type'])
             }
         }
     }
-    if (attribs['return_type']) {
-        memberNode.link.uri = getApiLink(attribs['return_type'])
-    }
-    attribs['types'].each {
-        def typeNode = memberNode.createChild(typeToString(it))
-        typeNode.link.uri = getApiLink(it)
-    }
-    memberNode.folded = true
     return memberNode
 }
 
@@ -154,6 +143,7 @@ def addProperty(Map<String, Map<String, Object>> memberMap, Method method) {
 }
 
 def addMethod(Map<String, Map<String, Object>> memberMap, Method method) {
+	println formatMethodKey(method)
     def propertyMap = getOrCreatePropertiesMap(memberMap, formatMethodKey(method))
     propertyMap['types'] = method.parameterTypes
     propertyMap['method'] = formatMethod(method)
@@ -167,7 +157,7 @@ def formatProperty(String property, String type, String mode) {
 }
 
 def formatMethodKey(Method method) {
-		return method.name + '/' + method.parameterCount
+		return method.name +
 			'(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
 
 }
@@ -187,10 +177,17 @@ def formatParameter(parameter) {
 		parameter.name;
 }
 
+def formatReturnType(Class clazz) {
+	def parameterType = formatParameterType(clazz)
+	if(parameterType)
+		parameterType;
+	else
+		clazz.simpleName;
+}
 
 def formatMethod(Method method) {
 	def parameters =  method.metaClass.respondsTo(method, "getParameters") ? method.getParameters().collect{ formatParameter(it) } : method.parameterTypes.collect{ formatParameterType(it) }
-    return '<html><body>' + typeToString(method.returnType) +
+    return '<html><body>' + formatReturnType(method.returnType) +
     ' <b>' + method.name + '</b>' +
     '(' + parameters.join(', ') + ')'
 }
@@ -232,6 +229,7 @@ def createChild(Proxy.Node parent, text, link) {
 }
 
 // == MAIN ==
+this.freeplaneApiBase = new File(ResourceController.resourceController.installationBaseDir).toURI().toString() + '/doc/api';
 def MAP_NAME = textUtils.getText('scripting_api_generator_title')
 def PROXY_NODE = textUtils.getText('scripting_api_generator_proxy')
 def UTILITES_NODE = textUtils.getText('scripting_api_generator_utilities')
@@ -257,6 +255,7 @@ makeApi(proxy, Proxy.Attributes.class)
 makeApi(proxy, Proxy.Cloud.class)
 makeApi(proxy, Proxy.Connector.class)
 makeApi(proxy, Proxy.Controller.class)
+makeApi(proxy, Proxy.Loader.class)
 makeApi(proxy, Proxy.Edge.class)
 makeApi(proxy, Proxy.ExternalObject.class)
 makeApi(proxy, Proxy.Font.class)

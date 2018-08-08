@@ -763,25 +763,24 @@ implements IExtension, NodeChangeAnnouncer{
 	/**@throws XMLException
 	 * @deprecated -- use MapIO*/
 	@Deprecated
-	public boolean newMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException, XMLException{
-        	final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-        	if (mapViewManager.tryToChangeToMapView(url))
-        		return false;
-        	try {
-        	if (AddOnsController.getController().installIfAppropriate(url))
-        		return false;
-        	Controller.getCurrentController().getViewController().setWaitingCursor(true);
-        	final MapModel newModel = new MapModel();
-        	UrlManager.getController().loadCatchExceptions(url, newModel);
-        	newModel.setReadOnly(true);
-        	newModel.setSaved(true);
-        	fireMapCreated(newModel);
-        	newMapView(newModel);
-        	return true;
-        }
-        finally {
-        	Controller.getCurrentController().getViewController().setWaitingCursor(false);
-        }
+	public void openMap(final URL url) throws FileNotFoundException, XMLParseException,IOException, URISyntaxException, XMLException{
+		if (AddOnsController.getController().installIfAppropriate(url))
+			return;
+		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
+		if (mapViewManager.tryToChangeToMapView(url))
+			return;
+		try {
+			Controller.getCurrentController().getViewController().setWaitingCursor(true);
+			final MapModel newModel = new MapModel();
+			UrlManager.getController().loadCatchExceptions(url, newModel);
+			newModel.setReadOnly(true);
+			newModel.setSaved(true);
+			fireMapCreated(newModel);
+			createMapView(newModel);
+		}
+		finally {
+			Controller.getCurrentController().getViewController().setWaitingCursor(false);
+		}
 	}
 
 
@@ -789,29 +788,23 @@ implements IExtension, NodeChangeAnnouncer{
 	        XMLParseException, IOException, URISyntaxException, XMLException, MalformedURLException {
 	    String nodeReference = url.getRef();
 	    if(nodeReference != null){
-	    	newMap(new URL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath()));
+	    	openMap(new URL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath()));
 	    	select(getNodeFromID(nodeReference));
 	    }
 	    else{
-	    	newMap(url);
+	    	openMap(url);
 	    }
 	}
 
-	public void newMapView(final MapModel mapModel) {
+	public void createMapView(final MapModel mapModel) {
 		Controller.getCurrentController().getMapViewManager().newMapView(mapModel, Controller.getCurrentModeController());
 	}
 
 	public MapModel newMap() {
-		final MapModel newModel = newModel();
-		fireMapCreated(newModel);
-		newMapView(newModel);
-		return newModel;
-	}
-
-	public MapModel newModel() {
 		final MapModel mindMapMapModel = new MapModel();
 		mindMapMapModel.createNewRoot();
 		fireMapCreated(mindMapMapModel);
+		createMapView(mindMapMapModel);
 		return mindMapMapModel;
 	}
 
@@ -820,7 +813,6 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	@Override
-	@Deprecated
 	public void nodeChanged(final NodeModel node) {
 		nodeChanged(node, NodeModel.UNKNOWN_PROPERTY, null, null);
 	}
@@ -832,7 +824,6 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	@Override
-	@Deprecated
 	public void nodeRefresh(final NodeModel node) {
 		nodeRefresh(node, NodeModel.UNKNOWN_PROPERTY, null, null);
 	}

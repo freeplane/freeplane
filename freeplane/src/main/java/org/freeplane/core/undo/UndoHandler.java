@@ -33,7 +33,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.ViewController;
 
-class UndoHandler implements IUndoHandler {
+public class UndoHandler implements IUndoHandler {
 	final private List<ChangeListener> listeners;
 
 	public static final int COMMIT_DELAY = 2;
@@ -65,7 +65,7 @@ class UndoHandler implements IUndoHandler {
 
 	final private MapModel map;
 
-	UndoHandler(MapModel map) {
+	public UndoHandler(MapModel map) {
 		this.map = map;
 		actionFrameStarted = false;
 		deactivated = false;

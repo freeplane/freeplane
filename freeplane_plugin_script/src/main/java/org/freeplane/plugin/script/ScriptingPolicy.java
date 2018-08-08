@@ -43,8 +43,6 @@ import org.osgi.framework.AdminPermission;
  */
 class ScriptingPolicy extends Policy {
 	private static final AllPermission ALL_PERMISSION = new AllPermission();
-	private static final boolean DISABLE_CHECKS = Boolean
-	    .getBoolean("org.freeplane.main.application.FreeplaneSecurityManager.disable");
 	final private Policy defaultPolicy;
 	final private Permissions permissions;
 	final private Permissions permissionBlackList;
@@ -90,8 +88,7 @@ class ScriptingPolicy extends Policy {
 
 	@Override
 	public boolean implies(ProtectionDomain domain, Permission permission) {
-		if (DISABLE_CHECKS || //
-				defaultPolicy.implies(domain, permission) || //
+		if (defaultPolicy.implies(domain, permission) || //
 				userLibCodeSource.implies(domain.getCodeSource())) {
 			return true;
 		}

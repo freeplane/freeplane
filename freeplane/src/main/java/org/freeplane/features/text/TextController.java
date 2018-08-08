@@ -255,12 +255,16 @@ public class TextController implements IExtension {
 		return text;
 	}
 
-	public String getShortPlainText(NodeModel nodeModel) {
+	public String getShortPlainText(NodeModel nodeModel, int maximumCharacters, String continuationMark) {
 		String adaptedText = getPlainTransformedTextWithoutNodeNumber(nodeModel);
-		if (adaptedText.length() > 40) {
-			adaptedText = adaptedText.substring(0, 40) + " ...";
+		if (adaptedText.length() > maximumCharacters) {
+			adaptedText = adaptedText.substring(0, maximumCharacters) + continuationMark;
 		}
 		return adaptedText;
+	}
+
+	public String getShortPlainText(NodeModel nodeModel) {
+		return getShortPlainText(nodeModel, 40, " ...");
 	}
 
 	public String getShortText(String longText) {
@@ -298,7 +302,7 @@ public class TextController implements IExtension {
 		}
 		details.setHidden(isHidden);
 		node.addExtension(details);
-		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, DETAILS_HIDDEN, !isHidden, isHidden, false, false, false);
+		final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, DETAILS_HIDDEN, !isHidden, isHidden, true, false, false);
 		Controller.getCurrentModeController().getMapController().nodeRefresh(nodeChangeEvent);
 	}
 

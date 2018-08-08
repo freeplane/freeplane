@@ -26,6 +26,7 @@ import java.util.Timer;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
@@ -43,6 +44,7 @@ public class MMapModel extends MapModel {
 	private LockManager lockManager;
 	private Timer timerForAutomaticSaving;
 	private int titleNumber = 0;
+	private boolean autosaveEnabled;
 
 	/**
 	 * The current version and all other version that don't need XML update for
@@ -50,12 +52,19 @@ public class MMapModel extends MapModel {
 	 */
 	public MMapModel() {
 		super();
-		addExtension(IUndoHandler.class, IUndoHandler.create(this));
+		this.autosaveEnabled = false;
+		addExtension(IUndoHandler.class, new UndoHandler(this));
 		this.setLockManager(ResourceController.getResourceController().getBooleanProperty(
 		    "experimental_file_locking_on") ? new LockManager() : new DummyLockManager());
+	}
+
+	public void enableAutosave() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				scheduleTimerForAutomaticSaving();
+				if(! autosaveEnabled) {
+					autosaveEnabled = true;
+					scheduleTimerForAutomaticSaving();
+				}
 			}
 		});
 	}
@@ -73,6 +82,7 @@ public class MMapModel extends MapModel {
 		if (getTimerForAutomaticSaving() != null) {
 			getTimerForAutomaticSaving().cancel();
 		}
+		autosaveEnabled = false;
 		super.destroy();
 	}
 
@@ -105,7 +115,9 @@ public class MMapModel extends MapModel {
 	}
 
 	public void scheduleTimerForAutomaticSaving() {
-		if (!(UrlManager.getController() instanceof MFileManager)) {
+		if (!(UrlManager.getController() instanceof MFileManager)
+				|| Controller.getCurrentController().getMapViewManager().isHeadless()
+				|| ! autosaveEnabled) {
 			return;
 		}
 		final int numberOfTempFiles = Integer.parseInt(ResourceController.getResourceController().getProperty(

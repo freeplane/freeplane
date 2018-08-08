@@ -4,7 +4,6 @@
 package org.freeplane.plugin.script.proxy;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,10 +13,12 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.api.Map;
+import org.freeplane.api.Node;
+import org.freeplane.api.NodeCondition;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.export.mindmapmode.ExportController;
@@ -27,7 +28,6 @@ import org.freeplane.features.icon.factory.MindIconFactory;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
-import org.freeplane.features.mapio.MapIO;
 import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -36,8 +36,6 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.plugin.script.ScriptContext;
-import org.freeplane.plugin.script.proxy.Proxy.Map;
-import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 import groovy.lang.Closure;
 
@@ -78,14 +76,14 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	@Override
-	public List<Node> getSelecteds() {
+	public List<? extends Node> getSelecteds() {
 		if (scriptContext != null)
 			scriptContext.accessAll();
 		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection().getOrderedSelection(), scriptContext);
 	}
 
 	@Override
-	public List<Node> getSortedSelection(final boolean differentSubtrees) {
+	public List<? extends Node> getSortedSelection(final boolean differentSubtrees) {
 		if (scriptContext != null)
 			scriptContext.accessAll();
 		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection()
@@ -111,8 +109,8 @@ class ControllerProxy implements Proxy.Controller {
     }
 
 	@Override
-	public void select(final Collection<Node> toSelect) {
-		final Iterator<Node> it = toSelect.iterator();
+	public void select(final Collection<? extends Node> toSelect) {
+		final Iterator<? extends Node> it = toSelect.iterator();
 		if (!it.hasNext()) {
 			return;
 		}
@@ -127,7 +125,7 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
     @Override
-	public void selectMultipleNodes(final Collection<Node> toSelect) {
+	public void selectMultipleNodes(final Collection<? extends Node> toSelect) {
 	    select(toSelect);
 	}
 
@@ -199,99 +197,52 @@ class ControllerProxy implements Proxy.Controller {
 
 	@Override
 	@Deprecated
-	public List<Node> find(final ICondition condition) {
+	public List<? extends Node> find(final ICondition condition) {
 		if (scriptContext != null)
 			scriptContext.accessAll();
-		return ProxyUtils.find(condition, Controller.getCurrentController().getMap().getRootNode(), scriptContext);
+		return ProxyUtils.find(condition, currentMapRootNode(), scriptContext);
 	}
 
 	@Override
-	public List<Node> find(final Closure<Boolean> closure) {
+	public List<? extends Node> find(NodeCondition condition) {
 		if (scriptContext != null)
 			scriptContext.accessAll();
-		return ProxyUtils.find(closure, Controller.getCurrentController().getMap().getRootNode(), scriptContext);
+		return ProxyUtils.find(condition, currentMapRootNode(), scriptContext);
+	}
+
+	private NodeModel currentMapRootNode() {
+		return Controller.getCurrentController().getMap().getRootNode();
+	}
+	@Override
+	public List<? extends Node> find(final Closure<Boolean> closure) {
+		if (scriptContext != null)
+			scriptContext.accessAll();
+		return ProxyUtils.find(closure, currentMapRootNode(), scriptContext);
 	}
 
 	// NodeRO: R
 	@Override
-	public List<Node> findAll() {
+	public List<? extends Node> findAll() {
 		if (scriptContext != null)
 			scriptContext.accessAll();
-		return ProxyUtils.findAll(Controller.getCurrentController().getMap().getRootNode(), scriptContext, true);
+		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, true);
     }
 
 	// NodeRO: R
 	@Override
-	public List<Node> findAllDepthFirst() {
+	public List<? extends Node> findAllDepthFirst() {
 		if (scriptContext != null)
 			scriptContext.accessAll();
-		return ProxyUtils.findAll(Controller.getCurrentController().getMap().getRootNode(), scriptContext, false);
+		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, false);
     }
 
 	@Override
 	public Map newMap() {
-		final MapModel oldMap = Controller.getCurrentController().getMap();
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
+		final MMapIO mapIO = MMapIO.getInstance();
 		final MapModel newMap = mapIO.newMapFromDefaultTemplate();
-		restartTransaction(oldMap, newMap);
 		return new MapProxy(newMap, scriptContext);
 	}
 
-	@Override
-	public Map newMapFromTemplate(File templateFile) {
-		final MapModel oldMap = Controller.getCurrentController().getMap();
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
-		final MapModel newMap = mapIO.newMapFromTemplate(templateFile);
-		restartTransaction(oldMap, newMap);
-		return new MapProxy(newMap, scriptContext);
-	}
-
-	@Override
-	public Map newHiddenMapFromTemplate(File templateFile) {
-		final MMapIO mapIO = (MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class);
-		MapModel newMap;
-		try {
-			newMap = mapIO.newHiddenUntitledMap(Compat.fileToUrl(templateFile));
-			return new MapProxy(newMap, scriptContext);
-		}
-		catch (MalformedURLException e) {
-			return null;
-		}
-	}
-
-	@Override
-	public Map newMap(URL url) {
-		try {
-			final MapModel oldMap = Controller.getCurrentController().getMap();
-			Controller.getCurrentModeController().getMapController().newMap(url);
-			final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-			final String key = mapViewManager.checkIfFileIsAlreadyOpened(url);
-			// make the map the current map even if it was already opened
-			if (key == null || !mapViewManager.tryToChangeToMapView(key))
-				throw new RuntimeException("map " + url + " does not seem to be opened");
-			final MapModel newMap = mapViewManager.getModel();
-			restartTransaction(oldMap, newMap);
-			return new MapProxy(newMap, scriptContext);
-		}
-		catch (Exception e) {
-			throw new RuntimeException("error on newMap", e);
-		}
-	}
-
-	private void restartTransaction(final MapModel oldMap, final MapModel newmap) {
-		final IUndoHandler oldUndoHandler = oldMap.getExtension(IUndoHandler.class);
-		final IUndoHandler newUndoHandler = newmap.getExtension(IUndoHandler.class);
-		final int transactionLevel = oldUndoHandler.getTransactionLevel();
-        if(transactionLevel == 0){
-            return;
-        }
-		if(transactionLevel == 1){
-		    oldUndoHandler.commit();
-		    newUndoHandler.startTransaction();
-		    return;
-		}
-		throw new RuntimeException("can not create map inside transaction");
-	}
 
     @Override
 	public float getZoom() {
@@ -351,4 +302,30 @@ class ControllerProxy implements Proxy.Controller {
         }
     	return mapProxies;
     }
+
+	@Override
+	public Proxy.Loader load(File file) {
+		return LoaderProxy.of(file, scriptContext);
+	}
+
+	@Override
+	public Proxy.Loader load(URL url) {
+		return LoaderProxy.of(url, scriptContext);
+	}
+
+	@Override
+	public Proxy.Loader load(String file) {
+		return LoaderProxy.of(file, scriptContext);
+	}
+
+	@Override
+	public Map newMap(URL url) {
+		return load(url).getMap();
+	}
+
+	@Override
+	public Map newMapFromTemplate(File templateFile) {
+		return load(templateFile).saveAfterLoading().getMap();
+	}
+
 }

@@ -14,16 +14,16 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+
 import jsyntaxpane.SyntaxDocument;
 import jsyntaxpane.Token;
 import jsyntaxpane.actions.ActionUtils;
 import jsyntaxpane.components.SyntaxComponent;
 import jsyntaxpane.util.Configuration;
-
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 
 public class NodeIdHighLighter implements SyntaxComponent, CaretListener {
 	private final Pattern nodeIdPattern = Pattern.compile("(ID_\\d+)|(\"ID_\\d+\")");
@@ -38,6 +38,7 @@ public class NodeIdHighLighter implements SyntaxComponent, CaretListener {
         DEINSTALLING
     }
 
+	@Override
 	public void caretUpdate(CaretEvent e) {
 		handle(e.getDot());
 	}
@@ -93,7 +94,7 @@ public class NodeIdHighLighter implements SyntaxComponent, CaretListener {
 	}
 
 	public void deHighlight() {
-		if (originallySelectedNode == null) 
+		if (originallySelectedNode == null)
 			return;
 		final Controller controller = Controller.getCurrentController();
 		if (controller == null)
@@ -115,9 +116,11 @@ public class NodeIdHighLighter implements SyntaxComponent, CaretListener {
 		}
 	}
 
+	@Override
 	public void config(Configuration config) {
 	}
 
+	@Override
 	public void install(JEditorPane editor) {
 		this.pane = editor;
 		pane.addCaretListener(this);
@@ -157,10 +160,12 @@ public class NodeIdHighLighter implements SyntaxComponent, CaretListener {
 //		pane.addFocusListener(new NodeIdHighLightFocusListener());
 //	}
 
+	@Override
 	public void deinstall(JEditorPane editor) {
 		status = Status.DEINSTALLING;
 		deHighlight();
 		pane.removeCaretListener(this);
+		pane = null;
 	}
 
 	public void propertyChange(PropertyChangeEvent evt) {

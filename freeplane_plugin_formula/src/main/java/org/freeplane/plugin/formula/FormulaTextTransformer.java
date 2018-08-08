@@ -11,9 +11,11 @@ import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.explorer.mindmapmode.MapExplorerController;
 import org.freeplane.features.format.FormattedFormula;
 import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
@@ -95,7 +97,8 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 			textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 			final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 			scrollPane.setMinimumSize(new Dimension(0, 60));
-			final EditNodeDialog editNodeDialog = new FormulaEditor(node, text, firstKeyEvent, editControl, false, textEditor);
+			final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+			final EditNodeDialog editNodeDialog = new FormulaEditor(explorer, node, text, firstKeyEvent, editControl, false, textEditor);
 			editNodeDialog.setTitle(TextUtils.getText("formula_editor"));
 			textEditor.setContentType("text/groovy");
 

@@ -2,7 +2,7 @@ package org.freeplane.features.edge;
 
 import org.freeplane.core.util.LogUtils;
 
-public enum EdgeStyle {
+public enum EdgeStyle implements org.freeplane.api.EdgeStyle{
     EDGESTYLE_BEZIER("bezier", 1f), EDGESTYLE_HIDDEN("hide_edge", 1f), EDGESTYLE_HORIZONTAL("horizontal", 1f), 
     EDGESTYLE_LINEAR("linear", 1f), EDGESTYLE_SHARP_BEZIER("sharp_bezier", 0.25f), EDGESTYLE_SHARP_LINEAR("sharp_linear", 0f),
 	EDGESTYLE_SUMMARY("summary", 1f);

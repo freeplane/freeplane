@@ -68,8 +68,4 @@ public interface IUndoHandler extends IExtension {
 
 	public int getTransactionLevel();
 
-	static IUndoHandler create(MMapModel map) {
-		return new UndoHandler(map);
-	}
-
 }

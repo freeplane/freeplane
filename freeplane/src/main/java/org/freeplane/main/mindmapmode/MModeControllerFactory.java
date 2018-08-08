@@ -63,6 +63,7 @@ import org.freeplane.features.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.encrypt.mindmapmode.MEncryptionController;
+import org.freeplane.features.explorer.mindmapmode.MapExplorerController;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.export.mindmapmode.ImportMindmanagerFiles;
 import org.freeplane.features.export.mindmapmode.ImportXmlFile;
@@ -126,7 +127,6 @@ import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.features.progress.mindmapmode.ProgressFactory;
 import org.freeplane.view.swing.features.time.mindmapmode.ReminderHook;
 import org.freeplane.view.swing.map.ShowNotesInMapAction;
-import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 import org.freeplane.view.swing.map.attribute.EditAttributesAction;
 import org.freeplane.view.swing.ui.DefaultNodeKeyListener;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
@@ -164,7 +164,6 @@ public class MModeControllerFactory {
 		UITools.setScrollbarIncrement(styleScrollPane);
 		final JComponent tabs = (JComponent) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
 		tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
-		new AttributePanelManager(modeController);
 		new HierarchicalIcons();
 		new AutomaticLayoutController();
 		new BlinkingNodeHook();
@@ -236,6 +235,7 @@ public class MModeControllerFactory {
 		userInputListenerFactory.setMapMouseListener(new MMapMouseListener());
 		final MTextController textController = new MTextController(modeController);
 		textController.install(modeController);
+		MapExplorerController.install(modeController, textController);
 		LinkController.install(new MLinkController(modeController));
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		ClipboardController.install(new MClipboardController());
@@ -247,6 +247,7 @@ public class MModeControllerFactory {
 		logicalStyleController.initM();
 		AttributeController.install(new MAttributeController(modeController));
 		userInputListenerFactory.setNodeKeyListener(new DefaultNodeKeyListener(new IEditHandler() {
+			@Override
 			public void edit(final KeyEvent e, final FirstAction action, final boolean editLong) {
 				((MTextController) MTextController.getController(modeController)).getEventQueue().activate(e);
 				textController.edit(action, editLong);

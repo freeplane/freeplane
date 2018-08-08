@@ -16,9 +16,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.plugin.script.ExecuteScriptException;
-import org.freeplane.plugin.script.FormulaUtils;
 import org.freeplane.plugin.script.GroovyScript;
-import org.freeplane.plugin.script.IScript;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.ScriptingPermissions;
 
@@ -87,8 +85,9 @@ public class ScriptCondition extends ASelectableCondition {
         return false;
 	}
 
+	@Override
 	public boolean checkNodeInFormulaContext(NodeModel node){
-		final ScriptContext scriptContext = new ScriptContext();
+		final ScriptContext scriptContext = new ScriptContext(node.getMap().getURL());
 		scriptContext.push(node, (String)script.getScript());
 		script.setScriptContext(scriptContext);
 		try {

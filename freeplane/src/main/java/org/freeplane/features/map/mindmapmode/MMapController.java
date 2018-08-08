@@ -42,6 +42,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.WeakHashMap;
 
 import javax.swing.JOptionPane;
 
@@ -94,8 +95,10 @@ import org.freeplane.features.url.NodeAndMapReference;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
+import org.freeplane.features.url.mindmapmode.MapLoader;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.n3.nanoxml.XMLException;
+import org.freeplane.n3.nanoxml.XMLParseException;
 
 /**
  * @author Dimitry Polivaev
@@ -349,7 +352,7 @@ public class MMapController extends MapController {
     }
 
 	public boolean close(final MapModel map) {
-		if (!map.isSaved()) {
+		if (!(map.isSaved() || map.isDocumentation())) {
 			Controller.getCurrentController().getMapViewManager().changeToMap(map);
 			final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
 			final String title = TextUtils.getText("SaveAction.text");
@@ -797,7 +800,7 @@ public class MMapController extends MapController {
 		return newIndex;
 	}
 
-	public MapModel newModel(NodeModel existingNode) {
+	public MapModel createModel(NodeModel existingNode) {
 	    // use new MMapModel() instead of calling this method with a null arg
 		if(existingNode == null)
 			throw new NullPointerException("null node not allowed.");
@@ -809,12 +812,10 @@ public class MMapController extends MapController {
     }
 
 	@Override
-	public MapModel newModel() {
-		final MMapModel mindMapMapModel = new MMapModel();
-		mindMapMapModel.createNewRoot();
-		fireMapCreated(mindMapMapModel);
-		return mindMapMapModel;
+	public MapModel newMap() {
+		return new MapLoader(getMModeController()).withView().getMap();
 	}
+
 
 
 	@Override
@@ -875,86 +876,45 @@ public class MMapController extends MapController {
 
 	/**@deprecated -- use MMapIO*/
 	@Deprecated
-	public boolean newUntitledMap(final URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException{
-        try {
-        	Controller.getCurrentController().getViewController().setWaitingCursor(true);
-        	final MapModel newModel = newHiddenUntitledMap(url);
-        	newMapView(newModel);
-        	return true;
-        }
-        finally {
-        	Controller.getCurrentController().getViewController().setWaitingCursor(false);
-        }
+	public void newMap(final URL url){
+		new MapLoader(getMModeController()).load(url).unsetMapLocation().withView().getMap();
 	}
 
-	public MapModel newHiddenUntitledMap(final URL url) throws IOException, XMLException {
-		final MapModel newModel = new MMapModel();
-		UrlManager.getController().load(url, newModel);
-		newModel.setURL(null);
-		fireMapCreated(newModel);
-		return newModel;
+	private WeakHashMap<MMapModel, Void> loadedMaps = new WeakHashMap<>();
+
+
+	public MMapModel getMap(URL url) {
+		for(MMapModel hiddenMap : loadedMaps.keySet()) {
+			if(url.equals(hiddenMap.getURL()))
+				return hiddenMap;
+		}
+		return null;
+	}
+
+
+	public void addLoadedMap(MMapModel map) {
+		loadedMaps.put(map, null);
+	}
+
+
+
+	public MMapModel createUntitledMap(final URL url) throws IOException, XMLException {
+		return (MMapModel) new MapLoader(getMModeController()).load(url).unsetMapLocation().withView().getMap();
+	}
+
+	public MapModel readMap(URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {
+		return new MapLoader(getMModeController()).load(url).getMap();
 	}
 
 	/**@throws XMLException
 	 * @deprecated -- use MMapIO*/
 	@Deprecated
 	@Override
-    public boolean newMap(URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
-		// load as documentation map if necessary
-		if(getMModeController().containsExtension(DocuMapAttribute.class)){
-			return newDocumentationMap(url);
-		}
-		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		if (mapViewManager.tryToChangeToMapView(url))
-			return false;
+	public void openMap(URL url) {
 		if (AddOnsController.getController().installIfAppropriate(url))
-			return false;
-		URL alternativeURL = null;
-		try {
-			final File file = Compat.urlToFile(url);
-			if(file == null){
-				alternativeURL =  url;
-			}
-			else{
-				if(file.exists()){
-					final MFileManager fileManager = MFileManager.getController(getMModeController());
-					File alternativeFile = fileManager.getAlternativeFile(file, AlternativeFileMode.AUTOSAVE);
-					if(alternativeFile != null){
-						if (alternativeFile.getAbsoluteFile().equals(file.getAbsoluteFile()) )
-							alternativeURL =  url;
-						else
-							alternativeURL = Compat.fileToUrl(alternativeFile);
-					}
-					else
-						return false;
-				}
-				else{
-					alternativeURL = url;
-				}
-			}
-		}
-		catch (MalformedURLException e) {
-		}
-		catch (URISyntaxException e) {
-		}
-
-		if(alternativeURL == null)
-			return false;
-		Controller.getCurrentController().getViewController().setWaitingCursor(true);
-		try{
-			final MapModel newModel = new MMapModel();
-    		final MFileManager fileManager = MFileManager.getController(getMModeController());
-    		fileManager.loadAndLock(alternativeURL, newModel);
-			newModel.setURL(url);
-			newModel.setSaved(alternativeURL.equals(url));
-			fireMapCreated(newModel);
-			newMapView(newModel);
-			return true;
-		}
-		finally {
-			Controller.getCurrentController().getViewController().setWaitingCursor(false);
-		}
-    }
+			return;
+		new MapLoader(getMModeController()).load(url).withView().getMap();
+	}
 
 	public void newDocumentationMap(final String file) {
 		final NodeAndMapReference nodeAndMapReference = new NodeAndMapReference(file);
@@ -973,7 +933,7 @@ public class MMapController extends MapController {
 			try {
 				if (endUrl.getFile().endsWith(".mm")) {
 					Controller.getCurrentController().selectMode(MModeController.MODENAME);
-					newDocumentationMap(endUrl);
+					openDocumentationMap(endUrl);
 					if(nodeAndMapReference.hasNodeReference())
 						select(nodeAndMapReference.getNodeReference());
 
@@ -996,56 +956,44 @@ public class MMapController extends MapController {
 	/**@throws XMLException
 	 * @deprecated -- use MMapIO*/
 	@Deprecated
-	public boolean newDocumentationMap(final URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException{
-		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
-		if (mapViewManager.tryToChangeToMapView(url))
-			return false;
-        try {
-        	Controller.getCurrentController().getViewController().setWaitingCursor(true);
-        	final MapModel newModel = new MMapModel();
-        	newModel.addExtension(DocuMapAttribute.instance);
-        	UrlManager.getController().load(url, newModel);
-        	newModel.setReadOnly(true);
-        	fireMapCreated(newModel);
-        	newMapView(newModel);
-        	newModel.setSaved(true);
-        	return true;
-        }
-        finally {
-        	Controller.getCurrentController().getViewController().setWaitingCursor(false);
-        }
+	public void openDocumentationMap(final URL url) throws FileNotFoundException, IOException, URISyntaxException, XMLException{
+		new MapLoader(getMModeController()).load(url).withView().asDocumentation().getMap();
 	}
 
 	/**@throws XMLException
 	 * @deprecated -- use MMapIO*/
 	@Deprecated
-    public boolean restoreCurrentMap() throws FileNotFoundException, IOException, URISyntaxException, XMLException {
+    public void restoreCurrentMap() throws FileNotFoundException, IOException, URISyntaxException, XMLException {
 	    final Controller controller = Controller.getCurrentController();
         final MapModel map = controller.getMap();
         final URL url = map.getURL();
         if(url == null){
         	UITools.errorMessage(TextUtils.getText("map_not_saved"));
-        	return false;
+        	return;
         }
 
 		if(map.containsExtension(DocuMapAttribute.class)){
 			closeWithoutSaving(map);
-			return newDocumentationMap(url);
+			openDocumentationMap(url);
+			return;
 		}
 
 		final URL alternativeURL = MFileManager.getController(getMModeController()).getAlternativeURL(url, AlternativeFileMode.ALL);
 		if(alternativeURL == null)
-			return false;
+			return;
 		controller.getViewController().setWaitingCursor(true);
 		try{
-			final MapModel newModel = new MMapModel();
+			final MMapModel newModel = new MMapModel();
 			((MFileManager)MFileManager.getController()).loadAndLock(alternativeURL, newModel);
 			newModel.setURL(url);
 			newModel.setSaved(alternativeURL.equals(url));
 			fireMapCreated(newModel);
+			loadedMaps.remove(map);
 			closeWithoutSaving(map);
-			newMapView(newModel);
-			return true;
+			newModel.enableAutosave();
+			loadedMaps.put(newModel, null);
+			createMapView(newModel);
+			return;
 		}
 		finally {
 			controller.getViewController().setWaitingCursor(false);

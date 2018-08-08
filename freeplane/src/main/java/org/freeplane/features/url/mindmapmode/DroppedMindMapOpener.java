@@ -17,7 +17,7 @@ public class DroppedMindMapOpener implements Listener{
 		Controller.getCurrentController().selectMode(MModeController.MODENAME);
 		ModeController modeController = Controller.getCurrentModeController();
 		for(URL url :  urls){
-			modeController.getMapController().newMap(url);
+			modeController.getMapController().openMap(url);
 		}
 	}
 }

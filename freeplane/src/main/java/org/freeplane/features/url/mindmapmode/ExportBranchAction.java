@@ -144,7 +144,7 @@ class ExportBranchAction extends AFreeplaneAction {
 				};
 				Controller.getCurrentModeController().execute(actor, parentMap);
 			}
-			mMapController.newModel(existingNode);
+			mMapController.createModel(existingNode);
 			final MapModel newMap = existingNode.getMap();
 			IExtension[] oldExtensions = newMap.getRootNode().getSharedExtensions().values().toArray(new IExtension[]{});
 			for(final IExtension extension : oldExtensions){
