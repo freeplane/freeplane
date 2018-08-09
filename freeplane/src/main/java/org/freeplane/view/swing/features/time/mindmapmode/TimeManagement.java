@@ -287,6 +287,8 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 							return;
 						}
 					}
+					if(scriptEditor == null)
+						script = alreadyPresentHook.getScript();
 					reminderHook.undoableToggleHook(node);
 				}
 				final ReminderExtension reminderExtension = new ReminderExtension(node);
