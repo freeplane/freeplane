@@ -7,6 +7,8 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.link.LinkConditionController;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -25,6 +27,9 @@ public class MapExplorerController implements IExtension{
 	private static final String ALIAS = "ALIAS";
 	private final TextController textController;
 	private final ModeController modeController;
+	public static void installFilterConditions() {
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(100, new MapExplorerConditionController());
+	}
 
 	public static void install(ModeController modeController, TextController textController) {
 		final MapExplorerController explorer = new MapExplorerController(modeController, textController);

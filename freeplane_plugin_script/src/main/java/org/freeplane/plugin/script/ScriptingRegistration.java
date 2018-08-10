@@ -177,7 +177,7 @@ class ScriptingRegistration {
 			createInitScriptsDirectory();
 			createUserLibDirectory();
 		}
-		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(100,
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(200,
 			new ScriptConditionController());
 		ScriptingPolicy.installRestrictingPolicy();
 		if(System.getSecurityManager() != null)
