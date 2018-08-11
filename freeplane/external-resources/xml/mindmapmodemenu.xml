@@ -186,8 +186,8 @@
 				</Entry>
 				<Entry name="ShowAttributeDialogAction" />
 				<Entry builder="separator" />
-				<Entry name="GloballyAccessibleNodeAction" />
 				<Entry name="AssignAliasAction" />
+				<Entry name="GloballyAccessibleNodeAction" />
 				<Entry builder="separator" />
 				<Entry name="LatexInsertLatexAction" plugin="org.freeplane.plugin.latex" />
 				<Entry name="LatexEditLatexAction" plugin="org.freeplane.plugin.latex" />
@@ -581,8 +581,8 @@
 		<Entry name="EnterPassword" />
 		<Entry name="node_popup_scripting" plugin="org.freeplane.plugin.script"
 			builder="userScripts" />
-		<Entry name="GloballyAccessibleNodeAction" />
 		<Entry name="AssignAliasAction" />
+		<Entry name="GloballyAccessibleNodeAction" />
 		<Entry builder="separator" />
 		<Entry name="CutAction" accelerator="control X" />
 		<Entry name="CopyAction" accelerator="control C" />
