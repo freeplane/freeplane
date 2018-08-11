@@ -213,7 +213,9 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		doubleClickTimer.cancel();
 		if (e.isPopupTrigger())
 			showPopupMenu(e);
-		else if(isInFoldingRegion(e))
+		else if(e.getButton() == MouseEvent.BUTTON1
+				&& Compat.isPlainEvent(e)
+				&& isInFoldingRegion(e))
 			toggleFolded(e);
 	}
 
