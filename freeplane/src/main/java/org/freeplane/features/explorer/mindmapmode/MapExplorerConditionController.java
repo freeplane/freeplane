@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.explorer.mindmapmode;
 
+import java.util.Collection;
 import java.util.Set;
 
 import javax.swing.ComboBoxEditor;
@@ -125,7 +126,7 @@ public class MapExplorerConditionController implements IElementaryConditionContr
 
 	private SortedComboBoxModel aliases() {
 		final MapModel map = Controller.getCurrentController().getMap();
-		Set<NodeAlias> aliases = NodeAliases.of(map).aliases();
+		Collection<NodeAlias> aliases = NodeAliases.of(map).aliases();
 		SortedComboBoxModel box = new SortedComboBoxModel();
 		for(NodeAlias a : aliases)
 			box.add(a.value);

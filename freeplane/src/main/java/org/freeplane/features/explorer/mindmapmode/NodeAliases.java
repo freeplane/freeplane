@@ -1,22 +1,34 @@
 package org.freeplane.features.explorer.mindmapmode;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
-import java.util.Set;
+import java.util.Map.Entry;
 import java.util.WeakHashMap;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;
 
 class NodeAliases implements IExtension {
-	private final Map<NodeAlias, Void> aliases = new WeakHashMap<>();
+	private final Map<NodeAlias, String> aliases = new WeakHashMap<>();
+	private final MapModel map;
 	
-	void add(NodeAlias alias) {
-		aliases.put(alias, null);
+	private NodeAliases(MapModel map) {
+		this.map = map;
+	}
+	
+	void add(NodeAlias alias, String id) {
+		aliases.put(alias, id);
 	}
 	
 
-	Set<NodeAlias> aliases() {
-		return aliases.keySet();
+	Collection<NodeAlias> aliases() {
+		ArrayList<NodeAlias> list = new ArrayList<>( aliases.size());
+		for (Entry<NodeAlias, String> entry:aliases.entrySet()) {
+			if(map.getNodeForID(entry.getValue()) != null)
+				list.add(entry.getKey());
+		}
+		return list;
 	}
 
 
@@ -24,7 +36,7 @@ class NodeAliases implements IExtension {
 		NodeAliases aliases = map.getExtension(NodeAliases.class);
 		if(aliases == null)
 		{
-			aliases = new NodeAliases();
+			aliases = new NodeAliases(map);
 			map.addExtension(aliases);
 		}
 		
