@@ -37,6 +37,7 @@ public class SeparatorProperty implements IPropertyControl {
 		this.label = label;
 	}
 
+	@Override
 	public String getTooltip() {
 		return null;
 	}
@@ -45,13 +46,17 @@ public class SeparatorProperty implements IPropertyControl {
 		return label;
 	}
 
+	@Override
 	public String getName() {
 		return null;
 	}
 
+	@Override
 	public void layout(final DefaultFormBuilder builder) {
 		final String labelKey = getLabel();
 		final String text = TextUtils.getOptionalText(labelKey);
+		if (builder.getColumn() > 1)
+			builder.nextLine();
 		final JComponent separator = builder.appendSeparator(text);
 		if(text != null) {
 			for (Component child : separator.getComponents()) {
@@ -62,6 +67,7 @@ public class SeparatorProperty implements IPropertyControl {
 		}
 	}
 
+	@Override
 	public void setEnabled(final boolean pEnabled) {
 	}
 }

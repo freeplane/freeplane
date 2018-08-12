@@ -327,6 +327,7 @@
 		<tab name="Keystrokes"
 			layout="right:max(40dlu;p), 4dlu, 80dlu, 7dlu,right:max(40dlu;p), 4dlu, 80dlu, 7dlu">
 			<separator name="commands_for_the_program" />
+			<boolean name="ignore_unassigned_f_keys" />
 			<text name="use_ctrl_key" />
 			<separator name="icons" />
 		</tab>

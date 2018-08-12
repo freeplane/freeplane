@@ -53,7 +53,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-import com.jgoodies.forms.factories.Borders;
 import org.apache.commons.lang.StringUtils;
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.resources.ResourceController;
@@ -68,6 +67,7 @@ import org.freeplane.features.mode.Controller;
 
 import com.jgoodies.forms.builder.ButtonBarBuilder;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.factories.Borders;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class OptionPanel {
@@ -96,7 +96,7 @@ public class OptionPanel {
 		this.feedback = feedback;
 		new OptionPanelBuilder();
 	}
-	
+
 	/**
 	 * Builds and returns a right aligned button bar with the given buttons.
 	 *
@@ -112,8 +112,8 @@ public class OptionPanel {
 		outerPanel.add(panel);
 		return outerPanel;
 	}
-	
-	
+
+
 	/**
 	 * This method builds the preferences panel.
 	 * A list of IPropertyControl is iterated through and
@@ -138,7 +138,7 @@ public class OptionPanel {
 			final IPropertyControl control = iterator.next();
 			if (control instanceof TabProperty) {
 				final TabProperty newTab = (TabProperty) control;
-				bottomLayout = new FormLayout(newTab.getName(), "");
+				bottomLayout = new FormLayout(newTab.getLayout(), "");
 				bottomBuilder = new DefaultFormBuilder(bottomLayout);
 				bottomBuilder.border(Borders.DIALOG);
 				final JScrollPane bottomComponent = new JScrollPane(bottomBuilder.getPanel());
@@ -154,6 +154,7 @@ public class OptionPanel {
 			}
 		}
 		tabbedPane.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(final ChangeEvent event) {
 				final JTabbedPane c = (JTabbedPane) event.getSource();
 				selectedPanel = tabIndexToStringMap.get(c.getSelectedIndex());
@@ -166,7 +167,7 @@ public class OptionPanel {
 		}
 		topDialog.getContentPane().add(centralPanel, BorderLayout.CENTER);
 		final FileOpener fileOpener = new FileOpener(FILE_EXTENSION, new FileOpener.Listener() {
-			
+
 			@Override
 			public void filesDropped(Collection<URL> urls) throws Exception {
 				for(URL url :urls) {
@@ -174,15 +175,16 @@ public class OptionPanel {
 						loadOptions(inputStream);
 					}
 				}
-				
+
 			}
 		});
-		
+
 		new DropTarget(centralPanel, fileOpener);
-		
+
 		final JButton saveButton = new JButton();
 		LabelAndMnemonicSetter.setLabelAndMnemonic(saveButton, TextUtils.getRawText("save"));
 		saveButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				saveOptionsToFile();
 			}
@@ -191,6 +193,7 @@ public class OptionPanel {
 		final JButton loadButton = new JButton();
 		LabelAndMnemonicSetter.setLabelAndMnemonic(loadButton, TextUtils.getRawText("load"));
 		loadButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				loadOptionsFromFile();
 			}
@@ -200,6 +203,7 @@ public class OptionPanel {
 		final JButton cancelButton = new JButton();
 		LabelAndMnemonicSetter.setLabelAndMnemonic(cancelButton, TextUtils.getRawText("cancel"));
 		cancelButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				closeWindow();
 			}
@@ -207,6 +211,7 @@ public class OptionPanel {
 		final JButton okButton = new JButton();
 		LabelAndMnemonicSetter.setLabelAndMnemonic(okButton, TextUtils.getRawText("ok"));
 		okButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				if (validate()) {
 					closeWindow();

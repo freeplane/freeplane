@@ -26,11 +26,11 @@ import java.io.Reader;
 import java.net.URL;
 import java.text.Collator;
 import java.util.Arrays;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
+import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -40,6 +40,8 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.OptionPanelBuilder.ComboPropertyCreator;
+import org.freeplane.core.resources.components.OptionPanelBuilder.PropertyCreator;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.TimePeriodUnits;
@@ -73,6 +75,7 @@ public class OptionPanelBuilder {
 			verticalMargin = 0;
 		}
 
+		@Override
 		public IPropertyControl createControl() {
 			@SuppressWarnings("unchecked")
 			final ComboProperty comboProperty = enumClass != null ? ComboProperty.of(name, enumClass) : new ComboProperty(name, choices, displayedItems);
@@ -115,7 +118,7 @@ public class OptionPanelBuilder {
 				try {
 					Class<?> enumClass = OptionPanelBuilder.class.getClassLoader().loadClass(enumClassName);
 					comboProperty = createComboProperty(name, enumClass);
-				} 
+				}
 				catch (Exception e) {
 					LogUtils.severe(e);
 					return null;
@@ -216,6 +219,7 @@ public class OptionPanelBuilder {
 		private IPropertyControlCreator createNumberPropertyCreator(final String name, final int min, final int step,
 		                                                            final int max) {
 			return new IPropertyControlCreator() {
+				@Override
 				public IPropertyControl createControl() {
 					return new NumberProperty(name, min, max, step);
 				}
@@ -225,12 +229,13 @@ public class OptionPanelBuilder {
 		private IPropertyControlCreator createNumberPropertyCreator(
 				final String name, final double min, final double step, final double max) {
 			return new IPropertyControlCreator() {
+				@Override
 				public IPropertyControl createControl() {
 					return new NumberProperty(name, min, max, step);
 				}
 			};
 		}
-		
+
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			final String minString = data.getAttribute("min", "1");
@@ -252,17 +257,18 @@ public class OptionPanelBuilder {
 			}
 		}
 	}
-	
+
 	private class LengthOptionCreator extends PropertyCreator {
 		private IPropertyControlCreator createNumberPropertyCreator(
 				final String name, final String defaultUnit, final double min, final double step, final double max) {
 			return new IPropertyControlCreator() {
+				@Override
 				public IPropertyControl createControl() {
 					return new QuantityProperty<LengthUnits>(name, min, max, step, LengthUnits.valueOf(defaultUnit));
 				}
 			};
 		}
-		
+
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			final String minString = data.getAttribute("min", "0");
@@ -276,17 +282,18 @@ public class OptionPanelBuilder {
 					Double.parseDouble(maxString));
 		}
 	}
-	
+
 	private class TimePeriodOptionCreator extends PropertyCreator {
 		private IPropertyControlCreator createNumberPropertyCreator(
 				final String name, final String defaultUnit, final double min, final double step, final double max) {
 			return new IPropertyControlCreator() {
+				@Override
 				public IPropertyControl createControl() {
 					return new QuantityProperty<TimePeriodUnits>(name, min, max, step, TimePeriodUnits.valueOf(defaultUnit));
 				}
 			};
 		}
-		
+
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			final String minString = data.getAttribute("min", "0");
@@ -304,12 +311,13 @@ public class OptionPanelBuilder {
 		private IPropertyControlCreator createPathPropertyCreator(final String name, final boolean isDir,
 		                                                          final String[] suffixes) {
 			return new IPropertyControlCreator() {
+				@Override
 				public IPropertyControl createControl() {
 					return new PathProperty(name, isDir, suffixes);
 				}
 			};
 		}
-		
+
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			final boolean isDir = Boolean.parseBoolean(data.getAttribute("dir", "false"));
@@ -351,6 +359,7 @@ public class OptionPanelBuilder {
 	};
 
 	protected abstract class PropertyCreator implements IElementDOMHandler {
+		@Override
 		public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 			if (attributes == null) {
 				return null;
@@ -368,6 +377,7 @@ public class OptionPanelBuilder {
 			return path;
 		}
 
+		@Override
 		public void endElement(final Object parent, final String tag, final Object userObject,
 		                       final XMLElement lastBuiltElement) {
 			final String name = lastBuiltElement.getAttribute("name", null);
@@ -384,6 +394,7 @@ public class OptionPanelBuilder {
 				}
 				else{
 					treeNode.setUserObject(new IPropertyControlCreator(){
+						@Override
 						public IPropertyControl createControl() {
 							final IPropertyControl control = creator.createControl();
 							if( control instanceof PropertyAdapter){
@@ -393,7 +404,7 @@ public class OptionPanelBuilder {
 							return control;
                         }});
 				}
-				
+
 			}
 		}
 
@@ -413,12 +424,10 @@ public class OptionPanelBuilder {
 		                       final XMLElement lastBuiltElement) {
 			final Path path = (Path) userObject;
 			final DefaultMutableTreeNode treeNode = tree.get(path.path);
-			if (treeNode.getUserObject() != this) {
-				return;
+			if (treeNode.getUserObject() == this) {
+				super.endElement(parent, tag, userObject, lastBuiltElement);
+				tree.addElement(path.parentPath == null ? tree : path.parentPath, nextLineCreator, IndexedTree.AS_CHILD);
 			}
-			super.endElement(parent, tag, userObject, lastBuiltElement);
-			tree.addElement(path.parentPath == null ? tree : path.parentPath, nextLineCreator, IndexedTree.AS_CHILD);
-			return;
 		}
 
 		@Override
@@ -456,7 +465,7 @@ public class OptionPanelBuilder {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
 			final String label = "OptionPanel.text." + name;
-			return createTextCreator(label);
+			return createTextLineCreator(label);
 		}
 	}
 
@@ -469,6 +478,7 @@ public class OptionPanelBuilder {
 		readManager = new ReadManager();
 		tree = new IndexedTree(null);
 		nextLineCreator = new IPropertyControlCreator() {
+			@Override
 			public IPropertyControl createControl() {
 				return new NextLineProperty();
 			}
@@ -525,10 +535,6 @@ public class OptionPanelBuilder {
 		addCreator(path, createSeparatorCreator(name), name, position);
 	}
 
-	public void addSpace(final String path, final int position) {
-		tree.addElement(path, nextLineCreator, position);
-	}
-
 	public void addStringProperty(final String path, final String name, final int position) {
 		addCreator(path, createStringOptionCreator(name), name, position);
 	}
@@ -542,11 +548,12 @@ public class OptionPanelBuilder {
 	}
 
 	public void addText(final String path, final String name, final int position) {
-		addCreator(path, createTextCreator(name), name, position);
+		addCreator(path, createTextLineCreator(name), name, position);
 	}
 
 	private IPropertyControlCreator createBooleanOptionCreator(final String name) {
 		return new IPropertyControlCreator() {
+			@Override
 			public IPropertyControl createControl() {
 				return new BooleanProperty(name);
 			}
@@ -555,6 +562,7 @@ public class OptionPanelBuilder {
 
 	private IPropertyControlCreator createColorOptionCreator(final String name) {
 		return new IPropertyControlCreator() {
+			@Override
 			public IPropertyControl createControl() {
 				return new ColorProperty(name, ResourceController.getResourceController().getDefaultProperty(name));
 			}
@@ -565,7 +573,7 @@ public class OptionPanelBuilder {
 			final Vector<?> displayedItems) {
 		return new ComboPropertyCreator(choices, displayedItems, name);
 	}
-	
+
 	public ComboPropertyCreator createComboProperty(String name, Class<?> enumClass) {
 		return new ComboPropertyCreator(null, null, name).withEnum(enumClass);
 	}
@@ -574,6 +582,7 @@ public class OptionPanelBuilder {
 	private IPropertyControlCreator createEditableComboProperty(final String name, final Vector<String> choices,
 			final Vector<String> displayedItems) {
 		return new IPropertyControlCreator() {
+			@Override
 			public IPropertyControl createControl() {
 				final ComboProperty comboProperty = new ComboProperty(name, choices, displayedItems);
 				comboProperty.setEditable(true);
@@ -584,6 +593,7 @@ public class OptionPanelBuilder {
 
 	private IPropertyControlCreator createFontOptionCreator(final String name) {
 		return new IPropertyControlCreator() {
+			@Override
 			public IPropertyControl createControl() {
 				return new FontProperty(name);
 			}
@@ -592,6 +602,7 @@ public class OptionPanelBuilder {
 
 	private IPropertyControlCreator createKeyOptionCreator(final String name) {
 		return new IPropertyControlCreator() {
+			@Override
 			public IPropertyControl createControl() {
 				return new KeyProperty(name);
 			}
@@ -600,6 +611,7 @@ public class OptionPanelBuilder {
 
 	private IPropertyControlCreator createNumberOptionCreator(final String name, final int min, final int max, final int step) {
 		return new IPropertyControlCreator() {
+			@Override
 			public IPropertyControl createControl() {
 				return new NumberProperty(name, min, max, step);
 			}
@@ -608,6 +620,7 @@ public class OptionPanelBuilder {
 
 	private IPropertyControlCreator createRemindValueProperty(final String name) {
 		return new IPropertyControlCreator() {
+			@Override
 			public IPropertyControl createControl() {
 				return new RemindValueProperty(name);
 			}
@@ -616,6 +629,7 @@ public class OptionPanelBuilder {
 
 	private IPropertyControlCreator createSeparatorCreator(final String label) {
 		return new IPropertyControlCreator() {
+			@Override
 			public IPropertyControl createControl() {
 				return new SeparatorProperty(label);
 			}
@@ -624,6 +638,7 @@ public class OptionPanelBuilder {
 
 	private IPropertyControlCreator createStringOptionCreator(final String name) {
 		return new IPropertyControlCreator() {
+			@Override
 			public IPropertyControl createControl() {
 				return new StringProperty(name);
 			}
@@ -632,6 +647,7 @@ public class OptionPanelBuilder {
 
 	private IPropertyControlCreator createTextBoxOptionCreator(final String name, final int lines) {
 		return new IPropertyControlCreator() {
+			@Override
 			public IPropertyControl createControl() {
 				return new TextBoxProperty(name, lines);
 			}
@@ -640,6 +656,7 @@ public class OptionPanelBuilder {
 
 	private IPropertyControlCreator createTabCreator(final String label, final String layout) {
 		return new IPropertyControlCreator() {
+			@Override
 			public IPropertyControl createControl() {
 				if (layout != null) {
 					return new TabProperty(label, layout);
@@ -649,10 +666,11 @@ public class OptionPanelBuilder {
 		};
 	}
 
-	private IPropertyControlCreator createTextCreator(final String label) {
+	private IPropertyControlCreator createTextLineCreator(final String label) {
 		return new IPropertyControlCreator() {
+			@Override
 			public IPropertyControl createControl() {
-				return new Text(label);
+				return new TextLine(label);
 			}
 		};
 	}
@@ -704,7 +722,7 @@ public class OptionPanelBuilder {
 			FileUtils.silentlyClose(reader);
 		}
 	}
-	
+
 	public void load(final Reader inputStreamReader) {
 		final TreeXmlReader treeXmlReader = new TreeXmlReader(readManager);
 		try {

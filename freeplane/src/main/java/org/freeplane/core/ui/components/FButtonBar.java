@@ -64,7 +64,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 	private static final Font BUTTON_FONT = new JButton().getFont().deriveFont(UITools.getUIFontSize(1.1));
 	private static final int BUTTON_NUMBER = 12;
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	final private Map<Integer, JButton[]> buttons;
@@ -74,6 +74,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 	final private Timer timer;
 	public FButtonBar(JRootPane rootPane) {
 		timer = new Timer(500, new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					onModifierChangeImpl();
 				}
@@ -84,6 +85,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		onModifierChange();
 	}
 
+	@Override
 	public void acceleratorChanged(final AFreeplaneAction action, final KeyStroke oldStroke, final KeyStroke newStroke) {
 		final int oldButtonNumber = oldStroke != null ? oldStroke.getKeyCode() - KeyEvent.VK_F1 : -1;
 		final int newButtonNumber = newStroke != null ? newStroke.getKeyCode() - KeyEvent.VK_F1 : -1;
@@ -109,11 +111,11 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 
 
     private void setAcceleratorAction(final JButton button, final KeyStroke ks) {
-        final SetAcceleratorOnNextClickAction setAcceleratorAction = new SetAcceleratorOnNextClickAction(ks);
+        final Action setAcceleratorAction = new SetFKeyAcceleratorOnNextClickAction(ks);
         button.setAction(setAcceleratorAction);
+        button.setEnabled(setAcceleratorAction.isEnabled());
         final String text = TextUtils.getText("f_button_unassigned");
         button.setText(text);
-        button.setToolTipText(setAcceleratorAction.getValue(Action.NAME).toString());
     }
 
 	private void cleanModifiers(final int modifiers) {
@@ -130,7 +132,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			final String name = "f" + (i + 1) + ".png";
 			final JButton button = buttons[i] = new JButton(toImageIcon(IconStoreFactory.ICON_STORE.getUIIcon(name).getIcon())) {
 				/**
-				 * 
+				 *
 				 */
 				private static final long serialVersionUID = 1L;
 
@@ -146,7 +148,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			}
             KeyStroke ks = KeyStroke.getKeyStroke(KeyEvent.VK_F1 + i, modifiers);
             setAcceleratorAction(button, ks);
-            
+
 		}
 		return buttons;
 	}
@@ -161,7 +163,8 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 	}
 
 	private boolean altPressedEventHidden = false;
-	
+
+	@Override
 	public boolean dispatchKeyEvent(final KeyEvent e) {
 		if(! (Controller.getCurrentModeController() instanceof MModeController ))
 			return false;
@@ -173,7 +176,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 			ownWindowAncestor.addWindowFocusListener(this);
 		}
 		final Window windowAncestor = SwingUtilities.getWindowAncestor(e.getComponent());
-		
+
 		if (windowAncestor == ownWindowAncestor && ownWindowAncestor.getJMenuBar() != null && ownWindowAncestor.getJMenuBar().isEnabled()) {
 			processDispatchedKeyEvent(e);
 		}
@@ -273,12 +276,12 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
                 break;
 		}
 	}
-	
+
 	@Override
 	public boolean processKeyBinding(KeyStroke ks, KeyEvent e) {
 		return processFKey(e);
 	}
-	
+
 	private boolean processFKey(final KeyEvent e){
 		if(e.getID() != KeyEvent.KEY_PRESSED)
 			return false;
@@ -290,7 +293,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		int keyCode = e.getKeyCode();
 		if (keyCode >= KeyEvent.VK_F1 && keyCode <= KeyEvent.VK_F12 ) {
 			final JButton btn = createButtons(nextModifiers)[keyCode - KeyEvent.VK_F1];
-			if(btn.getAction() instanceof SetAcceleratorOnNextClickAction 
+			if(btn.getAction() instanceof SetAcceleratorOnNextClickAction
 					&& e.getComponent() instanceof JTextComponent)
 				return false;
 			if(timer.isRunning()){
@@ -319,9 +322,11 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 		onModifierChange();
 	}
 
+	@Override
 	public void windowGainedFocus(final WindowEvent e) {
 	}
 
+	@Override
 	public void windowLostFocus(final WindowEvent e) {
 		resetModifiers();
 	}

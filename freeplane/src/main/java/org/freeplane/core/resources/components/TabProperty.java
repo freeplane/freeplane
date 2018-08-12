@@ -40,7 +40,13 @@ public class TabProperty implements IPropertyControl {
 		this.layoutFormat = layoutFormat;
 	}
 
+	@Override
 	public String getTooltip() {
+		return null;
+	}
+
+	@Override
+	public String getName() {
 		return null;
 	}
 
@@ -48,13 +54,15 @@ public class TabProperty implements IPropertyControl {
 		return label;
 	}
 
-	public String getName() {
+	public String getLayout() {
 		return layoutFormat;
 	}
 
+	@Override
 	public void layout(final DefaultFormBuilder builder) {
 	}
 
+	@Override
 	public void setEnabled(final boolean pEnabled) {
 	}
 }

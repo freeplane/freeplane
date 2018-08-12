@@ -50,7 +50,7 @@ public class AccelerateableAction implements IFreeplaneAction {
 
 	private static final String SET_ACCELERATOR_ON_NEXT_CLICK_ACTION = "set_accelerator_on_next_click_helpmessage";
 
-	static void setNewAcceleratorOnNextClick(KeyStroke accelerator) {
+	public static void setNewAcceleratorOnNextClick(KeyStroke accelerator) {
 		if (AccelerateableAction.isNewAcceleratorOnNextClickEnabled()) {
 			return;
 		}
@@ -61,14 +61,14 @@ public class AccelerateableAction implements IFreeplaneAction {
 			text = TextUtils.format("SetAccelerator.keystrokeDetected", toString(accelerator)) + "\n" + text;
 		final Component frame = Controller.getCurrentController().getViewController().getMenuComponent();
 		setAcceleratorOnNextClickActionDialog = UITools.createCancelDialog(frame, title, text);
-		getAcceleratorOnNextClickActionDialog().addComponentListener(new ComponentAdapter() {
+		setAcceleratorOnNextClickActionDialog.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentHidden(final ComponentEvent e) {
 				setAcceleratorOnNextClickActionDialog = null;
 				acceleratorForNextClickedAction = null;
 			}
 		});
-		getAcceleratorOnNextClickActionDialog().setVisible(true);
+		setAcceleratorOnNextClickActionDialog.setVisible(true);
 	}
 
 	public AccelerateableAction(final AFreeplaneAction originalAction) {
@@ -76,6 +76,7 @@ public class AccelerateableAction implements IFreeplaneAction {
 		this.originalAction = originalAction;
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final boolean newAcceleratorOnNextClickEnabled = AccelerateableAction.isNewAcceleratorOnNextClickEnabled();
 		final KeyStroke newAccelerator = acceleratorForNextClickedAction;
@@ -90,39 +91,45 @@ public class AccelerateableAction implements IFreeplaneAction {
 		}
 		originalAction.actionPerformed(e);
 	}
-	 
+
 	public static JDialog getAcceleratorOnNextClickActionDialog() {
 		return setAcceleratorOnNextClickActionDialog;
 	}
-	
+
 	public static KeyStroke getAcceleratorForNextClick() {
 		return acceleratorForNextClickedAction;
 	}
 
+	@Override
 	public void addPropertyChangeListener(final PropertyChangeListener listener) {
 		originalAction.addPropertyChangeListener(listener);
 	}
 
+	@Override
 	public void afterMapChange(final Object newMap) {
 		originalAction.afterMapChange(newMap);
 	}
 
+	@Override
 	public Object getValue(final String key) {
 		return originalAction.getValue(key);
 	}
 
+	@Override
 	public boolean isEnabled() {
 		return originalAction.isEnabled();
 	}
 
+	@Override
 	public boolean isSelected() {
 		return originalAction.isSelected();
 	}
 
+	@Override
 	public void setSelected(boolean newValue) {
 		originalAction.setSelected(newValue);
 	}
-	
+
 	public AFreeplaneAction getOriginalAction() {
 		return originalAction;
 	}
@@ -131,18 +138,22 @@ public class AccelerateableAction implements IFreeplaneAction {
         return newAccelerator.toString().replaceFirst("pressed ", "");
     }
 
+	@Override
 	public void putValue(final String key, final Object value) {
 		originalAction.putValue(key, value);
 	}
 
+	@Override
 	public void removePropertyChangeListener(final PropertyChangeListener listener) {
 		originalAction.removePropertyChangeListener(listener);
 	}
 
+	@Override
 	public void setEnabled(final boolean b) {
 		originalAction.setEnabled(b);
 	}
 
+	@Override
 	public String getIconKey() {
 		return originalAction.getIconKey();
 	}

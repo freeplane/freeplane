@@ -25,14 +25,15 @@ import org.freeplane.core.util.TextUtils;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class Text implements IPropertyControl {
+public class TextLine implements IPropertyControl {
 	private final String label;
 
-	public Text(final String label) {
+	public TextLine(final String label) {
 		super();
 		this.label = label;
 	}
 
+	@Override
 	public String getTooltip() {
 		return null;
 	}
@@ -41,16 +42,20 @@ public class Text implements IPropertyControl {
 		return label;
 	}
 
+	@Override
 	public String getName() {
 		return null;
 	}
 
+	@Override
 	public void layout(final DefaultFormBuilder builder) {
-		builder.append(new JLabel(TextUtils.getOptionalText(getLabel())), builder.getColumnCount()
-		        - builder.getColumn() + 1);
+		if(builder.getColumn() != 1)
+			builder.nextLine();
+		builder.append(new JLabel(TextUtils.getOptionalText(getLabel())));
 		builder.nextLine();
 	}
 
+	@Override
 	public void setEnabled(final boolean pEnabled) {
 	}
 }

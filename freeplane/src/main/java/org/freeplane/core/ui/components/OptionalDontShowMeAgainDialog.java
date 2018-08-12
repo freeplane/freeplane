@@ -48,6 +48,8 @@ import org.freeplane.features.mode.Controller;
  * @author foltin
  */
 public class OptionalDontShowMeAgainDialog {
+	private static final String REMEMBER_MY_DESCISION = "OptionalDontShowMeAgainDialog.rememberMyDescision";
+	public static final String DONT_SHOW_AGAIN = "OptionalDontShowMeAgainDialog.dontShowAgain";
 	public final static int BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED = 1;
 	public final static int ONLY_OK_SELECTION_IS_STORED = 0;
 	public final static int ONLY_OK_SELECTION_IS_SHOWN = 2;
@@ -182,10 +184,10 @@ public class OptionalDontShowMeAgainDialog {
 		        5, 5, 0, 0), 0, 0));
 		String boxString;
 		if (mMessageType != OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED) {
-			boxString = "OptionalDontShowMeAgainDialog.dontShowAgain";
+			boxString = DONT_SHOW_AGAIN;
 		}
 		else {
-			boxString = "OptionalDontShowMeAgainDialog.rememberMyDescision";
+			boxString = REMEMBER_MY_DESCISION;
 		}
 		mDontShowAgainBox = new JCheckBox(TextUtils.getRawText(boxString));
 		LabelAndMnemonicSetter.setLabelAndMnemonic(mDontShowAgainBox, null);
