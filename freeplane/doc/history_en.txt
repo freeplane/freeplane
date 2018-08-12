@@ -3,7 +3,9 @@
 ===============================
 API for referencing nodes from formulas and scripts
 Node aliases
-Global nodes 
+Global nodes
+Filtering nodes on aliases and on global accessibility
+Option to skip dialog for unnassigned F-keys 
 
 ===============================
 1.6.16
