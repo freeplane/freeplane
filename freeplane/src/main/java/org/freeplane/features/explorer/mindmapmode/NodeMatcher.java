@@ -45,7 +45,7 @@ class NodeMatcher {
 		static MatchedElement of(String searchedString) {
 			if(searchedString.isEmpty())
 				return NO_CONTENT;
-			if(searchedString.startsWith("#"))
+			if(searchedString.startsWith("~"))
 				if(StringUtils.isNumeric(searchedString.substring(1)))
 					return COUNTER;
 				else

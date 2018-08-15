@@ -28,4 +28,11 @@ class Command {
 		return new NodeMatcher(textController, searchedString);
 	}
 
+	@Override
+	public String toString() {
+		return "Command [operator=" + operator + ", searchedString=" + searchedString + "]";
+	}
+
+
+
 }

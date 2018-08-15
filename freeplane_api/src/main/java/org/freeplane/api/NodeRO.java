@@ -18,13 +18,13 @@ public interface NodeRO {
 	 *
 	 *  <h2> Path examples:</h2>
 	 *  <pre>{@code
-	 *  node.at(":'house'-->'kitchen'->#chairs->#2")
+	 *  node.at(":'house'/'kitchen'/~chairs/~2")
 	 *     - take first level node with text 'house',
 	 *     - in its subtree node find with text 'kitchen'
 	 *     - find its child node with alias 'chairs'
 	 *     - return the second child node of the chairs
 	 *
-	 *  node.at("<--'house'-->#dog")
+	 *  node.at(".. 'house'/**{@literal /}~dog")
 	 *      -- return node with alias 'dog' within subtree of ancestor node with text 'house'
 	 *  }</pre>
 	 *
@@ -32,44 +32,39 @@ public interface NodeRO {
 	 *
 	 * <h2>Child node:</h2>
 	 * <pre>{@code
-	 * ->'node text' or ->"node text" : child node with text 'node text'
-	 * ->'node...' : child node containing text starting with 'node'
-	 * ->'...' : any child node
-	 * ->#1 : child node at position 1 ( any positive number is allowed)
-	 * ->#nodeAlias : child node with alias 'nodeAlias', node alias can not be a number
+	 * /'node text' or /"node text" : child node with text 'node text'
+	 * /'node...' : child node containing text starting with 'node'
+	 * /'...' : any child node
+	 * /~1 : child node at position 1 ( any positive number is allowed)
+	 * /~nodeAlias : child node with alias 'nodeAlias', node alias can not be a number
 	 * because numbers are reserved for the previous selector.
 	 * }</pre>
 	 *
-	 * If element starts the path, prefix <b>{@code -> }</b> can be omitted.
+	 * If element starts the path, prefix <b>{@code / }</b> means the root node.
 	 *
 	 * <h2>Descendant node:</h2>
-	 * <pre>{@code
-	 * -->'node text' or -->"node text" : descendant node with text 'node text'
-	 * -->'node...' : descendant node containing text starting with 'node'
-	 * -->'...' : any descendant node
-	 * -->#nodeAlias descendant node with alias 'nodeAlias', node alias can not be a number
-	 * }</pre>
+	 * <pre>{@code /**{@literal /} }</pre>
 	 *
 	 * <h2>Parent node:</h2>
-	 * <pre>{@code <-}</pre>
+	 * <pre>{@code ..}</pre>
 	 *
 	 * <h2>Ancestor node:</h2>
 	 * <pre>{@code
-	 * <--'node text' or "node text" : the closest ancestor node with text 'node text'
-	 * <--'node...' : the closest ancestor node containing text starting with 'node'
-	 * <--#2  : second ancestor node also the parent node of the parent node (any positive number is allowed)
-	 * <--#nodeAlias : the closest ancestor node with alias 'nodeAlias', node alias can not be a number
+	 * ..'node text' or "node text" : the closest ancestor node with text 'node text'
+	 * ..'node...' : the closest ancestor node containing text starting with 'node'
+	 * ..~2  : second ancestor node also the parent node of the parent node (any positive number is allowed)
+	 * ..~nodeAlias : the closest ancestor node with alias 'nodeAlias', node alias can not be a number
 	 * }</pre>
 
-	 * <h2>Root or global node</h2>
-	 * (they allowed only as the first path element).
+	 * <h2>Global node</h2>
+	 * (allowed only as the first path element).
 	 * Here global node is a node carrying global flag which can be set using menu or by script.
 	 *
 	 * <pre>{@code
 	 * : (colon character) : map root node
 	 * :'node text' or :"node text" : global node with text 'node text'
 	 * :'node...' : global node containing text starting with 'node'
-	 * :#nodeAlias : global node with alias 'nodeAlias', node alias can not be a number
+	 * :~nodeAlias : global node with alias 'nodeAlias', node alias can not be a number
 	 * }</pre>
 
 	 * @since 1.7.1 */
