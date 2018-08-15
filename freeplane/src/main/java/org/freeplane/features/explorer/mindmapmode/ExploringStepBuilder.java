@@ -77,7 +77,9 @@ class ExploringStepBuilder {
 				separatorFound = false;
 			}
 		}
-		if (nextStep == ExploringStep.DESCENDANT)
+		if(matcher.regionStart() != pathLength)
+			throw new IllegalArgumentException("Illegal element at pos " + matcher.regionStart());
+		else if (nextStep == ExploringStep.DESCENDANT)
 			commands.add(command(ExploringStep.DESCENDANT, "'...'"));
 		else if(nextStep == ExploringStep.ANCESTOR)
 			commands.add(command(ExploringStep.PARENT, ""));

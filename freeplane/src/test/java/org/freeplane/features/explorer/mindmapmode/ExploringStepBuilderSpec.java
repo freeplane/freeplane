@@ -46,6 +46,11 @@ public class ExploringStepBuilderSpec {
 	}
 
 	@Test
+	public void illegalUnknownElement() throws Exception {
+		assertIllegalPath("???");
+	}
+
+	@Test
 	public void illegalAncestorAfterAncestor() throws Exception {
 		assertIllegalPath("....");
 	}
