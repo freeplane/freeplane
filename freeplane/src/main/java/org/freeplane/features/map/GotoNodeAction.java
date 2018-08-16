@@ -35,7 +35,7 @@ import org.freeplane.features.mode.Controller;
  */
 public class GotoNodeAction extends AFreeplaneAction {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 
@@ -43,14 +43,15 @@ public class GotoNodeAction extends AFreeplaneAction {
         super("GotoNodeAction");
     }
 
-    public void actionPerformed(ActionEvent e) {
+    @Override
+	public void actionPerformed(ActionEvent e) {
         final Controller controller = Controller.getCurrentController();
         final IMapSelection selection = controller.getSelection();
         final NodeModel node = selection.getSelected();
         final String id = UITools.showInputDialog(node, TextUtils.getText("enter_node_id"), (String)getValue(Action.NAME), JOptionPane.QUESTION_MESSAGE);
         if(id == null || "".equals(id))
             return;
-        final NodeModel nodeForID = controller.getMap().getNodeForID(id);
+        final NodeModel nodeForID = controller.getMap().getNodeForID_(id);
         if(nodeForID == null)
             return;
         controller.getModeController().getMapController().displayNode(nodeForID);

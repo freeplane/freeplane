@@ -14,9 +14,9 @@ import org.freeplane.features.filter.condition.DisjunctConditions;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.condition.SelectedViewSnapshotCondition;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
 
@@ -59,11 +59,11 @@ public class Slide implements NamedElement<Slide>{
 		return new Slide(name, new LinkedHashSet<String>(selectedNodeIds), placedNodeId, placedNodePosition,
 			    changesZoom, zoom, showsOnlySpecificNodes, showsAncestors, showsDescendants, filterCondition);
 	}
-	
+
 	public Slide(String name){
 		this(name, new LinkedHashSet<String>(), null, NodePosition.CENTER, false, 1f, false, false, false, null);
 	}
-	
+
 	private Slide(String name, Set<String> selectedNodeIds, String placesNodeId, NodePosition placedNodePosition,
 	                  boolean changeZoom,
 			float zoom, boolean showOnlySpecificNodes, boolean showAncestors, boolean showDescendants,
@@ -105,41 +105,41 @@ public class Slide implements NamedElement<Slide>{
 			fireSlideChangeEvent();
 		}
 	}
-	
+
 	public Set<String> getFoldedNodeIds() {
 		return foldedNodeIds;
 	}
-	
+
 	public boolean isNodeFolded(NodeModel node) {
 		return foldsNodes() &&  foldedNodeIds.contains(node.getID());
 	}
-	
+
 	public boolean foldsNodes(){
 		return foldedNodeIds != null;
 	}
-	
+
 	public void unsetFoldsNodes(){
 		if(foldedNodeIds != null){
 			foldedNodeIds = null;
 			fireSlideChangeEvent();
 		}
 	}
-	
+
 	public Collection<String> getCurrentFoldedNodeIds(){
 		return createNodeIterator().getCurrentFoldedNodeIds();
 	}
-	
+
 	public void setFoldedNodeIDs(Collection<String> foldedNodeIds) {
 		if(this.foldedNodeIds != foldedNodeIds){
 			this.foldedNodeIds = new LinkedHashSet<>(foldedNodeIds);
 			fireSlideChangeEvent();
 		}
 	}
-	
+
 	private class NodeIterator {
-		
+
 		private Filter filter;
-		
+
 		public Set<String> getCurrentFoldedNodeIds(){
 			filter = calculateFilterResults();
 			Set<String> foldedNodeIds = calculateCurrentFoldedNodeIds();
@@ -161,7 +161,7 @@ public class Slide implements NamedElement<Slide>{
 			filter.calculateFilterResults(map);
 			return filter;
 		}
-		
+
 		private void addCurrentFoldedNodeIds(NodeModel node, HashSet<String> nodeIds) {
 			if(isFoldedOnCurrentView(node)){
 				if(filter.isVisible(node))
@@ -194,7 +194,7 @@ public class Slide implements NamedElement<Slide>{
 		}
 
 	}
-	
+
 	public boolean isNodeVisible(NodeModel node) {
 		return selectedNodeIds.contains(node.getID());
 	}
@@ -209,7 +209,7 @@ public class Slide implements NamedElement<Slide>{
 			fireSlideChangeEvent();
 		}
 	}
-	
+
 	public NodePosition getPlacedNodePosition() {
 		return placedNodePosition;
 	}
@@ -294,7 +294,7 @@ public class Slide implements NamedElement<Slide>{
 	public void removeSlideChangeListener(SlideChangeListener slideChangeListener) {
 		this.slideChangeListeners.remove(slideChangeListener);
 	}
-	
+
 	private void fireSlideChangeEvent() {
 		for (SlideChangeListener slideChangeListener : slideChangeListeners)
 			slideChangeListener.onSlideModelChange(SlideChangeEvent.of(this));
@@ -314,7 +314,7 @@ public class Slide implements NamedElement<Slide>{
 		MapModel map = getMap();
 		ArrayList<NodeModel> selectedNodes = new ArrayList<>(selectedNodeIds.size());
 		for (String id : selectedNodeIds) {
-			NodeModel node = map.getNodeForID(id);
+			NodeModel node = map.getNodeForID_(id);
 			if (node != null && (!onlyVisible || node.isVisible()))
 				selectedNodes.add(node);
 		}
@@ -344,8 +344,8 @@ public class Slide implements NamedElement<Slide>{
 
 	public NodeIterator createNodeIterator() {
 		return new NodeIterator();
-	} 
-	
+	}
+
 	private void foldNodes() {
 		createNodeIterator().foldNodes();
 	}
@@ -354,7 +354,7 @@ public class Slide implements NamedElement<Slide>{
 		if (changesZoom)
 			Controller.getCurrentController().getMapViewManager().setZoom(zoom * zoomFactor);
 	}
-	
+
 	private boolean displaysAllSlideNodes() {
 		return ResourceController.getResourceController().getBooleanProperty("presentation.slideDisplaysAllNodes");
 	}
@@ -383,7 +383,7 @@ public class Slide implements NamedElement<Slide>{
 		if (showsOnlySpecificNodes) {
 			final NodeModel firstNode = selectedNodes.get(0);
 			selection.selectAsTheOnlyOneSelected(firstNode);
-		} 
+		}
 		if(selectsAllVisibleNodes){
 			if(showsAncestors) {
 				final NodeModel rootNode = selection.getSelected().getMap().getRootNode();
@@ -418,7 +418,7 @@ public class Slide implements NamedElement<Slide>{
 	public NodeModel getCurrentPlacedNode() {
 		if (placedNodeId != null) {
 			MapModel map = getMap();
-			NodeModel currentPlacedNode = map.getNodeForID(placedNodeId);
+			NodeModel currentPlacedNode = map.getNodeForID_(placedNodeId);
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			if(currentPlacedNode != null && currentPlacedNode.hasVisibleContent()) {
 				return currentPlacedNode;

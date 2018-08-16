@@ -12,20 +12,20 @@ import org.freeplane.features.map.MapModel;
 class NodeAliases implements IExtension {
 	private final Map<NodeAlias, String> aliases = new WeakHashMap<>();
 	private final MapModel map;
-	
+
 	private NodeAliases(MapModel map) {
 		this.map = map;
 	}
-	
+
 	void add(NodeAlias alias, String id) {
 		aliases.put(alias, id);
 	}
-	
+
 
 	Collection<NodeAlias> aliases() {
 		ArrayList<NodeAlias> list = new ArrayList<>( aliases.size());
 		for (Entry<NodeAlias, String> entry:aliases.entrySet()) {
-			if(map.getNodeForID(entry.getValue()) != null)
+			if(map.getNodeForID_(entry.getValue()) != null)
 				list.add(entry.getKey());
 		}
 		return list;
@@ -39,7 +39,7 @@ class NodeAliases implements IExtension {
 			aliases = new NodeAliases(map);
 			map.addExtension(aliases);
 		}
-		
+
 		return aliases;
 	}
 

@@ -54,6 +54,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -272,30 +273,31 @@ public class UrlManager implements IExtension {
 
 	private void loadLocalLinkURI(final String uriString) {
 		final String target = uriString.substring(1);
-		selectNode(target);
+		selectNode(null, target);
 	}
 
-	private void selectNode(final String target) {
+	public void selectNode(NodeModel start, final String localReference) {
 		try {
-			final MapController mapController = getMapController();
-			final NodeModel node = mapController.getNodeFromID(target);
+			final NodeModel node = Controller.getCurrentModeController().getExtension(MapExplorerController.class).getNodeAt(start, localReference);
 			if (node != null) {
+				final MapController mapController = getMapController();
 				mapController.select(node);
 			}
 			else {
-				final String errorMessage = TextUtils.format("link_not_found", target);
+				final String errorMessage = TextUtils.format("link_not_found", localReference);
 				Controller.getCurrentController().getViewController().err(errorMessage);
 			}
 		}
 		catch (final Exception e) {
-			LogUtils.severe("link " + target + " not found", e);
+			LogUtils.severe("link " + localReference + " not found", e);
 		}
 	}
 
 	private void loadNodeReferenceURI(final NodeAndMapReference nodeAndMapReference) {
 		try {
 			loadURL(new URI(nodeAndMapReference.getMapReference()));
-			selectNode(nodeAndMapReference.getNodeReference());
+			final MapModel map = Controller.getCurrentController().getMap();
+			selectNode(map.getRootNode(), nodeAndMapReference.getNodeReference());
 		} catch (URISyntaxException e) {
 			LogUtils.severe(e);
 		}

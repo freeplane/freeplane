@@ -25,8 +25,8 @@ import javax.swing.Icon;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.ObjectAndIcon;
+import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.format.PatternFormat;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.AbstractContentTransformer;
@@ -50,18 +50,13 @@ public class LinkTransformer extends AbstractContentTransformer {
 	public Object transformContent(TextController textController, Object content, NodeModel node, Object transformedExtension) {
 		if(PatternFormat.IDENTITY_PATTERN.equals(textController.getNodeFormat(node)))
 			return content;
-		final MapModel map = node.getMap();
-		return transformContent(content, map);
-	}
-
-	public Object transformContent(Object content, MapModel map) {
 		if(! (content instanceof URI))
 			return content;
 		final String string = content.toString();
 		if(! string.startsWith("#"))
 			return content;
-		final String nodeID=string.substring(1);
-		final NodeModel target = map.getNodeForID(nodeID);
+		final String reference=string.substring(1);
+		final NodeModel target = modeController.getExtension(MapExplorerController.class).getNodeAt(node, reference);
 		if(target != null){
 			final String shortText = TextController.getController(modeController).getShortPlainText(target);
 			return new ObjectAndIcon(shortText, localLinkIcon);

@@ -45,10 +45,11 @@ public class NodeBuilder implements IElementDOMHandler {
 			this.cloneType = cloneType;
 		}
 
+		@Override
 		public void setAttribute(final Object userObject, final String proposedReferenceId) {
 			final NodeModel node = (NodeModel) userObject;
 			final String realReference = mapReader.getCurrentNodeTreeCreator().substitutedID(proposedReferenceId);
-			node.convertToClone(getMap().getNodeForID(realReference), cloneType);
+			node.convertToClone(getMap().getNodeForID_(realReference), cloneType);
 		}
 	}
 
@@ -82,6 +83,7 @@ public class NodeBuilder implements IElementDOMHandler {
 		this.mapReader = mapReader;
 	}
 
+	@Override
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		final NodeModel userObject = createNode();
 		if (getMapChild() == null) {
@@ -94,6 +96,7 @@ public class NodeBuilder implements IElementDOMHandler {
 		return new NodeModel(getMap());
 	}
 
+	@Override
 	public void endElement(final Object parentObject, final String tag, final Object userObject, final XMLElement dom) {
 		final NodeModel node = (NodeModel) userObject;
 		if (dom.getAttributeCount() != 0 || dom.hasChildren()) {
@@ -128,7 +131,8 @@ public class NodeBuilder implements IElementDOMHandler {
 				    node.addExtension(encryptionModel);
 			    }
 
-			    public void setAttribute(final Object userObject, final String value) {
+			    @Override
+				public void setAttribute(final Object userObject, final String value) {
 				    final NodeModel node = (NodeModel) userObject;
 				    createEncryptedNode(node, value);
 				    node.setFolded(true);
@@ -136,7 +140,8 @@ public class NodeBuilder implements IElementDOMHandler {
 		    });
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeBuilder.XML_NODE_HISTORY_CREATED_AT,
 		    new IAttributeHandler() {
-			    public void setAttribute(final Object userObject, final String value) {
+			    @Override
+				public void setAttribute(final Object userObject, final String value) {
 				    final NodeModel node = (NodeModel) userObject;
 				    if (node.getHistoryInformation() == null) {
 					    node.setHistoryInformation(new HistoryInformationModel());
@@ -146,7 +151,8 @@ public class NodeBuilder implements IElementDOMHandler {
 		    });
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, NodeBuilder.XML_NODE_HISTORY_LAST_MODIFIED_AT,
 		    new IAttributeHandler() {
-			    public void setAttribute(final Object userObject, final String value) {
+			    @Override
+				public void setAttribute(final Object userObject, final String value) {
 				    final NodeModel node = (NodeModel) userObject;
 				    if (node.getHistoryInformation() == null) {
 					    node.setHistoryInformation(new HistoryInformationModel());
@@ -155,10 +161,12 @@ public class NodeBuilder implements IElementDOMHandler {
 			    }
 		    });
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "FOLDED", new IAttributeHandler() {
+			@Override
 			public void setAttribute(Object userObject, String value) {
 			}
 		});
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "FOLDED", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				final Object mode = mapReader.getCurrentNodeTreeCreator().getHint(Hint.MODE);
@@ -195,6 +203,7 @@ public class NodeBuilder implements IElementDOMHandler {
 				return nodeCount;
 			}
 
+			@Override
 			public void readingCompleted(final NodeModel topNode, final Map<String, String> newIds) {
 				if (!Mode.FILE.equals(mapReader.getCurrentNodeTreeCreator().getHint(Hint.MODE))) {
 					return;
@@ -221,6 +230,7 @@ public class NodeBuilder implements IElementDOMHandler {
 			}
 		});
 		final IAttributeHandler positionHandler = new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				node.setLeft(value.equals("left"));
@@ -229,6 +239,7 @@ public class NodeBuilder implements IElementDOMHandler {
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "POSITION", positionHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, "POSITION", positionHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "ID", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				final String realId = getMap().generateNodeID(value);
@@ -238,7 +249,7 @@ public class NodeBuilder implements IElementDOMHandler {
 				}
 			}
 		});
-		
+
 		final IAttributeHandler subtreeReferenceHandler = new CloneHandler(CloneType.TREE);
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "REFERENCE_ID", subtreeReferenceHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, "TREE_ID", subtreeReferenceHandler);

@@ -18,14 +18,14 @@ class FoundNodes implements IExtension {
 		if (map == null) {
 			return null;
 		}
-		FoundNodes nodes = (FoundNodes) map.getExtension(FoundNodes.class);
+		FoundNodes nodes = map.getExtension(FoundNodes.class);
 		if (nodes == null) {
 			nodes = new FoundNodes();
 			map.addExtension(nodes);
 		}
 		return nodes;
 	}
-	
+
 	/**
 	 * Display a node in the display (used by find and the goto action by arrow
 	 * link actions).
@@ -44,7 +44,7 @@ class FoundNodes implements IExtension {
 		    .listIterator(this.nodesUnfoldedByDisplay.size());
 		while (oldPathIterator.hasPrevious()) {
 			final String oldPathNodeID = oldPathIterator.previous();
-			final NodeModel oldPathNode = map.getNodeForID(oldPathNodeID);
+			final NodeModel oldPathNode = map.getNodeForID_(oldPathNodeID);
 			if (oldPathNode != null && oldPathNode.equals(nodeOnPath)) {
 				break;
 			}

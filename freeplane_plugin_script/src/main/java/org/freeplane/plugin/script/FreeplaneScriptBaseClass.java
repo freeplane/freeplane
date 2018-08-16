@@ -23,6 +23,8 @@ import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.script.proxy.AbstractProxy;
 import org.freeplane.plugin.script.proxy.Convertible;
 
 import groovy.lang.Binding;
@@ -280,7 +282,8 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 
     /** opens a {@link URI} */
     public void loadUri(final URI uri) {
-        LinkController.getController().loadURI(uri);
+    	final NodeModel delegate = ((AbstractProxy<NodeModel>)node).getDelegate();
+        LinkController.getController().loadURI(delegate, uri);
     }
 
 //	/** Shortcut for new {@link org.freeplane.api.Convertible}. */

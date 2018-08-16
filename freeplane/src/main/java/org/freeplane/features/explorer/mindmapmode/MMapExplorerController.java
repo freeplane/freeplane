@@ -15,7 +15,6 @@ import org.freeplane.features.text.TextController;
 public class MMapExplorerController extends MapExplorerController{
 
 
-	private final ModeController modeController;
 	public static void install(ModeController modeController, TextController textController) {
 		final MMapExplorerController explorer = new MMapExplorerController(modeController, textController);
 		modeController.addExtension(MapExplorerController.class, explorer);
@@ -27,8 +26,7 @@ public class MMapExplorerController extends MapExplorerController{
 
 
 	private MMapExplorerController(ModeController modeController, TextController textController) {
-		super(textController);
-		this.modeController = modeController;
+		super(modeController);
 	}
 
 	public void makeGlobal(final NodeModel node, final boolean isGlobal) {

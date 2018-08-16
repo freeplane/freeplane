@@ -12,14 +12,14 @@ public class SelectionActor implements IActor {
 	private final String[] nodeIDs;
 	final private MapModel map;
 	static private SelectionActor lastSelectionActor = null;
-	
+
 	static SelectionActor create(IMapSelection selection){
 		final SelectionActor selectionActor = new SelectionActor(selection);
 		if(!selectionActor.equals(lastSelectionActor))
 			lastSelectionActor = selectionActor;
 		return lastSelectionActor;
 	}
-	
+
 	private SelectionActor(IMapSelection selection) {
 		super();
 		map = selection.getSelected().getMap();
@@ -29,8 +29,8 @@ public class SelectionActor implements IActor {
 		for(NodeModel node : nodes)
 			nodeIDs[index++] = node.createID();
 	}
-	
-	
+
+
 
 	@Override
 	public int hashCode() {
@@ -66,14 +66,14 @@ public class SelectionActor implements IActor {
 		final Controller controller = Controller.getCurrentController();
 		if(! map.equals(controller.getMap()))
 			return;
-		
+
 		final IMapSelection selection = controller.getSelection();
 		if(this.equals(new SelectionActor(selection)))
 			return;
 		NodeModel[] nodes = new NodeModel[nodeIDs.length];
 		int index = 0;
 		for(String id : nodeIDs)
-			nodes[index++] = map.getNodeForID(id);
+			nodes[index++] = map.getNodeForID_(id);
 		selection.replaceSelection(nodes);
 	}
 

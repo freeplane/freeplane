@@ -9,6 +9,7 @@ import java.net.URISyntaxException;
 
 import org.freeplane.api.Node;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -67,13 +68,17 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 			LogUtils.warn(link + " is no node id link");
 			return null;
 		}
-		final NodeModel targetNode = getDelegate().getMap().getNodeForID(link.substring(1));
+		final NodeModel targetNode = resolve(link);
 		if (targetNode == null) {
 			LogUtils.warn(link + ": node does not exist (anymore?)");
 			return null;
 		}
 		return new NodeProxy(targetNode, getScriptContext());
     }
+
+	private NodeModel resolve(final String link) {
+		return getModeController().getExtension(MapExplorerController.class).getNodeAt(getDelegate(), link.substring(1));
+	}
 
 	// LinkRO
 	@Override
@@ -121,7 +126,7 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 	@Override
 	public void setNode(Node node) {
 		if (!removeLinkIfNull(node)) {
-			if (getModeController().getMapController().getNodeFromID(node.getId()) == null) {
+			if (getModeController().getMapController().getNodeFromID_(node.getId()) == null) {
 				throw new IllegalArgumentException("target node " + node.toString() + " belongs to a different map");
 			}
 			setText("#" + node.getId());

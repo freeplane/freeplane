@@ -55,11 +55,13 @@ public class MapExplorerController  implements IExtension{
 		});
 	}
 	private final TextController textController;
+	protected final ModeController modeController;
 
 
-	public MapExplorerController(TextController textController) {
+	public MapExplorerController(ModeController modeController) {
 		super();
-		this.textController = textController;
+		this.modeController = modeController;
+		this.textController = modeController.getExtension(TextController.class);
 	}
 
 	public boolean isGlobal(final NodeModel node) {
@@ -80,6 +82,25 @@ public class MapExplorerController  implements IExtension{
 
 	public String getAlias(final NodeModel node) {
 		return NodeAlias.getAlias(node);
+	}
+	public NodeModel getNodeAt(NodeModel start, String reference) {
+		return getNodeAt(start, reference, AccessedNodes.IGNORE);
+	}
+
+	public NodeModel getNodeAt(NodeModel start, String reference, AccessedNodes accessedNodes) {
+		if(reference.startsWith("ID"))
+			return  start.getMap().getNodeForID_(reference);
+		else if(start != null && reference.startsWith("at(") && reference.endsWith(")")){
+			String path = reference.substring(3, reference.length() - 1);
+			try {
+				return new MapExplorer(textController, start, path, accessedNodes).getNode();
+			}
+			catch (IllegalStateException e) {
+				return null;
+			}
+		}
+		else
+			throw new IllegalArgumentException("Invalid reference format in" + reference);
 	}
 
 

@@ -82,7 +82,7 @@ class NodeHolder {
 	public NodeModel getNode() {
 		final MapView modeController = mMapView.get();
 		if (modeController != null) {
-			return modeController.getModel().getNodeForID(mNodeId);
+			return modeController.getModel().getNodeForID_(mNodeId);
 		}
 		return null;
 	}

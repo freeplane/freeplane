@@ -89,7 +89,7 @@ public class NodeLinks implements IExtension {
 	        }
 	        return clones;
         }
-        else 
+        else
 			return Collections.<NodeLinkModel> emptyList();
 	}
 
@@ -133,7 +133,7 @@ public class NodeLinks implements IExtension {
                 }
                 catch (URISyntaxException e) {
 	                LogUtils.severe(e);
-                } 
+                }
 			}
 		}
 		return null;
@@ -193,9 +193,9 @@ public class NodeLinks implements IExtension {
 			return null;
 		}
 		final String linkString = link.toString();
-		if (linkString.startsWith("#")) {
+		if (linkString.startsWith("#ID")) {
 			final String id = linkString.substring(1);
-			if (model.getMap().getNodeForID(id) == null) {
+			if (model.getMap().getNodeForID_(id) == null) {
 				return null;
 			}
 		}

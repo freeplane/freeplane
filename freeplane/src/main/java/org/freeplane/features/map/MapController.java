@@ -51,6 +51,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.DelayedRunner;
+import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -668,11 +669,11 @@ implements IExtension, NodeChangeAnnouncer{
 	/*
 	 * Helper methods
 	 */
-	public NodeModel getNodeFromID(final String nodeID) {
+	public NodeModel getNodeFromID_(final String nodeID) {
 		final MapModel map = Controller.getCurrentController().getMap();
 		if(map == null)
 			return null;
-		final NodeModel node = map.getNodeForID(nodeID);
+		final NodeModel node = map.getNodeForID_(nodeID);
 		return node;
 	}
 
@@ -789,11 +790,18 @@ implements IExtension, NodeChangeAnnouncer{
 	    String nodeReference = url.getRef();
 	    if(nodeReference != null){
 	    	openMap(new URL(url.getProtocol(), url.getHost(), url.getPort(), url.getPath()));
-	    	select(getNodeFromID(nodeReference));
+	    	final NodeModel node = getNodeAt(nodeReference);
+	    	if(node != null)
+	    		select(node);
 	    }
 	    else{
 	    	openMap(url);
 	    }
+	}
+
+
+	private NodeModel getNodeAt(String nodeReference) {
+		return modeController.getExtension(MapExplorerController.class).getNodeAt(getRootNode(), nodeReference);
 	}
 
 	public void createMapView(final MapModel mapModel) {
@@ -1083,7 +1091,7 @@ implements IExtension, NodeChangeAnnouncer{
 
 
 	public void select(String nodeReference) {
-		select(getNodeFromID(nodeReference));
+		select(getNodeFromID_(nodeReference));
 	}
 
 }

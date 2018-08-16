@@ -43,6 +43,7 @@ public class MakeLinkFromAnchorAction extends AFreeplaneAction {
 		super("MakeLinkFromAnchorAction");
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 
 		final ModeController modeControllerForSelectedMap = Controller.getCurrentModeController();
@@ -62,21 +63,21 @@ public class MakeLinkFromAnchorAction extends AFreeplaneAction {
 			return;
 		}
 		final String sourceMapFileName = sourceID.substring( sourceID.indexOf("/") +1, sourceID.indexOf("#") );
-		
+
 		if( targetMapFileName.equals(sourceMapFileName) ) {
-		
+
 			final MLinkController linkController = (MLinkController) MLinkController.getController();
-			
+
 			final String sourceNodeID = sourceID.substring( sourceID.indexOf("#")+1 );
-			
-			final NodeModel sourceNode = modeControllerForSelectedMap.getMapController().getNodeFromID(sourceNodeID);
-			
+
+			final NodeModel sourceNode = modeControllerForSelectedMap.getMapController().getNodeFromID_(sourceNodeID);
+
 			if(sourceNode != null) {
 				linkController.setLinkTypeDependantLink(sourceNode, targetID.substring(targetID.indexOf("#")));
 			}
-			
+
 		} else {
-		
+
 			final MLinkController linkController_selected = (MLinkController) MLinkController.getController();
 			try {
 				final URI linkToAnchorNode = LinkController.createURI(sourceID.trim());
@@ -88,7 +89,7 @@ public class MakeLinkFromAnchorAction extends AFreeplaneAction {
 			}
 
 			final NodeModel sourceNode = modeControllerForSelectedMap.getMapController().getSelectedNode();
-	
+
 			final MLinkController linkController_anchored = (MLinkController) MLinkController.getController();
 			try {
 				final URI linkToCurrentNode = LinkController.createURI(targetID.trim());
@@ -98,7 +99,7 @@ public class MakeLinkFromAnchorAction extends AFreeplaneAction {
 				LogUtils.warn(e1);
 				return;
 			}
-	
+
 			try {
 				final URI linkBackToSelectedNode = LinkController.createURI(targetID.trim());
 				linkController_anchored.loadURI(linkBackToSelectedNode);

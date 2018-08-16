@@ -56,6 +56,7 @@ class FindAction extends AFreeplaneAction {
 		findPreviousAction = new FindPreviousAction();
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		if (selection == null) {
@@ -71,6 +72,7 @@ class FindAction extends AFreeplaneAction {
 			editor.mapChanged(start.getMap());
 		}
 		editor.addAncestorListener(new AncestorListener() {
+			@Override
 			public void ancestorAdded(final AncestorEvent event) {
 				final Component component = event.getComponent();
 				final Window windowAncestor = SwingUtilities.getWindowAncestor(component);
@@ -78,9 +80,11 @@ class FindAction extends AFreeplaneAction {
 					editor.focusInputField(true);
 				else{
 					windowAncestor.addWindowFocusListener(new WindowFocusListener() {
+						@Override
 						public void windowLostFocus(WindowEvent e) {
 						}
-						
+
+						@Override
 						public void windowGainedFocus(WindowEvent e) {
 							windowAncestor.removeWindowFocusListener(this);
 							editor.focusInputField(true);
@@ -91,14 +95,16 @@ class FindAction extends AFreeplaneAction {
 				editor.removeAncestorListener(this);
 			}
 
+			@Override
 			public void ancestorMoved(final AncestorEvent event) {
 			}
 
+			@Override
 			public void ancestorRemoved(final AncestorEvent event) {
 			}
 		});
 		final int run = UITools.showConfirmDialog(start, editor, TextUtils.getText("FindAction.text"),
-		    JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);	
+		    JOptionPane.OK_CANCEL_OPTION,JOptionPane.PLAIN_MESSAGE);
 		final Container parent = editor.getParent();
 		if (parent != null) {
 			parent.remove(editor);
@@ -129,7 +135,7 @@ class FindAction extends AFreeplaneAction {
 		}
 		final FilterController filterController = FilterController.getCurrentFilterController();
 		final NodeModel start = Controller.getCurrentController().getSelection().getSelected();
-		final NodeModel root = map.getNodeForID(info.rootID);
+		final NodeModel root = map.getNodeForID_(info.rootID);
 		if (root == null) {
 			info.condition = null;
 			displayNoPreviousFindMessage();
@@ -161,11 +167,11 @@ class FindAction extends AFreeplaneAction {
 	public AFreeplaneAction getFindNextAction() {
 		return findNextAction;
 	}
-	
+
 	public AFreeplaneAction getFindPreviousAction() {
 		return findPreviousAction;
 	}
-	
+
 	@SuppressWarnings("serial")
 	private class FindNextAction extends AFreeplaneAction{
 		FindNextAction() {

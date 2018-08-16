@@ -31,7 +31,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 	// MapRO: R
 	@Override
 	public Node node(final String id) {
-		final NodeModel node = getDelegate().getNodeForID(id);
+		final NodeModel node = getDelegate().getNodeForID_(id);
 		return node != null ? new NodeProxy(node, getScriptContext()) : null;
 	}
 

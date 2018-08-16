@@ -72,6 +72,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
+import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.IMapSelection;
@@ -231,7 +232,7 @@ public class LinkController extends SelectionController implements IExtension {
 	    				continue;
 	    		}
 	    		else
-	    			target = node.getMap().getNodeForID(targetID);
+	    			target = node.getMap().getNodeForID_(targetID);
 	    		final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, target);
 	    		gotoLinkNodeAction.configureText("follow_graphical_link", target);
 	    		if (!(link instanceof ConnectorModel)) {
@@ -380,7 +381,7 @@ public class LinkController extends SelectionController implements IExtension {
 		final String adaptedText = uri.toString();
 		if (adaptedText.startsWith("#")) {
 			ModeController modeController = Controller.getCurrentModeController();
-			final NodeModel dest = modeController.getMapController().getNodeFromID(adaptedText.substring(1));
+			final NodeModel dest = modeController.getExtension(MapExplorerController.class).getNodeAt(node, adaptedText.substring(1));
 			if (dest != null) {
 				return TextController.getController().getShortPlainText(dest);
 			}
@@ -528,7 +529,7 @@ public class LinkController extends SelectionController implements IExtension {
 				}
 			}
 			else {
-				loadURI(link);
+				loadURI(selectedNode, link);
 			}
 			final IMapSelection selection = modeController.getController().getSelection();
 			if(selection != null)
@@ -876,7 +877,7 @@ public class LinkController extends SelectionController implements IExtension {
 	    final String linkText = link.toString();
 	    if (linkText.startsWith("#")) {
 	    	final String id = linkText.substring(1);
-	    	if (model == null || model.getMap().getNodeForID(id) == null) {
+	    	if (model == null || linkText.startsWith("#ID") && model.getMap().getNodeForID_(id) == null) {
 	    		return null;
 	    	}
 	    	else{
@@ -929,6 +930,11 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public void loadURI(NodeModel node, URI uri) {
-		loadURI(uri);
+		final String uriString = uri.toString();
+		if (uriString.startsWith("#")) {
+			UrlManager.getController().selectNode(node, uriString.substring(1));
+		}
+		else
+			loadURI(uri);
 	}
 }

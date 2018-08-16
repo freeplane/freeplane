@@ -1,10 +1,13 @@
 package org.freeplane.features.presentations.mindmapmode;
 
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.CHANGES_ZOOM;
+import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.FOLDED_NODES;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.NAME;
-import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.*;
+import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.NODES_ON_SLIDE;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.NODE_ID;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.NODE_ON_SLIDE;
+import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.PLACED_NODE_ID;
+import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.PLACED_NODE_POSITION;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.PRESENTATION;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.SHOWS_ANCESTORS;
 import static org.freeplane.features.presentations.mindmapmode.PresentationBuilder.SHOWS_DESCENDANTS;
@@ -26,10 +29,10 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class PresentationBuilder {
@@ -149,7 +152,7 @@ class PresentationBuilder {
 			private ASelectableCondition loadFilterCondition(XMLElement xmlElement) {
 				return conditionFactory.loadCondition(xmlElement.getChildAtIndex(0));
 			}
-			
+
 			private float toFloat(XMLElement element, String attribute) {
 				return Float.parseFloat(element.getAttribute(attribute, "1f"));
 			}
@@ -157,11 +160,11 @@ class PresentationBuilder {
 			private boolean toBoolean(XMLElement element, String attribute) {
 				return Boolean.parseBoolean(element.getAttribute(attribute, ""));
 			}
-			
+
 			private String toString(XMLElement element, String attribute) {
 				return element.getAttribute(attribute, null);
 			}
-			
+
 		});
 
 		mapController.getWriteManager().addExtensionElementWriter(MapPresentations.class,
@@ -235,7 +238,7 @@ class PresentationWriter {
 		}
 		XMLElement xmlNodes = new XMLElement(NODES_ON_SLIDE);
 		for (String nodeId : s.getSelectedNodeIds()) {
-			if (map.getNodeForID(nodeId) != null) {
+			if (map.getNodeForID_(nodeId) != null) {
 				XMLElement xmlNode = new XMLElement(NODE_ON_SLIDE);
 				xmlNode.setAttribute(NODE_ID, nodeId);
 				xmlNodes.addChild(xmlNode);
@@ -246,7 +249,7 @@ class PresentationWriter {
 		if(s.foldsNodes()) {
 			XMLElement xmlFoldedNodes = new XMLElement(FOLDED_NODES);
 			for (String nodeId : s.getFoldedNodeIds()) {
-				if (map.getNodeForID(nodeId) != null) {
+				if (map.getNodeForID_(nodeId) != null) {
 					XMLElement xmlNode = new XMLElement(NODE_ON_SLIDE);
 					xmlNode.setAttribute(NODE_ID, nodeId);
 					xmlFoldedNodes.addChild(xmlNode);

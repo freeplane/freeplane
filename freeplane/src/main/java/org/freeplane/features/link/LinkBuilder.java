@@ -56,16 +56,17 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 	}
 
 	protected NodeLinkModel createArrowLink(final NodeModel source, final String targetID) {
-		return new ConnectorModel(source, targetID, 
+		return new ConnectorModel(source, targetID,
 				ConnectorArrows.DEFAULT, null,
 			linkController.getStandardConnectorColor(),
 			linkController.getStandardConnectorAlpha(),
 			linkController.getStandardConnectorShape(),
 		    linkController.getStandardConnectorWidth(),
-		    linkController.getStandardLabelFontFamily(), 
+		    linkController.getStandardLabelFontFamily(),
 		    linkController.getStandardLabelFontSize());
 	}
 
+	@Override
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (tag.equals("arrowlink")) {
 			return createArrowLink((NodeModel) parent, null);
@@ -77,6 +78,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 	 * Completes the links within the getMap(). They are registered in the
 	 * registry.
 	 */
+	@Override
 	public void readingCompleted(final NodeModel topNode, final Map<String, String> newIds) {
 		final Iterator<NodeLinkModel> iterator = processedLinks.iterator();
 		while (iterator.hasNext()) {
@@ -97,6 +99,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 
 	private void registerAttributeHandlers(final ReadManager reader) {
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, LINK, new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				linkController.loadLink(node, value);
@@ -104,8 +107,9 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 				processedLinks.addAll(links);
 			}
 		});
-		
+
 		final IAttributeHandler hyperlinkHandler = new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final NodeModel node = (NodeModel) userObject;
 				linkController.loadLinkFormat(node, Boolean.parseBoolean(value));
@@ -113,20 +117,23 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		};
 		reader.addAttributeHandler(NodeBuilder.XML_NODE, FORMAT_AS_HYPERLINK, hyperlinkHandler);
 		reader.addAttributeHandler(NodeBuilder.XML_STYLENODE, FORMAT_AS_HYPERLINK, hyperlinkHandler);
-		
+
 		reader.addAttributeHandler("arrowlink", "EDGE_LIKE", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setShape(Shape.EDGE_LIKE);
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "SHAPE", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setShape(Shape.valueOf(value));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "DASH", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				final String[] split = value.split(" ");
@@ -139,6 +146,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "DESTINATION", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setTargetID(value);
@@ -146,61 +154,71 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "SOURCE_LABEL", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setSourceLabel(value.toString());
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "MIDDLE_LABEL", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setMiddleLabel(value.toString());
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "TARGET_LABEL", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setTargetLabel(value.toString());
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "STARTINCLINATION", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setStartInclination(TreeXmlReader.xmlToPoint(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "ENDINCLINATION", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setEndInclination(TreeXmlReader.xmlToPoint(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "STARTARROW", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setStartArrow(ArrowType.valueOf(value.toUpperCase(Locale.ENGLISH)));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "ENDARROW", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setEndArrow(ArrowType.valueOf(value.toUpperCase(Locale.ENGLISH)));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "WIDTH", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setWidth(Integer.parseInt(value.toString()));
 			}
 		});
-		
+
 		reader.addAttributeHandler("arrowlink", "FONT_FAMILY", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setLabelFontFamily(value.toString());
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "FONT_SIZE", new IAttributeHandler() {
+			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
 				arrowLink.setLabelFontSize(Integer.parseInt(value.toString()));
@@ -208,6 +226,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		});
 	}
 
+	@Override
 	public void endElement(Object parent, String tag, Object element, XMLElement dom) {
 		final ConnectorModel arrowLink = (ConnectorModel) element;
 		final String color = dom.getAttribute("COLOR", null);
@@ -226,14 +245,14 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 			arrowLink.setAlpha(Integer.parseInt(transparency));
 		}
 		else if(color == null){
-			arrowLink.setAlpha(linkController.getStandardConnectorAlpha());	
+			arrowLink.setAlpha(linkController.getStandardConnectorAlpha());
 		}
 		fixSelfLoopedConnectorShape(arrowLink);
 	}
 
 	private void fixSelfLoopedConnectorShape(ConnectorModel connector) {
-		if (connector.isSelfLink() 
-				&& Shape.CUBIC_CURVE.equals(connector.getShape()) 
+		if (connector.isSelfLink()
+				&& Shape.CUBIC_CURVE.equals(connector.getShape())
 				&& MapVersionInterpreter.isOlderThan(connector.getSource().getMap(), FREEPLANE_VERSION_WITH_CURVED_LOOPED_CONNECTORS))
 			connector.setShape(Shape.LINE);
 	}
@@ -272,16 +291,16 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 				sb.append(i);
 			}
 			if(sb != null){
-				arrowLink.setAttribute("DASH", sb.toString());				
+				arrowLink.setAttribute("DASH", sb.toString());
 			}
 		}
-		
+
 		final int fontSize = model.getLabelFontSize();
 		arrowLink.setAttribute("FONT_SIZE", Integer.toString(fontSize));
 
 		final String fontFamily = model.getLabelFontFamily();
 		arrowLink.setAttribute("FONT_FAMILY", fontFamily);
-		
+
 		final String destinationLabel = target.createID();
 
 		if (destinationLabel != null) {
@@ -323,12 +342,12 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 
 	public void writeAttributes(final ITreeWriter writer, final NodeModel node) {
 		final NodeLinks links = node.getExtension(NodeLinks.class);
-		if(links != null) { 
+		if(links != null) {
 			final URI link = links.getHyperLink(node);
 			if (link != null) {
 				final String string = link.toString();
-				if (string.startsWith("#")) {
-					if ((node).getMap().getNodeForID(string.substring(1)) == null) {
+				if (string.startsWith("#ID")) {
+					if ((node).getMap().getNodeForID_(string.substring(1)) == null) {
 						return;
 					}
 				}
@@ -344,14 +363,14 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 	public void writeContent(final ITreeWriter writer, final NodeModel node)
 			throws IOException {
 		final NodeLinks links = node.getExtension(NodeLinks.class);
-		if(links != null) { 
+		if(links != null) {
 			final Iterator<NodeLinkModel> iterator = links.getLinks().iterator();
 			while (iterator.hasNext()) {
 				final NodeLinkModel linkModel = iterator.next();
 				if (linkModel instanceof ConnectorModel) {
 					final boolean linkNotWrittenBefore = ! processedLinks.contains(linkModel);
 					if(linkNotWrittenBefore) {
-						final ConnectorModel arrowLinkModel = (ConnectorModel) linkModel.cloneForSource((NodeModel) node);
+						final ConnectorModel arrowLinkModel = (ConnectorModel) linkModel.cloneForSource(node);
 						if(arrowLinkModel != null) {
 							save(writer, arrowLinkModel);
 							processedLinks.add(linkModel);

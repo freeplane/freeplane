@@ -117,7 +117,7 @@ public class MapModel {
 	}
 
 	public String generateNodeID(final String proposedID) {
-		if (proposedID != null && !"".equals(proposedID) && getNodeForID(proposedID) == null) {
+		if (proposedID != null && !"".equals(proposedID) && getNodeForID_(proposedID) == null) {
 			return proposedID;
 		}
 		String returnValue;
@@ -159,7 +159,7 @@ public class MapModel {
 	 * @param nodeID
 	 * @return
 	 */
-	public NodeModel getNodeForID(final String nodeID) {
+	public NodeModel getNodeForID_(final String nodeID) {
 		final NodeModel node = nodes.get(nodeID);
 		return node;
 	}
