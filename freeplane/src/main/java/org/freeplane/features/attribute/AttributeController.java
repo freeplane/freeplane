@@ -22,6 +22,7 @@ package org.freeplane.features.attribute;
 import java.awt.Component;
 import java.awt.Font;
 import java.net.URI;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -37,6 +38,7 @@ import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -59,9 +61,9 @@ public class AttributeController implements IExtension {
 	}
 
 	public static AttributeController getController(ModeController modeController) {
-		return (AttributeController) modeController.getExtension(AttributeController.class);
+		return modeController.getExtension(AttributeController.class);
 	}
-	
+
 	public static void install( final AttributeController attributeController) {
 		Controller.getCurrentModeController().addExtension(AttributeController.class, attributeController);
 	}
@@ -82,7 +84,7 @@ public class AttributeController implements IExtension {
 	}
 
 	public NodeAttributeTableModel createAttributeTableModel(final NodeModel node) {
-		NodeAttributeTableModel attributeModel = (NodeAttributeTableModel) node
+		NodeAttributeTableModel attributeModel = node
 		    .getExtension(NodeAttributeTableModel.class);
 		if (attributeModel != null) {
 			return attributeModel;
@@ -101,11 +103,11 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performRegistryAttribute(final String name) {
+	public void performRegistryAttribute(MapModel map, final String name) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performRegistryAttributeValue(final String name, final String value, boolean manual) {
+	public void performRegistryAttributeValue(MapModel map, final String name, final String value, boolean manual) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -113,11 +115,11 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performRemoveAttribute(final String name) {
+	public void performRemoveAttribute(MapModel map, final String name) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performRemoveAttributeValue(final String name, final Object value) {
+	public void performRemoveAttributeValue(MapModel map, final String name, final Object value) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -125,11 +127,11 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performReplaceAtributeName(final String oldName, final String newName) {
+	public void performReplaceAtributeName(MapModel map, final String oldName, final String newName) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performReplaceAttributeValue(final String name, final Object oldO, final Object newO) {
+	public void performReplaceAttributeValue(MapModel map, final String name, final Object oldO, final Object newO) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -137,7 +139,7 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performSetRestriction(final int row, final boolean restricted) {
+	public void performSetRestriction(MapModel map, final int row, final boolean restricted) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -145,12 +147,13 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performSetVisibility(final int index, final boolean isVisible) {
+	public void performSetVisibility(MapModel map, final int index, final boolean isVisible) {
 		throw new UnsupportedOperationException();
 	}
 
 	private void registerTooltipProvider() {
 		modeController.addToolTipProvider(ATTRIBUTE_TOOLTIP, new ITooltipProvider() {
+			@Override
 			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
 				final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 				final int rowCount = attributes.getRowCount();
@@ -163,7 +166,7 @@ public class AttributeController implements IExtension {
 						&& ! textController.isMinimized(node)) {
 					return null;
 				}
-				final NodeStyleController style = (NodeStyleController) modeController.getExtension(NodeStyleController.class);
+				final NodeStyleController style = modeController.getExtension(NodeStyleController.class);
 		        final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
 		        final NodeModel attributeStyleNode = model.getStyleNodeSafe(MapStyleModel.ATTRIBUTE_STYLE);
 		        final Font font = style.getFont(attributeStyleNode);
@@ -225,6 +228,7 @@ public class AttributeController implements IExtension {
 
 	private void registerStateIconProvider() {
 	    IconController.getController().addStateIconProvider(new IStateIconProvider() {
+			@Override
 			public UIIcon getStateIcon(NodeModel node) {
 				NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);;
 				if (attributes.getRowCount() == 0) {
@@ -248,7 +252,7 @@ public class AttributeController implements IExtension {
 			}
 		});
     }
-	
+
 	public boolean canEdit() {
 	    return false;
     }

@@ -26,6 +26,7 @@ import java.util.NoSuchElementException;
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.util.collection.IListModel;
@@ -45,10 +46,10 @@ public class AttributeRegistry implements IExtension {
 	static public final int GLOBAL = -1;
 
 	public static AttributeRegistry getRegistry(final MapModel map) {
-		AttributeRegistry registry = (AttributeRegistry) map.getExtension(AttributeRegistry.class);
+		AttributeRegistry registry = map.getExtension(AttributeRegistry.class);
 		if (registry == null) {
 			final AttributeController attributeController = AttributeController.getController();
-			registry = new AttributeRegistry(attributeController, TextController.getController());
+			registry = new AttributeRegistry(map, attributeController, TextController.getController());
 			map.addExtension(AttributeRegistry.class, registry);
 			final NodeModel rootNode = map.getRootNode();
 			if(rootNode != null)
@@ -71,9 +72,11 @@ public class AttributeRegistry implements IExtension {
 	private Boolean restrictionModel;
 	protected int visibleElementsNumber;
 	private final TextController textController;
+	private final MapModel map;
 
-	public AttributeRegistry(final AttributeController attributeController, final TextController textController) {
+	public AttributeRegistry(MapModel map, final AttributeController attributeController, final TextController textController) {
 		super();
+		this.map = map;
 		this.textController = textController;
 		attributeListeners = new HashSet<IAttributesListener>();
 		changeListeners = new HashSet<ChangeListener>();
@@ -99,11 +102,11 @@ public class AttributeRegistry implements IExtension {
 		if (isAttributeLayoutChanged == false) {
 			return;
 		}
-		getAttributeController().performSetRestriction(AttributeRegistry.GLOBAL, restrictionModel.booleanValue());
+		getAttributeController().performSetRestriction(map, AttributeRegistry.GLOBAL, restrictionModel.booleanValue());
 		for (int i = 0; i < elements.size(); i++) {
 			final AttributeRegistryElement element = getElement(i);
-			getAttributeController().performSetVisibility(i, element.getVisibilityModel().booleanValue());
-			getAttributeController().performSetRestriction(i, element.getRestriction().booleanValue());
+			getAttributeController().performSetVisibility(map, i, element.getVisibilityModel().booleanValue());
+			getAttributeController().performSetRestriction(map, i, element.getRestriction().booleanValue());
 		}
 		isAttributeLayoutChanged = false;
 	}
@@ -292,7 +295,7 @@ public class AttributeRegistry implements IExtension {
 	/**
 	 */
 	void removeAtribute(final Object o) {
-		getAttributeController().performRemoveAttribute(o.toString());
+		getAttributeController().performRemoveAttribute(map, o.toString());
 	}
 
 	public void removeAttributesListener(final IAttributesListener l) {
@@ -407,5 +410,33 @@ public class AttributeRegistry implements IExtension {
 			attributeRegistry.setName(AttributeBuilder.XML_NODE_ATTRIBUTE_REGISTRY);
 			writer.addElement(this, attributeRegistry);
 		}
+	}
+
+	public MapModel getMap() {
+		return map;
+	}
+
+	public void performRegistryAttributeValue(String name, String value, boolean manual) {
+		getAttributeController().performRegistryAttributeValue(map, name, value, manual);
+	}
+
+	void performRemoveAttributeValue(String name, Object value) {
+		getAttributeController().performRemoveAttributeValue(map, name, value);
+	}
+
+	void performReplaceAttributeValue(String name, Object oldO, Object newO) {
+		getAttributeController().performReplaceAttributeValue(map, name, oldO, newO);
+	}
+
+	void performReplaceAtributeName(String oldName, String newName) {
+		getAttributeController().performReplaceAtributeName(map, oldName, newName);
+	}
+
+	public void performRegistryAttribute(String name) {
+		getAttributeController().performRegistryAttribute(map, name);
+	}
+
+	public void performSetRestriction(int index, boolean restricted) {
+		getAttributeController().performSetRestriction(map, index, restricted);
 	}
 }

@@ -29,7 +29,7 @@ import org.freeplane.core.util.collection.IListModel;
 class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements TableModelListener, ComboBoxModel,
         IListModel {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	final private AttributeRegistry model;
@@ -46,10 +46,11 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 	 * @see
 	 * freeplane.controller.filter.util.SortedListModel#add(java.lang.Object)
 	 */
+	@Override
 	public void add(final Object o) {
 		final String s = o.toString();
 		if (-1 == model.indexOf(s)) {
-			model.getAttributeController().performRegistryAttributeValue(s, "", false);
+			model.performRegistryAttributeValue(s, "", false);
 		}
 	}
 
@@ -57,6 +58,7 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 	 * (non-Javadoc)
 	 * @see freeplane.controller.filter.util.SortedListModel#clear()
 	 */
+	@Override
 	public void clear() {
 	}
 
@@ -66,6 +68,7 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 	 * freeplane.controller.filter.util.SortedListModel#contains(java.lang.Object
 	 * )
 	 */
+	@Override
 	public boolean contains(final Object o) {
 		return model.containsElement(o.toString());
 	}
@@ -74,6 +77,7 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 	 * (non-Javadoc)
 	 * @see javax.swing.ListModel#getElementAt(int)
 	 */
+	@Override
 	public Object getElementAt(final int row) {
 		return model.getKey(row);
 	}
@@ -84,6 +88,7 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 	 * freeplane.controller.filter.util.SortedListModel#getIndexOf(java.lang.
 	 * Object)
 	 */
+	@Override
 	public int getIndexOf(final Object o) {
 		return model.indexOf(o.toString());
 	}
@@ -92,10 +97,12 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 	 * (non-Javadoc)
 	 * @see javax.swing.ComboBoxModel#getSelectedItem()
 	 */
+	@Override
 	public Object getSelectedItem() {
 		return selectedItem;
 	}
 
+	@Override
 	public int getSize() {
 		return model.size();
 	}
@@ -105,6 +112,7 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 	 * @see
 	 * freeplane.controller.filter.util.SortedListModel#delete(java.lang.Object)
 	 */
+	@Override
 	public void remove(final Object o) {
 		model.removeAtribute(o);
 	}
@@ -115,14 +123,16 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 	 * freeplane.controller.filter.util.SortedListModel#replace(java.lang.Object,
 	 * java.lang.Object)
 	 */
+	@Override
 	public void replace(final Object oldO, final Object newO) {
-		model.getAttributeController().performReplaceAtributeName(oldO.toString(), newO.toString());
+		model.performReplaceAtributeName(oldO.toString(), newO.toString());
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
 	 */
+	@Override
 	public void setSelectedItem(final Object o) {
 		selectedItem = o;
 		fireContentsChanged(this, -1, -1);
@@ -133,6 +143,7 @@ class AttributeRegistryComboBoxColumnModel extends AbstractListModel implements 
 	 * @seejavax.swing.event.TableModelListener#tableChanged(javax.swing.event.
 	 * TableModelEvent)
 	 */
+	@Override
 	public void tableChanged(final TableModelEvent e) {
 		if (e.getType() == TableModelEvent.DELETE) {
 			fireIntervalRemoved(this, e.getFirstRow(), e.getLastRow());

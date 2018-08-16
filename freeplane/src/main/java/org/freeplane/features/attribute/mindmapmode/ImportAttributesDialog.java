@@ -76,7 +76,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		static final Icon iconNotSelected = STORE.getUIIcon("cancel_button.png").getIcon();
 		static final Icon iconPartial = STORE.getUIIcon("forward.png").getIcon();
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -136,7 +136,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 // // 	final private Controller controller;
@@ -168,6 +168,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		final JButton okBtn = new JButton();
 		LabelAndMnemonicSetter.setLabelAndMnemonic(okBtn, TextUtils.getRawText("ok"));
 		okBtn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(final ActionEvent e) {
 				performImport(topNode);
 				dispose();
@@ -176,6 +177,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		final JButton cancelBtn = new JButton();
 		LabelAndMnemonicSetter.setLabelAndMnemonic(cancelBtn, TextUtils.getRawText("cancel"));
 		cancelBtn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(final ActionEvent e) {
 				dispose();
 			}
@@ -257,16 +259,16 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 				if (attributeNameRegistered == false) {
 					attributeNameRegistered = true;
 					if (-1 == currentAttributes.indexOf(name)) {
-						currentAttributes.getAttributeController().performRegistryAttribute(name);
+						currentAttributes.performRegistryAttribute(name);
 						final int index = currentAttributes.indexOf(name);
-						currentAttributes.getAttributeController().performSetRestriction(index,
+						currentAttributes.performSetRestriction(index,
 						    ((AttributeTreeNodeInfo) info).isRestricted());
 					}
 				}
 				final TreeNodeInfo childInfo = (TreeNodeInfo) childNode.getUserObject();
 				if (childInfo.getSelected() == TreeNodeInfo.FULL_SELECTED) {
 					final String value = childInfo.getInfo();
-					currentAttributes.getAttributeController().performRegistryAttributeValue(name, value, true);
+					currentAttributes.performRegistryAttributeValue(name, value, true);
 				}
 			}
 			else {
@@ -338,6 +340,7 @@ class ImportAttributesDialog extends JDialog implements TreeSelectionListener {
 		super.show();
 	}
 
+	@Override
 	public void valueChanged(final TreeSelectionEvent e) {
 		final DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 		if (selectedNode == null) {

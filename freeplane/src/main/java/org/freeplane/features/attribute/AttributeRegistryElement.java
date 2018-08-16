@@ -29,7 +29,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class AttributeRegistryElement {
 	private class RegisteredAttributeValues extends SortedComboBoxModel {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -47,7 +47,7 @@ public class AttributeRegistryElement {
 
 		@Override
 		public void add(final Object element) {
-			registry.getAttributeController().performRegistryAttributeValue(getKey(), element.toString(), true);
+			registry.performRegistryAttributeValue(getKey(), element.toString(), true);
 		}
 
 		public String getKey() {
@@ -56,12 +56,12 @@ public class AttributeRegistryElement {
 
 		@Override
 		public void remove(final Object element) {
-			registry.getAttributeController().performRemoveAttributeValue(getKey(), element);
+			registry.performRemoveAttributeValue(getKey(), element);
 		}
 
 		@Override
 		public void replace(final Object oldO, final Object newO) {
-			registry.getAttributeController().performReplaceAttributeValue(getKey(), oldO, newO);
+			registry.performReplaceAttributeValue(getKey(), oldO, newO);
 		}
 	}
 
