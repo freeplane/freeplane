@@ -169,6 +169,16 @@ public class Launcher {
 		return this;
 	}
 
+	public Launcher userDirectory(File userDirectory) {
+		return userDirectory(userDirectory.getAbsolutePath());
+	}
+
+	public Launcher userDirectory(String userDirectory) {
+        System.setProperty("org.freeplane.userfpdir", userDirectory);
+        System.setProperty("org.freeplane.old_userfpdir", userDirectory);
+		return this;
+	}
+
 	private Launcher(final File freeplaneInstallationDirectory) {
 		ensureSingleInstance();
 		this.freeplaneInstallationDirectory = freeplaneInstallationDirectory;
