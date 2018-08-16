@@ -1,4 +1,4 @@
-package org.freeplane.features.explorer.mindmapmode;
+package org.freeplane.features.explorer;
 
 import org.freeplane.features.map.NodeModel;
 

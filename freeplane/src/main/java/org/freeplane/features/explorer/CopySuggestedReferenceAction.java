@@ -1,4 +1,4 @@
-package org.freeplane.features.explorer.mindmapmode;
+package org.freeplane.features.explorer;
 
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;

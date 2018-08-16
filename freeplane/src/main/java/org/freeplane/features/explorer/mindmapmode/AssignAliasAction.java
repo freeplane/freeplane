@@ -34,9 +34,9 @@ class AssignAliasAction extends AFreeplaneAction {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	private MapExplorerController explorer;
+	private MMapExplorerController explorer;
 
-	public AssignAliasAction(final MapExplorerController explorer) {
+	public AssignAliasAction(final MMapExplorerController explorer) {
 		super("AssignAliasAction");
 		this.explorer = explorer;
 	}

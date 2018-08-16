@@ -3,7 +3,7 @@ package org.freeplane.plugin.formula;
 import java.util.List;
 
 import org.freeplane.features.attribute.NodeAttributeTableModel;
-import org.freeplane.features.explorer.mindmapmode.MapExplorerController;
+import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.MapChangeEvent;

@@ -33,11 +33,11 @@ class GloballyAccessibleNodeAction extends AMultipleNodeAction {
 	 */
 	private static final long serialVersionUID = 1L;
 	private boolean isNodeGloballyAccessible;
-	private MapExplorerController explorer;
+	private MMapExplorerController explorer;
 
 	/**
 	 */
-	public GloballyAccessibleNodeAction(final MapExplorerController explorer) {
+	public GloballyAccessibleNodeAction(final MMapExplorerController explorer) {
 		super("GloballyAccessibleNodeAction");
 		this.explorer = explorer;
 	}

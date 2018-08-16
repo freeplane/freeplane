@@ -17,40 +17,37 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.explorer.mindmapmode;
+package org.freeplane.features.explorer;
 
-import java.net.URI;
-
-import org.freeplane.features.attribute.Attribute;
-import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public abstract class AliasCondition extends ASelectableCondition {
-	static final String TEXT = "TEXT";
-	final private String alias;
-	public AliasCondition(final String alias) {
-		super();
-		this.alias = alias;
-	}
+public class GlobalNodeCondition extends ASelectableCondition {
+	static final String NAME = "filter_global";
 
-	abstract protected boolean checkAlias(final String alias);
+	public GlobalNodeCondition() {
+		super();
+	}
 
 	public boolean checkNode(final NodeModel node) {
-		final String alias = NodeAlias.getAlias(node);
-		return !alias.isEmpty() && checkAlias(alias);
+		return GlobalNodes.isGlobal(node);
 	}
 
-	public String getAlias() {
-		return alias;
+
+	@Override
+	protected String createDescription() {
+		final String condition = TextUtils.getText(NAME);
+		return condition;
 	}
-	
-	protected void fillXML(XMLElement element){
-		element.setAttribute(TEXT, alias);
+
+	@Override
+	protected String getName() {
+		return NAME;
 	}
+
 }

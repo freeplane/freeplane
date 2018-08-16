@@ -9,7 +9,7 @@ import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.explorer.mindmapmode.AccessedNodes;
+import org.freeplane.features.explorer.AccessedNodes;
 import org.freeplane.features.map.NodeModel;
 
 public class ScriptContext implements AccessedNodes{

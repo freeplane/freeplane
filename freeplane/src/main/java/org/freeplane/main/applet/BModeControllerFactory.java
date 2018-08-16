@@ -32,6 +32,7 @@ import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.encrypt.EncryptionController;
+import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
@@ -78,6 +79,7 @@ public class BModeControllerFactory {
 		CloudController.install(new CloudController(modeController));
 		NoteController.install(new NoteController());
 		new TextController(modeController).install(modeController);
+		MapExplorerController.install(modeController);
 		LinkController.install(new LinkController(modeController));
 		LogicalStyleController.install(new LogicalStyleController(modeController));
 		try {

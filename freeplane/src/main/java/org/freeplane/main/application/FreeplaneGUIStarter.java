@@ -48,7 +48,7 @@ import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.features.attribute.ModelessAttributeController;
-import org.freeplane.features.explorer.mindmapmode.MapExplorerController;
+import org.freeplane.features.explorer.MapExplorerConditionController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.NextNodeAction;
 import org.freeplane.features.filter.NextPresentationItemAction;
@@ -223,7 +223,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			    new LogicalStyleFilterController());
 			MapController.install();
 			NodeHistory.install(controller);
-			MapExplorerController.installFilterConditions();
+			MapExplorerConditionController.installFilterConditions();
 			final FreeplaneSurveyProperties freeplaneSurveyProperties = new FreeplaneSurveyProperties();
 			if(freeplaneSurveyProperties.mayAskUserToFillSurveys()) {
 				controller.addApplicationLifecycleListener(new SurveyStarter(freeplaneSurveyProperties, new SurveyRunner(freeplaneSurveyProperties), Math.random()));

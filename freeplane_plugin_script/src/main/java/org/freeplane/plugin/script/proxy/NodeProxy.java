@@ -36,9 +36,10 @@ import org.freeplane.features.encrypt.Base64Coding;
 import org.freeplane.features.encrypt.EncryptionController;
 import org.freeplane.features.encrypt.PasswordStrategy;
 import org.freeplane.features.encrypt.mindmapmode.MEncryptionController;
-import org.freeplane.features.explorer.mindmapmode.AccessedNodes;
-import org.freeplane.features.explorer.mindmapmode.MapExplorer;
-import org.freeplane.features.explorer.mindmapmode.MapExplorerController;
+import org.freeplane.features.explorer.AccessedNodes;
+import org.freeplane.features.explorer.MapExplorer;
+import org.freeplane.features.explorer.MapExplorerController;
+import org.freeplane.features.explorer.mindmapmode.MMapExplorerController;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.link.ConnectorModel;
@@ -1075,11 +1076,15 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	@Override
 	public Node at(String path) {
-		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+		final MMapExplorerController explorer = getExplorer();
 		final MapExplorer mapExplorer = explorer.getMapExplorer(getDelegate(), path, accessedNodes());
 		final NodeModel node = mapExplorer.getNode();
 		final ScriptContext scriptContext = getScriptContext();
 		return new NodeProxy(node, scriptContext);
+	}
+
+	private MMapExplorerController getExplorer() {
+		return (MMapExplorerController) Controller.getCurrentModeController().getExtension(MapExplorerController.class);
 	}
 
 	private AccessedNodes accessedNodes() {
@@ -1088,7 +1093,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	@Override
 	public List<? extends Node> allAt(String path) {
-		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+		final MMapExplorerController explorer = getExplorer();
 		final MapExplorer mapExplorer = explorer.getMapExplorer(getDelegate(), path, accessedNodes());
 		final ArrayList<NodeModel> nodeModels = new ArrayList<NodeModel>(mapExplorer.getNodes());
 		final ScriptContext scriptContext = getScriptContext();
@@ -1097,25 +1102,25 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	@Override
 	public String getAlias() {
-		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+		final MMapExplorerController explorer = getExplorer();
 		return explorer.getAlias(getDelegate());
 	}
 
 	@Override
 	public boolean getIsGlobal() {
-		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+		final MMapExplorerController explorer = getExplorer();
 		return explorer.isGlobal(getDelegate());
 	}
 
 	@Override
 	public void setAlias(String alias) {
-		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+		final MMapExplorerController explorer = getExplorer();
 		explorer.setAlias(getDelegate(), alias);
 	}
 
 	@Override
 	public void setIsGlobal(boolean value) {
-		final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+		final MMapExplorerController explorer = getExplorer();
 		explorer.makeGlobal(getDelegate(), value);
 	}
 }

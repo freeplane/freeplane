@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.explorer.mindmapmode;
+package org.freeplane.features.explorer;
 
 import java.util.Collection;
 import java.util.Set;
@@ -34,6 +34,7 @@ import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.core.util.collection.SortedComboBoxModel;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.DefaultConditionRenderer;
@@ -181,4 +182,8 @@ public class MapExplorerConditionController implements IElementaryConditionContr
 			return null;
 		}
     }
+
+	public static void installFilterConditions() {
+		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(100, new MapExplorerConditionController());
+	}
 }

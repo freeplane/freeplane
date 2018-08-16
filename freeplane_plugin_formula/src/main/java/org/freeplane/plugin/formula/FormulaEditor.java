@@ -24,7 +24,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JEditorPane;
 import javax.swing.RootPaneContainer;
 
-import org.freeplane.features.explorer.mindmapmode.MapExplorerController;
+import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
 import org.freeplane.view.swing.ui.mindmapmode.GlassPaneManager;

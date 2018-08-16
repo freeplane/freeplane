@@ -1,10 +1,14 @@
-package org.freeplane.features.explorer.mindmapmode;
+package org.freeplane.features.explorer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
 import org.assertj.core.api.ThrowableAssert;
+import org.freeplane.features.explorer.AccessedNodes;
+import org.freeplane.features.explorer.Command;
+import org.freeplane.features.explorer.ExploringStep;
+import org.freeplane.features.explorer.ExploringStepBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.TextController;
 import org.junit.Test;

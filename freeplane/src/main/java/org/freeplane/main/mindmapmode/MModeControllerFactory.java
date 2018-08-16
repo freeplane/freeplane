@@ -63,7 +63,7 @@ import org.freeplane.features.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.encrypt.mindmapmode.MEncryptionController;
-import org.freeplane.features.explorer.mindmapmode.MapExplorerController;
+import org.freeplane.features.explorer.mindmapmode.MMapExplorerController;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.export.mindmapmode.ImportMindmanagerFiles;
 import org.freeplane.features.export.mindmapmode.ImportXmlFile;
@@ -235,7 +235,7 @@ public class MModeControllerFactory {
 		userInputListenerFactory.setMapMouseListener(new MMapMouseListener());
 		final MTextController textController = new MTextController(modeController);
 		textController.install(modeController);
-		MapExplorerController.install(modeController, textController);
+		MMapExplorerController.install(modeController, textController);
 		LinkController.install(new MLinkController(modeController));
 		NodeStyleController.install(new MNodeStyleController(modeController));
 		ClipboardController.install(new MClipboardController());

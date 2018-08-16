@@ -1,4 +1,4 @@
-package org.freeplane.features.explorer.mindmapmode;
+package org.freeplane.features.explorer;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -9,7 +9,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
-class GlobalNodes implements IExtension, Iterable<NodeModel>{
+public class GlobalNodes implements IExtension, Iterable<NodeModel>{
 	private static final GlobalNodes EMPTY = new GlobalNodes(Collections.<NodeModel, Void>emptyMap());
 	private final Map<NodeModel, Void> nodes;
 
@@ -24,7 +24,7 @@ class GlobalNodes implements IExtension, Iterable<NodeModel>{
 		return nodes.containsKey(key);
 	}
 
-	static GlobalNodes writeableOf(MapModel map) {
+	public static GlobalNodes writeableOf(MapModel map) {
 		GlobalNodes globalNodes = map.getExtension(GlobalNodes.class);
 		if(globalNodes == null) {
 			globalNodes = new GlobalNodes(new WeakHashMap<NodeModel, Void>());
@@ -42,7 +42,7 @@ class GlobalNodes implements IExtension, Iterable<NodeModel>{
 		writeableOf(node.getMap()).makeGlobal(node);
 	}
 
-	void makeGlobal(NodeModel node, boolean isGlobal) {
+	public void makeGlobal(NodeModel node, boolean isGlobal) {
 		if(isGlobal)
 			makeGlobal(node);
 		else
@@ -57,7 +57,7 @@ class GlobalNodes implements IExtension, Iterable<NodeModel>{
 		nodes.remove(node);
 	}
 
-	static boolean isGlobal(NodeModel node) {
+	public static boolean isGlobal(NodeModel node) {
 		return readableOf(node.getMap()).contains(node);
 	}
 

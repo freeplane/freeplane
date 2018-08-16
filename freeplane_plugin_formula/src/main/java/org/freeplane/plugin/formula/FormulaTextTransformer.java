@@ -11,7 +11,7 @@ import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.explorer.mindmapmode.MapExplorerController;
+import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.format.FormattedFormula;
 import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.map.NodeModel;

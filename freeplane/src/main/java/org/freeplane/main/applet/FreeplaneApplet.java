@@ -47,6 +47,7 @@ import javax.swing.text.html.parser.ParserDelegator;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.features.attribute.ModelessAttributeController;
+import org.freeplane.features.explorer.MapExplorerConditionController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.NextNodeAction;
 import org.freeplane.features.filter.NextPresentationItemAction;
@@ -69,7 +70,7 @@ import org.freeplane.view.swing.map.MapViewController;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 
 public class FreeplaneApplet extends JApplet {
-	
+
 	@SuppressWarnings("serial")
 	private static class GlassPane extends JComponent{
 		private final Controller controller;
@@ -101,15 +102,15 @@ public class FreeplaneApplet extends JApplet {
 			setVisible(false);
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private AppletViewController appletViewController;
  	private Controller controller;
 	private static boolean instanceInitialized = false;
- 	
+
  	final static Lock appletLock = new ReentrantLock();
 	private Boolean isLaunchedByJavaWebStart;
 
@@ -120,13 +121,13 @@ public class FreeplaneApplet extends JApplet {
 	@Override
 	public void destroy() {
 	}
-	
+
 	@SuppressWarnings("serial")
     @Override
 	public void init() {
 		configureFrame();
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				try{
@@ -154,7 +155,7 @@ public class FreeplaneApplet extends JApplet {
 					ModelessAttributeController.install();
 					TextController.install();
 					MapController.install();
-
+					MapExplorerConditionController.installFilterConditions();
 					TimeController.install();
 					LinkController.install();
 					IconController.installConditionControllers();
@@ -185,7 +186,7 @@ public class FreeplaneApplet extends JApplet {
 						addGlassPane();
 					controller.getViewController().setMenubarVisible(false);
 					SwingUtilities.invokeLater(new Runnable() {
-						
+
 						@Override
 						public void run() {
 							appletViewController.init(controller);
@@ -214,7 +215,7 @@ public class FreeplaneApplet extends JApplet {
 			ImageIcon mWindowIcon;
 			mWindowIcon = new ImageIcon(getClass().getResource(
 					"/images/Freeplane_frame_icon_64x64.png"));
-			frame.setIconImage(mWindowIcon.getImage());			
+			frame.setIconImage(mWindowIcon.getImage());
 			if (!frame.isResizable()){
 				frame.setResizable(true);
 			}
@@ -230,6 +231,7 @@ public class FreeplaneApplet extends JApplet {
 	@Override
 	public void start() {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				appletViewController.start();
 			}
@@ -255,8 +257,8 @@ public class FreeplaneApplet extends JApplet {
 	    	return null;
 	    }
 		final AWTEvent currentEvent = EventQueue.getCurrentEvent();
-		if(controller != Controller.getCurrentController() 
-				&& currentEvent instanceof MouseEvent 
+		if(controller != Controller.getCurrentController()
+				&& currentEvent instanceof MouseEvent
 				&& currentEvent.getID() == MouseEvent.MOUSE_MOVED){
 			if(appletLock.tryLock()){
 				Controller.setCurrentController(controller);

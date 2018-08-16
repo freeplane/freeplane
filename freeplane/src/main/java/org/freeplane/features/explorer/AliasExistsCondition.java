@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.explorer.mindmapmode;
+package org.freeplane.features.explorer;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;

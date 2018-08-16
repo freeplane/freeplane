@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.explorer.mindmapmode;
+package org.freeplane.features.explorer;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
@@ -28,8 +28,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public class AliasStartsWithCondition extends AliasCondition {
-	public static final String NAME = "alias_starts_with";
+public class AliasEqualsCondition extends AliasCondition {
+	public static final String NAME = "alias_equals";
 	public static final String MATCH_CASE = "MATCH_CASE";
 	public static final String MATCH_APPROXIMATELY = "MATCH_APPROXIMATELY";
 
@@ -37,7 +37,7 @@ public class AliasStartsWithCondition extends AliasCondition {
 	private final boolean matchApproximately;
 	private final StringMatchingStrategy stringMatchingStrategy;
 
-	public AliasStartsWithCondition(final String alias, final boolean matchCase, final boolean matchApproximately) {
+	public AliasEqualsCondition(final String alias, final boolean matchCase, final boolean matchApproximately) {
 		super(alias);
 		this.matchCase = matchCase;
 		this.matchApproximately = matchApproximately;
@@ -47,16 +47,13 @@ public class AliasStartsWithCondition extends AliasCondition {
 
 	@Override
 	protected boolean checkAlias(final String alias) {
-		String searchedAlias = getAlias();
-		int searchedLength = searchedAlias.length();
-		return alias.length() >= searchedLength
-				&& stringMatchingStrategy.matches(searchedAlias, alias.substring(0, searchedLength), false, matchCase);
+		return stringMatchingStrategy.matches(getAlias(), alias.toString(), false, matchCase);
 	}
 
 	@Override
 	protected String createDescription() {
 		final String condition = TextUtils.getText(MapExplorerConditionController.FILTER_ALIAS);
-		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_STARTS_WITH);
+		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_IS_EQUAL_TO);
 		return ConditionFactory.createDescription(condition, simpleCondition, getAlias(), matchCase, matchApproximately);
 	}
 
