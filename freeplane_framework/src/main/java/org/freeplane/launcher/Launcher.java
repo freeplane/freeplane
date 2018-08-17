@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.api.Controller;
 import org.freeplane.api.HeadlessMapCreator;
@@ -143,7 +144,27 @@ public class Launcher {
 	 */
 	public Controller launchWithUI(String[] args) {
 		System.setProperty(HEADLESS_PROPERTY, "false");
-		return launchWithoutUICheck(args);
+		final Controller controller = launchWithoutUICheck(args);
+		waitUntilUIStarts();
+		return controller;
+	}
+
+	private void waitUntilUIStarts() {
+			try {
+				if(!SwingUtilities.isEventDispatchThread()) {
+					for(int i = 0; i < 10; i++) {
+						Thread.sleep(10);
+						SwingUtilities.invokeAndWait(new Runnable() {
+							@Override
+							public void run() {
+							}
+						});
+					}
+				}
+			}
+			catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 	}
 
 
