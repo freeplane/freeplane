@@ -98,7 +98,7 @@ public class AttributeController implements IExtension {
 		return attributeModel;
 	}
 
-	public void performInsertRow(final NodeAttributeTableModel model, final int row, final String name,
+	public void performInsertRow(final NodeModel node, final NodeAttributeTableModel model, final int row, final String name,
 	                             final Object value) {
 		throw new UnsupportedOperationException();
 	}
@@ -123,7 +123,7 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public Attribute performRemoveRow(final NodeAttributeTableModel model, final int row) {
+	public Attribute performRemoveRow(final NodeModel node, final NodeAttributeTableModel model, final int row) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -135,7 +135,7 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performSetColumnWidth(final NodeAttributeTableModel model, final int col, final Quantity<LengthUnits> width) {
+	public void performSetColumnWidth(final NodeModel node, final NodeAttributeTableModel model, final int col, final Quantity<LengthUnits> width) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -143,7 +143,7 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performSetValueAt(final NodeAttributeTableModel model, final Object o, final int row, final int col) {
+	public void performSetValueAt(final NodeModel node, final NodeAttributeTableModel model, final Object o, final int row, final int col) {
 		throw new UnsupportedOperationException();
 	}
 

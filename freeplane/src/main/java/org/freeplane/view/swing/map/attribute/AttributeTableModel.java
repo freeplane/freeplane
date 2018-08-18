@@ -39,26 +39,27 @@ import org.freeplane.view.swing.map.NodeView;
 /**
  * @author Dimitry Polivaev
  */
-abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel 
+abstract class AttributeTableModel extends AbstractTableModel
 		implements IAttributeTableModel,
         TableModelListener, ChangeListener{
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	final private AttributeController attributeController;
 	private AttributeRegistry attributeRegistry;
 	private NodeAttributeTableModel nodeAttributeModel;
 	final private TextController textController;
+	private final NodeModel node;
 
-	public AttributeTableModelDecoratorAdapter(final AttributeView attrView) {
+	public AttributeTableModel(final AttributeView attrView) {
 		super();
 		final ModeController modeController = attrView.getMapView().getModeController();
 		attributeController = AttributeController.getController(modeController);
 		textController = TextController.getController(modeController);
 		setNodeAttributeModel(attrView.getAttributes());
 		setAttributeRegistry(attrView.getAttributeRegistry());
-		getNodeAttributeModel().getNode();
+		node = attrView.getNode();
 		addListeners();
 	}
 
@@ -85,24 +86,26 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 
 	@Override
 	public Class<?> getColumnClass(final int columnIndex) {
-		return getNodeAttributeModel().getColumnClass(columnIndex);
+		return Object.class;
 	}
 
+	@Override
 	public int getColumnCount() {
 		return 2;
 	}
 
 	@Override
 	public String getColumnName(final int columnIndex) {
-		return getNodeAttributeModel().getColumnName(columnIndex);
+		return " ";
 	}
 
+	@Override
 	public Quantity<LengthUnits> getColumnWidth(final int col) {
 		return getNodeAttributeModel().getColumnWidth(col);
 	}
 
-	public NodeModel getNode() {
-		return getNodeAttributeModel().getNode();
+	NodeModel getNode() {
+		return node;
 	}
 
 	public NodeAttributeTableModel getNodeAttributeModel() {
@@ -119,7 +122,7 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 	}
 
 	public void setColumnWidth(final int col, final Quantity<LengthUnits> width) {
-		getAttributeController().performSetColumnWidth(getNodeAttributeModel(), col, width);
+		getAttributeController().performSetColumnWidth(getNode(), getNodeAttributeModel(), col, width);
 	}
 
 	public void setNodeAttributeModel(final NodeAttributeTableModel nodeAttributeModel) {
@@ -142,13 +145,14 @@ abstract class AttributeTableModelDecoratorAdapter extends AbstractTableModel
 	public void viewRemoved(NodeView nodeView) {
 		removeListeners();
 	}
+	@Override
 	public void tableChanged(final TableModelEvent e) {
 		switch(e.getType()){
 		case TableModelEvent.INSERT:
 		case TableModelEvent.UPDATE:
 			cacheTransformedValues(e.getFirstRow(), e.getLastRow());
 		}
-		
+
 	}
 	private void cacheTransformedValues(int firstRow, int lastRow) {
 		for(int row = firstRow; row <= lastRow; row++){

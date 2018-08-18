@@ -21,6 +21,7 @@ package org.freeplane.features.attribute.mindmapmode;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
+
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.attribute.AttributeController;
@@ -32,7 +33,7 @@ import org.freeplane.features.mode.Controller;
 public class RemoveLastAttributeAction extends AMultipleNodeAction {
 	/**
 	 * @author Stefan Ott
-	 * 
+	 *
 	 * This action removes the last attribute of a node
 	 */
 	private static final long serialVersionUID = 1L;
@@ -46,7 +47,7 @@ public class RemoveLastAttributeAction extends AMultipleNodeAction {
 		final AttributeUtilities atrUtil = new AttributeUtilities();
 		if (atrUtil.hasAttributes(node)) {
 			final NodeAttributeTableModel natm = NodeAttributeTableModel.getModel(node);
-			AttributeController.getController().performRemoveRow(natm, natm.getRowCount() - 1);
+			AttributeController.getController().performRemoveRow(node, natm, natm.getRowCount() - 1);
 		}
 	}
 

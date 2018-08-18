@@ -60,12 +60,12 @@ public class MAttributeController extends AttributeController {
 		 * .modes.attributes.ConcreteAttributeTableModel)
 		 */
 		@Override
-		public void visit(final NodeAttributeTableModel model) {
+		public void visit(final NodeModel node, final NodeAttributeTableModel model) {
 			for (int i = 0; i < model.getRowCount(); i++) {
 				if (model.getName(i).equals(name) && model.getValue(i).equals(oldValue)) {
 					final int row = i;
-					final IActor actor = new SetAttributeValueActor(model, row, newValue);
-					Controller.getCurrentModeController().execute(actor, model.getNode().getMap());
+					final IActor actor = new SetAttributeValueActor(node, model, row, newValue);
+					Controller.getCurrentModeController().execute(actor, node.getMap());
 				}
 			}
 		}
@@ -86,12 +86,12 @@ public class MAttributeController extends AttributeController {
 		 * .modes.attributes.ConcreteAttributeTableModel)
 		 */
 		@Override
-		public void visit(final NodeAttributeTableModel model) {
+		public void visit(final NodeModel node, final NodeAttributeTableModel model) {
 			for (int i = 0; i < model.getRowCount(); i++) {
 				if (model.getName(i).equals(name)) {
 					final int row = i;
-					final IActor actor = new RemoveAttributeActor(model, row);
-					Controller.getCurrentModeController().execute(actor, model.getNode().getMap());
+					final IActor actor = new RemoveAttributeActor(node, model, row);
+					Controller.getCurrentModeController().execute(actor, node.getMap());
 				}
 			}
 		}
@@ -114,14 +114,14 @@ public class MAttributeController extends AttributeController {
 		 * .modes.attributes.ConcreteAttributeTableModel)
 		 */
 		@Override
-		public void visit(final NodeAttributeTableModel model) {
+		public void visit(final NodeModel node, final NodeAttributeTableModel model) {
 			for (int i = 0; i < model.getRowCount(); i++) {
 				if (model.getName(i).equals(oldName)) {
 					final int row = i;
 					final String name = newName.toString();
 					final String oldName = this.oldName.toString();
-					final IActor actor = new SetAttributeNameActor(model, name, oldName, row);
-					Controller.getCurrentModeController().execute(actor, model.getNode().getMap());
+					final IActor actor = new SetAttributeNameActor(node, model, name, oldName, row);
+					Controller.getCurrentModeController().execute(actor, node.getMap());
 				}
 			}
 		}
@@ -144,11 +144,11 @@ public class MAttributeController extends AttributeController {
 		 * .modes.attributes.ConcreteAttributeTableModel)
 		 */
 		@Override
-		public void visit(final NodeAttributeTableModel model) {
+		public void visit(final NodeModel node, final NodeAttributeTableModel model) {
 			for (int i = 0; i < model.getRowCount(); i++) {
 				if (model.getName(i).equals(name) && model.getValue(i).equals(value)) {
-					final IActor actor = new RemoveAttributeActor(model, i);
-					Controller.getCurrentModeController().execute(actor, model.getNode().getMap());
+					final IActor actor = new RemoveAttributeActor(node, model, i);
+					Controller.getCurrentModeController().execute(actor, node.getMap());
 				}
 			}
 		}
@@ -159,9 +159,11 @@ public class MAttributeController extends AttributeController {
 		private final String name;
 		private final int row;
 		private final Object value;
+		private final NodeModel node;
 
-		private InsertAttributeActor(final NodeAttributeTableModel model, final int row, final String name,
+		private InsertAttributeActor(NodeModel node, final NodeAttributeTableModel model, final int row, final String name,
 		                             final Object value) {
+			this.node = node;
 			this.row = row;
 			this.name = name;
 			this.model = model;
@@ -172,7 +174,7 @@ public class MAttributeController extends AttributeController {
 		public void act() {
 			final Attribute newAttribute = new Attribute(name, value);
 			model.getAttributes().add(row, newAttribute);
-			model.fireTableRowsInserted(row, row);
+			model.fireTableRowsInserted(node, row, row);
 		}
 
 		@Override
@@ -183,7 +185,7 @@ public class MAttributeController extends AttributeController {
 		@Override
 		public void undo() {
 			model.getAttributes().remove(row);
-			model.fireTableRowsDeleted(row, row);
+			model.fireTableRowsDeleted(node, row, row);
 		}
 	}
 
@@ -197,7 +199,7 @@ public class MAttributeController extends AttributeController {
 		/**
 		 */
 		void iterate(final NodeModel node) {
-			visitor.visit(NodeAttributeTableModel.getModel(node));
+			visitor.visit(node, NodeAttributeTableModel.getModel(node));
 			for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
 				iterate(child);
 			}
@@ -205,7 +207,7 @@ public class MAttributeController extends AttributeController {
 	}
 
 	private static interface IVisitor {
-		void visit(NodeAttributeTableModel model);
+		void visit(final NodeModel node, NodeAttributeTableModel model);
 	}
 
 	private static class RegistryAttributeActor implements IActor {
@@ -292,11 +294,11 @@ public class MAttributeController extends AttributeController {
 	private class RemoveAttributeActor implements IActor {
 		final private InsertAttributeActor insertActor;
 
-		private RemoveAttributeActor(final NodeAttributeTableModel model, final int row) {
+		private RemoveAttributeActor(NodeModel node, final NodeAttributeTableModel model, final int row) {
 			final Attribute attribute = model.getAttribute(row);
 			final String name = attribute.getName();
 			final Object value = attribute.getValue();
-			insertActor = new InsertAttributeActor(model, row, name, value);
+			insertActor = new InsertAttributeActor(node, model, row, name, value);
 		}
 
 		@Override
@@ -346,13 +348,15 @@ public class MAttributeController extends AttributeController {
 	}
 
 	private static class SetAttributeColumnWidthActor implements IActor {
+		private final NodeModel node;
 		private final int col;
 		private final NodeAttributeTableModel model;
 		private final Quantity<LengthUnits> oldWidth;
 		private final Quantity<LengthUnits> width;
 
-		private SetAttributeColumnWidthActor(final int col, final Quantity<LengthUnits> oldWidth, final Quantity<LengthUnits> width,
+		private SetAttributeColumnWidthActor(NodeModel node, final int col, final Quantity<LengthUnits> oldWidth, final Quantity<LengthUnits> width,
 		                                     final NodeAttributeTableModel model) {
+			this.node = node;
 			this.col = col;
 			this.oldWidth = oldWidth;
 			this.width = width;
@@ -376,13 +380,15 @@ public class MAttributeController extends AttributeController {
 	}
 
 	private static class SetAttributeNameActor implements IActor {
+		private final NodeModel node;
 		private final NodeAttributeTableModel model;
 		private final String name;
 		private final String oldName;
 		private final int row;
 
-		private SetAttributeNameActor(final NodeAttributeTableModel model, final String name, final String oldName,
+		private SetAttributeNameActor(final NodeModel node, final NodeAttributeTableModel model, final String name, final String oldName,
 		                              final int row) {
+			this.node = node;
 			this.model = model;
 			this.name = name;
 			this.oldName = oldName;
@@ -392,7 +398,7 @@ public class MAttributeController extends AttributeController {
 		@Override
 		public void act() {
 			model.getAttribute(row).setName(name);
-			model.fireTableCellUpdated(row, 0);
+			model.fireTableCellUpdated(node, row, 0);
 		}
 
 		@Override
@@ -403,7 +409,7 @@ public class MAttributeController extends AttributeController {
 		@Override
 		public void undo() {
 			model.getAttribute(row).setName(oldName);
-			model.fireTableCellUpdated(row, 0);
+			model.fireTableCellUpdated(node, row, 0);
 		}
 	}
 
@@ -449,8 +455,10 @@ public class MAttributeController extends AttributeController {
 		private final Object newValue;
 		private final Object oldValue;
 		private final int row;
+		private NodeModel node;
 
-		private SetAttributeValueActor(final NodeAttributeTableModel model, final int row, final Object newValue) {
+		private SetAttributeValueActor(NodeModel node, final NodeAttributeTableModel model, final int row, final Object newValue) {
+			this.node = node;
 			this.row = row;
 			oldValue = model.getAttribute(row).getValue();
 			this.newValue = newValue;
@@ -460,7 +468,7 @@ public class MAttributeController extends AttributeController {
 		@Override
 		public void act() {
 			model.getAttribute(row).setValue(newValue);
-			model.fireTableCellUpdated(row, 1);
+			model.fireTableCellUpdated(node, row, 1);
 		}
 
 		@Override
@@ -471,7 +479,7 @@ public class MAttributeController extends AttributeController {
 		@Override
 		public void undo() {
 			model.getAttribute(row).setValue(oldValue);
-			model.fireTableCellUpdated(row, 1);
+			model.fireTableCellUpdated(node, row, 1);
 		}
 	}
 
@@ -566,7 +574,7 @@ public class MAttributeController extends AttributeController {
 		createAttributeTableModel(node);
 		final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 		final int rowCount = attributes.getRowCount();
-		performInsertRow(attributes, rowCount, pAttribute.getName(), pAttribute.getValue());
+		performInsertRow(node, attributes, rowCount, pAttribute.getName(), pAttribute.getValue());
 		return rowCount;
 	}
 
@@ -604,8 +612,8 @@ public class MAttributeController extends AttributeController {
 	}
 
 	@Override
-	public void performInsertRow(final NodeAttributeTableModel model, final int row, final String name, Object value) {
-		final MapModel map = model.getNode().getMap();
+	public void performInsertRow(final NodeModel node, final NodeAttributeTableModel model, final int row, final String name, Object value) {
+		final MapModel map = node.getMap();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);
 		if (name.equals("")) {
 			return;
@@ -632,7 +640,7 @@ public class MAttributeController extends AttributeController {
 			Controller.getCurrentModeController().execute(valueActor, map);
 		}
 		final Object newValue = value;
-		final IActor actor = new InsertAttributeActor(model, row, name, newValue);
+		final IActor actor = new InsertAttributeActor(node, model, row, name, newValue);
 		Controller.getCurrentModeController().execute(actor, map);
 	}
 
@@ -714,11 +722,11 @@ public class MAttributeController extends AttributeController {
 	}
 
 	@Override
-	public Attribute performRemoveRow(final NodeAttributeTableModel model, final int row) {
+	public Attribute performRemoveRow(final NodeModel node, final NodeAttributeTableModel model, final int row) {
 		final Vector<Attribute> attributes = model.getAttributes();
 		final Object o = attributes.elementAt(row);
-		final IActor actor = new RemoveAttributeActor(model, row);
-		Controller.getCurrentModeController().execute(actor, model.getNode().getMap());
+		final IActor actor = new RemoveAttributeActor(node, model, row);
+		Controller.getCurrentModeController().execute(actor, node.getMap());
 		return (Attribute) o;
 	}
 
@@ -761,13 +769,13 @@ public class MAttributeController extends AttributeController {
 	}
 
 	@Override
-	public void performSetColumnWidth(final NodeAttributeTableModel model, final int col, final Quantity<LengthUnits> width) {
+	public void performSetColumnWidth(final NodeModel node, final NodeAttributeTableModel model, final int col, final Quantity<LengthUnits> width) {
 		final Quantity<LengthUnits> oldWidth = model.getLayout().getColumnWidth(col);
 		if (width.equals(oldWidth)) {
 			return;
 		}
-		final IActor actor = new SetAttributeColumnWidthActor(col, oldWidth, width, model);
-		Controller.getCurrentModeController().execute(actor, model.getNode().getMap());
+		final IActor actor = new SetAttributeColumnWidthActor(node, col, oldWidth, width, model);
+		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
 	@Override
@@ -788,9 +796,9 @@ public class MAttributeController extends AttributeController {
 	}
 
 	@Override
-	public void performSetValueAt(final NodeAttributeTableModel model, final Object o, final int row, final int col) {
+	public void performSetValueAt(final NodeModel node, final NodeAttributeTableModel model, final Object o, final int row, final int col) {
 		final Attribute attribute = model.getAttribute(row);
-		final MapModel map = model.getNode().getMap();
+		final MapModel map = node.getMap();
 		final AttributeRegistry registry = AttributeRegistry.getRegistry(map);
 		switch (col) {
 			case 0: {
@@ -799,14 +807,14 @@ public class MAttributeController extends AttributeController {
 				if (oldName.equals(name)) {
 					return;
 				}
-				final IActor nameActor = new SetAttributeNameActor(model, name, oldName, row);
+				final IActor nameActor = new SetAttributeNameActor(node, model, name, oldName, row);
 				Controller.getCurrentModeController().execute(nameActor, map);
 				try {
 					final AttributeRegistryElement element = registry.getElement(name);
 					final String value = model.getValueAt(row, 1).toString();
 					final int index = element.getValues().getIndexOf(value);
 					if (index == -1) {
-						final IActor valueActor = new SetAttributeValueActor(model, row, element.getValues().firstElement());
+						final IActor valueActor = new SetAttributeValueActor(node, model, row, element.getValues().firstElement());
 						Controller.getCurrentModeController().execute(valueActor, map);
 					}
 				}
@@ -820,7 +828,7 @@ public class MAttributeController extends AttributeController {
 				if (attribute.getValue().equals(o)) {
 					return;
 				}
-				final IActor actor = new SetAttributeValueActor(model, row, o);
+				final IActor actor = new SetAttributeValueActor(node, model, row, o);
 				Controller.getCurrentModeController().execute(actor, map);
 				final String name = model.getValueAt(row, 0).toString();
 				final AttributeRegistryElement element = registry.getElement(name);
@@ -844,16 +852,16 @@ public class MAttributeController extends AttributeController {
 		Controller.getCurrentModeController().execute(actor, map);
 	}
 
-	public void removeAttribute(final NodeModel pNode, final int pPosition) {
-		createAttributeTableModel(pNode);
-		performRemoveRow(NodeAttributeTableModel.getModel(pNode), pPosition);
+	public void removeAttribute(final NodeModel node, final int pPosition) {
+		createAttributeTableModel(node);
+		performRemoveRow(node, NodeAttributeTableModel.getModel(node), pPosition);
 	}
 
-	public void setAttribute(final NodeModel pNode, final int pPosition, final Attribute pAttribute) {
-		createAttributeTableModel(pNode);
-		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(pNode);
-		performSetValueAt(model, pAttribute.getName(), pPosition, 0);
-		performSetValueAt(model, pAttribute.getValue(), pPosition, 1);
+	public void setAttribute(final NodeModel node, final int pPosition, final Attribute pAttribute) {
+		createAttributeTableModel(node);
+		final NodeAttributeTableModel model = NodeAttributeTableModel.getModel(node);
+		performSetValueAt(node, model, pAttribute.getName(), pPosition, 0);
+		performSetValueAt(node, model, pAttribute.getValue(), pPosition, 1);
 	}
 
     public void copyAttributesToNode(NodeModel source, NodeModel target) {

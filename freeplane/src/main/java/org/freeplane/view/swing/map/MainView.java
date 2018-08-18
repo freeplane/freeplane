@@ -167,7 +167,6 @@ public abstract class MainView extends ZoomableLabel {
 	protected int getMainViewWidthWithFoldingMark() {
 		int width = getWidth();
 		final NodeView nodeView = getNodeView();
-		final NodeModel model = nodeView.getModel();
 		if (nodeView.isFolded()) {
 			width += getZoomedFoldingSymbolHalfWidth() * 3;
 		}
@@ -334,7 +333,6 @@ public abstract class MainView extends ZoomableLabel {
 				p.x -= width;
 			final FoldingMark foldingCircle;
 			if(markType.equals(FoldingMark.UNFOLDED)) {
-				final NodeModel node = nodeView.getModel();
 				if(nodeView.hasHiddenChildren())
 					foldingCircle = FoldingMark.FOLDING_CIRCLE_HIDDEN_CHILD;
 				else

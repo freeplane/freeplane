@@ -30,7 +30,7 @@ import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 /**
  * @author Dimitry Polivaev
  */
-class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAdapter {
+class ReducedAttributeTableModelDecorator extends AttributeTableModel {
 	private static final long serialVersionUID = 1L;
 	private Vector<Integer> index = null;
 	private int visibleRowCount;
@@ -71,10 +71,12 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 		return index;
 	}
 
+	@Override
 	public int getRowCount() {
 		return visibleRowCount;
 	}
 
+	@Override
 	public Object getValueAt(final int row, final int col) {
 		if(index == null)
 			return null;
@@ -123,7 +125,7 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 
 	@Override
 	public void setValueAt(final Object o, final int row, final int col) {
-		getAttributeController().performSetValueAt(getNodeAttributeModel(), o, calcRow(row), col);
+		getAttributeController().performSetValueAt(getNode(), getNodeAttributeModel(), o, calcRow(row), col);
 		fireTableCellUpdated(row, col);
 	}
 
@@ -133,6 +135,7 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 	 * javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent
 	 * )
 	 */
+	@Override
 	public void stateChanged(final ChangeEvent e) {
 		rebuildTableModel();
 		if (index != null) {
@@ -140,6 +143,7 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModelDecoratorAd
 		}
 	}
 
+	@Override
 	public void tableChanged(final TableModelEvent e) {
 		super.tableChanged(e);
 		if (e.getType() != TableModelEvent.UPDATE || e.getColumn() != 0) {

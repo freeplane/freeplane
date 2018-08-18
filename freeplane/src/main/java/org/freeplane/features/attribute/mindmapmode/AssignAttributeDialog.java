@@ -93,13 +93,13 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		protected void performAction(final NodeModel model) {
 			attributeController.createAttributeTableModel(model);
 			final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(model);
-			attributeController.performInsertRow(attributes, attributes.getRowCount(), name, value);
+			attributeController.performInsertRow(model, attributes, attributes.getRowCount(), name, value);
 		}
 	}
 
 	protected static class ClonedComboBoxModel extends AbstractListModel implements ComboBoxModel {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 		private Object selectedItem;
@@ -116,14 +116,17 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 			sharedListModel.addListDataListener(l);
 		}
 
+		@Override
 		public Object getElementAt(final int index) {
 			return sharedListModel.getElementAt(index);
 		}
 
+		@Override
 		public Object getSelectedItem() {
 			return selectedItem;
 		}
 
+		@Override
 		public int getSize() {
 			return sharedListModel.getSize();
 		}
@@ -134,6 +137,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 			sharedListModel.removeListDataListener(l);
 		}
 
+		@Override
 		public void setSelectedItem(final Object anItem) {
 			selectedItem = anItem;
 			fireContentsChanged(this, -1, -1);
@@ -163,7 +167,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 			final NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(model);
 			for (int i = attributes.getRowCount() - 1; i >= 0; i--) {
 				if (attributes.getAttribute(i).getName().equals(name)) {
-					attributeController.performRemoveRow(attributes, i);
+					attributeController.performRemoveRow(model, attributes, i);
 				}
 			}
 		}
@@ -195,13 +199,14 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 			for (int i = attributes.getRowCount() - 1; i >= 0; i--) {
 				final Attribute attribute = attributes.getAttribute(i);
 				if (attribute.getName().equals(name) && attribute.getValue().equals(value)) {
-					attributeController.performRemoveRow(attributes, i);
+					attributeController.performRemoveRow(model, attributes, i);
 				}
 			}
 		}
 	}
 
 	private abstract class IteratingAction implements ActionListener {
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			try {
 				if (selectedBtn.getModel().isSelected()) {
@@ -278,8 +283,8 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 			for (int i = attributes.getRowCount() - 1; i >= 0; i--) {
 				final Attribute attribute = attributes.getAttribute(i);
 				if (attribute.getName().equals(name) && attribute.getValue().equals(value)) {
-					attributeController.performRemoveRow(attributes, i);
-					attributeController.performInsertRow(attributes, i, replacingName, replacingValue);
+					attributeController.performRemoveRow(model, attributes, i);
+					attributeController.performInsertRow(model, attributes, i, replacingName, replacingValue);
 				}
 			}
 		}
@@ -287,7 +292,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 
 	private static final Dimension maxButtonDimension = new Dimension(1000, 1000);
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	final private AttributeController attributeController;
@@ -356,6 +361,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		attributeNames.setMaximumSize(comboBoxMaximumSize);
 		attributeNames.setPreferredSize(comboBoxMaximumSize);
 		attributeNames.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(final ItemEvent e) {
 				selectedAttributeChanged(e.getItem(), attributeValues);
 			}
@@ -368,6 +374,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		replacingAttributeNames.setMaximumSize(comboBoxMaximumSize);
 		replacingAttributeNames.setPreferredSize(comboBoxMaximumSize);
 		replacingAttributeNames.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(final ItemEvent e) {
 				selectedAttributeChanged(e.getItem(), replacingAttributeValues);
 			}
@@ -416,6 +423,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		final JButton closeBtn = new JButton();
 		LabelAndMnemonicSetter.setLabelAndMnemonic(closeBtn, TextUtils.getRawText("simplyhtml.closeBtnName"));
 		closeBtn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(final ActionEvent e) {
 				dispose();
 			}
@@ -436,6 +444,7 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(this);
 	}
 
+	@Override
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		if (oldMap != null) {
 			final AttributeRegistry attributes = AttributeRegistry.getRegistry(oldMap);
@@ -480,10 +489,12 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		}
 	}
 
+	@Override
 	public void attributesChanged(final ChangeEvent e) {
 		attributesChanged();
 	}
 
+	@Override
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 

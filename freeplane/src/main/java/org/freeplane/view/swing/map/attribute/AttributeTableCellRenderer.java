@@ -34,7 +34,6 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.attribute.IAttributeTableModel;
 import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
@@ -74,7 +73,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		    column);
 		final AttributeTable attributeTable = (AttributeTable) table;
 		zoom = attributeTable.getZoom();
-	    final IAttributeTableModel attributeTableModel = (IAttributeTableModel) table.getModel();
+	    final AttributeTableModel attributeTableModel = (AttributeTableModel) table.getModel();
 		final String originalText = value == null ? null : value.toString();
 		String text = originalText;
 		Icon icon;

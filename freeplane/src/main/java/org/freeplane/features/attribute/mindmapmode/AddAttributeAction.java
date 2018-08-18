@@ -58,7 +58,7 @@ import org.freeplane.features.mode.Controller;
 public class AddAttributeAction extends AFreeplaneAction {
 	/**
 	 * @author Stefan Ott
-	 * 
+	 *
 	 * This action adds an attribute to all selected nodes
 	 */
 	private static final long serialVersionUID = 1L;
@@ -70,6 +70,7 @@ public class AddAttributeAction extends AFreeplaneAction {
 		super("attributes_AddAttributeAction");
 	};
 
+	@Override
 	public void actionPerformed(final ActionEvent arg0) {
 		final Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		final int selection = UITools.showConfirmDialog(Controller.getCurrentController().getSelection().getSelected(),
@@ -91,14 +92,14 @@ public class AddAttributeAction extends AFreeplaneAction {
 			//Add attributes to nodes
 			for (final NodeModel node : nodes) {
 				final NodeAttributeTableModel attributes = attrContr.createAttributeTableModel(node);
-				attrContr.performInsertRow(attributes, attributes.getRowCount(), name, value);
+				attrContr.performInsertRow(node, attributes, attributes.getRowCount(), name, value);
 			}
 		}
 	}
 
 	/**
 	 * This method creates the input dialog
-	 * 
+	 *
 	 * @return : the input dialog
 	 */
 	private JPanel getPanel() {
@@ -136,6 +137,7 @@ public class AddAttributeAction extends AFreeplaneAction {
 		attributeNames.setMaximumSize(comboBoxMaximumSize);
 		attributeNames.setPreferredSize(comboBoxMaximumSize);
 		attributeNames.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(final ItemEvent e) {
 				selectedAttributeChanged(e.getItem(), attributeValues);
 			}
@@ -150,6 +152,7 @@ public class AddAttributeAction extends AFreeplaneAction {
 		panel.add(attributeValues, gridBagConstraints);
 		//set focus to attributeNames
 		panel.addHierarchyListener(new HierarchyListener() {
+			@Override
 			public void hierarchyChanged(HierarchyEvent e) {
 				final Component component = e.getComponent();
 				if(component.isShowing()){

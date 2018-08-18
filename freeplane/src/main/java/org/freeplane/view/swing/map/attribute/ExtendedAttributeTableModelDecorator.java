@@ -27,10 +27,10 @@ import org.freeplane.features.attribute.Attribute;
 /**
  * @author Dimitry Polivaev
  */
-class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorAdapter {
+class ExtendedAttributeTableModelDecorator extends AttributeTableModel {
 	private static final int AFTER_LAST_ROW = Integer.MAX_VALUE;
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	int newRow;
@@ -62,6 +62,7 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 		}
 	}
 
+	@Override
 	public int getRowCount() {
 		if (newRow == ExtendedAttributeTableModelDecorator.AFTER_LAST_ROW) {
 			return getNodeAttributeModel().getRowCount();
@@ -69,6 +70,7 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 		return getNodeAttributeModel().getRowCount() + 1;
 	}
 
+	@Override
 	public Object getValueAt(final int row, final int col) {
 		if (row < newRow) {
 			return getNodeAttributeModel().getValueAt(row, col);
@@ -95,21 +97,21 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 	/**
 	 */
 	public void moveRowDown(final int row) {
-		final Attribute attribute = getAttributeController().performRemoveRow(getNodeAttributeModel(), row);
-		getAttributeController().performInsertRow(getNodeAttributeModel(), (row + 1), attribute.getName(),
+		final Attribute attribute = getAttributeController().performRemoveRow(getNode(), getNodeAttributeModel(), row);
+		getAttributeController().performInsertRow(getNode(), getNodeAttributeModel(), (row + 1), attribute.getName(),
 		    attribute.getValue());
 	}
 
 	/**
 	 */
 	public void moveRowUp(final int row) {
-		final Attribute attribute = getAttributeController().performRemoveRow(getNodeAttributeModel(), row);
-		getAttributeController().performInsertRow(getNodeAttributeModel(), (row - 1), attribute.getName(),
+		final Attribute attribute = getAttributeController().performRemoveRow(getNode(), getNodeAttributeModel(), row);
+		getAttributeController().performInsertRow(getNode(), getNodeAttributeModel(), (row - 1), attribute.getName(),
 		    attribute.getValue());
 	}
 
 	public Object removeRow(final int index) {
-		return getAttributeController().performRemoveRow(getNodeAttributeModel(), index);
+		return getAttributeController().performRemoveRow(getNode(), getNodeAttributeModel(), index);
 	}
 
 	@Override
@@ -117,7 +119,7 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 		if (row != newRow) {
 			if (col == 1 || o.toString().length() > 0) {
 				final int rowInModel = row < newRow ? row : row - 1;
-				getAttributeController().performSetValueAt(getNodeAttributeModel(), o, rowInModel, col);
+				getAttributeController().performSetValueAt(getNode(), getNodeAttributeModel(), o, rowInModel, col);
 			}
 			return;
 		}
@@ -125,16 +127,18 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModelDecoratorA
 			newRow = ExtendedAttributeTableModelDecorator.AFTER_LAST_ROW;
 			fireTableRowsDeleted(row, row);
 			if (col == 0 && o != null && o.toString().length() > 0) {
-				getAttributeController().performInsertRow(getNodeAttributeModel(), row, o.toString(), "");
+				getAttributeController().performInsertRow(getNode(), getNodeAttributeModel(), row, o.toString(), "");
 			}
 			return;
 		}
 	}
 
+	@Override
 	public void stateChanged(final ChangeEvent e) {
 		fireTableDataChanged();
 	}
-	
+
+	@Override
 	public void tableChanged(final TableModelEvent e) {
 		super.tableChanged(e);
 		fireTableChanged(new TableModelEvent(this, e.getFirstRow(), e.getLastRow(), e.getColumn(), e.getType()));

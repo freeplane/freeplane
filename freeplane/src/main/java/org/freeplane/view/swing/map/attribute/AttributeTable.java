@@ -73,7 +73,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.ColumnWidthChangeEvent;
-import org.freeplane.features.attribute.IAttributeTableModel;
 import org.freeplane.features.attribute.IColumnWidthChangeListener;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.format.FormattedObject;
@@ -138,7 +137,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final JTableHeader header = (JTableHeader) e.getSource();
 			final AttributeTable table = (AttributeTable) header.getTable();
 			final float zoom = table.attributeView.getMapView().getZoom();
-			final AttributeTableModelDecoratorAdapter model = (AttributeTableModelDecoratorAdapter) table
+			final AttributeTableModel model = (AttributeTableModel) table
 			.getModel();
 			for (int col = 0; col < table.getColumnCount(); col++) {
 				final int modelColumnWidth = model.getColumnWidth(col).toBaseUnitsRounded();
@@ -320,8 +319,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	/**
 	 * @return Returns the currentModel.
 	 */
-	public AttributeTableModelDecoratorAdapter getAttributeTableModel() {
-		return (AttributeTableModelDecoratorAdapter) getModel();
+	public AttributeTableModel getAttributeTableModel() {
+		return (AttributeTableModel) getModel();
 	}
 
 	public AttributeView getAttributeView() {
@@ -368,7 +367,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
     }
 
 	Icon getLinkIcon(final URI uri) {
-		NodeModel nodeModel = ((IAttributeTableModel)getModel()).getNode();
+		NodeModel nodeModel = ((AttributeTableModel)getModel()).getNode();
 	    final Icon linkIcon =  Controller.getCurrentModeController().getExtension(LinkController.class).getLinkIcon(uri, nodeModel);
 	    return linkIcon;
     }
@@ -459,7 +458,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				final KeyEvent kev = (KeyEvent) e;
 				textController.getEventQueue().setFirstEvent(kev);
 			}
-			final IAttributeTableModel model = (IAttributeTableModel) getModel();
+			final AttributeTableModel model = (AttributeTableModel) getModel();
 			final String text = getValueForEdit(row, col);
 			final DialogTableCellEditor dialogTableCellEditor = new DialogTableCellEditor();
 			EditNodeBase base = textController.getEditNodeBase(model.getNode(), text, dialogTableCellEditor.getEditControl(), false);

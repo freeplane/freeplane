@@ -50,7 +50,7 @@ public class AttributeView implements ChangeListener, TableModelListener {
 	static private AttributePopupMenu tablePopupMenu;
 	private AttributeTable attributeTable;
 	private JScrollPane attributeViewScrollPane;
-	private AttributeTableModelDecoratorAdapter currentAttributeTableModel;
+	private AttributeTableModel currentAttributeTableModel;
 	private ExtendedAttributeTableModelDecorator extendedAttributeTableModel = null;
 	final private NodeView nodeView;
 	final private ReducedAttributeTableModelDecorator reducedAttributeTableModel;

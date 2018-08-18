@@ -56,7 +56,7 @@ import org.freeplane.view.swing.ui.mindmapmode.NodeSelector;
  */
 class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private JMenuItem delete = null;
@@ -80,6 +80,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		}
 		oldTable = true;
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				if (!oldTable) {
 					return;
@@ -112,6 +113,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		if (delete == null) {
 			delete = new JMenuItem(TextUtils.getText("attributes_popup_delete"));
 			delete.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					table.removeRow(row);
 				}
@@ -127,6 +129,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		if (down == null) {
 			down = new JMenuItem(TextUtils.getText("attributes_popup_down"));
 			down.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					table.moveRowDown(row);
 				}
@@ -142,6 +145,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		if (insert == null) {
 			insert = new JMenuItem(TextUtils.getText("attributes_popup_new"));
 			insert.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					table.insertRow(row + 1);
 				}
@@ -156,6 +160,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		if (insertFileLink == null) {
 			insertFileLink = new JMenuItem(TextUtils.getText("SetLinkByFileChooserAction.text"));
 			insertFileLink.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					final AttributeTable table = AttributePopupMenu.this.table;
 					final URI relative = ((MFileManager) UrlManager.getController())
@@ -175,6 +180,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		if (insertLink == null) {
 			insertLink = new JMenuItem(TextUtils.getText("SetLinkByTextFieldAction.text"));
 			insertLink.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					final AttributeTable table = AttributePopupMenu.this.table;
 					final Object oldValue = table.getValueAt(row, col);
@@ -195,7 +201,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 						}
 					}
 				}
-				
+
 			});
 		}
 		return insertLink;
@@ -205,11 +211,13 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		if (insertNodeLink == null) {
 			insertNodeLink = new JMenuItem(TextUtils.getText("SetNodeLink.text"));
 			insertNodeLink.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					final AttributeTable table = AttributePopupMenu.this.table;
 					final Object oldValue = table.getValueAt(row, col);
 					final NodeSelector nodeSelector = new NodeSelector();
 					nodeSelector.show(table, new INodeSelector() {
+						@Override
 						public void nodeSelected(NodeModel node) {
 							if(node == null)
 								return;
@@ -236,6 +244,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		if (insertAnchoredLink == null) {
 			insertAnchoredLink = new JMenuItem(TextUtils.getText("MakeLinkToAnchorAction.text"));
 			insertAnchoredLink.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					final AttributeTable table = AttributePopupMenu.this.table;
 					final Object oldValue = table.getValueAt(row, col);
@@ -244,7 +253,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	                    final MLinkController mLinkController = (MLinkController)linkController;
 						if (mLinkController.isAnchored()) {
                             try {
-                            	final String anchorIDforNode = mLinkController.getAnchorIDforNode(((IAttributeTableModel) table.getModel()).getNode());
+                            	final String anchorIDforNode = mLinkController.getAnchorIDforNode(((AttributeTableModel) table.getModel()).getNode());
                             	if(anchorIDforNode != null){
                             		URI link = LinkController.createURI(anchorIDforNode);
                             		if(! oldValue.equals(link))
@@ -268,6 +277,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		if (optimalWidth == null) {
 			optimalWidth = new JMenuItem(TextUtils.getText("attributes_popup_optimal_width"));
 			optimalWidth.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					table.setOptimalColumnWidths();
 				}
@@ -287,6 +297,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		if (up == null) {
 			up = new JMenuItem(TextUtils.getText("attributes_popup_up"));
 			up.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					table.moveRowUp(row);
 				}
@@ -341,6 +352,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 * (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
 	 */
+	@Override
 	public void mouseClicked(final MouseEvent e) {
 	}
 
@@ -348,6 +360,7 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 * (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
 	 */
+	@Override
 	public void mouseEntered(final MouseEvent e) {
 	}
 
@@ -355,13 +368,16 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	 * (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
 	 */
+	@Override
 	public void mouseExited(final MouseEvent e) {
 	}
 
+	@Override
 	public void mousePressed(final MouseEvent e) {
 		maybeShowPopup(e);
 	}
 
+	@Override
 	public void mouseReleased(final MouseEvent e) {
 		maybeShowPopup(e);
 	}
@@ -411,6 +427,6 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 	    }
 	    table.requestFocusInWindow();
     }
-	
-	
+
+
 }
