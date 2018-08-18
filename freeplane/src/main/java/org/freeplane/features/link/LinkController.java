@@ -381,11 +381,13 @@ public class LinkController extends SelectionController implements IExtension {
 		final String adaptedText = uri.toString();
 		if (adaptedText.startsWith("#")) {
 			ModeController modeController = Controller.getCurrentModeController();
-			final NodeModel dest = modeController.getExtension(MapExplorerController.class).getNodeAt(node, adaptedText.substring(1));
+			final MapExplorerController explorer = modeController.getExtension(MapExplorerController.class);
+			final String reference = adaptedText.substring(1);
+			final NodeModel dest = explorer.getNodeAt(node, reference);
 			if (dest != null) {
 				return TextController.getController().getShortPlainText(dest);
 			}
-			return TextUtils.getText("link_not_available_any_more");
+			return TextUtils.format(reference.startsWith("ID") ? "link_not_available_any_more" : "invalid_or_ambiguous_reference", reference);
 		}
 		return adaptedText;
 	}

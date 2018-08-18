@@ -95,7 +95,7 @@ public class MapExplorerController  implements IExtension{
 			try {
 				return new MapExplorer(textController, start, path, accessedNodes).getNode();
 			}
-			catch (IllegalStateException e) {
+			catch (IllegalStateException|IllegalArgumentException e) {
 				return null;
 			}
 		}
