@@ -2,6 +2,9 @@
 1.7.1
 ===============================
 API for referencing nodes from formulas and scripts
+API for loading mind maps
+API for script execution
+Use same syntax in node URLs like #at(:~someNodeAlias)
 Node aliases
 Global nodes
 Filtering nodes on aliases and on global accessibility
