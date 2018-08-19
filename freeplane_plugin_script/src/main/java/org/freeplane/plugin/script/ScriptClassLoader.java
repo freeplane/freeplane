@@ -29,7 +29,7 @@ public final class ScriptClassLoader extends URLClassLoader {
 				GenericScript.class.getClassLoader());
 		return classLoader;
 	}
-	
+
 	private static URL pathToUrl(String path) {
         try {
             return new File(path).toURI().toURL();
@@ -90,17 +90,19 @@ public final class ScriptClassLoader extends URLClassLoader {
 			throw (ClassNotFoundException)e.getCause();
 		}
 	}
-	
-	
+
+
 	private Class<?> superLoadClass(String name, boolean resolve) throws ClassNotFoundException {
 		return super.loadClass(name, resolve);
 	}
-	
+
 	public void setSecurityManager(ScriptingSecurityManager securityManager) {
+		if(this.securityManager != null && ! this.securityManager.equals(securityManager))
+			throw new IllegalStateException("Security manager is already set");
 		this.securityManager = securityManager;
 	}
 
 	public boolean implies(Permission permission) {
 		return securityManager != null && securityManager.implies(permission);
-	}	
+	}
 }

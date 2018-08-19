@@ -29,32 +29,40 @@ import java.util.Enumeration;
 
 class ScriptingSecurityManager {
 
-    final private Permissions permissions;
+    private final Permissions permissions;
+	private final boolean withoutFileRestriction;
+	private final boolean withoutWriteRestriction;
+	private final boolean withoutNetworkRestriction;
+	private final boolean withoutExecRestriction;
 
-    public ScriptingSecurityManager(boolean pWithoutFileRestriction,
-            boolean pWithoutWriteRestriction,
-            boolean pWithoutNetworkRestriction, boolean pWithoutExecRestriction) {
-        permissions = new Permissions();
-		if (pWithoutExecRestriction && pWithoutFileRestriction && pWithoutWriteRestriction
-		        && pWithoutNetworkRestriction) {
+    public ScriptingSecurityManager(boolean withoutFileRestriction,
+            boolean withoutWriteRestriction,
+            boolean withoutNetworkRestriction, boolean withoutExecRestriction) {
+        this.withoutFileRestriction = withoutFileRestriction;
+				this.withoutWriteRestriction = withoutWriteRestriction;
+				this.withoutNetworkRestriction = withoutNetworkRestriction;
+				this.withoutExecRestriction = withoutExecRestriction;
+		permissions = new Permissions();
+		if (withoutExecRestriction && withoutFileRestriction && withoutWriteRestriction
+		        && withoutNetworkRestriction) {
 			permissions.add(new AllPermission());
         }
 		else {
-			if (pWithoutNetworkRestriction) {
+			if (withoutNetworkRestriction) {
 				permissions.add(new SocketPermission("*", "connect,accept,listen,resolve"));
 				permissions.add(new RuntimePermission("setFactory"));
 			}
 
-			if (pWithoutExecRestriction) {
+			if (withoutExecRestriction) {
 				permissions.add(new FilePermission("<<ALL FILES>>", "execute"));
 				permissions.add(new RuntimePermission("loadLibrary.*"));
 			}
-			if (pWithoutFileRestriction) {
+			if (withoutFileRestriction) {
 				permissions.add(new FilePermission("<<ALL FILES>>", "read"));
 				permissions.add(new RuntimePermission("readFileDescriptor"));
 			}
 
-			if (pWithoutWriteRestriction) {
+			if (withoutWriteRestriction) {
 				permissions.add(new RuntimePermission("writeFileDescriptor"));
 				permissions.add(new FilePermission("<<ALL FILES>>", "write,delete"));
 				permissions.add(new RuntimePermission("preferences"));
@@ -79,7 +87,7 @@ class ScriptingSecurityManager {
 		final boolean isAllowed = permissions.implies(permission);
 		return isAllowed;
 	}
-	
+
 	private void checkRequiredPermissions(){
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
@@ -87,6 +95,38 @@ class ScriptingSecurityManager {
             while(permissionElements.hasMoreElements())
             	sm.checkPermission(permissionElements.nextElement());
         }
-
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (withoutExecRestriction ? 1231 : 1237);
+		result = prime * result + (withoutFileRestriction ? 1231 : 1237);
+		result = prime * result + (withoutNetworkRestriction ? 1231 : 1237);
+		result = prime * result + (withoutWriteRestriction ? 1231 : 1237);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ScriptingSecurityManager other = (ScriptingSecurityManager) obj;
+		if (withoutExecRestriction != other.withoutExecRestriction)
+			return false;
+		if (withoutFileRestriction != other.withoutFileRestriction)
+			return false;
+		if (withoutNetworkRestriction != other.withoutNetworkRestriction)
+			return false;
+		if (withoutWriteRestriction != other.withoutWriteRestriction)
+			return false;
+		return true;
+	}
+
+
 }

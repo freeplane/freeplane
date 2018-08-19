@@ -21,9 +21,9 @@ package org.freeplane.plugin.script;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
-import java.net.URL;
 import java.util.List;
 
 import javax.script.Bindings;
@@ -90,12 +90,6 @@ public class GenericScript implements IScript {
 
     private Throwable errorsInScript;
 
-    private IFreeplaneScriptErrorHandler errorHandler;
-
-    private PrintStream outStream;
-
-    private ScriptContext scriptContext;
-
 	private ScriptEngine engine;
 
     private boolean compilationEnabled = true;
@@ -110,9 +104,6 @@ public class GenericScript implements IScript {
 		this.engine = null;
         compiledScript = null;
         errorsInScript = null;
-        errorHandler = ScriptResources.IGNORING_SCRIPT_ERROR_HANDLER;
-        outStream = System.out;
-        scriptContext = null;
 		scriptClassLoader = ScriptClassLoader.createClassLoader();
     }
 
@@ -159,31 +150,9 @@ public class GenericScript implements IScript {
         }
     }
 
-    @Override
-    public IScript setErrorHandler(IFreeplaneScriptErrorHandler pErrorHandler) {
-        this.errorHandler = pErrorHandler;
-        return this;
-    }
 
     @Override
-    public IScript setOutStream(PrintStream outStream) {
-        this.outStream = outStream;
-        return this;
-    }
-
-    @Override
-    public IScript setScriptContext(ScriptContext scriptContext) {
-        this.scriptContext = scriptContext;
-        return this;
-    }
-
-    @Override
-    public Object getScript() {
-        return scriptSource;
-    }
-
-    @Override
-    public Object execute(final NodeModel node) {
+    public Object execute(final NodeModel node, PrintStream outStream, IFreeplaneScriptErrorHandler errorHandler, ScriptContext scriptContext) {
         try {
             if (errorsInScript != null && compileTimeStrategy.canUseOldCompiledScript()) {
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
@@ -191,10 +160,10 @@ public class GenericScript implements IScript {
             final PrintStream oldOut = System.out;
 			ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             try {
-				final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
+				final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager(outStream);
 				scriptClassLoader.setSecurityManager(scriptingSecurityManager);
 				Thread.currentThread().setContextClassLoader(scriptClassLoader);
-                final SimpleScriptContext context = createScriptContext(node);
+                final SimpleScriptContext context = createScriptContext(node, scriptContext, outStream);
                 if (compilationEnabled && engine instanceof Compilable) {
                     compileAndCache((Compilable) engine);
                     System.setOut(outStream);
@@ -208,7 +177,7 @@ public class GenericScript implements IScript {
 				Thread.currentThread().setContextClassLoader(contextClassLoader);
             }
         } catch (final ScriptException e) {
-            handleScriptRuntimeException(e);
+            handleScriptRuntimeException(e, outStream, errorHandler);
             // :fixme: This throw is only reached, if
             // handleScriptRuntimeException
             // does not raise an exception. Should it be here at all?
@@ -223,7 +192,7 @@ public class GenericScript implements IScript {
     }
 
 
-    private ScriptingSecurityManager createScriptingSecurityManager() {
+    private ScriptingSecurityManager createScriptingSecurityManager(PrintStream outStream) {
         return new ScriptSecurity(scriptSource, specificPermissions, outStream)
                 .getScriptingSecurityManager();
     }
@@ -233,16 +202,16 @@ public class GenericScript implements IScript {
                 ScriptResources.SCRIPT_COMPILATION_DISABLED_EXTENSIONS);
     }
 
-    private SimpleScriptContext createScriptContext(final NodeModel node) {
+    private SimpleScriptContext createScriptContext(final NodeModel node, ScriptContext scriptContext, OutputStream outStream) {
         final SimpleScriptContext context = new SimpleScriptContext();
         final OutputStreamWriter outWriter = new OutputStreamWriter(outStream);
         context.setWriter(outWriter);
 		context.setErrorWriter(outWriter);
-        context.setBindings(createBinding(node), javax.script.ScriptContext.ENGINE_SCOPE);
+        context.setBindings(createBinding(node, scriptContext), javax.script.ScriptContext.ENGINE_SCOPE);
         return context;
     }
 
-    private Bindings createBinding(final NodeModel node) {
+    private Bindings createBinding(final NodeModel node, ScriptContext scriptContext) {
         final Bindings binding = engine.createBindings();
         binding.put("c", ProxyFactory.createController(scriptContext));
         binding.put("node", ProxyFactory.createNode(node, scriptContext));
@@ -286,7 +255,7 @@ public class GenericScript implements IScript {
         return motor;
     }
 
-    private void handleScriptRuntimeException(final ScriptException e) {
+    private void handleScriptRuntimeException(final ScriptException e, PrintStream outStream, IFreeplaneScriptErrorHandler errorHandler) {
         outStream.print("message: " + e.getMessage());
         int lineNumber = e.getLineNumber();
         outStream.print("Line number: " + lineNumber);
@@ -298,7 +267,7 @@ public class GenericScript implements IScript {
     }
 
     @Override
-    public boolean permissionsEquals(ScriptingPermissions permissions) {
+    public boolean hasPermissions(ScriptingPermissions permissions) {
         if (this.specificPermissions == null) {
             return this.specificPermissions == permissions;
         } else {

@@ -27,18 +27,32 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev
  * 17.12.2012
  */
-public interface IScript {
-//    public IScript setErrorHandler(IFreeplaneScriptErrorHandler pErrorHandler);
-//
-//	public IScript setOutStream(PrintStream outStream);
-//
-//	public IScript setScriptContext(ScriptContext scriptContext);
-//
-//	public Object getScript();
+public class ScriptRunner {
+	private final IScript script;
+	private IFreeplaneScriptErrorHandler errorHandler = ScriptResources.IGNORING_SCRIPT_ERROR_HANDLER;
+	private PrintStream outStream = System.out;
+	private ScriptContext scriptContext;
 
-	public Object execute(final NodeModel node, PrintStream outStream, IFreeplaneScriptErrorHandler pErrorHandler, ScriptContext scriptContext);
+	public ScriptRunner(IScript script) {
+		this.script = script;
 
-	public boolean hasPermissions(ScriptingPermissions permissions);
+	}
+    public ScriptRunner setErrorHandler(IFreeplaneScriptErrorHandler errorHandler) {
+    	this.errorHandler = errorHandler;
+		return this;
+    }
 
-//    public boolean permissionsEquals(ScriptingPermissions permissions);
+	public ScriptRunner setOutStream(PrintStream outStream) {
+    	this.outStream = outStream;
+		return this;
+    }
+
+	public ScriptRunner setScriptContext(ScriptContext scriptContext) {
+    	this.scriptContext = scriptContext;
+		return this;
+    }
+
+	public Object execute(final NodeModel node) {
+		return script.execute(node, outStream, errorHandler, scriptContext);
+	}
 }

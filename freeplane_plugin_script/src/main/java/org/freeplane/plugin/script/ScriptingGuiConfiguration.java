@@ -117,6 +117,7 @@ class ScriptingGuiConfiguration {
 	private final TreeMap<String, String> menuTitleToPathMap = new TreeMap<String, String>();
 	private final TreeMap<String, ScriptMetaData> menuTitleToMetaDataMap = new TreeMap<String, ScriptMetaData>();
 	private List<IScript> initScripts;
+	private List<File> initScriptFiles;
 
 	ScriptingGuiConfiguration() {
 		addPluginDefaults();
@@ -147,19 +148,20 @@ class ScriptingGuiConfiguration {
 		for (File dir : getScriptDirs()) {
             addNonAddOnScripts(dir, addOnScriptMap, scriptFilenameFilter);
 		}
-		this.initScripts = findInitScripts(scriptFilenameFilter);
+		findInitScripts(scriptFilenameFilter);
     }
 
-	private List<IScript> findInitScripts(final FilenameFilter scriptFilenameFilter) {
-		final List<IScript> initScripts = new ArrayList<IScript>(0);
+	private void findInitScripts(final FilenameFilter scriptFilenameFilter) {
+		initScripts = new ArrayList<>(0);
+		initScriptFiles = new ArrayList<>(0);
 		if (ScriptResources.getInitScriptsDir().isDirectory()) {
 			ScriptingPermissions standardPermissions = null;
 			File[] list = ScriptResources.getInitScriptsDir().listFiles(scriptFilenameFilter);
 			for (File file : list) {
 				initScripts.add(ScriptingEngine.createScriptForFile(file, standardPermissions));
+				initScriptFiles.add(file);
 			}
 		}
-		return initScripts;
 	}
 
 	private Map<File, Script> createAddOnScriptMap() {
@@ -387,5 +389,9 @@ class ScriptingGuiConfiguration {
 
 	public List<IScript> getInitScripts() {
 		return initScripts;
+	}
+
+	public List<File> getInitScriptFiles() {
+		return initScriptFiles;
 	}
 }

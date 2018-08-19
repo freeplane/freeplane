@@ -267,13 +267,14 @@ class ScriptingRegistration {
 
 	private void registerInitScripts(ScriptingGuiConfiguration configuration) {
 		final List<IScript> initScripts = configuration.getInitScripts();
+		final List<File> initScriptFiles = configuration.getInitScriptFiles();
 		if (!initScripts.isEmpty())
 		Controller.getCurrentController().addApplicationLifecycleListener(new ApplicationLifecycleListener() {
 			@Override
 			public void onStartupFinished() {
-				for (IScript script : initScripts) {
-					LogUtils.info("running init script " + script.getScript());
-					script.execute(null);
+				for (int i = 0; i < initScriptFiles.size(); i++) {
+					LogUtils.info("running init script " + initScriptFiles.get(i));
+					new ScriptRunner(initScripts.get(i)).execute(null);
 				}
 			}
 

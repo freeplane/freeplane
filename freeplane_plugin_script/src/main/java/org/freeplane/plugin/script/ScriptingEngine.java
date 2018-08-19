@@ -47,7 +47,7 @@ public class ScriptingEngine {
     public static Object executeScript(final NodeModel node, final String script, final IFreeplaneScriptErrorHandler pErrorHandler,
                                 final PrintStream pOutStream, final ScriptContext scriptContext,
                                 ScriptingPermissions permissions) {
-    	return new GroovyScript(script, permissions)
+    	return new ScriptRunner(new GroovyScript(script, permissions))
     		.setErrorHandler(pErrorHandler)
     		.setOutStream(pOutStream)
     		.setScriptContext(scriptContext)
@@ -55,17 +55,7 @@ public class ScriptingEngine {
 
     }
 
-    static Object executeScript(final NodeModel node, final File script, final IFreeplaneScriptErrorHandler pErrorHandler,
-                                final PrintStream pOutStream, final ScriptContext scriptContext,
-                                ScriptingPermissions permissions) {
-        return createScriptForFile(script, permissions) //
-            .setErrorHandler(pErrorHandler) //
-            .setOutStream(pOutStream) //
-            .setScriptContext(scriptContext) //
-            .execute(node);
-    }
-
-	public static int findLineNumberInString(final String resultString, int lineNumber) {
+    public static int findLineNumberInString(final String resultString, int lineNumber) {
 		final java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(".*@ line ([0-9]+).*",
 		    java.util.regex.Pattern.DOTALL);
 		final Matcher matcher = pattern.matcher(resultString);
@@ -76,17 +66,13 @@ public class ScriptingEngine {
 	}
 
 	public static Object executeScript(final NodeModel node, final String script) {
-    	return new GroovyScript(script).execute(node);
-	}
-
-	public static Object executeScript(NodeModel node, File script, ScriptingPermissions permissions) {
-    	return createScriptForFile(script, permissions).execute(node);
+    	return new ScriptRunner(new GroovyScript(script)).execute(node);
 	}
 
 	public synchronized static IScript createScriptForFile(File scriptFile, ScriptingPermissions permissions) {
+		final boolean isGroovy = scriptFile.getName().endsWith(".groovy");
 	    IScript script = scriptCache.get(scriptFile);
-	    if (script == null || script.permissionsEquals(permissions)) {
-	        final boolean isGroovy = scriptFile.getName().endsWith(".groovy");
+	    if (script == null || ! script.hasPermissions(permissions)) {
 	        script = isGroovy ? new GroovyScript(scriptFile, permissions) : new GenericScript(scriptFile, permissions);
 	        scriptCache.put(scriptFile, script);
 	    }
@@ -94,19 +80,19 @@ public class ScriptingEngine {
     }
 
 	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
-        return new GroovyScript(script, permissions) //
+        return new ScriptRunner(new GroovyScript(script, permissions)) //
             .execute(node);
 	}
 
     public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
-        return new GroovyScript(script) //
+        return new ScriptRunner(new GroovyScript(script)) //
             .setOutStream(printStream) //
             .execute(node);
     }
 
     public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext,
                                        final ScriptingPermissions permissions) {
-        return new GroovyScript(script, permissions) //
+        return new ScriptRunner(new GroovyScript(script, permissions)) //
             .setScriptContext(scriptContext) //
             .execute(node);
     }
@@ -142,7 +128,7 @@ public class ScriptingEngine {
     public static File getUserScriptDir() {
         return ScriptResources.getUserScriptDir();
     }
-    
+
     static void showScriptExceptionErrorMessage(ExecuteScriptException ex) {
         if (ex.getCause() instanceof SecurityException) {
         	final String message = WordUtils.wrap(ex.getCause().getMessage(), 80, "\n    ", false);

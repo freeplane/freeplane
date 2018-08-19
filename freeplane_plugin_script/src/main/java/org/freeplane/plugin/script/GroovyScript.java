@@ -22,7 +22,6 @@ package org.freeplane.plugin.script;
 import java.io.File;
 import java.io.PrintStream;
 import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
 import java.util.regex.Matcher;
@@ -53,12 +52,6 @@ public class GroovyScript implements IScript {
 
     private Throwable errorsInScript;
 
-    private IFreeplaneScriptErrorHandler errorHandler;
-
-    private PrintStream outStream;
-
-    private ScriptContext scriptContext;
-
     private CompileTimeStrategy compileTimeStrategy;
 
 	private ScriptClassLoader scriptClassLoader;
@@ -87,9 +80,6 @@ public class GroovyScript implements IScript {
         this.specificPermissions = permissions;
         compiledScript = null;
         errorsInScript = null;
-        errorHandler = ScriptResources.IGNORING_SCRIPT_ERROR_HANDLER;
-        outStream = System.out;
-        scriptContext = null;
         compileTimeStrategy = new CompileTimeStrategy(null);
     }
 
@@ -97,35 +87,12 @@ public class GroovyScript implements IScript {
         this(script, null);
     }
 
-    @Override
-    public IScript setErrorHandler(IFreeplaneScriptErrorHandler pErrorHandler) {
-        this.errorHandler = pErrorHandler;
-        return this;
-    }
-
-    @Override
-    public IScript setOutStream(PrintStream outStream) {
-        this.outStream = outStream;
-        return this;
-    }
-
-    @Override
-    public IScript setScriptContext(ScriptContext scriptContext) {
-        this.scriptContext = scriptContext;
-        return this;
-    }
-
-    @Override
-    public Object getScript() {
-        return script;
-    }
-
     public Script getCompiledScript() {
         return compiledScript;
     }
 
     @Override
-    public Object execute(final NodeModel node) {
+    public Object execute(final NodeModel node, PrintStream outStream, IFreeplaneScriptErrorHandler errorHandler, ScriptContext scriptContext) {
         try {
             if (errorsInScript != null && compileTimeStrategy.canUseOldCompiledScript()) {
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
@@ -133,9 +100,9 @@ public class GroovyScript implements IScript {
             final PrintStream oldOut = System.out;
             ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             try {
-                trustedCompileAndCache();
+                trustedCompileAndCache(outStream);
                 Thread.currentThread().setContextClassLoader(scriptClassLoader);
-                final Binding binding = createBinding(node);
+                final Binding binding = createBinding(node, scriptContext);
                 compiledScript.setBinding(binding);
                 System.setOut(outStream);
 				final Object result = compiledScript.run();
@@ -145,7 +112,7 @@ public class GroovyScript implements IScript {
                 Thread.currentThread().setContextClassLoader(contextClassLoader);
             }
         } catch (final GroovyRuntimeException e) {
-            handleScriptRuntimeException(e);
+            handleScriptRuntimeException(e, outStream, errorHandler);
             // :fixme: This throw is only reached, if
             // handleScriptRuntimeException
             // does not raise an exception. Should it be here at all?
@@ -159,13 +126,13 @@ public class GroovyScript implements IScript {
         }
     }
 
-    private ScriptingSecurityManager createScriptingSecurityManager() {
+    private ScriptingSecurityManager createScriptingSecurityManager(PrintStream outStream) {
         return new ScriptSecurity(script, specificPermissions, outStream)
                 .getScriptingSecurityManager();
     }
 
-    private void trustedCompileAndCache() throws Throwable {
-    	final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager();
+    private void trustedCompileAndCache(PrintStream outStream) throws Throwable {
+    	final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager(outStream);
     	AccessController.doPrivileged(new PrivilegedExceptionAction<Void>() {
 
 			@Override
@@ -184,7 +151,7 @@ public class GroovyScript implements IScript {
 		});
 	}
 
-    private static boolean groovyPatched = false; 
+    private static boolean groovyPatched = false;
     private Script compileAndCache(final ScriptingSecurityManager scriptingSecurityManager) throws Throwable {
     	patchGroovyObject();
     	if (compileTimeStrategy.canUseOldCompiledScript()) {
@@ -233,7 +200,7 @@ public class GroovyScript implements IScript {
         }
     }
 
-    private Binding createBinding(final NodeModel node) {
+    private Binding createBinding(final NodeModel node, ScriptContext scriptContext) {
         final Binding binding = new Binding();
         binding.setVariable("c", ProxyFactory.createController(scriptContext));
         binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
@@ -247,7 +214,7 @@ public class GroovyScript implements IScript {
         return binding;
     }
 
-    private void handleScriptRuntimeException(final GroovyRuntimeException e) {
+    private void handleScriptRuntimeException(final GroovyRuntimeException e, PrintStream outStream, IFreeplaneScriptErrorHandler errorHandler) {
         outStream.print("message: " + e.getMessage());
         final ModuleNode module = e.getModule();
         final ASTNode astNode = e.getNode();
@@ -291,7 +258,7 @@ public class GroovyScript implements IScript {
     }
 
     @Override
-    public boolean permissionsEquals(ScriptingPermissions permissions) {
+    public boolean hasPermissions(ScriptingPermissions permissions) {
         if (this.specificPermissions == null) {
             return this.specificPermissions == permissions;
         } else {

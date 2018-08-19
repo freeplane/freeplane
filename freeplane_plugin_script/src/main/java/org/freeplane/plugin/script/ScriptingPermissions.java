@@ -21,7 +21,7 @@
 package org.freeplane.plugin.script;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -36,7 +36,7 @@ import org.freeplane.core.util.TextUtils;
  * @author Volker Boerchers
  */
 public class ScriptingPermissions {
-	final Map<String, Boolean> permissions = new LinkedHashMap<String, Boolean>();
+	final Map<String, Boolean> permissions;
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING = "execute_scripts_without_asking";
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION = "execute_scripts_without_file_restriction";
 	public static final String RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION = "execute_scripts_without_write_restriction";
@@ -56,13 +56,15 @@ public class ScriptingPermissions {
 	private static ScriptingPermissions permissiveScriptingPermissions;
 
 	public ScriptingPermissions() {
+		 permissions = new HashMap<String, Boolean>();
 		// by default nothing is allowed
 		for (String permissionName : PERMISSION_NAMES) {
 			set(permissionName, false);
 		}
 	}
-	
+
 	public ScriptingPermissions(Properties properties) {
+		this();
 		for (String permissionName : PERMISSION_NAMES) {
 			final Object value = properties.get(permissionName);
 			if (value != null) {
@@ -73,29 +75,36 @@ public class ScriptingPermissions {
 		}
 	}
 
+
+
+	public ScriptingPermissions(Map<String, Boolean> permissions) {
+		this();
+		this.permissions.putAll(permissions);
+	}
+
 	public boolean get(String permissionName) {
 		final Boolean savedValue = permissions.get(permissionName);
 		return savedValue != null && savedValue.booleanValue();
 	}
-	
+
 	private void set(String permissionName, boolean value) {
 		permissions.put(permissionName, value);
 	}
 
-	void restorePermissions() {
-		for (String permissionName : PERMISSION_NAMES) {
-			restore(permissionName);
-		}
-	}
-
-	private void restore(final String permissionName) {
-		final Boolean savedValue = permissions.get(permissionName);
-		if (savedValue != null) 
-			ResourceController.getResourceController().setProperty(permissionName, savedValue);
-		else
-			ResourceController.getResourceController().setProperty(permissionName, "");
-	}
-
+//	void restorePermissions() {
+//		for (String permissionName : PERMISSION_NAMES) {
+//			restore(permissionName);
+//		}
+//	}
+//
+//	private void restore(final String permissionName) {
+//		final Boolean savedValue = permissions.get(permissionName);
+//		if (savedValue != null)
+//			ResourceController.getResourceController().setProperty(permissionName, savedValue);
+//		else
+//			ResourceController.getResourceController().setProperty(permissionName, "");
+//	}
+//
 	ScriptingSecurityManager getScriptingSecurityManager() {
 		boolean readPerm = get(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION);
 		boolean writePerm = get(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION);
@@ -103,7 +112,7 @@ public class ScriptingPermissions {
 		boolean execPerm = get(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION);
 		return new ScriptingSecurityManager(readPerm, writePerm, networkPerm, execPerm);
 	}
-	
+
 	/** this method is called only if the formula plugin is active and so formula evaluation is allowed. */
 	public static ScriptingPermissions getFormulaPermissions() {
 		if (formulaPermissions == null) {
@@ -121,7 +130,7 @@ public class ScriptingPermissions {
 	ScriptingSecurityManager getPermissiveScriptingSecurityManager() {
 		return new ScriptingSecurityManager(true, true, true, true);
 	}
-	
+
 	public static ScriptingPermissions getPermissiveScriptingPermissions() {
 		if (permissiveScriptingPermissions == null) {
 			permissiveScriptingPermissions = new ScriptingPermissions();
@@ -137,7 +146,7 @@ public class ScriptingPermissions {
 	boolean isExecuteSignedScriptsWithoutRestriction() {
 		return get(RESOURCES_SIGNED_SCRIPT_ARE_TRUSTED);
 	}
-	
+
 	private boolean executeScriptsWithoutAsking() {
 		return get(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING);
 	}

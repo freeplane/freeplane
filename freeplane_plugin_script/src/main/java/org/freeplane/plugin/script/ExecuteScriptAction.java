@@ -52,14 +52,14 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 
 	private final File scriptFile;
 	private final ExecutionMode mode;
-	private final IScript script;
+	private final ScriptRunner script;
 
 	public ExecuteScriptAction(final String scriptName, final String menuItemName, final String scriptFile,
 	                           final ExecutionMode mode, ScriptingPermissions permissions) {
 		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), menuItemName, null);
 		this.scriptFile = new File(scriptFile);
 		this.mode = mode;
-		script = ScriptingEngine.createScriptForFile(this.scriptFile, permissions);
+		script = new ScriptRunner(ScriptingEngine.createScriptForFile(this.scriptFile, permissions));
 	}
 
 	public static String makeMenuItemKey(final String scriptName, final ExecutionMode mode) {
@@ -131,11 +131,11 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		}
 		script.execute(node);
 	}
-	
+
 	public ExecutionMode getExecutionMode() {
 		return mode;
 	}
-	
+
 	public File getScriptFile() {
 		return scriptFile;
 	}
