@@ -57,9 +57,9 @@ abstract class AttributeTableModel extends AbstractTableModel
 		final ModeController modeController = attrView.getMapView().getModeController();
 		attributeController = AttributeController.getController(modeController);
 		textController = TextController.getController(modeController);
+		node = attrView.getNode();
 		setNodeAttributeModel(attrView.getAttributes());
 		setAttributeRegistry(attrView.getAttributeRegistry());
-		node = attrView.getNode();
 		addListeners();
 	}
 
