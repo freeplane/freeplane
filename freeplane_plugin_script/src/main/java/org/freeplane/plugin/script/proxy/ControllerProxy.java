@@ -16,6 +16,7 @@ import javax.swing.filechooser.FileFilter;
 import org.freeplane.api.Map;
 import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
+import org.freeplane.api.Script;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.undo.IUndoHandler;
@@ -326,6 +327,11 @@ class ControllerProxy implements Proxy.Controller {
 	@Override
 	public Map newMapFromTemplate(File templateFile) {
 		return load(templateFile).saveAfterLoading().getMap();
+	}
+
+	@Override
+	public Script script(File file) {
+		return new ScriptProxy(file, scriptContext);
 	}
 
 }
