@@ -73,11 +73,15 @@ public class MapExplorerController  implements IExtension{
 	}
 
 	public String getNodeReferenceSuggestion(NodeModel node) {
+		final StringBuilder sb = new StringBuilder();
+		if(isGlobal(node))
+			sb.append(':');
 		final String alias = getAlias(node);
 		if(!alias.isEmpty())
-			return '#' + alias;
-		final String shortPlainText = textController.getShortPlainText(node, 10, "...");
-		return shortPlainText;
+			sb.append('~').append(alias);
+		else
+			sb.append('\'').append(textController.getShortPlainText(node, 10, "...")).append('\'');
+		return sb.toString();
 	}
 
 	public String getAlias(final NodeModel node) {
