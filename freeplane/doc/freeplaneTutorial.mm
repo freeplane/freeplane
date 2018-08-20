@@ -1,10 +1,10 @@
-<map version="freeplane 1.6.0">
+<map version="freeplane 1.7.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <attribute_registry>
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
 </attribute_registry>
-<node LOCALIZED_STYLE_REF="default" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1498338733343" BACKGROUND_COLOR="#00ff66">
+<node LOCALIZED_STYLE_REF="default" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1534766214483" BACKGROUND_COLOR="#00ff66">
 <icon BUILTIN="bee"/>
 <richcontent TYPE="NODE">
 
@@ -17,7 +17,7 @@
       <b>Tutorial </b>
     </p>
     <p>
-      <b>Freeplane 1.6</b>
+      <b>Freeplane 1.7</b>
     </p>
   </body>
 </html>
@@ -621,7 +621,6 @@
     </p>
   </body>
 </html>
-
 </richcontent>
 <node TEXT="" ID="ID_748597006" CREATED="1500213151013" MODIFIED="1500213151015">
 <hook NAME="FirstGroupNode"/>
@@ -3989,47 +3988,6 @@
 </hook>
 </node>
 </node>
-<node TEXT="Linking nodes with anchor" STYLE_REF="Beginner" FOLDED="true" ID="ID_1524719322" CREATED="1336298056719" MODIFIED="1336299477442">
-<node STYLE_REF="TitlesContent" ID="ID_1594135890" CREATED="1336298585173" MODIFIED="1337500686337" HGAP_QUANTITY="-158.0 px" VSHIFT_QUANTITY="136.0 px"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      The following procudure makes it easy to make a link between two nodes, especially if two nodes are far apart in the map or are in different maps:
-    </p>
-    <ul>
-      <li>
-        right-click one of the nodes to be linked and select <i>Link &gt; Set link anchor</i>
-      </li>
-      <li>
-        right-click the other node to be linked and select Link &gt; Make link from anchor or <i>Link &gt; Make link to anchor</i>.
-      </li>
-    </ul>
-    <p>
-      <b>Note</b>
-    </p>
-    <ul>
-      <li>
-        <i>Set link anchor </i>will automatically replace the previous anchor.
-      </li>
-      <li>
-        The anchor will be lost after exiting Freeplane.
-      </li>
-      <li>
-        See below for a different procedure if nodes are more close to each other.
-      </li>
-      <li>
-        See attributes how to set&#160;&#160;a link in an attribute value. There is an easy way to link to other nodes as well.
-      </li>
-    </ul>
-  </body>
-</html>
-</richcontent>
-</node>
-</node>
 <node TEXT="External link" STYLE_REF="Beginner" FOLDED="true" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1335300461119" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
@@ -4131,6 +4089,155 @@
     <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
     <conditional_style ACTIVE="true" STYLE_REF="BeginnerTopic" LAST="false"/>
 </hook>
+</node>
+</node>
+<node TEXT="Linking nodes with anchor" STYLE_REF="Beginner" FOLDED="true" ID="ID_1524719322" CREATED="1336298056719" MODIFIED="1336299477442">
+<node STYLE_REF="TitlesContent" ID="ID_1594135890" CREATED="1336298585173" MODIFIED="1337500686337" HGAP_QUANTITY="-158.0 px" VSHIFT_QUANTITY="136.0 px"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      The following procudure makes it easy to make a link between two nodes, especially if two nodes are far apart in the map or are in different maps:
+    </p>
+    <ul>
+      <li>
+        right-click one of the nodes to be linked and select <i>Link &gt; Set link anchor</i>
+      </li>
+      <li>
+        right-click the other node to be linked and select Link &gt; Make link from anchor or <i>Link &gt; Make link to anchor</i>.
+      </li>
+    </ul>
+    <p>
+      <b>Note</b>
+    </p>
+    <ul>
+      <li>
+        <i>Set link anchor </i>will automatically replace the previous anchor.
+      </li>
+      <li>
+        The anchor will be lost after exiting Freeplane.
+      </li>
+      <li>
+        See below for a different procedure if nodes are more close to each other.
+      </li>
+      <li>
+        See attributes how to set&#160;&#160;a link in an attribute value. There is an easy way to link to other nodes as well.
+      </li>
+    </ul>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="Linking to nodes by node alias" STYLE_REF="Beginner" FOLDED="true" ID="ID_379369183" CREATED="1336298056719" MODIFIED="1534767392035">
+<node STYLE_REF="TitlesContent" ID="ID_1593503433" CREATED="1336298585173" MODIFIED="1534767392035" HGAP_QUANTITY="-159.0 px" VSHIFT_QUANTITY="121.0 px"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Each node can be assigned an alias as follows:
+    </p>
+    <ul>
+      <li>
+        Select Menu item &quot;Configure node reference&quot; from node pop-up menu or Edit-&gt;Node properties.
+      </li>
+      <li>
+        Enter alias consisting of letters, digits, underscores including at least one letter e.g. <code>#at(:~my_alias)</code>. Spaces are not allowed.
+      </li>
+      <li>
+        Check &quot;globally selectable&quot; box end press OK.
+      </li>
+    </ul>
+    <p>
+      Globally selectable nodes without content in alias field can be accessed by their content as described later.
+    </p>
+    <p>
+      Nodes with global aliases can by linked using a text hyperlink of the form <code>#at(:~my_alias)</code>&#160;typed in a hyperlink text dialog
+    </p>
+  </body>
+</html>
+
+</richcontent>
+</node>
+</node>
+<node TEXT="Linking to nodes by path" STYLE_REF="Beginner" FOLDED="true" ID="ID_1531232571" CREATED="1336298056719" MODIFIED="1534767274687" VGAP_QUANTITY="0.0 pt">
+<node STYLE_REF="TitlesContent" ID="ID_1352292545" CREATED="1336298585173" MODIFIED="1534767274687" HGAP_QUANTITY="-117.0 px" VSHIFT_QUANTITY="512.0 px"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <p>
+      Generally all nodes can be linked using node paths in hyperlinks.
+    </p>
+    <h2>
+      Path examples:
+    </h2>
+    <pre>  node.at(&quot;:'house'/'kitchen'/~chairs/~2&quot;)
+     - take global node with text 'house',
+     - in its subtree node find with text 'kitchen'
+     - find its child node with alias 'chairs'
+     - return the second child node of the chairs
+
+  node.at(&quot;.. 'house'/**/~dog&quot;)
+      -- return node with alias 'dog' within subtree 
+         of ancestor node with text 'house' </pre>
+    Following path elements are defined:
+
+    <h2>
+      Child node:
+    </h2>
+    <pre> 'node text' or /&quot;node text&quot; : child node with text 'node text'
+ 'node...' : child node containing text starting with 'node'
+ * or '...' : any child node
+ ~1 : child node at position 1 ( any number starting with 1 is allowed)
+ ~nodeAlias : child node with alias 'nodeAlias', node alias can not be a number
+ because numbers are reserved for the previous selector.</pre>
+    <h2>
+      Descendant node:
+    </h2>
+    <pre> /**/ </pre>
+    <h2>
+      Parent node:
+    </h2>
+    <pre> ..</pre>
+    <h2>
+      Ancestor node:
+    </h2>
+    <pre> ..'node text' or &quot;node text&quot; : the closest ancestor node with text 'node text'
+ ..'node...' : the closest ancestor node containing text starting with 'node'
+ ..~2  : second ancestor node also the parent node of the parent node (any positive number is allowed)
+ ..~nodeAlias : the closest ancestor node with alias 'nodeAlias', node alias can not be a number
+ </pre>
+    <h2>
+      Root node
+    </h2>
+    Prefix <b><code>/ </code></b>as the first path character means the path starts from the root node.
+
+    <pre> /'node text' or /&quot;node text&quot; : child node of the root with text 'node text'
+ /'node...' : child node of the root containing text starting with 'node'
+ /~nodeAlias : child node of the root with alias 'nodeAlias', node alias can not be a number
+ </pre>
+    <h2>
+      Global node
+    </h2>
+    (allowed only as the first path element). Here global node is a node carrying global flag which can be set using menu or by script.
+
+    <pre> :'node text' or :&quot;node text&quot; : global node with text 'node text'
+ :'node...' : global node containing text starting with 'node'
+ :~nodeAlias : global node with alias 'nodeAlias', 
+node alias can not be a number</pre>
+  </body>
+</html>
+
+</richcontent>
 </node>
 </node>
 <node TEXT="Email link" STYLE_REF="Professional" FOLDED="true" ID="ID_869144882" CREATED="1270892460675" MODIFIED="1335300461119" LINK="mailto:%20jokro@freeplane.nl">
