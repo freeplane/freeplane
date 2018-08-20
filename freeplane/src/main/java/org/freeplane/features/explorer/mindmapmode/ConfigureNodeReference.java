@@ -22,22 +22,27 @@ package org.freeplane.features.explorer.mindmapmode;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 
+import javax.swing.Box;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
-class AssignAliasAction extends AFreeplaneAction {
+class ConfigureNodeReference extends AFreeplaneAction {
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private MMapExplorerController explorer;
 
-	public AssignAliasAction(final MMapExplorerController explorer) {
-		super("AssignAliasAction");
+	public ConfigureNodeReference(final MMapExplorerController explorer) {
+		super("ConfigureNodeReferenceAction");
 		this.explorer = explorer;
 	}
 
@@ -45,10 +50,21 @@ class AssignAliasAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		final String alias = explorer.getAlias(node);
-		String newAlias = JOptionPane.showInputDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(),
-			TextUtils.getText("enter_node_alias"), alias);
-		if(newAlias != null){
-			explorer.setAlias(node, newAlias);
+		final String title = TextUtils.getText(getTextKey());
+		final JLabel aliasLabel = TranslatedElementFactory.createLabel("node_alias");
+		final JTextField aliasInput = new JTextField(alias, 40);
+
+		JCheckBox globalNodeCheckBox = TranslatedElementFactory.createCheckBox("globally_accessible");
+		globalNodeCheckBox.setSelected(explorer.isGlobal(node));
+		Box components = Box.createVerticalBox();
+		components.add(aliasLabel);
+		components.add(aliasInput);
+		components.add(globalNodeCheckBox);
+		if(JOptionPane.OK_OPTION == JOptionPane.showConfirmDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(), components, title, JOptionPane.OK_CANCEL_OPTION,
+		 JOptionPane.PLAIN_MESSAGE)){
+			explorer.setAlias(node, aliasInput.getText());
+			explorer.makeGlobal(node, globalNodeCheckBox.isSelected());
 		}
 	}
+
 }
