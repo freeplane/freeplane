@@ -31,13 +31,14 @@ dependencies {
 }
 
 sourceSets {
-    test {
-        resources {
-            srcDir 'resources'
-            srcDir 'viewer-resources'
-            srcDir 'external-resources'
-        }
-    }
+    viewer {}
+    editor {}
+    external {}
+	test {
+		runtimeClasspath += sourceSets.viewer.output
+		runtimeClasspath += sourceSets.editor.output
+		runtimeClasspath += sourceSets.external.output
+	}
 }
 
 // work around for new gradle bug if subproject name equals to root dir name
@@ -275,7 +276,7 @@ task viewerJar(type: Jar) {
         exclude (editorJar.includedClasses)
         exclude (osgiJar.includedClasses )
     }
-    from ('./viewer-resources')
+    from (sourceSets.viewer.resources)
     
     configurations.mergedViewerDependencies.files.each {
     	from(zipTree(it.path)) {
@@ -301,7 +302,7 @@ encoding//viewer-resources/translations=ISO-8859-1
 apply from: './git.gradle'
 
 task copyExternalResources(type: Copy) {
-    from('external-resources') {
+    from(sourceSets.external.resources) {
         include('**')
     }
     into(globalBin + '/resources')
