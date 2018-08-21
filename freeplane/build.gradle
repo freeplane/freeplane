@@ -37,6 +37,7 @@ sourceSets {
 	test {
 		runtimeClasspath += sourceSets.viewer.output
 		runtimeClasspath += sourceSets.editor.output
+		runtimeClasspath += sourceSets.external.output
 	}
 }
 
