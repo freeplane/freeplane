@@ -36,10 +36,8 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 
-import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
-import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
@@ -261,9 +259,6 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		ModeController modeController = controller.getModeController(mode);
 		controller.selectModeForBuild(modeController);
 		modeController.updateMenus(xml, plugins);
-		final FreeplaneMenuBar menuBar = modeController.getUserInputListenerFactory().getMenuBar();
-		MnemonicSetter.INSTANCE.setComponentMnemonics(menuBar,
-			controller.getExtension(FilterController.class).getQuickEditor());
 		controller.selectModeForBuild(null);
 	}
 
