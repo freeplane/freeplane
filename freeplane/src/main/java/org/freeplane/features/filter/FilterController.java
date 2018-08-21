@@ -218,6 +218,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	private ASelectableCondition highlightCondition;
 	private JComboBox activeFilterConditionComboBox;
 	private final FilterConditionEditor quickEditor;
+
 	static final int USER_DEFINED_CONDITION_START_INDEX = 3;
 	final private QuickFilterAction quickFilterAction;
 	private int mapChangeCounter;
@@ -483,6 +484,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			filterToolbar = createFilterToolbar();
 		}
 		return filterToolbar;
+	}
+
+	public FilterConditionEditor getQuickEditor() {
+		return quickEditor;
 	}
 
 	public FilterHistory getHistory() {

@@ -262,7 +262,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		controller.selectModeForBuild(modeController);
 		modeController.updateMenus(xml, plugins);
 		final FreeplaneMenuBar menuBar = modeController.getUserInputListenerFactory().getMenuBar();
-		MnemonicSetter.INSTANCE.setComponentMnemonics(menuBar);
+		MnemonicSetter.INSTANCE.setComponentMnemonics(menuBar,
+			controller.getExtension(FilterController.class).getQuickEditor());
 		controller.selectModeForBuild(null);
 	}
 

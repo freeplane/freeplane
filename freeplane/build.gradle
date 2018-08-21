@@ -5,7 +5,7 @@ configurations{
 
 dependencies {
 	
-	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.5'
+	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
 	compile ':kitfox-svg-salamander-1.1.1-p1'
 	
     compile project(':JOrtho_0.4_freeplane')

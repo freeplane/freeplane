@@ -37,7 +37,7 @@ import javax.swing.SwingConstants;
 public class FreeplaneToolBar extends JToolBar {
 	protected static Insets nullInsets = new Insets(0, 0, 0, 0);
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -53,17 +53,19 @@ public class FreeplaneToolBar extends JToolBar {
 		else
 			super.setLayout(ToolbarLayout.vertical());
 		addHierarchyBoundsListener(new HierarchyBoundsListener() {
+			@Override
 			public void ancestorResized(final HierarchyEvent e) {
 				revalidate();
 				repaint();
 			}
 
+			@Override
 			public void ancestorMoved(final HierarchyEvent e) {
 			}
 		});
 	}
-	
-	
+
+
 
 	@Override
     public void setLayout(LayoutManager mgr) {
@@ -121,6 +123,10 @@ public class FreeplaneToolBar extends JToolBar {
 				abstractButton.setText(null);
 			}
 		}
+		configureToolbarButtonSize(abstractButton);
+	}
+
+	public static void configureToolbarButtonSize(final AbstractButton abstractButton) {
 		if (System.getProperty("os.name").equals("Mac OS X")) {
 			abstractButton.putClientProperty("JButton.buttonType", "segmented");
 			abstractButton.putClientProperty("JButton.segmentPosition", "middle");

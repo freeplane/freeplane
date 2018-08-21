@@ -236,7 +236,7 @@ public class ReportGenerator extends StreamHandler {
 				public void run() {
 					try {
 						errorCounter++;
-						if (TextUtils.getRawText("internal_error_tooltip", null) != null) {
+						if (TextUtils.getRawText("internal_error.tooltip", null) != null) {
 							if (logButton == null) {
 								final Icon errorIcon = ResourceController.getResourceController()
 								    .getIcon("messagebox_warning_icon");
@@ -250,7 +250,7 @@ public class ReportGenerator extends StreamHandler {
 								};
 								logButton.addActionListener(new LogOpener());
 								logButton.setIcon(errorIcon);
-								String tooltip = TextUtils.getText("internal_error_tooltip");
+								String tooltip = TextUtils.getText("internal_error.tooltip");
 								logButton.setToolTipText(tooltip);
 								viewController.addStatusComponent("internal_error", logButton);
 							}

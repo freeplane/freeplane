@@ -124,7 +124,7 @@ class AttributeRegistryTable extends JTable {
 
 	static final private Icon checkBoxImage = ResourceController.getResourceController().getIcon("/images/checkbox12.png");
 	private static final ButtonRenderer editButtonRenderer = new ButtonRenderer(AttributeManagerDialog.editButtonImage,
-	    TextUtils.getText("attributes_edit_tooltip"));
+	    TextUtils.getText("attributes_edit.tooltip"));
 	/**
 	 * 
 	 */
@@ -138,7 +138,7 @@ class AttributeRegistryTable extends JTable {
 		this.editListAction = editListAction;
 		getTableHeader().setReorderingAllowed(false);
 		selectAllButtonRenderer = new ButtonRenderer(AttributeRegistryTable.checkBoxImage, TextUtils
-		    .getText("attributes_select_all_tooltip"));
+		    .getText("attributes_select_all.tooltip"));
 		selectAllButtonEditor = new ButtonEditor(new ToggleAllAction());
 		setDefaultEditor(IListModel.class, new ButtonEditor(editListAction));
 		setDefaultRenderer(IListModel.class, AttributeRegistryTable.editButtonRenderer);
@@ -173,14 +173,14 @@ class AttributeRegistryTable extends JTable {
 			final JComponent label = (JComponent) tableCellRenderer;
 			switch (column) {
 				case 1:
-					label.setToolTipText(TextUtils.getText("attributes_visible_tooltip"));
+					label.setToolTipText(TextUtils.getText("attributes_visible.tooltip"));
 					break;
 				case 2:
 					if (row == 0) {
-						label.setToolTipText(TextUtils.getText("attributes_restricted_attributes_tooltip"));
+						label.setToolTipText(TextUtils.getText("attributes_restricted_attributes.tooltip"));
 					}
 					else {
-						label.setToolTipText(TextUtils.getText("attributes_restricted_values_tooltip"));
+						label.setToolTipText(TextUtils.getText("attributes_restricted_values.tooltip"));
 					}
 					break;
 			}

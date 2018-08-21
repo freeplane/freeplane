@@ -44,14 +44,14 @@ import javax.swing.ListCellRenderer;
 import javax.swing.RootPaneContainer;
 import javax.swing.text.JTextComponent;
 
-import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
-import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
-import org.freeplane.core.util.TextUtils;
+import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -62,6 +62,7 @@ import org.freeplane.features.mode.Controller;
  */
 public class FilterConditionEditor extends JComponent {
 	private class ElementaryConditionChangeListener implements ItemListener {
+		@Override
 		public void itemStateChanged(final ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				setValuesEditor();
@@ -70,6 +71,7 @@ public class FilterConditionEditor extends JComponent {
 	}
 
 	private class FilteredPropertyChangeListener implements ItemListener {
+		@Override
 		public void itemStateChanged(final ItemEvent e) {
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				final Object selectedProperty = filteredPropertiesComponent.getSelectedItem();
@@ -84,7 +86,7 @@ public class FilterConditionEditor extends JComponent {
 			}
 		}
 	}
-		
+
 
 	/**
 	 * Start "Find next" action when pressing enter key in "value" combo box
@@ -97,14 +99,14 @@ public class FilterConditionEditor extends JComponent {
 			values.getEditor().addActionListener(enterKeyActionListener);
 		}
 	}
-	
+
 	public void setSearchingBusyCursor()
 	{
 		RootPaneContainer root = (RootPaneContainer)getTopLevelAncestor();
 		root.getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		root.getGlassPane().setVisible(true);
 	}
-	
+
 	public void setSearchingDefaultCursor()
 	{
 		RootPaneContainer root = (RootPaneContainer)getTopLevelAncestor();
@@ -122,14 +124,14 @@ public class FilterConditionEditor extends JComponent {
 		values.setEnabled(canSelectValues);
 		values.setEditable(false);
 		values.setModel(conditionController.getValuesForProperty(selectedProperty, selectedCondition));
-		
+
 		final ComboBoxEditor valueEditor = conditionController.getValueEditor(selectedProperty, selectedCondition);
 		values.setEditor(valueEditor != null ? valueEditor : new FixedBasicComboBoxEditor());
 		setValuesEnterKeyListener();
-		
+
 		final ListCellRenderer valueRenderer = conditionController.getValueRenderer(selectedProperty, selectedCondition);
 		values.setRenderer(valueRenderer != null ? valueRenderer : filterController.getConditionRenderer());
-		
+
 		values.setEditable(conditionController.canEditValues(selectedProperty, selectedCondition));
 		if (values.getModel().getSize() > 0) {
 			values.setSelectedIndex(0);
@@ -140,13 +142,11 @@ public class FilterConditionEditor extends JComponent {
 				&& conditionController.supportsApproximateMatching(selectedProperty, selectedCondition));
 	}
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final String PROPERTY_FILTER_MATCH_CASE = "filter_match_case";
-	private static final String PROPERTY_FILTER_MATCH_CASE_TOOLTIP = "filter_match_case_tooltip";
 	private static final String PROPERTY_FILTER_APPROXIMATE_MATCH = "filter_match_approximately";
-	private static final String PROPERTY_FILTER_APPROXIMATE_MATCH_TOOLTIP = "filter_match_approximately_tooltip";
 	final private JCheckBox caseSensitive;
 	final private JCheckBox approximateMatching;
 	final private JComboBox elementaryConditions;
@@ -156,6 +156,7 @@ public class FilterConditionEditor extends JComponent {
 	private WeakReference<MapModel> lastMap;
 	final private JComboBox values;
 	private ActionListener enterKeyActionListener;
+	final private JCheckBox btnDeny;
 	public FilterConditionEditor(final FilterController filterController) {
 		this(filterController, 5, false);
 	}
@@ -171,16 +172,23 @@ public class FilterConditionEditor extends JComponent {
 		this.filterController = filterController;
 		//Basic layout
 		//Item to search for
+
+		add(Box.createHorizontalGlue(), gridBagConstraints);
+		gridBagConstraints.gridx++;
+
+		btnDeny = TranslatedElementFactory.createCheckBox("filter_deny");
+		add(btnDeny, gridBagConstraints);
+		gridBagConstraints.gridx++;
+
 		filteredPropertiesComponent = new JComboBoxWithBorder();
 		filteredPropertiesModel = new ExtendedComboBoxModel();
 		filteredPropertiesComponent.setModel(filteredPropertiesModel);
 		filteredPropertiesComponent.addItemListener(new FilteredPropertyChangeListener());
-		add(Box.createHorizontalGlue(), gridBagConstraints);
-		gridBagConstraints.gridx++;
 		filteredPropertiesComponent.setAlignmentY(Component.TOP_ALIGNMENT);
+		filteredPropertiesComponent.setRenderer(filterController.getConditionRenderer());
 		add(filteredPropertiesComponent, gridBagConstraints);
 		gridBagConstraints.gridx++;
-		filteredPropertiesComponent.setRenderer(filterController.getConditionRenderer());
+
 		//Search condition
 		elementaryConditions = new JComboBoxWithBorder();
 		elementaryConditions.addItemListener(new ElementaryConditionChangeListener());
@@ -204,29 +212,23 @@ public class FilterConditionEditor extends JComponent {
 
 		JPanel ignoreCaseAndApproximateMatchingPanel = new JPanel();
 		ignoreCaseAndApproximateMatchingPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		
+
 		// Ignore case checkbox
-		caseSensitive = new JCheckBox();
+		caseSensitive = TranslatedElementFactory.createCheckBox(PROPERTY_FILTER_MATCH_CASE);
 		caseSensitive.setModel(filterController.getCaseSensitiveButtonModel());
-		caseSensitive.setToolTipText(TextUtils.getRawText(PROPERTY_FILTER_MATCH_CASE_TOOLTIP));
-		//add(caseSensitive, gridBagConstraints);
 		ignoreCaseAndApproximateMatchingPanel.add(caseSensitive);
-		//gridBagConstraints.gridx++;
-		LabelAndMnemonicSetter.setLabelAndMnemonic(caseSensitive,TextUtils.getRawText(PROPERTY_FILTER_MATCH_CASE));
 		caseSensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
 		    PROPERTY_FILTER_MATCH_CASE));
-		
-		// add approximate matching checkbox	
-		approximateMatching = new JCheckBox();
+
+		// add approximate matching checkbox
+		approximateMatching = TranslatedElementFactory.createCheckBox(PROPERTY_FILTER_APPROXIMATE_MATCH);
 		approximateMatching.setModel(filterController.getApproximateMatchingButtonModel());
-		approximateMatching.setToolTipText(TextUtils.getRawText(PROPERTY_FILTER_APPROXIMATE_MATCH_TOOLTIP));
-		LabelAndMnemonicSetter.setLabelAndMnemonic(approximateMatching, TextUtils.getRawText(PROPERTY_FILTER_APPROXIMATE_MATCH));
 		//add(approximateMatching, gridBagConstraints);
 		ignoreCaseAndApproximateMatchingPanel.add(approximateMatching);
 		approximateMatching.setSelected(ResourceController.getResourceController().getBooleanProperty(
 			    PROPERTY_FILTER_APPROXIMATE_MATCH));
 		mapChanged(Controller.getCurrentController().getMap());
-		
+
 		add(ignoreCaseAndApproximateMatchingPanel, gridBagConstraints);
 
 	}
@@ -241,9 +243,9 @@ public class FilterConditionEditor extends JComponent {
 			return;
 		}
 	}
-	
+
 	public boolean isInputFieldFocused(){
-		if (values.isFocusOwner()) 
+		if (values.isFocusOwner())
 			return true;
 		if (values.isPopupVisible() || values.getEditor().getEditorComponent().isFocusOwner())
 			return true;
@@ -286,7 +288,10 @@ public class FilterConditionEditor extends JComponent {
 				}
 			}
 		}
-		return newCond;
+		if (btnDeny.isSelected())
+			return new ConditionNotSatisfiedDecorator(newCond);
+		else
+			return newCond;
 	}
 
 	/**
@@ -314,7 +319,7 @@ public class FilterConditionEditor extends JComponent {
 
 	public void setEnterKeyActionListener(ActionListener enterKeyActionListener) {
 		if (enterKeyActionListener == null)
-		{ 
+		{
 			throw new NullPointerException("null value in setEnterKeyActionListener()!");
 		}
 		if (this.enterKeyActionListener != null)
@@ -335,7 +340,7 @@ public class FilterConditionEditor extends JComponent {
 	    		((JComboBox)c).getEditor().getEditorComponent().setEnabled(enabled);
 	    }
     }
-	
-	
+
+
 
 }

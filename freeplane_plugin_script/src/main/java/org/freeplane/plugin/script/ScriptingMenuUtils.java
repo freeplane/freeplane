@@ -7,7 +7,7 @@ import org.freeplane.plugin.script.ExecuteScriptAction.ExecutionMode;
 import org.freeplane.plugin.script.ScriptingGuiConfiguration.ScriptMetaData;
 
 public class ScriptingMenuUtils {
-    static final String LABEL_AVAILABLE_MODES_TOOLTIP = "ExecuteScript.available_modes_tooltip";
+    static final String LABEL_AVAILABLE_MODES_TOOLTIP = "ExecuteScript.available_modes.tooltip";
     static final String LABEL_NO_SCRIPTS_AVAILABLE = "ExecuteScripts.noScriptsAvailable";
 
     public static String parentLocation(String location) {

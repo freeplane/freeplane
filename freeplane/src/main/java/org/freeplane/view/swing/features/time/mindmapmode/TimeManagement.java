@@ -206,7 +206,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			}
 			{
 				setReminderButton = new JButton(getResourceString("plugins/TimeManagement.xml_reminderButton"));
-				setReminderButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_reminderButton_tooltip"));
+				setReminderButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_reminderButton.tooltip"));
 				setReminderButton.addMouseListener(new MouseAdapter() {
 					@Override
 	                public void mouseClicked(MouseEvent e) {
@@ -218,7 +218,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			{
 				remindLaterButton = new JButton(
 				    getResourceString("plugins/TimeManagement.xml_remindLaterButton"));
-				remindLaterButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_remindLaterButton_tooltip"));
+				remindLaterButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_remindLaterButton.tooltip"));
 				remindLaterButton.addMouseListener(new MouseAdapter() {
 
 					@Override
@@ -236,7 +236,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			{
 				removeReminderButton = new JButton(
 				    getResourceString("plugins/TimeManagement.xml_removeReminderButton"));
-				removeReminderButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_removeReminderButton_tooltip"));
+				removeReminderButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_removeReminderButton.tooltip"));
 				removeReminderButton.addMouseListener(new MouseAdapter() {
 
 					@Override

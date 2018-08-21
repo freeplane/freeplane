@@ -219,7 +219,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		southButtons.add(cancel);
 		southButtons.add(Box.createHorizontalGlue());
 		final JButton importBtn = new JButton(new ImportAction());
-		importBtn.setToolTipText(TextUtils.getText("attributes_import_tooltip"));
+		importBtn.setToolTipText(TextUtils.getText("attributes_import.tooltip"));
 		southButtons.add(importBtn);
 		southButtons.add(Box.createHorizontalGlue());
 		UITools.addEscapeActionToDialog(this);

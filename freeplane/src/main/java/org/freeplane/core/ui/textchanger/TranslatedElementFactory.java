@@ -15,7 +15,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JAutoToggleButton;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.icon.factory.IconFactory;
 
 public class TranslatedElementFactory {
 	public static JButton createButton(Action action, String labelKey) {
@@ -45,7 +44,7 @@ public class TranslatedElementFactory {
 	}
 
 	public static JCheckBox createCheckBox(String labelKey) {
-		final String text = TextUtils.getText(labelKey);
+		final String text = TextUtils.getRawText(labelKey);
 		final JCheckBox component = new JCheckBox();
 		LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
 		TranslatedElement.TEXT.setKey(component, labelKey);
