@@ -16,7 +16,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -console"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m -Declipse.ignoreApp=true -Dosgi.noShutdown=true -Dosgi.debug=debug.properties -ea &quot;-Dorg.freeplane.globalresourcedir=${workspace_loc:freeplane/external-resources}&quot; -Dorg.freeplane.nosplash=true -Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=false -Dorg.freeplane.outputUnusedActions=true &quot;-Dorg.freeplane.basedirectory=${workspace_loc:freeplane}/..&quot; -Djava.security.manager -Djava.security.policy=${workspace_loc:freeplane_framework/eclipse/launchers/freeplane.policy} &quot;-Dframework.home=${eclipse_home}/&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m -Declipse.ignoreApp=true -Dosgi.noShutdown=true -Dosgi.debug=debug.properties -ea &quot;-Dorg.freeplane.globalresourcedir=${workspace_loc:freeplane/src/external/resources}&quot; -Dorg.freeplane.nosplash=true -Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=false -Dorg.freeplane.outputUnusedActions=true &quot;-Dorg.freeplane.basedirectory=${workspace_loc:freeplane}/..&quot; -Djava.security.manager -Djava.security.policy=${workspace_loc:freeplane_framework/eclipse/launchers/freeplane.policy} &quot;-Dframework.home=${eclipse_home}/&quot;"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:freeplane/..}"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <booleanAttribute key="show_selected_only" value="true"/>
@@ -24,5 +24,6 @@
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfigArea" value="true"/>
+<stringAttribute key="workspace_bundles" value="org.freeplane.core@default:default,org.freeplane.plugin.bugreport@default:default,org.freeplane.plugin.formula@default:default,org.freeplane.plugin.jsyntaxpane@default:default,org.freeplane.plugin.latex@default:default,org.freeplane.plugin.openmaps@default:default,org.freeplane.plugin.script@default:default,org.freeplane.plugin.svg@default:default"/>
 <stringAttribute key="yk-options" value="&#10;snapshots-dir=&#10;additional-options2=onexit\=snapshot&#10;startup=0&#10;"/>
 </launchConfiguration>
