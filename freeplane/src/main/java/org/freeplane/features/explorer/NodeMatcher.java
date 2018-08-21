@@ -103,7 +103,7 @@ class NodeMatcher {
 			return text.equals(matchedString);
 	}
 
-	public List<? extends NodeModel> filterMatchingNodes(Iterable<NodeModel> iterable, AccessedNodes accessedNodes) {
+	public List<NodeModel> filterMatchingNodes(Iterable<NodeModel> iterable, AccessedNodes accessedNodes) {
 		if(matchedElement == MatchedElement.COUNTER) {
 			return getNodeByCounter(iterable, accessedNodes);
 		}
@@ -111,7 +111,7 @@ class NodeMatcher {
 			return getNodesByContent(iterable, accessedNodes);
 	}
 
-	private List<? extends NodeModel> getNodesByContent(Iterable<NodeModel> iterable, AccessedNodes accessedNodes) {
+	private List<NodeModel> getNodesByContent(Iterable<NodeModel> iterable, AccessedNodes accessedNodes) {
 		int counter = 0;
 		List<NodeModel> nodes = null;
 		for (NodeModel node : iterable) {
@@ -127,7 +127,7 @@ class NodeMatcher {
 		return nodes != null ? nodes : Collections.<NodeModel>emptyList();
 	}
 
-	private List<? extends NodeModel> getNodeByCounter(Iterable<NodeModel> iterable, AccessedNodes accessedNodes) {
+	private List<NodeModel> getNodeByCounter(Iterable<NodeModel> iterable, AccessedNodes accessedNodes) {
 		int counter = 1;
 		int requiredCounter = Integer.valueOf(matchedString);
 		for(NodeModel node : iterable) {

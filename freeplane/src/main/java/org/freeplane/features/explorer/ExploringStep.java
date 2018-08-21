@@ -18,7 +18,7 @@ enum ExploringStep {
 			assertEmpty(searchedString);
 		}
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel node, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
+		List<NodeModel> getNodes(NodeModel node, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 			final NodeModel rootNode = node.getMap().getRootNode();
 			accessedNodes.accessNode(rootNode);
 			return Collections.singletonList(rootNode);
@@ -32,7 +32,7 @@ enum ExploringStep {
 			assertNonEmpty(searchedString);
 		}
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
+		List<NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 			final Iterable<NodeModel> nodes = GlobalNodes.readableOf(start.getMap());
 			accessedNodes.accessGlobalNode();
 			return nodeMatcher.filterMatchingNodes(nodes, accessedNodes);
@@ -46,7 +46,7 @@ enum ExploringStep {
 		}
 
 		@Override
-		List<? extends NodeModel> getNodes(final NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
+		List<NodeModel> getNodes(final NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 			final Iterable<NodeModel> nodes = new Iterable<NodeModel>() {
 				NodeModel current = start;
 				@Override
@@ -85,7 +85,7 @@ enum ExploringStep {
 		}
 
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel node, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
+		List<NodeModel> getNodes(NodeModel node, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 			final NodeModel parentNode = node.getParentNode();
 			accessedNodes.accessNode(parentNode);
 			return Collections.singletonList(parentNode);
@@ -100,7 +100,7 @@ enum ExploringStep {
 		}
 
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
+		List<NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 			final Iterable<NodeModel> nodes = start.getChildren();
 			return nodeMatcher.filterMatchingNodes(nodes, accessedNodes);
 		}
@@ -114,7 +114,7 @@ enum ExploringStep {
 		}
 
 		@Override
-		List<? extends NodeModel> getNodes(NodeModel start, final NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
+		List<NodeModel> getNodes(NodeModel start, final NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 			accessedNodes.accessBranch(start);
 			final ICondition condition = new ICondition() {
 				@Override
@@ -145,15 +145,15 @@ enum ExploringStep {
 			throw new IllegalArgumentException("Unexpected non empty string: " + string);
 	}
 
-	abstract List<? extends NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes);
+	abstract List<NodeModel> getNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes);
 
 
 	NodeModel getSingleNode(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
-		final List<? extends NodeModel> nodes = getNodes(start, nodeMatcher, accessedNodes);
+		final List<NodeModel> nodes = getNodes(start, nodeMatcher, accessedNodes);
 		return nodes.get(0);
 	}
 
-	Collection<? extends NodeModel> getAllNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
+	Collection<NodeModel> getAllNodes(NodeModel start, NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 		return getNodes(start, nodeMatcher, accessedNodes);
 	}
 

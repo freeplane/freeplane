@@ -5,9 +5,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import org.freeplane.features.explorer.AccessedNodes;
-import org.freeplane.features.explorer.ExploringStep;
-import org.freeplane.features.explorer.NodeMatcher;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.junit.Test;
