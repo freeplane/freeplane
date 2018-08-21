@@ -9,6 +9,7 @@ Node aliases
 Global nodes
 Filtering nodes on aliases and on global accessibility
 Option to skip dialog for unnassigned F-keys 
+Denied (inverted) conditions in filter toolbar
 
 ===============================
 1.6.16
