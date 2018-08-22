@@ -34,6 +34,11 @@ sourceSets {
     viewer {}
     editor {}
     external {}
+	main {
+		compileClasspath  += sourceSets.viewer.output
+		compileClasspath  += sourceSets.editor.output
+		compileClasspath  += sourceSets.external.output
+	}
 	test {
 		runtimeClasspath += sourceSets.viewer.output
 		runtimeClasspath += sourceSets.editor.output
