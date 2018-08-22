@@ -23,9 +23,10 @@ def buildFiles() {
 }
 
 def miscExcludedFilesSpec() {
-    return ['**/.*/**', // dot files
-            '**/signjar*.properties', // might include credentials!
-            '*/META-INF/MANIFEST.MF']
+    return [
+			/* dot files */                  '**/.*/**',
+            /* might include credentials! */ '**/signjar*.properties'
+            ]
 }
 
 // NOTE: if you change excludes here, also adapt task 'srcpureTarGz' below
