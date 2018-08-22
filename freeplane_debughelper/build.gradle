@@ -1,0 +1,11 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+dependencies {
+	def exclusions = [project.name, 'freeplane_ant']
+	if (! Os.isFamily(Os.FAMILY_MAC)) {
+		exclusions.add('freeplane_mac')
+	}
+	parent.subprojects.findAll{! exclusions.contains(it.name)}.each {
+		compile it
+	}
+}
