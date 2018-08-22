@@ -1,0 +1,24 @@
+grant codeBase "file:${org.freeplane.basedirectory}/../../-" {
+        permission java.security.AllPermission;
+};
+
+grant codeBase "file:${user.home}/.p2/-" {
+        permission java.security.AllPermission;
+};
+
+grant codeBase "file:${user.home}/.gradle/-" {
+        permission java.security.AllPermission;
+};
+
+grant codeBase "file:${org.freeplane.os.lib.ext}/*" {
+        permission java.security.AllPermission;
+};
+
+grant codeBase "file:/usr/lib64/java-atk-wrapper/java-atk-wrapper.jar" {
+        permission java.security.AllPermission;
+};
+
+grant {
+		permission java.io.FilePermission "${org.freeplane.basedirectory}/-", "read";
+        permission java.lang.RuntimePermission "getClassLoader";
+};
