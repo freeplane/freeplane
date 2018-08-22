@@ -6,6 +6,10 @@ dependencies {
 		exclusions.add('freeplane_mac')
 	}
 	parent.subprojects.findAll{! exclusions.contains(it.name)}.each {
-		compile it
+		runtime it
 	}
+
+	runtime project(':freeplane').sourceSets.viewer.output
+	runtime project(':freeplane').sourceSets.editor.output
+	runtime project(':freeplane').sourceSets.external.output
 }
