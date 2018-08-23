@@ -15,7 +15,6 @@ dependencies {
 
 	runtime project(':freeplane').sourceSets.viewer.output
 	runtime project(':freeplane').sourceSets.editor.output
-	runtime project(':freeplane').sourceSets.external.output
 }
 
 task(run, dependsOn: 'classes', type: JavaExec) {
@@ -23,6 +22,7 @@ task(run, dependsOn: 'classes', type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs = ['-Xmx512m',
     "-Dorg.freeplane.basedirectory=$globalBin",
+    "-Dorg.freeplane.globalresourcedir=$rootDir/freeplane/src/external/resources",
     "-Djava.security.policy=$projectDir/security/freeplane.policy",
     '-Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=false',
     '-Dorg.freeplane.main.application.FreeplaneStarter.headless=false',

@@ -19,15 +19,6 @@
  */
 package org.freeplane.launcher;
 
-import java.awt.Toolkit;
-import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-
 import org.freeplane.api.Controller;
 import org.freeplane.api.HeadlessMapCreator;
 import org.knopflerfish.framework.Main;
@@ -35,6 +26,12 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.launch.Framework;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * This class can be used to run freeplane instance from an application and to obtain its {@link Controller} object.
  *
@@ -303,6 +300,8 @@ public class Launcher {
 		framework = main.start(args);
 		final BundleContext bundleContext = framework.getBundleContext();
 		final ServiceReference<Controller> controller = bundleContext.getServiceReference(Controller.class);
+		if(controller == null)
+			return null;
 		final Controller service = bundleContext.getService(controller);
 		return service;
 	}
