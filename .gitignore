@@ -146,6 +146,10 @@ apt_generated
 .recommenders/
 
 
+### Netbeans ###
+/.nb-gradle/
+/.nb-gradle-properties
+
 ### macOS ###
 *.DS_Store
 .AppleDouble
@@ -235,4 +239,3 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
-/.nb-gradle/
