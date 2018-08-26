@@ -31,13 +31,14 @@ dependencies {
 }
 
 sourceSets {
-    test {
-        resources {
-            srcDir 'resources'
-            srcDir 'viewer-resources'
-            srcDir 'external-resources'
-        }
-    }
+    viewer {}
+    editor {}
+    external {}
+	test {
+		runtimeClasspath += sourceSets.viewer.output
+		runtimeClasspath += sourceSets.editor.output
+		runtimeClasspath += sourceSets.external.output
+	}
 }
 
 // work around for new gradle bug if subproject name equals to root dir name
@@ -191,10 +192,13 @@ jar {
 }
 
 task copyOSGiJars(type: Copy) {
-     from ("$buildDir/libs") {
+        from ("$buildDir/libs") {
+          include("*.jar")
+		  exclude('freeplane-*.jar')
+        }
+     from (configurations.runtime) {
           include("*.jar")
 		  exclude('framework-*.jar')
-		  exclude('freeplane-*.jar')
 		  exclude('freeplane_api*.jar')
 		  exclude('mnemonicsetter-*.jar')
 		  
@@ -237,7 +241,7 @@ task editorJar(type: PartialJar) {
     from (sourceSets.main.output) {
 				include(includedClasses)
     }
-    from ('./resources')
+    from (sourceSets.editor.resources)
     includeEmptyDirs = false
 }
 
@@ -275,12 +279,10 @@ task viewerJar(type: Jar) {
         exclude (editorJar.includedClasses)
         exclude (osgiJar.includedClasses )
     }
-    from ('./viewer-resources')
+    from (sourceSets.viewer.resources)
     
     configurations.mergedViewerDependencies.files.each {
-    	from(zipTree(it.path)) {
-    		exclude('META-INF/MANIFEST.MF')
-    	}
+    	from(zipTree(it.path))
     }
 	
     includeEmptyDirs = false
@@ -301,7 +303,7 @@ encoding//viewer-resources/translations=ISO-8859-1
 apply from: './git.gradle'
 
 task copyExternalResources(type: Copy) {
-    from('external-resources') {
+    from(sourceSets.external.resources) {
         include('**')
     }
     into(globalBin + '/resources')
@@ -322,7 +324,6 @@ task copyDoc(type: Copy) {
 jar.dependsOn viewerJar
 jar.dependsOn editorJar
 jar.dependsOn osgiJar
-jar.dependsOn copyDeps
 build.dependsOn copyOSGiJars
 build.dependsOn copyOSGiManifest
 build.dependsOn copyExternalResources

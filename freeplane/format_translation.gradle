@@ -38,12 +38,12 @@ task check_translation(dependsOn: configurations.ant_tasks) {
         )
 
         ant.check_translation(
-            dir: file('./resources/translations'),
+            dir: file('src/editor/resources/translations'),
             includes: '*.properties',
             eolstyle: 'unix'
         )
         ant.check_translation(
-            dir: file('./viewer-resources/translations'),
+            dir: file('src/viewer/resources/translations'),
             includes: '*.properties',
             eolstyle: 'unix'
         )

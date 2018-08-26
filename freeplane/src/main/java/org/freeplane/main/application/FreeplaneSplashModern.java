@@ -102,7 +102,9 @@ public class FreeplaneSplashModern extends JWindow {
 		public void paintComponent(final Graphics g) {
 			final Graphics2D g2 = (Graphics2D) g;
 			splashImage.paintIcon(this, g2, 0, 0);
-			if(splashResource.getProtocol().equals("file"))
+			final String splashResourceType = splashResource.getProtocol();
+			final String classResourceType = getClass().getProtectionDomain().getCodeSource().getLocation().getProtocol();
+			if(! splashResourceType.equals(classResourceType))
 				return;
 			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 			final FreeplaneVersion version = FreeplaneVersion.getVersion();

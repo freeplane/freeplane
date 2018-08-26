@@ -1,0 +1,54 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+repositories {
+    maven { url "https://josm.openstreetmap.de/nexus/content/groups/public/" }
+}
+
+dependencies {
+	def exclusions = [project.name, 'freeplane_ant']
+	if (! Os.isFamily(Os.FAMILY_MAC)) {
+		exclusions.add('freeplane_mac')
+	}
+	parent.subprojects.findAll{! exclusions.contains(it.name)}.each {
+		runtime it
+	}
+
+	runtime project(':freeplane').sourceSets.viewer.output
+	runtime project(':freeplane').sourceSets.editor.output
+}
+
+task(run, dependsOn: 'classes', type: JavaExec) {
+    main ='org.freeplane.launcher.Launcher'
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs = ['-Xmx512m',
+    "-Dorg.freeplane.basedirectory=$globalBin",
+    "-Dorg.freeplane.globalresourcedir=${rootDir.path}/freeplane/src/external/resources",
+    "-Djava.security.policy=$projectDir/security/freeplane.policy",
+    '-Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=false',
+    '-Dorg.freeplane.main.application.FreeplaneStarter.headless=false',
+    '-Dorg.osgi.framework.bundle.parent=app',
+    '-Dorg.freeplane.nosplash=false']
+}
+
+task(debug, dependsOn: 'classes', type: JavaExec) {
+    main = run.main
+    jvmArgs = run.allJvmArgs    
+    debug = true
+}
+
+task(runDist, dependsOn: 'classes', type: JavaExec) {
+	main ='org.freeplane.launcher.Launcher'
+	classpath = fileTree(dir: globalBin, include: '*.jar')
+	jvmArgs = ['-Xmx512m',
+			   "-Dorg.freeplane.basedirectory=$globalBin",
+			   "-Djava.security.policy=$projectDir/security/freeplane.policy",
+			   '-Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=false',
+			   '-Dorg.freeplane.main.application.FreeplaneStarter.headless=false',
+			   '-Dorg.freeplane.nosplash=false']
+}
+
+task(debugDist, dependsOn: 'classes', type: JavaExec) {
+	main = runDist.main
+	jvmArgs = run.allJvmArgs
+	debug = true
+}

@@ -52,18 +52,6 @@ def filterAndExternalizePluginDependencies(runtime_files) {
     }
 }
 
-// we need this filter to convert i.e.:
-// lib/foo, li
-//  b/bar
-// TO:
-// lib/foo, lib/bar
-// !
-class UnwrapManifestFilter extends FilterReader {
-    UnwrapManifestFilter(Reader input) {
-        super(new StringReader(input.text.replace("\r\n ", "").replace("\n ", "").replace("\r ", "")))
-    }
-}
-
 subprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
@@ -138,57 +126,6 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
        ext.pluginid = 'org.freeplane.core'
     else
        ext.pluginid = project.name.replace("freeplane_plugin_", "org.freeplane.plugin.")
-
-    task copyDeps(type: Copy) {
-        from project.configurations.runtime
-        into "$buildDir/libs"
-    }
-    jar.dependsOn copyDeps
-
-    task filterOSGiManifestForEclipse(type: Copy) {
-        from('build/tmp/jar/MANIFEST.MF') {
-        }
-        into('META-INF/')
-        // unwrap each header
-        filter UnwrapManifestFilter
-        // replace path for dependencies
-        filter { line -> line.replace("lib/", "build/libs/") }
-        // re-wrap each header (TODO: use CRLF?)
-        filter { line -> line.replace(",", ",\n ") }
-    }
-    filterOSGiManifestForEclipse.dependsOn jar
-    build.dependsOn filterOSGiManifestForEclipse
-
-    task cleanOSGiManifestForEclipse(type: Delete) {
-       delete "META-INF/MANIFEST.MF"
-    }
-    clean.dependsOn cleanOSGiManifestForEclipse
-
-    // fix eclipse classpath: artifacts to be Export-Package:'d need
-    // to be referenced from build/libs (and not from ~/.gradle/caches)
-    eclipse.classpath.file {
-        whenMerged { classpath ->
-           for (entry in classpath.entries)
-           {
-               if (entry.kind.equals('lib'))
-               {
-                   def jarName = new File(entry.path).name
-                   def localDep = project.configurations.runtime.files.any { it.name.equals(jarName)}
-                   if (localDep && file('build/libs/' + jarName).exists())
-                   {
-                       entry.path = 'build/libs/' + jarName
-                   }
-               }
-           }
-           return classpath
-        }
-    }
-
-    //Configure plugins as eclipse-plugins.
-    eclipse.project {
-      buildCommand 'org.eclipse.pde.SchemaBuilder'
-      natures      'org.eclipse.pde.PluginNature'
-    }
 }
 
 // common configuration for all plugins...
@@ -197,11 +134,14 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
     task copyOSGiJars(type: Copy) {
         from ("$buildDir/libs") {
             include("*.jar")
+            exclude('freeplane-' + project.version + '.jar')
+            exclude('freeplane_plugin_*-' + project.version + '.jar')
+        }
+        from (configurations.runtime) {
+            include("*.jar")
             // TODO: this is redundant with regard to 'filterPluginDeps' (see above)!
             exclude('framework-*.jar')
             exclude('knopflerfish-framework*.jar')
-            exclude('freeplane-' + project.version + '.jar')
-            exclude('freeplane_plugin_*-' + project.version + '.jar')
         }
         from ('lib') {
             include("*.jar")

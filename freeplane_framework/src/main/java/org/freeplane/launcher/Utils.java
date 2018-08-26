@@ -21,6 +21,9 @@ class Utils {
 		if (Utils.isDefineNotSet(name)) {
 			Utils.setDefine(name, value);
 		}
+                else {
+                    System.out.println(name + "=" + System.getProperty(name));
+                }
 	}
 
 	static boolean isDefineNotSet(String name) {
@@ -28,7 +31,7 @@ class Utils {
 	}
 
 	static String setDefine(String name, String value) {
-		System.out.println(name + "=" + value);
+		System.out.println("*" + name + "=" + value);
 		return System.setProperty(name, value);
 	}
 }

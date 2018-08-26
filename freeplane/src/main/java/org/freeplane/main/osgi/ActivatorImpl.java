@@ -19,17 +19,6 @@
  */
 package org.freeplane.main.osgi;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.jar.Manifest;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
@@ -43,15 +32,16 @@ import org.freeplane.main.application.SingleInstanceManager;
 import org.freeplane.main.headlessmode.FreeplaneHeadlessStarter;
 import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller;
 import org.freeplane.main.mindmapmode.stylemode.SModeControllerFactory;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkEvent;
-import org.osgi.framework.FrameworkListener;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
+import org.osgi.framework.*;
 import org.osgi.service.url.URLConstants;
 import org.osgi.service.url.URLStreamHandlerService;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.*;
+import java.util.jar.Manifest;
 
 /**
  * @author Dimitry Polivaev
@@ -97,8 +87,8 @@ class ActivatorImpl implements BundleActivator {
 	}
 
 	private void loadPlugins(final BundleContext context) {
-		final String resourceBaseDir = FreeplaneGUIStarter.getResourceBaseDir();
-		final File baseDir = new File(resourceBaseDir).getAbsoluteFile().getParentFile();
+		final String installationBaseDir = FreeplaneGUIStarter.getInstallationBaseDir();
+		final File baseDir = new File(installationBaseDir).getAbsoluteFile();
 		List<Bundle> loadedPlugins = new LinkedList<Bundle>();
 		loadPlugins(context, new File(baseDir, "plugins"), loadedPlugins);
 		final String freeplaneUserDirectory = Compat.getApplicationUserDirectory();
