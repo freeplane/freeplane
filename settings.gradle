@@ -1,3 +1,4 @@
+rootProject.name='freeplane_root'
 include 'freeplane',
         'freeplane_api',
         'freeplane_ant',

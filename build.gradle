@@ -126,12 +126,6 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
        ext.pluginid = 'org.freeplane.core'
     else
        ext.pluginid = project.name.replace("freeplane_plugin_", "org.freeplane.plugin.")
-
-    //Configure plugins as eclipse-plugins.
-    eclipse.project {
-      buildCommand 'org.eclipse.pde.SchemaBuilder'
-      natures      'org.eclipse.pde.PluginNature'
-    }
 }
 
 // common configuration for all plugins...
