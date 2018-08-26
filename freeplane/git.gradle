@@ -32,29 +32,35 @@ task createGitProperty {
 		def whoami
 		def revisionHash
 		def execResult
-		new ByteArrayOutputStream().withStream { os ->
-			execResult = exec {
-				commandLine  'git', 'config', 'user.name'
-				standardOutput = os
-				ignoreExitValue = true
+		try {
+
+			new ByteArrayOutputStream().withStream { os ->
+				execResult = exec {
+					commandLine  'git', 'config', 'user.name'
+					standardOutput = os
+					ignoreExitValue = true
+				}
+				whoami = os.toString().trim()
 			}
-			whoami = os.toString().trim()
+			 if(execResult.exitValue != 0)
+				return
+
+			new ByteArrayOutputStream().withStream { os ->
+				execResult = exec {
+					commandLine 'git', 'log', '--pretty=format:%H', '-n1'
+					standardOutput = os
+					ignoreExitValue = true
+				}
+				revisionHash = os.toString().trim()
+			}
+
+			 if(execResult.exitValue != 0)
+				return
 		}
-		 if(execResult.exitValue != 0)
-		 	return
-		
-		new ByteArrayOutputStream().withStream { os ->
-			execResult = exec {
-				commandLine 'git', 'log', '--pretty=format:%H', '-n1'
-				standardOutput = os
-				ignoreExitValue = true
-			}
-			revisionHash = os.toString().trim()
+		catch (TaskExecutionException) {
+			return
 		}
 
-		 if(execResult.exitValue != 0)
-		 	return
-			 
 		def timestamp=new Date().format("yyyy-MM-dd'T'HH:mm:ss'Z'", TimeZone.getTimeZone("UTC"))
 		new File(globalBin, 'gitinfo.txt').write "git-revision=$revisionHash $whoami $timestamp"
 			 
