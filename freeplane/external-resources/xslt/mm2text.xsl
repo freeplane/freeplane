@@ -33,15 +33,25 @@
 	
 	<xsl:template match="richcontent[normalize-space(.) != '']">
 		<xsl:if test="@TYPE='DETAILS'">
-			<xsl:text>DETAILS: </xsl:text>
+			<xsl:text>DETAILS:&#xA;</xsl:text>
 		</xsl:if>
 		<xsl:if test="@TYPE='NOTE'">
-			<xsl:text>NOTE: </xsl:text>
+			<xsl:text>NOTE:&#xA;</xsl:text>
 		</xsl:if>
-		<xsl:value-of select="normalize-space(.)" />
+		<xsl:apply-templates/>
 		<xsl:text>&#xA;</xsl:text>
 	</xsl:template>
 
+	<xsl:template match="child::text()">
+		<xsl:value-of select="normalize-space(.)" />
+	</xsl:template>
+
+	<xsl:template match="p|br|tr|div|li|pre">
+		<xsl:if test="preceding-sibling::*">
+			<xsl:text>&#xA;</xsl:text>
+		</xsl:if>
+		<xsl:apply-templates/>
+	</xsl:template>
 
 	<xsl:template match='node[hook[@NAME="FirstGroupNode" or @NAME="SummaryNode"]]'>
 		<xsl:apply-templates select='node' />
