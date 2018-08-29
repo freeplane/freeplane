@@ -6,7 +6,7 @@ allprojects {
     // in a multi-project setup, all projects must have the same version number!
     // the real (specific) version number is in freeplane/viewer-resources/version.properties!
     version = '1.5'
-	
+
     // WARNING: this is removed with "gradle clean"!!
     ext.globalBin = rootDir.path + '/BIN'
 
@@ -68,7 +68,7 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
-	
+
 	targetCompatibility='1.7'
 	sourceCompatibility='1.7'
 
@@ -79,7 +79,7 @@ subprojects {
     javadoc {
       options.encoding = "UTF-8"
       enabled = false
-      failOnError = false  
+      failOnError = false
     }
 
     repositories {
@@ -105,7 +105,7 @@ subprojects {
         delete(project.file(".settings"))
     }
     cleanEclipseJdt.dependsOn cleanEclipseSettings
-	
+
 	if (project.hasProperty('TestLoggingFull')) {
 		test {
 			testLogging {
@@ -119,12 +119,6 @@ subprojects {
 // OSGi projects (/plugin/, freeplane) need this for compilation (e.g. resolve Bundle),
 // and freeplane_framework needs to copy it to BUILD/framework.jar
 configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ || it.name =~ /^freeplane_framework$/}){
-    repositories {
-        maven {
-            url 'https://dl.bintray.com/knopflerfish/knopflerfish-maven/'
-        }
-    }
-
     dependencies {
         compile group: 'org.knopflerfish.kf6', name:'framework', version: '8.0.4'
     }
@@ -221,7 +215,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
         from ("OSGI-INF")
         into(globalBin + '/plugins/' + pluginid + '/OSGI-INF/')
     }
-	
+
     build.dependsOn copyOSGiJars
     build.dependsOn copyOSGiManifest
 	build.dependsOn copyOSGiConfig
@@ -230,7 +224,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
     task pluginJar(type: Jar) {
          baseName = 'plugin'
          dependsOn classes
-    
+
          from (sourceSets.main.output) {
              include("**")
          }
