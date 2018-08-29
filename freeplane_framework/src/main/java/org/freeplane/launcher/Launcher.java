@@ -59,6 +59,7 @@ public class Launcher {
 	private static final String DISABLE_SECURITY_MANAGER_PROPERTY = "org.freeplane.main.application.FreeplaneSecurityManager.disable";
 	private static final String HEADLESS_PROPERTY = "org.freeplane.main.application.FreeplaneStarter.headless";
 	private static final String BASEDIRECTORY_PROPERTY = "org.freeplane.basedirectory";
+	private static final String JAVA_VERSION = System.getProperty("java.version");
 	private final File freeplaneInstallationDirectory;
 	private int argCount;
 	private boolean disableSecurityManager;
@@ -74,8 +75,7 @@ public class Launcher {
 	}
 
 	private static void checkForCompatibleJavaVersion() {
-		String javaVersion = System.getProperty("java.version");
-		if(javaVersion.startsWith("10.") || javaVersion.startsWith("10-")) {
+		if(JAVA_VERSION.startsWith("10.") || JAVA_VERSION.startsWith("10-")) {
 			JOptionPane optionPane = new JOptionPane(
 				"Freeplane is not compatible with java 10, exiting",
 				JOptionPane.ERROR_MESSAGE);
@@ -232,6 +232,8 @@ public class Launcher {
 	}
 
 	private static void fixX11AppName() {
+		if(! JAVA_VERSION.startsWith("1."))
+			return;
 		try {
 			Toolkit xToolkit = Toolkit.getDefaultToolkit();
 			if (xToolkit.getClass().getName().equals("sun.awt.X11.XToolkit"))
