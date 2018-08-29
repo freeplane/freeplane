@@ -40,9 +40,10 @@ public class BigBufferedImage extends BufferedImage {
 
     private static final String TMP_DIR = System.getProperty("java.io.tmpdir");
 	public static final int MAX_PIXELS_IN_MEMORY = 50 * 1024 * 1024;
+	private static final boolean FORCE_FILE_FOR_DEBUG = false;
 
-    public static BufferedImage create(final int width, final int height, final int imageType){
-    	if(width * height > 0)
+	public static BufferedImage create(final int width, final int height, final int imageType){
+    	if(FORCE_FILE_FOR_DEBUG || width * height > MAX_PIXELS_IN_MEMORY)
 			return AccessController.doPrivileged(new PrivilegedAction<BufferedImage>() {
 				@Override
 				public BufferedImage run() {
@@ -247,7 +248,7 @@ public class BigBufferedImage extends BufferedImage {
 		}
 	    private static final boolean JRE_IS_MINIMUM_JAVA9 = ! System.getProperty("java.version").startsWith("1.");
 
-		private void invokeCleaner(final MappedByteBuffer b)
+		private void invokeCleaner(final ByteBuffer b)
 		        throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 	        // TODO avoid reflection on every call
 	        try {
@@ -264,7 +265,7 @@ public class BigBufferedImage extends BufferedImage {
 	                        f.setAccessible(true);
 	                        final Object theUnsafe = f.get(null);
 	                        try {
-	                            unmapper.bindTo(theUnsafe).invokeExact(buffer);
+	                            unmapper.bindTo(theUnsafe).invokeExact(b);
 	                            return null;
 	                        } catch (Throwable t) {
 	                            throw new RuntimeException(t);
