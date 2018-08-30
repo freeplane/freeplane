@@ -38,28 +38,31 @@ public class SurveyStarter implements ApplicationLifecycleListener{
 
 	@Override
 	public void onStartupFinished() {
+		configureAndRunSurvey();
+	}
+
+	Thread configureAndRunSurvey() {
 		if (freeplaneSurveyProperties.mayAskUserAgain()) {
 			freeplaneSurveyProperties.setNextSurveyDay(1);
-			new Thread(new Runnable() {
+			Thread thread = new Thread(new Runnable() {
 				@Override
 				public void run() {
 					final Properties surveyProperties = new Properties();
 					try (final InputStream input = freeplaneSurveyProperties.openRemoteConfiguration()) {
 						surveyProperties.load(input);
 						final int frequency = Integer.parseInt(surveyProperties.getProperty(FREQUENCY_KEY));
-						if(frequency > 0 && randomNumber < 1. / frequency || freeplaneSurveyProperties.remindMeLaterIsActive()) {
+						if (frequency > 0 && randomNumber < 1. / frequency || freeplaneSurveyProperties.remindMeLaterIsActive()) {
 							surveyId = surveyProperties.getProperty(SURVEY_ID_KEY);
 							title = surveyProperties.getProperty(TITLE_KEY);
 							question = surveyProperties.getProperty(QUESTION_KEY);
 							surveyUrl = surveyProperties.getProperty(SURVEY_URL_KEY);
 							runOn = RunningPoint.valueOf(surveyProperties.getProperty(RUN_ON_KEY, RunningPoint.NEVER.name()));
-						}
-						else
+						} else
 							runOn = RunningPoint.NEVER;
 					} catch (Exception e) {
 						runOn = RunningPoint.NEVER;
 					}
-					if(RunningPoint.ON_START == runOn)
+					if (RunningPoint.ON_START == runOn)
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
@@ -67,9 +70,11 @@ public class SurveyStarter implements ApplicationLifecycleListener{
 							}
 						});
 				}
-			}).start();
+			});
+			thread.start();
+			return thread;
 		}
-		
+		return null;
 	}
 
 	@Override

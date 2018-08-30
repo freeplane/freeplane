@@ -38,14 +38,13 @@ public class SurveyStarterShould {
 		configProperties.setProperty(RUN_ON_KEY, "ON_START");
 		final SurveyRunner surveyRunner = mock(SurveyRunner.class);
 		FreeplaneSurveyProperties freeplaneSurveyProperties = mockSurveyProperties(configProperties);
-		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.49);
+		final SurveyStarter surveyStarter = createSurveyRunner(surveyRunner, freeplaneSurveyProperties, 0.49);
 		surveyStarter.onStartupFinished();
 		waitForOtherThreadToRun();
 		verify(surveyRunner).runServey("myId", "myTitle", "myQuestion", "mySurveyUrl");
 	}
 
 	private void waitForOtherThreadToRun() throws InterruptedException, InvocationTargetException {
-		Thread.sleep(100);
 		SwingUtilities.invokeAndWait(new Runnable() {
 			
 			@Override
@@ -60,7 +59,7 @@ public class SurveyStarterShould {
 		configProperties.setProperty(RUN_ON_KEY, "NEVER");
 		final SurveyRunner surveyRunner = mock(SurveyRunner.class);
 		FreeplaneSurveyProperties freeplaneSurveyProperties = mockSurveyProperties(configProperties);
-		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.49);
+		final SurveyStarter surveyStarter = createSurveyRunner(surveyRunner, freeplaneSurveyProperties, 0.49);
 		surveyStarter.onStartupFinished();
 		waitForOtherThreadToRun();
 		verify(surveyRunner, never()).runServey("myId", "myTitle", "myQuestion", "mySurveyUrl");
@@ -72,7 +71,7 @@ public class SurveyStarterShould {
 		configProperties.setProperty(RUN_ON_KEY, "ON_QUIT");
 		final SurveyRunner surveyRunner = mock(SurveyRunner.class);
 		FreeplaneSurveyProperties freeplaneSurveyProperties = mockSurveyProperties(configProperties);
-		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.49);
+		final SurveyStarter surveyStarter = createSurveyRunner(surveyRunner, freeplaneSurveyProperties, 0.49);
 		surveyStarter.onStartupFinished();
 		waitForOtherThreadToRun();
 		surveyStarter.onApplicationStopped();
@@ -115,7 +114,7 @@ public class SurveyStarterShould {
 		final SurveyRunner surveyRunner = mock(SurveyRunner.class);
 		FreeplaneSurveyProperties freeplaneSurveyProperties = mockSurveyProperties(configProperties);
 		when(freeplaneSurveyProperties.mayAskUserAgain()).thenReturn(false);
-		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.49);
+		final SurveyStarter surveyStarter = createSurveyRunner(surveyRunner, freeplaneSurveyProperties, 0.49);
 		surveyStarter.onStartupFinished();
 		verify(freeplaneSurveyProperties).mayAskUserAgain();
 		verifyNoMoreInteractions(freeplaneSurveyProperties, surveyRunner);
@@ -127,7 +126,7 @@ public class SurveyStarterShould {
 		final SurveyRunner surveyRunner = mock(SurveyRunner.class);
 		FreeplaneSurveyProperties freeplaneSurveyProperties = mockSurveyProperties(configProperties);
 		when(freeplaneSurveyProperties.mayAskUserAgain()).thenReturn(true);
-		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.49);
+		final SurveyStarter surveyStarter = createSurveyRunner(surveyRunner, freeplaneSurveyProperties, 0.49);
 		surveyStarter.onStartupFinished();
 		verify(freeplaneSurveyProperties).setNextSurveyDay(1);
 	}
@@ -139,7 +138,7 @@ public class SurveyStarterShould {
 		configProperties.setProperty(RUN_ON_KEY, "ON_START");
 		final SurveyRunner surveyRunner = mock(SurveyRunner.class);
 		FreeplaneSurveyProperties freeplaneSurveyProperties = mockSurveyProperties(configProperties);
-		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.51);
+		final SurveyStarter surveyStarter = createSurveyRunner(surveyRunner, freeplaneSurveyProperties, 0.51);
 		surveyStarter.onStartupFinished();
 		waitForOtherThreadToRun();
 		verify(freeplaneSurveyProperties).remindMeLaterIsActive();
@@ -157,7 +156,7 @@ public class SurveyStarterShould {
 		configProperties.setProperty(FREQUENCY_KEY, "0");
 		final SurveyRunner surveyRunner = mock(SurveyRunner.class);
 		FreeplaneSurveyProperties freeplaneSurveyProperties = mockSurveyProperties(configProperties);
-		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.49);
+		final SurveyStarter surveyStarter = createSurveyRunner(surveyRunner, freeplaneSurveyProperties, 0.49);
 		surveyStarter.onStartupFinished();
 		waitForOtherThreadToRun();
 		verify(freeplaneSurveyProperties).remindMeLaterIsActive();
@@ -166,6 +165,23 @@ public class SurveyStarterShould {
 		verify(freeplaneSurveyProperties).openRemoteConfiguration();
 		verifyNoMoreInteractions(freeplaneSurveyProperties, surveyRunner);
 	}
+
+	SurveyStarter createSurveyRunner(SurveyRunner surveyRunner, FreeplaneSurveyProperties freeplaneSurveyProperties, double randomNumber) {
+		return new SurveyStarter(freeplaneSurveyProperties, surveyRunner, randomNumber) {
+			@Override
+			Thread configureAndRunSurvey() {
+				Thread thread = super.configureAndRunSurvey();
+				try {
+					if(thread != null)
+						thread.join();
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+				return thread;
+			}
+		};
+	}
+
 	@Test
 	public void givenNonPositiveMiddleCheckRunPeriodMiddleRunFrequencyAndRemindMeLaterSet_runsServey() throws Exception {
 		Properties configProperties = createSurveyProperites();
@@ -174,7 +190,7 @@ public class SurveyStarterShould {
 		final SurveyRunner surveyRunner = mock(SurveyRunner.class);
 		FreeplaneSurveyProperties freeplaneSurveyProperties = mockSurveyProperties(configProperties);
 		when(freeplaneSurveyProperties.remindMeLaterIsActive()).thenReturn(true);
-		final SurveyStarter surveyStarter = new SurveyStarter(freeplaneSurveyProperties, surveyRunner, 0.49);
+		final SurveyStarter surveyStarter = createSurveyRunner(surveyRunner, freeplaneSurveyProperties, 0.49);
 		surveyStarter.onStartupFinished();
 		waitForOtherThreadToRun();
 		verify(freeplaneSurveyProperties).remindMeLaterIsActive();
