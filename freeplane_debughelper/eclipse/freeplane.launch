@@ -11,7 +11,7 @@
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.buildship.core.classpathprovider"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.freeplane.launcher.Launcher"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="freeplane_debughelper"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m &quot;-Dorg.freeplane.basedirectory=${workspace_loc:freeplane_debughelper}/../BIN&quot; &quot;-Djava.security.policy=${workspace_loc:freeplane_debughelper/security/freeplane.policy}&quot; -Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=false -Dorg.freeplane.main.application.FreeplaneStarter.headless=false -Dorg.osgi.framework.bundle.parent=app -Dorg.freeplane.nosplash=false"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512m &quot;-Dorg.freeplane.basedirectory=${workspace_loc:freeplane_debughelper}/../BIN&quot; &quot;-Djava.security.policy=${workspace_loc:freeplane_debughelper/security/freeplane.policy}&quot; -Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=false -Dorg.freeplane.main.application.FreeplaneStarter.headless=false -Dorg.osgi.framework.bundle.parent=app -Dorg.freeplane.nosplash=false &quot;-Dorg.freeplane.builtin.scripts.dir=${workspace_loc:freeplane_plugin_script/scripts}&quot;"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:freeplane_debughelper}/../BIN"/>
 <stringAttribute key="yk-options" value="&#13;&#10;additional-options2=onexit\=snapshot&#13;&#10;startup=0&#13;&#10;"/>
 </launchConfiguration>

@@ -23,6 +23,7 @@ task(run, dependsOn: 'classes', type: JavaExec) {
     jvmArgs = ['-Xmx512m',
     "-Dorg.freeplane.basedirectory=$globalBin",
     "-Dorg.freeplane.globalresourcedir=${rootDir.path}/freeplane/src/external/resources",
+	"-Dorg.freeplane.builtin.scripts.dir=${rootDir.path}/freeplane_plugin_script/scripts",
     "-Djava.security.policy=$projectDir/security/freeplane.policy",
     '-Dorg.freeplane.main.application.FreeplaneSecurityManager.disable=false',
     '-Dorg.freeplane.main.application.FreeplaneStarter.headless=false',

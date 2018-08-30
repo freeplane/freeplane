@@ -350,4 +350,11 @@ public class FileUtils {
 	public static String validFileNameOf(String proposal) {
 		return proposal.replaceAll("[&:/\\\\\0%$#~\\?\\*]+", "");
 	}
+
+	public static File getAbsoluteFile(String baseDir, String file) {
+    	if(isAbsolutePath(file))
+    		return new File(file);
+    	else
+			return new File(baseDir, file);
+	}
 }
