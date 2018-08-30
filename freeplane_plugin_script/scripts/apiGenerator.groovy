@@ -8,6 +8,8 @@
 
 import java.lang.reflect.Method
 
+import org.freeplane.api.Script
+
 import org.freeplane.core.resources.ResourceController
 import org.freeplane.core.ui.components.UITools
 import org.freeplane.core.util.FreeplaneVersion
@@ -256,6 +258,7 @@ makeApi(proxy, Proxy.Cloud.class)
 makeApi(proxy, Proxy.Connector.class)
 makeApi(proxy, Proxy.Controller.class)
 makeApi(proxy, Proxy.Loader.class)
+makeApi(proxy, Script.class)
 makeApi(proxy, Proxy.Edge.class)
 makeApi(proxy, Proxy.ExternalObject.class)
 makeApi(proxy, Proxy.Font.class)
