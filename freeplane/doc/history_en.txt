@@ -10,6 +10,7 @@ Global nodes
 Filtering nodes on aliases and on global accessibility
 Option to skip dialog for unnassigned F-keys 
 Denied (inverted) conditions in filter toolbar
+Java 11 compatibility
 
 ===============================
 1.6.16
