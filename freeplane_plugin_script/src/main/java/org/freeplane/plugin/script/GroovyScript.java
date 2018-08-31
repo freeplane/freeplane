@@ -21,6 +21,7 @@ package org.freeplane.plugin.script;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.security.AccessControlException;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
@@ -33,10 +34,8 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
-import org.freeplane.securegroovy.GroovyPatcher;
 
 import groovy.lang.Binding;
-import groovy.lang.GroovyObject;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.Script;
 
@@ -151,9 +150,9 @@ public class GroovyScript implements IScript {
 		});
 	}
 
-    private static boolean groovyPatched = false;
+    private static boolean accessPermissionCheckerChecked = false;
     private Script compileAndCache(final ScriptingSecurityManager scriptingSecurityManager) throws Throwable {
-    	patchGroovyObject();
+    	checkAccessPermissionCheckerExists();
     	if (compileTimeStrategy.canUseOldCompiledScript()) {
 			scriptClassLoader.setSecurityManager(scriptingSecurityManager);
             return compiledScript;
@@ -186,10 +185,16 @@ public class GroovyScript implements IScript {
         }
     }
 
-	static void patchGroovyObject() {
-		if(! groovyPatched){
-    		GroovyPatcher.apply(GroovyObject.class);
-    		groovyPatched = true;
+	static void checkAccessPermissionCheckerExists() {
+		if(!accessPermissionCheckerChecked){
+    		if(System.getSecurityManager() != null){
+				try {
+					GroovyScript.class.getClassLoader().loadClass("org.codehaus.groovy.reflection.AccessPermissionChecker");
+				} catch (ClassNotFoundException e) {
+					throw new AccessControlException("class org.codehaus.groovy.reflection.AccessPermissionChecker not found");
+				}
+			}
+    		accessPermissionCheckerChecked = true;
     	}
 	}
 

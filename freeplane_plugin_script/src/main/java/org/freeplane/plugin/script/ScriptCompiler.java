@@ -70,7 +70,7 @@ public class ScriptCompiler {
 		final Collection<File> compiledScriptFiles = compileOnlyChangedScriptFiles ? filterNewFiles(allScriptFiles) : allScriptFiles ;
 		if (!compiledScriptFiles.isEmpty()) {
 			try {
-				GroovyScript.patchGroovyObject();
+				GroovyScript.checkAccessPermissionCheckerExists();
 				compile(dir, compiledScriptFiles);
 				LogUtils.info("compiled in " + dir + ": " + createNameList(allScriptFiles));
 			}
