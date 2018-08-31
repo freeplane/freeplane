@@ -14,6 +14,7 @@ dependencies {
 		exclude group:'org.codehaus.groovy', module:'groovy-cli-commons'
 		exclude group:'org.codehaus.groovy', module:'groovy-cli-picocli'
 	}
+	runtime 'org.codehaus.groovy:groovy-dateutil:2.5.2'
 
 	testCompile 'junit:junit:4.12',
 	'org.hamcrest:hamcrest-all:1.3',
