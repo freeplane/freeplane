@@ -34,11 +34,6 @@ sourceSets {
     viewer {}
     editor {}
     external {}
-	test {
-		runtimeClasspath += sourceSets.viewer.output
-		runtimeClasspath += sourceSets.editor.output
-		runtimeClasspath += sourceSets.external.output
-	}
 }
 
 // work around for new gradle bug if subproject name equals to root dir name

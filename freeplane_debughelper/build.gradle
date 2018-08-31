@@ -13,8 +13,7 @@ dependencies {
 		runtime it
 	}
 
-	runtime project(':freeplane').sourceSets.viewer.output
-	runtime project(':freeplane').sourceSets.editor.output
+	runtime project(':freeplane').files('src/viewer/resources', 'src/editor/resources')
 }
 
 task(run, dependsOn: 'classes', type: JavaExec) {
