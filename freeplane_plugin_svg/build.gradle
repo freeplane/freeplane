@@ -2,13 +2,10 @@ dependencies {
     compileOnly project(':freeplane')
 	testCompile project(':freeplane')
 
-	// libbatik-java / batik-*.jar:
-	compile ('org.apache.xmlgraphics:batik-transcoder:1.9.1')
-	
-	compile 'org.apache.xmlgraphics:batik-swing:1.9.1'
-	compile 'org.apache.xmlgraphics:batik-codec:1.9.1'
-	compile 'org.apache.xmlgraphics:fop:2.1'
-	compile 'commons-logging:commons-logging:1.2'
+	compile 'org.apache.xmlgraphics:batik-transcoder:1.10'
+	compile 'org.apache.xmlgraphics:batik-swing:1.10'
+	compile 'org.apache.xmlgraphics:batik-codec:1.10'
+	compile 'org.apache.xmlgraphics:fop:2.2'
 }
 
 configurations.all {
