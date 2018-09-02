@@ -10,7 +10,10 @@ Global nodes
 Filtering nodes on aliases and on global accessibility
 Option to skip dialog for unnassigned F-keys 
 Denied (inverted) conditions in filter toolbar
-Java 11 compatibility
+Update Groovy to version 2.5.2
+Update JLatexMath to versin 1.0.7
+Update batik to version 2.10
+Java 11 compatibility (wip)
 
 ===============================
 1.6.16
