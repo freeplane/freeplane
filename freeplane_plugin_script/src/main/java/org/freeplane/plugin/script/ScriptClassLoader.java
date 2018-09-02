@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import org.freeplane.api.Script;
 import org.freeplane.core.util.ClassLoaderFactory;
 
 public final class ScriptClassLoader extends URLClassLoader {
@@ -54,6 +55,8 @@ public final class ScriptClassLoader extends URLClassLoader {
 	}
 
 	private URL superGetResource(String name) {
+		if(name.startsWith(Script.class.getPackage().getName().replace('.', '/') + '/'))
+			return Script.class.getClassLoader().getResource(name);
 		return super.getResource(name);
 	}
 
