@@ -145,7 +145,6 @@ def addProperty(Map<String, Map<String, Object>> memberMap, Method method) {
 }
 
 def addMethod(Map<String, Map<String, Object>> memberMap, Method method) {
-	println formatMethodKey(method)
     def propertyMap = getOrCreatePropertiesMap(memberMap, formatMethodKey(method))
     propertyMap['types'] = method.parameterTypes
     propertyMap['method'] = formatMethod(method)
