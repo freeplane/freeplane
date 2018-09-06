@@ -54,11 +54,12 @@ public class FreeplaneSplashModern extends JWindow {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final String FREEPLANE_SPLASH_PNG = "/images/Freeplane_splash.png";
 	private Font versionTextFont = null;
 
 	public FreeplaneSplashModern(final JFrame frame) {
 		super(frame);
-		splashResource = ResourceController.getResourceController().getResource("/images/Freeplane_splash.png");
+		splashResource = ResourceController.getResourceController().getResource(FREEPLANE_SPLASH_PNG);
 		splashImage = new ImageIcon(splashResource);
 		setBackground(new Color(0x57, 0xbf, 0x5e));
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -103,7 +104,7 @@ public class FreeplaneSplashModern extends JWindow {
 			final Graphics2D g2 = (Graphics2D) g;
 			splashImage.paintIcon(this, g2, 0, 0);
 			final String splashResourceType = splashResource.getProtocol();
-			final String classResourceType = getClass().getProtectionDomain().getCodeSource().getLocation().getProtocol();
+			final String classResourceType = getClass().getResource(FreeplaneSplashModern.class.getSimpleName() + ".class").getProtocol();
 			if(! splashResourceType.equals(classResourceType))
 				return;
 			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
