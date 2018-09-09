@@ -521,7 +521,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private Color background = null;
 	private JComponent backgroundComponent;
 	private Rectangle boundingRectangle = null;
-	private boolean disableMoveCursor = true;
 	private FitMap fitMap = FitMap.USER_DEFINED;
 	private boolean isPreparedForPrinting = false;
 	private boolean isPrinting = false;
@@ -604,7 +603,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptyNodeViewSet());
 		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, emptyNodeViewSet());
 		final ResourceController resourceController = ResourceController.getResourceController();
-		disableMoveCursor = resourceController.getBooleanProperty("disable_cursor_move_paper");
 		viewportSizeChangeListener = new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -2028,7 +2026,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	public void setMoveCursor(final boolean isHand) {
-		final int requiredCursor = (isHand && !disableMoveCursor) ? Cursor.MOVE_CURSOR : Cursor.DEFAULT_CURSOR;
+		final int requiredCursor = isHand ? Cursor.MOVE_CURSOR : Cursor.DEFAULT_CURSOR;
 		if (getCursor().getType() != requiredCursor) {
 			setCursor(requiredCursor != Cursor.DEFAULT_CURSOR ? new Cursor(requiredCursor) : null);
 		}
@@ -2062,7 +2060,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	/**
 	 * Add the node to the selection if it is not yet there, remove it
 	 * otherwise.
-	 * @param requestFocus
 	 */
 	private void toggleSelected(final NodeView nodeView) {
 		if (isSelected(nodeView)) {
