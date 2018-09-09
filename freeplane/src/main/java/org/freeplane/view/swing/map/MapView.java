@@ -123,6 +123,7 @@ import org.freeplane.view.swing.map.link.ILinkView;
  */
 public class MapView extends JPanel implements Printable, Autoscroll, IMapChangeListener, IFreeplanePropertyListener {
 
+	private static final String UNFOLD_ON_NAVIGATION = "unfold_on_navigation";
 	private final MapScroller mapScroller;
 	private MapViewLayout layoutType;
 
@@ -1097,7 +1098,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			newSelected = getVisibleSummarizedOrParentView(oldSelected);
 		}
 		else {
-			if (oldSelected.isFolded()) {
+			if (oldSelected.isFolded() && unfoldsOnNavigation()) {
 				getModeController().getMapController().unfold(oldModel);
 				return oldSelected;
 			}
@@ -1109,6 +1110,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				newSelected = getVisibleSummaryView(oldSelected);
 		}
 		return newSelected;
+	}
+
+	private boolean unfoldsOnNavigation() {
+		return ResourceController.getResourceController().getBooleanProperty(UNFOLD_ON_NAVIGATION);
 	}
 
 	boolean isOutlineLayoutSet() {
@@ -1170,7 +1175,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			newSelected = getVisibleSummarizedOrParentView(oldSelected);
 		}
 		else {
-			if (oldSelected.isFolded()) {
+			if (oldSelected.isFolded() && unfoldsOnNavigation()) {
 				getModeController().getMapController().unfoldAndScroll(oldModel);
 				if(oldSelected.getModel().hasVisibleContent())
 					return oldSelected;

@@ -187,6 +187,7 @@
 					<choice value="first" />
 					<choice value="last" />
 				</combo>
+                <boolean name="unfold_on_navigation" />
                 <boolean name="unfold_on_paste" />
 				<boolean name="fold_on_click_inside" />
 				<boolean name="edit_on_double_click" />
