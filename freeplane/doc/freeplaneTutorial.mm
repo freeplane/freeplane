@@ -633,7 +633,7 @@
   </head>
   <body>
     <p>
-      <img src="Images/other/workspace/Freeplane%20workspace.png" width="1000" height="563"/>
+      <img src="Images/other/workspace/Freeplane%20workspace.png" width="1000" height="544"/>
     </p>
   </body>
 </html>
@@ -647,7 +647,7 @@
   </head>
   <body>
     <p>
-      <img src="Images/other/workspace/Freeplane%20workspace%20(annotated).png" width="1000" height="563"/>
+      <img src="Images/other/workspace/Freeplane%20workspace%20(annotated).png" width="1000" height="544"/>
     </p>
   </body>
 </html>
@@ -885,7 +885,7 @@
     
   </head>
   <body>
-    <img src="Images/other/workspace/properties%20panel.png" width="363" height="499"/>
+    <img src="Images/other/workspace/properties%20panel.png" width="400" height="549"/>
   </body>
 </html>
 </richcontent>
@@ -1071,7 +1071,7 @@
     
   </head>
   <body>
-    <img src="Images/other/workspace/submenu%20flyouts%20(basic).png" width="386" height="236"/>
+    <img src="Images/other/workspace/submenu%20flyouts%20(basic).png" width="600" height="367"/>
   </body>
 </html>
 </richcontent>
@@ -1089,7 +1089,7 @@
     
   </head>
   <body>
-    <img src="Images/other/workspace/submenu%20flyouts%20(basic).png" width="386" height="236"/>
+    <img src="Images/other/workspace/submenu%20flyouts%20(basic).png" width="600" height="367"/>
   </body>
 </html>
 </richcontent>
@@ -1106,7 +1106,7 @@
     
   </head>
   <body>
-    <img src="Images/other/workspace/submenu%20flyouts.png" width="386" height="236"/>
+    <img src="Images/other/workspace/submenu%20flyouts.png" width="600" height="367"/>
   </body>
 </html>
 </richcontent>
@@ -1485,7 +1485,7 @@
     
   </head>
   <body>
-    <img src="Images/other/workspace/properties%20panel.png" width="363" height="499"/>
+    <img src="Images/other/workspace/properties%20panel.png" width="400" height="549"/>
   </body>
 </html>
 </richcontent>
