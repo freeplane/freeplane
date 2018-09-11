@@ -87,13 +87,14 @@
 		<Entry name="help">
 			<Entry name="web_resources">
 				<Entry name="OpenFreeplaneSiteAction" />
-				<Entry name="AskForHelp" />
+                <Entry name="AskForHelp" />
 				<Entry name="ReportBugAction" />
 				<Entry name="RequestFeatureAction" />
 			</Entry>
 			<Entry name="AboutAction" />
-			<Entry name="GettingStartedAction" />
+			<Entry name="TutorialAction" />
 			<Entry accelerator="F1" name="DocumentationAction" />
+            <Entry name="FreeplaneHandbook" />
 		</Entry>
 	</Entry>
 	<Entry name="map_popup" builder="map_popup" processOnPopup="true">
