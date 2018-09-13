@@ -59,10 +59,10 @@ public class ExportToOoWriter implements IExportEngine {
 		return new ExampleFileFilter("odt", TextUtils.getText("ExportToOoWriter.text"));
 	}
 	
-	public void export(MapModel map, File chosenFile) {
+	public void export(MapModel map, ExportedXmlWriter xmlWriter, File chosenFile) {
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try {
-			exportToOoWriter(map, chosenFile);
+			exportToOoWriter(map, xmlWriter, chosenFile);
 		}
 		catch (final Exception ex) {
 			LogUtils.warn(ex);
@@ -103,12 +103,12 @@ public class ExportToOoWriter implements IExportEngine {
 	}
 
 
-	public void exportToOoWriter(MapModel map, final File file) throws IOException {
+	public void exportToOoWriter(MapModel map, ExportedXmlWriter xmlWriter, final File file) throws IOException {
 		final ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(file));
 		try {
 			final StringWriter writer = new StringWriter();
 			final ModeController controller = Controller.getCurrentModeController();
-			controller.getMapController().getFilteredXml(map, writer, Mode.EXPORT, true);
+			xmlWriter.writeXml(writer, Mode.EXPORT);
 			final Result result = new StreamResult(zipout);
 
 			ZipEntry entry = new ZipEntry("content.xml");

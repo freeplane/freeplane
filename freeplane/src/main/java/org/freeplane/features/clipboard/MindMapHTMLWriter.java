@@ -26,6 +26,8 @@ import java.awt.Font;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LengthUnits;
@@ -217,12 +219,16 @@ class MindMapHTMLWriter {
 		defaultColor = nodeStyleController.getColor(styleNode);
 	}
 
-	void writeHTML(final NodeModel rootNodeOfBranch) throws IOException {
-		setDefaultsFrom(rootNodeOfBranch.getMap());
+	void writeHTML(final List<NodeModel> branchRootNodes) throws IOException {
+		if(branchRootNodes.isEmpty())
+			return;
+		NodeModel firstNode = branchRootNodes.get(0);
+		MapModel map = firstNode.getMap();
+		setDefaultsFrom(map);
 		final String htmlExportFoldingOption = getProperty("html_export_folding");
-		writeFoldingCode = (htmlExportFoldingOption.equals("html_export_fold_currently_folded") && mapController
-		    .hasFoldedStrictDescendant(rootNodeOfBranch))
-		        || htmlExportFoldingOption.equals("html_export_fold_all");
+		writeFoldingCode = htmlExportFoldingOption.equals("html_export_fold_all")
+				|| (htmlExportFoldingOption.equals("html_export_fold_currently_folded")
+				&& hasFoldedStrictDescendant(branchRootNodes));
 		ResourceController.getResourceController().getBooleanProperty("export_icons_in_html");
 		fileout
 		    .write(
@@ -230,28 +236,36 @@ class MindMapHTMLWriter {
 		                + lf + "<html>" + lf + "<head>" + lf);
 		fileout.write("<title>"
 		        + MindMapHTMLWriter.writeHTML_escapeUnicodeAndSpecialCharacters(
-		            TextController.getController().getPlainTransformedTextWithoutNodeNumber(rootNodeOfBranch)
+		            TextController.getController().getPlainTransformedTextWithoutNodeNumber(branchRootNodes.size() == 1 ?  firstNode : map.getRootNode())
 		                .replace('\n', ' '))
 		        + "</title>" + lf);
 		writeStyle();
 		fileout.write(lf + "</head>" + lf + "<body");
-		final MapStyleModel style = MapStyleModel.getExtension(rootNodeOfBranch.getMap());
+		final MapStyleModel style = MapStyleModel.getExtension(map);
 		final Color background = style != null ? style.getBackgroundColor() : null;
 		if (background != null) {
 			fileout.write(" bgcolor=" + ColorUtils.colorToString(background));
 		}
 		fileout.write(">" + lf);
-		if (writeFoldingCode) {
-			writeBodyWithFolding(rootNodeOfBranch);
-		}
-		else {
-			writeHTML(rootNodeOfBranch, "1", 0, /* isRoot */true, true, /* depth */
-			    1);
+		for(NodeModel node : branchRootNodes) {
+			if (writeFoldingCode) {
+				writeBodyWithFolding(node);
+			} else {
+				writeHTML(node, "1", 0, /* isRoot */true, true, /* depth */ 1);
+			}
 		}
 		fileout.write("</body>" + lf);
 		fileout.write("</html>" + lf);
 		fileout.close();
 		resetDefaults();
+	}
+
+	private boolean hasFoldedStrictDescendant(List<NodeModel> branchRootNodes) {
+		for(NodeModel node : branchRootNodes) {
+			if (mapController.hasFoldedStrictDescendant(node))
+				return true;
+		}
+		return  false;
 	}
 
 	private int writeHTML(final NodeModel model, final String parentID, int lastChildNumber, final boolean isRoot,

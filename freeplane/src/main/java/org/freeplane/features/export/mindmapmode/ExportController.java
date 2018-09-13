@@ -35,8 +35,11 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class ExportController implements IExtension{
 	/** a hash where the key is the file extension and the value the filename of
 	 * the corresponding XSLT sheet. */
-	final private HashMap<FileFilter, IExportEngine> filterMap = new HashMap<FileFilter, IExportEngine>();
-	final private ArrayList<FileFilter> fileFilters = new ArrayList<FileFilter>();
+	final private HashMap<FileFilter, IExportEngine> mapExportEngines = new HashMap<FileFilter, IExportEngine>();
+	final private ArrayList<FileFilter> mapExportFileFilters = new ArrayList<FileFilter>();
+
+	final private HashMap<FileFilter, IExportEngine> branchExportEngines = new HashMap<FileFilter, IExportEngine>();
+	final private ArrayList<FileFilter> branchExportFileFilters = new ArrayList<FileFilter>();
 
 	public static void install(ExportController exportController) {
 	    Controller.getCurrentModeController().addExtension(ExportController.class, exportController);
@@ -44,21 +47,22 @@ public class ExportController implements IExtension{
 	
 	public ExportController(final String xmlDescriptorFile) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		final ExportAction action = new ExportAction();
-		modeController.addAction(action);
+		modeController.addAction(new ExportAction());
+		modeController.addAction(new ExportBranchesAction());
 
-		final ExportToHTMLAction exportToHTMLAction = new ExportToHTMLAction();
-		addExportEngine(exportToHTMLAction.getFileFilter(), exportToHTMLAction);
-		final ExportBranchToHTMLAction exportBranchToHTMLAction = new ExportBranchToHTMLAction();
-		addExportEngine(exportBranchToHTMLAction.getFileFilter(), exportBranchToHTMLAction);
+		final ExportToHTML exportToHTML = new ExportToHTML();
+		addMapExportEngine(exportToHTML.getFileFilter(), exportToHTML);
+		final ExportBranchesToHTML exportBranchesToHTML = new ExportBranchesToHTML();
+		addBranchExportEngine(exportBranchesToHTML.getFileFilter(), exportBranchesToHTML);
 		
 		final ExportToOoWriter exportToOoWriter = new ExportToOoWriter();
-		
-		addExportEngine(exportToOoWriter.getFileFilter(), exportToOoWriter);
+
+		addMapExportEngine(exportToOoWriter.getFileFilter(), exportToOoWriter);
+		addBranchExportEngine(exportToOoWriter.getFileFilter(), exportToOoWriter);
 		createImageExporters();
 		createXSLTExportActions(xmlDescriptorFile);
 		new XsltExportEngineFactory().gatherXsltScripts(this);
-		Collections.sort(fileFilters, new Comparator<FileFilter>() {
+		Collections.sort(mapExportFileFilters, new Comparator<FileFilter>() {
 			public int compare(FileFilter f1, FileFilter f2) {
 	            return f1.getDescription().compareToIgnoreCase(f2.getDescription());
             }
@@ -67,9 +71,9 @@ public class ExportController implements IExtension{
 
 	public void createImageExporters() {
 		final ExportToImage pngExport = new ExportToImage("png","Portable Network Graphic (PNG)");
-		addExportEngine(pngExport.getFileFilter(), pngExport);
+		addMapExportEngine(pngExport.getFileFilter(), pngExport);
 		final ExportToImage jpgExport = new ExportToImage("jpg","Compressed image (JPEG)");
-		addExportEngine(jpgExport.getFileFilter(), jpgExport);
+		addMapExportEngine(jpgExport.getFileFilter(), jpgExport);
 	}
 	
 	private void createXSLTExportActions( final String xmlDescriptorFile) {
@@ -88,7 +92,10 @@ public class ExportController implements IExtension{
 				final XMLElement xmlProperties = descriptor.getFirstChildNamed("properties");
 				final Properties properties = xmlProperties.getAttributes();
 				final ExportWithXSLT action = new ExportWithXSLT(name, properties);
-				addExportEngine(action.getFileFilter(), action);
+				FileFilter fileFilter = action.getFileFilter();
+				addMapExportEngine(fileFilter, action);
+				if(Boolean.parseBoolean(properties.getProperty("branch_export")))
+					addBranchExportEngine(fileFilter, action);
 			}
 		}
 		catch (final Exception e) {
@@ -99,27 +106,35 @@ public class ExportController implements IExtension{
 		}
 	}
 
-	public void addExportEngine(final FileFilter filter, final IExportEngine exporter) {
-		for (final IExportEngine existingExporter : filterMap.values())
+	public void addMapExportEngine(final FileFilter filter, final IExportEngine exporter) {
+		if (! mapExportEngines.values().contains(exporter))
 		{
-			if (existingExporter.equals(exporter))
-			{
-				return;
-			}
+			mapExportFileFilters.add(filter);
+			mapExportEngines.put(filter, exporter);
 		}
-	    fileFilters.add(filter);
-		filterMap.put(filter, exporter);
     }
 
-	/** returns a Map(description -> xsltFile). */
-	public HashMap<FileFilter, IExportEngine> getFilterMap() {
-    	return filterMap;
-    }
+	public void addBranchExportEngine(final FileFilter filter, final IExportEngine exporter) {
+		if (! branchExportEngines.values().contains(exporter))
+		{
+			branchExportFileFilters.add(filter);
+			branchExportEngines.put(filter, exporter);
+		}
+	}
+	public HashMap<FileFilter, IExportEngine> getMapExportEngines() {
+		return mapExportEngines;
+	}
+	public HashMap<FileFilter, IExportEngine> getBranchExportEngines() {
+		return branchExportEngines;
+	}
 
-	/** returns a list of all appropriate FileFilters for a FileChooser. */
-	public List<FileFilter> getFileFilters() {
-    	return fileFilters;
-    }
+	public List<FileFilter> getMapExportFileFilters() {
+		return mapExportFileFilters;
+	}
+
+	public List<FileFilter> getBranchExportFileFilters() {
+		return branchExportFileFilters;
+	}
 
 	public static ExportController getContoller() {
 		return getController(Controller.getCurrentModeController());

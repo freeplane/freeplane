@@ -5,10 +5,7 @@ package org.freeplane.plugin.script.proxy;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import javax.swing.Icon;
 import javax.swing.filechooser.FileFilter;
@@ -24,6 +21,7 @@ import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.export.mindmapmode.IExportEngine;
+import org.freeplane.features.export.mindmapmode.MapXmlWriter;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.factory.MindIconFactory;
 import org.freeplane.features.map.MapModel;
@@ -263,7 +261,7 @@ class ControllerProxy implements Proxy.Controller {
     @Override
 	public List<String> getExportTypeDescriptions() {
         final ArrayList<String> list = new ArrayList<String>();
-        for (FileFilter fileFilter : ExportController.getContoller().getFileFilters()) {
+        for (FileFilter fileFilter : ExportController.getContoller().getMapExportFileFilters()) {
             list.add(fileFilter.getDescription());
         }
         return list;
@@ -271,7 +269,8 @@ class ControllerProxy implements Proxy.Controller {
 
     @Override
 	public void export(Map map, File destFile, String exportTypeDescription, boolean overwriteExisting) {
-        final FileFilter filter = findExportFileFilterByDescription(exportTypeDescription);
+		List<FileFilter> fileFilters = ExportController.getContoller().getMapExportFileFilters();
+		final FileFilter filter = findExportFileFilterByDescription(fileFilters, exportTypeDescription);
         if (filter == null) {
             throw new IllegalArgumentException("no export defined for '" + exportTypeDescription + "'");
         }
@@ -279,15 +278,16 @@ class ControllerProxy implements Proxy.Controller {
             throw new RuntimeException("destination file " + destFile.getAbsolutePath()
                     + " already exists - set overwriteExisting to true?");
         }
-        else {
-            final IExportEngine exportEngine = ExportController.getContoller().getFilterMap().get(filter);
-            exportEngine.export(((MapProxy) map).getDelegate(), destFile);
-            LogUtils.info("exported " + map.getFile() + " to " + destFile.getAbsolutePath());
-        }
+		HashMap<FileFilter, IExportEngine> exportEngines = ExportController.getContoller().getMapExportEngines();
+		final IExportEngine exportEngine = exportEngines.get(filter);
+		MapModel mapDelegate = ((MapProxy) map).getDelegate();
+		MapXmlWriter mapXmlWriter = new MapXmlWriter(mapDelegate);
+		exportEngine.export(mapDelegate, mapXmlWriter, destFile);
+		LogUtils.info("exported " + map.getFile() + " to " + destFile.getAbsolutePath());
     }
 
-    private FileFilter findExportFileFilterByDescription(String exportTypeDescription) {
-        for (FileFilter fileFilter : ExportController.getContoller().getFileFilters()) {
+    private FileFilter findExportFileFilterByDescription(List<FileFilter> fileFilters, String exportTypeDescription) {
+		for (FileFilter fileFilter : fileFilters) {
             if (fileFilter.getDescription().equals(exportTypeDescription))
                 return fileFilter;
         }

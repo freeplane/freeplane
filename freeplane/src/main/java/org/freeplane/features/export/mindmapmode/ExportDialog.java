@@ -23,6 +23,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -60,6 +63,7 @@ public class ExportDialog {
 	private static final String LAST_CHOOSEN_EXPORT_FILE_FILTER = "lastChoosenExportFileFilter";
 	/** the JFileChooser dialog used to choose filter and the file to export to. */
 	final private JFileChooser fileChooser = new JFileChooser();
+	final private Map<FileFilter, IExportEngine> exportEngines;
 
 	/**
 	 * This constructor does <i>not</i> the export per itself.
@@ -67,13 +71,13 @@ public class ExportDialog {
 	 * (especially the {@link JFileChooser#getChoosableFileFilters() choosable
 	 * file filters}).
 	 */
-	public ExportDialog() {
+	public ExportDialog(List<FileFilter> fileFilters, Map<FileFilter, IExportEngine> exportEngines) {
 		super();
+		this.exportEngines = exportEngines;
 		fileChooser.setAcceptAllFileFilterUsed(false); // the user can't select an "All Files filter"
 		fileChooser.setDialogTitle(TextUtils.getText("export_using_xslt"));
 		fileChooser.setToolTipText(TextUtils.getText("select_file_export_to"));
-		final ExportController  exportEngineRegistry = ExportController.getContoller();
-		for (FileFilter filter : exportEngineRegistry.getFileFilters()) {
+		for (FileFilter filter : fileFilters) {
 	        fileChooser.addChoosableFileFilter(filter);
         }
 		preselectFileFilter();
@@ -92,18 +96,8 @@ public class ExportDialog {
 		fileChooser.setFileFilter(fileFilter);
 	}
 
-	/**
-	 * A function to call again and again in order to export the same XML source file.
-	 * @see #export(Component)
-	 */
-	/**
-	 * A function to call again and again in order to export the same XML source file.
-	 * @param parentframe a parent component for the dialogs to appear (can be null).
-	 * @param streamSource 
-	 */
-	void export(final Component parentframe, final MapModel map) {
-		final ExportController exportEngineRegistry = ExportController.getContoller();
-		if (exportEngineRegistry.getFilterMap().isEmpty()) {
+	void export(final Component parentframe, final MapModel map, ExportedXmlWriter xmlWriter) {
+		if (exportEngines.isEmpty()) {
 			JOptionPane.showMessageDialog(parentframe, TextUtils.getText("xslt_export_not_possible"));
 			return;
 		}
@@ -186,8 +180,8 @@ public class ExportDialog {
 						return;
 					}
 				}
-				final IExportEngine exportEngine = exportEngineRegistry.getFilterMap().get(fileFilter);
-				exportEngine.export(map, selectedFile);
+				final IExportEngine exportEngine = exportEngines.get(fileFilter);
+				exportEngine.export(map, xmlWriter, selectedFile);
 			}
 		}
 		finally {

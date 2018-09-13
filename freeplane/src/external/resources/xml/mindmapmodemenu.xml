@@ -78,7 +78,8 @@
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="ExportAction" />
-			<Entry name="ExportBranchAction" accelerator="alt shift A" />
+            <Entry name="ExportBranchesAction"/>
+            <Entry name="ExportBranchAction"  accelerator="alt shift A" />
 			<Entry name="import">
 				<Entry name="ImportBranchAction" />
 				<Entry name="ImportLinkedBranchAction" />

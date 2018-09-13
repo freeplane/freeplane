@@ -34,11 +34,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.*;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
@@ -255,9 +251,13 @@ public class ClipboardController implements IExtension {
 	}
 
 	public void saveHTML(final NodeModel rootNodeOfBranch, final File file) throws IOException {
+		saveHTML(Collections.singletonList(rootNodeOfBranch), file);
+	}
+
+	public void saveHTML(final List<NodeModel> branchRootNodes, final File file) throws IOException {
 		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
 		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(Controller.getCurrentModeController().getMapController(), fileout);
-		htmlWriter.writeHTML(rootNodeOfBranch);
+		htmlWriter.writeHTML(branchRootNodes);
 	}
 
 	public boolean saveTXT(final NodeModel rootNodeOfBranch, final File file) {

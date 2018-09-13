@@ -30,6 +30,7 @@ import org.apache.batik.svggen.SVGGraphics2D;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.export.mindmapmode.ExportController;
+import org.freeplane.features.export.mindmapmode.ExportedXmlWriter;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
@@ -38,7 +39,7 @@ import org.w3c.dom.Document;
 class ExportSvg extends ExportVectorGraphic {
 	private static final String SVG_EMBED_FONTS = "org.freeplane.plugin.svg.export.svg.embed_fonts";
 
-	public void export(MapModel map, File chosenFile) {
+	public void export(MapModel map, ExportedXmlWriter xmlWriter, File chosenFile) {
 		if (!ExportController.getContoller().checkCurrentMap(map)){
 			return;
 		}

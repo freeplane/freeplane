@@ -130,12 +130,12 @@ public class ExportWithXSLT implements IExportEngine {
 		return success;
 	}
 
-	private boolean copyMap(final MapModel map, final String pDirectoryName, final Mode mode) {
+	private boolean copyMap(ExportedXmlWriter xmlWriter, final String pDirectoryName, final Mode mode) {
 		boolean success = true;
 		try {
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
 			    pDirectoryName + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION)));
-			Controller.getCurrentModeController().getMapController().getFilteredXml(map, fileout, mode, Mode.EXPORT.equals(mode));
+			xmlWriter.writeXml(fileout, mode);
 		}
 		catch (final IOException e) {
 			success = false;
@@ -181,12 +181,12 @@ public class ExportWithXSLT implements IExportEngine {
 	 * @param mode
 	 * @throws IOException
 	 */
-	private String getMapXml(final Mode mode) throws IOException {
+	private String getMapXml(ExportedXmlWriter xmlWriter, final Mode mode) throws IOException {
 		final StringWriter writer = new StringWriter();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final Controller controller = modeController.getController();
 		final MapModel map = controller.getMap();
-		modeController.getMapController().getFilteredXml(map, writer, mode, Mode.EXPORT.equals(mode));
+		xmlWriter.writeXml(writer, mode);
 		return writer.getBuffer().toString();
 	}
 
@@ -222,7 +222,7 @@ public class ExportWithXSLT implements IExportEngine {
 	/**
 	 * @param saveFile
 	 */
-	public void export(final MapModel map, final File saveFile) {
+	public void export(final MapModel map, ExportedXmlWriter xmlWriter, final File saveFile) {
 		try {
 			mTransformResultWithoutError = true;
 			final boolean create_image = StringUtils.equals(getProperty("create_html_linked_image"), "true");
@@ -230,7 +230,7 @@ public class ExportWithXSLT implements IExportEngine {
 			final String xsltFileName = getProperty("xslt_file");
 			final Mode mode = Mode.valueOf(getProperty("mode", Mode.EXPORT.name()));
 			String[] parameters = getProperty("set_properties", "").split(",\\s*");
-			boolean success = transformMapWithXslt(xsltFileName, saveFile, areaCode, mode, parameters);
+			boolean success = transformMapWithXslt(xmlWriter, xsltFileName, saveFile, areaCode, mode, parameters);
 			if (!success) {
 				JOptionPane.showMessageDialog(UITools.getCurrentRootComponent(), getProperty("error_applying_template"), "Freeplane",
 				    JOptionPane.ERROR_MESSAGE);
@@ -251,9 +251,9 @@ public class ExportWithXSLT implements IExportEngine {
 	                String copyМapХsltFile = getProperty("copy_map_xslt_file");
 	                final Mode copymode = Mode.valueOf(getProperty("copymode", Mode.EXPORT.name()));
 					if (copyМapХsltFile != null){
-	                    success = transformMapWithXslt(copyМapХsltFile, new File(directoryName, "map.mm"), "", copymode, new String[]{});
+	                    success = transformMapWithXslt(xmlWriter, copyМapХsltFile, new File(directoryName, "map.mm"), "", copymode, new String[]{});
 					} else {
-						success = copyMap(map, directoryName, copymode);
+						success = copyMap(xmlWriter, directoryName, copymode);
 					}
 				}
 				if (success && create_image) {
@@ -275,10 +275,10 @@ public class ExportWithXSLT implements IExportEngine {
 		}
 	}
 
-	private boolean transformMapWithXslt(final String xsltFileName, final File saveFile, final String areaCode,
+	private boolean transformMapWithXslt(ExportedXmlWriter xmlWriter, final String xsltFileName, final File saveFile, final String areaCode,
                                          final Mode mode, String[] parameters) throws IOException,
             TransformerFactoryConfigurationError {
-	    final String map = getMapXml(mode);
+	    final String map = getMapXml(xmlWriter, mode);
 		final StringReader reader = new StringReader(map);
 		ResourceController resourceController = ResourceController.getResourceController();
 		final URL xsltUrl = resourceController.getResource(xsltFileName);

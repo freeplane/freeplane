@@ -65,6 +65,9 @@ public class ExportToImage implements IExportEngine {
 		this.imageDescripton = imageDescripton;
 	}
 
+	public void export(MapModel map, ExportedXmlWriter xmlWriter, File toFile) {
+		export(map, toFile);
+	}
 	public void export(MapModel map, File toFile) {
 		export(map, null, null, null, toFile);
 	}
@@ -85,10 +88,7 @@ public class ExportToImage implements IExportEngine {
 				BigBufferedImage.dispose(image);
 		}
 	}
-	/**
-	 * Export image.
-	 * @param toFile 
-	 */
+
 	public boolean exportToImage(final RenderedImage image, File chosenFile) {
 		try {
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);

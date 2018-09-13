@@ -28,8 +28,8 @@ public class Activator implements BundleActivator {
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(ModeController modeController) {
 			    	final ExportController exportController = ExportController.getController(modeController);
-			    	exportController.addExportEngine(new ExampleFileFilter("pdf", TextUtils.getText("export_pdf_text")), new ExportPdf());
-			    	exportController.addExportEngine(new ExampleFileFilter("svg", TextUtils.getText("export_svg_text")), new ExportSvg());
+			    	exportController.addMapExportEngine(new ExampleFileFilter("pdf", TextUtils.getText("export_pdf_text")), new ExportPdf());
+			    	exportController.addMapExportEngine(new ExampleFileFilter("svg", TextUtils.getText("export_svg_text")), new ExportSvg());
 				    final ViewerController extension = (ViewerController) modeController
 				        .getExtension(ViewerController.class);
 				    extension.addFactory(new SvgViewerFactory());

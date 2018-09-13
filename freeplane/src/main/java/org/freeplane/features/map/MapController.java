@@ -654,8 +654,14 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	public void getFilteredXml(final MapModel map, final Writer fileout, final Mode mode, final boolean forceFormat)
-	        throws IOException {
+			throws IOException {
 		getMapWriter().writeMapAsXml(map, fileout, mode, false, forceFormat);
+	}
+
+	public void getFilteredXml(Collection<NodeModel> nodes, final Writer fileout, final Mode mode, final boolean forceFormat)
+			throws IOException {
+		for(NodeModel node :nodes)
+		getMapWriter().writeNodeAsXml(fileout, node, mode, false, true, forceFormat);
 	}
 
 	public MapReader getMapReader() {

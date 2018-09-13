@@ -84,9 +84,9 @@ public class XsltExportEngine implements IExportEngine {
 	
 	final private File xsltFile;
 	
-	public void export(MapModel map, File toFile) {
+	public void export(MapModel map, ExportedXmlWriter xmlWriter, File toFile) {
 		final Source xsltSource = new StreamSource(xsltFile);
-		final Source xmlSource = getMapXml(map);
+		final Source xmlSource = getMapXml(xmlWriter);
 		FileOutputStream outputStream = null;
 		final XsltExportPolicy xsltExportPolicy = new XsltExportPolicy();
         try {
@@ -113,19 +113,11 @@ public class XsltExportEngine implements IExportEngine {
         	}
         }
 	}
-	/**
-	 * @param mode 
-	 * @throws IOException
-	 */
-	private StreamSource getMapXml(final MapModel map) {
+
+	private StreamSource getMapXml(final ExportedXmlWriter xmlWriter) {
 		final StringWriter writer = new StringWriter();
 		final ModeController modeController = Controller.getCurrentModeController();
-		try {
-			modeController.getMapController().getFilteredXml(map, writer, Mode.EXPORT, true);
-		}
-		catch (final IOException e) {
-			e.printStackTrace();
-		}
+		xmlWriter.writeXml(writer, Mode.EXPORT);
 		final StringReader stringReader = new StringReader(writer.getBuffer().toString());
 		return new StreamSource(stringReader);
 	}

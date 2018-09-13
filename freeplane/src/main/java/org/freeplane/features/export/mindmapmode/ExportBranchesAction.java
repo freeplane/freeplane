@@ -17,38 +17,41 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
-import java.awt.event.ActionEvent;
-
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+
+import java.awt.event.ActionEvent;
+import java.util.List;
 
 /**
  * @author foltin To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
-class ExportAction extends AFreeplaneAction {
+class ExportBranchesAction extends AFreeplaneAction {
 	private ExportDialog exp = null;
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ExportAction() {
-		super("ExportAction");
+	public ExportBranchesAction() {
+		super("ExportBranchesAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		if(exp == null){
 			final ExportController exportEngineRegistry = ExportController.getContoller();
-			exp = new ExportDialog(exportEngineRegistry.getMapExportFileFilters(), exportEngineRegistry.getMapExportEngines());
+			exp = new ExportDialog(exportEngineRegistry.getBranchExportFileFilters(), exportEngineRegistry.getBranchExportEngines());
 		}
 		final MapModel map = Controller.getCurrentController().getMap();
 		if (map == null) {
 			return;
 		}
-		exp.export(UITools.getCurrentRootComponent(), map, new MapXmlWriter(map));
+		final List<NodeModel> branches = Controller.getCurrentController().getSelection().getSortedSelection(true);
+		exp.export(UITools.getCurrentRootComponent(), map, new BranchXmlWriter(branches));
 	}
 
 }

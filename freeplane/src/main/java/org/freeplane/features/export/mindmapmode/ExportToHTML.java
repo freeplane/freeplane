@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
@@ -33,18 +34,21 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 
-class ExportBranchToHTMLAction implements IExportEngine {
-
-	public ExportBranchToHTMLAction() {
+class ExportToHTML implements IExportEngine {
+	public ExportToHTML() {
+		super();
 	}
 
-	public void export(MapModel map, File file) {
-		if (! ExportController.getContoller().checkCurrentMap(map)){
-			return;
-		}
+	public FileFilter getFileFilter() {
+		return new ExampleFileFilter("html", TextUtils.getText("ExportToHTMLAction.text"));
+    }
+	public void export(MapModel map, ExportedXmlWriter xmlWriter, File file) {
 		try {
-			ClipboardController.getController().saveHTML(
-			    Controller.getCurrentModeController().getMapController().getSelectedNode(), file);
+			ClipboardController.getController().saveHTML(map.getRootNode(), file);
+			if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
+				ExportWithXSLT.copyIconsToDirectory(map, new File(file.getAbsoluteFile().getParentFile(), "icons")
+				    .getAbsolutePath());
+			}
 			((UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class))
 			    .loadURL(file.toURI());
 		}
@@ -54,7 +58,4 @@ class ExportBranchToHTMLAction implements IExportEngine {
 		}
 	}
 
-	public FileFilter getFileFilter() {
-	    return new ExampleFileFilter("html", TextUtils.getText("ExportBranchToHTMLAction.text"));
-    }
 }

@@ -35,6 +35,7 @@ import org.apache.fop.svg.PDFTranscoder;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.export.mindmapmode.ExportController;
+import org.freeplane.features.export.mindmapmode.ExportedXmlWriter;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
@@ -50,7 +51,7 @@ class ExportPdf extends ExportVectorGraphic {
 	public ExportPdf() {
 	}
 
-	public void export(MapModel map, File chosenFile) {
+	public void export(MapModel map, ExportedXmlWriter xmlWriter, File chosenFile) {
 		if (!ExportController.getContoller().checkCurrentMap(map)){
 			return;
 		}
