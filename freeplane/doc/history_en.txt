@@ -14,6 +14,7 @@ Update Groovy to version 2.5.2
 Update JLatexMath to versin 1.0.7
 Update batik to version 2.10
 Java 11 compatibility (wip)
+Export for selected branches only
 
 ===============================
 1.6.16
