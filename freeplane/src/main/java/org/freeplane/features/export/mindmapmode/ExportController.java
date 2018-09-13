@@ -40,6 +40,7 @@ public class ExportController implements IExtension{
 
 	final private HashMap<FileFilter, IExportEngine> branchExportEngines = new HashMap<FileFilter, IExportEngine>();
 	final private ArrayList<FileFilter> branchExportFileFilters = new ArrayList<FileFilter>();
+	private boolean fileFiltersSorted;
 
 	public static void install(ExportController exportController) {
 	    Controller.getCurrentModeController().addExtension(ExportController.class, exportController);
@@ -62,11 +63,20 @@ public class ExportController implements IExtension{
 		createImageExporters();
 		createXSLTExportActions(xmlDescriptorFile);
 		new XsltExportEngineFactory().gatherXsltScripts(this);
-		Collections.sort(mapExportFileFilters, new Comparator<FileFilter>() {
-			public int compare(FileFilter f1, FileFilter f2) {
-	            return f1.getDescription().compareToIgnoreCase(f2.getDescription());
-            }
-		});
+		fileFiltersSorted = false;
+	}
+
+	private void sortFileFilters() {
+		if (! fileFiltersSorted) {
+			fileFiltersSorted = true;
+			Comparator<FileFilter> fileFilterComparator = new Comparator<FileFilter>() {
+				public int compare(FileFilter f1, FileFilter f2) {
+					return f1.getDescription().compareToIgnoreCase(f2.getDescription());
+				}
+			};
+			Collections.sort(mapExportFileFilters, fileFilterComparator);
+			Collections.sort(branchExportFileFilters, fileFilterComparator);
+		}
 	}
 
 	public void createImageExporters() {
@@ -111,6 +121,7 @@ public class ExportController implements IExtension{
 		{
 			mapExportFileFilters.add(filter);
 			mapExportEngines.put(filter, exporter);
+			fileFiltersSorted = false;
 		}
     }
 
@@ -119,6 +130,7 @@ public class ExportController implements IExtension{
 		{
 			branchExportFileFilters.add(filter);
 			branchExportEngines.put(filter, exporter);
+			fileFiltersSorted = false;
 		}
 	}
 	public HashMap<FileFilter, IExportEngine> getMapExportEngines() {
@@ -129,10 +141,12 @@ public class ExportController implements IExtension{
 	}
 
 	public List<FileFilter> getMapExportFileFilters() {
+		sortFileFilters();
 		return mapExportFileFilters;
 	}
 
 	public List<FileFilter> getBranchExportFileFilters() {
+		sortFileFilters();
 		return branchExportFileFilters;
 	}
 
