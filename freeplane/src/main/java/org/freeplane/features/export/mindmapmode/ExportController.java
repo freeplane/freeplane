@@ -160,10 +160,10 @@ public class ExportController implements IExtension{
     }
 
     ExportDialog createMapExportDialog() {
-        return new ExportDialog(getMapExportFileFilters(), getMapExportEngines());
+        return new ExportDialog(getMapExportFileFilters(), getMapExportEngines(), ExportDialog.EXPORT_MAP_TITLE);
     }
 
 	ExportDialog createBranchExportDialog() {
-		return new ExportDialog(getBranchExportFileFilters(), getBranchExportEngines());
+		return new ExportDialog(getBranchExportFileFilters(), getBranchExportEngines(), ExportDialog.EXPORT_BRANCHES_TITLE);
 	}
 }

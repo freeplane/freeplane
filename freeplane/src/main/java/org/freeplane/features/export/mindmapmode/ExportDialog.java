@@ -58,6 +58,8 @@ import java.util.Map;
  */
 public class ExportDialog {
 	private static final String LAST_CHOOSEN_EXPORT_FILE_FILTER = "lastChoosenExportFileFilter";
+	public static final String EXPORT_MAP_TITLE = "ExportAction.text";
+	public static final String EXPORT_BRANCHES_TITLE = "ExportBranches.text";
 	/** the JFileChooser dialog used to choose filter and the file to export to. */
 	final private JFileChooser fileChooser = new JFileChooser();
 	final private Map<FileFilter, IExportEngine> exportEngines;
@@ -68,11 +70,11 @@ public class ExportDialog {
 	 * (especially the {@link JFileChooser#getChoosableFileFilters() choosable
 	 * file filters}).
 	 */
-	ExportDialog(List<FileFilter> fileFilters, Map<FileFilter, IExportEngine> exportEngines) {
+	ExportDialog(List<FileFilter> fileFilters, Map<FileFilter, IExportEngine> exportEngines, String dialogTitle) {
 		super();
 		this.exportEngines = exportEngines;
 		fileChooser.setAcceptAllFileFilterUsed(false); // the user can't select an "All Files filter"
-		fileChooser.setDialogTitle(TextUtils.getText("export_using_xslt"));
+		fileChooser.setDialogTitle(TextUtils.getText(dialogTitle));
 		fileChooser.setToolTipText(TextUtils.getText("select_file_export_to"));
 		for (FileFilter filter : fileFilters) {
 	        fileChooser.addChoosableFileFilter(filter);
