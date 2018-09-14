@@ -1,9 +1,10 @@
 package org.freeplane.features.export.mindmapmode;
 
-import java.io.File;
+import org.freeplane.features.map.NodeModel;
 
-import org.freeplane.features.map.MapModel;
+import java.io.File;
+import java.util.List;
 
 public interface IExportEngine {
-	public void export(MapModel map, ExportedXmlWriter xmlWriter, File toFile);
+	public void export(List<NodeModel> nodes, File toFile);
 }

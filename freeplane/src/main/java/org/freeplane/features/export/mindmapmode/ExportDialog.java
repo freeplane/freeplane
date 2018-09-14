@@ -17,26 +17,23 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
-import java.awt.Component;
-import java.awt.EventQueue;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class uses the JFileChooser dialog to allow users to choose a file name to
@@ -71,7 +68,7 @@ public class ExportDialog {
 	 * (especially the {@link JFileChooser#getChoosableFileFilters() choosable
 	 * file filters}).
 	 */
-	public ExportDialog(List<FileFilter> fileFilters, Map<FileFilter, IExportEngine> exportEngines) {
+	ExportDialog(List<FileFilter> fileFilters, Map<FileFilter, IExportEngine> exportEngines) {
 		super();
 		this.exportEngines = exportEngines;
 		fileChooser.setAcceptAllFileFilterUsed(false); // the user can't select an "All Files filter"
@@ -96,7 +93,7 @@ public class ExportDialog {
 		fileChooser.setFileFilter(fileFilter);
 	}
 
-	void export(final Component parentframe, final MapModel map, ExportedXmlWriter xmlWriter) {
+	void export(final Component parentframe, List<NodeModel> branches) {
 		if (exportEngines.isEmpty()) {
 			JOptionPane.showMessageDialog(parentframe, TextUtils.getText("xslt_export_not_possible"));
 			return;
@@ -104,6 +101,7 @@ public class ExportDialog {
 		// Finish to setup the File Chooser...
 		// And then use it
 		final String absolutePathWithoutExtension;
+		MapModel map = branches.get(0).getMap();
 		final File xmlSourceFile = map.getFile();
 		if (xmlSourceFile != null) {
 			absolutePathWithoutExtension = FileUtils.removeExtension(xmlSourceFile.getAbsolutePath());
@@ -181,7 +179,7 @@ public class ExportDialog {
 					}
 				}
 				final IExportEngine exportEngine = exportEngines.get(fileFilter);
-				exportEngine.export(map, xmlWriter, selectedFile);
+				exportEngine.export(branches, selectedFile);
 			}
 		}
 		finally {

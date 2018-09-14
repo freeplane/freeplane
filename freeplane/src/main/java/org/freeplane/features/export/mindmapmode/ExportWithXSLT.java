@@ -17,36 +17,6 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
-import java.awt.image.RenderedImage;
-import java.io.BufferedInputStream;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Properties;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
-import javax.swing.ListModel;
-import javax.swing.filechooser.FileFilter;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
@@ -58,9 +28,27 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.xml.transform.*;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.awt.image.RenderedImage;
+import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.List;
+import java.util.Properties;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author foltin To change the template for this generated type comment go to
@@ -130,12 +118,12 @@ public class ExportWithXSLT implements IExportEngine {
 		return success;
 	}
 
-	private boolean copyMap(ExportedXmlWriter xmlWriter, final String pDirectoryName, final Mode mode) {
+	private boolean copyMap(List<NodeModel> branches, final String pDirectoryName, final Mode mode) {
 		boolean success = true;
 		try {
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
 			    pDirectoryName + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION)));
-			xmlWriter.writeXml(fileout, mode);
+			new BranchXmlWriter(branches).writeXml(fileout, mode);
 		}
 		catch (final IOException e) {
 			success = false;
@@ -177,16 +165,12 @@ public class ExportWithXSLT implements IExportEngine {
 		return areaCode;
 	}
 
-	/**
-	 * @param mode
-	 * @throws IOException
-	 */
-	private String getMapXml(ExportedXmlWriter xmlWriter, final Mode mode) throws IOException {
+	private String getMapXml(List<NodeModel> nodes, final Mode mode) throws IOException {
 		final StringWriter writer = new StringWriter();
 		final ModeController modeController = Controller.getCurrentModeController();
 		final Controller controller = modeController.getController();
 		final MapModel map = controller.getMap();
-		xmlWriter.writeXml(writer, mode);
+		new BranchXmlWriter(nodes).writeXml(writer, mode);
 		return writer.getBuffer().toString();
 	}
 
@@ -222,7 +206,7 @@ public class ExportWithXSLT implements IExportEngine {
 	/**
 	 * @param saveFile
 	 */
-	public void export(final MapModel map, ExportedXmlWriter xmlWriter, final File saveFile) {
+	public void export(List<NodeModel> nodes, final File saveFile) {
 		try {
 			mTransformResultWithoutError = true;
 			final boolean create_image = StringUtils.equals(getProperty("create_html_linked_image"), "true");
@@ -230,7 +214,7 @@ public class ExportWithXSLT implements IExportEngine {
 			final String xsltFileName = getProperty("xslt_file");
 			final Mode mode = Mode.valueOf(getProperty("mode", Mode.EXPORT.name()));
 			String[] parameters = getProperty("set_properties", "").split(",\\s*");
-			boolean success = transformMapWithXslt(xmlWriter, xsltFileName, saveFile, areaCode, mode, parameters);
+			boolean success = transformMapWithXslt(nodes, xsltFileName, saveFile, areaCode, mode, parameters);
 			if (!success) {
 				JOptionPane.showMessageDialog(UITools.getCurrentRootComponent(), getProperty("error_applying_template"), "Freeplane",
 				    JOptionPane.ERROR_MESSAGE);
@@ -244,6 +228,7 @@ public class ExportWithXSLT implements IExportEngine {
 					final String filePrefix = getProperty("file_prefix");
 					copyFilesFromResourcesToDirectory(directoryName, filePrefix, files);
 				}
+				MapModel map = nodes.get(0).getMap();
 				if (success && StringUtils.equals(getProperty("copy_icons"), "true")) {
 					success = copyIcons(map, directoryName);
 				}
@@ -251,9 +236,9 @@ public class ExportWithXSLT implements IExportEngine {
 	                String copyМapХsltFile = getProperty("copy_map_xslt_file");
 	                final Mode copymode = Mode.valueOf(getProperty("copymode", Mode.EXPORT.name()));
 					if (copyМapХsltFile != null){
-	                    success = transformMapWithXslt(xmlWriter, copyМapХsltFile, new File(directoryName, "map.mm"), "", copymode, new String[]{});
+	                    success = transformMapWithXslt(nodes, copyМapХsltFile, new File(directoryName, "map.mm"), "", copymode, new String[]{});
 					} else {
-						success = copyMap(xmlWriter, directoryName, copymode);
+						success = copyMap(nodes, directoryName, copymode);
 					}
 				}
 				if (success && create_image) {
@@ -275,10 +260,10 @@ public class ExportWithXSLT implements IExportEngine {
 		}
 	}
 
-	private boolean transformMapWithXslt(ExportedXmlWriter xmlWriter, final String xsltFileName, final File saveFile, final String areaCode,
-                                         final Mode mode, String[] parameters) throws IOException,
+	private boolean transformMapWithXslt(List<NodeModel> nodes, final String xsltFileName, final File saveFile, final String areaCode,
+										 final Mode mode, String[] parameters) throws IOException,
             TransformerFactoryConfigurationError {
-	    final String map = getMapXml(xmlWriter, mode);
+	    final String map = getMapXml(nodes, mode);
 		final StringReader reader = new StringReader(map);
 		ResourceController resourceController = ResourceController.getResourceController();
 		final URL xsltUrl = resourceController.getResource(xsltFileName);

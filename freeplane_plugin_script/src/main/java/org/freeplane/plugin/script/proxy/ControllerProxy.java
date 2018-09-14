@@ -3,13 +3,7 @@
  */
 package org.freeplane.plugin.script.proxy;
 
-import java.io.File;
-import java.net.URL;
-import java.util.*;
-
-import javax.swing.Icon;
-import javax.swing.filechooser.FileFilter;
-
+import groovy.lang.Closure;
 import org.freeplane.api.Map;
 import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
@@ -21,7 +15,6 @@ import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.export.mindmapmode.IExportEngine;
-import org.freeplane.features.export.mindmapmode.MapXmlWriter;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.factory.MindIconFactory;
 import org.freeplane.features.map.MapModel;
@@ -36,7 +29,11 @@ import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.plugin.script.ScriptContext;
 
-import groovy.lang.Closure;
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.io.File;
+import java.net.URL;
+import java.util.*;
 
 class ControllerProxy implements Proxy.Controller {
 	private final ScriptContext scriptContext;
@@ -281,8 +278,7 @@ class ControllerProxy implements Proxy.Controller {
 		HashMap<FileFilter, IExportEngine> exportEngines = ExportController.getContoller().getMapExportEngines();
 		final IExportEngine exportEngine = exportEngines.get(filter);
 		MapModel mapDelegate = ((MapProxy) map).getDelegate();
-		MapXmlWriter mapXmlWriter = new MapXmlWriter(mapDelegate);
-		exportEngine.export(mapDelegate, mapXmlWriter, destFile);
+		exportEngine.export(Collections.singletonList(mapDelegate.getRootNode()), destFile);
 		LogUtils.info("exported " + map.getFile() + " to " + destFile.getAbsolutePath());
     }
 

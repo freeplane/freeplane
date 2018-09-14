@@ -1,14 +1,12 @@
 package org.freeplane.features.export.mindmapmode;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FilePermission;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.security.Permission;
-import java.security.Policy;
-import java.security.ProtectionDomain;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -16,14 +14,11 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.MapWriter.Mode;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
+import java.io.*;
+import java.security.Permission;
+import java.security.Policy;
+import java.security.ProtectionDomain;
+import java.util.List;
 
 public class XsltExportEngine implements IExportEngine {
 	
@@ -84,9 +79,9 @@ public class XsltExportEngine implements IExportEngine {
 	
 	final private File xsltFile;
 	
-	public void export(MapModel map, ExportedXmlWriter xmlWriter, File toFile) {
+	public void export(List<NodeModel> branches, File toFile) {
 		final Source xsltSource = new StreamSource(xsltFile);
-		final Source xmlSource = getMapXml(xmlWriter);
+		final Source xmlSource = getMapXml(branches);
 		FileOutputStream outputStream = null;
 		final XsltExportPolicy xsltExportPolicy = new XsltExportPolicy();
         try {
@@ -114,10 +109,10 @@ public class XsltExportEngine implements IExportEngine {
         }
 	}
 
-	private StreamSource getMapXml(final ExportedXmlWriter xmlWriter) {
+	private StreamSource getMapXml(final List<NodeModel> branches) {
 		final StringWriter writer = new StringWriter();
 		final ModeController modeController = Controller.getCurrentModeController();
-		xmlWriter.writeXml(writer, Mode.EXPORT);
+		new BranchXmlWriter(branches).writeXml(writer, Mode.EXPORT);
 		final StringReader stringReader = new StringReader(writer.getBuffer().toString());
 		return new StreamSource(stringReader);
 	}

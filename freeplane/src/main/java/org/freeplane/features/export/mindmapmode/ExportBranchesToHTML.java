@@ -19,33 +19,27 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-import javax.swing.filechooser.FileFilter;
-
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
+
+import javax.swing.filechooser.FileFilter;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 class ExportBranchesToHTML implements IExportEngine {
 
 	public ExportBranchesToHTML() {
 	}
 
-	public void export(MapModel map, ExportedXmlWriter xmlWriter, File file) {
-		if (! ExportController.getContoller().checkCurrentMap(map)){
-			return;
-		}
+	public void export(List<NodeModel> branches, File file) {
 		try {
-			final List<NodeModel> branches = Controller.getCurrentController().getSelection().getSortedSelection(true);
 			ClipboardController.getController().saveHTML(branches, file);
 			((UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class))
 			    .loadURL(file.toURI());

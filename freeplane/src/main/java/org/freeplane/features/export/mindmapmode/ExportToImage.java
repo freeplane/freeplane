@@ -17,25 +17,6 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Iterator;
-
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageTypeSpecifier;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.metadata.IIOInvalidTreeException;
-import javax.imageio.metadata.IIOMetadata;
-import javax.imageio.metadata.IIOMetadataNode;
-import javax.imageio.stream.ImageOutputStream;
-import javax.swing.filechooser.FileFilter;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
@@ -46,6 +27,21 @@ import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+
+import javax.imageio.*;
+import javax.imageio.metadata.IIOInvalidTreeException;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataNode;
+import javax.imageio.stream.ImageOutputStream;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author foltin
@@ -65,8 +61,8 @@ public class ExportToImage implements IExportEngine {
 		this.imageDescripton = imageDescripton;
 	}
 
-	public void export(MapModel map, ExportedXmlWriter xmlWriter, File toFile) {
-		export(map, toFile);
+	public void export(List<NodeModel> nodes, File toFile) {
+		export(nodes.get(0).getMap(), toFile);
 	}
 	public void export(MapModel map, File toFile) {
 		export(map, null, null, null, toFile);

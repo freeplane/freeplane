@@ -43,15 +43,15 @@ class ExportBranchesAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		if(exp == null){
-			final ExportController exportEngineRegistry = ExportController.getContoller();
-			exp = new ExportDialog(exportEngineRegistry.getBranchExportFileFilters(), exportEngineRegistry.getBranchExportEngines());
+			final ExportController exportController = ExportController.getContoller();
+			exp = exportController.createBranchExportDialog();
 		}
 		final MapModel map = Controller.getCurrentController().getMap();
 		if (map == null) {
 			return;
 		}
 		final List<NodeModel> branches = Controller.getCurrentController().getSelection().getSortedSelection(true);
-		exp.export(UITools.getCurrentRootComponent(), map, new BranchXmlWriter(branches));
+		exp.export(UITools.getCurrentRootComponent(), branches);
 	}
 
 }

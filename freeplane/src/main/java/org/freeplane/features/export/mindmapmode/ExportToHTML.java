@@ -19,11 +19,6 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.swing.filechooser.FileFilter;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
@@ -31,8 +26,14 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
+
+import javax.swing.filechooser.FileFilter;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 class ExportToHTML implements IExportEngine {
 	public ExportToHTML() {
@@ -42,8 +43,9 @@ class ExportToHTML implements IExportEngine {
 	public FileFilter getFileFilter() {
 		return new ExampleFileFilter("html", TextUtils.getText("ExportToHTMLAction.text"));
     }
-	public void export(MapModel map, ExportedXmlWriter xmlWriter, File file) {
+	public void export(List<NodeModel> nodes,  File file) {
 		try {
+			MapModel map = nodes.get(0).getMap();
 			ClipboardController.getController().saveHTML(map.getRootNode(), file);
 			if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
 				ExportWithXSLT.copyIconsToDirectory(map, new File(file.getAbsoluteFile().getParentFile(), "icons")

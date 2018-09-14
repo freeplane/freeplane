@@ -20,10 +20,6 @@
  */
 package org.freeplane.plugin.svg;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-
 import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.transcoder.SVGAbstractTranscoder;
@@ -35,12 +31,17 @@ import org.apache.fop.svg.PDFTranscoder;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.export.mindmapmode.ExportController;
-import org.freeplane.features.export.mindmapmode.ExportedXmlWriter;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MapView;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.List;
 
 /**
  * @author foltin
@@ -51,7 +52,8 @@ class ExportPdf extends ExportVectorGraphic {
 	public ExportPdf() {
 	}
 
-	public void export(MapModel map, ExportedXmlWriter xmlWriter, File chosenFile) {
+	public void export(List<NodeModel> branches, File chosenFile) {
+		MapModel map = branches.get(0).getMap();
 		if (!ExportController.getContoller().checkCurrentMap(map)){
 			return;
 		}

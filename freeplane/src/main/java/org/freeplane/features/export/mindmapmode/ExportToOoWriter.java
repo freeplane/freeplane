@@ -17,16 +17,16 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.net.URL;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.ExampleFileFilter;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 
 import javax.swing.filechooser.FileFilter;
 import javax.xml.transform.Result;
@@ -35,17 +35,11 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ExampleFileFilter;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.FileUtils;
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.MapWriter.Mode;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
+import java.io.*;
+import java.net.URL;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * @author foltin
@@ -59,10 +53,10 @@ public class ExportToOoWriter implements IExportEngine {
 		return new ExampleFileFilter("odt", TextUtils.getText("ExportToOoWriter.text"));
 	}
 	
-	public void export(MapModel map, ExportedXmlWriter xmlWriter, File chosenFile) {
+	public void export(List<NodeModel> branches, File chosenFile) {
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 		try {
-			exportToOoWriter(map, xmlWriter, chosenFile);
+			exportToOoWriter(branches, chosenFile);
 		}
 		catch (final Exception ex) {
 			LogUtils.warn(ex);
@@ -103,12 +97,12 @@ public class ExportToOoWriter implements IExportEngine {
 	}
 
 
-	public void exportToOoWriter(MapModel map, ExportedXmlWriter xmlWriter, final File file) throws IOException {
+	public void exportToOoWriter(List<NodeModel> branches, final File file) throws IOException {
 		final ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(file));
 		try {
 			final StringWriter writer = new StringWriter();
 			final ModeController controller = Controller.getCurrentModeController();
-			xmlWriter.writeXml(writer, Mode.EXPORT);
+			new BranchXmlWriter(branches).writeXml(writer, Mode.EXPORT);
 			final Result result = new StreamResult(zipout);
 
 			ZipEntry entry = new ZipEntry("content.xml");
