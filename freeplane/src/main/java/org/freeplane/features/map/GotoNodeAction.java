@@ -19,15 +19,14 @@
  */
 package org.freeplane.features.map;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.Action;
-import javax.swing.JOptionPane;
-
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.mode.Controller;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
 
 /**
  * @author Dimitry Polivaev
@@ -48,13 +47,14 @@ public class GotoNodeAction extends AFreeplaneAction {
         final Controller controller = Controller.getCurrentController();
         final IMapSelection selection = controller.getSelection();
         final NodeModel node = selection.getSelected();
-        final String id = UITools.showInputDialog(node, TextUtils.getText("enter_node_id"), (String)getValue(Action.NAME), JOptionPane.QUESTION_MESSAGE);
-        if(id == null || "".equals(id))
+        final String reference = UITools.showInputDialog(node, TextUtils.getText("enter_node_id_or_reference"), (String)getValue(Action.NAME), JOptionPane.QUESTION_MESSAGE);
+        if(reference == null || "".equals(reference))
             return;
-        final NodeModel nodeForID = controller.getMap().getNodeForID(id);
-        if(nodeForID == null)
+        final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+        final NodeModel dest = explorer.getNodeAt(node, reference);
+        if(dest == null)
             return;
-        controller.getModeController().getMapController().displayNode(nodeForID);
-        selection.selectAsTheOnlyOneSelected(nodeForID);
+        controller.getModeController().getMapController().displayNode(dest);
+        selection.selectAsTheOnlyOneSelected(dest);
     }
 }
