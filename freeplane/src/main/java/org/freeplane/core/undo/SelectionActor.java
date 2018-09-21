@@ -1,12 +1,12 @@
 package org.freeplane.core.undo;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class SelectionActor implements IActor {
 	private final String[] nodeIDs;
@@ -73,7 +73,7 @@ public class SelectionActor implements IActor {
 		NodeModel[] nodes = new NodeModel[nodeIDs.length];
 		int index = 0;
 		for(String id : nodeIDs)
-			nodes[index++] = map.getNodeForID_(id);
+			nodes[index++] = map.getNodeForID(id);
 		selection.replaceSelection(nodes);
 	}
 

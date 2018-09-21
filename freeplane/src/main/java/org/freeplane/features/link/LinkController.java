@@ -232,7 +232,7 @@ public class LinkController extends SelectionController implements IExtension {
 	    				continue;
 	    		}
 	    		else
-	    			target = node.getMap().getNodeForID_(targetID);
+	    			target = node.getMap().getNodeForID(targetID);
 	    		final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, target);
 	    		gotoLinkNodeAction.configureText("follow_graphical_link", target);
 	    		if (!(link instanceof ConnectorModel)) {
@@ -879,7 +879,7 @@ public class LinkController extends SelectionController implements IExtension {
 	    final String linkText = link.toString();
 	    if (linkText.startsWith("#")) {
 	    	final String id = linkText.substring(1);
-	    	if (model == null || linkText.startsWith("#ID") && model.getMap().getNodeForID_(id) == null) {
+	    	if (model == null || linkText.startsWith("#ID") && model.getMap().getNodeForID(id) == null) {
 	    		return null;
 	    	}
 	    	else{

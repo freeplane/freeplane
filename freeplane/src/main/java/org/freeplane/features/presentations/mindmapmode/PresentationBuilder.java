@@ -238,7 +238,7 @@ class PresentationWriter {
 		}
 		XMLElement xmlNodes = new XMLElement(NODES_ON_SLIDE);
 		for (String nodeId : s.getSelectedNodeIds()) {
-			if (map.getNodeForID_(nodeId) != null) {
+			if (map.getNodeForID(nodeId) != null) {
 				XMLElement xmlNode = new XMLElement(NODE_ON_SLIDE);
 				xmlNode.setAttribute(NODE_ID, nodeId);
 				xmlNodes.addChild(xmlNode);
@@ -249,7 +249,7 @@ class PresentationWriter {
 		if(s.foldsNodes()) {
 			XMLElement xmlFoldedNodes = new XMLElement(FOLDED_NODES);
 			for (String nodeId : s.getFoldedNodeIds()) {
-				if (map.getNodeForID_(nodeId) != null) {
+				if (map.getNodeForID(nodeId) != null) {
 					XMLElement xmlNode = new XMLElement(NODE_ON_SLIDE);
 					xmlNode.setAttribute(NODE_ID, nodeId);
 					xmlFoldedNodes.addChild(xmlNode);

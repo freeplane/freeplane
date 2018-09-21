@@ -51,7 +51,7 @@ public class GotoNodeAction extends AFreeplaneAction {
         final String id = UITools.showInputDialog(node, TextUtils.getText("enter_node_id"), (String)getValue(Action.NAME), JOptionPane.QUESTION_MESSAGE);
         if(id == null || "".equals(id))
             return;
-        final NodeModel nodeForID = controller.getMap().getNodeForID_(id);
+        final NodeModel nodeForID = controller.getMap().getNodeForID(id);
         if(nodeForID == null)
             return;
         controller.getModeController().getMapController().displayNode(nodeForID);

@@ -135,7 +135,7 @@ class FindAction extends AFreeplaneAction {
 		}
 		final FilterController filterController = FilterController.getCurrentFilterController();
 		final NodeModel start = Controller.getCurrentController().getSelection().getSelected();
-		final NodeModel root = map.getNodeForID_(info.rootID);
+		final NodeModel root = map.getNodeForID(info.rootID);
 		if (root == null) {
 			info.condition = null;
 			displayNoPreviousFindMessage();

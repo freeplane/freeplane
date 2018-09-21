@@ -195,7 +195,7 @@ public class NodeLinks implements IExtension {
 		final String linkString = link.toString();
 		if (linkString.startsWith("#ID")) {
 			final String id = linkString.substring(1);
-			if (model.getMap().getNodeForID_(id) == null) {
+			if (model.getMap().getNodeForID(id) == null) {
 				return null;
 			}
 		}

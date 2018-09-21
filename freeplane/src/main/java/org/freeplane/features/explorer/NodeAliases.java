@@ -25,7 +25,7 @@ class NodeAliases implements IExtension {
 	Collection<NodeAlias> aliases() {
 		ArrayList<NodeAlias> list = new ArrayList<>( aliases.size());
 		for (Entry<NodeAlias, String> entry:aliases.entrySet()) {
-			if(map.getNodeForID_(entry.getValue()) != null)
+			if(map.getNodeForID(entry.getValue()) != null)
 				list.add(entry.getKey());
 		}
 		return list;

@@ -19,34 +19,8 @@
  */
 package org.freeplane.features.map;
 
-import java.awt.EventQueue;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Writer;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.swing.Action;
-import javax.swing.SwingUtilities;
-
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.io.IAttributeHandler;
-import org.freeplane.core.io.ReadManager;
-import org.freeplane.core.io.UnknownElementWriter;
-import org.freeplane.core.io.UnknownElements;
-import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.io.*;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
@@ -66,6 +40,19 @@ import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 import org.freeplane.view.swing.map.NodeView;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.*;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Dimitry Polivaev
@@ -679,7 +666,7 @@ implements IExtension, NodeChangeAnnouncer{
 		final MapModel map = Controller.getCurrentController().getMap();
 		if(map == null)
 			return null;
-		final NodeModel node = map.getNodeForID_(nodeID);
+		final NodeModel node = map.getNodeForID(nodeID);
 		return node;
 	}
 

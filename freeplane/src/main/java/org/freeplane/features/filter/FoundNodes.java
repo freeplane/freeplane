@@ -44,7 +44,7 @@ class FoundNodes implements IExtension {
 		    .listIterator(this.nodesUnfoldedByDisplay.size());
 		while (oldPathIterator.hasPrevious()) {
 			final String oldPathNodeID = oldPathIterator.previous();
-			final NodeModel oldPathNode = map.getNodeForID_(oldPathNodeID);
+			final NodeModel oldPathNode = map.getNodeForID(oldPathNodeID);
 			if (oldPathNode != null && oldPathNode.equals(nodeOnPath)) {
 				break;
 			}

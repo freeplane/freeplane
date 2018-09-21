@@ -220,7 +220,7 @@ class SlideEditorController{
 					UndoableSlide.of(slide).setPlacedNodeId(null);
 					setNodePlacementControlsEnabled(false, slide.getPlacedNodePosition());
 					final MapModel map = Controller.getCurrentController().getMap();
-					final NodeModel node = map.getNodeForID_(centeredNodeId);
+					final NodeModel node = map.getNodeForID(centeredNodeId);
 					if(node != null)
 						selection.selectAsTheOnlyOneSelected(node);
 				}

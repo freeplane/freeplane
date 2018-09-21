@@ -93,7 +93,7 @@ public class MapExplorerController  implements IExtension{
 
 	public NodeModel getNodeAt(NodeModel start, String reference, AccessedNodes accessedNodes) {
 		if(reference.startsWith("ID"))
-			return  start.getMap().getNodeForID_(reference);
+			return  start.getMap().getNodeForID(reference);
 		else if(start != null && reference.startsWith("at(") && reference.endsWith(")")){
 			String path = reference.substring(3, reference.length() - 1);
 			try {

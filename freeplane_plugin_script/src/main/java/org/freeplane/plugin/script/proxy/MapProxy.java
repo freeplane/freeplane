@@ -1,9 +1,6 @@
 package org.freeplane.plugin.script.proxy;
 
-import java.awt.Color;
-import java.io.File;
-import java.util.Map.Entry;
-
+import groovy.lang.Closure;
 import org.freeplane.api.NodeCondition;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
@@ -21,7 +18,9 @@ import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
-import groovy.lang.Closure;
+import java.awt.*;
+import java.io.File;
+import java.util.Map.Entry;
 
 public class MapProxy extends AbstractProxy<MapModel> implements Map {
 	public MapProxy(final MapModel map, final ScriptContext scriptContext) {
@@ -31,7 +30,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 	// MapRO: R
 	@Override
 	public Node node(final String id) {
-		final NodeModel node = getDelegate().getNodeForID_(id);
+		final NodeModel node = getDelegate().getNodeForID(id);
 		return node != null ? new NodeProxy(node, getScriptContext()) : null;
 	}
 

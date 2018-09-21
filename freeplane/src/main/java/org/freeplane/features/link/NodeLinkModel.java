@@ -45,7 +45,7 @@ public abstract class NodeLinkModel{
 	}
 
 	public NodeModel getTarget() {
-		return getSource().getMap().getNodeForID_(getTargetID());
+		return getSource().getMap().getNodeForID(getTargetID());
 	}
 
 	public String getTargetID() {

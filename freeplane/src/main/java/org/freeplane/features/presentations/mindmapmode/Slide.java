@@ -314,7 +314,7 @@ public class Slide implements NamedElement<Slide>{
 		MapModel map = getMap();
 		ArrayList<NodeModel> selectedNodes = new ArrayList<>(selectedNodeIds.size());
 		for (String id : selectedNodeIds) {
-			NodeModel node = map.getNodeForID_(id);
+			NodeModel node = map.getNodeForID(id);
 			if (node != null && (!onlyVisible || node.isVisible()))
 				selectedNodes.add(node);
 		}
@@ -418,7 +418,7 @@ public class Slide implements NamedElement<Slide>{
 	public NodeModel getCurrentPlacedNode() {
 		if (placedNodeId != null) {
 			MapModel map = getMap();
-			NodeModel currentPlacedNode = map.getNodeForID_(placedNodeId);
+			NodeModel currentPlacedNode = map.getNodeForID(placedNodeId);
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			if(currentPlacedNode != null && currentPlacedNode.hasVisibleContent()) {
 				return currentPlacedNode;

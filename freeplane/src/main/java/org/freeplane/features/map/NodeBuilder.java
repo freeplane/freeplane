@@ -49,7 +49,7 @@ public class NodeBuilder implements IElementDOMHandler {
 		public void setAttribute(final Object userObject, final String proposedReferenceId) {
 			final NodeModel node = (NodeModel) userObject;
 			final String realReference = mapReader.getCurrentNodeTreeCreator().substitutedID(proposedReferenceId);
-			node.convertToClone(getMap().getNodeForID_(realReference), cloneType);
+			node.convertToClone(getMap().getNodeForID(realReference), cloneType);
 		}
 	}
 

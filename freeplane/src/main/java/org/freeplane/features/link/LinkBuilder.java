@@ -347,7 +347,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 			if (link != null) {
 				final String string = link.toString();
 				if (string.startsWith("#ID")) {
-					if ((node).getMap().getNodeForID_(string.substring(1)) == null) {
+					if ((node).getMap().getNodeForID(string.substring(1)) == null) {
 						return;
 					}
 				}
