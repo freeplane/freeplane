@@ -576,7 +576,7 @@
 		<Entry name="goto" processOnPopup="true">
 			<Entry builder="link_actions" />
 			<Entry builder="clone_actions" />
-			<Entry builder="noActions" />
+			<Entry name="GotoNodeAction" />
 		</Entry>
 		<Entry builder="separator" />
 		<Entry name="EnterPassword" />
