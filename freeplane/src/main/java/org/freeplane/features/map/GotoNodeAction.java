@@ -51,10 +51,17 @@ public class GotoNodeAction extends AFreeplaneAction {
         if(reference == null || "".equals(reference))
             return;
         final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
-        final NodeModel dest = explorer.getNodeAt(node, reference);
+        final NodeModel dest = explorer.getNodeAt(node, getReference(reference));
         if(dest == null)
             return;
         controller.getModeController().getMapController().displayNode(dest);
         selection.selectAsTheOnlyOneSelected(dest);
+    }
+
+    private String getReference(String reference) {
+        if(reference.startsWith("ID_") || reference.startsWith("at("))
+            return reference;
+        else
+            return "at(" + reference + ")";
     }
 }
