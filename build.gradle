@@ -11,6 +11,7 @@ allprojects {
     ext.globalBin = rootDir.path + '/BIN'
 
     repositories {
+		mavenCentral()
 		maven { url "http://www.knopflerfish.org/releases/6.1.0/maven2" }
 		maven { url "${project.gradle.gradleUserHomeDir}/local-artifacts" }
 		maven { url "http://dl.bintray.com/freeplane/freeplane" }
