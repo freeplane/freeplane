@@ -1,18 +1,11 @@
 package org.freeplane.features.explorer;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.io.IAttributeHandler;
-import org.freeplane.core.io.IAttributeWriter;
-import org.freeplane.core.io.ITreeWriter;
-import org.freeplane.core.io.ReadManager;
-import org.freeplane.core.io.WriteManager;
-import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.MapReader;
-import org.freeplane.features.map.NodeBuilder;
-import org.freeplane.features.map.NodeModel;
+import org.freeplane.core.io.*;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.*;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.text.TextController;
 
 public class MapExplorerController  implements IExtension{
 	private static final String TRUE = "true";
@@ -54,14 +47,12 @@ public class MapExplorerController  implements IExtension{
 			}
 		});
 	}
-	private final TextController textController;
 	protected final ModeController modeController;
 
 
 	public MapExplorerController(ModeController modeController) {
 		super();
 		this.modeController = modeController;
-		this.textController = modeController.getExtension(TextController.class);
 	}
 
 	public boolean isGlobal(final NodeModel node) {
@@ -69,7 +60,7 @@ public class MapExplorerController  implements IExtension{
 	}
 
 	public MapExplorer getMapExplorer(NodeModel start, String path, AccessedNodes accessedNodes) {
-		return new MapExplorer(textController, start, path, accessedNodes);
+		return new MapExplorer(start, path, accessedNodes);
 	}
 
 	public String getNodeReferenceSuggestion(NodeModel node) {
@@ -80,7 +71,7 @@ public class MapExplorerController  implements IExtension{
 		if(!alias.isEmpty())
 			sb.append('~').append(alias);
 		else
-			sb.append('\'').append(textController.getShortPlainText(node, 10, "...")).append('\'');
+			sb.append('\'').append(TextUtils.getShortText(HtmlUtils.htmlToPlain(node.getText()), 10, "...")).append('\'');
 		return sb.toString();
 	}
 
@@ -97,7 +88,7 @@ public class MapExplorerController  implements IExtension{
 		else if(start != null && reference.startsWith("at(") && reference.endsWith(")")){
 			String path = reference.substring(3, reference.length() - 1);
 			try {
-				return new MapExplorer(textController, start, path, accessedNodes).getNode();
+				return new MapExplorer(start, path, accessedNodes).getNode();
 			}
 			catch (IllegalStateException|IllegalArgumentException e) {
 				return null;

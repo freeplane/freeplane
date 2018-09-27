@@ -1,20 +1,17 @@
 package org.freeplane.features.explorer;
 
-import java.util.Collection;
-
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.text.TextController;
+
+import java.util.Collection;
 
 class Command {
 	private final ExploringStep operator;
-	private final TextController textController;
 	private final AccessedNodes accessedNodes;
 	private final String searchedString;
-	public Command(TextController textController, ExploringStep operator, String searchedString, AccessedNodes accessedNodes) {
+	public Command(ExploringStep operator, String searchedString, AccessedNodes accessedNodes) {
 		super();
 		this.searchedString = searchedString;
 		operator.assertValidString(searchedString);
-		this.textController = textController;
 		this.accessedNodes = accessedNodes;
 		this.operator = operator;
 	}
@@ -25,7 +22,7 @@ class Command {
 	}
 
 	private NodeMatcher createMatcher() {
-		return new NodeMatcher(textController, searchedString);
+		return new NodeMatcher(searchedString);
 	}
 
 	@Override

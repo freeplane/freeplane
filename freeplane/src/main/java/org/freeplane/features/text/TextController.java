@@ -19,15 +19,6 @@
  */
 package org.freeplane.features.text;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.swing.Icon;
-
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -49,6 +40,12 @@ import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.view.swing.map.MainView;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Dimitry Polivaev
@@ -257,10 +254,7 @@ public class TextController implements IExtension {
 
 	public String getShortPlainText(NodeModel nodeModel, int maximumCharacters, String continuationMark) {
 		String adaptedText = getPlainTransformedTextWithoutNodeNumber(nodeModel);
-		if (adaptedText.length() > maximumCharacters) {
-			adaptedText = adaptedText.substring(0, maximumCharacters) + continuationMark;
-		}
-		return adaptedText;
+		return TextUtils.getShortText(adaptedText, maximumCharacters, continuationMark);
 	}
 
 	public String getShortPlainText(NodeModel nodeModel) {

@@ -1,26 +1,25 @@
 package org.freeplane.features.explorer;
 
+import org.freeplane.features.map.NodeModel;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.text.TextController;
 
 public class MapExplorer {
 
 	private final NodeModel start;
 	private final List<Command> path;
 
-	public MapExplorer(TextController textController, NodeModel start, String path, AccessedNodes accessedNodes) {
-		this(textController, start,
-			new ExploringStepBuilder(textController, path, accessedNodes).buildSteps());
+	public MapExplorer(NodeModel start, String path, AccessedNodes accessedNodes) {
+		this(start,
+			new ExploringStepBuilder(path, accessedNodes).buildSteps());
 	}
 
 
 
-	MapExplorer(TextController textController, NodeModel start, List<Command> path) {
+	MapExplorer(NodeModel start, List<Command> path) {
 		this.start = start;
 		this.path = path;
 	}

@@ -1,15 +1,15 @@
 package org.freeplane.core.util;
 
-import java.text.DecimalFormat;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.regex.Pattern;
-
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.format.FormatController;
+
+import java.text.DecimalFormat;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.regex.Pattern;
 
 /** utilities for translations, conversions to/from number and dates etc.
  * In scripts available as "global variable" <code>textUtils</code>. */
@@ -162,7 +162,14 @@ public class TextUtils {
         return text.length() > 0 && uriPattern.matcher(text).matches();
     }
 
-	/** accessor for scripts. */
+    public static String getShortText(String text, int maximumCharacters, String continuationMark) {
+        if (text.length() > maximumCharacters) {
+            text = text.substring(0, maximumCharacters) + continuationMark;
+        }
+        return text;
+    }
+
+    /** accessor for scripts. */
 	public DecimalFormat getDefaultNumberFormat() {
 		return FormatController.getController().getDefaultNumberFormat();
 	}

@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.freeplane.features.text.TextController;
-
 class ExploringStepBuilder {
-	private final TextController textController;
 	private final AccessedNodes accessedNodes;
 
 	private final static String DOUBLE_QUOTED_STRING = "\"(?:[^\\\\\"]|\\\\.)*\"";
@@ -24,8 +21,7 @@ class ExploringStepBuilder {
 			+ SEPARATOR  + "|^" + GLOBAL  + "|" + Pattern.quote("*") + "{1,2}|" + Pattern.quote(ANCESTOR));
 	private Matcher matcher;
 
-	ExploringStepBuilder(TextController textController, String path, AccessedNodes accessedNodes) {
-		this.textController = textController;
+	ExploringStepBuilder(String path, AccessedNodes accessedNodes) {
 		this.matcher = regex.matcher(path.trim());
 		this.accessedNodes = accessedNodes;
 
@@ -89,6 +85,6 @@ class ExploringStepBuilder {
 	}
 
 	private Command command(ExploringStep exploringStep, String searchedString) {
-		return new Command(textController, exploringStep, searchedString, accessedNodes);
+		return new Command(exploringStep, searchedString, accessedNodes);
 	}
 }

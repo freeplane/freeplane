@@ -5,10 +5,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 
 import org.assertj.core.api.ThrowableAssert;
-import org.freeplane.features.explorer.AccessedNodes;
-import org.freeplane.features.explorer.Command;
-import org.freeplane.features.explorer.ExploringStep;
-import org.freeplane.features.explorer.ExploringStepBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.TextController;
 import org.junit.Test;
@@ -21,12 +17,12 @@ public class ExploringStepBuilderSpec {
 
 
 	private static Command command(ExploringStep operator, String searchedString) {
-		return new Command(textController, operator, searchedString, accessedNodes);
+		return new Command(operator, searchedString, accessedNodes);
 	}
 
 	NodeModel node = Mockito.mock(NodeModel.class);
 	private void assertPath(String path, Command... commands) {
-		 assertThat(new ExploringStepBuilder(textController, path, accessedNodes).buildSteps())//
+		 assertThat(new ExploringStepBuilder(path, accessedNodes).buildSteps())//
 		 	.usingFieldByFieldElementComparator().containsExactly(commands);
 	}
 
@@ -34,7 +30,7 @@ public class ExploringStepBuilderSpec {
 		 assertThatThrownBy(new ThrowableAssert.ThrowingCallable() {
 			@Override
 			public void call() throws Throwable {
-				new ExploringStepBuilder(textController, path, accessedNodes).buildSteps();
+				new ExploringStepBuilder(path, accessedNodes).buildSteps();
 			}
 		}).isInstanceOf(IllegalArgumentException.class);
 	}

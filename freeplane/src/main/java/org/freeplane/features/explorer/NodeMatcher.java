@@ -1,12 +1,12 @@
 package org.freeplane.features.explorer;
 
+import org.apache.commons.lang.StringUtils;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.features.map.NodeModel;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.text.TextController;
 
 class NodeMatcher {
 	enum MatchedElement{
@@ -72,13 +72,11 @@ class NodeMatcher {
 
 	private final String matchedString;
 	private final MatchedElement matchedElement;
-	private final TextController textController;
 	private static final String REST_CHARACTERS = "...";
 
 
 
-	public NodeMatcher(TextController textController, String searchedString) {
-		this.textController = textController;
+	public NodeMatcher(String searchedString) {
 		this.matchedElement = MatchedElement.of(searchedString);
 		this.matchedString = matchedElement.matchedStringOf(searchedString);
 	}
@@ -89,7 +87,7 @@ class NodeMatcher {
 		if(matchedElement == MatchedElement.ALIAS)
 			return matches(node.getExtension(NodeAlias.class));
 		else
-			return matches(textController.getPlainTransformedTextWithoutNodeNumber(node));
+			return matches(HtmlUtils.htmlToPlain(node.getText()));
 	}
 
 	private boolean matches(NodeAlias alias) {
