@@ -161,6 +161,8 @@ public interface IMapViewManager {
 
 	public boolean hasHiddenChildren(NodeModel selected);
 
+	int getHiddenChildCount(NodeModel node);
+
 	public boolean unfoldHiddenChildren(NodeModel node);
 
 	public void hideChildren(NodeModel node);

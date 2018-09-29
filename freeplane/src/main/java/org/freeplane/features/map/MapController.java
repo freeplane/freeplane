@@ -565,8 +565,8 @@ implements IExtension, NodeChangeAnnouncer{
 			if (nodesUnfoldedByDisplay != null && isFolded(nodeOnPath)) {
             	nodesUnfoldedByDisplay.add(nodeOnPath);
             }
-			unfold(nodeOnPath);
 		}
+		modeController.getController().getMapViewManager().displayOnCurrentView(node);
 	}
 
 	public void fireMapChanged(final MapChangeEvent event) {

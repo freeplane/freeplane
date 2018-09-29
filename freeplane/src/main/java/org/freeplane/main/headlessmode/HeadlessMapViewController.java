@@ -360,6 +360,11 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	@Override
+	public int getHiddenChildCount(NodeModel node) {
+		return 0;
+	}
+
+	@Override
 	public boolean hasHiddenChildren(NodeModel selected) {
 		return false;
 	}

@@ -199,12 +199,18 @@ public class MMapController extends MapController {
 			}
 			//$FALL-THROUGH$
 			case MMapController.NEW_CHILD: {
-				final boolean parentFolded = isFolded(targetNode);
-				if (parentFolded) {
-					unfold(targetNode);
+				final boolean targetFolded = isFolded(targetNode);
+				IMapViewManager mapViewManager = getModeController().getController().getMapViewManager();
+				if (targetFolded) {
+					if(! targetNode.isRoot() && mapViewManager.hasHiddenChildren(targetNode.getParentNode())){
+						mapViewManager.hideChildren(targetNode);
+						targetNode.setFolded(false);
+					}
+					else
+						unfold(targetNode);
 				}
 				final int position = ResourceController.getResourceController().getProperty("placenewbranches").equals(
-				    "last") ? targetNode.getChildCount() : 0;
+				    "last") ? targetNode.getChildCount() - mapViewManager.getHiddenChildCount(targetNode) : 0;
 				newNode = addNewNode(targetNode, position, targetNode.isNewChildLeft());
 				if (newNode == null) {
 					return null;

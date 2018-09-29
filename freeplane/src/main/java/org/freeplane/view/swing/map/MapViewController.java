@@ -1072,6 +1072,16 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	}
 
 	@Override
+	public int getHiddenChildCount(NodeModel node) {
+		if(selectedMapView == null)
+			return 0;
+		final NodeView nodeView = selectedMapView.getNodeView(node);
+		if(nodeView == null)
+			return 0;
+		return nodeView.getHiddenChildCount();
+	}
+
+	@Override
 	public boolean unfoldHiddenChildren(NodeModel node) {
 		if(selectedMapView == null)
 			return false;

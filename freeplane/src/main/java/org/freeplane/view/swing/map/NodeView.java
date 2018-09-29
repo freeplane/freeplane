@@ -808,11 +808,6 @@ public class NodeView extends JComponent implements INodeView {
 		}
 	}
 
-	/**
-	 * Create views for the newNode and all his descendants, set their isLeft
-	 * attribute according to this view.
-	 * @param index2
-	 */
 	void addChildView(final NodeModel newNode, int index) {
 			NodeViewFactory.getInstance().newNodeView(newNode, getMap(), this, index);
 	}
@@ -1675,12 +1670,19 @@ public class NodeView extends JComponent implements INodeView {
 	boolean isHierarchyVisible() {
 		return getHeight() > 2 * getSpaceAround();
 	}
+
 	public enum Properties{HIDDEN_CHILDREN};
 
 	boolean isChildHidden(NodeModel node) {
 		@SuppressWarnings("unchecked")
 		final Set<NodeModel> hiddenChildren = (Set<NodeModel>) getClientProperty(Properties.HIDDEN_CHILDREN);
 		return hiddenChildren != null && hiddenChildren.contains(node);
+	}
+
+	public int getHiddenChildCount() {
+		@SuppressWarnings("unchecked")
+		final Set<NodeModel> hiddenChildren = (Set<NodeModel>) getClientProperty(Properties.HIDDEN_CHILDREN);
+		return hiddenChildren != null ? hiddenChildren.size() : 0;
 	}
 
 	boolean hasHiddenChildren() {
