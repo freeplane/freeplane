@@ -62,8 +62,13 @@ public class ScriptContext implements AccessedNodes{
 			return nodeModel + "[" + script + "]";
 		}
 	}
+	private static final ThreadLocal<UniqueStack<NodeWrapper>> stack =
+			new ThreadLocal<UniqueStack<NodeWrapper>>() {
+				@Override protected UniqueStack<NodeWrapper> initialValue() {
+					return new UniqueStack<NodeWrapper>();
+				}
+			};
 
-	private final UniqueStack<NodeWrapper> stack = new UniqueStack<NodeWrapper>();
 	private final URL baseUrl;
 
 	public URL getBaseUrl() {
@@ -133,14 +138,18 @@ public class ScriptContext implements AccessedNodes{
 
     @SuppressWarnings("unused")
     private NodeWrapper stackLastLogNull(String method) {
-        final NodeWrapper last = stack.last();
+        final NodeWrapper last = stack().last();
         if (FormulaUtils.DEBUG_FORMULA_EVALUATION && last == null)
             System.err.println("stack is empty on " + method);
         return last;
     }
 
+	private UniqueStack<NodeWrapper> stack() {
+		return stack.get();
+	}
+
 	public boolean push(NodeModel nodeModel, String script) {
-		final boolean success = stack.push(new NodeWrapper(nodeModel, script));
+		final boolean success = stack().push(new NodeWrapper(nodeModel, script));
 		if (!success) {
 			LogUtils.warn("Circular reference detected! Traceback (innermost last):\n " //
 			        + stackTrace(nodeModel, script));
@@ -149,16 +158,16 @@ public class ScriptContext implements AccessedNodes{
 	}
 
 	public void pop() {
-		stack.pop();
+		stack().pop();
 	}
 
 	public NodeModel getStackFront() {
-		return stack.first().getNodeModel();
+		return stack().first().getNodeModel();
 	}
 
 	public String stackTrace(NodeModel nodeModel, String script) {
-		ArrayList<String> entries = new ArrayList<String>(stack.size());
-		for (NodeWrapper node : stack) {
+		ArrayList<String> entries = new ArrayList<String>(stack().size());
+		for (NodeWrapper node : stack()) {
 			entries.add(format(node.nodeModel, node.script, nodeModel));
 		}
 		entries.add(format(nodeModel, script, nodeModel));
@@ -184,6 +193,6 @@ public class ScriptContext implements AccessedNodes{
 
 	@Override
 	public String toString() {
-		return stack.toString();
+		return stack().toString();
 	}
 }

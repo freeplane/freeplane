@@ -31,6 +31,7 @@ import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.runtime.InvokerHelper;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
@@ -38,6 +39,8 @@ import org.freeplane.plugin.script.proxy.ProxyFactory;
 import groovy.lang.Binding;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.Script;
+
+import javax.swing.*;
 
 /**
  * Special scripting implementation for Groovy.
@@ -118,8 +121,14 @@ public class GroovyScript implements IScript {
             // And if: Shouldn't it raise an ExecuteScriptException?
             throw new RuntimeException(e);
         } catch (final Throwable e) {
-			if (Controller.getCurrentController().getSelection() != null && node.hasVisibleContent()) {
-                Controller.getCurrentModeController().getMapController().select(node);
+			IMapSelection selection = Controller.getCurrentController().getSelection();
+			if (selection != null && ! node.equals(selection.getSelected()) && node.hasVisibleContent()) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						Controller.getCurrentModeController().getMapController().select(node);
+					}
+				});
             }
             throw new ExecuteScriptException(e.getMessage(), e);
         }
