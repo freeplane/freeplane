@@ -11,11 +11,11 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
-public class EvaluationDependencies implements IExtension{
+class EvaluationDependencies implements IExtension{
 
 	static class DependantNodeReferences implements Iterable<NodeModel>{
 		final private WeakHashMap<NodeModel, Void> references = new WeakHashMap<>();
-		public void add(NodeModel node) {
+		void add(NodeModel node) {
 			references.put(node, null);
 		}
 
@@ -24,9 +24,14 @@ public class EvaluationDependencies implements IExtension{
 			return references.keySet().iterator();
 		}}
 
-	public enum Access {
+	enum Access {
 		NODE, BRANCH, ALL
 	}
+
+	static IExtension removeFrom(MapModel map) {
+		return map.removeExtension(EvaluationDependencies.class);
+	}
+
 
 	private final HashSet<MapModel> referencedMaps = new HashSet<>();
 
@@ -36,7 +41,7 @@ public class EvaluationDependencies implements IExtension{
 	private final HashSet<NodeModel> onAnyNodeDependencies = new HashSet<NodeModel>();
 	private final HashSet<NodeModel> onGlobalNodeDependencies = new HashSet<NodeModel>();
 
-	public Set<NodeModel> getDependencies(Set<NodeModel> result, final NodeModel node) {
+	Set<NodeModel> getDependencies(Set<NodeModel> result, final NodeModel node) {
 		final Iterable<NodeModel> onNode = onNodeDependencies.get(node);
 		if (onNode != null)
 			addRecursively(result, onNode);
@@ -49,7 +54,7 @@ public class EvaluationDependencies implements IExtension{
 		return result;
 	}
 
-	public Set<NodeModel> getGlobalDependencies(Set<NodeModel> result) {
+	Set<NodeModel> getGlobalDependencies(Set<NodeModel> result) {
 		addRecursively(result, onGlobalNodeDependencies);
 //		System.out.println("dependencies on(" + node + "): " + result);
 		return result;
@@ -64,7 +69,7 @@ public class EvaluationDependencies implements IExtension{
 	}
 
 	/** accessedNode was accessed when accessingNode was evaluated. */
-	public void accessNode(NodeModel accessingNode, NodeModel accessedNode) {
+	void accessNode(NodeModel accessingNode, NodeModel accessedNode) {
 		// FIXME: check if accessedNode is already covered by other accessModes
 		getDependencySet(accessedNode, onNodeDependencies).add(accessingNode);
 		addAccessedMap(accessingNode, accessedNode);
@@ -72,7 +77,7 @@ public class EvaluationDependencies implements IExtension{
 	}
 
 	/** accessedNode.children was accessed when accessingNode was evaluated. */
-	public void accessBranch(NodeModel accessingNode, NodeModel accessedNode) {
+	void accessBranch(NodeModel accessingNode, NodeModel accessedNode) {
 		// FIXME: check if accessedNode is already covered by other accessModes
 		getDependencySet(accessedNode, onBranchDependencies).add(accessingNode);
 		addAccessedMap(accessingNode, accessedNode);
@@ -91,13 +96,13 @@ public class EvaluationDependencies implements IExtension{
 	}
 
 	/** a method was used on the accessingNode that may use any node in the map. */
-	public void accessAll(NodeModel accessingNode) {
+	void accessAll(NodeModel accessingNode) {
 		// FIXME: check if accessedNode is already covered by other accessModes
 		onAnyNodeDependencies.add(accessingNode);
 //		System.out.println(accessingNode + " accesses all nodes. current dependencies:\n" + this);
 	}
 
-	public void accessGlobalNode(NodeModel accessingNode) {
+	void accessGlobalNode(NodeModel accessingNode) {
 		onGlobalNodeDependencies.add(accessingNode);
 	}
 

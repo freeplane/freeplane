@@ -18,6 +18,7 @@ import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.plugin.script.FormulaDependencies;
 import org.freeplane.plugin.script.FormulaUtils;
 
 /** cares for updating formula nodes on change of other nodes. */
@@ -71,7 +72,7 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 
 	private void globalNodesChanged(MapModel map) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		final List<NodeModel> dependencies = FormulaUtils.manageChangeAndReturnGlobalDependencies(map);
+		final List<NodeModel> dependencies = FormulaDependencies.manageChangeAndReturnGlobalDependencies(map);
 		for (NodeModel dependentNode : dependencies) {
 			modeController.getMapController().delayedNodeRefresh(dependentNode, IContentTransformer.class,
 			    null, null);
@@ -81,13 +82,13 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 	/** in case of insert we look for dependencies of the parent. But the parent is not actually changed in this case.
 	 * So there won't be any updates on the parent, even if it has formula that needs an update due to the
 	 * changed children count. */
-	private void nodeChangedImpl(boolean includeChanged, NodeModel... nodes) {
+	public void nodeChangedImpl(boolean includeChanged, NodeModel... nodes) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		//FIXME: needed???
 		//		if (modeController == null || modeController.isUndoAction()) {
 		//			return;
 		//		}
-		final List<NodeModel> dependencies = FormulaUtils.manageChangeAndReturnDependencies(includeChanged, nodes);
+		final List<NodeModel> dependencies = FormulaDependencies.manageChangeAndReturnDependencies(includeChanged, nodes);
 		for (NodeModel dependentNode : dependencies) {
 			modeController.getMapController().delayedNodeRefresh(dependentNode, IContentTransformer.class,
 			    null, null);

@@ -45,12 +45,12 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
         if (transformedExtension == node.getUserObject() && textController.isTextFormattingDisabled(node))
             return obj;
         final String text = obj.toString();
-        if (!FormulaUtils.containsFormulaCheckHTML(text)) {
+        if (!FormulaUtils.containsFormula(text)) {
             return obj;
         }
         final String plainText = HtmlUtils.htmlToPlain(text);
         // starting a new ScriptContext in evalIfScript
-        final Object result = FormulaUtils.evalIfScript(node, null, plainText);
+        final Object result = FormulaUtils.evalIfScript(node, plainText);
         if (result == null) {
             throw new ExecuteScriptException("got null result from evaluating " + node.getID() + ", text='"
                     + plainText.substring(1) + "'");
@@ -71,7 +71,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
     	if (node != null && transformedExtension == node.getUserObject() && textController.isTextFormattingDisabled(node))
     		return false;
     	final String text = obj.toString();
-    	if (!FormulaUtils.containsFormulaCheckHTML(text)) {
+    	if (!FormulaUtils.containsFormula(text)) {
     		return false;
     	}
     	return true;

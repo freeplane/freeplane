@@ -20,6 +20,6 @@ public class ConvertibleNodeText extends Convertible {
 	 * @throws ExecuteScriptException 
 	 */
 	public ConvertibleNodeText(NodeModel nodeModel, ScriptContext scriptContext) {
-		super(FormulaUtils.evalIfScript(nodeModel, scriptContext, HtmlUtils.htmlToPlain(nodeModel.getText(), true)));
+		super(FormulaUtils.evalIfScript(nodeModel, HtmlUtils.htmlToPlain(nodeModel.getText(), true)));
 	}
 }

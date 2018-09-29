@@ -9,7 +9,7 @@ public class ConvertibleHtmlText extends Convertible {
     private String htmlText;
 
     public ConvertibleHtmlText(final NodeModel nodeModel, final ScriptContext scriptContext, final String htmlText) {
-        super(FormulaUtils.safeEvalIfScript(nodeModel, scriptContext, htmlToPlain(htmlText)));
+        super(FormulaUtils.safeEvalIfScript(nodeModel, htmlToPlain(htmlText)));
         this.htmlText = htmlText;
     }
 
