@@ -360,7 +360,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public String getPlainText() {
-		return HtmlUtils.htmlToPlain(getDelegate().getText());
+		final NodeModel node = getDelegateForValueAccess();
+		return HtmlUtils.htmlToPlain(node.getText());
+	}
+
+	private NodeModel getDelegateForValueAccess() {
+		final NodeModel node = getDelegate();
+		getScriptContext().accessValue(node);
+		return node;
 	}
 
 	// NodeRO: R
@@ -373,7 +380,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public String getHtmlText() {
-		final String nodeText = getDelegate().getText();
+		final NodeModel node = getDelegateForValueAccess();
+		final String nodeText = node.getText();
 		if (HtmlUtils.isHtmlNode(nodeText))
 			return nodeText;
 		else
@@ -395,21 +403,21 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public String getText() {
-		return getDelegate().getText();
+		return getDelegateForValueAccess().getText();
 	}
 
 	// NodeRO: R
 	@Override
 	public String getTransformedText() {
 		final TextController textController = TextController.getController();
-		return textController.getTransformedTextNoThrow(getDelegate());
+		return textController.getTransformedTextNoThrow(getDelegateForValueAccess());
 	}
 
 	// NodeRO: R
 	@Override
 	public String getShortText() {
 		final TextController textController = TextController.getController();
-		return textController.getShortPlainText(getDelegate());
+		return textController.getShortPlainText(getDelegateForValueAccess());
 	}
 
 	// NodeRO: R
@@ -431,7 +439,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public Object getObject() {
-		final Object userObject = getDelegate().getUserObject();
+		final NodeModel node = getDelegateForValueAccess();
+		final Object userObject = node.getUserObject();
 		if (userObject instanceof IFormattedObject)
 			return ((IFormattedObject) userObject).getObject();
 		return userObject;
@@ -440,7 +449,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public byte[] getBinary() {
-		return Base64Coding.decode64(getDelegate().getText().replaceAll("\\s", ""));
+		final NodeModel node = getDelegateForValueAccess();
+		return Base64Coding.decode64(node.getText().replaceAll("\\s", ""));
 	}
 
 	// NodeRO: R
@@ -456,7 +466,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public Convertible getTo() {
-		return ProxyUtils.nodeModelToConvertible(getDelegate(), getScriptContext());
+		final NodeModel node = getDelegateForValueAccess();
+		return ProxyUtils.nodeModelToConvertible(node, getScriptContext());
 	}
 
 	// NodeRO: R

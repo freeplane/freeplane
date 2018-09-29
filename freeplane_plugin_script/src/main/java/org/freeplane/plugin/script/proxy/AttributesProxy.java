@@ -55,6 +55,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
 		final Attribute attribute = attributeTableModel.getAttribute(index);
+		getScriptContext().accessAttribute(getDelegate(), attribute);
 		return getAttributeValue(attribute);
 	}
 
@@ -67,6 +68,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		final ArrayList<Object> result = new ArrayList<Object>();
 		for (final Attribute attribute : attributeTableModel.getAttributes()) {
 			if (attribute.getName().equals(name)) {
+				getScriptContext().accessAttribute(getDelegate(), attribute);
 				result.add(getAttributeValue(attribute));
 			}
 		}
@@ -100,6 +102,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		final ArrayList<Convertible> result = new ArrayList<Convertible>(attributeTableModel.getRowCount());
 		for (final Attribute a : attributeTableModel.getAttributes()) {
+			getScriptContext().accessAttribute(getDelegate(), a);
 			result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), getAttributeValue(a)));
 		}
 		return result;
@@ -169,8 +172,10 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 				attributeTableModel.getRowCount());
 		for (final Attribute a : attributeTableModel.getAttributes()) {
 			final Object transformedAttributeValue = getAttributeValue(a);
-			if (condition.check(a.getName(), transformedAttributeValue))
+			if (condition.check(a.getName(), transformedAttributeValue)) {
+				getScriptContext().accessAttribute(getDelegate(), a);
 				result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), transformedAttributeValue));
+			}
 		}
 		return result;
 	}

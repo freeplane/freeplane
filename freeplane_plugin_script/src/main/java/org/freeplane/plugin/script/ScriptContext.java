@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.freeplane.core.util.Compat;
+import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.explorer.AccessedNodes;
 import org.freeplane.features.map.NodeModel;
 
@@ -12,12 +13,15 @@ public class ScriptContext implements AccessedNodes{
 
 	private final NodeScript nodeScript;
 
+	private final AccessedValues accessedValues;
+
 	public ScriptContext(NodeScript nodeScript) {
 		this.nodeScript = nodeScript;
+		this.accessedValues = new AccessedValues();
 	}
 
 	public URL getBaseUrl() {
-		return nodeScript.getBaseUrl();
+		return nodeScript != null ? nodeScript.getBaseUrl() : null;
 	}
 
 	public File toAbsoluteFile(File file) {
@@ -57,22 +61,45 @@ public class ScriptContext implements AccessedNodes{
 	}
 
 	@Override
+	public void accessAttribute(final NodeModel accessedNode, Attribute accessedAttribute) {
+		if(nodeScript != null)
+			accessedValues.accessAttribute(accessedNode, accessedAttribute);
+	}
+
+	@Override
+	public void accessValue(NodeModel accessedNode) {
+		if(nodeScript != null)
+			accessedValues.accessValue(accessedNode);
+	}
+
+	@Override
 	public void accessNode(final NodeModel accessedNode) {
-		FormulaDependencies.accessNode(nodeScript.getNodeModel(), accessedNode);
+		if(nodeScript != null)
+			FormulaDependencies.accessNode(nodeScript.getNodeModel(), accessedNode);
 	}
 
 	@Override
 	public void accessBranch(final NodeModel accessedNode) {
-		FormulaDependencies.accessBranch(nodeScript.getNodeModel(), accessedNode);
+		if(nodeScript != null)
+			FormulaDependencies.accessBranch(nodeScript.getNodeModel(), accessedNode);
 	}
 
 	@Override
 	public void accessAll() {
-		FormulaDependencies.accessAll(nodeScript.getNodeModel());
+		if(nodeScript != null)
+			FormulaDependencies.accessAll(nodeScript.getNodeModel());
 	}
 	@Override
 	public void accessGlobalNode() {
-		FormulaDependencies.accessGlobalNode(nodeScript.getNodeModel());
+		if(nodeScript != null)
+			FormulaDependencies.accessGlobalNode(nodeScript.getNodeModel());
+	}
+
+	public AccessedValues getAccessedValues() {
+		if(nodeScript != null)
+			return accessedValues;
+		else
+			throw new IllegalStateException("Accessed values not tracked without related node");
 	}
 
 	@Override
