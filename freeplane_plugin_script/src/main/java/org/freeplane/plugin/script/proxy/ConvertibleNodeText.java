@@ -4,7 +4,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.ExecuteScriptException;
 import org.freeplane.plugin.script.FormulaUtils;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 
 /**
  * A {@link Convertible} subclass as return type of {@link Node#getTo()}. Note that the nodeModel is only
@@ -19,7 +19,7 @@ public class ConvertibleNodeText extends Convertible {
 	 * will result in a NullPointerException. So there's nothing to check here.
 	 * @throws ExecuteScriptException 
 	 */
-	public ConvertibleNodeText(NodeModel nodeModel, ScriptContext scriptContext) {
+	public ConvertibleNodeText(NodeModel nodeModel, ScriptExecution scriptExecution) {
 		super(FormulaUtils.evalIfScript(nodeModel, HtmlUtils.htmlToPlain(nodeModel.getText(), true)));
 	}
 }

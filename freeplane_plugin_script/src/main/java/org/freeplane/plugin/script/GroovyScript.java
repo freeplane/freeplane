@@ -94,7 +94,7 @@ public class GroovyScript implements IScript {
     }
 
     @Override
-    public Object execute(final NodeModel node, PrintStream outStream, IFreeplaneScriptErrorHandler errorHandler, ScriptContext scriptContext) {
+    public Object execute(final NodeModel node, PrintStream outStream, IFreeplaneScriptErrorHandler errorHandler, ScriptExecution scriptExecution) {
         try {
             if (errorsInScript != null && compileTimeStrategy.canUseOldCompiledScript()) {
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
@@ -104,7 +104,7 @@ public class GroovyScript implements IScript {
             try {
                 trustedCompileAndCache(outStream);
                 Thread.currentThread().setContextClassLoader(scriptClassLoader);
-                final Binding binding = createBinding(node, scriptContext);
+                final Binding binding = createBinding(node, scriptExecution);
                 compiledScript.setBinding(binding);
                 System.setOut(outStream);
 				final Object result = compiledScript.run();
@@ -214,10 +214,10 @@ public class GroovyScript implements IScript {
         }
     }
 
-    private Binding createBinding(final NodeModel node, ScriptContext scriptContext) {
+    private Binding createBinding(final NodeModel node, ScriptExecution scriptExecution) {
         final Binding binding = new Binding();
-        binding.setVariable("c", ProxyFactory.createController(scriptContext));
-        binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
+        binding.setVariable("c", ProxyFactory.createController(scriptExecution));
+        binding.setVariable("node", ProxyFactory.createNode(node, scriptExecution));
         return binding;
     }
 

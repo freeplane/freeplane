@@ -9,15 +9,15 @@ import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.explorer.AccessedNodes;
 import org.freeplane.features.map.NodeModel;
 
-public class ScriptContext implements AccessedNodes{
+public class ScriptExecution implements AccessedNodes{
 
 	private final NodeScript nodeScript;
 
 	private final AccessedValues accessedValues;
 
-	public ScriptContext(NodeScript nodeScript) {
+	public ScriptExecution(NodeScript nodeScript) {
 		this.nodeScript = nodeScript;
-		this.accessedValues = new AccessedValues();
+		this.accessedValues = new AccessedValues(nodeScript.node);
 	}
 
 	public URL getBaseUrl() {
@@ -75,24 +75,24 @@ public class ScriptContext implements AccessedNodes{
 	@Override
 	public void accessNode(final NodeModel accessedNode) {
 		if(nodeScript != null)
-			FormulaDependencies.accessNode(nodeScript.getNodeModel(), accessedNode);
+			FormulaDependencies.accessNode(nodeScript.node, accessedNode);
 	}
 
 	@Override
 	public void accessBranch(final NodeModel accessedNode) {
 		if(nodeScript != null)
-			FormulaDependencies.accessBranch(nodeScript.getNodeModel(), accessedNode);
+			FormulaDependencies.accessBranch(nodeScript.node, accessedNode);
 	}
 
 	@Override
 	public void accessAll() {
 		if(nodeScript != null)
-			FormulaDependencies.accessAll(nodeScript.getNodeModel());
+			FormulaDependencies.accessAll(nodeScript.node);
 	}
 	@Override
 	public void accessGlobalNode() {
 		if(nodeScript != null)
-			FormulaDependencies.accessGlobalNode(nodeScript.getNodeModel());
+			FormulaDependencies.accessGlobalNode(nodeScript.node);
 	}
 
 	public AccessedValues getAccessedValues() {
@@ -105,5 +105,34 @@ public class ScriptContext implements AccessedNodes{
 	@Override
 	public String toString() {
 		return nodeScript.toString();
+	}
+
+	public Object execute() {
+		final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getFormulaPermissions();
+		NodeModel node = nodeScript.node;
+		String script = nodeScript.script;
+		if (FormulaCache.ENABLE_CACHING) {
+			final FormulaCache formulaCache = FormulaCache.of(nodeScript.getMap());
+			Object value = formulaCache.getOrThrowCachedResult(nodeScript);
+			if (value == null) {
+				try {
+					value = ScriptingEngine.executeScript(node, script, this, restrictedPermissions);
+					if(value == null)
+						throw new ExecuteScriptException("Null pointer returned by formula");
+					formulaCache.put(nodeScript, new CachedResult(value, getAccessedValues()));
+				}
+				catch (ExecuteScriptException e) {
+					formulaCache.put(nodeScript, new CachedResult(e, getAccessedValues()));
+					throw e;
+				}
+			}
+			else {
+				accessNode(node);
+			}
+			return value;
+		}
+		else {
+			return ScriptingEngine.executeScript(node, script, this, restrictedPermissions);
+		}
 	}
 }

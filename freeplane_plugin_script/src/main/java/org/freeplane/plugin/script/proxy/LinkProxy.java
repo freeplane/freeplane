@@ -14,11 +14,11 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 
 class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
-	LinkProxy(final NodeModel delegate, final ScriptContext scriptContext) {
-		super(delegate, scriptContext);
+	LinkProxy(final NodeModel delegate, final ScriptExecution scriptExecution) {
+		super(delegate, scriptExecution);
 	}
 
 	// LinkRO
@@ -73,7 +73,7 @@ class LinkProxy extends AbstractProxy<NodeModel> implements Proxy.Link {
 			LogUtils.warn(link + ": node does not exist (anymore?)");
 			return null;
 		}
-		return new NodeProxy(targetNode, getScriptContext());
+		return new NodeProxy(targetNode, getScriptExecution());
     }
 
 	private NodeModel resolve(final String link) {

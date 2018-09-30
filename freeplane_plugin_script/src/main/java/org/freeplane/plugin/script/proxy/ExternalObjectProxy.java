@@ -9,13 +9,13 @@ import java.net.URL;
 
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 import org.freeplane.view.swing.features.filepreview.ExternalResource;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
 
 class ExternalObjectProxy extends AbstractProxy<NodeModel> implements Proxy.ExternalObject {
-    ExternalObjectProxy(final NodeModel delegate, final ScriptContext scriptContext) {
-        super(delegate, scriptContext);
+    ExternalObjectProxy(final NodeModel delegate, final ScriptExecution scriptExecution) {
+        super(delegate, scriptExecution);
     }
 
     private ExternalResource getExternalObjectModel() {

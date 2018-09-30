@@ -15,13 +15,8 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
-import org.freeplane.plugin.script.ExecuteScriptException;
-import org.freeplane.plugin.script.FormulaThreadLocalStack;
-import org.freeplane.plugin.script.GroovyScript;
-import org.freeplane.plugin.script.NodeScript;
-import org.freeplane.plugin.script.ScriptContext;
-import org.freeplane.plugin.script.ScriptRunner;
-import org.freeplane.plugin.script.ScriptingPermissions;
+import org.freeplane.plugin.script.*;
+import org.freeplane.plugin.script.ScriptExecution;
 
 public class ScriptCondition extends ASelectableCondition {
 	private static final String SCRIPT_FILTER_DESCRIPTION_RESOURCE = "plugins/script_filter";
@@ -92,16 +87,17 @@ public class ScriptCondition extends ASelectableCondition {
 
 	@Override
 	public boolean checkNodeInFormulaContext(NodeModel node){
-		final ScriptContext scriptContext = new ScriptContext(new NodeScript(node, source));
-		FormulaThreadLocalStack.INSTANCE.push(node, source);
-		scriptRunner.setScriptContext(scriptContext);
+		NodeScript nodeScript = new NodeScript(node, source);
+		final ScriptExecution scriptExecution = new ScriptExecution(nodeScript);
+		FormulaThreadLocalStack.INSTANCE.push(nodeScript);
+		scriptRunner.setScriptExecution(scriptExecution);
 		try {
 			final boolean checkNode = checkNode(node);
 			return checkNode;
 		}
 		finally {
 			FormulaThreadLocalStack.INSTANCE.pop();
-			scriptRunner.setScriptContext(null);
+			scriptRunner.setScriptExecution(null);
 		}
 	}
 

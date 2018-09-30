@@ -13,21 +13,18 @@ import java.util.Map;
 import org.freeplane.api.NodeRO;
 import org.freeplane.api.Script;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.script.IScript;
-import org.freeplane.plugin.script.ScriptContext;
-import org.freeplane.plugin.script.ScriptRunner;
-import org.freeplane.plugin.script.ScriptingEngine;
-import org.freeplane.plugin.script.ScriptingPermissions;
+import org.freeplane.plugin.script.*;
+import org.freeplane.plugin.script.ScriptExecution;
 
 public class ScriptProxy implements Script {
 	private final File file;
 	private final Map<String, Boolean> permissions;
-	private final ScriptContext scriptContext;
+	private final ScriptExecution scriptExecution;
 	private PrintStream outStream;
 
-	public ScriptProxy(File file, ScriptContext scriptContext) {
+	public ScriptProxy(File file, ScriptExecution scriptExecution) {
 		this.file = file;
-		this.scriptContext = scriptContext;
+		this.scriptExecution = scriptExecution;
 		permissions = new HashMap<String, Boolean>();
 	}
 
@@ -75,7 +72,7 @@ public class ScriptProxy implements Script {
 	public Object executeOn(NodeRO node) {
 		final IScript script = ScriptingEngine.createScriptForFile(file, new ScriptingPermissions(permissions));
 		final ScriptRunner scriptRunner = new ScriptRunner(script);
-		scriptRunner.setScriptContext(scriptContext);
+		scriptRunner.setScriptExecution(scriptExecution);
 		if(outStream != null)
 			scriptRunner.setOutStream(outStream);
 		final NodeModel nodeModel = ((NodeProxy) node).getDelegate();

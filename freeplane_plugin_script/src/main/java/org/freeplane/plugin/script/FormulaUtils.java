@@ -64,13 +64,14 @@ public class FormulaUtils {
 	 * @return the evaluation result.
 	 * @throws ExecuteScriptException */
 	private static Object eval(final NodeModel nodeModel, final String script) {
-		ScriptContext scriptContext = new ScriptContext(new NodeScript(nodeModel, script));
-		if (!FormulaThreadLocalStack.INSTANCE.push(nodeModel, script)) {
+		NodeScript nodeScript = new NodeScript(nodeModel, script);
+		ScriptExecution scriptExecution = new ScriptExecution(nodeScript);
+		if (!FormulaThreadLocalStack.INSTANCE.push(nodeScript)) {
 			throw new StackOverflowError(TextUtils.format("formula.error.circularReference",
 			    HtmlUtils.htmlToPlain(script)));
 		}
 		try {
-			return FormulaCache.execute(nodeModel, scriptContext, script);
+			return scriptExecution.execute();
 		}
 		finally {
 			FormulaThreadLocalStack.INSTANCE.pop();

@@ -14,7 +14,7 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
@@ -23,22 +23,22 @@ import java.io.File;
 import java.util.Map.Entry;
 
 public class MapProxy extends AbstractProxy<MapModel> implements Map {
-	public MapProxy(final MapModel map, final ScriptContext scriptContext) {
-		super(map, scriptContext);
+	public MapProxy(final MapModel map, final ScriptExecution scriptExecution) {
+		super(map, scriptExecution);
 	}
 
 	// MapRO: R
 	@Override
 	public Node node(final String id) {
 		final NodeModel node = getDelegate().getNodeForID(id);
-		return node != null ? new NodeProxy(node, getScriptContext()) : null;
+		return node != null ? new NodeProxy(node, getScriptExecution()) : null;
 	}
 
 	// MapRO: R
 	@Override
 	public Node getRoot() {
 		final NodeModel rootNode = getDelegate().getRootNode();
-		return new NodeProxy(rootNode, getScriptContext());
+		return new NodeProxy(rootNode, getScriptExecution());
 	}
 
 	@Override
@@ -206,13 +206,13 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 	// Map: R/W
 	@Override
 	public void setFilter(final boolean showAncestors, final boolean showDescendants, final NodeCondition nc) {
-		final ICondition condition = ProxyUtils.createCondition(nc, getScriptContext());
+		final ICondition condition = ProxyUtils.createCondition(nc, getScriptExecution());
 		setFilter(showAncestors, showDescendants, condition);
 	}
 
 	// Map: R/W
 	public void setFilter(final boolean showAncestors, final boolean showDescendants, final Closure<Boolean> closure) {
-		final ICondition condition = ProxyUtils.createCondition(closure, getScriptContext());
+		final ICondition condition = ProxyUtils.createCondition(closure, getScriptExecution());
 		setFilter(showAncestors, showDescendants, condition);
 	}
 
@@ -248,6 +248,6 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
     // Map: RO
     @Override
 	public Proxy.Properties getStorage() {
-        return new PropertiesProxy(getDelegate(), getScriptContext());
+        return new PropertiesProxy(getDelegate(), getScriptExecution());
     }
 }

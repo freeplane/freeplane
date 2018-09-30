@@ -24,19 +24,19 @@ import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 
 import groovy.lang.Closure;
 
 public class ProxyUtils {
-	static List<? extends Node> createNodeList(final List<NodeModel> list, final ScriptContext scriptContext) {
+	static List<? extends Node> createNodeList(final List<NodeModel> list, final ScriptExecution scriptExecution) {
 		return new AbstractList<Node>() {
 			final private List<NodeModel> nodeModels = list;
 
 			@Override
 			public Node get(final int index) {
 				final NodeModel nodeModel = nodeModels.get(index);
-				return new NodeProxy(nodeModel, scriptContext);
+				return new NodeProxy(nodeModel, scriptExecution);
 			}
 
 			@Override
@@ -46,25 +46,25 @@ public class ProxyUtils {
 		};
 	}
 
-	static List<? extends Node> find(final ICondition condition, final NodeModel node, final ScriptContext scriptContext) {
-		return ProxyUtils.createNodeList(ProxyUtils.findImpl(condition, node, true), scriptContext);
+	static List<? extends Node> find(final ICondition condition, final NodeModel node, final ScriptExecution scriptExecution) {
+		return ProxyUtils.createNodeList(ProxyUtils.findImpl(condition, node, true), scriptExecution);
 	}
 
-	static List<? extends Node> findAll(final NodeModel node, final ScriptContext scriptContext, boolean breadthFirst) {
-		return ProxyUtils.createNodeList(ProxyUtils.findImpl(null, node, breadthFirst), scriptContext);
+	static List<? extends Node> findAll(final NodeModel node, final ScriptExecution scriptExecution, boolean breadthFirst) {
+		return ProxyUtils.createNodeList(ProxyUtils.findImpl(null, node, breadthFirst), scriptExecution);
 	}
 
-	static List<? extends Node> find(final Closure<Boolean> closure, final NodeModel node, final ScriptContext scriptContext) {
-		return ProxyUtils.find(createCondition(closure, scriptContext), node, scriptContext);
+	static List<? extends Node> find(final Closure<Boolean> closure, final NodeModel node, final ScriptExecution scriptExecution) {
+		return ProxyUtils.find(createCondition(closure, scriptExecution), node, scriptExecution);
 	}
 
-	static ICondition createCondition(final Closure<Boolean> closure, final ScriptContext scriptContext) {
+	static ICondition createCondition(final Closure<Boolean> closure, final ScriptExecution scriptExecution) {
 	    final ICondition condition = closure == null ? null : new ASelectableCondition() {
 			@Override
 			public boolean checkNode(final NodeModel node) {
 				try {
 					final Boolean result = closure
-					    .call(new Object[] { new NodeProxy(node, scriptContext) });
+					    .call(new Object[] { new NodeProxy(node, scriptExecution) });
 					if (result == null) {
 						throw new RuntimeException("find(): closure returned null instead of boolean/Boolean");
 					}
@@ -89,15 +89,15 @@ public class ProxyUtils {
 	    return condition;
     }
 
-	static List<? extends Node> find(final NodeCondition condition, final NodeModel node, final ScriptContext scriptContext) {
-		return ProxyUtils.find(createCondition(condition, scriptContext), node, scriptContext);
+	static List<? extends Node> find(final NodeCondition condition, final NodeModel node, final ScriptExecution scriptExecution) {
+		return ProxyUtils.find(createCondition(condition, scriptExecution), node, scriptExecution);
 	}
 
-	static ICondition createCondition(final NodeCondition condition, final ScriptContext scriptContext) {
+	static ICondition createCondition(final NodeCondition condition, final ScriptExecution scriptExecution) {
 		final ICondition filterCondition = condition == null ? null : new ASelectableCondition() {
 			@Override
 			public boolean checkNode(final NodeModel node) {
-				return condition.check(new NodeProxy(node, scriptContext));
+				return condition.check(new NodeProxy(node, scriptExecution));
 			}
 
 			@Override
@@ -136,12 +136,12 @@ public class ProxyUtils {
 		return matches;
 	}
 
-	public static List<Proxy.Node> createListOfChildren(final NodeModel nodeModel, final ScriptContext scriptContext) {
+	public static List<Proxy.Node> createListOfChildren(final NodeModel nodeModel, final ScriptExecution scriptExecution) {
         return new ArrayList<Proxy.Node>(new AbstractList<Proxy.Node>() {
     		@Override
     		public Proxy.Node get(final int index) {
     			final NodeModel child = nodeModel.getChildAt(index);
-    			return new NodeProxy(child, scriptContext);
+    			return new NodeProxy(child, scriptExecution);
     		}
 
     		@Override
@@ -152,7 +152,7 @@ public class ProxyUtils {
     }
 
 	/** this method is null-safe, i.e. value may be null and the result is not null. */
-	public static Convertible attributeValueToConvertible(final NodeModel nodeModel, final ScriptContext scriptContext,
+	public static Convertible attributeValueToConvertible(final NodeModel nodeModel, final ScriptExecution scriptExecution,
 	                                             Object value) {
 		if (value instanceof IFormattedObject)
 			value = ((IFormattedObject) value).getObject();
@@ -160,10 +160,10 @@ public class ProxyUtils {
 			return new ConvertibleNumber((Number) value);
 		else if (value instanceof Date)
 			return new ConvertibleDate((Date) value);
-		return new ConvertibleText(nodeModel, scriptContext, value == null ? null : value.toString());
+		return new ConvertibleText(nodeModel, scriptExecution, value == null ? null : value.toString());
 	}
 
-	public static Convertible nodeModelToConvertible(final NodeModel nodeModel, final ScriptContext scriptContext) {
+	public static Convertible nodeModelToConvertible(final NodeModel nodeModel, final ScriptExecution scriptExecution) {
         Object value = nodeModel.getUserObject();
     	if (value instanceof IFormattedObject)
     		value = ((IFormattedObject) value).getObject();
@@ -171,7 +171,7 @@ public class ProxyUtils {
     		return new ConvertibleNumber((Number) value);
     	else if (value instanceof Date)
     		return new ConvertibleDate((Date) value);
-    	return new ConvertibleNodeText(nodeModel, scriptContext);
+    	return new ConvertibleNodeText(nodeModel, scriptExecution);
     }
 
 	public static <T>  List<T> createList(final Collection<T> collection) {

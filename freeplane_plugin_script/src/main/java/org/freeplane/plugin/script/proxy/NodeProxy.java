@@ -64,7 +64,7 @@ import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 
 import groovy.lang.Closure;
 
@@ -72,10 +72,10 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	private static final Integer ONE = 1;
 	private static final Integer ZERO = 0;
 
-	public NodeProxy(final NodeModel node, final ScriptContext scriptContext) {
-		super(node, scriptContext);
-		if (scriptContext != null)
-			scriptContext.accessNode(node);
+	public NodeProxy(final NodeModel node, final ScriptExecution scriptExecution) {
+		super(node, scriptExecution);
+		if (scriptExecution != null)
+			scriptExecution.accessNode(node);
 	}
 
 	// Node: R/W
@@ -89,7 +89,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public Proxy.Connector addConnectorTo(final String targetNodeID) {
 		final MLinkController linkController = (MLinkController) LinkController.getController();
 		final ConnectorModel connectorModel = linkController.addConnector(getDelegate(), targetNodeID);
-		return new ConnectorProxy(connectorModel, getScriptContext());
+		return new ConnectorProxy(connectorModel, getScriptExecution());
 	}
 
 	// Node: R/W
@@ -97,7 +97,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public Node createChild() {
 		final NodeModel newNodeModel = new NodeModel(getDelegate().getMap());
 		getMapController().insertNode(newNodeModel, getDelegate());
-		return new NodeProxy(newNodeModel, getScriptContext());
+		return new NodeProxy(newNodeModel, getScriptExecution());
 	}
 
 	private MMapController getMapController() {
@@ -117,7 +117,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public Node createChild(final int position) {
 		final NodeModel newNodeModel = new NodeModel(getDelegate().getMap());
 		getMapController().insertNode(newNodeModel, getDelegate(), position);
-		return new NodeProxy(newNodeModel, getScriptContext());
+		return new NodeProxy(newNodeModel, getScriptExecution());
 	}
 
 	// Node: R/W
@@ -136,7 +136,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	    final MClipboardController clipboardController = (MClipboardController) ClipboardController.getController();
 		final NodeModel newNodeModel = clipboardController.duplicate(((NodeProxy) node).getDelegate(), withChildren);
 		getMapController().insertNode(newNodeModel, getDelegate());
-		return new NodeProxy(newNodeModel, getScriptContext());
+		return new NodeProxy(newNodeModel, getScriptExecution());
     }
 
 	// Node: R/W
@@ -148,14 +148,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public Proxy.Attributes getAttributes() {
-		return AttributesProxy.withRawValues(getDelegate(), getScriptContext());
+		return AttributesProxy.withRawValues(getDelegate(), getScriptExecution());
 	}
 
 	// NodeRO: R
 	@Override
 	public Convertible getAt(final String attributeName) {
 		final Object value = getAttributes().getFirst(attributeName);
-		return ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), value);
+		return ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptExecution(), value);
 	}
 
 	// Node: R/W
@@ -220,7 +220,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public List<Proxy.Node> getChildren() {
-		return ProxyUtils.createListOfChildren(getDelegate(), getScriptContext());
+		return ProxyUtils.createListOfChildren(getDelegate(), getScriptExecution());
 	}
 
     // NodeRO: R
@@ -245,7 +245,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
 	public Convertible getDetails() {
 		final String detailsText = DetailTextModel.getDetailTextText(getDelegate());
-		return (detailsText == null) ? null : new ConvertibleHtmlText(getDelegate(), getScriptContext(), detailsText);
+		return (detailsText == null) ? null : new ConvertibleHtmlText(getDelegate(), getScriptExecution(), detailsText);
 	}
 
 	// NodeRO: R
@@ -264,25 +264,25 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public Proxy.ExternalObject getExternalObject() {
-		return new ExternalObjectProxy(getDelegate(), getScriptContext());
+		return new ExternalObjectProxy(getDelegate(), getScriptExecution());
 	}
 
 	// NodeRO: R
 	@Override
 	public Proxy.Icons getIcons() {
-		return new IconsProxy(getDelegate(), getScriptContext());
+		return new IconsProxy(getDelegate(), getScriptExecution());
 	}
 
 	// NodeRO: R
 	@Override
 	public Proxy.Link getLink() {
-		return new LinkProxy(getDelegate(), getScriptContext());
+		return new LinkProxy(getDelegate(), getScriptExecution());
 	}
 
 	// NodeRO: R
     @Override
 	public Reminder getReminder() {
-        return new ReminderProxy(getDelegate(), getScriptContext());
+        return new ReminderProxy(getDelegate(), getScriptExecution());
     }
 
 	// NodeRO: R
@@ -320,14 +320,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
 	public Convertible getNote() {
 		final String noteText = getNoteText();
-		return (noteText == null) ? null : new ConvertibleNoteText(getDelegate(), getScriptContext(), noteText);
+		return (noteText == null) ? null : new ConvertibleNoteText(getDelegate(), getScriptExecution(), noteText);
 	}
 
 	// NodeRO: R
 	@Override
 	public Node getParent() {
 		final NodeModel parentNode = getDelegate().getParentNode();
-		return parentNode != null ? new NodeProxy(parentNode, getScriptContext()) : null;
+		return parentNode != null ? new NodeProxy(parentNode, getScriptExecution()) : null;
 	}
 
 	// NodeRO: R
@@ -340,21 +340,21 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
     // NodeRO: R
     @Override
 	public List<? extends Node> getPathToRoot() {
-        return ProxyUtils.createNodeList(Arrays.asList(getDelegate().getPathToRoot()), getScriptContext());
+        return ProxyUtils.createNodeList(Arrays.asList(getDelegate().getPathToRoot()), getScriptExecution());
     }
 
     // NodeRO: R
     @Override
 	public Node getNext() {
         final NodeModel node = MapNavigationUtils.findNext(Direction.FORWARD, getDelegate(), null);
-        return node == null ? null : new NodeProxy(node, getScriptContext());
+        return node == null ? null : new NodeProxy(node, getScriptExecution());
     }
 
     // NodeRO: R
     @Override
 	public Node getPrevious() {
         final NodeModel node = MapNavigationUtils.findPrevious(Direction.BACK, getDelegate(), null);
-        return node == null ? null : new NodeProxy(node, getScriptContext());
+        return node == null ? null : new NodeProxy(node, getScriptExecution());
     }
 
 	// NodeRO: R
@@ -366,7 +366,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	private NodeModel getDelegateForValueAccess() {
 		final NodeModel node = getDelegate();
-		getScriptContext().accessValue(node);
+		getScriptExecution().accessValue(node);
 		return node;
 	}
 
@@ -391,7 +391,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public NodeStyle getStyle() {
-		return new NodeStyleProxy(getDelegate(), getScriptContext());
+		return new NodeStyleProxy(getDelegate(), getScriptExecution());
 	}
 
 	// NodeRO: R
@@ -467,7 +467,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
 	public Convertible getTo() {
 		final NodeModel node = getDelegateForValueAccess();
-		return ProxyUtils.nodeModelToConvertible(node, getScriptContext());
+		return ProxyUtils.nodeModelToConvertible(node, getScriptExecution());
 	}
 
 	// NodeRO: R
@@ -651,7 +651,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
 	public Proxy.Map getMap() {
 		final MapModel map = getDelegate().getMap();
-		return map != null ? new MapProxy(map, getScriptContext()) : null;
+		return map != null ? new MapProxy(map, getScriptExecution()) : null;
 	}
 
 	// NodeRO: R
@@ -659,44 +659,44 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Deprecated
 	public List<? extends Node> find(final ICondition condition) {
 		final NodeModel delegate = getDelegate();
-		if (getScriptContext() != null)
-			getScriptContext().accessBranch(delegate);
-		return ProxyUtils.find(condition, delegate, getScriptContext());
+		if (getScriptExecution() != null)
+			getScriptExecution().accessBranch(delegate);
+		return ProxyUtils.find(condition, delegate, getScriptExecution());
 	}
 
 	// NodeRO: R
 	@Override
 	public List<? extends Node> find(final Closure<Boolean> closure) {
 		final NodeModel delegate = getDelegate();
-		if (getScriptContext() != null)
-			getScriptContext().accessBranch(delegate);
-		return ProxyUtils.find(closure, delegate, getScriptContext());
+		if (getScriptExecution() != null)
+			getScriptExecution().accessBranch(delegate);
+		return ProxyUtils.find(closure, delegate, getScriptExecution());
 	}
 
 	@Override
 	public List<? extends Node> find(NodeCondition condition) {
 		final NodeModel delegate = getDelegate();
-		if (getScriptContext() != null)
-			getScriptContext().accessBranch(delegate);
-		return ProxyUtils.find(condition, delegate, getScriptContext());
+		if (getScriptExecution() != null)
+			getScriptExecution().accessBranch(delegate);
+		return ProxyUtils.find(condition, delegate, getScriptExecution());
 	}
 
 	// NodeRO: R
 	@Override
 	public List<? extends Node> findAll() {
 		final NodeModel delegate = getDelegate();
-		if (getScriptContext() != null)
-			getScriptContext().accessBranch(delegate);
-		return ProxyUtils.findAll(delegate, getScriptContext(), true);
+		if (getScriptExecution() != null)
+			getScriptExecution().accessBranch(delegate);
+		return ProxyUtils.findAll(delegate, getScriptExecution(), true);
     }
 
 	// NodeRO: R
 	@Override
 	public List<? extends Node> findAllDepthFirst() {
 		final NodeModel delegate = getDelegate();
-		if (getScriptContext() != null)
-			getScriptContext().accessBranch(delegate);
-		return ProxyUtils.findAll(delegate, getScriptContext(), false);
+		if (getScriptExecution() != null)
+			getScriptExecution().accessBranch(delegate);
+		return ProxyUtils.findAll(delegate, getScriptExecution(), false);
     }
 
 	// NodeRO: R
@@ -998,14 +998,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		return new Comparator<NodeModel>() {
 			@Override
 			public int compare(NodeModel o1, NodeModel o2) {
-				final NodeProxy p1 = new NodeProxy(o1, getScriptContext());
-				final NodeProxy p2 = new NodeProxy(o1, getScriptContext());
+				final NodeProxy p1 = new NodeProxy(o1, getScriptExecution());
+				final NodeProxy p2 = new NodeProxy(o1, getScriptExecution());
 				return mapper.toComparable(p1).compareTo(mapper.toComparable(p2));
 			}
 		};
 	}
 	private void sortChildrenBy(final Comparator<NodeModel> comparator) {
-		getScriptContext().accessNode(getDelegate());
+		getScriptExecution().accessNode(getDelegate());
 		NodeModel node = getDelegate();
 		final ArrayList<NodeModel> children = new ArrayList<NodeModel>(node.getChildren());
 		Collections.sort(children, comparator);
@@ -1023,8 +1023,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		return new Comparator<NodeModel>() {
 			@Override
 			public int compare(NodeModel o1, NodeModel o2) {
-				final NodeProxy p1 = new NodeProxy(o1, getScriptContext());
-				final NodeProxy p2 = new NodeProxy(o1, getScriptContext());
+				final NodeProxy p1 = new NodeProxy(o1, getScriptExecution());
+				final NodeProxy p2 = new NodeProxy(o1, getScriptExecution());
 				return closure.call(p1).compareTo(closure.call(p2));
 			}
 		};
@@ -1044,14 +1044,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public List<? extends Node> getNodesSharingContent() {
 		final ArrayList<NodeModel> nodeModels = new ArrayList<NodeModel>(getDelegate().allClones().toCollection());
 		nodeModels.remove(getDelegate());
-		return ProxyUtils.createNodeList(nodeModels, getScriptContext());
+		return ProxyUtils.createNodeList(nodeModels, getScriptExecution());
 	}
 
 	@Override
 	public List<? extends Node> getNodesSharingContentAndSubtree() {
 		final ArrayList<NodeModel> nodeModels = new ArrayList<NodeModel>(getDelegate().subtreeClones().toCollection());
 		nodeModels.remove(getDelegate());
-		return ProxyUtils.createNodeList(nodeModels, getScriptContext());
+		return ProxyUtils.createNodeList(nodeModels, getScriptExecution());
 	}
 
 	@Override
@@ -1075,7 +1075,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 			throw new IllegalArgumentException("can't clone a node which has this node as child");
 		final NodeModel clone = withSubtree ? toBeCloned.cloneTree() : toBeCloned.cloneContent();
 		mapController.addNewNode(clone, target, target.getChildCount(), target.isNewChildLeft());
-		return new NodeProxy(clone, getScriptContext());
+		return new NodeProxy(clone, getScriptExecution());
 	}
 
 	@Override
@@ -1090,8 +1090,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		final MMapExplorerController explorer = getExplorer();
 		final MapExplorer mapExplorer = explorer.getMapExplorer(getDelegate(), path, accessedNodes());
 		final NodeModel node = mapExplorer.getNode();
-		final ScriptContext scriptContext = getScriptContext();
-		return new NodeProxy(node, scriptContext);
+		final ScriptExecution scriptExecution = getScriptExecution();
+		return new NodeProxy(node, scriptExecution);
 	}
 
 	private MMapExplorerController getExplorer() {
@@ -1099,7 +1099,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	}
 
 	private AccessedNodes accessedNodes() {
-		return getScriptContext() != null ? getScriptContext() : AccessedNodes.IGNORE;
+		return getScriptExecution() != null ? getScriptExecution() : AccessedNodes.IGNORE;
 	}
 
 	@Override
@@ -1107,8 +1107,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		final MMapExplorerController explorer = getExplorer();
 		final MapExplorer mapExplorer = explorer.getMapExplorer(getDelegate(), path, accessedNodes());
 		final ArrayList<NodeModel> nodeModels = new ArrayList<NodeModel>(mapExplorer.getNodes());
-		final ScriptContext scriptContext = getScriptContext();
-		return ProxyUtils.createNodeList(nodeModels, scriptContext);
+		final ScriptExecution scriptExecution = getScriptExecution();
+		return ProxyUtils.createNodeList(nodeModels, scriptExecution);
 	}
 
 	@Override

@@ -7,11 +7,11 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 
 class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
-	FontProxy(final NodeModel delegate, final ScriptContext scriptContext) {
-		super(delegate, scriptContext);
+	FontProxy(final NodeModel delegate, final ScriptExecution scriptExecution) {
+		super(delegate, scriptExecution);
 	}
 
 	public String getName() {

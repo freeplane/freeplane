@@ -152,7 +152,7 @@ public class GenericScript implements IScript {
 
 
     @Override
-    public Object execute(final NodeModel node, PrintStream outStream, IFreeplaneScriptErrorHandler errorHandler, ScriptContext scriptContext) {
+    public Object execute(final NodeModel node, PrintStream outStream, IFreeplaneScriptErrorHandler errorHandler, ScriptExecution scriptExecution) {
         try {
             if (errorsInScript != null && compileTimeStrategy.canUseOldCompiledScript()) {
                 throw new ExecuteScriptException(errorsInScript.getMessage(), errorsInScript);
@@ -163,7 +163,7 @@ public class GenericScript implements IScript {
 				final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager(outStream);
 				scriptClassLoader.setSecurityManager(scriptingSecurityManager);
 				Thread.currentThread().setContextClassLoader(scriptClassLoader);
-                final SimpleScriptContext context = createScriptContext(node, scriptContext, outStream);
+                final SimpleScriptContext context = createScriptContext(node, scriptExecution, outStream);
                 if (compilationEnabled && engine instanceof Compilable) {
                     compileAndCache((Compilable) engine);
                     System.setOut(outStream);
@@ -202,19 +202,19 @@ public class GenericScript implements IScript {
                 ScriptResources.SCRIPT_COMPILATION_DISABLED_EXTENSIONS);
     }
 
-    private SimpleScriptContext createScriptContext(final NodeModel node, ScriptContext scriptContext, OutputStream outStream) {
+    private SimpleScriptContext createScriptContext(final NodeModel node, ScriptExecution scriptExecution, OutputStream outStream) {
         final SimpleScriptContext context = new SimpleScriptContext();
         final OutputStreamWriter outWriter = new OutputStreamWriter(outStream);
         context.setWriter(outWriter);
 		context.setErrorWriter(outWriter);
-        context.setBindings(createBinding(node, scriptContext), javax.script.ScriptContext.ENGINE_SCOPE);
+        context.setBindings(createBinding(node, scriptExecution), javax.script.ScriptContext.ENGINE_SCOPE);
         return context;
     }
 
-    private Bindings createBinding(final NodeModel node, ScriptContext scriptContext) {
+    private Bindings createBinding(final NodeModel node, ScriptExecution scriptExecution) {
         final Bindings binding = engine.createBindings();
-        binding.put("c", ProxyFactory.createController(scriptContext));
-        binding.put("node", ProxyFactory.createNode(node, scriptContext));
+        binding.put("c", ProxyFactory.createController(scriptExecution));
+        binding.put("node", ProxyFactory.createNode(node, scriptExecution));
         binding.putAll(ScriptingConfiguration.getStaticProperties());
         return binding;
     }

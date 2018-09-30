@@ -4,13 +4,13 @@ import java.util.Date;
 
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 import org.freeplane.view.swing.features.time.mindmapmode.ReminderExtension;
 import org.freeplane.view.swing.features.time.mindmapmode.ReminderHook;
 
 public class ReminderProxy extends AbstractProxy<NodeModel> implements Proxy.Reminder {
-    ReminderProxy(final NodeModel delegate, final ScriptContext scriptContext) {
-        super(delegate, scriptContext);
+    ReminderProxy(final NodeModel delegate, final ScriptExecution scriptExecution) {
+        super(delegate, scriptExecution);
     }
 
     // ReminderRO

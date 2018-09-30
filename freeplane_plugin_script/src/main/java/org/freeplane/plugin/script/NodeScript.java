@@ -2,30 +2,50 @@ package org.freeplane.plugin.script;
 
 import java.net.URL;
 
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
 public class NodeScript {
-	final NodeModel nodeModel;
+	final NodeModel node;
 	final String script;
 
-	public NodeScript(NodeModel nodeModel, String script) {
-		this.nodeModel = nodeModel;
-		// NOTE: to ignore the script for cycle detection comment out next line
+	public NodeScript(NodeModel node, String script) {
+		this.node = node;
 		this.script = script;
 	}
-
-	public NodeModel getNodeModel() {
-		return nodeModel;
+	String format(NodeScript nodeScriptToHighlight) {
+		return (nodeScriptToHighlight.equals(this) ? "* " : "") + node.createID() + " "
+				+ limitLength(toPlainText(node.getText()), 30) //
+				+ " -> " + limitLength(script, 60);
 	}
 
-	//		public String getScript() {
-	//			return script;
-	//		}
+	private String toPlainText(String string) {
+		return HtmlUtils.htmlToPlain(string).replaceAll("\\s+", " ");
+	}
+
+	private String limitLength(final String string, int maxLenght) {
+		if (string == null || maxLenght >= string.length())
+			return string;
+		maxLenght = maxLenght > 3 ? maxLenght - 3 : maxLenght;
+		return string.substring(0, maxLenght) + "...";
+	}
+
+
+	MapModel getMap() {
+		return node.getMap();
+	}
+
+	public URL getBaseUrl() {
+		return getMap().getURL();
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((nodeModel == null) ? 0 : nodeModel.hashCode());
+		result = prime * result + ((node == null) ? 0 : node.hashCode());
 		result = prime * result + ((script == null) ? 0 : script.hashCode());
 		return result;
 	}
@@ -39,7 +59,7 @@ public class NodeScript {
 		if (getClass() != obj.getClass())
 			return false;
 		NodeScript other = (NodeScript) obj;
-		if (nodeModel != other.nodeModel)
+		if (node != other.node)
 			return false;
 		if (script == null) {
 			if (other.script != null)
@@ -50,10 +70,7 @@ public class NodeScript {
 
 	@Override
 	public String toString() {
-		return nodeModel + "[" + script + "]";
+		return node + "[" + script + "]";
 	}
 
-	public URL getBaseUrl() {
-		return nodeModel.getMap().getURL();
-	}
 }

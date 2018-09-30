@@ -10,11 +10,11 @@ import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 
 class EdgeProxy extends AbstractProxy<NodeModel> implements Proxy.Edge {
-	EdgeProxy(final NodeModel delegate, final ScriptContext scriptContext) {
-		super(delegate, scriptContext);
+	EdgeProxy(final NodeModel delegate, final ScriptExecution scriptExecution) {
+		super(delegate, scriptExecution);
 	}
 
 	@Override
