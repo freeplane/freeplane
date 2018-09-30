@@ -10,13 +10,13 @@ import org.freeplane.features.map.NodeModel;
 public class FormulaDependencies{
 	public static List<NodeModel> manageChangeAndReturnDependencies(boolean includeChanged, final NodeModel... changedNodes) {
 		final ArrayList<NodeModel> dependencies = removeAllChangedDependencies(includeChanged, changedNodes);
-		removeFromCache(dependencies);
+		FormulaCache.removeFromCache(dependencies);
 		return dependencies;
 	}
 
 	public static List<NodeModel> manageChangeAndReturnGlobalDependencies(MapModel map) {
 		final ArrayList<NodeModel> dependencies = removeGlobalDependencies(map);
-		removeFromCache(dependencies);
+		FormulaCache.removeFromCache(dependencies);
 		return dependencies;
 	}
 
@@ -60,11 +60,4 @@ public class FormulaDependencies{
 	}
 
 
-	private static void removeFromCache(final ArrayList<NodeModel> dependencies) {
-		if (FormulaCache.ENABLE_CACHING) {
-			for (NodeModel nodeModel : dependencies) {
-				FormulaCache.of(nodeModel.getMap()).remove(nodeModel);
-			}
-		}
-	}
 }

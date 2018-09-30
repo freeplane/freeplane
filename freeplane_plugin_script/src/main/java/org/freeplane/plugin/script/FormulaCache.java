@@ -16,6 +16,14 @@ class FormulaCache implements IExtension{
 	static final boolean ENABLE_CACHING = !Controller.getCurrentController().getResourceController()
 	    .getBooleanProperty("formula_disable_caching");
 
+	static void removeFromCache(final ArrayList<NodeModel> dependencies) {
+			if (ENABLE_CACHING) {
+				for (NodeModel nodeModel : dependencies) {
+					FormulaCache.of(nodeModel.getMap()).remove(nodeModel);
+				}
+			}
+		}
+
 	Object getOrThrowCachedResult(NodeScript nodeScript) {
 		final LinkedHashMap<String, CachedResult> cacheEntry = cache.get(nodeScript.node.getID());
 		if (cacheEntry == null) return null;
