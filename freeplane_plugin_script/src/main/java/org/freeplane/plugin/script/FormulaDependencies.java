@@ -8,38 +8,38 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
 public class FormulaDependencies{
-	public static List<NodeModel> manageChangeAndReturnDependencies(boolean includeChanged, final NodeModel... nodes) {
-		final ArrayList<NodeModel> dependencies = getAllDependencies(includeChanged, nodes);
+	public static List<NodeModel> manageChangeAndReturnDependencies(boolean includeChanged, final NodeModel... changedNodes) {
+		final ArrayList<NodeModel> dependencies = removeAllChangedDependencies(includeChanged, changedNodes);
 		FormulaCache.manageChange(dependencies);
 		return dependencies;
 	}
 
 	public static List<NodeModel> manageChangeAndReturnGlobalDependencies(MapModel map) {
-		final ArrayList<NodeModel> dependencies = getGlobalDependencies(map);
+		final ArrayList<NodeModel> dependencies = removeGlobalDependencies(map);
 		FormulaCache.manageChange(dependencies);
 		return dependencies;
 	}
 
-	private static ArrayList<NodeModel> getAllDependencies(boolean includeChanged, final NodeModel... nodes) {
+	private static ArrayList<NodeModel> removeAllChangedDependencies(boolean includeChanged, final NodeModel... changedNodes) {
 		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
-		for (int i = 0; i < nodes.length; i++) {
-			final LinkedHashSet<NodeModel> nodeDependencies = new LinkedHashSet<NodeModel>(0);
-			EvaluationDependencies.of(nodes[i].getMap()).getDependencies(nodeDependencies, nodes[i]);
-			if (nodeDependencies != null)
-				dependencies.addAll(nodeDependencies);
+		for (int i = 0; i < changedNodes.length; i++) {
+			final LinkedHashSet<NodeModel> accessingNodes = new LinkedHashSet<NodeModel>(0);
+			EvaluationDependencies.of(changedNodes[i].getMap()).removeChangedDependencies(accessingNodes, changedNodes[i]);
+			if (accessingNodes != null)
+				dependencies.addAll(accessingNodes);
 			if (includeChanged)
-				dependencies.add(nodes[i]);
+				dependencies.add(changedNodes[i]);
 		}
 		return dependencies;
 	}
 
 
-	private static ArrayList<NodeModel> getGlobalDependencies(MapModel map) {
+	private static ArrayList<NodeModel> removeGlobalDependencies(MapModel map) {
 		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
-		final LinkedHashSet<NodeModel> nodeDependencies = new LinkedHashSet<NodeModel>(0);
-		EvaluationDependencies.of(map).getGlobalDependencies(nodeDependencies);
-		if (nodeDependencies != null)
-			dependencies.addAll(nodeDependencies);
+		final LinkedHashSet<NodeModel> accessingNodes = new LinkedHashSet<NodeModel>(0);
+		EvaluationDependencies.of(map).removeGlobalDependencies(accessingNodes);
+		if (accessingNodes != null)
+			dependencies.addAll(accessingNodes);
 		return dependencies;
 	}
 

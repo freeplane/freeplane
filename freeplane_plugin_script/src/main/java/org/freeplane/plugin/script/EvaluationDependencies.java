@@ -1,5 +1,6 @@
 package org.freeplane.plugin.script;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -41,37 +42,41 @@ class EvaluationDependencies implements IExtension{
 	private final HashSet<NodeModel> onAnyNodeDependencies = new HashSet<NodeModel>();
 	private final HashSet<NodeModel> onGlobalNodeDependencies = new HashSet<NodeModel>();
 
-	Set<NodeModel> getDependencies(Set<NodeModel> result, final NodeModel node) {
-		final Iterable<NodeModel> onNode = onNodeDependencies.get(node);
+	void removeChangedDependencies(Set<NodeModel> accessingNodes, final NodeModel removedAccessedNode) {
+		final Iterable<NodeModel> onNode = onNodeDependencies.remove(removedAccessedNode);
 		if (onNode != null)
-			addRecursively(result, onNode);
-		for (Entry<NodeModel, DependantNodeReferences> entry : onBranchDependencies.entrySet()) {
-			if (node.isDescendantOf(entry.getKey()))
-				addRecursively(result, entry.getValue());
+			removeRecursively(accessingNodes, onNode);
+		ArrayList<Entry<NodeModel, DependantNodeReferences>> onBranchDependencyList = new ArrayList<>(onBranchDependencies.entrySet());
+		for (Entry<NodeModel, DependantNodeReferences> entry : onBranchDependencyList) {
+			final NodeModel branchNode = entry.getKey();
+			if (removedAccessedNode.isDescendantOf(branchNode)) {
+				onBranchDependencies.remove(branchNode);
+				removeRecursively(accessingNodes, entry.getValue());
+			}
 		}
-		addRecursively(result, onAnyNodeDependencies);
-//		System.out.println("dependencies on(" + node + "): " + result);
-		return result;
+		removeRecursively(accessingNodes, onAnyNodeDependencies);
+		onAnyNodeDependencies.clear();
+//		System.out.println("dependencies on(" + node + "): " + accessingNodes);
 	}
 
-	Set<NodeModel> getGlobalDependencies(Set<NodeModel> result) {
-		addRecursively(result, onGlobalNodeDependencies);
-//		System.out.println("dependencies on(" + node + "): " + result);
-		return result;
+	void removeGlobalDependencies(Set<NodeModel> accessingNodes) {
+		removeRecursively(accessingNodes, onGlobalNodeDependencies);
+//		System.out.println("dependencies on(" + node + "): " + accessingNodes);
 	}
 
-	private void addRecursively(Set<NodeModel> dependentNodes, final Iterable<NodeModel> nodesToAdd) {
-		for (NodeModel node : nodesToAdd) {
+	private void removeRecursively(Set<NodeModel> accessingNodes, final Iterable<NodeModel> changedAccessedNodes) {
+		for (NodeModel node : changedAccessedNodes) {
 			// avoid loops
-			if (dependentNodes.add(node))
-				dependentNodes.addAll(getDependencies(dependentNodes, node));
+			if (accessingNodes.add(node)) {
+				removeChangedDependencies(accessingNodes, node);
+			}
 		}
 	}
 
 	/** accessedNode was accessed when accessingNode was evaluated. */
 	void accessNode(NodeModel accessingNode, NodeModel accessedNode) {
 		// FIXME: check if accessedNode is already covered by other accessModes
-		getDependencySet(accessedNode, onNodeDependencies).add(accessingNode);
+		provideDependencySet(accessedNode, onNodeDependencies).add(accessingNode);
 		addAccessedMap(accessingNode, accessedNode);
 //		System.out.println(accessingNode + " accesses " + accessedNode + ". current dependencies:\n" + this);
 	}
@@ -79,7 +84,7 @@ class EvaluationDependencies implements IExtension{
 	/** accessedNode.children was accessed when accessingNode was evaluated. */
 	void accessBranch(NodeModel accessingNode, NodeModel accessedNode) {
 		// FIXME: check if accessedNode is already covered by other accessModes
-		getDependencySet(accessedNode, onBranchDependencies).add(accessingNode);
+		provideDependencySet(accessedNode, onBranchDependencies).add(accessingNode);
 		addAccessedMap(accessingNode, accessedNode);
 //		System.out.println(accessingNode + " accesses branch of " + accessedNode + ". current dependencies:\n" + this);
 	}
@@ -106,7 +111,7 @@ class EvaluationDependencies implements IExtension{
 		onGlobalNodeDependencies.add(accessingNode);
 	}
 
-	private DependantNodeReferences getDependencySet(final NodeModel accessedNode,
+	private DependantNodeReferences provideDependencySet(final NodeModel accessedNode,
 	                                            final HashMap<NodeModel, DependantNodeReferences> dependenciesMap) {
 		DependantNodeReferences set = dependenciesMap.get(accessedNode);
 		if (set == null) {
