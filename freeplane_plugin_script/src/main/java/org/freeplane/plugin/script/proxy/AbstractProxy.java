@@ -2,15 +2,15 @@ package org.freeplane.plugin.script.proxy;
 
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 
 public abstract class AbstractProxy<T> {
 	private final T delegate;
-	private final ScriptContext scriptContext;
+	private final ScriptExecution scriptExecution;
 
-	AbstractProxy(final T delegate, final ScriptContext scriptContext) {
+	AbstractProxy(final T delegate, final ScriptExecution scriptExecution) {
 		this.delegate = delegate;
-		this.scriptContext = scriptContext;
+		this.scriptExecution = scriptExecution;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -26,8 +26,8 @@ public abstract class AbstractProxy<T> {
 		return delegate;
 	}
 
-	public ScriptContext getScriptContext() {
-    	return scriptContext;
+	public ScriptExecution getScriptExecution() {
+    	return scriptExecution;
     }
 
 	public MModeController getModeController() {

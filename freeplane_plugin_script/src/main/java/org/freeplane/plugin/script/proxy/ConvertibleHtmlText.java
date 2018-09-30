@@ -3,12 +3,12 @@ package org.freeplane.plugin.script.proxy;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.FormulaUtils;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 
 public class ConvertibleHtmlText extends Convertible {
     private String htmlText;
 
-    public ConvertibleHtmlText(final NodeModel nodeModel, final ScriptContext scriptContext, final String htmlText) {
+    public ConvertibleHtmlText(final NodeModel nodeModel, final ScriptExecution scriptExecution, final String htmlText) {
         super(FormulaUtils.safeEvalIfScript(nodeModel, htmlToPlain(htmlText)));
         this.htmlText = htmlText;
     }

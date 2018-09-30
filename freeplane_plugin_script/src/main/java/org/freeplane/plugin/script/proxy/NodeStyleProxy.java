@@ -22,12 +22,12 @@ import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.StyleFactory;
 import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.styles.mindmapmode.MLogicalStyleController;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle {
-	NodeStyleProxy(final NodeModel delegate, final ScriptContext scriptContext) {
-		super(delegate, scriptContext);
+	NodeStyleProxy(final NodeModel delegate, final ScriptExecution scriptExecution) {
+		super(delegate, scriptExecution);
 	}
 
 	public IStyle getStyle() {
@@ -41,7 +41,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 
 	public Node getStyleNode() {
 		final NodeModel styleNode = MapStyleModel.getExtension(getDelegate().getMap()).getStyleNode(getStyle());
-		return new NodeProxy(styleNode, getScriptContext());
+		return new NodeProxy(styleNode, getScriptExecution());
 	}
 
 	public Color getBackgroundColor() {
@@ -53,11 +53,11 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
 	}
 
 	public Proxy.Edge getEdge() {
-		return new EdgeProxy(getDelegate(), getScriptContext());
+		return new EdgeProxy(getDelegate(), getScriptExecution());
 	}
 
 	public Proxy.Font getFont() {
-		return new FontProxy(getDelegate(), getScriptContext());
+		return new FontProxy(getDelegate(), getScriptExecution());
 	}
 
 	public Color getTextColor() {

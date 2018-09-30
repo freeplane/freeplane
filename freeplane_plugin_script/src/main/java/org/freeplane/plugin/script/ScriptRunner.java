@@ -31,7 +31,7 @@ public class ScriptRunner {
 	private final IScript script;
 	private IFreeplaneScriptErrorHandler errorHandler = ScriptResources.IGNORING_SCRIPT_ERROR_HANDLER;
 	private PrintStream outStream = System.out;
-	private ScriptContext scriptContext;
+	private ScriptExecution scriptExecution;
 
 	public ScriptRunner(IScript script) {
 		this.script = script;
@@ -47,12 +47,12 @@ public class ScriptRunner {
 		return this;
     }
 
-	public ScriptRunner setScriptContext(ScriptContext scriptContext) {
-    	this.scriptContext = scriptContext;
+	public ScriptRunner setScriptExecution(ScriptExecution scriptExecution) {
+    	this.scriptExecution = scriptExecution;
 		return this;
     }
 
 	public Object execute(final NodeModel node) {
-		return script.execute(node, outStream, errorHandler, scriptContext);
+		return script.execute(node, outStream, errorHandler, scriptExecution);
 	}
 }

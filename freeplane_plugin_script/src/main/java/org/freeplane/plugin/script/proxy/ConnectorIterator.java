@@ -8,15 +8,15 @@ import java.util.NoSuchElementException;
 
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.NodeLinkModel;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 
 class ConnectorIterator implements Iterator<Proxy.Connector> {
-	private final ScriptContext scriptContext;
+	private final ScriptExecution scriptExecution;
 	private final Iterator<NodeLinkModel> iterator;
 	private ConnectorModel next;
 
-	public ConnectorIterator(final Iterator<NodeLinkModel> iterator, final ScriptContext scriptContext) {
-		this.scriptContext = scriptContext;
+	public ConnectorIterator(final Iterator<NodeLinkModel> iterator, final ScriptExecution scriptExecution) {
+		this.scriptExecution = scriptExecution;
 		this.iterator = iterator;
 		next = getNextConnectorModel();
 	}
@@ -41,7 +41,7 @@ class ConnectorIterator implements Iterator<Proxy.Connector> {
 		}
 		final ConnectorModel current = next;
 		next = getNextConnectorModel();
-		return new ConnectorProxy(current, scriptContext);
+		return new ConnectorProxy(current, scriptExecution);
 	}
 
 	public void remove() {

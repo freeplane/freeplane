@@ -45,12 +45,12 @@ public class ScriptingEngine {
 	 * @throws ExecuteScriptException on errors
 	 */
     public static Object executeScript(final NodeModel node, final String script, final IFreeplaneScriptErrorHandler pErrorHandler,
-                                final PrintStream pOutStream, final ScriptContext scriptContext,
+                                final PrintStream pOutStream, final ScriptExecution scriptExecution,
                                 ScriptingPermissions permissions) {
     	return new ScriptRunner(new GroovyScript(script, permissions))
     		.setErrorHandler(pErrorHandler)
     		.setOutStream(pOutStream)
-    		.setScriptContext(scriptContext)
+    		.setScriptExecution(scriptExecution)
     		.execute(node);
 
     }
@@ -90,10 +90,10 @@ public class ScriptingEngine {
             .execute(node);
     }
 
-    public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext,
+    public static Object executeScript(final NodeModel node, final String script, final ScriptExecution scriptExecution,
                                        final ScriptingPermissions permissions) {
         return new ScriptRunner(new GroovyScript(script, permissions)) //
-            .setScriptContext(scriptContext) //
+            .setScriptExecution(scriptExecution) //
             .execute(node);
     }
 

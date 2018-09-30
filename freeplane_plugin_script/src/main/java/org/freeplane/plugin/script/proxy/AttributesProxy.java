@@ -20,7 +20,7 @@ import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.TextController;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 import org.freeplane.plugin.script.proxy.Proxy.Attributes;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -30,8 +30,8 @@ import groovy.lang.MissingMethodException;
 class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attributes {
 	private boolean transformsValues;
 
-	AttributesProxy(final NodeModel delegate, final ScriptContext scriptContext, final boolean transformsValues) {
-		super(delegate, scriptContext);
+	AttributesProxy(final NodeModel delegate, final ScriptExecution scriptExecution, final boolean transformsValues) {
+		super(delegate, scriptExecution);
 		this.transformsValues = transformsValues;
 	}
 
@@ -55,7 +55,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
 		final Attribute attribute = attributeTableModel.getAttribute(index);
-		getScriptContext().accessAttribute(getDelegate(), attribute);
+		getScriptExecution().accessAttribute(getDelegate(), attribute);
 		return getAttributeValue(attribute);
 	}
 
@@ -68,7 +68,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		final ArrayList<Object> result = new ArrayList<Object>();
 		for (final Attribute attribute : attributeTableModel.getAttributes()) {
 			if (attribute.getName().equals(name)) {
-				getScriptContext().accessAttribute(getDelegate(), attribute);
+				getScriptExecution().accessAttribute(getDelegate(), attribute);
 				result.add(getAttributeValue(attribute));
 			}
 		}
@@ -102,15 +102,15 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		final ArrayList<Convertible> result = new ArrayList<Convertible>(attributeTableModel.getRowCount());
 		for (final Attribute a : attributeTableModel.getAttributes()) {
-			getScriptContext().accessAttribute(getDelegate(), a);
-			result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), getAttributeValue(a)));
+			getScriptExecution().accessAttribute(getDelegate(), a);
+			result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptExecution(), getAttributeValue(a)));
 		}
 		return result;
 	}
 
 	@Override
 	public Proxy.Attributes getTransformed() {
-		return withTransformedValues(getDelegate(), getScriptContext());
+		return withTransformedValues(getDelegate(), getScriptExecution());
 	}
 
 
@@ -173,8 +173,8 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		for (final Attribute a : attributeTableModel.getAttributes()) {
 			final Object transformedAttributeValue = getAttributeValue(a);
 			if (condition.check(a.getName(), transformedAttributeValue)) {
-				getScriptContext().accessAttribute(getDelegate(), a);
-				result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), transformedAttributeValue));
+				getScriptExecution().accessAttribute(getDelegate(), a);
+				result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptExecution(), transformedAttributeValue));
 			}
 		}
 		return result;
@@ -403,11 +403,11 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
         };
     }
 
-	static Attributes withRawValues(NodeModel delegate, ScriptContext scriptContext) {
-		return new AttributesProxy(delegate, scriptContext, false);
+	static Attributes withRawValues(NodeModel delegate, ScriptExecution scriptExecution) {
+		return new AttributesProxy(delegate, scriptExecution, false);
 	}
 
-	static Attributes withTransformedValues(NodeModel delegate, ScriptContext scriptContext) {
-		return new AttributesProxy(delegate, scriptContext, true);
+	static Attributes withTransformedValues(NodeModel delegate, ScriptExecution scriptExecution) {
+		return new AttributesProxy(delegate, scriptExecution, true);
 	}
 }

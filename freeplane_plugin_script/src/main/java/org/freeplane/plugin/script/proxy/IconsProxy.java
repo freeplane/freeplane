@@ -16,11 +16,11 @@ import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 
 class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
-	IconsProxy(final NodeModel delegate, final ScriptContext scriptContext) {
-		super(delegate, scriptContext);
+	IconsProxy(final NodeModel delegate, final ScriptExecution scriptExecution) {
+		super(delegate, scriptExecution);
 	}
 
 	@Override

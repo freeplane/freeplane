@@ -4,12 +4,12 @@ import java.util.Set;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.styles.MapStyle;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 import org.freeplane.plugin.script.proxy.Proxy.Properties;
 
 public class PropertiesProxy extends AbstractProxy<MapModel> implements Properties {
-    PropertiesProxy(final MapModel delegate, final ScriptContext scriptContext) {
-        super(delegate, scriptContext);
+    PropertiesProxy(final MapModel delegate, final ScriptExecution scriptExecution) {
+        super(delegate, scriptExecution);
     }
 
     @Override

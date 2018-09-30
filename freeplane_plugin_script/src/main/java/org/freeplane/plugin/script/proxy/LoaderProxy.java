@@ -8,37 +8,37 @@ import java.security.PrivilegedAction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.mindmapmode.MapLoader;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 
 class LoaderProxy implements Proxy.Loader {
 
-	static Proxy.Loader of(ScriptContext scriptContext) {
-		return new LoaderProxy(scriptContext);
+	static Proxy.Loader of(ScriptExecution scriptExecution) {
+		return new LoaderProxy(scriptExecution);
 	}
 
-	static Proxy.Loader of(File file, ScriptContext scriptContext) {
-		return new LoaderProxy(scriptContext).load(file);
+	static Proxy.Loader of(File file, ScriptExecution scriptExecution) {
+		return new LoaderProxy(scriptExecution).load(file);
 	}
 
-	static Proxy.Loader of(URL url, ScriptContext scriptContext) {
-		return new LoaderProxy(scriptContext).load(url);
+	static Proxy.Loader of(URL url, ScriptExecution scriptExecution) {
+		return new LoaderProxy(scriptExecution).load(url);
 	}
 
-	static Proxy.Loader of(String file, ScriptContext scriptContext) {
-		return new LoaderProxy(scriptContext).load(file);
+	static Proxy.Loader of(String file, ScriptExecution scriptExecution) {
+		return new LoaderProxy(scriptExecution).load(file);
 	}
 
-	private final ScriptContext scriptContext;
+	private final ScriptExecution scriptExecution;
 	private final MapLoader mapLoader;
 
-	LoaderProxy(ScriptContext scriptContext) {
+	LoaderProxy(ScriptExecution scriptExecution) {
 		super();
 		mapLoader = new MapLoader(MModeController.getMModeController());
-		this.scriptContext = scriptContext;
+		this.scriptExecution = scriptExecution;
 	}
 
 	private LoaderProxy load(File file) {
-		if(file.isAbsolute() || scriptContext == null)
+		if(file.isAbsolute() || scriptExecution == null)
 			mapLoader.load(file);
 		else
 			load(file.getPath().replace('\\', '/'));
@@ -55,8 +55,8 @@ class LoaderProxy implements Proxy.Loader {
 		return this;
 	}
 
-	private ScriptContext provideScriptContext() {
-		return scriptContext != null ? scriptContext : new ScriptContext(null);
+	private ScriptExecution provideScriptContext() {
+		return scriptExecution != null ? scriptExecution : new ScriptExecution(null);
 	}
 
 	@Override
@@ -104,6 +104,6 @@ class LoaderProxy implements Proxy.Loader {
 	@Override
 	public Proxy.Map getMap() {
 		MapModel newMap = mapLoader.getMap();
-		return new MapProxy(newMap, scriptContext);
+		return new MapProxy(newMap, scriptExecution);
 	}
 }

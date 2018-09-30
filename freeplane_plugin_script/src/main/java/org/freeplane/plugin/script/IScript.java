@@ -32,11 +32,11 @@ public interface IScript {
 //
 //	public IScript setOutStream(PrintStream outStream);
 //
-//	public IScript setScriptContext(ScriptContext scriptContext);
+//	public IScript setScriptExecution(ScriptExecution scriptContext);
 //
 //	public Object getScript();
 
-	public Object execute(final NodeModel node, PrintStream outStream, IFreeplaneScriptErrorHandler pErrorHandler, ScriptContext scriptContext);
+	public Object execute(final NodeModel node, PrintStream outStream, IFreeplaneScriptErrorHandler pErrorHandler, ScriptExecution scriptExecution);
 
 	public boolean hasPermissions(ScriptingPermissions permissions);
 

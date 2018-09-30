@@ -14,12 +14,12 @@ import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Connector {
-	ConnectorProxy(final ConnectorModel connector, final ScriptContext scriptContext) {
-		super(connector, scriptContext);
+	ConnectorProxy(final ConnectorModel connector, final ScriptExecution scriptExecution) {
+		super(connector, scriptExecution);
 	}
 
     public String getShape() {
@@ -60,7 +60,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	public Node getSource() {
-		return new NodeProxy(getConnector().getSource(), getScriptContext());
+		return new NodeProxy(getConnector().getSource(), getScriptExecution());
 	}
 
 	public String getSourceLabel() {
@@ -77,7 +77,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	public Node getTarget() {
-		return new NodeProxy(getConnector().getTarget(), getScriptContext());
+		return new NodeProxy(getConnector().getTarget(), getScriptExecution());
 	}
 
 	public String getTargetLabel() {

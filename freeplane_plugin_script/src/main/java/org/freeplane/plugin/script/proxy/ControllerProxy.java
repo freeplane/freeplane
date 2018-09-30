@@ -27,7 +27,7 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
-import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptExecution;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -36,10 +36,10 @@ import java.net.URL;
 import java.util.*;
 
 class ControllerProxy implements Proxy.Controller {
-	private final ScriptContext scriptContext;
+	private final ScriptExecution scriptExecution;
 
-	public ControllerProxy(final ScriptContext scriptContext) {
-		this.scriptContext = scriptContext;
+	public ControllerProxy(final ScriptExecution scriptExecution) {
+		this.scriptExecution = scriptExecution;
 	}
 
 	@Override
@@ -66,24 +66,24 @@ class ControllerProxy implements Proxy.Controller {
 
 	@Override
 	public Node getSelected() {
-		if (scriptContext != null)
-			scriptContext.accessAll();
-		return new NodeProxy(Controller.getCurrentController().getSelection().getSelected(), scriptContext);
+		if (scriptExecution != null)
+			scriptExecution.accessAll();
+		return new NodeProxy(Controller.getCurrentController().getSelection().getSelected(), scriptExecution);
 	}
 
 	@Override
 	public List<? extends Node> getSelecteds() {
-		if (scriptContext != null)
-			scriptContext.accessAll();
-		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection().getOrderedSelection(), scriptContext);
+		if (scriptExecution != null)
+			scriptExecution.accessAll();
+		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection().getOrderedSelection(), scriptExecution);
 	}
 
 	@Override
 	public List<? extends Node> getSortedSelection(final boolean differentSubtrees) {
-		if (scriptContext != null)
-			scriptContext.accessAll();
+		if (scriptExecution != null)
+			scriptExecution.accessAll();
 		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection()
-		    .getSortedSelection(differentSubtrees), scriptContext);
+		    .getSortedSelection(differentSubtrees), scriptExecution);
 	}
 
     @Override
@@ -194,16 +194,16 @@ class ControllerProxy implements Proxy.Controller {
 	@Override
 	@Deprecated
 	public List<? extends Node> find(final ICondition condition) {
-		if (scriptContext != null)
-			scriptContext.accessAll();
-		return ProxyUtils.find(condition, currentMapRootNode(), scriptContext);
+		if (scriptExecution != null)
+			scriptExecution.accessAll();
+		return ProxyUtils.find(condition, currentMapRootNode(), scriptExecution);
 	}
 
 	@Override
 	public List<? extends Node> find(NodeCondition condition) {
-		if (scriptContext != null)
-			scriptContext.accessAll();
-		return ProxyUtils.find(condition, currentMapRootNode(), scriptContext);
+		if (scriptExecution != null)
+			scriptExecution.accessAll();
+		return ProxyUtils.find(condition, currentMapRootNode(), scriptExecution);
 	}
 
 	private NodeModel currentMapRootNode() {
@@ -211,32 +211,32 @@ class ControllerProxy implements Proxy.Controller {
 	}
 	@Override
 	public List<? extends Node> find(final Closure<Boolean> closure) {
-		if (scriptContext != null)
-			scriptContext.accessAll();
-		return ProxyUtils.find(closure, currentMapRootNode(), scriptContext);
+		if (scriptExecution != null)
+			scriptExecution.accessAll();
+		return ProxyUtils.find(closure, currentMapRootNode(), scriptExecution);
 	}
 
 	// NodeRO: R
 	@Override
 	public List<? extends Node> findAll() {
-		if (scriptContext != null)
-			scriptContext.accessAll();
-		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, true);
+		if (scriptExecution != null)
+			scriptExecution.accessAll();
+		return ProxyUtils.findAll(currentMapRootNode(), scriptExecution, true);
     }
 
 	// NodeRO: R
 	@Override
 	public List<? extends Node> findAllDepthFirst() {
-		if (scriptContext != null)
-			scriptContext.accessAll();
-		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, false);
+		if (scriptExecution != null)
+			scriptExecution.accessAll();
+		return ProxyUtils.findAll(currentMapRootNode(), scriptExecution, false);
     }
 
 	@Override
 	public Map newMap() {
 		final MMapIO mapIO = MMapIO.getInstance();
 		final MapModel newMap = mapIO.newMapFromDefaultTemplate();
-		return new MapProxy(newMap, scriptContext);
+		return new MapProxy(newMap, scriptExecution);
 	}
 
 
@@ -295,24 +295,24 @@ class ControllerProxy implements Proxy.Controller {
     	Collection<MapModel> mapModels = getMapViewManager().getMaps().values();
     	ArrayList<Map> mapProxies = new ArrayList<Map>(mapModels.size());
     	for (MapModel mapModel : mapModels) {
-	        mapProxies.add(new MapProxy(mapModel, scriptContext));
+	        mapProxies.add(new MapProxy(mapModel, scriptExecution));
         }
     	return mapProxies;
     }
 
 	@Override
 	public Proxy.Loader load(File file) {
-		return LoaderProxy.of(file, scriptContext);
+		return LoaderProxy.of(file, scriptExecution);
 	}
 
 	@Override
 	public Proxy.Loader load(URL url) {
-		return LoaderProxy.of(url, scriptContext);
+		return LoaderProxy.of(url, scriptExecution);
 	}
 
 	@Override
 	public Proxy.Loader load(String file) {
-		return LoaderProxy.of(file, scriptContext);
+		return LoaderProxy.of(file, scriptExecution);
 	}
 
 	@Override
@@ -327,7 +327,7 @@ class ControllerProxy implements Proxy.Controller {
 
 	@Override
 	public Script script(File file) {
-		return new ScriptProxy(file, scriptContext);
+		return new ScriptProxy(file, scriptExecution);
 	}
 
 }
