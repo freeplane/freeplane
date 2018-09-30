@@ -17,7 +17,7 @@ public class ScriptContext implements AccessedNodes{
 
 	public ScriptContext(NodeScript nodeScript) {
 		this.nodeScript = nodeScript;
-		this.accessedValues = new AccessedValues();
+		this.accessedValues = new AccessedValues(nodeScript.node);
 	}
 
 	public URL getBaseUrl() {
@@ -75,24 +75,24 @@ public class ScriptContext implements AccessedNodes{
 	@Override
 	public void accessNode(final NodeModel accessedNode) {
 		if(nodeScript != null)
-			FormulaDependencies.accessNode(nodeScript.getNodeModel(), accessedNode);
+			FormulaDependencies.accessNode(nodeScript.node, accessedNode);
 	}
 
 	@Override
 	public void accessBranch(final NodeModel accessedNode) {
 		if(nodeScript != null)
-			FormulaDependencies.accessBranch(nodeScript.getNodeModel(), accessedNode);
+			FormulaDependencies.accessBranch(nodeScript.node, accessedNode);
 	}
 
 	@Override
 	public void accessAll() {
 		if(nodeScript != null)
-			FormulaDependencies.accessAll(nodeScript.getNodeModel());
+			FormulaDependencies.accessAll(nodeScript.node);
 	}
 	@Override
 	public void accessGlobalNode() {
 		if(nodeScript != null)
-			FormulaDependencies.accessGlobalNode(nodeScript.getNodeModel());
+			FormulaDependencies.accessGlobalNode(nodeScript.node);
 	}
 
 	public AccessedValues getAccessedValues() {
@@ -106,4 +106,5 @@ public class ScriptContext implements AccessedNodes{
 	public String toString() {
 		return nodeScript.toString();
 	}
+
 }

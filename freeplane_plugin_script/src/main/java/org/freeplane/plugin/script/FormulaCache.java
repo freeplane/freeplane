@@ -10,79 +10,48 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 class FormulaCache implements IExtension{
-	private HashMap<String, LinkedHashMap<String, Object>> cache = new HashMap<String, LinkedHashMap<String, Object>>();
+	private HashMap<String, LinkedHashMap<String, CachedResult>> cache = new HashMap<String, LinkedHashMap<String, CachedResult>>();
 	// don't let caching use too much memory - but currently there are little means to cope with unavailable
 	// dependency data. It has to be tested but it should "only" lead to some missing updates.
-	private static final boolean ENABLE_CACHING = !Controller.getCurrentController().getResourceController()
+	static final boolean ENABLE_CACHING = !Controller.getCurrentController().getResourceController()
 	    .getBooleanProperty("formula_disable_caching");
 
-	Object get(NodeModel nodeModel, String text) {
-		final LinkedHashMap<String, Object> cacheEntry = cache.get(nodeModel.getID());
+	Object getOrThrowCachedResult(NodeScript nodeScript) {
+		final LinkedHashMap<String, CachedResult> cacheEntry = cache.get(nodeScript.node.getID());
 		if (cacheEntry == null) return null;
-		final Object object = cacheEntry.get(text);
+		final CachedResult cachedResult = cacheEntry.get(nodeScript.script);
+		return getOrThrowCachedResult(cachedResult.returnedValue);
+	}
+
+	private Object getOrThrowCachedResult(Object object) {
 		if(object instanceof ExecuteScriptException){
 			throw (ExecuteScriptException)object;
 		}
 		return object;
 	}
 
-	void put(NodeModel nodeModel, String text, Object value) {
-		getOrAdd(nodeModel).put(text, value);
+	void put(NodeScript nodeScript, CachedResult result) {
+		getOrAdd(nodeScript.node).put(nodeScript.script, result);
 	}
 
-	private LinkedHashMap<String, Object> getOrAdd(NodeModel node) {
-		LinkedHashMap<String, Object> cacheEntry = cache.get(node.getID());
+	private LinkedHashMap<String, CachedResult> getOrAdd(NodeModel node) {
+		LinkedHashMap<String, CachedResult> cacheEntry = cache.get(node.getID());
 		if (cacheEntry == null) {
-			cacheEntry = new LinkedHashMap<String, Object>(8);
+			cacheEntry = new LinkedHashMap<String, CachedResult>(8);
 			cache.put(node.getID(), cacheEntry);
 		}
 		return cacheEntry;
 	}
 
-	void markAsDirtyIfFormulaNode(NodeModel node) {
-		final LinkedHashMap<String, Object> entry = cache.get(node.getID());
+	void remove(NodeModel node) {
+		final LinkedHashMap<String, CachedResult> entry = cache.get(node.getID());
 		if (entry != null) {
 //			System.out.println("clearing cache for " + node);
 			entry.clear();
 		}
 	}
 
-	static void manageChange(final ArrayList<NodeModel> dependencies) {
-		if (ENABLE_CACHING) {
-			for (NodeModel nodeModel : dependencies) {
-				getFormulaCache(nodeModel.getMap()).markAsDirtyIfFormulaNode(nodeModel);
-			}
-		}
-	}
-
-	static Object execute(final NodeModel nodeModel, final ScriptContext scriptContext, final String text) {
-		final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getFormulaPermissions();
-		if (ENABLE_CACHING) {
-			final FormulaCache formulaCache = getFormulaCache(nodeModel.getMap());
-			Object value = formulaCache.get(nodeModel, text);
-			if (value == null) {
-				try {
-					value = ScriptingEngine.executeScript(nodeModel, text, scriptContext, restrictedPermissions);
-					if(value == null)
-						throw new ExecuteScriptException("Null pointer returned by formula");
-					formulaCache.put(nodeModel, text, value);
-				}
-				catch (ExecuteScriptException e) {
-					formulaCache.put(nodeModel, text, e);
-					throw e;
-				}
-			}
-			else {
-				scriptContext.accessNode(nodeModel);
-			}
-			return value;
-		}
-		else {
-			return ScriptingEngine.executeScript(nodeModel, text, scriptContext, restrictedPermissions);
-		}
-	}
-
-	private static FormulaCache getFormulaCache(MapModel map) {
+	static FormulaCache of(MapModel map) {
 		FormulaCache formulaCache = map.getExtension(FormulaCache.class);
 		if (formulaCache == null) {
 			formulaCache = new FormulaCache();
@@ -93,4 +62,6 @@ class FormulaCache implements IExtension{
 	static void removeFrom(MapModel map) {
 		map.removeExtension(FormulaCache.class);
 	}
+
+
 }

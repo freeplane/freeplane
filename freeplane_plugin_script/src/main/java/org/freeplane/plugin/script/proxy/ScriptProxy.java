@@ -13,11 +13,8 @@ import java.util.Map;
 import org.freeplane.api.NodeRO;
 import org.freeplane.api.Script;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.script.IScript;
+import org.freeplane.plugin.script.*;
 import org.freeplane.plugin.script.ScriptContext;
-import org.freeplane.plugin.script.ScriptRunner;
-import org.freeplane.plugin.script.ScriptingEngine;
-import org.freeplane.plugin.script.ScriptingPermissions;
 
 public class ScriptProxy implements Script {
 	private final File file;

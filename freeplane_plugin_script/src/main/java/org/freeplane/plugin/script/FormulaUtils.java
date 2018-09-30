@@ -64,17 +64,45 @@ public class FormulaUtils {
 	 * @return the evaluation result.
 	 * @throws ExecuteScriptException */
 	private static Object eval(final NodeModel nodeModel, final String script) {
-		ScriptContext scriptContext = new ScriptContext(new NodeScript(nodeModel, script));
-		if (!FormulaThreadLocalStack.INSTANCE.push(nodeModel, script)) {
+		NodeScript nodeScript = new NodeScript(nodeModel, script);
+		ScriptContext scriptContext = new ScriptContext(nodeScript);
+		if (!FormulaThreadLocalStack.INSTANCE.push(nodeScript)) {
 			throw new StackOverflowError(TextUtils.format("formula.error.circularReference",
 			    HtmlUtils.htmlToPlain(script)));
 		}
 		try {
-			return FormulaCache.execute(nodeModel, scriptContext, script);
+			return eval(scriptContext, nodeScript);
 		}
 		finally {
 			FormulaThreadLocalStack.INSTANCE.pop();
 		}
+	}
+
+	private static Object eval(ScriptContext scriptContext, NodeScript nodeScript) {
+			final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getFormulaPermissions();
+			NodeModel node = nodeScript.node;
+			String script = nodeScript.script;
+			if (FormulaCache.ENABLE_CACHING) {
+				final FormulaCache formulaCache = FormulaCache.of(nodeScript.getMap());
+				Object value = formulaCache.getOrThrowCachedResult(nodeScript);
+				if (value == null) {
+					try {
+						value = ScriptingEngine.executeScript(node, script, scriptContext, restrictedPermissions);
+						if(value == null)
+							throw new ExecuteScriptException("Null pointer returned by formula");
+						formulaCache.put(nodeScript, new CachedResult(value, scriptContext.getAccessedValues()));
+					}
+					catch (ExecuteScriptException e) {
+						formulaCache.put(nodeScript, new CachedResult(e, scriptContext.getAccessedValues()));
+						throw e;
+					}
+				}
+				return value;
+			}
+			else {
+				return ScriptingEngine.executeScript(node, script, scriptContext, restrictedPermissions);
+			}
+
 	}
 
 

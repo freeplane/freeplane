@@ -7,18 +7,23 @@ import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.map.NodeModel;
 
 class AccessedValues {
-	private final Map<Object, String> accessedValues;
+	private final Map<Object, NodeModel> accessedValues;
+	private final NodeModel accessingNode;
 
-	AccessedValues() {
-		this.accessedValues = new HashMap<Object, String>();
+	AccessedValues(NodeModel accessingNode) {
+		this.accessingNode = accessingNode;
+		this.accessedValues = new HashMap<Object, NodeModel>();
 	}
 
-	void accessAttribute(NodeModel node, Attribute attribute) {
-		accessedValues.put(attribute, node.createID());
+	void accessAttribute(NodeModel accessedNode, Attribute attribute) {
+		if(accessingNode.getMap() == accessedNode.getMap())
+			accessedValues.put(attribute, accessedNode);
 	}
 
-	public void accessValue(NodeModel node) {
-		final String id = node.createID();
-		accessedValues.put(id, id);
+	public void accessValue(NodeModel accessedNode) {
+		if(accessingNode.getMap() == accessedNode.getMap()) {
+			final String id = accessedNode.createID();
+			accessedValues.put(accessedNode, accessedNode);
+		}
 	}
 }
