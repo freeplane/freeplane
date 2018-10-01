@@ -5,5 +5,7 @@ dependencies {
         transitive = false
     }
 }
+targetCompatibility='1.7'
+sourceCompatibility='1.7'
 
 compileJava.onlyIf { Os.isFamily(Os.FAMILY_MAC) && Boolean.getBoolean('compileMacChanges')}

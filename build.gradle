@@ -59,8 +59,8 @@ subprojects {
     apply plugin: 'eclipse'
     apply plugin: 'idea'
 
-	targetCompatibility='1.7'
-	sourceCompatibility='1.7'
+	targetCompatibility='1.8'
+	sourceCompatibility='1.8'
 
 
     tasks.withType(JavaCompile) {
