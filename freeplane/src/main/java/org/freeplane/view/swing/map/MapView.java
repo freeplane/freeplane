@@ -81,12 +81,8 @@ import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.edge.EdgeColorsConfigurationFactory;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.highlight.NodeHighlighter;
-import org.freeplane.features.link.ConnectorModel;
+import org.freeplane.features.link.*;
 import org.freeplane.features.link.ConnectorModel.Shape;
-import org.freeplane.features.link.LinkController;
-import org.freeplane.features.link.MapLinks;
-import org.freeplane.features.link.NodeLinkModel;
-import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeChangeListener;
@@ -1650,11 +1646,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		return paintingMode;
 	}
 
-	private void paintConnectors(final Collection<NodeLinkModel> links, final Graphics2D graphics,
+	private void paintConnectors(final Collection<? extends NodeLinkModel> links, final Graphics2D graphics,
 	                        final HashSet<ConnectorModel> alreadyPaintedLinks) {
 		final Font font = graphics.getFont();
 		try {
-			final Iterator<NodeLinkModel> linkIterator = links.iterator();
+			final Iterator<? extends NodeLinkModel> linkIterator = links.iterator();
 			while (linkIterator.hasNext()) {
 				final NodeLinkModel next = linkIterator.next();
 				if (!(next instanceof ConnectorModel)) {
@@ -1697,17 +1693,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		arrowLinkViews = new Vector<ILinkView>();
 		final Object renderingHint = getModeController().getController().getMapViewManager().setEdgesRenderingHint(
 		    graphics);
-		if(MapLinks.hasLinks(model))
+		if(hasNodeLinks())
 			paintConnectors(rootView, graphics, new HashSet<ConnectorModel>());
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 	}
 
 	private void paintConnectors(final NodeView source, final Graphics2D graphics, final HashSet<ConnectorModel> alreadyPaintedConnectors) {
-		final LinkController linkController = LinkController.getController(getModeController());
 		final NodeModel node = source.getModel();
-		final Collection<NodeLinkModel> outLinks = linkController.getLinksFrom(node);
+		final Collection<? extends NodeLinkModel> outLinks = getLinksFrom(node);
 		paintConnectors(outLinks, graphics, alreadyPaintedConnectors);
-		final Collection<NodeLinkModel> inLinks = linkController.getLinksTo(node);
+		final Collection<? extends NodeLinkModel> inLinks = getLinksTo(node);
 		paintConnectors(inLinks, graphics, alreadyPaintedConnectors);
 		final int nodeViewCount = source.getComponentCount();
 		for (int i = 0; i < nodeViewCount; i++) {
@@ -1731,6 +1726,30 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				}
 			}
 			paintConnectors(child, graphics, alreadyPaintedConnectors);
+		}
+	}
+
+	private boolean hasNodeLinks() {
+		return null != getClientProperty(Connectors.class) ||  MapLinks.hasLinks(model);
+	}
+
+	private Collection<? extends NodeLinkModel> getLinksTo(NodeModel node) {
+		Connectors connectors = (Connectors) getClientProperty(Connectors.class);
+		if(connectors != null)
+			return connectors.getLinksTo(node);
+		else {
+			final LinkController linkController = LinkController.getController(getModeController());
+			return linkController.getLinksTo(node);
+		}
+	}
+
+	private Collection<? extends NodeLinkModel> getLinksFrom(NodeModel node) {
+		Connectors connectors = (Connectors) getClientProperty(Connectors.class);
+		if(connectors != null)
+			return connectors.getLinksFrom(node);
+		else {
+			final LinkController linkController = LinkController.getController(getModeController());
+			return linkController.getLinksFrom(node);
 		}
 	}
 

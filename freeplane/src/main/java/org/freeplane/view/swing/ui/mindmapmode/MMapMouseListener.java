@@ -27,6 +27,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.link.ConnectorModel;
+import org.freeplane.features.link.Connectors;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -98,6 +99,8 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 		if(e.isPopupTrigger())
 			return;
 		final MapView mapView = (MapView) e.getComponent();
+		if(mapView.getClientProperty(Connectors.class) != null)
+			return;
 		final Object object = mapView.detectCollision(new Point(originX, originY));
 		if (object instanceof ConnectorModel) {
 			final ConnectorModel arrowLinkModel = (ConnectorModel) object;

@@ -39,6 +39,7 @@ import org.freeplane.core.ui.ControllerPopupMenuListener;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.features.link.Connectors;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
@@ -64,7 +65,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 			final Component popupForModel;
 			final MapView mapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 			final ModeController modeController = Controller.getCurrentController().getModeController();
-			if(mapView != null){
+			if(isMapViewWithOriginalConectosAvailable(mapView)){
 				final java.lang.Object obj = mapView.detectCollision(e.getPoint());
 				popupForModel= LinkController.getController(modeController).getPopupForModel(obj);
 			}
@@ -129,6 +130,10 @@ public class DefaultMapMouseListener implements IMouseListener {
 			}
 			
 		}
+	}
+
+	private boolean isMapViewWithOriginalConectosAvailable(MapView mapView) {
+		return mapView != null && mapView.getClientProperty(Connectors.class) == null;
 	}
 
 	public void mouseClicked(final MouseEvent e) {

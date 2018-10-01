@@ -19,24 +19,24 @@
  */
 package org.freeplane.view.swing.map.attribute;
 
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.net.URI;
 
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.HighlighedAttributes;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
+import org.freeplane.view.swing.map.MapView;
 
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	public AttributeTableCellRenderer() {
@@ -77,19 +77,22 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		final String originalText = value == null ? null : value.toString();
 		String text = originalText;
 		Icon icon;
+		Color color = null;
+		if (column == 1 && isAttributeHighlighted(attributeTable, row))
+			color = FilterController.HIGHLIGHT_COLOR;
 		if (column == 1 && value != null) {
 			try {
 				// evaluate values only
 				final TextController textController = TextController.getController();
 				Object transformedObject = textController.getTransformedObject(value, attributeTableModel.getNode(), null);
 				text = transformedObject.toString();
-				if (transformedObject instanceof HighlightedTransformedObject && TextController.isMarkTransformedTextSet()) {
-					setBorder(BorderFactory.createLineBorder(HighlightedTransformedObject.OK_COLOR));
+				if (color == null && transformedObject instanceof HighlightedTransformedObject && TextController.isMarkTransformedTextSet()) {
+					color = HighlightedTransformedObject.OK_COLOR;
 				}
 			}
 			catch (Exception e) {
 				text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
-				setBorder(BorderFactory.createLineBorder(HighlightedTransformedObject.FAILURE_COLOR));
+				color = HighlightedTransformedObject.FAILURE_COLOR;
 			}
 			if(value instanceof URI){
 	                icon = ((AttributeTable)table).getLinkIcon((URI) value);
@@ -101,6 +104,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		else{
 			icon = null;
 		}
+		configureBorder(color);
 		final Icon scaledIcon;
 		final IconFactory iconFactory = IconFactory.getInstance();
 		if(icon != null && iconFactory.canScaleIcon(icon)){
@@ -130,6 +134,20 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		}
 		setOpaque(isSelected);
 		return rendererComponent;
+	}
+
+	private boolean isAttributeHighlighted(AttributeTable attributeTable, int row) {
+		MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, attributeTable);
+		if(mapView == null)
+			return false;
+		Attribute attribute = attributeTable.getAttributeTableModel().getNodeAttributeModel().getAttribute(row);
+		HighlighedAttributes highlighedAttributes = (HighlighedAttributes) mapView.getClientProperty(HighlighedAttributes.class);
+		return highlighedAttributes != null && highlighedAttributes.isHighlighted(attribute);
+	}
+
+	void configureBorder(Color color) {
+		if(color != null)
+			setBorder(BorderFactory.createLineBorder(color));
 	}
 
 	/*
