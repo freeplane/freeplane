@@ -39,23 +39,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.net.URI;
 import java.util.EventObject;
 
-import javax.swing.AbstractCellEditor;
-import javax.swing.BorderFactory;
-import javax.swing.ComboBoxEditor;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultCellEditor;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
@@ -149,56 +138,45 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 	}
 
-	static private class MyFocusListener implements FocusListener {
+	static {
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", new GlobalFocusChangeListener());
+	}
+	static private class GlobalFocusChangeListener implements PropertyChangeListener {
 		private AttributeTable focusedTable;
 
-		/*
-		 * (non-Javadoc)
-		 * @see
-		 * java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
-		 */
-		@Override
-		public void focusGained(final FocusEvent event) {
-			final Component source = (Component) event.getSource();
-			event.getOppositeComponent();
+
+		private void focusGained(final Component source) {
+			final AttributeTable newTable;
 			if (source instanceof AttributeTable) {
-				focusedTable = (AttributeTable) source;
+				newTable = (AttributeTable) source;
 			}
 			else {
-				focusedTable = (AttributeTable) SwingUtilities.getAncestorOfClass(AttributeTable.class, source);
+				newTable = (AttributeTable) SwingUtilities.getAncestorOfClass(AttributeTable.class, source);
 			}
-			if(focusedTable != null){
-			    focusedTable.setSelectedCellTypeInfo();
-			}
-			EventQueue.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if (focusedTable != null) {
-						final Component newNodeViewInFocus = SwingUtilities.getAncestorOfClass(NodeView.class,
-						    focusedTable);
-						if (newNodeViewInFocus != null) {
-							final NodeView viewer = (NodeView) newNodeViewInFocus;
-							if (viewer != viewer.getMap().getSelected()) {
-								viewer.getMap().selectAsTheOnlyOneSelected(viewer, false);
+			if(newTable != null) {
+				focusedTable = newTable;
+				focusedTable.setSelectedCellTypeInfo();
+				EventQueue.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						if (focusedTable != null) {
+							final Component newNodeViewInFocus = SwingUtilities.getAncestorOfClass(NodeView.class,
+									focusedTable);
+							if (newNodeViewInFocus != null) {
+								final NodeView viewer = (NodeView) newNodeViewInFocus;
+								if (viewer != viewer.getMap().getSelected()) {
+									viewer.getMap().selectAsTheOnlyOneSelected(viewer, false);
+								}
 							}
 						}
 					}
-				}
-			});
+				});
+			}
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * @see
-		 * java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
-		 */
-		@Override
-		public void focusLost(final FocusEvent event) {
-			if (event.isTemporary()) {
-				return;
-			}
-			final Component oppositeComponent = event.getOppositeComponent();
-			if (oppositeComponent == null) {
+		private void focusLost(final Component oppositeComponent) {
+			if (focusedTable == null || null == SwingUtilities.getAncestorOfClass(MapView.class, oppositeComponent)
+					&& ! (oppositeComponent instanceof AttributeTable)) {
 				return;
 			}
 			final Component newTable;
@@ -208,12 +186,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			else {
 				newTable = SwingUtilities.getAncestorOfClass(AttributeTable.class, oppositeComponent);
 			}
-			if (focusedTable == null) {
-				return;
-			}
 			if (focusedTable != newTable) {
+				focusedTable.clearSelection();
 				if (focusedTable.isEditing()) {
-					focusedTable.clearSelection();
 					focusedTable.getCellEditor().stopCellEditing();
 				}
 				if (!focusedTable.attributeView.isPopupShown()) {
@@ -228,13 +203,21 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				return;
 			}
 		}
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			Component newFocusOwner = (Component) evt.getNewValue();
+			if(focusedTable != null) {
+				focusLost(newFocusOwner);
+			}
+			focusGained(newFocusOwner);
+		}
 	}
 
 	static private MouseListener componentListener = new HeaderMouseListener();
 	static private ComboBoxModel defaultComboBoxModel = null;
 	static private AttributeTableCellRenderer dtcr = new AttributeTableCellRenderer();
 	private static final int EXTRA_HEIGHT = 4;
-	static private MyFocusListener focusListener = new MyFocusListener();
 	static private CursorUpdater cursorUpdater = new CursorUpdater();
 	private static final int MAX_HEIGTH = 300;
 	private static final int MAX_WIDTH = 300;
@@ -255,7 +238,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	AttributeTable(final AttributeView attributeView) {
 		super();
 		this.attributeView = attributeView;
-		addFocusListener(AttributeTable.focusListener);
 		addMouseListener(AttributeTable.cursorUpdater);
 		addMouseMotionListener(AttributeTable.cursorUpdater);
 		if (attributeView.getMapView().getModeController().canEdit()) {
@@ -267,7 +249,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		setModel(attributeView.getCurrentAttributeTableModel());
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		getTableHeader().setReorderingAllowed(false);
-		setRowSelectionAllowed(false);
+		setCellSelectionEnabled(true);
+		getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
 		setShowGrid(true);
 	}
@@ -482,8 +465,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				}
 
 			};
-			comboBox.addFocusListener(AttributeTable.focusListener);
-			comboBox.getEditor().getEditorComponent().addFocusListener(AttributeTable.focusListener);
 			comboBox.setRenderer(new TypedListCellRenderer());
 			dce = new DefaultCellEditor(comboBox) {
 		        @Override

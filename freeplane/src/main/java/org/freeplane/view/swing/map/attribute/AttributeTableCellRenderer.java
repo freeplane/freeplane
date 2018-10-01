@@ -69,7 +69,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	@Override
 	public Component getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected,
 	                                               final boolean hasFocus, final int row, final int column) {
-		final Component rendererComponent = super.getTableCellRendererComponent(table, value, hasFocus, isSelected, row,
+		final Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
 		    column);
 		final AttributeTable attributeTable = (AttributeTable) table;
 		zoom = attributeTable.getZoom();
@@ -128,7 +128,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 				setToolTipText(null);
 			}
 		}
-		setOpaque(hasFocus);
+		setOpaque(isSelected);
 		return rendererComponent;
 	}
 
