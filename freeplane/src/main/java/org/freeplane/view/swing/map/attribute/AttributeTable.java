@@ -30,8 +30,6 @@ import java.awt.Graphics2D;
 import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.awt.event.InputEvent;
@@ -138,11 +136,14 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 	}
 
+	private static GlobalFocusChangeListener globalFocusChangeListener;
+
 	static {
-		KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", new GlobalFocusChangeListener());
+		globalFocusChangeListener = new GlobalFocusChangeListener();
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", globalFocusChangeListener);
 	}
 	static private class GlobalFocusChangeListener implements PropertyChangeListener {
-		private AttributeTable focusedTable;
+		AttributeTable selectedTable;
 
 
 		private void focusGained(final Component source) {
@@ -154,14 +155,14 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				newTable = (AttributeTable) SwingUtilities.getAncestorOfClass(AttributeTable.class, source);
 			}
 			if(newTable != null) {
-				focusedTable = newTable;
-				focusedTable.setSelectedCellTypeInfo();
+				selectedTable = newTable;
+				selectedTable.setSelectedCellTypeInfo();
 				EventQueue.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						if (focusedTable != null) {
+						if (selectedTable != null) {
 							final Component newNodeViewInFocus = SwingUtilities.getAncestorOfClass(NodeView.class,
-									focusedTable);
+									selectedTable);
 							if (newNodeViewInFocus != null) {
 								final NodeView viewer = (NodeView) newNodeViewInFocus;
 								if (viewer != viewer.getMap().getSelected()) {
@@ -175,7 +176,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 
 		private void focusLost(final Component oppositeComponent) {
-			if (focusedTable == null || null == SwingUtilities.getAncestorOfClass(MapView.class, oppositeComponent)
+			if (selectedTable == null || null == SwingUtilities.getAncestorOfClass(MapView.class, oppositeComponent)
 					&& ! (oppositeComponent instanceof AttributeTable)) {
 				return;
 			}
@@ -186,20 +187,20 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			else {
 				newTable = SwingUtilities.getAncestorOfClass(AttributeTable.class, oppositeComponent);
 			}
-			if (focusedTable != newTable) {
-				focusedTable.clearSelection();
-				if (focusedTable.isEditing()) {
-					focusedTable.getCellEditor().stopCellEditing();
+			if (selectedTable != newTable) {
+				selectedTable.clearSelection();
+				if (selectedTable.isEditing()) {
+					selectedTable.getCellEditor().stopCellEditing();
 				}
-				if (!focusedTable.attributeView.isPopupShown()) {
-					final AttributeView attributeView = focusedTable.getAttributeView();
+				if (!selectedTable.attributeView.isPopupShown()) {
+					final AttributeView attributeView = selectedTable.getAttributeView();
 					final String currentAttributeViewType = AttributeRegistry.getRegistry(
 					    attributeView.getNode().getMap()).getAttributeViewType();
 					if (attributeView.getViewType() != currentAttributeViewType) {
 						attributeView.stateChanged(null);
 					}
 				}
-				focusedTable = null;
+				selectedTable = null;
 				return;
 			}
 		}
@@ -207,7 +208,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			Component newFocusOwner = (Component) evt.getNewValue();
-			if(focusedTable != null) {
+			if(selectedTable != null) {
 				focusLost(newFocusOwner);
 			}
 			focusGained(newFocusOwner);
@@ -223,6 +224,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private static final int MAX_WIDTH = 300;
 	private static final long serialVersionUID = 1L;
 	private static final float TABLE_ROW_HEIGHT = 4;
+
+	public static AttributeTable getSelectedTable(){
+		return globalFocusChangeListener.selectedTable;
+	}
 
 	static ComboBoxModel getDefaultComboBoxModel() {
 		if (AttributeTable.defaultComboBoxModel == null) {
