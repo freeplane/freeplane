@@ -94,6 +94,7 @@ import org.freeplane.n3.nanoxml.XMLWriter;
  * @author Dimitry Polivaev
  */
 public class FilterController implements IMapSelectionListener, IExtension {
+	public static final Color HIGHLIGHT_COLOR = Color.MAGENTA;
 	public static int TOOLBAR_SIDE = ViewController.TOP;
 	@SuppressWarnings("serial")
     @SelectableAction(checkOnPopup = true)
@@ -191,7 +192,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 			@Override
 			public void configure(Graphics2D g, boolean isPrinting) {
-				g.setColor(Color.MAGENTA);
+				g.setColor(HIGHLIGHT_COLOR);
 			}
 		});
 
