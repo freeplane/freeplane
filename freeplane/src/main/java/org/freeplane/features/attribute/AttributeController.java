@@ -52,10 +52,18 @@ import org.freeplane.features.text.TextController;
 /**
  * @author Dimitry Polivaev 22.11.2008
  */
-public class AttributeController implements IExtension {
+public class AttributeController implements IExtension, AttributeSelection {
 	public static final String SHOW_ICON_FOR_ATTRIBUTES = "show_icon_for_attributes";
 	private static final Integer ATTRIBUTE_TOOLTIP = 7;
 	static private UIIcon attributeIcon = null;
+	static private AttributeSelection attributeSelection;
+
+	public static void setAttributeSelection(AttributeSelection attributeSelection) {
+		if(AttributeController.attributeSelection != null)
+			throw new IllegalStateException();
+		AttributeController.attributeSelection = attributeSelection;
+	}
+
 	public static AttributeController getController() {
 		return getController(Controller.getCurrentModeController());
 	}
@@ -256,4 +264,9 @@ public class AttributeController implements IExtension {
 	public boolean canEdit() {
 	    return false;
     }
+
+	@Override
+	public NodeAttribute getSelectedAttribute() {
+		return attributeSelection != null ? attributeSelection.getSelectedAttribute() : null;
+	}
 }

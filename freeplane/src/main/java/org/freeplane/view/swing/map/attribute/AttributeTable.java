@@ -23,7 +23,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -37,8 +36,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.net.URI;
 import java.util.EventObject;
 
@@ -57,10 +54,7 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.attribute.AttributeRegistry;
-import org.freeplane.features.attribute.AttributeTableLayoutModel;
-import org.freeplane.features.attribute.ColumnWidthChangeEvent;
-import org.freeplane.features.attribute.IColumnWidthChangeListener;
+import org.freeplane.features.attribute.*;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.format.IFormattedObject;
@@ -136,83 +130,12 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 	}
 
-	private static GlobalFocusChangeListener globalFocusChangeListener;
+	private static AttributeSelectionChangeListener globalFocusChangeListener;
 
 	static {
-		globalFocusChangeListener = new GlobalFocusChangeListener();
+		globalFocusChangeListener = new AttributeSelectionChangeListener();
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", globalFocusChangeListener);
-	}
-	static private class GlobalFocusChangeListener implements PropertyChangeListener {
-		AttributeTable selectedTable;
-
-
-		private void focusGained(final Component source) {
-			final AttributeTable newTable;
-			if (source instanceof AttributeTable) {
-				newTable = (AttributeTable) source;
-			}
-			else {
-				newTable = (AttributeTable) SwingUtilities.getAncestorOfClass(AttributeTable.class, source);
-			}
-			if(newTable != null) {
-				selectedTable = newTable;
-				selectedTable.setSelectedCellTypeInfo();
-				EventQueue.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						if (selectedTable != null) {
-							final Component newNodeViewInFocus = SwingUtilities.getAncestorOfClass(NodeView.class,
-									selectedTable);
-							if (newNodeViewInFocus != null) {
-								final NodeView viewer = (NodeView) newNodeViewInFocus;
-								if (viewer != viewer.getMap().getSelected()) {
-									viewer.getMap().selectAsTheOnlyOneSelected(viewer, false);
-								}
-							}
-						}
-					}
-				});
-			}
-		}
-
-		private void focusLost(final Component oppositeComponent) {
-			if (selectedTable == null || null == SwingUtilities.getAncestorOfClass(MapView.class, oppositeComponent)
-					&& ! (oppositeComponent instanceof AttributeTable)) {
-				return;
-			}
-			final Component newTable;
-			if (oppositeComponent instanceof AttributeTable) {
-				newTable = oppositeComponent;
-			}
-			else {
-				newTable = SwingUtilities.getAncestorOfClass(AttributeTable.class, oppositeComponent);
-			}
-			if (selectedTable != newTable) {
-				selectedTable.clearSelection();
-				if (selectedTable.isEditing()) {
-					selectedTable.getCellEditor().stopCellEditing();
-				}
-				if (!selectedTable.attributeView.isPopupShown()) {
-					final AttributeView attributeView = selectedTable.getAttributeView();
-					final String currentAttributeViewType = AttributeRegistry.getRegistry(
-					    attributeView.getNode().getMap()).getAttributeViewType();
-					if (attributeView.getViewType() != currentAttributeViewType) {
-						attributeView.stateChanged(null);
-					}
-				}
-				selectedTable = null;
-				return;
-			}
-		}
-
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			Component newFocusOwner = (Component) evt.getNewValue();
-			if(selectedTable != null) {
-				focusLost(newFocusOwner);
-			}
-			focusGained(newFocusOwner);
-		}
+		AttributeController.setAttributeSelection(globalFocusChangeListener);
 	}
 
 	static private MouseListener componentListener = new HeaderMouseListener();
@@ -941,7 +864,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	    setSelectedCellTypeInfo();
     }
 
-	private void setSelectedCellTypeInfo() {
+	void setSelectedCellTypeInfo() {
 		final int r = getSelectedRow();
 		final int c = getSelectedColumn();
 		if(r >= 0 && c >= 0){
