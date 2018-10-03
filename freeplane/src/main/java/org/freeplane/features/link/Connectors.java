@@ -1,11 +1,16 @@
 package org.freeplane.features.link;
 
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.extension.Configurable;
 import org.freeplane.features.map.NodeModel;
 
 import java.util.*;
 
-public class Connectors {
-	public static final String CONNECTORS = "connectors";
+public class Connectors implements IExtension {
+	static Connectors of(Configurable configurable){
+		return configurable.computeIfAbsent(Connectors.class, Connectors::new);
+	}
+
 	private final Set<ConnectorModel> connectors = new HashSet<>();
 	private final Map<NodeModel, Collection<ConnectorModel>> connectorsFromSource = new HashMap<>();
 	private final Map<NodeModel, Collection<ConnectorModel>> connectorsToTarget = new HashMap<>();
@@ -13,7 +18,7 @@ public class Connectors {
 	public void add(ConnectorModel connector) {
 		if (connectors.add(connector)) {
 			connectorsFromSource.computeIfAbsent(connector.getSource(), n -> new ArrayList<>()).add(connector);
-			connectorsToTarget.computeIfAbsent(connector.getSource(), n -> new ArrayList<>()).add(connector);
+			connectorsToTarget.computeIfAbsent(connector.getTarget(), n -> new ArrayList<>()).add(connector);
 		}
 	}
 
@@ -23,10 +28,6 @@ public class Connectors {
 
 	public void clear() {
 		connectorsFromSource.clear();
-	}
-
-	public boolean isHighlighted(ConnectorModel connector) {
-		return connectors.contains(connector);
 	}
 
 	public Collection<ConnectorModel> getLinksFrom(NodeModel node){

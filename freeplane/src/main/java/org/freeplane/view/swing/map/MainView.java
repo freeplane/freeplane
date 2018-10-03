@@ -57,6 +57,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.UIIcon;
@@ -393,14 +394,17 @@ public abstract class MainView extends ZoomableLabel {
 
     private void drawModificationRect(Graphics g) {
 		final Color color = g.getColor();
-		if(TextModificationState.HIGHLIGHT.equals(textModified)){
+		if(TextModificationState.FAILURE.equals(textModified)) {
+			g.setColor(HighlightedTransformedObject.FAILURE_COLOR);
+		}
+		else if (MapView.isElementHighlighted(this, getNodeView().getModel())){
+			g.setColor(FilterController.HIGHLIGHT_COLOR);
+		}
+		else if(TextModificationState.HIGHLIGHT.equals(textModified)) {
 			final boolean markTransformedText = TextController.isMarkTransformedTextSet();
 			if(! markTransformedText)
 				return;
 			g.setColor(HighlightedTransformedObject.OK_COLOR);
-		}
-		else if(TextModificationState.FAILURE.equals(textModified)){
-			g.setColor(HighlightedTransformedObject.FAILURE_COLOR);
 		}
 		else{
 			return;

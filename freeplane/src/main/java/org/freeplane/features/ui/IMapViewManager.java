@@ -32,6 +32,7 @@ import java.util.Map;
 
 import javax.swing.*;
 
+import org.freeplane.core.extension.Configurable;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -61,21 +62,8 @@ public interface IMapViewManager {
 
 	public boolean changeToMode(final String modeName);
 
-	/**
-	 * Checks, whether or not a given url is already opened. Unlike
-	 * tryToChangeToMapView, it does not consider the map+extension identifiers
-	 * nor switches to the mapView.
-	 *
-	 * @return null, if not found, the map+extension identifier otherwise.
-	 */
 	public String checkIfFileIsAlreadyOpened(final URL urlToCheck) throws MalformedURLException;
 
-	/**
-	 * Close the currently active map, return false if closing canceled.
-	 *
-	 * @param withoutSave
-	 *            forces the closing without any save actions.
-	 */
 	public boolean close();
 	public boolean close(final Component view);
 	
@@ -105,6 +93,8 @@ public interface IMapViewManager {
 	public IMapSelection getMapSelection();
 
 	public JComponent getMapViewComponent();
+
+	public Configurable getMapViewConfiguration();
 
 	public List<? extends Component> getMapViewVector();
 

@@ -60,6 +60,7 @@ import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.image.BigBufferedImage;
 import org.freeplane.core.ui.svgicons.GraphicsHints;
+import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
@@ -523,6 +524,11 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	 */
 	@Override
 	public JComponent getMapViewComponent() {
+		return getMapView();
+	}
+
+	@Override
+	public Configurable getMapViewConfiguration() {
 		return getMapView();
 	}
 

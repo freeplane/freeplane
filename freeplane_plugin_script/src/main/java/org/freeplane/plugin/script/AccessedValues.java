@@ -23,7 +23,6 @@ public class AccessedValues {
 
 	public void accessValue(NodeModel accessedNode) {
 		if(accessingNode.getMap() == accessedNode.getMap()) {
-			final String id = accessedNode.createID();
 			accessedValues.put(accessedNode, accessedNode);
 		}
 	}

@@ -3,12 +3,13 @@ package org.freeplane.features.link;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.extension.Configurable;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
-import javax.swing.*;
+import javax.swing.Action;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -28,7 +29,7 @@ class LinkMenuBuilder implements EntryVisitor {
 		if (selection == null)
 			return;
 		final NodeModel node = selection.getSelected();
-		JComponent mapViewComponent = controller.getMapViewManager().getMapViewComponent();
+		Configurable mapViewComponent = controller.getMapViewManager().getMapViewConfiguration();
 		Set<NodeLinkModel> links = new LinkedHashSet<NodeLinkModel>(linkController.getLinksFrom(node, mapViewComponent));
 		links.addAll(linkController.getLinksTo(node, mapViewComponent));
 		boolean firstAction = true;

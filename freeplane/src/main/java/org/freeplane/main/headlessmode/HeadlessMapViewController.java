@@ -37,6 +37,7 @@ import java.util.Map;
 
 import javax.swing.*;
 
+import org.freeplane.core.extension.Configurable;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelection.NodePosition;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -178,6 +179,11 @@ public class HeadlessMapViewController implements IMapViewManager {
 
 	@Override
 	public JComponent getMapViewComponent() {
+		throw new RuntimeException("Method not implemented");
+	}
+
+	@Override
+	public Configurable getMapViewConfiguration() {
 		throw new RuntimeException("Method not implemented");
 	}
 

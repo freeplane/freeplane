@@ -10,6 +10,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.ConditionalContentTransformer;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
+import org.freeplane.plugin.formula.dependencies.ActionFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -31,6 +32,7 @@ public class Activator implements BundleActivator {
 			    FORMULA_DISABLE_PLUGIN);
 			final EvaluateAllAction evaluateAllAction = new EvaluateAllAction();
 			modeController.addAction(evaluateAllAction);
+			ActionFactory.createActions(modeController);
 			if (!disablePluginProperty) {
 				
 				TextController.getController(modeController).addTextTransformer(//

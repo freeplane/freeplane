@@ -55,6 +55,7 @@ import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.resources.ResourceController;
@@ -64,12 +65,7 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
-import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.MenuUtils;
-import org.freeplane.core.util.TextUtils;
+import org.freeplane.core.util.*;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.FilterController;
@@ -341,7 +337,7 @@ public class LinkController extends SelectionController implements IExtension {
 		return null != component.getClientProperty(Connectors.class) ||  MapLinks.hasLinks(map);
 	}
 
-	public Collection<? extends NodeLinkModel> getLinksTo(NodeModel node, JComponent component) {
+	public Collection<? extends NodeLinkModel> getLinksTo(NodeModel node, Configurable component) {
 		Connectors connectors = (Connectors) component.getClientProperty(Connectors.class);
 		if(connectors != null)
 			return connectors.getLinksTo(node);
@@ -350,7 +346,7 @@ public class LinkController extends SelectionController implements IExtension {
 		}
 	}
 
-	public Collection<? extends NodeLinkModel> getLinksFrom(NodeModel node, JComponent component) {
+	public Collection<? extends NodeLinkModel> getLinksFrom(NodeModel node, Configurable component) {
 		Connectors connectors = (Connectors) component.getClientProperty(Connectors.class);
 		if(connectors != null)
 			return connectors.getLinksFrom(node);
