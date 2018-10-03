@@ -1,12 +1,7 @@
 package org.freeplane.plugin.script;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.WeakHashMap;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;
@@ -14,7 +9,7 @@ import org.freeplane.features.map.NodeModel;
 
 class EvaluationDependencies implements IExtension{
 
-	static class DependantNodeReferences implements Iterable<NodeModel>{
+	static class DependentNodeReferences implements Iterable<NodeModel>{
 		final private WeakHashMap<NodeModel, Void> references = new WeakHashMap<>();
 		void add(NodeModel node) {
 			references.put(node, null);
@@ -29,6 +24,16 @@ class EvaluationDependencies implements IExtension{
 		NODE, BRANCH, ALL
 	}
 
+
+	static EvaluationDependencies of(MapModel map) {
+		EvaluationDependencies dependencies = map.getExtension(EvaluationDependencies.class);
+		if (dependencies == null) {
+			dependencies = new EvaluationDependencies();
+			map.addExtension(dependencies);
+		}
+		return dependencies;
+	}
+
 	static IExtension removeFrom(MapModel map) {
 		return map.removeExtension(EvaluationDependencies.class);
 	}
@@ -36,9 +41,9 @@ class EvaluationDependencies implements IExtension{
 
 	private final HashSet<MapModel> referencedMaps = new HashSet<>();
 
-	private final HashMap<NodeModel, DependantNodeReferences> onNodeDependencies = new HashMap<>();
+	private final HashMap<NodeModel, DependentNodeReferences> onNodeDependencies = new HashMap<>();
 	// FIXME: organize node and branch dependencies in a tree?
-	private final HashMap<NodeModel, DependantNodeReferences> onBranchDependencies = new HashMap<>();
+	private final HashMap<NodeModel, DependentNodeReferences> onBranchDependencies = new HashMap<>();
 	private final HashSet<NodeModel> onAnyNodeDependencies = new HashSet<NodeModel>();
 	private final HashSet<NodeModel> onGlobalNodeDependencies = new HashSet<NodeModel>();
 
@@ -46,8 +51,8 @@ class EvaluationDependencies implements IExtension{
 		final Iterable<NodeModel> onNode = onNodeDependencies.remove(removedAccessedNode);
 		if (onNode != null)
 			removeRecursively(accessingNodes, onNode);
-		ArrayList<Entry<NodeModel, DependantNodeReferences>> onBranchDependencyList = new ArrayList<>(onBranchDependencies.entrySet());
-		for (Entry<NodeModel, DependantNodeReferences> entry : onBranchDependencyList) {
+		ArrayList<Entry<NodeModel, DependentNodeReferences>> onBranchDependencyList = new ArrayList<>(onBranchDependencies.entrySet());
+		for (Entry<NodeModel, DependentNodeReferences> entry : onBranchDependencyList) {
 			final NodeModel branchNode = entry.getKey();
 			if (removedAccessedNode.isDescendantOf(branchNode)) {
 				onBranchDependencies.remove(branchNode);
@@ -111,26 +116,31 @@ class EvaluationDependencies implements IExtension{
 		onGlobalNodeDependencies.add(accessingNode);
 	}
 
-	private DependantNodeReferences provideDependencySet(final NodeModel accessedNode,
-	                                            final HashMap<NodeModel, DependantNodeReferences> dependenciesMap) {
-		DependantNodeReferences set = dependenciesMap.get(accessedNode);
+	private DependentNodeReferences provideDependencySet(final NodeModel accessedNode,
+														 final HashMap<NodeModel, DependentNodeReferences> dependenciesMap) {
+		DependentNodeReferences set = dependenciesMap.get(accessedNode);
 		if (set == null) {
-			set = new DependantNodeReferences();
+			set = new DependentNodeReferences();
 			dependenciesMap.put(accessedNode, set);
 		}
 		return set;
 	}
 
+	public Iterable<NodeModel> getPossibleDependencies(NodeModel node) {
+		DependentNodeReferences dependencies = onNodeDependencies.get(node);
+		return dependencies != null ? dependencies : Collections.emptyList();
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		for (Entry<NodeModel, DependantNodeReferences> entry : onNodeDependencies.entrySet()) {
+		for (Entry<NodeModel, DependentNodeReferences> entry : onNodeDependencies.entrySet()) {
 			builder.append("onNode (" + entry.getKey().getText() + "):\n");
 			for (NodeModel nodeModel : entry.getValue()) {
 				builder.append("  " + nodeModel + "\n");
 			}
 		}
-		for (Entry<NodeModel, DependantNodeReferences> entry : onBranchDependencies.entrySet()) {
+		for (Entry<NodeModel, DependentNodeReferences> entry : onBranchDependencies.entrySet()) {
 			builder.append("onBranch (" + entry.getKey().getText() + "):\n");
 			for (NodeModel nodeModel : entry.getValue()) {
 				builder.append("  " + nodeModel + "\n");
@@ -144,14 +154,4 @@ class EvaluationDependencies implements IExtension{
 		}
 		return builder.toString();
 	}
-
-	static EvaluationDependencies of(MapModel map) {
-		EvaluationDependencies dependencies = map.getExtension(EvaluationDependencies.class);
-		if (dependencies == null) {
-			dependencies = new EvaluationDependencies();
-			map.addExtension(dependencies);
-		}
-		return dependencies;
-	}
-
 }

@@ -2,11 +2,11 @@ package org.freeplane.plugin.script;
 
 class CachedResult {
 	final Object returnedValue;
-	final AccessedValues accessedValues;
+	final RelatedElements relatedElements;
 
 
-	CachedResult(Object returnedValue, AccessedValues accessedValues) {
+	CachedResult(Object returnedValue, RelatedElements relatedElements) {
 		this.returnedValue = returnedValue;
-		this.accessedValues = accessedValues;
+		this.relatedElements = relatedElements;
 	}
 }

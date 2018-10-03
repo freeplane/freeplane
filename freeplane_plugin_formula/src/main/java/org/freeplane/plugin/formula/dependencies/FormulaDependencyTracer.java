@@ -4,6 +4,7 @@ import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.HighlightedElements;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.Pair;
+import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttribute;
 import org.freeplane.features.filter.FilterController;
@@ -13,14 +14,24 @@ import org.freeplane.features.link.Connectors;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.script.AccessedValues;
-import org.freeplane.plugin.script.FormulaUtils;
+import org.freeplane.plugin.script.RelatedElements;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
 class FormulaDependencyTracer implements IExtension {
+
+	private ConnectorArrows connectorArrow;
+	private DependencySearchStrategy searchStrategy;
+
+	interface DependencySearchStrategy {
+		RelatedElements find(NodeModel node);
+		RelatedElements find(NodeModel node, Attribute attribute);
+		static final DependencySearchStrategy PREPENDENTS = new PrependentsSearchStrategy();
+		static final DependencySearchStrategy DEPENDENTS = new DependentsSearchStrategy();
+	}
+
 	private static final long serialVersionUID = 1L;
 	private final Configurable configurable;
 	private final LinkController linkController;
@@ -33,8 +44,24 @@ class FormulaDependencyTracer implements IExtension {
 		this.linkController = linkController;
 	}
 
-	public void tracePrecedence() {
-		final Collection<Pair<NodeModel, AccessedValues>> accessedValues;
+	public void findPrecedents() {
+		connectorArrow = ConnectorArrows.BACKWARD;
+		searchStrategy = DependencySearchStrategy.PREPENDENTS;
+		findDependencies();
+		connectorArrow = null;
+		searchStrategy = null;
+	}
+
+	public void findDependents() {
+		connectorArrow = ConnectorArrows.FORWARD;
+		searchStrategy = DependencySearchStrategy.DEPENDENTS;
+		findDependencies();
+		connectorArrow = null;
+		searchStrategy = null;
+	}
+
+	void findDependencies() {
+		final Collection<Pair<NodeModel, RelatedElements>> accessedValues;
 		highlighedElements = configurable.computeIfAbsent(HighlightedElements.class, HighlightedElements::new);
 		connectors = configurable.computeIfAbsent(Connectors.class, Connectors::new);
 		if (tracedValues == null) {
@@ -43,29 +70,56 @@ class FormulaDependencyTracer implements IExtension {
 			final NodeAttribute attribute = AttributeController.getSelectedAttribute();
 			if (attribute != null) {
 				highlighedElements.add(attribute.attribute);
-				accessedValues = findPrecedences(attribute);
+				accessedValues = findDependencies(attribute);
 			} else {
 				final NodeModel node = Controller.getCurrentController().getSelection().getSelected();
 				highlighedElements.add(node);
-				accessedValues = findPrecedences(node);
+				accessedValues = findDependencies(node);
 			}
 		} else {
-			accessedValues = tracedValues.stream().map(this::findPrecedences).flatMap(Collection::stream).collect(Collectors.toSet());
+			accessedValues = tracedValues.stream().map(this::findDependencies).flatMap(Collection::stream).collect(Collectors.toSet());
 		}
-		accessedValues.forEach(this::highlightPrecedent);
+		accessedValues.forEach(this::highlightDependencies);
 		configurable.refresh();
 		highlighedElements = null;
 		connectors = null;
 	}
 
-	private void highlightPrecedent(final Pair<NodeModel, AccessedValues> v) {
-		tracedValues = v.second.getAccessedValues();
+	private Collection<Pair<NodeModel, RelatedElements>> findDependencies(final Object value) {
+		if (value instanceof NodeAttribute)
+			return findDependencies((NodeAttribute) value);
+		else if (value instanceof NodeModel)
+			return findDependencies((NodeModel) value);
+		else
+			return Collections.emptySet();
+
+	}
+
+	private Collection<Pair<NodeModel, RelatedElements>> findDependencies(final NodeModel node) {
+		RelatedElements relatedElements = searchStrategy.find(node);
+		return toCollection(node, relatedElements);
+	}
+
+	private Collection<Pair<NodeModel, RelatedElements>> findDependencies(final NodeAttribute nodeAttribute) {
+		RelatedElements relatedElements = searchStrategy.find(nodeAttribute.node, nodeAttribute.attribute);
+		return toCollection(nodeAttribute.node, relatedElements);
+	}
+
+	private Collection<Pair<NodeModel, RelatedElements>> toCollection(NodeModel node, RelatedElements relatedElements) {
+		if (!relatedElements.isEmpty()) {
+			return Collections.singleton(new Pair<>(node, relatedElements));
+		} else
+			return Collections.emptySet();
+	}
+
+	private void highlightDependencies(final Pair<NodeModel, RelatedElements> v) {
+		tracedValues = v.second.getElements();
 		tracedValues.stream().map(a -> a instanceof NodeAttribute ? ((NodeAttribute) a).attribute : a).forEach(highlighedElements::add);
-		v.second.getAccessedNodes().stream()
+		v.second.getRelatedNodes().stream()
 				.filter(n -> v.first != n)
 				.forEach(n ->
 						connectors.add(new ConnectorModel(v.first, n.getID(),
-								ConnectorArrows.BACKWARD, null,
+								connectorArrow, null,
 								FilterController.HIGHLIGHT_COLOR,
 								linkController.getStandardConnectorAlpha(),
 								linkController.getStandardConnectorShape(),
@@ -74,31 +128,6 @@ class FormulaDependencyTracer implements IExtension {
 								linkController.getStandardLabelFontSize())));
 	}
 
-	private Collection<Pair<NodeModel, AccessedValues>> findPrecedences(final Object value) {
-		if (value instanceof NodeAttribute)
-			return findPrecedences((NodeAttribute) value);
-		else if (value instanceof NodeModel)
-			return findPrecedences((NodeModel) value);
-		else
-			return Collections.emptySet();
-
-	}
-
-	private Collection<Pair<NodeModel, AccessedValues>> findPrecedences(final NodeModel node) {
-		final Object userObject = node.getUserObject();
-		if (FormulaUtils.containsFormula(userObject)) {
-			return Collections.singleton(new Pair<>(node, FormulaUtils.getAccessedValues(node, ((String) userObject).substring(1))));
-		} else
-			return Collections.emptySet();
-	}
-
-	private Collection<Pair<NodeModel, AccessedValues>> findPrecedences(final NodeAttribute attribute) {
-		final Object value = attribute.value();
-		if (FormulaUtils.containsFormula(value)) {
-			return Collections.singleton(new Pair<>(attribute.node, FormulaUtils.getAccessedValues(attribute.node, (String) value)));
-		} else
-			return Collections.emptySet();
-	}
 
 	void clear() {
 		configurable.removeExtension(HighlightedElements.class);

@@ -60,4 +60,7 @@ public class FormulaDependencies{
 	}
 
 
+	public static Iterable<NodeModel> getPossibleDependencies(NodeModel node) {
+		return EvaluationDependencies.of(node.getMap()).getPossibleDependencies(node);
+	}
 }

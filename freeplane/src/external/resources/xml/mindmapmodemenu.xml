@@ -473,7 +473,8 @@
 			<Entry name="ExecuteScriptForAllNodes" />
 			<Entry name="ScriptEditor" />
             <Entry name="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula" />
-            <Entry name="formula.TracePrecedenceAction" plugin="org.freeplane.plugin.formula" />
+            <Entry name="formula.TracePrecedentsAction" plugin="org.freeplane.plugin.formula" />
+            <Entry name="formula.TraceDependentsAction" plugin="org.freeplane.plugin.formula" />
             <Entry name="formula.ClearDependenciesAction" plugin="org.freeplane.plugin.formula" />
 			<Entry builder="separator" />
 			<Entry name="SetAcceleratorOnNextClickAction" />

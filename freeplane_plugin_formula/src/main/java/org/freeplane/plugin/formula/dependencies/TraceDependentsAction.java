@@ -8,12 +8,12 @@ import org.freeplane.plugin.formula.FormulaPluginUtils;
 
 import java.awt.event.ActionEvent;
 
-class TracePrecedentsAction extends AFreeplaneAction {
+class TraceDependentsAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private final LinkController linkController;
 
-	public TracePrecedentsAction(LinkController linkController) {
-		super(FormulaPluginUtils.getFormulaKey("TracePrecedentsAction"));
+	public TraceDependentsAction(LinkController linkController) {
+		super(FormulaPluginUtils.getFormulaKey("TraceDependentsAction"));
 		this.linkController = linkController;
 	}
 
@@ -21,6 +21,6 @@ class TracePrecedentsAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		Configurable mapViewConfiguration = Controller.getCurrentController().getMapViewManager().getMapViewConfiguration();
 		FormulaDependencyTracer tracer = mapViewConfiguration.computeIfAbsent(FormulaDependencyTracer.class, () -> new FormulaDependencyTracer(mapViewConfiguration, linkController));
-		tracer.findPrecedents();
+		tracer.findDependents();
 	}
 }

@@ -13,11 +13,11 @@ public class ScriptContext implements AccessedNodes{
 
 	private final NodeScript nodeScript;
 
-	private final AccessedValues accessedValues;
+	private final RelatedElements relatedElements;
 
 	public ScriptContext(NodeScript nodeScript) {
 		this.nodeScript = nodeScript;
-		this.accessedValues = new AccessedValues(nodeScript.node);
+		this.relatedElements = new RelatedElements(nodeScript.node);
 	}
 
 	public URL getBaseUrl() {
@@ -63,13 +63,13 @@ public class ScriptContext implements AccessedNodes{
 	@Override
 	public void accessAttribute(final NodeModel accessedNode, Attribute accessedAttribute) {
 		if(nodeScript != null)
-			accessedValues.accessAttribute(accessedNode, accessedAttribute);
+			relatedElements.relateAttribute(accessedNode, accessedAttribute);
 	}
 
 	@Override
 	public void accessValue(NodeModel accessedNode) {
 		if(nodeScript != null)
-			accessedValues.accessValue(accessedNode);
+			relatedElements.relateNode(accessedNode);
 	}
 
 	@Override
@@ -95,9 +95,9 @@ public class ScriptContext implements AccessedNodes{
 			FormulaDependencies.accessGlobalNode(nodeScript.node);
 	}
 
-	public AccessedValues getAccessedValues() {
+	public RelatedElements getRelatedElements() {
 		if(nodeScript != null)
-			return accessedValues;
+			return relatedElements;
 		else
 			throw new IllegalStateException("Accessed values not tracked without related node");
 	}
