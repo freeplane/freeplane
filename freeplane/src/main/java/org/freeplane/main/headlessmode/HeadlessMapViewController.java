@@ -35,8 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JComboBox;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelection.NodePosition;
@@ -178,7 +177,7 @@ public class HeadlessMapViewController implements IMapViewManager {
 	}
 
 	@Override
-	public Component getMapViewComponent() {
+	public JComponent getMapViewComponent() {
 		throw new RuntimeException("Method not implemented");
 	}
 

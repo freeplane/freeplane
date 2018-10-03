@@ -34,7 +34,7 @@ public class FormulaUtils {
         }
     }
 
-	private static boolean textContainsFormula(final String text) {
+	public static boolean textContainsFormula(final String text) {
 		// ignore == and => since these are often used in text
 		return startsWithEqualSign(text) && secondCharIsntSpecial(text.charAt(1));
 	}
@@ -45,6 +45,10 @@ public class FormulaUtils {
 
 	private static boolean secondCharIsntSpecial(char secondChar) {
 		return secondChar != '=' && secondChar != '>';
+	}
+
+	public static boolean containsFormula(Object object) {
+		return (object instanceof String) && containsFormula((String)object);
 	}
 
 	public static boolean containsFormula(String text) {
@@ -105,6 +109,9 @@ public class FormulaUtils {
 
 	}
 
+	public static AccessedValues getAccessedValues(NodeModel node, String script) {
+		return FormulaCache.of(node.getMap()).getAccessedValues(node, script);
+	}
 
 	public static void clearCache(MapModel map) {
 		FormulaCache.removeFrom(map);

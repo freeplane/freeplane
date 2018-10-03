@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -75,10 +74,7 @@ import org.freeplane.features.DashVariant;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.link.ConnectorModel.Shape;
-import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.INodeSelectionListener;
-import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.*;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.SelectionController;
@@ -198,60 +194,9 @@ public class LinkController extends SelectionController implements IExtension {
 		modeController.addAction(new FollowLinkAction());
 		modeController.addUiBuilder(Phase.ACTIONS, "clone_actions", new ClonesMenuBuilder(modeController),
 				new ChildActionEntryRemover(modeController));
-		modeController.addUiBuilder(Phase.ACTIONS, "link_actions", new LinkMenuBuilder(modeController),
+		modeController.addUiBuilder(Phase.ACTIONS, "link_actions", new LinkMenuBuilder(modeController, this),
 				new ChildActionEntryRemover(modeController));
 	}
-
-	final class LinkMenuBuilder implements EntryVisitor {
-	    private final ModeController modeController;
-
-	    LinkMenuBuilder(ModeController modeController) {
-		    this.modeController = modeController;
-	    }
-
-	    @Override
-	    public void visit(Entry entry) {
-	    	final IMapSelection selection = modeController.getController().getSelection();
-	    	if (selection == null)
-	    		return;
-	    	final NodeModel node = selection.getSelected();
-	    	Set<NodeLinkModel> links = new LinkedHashSet<NodeLinkModel>(NodeLinks.getLinks(node));
-	    	links.addAll(getLinksTo(node));
-	    	boolean firstAction = true;
-	    	for (NodeLinkModel link : links) {
-	    		final String targetID = link.getTargetID();
-	    		final NodeModel target;
-	    		if (node.getID().equals(targetID)) {
-	    			if (link instanceof ConnectorModel) {
-	    				ConnectorModel cm = (ConnectorModel) link;
-	    				target = cm.getSource();
-	    				if (node.equals(target))
-	    					continue;
-	    			}
-	    			else
-	    				continue;
-	    		}
-	    		else
-	    			target = node.getMap().getNodeForID(targetID);
-	    		final GotoLinkNodeAction gotoLinkNodeAction = new GotoLinkNodeAction(LinkController.this, target);
-	    		gotoLinkNodeAction.configureText("follow_graphical_link", target);
-	    		if (!(link instanceof ConnectorModel)) {
-	    			gotoLinkNodeAction.putValue(Action.SMALL_ICON, LinkType.LOCAL.icon);
-	    		}
-	    		if (firstAction) {
-	    			entry.addChild(new Entry().setBuilders("separator"));
-	    			firstAction = false;
-	    		}
-	    		modeController.addActionIfNotAlreadySet(gotoLinkNodeAction);
-				new EntryAccessor().addChildAction(entry, gotoLinkNodeAction);
-	    	}
-	    }
-
-	    @Override
-	    public boolean shouldSkipChildren(Entry entry) {
-	    	return true;
-	    }
-    }
 
 
 	private class ClonesMenuBuilder implements EntryVisitor {
@@ -392,11 +337,33 @@ public class LinkController extends SelectionController implements IExtension {
 		return adaptedText;
 	}
 
-	public Collection<NodeLinkModel> getLinksFrom(NodeModel node) {
+	public boolean hasNodeLinks(MapModel map, JComponent component) {
+		return null != component.getClientProperty(Connectors.class) ||  MapLinks.hasLinks(map);
+	}
+
+	public Collection<? extends NodeLinkModel> getLinksTo(NodeModel node, JComponent component) {
+		Connectors connectors = (Connectors) component.getClientProperty(Connectors.class);
+		if(connectors != null)
+			return connectors.getLinksTo(node);
+		else {
+			return getLinksTo(node);
+		}
+	}
+
+	public Collection<? extends NodeLinkModel> getLinksFrom(NodeModel node, JComponent component) {
+		Connectors connectors = (Connectors) component.getClientProperty(Connectors.class);
+		if(connectors != null)
+			return connectors.getLinksFrom(node);
+		else {
+			return getLinksFrom(node);
+		}
+	}
+
+	private Collection<NodeLinkModel> getLinksFrom(NodeModel node) {
 		return NodeLinks.getLinks(node);
 	}
 
-	public Collection<NodeLinkModel> getLinksTo(final NodeModel target) {
+	private Collection<NodeLinkModel> getLinksTo(final NodeModel target) {
 		if (target.hasID() == false) {
 			return Collections.emptySet();
 		}

@@ -1730,27 +1730,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private boolean hasNodeLinks() {
-		return null != getClientProperty(Connectors.class) ||  MapLinks.hasLinks(model);
+		return LinkController.getController(getModeController()).hasNodeLinks(getModel(), this);
 	}
 
 	private Collection<? extends NodeLinkModel> getLinksTo(NodeModel node) {
-		Connectors connectors = (Connectors) getClientProperty(Connectors.class);
-		if(connectors != null)
-			return connectors.getLinksTo(node);
-		else {
-			final LinkController linkController = LinkController.getController(getModeController());
-			return linkController.getLinksTo(node);
-		}
+		return LinkController.getController(getModeController()).getLinksTo(node, this);
 	}
 
 	private Collection<? extends NodeLinkModel> getLinksFrom(NodeModel node) {
-		Connectors connectors = (Connectors) getClientProperty(Connectors.class);
-		if(connectors != null)
-			return connectors.getLinksFrom(node);
-		else {
-			final LinkController linkController = LinkController.getController(getModeController());
-			return linkController.getLinksFrom(node);
-		}
+		return LinkController.getController(getModeController()).getLinksFrom(node, this);
 	}
 
 	private void paintSelecteds(final Graphics2D g) {

@@ -522,7 +522,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	 * @see org.freeplane.core.frame.IMapViewController#getMapViewComponent()
 	 */
 	@Override
-	public Component getMapViewComponent() {
+	public JComponent getMapViewComponent() {
 		return getMapView();
 	}
 

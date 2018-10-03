@@ -71,5 +71,16 @@ class FormulaCache implements IExtension{
 		map.removeExtension(FormulaCache.class);
 	}
 
+	AccessedValues getAccessedValues(NodeModel node, String script) {
+		if(ENABLE_CACHING) {
+			final LinkedHashMap<String, CachedResult> cacheEntry = cache.get(node.getID());
+			if (cacheEntry == null) return null;
+			final CachedResult cachedResult = cacheEntry.get(script);
+			return cachedResult.accessedValues;
+		}
+		else
+			return null;
+	}
+
 
 }

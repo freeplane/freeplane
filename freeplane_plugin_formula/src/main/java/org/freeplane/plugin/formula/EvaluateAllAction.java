@@ -11,7 +11,7 @@ class EvaluateAllAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
 	public EvaluateAllAction() {
-		super(FormulaUtils.getFormulaKey("EvaluateAllAction"));
+		super(FormulaPluginUtils.getFormulaKey("EvaluateAllAction"));
 	}
 
 	public void actionPerformed(final ActionEvent e) {

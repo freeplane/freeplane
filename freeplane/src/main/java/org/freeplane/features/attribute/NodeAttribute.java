@@ -11,4 +11,12 @@ public class NodeAttribute {
 		this.node = node;
 		this.attribute = attribute;
 	}
+
+	public String name() {
+		return attribute.getName();
+	}
+
+	public Object value() {
+		return attribute.getValue();
+	}
 }

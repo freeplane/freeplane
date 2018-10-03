@@ -30,7 +30,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.JComboBox;
+import javax.swing.*;
 
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelection.NodePosition;
@@ -104,7 +104,7 @@ public interface IMapViewManager {
 
 	public IMapSelection getMapSelection();
 
-	public Component getMapViewComponent();
+	public JComponent getMapViewComponent();
 
 	public List<? extends Component> getMapViewVector();
 

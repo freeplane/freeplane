@@ -1,12 +1,13 @@
 package org.freeplane.plugin.script;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.map.NodeModel;
 
-class AccessedValues {
+public class AccessedValues {
 	private final Map<Object, NodeModel> accessedValues;
 	private final NodeModel accessingNode;
 
@@ -25,5 +26,13 @@ class AccessedValues {
 			final String id = accessedNode.createID();
 			accessedValues.put(accessedNode, accessedNode);
 		}
+	}
+
+	public Collection<NodeModel> getAccessedNodes() {
+		return accessedValues.values();
+	}
+
+	public Collection<Object> getAccessedValues() {
+		return accessedValues.keySet();
 	}
 }
