@@ -1,5 +1,10 @@
 package org.freeplane.plugin.formula.dependencies;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.stream.Collectors;
+
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.HighlightedElements;
 import org.freeplane.core.extension.IExtension;
@@ -15,10 +20,6 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.script.RelatedElements;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.stream.Collectors;
 
 class FormulaDependencyTracer implements IExtension {
 
@@ -79,6 +80,8 @@ class FormulaDependencyTracer implements IExtension {
 		} else {
 			accessedValues = tracedValues.stream().map(this::findDependencies).flatMap(Collection::stream).collect(Collectors.toSet());
 		}
+		tracedValues = new HashSet<Object>();
+		accessedValues.forEach(v -> tracedValues.addAll(v.second.getElements()));
 		accessedValues.forEach(this::highlightDependencies);
 		configurable.refresh();
 		highlighedElements = null;
@@ -113,10 +116,9 @@ class FormulaDependencyTracer implements IExtension {
 	}
 
 	private void highlightDependencies(final Pair<NodeModel, RelatedElements> v) {
-		tracedValues = v.second.getElements();
+		Collection<Object> tracedValues = v.second.getElements();
 		tracedValues.stream().map(a -> a instanceof NodeAttribute ? ((NodeAttribute) a).attribute : a).forEach(highlighedElements::add);
 		v.second.getRelatedNodes().stream()
-				.filter(n -> v.first != n)
 				.forEach(n ->
 						connectors.add(new ConnectorModel(v.first, n.getID(),
 								connectorArrow, null,
