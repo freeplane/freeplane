@@ -1,7 +1,13 @@
 package org.freeplane.plugin.script;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;
@@ -127,8 +133,8 @@ class EvaluationDependencies implements IExtension{
 	}
 
 	public Iterable<NodeModel> getPossibleDependencies(NodeModel node) {
-		DependentNodeReferences dependencies = onNodeDependencies.get(node);
-		return dependencies != null ? dependencies : Collections.emptyList();
+		Iterable<NodeModel> dependencies = onNodeDependencies.get(node);
+		return dependencies != null ? dependencies : Collections.<NodeModel>emptyList();
 	}
 
 	@Override
