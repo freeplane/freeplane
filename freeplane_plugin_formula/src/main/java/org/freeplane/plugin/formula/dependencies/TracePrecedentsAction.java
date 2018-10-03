@@ -8,12 +8,12 @@ import org.freeplane.plugin.formula.FormulaPluginUtils;
 
 import java.awt.event.ActionEvent;
 
-class TracePrecedenceAction extends AFreeplaneAction {
+class TracePrecedentsAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private final LinkController linkController;
 
-	public TracePrecedenceAction(LinkController linkController) {
-		super(FormulaPluginUtils.getFormulaKey("TracePrecedenceAction"));
+	public TracePrecedentsAction(LinkController linkController) {
+		super(FormulaPluginUtils.getFormulaKey("TracePrecedentsAction"));
 		this.linkController = linkController;
 	}
 
