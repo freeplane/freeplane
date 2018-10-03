@@ -2,7 +2,6 @@ language: java
 sudo: false # Use container based builds. They are faster and we do not need sudo.
 dist: trusty
 jdk:
-  - openjdk7
   - openjdk8
   - oraclejdk8
 #fails on because because java 9.0.1 is not compatible with gradle 4.0 currently used by travis
@@ -10,10 +9,6 @@ jdk:
 # therefore disabled until travis fixes it.
 # - oraclejdk9
 
-# Fix for openjdk7 which fails because of
-#   java.security.ProviderException: java.security.InvalidKeyException: EC parameters error
-install:
- - JAVA_HOME=$(jdk_switcher home openjdk8) gradle classes testClasses
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
