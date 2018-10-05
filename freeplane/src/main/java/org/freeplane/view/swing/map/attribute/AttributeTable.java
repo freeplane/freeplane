@@ -242,7 +242,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	@Override
     public boolean editCellAt(int row, int column, EventObject e) {
-		if(isEditing() && getCellEditor() instanceof DialogTableCellEditor){
+		if(isEditing() && getCellEditor() instanceof DialogTableCellEditor || ! isCellEditable(e)){
 			return false;
 		}
 		if(column == 1 && e instanceof MouseEvent){
@@ -342,10 +342,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 		@Override
 		public boolean isCellEditable(EventObject anEvent) {
-			if (anEvent instanceof MouseEvent) {
-				return ((MouseEvent)anEvent).getClickCount() >= CLICK_COUNT_TO_START;
-			}
-			return true;
+			return AttributeTable.this.isCellEditable(anEvent);
 		}
 		@Override
 		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
@@ -358,6 +355,12 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		return getCellEditor(row, col, (EventObject) getClientProperty("AttributeTable.EditEvent"));
 	}
 
+	private boolean isCellEditable(EventObject anEvent) {
+		if (anEvent instanceof MouseEvent) {
+			return ((MouseEvent)anEvent).getClickCount() >= CLICK_COUNT_TO_START;
+		}
+		return true;
+	}
 	@SuppressWarnings("serial")
     public TableCellEditor getCellEditor(final int row, final int col, EventObject e) {
 		if (dce != null) {
