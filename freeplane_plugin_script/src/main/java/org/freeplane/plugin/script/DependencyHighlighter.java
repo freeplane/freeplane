@@ -1,5 +1,10 @@
 package org.freeplane.plugin.script;
 
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.HighlightedElements;
 import org.freeplane.core.util.Pair;
@@ -10,11 +15,6 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.HighlightedTransformedObject;
-
-import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 class DependencyHighlighter {
 	private final LinkController linkController;
@@ -43,8 +43,8 @@ class DependencyHighlighter {
 		connectors.clear();
 		final Set<Pair<NodeModel, NodeModel>> connectedNodes = new LinkedHashSet<>();
 		for (int i = 0; i < cycle.size() - 1; i++) {
-			NodeModel first = cycle.get(i).node;
-			NodeModel second = cycle.get(i + 1).node;
+			final NodeModel first = cycle.get(i).node;
+			final NodeModel second = cycle.get(i + 1).node;
 			connectedNodes.add(new Pair<>(first, second));
 		}
 		connectedNodes.stream().map(this::createConnector).forEach(connectors::add);
@@ -71,5 +71,10 @@ class DependencyHighlighter {
 		cycle.stream().map(NodeScript::containingElements).map(RelatedElements::getElements)
 			.flatMap(Collection::stream)
 			.forEach(highlightedElements::add);
+	}
+
+	public void clear() {
+		configurable.removeExtension(HighlightedElements.class);
+		configurable.removeExtension(Connectors.class);
 	}
 }

@@ -61,8 +61,8 @@ public class UniqueStack<T> implements Iterable<T> {
 	}
 
 	public List<T> findCycle(final T element) {
-		final int cycleBegin = stack.lastIndexOf(element);
-		if (cycleBegin >= 0) {
+		if (set.contains(element)) {
+			final int cycleBegin = stack.lastIndexOf(element);
 			final ArrayList<T> cycle = new ArrayList<>(stack.size() - cycleBegin + 1);
 			cycle.addAll(stack.subList(cycleBegin, stack.size()));
 			cycle.add(element);

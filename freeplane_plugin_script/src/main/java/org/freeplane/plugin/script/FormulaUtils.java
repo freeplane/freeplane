@@ -73,12 +73,38 @@ public class FormulaUtils {
 	private static Object eval(final NodeModel nodeModel, final String script) {
 		final NodeScript nodeScript = new NodeScript(nodeModel, script);
 		final ScriptContext scriptContext = new ScriptContext(nodeScript);
+		final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getFormulaPermissions();
+		if (FormulaCache.ENABLE_CACHING) {
+			final FormulaCache formulaCache = FormulaCache.of(nodeModel.getMap());
+			Object value = formulaCache.getOrThrowCachedResult(nodeScript);
+			if (value == null) {
+				try {
+					value = eval(nodeScript, scriptContext, restrictedPermissions);
+					if (value == null)
+						throw new ExecuteScriptException("Null pointer returned by formula");
+					formulaCache.put(nodeScript, new CachedResult(value, scriptContext.getRelatedElements()));
+				}
+				catch (final ExecuteScriptException e) {
+					formulaCache.put(nodeScript, new CachedResult(e, scriptContext.getRelatedElements()));
+					throw e;
+				}
+			}
+			return value;
+		}
+		else {
+			return eval(nodeScript, scriptContext, restrictedPermissions);
+		}
+	}
+
+	private static Object eval(final NodeScript nodeScript, final ScriptContext scriptContext,
+							   final ScriptingPermissions restrictedPermissions) {
+		showCyclicDependency(nodeScript);
 		if (!FormulaThreadLocalStack.INSTANCE.push(nodeScript)) {
-			showCyclicDependency(nodeScript);
-			throw new CyclicScriptReferenceException(nodeScript);
+			throw new ExecuteScriptException(new CyclicScriptReferenceException(nodeScript));
 		}
 		try {
-			return eval(scriptContext, nodeScript);
+			return ScriptingEngine.executeScript(nodeScript.node, nodeScript.script, scriptContext,
+				restrictedPermissions);
 		}
 		finally {
 			FormulaThreadLocalStack.INSTANCE.pop();
@@ -90,36 +116,11 @@ public class FormulaUtils {
 		if (controller.getMap() != nodeScript.node.getMap())
 			return;
 		final List<NodeScript> cycle = FormulaThreadLocalStack.INSTANCE.findCycle(nodeScript);
-		if (cycle.isEmpty())
-			return;
 		final Configurable configurable = controller.getMapViewManager().getMapViewConfiguration();
-		new DependencyHighlighter(LinkController.getController(), configurable).showCyclicDependency(nodeScript);
-	}
-
-	private static Object eval(final ScriptContext scriptContext, final NodeScript nodeScript) {
-			final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getFormulaPermissions();
-		final NodeModel node = nodeScript.node;
-		final String script = nodeScript.script;
-			if (FormulaCache.ENABLE_CACHING) {
-				final FormulaCache formulaCache = FormulaCache.of(nodeScript.getMap());
-				Object value = formulaCache.getOrThrowCachedResult(nodeScript);
-				if (value == null) {
-					try {
-						value = ScriptingEngine.executeScript(node, script, scriptContext, restrictedPermissions);
-						if(value == null)
-							throw new ExecuteScriptException("Null pointer returned by formula");
-						formulaCache.put(nodeScript, new CachedResult(value, scriptContext.getRelatedElements()));
-					} catch (final ExecuteScriptException e) {
-						formulaCache.put(nodeScript, new CachedResult(e, scriptContext.getRelatedElements()));
-						throw e;
-					}
-				}
-				return value;
-			}
-			else {
-				return ScriptingEngine.executeScript(node, script, scriptContext, restrictedPermissions);
-			}
-
+		final DependencyHighlighter dependencyHighlighter = new DependencyHighlighter(LinkController.getController(),
+			configurable);
+		if (! cycle.isEmpty())
+			dependencyHighlighter.showCyclicDependency(nodeScript);
 	}
 
 	public static RelatedElements getRelatedElements(final NodeModel node, final Object object) {
