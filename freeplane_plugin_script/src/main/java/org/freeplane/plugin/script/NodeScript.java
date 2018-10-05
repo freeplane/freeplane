@@ -1,8 +1,11 @@
 package org.freeplane.plugin.script;
 
 import java.net.URL;
+import java.util.Vector;
 
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
@@ -40,6 +43,20 @@ public class NodeScript {
 		return getMap().getURL();
 	}
 
+	public RelatedElements containingElements(){
+		RelatedElements elements = new RelatedElements(node);
+		Object userObject = node.getUserObject();
+		if(scriptIsContainedIn(userObject))
+			elements.relateNode(node);
+		final Vector<Attribute> attributes = node.getExtension(NodeAttributeTableModel.class).getAttributes();
+		attributes.stream().filter(a -> scriptIsContainedIn(a.getValue()))
+				.forEach(a -> elements.relateAttribute(node, a));
+		return elements;
+	}
+
+	public boolean scriptIsContainedIn(Object userObject) {
+		return FormulaUtils.containsFormula(userObject) && script.equals(FormulaUtils.scriptOf((String)userObject));
+	}
 
 	@Override
 	public int hashCode() {

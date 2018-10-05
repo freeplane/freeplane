@@ -20,8 +20,6 @@ class ClearDependenciesAction extends AFreeplaneAction {
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		Configurable mapViewConfiguration = Controller.getCurrentController().getMapViewManager().getMapViewConfiguration();
-		FormulaDependencyTracer tracer = mapViewConfiguration.getExtension(FormulaDependencyTracer.class);
-		if(tracer != null)
-			tracer.clear();
+		FormulaDependencyTracer.clear(mapViewConfiguration);
 	}
 }

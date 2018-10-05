@@ -1,6 +1,7 @@
 package org.freeplane.plugin.script;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.util.HtmlUtils;
@@ -44,5 +45,9 @@ public class FormulaThreadLocalStack {
 		}
 		entries.add(nodeScript.format(nodeScript));
 		return StringUtils.join(entries.iterator(), "\n -> ");
+	}
+
+	public List<NodeScript> findCycle(NodeScript nodeScript) {
+		return stack().findCycle(nodeScript);
 	}
 }

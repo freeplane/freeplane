@@ -26,6 +26,14 @@ class FormulaDependencyTracer implements IExtension {
 
 	private DependencySearchStrategy searchStrategy;
 
+	public static void clear(Configurable configurable) {
+		configurable.removeExtension(HighlightedElements.class);
+		configurable.removeExtension(Connectors.class);
+		configurable.removeExtension(FormulaDependencyTracer.class);
+		configurable.refresh();
+
+	}
+
 	interface DependencySearchStrategy {
 		RelatedElements find(NodeModel node);
 
@@ -59,11 +67,11 @@ class FormulaDependencyTracer implements IExtension {
 
 	private void findDependencies(DependencySearchStrategy strategy) {
 		final Collection<Pair<NodeModel, RelatedElements>> accessedValues;
-		highlighedElements = configurable.computeIfAbsent(HighlightedElements.class, HighlightedElements::new);
+		highlighedElements = HighlightedElements.of(configurable);
 		if (tracedValues != null && searchStrategy != strategy)
 			tracedValues = highlighedElements.getElements();
 		searchStrategy = strategy;
-		connectors = configurable.computeIfAbsent(Connectors.class, Connectors::new);
+		connectors = Connectors.of(configurable);
 		if (tracedValues == null) {
 			highlighedElements.clear();
 			configurable.computeIfAbsent(Connectors.class, Connectors::new).clear();
@@ -149,14 +157,5 @@ class FormulaDependencyTracer implements IExtension {
 	private void highlightAttributes(final Pair<NodeModel, RelatedElements> v) {
 		v.second.getElements().stream().map(a -> a instanceof NodeAttribute ? ((NodeAttribute) a).attribute : a)
 			.forEach(highlighedElements::add);
-	}
-
-
-	void clear() {
-		configurable.removeExtension(HighlightedElements.class);
-		configurable.removeExtension(Connectors.class);
-		configurable.removeExtension(this);
-		configurable.refresh();
-		tracedValues = null;
 	}
 }

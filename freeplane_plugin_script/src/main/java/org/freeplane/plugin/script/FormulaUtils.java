@@ -1,13 +1,16 @@
 package org.freeplane.plugin.script;
 
-import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
-
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.freeplane.core.extension.Configurable;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 public class FormulaUtils {
 
@@ -16,7 +19,7 @@ public class FormulaUtils {
 	 * @throws ExecuteScriptException */
 	public static Object evalIfScript(final NodeModel nodeModel, final String text){
 		if (textContainsFormula(text)) {
-			final String script = text.substring(1);
+			final String script = scriptOf(text);
 			return eval(nodeModel, script);
 		}
 		else {
@@ -71,8 +74,8 @@ public class FormulaUtils {
 		final NodeScript nodeScript = new NodeScript(nodeModel, script);
 		final ScriptContext scriptContext = new ScriptContext(nodeScript);
 		if (!FormulaThreadLocalStack.INSTANCE.push(nodeScript)) {
-			throw new StackOverflowError(TextUtils.format("formula.error.circularReference",
-			    HtmlUtils.htmlToPlain(script)));
+			showCyclicDependency(nodeScript);
+			throw new CyclicScriptReferenceException(nodeScript);
 		}
 		try {
 			return eval(scriptContext, nodeScript);
@@ -80,6 +83,17 @@ public class FormulaUtils {
 		finally {
 			FormulaThreadLocalStack.INSTANCE.pop();
 		}
+	}
+
+	private static void showCyclicDependency(final NodeScript nodeScript) {
+		final Controller controller = Controller.getCurrentController();
+		if (controller.getMap() != nodeScript.node.getMap())
+			return;
+		final List<NodeScript> cycle = FormulaThreadLocalStack.INSTANCE.findCycle(nodeScript);
+		if (cycle.isEmpty())
+			return;
+		final Configurable configurable = controller.getMapViewManager().getMapViewConfiguration();
+		new DependencyHighlighter(LinkController.getController(), configurable).showCyclicDependency(nodeScript);
 	}
 
 	private static Object eval(final ScriptContext scriptContext, final NodeScript nodeScript) {
@@ -110,11 +124,16 @@ public class FormulaUtils {
 
 	public static RelatedElements getRelatedElements(final NodeModel node, final Object object) {
 		if (FormulaUtils.containsFormula(object)) {
-			final RelatedElements accessedValues = FormulaCache.of(node.getMap()).getAccessedValues(node, ((String) object).substring(1));
+			final RelatedElements accessedValues = FormulaCache.of(node.getMap()).getAccessedValues(node,
+				scriptOf((String) object));
 			if (accessedValues != null)
 				return accessedValues;
 		}
 		return new RelatedElements(node);
+	}
+
+	public static String scriptOf(final String object) {
+		return object.substring(1);
 	}
 
 	public static void clearCache(final MapModel map) {

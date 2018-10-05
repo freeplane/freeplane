@@ -11,7 +11,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.NodeModel;
 
 public class Connectors implements IExtension {
-	static Connectors of(Configurable configurable){
+	public static Connectors of(Configurable configurable){
 		return configurable.computeIfAbsent(Connectors.class, Connectors::new);
 	}
 

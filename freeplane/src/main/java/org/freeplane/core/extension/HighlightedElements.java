@@ -5,6 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class HighlightedElements  implements IExtension {
+
+	public static HighlightedElements of(Configurable configurable) {
+		return configurable.computeIfAbsent(HighlightedElements.class, HighlightedElements::new);
+	}
+
 	private final Set<Object> elements = new HashSet<>();
 
 	public void add(Object element) {

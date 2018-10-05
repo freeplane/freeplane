@@ -89,7 +89,8 @@ public class ScriptCondition extends ASelectableCondition {
 	public boolean checkNodeInFormulaContext(NodeModel node){
 		NodeScript nodeScript = new NodeScript(node, source);
 		final ScriptContext scriptContext = new ScriptContext(nodeScript);
-		FormulaThreadLocalStack.INSTANCE.push(nodeScript);
+		if (! FormulaThreadLocalStack.INSTANCE.push(nodeScript))
+			return false;
 		scriptRunner.setScriptContext(scriptContext);
 		try {
 			final boolean checkNode = checkNode(node);
