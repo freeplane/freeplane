@@ -1,4 +1,10 @@
 ===============================
+1.7.2
+===============================
+Java 7 support dropped, Java 8 is required
+Formula dependency tracing
+
+===============================
 1.7.1
 ===============================
 API for referencing nodes from formulas and scripts
@@ -15,6 +21,7 @@ Update JLatexMath to versin 1.0.7
 Update batik to version 2.10
 Java 11 compatibility (wip)
 Export for selected branches only
+Go to nodes by their "reference paths"
 
 ===============================
 1.6.16
