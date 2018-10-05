@@ -50,15 +50,19 @@ class FormulaDependencyTracer implements IExtension {
 	}
 
 	public void findPrecedents() {
-		searchStrategy = DependencySearchStrategy.PREPENDENTS;
+		selectSearchStrategyAndStartElements(DependencySearchStrategy.PREPENDENTS);
 		findDependencies();
-		searchStrategy = null;
 	}
 
 	public void findDependents() {
-		searchStrategy = DependencySearchStrategy.DEPENDENTS;
+		selectSearchStrategyAndStartElements(DependencySearchStrategy.DEPENDENTS);
 		findDependencies();
-		searchStrategy = null;
+	}
+
+	private void selectSearchStrategyAndStartElements(final DependencySearchStrategy strategy) {
+		if (tracedValues != null && searchStrategy != strategy)
+			tracedValues = highlighedElements.getElements();
+		searchStrategy = strategy;
 	}
 
 	void findDependencies() {
@@ -126,7 +130,8 @@ class FormulaDependencyTracer implements IExtension {
 	}
 
 	private void showConnectors(final Collection<Pair<NodeModel, RelatedElements>> accessedValues) {
-		Stream<Pair<NodeModel, NodeModel>> connectedNodes = accessedValues.stream().<Pair>flatMap(pair -> pair.second.getRelatedNodes().stream().distinct()
+		final Stream<Pair<NodeModel, NodeModel>> connectedNodes = accessedValues.stream()
+			.<Pair> flatMap(pair -> pair.second.getRelatedNodes().stream().distinct()
 				.map(node -> new Pair<>(pair.first, node))).distinct().map(searchStrategy::inConnectionOrder);
 		connectedNodes.forEach(this::showConnectors);
 	}

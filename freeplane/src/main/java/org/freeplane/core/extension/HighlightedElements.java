@@ -22,4 +22,8 @@ public class HighlightedElements  implements IExtension {
 	public boolean isContained(Object element) {
 		return elements.contains(element);
 	}
+
+	public Set<Object> getElements() {
+		return elements;
+	}
 }
