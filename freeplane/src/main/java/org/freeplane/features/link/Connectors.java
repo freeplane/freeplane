@@ -1,25 +1,26 @@
 package org.freeplane.features.link;
 
-import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.extension.Configurable;
-import org.freeplane.features.map.NodeModel;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-import java.util.*;
+import org.freeplane.core.extension.Configurable;
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.features.map.NodeModel;
 
 public class Connectors implements IExtension {
 	static Connectors of(Configurable configurable){
 		return configurable.computeIfAbsent(Connectors.class, Connectors::new);
 	}
 
-	private final Set<ConnectorModel> connectors = new HashSet<>();
 	private final Map<NodeModel, Collection<ConnectorModel>> connectorsFromSource = new HashMap<>();
 	private final Map<NodeModel, Collection<ConnectorModel>> connectorsToTarget = new HashMap<>();
 
 	public void add(ConnectorModel connector) {
-		if (connectors.add(connector)) {
-			connectorsFromSource.computeIfAbsent(connector.getSource(), n -> new ArrayList<>()).add(connector);
-			connectorsToTarget.computeIfAbsent(connector.getTarget(), n -> new ArrayList<>()).add(connector);
-		}
+		connectorsFromSource.computeIfAbsent(connector.getSource(), n -> new ArrayList<>()).add(connector);
+		connectorsToTarget.computeIfAbsent(connector.getTarget(), n -> new ArrayList<>()).add(connector);
 	}
 
 	public void addAll(Collection<? extends ConnectorModel> connectors) {

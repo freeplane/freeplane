@@ -11,6 +11,10 @@ public class Pair<U, V> {
 		this.second = v;
 	}
 
+	public Pair<V, U> swap() {
+		return new Pair<>(second, first);
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

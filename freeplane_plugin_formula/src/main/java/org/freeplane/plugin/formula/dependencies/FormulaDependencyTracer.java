@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.HighlightedElements;
@@ -23,12 +24,15 @@ import org.freeplane.plugin.script.RelatedElements;
 
 class FormulaDependencyTracer implements IExtension {
 
-	private ConnectorArrows connectorArrow;
 	private DependencySearchStrategy searchStrategy;
 
 	interface DependencySearchStrategy {
 		RelatedElements find(NodeModel node);
+
 		RelatedElements find(NodeModel node, Attribute attribute);
+
+		Pair<NodeModel, NodeModel> inConnectionOrder(Pair<NodeModel, NodeModel> nodePair);
+
 		static final DependencySearchStrategy PREPENDENTS = new PrependentsSearchStrategy();
 		static final DependencySearchStrategy DEPENDENTS = new DependentsSearchStrategy();
 	}
@@ -46,18 +50,14 @@ class FormulaDependencyTracer implements IExtension {
 	}
 
 	public void findPrecedents() {
-		connectorArrow = ConnectorArrows.BACKWARD;
 		searchStrategy = DependencySearchStrategy.PREPENDENTS;
 		findDependencies();
-		connectorArrow = null;
 		searchStrategy = null;
 	}
 
 	public void findDependents() {
-		connectorArrow = ConnectorArrows.FORWARD;
 		searchStrategy = DependencySearchStrategy.DEPENDENTS;
 		findDependencies();
-		connectorArrow = null;
 		searchStrategy = null;
 	}
 
@@ -80,12 +80,21 @@ class FormulaDependencyTracer implements IExtension {
 		} else {
 			accessedValues = tracedValues.stream().map(this::findDependencies).flatMap(Collection::stream).collect(Collectors.toSet());
 		}
-		tracedValues = new HashSet<Object>();
-		accessedValues.forEach(v -> tracedValues.addAll(v.second.getElements()));
-		accessedValues.forEach(this::highlightDependencies);
+		saveAccessedValuesForNextIteration(accessedValues);
+		highlightAttributes(accessedValues);
+		showConnectors(accessedValues);
 		configurable.refresh();
 		highlighedElements = null;
 		connectors = null;
+	}
+
+	private void highlightAttributes(final Collection<Pair<NodeModel, RelatedElements>> accessedValues) {
+		accessedValues.forEach(this::highlightAttributes);
+	}
+
+	private void saveAccessedValuesForNextIteration(final Collection<Pair<NodeModel, RelatedElements>> accessedValues) {
+		tracedValues = new HashSet<Object>();
+		accessedValues.forEach(v -> tracedValues.addAll(v.second.getElements()));
 	}
 
 	private Collection<Pair<NodeModel, RelatedElements>> findDependencies(final Object value) {
@@ -99,35 +108,47 @@ class FormulaDependencyTracer implements IExtension {
 	}
 
 	private Collection<Pair<NodeModel, RelatedElements>> findDependencies(final NodeModel node) {
-		RelatedElements relatedElements = searchStrategy.find(node);
+		final RelatedElements relatedElements = searchStrategy.find(node);
 		return toCollection(node, relatedElements);
 	}
 
 	private Collection<Pair<NodeModel, RelatedElements>> findDependencies(final NodeAttribute nodeAttribute) {
-		RelatedElements relatedElements = searchStrategy.find(nodeAttribute.node, nodeAttribute.attribute);
+		final RelatedElements relatedElements = searchStrategy.find(nodeAttribute.node, nodeAttribute.attribute);
 		return toCollection(nodeAttribute.node, relatedElements);
 	}
 
-	private Collection<Pair<NodeModel, RelatedElements>> toCollection(NodeModel node, RelatedElements relatedElements) {
+	private Collection<Pair<NodeModel, RelatedElements>> toCollection(final NodeModel node,
+																	  final RelatedElements relatedElements) {
 		if (!relatedElements.isEmpty()) {
 			return Collections.singleton(new Pair<>(node, relatedElements));
 		} else
 			return Collections.emptySet();
 	}
 
-	private void highlightDependencies(final Pair<NodeModel, RelatedElements> v) {
-		Collection<Object> tracedValues = v.second.getElements();
-		tracedValues.stream().map(a -> a instanceof NodeAttribute ? ((NodeAttribute) a).attribute : a).forEach(highlighedElements::add);
-		v.second.getRelatedNodes().stream()
-				.forEach(n ->
-						connectors.add(new ConnectorModel(v.first, n.getID(),
-								connectorArrow, null,
-								FilterController.HIGHLIGHT_COLOR,
-								linkController.getStandardConnectorAlpha(),
-								linkController.getStandardConnectorShape(),
-								linkController.getStandardConnectorWidth(),
-								linkController.getStandardLabelFontFamily(),
-								linkController.getStandardLabelFontSize())));
+	private void showConnectors(final Collection<Pair<NodeModel, RelatedElements>> accessedValues) {
+		Stream<Pair<NodeModel, NodeModel>> connectedNodes = accessedValues.stream().<Pair>flatMap(pair -> pair.second.getRelatedNodes().stream().distinct()
+				.map(node -> new Pair<>(pair.first, node))).distinct().map(searchStrategy::inConnectionOrder);
+		connectedNodes.forEach(this::showConnectors);
+	}
+
+	private void showConnectors(final Pair<NodeModel, NodeModel> v) {
+		connectors.add(createConnector(v.first, v.second.createID()));
+	}
+
+	private ConnectorModel createConnector(final NodeModel source, final String id) {
+		return new ConnectorModel(source, id,
+			ConnectorArrows.FORWARD, null,
+			FilterController.HIGHLIGHT_COLOR,
+			linkController.getStandardConnectorAlpha(),
+			linkController.getStandardConnectorShape(),
+			linkController.getStandardConnectorWidth(),
+			linkController.getStandardLabelFontFamily(),
+			linkController.getStandardLabelFontSize());
+	}
+
+	private void highlightAttributes(final Pair<NodeModel, RelatedElements> v) {
+		v.second.getElements().stream().map(a -> a instanceof NodeAttribute ? ((NodeAttribute) a).attribute : a)
+			.forEach(highlighedElements::add);
 	}
 
 

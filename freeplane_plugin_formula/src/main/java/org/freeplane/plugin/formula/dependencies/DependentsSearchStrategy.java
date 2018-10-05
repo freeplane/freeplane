@@ -1,5 +1,6 @@
 package org.freeplane.plugin.formula.dependencies;
 
+import org.freeplane.core.util.Pair;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.NodeModel;
@@ -34,5 +35,10 @@ class DependentsSearchStrategy implements FormulaDependencyTracer.DependencySear
 					.forEach(a -> relatedElements.relateAttribute(candidate, a));
 		}
 		return relatedElements;
+	}
+
+	@Override
+	public Pair<NodeModel, NodeModel> inConnectionOrder(Pair<NodeModel, NodeModel> nodePair) {
+		return nodePair;
 	}
 }
