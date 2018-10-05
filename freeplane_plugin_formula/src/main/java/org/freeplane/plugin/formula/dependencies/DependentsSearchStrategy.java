@@ -30,9 +30,12 @@ class DependentsSearchStrategy implements FormulaDependencyTracer.DependencySear
 			final Collection<Object> candidatePrecedents = FormulaUtils.getRelatedElements(candidate, userObject).getElements();
 			if (candidatePrecedents.contains(node))
 				relatedElements.relateNode(candidate);
-			final Vector<Attribute> attributes = candidate.getExtension(NodeAttributeTableModel.class).getAttributes();
-			attributes.stream().filter(a -> FormulaUtils.getRelatedElements(candidate, a.getValue()).getElements().contains(element))
-					.forEach(a -> relatedElements.relateAttribute(candidate, a));
+			NodeAttributeTableModel attributeTableModel = candidate.getExtension(NodeAttributeTableModel.class);
+			if(attributeTableModel != null) {
+				final Vector<Attribute> attributes = attributeTableModel.getAttributes();
+				attributes.stream().filter(a -> FormulaUtils.getRelatedElements(candidate, a.getValue()).getElements().contains(element))
+						.forEach(a -> relatedElements.relateAttribute(candidate, a));
+			}
 		}
 		return relatedElements;
 	}

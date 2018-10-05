@@ -48,9 +48,12 @@ public class NodeScript {
 		Object userObject = node.getUserObject();
 		if(scriptIsContainedIn(userObject))
 			elements.relateNode(node);
-		final Vector<Attribute> attributes = node.getExtension(NodeAttributeTableModel.class).getAttributes();
-		attributes.stream().filter(a -> scriptIsContainedIn(a.getValue()))
-				.forEach(a -> elements.relateAttribute(node, a));
+		NodeAttributeTableModel attributeTableModel = node.getExtension(NodeAttributeTableModel.class);
+		if(attributeTableModel != null) {
+			final Vector<Attribute> attributes = attributeTableModel.getAttributes();
+			attributes.stream().filter(a -> scriptIsContainedIn(a.getValue()))
+					.forEach(a -> elements.relateAttribute(node, a));
+		}
 		return elements;
 	}
 
