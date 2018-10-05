@@ -19,7 +19,7 @@ class DependentsSearchStrategy implements FormulaDependencyTracer.DependencySear
 
 	@Override
 	public RelatedElements find(NodeModel node, Attribute attribute) {
-		return find(node, attribute);
+		return find(node, (Object) attribute);
 	}
 
 	private RelatedElements find(final NodeModel node, Object element) {

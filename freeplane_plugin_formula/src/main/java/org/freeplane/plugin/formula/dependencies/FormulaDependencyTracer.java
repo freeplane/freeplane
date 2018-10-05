@@ -50,24 +50,19 @@ class FormulaDependencyTracer implements IExtension {
 	}
 
 	public void findPrecedents() {
-		selectSearchStrategyAndStartElements(DependencySearchStrategy.PREPENDENTS);
-		findDependencies();
+		findDependencies(DependencySearchStrategy.PREPENDENTS);
 	}
 
 	public void findDependents() {
-		selectSearchStrategyAndStartElements(DependencySearchStrategy.DEPENDENTS);
-		findDependencies();
+		findDependencies(DependencySearchStrategy.DEPENDENTS);
 	}
 
-	private void selectSearchStrategyAndStartElements(final DependencySearchStrategy strategy) {
+	private void findDependencies(DependencySearchStrategy strategy) {
+		final Collection<Pair<NodeModel, RelatedElements>> accessedValues;
+		highlighedElements = configurable.computeIfAbsent(HighlightedElements.class, HighlightedElements::new);
 		if (tracedValues != null && searchStrategy != strategy)
 			tracedValues = highlighedElements.getElements();
 		searchStrategy = strategy;
-	}
-
-	void findDependencies() {
-		final Collection<Pair<NodeModel, RelatedElements>> accessedValues;
-		highlighedElements = configurable.computeIfAbsent(HighlightedElements.class, HighlightedElements::new);
 		connectors = configurable.computeIfAbsent(Connectors.class, Connectors::new);
 		if (tracedValues == null) {
 			highlighedElements.clear();
