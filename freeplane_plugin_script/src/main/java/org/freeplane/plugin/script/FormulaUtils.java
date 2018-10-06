@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -100,7 +101,10 @@ public class FormulaUtils {
 							   final ScriptingPermissions restrictedPermissions) {
 		showCyclicDependency(nodeScript);
 		if (!FormulaThreadLocalStack.INSTANCE.push(nodeScript)) {
-			throw new ExecuteScriptException(new CyclicScriptReferenceException(nodeScript));
+			final String message = TextUtils.format("formula.error.circularReference",
+				HtmlUtils.htmlToPlain(nodeScript.script));
+			Controller.getCurrentController().getViewController().out(message);
+			throw new ExecuteScriptException(new CyclicScriptReferenceException(message));
 		}
 		try {
 			return ScriptingEngine.executeScript(nodeScript.node, nodeScript.script, scriptContext,
