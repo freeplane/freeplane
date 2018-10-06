@@ -45,41 +45,41 @@ class EvaluationDependencies implements IExtension{
 	}
 
 
-	private final HashSet<MapModel> referencedMaps = new HashSet<>();
+	private final WeakHashMap<MapModel, Void> referencedMaps = new WeakHashMap<>();
 
-	private final HashMap<NodeModel, DependentNodeReferences> onNodeDependencies = new HashMap<>();
+	private final WeakHashMap<NodeModel, DependentNodeReferences> onNodeDependencies = new WeakHashMap<>();
 	// FIXME: organize node and branch dependencies in a tree?
-	private final HashMap<NodeModel, DependentNodeReferences> onBranchDependencies = new HashMap<>();
-	private final HashSet<NodeModel> onAnyNodeDependencies = new HashSet<NodeModel>();
-	private final HashSet<NodeModel> onGlobalNodeDependencies = new HashSet<NodeModel>();
+	private final WeakHashMap<NodeModel, DependentNodeReferences> onBranchDependencies = new WeakHashMap<>();
+	private final WeakHashMap<NodeModel, Void> onAnyNodeDependencies = new WeakHashMap<>();
+	private final WeakHashMap<NodeModel, Void> onGlobalNodeDependencies = new WeakHashMap<>();
 
-	void removeChangedDependencies(Set<NodeModel> accessingNodes, final NodeModel removedAccessedNode) {
-		final Iterable<NodeModel> onNode = onNodeDependencies.remove(removedAccessedNode);
+	void getChangedDependencies(Set<NodeModel> accessingNodes, final NodeModel accessedNode) {
+		final Iterable<NodeModel> onNode = onNodeDependencies.get(accessedNode);
 		if (onNode != null)
-			removeRecursively(accessingNodes, onNode);
+			getRecursively(accessingNodes, onNode);
 		ArrayList<Entry<NodeModel, DependentNodeReferences>> onBranchDependencyList = new ArrayList<>(onBranchDependencies.entrySet());
 		for (Entry<NodeModel, DependentNodeReferences> entry : onBranchDependencyList) {
 			final NodeModel branchNode = entry.getKey();
-			if (removedAccessedNode.isDescendantOf(branchNode)) {
-				onBranchDependencies.remove(branchNode);
-				removeRecursively(accessingNodes, entry.getValue());
+			if (accessedNode.isDescendantOf(branchNode)) {
+				onBranchDependencies.get(branchNode);
+				getRecursively(accessingNodes, entry.getValue());
 			}
 		}
-		removeRecursively(accessingNodes, onAnyNodeDependencies);
+		getRecursively(accessingNodes, onAnyNodeDependencies.keySet());
 		onAnyNodeDependencies.clear();
 //		System.out.println("dependencies on(" + node + "): " + accessingNodes);
 	}
 
-	void removeGlobalDependencies(Set<NodeModel> accessingNodes) {
-		removeRecursively(accessingNodes, onGlobalNodeDependencies);
+	void getGlobalDependencies(Set<NodeModel> accessingNodes) {
+		getRecursively(accessingNodes, onGlobalNodeDependencies.keySet());
 //		System.out.println("dependencies on(" + node + "): " + accessingNodes);
 	}
 
-	private void removeRecursively(Set<NodeModel> accessingNodes, final Iterable<NodeModel> changedAccessedNodes) {
+	private void getRecursively(Set<NodeModel> accessingNodes, final Iterable<NodeModel> changedAccessedNodes) {
 		for (NodeModel node : changedAccessedNodes) {
 			// avoid loops
 			if (accessingNodes.add(node)) {
-				removeChangedDependencies(accessingNodes, node);
+				getChangedDependencies(accessingNodes, node);
 			}
 		}
 	}
@@ -108,22 +108,22 @@ class EvaluationDependencies implements IExtension{
 	}
 
 	private void addAccessedMap(final MapModel accessedMap) {
-		referencedMaps.add(accessedMap);
+		referencedMaps.put(accessedMap, null);
 	}
 
 	/** a method was used on the accessingNode that may use any node in the map. */
 	void accessAll(NodeModel accessingNode) {
 		// FIXME: check if accessedNode is already covered by other accessModes
-		onAnyNodeDependencies.add(accessingNode);
+		onAnyNodeDependencies.put(accessingNode, null);
 //		System.out.println(accessingNode + " accesses all nodes. current dependencies:\n" + this);
 	}
 
 	void accessGlobalNode(NodeModel accessingNode) {
-		onGlobalNodeDependencies.add(accessingNode);
+		onGlobalNodeDependencies.put(accessingNode, null);
 	}
 
 	private DependentNodeReferences provideDependencySet(final NodeModel accessedNode,
-														 final HashMap<NodeModel, DependentNodeReferences> dependenciesMap) {
+														 final WeakHashMap<NodeModel, DependentNodeReferences> dependenciesMap) {
 		DependentNodeReferences set = dependenciesMap.get(accessedNode);
 		if (set == null) {
 			set = new DependentNodeReferences();
@@ -154,7 +154,7 @@ class EvaluationDependencies implements IExtension{
 		}
 		if (!onAnyNodeDependencies.isEmpty()) {
 			builder.append("onAnyNode:\n");
-			for (NodeModel nodeModel : onAnyNodeDependencies) {
+			for (NodeModel nodeModel : onAnyNodeDependencies.keySet()) {
 				builder.append("  " + nodeModel + "\n");
 			}
 		}

@@ -9,22 +9,22 @@ import org.freeplane.features.map.NodeModel;
 
 public class FormulaDependencies{
 	public static List<NodeModel> manageChangeAndReturnDependencies(boolean includeChanged, final NodeModel... changedNodes) {
-		final ArrayList<NodeModel> dependencies = removeAllChangedDependencies(includeChanged, changedNodes);
+		final ArrayList<NodeModel> dependencies = getAllChangedDependencies(includeChanged, changedNodes);
 		FormulaCache.removeFromCache(dependencies);
 		return dependencies;
 	}
 
 	public static List<NodeModel> manageChangeAndReturnGlobalDependencies(MapModel map) {
-		final ArrayList<NodeModel> dependencies = removeGlobalDependencies(map);
+		final ArrayList<NodeModel> dependencies = getGlobalDependencies(map);
 		FormulaCache.removeFromCache(dependencies);
 		return dependencies;
 	}
 
-	private static ArrayList<NodeModel> removeAllChangedDependencies(boolean includeChanged, final NodeModel... changedNodes) {
+	private static ArrayList<NodeModel> getAllChangedDependencies(boolean includeChanged, final NodeModel... changedNodes) {
 		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
 		for (int i = 0; i < changedNodes.length; i++) {
 			final LinkedHashSet<NodeModel> accessingNodes = new LinkedHashSet<NodeModel>(0);
-			EvaluationDependencies.of(changedNodes[i].getMap()).removeChangedDependencies(accessingNodes, changedNodes[i]);
+			EvaluationDependencies.of(changedNodes[i].getMap()).getChangedDependencies(accessingNodes, changedNodes[i]);
 			if (accessingNodes != null)
 				dependencies.addAll(accessingNodes);
 			if (includeChanged)
@@ -34,10 +34,10 @@ public class FormulaDependencies{
 	}
 
 
-	private static ArrayList<NodeModel> removeGlobalDependencies(MapModel map) {
+	private static ArrayList<NodeModel> getGlobalDependencies(MapModel map) {
 		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
 		final LinkedHashSet<NodeModel> accessingNodes = new LinkedHashSet<NodeModel>(0);
-		EvaluationDependencies.of(map).removeGlobalDependencies(accessingNodes);
+		EvaluationDependencies.of(map).getGlobalDependencies(accessingNodes);
 		if (accessingNodes != null)
 			dependencies.addAll(accessingNodes);
 		return dependencies;
