@@ -540,7 +540,7 @@ public abstract class MainView extends ZoomableLabel {
 			textModified = transformedContent instanceof HighlightedTransformedObject ? TextModificationState.HIGHLIGHT : TextModificationState.NONE;
 		}
 		catch (Throwable e) {
-			LogUtils.warn(e.getMessage(), e);
+			LogUtils.warn(e.getMessage());
 			text = TextUtils.format("MainView.errorUpdateText", String.valueOf(userObject), e.getLocalizedMessage());
 			textModified = TextModificationState.FAILURE;
 		}

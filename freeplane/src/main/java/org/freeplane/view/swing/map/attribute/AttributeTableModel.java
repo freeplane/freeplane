@@ -138,7 +138,7 @@ abstract class AttributeTableModel extends AbstractTableModel
 					textController.getTransformedText(value.toString(), getNode(), null);
             }
             catch (Exception e) {
-            	LogUtils.warn(e);
+            	LogUtils.warn(e.getLocalizedMessage());
             }
 	}
 

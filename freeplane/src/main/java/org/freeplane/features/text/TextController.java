@@ -215,8 +215,8 @@ public class TextController implements IExtension {
 	}
 
 	public String getTransformedTextNoThrow(Object text, final NodeModel nodeModel, Object extension) {
-		text = getTransformedObjectNoFormattingNoThrow(text, nodeModel, extension);
-		return text.toString();
+		Object result = getTransformedObjectNoFormattingNoThrow(text, nodeModel, extension);
+		return result.toString();
 	}
 
 	public boolean isMinimized(NodeModel node) {

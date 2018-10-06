@@ -29,6 +29,7 @@ public class Connectors implements IExtension {
 
 	public void clear() {
 		connectorsFromSource.clear();
+		connectorsToTarget.clear();
 	}
 
 	public Collection<ConnectorModel> getLinksFrom(NodeModel node){

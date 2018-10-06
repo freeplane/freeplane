@@ -31,6 +31,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.text.HighlightedTransformedObject;
@@ -136,11 +137,14 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 	}
 
 	private boolean isAttributeHighlighted(AttributeTable attributeTable, int row) {
-		Attribute attribute = attributeTable.getAttributeTableModel().getNodeAttributeModel().getAttribute(row);
+		NodeAttributeTableModel attributes = attributeTable.getAttributeTableModel().getNodeAttributeModel();
+		if(attributes.getRowCount() <= row)
+			return false;
+		Attribute attribute = attributes.getAttribute(row);
 		return MapView.isElementHighlighted(attributeTable, attribute);
 	}
 
-	void configureBorder(Color color) {
+	private void configureBorder(Color color) {
 		if(color != null)
 			setBorder(BorderFactory.createLineBorder(color));
 	}

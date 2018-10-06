@@ -221,7 +221,7 @@ public class AttributeController implements IExtension {
 						return unicodeText;
 				}
 				catch (Throwable e) {
-					LogUtils.warn(e.getMessage(), e);
+					LogUtils.warn(e.getMessage());
 					return colorize(
 						TextUtils.format("MainView.errorUpdateText", String.valueOf(value), e.getLocalizedMessage())
 						.replace("\n", "<br>"), "red");

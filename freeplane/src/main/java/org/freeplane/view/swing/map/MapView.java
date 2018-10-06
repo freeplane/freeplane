@@ -81,6 +81,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final String UNFOLD_ON_NAVIGATION = "unfold_on_navigation";
 	private final MapScroller mapScroller;
 	private MapViewLayout layoutType;
+	private boolean paintConnectorsBehind;
 
 	public static boolean isElementHighlighted(final Component c, final Object element) {
 		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, c);
@@ -1498,10 +1499,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			if (containsExtension(Connectors.class)){
 				hideSingleEndConnectors = false;
 				showConnectors = SHOW_CONNECTOR_LINES;
+				paintConnectorsBehind = false;
 			}
 			else {
 				hideSingleEndConnectors = hideSingleEndConnectorsPropertyValue;
 				showConnectors = showConnectorsPropertyValue;
+				paintConnectorsBehind = ResourceController.getResourceController().getBooleanProperty(
+						"paint_connectors_behind");
 			}
 			super.paint(g2);
 		}
@@ -1558,8 +1562,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	@Override
 	protected void paintChildren(final Graphics g) {
-	    final boolean paintConnectorsBehind = ResourceController.getResourceController().getBooleanProperty(
-	    	    "paint_connectors_behind");
 	    final PaintingMode paintModes[];
 	    if(paintConnectorsBehind)
 	    	paintModes = new PaintingMode[]{

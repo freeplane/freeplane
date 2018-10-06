@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.HighlightedElements;
@@ -15,6 +16,8 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.HighlightedTransformedObject;
+
+import javax.swing.*;
 
 class DependencyHighlighter {
 	private final LinkController linkController;
@@ -32,13 +35,14 @@ class DependencyHighlighter {
 		final List<NodeScript> cycle = FormulaThreadLocalStack.INSTANCE.findCycle(nodeScript);
 		if (cycle.isEmpty())
 			return;
-		final Configurable configurable = controller.getMapViewManager().getMapViewConfiguration();
-		highlightAttributes(cycle);
-		showConnectors(cycle);
-		configurable.refresh();
+		showCycle(cycle);
 	}
 
-	private void showConnectors(final List<NodeScript> cycle) {
+	private void showCycle(final List<NodeScript> cycle) {
+		final HighlightedElements highlightedElements = HighlightedElements.of(configurable);
+		highlightedElements.clear();
+		Stream<Object> relatedElements = cycle.stream().map(NodeScript::containingElements).map(RelatedElements::getElements)
+				.flatMap(Collection::stream);
 		final Connectors connectors = Connectors.of(configurable);
 		connectors.clear();
 		final Set<Pair<NodeModel, NodeModel>> connectedNodes = new LinkedHashSet<>();
@@ -47,32 +51,29 @@ class DependencyHighlighter {
 			final NodeModel second = cycle.get(i + 1).node;
 			connectedNodes.add(new Pair<>(first, second));
 		}
-		connectedNodes.stream().map(this::createConnector).forEach(connectors::add);
-	}
+		SwingUtilities.invokeLater(new Runnable() {
+			private ConnectorModel createConnector(final Pair<NodeModel, NodeModel> connectedNodes) {
+				return createConnector(connectedNodes.first, connectedNodes.second.createID());
+			}
 
-	private ConnectorModel createConnector(final Pair<NodeModel, NodeModel> connectedNodes) {
-		return createConnector(connectedNodes.first, connectedNodes.second.createID());
+			private ConnectorModel createConnector(final NodeModel source, final String targetId) {
+				return new ConnectorModel(source, targetId,
+						ConnectorArrows.FORWARD, null,
+						HighlightedTransformedObject.FAILURE_COLOR,
+						linkController.getStandardConnectorAlpha(),
+						linkController.getStandardConnectorShape(),
+						linkController.getStandardConnectorWidth(),
+						linkController.getStandardLabelFontFamily(),
+						linkController.getStandardLabelFontSize());
+			}
+			@Override
+			public void run() {
+				relatedElements.forEach(highlightedElements::add);
+				connectedNodes.stream().map(this::createConnector).forEach(connectors::add);
+				configurable.refresh();
+			}
+		});
 	}
-
-	private ConnectorModel createConnector(final NodeModel source, final String targetId) {
-		return new ConnectorModel(source, targetId,
-			ConnectorArrows.FORWARD, null,
-			HighlightedTransformedObject.FAILURE_COLOR,
-			linkController.getStandardConnectorAlpha(),
-			linkController.getStandardConnectorShape(),
-			linkController.getStandardConnectorWidth(),
-			linkController.getStandardLabelFontFamily(),
-			linkController.getStandardLabelFontSize());
-	}
-
-	private void highlightAttributes(final List<NodeScript> cycle) {
-		final HighlightedElements highlightedElements = HighlightedElements.of(configurable);
-		highlightedElements.clear();
-		cycle.stream().map(NodeScript::containingElements).map(RelatedElements::getElements)
-			.flatMap(Collection::stream)
-			.forEach(highlightedElements::add);
-	}
-
 	public void clear() {
 		configurable.removeExtension(HighlightedElements.class);
 		configurable.removeExtension(Connectors.class);
