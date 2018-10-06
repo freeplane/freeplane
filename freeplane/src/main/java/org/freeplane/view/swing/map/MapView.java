@@ -34,11 +34,8 @@ import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.edge.EdgeColorsConfigurationFactory;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.highlight.NodeHighlighter;
-import org.freeplane.features.link.ConnectorModel;
+import org.freeplane.features.link.*;
 import org.freeplane.features.link.ConnectorModel.Shape;
-import org.freeplane.features.link.LinkController;
-import org.freeplane.features.link.NodeLinkModel;
-import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.*;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -516,9 +513,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
     private int noteHorizontalAlignment;
     private Color noteForeground;
     private Color noteBackground;
-	private static String showConnectors;
+	private static String showConnectorsPropertyValue;
+	private static boolean hideSingleEndConnectorsPropertyValue;
+	private String showConnectors;
+	private boolean hideSingleEndConnectors;
 	private static boolean showIcons;
-	private static boolean hideSingleEndConnectors;
 	private boolean fitToViewport;
 	private static Color spotlightBackgroundColor;
 	private static int outlineHGap;
@@ -545,8 +544,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			final int alpha = 255 - resourceController.getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
 			resourceController.setDefaultProperty(SPOTLIGHT_BACKGROUND_COLOR, ColorUtils.colorToRGBAString(new Color(0, 0, 0, alpha)));
 			spotlightBackgroundColor = resourceController.getColorProperty(SPOTLIGHT_BACKGROUND_COLOR);
-			hideSingleEndConnectors = resourceController.getBooleanProperty(HIDE_SINGLE_END_CONNECTORS);
-			showConnectors = resourceController.getProperty(SHOW_CONNECTORS_PROPERTY).intern();
+			hideSingleEndConnectorsPropertyValue = resourceController.getBooleanProperty(HIDE_SINGLE_END_CONNECTORS);
+			showConnectorsPropertyValue = resourceController.getProperty(SHOW_CONNECTORS_PROPERTY).intern();
 			showIcons = resourceController.getBooleanProperty(SHOW_ICONS_PROPERTY);
 			outlineHGap = resourceController.getLengthProperty(OUTLINE_HGAP_PROPERTY);
 			outlineViewFitsWindowWidth = resourceController.getBooleanProperty(OUTLINE_VIEW_FITS_WINDOW_WIDTH);
@@ -702,12 +701,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					return;
 				}
 				if (propertyName.equals(HIDE_SINGLE_END_CONNECTORS)) {
-					MapView.hideSingleEndConnectors = ResourceController.getResourceController().getBooleanProperty(HIDE_SINGLE_END_CONNECTORS);
+					MapView.hideSingleEndConnectorsPropertyValue = ResourceController.getResourceController().getBooleanProperty(HIDE_SINGLE_END_CONNECTORS);
 					mapView.repaint();
 					return;
 				}
 				if (propertyName.equals(SHOW_CONNECTORS_PROPERTY)) {
-					MapView.showConnectors = ResourceController.getResourceController().getProperty(SHOW_CONNECTORS_PROPERTY).intern();
+					MapView.showConnectorsPropertyValue = ResourceController.getResourceController().getProperty(SHOW_CONNECTORS_PROPERTY).intern();
 					mapView.repaint();
 					return;
 				}
@@ -1496,6 +1495,14 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				g2.setRenderingHint(GraphicsHints.CACHE_ICONS, Boolean.TRUE);
 			}
 			Controller.getCurrentController().getMapViewManager().setTextRenderingHint(g2);
+			if (containsExtension(Connectors.class)){
+				hideSingleEndConnectors = false;
+				showConnectors = SHOW_CONNECTOR_LINES;
+			}
+			else {
+				hideSingleEndConnectors = hideSingleEndConnectorsPropertyValue;
+				showConnectors = showConnectorsPropertyValue;
+			}
 			super.paint(g2);
 		}
 		finally {
