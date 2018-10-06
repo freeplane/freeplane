@@ -25,7 +25,9 @@ class EvaluateAllAction extends AFreeplaneAction {
 
 	private void evaluateAll(NodeModel node) {
 		evaluateObject(node, node.getUserObject());
-		node.getExtension(NodeAttributeTableModel.class).getAttributes().stream().forEach(a -> evaluateObject(node, a));
+		NodeAttributeTableModel attributeTableModel = node.getExtension(NodeAttributeTableModel.class);
+		if(attributeTableModel != null)
+			attributeTableModel.getAttributes().stream().forEach(a -> evaluateObject(node, a));
 		node.getChildren().stream().forEach(this::evaluateAll);
 	}
 

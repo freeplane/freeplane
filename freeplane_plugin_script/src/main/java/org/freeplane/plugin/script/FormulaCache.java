@@ -79,10 +79,10 @@ class FormulaCache implements IExtension{
 			final LinkedHashMap<String, CachedResult> cacheEntry = cache.get(node.getID());
 			if (cacheEntry == null) return null;
 			final CachedResult cachedResult = cacheEntry.get(script);
-			return cachedResult.relatedElements;
+			if(cachedResult != null)
+				return cachedResult.relatedElements;
 		}
-		else
-			return null;
+		return null;
 	}
 
 
