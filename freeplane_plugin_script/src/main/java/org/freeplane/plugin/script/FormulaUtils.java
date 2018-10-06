@@ -99,8 +99,8 @@ public class FormulaUtils {
 
 	private static Object eval(final NodeScript nodeScript, final ScriptContext scriptContext,
 							   final ScriptingPermissions restrictedPermissions) {
-		showCyclicDependency(nodeScript);
 		if (!FormulaThreadLocalStack.INSTANCE.push(nodeScript)) {
+			showCyclicDependency(nodeScript);
 			final String message = TextUtils.format("formula.error.circularReference",
 				HtmlUtils.htmlToPlain(nodeScript.script));
 			Controller.getCurrentController().getViewController().out(message);
