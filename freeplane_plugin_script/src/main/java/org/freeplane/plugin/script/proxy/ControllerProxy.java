@@ -66,22 +66,24 @@ class ControllerProxy implements Proxy.Controller {
 
 	@Override
 	public Node getSelected() {
+		accessAll();
+		return new NodeProxy(Controller.getCurrentController().getSelection().getSelected(), scriptContext);
+	}
+
+	private void accessAll() {
 		if (scriptContext != null)
 			scriptContext.accessAll();
-		return new NodeProxy(Controller.getCurrentController().getSelection().getSelected(), scriptContext);
 	}
 
 	@Override
 	public List<? extends Node> getSelecteds() {
-		if (scriptContext != null)
-			scriptContext.accessAll();
+		accessAll();
 		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection().getOrderedSelection(), scriptContext);
 	}
 
 	@Override
 	public List<? extends Node> getSortedSelection(final boolean differentSubtrees) {
-		if (scriptContext != null)
-			scriptContext.accessAll();
+		accessAll();
 		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection()
 		    .getSortedSelection(differentSubtrees), scriptContext);
 	}
@@ -194,15 +196,13 @@ class ControllerProxy implements Proxy.Controller {
 	@Override
 	@Deprecated
 	public List<? extends Node> find(final ICondition condition) {
-		if (scriptContext != null)
-			scriptContext.accessAll();
+		accessAll();
 		return ProxyUtils.find(condition, currentMapRootNode(), scriptContext);
 	}
 
 	@Override
 	public List<? extends Node> find(NodeCondition condition) {
-		if (scriptContext != null)
-			scriptContext.accessAll();
+		accessAll();
 		return ProxyUtils.find(condition, currentMapRootNode(), scriptContext);
 	}
 
@@ -211,24 +211,21 @@ class ControllerProxy implements Proxy.Controller {
 	}
 	@Override
 	public List<? extends Node> find(final Closure<Boolean> closure) {
-		if (scriptContext != null)
-			scriptContext.accessAll();
+		accessAll();
 		return ProxyUtils.find(closure, currentMapRootNode(), scriptContext);
 	}
 
 	// NodeRO: R
 	@Override
 	public List<? extends Node> findAll() {
-		if (scriptContext != null)
-			scriptContext.accessAll();
+		accessAll();
 		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, true);
     }
 
 	// NodeRO: R
 	@Override
 	public List<? extends Node> findAllDepthFirst() {
-		if (scriptContext != null)
-			scriptContext.accessAll();
+		accessAll();
 		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, false);
     }
 
