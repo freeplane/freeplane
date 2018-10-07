@@ -66,24 +66,24 @@ class ControllerProxy implements Proxy.Controller {
 
 	@Override
 	public Node getSelected() {
-		accessAll();
+		reportArbitraryNodeAccess();
 		return new NodeProxy(Controller.getCurrentController().getSelection().getSelected(), scriptContext);
 	}
 
-	private void accessAll() {
+	private void reportArbitraryNodeAccess() {
 		if (scriptContext != null)
 			scriptContext.accessAll();
 	}
 
 	@Override
 	public List<? extends Node> getSelecteds() {
-		accessAll();
+		reportArbitraryNodeAccess();
 		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection().getOrderedSelection(), scriptContext);
 	}
 
 	@Override
 	public List<? extends Node> getSortedSelection(final boolean differentSubtrees) {
-		accessAll();
+		reportArbitraryNodeAccess();
 		return ProxyUtils.createNodeList(Controller.getCurrentController().getSelection()
 		    .getSortedSelection(differentSubtrees), scriptContext);
 	}
@@ -196,13 +196,13 @@ class ControllerProxy implements Proxy.Controller {
 	@Override
 	@Deprecated
 	public List<? extends Node> find(final ICondition condition) {
-		accessAll();
+		reportArbitraryNodeAccess();
 		return ProxyUtils.find(condition, currentMapRootNode(), scriptContext);
 	}
 
 	@Override
 	public List<? extends Node> find(NodeCondition condition) {
-		accessAll();
+		reportArbitraryNodeAccess();
 		return ProxyUtils.find(condition, currentMapRootNode(), scriptContext);
 	}
 
@@ -211,21 +211,21 @@ class ControllerProxy implements Proxy.Controller {
 	}
 	@Override
 	public List<? extends Node> find(final Closure<Boolean> closure) {
-		accessAll();
+		reportArbitraryNodeAccess();
 		return ProxyUtils.find(closure, currentMapRootNode(), scriptContext);
 	}
 
 	// NodeRO: R
 	@Override
 	public List<? extends Node> findAll() {
-		accessAll();
+		reportArbitraryNodeAccess();
 		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, true);
     }
 
 	// NodeRO: R
 	@Override
 	public List<? extends Node> findAllDepthFirst() {
-		accessAll();
+		reportArbitraryNodeAccess();
 		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, false);
     }
 

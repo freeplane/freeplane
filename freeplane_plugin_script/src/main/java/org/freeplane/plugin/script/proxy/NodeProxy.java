@@ -56,7 +56,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	public NodeProxy(final NodeModel node, final ScriptContext scriptContext) {
 		super(node, scriptContext);
-		accessNode();
+		reportOwnedNodeAccess();
 	}
 
 	// Node: R/W
@@ -346,11 +346,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	}
 
 	private NodeModel getDelegateForValueAccess() {
-		accessValue();
+		reportValueAccess();
 		return getDelegate();
 	}
 
-	private void accessValue() {
+	private void reportValueAccess() {
 		final ScriptContext scriptContext = getScriptContext();
 		if (scriptContext != null)
 			scriptContext.accessValue(getDelegate());
@@ -645,11 +645,11 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Deprecated
 	public List<? extends Node> find(final ICondition condition) {
 		final NodeModel delegate = getDelegate();
-		accessBranch(delegate);
+		reportBranchAccess(delegate);
 		return ProxyUtils.find(condition, delegate, getScriptContext());
 	}
 
-	private void accessBranch(final NodeModel delegate) {
+	private void reportBranchAccess(final NodeModel delegate) {
 		ScriptContext scriptContext = getScriptContext();
 		if (scriptContext != null)
 			scriptContext.accessBranch(delegate);
@@ -659,14 +659,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
 	public List<? extends Node> find(final Closure<Boolean> closure) {
 		final NodeModel delegate = getDelegate();
-		accessBranch(delegate);
+		reportBranchAccess(delegate);
 		return ProxyUtils.find(closure, delegate, getScriptContext());
 	}
 
 	@Override
 	public List<? extends Node> find(final NodeCondition condition) {
 		final NodeModel delegate = getDelegate();
-		accessBranch(delegate);
+		reportBranchAccess(delegate);
 		return ProxyUtils.find(condition, delegate, getScriptContext());
 	}
 
@@ -674,7 +674,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
 	public List<? extends Node> findAll() {
 		final NodeModel delegate = getDelegate();
-		accessBranch(delegate);
+		reportBranchAccess(delegate);
 		return ProxyUtils.findAll(delegate, getScriptContext(), true);
     }
 
@@ -682,7 +682,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	@Override
 	public List<? extends Node> findAllDepthFirst() {
 		final NodeModel delegate = getDelegate();
-		accessBranch(delegate);
+		reportBranchAccess(delegate);
 		return ProxyUtils.findAll(delegate, getScriptContext(), false);
     }
 
@@ -992,7 +992,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		};
 	}
 	private void sortChildrenBy(final Comparator<NodeModel> comparator) {
-		accessNode();
+		reportOwnedNodeAccess();
 		final NodeModel node = getDelegate();
 		final ArrayList<NodeModel> children = new ArrayList<NodeModel>(node.getChildren());
 		Collections.sort(children, comparator);
@@ -1005,7 +1005,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		}
 	}
 
-	private void accessNode() {
+	private void reportOwnedNodeAccess() {
 		final ScriptContext scriptContext = getScriptContext();
 		if (scriptContext != null)
 			scriptContext.accessNode(getDelegate());

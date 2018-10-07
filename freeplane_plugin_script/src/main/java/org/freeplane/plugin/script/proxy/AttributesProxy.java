@@ -55,13 +55,14 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		final NodeAttributeTableModel attributeTableModel = getNodeAttributeTableModel();
 		final Attribute attribute = attributeTableModel.getAttribute(index);
-		accessAttribute(attribute);
+		reportAttributeAccess(attribute);
 		return getAttributeValue(attribute);
 	}
 
-	private void accessAttribute(Attribute attribute) {
-		if(getScriptContext() != null)
-			getScriptContext().accessAttribute(getDelegate(), attribute);
+	private void reportAttributeAccess(Attribute attribute) {
+		ScriptContext scriptContext = getScriptContext();
+		if(scriptContext != null)
+			scriptContext.accessAttribute(getDelegate(), attribute);
 	}
 
 	@Override
@@ -73,7 +74,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		final ArrayList<Object> result = new ArrayList<Object>();
 		for (final Attribute attribute : attributeTableModel.getAttributes()) {
 			if (attribute.getName().equals(name)) {
-				accessAttribute(attribute);
+				reportAttributeAccess(attribute);
 				result.add(getAttributeValue(attribute));
 			}
 		}
@@ -107,7 +108,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		}
 		final ArrayList<Convertible> result = new ArrayList<Convertible>(attributeTableModel.getRowCount());
 		for (final Attribute a : attributeTableModel.getAttributes()) {
-			accessAttribute(a);
+			reportAttributeAccess(a);
 			result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), getAttributeValue(a)));
 		}
 		return result;
@@ -178,7 +179,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 		for (final Attribute a : attributeTableModel.getAttributes()) {
 			final Object transformedAttributeValue = getAttributeValue(a);
 			if (condition.check(a.getName(), transformedAttributeValue)) {
-				accessAttribute(a);
+				reportAttributeAccess(a);
 				result.add(ProxyUtils.attributeValueToConvertible(getDelegate(), getScriptContext(), transformedAttributeValue));
 			}
 		}
