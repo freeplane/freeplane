@@ -877,7 +877,7 @@ public class NodeView extends JComponent implements INodeView {
 		if (property == NodeChangeType.FOLDING || property == Properties.HIDDEN_CHILDREN || property == EncryptionModel.class) {
 			if(map.isSelected() || property == EncryptionModel.class && ! isFolded){
 				boolean folded = getMap().getModeController().getMapController().isFolded(model);
-				boolean force = property ==Properties.HIDDEN_CHILDREN;
+				boolean force = property ==Properties.HIDDEN_CHILDREN || property == EncryptionModel.class;
 				setFolded(folded, force);
 			}
 			if(property != EncryptionModel.class)

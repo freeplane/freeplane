@@ -347,6 +347,11 @@ public class NodeModel{
 		fireNodeInserted(childNode, getIndex(child));
 	}
 
+	private boolean isAccessible() {
+		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
+		return encryptionModel == null || encryptionModel.isAccessible();
+	}
+
 	/**
 	 * Returns whether the argument is parent or parent of one of the grandpa's
 	 * of this node. (transitive)
@@ -364,7 +369,7 @@ public class NodeModel{
 	}
 
 	public boolean isFolded() {
-		return sharedData.isFolded();
+		return sharedData.isFolded() && isAccessible();
 	}
 
 	/*
@@ -465,10 +470,10 @@ public class NodeModel{
 
 	public void setFolded(boolean folded) {
 		boolean wasFolded = isFolded();
-		if (wasFolded != folded) {
+		if (wasFolded != folded && isAccessible()) {
 			sharedData.setFolded(folded && ! AlwaysUnfoldedNode.isConnectorNode(this));
+			fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(folded), false, false));
 		}
-		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(folded), false, false));
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {
