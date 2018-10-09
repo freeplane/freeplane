@@ -68,7 +68,7 @@ public class NodeModel{
 	public static final String NODE_ICON_SIZE = "icon_size";
 	static public final Object HYPERLINK_CHANGED = "hyperlink_changed";
 
-	private final List<NodeModel> children;
+	private List<NodeModel> children;
 	private NodeModel parent;
 	final private FilterInfo filterInfo;
 	private String id;
@@ -95,10 +95,10 @@ public class NodeModel{
 	}
 
 	public NodeModel(final Object userObject, final MapModel map) {
-		sharedData = new SharedNodeData();
-		init(userObject);
 		this.map = map;
 		children = new ArrayList<NodeModel>();
+		sharedData = new SharedNodeData();
+		init(userObject);
 		filterInfo = new FilterInfo();
 		clones = new Clones[]{new DetachedNodeList(this, TREE), new DetachedNodeList(this, CONTENT)};
 	}
@@ -155,6 +155,10 @@ public class NodeModel{
 
 	protected List<NodeModel> getChildrenInternal() {
 	    return children;
+    }
+
+	protected void setChildrenInternal(List<NodeModel> chidren) {
+	    this.children = chidren;
     }
 
 	public Enumeration<NodeModel> children() {
@@ -226,8 +230,7 @@ public class NodeModel{
 		if (getChildrenInternal() == null) {
 			return 0;
 		}
-		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
-		return encryptionModel == null || encryptionModel.isAccessible() ? getChildrenInternal().size() : 0;
+		return getChildrenInternal().size();
 	}
 
 	public List<NodeModel> getChildren() {
@@ -331,9 +334,6 @@ public class NodeModel{
 	}
 
 	public void insert(final NodeModel child, int index) {
-		if (!isAccessible()) {
-			throw new IllegalArgumentException("Trying to insert nodes into a ciphered node.");
-		}
 		final NodeModel childNode = child;
 		if (index < 0) {
 			index = getChildCount();
@@ -345,11 +345,6 @@ public class NodeModel{
 		}
 		child.setParent(this);
 		fireNodeInserted(childNode, getIndex(child));
-	}
-
-	private boolean isAccessible() {
-		final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
-		return encryptionModel == null || encryptionModel.isAccessible();
 	}
 
 	/**
@@ -471,8 +466,7 @@ public class NodeModel{
 	public void setFolded(boolean folded) {
 		boolean wasFolded = isFolded();
 		if (wasFolded != folded) {
-			final EncryptionModel encryptionModel = EncryptionModel.getModel(this);
-			sharedData.setFolded(encryptionModel != null && !encryptionModel.isAccessible() || folded && ! AlwaysUnfoldedNode.isConnectorNode(this));
+			sharedData.setFolded(folded && ! AlwaysUnfoldedNode.isConnectorNode(this));
 		}
 		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(folded), false, false));
 	}

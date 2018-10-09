@@ -292,7 +292,8 @@ public class ModeController extends AController implements FreeplaneActions{
 
 	public boolean hasOneVisibleChild(final NodeModel parent) {
 		int count = 0;
-		for (final NodeModel child : getMapController().childrenUnfolded(parent)) {
+		MapController r = getMapController();
+		for (final NodeModel child : parent.getChildren()) {
 			if (child.hasVisibleContent()) {
 				count++;
 			}

@@ -30,6 +30,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -66,7 +67,8 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 			    .getPath()).getFile());
 			final NodeModel node = ((MFileManager) UrlManager.getController()).loadTree(map, file);
 			map.setURL(url);
-			for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
+			MapController r = Controller.getCurrentModeController().getMapController();
+			for (final NodeModel child : node.getChildren()) {
 				child.setParent(null);
 				((MMapController) modeController.getMapController()).insertNode(child, selected);
 			}

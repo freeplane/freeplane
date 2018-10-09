@@ -25,6 +25,7 @@ import java.util.TreeSet;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.icon.HierarchicalIcons.Mode;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
@@ -61,7 +62,8 @@ class AccumulatedIcons  implements IExtension{
 		final Collection<MindIcon> ownIcons = IconController.getController().getIcons(node);
 		final AccumulatedIcons iconSet = new AccumulatedIcons(ownIcons);
 		boolean first = true;
-		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
+		MapController r = Controller.getCurrentModeController().getMapController();
+		for (final NodeModel child : node.getChildren()) {
 			if(first || mode.equals(Mode.OR)){
 				iconSet.addAccumulatedIconsToTreeSet(child);
 			}

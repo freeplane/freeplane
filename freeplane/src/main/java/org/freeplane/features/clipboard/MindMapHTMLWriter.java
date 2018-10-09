@@ -272,7 +272,7 @@ class MindMapHTMLWriter {
 	                      final boolean treatAsParagraph, final int depth)
 	        throws IOException {
 		if (!model.hasVisibleContent()) {
-			for (final NodeModel child : mapController.childrenUnfolded(model)) {
+			for (final NodeModel child : model.getChildren()) {
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber, false, false, depth);
 			}
 			return lastChildNumber;
@@ -281,7 +281,7 @@ class MindMapHTMLWriter {
 		if (writeFoldingCode) {
 			createFolding = mapController.isFolded(model);
 			if (getProperty("html_export_folding").equals("html_export_fold_all")) {
-				createFolding = mapController.hasChildren(model);
+				createFolding = model.hasChildren();
 			}
 			if (getProperty("html_export_folding").equals("html_export_no_folding") || basedOnHeadings || isRoot) {
 				createFolding = false;
@@ -291,7 +291,7 @@ class MindMapHTMLWriter {
 		final Object userObject = model.getUserObject();
 		final String text = textController.getTransformedTextNoThrow(userObject, model, userObject);
 		final boolean hasHtml = text.startsWith("<html>");
-		final boolean heading = basedOnHeadings && !hasHtml && mapController.hasChildren(model) && depth <= 6;
+		final boolean heading = basedOnHeadings && !hasHtml && model.hasChildren() && depth <= 6;
 		if (!treatAsParagraph && !basedOnHeadings) {
 			fileout.write("<li>");
 		}
@@ -343,15 +343,15 @@ class MindMapHTMLWriter {
 			fileout.write("</h" + depth + ">" + lf);
 		}
 		if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
-			for (final NodeModel child : mapController.childrenUnfolded(model)) {
+			for (final NodeModel child : model.getChildren()) {
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber, /*isRoot=*/false,
 				    false, depth + 1);
 			}
 			return lastChildNumber;
 		}
-		if (mapController.hasChildren(model)) {
+		if (model.hasChildren()) {
 			if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
-				for (final NodeModel child : mapController.childrenUnfolded(model)) {
+				for (final NodeModel child : model.getChildren()) {
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
 					    /*isRoot=*/false, false, depth + 1);
 				}
@@ -360,14 +360,14 @@ class MindMapHTMLWriter {
 				fileout.write(lf + "<ul id=\"fold" + localParentID
 				        + "\" style=\"POSITION: relative; VISIBILITY: visible;\">" + lf);
 				int localLastChildNumber = 0;
-				for (final NodeModel child : mapController.childrenUnfolded(model)) {
+				for (final NodeModel child : model.getChildren()) {
 					localLastChildNumber = writeHTML(child, localParentID, localLastChildNumber,
 					    /* isRoot=*/false, false, depth + 1);
 				}
 			}
 			else {
 				fileout.write(lf + "<ul>" + lf);
-				for (final NodeModel child : mapController.childrenUnfolded(model)) {
+				for (final NodeModel child : model.getChildren()) {
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
 					    /* isRoot= */false, false, depth + 1);
 				}

@@ -37,6 +37,7 @@ import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.map.IExtensionCopier;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -260,7 +261,8 @@ public class MEdgeController extends EdgeController {
 			}
 
 			private void edgeStyleRefresh(final NodeModel node) {
-				for (final NodeModel child : modeController.getMapController().childrenUnfolded(node)) {
+				MapController r = modeController.getMapController();
+				for (final NodeModel child : node.getChildren()) {
 					if(child.getViewers().isEmpty())
 						continue;
 					final EdgeModel edge = EdgeModel.getModel(child);
@@ -298,7 +300,8 @@ public class MEdgeController extends EdgeController {
 			}
 
 			private void edgeWidthRefresh(final NodeModel node) {
-				for (final NodeModel child : modeController.getMapController().childrenUnfolded(node)) {
+				MapController r = modeController.getMapController();
+				for (final NodeModel child : node.getChildren()) {
 					if(child.getViewers().isEmpty())
 						continue;
 					final EdgeModel edge = EdgeModel.getModel(child);
@@ -336,7 +339,8 @@ public class MEdgeController extends EdgeController {
 			}
 
 			private void edgeWidthRefresh(final NodeModel node) {
-				for (final NodeModel child : modeController.getMapController().childrenUnfolded(node)) {
+				MapController r = modeController.getMapController();
+				for (final NodeModel child : node.getChildren()) {
 					if(child.getViewers().isEmpty())
 						continue;
 					final EdgeModel edge = EdgeModel.getModel(child);

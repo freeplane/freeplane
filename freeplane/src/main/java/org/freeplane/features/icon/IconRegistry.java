@@ -62,7 +62,7 @@ public class IconRegistry implements IExtension {
 		for (final MindIcon icon : node.getIcons()) {
 			addIcon(icon);
 		}
-		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+		for (final NodeModel child : node.getChildren()) {
 			registryNodeIcons(mapController, child);
 		}
 	}

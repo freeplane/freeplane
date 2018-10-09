@@ -26,6 +26,7 @@ import org.freeplane.core.io.IReadCompletionListener;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
@@ -100,7 +101,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			}
 			return;
 		}
-		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
+		MapController r = Controller.getCurrentModeController().getMapController();
+		for (final NodeModel child : node.getChildren()) {
 			gatherLeavesAndSetParentsStyle(child);
 		}
 	}
@@ -113,7 +115,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 			AccumulatedIcons.setStyleCheckForChange(node, mode);
 			return;
 		}
-		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
+		MapController r = Controller.getCurrentModeController().getMapController();
+		for (final NodeModel child : node.getChildren()) {
 			gatherLeavesAndSetStyle(child);
 		}
 	}
@@ -193,7 +196,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		AccumulatedIcons icons = node.removeExtension(AccumulatedIcons.class);
 		if(icons != null){
 			Controller.getCurrentModeController().getMapController().delayedNodeRefresh(node, HierarchicalIcons.ICONS, null, null);
-			for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
+			MapController r = Controller.getCurrentModeController().getMapController();
+			for (final NodeModel child : node.getChildren()) {
 				removeIcons(child);
 			}
 		}

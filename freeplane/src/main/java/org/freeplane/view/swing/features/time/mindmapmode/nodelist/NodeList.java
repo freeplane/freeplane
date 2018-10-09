@@ -905,7 +905,8 @@ public class NodeList {
 			        new TextHolder(new DetailTextAccessor(node)) ,
 			        new TextHolder(new NoteTextAccessor(node)) });
 		}
-		for (final NodeModel child : Controller.getCurrentModeController().getMapController().childrenUnfolded(node)) {
+		MapController r = Controller.getCurrentModeController().getMapController();
+		for (final NodeModel child : node.getChildren()) {
 			updateModel(model, child);
 		}
 	}

@@ -287,7 +287,7 @@ public class AttributeRegistry implements IExtension {
 		for (int i = 0; i < model.getRowCount(); i++) {
 			registry(model.getAttribute(i));
 		}
-		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+		for (final NodeModel child : node.getChildren()) {
 			registryAttributes(mapController, child);
 		}
 	}

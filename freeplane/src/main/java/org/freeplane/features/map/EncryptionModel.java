@@ -22,15 +22,20 @@ package org.freeplane.features.map;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
+import java.util.WeakHashMap;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.map.MapWriter.Mode;
 
 public class EncryptionModel implements IExtension {
+	private final static WeakHashMap<NodeModel, List<NodeModel>> hiddenChildren = new WeakHashMap<>();
 	public static EncryptionModel getModel(final NodeModel node) {
-		return (EncryptionModel) node.getExtension(EncryptionModel.class);
+		return node.getExtension(EncryptionModel.class);
 	}
 
 	private String encryptedContent;
@@ -77,7 +82,7 @@ public class EncryptionModel implements IExtension {
 	}
 
 	/**
-	 * @param mapController 
+	 * @param mapController
 	 * @return true, if the password was correct.
 	 */
 	public boolean decrypt(final MapController mapController, final IEncrypter encrypter) {
@@ -127,16 +132,11 @@ public class EncryptionModel implements IExtension {
 		}
 	}
 
-	/**
-	 * @param mapController 
-	 * @param mode 
-	 * @throws IOException
-	 */
-	private void runEncryptedContentGeneration(final MapController mapController) throws IOException {
+	private void runEncryptedContentGeneration(final MapWriter mapWriter) throws IOException {
 		final StringWriter sWriter = new StringWriter();
 		for (final Iterator<NodeModel> i = node.getChildren().listIterator(); i.hasNext();) {
 			final NodeModel child = i.next();
-			mapController.getMapWriter().writeNodeAsXml(sWriter, child, MapWriter.Mode.FILE, true, true, false);
+			mapWriter.writeNodeAsXml(sWriter, child, MapWriter.Mode.FILE, true, true, false);
 			if (i.hasNext()) {
 				sWriter.write(ClipboardController.NODESEPARATOR);
 			}
@@ -145,10 +145,10 @@ public class EncryptionModel implements IExtension {
 		encryptedContent = encryptXml(childXml);
 	}
 
-	public String calculateEncryptedContent(final MapController mapController) {
+	public String calculateEncryptedContent(final MapWriter mapWriter) {
 		if (isDecrypted) {
 			try {
-				runEncryptedContentGeneration(mapController);
+				runEncryptedContentGeneration(mapWriter);
 			}
 			catch (final Exception e) {
 				LogUtils.severe(e);
@@ -180,8 +180,20 @@ public class EncryptionModel implements IExtension {
 	 * @param isAccessible
 	 *            The isAccessible to set.
 	 */
-	public void setAccessible(final boolean isAccessible) {
-		this.isAccessible = isAccessible;
+	synchronized public void setAccessible(final boolean isAccessible) {
+		if(this.isAccessible != isAccessible) {
+			if(isAccessible) {
+				node.setChildrenInternal(hiddenChildren.remove(node));
+			}
+			else {
+				final List<NodeModel> oldList = hiddenChildren.put(node, node.getChildrenInternal());
+				node.setChildrenInternal(Collections.emptyList());
+				if(oldList != null) {
+					LogUtils.severe("Hidden children replaced");
+				}
+			}
+			this.isAccessible = isAccessible;
+		}
 	}
 
 	public void setEncrypter(final IEncrypter encrypter) {

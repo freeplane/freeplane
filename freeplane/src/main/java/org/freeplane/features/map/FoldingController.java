@@ -182,7 +182,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	protected void foldAll(final NodeModel node) {
 		final MapController modeController = Controller.getCurrentModeController().getMapController();
 		setFolded(node, true);
-		for (NodeModel child : modeController.childrenUnfolded(node)) {
+		for (NodeModel child : node.getChildren()) {
 			foldAll(child);
 		}
 	}
@@ -198,13 +198,13 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	public void foldLastBranches(final NodeModel node) {
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		boolean nodeHasChildWhichIsLeave = false;
-		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+		for (final NodeModel child : node.getChildren()) {
 			if (child.getChildCount() == 0) {
 				nodeHasChildWhichIsLeave = true;
 			}
 		}
 		setFolded(node, nodeHasChildWhichIsLeave);
-		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+		for (final NodeModel child : node.getChildren()) {
 			foldLastBranches(child);
 		}
 	}
@@ -218,7 +218,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		if (k < stage) {
 			setFolded(node, false);
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
-			for (final NodeModel child : mapController.childrenUnfolded(node)) {
+			for (final NodeModel child : node.getChildren()) {
 				foldStageN(child, stage);
 			}
 		}
@@ -229,11 +229,11 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
 	protected int getMaxDepth(final NodeModel node) {
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		if (mapController.isFolded(node) || !mapController.hasChildren(node)) {
+		if (mapController.isFolded(node) || !node.hasChildren()) {
 			return depth(node);
 		}
 		int k = 0;
-		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+		for (final NodeModel child : node.getChildren()) {
 			final int l = getMaxDepth(child);
 			if (l > k) {
 				k = l;
@@ -251,11 +251,11 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		if (mapController.isFolded(node)) {
 			return depth(node);
 		}
-		if (!mapController.hasChildren(node)||AlwaysUnfoldedNode.isConnectorNode(node)) {
+		if (!node.hasChildren()||AlwaysUnfoldedNode.isConnectorNode(node)) {
 			return Integer.MAX_VALUE;
 		}
 		int k = Integer.MAX_VALUE;
-		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+		for (final NodeModel child : node.getChildren()) {
 			final int l = getMinDepth(child);
 			if (l < k) {
 				k = l;
@@ -290,7 +290,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	public void unfoldAll(final NodeModel node) {
 		setFolded(node, false);
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
-		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+		for (final NodeModel child : node.getChildren()) {
 			unfoldAll(child);
 		}
 	}
@@ -308,7 +308,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		if (k < stage) {
 			setFolded(node, false);
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
-			for (final NodeModel child : mapController.childrenUnfolded(node)) {
+			for (final NodeModel child : node.getChildren()) {
 				unfoldStageN(child, stage);
 			}
 		}

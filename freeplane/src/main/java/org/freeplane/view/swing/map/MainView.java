@@ -269,7 +269,8 @@ public abstract class MainView extends ZoomableLabel {
 		if (nodeView.isFolded()) {
 			return FoldingMark.ITSELF_FOLDED;
 		}
-		for (final NodeModel child : mapController.childrenUnfolded(node)) {
+		final NodeModel node1 = node;
+		for (final NodeModel child : node1.getChildren()) {
 			if (child.hasVisibleContent() && nodeView.isChildHidden(child)) {
 				return FoldingMark.ITSELF_FOLDED;
 			}

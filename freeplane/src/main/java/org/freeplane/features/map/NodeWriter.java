@@ -73,7 +73,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 	}
 
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
-		for (final NodeModel child: mapController.childrenUnfolded(node)) {
+		for (final NodeModel child: node.getChildren()) {
 		if (writeInvisible || child.isVisible()) {
 				writer.setHint(WriterHint.ALREADY_WRITTEN, isAlreadyWritten(child));
 				writer.addElement(child, nodeTag);
@@ -106,7 +106,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 		final Object mode = mode(writer);
 		final boolean isNodeAlreadyWritten = isAlreadyWritten(node);
 		if (encryptionModel != null && !(encryptionModel.isAccessible() && Mode.EXPORT.equals(mode)) && ! isNodeAlreadyWritten) {
-        	final String enctyptedContent = encryptionModel.calculateEncryptedContent(mapController);
+        	final String enctyptedContent = encryptionModel.calculateEncryptedContent(mapController.getMapWriter());
         	if(enctyptedContent != null){
         		writer.addAttribute(NodeBuilder.XML_NODE_ENCRYPTED_CONTENT, enctyptedContent);
         		mayWriteChildren = false;
@@ -194,7 +194,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 				writer.addElement(null, xmlNode.getChildAtIndex(i));
 			}
 		}
-		if (mayWriteChildren && shouldWriteChildren && mapController.childrenUnfolded(node).size()>0) {
+		if (mayWriteChildren && shouldWriteChildren && node.getChildren().size()>0) {
 			saveChildren(writer, node);
 		}
 	}

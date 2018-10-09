@@ -621,7 +621,8 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 
 			private void childShapeRefresh(final NodeModel node) {
-				for (final NodeModel child : modeController.getMapController().childrenUnfolded(node)) {
+				MapController r = modeController.getMapController();
+				for (final NodeModel child : node.getChildren()) {
 					if(child.getViewers().isEmpty())
 						continue;
 					final Shape childShape = NodeStyleModel.getShape(child);

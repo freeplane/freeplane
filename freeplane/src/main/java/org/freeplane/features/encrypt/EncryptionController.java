@@ -30,6 +30,7 @@ import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -42,21 +43,22 @@ public class EncryptionController implements IExtension {
 	private static final IconStore STORE = IconStoreFactory.ICON_STORE;
 	private static UIIcon decryptedIcon = STORE.getUIIcon("unlock.png");
 	private static UIIcon encryptedIcon = STORE.getUIIcon("lock.png");
-	
+
 	public static void install(EncryptionController encryptionController){
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(EncryptionController.class, encryptionController);
 		final EnterPassword pwdAction = new EnterPassword(encryptionController);
 		modeController.addAction(pwdAction);
 	}
-	
-	
+
+
 	public EncryptionController(final ModeController modeController) {
 		registerStateIconProvider(modeController);
     }
 
 	private void registerStateIconProvider(final ModeController modeController) {
 	    IconController.getController(modeController).addStateIconProvider(new IStateIconProvider() {
+			@Override
 			public UIIcon getStateIcon(NodeModel node) {
 				final EncryptionModel encryptionModel = EncryptionModel.getModel(node);
 				if (encryptionModel != null) {
@@ -80,8 +82,10 @@ public class EncryptionController implements IExtension {
 		if (encryptionModel != null) {
 			final boolean wasFolded = node.isFolded();
 			final boolean wasAccessible = encryptionModel.isAccessible();
-			if (wasAccessible)
-				encryptionModel.calculateEncryptedContent(Controller.getCurrentModeController().getMapController());
+			if (wasAccessible) {
+				final MapWriter mapWriter = Controller.getCurrentModeController().getMapController().getMapWriter();
+				encryptionModel.calculateEncryptedContent(mapWriter);
+			}
 			else {
 				if (!doPasswordCheckAndDecryptNode(encryptionModel, passwordStrategy))
 					return;
@@ -90,6 +94,7 @@ public class EncryptionController implements IExtension {
 			final boolean becomesAccessible = ! wasAccessible;
 			Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
 			final IActor actor = new IActor() {
+				@Override
 				public void act() {
 					encryptionModel.setAccessible(becomesAccessible);
 					if (becomesFolded != wasFolded) {
@@ -98,10 +103,12 @@ public class EncryptionController implements IExtension {
 					fireEncyptionChangedEvent(node);
 				}
 
+				@Override
 				public String getDescription() {
 					return "toggleCryptState";
 				}
 
+				@Override
 				public void undo() {
 					encryptionModel.setAccessible(wasAccessible);
 					if(becomesFolded != wasFolded)
@@ -141,7 +148,7 @@ public class EncryptionController implements IExtension {
 			UITools.errorMessage(TextUtils.getText("can_not_encrypt_cloned_node"));
 			return;
 		}
-			
+
 		final StringBuilder password = passwordStrategy.getPasswordWithConfirmation();
 		if (passwordStrategy.isCancelled()) {
 			return;
@@ -149,15 +156,18 @@ public class EncryptionController implements IExtension {
 		final EncryptionModel encryptionModel = new EncryptionModel(node);
 		encryptionModel.setEncrypter(new SingleDesEncrypter(password));
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				node.addExtension(encryptionModel);
 				fireEncyptionChangedEvent(node);
 			}
 
+			@Override
 			public String getDescription() {
 				return "encrypt";
 			}
 
+			@Override
 			public void undo() {
 				node.removeExtension(encryptionModel);
 				fireEncyptionChangedEvent(node);

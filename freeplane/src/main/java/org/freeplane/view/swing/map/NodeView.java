@@ -66,6 +66,7 @@ import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.HistoryInformationModel;
 import org.freeplane.features.map.INodeView;
 import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
@@ -799,7 +800,8 @@ public class NodeView extends JComponent implements INodeView {
 		if(isFolded)
 			return;
 		int index = 0;
-		for (NodeModel child : getMap().getModeController().getMapController().childrenUnfolded(getModel())) {
+		MapController r = getMap().getModeController().getMapController();
+		for (NodeModel child : getModel().getChildren()) {
 			if(isChildHidden(child))
 				return;
 			if(getComponentCount() <= index
