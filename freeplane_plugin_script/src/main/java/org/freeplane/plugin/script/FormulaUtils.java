@@ -87,6 +87,7 @@ public class FormulaUtils {
 				}
 				catch (final ExecuteScriptException e) {
 					formulaCache.put(nodeScript, new CachedResult(e, scriptContext.getRelatedElements()));
+					LogUtils.warn(e);
 					throw e;
 				}
 			}

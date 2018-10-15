@@ -19,6 +19,15 @@
  */
 package org.freeplane.features.text;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.Icon;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -40,12 +49,6 @@ import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.view.swing.map.MainView;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author Dimitry Polivaev
@@ -192,7 +195,7 @@ public class TextController implements IExtension {
 				return transformedObject;
 		}
 		catch (Throwable e) {
-			LogUtils.warn(e.getMessage(), e);
+			LogUtils.warn(e.getMessage());
 			return TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
 		}
 	}
