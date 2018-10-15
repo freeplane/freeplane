@@ -8,6 +8,6 @@ public class ActionFactory {
 		final LinkController linkController = modeController.getExtension(LinkController.class);
 		modeController.addAction(new TracePrecedentsAction(linkController));
 		modeController.addAction(new TraceDependentsAction(linkController));
-		modeController.addAction(new ClearDependenciesAction(linkController));
+		modeController.addAction(new ClearDependenciesAction());
 	}
 }
