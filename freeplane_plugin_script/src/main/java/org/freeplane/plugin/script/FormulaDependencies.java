@@ -35,9 +35,9 @@ public class FormulaDependencies{
 
 
 	private static ArrayList<NodeModel> getGlobalDependencies(MapModel map) {
-		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
 		final LinkedHashSet<NodeModel> accessingNodes = new LinkedHashSet<NodeModel>(0);
 		EvaluationDependencies.of(map).getGlobalDependencies(accessingNodes);
+		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
 		if (accessingNodes != null)
 			dependencies.addAll(accessingNodes);
 		return dependencies;
@@ -62,5 +62,15 @@ public class FormulaDependencies{
 
 	public static Iterable<NodeModel> getPossibleDependencies(NodeModel node) {
 		return EvaluationDependencies.of(node.getMap()).getPossibleDependencies(node);
+	}
+
+	public static List<NodeModel> removeAndReturnMapDependencies(MapModel map) {
+		final LinkedHashSet<NodeModel> accessingNodes = new LinkedHashSet<NodeModel>(0);
+		EvaluationDependencies.of(map).removeAndReturnChangedDependencies(accessingNodes, map);
+		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
+		if (accessingNodes != null)
+			dependencies.addAll(accessingNodes);
+		return dependencies;
+
 	}
 }

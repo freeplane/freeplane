@@ -2,8 +2,6 @@ package org.freeplane.plugin.script;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -24,7 +22,8 @@ class EvaluationDependencies implements IExtension{
 		@Override
 		public Iterator<NodeModel> iterator() {
 			return references.keySet().iterator();
-		}}
+		}
+	}
 
 	enum Access {
 		NODE, BRANCH, ALL
@@ -45,7 +44,7 @@ class EvaluationDependencies implements IExtension{
 	}
 
 
-	private final WeakHashMap<MapModel, Void> referencedMaps = new WeakHashMap<>();
+	private final WeakHashMap<MapModel, DependentNodeReferences> onMapDependencies = new WeakHashMap<>();
 
 	private final WeakHashMap<NodeModel, DependentNodeReferences> onNodeDependencies = new WeakHashMap<>();
 	// FIXME: organize node and branch dependencies in a tree?
@@ -75,6 +74,11 @@ class EvaluationDependencies implements IExtension{
 //		System.out.println("dependencies on(" + node + "): " + accessingNodes);
 	}
 
+	void removeAndReturnChangedDependencies(Set<NodeModel> accessingNodes, final MapModel accessedMap) {
+		final Iterable<NodeModel> onMap = onMapDependencies.remove(accessedMap);
+		if (onMap != null)
+			getRecursively(accessingNodes, onMap);
+	}
 	private void getRecursively(Set<NodeModel> accessingNodes, final Iterable<NodeModel> changedAccessedNodes) {
 		for (NodeModel node : changedAccessedNodes) {
 			// avoid loops
@@ -102,13 +106,7 @@ class EvaluationDependencies implements IExtension{
 
 	private void addAccessedMap(NodeModel accessingNode, NodeModel accessedNode) {
 		final MapModel accessedMap = accessedNode.getMap();
-		final MapModel accessingMap = accessingNode.getMap();
-		if(! accessingMap.equals(accessedMap))
-			EvaluationDependencies.of(accessingMap).addAccessedMap(accessedMap);
-	}
-
-	private void addAccessedMap(final MapModel accessedMap) {
-		referencedMaps.put(accessedMap, null);
+		provideDependencySet(accessedMap, onMapDependencies).add(accessingNode);
 	}
 
 	/** a method was used on the accessingNode that may use any node in the map. */
@@ -122,12 +120,12 @@ class EvaluationDependencies implements IExtension{
 		onGlobalNodeDependencies.put(accessingNode, null);
 	}
 
-	private DependentNodeReferences provideDependencySet(final NodeModel accessedNode,
-														 final WeakHashMap<NodeModel, DependentNodeReferences> dependenciesMap) {
-		DependentNodeReferences set = dependenciesMap.get(accessedNode);
+	private <T>DependentNodeReferences provideDependencySet(final T accessed,
+														 final WeakHashMap<T, DependentNodeReferences> dependenciesMap) {
+		DependentNodeReferences set = dependenciesMap.get(accessed);
 		if (set == null) {
 			set = new DependentNodeReferences();
-			dependenciesMap.put(accessedNode, set);
+			dependenciesMap.put(accessed, set);
 		}
 		return set;
 	}

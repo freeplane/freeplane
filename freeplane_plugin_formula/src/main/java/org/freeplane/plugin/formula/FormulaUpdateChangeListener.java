@@ -5,6 +5,7 @@ import java.util.List;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
@@ -22,7 +23,7 @@ import org.freeplane.plugin.script.FormulaDependencies;
 import org.freeplane.plugin.script.FormulaUtils;
 
 /** cares for updating formula nodes on change of other nodes. */
-public class FormulaUpdateChangeListener implements INodeChangeListener, IMapChangeListener{
+public class FormulaUpdateChangeListener implements INodeChangeListener, IMapChangeListener, IMapLifeCycleListener{
 	@Override
 	public void nodeChanged(NodeChangeEvent event) {
 		Object property = event.getProperty();
@@ -55,14 +56,6 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 	}
 
 	@Override
-	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
-	}
-
-	@Override
-	public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
-	}
-
-	@Override
 	public void mapChanged(MapChangeEvent event) {
 		if (UrlManager.MAP_URL.equals(event.getProperty()))
 		    FormulaUtils.clearCache(event.getMap());
@@ -71,8 +64,12 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 	}
 
 	private void globalNodesChanged(MapModel map) {
-		final ModeController modeController = Controller.getCurrentModeController();
 		final List<NodeModel> dependencies = FormulaDependencies.manageChangeAndReturnGlobalDependencies(map);
+		refresh(dependencies);
+	}
+
+	private void refresh(final List<NodeModel> dependencies) {
+		final ModeController modeController = Controller.getCurrentModeController();
 		for (NodeModel dependentNode : dependencies) {
 			modeController.getMapController().delayedNodeRefresh(dependentNode, IContentTransformer.class,
 			    null, null);
@@ -82,16 +79,21 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 	/** in case of insert we look for dependencies of the parent. But the parent is not actually changed in this case.
 	 * So there won't be any updates on the parent, even if it has formula that needs an update due to the
 	 * changed children count. */
-	public void nodeChangedImpl(boolean includeChanged, NodeModel... nodes) {
-		final ModeController modeController = Controller.getCurrentModeController();
+	private void nodeChangedImpl(boolean includeChanged, NodeModel... nodes) {
 		//FIXME: needed???
 		//		if (modeController == null || modeController.isUndoAction()) {
 		//			return;
 		//		}
 		final List<NodeModel> dependencies = FormulaDependencies.manageChangeAndReturnDependencies(includeChanged, nodes);
-		for (NodeModel dependentNode : dependencies) {
-			modeController.getMapController().delayedNodeRefresh(dependentNode, IContentTransformer.class,
-			    null, null);
-		}
+		refresh(dependencies);
 	}
+
+	@Override
+	public void onMapReloaded(MapModel oldMap, MapModel newMap) {
+		final List<NodeModel> dependencies = FormulaDependencies.removeAndReturnMapDependencies(oldMap);
+		refresh(dependencies);
+
+	}
+
+
 }
