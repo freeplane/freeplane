@@ -1,15 +1,18 @@
 package org.freeplane.plugin.script;
 
-import org.freeplane.features.attribute.Attribute;
-import org.freeplane.features.map.NodeModel;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
+import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 
 public class RelatedElements {
 	private final Map<Object, NodeModel> relatedElements;
 	private final NodeModel relatedNode;
+	private Set<MapModel> relatedMaps;
 
 	public RelatedElements(final NodeModel relatedNode) {
 		this.relatedNode = relatedNode;
@@ -24,6 +27,12 @@ public class RelatedElements {
 	public void relateNode(final NodeModel accessedNode) {
 		if (relatedNode.getMap() == accessedNode.getMap()) {
 			relatedElements.put(accessedNode, accessedNode);
+		}
+	}
+
+	public void relateMap(final MapModel accessedMap) {
+		if (relatedNode.getMap() != accessedMap) {
+			relatedMaps.add(accessedMap);
 		}
 	}
 

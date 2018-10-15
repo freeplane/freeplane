@@ -74,8 +74,10 @@ public class ScriptContext implements AccessedNodes{
 
 	@Override
 	public void accessNode(final NodeModel accessedNode) {
-		if(nodeScript != null)
+		if(nodeScript != null) {
 			FormulaDependencies.accessNode(nodeScript.node, accessedNode);
+			relatedElements.relateMap(accessedNode.getMap());
+		}
 	}
 
 	@Override
