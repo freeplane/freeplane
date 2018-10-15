@@ -23,7 +23,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.features.edge.AutomaticEdgeColor.Rule;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
-import org.freeplane.features.map.AMapChangeListenerAdapter;
+import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -47,7 +47,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExtension{
 	private ModeController modeController;
 
-	private class Listener extends AMapChangeListenerAdapter{
+	private class Listener implements IMapChangeListener {
 		@Override
 	    public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
 			if(!isActiveOnCreation(child) || modeController.isUndoAction()){
@@ -99,7 +99,7 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 		final MapController mapController = modeController.getMapController();
 		mapController.addMapChangeListener(listener);
     }
-	
+
 	@Override
 	protected void registerActions() {
 	}
@@ -140,7 +140,7 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 		element.setAttribute("COUNTER", Integer.toString(colorCount));
 		element.setAttribute("RULE", automaticEdgeColor.rule.toString());
 	}
-	
+
 	@Override
     protected IExtension toggle(NodeModel node, IExtension extension) {
 		extension = super.toggle(node, extension);

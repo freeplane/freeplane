@@ -28,7 +28,6 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MouseInsideListener;
-import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
@@ -69,13 +68,14 @@ public class NodeTooltipManager implements IExtension{
 		setTooltipDelays(instance);
 		UIManager.put("PopupMenu.consumeEventOnClose", Boolean.FALSE);
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+			@Override
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (propertyName.startsWith(TOOL_TIP_MANAGER)) {
 					setTooltipDelays(instance);
 				}
 			}
 		});
-		IMapChangeListener mapChangeListener = new AMapChangeListenerAdapter() {
+		IMapChangeListener mapChangeListener = new IMapChangeListener() {
 
 			@Override
             public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
@@ -97,6 +97,7 @@ public class NodeTooltipManager implements IExtension{
 		mapController.addMapChangeListener(mapChangeListener);
 		INodeSelectionListener nodeSelectionListener = new INodeSelectionListener() {
 
+			@Override
 			public void onSelect(NodeModel node) {
 				NodeView view = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, instance.insideComponent);
 				if(view != null && node.equals(view.getModel()))
@@ -104,6 +105,7 @@ public class NodeTooltipManager implements IExtension{
 				instance.hideTipWindow();
 			}
 
+			@Override
 			public void onDeselect(NodeModel node) {
 			}
 		};
@@ -278,6 +280,7 @@ public class NodeTooltipManager implements IExtension{
 
 
 	private class insideTimerAction implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (insideComponent != null){
 				if (isMouseOverComponent() && !editorActive()) {
@@ -300,6 +303,7 @@ public class NodeTooltipManager implements IExtension{
 	}
 
 	private class exitTimerAction implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(tip == null || insideComponent == null){
 				return;

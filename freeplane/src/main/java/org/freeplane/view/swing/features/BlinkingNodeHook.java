@@ -41,7 +41,6 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
@@ -84,6 +83,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 		@Override
 		public void run() {
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					final Iterable<NodeModel> nodes = getNodes();
 					if (Controller.getCurrentModeController().isBlocked()) {
@@ -91,6 +91,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 					}
 					for(NodeModel node :nodes) {
 						node.acceptViewVisitor(new INodeViewVisitor() {
+							@Override
 							public void visit(final INodeView nodeView) {
 								if(! (nodeView instanceof NodeView)){
 									return;
@@ -116,26 +117,32 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 			});
 		}
 
+		@Override
 		public void mapChanged(final MapChangeEvent event) {
 		}
 
+		@Override
 		public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 			if (Controller.getCurrentModeController().isUndoAction() || !(node.equals(nodeDeletionEvent.node) || node.isDescendantOf(nodeDeletionEvent.node))) {
 				return;
 			}
 			final IActor actor = new IActor() {
+				@Override
 				public void act() {
 					EventQueue.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							remove(node, node.getExtension(TimerColorChanger.class));
 						}
 					});
 				}
 
+				@Override
 				public String getDescription() {
 					return "BlinkingNodeHook.timer";
 				}
 
+				@Override
 				public void undo() {
 					node.addExtension(new TimerColorChanger(node));
 				}
@@ -143,21 +150,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 			Controller.getCurrentModeController().execute(actor, node.getMap());
 		}
 
-		public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
-		}
-
-		public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-		}
-
-		public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
-		}
-
-		public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
-		}
-
-		public void onCreate(final MapModel map) {
-		}
-
+		@Override
 		public void onRemove(final MapModel map) {
 			if (node.getMap().equals(map)) {
 				timer.cancel();

@@ -75,11 +75,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public static final String RESOURCES_BACKGROUND_IMAGE = "backgroundImageURI";
 	public static final String MAP_STYLES = "MAP_STYLES";
 	public static final String FIT_TO_VIEWPORT = "fit_to_viewport";
-	
+
 	public static void install(boolean persistent){
 		new MapStyle(persistent);
 	}
-	
+
 	protected MapStyle( final boolean persistent) {
 		super();
 		ModeController modeController = Controller.getCurrentModeController();
@@ -88,10 +88,12 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			mapController.getWriteManager().addExtensionElementWriter(getExtensionClass(),
 				new XmlWriter());
 			mapController.getReadManager().addElementHandler("conditional_styles", new IElementDOMHandler() {
+				@Override
 				public Object createElement(Object parent, String tag, XMLElement attributes) {
 					return parent;
 				}
 
+				@Override
 				public void endElement(Object parent, String tag, Object element, XMLElement dom) {
 					final NodeModel node = (NodeModel) parent;
 					final MapStyleModel mapStyleModel = MapStyleModel.getExtension(node);
@@ -102,6 +104,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 				mapController.getWriteManager().addExtensionElementWriter(ConditionalStyleModel.class,
 					new IExtensionElementWriter() {
+					@Override
 					public void writeContent(ITreeWriter writer, Object element, IExtension extension) throws IOException {
 						final ConditionalStyleModel conditionalStyleModel = (ConditionalStyleModel) extension;
 						if (conditionalStyleModel.getStyleCount() == 0)
@@ -112,10 +115,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 						writer.addElement(null, hook);
 					}
 				});
-				
+
 				mapController.getReadManager().addElementHandler("hook", new IElementDOMHandler() {
+					@Override
 					public Object createElement(Object parent, String tag, XMLElement attributes) {
-						if (attributes == null 
+						if (attributes == null
 								|| !NODE_CONDITIONAL_STYLES.equals(attributes.getAttribute("NAME", null))) {
 							return null;
 					}
@@ -123,15 +127,18 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 					((NodeModel)parent).addExtension(conditionalStyleModel);
 					return conditionalStyleModel;
 				}
-				
+
+				@Override
 				public void endElement(Object parent, String tag, Object element, XMLElement dom) {
 					loadConditionalStyles((ConditionalStyleModel) element, dom);
 				}
 			});
 			mapController.getReadManager().addElementHandler("map_styles",  new IElementContentHandler() {
+				@Override
 				public Object createElement(Object parent, String tag, XMLElement attributes) {
 	                return parent;
                 }
+				@Override
 				public void endElement(final Object parent, final String tag, final Object userObject,
 				                       final XMLElement attributes, final String content) {
 					// bugfix
@@ -159,6 +166,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	protected class XmlWriter implements IExtensionElementWriter {
+		@Override
 		public void writeContent(final ITreeWriter writer, final Object object, final IExtension extension)
 		        throws IOException {
 			final MapStyleModel mapStyleModel = (MapStyleModel) extension;
@@ -194,6 +202,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	protected class MyXmlReader extends XmlReader{
+		@Override
 		public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 			if (null == super.createElement(parent, tag, attributes)){
 				return null;
@@ -223,7 +232,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				}
 			}
         }
-		
+
 	}
 
 	@Override
@@ -273,7 +282,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			String styleText = styleElement.getAttribute("LOCALIZED_STYLE_REF", null);
 			final IStyle style;
 			if(styleText != null){
-				style = StyleFactory.create(TranslatedObject.format((String) styleText));
+				style = StyleFactory.create(TranslatedObject.format(styleText));
 			}
 			else {
 				style = StyleFactory.create(styleElement.getAttribute("STYLE_REF", null));
@@ -310,7 +319,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		for(final Item item : conditionalStyleModel){
 			item.toXml(conditionalStylesRoot);
 		}
-	    
+
     }
 
 	public Color getBackground(final MapModel map) {
@@ -330,6 +339,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		return MapStyleModel.class;
 	}
 
+	@Override
 	public void onCreate(final MapModel map) {
 		final NodeModel rootNode = map.getRootNode();
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(rootNode);
@@ -367,7 +377,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 
 	private void moveStyle(final MapModel sourceMap, final MapModel targetMap, boolean overwrite) {
-	    final MapStyleModel source = (MapStyleModel) sourceMap.getRootNode().removeExtension(MapStyleModel.class);
+	    final MapStyleModel source = sourceMap.getRootNode().removeExtension(MapStyleModel.class);
 	    if(source == null)
 	    	return;
 		final IExtension undoHandler = targetMap.getExtension(IUndoHandler.class);
@@ -387,7 +397,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
     protected HookAction createHookAction() {
 	    return null;
     }
-	
+
 	public void copyStyle(final URL source, final MapModel targetMap, boolean undoable) {
 	    final MapModel styleMapContainer = new MapModel();
 		final IExtension oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
@@ -405,22 +415,22 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		}
 		final IExtension newStyleModel = targetMap.getRootNode().getExtension(MapStyleModel.class);
 		IActor actor = new IActor() {
+			@Override
 			public void undo() {
 				targetMap.getRootNode().putExtension(oldStyleModel);
 			}
-			
+
+			@Override
 			public String getDescription() {
 				return "moveStyle";
 			}
-			
+
+			@Override
 			public void act() {
 				targetMap.getRootNode().putExtension(newStyleModel);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, targetMap);
-	}
-	
-	public void onRemove(final MapModel map) {
 	}
 
 	@Override
@@ -442,7 +452,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		saveConditionalStyles(mapStyleModel.getConditionalStyleModel(), element, true);
 		saveProperties(mapStyleModel.getProperties(), element);
 	}
-	
+
 	private void saveProperties(Map<String, String> properties, XMLElement element) {
 		if(properties.isEmpty()){
 			return;
@@ -463,7 +473,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		Controller.getCurrentModeController().getMapController().setSaved(map, false);
 	}
 
-	
+
 	public void setMapViewLayout(final MapModel map, final MapViewLayout layout) {
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(map);
 		if (layout.equals(mapStyleModel.getMapViewLayout())) {
@@ -480,6 +490,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				model.setBackgroundColor(actionColor);
 				Controller.getCurrentModeController().getMapController().fireMapChanged(
@@ -487,10 +498,12 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				        oldColor, actionColor));
 			}
 
+			@Override
 			public String getDescription() {
 				return "MapStyle.setBackgroundColor";
 			}
 
+			@Override
 			public void undo() {
 				model.setBackgroundColor(oldColor);
 				Controller.getCurrentModeController().getMapController().fireMapChanged(
@@ -502,11 +515,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 	public static  MapStyle getController(final ModeController modeController) {
-        return (MapStyle) modeController.getExtension(MapStyle.class);
+        return modeController.getExtension(MapStyle.class);
     }
 
 	public static MapStyle getController() {
-		return (MapStyle) getController(Controller.getCurrentModeController());
+		return getController(Controller.getCurrentModeController());
     }
 
 	public void setProperty(final MapModel model, final String key, final String newValue) {
@@ -516,14 +529,17 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			return;
 		}
 		IActor actor = new  IActor() {
+			@Override
 			public void undo() {
 				setPropertyWithoutUndo(model, key, oldValue);
 			}
-			
+
+			@Override
 			public String getDescription() {
 				return "set map style property";
 			}
-			
+
+			@Override
 			public void act() {
 				setPropertyWithoutUndo(model, key, newValue);
 			}
@@ -547,11 +563,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 			styleModel.setProperty(key, value);
 			return value;
 	}
-	
+
 	public String getProperty(final MapModel model, final String key) {
 	    return MapStyleModel.getExtension(model).getProperty(key);
 	}
-	
+
     public Map<String, String> getPropertiesReadOnly(final MapModel model) {
         return Collections.unmodifiableMap(MapStyleModel.getExtension(model).getProperties());
     }

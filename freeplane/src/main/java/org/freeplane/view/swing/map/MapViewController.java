@@ -54,13 +54,13 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.image.BigBufferedImage;
 import org.freeplane.core.ui.svgicons.GraphicsHints;
-import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.IMapSelection;
@@ -1024,10 +1024,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}
 		controller.getViewController().setTitle(frameTitle);
 		modeController.getUserInputListenerFactory().updateMapList();
-	}
-
-	@Override
-	public void onCreate(MapModel map) {
 	}
 
 	@Override

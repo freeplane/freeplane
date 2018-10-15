@@ -1,7 +1,7 @@
 package org.freeplane.features.map.mindmapmode;
 
-import org.freeplane.features.map.AMapChangeListenerAdapter;
 import org.freeplane.features.map.FirstGroupNodeFlag;
+import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.SummaryLevels;
@@ -10,13 +10,13 @@ import org.freeplane.features.map.SummaryNodeFlag;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.MapVersionInterpreter;
 
-public class SummaryNodeMapUpdater extends AMapChangeListenerAdapter {
+public class SummaryNodeMapUpdater implements IMapLifeCycleListener {
 	final private MMapController mapController;
 	final private MModeController modeController;
 	public SummaryNodeMapUpdater(MModeController modeController,  MMapController mapController){
 		this.modeController = modeController;
 		this.mapController = mapController;
-		
+
 	}
 	@Override
 	public void onCreate(MapModel map) {

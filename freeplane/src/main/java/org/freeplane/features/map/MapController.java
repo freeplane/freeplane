@@ -594,6 +594,13 @@ implements IExtension, NodeChangeAnnouncer{
 		}
 	}
 
+	public void fireMapReloaded(final MapModel oldMap, final MapModel newMap) {
+		final IMapLifeCycleListener[] list = mapLifeCycleListeners.toArray(new IMapLifeCycleListener[]{});
+		for (final IMapLifeCycleListener next : list) {
+			next.onMapReloaded(oldMap, newMap);
+		}
+	}
+
 	protected void fireMapRemoved(final MapModel map) {
 		final IMapLifeCycleListener[] list = mapLifeCycleListeners.toArray(new IMapLifeCycleListener[]{});
 		for (final IMapLifeCycleListener next : list) {

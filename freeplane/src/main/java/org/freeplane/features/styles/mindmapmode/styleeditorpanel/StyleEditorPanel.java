@@ -32,7 +32,7 @@ import javax.swing.JPanel;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.map.AMapChangeListenerAdapter;
+import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
@@ -53,13 +53,13 @@ public class StyleEditorPanel extends JPanel {
 	static final float FONT_SIZE = UITools.getUIFontSize(0.8);
 
 	/**
-	* 
+	*
 	*/
 	private static final long serialVersionUID = 1L;
-	
+
 	private boolean internalChange;
 	ControlGroup [] controlGroups;
-	
+
 	/**
 	 * @throws HeadlessException
 	 */
@@ -68,7 +68,8 @@ public class StyleEditorPanel extends JPanel {
 		super();
 		controlGroups = createControlGroups(modeController, uiFactory, addStyleBox);
 		addHierarchyListener(new HierarchyListener() {
-			
+
+			@Override
 			public void hierarchyChanged(HierarchyEvent e) {
 				if(isDisplayable()){
 					removeHierarchyListener(this);
@@ -120,7 +121,7 @@ public class StyleEditorPanel extends JPanel {
 
 	/**
 	 * Creates all controls and adds them to the frame.
-	 * @param modeController 
+	 * @param modeController
 	 */
 	private void init() {
 		final String form = "right:max(20dlu;p), 2dlu, p, 1dlu,right:max(20dlu;p), 4dlu, 80dlu, 7dlu";
@@ -129,7 +130,7 @@ public class StyleEditorPanel extends JPanel {
 		formBuilder.border(Paddings.DLU2);
 		new SeparatorProperty("OptionPanel.separator.NodeStyle").layout(formBuilder);
 		final List<IPropertyControl> controls = new ArrayList<IPropertyControl>();
-		
+
 		for (ControlGroup controlGroup :controlGroups) {
 			controlGroup.addControlGroup(formBuilder);
 		}
@@ -154,7 +155,7 @@ public class StyleEditorPanel extends JPanel {
 			for (int i=0; i<controlGroups.length; i++) {
 				controlGroups[i].setStyle(node);
 			}
-			
+
 		}
 		finally {
 			internalChange = false;
@@ -166,6 +167,7 @@ public class StyleEditorPanel extends JPanel {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		mapController.addNodeSelectionListener(new INodeSelectionListener() {
+			@Override
 			public void onSelect(final NodeModel node) {
 				final IMapSelection selection = controller.getSelection();
 				if (selection == null) {
@@ -184,11 +186,13 @@ public class StyleEditorPanel extends JPanel {
 				}
 			}
 
+			@Override
 			public void onDeselect(final NodeModel node) {
 				setComponentsEnabled(false);
 			}
 		});
 		mapController.addNodeChangeListener(new INodeChangeListener() {
+			@Override
 			public void nodeChanged(final NodeChangeEvent event) {
 				final IMapSelection selection = controller.getSelection();
 				if (selection == null) {
@@ -200,7 +204,7 @@ public class StyleEditorPanel extends JPanel {
 				}
 			}
 		});
-		mapController.addMapChangeListener(new AMapChangeListenerAdapter() {
+		mapController.addMapChangeListener(new IMapChangeListener() {
 
 			@Override
             public void mapChanged(MapChangeEvent event) {
@@ -213,7 +217,7 @@ public class StyleEditorPanel extends JPanel {
 				final NodeModel node = selection.getSelected();
 				setStyle(node);
             }
-			
+
 		});
 	}
 

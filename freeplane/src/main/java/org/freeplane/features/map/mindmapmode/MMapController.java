@@ -999,6 +999,7 @@ public class MMapController extends MapController {
 			closeWithoutSaving(map);
 			newModel.enableAutosave();
 			loadedMaps.put(newModel, null);
+			fireMapReloaded(map, newModel);
 			createMapView(newModel);
 			return;
 		}
