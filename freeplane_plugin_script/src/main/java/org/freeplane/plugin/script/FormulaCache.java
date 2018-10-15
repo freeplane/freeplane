@@ -1,15 +1,16 @@
 package org.freeplane.plugin.script;
 
-import org.freeplane.core.extension.IExtension;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-class FormulaCache implements IExtension{
+import org.freeplane.core.extension.IExtension;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.script.dependencies.RelatedElements;
+
+public class FormulaCache implements IExtension{
 	private final HashMap<String, LinkedHashMap<String, CachedResult>> cache = new HashMap<String, LinkedHashMap<String, CachedResult>>();
 	// don't let caching use too much memory - but currently there are little means to cope with unavailable
 	// dependency data. It has to be tested but it should "only" lead to some missing updates.

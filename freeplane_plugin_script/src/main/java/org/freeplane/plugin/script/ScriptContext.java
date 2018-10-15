@@ -8,6 +8,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.explorer.AccessedNodes;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.script.dependencies.RelatedElements;
 
 public class ScriptContext implements AccessedNodes{
 

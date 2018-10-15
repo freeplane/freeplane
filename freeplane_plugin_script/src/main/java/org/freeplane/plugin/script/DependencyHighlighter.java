@@ -16,6 +16,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.HighlightedTransformedObject;
+import org.freeplane.plugin.script.dependencies.RelatedElements;
 
 import javax.swing.*;
 

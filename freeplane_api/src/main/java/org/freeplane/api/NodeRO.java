@@ -413,4 +413,9 @@ public interface NodeRO {
     /**@since 1.3.7 */
 	int getMinimalDistanceBetweenChildren();
 
+	/**@since 1.3.7 */
+	DependencyLookup getPrecendents();
+
+	/**@since 1.3.7 */
+	DependencyLookup getDependents();
 }

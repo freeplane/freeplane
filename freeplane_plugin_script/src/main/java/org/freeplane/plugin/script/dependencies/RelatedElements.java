@@ -1,9 +1,10 @@
-package org.freeplane.plugin.script;
+package org.freeplane.plugin.script.dependencies;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.freeplane.features.attribute.Attribute;
@@ -53,5 +54,9 @@ public class RelatedElements {
 
 	public Collection<Object> getElements() {
 		return relatedElements.keySet();
+	}
+
+	public Set<Entry<Object, NodeModel>> entrySet() {
+		return relatedElements.entrySet();
 	}
 }

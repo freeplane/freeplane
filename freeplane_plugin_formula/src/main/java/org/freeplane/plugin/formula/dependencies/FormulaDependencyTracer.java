@@ -10,7 +10,6 @@ import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.HighlightedElements;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.Pair;
-import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttribute;
 import org.freeplane.features.filter.FilterController;
@@ -20,7 +19,8 @@ import org.freeplane.features.link.Connectors;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.script.RelatedElements;
+import org.freeplane.plugin.script.dependencies.DependencySearchStrategy;
+import org.freeplane.plugin.script.dependencies.RelatedElements;
 
 class FormulaDependencyTracer implements IExtension {
 
@@ -32,17 +32,6 @@ class FormulaDependencyTracer implements IExtension {
 		configurable.removeExtension(FormulaDependencyTracer.class);
 		configurable.refresh();
 
-	}
-
-	interface DependencySearchStrategy {
-		RelatedElements find(NodeModel node);
-
-		RelatedElements find(NodeModel node, Attribute attribute);
-
-		Pair<NodeModel, NodeModel> inConnectionOrder(Pair<NodeModel, NodeModel> nodePair);
-
-		static final DependencySearchStrategy PREPENDENTS = new PrependentsSearchStrategy();
-		static final DependencySearchStrategy DEPENDENTS = new DependentsSearchStrategy();
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -58,7 +47,7 @@ class FormulaDependencyTracer implements IExtension {
 	}
 
 	public void findPrecedents() {
-		findDependencies(DependencySearchStrategy.PREPENDENTS);
+		findDependencies(DependencySearchStrategy.PRECENDENTS);
 	}
 
 	public void findDependents() {

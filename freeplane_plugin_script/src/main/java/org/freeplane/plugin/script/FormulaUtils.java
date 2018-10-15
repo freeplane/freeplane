@@ -12,6 +12,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.script.dependencies.RelatedElements;
 
 public class FormulaUtils {
 
@@ -143,7 +144,6 @@ public class FormulaUtils {
 	}
 
 	public static void clearCache(final MapModel map) {
-		FormulaCache.removeFrom(map);
-		EvaluationDependencies.removeFrom(map);
+		FormulaDependencies.clearCache(map);
 	}
 }

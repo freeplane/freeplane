@@ -8,6 +8,7 @@ import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.script.dependencies.RelatedElements;
 
 public class NodeScript {
 	final NodeModel node;

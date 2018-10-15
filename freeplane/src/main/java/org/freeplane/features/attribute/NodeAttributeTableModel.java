@@ -127,13 +127,24 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 		return returnValue;
 	}
 
-	public int getAttributePosition(final String pKey) {
-		if (pKey == null) {
+	public int getAttributeIndex(final String name) {
+		if (name == null) {
 			return -1;
 		}
 		int pos = 0;
 		for (final Attribute attr : getAttributes()) {
-			if (pKey.equals(attr.getName())) {
+			if (name.equals(attr.getName())) {
+				return pos;
+			}
+			pos++;
+		}
+		return -1;
+	}
+
+	public int getAttributeIndex(final Attribute searchedAttribute) {
+		int pos = 0;
+		for (final Attribute attribute : getAttributes()) {
+			if (attribute == searchedAttribute) {
 				return pos;
 			}
 			pos++;

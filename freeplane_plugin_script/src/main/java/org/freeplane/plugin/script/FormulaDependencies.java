@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.plugin.script.dependencies.EvaluationDependencies;
 
 public class FormulaDependencies{
 	public static List<NodeModel> manageChangeAndReturnDependencies(boolean includeChanged, final NodeModel... changedNodes) {
@@ -15,6 +16,12 @@ public class FormulaDependencies{
 		FormulaCache.removeFromCache(dependencies);
 		return dependencies;
 	}
+
+	public static void clearCache(final MapModel map) {
+		FormulaCache.removeFrom(map);
+		map.removeExtension(EvaluationDependencies.class);
+	}
+
 
 	private static ArrayList<NodeModel> getAllChangedDependencies(boolean includeChanged, final NodeModel... changedNodes) {
 		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();

@@ -1,4 +1,4 @@
-package org.freeplane.plugin.script;
+package org.freeplane.plugin.script.dependencies;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +11,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 
-class EvaluationDependencies implements IExtension{
+public class EvaluationDependencies implements IExtension{
 
 	static class DependentNodeReferences implements Iterable<NodeModel>{
 		final private WeakHashMap<NodeModel, Void> references = new WeakHashMap<>();
@@ -30,7 +30,7 @@ class EvaluationDependencies implements IExtension{
 	}
 
 
-	static EvaluationDependencies of(MapModel map) {
+	public static EvaluationDependencies of(MapModel map) {
 		EvaluationDependencies dependencies = map.getExtension(EvaluationDependencies.class);
 		if (dependencies == null) {
 			dependencies = new EvaluationDependencies();
@@ -38,11 +38,6 @@ class EvaluationDependencies implements IExtension{
 		}
 		return dependencies;
 	}
-
-	static IExtension removeFrom(MapModel map) {
-		return map.removeExtension(EvaluationDependencies.class);
-	}
-
 
 	private final WeakHashMap<MapModel, DependentNodeReferences> onMapDependencies = new WeakHashMap<>();
 
@@ -52,7 +47,7 @@ class EvaluationDependencies implements IExtension{
 	private final WeakHashMap<NodeModel, Void> onAnyNodeDependencies = new WeakHashMap<>();
 	private final WeakHashMap<NodeModel, Void> onGlobalNodeDependencies = new WeakHashMap<>();
 
-	void getChangedDependencies(Set<NodeModel> accessingNodes, final NodeModel accessedNode) {
+	public void getChangedDependencies(Set<NodeModel> accessingNodes, final NodeModel accessedNode) {
 		final Iterable<NodeModel> onNode = onNodeDependencies.get(accessedNode);
 		if (onNode != null)
 			getRecursively(accessingNodes, onNode);
@@ -69,12 +64,12 @@ class EvaluationDependencies implements IExtension{
 //		System.out.println("dependencies on(" + node + "): " + accessingNodes);
 	}
 
-	void getGlobalDependencies(Set<NodeModel> accessingNodes) {
+	public void getGlobalDependencies(Set<NodeModel> accessingNodes) {
 		getRecursively(accessingNodes, onGlobalNodeDependencies.keySet());
 //		System.out.println("dependencies on(" + node + "): " + accessingNodes);
 	}
 
-	void removeAndReturnChangedDependencies(Set<NodeModel> accessingNodes, final MapModel accessedMap) {
+	public void removeAndReturnChangedDependencies(Set<NodeModel> accessingNodes, final MapModel accessedMap) {
 		final Iterable<NodeModel> onMap = onMapDependencies.remove(accessedMap);
 		if (onMap != null)
 			getRecursively(accessingNodes, onMap);
@@ -89,7 +84,7 @@ class EvaluationDependencies implements IExtension{
 	}
 
 	/** accessedNode was accessed when accessingNode was evaluated. */
-	void accessNode(NodeModel accessingNode, NodeModel accessedNode) {
+	public void accessNode(NodeModel accessingNode, NodeModel accessedNode) {
 		// FIXME: check if accessedNode is already covered by other accessModes
 		provideDependencySet(accessedNode, onNodeDependencies).add(accessingNode);
 		addAccessedMap(accessingNode, accessedNode);
@@ -97,7 +92,7 @@ class EvaluationDependencies implements IExtension{
 	}
 
 	/** accessedNode.children was accessed when accessingNode was evaluated. */
-	void accessBranch(NodeModel accessingNode, NodeModel accessedNode) {
+	public void accessBranch(NodeModel accessingNode, NodeModel accessedNode) {
 		// FIXME: check if accessedNode is already covered by other accessModes
 		provideDependencySet(accessedNode, onBranchDependencies).add(accessingNode);
 		addAccessedMap(accessingNode, accessedNode);
@@ -111,13 +106,13 @@ class EvaluationDependencies implements IExtension{
 	}
 
 	/** a method was used on the accessingNode that may use any node in the map. */
-	void accessAll(NodeModel accessingNode) {
+	public void accessAll(NodeModel accessingNode) {
 		// FIXME: check if accessedNode is already covered by other accessModes
 		onAnyNodeDependencies.put(accessingNode, null);
 //		System.out.println(accessingNode + " accesses all nodes. current dependencies:\n" + this);
 	}
 
-	void accessGlobalNode(NodeModel accessingNode) {
+	public void accessGlobalNode(NodeModel accessingNode) {
 		onGlobalNodeDependencies.put(accessingNode, null);
 	}
 

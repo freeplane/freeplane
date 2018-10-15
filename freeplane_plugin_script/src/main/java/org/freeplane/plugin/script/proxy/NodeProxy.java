@@ -3,13 +3,28 @@
  */
 package org.freeplane.plugin.script.proxy;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.typehandling.NumberMath;
-import org.freeplane.api.*;
+import org.freeplane.api.Attributes;
+import org.freeplane.api.Cloud;
+import org.freeplane.api.Connector;
+import org.freeplane.api.DependencyLookup;
+import org.freeplane.api.Node;
+import org.freeplane.api.NodeCondition;
+import org.freeplane.api.NodeRO;
+import org.freeplane.api.NodeStyle;
+import org.freeplane.api.NodeToComparableMapper;
+import org.freeplane.api.Reminder;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
@@ -31,8 +46,12 @@ import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
-import org.freeplane.features.map.*;
+import org.freeplane.features.map.EncryptionModel;
+import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController.Direction;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.MapNavigationUtils;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodelocation.LocationController;
@@ -47,6 +66,7 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.dependencies.DependencySearchStrategy;
 
 import groovy.lang.Closure;
 
@@ -1126,5 +1146,15 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public void setIsGlobal(final boolean value) {
 		final MMapExplorerController explorer = getExplorer();
 		explorer.makeGlobal(getDelegate(), value);
+	}
+
+	@Override
+	public DependencyLookup getPrecendents() {
+		return new DependencyLookupProxy(getDelegate(), getScriptContext(), DependencySearchStrategy.PRECENDENTS);
+	}
+
+	@Override
+	public DependencyLookup getDependents() {
+		return new DependencyLookupProxy(getDelegate(), getScriptContext(), DependencySearchStrategy.DEPENDENTS);
 	}
 }

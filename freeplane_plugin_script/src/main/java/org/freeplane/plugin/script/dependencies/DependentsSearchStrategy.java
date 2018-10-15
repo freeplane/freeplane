@@ -1,4 +1,4 @@
-package org.freeplane.plugin.formula.dependencies;
+package org.freeplane.plugin.script.dependencies;
 
 import org.freeplane.core.util.Pair;
 import org.freeplane.features.attribute.Attribute;
@@ -6,12 +6,11 @@ import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.FormulaDependencies;
 import org.freeplane.plugin.script.FormulaUtils;
-import org.freeplane.plugin.script.RelatedElements;
 
 import java.util.Collection;
 import java.util.Vector;
 
-class DependentsSearchStrategy implements FormulaDependencyTracer.DependencySearchStrategy {
+class DependentsSearchStrategy implements DependencySearchStrategy {
 	@Override
 	public RelatedElements find(final NodeModel node) {
 		return find(node, node);
