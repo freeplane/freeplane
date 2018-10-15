@@ -44,6 +44,6 @@ public abstract class AbstractProxy<T> {
     public String toString() {
 	    final String simpleName = getClass().getSimpleName();
 		String className = simpleName.endsWith(DEFAULT_CLASS_NAME_ENDING) ? simpleName.substring(0, simpleName.length() - DEFAULT_CLASS_NAME_ENDING.length()) : simpleName;
-		return className + ":" + delegate.toString();
+		return '(' + className + ") " + delegate.toString();
     }
 }
