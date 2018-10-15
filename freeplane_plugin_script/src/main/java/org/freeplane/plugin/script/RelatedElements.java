@@ -2,6 +2,7 @@ package org.freeplane.plugin.script;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,8 +33,14 @@ public class RelatedElements {
 
 	public void relateMap(final MapModel accessedMap) {
 		if (relatedNode.getMap() != accessedMap) {
-			relatedMaps.add(accessedMap);
+			add(accessedMap);
 		}
+	}
+
+	private void add(final MapModel accessedMap) {
+		if(relatedMaps == null)
+			relatedMaps = new HashSet<>();
+		relatedMaps.add(accessedMap);
 	}
 
 	public boolean isEmpty() {
