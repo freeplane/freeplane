@@ -50,6 +50,7 @@ jar {
         def exports = """\
                       org.freeplane.plugin.script,
                       org.freeplane.plugin.script.addons,
+                      org.freeplane.plugin.script.dependencies,
                       org.freeplane.plugin.script.filter,
                       org.freeplane.plugin.script.proxy
                       """
