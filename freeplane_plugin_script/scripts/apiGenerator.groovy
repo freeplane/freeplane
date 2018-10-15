@@ -230,7 +230,7 @@ def createChild(Proxy.Node parent, text, link) {
 }
 
 // == MAIN ==
-this.freeplaneApiBase = new File(ResourceController.resourceController.installationBaseDir).toURI().toString() + '/doc/api';
+this.freeplaneApiBase = new File(ResourceController.resourceController.installationBaseDir).toURI().toString() + 'doc/api';
 def MAP_NAME = textUtils.getText('scripting_api_generator_title')
 def PROXY_NODE = textUtils.getText('scripting_api_generator_proxy')
 def UTILITES_NODE = textUtils.getText('scripting_api_generator_utilities')
@@ -265,6 +265,8 @@ makeApi(proxy, Proxy.Icons.class)
 makeApi(proxy, Proxy.Link.class)
 makeApi(proxy, Proxy.Map.class)
 makeApi(proxy, Proxy.Node.class)
+makeApi(proxy, Proxy.DependencyLookup.class)
+makeApi(proxy, org.freeplane.api.Dependencies.class)
 makeApi(proxy, Proxy.NodeStyle.class)
 makeApi(proxy, Convertible.class)
 

@@ -5,6 +5,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.plugin.script.ScriptContext;
 
 public abstract class AbstractProxy<T> {
+	private static final String DEFAULT_CLASS_NAME_ENDING = "Proxy";
 	private final T delegate;
 	private final ScriptContext scriptContext;
 
@@ -41,6 +42,8 @@ public abstract class AbstractProxy<T> {
 
 	@Override
     public String toString() {
-	    return getClass() + ":" + delegate.toString();
+	    final String simpleName = getClass().getSimpleName();
+		String className = simpleName.endsWith(DEFAULT_CLASS_NAME_ENDING) ? simpleName.substring(0, simpleName.length() - DEFAULT_CLASS_NAME_ENDING.length()) : simpleName;
+		return className + ":" + delegate.toString();
     }
 }

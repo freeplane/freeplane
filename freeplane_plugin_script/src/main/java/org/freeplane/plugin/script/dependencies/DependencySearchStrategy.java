@@ -11,6 +11,6 @@ public interface DependencySearchStrategy {
 
 	Pair<NodeModel, NodeModel> inConnectionOrder(Pair<NodeModel, NodeModel> nodePair);
 
-	public static final DependencySearchStrategy PRECENDENTS = new PrecendentsSearchStrategy();
+	public static final DependencySearchStrategy PRECEDENTS = new PrecedentsSearchStrategy();
 	public static final DependencySearchStrategy DEPENDENTS = new DependentsSearchStrategy();
 }

@@ -148,10 +148,8 @@ public interface Proxy {
 	}
 
 	interface Loader extends org.freeplane.api.Loader{
-
 		@Override
 		Proxy.Map getMap();
-
 	}
 
 
@@ -253,4 +251,6 @@ public interface Proxy {
     interface Reminder extends ReminderRO, org.freeplane.api.Reminder {
 
     }
+
+    interface DependencyLookup extends org.freeplane.api.DependencyLookup {}
 }

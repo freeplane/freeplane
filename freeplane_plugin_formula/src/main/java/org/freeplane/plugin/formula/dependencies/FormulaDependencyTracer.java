@@ -47,7 +47,7 @@ class FormulaDependencyTracer implements IExtension {
 	}
 
 	public void findPrecedents() {
-		findDependencies(DependencySearchStrategy.PRECENDENTS);
+		findDependencies(DependencySearchStrategy.PRECEDENTS);
 	}
 
 	public void findDependents() {

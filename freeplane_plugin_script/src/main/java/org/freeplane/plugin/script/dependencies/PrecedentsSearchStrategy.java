@@ -5,7 +5,7 @@ import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.FormulaUtils;
 
-class PrecendentsSearchStrategy implements DependencySearchStrategy {
+class PrecedentsSearchStrategy implements DependencySearchStrategy {
 	@Override
 	public RelatedElements find(final NodeModel node) {
 		return FormulaUtils.getRelatedElements(node, node.getUserObject());

@@ -1149,8 +1149,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	}
 
 	@Override
-	public DependencyLookup getPrecendents() {
-		return new DependencyLookupProxy(getDelegate(), getScriptContext(), DependencySearchStrategy.PRECENDENTS);
+	public DependencyLookup getPrecedents() {
+		return new DependencyLookupProxy(getDelegate(), getScriptContext(), DependencySearchStrategy.PRECEDENTS);
 	}
 
 	@Override
