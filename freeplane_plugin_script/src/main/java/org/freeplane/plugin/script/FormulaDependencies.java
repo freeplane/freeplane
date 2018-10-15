@@ -3,6 +3,8 @@ package org.freeplane.plugin.script;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -10,12 +12,6 @@ import org.freeplane.features.map.NodeModel;
 public class FormulaDependencies{
 	public static List<NodeModel> manageChangeAndReturnDependencies(boolean includeChanged, final NodeModel... changedNodes) {
 		final ArrayList<NodeModel> dependencies = getAllChangedDependencies(includeChanged, changedNodes);
-		FormulaCache.removeFromCache(dependencies);
-		return dependencies;
-	}
-
-	public static List<NodeModel> manageChangeAndReturnGlobalDependencies(MapModel map) {
-		final ArrayList<NodeModel> dependencies = getGlobalDependencies(map);
 		FormulaCache.removeFromCache(dependencies);
 		return dependencies;
 	}
@@ -33,15 +29,6 @@ public class FormulaDependencies{
 		return dependencies;
 	}
 
-
-	private static ArrayList<NodeModel> getGlobalDependencies(MapModel map) {
-		final LinkedHashSet<NodeModel> accessingNodes = new LinkedHashSet<NodeModel>(0);
-		EvaluationDependencies.of(map).getGlobalDependencies(accessingNodes);
-		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
-		if (accessingNodes != null)
-			dependencies.addAll(accessingNodes);
-		return dependencies;
-	}
 
 	static void accessNode(NodeModel accessingNode, NodeModel accessedNode) {
 		EvaluationDependencies.of(accessedNode.getMap()).accessNode(accessingNode, accessedNode);
@@ -64,13 +51,21 @@ public class FormulaDependencies{
 		return EvaluationDependencies.of(node.getMap()).getPossibleDependencies(node);
 	}
 
-	public static List<NodeModel> removeAndReturnMapDependencies(MapModel map) {
-		final LinkedHashSet<NodeModel> accessingNodes = new LinkedHashSet<NodeModel>(0);
-		EvaluationDependencies.of(map).removeAndReturnChangedDependencies(accessingNodes, map);
-		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
-		if (accessingNodes != null)
-			dependencies.addAll(accessingNodes);
-		return dependencies;
+	public static List<NodeModel> manageChangeAndReturnGlobalDependencies(MapModel map) {
+		return manageChangeAndReturnDependencies(EvaluationDependencies.of(map)::getGlobalDependencies);
+	}
 
+	public static List<NodeModel> removeAndReturnMapDependencies(MapModel map) {
+		return manageChangeAndReturnDependencies(
+			set -> EvaluationDependencies.of(map).removeAndReturnChangedDependencies(set, map));
+	}
+
+	private static List<NodeModel> manageChangeAndReturnDependencies(Consumer<Set<NodeModel>> loader) {
+		final LinkedHashSet<NodeModel> accessingNodes = new LinkedHashSet<NodeModel>(0);
+		loader.accept(accessingNodes);
+		final ArrayList<NodeModel> dependencies = new ArrayList<NodeModel>();
+		dependencies.addAll(accessingNodes);
+		FormulaCache.removeFromCache(dependencies);
+		return dependencies;
 	}
 }

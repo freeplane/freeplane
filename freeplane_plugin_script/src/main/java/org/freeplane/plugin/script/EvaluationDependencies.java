@@ -106,7 +106,8 @@ class EvaluationDependencies implements IExtension{
 
 	private void addAccessedMap(NodeModel accessingNode, NodeModel accessedNode) {
 		final MapModel accessedMap = accessedNode.getMap();
-		provideDependencySet(accessedMap, onMapDependencies).add(accessingNode);
+		if(accessedMap != accessingNode.getMap())
+			provideDependencySet(accessedMap, onMapDependencies).add(accessingNode);
 	}
 
 	/** a method was used on the accessingNode that may use any node in the map. */
