@@ -386,6 +386,7 @@ public class MMapController extends MapController {
 
 	@Override
 	public void closeWithoutSaving(final MapModel map) {
+		loadedMaps.remove(map);
 		super.closeWithoutSaving(map);
 	}
 
@@ -995,11 +996,9 @@ public class MMapController extends MapController {
 			newModel.setURL(url);
 			newModel.setSaved(alternativeURL.equals(url));
 			fireMapCreated(newModel);
-			loadedMaps.remove(map);
+			loadedMaps.put(newModel, null);
 			closeWithoutSaving(map);
 			newModel.enableAutosave();
-			loadedMaps.put(newModel, null);
-			fireMapReloaded(map, newModel);
 			createMapView(newModel);
 			return;
 		}

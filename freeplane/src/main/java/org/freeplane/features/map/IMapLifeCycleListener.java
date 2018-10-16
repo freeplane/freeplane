@@ -27,6 +27,4 @@ public interface IMapLifeCycleListener {
 	default public void onCreate(MapModel map) {}
 
 	default public void onRemove(MapModel map) {}
-
-	default public void onMapReloaded(MapModel oldMap, MapModel newMap) {}
 }

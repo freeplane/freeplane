@@ -89,10 +89,9 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 	}
 
 	@Override
-	public void onMapReloaded(MapModel oldMap, MapModel newMap) {
-		final List<NodeModel> dependencies = FormulaDependencies.removeAndReturnMapDependencies(oldMap);
+	public void onRemove(MapModel map) {
+		final List<NodeModel> dependencies = FormulaDependencies.removeAndReturnMapDependencies(map);
 		refresh(dependencies);
-
 	}
 
 
