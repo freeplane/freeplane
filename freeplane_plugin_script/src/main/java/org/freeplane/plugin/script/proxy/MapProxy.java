@@ -1,6 +1,9 @@
 package org.freeplane.plugin.script.proxy;
 
-import groovy.lang.Closure;
+import java.awt.Color;
+import java.io.File;
+import java.util.Map.Entry;
+
 import org.freeplane.api.NodeCondition;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
@@ -14,13 +17,12 @@ import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.plugin.script.FormulaUtils;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
-import java.awt.*;
-import java.io.File;
-import java.util.Map.Entry;
+import groovy.lang.Closure;
 
 public class MapProxy extends AbstractProxy<MapModel> implements Map {
 	public MapProxy(final MapModel map, final ScriptContext scriptContext) {
@@ -250,4 +252,11 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 	public Proxy.Properties getStorage() {
         return new PropertiesProxy(getDelegate(), getScriptContext());
     }
+
+	@Override
+	public void evaluateAllFormulas() {
+		FormulaUtils.evaluateAllFormulas(getDelegate());
+	}
+
+
 }

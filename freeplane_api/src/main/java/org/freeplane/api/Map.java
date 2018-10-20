@@ -103,4 +103,11 @@ public interface Map extends MapRO {
 	/** returns an accessor to the map specific storage. The value is never null
 	 *  @since 1.3.6 */
 	public Properties getStorage();
+
+	/**
+	 * Evaluate all formulas in the map.
+	 *
+	 * Each formula in the map is evaluated not depending on if it was already cached.
+	 *  @since 1.7.2 */
+	public void evaluateAllFormulas();
 }

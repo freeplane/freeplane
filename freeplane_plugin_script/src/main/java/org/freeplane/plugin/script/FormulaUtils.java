@@ -8,6 +8,7 @@ import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -145,5 +146,27 @@ public class FormulaUtils {
 
 	public static void clearCache(final MapModel map) {
 		FormulaDependencies.clearCache(map);
+	}
+
+	public static void evaluateAllFormulas(MapModel map) {
+		clearCache(map);
+		evaluateAll(map.getRootNode());
+	}
+
+	static private void evaluateAll(NodeModel node) {
+		evaluateObject(node, node.getUserObject());
+		NodeAttributeTableModel attributeTableModel = node.getExtension(NodeAttributeTableModel.class);
+		if(attributeTableModel != null)
+			attributeTableModel.getAttributes().stream().forEach(a -> evaluateObject(node, a));
+		node.getChildren().stream().forEach(FormulaUtils::evaluateAll);
+	}
+
+	static private void evaluateObject(NodeModel node, Object userObject) {
+		try {
+			if (FormulaUtils.containsFormula(userObject)){
+				FormulaUtils.evalIfScript(node, (String) userObject);
+			}
+		} catch (Exception e) {
+		}
 	}
 }
