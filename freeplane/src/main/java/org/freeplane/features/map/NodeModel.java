@@ -472,8 +472,8 @@ public class NodeModel{
 		boolean wasFolded = isFolded();
 		if (wasFolded != folded && isAccessible()) {
 			sharedData.setFolded(folded && ! AlwaysUnfoldedNode.isConnectorNode(this));
-			fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(folded), false, false));
 		}
+		fireNodeChanged(new NodeChangeEvent(this, NodeChangeType.FOLDING, Boolean.valueOf(wasFolded), Boolean.valueOf(folded), false, false));
 	}
 
 	public void setHistoryInformation(final HistoryInformationModel historyInformation) {
