@@ -19,6 +19,55 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.AWTKeyStroke;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.KeyboardFocusManager;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Stroke;
+import java.awt.dnd.Autoscroll;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.RoundRectangle2D;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.AbstractList;
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.Vector;
+
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
+
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.HighlightedElements;
 import org.freeplane.core.io.xml.TreeXmlReader;
@@ -34,9 +83,25 @@ import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.edge.EdgeColorsConfigurationFactory;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.highlight.NodeHighlighter;
-import org.freeplane.features.link.*;
+import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
-import org.freeplane.features.map.*;
+import org.freeplane.features.link.Connectors;
+import org.freeplane.features.link.LinkController;
+import org.freeplane.features.link.NodeLinkModel;
+import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.map.IMapChangeListener;
+import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.INodeChangeListener;
+import org.freeplane.features.map.INodeView;
+import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeChangeEvent;
+import org.freeplane.features.map.NodeDeletionEvent;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeMoveEvent;
+import org.freeplane.features.map.NodeRelativePath;
+import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -53,24 +118,6 @@ import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
 import org.freeplane.view.swing.map.link.ILinkView;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.dnd.Autoscroll;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.RoundRectangle2D;
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.List;
 
 /**
  * This class represents the view of a whole MindMap (in analogy to class
@@ -2117,9 +2164,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	 */
 	@Override
 	protected void validateTree() {
-		validateSelecteds();
-		getRoot().validateTree();
-		super.validateTree();
+		if(isDisplayable()) {
+			validateSelecteds();
+			getRoot().validateTree();
+			super.validateTree();
+		}
 	}
 
 	@Override
