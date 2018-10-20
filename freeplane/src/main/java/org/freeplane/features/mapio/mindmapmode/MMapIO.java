@@ -41,14 +41,14 @@ import org.freeplane.n3.nanoxml.XMLParseException;
  */
 @SuppressWarnings("deprecation")
 public class MMapIO extends MapIO{
-	
-	
+
+
 	private static MMapIO INSTANCE;
-	
+
 	public static MMapIO getInstance() {
 		return INSTANCE;
 	}
-	
+
 	final private MFileManager fileManager;
 	final private MMapController mapController;
 	private MMapIO(MFileManager urlManager, MMapController mapController) {
@@ -56,10 +56,10 @@ public class MMapIO extends MapIO{
 	    this.fileManager = urlManager;
 	    this.mapController = mapController;
     }
-	
+
 	public static void install(MModeController modeController){
 		if(INSTANCE != null) {
-			throw new IllegalStateException("Should be used only in one mode");			
+			throw new IllegalStateException("Should be used only in one mode");
 		}
 		MFileManager urlManager = (MFileManager) modeController.getExtension(UrlManager.class);
 		MMapController mapController = (MMapController) modeController.getMapController();
@@ -86,9 +86,6 @@ public class MMapIO extends MapIO{
     }
 	public MapModel openUntitledMap(File startFile) {
 	    return fileManager.openUntitledMap(startFile);
-    }
-	public void saveAsUserTemplate() {
-	    fileManager.saveAsUserTemplate();
     }
 	public boolean save(MapModel map) {
 	    return fileManager.save(map);

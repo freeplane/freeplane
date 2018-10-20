@@ -31,10 +31,9 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
 @EnabledAction(checkOnNodeChange=true)
-
 class SaveAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -42,6 +41,7 @@ class SaveAction extends AFreeplaneAction {
 		super("SaveAction");
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		if (Controller.getCurrentController().getMap().isReadOnly()) {
 			JOptionPane.showMessageDialog(Controller.getCurrentController()
@@ -59,9 +59,8 @@ class SaveAction extends AFreeplaneAction {
 		else {
 			controller.getViewController().out(TextUtils.getText("saving_canceled"));
 		}
-		controller.getMapViewManager().setMapTitles();
 	}
-	
+
 	@Override
 	public void setEnabled() {
 		final Controller controller = Controller.getCurrentController();

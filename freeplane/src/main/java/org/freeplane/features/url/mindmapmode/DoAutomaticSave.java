@@ -72,6 +72,7 @@ public class DoAutomaticSave extends TimerTask {
 			cancel();
 			Controller.getCurrentController().getViewController().invokeAndWait(new Runnable() {
 
+				@Override
 				public void run() {
 					/* Now, it is dirty, we save it. */
 					try {
@@ -102,10 +103,12 @@ public class DoAutomaticSave extends TimerTask {
 						if (filesShouldBeDeletedAfterShutdown) {
 							tempFile.deleteOnExit();
 						}
-						((MFileManager) UrlManager.getController())
-						    .saveInternal((MMapModel) model, tempFile, true /*=internal call*/);
-						modeController.getController().getViewController()
-						    .out(TextUtils.format("automatically_save_message", tempFile));
+						if(file.canWrite()) {
+							((MFileManager) UrlManager.getController())
+							.saveInternal((MMapModel) model, tempFile, true /*=internal call*/);
+							modeController.getController().getViewController()
+							.out(TextUtils.format("automatically_save_message", tempFile));
+						}
 					}
 					catch (final Exception e) {
 						LogUtils.severe("Error in automatic MapModel.save(): ", e);

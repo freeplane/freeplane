@@ -716,32 +716,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		});
 	}
 
-	/**@deprecated -- use MMapIO*/
-	@Deprecated
-	public void saveAsUserTemplate() {
-		final JFileChooser chooser = new JFileChooser();
-		final FileFilter filter = getFileFilter();
-		chooser.addChoosableFileFilter(filter);
-		chooser.setFileFilter(filter);
-		final File userTemplates = defaultUserTemplateDir();
-		chooser.setCurrentDirectory(userTemplates);
-		final int returnVal = chooser
-		    .showOpenDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent());
-		if (returnVal != JFileChooser.APPROVE_OPTION) {
-			return;
-		}
-		File file = chooser.getSelectedFile();
-		if (file.exists()) {
-			final int overwriteMap = JOptionPane.showConfirmDialog(Controller.getCurrentController()
-			    .getMapViewManager().getMapViewComponent(), TextUtils.getText("map_already_exists"), "Freeplane",
-			    JOptionPane.YES_NO_OPTION);
-			if (overwriteMap != JOptionPane.YES_OPTION) {
-				return;
-			}
-		}
-		saveInternal((MMapModel) Controller.getCurrentController().getMap(), file, false);
-	}
-
 	public boolean save(final MapModel map) {
 		if (map == null || map.isSaved()) {
 			return true;
@@ -776,7 +750,16 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			    TextUtils.format("locking_failed_by_save_as", file.getName()));
 			return false;
 		}
+		if (file.exists() && !file.canWrite()) {
+			JOptionPane.showMessageDialog(Controller.getCurrentController()
+			    .getMapViewManager().getMapViewComponent(),
+			    TextUtils.format("SaveAs_toReadonlyMsg", file),
+			    TextUtils.getText("SaveAs_toReadonlyTitle"),
+			    JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
 		final URL urlBefore = map.getURL();
+		setFile(map, file);
 		final boolean saved = saveInternal((MMapModel) map, file, false);
 		if (!saved) {
 			return false;
@@ -847,25 +830,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	 * of temporary (internal) files.
 	 */
 	boolean saveInternal(final MMapModel map, final File file, final boolean isInternal) {
-		if (file.exists() && !file.canWrite()) {
-			JOptionPane.showMessageDialog(Controller.getCurrentController()
-			    .getMapViewManager().getMapViewComponent(),
-			    TextUtils.format("SaveAs_toReadonlyMsg", file),
-			    TextUtils.getText("SaveAs_toReadonlyTitle"),
-			    JOptionPane.WARNING_MESSAGE);
-			return false;
-		}
 		try {
 			if (map.getTimerForAutomaticSaving() != null) {
 				map.getTimerForAutomaticSaving().cancel();
 			}
-			if (!isInternal) {
-				setFile(map, file);
-			}
 			writeToFile(map, file);
-			if (!isInternal) {
-				map.setSaved(true);
-			}
 			map.scheduleTimerForAutomaticSaving();
 			return true;
 		}
