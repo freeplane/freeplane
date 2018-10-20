@@ -105,9 +105,7 @@ public class MMapIO extends MapIO{
 	public void writeToFile(MapModel map, File file) throws FileNotFoundException, IOException {
 	    fileManager.writeToFile(map, file);
     }
-	public String tryToLock(MapModel map, File file) throws Exception {
-	    return fileManager.tryToLock(map, file);
-    }
+
 	public NodeModel loadTree(MapModel map, File file) throws XMLParseException, IOException {
 		return fileManager.loadTree(map, file);
     }

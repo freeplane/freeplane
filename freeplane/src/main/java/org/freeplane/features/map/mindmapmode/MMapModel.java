@@ -54,12 +54,13 @@ public class MMapModel extends MapModel {
 		super();
 		this.autosaveEnabled = false;
 		addExtension(IUndoHandler.class, new UndoHandler(this));
-		this.setLockManager(ResourceController.getResourceController().getBooleanProperty(
-		    "experimental_file_locking_on") ? new LockManager() : new DummyLockManager());
+		this.lockManager = ResourceController.getResourceController().getBooleanProperty(
+		"experimental_file_locking_on") ? new LockManager() : new DummyLockManager();
 	}
 
 	public void enableAutosave() {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				if(! autosaveEnabled) {
 					autosaveEnabled = true;
@@ -76,8 +77,7 @@ public class MMapModel extends MapModel {
 	 */
 	@Override
 	public void destroy() {
-		getLockManager().releaseLock();
-		getLockManager().releaseTimer();
+		getLockManager().release();
 		/* cancel the timer, if map is closed. */
 		if (getTimerForAutomaticSaving() != null) {
 			getTimerForAutomaticSaving().cancel();
@@ -138,15 +138,7 @@ public class MMapModel extends MapModel {
 		final Timer timer = SysUtils.createTimer("TimerForAutomaticSaving");
 		timer.schedule(new DoAutomaticSave(this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown,
 		    useSingleBackupDirectory, singleBackupDirectory), delay, delay);
-		this.setTimerForAutomaticSaving(timer);
-	}
-
-	void setLockManager(final LockManager lockManager) {
-		this.lockManager = lockManager;
-	}
-
-	void setTimerForAutomaticSaving(final Timer timerForAutomaticSaving) {
-		this.timerForAutomaticSaving = timerForAutomaticSaving;
+		this.timerForAutomaticSaving = timer;
 	}
 
 	@Override

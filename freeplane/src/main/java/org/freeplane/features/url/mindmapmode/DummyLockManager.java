@@ -28,11 +28,7 @@ public class DummyLockManager extends LockManager {
 	}
 
 	@Override
-	public synchronized void releaseLock() {
-	}
-
-	@Override
-	public synchronized void releaseTimer() {
+	public synchronized void release() {
 	}
 
 	@Override

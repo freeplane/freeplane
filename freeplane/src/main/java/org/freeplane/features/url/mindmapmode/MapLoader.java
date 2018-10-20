@@ -110,6 +110,9 @@ public class MapLoader{
 					if (withView) {
 						createMapView(map);
 						enableAutosave(map);
+						final File newFile = urlToFileOrNull(newMapLocation);
+						if(newFile != null)
+							fileManager().lock(map, newFile);
 					}
 				}
 				finally {
@@ -222,11 +225,6 @@ public class MapLoader{
 		if(asDocumentation) {
 			map.setReadOnly(true);
 			map.addExtension(DocuMapAttribute.instance);
-		}
-		else {
-			final File newFile = urlToFileOrNull(newMapLocation);
-			if(newFile != null)
-				fileManager.lock(map, newFile);
 		}
 
 		if(sourceLocation != null) {

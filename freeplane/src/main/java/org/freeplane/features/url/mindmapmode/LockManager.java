@@ -40,8 +40,8 @@ public class LockManager extends TimerTask {
 	private final long lockSafetyPeriod;
 	private Timer lockTimer;
 	private final long lockUpdatePeriod;
-	
-	
+
+
 	public LockManager() {
 	    super();
 		lockedSemaphoreFile = null;
@@ -61,14 +61,11 @@ public class LockManager extends TimerTask {
 		return toReturn;
 	}
 
-	public synchronized void releaseLock() {
+	public synchronized void release() {
 		if (lockedSemaphoreFile != null) {
 			lockedSemaphoreFile.delete();
 			lockedSemaphoreFile = null;
 		}
-	}
-
-	public synchronized void releaseTimer() {
 		if (lockTimer != null) {
 			lockTimer.cancel();
 			lockTimer = null;
@@ -122,7 +119,7 @@ public class LockManager extends TimerTask {
 			lockTimer = SysUtils.createTimer(getClass().getSimpleName());
 			lockTimer.schedule(this, lockUpdatePeriod, lockUpdatePeriod);
 		}
-		releaseLock();
+		release();
 		lockedSemaphoreFile = semaphoreFile;
 		return null;
 	}
