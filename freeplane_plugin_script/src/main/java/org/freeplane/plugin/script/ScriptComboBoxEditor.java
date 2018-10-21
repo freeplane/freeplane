@@ -37,6 +37,7 @@ import javax.swing.SwingConstants;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 
@@ -50,7 +51,7 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 	final private List<ActionListener> actionListeners;
 	private String script;
 	private Dimension minimumSize;
-	private Rectangle bounds = new Rectangle(600, 400);
+	private Rectangle bounds;
 
 	public ScriptComboBoxEditor() {
 		showEditorBtn = new JButton();
@@ -58,12 +59,14 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 		setButtonText();
 		showEditorBtn.setHorizontalAlignment(SwingConstants.LEFT);
 		showEditorBtn.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				editScript(false);
 			}
 		});
 		actionListeners = new LinkedList<ActionListener>();
-		minimumSize = new Dimension(100, 60);
+		minimumSize = new Dimension(600, 400);
+		bounds = null;
 	}
 
 	public Dimension getMinimumSize() {
@@ -95,8 +98,12 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 		dialog.setResizable(true);
 		if(bounds != null)
 			dialog.setBounds(bounds);
+		else {
+			dialog.pack();
+			UITools.setDialogLocationRelativeTo(dialog, showEditorBtn);
+			bounds = dialog.getBounds();
+		}
 		dialog.setVisible(true);
-		bounds = dialog.getBounds();
 		final Integer result = ((Integer)optionPane.getValue());
 		if(result == null || result != JOptionPane.OK_OPTION)
 			return;
@@ -122,9 +129,11 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 
     }
 
+	@Override
 	public Component getEditorComponent() {
 		return showEditorBtn;
 	}
+	@Override
 	public void setItem(Object anObject) {
 		if(anObject == null)
 			script = "";
@@ -133,20 +142,24 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 		setButtonText();
     }
 
+	@Override
 	public Object getItem() {
 	    return script;
     }
+	@Override
 	public void selectAll() {
 		editScript(true);
     }
+	@Override
 	public void addActionListener(final ActionListener l) {
 		actionListeners.add(l);
 	}
 
+	@Override
 	public void removeActionListener(final ActionListener l) {
 		actionListeners.remove(l);
 	}
-	
+
 	public void setPreferredSize(Dimension preferredSize) {
 	    showEditorBtn.setPreferredSize(preferredSize);
     }
