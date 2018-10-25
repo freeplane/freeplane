@@ -1,5 +1,5 @@
 plugins {
-  id "nebula.ospackage" version "4.4.0"
+  id "nebula.ospackage" version "5.0.4"
 }
 
 allprojects {
