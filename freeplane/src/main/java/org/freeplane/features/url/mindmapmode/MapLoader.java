@@ -22,7 +22,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
-import org.freeplane.n3.nanoxml.XMLParseException;
+import org.freeplane.n3.nanoxml.XMLException;
 
 public class MapLoader{
 
@@ -194,7 +194,7 @@ public class MapLoader{
 		final MMapModel map = AccessController.doPrivileged(new PrivilegedExceptionAction<MMapModel>() {
 
 			@Override
-			public MMapModel run() throws FileNotFoundException, XMLParseException, URISyntaxException, IOException {
+			public MMapModel run() throws FileNotFoundException, XMLException, URISyntaxException, IOException {
 				return  loadMap(actualSourceLocation);
 			}
 		});
@@ -219,7 +219,7 @@ public class MapLoader{
 	}
 
 	private MMapModel loadMap(URL sourceLocation)
-			throws URISyntaxException, FileNotFoundException, XMLParseException, IOException {
+			throws URISyntaxException, FileNotFoundException, IOException, XMLException {
 		final MMapModel map = new MMapModel();
 		MFileManager fileManager = fileManager();
 		if(asDocumentation) {
@@ -230,9 +230,11 @@ public class MapLoader{
 		if(sourceLocation != null) {
 			final File file = Compat.urlToFile(sourceLocation);
 			if (file == null) {
-				fileManager.loadCatchExceptions(sourceLocation, map);
+				fileManager.load(sourceLocation, map);
 			}
 			else {
+				if(! file.canRead())
+					throw new FileNotFoundException(file.getAbsolutePath());
 				if (file.length() != 0) {
 					//DOCEAR - fixed: set the file for the map before parsing the xml, necessary for some events
 					fileManager.setFile(map, file);

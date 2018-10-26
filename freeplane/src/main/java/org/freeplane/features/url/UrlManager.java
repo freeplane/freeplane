@@ -197,9 +197,8 @@ public class UrlManager implements IExtension {
 	}
 
 	public boolean loadCatchExceptions(final URL url, final MapModel map){
-		InputStreamReader urlStreamReader = null;
 		try {
-			urlStreamReader = load(url, map);
+			load(url, map);
 			return true;
 		}
 		catch (final XMLException ex) {
@@ -216,23 +215,19 @@ public class UrlManager implements IExtension {
 				LogUtils.severe("Can not load url", ex);
 			}
 		}
-		finally {
-			FileUtils.silentlyClose(urlStreamReader);
-		}
 		UITools.errorMessage(TextUtils.format("url_open_error", url.toString()));
 		return false;
 	}
 
 
-	public InputStreamReader load(final URL url, final MapModel map)
+	public void load(final URL url, final MapModel map)
 			throws IOException, XMLException {
-		InputStreamReader urlStreamReader;
 		setURL(map, url);
 		InputStream inputStream = getLocation(url).openStream();
-		urlStreamReader = new InputStreamReader(inputStream);
-		final ModeController modeController = Controller.getCurrentModeController();
-		modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
-		return urlStreamReader;
+		try (InputStreamReader urlStreamReader = new InputStreamReader(inputStream)) {
+			final ModeController modeController = Controller.getCurrentModeController();
+			modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
+		}
 	}
 
 	private URL getLocation(final URL url) throws IOException {
@@ -248,10 +243,6 @@ public class UrlManager implements IExtension {
 		}
 		return url;
 	}
-
-    public boolean loadImpl(final URL url, final MapModel map){
-        return loadCatchExceptions(url, map);
-    }
 
     /**@deprecated -- use LinkController*/
 	@Deprecated
