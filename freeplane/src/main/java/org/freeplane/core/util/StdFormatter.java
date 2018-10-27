@@ -26,7 +26,7 @@ import java.util.logging.SimpleFormatter;
 class StdFormatter extends SimpleFormatter {
 	private static class StdOutErrLevel extends Level {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -59,11 +59,11 @@ class StdFormatter extends SimpleFormatter {
 			return super.format(record);
 		}
 		final StringBuilder sb = new StringBuilder();
-		sb.append(lineSeparator);
 		final String message = formatMessage(record);
 		sb.append(record.getLevel().getLocalizedName());
 		sb.append(": ");
-		sb.append(message);
+		sb.append(message.trim());
+		sb.append(lineSeparator);
 		return sb.toString();
 	}
 }

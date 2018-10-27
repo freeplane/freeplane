@@ -27,7 +27,9 @@ import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import java.util.logging.StreamHandler;
 
 import org.freeplane.core.resources.ResourceController;
 
@@ -43,7 +45,7 @@ import org.freeplane.core.resources.ResourceController;
  *      logger.severe('error on conversion of "' + node.text + '" to date', ex)
  *  }
  * </pre>
- * 
+ *
  * @author foltin
  */
 public class LogUtils {
@@ -75,11 +77,19 @@ public class LogUtils {
 				mFileHandler.setFormatter(new StdFormatter());
 				parentLogger.addHandler(mFileHandler);
 			}
-			final ConsoleHandler stdConsoleHandler = new ConsoleHandler();
-			stdConsoleHandler.setFormatter(new StdFormatter());
+			final StreamHandler stdConsoleHandler = new StreamHandler(System.out, new StdFormatter()) {
+				{
+					setLevel(Level.INFO);
+				}
+				@Override
+				public void publish(LogRecord record) {
+					super.publish(record);
+					flush();
+				}
+			};
+
 			if(System.getProperty("java.util.logging.config.file", null) == null){
 				mFileHandler.setLevel(Level.INFO);
-				stdConsoleHandler.setLevel(Level.INFO);
 			}
 			parentLogger.addHandler(stdConsoleHandler);
 			LoggingOutputStream los;
