@@ -157,7 +157,7 @@ public class FormulaUtils {
 		evaluateObject(node, node.getUserObject());
 		NodeAttributeTableModel attributeTableModel = node.getExtension(NodeAttributeTableModel.class);
 		if(attributeTableModel != null)
-			attributeTableModel.getAttributes().stream().forEach(a -> evaluateObject(node, a));
+			attributeTableModel.getAttributes().stream().forEach(a -> evaluateObject(node, a.getValue()));
 		node.getChildren().stream().forEach(FormulaUtils::evaluateAll);
 	}
 
