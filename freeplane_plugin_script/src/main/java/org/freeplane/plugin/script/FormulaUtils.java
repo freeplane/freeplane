@@ -1,5 +1,6 @@
 package org.freeplane.plugin.script;
 
+import java.net.URL;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -83,13 +84,10 @@ public class FormulaUtils {
 			if (value == null) {
 				try {
 					value = eval(nodeScript, scriptContext, restrictedPermissions);
-					if (value == null)
-						throw new ExecuteScriptException("Null pointer returned by formula");
 					formulaCache.put(nodeScript, new CachedResult(value, scriptContext.getRelatedElements()));
 				}
 				catch (final ExecuteScriptException e) {
 					formulaCache.put(nodeScript, new CachedResult(e, scriptContext.getRelatedElements()));
-					LogUtils.warn(e);
 					throw e;
 				}
 			}
@@ -101,20 +99,34 @@ public class FormulaUtils {
 	}
 
 	private static Object eval(final NodeScript nodeScript, final ScriptContext scriptContext,
-							   final ScriptingPermissions restrictedPermissions) {
-		if (!FormulaThreadLocalStack.INSTANCE.push(nodeScript)) {
-			showCyclicDependency(nodeScript);
-			final String message = TextUtils.format("formula.error.circularReference",
-				HtmlUtils.htmlToPlain(nodeScript.script));
-			Controller.getCurrentController().getViewController().out(message);
-			throw new ExecuteScriptException(new CyclicScriptReferenceException(message));
-		}
+	                           final ScriptingPermissions restrictedPermissions) {
+		final NodeModel node = nodeScript.node;
 		try {
-			return ScriptingEngine.executeScript(nodeScript.node, nodeScript.script, scriptContext,
-				restrictedPermissions);
+			if (!FormulaThreadLocalStack.INSTANCE.push(nodeScript)) {
+				showCyclicDependency(nodeScript);
+				final String message = TextUtils.format("formula.error.circularReference",
+					HtmlUtils.htmlToPlain(nodeScript.script));
+				Controller.getCurrentController().getViewController().out(message);
+				throw new ExecuteScriptException(new CyclicScriptReferenceException(message));
+			}
+			try {
+				final Object value = ScriptingEngine.executeScript(node, nodeScript.script, scriptContext,
+					restrictedPermissions);
+				if (value == null)
+					throw new ExecuteScriptException("Null pointer returned by formula");
+				return value;
+			}
+			finally {
+				FormulaThreadLocalStack.INSTANCE.pop();
+			}
 		}
-		finally {
-			FormulaThreadLocalStack.INSTANCE.pop();
+		catch (final ExecuteScriptException e) {
+			final URL url = node.getMap().getURL();
+			String nodeLocation = url != null ? url.toString() : "Unsaved map ";
+			String message = "Error on evaluating formula in map " + nodeLocation + ", node " +  node.getID() + ",\n"
+					+ "Script '" + nodeScript.script + "'";
+			LogUtils.warn(message, e);
+			throw e;
 		}
 	}
 
