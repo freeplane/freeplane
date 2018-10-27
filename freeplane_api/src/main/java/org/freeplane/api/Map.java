@@ -110,4 +110,11 @@ public interface Map extends MapRO {
 	 * Each formula in the map is evaluated not depending on if it was already cached.
 	 *  @since 1.7.2 */
 	public void evaluateAllFormulas();
+
+	/**
+	 * Evaluate probably changed formulas in the map.
+	 *
+	 * Each formula not having valid result in the cache is evaluated.
+	 *  @since 1.7.2 */
+	void evaluateOutdatedFormulas();
 }

@@ -83,7 +83,7 @@ public class FormulaUtils {
 			Object value = formulaCache.getOrThrowCachedResult(nodeScript);
 			if (value == null) {
 				try {
-					value = eval(nodeScript, scriptContext, restrictedPermissions);
+					value = evaluateLoggingExceptions(nodeScript, scriptContext, restrictedPermissions);
 					formulaCache.put(nodeScript, new CachedResult(value, scriptContext.getRelatedElements()));
 				}
 				catch (final ExecuteScriptException e) {
@@ -94,39 +94,45 @@ public class FormulaUtils {
 			return value;
 		}
 		else {
-			return eval(nodeScript, scriptContext, restrictedPermissions);
+			return evaluateLoggingExceptions(nodeScript, scriptContext, restrictedPermissions);
 		}
 	}
 
-	private static Object eval(final NodeScript nodeScript, final ScriptContext scriptContext,
+	private static Object evaluateLoggingExceptions(final NodeScript nodeScript, final ScriptContext scriptContext,
 	                           final ScriptingPermissions restrictedPermissions) {
-		final NodeModel node = nodeScript.node;
 		try {
-			if (!FormulaThreadLocalStack.INSTANCE.push(nodeScript)) {
-				showCyclicDependency(nodeScript);
-				final String message = TextUtils.format("formula.error.circularReference",
-					HtmlUtils.htmlToPlain(nodeScript.script));
-				Controller.getCurrentController().getViewController().out(message);
-				throw new ExecuteScriptException(new CyclicScriptReferenceException(message));
-			}
-			try {
-				final Object value = ScriptingEngine.executeScript(node, nodeScript.script, scriptContext,
-					restrictedPermissions);
-				if (value == null)
-					throw new ExecuteScriptException("Null pointer returned by formula");
-				return value;
-			}
-			finally {
-				FormulaThreadLocalStack.INSTANCE.pop();
-			}
+			return evaluateCheckingForCyclesAndNonNullResult(nodeScript, scriptContext, restrictedPermissions);
 		}
 		catch (final ExecuteScriptException e) {
+			final NodeModel node = nodeScript.node;
 			final URL url = node.getMap().getURL();
 			String nodeLocation = url != null ? url.toString() : "Unsaved map ";
 			String message = "Error on evaluating formula in map " + nodeLocation + ", node " +  node.getID() + ",\n"
 					+ "Script '" + nodeScript.script + "'";
 			LogUtils.warn(message, e);
 			throw e;
+		}
+	}
+
+	private static Object evaluateCheckingForCyclesAndNonNullResult(final NodeScript nodeScript,
+																	final ScriptContext scriptContext,
+																	final ScriptingPermissions restrictedPermissions) {
+		if (!FormulaThreadLocalStack.INSTANCE.push(nodeScript)) {
+			showCyclicDependency(nodeScript);
+			final String message = TextUtils.format("formula.error.circularReference",
+				HtmlUtils.htmlToPlain(nodeScript.script));
+			Controller.getCurrentController().getViewController().out(message);
+			throw new ExecuteScriptException(new CyclicScriptReferenceException(message));
+		}
+		try {
+			final Object value = ScriptingEngine.executeScript(nodeScript.node, nodeScript.script, scriptContext,
+				restrictedPermissions);
+			if (value == null)
+				throw new ExecuteScriptException("Null pointer returned by formula");
+			return value;
+		}
+		finally {
+			FormulaThreadLocalStack.INSTANCE.pop();
 		}
 	}
 
@@ -162,15 +168,19 @@ public class FormulaUtils {
 
 	public static void evaluateAllFormulas(MapModel map) {
 		clearCache(map);
-		evaluateAll(map.getRootNode());
+		evaluateOutdatedFormulas(map);
 	}
 
-	static private void evaluateAll(NodeModel node) {
+	public static void evaluateOutdatedFormulas(MapModel map) {
+		evaluateAllRecursively(map.getRootNode());
+	}
+
+	static private void evaluateAllRecursively(NodeModel node) {
 		evaluateObject(node, node.getUserObject());
 		NodeAttributeTableModel attributeTableModel = node.getExtension(NodeAttributeTableModel.class);
 		if(attributeTableModel != null)
 			attributeTableModel.getAttributes().stream().forEach(a -> evaluateObject(node, a.getValue()));
-		node.getChildren().stream().forEach(FormulaUtils::evaluateAll);
+		node.getChildren().stream().forEach(FormulaUtils::evaluateAllRecursively);
 	}
 
 	static private void evaluateObject(NodeModel node, Object userObject) {

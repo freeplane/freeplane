@@ -259,4 +259,10 @@ public class MapProxy extends AbstractProxy<MapModel> implements Map {
 	}
 
 
+	@Override
+	public void evaluateOutdatedFormulas() {
+		FormulaUtils.evaluateOutdatedFormulas(getDelegate());
+	}
+
+
 }
