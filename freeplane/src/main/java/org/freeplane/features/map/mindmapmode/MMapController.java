@@ -385,7 +385,7 @@ public class MMapController extends MapController {
 	}
 
 	@Override
-	public void closeWithoutSaving(final MapModel map) {
+	synchronized public void closeWithoutSaving(final MapModel map) {
 		loadedMaps.remove(map);
 		super.closeWithoutSaving(map);
 	}
@@ -891,7 +891,7 @@ public class MMapController extends MapController {
 	private WeakHashMap<MMapModel, Void> loadedMaps = new WeakHashMap<>();
 
 
-	public MMapModel getMap(URL url) {
+	synchronized public MMapModel getMap(URL url) {
 		for(MMapModel hiddenMap : loadedMaps.keySet()) {
 			if(url.equals(hiddenMap.getURL()))
 				return hiddenMap;
@@ -900,7 +900,7 @@ public class MMapController extends MapController {
 	}
 
 
-	public void addLoadedMap(MMapModel map) {
+	synchronized public void addLoadedMap(MMapModel map) {
 		loadedMaps.put(map, null);
 	}
 
@@ -997,7 +997,7 @@ public class MMapController extends MapController {
 			newModel.setURL(url);
 			newModel.setSaved(alternativeURL.equals(url));
 			fireMapCreated(newModel);
-			loadedMaps.put(newModel, null);
+			addLoadedMap(newModel);
 			closeWithoutSaving(map);
 			newModel.enableAutosave();
 			createMapView(newModel);

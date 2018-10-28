@@ -99,6 +99,7 @@ public class MClipboardController extends ClipboardController {
 			((MMapController) Controller.getCurrentModeController().getMapController()).insertNode(node, target);
 		}
 
+		@Override
 		public void paste(Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft, int dropAction) {
 			paste(target);
 		}
@@ -112,6 +113,7 @@ public class MClipboardController extends ClipboardController {
 			this.fileList = fileList;
 		}
 
+		@Override
 		public void paste(Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft, int dropAction) {
 			boolean copyFile = dropAction == DnDConstants.ACTION_COPY;
 	        final File mapFile = target.getMap().getFile();
@@ -120,7 +122,7 @@ public class MClipboardController extends ClipboardController {
 	        	    TextUtils.getText("map_not_saved"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 	        	return;
 	        }
-			ViewerController viewerController = ((ViewerController)Controller.getCurrentModeController().getExtension(ViewerController.class));
+			ViewerController viewerController = (Controller.getCurrentModeController().getExtension(ViewerController.class));
 			boolean pasteImagesFromFiles = ResourceController.getResourceController().getBooleanProperty("pasteImagesFromFiles");
 			for (final File sourceFile : fileList) {
 				final File file;
@@ -157,6 +159,7 @@ public class MClipboardController extends ClipboardController {
 			this.textFromClipboard = textFromClipboard;
 		}
 
+		@Override
 		public void paste(Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft, int dropAction) {
 			if (textFromClipboard != null) {
 				paste(textFromClipboard, target, asSibling, isLeft);
@@ -167,20 +170,22 @@ public class MClipboardController extends ClipboardController {
 			final String[] textLines = text.split(ClipboardController.NODESEPARATOR);
 			final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 			final MapReader mapReader = mapController.getMapReader();
-			final NodeTreeCreator nodeTreeCreator = mapReader.nodeTreeCreator(target.getMap());
-			nodeTreeCreator.setHint(Hint.MODE, Mode.CLIPBOARD);
-			for (int i = 0; i < textLines.length; ++i) {
-				try {
-					final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines[i]));
-					newModel.removeExtension(FreeNode.class);
-					final boolean wasLeft = newModel.isLeft();
-					mapController.insertNode(newModel, target, asSibling, isLeft, wasLeft != isLeft);
+			synchronized(mapReader) {
+				final NodeTreeCreator nodeTreeCreator = mapReader.nodeTreeCreator(target.getMap());
+				nodeTreeCreator.setHint(Hint.MODE, Mode.CLIPBOARD);
+				for (int i = 0; i < textLines.length; ++i) {
+					try {
+						final NodeModel newModel = nodeTreeCreator.create(new StringReader(textLines[i]));
+						newModel.removeExtension(FreeNode.class);
+						final boolean wasLeft = newModel.isLeft();
+						mapController.insertNode(newModel, target, asSibling, isLeft, wasLeft != isLeft);
+					}
+					catch (final XMLException e) {
+						LogUtils.severe("error on paste", e);
+					}
 				}
-				catch (final XMLException e) {
-					LogUtils.severe("error on paste", e);
-				}
+				nodeTreeCreator.finish(target);
 			}
-			nodeTreeCreator.finish(target);
 		}
 	}
 
@@ -225,6 +230,7 @@ public class MClipboardController extends ClipboardController {
 			this.textFromClipboard = textFromClipboard;
 		}
 
+		@Override
 		public void paste(Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft, int dropAction) {
 			final TextFragment[] textFragments = split(textFromClipboard);
 			pasteStringWithoutRedisplay(textFragments, target, asSibling, isLeft);
@@ -293,6 +299,7 @@ public class MClipboardController extends ClipboardController {
 			return !current.isLeaf();
 		}
 
+		@Override
 		public void paste(Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft, int dropAction) {
 			pasteHtmlWithoutRedisplay(textFromClipboard, target, asSibling, isLeft);
 		}
@@ -403,7 +410,8 @@ public class MClipboardController extends ClipboardController {
 			image = img;
 		}
 
-        public void paste(Transferable t, NodeModel target, boolean asSibling, boolean isLeft, int dropAction) {
+        @Override
+		public void paste(Transferable t, NodeModel target, boolean asSibling, boolean isLeft, int dropAction) {
 			final ModeController modeController = Controller.getCurrentModeController();
 			final MMapController mapController = (MMapController) modeController.getMapController();
             File mindmapFile = target.getMap().getFile();
@@ -418,7 +426,7 @@ public class MClipboardController extends ClipboardController {
     			imageFile.getParentFile().mkdirs();
             	String imgfilepath=imageFile.getAbsolutePath();
             	File tempFile = imageFile = new File(imgfilepath);
-            	final JFileChooser fileChooser = new JFileChooser(imageFile);		
+            	final JFileChooser fileChooser = new JFileChooser(imageFile);
             	final ExampleFileFilter filter = new ExampleFileFilter();
             	filter.addExtension(ImageAdder.IMAGE_FORMAT);
             	fileChooser.setAcceptAllFileFilterUsed(false);
@@ -495,8 +503,8 @@ public class MClipboardController extends ClipboardController {
 		modeController.addAction(new CloneAction());
 		modeController.addAction(new MoveAction());
 	}
-	
-	
+
+
 
 	@Override
     public Transferable copy(IMapSelection selection) {
@@ -505,8 +513,8 @@ public class MClipboardController extends ClipboardController {
 		transferable.setNodeObjects(collection, false);
 		return transferable;
     }
-	
-	
+
+
 
 	@Override
 	public Transferable copySingle(Collection<NodeModel> source) {
@@ -614,7 +622,7 @@ public class MClipboardController extends ClipboardController {
     }
 
 	Collection<IDataFlavorHandler> getFlavorHandlers() {
-		final Transferable t = getClipboardContents();		
+		final Transferable t = getClipboardContents();
 		final Collection<IDataFlavorHandler> handlerList = new LinkedList<IDataFlavorHandler>();
 		if (t == null) {
 			return handlerList;
@@ -679,7 +687,7 @@ public class MClipboardController extends ClipboardController {
 	}
 	private DataFlavor getSupportedHtmlFlavor(Transferable t) {
 		for (DataFlavor dataFlavor : t.getTransferDataFlavors())
-			if(dataFlavor.getPrimaryType().equals(MindMapNodesSelection.htmlFlavor.getPrimaryType()) 
+			if(dataFlavor.getPrimaryType().equals(MindMapNodesSelection.htmlFlavor.getPrimaryType())
 			&& dataFlavor.getSubType().equals(MindMapNodesSelection.htmlFlavor.getSubType())
 			&& dataFlavor.getRepresentationClass().equals(MindMapNodesSelection.htmlFlavor.getRepresentationClass())
 			)
@@ -690,12 +698,12 @@ public class MClipboardController extends ClipboardController {
 	public void paste(final Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft) {
 		paste(t, target, asSibling, isLeft, DnDConstants.ACTION_NONE);
 	}
-	
+
 	public void paste(final Transferable t, final NodeModel target, final boolean asSibling, final boolean isLeft, int dropAction) {
 		if (t == null) {
 			return;
 		}
-//		
+//
 //		DataFlavor[] fl = t.getTransferDataFlavors();
 //		for (int i = 0; i < fl.length; i++) {
 //			System.out.println(fl[i]);
@@ -708,7 +716,7 @@ public class MClipboardController extends ClipboardController {
 	void paste(final Transferable t, final IDataFlavorHandler handler, final NodeModel target, final boolean asSibling, final boolean isLeft) {
 		paste(t, handler, target, asSibling, isLeft, DnDConstants.ACTION_NONE);
     }
-	
+
 	void paste(final Transferable t, final IDataFlavorHandler handler, final NodeModel target, final boolean asSibling, final boolean isLeft, int dropAction) {
 		if (handler == null) {
 			return;
@@ -768,7 +776,7 @@ public class MClipboardController extends ClipboardController {
 				try {
 					URI linkUri = new URI(link);
 					uri = linkUri;
-					
+
 					File absoluteFile = UrlManager.getController().getAbsoluteFile(map, uri);
 					if(absoluteFile != null) {
 					//if ("file".equals(linkUri.getScheme())) {
@@ -778,7 +786,7 @@ public class MClipboardController extends ClipboardController {
 							text =  uri.toString();
 						}
 					}
-					
+
 				}
 				catch (Exception e) {
 				}
@@ -788,16 +796,16 @@ public class MClipboardController extends ClipboardController {
 				NodeLinks.createLinkExtension(node).setHyperLink(uri);
 			}
 			for (int j = parentNodes.size() - 1; j >= 0; --j) {
-				if (textFragment.depth > ((Integer) parentNodesDepths.get(j)).intValue()) {
+				if (textFragment.depth > parentNodesDepths.get(j).intValue()) {
 					for (int k = j + 1; k < parentNodes.size(); ++k) {
-						final NodeModel n = (NodeModel) parentNodes.get(k);
+						final NodeModel n = parentNodes.get(k);
 						if (n.getParentNode() == null) {
 							mapController.insertNode(n, parent, insertionIndex++);
 						}
 						parentNodes.remove(k);
 						parentNodesDepths.remove(k);
 					}
-					final NodeModel target = (NodeModel) parentNodes.get(j);
+					final NodeModel target = parentNodes.get(j);
 					node.setLeft(isLeft);
 					if (target != parent) {
 						target.setFolded(true);
@@ -811,16 +819,16 @@ public class MClipboardController extends ClipboardController {
 		}
 		{
 			for (int k = 0; k < parentNodes.size(); ++k) {
-				final NodeModel n = (NodeModel) parentNodes.get(k);
+				final NodeModel n = parentNodes.get(k);
 				if (map.getRootNode() != n && n.getParentNode() == null) {
 					mapController.insertNode(n, parent, insertionIndex++);
 				}
 			}
 		}
 	}
-	
+
 	private enum Operation{CLONE, MOVE};
-	
+
 	public void addClone(final Transferable transferable, final NodeModel target) {
 		processTransferable(transferable, target, Operation.CLONE);
 	}
@@ -833,7 +841,7 @@ public class MClipboardController extends ClipboardController {
 	private void processTransferable(final Transferable transferable, final NodeModel target, Operation operation) {
 		try {
 			final Collection<NodeModel> clonedNodes;
-			final boolean asSingleNodes; 
+			final boolean asSingleNodes;
 			if (operation == Operation.CLONE && transferable.isDataFlavorSupported(MindMapNodesSelection.mindMapNodeSingleObjectsFlavor)){
 				clonedNodes = (Collection<NodeModel>) transferable.getTransferData(MindMapNodesSelection.mindMapNodeSingleObjectsFlavor);
 				asSingleNodes = true;

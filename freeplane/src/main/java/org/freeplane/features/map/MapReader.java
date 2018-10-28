@@ -70,13 +70,15 @@ public class MapReader implements IElementDOMHandler {
 		}
 
 		public NodeModel createNodeTreeFromXml(final MapModel map, final Reader pReader) throws IOException,
-		        XMLException {
-			start(map);
-			final NodeModel node = create(pReader);
-			if (node == null)
-				throw new RuntimeException("corrupted map, no root node found");
-			finish(node);
-			return node;
+		XMLException {
+			synchronized(this) {
+				start(map);
+				final NodeModel node = create(pReader);
+				if (node == null)
+					throw new RuntimeException("corrupted map, no root node found");
+				finish(node);
+				return node;
+			}
 		}
 
 		public void finish(final NodeModel node) {
@@ -149,6 +151,7 @@ public class MapReader implements IElementDOMHandler {
 		nodeBuilder.registerBy(readManager);
 	}
 
+	@Override
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		return nodeTreeCreator.getCreatedMap();
 	}
@@ -172,6 +175,7 @@ public class MapReader implements IElementDOMHandler {
 		}
 	}
 
+	@Override
 	public void endElement(final Object parent, final String tag, final Object element, final XMLElement dom) {
 		final MapModel map = (MapModel) element;
 		if (dom.getAttributeCount() != 0 || dom.hasChildren()) {
