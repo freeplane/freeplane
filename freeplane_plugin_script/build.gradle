@@ -14,7 +14,7 @@ dependencies {
 		exclude group:'org.codehaus.groovy', module:'groovy-cli-commons'
 		exclude group:'org.codehaus.groovy', module:'groovy-cli-picocli'
 	}
-	runtime 'org.codehaus.groovy:groovy-dateutil:2.5.2'
+	runtime 'org.codehaus.groovy:groovy-dateutil:2.5.3'
 
 }
 
