@@ -107,7 +107,7 @@ public class MapModel {
 		listeners.add(listener);
 	}
 
-	public void destroy() {
+	public void releaseResources() {
 	}
 
 	public void fireMapChangeEvent(final MapChangeEvent event) {

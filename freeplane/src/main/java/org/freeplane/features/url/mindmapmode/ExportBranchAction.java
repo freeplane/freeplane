@@ -166,7 +166,7 @@ class ExportBranchAction extends AFreeplaneAction {
 			modeController.undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, existingNode, newNode);
 			newMap.getFile();
 			((MLinkController) LinkController.getController()).setLink(newNode, newUri, LinkController.LINK_ABSOLUTE);
-			newMap.destroy();
+			newMap.releaseResources();
 			existingNode.setParent(null);
 			mMapController.select(newNode);
 		}

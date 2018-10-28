@@ -991,6 +991,7 @@ public class MMapController extends MapController {
 			return;
 		controller.getViewController().setWaitingCursor(true);
 		try{
+			map.releaseResources();
 			final MMapModel newModel = new MMapModel();
 			((MFileManager)MFileManager.getController()).loadAndLock(alternativeURL, newModel);
 			newModel.setURL(url);

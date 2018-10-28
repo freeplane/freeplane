@@ -76,14 +76,14 @@ public class MMapModel extends MapModel {
 	 * @param mindMapMapModel
 	 */
 	@Override
-	public void destroy() {
+	public void releaseResources() {
 		getLockManager().release();
 		/* cancel the timer, if map is closed. */
 		if (getTimerForAutomaticSaving() != null) {
 			getTimerForAutomaticSaving().cancel();
 		}
 		autosaveEnabled = false;
-		super.destroy();
+		super.releaseResources();
 	}
 
 	public LockManager getLockManager() {

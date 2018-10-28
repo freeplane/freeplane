@@ -535,7 +535,7 @@ implements IExtension, NodeChangeAnnouncer{
 
 	public void closeWithoutSaving(final MapModel map) {
 		fireMapRemoved(map);
-		map.destroy();
+		map.releaseResources();
 	}
 
 	/**
