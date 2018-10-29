@@ -62,6 +62,7 @@ Modified; 14th February 2012: "figuresp" template extended to make compatible wi
 Modified_ 16th of June 2014: Compatibility issues with ##1.3.x## version of freeplane. 
 	1- LaTeX equations are identified as  "FORMAT="latexPatternFormat" within the node info. We keep the "hook" option for backwards compatibility. Warning: LaTeX Format will be exclusivelly considered for formulas (it will create an "equation" environment). 
 	2- Now there are more "hooks" because IMAGES can also be inserted as "hooks" therefore, the old equation filter "hook" has to be adjusted to the specific type "hook equation". Hooks with NAME=ExternalObject will be considered as images. 
+Modified: October 2018: Enable listings environment. (jose1711)
 
 Thanks to: Gorka Marcos and Myriam Alustiza for giving the xsl syntax support 			  
 
@@ -93,7 +94,9 @@ See: http://freemind.sourceforge.net/
 \usepackage{url}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
-%\usepackage{listings}
+\usepackage{listings}
+\lstset{basicstyle={\ttfamily},
+basewidth={0.5em}}
 \RequirePackage{eurosym}
 \usepackage{hyperref}
 
@@ -225,7 +228,6 @@ See: http://freemind.sourceforge.net/
 		<xsl:apply-templates/>
 	</xsl:if>
 	<xsl:if test="(count(ancestor::node())-2)=3"> <!-- We are starting a frame-->
-		<xsl:text>&#xD;{&#xD;</xsl:text>
 		
 		<xsl:if test="current()/attribute/@NAME = 'backgroundpicture' ">
 			<xsl:text>
@@ -299,7 +301,6 @@ See: http://freemind.sourceforge.net/
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:text>&#xD;\end{frame}</xsl:text>
-			<xsl:text>}</xsl:text>
 		<xsl:apply-templates/>
 	</xsl:if>
 </xsl:template>
@@ -673,7 +674,7 @@ See: http://freemind.sourceforge.net/
 	
 	<xsl:if test="$counter &lt; $numel + 1">
 		<xsl:choose>			
-			<xsl:when test="$att[$counter] = 'shrink' or  $att[$counter] = 'plain' or  $att[$counter] = 'allowframebreaks'   or  $att[$counter] = 'squeeze' or $nameatt[$counter] = 'framestyle' "> 
+			<xsl:when test="$att[$counter] = 'shrink' or  $att[$counter] = 'plain' or $att[$counter] = 'fragile' or  $att[$counter] = 'allowframebreaks'   or  $att[$counter] = 'squeeze' or $nameatt[$counter] = 'framestyle' "> 
 				<xsl:if test="$num_framestyle_atts &gt; 0"> <!--We check if it is the first element or not to put the coma.-->
 				<xsl:text>,</xsl:text>
 				</xsl:if>
