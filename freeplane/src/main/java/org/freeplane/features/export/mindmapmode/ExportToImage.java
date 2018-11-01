@@ -17,24 +17,7 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ExampleFileFilter;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.ui.image.BigBufferedImage;
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.IMapSelection.NodePosition;
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
-
-import javax.imageio.*;
-import javax.imageio.metadata.IIOInvalidTreeException;
-import javax.imageio.metadata.IIOMetadata;
-import javax.imageio.metadata.IIOMetadataNode;
-import javax.imageio.stream.ImageOutputStream;
-import javax.swing.filechooser.FileFilter;
-import java.awt.*;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -42,6 +25,27 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.metadata.IIOInvalidTreeException;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.metadata.IIOMetadataNode;
+import javax.imageio.stream.ImageOutputStream;
+import javax.swing.filechooser.FileFilter;
+
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.ExampleFileFilter;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapSelection.NodePosition;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author foltin
@@ -55,12 +59,13 @@ public class ExportToImage implements IExportEngine {
 	public static ExportToImage toPNG(){
 		return new ExportToImage("png", "to png");
 	}
-	
+
 	ExportToImage( final String imageType, final String imageDescripton) {
 		this.imageType = imageType;
 		this.imageDescripton = imageDescripton;
 	}
 
+	@Override
 	public void export(List<NodeModel> nodes, File toFile) {
 		export(nodes.get(0).getMap(), toFile);
 	}
@@ -78,10 +83,6 @@ public class ExportToImage implements IExportEngine {
 		}
 		catch (final OutOfMemoryError ex) {
 			UITools.errorMessage(TextUtils.getText("out_of_memory"));
-		}
-		finally {
-			if (image != null)
-				BigBufferedImage.dispose(image);
 		}
 	}
 
