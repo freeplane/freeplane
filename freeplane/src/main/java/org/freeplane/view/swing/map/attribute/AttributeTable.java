@@ -39,7 +39,21 @@ import java.awt.event.MouseListener;
 import java.net.URI;
 import java.util.EventObject;
 
-import javax.swing.*;
+import javax.swing.AbstractCellEditor;
+import javax.swing.BorderFactory;
+import javax.swing.ComboBoxEditor;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
@@ -54,7 +68,11 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.attribute.*;
+import org.freeplane.features.attribute.AttributeController;
+import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.attribute.AttributeTableLayoutModel;
+import org.freeplane.features.attribute.ColumnWidthChangeEvent;
+import org.freeplane.features.attribute.IColumnWidthChangeListener;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.format.IFormattedObject;
@@ -146,8 +164,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private static final int MAX_HEIGTH = 300;
 	private static final int MAX_WIDTH = 300;
 	private static final long serialVersionUID = 1L;
-	private static final float TABLE_ROW_HEIGHT = 4;
-
+	private static final int CURSOR_WIDTH = 2;
 	public static AttributeTable getSelectedTable(){
 		return globalFocusChangeListener.selectedTable;
 	}
@@ -394,6 +411,26 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					else
 						super.actionPerformed(e);
 				}
+
+			    private boolean layingOut = false;
+
+			    @Override
+				public void doLayout(){
+			        try{
+			            layingOut = true;
+			                super.doLayout();
+			        }finally{
+			            layingOut = false;
+			        }
+			    }
+
+			    @Override
+				public Dimension getSize(){
+			        Dimension dim = super.getSize();
+			        if(!layingOut)
+			            dim.width = Math.max(dim.width, getPreferredSize().width);
+			        return dim;
+			    }
 
 			};
 			comboBox.setRenderer(new TypedListCellRenderer());
@@ -649,15 +686,15 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	 */
 	public void setOptimalColumnWidths() {
 		Component comp = null;
-		int cellWidth = 0;
-		int maxCellWidth = 2 * (int) (Math.ceil(getFont().getSize2D() / UITools.FONT_SCALE_FACTOR +  AttributeTable.TABLE_ROW_HEIGHT));
+		int maxCellWidth = 2 * (int) (Math.ceil(getFont().getSize2D() / UITools.FONT_SCALE_FACTOR +  EXTRA_HEIGHT));
 		int rowCount = getRowCount();
 		if(rowCount > 0) {
 			for (int col = 0; col < 2; col++) {
 				for (int row = 0; row < rowCount; row++) {
 					comp = AttributeTable.dtcr.getTableCellRendererComponent(this, getValueAt(row, col), false, false, row,
 							col);
-					cellWidth = comp.getPreferredSize().width;
+					final Dimension preferredSize = comp.getPreferredSize();
+					int cellWidth = preferredSize.width + preferredSize.height +  EXTRA_HEIGHT + CURSOR_WIDTH;
 					maxCellWidth = Math.max(cellWidth, maxCellWidth);
 				}
 				getAttributeTableModel().setColumnWidth(col, LengthUnits.pixelsInPt(maxCellWidth + 1));
@@ -794,7 +831,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		final int constHeight = getTableHeaderHeight() + AttributeTable.EXTRA_HEIGHT;
 		final float zoom = getZoom();
 		final float fontSize = (float) getFont().getMaxCharBounds(((Graphics2D)getGraphics()).getFontRenderContext()).getHeight();
-		final float tableRowHeight = fontSize + zoom * AttributeTable.TABLE_ROW_HEIGHT;
+		final float tableRowHeight = fontSize + zoom * EXTRA_HEIGHT;
 		int newHeight = (int) ((tableRowHeight * rowCount + (zoom - 1) * constHeight) / rowCount);
 		if (newHeight < 1) {
 			newHeight = 1;

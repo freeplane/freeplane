@@ -572,6 +572,7 @@ abstract public class FrameController implements ViewController {
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
 		}
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
+		UIManager.put("ComboBox.squareButton", Boolean.FALSE);
 		final ResourceController resourceController = ResourceController.getResourceController();
 		if (!resourceController.getBooleanProperty("hugeFontsFixed", false)) {
 			if ("100".equals(resourceController.getProperties().get(UITools.MENU_ITEM_FONT_SIZE_PROPERTY))) {
