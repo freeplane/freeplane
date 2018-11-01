@@ -19,7 +19,10 @@ package org.freeplane.core.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /**
@@ -29,20 +32,21 @@ import java.util.logging.Logger;
 class LoggingOutputStream extends ByteArrayOutputStream {
 	final private Level level;
 	final private String lineSeparator;
-	final private Logger logger;
 	private int availableSpace;
+	private final PrintStream out;
 
 	/**
 	 * Constructor
+	 * @param stdout
 	 *
-	 * @param logger
+	 * @param out
 	 *            Logger to write to
-	 * @param level
+	 * @param mFileHandler
 	 *            Level at which to write the log message
 	 */
-	public LoggingOutputStream(final Logger logger, final Level level, int maximumLogSize) {
+	public LoggingOutputStream(Level level, final PrintStream out, final Handler handler, int maximumLogSize) {
 		super();
-		this.logger = logger;
+		this.out = out;
 		this.level = level;
 		this.availableSpace = maximumLogSize;
 		lineSeparator = System.getProperty("line.separator");
@@ -57,6 +61,7 @@ class LoggingOutputStream extends ByteArrayOutputStream {
 	 */
 	@Override
 	public void flush() throws IOException {
+		out.flush();
 		String record;
 		synchronized (this) {
 			super.flush();
@@ -66,11 +71,19 @@ class LoggingOutputStream extends ByteArrayOutputStream {
 		if (record.length() == 0 || record.equals(lineSeparator)) {
 			return;
 		}
-		logger.logp(level, "", "", record);
+		final Logger parentLogger = Logger.getAnonymousLogger().getParent();
+		final Handler[] handlers = parentLogger.getHandlers();
+		for(Handler handler : handlers) {
+			if(handler.getClass().getAnnotation(LogStdOut.class) != null) {
+				final LogRecord logRecord = new LogRecord(level, record);
+				handler.publish(logRecord);
+			}
+		}
 	}
 
 	@Override
 	public synchronized void write(int b) {
+		out.write(b);
 		if(availableSpace > 0) {
 			availableSpace--;
 			super.write(b);
@@ -79,11 +92,12 @@ class LoggingOutputStream extends ByteArrayOutputStream {
 
 	@Override
 	public synchronized void write(byte[] b, int off, int len) {
+		out.write(b, off, len);
 		if(availableSpace > 0) {
 			availableSpace-=len;
 			super.write(b, off, len);
 		}
 	}
-	
-	
+
+
 }

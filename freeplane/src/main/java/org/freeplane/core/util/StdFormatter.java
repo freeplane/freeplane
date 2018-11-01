@@ -38,11 +38,11 @@ class StdFormatter extends SimpleFormatter {
 	/**
 	 * Level for STDERR activity
 	 */
-	public final static Level STDERR = new StdOutErrLevel("STDERR", Level.SEVERE.intValue() + 53);
+	public final static Level STDERR = new StdOutErrLevel("STDERR", Level.SEVERE.intValue());
 	/**
 	 * Level for STDOUT activity.
 	 */
-	public final static Level STDOUT = new StdOutErrLevel("STDOUT", Level.WARNING.intValue() + 53);
+	public final static Level STDOUT = new StdOutErrLevel("STDOUT", Level.WARNING.intValue());
 	final private String lineSeparator = System.getProperty("line.separator");
 
 	/**
@@ -54,8 +54,8 @@ class StdFormatter extends SimpleFormatter {
 	 */
 	@Override
 	public synchronized String format(final LogRecord record) {
-		if (!StdFormatter.STDERR.getName().equals(record.getLoggerName())
-		        && !StdFormatter.STDOUT.getName().equals(record.getLoggerName())) {
+		if (!StdFormatter.STDERR.getName().equals(record.getLevel().getName())
+		        && !StdFormatter.STDOUT.getName().equals(record.getLevel().getName())) {
 			return super.format(record);
 		}
 		final StringBuilder sb = new StringBuilder();

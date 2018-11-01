@@ -22,6 +22,7 @@ package org.freeplane.core.util;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
@@ -49,7 +50,15 @@ import org.freeplane.core.resources.ResourceController;
  * @author foltin
  */
 public class LogUtils {
-    private static final Logger LOGGER = Logger.global;
+	@LogStdOut
+    private static final class FileHandlerExtension extends FileHandler {
+		private FileHandlerExtension(String pattern, int limit, int count, boolean append)
+				throws IOException, SecurityException {
+			super(pattern, limit, count, append);
+		}
+	}
+
+	private static final Logger LOGGER = Logger.global;
 	private static final int MAX_LOG_SIZE = 1 * 1024 * 1024;
 	static private boolean loggerCreated = false;
 
@@ -73,7 +82,7 @@ public class LogUtils {
 			logDirectory.mkdirs();
 			if(logDirectory.isDirectory()){
 				final String pathPattern = logDirectoryPath + File.separatorChar + "log";
-				mFileHandler = new FileHandler(pathPattern, 1400000, 5, false);
+				mFileHandler = new FileHandlerExtension(pathPattern, 1400000, 5, false);
 				mFileHandler.setFormatter(new StdFormatter());
 				parentLogger.addHandler(mFileHandler);
 			}
@@ -93,11 +102,9 @@ public class LogUtils {
 			}
 			parentLogger.addHandler(stdConsoleHandler);
 			LoggingOutputStream los;
-			Logger logger = Logger.getLogger(StdFormatter.STDOUT.getName());
-			los = new LoggingOutputStream(logger, StdFormatter.STDOUT, MAX_LOG_SIZE);
+			los = new LoggingOutputStream(StdFormatter.STDOUT, System.out, mFileHandler, MAX_LOG_SIZE);
 			System.setOut(new PrintStream(los, true));
-			logger = Logger.getLogger(StdFormatter.STDERR.getName());
-			los = new LoggingOutputStream(logger, StdFormatter.STDERR, MAX_LOG_SIZE);
+			los = new LoggingOutputStream(StdFormatter.STDERR, System.err, mFileHandler, MAX_LOG_SIZE);
 			System.setErr(new PrintStream(los, true));
 		}
 		catch (final Exception e) {
