@@ -35,12 +35,10 @@ import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.core.util.logging.LogStdOut;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.UIComponentVisibilityDispatcher;
 import org.freeplane.features.ui.ViewController;
 
-@LogStdOut
 public class ReportGenerator extends StreamHandler {
 	private static final String BUGREPORT_USER_ID = "org.freeplane.plugin.bugreport.userid";
 	private static final String REMOTE_LOG = "RemoteLog";

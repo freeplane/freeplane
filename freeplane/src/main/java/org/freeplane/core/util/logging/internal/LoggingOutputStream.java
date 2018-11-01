@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 import org.freeplane.core.util.logging.LogHandlers;
-import org.freeplane.core.util.logging.LogStdOut;
 
 /**
  * An OutputStream that writes contents to a Logger upon each call to flush()
@@ -74,11 +73,9 @@ class LoggingOutputStream extends ByteArrayOutputStream {
 			return;
 		}
 		final Collection<Handler> handlers = LogHandlers.getHandlers();
+		final LogRecord logRecord = new LogRecord(level, record);
 		for(Handler handler : handlers) {
-			if(handler.getClass().getAnnotation(LogStdOut.class) != null) {
-				final LogRecord logRecord = new LogRecord(level, record);
 				handler.publish(logRecord);
-			}
 		}
 	}
 
