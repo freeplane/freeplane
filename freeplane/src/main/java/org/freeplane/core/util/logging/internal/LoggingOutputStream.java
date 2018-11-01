@@ -15,15 +15,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.util;
+package org.freeplane.core.util.logging.internal;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Collection;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import java.util.logging.Logger;
+
+import org.freeplane.core.util.logging.LogHandlers;
+import org.freeplane.core.util.logging.LogStdOut;
 
 /**
  * An OutputStream that writes contents to a Logger upon each call to flush()
@@ -37,14 +40,13 @@ class LoggingOutputStream extends ByteArrayOutputStream {
 
 	/**
 	 * Constructor
-	 * @param stdout
-	 *
 	 * @param out
 	 *            Logger to write to
+	 * @param stdout
 	 * @param mFileHandler
 	 *            Level at which to write the log message
 	 */
-	public LoggingOutputStream(Level level, final PrintStream out, final Handler handler, int maximumLogSize) {
+	public LoggingOutputStream(Level level, final PrintStream out, int maximumLogSize) {
 		super();
 		this.out = out;
 		this.level = level;
@@ -71,8 +73,7 @@ class LoggingOutputStream extends ByteArrayOutputStream {
 		if (record.length() == 0 || record.equals(lineSeparator)) {
 			return;
 		}
-		final Logger parentLogger = Logger.getAnonymousLogger().getParent();
-		final Handler[] handlers = parentLogger.getHandlers();
+		final Collection<Handler> handlers = LogHandlers.getHandlers();
 		for(Handler handler : handlers) {
 			if(handler.getClass().getAnnotation(LogStdOut.class) != null) {
 				final LogRecord logRecord = new LogRecord(level, record);

@@ -22,15 +22,8 @@ package org.freeplane.core.util;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.io.File;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
-import java.util.logging.StreamHandler;
 
 import org.freeplane.core.resources.ResourceController;
 
@@ -50,68 +43,7 @@ import org.freeplane.core.resources.ResourceController;
  * @author foltin
  */
 public class LogUtils {
-	@LogStdOut
-    private static final class FileHandlerExtension extends FileHandler {
-		private FileHandlerExtension(String pattern, int limit, int count, boolean append)
-				throws IOException, SecurityException {
-			super(pattern, limit, count, append);
-		}
-	}
-
-	private static final Logger LOGGER = Logger.global;
-	private static final int MAX_LOG_SIZE = 1 * 1024 * 1024;
-	static private boolean loggerCreated = false;
-
-	public static void createLogger() {
-		if (loggerCreated) {
-			return;
-		}
-		loggerCreated = true;
-		FileHandler mFileHandler = null;
-		final Logger parentLogger = Logger.getAnonymousLogger().getParent();
-		final Handler[] handlers = parentLogger.getHandlers();
-		for (int i = 0; i < handlers.length; i++) {
-			final Handler handler = handlers[i];
-			if (handler instanceof ConsoleHandler) {
-				parentLogger.removeHandler(handler);
-			}
-		}
-		try {
-			final String logDirectoryPath = getLogDirectory();
-			final File logDirectory = new File(logDirectoryPath);
-			logDirectory.mkdirs();
-			if(logDirectory.isDirectory()){
-				final String pathPattern = logDirectoryPath + File.separatorChar + "log";
-				mFileHandler = new FileHandlerExtension(pathPattern, 1400000, 5, false);
-				mFileHandler.setFormatter(new StdFormatter());
-				parentLogger.addHandler(mFileHandler);
-			}
-			final StreamHandler stdConsoleHandler = new StreamHandler(System.out, new StdFormatter()) {
-				{
-					setLevel(Level.INFO);
-				}
-				@Override
-				public void publish(LogRecord record) {
-					super.publish(record);
-					flush();
-				}
-			};
-
-			if(System.getProperty("java.util.logging.config.file", null) == null){
-				mFileHandler.setLevel(Level.INFO);
-			}
-			parentLogger.addHandler(stdConsoleHandler);
-			LoggingOutputStream los;
-			los = new LoggingOutputStream(StdFormatter.STDOUT, System.out, mFileHandler, MAX_LOG_SIZE);
-			System.setOut(new PrintStream(los, true));
-			los = new LoggingOutputStream(StdFormatter.STDERR, System.err, mFileHandler, MAX_LOG_SIZE);
-			System.setErr(new PrintStream(los, true));
-		}
-		catch (final Exception e) {
-			LogUtils.warn("Error creating logging File Handler", e);
-		}
-	}
-
+	private static final Logger LOGGER = Logger.getLogger("org.freeplane");
 	public static String getLogDirectory() {
 	    final String logDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory() + File.separatorChar + "logs";
 	    return logDirectory;

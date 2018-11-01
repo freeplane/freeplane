@@ -1,4 +1,4 @@
-package org.freeplane.core.util;
+package org.freeplane.core.util.logging;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

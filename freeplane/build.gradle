@@ -80,6 +80,7 @@ jar {
                     org.freeplane.core.undo,
                     org.freeplane.core.util,
                     org.freeplane.core.util.collection,
+                    org.freeplane.core.util.logging,
                     org.freeplane.features.attribute,
                     org.freeplane.features.attribute.mindmapmode,
                     org.freeplane.features.clipboard,

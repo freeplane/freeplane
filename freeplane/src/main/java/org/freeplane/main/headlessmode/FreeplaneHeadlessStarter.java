@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.logging.internal.LogInitializer;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.format.FormatController;
@@ -64,7 +65,7 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 			Controller controller = new Controller(applicationResourceController);
 			Controller.setCurrentController(controller);
 			applicationResourceController.init();
-			LogUtils.createLogger();
+			LogInitializer.createLogger();
 			FreeplaneGUIStarter.showSysInfo();
 			final HeadlessMapViewController mapViewController = new HeadlessMapViewController();
 			controller.setMapViewManager(mapViewController);

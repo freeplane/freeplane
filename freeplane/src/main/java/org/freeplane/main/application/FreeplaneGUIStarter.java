@@ -45,6 +45,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
+import org.freeplane.core.util.logging.internal.LogInitializer;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.explorer.MapExplorerConditionController;
 import org.freeplane.features.filter.FilterController;
@@ -166,7 +167,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			Compat.macAppChanges();
 			controller.addAction(new QuitAction());
 			applicationResourceController.init();
-			LogUtils.createLogger();
+			LogInitializer.createLogger();
 			FreeplaneGUIStarter.showSysInfo();
 			final String lookandfeel = System.getProperty("lookandfeel", applicationResourceController
 			    .getProperty("lookandfeel"));
