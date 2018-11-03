@@ -3,7 +3,6 @@ package org.freeplane.plugin.script;
 import java.net.URI;
 import java.util.Date;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
@@ -27,7 +26,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.proxy.AbstractProxy;
 import org.freeplane.plugin.script.proxy.Convertible;
 
-import groovy.lang.Binding;
 import groovy.lang.MetaClass;
 import groovy.lang.MissingMethodException;
 import groovy.lang.MissingPropertyException;
@@ -103,6 +101,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 
 	private final Pattern nodeIdPattern = Pattern.compile("ID_\\d+");
 	private final MetaClass nodeMetaClass;
+	private Object script;
 	private Map<Object, Object> boundVariables;
 	private NodeRO node;
 	private ControllerRO controller;
@@ -111,30 +110,17 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     public FreeplaneScriptBaseClass() {
 	    super();
 	    nodeMetaClass = InvokerHelper.getMetaClass(NodeRO.class);
-	    // Groovy rocks!
 	    DefaultGroovyMethods.mixin(Number.class, NodeArithmeticsCategory.class);
-	    initBinding();
     }
 
-    @SuppressWarnings("unchecked")
-	public void initBinding() {
-	    boundVariables = super.getBinding().getVariables();
+	void updateBoundVariables() {
+	    boundVariables = getBinding().getVariables();
+	    final Object boundScript = boundVariables.remove("script");
+	    if(boundScript != null)
+	    	script = boundScript;
 	    // this is important: we need this reference no matter if "node" is overridden later by the user
 	    node = (NodeRO) boundVariables.get("node");
 	    controller = (ControllerRO) boundVariables.get("c");
-    }
-
-	@Override
-    public void setBinding(Binding binding) {
-	    super.setBinding(addStaticBindings(binding));
-	    initBinding();
-    }
-
-	private Binding addStaticBindings(Binding binding) {
-	    for (Entry<String, Object> entry : ScriptingConfiguration.getStaticProperties().entrySet()) {
-            binding.setProperty(entry.getKey(), entry.getValue());
-        }
-	    return binding;
     }
 
     /* <ul>
@@ -285,6 +271,13 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     	final NodeModel delegate = ((AbstractProxy<NodeModel>)node).getDelegate();
         LinkController.getController().loadURI(delegate, uri);
     }
+
+	@Override
+	public String toString() {
+		return "Script [" + script + "]";
+	}
+
+
 
 //	/** Shortcut for new {@link org.freeplane.api.Convertible}. */
 //	public Convertible convertible(String string) {

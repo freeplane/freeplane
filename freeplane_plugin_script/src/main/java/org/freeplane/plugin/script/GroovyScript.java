@@ -25,7 +25,10 @@ import java.security.AccessControlException;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
+import java.util.Map.Entry;
 import java.util.regex.Matcher;
+
+import javax.swing.SwingUtilities;
 
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
@@ -40,8 +43,6 @@ import groovy.lang.Binding;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.Script;
 
-import javax.swing.*;
-
 /**
  * Special scripting implementation for Groovy.
  */
@@ -50,7 +51,7 @@ public class GroovyScript implements IScript {
 
     private final ScriptingPermissions specificPermissions;
 
-    private Script compiledScript;
+    private FreeplaneScriptBaseClass compiledScript;
 
     private Throwable errorsInScript;
 
@@ -104,8 +105,7 @@ public class GroovyScript implements IScript {
             try {
                 trustedCompileAndCache(outStream);
                 Thread.currentThread().setContextClassLoader(scriptClassLoader);
-                final Binding binding = createBinding(node, scriptContext);
-                compiledScript.setBinding(binding);
+                updateBinding(node, scriptContext);
                 System.setOut(outStream);
 				final Object result = compiledScript.run();
 				return result;
@@ -179,9 +179,9 @@ public class GroovyScript implements IScript {
                         createCompilerConfiguration());
                 compileTimeStrategy.scriptCompileStart();
                 if (script instanceof String) {
-                    compiledScript = shell.parse((String) script);
+                    compiledScript = (FreeplaneScriptBaseClass) shell.parse((String) script);
                 } else if (script instanceof File) {
-                    compiledScript = shell.parse((File) script);
+                    compiledScript = (FreeplaneScriptBaseClass) shell.parse((File) script);
                 } else {
                     throw new IllegalArgumentException();
                 }
@@ -214,17 +214,19 @@ public class GroovyScript implements IScript {
         }
     }
 
-    private Binding createBinding(final NodeModel node, ScriptContext scriptContext) {
-        final Binding binding = new Binding();
+    private void updateBinding(final NodeModel node, ScriptContext scriptContext) {
+    	Binding binding = compiledScript.getBinding();
         binding.setVariable("c", ProxyFactory.createController(scriptContext));
         binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
-        return binding;
+	    for (Entry<String, Object> entry : ScriptingConfiguration.getStaticProperties().entrySet()) {
+            binding.setProperty(entry.getKey(), entry.getValue());
+        }
+        compiledScript.updateBoundVariables();
     }
 
     private Binding createBindingForCompilation() {
         final Binding binding = new Binding();
-        binding.setVariable("c", null);
-        binding.setVariable("node", null);
+        binding.setVariable("script", script);
         return binding;
     }
 
