@@ -53,14 +53,16 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 
 	private final File scriptFile;
 	private final ExecutionMode mode;
-	private final ScriptRunner script;
+	private final ScriptRunner scriptRunner;
 
 	public ExecuteScriptAction(final String scriptName, final String menuItemName, final String scriptFile,
 	                           final ExecutionMode mode, ScriptingPermissions permissions) {
 		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), menuItemName, null);
 		this.scriptFile = new File(scriptFile);
 		this.mode = mode;
-		script = new ScriptRunner(ScriptingEngine.createScriptForFile(this.scriptFile, permissions));
+		final IScript script = ScriptingEngine.createScriptForFile(this.scriptFile, permissions);
+		ScriptingEngine.saveForLaterUse(this.scriptFile, script);
+		scriptRunner = new ScriptRunner(script);
 	}
 
 	public static String makeMenuItemKey(final String scriptName, final ExecutionMode mode) {
@@ -90,7 +92,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 						executeScriptRecursive(node);
 					}
 					else {
-						script.execute(node);
+						scriptRunner.execute(node);
 					}
 				}
 				catch (ExecuteScriptException ex) {
@@ -131,7 +133,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		for (final NodeModel child : children) {
 			executeScriptRecursive(child);
 		}
-		script.execute(node);
+		scriptRunner.execute(node);
 	}
 
 	public ExecutionMode getExecutionMode() {

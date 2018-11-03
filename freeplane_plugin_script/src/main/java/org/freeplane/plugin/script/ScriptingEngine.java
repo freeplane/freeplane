@@ -20,8 +20,8 @@ package org.freeplane.plugin.script;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.regex.Matcher;
 
 import org.apache.commons.lang.WordUtils;
@@ -39,7 +39,7 @@ import org.freeplane.features.mode.ModeController;
 public class ScriptingEngine {
 	public static final String SCRIPT_PREFIX = "script";
 	// need a File for caching! Scripts from String have to be cached elsewhere
-    private static Map<File, IScript> scriptCache = new WeakHashMap<File, IScript>();
+    private static Map<File, IScript> scriptCache = new HashMap<File, IScript>();
 	/**
 	 * @param permissions if null use default scripting permissions.
 	 * @return the result of the script, or null, if the user has cancelled.
@@ -75,10 +75,13 @@ public class ScriptingEngine {
 	    IScript script = scriptCache.get(scriptFile);
 	    if (script == null || ! script.hasPermissions(permissions)) {
 	        script = isGroovy ? new GroovyScript(scriptFile, permissions) : new GenericScript(scriptFile, permissions);
-	        scriptCache.put(scriptFile, script);
 	    }
 	    return script;
     }
+
+	public static void saveForLaterUse(File scriptFile, IScript script) {
+		scriptCache.put(scriptFile, script);
+	}
 
 	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
         return new ScriptRunner(new GroovyScript(script, permissions)) //

@@ -158,7 +158,9 @@ class ScriptingGuiConfiguration {
 			ScriptingPermissions standardPermissions = null;
 			File[] list = ScriptResources.getInitScriptsDir().listFiles(scriptFilenameFilter);
 			for (File file : list) {
-				initScripts.add(ScriptingEngine.createScriptForFile(file, standardPermissions));
+				final IScript script = ScriptingEngine.createScriptForFile(file, standardPermissions);
+				ScriptingEngine.saveForLaterUse(file, script);
+				initScripts.add(script);
 				initScriptFiles.add(file);
 			}
 		}
