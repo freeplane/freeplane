@@ -39,7 +39,7 @@ import org.freeplane.features.mode.ModeController;
 public class ScriptingEngine {
 	public static final String SCRIPT_PREFIX = "script";
 	// need a File for caching! Scripts from String have to be cached elsewhere
-    private static Map<File, IScript> scriptCache = new HashMap<File, IScript>();
+    private static Map<File, IScript> savedScripts = new HashMap<File, IScript>();
 	/**
 	 * @param permissions if null use default scripting permissions.
 	 * @return the result of the script, or null, if the user has cancelled.
@@ -72,7 +72,7 @@ public class ScriptingEngine {
 
 	public synchronized static IScript createScriptForFile(File scriptFile, ScriptingPermissions permissions) {
 		final boolean isGroovy = scriptFile.getName().endsWith(".groovy");
-	    IScript script = scriptCache.get(scriptFile);
+	    IScript script = savedScripts.get(scriptFile);
 	    if (script == null || ! script.hasPermissions(permissions)) {
 	        script = isGroovy ? new GroovyScript(scriptFile, permissions) : new GenericScript(scriptFile, permissions);
 	    }
@@ -80,7 +80,7 @@ public class ScriptingEngine {
     }
 
 	public static void saveForLaterUse(File scriptFile, IScript script) {
-		scriptCache.put(scriptFile, script);
+		savedScripts.put(scriptFile, script);
 	}
 
 	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
