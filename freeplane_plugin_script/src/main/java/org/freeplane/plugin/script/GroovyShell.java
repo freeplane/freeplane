@@ -48,7 +48,7 @@ import groovy.lang.Script;
  */
 class GroovyShell extends GroovyObjectSupport {
 	private static final String DEFAULT_CODE_BASE = "/groovy/shell";
-	private Binding context;
+	private Binding binding;
 	private int counter;
 	private CompilerConfiguration config;
 	private GroovyClassLoader loader;
@@ -67,7 +67,7 @@ class GroovyShell extends GroovyObjectSupport {
 				return new MyGroovyClassLoader(parentLoader, config);
 			}
 		});
-		this.context = binding;
+		this.binding = binding;
 		this.config = config;
 	}
 
@@ -93,11 +93,11 @@ class GroovyShell extends GroovyObjectSupport {
 	}
 
 	private Object getVariable(String name) {
-		return context.getVariables().get(name);
+		return binding.getVariables().get(name);
 	}
 
 	private void setVariable(String name, Object value) {
-		context.setVariable(name, value);
+		binding.setVariable(name, value);
 	}
 
 	/**
@@ -117,7 +117,7 @@ class GroovyShell extends GroovyObjectSupport {
 	 * @return ready to run script
 	 */
 	private Script parse(final GroovyCodeSource codeSource) throws CompilationFailedException {
-		return InvokerHelper.createScript(parseClass(codeSource), context);
+		return InvokerHelper.createScript(parseClass(codeSource), binding);
 	}
 
 	/**
