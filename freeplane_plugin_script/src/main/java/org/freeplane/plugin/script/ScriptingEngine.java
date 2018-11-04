@@ -20,11 +20,12 @@ package org.freeplane.plugin.script;
 
 import java.io.File;
 import java.io.PrintStream;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 
 import org.apache.commons.lang.WordUtils;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -39,7 +40,12 @@ import org.freeplane.features.mode.ModeController;
 public class ScriptingEngine {
 	public static final String SCRIPT_PREFIX = "script";
 	// need a File for caching! Scripts from String have to be cached elsewhere
-    private static Map<File, IScript> savedScripts = new HashMap<File, IScript>();
+    private static Map<File, IScript> fileScripts = new ConcurrentHashMap<File, IScript>();
+    private static ConcurrentCache<ScriptSpecification, IScript> scripts
+    	= new ConcurrentCache(ScriptingEngine::getCompiledScriptCacheSize);
+    private static int getCompiledScriptCacheSize() {
+		return ResourceController.getResourceController().getIntProperty("compiled_script_cache_size");
+	}
 	/**
 	 * @param permissions if null use default scripting permissions.
 	 * @return the result of the script, or null, if the user has cancelled.
@@ -70,27 +76,39 @@ public class ScriptingEngine {
     	return new ScriptRunner(new GroovyScript(script)).execute(node);
 	}
 
-	public synchronized static IScript createScript(File scriptFile, ScriptingPermissions permissions) {
-		final boolean isGroovy = scriptFile.getName().endsWith(".groovy");
-	    IScript script = savedScripts.get(scriptFile);
+	public static IScript createScript(File scriptFile, ScriptingPermissions permissions, boolean saveForLaterUse) {
+	    IScript script = fileScripts.get(scriptFile);
 	    if (script == null || ! script.hasPermissions(permissions)) {
-	        script = isGroovy ? new GroovyScript(scriptFile, permissions) : new GenericScript(scriptFile, permissions);
+	    	if(saveForLaterUse) {
+	    		script = compile(scriptFile, permissions);
+	    		fileScripts.put(scriptFile, script);
+	    	}
+	    	else {
+	    		script = scripts.computeIfAbsent(new FileScriptSpecification(scriptFile, permissions),
+	    			() -> compile(scriptFile, permissions));
+	    	}
 	    }
 	    return script;
     }
-
-	public static void saveForLaterUse(File scriptFile, IScript script) {
-		savedScripts.put(scriptFile, script);
+	private static IScript compile(File scriptFile, ScriptingPermissions permissions) {
+		final boolean isGroovy = scriptFile.getName().endsWith(".groovy");
+		IScript script = isGroovy ? new GroovyScript(scriptFile, permissions) : new GenericScript(scriptFile, permissions);
+		return script;
 	}
 
 	public static IScript createScript(String source, String type, ScriptingPermissions permissions) {
+		return scripts.computeIfAbsent(new StringScriptSpecification(source, type, permissions),
+				() -> compile(source, type, permissions));
+	}
+
+	private static IScript compile(String source, String type, ScriptingPermissions permissions) {
 		final boolean isGroovy = type.equals("groovy");
 		IScript script = isGroovy ? new GroovyScript(source, permissions) : new GenericScript(source, type, permissions);
 	    return script;
 	}
 
 	public static IScript createGroovyScript(String script, ScriptingPermissions permissions) {
-		return new GroovyScript(script, permissions);
+		return createScript(script, "groovy", permissions);
 	}
 
 	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
@@ -99,7 +117,7 @@ public class ScriptingEngine {
 	}
 
     public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
-        return new ScriptRunner(new GroovyScript(script)) //
+        return new ScriptRunner(createGroovyScript(script, null)) //
             .setOutStream(printStream) //
             .execute(node);
     }

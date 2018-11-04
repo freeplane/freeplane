@@ -12,6 +12,7 @@
 <string name="script_compilation_disabled_extensions"/>
 <string name="script_directories"/>
 <string name="script_classpath"/>
+<number name = "compiled_script_cache_size" min = "0"/>
 <boolean name="compile_only_changed_script_files"/>
 <font name="groovy_editor_font"/>
 <number name="groovy_editor_font_size" min="4" max="216"/>

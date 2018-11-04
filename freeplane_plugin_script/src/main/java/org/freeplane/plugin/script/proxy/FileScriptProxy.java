@@ -17,6 +17,6 @@ public class FileScriptProxy extends ScriptProxy implements Script {
 	}
 	@Override
 	protected IScript createScript(ScriptingPermissions scriptingPermissions) {
-		return ScriptingEngine.createScript(file, scriptingPermissions);
+		return ScriptingEngine.createScript(file, scriptingPermissions, false);
 	}
 }
