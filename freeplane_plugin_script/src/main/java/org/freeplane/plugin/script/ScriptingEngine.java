@@ -48,7 +48,7 @@ public class ScriptingEngine {
     public static Object executeScript(final NodeModel node, final String script, final IFreeplaneScriptErrorHandler pErrorHandler,
                                 final PrintStream pOutStream, final ScriptContext scriptContext,
                                 ScriptingPermissions permissions) {
-    	return new ScriptRunner(new GroovyScript(script, permissions))
+    	return new ScriptRunner(createGroovyScript(script, permissions))
     		.setErrorHandler(pErrorHandler)
     		.setOutStream(pOutStream)
     		.setScriptContext(scriptContext)
@@ -70,7 +70,7 @@ public class ScriptingEngine {
     	return new ScriptRunner(new GroovyScript(script)).execute(node);
 	}
 
-	public synchronized static IScript createScriptForFile(File scriptFile, ScriptingPermissions permissions) {
+	public synchronized static IScript createScript(File scriptFile, ScriptingPermissions permissions) {
 		final boolean isGroovy = scriptFile.getName().endsWith(".groovy");
 	    IScript script = savedScripts.get(scriptFile);
 	    if (script == null || ! script.hasPermissions(permissions)) {
@@ -83,8 +83,18 @@ public class ScriptingEngine {
 		savedScripts.put(scriptFile, script);
 	}
 
+	public static IScript createScript(String source, String type, ScriptingPermissions permissions) {
+		final boolean isGroovy = type.equals("groovy");
+		IScript script = isGroovy ? new GroovyScript(source, permissions) : new GenericScript(source, type, permissions);
+	    return script;
+	}
+
+	public static IScript createGroovyScript(String script, ScriptingPermissions permissions) {
+		return new GroovyScript(script, permissions);
+	}
+
 	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
-        return new ScriptRunner(new GroovyScript(script, permissions)) //
+        return new ScriptRunner(createGroovyScript(script, permissions)) //
             .execute(node);
 	}
 
@@ -96,7 +106,7 @@ public class ScriptingEngine {
 
     public static Object executeScript(final NodeModel node, final String script, final ScriptContext scriptContext,
                                        final ScriptingPermissions permissions) {
-        return new ScriptRunner(new GroovyScript(script, permissions)) //
+        return new ScriptRunner(createGroovyScript(script, permissions)) //
             .setScriptContext(scriptContext) //
             .execute(node);
     }

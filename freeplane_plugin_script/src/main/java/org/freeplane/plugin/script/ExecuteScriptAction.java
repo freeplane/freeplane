@@ -60,7 +60,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), menuItemName, null);
 		this.scriptFile = new File(scriptFile);
 		this.mode = mode;
-		final IScript script = ScriptingEngine.createScriptForFile(this.scriptFile, permissions);
+		final IScript script = ScriptingEngine.createScript(this.scriptFile, permissions);
 		ScriptingEngine.saveForLaterUse(this.scriptFile, script);
 		scriptRunner = new ScriptRunner(script);
 	}

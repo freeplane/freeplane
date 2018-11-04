@@ -112,13 +112,15 @@ public class GenericScript implements IScript {
         compileTimeStrategy = new CompileTimeStrategy(null);
     }
 
-    public GenericScript(String script, String scriptEngineName, ScriptingPermissions permissions) {
+    public GenericScript(String script, String type, ScriptingPermissions permissions) {
 		init(script, permissions);
 		ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
 		try {
 			Thread.currentThread().setContextClassLoader(scriptClassLoader);
 			ScriptEngineManager scriptEngineManager = createScriptEngineManager(scriptClassLoader);
-			engine = checkNotNull(scriptEngineManager.getEngineByName(scriptEngineName), "name", scriptEngineName);
+			final ScriptEngine engineByExtension = scriptEngineManager.getEngineByExtension(type);
+			final ScriptEngine engine = engineByExtension != null ? engineByExtension :  scriptEngineManager.getEngineByName(type);
+			this.engine = checkNotNull(engine, type);
 		}
 		finally {
 			Thread.currentThread().setContextClassLoader(contextClassLoader);
@@ -132,7 +134,7 @@ public class GenericScript implements IScript {
 			Thread.currentThread().setContextClassLoader(scriptClassLoader);
 			ScriptEngineManager scriptEngineManager = createScriptEngineManager(scriptClassLoader);
 			final String extension = FilenameUtils.getExtension(scriptFile.getName());
-			engine = checkNotNull(scriptEngineManager.getEngineByExtension(extension), "extension", extension);
+			engine = checkNotNull(scriptEngineManager.getEngineByExtension(extension), extension);
 		}
 		finally {
 			Thread.currentThread().setContextClassLoader(contextClassLoader);
@@ -248,9 +250,9 @@ public class GenericScript implements IScript {
         }
     }
 
-    private static ScriptEngine checkNotNull(final ScriptEngine motor, String what, String detail) {
+    private static ScriptEngine checkNotNull(final ScriptEngine motor, String detail) {
         if (motor == null) {
-            throw new RuntimeException("can't load script engine by " + what + ": " + detail);
+            throw new RuntimeException("can't load script engine " + detail);
         }
         return motor;
     }

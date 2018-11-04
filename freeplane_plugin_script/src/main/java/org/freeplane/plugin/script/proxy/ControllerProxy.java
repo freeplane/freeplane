@@ -3,7 +3,18 @@
  */
 package org.freeplane.plugin.script.proxy;
 
-import groovy.lang.Closure;
+import java.io.File;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.Icon;
+import javax.swing.filechooser.FileFilter;
+
 import org.freeplane.api.Map;
 import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
@@ -29,11 +40,7 @@ import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.plugin.script.ScriptContext;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import java.io.File;
-import java.net.URL;
-import java.util.*;
+import groovy.lang.Closure;
 
 class ControllerProxy implements Proxy.Controller {
 	private final ScriptContext scriptContext;
@@ -324,7 +331,12 @@ class ControllerProxy implements Proxy.Controller {
 
 	@Override
 	public Script script(File file) {
-		return new ScriptProxy(file, scriptContext);
+		return new FileScriptProxy(file, scriptContext);
+	}
+
+	@Override
+	public Script script(String script, String type) {
+		return new StringScriptProxy(script, type, scriptContext);
 	}
 
 }

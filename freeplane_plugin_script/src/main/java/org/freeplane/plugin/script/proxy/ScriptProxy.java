@@ -5,7 +5,6 @@ import static org.freeplane.plugin.script.ScriptingPermissions.RESOURCES_EXECUTE
 import static org.freeplane.plugin.script.ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION;
 import static org.freeplane.plugin.script.ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_WRITE_RESTRICTION;
 
-import java.io.File;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,17 +12,17 @@ import java.util.Map;
 import org.freeplane.api.NodeRO;
 import org.freeplane.api.Script;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.plugin.script.*;
+import org.freeplane.plugin.script.IScript;
 import org.freeplane.plugin.script.ScriptContext;
+import org.freeplane.plugin.script.ScriptRunner;
+import org.freeplane.plugin.script.ScriptingPermissions;
 
-public class ScriptProxy implements Script {
-	private final File file;
+abstract class ScriptProxy implements Script {
 	private final Map<String, Boolean> permissions;
 	private final ScriptContext scriptContext;
 	private PrintStream outStream;
 
-	public ScriptProxy(File file, ScriptContext scriptContext) {
-		this.file = file;
+	public ScriptProxy(ScriptContext scriptContext) {
 		this.scriptContext = scriptContext;
 		permissions = new HashMap<String, Boolean>();
 	}
@@ -70,7 +69,7 @@ public class ScriptProxy implements Script {
 	}
 	@Override
 	public Object executeOn(NodeRO node) {
-		final IScript script = ScriptingEngine.createScriptForFile(file, new ScriptingPermissions(permissions));
+		final IScript script = createScript(new ScriptingPermissions(permissions));
 		final ScriptRunner scriptRunner = new ScriptRunner(script);
 		scriptRunner.setScriptContext(scriptContext);
 		if(outStream != null)
@@ -79,4 +78,6 @@ public class ScriptProxy implements Script {
 		final Object result = scriptRunner.execute(nodeModel);
 		return result;
 	}
+
+	abstract protected IScript createScript(ScriptingPermissions scriptingPermissions);
 }
