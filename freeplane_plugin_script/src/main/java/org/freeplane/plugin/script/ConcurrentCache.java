@@ -9,7 +9,6 @@ import java.util.function.Supplier;
 public class ConcurrentCache <K, V> {
 
 	private static final float DEFAULT_LOAD_FACTOR = 0.75f;
-	private static final int DEFAULT_INITIAL_CAPACITY = 100;
 
     private final ReentrantReadWriteLock rwl = new ReentrantReadWriteLock();
     private final ReentrantReadWriteLock.ReadLock readLock = rwl.readLock();
@@ -19,7 +18,7 @@ public class ConcurrentCache <K, V> {
 	@SuppressWarnings("serial")
 	public ConcurrentCache(IntSupplier maxSize) {
 		super();
-		cache = new  LinkedHashMap<K, V>(DEFAULT_INITIAL_CAPACITY, DEFAULT_LOAD_FACTOR, true){
+		cache = new  LinkedHashMap<K, V>(maxSize.getAsInt() + 1, DEFAULT_LOAD_FACTOR, true){
 			@Override
 			protected boolean removeEldestEntry(Entry<K, V> eldest) {
 				return size() > maxSize.getAsInt();
