@@ -33,7 +33,10 @@ public interface HeadlessMapCreator {
 	Script script(File source);
 
 	/**
-	 * Create executable script from file.
+	 * Create executable script from given argument.
+	 *
+	 * The script is executed with all permissions.
+	 *
 	 * @since 1.7.2
 	 */
 	Script script(String script, String type);

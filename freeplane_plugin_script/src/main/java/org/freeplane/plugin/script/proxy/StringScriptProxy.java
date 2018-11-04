@@ -6,7 +6,7 @@ import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.ScriptingEngine;
 import org.freeplane.plugin.script.ScriptingPermissions;
 
-public class StringScriptProxy extends ScriptProxy implements Script {
+class StringScriptProxy extends ScriptProxy implements Script {
 	private final String script;
 	private final String type;
 
@@ -14,6 +14,7 @@ public class StringScriptProxy extends ScriptProxy implements Script {
 		super(scriptContext);
 		this.script = script;
 		this.type = type;
+		withAllPermissions();
 	}
 	@Override
 	protected IScript createScript(ScriptingPermissions scriptingPermissions) {

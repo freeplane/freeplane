@@ -8,7 +8,7 @@ import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.ScriptingEngine;
 import org.freeplane.plugin.script.ScriptingPermissions;
 
-public class FileScriptProxy extends ScriptProxy implements Script {
+class FileScriptProxy extends ScriptProxy implements Script {
 	private final File file;
 
 	public FileScriptProxy(File file, ScriptContext scriptContext) {
