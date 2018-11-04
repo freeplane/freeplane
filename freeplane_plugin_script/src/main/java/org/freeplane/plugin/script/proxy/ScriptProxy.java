@@ -1,5 +1,6 @@
 package org.freeplane.plugin.script.proxy;
 
+import static org.freeplane.plugin.script.ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING;
 import static org.freeplane.plugin.script.ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION;
 import static org.freeplane.plugin.script.ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_NETWORK_RESTRICTION;
 import static org.freeplane.plugin.script.ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_READ_RESTRICTION;
@@ -25,6 +26,7 @@ abstract class ScriptProxy implements Script {
 	public ScriptProxy(ScriptContext scriptContext) {
 		this.scriptContext = scriptContext;
 		permissions = new HashMap<String, Boolean>();
+		permissions.put(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, true);
 	}
 
 	@Override
