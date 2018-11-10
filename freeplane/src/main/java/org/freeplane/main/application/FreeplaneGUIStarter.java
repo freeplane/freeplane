@@ -338,7 +338,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		}
 		final ModeController modeController = Controller.getCurrentModeController();
 		if(firstRun && ! dontLoadLastMaps){
-			final String map = ResourceController.getResourceController().getProperty("whatsnew_map");
+			final String map = ResourceController.getResourceController().getProperty("tutorial_map");
 			((MMapController)modeController.getMapController()).newDocumentationMap(map);
 		}
 		if (null != controller.getMap()) {

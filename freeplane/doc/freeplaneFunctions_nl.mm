@@ -149,6 +149,7 @@
       <li>
         <i>Beeld &gt; Notities &gt; Toon notitievenster. </i>
       </li>
+
     </ul>
   </body>
 </html>
@@ -168,9 +169,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1337127972">Basis mindmap</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie:</i>&#160;<a href="freeplane.mm#ID_1154882439">Bewerken &gt; Knoopkern</a>
       </li>
     </ul>
   </body>
@@ -204,9 +202,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_268413071">Bewerken &gt; Knoopkern tekst</a>&#160;
-      </li>
-      <li>
-        <i>Help &gt; Documentatie: Menu</i>&#160;&#160;<a href="freeplane.mm#ID_1162372089">Bewerken &gt; Knoopkern &gt; tekst...</a>
       </li>
     </ul>
   </body>
@@ -242,9 +237,6 @@
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1795262306">Afbeelding (knoopkern)</a>
       </li>
-      <li>
-        <i>Help &gt; Documentatie</i>&#160;<a href="freeplane.mm#ID_1277752024">Bewerken &gt; Knoopkern &gt; Afbeelding</a>
-      </li>
     </ul>
   </body>
 </html>
@@ -266,9 +258,6 @@
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1830541497">Groene-pijl koppeling</a>&#160;
       </li>
-      <li>
-        <i>Help &gt; Documentatie: Menu</i>&#160;&#160;<a href="freeplane.mm#ID_271903009">Bewerken &gt; Koppeling </a>
-      </li>
     </ul>
   </body>
 </html>
@@ -289,9 +278,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1913035829">Rode-pijlkoppeling</a>&#160;
-      </li>
-      <li>
-        <i>Help &gt; Documentatie: Menu</i>&#160;&#160;<a href="freeplane.mm#ID_178833757">Bewerken &gt; Koppeling</a>
       </li>
     </ul>
   </body>
@@ -317,9 +303,6 @@
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_715025500">Pictogrammen</a>&#160;
       </li>
-      <li>
-        <i>Help &gt; Documentatie: Menu</i>&#160;&#160;<a href="freeplane.mm#ID_835126969">Bewerken &gt; Knoopkern &gt; Pictogram...</a>
-      </li>
     </ul>
   </body>
 </html>
@@ -341,9 +324,6 @@
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_707469329">% Schijf</a>&#160;
       </li>
-      <li>
-        <i>Help &gt; Documentatie: Menu</i>&#160;&#160;<a href="freeplane.mm#ID_1053622072">Bewerken &gt; Knoopkern &gt; %Schijf.</a>
-      </li>
     </ul>
   </body>
 </html>
@@ -364,6 +344,7 @@
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1531819965">Automatische knoopnummering</a>&#160;
       </li>
+
     </ul>
   </body>
 </html>
@@ -387,9 +368,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1401167294">Vrije (zwevende) knoop</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie:</i>&#160;<a href="freeplane.mm#ID_572207726">Bewerken&#160;&gt; Vrij positioneerbare knoop(set/reset)</a>
       </li>
     </ul>
   </body>
@@ -423,9 +401,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1401167294">Vrije (zwevende) knoop</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie: </i>Menu&#160;<a href="freeplane.mm#ID_114978489">Format&#160;&gt; Toepassen stijl &gt; Zwevende knoop</a>
       </li>
     </ul>
   </body>
@@ -477,9 +452,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_143196514">Knoopuitbreiding</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie:</i>&#160;<a href="freeplane.mm#ID_1400990107">Bewerken&#160;&#160;&gt; Knoopuitbreiding</a>
       </li>
     </ul>
   </body>
@@ -535,9 +507,6 @@
       <li>
         <i>Help &gt; Handleiding:<b>&#160;</b></i><b></b>&#160;<a href="freeplaneTutorial_nl.mm#ID_898889730">Bewerken text in knoopdetails</a>
       </li>
-      <li>
-        <i>Help &gt; Documentatie:<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_742575187">Bewerken &gt; Knoopuitbreiding &gt; Bewerken knoopdetails in-line/ in venster</a>
-      </li>
     </ul>
   </body>
 </html>
@@ -580,12 +549,6 @@
       <li>
         <i>Help &gt; Handleiding: </i> <a href="freeplaneTutorial_nl.mm#ID_288274844">Toon in tooltip (zweeftekst)</a>
       </li>
-      <li>
-        <i>Help &gt; Documentation</i>&#160;<a href="freeplane.mm#ID_180063018">Beeld &gt; Minimaliseren knoop</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie:</i>&#160;<a href="freeplane.mm#ID_152459666">View &gt; Tooltips &gt; Tonen tooltips</a>
-      </li>
     </ul>
   </body>
 </html>
@@ -607,12 +570,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding:<b>&#160;</b></i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1324773677">Attributen in knoopuitbreiding</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie:<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_147715298">Bewerken &gt; Attributen</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie:<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_353026241">Beeld &gt;&#160;&#160;Attributen</a>
       </li>
     </ul>
   </body>
@@ -647,9 +604,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding:<b>&#160;</b></i><b></b>&#160;<a href="freeplaneTutorial_nl.mm#ID_616494746">Wetenschappelijke formule</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie:<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_1750517188">Bewerken &gt; Knoopuitbreiding &gt; LaTeX formule</a>
       </li>
     </ul>
   </body>
@@ -687,9 +641,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding:<b>&#160;</b></i>&#160;<a href="freeplaneTutorial_nl.mm#ID_575269438">Afbeelding</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie:<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_1620391394">Bewerken &gt; Knoopuitbreiding &gt; Afbeelding</a>
       </li>
     </ul>
   </body>
@@ -737,9 +688,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding:<b>&#160;</b></i><b>&#160;<a href="freeplaneTutorial_nl.mm#ID_1812601804">Opmaakpaneel,</a>&#160;</b>&#160;<a href="freeplaneTutorial#ID_1492225657">Takken</a>&#160;and <a href="freeplaneTutorial_nl.mm#ID_1005719714">Automatische takkleur</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie: <b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_881523974">Opmaak &gt; Takstijl/dikte/kleur; automatische takkleur</a>
       </li>
     </ul>
   </body>
@@ -812,9 +760,6 @@
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_274601394">Note</a>&#160;
       </li>
-      <li>
-        <i>Help &gt; Documentatie: Menu</i>&#160;&#160;<a href="freeplane.mm#ID_1365598976">Bewerken &gt; Note</a>
-      </li>
     </ul>
   </body>
 </html>
@@ -835,9 +780,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding:<b>&#160;</b></i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1150908697">Groep knopen binnen een wolk</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie:<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_1759348470">Opmaken &gt; Wolkeigenschappen</a>
       </li>
     </ul>
   </body>
@@ -860,9 +802,6 @@
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1150908697">Cloud node group</a>
       </li>
-      <li>
-        <i>Help &gt; Documentatie:</i>&#160;<a href="freeplane.mm#ID_759607649">View&#160;&#160;&gt; Toevoegen wolk of veranderen stijl</a>
-      </li>
     </ul>
   </body>
 </html>
@@ -883,9 +822,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1150908697">Knoopgroep wolk</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie:</i>&#160;<a href="freeplane.mm#ID_759607649">View&#160;&#160;&gt; Toevoegen wolk of veranderen stijl</a>
       </li>
     </ul>
   </body>
@@ -1006,9 +942,6 @@
       <li>
         <i>Help &gt; Handleiding:<b>&#160;</b></i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1073407528">Verbindingslijn</a>
       </li>
-      <li>
-        <i>Help &gt; Documentatie:<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_1803275985">Bewerken &gt; Toevoegen verbindingslijn</a>
-      </li>
     </ul>
   </body>
 </html>
@@ -1031,9 +964,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding:<b>&#160;</b></i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1073407528">Verbinding</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie:<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_1803275985">Bewerken &gt; Toevoegen verbindingslijn</a>
       </li>
     </ul>
   </body>
@@ -1079,9 +1009,6 @@
       <li>
         <i>Help &gt; Handleiding:<b>&#160;</b></i><b></b>&#160;<a href="freeplaneTutorial_nl.mm#ID_1073407528">Verbinding</a>
       </li>
-      <li>
-        <i>Help &gt; Documentatie:<b>&#160;</b></i><b>Menu</b><i>&#160;</i>&#160;<a href="freeplane.mm#ID_1803275985">Bewerken &gt; Verbindt</a>
-      </li>
     </ul>
   </body>
 </html>
@@ -1100,9 +1027,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1778719162">Opmaken en stylen</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie:</i>&#160;<a href="freeplane.mm#ID_39827582">Opmaken &gt; Knoopkern</a>
       </li>
     </ul>
   </body>
@@ -1160,9 +1084,6 @@
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1401167294">Free (floating) node</a>
       </li>
-      <li>
-        <i>Help &gt; Documentatie:</i>&#160;<a href="freeplane.mm#ID_572207726">Bewerken&#160;&gt; Vrij postitioneerbare knoop</a>
-      </li>
     </ul>
   </body>
 </html>
@@ -1186,9 +1107,6 @@
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1232153769">Beveiligen knoop</a>
       </li>
-      <li>
-        <i>Help &gt; Documentatie: </i>Menu&#160;<a href="freeplane.mm#ID_83654353">Extra&#160;&#160;&gt; Knoopbeveiliging</a>
-      </li>
     </ul>
   </body>
 </html>
@@ -1207,9 +1125,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_448338872">Berekeningen uitvoeren</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie: Wiki</i>&#160;<a href="freeplane.mm#ID_1130453106">Formule evalueren</a>
       </li>
     </ul>
   </body>
@@ -1254,9 +1169,6 @@
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1959496513">Datum en tijdacties</a>
       </li>
-      <li>
-        <i>Help &gt; Documentatie: Menu</i>&#160;<a href="freeplane.mm#ID_1959496513">&#160;Extra &gt; Agenda</a>
-      </li>
     </ul>
   </body>
 </html>
@@ -1278,9 +1190,6 @@
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_828862571">Filteren en zoeken</a>&#160;resp. <a href="freeplaneTutorial_nl.mm#ID_1014457432">Knopen sorteren</a>
       </li>
-      <li>
-        <i>Help &gt; Documentatie: Menu</i>&#160;<a href="freeplane.mm#ID_1254354349">Filter</a>&#160;&#160;resp. <a href="freeplane.mm#ID_1942706169">Bewerken &gt; Verplaatsen en sorteren</a>
-      </li>
     </ul>
   </body>
 </html>
@@ -1300,9 +1209,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_183210534">Sjablonen</a>&#160;resp. <a href="freeplaneTutorial_nl.mm#ID_1724703419">Stijlen</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie: Menu</i>&#160;<a href="freeplane.mm#ID_258919699">Opmaken</a>&#160;&#160;resp. <a href="freeplane.mm#ID_1796388799">Sjablonen</a>
       </li>
     </ul>
   </body>
@@ -1338,9 +1244,6 @@
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_519455593">Gebruiken en maken van een script</a>&#160;resp. <a href="freeplaneTutorial_nl.mm#ID_1156954596">Add-on</a>
       </li>
-      <li>
-        <i>Help &gt; Documentatie: Menu</i>&#160;<a href="freeplane.mm#ID_1890181858">Tools &gt; Scripts</a>&#160;&#160;resp. <a href="freeplane.mm#ID_100406395">Tools &gt; Add-ons</a>
-      </li>
     </ul>
   </body>
 </html>
@@ -1375,6 +1278,7 @@
       <li>
         <i>Help &gt; Handleiding: </i><a href="freeplaneTutorial_nl.mm#ID_141336344">Woordenlijsten voor spellingcontrole</a>&#160;resp. <a href="freeplaneTutorial_nl.mm#ID_170927482">Academische schrijvers suite</a>
       </li>
+
     </ul>
   </body>
 </html>
@@ -1399,9 +1303,6 @@
     <ul>
       <li>
         <i>Help &gt; Handleiding: </i>&#160;<a href="freeplaneTutorial_nl.mm#ID_1700918771">Groepsknoop met accollade</a>
-      </li>
-      <li>
-        <i>Help &gt; Documentatie:</i>&#160;<a href="freeplane.mm#ID_1700918771">Bewerken&#160;&gt; Knoopgroep &gt; Nieuwe groepsknoop (geselecteerde knopen)</a>
       </li>
     </ul>
   </body>

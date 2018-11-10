@@ -28,7 +28,7 @@ import org.freeplane.features.mode.Controller;
  */
 public class HelpController implements IExtension {
 	public static HelpController getController() {
-		return (HelpController) Controller.getCurrentController().getExtension(HelpController.class);
+		return Controller.getCurrentController().getExtension(HelpController.class);
 	}
 
 	public static void install() {
@@ -53,8 +53,6 @@ public class HelpController implements IExtension {
 		controller.addAction(new DocumentationAction("DocumentationAction", defaultMap));
 		final String tutorialMap = resourceController.getProperty("tutorial_map");
 		controller.addAction(new DocumentationAction("TutorialAction", tutorialMap));
-		final String whatsNewMap = resourceController.getProperty("whatsnew_map");
-		controller.addAction(new DocumentationAction("WhatsNewAction", whatsNewMap));
 		controller.addAction(new HotKeyInfoAction());
 	}
 

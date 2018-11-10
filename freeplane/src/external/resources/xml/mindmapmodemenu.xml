@@ -514,10 +514,9 @@
 			<Entry builder="separator" />
 			<Entry name="AboutAction" builder="removeOnMac"/>
 			<Entry builder="separator" />
-			<Entry name="TutorialAction" accelerator="F1" />
-			<Entry name="WhatsNewAction" />
+			<Entry name="TutorialAction" />
+			<Entry name="DocumentationAction" accelerator="F1" />
             <Entry name="FreeplaneHandbook" />
-			<Entry name="DocumentationAction" />
 			<Entry name="HotKeyInfoAction" />
 			<Entry builder="separator" />
 		</Entry>

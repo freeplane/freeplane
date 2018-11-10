@@ -92,7 +92,6 @@
 				<Entry name="RequestFeatureAction" />
 			</Entry>
 			<Entry name="AboutAction" />
-			<Entry name="TutorialAction" />
 			<Entry accelerator="F1" name="DocumentationAction" />
             <Entry name="FreeplaneHandbook" />
 		</Entry>
