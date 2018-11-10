@@ -1,5 +1,5 @@
 <map version="0.9.0">
-<!-- To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<!-- To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
 <node CREATED="1216809870908" ID="ID_1507004962" MODIFIED="1216826585940" TEXT="Example of project plan ready for export&#xa;using XSLT export with mm2msp_utf8.xsl">
 <richcontent TYPE="NOTE"><html>
   <head>

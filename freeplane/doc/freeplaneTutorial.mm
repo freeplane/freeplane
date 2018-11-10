@@ -1,5 +1,5 @@
 <map version="freeplane 1.7.0">
-<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
 <attribute_registry>
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
@@ -228,7 +228,7 @@
   </head>
   <body>
     <p>
-      Freeplane is meant to facilitate thinking, sharing information and getting things done at work, in school and at home. The software supports creating, sharing and using <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#What_is_mind_mapping">mind maps</a>, which are a kind of&#160;<a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">information maps</a>. The&#160;<a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane">Wiki Tutorial Freeplane</a>&#160;contains concrete examples of&#160; <a href="freeplaneApplications.mm">application areas.</a>
+      Freeplane is meant to facilitate thinking, sharing information and getting things done at work, in school and at home. The software supports creating, sharing and using <a href="https://www.freeplane.org/wiki/index.php/Tutorial_Freeplane#What_is_mind_mapping">mind maps</a>, which are a kind of&#160;<a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">information maps</a>. The&#160;<a href="https://www.freeplane.org/wiki/index.php/Tutorial_Freeplane">Wiki Tutorial Freeplane</a>&#160;contains concrete examples of&#160; <a href="freeplaneApplications.mm">application areas.</a>
     </p>
     <p>
       
@@ -276,7 +276,7 @@
       <b><font color="#ff0000">IMPORTANT</font></b><font color="#ff0000">&#160;</font>
     </p>
     <p>
-      <font color="#ff0000">Check <a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28Language_pack%29">here</a>&#160;if there exists a language pack add-on for your language. </font>
+      <font color="#ff0000">Check <a href="https://www.freeplane.org/wiki/index.php/Add-ons_%28Language_pack%29">here</a>&#160;if there exists a language pack add-on for your language. </font>
     </p>
     <p>
       <font color="#ff0000">Check <i>Help &gt; Documentation Maps Online</i>&#160;if video guides are available.</font>
@@ -2521,7 +2521,7 @@
   </head>
   <body>
     <p>
-      If you keep <i>Control</i>&#160;pressed and click at any free place of a mindmap, a so-called free positional, free floating node opens. This node behaves like a paper post-it: you can move it anywhere, independent of the nodes which are part of the root-hierarchy. The format of this node is determined by the system style <i>Floating node</i>. This standard style can be edited, giving all floating nodes this edited style. A post-it node can be&#160;&#160;conected to a hierarchical node by dragging and dropping it on the node of your choice: it will become a child node of this node. For examples of different types of free floating nodes, see the wiki <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Floating_nodes">Tutorial Freeplane</a>
+      If you keep <i>Control</i>&#160;pressed and click at any free place of a mindmap, a so-called free positional, free floating node opens. This node behaves like a paper post-it: you can move it anywhere, independent of the nodes which are part of the root-hierarchy. The format of this node is determined by the system style <i>Floating node</i>. This standard style can be edited, giving all floating nodes this edited style. A post-it node can be&#160;&#160;conected to a hierarchical node by dragging and dropping it on the node of your choice: it will become a child node of this node. For examples of different types of free floating nodes, see the wiki <a href="https://www.freeplane.org/wiki/index.php/Tutorial_Freeplane#Floating_nodes">Tutorial Freeplane</a>
     </p>
   </body>
 </html>
@@ -3464,7 +3464,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Calculating" STYLE_REF="Professional" FOLDED="true" ID="ID_448338872" CREATED="1316197624394" MODIFIED="1335300258084" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula" MIN_WIDTH="100.0 px" STYLE="combined">
+<node TEXT="Calculating" STYLE_REF="Professional" FOLDED="true" ID="ID_448338872" CREATED="1316197624394" MODIFIED="1335300258084" LINK="https://www.freeplane.org/wiki/index.php/Formula" MIN_WIDTH="100.0 px" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3956,7 +3956,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="External link" STYLE_REF="Beginner" FOLDED="true" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1335300461119" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" STYLE="combined">
+<node TEXT="External link" STYLE_REF="Beginner" FOLDED="true" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1335300461119" LINK="https://www.freeplane.org/wiki/index.php/Tutorial_Freeplane" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -7425,16 +7425,13 @@ node alias can not be a number</pre>
         .svg images cannot be published in a Java applet.
       </li>
       <li>
-        See the Freeplane documentation for more options. See <a href="http://freeplane.sourceforge.net/wiki/index.php/Embedding_mind_maps">this page</a>&#160;to publish a map on the Freeplane wiki.
+        See the Freeplane documentation for more options. See <a href="https://www.freeplane.org/wiki/index.php/Embedding_mind_maps">this page</a>&#160;to publish a map on the Freeplane wiki.
       </li>
       <li>
-        See this<a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Publishing_multiple_maps_in_one_Java_applet">&#160;example</a>&#160;how multiple maps can be published in one Java applet.
+        See this<a href="https://www.freeplane.org/wiki/index.php/Tutorial_Freeplane#Publishing_multiple_maps_in_one_Java_applet">&#160;example</a>&#160;how multiple maps can be published in one Java applet.
       </li>
       <li>
         It is possible to set in <i>Tools &gt; Preferences</i>&#160;that the folding state must be saved, such that the map opens each time with the same folding.
-      </li>
-      <li>
-        Freeplane developers can also publish on http://freeplane.sourceforge.net/mapsOnline. Documents published here, can be opened without Java Applet if they are linked through the map opened by <i>Help &gt; Documentation Maps Online.</i><b>&#160;In that case .svg images can be published</b><i>.</i>
       </li>
     </ul>
   </body>
@@ -7469,9 +7466,6 @@ node alias can not be a number</pre>
     <ul>
       <li>
         In MS Windows, right click the link of the mind map and choose copy hyperlink. Next paste this address in the URL above
-      </li>
-      <li>
-        http://freeplane.sourceforge.net/mapsOnline is a directory containing mind maps which can be opened without Java Applet, if the link <i>Help &gt; Documentation Maps Online </i>is followed. In that case svg images are displayed too.
       </li>
     </ul>
   </body>
@@ -7915,14 +7909,14 @@ node alias can not be a number</pre>
 <node TEXT="Clear Dependencies resets information about formula dependencies" ID="ID_23662627" CREATED="1541852134257" MODIFIED="1541852160693"/>
 <node TEXT="When dependency tracing is active, all other connectors are hidden." ID="ID_286584949" CREATED="1541852161549" MODIFIED="1541852198944"/>
 </node>
-<node TEXT="More information about using formulas is available in Freeplane Wiki" ID="ID_1130453106" CREATED="1455910904101" MODIFIED="1541851379852" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formulas"/>
+<node TEXT="More information about using formulas is available in Freeplane Wiki" ID="ID_1130453106" CREATED="1455910904101" MODIFIED="1541851379852" LINK="https://www.freeplane.org/wiki/index.php/Formulas"/>
 </node>
 <node TEXT="Using and writing scripts" STYLE_REF="Professional" FOLDED="true" ID="ID_519455593" CREATED="1316158310467" MODIFIED="1541851551473" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
 <node TEXT="Freeplane has a very powerful scripting possibility based on Groovy. In this way you can provide for specialised functions.&#xa;&#xa;There is a base of predefined scrips which are published on the Freeplane wiki. In this way you need not be a programmer to use scripts." ID="ID_1965879157" CREATED="1323530732191" MODIFIED="1541851796447"/>
-<node TEXT="More information about using scripts is available in Freeplane Wiki" ID="ID_164241738" CREATED="1541851477527" MODIFIED="1541851543212" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting"/>
+<node TEXT="More information about using scripts is available in Freeplane Wiki" ID="ID_164241738" CREATED="1541851477527" MODIFIED="1541851543212" LINK="https://www.freeplane.org/wiki/index.php/Scripting"/>
 <node TEXT="Scripts and required resources like icons or libraries can be packaged and distributed as freeplane add-ons. Read more in the Freeplane documentation,  visit the the wiki on add-ons and the wiki add-on scrips ." ID="ID_903826867" CREATED="1541851668271" MODIFIED="1541851717678"/>
 </node>
 </node>
@@ -8635,7 +8629,7 @@ node alias can not be a number</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Add-ons" STYLE_REF="Professional" FOLDED="true" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1335301155197" LINK="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28install%29" MIN_WIDTH="1.0 px">
+<node TEXT="Add-ons" STYLE_REF="Professional" FOLDED="true" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1335301155197" LINK="https://www.freeplane.org/wiki/index.php/Add-ons_%28install%29" MIN_WIDTH="1.0 px">
 <node STYLE_REF="TitlesContent" ID="ID_1670821464" CREATED="1330288802502" MODIFIED="1335096363601" HGAP_QUANTITY="-72.0 px" VSHIFT_QUANTITY="34.0 px"><richcontent TYPE="NODE">
 
 <html>
@@ -8647,7 +8641,7 @@ node alias can not be a number</pre>
       <font color="#000000">Click the red arrow to read more about extensions on the Interenet. </font>
     </p>
     <p>
-      <font color="#000000">Check <a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28Language_pack%29">here</a>&#160;if there exists a language pack add-on for your language.</font>
+      <font color="#000000">Check <a href="https://www.freeplane.org/wiki/index.php/Add-ons_%28Language_pack%29">here</a>&#160;if there exists a language pack add-on for your language.</font>
     </p>
   </body>
 </html>
@@ -8664,7 +8658,7 @@ node alias can not be a number</pre>
   </head>
   <body>
     <p>
-      Click <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Examples">here</a>&#160;to go to the Wiki
+      Click <a href="https://www.freeplane.org/wiki/index.php/Tutorial_Freeplane#Examples">here</a>&#160;to go to the Wiki
     </p>
   </body>
 </html>

@@ -1,6 +1,6 @@
 <map version="freeplane 1.5.6">
-<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      &lt;font size=&quot;4&quot;&gt;&lt;a href=&quot;http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Dashboard_for_GTD&quot;&gt;&lt;b&gt;G&lt;/b&gt;&lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Dashboard_for_GTD&quot;&gt;etting&lt;font size=&quot;3&quot;&gt;&amp;#160;&lt;/font&gt;&lt;font size=&quot;4&quot;&gt;&lt;b&gt;T&lt;/b&gt;&lt;/font&gt;hings &lt;font size=&quot;4&quot;&gt;&lt;b&gt;D&lt;/b&gt;&lt;/font&gt;one&lt;/a&gt;&lt;br&gt;With&lt;i&gt;&amp;#160;&lt;b&gt;Freeplane&lt;/b&gt;&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1334842513243" VGAP_QUANTITY="0.0 px" BACKGROUND_COLOR="#ffcc00"><hook NAME="MapStyle">
+<!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p style=&quot;text-align: center&quot;&gt;&#xa;      &lt;font size=&quot;4&quot;&gt;&lt;a href=&quot;https://www.freeplane.org/wiki/index.php/Tutorial_Freeplane#Dashboard_for_GTD&quot;&gt;&lt;b&gt;G&lt;/b&gt;&lt;/a&gt;&lt;/font&gt;&lt;a href=&quot;https://www.freeplane.org/wiki/index.php/Tutorial_Freeplane#Dashboard_for_GTD&quot;&gt;etting&lt;font size=&quot;3&quot;&gt;&amp;#160;&lt;/font&gt;&lt;font size=&quot;4&quot;&gt;&lt;b&gt;T&lt;/b&gt;&lt;/font&gt;hings &lt;font size=&quot;4&quot;&gt;&lt;b&gt;D&lt;/b&gt;&lt;/font&gt;one&lt;/a&gt;&lt;br&gt;With&lt;i&gt;&amp;#160;&lt;b&gt;Freeplane&lt;/b&gt;&lt;/i&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1334842513243" VGAP_QUANTITY="0.0 px" BACKGROUND_COLOR="#ffcc00"><hook NAME="MapStyle">
     <properties fit_to_viewport="false;"/>
 
 <map_styles>
@@ -80,7 +80,7 @@
   </head>
   <body>
     <p>
-      Write <a href="http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Tutorial_Extensions#Floating_nodes">digital post-its</a>
+      Write <a href="https://www.freeplane.org/wiki/index.php/Freeplane_Tutorial_Extensions#Floating_nodes">digital post-its</a>
     </p>
     <p>
       and order them in a map.<br/>
@@ -103,7 +103,7 @@
 </node>
 </node>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;http://freeplane.sourceforge.net/wiki/index.php/Scripting&quot;&gt;Program&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1100351552" CREATED="1317963664772" MODIFIED="1319316372328" HGAP_QUANTITY="-99.0 px" VSHIFT_QUANTITY="-158.0 px">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;https://www.freeplane.org/wiki/index.php/Scripting&quot;&gt;Program&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1100351552" CREATED="1317963664772" MODIFIED="1319316372328" HGAP_QUANTITY="-99.0 px" VSHIFT_QUANTITY="-158.0 px">
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
 
@@ -126,7 +126,7 @@
 </richcontent>
 <edge COLOR="#007c00" WIDTH="3"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Vault&quot;&gt;Protect&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_803151767" CREATED="1317963651200" MODIFIED="1318588665665" HGAP_QUANTITY="-203.0 px" VSHIFT_QUANTITY="-110.0 px">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;https://www.freeplane.org/wiki/index.php/Tutorial_Freeplane#Vault&quot;&gt;Protect&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_803151767" CREATED="1317963651200" MODIFIED="1318588665665" HGAP_QUANTITY="-203.0 px" VSHIFT_QUANTITY="-110.0 px">
 <icon BUILTIN="password"/>
 <hook NAME="FreeNode"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -144,7 +144,7 @@
 </richcontent>
 <edge COLOR="#00007c" WIDTH="3"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Tutorial_Extensions#SWOT_analysis&quot;&gt;Analyze&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1839755402" CREATED="1317963473454" MODIFIED="1335089373407" HGAP_QUANTITY="316.0 px" VSHIFT_QUANTITY="-106.0 px">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;https://www.freeplane.org/wiki/index.php/Freeplane_Tutorial_Extensions#SWOT_analysis&quot;&gt;Analyze&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1839755402" CREATED="1317963473454" MODIFIED="1335089373407" HGAP_QUANTITY="316.0 px" VSHIFT_QUANTITY="-106.0 px">
 <icon BUILTIN="xmag"/>
 <arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1839755402" STARTINCLINATION="37;-27;" ENDINCLINATION="37;-27;" STARTARROW="DEFAULT" ENDARROW="DEFAULT"/>
 <hook NAME="FreeNode"/>
@@ -173,7 +173,7 @@
   </head>
   <body>
     <p>
-      <a href="http://freeplane.sourceforge.net/wiki/index.php/Formula">Calculate</a>
+      <a href="https://www.freeplane.org/wiki/index.php/Formula">Calculate</a>
     </p>
   </body>
 </html>
@@ -186,7 +186,7 @@
 <edge STYLE="hide_edge" COLOR="#7c7c00" WIDTH="3"/>
 <hook NAME="FreeNode"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Tutorial_Extensions#Organize_your_collection&quot;&gt;Organize&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1300937459" CREATED="1317963516276" MODIFIED="1335089284317" HGAP_QUANTITY="396.0 px" VSHIFT_QUANTITY="-39.0 px">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;https://www.freeplane.org/wiki/index.php/Freeplane_Tutorial_Extensions#Organize_your_collection&quot;&gt;Organize&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1300937459" CREATED="1317963516276" MODIFIED="1335089284317" HGAP_QUANTITY="396.0 px" VSHIFT_QUANTITY="-39.0 px">
 <icon BUILTIN="attach"/>
 <arrowlink SHAPE="LINE" COLOR="#000000" WIDTH="2" TRANSPARENCY="80" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1300937459" STARTINCLINATION="95;0;" ENDINCLINATION="95;0;" STARTARROW="DEFAULT" ENDARROW="NONE"/>
 <hook NAME="FreeNode"/>
@@ -248,7 +248,7 @@
 <edge WIDTH="1"/>
 </node>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Tutorial_Extensions#Meeting_support&quot;&gt;Meet&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_941087087" CREATED="1317963530737" MODIFIED="1335088176296" HGAP_QUANTITY="-237.0 px" VSHIFT_QUANTITY="98.0 px">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;https://www.freeplane.org/wiki/index.php/Freeplane_Tutorial_Extensions#Meeting_support&quot;&gt;Meet&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_941087087" CREATED="1317963530737" MODIFIED="1335088176296" HGAP_QUANTITY="-237.0 px" VSHIFT_QUANTITY="98.0 px">
 <icon BUILTIN="group"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#0000ff" WIDTH="3" TRANSPARENCY="255" DASH="3 3" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1100351552" STARTINCLINATION="-217;-41;" ENDINCLINATION="-189;0;" STARTARROW="NONE" ENDARROW="NONE"/>
 <hook NAME="FreeNode"/>
@@ -272,14 +272,14 @@
 </html>
 </richcontent>
 <edge COLOR="#ff00ff" WIDTH="3"/>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;http://freeplane.sourceforge.net/mapsOnline/?map=MeetingBeginner.mm&quot;&gt;Beginner&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_184991784" CREATED="1317972712983" MODIFIED="1335088675136">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;https://www.freeplane.org/mapsOnline/?map=MeetingBeginner.mm&quot;&gt;Beginner&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_184991784" CREATED="1317972712983" MODIFIED="1335088675136">
 <icon BUILTIN="smiley-oh"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;http://freeplane.sourceforge.net/mapsOnline/?map=MeetingAdvanced.mm&quot;&gt;Advanced&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1404449457" CREATED="1317972719278" MODIFIED="1335088750262">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;https://www.freeplane.org/mapsOnline/?map=MeetingAdvanced.mm&quot;&gt;Advanced&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" ID="ID_1404449457" CREATED="1317972719278" MODIFIED="1335088750262">
 <icon BUILTIN="ksmiletris"/>
 </node>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Tutorial_Extensions#Writing_with_Freeplane&quot;&gt;Write&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1510399467" CREATED="1317965217458" MODIFIED="1335089125284" HGAP_QUANTITY="356.0 px" VSHIFT_QUANTITY="111.0 px">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;https://www.freeplane.org/wiki/index.php/Freeplane_Tutorial_Extensions#Writing_with_Freeplane&quot;&gt;Write&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1510399467" CREATED="1317965217458" MODIFIED="1335089125284" HGAP_QUANTITY="356.0 px" VSHIFT_QUANTITY="111.0 px">
 <icon BUILTIN="list"/>
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#ff0000" WIDTH="4" TRANSPARENCY="255" FONT_SIZE="16" FONT_FAMILY="Britannic Bold" DESTINATION="ID_360719522" MIDDLE_LABEL="Share it" STARTINCLINATION="88;183;" ENDINCLINATION="-3;215;" STARTARROW="NONE" ENDARROW="NONE"/>
 <richcontent TYPE="DETAILS" HIDDEN="true">
@@ -326,7 +326,7 @@
 <hook NAME="FreeNode"/>
 <edge COLOR="#0000ff" WIDTH="3"/>
 </node>
-<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;http://freeplane.sourceforge.net/wiki/index.php/Freeplane_Tutorial_Extensions#Assignment_.26_Presentation&quot;&gt;Learn&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1583240168" CREATED="1317963552842" MODIFIED="1335088980275" HGAP_QUANTITY="110.0 px" VSHIFT_QUANTITY="208.0 px">
+<node TEXT="&lt;html&gt;&#xa;  &lt;head&gt;&#xa;&#xa;  &lt;/head&gt;&#xa;  &lt;body&gt;&#xa;    &lt;p&gt;&#xa;      &lt;a href=&quot;https://www.freeplane.org/wiki/index.php/Freeplane_Tutorial_Extensions#Assignment_.26_Presentation&quot;&gt;Learn&lt;/a&gt;&#xa;    &lt;/p&gt;&#xa;  &lt;/body&gt;&#xa;&lt;/html&gt;" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1583240168" CREATED="1317963552842" MODIFIED="1335088980275" HGAP_QUANTITY="110.0 px" VSHIFT_QUANTITY="208.0 px">
 <icon BUILTIN="male1"/>
 <arrowlink SHAPE="LINE" COLOR="#ff0000" WIDTH="2" TRANSPARENCY="255" FONT_SIZE="12" FONT_FAMILY="SansSerif" DESTINATION="ID_1583240168" STARTINCLINATION="-9;57;" ENDINCLINATION="-9;57;" STARTARROW="NONE" ENDARROW="NONE"/>
 <hook NAME="FreeNode"/>

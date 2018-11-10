@@ -1,5 +1,5 @@
 <map version="freeplane 1.2.0">
-<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
 <attribute_registry>
     <attribute_name VISIBLE="true" NAME="See also"/>
     <attribute_name VISIBLE="true" NAME="a2"/>
@@ -193,7 +193,7 @@
   </head>
   <body>
     <p>
-      Freeplane heeft tot doel het denken, delen en gebruiken van infrormatie te vergemakkelijken. Freeplane ondersteunt het maken, delen en gebruiken van <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane_nl#Wat_is_mindmappen">mindmaps</a>, een soort van&#160; <a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">informatiekaarten</a>. &#160;De Freeplane <b><a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch">wiki</a></b>&#160;bevat concrete voorbeelden van&#160; <a href="freeplaneApplications_nl.mm">toepassingsgebieden.</a>&#160;De knoop <a href="freeplaneFunctions.mm">functieindex</a>&#160;&#160;bevat een visueel overzicht van alle functies en hyperlinks naar beschrijvingen van deze functies. Een snelle inleiding is te vinden in de Freeplane videogidsen (zie <i>Help&gt;Online documentatiemindmaps</i>).&#160;Het doel van deze Handleiding is om in aanvulling op de videogidsen de mogelijkeheden van Freeplane op een systemaische wijze te presenteren, en met voldoende diepgang voor de meeste gebruikers. Voor meer informatie, of meer details, ga naar de documentatie in menu <a href="freeplane.mm">Help &gt; Documentatie</a>.
+      Freeplane heeft tot doel het denken, delen en gebruiken van infrormatie te vergemakkelijken. Freeplane ondersteunt het maken, delen en gebruiken van <a href="https://www.freeplane.org/wiki/index.php/Tutorial_Freeplane_nl#Wat_is_mindmappen">mindmaps</a>, een soort van&#160; <a href="http://www.informationtamers.com/WikIT/index.php?title=Information_map_types">informatiekaarten</a>. &#160;De Freeplane <b><a href="https://www.freeplane.org/wiki/index.php/Mind_Map_Gallery/Dutch">wiki</a></b>&#160;bevat concrete voorbeelden van&#160; <a href="freeplaneApplications_nl.mm">toepassingsgebieden.</a>&#160;De knoop <a href="freeplaneFunctions.mm">functieindex</a>&#160;&#160;bevat een visueel overzicht van alle functies en hyperlinks naar beschrijvingen van deze functies. Een snelle inleiding is te vinden in de Freeplane videogidsen (zie <i>Help&gt;Online documentatiemindmaps</i>).&#160;Het doel van deze Handleiding is om in aanvulling op de videogidsen de mogelijkeheden van Freeplane op een systemaische wijze te presenteren, en met voldoende diepgang voor de meeste gebruikers. Voor meer informatie, of meer details, ga naar de documentatie in menu <a href="freeplane.mm">Help &gt; Documentatie</a>.
     </p>
   </body>
 </html>
@@ -239,7 +239,7 @@
     </p>
     <ul>
       <li>
-        Installeer de<a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28Language_pack%29#NL">&#160;language add-on NL</a>&#160;voor meer uitgebreide ondersteuning..
+        Installeer de<a href="https://www.freeplane.org/wiki/index.php/Add-ons_%28Language_pack%29#NL">&#160;language add-on NL</a>&#160;voor meer uitgebreide ondersteuning..
       </li>
       <li>
         Ga naar Help &gt;Documentatie Online om na te gaan of er al videogidsen beschikbaar zijn.
@@ -953,7 +953,7 @@
   </head>
   <body>
     <p>
-      Door op een vrije plaats in de mindmap te klikken terwijl <i>Control</i>&#160; is ingedrukt, opent een zogenaamde vrij positioneebare, vrij zwevende knoop. Dezeze knoop is te vergelijken met een post-it (geeltje). Je kunt de knoop verplaatsen zonder dat dit effect heeft op de andere knopen. De opmaak van deze knoop wordt bepaald door de systeemstijl<i>&#160;Zwevende knoop</i>. Je kunt deze stijl veranderen, bijvoorbeeld de wolk verwijderen of de takken zichtbaar maken. Je kunt de post-it node aan een knoop in de hierarchie vastmaken door hem op een andere knoop te plaatsen: de post-it wordt dan een kindknoop van deze knoop en is niet langer een vrije knoop. Voor voorbeelden, zie wiki <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Floating_nodes">Tutorial Freeplane.</a>
+      Door op een vrije plaats in de mindmap te klikken terwijl <i>Control</i>&#160; is ingedrukt, opent een zogenaamde vrij positioneebare, vrij zwevende knoop. Dezeze knoop is te vergelijken met een post-it (geeltje). Je kunt de knoop verplaatsen zonder dat dit effect heeft op de andere knopen. De opmaak van deze knoop wordt bepaald door de systeemstijl<i>&#160;Zwevende knoop</i>. Je kunt deze stijl veranderen, bijvoorbeeld de wolk verwijderen of de takken zichtbaar maken. Je kunt de post-it node aan een knoop in de hierarchie vastmaken door hem op een andere knoop te plaatsen: de post-it wordt dan een kindknoop van deze knoop en is niet langer een vrije knoop. Voor voorbeelden, zie wiki <a href="https://www.freeplane.org/wiki/index.php/Tutorial_Freeplane#Floating_nodes">Tutorial Freeplane.</a>
     </p>
   </body>
 </html>
@@ -1330,7 +1330,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Berekenen" STYLE_REF="Professional" FOLDED="true" ID="ID_448338872" CREATED="1316197624394" MODIFIED="1336124936624" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formula" MIN_WIDTH="100" STYLE="combined">
+<node TEXT="Berekenen" STYLE_REF="Professional" FOLDED="true" ID="ID_448338872" CREATED="1316197624394" MODIFIED="1336124936624" LINK="https://www.freeplane.org/wiki/index.php/Formula" MIN_WIDTH="100" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -1843,7 +1843,7 @@
 </richcontent>
 </node>
 </node>
-<node TEXT="Externe koppeling" STYLE_REF="Beginner" FOLDED="true" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1336125011738" LINK="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane" STYLE="combined">
+<node TEXT="Externe koppeling" STYLE_REF="Beginner" FOLDED="true" ID="ID_640110372" CREATED="1286651969385" MODIFIED="1336125011738" LINK="https://www.freeplane.org/wiki/index.php/Tutorial_Freeplane" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -3083,7 +3083,7 @@
         Als je wilt dat de mindmap op een bepaalde manier wordt open/dichtgevouwen, kies dan v&#243;&#243;r het exporteren <i>Extra &gt; Instellingen &gt; Omgeving &gt; Bewaar situatie van open/dicht vouwen &gt; Altijd.</i><br/>
       </li>
       <li>
-        Zie dit <a href="http://freeplane.sourceforge.net/wiki/index.php/Tutorial_Freeplane#Publishing_multiple_maps_in_one_Java_applet">voorbeeld</a>&#160;hoe je meerdere mindmaps in &#233;&#233;n Java Applet kunt publiceren.<br/>
+        Zie dit <a href="https://www.freeplane.org/wiki/index.php/Tutorial_Freeplane#Publishing_multiple_maps_in_one_Java_applet">voorbeeld</a>&#160;hoe je meerdere mindmaps in &#233;&#233;n Java Applet kunt publiceren.<br/>
       </li>
     </ul>
   </body>
@@ -3118,9 +3118,6 @@
     <ul>
       <li>
         In windows, rechtsklik op de link van de mindmap en kies hyperlink kopieren. Plak dit adres vervolgens in het URL-adres.
-      </li>
-      <li>
-        Via <i>Help &gt; Documentatiemindmaps online</i>&#160;kunnen mindmaps op<i>&#160; http://freeplane.sourceforge.net/mapsOnline</i>&#160;worden geopend. Ook .svg plaatjes worden dan getoond..
       </li>
     </ul>
   </body>
@@ -4814,7 +4811,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Scripts" STYLE_REF="Professional" FOLDED="true" ID="ID_519455593" CREATED="1316158310467" MODIFIED="1323811193426" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting" STYLE="combined">
+<node TEXT="Scripts" STYLE_REF="Professional" FOLDED="true" ID="ID_519455593" CREATED="1316158310467" MODIFIED="1323811193426" LINK="https://www.freeplane.org/wiki/index.php/Scripting" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -4832,7 +4829,7 @@
 
     </p>
     <p>
-      Read more in the Freeplane documentation,&#160;&#160;visit the the wiki on add-ons and the <a href="http://freeplane.sourceforge.net/wiki/index.php/Scripting">wiki add-on scrips</a>&#160;.
+      Read more in the Freeplane documentation,&#160;&#160;visit the the wiki on add-ons and the <a href="https://www.freeplane.org/wiki/index.php/Scripting">wiki add-on scrips</a>&#160;.
     </p>
   </body>
 </html>
@@ -4930,7 +4927,7 @@
 </hook>
 </node>
 </node>
-<node TEXT="Add-ons" STYLE_REF="Professional" FOLDED="true" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1323531432400" LINK="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28install%29" VSHIFT="-140" MIN_WIDTH="1">
+<node TEXT="Add-ons" STYLE_REF="Professional" FOLDED="true" ID="ID_1156954596" CREATED="1319993853694" MODIFIED="1323531432400" LINK="https://www.freeplane.org/wiki/index.php/Add-ons_%28install%29" VSHIFT="-140" MIN_WIDTH="1">
 <node STYLE_REF="TitlesContent" ID="ID_605874491" CREATED="1330288366116" MODIFIED="1336118542978" HGAP="-73" VSHIFT="34"><richcontent TYPE="NODE">
 
 <html>
@@ -4942,7 +4939,7 @@
       Klik op de rode pijl voor meer informatie over uitbreidingen.
     </p>
     <p>
-      Installeer de<a href="http://freeplane.sourceforge.net/wiki/index.php/Add-ons_%28Language_pack%29#NL">&#160;language add-on NL</a>&#160;voor meer uitgebreide ondersteuning.
+      Installeer de<a href="https://www.freeplane.org/wiki/index.php/Add-ons_%28Language_pack%29#NL">&#160;language add-on NL</a>&#160;voor meer uitgebreide ondersteuning.
     </p>
   </body>
 </html>
@@ -4959,7 +4956,7 @@
   </head>
   <body>
     <p>
-      Klik <a href="http://freeplane.sourceforge.net/wiki/index.php/Mind_Map_Gallery/Dutch"><b>hier</b></a>&#160;om naar de wiki met voorbeelden op Internet te gaan.
+      Klik <a href="https://www.freeplane.org/wiki/index.php/Mind_Map_Gallery/Dutch"><b>hier</b></a>&#160;om naar de wiki met voorbeelden op Internet te gaan.
     </p>
   </body>
 </html>

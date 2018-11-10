@@ -1,5 +1,5 @@
 <map version="freeplane 1.3.0">
-<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
 <node TEXT="My ListTest Map" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1369923020781" MAX_WIDTH="300"><hook NAME="MapStyle">
 
 <map_styles>

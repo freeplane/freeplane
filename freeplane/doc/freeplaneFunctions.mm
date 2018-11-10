@@ -1,5 +1,5 @@
 <map version="freeplane 1.5.9">
-<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
 <node TEXT="Freeplane 1.2&#xa;Functions" FOLDED="false" ID="ID_45488473" CREATED="1288535648658" MODIFIED="1323787510068" BACKGROUND_COLOR="#00ff99" VGAP_QUANTITY="0.0 px">
 <icon BUILTIN="bee"/>
 <font BOLD="true"/>
@@ -248,7 +248,7 @@
     </p>
     <ul>
       <li>
-        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="http://freeplaneTutorial.mm#ID_1795262306">Image (node core)</a>
+        <i>Help &gt;  </i><i>Tutorial</i>&#160;<a href="freeplaneTutorial.mm#ID_1795262306">Image (node core)</a>
       </li>
     </ul>
   </body>
@@ -554,7 +554,7 @@
   </head>
   <body>
     <p>
-      <b>Text </b>&#160;with <a href="http://www.freeplane.org">in-line</a>&#160;hyperlink(s), and:
+      <b>Text </b>&#160;with <a href="https://www.freeplane.org">in-line</a>&#160;hyperlink(s), and:
     </p>
   </body>
 </html>

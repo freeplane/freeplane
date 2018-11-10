@@ -1,5 +1,5 @@
 <map version="0.9.0">
-<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
 <node TEXT="viewer standard">
 <hook NAME="MapStyle" max_node_width="600">
 <map_styles>

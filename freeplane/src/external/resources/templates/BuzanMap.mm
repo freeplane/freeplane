@@ -1,5 +1,5 @@
 <map version="freeplane 1.6.0">
-<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
 <node TEXT="Central&#xa;Idea" FOLDED="false" ID="ID_191153586" ICON_SIZE="36.0 pt" LINK="menuitem:_ExternalImageAddAction" STYLE="oval">
 <font SIZE="22"/>
 <hook NAME="MapStyle">

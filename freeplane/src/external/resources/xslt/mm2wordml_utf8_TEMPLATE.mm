@@ -1,5 +1,5 @@
 <map version="0.9.0">
-<!-- To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<!-- To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
 <node CREATED="1216974513042" ID="ID_833600903" MODIFIED="1216991733257" TEXT="Example of map exportable to Word">
 <richcontent TYPE="NOTE"><html>
   <head>

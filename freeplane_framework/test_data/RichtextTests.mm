@@ -1,5 +1,5 @@
 <map version="freeplane 1.3.0">
-<!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
+<!--To view this file, download free mind mapping software Freeplane from https://www.freeplane.org -->
 <node TEXT="Notes and rich-text nodes" FOLDED="false" ID="ID_1723255651" CREATED="1283093380553" MODIFIED="1369945702337" MAX_WIDTH="300" MIN_WIDTH="1"><hook NAME="MapStyle">
 
 <map_styles>
