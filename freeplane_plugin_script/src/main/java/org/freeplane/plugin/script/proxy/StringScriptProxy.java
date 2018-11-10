@@ -14,7 +14,6 @@ class StringScriptProxy extends ScriptProxy implements Script {
 		super(scriptContext);
 		this.script = script;
 		this.type = type;
-		withAllPermissions();
 	}
 	@Override
 	protected IScript createScript(ScriptingPermissions scriptingPermissions) {
