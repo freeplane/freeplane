@@ -72,8 +72,8 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
 <stylenode TEXT="Introduction" BACKGROUND_COLOR="#00cc33" MIN_WIDTH="5.0 cm">
-<edge STYLE="bezier" COLOR="#33ffcc"/>
 <font BOLD="true"/>
+<edge STYLE="bezier" COLOR="#33ffcc"/>
 </stylenode>
 <stylenode TEXT="Beginner" BACKGROUND_COLOR="#33ffcc" STYLE="bubble" MIN_WIDTH="5.0 cm">
 <font BOLD="true"/>
@@ -7905,6 +7905,27 @@ node alias can not be a number</pre>
 </richcontent>
 </node>
 </node>
+<node TEXT="Calculations" STYLE_REF="Professional" FOLDED="true" POSITION="right" ID="ID_1500606594" CREATED="1541851211319" MODIFIED="1541851231740" NUMBERED="true">
+<node TEXT="Using and writing formulas" STYLE_REF="Professional" FOLDED="true" ID="ID_1694530970" CREATED="1541851426738" MODIFIED="1541851767589">
+<node TEXT="Node and attribute values can contain formulas written in Groovy which are automatically evaluated" ID="ID_327360465" CREATED="1541851269003" MODIFIED="1541851318735"/>
+<node TEXT="Freeplane can show dependencies between formulas and other node values and attributes" FOLDED="true" ID="ID_493991213" CREATED="1541851914276" MODIFIED="1541851976814">
+<node TEXT="Trace Precendents action shows all values ad attributes referenced by currently selected formula" ID="ID_149789652" CREATED="1541852007073" MODIFIED="1541852056818"/>
+<node TEXT="Trace Dependents action shows all values and attributes containing already evaluated formulas referencing currently selected values or attributes" ID="ID_1164933281" CREATED="1541852057463" MODIFIED="1541852097459"/>
+<node TEXT="Repeated execution of these actions traces the dependencies hierarchically" ID="ID_1443687552" CREATED="1541852098250" MODIFIED="1541852133561"/>
+<node TEXT="Clear Dependencies resets information about formula dependencies" ID="ID_23662627" CREATED="1541852134257" MODIFIED="1541852160693"/>
+<node TEXT="When dependency tracing is active, all other connectors are hidden." ID="ID_286584949" CREATED="1541852161549" MODIFIED="1541852198944"/>
+</node>
+<node TEXT="More information about using formulas is available in Freeplane Wiki" ID="ID_1130453106" CREATED="1455910904101" MODIFIED="1541851379852" LINK="http://freeplane.sourceforge.net/wiki/index.php/Formulas"/>
+</node>
+<node TEXT="Using and writing scripts" STYLE_REF="Professional" FOLDED="true" ID="ID_519455593" CREATED="1316158310467" MODIFIED="1541851551473" STYLE="combined">
+<hook NAME="NodeConditionalStyles">
+    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
+</hook>
+<node TEXT="Freeplane has a very powerful scripting possibility based on Groovy. In this way you can provide for specialised functions.&#xa;&#xa;There is a base of predefined scrips which are published on the Freeplane wiki. In this way you need not be a programmer to use scripts." ID="ID_1965879157" CREATED="1323530732191" MODIFIED="1541851796447"/>
+<node TEXT="More information about using scripts is available in Freeplane Wiki" ID="ID_164241738" CREATED="1541851477527" MODIFIED="1541851543212" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting"/>
+<node TEXT="Scripts and required resources like icons or libraries can be packaged and distributed as freeplane add-ons. Read more in the Freeplane documentation,  visit the the wiki on add-ons and the wiki add-on scrips ." ID="ID_903826867" CREATED="1541851668271" MODIFIED="1541851717678"/>
+</node>
+</node>
 <node TEXT="Date &amp; time actions" STYLE_REF="Professional" FOLDED="true" POSITION="right" ID="ID_1959496513" CREATED="1303932101749" MODIFIED="1541847561399" NUMBERED="true">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="SubMenu" LAST="false"/>
@@ -8315,7 +8336,7 @@ node alias can not be a number</pre>
 </hook>
 </node>
 </node>
-<node TEXT="Standard settings in Preferences" STYLE_REF="Professional" FOLDED="true" ID="ID_889570489" CREATED="1314730257257" MODIFIED="1335301155197" MIN_WIDTH="1.0 px" STYLE="combined">
+<node TEXT="Standard settings in Preferences" STYLE_REF="Professional" FOLDED="true" ID="ID_889570489" CREATED="1314730257257" MODIFIED="1541851749090" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -8495,7 +8516,7 @@ node alias can not be a number</pre>
 </node>
 </node>
 </node>
-<node TEXT="Vertical space between nodes" STYLE_REF="Professional" FOLDED="true" ID="ID_1934584954" CREATED="1324029133997" MODIFIED="1335301155197" STYLE="combined">
+<node TEXT="Vertical space between nodes" STYLE_REF="Professional" ID="ID_1934584954" CREATED="1324029133997" MODIFIED="1335301155197" STYLE="combined">
 <hook NAME="NodeConditionalStyles">
     <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
 </hook>
@@ -8517,34 +8538,6 @@ node alias can not be a number</pre>
     </p>
     <p>
       To reset the original posisitons, select a node and Edit &gt; Set default node positions.
-    </p>
-  </body>
-</html>
-</richcontent>
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="TitlesContent" LAST="false"/>
-</hook>
-</node>
-</node>
-<node TEXT="Using and writing scripts" STYLE_REF="Professional" FOLDED="true" ID="ID_519455593" CREATED="1316158310467" MODIFIED="1335301155197" LINK="http://freeplane.sourceforge.net/wiki/index.php/Scripting" STYLE="combined">
-<hook NAME="NodeConditionalStyles">
-    <conditional_style ACTIVE="true" STYLE_REF="MenuTitle" LAST="false"/>
-</hook>
-<node ID="ID_1965879157" CREATED="1323530732191" MODIFIED="1335096329702" HGAP_QUANTITY="-174.0 px" VSHIFT_QUANTITY="70.0 px"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <p>
-      Freeplane has a very powerful scripting possibility based on Groovy. In this way you can provide for specialised functions which might be lacking.
-    </p>
-    <p>
-      
-    </p>
-    <p>
-      There is a base of predefined scrips which are published on the Freeplane wiki. In this way you need not be a programmer to use scripts. Read more in the Freeplane documentation,&#160;&#160;visit the the wiki on add-ons and the <a href="http://freeplane.sourceforge.net/wiki/index.php/Scripting">wiki add-on scrips</a>&#160;.
     </p>
   </body>
 </html>
