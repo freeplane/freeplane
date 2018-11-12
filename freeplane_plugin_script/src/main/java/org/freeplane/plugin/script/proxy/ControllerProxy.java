@@ -321,12 +321,12 @@ class ControllerProxy implements Proxy.Controller {
 
 	@Override
 	public Map newMap(URL url) {
-		return load(url).getMap();
+		return load(url).withView().getMap();
 	}
 
 	@Override
 	public Map newMapFromTemplate(File templateFile) {
-		return load(templateFile).saveAfterLoading().getMap();
+		return load(templateFile).withView().saveAfterLoading().getMap();
 	}
 
 	@Override
