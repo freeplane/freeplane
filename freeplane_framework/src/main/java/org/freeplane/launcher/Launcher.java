@@ -19,6 +19,15 @@
  */
 package org.freeplane.launcher;
 
+import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import org.freeplane.api.Controller;
 import org.freeplane.api.HeadlessMapCreator;
 import org.knopflerfish.framework.Main;
@@ -26,12 +35,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.launch.Framework;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * This class can be used to run freeplane instance from an application and to obtain its {@link Controller} object.
  *
@@ -45,8 +48,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 	public static void createNewMindMap(File freeplaneInstallationDirectory, final File newMapFile) {
 		final Launcher launcher = Launcher.createForInstallation(freeplaneInstallationDirectory).disableSecurityManager();
 		HeadlessMapCreator mapCreator = launcher.launchHeadless();
-		final Map map = mapCreator.newHiddenMapFromTemplate(TestApp.class.getResource("/templateFile.mm"));
-		map.getRoot().createChild().setText("hello world");
+		final Map map = mapCreator.load(TestApp.class.getResource("/templateFile.mm")).unsetMapLocation().getMap();
+		final Node childNode = map.getRoot().createChild();
+		String value = "hello world";
+		childNode.setText(value);
+		final String nodeText = (String) mapCreator.script("node.to.text", "groovy").executeOn(childNode);
+		System.out.println("Read node value: " + nodeText);
+		if(! nodeText.equals(value))
+			throw new AssertionError("unexpected value returned");
 		map.saveAs(newMapFile);
 		System.out.println("Saved file " + newMapFile.getAbsolutePath());
 		launcher.shutdown();
