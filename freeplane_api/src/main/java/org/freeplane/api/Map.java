@@ -28,7 +28,7 @@ public interface Map extends MapRO {
 
 	/**
 	 * saves the map to disk. Note that there is <em>no undo</em> for this method.
-	 * @param allowInteraction if a saveAs dialog should be opened if the map has no assigned URL so far.
+	 * @param file the location of the file to be saved.
 	 * @return false if the saveAs was cancelled by the user and true otherwise.
 	 * @throws RuntimeException if the map has no assigned URL and parameter allowInteraction is false.
 	 * @since 1.2
@@ -49,7 +49,16 @@ public interface Map extends MapRO {
 	 *  @since 1.2 */
 	void setBackgroundColorCode(String rgbString);
 
-	/** install a lambda as the current filter in this map. If <code>closure</code> is null then filtering will
+	/** With {@link #filter(boolean, boolean, NodeCondition)} neither ancestors not descendants of the visible nodes are shown.
+	 * @see #filter(boolean, boolean, NodeCondition)
+	 * @since 1.2 */
+	public void filter(final NodeCondition condition);
+
+	/** alias for {@link #filter(NodeCondition)}. Enables assignment to the <code>filter</code> property.
+	 * @since 1.2 */
+	public void setFilter(final NodeCondition condition);
+
+	/** install a lambda as the current filter in this map. If <code>condition</code> is null then filtering will
 	 * be disabled. The filter state of a node can be checked by {@link Node#isVisible()}. <br>
 	 * To undo filtering use <em>Tools &rarr; Undo</em>. After execution of the following you have to use it seven times to
 	 * return to the initial filter state.
@@ -72,21 +81,14 @@ public interface Map extends MapRO {
 	 * // remove filter
 	 * node.map.filter = null
 	 * </pre>
-	 * @since 1.2 */
-	public void filter(final NodeCondition condition);
-
-	/** alias for {@link #filter(Closure)}. Enables assignment to the <code>filter</code> property.
-	 * @since 1.2 */
-	public void setFilter(final NodeCondition condition);
-
-	/** With {@link #filter(Closure)} neither ancestors not descendants of the visible nodes are shown. Use this
-	 * method to control these options.
-	 * @see #filter(Closure)
+	 * @param showAncestors whether to show ancestors or not.
+	 * @param showDescendants whether to show descendant or not.
+	 * @param condition filter the map using this lamda.
 	 * @since 1.2 */
 	public void filter(final boolean showAncestors, final boolean showDescendants, final NodeCondition condition);
 
-	/** alias for {@link #setFilter(boolean, boolean, Closure)}
-	 * @see #filter(Closure)
+	/** alias for {@link #filter(boolean, boolean, NodeCondition)}
+	 * @see #filter(boolean, boolean, NodeCondition)
 	 * @since 1.2 */
 	public void setFilter(final boolean showAncestors, final boolean showDescendants, final NodeCondition condition);
 

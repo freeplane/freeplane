@@ -58,7 +58,7 @@ public interface ControllerRO {
 	 *    print "node texts containing numbers:\n " + texts.join("\n ")
 	 * </pre>
 	 * See {@link Node#find(NodeCondition)} for searches on subtrees.
-	 * @param closure a lambda that returns a boolean value. The closure will receive
+	 * @param condition a lambda that returns a boolean value. The closure will receive
 	 *        a NodeModel as an argument which can be tested for a match.
 	 * @return all nodes for which <code>closure.call(NodeModel)</code> returns true.
 	 */

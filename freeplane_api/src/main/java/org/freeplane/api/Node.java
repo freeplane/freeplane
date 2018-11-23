@@ -170,9 +170,10 @@ public interface Node extends NodeRO {
 	 * methods will be able to convert the string properly to the wanted type.
 	 * <p>
 	 * Special support is provided for numbers, dates and calendars that are stored unconverted. For display of
-	 * them a standard formatter is used (use #setFormat() to change it). You may also pass {@link IFormattedObject}
-	 * instances ({@link FormattedDate}, {@link FormattedNumber} or {@link FormattedObject}) directly to determine
-	 * the format in one pass.
+	 * them a standard formatter is used (use #setFormat() to change it). You may also pass
+	 * {@link org.freeplane.features.format.IFormattedObject} instances ({@link org.freeplane.features.format.FormattedDate},
+	 * {@link org.freeplane.features.format.FormattedNumber} or {@link org.freeplane.features.format.FormattedObject})
+	 * directly to determine the format in one pass.
 	 * <p>
 	 * All other types are converted via value.toString().
 	 * <p><b>Numbers</b>
@@ -335,7 +336,7 @@ public interface Node extends NodeRO {
 	 *    // sort numerically
 	 *    node.sortChildrenBy{ it.to.num0 }
 	 * </pre>
-	 * @param closure a lambda that returns a Comparable value like a String. The closure will receive
+	 * @param comparable a lambda that returns a Comparable value like a String. The closure will receive
 	 *        a NodeModel as an argument.
 	 * @since 1.4.1
 	 */
@@ -349,7 +350,7 @@ public interface Node extends NodeRO {
 	void setAlias(String alias);
 
 	 /**
-	  * Sets if the node can be accessed using global accessor, see {@link NodeRO#call()}
+	  * Sets if the node can be accessed using global accessor, see {@link NodeRO#at(String)}
 	  *
 	  *  @since 1.7.1 */
 	void setIsGlobal(boolean value);
