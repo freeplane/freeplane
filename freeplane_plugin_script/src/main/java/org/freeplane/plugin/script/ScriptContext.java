@@ -45,7 +45,7 @@ public class ScriptContext implements AccessedNodes{
 		try {
 			File file = new File(path);
 			if(file.isAbsolute()) {
-				return file.toURL();
+				return file.toURI().toURL();
 			}
 			else  {
 				URL baseUrl = getBaseUrl();

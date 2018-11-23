@@ -552,7 +552,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 			File filterFile = new File(pathToFilterFile);
 			final IXMLReader reader = new StdXMLReader(new BufferedInputStream(new FileInputStream(filterFile)));
 			parser.setReader(reader);
-			reader.setSystemID(filterFile.toURL().toString());
+			reader.setSystemID(filterFile.toURI().toURL().toString());
 			final XMLElement loader = (XMLElement) parser.parse();
 			final Vector<XMLElement> conditions = loader.getChildren();
 			for (int i = 0; i < conditions.size(); i++) {

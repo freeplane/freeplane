@@ -77,6 +77,7 @@ import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.map.SummaryNode;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -937,11 +938,11 @@ public class MMapController extends MapController {
 			return;
 		}
 		try {
-			final URL endUrl = localFile.toURL();
+			final URL endUrl = localFile.toURI().toURL();
 			try {
 				if (endUrl.getFile().endsWith(".mm")) {
 					Controller.getCurrentController().selectMode(MModeController.MODENAME);
-					openDocumentationMap(endUrl);
+					MMapIO.getInstance().openDocumentationMap(endUrl);
 					if(nodeAndMapReference.hasNodeReference())
 						select(nodeAndMapReference.getNodeReference());
 
