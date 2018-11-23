@@ -17,11 +17,11 @@ public interface AttributesRO {
 	 * @since 1.2 */
 	Object getFirst(final String name);
 
-	/** returns true if there is any attribute with key <a>name</a>.
+	/** @return true if there is any attribute with key <a>name</a>.
 	 * @since 1.4 */
 	boolean containsKey(final String name);
 
-	/** returns all values for the attribute name. */
+	/** @return all values for the attribute name. */
 	List<Object> getAll(final String name);
 
 	/** returns all attribute names in the proper sequence. The number of names returned
@@ -74,7 +74,7 @@ public interface AttributesRO {
 	 * <pre>{@code
 	 *  = attributes.findValues{key, val -> key != 'TOTAL'}.sum(0){it.num0}
 	 * }</pre>
-	 * @param closure A closure that accepts two arguments (String key, Object value) and returns boolean/Boolean.
+	 * @param condition A closure that accepts two arguments (String key, Object value) and returns boolean/Boolean.
 	 * @since 1.2 */
 	List<? extends Convertible> findValues(AttributeCondition condition);
 

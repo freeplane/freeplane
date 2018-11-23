@@ -60,7 +60,7 @@ public interface Controller extends ControllerRO, HeadlessMapCreator {
 	 *   println("all available icon keys: " + FreeplaneIconUtils.listStandardIconKeys())
 	 *   c.setStatusInfo("standard", "hi there!", "button_ok");
 	 * </pre>
-	 * @see FreeplaneIconFactory
+	 * @see org.freeplane.core.ui.svgicons.FreeplaneIconFactory
 	 * @since 1.2 */
 	void setStatusInfo(String infoPanelKey, String info, String iconKey);
 
@@ -103,7 +103,7 @@ public interface Controller extends ControllerRO, HeadlessMapCreator {
 	@Deprecated
 	Map newMap(URL url);
 
-	/**  @deprecated since 1.6.16 - use {@link #load(file)}
+	/**  @deprecated since 1.6.16 - use {@link #load(File)}
 	 * @since 1.5 */
 	@Deprecated
 	public Map newMapFromTemplate(File templateFile);

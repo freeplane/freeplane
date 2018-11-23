@@ -103,7 +103,7 @@ public interface NodeRO {
 	 *   if (node["unknown attribute"])
 	 *      // surprise: the node has an attribute with key "unknown attribute"
 	 * </pre>
-	 * @throws ExecuteScriptException
+	 * @throws org.freeplane.plugin.script.ExecuteScriptException
 	 * @since 1.2
 	 */
 	Convertible getAt(String attributeName);
@@ -181,13 +181,13 @@ public interface NodeRO {
      * </ul>
 	 * @return Convertible getString(), getText() and toString() will return plain text instead of the HTML.
 	 *         Use {@link #getNoteText()} to get the HTML text.
-	 * @throws ExecuteScriptException
+	 * @throws org.freeplane.plugin.script.ExecuteScriptException
 	 * @since 1.2
 	 */
 	Convertible getNote();
 
 	/** Returns the HTML text of the node. (Notes always contain HTML text.)
-	 * @throws ExecuteScriptException */
+	 * @throws org.freeplane.plugin.script.ExecuteScriptException */
 	String getNoteText();
 
 	/** @since 1.2 */
@@ -204,7 +204,7 @@ public interface NodeRO {
 	String getAlias();
 
 	 /**
-	  * True if the node can be accessed using global accessor, see {@link #call()}
+	  * True if the node can be accessed using global accessor, see {@link #at(String)}
 	  *
 	  *  @since 1.7.1 */
 	boolean getIsGlobal();
@@ -249,8 +249,8 @@ public interface NodeRO {
 	 * <p>
 	 * See
 	 * <ul>
-	 * <li> {@link #getPlainText()} for plain text or use {@link HtmlUtils#htmlToPlain(String)}.
-	 * <li> {@link #getHtmlText()} for HTML text or use {@link HtmlUtils#plainToHTML(String)}.
+	 * <li> {@link #getPlainText()} for plain text or use {@link org.freeplane.core.util.HtmlUtils#htmlToPlain(String)}.
+	 * <li> {@link #getHtmlText()} for HTML text or use {@link org.freeplane.core.util.HtmlUtils#plainToHTML(String)}.
 	 * <li> {@link #getTransformedText()} or {@link #getValue()} for text after formula evaluation.
 	 * <li> {@link #getObject()} for possible typed content.
 	 * <li> {@link #getTo()} for text/object conversions.
@@ -268,7 +268,7 @@ public interface NodeRO {
 	@Deprecated
 	String getPlainTextContent();
 
-	/** The node text as HTML markup. Returns the same as {@link NodeProxy#getText()} if the node text
+	/** The node text as HTML markup. Returns the same as {@link #getText()} if the node text
 	 * already is HTML or converts the plain text to HTML otherwise.
 	 * @since 1.2 */
 	String getHtmlText();
@@ -290,7 +290,7 @@ public interface NodeRO {
 	/** The object that's displayed as the node text - normally the raw text of this node (then this method is
 	 * equivalent to {@link #getText()}).
 	 * But in case of typed content (for numbers, dates and calendars) {@link #getObject()} returns
-	 * a proper {@link IFormattedObject}. Use {@link #getPlainText()} to remove HTML.
+	 * a proper {@link org.freeplane.features.format.IFormattedObject}. Use {@link #getPlainText()} to remove HTML.
 	 * See {@link Node#setObject(Object)} for details.
 	 * @since 1.2 */
 	Object getObject();
@@ -309,13 +309,13 @@ public interface NodeRO {
 	 * <dt>node.to.object <dd>returns what fits best, see {@link Convertible#getObject()}.
 	 * </dl>
 	 * @return ConvertibleObject
-	 * @throws ExecuteScriptException on formula evaluation errors
+	 * @throws org.freeplane.plugin.script.ExecuteScriptException on formula evaluation errors
 	 * @since 1.2
 	 */
 	Convertible getTo();
 
 	/** an alias for {@link #getTo()}.
-	 * @throws ExecuteScriptException on formula evaluation errors
+	 * @throws org.freeplane.plugin.script.ExecuteScriptException on formula evaluation errors
 	 * @since 1.2 */
 	Convertible getValue();
 

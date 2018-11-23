@@ -25,7 +25,7 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 
 /** provides access to the current Freeplane version. In scripts use <code>c.freeplaneVersion</code>.
- * For usage instructions see {@link #compareTo(FreeplaneVersion)}. */
+ * For usage instructions see {@link #compareTo(org.freeplane.api.FreeplaneVersion)}. */
 public class FreeplaneVersion implements org.freeplane.api.FreeplaneVersion {
 	private static final FreeplaneVersion VERSION = FreeplaneVersion.loadVersion();
 	public static final String VERSION_KEY = "freeplane_version";
