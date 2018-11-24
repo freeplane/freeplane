@@ -101,8 +101,9 @@ public class UIComponentVisibilityDispatcher {
 		if(resizer == null)
 			component.setVisible(visible);
 		else {
-			if (visible || isContainedInFullWindow() && ! visible)
-				resizer.setVisible(visible);
+			final boolean containedInFullWindow = isContainedInFullWindow();
+			if (visible || ! containedInFullWindow || containedInFullWindow && ! visible)
+				resizer.setVisible(visible || ! containedInFullWindow);
 			resizer.setExpanded(visible);
 		}
     }
