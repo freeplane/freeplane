@@ -39,22 +39,20 @@ public class UIComponentVisibilityDispatcher {
 	private final String key;
 	private final JComponent component;
 	private OneTouchCollapseResizer resizer;
-	private final String propertyKeyPrefix;
 
 	public void setResizer(OneTouchCollapseResizer resizer) {
 		this.resizer = resizer;
 	}
 
-	public static void install(String propertyKeyPrefix, JComponent component, String key){
-		component.putClientProperty(KEY, new UIComponentVisibilityDispatcher(propertyKeyPrefix, component, key));
+	public static void install(JComponent component, String key){
+		component.putClientProperty(KEY, new UIComponentVisibilityDispatcher(component, key));
 	}
 
 	public static UIComponentVisibilityDispatcher dispatcher(JComponent component){
 		return (UIComponentVisibilityDispatcher) component.getClientProperty(KEY);
 	}
 
-	public UIComponentVisibilityDispatcher(String propertyKeyPrefix, JComponent component, String key) {
-		this.propertyKeyPrefix = propertyKeyPrefix;
+	private UIComponentVisibilityDispatcher(JComponent component, String key) {
 		this.component = component;
 		this.key = key;
     }
@@ -67,16 +65,12 @@ public class UIComponentVisibilityDispatcher {
 		else {
 			completeKeyString = key;
 		}
-		return getPropertyKeyPrefix() + completeKeyString;
+		return completeKeyString;
 	}
 
 	private boolean isContainedInFullWindow() {
 		final Component root = SwingUtilities.getRoot(component);
 		return root instanceof Frame && !((Frame) root).isResizable();
-	}
-
-	private String getPropertyKeyPrefix() {
-		return propertyKeyPrefix;
 	}
 
 	public void toggleVisibility() {

@@ -402,7 +402,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		    .getBooleanProperty("filter_toolbar_visible"));
 		Controller controller = Controller.getCurrentController();
 		FrameController frameController = (FrameController) controller.getViewController();
-		UIComponentVisibilityDispatcher.install(frameController.getPropertyKeyPrefix(), filterToolbar, "filter_toolbar_visible");
+		UIComponentVisibilityDispatcher.install(filterToolbar, "filter_toolbar_visible");
 		final JButton undoBtn = new JButton(controller.getAction("UndoFilterAction"));
 		final JButton redoBtn = new JButton(controller.getAction("RedoFilterAction"));
 		final JToggleButton showAncestorsBox = new JAutoToggleButton(controller.getAction("ShowAncestorsAction"),

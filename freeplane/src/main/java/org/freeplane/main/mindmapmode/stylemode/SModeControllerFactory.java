@@ -156,7 +156,7 @@ public class SModeControllerFactory {
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
-		UIComponentVisibilityDispatcher.install(viewController.getPropertyKeyPrefix(), toolBar, "toolbarVisible");
+		UIComponentVisibilityDispatcher.install(toolBar, "dialog_toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
 		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT, ((MIconController) IconController
 		    .getController()).getIconToolBarScrollPane());
@@ -221,7 +221,7 @@ public class SModeControllerFactory {
 		UITools.setScrollbarIncrement(styleScrollPane);
 		//		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
 		userInputListenerFactory.addToolBar("/format", ViewController.RIGHT, styleScrollPane);
-		UIComponentVisibilityDispatcher.install(viewController.getPropertyKeyPrefix(), styleScrollPane, "styleScrollPaneVisible");
+		UIComponentVisibilityDispatcher.install(styleScrollPane, "dialog_styleScrollPaneVisible");
 		modeController.addExtension(MUIFactory.class, new MUIFactory());
 		final Set<String> emptySet = Collections.emptySet();
 		modeController.updateMenus("/xml/stylemodemenu.xml", emptySet);

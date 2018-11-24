@@ -170,7 +170,7 @@ abstract public class FrameController implements ViewController {
 		this.mapViewManager = mapViewManager;
 		this.propertyKeyPrefix = propertyKeyPrefix;
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
-		UIComponentVisibilityDispatcher.install(propertyKeyPrefix, statusPanel, "toolbarVisible");
+		UIComponentVisibilityDispatcher.install(statusPanel, propertyKeyPrefix + "toolbarVisible");
 		status = new JLabel();
 		status.setBorder(BorderFactory.createEtchedBorder());
 		statusPanel.add(status);
@@ -264,7 +264,7 @@ abstract public class FrameController implements ViewController {
 			property = component + "Visible";
 		}
 		final boolean booleanProperty = ResourceController.getResourceController().getBooleanProperty(
-		    getPropertyKeyPrefix() + property);
+		    propertyKeyPrefix + property);
 		return booleanProperty;
 	}
 
@@ -424,7 +424,7 @@ abstract public class FrameController implements ViewController {
 		else {
 			property = componentName + "Visible";
 		}
-		ResourceController.getResourceController().setProperty(getPropertyKeyPrefix() + property, visible);
+		ResourceController.getResourceController().setProperty(propertyKeyPrefix + property, visible);
 	}
 
 	/**
@@ -523,10 +523,6 @@ abstract public class FrameController implements ViewController {
 	protected void showWindows(final Iterable<Window> windows) {
 		for (Window child : windows)
 			child.setVisible(true);
-	}
-
-	public String getPropertyKeyPrefix() {
-		return propertyKeyPrefix;
 	}
 
 	public static void setLookAndFeel(final String lookAndFeel, boolean supportHidpi) {

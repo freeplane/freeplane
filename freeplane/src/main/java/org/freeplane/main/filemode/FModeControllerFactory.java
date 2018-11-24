@@ -88,7 +88,7 @@ public class FModeControllerFactory {
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
 		FrameController frameController = (FrameController) controller.getViewController();
-		UIComponentVisibilityDispatcher.install(frameController.getPropertyKeyPrefix(), toolBar, "toolbarVisible");
+		UIComponentVisibilityDispatcher.install(toolBar, "toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
 		userInputListenerFactory.addToolBar("/filter_toolbar", FilterController.TOOLBAR_SIDE, FilterController.getCurrentFilterController().getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, controller.getViewController().getStatusBar());

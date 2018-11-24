@@ -32,15 +32,13 @@ import org.freeplane.core.ui.components.resizer.OneTouchCollapseResizer.Componen
  * 01.02.2014
  */
 public class CollapseableBoxBuilder {
-	private final String propertyKeyPrefix;
 	private String propertyNameBase;
 	private boolean resizeable = true;
 	public CollapseableBoxBuilder setResizeable(boolean resizeable) {
 		this.resizeable = resizeable;
 		return this;
 	}
-	public CollapseableBoxBuilder(final String propertyKeyPrefix){
-		this.propertyKeyPrefix = propertyKeyPrefix;
+	public CollapseableBoxBuilder(){
 
 	}
 	public CollapseableBoxBuilder setPropertyNameBase(String name) {
@@ -49,7 +47,7 @@ public class CollapseableBoxBuilder {
     }
 	public Box createBox(final Component component, final Direction direction) {
 	    Box resisableComponent = direction.createBox();
-		UIComponentVisibilityDispatcher.install(propertyKeyPrefix, resisableComponent, propertyNameBase);
+		UIComponentVisibilityDispatcher.install(resisableComponent, propertyNameBase);
 		final UIComponentVisibilityDispatcher dispatcher = UIComponentVisibilityDispatcher.dispatcher(resisableComponent);
 		final String sizePropertyName = dispatcher.getPropertyName() +  ".size";
 		final boolean expanded = dispatcher.isVisible();

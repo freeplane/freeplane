@@ -260,17 +260,17 @@ public class MModeControllerFactory {
 		MapStyle.install(true);
 		final FreeplaneToolBar toolbar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
 		final FrameController frameController = (FrameController) controller.getViewController();
-		UIComponentVisibilityDispatcher.install(frameController.getPropertyKeyPrefix(), toolbar, "toolbarVisible");
+		UIComponentVisibilityDispatcher.install(toolbar, "toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolbar);
 		userInputListenerFactory.addToolBar("/filter_toolbar", FilterController.TOOLBAR_SIDE, FilterController.getController(controller).getFilterToolbar());
 		userInputListenerFactory.addToolBar("/status", ViewController.BOTTOM, frameController
 		    .getStatusBar());
 		final JTabbedPane formattingPanel = new JTabbedPane();
-		Box resisableTabs = new CollapseableBoxBuilder(frameController.getPropertyKeyPrefix()).setPropertyNameBase("styleScrollPaneVisible").createBox(formattingPanel, Direction.RIGHT);
+		Box resisableTabs = new CollapseableBoxBuilder().setPropertyNameBase("styleScrollPaneVisible").createBox(formattingPanel, Direction.RIGHT);
 		userInputListenerFactory.addToolBar("/format", ViewController.RIGHT, resisableTabs);
 		final JRootPane rootPane = ((RootPaneContainer)frameController.getMenuComponent()).getRootPane();
 		final FButtonBar fButtonToolBar = new FButtonBar(rootPane);
-		UIComponentVisibilityDispatcher.install(frameController.getPropertyKeyPrefix(), fButtonToolBar, "fbarVisible");
+		UIComponentVisibilityDispatcher.install(fButtonToolBar, "fbarVisible");
 		fButtonToolBar.setVisible(ResourceController.getResourceController().getBooleanProperty("fbarVisible"));
 		userInputListenerFactory.addToolBar("/fbuttons", ViewController.TOP, fButtonToolBar);
 		userInputListenerFactory.setKeyEventProcessor(new IKeyStrokeProcessor() {
