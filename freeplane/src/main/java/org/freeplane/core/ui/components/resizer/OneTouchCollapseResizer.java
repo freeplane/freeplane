@@ -68,12 +68,15 @@ public class OneTouchCollapseResizer extends JResizer {
 				}
 			}
 
+			@Override
 			public void mouseReleased(MouseEvent e) {
 			}
 
+			@Override
 			public void mousePressed(MouseEvent e) {
 			}
 
+			@Override
 			public void mouseExited(MouseEvent e) {
 				if(e.getComponent() == getHotSpot()) {
 					resetCursor();
@@ -83,6 +86,7 @@ public class OneTouchCollapseResizer extends JResizer {
 				}
 			}
 
+			@Override
 			public void mouseEntered(MouseEvent e) {
 				if(e.getComponent() == getHotSpot()) {
 					getHotSpot().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -92,6 +96,7 @@ public class OneTouchCollapseResizer extends JResizer {
 				}
 			}
 
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				if((e.getComponent() == getHotSpot()) || sliderLock) {
 
@@ -174,8 +179,7 @@ public class OneTouchCollapseResizer extends JResizer {
 				mapViewManager.moveFocusFromDescendantToSelection(resizedComponent);
 				resizedComponent.setVisible(expanded);
 
-				if (!expanded)
-					fireCollapseStateChanged(resizedComponent, expanded);
+				fireCollapseStateChanged(resizedComponent, expanded);
 
 				recalibrate();
 			}
