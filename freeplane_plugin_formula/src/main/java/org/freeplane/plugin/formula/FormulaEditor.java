@@ -19,14 +19,25 @@
  */
 package org.freeplane.plugin.formula;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
+import javax.swing.Box;
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.RootPaneContainer;
 
+import org.freeplane.core.ui.components.resizer.JResizer.Direction;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
+import org.freeplane.plugin.script.ExecuteScriptException;
+import org.freeplane.plugin.script.FormulaUtils;
 import org.freeplane.view.swing.ui.mindmapmode.GlassPaneManager;
 import org.freeplane.view.swing.ui.mindmapmode.INodeSelector;
 
@@ -59,6 +70,31 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 	    textEditor.addAncestorListener(new GlassPaneManager(frame.getRootPane(), this));
 	    super.show(frame);
     }
+
+	@Override
+	protected void configureDialog(JDialog dialog) {
+		addPreviewPane(dialog);
+	}
+
+	private void addPreviewPane(JDialog dialog) {
+		String content = getText();
+		try {
+			FormulaUtils.evalIfScript(getNode(), content);
+		}
+		catch (ExecuteScriptException e) {
+			final StringWriter out = new StringWriter();
+			try(PrintWriter writer = new PrintWriter(out)) {
+				e.printStackTrace(writer);
+			}
+			final JTextArea exceptionView = new JTextArea(out.toString());
+			exceptionView.setBackground(Color.LIGHT_GRAY);
+			exceptionView.setForeground(Color.RED.darker());
+			exceptionView.setFont(textEditor.getFont());
+			exceptionView.setEditable(false);
+			final Box resisablePreview = Direction.RIGHT.createBox(new JScrollPane(exceptionView, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+			dialog.add(resisablePreview, BorderLayout.EAST);
+		}
+	}
 
 	@Override
 	public void nodeSelected(final NodeModel node) {

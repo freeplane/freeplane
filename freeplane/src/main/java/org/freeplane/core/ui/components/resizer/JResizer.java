@@ -77,6 +77,27 @@ public class JResizer extends JComponent {
 					component.setPreferredSize(new Dimension(1, size));
 			}
         }
+
+		public Box createBox(Component resizedComponent) {
+			final Box box = createBox();
+			final JResizer resizer = createResizer();
+			switch (this) {
+				case RIGHT:
+				case DOWN:
+					box.add(resizer);
+					box.add(resizedComponent);
+					break;
+				default:
+					box.add(resizedComponent);
+					box.add(resizer);
+			}
+			return box;
+
+		}
+
+		protected JResizer createResizer() {
+			return new JResizer(this);
+		}
 	}
 
 	private final Set<ResizerListener> resizeListener = new LinkedHashSet<ResizerListener>();
