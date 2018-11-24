@@ -1,9 +1,15 @@
 ===============================
+1.7.3
+===============================
+Show exception traces in formula editor
+Bug fixes
+
+===============================
 1.7.2
 ===============================
 Java 7 support dropped, Java 8 is required
 Formula dependency tracing
-
+Java 11 compatibility
 ===============================
 1.7.1
 ===============================
@@ -19,7 +25,6 @@ Denied (inverted) conditions in filter toolbar
 Update Groovy to version 2.5.2
 Update JLatexMath to versin 1.0.7
 Update batik to version 2.10
-Java 11 compatibility (wip)
 Export for selected branches only
 Go to nodes by their "reference paths"
 
