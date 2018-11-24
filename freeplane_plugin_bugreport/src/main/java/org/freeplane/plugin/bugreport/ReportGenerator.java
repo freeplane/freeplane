@@ -345,7 +345,7 @@ public class ReportGenerator extends StreamHandler {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		String option = resourceController.getProperty(OPTION, BugReportDialogManager.ASK);
 		if (option.equals(BugReportDialogManager.ASK)) {
-			if (resourceController.getBooleanProperty("org.freeplane.plugin.bugreport.dialog.disabled"))
+			if (resourceController.getBooleanProperty("org.freeplane.plugin.bugreport.dialog.disabled") || isHeadlessMode())
 				return BugReportDialogManager.DENIED;
 			String question = TextUtils.getText("org.freeplane.plugin.bugreport.question");
 			if (!question.startsWith("<html>")) {
@@ -380,6 +380,10 @@ public class ReportGenerator extends StreamHandler {
 			}
 		}
 		return option;
+	}
+
+	private boolean isHeadlessMode() {
+		return Controller.getCurrentController().getViewController().isHeadless();
 	}
 
 	private String sendReport(final Map<String, String> reportFields) {
