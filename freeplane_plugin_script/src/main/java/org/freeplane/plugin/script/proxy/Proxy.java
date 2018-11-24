@@ -34,13 +34,15 @@ import groovy.lang.Closure;
  */
 public interface Proxy {
 	interface AttributesRO extends org.freeplane.api.AttributesRO{
-		/** returns the values of all attributes for which the closure returns true. The fact that the values are
+		/**
+		 * returns the values of all attributes for which the closure returns true. The fact that the values are
 		 * returned as a list of {@link Convertible} enables conversion. The following formula sums all attributes
 		 * whose names are not equal to 'TOTAL':
 		 * <pre>{@code
 		 *  = attributes.findValues{key, val -> key != 'TOTAL'}.sum(0){it.num0}
 		 * }</pre>
 		 * @param closure A closure that accepts two arguments (String key, Object value) and returns boolean/Boolean.
+		 * @return the values of all attributes for which the closure returns true.
 		 * @since 1.2 */
 		List<? extends Convertible> findValues(Closure<Boolean> closure);
 	}
@@ -48,21 +50,29 @@ public interface Proxy {
     interface Cloud extends org.freeplane.api.Cloud { }
 
 	interface ConnectorRO extends org.freeplane.api.ConnectorRO {
-		/**@deprecated since 1.2 - use {@link #hasEndArrow()} instead */
+		/**
+		 * @return the end {@link ArrowType}
+		 * @deprecated since 1.2 - use {@link #hasEndArrow()} instead */
 		@Deprecated
 		ArrowType getEndArrow();
 
-		/** @deprecated since 1.2 - use {@link #hasStartArrow()} instead */
+		/**
+		 * @return the start {@link ArrowType}
+		 * @deprecated since 1.2 - use {@link #hasStartArrow()} instead */
 		@Deprecated
 		ArrowType getStartArrow();
 	}
 
 	interface Connector extends ConnectorRO, org.freeplane.api.Connector {
-	    /** @deprecated since 1.2 - use {@link #setEndArrow(boolean)} instead */
+	    /**
+			 * @param arrowType type of arrow
+			 * @deprecated since 1.2 - use {@link #setEndArrow(boolean)} instead */
 		@Deprecated
 		void setEndArrow(ArrowType arrowType);
 
-	    /** @deprecated since 1.2 - use {@link #setStartArrow(boolean)} instead */
+	    /**
+			 * @param arrowType type of arrow
+			 * @deprecated since 1.2 - use {@link #setStartArrow(boolean)} instead */
 		@Deprecated
 		void setStartArrow(ArrowType arrowType);
 	}
@@ -93,6 +103,8 @@ public interface Proxy {
 
 		/** Starting from the root node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
+		 * @param condition condition to match the search.
+		 * @return the nodes which match the condition.
 		 * @deprecated since 1.2 use {@link #find(NodeCondition)} instead. */
 		@Deprecated
 		List<? extends org.freeplane.api.Node> find(ICondition condition);

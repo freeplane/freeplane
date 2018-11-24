@@ -13,7 +13,7 @@ public interface Icons extends IconsRO {
 	 *   println("all available icon keys: " + FreeplaneIconUtils.listStandardIconKeys())
 	 *   node.icons.addIcon("button_ok")
 	 * </pre>
-	 * @see FreeplaneIconFactory */
+	 * @see org.freeplane.core.ui.svgicons.FreeplaneIconFactory */
 	void add(String name);
 
 	/** @since 1.4 */
