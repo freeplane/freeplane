@@ -14,7 +14,7 @@ public class OpenMapsViewer extends JMapViewer {
 	private static final int WIDTH = 800;
 
 	public OpenMapsViewer () {
-		 super(new MemoryTileCache(), 4);
+		 super(new MemoryTileCache());
 		 this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 	}
 
