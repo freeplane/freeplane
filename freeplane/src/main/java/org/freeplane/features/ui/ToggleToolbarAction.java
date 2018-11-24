@@ -25,6 +25,7 @@ import javax.swing.JComponent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.features.mode.Controller;
 
 @SelectableAction(checkOnPopup = true)

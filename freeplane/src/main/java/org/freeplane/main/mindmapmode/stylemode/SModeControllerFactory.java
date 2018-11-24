@@ -33,6 +33,7 @@ import org.freeplane.core.ui.SetAcceleratorOnNextClickAction;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
@@ -76,7 +77,6 @@ import org.freeplane.features.styles.mindmapmode.styleeditorpanel.StyleEditorPan
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ToggleToolbarAction;
-import org.freeplane.features.ui.UIComponentVisibilityDispatcher;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.view.swing.map.MapViewController;
@@ -156,7 +156,7 @@ public class SModeControllerFactory {
 		final JPopupMenu popupmenu = new JPopupMenu();
 		userInputListenerFactory.setNodePopupMenu(popupmenu);
 		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
-		UIComponentVisibilityDispatcher.install(viewController, toolBar, "toolbarVisible");
+		UIComponentVisibilityDispatcher.install(viewController.getPropertyKeyPrefix(), toolBar, "toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
 		userInputListenerFactory.addToolBar("/icon_toolbar", ViewController.LEFT, ((MIconController) IconController
 		    .getController()).getIconToolBarScrollPane());
@@ -221,7 +221,7 @@ public class SModeControllerFactory {
 		UITools.setScrollbarIncrement(styleScrollPane);
 		//		styleEditorPanel.setPreferredSize(new Dimension(200, 200));
 		userInputListenerFactory.addToolBar("/format", ViewController.RIGHT, styleScrollPane);
-		UIComponentVisibilityDispatcher.install(viewController, styleScrollPane, "styleScrollPaneVisible");
+		UIComponentVisibilityDispatcher.install(viewController.getPropertyKeyPrefix(), styleScrollPane, "styleScrollPaneVisible");
 		modeController.addExtension(MUIFactory.class, new MUIFactory());
 		final Set<String> emptySet = Collections.emptySet();
 		modeController.updateMenus("/xml/stylemodemenu.xml", emptySet);

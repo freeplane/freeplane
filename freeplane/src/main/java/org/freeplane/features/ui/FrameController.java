@@ -74,6 +74,7 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.util.ClassLoaderFactory;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
@@ -169,7 +170,7 @@ abstract public class FrameController implements ViewController {
 		this.mapViewManager = mapViewManager;
 		this.propertyKeyPrefix = propertyKeyPrefix;
 		statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 3, 0));
-		UIComponentVisibilityDispatcher.install(this, statusPanel, "toolbarVisible");
+		UIComponentVisibilityDispatcher.install(propertyKeyPrefix, statusPanel, "toolbarVisible");
 		status = new JLabel();
 		status.setBorder(BorderFactory.createEtchedBorder());
 		statusPanel.add(status);
@@ -524,15 +525,7 @@ abstract public class FrameController implements ViewController {
 			child.setVisible(true);
 	}
 
-	@Override
-	public String completeVisiblePropertyKey(final JComponent toolBar) {
-		if (toolBar == null) {
-			return null;
-		}
-		return UIComponentVisibilityDispatcher.dispatcher(toolBar).completeVisiblePropertyKey();
-	}
-
-	protected String getPropertyKeyPrefix() {
+	public String getPropertyKeyPrefix() {
 		return propertyKeyPrefix;
 	}
 

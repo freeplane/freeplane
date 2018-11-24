@@ -72,6 +72,7 @@ jar {
                     org.freeplane.core.ui.components,
                     org.freeplane.core.ui.components.calendar,
                     org.freeplane.core.ui.components.html,
+                    org.freeplane.core.ui.components.resizer,
                     org.freeplane.core.ui.textchanger,
                     org.freeplane.core.ui.menubuilders,
         			org.freeplane.core.ui.menubuilders.action,

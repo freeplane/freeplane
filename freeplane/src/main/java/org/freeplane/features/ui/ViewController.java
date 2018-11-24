@@ -29,6 +29,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
+
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -105,8 +106,6 @@ public interface ViewController {
 	public void setWaitingCursor(boolean b);
 
 	public void viewNumberChanged(final int number);
-
-	public String completeVisiblePropertyKey(final JComponent toolBar);
 
 	public void addObjectTypeInfo(Object value);
 

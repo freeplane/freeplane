@@ -17,33 +17,30 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.ui;
+package org.freeplane.core.ui.components.resizer;
 
 import java.awt.Component;
 
 import javax.swing.Box;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.JResizer.Direction;
-import org.freeplane.core.ui.components.OneTouchCollapseResizer;
-import org.freeplane.core.ui.components.OneTouchCollapseResizer.ComponentCollapseListener;
-import org.freeplane.core.ui.components.ResizeEvent;
-import org.freeplane.core.ui.components.ResizerListener;
+import org.freeplane.core.ui.components.resizer.JResizer.Direction;
+import org.freeplane.core.ui.components.resizer.OneTouchCollapseResizer.ComponentCollapseListener;
 
 /**
  * @author Dimitry Polivaev
  * 01.02.2014
  */
 public class CollapseableBoxBuilder {
-	private final FrameController frameController;
+	private final String propertyKeyPrefix;
 	private String propertyNameBase;
 	private boolean resizeable = true;
 	public CollapseableBoxBuilder setResizeable(boolean resizeable) {
 		this.resizeable = resizeable;
 		return this;
 	}
-	public CollapseableBoxBuilder(final FrameController frameController){
-		this.frameController = frameController;
+	public CollapseableBoxBuilder(final String propertyKeyPrefix){
+		this.propertyKeyPrefix = propertyKeyPrefix;
 
 	}
 	public CollapseableBoxBuilder setPropertyNameBase(String name) {
@@ -52,7 +49,7 @@ public class CollapseableBoxBuilder {
     }
 	public Box createBox(final Component component, final Direction direction) {
 	    Box resisableComponent = direction.createBox();
-		UIComponentVisibilityDispatcher.install(frameController, resisableComponent, propertyNameBase);
+		UIComponentVisibilityDispatcher.install(propertyKeyPrefix, resisableComponent, propertyNameBase);
 		final UIComponentVisibilityDispatcher dispatcher = UIComponentVisibilityDispatcher.dispatcher(resisableComponent);
 		final String sizePropertyName = dispatcher.getPropertyName() +  ".size";
 		final boolean expanded = dispatcher.isVisible();
@@ -81,6 +78,7 @@ public class CollapseableBoxBuilder {
 				// blindly accept
 			}
 			resizer.addResizerListener(new ResizerListener() {
+				@Override
 				public void componentResized(ResizeEvent event) {
 					if(event.getComponent().equals(component)) {
 						ResourceController.getResourceController().setProperty(sizePropertyName, String.valueOf(direction.getPreferredSize(component)));
@@ -92,12 +90,14 @@ public class CollapseableBoxBuilder {
 		else
 			resizer.setSliderLocked(true);
 		resizer.addCollapseListener(new ComponentCollapseListener() {
+			@Override
 			public void componentCollapsed(ResizeEvent event) {
 				if(event.getComponent().equals(component)) {
 					dispatcher.setProperty(false);
 				}
 			}
 
+			@Override
 			public void componentExpanded(ResizeEvent event) {
 				if(event.getComponent().equals(component)) {
 					dispatcher.setProperty(true);

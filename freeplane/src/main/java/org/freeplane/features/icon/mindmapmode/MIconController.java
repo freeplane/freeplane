@@ -54,8 +54,9 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
-import org.freeplane.core.ui.components.JResizer.Direction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.components.resizer.CollapseableBoxBuilder;
+import org.freeplane.core.ui.components.resizer.JResizer.Direction;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
@@ -80,7 +81,6 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.LogicalStyleController;
-import org.freeplane.features.ui.CollapseableBoxBuilder;
 import org.freeplane.features.ui.FrameController;
 
 /**
@@ -91,10 +91,10 @@ public class MIconController extends IconController {
 	private static final int ARROW_SIZE = Math.round(UITools.getUIFontSize(0.8));
 	private static final Font ARROW_FONT = new Font("SansSerif", 0, ARROW_SIZE);
 	private static final ConditionPredicate DEPENDS_ON_ICON = new ConditionPredicate() {
-		
+
 		@Override
 		public boolean test(ICondition condition) {
-			return condition instanceof IconContainedCondition 
+			return condition instanceof IconContainedCondition
 					|| condition instanceof IconExistsCondition;
 		}
 	};
@@ -166,6 +166,7 @@ public class MIconController extends IconController {
 	};
 
 	private static class ExtensionCopier implements IExtensionCopier {
+		@Override
 		public void copy(final Object key, final NodeModel from, final NodeModel to) {
 			if (!key.equals(Keys.ICONS)) {
 				return;
@@ -184,6 +185,7 @@ public class MIconController extends IconController {
 			}
 		}
 
+		@Override
 		public void remove(final Object key, final NodeModel from) {
 			if (!key.equals(Keys.ICONS)) {
 				return;
@@ -193,6 +195,7 @@ public class MIconController extends IconController {
 			}
 		}
 
+		@Override
 		public void remove(final Object key, final NodeModel from, final NodeModel which) {
 			if (!key.equals(Keys.ICONS)) {
 				return;
@@ -208,6 +211,7 @@ public class MIconController extends IconController {
 				targetIconIterator.remove();
 			}
 		}
+		@Override
 		public void resolveParentExtensions(Object key, NodeModel to) {
         }
 	}
@@ -228,17 +232,17 @@ public class MIconController extends IconController {
 		UITools.setScrollbarIncrement(iconToolBarScrollPane);
 		UITools.addScrollbarIncrementPropertyListener(iconToolBarScrollPane);
 		FrameController frameController = (FrameController) modeController.getController().getViewController();
-		iconBox = new CollapseableBoxBuilder(frameController).setPropertyNameBase("leftToolbarVisible").setResizeable(true).createBox(iconToolBarScrollPane, Direction.LEFT);
+		iconBox = new CollapseableBoxBuilder(frameController.getPropertyKeyPrefix()).setPropertyNameBase("leftToolbarVisible").setResizeable(true).createBox(iconToolBarScrollPane, Direction.LEFT);
 		createIconActions(modeController);
 		createPreferences();
 		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconActionBuilder(modeController));
 	}
-	
+
 	@Override
 	public void install(final ModeController modeController) {
 		super.install(modeController);
 		modeController.getMapController().addNodeChangeListener(new INodeChangeListener() {
-			
+
 			@Override
 			public void nodeChanged(NodeChangeEvent event) {
 				final NodeModel node = event.getNode();
@@ -253,15 +257,18 @@ public class MIconController extends IconController {
 
 	public void addIcon(final NodeModel node, final MindIcon icon) {
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				node.addIcon(icon);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, null, icon);
 			}
 
+			@Override
 			public String getDescription() {
 				return "addIcon";
 			}
 
+			@Override
 			public void undo() {
 				node.removeIcon();
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, icon, null);
@@ -272,15 +279,18 @@ public class MIconController extends IconController {
 
 	public void addIcon(final NodeModel node, final MindIcon icon, final int position) {
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				node.addIcon(icon, position);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, null, icon);
 			}
 
+			@Override
 			public String getDescription() {
 				return "addIcon";
 			}
 
+			@Override
 			public void undo() {
 				node.removeIcon(position);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, icon, null);
@@ -295,16 +305,19 @@ public class MIconController extends IconController {
 
 			private Quantity<LengthUnits> oldIconSize;
 
+			@Override
 			public void act() {
 				oldIconSize = node.getSharedData().getIcons().getIconSize();
 				node.getSharedData().getIcons().setIconSize(iconSize);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON_SIZE, null, iconSize);
 			}
 
+			@Override
 			public String getDescription() {
 				return "changeIconSize";
 			}
 
+			@Override
 			public void undo() {
 				node.getSharedData().getIcons().setIconSize(oldIconSize);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON_SIZE, oldIconSize, null);
@@ -336,6 +349,7 @@ public class MIconController extends IconController {
 		for (final AFreeplaneAction iconAction : actions) {
 			final IIconInformation info = (IIconInformation) iconAction;
 			optionPanelBuilder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {
+				@Override
 				public IPropertyControl createControl() {
 					final KeyProperty keyProperty = new KeyProperty(info.getShortcutKey(), info.getTranslationValueLabel());
 					keyProperty.setIcon(info.getIcon());
@@ -449,15 +463,18 @@ public class MIconController extends IconController {
 		final IActor actor = new IActor() {
 			private final MindIcon icon = node.getIcon(index);
 
+			@Override
 			public void act() {
 				node.removeIcon(index);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, icon, null);
 			}
 
+			@Override
 			public String getDescription() {
 				return "removeIcon";
 			}
 
+			@Override
 			public void undo() {
 				node.addIcon(icon, index);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NODE_ICON, null, icon);

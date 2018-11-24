@@ -17,15 +17,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.ui;
+package org.freeplane.core.ui.components.resizer;
 
+import java.awt.Component;
 import java.awt.Container;
+import java.awt.Frame;
 
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.OneTouchCollapseResizer;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.IMapViewManager;
 
 /**
  * @author Dimitry Polivaev
@@ -33,38 +36,47 @@ import org.freeplane.features.mode.Controller;
  */
 public class UIComponentVisibilityDispatcher {
 	private static String KEY = UIComponentVisibilityDispatcher.class.getName() + ".KEY";
-	private final FrameController frameController;
 	private final String key;
 	private final JComponent component;
 	private OneTouchCollapseResizer resizer;
+	private final String propertyKeyPrefix;
 
 	public void setResizer(OneTouchCollapseResizer resizer) {
 		this.resizer = resizer;
 	}
 
-	public static void install(FrameController frameController, JComponent component, String key){
-		component.putClientProperty(KEY, new UIComponentVisibilityDispatcher(frameController, component, key));
+	public static void install(String propertyKeyPrefix, JComponent component, String key){
+		component.putClientProperty(KEY, new UIComponentVisibilityDispatcher(propertyKeyPrefix, component, key));
 	}
 
 	public static UIComponentVisibilityDispatcher dispatcher(JComponent component){
 		return (UIComponentVisibilityDispatcher) component.getClientProperty(KEY);
 	}
 
-	public UIComponentVisibilityDispatcher(FrameController frameController, JComponent component, String key) {
-		this.frameController = frameController;
+	public UIComponentVisibilityDispatcher(String propertyKeyPrefix, JComponent component, String key) {
+		this.propertyKeyPrefix = propertyKeyPrefix;
 		this.component = component;
 		this.key = key;
     }
 
 	public String completeVisiblePropertyKey() {
 		final String completeKeyString;
-		if (frameController.isMenuComponentInFullScreenMode()) {
+		if (isContainedInFullWindow()) {
 			completeKeyString = key + ".fullscreen";
 		}
 		else {
 			completeKeyString = key;
 		}
-		return frameController.getPropertyKeyPrefix() + completeKeyString;
+		return getPropertyKeyPrefix() + completeKeyString;
+	}
+
+	private boolean isContainedInFullWindow() {
+		final Component root = SwingUtilities.getRoot(component);
+		return root instanceof Frame && !((Frame) root).isResizable();
+	}
+
+	private String getPropertyKeyPrefix() {
+		return propertyKeyPrefix;
 	}
 
 	public void toggleVisibility() {
@@ -95,7 +107,7 @@ public class UIComponentVisibilityDispatcher {
 		if(resizer == null)
 			component.setVisible(visible);
 		else {
-			if (visible || frameController.isMenuComponentInFullScreenMode() && ! visible)
+			if (visible || isContainedInFullWindow() && ! visible)
 				resizer.setVisible(visible);
 			resizer.setExpanded(visible);
 		}

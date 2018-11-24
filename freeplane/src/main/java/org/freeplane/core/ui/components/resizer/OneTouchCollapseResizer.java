@@ -2,7 +2,7 @@
  * author: Marcel Genzmehr
  * 29.11.2011
  */
-package org.freeplane.core.ui.components;
+package org.freeplane.core.ui.components.resizer;
 
 import java.awt.Color;
 import java.awt.Component;

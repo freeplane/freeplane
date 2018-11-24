@@ -187,11 +187,6 @@ public class HeadlessUIController extends FrameController {
 	}
 
 	@Override
-	public String completeVisiblePropertyKey(JComponent toolBar) {
-		throw methodNotImplementedException();
-	}
-
-	@Override
 	public void addObjectTypeInfo(Object value) {
 		throw methodNotImplementedException();
 	}

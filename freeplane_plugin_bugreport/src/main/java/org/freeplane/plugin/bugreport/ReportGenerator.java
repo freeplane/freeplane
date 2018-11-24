@@ -31,12 +31,12 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.ui.UIComponentVisibilityDispatcher;
 import org.freeplane.features.ui.ViewController;
 
 public class ReportGenerator extends StreamHandler {

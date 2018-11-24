@@ -1,4 +1,4 @@
-package org.freeplane.core.ui.components;
+package org.freeplane.core.ui.components.resizer;
 
 import java.awt.Component;
 import java.util.EventObject;
