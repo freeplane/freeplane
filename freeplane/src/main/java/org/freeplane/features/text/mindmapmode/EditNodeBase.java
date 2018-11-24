@@ -54,17 +54,18 @@ import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 abstract public class EditNodeBase {
 	public static enum EditedComponent{TEXT, DETAIL, NOTE}
 	abstract static class EditDialog{
-		 private final JDialog dialog; 
+		 private final JDialog dialog;
 		protected JDialog getDialog() {
         	return dialog;
         }
 
 		class CancelAction extends AbstractAction {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public void actionPerformed(final ActionEvent e) {
 				confirmedCancel();
 			}
@@ -92,10 +93,11 @@ abstract public class EditNodeBase {
 
 		class SplitAction extends AbstractAction {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public void actionPerformed(final ActionEvent e) {
 				split();
 			}
@@ -103,10 +105,11 @@ abstract public class EditNodeBase {
 
 		class SubmitAction extends AbstractAction {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public void actionPerformed(final ActionEvent e) {
 				submit();
 			}
@@ -197,8 +200,8 @@ abstract public class EditNodeBase {
 		public Component getMostRecentFocusOwner() {
 	        return dialog.getMostRecentFocusOwner();
         }
-		
-		
+
+
 	}
 
 	protected JPopupMenu createPopupMenu(Component component){
@@ -232,9 +235,9 @@ abstract public class EditNodeBase {
 		void ok(String newText);
 
 		void split(String newText, int position);
-		
+
 		boolean canSplit();
-		
+
 		EditedComponent getEditType();
 	}
 
@@ -244,7 +247,7 @@ abstract public class EditNodeBase {
 	final private IEditControl editControl;
 // 	final private ModeController modeController;
 	protected NodeModel node;
-	protected String text;
+	private String text;
 	private Color background;
 	protected Color getBackground() {
     	return background;
@@ -327,6 +330,6 @@ abstract public class EditNodeBase {
 	abstract public void show(RootPaneContainer frame);
 	public void setBackground(Color background) {
 	    this.background = background;
-	    
+
     }
 }

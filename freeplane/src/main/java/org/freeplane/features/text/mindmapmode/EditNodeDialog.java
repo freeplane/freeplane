@@ -19,8 +19,10 @@
  */
 package org.freeplane.features.text.mindmapmode;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -33,9 +35,9 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -107,7 +109,6 @@ public class EditNodeDialog extends EditNodeBase {
 					editorScrollPane = new JScrollPane(textComponent);
 				}
 			}
-			final JPanel panel = new JPanel();
 			final JButton okButton = new JButton();
 			final JButton cancelButton = new JButton();
 			final JButton splitButton = new JButton();
@@ -118,21 +119,25 @@ public class EditNodeDialog extends EditNodeBase {
 			LabelAndMnemonicSetter.setLabelAndMnemonic(splitButton, TextUtils.getRawText("split"));
 			LabelAndMnemonicSetter.setLabelAndMnemonic(enterConfirms, TextUtils.getRawText("enter_confirms"));
 			okButton.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					submit();
 				}
 			});
 			cancelButton.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					cancel();
 				}
 			});
 			splitButton.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					split();
 				}
 			});
 			enterConfirms.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					textComponent.requestFocus();
 					ResourceController.getResourceController().setProperty("el__enter_confirms_by_default",
@@ -140,6 +145,7 @@ public class EditNodeDialog extends EditNodeBase {
 				}
 			});
 			textComponent.addKeyListener(new KeyListener() {
+				@Override
 				public void keyPressed(final KeyEvent e) {
 					switch (e.getKeyCode()) {
 						case KeyEvent.VK_ESCAPE:
@@ -171,9 +177,11 @@ public class EditNodeDialog extends EditNodeBase {
 					}
 				}
 
+				@Override
 				public void keyReleased(final KeyEvent e) {
 				}
 
+				@Override
 				public void keyTyped(final KeyEvent e) {
 				}
 			});
@@ -187,19 +195,24 @@ public class EditNodeDialog extends EditNodeBase {
 					}
 				}
 
+				@Override
 				public void mouseClicked(final MouseEvent e) {
 				}
 
+				@Override
 				public void mouseEntered(final MouseEvent e) {
 				}
 
+				@Override
 				public void mouseExited(final MouseEvent e) {
 				}
 
+				@Override
 				public void mousePressed(final MouseEvent e) {
 					conditionallyShowPopup(e);
 				}
 
+				@Override
 				public void mouseReleased(final MouseEvent e) {
 					conditionallyShowPopup(e);
 				}
@@ -211,16 +224,10 @@ public class EditNodeDialog extends EditNodeBase {
 			if (enableSplit)
 				buttonPane.add(splitButton);
 			buttonPane.setMaximumSize(new Dimension(1000, 20));
-			if (ResourceController.getResourceController().getBooleanProperty("el__buttons_above")) {
-				panel.add(buttonPane);
-				panel.add(editorScrollPane);
-			}
-			else {
-				panel.add(editorScrollPane);
-				panel.add(buttonPane);
-			}
-			panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-			getDialog().setContentPane(panel);
+			final Container contentPane = getDialog().getContentPane();
+			contentPane.add(editorScrollPane, BorderLayout.CENTER);
+			final boolean areButtonsAtTheTop = ResourceController.getResourceController().getBooleanProperty("el__buttons_above");
+			contentPane.add(buttonPane, areButtonsAtTheTop ? BorderLayout.NORTH : BorderLayout.SOUTH);
 		}
 
 		/*
@@ -297,39 +304,49 @@ public class EditNodeDialog extends EditNodeBase {
 		textComponent = textEditor;
 	}
 
+	@Override
 	public void show(final RootPaneContainer frame) {
 		if (title == null) {
 			title = TextUtils.getText("edit_long_node");
 		}
-		final EditDialog dialog = new LongNodeDialog(frame, title, getBackground());
+		final EditDialog editor = new LongNodeDialog(frame, title, getBackground());
 		redispatchKeyEvents(textComponent, firstEvent);
         if (firstEvent == null) {
             textComponent.setCaretPosition(textComponent.getDocument().getLength());
         }
-		dialog.getDialog().setModal(isModal);
-		dialog.getDialog().pack();
+		final JDialog dialog = editor.getDialog();
+		configureDialog(dialog);
+		dialog.setModal(isModal);
+		dialog.pack();
 		Controller.getCurrentModeController().getController().getMapViewManager().scrollNodeToVisible(node);
 		if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
-			UITools.setDialogLocationUnder(dialog.getDialog(), getNode());
+			UITools.setDialogLocationUnder(dialog, getNode());
 		}
 		else {
-			UITools.setDialogLocationRelativeTo(dialog.getDialog(), getNode());
+			UITools.setDialogLocationRelativeTo(dialog, getNode());
 		}
-		dialog.show();
-		dialog.getDialog().addComponentListener(new ComponentListener() {
+		editor.show();
+		dialog.addComponentListener(new ComponentListener() {
+			@Override
 			public void componentShown(final ComponentEvent e) {
 			}
 
+			@Override
 			public void componentResized(final ComponentEvent e) {
 			}
 
+			@Override
 			public void componentMoved(final ComponentEvent e) {
 			}
 
+			@Override
 			public void componentHidden(final ComponentEvent e) {
-				dialog.dispose();
+				editor.dispose();
 			}
 		});
+	}
+
+	protected void configureDialog(JDialog dialog) {
 	}
 
 	public void setTitle(String title) {

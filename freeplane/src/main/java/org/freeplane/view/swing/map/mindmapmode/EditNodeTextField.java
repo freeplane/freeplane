@@ -120,7 +120,8 @@ public class EditNodeTextField extends EditNodeBase {
 		/* (non-Javadoc)
          * @see javax.swing.text.NavigationFilter#moveDot(javax.swing.text.NavigationFilter.FilterBypass, int, javax.swing.text.Position.Bias)
          */
-        public void moveDot(final FilterBypass fb, int dot, final Bias bias) {
+        @Override
+		public void moveDot(final FilterBypass fb, int dot, final Bias bias) {
             dot = getValidPosition(dot);
             super.moveDot(fb, dot, bias);
         }
@@ -128,7 +129,8 @@ public class EditNodeTextField extends EditNodeBase {
         /* (non-Javadoc)
          * @see javax.swing.text.NavigationFilter#setDot(javax.swing.text.NavigationFilter.FilterBypass, int, javax.swing.text.Position.Bias)
          */
-        public void setDot(final FilterBypass fb, int dot, final Bias bias) {
+        @Override
+		public void setDot(final FilterBypass fb, int dot, final Bias bias) {
             dot = getValidPosition(dot);
             super.setDot(fb, dot, bias);
         }
@@ -143,14 +145,16 @@ public class EditNodeTextField extends EditNodeBase {
         	return position;
         }
     }
-    
+
 	private static class InputMethodInUseListener implements InputMethodListener {
 		private boolean imeInUse = false;
 
+		@Override
 		public void inputMethodTextChanged(InputMethodEvent event) {
 			updateImeInUseState(event);
 		}
 
+		@Override
 		public void caretPositionChanged(InputMethodEvent event) {
 			updateImeInUseState(event);
 		}
@@ -158,7 +162,7 @@ public class EditNodeTextField extends EditNodeBase {
 		public boolean isIMEInUse(){
 			return imeInUse;
 		}
-		
+
 		private void updateImeInUseState(InputMethodEvent event) {
 	        AttributedCharacterIterator aci = event.getText();
 			if(aci != null) {
@@ -171,12 +175,13 @@ public class EditNodeTextField extends EditNodeBase {
         }
 
 	}
-	
+
 	private int extraWidth;
 	final private boolean layoutMapOnTextChange;
 
 	private final class MyDocumentListener implements DocumentListener {
 		private boolean updateRunning = false;
+		@Override
 		public void changedUpdate(final DocumentEvent e) {
 			onUpdate();
 		}
@@ -186,6 +191,7 @@ public class EditNodeTextField extends EditNodeBase {
 				return;
 			}
 			EventQueue.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					updateRunning = true;
 					layout();
@@ -194,10 +200,12 @@ public class EditNodeTextField extends EditNodeBase {
 			});
 		}
 
+		@Override
 		public void insertUpdate(final DocumentEvent e) {
 			onUpdate();
 		}
 
+		@Override
 		public void removeUpdate(final DocumentEvent e) {
 			onUpdate();
 		}
@@ -230,11 +238,12 @@ public class EditNodeTextField extends EditNodeBase {
 			}
 		}
 		else {
-			preferredSize.width = Math.max(maxWidth, preferredSize.width); 
+			preferredSize.width = Math.max(maxWidth, preferredSize.width);
 		}
 		if(preferredSize.width != lastWidth){
 			preferredSize.height = lastHeight;
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					layout();
 				}
@@ -265,7 +274,7 @@ public class EditNodeTextField extends EditNodeBase {
 		if(null != textfield.getClientProperty("EditNodeTextField.linewrap") || inputMethodInUseListener.isIMEInUse()){
 			return;
 		}
-		
+
 	    final HTMLDocument document = (HTMLDocument) textfield.getDocument();
 	    document.getStyleSheet().addRule("body { width: " + (maxWidth - 1) + "}");
 	    // bad hack: call "setEditable" only to update view
@@ -306,13 +315,15 @@ public class EditNodeTextField extends EditNodeBase {
 				e.consume();
 			}
 		}
-		
-		
 
+
+
+		@Override
 		public void focusGained(final FocusEvent e) {
 			popupShown = false;
 		}
 
+		@Override
 		public void focusLost(final FocusEvent e) {
 			if (textfield == null || !textfield.isVisible() || eventSource == CANCEL || popupShown) {
 				return;
@@ -338,6 +349,7 @@ public class EditNodeTextField extends EditNodeBase {
 			getEditControl().ok(output);
         }
 
+		@Override
 		public void keyPressed(final KeyEvent e) {
 			if (eventSource == CANCEL||textfield==null) {
 				return;
@@ -403,16 +415,19 @@ public class EditNodeTextField extends EditNodeBase {
 			if (keyCode == SPLIT_KEY_CODE && keyCode != -1 && e.isAltDown()&& !e.isAltGraphDown()&& !e.isControlDown() && ! Compat.isMacOsX())
 				return true;
 			final KeyStroke splitNodeHotKey = ResourceController.getResourceController().getAcceleratorManager().getAccelerator("SplitNode");
-			return splitNodeHotKey != null && splitNodeHotKey.getKeyCode() == keyCode  &&  
+			return splitNodeHotKey != null && splitNodeHotKey.getKeyCode() == keyCode  &&
 					(e.getModifiersEx() & KEYSTROKE_MODIFIERS)  == (splitNodeHotKey.getModifiers() & KEYSTROKE_MODIFIERS);
 		}
 
+		@Override
 		public void keyReleased(final KeyEvent e) {
 		}
 
+		@Override
 		public void keyTyped(final KeyEvent e) {
 		}
 
+		@Override
 		public void mouseClicked(final MouseEvent ev) {
 			if (textfield != null && (ev.getModifiers() & MouseEvent.CTRL_MASK) != 0) {
 				final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) textfield.getDocument(), textfield.viewToModel(ev.getPoint()));
@@ -426,38 +441,46 @@ public class EditNodeTextField extends EditNodeBase {
 			}
 		}
 
+		@Override
 		public void mouseEntered(final MouseEvent e) {
 		}
 
+		@Override
 		public void mouseExited(final MouseEvent e) {
 		}
 
+		@Override
 		public void mousePressed(final MouseEvent e) {
 			conditionallyShowPopup(e);
 		}
 
+		@Override
 		public void mouseReleased(final MouseEvent e) {
 			conditionallyShowPopup(e);
 		}
 	}
-	
+
 	private class MapViewChangeListener implements IMapViewChangeListener{
+		@Override
 		public void afterViewChange(Component oldView, Component newView) {
         }
 
+		@Override
 		public void afterViewClose(Component oldView) {
         }
 
+		@Override
 		public void afterViewCreated(Component mapView) {
         }
 
+		@Override
 		public void beforeViewChange(Component oldView, Component newView) {
 			final String output = getNewText();
 			hideMe();
 			getEditControl().ok(output);
         }
 	}
-	
+
 	private JEditorPane textfield;
 	final private InputMethodInUseListener inputMethodInUseListener;
 	private final DocumentListener documentListener;
@@ -489,37 +512,37 @@ public class EditNodeTextField extends EditNodeBase {
 				}
 			}
 		};
-		
+
 		boldAction = new StyledEditorKit.BoldAction();
 		boldAction.putValue(Action.NAME, TextUtils.getText("BoldAction.text"));
 		boldAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control B"));
-	
+
 		italicAction = new StyledEditorKit.ItalicAction();
 		italicAction.putValue(Action.NAME, TextUtils.getText("ItalicAction.text"));
 		italicAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control I"));
-		
+
 		underlineAction = new StyledEditorKit.UnderlineAction();
 		underlineAction.putValue(Action.NAME, TextUtils.getText("UnderlineAction.text"));
 		underlineAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control U"));
-		
+
 		redAction = new ForegroundAction(TextUtils.getText("red"), Color.RED);
 		redAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control R"));
-		
+
 		greenAction = new ForegroundAction(TextUtils.getText("green"), new Color(0, 0x80, 0));
 		greenAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control G"));
-		
+
 		blueAction = new ForegroundAction(TextUtils.getText("blue"), new Color(0, 0, 0xc0));
 		blueAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control L"));
-		
+
 		blackAction = new ForegroundAction(TextUtils.getText("black"), Color.BLACK);
 		blackAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control K"));
-		
+
 		defaultColorAction = new ExtendedEditorKit.RemoveStyleAttributeAction(StyleConstants.Foreground, TextUtils.getText("DefaultColorAction.text"));
 		defaultColorAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control D"));
-		
+
 		removeFormattingAction = new ExtendedEditorKit.RemoveStyleAttributeAction(null, TextUtils.getText("simplyhtml.clearFormatLabel"));
 		removeFormattingAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control T"));
-		
+
 		inputMethodInUseListener = new InputMethodInUseListener();
 		if(editControl != null ){
 			final ModeController modeController = Controller.getCurrentModeController();
@@ -587,7 +610,7 @@ public class EditNodeTextField extends EditNodeBase {
 	@Override
     protected JPopupMenu createPopupMenu(Component component) {
 		JPopupMenu menu = super.createPopupMenu(component);
-	    JMenu formatMenu = new JMenu(TextUtils.getText("simplyhtml.formatLabel")); 
+	    JMenu formatMenu = new JMenu(TextUtils.getText("simplyhtml.formatLabel"));
 	    menu.add(formatMenu);
 		if (textfield.getSelectionStart() == textfield.getSelectionEnd()){
 			formatMenu.setEnabled(false);
@@ -638,34 +661,34 @@ public class EditNodeTextField extends EditNodeBase {
 		final InputMap inputMap = textfield.getInputMap();
 		final ActionMap actionMap = textfield.getActionMap();
 		actionMap.put(DefaultEditorKit.pasteAction, pasteAction);
-		
+
 		inputMap.put((KeyStroke) boldAction.getValue(Action.ACCELERATOR_KEY), "boldAction");
 		actionMap.put("boldAction",boldAction);
-		
+
 		inputMap.put((KeyStroke) italicAction.getValue(Action.ACCELERATOR_KEY), "italicAction");
 		actionMap.put("italicAction", italicAction);
-		
+
 		inputMap.put((KeyStroke) underlineAction.getValue(Action.ACCELERATOR_KEY), "underlineAction");
 		actionMap.put("underlineAction", underlineAction);
-		
+
 		inputMap.put((KeyStroke) redAction.getValue(Action.ACCELERATOR_KEY), "redAction");
 		actionMap.put("redAction", redAction);
-		
+
 		inputMap.put((KeyStroke) greenAction.getValue(Action.ACCELERATOR_KEY), "greenAction");
 		actionMap.put("greenAction", greenAction);
-		
+
 		inputMap.put((KeyStroke) blueAction.getValue(Action.ACCELERATOR_KEY), "blueAction");
 		actionMap.put("blueAction", blueAction);
-		
+
 		inputMap.put((KeyStroke) blackAction.getValue(Action.ACCELERATOR_KEY), "blackAction");
 		actionMap.put("blackAction", blackAction);
-		
+
 		inputMap.put((KeyStroke) defaultColorAction.getValue(Action.ACCELERATOR_KEY), "defaultColorAction");
 		actionMap.put("defaultColorAction", defaultColorAction);
-		
+
 		inputMap.put((KeyStroke) removeFormattingAction.getValue(Action.ACCELERATOR_KEY), "removeFormattingAction");
 		actionMap.put("removeFormattingAction", removeFormattingAction);
-		
+
 		final Color nodeTextColor = parent.getForeground();
 		textfield.setCaretColor(nodeTextColor);
 		final StringBuilder ruleBuilder = new StringBuilder(100);
@@ -680,7 +703,7 @@ public class EditNodeTextField extends EditNodeBase {
 		final HTMLDocument document = (HTMLDocument) textfield.getDocument();
 		final StyleSheet styleSheet = document.getStyleSheet();
 		styleSheet.addRule(ruleBuilder.toString());
-		textfield.setText(text);
+		textfield.setText(getText());
 		final MapView mapView = nodeView.getMap();
 		if(! mapView.isValid())
 			mapView.validate();
@@ -724,16 +747,16 @@ public class EditNodeTextField extends EditNodeBase {
 		Rectangle iconR = layoutData.iconR;
 		final Rectangle textR = layoutData.textR;
 		int textFieldX = parentInsets.left - textFieldBorderWidth + (iconR.width > 0 ? textR.x - iconR.x : 0);
-		
-		
+
+
 		final EventBuffer eventQueue = MTextController.getController().getEventQueue();
 		KeyEvent firstEvent = eventQueue.getFirstEvent();
-		
+
 		Point mouseEventPoint = null;
 		if (firstEvent == null) {
 			MouseEvent currentEvent = eventQueue.getMouseEvent();
 			if(currentEvent != null){
-				MouseEvent mouseEvent = (MouseEvent) currentEvent;
+				MouseEvent mouseEvent = currentEvent;
 				if(mouseEvent.getComponent().equals(parent)){
 					mouseEventPoint = mouseEvent.getPoint();
 					mouseEventPoint.x -= textR.x;
@@ -742,7 +765,7 @@ public class EditNodeTextField extends EditNodeBase {
 			}
 		}
 
-		
+
 		textFieldMinimumSize.width = Math.max(textFieldMinimumSize.width, nodeWidth - textFieldX - (parentInsets.right - textFieldBorderWidth));
 		textFieldMinimumSize.height = Math.max(textFieldMinimumSize.height, textR.height);
 		textfield.setSize(textFieldMinimumSize.width, textFieldMinimumSize.height);
@@ -752,7 +775,7 @@ public class EditNodeTextField extends EditNodeBase {
 		verticalSpace = 2 * textY;
 		final int widthAddedToParent = newParentSize.width - parent.getWidth();
 		final Point location = new Point(textR.x - textFieldBorderWidth, textY);
-		
+
 		final int widthAddedToTextField = textFieldMinimumSize.width - (textR.width + 2 * textFieldBorderWidth);
 		if(widthAddedToTextField > 0){
 			switch(labelHorizontalAlignment){
@@ -768,8 +791,8 @@ public class EditNodeTextField extends EditNodeBase {
 				break;
 			}
 		}
-		
-        keepNodePosition();        
+
+        keepNodePosition();
 		parent.setPreferredSize(newParentSize);
 		parent.setText("");
         parent.setHorizontalAlignment(JLabel.LEFT);
@@ -778,13 +801,13 @@ public class EditNodeTextField extends EditNodeBase {
 			mapView.doLayout();
 			UITools.convertPointToAncestor(parent, location, mapView);
 		}
-		
+
 		textfield.setBounds(location.x, location.y, textFieldMinimumSize.width, textFieldMinimumSize.height);
 		if(layoutMapOnTextChange)
 			parent.add(textfield, 0);
 		else
 			mapView.add(textfield, 0);
-		
+
 		redispatchKeyEvents(textfield, firstEvent);
 		if (firstEvent == null) {
 			int pos = document.getLength();

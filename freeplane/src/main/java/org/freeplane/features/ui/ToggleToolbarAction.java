@@ -52,7 +52,7 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent event) {
 		final JComponent toolBar = getToolbar();
 		if(toolBar != null)
-			UIComponentVisibilityDispatcher.dispatcher(toolBar).toggleVisibility();
+			UIComponentVisibilityDispatcher.of(toolBar).toggleVisibility();
 	}
 
 
@@ -68,6 +68,6 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 
 	public boolean isVisible() {
 		final JComponent toolBar = getToolbar();
-		return toolBar != null && UIComponentVisibilityDispatcher.dispatcher(toolBar).isVisible();
+		return toolBar != null && UIComponentVisibilityDispatcher.of(toolBar).isVisible();
 	}
 }

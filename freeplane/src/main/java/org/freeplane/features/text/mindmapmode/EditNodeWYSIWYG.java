@@ -76,6 +76,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			final SubmitAction submitAction = new SubmitAction();
 			okButton.addActionListener(submitAction);
 			cancelButton.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					cancel();
 				}
@@ -188,7 +189,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	private static final Dimension PREFERRED_SIZE = new Dimension(600, 400);
 
 	private String title;
-	
+
 	private Font font;
 	private Color textColor = Color.BLACK;
 	private Dimension preferredSize = PREFERRED_SIZE;
@@ -231,6 +232,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 		super(node, text, editControl);
 	}
 
+	@Override
 	public void show(final RootPaneContainer frame) {
 		try {
 			HTMLDialog htmlEditorWindow = createHtmlEditor(frame);
@@ -274,7 +276,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			else {
 				UITools.setDialogLocationRelativeTo(htmlEditorWindow.getDialog(), node);
 			}
-			String content = text;
+			String content = getText();
 			if (!HtmlUtils.isHtmlNode(content)) {
 				content = HtmlUtils.plainToHTML(content);
 			}
@@ -300,7 +302,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	}
 
 	public HTMLDialog createHtmlEditor(final RootPaneContainer frame) throws Exception {
-		final JRootPane rootPane = ((RootPaneContainer)frame).getRootPane();
+		final JRootPane rootPane = frame.getRootPane();
 		HTMLDialog htmlEditorWindow = (HTMLDialog) rootPane.getClientProperty(HTMLDialog.class);
 		if (htmlEditorWindow == null) {
 			htmlEditorWindow = new HTMLDialog(this, "", "", frame);

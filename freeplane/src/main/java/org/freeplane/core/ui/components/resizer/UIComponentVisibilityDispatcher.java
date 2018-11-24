@@ -48,8 +48,8 @@ public class UIComponentVisibilityDispatcher {
 		component.putClientProperty(KEY, new UIComponentVisibilityDispatcher(component, key));
 	}
 
-	public static UIComponentVisibilityDispatcher dispatcher(JComponent component){
-		return (UIComponentVisibilityDispatcher) component.getClientProperty(KEY);
+	static public UIComponentVisibilityDispatcher of(JComponent component) {
+		return ((UIComponentVisibilityDispatcher)component.getClientProperty(KEY));
 	}
 
 	private UIComponentVisibilityDispatcher(JComponent component, String key) {

@@ -48,7 +48,7 @@ public class CollapseableBoxBuilder {
 	public Box createBox(final Component component, final Direction direction) {
 	    Box resisableComponent = direction.createBox();
 		UIComponentVisibilityDispatcher.install(resisableComponent, propertyNameBase);
-		final UIComponentVisibilityDispatcher dispatcher = UIComponentVisibilityDispatcher.dispatcher(resisableComponent);
+		final UIComponentVisibilityDispatcher dispatcher = UIComponentVisibilityDispatcher.of(resisableComponent);
 		final String sizePropertyName = dispatcher.getPropertyName() +  ".size";
 		final boolean expanded = dispatcher.isVisible();
 

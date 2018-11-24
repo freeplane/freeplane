@@ -257,7 +257,7 @@ public class ReportGenerator extends StreamHandler {
 							logButton.setText(TextUtils.format("errornumber", errorCounter));
 							final JComponent statusBar = viewController.getStatusBar();
 							if (!statusBar.isVisible())
-								UIComponentVisibilityDispatcher.dispatcher(statusBar).setVisible(true);
+								UIComponentVisibilityDispatcher.of(statusBar).setVisible(true);
 						}
 					}
 					catch (Exception e) {

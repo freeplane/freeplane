@@ -41,6 +41,7 @@ class EditNodeExternalApplication extends EditNodeBase {
 		super(node, text, editControl);
 	}
 
+	@Override
 	public void show(RootPaneContainer frame) {
 		new Thread() {
 			@Override
@@ -49,7 +50,7 @@ class EditNodeExternalApplication extends EditNodeBase {
 				try {
 					final File temporaryFile = File.createTempFile("tmm", ".html");
 					writer = new FileWriter(temporaryFile);
-					writer.write(EditNodeExternalApplication.this.text);
+					writer.write(getText());
 					writer.close();
 					final String htmlEditingCommand = ResourceController.getResourceController().getProperty(
 					    "html_editing_command");
