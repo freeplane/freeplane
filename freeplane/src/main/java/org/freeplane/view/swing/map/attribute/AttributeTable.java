@@ -39,6 +39,7 @@ import java.awt.event.MouseListener;
 import java.net.URI;
 import java.util.EventObject;
 
+import javax.swing.AbstractAction;
 import javax.swing.AbstractCellEditor;
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxEditor;
@@ -46,6 +47,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
+import javax.swing.InputMap;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -101,6 +103,15 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private static final String EDITING_STOPPED = AttributeTable.class.getName() + ".editingStopped";
 	private static int CLICK_COUNT_TO_START = 2;
 
+	private final class EditCellAction extends AbstractAction {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			final int selectedRow = getSelectedRow();
+			final int selectedColumn = getSelectedColumn();
+			if(selectedColumn >= 0 && selectedRow >= 0)
+				editCellAt(selectedRow, selectedColumn, e);
+		}
+	}
 	private static final class TableHeaderRendererImpl implements TableCellRenderer {
 		final private TableCellRenderer delegate;
 		TableHeaderRendererImpl(TableCellRenderer renderer){
@@ -197,6 +208,14 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		setCellSelectionEnabled(true);
 		getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
+		InputMap ancestorInputMap = getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		KeyStroke f2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
+		KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+		InputMap focusedComponentInputMap = getInputMap(JTable.WHEN_FOCUSED);
+		final Object editKey = ancestorInputMap.get(f2);
+		focusedComponentInputMap.put(enter, editKey);
+		EditCellAction action = new EditCellAction();
+		getActionMap().put(editKey, action);
 		setShowGrid(true);
 	}
 
@@ -283,7 +302,12 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				if(isEditing() && cellEditor instanceof DialogTableCellEditor){
 					((JComponent)editorComp).paintImmediately(0, 0, editorComp.getWidth(), editorComp.getHeight());
 					((DialogTableCellEditor)cellEditor).startEditing();
-					return false;
+				}
+				else {
+					final Component editorComponent = getEditorComponent();
+					if (editorComponent instanceof JComboBox) {
+						startEditing(e, (JComboBox) editorComponent);
+					}
 				}
 				return true;
 			}
@@ -293,6 +317,31 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			putClientProperty("AttributeTable.EditEvent", null);
 		}
     }
+
+	private void startEditing(EventObject e, final JComboBox comboBox) {
+		final ComboBoxEditor editor = comboBox.getEditor();
+		if (comboBox.isEditable()) {
+			editor.selectAll();
+			if(e instanceof KeyEvent) {
+				final KeyEvent keyEvent = (KeyEvent)e;
+				final char keyChar = keyEvent.getKeyChar();
+				if(keyChar != KeyEvent.CHAR_UNDEFINED) {
+					KeyEvent keyTypedEvent = new KeyEvent(editor.getEditorComponent(), KeyEvent.KEY_TYPED, keyEvent.getWhen(),
+							keyEvent.getModifiers(), KeyEvent.VK_UNDEFINED, keyChar, KeyEvent.KEY_LOCATION_UNKNOWN);
+					SwingUtilities.processKeyBindings(keyTypedEvent);
+				}
+			}
+		}
+		else {
+			comboBox.requestFocusInWindow();
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					comboBox.showPopup();
+				}
+			});
+		}
+	}
 
 	Icon getLinkIcon(final URI uri) {
 		NodeModel nodeModel = ((AttributeTableModel)getModel()).getNode();
@@ -385,10 +434,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		}
 		if(col == 1){
 			final MTextController textController = (MTextController) TextController.getController();
-			if(e instanceof KeyEvent){
-				final KeyEvent kev = (KeyEvent) e;
-				textController.getEventQueue().setFirstEvent(kev);
-			}
+			textController.getEventQueue().setFirstEvent((e instanceof KeyEvent) ? ((KeyEvent) e) : null);
 			final AttributeTableModel model = (AttributeTableModel) getModel();
 			final String text = getValueForEdit(row, col);
 			final DialogTableCellEditor dialogTableCellEditor = new DialogTableCellEditor();
@@ -610,39 +656,26 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				return super.processKeyBinding(ks, e, condition, pressed);
 
 		}
-		boolean retValue = super.processKeyBinding(ks, e, condition, pressed);
-		if (!retValue && condition == JComponent.WHEN_FOCUSED && isFocusOwner() && ks.getKeyCode() != KeyEvent.VK_TAB
+		if(super.processKeyBinding(ks, e, condition, pressed))
+			return true;
+		if (condition == JComponent.WHEN_FOCUSED)
+			return editCell(ks, e);
+		return false;
+	}
+
+	private boolean editCell(final KeyStroke ks, final KeyEvent e) {
+		if (isFocusOwner() && ks.getKeyCode() != KeyEvent.VK_TAB
 		        && e != null && e.getID() == KeyEvent.KEY_PRESSED && !e.isActionKey()
 		        && e.getKeyChar() != KeyEvent.CHAR_UNDEFINED
 		        && 0 == (e.getModifiers() & (InputEvent.CTRL_MASK | InputEvent.ALT_MASK))) {
 			final int leadRow = getSelectionModel().getLeadSelectionIndex();
 			final int leadColumn = getColumnModel().getSelectionModel().getLeadSelectionIndex();
-			if (leadRow != -1 && leadColumn != -1 && !isEditing()) {
-				if (!editCellAt(leadRow, leadColumn, e)) {
+			if (leadRow == -1 || leadColumn == -1  || isEditing() || !editCellAt(leadRow, leadColumn, e)) {
 					return false;
-				}
 			}
-			final Component editorComponent = getEditorComponent();
-			if (editorComponent instanceof JComboBox) {
-				final JComboBox comboBox = (JComboBox) editorComponent;
-				if (comboBox.isEditable()) {
-					final ComboBoxEditor editor = comboBox.getEditor();
-					editor.selectAll();
-					KeyEvent keyEv;
-					keyEv = new KeyEvent(editor.getEditorComponent(), KeyEvent.KEY_TYPED, e.getWhen(),
-					    e.getModifiers(), KeyEvent.VK_UNDEFINED, e.getKeyChar(), KeyEvent.KEY_LOCATION_UNKNOWN);
-					retValue = SwingUtilities.processKeyBindings(keyEv);
-				}
-				else {
-					editorComponent.requestFocusInWindow();
-					retValue = true;
-				}
-			}
-		}
-		if (ks.getKeyCode() == KeyEvent.VK_SPACE) {
 			return true;
 		}
-		return retValue;
+		return false;
 	}
 
 	@Override
