@@ -3,6 +3,7 @@ package org.freeplane.core.extension;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class HighlightedElements  implements IExtension {
 
@@ -30,5 +31,9 @@ public class HighlightedElements  implements IExtension {
 
 	public Set<Object> getElements() {
 		return elements;
+	}
+
+	public Stream<Object> stream() {
+		return elements.stream();
 	}
 }

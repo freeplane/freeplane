@@ -56,10 +56,10 @@ public class AttributeController implements IExtension {
 	public static final String SHOW_ICON_FOR_ATTRIBUTES = "show_icon_for_attributes";
 	private static final Integer ATTRIBUTE_TOOLTIP = 7;
 	static private UIIcon attributeIcon = null;
-	static private AttributeSelection attributeSelection;
+	static private AttributeSelection attributeSelection = AttributeSelection.EMPTY;
 
 	public static void setAttributeSelection(AttributeSelection attributeSelection) {
-		if(AttributeController.attributeSelection != null)
+		if(AttributeController.attributeSelection != AttributeSelection.EMPTY)
 			throw new IllegalStateException();
 		AttributeController.attributeSelection = attributeSelection;
 	}
@@ -265,7 +265,7 @@ public class AttributeController implements IExtension {
 	    return false;
     }
 
-	public static NodeAttribute getSelectedAttribute() {
-		return attributeSelection != null ? attributeSelection.getSelectedAttribute() : null;
+	public static AttributeSelection getAttributeSelection() {
+		return attributeSelection;
 	}
 }

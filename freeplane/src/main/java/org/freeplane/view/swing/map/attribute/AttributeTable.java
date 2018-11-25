@@ -206,7 +206,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		getTableHeader().setReorderingAllowed(false);
 		setCellSelectionEnabled(true);
-		getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
 		InputMap ancestorInputMap = getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		KeyStroke f2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
