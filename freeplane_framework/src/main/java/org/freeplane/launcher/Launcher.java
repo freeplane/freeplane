@@ -175,9 +175,8 @@ public class Launcher {
 
 
     /**
-     * This method can be used to shutdown embedded Freeplane instance.
-     *
-     * Usually you do not need it.
+     * The method should be call on application exit to shutdown embedded Freeplane instance.
+     * 
      * No Freeplane objects may be used after the shutdown is called.
      * It destroys some class loaders and invalidates all related classes and objects.
      */
