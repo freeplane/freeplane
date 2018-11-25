@@ -21,6 +21,7 @@ package org.freeplane.plugin.formula;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -89,9 +90,11 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 			final JTextArea exceptionView = new JTextArea(out.toString());
 			exceptionView.setBackground(Color.LIGHT_GRAY);
 			exceptionView.setForeground(Color.RED.darker());
-			exceptionView.setFont(textEditor.getFont());
+			final Font font = textEditor.getFont();
+			exceptionView.setFont(font.deriveFont(font.getSize2D() * 0.8f));
 			exceptionView.setEditable(false);
-			final Box resisablePreview = Direction.RIGHT.createBox(new JScrollPane(exceptionView, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+			final JScrollPane scrollPane = new JScrollPane(exceptionView, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			final Box resisablePreview = Direction.RIGHT.createBox(scrollPane);
 			dialog.add(resisablePreview, BorderLayout.EAST);
 		}
 	}
