@@ -21,7 +21,9 @@ package org.freeplane.plugin.formula;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -33,6 +35,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.RootPaneContainer;
 
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.JResizer.Direction;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.map.NodeModel;
@@ -94,6 +97,11 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 			exceptionView.setFont(font.deriveFont(font.getSize2D() * 0.8f));
 			exceptionView.setEditable(false);
 			final JScrollPane scrollPane = new JScrollPane(exceptionView, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			final Rectangle availableScreenBounds = UITools.getAvailableScreenBounds(UITools.getCurrentRootComponent());
+			final Dimension maximumSize = new Dimension(availableScreenBounds.width * 3 / 4, Integer.MAX_VALUE);
+			final Dimension preferredSize = scrollPane.getPreferredSize();
+			preferredSize.width = Math.min(preferredSize.width, maximumSize.width);
+			scrollPane.setPreferredSize(preferredSize);
 			final Box resisablePreview = Direction.RIGHT.createBox(scrollPane);
 			dialog.add(resisablePreview, BorderLayout.EAST);
 		}
