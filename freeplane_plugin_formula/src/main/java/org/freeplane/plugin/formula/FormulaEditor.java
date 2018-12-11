@@ -109,28 +109,42 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 
 	@Override
 	public void nodeSelected(final NodeModel node) {
-		final String replacement = createNodeReference(node);
+		final String replacement;
+		if(isCaretInsideStringToken())
+			replacement = mapExplorer.getNodeReferenceSuggestion(node);
+		else
+			replacement = createReference(node);
 		textEditor.replaceSelection(replacement);
 	    textEditor.requestFocus();
     }
 
-	private String createNodeReference(final NodeModel node) {
-		final int caretPosition = textEditor.getCaretPosition();
-		SyntaxDocument document =  (SyntaxDocument) textEditor.getDocument();
-		final Token token = document.getTokenAt(caretPosition);
-		final String replacement;
-		if(TokenType.isString(token))
-			replacement = mapExplorer.getNodeReferenceSuggestion(node);
+	private String createReference(final NodeModel node) {
+		if(node == getNode())
+			return "node";
+		else if(! mapExplorer.isGlobal(node))
+			return node.getID();
+		final String alias = mapExplorer.getAlias(node);
+		if(alias.isEmpty())
+			return node.getID();
 		else
-			replacement = node.getID();
-		return replacement;
+			return "at(':~" + alias + "')";
 	}
 
 	@Override
 	public void tableRowSelected(NodeModel node, String rowName) {
-		final String replacement = createNodeReference(node) + "['" + rowName + "']";
+		if(isCaretInsideStringToken())
+			return;
+		final String replacement = createReference(node) + "['" + rowName + "']";
 		textEditor.replaceSelection(replacement);
 	    textEditor.requestFocus();
+	}
+
+	private boolean isCaretInsideStringToken() {
+		final int caretPosition = textEditor.getCaretPosition();
+		SyntaxDocument document =  (SyntaxDocument) textEditor.getDocument();
+		final Token token = document.getTokenAt(caretPosition);
+		final boolean caretInsideStringToken = TokenType.isString(token);
+		return caretInsideStringToken;
 	}
 
 
