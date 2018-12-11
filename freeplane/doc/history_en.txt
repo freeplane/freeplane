@@ -1,4 +1,8 @@
 ===============================
+1.7.4
+===============================
+Formula and formula editor improvements
+===============================
 1.7.3
 ===============================
 Show exception traces in formula editor
