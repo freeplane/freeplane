@@ -1,6 +1,5 @@
 package org.freeplane.features.attribute;
 
-import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.map.NodeModel;
 
 public class NodeAttribute {
@@ -18,5 +17,9 @@ public class NodeAttribute {
 
 	public Object value() {
 		return attribute.getValue();
+	}
+
+	public Attribute attribute() {
+		return attribute;
 	}
 }

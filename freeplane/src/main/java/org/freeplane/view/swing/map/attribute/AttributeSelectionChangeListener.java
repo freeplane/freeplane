@@ -1,14 +1,23 @@
 package org.freeplane.view.swing.map.attribute;
 
-import org.freeplane.features.attribute.*;
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+
+import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.attribute.AttributeSelection;
+import org.freeplane.features.attribute.NodeAttribute;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
-
-import javax.swing.*;
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 class AttributeSelectionChangeListener implements PropertyChangeListener, AttributeSelection {
 	AttributeTable selectedTable;
@@ -83,16 +92,29 @@ class AttributeSelectionChangeListener implements PropertyChangeListener, Attrib
 	}
 
 	@Override
-	public NodeAttribute getSelectedAttribute() {
+	public List<SelectedAttribute> getSelectedAttributes() {
 		if(selectedTable == null)
-			return null;
-		int selectedRow = selectedTable.getSelectedRow();
-		if(selectedRow == -1)
-			return null;
+			return AttributeSelection.EMPTY.getSelectedAttributes();
+		final ListSelectionModel selectionModel = selectedTable.getSelectionModel();
+		int minSelectedRow = selectionModel.getMinSelectionIndex();
+		if(minSelectedRow == -1)
+			return AttributeSelection.EMPTY.getSelectedAttributes();
 		AttributeTableModel attributeTableModel = selectedTable.getAttributeTableModel();
 		NodeAttributeTableModel attributes = attributeTableModel.getNodeAttributeModel();
 		NodeModel node = attributeTableModel.getNode();
-		Attribute attribute = attributes.getAttribute(selectedRow);
-		return new NodeAttribute(node, attribute);
+		int maxSelectedRow = selectionModel.getMaxSelectionIndex();
+		final ArrayList<SelectedAttribute> selectedAttributes = new ArrayList<>(maxSelectedRow - minSelectedRow + 1);
+		for(int rowIndex = minSelectedRow; rowIndex <= maxSelectedRow; rowIndex++) {
+			if(selectionModel.isSelectedIndex(rowIndex)) {
+				final SelectedAttribute.SelectedPart selectedPart;
+				selectedPart = selectedTable.isCellSelected(rowIndex, 0) ?
+						selectedTable.isCellSelected(rowIndex, 1) ?
+								SelectedAttribute.SelectedPart.BOTH : SelectedAttribute.SelectedPart.NAME : SelectedAttribute.SelectedPart.VALUE;
+				Attribute attribute = attributes.getAttribute(rowIndex);
+				final NodeAttribute nodeAttrribute = new NodeAttribute(node, attribute);
+				selectedAttributes.add(new SelectedAttribute(nodeAttrribute, selectedPart)) ;
+			}
+		}
+		return selectedAttributes;
 	}
 }

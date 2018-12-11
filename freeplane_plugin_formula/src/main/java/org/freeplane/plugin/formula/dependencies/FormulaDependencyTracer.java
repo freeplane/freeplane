@@ -11,6 +11,7 @@ import org.freeplane.core.extension.HighlightedElements;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.Pair;
 import org.freeplane.features.attribute.AttributeController;
+import org.freeplane.features.attribute.AttributeSelection;
 import org.freeplane.features.attribute.NodeAttribute;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.link.ConnectorArrows;
@@ -64,10 +65,10 @@ class FormulaDependencyTracer implements IExtension {
 		if (tracedValues == null) {
 			highlighedElements.clear();
 			configurable.computeIfAbsent(Connectors.class, Connectors::new).clear();
-			final NodeAttribute attribute = AttributeController.getSelectedAttribute();
-			if (attribute != null) {
-				highlighedElements.add(attribute.attribute);
-				accessedValues = findDependencies(attribute);
+			final AttributeSelection attributeSelection = AttributeController.getAttributeSelection();
+			if (! attributeSelection.isEmpty()) {
+				attributeSelection.nodeAttributeStream().map(NodeAttribute::attribute).forEach(highlighedElements::add);
+				accessedValues = attributeSelection.nodeAttributeStream().map(this::findDependencies).flatMap(Collection::stream).collect(Collectors.toSet());
 			} else {
 				final NodeModel node = Controller.getCurrentController().getSelection().getSelected();
 				highlighedElements.add(node);
