@@ -8,6 +8,7 @@ import java.util.GregorianCalendar;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.codehaus.groovy.runtime.InvokerHelper;
+import org.codehaus.groovy.runtime.ScriptBytecodeAdapter;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.FormattedDate;
@@ -23,18 +24,21 @@ import groovy.lang.MissingMethodException;
 // instead of just calling equals, which is correctly defined
 public class Convertible extends GroovyObjectSupport /*implements Comparable<Object>*/ implements org.freeplane.api.Convertible {
 	private final String text;
+	private final Object object;
 
 	/** Use the {@code text} unchanged, i. e. oesn't evaluate formulas since this would require
 	 * a calculation rule or NodeModel.
 	 * @param text the String to convert. */
 	public Convertible(String text) {
 		this.text = text;
+		this.object = text;
 	}
 
 	/** Use {@link Convertible#toString(Object)} to convert to String, i.e. conversion is done properly.
-	 * @param text the Object to convert */
-	public Convertible(Object text) {
-		this.text = toString(text);
+	 * @param object the Object to convert */
+	public Convertible(Object object) {
+		this.object = object;
+		this.text = toString(object);
     }
 
 	/** Convert to Number. All Java number literals are allowed as described by {@link Long#decode(String)}
@@ -275,25 +279,18 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 		return text == null ? 0 : text.hashCode();
 	}
 
-	/** note: if obj is a String the result is true if String.equals(text). */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
-			return text == null;
-		if (obj.getClass() == String.class && text != null)
-			return text.equals(obj);
+			return object == null;
+		if(ScriptBytecodeAdapter.compareEqual(this.object, obj))
+			return true;
 		if (!(obj instanceof Convertible))
 			return false;
 		Convertible other = (Convertible) obj;
-		if (text == null) {
-			if (other.text != null)
-				return false;
-		}
-		else if (!text.equals(other.text))
-			return false;
-		return true;
+		return ScriptBytecodeAdapter.compareEqual(this.object, other.object);
 	}
 
 	@Override
@@ -318,5 +315,10 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
 	@Override
 	public boolean asBoolean() {
 	    return text != null && text.length() > 0;
+	}
+
+	@Override
+	public Object getRaw() {
+		return object;
 	}
 }

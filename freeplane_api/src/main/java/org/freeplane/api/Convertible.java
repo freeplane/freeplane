@@ -63,6 +63,13 @@ public interface Convertible {
 	 * @return Object - the type that fits best. */
 	public Object getObject();
 
+	/**
+	 * Returns original object
+	 * @return the original object
+	 * @since 1.7.4
+	 */
+	public Object getRaw();
+
 
 	/** Type check.
 	 * @return true if the text is convertible to number. */
