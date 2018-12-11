@@ -26,5 +26,8 @@ import org.freeplane.features.map.NodeModel;
  * Mar 3, 2011
  */
 public interface INodeSelector {
-	void nodeSelected(final NodeModel model);
+	void nodeSelected(final NodeModel node);
+	default void tableRowSelected(final NodeModel node, String rowName) {
+
+	}
 }

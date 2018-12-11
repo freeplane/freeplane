@@ -109,6 +109,12 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 
 	@Override
 	public void nodeSelected(final NodeModel node) {
+		final String replacement = createNodeReference(node);
+		textEditor.replaceSelection(replacement);
+	    textEditor.requestFocus();
+    }
+
+	private String createNodeReference(final NodeModel node) {
 		final int caretPosition = textEditor.getCaretPosition();
 		SyntaxDocument document =  (SyntaxDocument) textEditor.getDocument();
 		final Token token = document.getTokenAt(caretPosition);
@@ -117,7 +123,15 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 			replacement = mapExplorer.getNodeReferenceSuggestion(node);
 		else
 			replacement = node.getID();
+		return replacement;
+	}
+
+	@Override
+	public void tableRowSelected(NodeModel node, String rowName) {
+		final String replacement = createNodeReference(node) + "['" + rowName + "']";
 		textEditor.replaceSelection(replacement);
 	    textEditor.requestFocus();
-    }
+	}
+
+
 }

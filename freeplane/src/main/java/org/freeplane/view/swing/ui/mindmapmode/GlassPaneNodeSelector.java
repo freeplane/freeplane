@@ -26,6 +26,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JScrollBar;
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.IMouseListener;
@@ -43,7 +44,7 @@ import org.freeplane.view.swing.map.NodeView;
 class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
 
     /**
-     * 
+     *
      */
     private final INodeSelector nodeSelector;
 	private Component activeComponent;
@@ -54,26 +55,36 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
         this.nodeSelector = nodeSelector;
     }
 
+	@Override
 	public void mouseMoved(MouseEvent e) {
     }
 
-    public void mouseDragged(MouseEvent e) {
+    @Override
+	public void mouseDragged(MouseEvent e) {
         final Component component = findMapComponent(e);
         if(canRedispatchEventFor(component)){
         	redispatchMouseEvent(e, component);
         }
     }
 
-    public void mouseClicked(MouseEvent e) {
+    @Override
+	public void mouseClicked(MouseEvent e) {
     	if(e.getButton() != 1){
     		return;
     	}
         final Component component = findMapComponent(e);
-        if(! (component instanceof MainView)){
-        	return;
+
+        if(component instanceof JTable) {
+        	mouseClickedOnTable((JTable)component, e);
         }
-        MainView mainView = (MainView) component;
-        NodeView nodeView = mainView.getNodeView();
+
+        else if(component instanceof MainView){
+        	mouseClickedOnNode(e, (MainView) component);
+        }
+    }
+
+	private void mouseClickedOnNode(MouseEvent e, MainView mainView) {
+		NodeView nodeView = mainView.getNodeView();
 		final NodeModel node = nodeView.getModel();
         switch(e.getClickCount()){
         	case 1:
@@ -84,7 +95,22 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
     	        nodeSelector.nodeSelected(node);
         		break;
         }
-    }
+	}
+
+	private void mouseClickedOnTable(JTable table, MouseEvent e) {
+		if(e.getClickCount() != 2)
+			return;
+		NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, table);
+		if(nodeView == null)
+			return;
+		Point pointAtTable = getPointAtComponent(e, table);
+		final int selectedRow = table.rowAtPoint(pointAtTable );
+		if(selectedRow < 0 || selectedRow >= table.getRowCount())
+			return;
+		String rowName = (String) table.getValueAt(selectedRow, 0);
+		final NodeModel node = nodeView.getModel();
+		nodeSelector.tableRowSelected(node, rowName);
+	}
 
 	public boolean canRedispatchEventFor(final Component component) {
         if (component instanceof MapView)
@@ -94,13 +120,16 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
         return false;
     }
 
-    public void mouseEntered(MouseEvent e) {
+    @Override
+	public void mouseEntered(MouseEvent e) {
     }
 
-    public void mouseExited(MouseEvent e) {
+    @Override
+	public void mouseExited(MouseEvent e) {
     }
 
-    public void mousePressed(MouseEvent e) {
+    @Override
+	public void mousePressed(MouseEvent e) {
     	if(e.getButton() != 1){
     		return;
     	}
@@ -111,7 +140,8 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
         }
     }
 
-    public void mouseReleased(MouseEvent e) {
+    @Override
+	public void mouseReleased(MouseEvent e) {
     	if(e.getButton() != 1){
     		return;
     	}
@@ -130,31 +160,48 @@ class GlassPaneNodeSelector extends MouseAdapter implements IMouseListener{
     		glassPane,
     		glassPanePoint,
     		container);
-    	Component component = 
+    	Component component =
     		SwingUtilities.getDeepestComponentAt(
     			container,
     			containerPoint.x,
     			containerPoint.y);
-    	if(component instanceof MainView || component instanceof MapView || component instanceof JScrollBar){
+    	if(component instanceof MainView
+    			|| component instanceof JTable
+    			|| component instanceof MapView
+    			|| component instanceof JScrollBar){
 	    	return component;
     	}
+    	Container table = SwingUtilities.getAncestorOfClass(JTable.class, component);
+    	if(table != null)
+    		return table;
     	return SwingUtilities.getAncestorOfClass(MapView.class, component);
     }
-	    public void redispatchMouseEvent(MouseEvent e, final Component component) {
-        final Component glassPane = e.getComponent();
-        final Point glassPanePoint = e.getPoint();
-        Point componentPoint = SwingUtilities.convertPoint(
-        	glassPane,
-        	glassPanePoint,
-        	component);
-        component.dispatchEvent(new MouseEvent(component,
-        	e.getID(),
-        	e.getWhen(),
-        	e.getModifiers(),
-        	componentPoint.x,
-        	componentPoint.y,
-        	e.getClickCount(),
-        	e.isPopupTrigger()));
+	    private void redispatchMouseEvent(MouseEvent e, final Component component) {
+        final MouseEvent componentEvent = convertToComponentEvent(e, component);
+		component.dispatchEvent(componentEvent);
     }
+
+		private MouseEvent convertToComponentEvent(MouseEvent e, final Component component) {
+			Point componentPoint = getPointAtComponent(e, component);
+			final MouseEvent componentEvent = new MouseEvent(component,
+				e.getID(),
+				e.getWhen(),
+				e.getModifiers(),
+				componentPoint.x,
+				componentPoint.y,
+				e.getClickCount(),
+				e.isPopupTrigger());
+			return componentEvent;
+		}
+
+		private Point getPointAtComponent(MouseEvent e, final Component component) {
+			final Component glassPane = e.getComponent();
+			final Point glassPanePoint = e.getPoint();
+			Point componentPoint = SwingUtilities.convertPoint(
+				glassPane,
+				glassPanePoint,
+				component);
+			return componentPoint;
+		}
 
 }
