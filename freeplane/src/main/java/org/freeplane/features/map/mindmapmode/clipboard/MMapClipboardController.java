@@ -915,13 +915,13 @@ public class MMapClipboardController extends MapClipboardController implements M
 	}
 
 	@Override
-	public boolean canPaste() {
+	public boolean canPaste(Transferable t) {
 		return true;
 	}
 
 	@Override
-	public void paste() {
+	public void paste(Transferable t) {
 		final NodeModel parent = Controller.getCurrentController().getSelection().getSelected();
-		paste(ClipboardAccessor.getController().getClipboardContents(), parent, false, parent.isNewChildLeft());
+		paste(t, parent, false, parent.isNewChildLeft());
 	}
 }

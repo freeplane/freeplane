@@ -36,7 +36,7 @@ public class TypeReference{
 	static public Object create(final String objSpec) {
 		return create(objSpec, true);
 	}
-	
+
 	static public Object create(final String objSpec, final boolean verbose) {
 		try {
 			final int sep = objSpec.indexOf('|');
@@ -44,6 +44,8 @@ public class TypeReference{
 				return objSpec;
 			final String type = objSpec.substring(0, sep);
 			final String spec = objSpec.substring(sep + 1);
+			if(String.class.getName().equals(type))
+				return spec;
 			final AccessibleObject factory = getFactory(type);
 			if (factory instanceof Method)
 				return ((Method) factory).invoke(null, spec);
@@ -74,9 +76,6 @@ public class TypeReference{
 
 	public static String toSpec(Object obj){
 		final Class<? extends Object> clazz = obj.getClass();
-		if(clazz.equals(String.class)){
-			return obj.toString();
-		}
 		final SerializationMethod method = clazz.getAnnotation(SerializationMethod.class);
 		final String type = clazz.getName() + '|';
 		if(method == null){

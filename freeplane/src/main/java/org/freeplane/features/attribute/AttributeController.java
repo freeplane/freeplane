@@ -32,6 +32,8 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.clipboard.AttributeClipboardController;
+import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.UIIcon;
@@ -89,6 +91,11 @@ public class AttributeController implements IExtension {
 		modeController.addAction(new SetBooleanMapPropertyAction(SHOW_ICON_FOR_ATTRIBUTES));
 		registerTooltipProvider();
 		registerStateIconProvider();
+		registerAttributeClipboardController(modeController);
+	}
+
+	protected void registerAttributeClipboardController(final ModeController modeController) {
+		modeController.getExtension(ClipboardControllers.class).add(new AttributeClipboardController());
 	}
 
 	public NodeAttributeTableModel createAttributeTableModel(final NodeModel node) {

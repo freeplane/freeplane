@@ -31,6 +31,9 @@ import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeRegistryElement;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.attribute.mindmapmode.clipboard.MAttributeClipboardController;
+import org.freeplane.features.clipboard.ClipboardControllers;
+import org.freeplane.features.clipboard.mindmapmode.MClipboardControllers;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -579,6 +582,13 @@ public class MAttributeController extends AttributeController {
 		performInsertRow(node, attributes, rowCount, pAttribute.getName(), pAttribute.getValue());
 		return rowCount;
 	}
+
+	@Override
+	protected void registerAttributeClipboardController(final ModeController modeController) {
+		final MClipboardControllers controllers = (MClipboardControllers) modeController.getExtension(ClipboardControllers.class);
+		controllers.add(new MAttributeClipboardController(this));
+	}
+
 
 	/**
 	 *

@@ -38,9 +38,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URI;
 import java.util.EventObject;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractCellEditor;
+import javax.swing.Action;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
@@ -56,6 +61,7 @@ import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.TransferHandler;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
@@ -103,13 +109,14 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private static final String EDITING_STOPPED = AttributeTable.class.getName() + ".editingStopped";
 	private static int CLICK_COUNT_TO_START = 2;
 
-	private final class EditCellAction extends AbstractAction {
+	private static final class EditCellAction extends AbstractAction {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			final int selectedRow = getSelectedRow();
-			final int selectedColumn = getSelectedColumn();
+			AttributeTable table = (AttributeTable) e.getSource();
+			final int selectedRow = table.getSelectedRow();
+			final int selectedColumn = table.getSelectedColumn();
 			if(selectedColumn >= 0 && selectedRow >= 0)
-				editCellAt(selectedRow, selectedColumn, e);
+				table.editCellAt(selectedRow, selectedColumn, e);
 		}
 	}
 	private static final class TableHeaderRendererImpl implements TableCellRenderer {
@@ -191,6 +198,10 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private int highRowIndex = 0;
 	private static DefaultCellEditor dce;
 
+	private static final Set<String> editingActions = Stream.of((String)TransferHandler.getCopyAction().getValue(Action.NAME),
+		(String)TransferHandler.getPasteAction().getValue(Action.NAME), (String)TransferHandler.getCutAction().getValue(Action.NAME))
+			.collect(Collectors.toSet());
+
 	AttributeTable(final AttributeView attributeView) {
 		super();
 		this.attributeView = attributeView;
@@ -208,15 +219,36 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		setCellSelectionEnabled(true);
 		getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		putClientProperty("JTable.autoStartsEdit", Boolean.FALSE);
-		InputMap ancestorInputMap = getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		adaptActionMap(this);
+		setShowGrid(true);
+	}
+
+	private static void adaptActionMap(AttributeTable table) {
+		InputMap ancestorInputMap = table.getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		KeyStroke f2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
 		KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
-		InputMap focusedComponentInputMap = getInputMap(JTable.WHEN_FOCUSED);
+		InputMap focusedComponentInputMap = table.getInputMap(JTable.WHEN_FOCUSED);
 		final Object editKey = ancestorInputMap.get(f2);
 		focusedComponentInputMap.put(enter, editKey);
-		EditCellAction action = new EditCellAction();
-		getActionMap().put(editKey, action);
-		setShowGrid(true);
+		final ActionMap actionMap = table.getActionMap();
+		if(defaultParentActionMap == null || defaultParentActionMap != actionMap.getParent()) {
+			defaultParentActionMap = actionMap.getParent();
+			newDefaultParentActionMap = new ActionMap() {
+
+				@Override
+				public Action get(Object key) {
+					if(editingActions.contains(key))
+						return null;
+					else
+						return super.get(key);
+				}
+
+			};
+			newDefaultParentActionMap.setParent(defaultParentActionMap);
+			EditCellAction action = new EditCellAction();
+			newDefaultParentActionMap.put(editKey, action);
+		}
+		actionMap.setParent(newDefaultParentActionMap);
 	}
 
 	@Override
@@ -800,6 +832,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	private Color gridColor = null;
+	private static ActionMap defaultParentActionMap;
+	private static ActionMap newDefaultParentActionMap;
 	public void setGridAndBorderColor(Color gridColor) {
 		this.gridColor = gridColor;
 		if(gridColor != null) {

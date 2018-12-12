@@ -17,12 +17,16 @@ public class ClipboardControllers implements IExtension{
 	}
 
 	private final SortedSet<ClipboardController> controllers;
+	public final CopyAction copyAction;
 
 
 	public ClipboardControllers() {
 		super();
 		controllers = new TreeSet<>(this::prioritySort);
-		createActions();
+		final Controller controller = Controller.getCurrentController();
+		ModeController modeController = controller.getModeController();
+		copyAction = new CopyAction();
+		modeController.addAction(copyAction);
 	}
 
 	protected int prioritySort(ClipboardController x, ClipboardController y) {
@@ -30,11 +34,6 @@ public class ClipboardControllers implements IExtension{
 	}
 
 
-	private void createActions() {
-		final Controller controller = Controller.getCurrentController();
-		ModeController modeController = controller.getModeController();
-		modeController.addAction(new CopyAction());
-	}
 	public boolean add(ClipboardController e) {
 		return controllers.add(e);
 	}
