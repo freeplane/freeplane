@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.clipboard;
+package org.freeplane.features.map.clipboard;
 
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
@@ -41,10 +41,10 @@ class CopySingleAction extends AFreeplaneAction {
 		final Controller controller = Controller.getCurrentController();
 		final Collection<NodeModel> selection = controller.getSelection().getSortedSelection(false);
 		final ModeController modeController = Controller.getCurrentModeController();
-		final Transferable copy = ((ClipboardController) modeController.getExtension(ClipboardController.class))
+		final Transferable copy = ((MapClipboardController) modeController.getExtension(MapClipboardController.class))
 		    .copySingle(selection);
 		if (copy != null) {
-			((ClipboardController) modeController.getExtension(ClipboardController.class)).setClipboardContents(copy);
+			((MapClipboardController) modeController.getExtension(MapClipboardController.class)).setClipboardContents(copy);
 		}
 	}
 }

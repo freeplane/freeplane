@@ -24,7 +24,7 @@ import javax.swing.SwingConstants;
 
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
-import org.freeplane.features.clipboard.ClipboardController;
+import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.filter.FilterController;
@@ -63,6 +63,7 @@ public class FModeControllerFactory {
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
+		ClipboardControllers.install(new ClipboardControllers());
 		new FMapController(modeController);
 		UrlManager.install(new UrlManager());
 		MapIO.install(modeController);
@@ -72,7 +73,6 @@ public class FModeControllerFactory {
 		new TextController(modeController).install(modeController);
 		LinkController.install(new LinkController(modeController));
 		CloudController.install(new CloudController(modeController));
-		ClipboardController.install(new ClipboardController());
 		LocationController.install(new LocationController());
 		LogicalStyleController.install(new LogicalStyleController(modeController));
 		MapStyle.install(true);

@@ -19,13 +19,9 @@
  */
 package org.freeplane.features.clipboard;
 
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 
 class CopyAction extends AFreeplaneAction {
 //	private static final String NAME = "copy";
@@ -35,17 +31,10 @@ class CopyAction extends AFreeplaneAction {
 		super("CopyAction");
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
-		final Controller controller = Controller.getCurrentController();
-		final ModeController modeController = Controller.getCurrentModeController();
-		final IMapSelection selection = controller.getSelection();
-		if (selection != null) {
-			final ClipboardController clipboardController = (ClipboardController) modeController
-			    .getExtension(ClipboardController.class);
-			final Transferable copy = clipboardController.copy(selection);
-			if (copy != null) {
-				clipboardController.setClipboardContents(copy);
-			}
-		}
+		final ClipboardControllers clipboardController = ClipboardControllers
+			    .getController();
+			clipboardController.copy();
 	}
 }

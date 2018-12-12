@@ -22,9 +22,7 @@ package org.freeplane.features.clipboard.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
+import org.freeplane.features.clipboard.ClipboardControllers;
 
 class PasteAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
@@ -33,10 +31,10 @@ class PasteAction extends AFreeplaneAction {
 		super("PasteAction");
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
-		final MClipboardController clipboardController = (MClipboardController) ClipboardController
+		final MClipboardControllers clipboardController = (MClipboardControllers) ClipboardControllers
 		    .getController();
-		final NodeModel parent = Controller.getCurrentController().getSelection().getSelected();
-		clipboardController.paste(clipboardController.getClipboardContents(), parent, false, parent.isNewChildLeft());
+		clipboardController.paste();
 	}
 }

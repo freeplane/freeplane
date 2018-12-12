@@ -56,7 +56,8 @@ import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.clipboard.ClipboardController;
+import org.freeplane.features.clipboard.ClipboardControllers;
+import org.freeplane.features.clipboard.mindmapmode.MClipboardControllers;
 import org.freeplane.features.icon.mindmapmode.MIconController.Keys;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
@@ -77,6 +78,8 @@ import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.NodeRelativePath;
 import org.freeplane.features.map.SummaryLevels;
 import org.freeplane.features.map.SummaryNode;
+import org.freeplane.features.map.clipboard.MapClipboardController;
+import org.freeplane.features.map.mindmapmode.clipboard.MMapClipboardController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -223,6 +226,16 @@ public class MMapController extends MapController {
 				newNode = null;
 		}
 		return newNode;
+	}
+
+
+
+	@Override
+	protected MapClipboardController createMapClipboardController() {
+		final MMapClipboardController mapClipboardController = new MMapClipboardController();
+		final MClipboardControllers extension = (MClipboardControllers) getModeController().getExtension(ClipboardControllers.class);
+		extension.add(mapClipboardController);
+		return mapClipboardController;
 	}
 
 	private void startEditingAfterSelect(final NodeModel newNode) {
@@ -425,7 +438,7 @@ public class MMapController extends MapController {
 
 	private void convertCloneToNode(final NodeModel node) {
 		final MModeController mModeController = getMModeController();
-		final ClipboardController clipboardController = mModeController.getExtension(ClipboardController.class);
+		final MapClipboardController clipboardController = mModeController.getExtension(MapClipboardController.class);
 		final NodeModel duplicate = clipboardController.duplicate(node, false);
 		IActor converter = new IActor() {
 

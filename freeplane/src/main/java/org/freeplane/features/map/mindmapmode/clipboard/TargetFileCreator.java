@@ -1,4 +1,4 @@
-package org.freeplane.features.clipboard.mindmapmode;
+package org.freeplane.features.map.mindmapmode.clipboard;
 
 import java.io.File;
 import java.io.IOException;

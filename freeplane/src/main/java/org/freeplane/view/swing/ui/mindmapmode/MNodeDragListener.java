@@ -13,9 +13,10 @@ import java.awt.dnd.DragSourceEvent;
 import java.awt.dnd.DragSourceListener;
 import java.awt.dnd.InvalidDnDOperationException;
 import java.awt.event.InputEvent;
-import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.clipboard.MindMapNodesSelection;
+
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.clipboard.MapClipboardController;
+import org.freeplane.features.map.clipboard.MindMapNodesSelection;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
@@ -57,7 +58,7 @@ public class MNodeDragListener implements DragGestureListener {
 		else {
 			dragActionName = "MOVE";
 		}
-		final Transferable t = ClipboardController.getController().copy(Controller.getCurrentController().getSelection());
+		final Transferable t = MapClipboardController.getController().copy(Controller.getCurrentController().getSelection());
 		((MindMapNodesSelection) t).setDropAction(dragActionName);
 		try {
 			e.startDrag(cursor, t, new DragSourceListener() {

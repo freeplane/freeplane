@@ -1,15 +1,15 @@
 package org.freeplane.core.util;
 
-import org.freeplane.core.resources.ResourceBundles;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.TranslatedObject;
-import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.format.FormatController;
-
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.regex.Pattern;
+
+import org.freeplane.core.resources.ResourceBundles;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.TranslatedObject;
+import org.freeplane.features.clipboard.ClipboardAccessor;
+import org.freeplane.features.format.FormatController;
 
 /** utilities for translations, conversions to/from number and dates etc.
  * In scripts available as "global variable" <code>textUtils</code>. */
@@ -63,7 +63,7 @@ public class TextUtils {
 		sb.append(rawLabel.subSequence(0, pos));
 		sb.append(rawLabel.subSequence(pos + 1, length));
 		return sb.toString();
-		
+
 	}
 
 	/** Removes the "TranslateMe" sign from the end of not translated texts. */
@@ -173,12 +173,12 @@ public class TextUtils {
 	public DecimalFormat getDefaultNumberFormat() {
 		return FormatController.getController().getDefaultNumberFormat();
 	}
-	
+
 	/** accessor for scripts. */
 	public SimpleDateFormat getDefaultDateFormat() {
 		return FormatController.getController().getDefaultDateFormat();
 	}
-	
+
 	/** accessor for scripts. */
 	public SimpleDateFormat getDefaultDateTimeFormat() {
 		return FormatController.getController().getDefaultDateTimeFormat();
@@ -186,11 +186,11 @@ public class TextUtils {
 
 	/** Shortcut for scripting: Copies <code>string</code> to the system clipboard. */
 	public static void copyToClipboard(String string) {
-	    ClipboardController.getController().setClipboardContents(string);
+	    ClipboardAccessor.getController().setClipboardContents(string);
     }
-	
+
 	/** Shortcut for scripting: Copies <code>html</code> with mimetype text/html to the system clipboard. */
 	public static void copyHtmlToClipboard(String html) {
-		ClipboardController.getController().setClipboardContentsToHtml(html);
+		ClipboardAccessor.getController().setClipboardContentsToHtml(html);
 	}
 }

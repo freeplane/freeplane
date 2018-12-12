@@ -29,8 +29,8 @@ import java.util.WeakHashMap;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.clipboard.MapClipboardController;
 
 public class EncryptionModel implements IExtension {
 	private final static WeakHashMap<NodeModel, List<NodeModel>> hiddenChildren = new WeakHashMap<>();
@@ -93,7 +93,7 @@ public class EncryptionModel implements IExtension {
 		if (!isDecrypted) {
 			try {
 				final String childXml = decryptXml(encryptedContent, encrypter);
-				final String[] childs = childXml.split(ClipboardController.NODESEPARATOR);
+				final String[] childs = childXml.split(MapClipboardController.NODESEPARATOR);
 				for (int i = 0; i < childs.length; i++) {
 					final String string = childs[i];
 					if (string.length() == 0) {
@@ -138,7 +138,7 @@ public class EncryptionModel implements IExtension {
 			final NodeModel child = i.next();
 			mapWriter.writeNodeAsXml(sWriter, child, MapWriter.Mode.FILE, true, true, false);
 			if (i.hasNext()) {
-				sWriter.write(ClipboardController.NODESEPARATOR);
+				sWriter.write(MapClipboardController.NODESEPARATOR);
 			}
 		}
 		final StringBuffer childXml = sWriter.getBuffer();

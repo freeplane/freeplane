@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.clipboard.mindmapmode;
+package org.freeplane.features.map.mindmapmode.clipboard;
 
 import java.awt.Component;
 import java.awt.datatransfer.Transferable;
@@ -34,9 +34,9 @@ import javax.swing.JRadioButton;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.clipboard.mindmapmode.MClipboardController.IDataFlavorHandler;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.clipboard.MapClipboardController;
+import org.freeplane.features.map.mindmapmode.clipboard.MMapClipboardController.IDataFlavorHandler;
 import org.freeplane.features.mode.Controller;
 
 class SelectedPasteAction extends AFreeplaneAction {
@@ -50,7 +50,7 @@ class SelectedPasteAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MClipboardController clipboardController = (MClipboardController) ClipboardController
+		final MMapClipboardController clipboardController = (MMapClipboardController) MapClipboardController
 		    .getController();
 		final Collection<IDataFlavorHandler> flavorHandlers = clipboardController.getFlavorHandlers();
 		if (flavorHandlers.isEmpty()) {

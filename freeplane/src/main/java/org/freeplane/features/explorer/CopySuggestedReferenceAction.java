@@ -4,7 +4,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.clipboard.ClipboardController;
+import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
@@ -25,8 +25,8 @@ public class CopySuggestedReferenceAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel selected = controller.getSelection().getSelected();
-		final ClipboardController clipboardController = Controller.getCurrentModeController().getExtension(
-		    ClipboardController.class);
+		final ClipboardAccessor clipboardController = Controller.getCurrentModeController().getExtension(
+			ClipboardAccessor.class);
 		String suggestedString = explorer.getNodeReferenceSuggestion(selected);
 		clipboardController.setClipboardContents(new StringSelection(suggestedString));
 		controller.getViewController().out(suggestedString);

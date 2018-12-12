@@ -31,8 +31,6 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.features.encrypt.Base64Coding;
 import org.freeplane.features.encrypt.EncryptionController;
 import org.freeplane.features.encrypt.PasswordStrategy;
@@ -49,10 +47,12 @@ import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController.Direction;
+import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapNavigationUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.map.mindmapmode.clipboard.MMapClipboardController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodelocation.mindmapmode.MLocationController;
@@ -134,7 +134,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	}
 
 	private Node appendBranchImpl(final NodeRO node, final boolean withChildren) {
-	    final MClipboardController clipboardController = (MClipboardController) ClipboardController.getController();
+	    final MMapClipboardController clipboardController = (MMapClipboardController) MapClipboardController.getController();
 		final NodeModel newNodeModel = clipboardController.duplicate(((NodeProxy) node).getDelegate(), withChildren);
 		getMapController().insertNode(newNodeModel, getDelegate());
 		return new NodeProxy(newNodeModel, getScriptContext());
@@ -1093,7 +1093,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	@Override
 	public void pasteAsClone() {
-		final MClipboardController clipboardController = (MClipboardController) ClipboardController
+		final MMapClipboardController clipboardController = (MMapClipboardController) MapClipboardController
 			    .getController();
 		clipboardController.addClone(clipboardController.getClipboardContents(), getDelegate());
 	}

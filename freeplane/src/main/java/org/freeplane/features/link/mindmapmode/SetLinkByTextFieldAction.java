@@ -30,7 +30,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.clipboard.ClipboardController;
+import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;
@@ -39,7 +39,7 @@ import org.freeplane.features.mode.ModeController;
 
 class SetLinkByTextFieldAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -47,6 +47,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		super("SetLinkByTextFieldAction");
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
@@ -58,7 +59,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		if(linkAsString == null || "".equals(linkAsString)){
 			linkAsString = "http://";
 			// if clipboard contains a valid uri use it
-			ClipboardController clipboardController = modeController.getExtension(ClipboardController.class);
+			ClipboardAccessor clipboardController = modeController.getExtension(ClipboardAccessor.class);
 			Transferable t = clipboardController.getClipboardContents();
 			if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 				try {

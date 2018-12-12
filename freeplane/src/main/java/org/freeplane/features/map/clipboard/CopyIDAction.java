@@ -1,4 +1,4 @@
-package org.freeplane.features.clipboard;
+package org.freeplane.features.map.clipboard;
 
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
@@ -31,8 +31,8 @@ public class CopyIDAction extends AFreeplaneAction {
 			sb.append(node.createID());
 		}
 		final String idString = sb.toString();
-		final ClipboardController clipboardController = (ClipboardController) Controller.getCurrentModeController().getExtension(
-		    ClipboardController.class);
+		final MapClipboardController clipboardController = (MapClipboardController) Controller.getCurrentModeController().getExtension(
+		    MapClipboardController.class);
 		clipboardController.setClipboardContents(new StringSelection(idString));
 		controller.getViewController().out(idString);
 	}

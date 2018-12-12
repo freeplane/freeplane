@@ -21,8 +21,8 @@ package org.freeplane.main.headlessmode;
 
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
-import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
+import org.freeplane.features.clipboard.ClipboardControllers;
+import org.freeplane.features.clipboard.mindmapmode.MClipboardControllers;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.mindmapmode.MCloudController;
 import org.freeplane.features.edge.AutomaticEdgeColorHook;
@@ -115,6 +115,7 @@ public class HeadlessMModeControllerFactory {
 		modeController.setUserInputListenerFactory(new UserInputListenerFactory(modeController));
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
+		ClipboardControllers.install(new MClipboardControllers());
 		new MMapController(modeController);
 		final MFileManager fileManager = new MFileManager();
 		UrlManager.install(fileManager);
@@ -130,7 +131,6 @@ public class HeadlessMModeControllerFactory {
 		MMapExplorerController.install(modeController, textController);
 		LinkController.install(new MLinkController(modeController));
 		NodeStyleController.install(new MNodeStyleController(modeController));
-		ClipboardController.install(new MClipboardController());
 		LocationController.install(new MLocationController());
 		final MLogicalStyleController logicalStyleController = new MLogicalStyleController(modeController);
 		LogicalStyleController.install(logicalStyleController);

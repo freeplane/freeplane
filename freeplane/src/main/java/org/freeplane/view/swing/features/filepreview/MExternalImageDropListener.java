@@ -31,8 +31,8 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.clipboard.MindMapNodesSelection;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.clipboard.MindMapNodesSelection;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.view.swing.map.NodeView;
 

@@ -23,8 +23,8 @@ import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.url.UrlManager;
 
@@ -40,7 +40,7 @@ class ExportBranchesToHTML implements IExportEngine {
 
 	public void export(List<NodeModel> branches, File file) {
 		try {
-			ClipboardController.getController().saveHTML(branches, file);
+			MapClipboardController.getController().saveHTML(branches, file);
 			((UrlManager) Controller.getCurrentModeController().getExtension(UrlManager.class))
 			    .loadURL(file.toURI());
 		}

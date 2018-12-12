@@ -21,20 +21,12 @@ package org.freeplane.features.clipboard.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.JOptionPane;
-
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.clipboard.ClipboardControllers;
 
 class CutAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -42,23 +34,10 @@ class CutAction extends AFreeplaneAction {
 		super("CutAction");
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
-		final ModeController mMindMapController = Controller.getCurrentModeController();
-		final Controller controller = Controller.getCurrentController();
-		final NodeModel root = controller.getMap().getRootNode();
-		if (controller.getSelection().isSelected(root)) {
-			UITools.errorMessage(TextUtils.getText("cannot_delete_root"));
-			return;
-		}
-		final int showResult = OptionalDontShowMeAgainDialog.show("really_cut_node", "confirmation",
-		    MClipboardController.RESOURCES_CUT_NODES_WITHOUT_QUESTION,
-		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
-		if (showResult != JOptionPane.OK_OPTION) {
-			return;
-		}
-		final MClipboardController clipboardController = (MClipboardController) mMindMapController
-		    .getExtension(ClipboardController.class);
-		clipboardController.cut(controller.getSelection().getSortedSelection(true));
-		controller.getMapViewManager().obtainFocusForSelected();
+		final MClipboardControllers clipboardController = (MClipboardControllers) ClipboardControllers
+			    .getController();
+			clipboardController.cut();
 	}
 }

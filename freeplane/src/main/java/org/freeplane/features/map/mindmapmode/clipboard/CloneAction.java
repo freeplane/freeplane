@@ -17,13 +17,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.clipboard.mindmapmode;
+package org.freeplane.features.map.mindmapmode.clipboard;
 
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.mode.Controller;
 
 class CloneAction extends AFreeplaneAction {
@@ -37,7 +37,7 @@ class CloneAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final MClipboardController clipboardController = (MClipboardController) ClipboardController
+		final MMapClipboardController clipboardController = (MMapClipboardController) MapClipboardController
 			    .getController();
 		final NodeModel parent = Controller.getCurrentController().getSelection().getSelected();
 		clipboardController.addClone(clipboardController.getClipboardContents(), parent);

@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.clipboard.MindMapNodesSelection;
+import org.freeplane.features.map.clipboard.MindMapNodesSelection;
 
 public class FileOpener implements DropTargetListener {
 	

@@ -40,13 +40,13 @@ import javax.swing.Timer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.clipboard.MindMapNodesSelection;
-import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.clipboard.MapClipboardController;
+import org.freeplane.features.map.clipboard.MindMapNodesSelection;
 import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.map.mindmapmode.clipboard.MMapClipboardController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.view.swing.map.MainView;
@@ -241,7 +241,7 @@ private Timer timer;
 			final boolean isLeft = mainView.dropLeft(dtde.getLocation().getX());
 			if (!dtde.isLocalTransfer()) {
 				dtde.acceptDrop(DnDConstants.ACTION_COPY);
-				((MClipboardController) ClipboardController.getController()).paste(t, targetNode, dropAsSibling, isLeft, dropAction);
+				((MMapClipboardController) MapClipboardController.getController()).paste(t, targetNode, dropAsSibling, isLeft, dropAction);
 				dtde.dropComplete(true);
 				return;
 			}
@@ -273,7 +273,7 @@ private Timer timer;
 					    controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}
 				else if (DnDConstants.ACTION_COPY == dropAction || DnDConstants.ACTION_MOVE == dropAction) {
-					((MClipboardController) ClipboardController.getController()).paste(t, targetNode, dropAsSibling,
+					((MMapClipboardController) MapClipboardController.getController()).paste(t, targetNode, dropAsSibling,
 					    isLeft);
 	                controller.getSelection().selectAsTheOnlyOneSelected(targetNode);
 				}

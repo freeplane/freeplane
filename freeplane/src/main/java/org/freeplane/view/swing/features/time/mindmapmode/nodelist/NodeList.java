@@ -78,7 +78,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.DelayedRunner;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeChangeListener;
@@ -89,6 +88,7 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
+import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -461,7 +461,7 @@ public class NodeList {
 		MFileManager.getController(mindMapController).newMapFromDefaultTemplate();
 		final MapModel newMap = Controller.getCurrentController().getMap();
 		for (final NodeModel node : selectedNodes) {
-			final NodeModel copy = ClipboardController.getController().duplicate(node, false);
+			final NodeModel copy = MapClipboardController.getController().duplicate(node, false);
 			if (copy != null) {
 				mindMapController.getMapController().insertNodeIntoWithoutUndo(copy, newMap.getRootNode());
 			}

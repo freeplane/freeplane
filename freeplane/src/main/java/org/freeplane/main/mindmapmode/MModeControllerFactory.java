@@ -57,8 +57,8 @@ import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.attribute.mindmapmode.RemoveAllAttributesAction;
 import org.freeplane.features.attribute.mindmapmode.RemoveFirstAttributeAction;
 import org.freeplane.features.attribute.mindmapmode.RemoveLastAttributeAction;
-import org.freeplane.features.clipboard.ClipboardController;
-import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
+import org.freeplane.features.clipboard.ClipboardControllers;
+import org.freeplane.features.clipboard.mindmapmode.MClipboardControllers;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.mindmapmode.MCloudController;
 import org.freeplane.features.edge.AutomaticEdgeColorHook;
@@ -221,6 +221,7 @@ public class MModeControllerFactory {
 		modeController.setUserInputListenerFactory(userInputListenerFactory);
 		controller.addModeController(modeController);
 		controller.selectModeForBuild(modeController);
+		ClipboardControllers.install(new MClipboardControllers());
 		new MMapController(modeController);
 		final MFileManager fileManager = new MFileManager();
 		UrlManager.install(fileManager);
@@ -238,7 +239,6 @@ public class MModeControllerFactory {
 		MMapExplorerController.install(modeController, textController);
 		LinkController.install(new MLinkController(modeController));
 		NodeStyleController.install(new MNodeStyleController(modeController));
-		ClipboardController.install(new MClipboardController());
 		userInputListenerFactory.setNodeDragListener(new MNodeDragListener());
 		userInputListenerFactory.setNodeDropTargetListener(new MNodeDropListener());
 		LocationController.install(new MLocationController());

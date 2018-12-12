@@ -51,11 +51,13 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.DelayedRunner;
+import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
+import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.mode.AController.IActionOnChange;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -347,8 +349,16 @@ implements IExtension, NodeChangeAnnouncer{
 		addNodeSelectionListener(actionSelectorOnChange);
 		addNodeChangeListener(actionSelectorOnChange);
 		addMapChangeListener(actionSelectorOnChange);
-
+		final MapClipboardController mapClipboardController = createMapClipboardController();
+		modeController.addExtension(MapClipboardController.class, mapClipboardController);
 		createActions(modeController);
+	}
+
+
+	protected MapClipboardController createMapClipboardController() {
+		final MapClipboardController mapClipboardController = new MapClipboardController();
+		modeController.getExtension(ClipboardControllers.class).add(mapClipboardController);
+		return mapClipboardController;
 	}
 
 	public void unfoldAndScroll(final NodeModel node) {
