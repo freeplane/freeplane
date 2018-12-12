@@ -14,7 +14,6 @@ import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeSelection;
 import org.freeplane.features.attribute.NodeAttribute;
-import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
@@ -100,7 +99,6 @@ class AttributeSelectionChangeListener implements PropertyChangeListener, Attrib
 		if(minSelectedRow == -1)
 			return AttributeSelection.EMPTY.getSelectedAttributes();
 		AttributeTableModel attributeTableModel = selectedTable.getAttributeTableModel();
-		NodeAttributeTableModel attributes = attributeTableModel.getNodeAttributeModel();
 		NodeModel node = attributeTableModel.getNode();
 		int maxSelectedRow = selectionModel.getMaxSelectionIndex();
 		final ArrayList<SelectedAttribute> selectedAttributes = new ArrayList<>(maxSelectedRow - minSelectedRow + 1);
@@ -110,9 +108,11 @@ class AttributeSelectionChangeListener implements PropertyChangeListener, Attrib
 				selectedPart = selectedTable.isCellSelected(rowIndex, 0) ?
 						selectedTable.isCellSelected(rowIndex, 1) ?
 								SelectedAttribute.SelectedPart.BOTH : SelectedAttribute.SelectedPart.NAME : SelectedAttribute.SelectedPart.VALUE;
-				Attribute attribute = attributes.getAttribute(rowIndex);
-				final NodeAttribute nodeAttrribute = new NodeAttribute(node, attribute);
-				selectedAttributes.add(new SelectedAttribute(nodeAttrribute, selectedPart)) ;
+				Attribute attribute = attributeTableModel.getAttribute(rowIndex);
+				if(attribute  != null) {
+					final NodeAttribute nodeAttrribute = new NodeAttribute(node, attribute);
+					selectedAttributes.add(new SelectedAttribute(nodeAttrribute, selectedPart)) ;
+				}
 			}
 		}
 		return selectedAttributes;

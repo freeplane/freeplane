@@ -143,4 +143,16 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModel {
 		super.tableChanged(e);
 		fireTableChanged(new TableModelEvent(this, e.getFirstRow(), e.getLastRow(), e.getColumn(), e.getType()));
 	}
+
+	@Override
+	public Attribute getAttribute(int row) {
+		if (row < newRow) {
+			return getNodeAttributeModel().getAttribute(row);
+		}
+		if (row == newRow) {
+			return null;
+		}
+		return getNodeAttributeModel().getAttribute(row);
+
+	}
 }

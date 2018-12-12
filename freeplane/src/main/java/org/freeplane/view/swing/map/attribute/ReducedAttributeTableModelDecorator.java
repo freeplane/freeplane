@@ -83,6 +83,12 @@ class ReducedAttributeTableModelDecorator extends AttributeTableModel {
 		return getNodeAttributeModel().getValueAt(calcRow(row), col);
 	}
 
+	@Override
+	public Attribute getAttribute(final int row) {
+		if(index == null)
+			return null;
+		return getNodeAttributeModel().getAttribute(calcRow(row));
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see freeplane.modes.attributes.AttributeTableModel#insertRow(int,

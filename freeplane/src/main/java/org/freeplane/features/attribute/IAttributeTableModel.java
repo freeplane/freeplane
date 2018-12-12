@@ -31,4 +31,6 @@ public interface IAttributeTableModel {
 	int getRowCount();
 
 	Object getValueAt(int row, int col);
+
+	Attribute getAttribute(int row);
 }
