@@ -62,7 +62,9 @@ class FormulaDependencyTracer implements IExtension {
 			tracedValues = highlighedElements.getElements();
 		searchStrategy = strategy;
 		connectors = Connectors.of(configurable);
-		if (tracedValues == null) {
+		final boolean dependenciesFoundInFirstSearchIteration;
+		final boolean isFirstSearchIteration = tracedValues == null;
+		if (isFirstSearchIteration) {
 			highlighedElements.clear();
 			configurable.computeIfAbsent(Connectors.class, Connectors::new).clear();
 			final AttributeSelection attributeSelection = AttributeController.getAttributeSelection();
@@ -74,13 +76,17 @@ class FormulaDependencyTracer implements IExtension {
 				highlighedElements.add(node);
 				accessedValues = findDependencies(node);
 			}
+			dependenciesFoundInFirstSearchIteration = ! accessedValues.isEmpty();
 		} else {
 			accessedValues = tracedValues.stream().map(this::findDependencies).flatMap(Collection::stream).collect(Collectors.toSet());
+			dependenciesFoundInFirstSearchIteration = true;
 		}
 		saveAccessedValuesForNextIteration(accessedValues);
 		highlightAttributes(accessedValues);
 		showConnectors(accessedValues);
 		configurable.refresh();
+		if(! dependenciesFoundInFirstSearchIteration)
+			tracedValues = null;
 		highlighedElements = null;
 		connectors = null;
 	}
