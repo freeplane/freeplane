@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -34,7 +36,8 @@ import org.freeplane.features.mode.Controller;
 @SuppressWarnings("serial")
 public class NodeTooltip extends JToolTip {
 	class LinkMouseListener extends MouseAdapter implements MouseMotionListener{
-	    public void mouseMoved(final MouseEvent ev) {
+	    @Override
+		public void mouseMoved(final MouseEvent ev) {
 	    	final String link = HtmlUtils.getURLOfExistingLink((HTMLDocument) tip.getDocument(), tip.viewToModel(ev.getPoint()));
 	    	boolean followLink = link != null;
 	    	Controller currentController = Controller.getCurrentController();
@@ -51,7 +54,8 @@ public class NodeTooltip extends JToolTip {
 	        }
 	    }
 
-	    public void mouseClicked(final MouseEvent ev) {
+	    @Override
+		public void mouseClicked(final MouseEvent ev) {
 	    	if (Compat.isPlainEvent(ev)) {
 	    		final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) tip.getDocument(), tip.viewToModel(ev.getPoint()));
 	    		if (linkURL != null) {
@@ -65,13 +69,14 @@ public class NodeTooltip extends JToolTip {
 	    	}
 	    }
 
+		@Override
 		public void mouseDragged(MouseEvent e) {
         }
     }
-	
+
 	final private JEditorPane tip;
-	private int maximumWidth; 
-	
+	private int maximumWidth;
+
 	public NodeTooltip(GraphicsConfiguration graphicsConfiguration){
 		tip  = new JEditorPane();
 		tip.setContentType("text/html");
@@ -102,12 +107,22 @@ public class NodeTooltip extends JToolTip {
 		UITools.setScrollbarIncrement(scrollPane);
 		add(scrollPane);
 		tip.setOpaque(true);
+		addComponentListener(new ComponentAdapter() {
+
+			@Override
+            public void componentResized(ComponentEvent e) {
+				final NodeTooltip component = (NodeTooltip) e.getComponent();
+				component.scrollUp();
+				component.removeComponentListener(this);
+            }
+
+		});
 	}
 
 	private int getIntProperty(String propertyName) {
 		return ResourceController.getResourceController().getIntProperty(propertyName, Integer.MAX_VALUE);
 	}
-	
+
 	@Override
     public void setTipText(String tipText) {
 		try{
@@ -144,7 +159,7 @@ public class NodeTooltip extends JToolTip {
 		tip.setSize(preferredSize);
 		preferredSize = tip.getPreferredSize();
 		tip.setPreferredSize(preferredSize);
-		
+
 	}
 
 	@Override
@@ -163,7 +178,7 @@ public class NodeTooltip extends JToolTip {
 	void scrollUp() {
 		tip.scrollRectToVisible(new Rectangle(1, 1));
     }
-	
+
 	public void setBase(URL url){
 		((HTMLDocument)tip.getDocument()).setBase(url);
 	}

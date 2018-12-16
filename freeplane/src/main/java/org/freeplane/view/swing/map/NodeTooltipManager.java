@@ -7,8 +7,6 @@ import java.awt.KeyboardFocusManager;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -156,17 +154,6 @@ public class NodeTooltipManager implements IExtension{
 		if (insideComponent == null || !insideComponent.isShowing() || focusOwner == null)
 			return;
 		tip = insideComponent.createToolTip();
-		tip.addComponentListener(new ComponentAdapter() {
-
-			@Override
-            public void componentResized(ComponentEvent e) {
-				final NodeTooltip component = (NodeTooltip) e.getComponent();
-				component.scrollUp();
-				component.removeComponentListener(this);
-            }
-
-		});
-
 		tip.setTipText(toolTipText);
 		final JComponent nearComponent = insideComponent;
 		focusOwnerRef = new WeakReference<Component>(focusOwner);
