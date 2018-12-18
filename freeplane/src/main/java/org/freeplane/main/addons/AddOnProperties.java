@@ -453,7 +453,7 @@ public class AddOnProperties {
 			for (Entry<String, String> translationEntry : localeEntry.getValue().entrySet()) {
 				final XMLElement translationElement = new XMLElement("entry");
 				translationElement.setAttribute("key", translationEntry.getKey());
-				translationElement.setContent(StringEscapeUtils.escapeJava(translationEntry.getValue()));
+				translationElement.setContent(translationEntry.getValue());
 				localeElement.addChild(translationElement);
 			}
 			translationsElement.addChild(localeElement);
