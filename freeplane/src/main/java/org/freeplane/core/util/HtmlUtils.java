@@ -39,6 +39,8 @@ import javax.swing.text.html.HTMLDocument;
  * as "global variable" <code>htmlUtils</code>.
  */
 public class HtmlUtils {
+	private static final String TAB_SPACES = "         ";
+
 	public static class IndexPair {
 		final public boolean mIsTag;
 		final public int originalEnd;
@@ -100,7 +102,7 @@ public class HtmlUtils {
 		return htmlToPlain(text, strictHTMLOnly, /* removeNewLines= */true);
 	}
 
-	/** removes html markup and entities, partly and where appropriate by replacing it by plaintext equivalents like 
+	/** removes html markup and entities, partly and where appropriate by replacing it by plaintext equivalents like
 	 * &lt;li&gt; &rarr; '*'.
 	 * @param strictHTMLOnly if true does nothing unless the text starts with &lt;html&gt;
 	 * @param removeNewLines set to false to keep all blank lines. */
@@ -109,24 +111,24 @@ public class HtmlUtils {
 			return text;
 		}
 		if (PATTERNS == null) {
-			PATTERNS = new Pattern[] { 
-					Pattern.compile("(?ims)>[\n\t]+"), 
-					Pattern.compile("(?ims)[\n\t ]+"), 
-			        Pattern.compile("(?ims)<br[^>]*>"), 
+			PATTERNS = new Pattern[] {
+					Pattern.compile("(?ims)>[\n\t]+"),
+					Pattern.compile("(?ims)[\n\t ]+"),
+			        Pattern.compile("(?ims)<br[^>]*>"),
 			        Pattern.compile("(?ims)<p[^>]*>\\s+"),
-			        Pattern.compile("(?ims)<div[^>]*>\\s+"), 
+			        Pattern.compile("(?ims)<div[^>]*>\\s+"),
 			        Pattern.compile("(?ims)<tr[^>]*>\\s+"),
-			        Pattern.compile("(?ims)<dt[^>]*>"), 
+			        Pattern.compile("(?ims)<dt[^>]*>"),
 			        Pattern.compile("(?ims)<dd[^>]*>"),
-			        Pattern.compile("(?ims)<td[^>]*>"), 
+			        Pattern.compile("(?ims)<td[^>]*>"),
 			        Pattern.compile("(?ims)<[uo]l[^>]*>"),
-			        Pattern.compile("(?ims)<li[^>]*>"), 
+			        Pattern.compile("(?ims)<li[^>]*>"),
 			        Pattern.compile("(?ims) *</[^>]*>"),
-			        Pattern.compile("(?ims)<[^/][^>]*> *"), 
-			        Pattern.compile("^\n+"), 
+			        Pattern.compile("(?ims)<[^/][^>]*> *"),
+			        Pattern.compile("^\n+"),
 			        Pattern.compile("(?ims)&lt;"),
-			        Pattern.compile("(?ims)&gt;"), 
-			        Pattern.compile("(?ims)&quot;"), 
+			        Pattern.compile("(?ims)&gt;"),
+			        Pattern.compile("(?ims)&quot;"),
 			        Pattern.compile("(?ims)&nbsp;"),
 			        Pattern.compile("(?ims)&amp;"),
 			        Pattern.compile("(?ims)[ \t]+\n") };
@@ -182,7 +184,7 @@ public class HtmlUtils {
 	 * encloses the whole text in {@code <html><body><p>...</p></body></html>}. */
 	public static String plainToHTML(final String text) {
 		char myChar;
-		final String textTabsExpanded = text.replaceAll("\t", "         ");
+		final String textTabsExpanded = text.replaceAll("\t", TAB_SPACES).replaceAll("(?<!\n)\r(?!\n)", "\n");
 		final StringBuilder result = new StringBuilder(textTabsExpanded.length());
 		final int lengthMinus1 = textTabsExpanded.length() - 1;
 		result.append("<html><body><p>");
@@ -209,6 +211,8 @@ public class HtmlUtils {
 					break;
 				case '\n':
 					result.append("</p>\n<p>");
+					break;
+				case '\r':
 					break;
 				default:
 					if (myChar < 32 || myChar > 126)
@@ -445,7 +449,7 @@ public class HtmlUtils {
 			for(;;){
 				final int mStart = matcher.start();
 				final int mEnd = matcher.end();
-				
+
 				if(pair == null){
 					for(pair = indexPairs.next();pair.pureTextEnd <= mStart;pair = indexPairs.next()){
 						if(pair.mIsTag || pureTextPosition <= pair.pureTextStart){
@@ -460,12 +464,12 @@ public class HtmlUtils {
 					}
 				}
 
-				sbResult.append(unescapedText, 
-					pair.originalStart + pureTextPosition - pair.pureTextStart, 
+				sbResult.append(unescapedText,
+					pair.originalStart + pureTextPosition - pair.pureTextStart,
 					pair.originalStart + mStart - pair.pureTextStart);
 				appendReplacement(sbResult, matcher, replacement);
 				pureTextPosition = mEnd;
-				
+
 				if(matcher.find()){
 					if(matcher.start() >= pair.pureTextEnd){
 						if(mEnd < pair.pureTextEnd){
@@ -489,7 +493,7 @@ public class HtmlUtils {
 			}
 
 		}
-		
+
 		private void initialize(final String text) {
 			splittedStringList = new ArrayList<IndexPair>();
 			stringWithoutTags = null;
@@ -536,7 +540,7 @@ public class HtmlUtils {
 					// Skip past $
 					cursor++;
 					// The first number is always a group
-					int refNum = (int) replacement.charAt(cursor) - '0';
+					int refNum = replacement.charAt(cursor) - '0';
 					if ((refNum < 0) || (refNum > 9))
 						throw new IllegalArgumentException("Illegal group reference");
 					cursor++;
@@ -683,7 +687,7 @@ public class HtmlUtils {
 
 	/** Gets the string URL of an existing link, or null if none. */
 	public static String getURLOfExistingLink(HTMLDocument doc, int pos) {
-	    //setIgnoreActions(true);      
+	    //setIgnoreActions(true);
 	    final Element linkElement = HtmlUtils.getCurrentLinkElement(doc, pos);
 	    final boolean foundLink = (linkElement != null);
 	    if (!foundLink) {
@@ -717,7 +721,7 @@ public class HtmlUtils {
 	}
 
 	public static boolean isEmpty(String newText) {
-		return ! (newText.contains("<img") || newText.contains("<table")) 
+		return ! (newText.contains("<img") || newText.contains("<table"))
 				&& htmlToPlain(newText).equals("");
     }
 
