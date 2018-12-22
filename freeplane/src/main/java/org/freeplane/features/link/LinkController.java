@@ -65,12 +65,21 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
-import org.freeplane.core.util.*;
+import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.MenuUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.link.ConnectorModel.Shape;
-import org.freeplane.features.map.*;
+import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.INodeSelectionListener;
+import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.SelectionController;
@@ -621,8 +630,8 @@ public class LinkController extends SelectionController implements IExtension {
 	// patterns only need to be compiled once
 	static Pattern patSMB = Pattern.compile( // \\host\path[#fragement]
 	    "(?:\\\\\\\\([^\\\\]+)\\\\)(.*?)(?:#([^#]*))?");
-	static Pattern patFile = Pattern.compile( // [drive:]path[#fragment]
-	    "((?:\\p{Alpha}:)?([/\\\\])?(?:[^:#?]*))?(?:#([^#]*))?");
+	static Pattern patFile = Pattern.compile( // [file:][drive:]path[#fragment]
+	    "(?:file:)?((?:\\p{Alpha}:)?([/\\\\])?(?:[^:#?]*))?(?:#([^#]*))?");
 	static Pattern patURI = Pattern.compile( // [scheme:]scheme-specific-part[#fragment]
 	    "(?:(\\p{Alpha}[\\p{Alnum}+.-]+):)?(.*?)(?:#([^#]*))?");
 
@@ -634,9 +643,6 @@ public class LinkController extends SelectionController implements IExtension {
 	 */
 	public static URI createURI(final String inputValue) throws URISyntaxException {
 		try { // first, we try if the string can be interpreted as URI
-			return new URI(inputValue);
-		}
-		catch (final URISyntaxException e) {
 			// [scheme:]scheme-specific-part[#fragment]
 			// we check first if the string matches an SMB
 			// of the form \\host\path[#fragment]
@@ -670,6 +676,9 @@ public class LinkController extends SelectionController implements IExtension {
 					return new URI(scheme, null, ssp, fragment);
 				}
 			}
+			return new URI(inputValue);
+		}
+		catch (final URISyntaxException e) {
 			// if this doesn't work out, we try to
 			// recognize an URI of the form
 			// [scheme:]scheme-specific-part[#fragment]

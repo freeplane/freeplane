@@ -35,9 +35,11 @@ import javax.swing.Icon;
  */
 class CursorUpdater extends MouseAdapter implements MouseMotionListener{
 
+	@Override
 	public void mouseDragged(MouseEvent e) {
     }
 
+	@Override
 	public void mouseMoved(MouseEvent e) {
 		updateCursor(e);
     }
@@ -51,12 +53,12 @@ class CursorUpdater extends MouseAdapter implements MouseMotionListener{
     public void mouseExited(MouseEvent e) {
 		updateCursor(e.getComponent(), Cursor.DEFAULT_CURSOR);
     }
-	
-	
+
+
 	private void updateCursor(MouseEvent e) {
 	    final int cursor = getCursor(e);
 	    updateCursor(e.getComponent(), cursor);
-	    
+
     }
 
 	private int getCursor(MouseEvent e) {
@@ -71,10 +73,11 @@ class CursorUpdater extends MouseAdapter implements MouseMotionListener{
             return Cursor.DEFAULT_CURSOR;
         }
 		Object value = table.getValueAt(row, col);
-		if(!(value instanceof URI)){
+		URI uri = table.toUri(value);
+		if(uri == null){
 			return Cursor.DEFAULT_CURSOR;
 		}
-		final Icon linkIcon = table.getLinkIcon((URI) value);
+		final Icon linkIcon = table.getLinkIcon(uri);
 		if (linkIcon == null)
 			return Cursor.DEFAULT_CURSOR;
 		final int leftColumnWidth = table.getColumnModel().getColumn(0).getWidth();

@@ -78,6 +78,7 @@ public class ScrollableTooltip extends JToolTip {
 	private int maximumWidth;
 	static final String TEXT_HTML = "text/html";
 	private final String contentType;
+	private final JRestrictedSizeScrollPane scrollPane;
 
 	public ScrollableTooltip(GraphicsConfiguration graphicsConfiguration, String contentType){
 		this.contentType = contentType;
@@ -99,16 +100,16 @@ public class ScrollableTooltip extends JToolTip {
 		tip.addMouseListener(linkMouseListener);
 		tip.addMouseMotionListener(linkMouseListener);
 
-		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(tip);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane = new JRestrictedSizeScrollPane(tip);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		final Rectangle screenBounds = graphicsConfiguration.getBounds();
 		final int screenHeigth = screenBounds.height - 80;
 		final int screenWidth = screenBounds.width - 80;
 		final int maximumHeight = Math.min(screenHeigth, getIntProperty("toolTipManager.max_tooltip_height"));
 		final int scrollBarWidth = scrollPane.getVerticalScrollBar().getPreferredSize().width;
-		scrollPane.setMaximumSize(new Dimension(screenWidth, maximumHeight));
 		maximumWidth = Math.min(screenWidth, getIntProperty("toolTipManager.max_tooltip_width")) - scrollBarWidth;
+		scrollPane.setMaximumSize(new Dimension(maximumWidth, maximumHeight));
 		UITools.setScrollbarIncrement(scrollPane);
 		add(scrollPane);
 		tip.setOpaque(true);
@@ -160,6 +161,9 @@ public class ScrollableTooltip extends JToolTip {
 			tip.setEditable(true);
 			tip.setEditable(false);
 			preferredSize = tip.getPreferredSize();
+			if (preferredSize.width > maximumWidth) {
+
+			}
 		}
 		tip.setSize(preferredSize);
 		preferredSize = tip.getPreferredSize();

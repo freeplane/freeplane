@@ -83,6 +83,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		String text = originalText;
 		Icon icon;
 		Color color = null;
+		URI uri = null;
 		if (column == 1 && isAttributeHighlighted(attributeTable, row))
 			color = FilterController.HIGHLIGHT_COLOR;
 		if (column == 1 && value != null) {
@@ -99,8 +100,9 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 				text = TextUtils.format("MainView.errorUpdateText", originalText, e.getLocalizedMessage());
 				color = HighlightedTransformedObject.FAILURE_COLOR;
 			}
-			if(value instanceof URI){
-	                icon = ((AttributeTable)table).getLinkIcon((URI) value);
+			uri = attributeTable.toUri(value);
+			if(uri != null){
+	                icon = (attributeTable).getLinkIcon(uri);
 			}
 			else{
 				icon = null;
@@ -122,21 +124,28 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 			setIcon(scaledIcon);
 		}
 		setText(text);
-		if(text != originalText){
-			final String toolTip = HtmlUtils.plainToHTML(originalText);
-			setToolTipText(toolTip);
+		String toolTip = null;
+		if(uri != null) {
+			final String uriString = uri.toString();
+			final String uriLowerCase = uriString.toLowerCase();
+			if(uriLowerCase.endsWith(".png") || uriLowerCase.endsWith(".jpg")|| uriLowerCase.endsWith(".jpeg")) {
+				toolTip = "<html><img src=\"" + uriString + "\" />";
+			}
+
 		}
-		else{
-			final int prefWidth = getPreferredSize().width;
-			final int width = table.getColumnModel().getColumn(column).getWidth();
-			if (prefWidth > width) {
-				final String toolTip = HtmlUtils.plainToHTML(text);
-				setToolTipText(toolTip);
+		if(toolTip == null) {
+			if (text != originalText) {
+				toolTip = HtmlUtils.plainToHTML(originalText);
 			}
 			else {
-				setToolTipText(null);
+				final int prefWidth = getPreferredSize().width;
+				final int width = table.getColumnModel().getColumn(column).getWidth();
+				if (prefWidth > width) {
+					toolTip = HtmlUtils.plainToHTML(text);
+				}
 			}
 		}
+		setToolTipText(toolTip);
 		setOpaque(isSelected);
 		return rendererComponent;
 	}

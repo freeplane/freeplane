@@ -12,6 +12,7 @@ import org.codehaus.groovy.runtime.ScriptBytecodeAdapter;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.FormattedDate;
+import org.freeplane.features.link.LinkController;
 
 import groovy.lang.GroovyObjectSupport;
 import groovy.lang.MissingMethodException;
@@ -126,8 +127,7 @@ public class Convertible extends GroovyObjectSupport /*implements Comparable<Obj
         if (text == null)
             return null;
         try {
-            if (TextUtils.matchUriPattern(text))
-                return new URI(text);
+            return LinkController.createURI(text);
         }
         catch (URISyntaxException e) {
             // throw below

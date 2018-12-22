@@ -36,7 +36,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.EventObject;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -100,14 +103,15 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.ScrollableTooltip;
 import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.map.ScrollableTooltip;
 
 
 /**
  * @author Dimitry Polivaev
  */
 class AttributeTable extends JTable implements IColumnWidthChangeListener {
+	private static final String FILE_PROTOCOL = "file:";
 	private static final String EDITING_STOPPED = AttributeTable.class.getName() + ".editingStopped";
 	private static int CLICK_COUNT_TO_START = 2;
 
@@ -318,8 +322,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		if(column == 1 && e instanceof MouseEvent){
 			final MouseEvent me = (MouseEvent) e;
 			final Object value = getValueAt(row, column);
-			if(value instanceof URI){
-				final URI uri = (URI) value;
+			URI uri =  toUri(value);
+			if(uri != null){
 				final Icon linkIcon = getLinkIcon(uri);
 				final int xmax = linkIcon != null ? linkIcon.getIconWidth() : 0;
 				final int x = me.getX() - getColumnModel().getColumn(0).getWidth();
@@ -351,6 +355,27 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			putClientProperty("AttributeTable.EditEvent", null);
 		}
     }
+
+	URI toUri(final Object value) {
+		final Object object = TextController.getController().getTransformedObjectNoFormattingNoThrow(value, attributeView.getNode(), null);
+		if (object instanceof URI)
+			return (URI)object;
+		if(object instanceof File) {
+			final File file = (File)object;
+			if(file.exists())
+				return file.toURI();
+		}
+		if(! (object instanceof String))
+			return null;
+		String objectAsString = (String) object;
+		if(!objectAsString.startsWith(FILE_PROTOCOL))
+			return null;
+		String path = objectAsString.substring(FILE_PROTOCOL.length());
+		File file = new File(path);
+		if(file.exists())
+			return file.toURI();
+		return null;
+	}
 
 	private void startEditing(EventObject e, final JComboBox comboBox) {
 		final ComboBoxEditor editor = comboBox.getEditor();
@@ -678,6 +703,18 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	@Override
 	public JToolTip createToolTip() {
 		ScrollableTooltip tip = new ScrollableTooltip(this.getGraphicsConfiguration(), "text/html");
+
+		final URL url = attributeView.getNode().getMap().getURL();
+		if (url != null) {
+			tip.setBase(url);
+		}
+		else {
+			try {
+	            tip.setBase(new URL("file: "));
+            }
+            catch (MalformedURLException e) {
+            }
+		}
 		tip.setComponent(this);
 		return tip;
 	}

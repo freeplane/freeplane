@@ -508,22 +508,17 @@ public class MTextController extends TextController {
 	/** converts strings to date, number or URI if possible. All other data types are left unchanged. */
 	public Object guessObjectOrURI(final Object object, final String oldFormat) {
 		Object guessedObject = guessObject(object, oldFormat);
-		if (guessedObject == object && !(object instanceof URI) && matchUriPattern(object)) {
+		if (guessedObject == object
+				&& (guessedObject instanceof String)
+				&& TextUtils.matchesUriPattern((String) guessedObject)) {
 			try {
-				return new URI((String) object);
+				return LinkController.createURI((String) guessedObject);
 			}
 			catch (URISyntaxException e) {
-				LogUtils.warn("URI regular expression does not match URI parser for " + object);
-				return object;
+				// fall throw
 			}
 		}
 		return guessedObject;
-	}
-
-	private boolean matchUriPattern(Object object) {
-		if (!(object instanceof String))
-			return false;
-		return TextUtils.matchUriPattern((String) object);
 	}
 
 	public void setNodeText(final NodeModel node, final String newText) {

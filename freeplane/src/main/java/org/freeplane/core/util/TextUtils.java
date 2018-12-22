@@ -158,8 +158,8 @@ public class TextUtils {
 	}
 
 	/** in opposite to the URI make scheme mandatory. */
-	public static boolean matchUriPattern(String text) {
-        return text.length() > 0 && uriPattern.matcher(text).matches();
+	public static boolean matchesUriPattern(String text) {
+        return text.length() > 0 && (text.startsWith("file:") || uriPattern.matcher(text).matches());
     }
 
     public static String getShortText(String text, int maximumCharacters, String continuationMark) {
