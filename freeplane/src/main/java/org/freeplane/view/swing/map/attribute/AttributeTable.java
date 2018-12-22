@@ -58,6 +58,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -99,6 +100,7 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.ScrollableTooltip;
 import org.freeplane.view.swing.map.NodeView;
 
 
@@ -671,6 +673,14 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
                                                       isSelected, hasFocus,
                                                       row, column);
     }
+
+
+	@Override
+	public JToolTip createToolTip() {
+		ScrollableTooltip tip = new ScrollableTooltip(this.getGraphicsConfiguration(), "text/html");
+		tip.setComponent(this);
+		return tip;
+	}
 
 	@Override
 	protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {

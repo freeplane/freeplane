@@ -19,11 +19,16 @@
  */
 package org.freeplane.view.swing.map.attribute;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.net.URI;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.freeplane.core.ui.LengthUnits;
@@ -118,14 +123,14 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		}
 		setText(text);
 		if(text != originalText){
-			final String toolTip = HtmlUtils.isHtmlNode(originalText) ? text : HtmlUtils.plainToHTML(originalText);
+			final String toolTip = HtmlUtils.plainToHTML(originalText);
 			setToolTipText(toolTip);
 		}
 		else{
 			final int prefWidth = getPreferredSize().width;
 			final int width = table.getColumnModel().getColumn(column).getWidth();
 			if (prefWidth > width) {
-				final String toolTip = HtmlUtils.isHtmlNode(text) ? text : HtmlUtils.plainToHTML(text);
+				final String toolTip = HtmlUtils.plainToHTML(text);
 				setToolTipText(toolTip);
 			}
 			else {

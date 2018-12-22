@@ -34,7 +34,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
 
 @SuppressWarnings("serial")
-public class NodeTooltip extends JToolTip {
+public class ScrollableTooltip extends JToolTip {
 	class LinkMouseListener extends MouseAdapter implements MouseMotionListener{
 	    @Override
 		public void mouseMoved(final MouseEvent ev) {
@@ -76,23 +76,28 @@ public class NodeTooltip extends JToolTip {
 
 	final private JEditorPane tip;
 	private int maximumWidth;
+	static final String TEXT_HTML = "text/html";
+	private final String contentType;
 
-	public NodeTooltip(GraphicsConfiguration graphicsConfiguration){
+	public ScrollableTooltip(GraphicsConfiguration graphicsConfiguration, String contentType){
+		this.contentType = contentType;
 		tip  = new JEditorPane();
-		tip.setContentType("text/html");
+		tip.setContentType(contentType);
 		tip.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
-		final HTMLEditorKit kit = SynchronousScaledEditorKit.create();
-		tip.setEditorKit(kit);
+		if(contentType.equals(TEXT_HTML)) {
+			final HTMLEditorKit kit = SynchronousScaledEditorKit.create();
+			tip.setEditorKit(kit);
+			final HTMLDocument document = (HTMLDocument) tip.getDocument();
+			final StyleSheet styleSheet = document.getStyleSheet();
+			styleSheet.removeStyle("p");
+			styleSheet.removeStyle("body");
+			styleSheet.addRule("p {margin-top:0;}\n");
+		}
 		tip.setEditable(false);
 		tip.setMargin(new Insets(0, 0, 0, 0));
 		final LinkMouseListener linkMouseListener = new LinkMouseListener();
 		tip.addMouseListener(linkMouseListener);
 		tip.addMouseMotionListener(linkMouseListener);
-		final HTMLDocument document = (HTMLDocument) tip.getDocument();
-		final StyleSheet styleSheet = document.getStyleSheet();
-		styleSheet.removeStyle("p");
-		styleSheet.removeStyle("body");
-		styleSheet.addRule("p {margin-top:0;}\n");
 
 		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(tip);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -111,7 +116,7 @@ public class NodeTooltip extends JToolTip {
 
 			@Override
             public void componentResized(ComponentEvent e) {
-				final NodeTooltip component = (NodeTooltip) e.getComponent();
+				final ScrollableTooltip component = (ScrollableTooltip) e.getComponent();
 				component.scrollUp();
 				component.removeComponentListener(this);
             }
@@ -148,7 +153,7 @@ public class NodeTooltip extends JToolTip {
 		tip.setPreferredSize(null);
 		tip.setText(tipText);
 		Dimension preferredSize = tip.getPreferredSize();
-		if (preferredSize.width > maximumWidth) {
+		if (preferredSize.width > maximumWidth && contentType.equals(TEXT_HTML)) {
 			final HTMLDocument document = (HTMLDocument) tip.getDocument();
 			document.getStyleSheet().addRule("body { width: " + maximumWidth  + "}");
 			// bad hack: call "setEditable" only to update view
