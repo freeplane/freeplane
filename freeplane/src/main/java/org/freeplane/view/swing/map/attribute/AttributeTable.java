@@ -36,7 +36,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -111,7 +110,6 @@ import org.freeplane.view.swing.map.ScrollableTooltip;
  * @author Dimitry Polivaev
  */
 class AttributeTable extends JTable implements IColumnWidthChangeListener {
-	private static final String FILE_PROTOCOL = "file:";
 	private static final String EDITING_STOPPED = AttributeTable.class.getName() + ".editingStopped";
 	private static int CLICK_COUNT_TO_START = 2;
 
@@ -357,24 +355,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
     }
 
 	URI toUri(final Object value) {
-		final Object object = TextController.getController().getTransformedObjectNoFormattingNoThrow(value, attributeView.getNode(), null);
-		if (object instanceof URI)
-			return (URI)object;
-		if(object instanceof File) {
-			final File file = (File)object;
-			if(file.exists())
-				return file.toURI();
-		}
-		if(! (object instanceof String))
-			return null;
-		String objectAsString = (String) object;
-		if(!objectAsString.startsWith(FILE_PROTOCOL))
-			return null;
-		String path = objectAsString.substring(FILE_PROTOCOL.length());
-		File file = new File(path);
-		if(file.exists())
-			return file.toURI();
-		return null;
+		return TextController.getController().toUri(value, attributeView.getNode(), null);
 	}
 
 	private void startEditing(EventObject e, final JComboBox comboBox) {
