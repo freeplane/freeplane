@@ -14,6 +14,11 @@ grant codeBase "file:${org.freeplane.os.lib.ext}/*" {
         permission java.security.AllPermission;
 };
 
+// Allow to use javac from tools.jar
+grant codeBase "file:${java.home}/../lib/tools.jar" {
+  permission java.security.AllPermission;
+};
+
 grant codeBase "file:/usr/lib64/java-atk-wrapper/java-atk-wrapper.jar" {
         permission java.security.AllPermission;
 };
