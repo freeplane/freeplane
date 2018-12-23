@@ -228,7 +228,7 @@ public class ScaledHTML extends BasicHTML{
         	setSizeRunning = false;
         }
 
-        public void resetSize() {
+        public void resetWidth() {
         	setSize(initialWidth, initialHeight);
         }
 
@@ -241,5 +241,20 @@ public class ScaledHTML extends BasicHTML{
 		public ViewFactory getViewFactory() {
 	    return factory;
         }
+
+		public float getPreferredWidth() {
+			initialize();
+			return initialWidth;
+		}
+
+		public int getWidth() {
+			initialize();
+			return width;
+		}
+
+		public void setWidth(int width) {
+			initialize();
+			setSize(width, initialHeight);
+		}
     }
 }
