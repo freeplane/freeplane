@@ -86,7 +86,7 @@ public class ScaledHTML extends BasicHTML{
      * Overrides to the default stylesheet.  Should consider
      * just creating a completely fresh stylesheet.
      */
-    static final String styleChanges = 
+    static final String styleChanges =
     "p { margin-top: 0; margin-bottom: 0; margin-left: 0; margin-right: 0 }" +
     "body { margin-top: 0; margin-bottom: 0; margin-left: 0; margin-right: 0 }";
 
@@ -95,38 +95,63 @@ public class ScaledHTML extends BasicHTML{
      */
     public static class Renderer extends View {
 
-        Renderer(JComponent c, ViewFactory f, View v) {
-            super(null);
-        setSizeRunning = true;   
-	    host = c;
-	    factory = f;
-	    view = v;
-	    view.setParent(this);
-	    // initially layout to the preferred size
-	    setSize(view.getPreferredSpan(X_AXIS), view.getPreferredSpan(Y_AXIS));
-        }
+    	private static final int NOT_INITIALIZED = -1;
 
-        public AttributeSet getAttributes() {
+    	private int width;
+    	private View view;
+    	private ViewFactory factory;
+    	private JComponent host;
+    	private boolean setSizeRunning;
+    	private float initialWidth = NOT_INITIALIZED;
+    	private float initialHeight = NOT_INITIALIZED;
+
+		Renderer(JComponent c, ViewFactory f, View v) {
+    		super(null);
+    		setSizeRunning = true;
+    		host = c;
+    		factory = f;
+    		view = v;
+    		view.setParent(this);
+    		// initially layout to the preferred size
+    	}
+
+        @Override
+		public AttributeSet getAttributes() {
 	    return null;
 	}
 
-         public float getPreferredSpan(int axis) {
-	    if (axis == X_AXIS) {
-		// width currently laid out to
-		return width;
-	    }
-	    return view.getPreferredSpan(axis);
-        }
-         
+         @Override
+		public float getPreferredSpan(int axis) {
+        	 initialize();
+
+        	 if (axis == X_AXIS) {
+        		 // width currently laid out to
+        		 return width;
+        	 }
+        	 return view.getPreferredSpan(axis);
+         }
+
+         private void initialize() {
+        	 if(initialWidth == NOT_INITIALIZED) {
+        		 initialWidth = view.getPreferredSpan(X_AXIS);
+        		 initialHeight = view.getPreferredSpan(Y_AXIS);
+        		 setSize(initialWidth, initialHeight);
+        	 }
+         }
+
+       @Override
        public float getMinimumSpan(int axis) {
-	    return view.getMinimumSpan(axis);
+    	   initialize();
+    	   return view.getMinimumSpan(axis);
         }
 
-        public float getMaximumSpan(int axis) {
+        @Override
+		public float getMaximumSpan(int axis) {
 	    return Integer.MAX_VALUE;
         }
 
-        public void preferenceChanged(View child, boolean width, boolean height) {
+        @Override
+		public void preferenceChanged(View child, boolean width, boolean height) {
         	if(! setSizeRunning){
         		setSize(view.getPreferredSpan(X_AXIS), view.getPreferredSpan(Y_AXIS));
         		host.revalidate();
@@ -134,56 +159,69 @@ public class ScaledHTML extends BasicHTML{
         	}
         }
 
-        public float getAlignment(int axis) {
+        @Override
+		public float getAlignment(int axis) {
 	    return view.getAlignment(axis);
         }
 
-        public void paint(Graphics g, Shape allocation) {
+        @Override
+		public void paint(Graphics g, Shape allocation) {
 	    Rectangle alloc = allocation.getBounds();
 	    view.setSize(alloc.width, alloc.height);
 	    view.paint(g, allocation);
         }
-        
-         public void setParent(View parent) {
+
+         @Override
+		public void setParent(View parent) {
             throw new Error("Can't set parent on root view");
         }
 
-        public int getViewCount() {
+        @Override
+		public int getViewCount() {
             return 1;
         }
-        public View getView(int n) {
+        @Override
+		public View getView(int n) {
             return view;
         }
-        public Shape modelToView(int pos, Shape a, Position.Bias b) throws BadLocationException {
+        @Override
+		public Shape modelToView(int pos, Shape a, Position.Bias b) throws BadLocationException {
 	    return view.modelToView(pos, a, b);
         }
 
-	public Shape modelToView(int p0, Position.Bias b0, int p1, 
+	@Override
+	public Shape modelToView(int p0, Position.Bias b0, int p1,
 				 Position.Bias b1, Shape a) throws BadLocationException {
 	    return view.modelToView(p0, b0, p1, b1, a);
 	}
 
-        public int viewToModel(float x, float y, Shape a, Position.Bias[] bias) {
+        @Override
+		public int viewToModel(float x, float y, Shape a, Position.Bias[] bias) {
 	    return view.viewToModel(x, y, a, bias);
         }
 
-        public Document getDocument() {
+        @Override
+		public Document getDocument() {
             return view.getDocument();
         }
-        
-        public int getStartOffset() {
+
+        @Override
+		public int getStartOffset() {
 	    return view.getStartOffset();
         }
 
-        public int getEndOffset() {
+        @Override
+		public int getEndOffset() {
 	    return view.getEndOffset();
         }
 
-        public Element getElement() {
+        @Override
+		public Element getElement() {
 	    return view.getElement();
         }
 
-        public void setSize(float width, float height) {
+        @Override
+		public void setSize(float width, float height) {
         	setSizeRunning = true;
         	this.width = (int) width;
         	view.setSize(width, height);
@@ -191,23 +229,17 @@ public class ScaledHTML extends BasicHTML{
         }
 
         public void resetSize() {
-        	setSize(0, 0);
-        	setSize(view.getPreferredSpan(X_AXIS), view.getPreferredSpan(Y_AXIS));
+        	setSize(initialWidth, initialHeight);
         }
-        
-        public Container getContainer() {
+
+        @Override
+		public Container getContainer() {
             return host;
         }
-        
-        public ViewFactory getViewFactory() {
+
+        @Override
+		public ViewFactory getViewFactory() {
 	    return factory;
         }
-
-	private int width;
-        private View view;
-	private ViewFactory factory;
-	private JComponent host;
-	private boolean setSizeRunning;
-
     }
 }
