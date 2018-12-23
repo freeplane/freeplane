@@ -223,12 +223,17 @@ public class ScaledHTML extends BasicHTML{
         @Override
 		public void setSize(float width, float height) {
         	setSizeRunning = true;
+        	try {
         	this.width = (int) width;
         	view.setSize(width, height);
-        	setSizeRunning = false;
+        	}
+        	finally {
+        		setSizeRunning = false;
+			}
         }
 
         public void resetWidth() {
+        	initialize();
         	setSize(initialWidth, initialHeight);
         }
 
