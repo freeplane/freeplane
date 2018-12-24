@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -503,22 +502,6 @@ public class MTextController extends TextController {
 		if (parseData == null)
 			parseData = ResourceController.getResourceController().getBooleanProperty(PARSE_DATA_PROPERTY);
 		return parseData;
-	}
-
-	/** converts strings to date, number or URI if possible. All other data types are left unchanged. */
-	public Object guessObjectOrURI(final Object object, final String oldFormat) {
-		Object guessedObject = guessObject(object, oldFormat);
-		if (guessedObject == object
-				&& (guessedObject instanceof String)
-				&& TextUtils.matchesUriPattern((String) guessedObject)) {
-			try {
-				return LinkController.createURI((String) guessedObject);
-			}
-			catch (URISyntaxException e) {
-				// fall throw
-			}
-		}
-		return guessedObject;
 	}
 
 	public void setNodeText(final NodeModel node, final String newText) {

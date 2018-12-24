@@ -975,8 +975,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
     // have no place for the format except for the value itself - so we need a FormattedObject here
     private Object enforceFormattedObjectForIdentityPattern(Object value, final String pattern) {
         final MTextController textController = (MTextController) TextController.getController();
-        return PatternFormat.IDENTITY_PATTERN.equals(pattern) ? new FormattedObject(value, pattern) : textController
-            .guessObjectOrURI(value, pattern);
+		final Object object = value;
+        return PatternFormat.IDENTITY_PATTERN.equals(pattern) ? new FormattedObject(value, pattern) : textController.guessObject(object, pattern);
     }
 
 	@Override

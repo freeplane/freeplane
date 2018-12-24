@@ -259,9 +259,12 @@ public class ProxyUtils {
     }
 
     private static Object createFormattedObjectIfPossible(Object object, String pattern) {
-        if (object instanceof String)
-            object = ((MTextController) TextController.getController()).guessObjectOrURI(object, pattern);
-        else if (pattern != null)
+        if (object instanceof String) {
+			final Object object1 = object;
+			final String oldFormat = pattern;
+			object = ((MTextController) TextController.getController()).guessObject(object1, oldFormat);
+		}
+		else if (pattern != null)
             object = FormatController.format(object, pattern);
         return object;
     }
