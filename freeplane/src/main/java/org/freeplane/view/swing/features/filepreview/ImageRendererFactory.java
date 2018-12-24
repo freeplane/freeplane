@@ -3,8 +3,6 @@ package org.freeplane.view.swing.features.filepreview;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -14,30 +12,18 @@ import javax.swing.border.MatteBorder;
 
 import org.freeplane.core.util.LogUtils;
 
-public class ImageTooltipRendererFactory {
+public class ImageRendererFactory {
 	private static final int BORDER_WIDTH = 2;
-	private final JComponent renderer;
 
-	public ImageTooltipRendererFactory(IViewerFactory viewerFactory, URI uri, Dimension size) {
- 		this.renderer = new JComponent() {};
- 		renderer.setOpaque(false);
+	public void configureRenderer(IViewerFactory viewerFactory, URI uri, Dimension size, JComponent renderer) {
 		renderer.setBorder(new MatteBorder(BORDER_WIDTH, BORDER_WIDTH, BORDER_WIDTH, BORDER_WIDTH, Color.BLACK));
-
 		renderer.setPreferredSize(size);
 		renderer.setSize(size);
 		Dimension viewerSize = new Dimension(size.width - 2 * BORDER_WIDTH,
 		size.height - 2 * BORDER_WIDTH);
-		renderer.addHierarchyListener(new HierarchyListener() {
-			@Override
-			public void hierarchyChanged(HierarchyEvent e) {
-				if(renderer.isDisplayable()) {
-					JComponent viewer = createViewer(viewerFactory, uri, viewerSize);
-					renderer.add(viewer);
-					viewer.setLocation(BORDER_WIDTH, BORDER_WIDTH);
-					renderer.removeHierarchyListener(this);
-				}
-			}
-		});
+		JComponent viewer = createViewer(viewerFactory, uri, viewerSize);
+		renderer.add(viewer);
+		viewer.setLocation(BORDER_WIDTH, BORDER_WIDTH);
 	}
 
 	private JComponent createViewer(IViewerFactory viewerFactory, URI uri, Dimension size) {
@@ -62,7 +48,10 @@ public class ImageTooltipRendererFactory {
 		return viewer;
 	}
 
-	public JComponent getTooltipRenderer() {
+	public JComponent createRenderer(IViewerFactory viewerFactory, URI absoluteUri, Dimension tooltipSize) {
+		JComponent renderer = new JComponent() {};
+		configureRenderer(viewerFactory, absoluteUri, tooltipSize, renderer);
 		return renderer;
 	}
+
 }
