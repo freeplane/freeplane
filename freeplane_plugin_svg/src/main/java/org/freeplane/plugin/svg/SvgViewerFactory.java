@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.swing.gvt.GVTTreeRendererAdapter;
 import org.apache.batik.swing.gvt.GVTTreeRendererEvent;
@@ -36,8 +38,6 @@ public class SvgViewerFactory implements IViewerFactory {
 		@Override
 		public void setFinalViewerSize(final Dimension size) {
 			Dimension sizeWithScaleCorrection = fitToMaximumSize(size);
-			setRenderingTransform(initialTransform);
-			setPreferredSize(sizeWithScaleCorrection);
 			setMySize(sizeWithScaleCorrection);
 			setSize(sizeWithScaleCorrection);
 		}
@@ -152,6 +152,7 @@ public class SvgViewerFactory implements IViewerFactory {
 				if(r == -1){
 					r = resource.setZoom(originalWidth, maximumWidth);
 				}
+				canvas.resetRenderingTransform();
 				canvas.setFinalViewerSize(originalSize);
 				canvas.setPreferredSize(viewerLayoutManager.calculatePreferredSize());
 				canvas.revalidate();
@@ -164,12 +165,20 @@ public class SvgViewerFactory implements IViewerFactory {
 	@Override
 	public ScalableComponent createViewer(final URI uri, final Dimension preferredSize) {
 		final ViewerComponent canvas = new ViewerComponent(uri);
-		canvas.setFinalViewerSize(preferredSize);
 		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 			@Override
 			public void gvtRenderingCompleted(final GVTTreeRendererEvent e) {
-				canvas.setFinalViewerSize(canvas.getSize());
+				canvas.resetRenderingTransform();
+				canvas.setFinalViewerSize(canvas.getOriginalSize());
+				canvas.setPreferredSize(preferredSize);
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						canvas.setSize(preferredSize);
+					}
+				});
 				canvas.revalidate();
+				canvas.repaint();
 				canvas.removeGVTTreeRendererListener(this);
 			}
 		});
