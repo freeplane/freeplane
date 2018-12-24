@@ -1,17 +1,24 @@
 package org.freeplane.plugin.svg;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.swing.gvt.GVTTreeRendererAdapter;
 import org.apache.batik.swing.gvt.GVTTreeRendererEvent;
 import org.apache.batik.util.SVGConstants;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.view.swing.features.filepreview.ExternalResource;
 import org.freeplane.view.swing.features.filepreview.IViewerFactory;
@@ -22,12 +29,15 @@ import org.w3c.dom.svg.SVGLength;
 import org.w3c.dom.svg.SVGSVGElement;
 
 public class SvgViewerFactory implements IViewerFactory {
+	private static final String HOURGLASS = "\u29D6";
+	private static final Font HOURGLASS_FONT = UITools.scaleUI(new Font(Font.DIALOG, Font.PLAIN, 36));
 
 
 	private final class ViewerComponent extends JSVGCanvas implements ScalableComponent {
 		private static final long serialVersionUID = 1L;
 		private Dimension originalSize = null;
 		private Dimension maximumSize = null;
+		private boolean showHourGlass;
 
 		@Override
 		public Dimension getOriginalSize() {
@@ -69,9 +79,23 @@ public class SvgViewerFactory implements IViewerFactory {
 		}
 
 		public ViewerComponent(final URI uri) {
+			this(uri, new Dimension(1, 1));
+		}
+
+		public ViewerComponent(final URI uri, Dimension size) {
 			super(null, false, false);
 			setDocumentState(ALWAYS_STATIC);
-			setSize(1, 1);
+			setSize(size);
+			final Timer timer = new Timer(500, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					showHourGlass = image == null && getWidth() > 1;
+					if(showHourGlass)
+						repaint();
+					((Timer)e.getSource()).stop();
+				}
+			});
+			timer.start();
 			addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 				@Override
 				public void gvtRenderingStarted(final GVTTreeRendererEvent e) {
@@ -95,6 +119,7 @@ public class SvgViewerFactory implements IViewerFactory {
 					}
 					removeGVTTreeRendererListener(this);
 				}
+
 			});
 			setURI(uri.toString());
 		}
@@ -111,7 +136,19 @@ public class SvgViewerFactory implements IViewerFactory {
 		public void setMaximumComponentSize(Dimension size) {
 			this.maximumSize = size;
 		}
-	}
+
+		@Override
+		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			if(showHourGlass && image == null) {
+				g.setFont(HOURGLASS_FONT);
+				g.setColor(Color.GRAY);
+				g.drawString(HOURGLASS, getWidth() / 2 - HOURGLASS_FONT.getSize() * 1 / 3, getHeight() / 2);
+			}
+		}
+
+
+}
 
 	@Override
 	public boolean accept(final URI uri) {
@@ -151,6 +188,7 @@ public class SvgViewerFactory implements IViewerFactory {
 	@Override
 	public ScalableComponent createViewer(final URI uri, final Dimension preferredSize) {
 		final ViewerComponent canvas = new ViewerComponent(uri);
+		canvas.setSize(preferredSize);
 		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
 			@Override
 			public void gvtRenderingCompleted(final GVTTreeRendererEvent e) {
