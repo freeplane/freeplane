@@ -43,8 +43,30 @@ task copyFreeplaneShellScript(type: Copy) {
 	 filter(FixCrLfFilter.class, eol:FixCrLfFilter.CrLf.newInstance("lf"))
 }	 
 
+ext {launch4jDir = 'C:/Program Files (x86)/Launch4j'}
+
+task createExeFiles {
+	dependsOn 'makeKnopflerfischPermissionDirs'
+	onlyIf { file(launch4jDir).exists()}
+	inputs.dir('launch4j')
+	outputs.files("${globalBin}/freeplane.exe", "${globalBin}/freeplaneConsole.exe")
+	doLast {
+        ant.taskdef(name: 'launch4j',
+                    classname: 'net.sf.launch4j.ant.Launch4jTask',
+                    classpath: "${launch4jDir}/launch4j.jar:${launch4jDir}/lib/xstream.jar")
+        ant.launch4j (
+        	configFile: 'launch4j/freeplaneGui.lj4.xml',
+        	outfile: "${globalBin}/freeplane.exe"
+        )
+        ant.launch4j (
+        	configFile: 'launch4j/freeplaneConsole.lj4.xml',
+        	outfile: "${globalBin}/freeplaneConsole.exe"
+        )
+    }
+}
+
 task copyLauncherStuff(type: Copy) {
-	 dependsOn 'copyFreeplaneShellScript'
+	 dependsOn 'copyFreeplaneShellScript', 'createExeFiles'
      from('script/') {
          include('*')
          exclude('freeplane.sh')
