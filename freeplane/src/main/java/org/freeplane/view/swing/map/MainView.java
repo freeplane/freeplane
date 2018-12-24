@@ -569,7 +569,7 @@ public abstract class MainView extends ZoomableLabel {
 
 	@Override
     public JToolTip createToolTip() {
-		ScrollableTooltip tip = new ScrollableTooltip(this.getGraphicsConfiguration(), ScrollableTooltip.TEXT_HTML);
+		FreeplaneTooltip tip = new FreeplaneTooltip(this.getGraphicsConfiguration(), FreeplaneTooltip.TEXT_HTML);
         tip.setComponent(this);
 		final URL url = getMap().getModel().getURL();
 		if (url != null) {

@@ -28,10 +28,12 @@ public class SvgViewerFactory implements IViewerFactory {
 		private Dimension originalSize = null;
 		private Dimension maximumSize = null;
 
+		@Override
 		public Dimension getOriginalSize() {
 			return new Dimension(originalSize);
 		}
 
+		@Override
 		public void setFinalViewerSize(final Dimension size) {
 			Dimension sizeWithScaleCorrection = fitToMaximumSize(size);
 			setRenderingTransform(initialTransform);
@@ -53,10 +55,12 @@ public class SvgViewerFactory implements IViewerFactory {
 			return maximumSize.getWidth() >= size.width || maximumSize.getHeight() >= size.height;
 		}
 
+		@Override
 		public void setDraftViewerSize(final Dimension size) {
 			setFinalViewerSize(size);
 		}
 
+		@Override
 		public void setFinalViewerSize(final float zoom) {
 			if (originalSize != null) {
 				int scaledWidth = (int) (originalSize.width * zoom);
@@ -104,10 +108,12 @@ public class SvgViewerFactory implements IViewerFactory {
 			return super.getPreferredSize();
 		}
 
+		@Override
 		public void setMaximumComponentSize(Dimension size) {
 			this.maximumSize = size;
 		}
 
+		@Override
 		public void setCenter(boolean center) {
 		}
 
@@ -121,14 +127,18 @@ public class SvgViewerFactory implements IViewerFactory {
         }
 	}
 
+	@Override
 	public boolean accept(final URI uri) {
-		return uri.getRawPath().endsWith(".svg");
+		String path = uri.isOpaque() ? uri.getSchemeSpecificPart() : uri.getRawPath();
+		return path.toLowerCase().endsWith(".svg");
 	}
 
+	@Override
 	public String getDescription() {
 		return TextUtils.getText("svg");
 	};
 
+	@Override
 	public ScalableComponent createViewer(final ExternalResource resource, final URI uri, final int maximumWidth) {
 		final ViewerComponent canvas = new ViewerComponent(uri);
 		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
@@ -151,6 +161,7 @@ public class SvgViewerFactory implements IViewerFactory {
 		return canvas;
 	}
 
+	@Override
 	public ScalableComponent createViewer(final URI uri, final Dimension preferredSize) {
 		final ViewerComponent canvas = new ViewerComponent(uri);
 		canvas.setFinalViewerSize(preferredSize);
@@ -165,6 +176,7 @@ public class SvgViewerFactory implements IViewerFactory {
 		return canvas;
 	}
 
+	@Override
 	public ScalableComponent createViewer(URI uri, final float zoom) throws MalformedURLException, IOException {
 		final ViewerComponent canvas = new ViewerComponent(uri);
 		canvas.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {

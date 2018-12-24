@@ -1,6 +1,5 @@
 package org.freeplane.view.swing.map;
 
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
@@ -15,15 +14,14 @@ import java.net.URI;
 import java.net.URL;
 import java.security.AccessControlException;
 
+import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
-import javax.swing.JToolTip;
 import javax.swing.SwingUtilities;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.html.SynchronousScaledEditorKit;
@@ -33,9 +31,8 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
 
-@SuppressWarnings("serial")
-public class ScrollableTooltip extends JToolTip {
-	class LinkMouseListener extends MouseAdapter implements MouseMotionListener{
+class TextualTooltipRendererFactory {
+	private class LinkMouseListener extends MouseAdapter implements MouseMotionListener{
 	    @Override
 		public void mouseMoved(final MouseEvent ev) {
 	    	final String link = HtmlUtils.getURLOfExistingLink((HTMLDocument) tip.getDocument(), tip.viewToModel(ev.getPoint()));
@@ -60,7 +57,7 @@ public class ScrollableTooltip extends JToolTip {
 	    		final String linkURL = HtmlUtils.getURLOfExistingLink((HTMLDocument) tip.getDocument(), tip.viewToModel(ev.getPoint()));
 	    		if (linkURL != null) {
 	    			try {
-	    				NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, getComponent());
+	    				NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, component);
 	    				LinkController.getController().loadURI(nodeView.getModel(), new URI(linkURL));
 	    			} catch (Exception e) {
 	    				LogUtils.warn(e);
@@ -76,16 +73,18 @@ public class ScrollableTooltip extends JToolTip {
 
 	final private JEditorPane tip;
 	private int maximumWidth;
-	static final String TEXT_HTML = "text/html";
 	private final String contentType;
 	private final JRestrictedSizeScrollPane scrollPane;
-
-	public ScrollableTooltip(GraphicsConfiguration graphicsConfiguration, String contentType){
+	private JComponent component;
+	private URL baseUrl;
+	TextualTooltipRendererFactory(GraphicsConfiguration graphicsConfiguration, String contentType, URL baseUrl, String tipText, JComponent component, Dimension tooltipSize){
 		this.contentType = contentType;
+		this.baseUrl = baseUrl;
+		this.component = component;
 		tip  = new JEditorPane();
 		tip.setContentType(contentType);
 		tip.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
-		if(contentType.equals(TEXT_HTML)) {
+		if(contentType.equals(FreeplaneTooltip.TEXT_HTML)) {
 			final HTMLEditorKit kit = SynchronousScaledEditorKit.create();
 			tip.setEditorKit(kit);
 			final HTMLDocument document = (HTMLDocument) tip.getDocument();
@@ -103,34 +102,25 @@ public class ScrollableTooltip extends JToolTip {
 		scrollPane = new JRestrictedSizeScrollPane(tip);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		final Rectangle screenBounds = graphicsConfiguration.getBounds();
-		final int screenHeigth = screenBounds.height - 80;
-		final int screenWidth = screenBounds.width - 80;
-		final int maximumHeight = Math.min(screenHeigth, getIntProperty("toolTipManager.max_tooltip_height"));
 		final int scrollBarWidth = scrollPane.getVerticalScrollBar().getPreferredSize().width;
-		maximumWidth = Math.min(screenWidth, getIntProperty("toolTipManager.max_tooltip_width")) - scrollBarWidth;
-		scrollPane.setMaximumSize(new Dimension(maximumWidth, maximumHeight));
+		tooltipSize.width -= scrollBarWidth;
+		scrollPane.setMaximumSize(tooltipSize);
 		UITools.setScrollbarIncrement(scrollPane);
-		add(scrollPane);
 		tip.setOpaque(true);
-		addComponentListener(new ComponentAdapter() {
+		scrollPane.addComponentListener(new ComponentAdapter() {
 
 			@Override
             public void componentResized(ComponentEvent e) {
-				final ScrollableTooltip component = (ScrollableTooltip) e.getComponent();
-				component.scrollUp();
-				component.removeComponentListener(this);
+				scrollUp();
+				scrollPane.removeComponentListener(this);
             }
 
 		});
+		setTipText(tipText);
+
 	}
 
-	private int getIntProperty(String propertyName) {
-		return ResourceController.getResourceController().getIntProperty(propertyName, Integer.MAX_VALUE);
-	}
-
-	@Override
-    public void setTipText(String tipText) {
+    private void setTipText(String tipText) {
 		try{
         	setTipTextUnsafe(tipText);
         }
@@ -153,8 +143,9 @@ public class ScrollableTooltip extends JToolTip {
 		tip.setSize(0, 0);
 		tip.setPreferredSize(null);
 		tip.setText(tipText);
+		((HTMLDocument)tip.getDocument()).setBase(baseUrl);
 		Dimension preferredSize = tip.getPreferredSize();
-		if (preferredSize.width > maximumWidth && contentType.equals(TEXT_HTML)) {
+		if (preferredSize.width > maximumWidth && contentType.equals(FreeplaneTooltip.TEXT_HTML)) {
 			final HTMLDocument document = (HTMLDocument) tip.getDocument();
 			document.getStyleSheet().addRule("body { width: " + maximumWidth  + "}");
 			// bad hack: call "setEditable" only to update view
@@ -171,25 +162,11 @@ public class ScrollableTooltip extends JToolTip {
 
 	}
 
-	@Override
-    public Dimension getPreferredSize() {
-	    final Component scrollPane = getComponent(0);
-		return scrollPane.getPreferredSize();
-    }
-
-	@Override
-    public void layout() {
-		final Component scrollPane = getComponent(0);
-		scrollPane.setSize(getPreferredSize());
-	    super.layout();
-    }
-
-	void scrollUp() {
+	JComponent getTooltipRenderer() {
+		return scrollPane;
+	}
+	private void scrollUp() {
 		tip.scrollRectToVisible(new Rectangle(1, 1));
     }
-
-	public void setBase(URL url){
-		((HTMLDocument)tip.getDocument()).setBase(url);
-	}
 
 }

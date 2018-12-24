@@ -758,7 +758,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		return true;
     }
 
-	public IViewerFactory getCombiFactory() {
+	public IViewerFactory getViewerFactory() {
 	    return new CombiFactory();
     }
 }

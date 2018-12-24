@@ -38,13 +38,14 @@ import org.freeplane.core.util.TextUtils;
  * 22.08.2009
  */
 public class BitmapViewerFactory implements IViewerFactory {
+	@Override
 	public boolean accept(final URI uri) {
 		final Iterator<ImageReader> readers = getImageReaders(uri);
 		return readers.hasNext();
 	}
 
 	private Iterator<ImageReader> getImageReaders(final URI uri) {
-        String path = uri.getRawPath();
+        String path = uri.isOpaque() ? uri.getSchemeSpecificPart() : uri.getRawPath();
 		final int suffixPos = path.lastIndexOf('.') + 1;
 		if (suffixPos == 0) {
 			final List<ImageReader> empty = Collections.emptyList();
@@ -55,6 +56,7 @@ public class BitmapViewerFactory implements IViewerFactory {
 		return readers;
 	}
 
+	@Override
 	public ScalableComponent createViewer(final ExternalResource resource,
 			final URI uri, int maximumWidth) throws MalformedURLException,
 	        IOException {
@@ -66,12 +68,13 @@ public class BitmapViewerFactory implements IViewerFactory {
 		}
 		final ViewerLayoutManager viewerLayoutManager = new ViewerLayoutManager(1f, resource, originalSize);
 		((JComponent) bitmapViewerComponent).setLayout(viewerLayoutManager);
-		
+
 		Dimension zoomedSize = viewerLayoutManager.calculatePreferredSize();
 		bitmapViewerComponent.setFinalViewerSize(zoomedSize );
 		return bitmapViewerComponent;
 	}
 
+	@Override
 	public ScalableComponent createViewer(final URI uri,
 			final Dimension preferredSize) throws MalformedURLException,
 	        IOException {
@@ -80,10 +83,12 @@ public class BitmapViewerFactory implements IViewerFactory {
 		return bitmapViewerComponent;
 	}
 
+	@Override
 	public String getDescription() {
 		return TextUtils.getText("bitmaps");
 	}
 
+	@Override
 	public ScalableComponent createViewer(URI uri, float zoom)
 			throws MalformedURLException, IOException {
 		final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(uri);

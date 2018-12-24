@@ -39,8 +39,11 @@ import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.factory.IconFactory;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
+import org.freeplane.view.swing.features.filepreview.IViewerFactory;
+import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.map.MapView;
 
 class AttributeTableCellRenderer extends DefaultTableCellRenderer {
@@ -126,12 +129,10 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		setText(text);
 		String toolTip = null;
 		if(uri != null) {
-			final String uriString = uri.toString();
-			final String uriLowerCase = uriString.toLowerCase();
-			if(uriLowerCase.endsWith(".png") || uriLowerCase.endsWith(".jpg")|| uriLowerCase.endsWith(".jpeg")) {
-				toolTip = "<html><img src=\"" + uriString + "\" />";
-			}
-
+			final IViewerFactory viewerFactory = Controller.getCurrentModeController().getExtension(ViewerController.class).getViewerFactory();
+			if (viewerFactory.accept(uri)) {
+				toolTip = uri.toString();
+}
 		}
 		if(toolTip == null) {
 			if (text != originalText) {

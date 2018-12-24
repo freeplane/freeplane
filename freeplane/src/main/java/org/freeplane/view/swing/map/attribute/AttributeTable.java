@@ -103,7 +103,7 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
-import org.freeplane.view.swing.map.ScrollableTooltip;
+import org.freeplane.view.swing.map.FreeplaneTooltip;
 
 
 /**
@@ -683,7 +683,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
 	@Override
 	public JToolTip createToolTip() {
-		ScrollableTooltip tip = new ScrollableTooltip(this.getGraphicsConfiguration(), "text/html");
+		FreeplaneTooltip tip = new FreeplaneTooltip(this.getGraphicsConfiguration(), "text/html");
 
 		final URL url = attributeView.getNode().getMap().getURL();
 		if (url != null) {
