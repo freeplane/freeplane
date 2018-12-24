@@ -65,7 +65,6 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	private int imageY;
 	private boolean scaleEnabled;
 	private Dimension maximumSize = null;
-	private boolean center;
 	private final static Object LOCK = new Object();
 	private static boolean disabledDueToJavaBug = false;
 
@@ -180,20 +179,8 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	}
 
 	private void centerImagePosition(final int scaledImageWidth, final int scaledImageHeight) {
-		if (center) {
-			imageX = (getWidth() - scaledImageWidth) / 2;
-			imageY = (getHeight() - scaledImageHeight) / 2;
-		}
-		else {
-			if (scaledImageWidth > getHeight()) {
-				imageX = 0;
-				imageY = (getHeight() - scaledImageHeight) / 2;
-			}
-			else {
-				imageX = (getWidth() - scaledImageWidth) / 2;
-				imageY = 0;
-			}
-		}
+		imageX = (getWidth() - scaledImageWidth) / 2;
+		imageY = (getHeight() - scaledImageHeight) / 2;
 	}
 
 	private boolean componentHasNoArea() {
@@ -351,10 +338,5 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 
 	private boolean isUnderMaximumSize(final Dimension size) {
 		return maximumSize.getWidth() >= size.width || maximumSize.getHeight() >= size.height;
-	}
-
-	@Override
-	public void setCenter(boolean center) {
-		this.center = center;
 	}
 }

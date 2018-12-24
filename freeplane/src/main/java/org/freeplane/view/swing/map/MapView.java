@@ -1346,7 +1346,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				LogUtils.warn("no viewer created for " + uri);
 				return;
 			}
-			((ScalableComponent) backgroundComponent).setCenter(true);
 		}
 		catch (final FileNotFoundException e1) {
 			LogUtils.warn(e1);

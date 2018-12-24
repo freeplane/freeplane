@@ -41,6 +41,4 @@ public interface ScalableComponent {
 	void setDraftViewerSize(Dimension size);
 
 	void setMaximumComponentSize(Dimension size);
-
-	void setCenter(boolean center);
 }
