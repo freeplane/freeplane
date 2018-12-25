@@ -3,6 +3,12 @@
 ===============================
 Formula and formula editor improvements
 Copy, cut and paste of selected attributes
+URLs in string or file attribute values are interpreted at runtime.
+URLs returned by formulas in attribute values are considered.
+Image preview is shown as tool tip for attribute values 
+   containing URL pointing to svg or some known bitmap image.
+
+ 
 ===============================
 1.7.3
 ===============================
