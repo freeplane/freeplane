@@ -153,7 +153,6 @@ public class ScaledHTML extends BasicHTML{
         @Override
 		public void preferenceChanged(View child, boolean width, boolean height) {
         	if(! setSizeRunning){
-        		setSize(view.getPreferredSpan(X_AXIS), view.getPreferredSpan(Y_AXIS));
         		host.revalidate();
         		host.repaint();
         	}
