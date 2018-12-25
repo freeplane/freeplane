@@ -36,13 +36,16 @@ public class FreeplaneTooltip extends JToolTip {
 		final Dimension tooltipSize = tooltipSize(graphicsConfiguration);
 		try {
 			final URI uri = new URI(tipText);
-			final IViewerFactory viewerFactory = Controller.getCurrentModeController().getExtension(ViewerController.class).getViewerFactory();
-			if (viewerFactory.accept(uri)) {
-				final URI absoluteUri = uri.isAbsolute() ? uri : baseUrl.toURI().resolve(uri);
-				if(! absoluteUri.getScheme().equals("file") || new File(absoluteUri).canRead()) {
-					final JComponent imageViewer = new ImageRendererFactory().createRenderer(viewerFactory, absoluteUri, tooltipSize);
-					add(imageViewer);
-					return;
+			final ViewerController viewerController = Controller.getCurrentModeController().getExtension(ViewerController.class);
+			if(viewerController != null) {
+				final IViewerFactory viewerFactory = viewerController.getViewerFactory();
+				if (viewerFactory.accept(uri)) {
+					final URI absoluteUri = uri.isAbsolute() ? uri : baseUrl.toURI().resolve(uri);
+					if(! absoluteUri.getScheme().equals("file") || new File(absoluteUri).canRead()) {
+						final JComponent imageViewer = new ImageRendererFactory().createRenderer(viewerFactory, absoluteUri, tooltipSize);
+						add(imageViewer);
+						return;
+					}
 				}
 			}
 		}

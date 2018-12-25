@@ -42,7 +42,6 @@ import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
-import org.freeplane.view.swing.features.filepreview.IViewerFactory;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.map.MapView;
 
@@ -129,8 +128,8 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		setText(text);
 		String toolTip = null;
 		if(uri != null) {
-			final IViewerFactory viewerFactory = Controller.getCurrentModeController().getExtension(ViewerController.class).getViewerFactory();
-			if (viewerFactory.accept(uri)) {
+			final ViewerController viewerController = Controller.getCurrentModeController().getExtension(ViewerController.class);
+			if (viewerController != null && viewerController.getViewerFactory().accept(uri)) {
 				toolTip = uri.toString();
 }
 		}

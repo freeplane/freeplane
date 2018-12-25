@@ -37,6 +37,8 @@ import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.attribute.mindmapmode.MAttributeController;
+import org.freeplane.features.clipboard.ClipboardControllers;
+import org.freeplane.features.clipboard.mindmapmode.MClipboardControllers;
 import org.freeplane.features.cloud.CloudController;
 import org.freeplane.features.cloud.mindmapmode.MCloudController;
 import org.freeplane.features.edge.EdgeController;
@@ -119,6 +121,7 @@ public class SModeControllerFactory {
 		controller.addAction(new ShowSelectionAsRectangleAction());
 		modeController = new SModeController(controller);
 		controller.selectModeForBuild(modeController);
+		ClipboardControllers.install(new MClipboardControllers());
 		modeController.addAction(new NewUserStyleAction());
 		modeController.addAction(new DeleteUserStyleAction());
 		modeController.addAction(new NewLevelStyleAction());
