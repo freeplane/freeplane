@@ -230,7 +230,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 		}
 	}
 
-	private static final Pattern ATTRIBUTE_REGEX = Pattern.compile("\\s*\\+\t(\\S[^\t]*)(\t.*?)\\s*");
+	private static final Pattern ATTRIBUTE_REGEX = Pattern.compile("\\s*\\+\t(\\S[^\t]*)(?:\t(.*?))\\s*");
 	private class StringFlavorHandler implements IDataFlavorHandler {
 		private final String textFromClipboard;
 
