@@ -101,9 +101,9 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
+import org.freeplane.view.swing.map.FreeplaneTooltip;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
-import org.freeplane.view.swing.map.FreeplaneTooltip;
 
 
 /**
@@ -955,7 +955,9 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					final Object value = editor.getCellEditorValue();
 					if (value != null) {
 						final String pattern = extractPatternIfAvailable(getValueAt(editingRow, editingColumn));
-						final Object newValue = enforceFormattedObjectForIdentityPattern(value, pattern);
+				        final MTextController textController = (MTextController) TextController.getController();
+				        final Object object = textController.guessObject(value, pattern);
+						final Object newValue = enforceFormattedObjectForIdentityPattern(object, pattern);
 						setValueAt(newValue, editingRow, editingColumn);
 					}
 					removeEditor();
@@ -974,9 +976,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
     // unfortunately we have to handle IDENTITY_PATTERN explicitely since (only) attributes
     // have no place for the format except for the value itself - so we need a FormattedObject here
     private Object enforceFormattedObjectForIdentityPattern(Object value, final String pattern) {
-        final MTextController textController = (MTextController) TextController.getController();
-		final Object object = value;
-        return PatternFormat.IDENTITY_PATTERN.equals(pattern) ? new FormattedObject(value, pattern) : textController.guessObject(object, pattern);
+        return PatternFormat.IDENTITY_PATTERN.equals(pattern) ? new FormattedObject(value, pattern) : value;
     }
 
 	@Override
