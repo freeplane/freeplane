@@ -177,8 +177,6 @@
 				<Entry name="EditAttributesAction" accelerator="alt F9" />
 				<Entry name="attributes_AddAttributeAction" />
 				<Entry name="AssignAttributesAction" />
-				<Entry name="CopyAttributes" />
-				<Entry name="PasteAttributes" />
 				<Entry name="AddStyleAttributes" />
 				<Entry name="menu_removeAttribute">
 					<Entry name="attributes_RemoveFirstAttributeAction" />
