@@ -57,6 +57,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.attribute.mindmapmode.MAttributeController;
 import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.features.format.ScannerController;
@@ -793,21 +794,27 @@ public class MMapClipboardController extends MapClipboardController implements M
 			}
 			else if(textFragment.isAttribute()) {
 				NodeModel node = parentNodes.get(parentNodes.size() - 1);
-				addAttribute(node, textFragment);
+				addAttribute(node, textFragment, parent==node);
 			}
 		}
 		insertNewNodes(parent, insertionIndex, parentNodes);
 	}
 
-	private void addAttribute(NodeModel node, final TextFragment textFragment) {
-		NodeAttributeTableModel attributes = node.getExtension(NodeAttributeTableModel.class);
-		if(attributes == null) {
-			attributes = new NodeAttributeTableModel();
-			node.addExtension(attributes);
-		}
+	private void addAttribute(NodeModel node, final TextFragment textFragment, boolean toExistingNode) {
 		final String name = textFragment.first;
 		final Object value = ScannerController.getController().parse(textFragment.second);
-		attributes.addRowNoUndo(node, new Attribute(name, value));
+		final Attribute atribute = new Attribute(name, value);
+		if(toExistingNode) {
+			MAttributeController.getController().addAttribute(node, atribute);
+		}
+		else {
+			NodeAttributeTableModel attributes = node.getExtension(NodeAttributeTableModel.class);
+			if(attributes == null) {
+				attributes = new NodeAttributeTableModel();
+				node.addExtension(attributes);
+			}
+			attributes.addRowNoUndo(node, atribute);
+		}
 	}
 
 	private int addNode(NodeModel parent, final boolean isLeft, int insertionIndex,
