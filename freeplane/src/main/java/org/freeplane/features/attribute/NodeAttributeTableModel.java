@@ -39,7 +39,7 @@ import org.freeplane.features.map.NodeModel;
 public class NodeAttributeTableModel implements IExtension, IAttributeTableModel {
 	private static final DefaultTableModel DUMMY = new DefaultTableModel();
 	private static final int CAPACITY_INCREMENT = 10;
-	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel(null);
+	public static final NodeAttributeTableModel EMTPY_ATTRIBUTES = new NodeAttributeTableModel();
 
 	public static NodeAttributeTableModel getModel(final NodeModel node) {
 		final NodeAttributeTableModel attributes = node
@@ -51,11 +51,11 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	private AttributeTableLayoutModel layout;
 	private HashSet<TableModelListener> listeners;
 
-	public NodeAttributeTableModel(final NodeModel node) {
-		this(node, 0);
+	public NodeAttributeTableModel() {
+		this(0);
 	}
 
-	public NodeAttributeTableModel(final NodeModel node, final int size) {
+	public NodeAttributeTableModel(final int size) {
 		super();
 		allocateAttributes(size);
 	}

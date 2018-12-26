@@ -104,7 +104,7 @@ public class AttributeController implements IExtension {
 		if (attributeModel != null) {
 			return attributeModel;
 		}
-		attributeModel = new NodeAttributeTableModel(node);
+		attributeModel = new NodeAttributeTableModel();
 		node.addExtension(attributeModel);
 		if (node.areViewsEmpty()) {
 			return attributeModel;

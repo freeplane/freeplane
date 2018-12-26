@@ -54,7 +54,9 @@ import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.AttributeController;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.features.link.LinkController;
@@ -226,6 +228,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 		}
 	}
 
+	private static final Pattern ATTRIBUTE_REGEX = Pattern.compile("\\s*\\+\t(\\S[^\t]*)(\t.*?)\\s*");
 	private class StringFlavorHandler implements IDataFlavorHandler {
 		private final String textFromClipboard;
 
@@ -244,18 +247,24 @@ public class MMapClipboardController extends MapClipboardController implements M
 			final String[] textLines = textFromClipboard.split("\n");
 			for (int i = 0; i < textLines.length; ++i) {
 				String text = textLines[i];
-				text = text.replaceAll("\t", "        ");
-				if (text.matches(" *")) {
-					continue;
+				final Matcher matcher = ATTRIBUTE_REGEX.matcher(text);
+				if(matcher.matches()) {
+					textFragments.add(new TextFragment(matcher.group(1), matcher.group(2), TextFragment.ATTRIBUTE_DEPTH));
 				}
-				int depth = 0;
-				while (depth < text.length() && text.charAt(depth) == ' ') {
-					++depth;
-				}
-				final String visibleText = text.trim();
-				final String link = LinkController.findLink(text);
-				if (!visibleText.equals("")) {
-					textFragments.add(new TextFragment(visibleText, link, depth));
+				else {
+					text = text.replaceAll("\t", "        ");
+					if (text.matches(" *")) {
+						continue;
+					}
+					int depth = 0;
+					while (depth < text.length() && text.charAt(depth) == ' ') {
+						++depth;
+					}
+					final String visibleText = text.trim();
+					final String link = LinkController.findLink(text);
+					if (!visibleText.equals("")) {
+						textFragments.add(new TextFragment(visibleText, link, depth));
+					}
 				}
 			}
 			return textFragments.toArray(new TextFragment[textFragments.size()]);
@@ -392,16 +401,27 @@ public class MMapClipboardController extends MapClipboardController implements M
 	}
 
 	private static class TextFragment {
+		final static int ATTRIBUTE_DEPTH = -2;
+		String first;
+		String second;
 		int depth;
-		String link;
-		String text;
 
 		public TextFragment(final String text, final String link, final int depth) {
 			super();
-			this.text = text;
+			this.first = text;
+			this.second = link;
 			this.depth = depth;
-			this.link = link;
 		}
+
+		boolean isAttribute() {
+			return depth == ATTRIBUTE_DEPTH;
+		}
+
+		boolean isNode() {
+			return ! isAttribute();
+		}
+
+
 	}
 
 	private class ImageFlavorHandler implements IDataFlavorHandler {
@@ -750,7 +770,6 @@ public class MMapClipboardController extends MapClipboardController implements M
 
 	private void pasteStringWithoutRedisplay(final TextFragment[] textFragments, NodeModel parent,
 	                                              final boolean asSibling, final boolean isLeft) {
-		final MapModel map = parent.getMap();
 		int insertionIndex;
 		if (asSibling) {
 			NodeModel target = parent;
@@ -765,63 +784,104 @@ public class MMapClipboardController extends MapClipboardController implements M
 		final ArrayList<Integer> parentNodesDepths = new ArrayList<Integer>();
 		parentNodes.add(parent);
 		parentNodesDepths.add(new Integer(-1));
-		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		for (int i = 0; i < textFragments.length; ++i) {
 			final TextFragment textFragment = textFragments[i];
-			String text = textFragment.text;
-			final String link = textFragment.link;
-			URI uri = null;
-			if (link != null) {
-				try {
-					URI linkUri = new URI(link);
-					uri = linkUri;
-
-					File absoluteFile = UrlManager.getController().getAbsoluteFile(map, uri);
-					if(absoluteFile != null) {
-					//if ("file".equals(linkUri.getScheme())) {
-						final File mapFile = map.getFile();
-						uri  = LinkController.toLinkTypeDependantURI(mapFile, absoluteFile);
-						if(link.equals(text)){
-							text =  uri.toString();
-						}
-					}
-
-				}
-				catch (Exception e) {
-				}
+			if(textFragment.isNode()) {
+				insertionIndex = addNode(parent, isLeft, insertionIndex, parentNodes, parentNodesDepths,
+					textFragment);
 			}
-			final NodeModel node = mapController.newNode(text, map);
-			if(uri != null){
-				NodeLinks.createLinkExtension(node).setHyperLink(uri);
-			}
-			for (int j = parentNodes.size() - 1; j >= 0; --j) {
-				if (textFragment.depth > parentNodesDepths.get(j).intValue()) {
-					for (int k = j + 1; k < parentNodes.size(); ++k) {
-						final NodeModel n = parentNodes.get(k);
-						if (n.getParentNode() == null) {
-							mapController.insertNode(n, parent, insertionIndex++);
-						}
-						parentNodes.remove(k);
-						parentNodesDepths.remove(k);
-					}
-					final NodeModel target = parentNodes.get(j);
-					node.setLeft(isLeft);
-					if (target != parent) {
-						target.setFolded(true);
-						target.insert(node, target.getChildCount());
-					}
-					parentNodes.add(node);
-					parentNodesDepths.add(new Integer(textFragment.depth));
-					break;
-				}
+			else if(textFragment.isAttribute()) {
+				NodeModel node = parentNodes.get(parentNodes.size() - 1);
+				addAttribute(node, textFragment);
 			}
 		}
-		{
-			for (int k = 0; k < parentNodes.size(); ++k) {
-				final NodeModel n = parentNodes.get(k);
-				if (map.getRootNode() != n && n.getParentNode() == null) {
-					mapController.insertNode(n, parent, insertionIndex++);
+		insertNewNodes(parent, insertionIndex, parentNodes);
+	}
+
+	private void addAttribute(NodeModel node, final TextFragment textFragment) {
+		NodeAttributeTableModel attributes = node.getExtension(NodeAttributeTableModel.class);
+		if(attributes == null) {
+			attributes = new NodeAttributeTableModel();
+			node.addExtension(attributes);
+		}
+		attributes.addRowNoUndo(node, new Attribute(textFragment.first, textFragment.second));
+	}
+
+	private int addNode(NodeModel parent, final boolean isLeft, int insertionIndex,
+						final ArrayList<NodeModel> parentNodes, final ArrayList<Integer> parentNodesDepths,
+						final TextFragment textFragment) {
+		final MapModel map = parent.getMap();
+		final NodeModel node = createNode(map, textFragment);
+		return insertNode(parent, isLeft, insertionIndex, parentNodes, parentNodesDepths, textFragment, node);
+	}
+
+	private int insertNode(NodeModel parent, final boolean isLeft, int insertionIndex,
+						   final ArrayList<NodeModel> parentNodes, final ArrayList<Integer> parentNodesDepths,
+						   final TextFragment textFragment, final NodeModel node) {
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+		for (int j = parentNodes.size() - 1; j >= 0; --j) {
+			if (textFragment.depth > parentNodesDepths.get(j).intValue()) {
+				for (int k = j + 1; k < parentNodes.size(); ++k) {
+					final NodeModel n = parentNodes.get(k);
+					if (n.getParentNode() == null) {
+						mapController.insertNode(n, parent, insertionIndex++);
+					}
+					parentNodes.remove(k);
+					parentNodesDepths.remove(k);
 				}
+				final NodeModel target = parentNodes.get(j);
+				node.setLeft(isLeft);
+				if (target != parent) {
+					target.setFolded(true);
+					target.insert(node, target.getChildCount());
+				}
+				parentNodes.add(node);
+				parentNodesDepths.add(new Integer(textFragment.depth));
+				break;
+			}
+		}
+		return insertionIndex;
+	}
+
+	private NodeModel createNode(final MapModel map, final TextFragment textFragment) {
+		String text = textFragment.first;
+		final String link = textFragment.second;
+		URI uri = null;
+		if (link != null) {
+			try {
+				URI linkUri = new URI(link);
+				uri = linkUri;
+
+				File absoluteFile = UrlManager.getController().getAbsoluteFile(map, uri);
+				if(absoluteFile != null) {
+					//if ("file".equals(linkUri.getScheme())) {
+					final File mapFile = map.getFile();
+					uri  = LinkController.toLinkTypeDependantURI(mapFile, absoluteFile);
+					if(link.equals(text)){
+						text =  uri.toString();
+					}
+				}
+
+			}
+			catch (Exception e) {
+			}
+		}
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+		final NodeModel node = mapController.newNode(text, map);
+		if(uri != null){
+			NodeLinks.createLinkExtension(node).setHyperLink(uri);
+		}
+		return node;
+	}
+
+	private void insertNewNodes(NodeModel parent, int insertionIndex,
+								final ArrayList<NodeModel> parentNodes) {
+		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
+		final MapModel map = parent.getMap();
+		for (int k = 0; k < parentNodes.size(); ++k) {
+			final NodeModel node = parentNodes.get(k);
+			if (map.getRootNode() != node && node.getParentNode() == null) {
+				mapController.insertNode(node, parent, insertionIndex++);
 			}
 		}
 	}
