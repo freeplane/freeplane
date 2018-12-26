@@ -1,12 +1,13 @@
 ===============================
 1.7.4
 ===============================
-Formula and formula editor improvements
+Insert reference to node attribute in formula editor on mouse click in the attribute table
+Use "at"-syntax for global nodes with aliases when node reference is inserted in formula editor
 Copy, cut and paste of selected attributes
-URLs in string or file attribute values are interpreted at runtime.
-URLs returned by formulas in attribute values are considered.
-Image preview is shown as tool tip for attribute values 
-   containing URL pointing to svg or some known bitmap image.
+URLs in string or file attribute values are interpreted at runtime
+URLs returned by formulas in attribute values are considered
+Image preview is shown as tool tip for attribute values
+   containing URL pointing to svg or some known bitmap image
 Creating attributes from plain text in clipboard
 Bug fixes
  
