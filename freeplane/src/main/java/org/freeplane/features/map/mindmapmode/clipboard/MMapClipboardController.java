@@ -59,6 +59,7 @@ import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
+import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -804,7 +805,9 @@ public class MMapClipboardController extends MapClipboardController implements M
 			attributes = new NodeAttributeTableModel();
 			node.addExtension(attributes);
 		}
-		attributes.addRowNoUndo(node, new Attribute(textFragment.first, textFragment.second));
+		final String name = textFragment.first;
+		final Object value = ScannerController.getController().parse(textFragment.second);
+		attributes.addRowNoUndo(node, new Attribute(name, value));
 	}
 
 	private int addNode(NodeModel parent, final boolean isLeft, int insertionIndex,
