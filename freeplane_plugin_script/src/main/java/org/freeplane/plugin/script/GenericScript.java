@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.List;
 
 import javax.script.Bindings;
@@ -163,7 +165,14 @@ public class GenericScript implements IScript {
 			ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             try {
 				final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager(outStream);
-				scriptClassLoader.setSecurityManager(scriptingSecurityManager);
+				AccessController.doPrivileged(new PrivilegedAction<Void>() {
+
+					@Override
+					public Void run() {
+						scriptClassLoader.setSecurityManager(scriptingSecurityManager);
+						return null;
+					}
+				});
 				Thread.currentThread().setContextClassLoader(scriptClassLoader);
                 final SimpleScriptContext context = createScriptContext(node, scriptContext, outStream);
                 if (compilationEnabled && engine instanceof Compilable) {

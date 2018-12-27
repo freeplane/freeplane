@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
+import java.security.AllPermission;
 import java.security.Permission;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
@@ -100,8 +101,7 @@ public final class ScriptClassLoader extends URLClassLoader {
 	}
 
 	public void setSecurityManager(ScriptingSecurityManager securityManager) {
-		if(this.securityManager != null && ! this.securityManager.equals(securityManager))
-			throw new IllegalStateException("Security manager is already set");
+		AccessController.checkPermission(new AllPermission());
 		this.securityManager = securityManager;
 	}
 
