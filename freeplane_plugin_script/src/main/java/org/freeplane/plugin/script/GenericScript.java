@@ -164,11 +164,11 @@ public class GenericScript implements IScript {
             final PrintStream oldOut = System.out;
 			ClassLoader contextClassLoader = Thread.currentThread().getContextClassLoader();
             try {
-				final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager(outStream);
 				AccessController.doPrivileged(new PrivilegedAction<Void>() {
 
 					@Override
 					public Void run() {
+						final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager(outStream);
 						scriptClassLoader.setSecurityManager(scriptingSecurityManager);
 						return null;
 					}

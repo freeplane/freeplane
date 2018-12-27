@@ -140,12 +140,12 @@ public class GroovyScript implements IScript {
     }
 
     private void trustedCompileAndCache(PrintStream outStream) throws Throwable {
-    	final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager(outStream);
     	AccessController.doPrivileged(new PrivilegedExceptionAction<Void>() {
 
 			@Override
 			public Void run() throws PrivilegedActionException {
 				try {
+					final ScriptingSecurityManager scriptingSecurityManager = createScriptingSecurityManager(outStream);
 					compileAndCache(scriptingSecurityManager);
 				} catch (Exception e) {
 					throw new PrivilegedActionException(e);
