@@ -1,4 +1,5 @@
 import org.apache.tools.ant.filters.*
+import org.apache.tools.ant.taskdefs.condition.Os
 
 configurations{
 	mergedApiDependency
@@ -47,7 +48,7 @@ ext {launch4jDir = 'C:/Program Files (x86)/Launch4j'}
 
 task createExeFiles {
 	dependsOn 'makeKnopflerfischPermissionDirs'
-	onlyIf { file(launch4jDir).exists()}
+	onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) && file(launch4jDir).exists()}
 	inputs.dir('launch4j')
 	outputs.files("${globalBin}/freeplane.exe", "${globalBin}/freeplaneConsole.exe")
 	doLast {
