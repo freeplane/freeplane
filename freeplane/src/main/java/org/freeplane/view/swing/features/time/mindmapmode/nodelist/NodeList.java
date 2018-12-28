@@ -317,7 +317,7 @@ public class NodeList {
 	}
 
 	private static String COLUMN_CREATED = "Created";
-	private static String COLUMN_DATE = "Date";
+	private static String COLUMN_REMINDER = "Reminder";
 	private static String COLUMN_ICONS = "Icons";
 	private static String COLUMN_MODIFIED = "Modified";
 	private static String COLUMN_NOTES = "Notes";
@@ -326,14 +326,14 @@ public class NodeList {
 	private static String COLUMN_MAP = "Map";
 	private final int nodeMapColumn;
 	private final int nodeTextColumn;
-	private final int nodeReminderColumn;
 	private final int nodeIconColumn;
-	private final int nodeCreatedColumn;
-	private final int nodeModifiedColumn;
 	private final int nodeDetailsColumn;
 	private final int nodeNotesColumn;
+	private final int nodeReminderColumn;
+	private final int nodeCreatedColumn;
+	private final int nodeModifiedColumn;
 	private static final String PLUGINS_TIME_LIST_XML_CREATED = "plugins/TimeList.xml_Created";
-	private static final String PLUGINS_TIME_LIST_XML_DATE = "plugins/TimeList.xml_Date";
+	private static final String PLUGINS_TIME_LIST_XML_REMINDER = "plugins/TimeList.xml_Reminder";
 	private static final String PLUGINS_TIME_LIST_XML_ICONS = "plugins/TimeList.xml_Icons";
 	private static final String PLUGINS_TIME_LIST_XML_MODIFIED = "plugins/TimeList.xml_Modified";
 	private static final String PLUGINS_TIME_LIST_XML_NOTES = "plugins/TimeList.xml_Notes";
@@ -382,12 +382,12 @@ public class NodeList {
 	public NodeList( final boolean modal, final boolean showAllNodes, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
 		nodeMapColumn = searchInAllMaps ? 0 : -1;
 		nodeTextColumn = nodeMapColumn + 1;
-		nodeReminderColumn = nodeTextColumn + 1;
-		nodeIconColumn = nodeReminderColumn + 1;
-		nodeCreatedColumn = nodeIconColumn + 1;
-		nodeModifiedColumn = nodeCreatedColumn + 1;
-		nodeDetailsColumn = nodeModifiedColumn + 1;
+		nodeIconColumn = nodeTextColumn + 1;
+		nodeDetailsColumn = nodeIconColumn + 1;
 		nodeNotesColumn = nodeDetailsColumn + 1;
+		nodeReminderColumn = nodeNotesColumn + 1;
+		nodeCreatedColumn = nodeReminderColumn + 1;
+		nodeModifiedColumn = nodeCreatedColumn + 1;
 
 //		this.modeController = modeController;
 //		controller = modeController.getController();
@@ -582,7 +582,7 @@ public class NodeList {
 		COLUMN_TEXT = TextUtils.getText(PLUGINS_TIME_LIST_XML_TEXT);
 		COLUMN_MAP = TextUtils.getText(PLUGINS_TIME_LIST_XML_MAP);
 		COLUMN_DETAILS= TextUtils.getText(PLUGINS_TIME_LIST_XML_DETAILS);
-		COLUMN_DATE = TextUtils.getText(PLUGINS_TIME_LIST_XML_DATE);
+		COLUMN_REMINDER = TextUtils.getText(PLUGINS_TIME_LIST_XML_REMINDER);
 		COLUMN_NOTES = TextUtils.getText(PLUGINS_TIME_LIST_XML_NOTES);
 		dialog = new JDialog(UITools.getCurrentFrame(), modal /* modal */);
 		String windowTitle;
@@ -879,15 +879,15 @@ public class NodeList {
 				}
 			}
 		};
-		if(nodeReminderColumn >= 0)
+		if(nodeMapColumn >= 0)
 			model.addColumn(COLUMN_MAP);
 		model.addColumn(COLUMN_TEXT);
-		model.addColumn(COLUMN_DATE);
 		model.addColumn(COLUMN_ICONS);
-		model.addColumn(COLUMN_CREATED);
-		model.addColumn(COLUMN_MODIFIED);
 		model.addColumn(COLUMN_DETAILS);
 		model.addColumn(COLUMN_NOTES);
+		model.addColumn(COLUMN_REMINDER);
+		model.addColumn(COLUMN_CREATED);
+		model.addColumn(COLUMN_MODIFIED);
 		if (searchInAllMaps == false) {
 			final MapModel map = Controller.getCurrentController().getMap();
 			if(map != null) {
@@ -915,20 +915,20 @@ public class NodeList {
 			final Object[] row = searchInAllMaps ? new Object[] {
 					node.getMap().getTitle(),
 					new TextHolder(new CoreTextAccessor(node)),
-					date,
 					new IconsHolder(node),
-					node.getHistoryInformation().getCreatedAt(),
-					node.getHistoryInformation().getLastModifiedAt(),
 					new TextHolder(new DetailTextAccessor(node)) ,
-					new TextHolder(new NoteTextAccessor(node)) } :
+					new TextHolder(new NoteTextAccessor(node)),
+					date,
+					node.getHistoryInformation().getCreatedAt(),
+					node.getHistoryInformation().getLastModifiedAt()} :
 						new Object[] {
 								new TextHolder(new CoreTextAccessor(node)),
-								date,
 								new IconsHolder(node),
-								node.getHistoryInformation().getCreatedAt(),
-								node.getHistoryInformation().getLastModifiedAt(),
 								new TextHolder(new DetailTextAccessor(node)) ,
-								new TextHolder(new NoteTextAccessor(node)) };
+								new TextHolder(new NoteTextAccessor(node)),
+					date,
+					node.getHistoryInformation().getCreatedAt(),
+					node.getHistoryInformation().getLastModifiedAt()};
 			model.addRow(row);
 		}
 		for (final NodeModel child : node.getChildren()) {
