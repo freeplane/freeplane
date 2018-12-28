@@ -73,16 +73,16 @@ import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 public class ReminderHook extends PersistentNodeHook implements IExtension {
 
 	private static final String REMINDERS_BLINK = "remindersBlink";
-	//******************************************	
+	//******************************************
 	@EnabledAction(checkOnNodeChange = true)
 	private class ReminderHookAction extends HookAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
 		/**
-		 * 
+		 *
 		 */
 		public ReminderHookAction() {
 			super("ReminderHookAction");
@@ -96,19 +96,22 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 
 	static private class TimeListAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 		/**
-		 * 
+		 *
 		 */
 		private final NodeList timeList;
 
 		public TimeListAction() {
 			super("TimeListAction");
-			timeList = new NodeList(false, false, "timelistwindow.configuration");
+			timeList = new NodeList(NodeList.PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE,
+				(node, reminder) -> reminder != null,
+				false, "timelistwindow.configuration");
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			timeList.startup();
 		}
@@ -116,11 +119,11 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 
 	static private class TimeManagementAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 		/**
-		 * 
+		 *
 		 */
 		private final TimeManagement timeManagement;
 
@@ -129,6 +132,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 			timeManagement = new TimeManagement(reminderHook);
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			timeManagement.showDialog();
 		}
@@ -166,6 +170,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 	private static UIIcon flagIcon;
 	void registerStateIconProvider(){
 		IconController.getController(modeController).addStateIconProvider(new IStateIconProvider() {
+			@Override
 			public UIIcon getStateIcon(NodeModel node) {
 				UIIcon icon = null;
 				ClockState stateAdded = node.getExtension(ClockState.class);
@@ -216,6 +221,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 	}
 	private void registerTooltipProvider() {
 		modeController.addToolTipProvider(REMINDER_TOOLTIP, new ITooltipProvider() {
+			@Override
 			public String getTooltip(ModeController modeController, NodeModel node, Component view) {
 				final ReminderExtension model = ReminderExtension.getExtension(node);
 				if(model == null)
@@ -236,14 +242,17 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		final int axis = BoxLayout.Y_AXIS;
 		final JTimePanel timePanel = timeManagement.createTimePanel(null, false, 1);
 		modeController.getMapController().addNodeSelectionListener(new INodeSelectionListener() {
+			@Override
 			public void onSelect(NodeModel node) {
 				timePanel.update(node);
 			}
-			
+
+			@Override
 			public void onDeselect(NodeModel node) {
 			}
 		});
 		modeController.getMapController().addNodeChangeListener(new INodeChangeListener() {
+			@Override
 			public void nodeChanged(NodeChangeEvent event) {
 				final NodeModel node = event.getNode();
 				if(event.getProperty().equals(getExtensionClass()) && node.equals(modeController.getMapController().getSelectedNode()))
@@ -326,7 +335,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		if(script != null){
 			parameters.setAttribute(SCRIPT, script);
 		}
-		
+
 		element.addChild(parameters);
 	}
 
@@ -348,7 +357,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		final String script = reminderExtension.getScript();
 		if(script == null || script.equals(""))
 			return;
-		final IScriptStarter starter = (IScriptStarter) modeController.getExtension(IScriptStarter.class);
+		final IScriptStarter starter = modeController.getExtension(IScriptStarter.class);
 		if(starter == null)
 			return;
 		final NodeModel node = reminderExtension.getNode();
@@ -369,11 +378,11 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		public String toString() {
 			return TextUtils.getText("NotificationOptions." + name());
 		}
-		
+
 	};
 	public void showNotificationPopup(ReminderExtension reminderExtension) {
 		final NodeModel node = reminderExtension.getNode();
-		
+
 		String information = modeController.getExtension(TextController.class).getText(node);
 		String title = TextUtils.getText("reminderNotification");
 		final int option = JOptionPane.showOptionDialog(UITools.getCurrentFrame(), new JLabel(information), title, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, NotificationOptions.values(), NotificationOptions.SELECT_NODE);

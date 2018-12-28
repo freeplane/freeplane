@@ -345,8 +345,8 @@ public class NodeList {
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_FIND = "plugins/TimeManagement.xml_Find";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_REPLACE = "plugins/TimeManagement.xml_Replace";
 //	private static final String PLUGINS_TIME_MANAGEMENT_XML_SELECT = "plugins/TimeManagement.xml_Select";
-	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
-	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
+	public static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
+	public static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
 	private final String windowPreferenceStorageProperty;
 // = class.getName() + "_properties"
 	private static String replace(final Pattern p, String input, final String replacement) {
@@ -364,7 +364,12 @@ public class NodeList {
 // 	final private ModeController modeController;
 	private JTextField mNodePath;
 	private TextRenderer textRenderer;
-	private boolean showAllNodes = false;
+
+	private final String windowTitle;
+	public interface NodeFilter {
+		boolean showsNode(NodeModel node, ReminderExtension reminder) ;
+	}
+	private final NodeFilter nodeFilter;
 	private TableSorter sorter;
 	private JTable tableView;
 	private DefaultTableModel tableModel;
@@ -375,11 +380,12 @@ public class NodeList {
 	final private boolean modal;
 	private final MapChangeListener mapChangeListener;
 
-	public NodeList(  final boolean showAllNodes, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
-	    this(false, showAllNodes, searchInAllMaps, windowPreferenceStorageProperty);
+	public NodeList( final String windowTitle, final NodeFilter nodeFilter, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
+	    this(false, windowTitle, nodeFilter, searchInAllMaps, windowPreferenceStorageProperty);
     }
 
-	public NodeList( final boolean modal, final boolean showAllNodes, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
+	public NodeList( final boolean modal, String windowTitle, final NodeFilter nodeFilter, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
+		this.windowTitle = windowTitle;
 		nodeMapColumn = searchInAllMaps ? 0 : -1;
 		nodeTextColumn = nodeMapColumn + 1;
 		nodeIconColumn = nodeTextColumn + 1;
@@ -392,7 +398,7 @@ public class NodeList {
 //		this.modeController = modeController;
 //		controller = modeController.getController();
 		this.modal = modal;
-		this.showAllNodes = showAllNodes;
+		this.nodeFilter = nodeFilter;
 		this.searchInAllMaps = searchInAllMaps;
 		mFilterTextSearchField = new JComboBoxWithBorder();
 		mFilterTextSearchField.setEditable(true);
@@ -585,13 +591,6 @@ public class NodeList {
 		COLUMN_REMINDER = TextUtils.getText(PLUGINS_TIME_LIST_XML_REMINDER);
 		COLUMN_NOTES = TextUtils.getText(PLUGINS_TIME_LIST_XML_NOTES);
 		dialog = new JDialog(UITools.getCurrentFrame(), modal /* modal */);
-		String windowTitle;
-		if (showAllNodes) {
-			windowTitle = PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES;
-		}
-		else {
-			windowTitle = PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE;
-		}
 		dialog.setTitle(TextUtils.getText(windowTitle));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		final WindowAdapter windowListener = new WindowAdapter() {
@@ -911,7 +910,7 @@ public class NodeList {
 		if (hook != null) {
 			date = new Date(hook.getRemindUserAt());
 		}
-		if (showAllNodes && node.hasVisibleContent() || hook != null) {
+		if (nodeFilter.showsNode(node, hook)) {
 			final Object[] row = searchInAllMaps ? new Object[] {
 					node.getMap().getTitle(),
 					new TextHolder(new CoreTextAccessor(node)),
