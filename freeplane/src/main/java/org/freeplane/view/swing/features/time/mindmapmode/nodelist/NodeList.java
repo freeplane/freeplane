@@ -309,9 +309,9 @@ public class NodeList {
 
 		public TextHolder[] getNodeHoldersAt(final int row) {
 			return new TextHolder[]{
-					(TextHolder) sorter.getValueAt(row, NodeList.NODE_TEXT_COLUMN),
-					(TextHolder) sorter.getValueAt(row, NodeList.NODE_DETAILS_COLUMN),
-					(TextHolder) sorter.getValueAt(row, NodeList.NODE_NOTES_COLUMN)
+					(TextHolder) sorter.getValueAt(row, nodeTextColumn),
+					(TextHolder) sorter.getValueAt(row, nodeDetailsColumn),
+					(TextHolder) sorter.getValueAt(row, nodeNotesColumn)
 			};
 		}
 	}
@@ -323,13 +323,15 @@ public class NodeList {
 	private static String COLUMN_NOTES = "Notes";
 	private static String COLUMN_TEXT = "Text";
 	private static String COLUMN_DETAILS = "Details";
-	private static final int DATE_COLUMN = 0;
-	protected static final int NODE_CREATED_COLUMN = 3;
-	protected static final int NODE_ICON_COLUMN = 2;
-	protected static final int NODE_MODIFIED_COLUMN = 4;
-	protected static final int NODE_DETAILS_COLUMN = 5;
-	protected static final int NODE_NOTES_COLUMN = 6;
-	public static final int NODE_TEXT_COLUMN = 1;
+	private static String COLUMN_MAP = "Map";
+	private final int nodeMapColumn;
+	private final int nodeTextColumn;
+	private final int nodeReminderColumn;
+	private final int nodeIconColumn;
+	private final int nodeCreatedColumn;
+	private final int nodeModifiedColumn;
+	private final int nodeDetailsColumn;
+	private final int nodeNotesColumn;
 	private static final String PLUGINS_TIME_LIST_XML_CREATED = "plugins/TimeList.xml_Created";
 	private static final String PLUGINS_TIME_LIST_XML_DATE = "plugins/TimeList.xml_Date";
 	private static final String PLUGINS_TIME_LIST_XML_ICONS = "plugins/TimeList.xml_Icons";
@@ -337,6 +339,7 @@ public class NodeList {
 	private static final String PLUGINS_TIME_LIST_XML_NOTES = "plugins/TimeList.xml_Notes";
 	private static final String PLUGINS_TIME_LIST_XML_DETAILS = "plugins/TimeList.xml_Details";
 
+	private static final String PLUGINS_TIME_LIST_XML_MAP = "plugins/TimeList.xml_Map";
 	private static final String PLUGINS_TIME_LIST_XML_TEXT = "plugins/TimeList.xml_Text";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_CLOSE = "plugins/TimeManagement.xml_closeButton";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_FIND = "plugins/TimeManagement.xml_Find";
@@ -345,7 +348,7 @@ public class NodeList {
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
 	private final String windowPreferenceStorageProperty;
-// = NodeList.class.getName() + "_properties"
+// = class.getName() + "_properties"
 	private static String replace(final Pattern p, String input, final String replacement) {
 		final String result = HtmlUtils.getReplaceResult(p, input, replacement);
 		return result;
@@ -377,6 +380,15 @@ public class NodeList {
     }
 
 	public NodeList( final boolean modal, final boolean showAllNodes, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
+		nodeMapColumn = searchInAllMaps ? 0 : -1;
+		nodeTextColumn = nodeMapColumn + 1;
+		nodeReminderColumn = nodeTextColumn + 1;
+		nodeIconColumn = nodeReminderColumn + 1;
+		nodeCreatedColumn = nodeIconColumn + 1;
+		nodeModifiedColumn = nodeCreatedColumn + 1;
+		nodeDetailsColumn = nodeModifiedColumn + 1;
+		nodeNotesColumn = nodeDetailsColumn + 1;
+
 //		this.modeController = modeController;
 //		controller = modeController.getController();
 		this.modal = modal;
@@ -473,7 +485,7 @@ public class NodeList {
 	 */
 	private NodeModel getMindMapNode(final int focussedRow) {
 		final NodeModel selectedNode = ((TextHolder) tableView.getModel().getValueAt(focussedRow,
-		    NodeList.NODE_TEXT_COLUMN)).getNode();
+		    nodeTextColumn)).getNode();
 		return selectedNode;
 	}
 
@@ -502,7 +514,7 @@ public class NodeList {
 					final String literalReplacement = useRegexInReplace.isSelected() ? replacement : Matcher.quoteReplacement(replacement);
 					try {
 						if (HtmlUtils.isHtmlNode(text)) {
-							replaceResult = NodeList.replace(p, text,literalReplacement);
+							replaceResult = replace(p, text,literalReplacement);
 						}
 						else {
 							replaceResult = p.matcher(text).replaceAll(literalReplacement);
@@ -564,13 +576,14 @@ public class NodeList {
 			dialog.toFront();
 			return;
 		}
-		NodeList.COLUMN_MODIFIED = TextUtils.getText(PLUGINS_TIME_LIST_XML_MODIFIED);
-		NodeList.COLUMN_CREATED = TextUtils.getText(PLUGINS_TIME_LIST_XML_CREATED);
-		NodeList.COLUMN_ICONS = TextUtils.getText(PLUGINS_TIME_LIST_XML_ICONS);
-		NodeList.COLUMN_TEXT = TextUtils.getText(PLUGINS_TIME_LIST_XML_TEXT);
-		NodeList.COLUMN_DETAILS= TextUtils.getText(PLUGINS_TIME_LIST_XML_DETAILS);
-		NodeList.COLUMN_DATE = TextUtils.getText(PLUGINS_TIME_LIST_XML_DATE);
-		NodeList.COLUMN_NOTES = TextUtils.getText(PLUGINS_TIME_LIST_XML_NOTES);
+		COLUMN_MODIFIED = TextUtils.getText(PLUGINS_TIME_LIST_XML_MODIFIED);
+		COLUMN_CREATED = TextUtils.getText(PLUGINS_TIME_LIST_XML_CREATED);
+		COLUMN_ICONS = TextUtils.getText(PLUGINS_TIME_LIST_XML_ICONS);
+		COLUMN_TEXT = TextUtils.getText(PLUGINS_TIME_LIST_XML_TEXT);
+		COLUMN_MAP = TextUtils.getText(PLUGINS_TIME_LIST_XML_MAP);
+		COLUMN_DETAILS= TextUtils.getText(PLUGINS_TIME_LIST_XML_DETAILS);
+		COLUMN_DATE = TextUtils.getText(PLUGINS_TIME_LIST_XML_DATE);
+		COLUMN_NOTES = TextUtils.getText(PLUGINS_TIME_LIST_XML_NOTES);
 		dialog = new JDialog(UITools.getCurrentFrame(), modal /* modal */);
 		String windowTitle;
 		if (showAllNodes) {
@@ -659,7 +672,7 @@ public class NodeList {
 		tableView.getTableHeader().setReorderingAllowed(false);
 		tableModel = updateModel();
 		mFlatNodeTableFilterModel = new FlatNodeTableFilterModel(tableModel,
-			new int[]{NodeList.NODE_TEXT_COLUMN, NodeList.NODE_DETAILS_COLUMN, NodeList.NODE_NOTES_COLUMN}
+			new int[]{nodeTextColumn, nodeDetailsColumn, nodeNotesColumn}
 		);
 		sorter = new TableSorter(mFlatNodeTableFilterModel);
 		tableView.setModel(sorter);
@@ -667,7 +680,7 @@ public class NodeList {
 		sorter.setColumnComparator(Date.class, TableSorter.COMPARABLE_COMPARATOR);
 		sorter.setColumnComparator(NodeModel.class, TableSorter.LEXICAL_COMPARATOR);
 		sorter.setColumnComparator(IconsHolder.class, TableSorter.COMPARABLE_COMPARATOR);
-		sorter.setSortingStatus(NodeList.DATE_COLUMN, TableSorter.ASCENDING);
+		sorter.setSortingStatus(nodeReminderColumn, TableSorter.ASCENDING);
 		final JScrollPane pane = new JScrollPane(tableView);
 		UITools.setScrollbarIncrement(pane);
 		layoutConstraints.gridy++;
@@ -848,30 +861,33 @@ public class NodeList {
 			 * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
 			 */
 			@Override
-			public Class<?> getColumnClass(final int arg0) {
-				switch (arg0) {
-					case DATE_COLUMN:
-					case NODE_CREATED_COLUMN:
-					case NODE_MODIFIED_COLUMN:
-						return Date.class;
-					case NODE_TEXT_COLUMN:
-					case NODE_NOTES_COLUMN:
-					case NODE_DETAILS_COLUMN:
-						return TextHolder.class;
-					case NODE_ICON_COLUMN:
-						return IconsHolder.class;
-					default:
-						return Object.class;
+			public Class<?> getColumnClass(final int column) {
+				if (column == nodeReminderColumn || column == nodeCreatedColumn || column == nodeModifiedColumn) {
+					return Date.class;
+				}
+				else if (column == nodeTextColumn || column == nodeNotesColumn || column == nodeDetailsColumn) {
+					return TextHolder.class;
+				}
+				else if (column == nodeMapColumn) {
+					return String.class;
+				}
+				else if (column == nodeIconColumn) {
+					return IconsHolder.class;
+				}
+				else {
+					return Object.class;
 				}
 			}
 		};
-		model.addColumn(NodeList.COLUMN_DATE);
-		model.addColumn(NodeList.COLUMN_TEXT);
-		model.addColumn(NodeList.COLUMN_ICONS);
-		model.addColumn(NodeList.COLUMN_CREATED);
-		model.addColumn(NodeList.COLUMN_MODIFIED);
-		model.addColumn(NodeList.COLUMN_DETAILS);
-		model.addColumn(NodeList.COLUMN_NOTES);
+		if(nodeReminderColumn >= 0)
+			model.addColumn(COLUMN_MAP);
+		model.addColumn(COLUMN_TEXT);
+		model.addColumn(COLUMN_DATE);
+		model.addColumn(COLUMN_ICONS);
+		model.addColumn(COLUMN_CREATED);
+		model.addColumn(COLUMN_MODIFIED);
+		model.addColumn(COLUMN_DETAILS);
+		model.addColumn(COLUMN_NOTES);
 		if (searchInAllMaps == false) {
 			final MapModel map = Controller.getCurrentController().getMap();
 			if(map != null) {
@@ -896,16 +912,25 @@ public class NodeList {
 			date = new Date(hook.getRemindUserAt());
 		}
 		if (showAllNodes && node.hasVisibleContent() || hook != null) {
-			model.addRow(new Object[] {
-					date,
+			final Object[] row = searchInAllMaps ? new Object[] {
+					node.getMap().getTitle(),
 					new TextHolder(new CoreTextAccessor(node)),
+					date,
 					new IconsHolder(node),
-			        node.getHistoryInformation().getCreatedAt(),
-			        node.getHistoryInformation().getLastModifiedAt(),
-			        new TextHolder(new DetailTextAccessor(node)) ,
-			        new TextHolder(new NoteTextAccessor(node)) });
+					node.getHistoryInformation().getCreatedAt(),
+					node.getHistoryInformation().getLastModifiedAt(),
+					new TextHolder(new DetailTextAccessor(node)) ,
+					new TextHolder(new NoteTextAccessor(node)) } :
+						new Object[] {
+								new TextHolder(new CoreTextAccessor(node)),
+								date,
+								new IconsHolder(node),
+								node.getHistoryInformation().getCreatedAt(),
+								node.getHistoryInformation().getLastModifiedAt(),
+								new TextHolder(new DetailTextAccessor(node)) ,
+								new TextHolder(new NoteTextAccessor(node)) };
+			model.addRow(row);
 		}
-		MapController r = Controller.getCurrentModeController().getMapController();
 		for (final NodeModel child : node.getChildren()) {
 			updateModel(model, child);
 		}
