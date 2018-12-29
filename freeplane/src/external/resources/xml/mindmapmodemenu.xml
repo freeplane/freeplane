@@ -467,8 +467,8 @@
 			<Entry builder="separator" />
 			<Entry name="ManageAddOnsAction" plugin="org.freeplane.plugin.script" />
 			<Entry name="scripting" plugin="org.freeplane.plugin.script" builder="userScripts" />
-			<Entry name="ExecuteScriptForSelectionAction" />
-			<Entry name="ExecuteScriptForAllNodes" />
+			<Entry name="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
+			<Entry name="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>
 			<Entry name="ScriptEditor" />
             <Entry name="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula" />
             <Entry name="formula.ClearDependenciesAction" plugin="org.freeplane.plugin.formula" accelerator="alt F6"/>
@@ -516,6 +516,7 @@
 			<Entry name="DocumentationAction" accelerator="F1" />
             <Entry name="FreeplaneHandbook" />
 			<Entry name="HotKeyInfoAction" />
+			<Entry name="OpenApiDocumentationAction" plugin="org.freeplane.plugin.script"/>
 			<Entry builder="separator" />
 		</Entry>
 	</Entry>

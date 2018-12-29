@@ -24,25 +24,25 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
 
-class OpenURLAction extends AFreeplaneAction {
+public class OpenURLAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	final private String url;
 
-	OpenURLAction(final String key, final String url) {
+	public OpenURLAction(final String key, final String url) {
 		super(key);
 		this.url = url;
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		try {
 			Controller.getCurrentController().getViewController().openDocument(new URL(url));

@@ -62,6 +62,7 @@ import org.freeplane.plugin.script.addons.ManageAddOnsAction;
 import org.freeplane.plugin.script.addons.ManageAddOnsDialog;
 import org.freeplane.plugin.script.addons.ScriptAddOnProperties;
 import org.freeplane.plugin.script.filter.ScriptConditionController;
+import org.freeplane.plugin.script.help.OpenApiDocumentationAction;
 
 class ScriptingRegistration {
 	final private class ScriptModel implements IScriptModel {
@@ -189,6 +190,7 @@ class ScriptingRegistration {
         modeController.addAction(new ScriptEditor());
         modeController.addAction(new ExecuteScriptForAllNodes());
         modeController.addAction(new ExecuteScriptForSelectionAction());
+        modeController.addAction(new OpenApiDocumentationAction());
         final ManageAddOnsAction manageAddOnsAction = new ManageAddOnsAction();
         modeController.addAction(manageAddOnsAction);
         modeController.addExtension(AddOnInstaller.class, new AddOnInstaller() {
