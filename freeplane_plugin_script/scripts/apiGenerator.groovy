@@ -63,7 +63,7 @@ def makeApi(Proxy.Node node, Class clazz) {
     classNode.style.font.bold = true
     clazz.getMethods().findAll {
         it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO') ||
-		 it.declaringClass.getPackage().name == org.freeplane.api.Node.class.getPackage().name
+        it.declaringClass.getPackage().name == org.freeplane.api.Node.class.getPackage().name
     }.each {
         if (!addProperty(memberMap, it))
             addMethod(memberMap, it);
@@ -107,9 +107,9 @@ def createMemberNode(String memberName, Map<String, Object> attribs, Proxy.Node 
         // property
         def mode = (attribs['type_read'] ? 'r' : '') + (attribs['type_write'] ? 'w' : '')
         def type = attribs['type_read'] ? attribs['type_read'] : attribs['type_write']
-        //	if (mode == 'rw' && attribs['type_read'] != attribs['type_write']) {
-        //		logger.severe("property ${memberName} has differing getter and setter types")
-        //	}
+        //    if (mode == 'rw' && attribs['type_read'] != attribs['type_write']) {
+        //        logger.severe("property ${memberName} has differing getter and setter types")
+        //    }
         memberNode = classNode.createChild(formatProperty(memberName, formatReturnType(type), mode))
         memberNode.icons.add('wizard')
         [ 'method_read', 'method_write' ].each {
@@ -159,12 +159,12 @@ def addMethod(Map<String, Map<String, Object>> memberMap, Method method) {
 def formatProperty(String property, String type, String mode) {
     return "<html><body><b>${property}</b>: ${type} (${mode})"
     // Plain text:
-    //	return "${property}: ${type} (${mode})"
+    //    return "${property}: ${type} (${mode})"
 }
 
 def formatMethodKey(Method method) {
-		return method.name +
-			'(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
+    return method.name +
+        '(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
 
 }
 
@@ -176,23 +176,23 @@ def formatParameterType(Class clazz) {
 
 
 def formatParameter(parameter) {
-	def parameterType = formatParameterType(parameter.type)
-	if(parameterType)
-		parameterType + ' ' + parameter.name;
-	else
-		parameter.name;
+    def parameterType = formatParameterType(parameter.type)
+    if(parameterType)
+        parameterType + ' ' + parameter.name;
+    else
+        parameter.name;
 }
 
 def formatReturnType(Class clazz) {
-	def parameterType = formatParameterType(clazz)
-	if(parameterType)
-		parameterType;
-	else
-		clazz.simpleName;
+    def parameterType = formatParameterType(clazz)
+    if(parameterType)
+        parameterType;
+    else
+        clazz.simpleName;
 }
 
 def formatMethod(Method method) {
-	def parameters =  method.metaClass.respondsTo(method, "getParameters") ? method.getParameters().collect{ formatParameter(it) } : method.parameterTypes.collect{ formatParameterType(it) }
+    def parameters =  method.metaClass.respondsTo(method, "getParameters") ? method.getParameters().collect{ formatParameter(it) } : method.parameterTypes.collect{ formatParameterType(it) }
     return '<html><body>' + formatReturnType(method.returnType) +
     ' <b>' + method.name + '</b>' +
     '(' + parameters.join(', ') + ')'
