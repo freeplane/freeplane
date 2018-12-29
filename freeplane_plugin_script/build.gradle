@@ -71,6 +71,8 @@ task copyScripts(type: Copy) {
 
 javadoc {
     enabled = true
+    
+    title = "Freeplane API ${project.version}"
 
     source = fileTree(dir: 'src/main/java')
       .include('**/Proxy.java')

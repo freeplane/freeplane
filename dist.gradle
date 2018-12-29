@@ -1,13 +1,5 @@
 ext.globalDist = rootDir.path + '/DIST'
 
-Properties props = new Properties()
-props.load(new FileInputStream(rootDir.path + '/freeplane/src/viewer/resources/version.properties'))
-
-ext.majorVersion = props['freeplane_version']
-ext.versionStatus = props['freeplane_version_status']
-ext.minorVersion = System.getProperty('minor', '')
-ext.distVersion = "$majorVersion${versionStatus.empty?'':'-'+versionStatus}${minorVersion.empty?'':'-pre' + minorVersion}"
-
 task gitinfoDist(type: Copy) {
     from(globalBin) {
         include('gitinfo.txt')
