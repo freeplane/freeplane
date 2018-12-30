@@ -78,6 +78,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		modeController.getMapController().addMapChangeListener(this);
 	}
 
+
+
 	@Override
 	protected void add(final NodeModel node, final IExtension extension) {
 		if(MapStyleModel.getExtension(node.getMap()) != null){
@@ -88,6 +90,17 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 	}
 
 
+	@Override
+	public void undoableToggleHook(NodeModel node, IExtension extension) {
+		removeAnotherMode(node);
+		super.undoableToggleHook(node, extension);
+	}
+
+	protected void removeAnotherMode(NodeModel node) {
+		final HierarchicalIcons2 extension = node.getExtension(HierarchicalIcons2.class);
+		if(extension != null)
+			extension.undoableDeactivateHook(node);
+	}
 	@Override
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		return this;
@@ -231,4 +244,10 @@ class HierarchicalIcons2 extends HierarchicalIcons{
 	public HierarchicalIcons2() {
 	    super(Mode.AND);
     }
+	@Override
+	protected void removeAnotherMode(NodeModel node) {
+		final HierarchicalIcons extension = node.getExtension(HierarchicalIcons.class);
+		if(extension != null)
+			extension.undoableDeactivateHook(node);
+	}
 }
