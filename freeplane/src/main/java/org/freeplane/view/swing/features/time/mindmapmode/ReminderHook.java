@@ -62,8 +62,8 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.features.time.mindmapmode.TimeManagement.JTimePanel;
 import org.freeplane.view.swing.features.time.mindmapmode.nodelist.AllMapsNodeListAction;
-import org.freeplane.view.swing.features.time.mindmapmode.nodelist.NodeList;
 import org.freeplane.view.swing.features.time.mindmapmode.nodelist.NodeListAction;
+import org.freeplane.view.swing.features.time.mindmapmode.nodelist.TimeListAction;
 import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 
 /**
@@ -91,29 +91,6 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		@Override
 		public void setEnabled() {
 			setEnabled(isActiveForSelection());
-		}
-	}
-
-	static private class TimeListAction extends AFreeplaneAction {
-		/**
-		 *
-		 */
-		private static final long serialVersionUID = 1L;
-		/**
-		 *
-		 */
-		private final NodeList timeList;
-
-		public TimeListAction() {
-			super("TimeListAction");
-			timeList = new NodeList(NodeList.PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE,
-				(node, reminder) -> reminder != null,
-				false, "timelistwindow.configuration");
-		}
-
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			timeList.startup();
 		}
 	}
 

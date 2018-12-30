@@ -36,7 +36,7 @@ public class NodeListAction extends AFreeplaneAction {
 
 	public NodeListAction() {
 		super("NodeListAction");
-		nodeList = new NodeList(NodeList.PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES,
+		nodeList = new NodeListWithReplacement(NodeList.PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES,
 			(node, reminder) -> node.hasVisibleContent(),
 			false, "nodelistwindow.configuration");
 	}

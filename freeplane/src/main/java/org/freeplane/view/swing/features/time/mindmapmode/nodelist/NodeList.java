@@ -26,7 +26,6 @@ import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -40,9 +39,6 @@ import java.util.EventListener;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 import javax.swing.AbstractAction;
 import javax.swing.Box;
@@ -51,9 +47,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -68,15 +61,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.JTextComponent;
 
-import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
-import org.freeplane.core.ui.UIBuilder;
-import org.freeplane.core.ui.components.BlindIcon;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.DelayedRunner;
-import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -101,7 +90,7 @@ import org.freeplane.view.swing.features.time.mindmapmode.ReminderExtension;
 /**
  * @author foltin
  */
-public class NodeList {
+class NodeList {
 	private final class MapChangeListener implements IMapChangeListener, INodeChangeListener, IMapSelectionListener {
 		public MapChangeListener() {
 			super();
@@ -294,28 +283,6 @@ public class NodeList {
 		}
 	}
 
-	private class HolderAccessor{
-		private HolderAccessor() {
-	        super();
-        }
-
-		public void changeString(final TextHolder textHolder, final String newText) {
-			textHolder.setText(newText);
-		}
-
-		public int getLength() {
-			return mFlatNodeTableFilterModel.getRowCount();
-		}
-
-		public TextHolder[] getNodeHoldersAt(final int row) {
-			return new TextHolder[]{
-					(TextHolder) sorter.getValueAt(row, nodeTextColumn),
-					(TextHolder) sorter.getValueAt(row, nodeDetailsColumn),
-					(TextHolder) sorter.getValueAt(row, nodeNotesColumn)
-			};
-		}
-	}
-
 	private static String COLUMN_CREATED = "Created";
 	private static String COLUMN_REMINDER = "Reminder";
 	private static String COLUMN_ICONS = "Icons";
@@ -325,10 +292,10 @@ public class NodeList {
 	private static String COLUMN_DETAILS = "Details";
 	private static String COLUMN_MAP = "Map";
 	private final int nodeMapColumn;
-	private final int nodeTextColumn;
+	final int nodeTextColumn;
 	private final int nodeIconColumn;
-	private final int nodeDetailsColumn;
-	private final int nodeNotesColumn;
+	final int nodeDetailsColumn;
+	final int nodeNotesColumn;
 	private final int nodeReminderColumn;
 	private final int nodeCreatedColumn;
 	private final int nodeModifiedColumn;
@@ -343,21 +310,15 @@ public class NodeList {
 	private static final String PLUGINS_TIME_LIST_XML_TEXT = "plugins/TimeList.xml_Text";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_CLOSE = "plugins/TimeManagement.xml_closeButton";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_FIND = "plugins/TimeManagement.xml_Find";
-	private static final String PLUGINS_TIME_MANAGEMENT_XML_REPLACE = "plugins/TimeManagement.xml_Replace";
 	public static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
 	public static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
 	private final String windowPreferenceStorageProperty;
-	private static String replace(final Pattern p, String input, final String replacement) {
-		final String result = HtmlUtils.getReplaceResult(p, input, replacement);
-		return result;
-	}
 
 	private DateRenderer dateRenderer;
 	private JDialog dialog;
 	private IconsRenderer iconsRenderer;
-	final private JComboBox mFilterTextReplaceField;
-	final private JComboBox mFilterTextSearchField;
-	private FlatNodeTableFilterModel mFlatNodeTableFilterModel;
+	protected final JComboBox mFilterTextSearchField;
+	protected FlatNodeTableFilterModel mFlatNodeTableFilterModel;
 	private JTextField mNodePath;
 	private TextRenderer textRenderer;
 
@@ -366,17 +327,16 @@ public class NodeList {
 		boolean showsNode(NodeModel node, ReminderExtension reminder) ;
 	}
 	private final NodeFilter nodeFilter;
-	private TableSorter sorter;
-	private JTable tableView;
+	TableSorter sorter;
+	protected JTable tableView;
 	private DefaultTableModel tableModel;
 	private final boolean searchInAllMaps;
-	private final JCheckBox useRegexInReplace;
-	private final JCheckBox useRegexInFind;
-	private final JCheckBox matchCase;
+	protected final JCheckBox useRegexInFind;
+	protected final JCheckBox matchCase;
 	final private boolean modal;
 	private final MapChangeListener mapChangeListener;
 
-	public NodeList( final String windowTitle, final NodeFilter nodeFilter, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
+	NodeList( final String windowTitle, final NodeFilter nodeFilter, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
 	    this(false, windowTitle, nodeFilter, searchInAllMaps, windowPreferenceStorageProperty);
     }
 
@@ -402,28 +362,6 @@ public class NodeList {
 		mFilterTextSearchField.addActionListener(listener);
 		final JTextComponent editorComponent = (JTextComponent) mFilterTextSearchField.getEditor().getEditorComponent();
 		editorComponent.getDocument().addDocumentListener(listener);
-		mFilterTextSearchField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent pEvent) {
-				if (pEvent.getKeyCode() == KeyEvent.VK_DOWN) {
-					mFilterTextReplaceField.requestFocusInWindow();
-				}
-			}
-		});
-		mFilterTextReplaceField = new JComboBoxWithBorder();
-		mFilterTextReplaceField.setEditable(true);
-		mFilterTextReplaceField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(final KeyEvent pEvent) {
-				if (pEvent.getKeyCode() == KeyEvent.VK_DOWN) {
-					tableView.requestFocusInWindow();
-				}
-				else if (pEvent.getKeyCode() == KeyEvent.VK_UP) {
-					mFilterTextSearchField.requestFocusInWindow();
-				}
-			}
-		});
-		useRegexInReplace = new JCheckBox();
 		useRegexInFind = new JCheckBox();
 		useRegexInFind.addActionListener(listener);
 		matchCase = new JCheckBox();
@@ -491,53 +429,6 @@ public class NodeList {
 		return selectedNode;
 	}
 
-	private void replace(final HolderAccessor holderAccessor, boolean selectedOnly) {
-		final String searchString = (String) mFilterTextSearchField.getSelectedItem();
-		if(searchString == null)
-			return;
-		final String replaceString = (String) mFilterTextReplaceField.getSelectedItem();
-		Pattern p;
-		try {
-			p = Pattern.compile(useRegexInFind.isSelected() ? searchString : Pattern.quote(searchString),
-					matchCase.isSelected() ? 0 : Pattern.CASE_INSENSITIVE|Pattern.UNICODE_CASE);
-		}
-		catch (final PatternSyntaxException e) {
-			UITools.errorMessage(TextUtils.format("wrong_regexp", searchString, e.getMessage()));
-			return;
-		}
-		final String replacement = replaceString == null ? "" : replaceString;
-		final int length = holderAccessor.getLength();
-		for (int i = 0; i < length; i++) {
-			if( !selectedOnly || tableView.isRowSelected(i)){
-				TextHolder[] textHolders = holderAccessor.getNodeHoldersAt(i);
-				for(final TextHolder textHolder:textHolders){
-					final String text = textHolder.getText();
-					final String replaceResult;
-					final String literalReplacement = useRegexInReplace.isSelected() ? replacement : Matcher.quoteReplacement(replacement);
-					try {
-						if (HtmlUtils.isHtmlNode(text)) {
-							replaceResult = replace(p, text,literalReplacement);
-						}
-						else {
-							replaceResult = p.matcher(text).replaceAll(literalReplacement);
-						}
-					}
-					catch (Exception e) {
-						final String message = e.getMessage();
-						UITools.errorMessage(TextUtils.format("wrong_regexp", replacement, message != null ? message : e.getClass().getSimpleName()));
-						return;
-					}
-					if (!StringUtils.equals(text, replaceResult)) {
-						holderAccessor.changeString(textHolder, replaceResult);
-					}
-				}
-			}
-		}
-		mFlatNodeTableFilterModel.resetFilter();
-		mFilterTextSearchField.insertItemAt(mFilterTextSearchField.getSelectedItem(), 0);
-		mFilterTextReplaceField.insertItemAt(mFilterTextReplaceField.getSelectedItem(), 0);
-		mFilterTextSearchField.setSelectedItem("");
-	}
 
 	private void selectNodes(final int focussedRow, final int[] selectedRows) {
 		if (focussedRow >= 0) {
@@ -645,19 +536,7 @@ public class NodeList {
 		layoutConstraints.gridwidth = GridBagConstraints.REMAINDER;
 		layoutConstraints.gridy++;
 		contentPane.add(/* new JScrollPane */(mFilterTextSearchField), layoutConstraints);
-		layoutConstraints.gridy++;
-		layoutConstraints.weightx = 0.0;
-		layoutConstraints.gridwidth = 1;
-		contentPane.add(new JLabel(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)), layoutConstraints);
-		layoutConstraints.gridx = 5;
-		contentPane.add(new JLabel(TextUtils.getText("regular_expressions")), layoutConstraints);
-		layoutConstraints.gridx++;
-		contentPane.add(useRegexInReplace, layoutConstraints);
-		layoutConstraints.gridx = 0;
-		layoutConstraints.weightx = 1.0;
-		layoutConstraints.gridwidth = GridBagConstraints.REMAINDER;
-		layoutConstraints.gridy++;
-		contentPane.add(/* new JScrollPane */(mFilterTextReplaceField), layoutConstraints);
+		createReplacementUI(contentPane, layoutConstraints);
 		dateRenderer = new DateRenderer();
 		textRenderer = new TextRenderer();
 		iconsRenderer = new IconsRenderer();
@@ -704,32 +583,6 @@ public class NodeList {
 			}
 		};
 		final JButton exportButton = new JButton(exportAction);
-		final AbstractAction replaceAllAction = new AbstractAction(TextUtils
-		    .getText("plugins/TimeManagement.xml_Replace_All")) {
-			/**
-			     *
-			     */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void actionPerformed(final ActionEvent arg0) {
-				replace(new HolderAccessor(), false);
-			}
-		};
-		final JButton replaceAllButton = new JButton(replaceAllAction);
-		final AbstractAction replaceSelectedAction = new AbstractAction(TextUtils
-		    .getText("plugins/TimeManagement.xml_Replace_Selected")) {
-			/**
-			     *
-			     */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void actionPerformed(final ActionEvent arg0) {
-				replace(new HolderAccessor(), true);
-			}
-		};
-		final JButton replaceSelectedButton = new JButton(replaceSelectedAction);
 		final AbstractAction gotoAction = new AbstractAction(TextUtils.getText("plugins/TimeManagement.xml_Goto")) {
 			/**
 			     *
@@ -757,28 +610,15 @@ public class NodeList {
 		/* Initial State */
 		gotoAction.setEnabled(false);
 		exportAction.setEnabled(false);
-		replaceSelectedAction.setEnabled(false);
 		final Box bar = Box.createHorizontalBox();
 		bar.add(Box.createHorizontalGlue());
 		bar.add(cancelButton);
 		bar.add(exportButton);
-		bar.add(replaceAllButton);
-		bar.add(replaceSelectedButton);
+		addReplacementButtons(bar);
 		bar.add(gotoButton);
 		bar.add(Box.createHorizontalGlue());
 		layoutConstraints.gridy++;
 		contentPane.add(/* new JScrollPane */(bar), layoutConstraints);
-		final JMenuBar menuBar = new JMenuBar();
-		final JMenu menu = new JMenu(TextUtils.getText("plugins/TimeManagement.xml_menu_actions"));
-		final AbstractAction[] actionList = new AbstractAction[] { gotoAction,  replaceSelectedAction,
-		        replaceAllAction, exportAction, disposeAction };
-		for (int i = 0; i < actionList.length; i++) {
-			final AbstractAction action = actionList[i];
-			final JMenuItem item = menu.add(action);
-			item.setIcon(new BlindIcon(UIBuilder.ICON_SIZE));
-		}
-		menuBar.add(menu);
-		dialog.setJMenuBar(menuBar);
 		final ListSelectionModel rowSM = tableView.getSelectionModel();
 		rowSM.addListSelectionListener(new ListSelectionListener() {
 			@Override
@@ -788,7 +628,6 @@ public class NodeList {
 				}
 				final ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 				final boolean enable = !(lsm.isSelectionEmpty());
-				replaceSelectedAction.setEnabled(enable);
 				gotoAction.setEnabled(enable);
 				exportAction.setEnabled(enable);
 			}
@@ -839,6 +678,14 @@ public class NodeList {
 		mapController.addNodeChangeListener(mapChangeListener);
 		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(mapChangeListener);
 		dialog.setVisible(true);
+	}
+
+	protected void addReplacementButtons(final Box bar) {
+
+	}
+
+
+	protected void createReplacementUI(Container contentPane, GridBagConstraints layoutConstraints) {
 	}
 
 	/**
