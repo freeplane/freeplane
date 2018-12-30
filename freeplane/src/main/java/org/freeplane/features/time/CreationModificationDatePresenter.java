@@ -98,9 +98,9 @@ public class CreationModificationDatePresenter {
 		if (formatter == null) {
 			final StringBuilder sb = new StringBuilder();
 			sb.append("<html>");
-			sb.append(TextUtils.getText("plugins/TimeList.xml_Created"));
+			sb.append(TextUtils.getText("reminder.Created"));
 			sb.append(":  {0,date} {0,time}<br>");
-			sb.append(TextUtils.getText("plugins/TimeList.xml_Modified"));
+			sb.append(TextUtils.getText("reminder.Modified"));
 			sb.append(": {1,date} {1,time}</html>");
 			String tooltipFormat = sb.toString();
 			formatter = new MessageFormat(tooltipFormat);

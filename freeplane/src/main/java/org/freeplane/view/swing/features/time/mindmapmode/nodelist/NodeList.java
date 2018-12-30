@@ -299,15 +299,15 @@ class NodeList {
 	protected final int nodeReminderColumn;
 	private final int nodeCreatedColumn;
 	private final int nodeModifiedColumn;
-	private static final String PLUGINS_TIME_LIST_XML_CREATED = "plugins/TimeList.xml_Created";
-	private static final String PLUGINS_TIME_LIST_XML_REMINDER = "plugins/TimeList.xml_Reminder";
-	private static final String PLUGINS_TIME_LIST_XML_ICONS = "plugins/TimeList.xml_Icons";
-	private static final String PLUGINS_TIME_LIST_XML_MODIFIED = "plugins/TimeList.xml_Modified";
-	private static final String PLUGINS_TIME_LIST_XML_NOTES = "plugins/TimeList.xml_Notes";
-	private static final String PLUGINS_TIME_LIST_XML_DETAILS = "plugins/TimeList.xml_Details";
+	private static final String REMINDER_TEXT_CREATED = "reminder.Created";
+	private static final String REMINDER_TEXT_REMINDER = "reminder.Reminder";
+	private static final String REMINDER_TEXT_ICONS = "reminder.Icons";
+	private static final String REMINDER_TEXT_MODIFIED = "reminder.Modified";
+	private static final String REMINDER_TEXT_NOTES = "reminder.Notes";
+	private static final String REMINDER_TEXT_DETAILS = "reminder.Details";
 
-	private static final String PLUGINS_TIME_LIST_XML_MAP = "plugins/TimeList.xml_Map";
-	private static final String PLUGINS_TIME_LIST_XML_TEXT = "plugins/TimeList.xml_Text";
+	private static final String REMINDER_TEXT_MAP = "reminder.Map";
+	private static final String REMINDER_TEXT_TEXT = "reminder.Text";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_CLOSE = "plugins/TimeManagement.xml_closeButton";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_FIND = "plugins/TimeManagement.xml_Find";
 	public static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
@@ -469,14 +469,14 @@ class NodeList {
 			dialog.toFront();
 			return;
 		}
-		COLUMN_MODIFIED = TextUtils.getText(PLUGINS_TIME_LIST_XML_MODIFIED);
-		COLUMN_CREATED = TextUtils.getText(PLUGINS_TIME_LIST_XML_CREATED);
-		COLUMN_ICONS = TextUtils.getText(PLUGINS_TIME_LIST_XML_ICONS);
-		COLUMN_TEXT = TextUtils.getText(PLUGINS_TIME_LIST_XML_TEXT);
-		COLUMN_MAP = TextUtils.getText(PLUGINS_TIME_LIST_XML_MAP);
-		COLUMN_DETAILS= TextUtils.getText(PLUGINS_TIME_LIST_XML_DETAILS);
-		COLUMN_REMINDER = TextUtils.getText(PLUGINS_TIME_LIST_XML_REMINDER);
-		COLUMN_NOTES = TextUtils.getText(PLUGINS_TIME_LIST_XML_NOTES);
+		COLUMN_MODIFIED = TextUtils.getText(REMINDER_TEXT_MODIFIED);
+		COLUMN_CREATED = TextUtils.getText(REMINDER_TEXT_CREATED);
+		COLUMN_ICONS = TextUtils.getText(REMINDER_TEXT_ICONS);
+		COLUMN_TEXT = TextUtils.getText(REMINDER_TEXT_TEXT);
+		COLUMN_MAP = TextUtils.getText(REMINDER_TEXT_MAP);
+		COLUMN_DETAILS= TextUtils.getText(REMINDER_TEXT_DETAILS);
+		COLUMN_REMINDER = TextUtils.getText(REMINDER_TEXT_REMINDER);
+		COLUMN_NOTES = TextUtils.getText(REMINDER_TEXT_NOTES);
 		dialog = new JDialog(UITools.getCurrentFrame(), modal /* modal */);
 		dialog.setTitle(TextUtils.getText(windowTitle));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
