@@ -310,7 +310,7 @@ class NodeList {
 	private static final String REMINDER_TEXT_TEXT = "reminder.Text";
 	private static final String REMINDER_TEXT_CLOSE = "reminder.closeButton";
 	private static final String REMINDER_TEXT_FIND = "reminder.Find";
-	public static final String REMINDER_TEXT_WINDOW_TITLE = "reminder.WindowTitle";
+	static final String REMINDER_TEXT_WINDOW_TITLE = "reminder.WindowTitle";
 	public static final String REMINDER_TEXT_WINDOW_TITLE_ALL_NODES = "reminder.WindowTitle_All_Nodes";
 	private final String windowPreferenceStorageProperty;
 

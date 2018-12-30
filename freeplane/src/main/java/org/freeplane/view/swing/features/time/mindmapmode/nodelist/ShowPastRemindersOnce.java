@@ -30,6 +30,7 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
  * Feb 20, 2009
  */
 public class ShowPastRemindersOnce implements Runnable {
+	protected static final String REMINDER_TEXT_WINDOW_TITLE = "reminder.WindowTitle_pastReminders";
 	private boolean listIsShown;
 
 	/**
@@ -61,7 +62,7 @@ public class ShowPastRemindersOnce implements Runnable {
 						return;
 					}
 					final long currentTimeMillis = System.currentTimeMillis();
-					NodeListWithReminders timeList = new NodeListWithReminders(NodeList.REMINDER_TEXT_WINDOW_TITLE,
+					NodeListWithReminders timeList = new NodeListWithReminders(REMINDER_TEXT_WINDOW_TITLE,
 						(node, reminder) -> reminder != null && reminder.getRemindUserAt() < currentTimeMillis,
 						true, "allmaps.timelistwindow.configuration") {
 
