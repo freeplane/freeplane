@@ -207,6 +207,7 @@
 				<boolean name="pasteImagesFromFiles"/>
 			</separator>
 			<separator name="reminderOptions">
+				<remind_value name="reminder.showPastRemindersOnStart" />
 				<boolean name="remindersBlink" />
 				<boolean name="remindersShowNotifications" />
 				<time_period name="remindersStandardDelay" />
