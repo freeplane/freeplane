@@ -33,6 +33,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import org.freeplane.core.extension.IExtension;
@@ -63,6 +64,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.features.time.mindmapmode.TimeManagement.JTimePanel;
 import org.freeplane.view.swing.features.time.mindmapmode.nodelist.AllMapsNodeListAction;
 import org.freeplane.view.swing.features.time.mindmapmode.nodelist.NodeListAction;
+import org.freeplane.view.swing.features.time.mindmapmode.nodelist.ShowPastRemindersOnce;
 import org.freeplane.view.swing.features.time.mindmapmode.nodelist.TimeListAction;
 import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 
@@ -72,6 +74,7 @@ import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 @NodeHookDescriptor(hookName = "plugins/TimeManagementReminder.xml", onceForMap = false)
 public class ReminderHook extends PersistentNodeHook implements IExtension {
 
+	private static final ShowPastRemindersOnce SHOW_PAST_REMINDERS = new ShowPastRemindersOnce();
 	private static final String REMINDERS_BLINK = "remindersBlink";
 	//******************************************
 	@EnabledAction(checkOnNodeChange = true)
@@ -318,7 +321,13 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 
 	private void scheduleTimer(final ReminderExtension model) {
 		final Date date = new Date(model.getRemindUserAt());
-		scheduleTimer(model, new TimerBlinkTask(this, model, false, System.currentTimeMillis() < date.getTime() + ReminderExtension.BLINKING_PERIOD));
+		final long fireTime = System.currentTimeMillis() - ReminderExtension.BLINKING_PERIOD;
+		final long reminderTime = date.getTime();
+		final boolean reminderTimePassed = fireTime >= reminderTime;
+		final boolean runScript = ! reminderTimePassed;
+		scheduleTimer(model, new TimerBlinkTask(this, model, false, runScript));
+		if(reminderTimePassed)
+			SwingUtilities.invokeLater(SHOW_PAST_REMINDERS);
 		model.displayState(ClockState.CLOCK_VISIBLE, model.getNode(), false);
 	}
 

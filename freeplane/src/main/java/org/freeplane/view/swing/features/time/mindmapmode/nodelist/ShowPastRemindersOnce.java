@@ -17,39 +17,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.view.swing.features.time.mindmapmode;
+package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
-import java.util.TimerTask;
-
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 
 
 /**
  * @author Dimitry Polivaev
  * Feb 20, 2009
  */
-class TimerBlinkTask extends TimerTask {
-	private final ReminderHook reminderController;
-	/**
-	 *
-	 */
-	private final ReminderExtension reminderExtension;
-	private boolean stateAdded = false;
-	private boolean runScript;
+public class ShowPastRemindersOnce implements Runnable {
 	private boolean alreadyExecuted;
 
 	/**
 	 * @param b
 	 */
-	public TimerBlinkTask(final ReminderHook reminderController, final ReminderExtension reminderExtension,
-	                      final boolean stateAdded, boolean runScript) {
+	public ShowPastRemindersOnce() {
 		super();
-		this.reminderController = reminderController;
-		this.reminderExtension = reminderExtension;
-		this.stateAdded = stateAdded;
-		this.runScript = runScript;
 		alreadyExecuted = false;
 	}
 
@@ -59,23 +46,20 @@ class TimerBlinkTask extends TimerTask {
 
 			@Override
 			public void run() {
-				if(runScript){
-					runScript = false;
-					reminderController.runScript(reminderExtension);
-				}
 				if(! alreadyExecuted){
-					if(runScript && ResourceController.getResourceController().getBooleanProperty("remindersShowNotifications"))
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								reminderController.showNotificationPopup(reminderExtension);
-							}
-						});
-
 					alreadyExecuted = true;
+					final int showResult = OptionalDontShowMeAgainDialog.show("OptionPanel.plugins/TimeManagement.xml_showPastRemindersOnStart", "confirmation",
+					    "plugins/TimeManagement.xml_showPastRemindersOnStart",
+					    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
+					if (showResult != JOptionPane.OK_OPTION) {
+						return;
+					}
+					final long currentTimeMillis = System.currentTimeMillis();
+					NodeListWithReminders timeList = new NodeListWithReminders(NodeList.PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE,
+						(node, reminder) -> reminder != null && reminder.getRemindUserAt() < currentTimeMillis,
+						true, "timelistwindow.configuration");
+					timeList.startup();
 				}
-				stateAdded = !stateAdded;
-				reminderController.blink(reminderExtension, stateAdded);
 			}
 		});
 	}

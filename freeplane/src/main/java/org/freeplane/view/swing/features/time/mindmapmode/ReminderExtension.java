@@ -21,6 +21,7 @@ package org.freeplane.view.swing.features.time.mindmapmode;
 
 import java.util.Date;
 import java.util.Timer;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.map.IMapChangeListener;
@@ -38,7 +39,7 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
 	/**
 	 */
 	public static ReminderExtension getExtension(final NodeModel node) {
-		return (ReminderExtension) node.getExtension(ReminderExtension.class);
+		return node.getExtension(ReminderExtension.class);
 	}
 
 	private final NodeModel node;
@@ -64,7 +65,7 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
 	public void setRemindUserAt(final long remindUserAt) {
 		this.remindUserAt = remindUserAt;
 	}
-	
+
 
 	public PeriodUnit getPeriodUnit() {
     	return periodUnit;
@@ -131,28 +132,34 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
 		return false;
 	}
 
+	@Override
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
 		displayStateIcon(parent, ClockState.CLOCK_VISIBLE);
 	}
 
+	@Override
 	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 		displayStateIcon(nodeMoveEvent.newParent, ClockState.CLOCK_VISIBLE);
 	}
 
+	@Override
 	public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 		displayStateIcon(nodeDeletionEvent.parent, null);
 	}
 
+	@Override
 	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 		displayStateIcon(nodeMoveEvent.oldParent, null);
 	}
 
+	@Override
 	public void mapChanged(final MapChangeEvent event) {
 	}
 
+	@Override
 	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 	}
-	
+
 	public void displayState(final ClockState stateAdded, final NodeModel pNode,
 	                  final boolean recurse) {
 		if(stateAdded != null)

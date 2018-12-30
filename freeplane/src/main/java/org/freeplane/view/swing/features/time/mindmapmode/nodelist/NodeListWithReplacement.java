@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.AbstractAction;
-import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -131,7 +130,7 @@ public class NodeListWithReplacement extends NodeList{
 	}
 
 	@Override
-	protected void createReplacementUI(final Container contentPane, final GridBagConstraints layoutConstraints) {
+	protected void createSpecificUI(final Container contentPane, final GridBagConstraints layoutConstraints) {
 		layoutConstraints.gridy++;
 		layoutConstraints.weightx = 0.0;
 		layoutConstraints.gridwidth = 1;
@@ -147,7 +146,7 @@ public class NodeListWithReplacement extends NodeList{
 		contentPane.add(/* new JScrollPane */(mFilterTextReplaceField), layoutConstraints);
 	}
 	@Override
-	protected void addReplacementButtons(final Box bar) {
+	protected void createSpecificButtons(final Container container) {
 		final AbstractAction replaceAllAction = new AbstractAction(TextUtils
 		    .getText("plugins/TimeManagement.xml_Replace_All")) {
 			/**
@@ -175,8 +174,8 @@ public class NodeListWithReplacement extends NodeList{
 		};
 		final JButton replaceSelectedButton = new JButton(replaceSelectedAction);
 		replaceSelectedAction.setEnabled(false);
-		bar.add(replaceAllButton);
-		bar.add(replaceSelectedButton);
+		container.add(replaceAllButton);
+		container.add(replaceSelectedButton);
 		final ListSelectionModel rowSM1 = tableView.getSelectionModel();
 		rowSM1.addListSelectionListener(new ListSelectionListener() {
 			@Override

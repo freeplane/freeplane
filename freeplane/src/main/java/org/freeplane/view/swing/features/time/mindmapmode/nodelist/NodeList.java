@@ -296,7 +296,7 @@ class NodeList {
 	private final int nodeIconColumn;
 	final int nodeDetailsColumn;
 	final int nodeNotesColumn;
-	private final int nodeReminderColumn;
+	protected final int nodeReminderColumn;
 	private final int nodeCreatedColumn;
 	private final int nodeModifiedColumn;
 	private static final String PLUGINS_TIME_LIST_XML_CREATED = "plugins/TimeList.xml_Created";
@@ -340,7 +340,7 @@ class NodeList {
 	    this(false, windowTitle, nodeFilter, searchInAllMaps, windowPreferenceStorageProperty);
     }
 
-	public NodeList( final boolean modal, String windowTitle, final NodeFilter nodeFilter, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
+	NodeList( final boolean modal, String windowTitle, final NodeFilter nodeFilter, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
 		this.windowTitle = windowTitle;
 		nodeMapColumn = searchInAllMaps ? 0 : -1;
 		nodeTextColumn = nodeMapColumn + 1;
@@ -423,8 +423,8 @@ class NodeList {
 
 	/**
 	 */
-	private NodeModel getMindMapNode(final int focussedRow) {
-		final NodeModel selectedNode = ((TextHolder) tableView.getModel().getValueAt(focussedRow,
+	protected NodeModel getMindMapNode(final int row) {
+		final NodeModel selectedNode = ((TextHolder) tableView.getModel().getValueAt(row,
 		    nodeTextColumn)).getNode();
 		return selectedNode;
 	}
@@ -536,7 +536,7 @@ class NodeList {
 		layoutConstraints.gridwidth = GridBagConstraints.REMAINDER;
 		layoutConstraints.gridy++;
 		contentPane.add(/* new JScrollPane */(mFilterTextSearchField), layoutConstraints);
-		createReplacementUI(contentPane, layoutConstraints);
+		createSpecificUI(contentPane, layoutConstraints);
 		dateRenderer = new DateRenderer();
 		textRenderer = new TextRenderer();
 		iconsRenderer = new IconsRenderer();
@@ -614,7 +614,7 @@ class NodeList {
 		bar.add(Box.createHorizontalGlue());
 		bar.add(cancelButton);
 		bar.add(exportButton);
-		addReplacementButtons(bar);
+		createSpecificButtons(bar);
 		bar.add(gotoButton);
 		bar.add(Box.createHorizontalGlue());
 		layoutConstraints.gridy++;
@@ -680,12 +680,12 @@ class NodeList {
 		dialog.setVisible(true);
 	}
 
-	protected void addReplacementButtons(final Box bar) {
+	protected void createSpecificButtons(final Container container) {
 
 	}
 
 
-	protected void createReplacementUI(Container contentPane, GridBagConstraints layoutConstraints) {
+	protected void createSpecificUI(Container contentPane, GridBagConstraints layoutConstraints) {
 	}
 
 	/**
