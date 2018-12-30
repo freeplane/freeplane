@@ -321,7 +321,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 
 	private void scheduleTimer(final ReminderExtension model) {
 		final Date date = new Date(model.getRemindUserAt());
-		final long fireTime = System.currentTimeMillis() - ReminderExtension.BLINKING_PERIOD;
+		final long fireTime = SHOW_PAST_REMINDERS.timeLimit();
 		final long reminderTime = date.getTime();
 		final boolean reminderTimePassed = fireTime >= reminderTime;
 		final boolean runScript = ! reminderTimePassed;

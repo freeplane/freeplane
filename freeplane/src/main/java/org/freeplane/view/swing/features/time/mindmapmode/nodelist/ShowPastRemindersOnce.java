@@ -30,15 +30,17 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
  * Feb 20, 2009
  */
 public class ShowPastRemindersOnce implements Runnable {
+	private static final long UNDEFINED = - 1;
 	protected static final String REMINDER_TEXT_WINDOW_TITLE = "reminder.WindowTitle_pastReminders";
 	private boolean listIsShown;
+	private long timeLimit = UNDEFINED;
 
 	/**
 	 * @param b
 	 */
 	public ShowPastRemindersOnce() {
 		super();
-		listIsShown = false;
+		reset();
 	}
 
 	@Override
@@ -56,7 +58,7 @@ public class ShowPastRemindersOnce implements Runnable {
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
-								listIsShown = false;
+								reset();
 							}
 						});
 						return;
@@ -69,7 +71,7 @@ public class ShowPastRemindersOnce implements Runnable {
 							@Override
 							protected void disposeDialog() {
 								super.disposeDialog();
-								listIsShown = false;
+								reset();
 							}
 
 					};
@@ -81,5 +83,16 @@ public class ShowPastRemindersOnce implements Runnable {
 
 	public boolean alreadyExecuted(){
 		return listIsShown;
+	}
+
+	public long timeLimit() {
+		if(timeLimit == UNDEFINED)
+			timeLimit = System.currentTimeMillis();
+		return timeLimit;
+	}
+
+	private void reset() {
+		listIsShown = false;
+		timeLimit = UNDEFINED;
 	}
 }
