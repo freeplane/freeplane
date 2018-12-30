@@ -26,6 +26,7 @@ import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
@@ -37,7 +38,6 @@ import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.map.IExtensionCopier;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -55,6 +55,7 @@ public class MEdgeController extends EdgeController {
 	        this.modeController = modeController;
         }
 
+		@Override
 		public void copy(final Object key, final NodeModel from, final NodeModel to) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
@@ -63,7 +64,7 @@ public class MEdgeController extends EdgeController {
 		}
 
 		public void copy(final NodeModel from, final NodeModel to) {
-			final EdgeModel fromStyle = (EdgeModel) from.getExtension(EdgeModel.class);
+			final EdgeModel fromStyle = from.getExtension(EdgeModel.class);
 			if (fromStyle == null) {
 				return;
 			}
@@ -79,6 +80,7 @@ public class MEdgeController extends EdgeController {
 			    toStyle.setWidth(width);
 		}
 
+		@Override
 		public void remove(final Object key, final NodeModel from) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
@@ -86,15 +88,16 @@ public class MEdgeController extends EdgeController {
 			from.removeExtension(EdgeModel.class);
 		}
 
+		@Override
 		public void remove(final Object key, final NodeModel from, final NodeModel which) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
 			}
-			final EdgeModel whichStyle = (EdgeModel) which.getExtension(EdgeModel.class);
+			final EdgeModel whichStyle = which.getExtension(EdgeModel.class);
 			if (whichStyle == null) {
 				return;
 			}
-			final EdgeModel fromStyle = (EdgeModel) from.getExtension(EdgeModel.class);
+			final EdgeModel fromStyle = from.getExtension(EdgeModel.class);
 			if (fromStyle == null) {
 				return;
 			}
@@ -120,6 +123,7 @@ public class MEdgeController extends EdgeController {
 				from.addExtension(delta);
 		}
 
+		@Override
 		public void resolveParentExtensions(Object key, NodeModel to) {
 			if (!key.equals(LogicalStyleKeys.NODE_STYLE)) {
 				return;
@@ -141,7 +145,7 @@ public class MEdgeController extends EdgeController {
 				}
 			}
         }
-		
+
 		private ObjectRule<Color, Rules> getColorRule (NodeModel node) {
 			return modeController.getExtension(EdgeController.class).getColorRule(node);
 		}
@@ -221,15 +225,18 @@ public class MEdgeController extends EdgeController {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				EdgeModel.createEdgeModel(node).setColor(color);
 				modeController.getMapController().nodeChanged(node);
 			}
 
+			@Override
 			public String getDescription() {
 				return "setColor";
 			}
 
+			@Override
 			public void undo() {
 				EdgeModel.createEdgeModel(node).setColor(oldColor);
 				modeController.getMapController().nodeChanged(node);
@@ -254,6 +261,7 @@ public class MEdgeController extends EdgeController {
 			}
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				EdgeModel.createEdgeModel(node).setStyle(style);
 				modeController.getMapController().nodeChanged(node);
@@ -261,7 +269,6 @@ public class MEdgeController extends EdgeController {
 			}
 
 			private void edgeStyleRefresh(final NodeModel node) {
-				MapController r = modeController.getMapController();
 				for (final NodeModel child : node.getChildren()) {
 					if(child.getViewers().isEmpty())
 						continue;
@@ -273,10 +280,12 @@ public class MEdgeController extends EdgeController {
 				}
 			}
 
+			@Override
 			public String getDescription() {
 				return "setStyle";
 			}
 
+			@Override
 			public void undo() {
 				EdgeModel.createEdgeModel(node).setStyle(oldStyle);
 				modeController.getMapController().nodeChanged(node);
@@ -293,6 +302,7 @@ public class MEdgeController extends EdgeController {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				EdgeModel.createEdgeModel(node).setWidth(width);
 				modeController.getMapController().nodeChanged(node);
@@ -300,7 +310,6 @@ public class MEdgeController extends EdgeController {
 			}
 
 			private void edgeWidthRefresh(final NodeModel node) {
-				MapController r = modeController.getMapController();
 				for (final NodeModel child : node.getChildren()) {
 					if(child.getViewers().isEmpty())
 						continue;
@@ -312,10 +321,12 @@ public class MEdgeController extends EdgeController {
 				}
 			}
 
+			@Override
 			public String getDescription() {
 				return "setWidth";
 			}
 
+			@Override
 			public void undo() {
 				EdgeModel.createEdgeModel(node).setWidth(oldWidth);
 				modeController.getMapController().nodeChanged(node);
@@ -332,6 +343,7 @@ public class MEdgeController extends EdgeController {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public void act() {
 				EdgeModel.createEdgeModel(node).setDash(dash);
 				modeController.getMapController().nodeChanged(node);
@@ -339,7 +351,6 @@ public class MEdgeController extends EdgeController {
 			}
 
 			private void edgeWidthRefresh(final NodeModel node) {
-				MapController r = modeController.getMapController();
 				for (final NodeModel child : node.getChildren()) {
 					if(child.getViewers().isEmpty())
 						continue;
@@ -351,10 +362,12 @@ public class MEdgeController extends EdgeController {
 				}
 			}
 
+			@Override
 			public String getDescription() {
 				return "setDash";
 			}
 
+			@Override
 			public void undo() {
 				EdgeModel.createEdgeModel(node).setDash(oldDash);
 				modeController.getMapController().nodeChanged(node);

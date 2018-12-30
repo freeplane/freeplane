@@ -764,7 +764,6 @@ public class MMapController extends MapController {
      */
     private List<NodeModel> getSiblingsSortedOnSide(final NodeModel node) {
         final ArrayList<NodeModel> nodes = new ArrayList<NodeModel>(node.getChildCount());
-		MapController r = Controller.getCurrentModeController().getMapController();
         for (final NodeModel child : node.getChildren()) {
             nodes.add(child);
         }

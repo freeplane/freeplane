@@ -29,10 +29,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 
 /**
  * @author foltin
@@ -130,8 +127,6 @@ public class ScriptingEngine {
     }
 
 	static void performScriptOperationRecursive(final NodeModel node) {
-		ModeController modeController = Controller.getCurrentModeController();
-		MapController r = modeController.getMapController();
 		for (final NodeModel child : node.getChildren()) {
 			performScriptOperationRecursive(child);
 		}

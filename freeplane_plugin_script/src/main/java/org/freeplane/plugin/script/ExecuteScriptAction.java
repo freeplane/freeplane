@@ -27,10 +27,8 @@ import java.util.List;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /**
@@ -125,8 +123,6 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 	}
 
 	private void executeScriptRecursive(final NodeModel node) {
-		ModeController modeController = Controller.getCurrentModeController();
-		MapController r = modeController.getMapController();
 		final NodeModel[] children = node.getChildren()
 		    .toArray(new NodeModel[] {});
 		for (final NodeModel child : children) {

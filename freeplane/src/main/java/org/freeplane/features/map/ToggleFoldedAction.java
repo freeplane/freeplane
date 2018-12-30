@@ -31,7 +31,7 @@ import org.freeplane.features.mode.Controller;
 class ToggleFoldedAction extends AFreeplaneAction {
 	static final String NAME = "toggleFolded";
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -39,6 +39,7 @@ class ToggleFoldedAction extends AFreeplaneAction {
 		super("ToggleFoldedAction");
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		MapController r = Controller.getCurrentModeController().getMapController();
 		final Collection<NodeModel> selectedNodes = r.getSelectedNodes();

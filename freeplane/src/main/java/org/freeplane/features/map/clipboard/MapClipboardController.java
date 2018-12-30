@@ -45,7 +45,6 @@ import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -82,7 +81,6 @@ public class MapClipboardController implements IExtension, ClipboardController {
 		if (color != null) {
 			colors.add(color);
 		}
-		MapController r = Controller.getCurrentModeController().getMapController();
 		for (final NodeModel child : node.getChildren()) {
 			collectColors(child, colors);
 		}
@@ -282,7 +280,6 @@ public class MapClipboardController implements IExtension, ClipboardController {
 
 	private void writeChildrenRTF(final NodeModel node, final Writer fileout, final int depth,
 	                              final HashMap<Color, Integer> colorTable) throws IOException {
-		MapController r = Controller.getCurrentModeController().getMapController();
 		for (final NodeModel child : node.getChildren()) {
 			if (child.hasVisibleContent()) {
 				writeRTF(child, fileout, depth + 1, colorTable);
@@ -295,7 +292,6 @@ public class MapClipboardController implements IExtension, ClipboardController {
 
 	private void writeChildrenText(final NodeModel node, final Writer fileout, final int depth, String indentation)
 	        throws IOException {
-		MapController r = Controller.getCurrentModeController().getMapController();
 		for (final NodeModel child : node.getChildren()) {
 			if (child.hasVisibleContent()) {
 				writeTXT(child, fileout, depth + 1, indentation);

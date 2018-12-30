@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
+
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -30,7 +31,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -43,7 +43,7 @@ import org.freeplane.features.url.UrlManager;
  */
 class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -51,6 +51,7 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 		super("ImportLinkedBranchWithoutRootAction");
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final MapModel map = Controller.getCurrentController().getMap();
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -67,7 +68,6 @@ class ImportLinkedBranchWithoutRootAction extends AFreeplaneAction {
 			    .getPath()).getFile());
 			final NodeModel node = ((MFileManager) UrlManager.getController()).loadTree(map, file);
 			map.setURL(url);
-			MapController r = Controller.getCurrentModeController().getMapController();
 			for (final NodeModel child : node.getChildren()) {
 				child.setParent(null);
 				((MMapController) modeController.getMapController()).insertNode(child, selected);

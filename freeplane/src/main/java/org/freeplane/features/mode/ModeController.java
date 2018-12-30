@@ -123,16 +123,19 @@ public class ModeController extends AController implements FreeplaneActions{
 		final NodeModel backup = new NodeModel(null);
 		copyExtensions(key, to, backup);
 		final IActor actor = new IActor() {
+			@Override
 			public void undo() {
 				removeExtensions(key, to);
 				copyExtensions(key, backup, to);
 				getMapController().nodeChanged(to);
 			}
 
+			@Override
 			public String getDescription() {
 				return "undoableCopyExtensions";
 			}
 
+			@Override
 			public void act() {
 				copyExtensions(key, from, to);
 				getMapController().nodeChanged(to);
@@ -167,15 +170,18 @@ public class ModeController extends AController implements FreeplaneActions{
 		final NodeModel backup = new NodeModel(null);
 		copyExtensions(key, from, backup);
 		final IActor actor = new IActor() {
+			@Override
 			public void undo() {
 				copyExtensions(key, backup, from);
 				getMapController().nodeChanged(from);
 			}
 
+			@Override
 			public String getDescription() {
 				return "undoableCopyExtensions";
 			}
 
+			@Override
 			public void act() {
 				removeExtensions(key, from, which);
 				getMapController().nodeChanged(from);
@@ -204,15 +210,18 @@ public class ModeController extends AController implements FreeplaneActions{
 		final NodeModel backup = new NodeModel(null);
 		copyExtensions(key, to, backup);
 		final IActor actor = new IActor() {
+			@Override
 			public void undo() {
 				copyExtensions(key, backup, to);
 				getMapController().nodeChanged(to);
 			}
 
+			@Override
 			public String getDescription() {
 				return "undoableCopyExtensions";
 			}
 
+			@Override
 			public void act() {
 				resolveParentExtensions(key, to);
 				getMapController().nodeChanged(to);
@@ -292,7 +301,6 @@ public class ModeController extends AController implements FreeplaneActions{
 
 	public boolean hasOneVisibleChild(final NodeModel parent) {
 		int count = 0;
-		MapController r = getMapController();
 		for (final NodeModel child : parent.getChildren()) {
 			if (child.hasVisibleContent()) {
 				count++;

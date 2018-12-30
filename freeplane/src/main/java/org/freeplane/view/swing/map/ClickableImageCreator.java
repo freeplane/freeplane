@@ -24,7 +24,6 @@ import java.util.Vector;
 import javax.swing.JComponent;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.text.TextController;
@@ -86,7 +85,6 @@ class ClickableImageCreator {
 			holder.coordinates.width = content.getWidth();
 			holder.coordinates.height = content.getHeight();
 			area.add(holder);
-			MapController r = mapView.getModeController().getMapController();
 			for (final NodeModel child: node.getChildren()) {
 				createArea(child);
 			}
