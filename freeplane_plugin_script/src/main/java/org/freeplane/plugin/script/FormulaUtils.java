@@ -24,7 +24,7 @@ public class FormulaUtils {
 	public static Object evalIfScript(final NodeModel nodeModel, final String text){
 		if (textContainsFormula(text)) {
 			final String script = scriptOf(text);
-			return eval(nodeModel, script);
+			return executeScript(nodeModel, script);
 		}
 		else {
 			return text;
@@ -74,7 +74,7 @@ public class FormulaUtils {
 	/** evaluate text as a script.
 	 * @return the evaluation result.
 	 * @throws ExecuteScriptException */
-	private static Object eval(final NodeModel nodeModel, final String script) {
+	public static Object executeScript(final NodeModel nodeModel, final String script) {
 		final NodeScript nodeScript = new NodeScript(nodeModel, script);
 		final ScriptContext scriptContext = new ScriptContext(nodeScript);
 		final ScriptingPermissions restrictedPermissions = ScriptingPermissions.getFormulaPermissions();

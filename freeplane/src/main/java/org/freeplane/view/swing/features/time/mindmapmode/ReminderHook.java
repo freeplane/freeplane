@@ -41,6 +41,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IStateIconProvider;
@@ -354,7 +355,13 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		final Controller controller = modeController.getController();
 		if(! controller.getMapViewManager().getMaps(modeController.getModeName()).containsValue(map))
 			return;
-		starter.executeScript(node, script);
+		try {
+			starter.executeScript(node, script);
+		}
+		catch (Exception e) {
+			LogUtils.warn(e);
+			UITools.errorMessage(TextUtils.format("reminder_script_error", e.toString(), node.getMap().getTitle(), node.getID()));
+		}
     }
 	/**
 	 * @author Dimitry

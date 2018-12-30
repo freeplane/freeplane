@@ -33,7 +33,7 @@ public class NodeListWithReminders extends NodeList{
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				runScripts(true);
+				runScripts(false);
 			}
 		};
 		final JButton runAllButton = new JButton(runAllAction);
@@ -46,7 +46,7 @@ public class NodeListWithReminders extends NodeList{
 
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
-				runScripts(false);
+				runScripts(true);
 			}
 		};
 		final JButton runSelectedButton = new JButton(runSelectedAction);
