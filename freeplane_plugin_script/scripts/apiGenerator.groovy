@@ -24,7 +24,7 @@ import org.freeplane.plugin.script.proxy.ScriptUtils
 URI getApiLink(String path) {
     try {
         def apiBase = path.startsWith('org/freeplane') ? freeplaneApiBase
-                : 'http://groovy.codehaus.org/groovy-jdk'
+                : 'http://docs.groovy-lang.org/latest/html/groovy-jdk'
         return new URI(apiBase + '/' + path)
     } catch (Exception e) {
         logger.severe("could not create link for class ${path}", e)
@@ -63,7 +63,7 @@ def makeApi(Proxy.Node node, Class clazz) {
     classNode.style.font.bold = true
     clazz.getMethods().findAll {
         it.declaringClass == clazz || it.declaringClass.simpleName.endsWith('RO') ||
-		 it.declaringClass.getPackage().name == org.freeplane.api.Node.class.getPackage().name
+        it.declaringClass.getPackage().name == org.freeplane.api.Node.class.getPackage().name
     }.each {
         if (!addProperty(memberMap, it))
             addMethod(memberMap, it);
@@ -107,9 +107,9 @@ def createMemberNode(String memberName, Map<String, Object> attribs, Proxy.Node 
         // property
         def mode = (attribs['type_read'] ? 'r' : '') + (attribs['type_write'] ? 'w' : '')
         def type = attribs['type_read'] ? attribs['type_read'] : attribs['type_write']
-        //	if (mode == 'rw' && attribs['type_read'] != attribs['type_write']) {
-        //		logger.severe("property ${memberName} has differing getter and setter types")
-        //	}
+        //    if (mode == 'rw' && attribs['type_read'] != attribs['type_write']) {
+        //        logger.severe("property ${memberName} has differing getter and setter types")
+        //    }
         memberNode = classNode.createChild(formatProperty(memberName, formatReturnType(type), mode))
         memberNode.icons.add('wizard')
         [ 'method_read', 'method_write' ].each {
@@ -118,6 +118,9 @@ def createMemberNode(String memberName, Map<String, Object> attribs, Proxy.Node 
                 methodNode.icons.add('bookmark')
             }
         }
+    }
+    if (attribs['deprecated']) {
+        memberNode.icons.add('closed')
     }
     return memberNode
 }
@@ -134,6 +137,7 @@ def addProperty(Map<String, Map<String, Object>> memberMap, Method method) {
         propertyMap['type_read'] = method.returnType
         propertyMap['method_read'] = method
         propertyMap['return_type'] = method.returnType
+        propertyMap['deprecated'] = isDeprecated(method)
     }
     else if (isSetter(method) && method.parameterTypes.size() == 1) {
         def propertyMap = getOrCreatePropertiesMap(memberMap, getPropertyName(method))
@@ -149,17 +153,18 @@ def addMethod(Map<String, Map<String, Object>> memberMap, Method method) {
     propertyMap['types'] = method.parameterTypes
     propertyMap['method'] = formatMethod(method)
     propertyMap['return_type'] = method.returnType
+    propertyMap['deprecated'] = isDeprecated(method)
 }
 
 def formatProperty(String property, String type, String mode) {
     return "<html><body><b>${property}</b>: ${type} (${mode})"
     // Plain text:
-    //	return "${property}: ${type} (${mode})"
+    //    return "${property}: ${type} (${mode})"
 }
 
 def formatMethodKey(Method method) {
-		return method.name +
-			'(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
+    return method.name +
+        '(' + method.parameterTypes.collect{ typeToString(it) }.join(', ') + ')'
 
 }
 
@@ -171,23 +176,23 @@ def formatParameterType(Class clazz) {
 
 
 def formatParameter(parameter) {
-	def parameterType = formatParameterType(parameter.type)
-	if(parameterType)
-		parameterType + ' ' + parameter.name;
-	else
-		parameter.name;
+    def parameterType = formatParameterType(parameter.type)
+    if(parameterType)
+        parameterType + ' ' + parameter.name;
+    else
+        parameter.name;
 }
 
 def formatReturnType(Class clazz) {
-	def parameterType = formatParameterType(clazz)
-	if(parameterType)
-		parameterType;
-	else
-		clazz.simpleName;
+    def parameterType = formatParameterType(clazz)
+    if(parameterType)
+        parameterType;
+    else
+        clazz.simpleName;
 }
 
 def formatMethod(Method method) {
-	def parameters =  method.metaClass.respondsTo(method, "getParameters") ? method.getParameters().collect{ formatParameter(it) } : method.parameterTypes.collect{ formatParameterType(it) }
+    def parameters =  method.metaClass.respondsTo(method, "getParameters") ? method.getParameters().collect{ formatParameter(it) } : method.parameterTypes.collect{ formatParameterType(it) }
     return '<html><body>' + formatReturnType(method.returnType) +
     ' <b>' + method.name + '</b>' +
     '(' + parameters.join(', ') + ')'
@@ -199,6 +204,10 @@ def isGetter(Method method) {
 
 def isSetter(Method method) {
     return method.name =~ '^set[A-Z].*'
+}
+
+def isDeprecated(Method method) {
+    return method.isAnnotationPresent(Deprecated.class)
 }
 
 /** returns null if this is not a proper bean method name (get/set/is). */
@@ -288,7 +297,7 @@ createChild(web, 'Scripting API changes', 'http://freeplane.sourceforge.net/wiki
 
 def legend = newMap.root.createChild(LEGEND_NODE)
 initHeading(legend)
-def methodLegend = legend.createChild("normal methods have a 'bookmark' icon")
+def methodLegend = legend.createChild("Normal methods have a 'bookmark' icon")
 methodLegend.icons.add('bookmark')
 methodLegend.folded = true
 def propertyLegend = legend.createChild("Groovy properties have a 'wizard' icon")
@@ -302,8 +311,12 @@ propertyLegend.createChild("read-only properties are indicated by a trailing (r)
         createChild('if (node.leaf)\n    println "the id of this leaf node is " + node.id')
 propertyLegend.createChild("write-only and read-write properties are indicated by a trailing (w) or (rw)").
         createChild('node.text += " some suffix"')
-propertyLegend.createChild("properties with differing type of setter and getter have two nodes")
-legend.folded = true
+propertyLegend.createChild("Properties with differing type of setter and getter have two nodes")
+propertyLegend.folded = true
+def deprecatedLegend = legend.createChild("Deprecated methods have a 'closed' icon.")
+deprecatedLegend.createChild("Follow the class' link to the detailed API description to find out what to use instead.")
+deprecatedLegend.icons.add('closed')
+deprecatedLegend.folded = true
 
 c.deactivateUndo()
 newMap.saved = true
