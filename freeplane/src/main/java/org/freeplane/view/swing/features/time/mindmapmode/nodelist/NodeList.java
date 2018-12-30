@@ -344,24 +344,20 @@ public class NodeList {
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_CLOSE = "plugins/TimeManagement.xml_closeButton";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_FIND = "plugins/TimeManagement.xml_Find";
 	private static final String PLUGINS_TIME_MANAGEMENT_XML_REPLACE = "plugins/TimeManagement.xml_Replace";
-//	private static final String PLUGINS_TIME_MANAGEMENT_XML_SELECT = "plugins/TimeManagement.xml_Select";
 	public static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
 	public static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
 	private final String windowPreferenceStorageProperty;
-// = class.getName() + "_properties"
 	private static String replace(final Pattern p, String input, final String replacement) {
 		final String result = HtmlUtils.getReplaceResult(p, input, replacement);
 		return result;
 	}
 
-// // 	final private Controller controller;
 	private DateRenderer dateRenderer;
 	private JDialog dialog;
 	private IconsRenderer iconsRenderer;
 	final private JComboBox mFilterTextReplaceField;
 	final private JComboBox mFilterTextSearchField;
 	private FlatNodeTableFilterModel mFlatNodeTableFilterModel;
-// 	final private ModeController modeController;
 	private JTextField mNodePath;
 	private TextRenderer textRenderer;
 
