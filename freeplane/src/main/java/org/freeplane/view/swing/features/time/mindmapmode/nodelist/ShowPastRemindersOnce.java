@@ -55,7 +55,7 @@ public class ShowPastRemindersOnce implements Runnable {
 						return;
 					}
 					final long currentTimeMillis = System.currentTimeMillis();
-					NodeListWithReminders timeList = new NodeListWithReminders(NodeList.PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE,
+					NodeListWithReminders timeList = new NodeListWithReminders(NodeList.REMINDER_TEXT_WINDOW_TITLE,
 						(node, reminder) -> reminder != null && reminder.getRemindUserAt() < currentTimeMillis,
 						true, "timelistwindow.configuration");
 					timeList.startup();

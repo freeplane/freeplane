@@ -47,7 +47,7 @@ public class NodeListWithReplacement extends NodeList{
 		}
 	}
 
-	private static final String PLUGINS_TIME_MANAGEMENT_XML_REPLACE = "plugins/TimeManagement.xml_Replace";
+	private static final String REMINDER_TEXT_REPLACE = "plugins/TimeManagement.xml_Replace";
 	final private JComboBox mFilterTextReplaceField;
 	private final JCheckBox useRegexInReplace;
 
@@ -134,7 +134,7 @@ public class NodeListWithReplacement extends NodeList{
 		layoutConstraints.gridy++;
 		layoutConstraints.weightx = 0.0;
 		layoutConstraints.gridwidth = 1;
-		contentPane.add(new JLabel(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_REPLACE)), layoutConstraints);
+		contentPane.add(new JLabel(TextUtils.getText(REMINDER_TEXT_REPLACE)), layoutConstraints);
 		layoutConstraints.gridx = 5;
 		contentPane.add(new JLabel(TextUtils.getText("regular_expressions")), layoutConstraints);
 		layoutConstraints.gridx++;

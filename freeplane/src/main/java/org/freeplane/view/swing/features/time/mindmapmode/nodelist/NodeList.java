@@ -308,10 +308,10 @@ class NodeList {
 
 	private static final String REMINDER_TEXT_MAP = "reminder.Map";
 	private static final String REMINDER_TEXT_TEXT = "reminder.Text";
-	private static final String PLUGINS_TIME_MANAGEMENT_XML_CLOSE = "plugins/TimeManagement.xml_closeButton";
-	private static final String PLUGINS_TIME_MANAGEMENT_XML_FIND = "plugins/TimeManagement.xml_Find";
-	public static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
-	public static final String PLUGINS_TIME_MANAGEMENT_XML_WINDOW_TITLE_ALL_NODES = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
+	private static final String REMINDER_TEXT_CLOSE = "plugins/TimeManagement.xml_closeButton";
+	private static final String REMINDER_TEXT_FIND = "plugins/TimeManagement.xml_Find";
+	public static final String REMINDER_TEXT_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
+	public static final String REMINDER_TEXT_WINDOW_TITLE_ALL_NODES = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
 	private final String windowPreferenceStorageProperty;
 
 	private DateRenderer dateRenderer;
@@ -517,7 +517,7 @@ class NodeList {
 		layoutConstraints.weighty = 0.0;
 		layoutConstraints.anchor = GridBagConstraints.WEST;
 		layoutConstraints.fill = GridBagConstraints.HORIZONTAL;
-		contentPane.add(new JLabel(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_FIND)), layoutConstraints);
+		contentPane.add(new JLabel(TextUtils.getText(REMINDER_TEXT_FIND)), layoutConstraints);
 		layoutConstraints.gridwidth = 1;
 		layoutConstraints.gridx++;
 		contentPane.add(Box.createHorizontalStrut(40), layoutConstraints);
@@ -595,7 +595,7 @@ class NodeList {
 			}
 		};
 		final JButton gotoButton = new JButton(gotoAction);
-		final AbstractAction disposeAction = new AbstractAction(TextUtils.getText(PLUGINS_TIME_MANAGEMENT_XML_CLOSE)) {
+		final AbstractAction disposeAction = new AbstractAction(TextUtils.getText(REMINDER_TEXT_CLOSE)) {
 			/**
 			     *
 			     */
