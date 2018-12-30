@@ -373,7 +373,7 @@ class NodeList {
 	/**
 	 *
 	 */
-	private void disposeDialog() {
+	protected void disposeDialog() {
     	if(dialog == null || !dialog.isVisible()){
     		return;
     	}

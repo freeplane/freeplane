@@ -30,14 +30,14 @@ import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
  * Feb 20, 2009
  */
 public class ShowPastRemindersOnce implements Runnable {
-	private boolean alreadyExecuted;
+	private boolean listIsShown;
 
 	/**
 	 * @param b
 	 */
 	public ShowPastRemindersOnce() {
 		super();
-		alreadyExecuted = false;
+		listIsShown = false;
 	}
 
 	@Override
@@ -46,18 +46,32 @@ public class ShowPastRemindersOnce implements Runnable {
 
 			@Override
 			public void run() {
-				if(! alreadyExecuted){
-					alreadyExecuted = true;
+				if(! listIsShown){
+					listIsShown = true;
 					final int showResult = OptionalDontShowMeAgainDialog.show("OptionPanel.reminder.showPastRemindersOnStart", "confirmation",
 					    "reminder.showPastRemindersOnStart",
 					    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
 					if (showResult != JOptionPane.OK_OPTION) {
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								listIsShown = false;
+							}
+						});
 						return;
 					}
 					final long currentTimeMillis = System.currentTimeMillis();
 					NodeListWithReminders timeList = new NodeListWithReminders(NodeList.REMINDER_TEXT_WINDOW_TITLE,
 						(node, reminder) -> reminder != null && reminder.getRemindUserAt() < currentTimeMillis,
-						true, "timelistwindow.configuration");
+						true, "allmaps.timelistwindow.configuration") {
+
+							@Override
+							protected void disposeDialog() {
+								super.disposeDialog();
+								listIsShown = false;
+							}
+
+					};
 					timeList.startup();
 				}
 			}
@@ -65,6 +79,6 @@ public class ShowPastRemindersOnce implements Runnable {
 	}
 
 	public boolean alreadyExecuted(){
-		return alreadyExecuted;
+		return listIsShown;
 	}
 }
