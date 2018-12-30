@@ -754,6 +754,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		final String name = r.getModel().getTitle();
 		addToOrChangeInMapViews(name, getMapView());
 		changeToMapView(getMapView());
+		setMapTitles();
 	}
 
 	@Override
