@@ -308,10 +308,10 @@ class NodeList {
 
 	private static final String REMINDER_TEXT_MAP = "reminder.Map";
 	private static final String REMINDER_TEXT_TEXT = "reminder.Text";
-	private static final String REMINDER_TEXT_CLOSE = "plugins/TimeManagement.xml_closeButton";
-	private static final String REMINDER_TEXT_FIND = "plugins/TimeManagement.xml_Find";
-	public static final String REMINDER_TEXT_WINDOW_TITLE = "plugins/TimeManagement.xml_WindowTitle";
-	public static final String REMINDER_TEXT_WINDOW_TITLE_ALL_NODES = "plugins/TimeManagement.xml_WindowTitle_All_Nodes";
+	private static final String REMINDER_TEXT_CLOSE = "reminder.closeButton";
+	private static final String REMINDER_TEXT_FIND = "reminder.Find";
+	public static final String REMINDER_TEXT_WINDOW_TITLE = "reminder.WindowTitle";
+	public static final String REMINDER_TEXT_WINDOW_TITLE_ALL_NODES = "reminder.WindowTitle_All_Nodes";
 	private final String windowPreferenceStorageProperty;
 
 	private DateRenderer dateRenderer;
@@ -571,7 +571,7 @@ class NodeList {
 		@SuppressWarnings("serial")
 		JScrollPane scrollPane = new JScrollPane(mNodePath, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		contentPane.add(scrollPane, treeConstraints);
-		final AbstractAction exportAction = new AbstractAction(TextUtils.getText("plugins/TimeManagement.xml_Export")) {
+		final AbstractAction exportAction = new AbstractAction(TextUtils.getText("reminder.Export")) {
 			/**
 			     *
 			     */
@@ -583,7 +583,7 @@ class NodeList {
 			}
 		};
 		final JButton exportButton = new JButton(exportAction);
-		final AbstractAction gotoAction = new AbstractAction(TextUtils.getText("plugins/TimeManagement.xml_Goto")) {
+		final AbstractAction gotoAction = new AbstractAction(TextUtils.getText("reminder.Goto")) {
 			/**
 			     *
 			     */

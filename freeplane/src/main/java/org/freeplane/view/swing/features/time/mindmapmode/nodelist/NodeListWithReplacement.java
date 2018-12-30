@@ -47,7 +47,7 @@ public class NodeListWithReplacement extends NodeList{
 		}
 	}
 
-	private static final String REMINDER_TEXT_REPLACE = "plugins/TimeManagement.xml_Replace";
+	private static final String REMINDER_TEXT_REPLACE = "reminder.Replace";
 	final private JComboBox mFilterTextReplaceField;
 	private final JCheckBox useRegexInReplace;
 
@@ -148,7 +148,7 @@ public class NodeListWithReplacement extends NodeList{
 	@Override
 	protected void createSpecificButtons(final Container container) {
 		final AbstractAction replaceAllAction = new AbstractAction(TextUtils
-		    .getText("plugins/TimeManagement.xml_Replace_All")) {
+		    .getText("reminder.Replace_All")) {
 			/**
 			     *
 			     */
@@ -161,7 +161,7 @@ public class NodeListWithReplacement extends NodeList{
 		};
 		final JButton replaceAllButton = new JButton(replaceAllAction);
 		final AbstractAction replaceSelectedAction = new AbstractAction(TextUtils
-		    .getText("plugins/TimeManagement.xml_Replace_Selected")) {
+		    .getText("reminder.Replace_Selected")) {
 			/**
 			     *
 			     */

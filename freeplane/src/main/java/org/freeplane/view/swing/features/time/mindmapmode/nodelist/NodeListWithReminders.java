@@ -25,7 +25,7 @@ public class NodeListWithReminders extends NodeList{
 	@Override
 	protected void createSpecificButtons(final Container container) {
 		final AbstractAction runAllAction = new AbstractAction(TextUtils
-			.getText("plugins/TimeManagement.xml_Run_All")) {
+			.getText("reminder.Run_All")) {
 			/**
 			 *
 			 */
@@ -38,7 +38,7 @@ public class NodeListWithReminders extends NodeList{
 		};
 		final JButton runAllButton = new JButton(runAllAction);
 		final AbstractAction runSelectedAction = new AbstractAction(TextUtils
-			.getText("plugins/TimeManagement.xml_Run_Selected")) {
+			.getText("reminder.Run_Selected")) {
 			/**
 			 *
 			 */
@@ -52,7 +52,7 @@ public class NodeListWithReminders extends NodeList{
 		final JButton runSelectedButton = new JButton(runSelectedAction);
 		runSelectedAction.setEnabled(false);
 		final AbstractAction removeAllAction = new AbstractAction(TextUtils
-			.getText("plugins/TimeManagement.xml_Remove_All")) {
+			.getText("reminder.Remove_All")) {
 			/**
 			 *
 			 */
@@ -65,7 +65,7 @@ public class NodeListWithReminders extends NodeList{
 		};
 		final JButton removeAllButton = new JButton(removeAllAction);
 		final AbstractAction removeSelectedAction = new AbstractAction(TextUtils
-			.getText("plugins/TimeManagement.xml_Remove_Selected")) {
+			.getText("reminder.Remove_Selected")) {
 			/**
 			 *
 			 */

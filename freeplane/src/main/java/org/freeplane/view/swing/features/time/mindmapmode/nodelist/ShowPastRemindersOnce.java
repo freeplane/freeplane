@@ -48,8 +48,8 @@ public class ShowPastRemindersOnce implements Runnable {
 			public void run() {
 				if(! alreadyExecuted){
 					alreadyExecuted = true;
-					final int showResult = OptionalDontShowMeAgainDialog.show("OptionPanel.plugins/TimeManagement.xml_showPastRemindersOnStart", "confirmation",
-					    "plugins/TimeManagement.xml_showPastRemindersOnStart",
+					final int showResult = OptionalDontShowMeAgainDialog.show("OptionPanel.reminder.showPastRemindersOnStart", "confirmation",
+					    "reminder.showPastRemindersOnStart",
 					    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
 					if (showResult != JOptionPane.OK_OPTION) {
 						return;

@@ -209,7 +209,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 				final Date date = new Date(model.getRemindUserAt());
 				final Object[] messageArguments = { date };
 				final MessageFormat formatter = new MessageFormat(TextUtils
-					.getText("plugins/TimeManagement.xml_reminderNode.tooltip"));
+					.getText("reminder.reminderNode.tooltip"));
 				final String message = formatter.format(messageArguments);
 				return message;
 			}

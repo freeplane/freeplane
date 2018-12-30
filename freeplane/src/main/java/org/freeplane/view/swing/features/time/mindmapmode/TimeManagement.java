@@ -167,7 +167,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			}
 
 			{
-				final JButton todayButton = new JButton(getResourceString("plugins/TimeManagement.xml_todayButton"));
+				final JButton todayButton = new JButton(getResourceString("reminder.todayButton"));
 				todayButton.addActionListener(new ActionListener() {
 					public void actionPerformed(final ActionEvent arg0) {
 						final Calendar currentTime = Calendar.getInstance();
@@ -183,7 +183,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 				btnBuilder.append(dateFormatChooser);
 			}
 			{
-				final JButton appendButton = new JButton(getResourceString("plugins/TimeManagement.xml_appendButton"));
+				final JButton appendButton = new JButton(getResourceString("reminder.appendButton"));
 				if (dialog == null) {
 					appendButton.setFocusable(false);
 				}
@@ -205,8 +205,8 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 				}
 			}
 			{
-				setReminderButton = new JButton(getResourceString("plugins/TimeManagement.xml_reminderButton"));
-				setReminderButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_reminderButton.tooltip"));
+				setReminderButton = new JButton(getResourceString("reminder.reminderButton"));
+				setReminderButton.setToolTipText(getResourceString("reminder.reminderButton.tooltip"));
 				setReminderButton.addMouseListener(new MouseAdapter() {
 					@Override
 	                public void mouseClicked(MouseEvent e) {
@@ -217,8 +217,8 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			}
 			{
 				remindLaterButton = new JButton(
-				    getResourceString("plugins/TimeManagement.xml_remindLaterButton"));
-				remindLaterButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_remindLaterButton.tooltip"));
+				    getResourceString("reminder.remindLaterButton"));
+				remindLaterButton.setToolTipText(getResourceString("reminder.remindLaterButton.tooltip"));
 				remindLaterButton.addMouseListener(new MouseAdapter() {
 
 					@Override
@@ -235,8 +235,8 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			}
 			{
 				removeReminderButton = new JButton(
-				    getResourceString("plugins/TimeManagement.xml_removeReminderButton"));
-				removeReminderButton.setToolTipText(getResourceString("plugins/TimeManagement.xml_removeReminderButton.tooltip"));
+				    getResourceString("reminder.removeReminderButton"));
+				removeReminderButton.setToolTipText(getResourceString("reminder.removeReminderButton.tooltip"));
 				removeReminderButton.addMouseListener(new MouseAdapter() {
 
 					@Override
@@ -248,7 +248,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 				btnBuilder.append(removeReminderButton);
 			}
 			if (dialog != null) {
-				final JButton cancelButton = new JButton(getResourceString("plugins/TimeManagement.xml_closeButton"));
+				final JButton cancelButton = new JButton(getResourceString("reminder.closeButton"));
 				cancelButton.addMouseListener(new MouseAdapter() {
 
 					@Override
@@ -279,7 +279,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 					if(oldReminderTime > System.currentTimeMillis()){
 						final Object[] messageArguments = { new Date(oldReminderTime), date };
 						final MessageFormat formatter = new MessageFormat(
-							getResourceString("plugins/TimeManagement.xml_reminderNode_onlyOneDate"));
+							getResourceString("reminder.reminderNode_onlyOneDate"));
 						final String message = formatter.format(messageArguments);
 						final int result = JOptionPane.showConfirmDialog(controller.getViewController().getCurrentRootComponent(), message,
 							"Freeplane", JOptionPane.YES_NO_OPTION);
@@ -397,7 +397,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		};
 		getMindMapController().getMapController().addNodeChangeListener(nodeChangeListener);
 		
-		dialog.setTitle(getResourceString("plugins/TimeManagement.xml_WindowTitle"));
+		dialog.setTitle(getResourceString("reminder.WindowTitle"));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {
 			@Override
