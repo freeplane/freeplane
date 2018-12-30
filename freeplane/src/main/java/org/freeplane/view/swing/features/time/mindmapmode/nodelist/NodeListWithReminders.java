@@ -112,8 +112,8 @@ public class NodeListWithReminders extends NodeList{
 	}
 
 	private void removeReminder(ReminderHook reminderHook, NodeModel node, ReminderExtension reminder, int row) {
-		reminderHook.remove(node, reminder);
-		tableView.setValueAt("", row, nodeReminderColumn);
+		reminderHook.undoableDeactivateHook(node);
+		tableView.setValueAt(null, row, nodeReminderColumn);
 	}
 
 	private void apply(boolean selectedOnly, ReminderAction action) {

@@ -51,6 +51,7 @@ import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.ITooltipProvider;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
@@ -299,7 +300,9 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		final ReminderExtension reminderExtension = (ReminderExtension) extension;
 		reminderExtension.deactivateTimer();
 		reminderExtension.displayState(null, reminderExtension.getNode(), true);
-		modeController.getMapController().removeMapChangeListener(reminderExtension);
+		final MapController mapController = modeController.getMapController();
+		mapController.removeMapChangeListener(reminderExtension);
+		mapController.setSaved(node.getMap(), false);
 		super.remove(node, extension);
 	}
 

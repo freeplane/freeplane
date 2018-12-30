@@ -33,6 +33,7 @@ import javax.swing.table.TableModel;
  */
 class FlatNodeTableFilterModel extends AbstractTableModel {
 	private class TableModelHandler implements TableModelListener {
+		@Override
 		public void tableChanged(final TableModelEvent arg0) {
 			fireTableDataChanged();
 		}
@@ -72,6 +73,7 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	 * (non-Javadoc)
 	 * @see javax.swing.table.TableModel#getColumnCount()
 	 */
+	@Override
 	public int getColumnCount() {
 		return mTableModel.getColumnCount();
 	}
@@ -85,6 +87,7 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	 * (non-Javadoc)
 	 * @see javax.swing.table.TableModel#getRowCount()
 	 */
+	@Override
 	public int getRowCount() {
 		return mIndexArray.size();
 	}
@@ -93,12 +96,25 @@ class FlatNodeTableFilterModel extends AbstractTableModel {
 	 * (non-Javadoc)
 	 * @see javax.swing.table.TableModel#getValueAt(int, int)
 	 */
+	@Override
 	public Object getValueAt(final int row, final int column) {
+		ensureValidRow(row);
+		final int origRow = mIndexArray.get(row).intValue();
+		return mTableModel.getValueAt(origRow, column);
+	}
+
+	private void ensureValidRow(final int row) {
 		if (row < 0 || row >= getRowCount()) {
 			throw new IllegalArgumentException("Illegal Row specified: " + row);
 		}
+	}
+
+	@Override
+	public void setValueAt(Object value, final int row, final int column) {
+		ensureValidRow(row);
 		final int origRow = mIndexArray.get(row).intValue();
-		return mTableModel.getValueAt(origRow, column);
+		mTableModel.setValueAt(value, origRow, column);
+		fireTableCellUpdated(row, column);
 	}
 
 	public void resetFilter() {
