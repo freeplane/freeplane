@@ -75,7 +75,7 @@ public class NodeListWithReplacement extends NodeList{
 				}
 			}
 		});
-		useRegexInReplace = new JCheckBox();
+		useRegexInReplace = new JCheckBox(TextUtils.getText("regular_expressions"));
 	}
 	private static String replace(final Pattern p, String input, final String replacement) {
 		final String result = HtmlUtils.getReplaceResult(p, input, replacement);
@@ -135,9 +135,7 @@ public class NodeListWithReplacement extends NodeList{
 		layoutConstraints.weightx = 0.0;
 		layoutConstraints.gridwidth = 1;
 		contentPane.add(new JLabel(TextUtils.getText(REMINDER_TEXT_REPLACE)), layoutConstraints);
-		layoutConstraints.gridx = 5;
-		contentPane.add(new JLabel(TextUtils.getText("regular_expressions")), layoutConstraints);
-		layoutConstraints.gridx++;
+		layoutConstraints.gridx = 4;
 		contentPane.add(useRegexInReplace, layoutConstraints);
 		layoutConstraints.gridx = 0;
 		layoutConstraints.weightx = 1.0;

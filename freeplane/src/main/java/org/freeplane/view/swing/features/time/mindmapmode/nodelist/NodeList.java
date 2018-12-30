@@ -61,6 +61,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.JTextComponent;
 
+import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
@@ -362,9 +363,9 @@ class NodeList {
 		mFilterTextSearchField.addActionListener(listener);
 		final JTextComponent editorComponent = (JTextComponent) mFilterTextSearchField.getEditor().getEditorComponent();
 		editorComponent.getDocument().addDocumentListener(listener);
-		useRegexInFind = new JCheckBox();
+		useRegexInFind = new JCheckBox(TextUtils.getText("regular_expressions"));
 		useRegexInFind.addActionListener(listener);
-		matchCase = new JCheckBox();
+		matchCase = new JCheckBox(TextUtils.getText("filter_match_case"));
 		matchCase.addActionListener(listener);
 		mapChangeListener = new MapChangeListener();
 		this.windowPreferenceStorageProperty = windowPreferenceStorageProperty;
@@ -522,13 +523,9 @@ class NodeList {
 		layoutConstraints.gridx++;
 		contentPane.add(Box.createHorizontalStrut(40), layoutConstraints);
 		layoutConstraints.gridx++;
-		contentPane.add(new JLabel(TextUtils.getText("filter_match_case")), layoutConstraints);
-		layoutConstraints.gridx++;
 		contentPane.add(matchCase, layoutConstraints);
 		layoutConstraints.gridx++;
 		contentPane.add(Box.createHorizontalStrut(40), layoutConstraints);
-		layoutConstraints.gridx++;
-		contentPane.add(new JLabel(TextUtils.getText("regular_expressions")), layoutConstraints);
 		layoutConstraints.gridx++;
 		contentPane.add(useRegexInFind, layoutConstraints);
 		layoutConstraints.gridx = 0;
@@ -619,6 +616,7 @@ class NodeList {
 		bar.add(Box.createHorizontalGlue());
 		layoutConstraints.gridy++;
 		contentPane.add(/* new JScrollPane */(bar), layoutConstraints);
+		MnemonicSetter.INSTANCE.setComponentMnemonics(contentPane);
 		final ListSelectionModel rowSM = tableView.getSelectionModel();
 		rowSM.addListSelectionListener(new ListSelectionListener() {
 			@Override
