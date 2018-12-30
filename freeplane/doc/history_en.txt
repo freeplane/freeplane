@@ -9,6 +9,9 @@ URLs returned by formulas in attribute values are considered
 Image preview is shown as tool tip for attribute values
    containing URL pointing to svg or some known bitmap image
 Creating attributes from plain text in clipboard
+Show map titles in dialogs showing nodes from different maps
+Show all passed reminders in one time task dialog on start or after the map is loaded
+Add execute script and remove reminder buttons to time task dialog
 Bug fixes
  
 ===============================
