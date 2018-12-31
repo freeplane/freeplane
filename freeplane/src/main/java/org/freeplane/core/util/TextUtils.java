@@ -197,13 +197,12 @@ public class TextUtils {
 	public static void copyHtmlToClipboard(String html) {
 		ClipboardAccessor.getController().setClipboardContentsToHtml(html);
 	}
-	/*
-	 * The escapeUtf8 method is a stripped down version of the
-	 * StringEscapeUtils.escapeJava method in Commons Lang 2.6 
-	 */
 
 	/**
-	 * Escapes the UTF-8 non-ASCII characters in a <code>String</code>.
+	 * The escapeUtf8 method is a stripped down version of the
+	 * StringEscapeUtils.escapeJava method in Commons Lang 2.6 
+	 * 
+	 * It escapes the UTF-8 non-ASCII characters in a <code>String</code>.
 	 * <p>
 	 * Such a character becomes <code>'\\'</code> and <code>'u'</code> followed by
 	 * a 4 digit hex code.
@@ -239,12 +238,6 @@ public class TextUtils {
 		escapeUtf8StyleString(out, str);
 	}
 	
-	/**
-	 * Worker method for the {@link #escapeUtf8(String)} method.
-	 *
-	 * @param str String to escape values in, may be null
-	 * @return the escaped string
-	 */
 	private static String escapeUtf8StyleString(String str) {
 		if (str == null) {
 			return null;
@@ -259,13 +252,6 @@ public class TextUtils {
 		}
 	}
 	
-	/**
-	 * Worker method for the {@link #escapeUtf8(Writer, String)} method.
-	 *
-	 * @param out write to receive the escaped string
-	 * @param str String to escape values in, may be null
-	 * @throws IOException if an IOException occurs
-	 */
 	private static void escapeUtf8StyleString(Writer out, String str) throws IOException {
 		if (out == null) {
 			throw new IllegalArgumentException("The Writer must not be null");
@@ -291,13 +277,6 @@ public class TextUtils {
 		}
 	}
 	
-	/**
-	 * Returns an upper case hexadecimal <code>String</code> for the given
-	 * character.
-	 *
-	 * @param ch The character to convert.
-	 * @return An upper case hexadecimal <code>String</code>
-	 */
 	private static String hex(char ch) {
 		return Integer.toHexString(ch).toUpperCase(Locale.ENGLISH);
 	}
