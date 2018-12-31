@@ -20,8 +20,6 @@
  */
 package org.freeplane.plugin.script;
 
-import java.security.AccessController;
-import java.security.AllPermission;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +65,6 @@ public class ScriptingPermissions {
 
 	public ScriptingPermissions(Properties properties) {
 		this();
-		checkAllPermissions();
 		for (String permissionName : PERMISSION_NAMES) {
 			final Object value = properties.get(permissionName);
 			if (value != null) {
@@ -82,7 +79,6 @@ public class ScriptingPermissions {
 
 	public ScriptingPermissions(Map<String, Boolean> permissions) {
 		this();
-		checkAllPermissions();
 		this.permissions.putAll(permissions);
 	}
 
@@ -132,12 +128,10 @@ public class ScriptingPermissions {
 	}
 
 	ScriptingSecurityManager getPermissiveScriptingSecurityManager() {
-		checkAllPermissions();
 		return new ScriptingSecurityManager(true, true, true, true);
 	}
 
 	public static ScriptingPermissions getPermissiveScriptingPermissions() {
-		checkAllPermissions();
 		if (permissiveScriptingPermissions == null) {
 			permissiveScriptingPermissions = new ScriptingPermissions();
 			permissiveScriptingPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING, true);
@@ -147,11 +141,6 @@ public class ScriptingPermissions {
 			permissiveScriptingPermissions.set(RESOURCES_EXECUTE_SCRIPTS_WITHOUT_EXEC_RESTRICTION, true);
 		}
 		return permissiveScriptingPermissions;
-	}
-
-	static void checkAllPermissions() {
-		if(System.getSecurityManager() != null)
-			AccessController.checkPermission(new AllPermission());
 	}
 
 	boolean isExecuteSignedScriptsWithoutRestriction() {
