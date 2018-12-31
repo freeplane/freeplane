@@ -29,9 +29,9 @@ import org.freeplane.core.util.TextUtils;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 /** implementation of <remind> properties. */
-public class RemindValueProperty extends PropertyBean implements IPropertyControl {
-	public static final String DON_T_TOUCH_VALUE = "";
-	protected static final int DON_T_TOUCH_VALUE_INT = 2;
+public class MaybeBooleanProperty extends PropertyBean implements IPropertyControl {
+	public static final String ASK_VALUE = "ask";
+	protected static final int ASK_VALUE_INT = 2;
 	static public final String FALSE_VALUE = "false";
 	protected static final int FALSE_VALUE_INT = 1;
 	static public final String TRUE_VALUE = "true";
@@ -41,9 +41,10 @@ public class RemindValueProperty extends PropertyBean implements IPropertyContro
 
     /**
      */
-    public RemindValueProperty(final String name) {
+    public MaybeBooleanProperty(final String name) {
 		super(name);
 		mButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(final ActionEvent e) {
 				setState((getState() + 1) % 3);
 				firePropertyChangeEvent();
@@ -62,16 +63,18 @@ public class RemindValueProperty extends PropertyBean implements IPropertyContro
 				return TRUE_VALUE;
 			case FALSE_VALUE_INT:
 				return FALSE_VALUE;
-			case DON_T_TOUCH_VALUE_INT:
-				return DON_T_TOUCH_VALUE;
+			case ASK_VALUE_INT:
+				return ASK_VALUE;
 		}
 		return null;
 	}
 
+	@Override
 	public void layout(final DefaultFormBuilder builder) {
 		layout(builder, mButton);
 	}
 
+	@Override
 	public void setEnabled(final boolean pEnabled) {
 		mButton.setEnabled(pEnabled);
 	}
@@ -83,35 +86,30 @@ public class RemindValueProperty extends PropertyBean implements IPropertyContro
         state = newState;
         String[] strings;
         strings = new String[3];
-        strings[RemindValueProperty.TRUE_VALUE_INT] = TextUtils.getText("OptionalDontShowMeAgainDialog.ok")
+        strings[MaybeBooleanProperty.TRUE_VALUE_INT] = TextUtils.getText("OptionalDontShowMeAgainDialog.ok")
             .replaceFirst("&", "");
-        strings[RemindValueProperty.FALSE_VALUE_INT] = TextUtils.getText("OptionalDontShowMeAgainDialog.cancel")
+        strings[MaybeBooleanProperty.FALSE_VALUE_INT] = TextUtils.getText("OptionalDontShowMeAgainDialog.cancel")
             .replaceFirst("&", "");
-        strings[RemindValueProperty.DON_T_TOUCH_VALUE_INT] = TextUtils.getText("OptionPanel.ask").replaceFirst("&",
+        strings[MaybeBooleanProperty.ASK_VALUE_INT] = TextUtils.getText("OptionPanel.ask").replaceFirst("&",
             "");
         mButton.setText(strings[state]);
 	}
 
 	@Override
 	public void setValue(final String value) {
-		if (value == null
-		        || !(value.toLowerCase().equals(TRUE_VALUE) || value.toLowerCase().equals(FALSE_VALUE) || value
-		            .toLowerCase().equals(DON_T_TOUCH_VALUE))) {
-			throw new IllegalArgumentException("Cannot set a boolean to " + value);
-		}
 		setState(transformString(value));
 	}
 
 	private int transformString(final String string) {
-		if (string == null) {
-			return RemindValueProperty.DON_T_TOUCH_VALUE_INT;
-		}
 		if (string.toLowerCase().equals(TRUE_VALUE)) {
-			return RemindValueProperty.TRUE_VALUE_INT;
+			return MaybeBooleanProperty.TRUE_VALUE_INT;
 		}
-		if (string.toLowerCase().equals(FALSE_VALUE)) {
-			return RemindValueProperty.FALSE_VALUE_INT;
+		else if (string.toLowerCase().equals(FALSE_VALUE)) {
+			return MaybeBooleanProperty.FALSE_VALUE_INT;
 		}
-		return RemindValueProperty.DON_T_TOUCH_VALUE_INT;
+		else {
+			return MaybeBooleanProperty.ASK_VALUE_INT;
+		}
 	}
+
 }

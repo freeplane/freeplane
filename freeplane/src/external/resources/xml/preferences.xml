@@ -207,7 +207,7 @@
 				<boolean name="pasteImagesFromFiles"/>
 			</separator>
 			<separator name="reminderOptions">
-				<remind_value name="reminder.showPastRemindersOnStart" />
+				<maybe_boolean name="reminder.showPastRemindersOnStart" />
 				<boolean name="remindersBlink" />
 				<boolean name="remindersShowNotifications" />
 				<time_period name="remindersStandardDelay" />
@@ -251,7 +251,7 @@
 				<number name="spelling_opt_suggestions_limit_menu" min="0" />
 			</separator>
 			<separator name="notifications">
-				<remind_value name="remind_use_rich_text_in_new_nodes" />
+				<maybe_boolean name="remind_use_rich_text_in_new_nodes" />
 				<boolean name="delete_nodes_without_question" />
 				<boolean name="cut_nodes_without_question" />
 				<boolean name="remove_notes_without_question" />

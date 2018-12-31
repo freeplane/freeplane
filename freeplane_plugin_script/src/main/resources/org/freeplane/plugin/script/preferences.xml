@@ -2,7 +2,7 @@
 <tabbed_pane>
 <tab name="plugins">
 <separator name="scripting">
-<remind_value name="execute_scripts_without_asking"/>
+<maybe_boolean name="execute_scripts_without_asking"/>
 <boolean name="execute_scripts_without_file_restriction"/>
 <boolean name="execute_scripts_without_write_restriction"/>
 <boolean name="execute_scripts_without_network_restriction"/>

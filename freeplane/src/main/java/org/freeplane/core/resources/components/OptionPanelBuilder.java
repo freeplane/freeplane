@@ -26,11 +26,11 @@ import java.io.Reader;
 import java.net.URL;
 import java.text.Collator;
 import java.util.Arrays;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
-import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -40,8 +40,6 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.components.OptionPanelBuilder.ComboPropertyCreator;
-import org.freeplane.core.resources.components.OptionPanelBuilder.PropertyCreator;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.TimePeriodUnits;
@@ -411,10 +409,10 @@ public class OptionPanelBuilder {
 		abstract public IPropertyControlCreator getCreator(String name, XMLElement data);
 	}
 
-	private class RemindValueCreator extends PropertyCreator {
+	private class MaybeBooleanCreator extends PropertyCreator {
 		@Override
 		public IPropertyControlCreator getCreator(final String name, final XMLElement data) {
-			return createRemindValueProperty(name);
+			return createMaybeBooleanProperty(name);
 		}
 	}
 
@@ -527,8 +525,8 @@ public class OptionPanelBuilder {
 		addCreator(path, createNumberOptionCreator(name, min, max, step), name, position);
 	}
 
-	public void addRemindValueProperty(final String path, final String name, final int position) {
-		addCreator(path, createRemindValueProperty(name), name, position);
+	public void addMaybeBooleanProperty(final String path, final String name, final int position) {
+		addCreator(path, createMaybeBooleanProperty(name), name, position);
 	}
 
 	public void addSeparator(final String path, final String name, final int position) {
@@ -618,11 +616,11 @@ public class OptionPanelBuilder {
 		};
 	}
 
-	private IPropertyControlCreator createRemindValueProperty(final String name) {
+	private IPropertyControlCreator createMaybeBooleanProperty(final String name) {
 		return new IPropertyControlCreator() {
 			@Override
 			public IPropertyControl createControl() {
-				return new RemindValueProperty(name);
+				return new MaybeBooleanProperty(name);
 			}
 		};
 	}
@@ -706,7 +704,7 @@ public class OptionPanelBuilder {
 		readManager.addElementHandler("combo", new ComboOptionCreator());
 		readManager.addElementHandler("languages", new LanguagesComboCreator());
 		readManager.addElementHandler("key", new KeyOptionCreator());
-		readManager.addElementHandler("remind_value", new RemindValueCreator());
+		readManager.addElementHandler("maybe_boolean", new MaybeBooleanCreator());
 	}
 
 	public void load(final URL menu) {
