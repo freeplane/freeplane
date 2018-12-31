@@ -28,7 +28,7 @@ public class ScriptCompiler {
 	private final GroovyClassLoader compilerClassLoader;
 	private CompiledFiles oldCompiledFiles;
 	private boolean compileOnlyChangedScriptFiles;
-	
+
 
 
 	public ScriptCompiler() {
@@ -55,7 +55,7 @@ public class ScriptCompiler {
         compileOnlyChangedScriptFiles = ResourceController.getResourceController().getBooleanProperty(COMPILE_ONLY_CHANGED_SCRIPT_FILES);
         for (String pathElement : pathElements) {
             final File dir = new File(pathElement);
-            if (dir.isDirectory()) {
+            if (dir.isDirectory() && ! compiledScriptsDir.equals(dir)) {
 				final Collection<File> compiledScripts = compileScriptsInDirectory(dir);
 				newCompiledFiles.addAll(compiledScripts);
 			}
