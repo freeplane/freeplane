@@ -17,7 +17,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Vector;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.CdataContentXmlWriter;
@@ -453,7 +452,7 @@ public class AddOnProperties {
 			for (Entry<String, String> translationEntry : localeEntry.getValue().entrySet()) {
 				final XMLElement translationElement = new XMLElement("entry");
 				translationElement.setAttribute("key", translationEntry.getKey());
-				translationElement.setContent(StringEscapeUtils.escapeJava(translationEntry.getValue()));
+				translationElement.setContent(TextUtils.escapeUtf8(translationEntry.getValue()));
 				localeElement.addChild(translationElement);
 			}
 			translationsElement.addChild(localeElement);
