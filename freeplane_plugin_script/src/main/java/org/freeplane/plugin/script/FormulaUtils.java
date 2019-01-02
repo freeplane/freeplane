@@ -120,8 +120,9 @@ public class FormulaUtils {
 		if (!FormulaThreadLocalStack.INSTANCE.push(nodeScript)) {
 			showCyclicDependency(nodeScript);
 			final String message = TextUtils.format("formula.error.circularReference",
+				nodeScript.node.getID(),
 				HtmlUtils.htmlToPlain(nodeScript.script));
-			Controller.getCurrentController().getViewController().out(message);
+			Controller.getCurrentController().getViewController().out(TextUtils.getShortText(message, 80, "..."));
 			throw new ExecuteScriptException(new CyclicScriptReferenceException(message));
 		}
 		try {
