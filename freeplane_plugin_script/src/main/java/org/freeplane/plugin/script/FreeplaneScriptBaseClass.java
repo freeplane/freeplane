@@ -26,6 +26,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.proxy.AbstractProxy;
 import org.freeplane.plugin.script.proxy.Convertible;
 
+import groovy.lang.Closure;
 import groovy.lang.MetaClass;
 import groovy.lang.MissingMethodException;
 import groovy.lang.MissingPropertyException;
@@ -270,6 +271,15 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     public void loadUri(final URI uri) {
     	final NodeModel delegate = ((AbstractProxy<NodeModel>)node).getDelegate();
         LinkController.getController().loadURI(delegate, uri);
+    }
+
+    /**
+     * Executes given closure.
+     *
+     * If there are any cyclic dependencies formulas are skipped and no warnings or exceptions are thrown.
+     */
+    public <T> T skipCyclicDependencies(final Closure<T> closure) {
+    	return FormulaUtils.skipCyclicDependencies(closure::call);
     }
 
 	@Override

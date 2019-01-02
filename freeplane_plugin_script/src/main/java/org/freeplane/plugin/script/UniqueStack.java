@@ -1,12 +1,18 @@
 package org.freeplane.plugin.script;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Supplier;
 
 /** A minimal implementation of a stack that may contain an element only once - not threadsafe.
  * The stack may contains null but note that null is used by {@link #pop()} to signal an empty stack. */
 public class UniqueStack<T> implements Iterable<T> {
 	private final ArrayList<T> stack = new ArrayList<T>(8);
 	private final HashSet<T> set = new HashSet<T>(8);
+	private boolean skipCyclicDependencies;
 
 	/** creates an empty stack. */
 	public UniqueStack() {
@@ -70,5 +76,20 @@ public class UniqueStack<T> implements Iterable<T> {
 		}
 		else
 			return Collections.emptyList();
+	}
+
+	public <V> V skipCyclicDependencies(Supplier<V> closure) {
+		boolean oldSuppressWarningsOnCyclicDependencies = this.skipCyclicDependencies;
+		this.skipCyclicDependencies = true;
+		try {
+			return closure.get();
+		}
+		finally {
+			this.skipCyclicDependencies = oldSuppressWarningsOnCyclicDependencies;
+		}
+	}
+
+	public boolean skipCyclicDependencies() {
+		return skipCyclicDependencies;
 	}
 }

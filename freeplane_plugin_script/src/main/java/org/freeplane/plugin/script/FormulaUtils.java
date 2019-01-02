@@ -2,6 +2,7 @@ package org.freeplane.plugin.script;
 
 import java.net.URL;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -118,6 +119,8 @@ public class FormulaUtils {
 																	final ScriptContext scriptContext,
 																	final ScriptingPermissions restrictedPermissions) {
 		if (!FormulaThreadLocalStack.INSTANCE.push(nodeScript)) {
+			if(FormulaThreadLocalStack.INSTANCE.skipsCyclicDependencies())
+				return 0;
 			showCyclicDependency(nodeScript);
 			final String message = TextUtils.format("formula.error.circularReference",
 				nodeScript.node.getID(),
@@ -191,5 +194,9 @@ public class FormulaUtils {
 			}
 		} catch (Exception e) {
 		}
+	}
+
+	public static <T> T skipCyclicDependencies(Supplier<T> closure) {
+		return FormulaThreadLocalStack.INSTANCE.skipCyclicDependencies(closure);
 	}
 }

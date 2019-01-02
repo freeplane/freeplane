@@ -2,11 +2,10 @@ package org.freeplane.plugin.script;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang.StringUtils;
-import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.map.NodeModel;
 
 public class FormulaThreadLocalStack {
 
@@ -27,7 +26,7 @@ public class FormulaThreadLocalStack {
 
 	public boolean push(NodeScript nodeScript) {
 		final boolean success = stack().push(nodeScript);
-		if (!success) {
+		if (!success && ! skipsCyclicDependencies()) {
 			LogUtils.warn("Circular reference detected! Traceback (innermost last):\n " //
 			        + stackTrace(nodeScript));
 		}
@@ -49,5 +48,13 @@ public class FormulaThreadLocalStack {
 
 	public List<NodeScript> findCycle(NodeScript nodeScript) {
 		return stack().findCycle(nodeScript);
+	}
+
+	public <T> T skipCyclicDependencies(Supplier<T> closure) {
+		return stack().skipCyclicDependencies(closure);
+	}
+
+	public boolean skipsCyclicDependencies() {
+		return stack().skipCyclicDependencies();
 	}
 }
