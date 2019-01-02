@@ -64,6 +64,7 @@ import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.TransferHandler;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
@@ -103,6 +104,7 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.FreeplaneTooltip;
 import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeTooltipManager;
 import org.freeplane.view.swing.map.NodeView;
 
 
@@ -209,6 +211,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	AttributeTable(final AttributeView attributeView) {
 		super();
 		this.attributeView = attributeView;
+		initializeTooltipManager(attributeView);
 		addMouseListener(AttributeTable.cursorUpdater);
 		addMouseMotionListener(AttributeTable.cursorUpdater);
 		if (attributeView.getMapView().getModeController().canEdit()) {
@@ -253,6 +256,15 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			newDefaultParentActionMap.put(editKey, action);
 		}
 		actionMap.setParent(newDefaultParentActionMap);
+	}
+
+
+
+	private void initializeTooltipManager(AttributeView attributeView) {
+        ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
+        toolTipManager.unregisterComponent(this);
+        NodeTooltipManager.getSharedInstance(attributeView.getMapView().getModeController()).registerComponent(this);
+
 	}
 
 	@Override
