@@ -4,6 +4,7 @@ package org.freeplane.view.swing.map;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
+import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +27,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MouseInsideListener;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
@@ -161,7 +163,11 @@ public class NodeTooltipManager implements IExtension{
 		tipPopup.setLayout(new GridLayout(1, 1));
 		tipPopup.add(tip);
 		mouseInsideTooltipListener = new MouseInsideListener(tipPopup);
-		tipPopup.show(nearComponent, 0, nearComponent.getHeight());
+		final Component placedComponent = tipPopup;
+		final Window window = SwingUtilities.getWindowAncestor(nearComponent);
+		Point location = UITools.findBestLocation(placedComponent, nearComponent);
+		SwingUtilities.convertPointFromScreen(location, nearComponent);
+  		tipPopup.show(nearComponent, location.x, location.y);
 		focusOwner.requestFocusInWindow();
         exitTimer.start();
 	}

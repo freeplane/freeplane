@@ -327,16 +327,23 @@ public class UITools {
 		if (c == null || ! c.isShowing()) {
 			return;
 		}
-		final Point compLocation = c.getLocationOnScreen();
-		final int cw = c.getWidth();
-		final int ch = c.getHeight();
-		final Container parent = dialog.getParent();
+		final Point location = findBestLocation(dialog, c);
+		dialog.setLocation(location);
+	}
+
+	public static Point findBestLocation(final Component placedComponent, final Component displayedComponent) {
+		final Point compLocation = displayedComponent.getLocationOnScreen();
+		final int cw = displayedComponent.getWidth();
+		final int ch = displayedComponent.getHeight();
+//		final Container parent = placedComponent.getParent();
+		final Window parent = SwingUtilities.getWindowAncestor(displayedComponent);
 		final Point parentLocation = parent.getLocationOnScreen();
 		final int pw = parent.getWidth();
 		final int ph = parent.getHeight();
-		final int dw = dialog.getWidth();
-		final int dh = dialog.getHeight();
-		final Rectangle desktopBounds = getAvailableScreenBounds(c);
+		final Dimension preferredSize = placedComponent.getPreferredSize();
+		final int dw = preferredSize.width;
+		final int dh = preferredSize.height;
+		final Rectangle desktopBounds = getAvailableScreenBounds(displayedComponent);
 		final int minX = Math.max(parentLocation.x, desktopBounds.x);
 		final int minY = Math.max(parentLocation.y, desktopBounds.y);
 		final int maxX = Math.min(parentLocation.x + pw, desktopBounds.x + desktopBounds.width);
@@ -394,7 +401,8 @@ public class UITools {
 				}
 			}
 		}
-		dialog.setLocation(dx, dy);
+		final Point location = new Point(dx, dy);
+		return location;
 	}
 
 	public static void setDialogLocationRelativeTo(final JDialog dialog,
