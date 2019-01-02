@@ -26,7 +26,7 @@ public class FormulaThreadLocalStack {
 
 	public boolean push(NodeScript nodeScript) {
 		final boolean success = stack().push(nodeScript);
-		if (!success && ! skipsCyclicDependencies()) {
+		if (!success && ! ignoresCycles()) {
 			LogUtils.warn("Circular reference detected! Traceback (innermost last):\n " //
 			        + stackTrace(nodeScript));
 		}
@@ -50,11 +50,11 @@ public class FormulaThreadLocalStack {
 		return stack().findCycle(nodeScript);
 	}
 
-	public <T> T skipCyclicDependencies(Supplier<T> closure) {
-		return stack().skipCyclicDependencies(closure);
+	public <T> T ignoreCycles(Supplier<T> closure) {
+		return stack().ignoreCycles(closure);
 	}
 
-	public boolean skipsCyclicDependencies() {
-		return stack().skipCyclicDependencies();
+	public boolean ignoresCycles() {
+		return stack().ignoreCycles();
 	}
 }

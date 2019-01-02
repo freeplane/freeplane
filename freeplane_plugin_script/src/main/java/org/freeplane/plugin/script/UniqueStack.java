@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 public class UniqueStack<T> implements Iterable<T> {
 	private final ArrayList<T> stack = new ArrayList<T>(8);
 	private final HashSet<T> set = new HashSet<T>(8);
-	private boolean skipCyclicDependencies;
+	private boolean ignoreCycles;
 
 	/** creates an empty stack. */
 	public UniqueStack() {
@@ -78,18 +78,18 @@ public class UniqueStack<T> implements Iterable<T> {
 			return Collections.emptyList();
 	}
 
-	public <V> V skipCyclicDependencies(Supplier<V> closure) {
-		boolean oldSuppressWarningsOnCyclicDependencies = this.skipCyclicDependencies;
-		this.skipCyclicDependencies = true;
+	public <V> V ignoreCycles(Supplier<V> closure) {
+		boolean oldSuppressWarningsOnCyclicDependencies = this.ignoreCycles;
+		this.ignoreCycles = true;
 		try {
 			return closure.get();
 		}
 		finally {
-			this.skipCyclicDependencies = oldSuppressWarningsOnCyclicDependencies;
+			this.ignoreCycles = oldSuppressWarningsOnCyclicDependencies;
 		}
 	}
 
-	public boolean skipCyclicDependencies() {
-		return skipCyclicDependencies;
+	public boolean ignoreCycles() {
+		return ignoreCycles;
 	}
 }

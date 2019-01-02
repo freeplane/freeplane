@@ -119,7 +119,7 @@ public class FormulaUtils {
 																	final ScriptContext scriptContext,
 																	final ScriptingPermissions restrictedPermissions) {
 		if (!FormulaThreadLocalStack.INSTANCE.push(nodeScript)) {
-			if(FormulaThreadLocalStack.INSTANCE.skipsCyclicDependencies())
+			if(FormulaThreadLocalStack.INSTANCE.ignoresCycles())
 				return 0;
 			showCyclicDependency(nodeScript);
 			final String message = TextUtils.format("formula.error.circularReference",
@@ -196,7 +196,7 @@ public class FormulaUtils {
 		}
 	}
 
-	public static <T> T skipCyclicDependencies(Supplier<T> closure) {
-		return FormulaThreadLocalStack.INSTANCE.skipCyclicDependencies(closure);
+	public static <T> T ignoreCycles(Supplier<T> closure) {
+		return FormulaThreadLocalStack.INSTANCE.ignoreCycles(closure);
 	}
 }

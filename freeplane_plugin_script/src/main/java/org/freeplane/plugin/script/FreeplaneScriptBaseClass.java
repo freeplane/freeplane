@@ -278,8 +278,8 @@ public abstract class FreeplaneScriptBaseClass extends Script {
      *
      * If there are any cyclic dependencies formulas are skipped and no warnings or exceptions are thrown.
      */
-    public <T> T skipCyclicDependencies(final Closure<T> closure) {
-    	return FormulaUtils.skipCyclicDependencies(closure::call);
+    public <T> T ignoreCycles(final Closure<T> closure) {
+    	return FormulaUtils.ignoreCycles(closure::call);
     }
 
 	@Override
