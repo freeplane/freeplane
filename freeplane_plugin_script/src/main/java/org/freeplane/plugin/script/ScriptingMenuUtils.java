@@ -27,7 +27,7 @@ public class ScriptingMenuUtils {
 
 	/** menuTitle may either be a scriptName or a translation key. */
 	public static String scriptNameToMenuItemTitle(final String scriptName) {
-		final String translation = TextUtils.getText(scriptName, null);
+		final String translation = TextUtils.getText(scriptName, TextUtils.getText("addons." + scriptName, null));
 		if (translation != null) {
 			return translation;
 		}
