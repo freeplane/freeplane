@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 
 
 /**
@@ -49,6 +50,9 @@ public class ShowPastRemindersOnce {
 	}
 
 	public void addNode(NodeModel node) {
+		if(hasNoUserInterface())
+			return;
+
 		nodes.add(node);
 		SwingUtilities.invokeLater(new Runnable() {
 
@@ -83,6 +87,10 @@ public class ShowPastRemindersOnce {
 				}
 			}
 		});
+	}
+
+	private boolean hasNoUserInterface() {
+		return Controller.getCurrentController().getMapViewManager().isHeadless();
 	}
 
 	public boolean alreadyExecuted(){
