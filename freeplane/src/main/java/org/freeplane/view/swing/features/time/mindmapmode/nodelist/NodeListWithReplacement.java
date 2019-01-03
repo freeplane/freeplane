@@ -51,9 +51,8 @@ public class NodeListWithReplacement extends NodeList{
 	final private JComboBox mFilterTextReplaceField;
 	private final JCheckBox useRegexInReplace;
 
-	public NodeListWithReplacement(String windowTitle, NodeFilter nodeFilter, boolean searchInAllMaps,
-								   String windowPreferenceStorageProperty) {
-		super(windowTitle, nodeFilter, searchInAllMaps, windowPreferenceStorageProperty);
+	public NodeListWithReplacement(String windowTitle, boolean searchInAllMaps, String windowPreferenceStorageProperty) {
+		super(windowTitle, searchInAllMaps, windowPreferenceStorageProperty);
 		mFilterTextSearchField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(final KeyEvent pEvent) {

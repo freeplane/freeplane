@@ -17,12 +17,11 @@ public class TimeListAction extends AFreeplaneAction {
 	public TimeListAction() {
 		super("TimeListAction");
 		timeList = new NodeListWithReminders(NodeList.REMINDER_TEXT_WINDOW_TITLE,
-			(node, reminder) -> reminder != null,
 			false, "timelistwindow.configuration");
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		timeList.startup();
+		timeList.startup((node, reminder) -> reminder != null);
 	}
 }

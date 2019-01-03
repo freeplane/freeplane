@@ -33,7 +33,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import org.freeplane.core.extension.IExtension;
@@ -330,9 +329,10 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		final boolean reminderTimePassed = fireTime >= reminderTime;
 		final boolean runScript = ! reminderTimePassed;
 		scheduleTimer(model, new TimerBlinkTask(this, model, false, runScript));
+		final NodeModel node = model.getNode();
 		if(reminderTimePassed)
-			SwingUtilities.invokeLater(SHOW_PAST_REMINDERS);
-		model.displayState(ClockState.CLOCK_VISIBLE, model.getNode(), false);
+			SHOW_PAST_REMINDERS.addNode(node);
+		model.displayState(ClockState.CLOCK_VISIBLE, node, false);
 	}
 
 	private void scheduleTimer(final ReminderExtension model, final TimerBlinkTask task) {

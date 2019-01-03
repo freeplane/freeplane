@@ -17,9 +17,9 @@ import org.freeplane.view.swing.features.time.mindmapmode.ReminderExtension;
 import org.freeplane.view.swing.features.time.mindmapmode.ReminderHook;
 
 public class NodeListWithReminders extends NodeList{
-	public NodeListWithReminders(String windowTitle, NodeFilter nodeFilter, boolean searchInAllMaps,
+	public NodeListWithReminders(String windowTitle, boolean searchInAllMaps,
 	                             String windowPreferenceStorageProperty) {
-		super(windowTitle, nodeFilter, searchInAllMaps, windowPreferenceStorageProperty);
+		super(windowTitle, searchInAllMaps, windowPreferenceStorageProperty);
 	}
 
 	@Override
@@ -128,4 +128,5 @@ public class NodeListWithReminders extends NodeList{
 			}
 		}
 	}
+
 }

@@ -283,23 +283,6 @@ class NodeList {
 			}
 		}
 	}
-
-	private static String COLUMN_CREATED = "Created";
-	private static String COLUMN_REMINDER = "Reminder";
-	private static String COLUMN_ICONS = "Icons";
-	private static String COLUMN_MODIFIED = "Modified";
-	private static String COLUMN_NOTES = "Notes";
-	private static String COLUMN_TEXT = "Text";
-	private static String COLUMN_DETAILS = "Details";
-	private static String COLUMN_MAP = "Map";
-	private final int nodeMapColumn;
-	final int nodeTextColumn;
-	private final int nodeIconColumn;
-	final int nodeDetailsColumn;
-	final int nodeNotesColumn;
-	protected final int nodeReminderColumn;
-	private final int nodeCreatedColumn;
-	private final int nodeModifiedColumn;
 	private static final String REMINDER_TEXT_CREATED = "reminder.Created";
 	private static final String REMINDER_TEXT_REMINDER = "reminder.Reminder";
 	private static final String REMINDER_TEXT_ICONS = "reminder.Icons";
@@ -313,23 +296,39 @@ class NodeList {
 	private static final String REMINDER_TEXT_FIND = "reminder.Find";
 	static final String REMINDER_TEXT_WINDOW_TITLE = "reminder.WindowTitle";
 	public static final String REMINDER_TEXT_WINDOW_TITLE_ALL_NODES = "reminder.WindowTitle_All_Nodes";
+
+	private static String COLUMN_MODIFIED = TextUtils.getText(REMINDER_TEXT_MODIFIED);
+	private static String COLUMN_CREATED = TextUtils.getText(REMINDER_TEXT_CREATED);
+	private static String COLUMN_ICONS = TextUtils.getText(REMINDER_TEXT_ICONS);
+	private static String COLUMN_TEXT = TextUtils.getText(REMINDER_TEXT_TEXT);
+	private static String COLUMN_MAP = TextUtils.getText(REMINDER_TEXT_MAP);
+	private static String COLUMN_DETAILS= TextUtils.getText(REMINDER_TEXT_DETAILS);
+	private static String COLUMN_REMINDER = TextUtils.getText(REMINDER_TEXT_REMINDER);
+	private static String COLUMN_NOTES = TextUtils.getText(REMINDER_TEXT_NOTES);
+	private final int nodeMapColumn;
+	final int nodeTextColumn;
+	private final int nodeIconColumn;
+	final int nodeDetailsColumn;
+	final int nodeNotesColumn;
+	protected final int nodeReminderColumn;
+	private final int nodeCreatedColumn;
+	private final int nodeModifiedColumn;
 	private final String windowPreferenceStorageProperty;
 
-	private DateRenderer dateRenderer;
+	private final DateRenderer dateRenderer;
 	private JDialog dialog;
-	private IconsRenderer iconsRenderer;
+	private final IconsRenderer iconsRenderer;
 	protected final JComboBox mFilterTextSearchField;
 	protected FlatNodeTableFilterModel mFlatNodeTableFilterModel;
-	private JTextField mNodePath;
-	private TextRenderer textRenderer;
+	private final JTextField mNodePath;
+	private final TextRenderer textRenderer;
 
 	private final String windowTitle;
 	public interface NodeFilter {
 		boolean showsNode(NodeModel node, ReminderExtension reminder) ;
 	}
-	private final NodeFilter nodeFilter;
 	TableSorter sorter;
-	protected JTable tableView;
+	final protected JTable tableView;
 	private DefaultTableModel tableModel;
 	private final boolean searchInAllMaps;
 	protected final JCheckBox useRegexInFind;
@@ -337,11 +336,7 @@ class NodeList {
 	final private boolean modal;
 	private final MapChangeListener mapChangeListener;
 
-	NodeList( final String windowTitle, final NodeFilter nodeFilter, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
-	    this(false, windowTitle, nodeFilter, searchInAllMaps, windowPreferenceStorageProperty);
-    }
-
-	NodeList( final boolean modal, String windowTitle, final NodeFilter nodeFilter, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
+	NodeList( final String windowTitle, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
 		this.windowTitle = windowTitle;
 		nodeMapColumn = searchInAllMaps ? 0 : -1;
 		nodeTextColumn = nodeMapColumn + 1;
@@ -354,8 +349,7 @@ class NodeList {
 
 //		this.modeController = modeController;
 //		controller = modeController.getController();
-		this.modal = modal;
-		this.nodeFilter = nodeFilter;
+		this.modal = false;
 		this.searchInAllMaps = searchInAllMaps;
 		mFilterTextSearchField = new JComboBoxWithBorder();
 		mFilterTextSearchField.setEditable(true);
@@ -369,6 +363,12 @@ class NodeList {
 		matchCase.addActionListener(listener);
 		mapChangeListener = new MapChangeListener();
 		this.windowPreferenceStorageProperty = windowPreferenceStorageProperty;
+		dateRenderer = new DateRenderer();
+		textRenderer = new TextRenderer();
+		iconsRenderer = new IconsRenderer();
+		tableView = new FlatNodeTable();
+		mNodePath = new JTextField();
+
 	}
 
 	/**
@@ -465,19 +465,35 @@ class NodeList {
 		selectNodes(tableView.getSelectedRow(), tableView.getSelectedRows());
 	}
 
-	public void startup() {
+	public void startup(NodeFilter nodeFilter) {
 		if(dialog != null){
 			dialog.toFront();
 			return;
 		}
-		COLUMN_MODIFIED = TextUtils.getText(REMINDER_TEXT_MODIFIED);
-		COLUMN_CREATED = TextUtils.getText(REMINDER_TEXT_CREATED);
-		COLUMN_ICONS = TextUtils.getText(REMINDER_TEXT_ICONS);
-		COLUMN_TEXT = TextUtils.getText(REMINDER_TEXT_TEXT);
-		COLUMN_MAP = TextUtils.getText(REMINDER_TEXT_MAP);
-		COLUMN_DETAILS= TextUtils.getText(REMINDER_TEXT_DETAILS);
-		COLUMN_REMINDER = TextUtils.getText(REMINDER_TEXT_REMINDER);
-		COLUMN_NOTES = TextUtils.getText(REMINDER_TEXT_NOTES);
+		final DefaultTableModel model = createTableModel();
+		fillTableModel(model, nodeFilter);
+		tableModel = model;
+		initializeUI();
+	}
+
+	public void startup(List<NodeModel> nodes) {
+		if(dialog != null){
+			dialog.toFront();
+			return;
+		}
+		final DefaultTableModel model = createTableModel();
+		fillTableModel(model, nodes);
+		tableModel = model;
+		initializeUI();
+	}
+
+
+	private void initializeUI() {
+		mFlatNodeTableFilterModel = new FlatNodeTableFilterModel(tableModel,
+			new int[]{nodeTextColumn, nodeDetailsColumn, nodeNotesColumn}
+		);
+
+		sorter = new TableSorter(mFlatNodeTableFilterModel);
 		dialog = new JDialog(UITools.getCurrentFrame(), modal /* modal */);
 		dialog.setTitle(TextUtils.getText(windowTitle));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -506,6 +522,7 @@ class NodeList {
 				disposeDialog();
 			}
 		});
+
 		final Container contentPane = dialog.getContentPane();
 		final GridBagLayout gbl = new GridBagLayout();
 		contentPane.setLayout(gbl);
@@ -534,18 +551,9 @@ class NodeList {
 		layoutConstraints.gridy++;
 		contentPane.add(/* new JScrollPane */(mFilterTextSearchField), layoutConstraints);
 		createSpecificUI(contentPane, layoutConstraints);
-		dateRenderer = new DateRenderer();
-		textRenderer = new TextRenderer();
-		iconsRenderer = new IconsRenderer();
-		tableView = new FlatNodeTable();
 		tableView.addKeyListener(new FlatNodeTableKeyListener());
 		tableView.addMouseListener(new FlatNodeTableMouseAdapter());
 		tableView.getTableHeader().setReorderingAllowed(false);
-		tableModel = updateModel();
-		mFlatNodeTableFilterModel = new FlatNodeTableFilterModel(tableModel,
-			new int[]{nodeTextColumn, nodeDetailsColumn, nodeNotesColumn}
-		);
-		sorter = new TableSorter(mFlatNodeTableFilterModel);
 		tableView.setModel(sorter);
 		sorter.setTableHeader(tableView.getTableHeader());
 		sorter.setColumnComparator(Date.class, TableSorter.COMPARABLE_COMPARATOR);
@@ -560,7 +568,6 @@ class NodeList {
 		tableConstraints.weighty = 10;
 		tableConstraints.fill = GridBagConstraints.BOTH;
 		contentPane.add(pane, tableConstraints);
-		mNodePath = new JTextField();
 		mNodePath.setEditable(false);
 		layoutConstraints.gridy++;
 		GridBagConstraints treeConstraints = (GridBagConstraints) layoutConstraints.clone();
@@ -686,10 +693,32 @@ class NodeList {
 	protected void createSpecificUI(Container contentPane, GridBagConstraints layoutConstraints) {
 	}
 
-	/**
-	 * Creates a table model for the new table and returns it.
-	 */
-	private DefaultTableModel updateModel() {
+	private void fillTableModel(DefaultTableModel model, List<NodeModel> nodes) {
+		for(NodeModel node : nodes) {
+			final ReminderExtension hook = ReminderExtension.getExtension(node);
+			final Object[] row = createTableRowData(node, hook);
+			model.addRow(row);
+		}
+	}
+
+	private void fillTableModel(final DefaultTableModel model, NodeFilter nodeFilter) {
+		if (searchInAllMaps == false) {
+			final MapModel map = Controller.getCurrentController().getMap();
+			if(map != null) {
+				final NodeModel node = map.getRootNode();
+				fillModel(model, node, nodeFilter);
+			}
+		}
+		else {
+			final Map<String, MapModel> maps = Controller.getCurrentController().getMapViewManager().getMaps(MModeController.MODENAME);
+			for (final MapModel map : maps.values()) {
+				final NodeModel node = map.getRootNode();
+				fillModel(model, node, nodeFilter);
+			}
+		}
+	}
+
+	private DefaultTableModel createTableModel() {
 		final DefaultTableModel model = new DefaultTableModel() {
 			/**
 			 *
@@ -728,52 +757,40 @@ class NodeList {
 		model.addColumn(COLUMN_REMINDER);
 		model.addColumn(COLUMN_CREATED);
 		model.addColumn(COLUMN_MODIFIED);
-		if (searchInAllMaps == false) {
-			final MapModel map = Controller.getCurrentController().getMap();
-			if(map != null) {
-				final NodeModel node = map.getRootNode();
-				updateModel(model, node);
-			}
-		}
-		else {
-			final Map<String, MapModel> maps = Controller.getCurrentController().getMapViewManager().getMaps(MModeController.MODENAME);
-			for (final MapModel map : maps.values()) {
-				final NodeModel node = map.getRootNode();
-				updateModel(model, node);
-			}
-		}
 		return model;
 	}
 
-	private void updateModel(final DefaultTableModel model, final NodeModel node) {
+	private void fillModel(final DefaultTableModel model, final NodeModel node, NodeFilter nodeFilter) {
 		final ReminderExtension hook = ReminderExtension.getExtension(node);
-		Date date = null;
-		if (hook != null) {
-			date = new Date(hook.getRemindUserAt());
-		}
 		if (nodeFilter.showsNode(node, hook)) {
-			final Object[] row = searchInAllMaps ? new Object[] {
-					node.getMap().getTitle(),
-					new TextHolder(new CoreTextAccessor(node)),
-					new IconsHolder(node),
-					new TextHolder(new DetailTextAccessor(node)) ,
-					new TextHolder(new NoteTextAccessor(node)),
-					date,
-					node.getHistoryInformation().getCreatedAt(),
-					node.getHistoryInformation().getLastModifiedAt()} :
-						new Object[] {
-								new TextHolder(new CoreTextAccessor(node)),
-								new IconsHolder(node),
-								new TextHolder(new DetailTextAccessor(node)) ,
-								new TextHolder(new NoteTextAccessor(node)),
-					date,
-					node.getHistoryInformation().getCreatedAt(),
-					node.getHistoryInformation().getLastModifiedAt()};
+			final Object[] row = createTableRowData(node, hook);
 			model.addRow(row);
 		}
 		for (final NodeModel child : node.getChildren()) {
-			updateModel(model, child);
+			fillModel(model, child, nodeFilter);
 		}
+	}
+
+	private Object[] createTableRowData(final NodeModel node, final ReminderExtension hook) {
+		final Date date = hook != null ? new Date(hook.getRemindUserAt()) : null;
+		final Object[] row = searchInAllMaps ? new Object[] {
+				node.getMap().getTitle(),
+				new TextHolder(new CoreTextAccessor(node)),
+				new IconsHolder(node),
+				new TextHolder(new DetailTextAccessor(node)) ,
+				new TextHolder(new NoteTextAccessor(node)),
+				date,
+				node.getHistoryInformation().getCreatedAt(),
+				node.getHistoryInformation().getLastModifiedAt()} :
+					new Object[] {
+							new TextHolder(new CoreTextAccessor(node)),
+							new IconsHolder(node),
+							new TextHolder(new DetailTextAccessor(node)) ,
+							new TextHolder(new NoteTextAccessor(node)),
+				date,
+				node.getHistoryInformation().getCreatedAt(),
+				node.getHistoryInformation().getLastModifiedAt()};
+		return row;
 	}
 	static private HashSet<Object> changeableProperties = new HashSet<Object>(
 			Arrays.asList(NodeModel.NODE_TEXT, NodeModel.NODE_ICON, DetailTextModel.class, NodeModel.NOTE_TEXT)

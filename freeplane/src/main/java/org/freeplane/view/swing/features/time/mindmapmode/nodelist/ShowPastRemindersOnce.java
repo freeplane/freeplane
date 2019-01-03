@@ -19,21 +19,26 @@
  */
 package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.features.map.NodeModel;
 
 
 /**
  * @author Dimitry Polivaev
  * Feb 20, 2009
  */
-public class ShowPastRemindersOnce implements Runnable {
+public class ShowPastRemindersOnce {
 	private static final long UNDEFINED = - 1;
 	protected static final String REMINDER_TEXT_WINDOW_TITLE = "reminder.WindowTitle_pastReminders";
 	private boolean listIsShown;
 	private long timeLimit = UNDEFINED;
+	private final List<NodeModel> nodes = new ArrayList<NodeModel>();
 
 	/**
 	 * @param b
@@ -43,8 +48,8 @@ public class ShowPastRemindersOnce implements Runnable {
 		reset();
 	}
 
-	@Override
-	public void run() {
+	public void addNode(NodeModel node) {
+		nodes.add(node);
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
@@ -63,9 +68,7 @@ public class ShowPastRemindersOnce implements Runnable {
 						});
 						return;
 					}
-					final long currentTimeMillis = System.currentTimeMillis();
 					NodeListWithReminders timeList = new NodeListWithReminders(REMINDER_TEXT_WINDOW_TITLE,
-						(node, reminder) -> reminder != null && reminder.getRemindUserAt() < currentTimeMillis,
 						true, "allmaps.timelistwindow.configuration") {
 
 							@Override
@@ -75,7 +78,8 @@ public class ShowPastRemindersOnce implements Runnable {
 							}
 
 					};
-					timeList.startup();
+					timeList.startup(nodes);
+					nodes.clear();
 				}
 			}
 		});
@@ -93,6 +97,7 @@ public class ShowPastRemindersOnce implements Runnable {
 
 	private void reset() {
 		listIsShown = false;
+		nodes.clear();
 		timeLimit = UNDEFINED;
 	}
 }

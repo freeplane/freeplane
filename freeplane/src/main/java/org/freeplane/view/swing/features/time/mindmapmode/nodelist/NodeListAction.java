@@ -37,12 +37,12 @@ public class NodeListAction extends AFreeplaneAction {
 	public NodeListAction() {
 		super("NodeListAction");
 		nodeList = new NodeListWithReplacement(NodeList.REMINDER_TEXT_WINDOW_TITLE_ALL_NODES,
-			(node, reminder) -> node.hasVisibleContent(),
-			false, "nodelistwindow.configuration");
+			false,
+			"nodelistwindow.configuration");
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		nodeList.startup();
+		nodeList.startup((node, reminder) -> node.hasVisibleContent());
 	}
 }
