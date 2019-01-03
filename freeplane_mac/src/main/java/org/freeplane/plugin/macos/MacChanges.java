@@ -129,7 +129,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 				System.setProperty("org.freeplane.param" + loadedMapCounter, filePath);				
 			} else {
 				// Direct loading
-				getModeController().getMapController().newMap(Compat.fileToUrl(new File(filePath)));
+				getModeController().getMapController().openMap(Compat.fileToUrl(new File(filePath)));
 			}
 		} catch (Exception e) {
 			LogUtils.warn(e);
