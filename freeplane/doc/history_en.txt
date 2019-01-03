@@ -12,6 +12,7 @@ Creating attributes from plain text in clipboard
 Show map titles in dialogs showing nodes from different maps
 Show all passed reminders in one time task dialog on start or after the map is loaded
 Add execute script and remove reminder buttons to time task dialog
+Show past reminders action
 Support dependency management in groovy scripts (see http://docs.groovy-lang.org/latest/html/documentation/grape.html)
 Bug fixes
  
