@@ -459,7 +459,8 @@
 		</Entry>
 		<Entry name="extras">
 			<Entry name="TimeManagementAction" accelerator="control T" />
-			<Entry name="TimeListAction" />
+			<Entry name="ReminderListAction" />
+			<Entry name="OldReminderListAction" />
 			<Entry name="ReminderHookAction" />
 			<Entry builder="separator" />
 			<Entry name="EnterPassword" />

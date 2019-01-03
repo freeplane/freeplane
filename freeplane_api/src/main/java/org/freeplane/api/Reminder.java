@@ -16,7 +16,7 @@ import java.util.Date;
      *      node.reminder.setScript("loadUri(new URI('${node.map.file.toURI()}#${node.id}'))")
      *  }
      *  // a click on the node opens time management dialog
-     *  node.link.text = 'menuitem:_$TimeListAction$0'
+     *  node.link.text = 'menuitem:_$ReminderListAction$0'
      * </pre> */
     public interface Reminder extends ReminderRO {
 //        /** Creates a new reminder. Removes existing reminders for the same node if they exist.

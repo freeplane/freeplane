@@ -65,8 +65,9 @@ import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.view.swing.features.time.mindmapmode.TimeManagement.JTimePanel;
 import org.freeplane.view.swing.features.time.mindmapmode.nodelist.AllMapsNodeListAction;
 import org.freeplane.view.swing.features.time.mindmapmode.nodelist.NodeListAction;
+import org.freeplane.view.swing.features.time.mindmapmode.nodelist.OldReminderListAction;
+import org.freeplane.view.swing.features.time.mindmapmode.nodelist.ReminderListAction;
 import org.freeplane.view.swing.features.time.mindmapmode.nodelist.ShowPastRemindersOnce;
-import org.freeplane.view.swing.features.time.mindmapmode.nodelist.TimeListAction;
 import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 
 /**
@@ -135,7 +136,8 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		super();
 		this.modeController = modeController;
 		registerAction(new TimeManagementAction(this));
-		registerAction(new TimeListAction());
+		registerAction(new ReminderListAction());
+		registerAction(new OldReminderListAction());
 		registerAction(new NodeListAction());
 		registerAction(new AllMapsNodeListAction());
 		registerTooltipProvider();

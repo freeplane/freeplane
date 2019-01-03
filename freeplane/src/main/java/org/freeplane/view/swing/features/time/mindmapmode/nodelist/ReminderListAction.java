@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 
-public class TimeListAction extends AFreeplaneAction {
+public class ReminderListAction extends AFreeplaneAction {
 	/**
 	 *
 	 */
@@ -14,8 +14,8 @@ public class TimeListAction extends AFreeplaneAction {
 	 */
 	private final NodeList timeList;
 
-	public TimeListAction() {
-		super("TimeListAction");
+	public ReminderListAction() {
+		super("ReminderListAction");
 		timeList = new NodeListWithReminders(NodeList.REMINDER_TEXT_WINDOW_TITLE,
 			false, "timelistwindow.configuration");
 	}

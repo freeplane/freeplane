@@ -335,6 +335,7 @@ class NodeList {
 	protected final JCheckBox matchCase;
 	final private boolean modal;
 	private final MapChangeListener mapChangeListener;
+	protected static final String PAST_REMINDERS_TEXT_WINDOW_TITLE = "reminder.WindowTitle_pastReminders";
 
 	NodeList( final String windowTitle, final boolean searchInAllMaps, String windowPreferenceStorageProperty) {
 		this.windowTitle = windowTitle;

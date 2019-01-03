@@ -36,7 +36,6 @@ import org.freeplane.features.mode.Controller;
  */
 public class ShowPastRemindersOnce {
 	private static final long UNDEFINED = - 1;
-	protected static final String REMINDER_TEXT_WINDOW_TITLE = "reminder.WindowTitle_pastReminders";
 	private boolean listIsShown;
 	private long timeLimit = UNDEFINED;
 	private final List<NodeModel> nodes = new ArrayList<NodeModel>();
@@ -72,7 +71,7 @@ public class ShowPastRemindersOnce {
 						});
 						return;
 					}
-					NodeListWithReminders timeList = new NodeListWithReminders(REMINDER_TEXT_WINDOW_TITLE,
+					NodeListWithReminders timeList = new NodeListWithReminders(NodeList.PAST_REMINDERS_TEXT_WINDOW_TITLE,
 						true, "allmaps.timelistwindow.configuration") {
 
 							@Override
