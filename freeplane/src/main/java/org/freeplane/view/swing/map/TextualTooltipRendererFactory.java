@@ -105,6 +105,7 @@ class TextualTooltipRendererFactory {
 		final int scrollBarWidth = scrollPane.getVerticalScrollBar().getPreferredSize().width;
 		tooltipSize.width -= scrollBarWidth;
 		scrollPane.setMaximumSize(tooltipSize);
+		maximumWidth = tooltipSize.width;
 		UITools.setScrollbarIncrement(scrollPane);
 		tip.setOpaque(true);
 		scrollPane.addComponentListener(new ComponentAdapter() {
