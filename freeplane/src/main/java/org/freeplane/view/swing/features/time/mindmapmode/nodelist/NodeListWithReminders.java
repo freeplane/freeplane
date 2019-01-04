@@ -61,6 +61,7 @@ public class NodeListWithReminders extends NodeList{
 			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				removeReminders(false);
+				disposeDialog();
 			}
 		};
 		final JButton removeAllButton = new JButton(removeAllAction);
