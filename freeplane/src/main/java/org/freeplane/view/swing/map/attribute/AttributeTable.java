@@ -277,16 +277,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	}
 
 	private void changeSelectedRowHeight(final int rowIndex) {
-		if (highRowIndex != rowIndex) {
-			if (highRowIndex < getRowCount()) {
-				final int h = getRowHeight(highRowIndex);
-				setRowHeight(highRowIndex, h - AttributeTable.EXTRA_HEIGHT);
-			}
-			final int h = getRowHeight(rowIndex);
-			setRowHeight(rowIndex, h + AttributeTable.EXTRA_HEIGHT);
-			highRowIndex = rowIndex;
-			assert highRowIndex >= 0;
-		}
+		highRowIndex = rowIndex;
+		updateRowHeights();
 	}
 
 	@Override
@@ -953,20 +945,12 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		if (rowCount == 0) {
 			return;
 		}
-		final int constHeight = getTableHeaderHeight() + AttributeTable.EXTRA_HEIGHT;
-		final float zoom = getZoom();
 		final float fontSize = (float) getFont().getMaxCharBounds(((Graphics2D)getGraphics()).getFontRenderContext()).getHeight();
-		final float tableRowHeight = fontSize + zoom * EXTRA_HEIGHT;
-		int newHeight = (int) ((tableRowHeight * rowCount + (zoom - 1) * constHeight) / rowCount);
-		if (newHeight < 1) {
-			newHeight = 1;
-		}
-		final int highRowsNumber = (int) ((tableRowHeight - newHeight) * rowCount);
-		for (int i = 0; i < highRowsNumber; i++) {
-			setRowHeight(i, 1 + newHeight + (i == highRowIndex ? AttributeTable.EXTRA_HEIGHT : 0));
-		}
-		for (int i = highRowsNumber; i < rowCount; i++) {
-			setRowHeight(i, newHeight + (i == highRowIndex ? AttributeTable.EXTRA_HEIGHT : 0));
+		final float zoom = getZoom();
+		final int extraHeight = (int)(zoom * EXTRA_HEIGHT + 0.7f);
+		int rowHeight = Math.max(1, (int)fontSize + extraHeight);
+		for (int i = 0; i <  rowCount; i++) {
+			setRowHeight(i, rowHeight + (i == highRowIndex ? AttributeTable.EXTRA_HEIGHT : 0));
 		}
 	}
 
