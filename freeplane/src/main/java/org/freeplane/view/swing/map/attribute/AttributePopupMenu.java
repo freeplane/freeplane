@@ -313,7 +313,8 @@ class AttributePopupMenu extends JPopupMenu implements MouseListener {
 		final String attributeViewType = table.getAttributeView().getViewType();
 		final IAttributeTableModel model = table.getAttributeTableModel();
 		final int rowCount = model.getRowCount();
-		add(getOptimalWidth());
+		if(table.getNodeViewAncestor() != null)
+			add(getOptimalWidth());
 		if(col == 1){
 			add(getInsertLink());
 			add(getInsertFileLink());

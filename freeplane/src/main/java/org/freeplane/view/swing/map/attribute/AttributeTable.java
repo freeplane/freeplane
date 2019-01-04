@@ -59,8 +59,10 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToolTip;
+import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -159,14 +161,16 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		public void mouseReleased(final MouseEvent e) {
 			final JTableHeader header = (JTableHeader) e.getSource();
 			final AttributeTable table = (AttributeTable) header.getTable();
-			final float zoom = table.attributeView.getMapView().getZoom();
-			final AttributeTableModel model = (AttributeTableModel) table
-			.getModel();
-			for (int col = 0; col < table.getColumnCount(); col++) {
-				final int modelColumnWidth = model.getColumnWidth(col).toBaseUnitsRounded();
-				final int currentColumnWidth = Math.round(table.getColumnModel().getColumn(col).getWidth() / zoom);
-				if (modelColumnWidth != currentColumnWidth) {
-					model.setColumnWidth(col, LengthUnits.pixelsInPt(currentColumnWidth));
+			if(table.getNodeViewAncestor() != null) {
+				final float zoom = table.attributeView.getMapView().getZoom();
+				final AttributeTableModel model = (AttributeTableModel) table
+						.getModel();
+				for (int col = 0; col < table.getColumnCount(); col++) {
+					final int modelColumnWidth = model.getColumnWidth(col).toBaseUnitsRounded();
+					final int currentColumnWidth = Math.round(table.getColumnModel().getColumn(col).getWidth() / zoom);
+					if (modelColumnWidth != currentColumnWidth) {
+						model.setColumnWidth(col, LengthUnits.pixelsInPt(currentColumnWidth));
+					}
 				}
 			}
 		}
@@ -560,7 +564,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			validate();
 		}
 		final Dimension dimension = super.getPreferredSize();
-		NodeView nodeView = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, this);
+		NodeView nodeView = getNodeViewAncestor();
 		if(nodeView != null){
 			final MapView map = nodeView.getMap();
 			final ModeController modeController = map.getModeController();
@@ -569,10 +573,14 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			dimension.height = Math.min(map.getZoomed(AttributeTable.MAX_HEIGTH) - getTableHeaderHeight(), dimension.height);
 		}
 		else{
-			dimension.width = Math.min(MAX_WIDTH, dimension.width);
-			dimension.height = Math.min(MAX_HEIGTH, dimension.height);
+//			dimension.width = Math.min(MAX_WIDTH, dimension.width);
+//			dimension.height = Math.min(MAX_HEIGTH, dimension.height);
 		}
 		return dimension;
+	}
+
+	NodeView getNodeViewAncestor() {
+		return (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class, this);
 	}
 
 	int getTableHeaderHeight() {
@@ -878,10 +886,16 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		this.gridColor = gridColor;
 		if(gridColor != null) {
 			if(! gridColor.equals(getGridColor())) {
-				AttributeViewScrollPane scrollPane = (AttributeViewScrollPane) SwingUtilities.getAncestorOfClass(AttributeViewScrollPane.class, this);
 				final Border border = BorderFactory.createLineBorder(gridColor);
-				scrollPane.setBorder(border);
-				scrollPane.setViewportBorder(border);
+				final JComponent parent = (JComponent) getParent();
+				if(parent instanceof JViewport) {
+					JScrollPane scrollPane = (JScrollPane) parent.getParent();
+					scrollPane.setBorder(border);
+					scrollPane.setViewportBorder(border);
+				}
+				else {
+					parent.setBorder(border);
+				}
 				super.setGridColor(gridColor);
 			}
 		}
