@@ -801,16 +801,20 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		Component comp = null;
 		int maxCellWidth = 2 * (int) (Math.ceil(getFont().getSize2D() / UITools.FONT_SCALE_FACTOR +  EXTRA_HEIGHT));
 		int rowCount = getRowCount();
+		boolean isInsideNodeView = getNodeViewAncestor() != null;
 		if(rowCount > 0) {
 			for (int col = 0; col < 2; col++) {
 				for (int row = 0; row < rowCount; row++) {
 					comp = AttributeTable.dtcr.getTableCellRendererComponent(this, getValueAt(row, col), false, false, row,
 							col);
 					final Dimension preferredSize = comp.getPreferredSize();
-					int cellWidth = preferredSize.width + preferredSize.height +  EXTRA_HEIGHT + CURSOR_WIDTH;
+					int cellWidth = preferredSize.width + preferredSize.height +  EXTRA_HEIGHT + CURSOR_WIDTH + 1;
 					maxCellWidth = Math.max(cellWidth, maxCellWidth);
 				}
-				getAttributeTableModel().setColumnWidth(col, LengthUnits.pixelsInPt(maxCellWidth + 1));
+				if(isInsideNodeView)
+					getAttributeTableModel().setColumnWidth(col, LengthUnits.pixelsInPt(maxCellWidth));
+				else
+					getColumnModel().getColumn(col).setPreferredWidth(maxCellWidth);
 			}
 		}
 	}
