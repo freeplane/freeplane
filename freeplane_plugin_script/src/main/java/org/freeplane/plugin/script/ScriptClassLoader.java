@@ -101,7 +101,8 @@ public final class ScriptClassLoader extends URLClassLoader {
 	}
 
 	public void setSecurityManager(ScriptingSecurityManager securityManager) {
-		AccessController.checkPermission(new AllPermission());
+		if(System.getSecurityManager() != null)
+			AccessController.checkPermission(new AllPermission());
 		this.securityManager = securityManager;
 	}
 
