@@ -803,10 +803,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					int cellWidth = preferredSize.width + preferredSize.height +  EXTRA_HEIGHT + CURSOR_WIDTH + 1;
 					maxCellWidth = Math.max(cellWidth, maxCellWidth);
 				}
-				if(isInsideNodeView)
-					getAttributeTableModel().setColumnWidth(col, LengthUnits.pixelsInPt(maxCellWidth));
-				else
-					getColumnModel().getColumn(col).setPreferredWidth(maxCellWidth);
+				getAttributeTableModel().setColumnWidth(col, LengthUnits.pixelsInPt(maxCellWidth));
 			}
 		}
 	}
