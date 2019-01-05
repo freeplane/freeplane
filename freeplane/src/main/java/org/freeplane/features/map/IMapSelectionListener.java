@@ -21,7 +21,7 @@ package org.freeplane.features.map;
 
 
 public interface IMapSelectionListener {
-	void afterMapChange(MapModel oldMap, MapModel newMap);
+	default void afterMapChange(MapModel oldMap, MapModel newMap) {}
 
-	void beforeMapChange(MapModel oldMap, MapModel newMap);
+	default void beforeMapChange(MapModel oldMap, MapModel newMap) {}
 }

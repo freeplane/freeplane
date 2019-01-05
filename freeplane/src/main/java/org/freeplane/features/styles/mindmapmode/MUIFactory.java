@@ -75,12 +75,15 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		final String[] envFonts = gEnv.getAvailableFontFamilyNames();
 		fonts = new DefaultComboBoxModel(envFonts);
 		final ListDataListener fontsListener = new ListDataListener() {
+			@Override
 			public void intervalRemoved(final ListDataEvent e) {
 			}
 
+			@Override
 			public void intervalAdded(final ListDataEvent e) {
 			}
 
+			@Override
 			public void contentsChanged(final ListDataEvent e) {
 				if (e.getIndex0() != -1) {
 					return;
@@ -96,12 +99,15 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		};
 		fonts.addListDataListener(fontsListener);
 		final ListDataListener sizeListener = new ListDataListener() {
+			@Override
 			public void intervalRemoved(final ListDataEvent e) {
 			}
 
+			@Override
 			public void intervalAdded(final ListDataEvent e) {
 			}
 
+			@Override
 			public void contentsChanged(final ListDataEvent e) {
 				if (e.getIndex0() != -1) {
 					return;
@@ -120,12 +126,15 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		};
 		size.addListDataListener(sizeListener);
 		final ListDataListener styleListener = new ListDataListener() {
+			@Override
 			public void intervalRemoved(final ListDataEvent e) {
 			}
 
+			@Override
 			public void intervalAdded(final ListDataEvent e) {
 			}
 
+			@Override
 			public void contentsChanged(final ListDataEvent e) {
 				if (e.getIndex0() != -1) {
 					return;
@@ -155,6 +164,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
         ignoreChangeEvent = false;
 	}
 
+	@Override
 	public void nodeChanged(final NodeChangeEvent event) {
 		IMapSelection selection = Controller.getCurrentController().getSelection();
 		if(selection != null) {
@@ -165,9 +175,11 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		changeToolbar(event.getNode());
 	}
 
+	@Override
 	public void onDeselect(final NodeModel node) {
 	}
 
+	@Override
 	public void onSelect(final NodeModel node) {
 		changeToolbar(node);
 	}
@@ -211,6 +223,7 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		return fontsBox;
 	}
 
+	@Override
 	public void mapChanged(final MapChangeEvent event) {
 		final Object property = event.getProperty();
 		if (property.equals(MapStyle.MAP_STYLES)) {
@@ -221,21 +234,27 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		}
 	}
 
+	@Override
 	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 	}
 
+	@Override
 	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
 	}
 
+	@Override
 	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	}
 
+	@Override
 	public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 	}
 
+	@Override
 	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	}
 
+	@Override
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		updateMapStyles(newMap);
 	}
@@ -253,6 +272,4 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 		ignoreChangeEvent = false;
 	}
 
-	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
-	}
 }

@@ -156,10 +156,6 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		}
 	}
 
-	@Override
-	public void beforeMapChange(MapModel oldMap, MapModel newMap) {
-	}
-
 	NodeModel getNode() {
 		return node;
 	}

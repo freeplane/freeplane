@@ -79,15 +79,15 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpecs;
 
 /**
  * @author foltin
  */
 class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 
-	class JTimePanel extends JPanel 
+	class JTimePanel extends JPanel
 	{
         private static final long serialVersionUID = 1L;
 		private JButton setReminderButton;
@@ -104,7 +104,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 	        final NodeModel selected = reminderHook.getModeController().getMapController().getSelectedNode();
 	        update(selected);
         }
-		
+
 		public void update(NodeModel node){
 			if(node == null)
 				return;
@@ -157,7 +157,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			calendarComponent.getDayChooser().addPropertyChangeListener(TimeManagement.this);
 			calendarContainer.setAlignmentX(0.5f);
 			add(calendarContainer);
-			
+
 			DefaultFormBuilder btnBuilder = new DefaultFormBuilder(new FormLayout(FormSpecs.GROWING_BUTTON_COLSPEC.toString(), ""));
 			 btnBuilder.getLayout().addGroupedColumn(btnBuilder.getColumnCount());
 			 for(int i = 1; i< colCount; i++){
@@ -169,6 +169,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			{
 				final JButton todayButton = new JButton(getResourceString("reminder.todayButton"));
 				todayButton.addActionListener(new ActionListener() {
+					@Override
 					public void actionPerformed(final ActionEvent arg0) {
 						final Calendar currentTime = Calendar.getInstance();
 						currentTime.set(Calendar.SECOND, 0);
@@ -197,7 +198,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			}
 			{
 				scriptEditor = null;
-				IScriptEditorStarter editor = (IScriptEditorStarter) reminderHook.getModeController().getExtension(IScriptEditorStarter.class);
+				IScriptEditorStarter editor = reminderHook.getModeController().getExtension(IScriptEditorStarter.class);
 				if(editor != null){
 					scriptEditor = editor.createComboBoxEditor(new Dimension(600, 400));
 					Component scriptButton = scriptEditor.getEditorComponent();
@@ -225,7 +226,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 	                public void mouseClicked(MouseEvent e) {
 						remindLaterReminder();
 	               }
-					
+
 				});
 				btnBuilder.append(remindLaterButton);
 			}
@@ -243,7 +244,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 	                public void mouseClicked(MouseEvent e) {
 						removeReminder();
 	               }
-					
+
 				});
 				btnBuilder.append(removeReminderButton);
 			}
@@ -328,10 +329,8 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(this);
 	}
 
-	
-	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-	}
 
+	@Override
 	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 		disposeDialog();
 	}
@@ -366,6 +365,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 	}
 
 
+	@Override
 	public void propertyChange(final PropertyChangeEvent event) {
 		if (event.getPropertyName().equals(JDayChooser.DAY_PROPERTY)) {
 		}
@@ -380,15 +380,18 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		dialog = new JDialog(UITools.getCurrentFrame(), false /*not modal*/);
 		final JTimePanel timePanel =createTimePanel(dialog, true, 4);
 		nodeSelectionListener = new INodeSelectionListener() {
+			@Override
 			public void onSelect(NodeModel node) {
 				timePanel.update(node);
 			}
-			
+
+			@Override
 			public void onDeselect(NodeModel node) {
 			}
 		};
 		getMindMapController().getMapController().addNodeSelectionListener(nodeSelectionListener);
 		nodeChangeListener = new INodeChangeListener() {
+			@Override
 			public void nodeChanged(NodeChangeEvent event) {
 				final NodeModel node = event.getNode();
 				if(event.getProperty().equals(ReminderExtension.class) && node.equals(getMindMapController().getMapController().getSelectedNode()))
@@ -396,7 +399,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			}
 		};
 		getMindMapController().getMapController().addNodeChangeListener(nodeChangeListener);
-		
+
 		dialog.setTitle(getResourceString("reminder.WindowTitle"));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		dialog.addWindowListener(new WindowAdapter() {
@@ -407,10 +410,11 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		});
 		final Action action = new AbstractAction() {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public void actionPerformed(final ActionEvent arg0) {
 				disposeDialog();
 			}
@@ -421,7 +425,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		UITools.setBounds(dialog, -1, -1, dialog.getWidth(), dialog.getHeight());
 		dialog.setVisible(true);
 	}
-	
+
 	public JTimePanel createTimePanel(final Dialog dialog, boolean useTriple, int colCount) {
 		if (this.calendar == null) {
 			this.calendar = Calendar.getInstance();
@@ -444,6 +448,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 				return dateFormat;
 			}
 
+			@Override
 			public String toString() {
 				return dateFormat.formatObject(getCalendarDate()).toString();
 			}
@@ -469,6 +474,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 			dateFormatChooser.setSelectedIndex(selectedIndex);
 		}
 		dateFormatChooser.addItemListener(new ItemListener() {
+			@Override
 			public void itemStateChanged(final ItemEvent e) {
 				dateFormat = ((DateFormatComboBoxElement) e.getItem()).getDateFormat();
 				final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();

@@ -132,6 +132,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 		Controller controller = Controller.getCurrentController();
 		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
+			@Override
 			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 				if (modeController.equals(Controller.getCurrentModeController())) {
 					final RecursiveMenuStructureProcessor recursiveMenuStructureProcessor = new RecursiveMenuStructureProcessor();
@@ -155,8 +156,6 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				}
 			}
 
-			public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
-			}
 		});
 
 		addUiBuilder(Phase.ACTIONS, "navigate_maps", new BuilderDestroyerPair(new EntryVisitor() {
@@ -205,15 +204,18 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return new List[4];
 	}
 
+	@Override
 	public void addToolBar(final String name, final int position, final JComponent toolBar) {
 		toolBars.put(name, toolBar);
 		toolbarLists[position].add(toolBar);
 	}
 
+	@Override
 	public void addMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
 		mRegisteredMouseWheelEventHandler.add(handler);
 	}
 
+	@Override
 	public IMouseListener getMapMouseListener() {
 		if (mapMouseListener == null) {
 			mapMouseListener = new DefaultMapMouseListener();
@@ -221,6 +223,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return mapMouseListener;
 	}
 
+	@Override
 	public MouseWheelListener getMapMouseWheelListener() {
 		if (mapMouseWheelListener == null) {
 			mapMouseWheelListener = new DefaultMouseWheelListener();
@@ -228,10 +231,12 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return mapMouseWheelListener;
 	}
 
+	@Override
 	public JPopupMenu getMapPopup() {
 		return mapsPopupMenu;
 	}
 
+	@Override
 	public FreeplaneMenuBar getMenuBar() {
 		if (menuBar == null) {
 			menuBar = new FreeplaneMenuBar(delegateProcessor);
@@ -239,18 +244,22 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return menuBar;
 	}
 
+	@Override
 	public Set<IMouseWheelEventHandler> getMouseWheelEventHandlers() {
 		return Collections.unmodifiableSet(mRegisteredMouseWheelEventHandler);
 	}
 
+	@Override
 	public DragGestureListener getNodeDragListener() {
 		return nodeDragListener;
 	}
 
+	@Override
 	public DropTargetListener getNodeDropTargetListener() {
 		return nodeDropTargetListener;
 	}
 
+	@Override
 	public KeyListener getNodeKeyListener() {
 		if (nodeKeyListener == null) {
 			nodeKeyListener = new DefaultNodeKeyListener(null);
@@ -262,6 +271,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return nodeMotionListener;
 	}
 
+	@Override
 	public IMouseListener getNodeMouseMotionListener() {
 		if (nodeMouseMotionListener == null) {
 			nodeMouseMotionListener = new DefaultNodeMouseMotionListener();
@@ -269,6 +279,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return nodeMouseMotionListener;
 	}
 
+	@Override
 	public MouseWheelListener getNodeMouseWheelListener() {
 		if (nodeMouseWheelListener == null) {
 			nodeMouseWheelListener = new DefaultNodeMouseWheelListener(getMapMouseWheelListener());
@@ -276,18 +287,22 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		return nodeMouseWheelListener;
 	}
 
+	@Override
 	public JPopupMenu getNodePopupMenu() {
 		return nodePopupMenu;
 	}
 
+	@Override
 	public JComponent getToolBar(final String name) {
 		return toolBars.get(name);
 	}
 
+	@Override
 	public Iterable<JComponent> getToolBars(final int position) {
 		return toolbarLists[position];
 	}
 
+	@Override
 	public void removeMouseWheelEventHandler(final IMouseWheelEventHandler handler) {
 		mRegisteredMouseWheelEventHandler.remove(handler);
 	}
@@ -363,6 +378,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		this.nodePopupMenu = nodePopupMenu;
 	}
 
+	@Override
 	public void updateMapList() {
 		for (Entry entry : mapMenuEntries.keySet())
 			rebuildMenu(entry);
@@ -422,11 +438,13 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		mapMenuEntries.put(menuEntry, null);
     }
 
+	@Override
 	public void rebuildMenu(Entry entry){
 		if (subtreeBuilder != null)
 			subtreeBuilder.rebuildChildren(entry);
 	}
 
+	@Override
 	public void rebuildMenus(String name) {
 		if(genericMenuStructure != null) {
     		final List<Entry> entries = genericMenuStructure.findEntries(name);
@@ -435,10 +453,11 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 		}
 	}
 
+	@Override
 	public void updateMenus(String menuStructureResource, Set<String> plugins) {
 		mapsPopupMenu = new JPopupMenu();
 		mapsPopupMenu.setName(TextUtils.getText("mindmaps"));
-		
+
 		final URL genericStructure = ResourceController.getResourceController().getResource(
 		    menuStructureResource);
 		try {
@@ -516,13 +535,15 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			sb.append(key).append('\n');
 		}
 		LogUtils.info(sb.toString());
-		
+
 	}
 
+	@Override
 	public void addUiBuilder(Phase phase, String name, BuilderDestroyerPair builderDestroyerPair) {
 		customBuilders.get(phase.ordinal()).put(name, builderDestroyerPair);
 	}
-	
+
+	@Override
 	public void addBuildPhaseListener(BuildPhaseListener listener) {
 		buildPhaseListeners.add(listener);
 	}

@@ -84,15 +84,18 @@ public class MLogicalStyleController extends LogicalStyleController {
 			this.conditionalStyleModel = conditionalStyleModel;
 		}
 
+		@Override
 		public void undo() {
-			MLogicalStyleController.super.insertConditionalStyle(conditionalStyleModel, index, item.isActive(), item.getCondition(), 
+			MLogicalStyleController.super.insertConditionalStyle(conditionalStyleModel, index, item.isActive(), item.getCondition(),
 				item.getStyle(), item.isLast());
 		}
 
+		@Override
 		public String getDescription() {
 			return "RemoveConditionalStyle";
 		}
 
+		@Override
 		public void act() {
 			item = MLogicalStyleController.super.removeConditionalStyle(conditionalStyleModel, index);
 		}
@@ -113,15 +116,18 @@ public class MLogicalStyleController extends LogicalStyleController {
 			this.isLast = isLast;
 		}
 
+		@Override
 		public void undo() {
 			int index = conditionalStyleModel.getStyleCount() - 1;
 			MLogicalStyleController.super.removeConditionalStyle(conditionalStyleModel, index);
 		}
 
+		@Override
 		public String getDescription() {
 			return "AddConditionalStyle";
 		}
 
+		@Override
 		public void act() {
 			MLogicalStyleController.super.addConditionalStyle(conditionalStyleModel, isActive, condition, style, isLast);
 		}
@@ -131,6 +137,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		public StyleRemover() {
 		}
 
+		@Override
 		public void nodeChanged(final NodeChangeEvent event) {
 			final ModeController modeController = Controller.getCurrentModeController();
 			if (modeController == null || modeController.isUndoAction()) {
@@ -152,6 +159,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 	};
 
 	private static class ExtensionCopier implements IExtensionCopier {
+		@Override
 		public void copy(final Object key, final NodeModel from, final NodeModel to) {
 			if (!key.equals(LogicalStyleKeys.LOGICAL_STYLE)) {
 				return;
@@ -160,7 +168,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 		}
 
 		public void copy(final NodeModel from, final NodeModel to) {
-			final LogicalStyleModel fromStyle = (LogicalStyleModel) from.getExtension(LogicalStyleModel.class);
+			final LogicalStyleModel fromStyle = from.getExtension(LogicalStyleModel.class);
 			if (fromStyle == null) {
 				return;
 			}
@@ -168,6 +176,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			toStyle.setStyle(fromStyle.getStyle());
 		}
 
+		@Override
 		public void remove(final Object key, final NodeModel from) {
 			if (!key.equals(LogicalStyleKeys.LOGICAL_STYLE)) {
 				return;
@@ -175,21 +184,23 @@ public class MLogicalStyleController extends LogicalStyleController {
 			from.removeExtension(LogicalStyleModel.class);
 		}
 
+		@Override
 		public void remove(final Object key, final NodeModel from, final NodeModel which) {
 			if (!key.equals(LogicalStyleKeys.LOGICAL_STYLE)) {
 				return;
 			}
-			final LogicalStyleModel whichStyle = (LogicalStyleModel) which.getExtension(LogicalStyleModel.class);
+			final LogicalStyleModel whichStyle = which.getExtension(LogicalStyleModel.class);
 			if (whichStyle == null) {
 				return;
 			}
-			final LogicalStyleModel fromStyle = (LogicalStyleModel) from.getExtension(LogicalStyleModel.class);
+			final LogicalStyleModel fromStyle = from.getExtension(LogicalStyleModel.class);
 			if (fromStyle == null) {
 				return;
 			}
 			from.removeExtension(fromStyle);
 		}
-		
+
+		@Override
 		public void resolveParentExtensions(Object key, NodeModel to) {
         }
 	}
@@ -228,30 +239,34 @@ public class MLogicalStyleController extends LogicalStyleController {
 			    new ChildActionEntryRemover(modeController));
 			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
 			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
-				public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
-				}
-
+				@Override
 				public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 					userInputListenerFactory.rebuildMenus(STYLE_ACTIONS);
 				}
 			});
 			final MapController mapController = modeController.getMapController();
 			mapController.addMapChangeListener(new IMapChangeListener() {
+				@Override
 				public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 				}
 
+				@Override
 				public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 				}
 
+				@Override
 				public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
 				}
 
+				@Override
 				public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
 				}
 
+				@Override
 				public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
 				}
 
+				@Override
 				public void mapChanged(final MapChangeEvent event) {
 					if (event.getProperty().equals(MapStyle.MAP_STYLES)) {
 						userInputListenerFactory.rebuildMenus(STYLE_ACTIONS);
@@ -259,10 +274,12 @@ public class MLogicalStyleController extends LogicalStyleController {
 				}
 			});
 			mapController.addNodeSelectionListener(new INodeSelectionListener() {
+				@Override
 				public void onSelect(final NodeModel node) {
 					selectActions();
 				}
 
+				@Override
 				public void onDeselect(final NodeModel node) {
 				}
 			});
@@ -271,7 +288,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 
 	class StyleMenuBuilder implements EntryVisitor {
 		private final ModeController modeController;
-		
+
 		public StyleMenuBuilder(ModeController modeController) {
 			super();
 			this.modeController = modeController;
@@ -338,14 +355,17 @@ public class MLogicalStyleController extends LogicalStyleController {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
 			public String getDescription() {
 				return "setStyle";
 			}
 
+			@Override
 			public void act() {
 				changeStyle(modeController, node, oldStyle, style);
 			}
 
+			@Override
 			public void undo() {
 				changeStyle(modeController, node, style, oldStyle);
 			}
@@ -399,21 +419,24 @@ public class MLogicalStyleController extends LogicalStyleController {
 		}
 	}
 
-	
+
 	public void moveConditionalStyleDown(final MapModel map, final ConditionalStyleModel conditionalStyleModel, final int index) {
 		int maxIndex = conditionalStyleModel.getStyleCount() - 1;
 		if (index < 0 || index >= maxIndex) {
 			return;
 		}
 		IActor actor = new IActor() {
+			@Override
 			public String getDescription() {
 				return "moveConditionalStyleDown";
 			}
 
+			@Override
 			public void act() {
 				MLogicalStyleController.super.moveConditionalStyleDown(conditionalStyleModel, index);
 			}
 
+			@Override
 			public void undo() {
 				MLogicalStyleController.super.moveConditionalStyleUp(conditionalStyleModel, index + 1);
 			}
@@ -421,21 +444,24 @@ public class MLogicalStyleController extends LogicalStyleController {
 		Controller.getCurrentModeController().execute(actor, map);
 	}
 
-	
+
 	public void moveConditionalStyleUp(final MapModel map, final ConditionalStyleModel conditionalStyleModel, final int index) {
 		int maxIndex = conditionalStyleModel.getStyleCount() - 1;
 		if (index <= 0 || index > maxIndex) {
 			return;
 		}
 		IActor actor = new IActor() {
+			@Override
 			public String getDescription() {
 				return "moveConditionalStyleUp";
 			}
 
+			@Override
 			public void act() {
 				MLogicalStyleController.super.moveConditionalStyleUp(conditionalStyleModel, index);
 			}
 
+			@Override
 			public void undo() {
 				MLogicalStyleController.super.moveConditionalStyleDown(conditionalStyleModel, index - 1);
 			}
@@ -447,13 +473,13 @@ public class MLogicalStyleController extends LogicalStyleController {
 		return (MLogicalStyleController) LogicalStyleController.getController();
 	}
 
-	
+
 	public void addConditionalStyle(final MapModel map, final ConditionalStyleModel conditionalStyleModel, boolean isActive, ASelectableCondition condition, IStyle style, boolean isLast) {
 		AddConditionalStyleActor actor = new AddConditionalStyleActor(conditionalStyleModel, isActive, condition, style, isLast);
 		Controller.getCurrentModeController().execute(actor, map);
 	}
 
-	
+
 	public Item removeConditionalStyle(final MapModel map, final ConditionalStyleModel conditionalStyleModel, final int index) {
 		RemoveConditionalStyleActor actor = new RemoveConditionalStyleActor(conditionalStyleModel, index);
 		Controller.getCurrentModeController().execute(actor, map);
@@ -464,38 +490,47 @@ public class MLogicalStyleController extends LogicalStyleController {
 		return new TableModel() {
 			private final TableModel tableModel = conditionalStyleModel.asTableModel();
 
+			@Override
 			public void addTableModelListener(TableModelListener l) {
 				tableModel.addTableModelListener(l);
 			}
 
+			@Override
 			public Class<?> getColumnClass(int columnIndex) {
 				return tableModel.getColumnClass(columnIndex);
 			}
 
+			@Override
 			public int getColumnCount() {
 				return tableModel.getColumnCount();
 			}
 
+			@Override
 			public String getColumnName(int columnIndex) {
 				return tableModel.getColumnName(columnIndex);
 			}
 
+			@Override
 			public int getRowCount() {
 				return tableModel.getRowCount();
 			}
 
+			@Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
 				return tableModel.getValueAt(rowIndex, columnIndex);
 			}
 
+			@Override
 			public boolean isCellEditable(int rowIndex, int columnIndex) {
 				return tableModel.isCellEditable(rowIndex, columnIndex);
 			}
 
+			@Override
 			public void removeTableModelListener(TableModelListener l) {
 				tableModel.removeTableModelListener(l);
 			}
 
+			@Override
 			public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex) {
 				final Object oldValue = tableModel.getValueAt(rowIndex, columnIndex);
 				if(aValue == oldValue || aValue != null && aValue.equals(oldValue)){
@@ -503,14 +538,17 @@ public class MLogicalStyleController extends LogicalStyleController {
 				}
 				IActor actor = new IActor() {
 
+					@Override
 					public String getDescription() {
 						return "set conditional style table cell value";
 					}
 
+					@Override
 					public void act() {
 						tableModel.setValueAt(aValue, rowIndex, columnIndex);
 					}
 
+					@Override
 					public void undo() {
 						tableModel.setValueAt(oldValue, rowIndex, columnIndex);
 					}
@@ -519,6 +557,6 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 		};
 	}
-    
+
 
 }

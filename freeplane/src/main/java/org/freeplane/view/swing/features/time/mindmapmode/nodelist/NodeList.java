@@ -142,10 +142,6 @@ class NodeList {
         }
 
 		@Override
-		public void afterMapChange(MapModel oldMap, MapModel newMap) {
-       }
-
-		@Override
 		public void beforeMapChange(MapModel oldMap, MapModel newMap) {
 			disposeDialog();
         }

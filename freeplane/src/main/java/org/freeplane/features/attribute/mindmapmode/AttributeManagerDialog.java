@@ -43,7 +43,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.IListModel;
 import org.freeplane.features.attribute.AttributeRegistry;
-import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -56,7 +55,7 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 public class AttributeManagerDialog extends JDialog implements IMapSelectionListener {
 	private class ApplyAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -70,6 +69,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
 		 * )
 		 */
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			applyChanges();
 			Controller.getCurrentModeController().startTransaction();
@@ -78,7 +78,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 
 	private class CancelAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -92,6 +92,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
 		 * )
 		 */
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			resetChanges();
 			AttributeManagerDialog.this.setVisible(false);
@@ -109,7 +110,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 
 	class EditListAction extends AbstractAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 		private String labelText;
@@ -121,6 +122,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 			super(null, AttributeManagerDialog.editButtonImage);
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			ListDialog.showDialog((Component) e.getSource(), AttributeManagerDialog.this, labelText, title,
 			    listBoxModel, "xxxxxxxxxxxxxxxxxxxxx");
@@ -143,7 +145,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 
 	private class ImportAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -157,6 +159,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
 		 * )
 		 */
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			if (importDialog == null) {
 				importDialog = new ImportAttributesDialog(AttributeManagerDialog.this);
@@ -167,7 +170,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 
 	private class OKAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -181,6 +184,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
 		 * )
 		 */
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			applyChanges();
 			AttributeManagerDialog.this.setVisible(false);
@@ -228,6 +232,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		controller.getMapViewManager().addMapSelectionListener(this);
 	}
 
+	@Override
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		if (newMap != null) {
 			model = AttributeRegistry.getRegistry(newMap);
@@ -248,9 +253,6 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		final MapModel map = Controller.getCurrentController().getMap();
 		assert(AttributeRegistry.getRegistry(map) == model);
 		mapController.setSaved(map, false);
-	}
-
-	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
 	}
 
 	private void resetChanges() {

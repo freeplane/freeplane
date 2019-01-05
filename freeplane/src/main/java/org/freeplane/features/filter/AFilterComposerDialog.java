@@ -76,7 +76,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	 */
 	private class AddElementaryConditionAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -84,6 +84,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 			super("AddElementaryConditionAction");
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			ASelectableCondition newCond;
 			newCond = editor.getCondition();
@@ -96,6 +97,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	}
 
 	private class CloseAction implements ActionListener {
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			final Object source = e.getSource();
 			final boolean success;
@@ -137,6 +139,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		public void mouseClicked(final MouseEvent e) {
 			if (e.getClickCount() == 2) {
 				EventQueue.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						if (selectCondition()) {
 							dispose(true);
@@ -148,6 +151,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	}
 
 	private class ConditionListSelectionListener implements ListSelectionListener {
+		@Override
 		public void valueChanged(final ListSelectionEvent e) {
 			final int minSelectionIndex = elementaryConditionList.getMinSelectionIndex();
 			if (minSelectionIndex == -1) {
@@ -186,7 +190,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 
 	private class CreateConjunctConditionAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -194,6 +198,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 			super("CreateConjunctConditionAction");
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			final ASelectableCondition[] selectedValues = toConditionsArray(elementaryConditionList.getSelectedValues());
 			if (selectedValues.length < 2) {
@@ -208,7 +213,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 
 	private class CreateDisjunctConditionAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -216,6 +221,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 			super("CreateDisjunctConditionAction");
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			final ASelectableCondition[] selectedValues = toConditionsArray(elementaryConditionList.getSelectedValues());
 			if (selectedValues.length < 2) {
@@ -238,17 +244,18 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 
 	private class CreateNotSatisfiedConditionAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
 		/**
-		 * 
+		 *
 		 */
 		CreateNotSatisfiedConditionAction() {
 			super("CreateNotSatisfiedConditionAction");
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			final int min = elementaryConditionList.getMinSelectionIndex();
 			if (min >= 0) {
@@ -267,17 +274,18 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 
 	private class SplitConditionAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
 		/**
-		 * 
+		 *
 		 */
 		SplitConditionAction() {
 			super("SplitConditionAction");
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			final int min = elementaryConditionList.getMinSelectionIndex();
 			if (min >= 0) {
@@ -310,7 +318,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 
 	private class DeleteConditionAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -318,6 +326,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 			super("DeleteConditionAction");
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 			final int minSelectionIndex = elementaryConditionList.getMinSelectionIndex();
@@ -335,7 +344,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 
 	private class NameConditionAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -343,6 +352,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 			super("NameConditionAction");
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 			final int minSelectionIndex = elementaryConditionList.getMinSelectionIndex();
@@ -377,7 +387,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 
 	private class MoveConditionAction extends AFreeplaneAction {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 		final private int positionChange;
@@ -389,6 +399,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 			this.positionChange = up ? -1 : 1;
 		}
 
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 			selectedIndices = elementaryConditionList.getSelectedIndices();
@@ -415,6 +426,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
         }
 	}
 	private class LoadAction implements ActionListener {
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			final JFileChooser chooser = getFileChooser();
 			final int returnVal = chooser.showOpenDialog(AFilterComposerDialog.this);
@@ -458,6 +470,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	}
 
 	private class SaveAction implements ActionListener {
+		@Override
 		public void actionPerformed(final ActionEvent e) {
 			final JFileChooser chooser = getFileChooser();
 			chooser.setDialogTitle(TextUtils.getText("SaveAsAction.text"));
@@ -481,7 +494,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final int GAP_BETWEEN_BUTTONS = 10;
@@ -593,8 +606,8 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 		UITools.addEscapeActionToDialog(this);
 		pack();
 	}
-	
-	
+
+
 
 	public void setConditionRenderer(ListCellRenderer cellRenderer) {
 		elementaryConditionList.setCellRenderer(cellRenderer);
@@ -610,6 +623,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	    return button;
     }
 
+	@Override
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		editor.mapChanged(newMap);
 	}
@@ -627,9 +641,6 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	}
 
 	abstract protected boolean applyModel(DefaultComboBoxModel model, int[] selectedIndices);
-
-	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
-	}
 
 	protected JFileChooser getFileChooser() {
 		final JFileChooser chooser = UrlManager.getController().getFileChooser(MindMapFilterFileFilter.filter, false);

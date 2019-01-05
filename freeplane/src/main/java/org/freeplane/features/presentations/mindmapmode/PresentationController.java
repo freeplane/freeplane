@@ -31,7 +31,7 @@ public class PresentationController implements IExtension{
 	private static final Color NODE_HIGHLIGHTING_COLOR = Color.GREEN.brighter();
 	static final String PROCESS_NAVIGATION_KEYS_PROPERTY = "presentation.processesNavigationKeys";
 	static final String PROCESS_ESCAPE_KEY_PROPERTY = "presentation.processesEscapeKey";
-	
+
 
 	private static float[] FOLDED_NODE_DASH = new float[]{FOLDED_NODE_DOT_WIDTH/2, 2*FOLDED_NODE_DOT_WIDTH};
 	private static BasicStroke FOLDED_NODE_STROKE = new BasicStroke(FOLDED_NODE_DOT_WIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER, 1f, FOLDED_NODE_DASH, 0f);
@@ -51,12 +51,12 @@ public class PresentationController implements IExtension{
 		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
 		tabs.add("Presentations", presentationController.createPanel());
 		highlightController.addNodeHighlighter(new NodeHighlighter() {
-			
+
 			@Override
 			public boolean isNodeHighlighted(NodeModel node, boolean isPrinting) {
 				return !isPrinting && presentationState.shouldHighlightNodeContainedOnSlide(node);
 			}
-			
+
 			@Override
 			public void configure(Graphics2D g, boolean isPrinting) {
 				g.setColor(NODE_HIGHLIGHTING_COLOR);
@@ -64,12 +64,12 @@ public class PresentationController implements IExtension{
 
 		});
 		highlightController.addNodeHighlighter(new NodeHighlighter() {
-			
+
 			@Override
 			public boolean isNodeHighlighted(NodeModel node, boolean isPrinting) {
 				return !isPrinting && presentationState.shouldHighlightNodeFoldedOnSlide(node);
 			}
-			
+
 			@Override
 			public void configure(Graphics2D g, boolean isPrinting) {
 				g.setColor(NODE_HIGHLIGHTING_COLOR);
@@ -77,10 +77,10 @@ public class PresentationController implements IExtension{
 			}
 
 		});
-		
+
 		KeyEventDispatcher navigationKeyEventDispatcher = new NavigationKeyEventDispatcher(presentationState);
 		KeyEventDispatcher escapeKeyEventDispatcher = new EscapeKeyEventDispatcher(presentationState);
-		final PresentationAutomation presentationKeyHandler = new PresentationAutomation(presentationState, 
+		final PresentationAutomation presentationKeyHandler = new PresentationAutomation(presentationState,
 				PresentationKeyEventDispatcher.of(navigationKeyEventDispatcher, PROCESS_NAVIGATION_KEYS_PROPERTY),
 				PresentationKeyEventDispatcher.of(escapeKeyEventDispatcher, PROCESS_ESCAPE_KEY_PROPERTY));
 		presentationState.addPresentationStateListener(presentationKeyHandler);
@@ -96,7 +96,7 @@ public class PresentationController implements IExtension{
 		final ResourceController resourceController = ResourceController.getResourceController();
 		boolean combinesAllPresentations = resourceController.getBooleanProperty("presentation.combineAll");
 		resourceController.addPropertyChangeListener(new IFreeplanePropertyListener() {
-			
+
 			@Override
 			public void propertyChanged(String propertyName, String newValue, String oldValue) {
 				if("presentation.combineAll".equals(propertyName))
@@ -106,7 +106,7 @@ public class PresentationController implements IExtension{
 		presentationState.setCombinesAllPresentations(combinesAllPresentations);
 		presentationEditorController = new PresentationEditorController(presentationState);
 		presentationState.addPresentationStateListener(new PresentationStateChangeListener() {
-			
+
 			@Override
 			public void onPresentationStateChange(PresentationStateChangeEvent presentationStateChangeEvent) {
 				repaintMap();
@@ -116,11 +116,7 @@ public class PresentationController implements IExtension{
 
 	private void addMapSelectionListener() {
 		IMapSelectionListener mapSelectionListener = new IMapSelectionListener() {
-			
-			@Override
-			public void beforeMapChange(MapModel oldMap, MapModel newMap) {
-			}
-			
+
 			@Override
 			public void afterMapChange(MapModel oldMap, MapModel newMap) {
 				presentationState.stopPresentation();
@@ -139,7 +135,7 @@ public class PresentationController implements IExtension{
 		if(mapPresentations == null) {
 			mapPresentations = new MapPresentations(getPresentationFactory(map));
 			final CollectionChangeListener<Presentation> presentationCollectionChangeListener = new CollectionChangeListener<Presentation>() {
-				
+
 				@Override
 				public void onCollectionChange(CollectionChangedEvent<Presentation> event) {
 					if(event.eventType == COLLECTION_SIZE_CHANGED)
@@ -151,12 +147,12 @@ public class PresentationController implements IExtension{
 		}
 		return mapPresentations;
 	}
-	
+
 	NamedElementFactory<Presentation> getPresentationFactory(final MapModel map) {
 		final NamedElementFactory<Slide> slideFactory = getSlideFactory(map);
-		
+
 		final CollectionChangeListener<Slide> slideCollectionChangeListener = new CollectionChangeListener<Slide>() {
-			
+
 			@Override
 			public void onCollectionChange(CollectionChangedEvent<Slide> event) {
 				if(event.eventType == COLLECTION_SIZE_CHANGED)
@@ -166,14 +162,14 @@ public class PresentationController implements IExtension{
 			}
 		};
 		final NamedElementFactory<Presentation> presentationFactory = new NamedElementFactory<Presentation>() {
-			
+
 			@Override
 			public Presentation create(Presentation prototype, String newName) {
 				final Presentation presentation = prototype.create(newName);
 				presentation.slides.addCollectionChangeListener(slideCollectionChangeListener);
 				return presentation;
 			}
-			
+
 			@Override
 			public Presentation create(String name) {
 				final Presentation presentation = new Presentation(name, slideFactory);
@@ -193,14 +189,14 @@ public class PresentationController implements IExtension{
 					presentationState.changeSlide();
 				}
 			};
-			
+
 			@Override
 			public Slide create(Slide prototype, String newName) {
 				final Slide slide = prototype.create(newName);
 				slide.addSlideChangeListener(slideChangeListener);
 				return slide;
 			}
-			
+
 			@Override
 			public Slide create(String name) {
 				final Slide slide = new Slide(name);
@@ -218,7 +214,7 @@ public class PresentationController implements IExtension{
 			public void hierarchyChanged(HierarchyEvent e) {
 				if( 0 != (e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED))
 					presentationState.setHighlightsNodes(e.getComponent().isShowing());
-				
+
 			}
 		});
 		return new JAutoScrollBarPane(presentationEditor);

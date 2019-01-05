@@ -494,10 +494,6 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		attributesChanged();
 	}
 
-	@Override
-	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
-	}
-
 	private void selectedAttributeChanged(final Object selectedAttributeName, final JComboBox values) {
 		final MapModel map = Controller.getCurrentController().getMap();
 		final AttributeRegistry attributes = AttributeRegistry.getRegistry(map);

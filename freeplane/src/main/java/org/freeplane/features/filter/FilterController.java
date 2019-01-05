@@ -375,10 +375,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		}
 	}
 
-	@Override
-	public void beforeMapChange(final MapModel oldMap, final MapModel newMap) {
-	}
-
 	private Filter createFilter(final ASelectableCondition selectedCondition) {
 
 		final ASelectableCondition filterCondition;
