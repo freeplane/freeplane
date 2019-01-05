@@ -55,6 +55,7 @@ import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.explorer.MapExplorerController;
+import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -93,6 +94,13 @@ public class UrlManager implements IExtension {
 
 	public UrlManager() {
 		super();
+		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
+			@Override
+			public void afterMapChange(MapModel oldMap, MapModel newMap) {
+				if(newMap != null)
+				updateLastDirectoryFromMap(newMap);
+			}
+		});
 	}
 
 	protected void init() {
@@ -117,10 +125,6 @@ public class UrlManager implements IExtension {
 	 */
 	@SuppressWarnings("serial")
     public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector, boolean showHiddenFiles) {
-		final File parentFile = getMapsParentFile(Controller.getCurrentController().getMap());
-		if (parentFile != null && getLastCurrentDir() == null) {
-			setLastCurrentDir(parentFile);
-		}
 		final JFileChooser chooser = new JFileChooser(){
  			@Override
             protected JDialog createDialog(Component parent) throws HeadlessException {
@@ -165,7 +169,20 @@ public class UrlManager implements IExtension {
         return null;
     }
 	public File getLastCurrentDir() {
+		updateLastDirectoryFromCurrentMap();
 		return lastCurrentDir;
+	}
+
+	private void updateLastDirectoryFromCurrentMap() {
+		final MapModel map = Controller.getCurrentController().getMap();
+		updateLastDirectoryFromMap(map);
+	}
+
+	private void updateLastDirectoryFromMap(final MapModel map) {
+		final File parentFile = getMapsParentFile(map);
+		if (parentFile != null) {
+			this.lastCurrentDir = parentFile;
+		}
 	}
 
 	protected File getMapsParentFile(final MapModel map) {
