@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.freeplane.api.Script;
 import org.freeplane.core.util.ClassLoaderFactory;
+import sun.security.util.SecurityConstants;
 
 public final class ScriptClassLoader extends URLClassLoader {
 	private ScriptingSecurityManager securityManager = null;
@@ -47,12 +48,12 @@ public final class ScriptClassLoader extends URLClassLoader {
 	@Override
 	public URL getResource(final String name) {
 		return AccessController.doPrivileged(
-				new PrivilegedAction<URL>() {
+				OptimizingPrivilegedAction.of(new PrivilegedAction<URL>() {
 					@Override
 					public URL run(){
 						return superGetResource(name);
 					}
-				});
+				}));
 	}
 
 	private URL superGetResource(String name) {
@@ -84,12 +85,12 @@ public final class ScriptClassLoader extends URLClassLoader {
 	protected Class<?> loadClass(final String name, final boolean resolve) throws ClassNotFoundException {
 		try {
 			return AccessController.doPrivileged(
-			        new PrivilegedExceptionAction<Class<?>>() {
+			        OptimizingPrivilegedExceptionAction.of(new PrivilegedExceptionAction<Class<?>>() {
 			            @Override
 						public Class<?> run() throws ClassNotFoundException{
 			        		return superLoadClass(name, resolve);
 			            }
-			        });
+			        }));
 		} catch (PrivilegedActionException e) {
 			throw (ClassNotFoundException)e.getCause();
 		}
@@ -102,7 +103,7 @@ public final class ScriptClassLoader extends URLClassLoader {
 
 	public void setSecurityManager(ScriptingSecurityManager securityManager) {
 		if(System.getSecurityManager() != null)
-			AccessController.checkPermission(new AllPermission());
+			AccessController.checkPermission(SecurityConstants.ALL_PERMISSION);
 		this.securityManager = securityManager;
 	}
 
