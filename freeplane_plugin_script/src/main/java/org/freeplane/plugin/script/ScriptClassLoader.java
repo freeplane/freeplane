@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
-import java.security.AllPermission;
 import java.security.Permission;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
@@ -16,6 +15,7 @@ import java.util.List;
 
 import org.freeplane.api.Script;
 import org.freeplane.core.util.ClassLoaderFactory;
+import org.freeplane.core.util.OptimizedAccessController;
 import sun.security.util.SecurityConstants;
 
 public final class ScriptClassLoader extends URLClassLoader {
@@ -45,15 +45,15 @@ public final class ScriptClassLoader extends URLClassLoader {
 		super(urls, parent);
 	}
 
+
 	@Override
 	public URL getResource(final String name) {
-		return AccessController.doPrivileged(
-				OptimizingPrivilegedAction.of(new PrivilegedAction<URL>() {
+		return OptimizedAccessController.doPrivileged(new PrivilegedAction<URL>() {
 					@Override
 					public URL run(){
 						return superGetResource(name);
 					}
-				}));
+				});
 	}
 
 	private URL superGetResource(String name) {
@@ -65,7 +65,7 @@ public final class ScriptClassLoader extends URLClassLoader {
 	@Override
 	public Enumeration<URL> getResources(final String name) throws IOException {
 		try {
-			return AccessController.doPrivileged(
+			return OptimizedAccessController.doPrivileged(
 			        new PrivilegedExceptionAction<Enumeration<URL>>() {
 			            @Override
 						public Enumeration<URL> run() throws IOException{
@@ -84,13 +84,12 @@ public final class ScriptClassLoader extends URLClassLoader {
 	@Override
 	protected Class<?> loadClass(final String name, final boolean resolve) throws ClassNotFoundException {
 		try {
-			return AccessController.doPrivileged(
-			        OptimizingPrivilegedExceptionAction.of(new PrivilegedExceptionAction<Class<?>>() {
+			return OptimizedAccessController.doPrivileged(new PrivilegedExceptionAction<Class<?>>() {
 			            @Override
 						public Class<?> run() throws ClassNotFoundException{
 			        		return superLoadClass(name, resolve);
 			            }
-			        }));
+			        });
 		} catch (PrivilegedActionException e) {
 			throw (ClassNotFoundException)e.getCause();
 		}
