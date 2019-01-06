@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
+import java.security.AllPermission;
 import java.security.Permission;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
@@ -16,9 +17,8 @@ import java.util.List;
 import org.freeplane.api.Script;
 import org.freeplane.core.util.ClassLoaderFactory;
 
-import sun.security.util.SecurityConstants;
-
 public final class ScriptClassLoader extends URLClassLoader {
+	private static final Permission ALL_PERMISSION = new AllPermission();
 	private ScriptingSecurityManager securityManager = null;
 
 	public static ScriptClassLoader createClassLoader() {
@@ -102,7 +102,7 @@ public final class ScriptClassLoader extends URLClassLoader {
 
 	public void setSecurityManager(ScriptingSecurityManager securityManager) {
 		if(System.getSecurityManager() != null)
-			AccessController.checkPermission(SecurityConstants.ALL_PERMISSION);
+			AccessController.checkPermission(ALL_PERMISSION);
 		this.securityManager = securityManager;
 	}
 
