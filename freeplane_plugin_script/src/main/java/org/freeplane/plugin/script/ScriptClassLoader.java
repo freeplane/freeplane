@@ -15,7 +15,7 @@ import java.util.List;
 
 import org.freeplane.api.Script;
 import org.freeplane.core.util.ClassLoaderFactory;
-import org.freeplane.core.util.OptimizedAccessController;
+
 import sun.security.util.SecurityConstants;
 
 public final class ScriptClassLoader extends URLClassLoader {
@@ -48,7 +48,7 @@ public final class ScriptClassLoader extends URLClassLoader {
 
 	@Override
 	public URL getResource(final String name) {
-		return OptimizedAccessController.doPrivileged(new PrivilegedAction<URL>() {
+		return AccessController.doPrivileged(new PrivilegedAction<URL>() {
 					@Override
 					public URL run(){
 						return superGetResource(name);
@@ -65,7 +65,7 @@ public final class ScriptClassLoader extends URLClassLoader {
 	@Override
 	public Enumeration<URL> getResources(final String name) throws IOException {
 		try {
-			return OptimizedAccessController.doPrivileged(
+			return AccessController.doPrivileged(
 			        new PrivilegedExceptionAction<Enumeration<URL>>() {
 			            @Override
 						public Enumeration<URL> run() throws IOException{
@@ -84,7 +84,7 @@ public final class ScriptClassLoader extends URLClassLoader {
 	@Override
 	protected Class<?> loadClass(final String name, final boolean resolve) throws ClassNotFoundException {
 		try {
-			return OptimizedAccessController.doPrivileged(new PrivilegedExceptionAction<Class<?>>() {
+			return AccessController.doPrivileged(new PrivilegedExceptionAction<Class<?>>() {
 			            @Override
 						public Class<?> run() throws ClassNotFoundException{
 			        		return superLoadClass(name, resolve);

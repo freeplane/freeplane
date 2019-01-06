@@ -34,7 +34,6 @@ import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.runtime.InvokerHelper;
-import org.freeplane.core.util.OptimizedAccessController;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -141,7 +140,7 @@ public class GroovyScript implements IScript {
     }
 
     private void trustedCompileAndCache(PrintStream outStream) throws Throwable {
-		OptimizedAccessController.doPrivileged(new PrivilegedExceptionAction<Void>() {
+		AccessController.doPrivileged(new PrivilegedExceptionAction<Void>() {
 
 			@Override
 			public Void run() throws PrivilegedActionException {
