@@ -13,8 +13,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.LogUtils;
 
+import com.kitfox.svg.SVGCache;
 import com.kitfox.svg.SVGDiagram;
 import com.kitfox.svg.SVGUniverse;
 import com.kitfox.svg.app.beans.SVGIcon;
@@ -22,7 +22,6 @@ import com.kitfox.svg.app.beans.SVGIcon;
 /** utility methods to access Freeplane's (builtin and user) icons. */
 public class FreeplaneIconFactory {
 	private static final String ANTIALIAS_SVG = "antialias_svg";
-	private static SVGUniverse svgUniverse;
 
 	public static Icon createIcon(final String resourcePath) {
 		final URL resourceUrl = ResourceController.getResourceController().getResource(resourcePath);
@@ -76,12 +75,11 @@ public class FreeplaneIconFactory {
 	private static class SVGIconCreator {
 		private float aspectRatio;
 		private SVGIcon icon;
+		private URI svgUri;
 
 		SVGIconCreator(URL url) {
-			if (svgUniverse == null)
-				svgUniverse = new SVGUniverse();
+			SVGUniverse svgUniverse = SVGCache.getSVGUniverse();
 			icon = new SVGIcon();
-			URI svgUri;
 			try {
 				try {
 					new URI(url.toString());
@@ -90,12 +88,8 @@ public class FreeplaneIconFactory {
 				catch (URISyntaxException ex) {
 					svgUri = svgUniverse.loadSVG(url.openStream(), url.getPath());
 				}
-				icon.setSvgUniverse(svgUniverse);
-				icon.setSvgURI(svgUri);
 				final SVGDiagram diagram = svgUniverse.getDiagram(svgUri);
 				aspectRatio = diagram.getHeight() / diagram.getWidth();
-				icon.setAutosize(SVGIcon.AUTOSIZE_STRETCH);
-				icon.setAntiAlias(isSvgAntialiasEnabled());
 			}
 			catch (Exception e) {
 				throw new RuntimeException(e);
@@ -103,6 +97,9 @@ public class FreeplaneIconFactory {
 		}
 
 		public Icon create() {
+			icon.setAutosize(SVGIcon.AUTOSIZE_STRETCH);
+			icon.setAntiAlias(isSvgAntialiasEnabled());
+			icon.setSvgURI(svgUri);
 			return new CachingIcon(icon);
 		}
 
