@@ -47,10 +47,10 @@ import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController.Direction;
-import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapNavigationUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.clipboard.MMapClipboardController;
 import org.freeplane.features.mode.Controller;
@@ -683,11 +683,26 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		return ProxyUtils.find(closure, delegate, getScriptContext());
 	}
 
+	// NodeRO: R
+	@Override
+	public List<? extends Node> find(boolean withAncestors, boolean withDescendants, final Closure<Boolean> closure) {
+		final NodeModel delegate = getDelegate();
+		reportBranchAccess(delegate);
+		return ProxyUtils.find(withAncestors, withDescendants, closure, delegate, getScriptContext());
+	}
+
 	@Override
 	public List<? extends Node> find(final NodeCondition condition) {
 		final NodeModel delegate = getDelegate();
 		reportBranchAccess(delegate);
 		return ProxyUtils.find(condition, delegate, getScriptContext());
+	}
+
+	@Override
+	public List<? extends Node> find(boolean withAncestors, boolean withDescendants, final NodeCondition condition) {
+		final NodeModel delegate = getDelegate();
+		reportBranchAccess(delegate);
+		return ProxyUtils.find(withAncestors, withDescendants, condition, delegate, getScriptContext());
 	}
 
 	// NodeRO: R

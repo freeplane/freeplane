@@ -390,6 +390,14 @@ public interface NodeRO {
 	 * returns true. See {@link Controller#find(NodeCondition)} for details. */
 	List<? extends Node> find(final NodeCondition condition);
 
+	/** Starting from this node, recursively searches for nodes for which <code>condition.check(node)</code>
+	 * returns true and adds their ancestor or descendant nodes if required.
+	 *
+	 * @since 1.7.4
+	 *
+	 * See {@link Controller#find(NodeCondition)} for details. */
+	List<? extends Node> find(boolean withAncestors, boolean withDescendants, final NodeCondition condition);
+
 	/** Returns all nodes of the branch that starts with this node in breadth-first order.
 	 * See {@link Controller#findAll()} for map-global searches.
 	 * @since 1.2 */

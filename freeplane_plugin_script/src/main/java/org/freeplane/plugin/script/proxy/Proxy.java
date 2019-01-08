@@ -101,6 +101,15 @@ public interface Proxy {
 		 */
 		List<? extends org.freeplane.api.Node> find(Closure<Boolean> closure);
 
+		/** Starting from root node, recursively searches for nodes for which <code>condition.check(node)</code>
+		 * returns true and adds their ancestor or descendant nodes if required.
+		 *
+		 * @since 1.7.4
+		 *
+		 * See {@link Controller#find(NodeCondition)} for details. */
+
+		List<? extends org.freeplane.api.Node> find(boolean withAncestors, boolean withDescendants, Closure<Boolean> closure);
+
 		/** Starting from the root node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
 		 * @param condition condition to match the search.
@@ -129,6 +138,9 @@ public interface Proxy {
 
 		@Override
 		List<? extends org.freeplane.api.Node> find(NodeCondition condition);
+
+		@Override
+		List<? extends org.freeplane.api.Node> find(boolean withAncestors, boolean withDescendants, NodeCondition condition);
 
 		@Override
 		List<? extends org.freeplane.api.Node> findAll();
@@ -198,11 +210,22 @@ public interface Proxy {
 	interface NodeRO extends org.freeplane.api.NodeRO {
 
 		/** Starting from this node, recursively searches for nodes for which <code>closure.call(node)</code>
-		 * returns true. See {@link Controller#find(Closure)} for details. */
+		 * returns true.
+		 *
+		 * See {@link Controller#find(Closure)} for details. */
 		List<? extends org.freeplane.api.Node> find(Closure<Boolean> closure);
+
+		/** Starting from this node, recursively searches for nodes for which <code>closure.call(node)</code>
+		 * returns true.
+		 *
+		 * @since 1.7.4
+		 *
+		 * See {@link Controller#find(Closure)} for details. */
+		List<? extends org.freeplane.api.Node> find(boolean withAncestors, boolean withDescendants, Closure<Boolean> closure);
 
 		/** Starting from this node, recursively searches for nodes for which
 		 * <code>condition.checkNode(node)</code> returns true.
+		 *
 		 * @deprecated since 1.2 use {@link #find(NodeCondition)} instead. */
 		@Deprecated
 		List<? extends org.freeplane.api.Node> find(ICondition condition);

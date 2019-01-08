@@ -213,6 +213,12 @@ class ControllerProxy implements Proxy.Controller {
 		return ProxyUtils.find(condition, currentMapRootNode(), scriptContext);
 	}
 
+	@Override
+	public List<? extends Node> find(boolean withAncestors, boolean withDescendants, NodeCondition condition) {
+		reportArbitraryNodeAccess();
+		return ProxyUtils.find(withAncestors, withDescendants, condition, currentMapRootNode(), scriptContext);
+	}
+
 	private NodeModel currentMapRootNode() {
 		return Controller.getCurrentController().getMap().getRootNode();
 	}
@@ -220,6 +226,11 @@ class ControllerProxy implements Proxy.Controller {
 	public List<? extends Node> find(final Closure<Boolean> closure) {
 		reportArbitraryNodeAccess();
 		return ProxyUtils.find(closure, currentMapRootNode(), scriptContext);
+	}
+	@Override
+	public List<? extends Node> find(boolean withAncestors, boolean withDescendants, final Closure<Boolean> closure) {
+		reportArbitraryNodeAccess();
+		return ProxyUtils.find(withAncestors, withDescendants, closure, currentMapRootNode(), scriptContext);
 	}
 
 	// NodeRO: R

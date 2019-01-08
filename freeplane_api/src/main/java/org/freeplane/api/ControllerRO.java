@@ -25,8 +25,8 @@ public interface ControllerRO {
 	 * returns Freeplane version.
 	 * Use it like this:
 	 * <pre>{@code
-	 *   
-	 *   
+	 *
+	 *
 	 *
 	 *   def required = FreeplaneVersion.getVersion("1.1.2");
 	 *   if (c.freeplaneVersion < required)
@@ -63,6 +63,14 @@ public interface ControllerRO {
 	 * @return all nodes for which <code>closure.call(NodeModel)</code> returns true.
 	 */
 	List<? extends Node> find(NodeCondition condition);
+
+	/** Starting from this node, recursively searches for nodes for which <code>condition.check(node)</code>
+	 * returns true and adds their ancestor or descendant nodes if required.
+	 *
+	 * @since 1.7.4
+	 *
+	 * See {@link Controller#find(NodeCondition)} for details. */
+	List<? extends Node> find(boolean withAncestors, boolean withDescendants, final NodeCondition condition);
 
 	/**
 	 * Returns all nodes of the map in breadth-first order, that is, for the following map,

@@ -150,12 +150,17 @@ public class Filter {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
+
 	public void calculateFilterResults(final MapModel map) {
 		final NodeModel root = map.getRootNode();
 		resetFilter(root);
 		if (filterChildren(root, checkNode(root), false)) {
 			addFilterResult(root, FilterInfo.FILTER_SHOW_ANCESTOR);
 		}
+	}
+
+	public void calculateFilterResults(final NodeModel root) {
+		applyFilter(root, false, false, false);
 	}
 
 	private boolean applyFilter(final NodeModel node,

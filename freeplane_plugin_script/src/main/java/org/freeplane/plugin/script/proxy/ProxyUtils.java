@@ -12,9 +12,11 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.FormatController;
@@ -58,6 +60,19 @@ public class ProxyUtils {
 		return ProxyUtils.find(createCondition(closure, scriptContext), node, scriptContext);
 	}
 
+	static List<? extends Node> find(boolean withAncestors, boolean withDescendants, final Closure<Boolean> closure, final NodeModel node, final ScriptContext scriptContext) {
+		return ProxyUtils.find(withAncestors, withDescendants, createCondition(closure, scriptContext), node, scriptContext);
+	}
+
+	private static List<? extends Node> find(boolean withAncestors, boolean withDescendants, ICondition createCondition,
+											 NodeModel node, ScriptContext scriptContext) {
+		final Filter filter = Filter.createOneTimeFilter(createCondition, withAncestors, withDescendants, false);
+		filter.calculateFilterResults(node);
+		final List<NodeModel> allNodes = ProxyUtils.findImpl(null, node, true);
+		return ProxyUtils.createNodeList(allNodes.stream().filter(filter::isVisible)
+			.collect(Collectors.toList()), scriptContext);
+	}
+
 	static ICondition createCondition(final Closure<Boolean> closure, final ScriptContext scriptContext) {
 	    final ICondition condition = closure == null ? null : new ASelectableCondition() {
 			@Override
@@ -91,6 +106,10 @@ public class ProxyUtils {
 
 	static List<? extends Node> find(final NodeCondition condition, final NodeModel node, final ScriptContext scriptContext) {
 		return ProxyUtils.find(createCondition(condition, scriptContext), node, scriptContext);
+	}
+
+	static List<? extends Node> find(boolean withAncestors, boolean withDescendants, final NodeCondition condition, final NodeModel node, final ScriptContext scriptContext) {
+		return ProxyUtils.find(withAncestors, withDescendants, createCondition(condition, scriptContext), node, scriptContext);
 	}
 
 	static ICondition createCondition(final NodeCondition condition, final ScriptContext scriptContext) {
