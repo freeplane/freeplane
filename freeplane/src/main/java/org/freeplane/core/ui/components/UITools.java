@@ -335,18 +335,18 @@ public class UITools {
 		final Point compLocation = displayedComponent.getLocationOnScreen();
 		final int cw = displayedComponent.getWidth();
 		final int ch = displayedComponent.getHeight();
-		final Window parent = SwingUtilities.getWindowAncestor(displayedComponent);
-		final Point parentLocation = parent.getLocationOnScreen();
-		final int pw = parent.getWidth();
-		final int ph = parent.getHeight();
-		final Dimension preferredSize = placedComponent.getPreferredSize();
-		final int dw = preferredSize.width;
-		int dh = preferredSize.height;
+		final Window window =  displayedComponent instanceof Window ? (Window) displayedComponent : SwingUtilities.getWindowAncestor(displayedComponent);
+		final Point parentLocation = window.getLocationOnScreen();
+		final int pw = window.getWidth();
+		final int ph = window.getHeight();
 		final Rectangle desktopBounds = getAvailableScreenBounds(displayedComponent);
 		final int minX = Math.max(parentLocation.x, desktopBounds.x);
 		final int minY = Math.max(parentLocation.y, desktopBounds.y);
 		final int maxX = Math.min(parentLocation.x + pw, desktopBounds.x + desktopBounds.width);
 		final int maxY = Math.min(parentLocation.y + ph, desktopBounds.y + desktopBounds.height);
+		final Dimension preferredSize = placedComponent.getPreferredSize();
+		final int dw = preferredSize.width;
+		int dh = preferredSize.height;
 		int dx, dy;
 		if (compLocation.x + cw < minX) {
 			dx = minX;
