@@ -164,7 +164,6 @@ public class NodeTooltipManager implements IExtension{
 		tipPopup.add(tip);
 		mouseInsideTooltipListener = new MouseInsideListener(tipPopup);
 		final Component placedComponent = tipPopup;
-		final Window window = SwingUtilities.getWindowAncestor(nearComponent);
 		Point location = UITools.findBestLocation(placedComponent, nearComponent);
 		SwingUtilities.convertPointFromScreen(location, nearComponent);
   		tipPopup.show(nearComponent, location.x, location.y);
