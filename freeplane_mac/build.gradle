@@ -1,11 +1,15 @@
 import org.apache.tools.ant.taskdefs.condition.Os;
 
+repositories {
+    maven {url 'http://devel.uji.es/nexus/content/repositories/releases/'}
+}
+
 dependencies {
     compile (project(':freeplane')) {
         transitive = false
     }
+    
+    compileOnly 'com.apple:applejavaextensions:1.5.4'
 }
-targetCompatibility='1.7'
-sourceCompatibility='1.7'
 
-compileJava.onlyIf { Os.isFamily(Os.FAMILY_MAC) && Boolean.getBoolean('compileMacChanges')}
+compileJava.onlyIf { Boolean.getBoolean('compileMacChanges')}
