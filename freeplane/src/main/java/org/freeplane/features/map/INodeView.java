@@ -23,5 +23,8 @@ package org.freeplane.features.map;
  * @author Dimitry Polivaev
  * 10.01.2009
  */
-public interface INodeView extends INodeChangeListener, IMapChangeListener {
+public interface INodeView {
+	default void nodeChanged(NodeChangeEvent event) {};
+	default void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {};
+	default void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {};
 }

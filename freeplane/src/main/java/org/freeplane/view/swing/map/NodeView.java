@@ -65,13 +65,11 @@ import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.HistoryInformationModel;
 import org.freeplane.features.map.INodeView;
-import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeModel.NodeChangeType;
-import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -861,10 +859,6 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	@Override
-	public void mapChanged(final MapChangeEvent event) {
-	}
-
-	@Override
 	public void nodeChanged(final NodeChangeEvent event) {
 		final NodeModel node = event.getNode();
 		// is node is deleted, skip the rest.
@@ -977,14 +971,6 @@ public class NodeView extends JComponent implements INodeView {
 		addChildView(child, index);
 		numberingChanged(index + 1);
 		revalidate();
-	}
-
-	@Override
-	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-	}
-
-	@Override
-	public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
 	}
 
 	// updates children, starting from firstChangedIndex, if necessary.
@@ -1570,10 +1556,6 @@ public class NodeView extends JComponent implements INodeView {
 
 	boolean useSelectionColors() {
 		return isSelected() && !MapView.standardDrawRectangleForSelection && !map.isPrinting();
-	}
-
-	@Override
-	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 	}
 
 	@Override
