@@ -16,7 +16,7 @@ public class MClipboardControllers extends ClipboardControllers{
 	private final SortedSet<MClipboardController> controllers;
 
 	public MClipboardControllers(){
-		controllers = new TreeSet<>(this::prioritySort);
+		controllers = new TreeSet<MClipboardController>(this::prioritySort);
 		createActions();
 	}
 	private void createActions() {
