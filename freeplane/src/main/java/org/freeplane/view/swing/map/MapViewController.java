@@ -21,6 +21,7 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -30,8 +31,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.SystemColor;
+import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -83,6 +86,7 @@ import org.freeplane.features.ui.ViewController;
  * (the controller observes changes to the map mapViews here).
  */
 public class MapViewController implements IMapViewManager , IMapViewChangeListener, IFreeplanePropertyListener, IMapLifeCycleListener {
+
 	private String lastModeName;
 	/** reference to the current mapmapView; null is allowed, too. */
 	private MapView selectedMapView;
@@ -137,6 +141,33 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		}) ;
 		final String antialiasProperty = resourceController.getProperty(ViewController.RESOURCE_ANTIALIAS);
 		changeAntialias(antialiasProperty);
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("focusedWindow",this::focusSelectedNode);
+	}
+
+	private void focusSelectedNode(PropertyChangeEvent evt) {
+		final Window newWindow = (Window) evt.getNewValue();
+		if(newWindow == null)
+			return;
+		focusSelectedNode(newWindow, 2);
+	}
+
+	private void focusSelectedNode(final Window newWindow, int counter) {
+		if(counter > 0) {
+			SwingUtilities.invokeLater(() -> focusSelectedNode(newWindow, counter - 1));
+			return;
+		}
+		final MapView mapView = getMapView();
+		if(mapView == null || SwingUtilities.getWindowAncestor(mapView) != newWindow)
+			return;
+		final NodeView selectedNode = mapView.getSelected();
+		if(selectedNode == null)
+			return;
+		final Component focusOwner = newWindow.getFocusOwner();
+		if(focusOwner == null)
+			return;
+		final Container nodeView = SwingUtilities.getAncestorOfClass(NodeView.class, focusOwner);
+		if (nodeView != null && nodeView  != selectedNode)
+			selectedNode.requestFocusInWindow();
 	}
 
 	/* (non-Javadoc)
