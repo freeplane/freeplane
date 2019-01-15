@@ -15,7 +15,7 @@ Add execute script and remove reminder buttons to time task dialog
 Show past reminders action
 Support dependency management in groovy scripts (see http://docs.groovy-lang.org/latest/html/documentation/grape.html)
 Bug fixes
- 
+
 ===============================
 1.7.3
 ===============================
@@ -38,10 +38,10 @@ Use same syntax in node URLs like #at(:~someNodeAlias)
 Node aliases
 Global nodes
 Filtering nodes on aliases and on global accessibility
-Option to skip dialog for unnassigned F-keys 
+Option to skip dialog for unassigned F-keys
 Denied (inverted) conditions in filter toolbar
 Update Groovy to version 2.5.2
-Update JLatexMath to versin 1.0.7
+Update JLatexMath to version 1.0.7
 Update batik to version 2.10
 Export for selected branches only
 Go to nodes by their "reference paths"
@@ -137,7 +137,7 @@ Bug fixes
 ===============================
 Bug fixes
 Java 9 support
-REmoved broken export to flash 
+REmoved broken export to flash
 
 ===============================
 1.6.2
@@ -179,7 +179,7 @@ Configurable node border colors
 Configurable edge line type
 Configurable node border line type
 Configurable standard for connector arrows
-Configurable standard for connector line types 
+Configurable standard for connector line types
 Presentations
 Export for java web start
 Editor dialog for automatic edge colors
@@ -236,7 +236,7 @@ Command line interface improvements
 ===============================
 Support High Density Monitors by scaling UI elements
 New SimplyHTML actions and short cuts for color and font size changes
-Improve posisioning of inline editing field for left side nodes
+Improve positioning of inline editing field for left side nodes
 Performance optimizations for filtered maps
 Performance optimizations for huge maps
 
@@ -321,7 +321,7 @@ Background images
 Clones
 Scripting API extensions
 Save and restore last edit location
-New handling for summary nodes 
+New handling for summary nodes
 Actions for splitting node text to words
 
 ===============================

@@ -41,7 +41,7 @@ public class NodeLinks implements IExtension {
 	public static final Object CONNECTOR = "connector";
 
 	/**
-	 * @param source2
+	 * @param node
 	 * @return
 	 */
 	public static NodeLinks createLinkExtension(final NodeModel node) {

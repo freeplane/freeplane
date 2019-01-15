@@ -425,7 +425,7 @@ public class HtmlUtils {
 
 	/**
 	 * Replaces text in node content without replacing tags. fc, 19.12.06: This
-	 * method is very difficult. If you have a simplier method, please supply
+	 * method is very difficult. If you have a simpler method, please supply
 	 * it. But look that it complies with FindTextTests!!!
 	 */
 	public static String getReplaceResult(final Pattern pattern, final String text, final String replacement) {

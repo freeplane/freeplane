@@ -24,21 +24,21 @@ import java.util.Arrays;
 /**
  * Damerau-Levenshtein implementation, computes the edit distance (ins/del/subst/transpos)
  * between a search term and a text to search against.
- * see http://en.wikipedia.org/wiki/Damerau–Levenshtein_distance 
- * The basic algorithm is orignally from wikipedia, and was extended for semi-global alignments. 
- * 
+ * see http://en.wikipedia.org/wiki/Damerau–Levenshtein_distance
+ * The basic algorithm is originally from Wikipedia, and was extended for semi-global alignments.
+ *
  * Optionally the edit distance of a semi-global alignment is computed which
  * allows the search term to be shifted free-of-cost (i.e. dist("file", "a file is")==0).
- * 
+ *
  * Some properties are explained in the unit test, {@link org.freeplane.features.filter.EditDistanceStringMatchingStrategiesTest}.
- * 
+ *
  * TODO: use unicode code points instead of chars !!
- * 
+ *
  * @author Felix Natter <fnatter@gmx.net>
  *
  */
 public class DamerauLevenshtein implements EditDistanceStringMatchingStrategy {
-	
+
 	private String searchTerm;
 	private String searchText;
 	private Type type;
@@ -47,7 +47,7 @@ public class DamerauLevenshtein implements EditDistanceStringMatchingStrategy {
 	public int distance()
 	{
 		final int INFINITY = searchTerm.length() + searchText.length();
-		int[][] H = new int[searchTerm.length()+2][searchText.length()+2];  
+		int[][] H = new int[searchTerm.length()+2][searchText.length()+2];
 		H[0][0] = INFINITY;
 		for(int i = 0; i<=searchTerm.length(); i++) {
 			H[i+1][1] = i;
@@ -56,7 +56,7 @@ public class DamerauLevenshtein implements EditDistanceStringMatchingStrategy {
 		for(int j = 0; j<=searchText.length(); j++) {
 			H[1][j+1] = (type == Type.Global) ? j : 0;
 			H[0][j+1] = INFINITY;
-		}      
+		}
 		int[] DA = new int[alphabetLength];
 		Arrays.fill(DA, 0);
 		for(int i = 1; i<=searchTerm.length(); i++) {
@@ -69,7 +69,7 @@ public class DamerauLevenshtein implements EditDistanceStringMatchingStrategy {
 				H[i+1][j+1] =
 						min(H[i][j]+d,
 								H[i+1][j] + 1,
-								H[i][j+1]+1, 
+								H[i][j+1]+1,
 								H[i1][j1] + (i-i1-1) + 1 + (j-j1-1));
 			}
 			DA[searchTerm.charAt(i-1)] = i;
@@ -89,7 +89,7 @@ public class DamerauLevenshtein implements EditDistanceStringMatchingStrategy {
 			return min;
 		}
 	}
-	
+
 	private void writeMatrix(int[][] H)
 	{
 		for (int i = 0; i < H.length; i++)
@@ -101,8 +101,8 @@ public class DamerauLevenshtein implements EditDistanceStringMatchingStrategy {
 			System.out.println();
 		}
 	}
-	
-	private static int min(int ... nums) 
+
+	private static int min(int ... nums)
 	{
 		int min = Integer.MAX_VALUE;
 		for (int num : nums) {
@@ -122,10 +122,10 @@ public class DamerauLevenshtein implements EditDistanceStringMatchingStrategy {
 			return 1.0F - ((float)distance() / Math.min(searchTerm.length(), searchText.length()));
 		}
 	}
-	
+
 	/*
 	public DamerauLevenshtein(final String searchTerm, final String searchText,
-			final Type type, final boolean caseSensitive) 
+			final Type type, final boolean caseSensitive)
 	{
 		if (caseSensitive)
 		{
@@ -150,11 +150,11 @@ public class DamerauLevenshtein implements EditDistanceStringMatchingStrategy {
 		alphabetLength = maxCodePoint + 1;
 	}
 	*/
-	
+
 	public DamerauLevenshtein() {
-		
+
 	}
-	
+
 	public void init(final String searchTerm, final String searchText, final boolean subStringMatch,
 			final boolean caseSensitive)
 	{
@@ -162,7 +162,7 @@ public class DamerauLevenshtein implements EditDistanceStringMatchingStrategy {
 		{
 			throw new IllegalArgumentException("Null searchText/searchTerm!");
 		}
-			
+
 		if (caseSensitive)
 		{
 			this.searchTerm = searchTerm;
@@ -185,13 +185,13 @@ public class DamerauLevenshtein implements EditDistanceStringMatchingStrategy {
 		}
 		alphabetLength = maxCodePoint + 1;
 	}
-	
+
 	public boolean matches(final String searchTerm, final String searchText, final boolean subStringMatch,
 			final boolean caseSensitive)
 	{
 		//LogUtils.severe(String.format("DL(%s,%s)\n", searchTerm, searchText));
 		init(searchTerm, searchText, subStringMatch, caseSensitive);
-		
-		return matchProb() > StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB; 
+
+		return matchProb() > StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB;
 	}
 }

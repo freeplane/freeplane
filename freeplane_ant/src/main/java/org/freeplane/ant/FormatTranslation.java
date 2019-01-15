@@ -59,7 +59,7 @@ import org.apache.tools.ant.Task;
  * <tr><td>&lt;file&gt;: drop one of two of equal quality (revisit!):keep: &lt;line&gt;</td><td>keep line</td>
  *     <td>for one key two manual translations were found. This one (arbitrarily chosen) will be kept.
  *         Printout of the complete line allows to correct an action of FormatTranslation via Copy and Past
- *         if it chose the wrong tranlation.
+ *         if it chose the wrong translation.
  *     </td>
  * </tr>
  * <tr><td>&lt;file&gt;: drop one of two of equal quality (revisit!):drop: &lt;line&gt;</td><td>drop line</td>
@@ -373,7 +373,7 @@ public class FormatTranslation extends Task {
 				putEncodedNonAsciiCharacter(c, result, resultOffset);
 				replacedNonAsciiCharacterCount++;
 	        }
-	         
+
         }
 		return new String(result);
     }

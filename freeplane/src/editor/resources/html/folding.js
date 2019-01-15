@@ -22,7 +22,7 @@ function layer_exists(layer) {
 	return false; }}
 
 function show_layer(layer) {
-    eval(pre + layer + post).position = 'relative'; 
+    eval(pre + layer + post).position = 'relative';
     eval(pre + layer + post).visibility = 'visible'; }
 
 function hide_layer(layer) {
@@ -30,7 +30,7 @@ function hide_layer(layer) {
     eval(pre + layer + post).position = 'absolute'; }
 
 function hide_folder(folder) {
-    hide_folding_layer(folder)
+    hide_folding_layer(folder);
     show_layer('show'+folder);
 
     scrollBy(0,0); // This is a work around to make it work in Browsers (Explorer, Mozilla)

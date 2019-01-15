@@ -62,10 +62,10 @@ class FilePropertiesAction extends AFreeplaneAction {
 	 * Gets called when File -> Properties is selected
 	 */
 	public void actionPerformed(final ActionEvent e) {
-		//variables for informations to be displayed
+		//variables for information to be displayed
 		final String fileNamePath, fileSavedDateTime, fileSize;
 		final int fileChangesSinceSave;
-		//get informations
+		//get information
 		//if file has been saved once
 		final MapModel map = Controller.getCurrentController().getMap();
         if (map.getFile() != null) {
@@ -328,12 +328,12 @@ class FilePropertiesAction extends AFreeplaneAction {
 	}
 
 	/**
-	 * Builts an array containing nodes form the given node on downwards.
-	 * 
-	 * @param NodeModel node: The node from which on to search
-	 * @param boolean CountLeaves: If true only leave nodes are included in the return list,
+	 * Builds an array containing nodes form the given node on downwards.
+	 *
+	 * @param node The node from which on to search
+	 * @param condition If true only leave nodes are included in the return list,
 	 * otherwise all nodes from the selected on are included
-	 * 
+	 *
 	 * @return Returns a list of nodes
 	 */
 	private int getNodeCount(final NodeModel node, final ICondition condition) {

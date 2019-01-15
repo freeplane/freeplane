@@ -144,7 +144,7 @@ public abstract class ResourceController {
 	}
 
 	/**
-	 * @param resourcesNodeTextColor
+	 * @param key
 	 * @return
 	 */
 	public String getDefaultProperty(final String key) {

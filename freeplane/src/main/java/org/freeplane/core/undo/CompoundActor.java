@@ -23,10 +23,10 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 /**
- * Contains a list of actors and applys act() and undo() in a batch operation.
- * 
+ * Contains a list of actors and applies act() and undo() in a batch operation.
+ *
  * Implements composite design pattern.
- * 
+ *
  * @author Robert Ladstaetter
  */
 public class CompoundActor implements IActor {

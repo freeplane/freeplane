@@ -2,7 +2,7 @@
   *  Freeplane - mind map editor
  *  Copyright (C) 2001, 2002 Slava Pestov
  *  Copyright (C) 2009 Dimitry Polivaev
- *  
+ *
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * In conjunction with the <code>KeyEventWorkaround</code>, hides some warts in
  * the AWT key event API.
- * 
+ *
  */
 class KeyEventTranslator {
 	static class Key {
@@ -74,7 +74,7 @@ class KeyEventTranslator {
 	/**
 	 * Returns a string containing symbolic modifier names set in the specified
 	 * event.
-	 * 
+	 *
 	 * @param evt
 	 *            The event
 	 * @since jEdit 4.2pre3
@@ -99,7 +99,7 @@ class KeyEventTranslator {
 	/**
 	 * Returns a the symbolic modifier name for the specified Java modifier
 	 * flag.
-	 * 
+	 *
 	 * @param mod
 	 *            A modifier constant from <code>InputEvent</code>
 	 * @since jEdit 4.2pre3
@@ -166,7 +166,7 @@ class KeyEventTranslator {
 	/**
 	 * Changes the mapping between symbolic modifier key names (<code>C</code>,
 	 * <code>A</code>, <code>M</code>, <code>S</code>) and Java modifier flags.
-	 * You can map more than one Java modifier to a symobolic modifier, for
+	 * You can map more than one Java modifier to a symbolic modifier, for
 	 * example :
 	 * <p>
 	 * <code><pre>
@@ -178,7 +178,7 @@ class KeyEventTranslator {
 	 * <pre></code>
 	 * </p>
 	 * You cannot map a Java modifer to more than one symbolic modifier.
-	 * 
+	 *
 	 * @param c
 	 *            The modifier(s) to map the <code>C</code> modifier to
 	 * @param a
@@ -212,7 +212,7 @@ class KeyEventTranslator {
 	/**
 	 * Pass this an event from
 	 * {@link KeyEventWorkaround#processKeyEvent(java.awt.event.KeyEvent)}.
-	 * 
+	 *
 	 * @since jEdit 4.2pre3
 	 */
 	public static Key translateKeyEvent(final KeyEvent evt) {

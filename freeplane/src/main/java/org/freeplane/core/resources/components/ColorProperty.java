@@ -46,15 +46,15 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 	final JPopupMenu menu = new JPopupMenu();
 
 	/**
+	 * @param name
 	 * @param defaultColor
-	 * @param pTranslator
 	 */
 	public ColorProperty(final String name, final String defaultColor) {
 		super(name);
 		this.defaultColor = defaultColor;
 		mButton = new JButton() {
 			/**
-			 * 
+			 *
 			 */
 			private static final long serialVersionUID = 1L;
 			{

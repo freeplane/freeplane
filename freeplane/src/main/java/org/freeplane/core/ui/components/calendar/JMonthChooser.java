@@ -291,7 +291,7 @@ public class JMonthChooser extends JPanel implements ItemListener, ChangeListene
 	 * @param newMonth
 	 *            the new month value
 	 * @param select
-	 *            true, if the month should be selcted in the combo box.
+	 *            true, if the month should be selected in the combo box.
 	 */
 	private void setMonth(final int newMonth, final boolean select) {
 		if (!initialized || localInitialize) {
@@ -320,7 +320,7 @@ public class JMonthChooser extends JPanel implements ItemListener, ChangeListene
 	}
 
 	/**
-	 * Is invoked if the state of the spnner changes.
+	 * Is invoked if the state of the spinner changes.
 	 *
 	 * @param e
 	 *            the change event.
