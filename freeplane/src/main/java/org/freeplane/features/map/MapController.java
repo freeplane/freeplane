@@ -274,7 +274,7 @@ implements IExtension, NodeChangeAnnouncer{
 
 
 	/**
-	 * This class sortes nodes by ascending depth of their paths to root. This
+	 * This class sorts nodes by ascending depth of their paths to root. This
 	 * is useful to assure that children are cutted <b>before </b> their
 	 * fathers!!!. Moreover, it sorts nodes with the same depth according to
 	 * their position relative to each other.

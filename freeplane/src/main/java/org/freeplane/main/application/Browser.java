@@ -52,7 +52,7 @@ public class Browser {
 			}
 			catch (final IOException x) {
 				UITools
-				    .errorMessage("Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
+				    .errorMessage("Could not invoke browser.\n\nFreeplane executed the following statement on a command line:\n\""
 				            + command
 				            + "\".\n\nYou may look at the user or default property called '"
 				            + propertyString
@@ -71,7 +71,7 @@ public class Browser {
 			}
 			catch (final IOException ex2) {
 				UITools
-				    .errorMessage("Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
+				    .errorMessage("Could not invoke browser.\n\nFreeplane executed the following statement on a command line:\n\""
 				            + browserCommand
 				            + "\".\n\nYou may look at the user or default property called 'default_browser_command_mac'.");
 				System.err.println("Caught: " + ex2);
@@ -88,7 +88,7 @@ public class Browser {
 			}
 			catch (final IOException ex2) {
 				UITools
-				    .errorMessage("Could not invoke browser.\n\nFreeplane excecuted the following statement on a command line:\n\""
+				    .errorMessage("Could not invoke browser.\n\nFreeplane executed the following statement on a command line:\n\""
 				            + browserCommand
 				            + "\".\n\nYou may look at the user or default property called 'default_browser_command_other_os'.");
 				System.err.println("Caught: " + ex2);

@@ -1043,7 +1043,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	/**
 	 * @param differentSubtrees
 	 * @return an ArrayList of MindMapNode objects. If both ancestor and
-	 *         descandant node are selected, only the ancestor ist returned
+	 *         descendant node are selected, only the ancestor ist returned
 	 */
 	ArrayList<NodeModel> getSelectedNodesSortedByY(final boolean differentSubtrees) {
 		validateSelecteds();

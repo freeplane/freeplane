@@ -25,11 +25,11 @@ import java.awt.event.HierarchyListener;
 import org.freeplane.features.mode.Controller;
 
 /**
- * listener, that blocks the controler if the menu is active (PN) Take care!
+ * Listener, that blocks the controller if the menu is active (PN) Take care!
  * This listener is also used for modelpopups (as for graphical links).
  */
 public class ControllerPopupMenuListener implements HierarchyListener {
-    
+
     public void hierarchyChanged(HierarchyEvent e) {
         if(e.getID() != HierarchyEvent.ANCESTOR_MOVED && e.getID() != HierarchyEvent.ANCESTOR_RESIZED)
             Controller.getCurrentModeController().setBlocked(e.getComponent().isShowing());

@@ -16,7 +16,7 @@ import java.util.Set;
 import org.freeplane.features.mode.Controller;
 
 /**
- * Provides methods and constants which are dependend on the underlying java version
+ * Provides methods and constants which are dependent on the underlying java version
  *
  * @author robert.ladstaetter
  */
