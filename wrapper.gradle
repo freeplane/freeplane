@@ -1,0 +1,3 @@
+task local_wrapper(type: Wrapper) {
+  gradleVersion = '5.1.1'
+}
