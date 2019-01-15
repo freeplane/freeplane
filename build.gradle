@@ -5,6 +5,9 @@ plugins {
 Properties props = new Properties()
 props.load(new FileInputStream(rootDir.path + '/freeplane/src/viewer/resources/version.properties'))
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.10'
+}
 
 allprojects {
     // in a multi-project setup, all projects must have the same version number!
