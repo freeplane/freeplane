@@ -11,6 +11,10 @@ grant codeBase "file:${java.home}/../lib/tools.jar" {
   permission java.security.AllPermission;
 };
 
+grant codeBase "file:/usr/share/java/java-atk-wrapper.jar" {
+  permission java.security.AllPermission;
+};
+
 grant codeBase "file:/usr/lib64/java-atk-wrapper/java-atk-wrapper.jar" {
         permission java.security.AllPermission;
 };
