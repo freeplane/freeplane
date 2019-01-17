@@ -33,6 +33,7 @@ import javax.swing.SwingUtilities;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.control.customizers.ImportCustomizer;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
@@ -42,6 +43,7 @@ import org.freeplane.plugin.script.proxy.ProxyFactory;
 import groovy.lang.Binding;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.Script;
+import org.freeplane.plugin.script.proxy.ScriptUtils;
 
 /**
  * Special scripting implementation for Groovy.
@@ -253,6 +255,9 @@ public class GroovyScript implements IScript {
         if (!(ScriptResources.getClasspath() == null || ScriptResources.getClasspath().isEmpty())) {
             config.setClasspathList(ScriptResources.getClasspath());
         }
+		final ImportCustomizer importCustomizer = new ImportCustomizer();
+        importCustomizer.addStaticImport(ScriptUtils.class.getName(), "ignoreCycles");
+		config.addCompilationCustomizers(importCustomizer);
         return config;
     }
 

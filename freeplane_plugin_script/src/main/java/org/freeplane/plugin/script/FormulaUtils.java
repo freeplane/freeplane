@@ -196,7 +196,4 @@ public class FormulaUtils {
 		}
 	}
 
-	public static <T> T ignoreCycles(Supplier<T> closure) {
-		return FormulaThreadLocalStack.INSTANCE.ignoreCycles(closure);
-	}
 }

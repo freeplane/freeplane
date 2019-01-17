@@ -1,6 +1,10 @@
 package org.freeplane.plugin.script.proxy;
 
+import groovy.lang.Closure;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.script.FormulaThreadLocalStack;
+
+import java.util.function.Supplier;
 
 /** Various utilities for use in scripting, especially in utility scripts. */
 public class ScriptUtils {
@@ -17,4 +21,17 @@ public class ScriptUtils {
     public static Proxy.Node node() {
         return new NodeProxy(Controller.getCurrentController().getSelection().getSelected(), null);
     }
+
+	/**
+	 * Executes given closure.
+	 *
+	 * If there are any cyclic dependencies formulas are skipped and no warnings or exceptions are thrown.
+	 *
+	 * Statically imported by default
+	 *
+	 * @since 1.7.4
+	 */
+	public static <T> T ignoreCycles(Supplier<T> closure) {
+		return FormulaThreadLocalStack.INSTANCE.ignoreCycles(closure);
+	}
 }
