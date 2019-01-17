@@ -599,7 +599,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	@Override
 	public Component getSelectedComponent() {
 		final MapView mapView = getMapView();
-		return mapView == null ? null : mapView.getSelected();
+		return mapView == null ? null : mapView.getSelected().getMainView();
 	}
 
 	/* (non-Javadoc)

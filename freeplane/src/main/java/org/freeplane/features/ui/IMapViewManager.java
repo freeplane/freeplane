@@ -30,7 +30,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.features.map.IMapSelection;
@@ -57,7 +58,7 @@ public interface IMapViewManager {
 	public boolean changeToMapView(final Component newMapView);
 
 	public boolean changeToMapView(final String mapViewDisplayName);
-	
+
 	public void changeToMap(MapModel map);
 
 	public boolean changeToMode(final String modeName);
@@ -66,21 +67,21 @@ public interface IMapViewManager {
 
 	public boolean close();
 	public boolean close(final Component view);
-	
+
 	public String createHtmlMap();
 
 	public RenderedImage createImage(int dpi);
 
 	public RenderedImage createImage(final Dimension slideSize, NodeModel placedNode, NodePosition placedNodePosition, int imageResolutionInDpi);
-	
+
 	public Color getBackgroundColor(NodeModel node);
 
 	public Component getComponent(NodeModel node);
-	
+
 	public boolean isFoldedOnCurrentView(NodeModel node);
 
 	public void displayOnCurrentView(NodeModel node);
-	
+
 	public void setFoldedOnCurrentView(NodeModel node, boolean folded);
 
 	public Font getFont(NodeModel node);
@@ -158,9 +159,9 @@ public interface IMapViewManager {
 	public void hideChildren(NodeModel node);
 
 	public boolean showHiddenNode(NodeModel child);
-	
+
 	public boolean isSpotlightEnabled();
-	
+
 	public boolean isHeadless();
 
 }

@@ -19,17 +19,17 @@
  */
 package org.freeplane.features.mode;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.IMapSelection;
-import org.freeplane.view.swing.map.NodeView;
 
 class MoveToRootAction extends AFreeplaneAction {
 	static final String NAME = "moveToRoot";
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -37,12 +37,13 @@ class MoveToRootAction extends AFreeplaneAction {
 		super("MoveToRootAction");
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent event) {
 		Controller ctrl = Controller.getCurrentController();
 		final IMapSelection selection = ctrl.getSelection();
 		if (selection != null) {
-			final NodeView selectedComponent = (NodeView) ctrl.getMapViewManager().getSelectedComponent();
-			if (!selectedComponent.focused() && java.awt.EventQueue.getCurrentEvent() instanceof KeyEvent)
+			final Component selectedComponent = ctrl.getMapViewManager().getSelectedComponent();
+			if (!selectedComponent.hasFocus() && java.awt.EventQueue.getCurrentEvent() instanceof KeyEvent)
 				selectedComponent.requestFocusInWindow();
 			else
 				selection.selectRoot();

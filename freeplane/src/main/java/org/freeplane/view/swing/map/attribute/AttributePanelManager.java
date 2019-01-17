@@ -55,7 +55,7 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.map.MainView;
 
 /**
  * @author Dimitry Polivaev
@@ -88,12 +88,12 @@ public class AttributePanelManager{
         @Override
 		public void onSelect(NodeModel node) {
             removeOldView();
-            final NodeView nodeView = (NodeView) Controller.getCurrentController()
+            final MainView mainView = (MainView) Controller.getCurrentController()
             		.getMapViewManager().getSelectedComponent();
-            if (nodeView == null)
+            if (mainView == null)
                 return;
             AttributeController.getController(modeController).createAttributeTableModel(node);
-            attributeView = new AttributeView(nodeView, false);
+            attributeView = new AttributeView(mainView.getNodeView(), false);
             Box buttonBox = new Box(axis);
             buttonBox.setAlignmentX(0.5f);
             tablePanel.add(buttonBox);
