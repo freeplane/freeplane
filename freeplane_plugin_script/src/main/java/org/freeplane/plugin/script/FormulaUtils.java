@@ -83,7 +83,7 @@ public class FormulaUtils {
 			Object value = formulaCache.getOrThrowCachedResult(nodeScript);
 			if (value == null) {
 				try {
-					value = evaluateLoggingExceptions(nodeScript, scriptContext, restrictedPermissions);
+					value = evaluateLoggingExceptions(scriptContext, restrictedPermissions);
 					formulaCache.put(nodeScript, new CachedResult(value, scriptContext.getRelatedElements()));
 				}
 				catch (final ExecuteScriptException e) {
@@ -94,16 +94,17 @@ public class FormulaUtils {
 			return value;
 		}
 		else {
-			return evaluateLoggingExceptions(nodeScript, scriptContext, restrictedPermissions);
+			return evaluateLoggingExceptions(scriptContext, restrictedPermissions);
 		}
 	}
 
-	private static Object evaluateLoggingExceptions(final NodeScript nodeScript, final ScriptContext scriptContext,
-	                           final ScriptingPermissions restrictedPermissions) {
+	private static Object evaluateLoggingExceptions(final ScriptContext scriptContext,
+													final ScriptingPermissions restrictedPermissions) {
 		try {
-			return evaluateCheckingForCyclesAndNonNullResult(nodeScript, scriptContext, restrictedPermissions);
+			return evaluateCheckingForCyclesAndNonNullResult(scriptContext, restrictedPermissions);
 		}
 		catch (final ExecuteScriptException e) {
+			final NodeScript nodeScript = scriptContext.getNodeScript();
 			final NodeModel node = nodeScript.node;
 			final URL url = node.getMap().getURL();
 			String nodeLocation = url != null ? url.toString() : "Unsaved map ";
@@ -114,10 +115,10 @@ public class FormulaUtils {
 		}
 	}
 
-	private static Object evaluateCheckingForCyclesAndNonNullResult(final NodeScript nodeScript,
-																	final ScriptContext scriptContext,
+	private static Object evaluateCheckingForCyclesAndNonNullResult(final ScriptContext scriptContext,
 																	final ScriptingPermissions restrictedPermissions) {
-		if (!FormulaThreadLocalStacks.INSTANCE.push(nodeScript)) {
+		final NodeScript nodeScript = scriptContext.getNodeScript();
+		if (!FormulaThreadLocalStacks.INSTANCE.push(scriptContext)) {
 			if(FormulaThreadLocalStacks.INSTANCE.ignoresCycles())
 				return 0;
 			showCyclicDependency(nodeScript);

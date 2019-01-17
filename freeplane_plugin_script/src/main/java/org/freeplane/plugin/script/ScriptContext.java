@@ -21,6 +21,10 @@ public class ScriptContext implements AccessedNodes{
 		this.relatedElements = nodeScript != null ? new RelatedElements(nodeScript.node) : null;
 	}
 
+	public NodeScript getNodeScript() {
+		return nodeScript;
+	}
+
 	public URL getBaseUrl() {
 		return nodeScript != null ? nodeScript.getBaseUrl() : null;
 	}

@@ -12,23 +12,28 @@ public class FormulaThreadLocalStacks {
 	private FormulaThreadLocalStacks() {
 
 	}
-	private final ThreadLocal<UniqueStack<NodeScript>> stack =
-			new ThreadLocal<UniqueStack<NodeScript>>() {
-		@Override protected UniqueStack<NodeScript> initialValue() {
-			return new UniqueStack<NodeScript>();
+
+	private final ThreadLocal<UniqueStack> stack = new ThreadLocal<UniqueStack>() {
+		@Override
+		protected UniqueStack initialValue() {
+			return new UniqueStack();
 		}
 	};
 	public static final FormulaThreadLocalStacks INSTANCE = new FormulaThreadLocalStacks();
 
-	private UniqueStack<NodeScript> stack() {
+	private UniqueStack stack() {
 		return stack.get();
 	}
 
-	public boolean push(NodeScript nodeScript) {
-		final boolean success = stack().push(nodeScript);
+	public ScriptContext getCurrentContext() {
+		return stack().getCurrentContext();
+	}
+
+	public boolean push(final ScriptContext scriptContext) {
+		final boolean success = stack().push(scriptContext);
 		if (!success && ! ignoresCycles()) {
 			LogUtils.warn("Circular reference detected! Traceback (innermost last):\n " //
-			        + stackTrace(nodeScript));
+					+ stackTrace(scriptContext.getNodeScript()));
 		}
 		return success;
 	}
@@ -37,20 +42,20 @@ public class FormulaThreadLocalStacks {
 		stack().pop();
 	}
 
-	private String stackTrace(NodeScript nodeScript) {
-		ArrayList<String> entries = new ArrayList<String>(stack().size());
-		for (NodeScript node : stack()) {
+	private String stackTrace(final NodeScript nodeScript) {
+		final ArrayList<String> entries = new ArrayList<String>(stack().size());
+		for (final NodeScript node : stack()) {
 			entries.add(node.format(nodeScript));
 		}
 		entries.add(nodeScript.format(nodeScript));
 		return StringUtils.join(entries.iterator(), "\n -> ");
 	}
 
-	public List<NodeScript> findCycle(NodeScript nodeScript) {
+	public List<NodeScript> findCycle(final NodeScript nodeScript) {
 		return stack().findCycle(nodeScript);
 	}
 
-	public <T> T ignoreCycles(Supplier<T> closure) {
+	public <T> T ignoreCycles(final Supplier<T> closure) {
 		return stack().ignoreCycles(closure);
 	}
 
