@@ -78,7 +78,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 					if(iconController.onIconClicked(node, uiIcon))
 						return;
 				}
-				else if (component.isClickableLink(e.getX())) {
+				if (component.isClickableLink(e.getX())) {
 					LinkController.getController(mc).loadURL(node, e);
 					e.consume();
 					return;
