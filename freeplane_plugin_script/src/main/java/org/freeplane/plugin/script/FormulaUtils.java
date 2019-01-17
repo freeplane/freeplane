@@ -2,7 +2,6 @@ package org.freeplane.plugin.script;
 
 import java.net.URL;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
