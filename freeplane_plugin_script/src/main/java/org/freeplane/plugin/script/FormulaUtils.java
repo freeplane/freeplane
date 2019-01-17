@@ -117,8 +117,8 @@ public class FormulaUtils {
 	private static Object evaluateCheckingForCyclesAndNonNullResult(final NodeScript nodeScript,
 																	final ScriptContext scriptContext,
 																	final ScriptingPermissions restrictedPermissions) {
-		if (!FormulaThreadLocalStack.INSTANCE.push(nodeScript)) {
-			if(FormulaThreadLocalStack.INSTANCE.ignoresCycles())
+		if (!FormulaThreadLocalStacks.INSTANCE.push(nodeScript)) {
+			if(FormulaThreadLocalStacks.INSTANCE.ignoresCycles())
 				return 0;
 			showCyclicDependency(nodeScript);
 			final String message = TextUtils.format("formula.error.circularReference",
@@ -135,7 +135,7 @@ public class FormulaUtils {
 			return value;
 		}
 		finally {
-			FormulaThreadLocalStack.INSTANCE.pop();
+			FormulaThreadLocalStacks.INSTANCE.pop();
 		}
 	}
 
@@ -143,7 +143,7 @@ public class FormulaUtils {
 		final Controller controller = Controller.getCurrentController();
 		if (controller.getMap() != nodeScript.node.getMap())
 			return;
-		final List<NodeScript> cycle = FormulaThreadLocalStack.INSTANCE.findCycle(nodeScript);
+		final List<NodeScript> cycle = FormulaThreadLocalStacks.INSTANCE.findCycle(nodeScript);
 		final Configurable configurable = controller.getMapViewManager().getMapViewConfiguration();
 		final DependencyHighlighter dependencyHighlighter = new DependencyHighlighter(LinkController.getController(),
 			configurable);

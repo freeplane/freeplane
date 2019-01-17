@@ -1,8 +1,7 @@
 package org.freeplane.plugin.script.proxy;
 
-import groovy.lang.Closure;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.script.FormulaThreadLocalStack;
+import org.freeplane.plugin.script.FormulaThreadLocalStacks;
 
 import java.util.function.Supplier;
 
@@ -32,6 +31,6 @@ public class ScriptUtils {
 	 * @since 1.7.4
 	 */
 	public static <T> T ignoreCycles(Supplier<T> closure) {
-		return FormulaThreadLocalStack.INSTANCE.ignoreCycles(closure);
+		return FormulaThreadLocalStacks.INSTANCE.ignoreCycles(closure);
 	}
 }

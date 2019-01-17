@@ -33,7 +33,7 @@ class DependencyHighlighter {
 		final Controller controller = Controller.getCurrentController();
 		if (controller.getMap() != nodeScript.node.getMap())
 			return;
-		final List<NodeScript> cycle = FormulaThreadLocalStack.INSTANCE.findCycle(nodeScript);
+		final List<NodeScript> cycle = FormulaThreadLocalStacks.INSTANCE.findCycle(nodeScript);
 		if (cycle.isEmpty())
 			return;
 		showCycle(cycle);

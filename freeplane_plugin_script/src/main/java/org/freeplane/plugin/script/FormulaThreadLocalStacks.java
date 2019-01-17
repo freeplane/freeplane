@@ -7,9 +7,9 @@ import java.util.function.Supplier;
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.util.LogUtils;
 
-public class FormulaThreadLocalStack {
+public class FormulaThreadLocalStacks {
 
-	private FormulaThreadLocalStack() {
+	private FormulaThreadLocalStacks() {
 
 	}
 	private final ThreadLocal<UniqueStack<NodeScript>> stack =
@@ -18,7 +18,7 @@ public class FormulaThreadLocalStack {
 			return new UniqueStack<NodeScript>();
 		}
 	};
-	public static final FormulaThreadLocalStack INSTANCE = new FormulaThreadLocalStack();
+	public static final FormulaThreadLocalStacks INSTANCE = new FormulaThreadLocalStacks();
 
 	private UniqueStack<NodeScript> stack() {
 		return stack.get();
