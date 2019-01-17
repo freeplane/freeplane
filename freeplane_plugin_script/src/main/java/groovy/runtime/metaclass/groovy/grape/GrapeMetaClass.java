@@ -22,9 +22,10 @@ public class GrapeMetaClass extends DelegatingMetaClass {
 				@Override
 				public Object run() {
 					final Map map = (Map) arguments[0];
-					if (map.get("refObject") == null
-							&& map.get("classLoader") == null) {
-						map.put("classLoader", ReflectionUtils.getCallingClass(2).getClassLoader());
+					if (map.get("refObject") == null && map.get("classLoader") == null) {
+						final Class callingClass = ReflectionUtils.getCallingClass(2);
+						final ClassLoader classLoader = callingClass.getClassLoader();
+						map.put("classLoader", classLoader);
 					}
 					return GrapeMetaClass.super.invokeStaticMethod(object, methodName, arguments);
 				}

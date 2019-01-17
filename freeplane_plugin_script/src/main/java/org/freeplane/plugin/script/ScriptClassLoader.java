@@ -14,10 +14,11 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import groovy.lang.GroovyClassLoader;
 import org.freeplane.api.Script;
 import org.freeplane.core.util.ClassLoaderFactory;
 
-public final class ScriptClassLoader extends URLClassLoader {
+public final class ScriptClassLoader extends GroovyClassLoader {
 	private static final Permission ALL_PERMISSION = new AllPermission();
 	private ScriptingSecurityManager securityManager = null;
 
@@ -42,7 +43,9 @@ public final class ScriptClassLoader extends URLClassLoader {
     }
 
 	private ScriptClassLoader(URL[] urls, ClassLoader parent) {
-		super(urls, parent);
+		super(parent);
+		for(URL url :urls)
+			addURL(url);
 	}
 
 
