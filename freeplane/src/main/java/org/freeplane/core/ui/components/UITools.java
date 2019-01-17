@@ -57,6 +57,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -751,7 +752,9 @@ public class UITools {
 				@Override
 				public void focusGained(FocusEvent e) {
 					selectedComponent.removeFocusListener(this);
-					runnable.run();
+					final Timer timer = new Timer(100, evt -> runnable.run());
+					timer.setRepeats(false);
+					timer.start();
 				}
 			});
 			selectedComponent.requestFocusInWindow();
