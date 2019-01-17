@@ -19,24 +19,16 @@ package org.freeplane.plugin.script;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.AccessController;
-import java.security.CodeSource;
-import java.security.PermissionCollection;
-import java.security.Permissions;
-import java.security.PrivilegedAction;
+import java.security.*;
 
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilationUnit;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.control.SourceUnit;
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.InvokerHelper;
 
-import groovy.lang.Binding;
-import groovy.lang.GroovyClassLoader;
-import groovy.lang.GroovyCodeSource;
-import groovy.lang.GroovyObjectSupport;
-import groovy.lang.GroovyRuntimeException;
-import groovy.lang.Script;
+import groovy.lang.*;
 
 /**
  * Represents a groovy shell capable of running arbitrary groovy scripts
@@ -47,13 +39,17 @@ import groovy.lang.Script;
  * @version $Revision$
  */
 class GroovyShell extends GroovyObjectSupport {
-	private static final String DEFAULT_CODE_BASE = "/groovy/shell";
-	private Binding binding;
-	private int counter;
-	private CompilerConfiguration config;
-	private GroovyClassLoader loader;
+	static {
+		DefaultGroovyMethods.mixin(Number.class, NodeArithmeticsCategory.class);
+	}
 
-	GroovyShell(ClassLoader parent, Binding binding, final CompilerConfiguration config) {
+	private static final String DEFAULT_CODE_BASE = "/groovy/shell";
+	private final Binding binding;
+	private int counter;
+	private final CompilerConfiguration config;
+	private final GroovyClassLoader loader;
+
+	GroovyShell(final ClassLoader parent, final Binding binding, final CompilerConfiguration config) {
 		if (binding == null) {
 			throw new IllegalArgumentException("Binding must not be null.");
 		}
@@ -61,7 +57,7 @@ class GroovyShell extends GroovyObjectSupport {
 			throw new IllegalArgumentException("Compiler configuration must not be null.");
 		}
 		final ClassLoader parentLoader = (parent != null) ? parent : GroovyShell.class.getClassLoader();
-		this.loader = AccessController.doPrivileged(new PrivilegedAction<GroovyClassLoader>() {
+		loader = AccessController.doPrivileged(new PrivilegedAction<GroovyClassLoader>() {
 			@Override
 			public GroovyClassLoader run() {
 				return new MyGroovyClassLoader(parentLoader, config);
@@ -73,7 +69,7 @@ class GroovyShell extends GroovyObjectSupport {
 
 
 	@Override
-	public Object getProperty(String property) {
+	public Object getProperty(final String property) {
 		Object answer = getVariable(property);
 		if (answer == null) {
 			answer = super.getProperty(property);
@@ -82,21 +78,21 @@ class GroovyShell extends GroovyObjectSupport {
 	}
 
 	@Override
-	public void setProperty(String property, Object newValue) {
+	public void setProperty(final String property, final Object newValue) {
 		setVariable(property, newValue);
 		try {
 			super.setProperty(property, newValue);
 		}
-		catch (GroovyRuntimeException e) {
+		catch (final GroovyRuntimeException e) {
 			// ignore, was probably a dynamic property
 		}
 	}
 
-	private Object getVariable(String name) {
+	private Object getVariable(final String name) {
 		return binding.getVariables().get(name);
 	}
 
-	private void setVariable(String name, Object value) {
+	private void setVariable(final String name, final Object value) {
 		binding.setVariable(name, value);
 	}
 
@@ -125,7 +121,7 @@ class GroovyShell extends GroovyObjectSupport {
 	 *
 	 * @param file is the file of the script (which is used to create the class name of the script)
 	 */
-	Script parse(File file) throws CompilationFailedException, IOException {
+	Script parse(final File file) throws CompilationFailedException, IOException {
 		return parse(new GroovyCodeSource(file, config.getSourceEncoding()));
 	}
 
@@ -134,12 +130,12 @@ class GroovyShell extends GroovyObjectSupport {
 	 *
 	 * @param scriptText the text of the script
 	 */
-	Script parse(String scriptText) throws CompilationFailedException {
+	Script parse(final String scriptText) throws CompilationFailedException {
 		return parse(scriptText, generateScriptName());
 	}
 
 	private Script parse(final String scriptText, final String fileName) throws CompilationFailedException {
-		GroovyCodeSource gcs = AccessController.doPrivileged(new PrivilegedAction<GroovyCodeSource>() {
+		final GroovyCodeSource gcs = AccessController.doPrivileged(new PrivilegedAction<GroovyCodeSource>() {
 			@Override
 			public GroovyCodeSource run() {
 				return new GroovyCodeSource(scriptText, fileName, DEFAULT_CODE_BASE);
@@ -154,27 +150,27 @@ class GroovyShell extends GroovyObjectSupport {
 }
 
 class MyGroovyClassLoader extends GroovyClassLoader {
-	MyGroovyClassLoader(ClassLoader loader, CompilerConfiguration config) {
+	MyGroovyClassLoader(final ClassLoader loader, final CompilerConfiguration config) {
 		super(loader, config);
 	}
 
 	class MyInnerLoader extends InnerLoader {
 		private final MyGroovyClassLoader delegate;
 
-		MyInnerLoader(MyGroovyClassLoader delegate) {
+		MyInnerLoader(final MyGroovyClassLoader delegate) {
 			super(delegate);
 			this.delegate = delegate;
 		}
 
 		@Override
-		protected PermissionCollection getPermissions(CodeSource codeSource) {
+		protected PermissionCollection getPermissions(final CodeSource codeSource) {
 			return delegate.getPermissions(codeSource);
 		}
 	}
 
 	@Override
-	protected PermissionCollection getPermissions(CodeSource codeSource) {
-		PermissionCollection perms = new Permissions();
+	protected PermissionCollection getPermissions(final CodeSource codeSource) {
+		final PermissionCollection perms = new Permissions();
 		perms.setReadOnly();
 		return perms;
 	}
@@ -186,8 +182,8 @@ class MyGroovyClassLoader extends GroovyClassLoader {
 	 * @return the ClassCollector
 	 */
 	@Override
-	protected ClassCollector createCollector(CompilationUnit unit, SourceUnit su) {
-		InnerLoader loader = AccessController.doPrivileged(new PrivilegedAction<InnerLoader>() {
+	protected ClassCollector createCollector(final CompilationUnit unit, final SourceUnit su) {
+		final InnerLoader loader = AccessController.doPrivileged(new PrivilegedAction<InnerLoader>() {
 			@Override
 			public InnerLoader run() {
 				return new MyInnerLoader(MyGroovyClassLoader.this);

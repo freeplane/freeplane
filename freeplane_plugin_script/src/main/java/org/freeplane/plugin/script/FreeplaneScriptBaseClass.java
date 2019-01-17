@@ -7,7 +7,6 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
-import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.api.ControllerRO;
 import org.freeplane.api.NodeRO;
@@ -110,7 +109,6 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     public FreeplaneScriptBaseClass() {
 	    super();
 	    nodeMetaClass = InvokerHelper.getMetaClass(NodeRO.class);
-	    DefaultGroovyMethods.mixin(Number.class, NodeArithmeticsCategory.class);
     }
 
 	void updateBoundVariables() {
