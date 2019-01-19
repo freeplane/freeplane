@@ -4113,7 +4113,7 @@
     </p>
     <ul>
       <li>
-        Select Menu item &quot;Configure node reference&quot; from node pop-up menu or Edit-&gt;Node properties.
+        Select Menu item &quot;Set node alias&quot; from node pop-up menu or Edit-&gt;Node properties.
       </li>
       <li>
         Enter alias consisting of letters, digits, underscores including at least one letter e.g. <code>#at(:~my_alias)</code>. Spaces are not allowed.

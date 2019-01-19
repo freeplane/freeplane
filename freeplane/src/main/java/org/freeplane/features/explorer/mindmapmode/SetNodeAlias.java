@@ -34,15 +34,15 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
-class ConfigureNodeReference extends AFreeplaneAction {
+class SetNodeAlias extends AFreeplaneAction {
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private MMapExplorerController explorer;
 
-	public ConfigureNodeReference(final MMapExplorerController explorer) {
-		super("ConfigureNodeReferenceAction");
+	public SetNodeAlias(final MMapExplorerController explorer) {
+		super("SetNodeAliasAction");
 		this.explorer = explorer;
 	}
 

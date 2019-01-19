@@ -18,7 +18,7 @@ public class MMapExplorerController extends MapExplorerController{
 	public static void install(ModeController modeController, TextController textController) {
 		final MMapExplorerController explorer = new MMapExplorerController(modeController, textController);
 		modeController.addExtension(MapExplorerController.class, explorer);
-		modeController.addAction(new ConfigureNodeReference(explorer));
+		modeController.addAction(new SetNodeAlias(explorer));
 		modeController.addAction(new CopySuggestedReferenceAction(explorer));
 		MapExplorerController.install(modeController);
 	}
