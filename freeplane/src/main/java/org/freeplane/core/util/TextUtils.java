@@ -200,8 +200,8 @@ public class TextUtils {
 
 	/**
 	 * The escapeUtf8 method is a stripped down version of the
-	 * StringEscapeUtils.escapeJava method in Commons Lang 2.6 
-	 * 
+	 * StringEscapeUtils.escapeJava method in Commons Lang 2.6
+	 *
 	 * It escapes the UTF-8 non-ASCII characters in a <code>String</code>.
 	 * <p>
 	 * Such a character becomes <code>'\\'</code> and <code>'u'</code> followed by
@@ -212,7 +212,7 @@ public class TextUtils {
 	 * Example:
 	 * <pre>
 	 * input string: jalapeño
-	 * output string: jalape\u00F1o
+	 * output string: jalape\u005cu00F1o
 	 * </pre>
 	 *
 	 * @param str  String to escape values in, may be null
@@ -221,7 +221,7 @@ public class TextUtils {
 	public static String escapeUtf8(String str) {
 		return escapeUtf8StyleString(str);
 	}
-	
+
 	/**
 	 * Escapes the UTF-8 non-ASCII characters in a <code>String</code> to
 	 * a <code>Writer</code>.
@@ -237,7 +237,7 @@ public class TextUtils {
 	public static void escapeUtf8(Writer out, String str) throws IOException {
 		escapeUtf8StyleString(out, str);
 	}
-	
+
 	private static String escapeUtf8StyleString(String str) {
 		if (str == null) {
 			return null;
@@ -251,7 +251,7 @@ public class TextUtils {
 			throw new RuntimeException(ioe);
 		}
 	}
-	
+
 	private static void escapeUtf8StyleString(Writer out, String str) throws IOException {
 		if (out == null) {
 			throw new IllegalArgumentException("The Writer must not be null");
@@ -263,7 +263,7 @@ public class TextUtils {
 		sz = str.length();
 		for (int i = 0; i < sz; i++) {
 			char ch = str.charAt(i);
-	
+
 			// handle unicode
 			if (ch > 0xfff) {
 				out.write("\\u" + hex(ch));
@@ -276,7 +276,7 @@ public class TextUtils {
 			}
 		}
 	}
-	
+
 	private static String hex(char ch) {
 		return Integer.toHexString(ch).toUpperCase(Locale.ENGLISH);
 	}
