@@ -4,6 +4,7 @@ dist: trusty
 jdk:
   - openjdk8
   - oraclejdk8
+  - oraclejdk11
 
 #fails on because because java 9.0.1 is not compatible with gradle 4.0 currently used by travis
 # https://github.com/travis-ci/travis-ci/issues/8975
@@ -15,7 +16,7 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
 script: 
-  - gradle -PTestLoggingFull=true check_translation check
+  - ./gradlew -PTestLoggingFull=true check_translation check
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -23,3 +24,5 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+before_install:
+  JAVA_HOME=/usr/lib/jvm/java-8-oracle gradle -b wrapper.gradle wrapper
