@@ -212,7 +212,7 @@ public class TextUtils {
 	 * Example:
 	 * <pre>
 	 * input string: jalapeño
-	 * output string: jalape\u00F1o
+	 * output string: jalape<code>\u00F1</code>o
 	 * </pre>
 	 *
 	 * @param str  String to escape values in, may be null
