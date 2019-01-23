@@ -39,12 +39,6 @@ public class EncryptionModel implements IExtension {
 	}
 
 	private String encryptedContent;
-	private boolean isAccessible = true;
-	/**
-	 * is only set to false by the load mechanism. If the node is generated or
-	 * it is decrypted once, this is always true.
-	 */
-	private boolean isDecrypted = true;
 	private IEncrypter mEncrypter;
 	/**
 	 * password have to be stored in a StringBuilder as Strings cannot be deleted
@@ -52,11 +46,10 @@ public class EncryptionModel implements IExtension {
 	 */
 	final private NodeModel node;
 
-	public EncryptionModel(final NodeModel node) {
+	public EncryptionModel(final NodeModel node, IEncrypter encrypter) {
 		this.node = node;
+		this.mEncrypter = encrypter;
 		encryptedContent = null;
-		setAccessible(true);
-		isDecrypted = true;
 	}
 
 	/**
@@ -65,19 +58,16 @@ public class EncryptionModel implements IExtension {
 	public EncryptionModel(final NodeModel node, final String encryptedContent) {
 		this.node = node;
 		this.encryptedContent = encryptedContent;
-		setAccessible(false);
-		isDecrypted = false;
+		this.mEncrypter = null;
 	}
 
-	/**
-	 */
-	public boolean checkPassword(final IEncrypter encrypter) {
+	private boolean checkAndSetEncrypter(final IEncrypter encrypter) {
 		final String decryptedNode = decryptXml(encryptedContent, encrypter);
 		if (decryptedNode == null || !decryptedNode.equals("") && !decryptedNode.startsWith("<node ")) {
 			LogUtils.warn("Wrong password supplied (stored!=given).");
 			return false;
 		}
-		setEncrypter(encrypter);
+		mEncrypter = encrypter;
 		return true;
 	}
 
@@ -86,11 +76,12 @@ public class EncryptionModel implements IExtension {
 	 * @return true, if the password was correct.
 	 */
 	public boolean decrypt(final MapController mapController, final IEncrypter encrypter) {
-		if (!checkPassword(encrypter)) {
+		if(encryptedContent == null)
+			throw new IllegalStateException("No encrypted content");
+		if (!checkAndSetEncrypter(encrypter)) {
 			return false;
 		}
-		setAccessible(true);
-		if (!isDecrypted) {
+		if (! hiddenChildren.containsKey(node)) {
 			try {
 				final String childXml = decryptXml(encryptedContent, encrypter);
 				final String[] childs = childXml.split(MapClipboardController.NODESEPARATOR);
@@ -100,13 +91,11 @@ public class EncryptionModel implements IExtension {
 						continue;
 					}
 					pasteXML(string, node, mapController);
+					hiddenChildren.put(node, node.getChildrenInternal());
 				}
-				isDecrypted = true;
 			}
 			catch (final Exception e) {
 				LogUtils.severe(e);
-				setAccessible(false);
-				return true;
 			}
 		}
 		return true;
@@ -132,24 +121,29 @@ public class EncryptionModel implements IExtension {
 		}
 	}
 
-	private void runEncryptedContentGeneration(final MapWriter mapWriter) throws IOException {
-		final StringWriter sWriter = new StringWriter();
-		List<NodeModel> childNodes = isAccessible ? node.getChildren() : hiddenChildren.get(node);
-		for (final Iterator<NodeModel> i = childNodes.listIterator(); i.hasNext();) {
-			final NodeModel child = i.next();
-			mapWriter.writeNodeAsXml(sWriter, child, MapWriter.Mode.FILE, true, true, false);
-			if (i.hasNext()) {
-				sWriter.write(MapClipboardController.NODESEPARATOR);
+	private String encrypt(final MapWriter mapWriter, List<NodeModel> childNodes) {
+		try {
+			final StringWriter sWriter = new StringWriter();
+			for (final Iterator<NodeModel> i = childNodes.listIterator(); i.hasNext();) {
+				final NodeModel child = i.next();
+				mapWriter.writeNodeAsXml(sWriter, child, MapWriter.Mode.FILE, true, true, false);
+				if (i.hasNext()) {
+					sWriter.write(MapClipboardController.NODESEPARATOR);
+				}
 			}
+			final StringBuffer childXml = sWriter.getBuffer();
+			String encryptedContent = encryptXml(childXml);
+			return encryptedContent;
 		}
-		final StringBuffer childXml = sWriter.getBuffer();
-		encryptedContent = encryptXml(childXml);
+		catch (IOException e) {
+			throw new RuntimeException("Unexpected", e);
+		}
 	}
 
 	public String calculateEncryptedContent(final MapWriter mapWriter) {
-		if (isDecrypted) {
+		if (encryptedContent == null) {
 			try {
-				runEncryptedContentGeneration(mapWriter);
+				return encrypt(mapWriter, node.getChildrenInternal());
 			}
 			catch (final Exception e) {
 				LogUtils.severe(e);
@@ -158,12 +152,12 @@ public class EncryptionModel implements IExtension {
 		return encryptedContent;
 	}
 
-	/**
-	 * @return Returns the isAccessible (ie. if the node is decrypted
-	 *         (isAccessible==true) or not).
-	 */
 	public boolean isAccessible() {
-		return isAccessible;
+		return encryptedContent == null;
+	}
+
+	public boolean isLocked() {
+		return encryptedContent != null;
 	}
 
 	private void pasteXML(final String pasted, final NodeModel target, final MapController mapController) {
@@ -177,27 +171,18 @@ public class EncryptionModel implements IExtension {
 		}
 	}
 
-	/**
-	 * @param isAccessible
-	 *            The isAccessible to set.
-	 */
-	synchronized public void setAccessible(final boolean isAccessible) {
-		if(this.isAccessible != isAccessible) {
-			if(isAccessible) {
-				node.setChildrenInternal(hiddenChildren.remove(node));
-			}
-			else {
-				final List<NodeModel> oldList = hiddenChildren.put(node, node.getChildrenInternal());
-				node.setChildrenInternal(Collections.emptyList());
-				if(oldList != null) {
-					LogUtils.severe("Hidden children replaced");
-				}
-			}
-			this.isAccessible = isAccessible;
-		}
+	synchronized public void unlock() {
+		node.setChildrenInternal(hiddenChildren.remove(node));
+		encryptedContent = null;
 	}
 
-	public void setEncrypter(final IEncrypter encrypter) {
-		mEncrypter = encrypter;
+	synchronized public void lock(MapWriter mapWriter) {
+		List<NodeModel> childNodes = node.getChildrenInternal();
+		encryptedContent = encrypt(mapWriter, childNodes);
+		List<NodeModel> oldContent = hiddenChildren.put(node, childNodes);
+		node.setChildrenInternal(Collections.emptyList());
+		if(oldContent != null) {
+			LogUtils.severe("Hidden children replaced");
+		}
 	}
 }

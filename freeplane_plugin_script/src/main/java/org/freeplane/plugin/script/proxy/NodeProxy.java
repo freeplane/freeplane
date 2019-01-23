@@ -888,13 +888,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
     @Override
 	public void encrypt(final String password) {
         if (!isEncrypted())
-            getEncryptionController().toggleCryptState(getDelegate(), makePasswordStrategy(password));
+            getEncryptionController().toggleLock(getDelegate(), makePasswordStrategy(password));
     }
 
     @Override
 	public void decrypt(final String password) {
         if (isEncrypted())
-            getEncryptionController().toggleCryptState(getDelegate(), makePasswordStrategy(password));
+            getEncryptionController().toggleLock(getDelegate(), makePasswordStrategy(password));
     }
 
     @Override

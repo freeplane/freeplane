@@ -51,7 +51,7 @@ public class MEncryptionController extends EncryptionController {
 			return;
 		}
 		if(! encryptedMindMapNode.isAccessible())
-			toggleCryptState(node, passwordStrategy);
+			toggleLock(node, passwordStrategy);
 		if(! encryptedMindMapNode.isAccessible())
 			return;
 		final IActor actor = new IActor() {
