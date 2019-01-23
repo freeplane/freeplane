@@ -56,12 +56,6 @@ public class EnterPasswordDialog extends JDialog {
 	private StringBuilder password = null;
 	private int result = EnterPasswordDialog.CANCEL;
 
-	/**
-	 * @deprecated do not use. This is for visual editor only.
-	 */
-	@Deprecated
-	public EnterPasswordDialog() {
-	}
 
 	/**
 	 * This is the default constructor
@@ -69,7 +63,16 @@ public class EnterPasswordDialog extends JDialog {
 	public EnterPasswordDialog(final Frame frame, final boolean enterTwoPasswords) {
 		super(frame, "", true /* =modal */);
 		this.enterTwoPasswords = enterTwoPasswords;
-		initialize();
+		this.setTitle(TextUtils.getText("accessories/plugins/EncryptNode.properties_0"));
+		this.setContentPane(getJContentPane());
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(final WindowEvent we) {
+				cancelPressed();
+			}
+		});
+		pack();
 	}
 
 	private void cancelPressed() {
@@ -219,7 +222,7 @@ public class EnterPasswordDialog extends JDialog {
 	 */
 	private JPasswordField getJPasswordField() {
 		if (jPasswordField == null) {
-			jPasswordField = new JPasswordField();
+			jPasswordField = new JPasswordField(20);
 		}
 		return jPasswordField;
 	}
@@ -248,24 +251,6 @@ public class EnterPasswordDialog extends JDialog {
 	 */
 	public int getResult() {
 		return result;
-	}
-
-	/**
-	 * This method initializes this
-	 *
-	 * @return void
-	 */
-	private void initialize() {
-		this.setTitle(TextUtils.getText("accessories/plugins/EncryptNode.properties_0"));
-		this.setSize(300, 200);
-		this.setContentPane(getJContentPane());
-		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(final WindowEvent we) {
-				cancelPressed();
-			}
-		});
 	}
 
 	private void okPressed() {

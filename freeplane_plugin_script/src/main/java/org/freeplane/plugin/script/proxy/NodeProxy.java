@@ -905,13 +905,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
     private PasswordStrategy makePasswordStrategy(final String password) {
         return new PasswordStrategy() {
             @Override
-			public StringBuilder getPassword() {
+			public StringBuilder getPassword(NodeModel node) {
                 return new StringBuilder(password);
             }
 
             @Override
-			public StringBuilder getPasswordWithConfirmation() {
-                return getPassword();
+			public StringBuilder getPasswordWithConfirmation(NodeModel node) {
+                return getPassword(node);
             }
 
             @Override

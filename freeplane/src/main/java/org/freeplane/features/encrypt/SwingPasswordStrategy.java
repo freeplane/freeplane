@@ -5,30 +5,32 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.ui.components.EnterPasswordDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 public class SwingPasswordStrategy implements PasswordStrategy {
 
     private boolean isCancelled;
 
-    public StringBuilder getPassword() {
-        return getPasswordImpl(false);
+    public StringBuilder getPassword(NodeModel node) {
+        final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(UITools.getCurrentFrame(), false);
+		return getPassword(pwdDialog, node);
     }
 
-    public StringBuilder getPasswordWithConfirmation() {
-        return getPasswordImpl(true);
+    public StringBuilder getPasswordWithConfirmation(NodeModel node) {
+        final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(UITools.getCurrentFrame(), true);
+		return getPassword(pwdDialog, node);
     }
 
-    private StringBuilder getPasswordImpl(boolean withConfirmation) {
-        final EnterPasswordDialog pwdDialog = new EnterPasswordDialog(UITools.getCurrentFrame(), withConfirmation);
-        pwdDialog.setModal(true);
-        pwdDialog.setVisible(true);
+    private StringBuilder getPassword(final EnterPasswordDialog pwdDialog, NodeModel node) {
+    	UITools.setDialogLocationUnder(pwdDialog, node);
+		pwdDialog.setVisible(true);
         if (pwdDialog.getResult() == EnterPasswordDialog.CANCEL) {
             isCancelled = true;
             return null;
         }
         return pwdDialog.getPassword();
-    }
+	}
 
     public void onWrongPassword() {
         final Controller controller = Controller.getCurrentController();

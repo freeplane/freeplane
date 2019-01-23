@@ -82,7 +82,7 @@ public class EncryptionController implements IExtension {
 		if (encryptionModel != null) {
 			final boolean wasFolded = node.isFolded();
 			final boolean wasAccessible = encryptionModel.isAccessible();
-			if (!wasAccessible && !doPasswordCheckAndDecryptNode(encryptionModel, passwordStrategy))
+			if (!wasAccessible && !doPasswordCheckAndDecryptNode(node, encryptionModel, passwordStrategy))
 					return;
 			final boolean becomesFolded = wasAccessible;
 			final boolean becomesAccessible = ! wasAccessible;
@@ -128,8 +128,8 @@ public class EncryptionController implements IExtension {
 		}
 	}
 
-	private boolean doPasswordCheckAndDecryptNode(final EncryptionModel encryptionModel, PasswordStrategy passwordStrategy) {
-		final StringBuilder password = passwordStrategy.getPassword();
+	private boolean doPasswordCheckAndDecryptNode(NodeModel node, final EncryptionModel encryptionModel, PasswordStrategy passwordStrategy) {
+		final StringBuilder password = passwordStrategy.getPassword(node);
 		if (passwordStrategy.isCancelled())
 			return false;
 		if (!decrypt(encryptionModel, password)) {
@@ -152,7 +152,7 @@ public class EncryptionController implements IExtension {
 			return;
 		}
 
-		final StringBuilder password = passwordStrategy.getPasswordWithConfirmation();
+		final StringBuilder password = passwordStrategy.getPasswordWithConfirmation(node);
 		if (passwordStrategy.isCancelled()) {
 			return;
 		}
