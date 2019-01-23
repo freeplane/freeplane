@@ -134,7 +134,8 @@ public class EncryptionModel implements IExtension {
 
 	private void runEncryptedContentGeneration(final MapWriter mapWriter) throws IOException {
 		final StringWriter sWriter = new StringWriter();
-		for (final Iterator<NodeModel> i = node.getChildren().listIterator(); i.hasNext();) {
+		List<NodeModel> childNodes = isAccessible ? node.getChildren() : hiddenChildren.get(node);
+		for (final Iterator<NodeModel> i = childNodes.listIterator(); i.hasNext();) {
 			final NodeModel child = i.next();
 			mapWriter.writeNodeAsXml(sWriter, child, MapWriter.Mode.FILE, true, true, false);
 			if (i.hasNext()) {
