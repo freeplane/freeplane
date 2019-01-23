@@ -124,17 +124,15 @@ public class EncryptionController implements IExtension {
 	}
 
 	private boolean doPasswordCheckAndDecryptNode(final EncryptionModel encryptionModel, PasswordStrategy passwordStrategy) {
-		while (true) {
-			final StringBuilder password = passwordStrategy.getPassword();
-			if (passwordStrategy.isCancelled())
-			    return false;
-			if (!decrypt(encryptionModel, password)) {
-				passwordStrategy.onWrongPassword();
-				return false;
-			}
-			else {
-				return true;
-			}
+		final StringBuilder password = passwordStrategy.getPassword();
+		if (passwordStrategy.isCancelled())
+			return false;
+		if (!decrypt(encryptionModel, password)) {
+			passwordStrategy.onWrongPassword();
+			return false;
+		}
+		else {
+			return true;
 		}
 	}
 
