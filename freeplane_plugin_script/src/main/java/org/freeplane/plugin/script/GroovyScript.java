@@ -223,7 +223,7 @@ public class GroovyScript implements IScript {
 	    for (Entry<String, Object> entry : ScriptingConfiguration.getStaticProperties().entrySet()) {
             binding.setProperty(entry.getKey(), entry.getValue());
         }
-        compiledScript.updateBoundVariables();
+		compiledScript.setBinding(binding);
     }
 
     private Binding createBindingForCompilation() {

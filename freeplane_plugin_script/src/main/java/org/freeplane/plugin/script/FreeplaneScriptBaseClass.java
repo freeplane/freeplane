@@ -7,6 +7,7 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
+import groovy.lang.*;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.api.ControllerRO;
 import org.freeplane.api.NodeRO;
@@ -24,11 +25,6 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.proxy.AbstractProxy;
 import org.freeplane.plugin.script.proxy.Convertible;
-
-import groovy.lang.MetaClass;
-import groovy.lang.MissingMethodException;
-import groovy.lang.MissingPropertyException;
-import groovy.lang.Script;
 
 /** All methods of this class are available as "global" methods in every script.
  * Only documented methods are meant to be used in scripts.
@@ -109,9 +105,17 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     public FreeplaneScriptBaseClass() {
 	    super();
 	    nodeMetaClass = InvokerHelper.getMetaClass(NodeRO.class);
+		updateBoundVariables();
     }
 
-	void updateBoundVariables() {
+	@Override
+	public void setBinding(Binding binding) {
+		super.setBinding(binding);
+		updateBoundVariables();
+	}
+
+
+	private void updateBoundVariables() {
 	    boundVariables = getBinding().getVariables();
 	    final Object boundScript = boundVariables.remove("script");
 	    if(boundScript != null)
