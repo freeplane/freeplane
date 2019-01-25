@@ -41,6 +41,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.ITooltipProvider;
@@ -193,11 +194,12 @@ public class TextController implements IExtension {
 	/** returns an error message instead of a normal result if something goes wrong. */
 	public Object getTransformedObjectNoFormattingNoThrow(Object data, final NodeModel node, Object extension) {
 		try {
-			final Object transformedObject = getTransformedObject(data, node, extension);
+			Object transformedObject = getTransformedObject(data, node, extension);
 			if (transformedObject instanceof HighlightedTransformedObject)
-				return ((HighlightedTransformedObject) transformedObject).getObject();
-			else
-				return transformedObject;
+				transformedObject =  ((HighlightedTransformedObject) transformedObject).getObject();
+			if (transformedObject instanceof IFormattedObject)
+				transformedObject =  ((IFormattedObject) transformedObject).getObject();
+			return transformedObject;
 		}
 		catch (Throwable e) {
 			LogUtils.warn(e.getMessage());

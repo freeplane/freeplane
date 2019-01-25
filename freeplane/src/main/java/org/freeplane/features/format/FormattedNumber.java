@@ -63,9 +63,17 @@ public class FormattedNumber extends Number implements IFormattedObject, Compara
 	// implementation detail
 	private FormattedNumber(final Number number, final String pattern, final String formattedString,
 	                        final boolean isDefault) {
-		final long longValue = number.longValue();
-		if(longValue == number.doubleValue())
-			this.number = longValue;
+		if(number instanceof Float || number instanceof  Double) {
+			final long longValue = number.longValue();
+			if (longValue == number.doubleValue()) {
+				if(longValue >= Integer.MIN_VALUE && longValue <= Integer.MAX_VALUE)
+					this.number = (int)longValue;
+				else
+					this.number = longValue;
+			}
+			else
+				this.number = number;
+		}
 		else
 			this.number = number;
 		this.pattern = pattern;
