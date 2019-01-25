@@ -25,7 +25,6 @@ import java.security.AccessControlException;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 
@@ -224,11 +223,7 @@ public class GroovyScript implements IScript {
 	    for (Entry<String, Object> entry : ScriptingConfiguration.getStaticProperties().entrySet()) {
             binding.setProperty(entry.getKey(), entry.getValue());
         }
-		Map<?, ?> boundVariables = binding.getVariables();
-		final Object boundScript = boundVariables.remove("script");
-		if (boundScript != null) {
-			compiledScript.setScript(boundScript);
-		}
+        compiledScript.updateBoundVariables();
     }
 
     private Binding createBindingForCompilation() {

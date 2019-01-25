@@ -109,20 +109,16 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     public FreeplaneScriptBaseClass() {
 	    super();
 	    nodeMetaClass = InvokerHelper.getMetaClass(NodeRO.class);
-	    script = "";
     }
 
-	void setScript(Object script) {
-		this.script = script;
-	}
-
-	private void initializeBoundVariables() {
-    	if(boundVariables == null) {
-			boundVariables = getBinding().getVariables();
-			// this is important: we need this reference no matter if "node" is overridden later by the user
-			node = (NodeRO) boundVariables.get("node");
-			controller = (ControllerRO) boundVariables.get("c");
-		}
+	void updateBoundVariables() {
+	    boundVariables = getBinding().getVariables();
+	    final Object boundScript = boundVariables.remove("script");
+	    if(boundScript != null)
+	    	script = boundScript;
+	    // this is important: we need this reference no matter if "node" is overridden later by the user
+	    node = (NodeRO) boundVariables.get("node");
+	    controller = (ControllerRO) boundVariables.get("c");
     }
 
     /* <ul>
@@ -132,7 +128,6 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	 */
 	@Override
 	public Object getProperty(String property) {
-		initializeBoundVariables();
 		// shortcuts for the most usual cases
 		if (property.equals("node")) {
 			return node;
@@ -179,7 +174,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 
 	/** Shortcut for node.map.node(id) - necessary for ids to other maps. */
 	public NodeRO N(String id) {
-		initializeBoundVariables();
+		final NodeRO node = (NodeRO) getBinding().getVariable("node");
 		return node.getMap().node(id);
 	}
 
