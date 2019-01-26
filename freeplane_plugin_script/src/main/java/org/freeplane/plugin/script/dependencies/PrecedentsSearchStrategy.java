@@ -18,13 +18,9 @@ class PrecedentsSearchStrategy implements DependencySearchStrategy {
 		return getRelatedElements(node, object);
 	}
 
-	private RelatedElements getRelatedElements(NodeModel node, Object object) {
-		updateFormulaCache(node, object);
-		return FormulaUtils.getRelatedElements(node, object);
-	}
-
-	private void updateFormulaCache(NodeModel node, Object object) {
-		FormulaUtils.evaluateObject(node, object);
+	private RelatedElements getRelatedElements(NodeModel node, Object maybeFormula) {
+		FormulaUtils.cacheIfFormula(node, maybeFormula);
+		return FormulaUtils.getRelatedElements(node, maybeFormula);
 	}
 
 	@Override

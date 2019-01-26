@@ -176,21 +176,21 @@ public class FormulaUtils {
 	}
 
 	public static void evaluateOutdatedFormulas(MapModel map) {
-		evaluateAllRecursively(map.getRootNode());
+		cacheAllRecursively(map.getRootNode());
 	}
 
-	static private void evaluateAllRecursively(NodeModel node) {
-		evaluateObject(node, node.getUserObject());
+	static private void cacheAllRecursively(NodeModel node) {
+		cacheIfFormula(node, node.getUserObject());
 		NodeAttributeTableModel attributeTableModel = node.getExtension(NodeAttributeTableModel.class);
 		if(attributeTableModel != null)
-			attributeTableModel.getAttributes().stream().forEach(a -> evaluateObject(node, a.getValue()));
-		node.getChildren().stream().forEach(FormulaUtils::evaluateAllRecursively);
+			attributeTableModel.getAttributes().stream().forEach(a -> cacheIfFormula(node, a.getValue()));
+		node.getChildren().stream().forEach(FormulaUtils::cacheAllRecursively);
 	}
 
-	public static void evaluateObject(NodeModel node, Object userObject) {
+	public static void cacheIfFormula(NodeModel node, Object maybeFormula) {
 		try {
-			if (userObject instanceof String){
-				FormulaUtils.evalIfScript(node, (String) userObject);
+			if (maybeFormula instanceof String){
+				FormulaUtils.evalIfScript(node, (String) maybeFormula);
 			}
 		} catch (Exception e) {
 		}
