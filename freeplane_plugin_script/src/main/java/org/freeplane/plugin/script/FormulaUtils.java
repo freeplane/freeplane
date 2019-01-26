@@ -153,7 +153,7 @@ public class FormulaUtils {
 	}
 
 	public static RelatedElements getRelatedElements(final NodeModel node, final Object object) {
-		if (FormulaUtils.containsFormula(object)) {
+		if (FormulaCache.ENABLE_CACHING && FormulaUtils.containsFormula(object)) {
 			final RelatedElements accessedValues = FormulaCache.of(node.getMap()).getAccessedValues(node,
 				scriptOf((String) object));
 			if (accessedValues != null)
@@ -187,9 +187,9 @@ public class FormulaUtils {
 		node.getChildren().stream().forEach(FormulaUtils::evaluateAllRecursively);
 	}
 
-	static private void evaluateObject(NodeModel node, Object userObject) {
+	public static void evaluateObject(NodeModel node, Object userObject) {
 		try {
-			if (FormulaUtils.containsFormula(userObject)){
+			if (userObject instanceof String){
 				FormulaUtils.evalIfScript(node, (String) userObject);
 			}
 		} catch (Exception e) {
