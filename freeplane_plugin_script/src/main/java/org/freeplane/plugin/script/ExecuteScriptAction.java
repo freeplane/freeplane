@@ -58,6 +58,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		super(ExecuteScriptAction.makeMenuItemKey(scriptName, mode), menuItemName, null);
 		this.scriptFile = new File(scriptFile);
 		this.mode = mode;
+		this.setIcon(getIconKey());
 		final IScript script = ScriptingEngine.createScript(this.scriptFile, permissions, true);
 		scriptRunner = new ScriptRunner(script);
 	}
