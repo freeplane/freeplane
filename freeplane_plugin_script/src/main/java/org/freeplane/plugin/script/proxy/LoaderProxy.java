@@ -102,8 +102,13 @@ class LoaderProxy implements Proxy.Loader {
 	}
 
 	@Override
-	public Proxy.Map getMap() {
+	public Proxy.Map load() {
 		MapModel newMap = mapLoader.getMap();
 		return new MapProxy(newMap, scriptContext);
+	}
+
+	@Override
+	public Proxy.Map getMap() {
+		return load();
 	}
 }

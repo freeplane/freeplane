@@ -68,29 +68,44 @@ public interface Controller extends ControllerRO, HeadlessMapCreator {
 	@Deprecated
 	void setStatusInfo(String infoPanelKey, Icon icon);
 
+	/** @deprecated since 1.7.5 - use {@link #loader(File)} */
+	@Override
+	@Deprecated
+	Loader load(File file);
+
+	/** @deprecated since 1.7.5 - use {@link #loader(URL)} */
+	@Override
+	@Deprecated
+	Loader load(URL url);
+
+	/** @deprecated since 1.7.5 - use {@link #loader(String)} */
+	@Override
+	@Deprecated
+	Loader load(String input);
+
 	/**
 	 * Returns {@link Loader} for accessing or loading map from file.
 	 *
-	 * @since 1.7.1
+	 * @since 1.7.5
 	 */
 	@Override
-	Loader load(File file);
+	Loader loader(File file);
 
 	/**
 	 * Returns {@link Loader} for accessing or loading map from URL.
 	 *
-	 * @since 1.7.1
+	 * @since 1.7.5
 	 */
 	@Override
-	Loader load(URL file);
+	Loader loader(URL file);
 
 	/**
 	 * Returns {@link Loader} for accessing or loading map from file.
 	 *
-	 * @since 1.7.1
+	 * @since 1.7.5
 	 */
 	@Override
-	Loader load(String file);
+	Loader loader(String file);
 
 
 	/**
@@ -98,12 +113,12 @@ public interface Controller extends ControllerRO, HeadlessMapCreator {
 	 * @since 1.2 */
 	Map newMap();
 
-	/** @deprecated since 1.6.16 - use {@link #load(URL)}
+	/** @deprecated since 1.6.16 - use {@link #loader(URL)}
 	 * @since 1.2 */
 	@Deprecated
 	Map newMap(URL url);
 
-	/**  @deprecated since 1.6.16 - use {@link #load(File)}
+	/**  @deprecated since 1.6.16 - use {@link #loader(File)}
 	 * @since 1.5 */
 	@Deprecated
 	public Map newMapFromTemplate(File templateFile);

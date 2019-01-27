@@ -39,8 +39,16 @@ public interface HeadlessLoader {
 	/**
 	 * Creates and returns a map or selects and returns a previously loaded map.
 	 *
+	 * @since 1.7.5
+	 */
+	Map load();
+
+	/**
+	 * Creates and returns a map or selects and returns a previously loaded map.
+	 *
+	 * Same as {@link #load()}
+	 *
 	 * @since 1.7.1
 	 */
 	Map getMap();
-
 }
