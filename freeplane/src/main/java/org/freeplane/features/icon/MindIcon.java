@@ -28,7 +28,6 @@ package org.freeplane.features.icon;
 public class MindIcon extends UIIcon {
 	private static final String DEFAULT_IMAGE_PATH = "/images/icons";
 	private static final String SHORTCUT_KEY = "IconAction.%s.shortcut";
-
 	public MindIcon(final String name) {
 		this(name, name + ".png", "");
 	}
@@ -50,5 +49,9 @@ public class MindIcon extends UIIcon {
 		final String path = getUrl().getPath();
 		final String fileName = path.substring(path.lastIndexOf('/') + 1);
 		return fileName;
+	}
+
+	public static String nameToTranslationKey(final String name) {
+		return String.format("icon_%s", name);
 	}
 }

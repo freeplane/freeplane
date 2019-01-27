@@ -27,14 +27,12 @@ import org.freeplane.features.icon.MindIcon;
  * @author Tamas Eppel
  */
 public class MindIconFactory {
-	private static final String DESC_KEY = "icon_%s";
-
 	/**
 	 * Constructs a MindIcon with the given name from the property file.
 	 * The name of the icon is the file name without the extension.
 	 */
 	public static MindIcon createIcon(final String name) {
-		final String translationKeyLabel = name.indexOf('/') > 0 ? "" : String.format(DESC_KEY, name);
+		final String translationKeyLabel = name.indexOf('/') > 0 ? "" : MindIcon.nameToTranslationKey(name);
 		return new MindIcon(name, name + ".png", translationKeyLabel);
 	}
 
