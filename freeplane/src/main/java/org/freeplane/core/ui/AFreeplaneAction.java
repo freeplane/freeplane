@@ -26,7 +26,6 @@ import javax.swing.Action;
 import javax.swing.Icon;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.util.TextUtils;
 
 /**
@@ -135,7 +134,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	}
 
 	@Override
-	public final String getIconKey() {
+	public String getIconKey() {
 		return key + ".icon";
 	}
 
