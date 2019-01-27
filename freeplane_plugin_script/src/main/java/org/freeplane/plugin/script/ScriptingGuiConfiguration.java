@@ -59,14 +59,52 @@ import org.freeplane.plugin.script.addons.ScriptAddOnProperties.Script;
 class ScriptingGuiConfiguration {
 	private static final ExecutionMode DEFAULT_EXECUTION_MODE = ExecutionMode.ON_SELECTED_NODE;
 	static class ScriptMetaData {
+		static private final Pattern EXECUTION_MODE_ANNOTATION ;
+		static private final Pattern EXECUTION_MODE_DEFINITIONS ;
+		static {
+			final String modeName = StringUtils.join(ExecutionMode.values(), "|");
+			final String modeDef = "(?:ExecutionMode\\.)?(" + modeName + ")(?:=\"([^]\"]+)(?:\\[([^]\"]+)\\])?\")?";
+			final String modeDefs = "(?:" + modeDef + ",?)+";
+			EXECUTION_MODE_ANNOTATION = makeCaseInsensitivePattern("@ExecutionModes\\(\\{(" + modeDefs + ")\\}\\)");
+			EXECUTION_MODE_DEFINITIONS = makeCaseInsensitivePattern(modeDef);
+
+		}
 		private final TreeMap<ExecutionMode, String> executionModeLocationMap = new TreeMap<ExecutionMode, String>();
 		private final TreeMap<ExecutionMode, String> executionModeTitleKeyMap = new TreeMap<ExecutionMode, String>();
 		private final String scriptName;
 		private ScriptingPermissions permissions;
 
+		ScriptMetaData(String scriptName, String content) {
+			this(scriptName);
+			configure(content);
+		}
+
 		ScriptMetaData(final String scriptName) {
 			this.scriptName = scriptName;
 		}
+
+		private void configure(final String content) {
+
+			final Matcher mOuter = EXECUTION_MODE_ANNOTATION.matcher(content.replaceAll("\\s+", ""));
+			if (!mOuter.find()) {
+				addExecutionMode(DEFAULT_EXECUTION_MODE, null, null);
+				return;
+			}
+			final String[] locations = mOuter.group(1).split(",");
+			for (String match : locations) {
+				final Matcher m = EXECUTION_MODE_DEFINITIONS.matcher(match);
+				if (m.matches()) {
+//					System.err.println(getScriptName() + ":" + m.group(1) + "->" + m.group(2) + "->" + m.group(3));
+	                addExecutionMode(ExecutionMode.valueOf(m.group(1).toUpperCase(Locale.ENGLISH)), m.group(2),
+	                    m.group(3));
+				}
+				else {
+					LogUtils.severe("script " + getScriptName() + ": not a menu location: '" + match + "'");
+					continue;
+				}
+			}
+		}
+
 
 		public Set<ExecutionMode> getExecutionModes() {
 			return executionModeLocationMap.keySet();
@@ -302,50 +340,15 @@ class ScriptingGuiConfiguration {
 
     private ScriptMetaData createMetaData(final File file, final String scriptName,
                                           final Script scriptConfig) throws IOException {
-        return scriptConfig == null ? analyseScriptContent(FileUtils.slurpFile(file), scriptName) //
+        return scriptConfig == null ? new ScriptMetaData(scriptName, FileUtils.slurpFile(file)) //
                 : createMetaData(scriptName, scriptConfig);
     }
-
-	// not private to enable tests
-	ScriptMetaData analyseScriptContent(final String content, final String scriptName) {
-		final ScriptMetaData metaData = new ScriptMetaData(scriptName);
-		setExecutionModes(content, metaData);
-		return metaData;
-	}
 
 	private ScriptMetaData createMetaData(final String scriptName, final Script scriptConfig) {
 		final ScriptMetaData metaData = new ScriptMetaData(scriptName);
 		metaData.addExecutionMode(scriptConfig.executionMode, scriptConfig.menuLocation, scriptConfig.menuTitleKey);
 		metaData.setPermissions(scriptConfig.permissions);
 		return metaData;
-	}
-
-	public static void setExecutionModes(final String content, final ScriptMetaData metaData) {
-		final String modeName = StringUtils.join(ExecutionMode.values(), "|");
-		final String modeDef = "(?:ExecutionMode\\.)?(" + modeName + ")(?:=\"([^]\"]+)(?:\\[([^]\"]+)\\])?\")?";
-		final String modeDefs = "(?:" + modeDef + ",?)+";
-		final Pattern pOuter = makeCaseInsensitivePattern("@ExecutionModes\\(\\{(" + modeDefs + ")\\}\\)");
-		final Matcher mOuter = pOuter.matcher(content.replaceAll("\\s+", ""));
-		if (!mOuter.find()) {
-			metaData.addExecutionMode(DEFAULT_EXECUTION_MODE, null, null);
-//			System.err.println(metaData.getScriptName() + ": '" + pOuter + "' did not match "
-//			        + content.replaceAll("\\s+", ""));
-			return;
-		}
-		final Pattern pattern = makeCaseInsensitivePattern(modeDef);
-		final String[] locations = mOuter.group(1).split(",");
-		for (String match : locations) {
-			final Matcher m = pattern.matcher(match);
-			if (m.matches()) {
-//				System.err.println(metaData.getScriptName() + ":" + m.group(1) + "->" + m.group(2) + "->" + m.group(3));
-                metaData.addExecutionMode(ExecutionMode.valueOf(m.group(1).toUpperCase(Locale.ENGLISH)), m.group(2),
-                    m.group(3));
-			}
-			else {
-				LogUtils.severe("script " + metaData.getScriptName() + ": not a menu location: '" + match + "'");
-				continue;
-			}
-		}
 	}
 
 	/** some beautification: remove directory and suffix + make first letter uppercase. */
