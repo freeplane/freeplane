@@ -20,9 +20,6 @@
 package org.freeplane.core.resources;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,7 +37,6 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionAcceleratorManager;
@@ -228,6 +224,10 @@ public abstract class ResourceController {
 	/** register defaults in freeplane.properties respectively defaults.properties instead! */
 	public String getProperty(final String key, final String value) {
 		return getProperties().getProperty(key, value);
+	}
+
+	public boolean containsProperty(String key) {
+		return getProperties().containsKey(key);
 	}
 
 	public Collection<IFreeplanePropertyListener> getPropertyChangeListeners() {
