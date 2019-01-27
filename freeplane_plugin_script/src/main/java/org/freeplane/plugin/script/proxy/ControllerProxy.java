@@ -316,23 +316,23 @@ class ControllerProxy implements Proxy.Controller {
     }
 
 	@Override
-	public Proxy.Loader loader(File file) {
+	public Proxy.Loader mapLoader(File file) {
 		return LoaderProxy.of(file, scriptContext);
 	}
 
 	@Override
 	public Proxy.Loader load(File file) {
-		return loader(file);
+		return mapLoader(file);
 	}
 
 	@Override
-	public Proxy.Loader loader(URL url) {
+	public Proxy.Loader mapLoader(URL url) {
 		return LoaderProxy.of(url, scriptContext);
 	}
 
 	@Override
 	public Proxy.Loader load(URL url) {
-		return loader(url);
+		return mapLoader(url);
 	}
 
 	@Override
@@ -341,18 +341,18 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	@Override
-	public Proxy.Loader loader(String file) {
-		return loader(file);
+	public Proxy.Loader mapLoader(String file) {
+		return mapLoader(file);
 	}
 
 	@Override
 	public Map newMap(URL url) {
-		return loader(url).withView().load();
+		return mapLoader(url).withView().load();
 	}
 
 	@Override
 	public Map newMapFromTemplate(File templateFile) {
-		return loader(templateFile).withView().saveAfterLoading().load();
+		return mapLoader(templateFile).withView().saveAfterLoading().load();
 	}
 
 	@Override

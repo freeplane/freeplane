@@ -162,13 +162,13 @@ public interface Proxy {
 					boolean overwriteExisting);
 
 		@Override
-		Proxy.Loader loader(File file);
+		Proxy.Loader mapLoader(File file);
 
 		@Override
-		Proxy.Loader loader(URL file);
+		Proxy.Loader mapLoader(URL file);
 
 		@Override
-		Proxy.Loader loader(String file);
+		Proxy.Loader mapLoader(String file);
 	}
 
 	interface Loader extends org.freeplane.api.Loader{
