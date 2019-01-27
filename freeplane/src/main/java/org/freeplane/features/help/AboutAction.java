@@ -19,28 +19,32 @@
  */
 package org.freeplane.features.help;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 
 
 class AboutAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -51,27 +55,41 @@ class AboutAction extends AFreeplaneAction {
 		super("AboutAction");
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		Box box = Box.createVerticalBox();
 		String about = TextUtils.getText("about_text") + " " + FreeplaneVersion.getVersion();
 		addUri(box, "homepage_url", about);
 		addUri(box, "copyright_url", TextUtils.getText("copyright"));
-		addMessage(box, FreeplaneVersion.getVersion().getRevision());
+		final String revision = FreeplaneVersion.getVersion().getRevision();
+		if(! revision.isEmpty())
+			addMessage(box, revision);
 		addFormattedMessage(box, "java_version", Compat.JAVA_VERSION);
 		addFormattedMessage(box, "main_resource_directory", ResourceController.getResourceController().getResourceBaseDir());
 		addUri(box, "license_url", TextUtils.getText("license"));
 		addMessage(box, TextUtils.getText("license_text"));
-		
+
 		JOptionPane.showMessageDialog(UITools.getCurrentRootComponent(), box, TextUtils
 		    .getText("AboutAction.text"), JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void addFormattedMessage(Box box, String format, String parameter) {
-		box.add(new JLabel(TextUtils.format(format, parameter)));
+		addMessage(box,TextUtils.format(format, parameter));
 	}
 
-	private void addMessage(Box box, String localMessage) {
-		box.add(new JLabel(localMessage));
+	private void addMessage(Box box, String text) {
+		final JComponent textComponent;
+		if(HtmlUtils.isHtmlNode(text)) {
+			textComponent = new JLabel(text);
+		}
+		else {
+			final JTextField textField = new JTextField(text);
+			textField.setEditable(false);
+			textField.setBorder(BorderFactory.createEmptyBorder());
+			textComponent = textField;
+		}
+		textComponent.setAlignmentX(Component.LEFT_ALIGNMENT);
+		box.add(textComponent);
 	}
 
 	private void addUri(Box box, String uriProperty, String message) {
@@ -79,6 +97,7 @@ class AboutAction extends AFreeplaneAction {
 			URI uri;
 			uri = new URI( ResourceController.getResourceController().getProperty(uriProperty));
 			JButton uriButton = UITools.createHtmlLinkStyleButton(uri, message);
+			uriButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 			uriButton.setHorizontalAlignment(SwingConstants.LEADING);
 			box.add(uriButton);
 		} catch (URISyntaxException e1) {

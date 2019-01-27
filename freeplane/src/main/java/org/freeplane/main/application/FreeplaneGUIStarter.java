@@ -114,8 +114,9 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	public static void showSysInfo() {
 		final StringBuilder info = new StringBuilder();
 		info.append("freeplane_version = ");
-		info.append(FreeplaneVersion.getVersion());
-		String revision = FreeplaneVersion.getVersion().getRevision();
+		final FreeplaneVersion freeplaneVersion = FreeplaneVersion.getVersion();
+		info.append(freeplaneVersion);
+		String revision = freeplaneVersion.getRevision();
 
 		info.append("; freeplane_xml_version = ");
 		info.append(FreeplaneVersion.XML_VERSION);
