@@ -343,10 +343,10 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		final IIconInformation iconInformation = icons.get(index);
 		final String keyStroke = ResourceController.getResourceController().getProperty(iconInformation.getShortcutKey());
 		if (keyStroke != null) {
-			descriptionLabel.setText(iconInformation.getTranslationValueLabel() + ", " + keyStroke);
+			descriptionLabel.setText(iconInformation.getTranslatedDescription() + ", " + keyStroke);
 		}
 		else {
-			descriptionLabel.setText(iconInformation.getTranslationValueLabel());
+			descriptionLabel.setText(iconInformation.getTranslatedDescription());
 		}
 	}
 

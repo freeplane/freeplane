@@ -67,8 +67,8 @@ public class UserIcon extends MindIcon {
 	}
 
 	@Override
-	public String getTranslationValueLabel() {
-		String key = getTranslationKeyLabel();
+	public String getTranslatedDescription() {
+		String key = getDescriptionTranslationKey();
 		return TextUtils.getOptionalText(MindIcon.nameToTranslationKey(key), key);
 	}
 

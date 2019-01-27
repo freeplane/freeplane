@@ -41,7 +41,7 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformati
 
 	public RemoveAllIconsAction() {
 		super("RemoveAllIconsAction");
-		putValue(Action.SHORT_DESCRIPTION, getTranslationValueLabel());
+		putValue(Action.SHORT_DESCRIPTION, getTranslatedDescription());
 	}
 
 	@Override
@@ -50,11 +50,11 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformati
 		iconController.removeAllIcons(node);
 	}
 	
-	public String getTranslationKeyLabel() {
+	public String getDescriptionTranslationKey() {
 		return null;
 	}
 
-	public String getTranslationValueLabel() {
+	public String getTranslatedDescription() {
 		return (String) getValue(Action.NAME);
 	}
 

@@ -41,7 +41,7 @@ public class ZoomedIcon extends UIIcon {
 	private ImageIcon zoomedIcon;
 
 	public ZoomedIcon(final UIIcon uiIcon, final float zoom) {
-		super(uiIcon.getName(), uiIcon.getFileName(), uiIcon.getTranslationValueLabel(), uiIcon.getShortcutKey());
+		super(uiIcon.getName(), uiIcon.getFileName(), uiIcon.getDescriptionTranslationKey(), uiIcon.getShortcutKey());
 		this.uiIcon = uiIcon;
 		this.zoom = zoom;
 	}
@@ -50,7 +50,7 @@ public class ZoomedIcon extends UIIcon {
 	public Icon getIcon() {
 		throw new RuntimeException(new NoSuchMethodException());
 	}
-	
+
 	@Override
 	public Icon getIcon(final NodeModel node) {
 		if(uiIcon.getUrl().getPath().endsWith(".svg")) {

@@ -41,10 +41,10 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 	final private MindIcon mindIcon;
 
 	public IconAction( final MindIcon _icon) {
-		super("IconAction." + _icon.getName(), _icon.getTranslationValueLabel(), null);
+		super("IconAction." + _icon.getName(), _icon.getTranslatedDescription(), null);
 		mindIcon = _icon;
 		setIcon(getIcon());
-		putValue(Action.SHORT_DESCRIPTION, getTranslationValueLabel());
+		putValue(Action.SHORT_DESCRIPTION, getTranslatedDescription());
 	}
 
 	private MindIcon replaceByUserDefinedIcon() {
@@ -56,17 +56,17 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 		((MIconController) IconController.getController()).addIcon(node, replaceByUserDefinedIcon());
 	}
 	
-	public String getTranslationKeyLabel() {
-		return mindIcon.getTranslationKeyLabel();
+	public String getDescriptionTranslationKey() {
+		return mindIcon.getDescriptionTranslationKey();
 	}
 
 	@Override
 	public String getTextKey() {
-		return getTranslationKeyLabel();
+		return getDescriptionTranslationKey();
 	}
 
-	public String getTranslationValueLabel() {
-		return mindIcon.getTranslationValueLabel();
+	public String getTranslatedDescription() {
+		return mindIcon.getTranslatedDescription();
 	}
 
 	public Icon getIcon() {

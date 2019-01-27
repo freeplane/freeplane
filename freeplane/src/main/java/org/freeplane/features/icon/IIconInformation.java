@@ -23,9 +23,9 @@ import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 public interface IIconInformation {	
-	String getTranslationKeyLabel();
+	String getDescriptionTranslationKey();
 	
-	String getTranslationValueLabel();
+	String getTranslatedDescription();
 
 	Icon getIcon();
 

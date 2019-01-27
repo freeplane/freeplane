@@ -43,7 +43,7 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 	public RemoveIconAction( final int position) {
 		super(position == -1 ? "RemoveIconAction" : "RemoveIcon_" + position + "_Action");
 		this.position = position;
-		putValue(Action.SHORT_DESCRIPTION, getTranslationValueLabel());
+		putValue(Action.SHORT_DESCRIPTION, getTranslatedDescription());
 	}
 
 	@Override
@@ -53,11 +53,11 @@ class RemoveIconAction extends AMultipleNodeAction implements IIconInformation {
 		return;
 	}
 	
-	public String getTranslationKeyLabel() {
+	public String getDescriptionTranslationKey() {
 		return null;
 	}
 
-	public String getTranslationValueLabel() {
+	public String getTranslatedDescription() {
 		return (String) getValue(Action.NAME);
 	}
 

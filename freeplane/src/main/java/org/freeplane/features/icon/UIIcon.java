@@ -47,7 +47,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	        + "\\.\\." + SEPARATOR);
 	private final String name;
 	private final String fileName;
-	private final String translationKeyLabel;
+	private final String descriptionTranslationKey;
 	private final String shortcutKey;
 	private URL resourceURL;
 
@@ -55,15 +55,15 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		this(name, fileName, "", "?");
 	}
 
-	public UIIcon(final String name, final String fileName, final String translationKeyLabel) {
-		this(name, fileName, translationKeyLabel, "?");
+	public UIIcon(final String name, final String fileName, final String descriptionTranslationKey) {
+		this(name, fileName, descriptionTranslationKey, "?");
 	}
 
-	public UIIcon(final String name, final String fileName, final String translationKeyLabel,
+	public UIIcon(final String name, final String fileName, final String descriptionTranslationKey,
 	              final String shortcutKey) {
 		this.name = name;
 		this.fileName = fileName;
-		this.translationKeyLabel = translationKeyLabel;
+		this.descriptionTranslationKey = descriptionTranslationKey;
 		this.shortcutKey = shortcutKey;
 	}
 
@@ -80,13 +80,13 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	}
 
 	@Override
-	public String getTranslationKeyLabel() {
-		return translationKeyLabel;
+	public String getDescriptionTranslationKey() {
+		return descriptionTranslationKey;
 	}
 
 	@Override
-	public String getTranslationValueLabel() {
-		return TextUtils.getText(translationKeyLabel, "");
+	public String getTranslatedDescription() {
+		return TextUtils.getText(descriptionTranslationKey, "");
 	}
 
 	public String getName() {
@@ -135,7 +135,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((translationKeyLabel == null) ? 0 : translationKeyLabel.hashCode());
+		result = prime * result + ((descriptionTranslationKey == null) ? 0 : descriptionTranslationKey.hashCode());
 		result = prime * result + ((fileName == null) ? 0 : fileName.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((shortcutKey == null) ? 0 : shortcutKey.hashCode());
@@ -155,12 +155,12 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 			return false;
 		}
 		final UIIcon other = (UIIcon) obj;
-		if (translationKeyLabel == null) {
-			if (other.translationKeyLabel != null) {
+		if (descriptionTranslationKey == null) {
+			if (other.descriptionTranslationKey != null) {
 				return false;
 			}
 		}
-		else if (!translationKeyLabel.equals(other.translationKeyLabel)) {
+		else if (!descriptionTranslationKey.equals(other.descriptionTranslationKey)) {
 			return false;
 		}
 		if (fileName == null) {
