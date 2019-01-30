@@ -643,6 +643,9 @@ public class LinkController extends SelectionController implements IExtension {
 	 */
 	public static URI createURI(final String inputValue) throws URISyntaxException {
 		try { // first, we try if the string can be interpreted as URI
+			return new URI(inputValue);
+		}
+		catch (final URISyntaxException e) {
 			// [scheme:]scheme-specific-part[#fragment]
 			// we check first if the string matches an SMB
 			// of the form \\host\path[#fragment]
@@ -676,9 +679,6 @@ public class LinkController extends SelectionController implements IExtension {
 					return new URI(scheme, null, ssp, fragment);
 				}
 			}
-			return new URI(inputValue);
-		}
-		catch (final URISyntaxException e) {
 			// if this doesn't work out, we try to
 			// recognize an URI of the form
 			// [scheme:]scheme-specific-part[#fragment]
