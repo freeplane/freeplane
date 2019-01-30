@@ -61,7 +61,7 @@ public class ReportGenerator extends StreamHandler {
 		}
 	}
 
-	private final static String BUG_TRACKER_REFERENCE_URL = "http://freeplane.sourceforge.net/info/bugtracker.ref.txt";
+	private final static String BUG_TRACKER_REFERENCE_URL = "https://www.freeplane.org/info/bugtracker.ref.txt";
 	private static String BUG_TRACKER_URL = null;
 	static boolean isDisabled = false;
 	private static int errorCounter = 0;
@@ -403,7 +403,8 @@ public class ReportGenerator extends StreamHandler {
 			final URLConnection conn = url.openConnection();
 			conn.setDoOutput(true);
 			final OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-			wr.write(data.toString());
+			final String report = data.toString();
+			wr.write(report);
 			wr.flush();
 			// Get the response
 			final BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
