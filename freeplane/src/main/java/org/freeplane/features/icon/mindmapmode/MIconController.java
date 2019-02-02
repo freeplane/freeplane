@@ -22,6 +22,7 @@ package org.freeplane.features.icon.mindmapmode;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.Point;
@@ -36,12 +37,14 @@ import java.util.Map;
 
 import javax.swing.Action;
 import javax.swing.Box;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import javax.swing.plaf.basic.BasicIconFactory;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IPropertyControl;
@@ -380,15 +383,32 @@ public class MIconController extends IconController {
 		}
 		return iconInfoList;
 	}
-
+	final static private Icon SUBMENU_ICON = BasicIconFactory.getMenuArrowIcon();
 	private JMenu getSubmenu( final IconGroup group) {
-		final JMenu menu = new JMenu("\u25ba") {
+		final JMenu menu = new JMenu() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected Point getPopupMenuOrigin() {
 				return new Point(getWidth(), 0);
 			}
+
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				final int x = getWidth() - SUBMENU_ICON.getIconWidth();
+				final int y = (getHeight() - SUBMENU_ICON.getIconHeight()) / 2;
+				SUBMENU_ICON.paintIcon(this, g, x, y);
+			}
+
+			@Override
+			public Dimension getPreferredSize() {
+				final Dimension result = super.getPreferredSize();
+				result.width += SUBMENU_ICON.getIconWidth();
+				return result;
+			}
+
+
 		};
 		menu.setFont(ARROW_FONT);
 		menu.setMargin(ICON_SUBMENU_INSETS);
