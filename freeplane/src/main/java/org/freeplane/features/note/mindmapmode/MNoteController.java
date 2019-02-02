@@ -20,6 +20,7 @@
 package org.freeplane.features.note.mindmapmode;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -53,6 +54,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
+import org.freeplane.features.note.NoteStyleAccessor;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
@@ -114,6 +116,8 @@ public class MNoteController extends NoteController {
 	}
 
 	private static SHTMLPanel htmlEditorPanel;
+	private static Color defaultCaretColor;
+
 	public static final String RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION = "remove_notes_without_question";
 	public static final String RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO = "resources_use_default_font_for_notes_too";
 	public static final String RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES = "resources_use_margin_top_zero_for_notes";
@@ -154,6 +158,7 @@ public class MNoteController extends NoteController {
 
 		htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
 		final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
+		defaultCaretColor = editorPane.getCaretColor();
 
 		for (InputMap inputMap = editorPane.getInputMap(); inputMap != null; inputMap = inputMap.getParent()){
 			inputMap.remove(KeyStroke.getKeyStroke("ctrl pressed T"));
@@ -324,7 +329,10 @@ public class MNoteController extends NoteController {
 	    styleSheet.removeStyle("p");
 	    // set default font for notes:
 	    final ModeController modeController = Controller.getCurrentModeController();
-	    String noteCssRule = getNoteCSSStyle(modeController, node, 1f, false);
+	    final NoteStyleAccessor noteStyleAccessor = new NoteStyleAccessor(modeController, node, 1f, false);
+		String noteCssRule = noteStyleAccessor.getNoteCSSStyle();
+		Color noteForeground = noteStyleAccessor.getNoteForeground();
+		noteViewerComponent.getEditorPane().setCaretColor(noteForeground != null ? noteForeground : defaultCaretColor);
 		String bodyRule = new StringBuilder( "body {").append(noteCssRule).append("}\n").toString();
 		styleSheet.addRule(bodyRule);
 	    if (ResourceController.getResourceController().getBooleanProperty(

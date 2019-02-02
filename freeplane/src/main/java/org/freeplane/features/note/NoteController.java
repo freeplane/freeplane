@@ -19,15 +19,13 @@
  */
 package org.freeplane.features.note;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
+
 import javax.swing.Icon;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.UIIcon;
@@ -37,8 +35,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.nodestyle.NodeSizeModel;
-import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
@@ -55,7 +51,7 @@ public class NoteController implements IExtension {
 	private static final UIIcon noteIcon= IconStoreFactory.ICON_STORE.getUIIcon("knotes.png");
 	public static final String bwNoteIconUrl;
 	public static final Icon bwNoteIcon;
-	
+
 	static {
 			String bwNoteIconName = "note_black_and_transp.png";
 			bwNoteIconUrl = "freeplaneresource:/images/" + bwNoteIconName;
@@ -72,9 +68,9 @@ public class NoteController implements IExtension {
 	}
 
 	public static NoteController getController(ModeController modeController) {
-		return (NoteController) modeController.getExtension(NoteController.class);
+		return modeController.getExtension(NoteController.class);
     }
-	
+
 	public static void install( final NoteController noteController) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.addExtension(NoteController.class, noteController);
@@ -96,12 +92,12 @@ public class NoteController implements IExtension {
 	}
 
 	public final String getNoteText(final NodeModel node) {
-		final NoteModel extension = (NoteModel) node.getExtension(NoteModel.class);
+		final NoteModel extension = node.getExtension(NoteModel.class);
 		return extension != null ? extension.getHtml() : null;
 	}
 
 	public final String getXmlNoteText(final NodeModel node) {
-		final NoteModel extension = (NoteModel) node.getExtension(NoteModel.class);
+		final NoteModel extension = node.getExtension(NoteModel.class);
 		return extension != null ? extension.getXml() : null;
 	}
 
@@ -113,6 +109,7 @@ public class NoteController implements IExtension {
 
 	private void registerNoteTooltipProvider(ModeController modeController) {
 		modeController.addToolTipProvider(NOTE_TOOLTIP, new ITooltipProvider() {
+			@Override
 			public String getTooltip(final ModeController modeController, NodeModel node, Component view){
 				return getTooltip(modeController, node, (MainView)view);
 			}
@@ -124,7 +121,7 @@ public class NoteController implements IExtension {
 				if (noteText == null)
 					return null;
 				float zoom = view.getNodeView().getMap().getZoom();
-				final String rule = getNoteCSSStyle(modeController, node, zoom, true);
+				final String rule = new NoteStyleAccessor(modeController, node, zoom, true).getNoteCSSStyle();
 				final StringBuilder tooltipBodyBegin = new StringBuilder("<body><div style=\"");
 				tooltipBodyBegin.append(rule);
 				tooltipBodyBegin.append("\">");
@@ -133,7 +130,7 @@ public class NoteController implements IExtension {
 					tooltipBodyBegin.append(bwNoteIconUrl.toString());
 					tooltipBodyBegin.append("\">");
 				}
-				final String tooltipText = noteText.replaceFirst("<body>", 
+				final String tooltipText = noteText.replaceFirst("<body>",
 					tooltipBodyBegin.toString()).replaceFirst("</body>", "</div></body>");
 				return tooltipText;
 			}
@@ -142,12 +139,13 @@ public class NoteController implements IExtension {
 
 	private void registerStateIconProvider() {
 		IconController.getController().addStateIconProvider(new IStateIconProvider() {
+			@Override
 			public UIIcon getStateIcon(NodeModel node) {
 				boolean showIcon;
 				if(NoteModel.getNote(node) != null){
 					final String showNoteIcon = MapStyle.getController(modeController).getPropertySetDefault(node.getMap(), SHOW_NOTE_ICONS);
 					showIcon = Boolean.parseBoolean(showNoteIcon);
-					if(showIcon) 
+					if(showIcon)
 						return noteIcon;
 				}
 				return null;
@@ -164,33 +162,4 @@ public class NoteController implements IExtension {
 		final String property = MapStyleModel.getExtension(model).getProperty(NoteController.SHOW_NOTES_IN_MAP);
 		return Boolean.parseBoolean(property);
 	}
-
-	protected String getNoteCSSStyle(ModeController modeController, NodeModel node, float zoom, boolean asHtmlFragment) {
-		final StringBuilder rule = new StringBuilder();
-		// set default font for notes:
-		final NodeStyleController style = (NodeStyleController) Controller.getCurrentModeController().getExtension(
-		    NodeStyleController.class);
-		MapModel map = modeController.getController().getMap();
-		if(map != null){
-			final MapStyleModel model = MapStyleModel.getExtension(map);
-			final NodeModel noteStyleNode = model.getStyleNodeSafe(MapStyleModel.NOTE_STYLE);
-		    final Font noteFont = style.getFont(noteStyleNode);
-		    Color noteBackground = style.getBackgroundColor(noteStyleNode);
-		    Color noteForeground = style.getColor(noteStyleNode);
-		    final int alignment = style.getHorizontalTextAlignment(noteStyleNode).swingConstant;
-		    final CssRuleBuilder cssRuleBuilder = new CssRuleBuilder();
-		    if(asHtmlFragment)
-		    	cssRuleBuilder.withHTMLFont(noteFont);
-		    else
-			    cssRuleBuilder.withCSSFont(noteFont);
-		    cssRuleBuilder.withColor(noteForeground)
-					.withBackground(noteBackground)
-					.withAlignment(alignment);
-		    if(asHtmlFragment)
-		    	cssRuleBuilder.withMaxWidthAsPt(zoom, NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node));
-			rule.append(cssRuleBuilder);
-		}
-		return rule.toString();
-	}
-
 }
