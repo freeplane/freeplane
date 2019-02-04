@@ -52,7 +52,7 @@ jar {
         }
         deps.add(0, "lib/freeplaneosgi-${project.version}.jar")
         // this is built from :freeplane_mac on a Mac!
-        deps.add(0, "lib/freeplane_mac-${project.version}.jar")
+        deps.add(0, "lib/freeplane_mac-1.7.4.jar")
         deps.add(0, "lib/freeplaneeditor-${project.version}.jar")
         deps.add(0, "lib/freeplaneviewer.jar")
 
