@@ -11,5 +11,3 @@ dependencies {
     
     compileOnly 'com.apple:applejavaextensions:1.5.4'
 }
-
-compileJava.onlyIf { Boolean.getBoolean('compileMacChanges')}

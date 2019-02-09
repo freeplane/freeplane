@@ -52,7 +52,7 @@ jar {
         }
         deps.add(0, "lib/freeplaneosgi-${project.version}.jar")
         // this is built from :freeplane_mac on a Mac!
-        deps.add(0, "lib/freeplane_mac-1.7.4.jar")
+        deps.add(0, "lib/freeplane_mac-${project.version}.jar")
         deps.add(0, "lib/freeplaneeditor-${project.version}.jar")
         deps.add(0, "lib/freeplaneviewer.jar")
 
@@ -193,6 +193,7 @@ task copyOSGiJars(type: Copy) {
           include("*.jar")
 		  exclude('freeplane-*.jar')
         }
+		from(jar.outputs.files)
      from (configurations.runtime) {
           include("*.jar")
 		  exclude('framework-*.jar')
@@ -204,8 +205,10 @@ task copyOSGiJars(type: Copy) {
           include("*.jar")
           exclude('*-sources.jar')
      }
+	 from (project(':freeplane_mac').jar.outputs.files)
      into(globalBin + '/core/' + pluginid + '/lib/')
 }
+copyOSGiJars.dependsOn project(':freeplane_mac').jar
 
 task copyOSGiManifest(type: Copy) {
      from ("$buildDir/tmp/jar/") {

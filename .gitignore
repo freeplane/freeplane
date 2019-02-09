@@ -23,7 +23,8 @@
 backups
 .backup
 /macapp.properties
-freeplane/lib/jortho.jar
+/freeplane/lib/jortho.jar
+/freeplane/lib/freeplane_mac*.jar
 freeplane_framework/windows-icons/build
 freeplane_framework/windows-icons/*.layout
 freeplane_framework/windows-icons/Makefile.win
