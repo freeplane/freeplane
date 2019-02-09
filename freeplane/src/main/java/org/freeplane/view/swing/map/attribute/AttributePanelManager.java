@@ -187,7 +187,7 @@ public class AttributePanelManager{
                 @Override
 				public void valueChanged(final ListSelectionEvent event) {
                     // update format chooser
-                    if (!event.getValueIsAdjusting()) {
+                    if (attributeView != null && !event.getValueIsAdjusting()) {
                         setSelectedFormatItem();
                     }
                 }
