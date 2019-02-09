@@ -30,12 +30,18 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 
-import com.apple.eawt.*;
+import com.apple.eawt.AboutHandler;
 import com.apple.eawt.AppEvent.AboutEvent;
 import com.apple.eawt.AppEvent.OpenFilesEvent;
 import com.apple.eawt.AppEvent.OpenURIEvent;
 import com.apple.eawt.AppEvent.PreferencesEvent;
 import com.apple.eawt.AppEvent.QuitEvent;
+import com.apple.eawt.Application;
+import com.apple.eawt.OpenFilesHandler;
+import com.apple.eawt.OpenURIHandler;
+import com.apple.eawt.PreferencesHandler;
+import com.apple.eawt.QuitHandler;
+import com.apple.eawt.QuitResponse;
 
 public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesHandler, OpenURIHandler, QuitHandler{
 
@@ -44,11 +50,11 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 	private final Controller controller;
 
 	private int loadedMapCounter = 0;
-	
+
 	static public void apply(Controller controller) {
 		new MacChanges(controller);
 	}
-	
+
 	private MacChanges(Controller controller) {
 		this.controller = controller;
 		if(fmMacApplication==null){
@@ -62,6 +68,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 			// wait until handleOpenFile finishes if it was called in event thread
 			try {
 				EventQueue.invokeAndWait(new Runnable() {
+					@Override
 					public void run() {
 					};
 				});
@@ -75,8 +82,9 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 	private MModeController getModeController() {
 		return (MModeController) controller.getModeController(MModeController.MODENAME);
 	}
-	
-	
+
+
+	@Override
 	public void handleQuitRequestWith(QuitEvent event, QuitResponse response) {
 		try {
 			if(! isStarting())
@@ -87,15 +95,16 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		response.cancelQuit();
 	}
 
-	
+
+	@Override
 	public void openURI(OpenURIEvent event) {
 		URI uri = event.getURI();
-		
+
 		try {
 			if(isStarting()) {
 				// restore at startup:
 				loadedMapCounter++;
-				System.setProperty("org.freeplane.param" + loadedMapCounter, uri.toString());				
+				System.setProperty("org.freeplane.param" + loadedMapCounter, uri.toString());
 			} else {
 				// Direct loading
 				LinkController.getController().loadURI(uri);
@@ -105,15 +114,20 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		}
 	}
 
-	
+
+	@Override
 	public void handlePreferences(PreferencesEvent event) {
-		AFreeplaneAction action = getModeController().getAction("ShowPreferencesAction");
-		if(action != null)
-			action.actionPerformed(null);
-		
+		final MModeController modeController = getModeController();
+		if(modeController != null) {
+			AFreeplaneAction action = modeController.getAction("ShowPreferencesAction");
+			if(action != null)
+				action.actionPerformed(null);
+		}
+
 	}
 
-	
+
+	@Override
 	public void openFiles(OpenFilesEvent event) {
 		for(File file : event.getFiles()){
 			String filePath = file.getPath();
@@ -126,7 +140,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 			if(isStarting()) {
 				// restore at startup:
 				loadedMapCounter++;
-				System.setProperty("org.freeplane.param" + loadedMapCounter, filePath);				
+				System.setProperty("org.freeplane.param" + loadedMapCounter, filePath);
 			} else {
 				// Direct loading
 				getModeController().getMapController().openMap(Compat.fileToUrl(new File(filePath)));
@@ -140,11 +154,14 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		return controller.getViewController() == null;
 	}
 
-	
+
+	@Override
 	public void handleAbout(AboutEvent event) {
-		AFreeplaneAction action = getModeController().getController().getAction("AboutAction");
-		if(action != null)
-			action.actionPerformed(null);
-		
+		final MModeController modeController = getModeController();
+		if(modeController != null) {
+			AFreeplaneAction action = modeController.getController().getAction("AboutAction");
+			if(action != null)
+				action.actionPerformed(null);
+		}
 	}
 }
