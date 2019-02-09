@@ -91,16 +91,25 @@ public class EncryptionController implements IExtension {
 			final IActor actor = new IActor() {
 				@Override
 				public void act() {
+					apply(becomesAccessible, becomesFolded, wasFolded);
+				}
+
+				private void apply(boolean becomesAccessible, boolean becomesFolded, boolean wasFolded) {
+					if(encryptionModel.isAccessible() == becomesAccessible)
+						return;
 					if(becomesAccessible) {
 						encryptionModel.unlock();
 					}
 					else {
 						encryptionModel.lock(mapWriter);
 					}
-					if (becomesFolded != wasFolded) {
-						node.setFolded(becomesFolded);
+					final boolean encryptionSucceeded = encryptionModel.isAccessible() == becomesAccessible;
+					if(encryptionSucceeded) {
+						if (becomesFolded != wasFolded) {
+							node.setFolded(becomesFolded);
+						}
+						fireEncryptionChangedEvent(node);
 					}
-					fireEncryptionChangedEvent(node);
 				}
 
 				@Override
@@ -110,15 +119,7 @@ public class EncryptionController implements IExtension {
 
 				@Override
 				public void undo() {
-					if(wasAccessible) {
-						encryptionModel.unlock();
-					}
-					else {
-						encryptionModel.lock(mapWriter);
-					}
-					if(becomesFolded != wasFolded)
-						node.setFolded(wasFolded);
-					fireEncryptionChangedEvent(node);
+					apply(wasAccessible, wasFolded, becomesFolded);
 				}
 			};
 			Controller.getCurrentModeController().execute(actor, node.getMap());
@@ -161,7 +162,7 @@ public class EncryptionController implements IExtension {
 			@Override
 			public void act() {
 				node.addExtension(encryptionModel);
-				fireEncryptionChangedEvent(node);
+				fireEncryptionChangedEvent();
 			}
 
 			@Override
@@ -172,7 +173,12 @@ public class EncryptionController implements IExtension {
 			@Override
 			public void undo() {
 				node.removeExtension(encryptionModel);
-				fireEncryptionChangedEvent(node);
+				fireEncryptionChangedEvent();
+			}
+
+			private void fireEncryptionChangedEvent() {
+				Controller.getCurrentModeController().getMapController().setSaved(node.getMap(), false);
+				EncryptionController.this.fireEncryptionChangedEvent(node);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());
