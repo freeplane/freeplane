@@ -22,8 +22,10 @@ public class ImageRendererFactory {
 		Dimension viewerSize = new Dimension(size.width - 2 * BORDER_WIDTH,
 		size.height - 2 * BORDER_WIDTH);
 		JComponent viewer = createViewer(viewerFactory, uri, viewerSize);
-		renderer.add(viewer);
-		viewer.setLocation(BORDER_WIDTH, BORDER_WIDTH);
+		if(viewer != null) {
+			renderer.add(viewer);
+			viewer.setLocation(BORDER_WIDTH, BORDER_WIDTH);
+		}
 	}
 
 	private JComponent createViewer(IViewerFactory viewerFactory, URI uri, Dimension size) {
