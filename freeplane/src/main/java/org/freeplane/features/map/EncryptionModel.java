@@ -178,11 +178,17 @@ public class EncryptionModel implements IExtension {
 
 	synchronized public void lock(MapWriter mapWriter) {
 		List<NodeModel> childNodes = node.getChildrenInternal();
-		encryptedContent = encrypt(mapWriter, childNodes);
-		List<NodeModel> oldContent = hiddenChildren.put(node, childNodes);
-		node.setChildrenInternal(Collections.emptyList());
-		if(oldContent != null) {
-			LogUtils.severe("Hidden children replaced");
+		String encryptedContent = encrypt(mapWriter, childNodes);
+		if(encryptedContent != null) {
+			this.encryptedContent = encryptedContent;
+			List<NodeModel> oldContent = hiddenChildren.put(node, childNodes);
+			node.setChildrenInternal(Collections.emptyList());
+			if(oldContent != null) {
+				LogUtils.severe("Hidden children replaced");
+			}
+		}
+		else {
+
 		}
 	}
 }

@@ -44,7 +44,7 @@ import org.freeplane.features.mode.Controller;
 public class ColorTracker implements ActionListener, Serializable {
 	static class Closer extends WindowAdapter implements Serializable {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -57,7 +57,7 @@ public class ColorTracker implements ActionListener, Serializable {
 
 	static class DisposeOnClose extends ComponentAdapter implements Serializable {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
@@ -70,7 +70,7 @@ public class ColorTracker implements ActionListener, Serializable {
 
 	static JColorChooser colorChooser = new JColorChooser();
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -82,13 +82,14 @@ public class ColorTracker implements ActionListener, Serializable {
 	public static Color showCommonJColorChooserDialog(final Component component, final String title,
 	                                                  final Color initialColor, final Color defaultColor) {
 		final JColorChooser pane = ColorTracker.getCommonJColorChooser();
-		pane.setColor(initialColor);
+		pane.setColor(initialColor != null ? initialColor : (defaultColor != null ? defaultColor : Color.WHITE));
 		final ColorTracker ok = new ColorTracker(pane);
 		final JDialog dialog = JColorChooser.createDialog(component, title, true, pane, ok, null);
 		final Container container = (Container) dialog.getContentPane().getComponent(1);
 		if(defaultColor != null){
 			final JButton defaultBtn = new JButton(TextUtils.getText("reset_to_default"));
 			defaultBtn.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					dialog.dispose();
 					ok.setColor(defaultColor);
@@ -119,6 +120,7 @@ public class ColorTracker implements ActionListener, Serializable {
 		chooser = c;
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		color = chooser.getColor();
 	}
