@@ -17,6 +17,19 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
+import java.awt.Component;
+import java.awt.EventQueue;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.text.MessageFormat;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.UITools;
@@ -24,16 +37,6 @@ import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.text.MessageFormat;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class uses the JFileChooser dialog to allow users to choose a file name to
@@ -59,7 +62,7 @@ import java.util.Map;
 public class ExportDialog {
 	private static final String LAST_CHOOSEN_EXPORT_FILE_FILTER = "lastChoosenExportFileFilter";
 	public static final String EXPORT_MAP_TITLE = "ExportAction.text";
-	public static final String EXPORT_BRANCHES_TITLE = "ExportBranches.text";
+	public static final String EXPORT_BRANCHES_TITLE = "ExportBranchesAction.text";
 	/** the JFileChooser dialog used to choose filter and the file to export to. */
 	final private JFileChooser fileChooser = new JFileChooser();
 	final private Map<FileFilter, IExportEngine> exportEngines;
@@ -115,6 +118,7 @@ public class ExportDialog {
 			final private File selectedFile = absolutePathWithoutExtension == null ? null : new File(
 			    absolutePathWithoutExtension);
 
+			@Override
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if (evt.getPropertyName().equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY)) {
 					final FileFilter filter = fileChooser.getFileFilter();
@@ -123,6 +127,7 @@ public class ExportDialog {
 					}
 					final File acceptableFile = getAcceptableFile(selectedFile, (ExampleFileFilter) filter);
 					EventQueue.invokeLater(new Runnable() {
+						@Override
 						public void run() {
 							fileChooser.setSelectedFile(acceptableFile);
 						}
