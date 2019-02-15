@@ -193,7 +193,6 @@ task copyOSGiJars(type: Copy) {
           include("*.jar")
 		  exclude('freeplane-*.jar')
         }
-		from(jar.outputs.files)
      from (configurations.runtime) {
           include("*.jar")
 		  exclude('framework-*.jar')
