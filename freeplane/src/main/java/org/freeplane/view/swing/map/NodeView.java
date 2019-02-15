@@ -218,10 +218,11 @@ public class NodeView extends JComponent implements INodeView {
 		if (cloudColor != null) {
 			return cloudColor;
 		}
-		if (isRoot()) {
+		final NodeView parentView = getParentView();
+		if (parentView == null) {
 			return getMap().getBackground();
 		}
-		return getParentView().getBackgroundColor();
+		return parentView.getBackgroundColor();
 	}
 
 	public Color getCloudColor() {
