@@ -23,6 +23,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -54,6 +55,7 @@ public class QuantityProperty<U extends Enum<U> & Convertible> extends PropertyB
 
 	private void addChangeListeners() {
 		numberSpinner.addChangeListener(new ChangeListener() {
+			@Override
 			public void stateChanged(final ChangeEvent pE) {
 				firePropertyChangeEvent();
 			}
@@ -80,23 +82,33 @@ public class QuantityProperty<U extends Enum<U> & Convertible> extends PropertyB
 		return getQuantifiedValue().toString();
 	}
 
+	@Override
 	public void layout(final DefaultFormBuilder builder) {
-		Box box = Box.createHorizontalBox();
+		Box box = new Box(BoxLayout.X_AXIS) {
+
+			@Override
+			public void setEnabled(boolean enabled) {
+				QuantityProperty.this.setEnabled(enabled);
+			}
+
+		};
 		box.add(numberSpinner);
 		box.add(unitBox);
 		layout(builder, box);
 	}
 
+	@Override
 	public void setEnabled(final boolean pEnabled) {
 		numberSpinner.setEnabled(pEnabled);
+		unitBox.setEnabled(pEnabled);
 	}
-	
+
 	public void setQuantifiedValue(Quantity<U> quantity){
 		this.currentUnit = quantity.unit;
 		numberSpinner.setValue(quantity.value);
 		unitBox.setSelectedIndex(quantity.unit.ordinal());
 	}
-	
+
 	public Quantity<U> getQuantifiedValue(){
 		double value = (Double) numberSpinner.getValue();
 		U unit = getCurrentUnit();
@@ -111,7 +123,7 @@ public class QuantityProperty<U extends Enum<U> & Convertible> extends PropertyB
 	public void setValue(final String value)
 	{
 		Quantity<U> quantity = Quantity.fromString(value, defaultUnit);
-		setQuantifiedValue(quantity);		
+		setQuantifiedValue(quantity);
 	}
 
 }
