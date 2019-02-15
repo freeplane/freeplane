@@ -62,10 +62,15 @@ public class AddOnsController {
 		if (addOnsDir == null)
 			return;
 		File[] addonXmlFiles = addOnsDir.listFiles(new FilenameFilter() {
+			@Override
 			public boolean accept(File dir, String name) {
 				return name.endsWith(".plugin.xml");
 			}
 		});
+		if (addonXmlFiles == null) {
+			LogUtils.severe("Can not read addon directory " + addOnsDir);
+			return;
+		}
 		final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();
 		for (File file : addonXmlFiles) {
 			BufferedInputStream inputStream = null;
@@ -213,7 +218,7 @@ public class AddOnsController {
 		if(! autoInstall)
 			return false;
 		if (url.getFile().endsWith(UrlManager.FREEPLANE_ADD_ON_FILE_EXTENSION)) {
-			AddOnInstaller installer = (AddOnInstaller) Controller.getCurrentModeController().getExtension(
+			AddOnInstaller installer = Controller.getCurrentModeController().getExtension(
 			    AddOnInstaller.class);
 			if (installer == null) {
 				LogUtils.warn("no AddOnInstaller registered. Cannot install " + url);
@@ -233,13 +238,13 @@ public class AddOnsController {
 
 	public void setAutoInstallEnabled(boolean autoInstall) {
 	   this.autoInstall = autoInstall;
-	    
+
     }
 
 	public boolean isAutoInstallEnabled() {
     	return autoInstall;
     }
-	
+
 	public AddOnProperties getInstalledAddOn(final String name) {
 		// Performance consideration: list is small -> iteration over list is OK.
 		for (AddOnProperties addOn : installedAddOns) {
