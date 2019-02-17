@@ -32,7 +32,7 @@ public class MindIconFactory {
 	 * The name of the icon is the file name without the extension.
 	 */
 	public static MindIcon createIcon(final String name) {
-		final String translationKeyLabel = name.indexOf('/') > 0 ? "" : MindIcon.nameToTranslationKey(name);
+		final String translationKeyLabel = name.indexOf('/') > 0 ? "" : ("icon_" + name);
 		return new MindIcon(name, name + ".png", translationKeyLabel);
 	}
 

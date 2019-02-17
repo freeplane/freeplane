@@ -69,7 +69,7 @@ public class UserIcon extends MindIcon {
 	@Override
 	public String getTranslatedDescription() {
 		String key = getDescriptionTranslationKey();
-		return TextUtils.getOptionalText(MindIcon.nameToTranslationKey(key), key);
+		return TextUtils.getOptionalText("usericon_" + key, key);
 	}
 
 	@Override

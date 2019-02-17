@@ -50,8 +50,4 @@ public class MindIcon extends UIIcon {
 		final String fileName = path.substring(path.lastIndexOf('/') + 1);
 		return fileName;
 	}
-
-	public static String nameToTranslationKey(final String name) {
-		return String.format("icon_%s", name);
-	}
 }
