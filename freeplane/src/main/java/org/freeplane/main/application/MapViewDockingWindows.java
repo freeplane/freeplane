@@ -51,6 +51,18 @@ import javax.swing.UIManager;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
+import org.apache.commons.codec.binary.Base64;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.FileOpener;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.IMapViewChangeListener;
+import org.freeplane.features.url.mindmapmode.DroppedMindMapOpener;
+import org.freeplane.view.swing.map.MapView;
+import org.freeplane.view.swing.map.NodeView;
+import org.freeplane.view.swing.ui.DefaultMapMouseListener;
+
 import net.infonode.docking.AbstractTabWindow;
 import net.infonode.docking.DockingWindow;
 import net.infonode.docking.DockingWindowAdapter;
@@ -71,18 +83,6 @@ import net.infonode.tabbedpanel.TabLayoutPolicy;
 import net.infonode.tabbedpanel.TabbedPanelProperties;
 import net.infonode.tabbedpanel.titledtab.TitledTabProperties;
 import net.infonode.util.Direction;
-
-import org.apache.commons.codec.binary.Base64;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.FileOpener;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.ui.IMapViewChangeListener;
-import org.freeplane.features.url.mindmapmode.DroppedMindMapOpener;
-import org.freeplane.view.swing.map.MapView;
-import org.freeplane.view.swing.map.NodeView;
-import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 class MapViewDockingWindows implements IMapViewChangeListener {
 
@@ -118,7 +118,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		final Controller controller = Controller.getCurrentController();
 		controller.getMapViewManager().addMapViewChangeListener(this);
 		rootWindow.addListener(new DockingWindowAdapter(){
-			
+
 			private IconColorReplacer iconColorReplacer;
 
 			@Override
@@ -206,9 +206,9 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		rootWindowProperties.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
 
 		RootWindowProperties overwrittenProperties = new RootWindowProperties();
-		
+
 		overwrittenProperties.getFloatingWindowProperties().setUseFrame(true);
-		
+
 		final ComponentProperties windowAreaProperties = overwrittenProperties.getWindowAreaProperties();
 		windowAreaProperties.setBackgroundColor(UIManager.getColor("Panel.background"));
 		windowAreaProperties.setInsets(null);
@@ -245,6 +245,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
   		  return getLastFocusedChildWindow(lastFocusedChildWindow);
     }
 
+	@Override
 	public void afterViewChange(final Component pOldMap, final Component pNewMap) {
 		if (pNewMap == null) {
 			return;
@@ -302,6 +303,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		addDockedView(pOldMap != null ? getContainingDockedWindow(pOldMap) : null, viewFrame);
     }
 
+	@Override
 	public void afterViewClose(final Component pOldMapView) {
 		for (int i = 0; i < mapViews.size(); ++i) {
 			if (mapViews.get(i) == pOldMapView) {
@@ -315,9 +317,11 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		}
 	}
 
+	@Override
 	public void afterViewCreated(final Component mapView) {
 	}
 
+	@Override
 	public void beforeViewChange(final Component pOldMapView, final Component pNewMapView) {
 	}
 
@@ -377,7 +381,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 	public void focusMapViewLater(final MapView mapView) {
 		Timer timer = new Timer(40, new ActionListener() {
 			int retryCount = 5;
-		    public void actionPerformed(final ActionEvent event) {
+		    @Override
+			public void actionPerformed(final ActionEvent event) {
 		    	final Timer eventTimer = (Timer)event.getSource();
 		    	focusMapLater(mapView, eventTimer);
 		    }
@@ -417,7 +422,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			if (mapViewComponent instanceof MapView ) {
 	            String title = createTitle(mapViewComponent);
 	            View containingDockedWindow = getContainingDockedWindow(mapViewComponent);
-				containingDockedWindow.getViewProperties().setTitle(title);
+	            if(containingDockedWindow != null)
+	            	containingDockedWindow.getViewProperties().setTitle(title);
             }
 		}
     }
@@ -495,7 +501,7 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			final DockingWindow window = parentWindow.getChildWindow(i);
 			if(window instanceof TabWindow)
 				setTabAreaPolicy((TabWindow) window, TabAreaVisiblePolicy.NEVER);
-			if (!(window instanceof FloatingWindow)) 
+			if (!(window instanceof FloatingWindow))
 				setTabAreaInvisiblePolicies(window);
 		}
 	}
