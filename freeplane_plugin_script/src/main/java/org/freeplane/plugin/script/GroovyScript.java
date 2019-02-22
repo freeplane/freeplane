@@ -39,11 +39,11 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
+import org.freeplane.plugin.script.proxy.ScriptUtils;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyRuntimeException;
 import groovy.lang.Script;
-import org.freeplane.plugin.script.proxy.ScriptUtils;
 
 /**
  * Special scripting implementation for Groovy.
@@ -124,7 +124,7 @@ public class GroovyScript implements IScript {
             throw new RuntimeException(e);
         } catch (final Throwable e) {
 			IMapSelection selection = Controller.getCurrentController().getSelection();
-			if (selection != null && ! node.equals(selection.getSelected()) && node.hasVisibleContent()) {
+			if (selection != null && node != null && ! node.equals(selection.getSelected()) && node.hasVisibleContent()) {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
