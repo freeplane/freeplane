@@ -337,12 +337,12 @@ class ControllerProxy implements Proxy.Controller {
 
 	@Override
 	public Proxy.Loader load(String file) {
-		return LoaderProxy.of(file, scriptContext);
+		return mapLoader(file);
 	}
 
 	@Override
 	public Proxy.Loader mapLoader(String file) {
-		return mapLoader(file);
+		return LoaderProxy.of(file, scriptContext);
 	}
 
 	@Override
