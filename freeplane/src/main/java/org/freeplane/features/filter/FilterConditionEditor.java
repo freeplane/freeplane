@@ -288,7 +288,7 @@ public class FilterConditionEditor extends JComponent {
 				}
 			}
 		}
-		if (btnDeny.isSelected())
+		if (newCond != null && btnDeny.isSelected())
 			return new ConditionNotSatisfiedDecorator(newCond);
 		else
 			return newCond;
