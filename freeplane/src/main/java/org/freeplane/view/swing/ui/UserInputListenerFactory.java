@@ -497,7 +497,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 	private boolean isUserDefined(final URL location){
 		try {
-			if(! location.getProtocol().equalsIgnoreCase("file"))
+			if(location == null || ! location.getProtocol().equalsIgnoreCase("file"))
 				return false;
 			String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
 			if(freeplaneUserDirectory == null)
