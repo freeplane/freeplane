@@ -5,16 +5,16 @@
  *  This file is modified by Dimitry Polivaev in 2008.
  *
  *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
+ *  it under the terms of the GNU General License as published by
  *  the Free Software Foundation, either version 2 of the License, or
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ *  GNU General License for more details.
  *
- *  You should have received a copy of the GNU General Public License
+ *  You should have received a copy of the GNU General License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.freeplane.view.swing.map;
@@ -26,56 +26,52 @@ import java.awt.Insets;
 
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
-class RectangleMainView extends ShapedMainView {
+class RectanglePainter extends ShapedPainter {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	@Override
-	protected void paintNodeShape(final Graphics2D g) {
-		final int zoomedEdgeWidth = (int) getPaintedBorderWidth();
-		g.drawRect(zoomedEdgeWidth / 2, zoomedEdgeWidth / 2, getWidth() - zoomedEdgeWidth, getHeight() - zoomedEdgeWidth);
+    RectanglePainter(MainView mainView, ShapeConfigurationModel shapeConfiguration) {
+		super(mainView, shapeConfiguration);
 	}
 
 	@Override
-	protected void paintBackground(final Graphics2D graphics, final Color color) {
+	void paintNodeShape(final Graphics2D g) {
+		final int zoomedEdgeWidth = (int) mainView.getPaintedBorderWidth();
+		g.drawRect(zoomedEdgeWidth / 2, zoomedEdgeWidth / 2, mainView.getWidth() - zoomedEdgeWidth, mainView.getHeight() - zoomedEdgeWidth);
+	}
+
+	@Override
+	void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
-	}
-    
-    
-    public RectangleMainView(ShapeConfigurationModel shapeConfiguration) {
-		super(shapeConfiguration);
+		graphics.fillRect(0, 0, mainView.getWidth() - 1, mainView.getHeight() - 1);
 	}
 
-	public Insets getInsets(){
-		int edgeWidthInset = (int) (getUnzoomedBorderWidth() - 1);
+
+	@Override
+	Insets getInsets(){
+		int edgeWidthInset = (int) (mainView.getUnzoomedBorderWidth() - 1);
     	final ShapeConfigurationModel shapeConfiguration = getShapeConfiguration();
     	int horizontalMargin = shapeConfiguration.getHorizontalMargin().toBaseUnitsRounded() + edgeWidthInset;
     	int verticalMargin = shapeConfiguration.getVerticalMargin().toBaseUnitsRounded() + edgeWidthInset;
     	return new Insets(verticalMargin, horizontalMargin, verticalMargin, horizontalMargin);
     }
-    
+
     @Override
-    public Insets getInsets(Insets insets) {
+    Insets getInsets(Insets insets) {
         return getInsets();
     }
-    
+
 	@Override
-	public Dimension getPreferredSize() {
+	Dimension getPreferredSize() {
 		final Dimension preferredSize = super.getPreferredSize();
-		if (isPreferredSizeSet()) {
+		if (mainView.isPreferredSizeSet()) {
 			return preferredSize;
 		}
-		
-		preferredSize.width = limitWidth(preferredSize.width);
+
+		preferredSize.width = mainView.limitWidth(preferredSize.width);
 
 		if(getShapeConfiguration().isUniform()) {
 			if(preferredSize.width < preferredSize.height)
 				preferredSize.width = preferredSize.height;
-			else 
+			else
 				preferredSize.height = preferredSize.width;
 		}
 		return preferredSize;

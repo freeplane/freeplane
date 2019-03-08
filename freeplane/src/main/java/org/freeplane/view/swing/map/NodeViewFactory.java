@@ -22,8 +22,10 @@ package org.freeplane.view.swing.map;
 import java.awt.Container;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
+
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
@@ -58,41 +60,54 @@ class NodeViewFactory {
 	}
 
 	MainView newMainView(final NodeView node) {
+		final MainView view = new MainView();
 		ShapeConfigurationModel shapeConfiguration = shapeConfiguration(node);
 		final MainView oldView = node.getMainView();
 		if(oldView != null && oldView.getShapeConfiguration().equals(shapeConfiguration))
 			return oldView;
-		final ModeController modeController = node.getMap().getModeController();
-		final MainView view;
-		
-		switch(shapeConfiguration.getShape()){
-		case fork:
-			view =  new ForkMainView();
-			break;
-		case bubble:
-			view =  new BubbleMainView(shapeConfiguration);
-			break;
-		case oval:
-			view =  new OvalMainView(shapeConfiguration);
-			break;
-		case rectangle:
-			view =  new RectangleMainView(shapeConfiguration);
-			break;
-		case wide_hexagon:
-			view = new WideHexagonMainView(shapeConfiguration);
-			break;
-		case narrow_hexagon:
-			view = new NarrowHexagonMainView(shapeConfiguration);
-			break;
-		default:
-			System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shapeConfiguration.getShape()));
-			view = new ForkMainView();
+		final MainViewPainter shape = createViewPainter(view, shapeConfiguration);
+		view.setPainter(shape);
 
-		}
-		
+		final ModeController modeController = node.getMap().getModeController();
 		NodeTooltipManager toolTipManager = NodeTooltipManager.getSharedInstance(modeController);
 		toolTipManager.registerComponent(view);
 		return view;
+	}
+
+	void updateViewPainter(final NodeView node) {
+		ShapeConfigurationModel shapeConfiguration = shapeConfiguration(node);
+		final MainView mainView = node.getMainView();
+		final MainViewPainter painter = createViewPainter(mainView, shapeConfiguration);
+		mainView.setPainter(painter);
+	}
+
+	private MainViewPainter createViewPainter(final MainView view, ShapeConfigurationModel shapeConfiguration) {
+		final MainViewPainter shape;
+		switch(shapeConfiguration.getShape()){
+		case fork:
+			shape =  new ForkPainter(view);
+			break;
+		case bubble:
+			shape =  new BubblePainter(view, shapeConfiguration);
+			break;
+		case oval:
+			shape =  new OvalPainter(view, shapeConfiguration);
+			break;
+		case rectangle:
+			shape =  new RectanglePainter(view, shapeConfiguration);
+			break;
+		case wide_hexagon:
+			shape = new WideHexagonPainter(view, shapeConfiguration);
+			break;
+		case narrow_hexagon:
+			shape = new NarrowHexagonPainter(view, shapeConfiguration);
+			break;
+		default:
+			System.err.println("Tried to create a NodeView of unknown Style " + String.valueOf(shapeConfiguration.getShape()));
+			shape = new ForkPainter(view);
+
+		}
+		return shape;
 	}
 
 	private ShapeConfigurationModel shapeConfiguration(NodeView node) {
@@ -130,6 +145,7 @@ class NodeViewFactory {
 			updateNewView(newView);
 		else
 			newView.addHierarchyListener(new HierarchyListener() {
+				@Override
 				public void hierarchyChanged(HierarchyEvent e) {
 					NodeView view = (NodeView) e.getComponent();
 					if(displayed(view, e)){
@@ -171,9 +187,9 @@ class NodeViewFactory {
 		label.setVerticalTextPosition(JLabel.TOP);
 		return label;
 	}
-	
 
-	
+
+
 	void updateNoteViewer(NodeView nodeView, int minNodeWidth, int maxNodeWidth) {
 		ZoomableLabel note = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
 		String oldText = note != null ? note.getText() : null;

@@ -5,16 +5,16 @@
  *  This file is modified by Dimitry Polivaev in 2008.
  *
  *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
+ *  it under the terms of the GNU General License as published by
  *  the Free Software Foundation, either version 2 of the License, or
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ *  GNU General License for more details.
  *
- *  You should have received a copy of the GNU General Public License
+ *  You should have received a copy of the GNU General License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.freeplane.view.swing.map;
@@ -30,24 +30,25 @@ import java.awt.Stroke;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
-class ForkMainView extends MainView {
-	
-	private static final long serialVersionUID = 1L;
+class ForkPainter extends MainViewPainter {
+
+	ForkPainter(MainView mainView) {
+		super(mainView);
+	}
 
 	@Override
-    public
-	Point getLeftPoint() {
-		int edgeWidth = (int)getPaintedBorderWidth();
-		final Point in = new Point(0, getHeight() - edgeWidth / 2);
+    Point getLeftPoint() {
+		int edgeWidth = (int)mainView.getPaintedBorderWidth();
+		final Point in = new Point(0, mainView.getHeight() - edgeWidth / 2);
 		return in;
 	}
 
 	@Override
-	protected int getMainViewHeightWithFoldingMark() {
-		int height = getHeight();
-		final NodeView nodeView = getNodeView();
+	int getMainViewHeightWithFoldingMark() {
+		int height = mainView.getHeight();
+		final NodeView nodeView = mainView.getNodeView();
 		if (nodeView.isFolded()) {
-			height += getZoomedFoldingSymbolHalfWidth();
+			height += mainView.getZoomedFoldingSymbolHalfWidth();
 		}
 		return height;
 	}
@@ -55,52 +56,52 @@ class ForkMainView extends MainView {
 	@Override
     public
 	Point getRightPoint() {
-		int edgeWidth = (int)getPaintedBorderWidth();
-		final Point in = new Point(getWidth() - 1, getHeight() - edgeWidth / 2);
+		int edgeWidth = (int)mainView.getPaintedBorderWidth();
+		final Point in = new Point(mainView.getWidth() - 1, mainView.getHeight() - edgeWidth / 2);
 		return in;
 	}
 
 	@Override
-	public void paintComponent(final Graphics graphics) {
+	void paintComponent(final Graphics graphics) {
 		final Graphics2D g = (Graphics2D) graphics;
-		final NodeView nodeView = getNodeView();
+		final NodeView nodeView = mainView.getNodeView();
 		if (nodeView.getModel() == null) {
 			return;
 		}
-		paintBackgound(g);
-		paintDragOver(g);
+		mainView.paintBackgound(g);
+		mainView.paintDragOver(g);
 		super.paintComponent(g);
 	}
-	
+
 	@Override
-	protected void paintBackground(final Graphics2D graphics, final Color color) {
+	void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
-		graphics.fillRect(0, 0, getWidth(), getHeight() - (int)getPaintedBorderWidth());
+		graphics.fillRect(0, 0, mainView.getWidth(), mainView.getHeight() - (int)mainView.getPaintedBorderWidth());
 	}
 
 	@Override
 	void paintDecoration(final NodeView nodeView, final Graphics2D g) {
 		final Stroke oldStroke = g.getStroke();
-		g.setStroke(UITools.createStroke(getPaintedBorderWidth(), getDash().variant, BasicStroke.JOIN_MITER));
+		g.setStroke(UITools.createStroke(mainView.getPaintedBorderWidth(), mainView.getDash().variant, BasicStroke.JOIN_MITER));
 		final Color oldColor = g.getColor();
-		g.setColor(getBorderColor());
+		g.setColor(mainView.getBorderColor());
 		Point leftLinePoint = getLeftPoint();
-		g.drawLine(leftLinePoint.x, leftLinePoint.y, leftLinePoint.x + getWidth(), leftLinePoint.y);
+		g.drawLine(leftLinePoint.x, leftLinePoint.y, leftLinePoint.x + mainView.getWidth(), leftLinePoint.y);
 		g.setColor(oldColor);
 		g.setStroke(oldStroke);
 		super.paintDecoration(nodeView, g);
     }
-	
+
     @Override
-    public Insets getInsets() {
+    Insets getInsets() {
         return  getInsets(null);
     }
 
 	@Override
-    public Insets getInsets(Insets insets) {
-    	final NodeView nodeView = getNodeView();
+    Insets getInsets(Insets insets) {
+    	final NodeView nodeView = mainView.getNodeView();
         int edgeWidth = nodeView.getEdgeWidth();
-        edgeWidth = Math.round(getUnzoomedBorderWidth());
+        edgeWidth = Math.round(mainView.getUnzoomedBorderWidth());
 		if(insets == null)
     		insets = new Insets(0, 2, edgeWidth, 2);
     	else
@@ -110,13 +111,13 @@ class ForkMainView extends MainView {
 	private final static int SINGLE_CHILD_SHIFT = -2;
 
 	@Override
-	public int getSingleChildShift() {
+	int getSingleChildShift() {
 		return SINGLE_CHILD_SHIFT;
 	}
 
 	@Override
-	public ShapeConfigurationModel getShapeConfiguration() {
+	ShapeConfigurationModel getShapeConfiguration() {
 		return ShapeConfigurationModel.FORK;
 	}
-	
+
 }

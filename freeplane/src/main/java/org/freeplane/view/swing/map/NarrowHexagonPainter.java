@@ -5,16 +5,16 @@
  *  This file author is Dimitry Polivaev
  *
  *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
+ *  it under the terms of the GNU General License as published by
  *  the Free Software Foundation, either version 2 of the License, or
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ *  GNU General License for more details.
  *
- *  You should have received a copy of the GNU General Public License
+ *  You should have received a copy of the GNU General License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.freeplane.view.swing.map;
@@ -26,37 +26,34 @@ import java.awt.Polygon;
 
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
-class NarrowHexagonMainView extends VariableInsetsMainView {
+class NarrowHexagonPainter extends VariableInsetsPainter {
 	private static final double HORIZONTAL_MARGIN_FACTOR = 1.0;
 	private static final double UNIFORM_HEIGHT_TO_WIDTH_RELATION = 2 / Math.sqrt(3);
 	private static final double VERTICAL_MARGIN_FACTOR = 2;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	public NarrowHexagonMainView(ShapeConfigurationModel shapeConfigurationModel) {
-		super(shapeConfigurationModel);
+	NarrowHexagonPainter(MainView mainView, ShapeConfigurationModel shapeConfigurationModel) {
+		super(mainView, shapeConfigurationModel);
 	}
 
-	protected double getVerticalMarginFactor() {
+	@Override
+	double getVerticalMarginFactor() {
 		return VERTICAL_MARGIN_FACTOR;
 	}
 
-	protected double getHorizontalMarginFactor() {
+	@Override
+	double getHorizontalMarginFactor() {
 		return HORIZONTAL_MARGIN_FACTOR;
 	}
-	
+
 	@Override
-	public Dimension getPreferredSize() {
-		if (isPreferredSizeSet()) {
+	Dimension getPreferredSize() {
+		if (mainView.isPreferredSizeSet()) {
 			return super.getPreferredSize();
 		}
 		if(getShapeConfiguration().isUniform()){
-			final Dimension prefSize = getPreferredRectangleSizeWithoutMargin(getMaximumWidth());
+			final Dimension prefSize = getPreferredRectangleSizeWithoutMargin(mainView.getMaximumWidth());
 			double width = Math.ceil(prefSize.width + getMinimumHorizontalInset());
-			width = limitWidth(width);
+			width = mainView.limitWidth(width);
 			prefSize.width = (int) width;
 			prefSize.height = (int) (width * UNIFORM_HEIGHT_TO_WIDTH_RELATION);
 			return prefSize;
@@ -65,14 +62,14 @@ class NarrowHexagonMainView extends VariableInsetsMainView {
 			return super.getPreferredSize();
 	}
 
-	
+
 	@Override
-	protected void paintNodeShape(final Graphics2D g) {
+	void paintNodeShape(final Graphics2D g) {
 		Polygon polygon = getPaintedShape();
 		g.draw(polygon);
 	}
-	
-	protected Polygon getPaintedShape() {
+
+	Polygon getPaintedShape() {
 		double[] xCoords;
 		double[] yCoords;
 		if(getShapeConfiguration().isUniform()){
@@ -88,7 +85,7 @@ class NarrowHexagonMainView extends VariableInsetsMainView {
 	}
 
 	@Override
-	protected void paintBackground(final Graphics2D graphics, final Color color) {
+	void paintBackground(final Graphics2D graphics, final Color color) {
 		graphics.setColor(color);
 		graphics.fill(getPaintedShape());
 	}

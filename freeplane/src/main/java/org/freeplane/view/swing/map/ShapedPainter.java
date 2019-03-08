@@ -12,24 +12,24 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
-@SuppressWarnings("serial")
-abstract public class ShapedMainView extends MainView {
-	
+abstract class ShapedPainter extends MainViewPainter {
+
 	final private ShapeConfigurationModel shapeConfiguration;
 
-	public ShapedMainView(ShapeConfigurationModel shapeConfiguration) {
-		super();
+	ShapedPainter(MainView mainView, ShapeConfigurationModel shapeConfiguration) {
+		super(mainView);
 		this.shapeConfiguration = shapeConfiguration;
 	}
 
-	public ShapeConfigurationModel getShapeConfiguration(){
+	@Override
+	ShapeConfigurationModel getShapeConfiguration(){
 		return shapeConfiguration;
 	}
 
 	@Override
     public
 	Point getLeftPoint() {
-		final Point in = new Point(0, getHeight() / 2);
+		final Point in = new Point(0, mainView.getHeight() / 2);
 		return in;
 	}
 
@@ -37,33 +37,33 @@ abstract public class ShapedMainView extends MainView {
     public
 	Point getRightPoint() {
 		final Point in = getLeftPoint();
-		in.x = getWidth() - 1;
+		in.x = mainView.getWidth() - 1;
 		return in;
 	}
 
 	@Override
-	public void paintComponent(final Graphics graphics) {
+	void paintComponent(final Graphics graphics) {
 		final Graphics2D g = (Graphics2D) graphics;
-		final NodeView nodeView = getNodeView();
+		final NodeView nodeView = mainView.getNodeView();
 		if (nodeView.getModel() == null) {
 			return;
 		}
-		final ModeController modeController = getNodeView().getMap().getModeController();
+		final ModeController modeController = mainView.getNodeView().getMap().getModeController();
 		final Object renderingHint = modeController.getController().getMapViewManager().setEdgesRenderingHint(g);
-		paintBackgound(g);
-		paintDragOver(g);
-		final Color borderColor = getBorderColor();
+		mainView.paintBackgound(g);
+		mainView.paintDragOver(g);
+		final Color borderColor = mainView.getBorderColor();
 		final Color oldColor = g.getColor();
 		g.setColor(borderColor);
 		final Stroke oldStroke = g.getStroke();
-		g.setStroke(UITools.createStroke(getPaintedBorderWidth(), getDash().variant, BasicStroke.JOIN_MITER));
+		g.setStroke(UITools.createStroke(mainView.getPaintedBorderWidth(), mainView.getDash().variant, BasicStroke.JOIN_MITER));
 		paintNodeShape(g);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
 		g.setColor(oldColor);
 		g.setStroke(oldStroke);
 		super.paintComponent(g);
 	}
-	
-	abstract protected void paintNodeShape(final Graphics2D g);
+
+	abstract void paintNodeShape(final Graphics2D g);
 
 }
