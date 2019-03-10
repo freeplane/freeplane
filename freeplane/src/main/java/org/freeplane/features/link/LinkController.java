@@ -120,6 +120,36 @@ public class LinkController extends SelectionController implements IExtension {
 		this.modeController = modeController;
 	}
 
+	private static final String FILE_PROTOCOL = "file:";
+	public static URI toUri(Object object) {
+		if (object instanceof URI)
+			return (URI)object;
+		final String objectAsFileReference;
+		if(object instanceof File) {
+			objectAsFileReference = FILE_PROTOCOL + ((File)object).getPath();
+		}
+		else if(object instanceof URL) {
+			try {
+				return ((URL)object).toURI();
+			} catch (URISyntaxException e) {
+				return null;
+			}
+		}
+		else if (object instanceof String) {
+			objectAsFileReference = (String) object;
+			if(!objectAsFileReference.startsWith(FILE_PROTOCOL))
+				return null;
+		}
+		else
+			return null;
+		try {
+			return createURI(objectAsFileReference);
+		}
+		catch (URISyntaxException e) {
+			return null;
+		}
+	}
+
 	protected void init() {
 		createActions();
 		final MapController mapController = modeController.getMapController();
