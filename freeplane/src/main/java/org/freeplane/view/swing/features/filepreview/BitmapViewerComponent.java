@@ -70,13 +70,13 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 
 	public BitmapViewerComponent(final URI uri) throws MalformedURLException, IOException {
 		url = uri.toURL();
-		originalSize = readOriginalSize();
+		originalSize = readImageSize(url);
 		hint = Image.SCALE_SMOOTH;
 		scaleEnabled = true;
 		cachedImage = null;
 	}
 
-	private Dimension readOriginalSize() throws IOException {
+	static private Dimension readImageSize(URL url) throws IOException {
 		InputStream inputStream = null;
 		ImageInputStream in = null;
 		try {
