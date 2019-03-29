@@ -100,9 +100,9 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
+import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
-import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.FreeplaneTooltip;
 import org.freeplane.view.swing.map.MapView;
@@ -591,16 +591,29 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	/**
 	 */
 	public void insertRow(final int row) {
+		int actuallyInsertedRow = row;
 		if (getModel() instanceof ExtendedAttributeTableModelDecorator) {
 			final ExtendedAttributeTableModelDecorator model = (ExtendedAttributeTableModelDecorator) getModel();
-			if (isEditing() && getCellEditor() != null && !getCellEditor().stopCellEditing()) {
-				return;
+			if (isEditing()) {
+				final int editingRow = getEditingRow();
+				final int rowCount = getRowCount();
+				if (!getCellEditor().stopCellEditing()) {
+					return;
+				}
+				final int updatedRowCount = getRowCount();
+				if(updatedRowCount < rowCount && row >= editingRow) {
+					actuallyInsertedRow--;
+				}
 			}
-			model.insertRow(row);
-			changeSelection(row, 0, false, false);
-			if (editCellAt(row, 0)) {
-				getEditorComponent().requestFocusInWindow();
-			}
+			insertRow(model, actuallyInsertedRow);
+		}
+	}
+
+	private void insertRow(final ExtendedAttributeTableModelDecorator model, final int row) {
+		model.insertRow(row);
+		changeSelection(row, 0, false, false);
+		if (editCellAt(row, 0)) {
+			getEditorComponent().requestFocusInWindow();
 		}
 	}
 
@@ -793,7 +806,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		Component comp = null;
 		int maxCellWidth = 2 * (int) (Math.ceil(getFont().getSize2D() / UITools.FONT_SCALE_FACTOR +  EXTRA_HEIGHT));
 		int rowCount = getRowCount();
-		boolean isInsideNodeView = getNodeViewAncestor() != null;
 		if(rowCount > 0) {
 			for (int col = 0; col < 2; col++) {
 				for (int row = 0; row < rowCount; row++) {

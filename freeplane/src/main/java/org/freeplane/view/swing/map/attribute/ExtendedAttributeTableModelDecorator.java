@@ -23,6 +23,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.TableModelEvent;
 
 import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 
 /**
  * @author Dimitry Polivaev
@@ -72,13 +73,15 @@ class ExtendedAttributeTableModelDecorator extends AttributeTableModel {
 
 	@Override
 	public Object getValueAt(final int row, final int col) {
-		if (row < newRow) {
-			return getNodeAttributeModel().getValueAt(row, col);
-		}
-		if (row == newRow) {
+ 		final NodeAttributeTableModel attributes = getNodeAttributeModel();
+		if (row == newRow ||  row >= attributes.getRowCount()) {
 			return "";
 		}
-		return getNodeAttributeModel().getValueAt(row - 1, col);
+		else if (row < newRow) {
+			return attributes.getValueAt(row, col);
+		}
+		else
+			return attributes.getValueAt(row - 1, col);
 	}
 
 	public void insertRow(final int index) {
