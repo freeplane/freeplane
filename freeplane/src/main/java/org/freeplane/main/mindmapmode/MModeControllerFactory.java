@@ -25,6 +25,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.Box;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
@@ -127,6 +128,7 @@ import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.features.progress.mindmapmode.ProgressFactory;
 import org.freeplane.view.swing.features.time.mindmapmode.ReminderHook;
 import org.freeplane.view.swing.map.ShowNotesInMapAction;
+import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 import org.freeplane.view.swing.map.attribute.EditAttributesAction;
 import org.freeplane.view.swing.ui.DefaultNodeKeyListener;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
@@ -164,6 +166,7 @@ public class MModeControllerFactory {
 		UITools.setScrollbarIncrement(styleScrollPane);
 		final JComponent tabs = (JComponent) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
 		tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
+		tabs.add(TextUtils.getText("attributes_attribute"), createAttributesPanel());
 		new HierarchicalIcons();
 		new AutomaticLayoutController();
 		new BlinkingNodeHook();
@@ -201,6 +204,13 @@ public class MModeControllerFactory {
 		modeController.addAction(new ImportMindmanagerFiles());
 	}
 
+	private JComponent createAttributesPanel() {
+		final JPanel tablePanel = new AttributePanelManager(modeController).getTablePanel();
+		final JScrollPane attributeScrollPane = new JScrollPane(tablePanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		UITools.setScrollbarIncrement(attributeScrollPane);
+		return attributeScrollPane;
+	}
 	private MModeController createModeControllerImpl() {
 //		this.controller = controller;
 		createStandardControllers();

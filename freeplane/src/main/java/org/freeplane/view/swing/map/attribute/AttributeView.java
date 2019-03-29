@@ -25,8 +25,8 @@ import java.awt.Component;
 import java.awt.EventQueue;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -186,10 +186,9 @@ public class AttributeView implements ChangeListener, TableModelListener {
 				attributeTableContainer = new AttributeViewScrollPane(attributeTable);
 			}
 			else {
-				attributeTableContainer = new JPanel();
-				attributeTableContainer.setLayout(new BorderLayout());
-				attributeTableContainer.add(attributeTable.getTableHeader(), BorderLayout.PAGE_START, 0);
-				attributeTableContainer.add(attributeTable, BorderLayout.CENTER, 1);
+				attributeTableContainer = Box.createVerticalBox();
+				attributeTableContainer.add(attributeTable.getTableHeader(), 0);
+				attributeTableContainer.add(attributeTable, 1);
 				final Border border = BorderFactory.createLineBorder(attributeTable.getGridColor());
 				attributeTableContainer.setBorder(border);
 			}

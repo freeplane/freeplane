@@ -25,12 +25,8 @@ import java.awt.event.ActionListener;
 import java.text.MessageFormat;
 import java.util.Date;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.Timer;
@@ -68,7 +64,6 @@ import org.freeplane.view.swing.features.time.mindmapmode.nodelist.NodeListActio
 import org.freeplane.view.swing.features.time.mindmapmode.nodelist.OldReminderListAction;
 import org.freeplane.view.swing.features.time.mindmapmode.nodelist.ReminderListAction;
 import org.freeplane.view.swing.features.time.mindmapmode.nodelist.ShowPastRemindersOnce;
-import org.freeplane.view.swing.map.attribute.AttributePanelManager;
 
 /**
  * @author foltin
@@ -144,8 +139,8 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 		registerStateIconProvider();
 
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(90,
- new ReminderConditionController());
-		createTimePanel();
+			new ReminderConditionController());
+		createCalendarPanel();
 	}
 	private static final IconStore STORE = IconStoreFactory.ICON_STORE;
 	private static UIIcon bellIcon;
@@ -220,9 +215,8 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 
 	}
 
-	private void createTimePanel() {
+	private void createCalendarPanel() {
 		final TimeManagement timeManagement = new TimeManagement(this);
-		final int axis = BoxLayout.Y_AXIS;
 		final JTimePanel timePanel = timeManagement.createTimePanel(null, false, 1);
 		modeController.getMapController().addNodeSelectionListener(new INodeSelectionListener() {
 			@Override
@@ -242,17 +236,11 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 						timePanel.update(node);
 			}
 		});
-		timePanel.setBorder(BorderFactory.createTitledBorder(TextUtils.getText("calendar_panel")));
-		final JPanel tablePanel = new AttributePanelManager(modeController).getTablePanel();
-		tablePanel.setBorder(BorderFactory.createTitledBorder(TextUtils.getText("attributes_attribute")));
-		final Box panel = new Box(axis);
-		panel.add(timePanel);
-		panel.add(tablePanel);
 		final JTabbedPane tabs = (JTabbedPane) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
-		final JScrollPane timeScrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+		final JScrollPane timeScrollPane = new JScrollPane(timePanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 		    JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		UITools.setScrollbarIncrement(timeScrollPane);
-		tabs.add(TextUtils.getText("calendar_attributes_panel"), timeScrollPane);
+		tabs.add(TextUtils.getText("calendar_panel"), timeScrollPane);
     }
 
 	@Override
