@@ -36,7 +36,7 @@ public class AlwaysUnfoldedNode extends PersistentNodeHook implements IExtension
 		return this;
 	}
 	
-	static public boolean isConnectorNode(final NodeModel nodeModel) {
+	static public boolean isAlwaysUnfolded(final NodeModel nodeModel) {
 		return nodeModel.containsExtension(AlwaysUnfoldedNode.class);
 	}
 

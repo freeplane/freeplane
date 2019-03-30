@@ -251,7 +251,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		if (mapController.isFolded(node)) {
 			return depth(node);
 		}
-		if (!node.hasChildren()||AlwaysUnfoldedNode.isConnectorNode(node)) {
+		if (!node.hasChildren()||AlwaysUnfoldedNode.isAlwaysUnfolded(node)) {
 			return Integer.MAX_VALUE;
 		}
 		int k = Integer.MAX_VALUE;
@@ -321,7 +321,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		if (node.isRoot())
 			return 0;
 		final int parentDepth = depth(node.getParentNode());
-		if (! node.hasVisibleContent() || AlwaysUnfoldedNode.isConnectorNode(node)) {
+		if (! node.hasVisibleContent() || AlwaysUnfoldedNode.isAlwaysUnfolded(node)) {
 			return parentDepth;
 		}
 		else
