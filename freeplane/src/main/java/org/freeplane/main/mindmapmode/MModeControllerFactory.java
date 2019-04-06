@@ -71,6 +71,7 @@ import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.export.mindmapmode.ImportMindmanagerFiles;
 import org.freeplane.features.export.mindmapmode.ImportXmlFile;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.filter.hidden.HiddenNodeContoller;
 import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.mindmapmode.IconSelectionPlugin;
@@ -343,29 +344,7 @@ public class MModeControllerFactory {
 			    }
 		    }));
 
-
-//		IconController.getController(modeController).addStateIconProvider(new IStateIconProvider() {
-//			public UIIcon getStateIcon(NodeModel node) {
-//				final URI link = NodeLinks.getLink(node);
-//				return wrapIcon(LinkController.getLinkIcon(link, node));
-//			}
-//
-//			private UIIcon wrapIcon(final Icon linkIcon) {
-//				UIIcon icon = null;
-//				if(linkIcon != null) {
-//					if(linkIcon instanceof UIIcon) {
-//						icon = (UIIcon) linkIcon;
-//					}
-//					else {
-//    					icon = new UIIcon("ownIcon", null) {
-//    						public Icon getIcon() {
-//    							return linkIcon;
-//    						}
-//    					};
-//					}
-//				}
-//				return icon;
-//			}
-//		});
+		HiddenNodeContoller.registerModeSpecificActions(modeController);
+		HiddenNodeContoller.install(modeController);
 	}
 }

@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 
-public class ActionSelectListenerTest {
+public class ActionStatusUpdaterTest {
 
 	@Test
 	public void activatesSelectOnPopup_forCheckSelectionOnPopup() {
@@ -25,7 +25,7 @@ public class ActionSelectListenerTest {
 		new EntryAccessor().setAction(actionEntry, someAction);
 		
 		final EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
-		final ActionSelectListener actionSelectListener = new ActionSelectListener();
+		final ActionStatusUpdater actionSelectListener = new ActionStatusUpdater();
 		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
 		entryPopupListenerCollection.childEntriesWillBecomeVisible(menuEntry);
 		
@@ -43,7 +43,7 @@ public class ActionSelectListenerTest {
 		new EntryAccessor().setAction(actionEntry, someAction);
 		
 		final EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
-		final ActionSelectListener actionSelectListener = new ActionSelectListener();
+		final ActionStatusUpdater actionSelectListener = new ActionStatusUpdater();
 		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
 		entryPopupListenerCollection.childEntriesWillBecomeVisible(menuEntry);
 		

@@ -11,7 +11,7 @@ import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
 import org.freeplane.core.ui.menubuilders.action.AcceleratorBuilder;
 import org.freeplane.core.ui.menubuilders.action.AcceleratorDestroyer;
 import org.freeplane.core.ui.menubuilders.action.ActionFinder;
-import org.freeplane.core.ui.menubuilders.action.ActionSelectListener;
+import org.freeplane.core.ui.menubuilders.action.ActionStatusUpdater;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
@@ -57,7 +57,7 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		uiBuilder.addBuilder("skip", EntryVisitor.SKIP);
 		
 		childProcessor = new SubtreeProcessor();
-		final ActionSelectListener actionSelectListener = new ActionSelectListener();
+		final ActionStatusUpdater actionSelectListener = new ActionStatusUpdater();
 		EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
 		entryPopupListenerCollection.addEntryPopupListener(childProcessor);
 		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);

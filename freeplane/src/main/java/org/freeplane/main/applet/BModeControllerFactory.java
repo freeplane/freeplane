@@ -32,6 +32,7 @@ import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.encrypt.EncryptionController;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.filter.hidden.HiddenNodeContoller;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.FoldingController;
@@ -100,6 +101,7 @@ public class BModeControllerFactory {
 		new ViewerController();
 		EncryptionController.install(new EncryptionController(modeController));
 		new AutomaticLayoutController();
+		HiddenNodeContoller.install(modeController);
 		return modeController;
 	}
 }

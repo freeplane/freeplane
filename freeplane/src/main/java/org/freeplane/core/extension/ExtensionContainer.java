@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * Contains an extension map and utility methods to handle them.
- * 
+ *
  * @author robert.ladstaetter
  */
 public class ExtensionContainer {
@@ -30,7 +30,7 @@ public class ExtensionContainer {
 	}
 
 	public IExtension putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
-        final IExtension oldExtension = getExtensions().put(clazz, extension);
+        final IExtension oldExtension = extension != null ? extensions.put(clazz, extension) : extensions.remove(clazz);
 		return oldExtension;
 	}
 

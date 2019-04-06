@@ -133,6 +133,10 @@ public class NodeModel{
 		return getExtensionContainer().putExtension(extension);
 	}
 
+	public IExtension putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		return getExtensionContainer().putExtension(clazz, extension);
+	}
+
 	public void addIcon(final MindIcon icon) {
 		getIconModel().addIcon(icon);
 		if (map != null) {

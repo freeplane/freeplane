@@ -26,6 +26,8 @@ import javax.swing.Icon;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.filter.hidden.NodeVisibility;
+import org.freeplane.features.filter.hidden.NodeVisibilityConfiguration;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
@@ -247,6 +249,9 @@ public class Filter {
 	 * freeplane.controller.filter.Filter#isVisible(freeplane.modes.MindMapNode)
 	 */
 	public boolean isVisible(final NodeModel node) {
+		if(node.getExtension(NodeVisibility.class) == NodeVisibility.HIDDEN
+				&& node.getMap().getRootNode().getExtension(NodeVisibilityConfiguration.class) != NodeVisibilityConfiguration.SHOW_HIDDEN_NODES)
+			return false;
 		if (condition == null) {
 			return true;
 		}

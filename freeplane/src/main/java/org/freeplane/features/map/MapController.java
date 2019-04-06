@@ -711,13 +711,12 @@ implements IExtension, NodeChangeAnnouncer{
 	 *
 	 * @return returns a list of MindMapNode s.
 	 */
-	public Collection<NodeModel> getSelectedNodes() {
+	public List<NodeModel> getSelectedNodes() {
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		if (selection == null) {
-			final List<NodeModel> list = Collections.emptyList();
-			return list;
+			return Collections.emptyList();
 		}
-		return selection.getSelection();
+		return selection.getOrderedSelection();
 	}
 
 	public WriteManager getWriteManager() {

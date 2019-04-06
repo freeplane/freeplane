@@ -245,7 +245,7 @@ public class AttributeController implements IExtension {
 	    IconController.getController().addStateIconProvider(new IStateIconProvider() {
 			@Override
 			public UIIcon getStateIcon(NodeModel node) {
-				NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);;
+				NodeAttributeTableModel attributes = NodeAttributeTableModel.getModel(node);
 				if (attributes.getRowCount() == 0) {
 					return null;
 				}

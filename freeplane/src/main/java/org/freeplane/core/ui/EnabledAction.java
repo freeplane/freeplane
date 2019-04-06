@@ -27,4 +27,6 @@ public @interface EnabledAction {
 	static final String SELECTION_PROPERTY = "enabled";
 
 	boolean checkOnNodeChange() default false;
+
+	boolean checkOnPopup() default false;
 }

@@ -1058,4 +1058,39 @@ public class MMapController extends MapController {
 		return foldingSavedOptions.contains(resourceController.getProperty(NodeBuilder.RESOURCES_SAVE_FOLDING));
 	}
 
+	public <T extends IExtension> void setProperty(NodeModel node, T property) {
+		final Class<? extends IExtension> propertyClass = property.getClass();
+		setProperty(node, propertyClass, property);
+	}
+
+	public <T extends IExtension> void removeProperty(NodeModel node, Class<T> propertyClass) {
+		setProperty(node, propertyClass, null);
+	}
+
+	public <T extends IExtension> void setProperty(NodeModel node, final Class<? extends IExtension> propertyClass,
+													T property) {
+		final IExtension oldProperty = node.getExtension(propertyClass);
+		if(oldProperty != property) {
+			IActor actor = new IActor() {
+				@Override
+				public void undo() {
+					node.putExtension(propertyClass, oldProperty);
+					nodeChanged(node, propertyClass, property, oldProperty);
+				}
+
+				@Override
+				public String getDescription() {
+					return "setProperty";
+				}
+
+				@Override
+				public void act() {
+					node.putExtension(propertyClass, property);
+					nodeChanged(node, propertyClass, oldProperty, property);
+				}
+			};
+			getModeController().execute(actor, node.getMap());
+		}
+	}
+
 }

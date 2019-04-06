@@ -458,6 +458,9 @@
 			<Entry name="QuickHighlightAction" />
 			<Entry name="QuickFindAction.BACK" />
 			<Entry name="QuickFindAction.FORWARD" />
+			<Entry builder="separator" />
+			<Entry name="NodeEnumerationAction.NodeVisibility.HIDDEN" />
+			<Entry name="NodeEnumerationAction.NodeVisibilityConfiguration.SHOW_HIDDEN_NODES" />
 		</Entry>
 		<Entry name="extras">
 			<Entry name="TimeManagementAction" accelerator="control T" />

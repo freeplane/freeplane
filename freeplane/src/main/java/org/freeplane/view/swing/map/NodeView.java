@@ -58,6 +58,8 @@ import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeController.Rules;
 import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.features.filter.hidden.NodeVisibility;
+import org.freeplane.features.filter.hidden.NodeVisibilityConfiguration;
 import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.icon.HierarchicalIcons;
@@ -875,6 +877,18 @@ public class NodeView extends JComponent implements INodeView {
 			if(property != EncryptionModel.class)
 				return;
 		}
+		if(property == NodeVisibilityConfiguration.class) {
+			updateAll();
+			return;
+		}
+
+		if(property == NodeVisibility.class
+				&& node.getMap().getRootNode().getExtension(NodeVisibilityConfiguration.class) != NodeVisibilityConfiguration.SHOW_HIDDEN_NODES) {
+			final NodeView parentView = getParentView();
+			parentView.setFolded(parentView.isFolded, true);
+			return;
+		}
+
 		// is node is not fully initialized, skip the rest.
 		if (mainView == null) {
 			return;

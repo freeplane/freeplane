@@ -69,6 +69,14 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		return annotation.checkOnPopup();
 	}
 
+	public boolean checkEnabledOnPopup() {
+		final EnabledAction annotation = getClass().getAnnotation(EnabledAction.class);
+		if (annotation == null) {
+			return false;
+		}
+		return annotation.checkOnPopup();
+	}
+
 	final private String key;
 	private boolean selected = false;
 	final private String rawText;
