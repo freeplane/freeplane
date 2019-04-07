@@ -278,6 +278,8 @@
 				<Entry name="SetBooleanPropertyAction.center_selected_node" />
 			</Entry>
 			<Entry builder="separator" />
+			<Entry name="NodeEnumerationAction.NodeVisibility.HIDDEN" />
+			<Entry name="NodeEnumerationAction.NodeVisibilityConfiguration.SHOW_HIDDEN_NODES" />
 			<Entry name="SetShortenerStateAction" accelerator="alt F3" />
 			<Entry name="ToggleDetailsAction" accelerator="alt F2" />
 			<Entry name="menu_hoverView">
@@ -459,8 +461,6 @@
 			<Entry name="QuickFindAction.BACK" />
 			<Entry name="QuickFindAction.FORWARD" />
 			<Entry builder="separator" />
-			<Entry name="NodeEnumerationAction.NodeVisibility.HIDDEN" />
-			<Entry name="NodeEnumerationAction.NodeVisibilityConfiguration.SHOW_HIDDEN_NODES" />
 		</Entry>
 		<Entry name="extras">
 			<Entry name="TimeManagementAction" accelerator="control T" />
