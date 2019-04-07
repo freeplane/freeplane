@@ -810,10 +810,13 @@ public class EditNodeTextField extends EditNodeBase {
 
 		redispatchKeyEvents(textfield, firstEvent);
 		if (firstEvent == null) {
-			int pos = document.getLength();
+			final int caretPosition;
+			final int textLength = document.getLength();
 			if(mouseEventPoint != null)
-				pos = textfield.viewToModel(mouseEventPoint);
-			textfield.setCaretPosition(pos);
+				caretPosition = Math.min(textLength, textfield.viewToModel(mouseEventPoint));
+			else
+				caretPosition = textLength;
+			textfield.setCaretPosition(caretPosition);
 		}
 		document.addDocumentListener(documentListener);
 		if(textController.isMinimized(node)){

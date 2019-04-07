@@ -100,9 +100,9 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
-import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
+import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.FreeplaneTooltip;
 import org.freeplane.view.swing.map.MapView;
@@ -541,7 +541,12 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 
     private String getValueForEdit(final int row, final int col) {
         final Object value = getValueAt(row, col);
-        return (value instanceof IFormattedObject ? ((IFormattedObject) value).getObject() : value).toString();
+        final Object object;
+		if (value instanceof IFormattedObject)
+			object = ((IFormattedObject) value).getObject();
+		else
+			object = value;
+        return object == null ? "" : object.toString();
     }
 
 

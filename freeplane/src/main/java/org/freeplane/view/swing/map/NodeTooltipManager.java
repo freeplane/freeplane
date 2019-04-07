@@ -303,7 +303,7 @@ public class NodeTooltipManager implements IExtension{
             final KeyboardFocusManager currentKeyboardFocusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
             final Window activeWindow = currentKeyboardFocusManager.getActiveWindow();
             if(activeWindow instanceof JDialog && ((JDialog) activeWindow).isModal()
-            		&& ! SwingUtilities.isDescendingFrom(Controller.getCurrentController().getMapViewManager().getMapViewComponent(), activeWindow)){
+            		&& ! isCurrentMapWindowActive(activeWindow)){
                 hideTipWindow();
                 return;
             }
@@ -320,6 +320,11 @@ public class NodeTooltipManager implements IExtension{
 				}
 			}
 			hideTipWindow();
+		}
+
+		private boolean isCurrentMapWindowActive(final Window activeWindow) {
+			final JComponent mapViewComponent = Controller.getCurrentController().getMapViewManager().getMapViewComponent();
+			return mapViewComponent != null && SwingUtilities.isDescendingFrom(mapViewComponent, activeWindow);
 		}
 
 		protected boolean isMouseOverTip() {

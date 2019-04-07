@@ -27,6 +27,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.swing.ComboBoxModel;
@@ -80,14 +81,15 @@ public class MapStyleModel implements IExtension {
 	}
 
 	public static MapStyleModel getExtension(final MapModel map) {
-		return MapStyleModel.getExtension(map.getRootNode());
+		final MapStyleModel model = MapStyleModel.getExtension(map.getRootNode());
+		return Objects.requireNonNull(model);
 	}
 
 	public MapModel getStyleMap() {
 		return styleMap;
 	}
 
-	public static MapStyleModel getExtension(final NodeModel node) {
+	static MapStyleModel getExtension(final NodeModel node) {
 		return node.getExtension(MapStyleModel.class);
 	}
 

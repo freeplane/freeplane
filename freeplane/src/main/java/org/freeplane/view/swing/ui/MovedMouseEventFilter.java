@@ -60,7 +60,7 @@ public class MovedMouseEventFilter extends WindowAdapter {
 	        mousePositionAfterFocusGained = trackedWindow.getMousePosition();
         }
 		// Work around for mac os java bug
-        catch (ClassCastException ex) {
+        catch (ClassCastException | NullPointerException ex) {
         }
     }
 
@@ -74,5 +74,5 @@ public class MovedMouseEventFilter extends WindowAdapter {
 		trackedWindow.addWindowFocusListener(this);
 		mousePositionAfterFocusGained = null;
 	}
-	
+
 }

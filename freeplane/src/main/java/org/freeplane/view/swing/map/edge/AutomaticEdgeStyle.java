@@ -24,7 +24,7 @@ public class AutomaticEdgeStyle {
 		MapView map = node.getMap();
 		ModeController modeController = map.getModeController();
 		modeController.getExtension(NodeStyleController.class);
-		
+
 		final NodeView rootView = map.getRoot();
 		Point origin = new Point();
 		final MainView rootContent = rootView.getMainView();
@@ -32,7 +32,7 @@ public class AutomaticEdgeStyle {
 		Point coordinate = new Point();
 		final MainView nodeContent = node.getMainView();
 		UITools.convertPointToAncestor(nodeContent, coordinate, rootView);
-		final MapStyleModel mapStyleNodes = MapStyleModel.getExtension(rootView.getModel());
+		final MapStyleModel mapStyleNodes = MapStyleModel.getExtension(map.getModel());
 
 		final int distance;
 		final int nodeColumnWidth;
@@ -55,13 +55,13 @@ public class AutomaticEdgeStyle {
 		int level = (int) ((float)distance / nodeColumnWidth + 0.5);
 		if(SummaryNode.isHidden(node.getModel()))
 			level++;
-		
+
 		EdgeController edgeController = modeController.getExtension(EdgeController.class);
 		color = edgeController.areEdgeColorsAvailable(map.getModel()) ? edgeController.getEdgeColor(map.getModel(), level) : EdgeController.STANDARD_EDGE_COLOR;
-		
-		
+
+
 	}
-	
+
 	public Color getColor(){
 		return color;
 	}

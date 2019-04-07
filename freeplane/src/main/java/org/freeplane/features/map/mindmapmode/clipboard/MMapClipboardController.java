@@ -992,6 +992,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 	@Override
 	public void paste(Transferable t) {
 		final NodeModel parent = Controller.getCurrentController().getSelection().getSelected();
-		paste(t, parent, false, parent.isNewChildLeft());
+		if(parent != null)
+			paste(t, parent, false, parent.isNewChildLeft());
 	}
 }
