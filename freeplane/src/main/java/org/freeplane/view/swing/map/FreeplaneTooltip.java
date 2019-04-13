@@ -78,7 +78,7 @@ public class FreeplaneTooltip extends JToolTip {
 	@Override
     public void layout() {
 		final Component renderer = getComponent(0);
-		renderer.setSize(getPreferredSize());
+		renderer.setSize(getSize());
 	    super.layout();
     }
 

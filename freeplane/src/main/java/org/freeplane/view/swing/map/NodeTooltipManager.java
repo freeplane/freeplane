@@ -2,9 +2,11 @@ package org.freeplane.view.swing.map;
 
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -157,18 +159,25 @@ public class NodeTooltipManager implements IExtension{
 			return;
 		tip = insideComponent.createToolTip();
 		tip.setTipText(toolTipText);
-		final JComponent nearComponent = insideComponent;
 		focusOwnerRef = new WeakReference<Component>(focusOwner);
 		tipPopup = new JPopupMenu();
 		tipPopup.setLayout(new GridLayout(1, 1));
 		tipPopup.add(tip);
 		mouseInsideTooltipListener = new MouseInsideListener(tipPopup);
-		final Component placedComponent = tipPopup;
-		Point location = UITools.findBestLocation(placedComponent, nearComponent);
-		SwingUtilities.convertPointFromScreen(location, nearComponent);
-  		tipPopup.show(nearComponent, location.x, location.y);
-		focusOwner.requestFocusInWindow();
-        exitTimer.start();
+		final Rectangle desktopBounds = UITools.getAvailableScreenBounds(insideComponent);
+		final Dimension popupPreferredSize = tipPopup.getPreferredSize();
+		final Point desiredLocation = new Point(0, insideComponent.getHeight());
+		SwingUtilities.convertPointToScreen(desiredLocation, insideComponent);
+		int popupAllowedHeight =  desktopBounds.y + desktopBounds.height - desiredLocation.y;
+		if(popupAllowedHeight > 0) {
+			Dimension popupSize = new Dimension(
+				popupPreferredSize.width,
+				Math.min(popupAllowedHeight, popupPreferredSize.height));
+			tipPopup.setPreferredSize(popupSize);
+			tipPopup.show(insideComponent, 0, insideComponent.getHeight());
+			focusOwner.requestFocusInWindow();
+			exitTimer.start();
+		}
 	}
 
 	private void hideTipWindow() {
