@@ -10,15 +10,20 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.security.AccessControlException;
+import java.util.logging.Level;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 import javax.swing.text.html.HTMLDocument;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -129,7 +134,17 @@ public class ZoomableLabel extends JLabel {
 			isLong = widthMustBeRestricted || lines.length > 1;
 		}
 		if (isHtml) {
-			if (nodeText.indexOf("<img") >= 0 && nodeText.indexOf("<base ") < 0) {
+			if (nodeText.indexOf("<img") >= 0 && nodeText.indexOf("src=\"data:") >= 0) {
+				String base64String = StringUtils.substringBetween(nodeText, "base64,", "\"");
+				LogUtils.getLogger().log(Level.FINE, "base64String = " + base64String);
+				byte[] imageByte = org.apache.commons.codec.binary.Base64.decodeBase64(base64String);
+				ByteArrayInputStream inputStream = new ByteArrayInputStream(imageByte);
+				BufferedImage bufImage = ImageIO.read(inputStream);
+				ImageIcon icon = new ImageIcon(bufImage);
+				setIcon(icon);
+				return;
+			}
+			else if (nodeText.indexOf("<img") >= 0 && nodeText.indexOf("<base ") < 0) {
 				nodeText = "<html><base href=\"" + map.getModel().getURL() + "\">" + nodeText.substring(6);
 			}
 			final String htmlLongNodeHead = ResourceController.getResourceController().getProperty(
