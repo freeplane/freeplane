@@ -38,6 +38,7 @@ import org.freeplane.features.encrypt.mindmapmode.MEncryptionController;
 import org.freeplane.features.explorer.AccessedNodes;
 import org.freeplane.features.explorer.MapExplorer;
 import org.freeplane.features.explorer.MapExplorerController;
+import org.freeplane.features.explorer.NodeNotFoundException;
 import org.freeplane.features.explorer.mindmapmode.MMapExplorerController;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.IFormattedObject;
@@ -1117,9 +1118,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public Node at(final String path) {
 		final MMapExplorerController explorer = getExplorer();
 		final MapExplorer mapExplorer = explorer.getMapExplorer(getDelegate(), path, accessedNodes());
-		final NodeModel node = mapExplorer.getNode();
-		final ScriptContext scriptContext = getScriptContext();
-		return new NodeProxy(node, scriptContext);
+		try {
+			final NodeModel node = mapExplorer.getNode();
+			final ScriptContext scriptContext = getScriptContext();
+			return new NodeProxy(node, scriptContext);
+		}
+		catch (NodeNotFoundException e) {
+			throw new org.freeplane.api.NodeNotFoundException(e);
+		}
 	}
 
 	private MMapExplorerController getExplorer() {

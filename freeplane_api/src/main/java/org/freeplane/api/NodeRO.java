@@ -12,7 +12,8 @@ public interface NodeRO {
 	/**
 	 * Returns a single node located by path given as a string argument.
 	 *
-	 * <p>If no node or more than one node is available at the specified position, IllegalArgumentException is thrown.
+	 * <p>If no node or more than one node is available at the specified position,
+	 * {@link NodeNotFoundException} is thrown.
 	 *
 	 * <p>The path is a concatenation of path elements described below.
 	 *

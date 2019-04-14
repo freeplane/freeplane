@@ -1,11 +1,11 @@
 package org.freeplane.features.explorer;
 
-import org.freeplane.features.map.NodeModel;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import org.freeplane.features.map.NodeModel;
 
 public class MapExplorer {
 
@@ -30,7 +30,7 @@ public class MapExplorer {
 		if(nodeCount == 1)
 			return nodes.get(0);
 		else
-			throw new IllegalStateException("One and only one node matching giving string expected, " + nodeCount + " nodes found");
+			throw new NodeNotFoundException("One and only one node matching giving string expected, " + nodeCount + " nodes found");
 
 	}
 

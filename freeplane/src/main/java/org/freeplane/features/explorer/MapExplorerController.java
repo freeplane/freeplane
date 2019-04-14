@@ -1,5 +1,6 @@
 package org.freeplane.features.explorer;
 
+import org.freeplane.api.NodeNotFoundException;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
@@ -99,7 +100,7 @@ public class MapExplorerController  implements IExtension{
 			try {
 				return new MapExplorer(start, path, accessedNodes).getNode();
 			}
-			catch (IllegalStateException|IllegalArgumentException e) {
+			catch (NodeNotFoundException e) {
 				return null;
 			}
 		}
