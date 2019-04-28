@@ -245,6 +245,7 @@ def PROXY_NODE = textUtils.getText('scripting_api_generator_proxy')
 def UTILITES_NODE = textUtils.getText('scripting_api_generator_utilities')
 def WEB_NODE = textUtils.getText('scripting_api_generator_web')
 def LEGEND_NODE = textUtils.getText('scripting_api_generator_legend')
+def ICONS_NODE = textUtils.getText('icons')
 c.deactivateUndo()
 def resourceBaseDir = ResourceController.resourceController.resourceBaseDir;
 def allUserTemplates = new File(resourceBaseDir, 'templates');
@@ -288,6 +289,24 @@ makeApi(utils, TextUtils.class)
 makeApi(utils, FreeplaneVersion.class)
 makeApi(utils, HtmlUtils.class)
 makeApi(utils, LogUtils.class)
+
+def icons = newMap.root.createChild(ICONS_NODE)
+initHeading(icons)
+def bundle = ResourceController.getResourceController().getResources()
+bundle.getKeys().toList()
+    .findAll{ it.startsWith('icon_') }
+    .collect {
+        def key = it.substring('icon_'.length())
+        def translation = bundle.getResourceString(it, it).replaceAll('[&]', '')
+        translation + '@@@' + key
+    }
+    .sort()
+    .each {
+        def translationAndKey = it.split('@@@')
+        def tnode = icons.createChild(translationAndKey[0])
+        tnode.createChild(translationAndKey[1])
+    }
+icons.folded = true
 
 def web = createChild(newMap.root, WEB_NODE, 'http://freeplane.sourceforge.net/wiki/index.php/Scripting')
 initHeading(web)
