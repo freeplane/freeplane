@@ -32,7 +32,7 @@ public class DummyLockManager extends LockManager {
 	}
 
 	@Override
-	public synchronized void run() {
+	protected synchronized void updateSemaphoreFile() {
 	}
 
 	@Override

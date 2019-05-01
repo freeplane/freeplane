@@ -33,7 +33,7 @@ import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.SysUtils;
 
-public class LockManager extends TimerTask {
+public class LockManager{
 	static final String LOCK_EXPIRATION_TIME = "lock_expiration_time_in_minutes";
 	private File lockedSemaphoreFile;
 	private String lockingUserOfOldLock;
@@ -72,8 +72,7 @@ public class LockManager extends TimerTask {
 		}
 	}
 
-	@Override
-	public synchronized void run() {
+	protected synchronized void updateSemaphoreFile() {
 		if (lockedSemaphoreFile == null) {
 			LogUtils.severe("unexpected: lockedSemaphoreFile is null upon lock update");
 			return;
@@ -115,12 +114,17 @@ public class LockManager extends TimerTask {
 			}
 		}
 		writeSemaphoreFile(semaphoreFile);
-		if (lockTimer == null && lockUpdatePeriod > 0) {
-			lockTimer = SysUtils.createTimer(getClass().getSimpleName());
-			lockTimer.schedule(this, lockUpdatePeriod, lockUpdatePeriod);
-		}
 		release();
 		lockedSemaphoreFile = semaphoreFile;
+		if (lockTimer == null && lockUpdatePeriod > 0) {
+			lockTimer = SysUtils.createTimer(getClass().getSimpleName());
+			lockTimer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					updateSemaphoreFile();
+				}
+			}, lockUpdatePeriod, lockUpdatePeriod);
+		}
 		return null;
 	}
 
