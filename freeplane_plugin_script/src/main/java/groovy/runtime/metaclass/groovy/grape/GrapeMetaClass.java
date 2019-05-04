@@ -1,12 +1,13 @@
 package groovy.runtime.metaclass.groovy.grape;
 
+import groovy.lang.DelegatingMetaClass;
+import groovy.lang.GroovyClassLoader;
+import groovy.lang.MetaClass;
+import org.codehaus.groovy.reflection.ReflectionUtils;
+
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Map;
-
-import groovy.lang.DelegatingMetaClass;
-import groovy.lang.MetaClass;
-import org.codehaus.groovy.reflection.ReflectionUtils;
 
 public class GrapeMetaClass extends DelegatingMetaClass {
 	public GrapeMetaClass(MetaClass delegate) {
@@ -25,6 +26,8 @@ public class GrapeMetaClass extends DelegatingMetaClass {
 					if (map.get("refObject") == null && map.get("classLoader") == null) {
 						final Class callingClass = ReflectionUtils.getCallingClass(2);
 						final ClassLoader classLoader = callingClass.getClassLoader();
+						if(! (classLoader instanceof GroovyClassLoader))
+							return null;
 						map.put("classLoader", classLoader);
 					}
 					return GrapeMetaClass.super.invokeStaticMethod(object, methodName, arguments);
