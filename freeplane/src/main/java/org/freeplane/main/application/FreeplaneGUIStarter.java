@@ -270,13 +270,28 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		ModeController modeController = controller.getModeController(MModeController.MODENAME);
 		controller.selectModeForBuild(modeController);
 		EventQueue.invokeLater(new Runnable() {
+
+			private JFrame frame;
+			private Container contentPane;
+
 			@Override
 			public void run() {
+				showFrame();
+				EventQueue.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						loadMaps(CommandLineParser.parse(args, false).getFilesToOpenAsArray());
+						finishStartup();
+					}
+				});
+			}
+
+			private void showFrame() {
 				viewController.init(Controller.getCurrentController());
 				splash.toBack();
-				final JFrame frame = (JFrame) viewController.getMenuComponent();
+				frame = (JFrame) viewController.getMenuComponent();
 				final int extendedState = frame.getExtendedState();
-				Container contentPane = frame.getContentPane();
+				contentPane = frame.getContentPane();
 				contentPane.setVisible(false);
 				splash.dispose();
 				splash = null;
@@ -285,36 +300,39 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				if (extendedState != frame.getExtendedState()) {
 					frame.setExtendedState(extendedState);
 				}
-				loadMaps(CommandLineParser.parse(args, false).getFilesToOpenAsArray());
+			}
+
+			private void finishStartup() {
 				focusCurrentView();
 				contentPane.setVisible(true);
 				frame.toFront();
 				startupFinished = true;
-		        System.setProperty("nonInteractive", Boolean.toString(options.isNonInteractive()));
-		        try {
-                    Thread.sleep(1000);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+				System.setProperty("nonInteractive", Boolean.toString(options.isNonInteractive()));
+				try {
+					Thread.sleep(1000);
+				}
+				catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 
-		        UITools.executeWhenNodeHasFocus(new Runnable() {
+				UITools.executeWhenNodeHasFocus(new Runnable() {
 					@Override
 					public void run() {
-		                fireStartupFinished();
-		                MenuUtils.executeMenuItems(options.getMenuItemsToExecute());
-		                if(options.shouldStopAfterLaunch())
-		                	System.exit(0);
+						fireStartupFinished();
+						MenuUtils.executeMenuItems(options.getMenuItemsToExecute());
+						if(options.shouldStopAfterLaunch())
+							System.exit(0);
 					}
 				});
-            }
+			}
 
 			private void focusCurrentView() {
 				final MapView currentMapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 				if(currentMapView != null){
 					viewController.focusTo(currentMapView);
 				}
-            }
+			}
+
 		});
 	}
 
