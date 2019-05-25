@@ -842,6 +842,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			final String message = TextUtils.format("save_failed", file.getName());
 			if (!isInternal) {
 				UITools.errorMessage(message);
+				LogUtils.warn(message, e);
 			}
 			else {
 				Controller.getCurrentController().getViewController().out(message);
@@ -866,7 +867,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				lockedByOtherApplication = lock == null;
 			}
 			catch (Exception e) {
-				LogUtils.warn(e.getMessage());
+				LogUtils.warn(e.getMessage(), e);
 			}
 			if (lockedByOtherApplication) {
 				throw new IOException("can not obtain file lock for " + file);
