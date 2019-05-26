@@ -28,8 +28,10 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -61,6 +63,7 @@ class FilePropertiesAction extends AFreeplaneAction {
 	/**
 	 * Gets called when File -> Properties is selected
 	 */
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		//variables for information to be displayed
 		final String fileNamePath, fileSavedDateTime, fileSize;
@@ -94,13 +97,15 @@ class FilePropertiesAction extends AFreeplaneAction {
 		final NodeModel rootNode = map.getRootNode();
         final int nodeMainBranches = rootNode.getChildCount();
 		final ICondition trueCondition = new ICondition() {
-		    public boolean checkNode(NodeModel node) {
-		        return true;
+		    @Override
+			public boolean checkNode(NodeModel node) {
+		        return ! node.isHiddenSummary();
 		    }
 		};
         final ICondition isLeafCondition = new ICondition() {
-            public boolean checkNode(NodeModel node) {
-                return node.isLeaf();
+            @Override
+			public boolean checkNode(NodeModel node) {
+                return node.isLeaf() && ! node.isHiddenSummary();
             }
         };
         final int nodeTotalNodeCount = getNodeCount(rootNode, trueCondition);
@@ -109,8 +114,9 @@ class FilePropertiesAction extends AFreeplaneAction {
         final int nodeTotalFiltered;
         if(filter != null && filter.getCondition() != null){
             final ICondition matchesFilterCondition = new ICondition() {
-                public boolean checkNode(NodeModel node) {
-                    return node.getFilterInfo().isMatched();
+                @Override
+				public boolean checkNode(NodeModel node) {
+                    return node.getFilterInfo().isMatched()  && ! node.isHiddenSummary();
                 }
             };
             nodeTotalFiltered = getNodeCount(rootNode, matchesFilterCondition);
@@ -119,26 +125,13 @@ class FilePropertiesAction extends AFreeplaneAction {
             nodeTotalFiltered = -1;
         }
 		//Multiple nodes may be selected
-		final Collection<NodeModel> nodes = Controller.getCurrentController().getSelection().getSelection();
-		boolean isDescendant = false;
-        int nodeRelativeChildCount = 0;
-        int nodeRelativeNodeCount = 0;
-        int nodeRelativeLeafCount = 0;
-		for (final NodeModel n : nodes) {
-			nodeRelativeChildCount += n.getChildCount();
-			isDescendant = false;
-			//Nodes and leaf nodes are only counted once per branch
-			for (NodeModel node : nodes) {
-				if (n.isDescendantOf(node)) {
-					isDescendant = true;
-					break;
-				}
-			}
-			if (!isDescendant) {
-				nodeRelativeNodeCount += getNodeCount(n, trueCondition);
-				nodeRelativeLeafCount += getNodeCount(n, isLeafCondition);
-			}
-		}
+		final Set<NodeModel> nodes = Controller.getCurrentController().getSelection().getSelection();
+        long nodeRelativeChildCount = nodes.stream().mapToLong(this::countChildren).sum();
+        final Set<NodeModel> selectionRoots = getSelectionRoots(nodes);
+        long nodeRelativeNodeCount = selectionRoots.stream()//
+        		.mapToInt(n -> getNodeCount(n, trueCondition)).sum();
+        long nodeRelativeLeafCount = selectionRoots.stream()//
+        		.mapToInt(n -> getNodeCount(n, isLeafCondition)).sum();
 		final int nodeSelectedNodeCount = Controller.getCurrentController().getSelection().getSelection().size();
 		//build component
 		final JPanel panel = new JPanel();
@@ -325,6 +318,22 @@ class FilePropertiesAction extends AFreeplaneAction {
 		//Show dialog
 		JOptionPane.showMessageDialog(UITools.getCurrentRootComponent(), panel,
 		    TextUtils.getText("FilePropertiesAction.text"), JOptionPane.PLAIN_MESSAGE);
+	}
+
+	private long countChildren(NodeModel n) {
+		return n.getChildren().stream().filter(n2 -> ! n2.isHiddenSummary()).count();
+	}
+
+	private Set<NodeModel> getSelectionRoots(final Set<NodeModel> nodes) {
+		final Set<NodeModel> selectionRoots = new HashSet<>();
+		NODES: for (final NodeModel n : nodes) {
+			for(NodeModel parent = n.getParentNode(); parent != null; parent = parent.getParentNode()) {
+				if(nodes.contains(parent))
+					continue NODES;
+			}
+			selectionRoots.add(n);
+		}
+		return selectionRoots;
 	}
 
 	/**
