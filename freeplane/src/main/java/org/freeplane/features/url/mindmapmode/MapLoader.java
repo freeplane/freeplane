@@ -111,7 +111,7 @@ public class MapLoader{
 						createMapView(map);
 						enableAutosave(map);
 						final File newFile = urlToFileOrNull(newMapLocation);
-						if(newFile != null)
+						if(newFile != null && ! asDocumentation)
 							fileManager().lock(map, newFile);
 					}
 				}
