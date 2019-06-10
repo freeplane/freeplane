@@ -23,8 +23,10 @@ import java.io.File;
 import java.io.PrintStream;
 import java.security.AccessControlException;
 import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
+import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 
@@ -38,6 +40,7 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.plugin.script.proxy.Proxy.Node;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
 import org.freeplane.plugin.script.proxy.ScriptUtils;
 
@@ -107,9 +110,14 @@ public class GroovyScript implements IScript {
             try {
                 trustedCompileAndCache(outStream);
                 Thread.currentThread().setContextClassLoader(scriptClassLoader);
-                updateBinding(node, scriptContext);
+                FreeplaneScriptBaseClass scriptWithBinding = AccessController.doPrivileged(new PrivilegedAction<FreeplaneScriptBaseClass>() {
+					@Override
+					public FreeplaneScriptBaseClass run() {
+						return compiledScript.withBinding(node, scriptContext);
+					}
+				}); 
                 System.setOut(outStream);
-				final Object result = compiledScript.run();
+				final Object result = scriptWithBinding.run();
 				return result;
             } finally {
                 System.setOut(oldOut);
@@ -187,6 +195,7 @@ public class GroovyScript implements IScript {
                 } else {
                     throw new IllegalArgumentException();
                 }
+                compiledScript.setScript(script);
                 compileTimeStrategy.scriptCompiled();
                 return compiledScript;
             } catch (Throwable e) {
@@ -214,16 +223,6 @@ public class GroovyScript implements IScript {
             InvokerHelper.removeClass(compiledScript.getClass());
             compiledScript = null;
         }
-    }
-
-    private void updateBinding(final NodeModel node, ScriptContext scriptContext) {
-    	Binding binding = compiledScript.getBinding();
-        binding.setVariable("c", ProxyFactory.createController(scriptContext));
-        binding.setVariable("node", ProxyFactory.createNode(node, scriptContext));
-	    for (Entry<String, Object> entry : ScriptingConfiguration.getStaticProperties().entrySet()) {
-            binding.setProperty(entry.getKey(), entry.getValue());
-        }
-		compiledScript.setBinding(binding);
     }
 
     private Binding createBindingForCompilation() {

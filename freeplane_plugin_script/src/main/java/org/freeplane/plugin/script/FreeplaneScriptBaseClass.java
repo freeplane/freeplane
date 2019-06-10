@@ -2,12 +2,13 @@ package org.freeplane.plugin.script;
 
 import java.net.URI;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
-import groovy.lang.*;
 import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.api.ControllerRO;
 import org.freeplane.api.NodeRO;
@@ -25,6 +26,14 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.plugin.script.proxy.AbstractProxy;
 import org.freeplane.plugin.script.proxy.Convertible;
+import org.freeplane.plugin.script.proxy.Proxy;
+import org.freeplane.plugin.script.proxy.ProxyFactory;
+
+import groovy.lang.Binding;
+import groovy.lang.MetaClass;
+import groovy.lang.MissingMethodException;
+import groovy.lang.MissingPropertyException;
+import groovy.lang.Script;
 
 /** All methods of this class are available as "global" methods in every script.
  * Only documented methods are meant to be used in scripts.
@@ -97,6 +106,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	private final Pattern nodeIdPattern = Pattern.compile("ID_\\d+");
 	private final MetaClass nodeMetaClass;
 	private Object script;
+
 	private Map<Object, Object> boundVariables;
 	private NodeRO node;
 	private ControllerRO controller;
@@ -105,25 +115,39 @@ public abstract class FreeplaneScriptBaseClass extends Script {
     public FreeplaneScriptBaseClass() {
 	    super();
 	    nodeMetaClass = InvokerHelper.getMetaClass(NodeRO.class);
-		updateBoundVariables();
     }
 
-	@Override
-	public void setBinding(Binding binding) {
-		super.setBinding(binding);
-		updateBoundVariables();
+	void setScript(Object script) {
+		this.script = script;
 	}
 
+	FreeplaneScriptBaseClass withBinding(final NodeModel node, ScriptContext scriptContext) {
+		@SuppressWarnings("rawtypes")
+		Binding binding = new Binding(new LinkedHashMap(getBinding().getVariables()));
+		for (Entry<String, Object> entry : ScriptingConfiguration.getStaticProperties().entrySet()) {
+			binding.setProperty(entry.getKey(), entry.getValue());
+		}
+		Proxy.Controller controllerProxy = ProxyFactory.createController(scriptContext);
+		Proxy.Node nodeProxy = ProxyFactory.createNode(node, scriptContext);
+		return withBinding(binding, controllerProxy, nodeProxy);
+	}
 
-	private void updateBoundVariables() {
-	    boundVariables = getBinding().getVariables();
-	    final Object boundScript = boundVariables.remove("script");
-	    if(boundScript != null)
-	    	script = boundScript;
-	    // this is important: we need this reference no matter if "node" is overridden later by the user
-	    node = (NodeRO) boundVariables.get("node");
-	    controller = (ControllerRO) boundVariables.get("c");
-    }
+	private FreeplaneScriptBaseClass withBinding(Binding binding, ControllerRO controllerProxy, NodeRO nodeProxy) {
+		try {
+			binding.setVariable("c", controllerProxy);
+			binding.setVariable("node", nodeProxy);
+			FreeplaneScriptBaseClass instance = boundVariables != null ? getClass().newInstance() : this;
+			instance.script = script;
+			instance.node = nodeProxy;
+			instance.controller = controllerProxy;
+			instance.setBinding(binding);
+			instance.boundVariables = binding.getVariables();
+			return instance;
+		}
+		catch (InstantiationException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
     /* <ul>
 	 * <li> translate raw node ids to nodes.
