@@ -1,20 +1,16 @@
 package org.freeplane.main.application;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.RandomAccessFile;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
-
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.main.application.CommandLineParser.Options;
+
+import java.io.*;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class SingleInstanceManager {
 	private File lockFile = new File(Compat.getApplicationUserDirectory(), "single_instance.lock");
@@ -109,7 +105,7 @@ public class SingleInstanceManager {
 	private boolean startAsMaster() {
 		try {
 			// port number 0: use any free socket
-			final ServerSocket socket = new ServerSocket(0, 10);
+			final ServerSocket socket = new ServerSocket(0, 10, InetAddress.getByName(null));
 			port = socket.getLocalPort();
 			LogUtils.info("Listening for application instances on socket " + port);
 			createLockFile();
