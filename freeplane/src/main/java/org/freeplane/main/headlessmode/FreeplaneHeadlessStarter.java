@@ -66,7 +66,7 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 			Controller.setCurrentController(controller);
 			applicationResourceController.init();
 			LogInitializer.createLogger();
-			FreeplaneGUIStarter.showSysInfo();
+			ApplicationResourceController.showSysInfo();
 			final HeadlessMapViewController mapViewController = new HeadlessMapViewController();
 			controller.setMapViewManager(mapViewController);
 			viewController = new HeadlessUIController(controller, mapViewController, "");

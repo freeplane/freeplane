@@ -26,6 +26,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.main.application.FreeplaneGUIStarter;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.main.application.SingleInstanceManager;
@@ -87,7 +88,7 @@ class ActivatorImpl implements BundleActivator {
 	}
 
 	private void loadPlugins(final BundleContext context) {
-		final String installationBaseDir = FreeplaneGUIStarter.getInstallationBaseDir();
+		final String installationBaseDir = ApplicationResourceController.INSTALLATION_BASE_DIRECTORY;
 		final File baseDir = new File(installationBaseDir).getAbsoluteFile();
 		List<Bundle> loadedPlugins = new LinkedList<Bundle>();
 		loadPlugins(context, new File(baseDir, "plugins"), loadedPlugins);
@@ -149,7 +150,7 @@ class ActivatorImpl implements BundleActivator {
 	private void startFramework(final BundleContext context) {
         registerClasspathUrlHandler(context);
 		if (null == System.getProperty("org.freeplane.core.dir.lib", null)) {
-			final File root = new File(FreeplaneGUIStarter.getResourceBaseDir()).getAbsoluteFile().getParentFile();
+			final File root = new File(ApplicationResourceController.RESOURCE_BASE_DIRECTORY).getAbsoluteFile().getParentFile();
 			try {
 				String rootUrl = root.toURI().toURL().toString();
 				if (!rootUrl.endsWith("/")) {

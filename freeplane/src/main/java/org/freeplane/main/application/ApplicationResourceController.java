@@ -40,6 +40,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneVersion;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
 
 /**
@@ -54,6 +55,40 @@ public class ApplicationResourceController extends ResourceController {
 	public static final String FREEPLANE_GLOBALRESOURCEDIR_PROPERTY = "org.freeplane.globalresourcedir";
 	public static final String DEFAULT_FREEPLANE_GLOBALRESOURCEDIR = "resources";
 	private ArrayList<File> resourceDirectories;
+	
+	public static void showSysInfo() {
+		final StringBuilder info = new StringBuilder();
+		info.append("freeplane_version = ");
+		final FreeplaneVersion freeplaneVersion = FreeplaneVersion.getVersion();
+		info.append(freeplaneVersion);
+		String revision = freeplaneVersion.getRevision();
+
+		info.append("; freeplane_xml_version = ");
+		info.append(FreeplaneVersion.XML_VERSION);
+		if(! revision.equals("")){
+			info.append("\ngit revision = ");
+			info.append(revision);
+		}
+		info.append("\njava_version = ");
+		info.append(System.getProperty("java.version"));
+		info.append("; os_name = ");
+		info.append(System.getProperty("os.name"));
+		info.append("; os_version = ");
+		info.append(System.getProperty("os.version"));
+		LogUtils.info(info.toString());
+	}
+
+	
+	public static String RESOURCE_BASE_DIRECTORY;
+	public static String INSTALLATION_BASE_DIRECTORY;
+	static {
+		try {
+			RESOURCE_BASE_DIRECTORY = new File(System.getProperty(ApplicationResourceController.FREEPLANE_GLOBALRESOURCEDIR_PROPERTY,
+			ApplicationResourceController.DEFAULT_FREEPLANE_GLOBALRESOURCEDIR)).getCanonicalPath();
+			INSTALLATION_BASE_DIRECTORY = new File(System.getProperty(ApplicationResourceController.FREEPLANE_BASEDIRECTORY_PROPERTY, RESOURCE_BASE_DIRECTORY + "/..")).getCanonicalPath();
+		} catch (IOException e) {
+		}
+	}
 
 	/**
 	 * @param controller
@@ -213,12 +248,12 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public String getResourceBaseDir() {
-		return FreeplaneGUIStarter.getResourceBaseDir();
+		return RESOURCE_BASE_DIRECTORY;
 	}
 
 	@Override
 	public String getInstallationBaseDir() {
-		return FreeplaneGUIStarter.getInstallationBaseDir();
+		return INSTALLATION_BASE_DIRECTORY;
     }
 
 	public static File getUserPreferencesFile() {
