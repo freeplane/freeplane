@@ -30,9 +30,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.main.osgi.ConnectionHandler;
 
 /** A {@link URLStreamHandler} that handles resources on the classpath. */
-public class Handler extends URLStreamHandler {
+public class Handler extends URLStreamHandler implements ConnectionHandler{
 
     public Handler() {
     }

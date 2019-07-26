@@ -30,6 +30,7 @@ import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.main.application.FreeplaneGUIStarter;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.main.application.SingleInstanceManager;
+import org.freeplane.main.application.protocols.freeplaneresource.Handler;
 import org.freeplane.main.headlessmode.FreeplaneHeadlessStarter;
 import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller;
 import org.freeplane.main.mindmapmode.stylemode.SModeControllerFactory;
@@ -148,7 +149,8 @@ class ActivatorImpl implements BundleActivator {
 	}
 
 	private void startFramework(final BundleContext context) {
-        registerClasspathUrlHandler(context);
+        registerClasspathUrlHandler(context, ResourceController.FREEPLANE_RESOURCE_URL_PROTOCOL, new Handler());
+        registerClasspathUrlHandler(context, DataHandler.PROTOCOL, new DataHandler());
 		if (null == System.getProperty("org.freeplane.core.dir.lib", null)) {
 			final File root = new File(ApplicationResourceController.RESOURCE_BASE_DIRECTORY).getAbsoluteFile().getParentFile();
 			try {
@@ -271,10 +273,10 @@ class ActivatorImpl implements BundleActivator {
 		return Boolean.getBoolean(HEADLESS_RUN_PROPERTY_NAME);
 	}
 
-    private void registerClasspathUrlHandler(final BundleContext context) {
+    private void registerClasspathUrlHandler(final BundleContext context, String protocol, ConnectionHandler handler) {
         Hashtable<String, String[]> properties = new Hashtable<String, String[]>();
-        properties.put(URLConstants.URL_HANDLER_PROTOCOL, new String[] { ResourceController.FREEPLANE_RESOURCE_URL_PROTOCOL });
-        context.registerService(URLStreamHandlerService.class.getName(), new ResourcesUrlHandler(), properties);
+        properties.put(URLConstants.URL_HANDLER_PROTOCOL, new String[] { protocol });
+        context.registerService(URLStreamHandlerService.class.getName(), new DelegatingUrlHandlerService(handler), properties);
     }
 
 	@Override

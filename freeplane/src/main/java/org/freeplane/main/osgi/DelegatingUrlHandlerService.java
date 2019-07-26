@@ -22,13 +22,20 @@ package org.freeplane.main.osgi;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLStreamHandler;
 
 import org.freeplane.main.application.protocols.freeplaneresource.Handler;
 import org.osgi.service.url.AbstractURLStreamHandlerService;
 
-public class ResourcesUrlHandler extends AbstractURLStreamHandlerService{
-	final private Handler handler = new Handler();
-    public URLConnection openConnection(URL url) throws IOException{
+public class DelegatingUrlHandlerService extends AbstractURLStreamHandlerService{
+	final private ConnectionHandler handler;
+	
+    public DelegatingUrlHandlerService(ConnectionHandler handler) {
+		super();
+		this.handler = handler;
+	}
+
+	public URLConnection openConnection(URL url) throws IOException{
         return handler.openConnection(url);
     }
 }
