@@ -315,7 +315,7 @@ class MindMapHTMLWriter {
 			fileout.write("<span style=\"" + fontStyle + "\">");
 		}
 		String link = NodeLinks.getLinkAsString(model);
-		if (link != null) {
+		if (link != null && ! text.contains(link)) {
 			if (link.endsWith(UrlManager.FREEPLANE_FILE_EXTENSION)) {
 				link += ".html";
 			}
@@ -436,8 +436,7 @@ class MindMapHTMLWriter {
 		fileout.write(FileUtils.slurpResource("/html/freeplane.css"));
 		if (writeFoldingCode)
 			fileout.write(FileUtils.slurpResource("/html/folding.css"));
-		fileout.write(lf + "</style>" + lf //
-		        + "<!-- ^ Position is not set to relative / absolute here because of Mozilla -->");
+		fileout.write(lf + "</style>");
 	}
 
 	private void writeDefaultFontStyle() throws IOException {

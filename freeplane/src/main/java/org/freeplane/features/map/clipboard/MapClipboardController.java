@@ -373,11 +373,11 @@ public class MapClipboardController implements IExtension, ClipboardController {
 			final String text = rtfEscapeUnicodeAndSpecialCharacters(nodeText);
 			if (NodeLinks.getValidLink(mindMapNodeModel) != null) {
 				final String link = rtfEscapeUnicodeAndSpecialCharacters(NodeLinks.getLinkAsString(mindMapNodeModel));
-				if (link.equals(nodeText)) {
-					fileout.write(pre + "<{\\ul\\cf1 " + link + "}>" + "}");
+				if (text.contains(link)) {
+					fileout.write(pre + text + "}");
 				}
 				else {
-					fileout.write("{" + fontsize + pre + text + "} ");
+					fileout.write("{" + pre + text + "} ");
 					fileout.write("<{\\ul\\cf1 " + link + "}}>");
 				}
 			}
@@ -403,10 +403,10 @@ public class MapClipboardController implements IExtension, ClipboardController {
 		}
 		if (NodeLinks.getValidLink(mindMapNodeModel) != null) {
 			final String link = NodeLinks.getLinkAsString(mindMapNodeModel);
-			if (!link.equals(plainTextContent)) {
-				fileout.write(plainTextContent + " ");
+			fileout.write(plainTextContent);
+			if (! plainTextContent.contains(link)) {
+				fileout.write(" <" + link + ">");
 			}
-			fileout.write("<" + link + ">");
 		}
 		else {
 			fileout.write(plainTextContent);
