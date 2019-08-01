@@ -105,7 +105,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 		if (object instanceof ConnectorModel) {
 			final ConnectorModel arrowLinkModel = (ConnectorModel) object;
 			final Shape shape = arrowLinkModel.getShape();
-			if (Shape.EDGE_LIKE.equals(shape) || Shape.LINE.equals(shape) && ! arrowLinkModel.isSelfLink()) {
+			if (Shape.EDGE_LIKE.equals(shape)) {
 				return;
 			}
 			draggedLink = arrowLinkModel;
