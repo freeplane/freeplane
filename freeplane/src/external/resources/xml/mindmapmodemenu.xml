@@ -271,9 +271,9 @@
 				<Entry name="SetBooleanPropertyAction.show_note_icon_in_tooltip" />
 				<Entry name="ShowSelectionAsRectangleAction" />
 				<Entry name="SetBooleanPropertyAction.highlight_formulas" />
-				<Entry accelerator="alt W" name="MoveSelectedNodeAction.WEST" />
-				<Entry accelerator="alt C" name="MoveSelectedNodeAction.CENTER" />
-				<Entry accelerator="alt E" name="MoveSelectedNodeAction.EAST" />
+				<Entry name="MoveSelectedNodeAction.WEST" />
+				<Entry name="MoveSelectedNodeAction.CENTER" />
+				<Entry name="MoveSelectedNodeAction.EAST" />
 				<Entry name="SetBooleanPropertyAction.slow_scroll_selected_node" />
 				<Entry name="SetBooleanPropertyAction.center_selected_node" />
 			</Entry>
