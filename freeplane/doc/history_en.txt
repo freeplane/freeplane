@@ -1,4 +1,11 @@
 ===============================
+1.7.10
+===============================
+Fix menu mnemonics
+Do not output links twice copying nodes to clipboard
+Allow to change positions of LINE shape connectors
+
+===============================
 1.7.9
 ===============================
 Bug fixes
