@@ -19,10 +19,18 @@
  */
 package org.freeplane.core.ui.components;
 
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
+import javax.swing.MenuElement;
+import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.ui.IKeyStrokeProcessor;
@@ -88,13 +96,39 @@ public class FreeplaneMenuBar extends JMenuBar {
 		        && 0 == (e.getModifiers() & ~KEY_MODIFIERS) && e.getSource() instanceof JTextComponent) {
 			return false;
 		}
-		if (keyEventProcessor.processKeyBinding(ks, e) || super.processKeyBinding(ks, e, condition, pressed)) {
+		if (keyEventProcessor.processKeyBinding(ks, e) || showMenuOnKeyEvent(ks, e, condition, pressed)) {
 			return true;
 		}
 		final KeyStroke derivedKS = FreeplaneMenuBar.derive(ks, e.getKeyChar());
 		if (derivedKS == ks) {
 			return false;
 		}
-		return super.processKeyBinding(derivedKS, e, condition, pressed);
+		return keyEventProcessor.processKeyBinding(ks, e);
+	}
+
+	private boolean showMenuOnKeyEvent(final KeyStroke ks, final KeyEvent e, final int condition, final boolean pressed) {
+        MenuElement[] subElements = getSubElements();
+        for (MenuElement elem : subElements) {
+        	Component c = elem.getComponent();
+        	if (c != null && c instanceof JMenu && c.isVisible() &&
+        			processKeyBinding((JComponent)c, ks, e, condition, pressed)) {
+        		return true;
+        	}
+        }
+        return false;
+	}
+
+	private boolean processKeyBinding(JComponent c, KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+        InputMap map = c.getInputMap(condition);
+        ActionMap am = c.getActionMap();
+
+        if(map != null && am != null && isEnabled()) {
+            Object binding = map.get(ks);
+            Action action = (binding == null) ? null : am.get(binding);
+            if (action != null) {
+                return SwingUtilities.notifyAction(action, ks, e, c, e.getModifiers());
+            }
+        }
+        return false;
 	}
 }
