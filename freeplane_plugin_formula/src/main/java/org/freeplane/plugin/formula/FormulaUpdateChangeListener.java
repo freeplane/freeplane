@@ -19,6 +19,7 @@ import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.plugin.script.FormulaCache;
 import org.freeplane.plugin.script.FormulaDependencies;
 import org.freeplane.plugin.script.FormulaUtils;
 
@@ -71,7 +72,7 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 	private void refresh(final List<NodeModel> dependencies) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		for (NodeModel dependentNode : dependencies) {
-			modeController.getMapController().delayedNodeRefresh(dependentNode, IContentTransformer.class,
+			modeController.getMapController().delayedNodeRefresh(dependentNode, FormulaCache.class,
 			    null, null);
 		}
 	}

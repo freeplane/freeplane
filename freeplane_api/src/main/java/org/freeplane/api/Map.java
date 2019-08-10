@@ -119,4 +119,8 @@ public interface Map extends MapRO {
 	 * Each formula not having valid result in the cache is evaluated.
 	 *  @since 1.7.2 */
 	void evaluateOutdatedFormulas();
+	
+	void addListener(NodeChangeListener listener);
+	
+	void removeListener(NodeChangeListener listener);
 }
