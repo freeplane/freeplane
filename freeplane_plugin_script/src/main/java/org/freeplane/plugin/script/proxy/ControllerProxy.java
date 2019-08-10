@@ -4,6 +4,7 @@
 package org.freeplane.plugin.script.proxy;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -341,8 +342,13 @@ class ControllerProxy implements Proxy.Controller {
 	}
 
 	@Override
-	public Proxy.Loader mapLoader(String file) {
-		return LoaderProxy.of(file, scriptContext);
+	public Proxy.Loader mapLoader(String fileOrContent) {
+		return LoaderProxy.of(fileOrContent, scriptContext);
+	}
+
+	@Override
+	public Proxy.Loader mapLoader(InputStream inputStream) {
+		return LoaderProxy.of(inputStream, scriptContext);
 	}
 
 	@Override

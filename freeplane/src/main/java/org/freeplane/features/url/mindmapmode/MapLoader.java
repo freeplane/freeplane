@@ -3,6 +3,8 @@ package org.freeplane.features.url.mindmapmode;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -15,6 +17,7 @@ import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.MMapModel;
@@ -23,6 +26,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
 import org.freeplane.n3.nanoxml.XMLException;
+import org.freeplane.n3.nanoxml.XMLParseException;
 
 public class MapLoader{
 
@@ -35,6 +39,8 @@ public class MapLoader{
 	private boolean unsetMapLocation;
 	private boolean asDocumentation;
 	private String selectedNodeId;
+	private InputStream inputStream;
+
 
 	public MapLoader(ModeController modeController) {
 		super();
@@ -53,6 +59,11 @@ public class MapLoader{
 
 	}
 
+	public MapLoader setInputStream(InputStream inputStream) {
+		this.inputStream = inputStream;
+		return this;
+	}
+		
 	public MapLoader newMapLocation(File associatedFile) {
 		this.newMapLocation = fileToUrlOrNull(associatedFile);
 		this.saveAfterLoading = false;
@@ -189,13 +200,21 @@ public class MapLoader{
 			}
 		}
 
-		final URL actualSourceLocation = asDocumentation ? sourceLocation : alternativeSourceLocation();
-
-		final MMapModel map = AccessController.doPrivileged(new PrivilegedExceptionAction<MMapModel>() {
+		final URL actualSourceLocation = inputStream != null ? null : asDocumentation ? sourceLocation : alternativeSourceLocation();
+		final MMapModel map = createMindMap();
+		AccessController.doPrivileged(new PrivilegedExceptionAction<Void>() {
 
 			@Override
-			public MMapModel run() throws FileNotFoundException, XMLException, URISyntaxException, IOException {
-				return  loadMap(actualSourceLocation);
+			public Void run() throws FileNotFoundException, XMLException, URISyntaxException, IOException {
+				if(inputStream != null) {
+					loadMapContent(map);
+				}
+				else {
+					if(actualSourceLocation != null) {
+						loadMap(map, actualSourceLocation);
+					}
+				}
+				return null;
 			}
 		});
 
@@ -212,21 +231,17 @@ public class MapLoader{
 		if(saveAfterLoading && ! newMapLocation.equals(actualSourceLocation)) {
 			fileManager().save(map, map.getFile());
 		}
-		map.setSaved(actualSourceLocation != null && actualSourceLocation.equals(newMapLocation));
+		else {
+			map.setSaved(actualSourceLocation != null && actualSourceLocation.equals(newMapLocation));
+		}
 		mapController().addLoadedMap(map);
 		mapController().fireMapCreated(map);
 		return map;
 	}
 
-	private MMapModel loadMap(URL sourceLocation)
-			throws URISyntaxException, FileNotFoundException, IOException, XMLException {
-		final MMapModel map = new MMapModel();
+	private void loadMap(final MMapModel map, URL sourceLocation)
+			throws IOException, XMLException, FileNotFoundException, XMLParseException {
 		MFileManager fileManager = fileManager();
-		if(asDocumentation) {
-			map.setReadOnly(true);
-			map.addExtension(DocuMapAttribute.instance);
-		}
-
 		if(sourceLocation != null) {
 			final File file = Compat.urlToFile(sourceLocation);
 			if (file == null) {
@@ -243,7 +258,22 @@ public class MapLoader{
 				}
 			}
 		}
+	}
+
+	private MMapModel createMindMap() {
+		final MMapModel map = new MMapModel();
+		if(asDocumentation) {
+			map.setReadOnly(true);
+			map.addExtension(DocuMapAttribute.instance);
+		}
 		return map;
+	}
+
+	private void loadMapContent(final MMapModel map) throws IOException, XMLException {
+		try (InputStreamReader urlStreamReader = new InputStreamReader(inputStream)) {
+			final ModeController modeController = Controller.getCurrentModeController();
+			modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
+		}
 	}
 
 	private File urlToFileOrNull(URL url) throws URISyntaxException {

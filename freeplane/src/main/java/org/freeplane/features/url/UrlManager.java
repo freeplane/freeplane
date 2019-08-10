@@ -247,7 +247,7 @@ public class UrlManager implements IExtension {
 		}
 	}
 
-	private URL getLocation(final URL url) throws IOException {
+	public URL getLocation(final URL url) throws IOException {
 		URLConnection connection = url.openConnection();
 		if(connection instanceof HttpURLConnection){
 			int responseCode = ((HttpURLConnection)connection).getResponseCode();

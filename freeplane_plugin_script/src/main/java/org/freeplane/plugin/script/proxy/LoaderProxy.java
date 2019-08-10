@@ -1,9 +1,12 @@
 package org.freeplane.plugin.script.proxy;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.regex.Pattern;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -24,8 +27,12 @@ class LoaderProxy implements Proxy.Loader {
 		return new LoaderProxy(scriptContext).load(url);
 	}
 
-	static Proxy.Loader of(String file, ScriptContext scriptContext) {
-		return new LoaderProxy(scriptContext).load(file);
+	static Proxy.Loader of(String fileOrContent, ScriptContext scriptContext) {
+		return new LoaderProxy(scriptContext).load(fileOrContent);
+	}
+
+	static Proxy.Loader of(InputStream inputStream, ScriptContext scriptContext) {
+		return new LoaderProxy(scriptContext).load(inputStream);
 	}
 
 	private final ScriptContext scriptContext;
@@ -50,9 +57,23 @@ class LoaderProxy implements Proxy.Loader {
 		return this;
 	}
 
-	private LoaderProxy load(String path) {
-			mapLoader.load(provideScriptContext().toUrl(path));
+	private LoaderProxy load(String filePathOrContent) {
+		if(containsMindMapContent(filePathOrContent)) {
+			ByteArrayInputStream inputStream = new ByteArrayInputStream(filePathOrContent.getBytes());
+			load(inputStream);
+		} else
+			mapLoader.load(provideScriptContext().toUrl(filePathOrContent));
 		return this;
+	}
+
+	private LoaderProxy load(InputStream inputStream) {
+		mapLoader.setInputStream(inputStream);
+		return this;
+	}
+
+	Pattern MAP_CONTENT_BEGIN = Pattern.compile("^\\s*<");
+	private boolean containsMindMapContent(String filePathOrContent) {
+		return MAP_CONTENT_BEGIN.matcher(filePathOrContent).find();
 	}
 
 	private ScriptContext provideScriptContext() {
