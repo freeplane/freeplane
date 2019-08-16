@@ -2,6 +2,10 @@ package org.freeplane.api;
 
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /** Node's attribute table: <code>node.attributes</code> - read-write.
  * <p>
@@ -109,6 +113,16 @@ public interface Attributes extends AttributesRO {
 	 * </pre>
 	 * @since 1.3.2 */
 	Iterator<java.util.Map.Entry<String, Object>> iterator();
+	
+	/**
+	 * Returns stream of attributes represented by map entries.
+	 * 
+	 * @see #iterator()
+	 * @since 1.3.10
+	 */
+	default Stream<java.util.Map.Entry<String, Object>> stream(){
+		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator(), Spliterator.ORDERED),false);
+	}
 
 	/** optimize widths of attribute view columns according to contents.
 	 * @since 1.4 */

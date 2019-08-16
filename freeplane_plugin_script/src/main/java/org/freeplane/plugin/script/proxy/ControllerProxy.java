@@ -16,6 +16,7 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.filechooser.FileFilter;
 
+import org.freeplane.api.AttributeValueSerializer;
 import org.freeplane.api.Map;
 import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
@@ -369,6 +370,11 @@ class ControllerProxy implements Proxy.Controller {
 	@Override
 	public Script script(String script, String type) {
 		return new StringScriptProxy(script, type, scriptContext);
+	}
+
+	@Override
+	public AttributeValueSerializer getAttributeValueSerializer() {
+		return StaticAttributeValueSerializer.INSTANCE;
 	}
 
 }

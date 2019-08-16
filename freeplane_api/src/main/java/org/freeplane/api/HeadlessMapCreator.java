@@ -59,5 +59,11 @@ public interface HeadlessMapCreator {
 	 * @since 1.7.2
 	 */
 	Script script(String script, String type);
+	
+	/**
+	 * 
+	 * @since 1.7.10
+	 */
+	AttributeValueSerializer getAttributeValueSerializer();
 
 }
