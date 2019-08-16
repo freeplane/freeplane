@@ -9,10 +9,10 @@ public class NodeChanged {
 		this.node = node;
 		this.changedElement = changedElement;
 	}
-	Node getNode() {
+	public Node getNode() {
 		return node;
 	}
-	ChangedElement getChangedElement() {
+	public ChangedElement getChangedElement() {
 		return changedElement;
 	}
 	@Override
