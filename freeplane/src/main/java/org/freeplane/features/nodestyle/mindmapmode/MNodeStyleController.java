@@ -167,7 +167,7 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichStyle.getFontSize()) {
 				fromStyle.setFontSize(null);
 			}
-			if (null != whichStyle.getShapeConfiguration()) {
+			if (ShapeConfigurationModel.NULL_SHAPE != whichStyle.getShapeConfiguration()) {
 				fromStyle.setShapeConfiguration(ShapeConfigurationModel.NULL_SHAPE);
 			}
 			if (null != whichStyle.getColor()) {
