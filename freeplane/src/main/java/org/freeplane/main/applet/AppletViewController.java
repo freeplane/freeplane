@@ -26,6 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.concurrent.ExecutorService;
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -53,7 +54,6 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 	private JComponent mComponentInSplitPane;
 	private JComponent mapContentBox;
 	private JScrollPane scrollPane;
-
 	public AppletViewController( final FreeplaneApplet applet, Controller controller,
 	                            final IMapViewManager mapViewController) {
 		super(controller, mapViewController, "");

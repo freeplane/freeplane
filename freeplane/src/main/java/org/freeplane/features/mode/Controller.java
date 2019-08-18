@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 
 import org.apache.commons.io.IOExceptionWithCause;
 import org.freeplane.core.extension.ExtensionContainer;
@@ -147,6 +148,12 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 	 */
 	public ViewController getViewController() {
 		return viewController;
+	}
+	
+	
+
+	public ExecutorService getMainThreadExecutorService() {
+		return viewController.getMainThreadExecutorService();
 	}
 
 	public void quit() {

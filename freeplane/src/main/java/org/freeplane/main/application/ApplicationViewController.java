@@ -68,7 +68,7 @@ class ApplicationViewController extends FrameController {
 	private static final String SPLIT_PANE_POSITION = "split_pane_position";
 	private static final String SPLIT_PANE_RIGHT_POSITION = "split_pane_right_position";
 	private static final String SPLIT_PANE_TOP_POSITION = "split_pane_top_position";
-// // 	final private Controller controller;
+	// // 	final private Controller controller;
 	final private JFrame frame;
 	/** Contains the value where the Note Window should be displayed (right, left, top, bottom) */
 	private String mLocationPreferenceValue;
@@ -428,5 +428,4 @@ class ApplicationViewController extends FrameController {
 	public List<? extends Component> getMapViewVector() {
 		return mapViewWindows.getMapViewVector();
 	}
-
 }

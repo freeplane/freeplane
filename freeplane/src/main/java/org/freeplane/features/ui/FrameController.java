@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -751,6 +752,11 @@ abstract public class FrameController implements ViewController {
 		return EventQueue.isDispatchThread();
 	}
 
+	@Override
+	public ExecutorService getMainThreadExecutorService() {
+		return EventQueueExecutorServiceAdapter.INSTANCE;
+	}
+	
 	@Override
 	public void invokeLater(Runnable runnable) {
 		EventQueue.invokeLater(runnable);

@@ -46,8 +46,8 @@ import org.freeplane.features.ui.IMapViewManager;
  * 24.12.2012
  */
 public class HeadlessUIController extends FrameController {
-	final private AtomicLong workingThreadId = new AtomicLong();
-	final private ExecutorService worker = Executors.newSingleThreadExecutor(new ThreadFactory() {
+	final private static AtomicLong workingThreadId = new AtomicLong();
+	final private static ExecutorService executorService = Executors.newSingleThreadExecutor(new ThreadFactory() {
 		@Override
 		public Thread newThread(Runnable r) {
 			final Thread thread = Executors.defaultThreadFactory().newThread(r);
@@ -201,16 +201,22 @@ public class HeadlessUIController extends FrameController {
 		return workingThreadId.get() == Thread.currentThread().getId();
 	}
 
+
+	@Override
+	public ExecutorService getMainThreadExecutorService() {
+		return executorService;
+	}
+	
 	@Override
 	public void invokeLater(Runnable runnable) {
-		worker.execute(runnable);
+		executorService.execute(runnable);
 	}
 
 	@Override
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
 		try {
-			if(! worker.isShutdown())
-			worker.submit(runnable).get();
+			if(! executorService.isShutdown())
+			executorService.submit(runnable).get();
 		}
 		catch (ExecutionException e) {
 		}
@@ -269,6 +275,6 @@ public class HeadlessUIController extends FrameController {
 	}
 
 	public void shutdown() {
-		worker.shutdown();
+		executorService.shutdown();
 	}
 }

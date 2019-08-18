@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import javax.swing.Icon;
 import javax.swing.filechooser.FileFilter;
@@ -375,6 +376,11 @@ class ControllerProxy implements Proxy.Controller {
 	@Override
 	public AttributeValueSerializer getAttributeValueSerializer() {
 		return StaticAttributeValueSerializer.INSTANCE;
+	}
+
+	@Override
+	public ExecutorService getMainThreadExecutorService() {
+		return Controller.getCurrentController().getMainThreadExecutorService();
 	}
 
 }

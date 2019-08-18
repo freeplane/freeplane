@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import javax.swing.Icon;
 
@@ -130,5 +131,10 @@ public interface Controller extends ControllerRO, HeadlessMapCreator {
 	/** a list of all opened maps.
 	 * @since 1.5 */
 	List<? extends Map> getOpenMaps();
+	
+	/**
+	 * @since 1.7.10
+	 */
+	ExecutorService getMainThreadExecutorService();
 
 }
