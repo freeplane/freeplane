@@ -40,7 +40,6 @@ import org.freeplane.features.styles.LogicalStyleFilterController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.time.TimeController;
 import org.freeplane.main.application.ApplicationResourceController;
-import org.freeplane.main.application.FreeplaneGUIStarter;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 

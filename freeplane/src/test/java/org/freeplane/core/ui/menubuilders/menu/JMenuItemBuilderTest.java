@@ -10,8 +10,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.awt.Container;
-import java.lang.reflect.InvocationTargetException;
-
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;

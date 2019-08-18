@@ -9,8 +9,6 @@ import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
-import org.freeplane.features.filter.FilterController;
-import org.freeplane.features.mode.Controller;
 
 public class JMenubarBuilder implements EntryVisitor {
 	private final IUserInputListenerFactory userInputListenerFactory;

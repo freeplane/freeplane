@@ -1,7 +1,6 @@
 package org.freeplane.api;
 
 import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;

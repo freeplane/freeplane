@@ -17,7 +17,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.text.DetailTextModel;
-import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.script.FormulaCache;
 import org.freeplane.plugin.script.FormulaDependencies;

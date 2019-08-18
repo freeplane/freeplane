@@ -26,8 +26,6 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 
 import javax.swing.SwingUtilities;
@@ -40,8 +38,6 @@ import org.codehaus.groovy.runtime.InvokerHelper;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.plugin.script.proxy.Proxy.Node;
-import org.freeplane.plugin.script.proxy.ProxyFactory;
 import org.freeplane.plugin.script.proxy.ScriptUtils;
 
 import groovy.lang.Binding;

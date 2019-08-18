@@ -20,8 +20,6 @@
 package org.freeplane.features.explorer;
 
 import java.util.Collection;
-import java.util.Set;
-
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;

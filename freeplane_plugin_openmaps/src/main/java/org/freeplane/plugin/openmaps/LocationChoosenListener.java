@@ -1,6 +1,5 @@
 package org.freeplane.plugin.openmaps;
 
-import org.openstreetmap.gui.jmapviewer.Coordinate;
 import org.openstreetmap.gui.jmapviewer.interfaces.ICoordinate;
 
 /**

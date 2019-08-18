@@ -24,8 +24,6 @@ import java.util.Locale;
 import java.util.WeakHashMap;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
