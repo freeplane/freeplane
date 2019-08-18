@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.undo;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -186,7 +185,7 @@ public class UndoHandler implements IUndoHandler {
 			commit();
 			return;
 		}
-		EventQueue.invokeLater(new Runnable() {
+		Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
 			public void run() {
 				actorList.commitDelay--;
 				delayedCommit();
@@ -199,7 +198,7 @@ public class UndoHandler implements IUndoHandler {
 			rollback();
 			return;
 		}
-		EventQueue.invokeLater(new Runnable() {
+		Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
 			public void run() {
 				actorList.commitDelay--;
 				delayedRollback();

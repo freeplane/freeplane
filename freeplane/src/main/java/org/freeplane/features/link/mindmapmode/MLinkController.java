@@ -21,7 +21,6 @@ package org.freeplane.features.link.mindmapmode;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Window;
@@ -272,7 +271,7 @@ public class MLinkController extends LinkController {
 
 		@Override
 		public void onNodeInserted(final NodeModel parent, final NodeModel model, final int newIndex) {
-			EventQueue.invokeLater(new Runnable() {
+			Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
 				@Override
 				public void run() {
 					final MapModel map = model.getMap();

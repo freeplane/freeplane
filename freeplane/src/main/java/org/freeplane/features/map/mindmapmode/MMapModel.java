@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.map.mindmapmode;
 
-import java.awt.EventQueue;
 import java.io.File;
 import java.net.URL;
 import java.util.Timer;
@@ -59,7 +58,7 @@ public class MMapModel extends MapModel {
 	}
 
 	public void enableAutosave() {
-		EventQueue.invokeLater(new Runnable() {
+		Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				if(! autosaveEnabled) {

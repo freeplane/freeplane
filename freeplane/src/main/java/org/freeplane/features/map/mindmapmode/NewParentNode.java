@@ -17,7 +17,6 @@
  */
 package org.freeplane.features.map.mindmapmode;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -81,7 +80,7 @@ public class NewParentNode extends AFreeplaneAction {
 			return;
 		}
 		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(newNode);
-		EventQueue.invokeLater(new Runnable() {
+		Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
 			public void run() {
 				((MTextController) TextController.getController()).edit(newNode, selectedNode, true, false, false);
 			}

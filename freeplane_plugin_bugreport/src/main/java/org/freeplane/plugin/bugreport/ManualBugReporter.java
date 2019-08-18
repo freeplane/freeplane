@@ -1,6 +1,5 @@
 package org.freeplane.plugin.bugreport;
 
-import java.awt.EventQueue;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
@@ -28,7 +27,7 @@ class ManualBugReporter implements IBugReportListener {
 		}
 		final String log = report.get("log");
 		final String hash = report.get("hash");
-		EventQueue.invokeLater(new Runnable() {
+		Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
 			public void run() {
 				openBugTracker(log, hash);
 			}

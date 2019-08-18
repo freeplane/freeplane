@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.map;
 
-import java.awt.EventQueue;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
@@ -966,7 +965,7 @@ implements IExtension, NodeChangeAnnouncer{
 						}
 					}
 				};
-				EventQueue.invokeLater(refresher);
+				Controller.getCurrentController().getViewController().invokeLater(refresher);
 			}
 		}
 	}

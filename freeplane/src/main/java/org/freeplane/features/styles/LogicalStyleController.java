@@ -20,7 +20,6 @@
 package org.freeplane.features.styles;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.lang.ref.WeakReference;
 import java.util.Collection;
 import java.util.HashMap;
@@ -264,7 +263,7 @@ public class LogicalStyleController implements IExtension {
 		else {
 			mapsToRefresh.put(map, count + 1);
 		}
-		EventQueue.invokeLater(new Runnable() {
+		Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
 			public void run() {
 				final Integer count = mapsToRefresh.get(map);
 				if (count > 0) {
