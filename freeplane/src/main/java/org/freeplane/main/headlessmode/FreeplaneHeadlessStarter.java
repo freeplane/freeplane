@@ -98,8 +98,6 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 	@Override
 	public void createModeControllers(final Controller controller) {
 		HeadlessMModeControllerFactory.createModeController();
-		controller.getModeController(MModeController.MODENAME).getMapController().addMapChangeListener(
-			applicationResourceController.getLastOpenedList());
     }
 
 	@Override
