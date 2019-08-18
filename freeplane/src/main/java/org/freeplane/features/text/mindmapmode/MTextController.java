@@ -248,7 +248,7 @@ public class MTextController extends TextController {
 	@Override
 	public void install(final ModeController modeController) {
 		super.install(modeController);
-		modeController.getMapController().addNodeChangeListener(new INodeChangeListener() {
+		modeController.getMapController().addUINodeChangeListener(new INodeChangeListener() {
 			@Override
 			public void nodeChanged(NodeChangeEvent event) {
 				if (event.getProperty().equals(NodeModel.NODE_TEXT)) {
@@ -867,7 +867,7 @@ public class MTextController extends TextController {
 		public void install() {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this);
 			MapController mapController = modeController.getMapController();
-			mapController.addNodeChangeListener(this);
+			mapController.addUINodeChangeListener(this);
 			mapController.addNodeSelectionListener(this);
 		}
 

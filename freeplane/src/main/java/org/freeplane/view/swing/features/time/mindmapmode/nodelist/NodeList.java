@@ -676,8 +676,8 @@ class NodeList {
 			matchCase.isSelected(), useRegexInFind.isSelected());
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
-		mapController.addMapChangeListener(mapChangeListener);
-		mapController.addNodeChangeListener(mapChangeListener);
+		mapController.addUIMapChangeListener(mapChangeListener);
+		mapController.addUINodeChangeListener(mapChangeListener);
 		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(mapChangeListener);
 		dialog.setVisible(true);
 	}

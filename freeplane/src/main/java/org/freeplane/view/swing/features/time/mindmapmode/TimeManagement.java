@@ -398,7 +398,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 						timePanel.update(node);
 			}
 		};
-		getMindMapController().getMapController().addNodeChangeListener(nodeChangeListener);
+		getMindMapController().getMapController().addUINodeChangeListener(nodeChangeListener);
 
 		dialog.setTitle(getResourceString("reminder.WindowTitle"));
 		dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

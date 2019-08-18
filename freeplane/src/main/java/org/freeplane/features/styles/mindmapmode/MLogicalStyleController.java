@@ -220,7 +220,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 	}
 	public void initM() {
 	    final ModeController modeController = Controller.getCurrentModeController();
-		modeController.getMapController().addNodeChangeListener(new StyleRemover());
+		modeController.getMapController().addUINodeChangeListener(new StyleRemover());
 		modeController.registerExtensionCopier(new ExtensionCopier());
 		modeController.addAction(new RedefineStyleAction());
 		modeController.addAction(new NewUserStyleAction());
@@ -245,7 +245,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 				}
 			});
 			final MapController mapController = modeController.getMapController();
-			mapController.addMapChangeListener(new IMapChangeListener() {
+			mapController.addUIMapChangeListener(new IMapChangeListener() {
 				@Override
 				public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
 				}

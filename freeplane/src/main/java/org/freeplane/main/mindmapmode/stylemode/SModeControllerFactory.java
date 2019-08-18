@@ -209,7 +209,7 @@ public class SModeControllerFactory {
 			public void onDeselect(final NodeModel node) {
 			}
 		});
-		mapController.addNodeChangeListener(new INodeChangeListener() {
+		mapController.addUINodeChangeListener(new INodeChangeListener() {
 			@Override
 			public void nodeChanged(NodeChangeEvent event) {
 				final NodeModel node = event.getNode();

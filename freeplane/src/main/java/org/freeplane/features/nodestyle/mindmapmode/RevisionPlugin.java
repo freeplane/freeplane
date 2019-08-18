@@ -41,7 +41,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class RevisionPlugin extends PersistentNodeHook implements INodeChangeListener, IExtension {
 	public RevisionPlugin() {
 		super();
-		Controller.getCurrentModeController().getMapController().addNodeChangeListener(this);
+		Controller.getCurrentModeController().getMapController().addUINodeChangeListener(this);
 	}
 
 	@Override

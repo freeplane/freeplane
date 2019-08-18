@@ -191,7 +191,7 @@ public class StyleEditorPanel extends JPanel {
 				setComponentsEnabled(false);
 			}
 		});
-		mapController.addNodeChangeListener(new INodeChangeListener() {
+		mapController.addUINodeChangeListener(new INodeChangeListener() {
 			@Override
 			public void nodeChanged(final NodeChangeEvent event) {
 				final IMapSelection selection = controller.getSelection();
@@ -204,7 +204,7 @@ public class StyleEditorPanel extends JPanel {
 				}
 			}
 		});
-		mapController.addMapChangeListener(new IMapChangeListener() {
+		mapController.addUIMapChangeListener(new IMapChangeListener() {
 
 			@Override
             public void mapChanged(MapChangeEvent event) {

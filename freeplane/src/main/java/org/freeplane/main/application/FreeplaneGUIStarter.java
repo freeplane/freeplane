@@ -200,7 +200,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		MModeControllerFactory.createModeController();
 		final ModeController mindMapModeController = controller.getModeController(MModeController.MODENAME);
 		LastOpenedList lastOpenedList = applicationResourceController.getLastOpenedList();
-		mindMapModeController.getMapController().addMapChangeListener(lastOpenedList);
+		mindMapModeController.getMapController().addUIMapChangeListener(lastOpenedList);
 		lastOpenedList.registerMenuContributor(mindMapModeController);
 		mindMapModeController.addUiBuilder(Phase.ACTIONS, "filterConditions", FilterController
 		    .getController(controller)

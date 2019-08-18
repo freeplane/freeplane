@@ -97,7 +97,7 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 		modeController.addExtension(AutomaticEdgeColorHook.class, this);
 
 		final MapController mapController = modeController.getMapController();
-		mapController.addMapChangeListener(listener);
+		mapController.addUIMapChangeListener(listener);
     }
 
 	@Override

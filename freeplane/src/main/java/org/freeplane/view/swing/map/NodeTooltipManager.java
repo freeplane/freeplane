@@ -96,7 +96,7 @@ public class NodeTooltipManager implements IExtension{
 
 		};
 		MapController mapController = modeController.getMapController();
-		mapController.addMapChangeListener(mapChangeListener);
+		mapController.addUIMapChangeListener(mapChangeListener);
 		INodeSelectionListener nodeSelectionListener = new INodeSelectionListener() {
 
 			@Override

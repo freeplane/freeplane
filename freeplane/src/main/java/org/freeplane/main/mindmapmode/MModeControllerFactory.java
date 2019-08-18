@@ -303,9 +303,9 @@ public class MModeControllerFactory {
 		FoldingController.install(new FoldingController());
 
 		uiFactory = new MUIFactory();
-		mapController.addNodeChangeListener(uiFactory);
+		mapController.addUINodeChangeListener(uiFactory);
 		mapController.addNodeSelectionListener(uiFactory);
-		mapController.addMapChangeListener(uiFactory);
+		mapController.addUIMapChangeListener(uiFactory);
 		controller.getMapViewManager().addMapSelectionListener(uiFactory);
 		modeController.addExtension(MUIFactory.class, uiFactory);
 

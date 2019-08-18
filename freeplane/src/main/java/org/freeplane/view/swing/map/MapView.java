@@ -689,7 +689,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	@Override
     public void addNotify() {
 	    super.addNotify();
-	    modeController.getMapController().addNodeChangeListener(connectorChangeListener);
+	    modeController.getMapController().addUINodeChangeListener(connectorChangeListener);
 	    getParent().addComponentListener(viewportSizeChangeListener);
 		adjustViewportScrollMode();
     }

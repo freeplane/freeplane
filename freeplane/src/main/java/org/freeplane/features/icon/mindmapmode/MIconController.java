@@ -244,7 +244,7 @@ public class MIconController extends IconController {
 	@Override
 	public void install(final ModeController modeController) {
 		super.install(modeController);
-		modeController.getMapController().addNodeChangeListener(new INodeChangeListener() {
+		modeController.getMapController().addUINodeChangeListener(new INodeChangeListener() {
 
 			@Override
 			public void nodeChanged(NodeChangeEvent event) {

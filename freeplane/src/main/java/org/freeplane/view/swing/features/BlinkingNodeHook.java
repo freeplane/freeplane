@@ -60,7 +60,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 		TimerColorChanger(final NodeModel node) {
 			this.node = node;
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
-			mapController.addMapChangeListener(this);
+			mapController.addUIMapChangeListener(this);
 			mapController.addMapLifeCycleListener(this);
 			timer = SysUtils.createTimer(getClass().getSimpleName());
 			timer.schedule(this, 500, 500);

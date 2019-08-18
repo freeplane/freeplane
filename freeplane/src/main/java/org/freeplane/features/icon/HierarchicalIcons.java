@@ -74,8 +74,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		this.mode = mode;
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.getMapController().getReadManager().addReadCompletionListener(this);
-		modeController.getMapController().addNodeChangeListener(this);
-		modeController.getMapController().addMapChangeListener(this);
+		modeController.getMapController().addUINodeChangeListener(this);
+		modeController.getMapController().addUIMapChangeListener(this);
 	}
 
 

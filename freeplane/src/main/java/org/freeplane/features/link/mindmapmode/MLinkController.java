@@ -371,7 +371,7 @@ public class MLinkController extends LinkController {
 		this.anchorID = "";
 		createActions();
 		modeController.registerExtensionCopier(new StyleCopier());
-		(modeController.getMapController()).addMapChangeListener(mapLinkChanger);
+		(modeController.getMapController()).addUIMapChangeListener(mapLinkChanger);
 	}
 
 	public ConnectorModel addConnector(final NodeModel source, final NodeModel target) {

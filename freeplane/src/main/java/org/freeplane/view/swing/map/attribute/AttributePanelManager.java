@@ -270,7 +270,7 @@ public class AttributePanelManager{
         final TableCreator tableCreator = new TableCreator();
 		final MapController mapController = modeController.getMapController();
 		mapController.addNodeSelectionListener(tableCreator);
-		mapController.addNodeChangeListener(tableCreator);
+		mapController.addUINodeChangeListener(tableCreator);
     }
     public JPanel getTablePanel() {
         return tablePanel;
