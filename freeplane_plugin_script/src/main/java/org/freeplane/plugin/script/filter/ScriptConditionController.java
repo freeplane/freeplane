@@ -21,6 +21,7 @@ package org.freeplane.plugin.script.filter;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
@@ -45,16 +46,26 @@ import org.freeplane.plugin.script.ScriptRenderer;
  */
 public class ScriptConditionController implements IElementaryConditionController {
 	static final String FILTER_SCRIPT = "filter_script";
-	private final ComboBoxEditor editor = new ScriptComboBoxEditor();
-	private final ListCellRenderer renderer = new ScriptRenderer();
-	private final ComboBoxModel values = new DefaultComboBoxModel();
+	private final ComboBoxEditor editor;
+	private final ListCellRenderer renderer;
+	private final ComboBoxModel values;
 
 	public ScriptConditionController() {
 		super();
-		Component showEditorBtn = editor.getEditorComponent();
-		final Dimension preferredSize = showEditorBtn.getPreferredSize();
-		preferredSize.width = 100;
-		showEditorBtn.setPreferredSize(preferredSize);
+		if(! GraphicsEnvironment.isHeadless()) {
+			editor = new ScriptComboBoxEditor();
+			renderer = new ScriptRenderer();
+			values = new DefaultComboBoxModel();
+			Component showEditorBtn = editor.getEditorComponent();
+			final Dimension preferredSize = showEditorBtn.getPreferredSize();
+			preferredSize.width = 100;
+			showEditorBtn.setPreferredSize(preferredSize);
+		}
+		else {
+			editor = null;
+			renderer = null;
+			values = null;
+		}
 
 	}
 
