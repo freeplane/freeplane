@@ -42,9 +42,9 @@ class NodeLevelConditionController implements IElementaryConditionController {
 	static final String FILTER_ROOT = "filter_root";
 	static final String FILTER_LEAF = "filter_leaf";
 	static final String FILTER_PERIODIC_LEVEL = "filter_periodic_level";
-	private final ComboBoxEditor levelEditor = new NumberComboBoxEditor();
-	private final ComboBoxModel values = new DefaultComboBoxModel();
-	private final ComboBoxModel periodicValues = new DefaultComboBoxModel(PeriodicLevelCondition.createConditions(7));
+	private ComboBoxEditor levelEditor;
+	private ComboBoxModel values;
+	private ComboBoxModel periodicValues;
 
 
 	public boolean canEditValues(final Object selectedItem, final TranslatedObject simpleCond) {
@@ -145,13 +145,20 @@ class NodeLevelConditionController implements IElementaryConditionController {
 		if(selectedCondition.objectEquals(FILTER_PERIODIC_LEVEL)){
 			return new FixedBasicComboBoxEditor();
 		}
+		if(levelEditor == null)
+			levelEditor = new NumberComboBoxEditor();
+
 		return levelEditor;
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property, TranslatedObject simpleCond) {
 		if(simpleCond.objectEquals(FILTER_PERIODIC_LEVEL)){
+			if(periodicValues == null)
+				periodicValues = new DefaultComboBoxModel(PeriodicLevelCondition.createConditions(7));
 			return periodicValues;
 		}
+		if(values == null)
+			values = new DefaultComboBoxModel();
 		return values;
 	}
 

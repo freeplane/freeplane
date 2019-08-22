@@ -42,8 +42,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class TimeConditionController implements IElementaryConditionController {
 	static final String FILTER_TIME = "filter_time";
 // // //	final private Controller controller;
-	private final ComboBoxEditor editor = new TimeComboBoxEditor(true);
-	private final ComboBoxModel values = new DefaultComboBoxModel();
+	private ComboBoxEditor editor = null;
+	private ComboBoxModel values = null;
 
 	public TimeConditionController() {
 		super();
@@ -90,10 +90,14 @@ public class TimeConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxEditor getValueEditor(Object selectedProperty, TranslatedObject selectedCondition) {
+		if(editor == null)
+			editor = new TimeComboBoxEditor(true);
 		return editor;
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object selectedItem, TranslatedObject simpleCond) {
+		if(values == null)
+			values = new DefaultComboBoxModel();
 		values.setSelectedItem(FormattedDate.createDefaultFormattedDate(System.currentTimeMillis(), IFormattedObject.TYPE_DATETIME));
 		return values;
 	}

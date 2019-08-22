@@ -149,18 +149,22 @@ abstract public class FrameController implements ViewController {
 	final private JPanel statusPanel;
 	final private JComponent toolbarPanel[];
 	final private String propertyKeyPrefix;
+	private static boolean uiResourcesInitialized = false;
 	private static Icon textIcon;
 	private static Icon numberIcon;
 	private static Icon dateIcon;
 	private static Icon dateTimeIcon;
 	private static Icon linkIcon;
-	static {
-		final ResourceController resourceController = ResourceController.getResourceController();
-		textIcon = resourceController.getIcon("text_icon");
-		numberIcon = resourceController.getIcon("number_icon");
-		dateIcon = resourceController.getIcon("date_icon");
-		dateTimeIcon = resourceController.getIcon("date_time_icon");
-		linkIcon = resourceController.getIcon("link_icon");
+	static private void initializeUiResources(){
+		if(uiResourcesInitialized == false) {
+			uiResourcesInitialized = true;
+			final ResourceController resourceController = ResourceController.getResourceController();
+			textIcon = resourceController.getIcon("text_icon");
+			numberIcon = resourceController.getIcon("number_icon");
+			dateIcon = resourceController.getIcon("date_icon");
+			dateTimeIcon = resourceController.getIcon("date_time_icon");
+			linkIcon = resourceController.getIcon("link_icon");
+		}
 	}
 	private final IMapViewManager mapViewManager;
 
@@ -226,6 +230,7 @@ abstract public class FrameController implements ViewController {
 
 	@Override
 	public void init(Controller controller) {
+		initializeUiResources();
 		final JComponent mainContentPane = getMainContentPane();
 		mainContentPane.add(toolbarPanel[TOP], BorderLayout.NORTH);
 		mainContentPane.add(toolbarPanel[LEFT], BorderLayout.WEST);
