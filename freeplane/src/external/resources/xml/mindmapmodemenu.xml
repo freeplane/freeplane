@@ -446,6 +446,7 @@
 			<Entry name="UndoFilterAction" />
 			<Entry name="RedoFilterAction" />
 			<Entry name="ReapplyFilterAction" />
+			<Entry name="SelectFilteredNodesAction" />
 			<Entry builder="separator" />
 			<Entry name="QuickFilterAction" />
 			<Entry name="ApplySelectedViewConditionAction" />

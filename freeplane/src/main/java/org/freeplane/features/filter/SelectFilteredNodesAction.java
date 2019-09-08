@@ -22,58 +22,46 @@ package org.freeplane.features.filter;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapController.Direction;
+import org.freeplane.features.map.MapNavigationUtils;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev
- * Mar 30, 2009
  */
-class QuickFindAllAction extends AFreeplaneAction {
-	/**
-	 * 
-	 */
+class SelectFilteredNodesAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
-	/**
-	 * 
-	 */
-	private final FilterConditionEditor filterEditor;
 	private final FilterController filterController;
 
 
-	/**
-	 * @param filterController
-	 * @param quickEditor 
-	 */
-	QuickFindAllAction(final FilterController filterController, FilterConditionEditor quickEditor) {
-		super("QuickFindAllAction");
+	SelectFilteredNodesAction(final FilterController filterController) {
+		super("SelectFilteredNodesAction");
 		this.filterController = filterController;
-		this.filterEditor = quickEditor;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final ASelectableCondition condition = filterEditor.getCondition();
-		if(condition == null){
+		if(! filterController.isFilterActive()){
 			return;
 		}
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		final NodeModel selected = selection.getSelected();
         final NodeModel rootNode = selected.getMap().getRootNode();
-		boolean nodeFound = condition.checkNode(rootNode);
+		boolean nodeFound = rootNode.getFilterInfo().isMatched();
 		if(nodeFound){
 			selection.selectAsTheOnlyOneSelected(rootNode);
 		}
 		NodeModel next = rootNode;
 		for(;;){
-			next = filterController.findNext(next, rootNode, Direction.FORWARD, condition);
+			next = MapNavigationUtils.findNext(Direction.FORWARD, next, rootNode);
 			if(next == null){
 				break;
 			}
+			if(next.isHiddenSummary() || ! next.getFilterInfo().isMatched())
+				continue;
 			mapController.displayNode(next);
 			if(nodeFound){
 				selection.toggleSelected(next);
@@ -83,7 +71,7 @@ class QuickFindAllAction extends AFreeplaneAction {
 				nodeFound = true;
 			}
 		}
-		if(condition.checkNode(selected))
+		if(selected.getFilterInfo().isMatched())
 		    selection.makeTheSelected(selected);
 	}
 }

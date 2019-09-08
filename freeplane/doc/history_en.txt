@@ -4,6 +4,7 @@
 Fix menu mnemonics
 Do not output links twice copying nodes to clipboard
 Allow to change positions of LINE shape connectors
+New action: select nodes matching filter
 
 ===============================
 1.7.9

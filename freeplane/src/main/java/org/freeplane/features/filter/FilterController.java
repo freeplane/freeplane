@@ -269,6 +269,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		controller.addAction(new UndoFilterAction(this));
 		controller.addAction(new RedoFilterAction(this));
 		controller.addAction(new ReapplyFilterAction(this));
+		controller.addAction(new SelectFilteredNodesAction(this));
 		controller.addAction(new ShowAncestorsAction(this));
 		controller.addAction(new ShowDescendantsAction(this));
 		controller.addAction(new ApplyToVisibleAction(this));
@@ -410,7 +411,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		    applyToVisibleNodeOnly);
 		final JButton btnEdit = new JButton(controller.getAction("EditFilterAction"));
 		activeFilterConditionComboBox = new JComboBoxWithBorder(getFilterConditions());
-		final JButton applyBtn = new JButton(controller.getAction("ReapplyFilterAction"));
+		final JButton reapplyFilterBtn = new JButton(controller.getAction("ReapplyFilterAction"));
+		final JButton selectFilteredNodesBtn = new JButton(controller.getAction("SelectFilteredNodesAction"));
 		final JButton filterSelectedBtn = new JButton(controller.getAction("ApplySelectedViewConditionAction"));
 		final JButton noFilteringBtn = new JButton(controller.getAction("ApplyNoFilteringAction"));
 		final JButton applyFindPreviousBtn = new JButton(controller.getAction("QuickFindAction.BACK"));
@@ -426,7 +428,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.add(showDescendantsBox);
 		filterToolbar.add(applyToVisibleBox);
 		filterToolbar.add(activeFilterConditionComboBox);
-		filterToolbar.add(applyBtn);
+		filterToolbar.add(reapplyFilterBtn);
+		filterToolbar.add(selectFilteredNodesBtn);
 		filterToolbar.add(filterSelectedBtn);
 		filterToolbar.add(noFilteringBtn);
 		filterToolbar.add(btnEdit);
