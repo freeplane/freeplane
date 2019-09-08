@@ -40,15 +40,28 @@ public interface HeadlessLoader {
 	 * Creates and returns a map or selects and returns a previously loaded map.
 	 *
 	 * @since 1.7.5
+	 * 
+	 * @deprecated since 1.7.10 - use {@link #getMindMap()}
 	 */
-	Map load();
+	@Deprecated
+	default Map load() {return (Map) getMindMap();}
 
+	/** 
+	 * Creates and returns a map or selects and returns a previously loaded map.
+	 * 
+	 * @since 1.5
+	 * 
+	 * @deprecated since 1.7.10 - use {@link #getMindMap()}
+	 * 
+	 * */
+	@Deprecated
+	default Map getMap() {return (Map) getMindMap();}
 	/**
 	 * Creates and returns a map or selects and returns a previously loaded map.
 	 *
 	 * Same as {@link #load()}
 	 *
-	 * @since 1.7.1
+	 * @since 1.7.10
 	 */
-	Map getMap();
+	MindMap getMindMap();
 }

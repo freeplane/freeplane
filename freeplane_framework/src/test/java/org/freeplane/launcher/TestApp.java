@@ -3,7 +3,7 @@ package org.freeplane.launcher;
 import java.io.File;
 
 import org.freeplane.api.HeadlessMapCreator;
-import org.freeplane.api.Map;
+import org.freeplane.api.MindMap;
 import org.freeplane.api.Node;
 
 public class TestApp {
@@ -20,7 +20,7 @@ public class TestApp {
 	private static void createNewMindMap(File freeplaneInstallationDirectory, final File newMapFile) {
 		final Launcher launcher = Launcher.createForInstallation(freeplaneInstallationDirectory).disableSecurityManager();
 		HeadlessMapCreator mapCreator = launcher.launchHeadless();
-		final Map map = mapCreator.mapLoader(TestApp.class.getResource("/templateFile.mm")).unsetMapLocation().load();
+		final MindMap map = mapCreator.mapLoader(TestApp.class.getResource("/templateFile.mm")).unsetMapLocation().load();
 		final Node childNode = map.getRoot().createChild();
 		String value = "hello world";
 		childNode.setText(value);

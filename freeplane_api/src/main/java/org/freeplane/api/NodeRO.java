@@ -156,9 +156,23 @@ public interface NodeRO {
 	/** use it to create and inspect {@link Reminder}s. This property is never null. */
 	Reminder getReminder();
 
-	/** the map this node belongs to. */
-	Map getMap();
+	/** 
+	 * The mind map this node belongs to. 
+	 *
+	 * @since 1.7.10
+	 */
+	MindMap getMindMap();
 
+	/**
+	 * The mind map this node belongs to. 
+	 *
+	 * @since 1.7.5
+	 * 
+	 * @deprecated since 1.7.10 - use {@link #getMindMap()}
+	 */
+	@Deprecated
+	default Map getMap() {return (Map) getMindMap();}
+	
 	/** @deprecated since 1.2 - use Node.getId() instead. */
 	@Deprecated
 	String getNodeID();

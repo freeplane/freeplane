@@ -656,7 +656,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	// NodeRO: R
 	@Override
-	public Proxy.Map getMap() {
+	public Proxy.Map getMindMap() {
 		final MapModel map = getDelegate().getMap();
 		return map != null ? new MapProxy(map, getScriptContext()) : null;
 	}

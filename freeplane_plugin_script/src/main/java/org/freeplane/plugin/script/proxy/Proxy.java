@@ -158,7 +158,7 @@ public interface Proxy {
 		List<String> getExportTypeDescriptions();
 
 		@Override
-		void export(org.freeplane.api.Map map, File destinationFile, String exportTypeDescription,
+		void export(org.freeplane.api.MindMap map, File destinationFile, String exportTypeDescription,
 					boolean overwriteExisting);
 
 		@Override
@@ -173,7 +173,7 @@ public interface Proxy {
 
 	interface Loader extends org.freeplane.api.Loader{
 		@Override
-		Proxy.Map load();
+		Proxy.MindMap getMindMap();
 	}
 
 
@@ -203,9 +203,25 @@ public interface Proxy {
 
 	interface Link extends LinkRO, org.freeplane.api.Link { }
 
-	interface MapRO extends org.freeplane.api.MapRO {	}
+	interface MindMapRO extends org.freeplane.api.MindMapRO {	}
 
-	interface Map extends MapRO , org.freeplane.api.Map {	}
+	interface MindMap extends MindMapRO , org.freeplane.api.MindMap {	}
+
+	/**
+	 * Deprecated mind map interface name.
+	 *  
+	 * @deprecated since 1.7.10, use Proxy.MindMapRO
+	 */
+	@Deprecated
+	interface MapRO extends MindMapRO, org.freeplane.api.MapRO{	}
+
+	/**
+	 * Deprecated mind map interface name.
+	 *  
+	 * @deprecated since 1.7.10 use Proxy.MindMap
+	 */
+	@Deprecated
+	interface Map extends MindMap, org.freeplane.api.Map {	}
 
 	interface NodeRO extends org.freeplane.api.NodeRO {
 

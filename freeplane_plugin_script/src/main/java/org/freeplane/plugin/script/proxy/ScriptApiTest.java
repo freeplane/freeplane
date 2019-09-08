@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.freeplane.api.Map;
+import org.freeplane.api.MindMap;
 import org.freeplane.api.Node;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
@@ -25,7 +25,7 @@ import org.freeplane.features.ui.ViewController;
 public class ScriptApiTest {
 	ControllerProxy c;
 	NodeProxy node;
-	private Map map;
+	private MindMap map;
 	private Comparator<NodeProxy> nodeComparator = new Comparator<NodeProxy>() {
 		@Override
 		public int compare(NodeProxy o1, NodeProxy o2) {
@@ -125,7 +125,7 @@ public class ScriptApiTest {
 		assertEquals("should return null for non-existing attributes", null, map.getRoot().getAttributes().get("x"));
 	}
 
-	private Map setupMapWithSomeAttributes() {
+	private MindMap setupMapWithSomeAttributes() {
 		createTestMap();
 		map.getRoot().getAttributes().add("a1", "va1");
 		map.getRoot().getAttributes().add("a1", "va2");
@@ -157,8 +157,8 @@ public class ScriptApiTest {
 		throw new TestException(m);
 	}
 
-	private Map createTestMap() {
-		map = c.newMap();
+	private MindMap createTestMap() {
+		map = c.newMindMap();
 		map.getRoot().createChild("first node");
 		map.getRoot().createChild("second node");
 		return map;
@@ -375,7 +375,7 @@ public class ScriptApiTest {
 	//
 	//	}
 	public void test_ControllerRO_getSelected() {
-		map = c.newMap();
+		map = c.newMindMap();
 		assertEquals("new root node should be selected", map.getRoot(), c.getSelected());
 		final Node firstChild = map.getRoot().createChild("child 1");
 		final Node secondChild = map.getRoot().createChild("child 2");
@@ -387,7 +387,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_ControllerRO_getSelecteds() {
-		map = c.newMap();
+		map = c.newMindMap();
 		assertEquals("new root node should be selected", map.getRoot(), c.getSelected());
 		final Node firstChild = map.getRoot().createChild("child 1");
 		final Node secondChild = map.getRoot().createChild("child 2");
@@ -404,7 +404,7 @@ public class ScriptApiTest {
 
 	@SuppressWarnings("deprecation")
     public void test_ControllerRO_find_ICondition_condition() {
-		map = c.newMap();
+		map = c.newMindMap();
 		@SuppressWarnings("unused")
 		final Node firstChild = map.getRoot().createChild("child 1");
 		final Node secondChild = map.getRoot().createChild("child 2");
@@ -413,14 +413,14 @@ public class ScriptApiTest {
 	}
 
 	public void test_Controller_centerOnNode_Node_center() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node firstChild = map.getRoot().createChild("child 1");
 		// no actual test
 		c.centerOnNode(firstChild);
 	}
 
 	public void test_Controller_select_Node_toSelect() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node firstChild = map.getRoot().createChild("child 1");
 		final Node secondChild = map.getRoot().createChild("child 2");
 		final Node thirdChild = map.getRoot().createChild("child 3");
@@ -435,7 +435,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_Controller_selectBranch_Node_branchRoot() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node child1 = map.getRoot().createChild("child 1");
 		final Node child2 = map.getRoot().createChild("child 2");
 		final Node grandchild1 = child1.createChild("child 1.1");
@@ -454,7 +454,7 @@ public class ScriptApiTest {
 
 	@SuppressWarnings("deprecation")
 	public void test_Controller_undo_redo_stuff() {
-		map = c.newMap();
+		map = c.newMindMap();
 		map.getRoot().createChild("child 1");
 		assertFalse("node should be there before undo", c.find(new NodeContainsCondition(TextController.FILTER_NODE, "child 1", false)).isEmpty());
 		c.undo();
@@ -506,7 +506,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_Controller_newMap() {
-		map = c.newMap();
+		map = c.newMindMap();
 	}
 
 	//
@@ -634,32 +634,32 @@ public class ScriptApiTest {
 	//
 	//	}
 	public void test_MapRO_getRoot() {
-		map = c.newMap();
+		map = c.newMindMap();
 		assertEquals("the root node shouldn't have a parent", null, map.getRoot().getParent());
 	}
 
 	public void test_MapRO_node_String_id() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node firstChild = map.getRoot().createChild("child 1");
 		final String id = firstChild.getId();
 		assertEquals("get by id returned wrong node", firstChild, map.node(id));
 	}
 
 	public void test_MapRO_getFile() {
-		map = c.newMap();
+		map = c.newMindMap();
 		assertTrue("the file of a new map should be null", map.getFile() == null);
 	}
 
 	public void test_Map_close() {
-		Map originalMap = node.getMap();
-		map = c.newMap();
+		MindMap originalMap = node.getMindMap();
+		map = c.newMindMap();
 		map.getRoot().createChild("child 1");
 		assertFalse("a new map should have been opened", originalMap.equals(map));
 		map.close(true, false);
-		assertEquals("the original map should be selected again", originalMap.getName(), c.getSelected().getMap()
+		assertEquals("the original map should be selected again", originalMap.getName(), c.getSelected().getMindMap()
 		    .getName());
 		// let tearDown() some work to do...
-		map = c.newMap();
+		map = c.newMindMap();
 	}
 
 	public void test_Map_save() {
@@ -673,7 +673,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_NodeRO_getChildPosition_Node_childNode() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node child1 = map.getRoot().createChild("child 1");
 		final Node child2 = map.getRoot().createChild("child 2");
 		assertEquals("wrong position", 0, map.getRoot().getChildPosition(child1));
@@ -681,7 +681,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_NodeRO_getChildren() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node child1 = map.getRoot().createChild("child 1");
 		final Node child2 = map.getRoot().createChild("child 2");
 		final List<? extends Node> children = map.getRoot().getChildren();
@@ -703,7 +703,7 @@ public class ScriptApiTest {
 	//
 	//	}
 	public void test_NodeRO_getIcons() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node root = map.getRoot();
 		assertTrue("by default a node has no icons", root.getIcons().getIcons().isEmpty());
 		root.getIcons().add("bee");
@@ -711,7 +711,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_NodeRO_getLink() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node root = map.getRoot();
 		assertEquals("by default a node has no links", null, root.getLink().getText());
 		final String url = "file://blabla.txt";
@@ -720,20 +720,20 @@ public class ScriptApiTest {
 	}
 
 	public void test_NodeRO_getMap() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node root = map.getRoot();
-		assertEquals("???", map, root.getMap());
+		assertEquals("???", map, root.getMindMap());
 	}
 
 	public void test_NodeRO_getId() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node root = map.getRoot();
 		assertTrue("unknown node id pattern in '" + root.getId() + "'", root.getId().matches("ID_[1-9]\\d+"));
 	}
 
 	@SuppressWarnings("deprecation")
     public void test_NodeRO_getNodeID() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node root = map.getRoot();
 		assertTrue("unknown node id pattern in '" + root.getNodeID() + "'", root.getNodeID().matches("ID_[1-9]\\d+"));
 	}
@@ -752,7 +752,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_NodeRO_getNote_getPlain(){
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node rootNode = map.getRoot();
 		final String plainText = " xx\nx ";
 		rootNode.setNote(plainText);
@@ -770,7 +770,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_NodeRO_getNote() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node root = map.getRoot();
 		root.setNote(" xxx ");
 		// in Groovy also assert HtmlUtils.plainToHTML(" xxx ") == root.note would be OK
@@ -795,7 +795,7 @@ public class ScriptApiTest {
 	//	}
 	//
 	public void test_NodeRO_getPlainText() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node root = map.getRoot();
 		final String plainText = " xxx ";
 		root.setText(plainText);
@@ -813,7 +813,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_NodeRO_getText() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node root = map.getRoot();
 		root.setText(" xxx ");
 		assertEquals("", " xxx ", root.getText());
@@ -860,7 +860,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_NodeRO_isLeaf() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node root = map.getRoot();
 		assertTrue("even root is a leaf, if single", root.isLeaf());
 		root.createChild("child");
@@ -881,7 +881,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_NodeRO_isVisible() {
-		map = c.newMap();
+		map = c.newMindMap();
 		map.getRoot().createChild("first node");
 		map.getRoot().createChild("second node");
 		assertTrue("initially all nodes should be visible", firstChild().isVisible());
@@ -895,7 +895,7 @@ public class ScriptApiTest {
 	/** copy of {@link #test_ControllerRO_find_ICondition_condition()}. */
 	@SuppressWarnings("deprecation")
 	public void test_NodeRO_find_ICondition_condition() {
-		map = c.newMap();
+		map = c.newMindMap();
 		@SuppressWarnings("unused")
 		final Node firstChild = map.getRoot().createChild("child 1");
 		final Node secondChild = map.getRoot().createChild("child 2");
@@ -907,7 +907,7 @@ public class ScriptApiTest {
 	//
 	//	}
 	public void test_NodeRO_getLastModifiedAt() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node child = map.getRoot().createChild("a node");
 		final Date initialLastModifiedAt = child.getLastModifiedAt();
 		long diff = System.currentTimeMillis() - initialLastModifiedAt.getTime();
@@ -928,7 +928,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_NodeRO_getCreatedAt() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node child = map.getRoot().createChild("a node");
 		final Date initialCreatedAt = child.getCreatedAt();
 		final long diff = System.currentTimeMillis() - initialCreatedAt.getTime();
@@ -950,14 +950,14 @@ public class ScriptApiTest {
 	//
 	//	}
 	public void test_Node_createChild() {
-		map = c.newMap();
+		map = c.newMindMap();
 		assertEquals("", 0, map.getRoot().getChildren().size());
 		map.getRoot().createChild();
 		assertEquals("child should be created", 1, map.getRoot().getChildren().size());
 	}
 
 	public void test_Node_createChild_int_position() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node root = map.getRoot();
 		final Node child1 = root.createChild("child 1");
 		final Node child2 = root.createChild("child 2");
@@ -986,7 +986,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_Node_delete() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node root = map.getRoot();
 		final Node child1 = root.createChild("child 1");
 		final Node child2 = root.createChild("child 2");
@@ -997,7 +997,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_Node_moveTo_Node_parentNode() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node root = map.getRoot();
 		final Node child1 = root.createChild("child 1");
 		final Node child2 = root.createChild("child 2");
@@ -1008,7 +1008,7 @@ public class ScriptApiTest {
 	}
 
 	public void test_Node_moveTo_Node_parentNode_int_position() {
-		map = c.newMap();
+		map = c.newMindMap();
 		final Node root = map.getRoot();
 		final Node child1 = root.createChild("child 1");
 		final Node child2 = root.createChild("child 2");

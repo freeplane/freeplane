@@ -203,7 +203,7 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	/** Shortcut for node.map.node(id) - necessary for ids to other maps. */
 	public NodeRO N(String id) {
 		final NodeRO node = (NodeRO) getBinding().getVariable("node");
-		return node.getMap().node(id);
+		return node.getMindMap().node(id);
 	}
 
 	/** Shortcut for node.map.node(id).text. */

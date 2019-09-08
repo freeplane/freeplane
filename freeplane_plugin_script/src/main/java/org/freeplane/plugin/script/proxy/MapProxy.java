@@ -18,13 +18,14 @@ import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.plugin.script.FormulaUtils;
 import org.freeplane.plugin.script.ScriptContext;
 import org.freeplane.plugin.script.proxy.Proxy.Map;
+import org.freeplane.plugin.script.proxy.Proxy.MindMap;
 import org.freeplane.plugin.script.proxy.Proxy.Node;
 
 import java.awt.*;
 import java.io.File;
 import java.util.Map.Entry;
 
-public class MapProxy extends AbstractProxy<MapModel> implements Map {
+public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 	public MapProxy(final MapModel map, final ScriptContext scriptContext) {
 		super(map, scriptContext);
 	}

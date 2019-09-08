@@ -123,13 +123,8 @@ class LoaderProxy implements Proxy.Loader {
 	}
 
 	@Override
-	public Proxy.Map load() {
+	public Proxy.MindMap getMindMap() {
 		MapModel newMap = mapLoader.getMap();
 		return new MapProxy(newMap, scriptContext);
-	}
-
-	@Override
-	public Proxy.Map getMap() {
-		return load();
 	}
 }

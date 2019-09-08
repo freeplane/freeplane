@@ -108,29 +108,56 @@ public interface Controller extends ControllerRO, HeadlessMapCreator {
 	@Override
 	Loader mapLoader(String file);
 
+	/**
+	 * opens a new map with a default name in the foreground.
+	 * @since 1.2 
+	 *
+	 * @deprecated since 1.7.10 - use {@link #newMindMap()}
+	 */
+	default Map newMap() {return (Map) newMindMap();}
+
+	/** 
+	 * @deprecated since 1.6.16 - use {@link #mapLoader(URL)}
+	 * @since 1.2 */
+	@Deprecated
+	default Map newMap(URL url) {
+		return (Map) mapLoader(url).withView().getMindMap();
+	}
+
+	/**  
+	 * @deprecated since 1.6.16 - use {@link #mapLoader(File)}
+	 * @since 1.5 */
+	@Deprecated
+	default Map newMapFromTemplate(File templateFile) {
+		return (Map) mapLoader(templateFile).withView().saveAfterLoading().getMindMap();
+	}
 
 	/**
 	 * opens a new map with a default name in the foreground.
-	 * @since 1.2 */
-	Map newMap();
-
-	/** @deprecated since 1.6.16 - use {@link #mapLoader(URL)}
-	 * @since 1.2 */
-	@Deprecated
-	Map newMap(URL url);
-
-	/**  @deprecated since 1.6.16 - use {@link #mapLoader(File)}
-	 * @since 1.5 */
-	@Deprecated
-	public Map newMapFromTemplate(File templateFile);
-
+	 * @since 1.7.10 */
+	MindMap newMindMap();
+	
 	/** a value of 1 means 100%.
 	 * @since 1.2 */
 	void setZoom(final float ratio);
 
-	/** a list of all opened maps.
-	 * @since 1.5 */
-	List<? extends Map> getOpenMaps();
+	/** 
+	 * a list of all opened maps.
+	 * 
+	 * @since 1.5
+	 * 
+	 * @deprecated since 1.7.10 - use {@link #getOpenMindMaps()}
+	 * 
+	 * */
+	@Deprecated
+	@SuppressWarnings("unchecked")
+	default List<? extends Map> getOpenMaps() {return (List<? extends Map>) getOpenMindMaps();}
+
+	/** 
+	 * a list of all opened maps.
+	 * @since 1.5 
+	 * */
+	List<? extends MindMap> getOpenMindMaps();
 	
 	/**
 	 * @since 1.7.10
