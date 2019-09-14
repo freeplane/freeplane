@@ -19,8 +19,10 @@
  */
 package org.freeplane.features.mode.mindmapmode;
 
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Vector;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -142,8 +144,14 @@ public class MModeController extends ModeController {
 
 	@Override
 	public void execute(final IActor actor, final MapModel map) {
-		addUndoableActor(actor, map);
-		actor.act();
+		try {
+			Controller.getCurrentController().getViewController().invokeAndWait(() -> {
+				addUndoableActor(actor, map);
+				actor.act();
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

@@ -118,7 +118,7 @@ public interface ViewController {
 	
 	public ExecutorService getMainThreadExecutorService();
 
-	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException, ExecutionException;
+	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException;
 
 	public boolean isHeadless();
 

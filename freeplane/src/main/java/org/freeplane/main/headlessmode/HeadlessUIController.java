@@ -215,10 +215,13 @@ public class HeadlessUIController extends FrameController {
 	@Override
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
 		try {
-			if(! executorService.isShutdown())
-			executorService.submit(runnable).get();
+			if(isDispatchThread())
+				runnable.run();
+			else if(! executorService.isShutdown())
+				executorService.submit(runnable).get();
 		}
 		catch (ExecutionException e) {
+			throw new InvocationTargetException(e);
 		}
 	}
 

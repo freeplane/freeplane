@@ -782,7 +782,10 @@ abstract public class FrameController implements ViewController {
 
 	@Override
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
-		EventQueue.invokeAndWait(runnable);
+		if(isDispatchThread())
+			runnable.run();
+		else
+			EventQueue.invokeAndWait(runnable);
 	}
 
 	@Override
