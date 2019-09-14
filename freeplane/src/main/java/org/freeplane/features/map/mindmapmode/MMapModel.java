@@ -52,11 +52,17 @@ public class MMapModel extends MapModel {
 	public MMapModel() {
 		super();
 		this.autosaveEnabled = false;
-		addExtension(IUndoHandler.class, new UndoHandler(this));
 		this.lockManager = ResourceController.getResourceController().getBooleanProperty(
 		"experimental_file_locking_on") ? new LockManager() : new DummyLockManager();
 	}
 
+
+	@Override
+	public void beforeViewCreated() {
+		if(! containsExtension(IUndoHandler.class))
+			addExtension(IUndoHandler.class, new UndoHandler(MMapModel.this));
+	}
+	
 	public void enableAutosave() {
 		Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
 			@Override

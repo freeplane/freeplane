@@ -817,6 +817,7 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	public void createMapView(final MapModel mapModel) {
+		mapModel.beforeViewCreated();
 		Controller.getCurrentController().getMapViewManager().newMapView(mapModel, Controller.getCurrentModeController());
 	}
 

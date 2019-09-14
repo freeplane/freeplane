@@ -22,7 +22,6 @@ package org.freeplane.features.mode.mindmapmode;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Vector;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -67,31 +66,36 @@ public class MModeController extends ModeController {
 
 	private void addUndoableActor(final IActor actor, final MapModel map) {
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
-		undoHandler.addActor(actor);
+		if(undoHandler != null)
+			undoHandler.addActor(actor);
 	}
 
 	public void deactivateUndo(final MMapModel map) {
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
-		undoHandler.deactivate();
+		if(undoHandler != null)
+			undoHandler.deactivate();
 	}
 
 	@Override
 	public void commit() {
 		final MapModel map = getController().getMap();
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
-		undoHandler.commit();
+		if(undoHandler != null)
+			undoHandler.commit();
 	}
 
 	public void delayedCommit() {
 		final MMapModel map = (MMapModel) getController().getMap();
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
-		undoHandler.delayedCommit();
+		if(undoHandler != null)
+			undoHandler.delayedCommit();
 	}
 
 	public void delayedRollback() {
 		final MMapModel map = (MMapModel) getController().getMap();
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
-		undoHandler.delayedRollback();
+		if(undoHandler != null)
+			undoHandler.delayedRollback();
 	}
 
 	private void createActions() {
@@ -166,17 +170,16 @@ public class MModeController extends ModeController {
 	@Override
 	public boolean isUndoAction() {
 		final MapModel model = getController().getMap();
-		if (!(model instanceof MMapModel)) {
-			return false;
-		}
-		return ((MMapModel) model).getExtension(IUndoHandler.class).isUndoActionRunning();
+		IUndoHandler undoHandler = model.getExtension(IUndoHandler.class);
+		return undoHandler != null && undoHandler.isUndoActionRunning();
 	}
 
 	@Override
 	public void rollback() {
 		final MapModel map = getController().getMap();
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
-		undoHandler.rollback();
+		if(undoHandler != null)
+			undoHandler.rollback();
 	}
 
 	/**
@@ -199,14 +202,16 @@ public class MModeController extends ModeController {
 	public void startTransaction() {
 		final MapModel map = getController().getMap();
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
-		undoHandler.startTransaction();
+		if(undoHandler != null)
+			undoHandler.startTransaction();
 	}
 
 	@Override
 	public void forceNewTransaction() {
 		final MapModel map = getController().getMap();
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
-		undoHandler.forceNewTransaction();
+		if(undoHandler != null)
+			undoHandler.forceNewTransaction();
     }
 
 	/**

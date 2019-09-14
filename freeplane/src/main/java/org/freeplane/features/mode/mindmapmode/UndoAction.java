@@ -70,15 +70,16 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener{
 		final Controller controller = Controller.getCurrentController();
 		final MapModel map = controller.getMap();
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
-		undoHandler.getUndoAction().actionPerformed(e);
-
+		if (undoHandler != null)
+			undoHandler.getUndoAction().actionPerformed(e);
 	}
 
 	@Override
 	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
 		if (oldMap instanceof MMapModel) {
 			final IUndoHandler undoHandler = oldMap.getExtension(IUndoHandler.class);
-			undoHandler.removeChangeListener(changeListener);
+			if (undoHandler != null)
+				undoHandler.removeChangeListener(changeListener);
 		}
 		if (newMap == null) {
 			setEnabled(false);

@@ -313,4 +313,7 @@ public class MapModel {
 		Controller.getCurrentModeController().getMapController().closeWithoutSaving(this);
 		return true;
 	}
+
+	public void beforeViewCreated() {
+	}
 }
