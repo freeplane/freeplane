@@ -41,6 +41,8 @@ import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 
+import com.bulenkov.darcula.DarculaLaf;
+
 public class MModeController extends ModeController {
 	private static final String LOOKANDFEEL_PROPERTY = "lookandfeel";
     static public final String MODENAME = "MindMap";
@@ -112,8 +114,8 @@ public class MModeController extends ModeController {
 
 	public static ShowPreferencesAction createShowPreferencesAction(OptionPanelBuilder optionPanelBuilder) {
 	    final LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
-		final Vector<String> lafNames = new Vector<String>(lafInfo.length + 1);
-		final Vector<String> translatedLafNames = new Vector<String>(lafInfo.length + 1);
+		final Vector<String> lafNames = new Vector<String>(lafInfo.length + 2);
+		final Vector<String> translatedLafNames = new Vector<String>(lafInfo.length + 2);
 		lafNames.add("default");
 		translatedLafNames.add(TextUtils.getOptionalText("OptionPanel.default"));
 		for (int i = 0; i < lafInfo.length; i++) {
@@ -122,6 +124,8 @@ public class MModeController extends ModeController {
 			lafNames.add(className);
 			translatedLafNames.add(info.getName());
 		}
+		lafNames.add(DarculaLaf.class.getName());
+		translatedLafNames.add("Darcula");
 		addCurrentLookAndFeelIfNecessary(lafNames, translatedLafNames);
 		optionPanelBuilder.addEditableComboProperty("Appearance/look_and_feel/lookandfeel", LOOKANDFEEL_PROPERTY, lafNames,
 		    translatedLafNames, IndexedTree.AS_CHILD);

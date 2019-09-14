@@ -19,6 +19,7 @@
  */
 package org.freeplane.plugin.script;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -80,13 +81,17 @@ public class ScriptComboBoxEditor implements ComboBoxEditor {
 	protected void editScript(boolean selectAll) {
 		JEditorPane textEditor = new JEditorPane();
 		textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+		textEditor.setBackground(Color.WHITE);
+		textEditor.setForeground(Color.BLACK);
+		textEditor.setSelectedTextColor(Color.BLUE);
 		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 		scrollPane.setMinimumSize(minimumSize);
 		textEditor.setContentType("text/groovy");
 
 		final String fontName = ResourceController.getResourceController().getProperty(ScriptEditorPanel.GROOVY_EDITOR_FONT);
 		final int fontSize = ResourceController.getResourceController().getIntProperty(ScriptEditorPanel.GROOVY_EDITOR_FONT_SIZE);
-		textEditor.setFont(new Font(fontName, Font.PLAIN, fontSize));
+		final Font font = UITools.scaleUI(new Font(fontName, Font.PLAIN, fontSize));
+		textEditor.setFont(font);
 
 		textEditor.setText(script);
 		if(selectAll){

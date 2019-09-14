@@ -1,5 +1,6 @@
 package org.freeplane.plugin.formula;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
@@ -90,6 +91,9 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 		if(text.startsWith("=")){
 			JEditorPane textEditor = new JEditorPane();
 			textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+			textEditor.setBackground(Color.WHITE);
+			textEditor.setForeground(Color.BLACK);
+			textEditor.setSelectedTextColor(Color.BLUE);
 			final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 			scrollPane.setMinimumSize(new Dimension(0, 60));
 			final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);

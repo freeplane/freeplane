@@ -64,8 +64,10 @@ import javax.swing.ToolTipManager;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.metal.MetalFileChooserUI;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
@@ -87,6 +89,8 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.time.TimeComboBoxEditor;
+
+import com.bulenkov.darcula.DarculaLaf;
 
 /**
  * @author Dimitry Polivaev
@@ -534,14 +538,16 @@ abstract public class FrameController implements ViewController {
 	public static void setLookAndFeel(final String lookAndFeel, boolean supportHidpi) {
 		try {
 			if (lookAndFeel.equals("default")) {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+				setLookAndFeelFixDarculaNPE(lookAndFeelClassName);
 			}
 			else {
 				LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
 				boolean setLnF = false;
 				for (LookAndFeelInfo lafInfo : lafInfos) {
 					if (lafInfo.getName().equalsIgnoreCase(lookAndFeel)) {
-						UIManager.setLookAndFeel(lafInfo.getClassName());
+						String lookAndFeelClassName = lafInfo.getClassName();
+						setLookAndFeelFixDarculaNPE(lookAndFeelClassName);
 						setLnF = true;
 						break;
 					}
@@ -606,6 +612,13 @@ abstract public class FrameController implements ViewController {
 		final Color color = UIManager.getColor("control");
 		if (color != null && color.getAlpha() < 255)
 			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
+	}
+
+	private static void setLookAndFeelFixDarculaNPE(String lookAndFeelClassName) throws ClassNotFoundException,
+			InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+		if(DarculaLaf.class.getName().equals(lookAndFeelClassName))
+			UIManager.setLookAndFeel(new MetalLookAndFeel());
+		UIManager.setLookAndFeel(lookAndFeelClassName);
 	}
 
 	private static int getLookAndFeelDefaultMenuItemFontSize() {

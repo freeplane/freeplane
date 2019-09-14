@@ -47,6 +47,7 @@ import javax.swing.event.ChangeListener;
  * @version $LastChangedDate: 2006-04-28 13:50:52 +0200 (Fr, 28 Apr 2006) $
  */
 class JSpinField extends JPanel implements ChangeListener, CaretListener, ActionListener, FocusListener {
+	private static final Color DEFAULT_TEXT_COLOR = UIManager.getColor("TextField.foreground");
 	/**
 	 *
 	 */
@@ -366,7 +367,7 @@ class JSpinField extends JPanel implements ChangeListener, CaretListener, Action
 		}
 		if (updateTextField) {
 			textField.setText(Integer.toString(value));
-			textField.setForeground(Color.black);
+			textField.setForeground(DEFAULT_TEXT_COLOR);
 		}
 		if (firePropertyChange) {
 			firePropertyChange("value", oldValue, value);

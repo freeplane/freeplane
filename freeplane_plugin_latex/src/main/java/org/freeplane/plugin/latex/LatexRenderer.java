@@ -1,5 +1,6 @@
 package org.freeplane.plugin.latex;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
@@ -110,6 +111,9 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 
 		if(latexText != null){
 			JEditorPane textEditor = new JEditorPane();
+			textEditor.setBackground(Color.WHITE);
+			textEditor.setForeground(Color.BLACK);
+			textEditor.setSelectedTextColor(Color.BLUE);
 			textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 			final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 			scrollPane.setMinimumSize(new Dimension(0, 60));
