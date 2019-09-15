@@ -15,10 +15,11 @@ public class ClassLoaderFactory {
 			return name.toLowerCase().endsWith(".jar");
 		}
 	};
-	
+
 	public static URLClassLoader getClassLoaderForUserLib(){
 		final List<URL> userJars = findJars(new String[]{Compat.getApplicationUserDirectory() + "/lib"});
-		final URLClassLoader urlClassLoader = new URLClassLoader(userJars.toArray(new URL[userJars.size()]));
+		final URLClassLoader urlClassLoader = new URLClassLoader(userJars.toArray(new URL[userJars.size()]),
+			ClassLoaderFactory.class.getClassLoader());
 		return urlClassLoader;
 	}
 
