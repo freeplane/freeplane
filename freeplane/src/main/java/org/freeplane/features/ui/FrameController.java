@@ -90,8 +90,6 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.time.TimeComboBoxEditor;
 
-import com.bulenkov.darcula.DarculaLaf;
-
 /**
  * @author Dimitry Polivaev
  */
@@ -616,7 +614,7 @@ abstract public class FrameController implements ViewController {
 
 	private static void setLookAndFeelFixDarculaNPE(String lookAndFeelClassName) throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-		if(DarculaLaf.class.getName().equals(lookAndFeelClassName))
+		if(lookAndFeelClassName.equals("com.bulenkov.darcula.DarculaLaf"))
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
 		UIManager.setLookAndFeel(lookAndFeelClassName);
 	}
