@@ -3,10 +3,6 @@ configurations{
 	compile.extendsFrom(mergedViewerDependencies)
 }
 
-repositories {
-	maven { url "https://repo.spring.io/plugins-release/"}
-}
-
 dependencies {
 	
 	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
