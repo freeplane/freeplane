@@ -31,6 +31,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Serializable;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -69,6 +70,8 @@ public class ColorTracker implements ActionListener, Serializable {
 	}
 
 	static JColorChooser colorChooser = new JColorChooser();
+	
+	private static AtomicReference<Color> lastSelectedColor = new AtomicReference<>(Color.WHITE);
 	/**
 	 *
 	 */
@@ -82,9 +85,9 @@ public class ColorTracker implements ActionListener, Serializable {
 	public static Color showCommonJColorChooserDialog(final Component component, final String title,
 	                                                  final Color initialColor, final Color defaultColor) {
 		final JColorChooser pane = ColorTracker.getCommonJColorChooser();
-		pane.setColor(initialColor != null ? initialColor : (defaultColor != null ? defaultColor : Color.WHITE));
-		final ColorTracker ok = new ColorTracker(pane);
-		final JDialog dialog = JColorChooser.createDialog(component, title, true, pane, ok, null);
+		pane.setColor(initialColor != null ? initialColor : (defaultColor != null ? defaultColor : lastSelectedColor.get()));
+		final ColorTracker tracker = new ColorTracker(pane);
+		final JDialog dialog = JColorChooser.createDialog(component, title, true, pane, tracker, null);
 		final Container container = (Container) dialog.getContentPane().getComponent(1);
 		if(defaultColor != null){
 			final JButton defaultBtn = new JButton(TextUtils.getText("reset_to_default"));
@@ -92,7 +95,7 @@ public class ColorTracker implements ActionListener, Serializable {
 				@Override
 				public void actionPerformed(final ActionEvent e) {
 					dialog.dispose();
-					ok.setColor(defaultColor);
+					tracker.setColor(defaultColor);
 				}
 			});
 			container.add(defaultBtn);
@@ -102,7 +105,9 @@ public class ColorTracker implements ActionListener, Serializable {
 		dialog.pack();
 		UITools.setDialogLocationRelativeTo(dialog, component);
 		dialog.setVisible(true);
-		return ok.getColor();
+		Color color = tracker.getColor();
+		lastSelectedColor.set(color);
+		return color; 
 	}
 
 	public static Color showCommonJColorChooserDialog( final NodeModel nodeModel,
