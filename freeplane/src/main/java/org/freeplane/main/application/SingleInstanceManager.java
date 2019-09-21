@@ -92,11 +92,7 @@ public class SingleInstanceManager {
 			LogUtils.info("Successfully notified first instance.");
 			return true;
 		}
-		catch (UnknownHostException e) {
-			LogUtils.severe(e.getMessage(), e);
-			return false;
-		}
-		catch (IOException e) {
+		catch (Exception e) {
 			LogUtils.warn("Error connecting to existing instance (stale lockfiles may cause this).", e);
 			return false;
 		}
