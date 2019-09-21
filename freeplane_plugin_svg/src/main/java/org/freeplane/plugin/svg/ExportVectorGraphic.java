@@ -45,12 +45,14 @@ import org.w3c.dom.Document;
  */
 abstract class ExportVectorGraphic implements IExportEngine {
 
+	private static final String DARCULA_LAF = "com.bulenkov.darcula.DarculaLaf";
+
 	/**
 	 */
 	protected SVGGraphics2D fillSVGGraphics2D(final MapView view) {
 
 		// work around svg/pdf-Export problems when exporting with Gtk or Nimbus L&Fs
-		final String previousLnF = UIManager.getLookAndFeel().getClass().getName();
+		final String previousLnF = currentLookAndFeelClassName();
 		setLnF(view, UIManager.getCrossPlatformLookAndFeelClassName());
 
 		try
@@ -81,6 +83,10 @@ abstract class ExportVectorGraphic implements IExportEngine {
 		}
 	}
 
+	private String currentLookAndFeelClassName() {
+		return UIManager.getLookAndFeel().getClass().getName();
+	}
+
 	protected SVGGeneratorContext createGeneratorContext(final Document domFactory) {
 		final SVGGeneratorContext ctx = SVGGeneratorContext.createDefault(domFactory);
 		return ctx;
@@ -88,18 +94,20 @@ abstract class ExportVectorGraphic implements IExportEngine {
 
 	private void setLnF(final MapView view, final String LnF)
 	{
-		try {
-			// Set cross-platform Java L&F (also called "Metal")
-			UIManager.setLookAndFeel(LnF);
+		if(! currentLookAndFeelClassName().equals(DARCULA_LAF)) {
+			try {
+				// Set cross-platform Java L&F (also called "Metal")
+				UIManager.setLookAndFeel(LnF);
 
-			Frame frame = JOptionPane.getFrameForComponent(view.getRoot().getRootPane());
-			SwingUtilities.updateComponentTreeUI(frame);
-			// this is recommended but causes the root node to be shifted to the bottom right corner :-(
-			// frame.pack();
-		}
-		catch(Exception ex)
-		{
-			throw new RuntimeException("Error when changing L&F for SVG Export!", ex);
+				Frame frame = JOptionPane.getFrameForComponent(view.getRoot().getRootPane());
+				SwingUtilities.updateComponentTreeUI(frame);
+				// this is recommended but causes the root node to be shifted to the bottom right corner :-(
+				// frame.pack();
+			}
+			catch(Exception ex)
+			{
+				throw new RuntimeException("Error when changing L&F for SVG Export!", ex);
+			}
 		}
 	}
 
