@@ -720,6 +720,17 @@ public class NodeView extends JComponent implements INodeView {
 		return getBackgroundColor();
 	}
 
+	public Color getPaintedBackground() {
+		final Color color;
+		if (useSelectionColors()) {
+			color = getSelectedColor();
+		}
+		else {
+			color = getTextBackground();
+		}
+		return color;
+	}
+	
 	public Color getTextColor() {
 		final Color color = NodeStyleController.getController(getMap().getModeController()).getColor(model);
 		return color;

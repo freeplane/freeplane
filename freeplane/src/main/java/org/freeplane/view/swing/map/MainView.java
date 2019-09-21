@@ -340,14 +340,7 @@ public class MainView extends ZoomableLabel {
 	}
 
 	public Color getPaintedBackground() {
-		final Color color;
-		if (getNodeView().useSelectionColors()) {
-			color = getNodeView().getSelectedColor();
-		}
-		else {
-			color = getNodeView().getTextBackground();
-		}
-		return color;
+		return getNodeView().getPaintedBackground();
 	}
 
 	@Override

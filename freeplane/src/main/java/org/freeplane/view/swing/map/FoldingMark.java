@@ -16,11 +16,7 @@ class DrawableNothing implements Drawable{
 	}
 }
 abstract class DrawableShape implements Drawable{
-	private final Color fillColor;
 
-	public DrawableShape(Color fillColor) {
-		this.fillColor = fillColor;
-	}
 	public void draw(Graphics2D g, NodeView nodeView, Rectangle r) {
 		final Color color = g.getColor(); 
 		final Color edgeColor = nodeView.getMainView().getBorderColor();
@@ -36,13 +32,13 @@ abstract class DrawableShape implements Drawable{
 	}
 	abstract Shape getShape(Rectangle r);
 	protected Color getFillColor(NodeView nodeView) {
-		return fillColor;
+		return nodeView.getPaintedBackground();
 	}
 }
 
 class DrawableEllipse extends DrawableShape{
-	public DrawableEllipse(Color fillColor) {
-		super(fillColor);
+	public DrawableEllipse() {
+		super();
 	}
 	Shape getShape(Rectangle r){
 		return new Ellipse2D.Float(r.x, r.y, r.width, r.height);
@@ -53,8 +49,8 @@ class FoldingCircle extends DrawableEllipse{
 	final private boolean folded;
 	final private boolean hiddenChild;
 
-	public FoldingCircle(Color fillColor, boolean folded, boolean hiddenChild) {
-		super(fillColor);
+	public FoldingCircle(boolean folded, boolean hiddenChild) {
+		super();
 		this.folded  = folded;
 		this.hiddenChild =hiddenChild;
 	}
@@ -86,8 +82,8 @@ class FoldingCircle extends DrawableEllipse{
 }
 
 class DrawableTriangle extends DrawableShape{
-	public DrawableTriangle(Color fillColor) {
-		super(fillColor);
+	public DrawableTriangle() {
+		super();
 	}
 	Shape getShape(Rectangle r){
 		final Polygon polygon = new Polygon();
@@ -102,8 +98,8 @@ class DrawableTriangle extends DrawableShape{
 
 
 class DrawableRectangle extends DrawableShape{
-	public DrawableRectangle(Color fillColor) {
-		super(fillColor);
+	public DrawableRectangle() {
+		super();
 	}
 	Shape getShape(Rectangle r){
 		final Polygon polygon = new Polygon();
@@ -120,11 +116,11 @@ class DrawableRectangle extends DrawableShape{
 	}
 }
 public enum FoldingMark implements Drawable{
-	UNFOLDED(new DrawableNothing()), ITSELF_FOLDED(new DrawableEllipse(Color.WHITE)), UNVISIBLE_CHILDREN_FOLDED(new DrawableEllipse(Color.GRAY)), 
-	SHORTENED(new DrawableTriangle(Color.WHITE)), 
-	CLONE(new DrawableRectangle(Color.WHITE)), 
-	FOLDING_CIRCLE_FOLDED(new FoldingCircle(Color.WHITE, true, false)), FOLDING_CIRCLE_UNFOLDED(new FoldingCircle(Color.WHITE, false, false)),
-	FOLDING_CIRCLE_HIDDEN_CHILD(new FoldingCircle(Color.WHITE, false, true));
+	UNFOLDED(new DrawableNothing()), ITSELF_FOLDED(new DrawableEllipse()), UNVISIBLE_CHILDREN_FOLDED(new DrawableEllipse()), 
+	SHORTENED(new DrawableTriangle()), 
+	CLONE(new DrawableRectangle()), 
+	FOLDING_CIRCLE_FOLDED(new FoldingCircle(true, false)), FOLDING_CIRCLE_UNFOLDED(new FoldingCircle(false, false)),
+	FOLDING_CIRCLE_HIDDEN_CHILD(new FoldingCircle(false, true));
 	final Drawable drawable;
 
 	FoldingMark(Drawable drawable){
