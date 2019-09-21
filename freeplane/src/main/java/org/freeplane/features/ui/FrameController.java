@@ -75,10 +75,12 @@ import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
+import org.freeplane.core.ui.components.FixDarculaToggleButtonUI;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.util.ClassLoaderFactory;
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.format.FormattedDate;
@@ -94,6 +96,7 @@ import org.freeplane.features.time.TimeComboBoxEditor;
  * @author Dimitry Polivaev
  */
 abstract public class FrameController implements ViewController {
+	private static final String DARCULA_LAF_NAME = "com.bulenkov.darcula.DarculaLaf";
 	private static final double DEFAULT_SCALING_FACTOR = 0.8;
 	private static final Quantity<LengthUnits> ICON_SIZE = new Quantity<LengthUnits>(12, LengthUnits.pt);
 
@@ -539,6 +542,7 @@ abstract public class FrameController implements ViewController {
 				String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
 				fixDarculaNPE(lookAndFeelClassName);
 				UIManager.setLookAndFeel(lookAndFeelClassName);
+				fixDarculaButtonUI();
 			}
 			else {
 				LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
@@ -548,6 +552,7 @@ abstract public class FrameController implements ViewController {
 						String lookAndFeelClassName = lafInfo.getClassName();
 						fixDarculaNPE(lookAndFeelClassName);
 						UIManager.setLookAndFeel(lookAndFeelClassName);
+						fixDarculaButtonUI();
 						setLnF = true;
 						break;
 					}
@@ -558,6 +563,7 @@ abstract public class FrameController implements ViewController {
 						final Class<?> lookAndFeelClass = userLibClassLoader.loadClass(lookAndFeel);
 						fixDarculaNPE(lookAndFeelClass.getName());
 						UIManager.setLookAndFeel((LookAndFeel) lookAndFeelClass.newInstance());
+						fixDarculaButtonUI();
 						final ClassLoader uiClassLoader = lookAndFeelClass.getClassLoader();
 						if (userLibClassLoader != uiClassLoader)
 							userLibClassLoader.close();
@@ -617,8 +623,16 @@ abstract public class FrameController implements ViewController {
 	}
 
 	private static void fixDarculaNPE(String lookAndFeelClassName) throws UnsupportedLookAndFeelException {
-		if(lookAndFeelClassName.equals("com.bulenkov.darcula.DarculaLaf"))
+		if(lookAndFeelClassName.equals(DARCULA_LAF_NAME))
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
+	}
+
+	private static void fixDarculaButtonUI(){
+		if(UIManager.getLookAndFeel().getClass().getName().equals(DARCULA_LAF_NAME)) {
+			UIManager.put("ToggleButtonUI", FixDarculaToggleButtonUI.class.getName());
+			UIManager.put("Button.darcula.selection.color1", ColorUtils.rgbStringToColor("#687f88"));
+			UIManager.put("Button.darcula.selection.color2", ColorUtils.rgbStringToColor("#436188"));
+		}
 	}
 
 	private static int getLookAndFeelDefaultMenuItemFontSize() {
