@@ -17,6 +17,7 @@
 #define MyAppPublisher "Open source"
 #define MyAppURL "http://sourceforge.net/projects/freeplane/"
 #define MyAppExeName "freeplane.exe"
+#define ConfigurationDirectory 'Freeplane\1.7.x'
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -58,11 +59,11 @@ LanguageDetectionMethod=locale
 WizardImageFile=WizModernImage-IS.bmp
 
 [Languages]
-Name: english; MessagesFile: compiler:Default.isl,messages_en.txt; LicenseFile: gpl-2.0_english.txt
-Name: croatian; MessagesFile: compiler:Languages\Croatian.isl,messages_hr.txt; LicenseFile: gpl-2.0_croatian.txt
-Name: french; MessagesFile: compiler:Languages\French.isl,messages_fr.txt; LicenseFile: gpl-2.0_french.txt
-Name: german; MessagesFile: compiler:Languages\German.isl,messages_de.txt; LicenseFile: gpl-2.0_german.txt
-Name: russian; MessagesFile: compiler:Languages\Russian.isl,messages_ru.txt; LicenseFile: gpl-2.0_russian.txt
+Name: english; MessagesFile: compiler:Default.isl,messages_en.isl; LicenseFile: gpl-2.0_english.txt
+Name: croatian; MessagesFile: compiler:Languages\Croatian.isl,messages_hr.isl; LicenseFile: gpl-2.0_croatian.txt
+Name: french; MessagesFile: compiler:Languages\French.isl,messages_fr.isl; LicenseFile: gpl-2.0_french.txt
+Name: german; MessagesFile: compiler:Languages\German.isl,messages_de.isl; LicenseFile: gpl-2.0_german.txt
+Name: russian; MessagesFile: compiler:Languages\Russian.isl,messages_ru.isl; LicenseFile: gpl-2.0_russian.txt
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
@@ -111,3 +112,20 @@ Name: {app}\plugins; Type: filesandordirs; Tasks: ; Languages:
 [Dirs]
 Name: {userappdata}\Freeplane; Flags: uninsneveruninstall; Tasks: ; Languages: 
 
+[Code]
+// ask for delete config file during uninstall
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+  UserConfigurationDirectory: String;
+begin
+  case CurUninstallStep of
+    usUninstall:
+      begin
+        UserConfigurationDirectory := ExpandConstant('{userappdata}\{#ConfigurationDirectory}');
+        if DirExists(UserConfigurationDirectory) AND (MsgBox(ExpandConstant('{cm:DeleteConfigurationFiles,{username}}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES) then
+          begin
+             DelTree(UserConfigurationDirectory, True, True, True);
+          end
+      end;
+  end;
+end;

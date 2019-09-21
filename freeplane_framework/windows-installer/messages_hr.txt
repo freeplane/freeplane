@@ -1,4 +1,0 @@
-[CustomMessages]
-JavaNotFound=Java 1.5 or greater not detected. - You have to download and install Java from http://java.sun.com/ - \nContinue with installation?
-
-
