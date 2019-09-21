@@ -537,7 +537,8 @@ abstract public class FrameController implements ViewController {
 		try {
 			if (lookAndFeel.equals("default")) {
 				String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
-				setLookAndFeelFixDarculaNPE(lookAndFeelClassName);
+				fixDarculaNPE(lookAndFeelClassName);
+				UIManager.setLookAndFeel(lookAndFeelClassName);
 			}
 			else {
 				LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
@@ -545,7 +546,8 @@ abstract public class FrameController implements ViewController {
 				for (LookAndFeelInfo lafInfo : lafInfos) {
 					if (lafInfo.getName().equalsIgnoreCase(lookAndFeel)) {
 						String lookAndFeelClassName = lafInfo.getClassName();
-						setLookAndFeelFixDarculaNPE(lookAndFeelClassName);
+						fixDarculaNPE(lookAndFeelClassName);
+						UIManager.setLookAndFeel(lookAndFeelClassName);
 						setLnF = true;
 						break;
 					}
@@ -554,6 +556,7 @@ abstract public class FrameController implements ViewController {
 					final URLClassLoader userLibClassLoader = ClassLoaderFactory.getClassLoaderForUserLib();
 					try {
 						final Class<?> lookAndFeelClass = userLibClassLoader.loadClass(lookAndFeel);
+						fixDarculaNPE(lookAndFeelClass.getName());
 						UIManager.setLookAndFeel((LookAndFeel) lookAndFeelClass.newInstance());
 						final ClassLoader uiClassLoader = lookAndFeelClass.getClassLoader();
 						if (userLibClassLoader != uiClassLoader)
@@ -561,6 +564,7 @@ abstract public class FrameController implements ViewController {
 						UIManager.getDefaults().put("ClassLoader", uiClassLoader);
 					}
 					catch (ClassNotFoundException | ClassCastException | InstantiationException e) {
+						LogUtils.warn("Error while setting Look&Feel" + lookAndFeel + ", reverted to default");
 						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 						Controller.getCurrentController().getResourceController().setProperty("lookandfeel", "default");
 					}
@@ -612,11 +616,9 @@ abstract public class FrameController implements ViewController {
 			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
 	}
 
-	private static void setLookAndFeelFixDarculaNPE(String lookAndFeelClassName) throws ClassNotFoundException,
-			InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+	private static void fixDarculaNPE(String lookAndFeelClassName) throws UnsupportedLookAndFeelException {
 		if(lookAndFeelClassName.equals("com.bulenkov.darcula.DarculaLaf"))
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
-		UIManager.setLookAndFeel(lookAndFeelClassName);
 	}
 
 	private static int getLookAndFeelDefaultMenuItemFontSize() {
@@ -772,7 +774,7 @@ abstract public class FrameController implements ViewController {
 	public ExecutorService getMainThreadExecutorService() {
 		return EventQueueExecutorServiceAdapter.INSTANCE;
 	}
-	
+
 	@Override
 	public void invokeLater(Runnable runnable) {
 		EventQueue.invokeLater(runnable);
