@@ -181,8 +181,9 @@ class ScriptingRegistration {
 		FilterController.getCurrentFilterController().getConditionFactory().addConditionController(200,
 			new ScriptConditionController());
 		ScriptingPolicy.installRestrictingPolicy();
-		if(System.getSecurityManager() != null)
-			System.setSecurityManager(new InternationalizedSecurityManager());
+		SecurityManager delegate = System.getSecurityManager();
+		if(delegate != null)
+			System.setSecurityManager(new InternationalizedSecurityManager(delegate));
 	}
 
 	private void registerGuiStuff(ModeController modeController) {

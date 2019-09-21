@@ -23,12 +23,14 @@ package org.freeplane.plugin.svg;
 import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.transcoder.SVGAbstractTranscoder;
+import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.ImageTranscoder;
 import org.apache.fop.svg.AbstractFOPTranscoder;
 import org.apache.fop.svg.PDFTranscoder;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.security.QuickSecurityManager;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.map.MapModel;
@@ -41,6 +43,8 @@ import org.w3c.dom.Element;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.List;
 
 /**
@@ -84,7 +88,7 @@ class ExportPdf extends ExportVectorGraphic {
 			final FileOutputStream ostream = new FileOutputStream(chosenFile);
 			final BufferedOutputStream bufStream = new BufferedOutputStream(ostream);
 			final TranscoderOutput output = new TranscoderOutput(bufStream);
-			pdfTranscoder.transcode(input, output);
+			transcode(pdfTranscoder, input, output);
 			ostream.flush();
 			ostream.close();
 		}
@@ -96,8 +100,23 @@ class ExportPdf extends ExportVectorGraphic {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
-	
-	
+
+	private void transcode(final PDFTranscoder pdfTranscoder, final TranscoderInput input,
+			final TranscoderOutput output) throws Exception {
+		AccessController.doPrivileged(new PrivilegedAction<Void>() {
+
+			@Override
+			public Void run() {
+				try {
+					QuickSecurityManager.skipChecks(() -> pdfTranscoder.transcode(input, output));
+				} catch (TranscoderException e) {
+					throw new RuntimeException(e);
+				}
+				return null;
+			}
+		});
+		
+	}
 
 	protected SVGGeneratorContext createGeneratorContext(final Document domFactory) {
 		final SVGGeneratorContext ctx = super.createGeneratorContext(domFactory);

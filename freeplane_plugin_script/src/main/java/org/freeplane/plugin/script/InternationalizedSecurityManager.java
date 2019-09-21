@@ -38,14 +38,17 @@ class InternationalizedSecurityManager extends SecurityManager {
 	private static final int PERM_Read = 8;
 	private static final int PERM_SetFactory = 4;
 	private static final int PERM_Write = 9;
+	
+	final private SecurityManager delegate;
 
-	public InternationalizedSecurityManager() {
+	public InternationalizedSecurityManager(SecurityManager delegate) {
+		this.delegate = delegate;
 	}
 
 	@Override
 	public void checkAccept(final String pHost, final int pPort) {
 		try{
-			super.checkAccept(pHost, pPort);
+			delegate.checkAccept(pHost, pPort);
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_NETWORK, InternationalizedSecurityManager.PERM_Accept);
@@ -55,7 +58,7 @@ class InternationalizedSecurityManager extends SecurityManager {
 	@Override
 	public void checkConnect(final String pHost, final int pPort) {
 		try{
-			super.checkConnect(pHost, pPort);
+			delegate.checkConnect(pHost, pPort);
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_NETWORK, InternationalizedSecurityManager.PERM_Connect);
@@ -74,15 +77,15 @@ class InternationalizedSecurityManager extends SecurityManager {
 
 	private void checkConnectHandleNullContext(final String pHost, final int pPort, final Object pContext) {
 		if(pContext != null)
-			super.checkConnect(pHost, pPort, pContext);
+			delegate.checkConnect(pHost, pPort, pContext);
 		else
-			super.checkConnect(pHost, pPort);
+			delegate.checkConnect(pHost, pPort);
 	}
 
 	@Override
 	public void checkDelete(final String pFile) {
 		try{
-			super.checkDelete(pFile);
+			delegate.checkDelete(pFile);
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_FILE, InternationalizedSecurityManager.PERM_Delete);
@@ -92,7 +95,7 @@ class InternationalizedSecurityManager extends SecurityManager {
 	@Override
 	public void checkExec(final String pCmd) {
 		try{
-			super.checkExec(pCmd);
+			delegate.checkExec(pCmd);
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_EXEC, InternationalizedSecurityManager.PERM_Exec);
@@ -103,7 +106,7 @@ class InternationalizedSecurityManager extends SecurityManager {
 	@Override
 	public void checkLink(final String pLib) {
 		try{
-			super.checkLink(pLib);
+			delegate.checkLink(pLib);
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_EXEC, InternationalizedSecurityManager.PERM_Link);
@@ -113,7 +116,7 @@ class InternationalizedSecurityManager extends SecurityManager {
 	@Override
 	public void checkListen(final int pPort) {
 		try{
-			super.checkListen(pPort);
+			delegate.checkListen(pPort);
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_NETWORK, InternationalizedSecurityManager.PERM_Listen);
@@ -123,7 +126,7 @@ class InternationalizedSecurityManager extends SecurityManager {
 	@Override
 	public void checkMulticast(final InetAddress pMaddr) {
 		try{
-			super.checkMulticast(pMaddr);
+			delegate.checkMulticast(pMaddr);
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_NETWORK, InternationalizedSecurityManager.PERM_Multicast);
@@ -133,7 +136,7 @@ class InternationalizedSecurityManager extends SecurityManager {
 	@Override
 	public void checkMulticast(final InetAddress pMaddr, final byte pTtl) {
 		try{
-			super.checkMulticast(pMaddr, pTtl);
+			delegate.checkMulticast(pMaddr, pTtl);
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_NETWORK, InternationalizedSecurityManager.PERM_Multicast);
@@ -143,7 +146,7 @@ class InternationalizedSecurityManager extends SecurityManager {
 	@Override
 	public void checkRead(final FileDescriptor pFd) {
 		try{
-			super.checkRead(pFd);
+			delegate.checkRead(pFd);
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_FILE, InternationalizedSecurityManager.PERM_Read);
@@ -153,7 +156,7 @@ class InternationalizedSecurityManager extends SecurityManager {
 	@Override
 	public void checkRead(final String pFile) {
 		try{
-			super.checkRead(pFile);
+			delegate.checkRead(pFile);
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_FILE, InternationalizedSecurityManager.PERM_Read, pFile);
@@ -163,7 +166,7 @@ class InternationalizedSecurityManager extends SecurityManager {
 	@Override
 	public void checkRead(final String pFile, final Object pContext) {
 		try{
-			super.checkRead(pFile, pContext);
+			delegate.checkRead(pFile, pContext);
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_FILE, InternationalizedSecurityManager.PERM_Read, pFile);
@@ -173,7 +176,7 @@ class InternationalizedSecurityManager extends SecurityManager {
 	@Override
 	public void checkSetFactory() {
 		try{
-			super.checkSetFactory();
+			delegate.checkSetFactory();
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_NETWORK, InternationalizedSecurityManager.PERM_SetFactory);
@@ -183,7 +186,7 @@ class InternationalizedSecurityManager extends SecurityManager {
 	@Override
 	public void checkWrite(final FileDescriptor pFd) {
 		try{
-			super.checkWrite(pFd);
+			delegate.checkWrite(pFd);
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_FILE, InternationalizedSecurityManager.PERM_Write);
@@ -193,7 +196,7 @@ class InternationalizedSecurityManager extends SecurityManager {
 	@Override
 	public void checkWrite(final String pFile) {
 		try{
-			super.checkWrite(pFile);
+			delegate.checkWrite(pFile);
 		}
 		catch(AccessControlException e){
 			throw getException(e, InternationalizedSecurityManager.PERM_GROUP_FILE, InternationalizedSecurityManager.PERM_Write);
@@ -212,17 +215,12 @@ class InternationalizedSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPermission(Permission perm) {
-		disallowSupressingAccessChecks(perm);
-		super.checkPermission(perm);
-	}
-
-	private void disallowSupressingAccessChecks(Permission perm) {
+		delegate.checkPermission(perm);
 	}
 
 	@Override
 	public void checkPermission(Permission perm, Object context) {
-		disallowSupressingAccessChecks(perm);
-		super.checkPermission(perm, context);	
+		delegate.checkPermission(perm, context);	
 	}
 	
 	
