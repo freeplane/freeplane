@@ -70,7 +70,6 @@ jar {
                     org.freeplane.core.io.xml,
                     org.freeplane.core.resources,
                     org.freeplane.core.resources.components,
-                    org.freeplane.core.security,
                     org.freeplane.core.ui,
                     org.freeplane.core.ui.components,
                     org.freeplane.core.ui.components.calendar,

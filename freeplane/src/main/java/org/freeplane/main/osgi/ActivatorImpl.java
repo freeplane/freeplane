@@ -20,7 +20,6 @@
 package org.freeplane.main.osgi;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.security.QuickSecurityManager;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
@@ -176,19 +175,10 @@ class ActivatorImpl implements BundleActivator {
 		else if (singleInstanceManager.isMasterPresent()) {
 			starter.setDontLoadLastMaps();
 		}
-
-		if(System.getSecurityManager() != null)
-			System.setSecurityManager(new QuickSecurityManager());
-
-		final Controller controller = QuickSecurityManager.skipChecks(() -> {
-
-			loadPlugins(context);
-			final Controller c = starter.createController();
-			starter.createModeControllers(c);
-			installControllerExtensions(context, c);
-			return c;
-		});
-		
+		loadPlugins(context);
+		final Controller controller = starter.createController();
+		starter.createModeControllers(controller);
+		installControllerExtensions(context, controller);
 		if ("true".equals(System.getProperty("org.freeplane.exit_on_start", null))) {
 			controller.getViewController().invokeLater(new Runnable() {
 				@Override
@@ -199,7 +189,6 @@ class ActivatorImpl implements BundleActivator {
 			});
 			return;
 		}
-		
 		controller.getViewController().invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -209,10 +198,8 @@ class ActivatorImpl implements BundleActivator {
 					if (bundle.getState() == Bundle.ACTIVE)
 						plugins.add(bundle.getSymbolicName());
 				}
-				QuickSecurityManager.skipChecks(() -> {
-					FilterController.getController(controller).loadDefaultConditions();
-					starter.buildMenus(controller, plugins);
-				});
+				FilterController.getController(controller).loadDefaultConditions();
+				starter.buildMenus(controller, plugins);
 				starter.createFrame(getCallParameters());
 			}
 		});
@@ -275,7 +262,7 @@ class ActivatorImpl implements BundleActivator {
 		osgiExtentionInstaller.installExtensions(controller);
 	}
 
-	private FreeplaneStarter createStarter() {
+	public FreeplaneStarter createStarter() {
 		if(runsHeadless())
 			return new FreeplaneHeadlessStarter();
 		else
