@@ -1,2 +1,5 @@
+[LangOptions]
+LanguageCodePage=1250
+
 [CustomMessages]
-DeleteConfigurationFiles=Delete all Freeplane user configuration and resource files for user %1?
+DeleteConfigurationFiles=Treba li izbrisati sve korisnièke konfiguracije i datoteke resursa Freeplanea za korisnika% 1?

@@ -59,11 +59,13 @@ LanguageDetectionMethod=locale
 WizardImageFile=WizModernImage-IS.bmp
 
 [Languages]
-Name: english; MessagesFile: compiler:Default.isl,messages_en.isl; LicenseFile: gpl-2.0_english.txt
-Name: croatian; MessagesFile: compiler:Languages\Croatian.isl,messages_hr.isl; LicenseFile: gpl-2.0_croatian.txt
-Name: french; MessagesFile: compiler:Languages\French.isl,messages_fr.isl; LicenseFile: gpl-2.0_french.txt
-Name: german; MessagesFile: compiler:Languages\German.isl,messages_de.isl; LicenseFile: gpl-2.0_german.txt
-Name: russian; MessagesFile: compiler:Languages\Russian.isl,messages_ru.isl; LicenseFile: gpl-2.0_russian.txt
+Name: English; MessagesFile: compiler:Default.isl,messages_en.isl; LicenseFile: gpl-2.0_english.txt
+Name: Croatian; MessagesFile: Croatian.isl,messages_hr.isl; LicenseFile: gpl-2.0_croatian.txt
+Name: French; MessagesFile: compiler:Languages\French.isl,messages_fr.isl; LicenseFile: gpl-2.0_french.txt
+Name: German; MessagesFile: compiler:Languages\German.isl,messages_de.isl; LicenseFile: gpl-2.0_german.txt
+Name: Russian; MessagesFile: compiler:Languages\Russian.isl,messages_ru.isl; LicenseFile: gpl-2.0_russian.txt
+Name: Spanish; MessagesFile: compiler:Languages\Spanish.isl,messages_es.isl; LicenseFile: gpl-2.0_english.txt
+Name: Portuguese; MessagesFile: compiler:Languages\Portuguese.isl,messages_pt.isl; LicenseFile: gpl-2.0_portuguese.txt
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
