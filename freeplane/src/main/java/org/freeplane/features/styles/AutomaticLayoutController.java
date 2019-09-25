@@ -100,7 +100,7 @@ public class AutomaticLayoutController extends PersistentNodeHook implements IEx
     protected IExtension toggle(NodeModel node, IExtension extension) {
 		extension = super.toggle(node, extension);
 	    final MapModel map = node.getMap();
-	    if(map.isUndoAction()){
+	    if(map.isUndoActionRunning()){
 	    	return extension;
 	    }
 		LogicalStyleController.getController().refreshMap(map);

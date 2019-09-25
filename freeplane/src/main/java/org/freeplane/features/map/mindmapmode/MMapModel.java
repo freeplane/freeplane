@@ -155,7 +155,7 @@ public class MMapModel extends MapModel {
 	}
 
 	@Override
-	public boolean isUndoAction() {
+	public boolean isUndoActionRunning() {
 		IUndoHandler undoHandler = getExtension(IUndoHandler.class);
 		return undoHandler != null && undoHandler.isUndoActionRunning();
 	}

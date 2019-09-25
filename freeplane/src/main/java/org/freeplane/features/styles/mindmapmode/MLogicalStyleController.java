@@ -142,7 +142,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			final ModeController modeController = Controller.getCurrentModeController();
 			final NodeModel node = event.getNode();
 			final MapModel map = node.getMap();
-			if (modeController == null || map.isUndoAction()) {
+			if (modeController == null || map.isUndoActionRunning()) {
 				return;
 			}
 			if (!event.getProperty().equals(LogicalStyleModel.class)) {

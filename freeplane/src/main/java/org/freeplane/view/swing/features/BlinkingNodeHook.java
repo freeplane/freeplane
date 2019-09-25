@@ -123,7 +123,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 
 		@Override
 		public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-			if (node.getMap().isUndoAction()
+			if (node.getMap().isUndoActionRunning()
 					|| !(node.equals(nodeDeletionEvent.node)
 							|| node.isDescendantOf(nodeDeletionEvent.node))) {
 				return;

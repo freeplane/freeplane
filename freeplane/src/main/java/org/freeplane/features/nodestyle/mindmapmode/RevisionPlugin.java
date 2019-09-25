@@ -61,7 +61,7 @@ public class RevisionPlugin extends PersistentNodeHook implements INodeChangeLis
 			return;
 		}
 		if (event.getProperty().equals(NodeModel.NODE_TEXT)
-				&& !node.getMap().isUndoAction()) {
+				&& !node.getMap().isUndoActionRunning()) {
 			final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 			    .getController();
 			final String colorProperty = ResourceController.getResourceController().getProperty("revision_color");
