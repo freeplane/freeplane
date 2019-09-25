@@ -25,12 +25,12 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.map.INodeChangeListener;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
-import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -61,7 +61,7 @@ public class RevisionPlugin extends PersistentNodeHook implements INodeChangeLis
 			return;
 		}
 		if (event.getProperty().equals(NodeModel.NODE_TEXT)
-				&& !((MModeController) Controller.getCurrentModeController()).isUndoAction(node.getMap())) {
+				&& !node.getMap().isUndoAction()) {
 			final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 			    .getController();
 			final String colorProperty = ResourceController.getResourceController().getProperty("revision_color");

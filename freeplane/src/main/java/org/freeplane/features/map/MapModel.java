@@ -316,4 +316,8 @@ public class MapModel {
 
 	public void beforeViewCreated() {
 	}
+
+	public boolean isUndoAction() {
+		return false;
+	}
 }

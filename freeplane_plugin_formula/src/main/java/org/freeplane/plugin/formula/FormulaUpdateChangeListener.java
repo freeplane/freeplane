@@ -80,10 +80,6 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 	 * So there won't be any updates on the parent, even if it has formula that needs an update due to the
 	 * changed children count. */
 	private void nodeChangedImpl(boolean includeChanged, NodeModel... nodes) {
-		//FIXME: needed???
-		//		if (modeController == null || modeController.isUndoAction()) {
-		//			return;
-		//		}
 		final List<NodeModel> dependencies = FormulaDependencies.manageChangeAndReturnDependencies(includeChanged, nodes);
 		refresh(dependencies);
 	}

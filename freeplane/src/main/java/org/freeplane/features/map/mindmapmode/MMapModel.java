@@ -62,7 +62,7 @@ public class MMapModel extends MapModel {
 		if(! containsExtension(IUndoHandler.class))
 			addExtension(IUndoHandler.class, new UndoHandler(MMapModel.this));
 	}
-	
+
 	public void enableAutosave() {
 		Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
 			@Override
@@ -152,5 +152,11 @@ public class MMapModel extends MapModel {
 		final ModeController modeController = controller.getModeController(MModeController.MODENAME);
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		return mapController.close(this);
+	}
+
+	@Override
+	public boolean isUndoAction() {
+		IUndoHandler undoHandler = getExtension(IUndoHandler.class);
+		return undoHandler != null && undoHandler.isUndoActionRunning();
 	}
 }

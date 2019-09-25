@@ -156,7 +156,7 @@ public class MMapController extends MapController {
 				}
 
 				private void onNodeDeleted(final NodeModel node) {
-					if (!getModeController().isUndoAction(node.getMap()) && ! node.isFolded() && ! node.hasChildren() && SummaryNode.isSummaryNode(node)&& node.getText().isEmpty()){
+					if (!node.getMap().isUndoAction() && ! node.isFolded() && ! node.hasChildren() && SummaryNode.isSummaryNode(node)&& node.getText().isEmpty()){
 						deleteSingleSummaryNode(node);
 					}
 				}

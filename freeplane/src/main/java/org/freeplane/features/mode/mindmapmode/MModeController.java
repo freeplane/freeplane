@@ -168,12 +168,6 @@ public class MModeController extends ModeController {
 	}
 
 	@Override
-	public boolean isUndoAction(final MapModel model) {
-		IUndoHandler undoHandler = model.getExtension(IUndoHandler.class);
-		return undoHandler != null && undoHandler.isUndoActionRunning();
-	}
-
-	@Override
 	public void rollback() {
 		final MapModel map = getController().getMap();
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);

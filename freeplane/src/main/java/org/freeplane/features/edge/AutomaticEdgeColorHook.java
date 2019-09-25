@@ -32,7 +32,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
-import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
@@ -50,7 +49,7 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 	private class Listener implements IMapChangeListener {
 		@Override
 	    public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-			if(!isActiveOnCreation(child) || modeController.isUndoAction(parent.getMap())){
+			if(!isActiveOnCreation(child) || parent.getMap().isUndoAction()){
 				return;
 			}
 			if(MapStyleModel.FLOATING_STYLE.equals(LogicalStyleModel.getStyle(child)))
@@ -145,8 +144,7 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
     protected IExtension toggle(NodeModel node, IExtension extension) {
 		extension = super.toggle(node, extension);
 		final MapModel map = node.getMap();
-	    final MModeController modeController = (MModeController) Controller.getCurrentModeController();
-	    if(modeController.isUndoAction(map)){
+	    if(map.isUndoAction()){
 	    	return extension;
 	    }
 		LogicalStyleController.getController().refreshMap(map);

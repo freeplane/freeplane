@@ -864,7 +864,7 @@ implements IExtension, NodeChangeAnnouncer{
 		final MapModel map = node.getMap();
 		if(nodeChangeEvent.setsDirtyFlag())
 			setSaved(map, false);
-		if (nodeChangeEvent.updatesModificationTime() && !Controller.getCurrentModeController().isUndoAction(map)) {
+		if (nodeChangeEvent.updatesModificationTime() && !map.isUndoAction()) {
 			final HistoryInformationModel historyInformation = node.getHistoryInformation();
 			if (historyInformation != null) {
 				final IActor historyActor = new IActor() {
