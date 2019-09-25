@@ -140,14 +140,14 @@ public class MLogicalStyleController extends LogicalStyleController {
 		@Override
 		public void nodeChanged(final NodeChangeEvent event) {
 			final ModeController modeController = Controller.getCurrentModeController();
-			if (modeController == null || modeController.isUndoAction()) {
+			final NodeModel node = event.getNode();
+			final MapModel map = node.getMap();
+			if (modeController == null || modeController.isUndoAction(map)) {
 				return;
 			}
 			if (!event.getProperty().equals(LogicalStyleModel.class)) {
 				return;
 			}
-			final NodeModel node = event.getNode();
-			final MapModel map = node.getMap();
 			final IStyle styleKey = (IStyle) event.getNewValue();
 			final MapStyleModel mapStyles = MapStyleModel.getExtension(map);
 			final NodeModel styleNode = mapStyles.getStyleNode(styleKey);

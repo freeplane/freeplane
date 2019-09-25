@@ -531,7 +531,7 @@ implements IExtension, NodeChangeAnnouncer{
 		if(!isHeadless())
 			nodeChangeListeners.add(listener);
 	}
-	
+
 	public void addNodeChangeListener(final INodeChangeListener listener) {
 		nodeChangeListeners.add(listener);
 	}
@@ -539,7 +539,7 @@ implements IExtension, NodeChangeAnnouncer{
 	private boolean isHeadless() {
 		return Controller.getCurrentController().getViewController().isHeadless();
 	}
-	
+
 	public void addMapLifeCycleListener(final IMapLifeCycleListener listener) {
 		mapLifeCycleListeners.add(listener);
 	}
@@ -861,9 +861,10 @@ implements IExtension, NodeChangeAnnouncer{
 			return;
 		}
 		final NodeModel node = nodeChangeEvent.getNode();
+		final MapModel map = node.getMap();
 		if(nodeChangeEvent.setsDirtyFlag())
-			setSaved(node.getMap(), false);
-		if (nodeChangeEvent.updatesModificationTime() && !Controller.getCurrentModeController().isUndoAction()) {
+			setSaved(map, false);
+		if (nodeChangeEvent.updatesModificationTime() && !Controller.getCurrentModeController().isUndoAction(map)) {
 			final HistoryInformationModel historyInformation = node.getHistoryInformation();
 			if (historyInformation != null) {
 				final IActor historyActor = new IActor() {
@@ -893,7 +894,7 @@ implements IExtension, NodeChangeAnnouncer{
 						setDate(historyInformation, now);
 					}
 				};
-				Controller.getCurrentModeController().execute(historyActor, node.getMap());
+				Controller.getCurrentModeController().execute(historyActor, map);
 			}
 		}
 		fireNodeChanged(node, nodeChangeEvent);

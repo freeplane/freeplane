@@ -50,7 +50,7 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 	private class Listener implements IMapChangeListener {
 		@Override
 	    public void onNodeInserted(NodeModel parent, NodeModel child, int newIndex) {
-			if(!isActiveOnCreation(child) || modeController.isUndoAction()){
+			if(!isActiveOnCreation(child) || modeController.isUndoAction(parent.getMap())){
 				return;
 			}
 			if(MapStyleModel.FLOATING_STYLE.equals(LogicalStyleModel.getStyle(child)))
@@ -144,11 +144,12 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 	@Override
     protected IExtension toggle(NodeModel node, IExtension extension) {
 		extension = super.toggle(node, extension);
+		final MapModel map = node.getMap();
 	    final MModeController modeController = (MModeController) Controller.getCurrentModeController();
-	    if(modeController.isUndoAction()){
+	    if(modeController.isUndoAction(map)){
 	    	return extension;
 	    }
-	    LogicalStyleController.getController().refreshMap(node.getMap());
+		LogicalStyleController.getController().refreshMap(map);
     	return extension;
     }
 

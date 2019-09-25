@@ -255,7 +255,7 @@ public class ModeController extends AController implements FreeplaneActions{
 	public void commit() {
 	}
 
-	public boolean isUndoAction() {
+	public boolean isUndoAction(final MapModel model) {
 		return false;
 	}
 

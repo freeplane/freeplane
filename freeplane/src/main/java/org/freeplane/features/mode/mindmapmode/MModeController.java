@@ -168,8 +168,7 @@ public class MModeController extends ModeController {
 	}
 
 	@Override
-	public boolean isUndoAction() {
-		final MapModel model = getController().getMap();
+	public boolean isUndoAction(final MapModel model) {
 		IUndoHandler undoHandler = model.getExtension(IUndoHandler.class);
 		return undoHandler != null && undoHandler.isUndoActionRunning();
 	}
@@ -239,12 +238,13 @@ public class MModeController extends ModeController {
 	public boolean canEdit() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean supportsHookActions() {
 		return true;
 	}
 
+	@Override
 	public boolean shouldCenterCompactMaps() {
 		return ResourceController.getResourceController().getBooleanProperty("shouldCenterSmallMaps");
 	}
