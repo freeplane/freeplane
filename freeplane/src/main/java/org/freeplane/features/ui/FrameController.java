@@ -65,6 +65,7 @@ import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 import javax.swing.plaf.metal.MetalFileChooserUI;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -159,8 +160,9 @@ abstract public class FrameController implements ViewController {
 	private static Icon dateIcon;
 	private static Icon dateTimeIcon;
 	private static Icon linkIcon;
-	static private void initializeUiResources(){
-		if(uiResourcesInitialized == false) {
+
+	static private void initializeUiResources() {
+		if (uiResourcesInitialized == false) {
 			uiResourcesInitialized = true;
 			final ResourceController resourceController = ResourceController.getResourceController();
 			textIcon = resourceController.getIcon("text_icon");
@@ -170,6 +172,7 @@ abstract public class FrameController implements ViewController {
 			linkIcon = resourceController.getIcon("link_icon");
 		}
 	}
+
 	private final IMapViewManager mapViewManager;
 
 	public FrameController(Controller controller, final IMapViewManager mapViewManager,
@@ -269,12 +272,11 @@ abstract public class FrameController implements ViewController {
 		final String property;
 		if (isMenuComponentInFullScreenMode()) {
 			property = component + "Visible.fullscreen";
-		}
-		else {
+		} else {
 			property = component + "Visible";
 		}
-		final boolean booleanProperty = ResourceController.getResourceController().getBooleanProperty(
-		    propertyKeyPrefix + property);
+		final boolean booleanProperty = ResourceController.getResourceController()
+				.getBooleanProperty(propertyKeyPrefix + property);
 		return booleanProperty;
 	}
 
@@ -428,8 +430,7 @@ abstract public class FrameController implements ViewController {
 		final String property;
 		if (isMenuComponentInFullScreenMode()) {
 			property = componentName + "Visible.fullscreen";
-		}
-		else {
+		} else {
 			property = componentName + "Visible";
 		}
 		ResourceController.getResourceController().setProperty(propertyKeyPrefix + property, visible);
@@ -487,14 +488,13 @@ abstract public class FrameController implements ViewController {
 			setUIComponentsVisible(controller.getMapViewManager(), isMenubarVisible());
 			for (int j = 0; j < 4; j++) {
 				final Iterable<JComponent> toolBars = controller.getModeController().getUserInputListenerFactory()
-				    .getToolBars(j);
+						.getToolBars(j);
 				for (final JComponent toolBar : toolBars) {
 					UIComponentVisibilityDispatcher.of(toolBar).resetVisible();
 				}
 			}
 			showWindows(visibleFrames);
-		}
-		else {
+		} else {
 			frame.dispose();
 			frame.setUndecorated(false);
 			frame.setResizable(true);
@@ -504,7 +504,7 @@ abstract public class FrameController implements ViewController {
 			setUIComponentsVisible(controller.getMapViewManager(), isMenubarVisible());
 			for (int j = 0; j < 4; j++) {
 				final Iterable<JComponent> toolBars = controller.getModeController().getUserInputListenerFactory()
-				    .getToolBars(j);
+						.getToolBars(j);
 				for (final JComponent toolBar : toolBars) {
 					UIComponentVisibilityDispatcher.of(toolBar).resetVisible();
 				}
@@ -540,8 +540,7 @@ abstract public class FrameController implements ViewController {
 				fixDarculaNPE(lookAndFeelClassName);
 				UIManager.setLookAndFeel(lookAndFeelClassName);
 				fixDarculaButtonUI();
-			}
-			else {
+			} else {
 				LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
 				boolean setLnF = false;
 				for (LookAndFeelInfo lafInfo : lafInfos) {
@@ -565,16 +564,14 @@ abstract public class FrameController implements ViewController {
 						if (userLibClassLoader != uiClassLoader)
 							userLibClassLoader.close();
 						UIManager.getDefaults().put("ClassLoader", uiClassLoader);
-					}
-					catch (ClassNotFoundException | ClassCastException | InstantiationException e) {
+					} catch (ClassNotFoundException | ClassCastException | InstantiationException e) {
 						LogUtils.warn("Error while setting Look&Feel" + lookAndFeel + ", reverted to default");
 						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 						Controller.getCurrentController().getResourceController().setProperty("lookandfeel", "default");
 					}
 				}
 			}
-		}
-		catch (final Exception ex) {
+		} catch (final Exception ex) {
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
 		}
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
@@ -600,16 +597,15 @@ abstract public class FrameController implements ViewController {
 		UIManager.getLookAndFeelDefaults().put("ScrollBar.minimumThumbSize", minimumThumbSize);
 		UIManager.put("ScrollBar.minimumThumbSize", minimumThumbSize);
 		// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7077418
-		// NullPointerException in WindowsFileChooserUI when system icons missing/invalid
+		// NullPointerException in WindowsFileChooserUI when system icons
+		// missing/invalid
 		// set FileChooserUI to MetalFileChooserUI if no JFileChooser can be created
 		try {
 			new JFileChooser();
-		}
-		catch (Throwable t) {
+		} catch (Throwable t) {
 			try {
 				UIManager.getLookAndFeelDefaults().put("FileChooserUI", MetalFileChooserUI.class.getName());
-			}
-			catch (Throwable t1) {
+			} catch (Throwable t1) {
 			}
 		}
 		// Workaround for https://bugs.openjdk.java.net/browse/JDK-8179014
@@ -617,15 +613,70 @@ abstract public class FrameController implements ViewController {
 		final Color color = UIManager.getColor("control");
 		if (color != null && color.getAlpha() < 255)
 			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
+
+		setFonts();
+	}
+
+	static public void setFonts() {
+		int lookAndFeelDefaultMenuItemFontSize = getLookAndFeelDefaultMenuItemFontSize();
+		setFont(new FontUIResource(new Font("SF Pro Text", Font.PLAIN, lookAndFeelDefaultMenuItemFontSize)));
+	}
+
+	private static void setFont(FontUIResource myFont) {
+		UIManager.put("CheckBoxMenuItem.acceleratorFont", myFont);
+		UIManager.put("Button.font", myFont);
+		UIManager.put("ToggleButton.font", myFont);
+		UIManager.put("RadioButton.font", myFont);
+		UIManager.put("CheckBox.font", myFont);
+		UIManager.put("ColorChooser.font", myFont);
+		UIManager.put("ComboBox.font", myFont);
+		UIManager.put("Label.font", myFont);
+		UIManager.put("List.font", myFont);
+		UIManager.put("MenuBar.font", myFont);
+		UIManager.put("Menu.acceleratorFont", myFont);
+		UIManager.put("RadioButtonMenuItem.acceleratorFont", myFont);
+		UIManager.put("MenuItem.acceleratorFont", myFont);
+		UIManager.put("MenuItem.font", myFont);
+		UIManager.put("RadioButtonMenuItem.font", myFont);
+		UIManager.put("CheckBoxMenuItem.font", myFont);
+		UIManager.put("OptionPane.buttonFont", myFont);
+		UIManager.put("OptionPane.messageFont", myFont);
+		UIManager.put("Menu.font", myFont);
+		UIManager.put("PopupMenu.font", myFont);
+		UIManager.put("OptionPane.font", myFont);
+		UIManager.put("Panel.font", myFont);
+		UIManager.put("ProgressBar.font", myFont);
+		UIManager.put("ScrollPane.font", myFont);
+		UIManager.put("Viewport.font", myFont);
+		UIManager.put("TabbedPane.font", myFont);
+		UIManager.put("Slider.font", myFont);
+		UIManager.put("Table.font", myFont);
+		UIManager.put("TableHeader.font", myFont);
+		UIManager.put("TextField.font", myFont);
+		UIManager.put("Spinner.font", myFont);
+		UIManager.put("PasswordField.font", myFont);
+		UIManager.put("TextArea.font", myFont);
+		UIManager.put("TextPane.font", myFont);
+		UIManager.put("EditorPane.font", myFont);
+		UIManager.put("TabbedPane.smallFont", myFont);
+		UIManager.put("TitledBorder.font", myFont);
+		UIManager.put("ToolBar.font", myFont);
+		UIManager.put("ToolTip.font", myFont);
+		UIManager.put("Tree.font", myFont);
+		UIManager.put("FormattedTextField.font", myFont);
+		UIManager.put("IconButton.font", myFont);
+		UIManager.put("InternalFrame.optionDialogTitleFont", myFont);
+		UIManager.put("InternalFrame.paletteTitleFont", myFont);
+		UIManager.put("InternalFrame.titleFont", myFont);
 	}
 
 	private static void fixDarculaNPE(String lookAndFeelClassName) throws UnsupportedLookAndFeelException {
-		if(lookAndFeelClassName.equals(DARCULA_LAF_NAME))
+		if (lookAndFeelClassName.equals(DARCULA_LAF_NAME))
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
 	}
 
-	private static void fixDarculaButtonUI(){
-		if(UIManager.getLookAndFeel().getClass().getName().equals(DARCULA_LAF_NAME)) {
+	private static void fixDarculaButtonUI() {
+		if (UIManager.getLookAndFeel().getClass().getName().equals(DARCULA_LAF_NAME)) {
 			UIManager.put("ToggleButtonUI", FixDarculaToggleButtonUI.class.getName());
 			UIManager.put("Button.darcula.selection.color1", ColorUtils.rgbStringToColor("#687f88"));
 			UIManager.put("Button.darcula.selection.color2", ColorUtils.rgbStringToColor("#436188"));
@@ -787,7 +838,7 @@ abstract public class FrameController implements ViewController {
 
 	@Override
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException {
-		if(isDispatchThread())
+		if (isDispatchThread())
 			runnable.run();
 		else
 			EventQueue.invokeAndWait(runnable);
