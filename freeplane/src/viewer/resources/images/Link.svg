@@ -1,43 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   height="16"
-   width="16"
-   id="svg2"
-   viewBox="0 0 16 16"
-   version="1.1">
-  <defs
-     id="defs14" />
-  <metadata
-     id="metadata4">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
-  <rect
-     transform="scale(-1,-1)"
-     y="-16"
-     x="-20.5"
-     height="16"
-     width="24"
-     id="rect814"
-     style="opacity:0.99545456;fill:none;fill-opacity:1;stroke:none;stroke-width:1.76404297;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none" />
-  <path
-     id="path4490"
-     d="m 3.0151396,7.9521667 8.5118114,0"
-     style="fill:none;stroke:#d40101;stroke-width:1.58381009;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
-  <path
-     id="rect4774"
-     d="M 9.9138866,6.0525943 12.823007,8.0080426 9.8898348,9.9474565"
-     style="opacity:0.99545456;fill:none;fill-opacity:1;stroke:#d40000;stroke-width:1.51383531;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none" />
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="16px" viewBox="0 0 8 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>Link</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Icon" transform="translate(2.092303, 5.197008)" fill="#D30000" stroke="#D30000">
+            <polygon id="Triangle" transform="translate(2.163590, 2.802992) rotate(90.000000) translate(-2.163590, -2.802992) " points="2.16358982 1 4.32717963 4.60598303 0 4.60598303"></polygon>
+        </g>
+    </g>
 </svg>
