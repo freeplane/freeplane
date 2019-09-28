@@ -262,6 +262,13 @@ public class ApplicationResourceController extends ResourceController {
 		final File autoPropertiesFile = new File(userPropertiesFolder, "auto.properties");
 		return autoPropertiesFile;
 	}
+	
+	public static File getLinkDecorationPropertiesFile() {
+		final String freeplaneDirectory = Compat.getApplicationUserDirectory();
+		final File userPropertiesFolder = new File(freeplaneDirectory);
+		final File linkDecorationPropertiesFile = new File(userPropertiesFolder, "linkDecoration.ini");
+		return linkDecorationPropertiesFile;
+	}
 
 	@Override
 	public void init() {

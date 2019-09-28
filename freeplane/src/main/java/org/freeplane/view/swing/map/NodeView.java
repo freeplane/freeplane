@@ -89,6 +89,7 @@ import org.freeplane.view.swing.map.edge.AutomaticEdgeStyle;
 import org.freeplane.view.swing.map.edge.EdgeView;
 import org.freeplane.view.swing.map.edge.EdgeViewFactory;
 
+
 /**
  * This class represents a single Node of a MindMap (in analogy to
  * TreeCellRenderer).
@@ -1399,6 +1400,7 @@ public class NodeView extends JComponent implements INodeView {
 		mainView.setVisible(true);
 		mainView.updateTextColor(this);
 		mainView.updateFont(this);
+		mainView.updateIcons(this);
 		mainView.updateHorizontalTextAlignment(this);
 		mainView.updateBorder(this);
         MapView map = getMap();

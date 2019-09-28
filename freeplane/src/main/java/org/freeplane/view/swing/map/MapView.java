@@ -45,6 +45,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -80,6 +81,8 @@ import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.ModelessAttributeController;
+import org.freeplane.features.decoration.LinkDecorationConfig;
+import org.freeplane.features.decoration.NodeViewDecorator;
 import org.freeplane.features.edge.EdgeColorsConfigurationFactory;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.highlight.NodeHighlighter;
@@ -112,12 +115,15 @@ import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.main.application.ApplicationResourceController;
 import org.freeplane.view.swing.features.filepreview.IViewerFactory;
 import org.freeplane.view.swing.features.filepreview.ScalableComponent;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.map.link.ConnectorView;
 import org.freeplane.view.swing.map.link.EdgeLinkView;
 import org.freeplane.view.swing.map.link.ILinkView;
+
+
 
 /**
  * This class represents the view of a whole MindMap (in analogy to class
@@ -129,6 +135,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private final MapScroller mapScroller;
 	private MapViewLayout layoutType;
 	private boolean paintConnectorsBehind;
+	
+	private NodeViewDecorator nodeViewDecorator;
+
+	public NodeViewDecorator getNodeViewDecorator()
+	{
+		return nodeViewDecorator;
+	}
 
 	public static boolean isElementHighlighted(final Component c, final Object element) {
 		final MapView mapView = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, c);
@@ -652,6 +665,9 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		};
 		addPropertyChangeListener(SPOTLIGHT_ENABLED, repaintOnClientPropertyChangeListener);
+		
+		LinkDecorationConfig decorationConfig = new LinkDecorationConfig();
+		nodeViewDecorator = new NodeViewDecorator(decorationConfig);
 	}
 
 	public void replaceSelection(final NodeView[] views) {
