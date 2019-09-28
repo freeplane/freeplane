@@ -37,6 +37,8 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JRootPane;
 import javax.swing.JWindow;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FileUtils;
@@ -77,8 +79,12 @@ public class FreeplaneSplashModern extends JWindow {
 		}
 	    InputStream fontInputStream = null;
 		try {
-			fontInputStream = ResourceController.getResourceController().getResource("/fonts/intuitive-subset.ttf")
-			    .openStream();
+			
+			//fontInputStream = ResourceController.getResourceController().getResource("/fonts/intuitive-subset.ttf")
+			//fontInputStream = ResourceController.getResourceController().getResource("/fonts/WarnockPro-SemiboldCapt.otf").openStream();
+			//fontInputStream = ResourceController.getResourceController().getResource("/fonts/WarnockPro-BoldCapt.otf").openStream();
+			fontInputStream = ResourceController.getResourceController().getResource("/fonts/MinionPro-BoldCapt.otf").openStream();
+			
 			versionTextFont = Font.createFont(Font.TRUETYPE_FONT, fontInputStream);
 		}
 		catch (final Exception e) {
@@ -112,7 +118,7 @@ public class FreeplaneSplashModern extends JWindow {
 			final String versionString = getVersionText(version);
 			g2.setColor(Color.WHITE);
 			createVersionTextFont();
-			final float versionFontSize= 20;
+			final float versionFontSize= 14;
 			g2.setFont(versionTextFont.deriveFont(versionFontSize));
 			int versionStringWidth = g2.getFontMetrics().stringWidth(versionString);
 			final int xCoordinate = splashImage.getIconWidth() - versionStringWidth - 20;
@@ -149,6 +155,13 @@ public class FreeplaneSplashModern extends JWindow {
     }
 
 	static public void main(String[] args){
+		try {
+			if (System.getProperty("os.name", "").startsWith("Mac OS")) {
+				UIManager.setLookAndFeel("org.violetlib.aqua.AquaLookAndFeel");
+			}
+		} catch (Exception e) {}
+
+		setFonts();
 		ApplicationResourceController applicationResourceController = new ApplicationResourceController();
 		Controller controller = new Controller(applicationResourceController);
 		Controller.setCurrentController(controller);
@@ -163,4 +176,57 @@ public class FreeplaneSplashModern extends JWindow {
 		});
 		freeplaneSplashModern.setVisible(true);
 	}
+
+	static public void setFonts() {
+		setFont(new FontUIResource(new Font("SF UI Text", Font.PLAIN, 11)));
+	}
+
+	private static void setFont(FontUIResource myFont) {
+		UIManager.put("CheckBoxMenuItem.acceleratorFont", myFont);
+		UIManager.put("Button.font", myFont);
+		UIManager.put("ToggleButton.font", myFont);
+		UIManager.put("RadioButton.font", myFont);
+		UIManager.put("CheckBox.font", myFont);
+		UIManager.put("ColorChooser.font", myFont);
+		UIManager.put("ComboBox.font", myFont);
+		UIManager.put("Label.font", myFont);
+		UIManager.put("List.font", myFont);
+		UIManager.put("MenuBar.font", myFont);
+		UIManager.put("Menu.acceleratorFont", myFont);
+		UIManager.put("RadioButtonMenuItem.acceleratorFont", myFont);
+		UIManager.put("MenuItem.acceleratorFont", myFont);
+		UIManager.put("MenuItem.font", myFont);
+		UIManager.put("RadioButtonMenuItem.font", myFont);
+		UIManager.put("CheckBoxMenuItem.font", myFont);
+		UIManager.put("OptionPane.buttonFont", myFont);
+		UIManager.put("OptionPane.messageFont", myFont);
+		UIManager.put("Menu.font", myFont);
+		UIManager.put("PopupMenu.font", myFont);
+		UIManager.put("OptionPane.font", myFont);
+		UIManager.put("Panel.font", myFont);
+		UIManager.put("ProgressBar.font", myFont);
+		UIManager.put("ScrollPane.font", myFont);
+		UIManager.put("Viewport.font", myFont);
+		UIManager.put("TabbedPane.font", myFont);
+		UIManager.put("Slider.font", myFont);
+		UIManager.put("Table.font", myFont);
+		UIManager.put("TableHeader.font", myFont);
+		UIManager.put("TextField.font", myFont);
+		UIManager.put("Spinner.font", myFont);
+		UIManager.put("PasswordField.font", myFont);
+		UIManager.put("TextArea.font", myFont);
+		UIManager.put("TextPane.font", myFont);
+		UIManager.put("EditorPane.font", myFont);
+		UIManager.put("TabbedPane.smallFont", myFont);
+		UIManager.put("TitledBorder.font", myFont);
+		UIManager.put("ToolBar.font", myFont);
+		UIManager.put("ToolTip.font", myFont);
+		UIManager.put("Tree.font", myFont);
+		UIManager.put("FormattedTextField.font", myFont);
+		UIManager.put("IconButton.font", myFont);
+		UIManager.put("InternalFrame.optionDialogTitleFont", myFont);
+		UIManager.put("InternalFrame.paletteTitleFont", myFont);
+		UIManager.put("InternalFrame.titleFont", myFont);
+	}
+
 }
