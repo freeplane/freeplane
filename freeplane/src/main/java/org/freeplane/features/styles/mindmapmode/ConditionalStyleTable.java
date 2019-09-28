@@ -19,6 +19,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterComposerDialog;
 import org.freeplane.features.filter.condition.ASelectableCondition;
@@ -95,7 +96,7 @@ class ConditionalStyleTable extends JTable {
 	    final TableColumnModel columnModel = getColumnModel();
 	    setAutoResizeMode(JTable.AUTO_RESIZE_OFF); 
 //	    setSelectionBackground(DefaultConditionRenderer.SELECTED_BACKGROUND);
-	    setRowHeight(20);
+	    setRowHeight(UITools.getDefaultLabelFont().getSize() * 5 / 4);
 		conditionRenderer = createConditionRenderer();
 		columnModel.getColumn(1).setCellRenderer(conditionRenderer);
 		columnModel.getColumn(1).setCellEditor(new ConditionEditor());

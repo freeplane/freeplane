@@ -364,6 +364,7 @@ class NodeList {
 		textRenderer = new TextRenderer();
 		iconsRenderer = new IconsRenderer();
 		tableView = new FlatNodeTable();
+		tableView.setRowHeight(UITools.getDefaultLabelFont().getSize() * 5 / 4);
 		mNodePath = new JTextField();
 
 	}
