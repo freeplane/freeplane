@@ -415,7 +415,7 @@ class ScriptEditorPanel extends JDialog {
 	private void addAction(final JMenu menu, final AbstractAction action) {
 		final JMenuItem item = menu.add(action);
 		LabelAndMnemonicSetter.setLabelAndMnemonic(item, (String) action.getValue(Action.NAME));
-		item.setIcon(new BlindIcon(UIBuilder.ICON_SIZE));
+		//item.setIcon(new BlindIcon(UIBuilder.ICON_SIZE));
 	}
 
 	/**

@@ -8,28 +8,39 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 public class JFreeplaneMenuItem extends JMenuItem implements IKeyBindingManager {
+
+	public void setIcon(Icon defaultIcon) {
+		super.setIcon(null);
+	}
+
 	public JFreeplaneMenuItem() {
 		super();
+		setIcon(null);
 	}
 
 	public JFreeplaneMenuItem(final Action a) {
 		super(a);
+		setIcon(null);
 	}
 
 	public JFreeplaneMenuItem(final Icon icon) {
 		super(icon);
+		setIcon(null);
 	}
 
 	public JFreeplaneMenuItem(final String text, final Icon icon) {
 		super(text, icon);
+		setIcon(null);
 	}
 
 	public JFreeplaneMenuItem(final String text, final int mnemonic) {
 		super(text, mnemonic);
+		setIcon(null);
 	}
 
 	public JFreeplaneMenuItem(final String text) {
 		super(text);
+		setIcon(null);
 	}
 
 	/**

@@ -131,8 +131,7 @@ abstract public class FrameController implements ViewController {
 			}
 			if (maxHeight > 0) {
 				preferredSize = new Dimension(getWidth(), maxHeight);
-			}
-			else {
+			} else {
 				preferredSize = new Dimension(0, 0);
 			}
 			if (oldPreferredSize.height != preferredSize.height) {
@@ -174,7 +173,7 @@ abstract public class FrameController implements ViewController {
 	private final IMapViewManager mapViewManager;
 
 	public FrameController(Controller controller, final IMapViewManager mapViewManager,
-	                       final String propertyKeyPrefix) {
+			final String propertyKeyPrefix) {
 		super();
 		this.controller = controller;
 		this.mapViewManager = mapViewManager;
@@ -194,7 +193,7 @@ abstract public class FrameController implements ViewController {
 			}
 		});
 		statusTextCleaner.setRepeats(false);
-		//		this.controller = controller;
+		// this.controller = controller;
 		controller.setViewController(this);
 		controller.addAction(new ToggleFullScreenAction(this));
 		controller.addAction(new CloseAction());
@@ -329,8 +328,7 @@ abstract public class FrameController implements ViewController {
 			label.setBorder(BorderFactory.createEtchedBorder());
 			statusInfos.put(key, label);
 			statusPanel.add(label, statusPanel.getComponentCount() - 1);
-		}
-		else {
+		} else {
 			label.setText(info);
 			label.revalidate();
 			label.repaint();
@@ -345,8 +343,7 @@ abstract public class FrameController implements ViewController {
 		Component oldComponent = statusInfos.put(key, component);
 		if (oldComponent == null) {
 			statusPanel.add(component, statusPanel.getComponentCount() - 1);
-		}
-		else {
+		} else {
 			final int index = UITools.getComponentIndex(component);
 			statusPanel.remove(index);
 			statusPanel.add(component, index);
@@ -474,13 +471,13 @@ abstract public class FrameController implements ViewController {
 		ToolTipManager.sharedInstance().setEnabled(false);
 		final Controller controller = getController();
 		ResourceController.getResourceController().firePropertyChanged(FULLSCREEN_ENABLED_PROPERTY,
-		    Boolean.toString(!fullScreen), Boolean.toString(fullScreen));
+				Boolean.toString(!fullScreen), Boolean.toString(fullScreen));
 		Iterable<Window> visibleFrames = collectVisibleFrames(frame);
 		if (fullScreen) {
 			final GraphicsConfiguration graphicsConfiguration = frame.getGraphicsConfiguration();
 			final Rectangle bounds = graphicsConfiguration.getBounds();
 			frame.getRootPane().putClientProperty(FrameState.class,
-			    new FrameState(frame.getBounds(), frame.getExtendedState()));
+					new FrameState(frame.getBounds(), frame.getExtendedState()));
 			frame.getExtendedState();
 			frame.dispose();
 			frame.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -649,12 +646,11 @@ abstract public class FrameController implements ViewController {
 	private static double calculateFontSizeScalingFactor(int lookAndFeelDefaultMenuItemFontSize) {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		final int userDefinedMenuItemFontSize = resourceController.getIntProperty(UITools.MENU_ITEM_FONT_SIZE_PROPERTY,
-		    UNKNOWN);
+				UNKNOWN);
 		final double scalingFactor;
 		if (userDefinedMenuItemFontSize == UNKNOWN) {
 			scalingFactor = DEFAULT_SCALING_FACTOR;
-		}
-		else {
+		} else {
 			scalingFactor = ((double) userDefinedMenuItemFontSize) / lookAndFeelDefaultMenuItemFontSize;
 		}
 		return scalingFactor;
@@ -688,23 +684,18 @@ abstract public class FrameController implements ViewController {
 		}
 		if (value instanceof String || value instanceof StyleTranslatedObject) {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, textIcon);
-		}
-		else if (value instanceof FormattedDate) {
+		} else if (value instanceof FormattedDate) {
 			final FormattedDate fd = (FormattedDate) value;
 			if (fd.containsTime()) {
 				addStatusInfo(ResourceController.OBJECT_TYPE, null, dateTimeIcon);
-			}
-			else {
+			} else {
 				addStatusInfo(ResourceController.OBJECT_TYPE, null, dateIcon);
 			}
-		}
-		else if (value instanceof Number) {
+		} else if (value instanceof Number) {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, numberIcon);
-		}
-		else if (value instanceof URI) {
+		} else if (value instanceof URI) {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, linkIcon);
-		}
-		else {
+		} else {
 			addStatusInfo(ResourceController.OBJECT_TYPE, null, null);
 		}
 	}
@@ -732,7 +723,7 @@ abstract public class FrameController implements ViewController {
 				if (item != null && oldItem != null && item.toString().equals(oldItem.toString()))
 					return oldItem;
 				if (ResourceController.getResourceController().getBooleanProperty("parse_data")
-				        && item instanceof String) {
+						&& item instanceof String) {
 					final Object scannedObject = ScannerController.getController().parse((String) item);
 					return scannedObject;
 				}

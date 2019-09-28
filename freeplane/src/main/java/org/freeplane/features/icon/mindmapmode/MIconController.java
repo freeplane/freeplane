@@ -412,7 +412,7 @@ public class MIconController extends IconController {
 		};
 		menu.setFont(ARROW_FONT);
 		menu.setMargin(ICON_SUBMENU_INSETS);
-		menu.setIcon(group.getGroupIcon().getIcon());
+		//menu.setIcon(group.getGroupIcon().getIcon());
 		for (final MindIcon icon : group.getIcons()) {
 			addActionToIconSubmenu(menu, icon, icon.getFileName());
 		}
