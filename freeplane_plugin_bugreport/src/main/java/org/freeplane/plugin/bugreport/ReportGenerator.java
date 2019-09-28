@@ -422,26 +422,26 @@ public class ReportGenerator extends StreamHandler {
 	}
 
 	private void runSubmitAfterTimeout() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(1000);
-				}
-				catch (InterruptedException e) {
-				}
-				Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						if (!isDisabled) {
-							final Thread submitterThread = new Thread(new SubmitRunner(), REMOTE_LOG);
-							submitterThread.start();
-						}
-						else
-							isReportGenerationInProgress = false;
-					}
-				});
-			}
-		}).start();
+//		new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				try {
+//					Thread.sleep(1000);
+//				}
+//				catch (InterruptedException e) {
+//				}
+//				Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
+//					@Override
+//					public void run() {
+//						if (!isDisabled) {
+//							final Thread submitterThread = new Thread(new SubmitRunner(), REMOTE_LOG);
+//							submitterThread.start();
+//						}
+//						else
+//							isReportGenerationInProgress = false;
+//					}
+//				});
+//			}
+//		}).start();
 	}
 }
