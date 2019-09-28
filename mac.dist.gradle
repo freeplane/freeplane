@@ -63,7 +63,10 @@ def defineMacBuildTasks = {boolean includeJavaRuntime ->
 					}
 					else {
 						def javaHomeJre = System.properties['java.home']
+						//def javaHomeJre = "/Users/stuart/apps/mac/jdk8_121/Home/jre"
+
 						def javaHome = javaHomeJre - ~/\/jre$/
+						//def javaHome = "/Users/stuart/apps/mac/jdk1.8.0_121.jdk/Contents/Home"
 						runtime(dir: javaHome)
 					}
 				}
