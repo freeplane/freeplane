@@ -68,7 +68,8 @@ import org.osgi.framework.launch.Framework;
  *
  */
 public class Launcher {
-	private static final String SYSTEM_PROPERTIES = "system.properties";
+	private static final String FREEPLANE_JAVA_OPTION_FILE = "FREEPLANE_JAVA_OPTION_FILE";
+	private static final String DEFAULT_FREEPLANE_OPTION_FILE_NAME = "system.properties";
 	private static final String DISABLE_SECURITY_MANAGER_PROPERTY = "org.freeplane.main.application.FreeplaneSecurityManager.disable";
 	private static final String HEADLESS_PROPERTY = "org.freeplane.main.application.FreeplaneStarter.headless";
 	private static final String BASEDIRECTORY_PROPERTY = "org.freeplane.basedirectory";
@@ -228,7 +229,9 @@ public class Launcher {
 	}
 
 	private void loadJavaSystemProperties() {
-		File propertyFile = new File(freeplaneInstallationDirectory, SYSTEM_PROPERTIES);
+		String optionFileFromEnvironment = System.getenv(FREEPLANE_JAVA_OPTION_FILE);
+		File propertyFile = optionFileFromEnvironment != null ? new File(optionFileFromEnvironment) //
+				: new File(freeplaneInstallationDirectory, DEFAULT_FREEPLANE_OPTION_FILE_NAME);
 		if(propertyFile.canRead()) {
 			System.out.println("Load system properties from installation specific file " + propertyFile.getAbsolutePath());
 			try(InputStream input = new BufferedInputStream(new FileInputStream(propertyFile))){
