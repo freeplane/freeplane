@@ -20,8 +20,11 @@
 package org.freeplane.launcher;
 
 import java.awt.Toolkit;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.JDialog;
@@ -65,6 +68,7 @@ import org.osgi.framework.launch.Framework;
  *
  */
 public class Launcher {
+	private static final String SYSTEM_PROPERTIES = "system.properties";
 	private static final String DISABLE_SECURITY_MANAGER_PROPERTY = "org.freeplane.main.application.FreeplaneSecurityManager.disable";
 	private static final String HEADLESS_PROPERTY = "org.freeplane.main.application.FreeplaneStarter.headless";
 	private static final String BASEDIRECTORY_PROPERTY = "org.freeplane.basedirectory";
@@ -176,7 +180,7 @@ public class Launcher {
 
     /**
      * The method should be call on application exit to shutdown embedded Freeplane instance.
-     * 
+     *
      * No Freeplane objects may be used after the shutdown is called.
      * It destroys some class loaders and invalidates all related classes and objects.
      */
@@ -218,8 +222,22 @@ public class Launcher {
 	private Launcher(final File freeplaneInstallationDirectory) {
 		ensureSingleInstance();
 		this.freeplaneInstallationDirectory = freeplaneInstallationDirectory;
+		loadJavaSystemProperties();
 		argCount = 0;
 		disableSecurityManager = Boolean.getBoolean(DISABLE_SECURITY_MANAGER_PROPERTY);
+	}
+
+	private void loadJavaSystemProperties() {
+		File propertyFile = new File(freeplaneInstallationDirectory, SYSTEM_PROPERTIES);
+		if(propertyFile.canRead()) {
+			System.out.println("Load system properties from installation specific file " + propertyFile.getAbsolutePath());
+			try(InputStream input = new BufferedInputStream(new FileInputStream(propertyFile))){
+				System.getProperties().load(input);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	static private void ensureSingleInstance() {
