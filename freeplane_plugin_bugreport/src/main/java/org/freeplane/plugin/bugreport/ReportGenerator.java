@@ -236,33 +236,33 @@ public class ReportGenerator extends StreamHandler {
 				public void run() {
 					try {
 						errorCounter++;
-						if (TextUtils.getRawText("internal_error.tooltip", null) != null) {
-							if (logButton == null) {
-								final Icon errorIcon = ResourceController.getResourceController()
-								    .getIcon("messagebox_warning_icon");
-								logButton = new JButton() {
-									@Override
-									public Dimension getPreferredSize() {
-										Dimension preferredSize = super.getPreferredSize();
-										preferredSize.height = Math.max(getIcon().getIconHeight(), getFont().getSize());
-										return preferredSize;
-									}
-								};
-								logButton.addActionListener(new LogOpener());
-								logButton.setIcon(errorIcon);
-								String tooltip = TextUtils.getText("internal_error.tooltip");
-								logButton.setToolTipText(tooltip);
-								viewController.addStatusComponent("internal_error", logButton);
-							}
-							logButton.setText(TextUtils.format("errornumber", errorCounter));
-							final JComponent statusBar = viewController.getStatusBar();
-							if (!statusBar.isVisible())
-								UIComponentVisibilityDispatcher.of(statusBar).setVisible(true);
-						}
+						// if (TextUtils.getRawText("internal_error.tooltip", null) != null) {
+						// 	if (logButton == null) {
+						// 		final Icon errorIcon = ResourceController.getResourceController()
+						// 		    .getIcon("messagebox_warning_icon");
+						// 		logButton = new JButton() {
+						// 			@Override
+						// 			public Dimension getPreferredSize() {
+						// 				Dimension preferredSize = super.getPreferredSize();
+						// 				preferredSize.height = Math.max(getIcon().getIconHeight(), getFont().getSize());
+						// 				return preferredSize;
+						// 			}
+						// 		};
+						// 		logButton.addActionListener(new LogOpener());
+						// 		logButton.setIcon(errorIcon);
+						// 		String tooltip = TextUtils.getText("internal_error.tooltip");
+						// 		logButton.setToolTipText(tooltip);
+						// 		viewController.addStatusComponent("internal_error", logButton);
+						// 	}
+						// 	logButton.setText(TextUtils.format("errornumber", errorCounter));
+						// 	final JComponent statusBar = viewController.getStatusBar();
+						// 	if (!statusBar.isVisible())
+						// 		UIComponentVisibilityDispatcher.of(statusBar).setVisible(true);
+						// }
 					}
 					catch (Exception e) {
 					}
-					runSubmitAfterTimeout();
+					//runSubmitAfterTimeout();
 				}
 			});
 		}
@@ -271,66 +271,66 @@ public class ReportGenerator extends StreamHandler {
 	}
 
 	private void runSubmit() {
-		try {
+		// try {
 			close();
-			final String errorMessage = out.toString(getEncoding());
-			if (errorMessage.indexOf(getClass().getPackage().getName()) != -1) {
-				// avoid infinite loops
-				System.err.println("don't send bug reports from bugreport plugin");
-				return;
-			}
-			createInfo();
-			hash = calculateHash(errorMessage);
-			if (hash == null) {
-				return;
-			}
-			final String reportHeader = createReportHeader();
-			StringBuilder sb = new StringBuilder();
-			sb.append(reportHeader).append('\n').append("previous report : ");
-			String lastReportInfo = ResourceController.getResourceController().getProperty(LAST_BUG_REPORT_INFO,
-			    NO_REPORTS_SENT_BEFORE);
-			sb.append(lastReportInfo).append('\n');
-			final String userId = ResourceController.getResourceController().getProperty(BUGREPORT_USER_ID);
-			if (userId.length() > 0) {
-				sb.append("user : ").append(userId).append('\n');
-			}
-			sb.append(info);
-			sb.append(errorMessage);
-			log = sb.toString();
-			if (log.equals("")) {
-				return;
-			}
-			final ReportRegistry register = ReportRegistry.getInstance();
-			if (register.isReportRegistered(hash)) {
-				return;
-			}
-			final String option = showBugReportDialog();
-			if (BugReportDialogManager.ALLOWED.equals(option)) {
-				register.registerReport(hash, reportHeader);
-				final Map<String, String> report = new LinkedHashMap<String, String>();
-				report.put("hash", hash);
-				report.put("log", log);
-				report.put("version", version);
-				report.put("revision", revision);
-				String status = AccessController.doPrivileged(new PrivilegedAction<String>() {
-					@Override
-					public String run() {
-						final String status = sendReport(report);
-						return status;
-					}
-				});
-				if (bugReportListener != null && status != null) {
-					bugReportListener.onReportSent(report, status);
-				}
-			}
-		}
-		catch (final UnsupportedEncodingException e) {
-			LogUtils.severe(e);
-		}
-		finally {
+			// final String errorMessage = out.toString(getEncoding());
+			// if (errorMessage.indexOf(getClass().getPackage().getName()) != -1) {
+			// 	// avoid infinite loops
+			// 	System.err.println("don't send bug reports from bugreport plugin");
+			// 	return;
+			// }
+			// createInfo();
+			// hash = calculateHash(errorMessage);
+			// if (hash == null) {
+			// 	return;
+			// }
+			// final String reportHeader = createReportHeader();
+			// StringBuilder sb = new StringBuilder();
+			// sb.append(reportHeader).append('\n').append("previous report : ");
+			// String lastReportInfo = ResourceController.getResourceController().getProperty(LAST_BUG_REPORT_INFO,
+			//     NO_REPORTS_SENT_BEFORE);
+			// sb.append(lastReportInfo).append('\n');
+			// final String userId = ResourceController.getResourceController().getProperty(BUGREPORT_USER_ID);
+			// if (userId.length() > 0) {
+			// 	sb.append("user : ").append(userId).append('\n');
+			// }
+			// sb.append(info);
+			// sb.append(errorMessage);
+			// log = sb.toString();
+			// if (log.equals("")) {
+			// 	return;
+			// }
+			// final ReportRegistry register = ReportRegistry.getInstance();
+			// if (register.isReportRegistered(hash)) {
+			// 	return;
+			// }
+			// final String option = showBugReportDialog();
+			// if (BugReportDialogManager.ALLOWED.equals(option)) {
+			// 	register.registerReport(hash, reportHeader);
+			// 	final Map<String, String> report = new LinkedHashMap<String, String>();
+			// 	report.put("hash", hash);
+			// 	report.put("log", log);
+			// 	report.put("version", version);
+			// 	report.put("revision", revision);
+			// 	String status = AccessController.doPrivileged(new PrivilegedAction<String>() {
+			// 		@Override
+			// 		public String run() {
+			// 			final String status = sendReport(report);
+			// 			return status;
+			// 		}
+			// 	});
+			// 	if (bugReportListener != null && status != null) {
+			// 		bugReportListener.onReportSent(report, status);
+			// 	}
+			// }
+		// }
+		// catch (final UnsupportedEncodingException e) {
+		// 	LogUtils.severe(e);
+		// }
+		// finally {
 			out = null;
 			isReportGenerationInProgress = false;
-		}
+		// }
 	}
 
 	private String createReportHeader() {
