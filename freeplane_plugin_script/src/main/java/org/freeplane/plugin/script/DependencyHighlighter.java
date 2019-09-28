@@ -61,7 +61,7 @@ class DependencyHighlighter {
 				return new ConnectorModel(source, targetId,
 						ConnectorArrows.FORWARD, null,
 						HighlightedTransformedObject.FAILURE_COLOR,
-						linkController.getStandardConnectorAlpha(),
+						linkController.getStandardConnectorOpacity(),
 						linkController.getStandardConnectorShape(),
 						linkController.getStandardConnectorWidth(),
 						linkController.getStandardLabelFontFamily(),

@@ -35,4 +35,34 @@ public interface Connector extends ConnectorRO {
     /** startPoint, endPoint: list of two integers representing a Point.
      * @since 1.3.3 */
     void setInclination(final List<Integer> startPoint, final List<Integer> endPoint);
+    
+	/**
+	 * Since 1.7.10
+	 */
+	void setDashArray(int[] dashArray);
+	
+	/**
+	 * 0 <= opacity <= 255
+	 * 
+	 * Since 1.7.10
+	 */
+	void setOpacity(int opacity);
+	
+	/**
+	 * Since 1.7.10
+	 */
+	void setWidth(int width);
+	
+	
+	/**
+	 * Since 1.7.10
+	 */
+	void setLabelFontFamily(String name);
+	
+	/**
+	 * Since 1.7.10
+	 */
+	void setLabelFontSize(int size);
+
+
 }
