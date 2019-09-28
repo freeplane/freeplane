@@ -21,6 +21,8 @@
 package org.freeplane.core.ui.components;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridLayout;
@@ -33,11 +35,15 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
+import java.util.StringTokenizer;
+import java.util.Vector;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
@@ -80,20 +86,42 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	 */
 	private static final long serialVersionUID = 1L;
 	final private JLabel descriptionLabel;
-	final private JLabel[] iconLabels;
+	private JLabel[] iconLabels; // SR
 	final private JPanel iconPanel = new JPanel();
 	final private List<? extends IIconInformation> icons;
 	private int mModifiers;
-	final private int numOfIcons;
+	private int numOfIcons; // SR
 	private int result;
 	private Position selected = new Position(0, 0);
-	final private int xDimension;
+	private int xDimension; // SR
 	private int yDimension;
+
+	// <SR>
+	private List<? extends IIconInformation> allIcons;
+	private List<? extends IIconInformation> currentIcons;
+
+	private JPanel filterPanel = new JPanel();
+
+	private static Position lastPosition = new Position(0, 0);
+	//private FreeMindMain freeMindMain;
+	private static int GAP = 0;
+	private boolean oddRow = true;
+	private int perIconSize = 22;
+	private JTextField filterTextField;
+	// </SR>
 
 	public IconSelectionPopupDialog(final Frame frame, final List<? extends IIconInformation> icons) {
 		super(frame, TextUtils.getText("select_icon"));
 		getContentPane().setLayout(new BorderLayout());
 		this.icons = icons;
+
+		// </SR>
+		//this.freeMindMain = freeMindMain;
+
+		this.allIcons = icons;
+		this.currentIcons = icons;
+		// </SR>
+
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -101,6 +129,77 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 				close();
 			}
 		});
+
+		// <SR>
+		getContentPane().add(filterPanel, BorderLayout.NORTH);
+		GridLayout gridlayout = new GridLayout(0, 1);
+		gridlayout.setHgap(0);
+		gridlayout.setVgap(0);
+		filterPanel.setLayout(gridlayout);
+		filterTextField = new JTextField();
+		filterTextField.addKeyListener(new KeyListener()
+		{
+			public void keyPressed(KeyEvent keyEvent)
+			{
+				String filterText = filterTextField.getText();
+				if (filterText.length() == 0) {
+					if (keyEvent.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+						IconSelectionPopupDialog.this.keyPressed(keyEvent);
+					}
+				}
+			}
+
+			public void keyReleased(KeyEvent keyEvent)
+			{
+				boolean passCharOnToDialog = false;
+				String filterText = filterTextField.getText();
+				if (!filterText.startsWith("/")) {
+					filterTextField.setCaretPosition(filterText.length());
+				}
+				if (filterText.startsWith(".") && filterText.length() == 2) {
+					filterTextField.setText("");
+					passCharOnToDialog = true;
+				}
+				else {
+					char keyChar = keyEvent.getKeyChar();
+					switch (keyChar) {
+						case KeyEvent.VK_ESCAPE:
+							if (filterText.length() > 0) {
+								// Consume the Esc here
+								filterTextField.setText("");
+								keyEvent.consume();
+								break;
+							}
+							// else fall through to IconSelectionPopupDialog.this.keyPressed(keyEvent) below
+						case KeyEvent.VK_LEFT:
+						case KeyEvent.VK_RIGHT:
+						case KeyEvent.VK_UP:
+						case KeyEvent.VK_DOWN:
+						case KeyEvent.VK_ENTER:
+						case KeyEvent.CHAR_UNDEFINED:
+							passCharOnToDialog = true;
+							break;
+					}
+				}
+				if (passCharOnToDialog) {
+					// Pass on to this dialog's keyPressed(...) method.
+					IconSelectionPopupDialog.this.keyPressed(keyEvent);
+					return;
+				}
+				else {
+					if (!filterText.startsWith(".")) {
+						filterIcons();
+					}
+				}
+			}
+
+			public void keyTyped(KeyEvent keyEvent)
+			{
+			}
+		});
+		filterPanel.add(filterTextField);
+		// </SR>
+
 		numOfIcons = icons.size();
 		xDimension = (int) Math.ceil(Math.sqrt(numOfIcons));
 		if (numOfIcons <= xDimension * (xDimension - 1)) {
@@ -109,9 +208,9 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		else {
 			yDimension = xDimension;
 		}
-		final GridLayout gridlayout = new GridLayout(0, xDimension);
-		gridlayout.setHgap(3);
-		gridlayout.setVgap(3);
+		//final GridLayout gridlayout = new GridLayout(0, xDimension); SR
+		//gridlayout.setHgap(3); // SR
+		//gridlayout.setVgap(3); // SR
 		iconPanel.setLayout(gridlayout);
 		iconLabels = new JLabel[numOfIcons];
 		for (int i = 0; i < numOfIcons; ++i) {
@@ -134,8 +233,148 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		pack();
 	}
 
+	private void filterIcons()
+	{
+		String filterText = filterTextField.getText().toLowerCase();
+		Pattern regex = null;
+		if (filterText.trim().length() > 0) {
+			if (filterText.startsWith("/") && filterText.trim().length() >= 2) {
+				regex = Pattern.compile(filterText.substring(1).trim());
+			}
+			currentIcons = new Vector<IIconInformation>();
+			for (IIconInformation icon : allIcons) {
+				String iconLabel = icon.getTranslatedDescription(); // SR - Check
+				if (iconLabel.startsWith("icon_")) {
+					iconLabel = iconLabel.substring(5);
+				}
+				boolean matches = false;
+				if (filterText.startsWith("/")) {
+					matches = regex.matcher(iconLabel).matches();
+				}
+				else {
+					if (filterText.contains(" ")) {
+						matches = true;
+						StringTokenizer tokenizer = new StringTokenizer(filterText);
+						while (tokenizer.hasMoreTokens()) {
+							String token = tokenizer.nextToken();
+							matches = matches && iconLabel.toLowerCase().contains(token);
+							if (!matches) {
+								break;
+							}
+						}
+					}
+					else {
+						matches = iconLabel.toLowerCase().contains(filterText);
+					}
+				}
+				if (matches) {
+					System.out.println(iconLabel);
+					((Vector<IIconInformation>) currentIcons).add(icon);
+				}
+			}
+		}
+		else {
+			currentIcons = allIcons;
+		}
+
+		// if (currentIcons.size() == 1 && filterText.startsWith(".")) {
+		// if (filterText.length() == 2 && filterText.charAt(1) == currentIcons.get(0).getKeyStroke().getKeyChar()) {
+		// // Automatically add
+		// lastPosition = selected = new Position(0, 0);
+		// addIcon(0);
+		// }
+		// }
+
+		for (Component component : iconPanel.getComponents()) {
+			component.removeMouseListener(this);
+		}
+		iconPanel.removeAll();
+		fillIconPanel(currentIcons);
+		lastPosition = selected = new Position(0, 0);
+		select(selected);
+		pack();
+	}
+
+	private void fillIconPanel(List<? extends IIconInformation> icons)
+	{
+		numOfIcons = icons.size();
+		xDimension = new Double(Math.ceil(Math.sqrt(numOfIcons))).intValue();
+		if (xDimension >= 6) {
+			// Build a button-matrix which is closest to quadratic
+			if (numOfIcons <= xDimension * (xDimension - 1)) {
+				yDimension = xDimension - 1;
+			}
+			else {
+				yDimension = xDimension;
+			}
+		}
+		else {
+			xDimension = 5; // Fix at minimum 5 wide
+			yDimension = numOfIcons / xDimension + (numOfIcons % xDimension > 0 ? 1 : 0);
+			if (yDimension == 0) {
+				yDimension = 1; // Always have at least one row
+			}
+		}
+		iconLabels = new JLabel[xDimension * yDimension];
+
+		JPanel rowPanel = null;
+		for (int i = 0; i < (xDimension * yDimension); ++i) {
+			if (i % xDimension == 0) {
+				rowPanel = createIconRowPanel();
+				iconPanel.add(rowPanel);
+			}
+			if (i < numOfIcons) {
+				final IIconInformation icon = icons.get(i);
+				rowPanel.add(iconLabels[i] = new JLabel(icon.getIcon()));
+				iconLabels[i].setBackground(Color.WHITE);
+				// iconLabels[i].setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(GAP, GAP,
+				// GAP,
+				// GAP), BorderFactory.createLineBorder(Color.LIGHT_GRAY)));
+				iconLabels[i].setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
+				iconLabels[i].addMouseListener(this);
+			}
+			else {
+				rowPanel.add(new JLabel(" "));
+			}
+		}
+
+		int xDim = xDimension * perIconSize;
+		int yDim = yDimension * perIconSize;
+		Dimension size = new Dimension(xDim, yDim);
+		iconPanel.setPreferredSize(size);
+		iconPanel.setMinimumSize(size);
+		iconPanel.setMaximumSize(size);
+		iconPanel.setSize(size);
+	}
+
+	private JPanel createIconRowPanel()
+	{
+		oddRow = !oddRow;
+		JPanel rowPanel = new JPanel();
+		// rowPanel.setBackground(oddRow ? new Color(255, 255, 200) : Color.WHITE);
+		rowPanel.setBackground(Color.WHITE);
+		rowPanel.setPreferredSize(new Dimension(xDimension * perIconSize, perIconSize));
+		rowPanel.setMinimumSize(new Dimension(xDimension * perIconSize, perIconSize));
+		rowPanel.setMaximumSize(new Dimension(xDimension * perIconSize, perIconSize));
+
+		GridLayout rowPanelLayout = new GridLayout(1, xDimension);
+		rowPanelLayout.setHgap(0);
+		rowPanelLayout.setVgap(0);
+
+		rowPanel.setLayout(rowPanelLayout);
+		return rowPanel;
+	}
 	private void addIcon(final int pModifiers) {
-		result = calculateIndex(getSelectedPosition());
+//		result = calculateIndex(getSelectedPosition());
+//		mModifiers = pModifiers;
+//		this.dispose();
+		int indexInFilteredIconsList = calculateIndex(getSelectedPosition());
+		IIconInformation selectedIcon = currentIcons.get(indexInFilteredIconsList);
+		for (int i = 0; i < allIcons.size(); i++) {
+			if (allIcons.get(i) == selectedIcon) {
+				result = i;
+			}
+		}
 		mModifiers = pModifiers;
 		this.dispose();
 	}
@@ -184,8 +423,8 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	}
 
 	private int findIndexByKeyEvent(final KeyEvent keyEvent) {
-		for (int i = 0; i < icons.size(); i++) {
-			final IIconInformation info = icons.get(i);
+		for (int i = 0; i < currentIcons.size(); i++) {
+			final IIconInformation info = currentIcons.get(i);
 			final KeyStroke iconKeyStroke = info.getKeyStroke();
 			if (iconKeyStroke != null
 			        && (keyEvent.getKeyCode() == iconKeyStroke.getKeyCode()
@@ -239,7 +478,12 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	}
 
 	private void highlight(final Position position) {
-		iconLabels[calculateIndex(position)].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		//iconLabels[calculateIndex(position)].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		JLabel label = iconLabels[calculateIndex(position)];
+		if (label != null) {
+			label.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP), BorderFactory.createLineBorder(
+					Color.RED, 2)));
+		}
 	}
 
 	/*
@@ -340,7 +584,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		setSelectedPosition(position);
 		highlight(position);
 		final int index = calculateIndex(position);
-		final IIconInformation iconInformation = icons.get(index);
+		final IIconInformation iconInformation = currentIcons.get(index);
 		final String keyStroke = ResourceController.getResourceController().getProperty(iconInformation.getShortcutKey());
 		if (keyStroke != null) {
 			descriptionLabel.setText(iconInformation.getTranslatedDescription() + ", " + keyStroke);
@@ -355,6 +599,10 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	}
 
 	private void unhighlight(final Position position) {
-		iconLabels[calculateIndex(position)].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+		//iconLabels[calculateIndex(position)].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+		JLabel label = iconLabels[calculateIndex(position)];
+		if (label != null) {
+			label.setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
+		}
 	}
 }
