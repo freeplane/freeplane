@@ -15,6 +15,34 @@ public interface ConnectorRO {
     Color getColor();
 
 	String getColorCode();
+	
+	/**
+	 * Since 1.7.10
+	 */
+	int[] getDashArray();
+	
+	/**
+	 * 0 <= opacity <= 255
+	 * 
+	 * Since 1.7.10
+	 */
+	int getOpacity();
+	
+	/**
+	 * Since 1.7.10
+	 */
+	int getWidth();
+	
+	
+	/**
+	 * Since 1.7.10
+	 */
+	String getLabelFontFamily();
+	
+	/**
+	 * Since 1.7.10
+	 */
+	int getLabelFontSize();
 
     /**  @since 1.2 */
 	boolean hasEndArrow();

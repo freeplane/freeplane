@@ -29,13 +29,61 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	public void setShape(String shape) {
 	    getLinkController().setShape(getConnector(), Shape.valueOf(shape));
 	}
+
+    public String getLabelFontFamily() {
+		return getConnector().getLabelFontFamily();
+	}
+	
+	public void setLabelFontFamily(String font) {
+	    getLinkController().setLabelFontFamily(getConnector(), font);
+	}
+
+    public int getLabelFontSize() {
+		return getConnector().getLabelFontSize();
+	}
+	
+	public void setLabelFontSize(int size) {
+	    getLinkController().setLabelFontSize(getConnector(), size);
+	}
 	
 	public Color getColor() {
 	    return getLinkController().getColor(getConnector());
 	}
 	
+	public void setColor(final Color color) {
+		getLinkController().setConnectorColor(getConnector(), color);
+	}
+
+	public int getOpacity() {
+	    return getLinkController().getOpacity(getConnector());
+	}
+	
+	public void setOpacity(final int opacity) {
+		getLinkController().setOpacity(getConnector(), opacity);
+	}
+
+	public int getWidth() {
+	    return getLinkController().getWidth(getConnector());
+	}
+	
+	public void setWidth(final int width) {
+		getLinkController().setWidth(getConnector(), width);
+	}
+
+	public int[] getDashArray() {
+	    return getLinkController().getDashArray(getConnector());
+	}
+	
+	public void setDashArray(final int[] dashArray) {
+		getLinkController().setConnectorDashArray(getConnector(), dashArray);
+	}
+
 	public String getColorCode() {
 		return ColorUtils.colorToString(getColor());
+	}
+
+	public void setColorCode(final String rgbString) {
+		setColor(ColorUtils.stringToColor(rgbString));
 	}
 
 	ConnectorModel getConnector() {
@@ -82,14 +130,6 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 
 	public String getTargetLabel() {
 		return getConnector().getTargetLabel();
-	}
-
-	public void setColor(final Color color) {
-		getLinkController().setConnectorColor(getConnector(), color);
-	}
-
-	public void setColorCode(final String rgbString) {
-		setColor(ColorUtils.stringToColor(rgbString));
 	}
 
     private void setEndArrowImpl(final ArrowType arrowType) {

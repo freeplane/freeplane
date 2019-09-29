@@ -59,7 +59,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		return new ConnectorModel(source, targetID,
 				ConnectorArrows.DEFAULT, null,
 			linkController.getStandardConnectorColor(),
-			linkController.getStandardConnectorAlpha(),
+			linkController.getStandardConnectorOpacity(),
 			linkController.getStandardConnectorShape(),
 		    linkController.getStandardConnectorWidth(),
 		    linkController.getStandardLabelFontFamily(),
@@ -245,7 +245,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 			arrowLink.setAlpha(Integer.parseInt(transparency));
 		}
 		else if(color == null){
-			arrowLink.setAlpha(linkController.getStandardConnectorAlpha());
+			arrowLink.setAlpha(linkController.getStandardConnectorOpacity());
 		}
 		fixSelfLoopedConnectorShape(arrowLink);
 	}

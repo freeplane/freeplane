@@ -149,7 +149,7 @@ public class MLinkController extends LinkController {
 			NodeLinks nodeLinks = NodeLinks.createLinkExtension(source);
 			arrowLink = new ConnectorModel(source, targetID,
 				getStandardConnectorArrows(), getStandardDashVariant().variant,
-				getStandardConnectorColor(), getStandardConnectorAlpha(),
+				getStandardConnectorColor(), getStandardConnectorOpacity(),
 				getStandardConnectorShape(), getStandardConnectorWidth(),
 				getStandardLabelFontFamily(), getStandardLabelFontSize());
 			nodeLinks.addArrowlink(arrowLink);
@@ -579,7 +579,7 @@ public class MLinkController extends LinkController {
                     setSourceLabel(link, sourceLabelEditor.getText());
                     setTargetLabel(link, targetLabelEditor.getText());
                 setMiddleLabel(link, middleLabelEditor.getText());
-                setAlpha(link, transparencySlider.getValue());
+                setOpacity(link, transparencySlider.getValue());
                 setWidth(link, widthModel.getNumber().intValue());
             }
 
@@ -689,7 +689,7 @@ public class MLinkController extends LinkController {
 		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
 	}
 
-	public void setConnectorDash(final ConnectorModel arrowLink, final int[] dash) {
+	public void setConnectorDashArray(final ConnectorModel arrowLink, final int[] dash) {
 		final int[] oldDash = arrowLink.getDash();
 		if (dash == oldDash || dash != null && dash.equals(oldDash)) {
 			return;
@@ -1020,7 +1020,7 @@ public class MLinkController extends LinkController {
 		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
 	}
 
-	public void setAlpha(final ConnectorModel connector, final int alpha) {
+	public void setOpacity(final ConnectorModel connector, final int alpha) {
 		final int oldAlpha = connector.getAlpha();
 		if (oldAlpha == alpha) {
 			return;

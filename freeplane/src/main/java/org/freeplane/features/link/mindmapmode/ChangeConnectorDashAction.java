@@ -48,6 +48,6 @@ class ChangeConnectorDashAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final MLinkController linkController = (MLinkController) LinkController.getController();
-		linkController.setConnectorDash(connector, dash.variant);
+		linkController.setConnectorDashArray(connector, dash.variant);
 	}
 }

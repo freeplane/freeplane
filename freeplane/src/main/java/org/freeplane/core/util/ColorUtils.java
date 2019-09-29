@@ -58,16 +58,16 @@ public class ColorUtils {
 		return new Color(r,g,b,a);
 	}
 
-	public static Color stringToColor(final String str, final Color alphaHolder) {
+	public static Color stringToColor(final String str, final Color opacityHolder) {
 		final Color rgb = stringToColor(str);
-		if(alphaHolder == null || isNonTransparent(alphaHolder) || rgb == null)
+		if(opacityHolder == null || isNonTransparent(opacityHolder) || rgb == null)
 			return rgb;
 		else
-			return new Color(rgb.getRed(), rgb.getGreen(), rgb.getBlue(), alphaHolder.getAlpha());
+			return new Color(rgb.getRed(), rgb.getGreen(), rgb.getBlue(), opacityHolder.getAlpha());
 	}
 
-	public static boolean isNonTransparent(final Color alphaHolder) {
-		final boolean isNonTransparent = alphaHolder.getAlpha() == NON_TRANSPARENT_ALPHA;
+	public static boolean isNonTransparent(final Color opacityHolder) {
+		final boolean isNonTransparent = opacityHolder.getAlpha() == NON_TRANSPARENT_ALPHA;
 		return isNonTransparent;
 	}
 	
@@ -75,24 +75,24 @@ public class ColorUtils {
 		return alphaToColor(Integer.parseInt(value), color);
 	}
 	
-	public static Color alphaToColor(final int alpha, final Color rgbHolder) {
+	public static Color alphaToColor(final int opacity, final Color rgbHolder) {
 		if(rgbHolder == null)
-			return new Color(0, 0, 0, alpha);
-        if(rgbHolder.getAlpha() == alpha)
+			return new Color(0, 0, 0, opacity);
+        if(rgbHolder.getAlpha() == opacity)
     		return rgbHolder;
-    	return new Color(rgbHolder.getRed(), rgbHolder.getGreen(), rgbHolder.getBlue(), alpha);
+    	return new Color(rgbHolder.getRed(), rgbHolder.getGreen(), rgbHolder.getBlue(), opacity);
     }
 
-	public static void setColorAttributes(final XMLElement element, String colorAttribute, String alphaAttribute, final Color color) {
+	public static void setColorAttributes(final XMLElement element, String colorAttribute, String opacityAttribite, final Color color) {
 		element.setAttribute(colorAttribute, colorToString(color));
 		if(! isNonTransparent(color))
-			element.setAttribute(alphaAttribute, Integer.toString(color.getAlpha()));
+			element.setAttribute(opacityAttribite, Integer.toString(color.getAlpha()));
 	}
 	
-	public static void addColorAttributes(final ITreeWriter writer, String colorAttribute, String alphaAttribute, final Color color) {
+	public static void addColorAttributes(final ITreeWriter writer, String colorAttribute, String opacityAttribite, final Color color) {
 		writer.addAttribute(colorAttribute, colorToString(color));
 		if(! isNonTransparent(color))
-			writer.addAttribute(alphaAttribute, Integer.toString(color.getAlpha()));
+			writer.addAttribute(opacityAttribite, Integer.toString(color.getAlpha()));
 	}
 
 	public static Color makeNonTransparent(Color color){

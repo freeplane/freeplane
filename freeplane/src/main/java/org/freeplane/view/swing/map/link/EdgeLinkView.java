@@ -61,11 +61,11 @@ public class EdgeLinkView extends AConnectorView {
 		else {
 			final LinkController linkController = LinkController.getController(modeController);
 			color = linkController.getColor(connectorModel);
-			final int alpha = linkController.getAlpha(connectorModel);
+			final int alpha = linkController.getOpacity(connectorModel);
 			color =  ColorUtils.alphaToColor(alpha, color);
 			final int width = linkController.getWidth(model);
 			edgeView.setWidth(width);
-			int[] dash = linkController.getDash(model);
+			int[] dash = linkController.getDashArray(model);
 			edgeView.setDash(dash);
 		}
 		edgeView.setColor(color);

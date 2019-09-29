@@ -93,7 +93,7 @@ class FileRevisionsDialog extends JDialog {
 			getColumnModel().getColumn(0).setPreferredWidth((int) (width * 0.7));
 			getColumnModel().getColumn(1).setPreferredWidth((int) (width * 0.1));
 			getColumnModel().getColumn(2).setPreferredWidth((int) (width * 0.2));
-			setRowHeight(20);
+			setRowHeight(UITools.getDefaultLabelFont().getSize() * 5 / 4);
 			setRowSelectionAllowed(true);
 			setFocusable(false);
 			setDefaultRenderer(Object.class, renderer);
