@@ -34,6 +34,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -45,12 +46,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IIconInformation;
+import org.freeplane.features.icon.factory.IconFactory;
 
 public class IconSelectionPopupDialog extends JDialog implements KeyListener, MouseListener {
 	static class Position {
@@ -86,14 +90,14 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	 */
 	private static final long serialVersionUID = 1L;
 	final private JLabel descriptionLabel;
-	private JLabel[] iconLabels; // SR
+	private JLabel[] iconLabels;
 	final private JPanel iconPanel = new JPanel();
 	final private List<? extends IIconInformation> icons;
 	private int mModifiers;
-	private int numOfIcons; // SR
+	private int numOfIcons;
 	private int result;
 	private Position selected = new Position(0, 0);
-	private int xDimension; // SR
+	private int xDimension;
 	private int yDimension;
 
 	// <SR>
@@ -102,11 +106,10 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 
 	private JPanel filterPanel = new JPanel();
 
-	private static Position lastPosition = new Position(0, 0);
-	//private FreeMindMain freeMindMain;
-	private static int GAP = 0;
+	private static String lastSearchText = "";
+	private static int GAP = 1;
 	private boolean oddRow = true;
-	private int perIconSize = 22;
+	private int perIconSize = (int) (IconFactory.DEFAULT_UI_ICON_HEIGHT.in(LengthUnits.px).value * 1.15 + GAP * 2);
 	private JTextField filterTextField;
 	// </SR>
 
@@ -114,12 +117,19 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		super(frame, TextUtils.getText("select_icon"));
 		getContentPane().setLayout(new BorderLayout());
 		this.icons = icons;
+		this.allIcons = new Vector<IIconInformation>(100);
 
 		// </SR>
-		//this.freeMindMain = freeMindMain;
-
-		this.allIcons = icons;
-		this.currentIcons = icons;
+		// Filter out duplicates that are appearing in IconSelection
+		List<String> labelsUsedSoFar = new ArrayList<String>();
+		for (IIconInformation icon : icons) {
+			String label = icon.getTranslatedDescription();
+			if (!labelsUsedSoFar.contains(label)) {
+				((Vector<IIconInformation>) allIcons).add(icon);
+				labelsUsedSoFar.add(label);
+			}
+		}
+		this.currentIcons = allIcons;
 		// </SR>
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -133,14 +143,12 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		// <SR>
 		getContentPane().add(filterPanel, BorderLayout.NORTH);
 		GridLayout gridlayout = new GridLayout(0, 1);
-		gridlayout.setHgap(0);
-		gridlayout.setVgap(0);
+		gridlayout.setHgap(3); // SR
+		gridlayout.setVgap(3); // SR
 		filterPanel.setLayout(gridlayout);
 		filterTextField = new JTextField();
-		filterTextField.addKeyListener(new KeyListener()
-		{
-			public void keyPressed(KeyEvent keyEvent)
-			{
+		filterTextField.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent keyEvent) {
 				String filterText = filterTextField.getText();
 				if (filterText.length() == 0) {
 					if (keyEvent.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
@@ -149,52 +157,49 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 				}
 			}
 
-			public void keyReleased(KeyEvent keyEvent)
-			{
+			public void keyReleased(KeyEvent keyEvent) {
 				boolean passCharOnToDialog = false;
 				String filterText = filterTextField.getText();
+				lastSearchText = filterText;
 				if (!filterText.startsWith("/")) {
 					filterTextField.setCaretPosition(filterText.length());
 				}
 				if (filterText.startsWith(".") && filterText.length() == 2) {
 					filterTextField.setText("");
 					passCharOnToDialog = true;
-				}
-				else {
+				} else {
 					char keyChar = keyEvent.getKeyChar();
 					switch (keyChar) {
-						case KeyEvent.VK_ESCAPE:
-							if (filterText.length() > 0) {
-								// Consume the Esc here
-								filterTextField.setText("");
-								keyEvent.consume();
-								break;
-							}
-							// else fall through to IconSelectionPopupDialog.this.keyPressed(keyEvent) below
-						case KeyEvent.VK_LEFT:
-						case KeyEvent.VK_RIGHT:
-						case KeyEvent.VK_UP:
-						case KeyEvent.VK_DOWN:
-						case KeyEvent.VK_ENTER:
-						case KeyEvent.CHAR_UNDEFINED:
-							passCharOnToDialog = true;
+					case KeyEvent.VK_ESCAPE:
+						if (filterText.length() > 0) {
+							// Consume the Esc here, clear the filterTextField.
+							filterTextField.setText("");
+							keyEvent.consume();
 							break;
+						}
+						// else fall through to IconSelectionPopupDialog.this.keyPressed(keyEvent) below
+					case KeyEvent.VK_LEFT:
+					case KeyEvent.VK_RIGHT:
+					case KeyEvent.VK_UP:
+					case KeyEvent.VK_DOWN:
+					case KeyEvent.VK_ENTER:
+					case KeyEvent.CHAR_UNDEFINED:
+						passCharOnToDialog = true;
+						break;
 					}
 				}
 				if (passCharOnToDialog) {
 					// Pass on to this dialog's keyPressed(...) method.
 					IconSelectionPopupDialog.this.keyPressed(keyEvent);
 					return;
-				}
-				else {
+				} else {
 					if (!filterText.startsWith(".")) {
 						filterIcons();
 					}
 				}
 			}
 
-			public void keyTyped(KeyEvent keyEvent)
-			{
+			public void keyTyped(KeyEvent keyEvent) {
 			}
 		});
 		filterPanel.add(filterTextField);
@@ -204,13 +209,10 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		xDimension = (int) Math.ceil(Math.sqrt(numOfIcons));
 		if (numOfIcons <= xDimension * (xDimension - 1)) {
 			yDimension = xDimension - 1;
-		}
-		else {
+		} else {
 			yDimension = xDimension;
 		}
-		//final GridLayout gridlayout = new GridLayout(0, xDimension); SR
-		//gridlayout.setHgap(3); // SR
-		//gridlayout.setVgap(3); // SR
+
 		iconPanel.setLayout(gridlayout);
 		iconLabels = new JLabel[numOfIcons];
 		for (int i = 0; i < numOfIcons; ++i) {
@@ -231,10 +233,22 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		select(getSelectedPosition());
 		addKeyListener(this);
 		pack();
+		iconPanel.repaint(50);
+		repaint(50);
+		iconPanel.repaint(50);
+		repaint(50);
+		iconPanel.repaint(50);
+		repaint(50);
+		iconPanel.repaint(50);
+		repaint(50);
+		iconPanel.repaint(50);
+		repaint(50);
+		iconPanel.repaint(50);
+		repaint(50);
+		filterTextField.setText(lastSearchText);
 	}
 
-	private void filterIcons()
-	{
+	private void filterIcons() {
 		String filterText = filterTextField.getText().toLowerCase();
 		Pattern regex = null;
 		if (filterText.trim().length() > 0) {
@@ -250,8 +264,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 				boolean matches = false;
 				if (filterText.startsWith("/")) {
 					matches = regex.matcher(iconLabel).matches();
-				}
-				else {
+				} else {
 					if (filterText.contains(" ")) {
 						matches = true;
 						StringTokenizer tokenizer = new StringTokenizer(filterText);
@@ -262,23 +275,21 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 								break;
 							}
 						}
-					}
-					else {
+					} else {
 						matches = iconLabel.toLowerCase().contains(filterText);
 					}
 				}
 				if (matches) {
-					System.out.println(iconLabel);
 					((Vector<IIconInformation>) currentIcons).add(icon);
 				}
 			}
-		}
-		else {
+		} else {
 			currentIcons = allIcons;
 		}
 
 		// if (currentIcons.size() == 1 && filterText.startsWith(".")) {
-		// if (filterText.length() == 2 && filterText.charAt(1) == currentIcons.get(0).getKeyStroke().getKeyChar()) {
+		// if (filterText.length() == 2 && filterText.charAt(1) ==
+		// currentIcons.get(0).getKeyStroke().getKeyChar()) {
 		// // Automatically add
 		// lastPosition = selected = new Position(0, 0);
 		// addIcon(0);
@@ -290,25 +301,25 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		}
 		iconPanel.removeAll();
 		fillIconPanel(currentIcons);
-		lastPosition = selected = new Position(0, 0);
+		selected = new Position(0, 0);
 		select(selected);
 		pack();
+		// Trying to fix the Darcula repaint issue -- icon panel not painting properly.
+		validate();
+		repaint();
 	}
 
-	private void fillIconPanel(List<? extends IIconInformation> icons)
-	{
+	private void fillIconPanel(List<? extends IIconInformation> icons) {
 		numOfIcons = icons.size();
 		xDimension = new Double(Math.ceil(Math.sqrt(numOfIcons))).intValue();
 		if (xDimension >= 6) {
 			// Build a button-matrix which is closest to quadratic
 			if (numOfIcons <= xDimension * (xDimension - 1)) {
 				yDimension = xDimension - 1;
-			}
-			else {
+			} else {
 				yDimension = xDimension;
 			}
-		}
-		else {
+		} else {
 			xDimension = 5; // Fix at minimum 5 wide
 			yDimension = numOfIcons / xDimension + (numOfIcons % xDimension > 0 ? 1 : 0);
 			if (yDimension == 0) {
@@ -318,6 +329,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		iconLabels = new JLabel[xDimension * yDimension];
 
 		JPanel rowPanel = null;
+		Color panelBackgroundColor = UIManager.getColor("Panel.background");
 		for (int i = 0; i < (xDimension * yDimension); ++i) {
 			if (i % xDimension == 0) {
 				rowPanel = createIconRowPanel();
@@ -326,14 +338,15 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 			if (i < numOfIcons) {
 				final IIconInformation icon = icons.get(i);
 				rowPanel.add(iconLabels[i] = new JLabel(icon.getIcon()));
-				iconLabels[i].setBackground(Color.WHITE);
-				// iconLabels[i].setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(GAP, GAP,
-				// GAP,
-				// GAP), BorderFactory.createLineBorder(Color.LIGHT_GRAY)));
+				iconLabels[i].setBackground(panelBackgroundColor);
+				// iconLabels[i].setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(GAP,
+				// GAP, GAP, GAP),
+				// BorderFactory.createLineBorder(Color.LIGHT_GRAY)));
 				iconLabels[i].setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
 				iconLabels[i].addMouseListener(this);
-			}
-			else {
+				// iconLabels[i].repaint(); // SR - Fix icons not painting until "moused-over"
+				// when Darcula theme is used
+			} else {
 				rowPanel.add(new JLabel(" "));
 			}
 		}
@@ -345,14 +358,14 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		iconPanel.setMinimumSize(size);
 		iconPanel.setMaximumSize(size);
 		iconPanel.setSize(size);
+		iconPanel.repaint(100);
 	}
 
-	private JPanel createIconRowPanel()
-	{
+	private JPanel createIconRowPanel() {
 		oddRow = !oddRow;
 		JPanel rowPanel = new JPanel();
-		// rowPanel.setBackground(oddRow ? new Color(255, 255, 200) : Color.WHITE);
-		rowPanel.setBackground(Color.WHITE);
+		Color panelBackgroundColor = UIManager.getColor("Panel.background");
+		rowPanel.setBackground(panelBackgroundColor);
 		rowPanel.setPreferredSize(new Dimension(xDimension * perIconSize, perIconSize));
 		rowPanel.setMinimumSize(new Dimension(xDimension * perIconSize, perIconSize));
 		rowPanel.setMaximumSize(new Dimension(xDimension * perIconSize, perIconSize));
@@ -362,12 +375,12 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		rowPanelLayout.setVgap(0);
 
 		rowPanel.setLayout(rowPanelLayout);
+		rowPanel.repaint();
 		return rowPanel;
 	}
+
 	private void addIcon(final int pModifiers) {
-//		result = calculateIndex(getSelectedPosition());
-//		mModifiers = pModifiers;
-//		this.dispose();
+		result = calculateIndex(getSelectedPosition());
 		int indexInFilteredIconsList = calculateIndex(getSelectedPosition());
 		IIconInformation selectedIcon = currentIcons.get(indexInFilteredIconsList);
 		for (int i = 0; i < allIcons.size(); i++) {
@@ -478,16 +491,17 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	}
 
 	private void highlight(final Position position) {
-		//iconLabels[calculateIndex(position)].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+		// iconLabels[calculateIndex(position)].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 		JLabel label = iconLabels[calculateIndex(position)];
 		if (label != null) {
-			label.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP), BorderFactory.createLineBorder(
-					Color.RED, 2)));
+			label.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0),
+					BorderFactory.createLineBorder(Color.RED, 2)));
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
 	public void keyPressed(final KeyEvent keyEvent) {
@@ -599,7 +613,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	}
 
 	private void unhighlight(final Position position) {
-		//iconLabels[calculateIndex(position)].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+		// iconLabels[calculateIndex(position)].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 		JLabel label = iconLabels[calculateIndex(position)];
 		if (label != null) {
 			label.setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
