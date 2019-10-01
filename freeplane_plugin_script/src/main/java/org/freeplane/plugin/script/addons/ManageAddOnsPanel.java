@@ -154,7 +154,7 @@ public class ManageAddOnsPanel extends JPanel {
 		table.setTableHeader(null);
 //FIXME: Java 6
 //		table.setAutoCreateRowSorter(true);
-		final int rowHeight = 62;
+		final int rowHeight = UITools.getDefaultLabelFont().getSize() * 5;
         table.setRowHeight(rowHeight);
 		table.setBackground(Color.white);
 		table.setShowVerticalLines(false);

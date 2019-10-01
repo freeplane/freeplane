@@ -349,7 +349,7 @@ public class LinkController extends SelectionController implements IExtension {
 		return model.getColor();
 	}
 
-	public int[] getDash(final ConnectorModel model) {
+	public int[] getDashArray(final ConnectorModel model) {
 		return model.getDash();
 	}
 
@@ -821,13 +821,13 @@ public class LinkController extends SelectionController implements IExtension {
 		return shape;
 	}
 
-	public int getStandardConnectorAlpha() {
+	public int getStandardConnectorOpacity() {
 		final String standardAlpha = ResourceController.getResourceController().getProperty(RESOURCES_CONNECTOR_COLOR_ALPHA);
 		final int alpha = Integer.valueOf(standardAlpha);
 		return alpha;
 	}
 
-	public int getAlpha(ConnectorModel connectorModel) {
+	public int getOpacity(ConnectorModel connectorModel) {
 		return connectorModel.getAlpha();
     }
 

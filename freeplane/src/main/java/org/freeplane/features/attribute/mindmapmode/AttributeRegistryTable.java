@@ -36,6 +36,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.collection.IListModel;
 
@@ -142,7 +143,7 @@ class AttributeRegistryTable extends JTable {
 		selectAllButtonEditor = new ButtonEditor(new ToggleAllAction());
 		setDefaultEditor(IListModel.class, new ButtonEditor(editListAction));
 		setDefaultRenderer(IListModel.class, AttributeRegistryTable.editButtonRenderer);
-		setRowHeight(20);
+		setRowHeight(UITools.getDefaultLabelFont().getSize() * 5 / 4);
 		setRowSelectionAllowed(false);
 	}
 

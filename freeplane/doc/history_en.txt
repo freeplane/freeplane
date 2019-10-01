@@ -6,7 +6,7 @@ Do not output links twice copying nodes to clipboard
 Allow to change positions of LINE shape connectors
 New action: select nodes matching filter
 Dark UI mode support (Look and feel and map template "Darcula")
-
+Overwrite system properties from installation specific file <install-dir>/system.properties
 ===============================
 1.7.9
 ===============================

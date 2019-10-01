@@ -69,7 +69,7 @@ public class ConnectorView extends AConnectorView{
 		final LinkController linkController = LinkController.getController(getModeController());
 		textColor = linkController.getColor(connectorModel);
 		this.bgColor =bgColor;
-		final int alpha = linkController.getAlpha(connectorModel);
+		final int alpha = linkController.getOpacity(connectorModel);
 		color =  ColorUtils.alphaToColor(alpha, textColor);
 
 		final int width = linkController.getWidth(connectorModel);
@@ -77,7 +77,7 @@ public class ConnectorView extends AConnectorView{
 			stroke = new BasicStroke(width);
 		}
 		else{
-			stroke = UITools.createStroke((float) width, linkController.getDash(connectorModel), BasicStroke.JOIN_ROUND);
+			stroke = UITools.createStroke((float) width, linkController.getDashArray(connectorModel), BasicStroke.JOIN_ROUND);
 		}
 
 	}

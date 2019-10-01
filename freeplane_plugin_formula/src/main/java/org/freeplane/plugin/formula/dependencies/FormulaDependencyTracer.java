@@ -143,7 +143,7 @@ class FormulaDependencyTracer implements IExtension {
 		return new ConnectorModel(source, id,
 			ConnectorArrows.FORWARD, null,
 			FilterController.HIGHLIGHT_COLOR,
-			linkController.getStandardConnectorAlpha(),
+			linkController.getStandardConnectorOpacity(),
 			linkController.getStandardConnectorShape(),
 			linkController.getStandardConnectorWidth(),
 			linkController.getStandardLabelFontFamily(),
