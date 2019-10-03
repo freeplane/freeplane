@@ -178,7 +178,7 @@ public class FreeplaneSplashModern extends JWindow {
 	}
 
 	static public void setFonts() {
-		setFont(new FontUIResource(new Font("SF UI Text", Font.PLAIN, 11)));
+		//setFont(new FontUIResource(new Font("SF UI Text", Font.PLAIN, 11)));
 	}
 
 	private static void setFont(FontUIResource myFont) {
