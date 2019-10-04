@@ -56,7 +56,8 @@ public class EditStylesAction extends AFreeplaneAction {
 	public EditStylesAction() {
 		super("EditStylesAction");
 	}
-	
+
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final Controller currentController = Controller.getCurrentController();
 		final MapModel map = currentController.getMap();
@@ -66,12 +67,13 @@ public class EditStylesAction extends AFreeplaneAction {
 			UITools.errorMessage(TextUtils.getText("no_styles_found_in_map"));
 			return;
 		}
-		
+
 		final IMapViewManager mapViewManager = currentController.getMapViewManager();
 		currentMapView = mapViewManager.getMapViewComponent();
 		mapViewManager.changeToMapView((Component)null);
-		
-		final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+
+		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
+		styleMap.putExtension(IUndoHandler.class, undoHandler);
 		undoHandler.startTransaction();
 		init();
 		SModeController modeController = getModeController();
@@ -127,7 +129,7 @@ public class EditStylesAction extends AFreeplaneAction {
 		    	windowConfigurationStorage.storeDialogPositions(dialog);
 				final IMapViewManager mapViewManager = modeController.getController().getMapViewManager();
 				final MapModel map = mapViewManager.getModel();
-				final IUndoHandler undoHandler = (IUndoHandler) map.getExtension(IUndoHandler.class);
+				final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
 				modeController.getMapController().closeWithoutSaving(map);
 				Controller.setCurrentController(mainController);
 				super.componentHidden(e);
@@ -144,7 +146,7 @@ public class EditStylesAction extends AFreeplaneAction {
 						rollback();
 				}
 			}
-	
+
 		});
 	}
 }
