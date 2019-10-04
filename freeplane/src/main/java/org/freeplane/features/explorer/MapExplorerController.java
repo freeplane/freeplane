@@ -1,6 +1,5 @@
 package org.freeplane.features.explorer;
 
-import org.freeplane.api.NodeNotFoundException;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
@@ -101,13 +100,15 @@ public class MapExplorerController  implements IExtension{
 				return new MapExplorer(start, path, accessedNodes).getNode();
 			}
 			catch (NodeNotFoundException e) {
-				return null;
+			}
+			catch (IllegalArgumentException e) {
+				LogUtils.warn("Invalid reference format in" + reference);
 			}
 		}
 		else {
 			LogUtils.warn("Invalid reference format in" + reference);
-			return null;
 		}
+		return null;
 	}
 
 
