@@ -32,6 +32,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
@@ -41,7 +42,7 @@ import org.freeplane.features.mode.Controller;
 
 class SelectedPasteAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -49,6 +50,7 @@ class SelectedPasteAction extends AFreeplaneAction {
 		super("SelectedPasteAction");
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final MMapClipboardController clipboardController = (MMapClipboardController) MapClipboardController
 		    .getController();
@@ -57,7 +59,8 @@ class SelectedPasteAction extends AFreeplaneAction {
 			return;
 		}
 		final JPanel options = createPane(flavorHandlers);
-		if (JOptionPane.CANCEL_OPTION == JOptionPane.showConfirmDialog((Component) e.getSource(), options, 
+		MnemonicSetter.INSTANCE.setComponentMnemonics(options);
+		if (JOptionPane.CANCEL_OPTION == JOptionPane.showConfirmDialog((Component) e.getSource(), options,
 				(String) getValue(Action.NAME), JOptionPane.OK_CANCEL_OPTION)) {
 			return;
 		}
@@ -82,6 +85,7 @@ class SelectedPasteAction extends AFreeplaneAction {
 				radioButton.setSelected(true);
 			}
 			radioButton.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(final ActionEvent e) {
 					selectedHandler = handler;
 				}
