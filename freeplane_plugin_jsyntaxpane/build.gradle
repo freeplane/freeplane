@@ -1,6 +1,5 @@
 dependencies {
     compileOnly project(':freeplane')
-	testCompile project(':freeplane')
 
     // from flatDir "localGitDepsRepository":
     // from the Debian "libjsyntaxpane-java" package:

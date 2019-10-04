@@ -87,6 +87,10 @@ subprojects {
        }
     }
 
+    configurations {
+        testCompileOnly.extendsFrom(compileOnly)
+    }
+    
     dependencies {
 		testCompile 'junit:junit:4.12',
 				'org.hamcrest:hamcrest-all:1.3',

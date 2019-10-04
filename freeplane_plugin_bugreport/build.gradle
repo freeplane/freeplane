@@ -1,6 +1,5 @@
 dependencies {
     compileOnly project(':freeplane')
-	testCompile project(':freeplane')
 }
 
 jar {

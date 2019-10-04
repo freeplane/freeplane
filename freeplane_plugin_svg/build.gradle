@@ -1,6 +1,5 @@
 dependencies {
     compileOnly project(':freeplane')
-	testCompile project(':freeplane')
 
 	compile 'org.apache.xmlgraphics:batik-transcoder:1.10'
 	compile 'org.apache.xmlgraphics:batik-swing:1.10'

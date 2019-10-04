@@ -1,8 +1,6 @@
 dependencies {
     compileOnly project(':freeplane')
-	testCompile project(':freeplane')
     compileOnly project(':freeplane_plugin_jsyntaxpane')
-	testCompile project(':freeplane_plugin_jsyntaxpane')
 	compile ('org.codehaus.groovy:groovy-all:2.5.4') {
 		exclude group:'org.codehaus.groovy', module:'groovy-test'
 		exclude group:'org.codehaus.groovy', module:'groovy-test-junit5'
