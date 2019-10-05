@@ -171,7 +171,7 @@ public class UITools {
 			myMessage = TextUtils.getText("undefined_error");
 		}
 		LogUtils.warn(myMessage);
-		if(! errorMessageQueued.getAndSet(true))
+		if(! GraphicsEnvironment.isHeadless() && ! errorMessageQueued.getAndSet(true))
 			EventQueue.invokeLater(new Runnable() {
 				@Override
 				public void run() {
