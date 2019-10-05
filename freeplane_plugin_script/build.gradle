@@ -1,7 +1,7 @@
 dependencies {
-    compileOnly project(':freeplane')
-    compileOnly project(':freeplane_plugin_jsyntaxpane')
-	compile ('org.codehaus.groovy:groovy-all:2.5.4') {
+    compile project(':freeplane')
+    compile project(':freeplane_plugin_jsyntaxpane')
+	lib ('org.codehaus.groovy:groovy-all:2.5.4') {
 		exclude group:'org.codehaus.groovy', module:'groovy-test'
 		exclude group:'org.codehaus.groovy', module:'groovy-test-junit5'
 		exclude group:'org.codehaus.groovy', module:'groovy-testng'
@@ -11,8 +11,8 @@ dependencies {
 		exclude group:'org.codehaus.groovy', module:'groovy-cli-commons'
 		exclude group:'org.codehaus.groovy', module:'groovy-cli-picocli'
 	}
-	runtime 'org.codehaus.groovy:groovy-dateutil:2.5.4'
-	runtime 'org.apache.ivy:ivy:2.4.0'
+	lib 'org.codehaus.groovy:groovy-dateutil:2.5.4'
+	lib 'org.apache.ivy:ivy:2.4.0'
 
 }
 
@@ -26,7 +26,7 @@ jar {
         name = pluginid
         symbolicName = pluginid
 
-        def deps = filterAndExternalizePluginDependencies(configurations.runtime.files)
+        def deps = filterAndExternalizePluginDependencies(configurations.lib.files)
         deps.add(0, "lib/plugin-" + project.version + '.jar')
 
         attributes 'Class-Path': deps.join(', ')

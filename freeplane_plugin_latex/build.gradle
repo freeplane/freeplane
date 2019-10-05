@@ -1,9 +1,9 @@
 dependencies {
-    compileOnly project(':freeplane')
-    compileOnly project(':freeplane_plugin_jsyntaxpane')
-    compile 'org.scilab.forge:jlatexmath:1.0.7'
-    compile 'org.scilab.forge:jlatexmath-font-greek:1.0.7'
-    compile 'org.scilab.forge:jlatexmath-font-cyrillic:1.0.7'
+    compile project(':freeplane')
+    compile project(':freeplane_plugin_jsyntaxpane')
+    lib 'org.scilab.forge:jlatexmath:1.0.7'
+    lib 'org.scilab.forge:jlatexmath-font-greek:1.0.7'
+    lib 'org.scilab.forge:jlatexmath-font-cyrillic:1.0.7'
 }
 
 jar {
@@ -12,7 +12,7 @@ jar {
         symbolicName = pluginid
 
         
-        def deps = filterAndExternalizePluginDependencies(configurations.runtime.files)
+        def deps = filterAndExternalizePluginDependencies(configurations.lib.files)
         deps.add(0, "lib/plugin-" + project.version + '.jar')
 
         attributes 'Class-Path': deps.join(', ')

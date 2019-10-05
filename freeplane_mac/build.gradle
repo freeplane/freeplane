@@ -1,5 +1,3 @@
-import org.apache.tools.ant.taskdefs.condition.Os;
-
 repositories {
     maven {url 'http://devel.uji.es/nexus/content/repositories/releases/'}
 }

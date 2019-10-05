@@ -1,5 +1,5 @@
 dependencies {
-    compileOnly project(':freeplane')
+    compile project(':freeplane')
 }
 
 jar {
@@ -8,7 +8,7 @@ jar {
         symbolicName = pluginid
 
         
-        def deps = filterAndExternalizePluginDependencies(configurations.runtime.files)
+        def deps = filterAndExternalizePluginDependencies(configurations.lib.files)
         deps.add(0, "lib/plugin-" + project.version + '.jar')
 
         attributes 'Class-Path': deps.join(', ')

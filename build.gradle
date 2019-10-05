@@ -88,7 +88,8 @@ subprojects {
     }
 
     configurations {
-        testCompileOnly.extendsFrom(compileOnly)
+        lib
+        compile.extendsFrom(lib)
     }
     
     dependencies {
@@ -148,11 +149,8 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
             exclude('freeplane-' + project.version + '.jar')
             exclude('freeplane_plugin_*-' + project.version + '.jar')
         }
-        from (configurations.runtime) {
+        from (configurations.lib) {
             include("*.jar")
-            // TODO: this is redundant with regard to 'filterPluginDeps' (see above)!
-            exclude('framework-*.jar')
-            exclude('knopflerfish-framework*.jar')
         }
         from ('lib') {
             include("*.jar")

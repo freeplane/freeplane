@@ -1,5 +1,5 @@
 dependencies {
-    compile group: 'org.apache.ant', name: 'ant', version: '1.9.3'
+    lib group: 'org.apache.ant', name: 'ant', version: '1.9.3'
 }
 
 jar {

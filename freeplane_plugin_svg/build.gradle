@@ -1,10 +1,10 @@
 dependencies {
-    compileOnly project(':freeplane')
+    compile project(':freeplane')
 
-	compile 'org.apache.xmlgraphics:batik-transcoder:1.10'
-	compile 'org.apache.xmlgraphics:batik-swing:1.10'
-	compile 'org.apache.xmlgraphics:batik-codec:1.10'
-	compile 'org.apache.xmlgraphics:fop:2.2'
+	lib 'org.apache.xmlgraphics:batik-transcoder:1.10'
+	lib 'org.apache.xmlgraphics:batik-swing:1.10'
+	lib 'org.apache.xmlgraphics:batik-codec:1.10'
+	lib 'org.apache.xmlgraphics:fop:2.2'
 }
 
 configurations.all {
@@ -19,7 +19,7 @@ jar {
         name = pluginid
         symbolicName = pluginid 
 
-        def deps = filterAndExternalizePluginDependencies(configurations.runtime.files)
+        def deps = filterAndExternalizePluginDependencies(configurations.lib.files)
         deps.add(0, "lib/plugin-" + project.version + '.jar')
 
         attributes 'Class-Path': deps.join(', ')

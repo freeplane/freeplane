@@ -1,25 +1,25 @@
 configurations{
 	mergedViewerDependencies
-	compile.extendsFrom(mergedViewerDependencies)
+    compile.extendsFrom(mergedViewerDependencies)
 }
 
 dependencies {
 	
 	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
-	compile ':kitfox-svg-salamander-1.1.1-p1'
-	compile 'com.github.robtimus:data-url:1.0.1'
-	compile 'com.bulenkov:darcula:2018.2'
+	lib ':kitfox-svg-salamander-1.1.1-p1'
+	lib 'com.github.robtimus:data-url:1.0.1'
+	lib 'com.bulenkov:darcula:2018.2'
+
+    lib project(':JOrtho_0.4_freeplane')
+    compile project(':freeplane_api')
 	
-    compile project(':JOrtho_0.4_freeplane')
-	compile project(':freeplane_api')
-	
-    compile 'commons-lang:commons-lang:2.6',
+    lib 'commons-lang:commons-lang:2.6',
             'commons-io:commons-io:2.4',
             'commons-codec:commons-codec:1.8',
             'com.jgoodies:jgoodies-forms:1.9.0',
             'com.jgoodies:jgoodies-common:1.8.1'
 
-	compile  ('com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.17.3') {
+	lib  ('com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.17.3') {
 		exclude module: 'javahelp'
 		exclude module: 'mnemonicsetter'
 	}
@@ -27,7 +27,7 @@ dependencies {
  	testRuntime files('src/viewer/resources', 'src/editor/resources', 'src/external/resources')
 
     // from flatDir "localGitDepsRepository":
-    compile ':idw-gpl-1.6.1'
+    lib ':idw-gpl-1.6.1'
 }
 
 sourceSets {
@@ -49,7 +49,7 @@ jar {
         name = pluginid
         symbolicName = pluginid
 
-        def deps = configurations.runtime.files.collect {
+        def deps = configurations.lib.files.collect {
             externalizeJar(it)
         }
         deps.add(0, "lib/freeplaneosgi-${project.version}.jar")
@@ -195,11 +195,8 @@ task copyOSGiJars(type: Copy) {
           include("*.jar")
 		  exclude('freeplane-*.jar')
         }
-     from (configurations.runtime) {
+     from (configurations.lib) {
           include("*.jar")
-		  exclude('framework-*.jar')
-		  exclude('freeplane_api*.jar')
-		  exclude('mnemonicsetter-*.jar')
 		  
      }
      from ('lib') {
