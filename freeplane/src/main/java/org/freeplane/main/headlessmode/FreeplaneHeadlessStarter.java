@@ -106,7 +106,7 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
 
 
 	@Override
-	public void createFrame(final String[] args) {
+	public void createFrame() {
 		Controller controller = Controller.getCurrentController();
 		ModeController modeController = controller.getModeController(MModeController.MODENAME);
 		controller.selectModeForBuild(modeController);
@@ -125,8 +125,7 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
     }
 
 	@Override
-	public void loadMapsLater(String[] args) {
-	    // TODO Auto-generated method stub
+	public void loadMapsLater() {
 
     }
 }

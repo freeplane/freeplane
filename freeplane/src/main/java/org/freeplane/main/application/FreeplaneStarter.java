@@ -37,9 +37,9 @@ public interface FreeplaneStarter {
 
 	public void buildMenus(final Controller controller, final Set<String> plugins);
 
-	public void createFrame(final String[] args);
+	public void createFrame();
 
-	public void loadMapsLater(final String[] args);
+	public void loadMapsLater();
 
 	public void stop();
 

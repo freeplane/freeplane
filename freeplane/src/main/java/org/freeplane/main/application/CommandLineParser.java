@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.freeplane.core.util.Compat;
 
-class CommandLineParser {
-    static class Options {
+public class CommandLineParser {
+    public static class Options {
         private static final String HELP_MESSAGE = //
                 "\nUsage:\n\tfreeplane.bat [options] [file1 [file2 ...]]\n" //
                 + "\n -X<menukey>   : execute menu item with key <menukey>." //
@@ -64,7 +64,7 @@ class CommandLineParser {
             nonInteractive = b;
         }
 
-        boolean isNonInteractive() {
+        public boolean isNonInteractive() {
             return nonInteractive;
         }
 
@@ -87,7 +87,7 @@ class CommandLineParser {
         }
     }
 
-    static CommandLineParser.Options parse(String[] args, boolean firstRun) {
+    public static CommandLineParser.Options parse(String[] args) {
         CommandLineParser.Options result = new CommandLineParser.Options();
         if (args == null || args.length == 0 || !args[0].startsWith("-")) {
             result.setFilesToOpen(args);
@@ -128,8 +128,7 @@ class CommandLineParser {
                 else if (args.length > i + 1)
                     userdir = args[++i];
                 else {
-                    if (firstRun)
-                        System.err.println("option -U<userdir> misses its parameter");
+                	System.err.println("option -U<userdir> misses its parameter");
                 }
                 if (userdir != null) {
                     System.setProperty(Compat.FREEPLANE_USERDIR_PROPERTY, userdir);
@@ -154,7 +153,7 @@ class CommandLineParser {
         }
         for (; i != args.length; ++i)
             result.addFilesToOpen(args[i]);
-        if (result.isHelpRequested() && firstRun) {
+        if (result.isHelpRequested()) {
             System.out.println(result.getHelpMessage());
             System.exit(0);
         }

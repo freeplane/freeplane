@@ -103,9 +103,9 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	private static final String LOAD_LAST_MAP = "load_last_map";
 	final private Options options;
 
-	public FreeplaneGUIStarter(String[] args) {
+	public FreeplaneGUIStarter(Options options) {
 		super();
-		options = CommandLineParser.parse(args, true);
+		this.options = options;
 		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
 		firstRun = !userPreferencesFile.exists();
 		new UserPropertiesUpdater().importOldProperties();
@@ -223,7 +223,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	}
 
 	@Override
-	public void createFrame(final String[] args) {
+	public void createFrame() {
 		Controller controller = Controller.getCurrentController();
 		ModeController modeController = controller.getModeController(MModeController.MODENAME);
 		controller.selectModeForBuild(modeController);
@@ -238,7 +238,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				EventQueue.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						loadMaps(CommandLineParser.parse(args, false).getFilesToOpenAsArray());
+						loadMaps();
 						finishStartup();
 					}
 				});
@@ -265,8 +265,6 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				contentPane.setVisible(true);
 				frame.toFront();
 				startupFinished = true;
-				if(options.isNonInteractive())
-					System.setProperty(JAVA_HEADLESS_PROPERTY, "true");
 				try {
 					Thread.sleep(1000);
 				}
@@ -299,7 +297,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		Controller.getCurrentController().fireStartupFinished();
 	}
 
-	private void loadMaps( final String[] args) {
+	private void loadMaps() {
 		final Controller controller = Controller.getCurrentController();
 		final boolean alwaysLoadLastMaps = ResourceController.getResourceController().getBooleanProperty(
 		    "always_load_last_maps");
@@ -307,7 +305,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		if (alwaysLoadLastMaps && !dontLoadLastMaps) {
 			loadLastMaps();
 		}
-		loadMaps(controller, args);
+		loadMaps(controller);
 		if (controller.getMap() == null && !alwaysLoadLastMaps && !dontLoadLastMaps) {
 			final AddOnsController addonsController = AddOnsController.getController();
 			addonsController.setAutoInstallEnabled(false);
@@ -336,13 +334,13 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
     }
 
 	@Override
-	public void loadMapsLater(final String[] args){
+	public void loadMapsLater(){
 	    EventQueue.invokeLater(new Runnable() {
 
             @Override
 			public void run() {
                 if(startupFinished && EventQueue.isDispatchThread()){
-                    loadMaps(Controller.getCurrentController(), args);
+                    loadMaps(Controller.getCurrentController());
                     toFront();
                     return;
                 }
@@ -368,8 +366,9 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
     	}
     }
 
-    private void loadMaps(final Controller controller, final String[] args) {
+    private void loadMaps(final Controller controller) {
 		controller.selectMode(MModeController.MODENAME);
+		String[] args = options.getFilesToOpenAsArray();
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			try {

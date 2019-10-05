@@ -15,7 +15,7 @@ public class HeadlessFreeplaneRunner {
 			final Controller controller = starter.createController();
 			starter.createModeControllers(controller);
 			FilterController.getController(controller).loadDefaultConditions();
-			starter.createFrame(new String[]{});
+			starter.createFrame();
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);
