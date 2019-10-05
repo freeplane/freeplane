@@ -20,6 +20,7 @@
 package org.freeplane.main.osgi;
 
 import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -61,6 +62,23 @@ import org.osgi.service.url.URLStreamHandlerService;
  * 05.01.2009
  */
 class ActivatorImpl implements BundleActivator {
+	private static void fixX11AppName() {
+		if(! System.getProperty("java.version").startsWith("1."))
+			return;
+		try {
+			Toolkit xToolkit = Toolkit.getDefaultToolkit();
+			if (xToolkit.getClass().getName().equals("sun.awt.X11.XToolkit"))
+			{
+				java.lang.reflect.Field awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
+				awtAppClassNameField.setAccessible(true);
+				awtAppClassNameField.set(xToolkit, "Freeplane");
+			}
+		} catch (NoSuchFieldException | SecurityException
+				| IllegalArgumentException | IllegalAccessException e) {
+			System.err.format("Couldn't set awtAppClassName: %s%n", e.getClass().getSimpleName() + ": " + e.getMessage());
+		}
+	}
+	
 	private static final String JAVA_HEADLESS_PROPERTY = "java.awt.headless";
 
 	private FreeplaneStarter starter;
@@ -277,12 +295,15 @@ class ActivatorImpl implements BundleActivator {
 		SModeControllerFactory.getInstance().setExtensionInstaller(osgiExtentionInstaller);
 		osgiExtentionInstaller.installExtensions(controller);
 	}
+	
 
 	public FreeplaneStarter createStarter(Options options) {
-		if(GraphicsEnvironment.isHeadless())
+		if(GraphicsEnvironment.isHeadless()) {
 			return new FreeplaneHeadlessStarter();
-		else
+		} else {
+			fixX11AppName();
 			return new FreeplaneGUIStarter(options);
+		}
     }
 
 	private void registerClasspathUrlHandler(final BundleContext context, String protocol, ConnectionHandler handler) {

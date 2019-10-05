@@ -19,7 +19,7 @@
  */
 package org.freeplane.launcher;
 
-import java.awt.Toolkit;
+import java.awt.GraphicsEnvironment;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -82,7 +82,6 @@ public class Launcher {
 	private Framework framework;
 
 	public static void main(String[] args) {
-		fixX11AppName();
 		checkForCompatibleJavaVersion();
 		workAroundForDataFlavorComparator_JDK8130242();
 		new Launcher().launchWithoutUICheck(args);
@@ -154,6 +153,8 @@ public class Launcher {
 	 *
 	 */
 	public Controller launchWithUI(String[] args) {
+		if(GraphicsEnvironment.isHeadless())
+			throw new RuntimeException("UI can not run in a headless graphics environment");
 		final Controller controller = launchWithoutUICheck(args);
 		waitUntilUIStarts();
 		return controller;
@@ -261,23 +262,6 @@ public class Launcher {
 			}
 		}
 		return frameworkDir;
-	}
-
-	private static void fixX11AppName() {
-		if(! JAVA_VERSION.startsWith("1."))
-			return;
-		try {
-			Toolkit xToolkit = Toolkit.getDefaultToolkit();
-			if (xToolkit.getClass().getName().equals("sun.awt.X11.XToolkit"))
-			{
-				java.lang.reflect.Field awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
-				awtAppClassNameField.setAccessible(true);
-				awtAppClassNameField.set(xToolkit, "Freeplane");
-			}
-		} catch (NoSuchFieldException | SecurityException
-				| IllegalArgumentException | IllegalAccessException e) {
-			System.err.format("Couldn't set awtAppClassName: %s%n", e.getClass().getSimpleName() + ": " + e.getMessage());
-		}
 	}
 
 	private static void workAroundForDataFlavorComparator_JDK8130242() {

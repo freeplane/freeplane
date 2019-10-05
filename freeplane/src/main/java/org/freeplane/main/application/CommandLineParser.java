@@ -55,15 +55,6 @@ public class CommandLineParser {
             menuItemsToExecute.add(item);
         }
 
-        /** leads to setting of system property 'nonInteractive' - check via
-         * <pre>
-         *   boolean nonInteractive = Boolean.parseBoolean(System.getProperty("nonInteractive"));
-         * </pre>
-         */
-        private void setNonInteractive(boolean b) {
-            nonInteractive = b;
-        }
-
         public boolean isNonInteractive() {
             return nonInteractive;
         }
@@ -108,7 +99,7 @@ public class CommandLineParser {
                 }
             }
             else if (arg.startsWith("-N")) {
-                result.setNonInteractive(true);
+                result.nonInteractive = true;
                 // -NX mymenuitem is allowed
                 if (arg.length() > 2) {
                     args[i] = "-" + arg.substring(2);
