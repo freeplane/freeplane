@@ -112,7 +112,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 	}
 
 	private void changeToThisMap(final IMapViewManager mapViewManager) {
-		if (! mapViewManager.isHeadless()) {
+		if (! GraphicsEnvironment.isHeadless()) {
 			String mapKey = findMapViewKey(mapViewManager);
 			if (mapKey == null)
 				throw new RuntimeException("map " + getDelegate() + " does not seem to be opened");

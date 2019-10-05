@@ -803,11 +803,6 @@ abstract public class FrameController implements ViewController {
 	}
 
 	@Override
-	public boolean isHeadless() {
-		return false;
-	}
-
-	@Override
 	public List<? extends Component> getMapViewVector() {
 		return mapViewManager.getMapViewVector();
 	}

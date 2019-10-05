@@ -1152,9 +1152,4 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 		return selectedMapView != null && selectedMapView.isSpotlightEnabled();
 	}
 
-	@Override
-	public boolean isHeadless() {
-		return false;
-	}
-
 }

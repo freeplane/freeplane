@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.map.mindmapmode;
 
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.net.URL;
 import java.util.Timer;
@@ -121,7 +122,7 @@ public class MMapModel extends MapModel {
 
 	public void scheduleTimerForAutomaticSaving() {
 		if (!(UrlManager.getController() instanceof MFileManager)
-				|| Controller.getCurrentController().getMapViewManager().isHeadless()
+				|| GraphicsEnvironment.isHeadless()
 				|| ! autosaveEnabled) {
 			return;
 		}

@@ -38,6 +38,7 @@ import org.osgi.framework.*;
 import org.osgi.service.url.URLConstants;
 import org.osgi.service.url.URLStreamHandlerService;
 
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -50,7 +51,6 @@ import java.util.jar.Manifest;
  * 05.01.2009
  */
 class ActivatorImpl implements BundleActivator {
-	private static final String HEADLESS_RUN_PROPERTY_NAME = FreeplaneStarter.class.getName() + ".headless";
 	private FreeplaneStarter starter;
 
 	private String[] getCallParameters() {
@@ -166,7 +166,7 @@ class ActivatorImpl implements BundleActivator {
 		}
 		// initialize ApplicationController - SingleInstanceManager needs the configuration
 		starter =  createStarter();
-		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager(starter, runsHeadless());
+		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager(starter, GraphicsEnvironment.isHeadless());
 		singleInstanceManager.start(getCallParameters());
 		if (singleInstanceManager.isSlave()) {
 			LogUtils.info("opened files in master - exiting now");
@@ -263,17 +263,13 @@ class ActivatorImpl implements BundleActivator {
 	}
 
 	public FreeplaneStarter createStarter() {
-		if(runsHeadless())
+		if(GraphicsEnvironment.isHeadless())
 			return new FreeplaneHeadlessStarter();
 		else
 			return new FreeplaneGUIStarter(getCallParameters());
     }
 
-	private boolean runsHeadless() {
-		return Boolean.getBoolean(HEADLESS_RUN_PROPERTY_NAME);
-	}
-
-    private void registerClasspathUrlHandler(final BundleContext context, String protocol, ConnectionHandler handler) {
+	private void registerClasspathUrlHandler(final BundleContext context, String protocol, ConnectionHandler handler) {
         Hashtable<String, String[]> properties = new Hashtable<String, String[]>();
         properties.put(URLConstants.URL_HANDLER_PROTOCOL, new String[] { protocol });
         context.registerService(URLStreamHandlerService.class.getName(), new DelegatingUrlHandlerService(handler), properties);

@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.map;
 
+import java.awt.GraphicsEnvironment;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
@@ -519,7 +520,7 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	public void addUIMapChangeListener(final IMapChangeListener listener) {
-		if(!isHeadless())
+		if(!GraphicsEnvironment.isHeadless())
 			mapChangeListeners.add(listener);
 	}
 
@@ -528,16 +529,12 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	public void addUINodeChangeListener(final INodeChangeListener listener) {
-		if(!isHeadless())
+		if(!GraphicsEnvironment.isHeadless())
 			nodeChangeListeners.add(listener);
 	}
 
 	public void addNodeChangeListener(final INodeChangeListener listener) {
 		nodeChangeListeners.add(listener);
-	}
-
-	private boolean isHeadless() {
-		return Controller.getCurrentController().getViewController().isHeadless();
 	}
 
 	public void addMapLifeCycleListener(final IMapLifeCycleListener listener) {

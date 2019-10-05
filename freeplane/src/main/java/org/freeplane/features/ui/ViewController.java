@@ -20,6 +20,7 @@
 package org.freeplane.features.ui;
 
 import java.awt.Component;
+import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -119,8 +120,6 @@ public interface ViewController {
 	public ExecutorService getMainThreadExecutorService();
 
 	public void invokeAndWait(Runnable runnable) throws InterruptedException, InvocationTargetException;
-
-	public boolean isHeadless();
 
 	public boolean areScrollbarsVisible();
 

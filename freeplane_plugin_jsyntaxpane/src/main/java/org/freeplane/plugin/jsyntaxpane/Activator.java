@@ -1,5 +1,6 @@
 package org.freeplane.plugin.jsyntaxpane;
 
+import java.awt.GraphicsEnvironment;
 import java.util.Hashtable;
 
 import jsyntaxpane.DefaultSyntaxKit;
@@ -22,7 +23,7 @@ public class Activator implements BundleActivator {
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(ModeController modeController) {
-			    	if(! modeController.getController().getViewController().isHeadless())
+			    	if(! GraphicsEnvironment.isHeadless())
 			    		initJSyntaxPane(context);
 				    //new ScriptingRegistration(modeController);
 			    }

@@ -17,6 +17,7 @@
  */
 package org.freeplane.features.map;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -160,8 +161,8 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	}
 	public FoldingController() {
 		super();
-		final ModeController modeController = Controller.getCurrentModeController();
-		if(!modeController.getController().getViewController().isHeadless()){
+		if(!GraphicsEnvironment.isHeadless()){
+			final ModeController modeController = Controller.getCurrentModeController();
 			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
 			userInputListenerFactory.addMouseWheelEventHandler(this);
 			for (final AFreeplaneAction annotatedAction : getAnnotatedActions()) {

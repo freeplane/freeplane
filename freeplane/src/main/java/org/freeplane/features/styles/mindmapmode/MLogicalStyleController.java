@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.styles.mindmapmode;
 
+import java.awt.GraphicsEnvironment;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -234,7 +235,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			modeController.addAction(new SetBooleanMapPropertyAction(MapStyle.FIT_TO_VIEWPORT));
 			modeController.addAction(new CopyMapStylesAction());
 		}
-		if(! modeController.getController().getViewController().isHeadless()){
+		if(! GraphicsEnvironment.isHeadless()){
 			modeController.addUiBuilder(Phase.ACTIONS, "style_actions", new StyleMenuBuilder(modeController),
 			    new ChildActionEntryRemover(modeController));
 			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
