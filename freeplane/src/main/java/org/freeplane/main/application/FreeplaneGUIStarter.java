@@ -84,8 +84,7 @@ import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 
 public class FreeplaneGUIStarter implements FreeplaneStarter {
-
-
+	private static final String JAVA_HEADLESS_PROPERTY = "java.awt.headless";
 
 	static{
 		Compat.fixMousePointerForLinux();
@@ -266,7 +265,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				contentPane.setVisible(true);
 				frame.toFront();
 				startupFinished = true;
-				System.setProperty("nonInteractive", Boolean.toString(options.isNonInteractive()));
+				if(options.isNonInteractive())
+					System.setProperty(JAVA_HEADLESS_PROPERTY, "true");
 				try {
 					Thread.sleep(1000);
 				}
