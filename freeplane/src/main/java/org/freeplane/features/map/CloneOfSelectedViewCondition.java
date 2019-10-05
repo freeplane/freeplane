@@ -59,7 +59,6 @@ public class CloneOfSelectedViewCondition extends ASelectableCondition implement
     protected String getName() {
 	    return NAME;
     }
-	public void toXml(final XMLElement element) {}
 
 	public static ASelectableCondition load(XMLElement element) {
 	    return new CloneOfSelectedViewCondition();
