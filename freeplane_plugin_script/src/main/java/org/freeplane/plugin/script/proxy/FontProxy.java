@@ -42,6 +42,16 @@ class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
 		return NodeStyleModel.isItalic(getDelegate()) != null;
 	}
 
+	@Override
+	public boolean isStrikedThrough() {
+		return getStyleController().isStrikedThrough(getDelegate());
+	}
+
+	@Override
+	public boolean isStrikedThroughSet() {
+		return NodeStyleModel.isStrikedThrough(getDelegate()) != null;
+	}
+
 	public boolean isNameSet() {
 		return NodeStyleModel.getFontFamilyName(getDelegate()) != null;
 	}
@@ -58,6 +68,11 @@ class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
 		getStyleController().setItalic(getDelegate(), null);
 	}
 
+	@Override
+	public void resetStrikedThrough() {
+		getStyleController().setStrikedThrough(getDelegate(), null);
+	}
+
 	public void resetName() {
 		getStyleController().setFontFamily(getDelegate(), null);
 	}
@@ -72,6 +87,11 @@ class FontProxy extends AbstractProxy<NodeModel> implements Proxy.Font {
 
 	public void setItalic(final boolean italic) {
 		getStyleController().setItalic(getDelegate(), italic);
+	}
+
+	@Override
+	public void setStrikedThrough(boolean strikedThrough) {
+		getStyleController().setStrikedThrough(getDelegate(), strikedThrough);
 	}
 
 	public void setName(final String name) {

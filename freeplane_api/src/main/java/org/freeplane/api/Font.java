@@ -6,6 +6,8 @@ public interface Font extends FontRO {
 
 	void resetItalic();
 
+	void resetStrikedThrough();
+
 	void resetName();
 
 	void resetSize();
@@ -13,6 +15,8 @@ public interface Font extends FontRO {
 	void setBold(boolean bold);
 
 	void setItalic(boolean italic);
+
+	void setStrikedThrough(boolean strikedThrough);
 
 	void setName(String name);
 
