@@ -305,7 +305,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		if (alwaysLoadLastMaps && !dontLoadLastMaps) {
 			loadLastMaps();
 		}
-		loadMaps(controller);
+		loadMaps(controller, options.getFilesToOpenAsArray());
 		if (controller.getMap() == null && !alwaysLoadLastMaps && !dontLoadLastMaps) {
 			final AddOnsController addonsController = AddOnsController.getController();
 			addonsController.setAutoInstallEnabled(false);
@@ -334,13 +334,13 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
     }
 
 	@Override
-	public void loadMapsLater(){
+	public void loadMapsLater(final String[] args){
 	    EventQueue.invokeLater(new Runnable() {
 
             @Override
 			public void run() {
                 if(startupFinished && EventQueue.isDispatchThread()){
-                    loadMaps(Controller.getCurrentController());
+                    loadMaps(Controller.getCurrentController(), args);
                     toFront();
                     return;
                 }
@@ -366,9 +366,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
     	}
     }
 
-    private void loadMaps(final Controller controller) {
+    private void loadMaps(final Controller controller, final String[] args) {
 		controller.selectMode(MModeController.MODENAME);
-		String[] args = options.getFilesToOpenAsArray();
 		for (int i = 0; i < args.length; i++) {
 			String fileArgument = args[i];
 			try {

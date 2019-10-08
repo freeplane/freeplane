@@ -121,7 +121,7 @@ public class SingleInstanceManager {
 								        + "' for client");
                                 in.close();
                                 client.close();
-								starter.loadMapsLater();
+								starter.loadMapsLater(filesToLoadForClient);
 							}
 							catch (SecurityException e) {
 							    // this happens when the master is currently executing a script

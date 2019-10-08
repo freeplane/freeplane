@@ -125,7 +125,7 @@ public class FreeplaneHeadlessStarter implements FreeplaneStarter {
     }
 
 	@Override
-	public void loadMapsLater() {
+	public void loadMapsLater(String[] args) {
 
     }
 }

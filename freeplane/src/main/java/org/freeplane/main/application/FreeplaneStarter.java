@@ -39,7 +39,7 @@ public interface FreeplaneStarter {
 
 	public void createFrame();
 
-	public void loadMapsLater();
+	public void loadMapsLater(final String[] args);
 
 	public void stop();
 
