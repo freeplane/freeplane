@@ -14,7 +14,7 @@ People new to the project can start with implementing a new small feature or doi
 
 For internal developer discussions there is a private mailing list. It is held private to avoid spam mails. If you want to be subscribed let us know what mail address you are going to use with it. This list is the preferred way to ask all code related questions because they usually get answered soon and by the most competent team member.
 
-Some documentation for new developers is availble in Freeplane wiki [here](http://freeplane.sourceforge.net/wiki/index.php/Category:Coding) and [here](http://freeplane.sourceforge.net/wiki/index.php/Category:Developer). It is written for new guys and should also be maintained by the new guys to stay up to date.
+Some documentation for new developers is availble in Freeplane wiki https://www.freeplane.org/wiki/index.php/How_to_build_Freeplane and also [here](https://www.freeplane.org/wiki/index.php/Category:Coding) and [here](https://www.freeplane.org/wiki/index.php/Category:Developer). It is written for new guys and should also be maintained by the new guys to stay up to date.
 
 Looking forward to any questions and contributions,
 
