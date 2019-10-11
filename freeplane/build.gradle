@@ -58,10 +58,8 @@ jar {
         deps.add(0, "lib/freeplaneeditor-${project.version}.jar")
         deps.add(0, "lib/freeplaneviewer.jar")
 
-        attributes 'Class-Path' : deps.join(', ')
-        attributes 'Bundle-ClassPath': '., ' + deps.join(', ')
-        // f*ck bnd! it filters things like "org.apache.commons.*" from
-        // Export-Package:, that's why we bypass bnd for now!
+        instruction 'Bundle-ClassPath', '., ' + deps.join(', ')
+
         def exports = """\
                     com.inet.jortho,
                     org.freeplane.api,
@@ -178,7 +176,7 @@ jar {
                     org.apache.commons.lang.math,
                     org.apache.commons.lang.time
                     """
-        attributes 'Export-Package': exports.replaceAll("\\s+", "")
+        instruction 'Export-Package', exports.replaceAll("\\s+", "")
 
         instruction 'Bundle-Vendor', 'Freeplane Project'
         instruction 'Import-Package', 'org.osgi.framework,org.osgi.service.url;version="1.0.0"'

@@ -16,8 +16,7 @@ jar {
         def deps = filterAndExternalizePluginDependencies(configurations.lib.files)
         deps.add(0, "lib/plugin-" + project.version + '.jar')
 
-        attributes 'Class-Path': deps.join(', ')
-        attributes 'Bundle-ClassPath': '., ' + deps.join(', ')
+        instruction 'Bundle-ClassPath', '., ' + deps.join(', ')
 
         instruction 'Bundle-Vendor', 'Freeplane Project'
         instruction 'Bundle-Activator', pluginid + ".Activator"
@@ -39,8 +38,7 @@ jar {
                       jsyntaxpane.syntaxkits,
                       jsyntaxpane.actions
                       """
-        // bnd f**cks up the exports, so we bypass it using attributes!
-        attributes 'Export-Package': exports.replaceAll("\\s+", "")
+        instruction 'Export-Package', exports.replaceAll("\\s+", "")
 
         // Require-Bundle is ignored by bnd => replaced by Import-Package!
         //instruction 'Require-Bundle', 'org.freeplane.core;bundle-version="1.0.1", org.freeplane.plugin.script;bundle-version="1.0.1"'

@@ -20,8 +20,7 @@ jar {
         def deps = filterAndExternalizePluginDependencies(configurations.lib.files)
         deps.add(0, "lib/plugin-" + project.version + '.jar')
 
-        attributes 'Class-Path': deps.join(', ')
-        attributes 'Bundle-ClassPath': '., ' + deps.join(', ')
+        instruction 'Bundle-ClassPath', '., ' + deps.join(', ')
 
         instruction 'Bundle-Vendor', 'Freeplane Project'
         instruction 'Bundle-Activator', pluginid + ".Activator"
