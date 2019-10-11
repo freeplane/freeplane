@@ -6,6 +6,16 @@ Properties props = new Properties()
 props.load(new FileInputStream(rootDir.path + '/freeplane/src/viewer/resources/version.properties'))
 
 allprojects {
+
+//buildscript {
+//  repositories {
+//    mavenCentral()
+//  }
+//  dependencies {
+//    classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:4.4.0'
+//  }
+//}
+
     // in a multi-project setup, all projects must have the same version number!
     // the real (specific) version number is in freeplane/viewer-resources/version.properties!
 	ext.majorVersion = props['freeplane_version']
@@ -132,16 +142,57 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ |
 
 // common configuration for all OSGi projects...
 configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }) {
+    //apply plugin: 'biz.aQute.bnd.builder'
     apply plugin: 'osgi'
 
     if (project.name.equals("freeplane"))
        ext.pluginid = 'org.freeplane.core'
-    else
-       ext.pluginid = project.name.replace("freeplane_plugin_", "org.freeplane.plugin.")
+
+       
+
+   afterEvaluate {
+
+     if (it.name =~ /plugin/) {
+       ext.bundleDeps = filterAndExternalizePluginDependencies(configurations.lib.files)
+       bundleDeps.add(0, "lib/plugin-" + project.version + '.jar')
+     }
+
+     jar {
+
+       manifest {
+
+        name = pluginid
+        symbolicName = pluginid
+
+        instruction 'Bundle-ClassPath', '., ' + bundleDeps.join(', ')
+
+        instruction 'Bundle-Vendor', 'Freeplane Project'
+        instruction 'Bundle-Activator', bundleActivator
+        instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
+
+        instruction 'Import-Package', bundleImports.replaceAll("\\s+", "")
+        instruction 'Export-Package', bundleExports.replaceAll("\\s+", "")
+
+       }
+        //bnd('Bundle-Name': pluginid,
+        // 'Export-Package': bundleExports.replaceAll("\\s+", ""),
+        // 'Bundle-Vendor': 'Freeplane Project',
+        // 'Import-Package': bundleImports.replaceAll("\\s+", ""),
+        // 'Bundle-Activator': bundleActivator,
+        // 'Bundle-RequiredExecutionEnvironment': 'JavaSE-1.8',
+        // 'Bundle-ClassPath': '., ' + bundleDeps.join(', ')
+        //)
+
+   }
+   }
+
 }
 
 // common configuration for all plugins...
-configure(subprojects.findAll {it.name =~ /plugin/ }) {
+configure(subprojects.findAll {it.name =~ /plugin/}) {
+
+   ext.pluginid = project.name.replace("freeplane_plugin_", "org.freeplane.plugin.")
+   ext.bundleActivator = pluginid + ".Activator"
 
     task copyOSGiJars(type: Copy) {
         from ("$buildDir/libs") {
@@ -173,7 +224,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ }) {
 
     build.dependsOn copyOSGiJars
     build.dependsOn copyOSGiManifest
-	build.dependsOn copyOSGiConfig
+    build.dependsOn copyOSGiConfig
 
     // create a separate non-OSGi(!) jar for each plugin!
     task pluginJar(type: Jar) {

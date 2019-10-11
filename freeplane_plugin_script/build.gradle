@@ -21,35 +21,15 @@ tasks.withType(JavaCompile) {
 		options.compilerArgs << '-parameters'
 }
 
-jar {
-    manifest {
-        name = pluginid
-        symbolicName = pluginid
+ext.bundleImports = 'org.freeplane.*, org.jgoodies.*, org.apache.*'
 
-        def deps = filterAndExternalizePluginDependencies(configurations.lib.files)
-        deps.add(0, "lib/plugin-" + project.version + '.jar')
-
-        instruction 'Bundle-ClassPath', '., ' + deps.join(', ')
-
-        instruction 'Bundle-Vendor', 'Freeplane Project'
-        instruction 'Bundle-Activator', pluginid + ".Activator"
-        instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
-
-        instruction 'Import-Package', 'org.freeplane.*, org.jgoodies.*, org.apache.*'
-
-        def exports = """\
-                      org.freeplane.plugin.script,
-                      org.freeplane.plugin.script.addons,
-                      org.freeplane.plugin.script.dependencies,
-                      org.freeplane.plugin.script.filter,
-                      org.freeplane.plugin.script.proxy
-                      """
-        instruction 'Export-Package', exports.replaceAll("\\s+", "")
-        
-        // Require-Bundle is ignored by bnd => replaced by Import-Package!
-        //instruction 'Require-Bundle', 'org.freeplane.core;bundle-version="1.0.1"'
-    }
-}
+ext.bundleExports = """\
+             org.freeplane.plugin.script,
+             org.freeplane.plugin.script.addons,
+             org.freeplane.plugin.script.dependencies,
+             org.freeplane.plugin.script.filter,
+             org.freeplane.plugin.script.proxy
+             """
 
 task copyScripts(type: Copy) {
     from('scripts/') {

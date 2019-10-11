@@ -11,33 +11,14 @@ dependencies {
     lib 'org.openstreetmap.jmapviewer:jmapviewer:1.14'
 }
 
-jar {
-    manifest {
-        name = pluginid
-        symbolicName = pluginid
+ext.bundleImports = """\
+                org.osgi.framework;version="1.3.0",
+                org.freeplane.core.*,
+                org.freeplane.features.*,
+                org.freeplane.main.*,
+                org.freeplane.n3.*,
+                org.freeplane.view.*
+                """
 
-        
-        def deps = filterAndExternalizePluginDependencies(configurations.lib.files)
-        deps.add(0, "lib/plugin-" + project.version + '.jar')
+ext.bundleExports = ''
 
-        instruction 'Bundle-ClassPath', '., ' + deps.join(', ')
-
-        instruction 'Bundle-Vendor', 'Freeplane Project'
-        instruction 'Bundle-Activator', pluginid + ".Activator"
-        instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
-
-        def imports = """\
-                      org.osgi.framework;version="1.3.0",
-                      org.freeplane.core.*,
-                      org.freeplane.features.*,
-                      org.freeplane.main.*,
-                      org.freeplane.n3.*,
-                      org.freeplane.view.*
-                      """
-        instruction 'Import-Package', imports.replaceAll("\\s+", "")
-        instruction 'Export-Package', ''
-
-        // Require-Bundle is ignored by bnd => replaced by Import-Package!
-        //instruction 'Require-Bundle', 'org.freeplane.core;bundle-version="1.0.1"'
-    }
-}

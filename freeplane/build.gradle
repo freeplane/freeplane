@@ -42,25 +42,17 @@ eclipse {
     name = 'freeplane'
 	}
 }
-	
-jar {
-    manifest {
 
-        name = pluginid
-        symbolicName = pluginid
+ext.bundleDeps = configurations.lib.files.collect {
+    externalizeJar(it)
+}
+bundleDeps.add(0, "lib/freeplaneosgi-${project.version}.jar")
+// this is built from :freeplane_mac on a Mac!
+bundleDeps.add(0, "lib/freeplane_mac-${project.version}.jar")
+bundleDeps.add(0, "lib/freeplaneeditor-${project.version}.jar")
+bundleDeps.add(0, "lib/freeplaneviewer.jar")
 
-        def deps = configurations.lib.files.collect {
-            externalizeJar(it)
-        }
-        deps.add(0, "lib/freeplaneosgi-${project.version}.jar")
-        // this is built from :freeplane_mac on a Mac!
-        deps.add(0, "lib/freeplane_mac-${project.version}.jar")
-        deps.add(0, "lib/freeplaneeditor-${project.version}.jar")
-        deps.add(0, "lib/freeplaneviewer.jar")
-
-        instruction 'Bundle-ClassPath', '., ' + deps.join(', ')
-
-        def exports = """\
+ext.bundleExports = """\
                     com.inet.jortho,
                     org.freeplane.api,
                     org.freeplane.core.extension,
@@ -176,17 +168,9 @@ jar {
                     org.apache.commons.lang.math,
                     org.apache.commons.lang.time
                     """
-        instruction 'Export-Package', exports.replaceAll("\\s+", "")
+ext.bundleImports = 'org.osgi.framework,org.osgi.service.url;version="1.0.0"'
 
-        instruction 'Bundle-Vendor', 'Freeplane Project'
-        instruction 'Import-Package', 'org.osgi.framework,org.osgi.service.url;version="1.0.0"'
-        // unfortunately bnd filters "org.apache.commons.*" so we use attributes to bypass bnd (see above)
-        //instruction 'Export-Package', '*;-noimport:=true'
-        //instruction 'Private-Package', '*'
-        instruction 'Bundle-Activator', 'org.freeplane.main.osgi.Activator'
-        instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
-    }
-}
+ext.bundleActivator = 'org.freeplane.main.osgi.Activator'
 
 task copyOSGiJars(type: Copy) {
         from ("$buildDir/libs") {
