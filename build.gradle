@@ -1,3 +1,12 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:4.3.0'
+  }
+}
+
 plugins {
   id "nebula.ospackage" version "5.0.4"
 }
@@ -7,14 +16,6 @@ props.load(new FileInputStream(rootDir.path + '/freeplane/src/viewer/resources/v
 
 allprojects {
 
-//buildscript {
-//  repositories {
-//    mavenCentral()
-//  }
-//  dependencies {
-//    classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:4.4.0'
-//  }
-//}
 
     // in a multi-project setup, all projects must have the same version number!
     // the real (specific) version number is in freeplane/viewer-resources/version.properties!
@@ -142,13 +143,10 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ |
 
 // common configuration for all OSGi projects...
 configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }) {
-    //apply plugin: 'biz.aQute.bnd.builder'
-    apply plugin: 'osgi'
+    apply plugin: 'biz.aQute.bnd.builder'
 
     if (project.name.equals("freeplane"))
        ext.pluginid = 'org.freeplane.core'
-
-       
 
    afterEvaluate {
 
@@ -159,31 +157,16 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
 
      jar {
 
-       manifest {
-
-        name = pluginid
-        symbolicName = pluginid
-
-        instruction 'Bundle-ClassPath', '., ' + bundleDeps.join(', ')
-
-        instruction 'Bundle-Vendor', 'Freeplane Project'
-        instruction 'Bundle-Activator', bundleActivator
-        instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
-
-        instruction 'Import-Package', bundleImports.replaceAll("\\s+", "")
-        instruction 'Export-Package', bundleExports.replaceAll("\\s+", "")
+        bnd('Bundle-Name': pluginid,
+         'Export-Package': bundleExports.replaceAll("\\s+", ""),
+         'Bundle-Vendor': 'Freeplane Project',
+         'Import-Package': bundleImports.replaceAll("\\s+", ""),
+         'Bundle-Activator': bundleActivator,
+         'Bundle-RequiredExecutionEnvironment': 'JavaSE-1.8',
+         'Bundle-ClassPath': '., ' + bundleDeps.join(', ')
+        )
 
        }
-        //bnd('Bundle-Name': pluginid,
-        // 'Export-Package': bundleExports.replaceAll("\\s+", ""),
-        // 'Bundle-Vendor': 'Freeplane Project',
-        // 'Import-Package': bundleImports.replaceAll("\\s+", ""),
-        // 'Bundle-Activator': bundleActivator,
-        // 'Bundle-RequiredExecutionEnvironment': 'JavaSE-1.8',
-        // 'Bundle-ClassPath': '., ' + bundleDeps.join(', ')
-        //)
-
-   }
    }
 
 }
