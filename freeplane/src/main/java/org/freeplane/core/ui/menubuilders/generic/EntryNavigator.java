@@ -1,15 +1,23 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 
 public class EntryNavigator {
-	private final Map<String, String> aliases = new LinkedHashMap<String, String>();
+	private final Map<String, String> aliases;
+	static EntryNavigator entryNavigator;
 
-	public EntryNavigator() {
+	public static EntryNavigator instance() {
+		if(entryNavigator != null)
+			return entryNavigator;
+		entryNavigator = EntryNavigatorFactory.createNavigator();
+		return entryNavigator;
 	}
-	
+
+	EntryNavigator(Map<String, String> aliases) {
+		this.aliases = aliases;
+	}
+
 	public Entry findChildByPath(Entry top, String path) {
 		final String canonicalPath = replaceAliases(path);
 		return top.getChildByPath(canonicalPath.split("/"));
@@ -24,10 +32,7 @@ public class EntryNavigator {
 		return path;
 	}
 
-	public void addAlias(String alias, String path) {
-		aliases.put(alias, path);
-	}
-
+	@Override
 	public String toString() {
 		return String.valueOf(aliases);
 	}
