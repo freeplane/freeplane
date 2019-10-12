@@ -157,13 +157,15 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
 
      jar {
 
-        bnd('Bundle-Name': pluginid,
-         'Export-Package': bundleExports.replaceAll("\\s+", ""),
-         'Bundle-Vendor': 'Freeplane Project',
-         'Import-Package': bundleImports.replaceAll("\\s+", ""),
-         'Bundle-Activator': bundleActivator,
-         'Bundle-RequiredExecutionEnvironment': 'JavaSE-1.8',
-         'Bundle-ClassPath': '., ' + bundleDeps.join(', ')
+        bnd(
+        '-savemanifest': 'build/manifest/MANIFEST.MF',
+        'Bundle-Name': pluginid,
+        'Export-Package': bundleExports.replaceAll("\\s+", ""),
+        'Bundle-Vendor': 'Freeplane Project',
+        'Import-Package': bundleImports.replaceAll("\\s+", ""),
+        'Bundle-Activator': bundleActivator,
+        'Bundle-RequiredExecutionEnvironment': 'JavaSE-1.8',
+        'Bundle-ClassPath': '., ' + bundleDeps.join(', ')
         )
 
        }
@@ -194,7 +196,7 @@ configure(subprojects.findAll {it.name =~ /plugin/}) {
     }
 
     task copyOSGiManifest(type: Copy) {
-        from ("$buildDir/tmp/jar/") {
+        from ("$buildDir/manifest/") {
             include("MANIFEST.MF")
         }
         into(globalBin + '/plugins/' + pluginid + '/META-INF/')
@@ -226,12 +228,11 @@ configure(subprojects.findAll {it.name =~ /plugin/}) {
          includeEmptyDirs = false
 
          // use a non-OSGi manifest (this jar is referenced from an OSGi bundle)!
-         project.manifest { }
+         manifest { }
     }
 
     // jar must execute after pluginJar so that the OSGi manifest can still be
-    // picked up from build/tmp/jar (and isn't overwritten by plugin*.jar's non-OSGi
-    // manifest!)
+    // picked up from build/manifest
     jar.dependsOn pluginJar
 }
 

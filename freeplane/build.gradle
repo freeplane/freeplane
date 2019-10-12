@@ -191,7 +191,7 @@ task copyOSGiJars(type: Copy) {
 copyOSGiJars.dependsOn project(':freeplane_mac').jar
 
 task copyOSGiManifest(type: Copy) {
-     from ("$buildDir/tmp/jar/") {
+     from ("$buildDir/manifest/") {
           include("MANIFEST.MF")
      }
      into(globalBin + '/core/' + pluginid + '/META-INF/')
