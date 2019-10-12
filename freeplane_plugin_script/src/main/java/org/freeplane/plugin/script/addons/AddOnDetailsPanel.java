@@ -19,7 +19,6 @@ import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryNavigator;
-import org.freeplane.core.ui.menubuilders.generic.EntryNavigatorFactory;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -40,8 +39,6 @@ import com.jgoodies.forms.layout.RowSpec;
 public class AddOnDetailsPanel extends JPanel {
 	private int maxWidth = 500;
 	private String warning;
-	private static EntryNavigator entryNavigator = createEntryNavigator();
-
 	public AddOnDetailsPanel(final AddOnProperties addOn, final String warning) {
 		this.warning = warning;
 		setLayout(new FormLayout(new ColumnSpec[] {
@@ -74,11 +71,6 @@ public class AddOnDetailsPanel extends JPanel {
 		add(box, "3, 8, left, default");
 		JComponent details = createDetails(addOn);
 		add(details, "3, 9");
-	}
-
-	private static EntryNavigator createEntryNavigator() {
-		EntryNavigator entryNavigator = new EntryNavigatorFactory().createNavigator();
-		return entryNavigator;
 	}
 
 	private JLabel createImageLabel(AddOnProperties addOn) {
@@ -164,7 +156,7 @@ public class AddOnDetailsPanel extends JPanel {
 	private String formatMenuLocation(ScriptAddOnProperties.Script script) {
 		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		Entry top = modeController.getUserInputListenerFactory().getGenericMenuStructure();
-		final String canonicalPath = entryNavigator.replaceAliases(script.menuLocation);
+		final String canonicalPath = EntryNavigator.instance().replaceAliases(script.menuLocation);
 		final String[] pathElements = canonicalPath.split("/");
 		Entry entry = top;
 		final ListIterator<String> pathIterator = Arrays.asList(pathElements).listIterator();

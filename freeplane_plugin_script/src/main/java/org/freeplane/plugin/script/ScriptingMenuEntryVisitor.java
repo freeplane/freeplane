@@ -14,7 +14,6 @@ import org.freeplane.core.ui.menubuilders.generic.BuildPhaseListener;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryNavigator;
-import org.freeplane.core.ui.menubuilders.generic.EntryNavigatorFactory;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.util.TextUtils;
@@ -25,7 +24,6 @@ import org.freeplane.plugin.script.ScriptingGuiConfiguration.ScriptMetaData;
 public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListener {
 	private ScriptingGuiConfiguration configuration;
 	private final HashSet<String> registeredLocations = new HashSet<String>();
-	private EntryNavigator entryNavigator;
 	private ModeController modeController;
 
 	public ScriptingMenuEntryVisitor(ScriptingGuiConfiguration configuration, ModeController modeController) {
@@ -33,16 +31,9 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 		this.modeController = modeController;
 	}
 
-	void initEntryNavigator() {
-		if (entryNavigator == null) {
-			entryNavigator = new EntryNavigatorFactory().createNavigator();
-		}
-    }
-
 	/** builds menu entries for scripts without a special menu location. */
 	@Override
 	public void visit(Entry target) {
-		initEntryNavigator();
 		for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
 			String scriptName = entry.getKey();
 			final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
@@ -76,7 +67,6 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 	}
 
 	private void addEntryForGivenLocation(Entry rootEntry, final ScriptMetaData metaData, String scriptPath) {
-		initEntryNavigator();
 		for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
 			final String location = metaData.getMenuLocation(executionMode);
 			if (registeredLocations.add(location + "/" + metaData.getScriptName())) {
@@ -90,6 +80,7 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 	}
 
 	private Entry findOrCreateEntry(Entry rootEntry, final String path) {
+		EntryNavigator entryNavigator = EntryNavigator.instance();
 		Entry entry = entryNavigator.findChildByPath(rootEntry, path);
 		if (entry == null) {
 			// System.err.println("creating submenu " + path);
