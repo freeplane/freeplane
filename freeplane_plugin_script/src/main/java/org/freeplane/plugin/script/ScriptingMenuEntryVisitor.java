@@ -33,17 +33,16 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 		this.modeController = modeController;
 	}
 
-	private EntryNavigator initEntryNavigator(Entry scriptingEntry) {
+	void initEntryNavigator() {
 		if (entryNavigator == null) {
 			entryNavigator = new EntryNavigatorFactory().createNavigator();
 		}
-		return entryNavigator;
     }
 
 	/** builds menu entries for scripts without a special menu location. */
 	@Override
 	public void visit(Entry target) {
-		initEntryNavigator(target);
+		initEntryNavigator();
 		for (final Map.Entry<String, String> entry : configuration.getMenuTitleToPathMap().entrySet()) {
 			String scriptName = entry.getKey();
 			final ScriptMetaData metaData = configuration.getMenuTitleToMetaDataMap().get(scriptName);
@@ -77,6 +76,7 @@ public class ScriptingMenuEntryVisitor implements EntryVisitor, BuildPhaseListen
 	}
 
 	private void addEntryForGivenLocation(Entry rootEntry, final ScriptMetaData metaData, String scriptPath) {
+		initEntryNavigator();
 		for (final ExecutionMode executionMode : metaData.getExecutionModes()) {
 			final String location = metaData.getMenuLocation(executionMode);
 			if (registeredLocations.add(location + "/" + metaData.getScriptName())) {
