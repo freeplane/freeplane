@@ -168,8 +168,6 @@ ext.bundleExports = """\
                     org.apache.commons.lang.math,
                     org.apache.commons.lang.time
                     """
-ext.bundleImports = 'org.osgi.framework,org.osgi.service.url;version="1.0.0"'
-
 ext.bundleActivator = 'org.freeplane.main.osgi.Activator'
 
 task copyOSGiJars(type: Copy) {

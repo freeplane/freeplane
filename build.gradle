@@ -144,7 +144,8 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ |
 configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }) {
     //apply plugin: 'biz.aQute.bnd.builder'
     apply plugin: 'osgi'
-
+    ext.bundleImports = 'nothing.*'
+    ext.bundleExports = ''
     if (project.name.equals("freeplane"))
        ext.pluginid = 'org.freeplane.core'
 
@@ -169,9 +170,11 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
         instruction 'Bundle-Vendor', 'Freeplane Project'
         instruction 'Bundle-Activator', bundleActivator
         instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
-
         instruction 'Import-Package', bundleImports.replaceAll("\\s+", "")
         instruction 'Export-Package', bundleExports.replaceAll("\\s+", "")
+        if (it.name =~ /plugin/) {
+            instruction 'Require-Bundle', 'org.freeplane.core'
+        }
 
        }
         //bnd('Bundle-Name': pluginid,
@@ -181,6 +184,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
         // 'Bundle-Activator': bundleActivator,
         // 'Bundle-RequiredExecutionEnvironment': 'JavaSE-1.8',
         // 'Bundle-ClassPath': '., ' + bundleDeps.join(', ')
+        // only in plugins: 'Require-Bundle', 'org.freeplane.core'
         //)
 
    }

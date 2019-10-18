@@ -21,8 +21,6 @@ tasks.withType(JavaCompile) {
 		options.compilerArgs << '-parameters'
 }
 
-ext.bundleImports = 'org.freeplane.*, com.jgoodies.*, org.apache.*'
-
 ext.bundleExports = """\
              org.freeplane.plugin.script,
              org.freeplane.plugin.script.addons,
