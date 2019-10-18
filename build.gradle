@@ -161,7 +161,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
      jar {
         def bndConfiguration = [
         '-savemanifest': 'build/manifest/MANIFEST.MF',
-        'Bundle-Name': pluginid,
+        'Bundle-SymbolicName': pluginid,
         'Export-Package': bundleExports.replaceAll("\\s+", ""),
         'Bundle-Vendor': 'Freeplane Project',
         'Import-Package': bundleImports.replaceAll("\\s+", ""),
