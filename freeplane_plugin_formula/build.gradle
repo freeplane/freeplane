@@ -4,15 +4,4 @@ dependencies {
     compile project(':freeplane_plugin_jsyntaxpane')
 }
 
-ext.bundleImports = """\
-               org.osgi.framework;version="1.3.0",
-               org.freeplane.plugin.script.*,
-               org.freeplane.core.*,
-               org.freeplane.features.*,
-               org.freeplane.main.*,
-               org.freeplane.n3.*,
-               org.freeplane.view.*,
-               jsyntaxpane
-               """
-
-ext.bundleExports = ''
+ext.bundleImports = 'org.freeplane.plugin.script.*,jsyntaxpane.*'

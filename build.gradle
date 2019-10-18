@@ -145,6 +145,9 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ |
 configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }) {
     apply plugin: 'biz.aQute.bnd.builder'
 
+    ext.bundleImports = 'nothing.*'
+    ext.bundleExports = ''
+    
     if (project.name.equals("freeplane"))
        ext.pluginid = 'org.freeplane.core'
 
@@ -156,8 +159,7 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
      }
 
      jar {
-
-        bnd(
+        def bndConfiguration = [
         '-savemanifest': 'build/manifest/MANIFEST.MF',
         'Bundle-Name': pluginid,
         'Export-Package': bundleExports.replaceAll("\\s+", ""),
@@ -166,7 +168,11 @@ configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ }
         'Bundle-Activator': bundleActivator,
         'Bundle-RequiredExecutionEnvironment': 'JavaSE-1.8',
         'Bundle-ClassPath': '., ' + bundleDeps.join(', ')
-        )
+        ]
+        if (project.name =~ /plugin/) {
+            bndConfiguration << ['Require-Bundle':'org.freeplane.core']
+        }
+        bnd(bndConfiguration)
 
        }
    }

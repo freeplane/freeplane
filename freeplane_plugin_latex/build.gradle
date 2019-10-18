@@ -6,15 +6,5 @@ dependencies {
     lib 'org.scilab.forge:jlatexmath-font-cyrillic:1.0.7'
 }
 
-ext.bundleImports = """\
-              org.osgi.framework;version="1.3.0",
-              jsyntaxpane.lexers,
-              jsyntaxpane.syntaxkits,
-              org.freeplane.core.*,
-              org.freeplane.features.*,
-              org.freeplane.main.*,
-              org.freeplane.n3.*,
-              org.freeplane.view.*
-              """
-ext.bundleExports = ''
+ext.bundleImports = 'jsyntaxpane.*'
 
