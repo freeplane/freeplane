@@ -21,6 +21,8 @@ tasks.withType(JavaCompile) {
 		options.compilerArgs << '-parameters'
 }
 
+ext.bundleImports = 'jsyntaxpane.*'
+
 ext.bundleExports = """\
              org.freeplane.plugin.script,
              org.freeplane.plugin.script.addons,
