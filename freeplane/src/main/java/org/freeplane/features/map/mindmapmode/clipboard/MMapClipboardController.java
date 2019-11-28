@@ -404,14 +404,14 @@ public class MMapClipboardController extends MapClipboardController implements M
 
 	private static class TextFragment {
 		final static int ATTRIBUTE_DEPTH = -2;
-		String first;
-		String second;
+		String text;
+		String link;
 		int depth;
 
 		public TextFragment(final String text, final String link, final int depth) {
 			super();
-			this.first = text;
-			this.second = link;
+			this.text = text;
+			this.link = link;
 			this.depth = depth;
 		}
 
@@ -421,6 +421,11 @@ public class MMapClipboardController extends MapClipboardController implements M
 
 		boolean isNode() {
 			return ! isAttribute();
+		}
+
+		@Override
+		public String toString() {
+			return "TextFragment [" + text + (link != null ? " [" + link  +  "]": "")  + "," + depth + "]";
 		}
 
 
@@ -801,8 +806,8 @@ public class MMapClipboardController extends MapClipboardController implements M
 	}
 
 	private void addAttribute(NodeModel node, final TextFragment textFragment, boolean toExistingNode) {
-		final String name = textFragment.first;
-		final Object value = ScannerController.getController().parse(textFragment.second);
+		final String name = textFragment.text;
+		final Object value = ScannerController.getController().parse(textFragment.link);
 		final Attribute atribute = new Attribute(name, value);
 		if(toExistingNode) {
 			MAttributeController.getController().addAttribute(node, atribute);
@@ -829,17 +834,18 @@ public class MMapClipboardController extends MapClipboardController implements M
 						   final ArrayList<NodeModel> parentNodes, final ArrayList<Integer> parentNodesDepths,
 						   final TextFragment textFragment, final NodeModel node) {
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
-		for (int j = parentNodes.size() - 1; j >= 0; --j) {
-			if (textFragment.depth > parentNodesDepths.get(j).intValue()) {
-				for (int k = j + 1; k < parentNodes.size(); ++k) {
-					final NodeModel n = parentNodes.get(k);
+		for (int parentNodeIndex = parentNodes.size() - 1; parentNodeIndex >= 0; --parentNodeIndex) {
+			if (textFragment.depth > parentNodesDepths.get(parentNodeIndex).intValue()) {
+				int completedParentNodeIndex = parentNodeIndex + 1;
+				while (completedParentNodeIndex < parentNodes.size()) {
+					final NodeModel n = parentNodes.get(completedParentNodeIndex);
 					if (n.getParentNode() == null) {
 						mapController.insertNode(n, parent, insertionIndex++);
 					}
-					parentNodes.remove(k);
-					parentNodesDepths.remove(k);
+					parentNodes.remove(completedParentNodeIndex);
+					parentNodesDepths.remove(completedParentNodeIndex);
 				}
-				final NodeModel target = parentNodes.get(j);
+				final NodeModel target = parentNodes.get(parentNodeIndex);
 				node.setLeft(isLeft);
 				if (target != parent) {
 					target.setFolded(true);
@@ -854,8 +860,8 @@ public class MMapClipboardController extends MapClipboardController implements M
 	}
 
 	private NodeModel createNode(final MapModel map, final TextFragment textFragment) {
-		String text = textFragment.first;
-		final String link = textFragment.second;
+		String text = textFragment.text;
+		final String link = textFragment.link;
 		URI uri = null;
 		if (link != null) {
 			try {
