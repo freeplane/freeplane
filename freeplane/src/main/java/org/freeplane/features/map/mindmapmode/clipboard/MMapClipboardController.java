@@ -836,15 +836,17 @@ public class MMapClipboardController extends MapClipboardController implements M
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();
 		for (int parentNodeIndex = parentNodes.size() - 1; parentNodeIndex >= 0; --parentNodeIndex) {
 			if (textFragment.depth > parentNodesDepths.get(parentNodeIndex).intValue()) {
-				int completedParentNodeIndex = parentNodeIndex + 1;
-				while (completedParentNodeIndex < parentNodes.size()) {
+				int firstCompletedIndex = parentNodeIndex + 1;
+				for (int completedParentNodeIndex = firstCompletedIndex;
+						completedParentNodeIndex < parentNodes.size();
+						completedParentNodeIndex++) {
 					final NodeModel n = parentNodes.get(completedParentNodeIndex);
 					if (n.getParentNode() == null) {
 						mapController.insertNode(n, parent, insertionIndex++);
 					}
-					parentNodes.remove(completedParentNodeIndex);
-					parentNodesDepths.remove(completedParentNodeIndex);
 				}
+				parentNodes.subList(firstCompletedIndex,parentNodes.size()).clear();
+				parentNodesDepths.subList(firstCompletedIndex,parentNodesDepths.size()).clear();
 				final NodeModel target = parentNodes.get(parentNodeIndex);
 				node.setLeft(isLeft);
 				if (target != parent) {
