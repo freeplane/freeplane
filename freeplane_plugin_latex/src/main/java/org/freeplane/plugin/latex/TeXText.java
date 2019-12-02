@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.mode.Controller;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
@@ -23,10 +24,13 @@ public class TeXText
 
 	public TeXIcon createTeXIcon(int style, int size, int align, int maxWidth) {
 
-        final String predefinedMacros = ResourceController.getResourceController().getProperty(LATEX_MACROS);
         StringBuffer sb = new StringBuffer();
-        if (predefinedMacros != null) {
-           sb.append(predefinedMacros + "\n\n");
+        if (Controller.getCurrentController() != null && ResourceController.getResourceController() != null)
+        {
+            final String predefinedMacros = ResourceController.getResourceController().getProperty(LATEX_MACROS);
+            if (predefinedMacros != null) {
+                sb.append(predefinedMacros + "\n\n");
+            }
         }
         sb.append("\n\n")
 		.append("\\text{")
@@ -43,7 +47,8 @@ public class TeXText
 			.setSize(size)
 			.setWidth(TeXConstants.UNIT_PIXEL, maxWidth, align)
 			.setIsMaxWidth(true)
-			.setInterLineSpacing(TeXConstants.UNIT_PIXEL, /*40f*/size * 1.2F)
+//			.setInterLineSpacing(TeXConstants.UNIT_PIXEL, /*40f*/size * 1.2F)
+			.setInterLineSpacing(TeXConstants.UNIT_PT, /*40f*/0.4f)
 			.build();
     }
 
