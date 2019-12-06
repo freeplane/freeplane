@@ -8,7 +8,7 @@ buildscript {
 }
 
 plugins {
-  id "nebula.ospackage" version "5.0.4"
+  id "nebula.ospackage" version "8.0.3"
 }
 
 Properties props = new Properties()
