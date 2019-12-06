@@ -3,6 +3,8 @@
 ===============================
 Fix copying text from clipboard
 Scale icons in filter conditions
+Make LaTeX line spacing configurable
+
 ===============================
 1.7.10
 ===============================
