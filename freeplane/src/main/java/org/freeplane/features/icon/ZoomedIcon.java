@@ -45,7 +45,7 @@ public class ZoomedIcon extends UIIcon {
 		int ownHeight = icon.getIconHeight();
 		if(ownHeight == heightInPixel)
 			return icon;
-		float zoom = ((float)heightInPixel) / ownHeight;
+		float zoom = ownHeight != 0 ? ((float)heightInPixel) / ownHeight : 0;
 		return new ZoomedIcon(uiIcon, zoom).getIcon();
 	}
 
