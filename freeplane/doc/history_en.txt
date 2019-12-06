@@ -1,4 +1,9 @@
 ===============================
+1.7.11
+===============================
+Fix copying text from clipboard
+Scale icons in filter conditions
+===============================
 1.7.10
 ===============================
 Fix menu mnemonics
