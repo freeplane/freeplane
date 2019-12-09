@@ -181,9 +181,9 @@ public class MapLoader{
 
 	private static URL fileToUrlOrNull(final File file) {
 		try {
-			return Compat.fileToUrl(file);
+			return Compat.fileToUrl(file.getCanonicalFile());
 		}
-		catch (MalformedURLException e) {
+		catch (IOException e) {
 			return null;
 		}
 	}
