@@ -1,5 +1,8 @@
 repositories {
-    maven {url 'http://devel.uji.es/nexus/content/repositories/releases/'}
+    // maven {url 'http://devel.uji.es/nexus/content/repositories/releases/'}
+    flatDir {
+       dirs 'lib'
+   }
 }
 
 dependencies {
@@ -7,5 +10,6 @@ dependencies {
         transitive = false
     }
     
-    compileOnly 'com.apple:applejavaextensions:1.5.4'
+    //compileOnly 'com.apple:applejavaextensions:1.5.4'
+    compileOnly name: 'AppleJavaExtensions-1.5.4'
 }
