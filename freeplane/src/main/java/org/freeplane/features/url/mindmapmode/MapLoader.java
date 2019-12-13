@@ -264,7 +264,7 @@ public class MapLoader{
 		final MMapModel map = new MMapModel();
 		if(asDocumentation) {
 			map.setReadOnly(true);
-			map.addExtension(DocuMapAttribute.instance);
+			map.addExtension(DocuMapAttribute.INSTANCE);
 		}
 		return map;
 	}

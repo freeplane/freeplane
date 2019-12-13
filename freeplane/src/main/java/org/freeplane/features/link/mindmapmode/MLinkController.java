@@ -1054,7 +1054,7 @@ public class MLinkController extends LinkController {
 		boolean addDocuMapAttribute = node.getMap().containsExtension(DocuMapAttribute.class)
 				&& ! modeController.containsExtension(DocuMapAttribute.class);
 		if(addDocuMapAttribute){
-			modeController.addExtension(DocuMapAttribute.class, DocuMapAttribute.instance);
+			modeController.addExtension(DocuMapAttribute.class, DocuMapAttribute.INSTANCE);
 		}
 		try{
 			super.loadURL(node, e);
@@ -1072,7 +1072,7 @@ public class MLinkController extends LinkController {
 		boolean addDocuMapAttribute = node.getMap().containsExtension(DocuMapAttribute.class)
 				&& ! modeController.containsExtension(DocuMapAttribute.class);
 		if(addDocuMapAttribute){
-			modeController.addExtension(DocuMapAttribute.class, DocuMapAttribute.instance);
+			modeController.addExtension(DocuMapAttribute.class, DocuMapAttribute.INSTANCE);
 		}
 		try{
 			super.loadURI(node, uri);

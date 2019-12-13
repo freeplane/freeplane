@@ -52,7 +52,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
@@ -371,7 +370,7 @@ public class MMapController extends MapController {
     }
 
 	public boolean close(final MapModel map) {
-		if (!(map.isSaved() || map.isDocumentation())) {
+		if (!(map.isSaved() || map.isReadOnly())) {
 			Controller.getCurrentController().getMapViewManager().changeToMap(map);
 			final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
 			final String title = TextUtils.getText("SaveAction.text");
