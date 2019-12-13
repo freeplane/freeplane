@@ -115,9 +115,9 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	@Override
 	public void mouseClicked(final MouseEvent e) {
-		boolean shoudResetPosition = e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2
+		boolean shouldEditOrResetPosition = e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2
 				&& doubleClickTimer.getDelay() > 0;
-		if (shoudResetPosition) {
+		if (shouldEditOrResetPosition) {
 			final MainView mainView = (MainView) e.getComponent();
 			if (mainView.getMouseArea().equals(MouseArea.MOTION)) {
 				final Controller controller = Controller.getCurrentController();
@@ -137,7 +137,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				}
 			}
 			else {
-				if (Compat.isPlainEvent(e) && !isInFoldingRegion(e)) {
+				if (Compat.isPlainEvent(e) && !isInFoldingRegion(e) && ! mainView.isInDragRegion(e.getPoint())) {
 					final MTextController textController = MTextController.getController();
 					textController.getEventQueue().activate(e);
 					textController.edit(FirstAction.EDIT_CURRENT, false);
@@ -151,11 +151,16 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
     public void mouseMoved(final MouseEvent e) {
 		if (isDragActive())
 			return;
-		final MainView v = (MainView) e.getSource();
-		if (v.isInDragRegion(e.getPoint())) {
-			v.setMouseArea(MouseArea.MOTION);
-			v.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-			return;
+		final NodeView nodeV = getNodeView(e);
+		MapView mapView = nodeV.getMap();
+		ModeController modeController = mapView.getModeController();
+		if(modeController.canEdit(mapView.getModel())) {
+			final MainView v = (MainView) e.getSource();
+			if (v.isInDragRegion(e.getPoint())) {
+				v.setMouseArea(MouseArea.MOTION);
+				v.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+				return;
+			}
 		}
 		super.mouseMoved(e);
 	}
@@ -174,18 +179,21 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		setClickDelay();
 		if (isInDragRegion(e)) {
 			if ((e.getModifiersEx() & InputEvent.BUTTON1_DOWN_MASK) == (InputEvent.BUTTON1_DOWN_MASK)) {
-				nodeSelector.stopTimerForDelayedSelection();
 				final NodeView nodeV = getNodeView(e);
-				final Point point = e.getPoint();
-				UITools.convertPointToAncestor(nodeV, point, JScrollPane.class);
-				findGridPoint(point);
 				final NodeModel node = nodeV.getModel();
-				dragStartingPoint = point;
-				originalAssignedParentVGap = LocationModel.getModel(node.getParentNode()).getVGap();
-				NodeModel childDistanceContainer = nodeV.getParentView().getChildDistanceContainer().getModel();
-				minimalDistanceBetweenChildren = mapView.getModeController().getExtension(LocationController.class).getMinimalDistanceBetweenChildren(childDistanceContainer);
-				originalHGap = LocationModel.getModel(node).getHGap();
-				originalShiftY = LocationModel.getModel(node).getShiftY();
+				ModeController modeController = mapView.getModeController();
+				if(modeController.canEdit(node.getMap())) {
+					nodeSelector.stopTimerForDelayedSelection();
+					final Point point = e.getPoint();
+					UITools.convertPointToAncestor(nodeV, point, JScrollPane.class);
+					findGridPoint(point);
+					dragStartingPoint = point;
+					originalAssignedParentVGap = LocationModel.getModel(node.getParentNode()).getVGap();
+					NodeModel childDistanceContainer = nodeV.getParentView().getChildDistanceContainer().getModel();
+					minimalDistanceBetweenChildren = modeController.getExtension(LocationController.class).getMinimalDistanceBetweenChildren(childDistanceContainer);
+					originalHGap = LocationModel.getModel(node).getHGap();
+					originalShiftY = LocationModel.getModel(node).getShiftY();
+				}
 			}
 		}
 		else
