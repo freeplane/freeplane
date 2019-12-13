@@ -1,10 +1,10 @@
 dependencies {
     compile project(':freeplane')
 
-	lib 'org.apache.xmlgraphics:batik-transcoder:1.10'
-	lib 'org.apache.xmlgraphics:batik-swing:1.10'
-	lib 'org.apache.xmlgraphics:batik-codec:1.10'
-	lib 'org.apache.xmlgraphics:fop:2.2'
+	lib 'org.apache.xmlgraphics:batik-transcoder:1.12'
+	lib 'org.apache.xmlgraphics:batik-swing:1.12'
+	lib 'org.apache.xmlgraphics:batik-codec:1.12'
+	lib 'org.apache.xmlgraphics:fop:2.4'
 }
 
 configurations.all {
