@@ -26,7 +26,6 @@ import java.awt.Polygon;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 
 abstract class VariableInsetsPainter extends ShapedPainter {
-	private static final long serialVersionUID = 1L;
 	private double zoomedVerticalInset;
 	private double zoomedHorizontalInset;
 

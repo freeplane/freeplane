@@ -129,7 +129,6 @@ public class StyleEditorPanel extends JPanel {
 		final DefaultFormBuilder formBuilder = new DefaultFormBuilder(rightLayout);
 		formBuilder.border(Paddings.DLU2);
 		new SeparatorProperty("OptionPanel.separator.NodeStyle").layout(formBuilder);
-		final List<IPropertyControl> controls = new ArrayList<IPropertyControl>();
 
 		for (ControlGroup controlGroup :controlGroups) {
 			controlGroup.addControlGroup(formBuilder);

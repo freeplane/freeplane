@@ -111,7 +111,6 @@ public class XsltExportEngine implements IExportEngine {
 
 	private StreamSource getMapXml(final List<NodeModel> branches) {
 		final StringWriter writer = new StringWriter();
-		final ModeController modeController = Controller.getCurrentModeController();
 		new BranchXmlWriter(branches).writeXml(writer, Mode.EXPORT);
 		final StringReader stringReader = new StringReader(writer.getBuffer().toString());
 		return new StreamSource(stringReader);

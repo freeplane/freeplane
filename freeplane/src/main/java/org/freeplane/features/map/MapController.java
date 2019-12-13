@@ -943,7 +943,6 @@ implements IExtension, NodeChangeAnnouncer{
 
 	static class Refresher {
 		private final ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue> nodesToRefresh = new ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue>();
-		private boolean refreshRunning;
 
 		/** optimization of nodeRefresh() as it handles multiple nodes in one Runnable, even nodes that weren't on the
 		 * list when the thread was started.*/
@@ -965,17 +964,12 @@ implements IExtension, NodeChangeAnnouncer{
 						@SuppressWarnings("unchecked")
 						final Entry<NodeRefreshKey, NodeRefreshValue>[] entries = nodesToRefresh.entrySet().toArray(new Entry[]{} );
 						nodesToRefresh.clear();
-						refreshRunning = true;
-						try {
-							for (Entry<NodeRefreshKey, NodeRefreshValue> entry : entries) {
-								final NodeRefreshValue info = entry.getValue();
-								if (info.controller == currentModeController){
-									final NodeRefreshKey key = entry.getKey();
-									currentModeController.getMapController().nodeRefresh(key.node, key.property, info.oldValue, info.newValue);
-								}
+						for (Entry<NodeRefreshKey, NodeRefreshValue> entry : entries) {
+							final NodeRefreshValue info = entry.getValue();
+							if (info.controller == currentModeController){
+								final NodeRefreshKey key = entry.getKey();
+								currentModeController.getMapController().nodeRefresh(key.node, key.property, info.oldValue, info.newValue);
 							}
-						} finally {
-							refreshRunning = false;
 						}
 					}
 				};

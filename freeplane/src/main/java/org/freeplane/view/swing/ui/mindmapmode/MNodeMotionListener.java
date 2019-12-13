@@ -315,7 +315,6 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 
 	private NodeModel[] adjustNodeIndexBackupSelection(final NodeView nodeV, NodeModel[] selectedsBackup) {
 		final NodeModel node = nodeV.getModel();
-		boolean isLeft = nodeV.isLeft();
 		final int newIndex = calculateNewFreeNodeIndex(nodeV);
 		if (newIndex != -1) {
 			final ModeController modeController = nodeV.getMap().getModeController();

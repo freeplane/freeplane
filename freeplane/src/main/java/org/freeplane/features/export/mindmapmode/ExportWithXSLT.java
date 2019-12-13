@@ -167,9 +167,6 @@ public class ExportWithXSLT implements IExportEngine {
 
 	private String getMapXml(List<NodeModel> nodes, final Mode mode) throws IOException {
 		final StringWriter writer = new StringWriter();
-		final ModeController modeController = Controller.getCurrentModeController();
-		final Controller controller = modeController.getController();
-		final MapModel map = controller.getMap();
 		new BranchXmlWriter(nodes).writeXml(writer, mode);
 		return writer.getBuffer().toString();
 	}

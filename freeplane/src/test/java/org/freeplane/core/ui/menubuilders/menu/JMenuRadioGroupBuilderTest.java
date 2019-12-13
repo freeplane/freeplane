@@ -1,11 +1,9 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import javax.swing.JMenu;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.action.AcceleratebleActionProvider;
@@ -23,9 +21,6 @@ public class JMenuRadioGroupBuilderTest {
 	private Entry actionEntry;
 	private AFreeplaneAction action;
 	private Entry menuEntry;
-	private Entry groupEntry;
-	private JMenu menu;
-	private EntryPopupListener popupListener;
 	private ResourceAccessor resourceAccessorMock;
 	private IAcceleratorMap accelerators;
 	private AcceleratebleActionProvider acceleratebleActionProvider;
@@ -39,9 +34,7 @@ public class JMenuRadioGroupBuilderTest {
 		new EntryAccessor().setAction(actionEntry, action);
 		menuEntry = new Entry();
 		menuEntry.setName("menu");
-		groupEntry = new Entry();
-		menu = new JMenu();
-		popupListener = mock(EntryPopupListener.class);
+		EntryPopupListener popupListener = mock(EntryPopupListener.class);
 		resourceAccessorMock = mock(ResourceAccessor.class);
 		when(resourceAccessorMock.getRawText(anyString())).thenReturn("");
 		when(resourceAccessorMock.getRawText("menu")).thenReturn("menu");

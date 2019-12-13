@@ -234,7 +234,6 @@ public class MIconController extends IconController {
 		JAutoScrollBarPane iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);
 		UITools.setScrollbarIncrement(iconToolBarScrollPane);
 		UITools.addScrollbarIncrementPropertyListener(iconToolBarScrollPane);
-		FrameController frameController = (FrameController) modeController.getController().getViewController();
 		iconBox = new CollapseableBoxBuilder().setPropertyNameBase("leftToolbarVisible").setResizeable(true).createBox(iconToolBarScrollPane, Direction.LEFT);
 		createIconActions(modeController);
 		createPreferences();
