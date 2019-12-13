@@ -31,10 +31,11 @@ allprojects {
 
     repositories {
 		mavenCentral()
-		maven { url "http://www.knopflerfish.org/releases/6.1.0/maven2" }
+		maven { url 'http://www.knopflerfish.org/releases/6.1.0/maven2' }
 		maven { url "${project.gradle.gradleUserHomeDir}/local-artifacts" }
-		maven { url "http://dl.bintray.com/freeplane/freeplane" }
-		maven { url "https://repo.spring.io/plugins-release/"}
+		maven { url 'http://dl.bintray.com/freeplane/freeplane' }
+		maven { url 'https://repo.spring.io/plugins-release/' }
+		maven { url 'https://repository.jboss.org/maven2/' }
 
         // this is necessary to grab both binary and source jars
         // for local (git) dependencies
