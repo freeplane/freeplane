@@ -3,12 +3,13 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:4.3.0'
+    classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:4.3.1'
   }
 }
 
 plugins {
-  id "nebula.ospackage" version "8.0.3"
+  id 'nebula.ospackage' version '8.0.3'
+  id 'com.github.ben-manes.versions' version '0.27.0'
 }
 
 Properties props = new Properties()
