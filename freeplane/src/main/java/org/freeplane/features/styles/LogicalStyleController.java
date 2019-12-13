@@ -238,6 +238,11 @@ public class LogicalStyleController implements IExtension {
     }
 	public void refreshMap(final MapModel map) {
 		final IActor actor = new IActor() {
+			@Override
+			public boolean isReadonly() {
+				return true;
+			}
+
 			public void undo() {
 				refreshMapLater(map);
 			}

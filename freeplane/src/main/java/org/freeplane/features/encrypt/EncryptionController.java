@@ -90,6 +90,11 @@ public class EncryptionController implements IExtension {
 			final MapWriter mapWriter = Controller.getCurrentModeController().getMapController().getMapWriter();
 			final IActor actor = new IActor() {
 				@Override
+				public boolean isReadonly() {
+					return true;
+				}
+
+				@Override
 				public void act() {
 					apply(becomesAccessible, becomesFolded, wasFolded);
 				}

@@ -148,13 +148,15 @@ public class MModeController extends ModeController {
 
 	@Override
 	public void execute(final IActor actor, final MapModel map) {
-		try {
-			Controller.getCurrentController().getViewController().invokeAndWait(() -> {
-				addUndoableActor(actor, map);
-				actor.act();
-			});
-		} catch (InvocationTargetException | InterruptedException e) {
-			throw new RuntimeException(e);
+		if(actor.isReadonly() || canEdit(map)) {
+			try {
+				Controller.getCurrentController().getViewController().invokeAndWait(() -> {
+					addUndoableActor(actor, map);
+					actor.act();
+				});
+			} catch (InvocationTargetException | InterruptedException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 

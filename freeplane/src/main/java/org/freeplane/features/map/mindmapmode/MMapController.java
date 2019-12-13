@@ -1029,6 +1029,11 @@ public class MMapController extends MapController {
 		if(isFoldingPersistent()){
 			IActor foldingActor = new IActor() {
 				@Override
+				public boolean isReadonly() {
+					return true;
+				}
+
+				@Override
 				public void undo() {
 					unfoldHiddenChildren(node);
 					MMapController.super.setFoldingState(node, wasFolded);

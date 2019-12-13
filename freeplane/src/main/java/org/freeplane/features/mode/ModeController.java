@@ -32,6 +32,7 @@ import java.util.TreeMap;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
@@ -55,7 +56,8 @@ import org.freeplane.features.ui.INodeViewLifeCycleListener;
  * MindMapController as a sample.
  */
 public class ModeController extends AController implements FreeplaneActions{
-// // 	final private Controller controller;
+	public static final String EDITING_LOCKED_PROPERTY = "editing_locked";
+	// // 	final private Controller controller;
 	private final ExtensionContainer extensionContainer;
 	private final Collection<IExtensionCopier> copiers;
 	private boolean isBlocked = false;
@@ -253,6 +255,14 @@ public class ModeController extends AController implements FreeplaneActions{
 
 
 	public void commit() {
+	}
+
+	public boolean canEdit(MapModel map) {
+		return canEdit() && map != null && ! map.isReadOnly() && ! isEditingLocked();
+	}
+
+	public boolean isEditingLocked() {
+		return ResourceController.getResourceController().getBooleanProperty(EDITING_LOCKED_PROPERTY);
 	}
 
 	public void execute(final IActor actor, final MapModel map) {

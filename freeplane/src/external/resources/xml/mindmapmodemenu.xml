@@ -464,6 +464,7 @@
 			<Entry builder="separator" />
 		</Entry>
 		<Entry name="extras">
+			<Entry name="SetBooleanPropertyAction.editing_locked" />
 			<Entry name="TimeManagementAction" accelerator="control T" />
 			<Entry name="ReminderListAction" />
 			<Entry name="OldReminderListAction" />

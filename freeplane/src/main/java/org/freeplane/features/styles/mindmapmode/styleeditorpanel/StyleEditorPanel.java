@@ -29,6 +29,8 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.components.UITools;
@@ -161,6 +163,13 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 
+	private void setComponentsEnabled(boolean enabled) {
+		final Container panel = (Container) getComponent(0);
+		for (int i = 0; i < panel.getComponentCount(); i++) {
+			panel.getComponent(i).setEnabled(enabled);
+		}
+	}
+	
 	private void addListeners() {
 		final Controller controller = Controller.getCurrentController();
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -173,15 +182,9 @@ public class StyleEditorPanel extends JPanel {
 					return;
 				}
 				if (selection.size() == 1) {
-					setComponentsEnabled(true);
+					if(modeController.canEdit(selection.getSelected().getMap()))
+						setComponentsEnabled(true);
 					setStyle(node);
-				}
-			}
-
-			public void setComponentsEnabled(boolean enabled) {
-				final Container panel = (Container) getComponent(0);
-				for (int i = 0; i < panel.getComponentCount(); i++) {
-					panel.getComponent(i).setEnabled(enabled);
 				}
 			}
 
@@ -217,6 +220,14 @@ public class StyleEditorPanel extends JPanel {
 				setStyle(node);
             }
 
+		});
+		
+		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
+			@Override
+			public void propertyChanged(String propertyName, String newValue, String oldValue) {
+				if(propertyName.equals(ModeController.EDITING_LOCKED_PROPERTY))
+					setComponentsEnabled(modeController.canEdit(controller.getMap()));
+			}
 		});
 	}
 
