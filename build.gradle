@@ -36,7 +36,6 @@ allprojects {
 		maven { url "${project.gradle.gradleUserHomeDir}/local-artifacts" }
 		maven { url 'http://dl.bintray.com/freeplane/freeplane' }
 		maven { url 'https://repo.spring.io/plugins-release/' }
-		maven { url 'https://repository.jboss.org/maven2/' }
 
         // this is necessary to grab both binary and source jars
         // for local (git) dependencies
