@@ -13,6 +13,7 @@
 		</Entry>
 		<Entry name="zoom" builder="main_toolbar_zoom" />
 		<Entry name="open">
+			<Entry name="SetBooleanPropertyAction.editing_locked" />
 			<Entry name="OpenAction" />
 			<Entry name="NewMapAction" />
 			<Entry name="SaveAction" />
