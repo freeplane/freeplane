@@ -4,7 +4,10 @@ dependencies {
 	lib 'org.apache.xmlgraphics:batik-transcoder:1.12'
 	lib 'org.apache.xmlgraphics:batik-swing:1.12'
 	lib 'org.apache.xmlgraphics:batik-codec:1.12'
-	lib 'org.apache.xmlgraphics:fop:2.4'
+	lib ('org.apache.xmlgraphics:fop-core:2.4') {transitive = false}
+	lib ('org.apache.xmlgraphics:fop-util:2.4') {transitive = false}
+	lib ('org.apache.xmlgraphics:fop-events:2.4') {transitive = false}
+	lib ('org.apache.pdfbox:fontbox:2.0.16') {transitive = false}
 }
 
 configurations.all {
