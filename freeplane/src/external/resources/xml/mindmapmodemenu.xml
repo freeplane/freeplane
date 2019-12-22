@@ -14,7 +14,7 @@
 		<Entry name="zoom" builder="main_toolbar_zoom" />
 		<Entry name="open">
 			<Entry name="SetBooleanPropertyAction.editing_locked" />
-			<Entry name="OpenAction" />
+			<Entry name="OpenAction"/>
 			<Entry name="NewMapAction" />
 			<Entry name="SaveAction" />
 			<Entry name="SaveAsAction" />
@@ -22,13 +22,13 @@
 			<Entry name="PrintDirectAction" />
 			<Entry name="CloseAction" />
 		</Entry>
-		<Entry builder="separator" />
-		<Entry name="undo">
-			<Entry name="UndoAction" />
-			<Entry name="RedoAction" />
+		<Entry name="undo" usedBy = "EDITOR" >
+			<Entry builder="separator" />
+			<Entry name="UndoAction"/>
+			<Entry name="RedoAction"/>
 		</Entry>
-		<Entry builder="separator" />
-		<Entry name="font">
+		<Entry name="font" usedBy = "EDITOR" >
+			<Entry builder="separator" />
 			<Entry builder="main_toolbar_style" />
 			<Entry builder="main_toolbar_font_name" />
 			<Entry builder="main_toolbar_font_size" />
@@ -36,15 +36,17 @@
 			<Entry name="ItalicAction" />
 			<Entry name="StrikeThroughAction"/>
 		</Entry>
-		<Entry builder="separator" />
-		<Entry>
+		<Entry usedBy = "EDITOR" >
+			<Entry builder="separator" />
 			<Entry name="TextAlignAction.LEFT" />
 			<Entry name="TextAlignAction.CENTER" />
 			<Entry name="TextAlignAction.RIGHT" />
 		</Entry>
-		<Entry builder="separator" />
-		<Entry name="CloudAction" />
-		<Entry name="CloudColorAction" />
+		<Entry usedBy = "EDITOR" >
+			<Entry builder="separator" />
+			<Entry name="CloudAction" />
+			<Entry name="CloudColorAction" />
+		</Entry>
 		<Entry builder="separator" />
 		<Entry name="folding">
 			<Entry name="UnfoldOneLevelAction" />
@@ -63,25 +65,25 @@
 	<Entry name="main_menu" builder="main_menu">
 		<Entry name="file">
 			<Entry name="NewMapAction" accelerator="control N" />
-			<Entry name="new_map_from_user_templates" />
-			<Entry name="EncryptedMap" />
-			<Entry builder="separator" />
-			<Entry name="SaveAction" accelerator="control S" />
+			<Entry name="new_map_from_user_templates" usedBy = "EXPERT" />
+			<Entry name="EncryptedMap" usedBy = "EXPERT" />
+			<Entry builder="separator" usedBy = "EXPERT" />
+			<Entry name="SaveAction" accelerator="control S" usedBy = "EDITOR" />
 			<Entry name="SaveAsAction" accelerator="control shift S" />
-			<Entry name="SaveAll" />
-			<Entry name="RevertAction" />
-			<Entry builder="separator" />
+			<Entry name="SaveAll" usedBy = "EXPERT" />
+			<Entry name="RevertAction" usedBy = "EDITOR" />
+			<Entry builder="separator"  usedBy = "EXPERT" />
 			<Entry name="OpenAction" accelerator="control O" />
-			<Entry name="OpenURLMapAction" />
+			<Entry name="OpenURLMapAction" usedBy = "EXPERT" />
 			<Entry name="lastOpenedMaps">
 				<Entry builder="lastOpenedMaps" />
 				<Entry builder="noActions" />
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="ExportAction" />
-            <Entry name="ExportBranchesAction"/>
-            <Entry name="ExportBranchAction"  accelerator="alt shift A" />
-			<Entry name="import">
+            <Entry name="ExportBranchesAction" usedBy = "EXPERT" />
+            <Entry name="ExportBranchAction"  accelerator="alt shift A" usedBy = "EXPERT" />
+			<Entry name="import" usedBy = "EXPERT_EDITOR" >
 				<Entry name="ImportBranchAction" />
 				<Entry name="ImportLinkedBranchAction" />
 				<Entry name="ImportLinkedBranchWithoutRootAction" />
@@ -104,30 +106,32 @@
 			<Entry builder="separator" />
 			<Entry name="QuitAction" accelerator="control Q" builder="removeOnMac" />
 		</Entry>
-		<Entry name="edit">
+		<Entry name="edit" usedBy = "EDITOR" >
 			<Entry name="menu_newNode">
 				<Entry name="NewChildAction" accelerator="INSERT" />
 				<Entry name="NewSiblingAction" accelerator="ENTER" />
 				<Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
 				<Entry name="NewParentNode" accelerator="shift INSERT" />
-				<Entry name="NewFreeNodeAction" />
-				<Entry name="NewSummaryAction" accelerator="alt shift INSERT" />
+				<Entry name="NewFreeNodeAction" usedBy = "EXPERT" />
+				<Entry name="NewSummaryAction" accelerator="alt shift INSERT" usedBy = "EXPERT" />
 			</Entry>
 			<Entry name="CloudAction" accelerator="control shift B" />
 			<Entry name="AddConnectorAction" accelerator="control L" />
 			<Entry name="links">
 				<Entry name="SetLinkByFileChooserAction" accelerator="control shift K" />
 				<Entry name="SetLinkByTextFieldAction" accelerator="control K" />
-				<Entry name="ExtractLinkFromTextAction" />
-				<Entry builder="separator" />
-				<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
-				<Entry name="AddMenuItemLinkAction" />
-				<Entry name="AddExecutionLinkAction" />
-				<Entry builder="separator" />
-				<Entry name="SetLinkAnchorAction" />
-				<Entry name="MakeLinkFromAnchorAction" />
-				<Entry name="MakeLinkToAnchorAction" />
-				<Entry name="ClearLinkAnchorAction" />
+				<Entry name="ExtractLinkFromTextAction" usedBy = "EXPERT" />
+				<Entry usedBy = "EXPERT" >
+					<Entry builder="separator"/>
+					<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
+					<Entry name="AddMenuItemLinkAction" />
+					<Entry name="AddExecutionLinkAction" />
+					<Entry builder="separator" />
+					<Entry name="SetLinkAnchorAction" />
+					<Entry name="MakeLinkFromAnchorAction" />
+					<Entry name="MakeLinkToAnchorAction" />
+					<Entry name="ClearLinkAnchorAction" />
+				</Entry>
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="DeleteAction" accelerator="DELETE" />
@@ -136,12 +140,12 @@
 				<Entry name="EditAction" accelerator="F2" />
 				<Entry name="SetBooleanPropertyAction.edit_on_double_click" />
 				<Entry name="EditLongAction" accelerator="alt ENTER" />
-				<Entry name="SplitNode" accelerator="alt S" />
-				<Entry builder="splitToWordsActions" />
-				<Entry builder="joinNodesActions" accelerator="control J" />
+				<Entry name="SplitNode" accelerator="alt S" usedBy = "EXPERT" />
+				<Entry builder="splitToWordsActions" usedBy = "EXPERT" />
+				<Entry builder="joinNodesActions" accelerator="control J" usedBy = "EXPERT" />
 				<Entry name="RevisionPluginAction" />
 				<Entry builder="separator" />
-				<Entry name="SetImageByFileChooserAction" accelerator="alt shift K" />
+				<Entry name="SetImageByFileChooserAction" accelerator="alt shift K" usedBy = "EXPERT" />
 			</Entry>
 			<Entry name="icons">
 				<Entry name="IconSelectionPlugin" accelerator="control F2" />
@@ -188,15 +192,17 @@
 				</Entry>
 				<Entry name="ShowAttributeDialogAction" />
 				<Entry builder="separator" />
-				<Entry name="SetNodeAliasAction" />
-				<Entry builder="separator" />
-				<Entry name="LatexInsertLatexAction" plugin="org.freeplane.plugin.latex" />
-				<Entry name="LatexEditLatexAction" plugin="org.freeplane.plugin.latex" />
-				<Entry name="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex" />
-				<Entry builder="separator" />
-				<Entry name="OpenMapsAddLocation" plugin="org.freeplane.plugin.openmaps" />
-				<Entry name="OpenMapsRemoveLocation" plugin="org.freeplane.plugin.openmaps" />
-				<Entry name="OpenMapsViewLocation" plugin="org.freeplane.plugin.openmaps" />
+				<Entry usedBy = "EXPERT" >
+					<Entry name="SetNodeAliasAction" />
+					<Entry builder="separator" />
+					<Entry name="LatexInsertLatexAction" plugin="org.freeplane.plugin.latex" />
+					<Entry name="LatexEditLatexAction" plugin="org.freeplane.plugin.latex" />
+					<Entry name="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex" />
+					<Entry builder="separator" />
+					<Entry name="OpenMapsAddLocation" plugin="org.freeplane.plugin.openmaps" />
+					<Entry name="OpenMapsRemoveLocation" plugin="org.freeplane.plugin.openmaps" />
+					<Entry name="OpenMapsViewLocation" plugin="org.freeplane.plugin.openmaps" />
+				</Entry>
 			</Entry>
 			<Entry name="notes">
 				<Entry name="SelectNoteAction" accelerator="control LESS" />
@@ -216,8 +222,8 @@
 			<Entry name="PasteAction" accelerator="control V" />
 			<Entry name="SelectedPasteAction" accelerator="control shift V"/>
 			<Entry name="MoveAction" />
-			<Entry name="CloneAction" accelerator="control D"/>
-			<Entry name="ConvertCloneToIndependentNodeAction"/>
+			<Entry name="CloneAction" accelerator="control D" usedBy="EXPERT" />
+			<Entry name="ConvertCloneToIndependentNodeAction" usedBy="EXPERT" />
 			<Entry builder="separator" />
 			<Entry name="menu_moveNode">
 				<Entry name="NodeUpAction" accelerator="control UP" />
@@ -255,8 +261,8 @@
 				<Entry name="ZoomOutAction" accelerator="alt DOWN" />
 				<Entry name="FitToPage" />
 			</Entry>
-			<Entry builder="separator" />
-			<Entry name="menu_viewmode">
+			<Entry name="menu_viewmode" usedBy = "EXPERT" >
+				<Entry builder="separator" />
 				<Entry name="ViewLayoutTypeAction.OUTLINE" />
 				<Entry name="SetBooleanPropertyAction.outline_view_fits_window_width" />
 				<Entry name="ToggleFullScreenAction" accelerator="F11" />
@@ -279,11 +285,13 @@
 				<Entry name="SetBooleanPropertyAction.center_selected_node" />
 			</Entry>
 			<Entry builder="separator" />
-			<Entry name="NodeEnumerationAction.NodeVisibility.HIDDEN" />
-			<Entry name="NodeEnumerationAction.NodeVisibilityConfiguration.SHOW_HIDDEN_NODES" />
+			<Entry usedBy = "EXPERT" >
+				<Entry name="NodeEnumerationAction.NodeVisibility.HIDDEN" />
+				<Entry name="NodeEnumerationAction.NodeVisibilityConfiguration.SHOW_HIDDEN_NODES" />
+			</Entry>
 			<Entry name="SetShortenerStateAction" accelerator="alt F3" />
 			<Entry name="ToggleDetailsAction" accelerator="alt F2" />
-			<Entry name="menu_hoverView">
+			<Entry name="menu_hoverView" usedBy = "EXPERT" >
 				<Entry name="SetBooleanPropertyAction.show_node_tooltips" />
 				<Entry name="SetBooleanPropertyAction.show_styles_in_tooltip" />
 				<Entry name="SetBooleanPropertyAction.show_creation_modification_in_tooltip" />
@@ -309,7 +317,7 @@
 				<Entry name="ShowNotesInMapAction" />
 			</Entry>
 		</Entry>
-		<Entry name="format">
+		<Entry name="format" usedBy = "EDITOR" >
 			<Entry name="styleActions" textKey="menu_applyStyle">
 				<Entry builder="style_actions" />
 			</Entry>
@@ -408,7 +416,7 @@
 				<Entry name="RemoveAllAlwaysUnfoldedNodeFlagsAction" />
 				<Entry name="AlwaysUnfoldedNodeAction" />
 			</Entry>
-			<Entry name="presentation">
+			<Entry name="presentation" usedBy = "EXPERT" >
 				<Entry name="StartPresentationOrShowNextSlideAction" accelerator="F5"/>
 				<Entry name="ShowFirstSlideAndStartPresentationAction"/>
 				<Entry name="StartPresentationAction" />
@@ -476,21 +484,21 @@
 			<Entry builder="separator" />
 			<Entry name="ManageAddOnsAction" plugin="org.freeplane.plugin.script" />
 			<Entry name="scripting" plugin="org.freeplane.plugin.script" builder="userScripts" />
-			<Entry name="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script"/>
-			<Entry name="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script"/>
-			<Entry name="ScriptEditor" />
-            <Entry name="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula" />
-            <Entry name="formula.ClearDependenciesAction" plugin="org.freeplane.plugin.formula" accelerator="alt F6"/>
-            <Entry name="formula.TracePrecedentsAction" plugin="org.freeplane.plugin.formula" accelerator="alt F7" />
-            <Entry name="formula.TraceDependentsAction" plugin="org.freeplane.plugin.formula" accelerator="alt F8" />
+			<Entry name="ExecuteScriptForSelectionAction" plugin="org.freeplane.plugin.script" usedBy = "EXPERT" />
+			<Entry name="ExecuteScriptForAllNodes" plugin="org.freeplane.plugin.script" usedBy = "EXPERT" />
+			<Entry name="ScriptEditor" usedBy = "EXPERT" />
+            <Entry name="formula.EvaluateAllAction" plugin="org.freeplane.plugin.formula" usedBy = "EXPERT" />
+            <Entry name="formula.ClearDependenciesAction" plugin="org.freeplane.plugin.formula" accelerator="alt F6" usedBy = "EXPERT" />
+            <Entry name="formula.TracePrecedentsAction" plugin="org.freeplane.plugin.formula" accelerator="alt F7" usedBy = "EXPERT" />
+            <Entry name="formula.TraceDependentsAction" plugin="org.freeplane.plugin.formula" accelerator="alt F8" usedBy = "EXPERT" />
 			<Entry builder="separator" />
 			<Entry name="SetAcceleratorOnNextClickAction" />
 			<Entry name="acceleratorPresets">
-				<Entry name="load_accelerator_presets">
+				<Entry name="load_accelerator_presets" usedBy = "EXPERT" >
 					<Entry builder="acceleratorPresets" />
 					<Entry builder="noActions" />
 				</Entry>
-				<Entry name="SaveAcceleratorPresetsAction" />
+				<Entry name="SaveAcceleratorPresetsAction" usedBy = "EXPERT" />
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="OpenUserDirAction" />
@@ -499,7 +507,7 @@
 			<Entry builder="conditionalActionBuilder" property="enableUserDefinedInterfaceStrings" 
 				actionKey="TextChangeHotKeyAction" 
 				actionClass="org.freeplane.core.ui.textchanger.TextChangeHotKeyAction" 
-				accelerator="control shift F10"/>
+				accelerator="control shift F10" usedBy = "EXPERT" />
 		</Entry>
 		<Entry name="mindmaps">
 			<Entry name="modes" builder="navigate_modes,radio_button_group" />
@@ -525,7 +533,7 @@
 			<Entry name="DocumentationAction" accelerator="F1" />
             <Entry name="FreeplaneHandbook" />
 			<Entry name="HotKeyInfoAction" />
-			<Entry name="OpenApiDocumentationAction" plugin="org.freeplane.plugin.script"/>
+			<Entry name="OpenApiDocumentationAction" plugin="org.freeplane.plugin.script" usedBy = "EXPERT" />
 			<Entry builder="separator" />
 		</Entry>
 	</Entry>
@@ -553,35 +561,35 @@
 		<Entry name="GotoNodeAction" />
 	</Entry>
 	<Entry name="node_popup" builder="node_popup">
-		<Entry name="EditLongAction" accelerator="alt ENTER" />
-		<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
-		<Entry name="EditDetailsAction" accelerator="F3" />
-		<Entry name="DeleteDetailsAction" />
+		<Entry name="EditLongAction" accelerator="alt ENTER" usedBy = "EDITOR" />
+		<Entry name="EditDetailsInDialogAction" accelerator="control F3" usedBy = "EDITOR" />
+		<Entry name="EditDetailsAction" accelerator="F3" usedBy = "EDITOR" />
+		<Entry name="DeleteDetailsAction" usedBy = "EDITOR" />
 		<Entry name="SetShortenerStateAction" />
-		<Entry name="EditNoteInDialogAction" />
-		<Entry name="ExternalImageAddAction" />
-		<Entry name="EditAttributesAction" accelerator="alt F9" />
+		<Entry name="EditNoteInDialogAction" usedBy = "EDITOR" />
+		<Entry name="ExternalImageAddAction" usedBy = "EDITOR" />
+		<Entry name="EditAttributesAction" accelerator="alt F9" usedBy = "EDITOR" />
 		<Entry builder="separator" />
-		<Entry name="NewSummaryAction" accelerator="alt shift INSERT" />
-		<Entry name="AlwaysUnfoldedNodeAction" />
-		<Entry name="FreeNodeAction" />
-		<Entry name="CloudAction" accelerator="control shift B" />
-		<Entry name="styleActions" textKey="menu_applyStyle">
+		<Entry name="NewSummaryAction" accelerator="alt shift INSERT" usedBy = "EDITOR" />
+		<Entry name="AlwaysUnfoldedNodeAction" usedBy = "EXPERT_EDITOR" />
+		<Entry name="FreeNodeAction" usedBy = "EXPERT_EDITOR" />
+		<Entry name="CloudAction" accelerator="control shift B" usedBy = "EDITOR" />
+		<Entry name="styleActions" textKey="menu_applyStyle" usedBy = "EDITOR" >
 				<Entry builder="style_actions" />
 		</Entry>
-		<Entry name="AddConnectorAction" accelerator="control L" />
-		<Entry name="links" builder="popup_navigate">
+		<Entry name="AddConnectorAction" accelerator="control L" usedBy = "EDITOR" />
+		<Entry name="links" builder="popup_navigate" usedBy = "EDITOR" >
 			<Entry name="SetLinkByFileChooserAction" accelerator="control shift K" />
 			<Entry name="SetLinkByTextFieldAction" accelerator="control K" />
-			<Entry name="ExtractLinkFromTextAction" />
+			<Entry name="ExtractLinkFromTextAction" usedBy = "EXPERT" />
+			<Entry builder="separator" usedBy = "EXPERT" />
+			<Entry name="AddLocalLinkAction" accelerator="alt shift L" usedBy = "EXPERT" />
+			<Entry name="AddMenuItemLinkAction" usedBy = "EXPERT" />
 			<Entry builder="separator" />
-			<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
-			<Entry name="AddMenuItemLinkAction" />
-			<Entry builder="separator" />
-			<Entry name="SetLinkAnchorAction" />
-			<Entry name="MakeLinkFromAnchorAction" />
-			<Entry name="MakeLinkToAnchorAction" />
-			<Entry name="ClearLinkAnchorAction" />
+			<Entry name="SetLinkAnchorAction" usedBy = "EXPERT" />
+			<Entry name="MakeLinkFromAnchorAction" usedBy = "EXPERT" />
+			<Entry name="MakeLinkToAnchorAction" usedBy = "EXPERT" />
+			<Entry name="ClearLinkAnchorAction" usedBy = "EXPERT" />
 		</Entry>
 		<Entry name="goto" processOnPopup="true">
 			<Entry builder="link_actions" />
@@ -592,17 +600,17 @@
 		<Entry name="EnterPassword" />
 		<Entry name="node_popup_scripting" plugin="org.freeplane.plugin.script"
 			builder="userScripts" />
-		<Entry name="SetNodeAliasAction" />
+		<Entry name="SetNodeAliasAction" usedBy = "EXPERT" />
 		<Entry builder="separator" />
-		<Entry name="CutAction" accelerator="control X" />
-		<Entry name="CopyAction" accelerator="control C" />
-		<Entry name="CopySingleAction" accelerator="control shift C" />
-		<Entry name="CopyIDAction" />
-		<Entry name="CopySuggestedReferenceAction" />
-		<Entry name="CopyNodeURIAction" />
-		<Entry name="PasteAction" accelerator="control V" />
-		<Entry name="SortNodes" />
-		<Entry name="UndoAction" />
-		<Entry name="RedoAction" />
+		<Entry name="CutAction" accelerator="control X" usedBy = "EDITOR" />
+		<Entry name="CopyAction" accelerator="control C" usedBy = "EDITOR" />
+		<Entry name="CopySingleAction" accelerator="control shift C" usedBy = "EDITOR" />
+		<Entry name="CopyIDAction" usedBy = "EXPERT" />
+		<Entry name="CopySuggestedReferenceAction" usedBy = "EXPERT" />
+		<Entry name="CopyNodeURIAction" usedBy = "EXPERT" />
+		<Entry name="PasteAction" accelerator="control V" usedBy = "EDITOR" />
+		<Entry name="SortNodes" usedBy = "EDITOR" />
+		<Entry name="UndoAction" usedBy = "EDITOR" />
+		<Entry name="RedoAction" usedBy = "EDITOR" />
 	</Entry>
 </FreeplaneUIEntries>
