@@ -119,11 +119,11 @@ public class MapLoader{
 				try{
 					map = loadMap();
 					if (withView) {
-						createMapView(map);
-						enableAutosave(map);
 						final File newFile = urlToFileOrNull(newMapLocation);
 						if(newFile != null && ! asDocumentation)
 							fileManager().lock(map, newFile);
+						createMapView(map);
+						enableAutosave(map);
 					}
 				}
 				finally {

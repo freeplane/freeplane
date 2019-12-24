@@ -29,9 +29,9 @@ public class ActionFinder implements EntryVisitor{
 			if(action == null) {
 				for (final Class<? extends AFreeplaneAction> actionClass : Arrays.asList(SetBooleanPropertyAction.class, SetBooleanMapPropertyAction.class, SetBooleanMapViewPropertyAction.class,
 					SetStringPropertyAction.class)){
-					final String setBooleanPropertyActionPrefix = actionClass.getSimpleName() + ".";
-					if (actionName.startsWith(setBooleanPropertyActionPrefix)) {
-						String propertyName = actionName.substring(setBooleanPropertyActionPrefix.length());
+					final String actionPrefix = actionClass.getSimpleName() + ".";
+					if (actionName.startsWith(actionPrefix)) {
+						String propertyName = actionName.substring(actionPrefix.length());
 						action = createAction(actionClass, propertyName);
 						if(action !=  null) {
 							freeplaneActions.addAction(action);

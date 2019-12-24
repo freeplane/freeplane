@@ -50,6 +50,7 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 
 	private BorderWidthMatchesEdgeWidthListener borderWidthMatchesEdgeChangeListener;
 	private BorderWidthListener borderWidthListener;
+	private boolean canEdit;
 	
 	private class BorderWidthMatchesEdgeWidthListener extends ControlGroupChangeListener {
 		public BorderWidthMatchesEdgeWidthListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
@@ -133,12 +134,13 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 
 	public void enableOrDisableBorderWidthControls() {
 		final boolean borderWidthCanBeSet = ! mBorderWidthMatchesEdgeWidth.getBooleanValue();
-		mSetBorderWidth.setEnabled(borderWidthCanBeSet);
-		mBorderWidth.setEnabled(borderWidthCanBeSet);
+		mSetBorderWidth.setEnabled(borderWidthCanBeSet && canEdit);
+		mBorderWidth.setEnabled(borderWidthCanBeSet && canEdit);
 	}
 
 	@Override
-	public void setStyle(NodeModel node) {
+	public void setStyle(NodeModel node, boolean canEdit) {
+		this.canEdit = canEdit;
 		borderWidthListener.setStyle(node);
 		borderWidthMatchesEdgeChangeListener.setStyle(node);
 	}

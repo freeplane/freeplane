@@ -40,6 +40,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanel.IOptionPanelFeedback;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.util.TextUtils;
 
 /**
@@ -142,6 +143,6 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 	}
 
 	@Override
-    public void afterMapChange(final Object newMap) {
+    public void afterMapChange(UserRole userRole, boolean isMapSelected) {
     }
 }

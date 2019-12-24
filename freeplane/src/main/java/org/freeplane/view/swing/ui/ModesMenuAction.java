@@ -22,6 +22,7 @@ package org.freeplane.view.swing.ui;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.features.mode.Controller;
 
 class ModesMenuAction extends AFreeplaneAction {
@@ -38,6 +39,6 @@ class ModesMenuAction extends AFreeplaneAction {
 	}
 
 	@Override
-	public void afterMapChange(final Object newMap) {
+	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 	}
 }

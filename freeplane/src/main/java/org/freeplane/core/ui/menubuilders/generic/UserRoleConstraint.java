@@ -24,16 +24,42 @@ package org.freeplane.core.ui.menubuilders.generic;
  * Dec 21, 2019
  */
 public enum UserRoleConstraint {
-	EXPERT(false, true), EDITOR(true, false), EXPERT_EDITOR(true, true);
+	NO_CONSTRAINT(false, false) {
+		@Override
+		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
+			return entryConstraint;
+		}
+	},
+	ADVANCED(false, true) {
+		@Override
+		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
+			return entryConstraint.editorRequired ? UserRoleConstraint.ADVANCED_EDITOR : this;
+		}
+	}, 
+	EDITOR(true, false) {
+		@Override
+		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
+			return entryConstraint.advancedRequired ? UserRoleConstraint.ADVANCED_EDITOR : this;
+		}
+	}, 
+	ADVANCED_EDITOR(true, true) {
+		@Override
+		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
+			return this;
+		}
+	};
 	private final boolean editorRequired;
-	private final boolean expertRequired;
-	private UserRoleConstraint(boolean editorRequired, boolean expertRequired) {
+	private final boolean advancedRequired;
+	private UserRoleConstraint(boolean editorRequired, boolean advancedRequired) {
 		this.editorRequired = editorRequired;
-		this.expertRequired = expertRequired;
+		this.advancedRequired = advancedRequired;
 	}
 	
-	public boolean test(boolean isEditor, boolean isExpert) {
-		return (! editorRequired || isEditor) && (! expertRequired || isExpert);
+	public boolean test(UserRole user) {
+		return (! editorRequired || user.isEditor) && (! advancedRequired || user.isAdvanced);
 	}
+
+
+	abstract public UserRoleConstraint and(UserRoleConstraint entryConstraint);
 	
 }

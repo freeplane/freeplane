@@ -1028,7 +1028,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 	@Override
 	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
-		if (propertyName.equals(ModeController.EDITING_LOCKED_PROPERTY)) {
+		if (propertyName.equals(ModeController.VIEW_MODE_PROPERTY)) {
 			setFrameTitle();
 			return;
 		}
@@ -1057,7 +1057,7 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 			if (model != null) {
 				viewName = getMapViewComponent().getName();
 				frameTitle = viewName + ((model.isSaved() || model.isReadOnly()) ? "" : "*") + " - " + frameTitle
-						+ (modeController.isEditingLocked() ? format("editing_locked") :
+						+ (modeController.isEditingLocked() ? format("OptionPanel.view_mode.true") :
 							model.isReadOnly() ? format("read_only") : "");
 				final File file = model.getFile();
 				if (file != null) {

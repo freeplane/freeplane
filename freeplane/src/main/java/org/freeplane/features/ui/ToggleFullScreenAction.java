@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -52,6 +53,6 @@ public class ToggleFullScreenAction extends AFreeplaneAction {
 	}
 	
 	@Override
-	public void afterMapChange(final Object newMap) {
+	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 	}
 }

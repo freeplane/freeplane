@@ -28,6 +28,7 @@ import javax.swing.KeyStroke;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.UserRoleConstraint;
 import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
@@ -45,6 +46,7 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 		mindIcon = _icon;
 		setIcon(getIcon());
 		putValue(Action.SHORT_DESCRIPTION, getTranslatedDescription());
+		addConstraint(UserRoleConstraint.EDITOR);
 	}
 
 	private MindIcon replaceByUserDefinedIcon() {

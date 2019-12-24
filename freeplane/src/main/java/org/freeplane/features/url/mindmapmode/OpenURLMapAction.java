@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
@@ -62,6 +63,6 @@ class OpenURLMapAction extends AFreeplaneAction {
 	}
 
 	@Override
-	public void afterMapChange(final Object newMap) {
+	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 	}
 }

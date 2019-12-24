@@ -41,6 +41,7 @@ public class SetBooleanPropertyAction extends AFreeplaneAction{
 	    this.propertyName = propertyName;
 	    setIcon(propertyName + ".icon");
 	    setTooltip(getTooltipKey());
+	    setSelected();
 	    ResourceController.getResourceController().addPropertyChangeListener(//
 	    	(name, newValue, oldValue) -> {
 	    		if(this.propertyName.equals(name))

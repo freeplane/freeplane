@@ -1,5 +1,6 @@
 package org.freeplane.features.mode;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -47,11 +48,11 @@ public class AController {
 
 	public void addAction(final AFreeplaneAction value) {
 		final String key = value.getKey();
-		final AFreeplaneAction old = getActions().put(key, value);
+		final AFreeplaneAction old = actions.put(key, value);
 		//String pattern = key.replaceAll("\\.", "\\\\.").replaceAll("/", "\\\\/"); 			
 		//System.out.println("key\t\t" + value.getClass().getSimpleName() + "\t\ts/\\\"" + pattern + "\\\"/\\\"" + value.getClass().getSimpleName() + "\\\"/;");		
 		if (old != null && !old.equals(value)) {
-			getActions().put(key, old);
+			actions.put(key, old);
 			throw new RuntimeException("action " + key + " already registered");
 		}
 		if (value.checkSelectionOnPropertyChange()) {
@@ -66,11 +67,11 @@ public class AController {
 	}
 	
 	public AFreeplaneAction getAction(final String key) {
-		return getActions().get(key);
+		return actions.get(key);
 	}
 
-	protected Map<String, AFreeplaneAction> getActions() {
-		return actions;
+	public Collection<AFreeplaneAction> getActions() {
+		return actions.values();
 	}
 	
 	public Set<String> getActionKeys(){
@@ -78,7 +79,7 @@ public class AController {
 	}
 
 	public AFreeplaneAction removeAction(final String key) {
-		final AFreeplaneAction action = getActions().remove(key);
+		final AFreeplaneAction action = actions.remove(key);
 		if (action.checkSelectionOnPropertyChange()) {
 			ResourceController.getResourceController().removePropertyChangeListener(
 			    ActionSelectorOnPropertyChange.class, action);

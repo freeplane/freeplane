@@ -23,6 +23,7 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
+import javax.swing.ButtonGroup;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
@@ -38,9 +39,11 @@ public class JAutoRadioButtonMenuItem extends JRadioButtonMenuItem implements IK
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public JAutoRadioButtonMenuItem(final IFreeplaneAction a) {
+	public JAutoRadioButtonMenuItem(final IFreeplaneAction a, ButtonGroup group) {
 		super();
-		setModel(new ActionToggleButtonModel(a));
+		ActionToggleButtonModel model = new ActionToggleButtonModel(a);
+		model.setGroup(group);
+		setModel(model);
 		setAction(a);
 	}
 	

@@ -22,6 +22,7 @@ package org.freeplane.features.mode;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -39,6 +40,7 @@ import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.features.map.IExtensionCopier;
@@ -56,7 +58,9 @@ import org.freeplane.features.ui.INodeViewLifeCycleListener;
  * MindMapController as a sample.
  */
 public class ModeController extends AController implements FreeplaneActions{
-	public static final String EDITING_LOCKED_PROPERTY = "editing_locked";
+	public static final String VIEW_MODE_PROPERTY = "view_mode";
+	public static final String USER_INTERFACE_PROPERTY = "user_interface";
+	public static final List<String> USER_INTERFACE_PROPERTIES = Arrays.asList(VIEW_MODE_PROPERTY, USER_INTERFACE_PROPERTY);
 	// // 	final private Controller controller;
 	private final ExtensionContainer extensionContainer;
 	private final Collection<IExtensionCopier> copiers;
@@ -261,8 +265,12 @@ public class ModeController extends AController implements FreeplaneActions{
 		return canEdit() && map != null && ! map.isReadOnly() && ! isEditingLocked();
 	}
 
+	public UserRole userRole(MapModel map) {
+		return UserRole.ADVANCED_EDITOR;
+	}
+	
 	public boolean isEditingLocked() {
-		return ResourceController.getResourceController().getBooleanProperty(EDITING_LOCKED_PROPERTY);
+		return ResourceController.getResourceController().getBooleanProperty(VIEW_MODE_PROPERTY);
 	}
 
 	public void execute(final IActor actor, final MapModel map) {
