@@ -30,6 +30,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.resources.components.ShowPreferencesAction;
 import org.freeplane.core.ui.IndexedTree;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.TextUtils;
@@ -235,6 +236,10 @@ public class MModeController extends ModeController {
 		return true;
 	}
 
+	public UserRole userRole(MapModel map) {
+		return canEdit(map) ? UserRole.EXPERT_EDITOR : UserRole.EXPERT_VIEWER;
+	}
+	
 	@Override
 	public boolean supportsHookActions() {
 		return true;

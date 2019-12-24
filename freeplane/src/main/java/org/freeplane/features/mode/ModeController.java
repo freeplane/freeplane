@@ -263,7 +263,7 @@ public class ModeController extends AController implements FreeplaneActions{
 	}
 
 	public UserRole userRole(MapModel map) {
-		return canEdit(map) ? UserRole.EXPERT_EDITOR : UserRole.EXPERT_VIEWER;
+		return UserRole.EXPERT_EDITOR;
 	}
 	
 	public boolean isEditingLocked() {

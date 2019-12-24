@@ -57,7 +57,7 @@ public class StyleEditorPanel extends JPanel {
 	private final class PanelEnabler implements IFreeplanePropertyListener, IMapSelectionListener {
 		private final Controller controller;
 		private final ModeController modeController;
-		private boolean canEdit = true;
+		boolean canEdit = true;
 
 		private PanelEnabler(Controller controller, ModeController modeController) {
 			this.controller = controller;
@@ -95,6 +95,8 @@ public class StyleEditorPanel extends JPanel {
 
 	private boolean internalChange;
 	ControlGroup [] controlGroups;
+
+	private PanelEnabler panelEnabler;
 
 	/**
 	 * @throws HeadlessException
@@ -188,7 +190,7 @@ public class StyleEditorPanel extends JPanel {
 		internalChange = true;
 		try {
 			for (int i=0; i<controlGroups.length; i++) {
-				controlGroups[i].setStyle(node);
+				controlGroups[i].setStyle(node, panelEnabler != null && panelEnabler.canEdit);
 			}
 
 		}
@@ -256,7 +258,7 @@ public class StyleEditorPanel extends JPanel {
 
 		});
 		
-		PanelEnabler panelEnabler = new PanelEnabler(controller, modeController);
+		panelEnabler = new PanelEnabler(controller, modeController);
 		controller.getMapViewManager().addMapSelectionListener(panelEnabler);
 		ResourceController.getResourceController().addPropertyChangeListener(panelEnabler);
 	}

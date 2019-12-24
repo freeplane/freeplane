@@ -68,7 +68,7 @@ public class FontNameControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void setStyle(NodeModel node) {
+	public void setStyle(NodeModel node, boolean canEdit) {
 		propertyChangeListener.setStyle(node);
 	}
 

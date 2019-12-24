@@ -55,6 +55,7 @@ class NodeShapeControlGroup implements ControlGroup {
 	private BooleanProperty mUniformShape;
 
 	private NodeShapeChangeListener propertyChangeListener;
+	private boolean canEdit;
 
 	private class NodeShapeChangeListener extends ControlGroupChangeListener {
 		public NodeShapeChangeListener(final BooleanProperty mSet, final IPropertyControl... mProperty) {
@@ -119,12 +120,13 @@ class NodeShapeControlGroup implements ControlGroup {
 		mUniformShape.layout(formBuilder);
 	}
 	
-	public void setStyle(NodeModel node) {
+	public void setStyle(NodeModel node, boolean canEdit) {
+		this.canEdit = canEdit;
 		propertyChangeListener.setStyle(node);
 	}
 	
 	private void enableShapeConfigurationProperties(final boolean enabled, final Shape shape) {
-		final boolean enableConfigurationProperties = enabled && shape.hasConfiguration;
+		final boolean enableConfigurationProperties = enabled && shape.hasConfiguration && canEdit;
 		mShapeHorizontalMargin.setEnabled(enableConfigurationProperties);
 		mShapeVerticalMargin.setEnabled(enableConfigurationProperties);
 		mUniformShape.setEnabled(enableConfigurationProperties);

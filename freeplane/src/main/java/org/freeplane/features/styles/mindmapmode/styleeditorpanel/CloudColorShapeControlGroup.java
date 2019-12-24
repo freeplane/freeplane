@@ -126,7 +126,7 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void setStyle(NodeModel node) {
+	public void setStyle(NodeModel node, boolean canEdit) {
 		mPropertyListener.setStyle(node);
 	}
 }

@@ -78,7 +78,7 @@ class MaxNodeWidthControlGroup implements ControlGroup {
 		mMaxNodeWidth.layout(formBuilder);
 	}
 	
-	public void setStyle(NodeModel node) {
+	public void setStyle(NodeModel node, boolean canEdit) {
 		propertyChangeListener.setStyle(node);
 	}
 	
