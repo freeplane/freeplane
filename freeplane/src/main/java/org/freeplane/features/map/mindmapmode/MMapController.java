@@ -848,7 +848,7 @@ public class MMapController extends MapController {
 			controller.getMapViewManager().setMapTitles();
 			final AFreeplaneAction saveAction = controller.getModeController().getAction("SaveAction");
 			if(saveAction != null)
-				saveAction.setEnabled(UserRole.BEGINNER_EDITOR);
+				saveAction.setEnabled(UserRole.SIMPLE_EDITOR);
 		}
 	}
 

@@ -30,33 +30,33 @@ public enum UserRoleConstraint {
 			return entryConstraint;
 		}
 	},
-	EXPERT(false, true) {
+	ADVANCED(false, true) {
 		@Override
 		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
-			return entryConstraint.editorRequired ? UserRoleConstraint.EXPERT_EDITOR : this;
+			return entryConstraint.editorRequired ? UserRoleConstraint.ADVANCED_EDITOR : this;
 		}
 	}, 
 	EDITOR(true, false) {
 		@Override
 		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
-			return entryConstraint.expertRequired ? UserRoleConstraint.EXPERT_EDITOR : this;
+			return entryConstraint.advancedRequired ? UserRoleConstraint.ADVANCED_EDITOR : this;
 		}
 	}, 
-	EXPERT_EDITOR(true, true) {
+	ADVANCED_EDITOR(true, true) {
 		@Override
 		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
 			return this;
 		}
 	};
 	private final boolean editorRequired;
-	private final boolean expertRequired;
-	private UserRoleConstraint(boolean editorRequired, boolean expertRequired) {
+	private final boolean advancedRequired;
+	private UserRoleConstraint(boolean editorRequired, boolean advancedRequired) {
 		this.editorRequired = editorRequired;
-		this.expertRequired = expertRequired;
+		this.advancedRequired = advancedRequired;
 	}
 	
-	public boolean test(UserRole role) {
-		return (! editorRequired || role.isEditor) && (! expertRequired || role.isExpert);
+	public boolean test(UserRole user) {
+		return (! editorRequired || user.isEditor) && (! advancedRequired || user.isAdvanced);
 	}
 
 

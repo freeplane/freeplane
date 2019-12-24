@@ -106,7 +106,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 		@Override
 		public void propertyChanged(String propertyName, String newValue, String oldValue) {
-			if(propertyName.equals("editing_locked"))
+			if(ModeController.USER_INTERFACE_PROPERTIES.contains(propertyName))
 				updateActions(modeController.getController().getMap());
 		}
 

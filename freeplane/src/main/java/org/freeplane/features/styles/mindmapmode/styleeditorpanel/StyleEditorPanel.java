@@ -66,7 +66,7 @@ public class StyleEditorPanel extends JPanel {
 
 		@Override
 		public void propertyChanged(String propertyName, String newValue, String oldValue) {
-			if(propertyName.equals(ModeController.EDITING_LOCKED_PROPERTY))
+			if(propertyName.equals(ModeController.VIEW_MODE_PROPERTY))
 				updatePanel();
 		}
 		
