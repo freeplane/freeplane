@@ -36,10 +36,12 @@ import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -52,6 +54,38 @@ import com.jgoodies.forms.factories.Paddings;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class StyleEditorPanel extends JPanel {
+	private final class PanelEnabler implements IFreeplanePropertyListener, IMapSelectionListener {
+		private final Controller controller;
+		private final ModeController modeController;
+		private boolean canEdit = true;
+
+		private PanelEnabler(Controller controller, ModeController modeController) {
+			this.controller = controller;
+			this.modeController = modeController;
+		}
+
+		@Override
+		public void propertyChanged(String propertyName, String newValue, String oldValue) {
+			if(propertyName.equals(ModeController.EDITING_LOCKED_PROPERTY))
+				updatePanel();
+		}
+		
+		@Override
+		public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
+			if (modeController.equals(Controller.getCurrentModeController())) {
+				updatePanel();
+			}
+		}
+
+		private void updatePanel() {
+			boolean canEditNow = modeController.canEdit(controller.getMap());
+			if(canEdit != canEditNow) {
+				canEdit = canEditNow;
+				setComponentsEnabled(canEdit);
+			}
+		}
+	}
+
 	static final float FONT_SIZE = UITools.getUIFontSize(0.8);
 
 	/**
@@ -222,13 +256,9 @@ public class StyleEditorPanel extends JPanel {
 
 		});
 		
-		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
-			@Override
-			public void propertyChanged(String propertyName, String newValue, String oldValue) {
-				if(propertyName.equals(ModeController.EDITING_LOCKED_PROPERTY))
-					setComponentsEnabled(modeController.canEdit(controller.getMap()));
-			}
-		});
+		PanelEnabler panelEnabler = new PanelEnabler(controller, modeController);
+		controller.getMapViewManager().addMapSelectionListener(panelEnabler);
+		ResourceController.getResourceController().addPropertyChangeListener(panelEnabler);
 	}
 
 }

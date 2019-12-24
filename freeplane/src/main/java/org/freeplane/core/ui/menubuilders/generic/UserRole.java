@@ -1,8 +1,8 @@
 /*
  *  Freeplane - mind map editor
- *  Copyright (C) 2009 Dimitry
+ *  Copyright (C) 2019 dimitry
  *
- *  This file author is Dimitry
+ *  This file author is dimitry
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,23 +17,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.core.ui;
-
-import javax.swing.Action;
-
-import org.freeplane.core.ui.menubuilders.generic.UserRole;
+package org.freeplane.core.ui.menubuilders.generic;
 
 /**
  * @author Dimitry Polivaev
- * 09.07.2009
+ * Dec 21, 2019
  */
-public interface IFreeplaneAction extends Action {
-	public void afterMapChange(UserRole userRole, boolean isMapSelected);
-
-	public boolean isSelected();
-
-	public void setSelected(boolean b);
-
-	public String getIconKey();
-
+public enum UserRole {
+	 BEGINNER_VIEWER(false, false), EXPERT_VIEWER(false, true), 
+	 BEGINNER_EDITOR(true, false), EXPERT_EDITOR(true, true);
+		final boolean isEditor;
+		final boolean isExpert;
+		private UserRole(boolean isEditor, boolean isExpert) {
+			this.isEditor = isEditor;
+			this.isExpert = isExpert;
+		}
 }

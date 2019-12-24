@@ -29,18 +29,13 @@ public class TranslatedElementFactory {
 	public static JButton createButton(String labelKey) {
 		return createButton(null, labelKey);
 	}
-
-	public static JToggleButton createToggleButton(Action action, String labelKey) {
-		final JToggleButton component = action != null ? new JAutoToggleButton(action) : new JAutoToggleButton();
+	public static JToggleButton createToggleButton(String labelKey) {
+		final JToggleButton component = new JAutoToggleButton();
 		final String text = TextUtils.getRawText(labelKey);
 		LabelAndMnemonicSetter.setLabelAndMnemonic(component, text);
 		TranslatedElement.TEXT.setKey(component, labelKey);
 		createTooltip(component, labelKey + ".tooltip");
 		return component;
-	}
-
-	public static JToggleButton createToggleButton(String labelKey) {
-		return createToggleButton(null, labelKey);
 	}
 
 	public static JCheckBox createCheckBox(String labelKey) {

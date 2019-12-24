@@ -26,6 +26,7 @@ import javax.swing.JComponent;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.features.mode.Controller;
 
 @SelectableAction(checkOnPopup = true)
@@ -63,7 +64,7 @@ public class ToggleToolbarAction extends AFreeplaneAction {
 	}
 
 	@Override
-	public void afterMapChange(final Object newMap) {
+	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 	}
 
 	public boolean isVisible() {

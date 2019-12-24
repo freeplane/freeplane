@@ -49,6 +49,7 @@ import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.DelayedRunner;
 import org.freeplane.features.clipboard.ClipboardControllers;
@@ -114,9 +115,12 @@ implements IExtension, NodeChangeAnnouncer{
 		}
 
 		private void setActionsEnabledNow() {
-			if (hasValidSelection())
+			if (hasValidSelection()) {
+				MapModel map = Controller.getCurrentController().getMap();
+				UserRole userRole = Controller.getCurrentModeController().userRole(map);
 				for (AFreeplaneAction action : actions)
-					action.setEnabled();
+					action.setEnabled(userRole);
+			}
 		}
 
 		@Override

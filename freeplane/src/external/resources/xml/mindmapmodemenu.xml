@@ -106,135 +106,139 @@
 			<Entry builder="separator" />
 			<Entry name="QuitAction" accelerator="control Q" builder="removeOnMac" />
 		</Entry>
-		<Entry name="edit" usedBy = "EDITOR" >
-			<Entry name="menu_newNode">
-				<Entry name="NewChildAction" accelerator="INSERT" />
-				<Entry name="NewSiblingAction" accelerator="ENTER" />
-				<Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
-				<Entry name="NewParentNode" accelerator="shift INSERT" />
-				<Entry name="NewFreeNodeAction" usedBy = "EXPERT" />
-				<Entry name="NewSummaryAction" accelerator="alt shift INSERT" usedBy = "EXPERT" />
-			</Entry>
-			<Entry name="CloudAction" accelerator="control shift B" />
-			<Entry name="AddConnectorAction" accelerator="control L" />
-			<Entry name="links">
-				<Entry name="SetLinkByFileChooserAction" accelerator="control shift K" />
-				<Entry name="SetLinkByTextFieldAction" accelerator="control K" />
-				<Entry name="ExtractLinkFromTextAction" usedBy = "EXPERT" />
-				<Entry usedBy = "EXPERT" >
-					<Entry builder="separator"/>
-					<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
-					<Entry name="AddMenuItemLinkAction" />
-					<Entry name="AddExecutionLinkAction" />
-					<Entry builder="separator" />
-					<Entry name="SetLinkAnchorAction" />
-					<Entry name="MakeLinkFromAnchorAction" />
-					<Entry name="MakeLinkToAnchorAction" />
-					<Entry name="ClearLinkAnchorAction" />
+		<Entry name="edit">
+			<Entry usedBy = "EDITOR" >
+				<Entry name="menu_newNode">
+					<Entry name="NewChildAction" accelerator="INSERT" />
+					<Entry name="NewSiblingAction" accelerator="ENTER" />
+					<Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
+					<Entry name="NewParentNode" accelerator="shift INSERT" />
+					<Entry name="NewFreeNodeAction" usedBy = "EXPERT" />
+					<Entry name="NewSummaryAction" accelerator="alt shift INSERT" usedBy = "EXPERT" />
 				</Entry>
-			</Entry>
-			<Entry builder="separator" />
-			<Entry name="DeleteAction" accelerator="DELETE" />
-			<Entry builder="separator" />
-			<Entry name="menu_title">
-				<Entry name="EditAction" accelerator="F2" />
-				<Entry name="SetBooleanPropertyAction.edit_on_double_click" />
-				<Entry name="EditLongAction" accelerator="alt ENTER" />
-				<Entry name="SplitNode" accelerator="alt S" usedBy = "EXPERT" />
-				<Entry builder="splitToWordsActions" usedBy = "EXPERT" />
-				<Entry builder="joinNodesActions" accelerator="control J" usedBy = "EXPERT" />
-				<Entry name="RevisionPluginAction" />
+				<Entry name="CloudAction" accelerator="control shift B" />
+				<Entry name="AddConnectorAction" accelerator="control L" />
+				<Entry name="links">
+					<Entry name="SetLinkByFileChooserAction" accelerator="control shift K" />
+					<Entry name="SetLinkByTextFieldAction" accelerator="control K" />
+					<Entry name="ExtractLinkFromTextAction" usedBy = "EXPERT" />
+					<Entry usedBy = "EXPERT" >
+						<Entry builder="separator"/>
+						<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
+						<Entry name="AddMenuItemLinkAction" />
+						<Entry name="AddExecutionLinkAction" />
+						<Entry builder="separator" />
+						<Entry name="SetLinkAnchorAction" />
+						<Entry name="MakeLinkFromAnchorAction" />
+						<Entry name="MakeLinkToAnchorAction" />
+						<Entry name="ClearLinkAnchorAction" />
+					</Entry>
+				</Entry>
 				<Entry builder="separator" />
-				<Entry name="SetImageByFileChooserAction" accelerator="alt shift K" usedBy = "EXPERT" />
-			</Entry>
-			<Entry name="icons">
-				<Entry name="IconSelectionPlugin" accelerator="control F2" />
-				<Entry name="menu_iconByCategory">
-					<Entry builder="icon_actions" />
-				</Entry>
-				<Entry name="progress">
-					<Entry name="IconProgressIconUpAction" accelerator="alt LESS" />
-					<Entry name="IconProgressIconDownAction" accelerator="alt shift LESS" />
-					<Entry builder="separator" />
-					<Entry name="IconProgressExtended10Action" />
-					<Entry name="IconProgressExtended25Action" />
-					<Entry builder="separator" />
-					<Entry name="IconProgressRemoveAction" />
-				</Entry>
-				<Entry name="HierarchicalIconsAction" />
-				<Entry name="HierarchicalIcons2Action" />
-				<Entry name="menu_remove_icons">
-					<Entry name="RemoveIcon_0_Action" />
-					<Entry name="RemoveIconAction" />
-					<Entry name="RemoveAllIconsAction" />
-				</Entry>
-			</Entry>
-			<Entry name="menu_extensions">
-				<Entry name="EditDetailsAction" accelerator="F3" />
-				<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
-				<Entry name="CopyStyleExtensionsAction" />
-				<Entry name="DeleteDetailsAction" />
+				<Entry name="DeleteAction" accelerator="DELETE" />
 				<Entry builder="separator" />
-				<Entry name="ExternalImageAddAction" />
-				<Entry name="ExternalImageChangeAction" />
-				<Entry name="ExternalImageRemoveAction" />
-				<Entry builder="separator" />
-				<Entry name="EditAttributesAction" accelerator="alt F9" />
-				<Entry name="attributes_AddAttributeAction" />
-				<Entry name="AssignAttributesAction" />
-				<Entry name="CopyAttributes" />
-				<Entry name="PasteAttributes" />
-				<Entry name="AddStyleAttributes" />
-				<Entry name="menu_removeAttribute">
-					<Entry name="attributes_RemoveFirstAttributeAction" />
-					<Entry name="attributes_RemoveLastAttributeAction" />
-					<Entry name="attributes_RemoveAllAttributesAction" />
-				</Entry>
-				<Entry name="ShowAttributeDialogAction" />
-				<Entry builder="separator" />
-				<Entry usedBy = "EXPERT" >
-					<Entry name="SetNodeAliasAction" />
+				<Entry name="menu_title">
+					<Entry name="EditAction" accelerator="F2" />
+					<Entry name="SetBooleanPropertyAction.edit_on_double_click" />
+					<Entry name="EditLongAction" accelerator="alt ENTER" />
+					<Entry name="SplitNode" accelerator="alt S" usedBy = "EXPERT" />
+					<Entry builder="splitToWordsActions" usedBy = "EXPERT" />
+					<Entry builder="joinNodesActions" accelerator="control J" usedBy = "EXPERT" />
+					<Entry name="RevisionPluginAction" />
 					<Entry builder="separator" />
-					<Entry name="LatexInsertLatexAction" plugin="org.freeplane.plugin.latex" />
-					<Entry name="LatexEditLatexAction" plugin="org.freeplane.plugin.latex" />
-					<Entry name="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex" />
-					<Entry builder="separator" />
-					<Entry name="OpenMapsAddLocation" plugin="org.freeplane.plugin.openmaps" />
-					<Entry name="OpenMapsRemoveLocation" plugin="org.freeplane.plugin.openmaps" />
-					<Entry name="OpenMapsViewLocation" plugin="org.freeplane.plugin.openmaps" />
+					<Entry name="SetImageByFileChooserAction" accelerator="alt shift K" usedBy = "EXPERT" />
 				</Entry>
+				<Entry name="icons">
+					<Entry name="IconSelectionPlugin" accelerator="control F2" />
+					<Entry name="menu_iconByCategory">
+						<Entry builder="icon_actions" />
+					</Entry>
+					<Entry name="progress">
+						<Entry name="IconProgressIconUpAction" accelerator="alt LESS" />
+						<Entry name="IconProgressIconDownAction" accelerator="alt shift LESS" />
+						<Entry builder="separator" />
+						<Entry name="IconProgressExtended10Action" />
+						<Entry name="IconProgressExtended25Action" />
+						<Entry builder="separator" />
+						<Entry name="IconProgressRemoveAction" />
+					</Entry>
+					<Entry name="HierarchicalIconsAction" />
+					<Entry name="HierarchicalIcons2Action" />
+					<Entry name="menu_remove_icons">
+						<Entry name="RemoveIcon_0_Action" />
+						<Entry name="RemoveIconAction" />
+						<Entry name="RemoveAllIconsAction" />
+					</Entry>
+				</Entry>
+				<Entry name="menu_extensions">
+					<Entry name="EditDetailsAction" accelerator="F3" />
+					<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
+					<Entry name="CopyStyleExtensionsAction" />
+					<Entry name="DeleteDetailsAction" />
+					<Entry builder="separator" />
+					<Entry name="ExternalImageAddAction" />
+					<Entry name="ExternalImageChangeAction" />
+					<Entry name="ExternalImageRemoveAction" />
+					<Entry builder="separator" />
+					<Entry name="EditAttributesAction" accelerator="alt F9" />
+					<Entry name="attributes_AddAttributeAction" />
+					<Entry name="AssignAttributesAction" />
+					<Entry name="AddStyleAttributes" />
+					<Entry name="menu_removeAttribute">
+						<Entry name="attributes_RemoveFirstAttributeAction" />
+						<Entry name="attributes_RemoveLastAttributeAction" />
+						<Entry name="attributes_RemoveAllAttributesAction" />
+					</Entry>
+					<Entry name="ShowAttributeDialogAction" />
+					<Entry builder="separator" />
+					<Entry usedBy = "EXPERT" >
+						<Entry name="SetNodeAliasAction" />
+						<Entry builder="separator" />
+						<Entry name="LatexInsertLatexAction" plugin="org.freeplane.plugin.latex" />
+						<Entry name="LatexEditLatexAction" plugin="org.freeplane.plugin.latex" />
+						<Entry name="LatexDeleteLatexAction" plugin="org.freeplane.plugin.latex" />
+						<Entry builder="separator" />
+						<Entry name="OpenMapsAddLocation" plugin="org.freeplane.plugin.openmaps" />
+						<Entry name="OpenMapsRemoveLocation" plugin="org.freeplane.plugin.openmaps" />
+						<Entry name="OpenMapsViewLocation" plugin="org.freeplane.plugin.openmaps" />
+					</Entry>
+				</Entry>
+				<Entry name="notes">
+					<Entry name="SelectNoteAction" accelerator="control LESS" />
+					<Entry name="EditNoteInDialogAction" />
+					<Entry name="RemoveNoteAction" />
+				</Entry>
+				<Entry builder="separator" />
+				<Entry name="UndoAction" accelerator="control Z" />
+				<Entry name="RedoAction" accelerator="control Y" />
+				<Entry name="CutAction" accelerator="control X" />
 			</Entry>
-			<Entry name="notes">
-				<Entry name="SelectNoteAction" accelerator="control LESS" />
-				<Entry name="EditNoteInDialogAction" />
-				<Entry name="RemoveNoteAction" />
-			</Entry>
-			<Entry builder="separator" />
-			<Entry name="UndoAction" accelerator="control Z" />
-			<Entry name="RedoAction" accelerator="control Y" />
-			<Entry name="CutAction" accelerator="control X" />
 			<Entry name="menu_copy">
 				<Entry name="CopyAction" accelerator="control C" />
 				<Entry name="CopySingleAction" accelerator="control shift C" />
 				<Entry name="CopyIDAction" />
 				<Entry name="CopyNodeURIAction" />
+				<Entry name="CopyAttributes" />
 			</Entry>
-			<Entry name="PasteAction" accelerator="control V" />
-			<Entry name="SelectedPasteAction" accelerator="control shift V"/>
-			<Entry name="MoveAction" />
-			<Entry name="CloneAction" accelerator="control D" usedBy="EXPERT" />
-			<Entry name="ConvertCloneToIndependentNodeAction" usedBy="EXPERT" />
-			<Entry builder="separator" />
-			<Entry name="menu_moveNode">
-				<Entry name="NodeUpAction" accelerator="control UP" />
-				<Entry name="NodeDownAction" accelerator="control DOWN" />
-				<Entry name="SortNodes" />
-				<Entry name="ChangeNodeLevelLeftsAction" accelerator="control LEFT" />
-				<Entry name="ChangeNodeLevelRightsAction" accelerator="control RIGHT" />
-			</Entry>
-			<Entry name="FreeNodeAction" />
-			<Entry name="ResetNodeLocationAction" accelerator="control R" />
-			<Entry builder="separator" />
+			<Entry usedBy="EDITOR">
+				<Entry name="PasteAction" accelerator="control V" />
+				<Entry name="SelectedPasteAction" accelerator="control shift V"/>
+				<Entry name="PasteAttributes" />
+				<Entry name="MoveAction" />
+				<Entry name="CloneAction" accelerator="control D" usedBy="EXPERT" />
+				<Entry name="ConvertCloneToIndependentNodeAction" usedBy="EXPERT" />
+				<Entry builder="separator" />
+				<Entry name="menu_moveNode">
+					<Entry name="NodeUpAction" accelerator="control UP" />
+					<Entry name="NodeDownAction" accelerator="control DOWN" />
+					<Entry name="SortNodes" />
+					<Entry name="ChangeNodeLevelLeftsAction" accelerator="control LEFT" />
+					<Entry name="ChangeNodeLevelRightsAction" accelerator="control RIGHT" />
+				</Entry>
+				<Entry name="FreeNodeAction" />
+				<Entry name="ResetNodeLocationAction" accelerator="control R" />
+				<Entry builder="separator" />
+			</Entry>	
 			<Entry name="find">
 				<Entry name="FindAction" accelerator="control G" />
 				<Entry name="FindNextAction"  accelerator="control shift G" />
@@ -603,8 +607,8 @@
 		<Entry name="SetNodeAliasAction" usedBy = "EXPERT" />
 		<Entry builder="separator" />
 		<Entry name="CutAction" accelerator="control X" usedBy = "EDITOR" />
-		<Entry name="CopyAction" accelerator="control C" usedBy = "EDITOR" />
-		<Entry name="CopySingleAction" accelerator="control shift C" usedBy = "EDITOR" />
+		<Entry name="CopyAction" accelerator="control C"/>
+		<Entry name="CopySingleAction" accelerator="control shift C" />
 		<Entry name="CopyIDAction" usedBy = "EXPERT" />
 		<Entry name="CopySuggestedReferenceAction" usedBy = "EXPERT" />
 		<Entry name="CopyNodeURIAction" usedBy = "EXPERT" />

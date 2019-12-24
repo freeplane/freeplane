@@ -51,6 +51,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
@@ -847,7 +848,7 @@ public class MMapController extends MapController {
 			controller.getMapViewManager().setMapTitles();
 			final AFreeplaneAction saveAction = controller.getModeController().getAction("SaveAction");
 			if(saveAction != null)
-				saveAction.setEnabled();
+				saveAction.setEnabled(UserRole.BEGINNER_EDITOR);
 		}
 	}
 

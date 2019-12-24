@@ -24,7 +24,30 @@ package org.freeplane.core.ui.menubuilders.generic;
  * Dec 21, 2019
  */
 public enum UserRoleConstraint {
-	EXPERT(false, true), EDITOR(true, false), EXPERT_EDITOR(true, true);
+	NO_CONSTRAINT(false, false) {
+		@Override
+		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
+			return entryConstraint;
+		}
+	},
+	EXPERT(false, true) {
+		@Override
+		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
+			return entryConstraint.editorRequired ? UserRoleConstraint.EXPERT_EDITOR : this;
+		}
+	}, 
+	EDITOR(true, false) {
+		@Override
+		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
+			return entryConstraint.expertRequired ? UserRoleConstraint.EXPERT_EDITOR : this;
+		}
+	}, 
+	EXPERT_EDITOR(true, true) {
+		@Override
+		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
+			return this;
+		}
+	};
 	private final boolean editorRequired;
 	private final boolean expertRequired;
 	private UserRoleConstraint(boolean editorRequired, boolean expertRequired) {
@@ -32,8 +55,11 @@ public enum UserRoleConstraint {
 		this.expertRequired = expertRequired;
 	}
 	
-	public boolean test(boolean isEditor, boolean isExpert) {
-		return (! editorRequired || isEditor) && (! expertRequired || isExpert);
+	public boolean test(UserRole role) {
+		return (! editorRequired || role.isEditor) && (! expertRequired || role.isExpert);
 	}
+
+
+	abstract public UserRoleConstraint and(UserRoleConstraint entryConstraint);
 	
 }

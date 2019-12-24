@@ -39,6 +39,7 @@ import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.features.map.IExtensionCopier;
@@ -261,6 +262,10 @@ public class ModeController extends AController implements FreeplaneActions{
 		return canEdit() && map != null && ! map.isReadOnly() && ! isEditingLocked();
 	}
 
+	public UserRole userRole(MapModel map) {
+		return canEdit(map) ? UserRole.EXPERT_EDITOR : UserRole.EXPERT_VIEWER;
+	}
+	
 	public boolean isEditingLocked() {
 		return ResourceController.getResourceController().getBooleanProperty(EDITING_LOCKED_PROPERTY);
 	}

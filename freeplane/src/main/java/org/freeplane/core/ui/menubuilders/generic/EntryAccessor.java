@@ -1,5 +1,6 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
+import java.awt.Component;
 import java.net.URL;
 
 import javax.swing.Icon;
@@ -11,13 +12,12 @@ import org.freeplane.core.util.TextUtils;
 
 public class EntryAccessor {
 
-	public static final String COMPONENT = "component";
-	public static final Class<AFreeplaneAction> ACTION = AFreeplaneAction.class;
-	public static final String TEXT = "text";
-	public static final String TEXT_KEY = "textKey";
+	private static final String COMPONENT = "component";
+	private static final String TEXT = "text";
+	private static final String TEXT_KEY = "textKey";
 	public static final Class<Icon> ICON = Icon.class;
 	public static final String ACCELERATOR = "accelerator";
-	public final ResourceAccessor resourceAccessor;
+	private final ResourceAccessor resourceAccessor;
 	public static final String MENU_ELEMENT_SEPARATOR = " -> ";
 
 	public EntryAccessor(ResourceAccessor resourceAccessor) {
@@ -107,24 +107,24 @@ public class EntryAccessor {
 		return null;
 	}
 
-	public Object getComponent(final Entry entry) {
-		return entry.getAttribute(COMPONENT);
+	public Component getComponent(final Entry entry) {
+		return (Component) entry.getAttribute(COMPONENT);
 	}
 
 	public Object removeComponent(final Entry entry) {
 		return entry.removeAttribute(COMPONENT);
 	}
 
-	public void setComponent(final Entry entry, Object component) {
+	public void setComponent(final Entry entry, Component component) {
 		entry.setAttribute(COMPONENT, component);
 	}
 
 	public AFreeplaneAction getAction(final Entry entry) {
-		return entry.getAttribute(ACTION);
+		return entry.getAction();
 	}
 
 	public void setAction(final Entry entry, AFreeplaneAction action) {
-		entry.setAttribute(ACTION, action);
+		entry.setAction(action);
 	}
 
 	public Object getAncestorComponent(final Entry entry) {
