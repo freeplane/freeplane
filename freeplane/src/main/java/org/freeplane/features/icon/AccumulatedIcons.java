@@ -33,15 +33,15 @@ import org.freeplane.features.mode.Controller;
  * Dec 10, 2011
  */
 class AccumulatedIcons  implements IExtension{
-	private final TreeSet<UIIcon> childIcons ;
-	private final Collection<? extends UIIcon> ownIcons;
+	private final TreeSet<NamedIcon> childIcons ;
+	private final Collection<? extends NamedIcon> ownIcons;
 
-	AccumulatedIcons(Collection<? extends UIIcon> ownIcons) {
+	AccumulatedIcons(Collection<? extends NamedIcon> ownIcons) {
 		this.ownIcons = ownIcons;
-		this.childIcons = new TreeSet<UIIcon>();
+		this.childIcons = new TreeSet<NamedIcon>();
     }
 
-	public Collection<UIIcon> getAccumulatedIcons() {
+	public Collection<NamedIcon> getAccumulatedIcons() {
 	    return childIcons;
     }
 
@@ -58,7 +58,7 @@ class AccumulatedIcons  implements IExtension{
 	}
 
 	static public boolean setStyleCheckForChange(final NodeModel node, Mode mode) {
-		final Collection<MindIcon> ownIcons = IconController.getController().getIcons(node);
+		final Collection<NamedIcon> ownIcons = IconController.getController().getIcons(node);
 		final AccumulatedIcons iconSet = new AccumulatedIcons(ownIcons);
 		boolean first = true;
 		for (final NodeModel child : node.getChildren()) {

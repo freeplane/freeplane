@@ -61,6 +61,7 @@ import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
@@ -394,8 +395,8 @@ public class MainView extends ZoomableLabel {
 			iconImages.addIcon(icon, model);
 		}
 		final ModeController modeController = getNodeView().getMap().getModeController();
-		final Collection<MindIcon> icons = IconController.getController(modeController).getIcons(model);
-		for (final MindIcon myIcon : icons) {
+		final Collection<NamedIcon> icons = IconController.getController(modeController).getIcons(model);
+		for (final NamedIcon myIcon : icons) {
 			iconImages.addIcon(myIcon, model);
 		}
 		addOwnIcons(iconImages, model);
@@ -667,7 +668,7 @@ public class MainView extends ZoomableLabel {
 		return getNodeView().getZoomed(DRAG_OVAL_WIDTH);
 	}
 
-	public UIIcon getUIIconAt(Point coordinate){
+	public NamedIcon getUIIconAt(Point coordinate){
 		Icon icon = getIcon();
 		if(icon instanceof MultipleImage){
 			Rectangle iconRectangle = getIconRectangle();

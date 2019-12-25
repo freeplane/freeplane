@@ -30,28 +30,28 @@ import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.features.map.NodeModel;
 
 public class UIIconSet extends UIIcon {
-	final Collection<UIIcon> uiIcons;
+	final Collection<NamedIcon> uiIcons;
 	final float zoom;
 
-	public Collection<UIIcon> getIcons() {
+	public Collection<NamedIcon> getIcons() {
 		return uiIcons;
 	}
 
-	List<UIIcon> imageIcons;
+	List<NamedIcon> imageIcons;
 	private MultipleImage compoundIcon;
 
-	public UIIconSet(final Collection<UIIcon> uiIcons, final float zoom) {
+	public UIIconSet(final Collection<NamedIcon> uiIcons, final float zoom) {
 		super("", "");
 		this.zoom = zoom;
 		this.uiIcons = Collections.unmodifiableCollection(uiIcons);
-		imageIcons = new LinkedList<UIIcon>();
-		for (final UIIcon uiIcon : uiIcons) {
-			final UIIcon icon;
+		imageIcons = new LinkedList<NamedIcon>();
+		for (final NamedIcon uiIcon : uiIcons) {
+			final NamedIcon icon;
 			if (zoom == 1f) {
 				icon = uiIcon;
 			}
 			else {
-				icon = new ZoomedIcon(uiIcon, zoom);
+				icon = uiIcon.zoom(zoom);
 			}
 			imageIcons.add(icon);
 		}
@@ -66,7 +66,7 @@ public class UIIconSet extends UIIcon {
 	public Icon getIcon(final NodeModel node) {
 		if (compoundIcon == null) {
 			compoundIcon = new MultipleImage();
-			for (final UIIcon icon : imageIcons) {
+			for (final NamedIcon icon : imageIcons) {
 				compoundIcon.addIcon(icon, node);
 			}
 		}
@@ -74,7 +74,7 @@ public class UIIconSet extends UIIcon {
 	}
 
 	@Override
-	public int compareTo(final UIIcon uiIcon) {
+	public int compareTo(final NamedIcon uiIcon) {
 		return 1;
 	}
 

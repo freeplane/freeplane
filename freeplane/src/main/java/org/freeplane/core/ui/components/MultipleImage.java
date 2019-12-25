@@ -31,23 +31,24 @@ import javax.swing.Icon;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.map.NodeModel;
 
 public class MultipleImage implements Icon {
-	final private List<Icon> mIcons = new ArrayList<Icon>();
-	final private List<UIIcon> mUIIcons = new ArrayList<UIIcon>();
+	final private List<Icon> mIcons = new ArrayList<>();
+	final private List<NamedIcon> mUIIcons = new ArrayList<>();
 
 	public MultipleImage() {
 	}
 
-	public void addIcon(final UIIcon uiIcon) {
+	public void addIcon(final NamedIcon uiIcon) {
 		mIcons.add(uiIcon.getIcon());
 		mUIIcons.add(uiIcon);
 	}
 
-	public void addIcon(final UIIcon uiIcon, final NodeModel node) {
+	public void addIcon(final NamedIcon uiIcon, final NodeModel node) {
 		mIcons.add(uiIcon.getIcon(node));
 		mUIIcons.add(uiIcon);
 	}
@@ -91,7 +92,7 @@ public class MultipleImage implements Icon {
 		}
 	}
 	
-	public UIIcon getUIIconAt(Point coordinate){
+	public NamedIcon getUIIconAt(Point coordinate){
 		if(coordinate.x < 0 || coordinate.y < 0)
 			return null;
 		int iconX = 0;

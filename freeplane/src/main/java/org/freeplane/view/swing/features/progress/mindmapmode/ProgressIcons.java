@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.map.NodeModel;
 
@@ -33,7 +34,7 @@ public class ProgressIcons {
 		final ProgressUtilities progUtil = new ProgressUtilities();
 		final MIconController iconController = (MIconController) IconController.getController();
 		String activeIcon = null;
-		final List<MindIcon> icons = node.getIcons();
+		final List<NamedIcon> icons = node.getIcons();
 		//get active progress icon and remove it
 		if (progUtil.hasProgressIcons(node)) {
 			for (int i = 0; i < icons.size(); i++) {
@@ -185,7 +186,7 @@ public class ProgressIcons {
 		if (progUtil.hasProgressIcons(node) || progUtil.hasOKIcon(node)) {
 			final MIconController iconController = (MIconController) IconController.getController();
 			final String[] progressIconNames = new String[] { "0%", "25%", "50%", "75%", "100%", "button_ok" };
-			final List<MindIcon> icons = node.getIcons();
+			final List<NamedIcon> icons = node.getIcons();
 			//	remove progress icons
 			for (int i = 0; i < icons.size(); i++) {
 				String iconName = icons.get(i).getName();

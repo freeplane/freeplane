@@ -76,6 +76,7 @@ import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
@@ -373,7 +374,7 @@ public class MTextController extends TextController {
 		String joinedContent = "";
 		final Controller controller = Controller.getCurrentController();
 		boolean isHtml = false;
-		final LinkedHashSet<MindIcon> icons = new LinkedHashSet<MindIcon>();
+		final LinkedHashSet<NamedIcon> icons = new LinkedHashSet<>();
 		for (final NodeModel node : selectedNodes) {
 			final String nodeContent = node.getText();
 			icons.addAll(node.getIcons());
@@ -391,7 +392,7 @@ public class MTextController extends TextController {
 		setNodeText(selectedNode, joinedContent);
 		final MIconController iconController = (MIconController) IconController.getController();
 		iconController.removeAllIcons(selectedNode);
-		for (final MindIcon icon : icons) {
+		for (final NamedIcon icon : icons) {
 			iconController.addIcon(selectedNode, icon);
 		}
 	}

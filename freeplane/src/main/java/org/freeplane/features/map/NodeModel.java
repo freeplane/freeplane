@@ -37,6 +37,7 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.ui.INodeViewVisitor;
 
 /**
@@ -137,14 +138,14 @@ public class NodeModel{
 		return getExtensionContainer().putExtension(clazz, extension);
 	}
 
-	public void addIcon(final MindIcon icon) {
+	public void addIcon(final NamedIcon icon) {
 		getIconModel().addIcon(icon);
 		if (map != null) {
 			map.getIconRegistry().addIcon(icon);
 		}
 	}
 
-	public void addIcon(final MindIcon icon, final int position) {
+	public void addIcon(final NamedIcon icon, final int position) {
 		getIconModel().addIcon(icon, position);
 		getMap().getIconRegistry().addIcon(icon);
 	}
@@ -264,11 +265,11 @@ public class NodeModel{
 		return sharedData.getHistoryInformation();
 	}
 
-	public MindIcon getIcon(final int position) {
+	public NamedIcon getIcon(final int position) {
 		return getIconModel().getIcon(position);
 	}
 
-	public List<MindIcon> getIcons() {
+	public List<NamedIcon> getIcons() {
 		return getIconModel().getIcons();
 	}
 

@@ -36,6 +36,8 @@ import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
+import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -381,15 +383,18 @@ class MindMapHTMLWriter {
 
 	private void writeIcons(final NodeModel model) throws IOException {
 		final IconController iconController = IconController.getController();
-		final Collection<MindIcon> icons = iconController.getIcons(model);
-		for (MindIcon icon : icons) {
-			final String iconFileName = icon.getSource();
-			fileout.write("<img src=\"icons/" + iconFileName + "\" alt=\"" + icon.getTranslatedDescription() + "\"");
-			if (iconFileName.endsWith(".svg")) {
-				final Quantity<LengthUnits> iconSize = iconController.getIconSize(model);
-				fileout.write(" height = \"" + iconSize.toBaseUnitsRounded() + "\"");
+		final Collection<NamedIcon> icons = iconController.getIcons(model);
+		for (NamedIcon icon : icons) {
+			if(icon instanceof MindIcon) {
+				MindIcon mindIcon = (MindIcon) icon;
+				final String iconFile = mindIcon.getSource();
+				fileout.write("<img src=\"icons/" + iconFile + "\" alt=\"" + mindIcon.getTranslatedDescription() + "\"");
+				if (iconFile.endsWith(".svg")) {
+					final Quantity<LengthUnits> iconSize = iconController.getIconSize(model);
+					fileout.write(" height = \"" + iconSize.toBaseUnitsRounded() + "\"");
+				}
+				fileout.write(">");
 			}
-			fileout.write(">");
 		}
 	}
 

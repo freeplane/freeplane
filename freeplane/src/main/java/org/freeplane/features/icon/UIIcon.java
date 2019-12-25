@@ -38,7 +38,7 @@ import org.freeplane.features.map.NodeModel;
  * @author Tamas Eppel
  *
  */
-public class UIIcon implements IIconInformation, Comparable<UIIcon> {
+public class UIIcon implements IIconInformation, NamedIcon {
 	private static final String DEFAULT_IMAGE_PATH = "/images";
 	protected static final String SEPARATOR = "/";
 	protected static final String THEME_FOLDER_KEY = "icon.theme.folder";
@@ -89,6 +89,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		return TextUtils.getText(descriptionTranslationKey, "");
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -98,6 +99,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		return IconFactory.getInstance().getIcon(this);
 	}
 
+	@Override
 	public Icon getIcon(final NodeModel node) {
 		final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(node);
 		return IconFactory.getInstance().getIcon(this, iconHeight);
@@ -191,12 +193,17 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 	}
 
 	@Override
-	public int compareTo(final UIIcon uiIcon) {
+	public int compareTo(final NamedIcon uiIcon) {
 		return this.getPath().compareTo(uiIcon.getPath());
 	}
 
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	@Override
+	public NamedIcon zoom(float zoom) {
+		 return new ZoomedIcon(this, zoom);
 	}
 }

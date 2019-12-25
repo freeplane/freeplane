@@ -74,6 +74,7 @@ import org.freeplane.features.icon.IconExistsCondition;
 import org.freeplane.features.icon.IconGroup;
 import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.INodeChangeListener;
@@ -178,9 +179,9 @@ public class MIconController extends IconController {
 		}
 
 		public void copy(final NodeModel from, final NodeModel to) {
-			final List<MindIcon> sourceIcons = from.getIcons();
-			final List<MindIcon> targetIcons = to.getIcons();
-			for (final MindIcon icon : sourceIcons) {
+			final List<NamedIcon> sourceIcons = from.getIcons();
+			final List<NamedIcon> targetIcons = to.getIcons();
+			for (final NamedIcon icon : sourceIcons) {
 				if (targetIcons.contains(icon)) {
 					continue;
 				}
@@ -203,11 +204,11 @@ public class MIconController extends IconController {
 			if (!key.equals(Keys.ICONS)) {
 				return;
 			}
-			final List<MindIcon> targetIcons = from.getIcons();
-			final List<MindIcon> whichIcons = which.getIcons();
-			final Iterator<MindIcon> targetIconIterator = targetIcons.iterator();
+			final List<NamedIcon> targetIcons = from.getIcons();
+			final List<NamedIcon> whichIcons = which.getIcons();
+			final Iterator<NamedIcon> targetIconIterator = targetIcons.iterator();
 			while (targetIconIterator.hasNext()) {
-				MindIcon icon = targetIconIterator.next();
+				NamedIcon icon = targetIconIterator.next();
 				if (!whichIcons.contains(icon)) {
 					continue;
 				}
@@ -257,7 +258,7 @@ public class MIconController extends IconController {
 	}
 
 
-	public void addIcon(final NodeModel node, final MindIcon icon) {
+	public void addIcon(final NodeModel node, final NamedIcon icon) {
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
@@ -480,7 +481,7 @@ public class MIconController extends IconController {
 			return size;
 		}
 		final IActor actor = new IActor() {
-			private final MindIcon icon = node.getIcon(index);
+			private final NamedIcon icon = node.getIcon(index);
 
 			@Override
 			public void act() {

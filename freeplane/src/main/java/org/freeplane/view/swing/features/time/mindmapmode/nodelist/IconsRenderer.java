@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
 
 /**
  * @author Dimitry Polivaev
@@ -43,7 +44,7 @@ class IconsRenderer extends DefaultTableCellRenderer {
 		if (value instanceof IconsHolder) {
 			final IconsHolder iconsHolder = (IconsHolder) value;
 			final MultipleImage iconImages = new MultipleImage();
-			for (final MindIcon icon : iconsHolder.getIcons()) {
+			for (final NamedIcon icon : iconsHolder.getIcons()) {
 				iconImages.addIcon(icon);
 			}
 			if (iconImages.getImageCount() > 0) {

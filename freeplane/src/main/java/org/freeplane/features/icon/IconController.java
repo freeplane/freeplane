@@ -50,7 +50,7 @@ public class IconController implements IExtension {
 
 	private static final Quantity<LengthUnits> DEFAULT_ICON_SIZE = new Quantity<LengthUnits>(12, LengthUnits.pt);
 
-	final private CombinedPropertyChain<Collection<MindIcon>, NodeModel> iconHandlers;
+	final private CombinedPropertyChain<Collection<NamedIcon>, NodeModel> iconHandlers;
 	public static IconController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		return getController(modeController);
@@ -87,15 +87,15 @@ public class IconController implements IExtension {
 	public IconController(final ModeController modeController) {
 		super();
 		stateIconProviders = new LinkedList<IStateIconProvider>();
-		iconHandlers = new CombinedPropertyChain<Collection<MindIcon>, NodeModel>(false);
+		iconHandlers = new CombinedPropertyChain<Collection<NamedIcon>, NodeModel>(false);
 //		this.modeController = modeController;
 		final MapController mapController = modeController.getMapController();
 		final ReadManager readManager = mapController.getReadManager();
 		final WriteManager writeManager = mapController.getWriteManager();
 		final IconBuilder textBuilder = new IconBuilder(this, IconStoreFactory.ICON_STORE);
 		textBuilder.registerBy(readManager, writeManager);
-		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<Collection<MindIcon>, NodeModel>() {
-			public Collection<MindIcon> getProperty(final NodeModel node, final Collection<MindIcon> currentValue) {
+		addIconGetter(IPropertyHandler.STYLE, new IPropertyHandler<Collection<NamedIcon>, NodeModel>() {
+			public Collection<NamedIcon> getProperty(final NodeModel node, final Collection<NamedIcon> currentValue) {
 				final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
 				final Collection<IStyle> styleKeys = LogicalStyleController.getController(modeController).getStyles(node);
 				for(IStyle styleKey : styleKeys){
@@ -103,7 +103,7 @@ public class IconController implements IExtension {
 					if (styleNode == null || node == styleNode && !(styleKey instanceof StyleNode)) {
 						continue;
 					}
-					final List<MindIcon> styleIcons;
+					final List<NamedIcon> styleIcons;
 					styleIcons = styleNode.getIcons();
 					currentValue.addAll(styleIcons);
 				}
@@ -113,21 +113,21 @@ public class IconController implements IExtension {
 		iconMouseListeners = new LinkedList<IconMouseListener>();
 	}
 
-	public IPropertyHandler<Collection<MindIcon>, NodeModel> addIconGetter(
+	public IPropertyHandler<Collection<NamedIcon>, NodeModel> addIconGetter(
 	                                                                 final Integer key,
-	                                                                 final IPropertyHandler<Collection<MindIcon>, NodeModel> getter) {
+	                                                                 final IPropertyHandler<Collection<NamedIcon>, NodeModel> getter) {
 		return iconHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyHandler<Collection<MindIcon>, NodeModel> removeIconGetter(
+	public IPropertyHandler<Collection<NamedIcon>, NodeModel> removeIconGetter(
 	                                                                    final Integer key,
-	                                                                    final IPropertyHandler<Collection<MindIcon>, NodeModel> getter) {
+	                                                                    final IPropertyHandler<Collection<NamedIcon>, NodeModel> getter) {
 		return iconHandlers.addGetter(key, getter);
 	}
 
 
-	public Collection<MindIcon> getIcons(final NodeModel node) {
-		final Collection<MindIcon> icons = iconHandlers.getProperty(node, new LinkedList<MindIcon>());
+	public Collection<NamedIcon> getIcons(final NodeModel node) {
+		final Collection<NamedIcon> icons = iconHandlers.getProperty(node, new LinkedList<NamedIcon>());
 		return icons;
 	}
 	
@@ -145,7 +145,7 @@ public class IconController implements IExtension {
 		}
 		return icons;
 	}
-	public boolean onIconClicked(NodeModel node, UIIcon icon) {
+	public boolean onIconClicked(NodeModel node, NamedIcon icon) {
 		boolean processed = false;
 		for (IconMouseListener listener : iconMouseListeners)
 		{

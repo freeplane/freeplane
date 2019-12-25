@@ -38,9 +38,9 @@ public class IconContainedCondition extends ASelectableCondition {
 	static final String NAME = "icon_contained_condition";
 
 	static private int iconFirstIndex(final NodeModel node, final String iconName) {
-		final Collection<MindIcon> icons = IconController.getController().getIcons(node);
+		final Collection<NamedIcon> icons = IconController.getController().getIcons(node);
 		int i = 0;
-		for (MindIcon nextIcon : icons) {
+		for (NamedIcon nextIcon : icons) {
 			if (iconName.equals(nextIcon.getName())) {
 				return i;
 			}
