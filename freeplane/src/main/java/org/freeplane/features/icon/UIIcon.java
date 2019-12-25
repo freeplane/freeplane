@@ -23,7 +23,6 @@ import java.net.URL;
 import java.util.regex.Pattern;
 
 import javax.swing.Icon;
-import javax.swing.KeyStroke;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LengthUnits;
@@ -38,7 +37,7 @@ import org.freeplane.features.map.NodeModel;
  * @author Tamas Eppel
  *
  */
-public class UIIcon implements IIconInformation, NamedIcon {
+public class UIIcon implements IconDescription, NamedIcon {
 	private static final String DEFAULT_IMAGE_PATH = "/images";
 	protected static final String SEPARATOR = "/";
 	protected static final String THEME_FOLDER_KEY = "icon.theme.folder";
@@ -103,11 +102,6 @@ public class UIIcon implements IIconInformation, NamedIcon {
 	public Icon getIcon(final NodeModel node) {
 		final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(node);
 		return IconFactory.getInstance().getIcon(this, iconHeight);
-	}
-
-	@Override
-	public KeyStroke getKeyStroke() {
-		return null;
 	}
 
 	public String getImagePath() {

@@ -44,7 +44,7 @@ import javax.swing.border.BevelBorder;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.icon.IIconInformation;
+import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.factory.IconFactory;
 
 public class IconSelectionPopupDialog extends JDialog implements KeyListener, MouseListener {
@@ -83,7 +83,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	final private JLabel descriptionLabel;
 	final private JLabel[] iconLabels;
 	final private JPanel iconPanel = new JPanel();
-	final private List<? extends IIconInformation> icons;
+	final private List<? extends IconDescription> icons;
 	private int mModifiers;
 	final private int numOfIcons;
 	private int result;
@@ -91,7 +91,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	final private int xDimension;
 	private int yDimension;
 
-	public IconSelectionPopupDialog(final Frame frame, final List<? extends IIconInformation> icons) {
+	public IconSelectionPopupDialog(final Frame frame, final List<? extends IconDescription> icons) {
 		super(frame, TextUtils.getText("select_icon"));
 		getContentPane().setLayout(new BorderLayout());
 		this.icons = icons;
@@ -116,7 +116,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		iconPanel.setLayout(gridlayout);
 		iconLabels = new JLabel[numOfIcons];
 		for (int i = 0; i < numOfIcons; ++i) {
-			final IIconInformation icon = icons.get(i);
+			final IconDescription icon = icons.get(i);
 			iconPanel.add(iconLabels[i] = new JLabel(icon.getActionIcon()));
 			iconLabels[i].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 			iconLabels[i].addMouseListener(this);
@@ -184,10 +184,15 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		}
 	}
 
+	public KeyStroke getKeyStroke(String keystrokeResourceName) {
+		final String keyStrokeDescription = ResourceController.getResourceController().getProperty(keystrokeResourceName);
+		return UITools.getKeyStroke(keyStrokeDescription);
+	}
+
 	private int findIndexByKeyEvent(final KeyEvent keyEvent) {
 		for (int i = 0; i < icons.size(); i++) {
-			final IIconInformation info = icons.get(i);
-			final KeyStroke iconKeyStroke = info.getKeyStroke();
+			final IconDescription info = icons.get(i);
+			final KeyStroke iconKeyStroke = getKeyStroke(info.getShortcutKey());
 			if (iconKeyStroke != null
 			        && (keyEvent.getKeyCode() == iconKeyStroke.getKeyCode()
 			                && keyEvent.getKeyCode() != 0
@@ -341,7 +346,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		setSelectedPosition(position);
 		highlight(position);
 		final int index = calculateIndex(position);
-		final IIconInformation iconInformation = icons.get(index);
+		final IconDescription iconInformation = icons.get(index);
 		final String keyStroke = ResourceController.getResourceController().getProperty(iconInformation.getShortcutKey());
 		if (keyStroke != null) {
 			descriptionLabel.setText(iconInformation.getTranslatedDescription() + ", " + keyStroke);

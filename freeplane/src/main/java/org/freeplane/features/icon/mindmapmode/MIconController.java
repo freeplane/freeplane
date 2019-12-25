@@ -67,7 +67,7 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.filter.condition.ICondition;
-import org.freeplane.features.icon.IIconInformation;
+import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.IconContainedCondition;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconExistsCondition;
@@ -350,7 +350,7 @@ public class MIconController extends IconController {
 		actions.add(modeController.getAction("RemoveAllIconsAction"));
 
 		for (final AFreeplaneAction iconAction : actions) {
-			final IIconInformation info = (IIconInformation) iconAction;
+			final IconDescription info = (IconDescription) iconAction;
 			optionPanelBuilder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {
 				@Override
 				public IPropertyControl createControl() {

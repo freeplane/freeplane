@@ -20,9 +20,8 @@
 package org.freeplane.features.icon;
 
 import javax.swing.Icon;
-import javax.swing.KeyStroke;
 
-public interface IIconInformation {	
+public interface IconDescription {	
 	String getDescriptionTranslationKey();
 	
 	String getTranslatedDescription();
@@ -32,8 +31,6 @@ public interface IIconInformation {
 	default Icon getActionIcon() {
 		return getIcon();
 	}
-
-	KeyStroke getKeyStroke();
 
 	String getShortcutKey();
 }

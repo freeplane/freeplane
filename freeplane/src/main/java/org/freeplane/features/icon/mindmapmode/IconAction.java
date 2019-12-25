@@ -23,21 +23,18 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.KeyStroke;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRoleConstraint;
-import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.ZoomedIcon;
-import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.factory.IconFactory;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
 
-public class IconAction extends AMultipleNodeAction implements IIconInformation {
+public class IconAction extends AMultipleNodeAction implements IconDescription {
 
 	private static final long serialVersionUID = 1L;
 	final private MindIcon mindIcon;
@@ -80,13 +77,6 @@ public class IconAction extends AMultipleNodeAction implements IIconInformation 
 		return (Icon) getValue(Action.SMALL_ICON);
 	}
 	
-
-	public KeyStroke getKeyStroke() {
-		final String keystrokeResourceName = mindIcon.getShortcutKey();
-		final String keyStrokeDescription = ResourceController.getResourceController().getProperty(keystrokeResourceName);
-		return UITools.getKeyStroke(keyStrokeDescription);
-	}
-
 	public MindIcon getMindIcon() {
 		return replaceByUserDefinedIcon();
 	}
