@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.icon;
 
+import java.util.Comparator;
+
 import javax.swing.Icon;
 
 import org.freeplane.features.map.NodeModel;
@@ -28,10 +30,18 @@ import org.freeplane.features.map.NodeModel;
  * Dec 25, 2019
  */
 public interface NamedIcon extends Comparable<NamedIcon> {
+	static Comparator<NamedIcon> COMPARATOR = //
+			Comparator.comparing((NamedIcon x) -> x.getClass().getName())//
+			.thenComparing(NamedIcon::getPath);
+
 	String getName();
 	Icon getIcon();
 	Icon getIcon(final NodeModel node);
 	String getPath();
 	NamedIcon zoom(float zoom);
+
+	default int compareTo(final NamedIcon uiIcon) {
+		return COMPARATOR.compare(this, uiIcon);
+	}
 	
 }

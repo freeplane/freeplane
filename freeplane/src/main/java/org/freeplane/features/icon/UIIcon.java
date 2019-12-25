@@ -193,11 +193,6 @@ public class UIIcon implements IIconInformation, NamedIcon {
 	}
 
 	@Override
-	public int compareTo(final NamedIcon uiIcon) {
-		return this.getPath().compareTo(uiIcon.getPath());
-	}
-
-	@Override
 	public String toString() {
 		return name;
 	}
