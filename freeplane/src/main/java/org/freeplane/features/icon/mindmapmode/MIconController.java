@@ -354,7 +354,7 @@ public class MIconController extends IconController {
 				@Override
 				public IPropertyControl createControl() {
 					final KeyProperty keyProperty = new KeyProperty(info.getShortcutKey(), info.getTranslatedDescription());
-					keyProperty.setIcon(info.getIcon());
+					keyProperty.setIcon(info.getActionIcon());
 					keyProperty.disableModifiers();
 					return keyProperty;
 				}

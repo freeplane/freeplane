@@ -32,11 +32,12 @@ import org.freeplane.core.ui.menubuilders.generic.UserRoleConstraint;
 import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.ZoomedIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.map.NodeModel;
 
-class IconAction extends AMultipleNodeAction implements IIconInformation {
+public class IconAction extends AMultipleNodeAction implements IIconInformation {
 
 	private static final long serialVersionUID = 1L;
 	final private MindIcon mindIcon;
@@ -44,7 +45,7 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 	public IconAction( final MindIcon _icon) {
 		super("IconAction." + _icon.getName(), _icon.getTranslatedDescription(), null);
 		mindIcon = _icon;
-		setIcon(getIcon());
+		setIcon(ZoomedIcon.withHeigth(_icon, IconFactory.DEFAULT_UI_ICON_HEIGHT.toBaseUnitsRounded()));
 		putValue(Action.SHORT_DESCRIPTION, getTranslatedDescription());
 		addConstraint(UserRoleConstraint.EDITOR);
 	}
@@ -74,6 +75,11 @@ class IconAction extends AMultipleNodeAction implements IIconInformation {
 	public Icon getIcon() {
 		return IconFactory.getInstance().getIcon(replaceByUserDefinedIcon());
 	}
+	
+	public Icon getActionIcon() {
+		return (Icon) getValue(Action.SMALL_ICON);
+	}
+	
 
 	public KeyStroke getKeyStroke() {
 		final String keystrokeResourceName = mindIcon.getShortcutKey();

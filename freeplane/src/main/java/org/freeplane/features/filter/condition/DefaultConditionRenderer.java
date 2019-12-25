@@ -74,7 +74,7 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 			JLabel label = new JLabel();
 			Font font = label.getFont();
 			final int fontHeight = label.getFontMetrics(font).getHeight();
-			label.setIcon((ZoomedIcon.withHeigth((UIIcon) value, fontHeight)));
+			label.setIcon(ZoomedIcon.withHeigth((UIIcon) value, fontHeight));
 			label.setHorizontalAlignment(SwingConstants.CENTER);
 			component = label;
 		}
