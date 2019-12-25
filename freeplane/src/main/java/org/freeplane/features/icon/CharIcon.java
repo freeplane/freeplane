@@ -22,8 +22,6 @@ package org.freeplane.features.icon;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
@@ -36,20 +34,23 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev
  * Dec 25, 2019
  */
-public class TextIcon implements NamedIcon{
+public class CharIcon implements NamedIcon{
 	
     private static final FontRenderContext FONT_RENDER_CONTEXT = new FontRenderContext(new AffineTransform(),
 	  true, true);
 
-	private final String text;
-	private final Font font;
 	private final Icon icon;
 
-	public TextIcon(String text, Font font) {
+	private final int codepoint;
+
+	private final String fontFamily;
+
+	public CharIcon(int codepoint, Font font) {
 		super();
-		this.text = text;
-		this.font = font;
-		Rectangle2D stringBounds = font.getStringBounds(text, 0, text.length(), FONT_RENDER_CONTEXT);
+		this.codepoint = codepoint;
+		fontFamily = font.getFamily();
+		char[] chars = Character.toChars(codepoint);
+		Rectangle2D stringBounds = font.getStringBounds(chars, 0, chars.length, FONT_RENDER_CONTEXT);
 		int width = (int) Math.ceil(stringBounds.getWidth()); 
 		int heigth = (int) Math.ceil(stringBounds.getHeight()); 
 		icon = new Icon() {
@@ -57,7 +58,7 @@ public class TextIcon implements NamedIcon{
 			public void paintIcon(Component c, Graphics g, int x, int y) {
 				Font oldFont = g.getFont();
 				g.setFont(font);
-				g.drawString(text, 0, getIconHeight());
+				g.drawChars(chars, 0, chars.length, 0, getIconHeight());
 				g.setFont(oldFont);
 			}
 			
@@ -75,7 +76,7 @@ public class TextIcon implements NamedIcon{
 
 	@Override
 	public String getName() {
-		return "text-" + text;
+		return "unicode-" + codepoint;
 	}
 
 	@Override
