@@ -13,6 +13,10 @@ public class ActionStatusUpdater implements EntryPopupListener {
 	public void childEntriesWillBecomeVisible(final Entry submenu) {
 		MapModel map = Controller.getCurrentController().getMap();
 		UserRole userRole = Controller.getCurrentModeController().userRole(map);
+		childEntriesWillBecomeVisible(submenu, userRole);
+	}
+
+	void childEntriesWillBecomeVisible(final Entry submenu, UserRole userRole) {
 		for (Entry target : submenu.children()) {
 			final AFreeplaneAction action = new EntryAccessor().getAction(target);
 			if (action != null) {
