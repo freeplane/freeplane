@@ -45,6 +45,7 @@ import javax.swing.border.BevelBorder;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IIconInformation;
+import org.freeplane.features.icon.factory.IconFactory;
 
 public class IconSelectionPopupDialog extends JDialog implements KeyListener, MouseListener {
 	static class Position {
@@ -116,15 +117,15 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		iconLabels = new JLabel[numOfIcons];
 		for (int i = 0; i < numOfIcons; ++i) {
 			final IIconInformation icon = icons.get(i);
-			iconPanel.add(iconLabels[i] = new JLabel(icon.getIcon()));
+			iconPanel.add(iconLabels[i] = new JLabel(icon.getActionIcon()));
 			iconLabels[i].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 			iconLabels[i].addMouseListener(this);
 		}
-		final int perIconSize = 27;
-		iconPanel.setPreferredSize(new Dimension(xDimension * perIconSize, yDimension * perIconSize));
-		iconPanel.setMinimumSize(new Dimension(xDimension * perIconSize, yDimension * perIconSize));
-		iconPanel.setMaximumSize(new Dimension(xDimension * perIconSize, yDimension * perIconSize));
-		iconPanel.setSize(new Dimension(xDimension * perIconSize, yDimension * perIconSize));
+		final int singleIconSize = (int) ((IconFactory.DEFAULT_UI_ICON_HEIGHT.toBaseUnits()+ 0.5) * 1.1);
+		iconPanel.setPreferredSize(new Dimension(xDimension * singleIconSize, yDimension * singleIconSize));
+		iconPanel.setMinimumSize(new Dimension(xDimension * singleIconSize, yDimension * singleIconSize));
+		iconPanel.setMaximumSize(new Dimension(xDimension * singleIconSize, yDimension * singleIconSize));
+		iconPanel.setSize(new Dimension(xDimension * singleIconSize, yDimension * singleIconSize));
 		getContentPane().add(iconPanel, BorderLayout.CENTER);
 		descriptionLabel = new JLabel(" ");
 		getContentPane().add(descriptionLabel, BorderLayout.SOUTH);
