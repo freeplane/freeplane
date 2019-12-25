@@ -5,7 +5,8 @@ Fix copying text from clipboard
 Scale icons in filter conditions
 Make LaTeX line spacing configurable
 Java 13 support
-Viewing (lock editing, readonly) mode
+Viewing/Editing user interfaces
+Simple/Advanced user interfaces
 
 ===============================
 1.7.10
