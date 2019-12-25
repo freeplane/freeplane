@@ -99,8 +99,7 @@ public class UIIcon implements IconDescription, NamedIcon {
 	}
 
 	@Override
-	public Icon getIcon(final NodeModel node) {
-		final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(node);
+	public Icon getIcon(Quantity<LengthUnits> iconHeight) {
 		return IconFactory.getInstance().getIcon(this, iconHeight);
 	}
 

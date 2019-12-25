@@ -26,7 +26,9 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.MultipleImage;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 
 public class UIIconSet extends UIIcon {
@@ -63,11 +65,11 @@ public class UIIconSet extends UIIcon {
 	}
 	
 	@Override
-	public Icon getIcon(final NodeModel node) {
+	public Icon getIcon(Quantity<LengthUnits> iconHeight) {
 		if (compoundIcon == null) {
 			compoundIcon = new MultipleImage();
 			for (final NamedIcon icon : imageIcons) {
-				compoundIcon.addIcon(icon, node);
+				compoundIcon.addIcon(icon, iconHeight);
 			}
 		}
 		return compoundIcon;

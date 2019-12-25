@@ -48,8 +48,8 @@ public class MultipleImage implements Icon {
 		mUIIcons.add(uiIcon);
 	}
 
-	public void addIcon(final NamedIcon uiIcon, final NodeModel node) {
-		mIcons.add(uiIcon.getIcon(node));
+	public void addIcon(final NamedIcon uiIcon, Quantity<LengthUnits> iconHeight) {
+		mIcons.add(uiIcon.getIcon(iconHeight));
 		mUIIcons.add(uiIcon);
 	}
 
