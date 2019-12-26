@@ -90,6 +90,9 @@ import org.freeplane.main.application.FreeplaneSplashModern;
  * @since 29.12.2008
  */
 public class UITools {
+	public static class Defaults {
+		public static float DEFAULT_FONT_SCALING_FACTOR = 1f;
+	}
 	public static final String MENU_ITEM_FONT_SIZE_PROPERTY = "menuItemFontSize";
 	public static final String MAIN_FREEPLANE_FRAME = "mainFreeplaneFrame";
 
@@ -650,7 +653,7 @@ public class UITools {
 
 	public static final float FONT_SCALE_FACTOR;
 	static {
-		float factor = 1f;
+		float factor = Defaults.DEFAULT_FONT_SCALING_FACTOR;
 		try {
 	        factor = UITools.getScaleFactor();
         }
