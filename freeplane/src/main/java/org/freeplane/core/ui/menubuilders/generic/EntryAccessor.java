@@ -58,7 +58,7 @@ public class EntryAccessor {
 		else {
 			final String textKey = (String) entry.getAttribute(TEXT_KEY);
 			if (textKey != null)
-				return (String) resourceAccessor.getRawText(textKey);
+				return resourceAccessor.getRawText(textKey);
 			else {
 				final AFreeplaneAction action = getAction(entry);
 				if (action != null)
@@ -97,7 +97,7 @@ public class EntryAccessor {
 		else
 			return name;
 	}
-	
+
 	public String getTooltipKey(final Entry entry) {
 		final AFreeplaneAction action = getAction(entry);
 		if (action != null) {
@@ -155,11 +155,12 @@ public class EntryAccessor {
 
 	public void addChildAction(Entry target, AFreeplaneAction action) {
 		final Entry actionEntry = new Entry();
+		actionEntry.addConstraint(target);
 		actionEntry.setName(action.getKey());
 		setAction(actionEntry, action);
 		target.addChild(actionEntry);
 	}
-	
+
 	public String getLocationDescription(Entry entry) {
 		final StringBuilder stringBuilder = new StringBuilder();
 		buildLocationDescription(entry, stringBuilder);

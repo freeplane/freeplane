@@ -39,11 +39,11 @@ public class ZoomedIcon extends UIIcon {
 	private final UIIcon uiIcon;
 	private final float zoom;
 	private ImageIcon zoomedIcon;
-	
+
 	public static Icon withHeigth(UIIcon uiIcon, int heightInPixel) {
 		Icon icon = uiIcon.getIcon();
 		int ownHeight = icon.getIconHeight();
-		if(ownHeight == heightInPixel)
+		if(ownHeight == heightInPixel||ownHeight <= 0)
 			return icon;
 		float zoom = ownHeight != 0 ? ((float)heightInPixel) / ownHeight : 0;
 		return new ZoomedIcon(uiIcon, zoom).getIcon();
