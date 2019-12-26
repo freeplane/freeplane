@@ -59,10 +59,14 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -75,28 +79,21 @@ import org.freeplane.core.util.Quantity;
  * LabelDemo.java needs one other file:
  *   images/middle.gif
  */
-public class LabelDemo extends JPanel {
+public class LabelDemo extends Box {
     public LabelDemo() {
-        super(new GridLayout(4,1));  //3 rows, 1 column
+        super(BoxLayout.Y_AXIS);
         
         UITools.Defaults.DEFAULT_FONT_SCALING_FACTOR = 3;
         
         JLabel label1, label2, label3;
  
-        Font font;
-        if(false) {
-        	try {
-        		font = Font.createFont( Font.TRUETYPE_FONT, getClass().getResourceAsStream("/OpenSansEmoji.ttf") );
-        	}
-        	catch (FontFormatException | IOException e) {
-        		throw new RuntimeException(e);
-        	}
-        }
-        else
-        	font = new Font("dialog", 0, 48);
-        String emojiAsString = "\uD83D\uDE00\uD83D\uDE01\uD83D\uDE02";
+        Font font = new Font("dialog", 0, 48);
+        StringBuilder emojiAsString = new StringBuilder();
+        for (int codePoint = 0x1f300; codePoint <= 0x1F64F; codePoint++)
+        	emojiAsString.append(Character.toChars(codePoint));
 		String text = "Ag" + emojiAsString;
-		Icon icon = new TextIcon(text, font , Color.BLUE).getIcon(new Quantity<LengthUnits>(5, LengthUnits.cm));
+		System.out.println(Integer.toHexString(emojiAsString.codePointAt(0)));
+		Icon icon = new TextIcon(text, font , Color.BLUE).getIcon(new Quantity<LengthUnits>(0.5, LengthUnits.cm));
  
         //Create the first label.
         label1 = new JLabel("Image and Text",
@@ -131,10 +128,12 @@ public class LabelDemo extends JPanel {
         add(label1);
         add(label2);
         add(label3);
-        JTextField textInput = new JTextField();
+        JTextArea textInput = new JTextArea();
+        textInput.setLineWrap(true);
+        textInput.setColumns(80);
         textInput.setFont(font);
         textInput.setText(text);
-		add(textInput);
+		add(new JScrollPane(textInput));
     }
  
     /**
