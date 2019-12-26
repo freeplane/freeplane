@@ -66,7 +66,9 @@ class ToolbarLayout implements LayoutManager {
 		}
 	}
 	private int getPreferredWidth(final Component c, final int maxWidth) {
-		final int width = c instanceof Separator && blockEndPosition == BlockEndPosition.ANYWHERE ? maxWidth : c.getPreferredSize().width;
+		final int width = ! c.isVisible() ? 0 : 
+				c instanceof Separator && blockEndPosition == BlockEndPosition.ANYWHERE ? maxWidth : 
+					c.getPreferredSize().width;
 		return width;
 	}
 
