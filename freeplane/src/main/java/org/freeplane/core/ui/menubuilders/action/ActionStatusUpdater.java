@@ -7,13 +7,26 @@ import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 
 public class ActionStatusUpdater implements EntryPopupListener {
 	@Override
 	public void childEntriesWillBecomeVisible(final Entry submenu) {
-		MapModel map = Controller.getCurrentController().getMap();
-		UserRole userRole = Controller.getCurrentModeController().userRole(map);
+		UserRole userRole = currentUserRole();
 		childEntriesWillBecomeVisible(submenu, userRole);
+	}
+
+	UserRole currentUserRole() {
+		Controller currentController = Controller.getCurrentController();
+		if(currentController == null)
+			return UserRole.ADVANCED_EDITOR;
+		ModeController currentModeController = Controller.getCurrentModeController();
+		if(currentModeController == null)
+			return UserRole.ADVANCED_EDITOR;
+		
+		MapModel map = currentController.getMap();
+		UserRole userRole = currentModeController.userRole(map);
+		return userRole;
 	}
 
 	void childEntriesWillBecomeVisible(final Entry submenu, UserRole userRole) {
