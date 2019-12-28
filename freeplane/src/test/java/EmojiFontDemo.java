@@ -17,11 +17,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.icon;
+
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 
 /*
  * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
@@ -57,11 +58,16 @@ import java.awt.FontFormatException;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -70,6 +76,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
@@ -79,60 +87,44 @@ import org.freeplane.core.util.Quantity;
  * LabelDemo.java needs one other file:
  *   images/middle.gif
  */
-public class LabelDemo extends Box {
-    public LabelDemo() {
+public class EmojiFontDemo extends Box {
+    public EmojiFontDemo() {
         super(BoxLayout.Y_AXIS);
+		final GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
         
-        UITools.Defaults.DEFAULT_FONT_SCALING_FACTOR = 3;
-        
-        JLabel label1, label2, label3;
- 
-        Font font = new Font("dialog", 0, 48);
         StringBuilder emojiAsString = new StringBuilder();
         for (int codePoint = 0x1f300; codePoint <= 0x1F64F; codePoint++)
         	emojiAsString.append(Character.toChars(codePoint));
 		String text = "Ag" + emojiAsString;
-		System.out.println(Integer.toHexString(emojiAsString.codePointAt(0)));
-		Icon icon = new TextIcon(text, font , Color.BLUE).getIcon(new Quantity<LengthUnits>(0.5, LengthUnits.cm));
- 
-        //Create the first label.
-        label1 = new JLabel("Image and Text",
-                            icon,
-                            JLabel.CENTER);
-        //Set the position of its text, relative to its icon:
-        label1.setVerticalTextPosition(JLabel.BOTTOM);
-        label1.setHorizontalTextPosition(JLabel.CENTER);
- 
-        //Create the other labels.
-        label2 = new JLabel("Text-Only Label");
-        label3 = new JLabel(icon);
- 
-        //Create tool tips, for the heck of it.
-        label1.setToolTipText("A label containing both image and text");
-        label2.setToolTipText("A label containing only text");
-        label3.setToolTipText("A label containing only an image");
- 
-        label1.setBackground(Color.CYAN);
-        label2.setBackground(Color.CYAN);
-        label3.setBackground(Color.CYAN);
-        
-        label1.setOpaque(true);
-        label2.setOpaque(true);
-        label3.setOpaque(true);
-        
-        label1.setBorder(BorderFactory.createEtchedBorder());
-        label2.setBorder(BorderFactory.createEtchedBorder());
-        label3.setBorder(BorderFactory.createEtchedBorder());
-        
-        //Add the labels.
-        add(label1);
-        add(label2);
-        add(label3);
         JTextArea textInput = new JTextArea();
         textInput.setLineWrap(true);
         textInput.setColumns(80);
-        textInput.setFont(font);
         textInput.setText(text);
+        
+        int fontSize = 60;
+		final String[] envFonts = gEnv.getAvailableFontFamilyNames();
+		String[] validFonts = Stream.of(envFonts).filter(name -> new Font(name, 0, fontSize).canDisplay(0x1F600)).toArray(String[]::new);
+		DefaultComboBoxModel<String> fontsModel = new DefaultComboBoxModel<>(validFonts);
+		if (fontsModel.getSize() == 0)
+			fontsModel.addElement("dialog");
+        
+        JComboBox<String> fontSelector = new JComboBox<>(fontsModel);
+        textInput.setFont(new Font(fontsModel.getSelectedItem().toString(), 0, fontSize));
+		add(fontSelector);
+        fontsModel.addListDataListener(new ListDataListener() {
+			@Override
+			public void intervalRemoved(ListDataEvent e) {
+			}
+			
+			@Override
+			public void intervalAdded(ListDataEvent e) {
+			}
+			
+			@Override
+			public void contentsChanged(ListDataEvent e) {
+				textInput.setFont(new Font((String)fontsModel.getSelectedItem(), 0, fontSize));
+			}
+		});
 		add(new JScrollPane(textInput));
     }
  
@@ -147,7 +139,7 @@ public class LabelDemo extends Box {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
  
         //Add content to the window.
-        frame.add(new LabelDemo());
+        frame.add(new EmojiFontDemo());
  
         //Display the window.
         frame.pack();
