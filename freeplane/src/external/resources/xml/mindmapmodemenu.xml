@@ -177,7 +177,6 @@
 					<Entry name="DeleteDetailsAction" />
 					<Entry builder="separator" />
 					<Entry name="ExternalImageAddAction" />
-					<Entry name="ExternalImageChangeAction" />
 					<Entry name="ExternalImageRemoveAction" />
 					<Entry builder="separator" />
 					<Entry name="EditAttributesAction" accelerator="alt F9" />

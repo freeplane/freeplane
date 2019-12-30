@@ -24,11 +24,9 @@ import java.net.URI;
 import java.util.Collection;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.view.swing.features.progress.mindmapmode.ProgressUtilities;
 
 /**
  *
@@ -36,7 +34,6 @@ import org.freeplane.view.swing.features.progress.mindmapmode.ProgressUtilities;
  *
  *This action adds an external image to a node
  */
-@EnabledAction(checkOnNodeChange = true)
 public class AddExternalImageAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 
@@ -45,7 +42,6 @@ public class AddExternalImageAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent event) {
-		final ProgressUtilities progUtil = new ProgressUtilities();
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		final Collection<NodeModel> nodes = mapController.getSelectedNodes();
 		final ViewerController vc = Controller.getCurrentController().getModeController()
@@ -60,23 +56,7 @@ public class AddExternalImageAction extends AFreeplaneAction {
 		if (absoluteUri == null)
 			return;
 		for (final NodeModel node : nodes) {
-			if (!progUtil.hasExternalResource(node)) {
-				vc.paste(absoluteUri, node, node.isLeft());
-			}
+			vc.paste(absoluteUri, node, node.isLeft());
 		}
-	}
-
-	@Override
-	public void setEnabled() {
-		boolean enable = false;
-		final ProgressUtilities progUtil = new ProgressUtilities();
-		final Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
-		for (final NodeModel node : nodes) {
-			if (node != null && !progUtil.hasExternalResource(node)) {
-				enable = true;
-				break;
-			}
-		}
-		setEnabled(enable);
 	}
 }
