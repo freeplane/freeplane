@@ -122,7 +122,6 @@ import org.freeplane.main.mindmapmode.stylemode.SModeControllerFactory;
 import org.freeplane.view.swing.features.BlinkingNodeHook;
 import org.freeplane.view.swing.features.FitToPage;
 import org.freeplane.view.swing.features.filepreview.AddExternalImageAction;
-import org.freeplane.view.swing.features.filepreview.ChangeExternalImageAction;
 import org.freeplane.view.swing.features.filepreview.RemoveExternalImageAction;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
@@ -189,7 +188,6 @@ public class MModeControllerFactory {
 		modeController.addAction(new RemoveAllAttributesAction());
 		modeController.addAction(new AddExternalImageAction());
 		modeController.addAction(new RemoveExternalImageAction());
-		modeController.addAction(new ChangeExternalImageAction());
 		modeController.addAction(new ShowFormatPanelAction());
 		modeController.addAction(new FitToPage());
 		modeController.addAction(new UpdateCheckAction());
