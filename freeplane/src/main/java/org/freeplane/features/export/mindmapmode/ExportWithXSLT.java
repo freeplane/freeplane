@@ -44,6 +44,7 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -122,7 +123,8 @@ public class ExportWithXSLT implements IExportEngine {
 		boolean success = true;
 		try {
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-			    pDirectoryName + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION)));
+			    pDirectoryName + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION), //
+				StandardCharsets.UTF_8));
 			new BranchXmlWriter(branches).writeXml(fileout, mode);
 		}
 		catch (final IOException e) {

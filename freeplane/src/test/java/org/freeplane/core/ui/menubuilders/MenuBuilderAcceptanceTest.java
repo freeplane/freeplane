@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
 import javax.swing.JPopupMenu;
@@ -43,7 +44,7 @@ public class MenuBuilderAcceptanceTest {
 		    new EntriesForAction(), Collections.<BuildPhaseListener>emptyList()).getBuildProcessor();
 		final String menuResource = "/xml/mindmapmodemenu.xml";
 		final InputStream resource = MenuBuilderAcceptanceTest.class.getResourceAsStream(menuResource);
-		final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
+		final BufferedReader reader = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8));
 		menuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
 		buildProcessor.build(menuStructure);
 	}

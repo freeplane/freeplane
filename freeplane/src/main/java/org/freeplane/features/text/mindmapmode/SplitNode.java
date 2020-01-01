@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Collection;
+
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.html.HTML;
@@ -29,7 +30,6 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -38,6 +38,8 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.text.TextController;
+
+import com.lightdev.app.shtm.SHTMLWriter;
 
 /**
  * @author Dimitry Polivaev
@@ -159,7 +161,7 @@ public class SplitNode extends AFreeplaneAction {
 		final String paragraphText = doc.getText(start, end - start).trim();
 		if (paragraphText.length() > 0) {
 			final StringWriter out = new StringWriter();
-			new FixedHTMLWriter(out, doc, start, end - start).write();
+			new SHTMLWriter(out, doc, start, end - start).write();
 			final String fragment = out.toString();
 			if (!fragment.equals("")) {
 				return fragment;

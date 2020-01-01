@@ -64,7 +64,6 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -75,7 +74,6 @@ import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.icon.IconController;
-import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
@@ -112,6 +110,7 @@ import com.jgoodies.common.base.Objects;
 import com.lightdev.app.shtm.ActionBuilder;
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.SHTMLPanelImpl;
+import com.lightdev.app.shtm.SHTMLWriter;
 import com.lightdev.app.shtm.UIResources;
 
 /**
@@ -300,10 +299,10 @@ public class MTextController extends TextController {
 					return null;
 				}
 				StringWriter out = new StringWriter();
-				new FixedHTMLWriter(out, doc, firstStart, firstLen - firstStart).write();
+				new SHTMLWriter(out, doc, firstStart, firstLen - firstStart).write();
 				strings[0] = out.toString();
 				out = new StringWriter();
-				new FixedHTMLWriter(out, doc, pos + secondStart, secondLen - secondStart).write();
+				new SHTMLWriter(out, doc, pos + secondStart, secondLen - secondStart).write();
 				strings[1] = out.toString();
 				return strings;
 			}

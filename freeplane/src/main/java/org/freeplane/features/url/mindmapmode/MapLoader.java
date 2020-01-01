@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
@@ -270,7 +271,7 @@ public class MapLoader{
 	}
 
 	private void loadMapContent(final MMapModel map) throws IOException, XMLException {
-		try (InputStreamReader urlStreamReader = new InputStreamReader(inputStream)) {
+		try (InputStreamReader urlStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 			final ModeController modeController = Controller.getCurrentModeController();
 			modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
 		}

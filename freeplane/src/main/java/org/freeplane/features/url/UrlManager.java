@@ -37,6 +37,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -241,7 +242,7 @@ public class UrlManager implements IExtension {
 			throws IOException, XMLException {
 		setURL(map, url);
 		InputStream inputStream = getLocation(url).openStream();
-		try (InputStreamReader urlStreamReader = new InputStreamReader(inputStream)) {
+		try (InputStreamReader urlStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 			final ModeController modeController = Controller.getCurrentModeController();
 			modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
 		}

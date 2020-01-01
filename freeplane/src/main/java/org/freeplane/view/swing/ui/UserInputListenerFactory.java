@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -505,7 +506,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				    .entrySet())
 					buildProcessor.phase(phase).addBuilderPair(entry.getKey(), entry.getValue());
 			final InputStream resource = genericStructure.openStream();
-			final BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
+			final BufferedReader reader = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8));
 			genericMenuStructure = XmlEntryStructureBuilder.buildMenuStructure(reader);
 			filterPlugins(genericMenuStructure, plugins);
 			buildProcessor.build(genericMenuStructure);

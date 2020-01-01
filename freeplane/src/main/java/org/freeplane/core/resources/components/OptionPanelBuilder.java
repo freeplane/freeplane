@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.Arrays;
 import java.util.Map.Entry;
@@ -710,7 +711,7 @@ public class OptionPanelBuilder {
 	public void load(final URL menu) {
 		InputStreamReader reader = null;
 		try {
-			reader = new InputStreamReader(new BufferedInputStream(menu.openStream()));
+			reader = new InputStreamReader(new BufferedInputStream(menu.openStream()), StandardCharsets.UTF_8);
 			load(reader);
 		}
 		catch (final IOException e) {

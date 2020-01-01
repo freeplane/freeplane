@@ -215,7 +215,7 @@ public class HtmlUtils {
 				case '\r':
 					break;
 				default:
-					if (myChar < 32 || myChar > 126)
+					if (myChar < 32)
 						result.append("&#").append(Integer.toString(myChar)).append(';');
 					else
 						result.append(myChar);
@@ -372,7 +372,7 @@ public class HtmlUtils {
 		for (int i = 0; i < text.length(); ++i) {
 			myChar = text.charAt(i);
 			intValue = text.charAt(i);
-			if (intValue < 32 || intValue > 126) {
+			if (intValue < 32) {
 				if(result == null){
 					 result = new StringBuilder((int) (text.length() * 1.2));
 					 result.append(text.subSequence(0, i));

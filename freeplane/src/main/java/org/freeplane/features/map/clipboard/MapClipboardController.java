@@ -30,6 +30,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -241,14 +242,16 @@ public class MapClipboardController implements IExtension, ClipboardController {
 	}
 
 	public void saveHTML(final List<NodeModel> branchRootNodes, final File file) throws IOException {
-		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), //
+			StandardCharsets.UTF_8));
 		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(Controller.getCurrentModeController().getMapController(), fileout);
 		htmlWriter.writeHTML(branchRootNodes);
 	}
 
 	public boolean saveTXT(final NodeModel rootNodeOfBranch, final File file) {
 		try {
-			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), //
+				StandardCharsets.UTF_8));
 			writeTXT(rootNodeOfBranch, fileout,/* depth= */
 			0);
 			fileout.close();

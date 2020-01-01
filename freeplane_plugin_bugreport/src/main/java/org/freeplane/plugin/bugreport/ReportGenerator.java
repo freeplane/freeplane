@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.MessageDigest;
 import java.security.PrivilegedAction;
@@ -176,7 +177,8 @@ public class ReportGenerator extends StreamHandler {
 		}
 		try {
 			final URL url = new URL(BUG_TRACKER_REFERENCE_URL);
-			final BufferedReader in = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
+			final BufferedReader in = new BufferedReader(//
+				new InputStreamReader(url.openConnection().getInputStream(), StandardCharsets.UTF_8));
 			BUG_TRACKER_URL = in.readLine();
 			return BUG_TRACKER_URL;
 		}
@@ -399,12 +401,12 @@ public class ReportGenerator extends StreamHandler {
 			final URL url = new URL(getBugTrackerUrl());
 			final URLConnection conn = url.openConnection();
 			conn.setDoOutput(true);
-			final OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+			final OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8);
 			final String report = data.toString();
 			wr.write(report);
 			wr.flush();
 			// Get the response
-			final BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			final BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
 			final String line = rd.readLine();
 			if (line != null) {
 				System.out.println(line);

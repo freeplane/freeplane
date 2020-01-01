@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import javax.net.ssl.SSLHandshakeException;
@@ -77,7 +78,7 @@ class HttpVersionClient {
 
     private boolean parseProperties(final URL url, final FreeplaneVersion currentVersion) throws IOException {
         Properties versionProperties = new Properties();
-        versionProperties.load(new InputStreamReader(url.openConnection().getInputStream()));
+        versionProperties.load(new InputStreamReader(url.openConnection().getInputStream(), StandardCharsets.UTF_8));
 
         // if the 'version' property doesn't exist, an IllegalArgumentException will be raised since it's mandatory
         if (versionProperties.getProperty("version") != null) {
@@ -97,7 +98,7 @@ class HttpVersionClient {
         BufferedReader in = null;
         try {
             // "version.txt" format
-            in = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
+            in = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream(), StandardCharsets.UTF_8));
             String line = in.readLine();
             while (line != null && !line.startsWith("=====")) {
                 line = in.readLine();

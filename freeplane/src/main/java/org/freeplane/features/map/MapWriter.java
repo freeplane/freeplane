@@ -29,6 +29,7 @@ import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.link.LinkBuilder;
 import org.freeplane.features.link.LinkController;
@@ -89,7 +90,7 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 
 	public void writeMapAsXml(final MapModel map, final Writer fileout, final Mode mode, final boolean saveInvisible,
 	                          final boolean forceFormat) throws IOException {
-		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, fileout);
+		final TreeXmlWriter xmlWriter = createTreeWriter(fileout);
 		xmlWriter.setHint(Hint.MODE, mode);
 		if (forceFormat) {
 			xmlWriter.setHint(WriterHint.FORCE_FORMATTING);
@@ -131,13 +132,18 @@ public class MapWriter implements IElementWriter, IAttributeWriter {
 
 	public void writeNodeAsXml(final Writer writer, final NodeModel node, final Mode mode,
 	                           final boolean writeInvisible, final boolean writeChildren, boolean forceFormat) throws IOException {
-		final TreeXmlWriter xmlWriter = new TreeXmlWriter(writeManager, writer);
+		final TreeXmlWriter xmlWriter = createTreeWriter(writer);
 		xmlWriter.setHint(Hint.MODE, mode);
 		if (forceFormat) {
 			xmlWriter.setHint(WriterHint.FORCE_FORMATTING);
 		}
 		writeNode(xmlWriter, node, writeInvisible, writeChildren);
 		xmlWriter.flush();
+	}
+
+	TreeXmlWriter createTreeWriter(final Writer writer) {
+		return new TreeXmlWriter(writeManager, writer, //
+			ResourceController.getResourceController().getBooleanProperty("useAsciiCharset"));
 	}
 }
 
