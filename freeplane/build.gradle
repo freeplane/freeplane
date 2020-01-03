@@ -308,3 +308,4 @@ build.dependsOn copyExternalResources
 build.dependsOn copyDoc
 
 apply from: './format_translation.gradle'
+apply from: './emoji.gradle'

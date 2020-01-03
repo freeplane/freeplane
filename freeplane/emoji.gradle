@@ -1,0 +1,93 @@
+import java.util.concurrent.*
+
+task downloadEmoji {
+	def emojiVersion = '12.1'
+	def twemojiVersion = '12.1.4'
+	def twemojiBaseUrl = "https://twemoji.maxcdn.com/v/$twemojiVersion/svg/"
+	def emojiListUrl = "http://unicode.org/Public/emoji/$emojiVersion/emoji-test.txt"
+	def emojiListFile = file('build/emoji/emojilist.txt')
+	def emojiEntriesFile = file('build/emoji/emojientries.xml')
+	def HEX_CODEPOINT_END_POSITION = 43
+	def STATUS_END_POSITION = 65
+	def EMOJI_POSITION = 67
+	doLast {
+		if (!emojiListFile.exists()) {
+			mkdir(emojiListFile.parent)
+    		new URL(emojiListUrl).withInputStream{ i -> emojiListFile.withOutputStream{ it << i }}
+		}
+		ExecutorService exec = Executors.newFixedThreadPool(40)
+		emojiListFile.eachLine { String line ->
+			if(line.length() > EMOJI_POSITION  && line.charAt(HEX_CODEPOINT_END_POSITION) == ';' && line.charAt(STATUS_END_POSITION) == '#') {
+ 				String emojiStatus = line.substring(HEX_CODEPOINT_END_POSITION + 1, STATUS_END_POSITION).trim()
+ 				if(emojiStatus != 'component') {
+	 				String hexCodes = line.substring(0, HEX_CODEPOINT_END_POSITION).trim()
+	 				String twemojiFileName = hexCodes.toLowerCase().replace(' ', '-').replaceFirst("^00", "") + '.svg';
+	 				String emojiUrl = "$twemojiBaseUrl$twemojiFileName"
+	 				def emojiFile = file("build/emoji/$twemojiFileName")
+			 		if (!emojiFile.exists()) {
+						exec.submit({
+							def get = new URL(emojiUrl).openConnection();
+							def getRC = get.getResponseCode();
+							if(getRC.equals(200)) {
+								emojiFile.withOutputStream{
+									new BufferedOutputStream(it) << new BufferedInputStream(get.getInputStream())
+								}
+							}
+						} as Runnable)
+					}
+				}
+			}
+		}
+		exec.shutdown()
+		if(! exec.isTerminated()) {	
+			println('Wait for downloads')
+			exec.awaitTermination(3600, TimeUnit.SECONDS);
+		}
+		println('Downloads completed')	
+		Node root = new Node(null, 'FreeplaneEmojiEntries')
+		Node group = null 
+		Node subgroup = null
+		Node toneSubgroup = null
+		boolean firstInGroupSet = false
+		boolean firstInSubgroupSet = false
+		String lastEmoji = null
+		emojiListFile.eachLine { String line ->
+ 			if(line.startsWith('# group')) {
+ 				group = root.appendNode('Entry')
+ 				group.attributes().put('name', line.substring(2))
+ 				println(line)
+ 			}
+ 			else if(line.startsWith('# subgroup')) {
+ 				subgroup = group.appendNode('Entry')
+ 				subgroup.attributes().put('name', line.substring(2))
+ 				println(line)
+ 			}
+ 			else if(line.length() > EMOJI_POSITION  && line.charAt(HEX_CODEPOINT_END_POSITION) == ';' && line.charAt(STATUS_END_POSITION) == '#') {
+ 				String hexCodes = line.substring(0, HEX_CODEPOINT_END_POSITION).trim()
+ 				String twemojiFileName = hexCodes.toLowerCase().replace(' ', '-').replaceFirst("^00", "") + '.svg';
+ 				String emojiUrl = "$twemojiBaseUrl$twemojiFileName"
+ 				def emojiFile = file("build/emoji/$twemojiFileName")
+		    	if (emojiFile.exists()) {
+			 		String emoji = line.substring(EMOJI_POSITION, line.indexOf(' ', EMOJI_POSITION))
+			 		Node action
+			 		if(hexCodes.contains(' 1F3F')) {
+			 			if (toneSubgroup == null) {
+			 				toneSubgroup = subgroup.appendNode('Entry')
+			 				toneSubgroup.attributes().put('name', 'tone variants')
+			 				toneSubgroup.attributes().put('emoji', emoji)
+			 			}
+		 				action = toneSubgroup.appendNode('Entry')
+ 						action.attributes().put('emoji', emoji)
+			 		}
+			 		else {
+			 			toneSubgroup = null
+	 					action = subgroup.appendNode('Entry')
+	 				}
+	 				action.attributes().put('emoji', emoji)
+	 				action.attributes().put('file', twemojiFileName)
+	 			}	
+ 			}	
+		}
+		emojiEntriesFile.withOutputStream {new XmlNodePrinter(new PrintWriter(new OutputStreamWriter(it))).print(root)}
+	}
+}
