@@ -69,7 +69,6 @@ import javax.swing.text.Position.Bias;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit;
 import javax.swing.text.StyledEditorKit.BoldAction;
-import javax.swing.text.StyledEditorKit.ForegroundAction;
 import javax.swing.text.StyledEditorKit.ItalicAction;
 import javax.swing.text.StyledEditorKit.StyledTextAction;
 import javax.swing.text.StyledEditorKit.UnderlineAction;
@@ -104,6 +103,7 @@ import org.freeplane.view.swing.map.ZoomableLabel;
 import org.freeplane.view.swing.map.ZoomableLabelUI;
 import org.freeplane.view.swing.map.ZoomableLabelUI.LayoutData;
 
+import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.SHTMLWriter;
 
 
@@ -525,16 +525,16 @@ public class EditNodeTextField extends EditNodeBase {
 		underlineAction.putValue(Action.NAME, TextUtils.getText("UnderlineAction.text"));
 		underlineAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control U"));
 
-		redAction = new ForegroundAction(TextUtils.getText("red"), Color.RED);
+		redAction = new ForegroundAction(TextUtils.getText("red"), SHTMLPanel.DARK_RED, SHTMLPanel.LIGHT_RED);
 		redAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control R"));
 
-		greenAction = new ForegroundAction(TextUtils.getText("green"), new Color(0, 0x80, 0));
+		greenAction = new ForegroundAction(TextUtils.getText("green"), SHTMLPanel.DARK_GREEN, SHTMLPanel.LIGHT_GREEN);
 		greenAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control G"));
 
-		blueAction = new ForegroundAction(TextUtils.getText("blue"), new Color(0, 0, 0xc0));
+		blueAction = new ForegroundAction(TextUtils.getText("blue"), SHTMLPanel.DARK_BLUE, SHTMLPanel.LIGHT_BLUE);
 		blueAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control L"));
 
-		blackAction = new ForegroundAction(TextUtils.getText("black"), Color.BLACK);
+		blackAction = new ForegroundAction(TextUtils.getText("black"), Color.BLACK, Color.WHITE);
 		blackAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control K"));
 
 		defaultColorAction = new ExtendedEditorKit.RemoveStyleAttributeAction(StyleConstants.Foreground, TextUtils.getText("DefaultColorAction.text"));
@@ -606,8 +606,8 @@ public class EditNodeTextField extends EditNodeBase {
 	private int verticalSpace;
 	private int horizontalSpace;
 	private MapViewChangeListener mapViewChangeListener;
-
-	@Override
+	
+    @Override
     protected JPopupMenu createPopupMenu(Component component) {
 		JPopupMenu menu = super.createPopupMenu(component);
 	    JMenu formatMenu = new JMenu(TextUtils.getText("simplyhtml.formatLabel"));
