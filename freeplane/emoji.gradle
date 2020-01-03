@@ -1,20 +1,38 @@
 import java.util.concurrent.*
 
-task downloadEmoji {
+class EmojiDownloader {
 	def emojiVersion = '12.1'
 	def twemojiVersion = '12.1.4'
 	def twemojiBaseUrl = "https://twemoji.maxcdn.com/v/$twemojiVersion/svg/"
 	def emojiListUrl = "http://unicode.org/Public/emoji/$emojiVersion/emoji-test.txt"
-	def emojiListFile = file('build/emoji/emojilist.txt')
-	def emojiEntriesFile = file('build/emoji/emojientries.xml')
 	def HEX_CODEPOINT_END_POSITION = 43
 	def STATUS_END_POSITION = 65
 	def EMOJI_POSITION = 67
-	doLast {
+
+	File emojiListFile
+	File emojiEntriesFile
+	Project project
+	
+	EmojiDownloader(Project project) {
+		this.project = project;
+		this.emojiListFile = project.file('build/emoji/emojilist.txt')
+		this.emojiEntriesFile = project.file('build/emoji/emojientries.xml')
+	}
+	
+	def run(){
+		downloadEmojiList()
+		downloadEmojiFiles()
+		createUiEntryFile()
+	}
+	
+	def downloadEmojiList(){
 		if (!emojiListFile.exists()) {
 			mkdir(emojiListFile.parent)
     		new URL(emojiListUrl).withInputStream{ i -> emojiListFile.withOutputStream{ it << i }}
 		}
+	}
+	
+	def downloadEmojiFiles(){
 		ExecutorService exec = Executors.newFixedThreadPool(40)
 		emojiListFile.eachLine { String line ->
 			if(line.length() > EMOJI_POSITION  && line.charAt(HEX_CODEPOINT_END_POSITION) == ';' && line.charAt(STATUS_END_POSITION) == '#') {
@@ -23,7 +41,7 @@ task downloadEmoji {
 	 				String hexCodes = line.substring(0, HEX_CODEPOINT_END_POSITION).trim()
 	 				String twemojiFileName = hexCodes.toLowerCase().replace(' ', '-').replaceFirst("^00", "") + '.svg';
 	 				String emojiUrl = "$twemojiBaseUrl$twemojiFileName"
-	 				def emojiFile = file("build/emoji/$twemojiFileName")
+	 				def emojiFile = project.file("build/emoji/$twemojiFileName")
 			 		if (!emojiFile.exists()) {
 						exec.submit({
 							def get = new URL(emojiUrl).openConnection();
@@ -44,6 +62,9 @@ task downloadEmoji {
 			exec.awaitTermination(3600, TimeUnit.SECONDS);
 		}
 		println('Downloads completed')	
+	}
+	
+	def createUiEntryFile(){
 		Node root = new Node(null, 'FreeplaneEmojiEntries')
 		Node group = null 
 		Node subgroup = null
@@ -55,18 +76,16 @@ task downloadEmoji {
  			if(line.startsWith('# group')) {
  				group = root.appendNode('Entry')
  				group.attributes().put('name', line.substring(2))
- 				println(line)
  			}
  			else if(line.startsWith('# subgroup')) {
  				subgroup = group.appendNode('Entry')
  				subgroup.attributes().put('name', line.substring(2))
- 				println(line)
  			}
  			else if(line.length() > EMOJI_POSITION  && line.charAt(HEX_CODEPOINT_END_POSITION) == ';' && line.charAt(STATUS_END_POSITION) == '#') {
  				String hexCodes = line.substring(0, HEX_CODEPOINT_END_POSITION).trim()
  				String twemojiFileName = hexCodes.toLowerCase().replace(' ', '-').replaceFirst("^00", "") + '.svg';
  				String emojiUrl = "$twemojiBaseUrl$twemojiFileName"
- 				def emojiFile = file("build/emoji/$twemojiFileName")
+ 				def emojiFile = project.file("build/emoji/$twemojiFileName")
 		    	if (emojiFile.exists()) {
 			 		String emoji = line.substring(EMOJI_POSITION, line.indexOf(' ', EMOJI_POSITION))
 			 		Node action
@@ -89,5 +108,12 @@ task downloadEmoji {
  			}	
 		}
 		emojiEntriesFile.withOutputStream {new XmlNodePrinter(new PrintWriter(new OutputStreamWriter(it))).print(root)}
+	}
+	
+}
+
+task downloadEmoji {
+	doLast {
+		new EmojiDownloader(project).run()
 	}
 }
