@@ -46,8 +46,8 @@ allprojects {
 
 }
 
-// this is used for (linux) packages, where the dependencies
-// live on the file system (/usr/share/java/*.jar on Debian):
+/* this is used for (linux) packages, where the dependencies
+  live on the file system (/usr/share/java/*.jar on Debian): */
 def externalizeJar(File jar) {
     // do not externalize, jars are copied over to /BUILD
     // in development workflow!
@@ -263,3 +263,4 @@ task format_translation {
 
 apply from: './dist.gradle'
 apply from: './jdt-config.gradle'
+
