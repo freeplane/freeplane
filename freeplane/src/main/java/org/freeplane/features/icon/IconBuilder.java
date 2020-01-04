@@ -101,8 +101,9 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
 			iconElement.setName("icon");
 			iconElement.setAttribute("BUILTIN", icon.getName());
 			if (forceFormatting) {
-				if(icon instanceof MindIcon)
-					iconElement.setAttribute("src", ((MindIcon) icon).getSource());
+					String source = icon.getSource();
+					if(source !=  null)
+					    iconElement.setAttribute("src", source);
 				iconElement.setAttribute("height",
 				    Integer.toString(iconController.getIconSize(node).toBaseUnitsRounded()));
 			}

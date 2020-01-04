@@ -25,7 +25,6 @@ import javax.swing.Icon;
 
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
-import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev
@@ -42,8 +41,10 @@ public interface NamedIcon extends Comparable<NamedIcon> {
 	String getPath();
 	NamedIcon zoom(float zoom);
 
-	default int compareTo(final NamedIcon uiIcon) {
+	@Override
+    default int compareTo(final NamedIcon uiIcon) {
 		return COMPARATOR.compare(this, uiIcon);
 	}
+    String getSource();
 	
 }

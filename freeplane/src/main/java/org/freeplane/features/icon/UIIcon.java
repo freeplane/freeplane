@@ -194,4 +194,9 @@ public class UIIcon implements IconDescription, NamedIcon {
 	public NamedIcon zoom(float zoom) {
 		 return new ZoomedIcon(this, zoom);
 	}
+
+    @Override
+    public String getSource() {
+        return null;
+    }
 }
