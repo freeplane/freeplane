@@ -30,8 +30,8 @@ import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 import javax.swing.table.TableCellRenderer;
 
+import org.freeplane.core.ui.svgicons.FixedSizeUIIcon;
 import org.freeplane.features.icon.UIIcon;
-import org.freeplane.features.icon.ZoomedIcon;
 
 /**
  * @author Dimitry Polivaev
@@ -74,7 +74,7 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 			JLabel label = new JLabel();
 			Font font = label.getFont();
 			final int fontHeight = label.getFontMetrics(font).getHeight();
-			label.setIcon(ZoomedIcon.withHeigth((UIIcon) value, fontHeight));
+			label.setIcon(FixedSizeUIIcon.withHeigth(((UIIcon) value).getUrl(), fontHeight));
 			label.setHorizontalAlignment(SwingConstants.CENTER);
 			component = label;
 		}

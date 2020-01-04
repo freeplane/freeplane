@@ -32,9 +32,9 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicLabelUI;
 
 import org.freeplane.core.resources.TranslatedObject;
+import org.freeplane.core.ui.svgicons.FixedSizeUIIcon;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.UIIcon;
-import org.freeplane.features.icon.ZoomedIcon;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -72,7 +72,7 @@ public class ConditionFactory {
 		JLabel label = new JLabel();
 		Font font = label.getFont();
 		final int fontHeight = label.getFontMetrics(font).getHeight();
-		label.setIcon((ZoomedIcon.withHeigth(uiIcon, fontHeight)));
+		label.setIcon((FixedSizeUIIcon.withHeigth(uiIcon.getUrl(), fontHeight)));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setUI((BasicLabelUI)BasicLabelUI.createUI(label));
 		return label;

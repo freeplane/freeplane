@@ -44,6 +44,7 @@ public interface IconFactory {
 		    .getLengthQuantityProperty("toolbar_icon_height");
   
 	IconFactory FACTORY = ! GraphicsEnvironment.isHeadless() ? GraphicIconFactory.FACTORY : HeadlessIconFactory.FACTORY;
+	//IconFactory FACTORY = FakeIconFactory.FACTORY;
 	
 	static IconFactory getInstance() {
 		return FACTORY;

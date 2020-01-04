@@ -26,10 +26,10 @@ import javax.swing.Icon;
 
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.menubuilders.generic.UserRoleConstraint;
+import org.freeplane.core.ui.svgicons.FixedSizeUIIcon;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.MindIcon;
-import org.freeplane.features.icon.ZoomedIcon;
 import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
@@ -42,7 +42,7 @@ public class IconAction extends AMultipleNodeAction implements IconDescription {
 	public IconAction( final MindIcon _icon) {
 		super("IconAction." + _icon.getName(), _icon.getTranslatedDescription(), null);
 		mindIcon = _icon;
-		setIcon(ZoomedIcon.withHeigth(_icon, IconFactory.DEFAULT_UI_ICON_HEIGHT.toBaseUnitsRounded()));
+		setIcon(FixedSizeUIIcon.withHeigth(_icon.getUrl(), IconFactory.DEFAULT_UI_ICON_HEIGHT.toBaseUnitsRounded()));
 		putValue(Action.SHORT_DESCRIPTION, getTranslatedDescription());
 		addConstraint(UserRoleConstraint.EDITOR);
 	}
