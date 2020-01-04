@@ -3,6 +3,8 @@ configurations{
     compile.extendsFrom(mergedViewerDependencies)
 }
 
+apply from: './emoji.gradle'
+
 dependencies {
 	
 	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
@@ -25,7 +27,7 @@ dependencies {
 	}
     
  	testRuntime files('src/viewer/resources', 'src/editor/resources', 'src/external/resources')
-
+ 	
     // from flatDir "localGitDepsRepository":
     lib ':idw-gpl-1.6.1'
 }
@@ -51,6 +53,7 @@ bundleDeps.add(0, "lib/freeplaneosgi-${project.version}.jar")
 bundleDeps.add(0, "lib/freeplane_mac-${project.version}.jar")
 bundleDeps.add(0, "lib/freeplaneeditor-${project.version}.jar")
 bundleDeps.add(0, "lib/freeplaneviewer.jar")
+bundleDeps.add("lib/emoji-${project.version}.jar")
 
 ext.bundleExports = """\
                     com.inet.jortho,
@@ -186,7 +189,9 @@ task copyOSGiJars(type: Copy) {
 	 from (project(':freeplane_mac').jar.outputs.files)
      into(globalBin + '/core/' + pluginid + '/lib/')
 }
+
 copyOSGiJars.dependsOn project(':freeplane_mac').jar
+copyOSGiJars.dependsOn emojiJar
 
 task copyOSGiManifest(type: Copy) {
      from ("$buildDir/manifest/") {
@@ -308,4 +313,4 @@ build.dependsOn copyExternalResources
 build.dependsOn copyDoc
 
 apply from: './format_translation.gradle'
-apply from: './emoji.gradle'
+

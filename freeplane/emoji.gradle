@@ -1,5 +1,15 @@
 import java.util.concurrent.*
 
+project.ext.emojiDir = "${project.buildDir}/emoji/resources"
+
+sourceSets {
+	emoji {
+		resources {
+			srcDir emojiDir
+		}
+	}
+}
+
 class EmojiDownloader {
 	def emojiVersion = '12.1'
 	def twemojiVersion = '12.1.4'
@@ -12,11 +22,13 @@ class EmojiDownloader {
 	File emojiListFile
 	File emojiEntriesFile
 	Project project
+	String emojiDir
 	
 	EmojiDownloader(Project project) {
-		this.project = project;
-		this.emojiListFile = project.file('build/emoji/emojilist.txt')
-		this.emojiEntriesFile = project.file('build/emoji/emojientries.xml')
+		this.project = project
+		this.emojiDir = "${project.emojiDir}/images/emoji"
+		this.emojiListFile = project.file("$emojiDir/emojilist.txt")
+		this.emojiEntriesFile = project.file("$emojiDir/emojientries.xml")
 	}
 	
 	def run(){
@@ -27,7 +39,7 @@ class EmojiDownloader {
 	
 	def downloadEmojiList(){
 		if (!emojiListFile.exists()) {
-			mkdir(emojiListFile.parent)
+			project.mkdir(emojiListFile.parent)
     		new URL(emojiListUrl).withInputStream{ i -> emojiListFile.withOutputStream{ it << i }}
 		}
 	}
@@ -41,7 +53,7 @@ class EmojiDownloader {
 	 				String hexCodes = line.substring(0, HEX_CODEPOINT_END_POSITION).trim()
 	 				String twemojiFileName = hexCodes.toLowerCase().replace(' ', '-').replaceFirst("^00", "") + '.svg';
 	 				String emojiUrl = "$twemojiBaseUrl$twemojiFileName"
-	 				def emojiFile = project.file("build/emoji/$twemojiFileName")
+	 				def emojiFile = project.file("$emojiDir/$twemojiFileName")
 			 		if (!emojiFile.exists()) {
 						exec.submit({
 							def get = new URL(emojiUrl).openConnection();
@@ -85,7 +97,7 @@ class EmojiDownloader {
  				String hexCodes = line.substring(0, HEX_CODEPOINT_END_POSITION).trim()
  				String twemojiFileName = hexCodes.toLowerCase().replace(' ', '-').replaceFirst("^00", "") + '.svg';
  				String emojiUrl = "$twemojiBaseUrl$twemojiFileName"
- 				def emojiFile = project.file("build/emoji/$twemojiFileName")
+ 				def emojiFile = project.file("$emojiDir/$twemojiFileName")
 		    	if (emojiFile.exists()) {
 			 		String emoji = line.substring(EMOJI_POSITION, line.indexOf(' ', EMOJI_POSITION))
 			 		Node action
@@ -116,4 +128,15 @@ task downloadEmoji {
 	doLast {
 		new EmojiDownloader(project).run()
 	}
+}
+
+task emojiJar(type: Jar) {
+	manifest = project.manifest {
+		attributes("Manifest-Version": "1.0")
+	}
+	baseName = 'emoji'
+	dependsOn downloadEmoji
+    from (sourceSets.emoji.output) {
+		include(['**/*.svg', '**/*.xml'])
+    }
 }
