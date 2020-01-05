@@ -115,7 +115,6 @@
 				</combo>
 			</separator>
 			<separator name="svg_icons">
-				<boolean name="use_svg_icons" />
 				<boolean name="antialias_svg" />
 			</separator>
 			<separator name="size_limits">
