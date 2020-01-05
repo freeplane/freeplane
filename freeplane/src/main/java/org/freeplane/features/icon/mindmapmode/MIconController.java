@@ -67,9 +67,9 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.filter.condition.ICondition;
-import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.IconContainedCondition;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.IconExistsCondition;
 import org.freeplane.features.icon.IconGroup;
 import org.freeplane.features.icon.IconStore;
@@ -85,7 +85,6 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.LogicalStyleController;
-import org.freeplane.features.ui.FrameController;
 
 /**
  * @author Dimitry Polivaev

@@ -59,21 +59,6 @@ public class IconStore {
 		}
 	}
 
-	/**
-	 * Adds a new MindIcon to the group with the given name.
-	 * 
-	 * @param groupName where to add the icon
-	 * @param icon to add
-	 */
-	public void addMindIcon(final String groupName, final MindIcon icon) {
-		if (!groups.containsKey(groupName)) {
-			final IconGroup group = new IconGroup(groupName, icon);
-			groups.put(groupName, group);
-		}
-		groups.get(groupName).addIcon(icon);
-		mindIcons.put(icon.getName(), icon);
-	}
-
 	public void addUIIcon(final UIIcon uiIcon) {
 		uiIcons.put(uiIcon.getFile(), uiIcon);
 	}

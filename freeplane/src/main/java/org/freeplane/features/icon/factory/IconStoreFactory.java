@@ -56,13 +56,10 @@ public class IconStoreFactory {
 	private static final String GROUP_DESC_KEY = "IconGroupPopupAction.%s.text";
 	private static final Pattern iconFileNamePattern = Pattern.compile(".*\\.(svg|png)$", Pattern.CASE_INSENSITIVE);
 
-	public static IconStore ICON_STORE;
-	static {
-		ICON_STORE = new IconStore();
-		IconStoreFactory.setIconGroups(ICON_STORE);
-	}
-
-	private static void setIconGroups(final IconStore iconStore) {
+	public static IconStore ICON_STORE = createIcons();
+	
+	private static IconStore createIcons() {
+	    final IconStore iconStore = new IconStore();
 		final String[] groupNames = RESOURCE_CONTROLLER.getProperty(GROUP_NAMES_KEY).split(SEPARATOR);
 		for (final String groupName : groupNames) {
 			final String description = TextUtils.getText(String.format(GROUP_DESC_KEY, groupName));
@@ -83,6 +80,7 @@ public class IconStoreFactory {
 			}
 			iconStore.addGroup(new IconGroup(groupName, groupIcon, description, icons));
 		}
+		return iconStore;
 	}
 
 	private static Map<String, MindIcon> getIcons(final String groupName) {
