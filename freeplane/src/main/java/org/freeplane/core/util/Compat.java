@@ -179,7 +179,7 @@ public class Compat {
 			try {
 				userFpDir = new File(getDefaultFreeplaneUserDirectory()).getCanonicalPath();
 			} catch (IOException e1) {
-				userFpDir = userFpDirPath;
+				throw new RuntimeException(e1);
 			}
 		}
 	}

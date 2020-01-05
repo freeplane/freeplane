@@ -23,8 +23,12 @@ import static org.freeplane.features.nodestyle.FontUtils.isStrikedThrough;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,6 +37,7 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
@@ -387,11 +392,15 @@ class MindMapHTMLWriter {
 		for (NamedIcon icon : icons) {
 			if(icon instanceof MindIcon) {
 				MindIcon mindIcon = (MindIcon) icon;
-				final String iconFile = mindIcon.getFile();
-				fileout.write("<img src=\"icons/" + iconFile + "\" alt=\"" + mindIcon.getTranslatedDescription() + "\"");
-				final Quantity<LengthUnits> iconSize = iconController.getIconSize(model);
-				fileout.write(" height = \"" + iconSize.toBaseUnitsRounded() + "\"");
-				fileout.write(">");
+				try {
+                    final String iconFile =  new URI(null, mindIcon.getFile(), null).toString();
+                    fileout.write("<img src=\"icons/" + iconFile + "\" alt=\"" + mindIcon.getTranslatedDescription() + "\"");
+                    final Quantity<LengthUnits> iconSize = iconController.getIconSize(model);
+                    fileout.write(" height = \"" + iconSize.toBaseUnitsRounded() + "\"");
+                    fileout.write(">");
+                } catch (Exception e) {
+                    LogUtils.severe(e);
+                }
 			}
 		}
 	}

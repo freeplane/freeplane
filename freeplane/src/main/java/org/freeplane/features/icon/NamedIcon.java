@@ -33,13 +33,12 @@ import org.freeplane.core.util.Quantity;
 public interface NamedIcon extends Comparable<NamedIcon> {
 	static Comparator<NamedIcon> COMPARATOR = //
 			Comparator.comparing((NamedIcon x) -> x.getClass().getName())//
-			.thenComparing(NamedIcon::getPath);
+			.thenComparing(NamedIcon::getFile);
 
     String getName();
     String getFile();
 	Icon getIcon();
 	Icon getIcon(Quantity<LengthUnits> iconHeight);
-	String getPath();
 	NamedIcon zoom(float zoom);
 
 	@Override

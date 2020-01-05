@@ -38,11 +38,8 @@ import org.freeplane.features.icon.factory.IconFactory;
  */
 public class UIIcon implements IconDescription, NamedIcon {
 	private static final String DEFAULT_IMAGE_PATH = "/images";
-	protected static final String SEPARATOR = "/";
 	protected static final String THEME_FOLDER_KEY = "icon.theme.folder";
 	protected static final ResourceController RESOURCE_CONTROLLER = ResourceController.getResourceController();
-	private static final Pattern parentDirPattern = Pattern.compile(SEPARATOR + "[^" + SEPARATOR + ".]+" + SEPARATOR
-	        + "\\.\\." + SEPARATOR);
 	private final String name;
 	private final String file;
 	private final String descriptionTranslationKey;
@@ -117,13 +114,7 @@ public class UIIcon implements IconDescription, NamedIcon {
 	}
 
 	public String getPath() {
-		StringBuilder builder = new StringBuilder();
-		builder = new StringBuilder();
-		builder.append(this.getImagePath());
-		builder.append(SEPARATOR);
-		builder.append(file);
-		final String path = parentDirPattern.matcher(builder.toString()).replaceFirst(SEPARATOR);
-		return path;
+		return this.getImagePath() + '/' + file;
 	}
 
 	@Override
