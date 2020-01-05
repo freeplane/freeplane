@@ -48,7 +48,7 @@ public class UserIcon extends MindIcon {
 		builder.append(SEPARATOR);
 		builder.append("icons");
 		builder.append(SEPARATOR);
-		builder.append(this.getFileName());
+		builder.append(this.getFile());
 		final String path = builder.toString().replace(File.separatorChar, '/');
 		return path;
 	}
@@ -70,17 +70,5 @@ public class UserIcon extends MindIcon {
 	public String getTranslatedDescription() {
 		String key = getDescriptionTranslationKey();
 		return TextUtils.getOptionalText("usericon_" + key, key);
-	}
-
-	@Override
-	public String getSource() {
-		final String path = getUrl().getPath();
-		final String iconName = getName();
-		try {
-			return new URI("file", iconName, null).getRawSchemeSpecificPart() + path.substring(path.length() - 4);
-		}
-		catch (URISyntaxException e) {
-			throw new RuntimeException(e);
-		}
 	}
 }

@@ -29,7 +29,6 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.factory.IconFactory;
-import org.freeplane.features.map.NodeModel;
 
 /**
  * Base class for all icons used in FreePlane.
@@ -45,29 +44,30 @@ public class UIIcon implements IconDescription, NamedIcon {
 	private static final Pattern parentDirPattern = Pattern.compile(SEPARATOR + "[^" + SEPARATOR + ".]+" + SEPARATOR
 	        + "\\.\\." + SEPARATOR);
 	private final String name;
-	private final String fileName;
+	private final String file;
 	private final String descriptionTranslationKey;
 	private final String shortcutKey;
 	private URL resourceURL;
 
-	public UIIcon(final String name, final String fileName) {
-		this(name, fileName, "", "?");
+	public UIIcon(final String name, final String file) {
+		this(name, file, "", "?");
 	}
 
-	public UIIcon(final String name, final String fileName, final String descriptionTranslationKey) {
-		this(name, fileName, descriptionTranslationKey, "?");
+	public UIIcon(final String name, final String file, final String descriptionTranslationKey) {
+		this(name, file, descriptionTranslationKey, "?");
 	}
 
-	public UIIcon(final String name, final String fileName, final String descriptionTranslationKey,
+	public UIIcon(final String name, final String file, final String descriptionTranslationKey,
 	              final String shortcutKey) {
 		this.name = name;
-		this.fileName = fileName;
+		this.file = file;
 		this.descriptionTranslationKey = descriptionTranslationKey;
 		this.shortcutKey = shortcutKey;
 	}
 
-	public String getFileName() {
-		return fileName;
+	@Override
+    public String getFile() {
+		return file;
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class UIIcon implements IconDescription, NamedIcon {
 		builder = new StringBuilder();
 		builder.append(this.getImagePath());
 		builder.append(SEPARATOR);
-		builder.append(fileName);
+		builder.append(file);
 		final String path = parentDirPattern.matcher(builder.toString()).replaceFirst(SEPARATOR);
 		return path;
 	}
@@ -131,7 +131,7 @@ public class UIIcon implements IconDescription, NamedIcon {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((descriptionTranslationKey == null) ? 0 : descriptionTranslationKey.hashCode());
-		result = prime * result + ((fileName == null) ? 0 : fileName.hashCode());
+		result = prime * result + ((file == null) ? 0 : file.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((shortcutKey == null) ? 0 : shortcutKey.hashCode());
 		result = prime * result + this.getClass().hashCode();
@@ -158,12 +158,12 @@ public class UIIcon implements IconDescription, NamedIcon {
 		else if (!descriptionTranslationKey.equals(other.descriptionTranslationKey)) {
 			return false;
 		}
-		if (fileName == null) {
-			if (other.fileName != null) {
+		if (file == null) {
+			if (other.file != null) {
 				return false;
 			}
 		}
-		else if (!fileName.equals(other.fileName)) {
+		else if (!file.equals(other.file)) {
 			return false;
 		}
 		if (name == null) {
@@ -194,9 +194,4 @@ public class UIIcon implements IconDescription, NamedIcon {
 	public NamedIcon zoom(float zoom) {
 		 return new ZoomedIcon(this, zoom);
 	}
-
-    @Override
-    public String getSource() {
-        return null;
-    }
 }

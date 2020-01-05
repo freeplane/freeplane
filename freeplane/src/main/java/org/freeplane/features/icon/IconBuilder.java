@@ -101,7 +101,7 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
 			iconElement.setName("icon");
 			iconElement.setAttribute("BUILTIN", icon.getName());
 			if (forceFormatting) {
-					String source = icon.getSource();
+					String source = icon.getFile();
 					if(source !=  null)
 					    iconElement.setAttribute("src", source);
 				iconElement.setAttribute("height",

@@ -387,12 +387,10 @@ class MindMapHTMLWriter {
 		for (NamedIcon icon : icons) {
 			if(icon instanceof MindIcon) {
 				MindIcon mindIcon = (MindIcon) icon;
-				final String iconFile = mindIcon.getSource();
+				final String iconFile = mindIcon.getFile();
 				fileout.write("<img src=\"icons/" + iconFile + "\" alt=\"" + mindIcon.getTranslatedDescription() + "\"");
-				if (iconFile.endsWith(".svg")) {
-					final Quantity<LengthUnits> iconSize = iconController.getIconSize(model);
-					fileout.write(" height = \"" + iconSize.toBaseUnitsRounded() + "\"");
-				}
+				final Quantity<LengthUnits> iconSize = iconController.getIconSize(model);
+				fileout.write(" height = \"" + iconSize.toBaseUnitsRounded() + "\"");
 				fileout.write(">");
 			}
 		}

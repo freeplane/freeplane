@@ -44,10 +44,4 @@ public class MindIcon extends UIIcon {
 	public String getImagePath() {
 		return DEFAULT_IMAGE_PATH;
 	}
-
-	public String getSource() {
-		final String path = getUrl().getPath();
-		final String fileName = path.substring(path.lastIndexOf('/') + 1);
-		return fileName;
-	}
 }

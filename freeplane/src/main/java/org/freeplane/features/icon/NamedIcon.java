@@ -35,7 +35,8 @@ public interface NamedIcon extends Comparable<NamedIcon> {
 			Comparator.comparing((NamedIcon x) -> x.getClass().getName())//
 			.thenComparing(NamedIcon::getPath);
 
-	String getName();
+    String getName();
+    String getFile();
 	Icon getIcon();
 	Icon getIcon(Quantity<LengthUnits> iconHeight);
 	String getPath();
@@ -45,6 +46,4 @@ public interface NamedIcon extends Comparable<NamedIcon> {
     default int compareTo(final NamedIcon uiIcon) {
 		return COMPARATOR.compare(this, uiIcon);
 	}
-    String getSource();
-	
 }

@@ -134,7 +134,7 @@ public class MIconController extends IconController {
 			item.setName(group.getDescriptionKey());
 			target.addChild(item);
 			for (final MindIcon icon : group.getIcons()) {
-				final String fileName = icon.getFileName();
+				final String fileName = icon.getFile();
 				addAction(item, "", icon, fileName);
 			}
 		}
@@ -414,7 +414,7 @@ public class MIconController extends IconController {
 		menu.setMargin(ICON_SUBMENU_INSETS);
 		menu.setIcon(group.getGroupIcon().getIcon());
 		for (final MindIcon icon : group.getIcons()) {
-			addActionToIconSubmenu(menu, icon, icon.getFileName());
+			addActionToIconSubmenu(menu, icon, icon.getFile());
 		}
 		menu.setToolTipText(group.getDescription());
 		return menu;
