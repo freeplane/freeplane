@@ -96,7 +96,7 @@ public class MenuUtils {
 				// but only for a few of these Icons are available
 				return null;
 			}
-			final String name = resource.replaceAll("/images/(.*).png", "../$1");
+			final String name = resource.replaceAll("/images/(.*).svg", "../$1");
 			return new MindIcon(name);
 		}
 

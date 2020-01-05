@@ -41,8 +41,8 @@ import org.freeplane.features.mode.ModeController;
  */
 public class EncryptionController implements IExtension {
 	private static final IconStore STORE = IconStoreFactory.ICON_STORE;
-	private static UIIcon decryptedIcon = STORE.getUIIcon("unlock.png");
-	private static UIIcon encryptedIcon = STORE.getUIIcon("lock.png");
+	private static UIIcon decryptedIcon = STORE.getUIIcon("unlock.svg");
+	private static UIIcon encryptedIcon = STORE.getUIIcon("lock.svg");
 
 	public static void install(EncryptionController encryptionController){
 		final ModeController modeController = Controller.getCurrentModeController();

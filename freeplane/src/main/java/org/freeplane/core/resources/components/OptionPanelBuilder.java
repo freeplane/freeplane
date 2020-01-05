@@ -143,7 +143,7 @@ public class OptionPanelBuilder {
 				final String iconName = element.getAttribute("icon", null);
 				final Object displayedItem;
 				if(iconName != null) {
-					displayedItem = new ImageIcon(ResourceController.getResourceController().getResource("/images/" + iconName));
+					displayedItem = ResourceController.getResourceController().getIcon("/images/" + iconName);
 				}
 				else {
 					final String translationKey = element.getAttribute("text", "OptionPanel." + choice);

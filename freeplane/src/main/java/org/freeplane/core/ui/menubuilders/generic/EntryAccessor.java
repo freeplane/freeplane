@@ -1,13 +1,10 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
 import java.awt.Component;
-import java.net.URL;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
 public class EntryAccessor {
@@ -34,19 +31,8 @@ public class EntryAccessor {
 		else {
 			String name = entry.getName();
 			final String key = name + ".icon";
-			final String iconResource = resourceAccessor.getProperty(key);
-			final Icon icon;
-			if (iconResource != null) {
-				final URL url = resourceAccessor.getResource(iconResource);
-				if(url != null)
-					icon = new ImageIcon(url);
-				else {
-					LogUtils.severe("Can not load icon '" + iconResource + "'");
-					icon = null;
-				}
-			}
-			else
-				icon = null;
+			
+			final Icon icon = resourceAccessor.getIcon(key);
 			return icon;
 		}
 

@@ -370,7 +370,7 @@ public abstract class ResourceController {
 
 	private Icon loadIcon(final String resourcePath) {
 		if (resourcePath != null) {
-			URL url = getFirstResource(IconFactory.getAlternativePaths(resourcePath));
+			URL url = getResource(resourcePath);
 			if (url != null) {
 				return IconFactory.getInstance().getIcon(url, IconFactory.DEFAULT_UI_ICON_HEIGHT);
 			}
@@ -381,18 +381,8 @@ public abstract class ResourceController {
 		return null;
 	}
 
-	public URL getFirstResource(String... resourcePaths) {
-		for (String path : resourcePaths) {
-			final URL url = getResource(path);
-			if (url != null)
-				return url;
-		}
-		return null;
-	}
-
 	public URL getIconResource(String resourcePath) {
-		final String[] alternativePaths = IconFactory.getAlternativePaths(resourcePath);
-		return getFirstResource(alternativePaths);
+		return getResource(resourcePath);
 	}
 
 	public Icon getImageIcon(String iconKey) {

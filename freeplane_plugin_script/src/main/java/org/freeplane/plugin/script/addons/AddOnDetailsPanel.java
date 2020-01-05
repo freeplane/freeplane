@@ -75,7 +75,7 @@ public class AddOnDetailsPanel extends JPanel {
 
 	private JLabel createImageLabel(AddOnProperties addOn) {
 		final JLabel label = new JLabel("");
-		label.setIcon(IconNotFound.createIconOrReturnNotFoundIcon(addOn.getName() + ".png"));
+		label.setIcon(IconNotFound.createIconOrReturnNotFoundIcon(addOn.getName() + ".svg", addOn.getName() + ".png"));
 		return label;
 	}
 

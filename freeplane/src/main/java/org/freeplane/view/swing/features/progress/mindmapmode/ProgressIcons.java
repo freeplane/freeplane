@@ -16,10 +16,10 @@ import org.freeplane.features.map.NodeModel;
 public class ProgressIcons {
 	public static final String EXTENDED_PROGRESS_ICON_IDENTIFIER = ".*[Pp]rogress_(tenth|quarter)_[0-9]{2}\\.[a-zA-Z0-9]*";
 	private final static String[] iconNames = new String[] { "0%", "25%", "50%", "75%", "100%" };
-	private final static MindIcon[] progressIcons = new MindIcon[] { new MindIcon(iconNames[0], iconNames[0] + ".png"),
-	        new MindIcon(iconNames[1], iconNames[1] + ".png"), new MindIcon(iconNames[2], iconNames[2] + ".png"),
-	        new MindIcon(iconNames[3], iconNames[3] + ".png"), new MindIcon(iconNames[4], iconNames[4] + ".png") };
-	private final static MindIcon OKIcon = new MindIcon("button_ok", "button_ok.png");
+	private final static MindIcon[] progressIcons = new MindIcon[] { new MindIcon(iconNames[0], iconNames[0] + ".svg"),
+	        new MindIcon(iconNames[1], iconNames[1] + ".svg"), new MindIcon(iconNames[2], iconNames[2] + ".svg"),
+	        new MindIcon(iconNames[3], iconNames[3] + ".svg"), new MindIcon(iconNames[4], iconNames[4] + ".svg") };
+	private final static MindIcon OKIcon = new MindIcon("button_ok", "button_ok.svg");
 
 	/**
 	 * This method increases/ decreases the progress icons.

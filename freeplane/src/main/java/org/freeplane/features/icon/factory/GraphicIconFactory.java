@@ -16,7 +16,7 @@ class GraphicIconFactory implements IconFactory {
 	private static final String DEFAULT_IMAGE_PATH = "/images/";
 	static final IconFactory FACTORY = new GraphicIconFactory();
 	private static final Icon ICON_NOT_FOUND = FACTORY.getIcon(ResourceController.getResourceController()
-	    .getResource(DEFAULT_IMAGE_PATH + "IconNotFound.png"));
+	    .getResource(DEFAULT_IMAGE_PATH + "IconNotFound.svg"));
 	
 	
 	private final WeakValueCache<String, Icon> ICON_CACHE = new WeakValueCache<String, Icon>();

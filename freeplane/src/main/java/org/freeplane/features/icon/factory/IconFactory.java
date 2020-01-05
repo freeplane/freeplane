@@ -38,8 +38,6 @@ import org.freeplane.features.icon.UIIcon;
  */
 public interface IconFactory {
 
-	String USE_SVG_ICONS = "use_svg_icons";
-
 	Quantity<LengthUnits> DEFAULT_UI_ICON_HEIGHT = ResourceController.getResourceController()
 		    .getLengthQuantityProperty("toolbar_icon_height");
   
@@ -47,20 +45,6 @@ public interface IconFactory {
 	
 	static IconFactory getInstance() {
 		return FACTORY;
-	}
-	
-	public static String[] getAlternativePaths(final String resourcePath) {
-		final String pngSuffix = ".png";
-		if (isSvgIconsEnabled() && resourcePath.endsWith(pngSuffix)) {
-			final String svgPath = resourcePath.substring(0, resourcePath.length() - pngSuffix.length()) + ".svg";
-			return new String[] { svgPath, resourcePath };
-		}
-		else
-			return new String[] { resourcePath };
-	}
-
-	static public boolean isSvgIconsEnabled() {
-		return ResourceController.getResourceController().getBooleanProperty(IconFactory.USE_SVG_ICONS);
 	}
 	
 	boolean canScaleIcon(Icon icon);

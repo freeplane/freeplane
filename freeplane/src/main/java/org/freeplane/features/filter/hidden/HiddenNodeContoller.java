@@ -36,7 +36,7 @@ public class HiddenNodeContoller {
 					return null;
 				}
 				if (hiddenNodeIcon == null) {
-					hiddenNodeIcon = IconStoreFactory.ICON_STORE.getUIIcon("hidden.png");
+					hiddenNodeIcon = IconStoreFactory.ICON_STORE.getUIIcon("hidden.svg");
 				}
 				return hiddenNodeIcon;
 			}

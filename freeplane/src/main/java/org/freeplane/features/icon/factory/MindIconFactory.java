@@ -33,7 +33,7 @@ public class MindIconFactory {
 	 */
 	public static MindIcon createIcon(final String name) {
 		final String translationKeyLabel = name.indexOf('/') > 0 ? "" : ("icon_" + name);
-		return new MindIcon(name, name + ".png", translationKeyLabel);
+		return new MindIcon(name, name + ".svg", translationKeyLabel);
 	}
 
 	public static Icon createStandardIcon(String iconKey) {

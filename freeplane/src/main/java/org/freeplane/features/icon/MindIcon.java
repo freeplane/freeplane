@@ -29,7 +29,7 @@ public class MindIcon extends UIIcon {
 	private static final String DEFAULT_IMAGE_PATH = "/images/icons";
 	private static final String SHORTCUT_KEY = "IconAction.%s.shortcut";
 	public MindIcon(final String name) {
-		this(name, name + ".png", "");
+		this(name, name + ".svg", "");
 	}
 
 	public MindIcon(final String name, final String fileName) {

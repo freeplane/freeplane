@@ -2,6 +2,8 @@ package org.freeplane.core.ui.menubuilders.generic;
 
 import java.net.URL;
 
+import javax.swing.Icon;
+
 class NullResourceAccessor implements ResourceAccessor {
     @Override
     public URL getResource(String name) {
@@ -32,4 +34,9 @@ class NullResourceAccessor implements ResourceAccessor {
 	public String getText(String name, String defaultValue) {
 		return defaultValue;
 	}
+
+    @Override
+    public Icon getIcon(String key) {
+        return null;
+    }
 }

@@ -179,21 +179,21 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 	}
 	private UIIcon getBellIcon() {
 		if (bellIcon == null) {
-			bellIcon = STORE.getUIIcon("bell.png");
+			bellIcon = STORE.getUIIcon("bell.svg");
 		}
 		return bellIcon;
 	}
 
 	private UIIcon getClockIcon() {
 		if (clockIcon == null) {
-			clockIcon = STORE.getUIIcon("clock.png");
+			clockIcon = STORE.getUIIcon("clock.svg");
 		}
 		return clockIcon;
 	}
 
 	private UIIcon getFlagIcon() {
 		if (flagIcon == null) {
-			flagIcon = STORE.getUIIcon("flag.png");
+			flagIcon = STORE.getUIIcon("flag.svg");
 		}
 		return flagIcon;
 	}

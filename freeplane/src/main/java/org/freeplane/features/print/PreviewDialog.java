@@ -25,6 +25,7 @@ import java.net.URL;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -60,16 +61,16 @@ class PreviewDialog extends JDialog implements ActionListener {
 		final JToolBar toolbar = new FreeplaneToolBar("preview_toolbar", SwingConstants.HORIZONTAL);
 		getContentPane().add(toolbar, "North");
 		pageNumber = new JLabel("- 9999 -");
-		final JButton button = getButton("Back24.gif", new BrowseAction(preview, pageNumber, -1));
+		final JButton button = getButton("Back24.svg", new BrowseAction(preview, pageNumber, -1));
 		toolbar.add(button);
 		pageNumber.setPreferredSize(new Dimension(pageNumber.getPreferredSize().width, button.getPreferredSize().height));
 		pageNumber.setText("- 1 -");
 		pageNumber.setHorizontalAlignment(SwingConstants.CENTER);
 		toolbar.add(pageNumber);
-		toolbar.add(getButton("Forward24.gif", new BrowseAction(preview, pageNumber, 1)));
+		toolbar.add(getButton("Forward24.svg", new BrowseAction(preview, pageNumber, 1)));
 		toolbar.add(new JToolBar.Separator());
-		toolbar.add(getButton("ZoomIn24.png", new ZoomAction(preview, PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
-		toolbar.add(getButton("ZoomOut24.png", new ZoomAction(preview, 1.0/PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
+		toolbar.add(getButton("ZoomIn24.svg", new ZoomAction(preview, PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
+		toolbar.add(getButton("ZoomOut24.svg", new ZoomAction(preview, 1.0/PreviewDialog.DEFAULT_ZOOM_FACTOR_STEP)));
 		toolbar.add(new JToolBar.Separator());
 		final JPanel buttons = new JPanel();
 		buttons.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -90,14 +91,10 @@ class PreviewDialog extends JDialog implements ActionListener {
 
 	private JButton getButton(final String name, final String iconName, final AbstractAction action) {
 		JButton result = null;
-		ImageIcon icon = null;
-		final URL imageURL = ResourceController.getResourceController().getIconResource("/images/" + iconName);
-		if (imageURL != null) {
-			icon = new ImageIcon(imageURL);
-		}
+		Icon icon = ResourceController.getResourceController().getIcon("/images/" + iconName);
 		if (action != null) {
 			if (icon != null) {
-				action.putValue(Action.SMALL_ICON, new ImageIcon(imageURL));
+				action.putValue(Action.SMALL_ICON, icon);
 			}
 			if (name != null) {
 				action.putValue(Action.NAME, name);

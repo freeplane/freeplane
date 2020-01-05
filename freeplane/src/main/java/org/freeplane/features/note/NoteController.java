@@ -48,12 +48,12 @@ public class NoteController implements IExtension {
 	 *
 	 */
 	public static final String NODE_NOTE_ICON = "accessories.plugins.NodeNoteIcon";
-	private static final UIIcon noteIcon= IconStoreFactory.ICON_STORE.getUIIcon("knotes.png");
+	private static final UIIcon noteIcon= IconStoreFactory.ICON_STORE.getUIIcon("knotes.svg");
 	public static final String bwNoteIconUrl;
 	public static final Icon bwNoteIcon;
 
 	static {
-			String bwNoteIconName = "note_black_and_transp.png";
+			String bwNoteIconName = "note_black_and_transp.svg";
 			bwNoteIconUrl = "freeplaneresource:/images/" + bwNoteIconName;
 			bwNoteIcon = IconStoreFactory.ICON_STORE.getUIIcon(bwNoteIconName).getIcon();
 	}
