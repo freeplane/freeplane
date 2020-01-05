@@ -381,10 +381,6 @@ public abstract class ResourceController {
 		return null;
 	}
 
-	public URL getIconResource(String resourcePath) {
-		return getResource(resourcePath);
-	}
-
 	public Icon getImageIcon(String iconKey) {
 		return FreeplaneIconFactory.toImageIcon(getIcon(iconKey));
 	}

@@ -109,7 +109,7 @@ public class UIIcon implements IconDescription, NamedIcon {
 			return resourceURL;
 		}
 		final String path = getPath();
-		resourceURL = RESOURCE_CONTROLLER.getIconResource(path);
+		resourceURL = RESOURCE_CONTROLLER.getResource(path);
 		return resourceURL;
 	}
 
