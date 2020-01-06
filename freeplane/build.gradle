@@ -53,7 +53,7 @@ bundleDeps.add(0, "lib/freeplaneosgi-${project.version}.jar")
 bundleDeps.add(0, "lib/freeplane_mac-${project.version}.jar")
 bundleDeps.add(0, "lib/freeplaneeditor-${project.version}.jar")
 bundleDeps.add(0, "lib/freeplaneviewer.jar")
-bundleDeps.add("lib/emoji-${project.version}.jar")
+bundleDeps.add("lib/${emojiJar.archiveFile.get().asFile.name}")
 
 ext.bundleExports = """\
                     com.inet.jortho,
@@ -263,6 +263,8 @@ task viewerJar(type: Jar) {
         exclude (osgiJar.includedClasses )
     }
     from (sourceSets.viewer.resources)
+    from (sourceSets.emojiList.resources)
+    
     
     configurations.mergedViewerDependencies.files.each {
     	from(zipTree(it.path))

@@ -1,47 +1,48 @@
 import java.util.concurrent.*
-
-project.ext.emojiDir = "${project.buildDir}/emoji/resources"
+import java.util.zip.ZipFile
 
 sourceSets {
-	emoji {
+	emojiGraphics {
 		resources {
-			srcDir emojiDir
+			srcDir "${project.buildDir}/emoji/resources"
+		}
+	}
+	
+	emojiList {
+		resources {
+			srcDir "${project.buildDir}/emoji/xml"
 		}
 	}
 }
 
-class EmojiDownloader {
-	static def emojiVersion = '12.1'
-	static def TWEMOJI_VERSION = '12.1.4'
-	static def twemojiBaseUrl = "https://twemoji.maxcdn.com/v/$TWEMOJI_VERSION/svg/"
-	static def emojiListUrl = "http://unicode.org/Public/emoji/$emojiVersion/emoji-test.txt"
-	static def HEX_CODEPOINT_END_POSITION = 43
-	static def STATUS_END_POSITION = 65
-	static def EMOJI_POSITION = 67
+interface EmojiConstants {
+	def emojiVersion = '12.1'
+	def TWEMOJI_VERSION = '12.1.4'
+	def twemojiBaseUrl = "https://twemoji.maxcdn.com/v/$TWEMOJI_VERSION/svg/"
+	def emojiListUrl = "http://unicode.org/Public/emoji/$emojiVersion/emoji-test.txt"
+	def HEX_CODEPOINT_END_POSITION = 43
+	def STATUS_END_POSITION = 65
+	def EMOJI_POSITION = 67
+}
+
+class EmojiDownloader implements EmojiConstants{
 
 	File emojiListFile
 	File emojiEntriesFile
-	Project project
-	String emojiDir
+	File emojiDir
 	
-	EmojiDownloader(Project project) {
-		this.project = project
-		this.emojiDir = "${project.emojiDir}/images/emoji"
-		this.emojiListFile = project.file("$emojiDir/emojilist.txt")
-		this.emojiEntriesFile = project.file("$emojiDir/emojientries.xml")
-	}
-	
-	def run(){
-		downloadEmojiList()
-		downloadEmojiFiles()
-		createUiEntryFile()
+	EmojiDownloader(File emojiDir) {
+		this.emojiDir = new File(emojiDir, 'resources/images/emoji')
+		emojiDir.mkdirs()
+		this.emojiListFile = new File(emojiDir, 'txt/emojilist.txt')
 	}
 	
 	def downloadEmojiList(){
 		if (!emojiListFile.exists()) {
-			project.mkdir(emojiListFile.parent)
+			emojiListFile.parentFile.mkdirs()
     		new URL(emojiListUrl).withInputStream{ i -> emojiListFile.withOutputStream{ it << i }}
 		}
+		return this
 	}
 	
 	def downloadEmojiFiles(){
@@ -53,7 +54,7 @@ class EmojiDownloader {
 	 				String hexCodes = line.substring(0, HEX_CODEPOINT_END_POSITION).trim()
 	 				String twemojiFileName = hexCodes.toLowerCase().replace(' ', '-').replaceFirst("^00", "") + '.svg';
 	 				String emojiUrl = "$twemojiBaseUrl$twemojiFileName"
-	 				def emojiFile = project.file("$emojiDir/$twemojiFileName")
+	 				def emojiFile = new File(emojiDir, twemojiFileName)
 			 		if (!emojiFile.exists()) {
 						exec.submit({
 							def get = new URL(emojiUrl).openConnection();
@@ -73,73 +74,91 @@ class EmojiDownloader {
 			println('Wait for downloads')
 			exec.awaitTermination(3600, TimeUnit.SECONDS);
 		}
-		println('Downloads completed')	
+		println('Downloads completed')
+		return this	
 	}
-	
-	def createUiEntryFile(){
-		Node root = new Node(null, 'FreeplaneEmojiEntries')
-		Node group = null 
-		Node subgroup = null
-		Node toneSubgroup = null
-		boolean firstInGroupSet = false
-		boolean firstInSubgroupSet = false
-		String lastEmoji = null
-		emojiListFile.eachLine { String line ->
- 			if(line.startsWith('# group')) {
- 				group = root.appendNode('Entry')
- 				group.attributes().put('name', line.substring(2))
- 			}
- 			else if(line.startsWith('# subgroup')) {
- 				subgroup = group.appendNode('Entry')
- 				subgroup.attributes().put('name', line.substring(2))
- 			}
- 			else if(line.length() > EMOJI_POSITION  && line.charAt(HEX_CODEPOINT_END_POSITION) == ';' && line.charAt(STATUS_END_POSITION) == '#') {
- 				String hexCodes = line.substring(0, HEX_CODEPOINT_END_POSITION).trim()
- 				String twemojiFileName = hexCodes.toLowerCase().replace(' ', '-').replaceFirst("^00", "") + '.svg';
- 				String emojiUrl = "$twemojiBaseUrl$twemojiFileName"
- 				def emojiFile = project.file("$emojiDir/$twemojiFileName")
-		    	if (emojiFile.exists()) {
-			 		String emoji = line.substring(EMOJI_POSITION, line.indexOf(' ', EMOJI_POSITION))
-			 		Node action
-			 		if(hexCodes.contains(' 1F3F')) {
-			 			if (toneSubgroup == null) {
-			 				toneSubgroup = subgroup.appendNode('Entry')
-			 				toneSubgroup.attributes().put('name', 'tone variants')
-			 				toneSubgroup.attributes().put('emoji', emoji)
-			 			}
-		 				action = toneSubgroup.appendNode('Entry')
- 						action.attributes().put('emoji', emoji)
-			 		}
-			 		else {
-			 			toneSubgroup = null
-	 					action = subgroup.appendNode('Entry')
-	 				}
-	 				group.attributes().putIfAbsent('emoji', emoji)
-	 				group.attributes().putIfAbsent('file', twemojiFileName)
-	 				subgroup.attributes().putIfAbsent('emoji', emoji)
-	 				subgroup.attributes().putIfAbsent('file', twemojiFileName)
-	 				action.attributes().put('emoji', emoji)
-	 				action.attributes().put('file', twemojiFileName)
-	 			}	
- 			}	
-		}
-		emojiEntriesFile.withOutputStream {new XmlNodePrinter(new PrintWriter(new OutputStreamWriter(it))).print(root)}
-	}
-	
 }
+
+class UiEntryCreator implements EmojiConstants {
+	
+	static def createUiEntryFile(File emojiDirectory, File emojiGraphicsJarFile){
+		
+		new ZipFile(emojiGraphicsJarFile).withCloseable{ graphicsJar ->
+			def emojiListFile = new File(emojiDirectory, 'txt/emojilist.txt')
+		
+			Node root = new Node(null, 'FreeplaneEmojiEntries')
+			Node group = null 
+			Node subgroup = null
+			Node toneSubgroup = null
+			boolean firstInGroupSet = false
+			boolean firstInSubgroupSet = false
+			String lastEmoji = null
+			
+			emojiListFile.eachLine { String line ->
+	 			if(line.startsWith('# group')) {
+	 				group = root.appendNode('Entry')
+	 				group.attributes().put('comment', line.substring(2))
+	 			}
+	 			else if(line.startsWith('# subgroup')) {
+	 				subgroup = group.appendNode('Entry')
+	 				subgroup.attributes().put('comment', line.substring(2))
+	 			}
+	 			else if(line.length() > EMOJI_POSITION  && line.charAt(HEX_CODEPOINT_END_POSITION) == ';' && line.charAt(STATUS_END_POSITION) == '#') {
+	 				String hexCodes = line.substring(0, HEX_CODEPOINT_END_POSITION).trim()
+	 				String twemojiFileName = hexCodes.toLowerCase().replace(' ', '-').replaceFirst("^00", "") + '.svg';
+			    	if (graphicsJar.getEntry("images/emoji/$twemojiFileName") != null) {
+			    		int emojiEnd = line.indexOf(' ', EMOJI_POSITION)
+				 		String emoji = line.substring(EMOJI_POSITION, emojiEnd)
+				 		int commentStart = line.indexOf(' ', emojiEnd + 1) + 1
+				 		String comment = line.substring(commentStart)
+				 		Node action
+				 		if(hexCodes.contains(' 1F3F')) {
+				 			if (toneSubgroup == null) {
+				 				toneSubgroup = subgroup.appendNode('Entry')
+				 				toneSubgroup.attributes().put('comment', 'skins')
+				 				toneSubgroup.attributes().put('emoji', emoji)
+				 				toneSubgroup.attributes().put('file', twemojiFileName)
+				 			}
+			 				action = toneSubgroup.appendNode('Entry')
+	 						action.attributes().put('emoji', emoji)
+				 		}
+				 		else {
+				 			toneSubgroup = null
+		 					action = subgroup.appendNode('Entry')
+		 					action.attributes().put('comment', comment)
+		 				}
+		 				group.attributes().putIfAbsent('emoji', emoji)
+		 				group.attributes().putIfAbsent('file', twemojiFileName)
+		 				subgroup.attributes().putIfAbsent('emoji', emoji)
+		 				subgroup.attributes().putIfAbsent('file', twemojiFileName)
+		 				action.attributes().put('emoji', emoji)
+		 				action.attributes().put('entity', hexCodes)
+		 				action.attributes().put('file', twemojiFileName)
+		 			}	
+	 			}	
+			}
+			def emojiEntriesFile = new File(emojiDirectory, 'xml/images/emoji/xml/emojientries.xml')
+			emojiEntriesFile.parentFile.mkdirs()
+			emojiEntriesFile.withOutputStream {new XmlNodePrinter(new PrintWriter(new OutputStreamWriter(it))).print(root)}
+		}
+		
+		return this
+	}
+}	
 
 task downloadEmoji {
 
-	onlyIf{
-		! emojiJar.archiveFile.get().asFile.exists()
-	}
-
 	doLast {
-		new EmojiDownloader(project).run()
+		def downloader = new EmojiDownloader(file("$buildDir/emoji"))
+		downloader.downloadEmojiList()
+		if (! emojiJar.archiveFile.get().asFile.exists()) {
+			downloader.downloadEmojiFiles()
+		}
 	}
 }
 
 task emojiJar(type: Jar) {
+	dependsOn downloadEmoji
 	onlyIf{
 		! emojiJar.archiveFile.get().asFile.exists()
 	}
@@ -149,8 +168,13 @@ task emojiJar(type: Jar) {
 	}
 	baseName = 'emoji'
 	archiveVersion = EmojiDownloader.TWEMOJI_VERSION
-	dependsOn downloadEmoji
-    from (sourceSets.emoji.output) {
-		include(['**/*.svg', '**/*.xml'])
-    }
+    from (sourceSets.emojiGraphics.resources)
+}
+
+task createEmojiList {
+	dependsOn emojiJar
+	
+	doLast {
+		UiEntryCreator.createUiEntryFile(file("$buildDir/emoji"), emojiJar.archiveFile.get().asFile)
+	}
 }
