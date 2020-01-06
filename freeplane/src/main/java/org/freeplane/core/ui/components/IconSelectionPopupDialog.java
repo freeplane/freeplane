@@ -103,7 +103,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 			}
 		});
 		numOfIcons = icons.size();
-		xDimension = (int) Math.ceil(Math.sqrt(numOfIcons));
+		xDimension = (int) Math.ceil(Math.sqrt(numOfIcons)) * 16 / 9;
 		if (numOfIcons <= xDimension * (xDimension - 1)) {
 			yDimension = xDimension - 1;
 		}

@@ -136,7 +136,6 @@ class UiEntryCreator implements EmojiConstants {
 					 		else {
 					 			toneSubgroup = null
 			 					action = subgroup.appendNode('Entry')
-			 					action.attributes().put('comment', comment)
 			 				}
 			 				group.attributes().putIfAbsent('emoji', emoji)
 			 				group.attributes().putIfAbsent('file', twemojiFileName)
@@ -145,6 +144,7 @@ class UiEntryCreator implements EmojiConstants {
 			 				action.attributes().put('emoji', emoji)
 			 				action.attributes().put('entity', hexCodes)
 			 				action.attributes().put('file', twemojiFileName)
+		 					action.attributes().put('comment', comment)
 			 			}	
 		 			}
 	 			}	

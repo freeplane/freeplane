@@ -28,8 +28,7 @@ public class FixedSizeUIIcon implements Icon {
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         if (width >= 0 && height >= 0 && failure == false) {
-            Image image;
-            image = createImage();
+            Image image = createImage();
             if(image != null)
                 g.drawImage(image, x, y, c);
         }
