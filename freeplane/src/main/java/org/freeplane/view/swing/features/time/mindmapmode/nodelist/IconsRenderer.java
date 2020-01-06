@@ -22,7 +22,6 @@ package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import org.freeplane.core.ui.components.MultipleImage;
-import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
 
 /**

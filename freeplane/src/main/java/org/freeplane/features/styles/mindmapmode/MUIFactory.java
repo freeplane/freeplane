@@ -20,7 +20,6 @@
 package org.freeplane.features.styles.mindmapmode;
 
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.util.Collection;
 

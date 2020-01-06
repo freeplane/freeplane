@@ -8,7 +8,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IFreeplaneAction;
 import org.freeplane.core.ui.components.JAutoRadioButtonMenuItem;

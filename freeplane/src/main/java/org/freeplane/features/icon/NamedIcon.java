@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.icon;
 
-import java.util.Comparator;
-
 import javax.swing.Icon;
 
 import org.freeplane.core.ui.LengthUnits;

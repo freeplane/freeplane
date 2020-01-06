@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
-import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
 
 /**

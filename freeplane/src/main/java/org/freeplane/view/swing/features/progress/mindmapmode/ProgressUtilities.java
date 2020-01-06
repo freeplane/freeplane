@@ -2,7 +2,6 @@ package org.freeplane.view.swing.features.progress.mindmapmode;
 
 import java.util.List;
 
-import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.view.swing.features.filepreview.ExternalResource;

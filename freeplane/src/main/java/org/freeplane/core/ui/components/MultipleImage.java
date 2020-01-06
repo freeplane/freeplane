@@ -32,7 +32,6 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.NamedIcon;
-import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.map.NodeModel;
 

@@ -12,7 +12,6 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 
 import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.ui.MenuSplitterConfiguration;
 import org.freeplane.core.util.Quantity;
 
 @SuppressWarnings("serial")

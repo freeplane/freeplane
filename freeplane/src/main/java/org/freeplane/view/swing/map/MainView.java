@@ -62,7 +62,6 @@ import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
-import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.link.LinkController;

@@ -21,7 +21,6 @@ package org.freeplane.features.icon;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collection;
 
 import org.freeplane.core.io.IAttributeHandler;

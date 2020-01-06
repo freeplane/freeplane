@@ -24,14 +24,10 @@ import java.awt.Container;
 import java.awt.HeadlessException;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JPanel;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.IMapChangeListener;

@@ -40,9 +40,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
-import org.freeplane.features.icon.MindIcon;
-import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 

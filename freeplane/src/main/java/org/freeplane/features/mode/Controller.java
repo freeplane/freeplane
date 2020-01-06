@@ -20,7 +20,6 @@
  */
 package org.freeplane.features.mode;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;

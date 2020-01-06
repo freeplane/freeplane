@@ -18,25 +18,18 @@ package com.thebuzzmedia.imgscalr;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.AreaAveragingScaleFilter;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ColorConvertOp;
-import java.awt.image.ColorModel;
 import java.awt.image.ConvolveOp;
 import java.awt.image.ImagingOpException;
-import java.awt.image.IndexColorModel;
 import java.awt.image.Kernel;
-import java.awt.image.RasterFormatException;
 import java.awt.image.RescaleOp;
-
-import javax.imageio.ImageIO;
 
 /**
  * Class used to implement performant, high-quality and intelligent image

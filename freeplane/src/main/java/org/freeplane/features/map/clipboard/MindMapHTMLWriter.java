@@ -23,12 +23,9 @@ import static org.freeplane.features.nodestyle.FontUtils.isStrikedThrough;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.List;
 
@@ -42,7 +39,6 @@ import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
-import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;

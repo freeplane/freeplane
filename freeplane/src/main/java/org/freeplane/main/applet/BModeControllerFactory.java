@@ -48,7 +48,6 @@ import org.freeplane.features.styles.AutomaticLayoutController;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
-import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
