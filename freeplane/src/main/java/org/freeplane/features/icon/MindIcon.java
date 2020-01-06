@@ -44,4 +44,8 @@ public class MindIcon extends UIIcon {
 	public String getImagePath() {
 		return DEFAULT_IMAGE_PATH;
 	}
+
+    public boolean isShownOnToolbar() {
+        return true;
+    }
 }

@@ -19,11 +19,9 @@
  */
 package org.freeplane.features.icon;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,21 +38,20 @@ public class IconStore {
 
 	public IconStore() {
 		groups = new LinkedHashMap<String, IconGroup>();
-		mindIcons = new HashMap<String, MindIcon>();
+		mindIcons = new LinkedHashMap<>();
 		uiIcons = new HashMap<String, UIIcon>();
 	}
 
-	/**
-	 * Adds a new MindIcon group to the store.
-	 * 
-	 * @param group
-	 */
 	public void addGroup(final IconGroup group) {
 		groups.put(group.getName(), group);
 		for (final MindIcon icon : group.getIcons()) {
-			mindIcons.put(icon.getName(), icon);
+		    mindIcons.put(icon.getName(), icon);
 		}
 	}
+
+    public void addEmojiIcon(final EmojiIcon icon) {
+        mindIcons.put(icon.getName(), icon);
+    }
 
 	public void addUIIcon(final UIIcon uiIcon) {
 		uiIcons.put(uiIcon.getFile(), uiIcon);
@@ -71,11 +68,7 @@ public class IconStore {
 	 * @return all MindIcons from all groups in the store, including user icons
 	 */
 	public Collection<MindIcon> getMindIcons() {
-		final List<MindIcon> icons = new ArrayList<MindIcon>();
-		for (final IconGroup group : groups.values()) {
-			icons.addAll(group.getIcons());
-		}
-		return icons;
+		return mindIcons.values();
 	}
 
 	/**

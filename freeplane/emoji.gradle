@@ -13,6 +13,11 @@ sourceSets {
 			srcDir "${project.buildDir}/emoji/xml"
 		}
 	}
+    test{
+    	resources {
+    		srcDir "${project.buildDir}/emoji/xml"
+    	}
+    }
 }
 
 interface EmojiConstants {
@@ -96,45 +101,52 @@ class UiEntryCreator implements EmojiConstants {
 			
 			emojiListFile.eachLine { String line ->
 	 			if(line.startsWith('# group')) {
-	 				group = root.appendNode('Entry')
-	 				group.attributes().put('comment', line.substring(2))
+	 				if(line.endsWith(': Component')){
+	 					group = null
+	 				}
+	 				else {
+	 					group = root.appendNode('Entry')
+	 					group.attributes().put('comment', line.substring(2))
+	 				}
 	 			}
-	 			else if(line.startsWith('# subgroup')) {
-	 				subgroup = group.appendNode('Entry')
-	 				subgroup.attributes().put('comment', line.substring(2))
-	 			}
-	 			else if(line.length() > EMOJI_POSITION  && line.charAt(HEX_CODEPOINT_END_POSITION) == ';' && line.charAt(STATUS_END_POSITION) == '#') {
-	 				String hexCodes = line.substring(0, HEX_CODEPOINT_END_POSITION).trim()
-	 				String twemojiFileName = hexCodes.toLowerCase().replace(' ', '-').replaceFirst("^00", "") + '.svg';
-			    	if (graphicsJar.getEntry("images/emoji/$twemojiFileName") != null) {
-			    		int emojiEnd = line.indexOf(' ', EMOJI_POSITION)
-				 		String emoji = line.substring(EMOJI_POSITION, emojiEnd)
-				 		int commentStart = line.indexOf(' ', emojiEnd + 1) + 1
-				 		String comment = line.substring(commentStart)
-				 		Node action
-				 		if(hexCodes.contains(' 1F3F')) {
-				 			if (toneSubgroup == null) {
-				 				toneSubgroup = subgroup.appendNode('Entry')
-				 				toneSubgroup.attributes().put('comment', 'skins')
-				 				toneSubgroup.attributes().put('emoji', emoji)
-				 				toneSubgroup.attributes().put('file', twemojiFileName)
-				 			}
-			 				action = toneSubgroup.appendNode('Entry')
-	 						action.attributes().put('emoji', emoji)
-				 		}
-				 		else {
-				 			toneSubgroup = null
-		 					action = subgroup.appendNode('Entry')
-		 					action.attributes().put('comment', comment)
-		 				}
-		 				group.attributes().putIfAbsent('emoji', emoji)
-		 				group.attributes().putIfAbsent('file', twemojiFileName)
-		 				subgroup.attributes().putIfAbsent('emoji', emoji)
-		 				subgroup.attributes().putIfAbsent('file', twemojiFileName)
-		 				action.attributes().put('emoji', emoji)
-		 				action.attributes().put('entity', hexCodes)
-		 				action.attributes().put('file', twemojiFileName)
-		 			}	
+	 			else if(group != null) {  
+		 			if(line.startsWith('# subgroup')) {
+		 				subgroup = group.appendNode('Entry')
+		 				subgroup.attributes().put('comment', line.substring(2))
+		 			}
+		 			else if(line.length() > EMOJI_POSITION  && line.charAt(HEX_CODEPOINT_END_POSITION) == ';' && line.charAt(STATUS_END_POSITION) == '#') {
+		 				String hexCodes = line.substring(0, HEX_CODEPOINT_END_POSITION).trim()
+		 				String twemojiFileName = hexCodes.toLowerCase().replace(' ', '-').replaceFirst("^00", "") + '.svg';
+				    	if (graphicsJar.getEntry("images/emoji/$twemojiFileName") != null) {
+				    		int emojiEnd = line.indexOf(' ', EMOJI_POSITION)
+					 		String emoji = line.substring(EMOJI_POSITION, emojiEnd)
+					 		int commentStart = line.indexOf(' ', emojiEnd + 1) + 1
+					 		String comment = line.substring(commentStart)
+					 		Node action
+					 		if(hexCodes.contains(' 1F3F')) {
+					 			if (toneSubgroup == null) {
+					 				toneSubgroup = subgroup.appendNode('Entry')
+					 				toneSubgroup.attributes().put('comment', 'skins')
+					 				toneSubgroup.attributes().put('emoji', emoji)
+					 				toneSubgroup.attributes().put('file', twemojiFileName)
+					 			}
+				 				action = toneSubgroup.appendNode('Entry')
+		 						action.attributes().put('skin', true)
+					 		}
+					 		else {
+					 			toneSubgroup = null
+			 					action = subgroup.appendNode('Entry')
+			 					action.attributes().put('comment', comment)
+			 				}
+			 				group.attributes().putIfAbsent('emoji', emoji)
+			 				group.attributes().putIfAbsent('file', twemojiFileName)
+			 				subgroup.attributes().putIfAbsent('emoji', emoji)
+			 				subgroup.attributes().putIfAbsent('file', twemojiFileName)
+			 				action.attributes().put('emoji', emoji)
+			 				action.attributes().put('entity', hexCodes)
+			 				action.attributes().put('file', twemojiFileName)
+			 			}	
+		 			}
 	 			}	
 			}
 			def emojiEntriesFile = new File(emojiDirectory, 'xml/images/emoji/xml/emojientries.xml')

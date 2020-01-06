@@ -19,14 +19,20 @@
  */
 package org.freeplane.features.icon;
 
-import org.freeplane.core.util.TextUtils;
-
 public class EmojiIcon extends MindIcon {
-    private static final String DEFAULT_IMAGE_PATH = "/images/icons/emoji";
+    private static final String DEFAULT_IMAGE_PATH = "/images/emoji";
+    final String emoji;
+    private final boolean isShownOnToolbar;
 
-    public EmojiIcon(final String name, final String fileName, final String description, int order) {
-		super(name, fileName, description, order);
+    public EmojiIcon(final String emoji, final String entity, final String fileName, final String description, int order, boolean isShownOnToolbar) {
+		super(entityName(entity), fileName, description, order);
+        this.emoji = emoji;
+        this.isShownOnToolbar = isShownOnToolbar;
 	}
+
+    public static String entityName(final String entity) {
+        return "emoji-" + entity.replace(' ', '-');
+    }
 
     @Override
     public String getImagePath() {
@@ -36,6 +42,11 @@ public class EmojiIcon extends MindIcon {
 	@Override
 	public String getTranslatedDescription() {
 		String key = getDescriptionTranslationKey();
-		return TextUtils.getOptionalText("usericon_" + key, key);
+		return key;
 	}
+
+    @Override
+    public boolean isShownOnToolbar() {
+        return isShownOnToolbar;
+    }
 }

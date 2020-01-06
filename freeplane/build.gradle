@@ -26,8 +26,6 @@ dependencies {
 		exclude module: 'mnemonicsetter'
 	}
     
- 	testRuntime files('src/viewer/resources', 'src/editor/resources', 'src/external/resources')
- 	
     // from flatDir "localGitDepsRepository":
     lib ':idw-gpl-1.6.1'
 }
@@ -36,6 +34,13 @@ sourceSets {
     viewer {}
     editor {}
     external {}
+    test{
+    	resources {
+    		source sourceSets.viewer.resources
+    		source sourceSets.editor.resources
+    		source sourceSets.external.resources
+    	}
+    }
 }
 
 // work around for new gradle bug if subproject name equals to root dir name

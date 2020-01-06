@@ -41,8 +41,8 @@ public class XmlEntryStructureBuilder implements EntryVisitor{
 		}
 	}
 
-	static public Entry buildMenuStructure(String xmlWithoutContent) {
-		final Reader reader = new StringReader(xmlWithoutContent);
+	static public Entry buildMenuStructure(String xml) {
+		final Reader reader = new StringReader(xml);
 		return buildMenuStructure(reader);
 	}
 

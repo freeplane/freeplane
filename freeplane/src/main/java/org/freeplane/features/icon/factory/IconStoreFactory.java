@@ -19,8 +19,14 @@
  */
 package org.freeplane.features.icon.factory;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,8 +37,14 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
+import org.freeplane.core.ui.menubuilders.action.ActionFinder;
+import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.EmojiIcon;
 import org.freeplane.features.icon.IconGroup;
 import org.freeplane.features.icon.IconNotFound;
 import org.freeplane.features.icon.IconStore;
@@ -56,12 +68,16 @@ public class IconStoreFactory {
 	private static final String GROUP_ICON_KEY = "IconGroupPopupAction.%s.icon";
 	private static final String GROUP_DESC_KEY = "IconGroupPopupAction.%s.text";
 	private static final Pattern iconFileNamePattern = Pattern.compile(".*\\.(svg|png)$", Pattern.CASE_INSENSITIVE);
+	private static final String EMOJI_ENTRIES_RESOURCE = "/images/emoji/xml/emojientries.xml";   
 
 	public static IconStore ICON_STORE = new IconStoreFactory().createIcons();
 	
 	private int order = 0;
+    private final IconStore iconStore;
 	
-	private IconStoreFactory() {}
+	private IconStoreFactory() {
+	    iconStore = new IconStore();
+	}
 	
     private MindIcon createMindIcon(final String name) {
         final String translationKeyLabel = name.indexOf('/') > 0 ? "" : ("icon_" + name);
@@ -69,8 +85,56 @@ public class IconStoreFactory {
     }
     
 	private IconStore createIcons() {
-	    final IconStore iconStore = new IconStore();
-		final String[] groupNames = RESOURCE_CONTROLLER.getProperty(GROUP_NAMES_KEY).split(SEPARATOR);
+		createClassicIcons();
+		createEmojiIcons();
+		createStateIcons();
+		return iconStore;
+	}
+
+    private void createEmojiIcons() {
+        final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
+        actionBuilder.setDefaultBuilder(new EntryVisitor() {
+            
+            @Override
+            public void visit(Entry entry) {
+                if(entry.isLeaf()) {
+                    String emoji = (String) entry.getAttribute("emoji");
+                    String file = (String) entry.getAttribute("file");
+                    String entity = (String) entry.getAttribute("entity");
+                    String comment = (String) entry.getAttribute("comment");
+                    boolean containsSkin = Boolean.TRUE.equals(entry.getAttribute("skin"));
+                    EmojiIcon emojiIcon = new EmojiIcon(emoji, entity, file, comment, order++, //
+                            ! containsSkin);
+                    iconStore.addEmojiIcon(emojiIcon);
+                }
+            }
+            
+            @Override
+            public boolean shouldSkipChildren(Entry entry) {
+                return false;
+            }
+        });
+        try {
+            InputStream resource = ResourceController.getResourceController().getResourceStream(EMOJI_ENTRIES_RESOURCE);
+            final Reader reader = new InputStreamReader(resource, StandardCharsets.UTF_8);
+            Entry entries = XmlEntryStructureBuilder.buildMenuStructure(reader);
+            actionBuilder.build(entries);
+        } catch (IOException e) {
+           throw new RuntimeException(e);
+        }
+
+    }
+
+    private void createStateIcons() {
+        final String[] stateIconNames = RESOURCE_CONTROLLER.getProperty(STATE_ICON_NAMES_KEY).split(SEPARATOR);
+		for(String name : stateIconNames) {
+		    UIIcon icon = new UIIcon(name, name, order++);
+		    iconStore.addUIIcon(icon);
+		}
+    }
+
+    private void createClassicIcons() {
+        final String[] groupNames = RESOURCE_CONTROLLER.getProperty(GROUP_NAMES_KEY).split(SEPARATOR);
 		for (final String groupName : groupNames) {
 			final String description = TextUtils.getText(String.format(GROUP_DESC_KEY, groupName));
 			List<MindIcon> icons;
@@ -90,13 +154,7 @@ public class IconStoreFactory {
 			}
 			iconStore.addGroup(new IconGroup(groupName, groupIcon, description, icons));
 		}
-		final String[] stateIconNames = RESOURCE_CONTROLLER.getProperty(STATE_ICON_NAMES_KEY).split(SEPARATOR);
-		for(String name : stateIconNames) {
-		    UIIcon icon = new UIIcon(name, name, order++);
-		    iconStore.addUIIcon(icon);
-		}
-		return iconStore;
-	}
+    }
 
 	private Map<String, MindIcon> getIcons(final String groupName) {
 		final String[] iconNames = RESOURCE_CONTROLLER.getProperty(String.format(GROUP_KEY, groupName))

@@ -125,48 +125,12 @@ public class UIIcon implements IconDescription, NamedIcon {
 
 	@Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((descriptionTranslationKey == null) ? 0: descriptionTranslationKey.hashCode());
-        result = prime * result + ((file == null) ? 0 : file.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + order;
-        result = prime * result + ((shortcutKey == null) ? 0 : shortcutKey.hashCode());
-        return result;
-    }
+	    return super.hashCode();
+     }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        UIIcon other = (UIIcon) obj;
-        if (descriptionTranslationKey == null) {
-            if (other.descriptionTranslationKey != null)
-                return false;
-        } else if (!descriptionTranslationKey.equals(other.descriptionTranslationKey))
-            return false;
-        if (file == null) {
-            if (other.file != null)
-                return false;
-        } else if (!file.equals(other.file))
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        if (order != other.order)
-            return false;
-        if (shortcutKey == null) {
-            if (other.shortcutKey != null)
-                return false;
-        } else if (!shortcutKey.equals(other.shortcutKey))
-            return false;
-        return true;
+        return super.equals(obj);
     }
 
     @Override
