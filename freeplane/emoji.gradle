@@ -11,13 +11,13 @@ sourceSets {
 }
 
 class EmojiDownloader {
-	def emojiVersion = '12.1'
-	def twemojiVersion = '12.1.4'
-	def twemojiBaseUrl = "https://twemoji.maxcdn.com/v/$twemojiVersion/svg/"
-	def emojiListUrl = "http://unicode.org/Public/emoji/$emojiVersion/emoji-test.txt"
-	def HEX_CODEPOINT_END_POSITION = 43
-	def STATUS_END_POSITION = 65
-	def EMOJI_POSITION = 67
+	static def emojiVersion = '12.1'
+	static def TWEMOJI_VERSION = '12.1.4'
+	static def twemojiBaseUrl = "https://twemoji.maxcdn.com/v/$TWEMOJI_VERSION/svg/"
+	static def emojiListUrl = "http://unicode.org/Public/emoji/$emojiVersion/emoji-test.txt"
+	static def HEX_CODEPOINT_END_POSITION = 43
+	static def STATUS_END_POSITION = 65
+	static def EMOJI_POSITION = 67
 
 	File emojiListFile
 	File emojiEntriesFile
@@ -114,6 +114,10 @@ class EmojiDownloader {
 			 			toneSubgroup = null
 	 					action = subgroup.appendNode('Entry')
 	 				}
+	 				group.attributes().putIfAbsent('emoji', emoji)
+	 				group.attributes().putIfAbsent('file', twemojiFileName)
+	 				subgroup.attributes().putIfAbsent('emoji', emoji)
+	 				subgroup.attributes().putIfAbsent('file', twemojiFileName)
 	 				action.attributes().put('emoji', emoji)
 	 				action.attributes().put('file', twemojiFileName)
 	 			}	
@@ -125,16 +129,26 @@ class EmojiDownloader {
 }
 
 task downloadEmoji {
+
+	onlyIf{
+		! emojiJar.archiveFile.get().asFile.exists()
+	}
+
 	doLast {
 		new EmojiDownloader(project).run()
 	}
 }
 
 task emojiJar(type: Jar) {
+	onlyIf{
+		! emojiJar.archiveFile.get().asFile.exists()
+	}
+	
 	manifest = project.manifest {
 		attributes("Manifest-Version": "1.0")
 	}
 	baseName = 'emoji'
+	archiveVersion = EmojiDownloader.TWEMOJI_VERSION
 	dependsOn downloadEmoji
     from (sourceSets.emoji.output) {
 		include(['**/*.svg', '**/*.xml'])
