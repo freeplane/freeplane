@@ -31,7 +31,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.export.mindmapmode.IExportEngine;
 import org.freeplane.features.filter.condition.ICondition;
-import org.freeplane.features.icon.factory.MindIconFactory;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
@@ -184,7 +184,7 @@ class ControllerProxy implements Proxy.Controller {
 	@Override
 	public void setStatusInfo(final String infoPanelKey, final String info, final String iconKey) {
 		final ViewController viewController = getViewController();
-		viewController.addStatusInfo(infoPanelKey, info, MindIconFactory.createStandardIcon(iconKey));
+		viewController.addStatusInfo(infoPanelKey, info, IconStoreFactory.ICON_STORE.getUIIcon(iconKey).getIcon());
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import org.freeplane.api.Node;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.Filter;
-import org.freeplane.features.icon.factory.MindIconFactory;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.NodeContainsCondition;
@@ -488,7 +488,7 @@ public class ScriptApiTest {
 		assertTrue("find out about the available icons with FreeplaneIconUtils.listStandardIconKeys() -> " + keys,
 		    keys.contains("button_ok"));
 		// no actual test
-		c.setStatusInfo("standard", MindIconFactory.createStandardIcon("button_ok"));
+		c.setStatusInfo("standard", IconStoreFactory.ICON_STORE.getUIIcon("button_ok").getIcon());
 		// no actual test - info should be removed
 		c.setStatusInfo(null);
 	}

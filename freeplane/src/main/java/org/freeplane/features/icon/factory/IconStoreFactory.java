@@ -50,15 +50,25 @@ import org.freeplane.features.icon.UserIcon;
 public class IconStoreFactory {
 	private static final String SEPARATOR = ";";
 	private static final ResourceController RESOURCE_CONTROLLER = ResourceController.getResourceController();
-	private static final String GROUP_NAMES_KEY = "icons.groups";
+    private static final String GROUP_NAMES_KEY = "icons.groups";
+    private static final String STATE_ICON_NAMES_KEY = "icons.state";
 	private static final String GROUP_KEY = "icons.group.%s";
 	private static final String GROUP_ICON_KEY = "IconGroupPopupAction.%s.icon";
 	private static final String GROUP_DESC_KEY = "IconGroupPopupAction.%s.text";
 	private static final Pattern iconFileNamePattern = Pattern.compile(".*\\.(svg|png)$", Pattern.CASE_INSENSITIVE);
 
-	public static IconStore ICON_STORE = createIcons();
+	public static IconStore ICON_STORE = new IconStoreFactory().createIcons();
 	
-	private static IconStore createIcons() {
+	private int order = 0;
+	
+	private IconStoreFactory() {}
+	
+    private MindIcon createMindIcon(final String name) {
+        final String translationKeyLabel = name.indexOf('/') > 0 ? "" : ("icon_" + name);
+        return new MindIcon(name, name + ".svg", translationKeyLabel, order++);
+    }
+    
+	private IconStore createIcons() {
 	    final IconStore iconStore = new IconStore();
 		final String[] groupNames = RESOURCE_CONTROLLER.getProperty(GROUP_NAMES_KEY).split(SEPARATOR);
 		for (final String groupName : groupNames) {
@@ -66,12 +76,12 @@ public class IconStoreFactory {
 			List<MindIcon> icons;
 			UIIcon groupIcon = null;
 			if ("user".equals(groupName)) {
-				icons = IconStoreFactory.getUserIcons();
-				groupIcon = MindIconFactory.createIcon("user_icon");
+				icons = getUserIcons();
+				groupIcon = createMindIcon("user_icon");
 			}
 			else {
 				final String groupIconName = RESOURCE_CONTROLLER.getProperty(String.format(GROUP_ICON_KEY, groupName));
-				final Map<String, MindIcon> iconMap = IconStoreFactory.getIcons(groupName);
+				final Map<String, MindIcon> iconMap = getIcons(groupName);
 				groupIcon = iconMap.get(groupIconName);
 				icons = new ArrayList<MindIcon>(iconMap.values());
 			}
@@ -80,21 +90,26 @@ public class IconStoreFactory {
 			}
 			iconStore.addGroup(new IconGroup(groupName, groupIcon, description, icons));
 		}
+		final String[] stateIconNames = RESOURCE_CONTROLLER.getProperty(STATE_ICON_NAMES_KEY).split(SEPARATOR);
+		for(String name : stateIconNames) {
+		    UIIcon icon = new UIIcon(name, name, order++);
+		    iconStore.addUIIcon(icon);
+		}
 		return iconStore;
 	}
 
-	private static Map<String, MindIcon> getIcons(final String groupName) {
+	private Map<String, MindIcon> getIcons(final String groupName) {
 		final String[] iconNames = RESOURCE_CONTROLLER.getProperty(String.format(GROUP_KEY, groupName))
 		    .split(SEPARATOR);
 		final Map<String, MindIcon> icons = new LinkedHashMap<String, MindIcon>(iconNames.length);
 		for (final String iconName : iconNames) {
-			final MindIcon icon = MindIconFactory.createIcon(iconName);
+			final MindIcon icon = createMindIcon(iconName);
 			icons.put(iconName, icon);
 		}
 		return icons;
 	}
 
-	private static List<MindIcon> getUserIcons() {
+	private List<MindIcon> getUserIcons() {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		if (resourceController.isApplet()) {
 			return Collections.emptyList();
@@ -105,10 +120,10 @@ public class IconStoreFactory {
 			iconDir.mkdirs();
 			return Collections.emptyList();
 		}
-		return IconStoreFactory.getUserIcons(iconDir, "");
+		return getUserIcons(iconDir, "");
 	}
 
-	private static List<MindIcon> getUserIcons(final File iconDir, final String dir) {
+	private List<MindIcon> getUserIcons(final File iconDir, final String dir) {
 		final String[] userIconArray = iconDir.list(new FilenameFilter() {
 			public boolean accept(final File dir, final String name) {
 				return hasValidIconFileExtension(name) || new File(dir, name).isDirectory();
@@ -129,7 +144,7 @@ public class IconStoreFactory {
 			final File childDir = new File(iconDir, fileName);
 			if (childDir.isDirectory()) {
 				final String fullName = dir + fileName;
-				final List<MindIcon> childUserIcons = IconStoreFactory.getUserIcons(childDir, fullName + '/');
+				final List<MindIcon> childUserIcons = getUserIcons(childDir, fullName + '/');
 				icons.addAll(childUserIcons);
 			}
 		}
@@ -144,17 +159,17 @@ public class IconStoreFactory {
 			if (iconName.equals("")) {
 				continue;
 			}
-			final UserIcon icon = new UserIcon(iconName, fullName, iconDescription);
+			final UserIcon icon = new UserIcon(iconName, fullName, iconDescription, order++);
 			icons.add(icon);
 		}
 		return icons;
 	}
 
-	private static boolean hasValidIconFileExtension(final String name) {
+	private boolean hasValidIconFileExtension(final String name) {
 		return iconFileNamePattern.matcher(name).matches();
 	}
 
-	private static String getIconFileNameWithoutExtension(final String fileNameWithExtension) {
+	private String getIconFileNameWithoutExtension(final String fileNameWithExtension) {
 		return hasValidIconFileExtension(fileNameWithExtension) ?
 				fileNameWithExtension.substring(0, fileNameWithExtension.length() - 4) : fileNameWithExtension;
 	}

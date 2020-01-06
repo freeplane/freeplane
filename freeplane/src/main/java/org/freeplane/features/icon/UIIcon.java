@@ -20,7 +20,6 @@
 package org.freeplane.features.icon;
 
 import java.net.URL;
-import java.util.regex.Pattern;
 
 import javax.swing.Icon;
 
@@ -45,21 +44,23 @@ public class UIIcon implements IconDescription, NamedIcon {
 	private final String descriptionTranslationKey;
 	private final String shortcutKey;
 	private URL resourceURL;
+    private final int order;
 
-	public UIIcon(final String name, final String file) {
-		this(name, file, "", "?");
+	public UIIcon(final String name, final String file, int order) {
+		this(name, file, "", "?", order);
 	}
 
-	public UIIcon(final String name, final String file, final String descriptionTranslationKey) {
-		this(name, file, descriptionTranslationKey, "?");
+	public UIIcon(final String name, final String file, final String descriptionTranslationKey, int order) {
+		this(name, file, descriptionTranslationKey, "?", order);
 	}
 
 	public UIIcon(final String name, final String file, final String descriptionTranslationKey,
-	              final String shortcutKey) {
+	              final String shortcutKey, int order) {
 		this.name = name;
 		this.file = file;
 		this.descriptionTranslationKey = descriptionTranslationKey;
 		this.shortcutKey = shortcutKey;
+        this.order = order;
 	}
 
 	@Override
@@ -118,65 +119,57 @@ public class UIIcon implements IconDescription, NamedIcon {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((descriptionTranslationKey == null) ? 0 : descriptionTranslationKey.hashCode());
-		result = prime * result + ((file == null) ? 0 : file.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((shortcutKey == null) ? 0 : shortcutKey.hashCode());
-		result = prime * result + this.getClass().hashCode();
-		return result;
-	}
+    public int getOrder() {
+        return order;
+    }
 
 	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final UIIcon other = (UIIcon) obj;
-		if (descriptionTranslationKey == null) {
-			if (other.descriptionTranslationKey != null) {
-				return false;
-			}
-		}
-		else if (!descriptionTranslationKey.equals(other.descriptionTranslationKey)) {
-			return false;
-		}
-		if (file == null) {
-			if (other.file != null) {
-				return false;
-			}
-		}
-		else if (!file.equals(other.file)) {
-			return false;
-		}
-		if (name == null) {
-			if (other.name != null) {
-				return false;
-			}
-		}
-		else if (!name.equals(other.name)) {
-			return false;
-		}
-		if (shortcutKey == null) {
-			if (other.shortcutKey != null) {
-				return false;
-			}
-		}
-		else if (!shortcutKey.equals(other.shortcutKey)) {
-			return false;
-		}
-		return true;
-	}
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((descriptionTranslationKey == null) ? 0: descriptionTranslationKey.hashCode());
+        result = prime * result + ((file == null) ? 0 : file.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + order;
+        result = prime * result + ((shortcutKey == null) ? 0 : shortcutKey.hashCode());
+        return result;
+    }
 
-	@Override
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        UIIcon other = (UIIcon) obj;
+        if (descriptionTranslationKey == null) {
+            if (other.descriptionTranslationKey != null)
+                return false;
+        } else if (!descriptionTranslationKey.equals(other.descriptionTranslationKey))
+            return false;
+        if (file == null) {
+            if (other.file != null)
+                return false;
+        } else if (!file.equals(other.file))
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (order != other.order)
+            return false;
+        if (shortcutKey == null) {
+            if (other.shortcutKey != null)
+                return false;
+        } else if (!shortcutKey.equals(other.shortcutKey))
+            return false;
+        return true;
+    }
+
+    @Override
 	public String toString() {
 		return name;
 	}

@@ -29,6 +29,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.Box;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
@@ -46,8 +47,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.MenuUtils.MenuEntry;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.icon.MindIcon;
-import org.freeplane.features.icon.factory.MindIconFactory;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
@@ -94,7 +94,7 @@ public class SelectMenuItemDialog extends JDialog {
 			setOpenIcon(null);
 			setClosedIcon(null);
 			// set default
-			setLeafIcon(MindIconFactory.createIcon(DEFAULT_ICON).getIcon());
+			setLeafIcon(IconStoreFactory.ICON_STORE.getUIIcon(DEFAULT_ICON).getIcon());
 		}
 
 		@Override
@@ -105,10 +105,9 @@ public class SelectMenuItemDialog extends JDialog {
 			if (leaf) {
 				final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 				final MenuEntry menuEntry = (MenuEntry) node.getUserObject();
-				if (menuEntry.getIconKey() != null) {
-					final MindIcon mindIcon = menuEntry.createMindIcon();
-					if (mindIcon != null)
-						setIcon(mindIcon.getIcon());
+				Icon icon = menuEntry.getIcon();
+				if (icon != null) {
+				    setIcon(icon);
 				}
 			}
 			return this;

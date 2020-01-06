@@ -8,11 +8,12 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.resources.ResourceController;
 
 public class IconNotFound extends MindIcon {
-	private static final String DEFAULT_IMAGE_PATH = "/images";
+	private static final int ORDER = Integer.MAX_VALUE;
+    private static final String DEFAULT_IMAGE_PATH = "/images";
 //	private static final IconNotFound ICON_NOT_FOUND = new IconNotFound();
 
 	public IconNotFound(final String originallyRequestedIconName) {
-		super(originallyRequestedIconName, "IconNotFound.svg", "icon not found");
+		super(originallyRequestedIconName, "IconNotFound.svg", "icon not found", ORDER);
 	}
 
 	@Override

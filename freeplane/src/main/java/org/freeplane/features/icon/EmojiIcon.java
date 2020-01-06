@@ -17,26 +17,25 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.icon.factory;
+package org.freeplane.features.icon;
 
-import javax.swing.Icon;
+import org.freeplane.core.util.TextUtils;
 
-import org.freeplane.features.icon.MindIcon;
+public class EmojiIcon extends MindIcon {
+    private static final String DEFAULT_IMAGE_PATH = "/images/icons/emoji";
 
-/**
- * @author Tamas Eppel
- */
-public class MindIconFactory {
-	/**
-	 * Constructs a MindIcon with the given name from the property file.
-	 * The name of the icon is the file name without the extension.
-	 */
-	public static MindIcon createIcon(final String name) {
-		final String translationKeyLabel = name.indexOf('/') > 0 ? "" : ("icon_" + name);
-		return new MindIcon(name, name + ".svg", translationKeyLabel);
+    public EmojiIcon(final String name, final String fileName, final String description, int order) {
+		super(name, fileName, description, order);
 	}
 
-	public static Icon createStandardIcon(String iconKey) {
-		return createIcon(iconKey).getIcon();
+    @Override
+    public String getImagePath() {
+        return DEFAULT_IMAGE_PATH;
+    }
+    
+	@Override
+	public String getTranslatedDescription() {
+		String key = getDescriptionTranslationKey();
+		return TextUtils.getOptionalText("usericon_" + key, key);
 	}
 }

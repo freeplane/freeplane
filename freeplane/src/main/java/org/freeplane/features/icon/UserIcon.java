@@ -38,8 +38,8 @@ public class UserIcon extends MindIcon {
 	private static final String DEFAULT_IMAGE_PATH = //
 	        ResourceController.getResourceController().getFreeplaneUserDirectory() + "/icons";
 
-    public UserIcon(final String name, final String fileName, final String description) {
-		super(name, fileName, description);
+    public UserIcon(final String name, final String fileName, final String description, int order) {
+		super(name, fileName, description, order);
 	}
 
     @Override

@@ -29,10 +29,10 @@ import javax.swing.Icon;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.util.Quantity;
-import org.freeplane.features.map.NodeModel;
 
 public class UIIconSet extends UIIcon {
-	final Collection<NamedIcon> uiIcons;
+	private static final int ORDER = Integer.MAX_VALUE;
+    final Collection<NamedIcon> uiIcons;
 	final float zoom;
 
 	public Collection<NamedIcon> getIcons() {
@@ -43,7 +43,7 @@ public class UIIconSet extends UIIcon {
 	private MultipleImage compoundIcon;
 
 	public UIIconSet(final Collection<NamedIcon> uiIcons, final float zoom) {
-		super("", "");
+		super("", "", ORDER);
 		this.zoom = zoom;
 		this.uiIcons = Collections.unmodifiableCollection(uiIcons);
 		imageIcons = new LinkedList<NamedIcon>();
