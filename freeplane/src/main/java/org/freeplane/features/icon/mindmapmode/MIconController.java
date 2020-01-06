@@ -21,7 +21,6 @@ package org.freeplane.features.icon.mindmapmode;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -91,8 +90,6 @@ import org.freeplane.features.styles.LogicalStyleController;
  */
 public class MIconController extends IconController {
 	private static final Insets ICON_SUBMENU_INSETS = new Insets(3, 0, 3, 0);
-	private static final int ARROW_SIZE = Math.round(UITools.getUIFontSize(0.8));
-	private static final Font ARROW_FONT = new Font("SansSerif", 0, ARROW_SIZE);
 	private static final ConditionPredicate DEPENDS_ON_ICON = new ConditionPredicate() {
 
 		@Override
@@ -166,7 +163,7 @@ public class MIconController extends IconController {
 
 	public static enum Keys {
 		ICONS
-	};
+	}
 
 	private static class ExtensionCopier implements IExtensionCopier {
 		@Override
@@ -193,9 +190,7 @@ public class MIconController extends IconController {
 			if (!key.equals(Keys.ICONS)) {
 				return;
 			}
-			while (from.removeIcon() > 0) {
-				;
-			}
+			while (from.removeIcon() > 0) {/**/}
 		}
 
 		@Override
@@ -216,6 +211,7 @@ public class MIconController extends IconController {
 		}
 		@Override
 		public void resolveParentExtensions(Object key, NodeModel to) {
+		    //
         }
 	}
 
@@ -409,7 +405,6 @@ public class MIconController extends IconController {
 
 
 		};
-		menu.setFont(ARROW_FONT);
 		menu.setMargin(ICON_SUBMENU_INSETS);
 		menu.setIcon(group.getGroupIcon().getIcon());
 		for (final MindIcon icon : group.getIcons()) {
