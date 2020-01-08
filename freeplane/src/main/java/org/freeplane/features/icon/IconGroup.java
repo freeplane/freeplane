@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.freeplane.core.util.TextUtils;
-
 /**
  * 
  * Stores all kinds of icons used in Freeplane.
@@ -33,105 +31,70 @@ import org.freeplane.core.util.TextUtils;
  *
  */
 public class IconGroup {
-	private String name;
-	private List<MindIcon> icons;
-	private UIIcon groupIcon;
-	private String description;
-
-	public IconGroup(final String name, final UIIcon groupIcon) {
-		this.name = name;
-		this.groupIcon = groupIcon;
+	private final String name;
+	private final List<IconGroup> groups ;
+	private final MindIcon groupIcon;
+	private final String description;
+	
+	private IconGroup(final MindIcon groupIcon) {
+	    this(groupIcon.getName(), groupIcon, groupIcon.getTranslatedDescription());
 	}
 
-	public IconGroup(final String name, final UIIcon groupIcon, final String description) {
-		this.name = name;
-		this.groupIcon = groupIcon;
-		this.description = description;
-	}
-
-	public IconGroup(final String name, final UIIcon groupIcon, final String description, final List<MindIcon> icons) {
-		this.name = name;
-		this.groupIcon = groupIcon;
-		this.description = description;
-		this.icons = new ArrayList<MindIcon>(icons);
-	}
+    public IconGroup(final String name, final MindIcon groupIcon, final String description) {
+        this.name = name;
+        this.groupIcon = groupIcon;
+        this.description = description;
+        this.groups = new ArrayList<>();
+    }
+    public IconGroup(final String name, final MindIcon groupIcon, final String description, final List<MindIcon> icons) {
+        this(name, groupIcon, description);
+        icons.stream().map(IconGroup::new).forEach(this.groups::add);
+    }
 
 	public String getName() {
 		return name;
 	}
-
-	public void setName(final String name) {
-		this.name = name;
+	public List<IconGroup> getGroups() {
+		return Collections.unmodifiableList(groups);
 	}
 
 	public List<MindIcon> getIcons() {
-		return Collections.unmodifiableList(icons);
+	    if(isLeaf())
+	        return Collections.singletonList(getGroupIcon());
+	    List<MindIcon> icons = new ArrayList<>(); 	                    
+	    groups.stream().map(IconGroup::getIcons).forEach(icons::addAll);
+	    return icons;
 	}
 
-	public void setIcons(final List<MindIcon> icons) {
-		this.icons = new ArrayList<MindIcon>(icons);
-	}
 
-	public UIIcon getGroupIcon() {
+	public MindIcon getGroupIcon() {
 		return groupIcon;
 	}
 
-	public void setGroupIcon(final UIIcon groupIcon) {
-		this.groupIcon = groupIcon;
-	}
-
 	public String getDescription() {
-		if (description == null) {
-			description = TextUtils.getText(getDescriptionKey());
-		}
 		return description;
 	}
 
-	public String getDescriptionKey() {
-		return "IconGroupPopupAction." + name.toLowerCase() + ".text";
-	}
-
-	public void setDescription(final String description) {
-		this.description = description;
-	}
-
-	public void addIcon(final MindIcon icon) {
-		icons.add(icon);
-	}
+    public void addGroup(final IconGroup group) {
+        groups.add(group);
+    }
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
+	    throw new RuntimeException();
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final IconGroup other = (IconGroup) obj;
-		if (name == null) {
-			if (other.name != null) {
-				return false;
-			}
-		}
-		else if (!name.equals(other.name)) {
-			return false;
-		}
-		return true;
+        throw new RuntimeException();
 	}
 
 	@Override
 	public String toString() {
 		return String.format("icon group [%s]", name);
+	}
+	
+	public boolean isLeaf() {
+	    return groups.isEmpty();
 	}
 }

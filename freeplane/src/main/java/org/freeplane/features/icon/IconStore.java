@@ -19,9 +19,11 @@
  */
 package org.freeplane.features.icon;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,8 +46,9 @@ public class IconStore {
 
 	public void addGroup(final IconGroup group) {
 		groups.put(group.getName(), group);
-		for (final MindIcon icon : group.getIcons()) {
-		    mindIcons.put(icon.getName(), icon);
+		for (final IconGroup subgroup : group.getGroups()) {
+		    if (subgroup.isLeaf())
+		    mindIcons.put(subgroup.getName(), subgroup.getGroupIcon());
 		}
 	}
 
@@ -74,8 +77,8 @@ public class IconStore {
 	/**
 	 * @return all user icons in the store
 	 */
-	public Collection<MindIcon> getUserIcons() {
-		return groups.get("user").getIcons();
+	public List<MindIcon> getUserIcons() {
+	    return groups.get("user").getIcons();
 	}
 
 	/**

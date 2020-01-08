@@ -138,7 +138,7 @@ public class IconStoreFactory {
 		for (final String groupName : groupNames) {
 			final String description = TextUtils.getText(String.format(GROUP_DESC_KEY, groupName));
 			List<MindIcon> icons;
-			UIIcon groupIcon = null;
+			MindIcon groupIcon = null;
 			if ("user".equals(groupName)) {
 				icons = getUserIcons();
 				groupIcon = createMindIcon("user_icon");
