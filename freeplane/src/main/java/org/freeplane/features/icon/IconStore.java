@@ -93,23 +93,20 @@ public class IconStore {
 	}
 
 	/**
-	 * Returns a UIIcon with a given name. If one is not found in the store,
-	 * it will be created and stored.
+	 * Returns a UIIcon with a given name.
 	 * 
 	 * @param name of UIIcon to return
 	 * @return UIIcon with given name
 	 */
 	public UIIcon getUIIcon(final String name) {
-		UIIcon result;
 		if (mindIcons.containsKey(name)) {
-			result = mindIcons.get(name);
+		    return mindIcons.get(name);
 		}
 		else if (uiIcons.containsKey(name)) {
-			result = uiIcons.get(name);
+		    return uiIcons.get(name);
 		}
 		else {
-			throw new RuntimeException("Icon " + name + " not registered");
+		    return new IconNotFound(name);
 		}
-		return result;
 	}
 }
