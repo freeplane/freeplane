@@ -29,6 +29,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.main.application.MacOptions;
 
 import com.apple.eawt.AboutHandler;
 import com.apple.eawt.AppEvent.AboutEvent;
@@ -48,8 +49,6 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 	private static Application fmMacApplication;
 
 	private final Controller controller;
-
-	private int loadedMapCounter = 0;
 
 	static public void apply(Controller controller) {
 		new MacChanges(controller);
@@ -103,8 +102,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		try {
 			if(isStarting()) {
 				// restore at startup:
-				loadedMapCounter++;
-				System.setProperty("org.freeplane.param" + loadedMapCounter, uri.toString());
+			    MacOptions.macFilesToOpen.add(uri.toString());
 			} else {
 				// Direct loading
 				LinkController.getController().loadURI(uri);
@@ -139,8 +137,8 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		try {
 			if(isStarting()) {
 				// restore at startup:
-				loadedMapCounter++;
-				System.setProperty("org.freeplane.param" + loadedMapCounter, filePath);
+                MacOptions.macFilesToOpen.add(filePath);
+
 			} else {
 				// Direct loading
 				getModeController().getMapController().openMap(Compat.fileToUrl(new File(filePath)));
