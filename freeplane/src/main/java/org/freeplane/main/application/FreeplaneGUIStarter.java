@@ -371,15 +371,19 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
     private void loadMaps(final Controller controller, final String[] args) {
 		controller.selectMode(MModeController.MODENAME);
 		for (int i = 0; i < args.length; i++) {
-			String fileArgument = args[i];
-			try {
-				final LinkController linkController = LinkController.getController();
-				linkController.loadMap(fileArgument);
-			}
-			catch (final Exception ex) {
-				System.err.println("File " + fileArgument + " not loaded");
-			}
+			loadMap(args[i]);
 		}
+		MacOptions.macFilesToOpen.forEach(this::loadMap);
+    }
+
+    private void loadMap(String fileArgument) {
+        try {
+        	final LinkController linkController = LinkController.getController();
+        	linkController.loadMap(fileArgument);
+        }
+        catch (final Exception ex) {
+        	System.err.println("File " + fileArgument + " not loaded");
+        }
     }
 
    @Override
