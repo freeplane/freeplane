@@ -36,9 +36,13 @@ public class IconGroup {
 	private final MindIcon groupIcon;
 	private final String description;
 	
-	public IconGroup(final MindIcon groupIcon) {
-	    this(groupIcon.getName(), groupIcon, groupIcon.getTranslatedDescription());
-	}
+    public IconGroup(String groupName, final MindIcon groupIcon) {
+        this(groupName, groupIcon, groupIcon.getTranslatedDescription());
+    }
+
+    public IconGroup(final MindIcon groupIcon) {
+        this(groupIcon.getName(), groupIcon);
+    }
 
     public IconGroup(final String name, final MindIcon groupIcon, final String description) {
         this(name, groupIcon, description, new ArrayList<IconGroup>());

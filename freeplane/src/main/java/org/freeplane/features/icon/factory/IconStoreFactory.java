@@ -65,7 +65,8 @@ public class IconStoreFactory {
             String type = (String) entry.getAttribute("type");
             String description = "skins".equals(type) ? TextUtils.getText("emoji_skin_tones") : (String) entry.getAttribute("description");
             EmojiIcon emojiIcon = new EmojiIcon(emoji, entity, file, description, order++);
-            IconGroup entryGroup = new IconGroup(emojiIcon);
+            String name = entry.getName();
+            IconGroup entryGroup = name.isEmpty() ? new IconGroup(emojiIcon) : new IconGroup(name, emojiIcon);
             entry.setAttribute(IconGroup.class, entryGroup);
             Entry parent = entry.getParent();
             if(parent != null) {
@@ -90,8 +91,7 @@ public class IconStoreFactory {
 	private static final String GROUP_ICON_KEY = "IconGroupPopupAction.%s.icon";
 	private static final String GROUP_DESC_KEY = "IconGroupPopupAction.%s.text";
 	private static final Pattern iconFileNamePattern = Pattern.compile(".*\\.(svg|png)$", Pattern.CASE_INSENSITIVE);
-	private static final String EMOJI_ENTRIES_RESOURCE = "/images/emoji/xml/emojientries.xml";   
-
+	private static final String EMOJI_ENTRIES_RESOURCE = "/images/emoji/xml/emojientries.xml";
 	public static IconStore ICON_STORE = new IconStoreFactory().createIcons();
 	
 	private int order = 0;
@@ -121,6 +121,7 @@ public class IconStoreFactory {
             InputStream resource = ResourceController.getResourceController().getResourceStream(EMOJI_ENTRIES_RESOURCE);
             final Reader reader = new InputStreamReader(resource, StandardCharsets.UTF_8);
             Entry emojiGroupEntry = XmlEntryStructureBuilder.buildMenuStructure(reader);
+            emojiGroupEntry.setName(IconStore.EMOJI_GROUP);
             emojiGroupEntry.setAttribute("emoji", "📙");
             emojiGroupEntry.setAttribute("file", "1f4d9.svg");
             emojiGroupEntry.setAttribute("description", TextUtils.getText("emoji_collection"));

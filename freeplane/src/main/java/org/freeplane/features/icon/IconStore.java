@@ -37,6 +37,7 @@ public class IconStore {
 	private final Map<String, IconGroup> groups;
 	private final Map<String, MindIcon> mindIcons;
 	private final Map<String, UIIcon> uiIcons;
+    public static final String EMOJI_GROUP = "emoji_group";
 
 	public IconStore() {
 		groups = new LinkedHashMap<String, IconGroup>();

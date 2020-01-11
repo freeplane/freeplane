@@ -434,7 +434,7 @@ public class MIconController extends IconController {
 		iconMenuBar.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		iconMenuBar.setLayout(new GridLayout(0, 1));
 		for (final IconGroup iconGroup : STORE.getGroups()) {
-		    if(isStructured || ! iconGroup.getGroupIcon().isShownOnToolbar())
+		    if(isStructured || iconGroup.getName().equals(IconStore.EMOJI_GROUP))
 			iconMenuBar.add(getSubmenu(iconGroup));
 		}
 		iconToolBar.add(iconMenuBar);
