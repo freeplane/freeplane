@@ -71,7 +71,7 @@ public class ConditionFactory {
 		JLabel label = new JLabel();
 		Font font = label.getFont();
 		final int fontHeight = label.getFontMetrics(font).getHeight();
-		label.setIcon((FixedSizeUIIcon.withHeigth(uiIcon.getUrl(), fontHeight)));
+		label.setIcon((FixedSizeUIIcon.withHeigth(uiIcon.getUrl(), fontHeight, uiIcon.hasStandardSize())));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setUI((BasicLabelUI)BasicLabelUI.createUI(label));
 		return label;

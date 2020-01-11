@@ -42,8 +42,8 @@ public class IconAction extends AMultipleNodeAction implements IconDescription {
     public IconAction( final MindIcon mindIcon) {
         super("IconAction." + mindIcon.getName(), mindIcon.getTranslatedDescription(), null);
         this.mindIcon = mindIcon;
-        FixedSizeUIIcon defaultSizeIcon = FixedSizeUIIcon.withHeigth(mindIcon.getUrl(), IconFactory.DEFAULT_UI_ICON_HEIGTH.toBaseUnitsRounded());
-        setIcon(mindIcon.hasStandardSize() ? defaultSizeIcon : defaultSizeIcon.withProportionalWidth());
+        setIcon(FixedSizeUIIcon.withHeigth(//
+                mindIcon.getUrl(), IconFactory.DEFAULT_UI_ICON_HEIGTH.toBaseUnitsRounded(), mindIcon.hasStandardSize()));
         putValue(Action.SHORT_DESCRIPTION, getTranslatedDescription());
         addConstraint(UserRoleConstraint.EDITOR);
     }
