@@ -82,7 +82,7 @@ public class MenuSplitter{
                 else {
 	        		if (component instanceof JPopupMenu.Separator)
 	        			return;
-	        		submenu = new JMenu("-");
+	        		submenu = new JMenu(" ");
 	        		submenu.putClientProperty(EXTRA_SUBMENU, Boolean.TRUE);
 	        		popupMenu.add(submenu);
 	        		if(! Compat.isMacOsX())
