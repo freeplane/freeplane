@@ -22,12 +22,10 @@ package org.freeplane.features.icon;
 public class EmojiIcon extends MindIcon {
     private static final String DEFAULT_IMAGE_PATH = "/images/emoji";
     final String emoji;
-    private final boolean isShownOnToolbar;
 
-    public EmojiIcon(final String emoji, final String entity, final String fileName, final String description, int order, boolean isShownOnToolbar) {
+    public EmojiIcon(final String emoji, final String entity, final String fileName, final String description, int order) {
 		super(entityName(entity), fileName, description, order);
         this.emoji = emoji;
-        this.isShownOnToolbar = isShownOnToolbar;
 	}
 
     public static String entityName(final String entity) {
@@ -47,6 +45,6 @@ public class EmojiIcon extends MindIcon {
 
     @Override
     public boolean isShownOnToolbar() {
-        return isShownOnToolbar;
+        return false;
     }
 }

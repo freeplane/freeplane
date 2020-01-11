@@ -421,7 +421,7 @@ public class MIconController extends IconController {
 			new MenuSplitter().addMenuComponent(menu, new JMenuItem(myAction),  menu.getItemCount());
 	}
 
-	private void insertSubmenus(final JToolBar iconToolBar) {
+	private void insertSubmenus(final JToolBar iconToolBar, boolean isStructured) {
 		final JMenuBar iconMenuBar = new JMenuBar() {
 			private static final long serialVersionUID = 1L;
 
@@ -434,6 +434,7 @@ public class MIconController extends IconController {
 		iconMenuBar.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		iconMenuBar.setLayout(new GridLayout(0, 1));
 		for (final IconGroup iconGroup : STORE.getGroups()) {
+		    if(isStructured || ! iconGroup.getGroupIcon().isShownOnToolbar())
 			iconMenuBar.add(getSubmenu(iconGroup));
 		}
 		iconToolBar.add(iconMenuBar);
@@ -488,15 +489,17 @@ public class MIconController extends IconController {
 		iconToolBar.add(modeController.getAction("RemoveIconAction")).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		iconToolBar.add(modeController.getAction("RemoveAllIconsAction")).setAlignmentX(
 		    JComponent.CENTER_ALIGNMENT);
-		iconToolBar.addSeparator();
-		if (ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar")) {
-			insertSubmenus(iconToolBar);
-			return;
-		}
-		for (final MindIcon mindIcon : STORE.getMindIcons()) {
-		    if(mindIcon.isShownOnToolbar()) {
-		        final AFreeplaneAction iconAction = iconActions.get(mindIcon.getName());
-		        iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		boolean isStructured = ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar");
+		if (! isStructured)
+		    iconToolBar.addSeparator();
+		insertSubmenus(iconToolBar, isStructured);
+		if (! isStructured) {
+		    iconToolBar.addSeparator();
+		    for (final MindIcon mindIcon : STORE.getMindIcons()) {
+		        if(mindIcon.isShownOnToolbar()) {
+		            final AFreeplaneAction iconAction = iconActions.get(mindIcon.getName());
+		            iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		        }
 		    }
 		}
 	}

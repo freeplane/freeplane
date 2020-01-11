@@ -64,9 +64,7 @@ public class IconStoreFactory {
             String entity = entry.isLeaf() ? (String) entry.getAttribute("entity") : "";
             String type = (String) entry.getAttribute("type");
             String description = "skins".equals(type) ? TextUtils.getText("emoji_skin_tones") : (String) entry.getAttribute("description");
-            boolean containsSkin = Boolean.TRUE.equals(entry.getAttribute("skin"));
-            EmojiIcon emojiIcon = new EmojiIcon(emoji, entity, file, description, order++, //
-                    ! containsSkin);
+            EmojiIcon emojiIcon = new EmojiIcon(emoji, entity, file, description, order++);
             IconGroup entryGroup = new IconGroup(emojiIcon);
             entry.setAttribute(IconGroup.class, entryGroup);
             Entry parent = entry.getParent();
