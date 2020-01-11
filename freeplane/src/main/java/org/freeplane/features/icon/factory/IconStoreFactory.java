@@ -121,8 +121,8 @@ public class IconStoreFactory {
             InputStream resource = ResourceController.getResourceController().getResourceStream(EMOJI_ENTRIES_RESOURCE);
             final Reader reader = new InputStreamReader(resource, StandardCharsets.UTF_8);
             Entry emojiGroupEntry = XmlEntryStructureBuilder.buildMenuStructure(reader);
-            emojiGroupEntry.setAttribute("emoji", "🗂");
-            emojiGroupEntry.setAttribute("file", "1f5c2.svg");
+            emojiGroupEntry.setAttribute("emoji", "📙");
+            emojiGroupEntry.setAttribute("file", "1f4d9.svg");
             emojiGroupEntry.setAttribute("description", TextUtils.getText("emoji_collection"));
             actionBuilder.build(emojiGroupEntry);
             iconStore.addGroup(emojiGroupEntry.getAttribute(IconGroup.class));
