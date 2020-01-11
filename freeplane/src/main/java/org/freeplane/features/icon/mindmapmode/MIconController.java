@@ -27,7 +27,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -499,11 +498,6 @@ public class MIconController extends IconController {
 		        final AFreeplaneAction iconAction = iconActions.get(mindIcon.getName());
 		        iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		    }
-		}
-		final Collection<MindIcon> userIcons = STORE.getUserIcons();
-		for (final MindIcon icon : userIcons) {
-			final AFreeplaneAction iconAction = iconActions.get(icon.getName());
-			iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		}
 	}
 
