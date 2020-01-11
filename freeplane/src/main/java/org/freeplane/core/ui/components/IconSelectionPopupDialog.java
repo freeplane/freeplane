@@ -23,7 +23,7 @@ package org.freeplane.core.ui.components;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -32,13 +32,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 
@@ -48,48 +51,19 @@ import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.factory.IconFactory;
 
 public class IconSelectionPopupDialog extends JDialog implements KeyListener, MouseListener {
-	static class Position {
-		final private int x, y;
-
-		public Position(final int x, final int y) {
-			this.x = x;
-			this.y = y;
-		}
-
-		/**
-		 * @return Returns the x.
-		 */
-		public int getX() {
-			return x;
-		}
-
-		/**
-		 * @return Returns the y.
-		 */
-		public int getY() {
-			return y;
-		}
-
-		@Override
-		public String toString() {
-			return ("(" + getX() + "," + getY() + ")");
-		}
-	}
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	final private JLabel descriptionLabel;
-	final private JLabel[] iconLabels;
+	final private List<JLabel> iconLabels;
 	final private JPanel iconPanel = new JPanel();
 	final private List<? extends IconDescription> icons;
 	private int mModifiers;
 	final private int numOfIcons;
 	private int result;
-	private Position selected = new Position(0, 0);
-	final private int xDimension;
-	private int yDimension;
+	private JLabel selected;
 
 	public IconSelectionPopupDialog(final Frame frame, final List<? extends IconDescription> icons) {
 		super(frame, TextUtils.getText("select_icon"));
@@ -103,51 +77,49 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 			}
 		});
 		numOfIcons = icons.size();
-		xDimension = (int) Math.ceil(Math.sqrt(numOfIcons)) * 16 / 9;
-		if (numOfIcons <= xDimension * (xDimension - 1)) {
-			yDimension = xDimension - 1;
-		}
-		else {
-			yDimension = xDimension;
-		}
-		final GridLayout gridlayout = new GridLayout(0, xDimension);
-		gridlayout.setHgap(3);
-		gridlayout.setVgap(3);
-		iconPanel.setLayout(gridlayout);
-		iconLabels = new JLabel[numOfIcons];
+        final int singleIconSize = (int) ((IconFactory.DEFAULT_UI_ICON_HEIGTH.toBaseUnits()+ 0.5) * 1.1);
+        int xDimension = (int) Math.ceil(Math.sqrt(numOfIcons)) * 16 / 9;
+        final ToolbarLayout layout = ToolbarLayout.vertical();
+        layout.setMaximumWidth(Math.min(singleIconSize * xDimension, UITools.getScreenBounds(frame.getGraphicsConfiguration()).width * 4 / 5));
+        
+		iconPanel.setLayout(layout);
+		iconLabels = new ArrayList<>(numOfIcons);
 		for (int i = 0; i < numOfIcons; ++i) {
 			final IconDescription icon = icons.get(i);
-			iconPanel.add(iconLabels[i] = new JLabel(icon.getActionIcon()));
-			iconLabels[i].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-			iconLabels[i].addMouseListener(this);
+			JLabel label = new JLabel(icon.getActionIcon());
+			iconLabels.add(label);
+            iconPanel.add(label);
+            label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+            label.addMouseListener(this);
 		}
-		final int singleIconSize = (int) ((IconFactory.DEFAULT_UI_ICON_HEIGTH.toBaseUnits()+ 0.5) * 1.1);
-		iconPanel.setPreferredSize(new Dimension(xDimension * singleIconSize, yDimension * singleIconSize));
-		iconPanel.setMinimumSize(new Dimension(xDimension * singleIconSize, yDimension * singleIconSize));
-		iconPanel.setMaximumSize(new Dimension(xDimension * singleIconSize, yDimension * singleIconSize));
-		iconPanel.setSize(new Dimension(xDimension * singleIconSize, yDimension * singleIconSize));
-		getContentPane().add(iconPanel, BorderLayout.CENTER);
+		Dimension preferredSize = iconPanel.getPreferredSize();
+		JScrollPane scrollPane = new JScrollPane(iconPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+		        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setPreferredSize(preferredSize);
+        getContentPane().add(scrollPane, BorderLayout.CENTER);
 		descriptionLabel = new JLabel(" ");
 		getContentPane().add(descriptionLabel, BorderLayout.SOUTH);
-		setSelectedPosition(new Position(0, 0));
-		select(getSelectedPosition());
+		JLabel firstIcon = iconLabels.get(0);
+        final JLabel label = firstIcon;
+        selected = label;
+		highlight(firstIcon);
 		addKeyListener(this);
 		pack();
 	}
 
 	private void addIcon(final int pModifiers) {
-		result = calculateIndex(getSelectedPosition());
+		result =  iconLabels.indexOf(selected);
 		mModifiers = pModifiers;
 		this.dispose();
 	}
 
-	private int calculateIndex(final Position position) {
-		return position.getY() * xDimension + position.getX();
-	}
-
-	private boolean canSelect(final Position position) {
-		return ((position.getX() >= 0) && (position.getX() < xDimension) && (position.getY() >= 0)
-		        && (position.getY() < yDimension) && (calculateIndex(position) < numOfIcons));
+	private int findIndex(final Point location) {
+		for(int i = 0; i < iconLabels.size(); i++) {
+		    JLabel label = iconLabels.get(i);
+		    if(label.getBounds().contains(location))
+		        return i;
+		}
+		return -1;
 	}
 
 	private void close() {
@@ -157,31 +129,31 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	}
 
 	private void cursorDown() {
-		final Position newPosition = new Position(getSelectedPosition().getX(), getSelectedPosition().getY() + 1);
-		if (canSelect(newPosition)) {
-			select(newPosition);
+		final Point newPosition = new Point(selected.getX(), selected.getY() + selected.getWidth() + 1);
+		int newIndex = findIndex(newPosition);
+		if (newIndex >= 0) {
+			select(newIndex);
 		}
 	}
 
 	private void cursorLeft() {
-		final Position newPosition = new Position(getSelectedPosition().getX() - 1, getSelectedPosition().getY());
-		if (canSelect(newPosition)) {
-			select(newPosition);
-		}
+	    int selectedIndex = iconLabels.indexOf(selected) - 1;
+	    if(selectedIndex >= 0)
+	        select(selectedIndex);
 	}
 
 	private void cursorRight() {
-		final Position newPosition = new Position(getSelectedPosition().getX() + 1, getSelectedPosition().getY());
-		if (canSelect(newPosition)) {
-			select(newPosition);
-		}
+        int selectedIndex = iconLabels.indexOf(selected) + 1;
+        if(selectedIndex < iconLabels.size())
+            select(selectedIndex);
 	}
 
 	private void cursorUp() {
-		final Position newPosition = new Position(getSelectedPosition().getX(), getSelectedPosition().getY() - 1);
-		if (canSelect(newPosition)) {
-			select(newPosition);
-		}
+        final Point newPosition = new Point(selected.getX(), selected.getY() - 1);
+        int newIndex = findIndex(newPosition);
+        if (newIndex >= 0) {
+            select(newIndex);
+        }
 	}
 
 	public KeyStroke getKeyStroke(String keystrokeResourceName) {
@@ -226,33 +198,24 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		return m;
 	}
 
-	private Position getPosition(final JLabel caller) {
-		int index = 0;
-		for (index = 0; index < iconLabels.length; index++) {
-			if (caller == iconLabels[index]) {
-				break;
-			}
-		}
-		return new Position(index % xDimension, index / xDimension);
-	}
-
 	public int getResult() {
 		return result;
 	}
 
-	private Position getSelectedPosition() {
-		return selected;
-	}
+    private JLabel findLabel(final Point location) {
+        return iconLabels.get(findIndex(location));
+    }
 
-	private void highlight(final Position position) {
-		iconLabels[calculateIndex(position)].setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
-	}
+    private void highlight(JLabel label) {
+        label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+    }
 
 	/*
 	 * (non-Javadoc)
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
-	public void keyPressed(final KeyEvent keyEvent) {
+	@Override
+    public void keyPressed(final KeyEvent keyEvent) {
 		switch (keyEvent.getKeyCode()) {
 			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_KP_RIGHT:
@@ -293,21 +256,22 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	 * (non-Javadoc)
 	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
 	 */
-	public void keyReleased(final KeyEvent arg0) {
-	}
+	@Override
+    public void keyReleased(final KeyEvent arg0) {/**/}
 
 	/*
 	 * (non-Javadoc)
 	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
 	 */
-	public void keyTyped(final KeyEvent arg0) {
-	}
+	@Override
+    public void keyTyped(final KeyEvent arg0) {/**/}
 
 	/*
 	 * (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
 	 */
-	public void mouseClicked(final MouseEvent mouseEvent) {
+	@Override
+    public void mouseClicked(final MouseEvent mouseEvent) {
 		addIcon(mouseEvent.getModifiers());
 	}
 
@@ -315,37 +279,43 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	 * (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
 	 */
-	public void mouseEntered(final MouseEvent arg0) {
-		select(getPosition((JLabel) arg0.getSource()));
+	@Override
+    public void mouseEntered(final MouseEvent arg0) {
+		select(((JLabel) arg0.getSource()).getLocation());
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
 	 */
-	public void mouseExited(final MouseEvent arg0) {
-	}
+	@Override
+    public void mouseExited(final MouseEvent arg0) {/**/}
 
 	/*
 	 * (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
-	public void mousePressed(final MouseEvent arg0) {
-	}
+	@Override
+    public void mousePressed(final MouseEvent arg0) {/**/}
 
 	/*
 	 * (non-Javadoc)
 	 * @see
 	 * java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
 	 */
-	public void mouseReleased(final MouseEvent arg0) {
+	@Override
+    public void mouseReleased(final MouseEvent arg0) {/**/}
+
+	private void select(final Point location) {
+	    int index = findIndex(location);
+		select(index);
 	}
 
-	private void select(final Position position) {
-		unhighlight(getSelectedPosition());
-		setSelectedPosition(position);
-		highlight(position);
-		final int index = calculateIndex(position);
+    private void select(final int index) {
+        unhighlight(this.selected);
+        JLabel newSelected = iconLabels.get(index);
+        this.selected = newSelected;
+		highlight(newSelected);
 		final IconDescription iconInformation = icons.get(index);
 		final String keyStroke = ResourceController.getResourceController().getProperty(iconInformation.getShortcutKey());
 		if (keyStroke != null) {
@@ -354,13 +324,9 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		else {
 			descriptionLabel.setText(iconInformation.getTranslatedDescription());
 		}
-	}
+    }
 
-	private void setSelectedPosition(final Position position) {
-		selected = position;
-	}
-
-	private void unhighlight(final Position position) {
-		iconLabels[calculateIndex(position)].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+	private void unhighlight(final JLabel label) {
+	    label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 	}
 }
