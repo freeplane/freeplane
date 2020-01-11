@@ -1,8 +1,10 @@
 package org.freeplane.core.ui.svgicons;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -27,11 +29,15 @@ public class FixedSizeUIIcon implements Icon {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        if (width >= 0 && height >= 0 && failure == false) {
+        if (isValid()) {
             Image image = createImage();
             if(image != null)
                 g.drawImage(image, x, y, c);
         }
+    }
+
+    private boolean isValid() {
+        return width >= 0 && height >= 0 && failure == false;
     }
 
     private Image createImage() {
@@ -57,8 +63,27 @@ public class FixedSizeUIIcon implements Icon {
         return height;
     }
 
-    public static Icon withHeigth(URL url, int heightInPixel) {
+    public static FixedSizeUIIcon withHeigth(URL url, int heightInPixel) {
         return new FixedSizeUIIcon(url, heightInPixel, heightInPixel);
+    }
+
+    public FixedSizeUIIcon withProportionalWidth() {
+        if (! isValid()) 
+            return this;
+        try {
+            if(url.getPath().endsWith(".svg")) {
+                Dimension size = new SVGIconCreator(url).getSize();
+                return new FixedSizeUIIcon(url, height * size.width / size.height , height);
+            } else {
+                BufferedImage image = ImageIO.read(url);
+                image.getHeight();
+                return new FixedSizeUIIcon(url, height * image.getWidth() / image.getHeight() , height);
+            }
+        } catch (Exception e) {
+            LogUtils.severe(e);
+            failure = true;
+            return null;
+        }
     }
 
 }

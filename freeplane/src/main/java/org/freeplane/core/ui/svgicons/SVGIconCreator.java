@@ -32,6 +32,17 @@ class SVGIconCreator {
         SVGIcon icon = createSvgIcon();
         return new CachingIcon(icon);
     }
+    
+    Dimension getSize() {
+        SVGIcon icon = createSvgIcon();
+        int iconWidth = icon.getIconWidth();
+        int iconHeight = icon.getIconHeight();
+        if(! diagramWasAlreadyLoaded) {
+            SVGUniverse svgUniverse = SVGCache.getSVGUniverse();
+            svgUniverse.removeDocument(svgUri);
+        }
+        return new Dimension(iconWidth, iconHeight);
+    }
 
     Image loadImage() {
         SVGIcon icon = createSvgIcon();

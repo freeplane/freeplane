@@ -121,7 +121,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 			iconLabels[i].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 			iconLabels[i].addMouseListener(this);
 		}
-		final int singleIconSize = (int) ((IconFactory.DEFAULT_UI_ICON_HEIGHT.toBaseUnits()+ 0.5) * 1.1);
+		final int singleIconSize = (int) ((IconFactory.DEFAULT_UI_ICON_HEIGTH.toBaseUnits()+ 0.5) * 1.1);
 		iconPanel.setPreferredSize(new Dimension(xDimension * singleIconSize, yDimension * singleIconSize));
 		iconPanel.setMinimumSize(new Dimension(xDimension * singleIconSize, yDimension * singleIconSize));
 		iconPanel.setMaximumSize(new Dimension(xDimension * singleIconSize, yDimension * singleIconSize));

@@ -35,6 +35,7 @@ public interface NamedIcon extends Comparable<NamedIcon> {
 	Icon getIcon(Quantity<LengthUnits> iconHeight);
 	NamedIcon zoom(float zoom);
 	int getOrder();
+	boolean hasStandardSize();
 	
 
 	@Override

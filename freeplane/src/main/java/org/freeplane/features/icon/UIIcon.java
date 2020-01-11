@@ -142,4 +142,9 @@ public class UIIcon implements IconDescription, NamedIcon {
 	public NamedIcon zoom(float zoom) {
 		 return new ZoomedIcon(this, zoom);
 	}
+
+    @Override
+    public boolean hasStandardSize() {
+        return true;
+    }
 }

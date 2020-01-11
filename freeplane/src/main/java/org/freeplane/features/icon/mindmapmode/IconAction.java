@@ -36,52 +36,53 @@ import org.freeplane.features.map.NodeModel;
 
 public class IconAction extends AMultipleNodeAction implements IconDescription {
 
-	private static final long serialVersionUID = 1L;
-	final private MindIcon mindIcon;
+    private static final long serialVersionUID = 1L;
+    final private MindIcon mindIcon;
 
-	public IconAction( final MindIcon _icon) {
-		super("IconAction." + _icon.getName(), _icon.getTranslatedDescription(), null);
-		mindIcon = _icon;
-		setIcon(FixedSizeUIIcon.withHeigth(_icon.getUrl(), IconFactory.DEFAULT_UI_ICON_HEIGHT.toBaseUnitsRounded()));
-		putValue(Action.SHORT_DESCRIPTION, getTranslatedDescription());
-		addConstraint(UserRoleConstraint.EDITOR);
-	}
+    public IconAction( final MindIcon mindIcon) {
+        super("IconAction." + mindIcon.getName(), mindIcon.getTranslatedDescription(), null);
+        this.mindIcon = mindIcon;
+        FixedSizeUIIcon defaultSizeIcon = FixedSizeUIIcon.withHeigth(mindIcon.getUrl(), IconFactory.DEFAULT_UI_ICON_HEIGTH.toBaseUnitsRounded());
+        setIcon(mindIcon.hasStandardSize() ? defaultSizeIcon : defaultSizeIcon.withProportionalWidth());
+        putValue(Action.SHORT_DESCRIPTION, getTranslatedDescription());
+        addConstraint(UserRoleConstraint.EDITOR);
+    }
 
-	private MindIcon replaceByUserDefinedIcon() {
-		return IconStoreFactory.ICON_STORE.getMindIcon(mindIcon.getName());
-	}
+    private MindIcon replaceByUserDefinedIcon() {
+        return IconStoreFactory.ICON_STORE.getMindIcon(mindIcon.getName());
+    }
 
-	@Override
-	public void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MIconController) IconController.getController()).addIcon(node, replaceByUserDefinedIcon());
-	}
-	
-	public String getDescriptionTranslationKey() {
-		return mindIcon.getDescriptionTranslationKey();
-	}
+    @Override
+    public void actionPerformed(final ActionEvent e, final NodeModel node) {
+        ((MIconController) IconController.getController()).addIcon(node, replaceByUserDefinedIcon());
+    }
+    
+    public String getDescriptionTranslationKey() {
+        return mindIcon.getDescriptionTranslationKey();
+    }
 
-	@Override
-	public String getTextKey() {
-		return getDescriptionTranslationKey();
-	}
+    @Override
+    public String getTextKey() {
+        return getDescriptionTranslationKey();
+    }
 
-	public String getTranslatedDescription() {
-		return mindIcon.getTranslatedDescription();
-	}
+    public String getTranslatedDescription() {
+        return mindIcon.getTranslatedDescription();
+    }
 
-	public Icon getIcon() {
-		return IconFactory.getInstance().getIcon(replaceByUserDefinedIcon());
-	}
-	
-	public Icon getActionIcon() {
-		return (Icon) getValue(Action.SMALL_ICON);
-	}
-	
-	public MindIcon getMindIcon() {
-		return replaceByUserDefinedIcon();
-	}
+    public Icon getIcon() {
+        return IconFactory.getInstance().getIcon(replaceByUserDefinedIcon());
+    }
+    
+    public Icon getActionIcon() {
+        return (Icon) getValue(Action.SMALL_ICON);
+    }
+    
+    public MindIcon getMindIcon() {
+        return replaceByUserDefinedIcon();
+    }
 
-	public String getShortcutKey() {
-		return mindIcon.getShortcutKey();
-	}
+    public String getShortcutKey() {
+        return mindIcon.getShortcutKey();
+    }
 }

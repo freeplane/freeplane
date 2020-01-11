@@ -65,4 +65,11 @@ public class UserIcon extends MindIcon {
 		String key = getDescriptionTranslationKey();
 		return TextUtils.getOptionalText("usericon_" + key, key);
 	}
+
+    @Override
+    public boolean hasStandardSize() {
+        return false;
+    }
+	
+	
 }

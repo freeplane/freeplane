@@ -27,11 +27,11 @@ class GraphicIconFactory implements IconFactory {
 	private GraphicIconFactory() {};
 
 	public Icon getIcon(final UIIcon uiIcon) {
-		return getIcon(uiIcon.getUrl(), DEFAULT_UI_ICON_HEIGHT);
+		return getIcon(uiIcon.getUrl(), DEFAULT_UI_ICON_HEIGTH);
 	}
 
 	public Icon getIcon(final URL url) {
-		return getIcon(url, DEFAULT_UI_ICON_HEIGHT);
+		return getIcon(url, DEFAULT_UI_ICON_HEIGTH);
 	}
 
 	private String createCacheKey(final URL url, final int heightPixels) {
