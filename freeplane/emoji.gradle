@@ -100,19 +100,21 @@ class UiEntryCreator implements EmojiConstants {
 			String lastEmoji = null
 			
 			emojiListFile.eachLine { String line ->
-	 			if(line.startsWith('# group')) {
+	 			if(line.startsWith('# group:')) {
 	 				if(line.endsWith(': Component')){
 	 					group = null
 	 				}
 	 				else {
 	 					group = root.appendNode('Entry')
-	 					group.attributes().put('comment', line.substring(2))
+	 					group.attributes().put('description', line.substring(line.indexOf(':') + 2))
+	 					group.attributes().put('type', 'group')
 	 				}
 	 			}
 	 			else if(group != null) {  
-		 			if(line.startsWith('# subgroup')) {
+		 			if(line.startsWith('# subgroup:')) {
 		 				subgroup = group.appendNode('Entry')
-		 				subgroup.attributes().put('comment', line.substring(2))
+		 				subgroup.attributes().put('description', line.substring(line.indexOf(':') + 2))
+		 				subgroup.attributes().put('type', 'subgroup')
 		 			}
 		 			else if(line.length() > EMOJI_POSITION  && line.charAt(HEX_CODEPOINT_END_POSITION) == ';' && line.charAt(STATUS_END_POSITION) == '#') {
 		 				String hexCodes = line.substring(0, HEX_CODEPOINT_END_POSITION).trim()
@@ -121,14 +123,15 @@ class UiEntryCreator implements EmojiConstants {
 				    		int emojiEnd = line.indexOf(' ', EMOJI_POSITION)
 					 		String emoji = line.substring(EMOJI_POSITION, emojiEnd)
 					 		int commentStart = line.indexOf(' ', emojiEnd + 1) + 1
-					 		String comment = line.substring(commentStart)
+					 		String description = line.substring(commentStart)
 					 		Node action
 					 		if(hexCodes.contains(' 1F3F')) {
 					 			if (toneSubgroup == null) {
 					 				toneSubgroup = subgroup.appendNode('Entry')
-					 				toneSubgroup.attributes().put('comment', 'skins')
+					 				toneSubgroup.attributes().put('description', 'skins')
 					 				toneSubgroup.attributes().put('emoji', emoji)
 					 				toneSubgroup.attributes().put('file', twemojiFileName)
+					 				toneSubgroup.attributes().put('type', 'skins')
 					 			}
 				 				action = toneSubgroup.appendNode('Entry')
 		 						action.attributes().put('skin', true)
@@ -142,9 +145,10 @@ class UiEntryCreator implements EmojiConstants {
 			 				subgroup.attributes().putIfAbsent('emoji', emoji)
 			 				subgroup.attributes().putIfAbsent('file', twemojiFileName)
 			 				action.attributes().put('emoji', emoji)
+			 				action.attributes().put('type', 'emoji')
 			 				action.attributes().put('entity', hexCodes)
 			 				action.attributes().put('file', twemojiFileName)
-		 					action.attributes().put('comment', comment)
+		 					action.attributes().put('description', description.startsWith('flag: ') ? description.substring(6) : description)
 			 			}	
 		 			}
 	 			}	

@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.icon.factory;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -31,14 +30,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
-import org.freeplane.core.ui.menubuilders.action.ActionFinder;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
@@ -60,7 +56,33 @@ import org.freeplane.features.icon.UserIcon;
  *
  */
 public class IconStoreFactory {
-	private static final String USER_GROUP_ICON = "user_icon";
+	class EmojiGroupBuilder implements EntryVisitor {
+        @Override
+        public void visit(Entry entry) {
+            String emoji = (String) entry.getAttribute("emoji");
+            String file = (String) entry.getAttribute("file");
+            String entity = entry.isLeaf() ? (String) entry.getAttribute("entity") : "";
+            String type = (String) entry.getAttribute("type");
+            String description = "skins".equals(type) ? TextUtils.getText("emoji_skin_tones") : (String) entry.getAttribute("description");
+            boolean containsSkin = Boolean.TRUE.equals(entry.getAttribute("skin"));
+            EmojiIcon emojiIcon = new EmojiIcon(emoji, entity, file, description, order++, //
+                    ! containsSkin);
+            IconGroup entryGroup = new IconGroup(emojiIcon);
+            entry.setAttribute(IconGroup.class, entryGroup);
+            Entry parent = entry.getParent();
+            if(parent != null) {
+                IconGroup parentGroup = parent.getAttribute(IconGroup.class);
+                parentGroup.addGroup(entryGroup);
+            }
+        }
+
+        @Override
+        public boolean shouldSkipChildren(Entry entry) {
+            return false;
+        }
+    }
+
+    private static final String USER_GROUP_ICON = "user_icon";
     private static final String USER_ICON_GROUP_NAME = "user";
     private static final String SEPARATOR = ";";
 	private static final ResourceController RESOURCE_CONTROLLER = ResourceController.getResourceController();
@@ -95,32 +117,17 @@ public class IconStoreFactory {
 
     private void createEmojiIcons() {
         final RecursiveMenuStructureProcessor actionBuilder = new RecursiveMenuStructureProcessor();
-        actionBuilder.setDefaultBuilder(new EntryVisitor() {
-            
-            @Override
-            public void visit(Entry entry) {
-                if(entry.isLeaf()) {
-                    String emoji = (String) entry.getAttribute("emoji");
-                    String file = (String) entry.getAttribute("file");
-                    String entity = (String) entry.getAttribute("entity");
-                    String comment = (String) entry.getAttribute("comment");
-                    boolean containsSkin = Boolean.TRUE.equals(entry.getAttribute("skin"));
-                    EmojiIcon emojiIcon = new EmojiIcon(emoji, entity, file, comment, order++, //
-                            ! containsSkin);
-                    iconStore.addEmojiIcon(emojiIcon);
-                }
-            }
-            
-            @Override
-            public boolean shouldSkipChildren(Entry entry) {
-                return false;
-            }
-        });
+        EntryVisitor defaultBuilder = new EmojiGroupBuilder();
+        actionBuilder.setDefaultBuilder(defaultBuilder);
         try {
             InputStream resource = ResourceController.getResourceController().getResourceStream(EMOJI_ENTRIES_RESOURCE);
             final Reader reader = new InputStreamReader(resource, StandardCharsets.UTF_8);
-            Entry entries = XmlEntryStructureBuilder.buildMenuStructure(reader);
-            actionBuilder.build(entries);
+            Entry emojiGroupEntry = XmlEntryStructureBuilder.buildMenuStructure(reader);
+            emojiGroupEntry.setAttribute("emoji", "🗂");
+            emojiGroupEntry.setAttribute("file", "1f5c2.svg");
+            emojiGroupEntry.setAttribute("description", TextUtils.getText("emoji_collection"));
+            actionBuilder.build(emojiGroupEntry);
+            iconStore.addGroup(emojiGroupEntry.getAttribute(IconGroup.class));
         } catch (IOException e) {
            throw new RuntimeException(e);
         }

@@ -58,11 +58,7 @@ public class IconStore {
 		}
     }
 
-    public void addEmojiIcon(final EmojiIcon icon) {
-        mindIcons.put(icon.getName(), icon);
-    }
-
-	public void addUIIcon(final UIIcon uiIcon) {
+ 	public void addUIIcon(final UIIcon uiIcon) {
 		uiIcons.put(uiIcon.getFile(), uiIcon);
 	}
 
