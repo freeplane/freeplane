@@ -36,22 +36,27 @@ public class IconGroup {
 	private final MindIcon groupIcon;
 	private final String description;
 	
-	private IconGroup(final MindIcon groupIcon) {
+	public IconGroup(final MindIcon groupIcon) {
 	    this(groupIcon.getName(), groupIcon, groupIcon.getTranslatedDescription());
 	}
 
     public IconGroup(final String name, final MindIcon groupIcon, final String description) {
-        this.name = name;
-        this.groupIcon = groupIcon;
-        this.description = description;
-        this.groups = new ArrayList<>();
+        this(name, groupIcon, description, new ArrayList<IconGroup>());
     }
-    public IconGroup(final String name, final MindIcon groupIcon, final String description, final List<MindIcon> icons) {
-        this(name, groupIcon, description);
+    
+    public void addIcons(final List<MindIcon> icons) {
         icons.stream().map(IconGroup::new).forEach(this.groups::add);
     }
 
-	public String getName() {
+	public IconGroup(String name, MindIcon groupIcon, String description, List<IconGroup> groups) {
+        super();
+        this.name = name;
+        this.groupIcon = groupIcon;
+        this.description = description;
+        this.groups = groups;
+    }
+
+    public String getName() {
 		return name;
 	}
 	public List<IconGroup> getGroups() {

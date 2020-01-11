@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.icon.mindmapmode;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -100,7 +99,6 @@ public class MIconController extends IconController {
 	};
 
 	private final class IconActionBuilder implements EntryVisitor {
-		private final HashMap<String, Entry> submenuEntries = new HashMap<String, Entry>();
 		final private ModeController modeController;
 
 		public IconActionBuilder(ModeController modeController) {
@@ -110,7 +108,6 @@ public class MIconController extends IconController {
 		@Override
 		public void visit(Entry target) {
 			addIcons(target);
-			submenuEntries.clear();
 			updateIconToolbar(modeController);
 		}
 
@@ -121,40 +118,24 @@ public class MIconController extends IconController {
 		}
 
 		private void addIconGroup(final Entry target, final IconGroup group) {
-			if (group.getIcons().size() < 1) {
-				return;
-			}
-			final Entry item = new Entry();
-			EntryAccessor entryAccessor = new EntryAccessor();
-			entryAccessor.setIcon(item, group.getGroupIcon().getIcon());
-			entryAccessor.setText(item, group.getDescription());
-			target.addChild(item);
-			for (final MindIcon icon : group.getIcons()) {
-				final String fileName = icon.getFile();
-				addAction(item, "", icon, fileName);
-			}
+		    if (group.getIcons().size() < 1) {
+		        return;
+		    }
+		    final Entry item = new Entry();
+		    EntryAccessor entryAccessor = new EntryAccessor();
+		    entryAccessor.setIcon(item, group.getGroupIcon().getIcon());
+		    entryAccessor.setText(item, group.getDescription());
+		    target.addChild(item);
+		    for (final IconGroup childGroup : group.getGroups()) {
+		        if(childGroup.isLeaf()) {
+		            MindIcon icon = childGroup.getGroupIcon();
+		            entryAccessor.addChildAction(item, iconActions.get(icon.getName()));
+		        }
+		        else
+		            addIconGroup(item, childGroup);
+		    }
 		}
 
-		private void addAction(final Entry target, final String itemKey, final MindIcon icon,
-		                       final String fileName) {
-			final int separatorPosition = fileName.indexOf('/');
-			EntryAccessor entryAccessor = new EntryAccessor();
-			if (separatorPosition == -1) {
-				entryAccessor.addChildAction(target, iconActions.get(icon.getName()));
-			}
-			else {
-				final String submenuName = fileName.substring(0, separatorPosition);
-				final String submenuKey = itemKey + "/" + submenuName;
-				Entry submenu = submenuEntries.get(submenuKey);
-				if (submenu == null) {
-					submenu = new Entry();
-					entryAccessor.setText(submenu, submenuName);
-					submenuEntries.put(submenuKey, submenu);
-					target.addChild(submenu);
-				}
-				addAction(submenu, submenuKey, icon, fileName.substring(separatorPosition + 1));
-			}
-		}
 		@Override
 		public boolean shouldSkipChildren(Entry entry) {
 			return false;
@@ -380,7 +361,28 @@ public class MIconController extends IconController {
 	}
 	final static private Icon SUBMENU_ICON = BasicIconFactory.getMenuArrowIcon();
 	private JMenu getSubmenu( final IconGroup group) {
-		final JMenu menu = new JMenu() {
+		final JMenu menu = createToolbarSubmenu(group);
+		fillSubmenu(menu, group);
+		return menu;
+	}
+
+    private void fillSubmenu(final JMenu menu, final IconGroup group) {
+        for (final IconGroup childGroup : group.getGroups()) {
+		    if(childGroup.isLeaf()) {
+		        MindIcon groupIcon = childGroup.getGroupIcon();
+		        addActionToIconSubmenu(menu, groupIcon);
+		    }
+		    else {
+		        final JMenu submenu = new JMenu(childGroup.getDescription());
+		        submenu.setIcon(childGroup.getGroupIcon().getIcon());
+		        fillSubmenu(submenu, childGroup);
+		        addGroupToIconSubmenu(menu, submenu);
+		    }
+		}
+    }
+
+    private JMenu createToolbarSubmenu(final IconGroup group) {
+        final JMenu menu = new JMenu() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -407,35 +409,17 @@ public class MIconController extends IconController {
 		};
 		menu.setMargin(ICON_SUBMENU_INSETS);
 		menu.setIcon(group.getGroupIcon().getIcon());
-		for (final MindIcon icon : group.getIcons()) {
-			addActionToIconSubmenu(menu, icon, icon.getFile());
-		}
 		menu.setToolTipText(group.getDescription());
-		return menu;
-	}
+        return menu;
+    }
 
-	private void addActionToIconSubmenu(final JMenu menu, final MindIcon icon, final String fileName) {
+	private void addGroupToIconSubmenu(JMenu menu, JMenu submenu) {
+	    new MenuSplitter().addMenuComponent(menu, submenu,  menu.getItemCount());
+    }
+
+    private void addActionToIconSubmenu(final JMenu menu, final MindIcon icon) {
 		final AFreeplaneAction myAction = iconActions.get(icon.getName());
-		final int separatorPosition = fileName.indexOf('/');
-		if (separatorPosition == -1) {
 			new MenuSplitter().addMenuComponent(menu, new JMenuItem(myAction),  menu.getItemCount());
-			return;
-		}
-		final String submenuName = fileName.substring(0, separatorPosition);
-		final int componentCount = menu.getItemCount();
-		if (componentCount != 0) {
-			final Component lastComponent = menu.getMenuComponent(componentCount - 1);
-			if (lastComponent instanceof JMenu) {
-				final JMenu lastSubmenu = (JMenu) lastComponent;
-				if (lastSubmenu.getText().equals(submenuName)) {
-					addActionToIconSubmenu(lastSubmenu, icon, fileName.substring(separatorPosition + 1));
-					return;
-				}
-			}
-		}
-		final JMenu submenu = new JMenu(submenuName);
-		menu.add(submenu);
-		addActionToIconSubmenu(submenu, icon, fileName.substring(separatorPosition + 1));
 	}
 
 	private void insertSubmenus(final JToolBar iconToolBar) {

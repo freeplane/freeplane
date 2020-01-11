@@ -46,11 +46,17 @@ public class IconStore {
 
 	public void addGroup(final IconGroup group) {
 		groups.put(group.getName(), group);
-		for (final IconGroup subgroup : group.getGroups()) {
-		    if (subgroup.isLeaf())
-		    mindIcons.put(subgroup.getName(), subgroup.getGroupIcon());
-		}
+		addIcons(group);
 	}
+
+    private void addIcons(final IconGroup group) {
+        for (final IconGroup subgroup : group.getGroups()) {
+		    if (subgroup.isLeaf())
+		        mindIcons.put(subgroup.getName(), subgroup.getGroupIcon());
+		    else
+		        addIcons(subgroup);
+		}
+    }
 
     public void addEmojiIcon(final EmojiIcon icon) {
         mindIcons.put(icon.getName(), icon);
