@@ -42,6 +42,9 @@ import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.mindmapmode.MIconController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -277,6 +280,7 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public void saveProperties() {
+        ((MIconController)MModeController.getMModeController().getExtension(IconController.class)).saveRecentlyUsedActions();
 		OutputStream out = null;
 		try {
 			out = new FileOutputStream(autoPropertiesFile);

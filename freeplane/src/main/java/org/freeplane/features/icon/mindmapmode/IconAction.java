@@ -54,7 +54,7 @@ public class IconAction extends AMultipleNodeAction implements IconDescription {
 
     @Override
     public void actionPerformed(final ActionEvent e, final NodeModel node) {
-        ((MIconController) IconController.getController()).addIcon(node, replaceByUserDefinedIcon());
+        ((MIconController) IconController.getController()).addIconByUserAction(node, this);
     }
     
     public String getDescriptionTranslationKey() {

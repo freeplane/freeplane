@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.LayoutManager;
 
 import javax.swing.JToolBar.Separator;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 
 public class ToolbarLayout implements LayoutManager {
 
@@ -78,7 +80,7 @@ public class ToolbarLayout implements LayoutManager {
 	}
 
     private int calculateMaxWidth(final Container container) {
-        Container parent = container.getParent();
+        Container parent = SwingUtilities.getAncestorOfClass(JViewport.class, container);
         if (parent != null)
             return parent.getWidth();
         else if (maximumWidth >= 0)

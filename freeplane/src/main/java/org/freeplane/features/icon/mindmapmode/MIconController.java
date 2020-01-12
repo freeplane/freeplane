@@ -87,7 +87,8 @@ import org.freeplane.features.styles.LogicalStyleController;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
-	private static final Insets ICON_SUBMENU_INSETS = new Insets(3, 0, 3, 0);
+	private static final String RECENTLY_USED_ICONS_PROPERTY = "recently_used_icons";
+    private static final Insets ICON_SUBMENU_INSETS = new Insets(3, 0, 3, 0);
 	private static final ConditionPredicate DEPENDS_ON_ICON = new ConditionPredicate() {
 
 		@Override
@@ -199,6 +200,7 @@ public class MIconController extends IconController {
 	private final IconStore STORE = IconStoreFactory.ICON_STORE;
 	private final JToolBar iconToolBar;
 	private final Box iconBox;
+	private final FastAccessableIcons recentlyUsedIcons;
 
 	/**
 	 * @param modeController
@@ -214,6 +216,7 @@ public class MIconController extends IconController {
 		createIconActions(modeController);
 		createPreferences();
 		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconActionBuilder(modeController));
+		recentlyUsedIcons = new FastAccessableIcons(modeController);
 	}
 
 	@Override
@@ -233,7 +236,12 @@ public class MIconController extends IconController {
 	}
 
 
-	public void addIcon(final NodeModel node, final NamedIcon icon) {
+    public void addIconByUserAction(final NodeModel node, final IconAction action) {
+        addIcon(node, action.getMindIcon());
+        recentlyUsedIcons.add(action);
+    }
+
+    public void addIcon(final NodeModel node, final NamedIcon icon) {
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
@@ -489,7 +497,10 @@ public class MIconController extends IconController {
 		iconToolBar.add(modeController.getAction("RemoveIconAction")).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		iconToolBar.add(modeController.getAction("RemoveAllIconsAction")).setAlignmentX(
 		    JComponent.CENTER_ALIGNMENT);
-		boolean isStructured = ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar");
+        iconToolBar.addSeparator();
+        recentlyUsedIcons.load(ResourceController.getResourceController().getProperty(RECENTLY_USED_ICONS_PROPERTY, ""));
+        recentlyUsedIcons.addPanelTo(iconToolBar);
+        boolean isStructured = ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar");
 		if (! isStructured)
 		    iconToolBar.addSeparator();
 		insertSubmenus(iconToolBar, isStructured);
@@ -513,5 +524,10 @@ public class MIconController extends IconController {
 			result.add(mindIcon.getName());
 		return result;
 	}
+
+    public void saveRecentlyUsedActions() {
+        String initializer = recentlyUsedIcons.getInitializer();
+        ResourceController.getResourceController().setProperty(RECENTLY_USED_ICONS_PROPERTY, initializer);
+    }
 
 }

@@ -172,6 +172,7 @@
 			<separator name="icon_properties">
 				<boolean name="structured_icon_toolbar" />
 				<boolean name="show_icons" />
+                <number name="fast_access_icon_number" min="0" max="100"/>
 			</separator>
 		</tab>
 		<tab name="Defaults">
