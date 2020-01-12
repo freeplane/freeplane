@@ -22,6 +22,7 @@ package org.freeplane.features.filter.condition;
 import java.awt.Component;
 import java.awt.Font;
 
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -75,7 +76,8 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 			Font font = label.getFont();
 			final int fontHeight = label.getFontMetrics(font).getHeight();
 			UIIcon uiIcon = (UIIcon) value;
-            label.setIcon(FixedSizeUIIcon.withHeigth(uiIcon.getUrl(), fontHeight, uiIcon.hasStandardSize()));
+            Icon icon = FixedSizeUIIcon.withHeigth(uiIcon.getUrl(), fontHeight, uiIcon.hasStandardSize());
+            label.setIcon(icon);
 			label.setHorizontalAlignment(SwingConstants.CENTER);
 			component = label;
 		}

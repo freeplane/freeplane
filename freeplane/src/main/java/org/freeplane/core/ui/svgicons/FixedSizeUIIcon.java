@@ -9,6 +9,7 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import org.freeplane.core.util.LogUtils;
 
@@ -44,8 +45,10 @@ public class FixedSizeUIIcon implements Icon {
         try {
             if(url.getPath().endsWith(".svg")) 
                 return new SVGIconCreator(url).setHeight(height).setWidth(width).loadImage();
-            else
-                return ImageIO.read(url).getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            else {
+                Image unloadedScaledImage = ImageIO.read(url).getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                return new ImageIcon(unloadedScaledImage).getImage();
+            }
         } catch (Exception e) {
             LogUtils.severe(e);
             failure = true;
@@ -77,7 +80,6 @@ public class FixedSizeUIIcon implements Icon {
                 return new FixedSizeUIIcon(url, height * size.width / size.height , height);
             } else {
                 BufferedImage image = ImageIO.read(url);
-                image.getHeight();
                 return new FixedSizeUIIcon(url, height * image.getWidth() / image.getHeight() , height);
             }
         } catch (Exception e) {
