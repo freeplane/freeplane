@@ -34,14 +34,5 @@ public class IconNotFound extends MindIcon {
         }
         return new IconNotFound("?").getIcon();
     }
-    
-    /**
-     * creates an ImageIcon from <code>getImagePath()/filename</code>. If this is not possible returns null.
-     */
-    public static Icon createIconOrReturnNull(final String fileName) {
-        final URL resource = ResourceController.getResourceController()
-                .getResource(DEFAULT_IMAGE_PATH + "/" + fileName);
-        return (resource == null) ? null : new ImageIcon(resource);
-    }
-
+ 
 }
