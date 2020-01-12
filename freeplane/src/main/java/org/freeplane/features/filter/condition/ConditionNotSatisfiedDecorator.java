@@ -81,7 +81,12 @@ public class ConditionNotSatisfiedDecorator extends ASelectableCondition impleme
 		return component;
 	}
 
-	public void fillXML(final XMLElement child) {
+	@Override
+    public boolean canBePersisted() {
+        return originalCondition.canBePersisted();
+    }
+
+    public void fillXML(final XMLElement child) {
 		originalCondition.toXml(child);
 	}
 
