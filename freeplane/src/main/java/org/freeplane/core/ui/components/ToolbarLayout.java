@@ -80,14 +80,16 @@ public class ToolbarLayout implements LayoutManager {
 	}
 
     private int calculateMaxWidth(final Container container) {
-        Container parent = SwingUtilities.getAncestorOfClass(JViewport.class, container);
+        Container viewport = SwingUtilities.getAncestorOfClass(JViewport.class, container);
+        if (viewport != null)
+            return viewport.getWidth();
+        Container parent = container.getParent();
         if (parent != null)
             return parent.getWidth();
-        else if (maximumWidth >= 0)
+        if (maximumWidth >= 0)
             return maximumWidth;
-        else {
-            return Integer.MAX_VALUE;
-        }
+        
+        return Integer.MAX_VALUE;
     }
 	private int getPreferredWidth(final Component c, final int maxWidth) {
 		final int width = ! c.isVisible() ? 0 : 

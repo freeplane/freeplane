@@ -37,7 +37,7 @@ class FastAccessableIcons {
         }
         int maxCount = ResourceController.getResourceController().getIntProperty(FAST_ACCESS_ICON_NUMBER_PROPERTY);
         while(actionCount >= maxCount)
-            panel.remove(actionCount - 1);
+            panel.remove(--actionCount);
         panel.add(createButton(action), 0);
         panel.revalidate();
         panel.repaint();
