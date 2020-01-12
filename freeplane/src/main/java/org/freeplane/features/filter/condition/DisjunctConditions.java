@@ -22,6 +22,7 @@ package org.freeplane.features.filter.condition;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Vector;
+import java.util.stream.Stream;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -97,7 +98,14 @@ public class DisjunctConditions extends ASelectableCondition implements ICombine
 		return component;
 	}
 
-	public void fillXML(final XMLElement child) {
+
+    @Override
+    public boolean canBePersisted() {
+        return Stream.of(conditions).allMatch(ASelectableCondition::canBePersisted);
+    }
+    
+	@Override
+    public void fillXML(final XMLElement child) {
 		for (final ASelectableCondition condition : conditions) {
 			condition.toXml(child);
 		}

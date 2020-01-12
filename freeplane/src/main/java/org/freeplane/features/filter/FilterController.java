@@ -300,7 +300,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		}
 
 		if (cloneOfSelectedViewCondition == null)
-			cloneOfSelectedViewCondition = CloneOfSelectedViewCondition.CreateCondition();
+			cloneOfSelectedViewCondition = CloneOfSelectedViewCondition.createCondition();
 		filterConditions.insertElementAt(cloneOfSelectedViewCondition, 2);
 	}
 
@@ -588,7 +588,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final Writer writer = new FileWriter(pathToFilterFile);
 		for (int i = 0; i < filterConditionModel.getSize(); i++) {
 			final ASelectableCondition cond = (ASelectableCondition) filterConditionModel.getElementAt(i);
-			if (cond != null && !(cond instanceof NoFilteringCondition)) {
+			if (cond != null && cond.canBePersisted()) {
 				cond.toXml(saver);
 			}
 		}

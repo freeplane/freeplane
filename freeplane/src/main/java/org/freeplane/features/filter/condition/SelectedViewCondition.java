@@ -57,9 +57,14 @@ public class SelectedViewCondition extends ASelectableCondition implements Condi
     protected String getName() {
 	    return NAME;
     }
-	public void toXml(final XMLElement element) {}
-
-	public ASelectableCondition createSnapshotCondition() {
+	
+    @Override
+    public boolean canBePersisted() {
+        return false;
+    }
+ 
+	@Override
+    public ASelectableCondition createSnapshotCondition() {
 	    return  new SelectedViewSnapshotCondition(Controller.getCurrentController().getSelection().getSelection());
     }
 }
