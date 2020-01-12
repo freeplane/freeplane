@@ -32,12 +32,12 @@ public class MindIcon extends UIIcon {
 		this(name, name + ".svg", "", order);
 	}
 
-	public MindIcon(final String name, final String fileName, int order) {
-		this(name, fileName, "", order);
+	public MindIcon(final String name, final String file, int order) {
+		this(name, file, "", order);
 	}
 
-	public MindIcon(final String name, final String fileName, final String description, int order) {
-		super(name, fileName, description, String.format(SHORTCUT_KEY, name), order);
+	public MindIcon(final String name, final String file, final String description, int order) {
+		super(name, file, description, String.format(SHORTCUT_KEY, name), order);
 	}
 
 	@Override
