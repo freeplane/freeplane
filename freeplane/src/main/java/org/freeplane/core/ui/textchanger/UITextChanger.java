@@ -1,5 +1,6 @@
 package org.freeplane.core.ui.textchanger;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.KeyEventDispatcher;
 import java.awt.Point;
@@ -266,6 +267,7 @@ class UITextChanger implements KeyEventDispatcher {
 	private JTextField createTextField(TranslatedElement element, final String translationKey) {
 		final String rawText = TextUtils.getRawText(translationKey, "");
 		final JTextField textField = new JTextField(rawText);
+//		textField.setBackground(new Color(30, 30, 30));
 		final String originalRawText = TextUtils.getOriginalRawText(translationKey);
 		if (originalRawText == null) {
 			TranslatedElement.TOOLTIP.setKey(textField, ORIGINAL_TEXT_IS_NOT_DEFINED);

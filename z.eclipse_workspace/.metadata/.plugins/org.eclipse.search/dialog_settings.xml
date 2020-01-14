@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="SearchDialog">
+		<item key="PREVIOUS_PAGE" value="org.eclipse.search.internal.ui.text.TextSearchPage"/>
+	</section>
+	<section name="Search">
+		<list key="Search.processedPageIds">
+			<item value="org.eclipse.search.internal.ui.text.TextSearchPage"/>
+			<item value="org.eclipse.mylyn.tasks.ui.search.page"/>
+			<item value="org.eclipse.egit.ui.commitSearchPage"/>
+			<item value="org.eclipse.jdt.ui.JavaSearchPage"/>
+		</list>
+		<list key="Search.enabledPageIds">
+			<item value="org.eclipse.search.internal.ui.text.TextSearchPage"/>
+			<item value="org.eclipse.mylyn.tasks.ui.search.page"/>
+			<item value="org.eclipse.egit.ui.commitSearchPage"/>
+			<item value="org.eclipse.jdt.ui.JavaSearchPage"/>
+		</list>
+	</section>
+	<section name="SearchDialog.ScopePart">
+		<item key="scope" value="0"/>
+	</section>
+	<section name="DialogBounds_SearchDialog">
+		<item key="DIALOG_X_ORIGIN" value="1011"/>
+		<item key="DIALOG_Y_ORIGIN" value="397"/>
+		<item key="DIALOG_WIDTH" value="538"/>
+		<item key="DIALOG_HEIGHT" value="473"/>
+		<item key="DIALOG_FONT_NAME" value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont"/>
+	</section>
+	<section name="">
+		<item key="org.eclipse.jdt.search.resultpage.limit" value="1000"/>
+		<item key="org.eclipse.jdt.search.resultpage.limit_enabled" value="TRUE"/>
+		<item key="org.eclipse.search.resultpage.limit" value="1000"/>
+	</section>
+	<section name="org.eclipse.jdt.ui.JavaSearchResultPage">
+		<item key="org.eclipse.jdt.search.resultpage.limit" value="1000"/>
+		<item key="org.eclipse.jdt.search.resultpage.limit_enabled" value="TRUE"/>
+	</section>
+	<section name="TextSearchPage">
+		<item key="CASE_SENSITIVE" value="false"/>
+		<item key="REG_EX_SEARCH" value="false"/>
+		<item key="WHOLE_WORD" value="false"/>
+		<item key="SEARCH_DERIVED" value="false"/>
+		<item key="SEARCH_IN_BINARIES" value="false"/>
+		<item key="HISTORY_SIZE" value="1"/>
+		<section name="HISTORY0">
+			<item key="ignoreCase" value="true"/>
+			<item key="isRegExSearch" value="false"/>
+			<item key="isWholeWord" value="false"/>
+			<item key="textPattern" value="setBackground"/>
+			<item key="scope" value="0"/>
+			<list key="fileNamePatterns">
+				<item value="*.java"/>
+			</list>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="EXTENSIONS">
+			<item key="0" value="*.java"/>
+		</section>
+	</section>
+	<section name="org.eclipse.search.text.FileSearchResultPage">
+		<item key="org.eclipse.search.resultpage.limit" value="1000"/>
+	</section>
+</section>

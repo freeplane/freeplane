@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.debug.ui.LAUNCH_CONFIGURATIONS_DIALOG_SECTION">
+		<item key="org.eclipse.debug.ui.DIALOG_SASH_WEIGHTS_1" value="514"/>
+		<item key="org.eclipse.debug.ui.DIALOG_SASH_WEIGHTS_2" value="485"/>
+		<item key="org.eclipse.debug.ui.EXPANDED_NODES" value="org.eclipse.jdt.launching.localJavaApplication, org.eclipse.buildship.core.launch.runconfiguration, "/>
+		<item key="DIALOG_WIDTH" value="1785"/>
+		<item key="DIALOG_HEIGHT" value="1248"/>
+		<item key="DIALOG_FONT_NAME" value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont"/>
+	</section>
+	<section name="ExportLaunchConfigurations">
+		<item key="import_config_overwrite" value="false"/>
+		<item key="import_config_oldpath" value="/Users/stuart/d2/dev/Freeplane/freeplane_debughelper/eclipse"/>
+	</section>
+	<section name="org.eclipse.debug.ui.SELECT_LAUNCH_SHORTCUT_DIALOG">
+		<item key="DIALOG_WIDTH" value="253"/>
+		<item key="DIALOG_HEIGHT" value="416"/>
+		<item key="DIALOG_FONT_NAME" value="1|.AppleSystemUIFont|11.0|0|COCOA|1|.AppleSystemUIFont"/>
+	</section>
+</section>

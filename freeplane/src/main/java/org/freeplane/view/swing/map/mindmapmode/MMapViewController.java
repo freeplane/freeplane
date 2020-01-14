@@ -127,10 +127,13 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 			return null;
 		}
 		final EditNodeTextField textField = new EditNodeTextField(node, (ZoomableLabel) parentComponent, text, editControl);
+		Color darkTextFieldBackgroundColor = new Color(30, 30, 30);  // SR - Use dark textField background on macOS
 		if(EditedComponent.TEXT.equals(parent))
-			textField.setBackground (nodeView.getTextBackground());
+			textField.setBackground(darkTextFieldBackgroundColor);   // SR - Use dark textField background on macOS
+			//textField.setBackground (nodeView.getTextBackground());
 		else if(EditedComponent.DETAIL.equals(parent))
-			textField.setBackground (nodeView.getMap().getDetailBackground());
+			textField.setBackground(darkTextFieldBackgroundColor);   // SR - Use dark textField background on macOS
+			//textField.setBackground (nodeView.getMap().getDetailBackground());
 		return textField;
 	}
 

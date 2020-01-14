@@ -1,0 +1,14 @@
+INDEX VERSION 1.131+/Users/stuart/d2/dev/Freeplane/z.eclipse_workspace/.metadata/.plugins/org.eclipse.jdt.core
+452360670.index
+937763053.index
+3259098049.index
+1540970505.index
+646634288.index
+1390355476.index
+3329621110.index
+3051944652.index
+1629987198.index
+1456874680.index
+3059193231.index
+409340295.index
+449899765.index
