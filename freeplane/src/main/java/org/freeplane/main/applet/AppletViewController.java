@@ -26,6 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -37,7 +38,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.IMapViewChangeListener;
@@ -81,6 +81,7 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 		if (!EventQueue.isDispatchThread()) {
 			try {
 				EventQueue.invokeAndWait(new Runnable() {
+					@Override
 					public void run() {
 					};
 				});
@@ -190,39 +191,30 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 		applet.setWaitingCursor(waiting);
 	}
 
-	public void start() {
-		try {
-			final IMapSelection selection = getController().getSelection();
-			if (selection != null) {
-				selection.selectRoot();
-			}
-			else {
-				System.err.println("View is null.");
-			}
-		}
-		catch (final Exception e) {
-			LogUtils.severe(e);
-		}
-	}
-
+	@Override
 	public void afterViewChange(Component oldView, Component newView) {
 		if(scrollPane != null)
 			scrollPane.setViewportView(newView);
     }
 
+	@Override
 	public void afterViewClose(Component oldView) {
     }
 
+	@Override
 	public void afterViewCreated(Component mapView) {
     }
 
+	@Override
 	public void beforeViewChange(Component oldView, Component newView) {
     }
 
+	@Override
 	public void previousMapView() {
 		throw new RuntimeException("Method not implemented");
 	}
 
+	@Override
 	public void nextMapView() {
 		throw new RuntimeException("Method not implemented");
 	}
