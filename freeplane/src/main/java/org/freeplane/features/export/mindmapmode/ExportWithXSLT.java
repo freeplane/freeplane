@@ -97,7 +97,7 @@ public class ExportWithXSLT implements IExportEngine {
 		final StringTokenizer tokenizer = new StringTokenizer(files, ",");
 		final File destinationDirectory = new File(targetDirectoryName);
 		while (tokenizer.hasMoreTokens()) {
-			final String sourceFile = tokenizer.nextToken();
+			final String sourceFile = tokenizer.nextToken().trim();
 			int nameStartPosition = sourceFile.lastIndexOf('/') + 1;
 			String sourceFileDirectory = nameStartPosition > 0 ? sourceFile.substring(0, nameStartPosition) : "";
 			String sourceFileName = nameStartPosition > 0 ? sourceFile.substring(nameStartPosition) : sourceFile;
