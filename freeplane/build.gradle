@@ -187,7 +187,9 @@ task copyOSGiJars(type: Copy) {
 	 from (project(':freeplane_api').file('build/libs/freeplaneapi_viewer.jar'))
      into(globalBin + '/core/' + pluginid + '/lib/')
 }
-copyOSGiJars.dependsOn project(':freeplane_mac').jar
+copyOSGiJars.dependsOn tasks.getByPath(':freeplane_mac:jar')
+copyOSGiJars.dependsOn tasks.getByPath(':freeplane_api:viewerApiJar')
+
 
 task copyOSGiManifest(type: Copy) {
      from ("$buildDir/manifest/") {
