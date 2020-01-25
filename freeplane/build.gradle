@@ -34,12 +34,12 @@ sourceSets {
     viewer {}
     editor {}
     external {}
-    test{
-    	resources {
-    		source sourceSets.viewer.resources
-    		source sourceSets.editor.resources
-    		source sourceSets.external.resources
-    	}
+    test {
+        runtimeClasspath += sourceSets.viewer.runtimeClasspath
+        runtimeClasspath += sourceSets.editor.runtimeClasspath
+        runtimeClasspath += sourceSets.external.runtimeClasspath
+        runtimeClasspath += sourceSets.emojiGraphics.runtimeClasspath
+        runtimeClasspath += sourceSets.emojiList.runtimeClasspath
     }
 }
 
@@ -49,6 +49,10 @@ eclipse {
     name = 'freeplane'
 	}
 }
+
+processTestResources.dependsOn createEmojiList
+tasks.getByPath('eclipse').dependsOn createEmojiList
+
 
 ext.bundleDeps = configurations.lib.files.collect {
     externalizeJar(it)

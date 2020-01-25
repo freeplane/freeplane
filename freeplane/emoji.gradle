@@ -13,11 +13,6 @@ sourceSets {
 			srcDir "${project.buildDir}/emoji/xml"
 		}
 	}
-    test{
-    	resources {
-    		srcDir "${project.buildDir}/emoji/xml"
-    	}
-    }
 }
 
 interface EmojiConstants {
@@ -38,7 +33,7 @@ class EmojiDownloader implements EmojiConstants{
 	
 	EmojiDownloader(File emojiDir) {
 		this.emojiDir = new File(emojiDir, 'resources/images/emoji')
-		emojiDir.mkdirs()
+		this.emojiDir.mkdirs()
 		this.emojiListFile = new File(emojiDir, 'txt/emojilist.txt')
 	}
 	
