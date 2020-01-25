@@ -3,17 +3,11 @@ import java.util.zip.ZipFile
 
 sourceSets {
 	emojiGraphics {
-		resources {
-			srcDir "${project.buildDir}/emoji/resources"
-		}
 		output.dir("${project.buildDir}/emoji/resources", 
 			builtBy: 'downloadEmoji')
 	}
 	
 	emojiList {
-		resources {
-			srcDir "${project.buildDir}/emoji/xml"
-		}
 		output.dir("${project.buildDir}/emoji/xml", 
 			builtBy: 'createEmojiList')
 	}
@@ -184,7 +178,7 @@ task emojiJar(type: Jar) {
 	}
 	baseName = 'emoji'
 	archiveVersion = EmojiDownloader.TWEMOJI_VERSION
-    from (sourceSets.emojiGraphics.resources)
+    from (sourceSets.emojiGraphics.output)
 }
 
 task createEmojiList {

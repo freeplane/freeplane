@@ -34,15 +34,17 @@ dependencies {
  
     // from flatDir "localGitDepsRepository":
     lib ':idw-gpl-1.6.1'
+    
+    testRuntime sourceSets.emojiGraphics.output.dirs
+ 	testRuntime sourceSets.emojiList.output.dirs
+    
 }
 
 test {
 	classpath = project.sourceSets.test.runtimeClasspath + 
 		sourceSets.viewer.resources.sourceDirectories +
  		sourceSets.editor.resources.sourceDirectories +
- 		sourceSets.external.resources.sourceDirectories +
- 		sourceSets.emojiGraphics.resources.sourceDirectories +
- 		sourceSets.emojiList.resources.sourceDirectories
+ 		sourceSets.external.resources.sourceDirectories
 }
 
 // work around for new gradle bug if subproject name equals to root dir name
