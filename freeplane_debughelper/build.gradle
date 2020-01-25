@@ -14,7 +14,12 @@ dependencies {
 		runtime it
 	}
 
-	runtime project(':freeplane').files('src/viewer/resources', 'src/editor/resources')
+	runtime project(':freeplane').sourceSets.viewer.resources.sourceDirectories
+	runtime project(':freeplane').sourceSets.editor.resources.sourceDirectories
+	runtime project(':freeplane').sourceSets.external.resources.sourceDirectories
+	runtime project(':freeplane').sourceSets.emojiGraphics.output.dirs
+ 	runtime project(':freeplane').sourceSets.emojiList.output.dirs
+
 }
 
 task(run, dependsOn: 'classes', type: JavaExec) {

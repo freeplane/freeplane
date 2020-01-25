@@ -35,8 +35,8 @@ dependencies {
     // from flatDir "localGitDepsRepository":
     lib ':idw-gpl-1.6.1'
     
-    testRuntime sourceSets.emojiGraphics.output.dirs
- 	testRuntime sourceSets.emojiList.output.dirs
+    runtime sourceSets.emojiGraphics.output.dirs
+ 	runtime sourceSets.emojiList.output.dirs
     
 }
 
