@@ -192,10 +192,11 @@ task copyOSGiJars(type: Copy) {
           exclude('*-sources.jar')
      }
 	 from (project(':freeplane_mac').jar.outputs.files)
+	 from (project(':freeplane_api').file('build/libs/freeplaneapi_viewer.jar'))
      into(globalBin + '/core/' + pluginid + '/lib/')
 }
-
-copyOSGiJars.dependsOn project(':freeplane_mac').jar
+copyOSGiJars.dependsOn tasks.getByPath(':freeplane_mac:jar')
+copyOSGiJars.dependsOn tasks.getByPath(':freeplane_api:viewerApiJar')
 copyOSGiJars.dependsOn emojiJar
 
 task copyOSGiManifest(type: Copy) {
@@ -278,8 +279,6 @@ task viewerJar(type: Jar) {
     includeEmptyDirs = false
 }
 
-apply from: './signjar.gradle'
-
 eclipseJdt {
     doLast {
         File f = file('.settings/org.eclipse.core.resources.prefs')
@@ -318,6 +317,7 @@ build.dependsOn copyOSGiJars
 build.dependsOn copyOSGiManifest
 build.dependsOn copyExternalResources
 build.dependsOn copyDoc
+apply from: './signjar.gradle'
 
 apply from: './format_translation.gradle'
 

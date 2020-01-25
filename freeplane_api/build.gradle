@@ -1,3 +1,20 @@
+task viewerApiJar(type: Jar) {
+    // use '= project.manifest' to avoid that an OSGi manifest is created!
+	manifest = project.manifest {
+		attributes("Manifest-Version": "1.0")
+	}
+
+    archiveName = 'freeplaneapi_viewer.jar'
+    dependsOn classes
+	
+    from (sourceSets.main.output) {
+				include '**/EdgeStyle.class'
+				include '**/FreeplaneVersion.class'
+    }
+    includeEmptyDirs = false
+}
+
+build.dependsOn viewerApiJar
 
 
 
