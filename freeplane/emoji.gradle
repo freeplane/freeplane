@@ -6,12 +6,16 @@ sourceSets {
 		resources {
 			srcDir "${project.buildDir}/emoji/resources"
 		}
+		output.dir("${project.buildDir}/emoji/resources", 
+			builtBy: 'downloadEmoji')
 	}
 	
 	emojiList {
 		resources {
 			srcDir "${project.buildDir}/emoji/xml"
 		}
+		output.dir("${project.buildDir}/emoji/xml", 
+			builtBy: 'createEmojiList')
 	}
 }
 
@@ -158,6 +162,7 @@ class UiEntryCreator implements EmojiConstants {
 }	
 
 task downloadEmoji {
+	outputs.dir("${project.buildDir}/emoji/resources")
 
 	doLast {
 		def downloader = new EmojiDownloader(file("$buildDir/emoji"))
@@ -184,6 +189,7 @@ task emojiJar(type: Jar) {
 
 task createEmojiList {
 	dependsOn emojiJar
+	outputs.dir("${project.buildDir}/emoji/xml")
 	
 	doLast {
 		UiEntryCreator.createUiEntryFile(file("$buildDir/emoji"), emojiJar.archiveFile.get().asFile)

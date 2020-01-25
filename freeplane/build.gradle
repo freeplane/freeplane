@@ -5,6 +5,12 @@ configurations{
 
 apply from: './emoji.gradle'
 
+sourceSets {
+    viewer {}
+    editor {}
+    external {}
+}
+
 dependencies {
 	
 	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
@@ -25,22 +31,18 @@ dependencies {
 		exclude module: 'javahelp'
 		exclude module: 'mnemonicsetter'
 	}
-    
+ 
     // from flatDir "localGitDepsRepository":
     lib ':idw-gpl-1.6.1'
 }
 
-sourceSets {
-    viewer {}
-    editor {}
-    external {}
-    test {
-        runtimeClasspath += sourceSets.viewer.runtimeClasspath
-        runtimeClasspath += sourceSets.editor.runtimeClasspath
-        runtimeClasspath += sourceSets.external.runtimeClasspath
-        runtimeClasspath += sourceSets.emojiGraphics.runtimeClasspath
-        runtimeClasspath += sourceSets.emojiList.runtimeClasspath
-    }
+test {
+	classpath = project.sourceSets.test.runtimeClasspath + 
+		sourceSets.viewer.resources.sourceDirectories +
+ 		sourceSets.editor.resources.sourceDirectories +
+ 		sourceSets.external.resources.sourceDirectories +
+ 		sourceSets.emojiGraphics.resources.sourceDirectories +
+ 		sourceSets.emojiList.resources.sourceDirectories
 }
 
 // work around for new gradle bug if subproject name equals to root dir name
