@@ -277,7 +277,7 @@ task viewerJar(type: Jar) {
         exclude (osgiJar.includedClasses )
     }
     from (sourceSets.viewer.resources)
-    from (sourceSets.emojiList.resources)
+    from (sourceSets.emojiList.output)
     
     
     configurations.mergedViewerDependencies.files.each {
