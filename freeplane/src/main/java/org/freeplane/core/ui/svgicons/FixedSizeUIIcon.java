@@ -19,7 +19,7 @@ public class FixedSizeUIIcon implements Icon {
     private final int height;
     private final URL url;
     private boolean failure = false;
-    
+
 
     public FixedSizeUIIcon(URL url, int width, int height) {
         super();
@@ -43,7 +43,7 @@ public class FixedSizeUIIcon implements Icon {
 
     private Image createImage() {
         try {
-            if(url.getPath().endsWith(".svg")) 
+            if(url.getPath().endsWith(".svg"))
                 return new SVGIconCreator(url).setHeight(height).setWidth(width).loadImage();
             else {
                 Image unloadedScaledImage = ImageIO.read(url).getScaledInstance(width, height, Image.SCALE_SMOOTH);
@@ -72,7 +72,7 @@ public class FixedSizeUIIcon implements Icon {
     }
 
     public FixedSizeUIIcon withProportionalWidth() {
-        if (! isValid()) 
+        if (! isValid())
             return this;
         try {
             if(url.getPath().endsWith(".svg")) {
@@ -83,7 +83,7 @@ public class FixedSizeUIIcon implements Icon {
                 return new FixedSizeUIIcon(url, height * image.getWidth() / image.getHeight() , height);
             }
         } catch (Exception e) {
-            LogUtils.severe(e);
+            LogUtils.severe("Can not create icon for URL " + url, e);
             failure = true;
             return null;
         }
