@@ -52,7 +52,7 @@ public class UserIcon extends MindIcon {
         URL result = null;
         final String urlString = getPath();
         try {
-            result = new File(urlString).toURL();
+            result = new File(urlString).toURI().toURL();
         }
         catch (final MalformedURLException e) {
             LogUtils.warn(String.format("could not create URL from [%s]", urlString));
