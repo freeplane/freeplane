@@ -50,7 +50,7 @@ public class ManageAddOnsDialog extends JDialog {
 		addOnInstallerPanel = new AddOnInstallerPanel(manageAddOnsPanel, manageThemesPanel);
 		tabbedPane.addTab(getText("tab.install"), createIcon("/images/install_addons.svg"), addOnInstallerPanel,
 		    getText("tab.install.tooltip"));
-		tabbedPane.addTab(getText("tab.manage"), createIcon("/images/manage_addons.png"), manageAddOnsPanel,
+		tabbedPane.addTab(getText("tab.manage"), createIcon("/images/manage_addons.svg"), manageAddOnsPanel,
 		    getText("tab.manage.tooltip"));
 		tabbedPane.addTab(getText("tab.manage.themes"), createIcon("/images/manage_themes.png"), manageThemesPanel,
 		    getText("tab.manage.themes.tooltip"));
