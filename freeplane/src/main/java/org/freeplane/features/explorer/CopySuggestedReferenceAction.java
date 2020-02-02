@@ -25,8 +25,7 @@ public class CopySuggestedReferenceAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel selected = controller.getSelection().getSelected();
-		final ClipboardAccessor clipboardController = Controller.getCurrentModeController().getExtension(
-			ClipboardAccessor.class);
+		final ClipboardAccessor clipboardController = ClipboardAccessor.getInstance();
 		String suggestedString = explorer.getNodeReferenceSuggestion(selected);
 		clipboardController.setClipboardContents(new StringSelection(suggestedString));
 		controller.getViewController().out(suggestedString);

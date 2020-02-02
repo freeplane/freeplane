@@ -59,8 +59,7 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		if(linkAsString == null || "".equals(linkAsString)){
 			linkAsString = "http://";
 			// if clipboard contains a valid uri use it
-			ClipboardAccessor clipboardController = modeController.getExtension(ClipboardAccessor.class);
-			Transferable t = clipboardController.getClipboardContents();
+			Transferable t = ClipboardAccessor.getInstance().getClipboardContents();
 			if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 				try {
 					final String plainTextFromClipboard = t.getTransferData(DataFlavor.stringFlavor).toString().trim();

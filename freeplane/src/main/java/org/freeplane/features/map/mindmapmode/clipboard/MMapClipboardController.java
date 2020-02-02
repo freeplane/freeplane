@@ -966,7 +966,7 @@ public class MMapClipboardController extends MapClipboardController implements M
     }
 
 	public Transferable getClipboardContents() {
-		return ClipboardAccessor.getController().getClipboardContents();
+		return ClipboardAccessor.getInstance().getClipboardContents();
 	}
 
 	@Override
