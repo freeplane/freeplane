@@ -14,9 +14,16 @@ public class ClipboardAccessor{
 	private static final ClipboardAccessor INSTANCE = new ClipboardAccessor();
     private Clipboard clipboard;
 	private Clipboard selection;
-	public static ClipboardAccessor getController() {
-		return INSTANCE;
-	}
+	
+	@Deprecated
+    public static ClipboardAccessor getController() {
+        return getInstance();
+    }
+	
+    public static ClipboardAccessor getInstance() {
+        return INSTANCE;
+    }
+    
 	private ClipboardAccessor() {
 		super();
 		try {

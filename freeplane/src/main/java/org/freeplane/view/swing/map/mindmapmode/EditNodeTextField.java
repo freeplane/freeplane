@@ -502,7 +502,7 @@ public class EditNodeTextField extends EditNodeBase {
 				if (target == null) {
 					return;
 				}
-				final Transferable contents = ClipboardAccessor.getController().getClipboardContents();
+				final Transferable contents = ClipboardAccessor.getInstance().getClipboardContents();
 				if(contents !=  null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)){
 					try {
 						String text = (String) contents.getTransferData(DataFlavor.stringFlavor);
