@@ -24,7 +24,7 @@
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{D3941722-C4DD-4509-88C4-0E87F675A859}
-AppCopyright=Copyright © 2000-2019 Freeplane team and others
+AppCopyright=Copyright © 2000-2020 Freeplane team and others
 AppName={#MyAppName}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
