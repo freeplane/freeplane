@@ -98,7 +98,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 
 		@Override
 		public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-			if (modeController.equals(Controller.getCurrentModeController()) && newMap != null) {
+			if (modeController.equals(Controller.getCurrentModeController())) {
 				updateActions(newMap);
 			}
 		}
