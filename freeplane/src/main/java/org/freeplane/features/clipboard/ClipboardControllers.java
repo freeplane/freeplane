@@ -10,7 +10,6 @@ import org.freeplane.features.mode.ModeController;
 public class ClipboardControllers implements IExtension{
 	public static void install( final ClipboardControllers clipboardController) {
 		Controller.getCurrentModeController().addExtension(ClipboardControllers.class, clipboardController);
-		Controller.getCurrentModeController().addExtension(ClipboardAccessor.class, new ClipboardAccessor());
 	}
 	public static ClipboardControllers getController() {
 		return Controller.getCurrentModeController().getExtension(ClipboardControllers.class);

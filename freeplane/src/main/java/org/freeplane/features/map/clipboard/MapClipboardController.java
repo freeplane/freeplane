@@ -73,7 +73,7 @@ public class MapClipboardController implements IExtension, ClipboardController {
 	}
 
 	public void setClipboardContents(Transferable transferable) {
-		(Controller.getCurrentModeController().getExtension(ClipboardAccessor.class)).setClipboardContents(transferable);
+	    ClipboardAccessor.getController().setClipboardContents(transferable);
 	}
 
 	private void collectColors(final NodeModel node, final HashSet<Color> colors) {

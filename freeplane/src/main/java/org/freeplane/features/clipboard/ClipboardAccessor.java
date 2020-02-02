@@ -7,26 +7,18 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.security.AccessControlException;
 
-import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.mode.Controller;
 
-public class ClipboardAccessor implements IExtension{
+public class ClipboardAccessor{
 
-	private Clipboard clipboard;
-// 	final private ModeController modeController;
+	private static final ClipboardAccessor INSTANCE = new ClipboardAccessor();
+    private Clipboard clipboard;
 	private Clipboard selection;
-	public static void install( final ClipboardAccessor clipboardController) {
-		Controller.getCurrentModeController().addExtension(ClipboardAccessor.class, clipboardController);
-	}
 	public static ClipboardAccessor getController() {
-		return Controller.getCurrentModeController().getExtension(ClipboardAccessor.class);
+		return INSTANCE;
 	}
-
-
-	public ClipboardAccessor() {
+	private ClipboardAccessor() {
 		super();
-//		this.modeController = modeController;
 		try {
 			final Toolkit toolkit = Toolkit.getDefaultToolkit();
 
@@ -46,10 +38,15 @@ public class ClipboardAccessor implements IExtension{
 	/**
 	 */
 	public Transferable getClipboardContents() {
-		if (clipboard != null) {
-			return clipboard.getContents(this);
-		}
-		return null;
+	    if (clipboard != null) {
+	        try {
+	            return clipboard.getContents(this);
+	        }
+	        catch (IllegalStateException | NullPointerException e) {
+	            LogUtils.warn("can not access clipboard contents");
+	        }
+	    }
+	    return null;
 	}
 
 	/**

@@ -86,6 +86,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -501,8 +502,8 @@ public class EditNodeTextField extends EditNodeBase {
 				if (target == null) {
 					return;
 				}
-				final Transferable contents = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(this);
-				if(contents.isDataFlavorSupported(DataFlavor.stringFlavor)){
+				final Transferable contents = ClipboardAccessor.getController().getClipboardContents();
+				if(contents !=  null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)){
 					try {
 						String text = (String) contents.getTransferData(DataFlavor.stringFlavor);
 						target.replaceSelection(text);
