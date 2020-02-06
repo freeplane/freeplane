@@ -82,15 +82,6 @@ public class ConnectorView extends AConnectorView{
 
 	}
 
-	public float[] zoomDash(float[] dash) {
-		float[] result = dash.clone();
-	    final double zoom = getZoom();
-	    for(float f : result){
-	    	f *= zoom;
-	    }
-	    return result;
-    }
-
 	/**
 	 */
 	private Point calcInclination(final NodeView node, final int dellength) {

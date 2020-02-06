@@ -19,6 +19,7 @@
  */
 package org.freeplane.features.map;
 
+import java.awt.GraphicsEnvironment;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
@@ -48,6 +49,7 @@ import org.freeplane.core.io.UnknownElements;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.DelayedRunner;
 import org.freeplane.features.clipboard.ClipboardControllers;
@@ -113,9 +115,12 @@ implements IExtension, NodeChangeAnnouncer{
 		}
 
 		private void setActionsEnabledNow() {
-			if (hasValidSelection())
+			if (hasValidSelection()) {
+				MapModel map = Controller.getCurrentController().getMap();
+				UserRole userRole = Controller.getCurrentModeController().userRole(map);
 				for (AFreeplaneAction action : actions)
-					action.setEnabled();
+					action.setEnabled(userRole);
+			}
 		}
 
 		@Override
@@ -519,7 +524,7 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	public void addUIMapChangeListener(final IMapChangeListener listener) {
-		if(!isHeadless())
+		if(!GraphicsEnvironment.isHeadless())
 			mapChangeListeners.add(listener);
 	}
 
@@ -528,16 +533,12 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	public void addUINodeChangeListener(final INodeChangeListener listener) {
-		if(!isHeadless())
+		if(!GraphicsEnvironment.isHeadless())
 			nodeChangeListeners.add(listener);
 	}
 
 	public void addNodeChangeListener(final INodeChangeListener listener) {
 		nodeChangeListeners.add(listener);
-	}
-
-	private boolean isHeadless() {
-		return Controller.getCurrentController().getViewController().isHeadless();
 	}
 
 	public void addMapLifeCycleListener(final IMapLifeCycleListener listener) {
@@ -946,7 +947,6 @@ implements IExtension, NodeChangeAnnouncer{
 
 	static class Refresher {
 		private final ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue> nodesToRefresh = new ConcurrentHashMap<NodeRefreshKey, NodeRefreshValue>();
-		private boolean refreshRunning;
 
 		/** optimization of nodeRefresh() as it handles multiple nodes in one Runnable, even nodes that weren't on the
 		 * list when the thread was started.*/
@@ -968,17 +968,12 @@ implements IExtension, NodeChangeAnnouncer{
 						@SuppressWarnings("unchecked")
 						final Entry<NodeRefreshKey, NodeRefreshValue>[] entries = nodesToRefresh.entrySet().toArray(new Entry[]{} );
 						nodesToRefresh.clear();
-						refreshRunning = true;
-						try {
-							for (Entry<NodeRefreshKey, NodeRefreshValue> entry : entries) {
-								final NodeRefreshValue info = entry.getValue();
-								if (info.controller == currentModeController){
-									final NodeRefreshKey key = entry.getKey();
-									currentModeController.getMapController().nodeRefresh(key.node, key.property, info.oldValue, info.newValue);
-								}
+						for (Entry<NodeRefreshKey, NodeRefreshValue> entry : entries) {
+							final NodeRefreshValue info = entry.getValue();
+							if (info.controller == currentModeController){
+								final NodeRefreshKey key = entry.getKey();
+								currentModeController.getMapController().nodeRefresh(key.node, key.property, info.oldValue, info.newValue);
 							}
-						} finally {
-							refreshRunning = false;
 						}
 					}
 				};

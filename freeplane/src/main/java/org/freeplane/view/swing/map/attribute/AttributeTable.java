@@ -190,7 +190,6 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 	private static final int EXTRA_HEIGHT = 4;
 	static private CursorUpdater cursorUpdater = new CursorUpdater();
 	private static final int MAX_HEIGTH = 300;
-	private static final int MAX_WIDTH = 300;
 	private static final long serialVersionUID = 1L;
 	private static final int CURSOR_WIDTH = 2;
 	public static AttributeTable getSelectedTable(){
@@ -959,8 +958,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 		if (rowCount == 0) {
 			return;
 		}
-		final float fontSize = (float) getFont().getMaxCharBounds(((Graphics2D)getGraphics()).getFontRenderContext()).getHeight();
 		final float zoom = getZoom();
+		final float fontSize = (float) getFont().getMaxCharBounds(((Graphics2D)getGraphics()).getFontRenderContext()).getHeight() * zoom;
 		final int extraHeight = (int)(zoom * EXTRA_HEIGHT + 0.7f);
 		int rowHeight = Math.max(1, (int)fontSize + extraHeight);
 		for (int i = 0; i <  rowCount; i++) {

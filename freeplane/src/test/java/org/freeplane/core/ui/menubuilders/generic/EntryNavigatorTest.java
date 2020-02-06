@@ -3,13 +3,15 @@ package org.freeplane.core.ui.menubuilders.generic;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import java.util.Collections;
+
 import org.junit.Test;
 
 
 public class EntryNavigatorTest {
 	@Test
 	public void findsChildByPath() throws Exception {
-		final EntryNavigator entryNavigator = new EntryNavigator();
+		final EntryNavigator entryNavigator = new EntryNavigator(Collections.emptyMap());
 		Entry top = new Entry();
 		Entry middle = new Entry();
 		top.addChild(middle);
@@ -22,8 +24,7 @@ public class EntryNavigatorTest {
 
 	@Test
 	public void findsChildByPathAlias() throws Exception {
-		final EntryNavigator entryNavigator = new EntryNavigator();
-		entryNavigator.addAlias("medium", "middle");
+		final EntryNavigator entryNavigator = new EntryNavigator(Collections.singletonMap("medium", "middle"));
 		Entry top = new Entry();
 		Entry middle = new Entry();
 		top.addChild(middle);

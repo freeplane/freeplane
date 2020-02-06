@@ -7,7 +7,7 @@ import static org.mockito.Mockito.when;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
-import org.freeplane.core.ui.menubuilders.generic.EntryPopupListenerCollection;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -23,12 +23,9 @@ public class ActionStatusUpdaterTest {
 		when(someAction.checkSelectionOnPopup()).thenReturn(true);
 		when(someAction.isEnabled()).thenReturn(true);
 		new EntryAccessor().setAction(actionEntry, someAction);
-		
-		final EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
+
 		final ActionStatusUpdater actionSelectListener = new ActionStatusUpdater();
-		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
-		entryPopupListenerCollection.childEntriesWillBecomeVisible(menuEntry);
-		
+		actionSelectListener.childEntriesWillBecomeVisible(menuEntry, UserRole.ADVANCED_EDITOR);
 		verify(someAction).setSelected();
 	}
 
@@ -41,12 +38,10 @@ public class ActionStatusUpdaterTest {
 		when(someAction.checkSelectionOnPopup()).thenReturn(false);
 		when(someAction.isEnabled()).thenReturn(true);
 		new EntryAccessor().setAction(actionEntry, someAction);
-		
-		final EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
+
 		final ActionStatusUpdater actionSelectListener = new ActionStatusUpdater();
-		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
-		entryPopupListenerCollection.childEntriesWillBecomeVisible(menuEntry);
-		
+		actionSelectListener.childEntriesWillBecomeVisible(menuEntry, UserRole.ADVANCED_EDITOR);
+
 		verify(someAction, never()).setSelected();
 	}
 

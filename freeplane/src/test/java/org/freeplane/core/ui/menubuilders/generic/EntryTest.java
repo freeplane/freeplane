@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
+import java.awt.Component;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -106,7 +107,7 @@ public class EntryTest {
 	
 	@Test 
 	public void findsParentComponent(){
-		Object component = mock(Object.class);
+		Component component = mock(Component.class);
 		Entry structureWithEntry = new Entry();
 		new EntryAccessor().setComponent(structureWithEntry, component);
 		final Entry child = new Entry();
@@ -126,7 +127,7 @@ public class EntryTest {
 	
 	@Test 
 	public void findsAncestorComponent(){
-		Object component = mock(Object.class);
+		Component component = mock(Component.class);
 		Entry structureWithEntry = new Entry();
 		new EntryAccessor().setComponent(structureWithEntry, component);
 		final Entry level1child = new Entry();

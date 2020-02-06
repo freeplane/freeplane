@@ -29,7 +29,7 @@ public class CloneOfSelectedViewCondition extends ASelectableCondition implement
 	static final String NAME = "clone_condition";
 	private static String description;
 
-	public static ASelectableCondition CreateCondition() {
+	public static ASelectableCondition createCondition() {
 		return new CloneOfSelectedViewCondition();
 	}
 
@@ -59,10 +59,10 @@ public class CloneOfSelectedViewCondition extends ASelectableCondition implement
     protected String getName() {
 	    return NAME;
     }
-	public void toXml(final XMLElement element) {}
-
-	public static ASelectableCondition load(XMLElement element) {
-	    return new CloneOfSelectedViewCondition();
+	
+    @Override
+    public boolean canBePersisted() {
+        return false;
     }
 
 	public ASelectableCondition createSnapshotCondition() {

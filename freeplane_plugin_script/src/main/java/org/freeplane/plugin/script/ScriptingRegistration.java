@@ -21,6 +21,7 @@
 package org.freeplane.plugin.script;
 
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -172,7 +173,7 @@ class ScriptingRegistration {
 		registerScriptAddOns();
 		new ScriptingConfiguration();
 		new ScriptCompiler().compileScriptsOnPath(ScriptResources.getClasspath());
-		if(! modeController.getController().getViewController().isHeadless()){
+		if(! GraphicsEnvironment.isHeadless()){
 			registerGuiStuff(modeController);
 			createUserScriptsDirectory();
 			createInitScriptsDirectory();

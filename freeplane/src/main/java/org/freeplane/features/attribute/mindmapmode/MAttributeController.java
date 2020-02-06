@@ -351,15 +351,12 @@ public class MAttributeController extends AttributeController {
 	}
 
 	private static class SetAttributeColumnWidthActor implements IActor {
-		private final NodeModel node;
 		private final int col;
 		private final NodeAttributeTableModel model;
 		private final Quantity<LengthUnits> oldWidth;
 		private final Quantity<LengthUnits> width;
 
-		private SetAttributeColumnWidthActor(NodeModel node, final int col, final Quantity<LengthUnits> oldWidth, final Quantity<LengthUnits> width,
-		                                     final NodeAttributeTableModel model) {
-			this.node = node;
+		private SetAttributeColumnWidthActor(final NodeAttributeTableModel model, final int col, final Quantity<LengthUnits> oldWidth, final Quantity<LengthUnits> width) {
 			this.col = col;
 			this.oldWidth = oldWidth;
 			this.width = width;
@@ -784,7 +781,7 @@ public class MAttributeController extends AttributeController {
 		if (width.equals(oldWidth)) {
 			return;
 		}
-		final IActor actor = new SetAttributeColumnWidthActor(node, col, oldWidth, width, model);
+		final IActor actor = new SetAttributeColumnWidthActor(model, col, oldWidth, width);
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 

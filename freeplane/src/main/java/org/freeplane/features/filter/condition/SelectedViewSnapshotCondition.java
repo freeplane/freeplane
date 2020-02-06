@@ -24,7 +24,6 @@ import java.util.HashSet;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 public class SelectedViewSnapshotCondition extends ASelectableCondition {
 	private static final String NAME = "selected_view_snapshot";
@@ -54,5 +53,10 @@ public class SelectedViewSnapshotCondition extends ASelectableCondition {
     protected String getName() {
 	    return NAME;
    }
-	public void toXml(final XMLElement element) {}
+    
+    @Override
+    public boolean canBePersisted() {
+        return false;
+    }
+
 }

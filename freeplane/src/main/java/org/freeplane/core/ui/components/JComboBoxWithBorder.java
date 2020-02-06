@@ -17,6 +17,7 @@ import org.freeplane.core.util.Quantity;
 
 @SuppressWarnings("serial")
 public class JComboBoxWithBorder<T> extends JComboBox<T>{
+	private static final int MAXIMUM_ROW_COUNT = 10;
 	static private final int MARGIN = new Quantity<LengthUnits>(2, LengthUnits.pt).toBaseUnitsRounded();
 	static private final EmptyBorder STANDARD_BORDER = new EmptyBorder(0, MARGIN, 0, MARGIN);  
 	private RendererWithBorder rendererWithBorder;
@@ -60,7 +61,7 @@ public class JComboBoxWithBorder<T> extends JComboBox<T>{
 
 	private void initialize() {
 		rendererWithBorder = new RendererWithBorder();
-		MenuSplitterConfiguration.setMaximumRowCount(this);
+		setMaximumRowCount(MAXIMUM_ROW_COUNT);
 		updateUI();
 	}
 

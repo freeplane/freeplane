@@ -105,9 +105,6 @@ class CloneConditionController implements IElementaryConditionController {
 	}
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
-		if (element.getName().equalsIgnoreCase(CloneOfSelectedViewCondition.NAME)) {
-			return CloneOfSelectedViewCondition.load(element);
-		}
 		return null;
 	}
 

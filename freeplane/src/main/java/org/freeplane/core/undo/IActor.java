@@ -25,4 +25,8 @@ public interface IActor {
 	String getDescription();
 
 	void undo();
+
+	default boolean isReadonly() {
+		return false;
+	}
 }

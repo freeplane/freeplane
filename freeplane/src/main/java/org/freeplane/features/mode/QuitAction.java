@@ -22,6 +22,7 @@ package org.freeplane.features.mode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 
 /**
  * Manages the history of visited maps. Maybe explicitly closed maps should be
@@ -46,6 +47,6 @@ public class QuitAction extends AFreeplaneAction {
 	}
 
 	@Override
-	public void afterMapChange(final Object newMap) {
+	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 	}
 }

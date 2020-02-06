@@ -226,11 +226,6 @@ public class HeadlessUIController extends FrameController {
 	}
 
 	@Override
-	public boolean isHeadless() {
-		return true;
-	}
-
-	@Override
 	public boolean areScrollbarsVisible() {
 		return false;
 	}

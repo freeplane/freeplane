@@ -31,6 +31,7 @@ import javax.swing.KeyStroke;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.IKeyBindingManager;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
@@ -106,8 +107,8 @@ public class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	@Override
-	public void afterMapChange(final Object newMap) {
-		originalAction.afterMapChange(newMap);
+	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+		originalAction.afterMapChange( userRole, isMapSelected);
 	}
 
 	@Override

@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 
 @SelectableAction(checkOnPopup = true)
 class ToggleScrollbarsAction extends AFreeplaneAction {
@@ -46,6 +47,6 @@ class ToggleScrollbarsAction extends AFreeplaneAction {
 		setSelected(controller.areScrollbarsVisible());
 	}
 	@Override
-	public void afterMapChange(final Object newMap) {
+	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 	}
 }

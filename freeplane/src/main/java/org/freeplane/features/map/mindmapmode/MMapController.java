@@ -51,6 +51,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
@@ -370,7 +371,7 @@ public class MMapController extends MapController {
     }
 
 	public boolean close(final MapModel map) {
-		if (!(map.isSaved() || map.isDocumentation())) {
+		if (!(map.isSaved() || map.isReadOnly())) {
 			Controller.getCurrentController().getMapViewManager().changeToMap(map);
 			final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
 			final String title = TextUtils.getText("SaveAction.text");
@@ -847,7 +848,7 @@ public class MMapController extends MapController {
 			controller.getMapViewManager().setMapTitles();
 			final AFreeplaneAction saveAction = controller.getModeController().getAction("SaveAction");
 			if(saveAction != null)
-				saveAction.setEnabled();
+				saveAction.setEnabled(UserRole.SIMPLE_EDITOR);
 		}
 	}
 
@@ -1028,6 +1029,11 @@ public class MMapController extends MapController {
 			return;
 		if(isFoldingPersistent()){
 			IActor foldingActor = new IActor() {
+				@Override
+				public boolean isReadonly() {
+					return true;
+				}
+
 				@Override
 				public void undo() {
 					unfoldHiddenChildren(node);

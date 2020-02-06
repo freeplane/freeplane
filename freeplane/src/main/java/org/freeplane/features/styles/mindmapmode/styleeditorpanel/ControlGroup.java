@@ -29,6 +29,6 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
  */
 interface ControlGroup{
 	String SET_RESOURCE = "set_property_text";
-	public void setStyle(NodeModel node);
+	public void setStyle(NodeModel node, boolean canEdit);
 	void addControlGroup(DefaultFormBuilder formBuilder);
 }

@@ -1,4 +1,19 @@
 ===============================
+1.7.12
+===============================
+Bug fixes
+
+===============================
+1.7.11
+===============================
+Fix copying text from clipboard
+Scale icons in filter conditions
+Make LaTeX line spacing configurable
+Java 13 support
+Viewing/Editing user interfaces
+Simple/Advanced user interfaces
+
+===============================
 1.7.10
 ===============================
 Fix menu mnemonics
@@ -7,6 +22,9 @@ Allow to change positions of LINE shape connectors
 New action: select nodes matching filter
 Dark UI mode support (Look and feel and map template "Darcula")
 Overwrite system properties from installation specific file <install-dir>/system.properties
+Environment var FREEPLANE_JAVA_OPTION_FILE can override path to system.properties read on start
+Add new properties  to connector API : dashArray, opacity, width, labelFontFamily and labelFontSize
+Suggest to delete all user configuration and resource files on uninstall
 ===============================
 1.7.9
 ===============================

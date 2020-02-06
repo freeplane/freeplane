@@ -574,6 +574,14 @@ public class ScriptApiTest {
 	//
 	//	}
 	//
+	//	public void test_FontRO_isStrikedThrough() {
+	//
+	//	}
+	//
+	//	public void test_FontRO_isStrikedThroughSet() {
+	//
+	//	}
+	//
 	//	public void test_FontRO_isNameSet() {
 	//
 	//	}
@@ -590,6 +598,10 @@ public class ScriptApiTest {
 	//
 	//	}
 	//
+	//	public void test_Font_resetStrikedThrough() {
+	//
+	//	}
+	//
 	//	public void test_Font_resetName() {
 	//
 	//	}
@@ -603,6 +615,10 @@ public class ScriptApiTest {
 	//	}
 	//
 	//	public void test_Font_setItalic_boolean_italic() {
+	//
+	//	}
+	//
+	//	public void test_Font_setStrikedThrough_boolean_strikedThrough() {
 	//
 	//	}
 	//

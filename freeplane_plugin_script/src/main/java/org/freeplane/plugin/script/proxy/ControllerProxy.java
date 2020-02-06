@@ -3,6 +3,7 @@
  */
 package org.freeplane.plugin.script.proxy;
 
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
@@ -270,7 +271,7 @@ class ControllerProxy implements Proxy.Controller {
 
     @Override
 	public boolean isInteractive() {
-        return !Boolean.parseBoolean(System.getProperty("nonInteractive"));
+        return !GraphicsEnvironment.isHeadless();
     }
 
     @Override

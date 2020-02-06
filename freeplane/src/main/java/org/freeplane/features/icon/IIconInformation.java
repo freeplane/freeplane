@@ -28,6 +28,10 @@ public interface IIconInformation {
 	String getTranslatedDescription();
 
 	Icon getIcon();
+	
+	default Icon getActionIcon() {
+		return getIcon();
+	}
 
 	KeyStroke getKeyStroke();
 

@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.features.url.UrlManager;
 
 class NewMapFromTemplateAction extends AFreeplaneAction {
@@ -42,6 +43,6 @@ class NewMapFromTemplateAction extends AFreeplaneAction {
 	}
 
 	@Override
-	public void afterMapChange(final Object newMap) {
+	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 	}
 }

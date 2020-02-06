@@ -62,16 +62,19 @@ class ExportBranchAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final NodeModel existingNode = Controller.getCurrentModeController().getMapController().getSelectedNode();
+		ModeController modeController = Controller.getCurrentModeController();
 		final Controller controller = Controller.getCurrentController();
 		final MapModel parentMap = controller.getMap();
+		if(! modeController.canEdit(parentMap))
+			return;
+		final NodeModel existingNode = modeController.getMapController().getSelectedNode();
 		if (parentMap == null || existingNode == null || existingNode.isRoot()) {
 			controller.getViewController().err("Could not export branch.");
 			return;
 		}
 		if (parentMap.getFile() == null) {
 			controller.getViewController().out("You must save the current map first!");
-			((MModeController) Controller.getCurrentModeController()).save();
+			((MModeController) modeController).save();
 		}
 		JFileChooser chooser;
 		final File file = parentMap.getFile();
@@ -120,7 +123,6 @@ class ExportBranchAction extends AFreeplaneAction {
 			((MLinkController) LinkController.getController()).setLink(existingNode,
 			    oldUri, LinkController.LINK_ABSOLUTE);
 			final int nodePosition = parent.getIndex(existingNode);
-			final ModeController modeController = Controller.getCurrentModeController();
 			modeController.undoableResolveParentExtensions(LogicalStyleKeys.NODE_STYLE, existingNode);
 			final MMapController mMapController = (MMapController) modeController.getMapController();
 			mMapController.deleteNode(existingNode);
@@ -142,7 +144,7 @@ class ExportBranchAction extends AFreeplaneAction {
 						existingNode.setFolded(false);
 					}
 				};
-				Controller.getCurrentModeController().execute(actor, parentMap);
+				modeController.execute(actor, parentMap);
 			}
 			mMapController.createModel(existingNode);
 			final MapModel newMap = existingNode.getMap();

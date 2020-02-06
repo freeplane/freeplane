@@ -17,6 +17,7 @@
  */
 package org.freeplane.features.map;
 
+import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -160,8 +161,8 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	}
 	public FoldingController() {
 		super();
-		final ModeController modeController = Controller.getCurrentModeController();
-		if(!modeController.getController().getViewController().isHeadless()){
+		if(!GraphicsEnvironment.isHeadless()){
+			final ModeController modeController = Controller.getCurrentModeController();
 			final IUserInputListenerFactory userInputListenerFactory = modeController.getUserInputListenerFactory();
 			userInputListenerFactory.addMouseWheelEventHandler(this);
 			for (final AFreeplaneAction annotatedAction : getAnnotatedActions()) {
@@ -180,7 +181,6 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	}
 
 	protected void foldAll(final NodeModel node) {
-		final MapController modeController = Controller.getCurrentModeController().getMapController();
 		setFolded(node, true);
 		for (NodeModel child : node.getChildren()) {
 			foldAll(child);
@@ -196,7 +196,6 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	 *            node to start from.
 	 */
 	public void foldLastBranches(final NodeModel node) {
-		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		boolean nodeHasChildWhichIsLeave = false;
 		for (final NodeModel child : node.getChildren()) {
 			if (child.getChildCount() == 0) {
@@ -217,7 +216,6 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		final int k = depth(node);
 		if (k < stage) {
 			setFolded(node, false);
-			final MapController mapController = Controller.getCurrentModeController().getMapController();
 			for (final NodeModel child : node.getChildren()) {
 				foldStageN(child, stage);
 			}
@@ -289,7 +287,6 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 
 	public void unfoldAll(final NodeModel node) {
 		setFolded(node, false);
-		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		for (final NodeModel child : node.getChildren()) {
 			unfoldAll(child);
 		}
@@ -307,7 +304,6 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		final int k = depth(node);
 		if (k < stage) {
 			setFolded(node, false);
-			final MapController mapController = Controller.getCurrentModeController().getMapController();
 			for (final NodeModel child : node.getChildren()) {
 				unfoldStageN(child, stage);
 			}

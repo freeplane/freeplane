@@ -97,7 +97,7 @@ public class ExportWithXSLT implements IExportEngine {
 		final StringTokenizer tokenizer = new StringTokenizer(files, ",");
 		final File destinationDirectory = new File(targetDirectoryName);
 		while (tokenizer.hasMoreTokens()) {
-			final String sourceFile = tokenizer.nextToken();
+			final String sourceFile = tokenizer.nextToken().trim();
 			int nameStartPosition = sourceFile.lastIndexOf('/') + 1;
 			String sourceFileDirectory = nameStartPosition > 0 ? sourceFile.substring(0, nameStartPosition) : "";
 			String sourceFileName = nameStartPosition > 0 ? sourceFile.substring(nameStartPosition) : sourceFile;
@@ -167,9 +167,6 @@ public class ExportWithXSLT implements IExportEngine {
 
 	private String getMapXml(List<NodeModel> nodes, final Mode mode) throws IOException {
 		final StringWriter writer = new StringWriter();
-		final ModeController modeController = Controller.getCurrentModeController();
-		final Controller controller = modeController.getController();
-		final MapModel map = controller.getMap();
 		new BranchXmlWriter(nodes).writeXml(writer, mode);
 		return writer.getBuffer().toString();
 	}

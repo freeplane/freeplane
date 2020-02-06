@@ -19,6 +19,19 @@
  */
 package org.freeplane.main.osgi;
 
+import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.jar.Manifest;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
@@ -27,6 +40,8 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.main.application.ApplicationResourceController;
+import org.freeplane.main.application.CommandLineParser;
+import org.freeplane.main.application.CommandLineParser.Options;
 import org.freeplane.main.application.FreeplaneGUIStarter;
 import org.freeplane.main.application.FreeplaneStarter;
 import org.freeplane.main.application.SingleInstanceManager;
@@ -34,23 +49,38 @@ import org.freeplane.main.application.protocols.freeplaneresource.Handler;
 import org.freeplane.main.headlessmode.FreeplaneHeadlessStarter;
 import org.freeplane.main.mindmapmode.stylemode.ExtensionInstaller;
 import org.freeplane.main.mindmapmode.stylemode.SModeControllerFactory;
-import org.osgi.framework.*;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.url.URLConstants;
 import org.osgi.service.url.URLStreamHandlerService;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.util.*;
-import java.util.jar.Manifest;
 
 /**
  * @author Dimitry Polivaev
  * 05.01.2009
  */
 class ActivatorImpl implements BundleActivator {
-	private static final String HEADLESS_RUN_PROPERTY_NAME = FreeplaneStarter.class.getName() + ".headless";
+	private static void fixX11AppName() {
+		if(! System.getProperty("java.version").startsWith("1."))
+			return;
+		try {
+			Toolkit xToolkit = Toolkit.getDefaultToolkit();
+			if (xToolkit.getClass().getName().equals("sun.awt.X11.XToolkit"))
+			{
+				java.lang.reflect.Field awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
+				awtAppClassNameField.setAccessible(true);
+				awtAppClassNameField.set(xToolkit, "Freeplane");
+			}
+		} catch (NoSuchFieldException | SecurityException
+				| IllegalArgumentException | IllegalAccessException e) {
+			System.err.format("Couldn't set awtAppClassName: %s%n", e.getClass().getSimpleName() + ": " + e.getMessage());
+		}
+	}
+	
+	private static final String JAVA_HEADLESS_PROPERTY = "java.awt.headless";
+
 	private FreeplaneStarter starter;
 
 	private String[] getCallParameters() {
@@ -165,9 +195,13 @@ class ActivatorImpl implements BundleActivator {
 			}
 		}
 		// initialize ApplicationController - SingleInstanceManager needs the configuration
-		starter =  createStarter();
-		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager(starter, runsHeadless());
-		singleInstanceManager.start(getCallParameters());
+		Options options = CommandLineParser.parse(getCallParameters());
+		if(options.isNonInteractive())
+			System.setProperty(JAVA_HEADLESS_PROPERTY, "true");
+
+		starter =  createStarter(options);
+		final SingleInstanceManager singleInstanceManager = new SingleInstanceManager(starter, GraphicsEnvironment.isHeadless());
+		singleInstanceManager.start(options);
 		if (singleInstanceManager.isSlave()) {
 			LogUtils.info("opened files in master - exiting now");
 			System.exit(0);
@@ -200,7 +234,7 @@ class ActivatorImpl implements BundleActivator {
 				}
 				FilterController.getController(controller).loadDefaultConditions();
 				starter.buildMenus(controller, plugins);
-				starter.createFrame(getCallParameters());
+				starter.createFrame();
 			}
 		});
 	}
@@ -261,19 +295,18 @@ class ActivatorImpl implements BundleActivator {
 		SModeControllerFactory.getInstance().setExtensionInstaller(osgiExtentionInstaller);
 		osgiExtentionInstaller.installExtensions(controller);
 	}
+	
 
-	public FreeplaneStarter createStarter() {
-		if(runsHeadless())
+	public FreeplaneStarter createStarter(Options options) {
+		if(GraphicsEnvironment.isHeadless()) {
 			return new FreeplaneHeadlessStarter();
-		else
-			return new FreeplaneGUIStarter(getCallParameters());
+		} else {
+			fixX11AppName();
+			return new FreeplaneGUIStarter(options);
+		}
     }
 
-	private boolean runsHeadless() {
-		return Boolean.getBoolean(HEADLESS_RUN_PROPERTY_NAME);
-	}
-
-    private void registerClasspathUrlHandler(final BundleContext context, String protocol, ConnectionHandler handler) {
+	private void registerClasspathUrlHandler(final BundleContext context, String protocol, ConnectionHandler handler) {
         Hashtable<String, String[]> properties = new Hashtable<String, String[]>();
         properties.put(URLConstants.URL_HANDLER_PROTOCOL, new String[] { protocol });
         context.registerService(URLStreamHandlerService.class.getName(), new DelegatingUrlHandlerService(handler), properties);

@@ -38,8 +38,11 @@ public class JAutoToggleButton extends JToggleButton implements PropertyChangeLi
 	private static final long serialVersionUID = 1L;
 	private PropertyChangeListener defaultPropertyChanegListener;
 
-	public JAutoToggleButton(final Action a) {
+	public JAutoToggleButton(final IFreeplaneAction a) {
 		super(a);
+		if (a.isSelected()) {
+			setSelected(true);
+		}
 	}
 
 	public JAutoToggleButton() {
@@ -47,11 +50,8 @@ public class JAutoToggleButton extends JToggleButton implements PropertyChangeLi
 	}
 
 	public JAutoToggleButton(final IFreeplaneAction a, final ButtonModel model) {
-		super(a);
+		this(a);
 		model.addChangeListener(this);
-		if (a.isSelected()) {
-			setSelected(true);
-		}
 	}
 
 	@Override

@@ -88,7 +88,7 @@ public class IconContainedCondition extends ASelectableCondition {
 		final JCondition component = new JCondition();
 		final String text = TextUtils.getText("filter_icon") + ' ' + TextUtils.getText("filter_contains") + ' ';
 		component.add(ConditionFactory.createConditionLabel(text));
-		JLabel icon = ConditionFactory.createConditionLabel(STORE.getUIIcon(getIconName()).getIcon());
+		JLabel icon = ConditionFactory.createConditionLabel(STORE.getUIIcon(getIconName()));
 		component.add(icon);
 		icon.setBackground(Color.WHITE);
 		icon.setOpaque(true);

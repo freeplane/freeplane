@@ -56,5 +56,8 @@ public class NoFilteringCondition extends ASelectableCondition {
 	    return NAME;
     }
 	
-	public void toXml(final XMLElement element) {}
+	@Override
+	public boolean canBePersisted() {
+	    return false;
+	}
 }

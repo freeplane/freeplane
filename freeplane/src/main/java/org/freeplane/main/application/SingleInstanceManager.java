@@ -28,8 +28,7 @@ public class SingleInstanceManager {
 		isSingleInstanceForceMode =!runsHeadless && resourceController.getBooleanProperty("single_instance_force");
 	}
 
-	public void start(String[] args) {
-        final Options options = CommandLineParser.parse(args, false);
+	public void start(final Options options) {
         final String[] filesToLoad = options.getFilesToOpenAsArray();
 		if (isSingleInstanceMode && !options.hasMenuItemsToExecute()) {
 			initLockFile();

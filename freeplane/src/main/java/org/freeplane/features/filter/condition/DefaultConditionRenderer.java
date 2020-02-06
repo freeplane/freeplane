@@ -20,15 +20,18 @@
 package org.freeplane.features.filter.condition;
 
 import java.awt.Component;
+import java.awt.Font;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
 import javax.swing.table.TableCellRenderer;
 
 import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.ZoomedIcon;
 
 /**
  * @author Dimitry Polivaev
@@ -68,7 +71,12 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 			component =  new JLabel(noValueText);
 		}
 		else if (value instanceof UIIcon) {
-			component = new JLabel(((UIIcon) value).getIcon());
+			JLabel label = new JLabel();
+			Font font = label.getFont();
+			final int fontHeight = label.getFontMetrics(font).getHeight();
+			label.setIcon(ZoomedIcon.withHeigth((UIIcon) value, fontHeight));
+			label.setHorizontalAlignment(SwingConstants.CENTER);
+			component = label;
 		}
 		else if (value instanceof ASelectableCondition) {
 			final ASelectableCondition cond = (ASelectableCondition) value;

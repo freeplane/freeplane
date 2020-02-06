@@ -26,5 +26,8 @@ import org.freeplane.core.extension.IExtension;
  * Dec 10, 2011
  */
 public class DocuMapAttribute implements IExtension {
-	public static final IExtension instance = new DocuMapAttribute();
+	public static final DocuMapAttribute INSTANCE = new DocuMapAttribute();
+	private DocuMapAttribute() {
+		
+	}
 }

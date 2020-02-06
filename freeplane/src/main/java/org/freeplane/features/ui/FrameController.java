@@ -99,7 +99,6 @@ import org.freeplane.features.time.TimeComboBoxEditor;
 abstract public class FrameController implements ViewController {
 	private static final String DARCULA_LAF_NAME = "com.bulenkov.darcula.DarculaLaf";
 	private static final double DEFAULT_SCALING_FACTOR = 0.8;
-	private static final Quantity<LengthUnits> ICON_SIZE = new Quantity<LengthUnits>(12, LengthUnits.pt);
 
 	private final class HorizontalToolbarPanel extends JPanel {
 		/**
@@ -842,11 +841,6 @@ abstract public class FrameController implements ViewController {
 			runnable.run();
 		else
 			EventQueue.invokeAndWait(runnable);
-	}
-
-	@Override
-	public boolean isHeadless() {
-		return false;
 	}
 
 	@Override

@@ -119,11 +119,11 @@ public class MapLoader{
 				try{
 					map = loadMap();
 					if (withView) {
-						createMapView(map);
-						enableAutosave(map);
 						final File newFile = urlToFileOrNull(newMapLocation);
 						if(newFile != null && ! asDocumentation)
 							fileManager().lock(map, newFile);
+						createMapView(map);
+						enableAutosave(map);
 					}
 				}
 				finally {
@@ -181,9 +181,9 @@ public class MapLoader{
 
 	private static URL fileToUrlOrNull(final File file) {
 		try {
-			return Compat.fileToUrl(file);
+			return Compat.fileToUrl(file.getCanonicalFile());
 		}
-		catch (MalformedURLException e) {
+		catch (IOException e) {
 			return null;
 		}
 	}
@@ -264,7 +264,7 @@ public class MapLoader{
 		final MMapModel map = new MMapModel();
 		if(asDocumentation) {
 			map.setReadOnly(true);
-			map.addExtension(DocuMapAttribute.instance);
+			map.addExtension(DocuMapAttribute.INSTANCE);
 		}
 		return map;
 	}

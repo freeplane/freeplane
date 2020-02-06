@@ -43,13 +43,11 @@ public class MenuRadioActionComponentProvider implements ComponentProvider {
 			final JMenuItem actionComponent;
 			IFreeplaneAction wrappedAction = acceleratebleActionProvider.wrap(action);
 			if (action.isSelectable()) {
-				actionComponent = new JAutoRadioButtonMenuItem(wrappedAction);
+				actionComponent = new JAutoRadioButtonMenuItem(wrappedAction, buttonGroup);
 			}
 			else {
 				actionComponent = new JRadioButtonMenuItem(wrappedAction);
 			}
-			actionComponent.setSelected(Boolean.parseBoolean(String.valueOf(entry.getAttribute("selected"))) 
-				|| entry.getName().equals(getSelectedActionName(entry)));
 			buttonGroup.add(actionComponent);
 			final KeyStroke accelerator = accelerators.getAccelerator(action);
 			actionComponent.setAccelerator(accelerator);
@@ -61,15 +59,5 @@ public class MenuRadioActionComponentProvider implements ComponentProvider {
 		}
 		else
 			return null;
-	}
-
-	private String getSelectedActionName(Entry entry) {
-		String selectedAction = (String) entry.getParent().getAttribute("selectedAction");
-		if (selectedAction != null)
-			return selectedAction;
-		String selectedActionProperty = (String) entry.getParent().getAttribute("selectedActionProperty");
-		if (selectedActionProperty != null)
-			return ResourceController.getResourceController().getProperty(selectedActionProperty);
-		return null;
 	}
 }

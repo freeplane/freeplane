@@ -40,6 +40,7 @@ import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.ui.menubuilders.generic.UserRole.Interfaces;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
@@ -84,9 +85,6 @@ import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 
 public class FreeplaneGUIStarter implements FreeplaneStarter {
-
-
-
 	static{
 		Compat.fixMousePointerForLinux();
 	}
@@ -104,13 +102,16 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	private static final String LOAD_LAST_MAP = "load_last_map";
 	final private Options options;
 
-	public FreeplaneGUIStarter(String[] args) {
+	public FreeplaneGUIStarter(Options options) {
 		super();
-		options = CommandLineParser.parse(args, true);
+		this.options = options;
 		final File userPreferencesFile = ApplicationResourceController.getUserPreferencesFile();
 		firstRun = !userPreferencesFile.exists();
 		new UserPropertiesUpdater().importOldProperties();
 		applicationResourceController = new ApplicationResourceController();
+		if(!userPreferencesFile.exists()) {
+			applicationResourceController.setProperty(ModeController.USER_INTERFACE_PROPERTY, Interfaces.SIMPLE.name());
+		}
 	}
 
 	@Override
@@ -224,7 +225,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	}
 
 	@Override
-	public void createFrame(final String[] args) {
+	public void createFrame() {
 		Controller controller = Controller.getCurrentController();
 		ModeController modeController = controller.getModeController(MModeController.MODENAME);
 		controller.selectModeForBuild(modeController);
@@ -239,7 +240,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				EventQueue.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						loadMaps(CommandLineParser.parse(args, false).getFilesToOpenAsArray());
+						loadMaps();
 						finishStartup();
 					}
 				});
@@ -266,7 +267,6 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 				contentPane.setVisible(true);
 				frame.toFront();
 				startupFinished = true;
-				System.setProperty("nonInteractive", Boolean.toString(options.isNonInteractive()));
 				try {
 					Thread.sleep(1000);
 				}
@@ -299,7 +299,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		Controller.getCurrentController().fireStartupFinished();
 	}
 
-	private void loadMaps( final String[] args) {
+	private void loadMaps() {
 		final Controller controller = Controller.getCurrentController();
 		final boolean alwaysLoadLastMaps = ResourceController.getResourceController().getBooleanProperty(
 		    "always_load_last_maps");
@@ -307,7 +307,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		if (alwaysLoadLastMaps && !dontLoadLastMaps) {
 			loadLastMaps();
 		}
-		loadMaps(controller, args);
+		loadMaps(controller, options.getFilesToOpenAsArray());
 		if (controller.getMap() == null && !alwaysLoadLastMaps && !dontLoadLastMaps) {
 			final AddOnsController addonsController = AddOnsController.getController();
 			addonsController.setAutoInstallEnabled(false);
@@ -371,15 +371,19 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
     private void loadMaps(final Controller controller, final String[] args) {
 		controller.selectMode(MModeController.MODENAME);
 		for (int i = 0; i < args.length; i++) {
-			String fileArgument = args[i];
-			try {
-				final LinkController linkController = LinkController.getController();
-				linkController.loadMap(fileArgument);
-			}
-			catch (final Exception ex) {
-				System.err.println("File " + fileArgument + " not loaded");
-			}
+			loadMap(args[i]);
 		}
+		MacOptions.macFilesToOpen.forEach(this::loadMap);
+    }
+
+    private void loadMap(String fileArgument) {
+        try {
+        	final LinkController linkController = LinkController.getController();
+        	linkController.loadMap(fileArgument);
+        }
+        catch (final Exception ex) {
+        	System.err.println("File " + fileArgument + " not loaded");
+        }
     }
 
    @Override

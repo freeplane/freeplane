@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
+import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class ShowPastRemindersOnce {
 	}
 
 	public void addNode(NodeModel node) {
-		if(hasNoUserInterface())
+		if(GraphicsEnvironment.isHeadless())
 			return;
 
 		nodes.add(node);
@@ -86,10 +87,6 @@ public class ShowPastRemindersOnce {
 				}
 			}
 		});
-	}
-
-	private boolean hasNoUserInterface() {
-		return Controller.getCurrentController().getMapViewManager().isHeadless();
 	}
 
 	public boolean alreadyExecuted(){

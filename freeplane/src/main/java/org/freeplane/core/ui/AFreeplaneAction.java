@@ -26,6 +26,8 @@ import javax.swing.Action;
 import javax.swing.Icon;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
+import org.freeplane.core.ui.menubuilders.generic.UserRoleConstraint;
 import org.freeplane.core.util.TextUtils;
 
 /**
@@ -37,49 +39,13 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public boolean checkEnabledOnChange() {
-		final EnabledAction annotation = getClass().getAnnotation(EnabledAction.class);
-		if (annotation == null) {
-			return false;
-		}
-		return annotation.checkOnNodeChange();
-	}
-
-	public boolean checkSelectionOnChange() {
-		final SelectableAction annotation = getClass().getAnnotation(SelectableAction.class);
-		if (annotation == null) {
-			return false;
-		}
-		return annotation.checkOnNodeChange();
-	}
-
-	public boolean checkSelectionOnPropertyChange() {
-		final SelectableAction annotation = getClass().getAnnotation(SelectableAction.class);
-		if (annotation == null) {
-			return false;
-		}
-		return !"".equals(annotation.checkOnPropertyChange());
-	}
-
-	public boolean checkSelectionOnPopup() {
-		final SelectableAction annotation = getClass().getAnnotation(SelectableAction.class);
-		if (annotation == null) {
-			return false;
-		}
-		return annotation.checkOnPopup();
-	}
-
-	public boolean checkEnabledOnPopup() {
-		final EnabledAction annotation = getClass().getAnnotation(EnabledAction.class);
-		if (annotation == null) {
-			return false;
-		}
-		return annotation.checkOnPopup();
-	}
 
 	final private String key;
 	private boolean selected = false;
 	final private String rawText;
+
+
+	private UserRoleConstraint constraint = UserRoleConstraint.NO_CONSTRAINT;
 
 	public AFreeplaneAction(final String key) {
 		super();
@@ -91,6 +57,10 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		//		System.out.println(key);
 	}
 
+	public void addConstraint(UserRoleConstraint constraint) {
+		this.constraint = this.constraint.and(constraint);
+	}
+	
 	protected void setIcon(final String iconKey) {
 		Icon icon = ResourceController.getResourceController().getIcon(iconKey);
 		setIcon(icon);
@@ -127,20 +97,57 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	}
 
 	@Override
-	public void afterMapChange(final Object newMap) {
-		if (newMap == null) {
+	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+		if (isMapSelected) {
+			setEnabled(userRole);
+		}
+		else {
 			if (super.isEnabled()) {
 				setEnabled(false);
 			}
 		}
-		else {
-			if (!super.isEnabled()) {
-				setEnabled(true);
-			}
-			setEnabled();
-		}
 	}
 
+	public boolean checkEnabledOnChange() {
+		final EnabledAction annotation = getClass().getAnnotation(EnabledAction.class);
+		if (annotation == null) {
+			return false;
+		}
+		return annotation.checkOnNodeChange();
+	}
+	
+	public boolean checkSelectionOnChange() {
+		final SelectableAction annotation = getClass().getAnnotation(SelectableAction.class);
+		if (annotation == null) {
+			return false;
+		}
+		return annotation.checkOnNodeChange();
+	}
+
+	public boolean checkSelectionOnPropertyChange() {
+		final SelectableAction annotation = getClass().getAnnotation(SelectableAction.class);
+		if (annotation == null) {
+			return false;
+		}
+		return !"".equals(annotation.checkOnPropertyChange());
+	}
+
+	public boolean checkSelectionOnPopup() {
+		final SelectableAction annotation = getClass().getAnnotation(SelectableAction.class);
+		if (annotation == null) {
+			return false;
+		}
+		return annotation.checkOnPopup();
+	}
+
+	public boolean checkEnabledOnPopup() {
+		final EnabledAction annotation = getClass().getAnnotation(EnabledAction.class);
+		if (annotation == null) {
+			return false;
+		}
+		return annotation.checkOnPopup();
+	}
+	
 	@Override
 	public String getIconKey() {
 		return key + ".icon";
@@ -163,7 +170,9 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		return selected;
 	}
 
-	public void setEnabled() {
+	protected void setEnabled() {
+		if(! isEnabled())
+			setEnabled(true);
 	}
 
 	public void setSelected() {
@@ -188,5 +197,12 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 
 	public String getRawText() {
 		return rawText;
+	}
+
+	public void setEnabled(UserRole userRole) {
+		if(constraint.test(userRole))
+			setEnabled();
+		else
+			setEnabled(false);
 	}
 }

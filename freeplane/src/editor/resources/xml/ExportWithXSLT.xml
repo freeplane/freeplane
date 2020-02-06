@@ -36,7 +36,10 @@
             branch_export="false"
             xslt_file="/xslt/freeplane2applet.xsl"
             create_dir="true"
-            files_to_copy="${org.freeplane.core.dir.lib}freeplaneviewer.jar,${org.freeplane.core.dir.lib}kitfox-svg-salamander-1.1.1-p1.jar,/html/freeplane_applet.jnlp"
+            files_to_copy="${org.freeplane.core.dir.lib}freeplaneviewer.jar,
+            ${org.freeplane.core.dir.lib}freeplaneapi_viewer.jar,
+            ${org.freeplane.core.dir.lib}kitfox-svg-salamander-1.1.1-p1.jar,
+            /html/freeplane_applet.jnlp"
             file_prefix=""
             copy_map="true"
             copymode="FILE"
@@ -54,7 +57,9 @@
             branch_export="false"
             xslt_file="/xslt/freeplane2ws.xsl"
             create_dir="true"
-            files_to_copy="${org.freeplane.core.dir.lib}freeplaneviewer.jar,${org.freeplane.core.dir.lib}kitfox-svg-salamander-1.1.1-p1.jar,"
+            files_to_copy="${org.freeplane.core.dir.lib}freeplaneviewer.jar,
+            ${org.freeplane.core.dir.lib}freeplaneapi_viewer.jar,
+            ${org.freeplane.core.dir.lib}kitfox-svg-salamander-1.1.1-p1.jar"
             file_prefix=""
             copy_map="true"
             copymode="FILE"

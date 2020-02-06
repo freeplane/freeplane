@@ -218,7 +218,6 @@ public class MUIFactory implements INodeSelectionListener, INodeChangeListener, 
 	public Container createFontBox() {
 		final JComboBox fontsBox = new JComboBoxWithBorder();
 		fontsBox.setRenderer(new ComboBoxRendererWithTooltip(fontsBox));
-		final Dimension preferredSize = fontsBox.getPreferredSize();
 		fontsBox.setModel(fonts);
 		return fontsBox;
 	}

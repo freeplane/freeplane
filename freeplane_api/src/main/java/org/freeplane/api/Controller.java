@@ -129,7 +129,7 @@ public interface Controller extends ControllerRO, HeadlessMapCreator {
 	 * @since 1.5 */
 	@Deprecated
 	default Map newMapFromTemplate(File templateFile) {
-		return (Map) mapLoader(templateFile).withView().saveAfterLoading().getMindMap();
+		return (Map) mapLoader(templateFile).withView().unsetMapLocation().getMindMap();
 	}
 
 	/**

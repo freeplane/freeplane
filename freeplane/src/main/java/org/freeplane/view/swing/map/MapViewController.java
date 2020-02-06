@@ -1028,33 +1028,51 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 
 	@Override
 	public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
+		if (propertyName.equals(ModeController.VIEW_MODE_PROPERTY)) {
+			setFrameTitle();
+			return;
+		}
 		if (propertyName.equals(ViewController.RESOURCE_ANTIALIAS)) {
 			changeAntialias(newValue);
+			return;
 		}
 	}
 	@Override
 	public void setMapTitles() {
-		final ModeController modeController = Controller.getCurrentModeController();
-		if (modeController == null) {
-			controller.getViewController().setTitle("");
-			return;
+		setFrameTitle();
+		ModeController modeController = Controller.getCurrentModeController();
+		if (modeController != null) {
+			modeController.getUserInputListenerFactory().updateMapList();
 		}
-		final Object[] messageArguments = { TextUtils.getText(("mode_" + modeController.getModeName())) };
-		final MessageFormat formatter = new MessageFormat(TextUtils.getText("mode_title"));
-		String frameTitle = formatter.format(messageArguments);
-		String viewName = "";
-		final MapModel model = getModel();
-		if (model != null) {
-			viewName = getMapViewComponent().getName();
-			frameTitle = viewName + ((model.isSaved() || model.isReadOnly()) ? "" : "*") + " - " + frameTitle
-			        + (model.isReadOnly() ? " (" + TextUtils.getText("read_only") + ")" : "");
-			final File file = model.getFile();
-			if (file != null) {
-				frameTitle += " " + file.getAbsolutePath();
+	}
+
+	private void setFrameTitle() {
+		ModeController modeController = Controller.getCurrentModeController();
+		if (modeController != null) {
+			final Object[] messageArguments = { TextUtils.getText(("mode_" + modeController.getModeName())) };
+			final MessageFormat formatter = new MessageFormat(TextUtils.getText("mode_title"));
+			String frameTitle = formatter.format(messageArguments);
+			String viewName = "";
+			final MapModel model = getModel();
+			if (model != null) {
+				viewName = getMapViewComponent().getName();
+				frameTitle = viewName + ((model.isSaved() || model.isReadOnly()) ? "" : "*") + " - " + frameTitle
+						+ (modeController.isEditingLocked() ? format("OptionPanel.view_mode.true") :
+							model.isReadOnly() ? format("read_only") : "");
+				final File file = model.getFile();
+				if (file != null) {
+					frameTitle += " " + file.getAbsolutePath();
+				}
 			}
+			controller.getViewController().setTitle(frameTitle);
 		}
-		controller.getViewController().setTitle(frameTitle);
-		modeController.getUserInputListenerFactory().updateMapList();
+		else {
+			controller.getViewController().setTitle("");
+		}
+	}
+
+	private String format(String propertyName) {
+		return " (" + TextUtils.getText(propertyName) + ")";
 	}
 
 	@Override
@@ -1150,11 +1168,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	@Override
 	public boolean isSpotlightEnabled() {
 		return selectedMapView != null && selectedMapView.isSpotlightEnabled();
-	}
-
-	@Override
-	public boolean isHeadless() {
-		return false;
 	}
 
 }

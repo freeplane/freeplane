@@ -190,12 +190,12 @@ public class TextUtils {
 
 	/** Shortcut for scripting: Copies <code>string</code> to the system clipboard. */
 	public static void copyToClipboard(String string) {
-	    ClipboardAccessor.getController().setClipboardContents(string);
+	    ClipboardAccessor.getInstance().setClipboardContents(string);
     }
 
 	/** Shortcut for scripting: Copies <code>html</code> with mimetype text/html to the system clipboard. */
 	public static void copyHtmlToClipboard(String html) {
-		ClipboardAccessor.getController().setClipboardContentsToHtml(html);
+		ClipboardAccessor.getInstance().setClipboardContentsToHtml(html);
 	}
 
 	/**

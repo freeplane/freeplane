@@ -30,14 +30,14 @@ import org.freeplane.core.util.TextUtils;
  * Mar 2, 2011
  */
 @SuppressWarnings("serial")
-@SelectableAction(checkOnPopup = true)
+@SelectableAction
 public class SetStringPropertyAction extends AFreeplaneAction{
 
 	private String propertyName;
 	private String propertyValue;
 	private String property;
 	public SetStringPropertyAction(String property) {
-	    super("SetBooleanPropertyAction." + property, 
+	    super("SetStringPropertyAction." + property, 
 	    	TextUtils.getRawText("OptionPanel." + property),
 	    	null);
 		this.property = property;
@@ -46,6 +46,12 @@ public class SetStringPropertyAction extends AFreeplaneAction{
 	    this.propertyValue = property.substring(separator + 1);
 	    setIcon(property + ".icon");
 	    setTooltip(getTooltipKey());
+	    setSelected();
+	    ResourceController.getResourceController().addPropertyChangeListener(//
+	    	(name, newValue, oldValue) -> {
+	    		if(this.propertyName.equals(name))
+	    			setSelected();
+		});
     }
 
 	public void actionPerformed(ActionEvent e) {

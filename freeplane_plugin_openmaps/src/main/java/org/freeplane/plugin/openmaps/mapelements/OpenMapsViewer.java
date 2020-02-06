@@ -1,9 +1,12 @@
 package org.freeplane.plugin.openmaps.mapelements;
 
 import java.awt.Dimension;
+import java.util.Collections;
 
+import org.freeplane.core.util.FreeplaneVersion;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MemoryTileCache;
+import org.openstreetmap.gui.jmapviewer.OsmTileLoader;
 
 /**
  * @author Blair Archibald
@@ -15,6 +18,8 @@ public class OpenMapsViewer extends JMapViewer {
 
 	public OpenMapsViewer () {
 		 super(new MemoryTileCache());
+		 setTileLoader(new OsmTileLoader(this, Collections.singletonMap("User-Agent", //
+			 "Freeplane/"+FreeplaneVersion.getVersion().numberToString())));
 		 this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 	}
 

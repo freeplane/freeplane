@@ -660,17 +660,6 @@ public class MainView extends ZoomableLabel {
 	public MouseArea getMouseArea() {
 		return mouseArea;
 	}
-	public MouseArea whichMouseArea(Point point) {
-		final int x = point.x;
-		if(isInDragRegion(point))
-			return MouseArea.MOTION;
-		if(isInFoldingRegion(point))
-			return MouseArea.FOLDING;
-		if(isClickableLink(x))
-			return MouseArea.LINK;
-		return MouseArea.DEFAULT;
-	}
-
 
 	public void setMouseArea(MouseArea mouseArea) {
 		if(mouseArea.equals(this.mouseArea))

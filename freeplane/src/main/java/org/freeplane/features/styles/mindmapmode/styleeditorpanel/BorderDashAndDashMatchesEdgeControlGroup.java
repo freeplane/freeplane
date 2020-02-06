@@ -49,6 +49,7 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
 	
 	private BorderDashListener borderDashListener;
 	private BorderDashMatchesEdgeDashListener borderDashMatchesEdgeDashChangeListener;
+	private boolean canEdit;
 	
 	private class BorderDashListener extends ControlGroupChangeListener {
 		public BorderDashListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
@@ -131,15 +132,16 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
 	}
 
 	@Override
-	public void setStyle(NodeModel node) {
+	public void setStyle(NodeModel node, boolean canEdit) {
+		this.canEdit = canEdit;
 		borderDashListener.setStyle(node);
 		borderDashMatchesEdgeDashChangeListener.setStyle(node);
 	}
 
 	private void enableOrDisableBorderDashControls() {
 		final boolean borderDashCanBeSet = ! mBorderDashMatchesEdgeDash.getBooleanValue();
-		mSetBorderDash.setEnabled(borderDashCanBeSet);
-		mBorderDash.setEnabled(borderDashCanBeSet);
+		mSetBorderDash.setEnabled(borderDashCanBeSet && canEdit);
+		mBorderDash.setEnabled(borderDashCanBeSet && canEdit);
 	}
 
 }

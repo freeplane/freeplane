@@ -20,8 +20,6 @@
 package org.freeplane.features.map;	
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.NodeHookDescriptor;
 import org.freeplane.features.mode.PersistentNodeHook;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -33,7 +31,6 @@ import org.freeplane.n3.nanoxml.XMLElement;
 @NodeHookDescriptor(hookName = "SummaryNode", onceForMap = false)
 public class SummaryNode extends PersistentNodeHook implements IExtension{
 	
-	private ModeController modeController;
 
 	public static void install(){
 		new SummaryNode();
@@ -48,7 +45,6 @@ public class SummaryNode extends PersistentNodeHook implements IExtension{
 
 	public SummaryNode() {
 		super();
-		modeController = Controller.getCurrentModeController();
 	}
 
 	@Override

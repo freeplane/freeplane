@@ -1,11 +1,13 @@
 dependencies {
-    compileOnly project(':freeplane')
-	testCompile project(':freeplane')
+    compile project(':freeplane')
 
-	compile 'org.apache.xmlgraphics:batik-transcoder:1.10'
-	compile 'org.apache.xmlgraphics:batik-swing:1.10'
-	compile 'org.apache.xmlgraphics:batik-codec:1.10'
-	compile 'org.apache.xmlgraphics:fop:2.2'
+	lib 'org.apache.xmlgraphics:batik-transcoder:1.12'
+	lib 'org.apache.xmlgraphics:batik-swing:1.12'
+	lib 'org.apache.xmlgraphics:batik-codec:1.12'
+	lib ('org.apache.xmlgraphics:fop-core:2.4') {transitive = false}
+	lib ('org.apache.xmlgraphics:fop-util:2.4') {transitive = false}
+	lib ('org.apache.xmlgraphics:fop-events:2.4') {transitive = false}
+	lib ('org.apache.pdfbox:fontbox:2.0.16') {transitive = false}
 }
 
 configurations.all {
@@ -13,38 +15,4 @@ configurations.all {
     exclude module: 'rhino' 
 	exclude module: 'xalan' 
 	exclude module: 'commons-io' 
-}
-
-jar {
-    manifest {
-        name = pluginid
-        symbolicName = pluginid 
-
-        def deps = filterAndExternalizePluginDependencies(configurations.runtime.files)
-        deps.add(0, "lib/plugin-" + project.version + '.jar')
-
-        attributes 'Class-Path': deps.join(', ')
-        attributes 'Bundle-ClassPath': '., ' + deps.join(', ')
-
-        instruction 'Bundle-Vendor', 'Freeplane Project'
-        instruction 'Bundle-Activator', pluginid + ".Activator"
-        instruction 'Bundle-RequiredExecutionEnvironment', 'JavaSE-1.8'
-
-        def imports = """\
-                      org.osgi.framework;version="1.3.0",
-                      org.freeplane.core.*,
-                      org.freeplane.features.*,
-                      org.freeplane.main.*,
-                      org.freeplane.n3.*,
-                      org.freeplane.view.*,
-                      org.apache.commons.io,
-                      org.apache.commons.io.output,
-                      org.apache.commons.io.filefilter
-                      """
-        instruction 'Import-Package', imports.replaceAll("\\s+", "")
-        instruction 'Export-Package', ''
-
-        // Require-Bundle is ignored by bnd => replaced by Import-Package!
-        //instruction 'Require-Bundle', 'org.freeplane.core;bundle-version="1.0.1", org.freeplane.plugin.script;bundle-version="1.0.1"'
-    }
 }

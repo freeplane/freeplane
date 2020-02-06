@@ -712,6 +712,10 @@ public class MTextController extends TextController {
 		}
 		final IActor actor = new IActor() {
 			@Override
+			public boolean isReadonly() {
+				return true;
+			}
+			@Override
 			public void act() {
 				setHidden(isHidden);
 			}
@@ -744,6 +748,11 @@ public class MTextController extends TextController {
 			return;
 		}
 		final IActor actor = new IActor() {
+			@Override
+			public boolean isReadonly() {
+				return true;
+			}
+
 			@Override
 			public void act() {
 				setShortener(state);

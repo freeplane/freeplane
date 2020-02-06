@@ -29,15 +29,19 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -50,6 +54,38 @@ import com.jgoodies.forms.factories.Paddings;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class StyleEditorPanel extends JPanel {
+	private final class PanelEnabler implements IFreeplanePropertyListener, IMapSelectionListener {
+		private final Controller controller;
+		private final ModeController modeController;
+		boolean canEdit = true;
+
+		private PanelEnabler(Controller controller, ModeController modeController) {
+			this.controller = controller;
+			this.modeController = modeController;
+		}
+
+		@Override
+		public void propertyChanged(String propertyName, String newValue, String oldValue) {
+			if(propertyName.equals(ModeController.VIEW_MODE_PROPERTY))
+				updatePanel();
+		}
+		
+		@Override
+		public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
+			if (modeController.equals(Controller.getCurrentModeController())) {
+				updatePanel();
+			}
+		}
+
+		private void updatePanel() {
+			boolean canEditNow = modeController.canEdit(controller.getMap());
+			if(canEdit != canEditNow) {
+				canEdit = canEditNow;
+				setComponentsEnabled(canEdit);
+			}
+		}
+	}
+
 	static final float FONT_SIZE = UITools.getUIFontSize(0.8);
 
 	/**
@@ -59,6 +95,8 @@ public class StyleEditorPanel extends JPanel {
 
 	private boolean internalChange;
 	ControlGroup [] controlGroups;
+
+	private PanelEnabler panelEnabler;
 
 	/**
 	 * @throws HeadlessException
@@ -129,7 +167,6 @@ public class StyleEditorPanel extends JPanel {
 		final DefaultFormBuilder formBuilder = new DefaultFormBuilder(rightLayout);
 		formBuilder.border(Paddings.DLU2);
 		new SeparatorProperty("OptionPanel.separator.NodeStyle").layout(formBuilder);
-		final List<IPropertyControl> controls = new ArrayList<IPropertyControl>();
 
 		for (ControlGroup controlGroup :controlGroups) {
 			controlGroup.addControlGroup(formBuilder);
@@ -153,7 +190,7 @@ public class StyleEditorPanel extends JPanel {
 		internalChange = true;
 		try {
 			for (int i=0; i<controlGroups.length; i++) {
-				controlGroups[i].setStyle(node);
+				controlGroups[i].setStyle(node, panelEnabler != null && panelEnabler.canEdit);
 			}
 
 		}
@@ -162,6 +199,13 @@ public class StyleEditorPanel extends JPanel {
 		}
 	}
 
+	private void setComponentsEnabled(boolean enabled) {
+		final Container panel = (Container) getComponent(0);
+		for (int i = 0; i < panel.getComponentCount(); i++) {
+			panel.getComponent(i).setEnabled(enabled);
+		}
+	}
+	
 	private void addListeners() {
 		final Controller controller = Controller.getCurrentController();
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -174,15 +218,9 @@ public class StyleEditorPanel extends JPanel {
 					return;
 				}
 				if (selection.size() == 1) {
-					setComponentsEnabled(true);
+					if(modeController.canEdit(selection.getSelected().getMap()))
+						setComponentsEnabled(true);
 					setStyle(node);
-				}
-			}
-
-			public void setComponentsEnabled(boolean enabled) {
-				final Container panel = (Container) getComponent(0);
-				for (int i = 0; i < panel.getComponentCount(); i++) {
-					panel.getComponent(i).setEnabled(enabled);
 				}
 			}
 
@@ -219,6 +257,10 @@ public class StyleEditorPanel extends JPanel {
             }
 
 		});
+		
+		panelEnabler = new PanelEnabler(controller, modeController);
+		controller.getMapViewManager().addMapSelectionListener(panelEnabler);
+		ResourceController.getResourceController().addPropertyChangeListener(panelEnabler);
 	}
 
 }

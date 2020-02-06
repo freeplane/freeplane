@@ -228,21 +228,6 @@ public class FreeplaneApplet extends JApplet {
 		glassPane.setVisible(true);
 	}
 
-	@Override
-	public void start() {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				appletViewController.start();
-			}
-		});
-	}
-
-	@Override
-	public void stop() {
-		super.stop();
-	}
-
 	private void updateLookAndFeel(ResourceController appletResourceController) {
 		String lookAndFeel = "";
 		setPropertyByParameter(appletResourceController, "lookandfeel");

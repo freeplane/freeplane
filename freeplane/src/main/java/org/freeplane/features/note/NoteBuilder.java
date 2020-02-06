@@ -29,11 +29,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  */
 class NoteBuilder implements IElementContentHandler {
-	final private NoteController noteController;
-
-	public NoteBuilder(final NoteController noteController) {
+	public NoteBuilder() {
 		super();
-		this.noteController = noteController;
 	}
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {

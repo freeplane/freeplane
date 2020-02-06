@@ -35,7 +35,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconRegistry;
-import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
@@ -191,11 +190,7 @@ public class MapModel {
 	}
 
 	public boolean isReadOnly() {
-		return readOnly || isDocumentation();
-	}
-
-	public boolean isDocumentation() {
-		return containsExtension(DocuMapAttribute.class);
+		return readOnly;
 	}
 
 	public boolean isSaved() {

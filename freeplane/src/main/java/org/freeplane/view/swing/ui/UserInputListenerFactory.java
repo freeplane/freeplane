@@ -49,6 +49,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
+import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionAcceleratorManager;
@@ -72,6 +73,7 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.ui.menubuilders.menu.MenuAcceleratorChangeListener;
 import org.freeplane.core.ui.menubuilders.menu.MenuBuildProcessFactory;
 import org.freeplane.core.util.Compat;
@@ -86,6 +88,58 @@ import org.freeplane.features.ui.ViewController;
 import org.freeplane.view.swing.map.MapView;
 
 public class UserInputListenerFactory implements IUserInputListenerFactory {
+	private final class ActionEnabler implements IMapSelectionListener, IFreeplanePropertyListener {
+		private final ModeController modeController;
+		private UserRole userRole = null;
+
+		private ActionEnabler(ModeController modeController) {
+			this.modeController = modeController;
+		}
+
+		@Override
+		public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
+			if (modeController.equals(Controller.getCurrentModeController())) {
+				updateActions(newMap);
+			}
+		}
+
+
+		@Override
+		public void propertyChanged(String propertyName, String newValue, String oldValue) {
+			if(ModeController.USER_INTERFACE_PROPERTIES.contains(propertyName))
+				updateActions(modeController.getController().getMap());
+		}
+
+		private void updateActions(final MapModel newMap) {
+			UserRole newUserRole = modeController.userRole(newMap);
+			if(newUserRole != userRole) {
+				userRole = newUserRole;
+				final RecursiveMenuStructureProcessor recursiveMenuStructureProcessor = new RecursiveMenuStructureProcessor();
+				recursiveMenuStructureProcessor.setDefaultBuilder(new EntryVisitor() {
+					EntryAccessor entryAccessor = new EntryAccessor();
+
+					@Override
+					public void visit(Entry entry) {
+						final AFreeplaneAction action = entryAccessor.getAction(entry);
+						if (action != null) {
+							action.afterMapChange( userRole, newMap != null);
+						}
+						Component component = entryAccessor.getComponent(entry);
+						if(component != null && component.getParent() != null) {
+							component.setVisible(entry.isAllowed(userRole));
+						}
+					}
+
+					@Override
+					public boolean shouldSkipChildren(Entry entry) {
+						return false;
+					}
+				});
+				recursiveMenuStructureProcessor.build(genericMenuStructure);
+			}
+		}
+	}
+
 	public static final String NODE_POPUP = "/node_popup";
 // // 	final private Controller controller;
 	private IMouseListener mapMouseListener;
@@ -131,32 +185,9 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			customBuilders.add(new HashMap<String, BuilderDestroyerPair>());
 		}
 		Controller controller = Controller.getCurrentController();
-		controller.getMapViewManager().addMapSelectionListener(new IMapSelectionListener() {
-			@Override
-			public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-				if (modeController.equals(Controller.getCurrentModeController())) {
-					final RecursiveMenuStructureProcessor recursiveMenuStructureProcessor = new RecursiveMenuStructureProcessor();
-					recursiveMenuStructureProcessor.setDefaultBuilder(new EntryVisitor() {
-						EntryAccessor entryAccessor = new EntryAccessor();
-
-						@Override
-						public void visit(Entry entry) {
-							final AFreeplaneAction action = entryAccessor.getAction(entry);
-							if (action != null) {
-								action.afterMapChange(newMap);
-							}
-						}
-
-						@Override
-						public boolean shouldSkipChildren(Entry entry) {
-							return false;
-						}
-					});
-					recursiveMenuStructureProcessor.build(genericMenuStructure);
-				}
-			}
-
-		});
+		ActionEnabler actionEnabler = new ActionEnabler(modeController);
+		controller.getMapViewManager().addMapSelectionListener(actionEnabler);
+		ResourceController.getResourceController().addPropertyChangeListener(actionEnabler);
 
 		addUiBuilder(Phase.ACTIONS, "navigate_maps", new BuilderDestroyerPair(new EntryVisitor() {
 			@Override

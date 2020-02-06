@@ -300,7 +300,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		}
 
 		if (cloneOfSelectedViewCondition == null)
-			cloneOfSelectedViewCondition = CloneOfSelectedViewCondition.CreateCondition();
+			cloneOfSelectedViewCondition = CloneOfSelectedViewCondition.createCondition();
 		filterConditions.insertElementAt(cloneOfSelectedViewCondition, 2);
 	}
 
@@ -398,7 +398,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.setVisible(ResourceController.getResourceController()
 		    .getBooleanProperty("filter_toolbar_visible"));
 		Controller controller = Controller.getCurrentController();
-		FrameController frameController = (FrameController) controller.getViewController();
 		UIComponentVisibilityDispatcher.install(filterToolbar, "filter_toolbar_visible");
 		final JButton undoBtn = new JButton(controller.getAction("UndoFilterAction"));
 		final JButton redoBtn = new JButton(controller.getAction("RedoFilterAction"));
@@ -589,7 +588,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final Writer writer = new FileWriter(pathToFilterFile);
 		for (int i = 0; i < filterConditionModel.getSize(); i++) {
 			final ASelectableCondition cond = (ASelectableCondition) filterConditionModel.getElementAt(i);
-			if (cond != null && !(cond instanceof NoFilteringCondition)) {
+			if (cond != null && cond.canBePersisted()) {
 				cond.toXml(saver);
 			}
 		}

@@ -162,13 +162,6 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		}
 	}
 
-	/**
-	 * @param actionEvent
-	 */
-	public void quit(final ActionEvent actionEvent) {
-		getActions().get("QuitAction").actionPerformed(actionEvent);
-	}
-
 	public void selectMode(ModeController newModeController) {
 		modeController4build = null;
 		final ModeController oldModeController = modeController;

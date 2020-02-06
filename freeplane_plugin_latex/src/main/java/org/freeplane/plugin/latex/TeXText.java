@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
+import org.freeplane.features.mode.Controller;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
@@ -14,6 +17,7 @@ import org.scilab.forge.jlatexmath.TeXIcon;
 public class TeXText
 {
 	private static final String LATEX_MACROS = "latex_macros";
+    private static final String LATEX_INTERLINE_SPACING = "latex_interline_spacing";
 
     String rawText;
 
@@ -23,10 +27,13 @@ public class TeXText
 
 	public TeXIcon createTeXIcon(int style, int size, int align, int maxWidth) {
 
-        final String predefinedMacros = ResourceController.getResourceController().getProperty(LATEX_MACROS);
         StringBuffer sb = new StringBuffer();
-        if (predefinedMacros != null) {
-           sb.append(predefinedMacros + "\n\n");
+        if (Controller.getCurrentController() != null && ResourceController.getResourceController() != null)
+        {
+            final String predefinedMacros = ResourceController.getResourceController().getProperty(LATEX_MACROS);
+            if (predefinedMacros != null) {
+                sb.append(predefinedMacros + "\n\n");
+            }
         }
         sb.append("\n\n")
 		.append("\\text{")
@@ -37,13 +44,38 @@ public class TeXText
 
 		TeXFormula tf = new TeXFormula(sb.toString());
 
+        final Quantity<LengthUnits> latexInterlineSpacingQuantity = ResourceController.getResourceController().getLengthQuantityProperty(LATEX_INTERLINE_SPACING);
+        int latexInterlineSpacingUnit = -1;
+        float latexInterlineSpacingValue = (float)latexInterlineSpacingQuantity.value;
+        if (latexInterlineSpacingQuantity.unit == LengthUnits.px)
+        {
+            latexInterlineSpacingUnit = TeXConstants.UNIT_PIXEL;
+        }
+        else if (latexInterlineSpacingQuantity.unit == LengthUnits.in)
+        {
+            latexInterlineSpacingUnit = TeXConstants.UNIT_IN;
+        }
+        else if (latexInterlineSpacingQuantity.unit == LengthUnits.mm)
+        {
+            latexInterlineSpacingUnit = TeXConstants.UNIT_MM;
+        }
+        else if (latexInterlineSpacingQuantity.unit == LengthUnits.cm)
+        {
+            latexInterlineSpacingUnit = TeXConstants.UNIT_CM;
+        }
+        else if (latexInterlineSpacingQuantity.unit == LengthUnits.pt)
+        {
+            latexInterlineSpacingUnit = TeXConstants.UNIT_PT;
+        }
+
         //tf.createTeXIcon(style, size, TeXConstants.UNIT_PIXEL, maxWidth, align, TeXConstants.UNIT_PIXEL, 40f);
 		return tf.new TeXIconBuilder()
 			.setStyle(style)
 			.setSize(size)
 			.setWidth(TeXConstants.UNIT_PIXEL, maxWidth, align)
 			.setIsMaxWidth(true)
-			.setInterLineSpacing(TeXConstants.UNIT_PIXEL, /*40f*/size * 1.2F)
+//			.setInterLineSpacing(TeXConstants.UNIT_PIXEL, /*40f*/size * 1.2F)
+			.setInterLineSpacing(latexInterlineSpacingUnit, latexInterlineSpacingValue)
 			.build();
     }
 

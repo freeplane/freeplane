@@ -40,6 +40,15 @@ public class ZoomedIcon extends UIIcon {
 	private final float zoom;
 	private ImageIcon zoomedIcon;
 
+	public static Icon withHeigth(UIIcon uiIcon, int heightInPixel) {
+		Icon icon = uiIcon.getIcon();
+		int ownHeight = icon.getIconHeight();
+		if(ownHeight == heightInPixel||ownHeight <= 0)
+			return icon;
+		float zoom = ownHeight != 0 ? ((float)heightInPixel) / ownHeight : 0;
+		return new ZoomedIcon(uiIcon, zoom).getIcon();
+	}
+
 	public ZoomedIcon(final UIIcon uiIcon, final float zoom) {
 		super(uiIcon.getName(), uiIcon.getFileName(), uiIcon.getDescriptionTranslationKey(), uiIcon.getShortcutKey());
 		this.uiIcon = uiIcon;
@@ -48,7 +57,15 @@ public class ZoomedIcon extends UIIcon {
 
 	@Override
 	public Icon getIcon() {
-		throw new RuntimeException(new NoSuchMethodException());
+		if(uiIcon.getUrl().getPath().endsWith(".svg")) {
+			Icon icon = uiIcon.getIcon();
+			int ownHeight = icon.getIconHeight();
+			final Quantity<LengthUnits> iconHeight = new Quantity<>(ownHeight, LengthUnits.px);
+			return IconFactory.getInstance().getIcon(this, iconHeight.zoomBy(zoom));
+		}
+		else {
+			return getZoomedBitmapIcon();
+		}
 	}
 
 	@Override

@@ -21,12 +21,14 @@ package org.freeplane.core.ui;
 
 import javax.swing.Action;
 
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
+
 /**
  * @author Dimitry Polivaev
  * 09.07.2009
  */
 public interface IFreeplaneAction extends Action {
-	public void afterMapChange(Object newMap);
+	public void afterMapChange(UserRole userRole, boolean isMapSelected);
 
 	public boolean isSelected();
 
