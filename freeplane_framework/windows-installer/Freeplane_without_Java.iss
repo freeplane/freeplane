@@ -124,7 +124,7 @@ begin
     usUninstall:
       begin
         UserConfigurationDirectory := ExpandConstant('{userappdata}\{#ConfigurationDirectory}');
-        if DirExists(UserConfigurationDirectory) AND (MsgBox(ExpandConstant('{cm:DeleteConfigurationFiles,{username}}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES) then
+        if (UninstallSilent = False) AND DirExists(UserConfigurationDirectory) AND (MsgBox(ExpandConstant('{cm:DeleteConfigurationFiles,{username}}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES) then
           begin
              DelTree(UserConfigurationDirectory, True, True, True);
           end
