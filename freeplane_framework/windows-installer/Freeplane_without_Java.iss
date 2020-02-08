@@ -115,6 +115,28 @@ Name: {app}\plugins; Type: filesandordirs; Tasks: ; Languages:
 Name: {userappdata}\Freeplane; Flags: uninsneveruninstall; Tasks: ; Languages: 
 
 [Code]
+function CmdLineParamExists(const Value: string): Boolean;
+var
+  I: Integer;
+begin
+  Result := False;
+  for I := 1 to ParamCount do
+    if CompareText(ParamStr(I), Value) = 0 then
+    begin
+      Result := True;
+      Exit;
+    end;
+end;
+
+function DeleteConfigurationFilesForced: Boolean;
+begin
+  Result := CmdLineParamExists('/DELETE_CONFIGURATION_FILES');
+end;
+
+function KeepConfigurationFilesForced: Boolean;
+begin
+  Result := CmdLineParamExists('/KEEP_CONFIGURATION_FILES');
+end;
 // ask for delete config file during uninstall
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 var
@@ -124,7 +146,10 @@ begin
     usUninstall:
       begin
         UserConfigurationDirectory := ExpandConstant('{userappdata}\{#ConfigurationDirectory}');
-        if DirExists(UserConfigurationDirectory) AND (MsgBox(ExpandConstant('{cm:DeleteConfigurationFiles,{username}}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES) then
+        if KeepConfigurationFilesForced or (not DirExists(UserConfigurationDirectory)) or (UninstallSilent and (DeleteConfigurationFilesForced = False)) then begin
+          exit;
+        end
+        else if  (DeleteConfigurationFilesForced = True) OR (MsgBox(ExpandConstant('{cm:DeleteConfigurationFiles,{username}}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES) then
           begin
              DelTree(UserConfigurationDirectory, True, True, True);
           end
