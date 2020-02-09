@@ -711,7 +711,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public List<? extends Node> findAll() {
 		final NodeModel delegate = getDelegate();
 		reportBranchAccess(delegate);
-		return ProxyUtils.findAll(delegate, getScriptContext(), true);
+		return ProxyUtils.findAll(delegate, getScriptContext(), false);
     }
 
 	// NodeRO: R
@@ -719,7 +719,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public List<? extends Node> findAllDepthFirst() {
 		final NodeModel delegate = getDelegate();
 		reportBranchAccess(delegate);
-		return ProxyUtils.findAll(delegate, getScriptContext(), false);
+		return ProxyUtils.findAll(delegate, getScriptContext(), true);
     }
 
 	// NodeRO: R

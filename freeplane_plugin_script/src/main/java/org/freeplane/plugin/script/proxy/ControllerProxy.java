@@ -241,14 +241,14 @@ class ControllerProxy implements Proxy.Controller {
 	@Override
 	public List<? extends Node> findAll() {
 		reportArbitraryNodeAccess();
-		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, true);
+		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, false);
     }
 
 	// NodeRO: R
 	@Override
 	public List<? extends Node> findAllDepthFirst() {
 		reportArbitraryNodeAccess();
-		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, false);
+		return ProxyUtils.findAll(currentMapRootNode(), scriptContext, true);
     }
 
 	@Override

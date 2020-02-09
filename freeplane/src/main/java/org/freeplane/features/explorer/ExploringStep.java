@@ -5,11 +5,10 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
-import org.freeplane.features.filter.Searcher;
-import org.freeplane.features.filter.Searcher.Algorithm;
-import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeStream;
 
 enum ExploringStep {
 	ROOT{
@@ -116,13 +115,7 @@ enum ExploringStep {
 		@Override
 		List<NodeModel> getNodes(NodeModel start, final NodeMatcher nodeMatcher, AccessedNodes accessedNodes) {
 			accessedNodes.accessBranch(start);
-			final ICondition condition = new ICondition() {
-				@Override
-				public boolean checkNode(NodeModel node) {
-					return nodeMatcher.matches(node);
-				}
-			};
-			return new Searcher(Algorithm.DEPTH_FIRST).condition(condition).find(start.getChildren());
+			return NodeStream.of(start).skip(1).filter(nodeMatcher::matches).collect(Collectors.toList());
 		}
 	};
 
