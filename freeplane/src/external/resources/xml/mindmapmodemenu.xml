@@ -162,8 +162,8 @@
 						<Entry builder="separator" />
 						<Entry name="IconProgressRemoveAction" />
 					</Entry>
-					<Entry name="HierarchicalIconsAction" />
-					<Entry name="HierarchicalIcons2Action" />
+					<Entry name="IconUnionHierarchyAction" />
+					<Entry name="IconIntersectionHierarchyAction" />
 					<Entry name="menu_remove_icons">
 						<Entry name="RemoveIcon_0_Action" />
 						<Entry name="RemoveIconAction" />

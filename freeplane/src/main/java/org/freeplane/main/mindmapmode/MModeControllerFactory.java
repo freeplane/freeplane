@@ -72,8 +72,8 @@ import org.freeplane.features.export.mindmapmode.ImportMindmanagerFiles;
 import org.freeplane.features.export.mindmapmode.ImportXmlFile;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.hidden.HiddenNodeContoller;
-import org.freeplane.features.icon.HierarchicalIcons;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.hierarchicalicons.HierarchicalIcons;
 import org.freeplane.features.icon.mindmapmode.IconSelectionPlugin;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
@@ -167,7 +167,7 @@ public class MModeControllerFactory {
 		final JComponent tabs = (JComponent) modeController.getUserInputListenerFactory().getToolBar("/format").getComponent(1);
 		tabs.add(TextUtils.getText("format_panel"), styleScrollPane);
 		tabs.add(TextUtils.getText("attributes_attribute"), createAttributesPanel());
-		new HierarchicalIcons();
+        HierarchicalIcons.install(modeController);
 		new AutomaticLayoutController();
 		new BlinkingNodeHook();
 		SummaryNode.install();

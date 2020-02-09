@@ -18,12 +18,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.icon;
+package org.freeplane.features.icon.hierarchicalicons;
 
 import java.util.Map;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IReadCompletionListener;
+import org.freeplane.features.icon.IStateIconProvider;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.UIIconSet;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeChangeListener;
 import org.freeplane.features.map.MapChangeEvent;
@@ -44,39 +48,40 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Foltin
  */
-@NodeHookDescriptor(hookName = "accessories/plugins/HierarchicalIcons.properties")
-public class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
+public abstract class HierarchicalIcons extends PersistentNodeHook implements INodeChangeListener, IMapChangeListener,
         IReadCompletionListener, IExtension {
 	public static final String ICONS = "hierarchical_icons";
 
-	public HierarchicalIcons() {
-		this(Mode.OR);
-		final ModeController modeController = Controller.getCurrentModeController();
-		IconController.getController(modeController).addStateIconProvider(new IStateIconProvider() {
-			@Override
-			public UIIcon getStateIcon(NodeModel node) {
-				AccumulatedIcons iconSet = node.getExtension(AccumulatedIcons.class);
-				if(iconSet != null)
-					return new UIIconSet(iconSet.getAccumulatedIcons(), 0.75f);
-				else
-					return null;
-			}
+    public static void install(final ModeController modeController) {
+        IconController.getController(modeController).addStateIconProvider(new IStateIconProvider() {
+            @Override
+            public UIIcon getStateIcon(NodeModel node) {
+                AccumulatedIcons iconSet = node.getExtension(AccumulatedIcons.class);
+                if(iconSet != null)
+                    return new UIIconSet(iconSet.getAccumulatedIcons(), 0.75f);
+                else
+                    return null;
+            }
 
-			@Override
-			public boolean mustIncludeInIconRegistry() {
-				return false;
-			}
-		});
-		new HierarchicalIcons2();
+            @Override
+            public boolean mustIncludeInIconRegistry() {
+                return false;
+            }
+        });
+        new IconIntersectionHierarchy().installHook(modeController);
+        new IconUnionHierarchy().installHook(modeController);
 	}
+    
 	protected HierarchicalIcons(Mode mode) {
 		super();
 		this.mode = mode;
-		final ModeController modeController = Controller.getCurrentModeController();
-		modeController.getMapController().getReadManager().addReadCompletionListener(this);
+	}
+
+    protected void installHook(final ModeController modeController) {
+        modeController.getMapController().getReadManager().addReadCompletionListener(this);
 		modeController.getMapController().addUINodeChangeListener(this);
 		modeController.getMapController().addUIMapChangeListener(this);
-	}
+    }
 
 
 
@@ -96,11 +101,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		super.undoableToggleHook(node, extension);
 	}
 
-	protected void removeAnotherMode(NodeModel node) {
-		final HierarchicalIcons2 extension = node.getExtension(HierarchicalIcons2.class);
-		if(extension != null)
-			extension.undoableDeactivateHook(node);
-	}
+	abstract protected void removeAnotherMode(NodeModel node);
+	
 	@Override
 	protected IExtension createExtension(final NodeModel node, final XMLElement element) {
 		return this;
@@ -221,8 +223,8 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 		}
 	}
 
-	public static enum Mode{AND, OR};
-	private Mode mode = Mode.OR;
+	public static enum Mode{INTERSECTION, UNION}
+	final private Mode mode;
 
 	/**
 	 */
@@ -239,15 +241,29 @@ public class HierarchicalIcons extends PersistentNodeHook implements INodeChange
 
 }
 
+@NodeHookDescriptor(hookName = "accessories/plugins/HierarchicalIcons.properties")
+class IconUnionHierarchy extends HierarchicalIcons{
+    public IconUnionHierarchy() {
+        super(Mode.UNION);
+    }
+    @Override
+    protected void removeAnotherMode(NodeModel node) {
+        final HierarchicalIcons extension = node.getExtension(IconIntersectionHierarchy.class);
+        if(extension != null)
+            extension.undoableDeactivateHook(node);
+    }
+}
+
 @NodeHookDescriptor(hookName = "accessories/plugins/HierarchicalIcons2.properties")
-class HierarchicalIcons2 extends HierarchicalIcons{
-	public HierarchicalIcons2() {
-	    super(Mode.AND);
+class IconIntersectionHierarchy extends HierarchicalIcons{
+	public IconIntersectionHierarchy() {
+	    super(Mode.INTERSECTION);
     }
 	@Override
 	protected void removeAnotherMode(NodeModel node) {
-		final HierarchicalIcons extension = node.getExtension(HierarchicalIcons.class);
+		final HierarchicalIcons extension = node.getExtension(IconUnionHierarchy.class);
 		if(extension != null)
 			extension.undoableDeactivateHook(node);
 	}
 }
+

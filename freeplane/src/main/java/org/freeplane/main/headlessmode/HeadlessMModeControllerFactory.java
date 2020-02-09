@@ -32,7 +32,7 @@ import org.freeplane.features.encrypt.mindmapmode.MEncryptionController;
 import org.freeplane.features.explorer.mindmapmode.MMapExplorerController;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.export.mindmapmode.ImportMindmanagerFiles;
-import org.freeplane.features.icon.HierarchicalIcons;
+import org.freeplane.features.icon.hierarchicalicons.HierarchicalIcons;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
@@ -88,7 +88,7 @@ public class HeadlessMModeControllerFactory {
 	private MModeController modeController;
 
 	private void createAddIns() {
-		new HierarchicalIcons();
+		HierarchicalIcons.install(modeController);
 		new AutomaticLayoutController();
 		new BlinkingNodeHook();
 		SummaryNode.install();

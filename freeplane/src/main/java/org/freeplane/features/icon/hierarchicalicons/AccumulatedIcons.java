@@ -17,14 +17,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.icon;
+package org.freeplane.features.icon.hierarchicalicons;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.TreeSet;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.features.icon.HierarchicalIcons.Mode;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.NamedIcon;
+import org.freeplane.features.icon.hierarchicalicons.HierarchicalIcons.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 
@@ -62,7 +64,7 @@ class AccumulatedIcons  implements IExtension{
 		final AccumulatedIcons iconSet = new AccumulatedIcons(ownIcons);
 		boolean first = true;
 		for (final NodeModel child : node.getChildren()) {
-			if(first || mode.equals(Mode.OR)){
+			if(first || mode.equals(Mode.UNION)){
 				iconSet.addAccumulatedIconsToTreeSet(child);
 			}
 			else{
