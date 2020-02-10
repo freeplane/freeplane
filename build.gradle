@@ -13,7 +13,7 @@ allprojects {
     repositories {
 		maven { url "http://www.knopflerfish.org/releases/6.1.0/maven2" }
 		maven { url "${project.gradle.gradleUserHomeDir}/local-artifacts" }
-		maven { url "http://dl.bintray.com/freeplane/freeplane" }
+		maven { url "https://dl.bintray.com/freeplane/freeplane" }
 
         // this is necessary to grab both binary and source jars
         // for local (git) dependencies
@@ -84,7 +84,7 @@ subprojects {
 
     repositories {
        maven  {
-        url "http://repo1.maven.org/maven2"
+        url "https://repo1.maven.org/maven2"
        }
     }
 
