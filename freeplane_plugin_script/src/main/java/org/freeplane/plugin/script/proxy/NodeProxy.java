@@ -194,14 +194,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 	// Node: R/W
     @Override
-	public void setDetailsText(final String html) {
+	public void setDetailsText(final String text) {
         final MTextController textController = (MTextController) TextController.getController();
-		if (html == null) {
+		if (text == null) {
 			textController.setDetailsHidden(getDelegate(), false);
 			textController.setDetails(getDelegate(), null);
 		}
 		else{
-			textController.setDetails(getDelegate(), html);
+			textController.setDetails(getDelegate(), HtmlUtils.textToHTML(text));
 		}
     }
 
@@ -389,7 +389,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public String getHtmlText() {
 		final NodeModel node = getDelegateForValueAccess();
 		final String nodeText = node.getText();
-		if (HtmlUtils.isHtmlNode(nodeText))
+		if (HtmlUtils.isHtml(nodeText))
 			return nodeText;
 		else
 			return HtmlUtils.plainToHTML(nodeText);
@@ -600,14 +600,14 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 		// the text content of a Convertible object might be null
 		if (text == null)
 			return null;
-		return HtmlUtils.isHtmlNode(text) ? text : HtmlUtils.plainToHTML(text);
+		return HtmlUtils.isHtml(text) ? text : HtmlUtils.plainToHTML(text);
 	}
 
 	// Node: R/W
 	@Override
-	public void setNoteText(final String html) {
+	public void setNoteText(final String text) {
 		final MNoteController noteController = (MNoteController) NoteController.getController();
-		noteController.setNoteText(getDelegate(), html);
+		noteController.setNoteText(getDelegate(), HtmlUtils.textToHTML(text));
 	}
 
 	// Node: R/W
