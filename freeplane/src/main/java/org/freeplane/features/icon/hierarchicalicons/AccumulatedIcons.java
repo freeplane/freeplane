@@ -35,6 +35,7 @@ import org.freeplane.features.mode.Controller;
  * Dec 10, 2011
  */
 class AccumulatedIcons  implements IExtension{
+    private static final AccumulatedIcons EMPTY_SET = new AccumulatedIcons(Collections.emptyList());
 	private final TreeSet<NamedIcon> childIcons ;
 	private final Collection<? extends NamedIcon> ownIcons;
 
@@ -59,7 +60,8 @@ class AccumulatedIcons  implements IExtension{
 		childIcons.addAll(icons.childIcons);
 	}
 
-	static public boolean setStyleCheckForChange(final NodeModel node, Mode mode) {
+	static boolean setStyleCheckForChange(final NodeModel node, Mode mode) {
+System.out.println("Setting icons for node " + node.getText());	    
 		final Collection<NamedIcon> ownIcons = IconController.getController().getIcons(node);
 		final AccumulatedIcons iconSet = new AccumulatedIcons(ownIcons);
 		boolean first = true;
@@ -80,12 +82,8 @@ class AccumulatedIcons  implements IExtension{
 		iconSet.childIcons.removeAll(ownIcons);
 
 		final AccumulatedIcons oldSet;
-		if (! (iconSet.ownIcons.isEmpty() && iconSet.childIcons.isEmpty())) {
-			oldSet = (AccumulatedIcons)node.putExtension(iconSet);
-		}
-		else {
-			oldSet = node.removeExtension(AccumulatedIcons.class);
-		}
+		boolean setContainsIcons = ! (iconSet.ownIcons.isEmpty() && iconSet.childIcons.isEmpty());
+        oldSet = (AccumulatedIcons)node.putExtension(setContainsIcons ?iconSet:EMPTY_SET);
 		if(iconSet.equals(oldSet) || iconSet.ownIcons.isEmpty() && iconSet.childIcons.isEmpty() && oldSet == null)
 			return false;
 		Controller.getCurrentModeController().getMapController().delayedNodeRefresh(node, HierarchicalIcons.ICONS, null, null);
@@ -107,5 +105,8 @@ class AccumulatedIcons  implements IExtension{
 		return false;
     }
 
-
+    @Override
+    public String toString() {
+        return "AccumulatedIcons [ownIcons=" + ownIcons + ", childIcons=" + childIcons + "]";
+    }
 }
