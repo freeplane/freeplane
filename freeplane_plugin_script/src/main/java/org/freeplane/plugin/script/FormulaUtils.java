@@ -58,7 +58,7 @@ public class FormulaUtils {
 	}
 
 	public static boolean containsFormula(final String text) {
-	    if(HtmlUtils.isHtmlNode(text))
+	    if(HtmlUtils.isHtml(text))
 	    	return htmlContainsFormula(text);
 	    else
 	    	return textContainsFormula(text);

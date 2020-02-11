@@ -139,7 +139,7 @@ public class AddOnDetailsPanel extends JPanel {
 	}
 
     private String toHtml(String htmlOrPlainText) {
-        if (HtmlUtils.isHtmlNode(htmlOrPlainText))
+        if (HtmlUtils.isHtml(htmlOrPlainText))
             return htmlOrPlainText.replaceAll("</?(html|body)>", "");
         else
             return HtmlUtils.toHTMLEscapedText(htmlOrPlainText);

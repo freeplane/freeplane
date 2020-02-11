@@ -904,7 +904,7 @@ public class LinkController extends SelectionController implements IExtension {
 
 	public boolean formatNodeAsHyperlink(final NodeModel node){
 		String text = node.getText();
-		if (text.isEmpty() || HtmlUtils.isHtmlNode(text))
+		if (text.isEmpty() || HtmlUtils.isHtml(text))
 			return false;
 		final Boolean ownFlag = ownFormatNodeAsHyperlink(node);
 		if(ownFlag != null)

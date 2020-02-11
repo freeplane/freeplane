@@ -251,7 +251,7 @@ public class TextController implements IExtension {
 	public String getTransformedTextNoThrow(NodeModel nodeModel) {
 		final Object userObject = nodeModel.getUserObject();
 		final Object input;
-		if (userObject instanceof String && HtmlUtils.isHtmlNode((String) userObject))
+		if (userObject instanceof String && HtmlUtils.isHtml((String) userObject))
 			input = HtmlUtils.htmlToPlain((String) userObject);
 		else
 			input = userObject;
@@ -270,7 +270,7 @@ public class TextController implements IExtension {
 
 	public String getShortText(String longText) {
 		String text;
-		final boolean isHtml = HtmlUtils.isHtmlNode(longText);
+		final boolean isHtml = HtmlUtils.isHtml(longText);
 		if (isHtml) {
 			text = HtmlUtils.htmlToPlain(longText).trim();
 		}
@@ -376,7 +376,7 @@ public class TextController implements IExtension {
 					htmlBodyStyle.append("color:red;");
 				}
 				htmlBodyStyle.append("\">");
-				if (!HtmlUtils.isHtmlNode(text)) {
+				if (!HtmlUtils.isHtml(text)) {
 					text = HtmlUtils.plainToHTML(text);
 				}
 				final String tooltipText = text.replaceFirst("<body>", htmlBodyStyle.toString())
