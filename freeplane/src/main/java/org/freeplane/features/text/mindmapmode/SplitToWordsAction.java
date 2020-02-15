@@ -150,7 +150,7 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 			}
 		}
 		if(saveOriginalTextAsDetails) {
-			textController.setDetails(currentNode, HtmlUtils.isHtmlNode(details) ?  details : HtmlUtils.plainToHTML(details));
+			textController.setDetails(currentNode, HtmlUtils.isHtml(details) ?  details : HtmlUtils.plainToHTML(details));
 			textController.setIsMinimized(currentNode, true);
 		}
 	}

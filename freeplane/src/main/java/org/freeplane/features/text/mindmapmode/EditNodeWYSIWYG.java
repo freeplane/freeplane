@@ -277,7 +277,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 				UITools.setDialogLocationRelativeTo(htmlEditorWindow.getDialog(), node);
 			}
 			String content = getText();
-			if (!HtmlUtils.isHtmlNode(content)) {
+			if (!HtmlUtils.isHtml(content)) {
 				content = HtmlUtils.plainToHTML(content);
 			}
 			htmlEditorPanel.setCurrentDocumentContent(content);

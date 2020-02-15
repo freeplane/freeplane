@@ -50,7 +50,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	    final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
 		final boolean editInternalWysiwyg = editLong && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
 		final boolean editExternal = editLong && StringUtils.equals(htmlEditingOption, "external");
-		if(! HtmlUtils.isHtmlNode(text)){
+		if(! HtmlUtils.isHtml(text)){
 			text = HtmlUtils.plainToHTML(text);
 		}
 		if (editInternalWysiwyg) {

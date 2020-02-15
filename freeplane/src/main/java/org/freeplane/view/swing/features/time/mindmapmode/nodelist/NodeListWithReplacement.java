@@ -104,7 +104,7 @@ public class NodeListWithReplacement extends NodeList{
 					final String replaceResult;
 					final String literalReplacement = useRegexInReplace.isSelected() ? replacement : Matcher.quoteReplacement(replacement);
 					try {
-						if (HtmlUtils.isHtmlNode(text)) {
+						if (HtmlUtils.isHtml(text)) {
 							replaceResult = replace(p, text,literalReplacement);
 						}
 						else {

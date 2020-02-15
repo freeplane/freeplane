@@ -377,7 +377,7 @@ public class MTextController extends TextController {
 		for (final NodeModel node : selectedNodes) {
 			final String nodeContent = node.getText();
 			icons.addAll(node.getIcons());
-			final boolean isHtmlNode = HtmlUtils.isHtmlNode(nodeContent);
+			final boolean isHtmlNode = HtmlUtils.isHtml(nodeContent);
 			joinedContent = addContent(joinedContent, isHtml, nodeContent, isHtmlNode, separator);
 			if (node != selectedNode) {
 				final MMapController mapController = (MMapController) Controller.getCurrentModeController()
@@ -472,7 +472,7 @@ public class MTextController extends TextController {
 	private Boolean parseData;
 
 	public void setGuessedNodeObject(final NodeModel node, final String newText) {
-		if (HtmlUtils.isHtmlNode(newText))
+		if (HtmlUtils.isHtml(newText))
 			setNodeObject(node, newText);
 		else {
 			final Object guessedObject = guessObject(newText, NodeStyleModel.getNodeFormat(node));
@@ -961,7 +961,7 @@ public class MTextController extends TextController {
 
 			@Override
 			public void split(final String text, final int position) {
-				String processedText = HtmlUtils.isHtmlNode(text) ? removeHtmlHead(text) : text;
+				String processedText = HtmlUtils.isHtml(text) ? removeHtmlHead(text) : text;
 				splitNode(nodeModel, position, processedText);
 				viewController.obtainFocusForSelected();
 				stop();
@@ -1103,7 +1103,7 @@ public class MTextController extends TextController {
 	}
 
 	private String makePlainIfNoFormattingFound(String text) {
-		if (HtmlUtils.isHtmlNode(text)) {
+		if (HtmlUtils.isHtml(text)) {
 			text = removeHtmlHead(text);
 			if (!containsFormatting(text)) {
 				text = HtmlUtils.htmlToPlain(text);

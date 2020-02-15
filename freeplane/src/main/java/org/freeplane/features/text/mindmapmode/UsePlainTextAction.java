@@ -39,7 +39,7 @@ class UsePlainTextAction extends AMultipleNodeAction {
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		final String nodeText = node.getText();
-		if (HtmlUtils.isHtmlNode(nodeText)) {
+		if (HtmlUtils.isHtml(nodeText)) {
 			((MTextController) TextController.getController()).setNodeText(node, HtmlUtils
 			    .htmlToPlain(nodeText));
 		}

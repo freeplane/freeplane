@@ -36,7 +36,7 @@ class FormatContentTransformer extends AbstractContentTransformer {
 		// - if error: use original text
 		// - if nodeNumbering add numbering
 		// - if html: enclose in html tag
-		final boolean isHtml = (obj instanceof String) && HtmlUtils.isHtmlNode((String)obj);
+		final boolean isHtml = (obj instanceof String) && HtmlUtils.isHtml((String)obj);
 		if (isHtml) {
 			obj = HtmlUtils.extractRawBody((String)obj);
 		}

@@ -71,7 +71,7 @@ import org.freeplane.view.swing.features.time.mindmapmode.nodelist.ShowPastRemin
 @NodeHookDescriptor(hookName = "plugins/TimeManagementReminder.xml", onceForMap = false)
 public class ReminderHook extends PersistentNodeHook implements IExtension {
 
-	private static final ShowPastRemindersOnce SHOW_PAST_REMINDERS = new ShowPastRemindersOnce();
+	private static final ShowPastRemindersOnce pastReminders = new ShowPastRemindersOnce();
 	private static final String REMINDERS_BLINK = "remindersBlink";
 	//******************************************
 	@EnabledAction(checkOnNodeChange = true)
@@ -314,14 +314,13 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 
 	private void scheduleTimer(final ReminderExtension model) {
 		final Date date = new Date(model.getRemindUserAt());
-		final long fireTime = SHOW_PAST_REMINDERS.timeLimit();
+		final long fireTime = pastReminders.timeLimit();
 		final long reminderTime = date.getTime();
-		final boolean reminderTimePassed = fireTime >= reminderTime;
-		final boolean runScript = ! reminderTimePassed;
-		scheduleTimer(model, new TimerBlinkTask(this, model, false, runScript));
+		final boolean reminderTimeInTheFuture = fireTime < reminderTime;
+		scheduleTimer(model, new TimerBlinkTask(this, model, false, reminderTimeInTheFuture));
 		final NodeModel node = model.getNode();
-		if(reminderTimePassed)
-			SHOW_PAST_REMINDERS.addNode(node);
+		if(! reminderTimeInTheFuture)
+			pastReminders.addNode(node);
 		model.displayState(ClockState.CLOCK_VISIBLE, node, false);
 	}
 
@@ -334,9 +333,9 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
     	return modeController;
     }
 	public void runScript(ReminderExtension reminderExtension) {
-		final String script = reminderExtension.getScript();
-		if(script == null || script.equals(""))
+		if(! reminderExtension.containsScript())
 			return;
+		final String script = reminderExtension.getScript();
 		final IScriptStarter starter = modeController.getExtension(IScriptStarter.class);
 		if(starter == null)
 			return;
