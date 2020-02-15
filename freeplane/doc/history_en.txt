@@ -4,6 +4,7 @@
 Use UTF-8 encoding for mind map files
 Use emoticons from https://twemoji.twitter.com/ as icons
 Use only svg icons, remove png icons when svg icons can be used 
+Hierarchical icons for subtrees
 
 ===============================
 1.7.13
