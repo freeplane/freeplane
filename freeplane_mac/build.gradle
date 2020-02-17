@@ -1,15 +1,8 @@
-repositories {
-    // maven {url 'http://devel.uji.es/nexus/content/repositories/releases/'}
-    flatDir {
-       dirs 'lib'
-   }
-}
+targetCompatibility='1.12'
+sourceCompatibility='1.12'
 
 dependencies {
     compile (project(':freeplane')) {
         transitive = false
     }
-    
-    //compileOnly 'com.apple:applejavaextensions:1.5.4'
-    compileOnly name: 'AppleJavaExtensions-1.5.4'
 }
