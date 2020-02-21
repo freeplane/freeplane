@@ -27,7 +27,7 @@ public interface IViewerFactory {
 	 * Creates viewer component for given URI calculating its preferred size from the zoom of the resource
 	 */
 	ScalableComponent createViewer(ExternalResource resource, URI absoluteUri,
-			int maximumWidth) throws MalformedURLException, IOException;
+			int maximumWidth, float zoom) throws MalformedURLException, IOException;
 
 	/**
 	 * Returns description to be used in a user interface

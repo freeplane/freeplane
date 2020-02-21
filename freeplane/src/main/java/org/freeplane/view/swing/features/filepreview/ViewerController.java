@@ -74,11 +74,11 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 
 		@Override
 		public ScalableComponent createViewer(final ExternalResource resource,
-				final URI absoluteUri, final int maximumWidth)
+				final URI absoluteUri, final int maximumWidth, float zoom)
 		        throws MalformedURLException, IOException {
 			factory = getViewerFactory(absoluteUri);
 			ScalableComponent component = factory.createViewer(resource, absoluteUri,
-					maximumWidth);
+					maximumWidth, zoom);
 			return component;
 		}
 
@@ -163,7 +163,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			final int width = viewer.getWidth();
 			final int y = e.getY();
 			final int height = viewer.getHeight();
-			if (x < width - 4 || y < height - 4 ) {
+			if (x < width - SENSITIVE_AREA_SIZE || y < height - SENSITIVE_AREA_SIZE ) {
 				return false;
 			}
 			final IViewerFactory factory = (IViewerFactory) viewer.getClientProperty(IViewerFactory.class);
@@ -188,18 +188,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			final ExternalResource activeView = getModel(e);
 			if(activeView ==  null)
 				return false;
-			NodeModel node = null;
-			//get node from mouse click
-			for (int i = 0; i < e.getComponent().getParent().getComponentCount(); i++) {
-				if (e.getComponent().getParent().getComponent(i) instanceof MainView) {
-					final MainView mv = (MainView) e.getComponent().getParent().getComponent(i);
-					node = mv.getNodeView().getModel();
-					break;
-				}
-			}
-			if (node == null) {
-				node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-			}
+			NodeModel node = getNode(e);
 			final MapModel map = node.getMap();
 			URI absoluteUri = activeView.getAbsoluteUri(map);
 			if(absoluteUri == null)
@@ -248,11 +237,45 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			}
 			final ExternalResource nextView = new ExternalResource(nextUri);
 			nextView.setZoom(activeView.getZoom());
-			remove(node, activeView);
-			add(node, nextView);
+			IActor actor = new IActor() {
+                
+                @Override
+                public void undo() {
+                    remove(node, nextView);
+                    add(node, activeView);
+                }
+                
+                @Override
+                public String getDescription() {
+                    return "updateExtendedProgressIcons";
+                }
+                
+                @Override
+                public void act() {
+                    remove(node, activeView);
+                    add(node, nextView);
+                }
+            }; 
+            Controller.getCurrentModeController().execute(actor, map);
 			ProgressIcons.updateExtendedProgressIcons(node, sNextURI);
 			return true;
 		}
+
+        private NodeModel getNode(final MouseEvent e) {
+            NodeModel node = null;
+			//get node from mouse click
+			for (int i = 0; i < e.getComponent().getParent().getComponentCount(); i++) {
+				if (e.getComponent().getParent().getComponent(i) instanceof MainView) {
+					final MainView mv = (MainView) e.getComponent().getParent().getComponent(i);
+					node = mv.getNodeView().getModel();
+					break;
+				}
+			}
+			if (node == null) {
+				node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+			}
+            return node;
+        }
 
 		@Override
 		public void mouseEntered(final MouseEvent e) {
@@ -564,17 +587,18 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		return null;
 	}
 
-	void createViewer(final ExternalResource model, final NodeView view) {
-		final JComponent viewer = createViewer(view.getMap().getModel(), model);
+	void createViewer(final ExternalResource resource, final NodeView view) {
+		MapView map = view.getMap();
+        final JComponent viewer = createViewer(map.getModel(), resource, map.getZoom());
 		if (imagePopupMenu == null) {
 			imagePopupMenu = new ExternalImagePopupMenu();
 		}
 		viewer.setBorder(VIEWER_BORDER_INSTANCE);
-		final Set<NodeView> viewers = model.getViewers();
+		final Set<NodeView> viewers = resource.getViewers();
 		viewers.add(view);
 		viewer.setBounds(viewer.getX() - 5, viewer.getY() - 5, viewer.getWidth() + 15, viewer.getHeight() + 15);
 		view.addContent(viewer, VIEWER_POSITION);
-		if(view.getMap().getModeController().canEdit()){
+		if(map.getModeController().canEdit()){
 			final DropTarget dropTarget = new DropTarget(viewer, DTL);
 			dropTarget.setActive(true);
 		}
@@ -641,7 +665,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		super.saveExtension(extension, element);
 	}
 
-	private JComponent createViewer(final MapModel map, final ExternalResource model) {
+	private JComponent createViewer(final MapModel map, final ExternalResource model, float zoom) {
 		final URI uri = model.getUri();
 		if (uri == null) {
 			return new JLabel("no file set");
@@ -657,7 +681,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		JComponent viewer = null;
 		try {
 			final int maxWidth = ResourceController.getResourceController().getIntProperty("max_image_width");
-			viewer = (JComponent) factory.createViewer(model, absoluteUri, maxWidth);
+			viewer = (JComponent) factory.createViewer(model, absoluteUri, maxWidth, zoom);
 		}
 		catch (final Exception e) {
 			final String info = HtmlUtils.combineTextWithExceptionInfo(uri.toString(), e);

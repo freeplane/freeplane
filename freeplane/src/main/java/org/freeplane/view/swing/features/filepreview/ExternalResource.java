@@ -66,6 +66,7 @@ public class ExternalResource implements IExtension {
 				final Dimension preferredSize = layoutManager.calculatePreferredSize();
 				((ScalableComponent) viewer).setFinalViewerSize(preferredSize);
 				viewer.revalidate();
+				viewer.repaint();
 			}
 		}
 	}
