@@ -626,11 +626,15 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, emptyNodeViewSet());
 		setFocusTraversalKeys(KeyboardFocusManager.UP_CYCLE_TRAVERSAL_KEYS, emptyNodeViewSet());
 		viewportSizeChangeListener = new ComponentAdapter() {
+		    boolean firstRun = true;
 			@Override
 			public void componentResized(final ComponentEvent e) {
+			    if(firstRun) {
+			        loadBackgroundImage();
+			        firstRun = false;
+			    }
 				if (fitToViewport) {
 					adjustBackgroundComponentScale();
-					repaint();
 				}
 				if(usesLayoutSpecificMaxNodeWidth()) {
 					rootView.updateAll();
@@ -641,7 +645,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		final String fitToViewportAsString = MapStyle.getController(modeController).getPropertySetDefault(model,
 		    MapStyle.FIT_TO_VIEWPORT);
 		fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
-		loadBackgroundImage();
 		connectorChangeListener = new INodeChangeListener() {
 			@Override
 			public void nodeChanged(final NodeChangeEvent event) {
@@ -1290,7 +1293,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			fitToViewport = Boolean.parseBoolean(fitToViewportAsString);
 			adjustViewportScrollMode();
 			adjustBackgroundComponentScale();
-			repaint();
 		}
 		if(property.equals(EdgeColorsConfigurationFactory.EDGE_COLOR_CONFIGURATION_PROPERTY)){
 			getRoot().updateAll();
@@ -1331,16 +1333,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private void assignViewerToBackgroundComponent(final IViewerFactory factory, final URI uri) {
 		try {
 			if (fitToViewport) {
-				final JViewport vp = (JViewport) getParent();
-				if(vp != null){
-					final Dimension viewPortSize = vp.getVisibleRect().getSize();
-					backgroundComponent = (JComponent) factory.createViewer(uri, viewPortSize);
-				}
-				else
-					backgroundComponent = (JComponent) factory.createViewer(uri, new Dimension(1,1));
+			    final JViewport vp = (JViewport) getParent();
+			    final Dimension viewPortSize = vp.getVisibleRect().getSize();
+			    backgroundComponent = (JComponent) factory.createViewer(uri, viewPortSize, c -> repaint());
 			}
             else
-	            backgroundComponent = (JComponent) factory.createViewer(uri, zoom);
+	            backgroundComponent = (JComponent) factory.createViewer(uri, zoom, c -> repaint());
 			if(backgroundComponent == null) {
 				LogUtils.warn("no viewer created for " + uri);
 				return;
@@ -2099,6 +2097,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				((ScalableComponent) backgroundComponent).setMaximumComponentSize(getPreferredSize());
 				((ScalableComponent) backgroundComponent).setFinalViewerSize(zoom);
 			}
+            SwingUtilities.invokeLater(this::repaint);
 		}
 	}
 
