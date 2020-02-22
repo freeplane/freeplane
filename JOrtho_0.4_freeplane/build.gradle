@@ -11,7 +11,7 @@ dependencies {
 
 jar {
     dependsOn 'check_translation'
-    baseName "jortho"
+    archiveBaseName = 'jortho'
 }
 
 task format_translation(dependsOn: configurations.ant_tasks) {

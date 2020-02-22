@@ -32,7 +32,7 @@ allprojects {
 
     repositories {
 		mavenCentral()
-		maven { url 'http://www.knopflerfish.org/releases/6.1.0/maven2' }
+		maven { url 'https://www.knopflerfish.org/releases/6.1.0/maven2' }
 		maven { url "${project.gradle.gradleUserHomeDir}/local-artifacts" }
 		maven { url 'https://dl.bintray.com/freeplane/freeplane' }
 		maven { url 'https://repo.spring.io/plugins-release/' }
@@ -75,7 +75,7 @@ def filterAndExternalizePluginDependencies(runtime_files) {
 }
 
 subprojects {
-    apply plugin: 'java'
+    apply plugin: 'java-library'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
 
@@ -102,11 +102,11 @@ subprojects {
 
     configurations {
         lib
-        compile.extendsFrom(lib)
+        api.extendsFrom(lib)
     }
     
     dependencies {
-		testCompile 'junit:junit:4.12',
+		testImplementation 'junit:junit:4.12',
 				'org.hamcrest:hamcrest-all:1.3',
 				'org.mockito:mockito-core:3.2.0',
 			 	'org.assertj:assertj-core:3.14.0'
@@ -139,7 +139,7 @@ subprojects {
 // and freeplane_framework needs to copy it to BUILD/framework.jar
 configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ || it.name =~ /^freeplane_framework$/}){
     dependencies {
-        compile group: 'org.knopflerfish.kf6', name:'framework', version: '8.0.4'
+        implementation group: 'org.knopflerfish.kf6', name:'framework', version: '8.0.4'
     }
 }
 
@@ -221,7 +221,7 @@ configure(subprojects.findAll {it.name =~ /plugin/}) {
 
     // create a separate non-OSGi(!) jar for each plugin!
     task pluginJar(type: Jar) {
-         baseName = 'plugin'
+         archiveBaseName = 'plugin'
          dependsOn classes
 
          from (sourceSets.main.output) {

@@ -1,8 +1,8 @@
 task freeplaneDeb(type: Deb) {
-    destinationDir = new File(globalDist)
+    destinationDirectory = new File(globalDist)
 
     packageName = 'freeplane'
-    version = distVersion + "~upstream"
+    archiveVersion = distVersion + "~upstream"
     release = 1
     
     requires('default-jre | java7-runtime')

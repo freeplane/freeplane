@@ -11,10 +11,10 @@ dependencies {
 		exclusions.add('freeplane_mac')
 	}
 	parent.subprojects.findAll{! exclusions.contains(it.name)}.each {
-		runtime it
+		runtimeOnly it
 	}
 
-	runtime project(':freeplane').files('src/viewer/resources', 'src/editor/resources')
+	runtimeOnly project(':freeplane').files('src/viewer/resources', 'src/editor/resources')
 }
 
 task(run, dependsOn: 'classes', type: JavaExec) {

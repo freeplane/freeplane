@@ -6,7 +6,7 @@ repositories {
 }
 
 dependencies {
-    compile (project(':freeplane')) {
+    implementation (project(':freeplane')) {
         transitive = false
     }
     

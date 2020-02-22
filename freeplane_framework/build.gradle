@@ -11,8 +11,8 @@ dependencies {
 }
 
 task freeplanelauncherJar(type: Jar) {
-     archiveName = 'freeplanelauncher.jar'
-     destinationDir = new File(globalBin)
+     archiveFileName = 'freeplanelauncher.jar'
+     destinationDirectory = new File(globalBin)
 
      dependsOn classes
      from (sourceSets.main.output) {
@@ -73,7 +73,7 @@ task copyLauncherStuff(type: Copy) {
          exclude('freeplane.sh')
      }
 
-     def knopflerfishJarFile = project.configurations.runtime.files.find {
+     def knopflerfishJarFile = project.configurations.runtimeClasspath.files.find {
          isKnopflerfishJar(it.name)
      }
      from(knopflerfishJarFile)
