@@ -114,7 +114,7 @@
 					<Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
 					<Entry name="NewParentNode" accelerator="shift INSERT" />
 					<Entry name="NewFreeNodeAction" usedBy = "ADVANCED" />
-					<Entry name="NewSummaryAction" accelerator="alt shift INSERT" usedBy = "ADVANCED" />
+					<Entry name="NewSummaryAction" accelerator="alt shift INSERT"/>
 				</Entry>
 				<Entry name="CloudAction" accelerator="control shift B" />
 				<Entry name="AddConnectorAction" accelerator="control L" />
