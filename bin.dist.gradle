@@ -1,6 +1,6 @@
 task binZip(type: Zip) {
-    destinationDir = new File(globalDist)
-    archiveName = 'freeplane_bin-' + distVersion + '.zip'
+    destinationDirectory = new File(globalDist)
+    archiveFileName = 'freeplane_bin-' + distVersion + '.zip'
 
     from(globalBin) {
         include('**')

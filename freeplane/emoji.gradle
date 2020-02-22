@@ -176,7 +176,7 @@ task emojiJar(type: Jar) {
 	manifest = project.manifest {
 		attributes("Manifest-Version": "1.0")
 	}
-	baseName = 'emoji'
+	archiveBaseName = 'emoji'
 	archiveVersion = EmojiDownloader.TWEMOJI_VERSION
     from (sourceSets.emojiGraphics.output)
 }

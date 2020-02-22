@@ -1,6 +1,6 @@
 configurations{
 	mergedViewerDependencies
-    compile.extendsFrom(mergedViewerDependencies)
+	api.extendsFrom mergedViewerDependencies
 }
 
 apply from: './emoji.gradle'
@@ -12,14 +12,13 @@ sourceSets {
 }
 
 dependencies {
-	
 	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
 	lib ':kitfox-svg-salamander-1.1.1-p1'
 	lib 'com.github.robtimus:data-url:1.0.1'
 	lib 'com.bulenkov:darcula:2018.2'
 
     lib project(':JOrtho_0.4_freeplane')
-    compile project(':freeplane_api')
+    api project(':freeplane_api')
 	
     lib 'commons-lang:commons-lang:2.6',
             'commons-io:commons-io:2.6',
@@ -31,12 +30,12 @@ dependencies {
 		exclude module: 'javahelp'
 		exclude module: 'mnemonicsetter'
 	}
- 
+    
     // from flatDir "localGitDepsRepository":
     lib ':idw-gpl-1.6.1'
     
-    runtime sourceSets.emojiGraphics.output.dirs
- 	runtime sourceSets.emojiList.output.dirs
+    runtimeOnly sourceSets.emojiGraphics.output.dirs
+ 	runtimeOnly sourceSets.emojiList.output.dirs
     
 }
 
@@ -224,7 +223,7 @@ task editorJar(type: PartialJar) {
         attributes("Manifest-Version": "1.0",
                    "Main-Class": "org.freeplane.main.application.FreeplaneMain")
     }
-    baseName = 'freeplaneeditor'
+    archiveBaseName = 'freeplaneeditor'
     dependsOn classes
 	includedClasses = [
 				"**/application/**",
@@ -247,7 +246,7 @@ task osgiJar(type: PartialJar) {
 	manifest = project.manifest {
 		attributes("Manifest-Version": "1.0")
 	}
-	baseName = 'freeplaneosgi'
+	archiveBaseName = 'freeplaneosgi'
 	dependsOn classes
 	includedClasses = [
 				"**/osgi/**"
@@ -270,7 +269,7 @@ task viewerJar(type: Jar) {
     }
 
     // this must be unversioned because the applet export code relies on this
-    archiveName = 'freeplaneviewer.jar'
+    archiveFileName = 'freeplaneviewer.jar'
     dependsOn classes
     from (sourceSets.main.output) {
         exclude (editorJar.includedClasses)

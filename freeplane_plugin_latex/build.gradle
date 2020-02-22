@@ -1,6 +1,6 @@
 dependencies {
-    compile project(':freeplane')
-    compile project(':freeplane_plugin_jsyntaxpane')
+    implementation project(':freeplane')
+    implementation project(':freeplane_plugin_jsyntaxpane')
     lib 'org.scilab.forge:jlatexmath:1.0.7'
     lib 'org.scilab.forge:jlatexmath-font-greek:1.0.7'
     lib 'org.scilab.forge:jlatexmath-font-cyrillic:1.0.7'

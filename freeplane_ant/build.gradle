@@ -3,5 +3,5 @@ dependencies {
 }
 
 jar {
-    baseName "freeplaneant"
+    archiveBaseName = 'freeplaneant'
 }

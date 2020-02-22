@@ -1,5 +1,5 @@
 dependencies {
-    compile project(':freeplane')
+    implementation project(':freeplane')
 
 	lib 'org.apache.xmlgraphics:batik-transcoder:1.12'
 	lib 'org.apache.xmlgraphics:batik-swing:1.12'

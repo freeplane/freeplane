@@ -4,7 +4,7 @@ task viewerApiJar(type: Jar) {
 		attributes("Manifest-Version": "1.0")
 	}
 
-    archiveName = 'freeplaneapi_viewer.jar'
+    archiveFileName = 'freeplaneapi_viewer.jar'
     dependsOn classes
 	
     from (sourceSets.main.output) {
