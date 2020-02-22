@@ -156,7 +156,8 @@ public abstract class HierarchicalIcons extends PersistentNodeHook implements IN
 		if(icons != null && ! icons.getAccumulatedIcons().isEmpty()){
 			Controller.getCurrentModeController().getMapController().delayedNodeRefresh(node, HierarchicalIcons.ICONS, null, null);
 			for (final NodeModel child : node.getChildren()) {
-				removeIcons(child);
+			    if(null == hierarchicalIconsExtensionOf(child))
+			        removeIcons(child);
 			}
 		}
 	}

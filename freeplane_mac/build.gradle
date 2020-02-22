@@ -2,7 +2,7 @@ targetCompatibility='1.12'
 sourceCompatibility='1.12'
 
 dependencies {
-    compile (project(':freeplane')) {
+    implementation (project(':freeplane')) {
         transitive = false
     }
 }

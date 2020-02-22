@@ -127,8 +127,8 @@ def defineMacBuildTasks = {boolean includeJavaRuntime ->
     }
 
     def zip4mac = tasks.create (taskName('zip4mac'), Zip) {
-        destinationDir = new File(globalDist)
-        archiveName = taskName('freeplane_macos_bin') + '-' + distVersion + '.zip'
+        destinationDirectory = new File(globalDist)
+        archiveFileName = taskName('freeplane_macos_bin') + '-' + distVersion + '.zip'
 
         from(bin4mac) {
             exclude('**/JavaAppLauncher')
