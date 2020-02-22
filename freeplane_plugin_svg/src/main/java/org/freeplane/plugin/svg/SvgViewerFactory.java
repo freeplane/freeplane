@@ -6,9 +6,13 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.function.Consumer;
 
+import org.apache.batik.bridge.ViewBox;
 import org.apache.batik.swing.JSVGCanvas;
+import org.apache.batik.swing.gvt.GVTTreeRendererAdapter;
+import org.apache.batik.swing.gvt.GVTTreeRendererEvent;
 import org.apache.batik.swing.svg.GVTTreeBuilderAdapter;
 import org.apache.batik.swing.svg.GVTTreeBuilderEvent;
+import org.apache.batik.swing.svg.JSVGComponent;
 import org.apache.batik.util.SVGConstants;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
@@ -22,7 +26,7 @@ import org.w3c.dom.svg.SVGSVGElement;
 
 public class SvgViewerFactory implements IViewerFactory {
 
-	private static class ViewerComponent extends JSVGCanvas implements ScalableComponent {
+	private static class ViewerComponent extends JSVGComponent implements ScalableComponent {
 		private static final long serialVersionUID = 1L;
 		private Dimension originalSize = null;
 		private Dimension maximumSize = null;
@@ -32,36 +36,37 @@ public class SvgViewerFactory implements IViewerFactory {
 		    setPreferredSize(new Dimension(1, 1));
 		    setRecenterOnResize(false);
 		    setDocumentState(ALWAYS_STATIC);
-		    setURI(uri.toString());
 		    addGVTTreeBuilderListener(new GVTTreeBuilderAdapter() {
 		        @Override
 		        public void gvtBuildCompleted(GVTTreeBuilderEvent e) {
 		            removeGVTTreeBuilderListener(this);
                     final SVGDocument document = getSVGDocument();
-                    final SVGSVGElement rootElement = document.getRootElement();
-                    final SVGLength width = rootElement.getWidth().getBaseVal();
-                    final SVGLength height = rootElement.getHeight().getBaseVal();
-                    float defaultWidth = (float) Math.ceil(width.getValue());
-                    float defaultHeigth = (float) Math.ceil(height.getValue());
-                    if (defaultWidth == 1f && defaultHeigth == 1f) {
-                        defaultWidth = ResourceController.getResourceController().getIntProperty(
-                                "default_external_component_width", 200);
-                        defaultHeigth = ResourceController.getResourceController().getIntProperty(
-                                "default_external_component_height", 200);
-                    }
-                    originalSize = new Dimension((int) defaultWidth, (int) defaultHeigth);
-                    if ("".equals(rootElement.getAttributeNS(null, SVGConstants.SVG_VIEW_BOX_ATTRIBUTE))) {
-                        rootElement.setAttributeNS(null, SVGConstants.SVG_VIEW_BOX_ATTRIBUTE, "0 0 " + defaultWidth
-                                + " " + defaultHeigth);
-                    }
-                    if ("".equals(rootElement.getAttributeNS(null, SVGConstants.SVG_PRESERVE_ASPECT_RATIO_ATTRIBUTE))) {
-                        rootElement.setAttributeNS(null, SVGConstants.SVG_PRESERVE_ASPECT_RATIO_ATTRIBUTE, "none");
+                    final SVGSVGElement svgElt = document.getRootElement();
+                    String svgViewboxAttribute = svgElt.getAttributeNS(null, SVGConstants.SVG_VIEW_BOX_ATTRIBUTE);
+                    if (svgViewboxAttribute.isEmpty()) {
+                        final SVGLength svgWidth = svgElt.getWidth().getBaseVal();
+                        final SVGLength svgHeight = svgElt.getHeight().getBaseVal();
+                        float width = (float) Math.ceil(svgWidth.getValue());
+                        float heigth = (float) Math.ceil(svgHeight.getValue());
+                        if (width <= 1f && heigth <= 1f) {
+                            width = ResourceController.getResourceController().getIntProperty(
+                                    "default_external_component_width", 200);
+                            heigth = ResourceController.getResourceController().getIntProperty(
+                                    "default_external_component_height", 200);
+                        }
+                        originalSize = new Dimension((int) width, (int) heigth);
+                        svgElt.setAttributeNS(null, SVGConstants.SVG_VIEW_BOX_ATTRIBUTE, "0 0 " + width
+                                + " " + heigth);
+                    } else {
+                        float[] vb= ViewBox.parseViewBoxAttribute(svgElt, svgViewboxAttribute, bridgeContext);
+                        originalSize = new Dimension((int) vb[2], (int) vb[3]);
                     }
                     initializer.accept(ViewerComponent.this);
                     revalidate();
                     repaint();
                 }
 		    });
+		    loadSVGDocument(uri.toString());
 
 		}
 		
@@ -122,7 +127,7 @@ public class SvgViewerFactory implements IViewerFactory {
 	}
 
 	@Override
-	public ScalableComponent createViewer(final ExternalResource resource, final URI uri, final int maximumWidth, float zoom) {
+	public ViewerComponent createViewer(final ExternalResource resource, final URI uri, final int maximumWidth, float zoom) {
 		return new ViewerComponent(uri, canvas -> {
             final Dimension originalSize = canvas.getOriginalSize();
             float r = resource.getZoom();
@@ -140,18 +145,47 @@ public class SvgViewerFactory implements IViewerFactory {
 	}
 
 	@Override
-	public ScalableComponent createViewer(final URI uri, final Dimension size) {
+	public ViewerComponent createViewer(final URI uri, final Dimension size) {
         return new ViewerComponent(uri, canvas -> {
             canvas.setFinalViewerSize(size);
         });
 	}
 
 	@Override
-	public ScalableComponent createViewer(URI uri, final float zoom) throws MalformedURLException, IOException {
+	public ViewerComponent createViewer(URI uri, final float zoom) throws MalformedURLException, IOException {
         return new ViewerComponent(uri, canvas -> {
-            if(zoom != 1f) {
-                canvas.setFinalViewerSize(zoom);
-            }
+            canvas.setFinalViewerSize(zoom);
         });
 	}
+
+    @Override
+    public ViewerComponent createViewer(URI uri, Dimension preferredSize,
+            Consumer<ScalableComponent> callback) throws MalformedURLException, IOException {
+        ViewerComponent viewer = createViewer(uri, preferredSize);
+        viewer.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
+
+            @Override
+            public void gvtRenderingCompleted(GVTTreeRendererEvent e) {
+                callback.accept(viewer);
+            }
+            
+        });
+        return viewer;
+    }
+
+    @Override
+    public ViewerComponent createViewer(URI uri, float zoom, Consumer<ScalableComponent> callback)
+            throws MalformedURLException, IOException {
+        ViewerComponent viewer = createViewer(uri, zoom);
+        viewer.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
+
+            @Override
+            public void gvtRenderingCompleted(GVTTreeRendererEvent e) {
+                callback.accept(viewer);
+            }
+            
+        });
+        return viewer;
+
+    }
 }

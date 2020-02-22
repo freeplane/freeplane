@@ -26,6 +26,7 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -101,4 +102,16 @@ public class BitmapViewerFactory implements IViewerFactory {
 	public Dimension getOriginalSize(final JComponent viewer) {
 		return ((BitmapViewerComponent) viewer).getOriginalSize();
 	}
+
+    @Override
+    public ScalableComponent createViewer(URI uri, Dimension preferredSize,
+            Consumer<ScalableComponent> callback) throws MalformedURLException, IOException {
+        return createViewer(uri, preferredSize);
+    }
+
+    @Override
+    public ScalableComponent createViewer(URI uri, float zoom, Consumer<ScalableComponent> callback)
+            throws MalformedURLException, IOException {
+        return createViewer(uri, zoom);
+    }
 }

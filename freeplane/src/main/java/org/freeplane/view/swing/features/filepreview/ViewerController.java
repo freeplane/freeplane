@@ -18,6 +18,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -62,15 +63,25 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	private final class CombiFactory implements IViewerFactory {
 		private IViewerFactory factory;
 
-		@Override
-		public ScalableComponent createViewer(final URI uri,
-				final Dimension preferredSize) throws MalformedURLException,
-				IOException {
-			factory = getViewerFactory(uri);
-			ScalableComponent component = (factory == null ? null : factory.createViewer(uri,
-					preferredSize));
-			return component;
-		}
+        @Override
+        public ScalableComponent createViewer(final URI uri,
+                final Dimension preferredSize) throws MalformedURLException,
+                IOException {
+            factory = getViewerFactory(uri);
+            ScalableComponent component = (factory == null ? null : factory.createViewer(uri,
+                    preferredSize));
+            return component;
+        }
+
+        @Override
+        public ScalableComponent createViewer(final URI uri,
+                final Dimension preferredSize, Consumer<ScalableComponent> callback) throws MalformedURLException,
+                IOException {
+            factory = getViewerFactory(uri);
+            ScalableComponent component = (factory == null ? null : factory.createViewer(uri,
+                    preferredSize, callback));
+            return component;
+        }
 
 		@Override
 		public ScalableComponent createViewer(final ExternalResource resource,
@@ -99,14 +110,23 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return getViewerFactory(uri) != null;
 		}
 
-		@Override
-		public ScalableComponent createViewer(URI uri, float zoom)
-				throws MalformedURLException, IOException {
-			factory = getViewerFactory(uri);
-			ScalableComponent component = (factory == null ? null : factory.createViewer(uri,
-					zoom));
-			return component;
-		}
+        @Override
+        public ScalableComponent createViewer(URI uri, float zoom)
+                throws MalformedURLException, IOException {
+            factory = getViewerFactory(uri);
+            ScalableComponent component = (factory == null ? null : factory.createViewer(uri,
+                    zoom));
+            return component;
+        }
+
+        @Override
+        public ScalableComponent createViewer(URI uri, float zoom,
+                Consumer<ScalableComponent> callback) throws MalformedURLException, IOException {
+            factory = getViewerFactory(uri);
+            ScalableComponent component = (factory == null ? null : factory.createViewer(uri,
+                    zoom, callback));
+            return component;
+        }
 
 	}
 
