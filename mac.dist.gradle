@@ -65,7 +65,6 @@ def defineMacBuildTasks = {
    	 '--name' , 'Freeplane',
    	 '--type', 'app-image',
      '--icon', 'freeplane_framework/mac-appbundler/freeplane.icns',
-     '--file-associations', 'freeplane_framework/mac-appbundler/file-associations.config',
      '--app-version', distVersion,
      '--java-options', '-Xmx512m',
      '--java-options', '-Dapple.laf.useScreenMenuBar=true',
@@ -79,7 +78,7 @@ def defineMacBuildTasks = {
      dependsOn macosapp_input, macosapp_deleteAppImage
    }
    
-   def macosapp_copyapp= tasks.create ('macosapp_copyapp') {
+   def macosapp_makeapp= tasks.create ('macosapp_makeapp') {
 	   dependsOn jpackage_macosxapp
      doFirst {
         copy {
@@ -87,9 +86,23 @@ def defineMacBuildTasks = {
                 include '*/**'
           }
           into 'build/macosapp/app-image/Freeplane.app/Contents/app'
-       }
+        }
+        copy {
+          from file ('freeplane_framework/mac-appbundler/freeplanedoc.icns')
+          into 'build/macosapp/app-image/Freeplane.app/Contents/Resources'
+        }
+
+        def dist_macos_info = 'build/macosapp/app-image/Freeplane.app/Contents/Info.plist'
+        ant.xslt(in: new File(dist_macos_info),
+          style: new File('freeplane_framework/mac-appbundler/mac_info_plist.xslt'),
+          out: new File(dist_macos_info + '2')
+        )
+        java.nio.file.Files.move(java.nio.file.Paths.get(dist_macos_info + '2'),
+                   java.nio.file.Paths.get(dist_macos_info),
+             java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+
+      }
     }
-  }
   
   def signMacApp= tasks.create ('signMacApp', Exec) {
         onlyIf { Os.isFamily(Os.FAMILY_MAC) && macAppProperties['macapp.codesign.identity'] != null}
@@ -98,7 +111,7 @@ def defineMacBuildTasks = {
         '-s', 'Developer ID Application: ' + macAppProperties['macapp.codesign.identity'], 
         '-v', 'build/macosapp/app-image/Freeplane.app'
 
-        dependsOn macosapp_copyapp
+        dependsOn macosapp_makeapp
     }
 
    def macosapp_copyvolumeicon= tasks.create ('macosapp_copyvolumeicon', Copy) {

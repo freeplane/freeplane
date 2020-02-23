@@ -27,9 +27,6 @@
 			<string>Editor</string>
 		</dict>
 	</array>
-    <xsl:apply-templates select="@* | node()"/>
-    <key>NSHighResolutionCapable</key>
-    <true/>
 	<key>CFBundleURLTypes</key>
 	<array>
 	    <dict>
@@ -41,6 +38,7 @@
 	        </array>
 	    </dict>
 	</array>    
+    <xsl:apply-templates select="@* | node()"/>
   </xsl:copy>
 </xsl:template>
 
