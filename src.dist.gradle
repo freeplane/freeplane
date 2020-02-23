@@ -33,7 +33,7 @@ def miscExcludedFilesSpec() {
 // (unfortunately there is some redundancy)!
 task srcTarGz(type: Tar) {
     destinationDirectory = new File(globalDist)
-    archiveBaseName = 'freeplane_src-' + distVersion + '.tar.gz'
+    archiveFileName = 'freeplane_src-' + distVersion + '.tar.gz'
     compression = 'GZIP'
     includeEmptyDirs = false
 
@@ -98,7 +98,7 @@ def srcpureAdditionalExcludeSpec() {
 
 task srcpureTarGz(type: Tar) {
     destinationDirectory = new File(globalDist)
-    archiveBaseName = 'freeplane_srcpure-' + distVersion + '.tar.gz'
+    archiveFileName = 'freeplane_srcpure-' + distVersion + '.tar.gz'
     compression = 'GZIP'
     includeEmptyDirs = false
 
