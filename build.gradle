@@ -3,14 +3,14 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:4.3.1'
+    classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:5.0.0'
   }
 }
 
 plugins {
-  id 'nebula.ospackage' version '8.0.3'
-  id 'com.github.ben-manes.versions' version '0.27.0'
-  id 'org.owasp.dependencycheck' version '5.2.4' apply false
+  id 'nebula.ospackage' version '8.1.0'
+  id 'com.github.ben-manes.versions' version '0.28.0'
+  id 'org.owasp.dependencycheck' version '5.3.0' apply false
 }
 
 Properties props = new Properties()
@@ -32,7 +32,7 @@ allprojects {
 
     repositories {
 		mavenCentral()
-		maven { url 'https://www.knopflerfish.org/releases/6.1.0/maven2' }
+		maven { url 'https://resources.knopflerfish.org/repo/maven2/release/' }
 		maven { url "${project.gradle.gradleUserHomeDir}/local-artifacts" }
 		maven { url 'https://dl.bintray.com/freeplane/freeplane' }
 		maven { url 'https://repo.spring.io/plugins-release/' }
@@ -106,10 +106,10 @@ subprojects {
     }
     
     dependencies {
-		testImplementation 'junit:junit:4.12',
+		testImplementation 'junit:junit:4.13',
 				'org.hamcrest:hamcrest-all:1.3',
-				'org.mockito:mockito-core:3.2.0',
-			 	'org.assertj:assertj-core:3.14.0'
+				'org.mockito:mockito-core:3.3.1',
+			 	'org.assertj:assertj-core:3.15.0'
     }
 
     task copyEclipseSettings(type: Copy) {
@@ -139,7 +139,7 @@ subprojects {
 // and freeplane_framework needs to copy it to BUILD/framework.jar
 configure(subprojects.findAll {it.name =~ /plugin/ || it.name =~ /^freeplane$/ || it.name =~ /^freeplane_framework$/}){
     dependencies {
-        implementation group: 'org.knopflerfish.kf6', name:'framework', version: '8.0.4'
+        implementation group: 'org.knopflerfish.kf6', name:'framework', version: '8.0.9'
     }
 }
 

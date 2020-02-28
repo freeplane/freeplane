@@ -22,7 +22,7 @@ dependencies {
 	
     lib 'commons-lang:commons-lang:2.6',
             'commons-io:commons-io:2.6',
-            'commons-codec:commons-codec:1.13',
+            'commons-codec:commons-codec:1.14',
             'com.jgoodies:jgoodies-forms:1.9.0',
             'com.jgoodies:jgoodies-common:1.8.1'
 
