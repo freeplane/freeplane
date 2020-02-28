@@ -47,7 +47,6 @@ task copyFreeplaneShellScript(type: Copy) {
 ext {launch4jDir = 'C:/Program Files (x86)/Launch4j'}
 
 task createExeFiles {
-	dependsOn 'makeKnopflerfischPermissionDirs'
 	onlyIf { Os.isFamily(Os.FAMILY_WINDOWS) && file(launch4jDir).exists()}
 	inputs.dir('launch4j')
 	outputs.files("${globalBin}/freeplane.exe", "${globalBin}/freeplaneConsole.exe")
@@ -96,13 +95,6 @@ task copyLauncherStuff(type: Copy) {
      dependsOn jar
 }
 
-task makeKnopflerfischPermissionDirs {
-    doLast {
-        new File(globalBin, 'fwdir/perms').mkdirs()
-        new File(globalBin, 'fwdir/condperm').mkdirs()
-    }
-}
-
 eclipseJdt {
     doLast {
         File f = file('.settings/org.eclipse.core.resources.prefs')
@@ -110,6 +102,6 @@ eclipseJdt {
     }
 }
 
-build.dependsOn (copyLauncherStuff, makeKnopflerfischPermissionDirs)
+build.dependsOn (copyLauncherStuff)
 
 
