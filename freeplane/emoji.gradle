@@ -45,7 +45,7 @@ class EmojiDownloader implements EmojiConstants{
 	
 	def downloadEmojiFiles(){
 		ExecutorService exec = Executors.newFixedThreadPool(40)
-		emojiListFile.eachLine { String line ->
+		emojiListFile.eachLine('UTF-8') { String line ->
 			if(line.length() > EMOJI_POSITION  && line.charAt(HEX_CODEPOINT_END_POSITION) == ';' && line.charAt(STATUS_END_POSITION) == '#') {
  				String emojiStatus = line.substring(HEX_CODEPOINT_END_POSITION + 1, STATUS_END_POSITION).trim()
  				if(emojiStatus != 'component') {
@@ -92,7 +92,7 @@ class UiEntryCreator implements EmojiConstants {
 			boolean firstInGroupSet = false
 			boolean firstInSubgroupSet = false
 			
-			emojiListFile.eachLine { String line ->
+			emojiListFile.eachLine('UTF-8'){ String line ->
 	 			if(line.startsWith('# group:')) {
 	 				if(line.endsWith(': Component')){
 	 					group = null
@@ -157,7 +157,7 @@ class UiEntryCreator implements EmojiConstants {
 			}
 			def emojiEntriesFile = new File(emojiDirectory, 'xml/images/emoji/xml/emojientries.xml')
 			emojiEntriesFile.parentFile.mkdirs()
-			emojiEntriesFile.withOutputStream {new XmlNodePrinter(new PrintWriter(new OutputStreamWriter(it))).print(root)}
+			emojiEntriesFile.withOutputStream {new XmlNodePrinter(new PrintWriter(new OutputStreamWriter(it, 'UTF-8'))).print(root)}
 		}
 		
 		return this
