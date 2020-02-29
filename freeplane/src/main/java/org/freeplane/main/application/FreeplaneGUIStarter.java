@@ -85,6 +85,8 @@ import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 
 public class FreeplaneGUIStarter implements FreeplaneStarter {
+	private static boolean ARE_SURVEYS_ENABLED = false;
+
 	static{
 		Compat.fixMousePointerForLinux();
 	}
@@ -185,7 +187,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			NodeHistory.install(controller);
 			MapExplorerConditionController.installFilterConditions();
 			final FreeplaneSurveyProperties freeplaneSurveyProperties = new FreeplaneSurveyProperties();
-			if(freeplaneSurveyProperties.mayAskUserToFillSurveys()) {
+			if(ARE_SURVEYS_ENABLED && freeplaneSurveyProperties.mayAskUserToFillSurveys()) {
 				controller.addApplicationLifecycleListener(new SurveyStarter(freeplaneSurveyProperties, new SurveyRunner(freeplaneSurveyProperties), Math.random()));
 			}
 			return controller;
