@@ -261,7 +261,7 @@ public class GenericScript implements IScript {
 
     private static ScriptEngine checkNotNull(final ScriptEngine motor, String detail) {
         if (motor == null) {
-            throw new RuntimeException("can't load script engine " + detail);
+            throw new ScriptEngineNotLoadedException("can't load script engine " + detail);
         }
         return motor;
     }
