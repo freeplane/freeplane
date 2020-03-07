@@ -1,4 +1,11 @@
 ===============================
+1.7.14
+===============================
+Bug fixes
+Support Java 13
+"Enter" closes only dialogs with "confirms by default" check box
+
+===============================
 1.7.13
 ===============================
 Bug fixes
