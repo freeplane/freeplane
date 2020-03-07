@@ -27,7 +27,6 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
@@ -369,8 +368,7 @@ public class EditNodeTextField extends EditNodeBase {
 				case KeyEvent.VK_ENTER: {
 					if (e.isControlDown() || e.isMetaDown())
 						break;
-					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
-					if (enterConfirms == e.isAltDown() || e.isShiftDown()) {
+					if (e.isAltDown() || e.isShiftDown()) {
 						e.consume();
 						final Component component = e.getComponent();
 						final KeyEvent keyEvent = new KeyEvent(component, e.getID(), e.getWhen(), 0, keyCode, e
