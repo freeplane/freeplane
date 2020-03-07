@@ -2,9 +2,12 @@ package org.freeplane.plugin.jsyntaxpane;
 
 import java.awt.GraphicsEnvironment;
 import java.util.Hashtable;
+import java.util.stream.Stream;
 
 import jsyntaxpane.DefaultSyntaxKit;
 import jsyntaxpane.syntaxkits.GroovySyntaxKit;
+import jsyntaxpane.syntaxkits.JavaSyntaxKit;
+import jsyntaxpane.util.Configuration;
 
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -35,6 +38,9 @@ public class Activator implements BundleActivator {
 	    try {
             Thread.currentThread().setContextClassLoader(DefaultSyntaxKit.class.getClassLoader());
             DefaultSyntaxKit.initKit();
+            Configuration javaSyntaxKitConfig = new JavaSyntaxKit().getConfig();
+            Stream.of("Action.insert-date", "Action.insert-date.Function","Script.insert-date.URL")//
+                .forEach(javaSyntaxKitConfig::remove);
             final String components = "jsyntaxpane.components.PairsMarker" //
             		+ ", jsyntaxpane.components.LineNumbersRuler" //
             		+ ", jsyntaxpane.components.TokenMarker" //

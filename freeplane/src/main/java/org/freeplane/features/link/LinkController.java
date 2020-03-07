@@ -335,10 +335,8 @@ public class LinkController extends SelectionController implements IExtension {
 					final ClosePopupAction cancelAction = new ClosePopupAction(CANCEL);
 					inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelAction);
 					actionMap.put(cancelAction, cancelAction);
-					inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.ALT_DOWN_MASK), closeAction);
-					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
-					if(enterConfirms)
-						inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), closeAction);
+					inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.SHIFT_DOWN_MASK), closeAction);
+					inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), closeAction);
 					actionMap.put(closeAction, closeAction);
 				}
 			}
