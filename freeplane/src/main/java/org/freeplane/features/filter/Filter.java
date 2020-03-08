@@ -90,13 +90,13 @@ public class Filter {
 		super();
 		this.condition = condition;
 		this.accessor = accessor;
-		int options = FilterInfo.FILTER_INITIAL_VALUE | FilterInfo.FILTER_SHOW_MATCHED;
+		int options = FilterInfo.FILTER_INITIAL_VALUE | FilterInfo.FILTER_SHOW_AS_MATCHED;
 		if (areAncestorsShown) {
-			options += FilterInfo.FILTER_SHOW_ANCESTOR;
+			options += FilterInfo.FILTER_SHOW_AS_ANCESTOR;
 		}
-		options += FilterInfo.FILTER_SHOW_ECLIPSED;
+		options += FilterInfo.FILTER_SHOW_AS_ECLIPSED;
 		if (areDescendantsShown) {
-			options += FilterInfo.FILTER_SHOW_DESCENDANT;
+			options += FilterInfo.FILTER_SHOW_AS_DESCENDANT;
 		}
 		this.options = options;
 		appliesToVisibleNodesOnly = condition != null && applyToVisibleNodesOnly;
@@ -157,7 +157,7 @@ public class Filter {
 		final NodeModel root = map.getRootNode();
 		resetFilter(root);
 		if (filterChildren(root, checkNode(root), false)) {
-			addFilterResult(root, FilterInfo.FILTER_SHOW_ANCESTOR);
+			addFilterResult(root, FilterInfo.FILTER_SHOW_AS_ANCESTOR);
 		}
 	}
 
@@ -166,31 +166,31 @@ public class Filter {
 	}
 
 	private boolean applyFilter(final NodeModel node,
-	                            final boolean isAncestorSelected, final boolean isAncestorEclipsed,
-	                            boolean isDescendantSelected) {
+	                            final boolean hasMatchingAncestor, final boolean hasHiddenAncestor,
+	                            boolean hasMatchingDescendant) {
 		final boolean canBeShown = ! shouldRemainInvisible(node);
 		final boolean conditionSatisfied = canBeShown && checkNode(node);
 		resetFilter(node);
-		if (isAncestorSelected && canBeShown) {
-			addFilterResult(node, FilterInfo.FILTER_SHOW_DESCENDANT);
+		if (hasMatchingAncestor && canBeShown) {
+			addFilterResult(node, FilterInfo.FILTER_SHOW_AS_DESCENDANT);
 		}
 		if (conditionSatisfied) {
-			isDescendantSelected = true;
-			addFilterResult(node, FilterInfo.FILTER_SHOW_MATCHED);
+			hasMatchingDescendant = true;
+			addFilterResult(node, FilterInfo.FILTER_SHOW_AS_MATCHED);
 		}
 		else {
-			addFilterResult(node, FilterInfo.FILTER_SHOW_HIDDEN);
+			addFilterResult(node, FilterInfo.FILTER_SHOW_AS_HIDDEN);
 		}
-		if (isAncestorEclipsed && canBeShown) {
-			addFilterResult(node, FilterInfo.FILTER_SHOW_ECLIPSED);
+		if (hasHiddenAncestor && canBeShown) {
+			addFilterResult(node, FilterInfo.FILTER_SHOW_AS_ECLIPSED);
 		}
-		if (filterChildren(node, conditionSatisfied || isAncestorSelected, !conditionSatisfied
-		        || isAncestorEclipsed)) {
+		if (filterChildren(node, conditionSatisfied || hasMatchingAncestor, !conditionSatisfied
+		        || hasHiddenAncestor)) {
 			if(canBeShown)
-				addFilterResult(node, FilterInfo.FILTER_SHOW_ANCESTOR);
-			isDescendantSelected = true;
+				addFilterResult(node, FilterInfo.FILTER_SHOW_AS_ANCESTOR);
+			hasMatchingDescendant = true;
 		}
-		return isDescendantSelected;
+		return hasMatchingDescendant;
 	}
 
 	/*
@@ -198,7 +198,7 @@ public class Filter {
 	 * @see freeplane.controller.filter.Filter#areAncestorsShown()
 	 */
 	public boolean areAncestorsShown() {
-		return 0 != (options & FilterInfo.FILTER_SHOW_ANCESTOR);
+		return 0 != (options & FilterInfo.FILTER_SHOW_AS_ANCESTOR);
 	}
 
 	/*
@@ -206,7 +206,7 @@ public class Filter {
 	 * @see freeplane.controller.filter.Filter#areDescendantsShown()
 	 */
 	public boolean areDescendantsShown() {
-		return 0 != (options & FilterInfo.FILTER_SHOW_DESCENDANT);
+		return 0 != (options & FilterInfo.FILTER_SHOW_AS_DESCENDANT);
 	}
 
 	private boolean checkNode(final NodeModel node) {
@@ -224,13 +224,13 @@ public class Filter {
 	}
 
 	private boolean filterChildren(final NodeModel node,
-	                               final boolean isAncestorSelected, final boolean isAncestorEclipsed) {
-		boolean isDescendantSelected = false;
+	                               final boolean hasMatchingAncestor, final boolean hasHiddenAncestor) {
+		boolean hasMatchingDescendant = false;
 		for (final NodeModel child : node.getChildren()) {
-			isDescendantSelected = applyFilter(child, isAncestorSelected, isAncestorEclipsed,
-			    isDescendantSelected);
+			hasMatchingDescendant = applyFilter(child, hasMatchingAncestor, hasHiddenAncestor,
+			    hasMatchingDescendant);
 		}
-		return isDescendantSelected;
+		return hasMatchingDescendant;
 	}
 
 	public ICondition getCondition() {

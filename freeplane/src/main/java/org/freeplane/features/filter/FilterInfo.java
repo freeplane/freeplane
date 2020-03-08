@@ -23,12 +23,13 @@ package org.freeplane.features.filter;
  * @author Dimitry Polivaev
  */
 public class FilterInfo {
-	public static final int FILTER_INITIAL_VALUE = 1;
-	public static final int FILTER_SHOW_ANCESTOR = 4;
-	public static final int FILTER_SHOW_DESCENDANT = 8;
-	public static final int FILTER_SHOW_ECLIPSED = 16;
-	public static final int FILTER_SHOW_HIDDEN = 32;
-	public static final int FILTER_SHOW_MATCHED = 2;
+	static final int FILTER_INITIAL_VALUE = 1;
+	static final int FILTER_SHOW_AS_ANCESTOR = 4;
+	static final int FILTER_SHOW_AS_DESCENDANT = 8;
+	static final int FILTER_SHOW_AS_ECLIPSED = 16;
+	static final int FILTER_SHOW_AS_HIDDEN = 32;
+	static final int FILTER_SHOW_AS_MATCHED = 2;
+	
 	private int info = FilterInfo.FILTER_INITIAL_VALUE;
 
 	/**
@@ -39,7 +40,7 @@ public class FilterInfo {
 	}
 
 	void add(final int flag) {
-		if ((flag & (FilterInfo.FILTER_SHOW_MATCHED | FilterInfo.FILTER_SHOW_HIDDEN)) != 0) {
+		if ((flag & (FilterInfo.FILTER_SHOW_AS_MATCHED | FilterInfo.FILTER_SHOW_AS_HIDDEN)) != 0) {
 			info &= ~FilterInfo.FILTER_INITIAL_VALUE;
 		}
 		info |= flag;
@@ -48,13 +49,13 @@ public class FilterInfo {
 	/**
 	 */
 	public boolean isAncestor() {
-		return (info & FilterInfo.FILTER_SHOW_ANCESTOR) != 0;
+		return (info & FilterInfo.FILTER_SHOW_AS_ANCESTOR) != 0;
 	}
 
 	/**
 	 */
 	public boolean isMatched() {
-		return (info & FilterInfo.FILTER_SHOW_MATCHED) != 0;
+		return (info & FilterInfo.FILTER_SHOW_AS_MATCHED) != 0;
 	}
 
 	public void reset() {
@@ -62,15 +63,15 @@ public class FilterInfo {
 	}
 
 	public void setAncestor() {
-		add(FilterInfo.FILTER_SHOW_ANCESTOR);
+		add(FilterInfo.FILTER_SHOW_AS_ANCESTOR);
 	}
 
 	public void setDescendant() {
-		add(FilterInfo.FILTER_SHOW_DESCENDANT);
+		add(FilterInfo.FILTER_SHOW_AS_DESCENDANT);
 	}
 
 	public void setMatched() {
-		add(FilterInfo.FILTER_SHOW_MATCHED);
+		add(FilterInfo.FILTER_SHOW_AS_MATCHED);
 	}
 
 	public boolean isUnset() {
@@ -78,8 +79,8 @@ public class FilterInfo {
 	}
 
 	boolean isVisible(final int filterOptions) {
-		final boolean showAsAncestor = (filterOptions & FilterInfo.FILTER_SHOW_ANCESTOR) != 0;
-		return (showAsAncestor || (filterOptions & FilterInfo.FILTER_SHOW_ECLIPSED) >= (info & FilterInfo.FILTER_SHOW_ECLIPSED))
-		        && ((filterOptions & info & ~FilterInfo.FILTER_SHOW_ECLIPSED) != 0);
+		final boolean showAsAncestor = (filterOptions & FilterInfo.FILTER_SHOW_AS_ANCESTOR) != 0;
+		return (showAsAncestor || (filterOptions & FilterInfo.FILTER_SHOW_AS_ECLIPSED) >= (info & FilterInfo.FILTER_SHOW_AS_ECLIPSED))
+		        && ((filterOptions & info & ~FilterInfo.FILTER_SHOW_AS_ECLIPSED) != 0);
 	}
 }
