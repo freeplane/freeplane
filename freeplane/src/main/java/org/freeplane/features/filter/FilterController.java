@@ -210,7 +210,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	final private String pathToFilterFile;
 	private ASelectableCondition selectedViewCondition;
 	private ASelectableCondition cloneOfSelectedViewCondition;
-	private final ButtonModel showAncestors;
+    private final ButtonModel hideMatchingNodes;
+    private final ButtonModel showAncestors;
 	private final ButtonModel approximateMatchingButtonModel;
 	private final ButtonModel caseSensitiveButtonModel;
 	private final ButtonModel showDescendants;
@@ -230,6 +231,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterChangeListener = new FilterChangeListener();
 		showAncestors = new JToggleButton.ToggleButtonModel();
 		final Filter transparentFilter = createTransparentFilter();
+		hideMatchingNodes = new JToggleButton.ToggleButtonModel();
+		hideMatchingNodes.setSelected(transparentFilter.areMatchingNodesHidden());
+		hideMatchingNodes.addChangeListener(filterChangeListener);
 		showAncestors.setSelected(transparentFilter.areAncestorsShown());
 		showAncestors.addChangeListener(filterChangeListener);
 		showAncestors.addChangeListener(new ButtonModelStateChangeListenerForProperty("filter.showAncestors"));
@@ -269,6 +273,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		controller.addAction(new RedoFilterAction(this));
 		controller.addAction(new ReapplyFilterAction(this));
 		controller.addAction(new SelectFilteredNodesAction(this));
+		controller.addAction(new HideMatchingNodesAction(this));
 		controller.addAction(new ShowAncestorsAction(this));
 		controller.addAction(new ShowDescendantsAction(this));
 		controller.addAction(new ApplyToVisibleAction(this));
@@ -387,7 +392,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		else {
 			filterCondition = selectedCondition;
 		}
-		final Filter filter = new Filter(filterCondition, showAncestors.isSelected(), showDescendants
+		final Filter filter = new Filter(filterCondition, hideMatchingNodes.isSelected(), showAncestors.isSelected(), showDescendants
 		    .isSelected(), applyToVisibleNodeOnly.isSelected());
 		return filter;
 	}
@@ -400,8 +405,11 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		UIComponentVisibilityDispatcher.install(filterToolbar, "filter_toolbar_visible");
 		final JButton undoBtn = new JButton(controller.getAction("UndoFilterAction"));
 		final JButton redoBtn = new JButton(controller.getAction("RedoFilterAction"));
-		final JToggleButton showAncestorsBox = new JAutoToggleButton(controller.getAction("ShowAncestorsAction"),
-		    showAncestors);
+        final JToggleButton hideMatchingNodesBox = new JAutoToggleButton(controller.getAction("HideMatchingNodesAction"),
+                hideMatchingNodes);
+        hideMatchingNodesBox.setSelected(hideMatchingNodes.isSelected());
+        final JToggleButton showAncestorsBox = new JAutoToggleButton(controller.getAction("ShowAncestorsAction"),
+                showAncestors);
 		showAncestorsBox.setSelected(showAncestors.isSelected());
 		final JToggleButton showDescendantsBox = new JAutoToggleButton(controller.getAction("ShowDescendantsAction"),
 		    showDescendants);
@@ -422,7 +430,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		filterToolbar.addSeparator();
 		filterToolbar.add(undoBtn);
 		filterToolbar.add(redoBtn);
-		filterToolbar.add(showAncestorsBox);
+        filterToolbar.add(hideMatchingNodesBox);
+        filterToolbar.add(showAncestorsBox);
 		filterToolbar.add(showDescendantsBox);
 		filterToolbar.add(applyToVisibleBox);
 		filterToolbar.add(activeFilterConditionComboBox);
@@ -496,9 +505,13 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		return (ASelectableCondition) getFilterConditions().getSelectedItem();
 	}
 
-	public ButtonModel getShowAncestors() {
-		return showAncestors;
-	}
+    public ButtonModel getShowAncestors() {
+        return showAncestors;
+    }
+
+    public ButtonModel getHideMatchingNodes() {
+        return hideMatchingNodes;
+    }
 
 	public ButtonModel getShowDescendants() {
 		return showDescendants;
@@ -614,7 +627,8 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		showAncestors.removeChangeListener(filterChangeListener);
 		showDescendants.removeChangeListener(filterChangeListener);
 		filterConditions.setSelectedItem(condition(filter));
-		showAncestors.setSelected(filter.areAncestorsShown());
+        hideMatchingNodes.setSelected(filter.areMatchingNodesHidden());
+        showAncestors.setSelected(filter.areAncestorsShown());
 		showDescendants.setSelected(filter.areDescendantsShown());
 		applyToVisibleNodeOnly.setSelected(filter.appliesToVisibleNodesOnly());
 		filterConditions.addListDataListener(filterChangeListener);

@@ -175,7 +175,7 @@ public class Slide implements NamedElement<Slide>{
 
 		public void foldNodes() {
 			if(foldsNodes()) {
-				filter = new Filter(getEffectiveFilterCondition(), true, showsDescendants, false);
+				filter = new Filter(getEffectiveFilterCondition(), false, true, showsDescendants, false);
 				foldNodes(getMap().getRootNode());
 				filter = null;
 			}
@@ -438,7 +438,7 @@ public class Slide implements NamedElement<Slide>{
 	private void applyFilter() {
 		MapModel map = getMap();
 		final ICondition condition = getEffectiveFilterCondition();
-		new Filter(condition, showsAncestors, showsDescendants, false).applyFilter(this, map, false);
+		new Filter(condition, false, showsAncestors, showsDescendants, false).applyFilter(this, map, false);
 	}
 
 	public ICondition getEffectiveFilterCondition() {

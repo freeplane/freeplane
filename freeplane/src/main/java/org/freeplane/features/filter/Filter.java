@@ -40,7 +40,7 @@ import org.freeplane.features.mode.Controller;
 public class Filter {
 	static Filter createTransparentFilter() {
 		final ResourceController resourceController = ResourceController.getResourceController();
-		return new Filter(null, resourceController.getBooleanProperty("filter.showAncestors"), resourceController.getBooleanProperty("filter.showDescendants"), false);
+		return new Filter(null, false, resourceController.getBooleanProperty("filter.showAncestors"), resourceController.getBooleanProperty("filter.showDescendants"), false);
 	}
 
 	public interface FilterInfoAccessor{
@@ -71,7 +71,7 @@ public class Filter {
 				return filterInfo;
 			}
 		};
-		return new Filter(condition, areAncestorsShown, areDescendantsShown, applyToVisibleNodesOnly, oneTimeFilterAccessor);
+		return new Filter(condition, false, areAncestorsShown, areDescendantsShown, applyToVisibleNodesOnly, oneTimeFilterAccessor);
 	}
 
 	final private boolean appliesToVisibleNodesOnly;
@@ -79,18 +79,20 @@ public class Filter {
 	final int options;
 
 	final private FilterInfoAccessor accessor;
+    final private boolean hidesMatchingNodes;
 
-	public Filter(final ICondition condition, final boolean areAncestorsShown,
+    public Filter(final ICondition condition, final boolean hidesMatchingNodes, final boolean areAncestorsShown,
             final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly) {
-		this(condition, areAncestorsShown, areDescendantsShown, applyToVisibleNodesOnly, DEFAULT_FILTER_INFO_ACCESSOR);
+		this(condition, hidesMatchingNodes, areAncestorsShown, areDescendantsShown, applyToVisibleNodesOnly, DEFAULT_FILTER_INFO_ACCESSOR);
 	}
-	public Filter(final ICondition condition, final boolean areAncestorsShown,
+	public Filter(final ICondition condition, final boolean hidesMatchingNodes, final boolean areAncestorsShown,
 	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly,
 	              FilterInfoAccessor accessor) {
 		super();
 		this.condition = condition;
+        this.hidesMatchingNodes = hidesMatchingNodes;
 		this.accessor = accessor;
-		int options = FilterInfo.FILTER_SHOW_AS_INITIAL_VALUE | FilterInfo.FILTER_SHOW_AS_MATCHED;
+		int options = FilterInfo.FILTER_SHOW_AS_MATCHED;
 		if (areAncestorsShown) {
 			options += FilterInfo.FILTER_SHOW_AS_ANCESTOR;
 		}
@@ -196,6 +198,11 @@ public class Filter {
 	public boolean areAncestorsShown() {
 		return 0 != (options & FilterInfo.FILTER_SHOW_AS_ANCESTOR);
 	}
+	
+	boolean areMatchingNodesHidden() {
+	    return hidesMatchingNodes;
+	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -248,10 +255,11 @@ public class Filter {
 		if(node.getExtension(NodeVisibility.class) == NodeVisibility.HIDDEN
 				&& node.getMap().getRootNode().getExtension(NodeVisibilityConfiguration.class) != NodeVisibilityConfiguration.SHOW_HIDDEN_NODES)
 			return false;
-		if (condition == null) {
+		if (condition == null || node.isRoot()) {
 			return true;
 		}
-		return getFilterInfo(node).isVisible(this.options);
+		FilterInfo filterInfo = getFilterInfo(node);
+        return filterInfo.isNotChecked() || filterInfo.matches(this.options) != hidesMatchingNodes;
 	}
 	private void refreshMap(Object source, MapModel map) {
 		Controller.getCurrentModeController().getMapController().fireMapChanged(new MapChangeEvent(source, map, Filter.class, null, this, false));

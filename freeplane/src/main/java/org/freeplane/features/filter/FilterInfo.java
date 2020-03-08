@@ -61,7 +61,11 @@ public class FilterInfo {
 		info = FilterInfo.FILTER_SHOW_AS_INITIAL_VALUE;
 	}
 
-	boolean isVisible(final int filterOptions) {
+	boolean matches(final int filterOptions) {
 		return (filterOptions & info) != 0;
 	}
+
+    boolean isNotChecked() {
+        return matches(FILTER_SHOW_AS_INITIAL_VALUE);
+    }
 }

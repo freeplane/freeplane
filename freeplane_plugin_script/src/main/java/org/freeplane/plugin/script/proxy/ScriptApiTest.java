@@ -901,7 +901,7 @@ public class ScriptApiTest {
 		map.getRoot().createChild("first node");
 		map.getRoot().createChild("second node");
 		assertTrue("initially all nodes should be visible", firstChild().isVisible());
-		new Filter(new NodeContainsCondition(TextController.FILTER_NODE, "first", false), true, true, true).applyFilter(this, Controller
+		new Filter(new NodeContainsCondition(TextController.FILTER_NODE, "first", false), false, true, true, true).applyFilter(this, Controller
 		    .getCurrentController().getMap(), true);
 		assertTrue("first node should be  matched by the filter", firstChild().isVisible());
 		assertFalse("second node should not be matched by the filter", map.getRoot().getChildren().get(1).isVisible());

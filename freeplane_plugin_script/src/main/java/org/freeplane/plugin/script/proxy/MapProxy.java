@@ -225,7 +225,7 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 			filterController.applyNoFiltering();
 		}
 		else {
-			final Filter filter = new Filter(condition, showAncestors,
+			final Filter filter = new Filter(condition, false, showAncestors,
 			    showDescendants, true);
 			filterController.applyFilter(filter, getDelegate(), true);
 		}
