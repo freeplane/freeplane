@@ -11,7 +11,7 @@
 ; Predrag Cuklin 18/06/2009 - Universial Version
 ;****************************************************************************
 
-#define MyVersion "1.8.0"
+#define MyVersion "1.8.1"
 #define MyStatus ""
 #define MyAppName "Freeplane"
 #define MyAppPublisher "Open source"
