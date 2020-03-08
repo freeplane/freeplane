@@ -169,23 +169,33 @@ public class Filter {
 	private boolean applyFilter(final NodeModel node,
 	                            final boolean hasMatchingAncestor, final boolean hasHiddenAncestor,
 	                            boolean hasMatchingDescendant) {
-		final boolean canBeShown = ! shouldRemainInvisible(node);
-		final boolean conditionSatisfied = canBeShown && checkNode(node);
+		final boolean conditionSatisfied =  (condition == null || condition.checkNode(node));
+		final boolean matchesCombinedFilter;
+		if(appliesToVisibleNodesOnly) {
+		    FilterInfo filterInfo = getFilterInfo(node);
+            final boolean alreadyMatched = filterInfo.isMatched();
+		    if(hidesMatchingNodes)
+		        matchesCombinedFilter = conditionSatisfied || alreadyMatched;
+		    else
+		        matchesCombinedFilter = conditionSatisfied && (alreadyMatched || filterInfo.isNotChecked());
+		}
+		else {
+		    matchesCombinedFilter = conditionSatisfied;
+		}
 		resetFilter(node);
-		if (hasMatchingAncestor && canBeShown) {
+		if (hasMatchingAncestor) {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_AS_DESCENDANT);
 		}
-		if (conditionSatisfied) {
+		if (matchesCombinedFilter) {
 			hasMatchingDescendant = true;
 			addFilterResult(node, FilterInfo.FILTER_SHOW_AS_MATCHED);
 		}
 		else {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_AS_HIDDEN);
 		}
-		if (filterChildren(node, conditionSatisfied || hasMatchingAncestor, !conditionSatisfied
+		if (filterChildren(node, matchesCombinedFilter || hasMatchingAncestor, !matchesCombinedFilter
 		        || hasHiddenAncestor)) {
-			if(canBeShown)
-				addFilterResult(node, FilterInfo.FILTER_SHOW_AS_ANCESTOR);
+		    addFilterResult(node, FilterInfo.FILTER_SHOW_AS_ANCESTOR);
 			hasMatchingDescendant = true;
 		}
 		return hasMatchingDescendant;
@@ -213,13 +223,7 @@ public class Filter {
 	}
 
 	private boolean checkNode(final NodeModel node) {
-		if (condition == null) {
-			return true;
-		}
-		if (shouldRemainInvisible(node)) {
-			return false;
-		}
-		return condition.checkNode(node);
+		return condition == null || ! shouldRemainInvisible(node) && condition.checkNode(node);
 	}
 
 	private boolean shouldRemainInvisible(final NodeModel node) {
