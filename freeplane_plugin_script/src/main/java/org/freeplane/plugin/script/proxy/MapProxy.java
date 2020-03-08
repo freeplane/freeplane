@@ -210,22 +210,35 @@ public class MapProxy extends AbstractProxy<MapModel> implements MindMap, Map {
 	@Override
 	public void setFilter(final boolean showAncestors, final boolean showDescendants, final NodeCondition nc) {
 		final ICondition condition = ProxyUtils.createCondition(nc, getScriptContext());
-		setFilter(showAncestors, showDescendants, condition);
+		setFilter(false, showAncestors, showDescendants, condition);
 	}
 
 	// Map: R/W
 	public void setFilter(final boolean showAncestors, final boolean showDescendants, final Closure<Boolean> closure) {
 		final ICondition condition = ProxyUtils.createCondition(closure, getScriptContext());
-		setFilter(showAncestors, showDescendants, condition);
+		setFilter(false, showAncestors, showDescendants, condition);
 	}
 
-	private void setFilter(final boolean showAncestors, final boolean showDescendants, final ICondition condition) {
+    // Map: R/W
+    @Override
+    public void hide(final boolean showAncestors, final boolean showDescendants, final NodeCondition nc) {
+        final ICondition condition = ProxyUtils.createCondition(nc, getScriptContext());
+        setFilter(true, showAncestors, showDescendants, condition);
+    }
+
+    // Map: R/W
+    public void hide(final boolean showAncestors, final boolean showDescendants, final Closure<Boolean> closure) {
+        final ICondition condition = ProxyUtils.createCondition(closure, getScriptContext());
+        setFilter(true, showAncestors, showDescendants, condition);
+    }
+    
+	private void setFilter(boolean hideMatches, final boolean showAncestors, final boolean showDescendants, final ICondition condition) {
 		final FilterController filterController = FilterController.getCurrentFilterController();
 		if (condition == null) {
 			filterController.applyNoFiltering();
 		}
 		else {
-			final Filter filter = new Filter(condition, false, showAncestors,
+			final Filter filter = new Filter(condition, hideMatches, showAncestors,
 			    showDescendants, true);
 			filterController.applyFilter(filter, getDelegate(), true);
 		}
