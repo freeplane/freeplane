@@ -90,11 +90,10 @@ public class Filter {
 		super();
 		this.condition = condition;
 		this.accessor = accessor;
-		int options = FilterInfo.FILTER_INITIAL_VALUE | FilterInfo.FILTER_SHOW_AS_MATCHED;
+		int options = FilterInfo.FILTER_SHOW_AS_INITIAL_VALUE | FilterInfo.FILTER_SHOW_AS_MATCHED;
 		if (areAncestorsShown) {
 			options += FilterInfo.FILTER_SHOW_AS_ANCESTOR;
 		}
-		options += FilterInfo.FILTER_SHOW_AS_ECLIPSED;
 		if (areDescendantsShown) {
 			options += FilterInfo.FILTER_SHOW_AS_DESCENDANT;
 		}
@@ -180,9 +179,6 @@ public class Filter {
 		}
 		else {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_AS_HIDDEN);
-		}
-		if (hasHiddenAncestor && canBeShown) {
-			addFilterResult(node, FilterInfo.FILTER_SHOW_AS_ECLIPSED);
 		}
 		if (filterChildren(node, conditionSatisfied || hasMatchingAncestor, !conditionSatisfied
 		        || hasHiddenAncestor)) {
