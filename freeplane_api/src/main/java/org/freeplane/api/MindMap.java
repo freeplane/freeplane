@@ -86,10 +86,23 @@ public interface MindMap extends MindMapRO {
 	 * @param condition filter the map using this lamda.
 	 * @since 1.2 */
 	public void filter(final boolean showAncestors, final boolean showDescendants, final NodeCondition condition);
-
+	
+	/**
+	 * Hides nodes matching given condition.
+	 * 
+	 * @see #filter(boolean, boolean, NodeCondition)
+	 * 
+	 * @param hideAncestors whether to hide ancestors or not.
+	 * @param hideDescendants whether to hide descendant or not.
+	 * @param condition filter the map using this lamda.
+	 * @since 1.8.1 
+	 */
+    public void hide(final boolean hideAncestors, final boolean hideDescendants, final NodeCondition condition);
 	/** alias for {@link #filter(boolean, boolean, NodeCondition)}
 	 * @see #filter(boolean, boolean, NodeCondition)
+	 * @deprecated use filter
 	 * @since 1.2 */
+	@Deprecated
 	public void setFilter(final boolean showAncestors, final boolean showDescendants, final NodeCondition condition);
 
 	/** reinstalls the previously undone filter if there is any.
