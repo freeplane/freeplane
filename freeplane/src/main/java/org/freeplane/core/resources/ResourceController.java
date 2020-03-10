@@ -71,8 +71,11 @@ public abstract class ResourceController {
 	public static final String FREEPLANE_RESOURCE_URL_PROTOCOL = "freeplaneresource";
 	public static final String OBJECT_TYPE = "ObjectType";
 
-	public ResourceController() {
+    private final Locale systemLocale;
+
+    public ResourceController() {
 		super();
+	    systemLocale = Locale.getDefault();
 	}
 
 	public void addLanguageResources(final String language, final URL url) {
@@ -384,4 +387,9 @@ public abstract class ResourceController {
 	public Icon getImageIcon(String iconKey) {
 		return FreeplaneIconFactory.toImageIcon(getIcon(iconKey));
 	}
+
+	public Locale getSystemLocale() {
+        return systemLocale;
+    }
+
 }
