@@ -155,24 +155,15 @@ public class DamerauLevenshtein implements EditDistanceStringMatchingStrategy {
 
 	}
 
-	public void init(final String searchTerm, final String searchText, final boolean subStringMatch,
-			final boolean caseSensitive)
+	public void init(final String searchTerm, final String searchText, final boolean subStringMatch)
 	{
 		if (searchTerm == null || searchText == null)
 		{
 			throw new IllegalArgumentException("Null searchText/searchTerm!");
 		}
 
-		if (caseSensitive)
-		{
-			this.searchTerm = searchTerm;
-			this.searchText = searchText;
-		}
-		else
-		{
-			this.searchTerm = searchTerm.toLowerCase();
-			this.searchText= searchText.toLowerCase();
-		}
+		this.searchTerm = searchTerm;
+		this.searchText = searchText;
 		this.type = subStringMatch ? Type.SemiGlobal : Type.Global;
 		int maxCodePoint = 0;
 		for (int i = 0; i < this.searchTerm.length(); i++)
@@ -186,11 +177,9 @@ public class DamerauLevenshtein implements EditDistanceStringMatchingStrategy {
 		alphabetLength = maxCodePoint + 1;
 	}
 
-	public boolean matches(final String searchTerm, final String searchText, final boolean subStringMatch,
-			final boolean caseSensitive)
+	public boolean matches(final String searchTerm, final String searchText, final boolean subStringMatch)
 	{
-		//LogUtils.severe(String.format("DL(%s,%s)\n", searchTerm, searchText));
-		init(searchTerm, searchText, subStringMatch, caseSensitive);
+		init(searchTerm, searchText, subStringMatch);
 
 		return matchProb() > StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB;
 	}

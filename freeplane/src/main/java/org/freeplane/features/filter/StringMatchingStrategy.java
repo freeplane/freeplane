@@ -37,7 +37,6 @@ public interface StringMatchingStrategy {
 	 * @param caseSensitive whether to honor case
 	 * @return whether the configuration results in a match
 	 */
-	boolean matches(final String searchTerm, final String searchText, final boolean subStringMatch,
-			final boolean caseSensitive);
+	boolean matches(final String searchTerm, final String searchText, final boolean subStringMatch);
 	
 }
