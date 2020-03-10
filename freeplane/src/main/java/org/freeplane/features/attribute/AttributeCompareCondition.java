@@ -118,7 +118,6 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 		if (attribute instanceof String) child.setAttribute(ATTRIBUTE, (String) attribute);
 		child.setAttribute(COMPARATION_RESULT, Integer.toString(comparationResult));
 		child.setAttribute(SUCCEED, TreeXmlWriter.BooleanToXml(succeed));
-		child.setAttribute(MATCH_APPROXIMATELY, TreeXmlWriter.BooleanToXml(matchApproximately));
 	}
 
 	@Override
