@@ -31,12 +31,6 @@ public abstract class StringConditionAdapter extends ASelectableCondition {
     }
 
     @Override
-    public boolean checkNode(NodeModel node) {
-        // TODO Auto-generated method stub
-        throw new RuntimeException("Method not implemented");
-    }
-
-    @Override
     protected void fillXML(XMLElement element) {
         super.fillXML(element);
         if(matchCase)
