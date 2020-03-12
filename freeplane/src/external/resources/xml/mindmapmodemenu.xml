@@ -237,7 +237,7 @@
 				<Entry name="FreeNodeAction" />
 				<Entry name="ResetNodeLocationAction" accelerator="control R" />
 				<Entry builder="separator" />
-			</Entry>	
+			</Entry>
 			<Entry name="find">
 				<Entry name="FindAction" accelerator="control G" />
 				<Entry name="FindNextAction"  accelerator="control shift G" />
@@ -323,6 +323,7 @@
 				</Entry>
 				<Entry name="SetBooleanMapPropertyAction.show_note_icons" />
 				<Entry name="ShowNotesInMapAction" />
+                <Entry name="SetBooleanPropertyAction.simplyhtml.note.show_toolbars" />
 			</Entry>
 		</Entry>
 		<Entry name="format" usedBy = "EDITOR" >
@@ -512,9 +513,9 @@
 			<Entry name="OpenUserDirAction" />
 			<Entry builder="separator" />
 			<Entry name="ShowPreferencesAction" accelerator="control COMMA" builder="removeOnMac"/>
-			<Entry builder="conditionalActionBuilder" property="enableUserDefinedInterfaceStrings" 
-				actionKey="TextChangeHotKeyAction" 
-				actionClass="org.freeplane.core.ui.textchanger.TextChangeHotKeyAction" 
+			<Entry builder="conditionalActionBuilder" property="enableUserDefinedInterfaceStrings"
+				actionKey="TextChangeHotKeyAction"
+				actionClass="org.freeplane.core.ui.textchanger.TextChangeHotKeyAction"
 				accelerator="control shift F10" usedBy = "ADVANCED" />
 		</Entry>
 		<Entry name="mindmaps">
@@ -551,7 +552,7 @@
 		</Entry>
 	</Entry>
 	<Entry name="map_popup" builder="map_popup" processOnPopup="true">
-		<Entry builder="navigate_maps,radio_button_group"/> 
+		<Entry builder="navigate_maps,radio_button_group"/>
 		<Entry builder="separator" />
 		<Entry name="ToggleFullScreenAction" />
 		<Entry name="ToggleMenubarAction"  builder="removeOnMac"/>
