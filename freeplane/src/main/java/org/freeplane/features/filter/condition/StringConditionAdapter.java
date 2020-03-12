@@ -1,5 +1,6 @@
 package org.freeplane.features.filter.condition;
 
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class StringConditionAdapter extends ASelectableCondition {
@@ -41,4 +42,10 @@ public abstract class StringConditionAdapter extends ASelectableCondition {
         if(ignoreDiacritics)
             element.setAttribute(IGNORE_DIACRITICS, "true");
     }
+
+    protected String createDescription(final String attribute, final String simpleCondition, final String value) {
+        return ConditionFactory.createDescription(attribute, simpleCondition, value, matchCase, matchApproximately, ignoreDiacritics);
+    }
+
+
 }

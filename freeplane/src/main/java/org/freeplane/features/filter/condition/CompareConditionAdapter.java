@@ -190,7 +190,7 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
 			default:
 				throw new IllegalArgumentException();
 		}
-		return ConditionFactory.createDescription(attribute, simpleCondition, valueDescription(), matchCase, matchApproximately);
+		return createDescription(attribute, simpleCondition, valueDescription());
 	}
 
 	private String valueDescription() {

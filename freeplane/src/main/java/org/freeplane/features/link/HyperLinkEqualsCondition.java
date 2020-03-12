@@ -50,7 +50,7 @@ public class HyperLinkEqualsCondition extends HyperLinkCondition {
 	protected String createDescription() {
 		final String condition = TextUtils.getText(LinkConditionController.FILTER_LINK);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_IS_EQUAL_TO);
-		return ConditionFactory.createDescription(condition, simpleCondition, getHyperlink(), matchCase, matchApproximately);
+		return createDescription(condition, simpleCondition, getHyperlink());
 	}
 
 	@Override

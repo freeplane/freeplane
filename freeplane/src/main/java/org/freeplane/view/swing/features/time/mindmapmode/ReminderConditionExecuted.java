@@ -46,7 +46,7 @@ public class ReminderConditionExecuted extends ASelectableCondition {
 	protected String createDescription() {
 		final String reminder = TextUtils.getText(ReminderConditionController.FILTER_REMINDER);
 		final String executed = TextUtils.getText(FILTER_REMINDER_EXECUTED);
-		return ConditionFactory.createDescription(reminder, executed, null, false, false);
+		return ConditionFactory.createDescription(reminder, executed, null);
 	}
 
 	@Override

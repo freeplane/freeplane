@@ -98,7 +98,7 @@ public class AttributeContainsCondition extends StringConditionAdapter {
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(attribute.toString(), simpleCondition, value, matchCase, matchApproximately);
+		return createDescription(attribute.toString(), simpleCondition, value);
 	}
 
 	@Override

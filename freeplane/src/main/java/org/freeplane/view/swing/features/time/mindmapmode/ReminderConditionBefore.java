@@ -52,7 +52,7 @@ public class ReminderConditionBefore extends ReminderCondition {
 		final String filterTime = TextUtils.getText(ReminderConditionController.FILTER_REMINDER);
 		final String dateAsString = getDate().toString();
 		final String before = TextUtils.getText(FILTER_REMINDER_BEFORE);
-		return ConditionFactory.createDescription(filterTime, before, dateAsString, false, false);
+		return ConditionFactory.createDescription(filterTime, before, dateAsString);
 	}
 
 	@Override

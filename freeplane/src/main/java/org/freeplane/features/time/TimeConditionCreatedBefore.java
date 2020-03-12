@@ -49,7 +49,7 @@ public class TimeConditionCreatedBefore extends TimeCondition {
 		final String filterTime = TextUtils.getText(TimeConditionController.FILTER_TIME);
 		final String dateAsString = getDate().toString();
 		final String before = TextUtils.getText(FILTER_CREATED_BEFORE);
-		return ConditionFactory.createDescription(filterTime, before, dateAsString, false, false);
+		return ConditionFactory.createDescription(filterTime, before, dateAsString);
 	}
 
 	@Override

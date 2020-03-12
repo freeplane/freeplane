@@ -62,7 +62,7 @@ public class ConnectorLabelEqualsCondition extends ConnectorLabelCondition {
 	protected String createDescription() {
 		final String condition = TextUtils.getText(LinkConditionController.CONNECTOR_LABEL);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_IS_EQUAL_TO);
-		return ConditionFactory.createDescription(condition, simpleCondition, getText(), matchCase, matchApproximately);
+		return createDescription(condition, simpleCondition, getText());
 	}
 
 	@Override

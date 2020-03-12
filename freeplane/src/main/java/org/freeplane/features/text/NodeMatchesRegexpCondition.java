@@ -80,7 +80,7 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition implements 
 		final String nodeCondition = TextUtils.getText(nodeItem);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_REGEXP);
 		return ConditionFactory.createDescription(nodeCondition, simpleCondition, searchPattern.pattern(),
-		    isMatchCase(), false);
+		    isMatchCase(), false, false);
 	}
 
 	public void fillXML(final XMLElement child) {

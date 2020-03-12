@@ -97,7 +97,7 @@ public class AttributeMatchesCondition extends ASelectableCondition {
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_REGEXP);
-		return ConditionFactory.createDescription(attribute.toString(), simpleCondition, value, isMatchCase(), false);
+		return ConditionFactory.createDescription(attribute.toString(), simpleCondition, value, isMatchCase(), false, false);
 	}
 
 	public void fillXML(final XMLElement child) {

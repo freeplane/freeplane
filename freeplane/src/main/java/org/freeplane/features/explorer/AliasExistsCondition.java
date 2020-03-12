@@ -39,7 +39,7 @@ public class AliasExistsCondition extends ASelectableCondition {
 	protected String createDescription() {
 		final String condition = TextUtils.getText(MapExplorerConditionController.FILTER_ALIAS);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_EXIST);
-		return ConditionFactory.createDescription(condition, simpleCondition, null, false, false);
+		return ConditionFactory.createDescription(condition, simpleCondition, null);
 	}
 
 	@Override

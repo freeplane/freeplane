@@ -72,7 +72,7 @@ public class NoteContainsCondition extends StringConditionAdapter {
 	protected String createDescription(final boolean matchCase) {
 		final String nodeCondition = TextUtils.getText(TextController.FILTER_NOTE);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, matchCase, matchApproximately);
+		return createDescription(nodeCondition, simpleCondition, value);
 	}
 
 	protected String getText(final NodeModel node) {

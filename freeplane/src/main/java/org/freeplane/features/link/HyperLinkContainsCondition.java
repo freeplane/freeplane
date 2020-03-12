@@ -49,7 +49,7 @@ public class HyperLinkContainsCondition extends HyperLinkCondition {
 	protected String createDescription() {
 		final String condition = TextUtils.getText(LinkConditionController.FILTER_LINK);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(condition, simpleCondition, getHyperlink(), matchCase, matchApproximately);
+		return createDescription(condition, simpleCondition, getHyperlink());
 	}
 
 	@Override

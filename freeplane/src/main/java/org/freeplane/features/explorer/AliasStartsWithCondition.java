@@ -51,7 +51,7 @@ public class AliasStartsWithCondition extends AliasCondition {
 	protected String createDescription() {
 		final String condition = TextUtils.getText(MapExplorerConditionController.FILTER_ALIAS);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_STARTS_WITH);
-		return ConditionFactory.createDescription(condition, simpleCondition, getAlias(), matchCase, matchApproximately);
+		return createDescription(condition, simpleCondition, getAlias());
 	}
 
 	@Override

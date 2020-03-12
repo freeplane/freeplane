@@ -49,7 +49,7 @@ public class AliasEqualsCondition extends AliasCondition {
 	protected String createDescription() {
 		final String condition = TextUtils.getText(MapExplorerConditionController.FILTER_ALIAS);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_IS_EQUAL_TO);
-		return ConditionFactory.createDescription(condition, simpleCondition, getAlias(), matchCase, matchApproximately);
+		return createDescription(condition, simpleCondition, getAlias());
 	}
 
 	@Override

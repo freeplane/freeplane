@@ -42,8 +42,8 @@ public class IconExistsCondition extends ASelectableCondition {
 
 	@Override
     protected String createDescription() {
-        return ConditionFactory.createDescription(TextUtils.getText("filter_icon"), TextUtils.getText(ConditionFactory.FILTER_EXIST), 
-        		null, false, false);
+        return ConditionFactory.createDescription(TextUtils.getText("filter_icon"), TextUtils.getText(ConditionFactory.FILTER_EXIST),
+                null);
     }
 
 	@Override
