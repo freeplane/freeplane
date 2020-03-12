@@ -35,20 +35,22 @@ public class NoteContainsCondition extends StringConditionAdapter {
 	static final String VALUE = "VALUE";
 
     static ASelectableCondition loadMatchCase(final XMLElement element) {
-        return new NoteContainsCondition(element.getAttribute(NoteContainsCondition.VALUE, null), true,
-                Boolean.valueOf(element.getAttribute(NoteContainsCondition.MATCH_APPROXIMATELY, null)));
+        return new NoteContainsCondition(element.getAttribute(VALUE, null), true,
+                Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
+                Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
     }
 
     static ASelectableCondition loadIgnoreCase(final XMLElement element) {
-        return new NoteContainsCondition(element.getAttribute(NoteContainsCondition.VALUE, null), false,
-                Boolean.valueOf(element.getAttribute(NoteContainsCondition.MATCH_APPROXIMATELY, null)));
+        return new NoteContainsCondition(element.getAttribute(VALUE, null), false,
+                Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
+                Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
     }
 
 	final private String value;
 	final StringMatchingStrategy stringMatchingStrategy;
 
-	NoteContainsCondition(final String value, final boolean matchCase, final boolean matchApproximately) {
-		super(matchCase, matchApproximately);
+	NoteContainsCondition(final String value, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, ignoreDiacritics);
 		this.value = value;
 		this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;

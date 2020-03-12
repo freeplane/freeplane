@@ -41,7 +41,8 @@ public class LogicalStyleFilterController implements IElementaryConditionControl
 	}
 
 	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
-	                                            final Object value, final boolean matchCase, final boolean matchApproximately) {
+	                                            final Object value, final boolean matchCase, final boolean matchApproximately,
+                                                final boolean ignoreDiacritics) {
 		if(simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO))
 			return new StyleCondition((IStyle) value);
 		if(simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS))

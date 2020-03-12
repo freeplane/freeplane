@@ -87,7 +87,8 @@ public class ScriptConditionController implements IElementaryConditionController
 
 	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
-	                                            final boolean matchApproximately) {
+	                                            final boolean matchApproximately,
+                                                final boolean ignoreDiacritics) {
 		if(value == null)
 			return null;
 		final String string = (String) value;

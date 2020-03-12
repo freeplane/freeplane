@@ -30,8 +30,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public abstract class AliasCondition extends StringConditionAdapter {
 	static final String TEXT = "TEXT";
 	final private String alias;
-	public AliasCondition(final String alias, boolean matchCase, boolean matchAproximately) {
-		super(matchCase, matchAproximately);
+	public AliasCondition(final String alias, boolean matchCase, boolean matchAproximately, boolean ignoreDiacritics) {
+		super(matchCase, matchAproximately, ignoreDiacritics);
 		this.alias = alias;
 	}
 

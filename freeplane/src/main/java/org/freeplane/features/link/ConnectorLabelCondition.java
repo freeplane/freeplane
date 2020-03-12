@@ -41,8 +41,8 @@ public abstract class ConnectorLabelCondition extends StringConditionAdapter {
 	}
 
 	public ConnectorLabelCondition(final String text, final boolean matchCase,
-			final boolean matchApproximately) {
-		super(matchCase, matchApproximately);
+			final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, ignoreDiacritics);
 		this.text = text;
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;

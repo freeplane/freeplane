@@ -36,21 +36,23 @@ public class NodeContainsCondition extends StringConditionAdapter implements Nod
 		return new NodeContainsCondition(
 			element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE),
 			element.getAttribute(NodeContainsCondition.VALUE, null),
-			false, Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)));
+			false, Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
+			Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
 	}
 
     static ASelectableCondition loadMatchCase(final XMLElement element) {
         return new NodeContainsCondition(
             element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE),
             element.getAttribute(NodeContainsCondition.VALUE, null),
-            true, Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)));
+            true, Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
+            Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
     }
 	final private String value;
 	final private String nodeItem;
 	final StringMatchingStrategy stringMatchingStrategy;
 
-	public NodeContainsCondition(String nodeItem, final String value, boolean matchCase, final boolean matchApproximately) {
-		super(matchCase, matchApproximately);
+	public NodeContainsCondition(String nodeItem, final String value, boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, ignoreDiacritics);
 		this.value = value;
 		//this.valueLowerCase = value.toLowerCase();
 		this.nodeItem = nodeItem;

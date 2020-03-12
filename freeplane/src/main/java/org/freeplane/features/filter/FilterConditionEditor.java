@@ -138,8 +138,10 @@ public class FilterConditionEditor extends JComponent {
 		}
 		caseSensitive.setEnabled(canSelectValues
 		        && conditionController.isCaseDependent(selectedProperty, selectedCondition));
-		approximateMatching.setEnabled(canSelectValues
-				&& conditionController.supportsApproximateMatching(selectedProperty, selectedCondition));
+        approximateMatching.setEnabled(canSelectValues
+                && conditionController.supportsApproximateMatching(selectedProperty, selectedCondition));
+        ignoreDiacritics.setEnabled(canSelectValues
+                && conditionController.supportsApproximateMatching(selectedProperty, selectedCondition));
 	}
 	/**
 	 *
@@ -147,8 +149,10 @@ public class FilterConditionEditor extends JComponent {
 	private static final long serialVersionUID = 1L;
 	private static final String PROPERTY_FILTER_MATCH_CASE = "filter_match_case";
 	private static final String PROPERTY_FILTER_APPROXIMATE_MATCH = "filter_match_approximately";
+	private static final String PROPERTY_FILTER_IGNORE_DIACRITICS = "filter_ignore_diacritics";
 	final private JCheckBox caseSensitive;
 	final private JCheckBox approximateMatching;
+	final private JCheckBox ignoreDiacritics;
 	final private JComboBox elementaryConditions;
 	final private FilterController filterController;
 	final private JComboBox filteredPropertiesComponent;
@@ -227,6 +231,14 @@ public class FilterConditionEditor extends JComponent {
 		ignoreCaseAndApproximateMatchingPanel.add(approximateMatching);
 		approximateMatching.setSelected(ResourceController.getResourceController().getBooleanProperty(
 			    PROPERTY_FILTER_APPROXIMATE_MATCH));
+		
+		
+		ignoreDiacritics = TranslatedElementFactory.createCheckBox(PROPERTY_FILTER_IGNORE_DIACRITICS);
+		ignoreDiacritics.setModel(filterController.getIgnoreDiacriticsButtonModel());
+        //add(approximateMatching, gridBagConstraints);
+        ignoreCaseAndApproximateMatchingPanel.add(ignoreDiacritics);
+        ignoreDiacritics.setSelected(ResourceController.getResourceController().getBooleanProperty(
+                PROPERTY_FILTER_IGNORE_DIACRITICS));
 		mapChanged(Controller.getCurrentController().getMap());
 
 		add(ignoreCaseAndApproximateMatchingPanel, gridBagConstraints);
@@ -269,7 +281,8 @@ public class FilterConditionEditor extends JComponent {
 		final boolean matchApproximately = approximateMatching.isSelected();
 		ResourceController.getResourceController().setProperty(PROPERTY_FILTER_MATCH_CASE, matchCase);
 		final Object selectedItem = filteredPropertiesComponent.getSelectedItem();
-		newCond = filterController.getConditionFactory().createCondition(selectedItem, simpleCond, value, matchCase, matchApproximately);
+		newCond = filterController.getConditionFactory().createCondition(selectedItem, simpleCond, value, matchCase, matchApproximately,
+		        ignoreDiacritics.isSelected());
 		if (values.isEditable()) {
 			if (!value.equals("")) {
 				DefaultComboBoxModel list = (DefaultComboBoxModel) values.getModel();

@@ -34,8 +34,8 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public abstract class HyperLinkCondition extends StringConditionAdapter {
 	static final String TEXT = "TEXT";
 	final private String hyperlink;
-	public HyperLinkCondition(final String hyperlink) {
-		super(false, false);
+	public HyperLinkCondition(final String hyperlink, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, ignoreDiacritics);
 		this.hyperlink = hyperlink;
 	}
 
@@ -68,19 +68,8 @@ public abstract class HyperLinkCondition extends StringConditionAdapter {
 	    return hyperlink;
     }
 
-    @Override
-    protected String createDescription() {
-        // TODO Auto-generated method stub
-        throw new RuntimeException("Method not implemented");
-    }
-
-    @Override
-    protected String getName() {
-        // TODO Auto-generated method stub
-        throw new RuntimeException("Method not implemented");
-    }
-
     protected void fillXML(XMLElement element){
+        super.fillXML(element);
 		element.setAttribute(TEXT, hyperlink);
 	}
 }

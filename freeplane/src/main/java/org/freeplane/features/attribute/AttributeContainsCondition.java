@@ -41,7 +41,8 @@ public class AttributeContainsCondition extends StringConditionAdapter {
 			AttributeConditionController.toAttributeObject(element.getAttribute(ATTRIBUTE, null)),
             element.getAttribute(VALUE, null),
             Boolean.valueOf(element.getAttribute(MATCH_CASE, null)),
-            Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null))
+            Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
+            Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null))
 		    );
 	}
 
@@ -53,8 +54,8 @@ public class AttributeContainsCondition extends StringConditionAdapter {
     /**
 	 */
 	public AttributeContainsCondition(final Object attribute,final String value, final boolean matchCase,
-			final boolean matchApproximately) {
-		super(matchCase, matchApproximately);
+			final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, ignoreDiacritics);
         this.attribute = attribute;
         this.value = value;
         //this.comparedValue = matchCase ? value : value.toLowerCase();

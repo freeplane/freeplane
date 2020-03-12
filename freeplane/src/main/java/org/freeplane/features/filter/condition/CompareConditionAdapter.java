@@ -48,8 +48,8 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
 	abstract public boolean isEqualityCondition();
 
 	@SuppressWarnings("deprecation")
-	protected CompareConditionAdapter(final Object value, final boolean matchCase, final boolean matchApproximately) {
-		super(matchCase, matchApproximately);
+	protected CompareConditionAdapter(final Object value, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, ignoreDiacritics);
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -82,14 +82,14 @@ abstract public class CompareConditionAdapter extends StringConditionAdapter {
 	}
 
 	protected CompareConditionAdapter(final Double value) {
-		super(false, false);
+		super(false, false, false);
 		conditionValue = value;
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
 
 	protected CompareConditionAdapter(final Long value) {
-	    super(false, false);
+	    super(false, false, false);
 		conditionValue = value;
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;

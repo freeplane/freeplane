@@ -66,7 +66,8 @@ class IconConditionController implements IElementaryConditionController {
     }
 
     public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
-                                                final Object value, final boolean matchCase, final boolean approximateMatching) {
+                                                final Object value, final boolean matchCase, final boolean approximateMatching,
+                                                final boolean ignoreDiacritics) {
         if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS))
             return value instanceof UIIcon ? new IconContainedCondition(((UIIcon) value).getName()) : null;
         if (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST))

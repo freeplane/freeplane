@@ -30,8 +30,8 @@ public class ConnectorLabelEqualsCondition extends ConnectorLabelCondition {
 	public static final String NAME = "connector_label_equals";
 
 	public ConnectorLabelEqualsCondition(final String text, final boolean matchCase,
-			final boolean matchApproximately) {
-		super(text, matchCase, matchApproximately);
+			final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(text, matchCase, matchApproximately, ignoreDiacritics);
 	}
 
 	@Override

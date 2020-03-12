@@ -37,6 +37,7 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
+import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -68,17 +69,18 @@ public class MapExplorerConditionController implements IElementaryConditionContr
 
 	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
-	                                            final boolean matchApproximately) {
+	                                            final boolean matchApproximately,
+                                                final boolean ignoreDiacritics) {
 		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		if (namedObject.objectEquals(FILTER_GLOBAL)) {
 			return new GlobalNodeCondition();
 		}
 		if (namedObject.objectEquals(FILTER_ALIAS)) {
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new AliasEqualsCondition((String) value, matchCase, matchApproximately);
+				return new AliasEqualsCondition((String) value, matchCase, matchApproximately, ignoreDiacritics);
 			}
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_STARTS_WITH)) {
-				return new AliasStartsWithCondition((String) value, matchCase, matchApproximately);
+				return new AliasStartsWithCondition((String) value, matchCase, matchApproximately, ignoreDiacritics);
 			}
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST)) {
 				return new AliasExistsCondition();
@@ -144,10 +146,11 @@ public class MapExplorerConditionController implements IElementaryConditionContr
 		if (element.getName().equalsIgnoreCase(AliasEqualsCondition.NAME)) {
 			final String target = element.getAttribute(AliasEqualsCondition.TEXT, null);
 			final boolean matchCase = Boolean.toString(true).equals(
-				    element.getAttribute(AliasEqualsCondition.MATCH_CASE, null));
+				    element.getAttribute(StringConditionAdapter.MATCH_CASE, null));
 			final boolean matchApproximately = Boolean.toString(true).equals(
-					element.getAttribute(AliasEqualsCondition.MATCH_APPROXIMATELY, null));
-			return new AliasEqualsCondition(target, matchCase, matchApproximately);
+					element.getAttribute(StringConditionAdapter.MATCH_APPROXIMATELY, null));
+			return new AliasEqualsCondition(target, matchCase, matchApproximately,
+			        Boolean.valueOf(element.getAttribute(StringConditionAdapter.IGNORE_DIACRITICS, null)));
 		}
 		if (element.getName().equalsIgnoreCase(AliasStartsWithCondition.NAME)) {
 			final String target = element.getAttribute(AliasEqualsCondition.TEXT, null);
@@ -155,7 +158,8 @@ public class MapExplorerConditionController implements IElementaryConditionContr
 				    element.getAttribute(AliasEqualsCondition.MATCH_CASE, null));
 			final boolean matchApproximately = Boolean.toString(true).equals(
 					element.getAttribute(AliasEqualsCondition.MATCH_APPROXIMATELY, null));
-			return new AliasStartsWithCondition(target, matchCase, matchApproximately);
+			return new AliasStartsWithCondition(target, matchCase, matchApproximately,
+			        Boolean.valueOf(element.getAttribute(StringConditionAdapter.IGNORE_DIACRITICS, null)));
 		}
 		if (element.getName().equalsIgnoreCase(AliasExistsCondition.NAME)) {
 			return new AliasExistsCondition();

@@ -103,9 +103,9 @@ public class ConditionFactory {
 
 	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
-	                                            final boolean matchApproximately) {
+	                                            final boolean matchApproximately, boolean ignoreDiacritics) {
 		return getConditionController(selectedItem).createCondition(selectedItem, simpleCond, value, matchCase,
-				matchApproximately);
+				matchApproximately, ignoreDiacritics);
 	}
 
 	public IElementaryConditionController getConditionController(final Object item) {

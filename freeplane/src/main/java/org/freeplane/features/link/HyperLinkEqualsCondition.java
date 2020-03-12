@@ -35,8 +35,8 @@ public class HyperLinkEqualsCondition extends HyperLinkCondition {
 
 	private final StringMatchingStrategy stringMatchingStrategy;
 
-	public HyperLinkEqualsCondition(final String hyperlink, final boolean matchCase, final boolean matchApproximately) {
-		super(hyperlink);
+	public HyperLinkEqualsCondition(final String hyperlink, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(hyperlink, matchCase, matchApproximately, ignoreDiacritics);
 		this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}

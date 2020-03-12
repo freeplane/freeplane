@@ -32,8 +32,8 @@ public class AliasEqualsCondition extends AliasCondition {
 
 	private final StringMatchingStrategy stringMatchingStrategy;
 
-	public AliasEqualsCondition(final String alias, final boolean matchCase, final boolean matchApproximately) {
-		super(alias, matchCase, matchApproximately);
+	public AliasEqualsCondition(final String alias, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(alias, matchCase, matchApproximately, ignoreDiacritics);
 		this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}

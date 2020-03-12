@@ -55,7 +55,8 @@ public class NodeTextCompareCondition extends CompareConditionAdapter implements
 			matchCase, 
 			compResult, 
 			succeed,
-			matchApproximately);
+			matchApproximately,
+			Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
 	}
 
 	final private int comparationResult;
@@ -63,8 +64,8 @@ public class NodeTextCompareCondition extends CompareConditionAdapter implements
 	final private String nodeItem;
 
 	NodeTextCompareCondition(String nodeItem, final Object value, final boolean matchCase, final int comparationResult,
-	                     final boolean succeed, final boolean matchApproximately) {
-		super(value, matchCase, matchApproximately);
+	                     final boolean succeed, final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(value, matchCase, matchApproximately, ignoreDiacritics);
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
 		this.nodeItem=nodeItem;

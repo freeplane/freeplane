@@ -31,7 +31,7 @@ public class ConnectorExistsCondition extends ConnectorLabelCondition {
 	public static final String NAME = "connector_exists";
 
 	public ConnectorExistsCondition() {
-		super(null, true, false);
+		super(null, false, false, false);
 	}
 
 	@Override

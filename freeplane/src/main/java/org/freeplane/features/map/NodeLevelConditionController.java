@@ -89,15 +89,17 @@ class NodeLevelConditionController implements IElementaryConditionController {
 
 	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
-	                                            final boolean matchApproximately) {
+	                                            final boolean matchApproximately,
+                                                final boolean ignoreDiacritics) {
 		if(value instanceof PeriodicLevelCondition){
 			return (ASelectableCondition) value;
 		}
-		return createASelectableCondition(simpleCond, (String) value, matchCase, matchApproximately);
+		return createASelectableCondition(simpleCond, (String) value, matchCase, matchApproximately, ignoreDiacritics);
 	}
 
 	protected ASelectableCondition createASelectableCondition(final TranslatedObject simpleCondition, final String value,
-	                                                   final boolean matchCase, final boolean matchApproximately) {
+	                                                   final boolean matchCase, final boolean matchApproximately,
+	                                                   final boolean ignoreDiacritics) {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
 			return new NodeLevelCompareCondition(value, matchCase, 0, true);
 		}

@@ -31,8 +31,8 @@ public class ConnectorLabelContainsCondition extends ConnectorLabelCondition {
 	
 
 	public ConnectorLabelContainsCondition(final String text, final boolean matchCase,
-			final boolean matchApproximately) {
-		super(text, matchCase, matchApproximately);
+			final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(text, matchCase, matchApproximately, ignoreDiacritics);
 	}
 
 	@Override

@@ -213,6 +213,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
     private final ButtonModel hideMatchingNodes;
     private final ButtonModel showAncestors;
 	private final ButtonModel approximateMatchingButtonModel;
+	private final ButtonModel ignoreDiacriticsButtonModel;
 	private final ButtonModel caseSensitiveButtonModel;
 	private final ButtonModel showDescendants;
 	private final ButtonModel highlightNodes;
@@ -245,8 +246,10 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		highlightNodes.setSelected(false);
 		applyToVisibleNodeOnly = new JToggleButton.ToggleButtonModel();
 		applyToVisibleNodeOnly.setSelected(false);
-		approximateMatchingButtonModel = new JToggleButton.ToggleButtonModel();
-		approximateMatchingButtonModel.setSelected(false);
+        approximateMatchingButtonModel = new JToggleButton.ToggleButtonModel();
+        approximateMatchingButtonModel.setSelected(false);
+        ignoreDiacriticsButtonModel = new JToggleButton.ToggleButtonModel();
+        ignoreDiacriticsButtonModel.setSelected(false);
 		caseSensitiveButtonModel = new JToggleButton.ToggleButtonModel();
 		caseSensitiveButtonModel.setSelected(false);
 
@@ -696,6 +699,12 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	public ButtonModel getApproximateMatchingButtonModel() {
 		return approximateMatchingButtonModel;
 	}
+	
+    public ButtonModel getIgnoreDiacriticsButtonModel() {
+        return ignoreDiacriticsButtonModel;
+    }
+
+
 
 	public ButtonModel getCaseSensitiveButtonModel() {
 		return caseSensitiveButtonModel;

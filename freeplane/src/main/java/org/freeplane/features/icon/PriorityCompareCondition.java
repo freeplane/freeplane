@@ -53,7 +53,7 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 	final private boolean succeed;
 
 	PriorityCompareCondition(final String value, final int comparationResult, final boolean succeed) {
-		super(value, false, false);
+		super(value, false, false, false);
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
 	}

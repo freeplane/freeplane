@@ -33,7 +33,7 @@ public class HyperLinkExistsCondition extends HyperLinkCondition {
 	public static final String NAME = "hyper_link_exists";
 
 	public HyperLinkExistsCondition() {
-		super(null);
+		super(null, false, false, false);
 	}
 
 	@Override
