@@ -79,7 +79,7 @@ public class NodeContainsCondition extends StringConditionAdapter implements Nod
 	protected String createDescription() {
 		final String nodeCondition = TextUtils.getText(nodeItem);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, false, matchApproximately);
+		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, matchCase, matchApproximately);
 	}
 
 	@Override
