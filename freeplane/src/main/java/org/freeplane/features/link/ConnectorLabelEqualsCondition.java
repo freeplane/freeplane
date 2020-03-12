@@ -21,7 +21,6 @@ package org.freeplane.features.link;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ConditionFactory;
-import org.freeplane.features.filter.condition.StringTransformer;
 
 /**
  * @author Dimitry Polivaev

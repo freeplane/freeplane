@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.explorer;
 
-import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;

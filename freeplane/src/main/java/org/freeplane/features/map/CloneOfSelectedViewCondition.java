@@ -23,7 +23,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionSnapshotFactory;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 public class CloneOfSelectedViewCondition extends ASelectableCondition implements ConditionSnapshotFactory{
 	static final String NAME = "clone_condition";

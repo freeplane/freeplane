@@ -1,7 +1,5 @@
 package org.freeplane.features.filter.condition;
 
-import org.freeplane.core.io.xml.TreeXmlWriter;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class StringConditionAdapter extends ASelectableCondition {

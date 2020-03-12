@@ -21,7 +21,6 @@ package org.freeplane.features.filter.condition;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NoFilteringCondition extends ASelectableCondition {
 	private static final String NAME = "no_filtering_condition";

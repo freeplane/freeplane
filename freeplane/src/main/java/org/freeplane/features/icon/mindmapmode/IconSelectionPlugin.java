@@ -24,7 +24,6 @@ import javax.swing.Action;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
-import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.IconController;

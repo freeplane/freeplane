@@ -21,7 +21,6 @@ package org.freeplane.features.filter.condition;
 
 import java.util.Date;
 
-import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
