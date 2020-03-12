@@ -917,7 +917,8 @@ public class MTextController extends TextController {
 		stopEditing();
 		if (isNewNode && !eventQueue.isActive()
 		        && !ResourceController.getResourceController()
-		            .getBooleanProperty("display_inline_editor_for_all_new_nodes")) {
+		            .getBooleanProperty("display_inline_editor_for_all_new_nodes")
+		            && ! isTextFormattingDisabled(nodeModel)) {
 			keyEventDispatcher = new EditEventDispatcher(Controller.getCurrentModeController(), nodeModel,
 			    prevSelectedModel, isNewNode, parentFolded, editLong);
 			keyEventDispatcher.install();
