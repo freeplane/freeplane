@@ -1,7 +1,11 @@
 ===============================
-1.8.0
+1.8.1
 ===============================
 Filter hiding matching nodes with ancestors / descendants
+Hide and show note panel tool bar using freeplane menu
+Optionally ignore accents and diacritics in filter conditions
+Keep white space inside the line in search and replace dialog
+
 ===============================
 1.8.0
 ===============================
