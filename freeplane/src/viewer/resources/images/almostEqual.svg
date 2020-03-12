@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   height="16"
+   width="16"
+   version="1.1"
+   viewBox="0 0 14.999883 14.999851"
+   id="svg845">
+  <defs
+     id="defs829">
+    <linearGradient
+       id="b"
+       y2="563.76001"
+       gradientUnits="userSpaceOnUse"
+       x2="285.19"
+       gradientTransform="matrix(1.7686,0,0,1.8459,-306.28,-490.99)"
+       y1="563.58002"
+       x1="295.32001">
+      <stop
+         stop-color="#2a89ea"
+         offset="0"
+         id="stop815" />
+      <stop
+         stop-color="#d4e2f6"
+         offset=".47542"
+         id="stop817" />
+      <stop
+         stop-color="#e5eef9"
+         offset=".86308"
+         id="stop819" />
+      <stop
+         stop-color="#f7fafd"
+         offset="1"
+         id="stop821" />
+    </linearGradient>
+    <linearGradient
+       id="a"
+       y2="557.23999"
+       gradientUnits="userSpaceOnUse"
+       x2="290.70001"
+       y1="558.21002"
+       x1="290.75">
+      <stop
+         stop-color="#b6c6dd"
+         offset="0"
+         id="stop824" />
+      <stop
+         stop-color="#f7fafd"
+         offset="1"
+         id="stop826" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata831">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.9998827px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#0000ff;fill-opacity:1;stroke:none;stroke-width:0.63414896px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     x="3.966712"
+     y="10.110786"
+     id="text870"
+     transform="scale(0.70729161,1.413844)"><tspan
+       y="10.110786"
+       x="3.966712"
+       id="tspan1464">≈</tspan></text>
+</svg>

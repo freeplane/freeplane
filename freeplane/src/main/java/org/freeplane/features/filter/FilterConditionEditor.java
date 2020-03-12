@@ -40,6 +40,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.ListCellRenderer;
 import javax.swing.RootPaneContainer;
 import javax.swing.text.JTextComponent;
@@ -150,9 +151,9 @@ public class FilterConditionEditor extends JComponent {
 	private static final String PROPERTY_FILTER_MATCH_CASE = "filter_match_case";
 	private static final String PROPERTY_FILTER_APPROXIMATE_MATCH = "filter_match_approximately";
 	private static final String PROPERTY_FILTER_IGNORE_DIACRITICS = "filter_ignore_diacritics";
-	final private JCheckBox caseSensitive;
-	final private JCheckBox approximateMatching;
-	final private JCheckBox ignoreDiacritics;
+	final private JToggleButton caseSensitive;
+	final private JToggleButton approximateMatching;
+	final private JToggleButton ignoreDiacritics;
 	final private JComboBox elementaryConditions;
 	final private FilterController filterController;
 	final private JComboBox filteredPropertiesComponent;
@@ -218,14 +219,14 @@ public class FilterConditionEditor extends JComponent {
 		ignoreCaseAndApproximateMatchingPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
 		// Ignore case checkbox
-		caseSensitive = TranslatedElementFactory.createCheckBox(PROPERTY_FILTER_MATCH_CASE);
+		caseSensitive = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_MATCH_CASE + ".icon", PROPERTY_FILTER_MATCH_CASE + ".tooltip");
 		caseSensitive.setModel(filterController.getCaseSensitiveButtonModel());
 		ignoreCaseAndApproximateMatchingPanel.add(caseSensitive);
 		caseSensitive.setSelected(ResourceController.getResourceController().getBooleanProperty(
 		    PROPERTY_FILTER_MATCH_CASE));
 
 		// add approximate matching checkbox
-		approximateMatching = TranslatedElementFactory.createCheckBox(PROPERTY_FILTER_APPROXIMATE_MATCH);
+		approximateMatching = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_APPROXIMATE_MATCH + ".icon", PROPERTY_FILTER_APPROXIMATE_MATCH+ ".tooltip");
 		approximateMatching.setModel(filterController.getApproximateMatchingButtonModel());
 		//add(approximateMatching, gridBagConstraints);
 		ignoreCaseAndApproximateMatchingPanel.add(approximateMatching);
@@ -233,7 +234,7 @@ public class FilterConditionEditor extends JComponent {
 			    PROPERTY_FILTER_APPROXIMATE_MATCH));
 		
 		
-		ignoreDiacritics = TranslatedElementFactory.createCheckBox(PROPERTY_FILTER_IGNORE_DIACRITICS);
+		ignoreDiacritics = TranslatedElementFactory.createToggleButtonWithIcon(PROPERTY_FILTER_IGNORE_DIACRITICS + ".icon", PROPERTY_FILTER_IGNORE_DIACRITICS+ ".tooltip");
 		ignoreDiacritics.setModel(filterController.getIgnoreDiacriticsButtonModel());
         //add(approximateMatching, gridBagConstraints);
         ignoreCaseAndApproximateMatchingPanel.add(ignoreDiacritics);
