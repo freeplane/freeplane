@@ -101,7 +101,7 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 	}
 
 	private String getIconName() {
-		return "full-" + getConditionValue().toString();
+		return "full-" + conditionValue().toString();
 	}
 
 	public void fillXML(final XMLElement child) {

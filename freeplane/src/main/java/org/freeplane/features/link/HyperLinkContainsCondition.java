@@ -32,25 +32,18 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 public class HyperLinkContainsCondition extends HyperLinkCondition {
 	public static final String NAME = "hyper_link_contains";
-	public static final String MATCH_CASE = "MATCH_CASE";
-	public static final String MATCH_APPROXIMATELY = "MATCH_APPROXIMATELY";
-	
-	private final boolean matchCase;
-	private final boolean matchApproximately;
+
 	private final StringMatchingStrategy stringMatchingStrategy;
 
 	public HyperLinkContainsCondition(final String hyperlink, final boolean matchCase, final boolean matchApproximately) {
 		super(hyperlink);
-		this.matchCase = matchCase;
-		this.matchApproximately = matchApproximately;
 		this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
 
 	@Override
 	protected boolean checkLink(final URI nodeLink) {
-		return stringMatchingStrategy.matches(getHyperlink(), nodeLink.toString(), true, matchCase);
-//		return nodeLink.toString().contains(getHyperlink());
+		return stringMatchingStrategy.matches(normalizedValue(), normalize(nodeLink), true);
 	}
 
 	@Override
@@ -64,11 +57,5 @@ public class HyperLinkContainsCondition extends HyperLinkCondition {
 	protected String getName() {
 		return NAME;
 	}
-	
-	@Override
-	public void fillXML(final XMLElement child) {
-		super.fillXML(child);
-		child.setAttribute(HyperLinkContainsCondition.MATCH_CASE, Boolean.toString(matchCase));
-		child.setAttribute(HyperLinkContainsCondition.MATCH_APPROXIMATELY, Boolean.toString(matchApproximately));
-	}
+
 }

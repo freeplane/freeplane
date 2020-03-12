@@ -20,6 +20,7 @@
 package org.freeplane.features.explorer;
 
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -27,11 +28,11 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public abstract class AliasCondition extends ASelectableCondition {
+public abstract class AliasCondition extends StringConditionAdapter {
 	static final String TEXT = "TEXT";
 	final private String alias;
-	public AliasCondition(final String alias) {
-		super();
+	public AliasCondition(final String alias, boolean matchCase, boolean matchAproximately) {
+		super(matchCase, matchAproximately);
 		this.alias = alias;
 	}
 
@@ -46,7 +47,14 @@ public abstract class AliasCondition extends ASelectableCondition {
 		return alias;
 	}
 	
+    @Override
+    protected Object conditionValue() {
+        return alias;
+    }
+
+	
 	protected void fillXML(XMLElement element){
+	    super.fillXML(element);
 		element.setAttribute(TEXT, alias);
 	}
 }

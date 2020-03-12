@@ -56,19 +56,15 @@ public class ConnectorLabelContainsCondition extends ConnectorLabelCondition {
 		if (middleLabel == null) {
 			return false;
 		}
-		return getStringMatchingStrategy().matches(getText(), middleLabel, true, matchCase());
+		return getStringMatchingStrategy().matches(normalizedValue(), normalize(middleLabel), true);
 		
-//		if (matchCase()) {
-//			return middleLabel.contains(getText());
-//		}
-//		return middleLabel.toLowerCase().contains(getText());
 	}
 
 	@Override
 	protected String createDescription() {
 		final String condition = TextUtils.getText(LinkConditionController.CONNECTOR_LABEL);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(condition, simpleCondition, getText(), matchCase(), matchApproximately());
+		return ConditionFactory.createDescription(condition, simpleCondition, getText(), matchCase, matchApproximately);
 	}
 
 	@Override

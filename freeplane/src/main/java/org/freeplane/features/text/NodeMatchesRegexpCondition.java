@@ -26,6 +26,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.CompareConditionAdapter;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -34,7 +35,7 @@ public class NodeMatchesRegexpCondition extends ASelectableCondition implements 
 	static final String SEARCH_PATTERN = "SEARCH_PATTERN";
 
 	static ASelectableCondition load(final XMLElement element) {
-		final Boolean matchCase = Boolean.valueOf(element.getAttribute(NodeTextCompareCondition.MATCH_CASE, "false"));
+		final Boolean matchCase = Boolean.valueOf(element.getAttribute(StringConditionAdapter.MATCH_CASE, "false"));
 		final String searchPattern = element.getAttribute(SEARCH_PATTERN, null);
 		final String nodeItem = element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE);
 		return new NodeMatchesRegexpCondition(nodeItem, searchPattern, matchCase);

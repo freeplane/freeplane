@@ -81,8 +81,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 			if (value.equals("")) {
 				return null;
 			}
-			return matchCase ? new MatchCaseNodeContainsCondition(item, value.toString(), matchApproximately) : 
-				               new NodeContainsCondition(item, value.toString(), matchApproximately);
+			return new NodeContainsCondition(item, value.toString(), matchCase, matchApproximately);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
 			try {
@@ -154,11 +153,11 @@ class NodeTextConditionController implements IElementaryConditionController {
 	}
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
-		if (element.getName().equalsIgnoreCase(NodeContainsCondition.NAME)) {
-			return NodeContainsCondition.load(element);
+		if (element.getName().equalsIgnoreCase(NodeContainsCondition.IGNORE_CASE_NAME)) {
+			return NodeContainsCondition.loadIgnoreCase(element);
 		}
-		if (element.getName().equalsIgnoreCase(MatchCaseNodeContainsCondition.NAME)) {
-			return MatchCaseNodeContainsCondition.load(element);
+		if (element.getName().equalsIgnoreCase(NodeContainsCondition.MATCH_CASE_NAME)) {
+			return NodeContainsCondition.loadIgnoreCase(element);
 		}
 		if (element.getName().equalsIgnoreCase(NodeTextCompareCondition.NAME)) {
 			return NodeTextCompareCondition.load(element);
@@ -166,11 +165,11 @@ class NodeTextConditionController implements IElementaryConditionController {
 		if (element.getName().equalsIgnoreCase(NodeMatchesRegexpCondition.NAME)) {
 			return NodeMatchesRegexpCondition.load(element);
 		}
-		if (element.getName().equalsIgnoreCase(NoteContainsCondition.NAME)) {
-			return NoteContainsCondition.load(element);
+		if (element.getName().equalsIgnoreCase(NoteContainsCondition.IGNORE_CASE_NAME)) {
+			return NoteContainsCondition.loadIgnoreCase(element);
 		}
-		if (element.getName().equalsIgnoreCase(MatchCaseNoteContainsCondition.NAME)) {
-			return MatchCaseNoteContainsCondition.load(element);
+		if (element.getName().equalsIgnoreCase(NoteContainsCondition.MATCH_CASE_NAME)) {
+			return NoteContainsCondition.loadMatchCase(element);
 		}
 		return null;
 	}
