@@ -81,6 +81,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapNavigationUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.ui.ToggleToolbarAction;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.n3.nanoxml.IXMLParser;
@@ -92,7 +93,7 @@ import org.freeplane.n3.nanoxml.XMLWriter;
 /**
  * @author Dimitry Polivaev
  */
-public class FilterController implements IMapSelectionListener, IExtension {
+public class FilterController implements IExtension, IMapViewChangeListener {
 	public static final Color HIGHLIGHT_COLOR = Color.MAGENTA;
 	public static int TOOLBAR_SIDE = ViewController.TOP;
 	@SuppressWarnings("serial")
@@ -224,10 +225,12 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	static final int USER_DEFINED_CONDITION_START_INDEX = 3;
 	final private QuickFilterAction quickFilterAction;
 	private int mapChangeCounter;
+    private final ViewAwareFilterAccessor filterAccessor;
 
 	public FilterController() {
 		Controller controller = Controller.getCurrentController();
 		filterMenuBuilder = new FilterMenuBuilder(controller, this);
+		filterAccessor = new ViewAwareFilterAccessor();
 		history = new FilterHistory();
 		filterChangeListener = new FilterChangeListener();
 		showAncestors = new JToggleButton.ToggleButtonModel();
@@ -253,7 +256,9 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		caseSensitiveButtonModel = new JToggleButton.ToggleButtonModel();
 		caseSensitiveButtonModel.setSelected(false);
 
-		controller.getMapViewManager().addMapSelectionListener(this);
+		controller.getMapViewManager().addMapViewChangeListener(this);
+		controller.getMapViewManager().addMapViewChangeListener(filterAccessor);
+		
         final AFreeplaneAction showFilterToolbar = new ToggleFilterToolbarAction("ShowFilterToolbarAction", "/filter_toolbar");
 		quickEditor = new FilterConditionEditor(this, 0, true);
 		quickEditor.setEnterKeyActionListener( new ActionListener()  {
@@ -314,11 +319,11 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	/**
 	 */
 	@Override
-	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
+	public void afterViewChange(Component oldView, Component newView) {
 		if(filterToolbar == null){
 			return;
 		}
-		history.clear();
+		getHistory().clear();
 		updateUILater();
 	}
 
@@ -367,7 +372,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	public void applyFilter(final Filter filter, MapModel map, final boolean force) {
 	    filter.applyFilter(this, map, force);
-		history.add(filter);
+		getHistory().add(filter);
     }
 
 	public void applyNoFiltering() {
@@ -498,10 +503,6 @@ public class FilterController implements IMapSelectionListener, IExtension {
 
 	public FilterConditionEditor getQuickEditor() {
 		return quickEditor;
-	}
-
-	public FilterHistory getHistory() {
-		return history;
 	}
 
 	ASelectableCondition getSelectedCondition() {
@@ -649,7 +650,7 @@ public class FilterController implements IMapSelectionListener, IExtension {
     }
 
 	void updateSettingsFromHistory() {
-		final Filter filter = history.getCurrentFilter();
+		final Filter filter = getHistory().getCurrentFilter();
 		updateSettingsFromFilter(filter);
 	}
 
@@ -683,12 +684,12 @@ public class FilterController implements IMapSelectionListener, IExtension {
 	}
 
 	public void redo() {
-		history.redo();
+		getHistory().redo();
 		updateSettingsFromHistory();
     }
 
 	public void undo() {
-		history.undo();
+		getHistory().undo();
 		updateSettingsFromHistory();
     }
 
@@ -726,5 +727,13 @@ public class FilterController implements IMapSelectionListener, IExtension {
 		final ASelectableCondition selectedCondition = getSelectedCondition();
 		return NO_FILTERING != selectedCondition && null != selectedCondition;
 	}
+
+    public FilterAccessor getFilterAccessor() {
+        return filterAccessor;
+    }
+
+    private FilterHistory getHistory() {
+        return history;
+    }
 
 }

@@ -33,7 +33,9 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.Filter;
+import org.freeplane.features.filter.FilterAccessor;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -47,7 +49,7 @@ public class MapModel {
 	 */
 	protected int changesPerformedSinceLastSave = 0;
 	private final ExtensionContainer extensionContainer;
-	private Filter filter = null;
+	private FilterAccessor filterAccessor;
 	private IconRegistry iconRegistry;
 	final private List<IMapChangeListener> listeners;
 	final private Map<String, NodeModel> nodes;
@@ -63,7 +65,7 @@ public class MapModel {
 		nodes = new HashMap<String, NodeModel>();
 		final FilterController filterController = FilterController.getCurrentFilterController();
 		if (filterController != null) {
-			filter = filterController.createTransparentFilter();
+			filterAccessor = filterController.getFilterAccessor();
 		}
 		this.iconRegistry = iconRegistry;
 		this.nodeChangeAnnouncer = nodeChangeAnnouncer;
@@ -147,7 +149,7 @@ public class MapModel {
 	}
 
 	public Filter getFilter() {
-		return filter;
+		return filterAccessor.getFilter(this);
 	}
 
 	public IconRegistry getIconRegistry() {
@@ -250,7 +252,7 @@ public class MapModel {
 	};
 
 	public void setFilter(final Filter filter) {
-		this.filter = filter;
+		filterAccessor.setFilter(this, filter);
 	}
 
 	public void setReadOnly(final boolean readOnly) {
@@ -315,4 +317,8 @@ public class MapModel {
 	public boolean isUndoActionRunning() {
 		return false;
 	}
+
+    FilterInfo getFilterInfo(NodeModel node) {
+        return filterAccessor.getFilterInfo(node);
+    }
 }

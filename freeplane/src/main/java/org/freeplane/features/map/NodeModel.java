@@ -70,7 +70,6 @@ public class NodeModel{
 
 	private List<NodeModel> children;
 	private NodeModel parent;
-	final private FilterInfo filterInfo;
 	private String id;
 	private MapModel map = null;
 	private int position = NodeModel.UNKNOWN_POSITION;
@@ -99,7 +98,6 @@ public class NodeModel{
 		children = new ArrayList<NodeModel>();
 		sharedData = new SharedNodeData();
 		init(userObject);
-		filterInfo = new FilterInfo();
 		clones = new Clones[]{new DetachedNodeList(this, TREE), new DetachedNodeList(this, CONTENT)};
 	}
 
@@ -107,7 +105,6 @@ public class NodeModel{
 		this.map = toBeCloned.map;
 		this.sharedData = toBeCloned.sharedData;
 		children = new ArrayList<NodeModel>();
-		filterInfo = new FilterInfo();
 		clones = new Clones[]{new DetachedNodeList(this, cloneType == TREE ? toBeCloned : this, TREE), new DetachedNodeList(this, toBeCloned, CONTENT)};
 	}
 
@@ -257,7 +254,7 @@ public class NodeModel{
 	};
 
 	public FilterInfo getFilterInfo() {
-		return filterInfo;
+		return map.getFilterInfo(this);
 	}
 
 	public HistoryInformationModel getHistoryInformation() {
