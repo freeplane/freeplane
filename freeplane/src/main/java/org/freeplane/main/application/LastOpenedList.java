@@ -221,10 +221,6 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 		return mapViewManager.getModel(mapView);
     }
 
-	@Override
-	public void beforeViewChange(final Component oldView, final Component newView) {
-	}
-
 	private int getMaxMenuEntries() {
 		return ResourceController.getResourceController().getIntProperty(LAST_OPENED_LIST_LENGTH, 25);
 	}

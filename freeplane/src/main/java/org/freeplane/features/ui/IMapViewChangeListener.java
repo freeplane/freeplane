@@ -22,11 +22,11 @@ package org.freeplane.features.ui;
 import java.awt.Component;
 
 public interface IMapViewChangeListener {
-	void afterViewChange(Component oldView, Component newView);
+	default void afterViewChange(Component oldView, Component newView) {};
 
-	void afterViewClose(Component oldView);
+	default void afterViewClose(Component oldView) {};
 
-	void afterViewCreated(Component mapView);
+	default void afterViewCreated(Component mapView) {};
 
-	void beforeViewChange(Component oldView, Component newView);
+	default void beforeViewChange(Component oldView, Component newView) {};
 }

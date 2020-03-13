@@ -73,15 +73,6 @@ class BToolbarContributor implements EntryVisitor, IMapViewChangeListener {
 		setURLField(url.toString());
 	}
 
-	public void afterViewClose(final Component oldView) {
-	}
-
-	public void afterViewCreated(final Component mapView) {
-	}
-
-	public void beforeViewChange(final Component oldView, final Component newView) {
-	}
-
 	private void setURLField(final String text) {
 		urlfield.setText(text);
 	}

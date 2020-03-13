@@ -461,18 +461,6 @@ public class EditNodeTextField extends EditNodeBase {
 
 	private class MapViewChangeListener implements IMapViewChangeListener{
 		@Override
-		public void afterViewChange(Component oldView, Component newView) {
-        }
-
-		@Override
-		public void afterViewClose(Component oldView) {
-        }
-
-		@Override
-		public void afterViewCreated(Component mapView) {
-        }
-
-		@Override
 		public void beforeViewChange(Component oldView, Component newView) {
 			final String output = getNewText();
 			hideMe();

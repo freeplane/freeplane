@@ -845,10 +845,6 @@ public class MapViewController implements IMapViewManager , IMapViewChangeListen
 	}
 
 	@Override
-	public void afterViewCreated(final Component mapView) {
-	}
-
-	@Override
 	public void beforeViewChange(final Component oldMap, final Component newMap) {
 		Controller controller = Controller.getCurrentController();
 		final ModeController modeController = controller.getModeController();

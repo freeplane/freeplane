@@ -196,19 +196,6 @@ class AppletViewController extends FrameController implements IMapViewChangeList
 		if(scrollPane != null)
 			scrollPane.setViewportView(newView);
     }
-
-	@Override
-	public void afterViewClose(Component oldView) {
-    }
-
-	@Override
-	public void afterViewCreated(Component mapView) {
-    }
-
-	@Override
-	public void beforeViewChange(Component oldView, Component newView) {
-    }
-
 	@Override
 	public void previousMapView() {
 		throw new RuntimeException("Method not implemented");

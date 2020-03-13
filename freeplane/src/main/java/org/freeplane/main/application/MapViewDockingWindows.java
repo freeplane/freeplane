@@ -316,15 +316,6 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 			}
 		}
 	}
-
-	@Override
-	public void afterViewCreated(final Component mapView) {
-	}
-
-	@Override
-	public void beforeViewChange(final Component pOldMapView, final Component pNewMapView) {
-	}
-
 	private void viewSelectionChanged(final Component mapView) {
 		if (!mPaneSelectionUpdate) {
 			return;

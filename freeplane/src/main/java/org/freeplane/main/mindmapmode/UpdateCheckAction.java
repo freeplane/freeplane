@@ -84,15 +84,6 @@ class UpdateCheckAction extends AFreeplaneAction {
 				setTimer();
 			}
 
-			public void afterViewClose(final Component oldView) {
-			}
-
-			public void afterViewCreated(final Component mapView) {
-			}
-
-			public void beforeViewChange(final Component oldView, final Component newView) {
-			}
-
 			private void removeMe() {
 				controller.getMapViewManager().removeMapViewChangeListener(this);
 			}
