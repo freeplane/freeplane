@@ -180,11 +180,16 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
     }
 
 	@Override
-	public void afterViewCreated(final Component mapView) {
-		final MapModel map = getMapModel(mapView);
+	public void afterViewCreated(Component oldView, Component newView) {
+		final MapModel map = getMapModel(newView);
 		final RecentFile recentFile = findRecentFileByMapModel(map);
 		// the next line will only succeed if the map is already opened
-		if (saveLastPositionInMapEnabled() && ! selectLastVisitedNode(recentFile)) {
+		if(oldView instanceof MapView && newView instanceof MapView
+		        && ((MapView)oldView).getModel() == ((MapView)newView).getModel()) {
+		    List<NodeModel> nodes = ((MapView)oldView).getMapSelection().getOrderedSelection();
+            ((MapView)newView).getMapSelection().replaceSelection(nodes.toArray(new NodeModel[nodes.size()]));
+		}
+		else if (saveLastPositionInMapEnabled() && ! selectLastVisitedNode(recentFile)) {
 			ensureSelectLastVisitedNodeOnOpen(map, recentFile);
 		}
 	}

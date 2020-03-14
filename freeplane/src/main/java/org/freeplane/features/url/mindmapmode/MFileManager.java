@@ -919,10 +919,10 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	@Override
-	public void afterViewCreated(final Component mapView) {
-		if (mapView != null) {
+	public void afterViewCreated(Component oldView, Component newView) {
+		if (newView != null) {
 			final FileOpener fileOpener = new FileOpener("mm", new DroppedMindMapOpener());
-			new DropTarget(mapView, fileOpener);
+			new DropTarget(newView, fileOpener);
 		}
 	}
 

@@ -80,42 +80,42 @@ class MapViewChangeObserverCompound {
 		return view == null ? null : view.getModel();
 	}
 
-	void mapViewCreated(final MapView mapView) {
-		if(! mapView.isShowing())
+	void mapViewCreated(final MapView previousMapView, MapView createdMapView) {
+		if(! createdMapView.isShowing())
 		{
-			fireMapViewCreatedAfterItIsDisplayed(mapView);
+			fireMapViewCreatedAfterItIsDisplayed(previousMapView, createdMapView);
 		}
-		else if (!mapView.isLayoutCompleted()) {
-			fireMapViewCreatedLater(mapView);
+		else if (!createdMapView.isLayoutCompleted()) {
+			fireMapViewCreatedLater(previousMapView, createdMapView);
 		}
 		else {
-			fireMapViewCreated(mapView);
+			fireMapViewCreated(previousMapView, createdMapView);
 		}
 	}
 
-	private void fireMapViewCreatedLater(final MapView view) {
+	private void fireMapViewCreatedLater(final MapView previousView, MapView createdMapView) {
 	    EventQueue.invokeLater(new Runnable() {
 	    	public void run() {
-	    		mapViewCreated(view);
+	    		mapViewCreated(previousView, createdMapView);
 	    	}
 	    });
     }
 
-	private void fireMapViewCreatedAfterItIsDisplayed(final MapView view) {
+	private void fireMapViewCreatedAfterItIsDisplayed(final MapView previousView, MapView createdMapView) {
 		HierarchyListener retryEventListener = new HierarchyListener() {
 			public void hierarchyChanged(HierarchyEvent e) {
-				if (view.isShowing()) {
-					view.removeHierarchyListener(this);
-					mapViewCreated(view);
+				if (createdMapView.isShowing()) {
+				    createdMapView.removeHierarchyListener(this);
+					mapViewCreated(previousView, createdMapView);
 				}
 			}
 		};
-		view.addHierarchyListener(retryEventListener);
+		createdMapView.addHierarchyListener(retryEventListener);
 	}
 
-	private void fireMapViewCreated(final MapView mapView) {
+	private void fireMapViewCreated(final MapView previousMapView, MapView createdMapView) {
 	    for (final IMapViewChangeListener observer : viewListeners.toArray(new IMapViewChangeListener[]{})) {
-			observer.afterViewCreated(mapView);
+			observer.afterViewCreated(previousMapView, createdMapView);
 		}
     }
 

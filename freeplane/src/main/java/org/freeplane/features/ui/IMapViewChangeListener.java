@@ -26,7 +26,7 @@ public interface IMapViewChangeListener {
 
 	default void afterViewClose(Component oldView) {};
 
-	default void afterViewCreated(Component mapView) {};
+	default void afterViewCreated(Component oldView, Component newView) {};
 
 	default void beforeViewChange(Component oldView, Component newView) {};
 }
