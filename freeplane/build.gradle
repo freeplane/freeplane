@@ -16,6 +16,7 @@ dependencies {
 	lib ':kitfox-svg-salamander-1.1.1-p1'
 	lib 'com.github.robtimus:data-url:1.0.1'
 	lib 'com.bulenkov:darcula:2018.2'
+	lib 'com.twelvemonkeys.imageio:imageio-jpeg:3.5'
 
     lib project(':JOrtho_0.4_freeplane')
     api project(':freeplane_api')
