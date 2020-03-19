@@ -2,10 +2,12 @@ package org.freeplane.core.ui.menubuilders.generic;
 
 import static java.lang.Boolean.TRUE;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair.VisitorType;
@@ -131,16 +133,14 @@ public class RecursiveMenuStructureProcessor{
 		final Entry explicitDefaultBuilderEntry = explicitDefaultBuilderEntry(root, entry);
 		if (explicitDefaultBuilderEntry != null) {
 			String builderName = explicitBuilderName(explicitDefaultBuilderEntry);
-			if (entry == explicitDefaultBuilderEntry) {
-				builderName = subtreeDefaultVisitors.get(builderName);
+			int count = 1; 
+			for (Entry index = entry; index != explicitDefaultBuilderEntry; index = index.getParent()) {
+			    count++;
 			}
-			else
-				for (Entry index = entry; index != explicitDefaultBuilderEntry; index = index.getParent()) {
-					if (explicitBuilderName(index) == null) {
-					final String nextExplicitDefaultBuilderName = subtreeDefaultVisitors.get(builderName);
-					if (nextExplicitDefaultBuilderName != null)
-						builderName = nextExplicitDefaultBuilderName;
-					}
+			for (int i = 0; i < count; i++) {
+			    final String nextExplicitDefaultBuilderName = subtreeDefaultVisitors.get(builderName);
+			    if (nextExplicitDefaultBuilderName != null)
+			        builderName = nextExplicitDefaultBuilderName;
 			}
 			return visitors.get(builderName);
 		}
