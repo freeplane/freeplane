@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.stream.Stream;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -115,33 +114,29 @@ public class JMenuItemBuilder implements EntryVisitor{
 		if(actionComponent != null){
 			menuSplitter.addMenuComponent(menu, actionComponent);
 		}
-		PopupMenuListener[] popupMenuListeners = {
-				new PopupMenuListenerForEntry(entry, popupListener, resourceAccessor),
-				MnemonicSetter.INSTANCE};
+		PopupMenuListenerForEntry popupMenuListener = new PopupMenuListenerForEntry(entry, popupListener, resourceAccessor);
 		if(Compat.isMacOsX()) {
-			addPopupMenuListenersForMacOsX(menu, popupMenuListeners);
+			addPopupMenuListenersForMacOsX(menu, popupMenuListener);
 		}
 		else {
 			final JPopupMenu popupMenu = menu.getPopupMenu();
-			Stream.of(popupMenuListeners)
-				.forEach(popupMenu::addPopupMenuListener);
+			popupMenu.addPopupMenuListener(MnemonicSetter.INSTANCE);
+			popupMenu.addPopupMenuListener(popupMenuListener);
 		}
 		setTranslationKey(entry, menu);
 
 	}
 
-	private void addPopupMenuListenersForMacOsX(JMenu menu, PopupMenuListener[] popupMenuListeners) {
+	private void addPopupMenuListenersForMacOsX(JMenu menu, PopupMenuListener popupMenuListener) {
 		menu.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				PopupMenuEvent popupMenuEvent = new PopupMenuEvent(e.getSource());
 				if(e.getStateChange() == ItemEvent.SELECTED) {
-					Stream.of(popupMenuListeners)
-						.forEach(l -> l.popupMenuWillBecomeVisible(popupMenuEvent));
+				    popupMenuListener.popupMenuWillBecomeVisible(popupMenuEvent);
 				}
 				if(e.getStateChange() == ItemEvent.DESELECTED) {
-					Stream.of(popupMenuListeners)
-						.forEach(l -> l.popupMenuWillBecomeInvisible(popupMenuEvent));
+				    popupMenuListener.popupMenuWillBecomeInvisible(popupMenuEvent);
 				}
 			}
 		});
