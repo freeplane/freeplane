@@ -2,11 +2,16 @@ package org.freeplane.core.ui.menubuilders.menu;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.stream.Stream;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -23,6 +28,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 
 public class JMenuItemBuilder implements EntryVisitor{
@@ -105,11 +111,36 @@ public class JMenuItemBuilder implements EntryVisitor{
 		if(actionComponent != null){
 			menuSplitter.addMenuComponent(menu, actionComponent);
 		}
-		final JPopupMenu popupMenu = menu.getPopupMenu();
-		popupMenu.addPopupMenuListener(new PopupMenuListenerForEntry(entry, popupListener));
-		popupMenu.addPopupMenuListener(MnemonicSetter.INSTANCE);
+		PopupMenuListener[] popupMenuListeners = {
+				new PopupMenuListenerForEntry(entry, popupListener),
+				MnemonicSetter.INSTANCE};
+		if(Compat.isMacOsX()) {
+			addPopupMenuListenersForMacOsX(menu, popupMenuListeners);
+		}
+		else {
+			final JPopupMenu popupMenu = menu.getPopupMenu();
+			Stream.of(popupMenuListeners)
+				.forEach(popupMenu::addPopupMenuListener);
+		}
 		setTranslationKey(entry, menu);
 
+	}
+
+	private void addPopupMenuListenersForMacOsX(JMenu menu, PopupMenuListener[] popupMenuListeners) {
+		menu.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				PopupMenuEvent popupMenuEvent = new PopupMenuEvent(e.getSource());
+				if(e.getStateChange() == ItemEvent.SELECTED) {
+					Stream.of(popupMenuListeners)
+						.forEach(l -> l.popupMenuWillBecomeVisible(popupMenuEvent));
+				}
+				if(e.getStateChange() == ItemEvent.DESELECTED) {
+					Stream.of(popupMenuListeners)
+						.forEach(l -> l.popupMenuWillBecomeInvisible(popupMenuEvent));
+				}
+			}
+		});
 	}
 
 	private void setTranslationKey(final Entry entry, Component actionComponent) {
