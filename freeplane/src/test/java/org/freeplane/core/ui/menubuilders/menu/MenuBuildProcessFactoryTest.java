@@ -66,10 +66,15 @@ public class MenuBuildProcessFactoryTest {
 						+ "</Entry>"
 						+ "</Entry>");
 		phaseProcessor.build(menuStructure);
-		final Entry openedEntry = menuStructure.getChild(0,0,0);
-		JMenu menu = (JMenu) new EntryAccessor().getComponent(openedEntry);
-		menu.getPopupMenu().setVisible(true);
+        setVisible(menuStructure, 0, 0);
+        setVisible(menuStructure, 0, 0, 0);
 		verify(freeplaneActions).getAction("action");
 	}
+
+    private void setVisible(final Entry menuStructure, int... indices) {
+        final Entry openedEntry = menuStructure.getChild(indices);
+		JMenu menu = (JMenu) new EntryAccessor().getComponent(openedEntry);
+		menu.getPopupMenu().setVisible(true);
+    }
 
 }
