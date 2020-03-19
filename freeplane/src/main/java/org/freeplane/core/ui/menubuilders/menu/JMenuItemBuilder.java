@@ -58,11 +58,15 @@ public class JMenuItemBuilder implements EntryVisitor{
 
 	@Override
 	public void visit(Entry entry) {
-		if ((entry.hasChildren() || entryAccessor.getAction(entry) == null) && !entryAccessor.getText(entry).isEmpty())
+		if (containsSubmenu(entry))
 			addSubmenu(entry);
 		else
 			addActionItem(entry);
 	}
+
+    public boolean containsSubmenu(Entry entry) {
+        return (entry.hasChildren() || entryAccessor.getAction(entry) == null) && !entryAccessor.getText(entry).isEmpty();
+    }
 
 	private void addActionItem(Entry entry) {
 		final Component actionComponent = createActionComponent(entry);
@@ -112,7 +116,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 			menuSplitter.addMenuComponent(menu, actionComponent);
 		}
 		PopupMenuListener[] popupMenuListeners = {
-				new PopupMenuListenerForEntry(entry, popupListener),
+				new PopupMenuListenerForEntry(entry, popupListener, resourceAccessor),
 				MnemonicSetter.INSTANCE};
 		if(Compat.isMacOsX()) {
 			addPopupMenuListenersForMacOsX(menu, popupMenuListeners);
@@ -156,7 +160,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {
-		return false;
+		return containsSubmenu(entry);
 	}
 
 }

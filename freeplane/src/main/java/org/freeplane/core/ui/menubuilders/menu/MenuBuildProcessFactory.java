@@ -33,11 +33,13 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 	
 	private SubtreeProcessor childProcessor;
 
-	public PhaseProcessor getBuildProcessor() {
+	@Override
+    public PhaseProcessor getBuildProcessor() {
 		return buildProcessor;
 	}
 
-	public SubtreeProcessor getChildProcessor() {
+	@Override
+    public SubtreeProcessor getChildProcessor() {
 		return childProcessor;
 	}
 
@@ -52,36 +54,50 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		acceleratorBuilder.setDefaultBuilderPair(new AcceleratorBuilder(acceleratorMap, entries),
 		    new AcceleratorDestroyer(entries));
 
-		final RecursiveMenuStructureProcessor uiBuilder = new RecursiveMenuStructureProcessor();
-		uiBuilder.setDefaultBuilder(EntryVisitor.EMTPY);
-		uiBuilder.addBuilder("skip", EntryVisitor.SKIP);
-		
-		childProcessor = new SubtreeProcessor();
-		final ActionStatusUpdater actionSelectListener = new ActionStatusUpdater();
-		EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
-		entryPopupListenerCollection.addEntryPopupListener(childProcessor);
-		entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
+        
+        childProcessor = new SubtreeProcessor(RecursiveMenuStructureProcessor::shouldProcessOnEvent);
+        final ActionStatusUpdater actionSelectListener = new ActionStatusUpdater();
+        EntryPopupListenerCollection entryPopupListenerCollection = new EntryPopupListenerCollection();
+        entryPopupListenerCollection.addEntryPopupListener(childProcessor);
+        
+        acceleratorMap.addAcceleratorChangeListener(modeController, new MenuAcceleratorChangeListener(entries));
 
-		
-		acceleratorMap.addAcceleratorChangeListener(modeController, new MenuAcceleratorChangeListener(entries));
+        final RecursiveMenuStructureProcessor uiBuilder = new RecursiveMenuStructureProcessor();
+		uiBuilder.setDefaultBuilderPair(EntryVisitor.EMTPY, EntryVisitor.EMTPY);
+		uiBuilder.addBuilderPair("skip", EntryVisitor.SKIP, EntryVisitor.SKIP);
 		
 		uiBuilder.addBuilder("toolbar", new JToolbarBuilder(userInputListenerFactory));
 		uiBuilder.setSubtreeDefaultBuilderPair("toolbar", "toolbar.action");
 		uiBuilder.addBuilder("toolbar.action", new JToolbarComponentBuilder());
 
 		uiBuilder.addBuilder("main_menu", new JMenubarBuilder(userInputListenerFactory));
-		uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu.action");
+        uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu");
+        uiBuilder.setSubtreeDefaultBuilderPair("menu", "skip");
 		
-		uiBuilder.addBuilderPair("radio_button_group", //
-		    new JMenuRadioGroupBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
-		        resourceAccessor), new JComponentRemover());
-		
-		uiBuilder.addBuilder("map_popup", new PopupBuilder(userInputListenerFactory.getMapPopup(), entryPopupListenerCollection));
-		uiBuilder.setSubtreeDefaultBuilderPair("map_popup", "menu.action");
-		uiBuilder.addBuilder("node_popup", new PopupBuilder(userInputListenerFactory.getNodePopupMenu(), entryPopupListenerCollection));
-		uiBuilder.setSubtreeDefaultBuilderPair("node_popup", "menu.action");
+		uiBuilder.addBuilder("map_popup", new PopupBuilder(userInputListenerFactory.getMapPopup(), entryPopupListenerCollection, resourceAccessor));
+		uiBuilder.setSubtreeDefaultBuilderPair("map_popup", "skip");
+		uiBuilder.addBuilder("node_popup", new PopupBuilder(userInputListenerFactory.getNodePopupMenu(), entryPopupListenerCollection, resourceAccessor));
+		uiBuilder.setSubtreeDefaultBuilderPair("node_popup", "skip");
 
-		actionBuilder.addBuilder("ignore", new ChildEntryFilter() {
+		AcceleratebleActionProvider acceleratebleActionProvider = new AcceleratebleActionProvider();
+		JMenuItemBuilder menuBuilder = new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, acceleratebleActionProvider,
+		        resourceAccessor);
+        JComponentRemover destroyer = new JComponentRemover();
+		uiBuilder.addBuilder("menu", menuBuilder);
+        uiBuilder.addBuilderPair("radio_button_group", EntryVisitor.SKIP, EntryVisitor.SKIP);
+
+        final RecursiveMenuStructureProcessor menuItemBuilder = new RecursiveMenuStructureProcessor();
+        menuItemBuilder.setDefaultBuilderPair(menuBuilder, destroyer);
+        menuItemBuilder.addBuilderPair("skip", EntryVisitor.SKIP, EntryVisitor.SKIP);
+        menuItemBuilder.addBuilderPair("noActions", new EmptyMenuItemBuilder(resourceAccessor), destroyer);
+
+        menuItemBuilder.addBuilderPair("radio_button_group", //
+            new JMenuRadioGroupBuilder(entryPopupListenerCollection, acceleratorMap, acceleratebleActionProvider,
+                resourceAccessor), 
+                new JRadioButtonGroupComponentRemover()
+                );
+
+        actionBuilder.addBuilder("ignore", new ChildEntryFilter() {
 			@Override
 			public boolean shouldRemove(Entry entry) {
 				return ! uiBuilder.containsOneOf(entry.builders());
@@ -97,19 +113,19 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 			});
 		}
 
-		JMenuItemBuilder menuBuilder = new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
-		    resourceAccessor);
-		JComponentRemover destroyer = new JComponentRemover();
-		uiBuilder.addBuilderPair("menu", menuBuilder, destroyer);
-		uiBuilder.addBuilderPair("menu.action", menuBuilder, destroyer);
-		uiBuilder.addBuilderPair("noActions", new EmptyMenuItemBuilder(resourceAccessor), destroyer);
-
-
 		buildProcessor = new PhaseProcessor(buildPhaseListeners)
 								.withPhase(ACTIONS, actionBuilder) //
 							    .withPhase(ACCELERATORS, acceleratorBuilder)
 							    .withPhase(UI, uiBuilder);
 		childProcessor.setProcessor(buildProcessor);
+		
+		PhaseProcessor menuItemProcessor = new PhaseProcessor(buildPhaseListeners)
+		.withPhase(UI, menuItemBuilder);
+		
+        SubtreeProcessor menuProcessor = new SubtreeProcessor(e -> menuBuilder.containsSubmenu(e) && ! e.builders().contains("radio_button_group"));
+        entryPopupListenerCollection.addEntryPopupListener(menuProcessor);
+        entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
+		menuProcessor.setProcessor(menuItemProcessor);
 	}
 }
 

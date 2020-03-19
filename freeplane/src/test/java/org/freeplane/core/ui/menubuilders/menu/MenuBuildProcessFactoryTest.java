@@ -22,7 +22,7 @@ import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.features.mode.FreeplaneActions;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 
 
 public class MenuBuildProcessFactoryTest {
@@ -33,7 +33,7 @@ public class MenuBuildProcessFactoryTest {
 	public void setup() {
 		freeplaneActions = mock(FreeplaneActions.class);
 		final ResourceAccessor resourceAccessorMock = mock(ResourceAccessor.class);
-		when(resourceAccessorMock.getRawText(Matchers.anyString())).thenReturn("text");
+		when(resourceAccessorMock.getRawText(ArgumentMatchers.anyString())).thenReturn("text");
 		final IUserInputListenerFactory userInputListenerFactory = mock(IUserInputListenerFactory.class);
 		final FreeplaneMenuBar menubar = TestMenuBarFactory.createFreeplaneMenuBar();
 		when(userInputListenerFactory.getMenuBar()).thenReturn(menubar);
