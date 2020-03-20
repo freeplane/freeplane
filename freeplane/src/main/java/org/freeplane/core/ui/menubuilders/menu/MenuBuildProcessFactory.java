@@ -82,7 +82,7 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		AcceleratebleActionProvider acceleratebleActionProvider = new AcceleratebleActionProvider();
 		JMenuItemBuilder menuBuilder = new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, acceleratebleActionProvider,
 		        resourceAccessor);
-        JComponentRemover destroyer = new JComponentRemover();
+        JComponentRemover destroyer = JComponentRemover.INSTANCE;
 		uiBuilder.addBuilder("menu", menuBuilder);
         uiBuilder.addBuilderPair("radio_button_group", EntryVisitor.SKIP, EntryVisitor.SKIP);
 

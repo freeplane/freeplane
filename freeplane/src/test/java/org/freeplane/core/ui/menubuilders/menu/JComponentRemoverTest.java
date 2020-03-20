@@ -19,7 +19,7 @@ import org.junit.Test;
 public class JComponentRemoverTest {
 	@Test
 	public void removesComponentsFromParents() throws Exception {
-		final JComponentRemover componentRemover = new JComponentRemover();
+		final JComponentRemover componentRemover = JComponentRemover.INSTANCE;
 		final Entry entry = new Entry();
 		JComponent parent = new JPanel();
 		JComponent entryComponent = new JPanel();
@@ -32,14 +32,14 @@ public class JComponentRemoverTest {
 
 	@Test
 	public void ignoresEntriesWithoutComponents() throws Exception {
-		final JComponentRemover componentRemover = new JComponentRemover();
+		final JComponentRemover componentRemover = JComponentRemover.INSTANCE;
 		final Entry entry = new Entry();
 		componentRemover.visit(entry);
 	}
 
 	@Test
 	public void removesExtraSubmenusFromParents() throws Exception {
-		final JComponentRemover componentRemover = new JComponentRemover();
+		final JComponentRemover componentRemover = JComponentRemover.INSTANCE;
 		final Entry entry = new Entry();
 		JMenu parent = new JMenu();
 		JComponent entryComponent = new JMenu();

@@ -4,7 +4,7 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 
 public class JRadioButtonGroupComponentRemover implements EntryVisitor{
-    private final JComponentRemover remover = new JComponentRemover();
+    private final JComponentRemover remover = JComponentRemover.INSTANCE;
     
     
 	@Override
