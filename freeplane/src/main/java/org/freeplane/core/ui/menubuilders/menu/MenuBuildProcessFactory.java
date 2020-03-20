@@ -97,20 +97,20 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
                 new JRadioButtonGroupComponentRemover()
                 );
 
-        actionBuilder.addBuilder("ignore", new ChildEntryFilter() {
+        actionBuilder.addBuilderPair("ignore", new ChildEntryFilter() {
 			@Override
 			public boolean shouldRemove(Entry entry) {
 				return ! uiBuilder.containsOneOf(entry.builders());
 			}
-		});
+		}, EntryVisitor.EMTPY);
 		
 		if(Compat.isMacOsX()){
-			actionBuilder.addBuilder("removeOnMac", new ChildEntryFilter() {
+			actionBuilder.addBuilderPair("removeOnMac", new ChildEntryFilter() {
 				@Override
 				public boolean shouldRemove(Entry entry) {
 					return true;
 				}
-			});
+			}, EntryVisitor.EMTPY);
 		}
 
 		buildProcessor = new PhaseProcessor(buildPhaseListeners)

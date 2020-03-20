@@ -1,6 +1,10 @@
 package org.freeplane.core.ui.menubuilders.menu;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -8,6 +12,7 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
+import org.freeplane.core.util.Compat;
 
 class PopupMenuListenerForEntry implements PopupMenuListener{
 	private final Entry entry;
@@ -22,17 +27,39 @@ class PopupMenuListenerForEntry implements PopupMenuListener{
 
 	@Override
 	public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+		if(Compat.isMacOsX()) {
+			Timer macOsMenuTimer = entry.getAttribute(Timer.class);
+			if(macOsMenuTimer != null) {
+				macOsMenuTimer.stop();
+				entry.removeAttribute(Timer.class);
+				fireChildEntriesHidden(entry);
+			}
+		}
 		fireChildEntriesWillBecomeVisible(entry);
 	}
 
 	@Override
 	public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				fireChildEntriesHidden(entry);
-			}
-		});
+		if(! Compat.isMacOsX()) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					fireChildEntriesHidden(entry);
+				}
+			});
+		}
+		else {
+			Timer macOsMenuTimer = new Timer(20, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					entry.removeAttribute(Timer.class);
+					fireChildEntriesHidden(entry);
+				}
+			});
+			entry.setAttribute(Timer.class, macOsMenuTimer);
+			macOsMenuTimer.setRepeats(false);
+			macOsMenuTimer.start();
+		}
 	}
 
 	private boolean containsSubmenu(Entry entry) {
