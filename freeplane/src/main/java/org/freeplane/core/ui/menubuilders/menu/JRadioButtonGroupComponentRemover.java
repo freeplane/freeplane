@@ -16,7 +16,7 @@ public class JRadioButtonGroupComponentRemover implements EntryVisitor{
 
     @Override
 	public boolean shouldSkipChildren(Entry entry) {
-		return false;
+		return true;
 	}
 	
 }
