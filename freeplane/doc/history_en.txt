@@ -6,6 +6,8 @@ Hide and show note panel tool bar using freeplane menu
 Optionally ignore accents and diacritics in filter conditions
 Keep white space inside the line in search and replace dialog
 Set individual filter for each map view
+Improvements for MacOS Menus
+Bug fixes
 
 ===============================
 1.8.0
