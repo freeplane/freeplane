@@ -22,15 +22,15 @@ package org.freeplane.features.icon;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.mode.Controller;
 
 public class EmojiIcon extends MindIcon {
     private static final String VERSION = "12.1.4";
     private static final String RESOURCE_IMAGE_PATH = "/images/emoji";
     private static final String REMOTE_IMAGE_PATH = "https://twemoji.maxcdn.com/v/" + VERSION + "/svg/";
-    
-    private static final boolean areResourcesAvailable = ResourceController.getResourceController().getResource(RESOURCE_IMAGE_PATH) != null;
-    
+
+    private static final boolean areResourcesAvailable = ! Controller.getCurrentController().getViewController().isApplet();
+
     final String emoji;
 
     public EmojiIcon(final String emoji, final String entity, final String file, final String description, int order) {
@@ -46,9 +46,9 @@ public class EmojiIcon extends MindIcon {
     public String getImagePath() {
         return RESOURCE_IMAGE_PATH;
     }
-    
-    
-    
+
+
+
 	@Override
     public URL getUrl() {
         if(! areResourcesAvailable)
