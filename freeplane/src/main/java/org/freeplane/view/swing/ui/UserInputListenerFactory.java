@@ -111,8 +111,8 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 				updateActions(modeController.getController().getMap());
 		}
 
-		private void updateActions(final MapModel newMap) {
-			UserRole newUserRole = modeController.userRole(newMap);
+		private void updateActions(final MapModel map) {
+			UserRole newUserRole = modeController.userRole(map);
 			if(newUserRole != userRole) {
 				userRole = newUserRole;
 				final RecursiveMenuStructureProcessor recursiveMenuStructureProcessor = new RecursiveMenuStructureProcessor();
@@ -123,12 +123,10 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 					public void visit(Entry entry) {
 						final AFreeplaneAction action = entryAccessor.getAction(entry);
 						if (action != null) {
-							action.afterMapChange( userRole, newMap != null);
+							action.afterMapChange( userRole, map != null);
 						}
-						Component component = entryAccessor.getComponent(entry);
-						if(component != null && component.getParent() != null) {
-							component.setVisible(entry.isAllowed(userRole));
-						}
+                        entry.removeAttribute("allowed");
+                        entry.setAttribute("allowed", entry.isAllowed(userRole));
 					}
 
 					@Override

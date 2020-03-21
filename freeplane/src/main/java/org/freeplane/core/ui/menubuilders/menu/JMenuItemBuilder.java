@@ -57,6 +57,8 @@ public class JMenuItemBuilder implements EntryVisitor{
 
 	@Override
 	public void visit(Entry entry) {
+	    if(Boolean.FALSE.equals(entry.getAttribute("allowed")))
+	        return;
 		if (containsSubmenu(entry))
 			addSubmenu(entry);
 		else
@@ -155,7 +157,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {
-		return containsSubmenu(entry);
+		return Boolean.FALSE.equals(entry.getAttribute("allowed")) || containsSubmenu(entry);
 	}
 
 }

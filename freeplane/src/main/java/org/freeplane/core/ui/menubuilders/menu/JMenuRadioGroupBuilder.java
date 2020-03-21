@@ -24,6 +24,8 @@ public class JMenuRadioGroupBuilder implements EntryVisitor {
 	}
 	@Override
 	public void visit(Entry target) {
+        if(Boolean.FALSE.equals(target.getAttribute("allowed")))
+            return;
 		ButtonGroup buttonGroup = new ButtonGroup();
 		final MenuRadioActionComponentProvider menuActionComponentProvider = new MenuRadioActionComponentProvider(
 		    accelerators, acceleratebleActionProvider, resourceAccessor, buttonGroup);
