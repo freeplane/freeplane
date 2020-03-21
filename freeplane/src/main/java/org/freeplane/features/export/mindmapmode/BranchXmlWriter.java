@@ -17,6 +17,9 @@ class BranchXmlWriter{
 
 	void writeXml(Writer writer, MapWriter.Mode mode) {
 		try {
+		    writer.append("<!DOCTYPE mindmap [\n" + 
+		            "    <!ENTITY nbsp \"&#160;\"> \n" + 
+		            "]>\n");
 			if(branches.size() == 1 && branches.get(0).isRoot()) {
 				Controller.getCurrentModeController().getMapController().getFilteredXml(branches.get(0).getMap(), writer, mode, MapWriter.Mode.EXPORT.equals(mode));
 			}
