@@ -94,7 +94,8 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	            editNodeWYSIWYG.setTitle("edit_note");
                 editNodeWYSIWYG.setFont(map.getNoteFont());
                 editNodeWYSIWYG.setTextColor(map.getNoteForeground());
-                editNodeWYSIWYG.setBackground (map.getNoteBackground());
+                final Color noteBackground = map.getNoteBackground();
+				editNodeWYSIWYG.setBackground (noteBackground != null ? noteBackground : map.getBackground());
                 editNodeWYSIWYG.setTextAlignment(map.getNoteHorizontalAlignment());
 			}
 			return editNodeWYSIWYG;
