@@ -327,88 +327,91 @@
                 <Entry name="SetBooleanPropertyAction.simplyhtml.note.show_toolbars" />
 			</Entry>
 		</Entry>
-		<Entry name="format" usedBy = "EDITOR" >
-			<Entry name="styleActions" textKey="menu_applyStyle">
-				<Entry builder="style_actions" />
-			</Entry>
-			<Entry name="automatic_layout">
-				<Entry name="AutomaticLayoutControllerAction.HEADINGS" />
-				<Entry name="AutomaticLayoutControllerAction.ALL" />
-				<Entry name="AutomaticLayoutControllerAction.null" />
-			</Entry>
-			<Entry name="menu_manageStyles">
-				<Entry name="NewUserStyleAction" />
-				<Entry name="RedefineStyleAction" accelerator="alt R" />
-				<Entry name="RemoveFormatAction" />
-				<Entry name="ManageConditionalStylesAction" />
-				<Entry name="ManageNodeConditionalStylesAction" />
-				<Entry builder="separator" />
-				<Entry name="CopyMapStylesAction" accelerator="control shift O" />
-				<Entry name="EditStylesAction" accelerator="control F11" />
-			</Entry>
-			<Entry name="FormatCopy" accelerator="alt shift C" />
-			<Entry name="FormatPaste" accelerator="alt shift V" />
-			<Entry name="SetBooleanPropertyAction.copyFormatToNewSibling" />
-			<Entry builder="separator" />
-			<Entry name="map_background">
-				<Entry name="MapBackgroundImageAction" />
-				<Entry name="SetBooleanMapPropertyAction.fit_to_viewport" />
-				<Entry name="MapBackgroundColorAction" />
-				<Entry name="MapBackgroundClearAction" />
-			</Entry>
-			<Entry name="menu_coreFormat">
-				<Entry name="BoldAction" accelerator="control B" />
-				<Entry name="ItalicAction" accelerator="control I" />
-				<Entry name="StrikeThroughAction"/>
-				<Entry name="IncreaseNodeFontAction" accelerator="control PLUS" />
-				<Entry name="DecreaseNodeFontAction" accelerator="control MINUS" />
-				<Entry builder="separator" />
-				<Entry name="TextAlignAction.LEFT" />
-				<Entry name="TextAlignAction.CENTER" />
-				<Entry name="TextAlignAction.RIGHT" />
-				<Entry builder="separator" />
-				<Entry name="NodeColorAction" accelerator="alt shift F" />
-				<Entry name="BlinkingNodeHookAction" />
-				<Entry name="NodeColorBlendAction" />
-				<Entry builder="separator" />
-				<Entry name="NodeBackgroundColorAction" accelerator="alt B" />
-				<Entry builder="separator" />
-				<Entry name="NodeShapeAction.fork" />
-				<Entry name="NodeShapeAction.bubble" />
-				<Entry builder="separator" />
-				<Entry name="UsePlainTextAction" accelerator="alt shift P" />
-			</Entry>
-			<Entry name="cloud_shapes">
-				<Entry builder="radio_button_group">
-					<Entry name="CloudShapeAction.ARC" />
-					<Entry name="CloudShapeAction.STAR" />
-					<Entry name="CloudShapeAction.RECT" />
-					<Entry name="CloudShapeAction.ROUND_RECT" />
+		<Entry name="format" >
+			<Entry usedBy = "EDITOR" >
+				<Entry name="styleActions" textKey="menu_applyStyle">
+					<Entry builder="style_actions" />
 				</Entry>
-				<Entry name="CloudColorAction" />
-			</Entry>
-			<Entry builder="separator" />
-			<Entry name="EdgeProperties">
-				<Entry builder="radio_button_group" name="edgeStyles" textKey="styles">
-					<Entry name="EdgeStyleAsParentAction" />
-					<Entry name="EdgeStyleAction.linear" />
-					<Entry name="EdgeStyleAction.bezier" />
-					<Entry name="EdgeStyleAction.sharp_linear" />
-					<Entry name="EdgeStyleAction.sharp_bezier" />
-					<Entry name="EdgeStyleAction.horizontal" />
-					<Entry name="EdgeStyleAction.hide_edge" />
+				<Entry name="automatic_layout">
+					<Entry name="AutomaticLayoutControllerAction.HEADINGS" />
+					<Entry name="AutomaticLayoutControllerAction.ALL" />
+					<Entry name="AutomaticLayoutControllerAction.null" />
 				</Entry>
-				<Entry builder="radio_button_group" name="edge_widths">
-					<Entry name="EdgeWidthAction_width_parent" />
-					<Entry name="EdgeWidthAction_width_thin" />
-					<Entry name="EdgeWidthAction_1" />
-					<Entry name="EdgeWidthAction_2" />
-					<Entry name="EdgeWidthAction_4" />
-					<Entry name="EdgeWidthAction_8" />
+				<Entry name="menu_manageStyles">
+					<Entry name="NewUserStyleAction" />
+					<Entry name="RedefineStyleAction" accelerator="alt R" />
+					<Entry name="RemoveFormatAction" />
+					<Entry name="ManageConditionalStylesAction" />
+					<Entry name="ManageNodeConditionalStylesAction" />
+					<Entry builder="separator" />
+					<Entry name="CopyMapStylesAction" accelerator="control shift O" />
+					<Entry name="EditStylesAction" accelerator="control F11" />
 				</Entry>
-				<Entry name="EdgeColorAction" accelerator="alt shift E" />
+				<Entry name="FormatCopy" accelerator="alt shift C" />
+				<Entry name="FormatPaste" accelerator="alt shift V" />
+				<Entry name="SetBooleanPropertyAction.copyFormatToNewSibling" />
+				<Entry builder="separator" />
+				<Entry name="map_background">
+					<Entry name="MapBackgroundImageAction" />
+					<Entry name="SetBooleanMapPropertyAction.fit_to_viewport" />
+					<Entry name="MapBackgroundColorAction" />
+					<Entry name="MapBackgroundClearAction" />
+				</Entry>
+				<Entry name="menu_coreFormat">
+					<Entry name="BoldAction" accelerator="control B" />
+					<Entry name="ItalicAction" accelerator="control I" />
+					<Entry name="StrikeThroughAction"/>
+					<Entry name="IncreaseNodeFontAction" accelerator="control PLUS" />
+					<Entry name="DecreaseNodeFontAction" accelerator="control MINUS" />
+					<Entry builder="separator" />
+					<Entry name="TextAlignAction.LEFT" />
+					<Entry name="TextAlignAction.CENTER" />
+					<Entry name="TextAlignAction.RIGHT" />
+					<Entry builder="separator" />
+					<Entry name="NodeColorAction" accelerator="alt shift F" />
+					<Entry name="BlinkingNodeHookAction" />
+					<Entry name="NodeColorBlendAction" />
+					<Entry builder="separator" />
+					<Entry name="NodeBackgroundColorAction" accelerator="alt B" />
+					<Entry builder="separator" />
+					<Entry name="NodeShapeAction.fork" />
+					<Entry name="NodeShapeAction.bubble" />
+					<Entry builder="separator" />
+					<Entry name="UsePlainTextAction" accelerator="alt shift P" />
+				</Entry>
+				<Entry name="cloud_shapes">
+					<Entry builder="radio_button_group">
+						<Entry name="CloudShapeAction.ARC" />
+						<Entry name="CloudShapeAction.STAR" />
+						<Entry name="CloudShapeAction.RECT" />
+						<Entry name="CloudShapeAction.ROUND_RECT" />
+					</Entry>
+					<Entry name="CloudColorAction" />
+				</Entry>
+				<Entry builder="separator" />
+				<Entry name="EdgeProperties">
+					<Entry builder="radio_button_group" name="edgeStyles" textKey="styles">
+						<Entry name="EdgeStyleAsParentAction" />
+						<Entry name="EdgeStyleAction.linear" />
+						<Entry name="EdgeStyleAction.bezier" />
+						<Entry name="EdgeStyleAction.sharp_linear" />
+						<Entry name="EdgeStyleAction.sharp_bezier" />
+						<Entry name="EdgeStyleAction.horizontal" />
+						<Entry name="EdgeStyleAction.hide_edge" />
+					</Entry>
+					<Entry builder="radio_button_group" name="edge_widths">
+						<Entry name="EdgeWidthAction_width_parent" />
+						<Entry name="EdgeWidthAction_width_thin" />
+						<Entry name="EdgeWidthAction_1" />
+						<Entry name="EdgeWidthAction_2" />
+						<Entry name="EdgeWidthAction_4" />
+						<Entry name="EdgeWidthAction_8" />
+					</Entry>
+					<Entry name="EdgeColorAction" accelerator="alt shift E" />
+				</Entry>
+				<Entry builder="separator" />
 			</Entry>
-			<Entry builder="separator" />
+			<Entry builder="noActions" />
 		</Entry>
 		<Entry name="navigate" builder="menu_navigate">
 			<Entry name="NavigationPreviousMapAction" accelerator="control shift TAB" />
