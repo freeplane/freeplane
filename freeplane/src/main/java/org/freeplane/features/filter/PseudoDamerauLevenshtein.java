@@ -530,6 +530,8 @@ public class PseudoDamerauLevenshtein implements EditDistanceStringMatchingStrat
 			throw new IllegalArgumentException("Null searchText/searchTerm!");
 		}
 
+        this.searchTerm = searchTerm;
+        this.searchText = searchText;
  		this.type = subStringMatch ? Type.SemiGlobal : Type.Global;
 	}
 
