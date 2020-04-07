@@ -247,7 +247,7 @@ public class JMenuItemBuilderTest {
 		JMenu item = (JMenu)new EntryAccessor().getComponent(menuEntry);
 		item.getPopupMenu().setVisible(true);
 		item.getPopupMenu().setVisible(false);
-		
+		Thread.sleep(100);
 		SwingUtilities.invokeAndWait(new Runnable() {
 			@Override
 			public void run() {
