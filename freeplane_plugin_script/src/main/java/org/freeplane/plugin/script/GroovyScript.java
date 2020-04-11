@@ -127,8 +127,8 @@ public class GroovyScript implements IScript {
             // And if: Shouldn't it raise an ExecuteScriptException?
             throw new RuntimeException(e);
         } catch (final Throwable e) {
-			IMapSelection selection = Controller.getCurrentController().getSelection();
-			if (selection != null && node != null && ! node.equals(selection.getSelected()) && node.hasVisibleContent()) {
+            IMapSelection selection = Controller.getCurrentController().getSelection();
+			if (selection != null && node != null && ! node.equals(selection.getSelected()) && node.hasVisibleContent(selection.getFilter())) {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {

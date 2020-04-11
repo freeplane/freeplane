@@ -36,6 +36,7 @@ import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
@@ -273,7 +274,7 @@ class MindMapHTMLWriter {
 	private int writeHTML(final NodeModel model, final String parentID, int lastChildNumber, final boolean isRoot,
 	                      final boolean treatAsParagraph, final int depth)
 	        throws IOException {
-		if (!model.hasVisibleContent()) {
+		if (!model.hasVisibleContent(FilterController.getFilter(model.getMap()))) {
 			for (final NodeModel child : model.getChildren()) {
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber, false, false, depth);
 			}

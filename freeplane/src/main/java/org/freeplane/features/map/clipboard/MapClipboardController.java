@@ -44,6 +44,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.clipboard.ClipboardController;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -284,7 +285,7 @@ public class MapClipboardController implements IExtension, ClipboardController {
 	private void writeChildrenRTF(final NodeModel node, final Writer fileout, final int depth,
 	                              final HashMap<Color, Integer> colorTable) throws IOException {
 		for (final NodeModel child : node.getChildren()) {
-			if (child.hasVisibleContent()) {
+			if (child.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
 				writeRTF(child, fileout, depth + 1, colorTable);
 			}
 			else {
@@ -296,7 +297,7 @@ public class MapClipboardController implements IExtension, ClipboardController {
 	private void writeChildrenText(final NodeModel node, final Writer fileout, final int depth, String indentation)
 	        throws IOException {
 		for (final NodeModel child : node.getChildren()) {
-			if (child.hasVisibleContent()) {
+			if (child.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
 				writeTXT(child, fileout, depth + 1, indentation);
 			}
 			else {

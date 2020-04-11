@@ -28,6 +28,7 @@ import java.util.Map;
 import javax.swing.tree.MutableTreeNode;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.map.HistoryInformationModel;
@@ -161,11 +162,6 @@ class SingleCopySource extends NodeModel {
     }
 
 	@Override
-    public FilterInfo getFilterInfo() {
-	    return delegate.getFilterInfo();
-    }
-
-	@Override
     public HistoryInformationModel getHistoryInformation() {
 	    return delegate.getHistoryInformation();
     }
@@ -196,8 +192,8 @@ class SingleCopySource extends NodeModel {
     }
 
 	@Override
-    public int getNodeLevel(boolean countHidden) {
-	    return delegate.getNodeLevel(countHidden);
+    public int getNodeLevel() {
+	    return delegate.getNodeLevel();
     }
 
 	@Override
@@ -265,13 +261,13 @@ class SingleCopySource extends NodeModel {
     }
 
 	@Override
-    public boolean isVisible() {
-	    return delegate.isVisible();
+    public boolean isVisible(Filter filter) {
+	    return delegate.isVisible(filter);
 	}
 	
 	@Override
-	public boolean hasVisibleContent() {
-	    return delegate.hasVisibleContent();
+	public boolean hasVisibleContent(Filter filter) {
+	    return delegate.hasVisibleContent(filter);
     }
 	
 	@Override
@@ -358,8 +354,8 @@ class SingleCopySource extends NodeModel {
     }
 
 	@Override
-    public NodeModel getVisibleAncestorOrSelf() {
-	    return delegate.getVisibleAncestorOrSelf();
+    public NodeModel getVisibleAncestorOrSelf(Filter filter) {
+	    return delegate.getVisibleAncestorOrSelf(filter);
     }
 
 

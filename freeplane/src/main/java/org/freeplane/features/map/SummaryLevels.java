@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.freeplane.features.filter.Filter;
+
 public class SummaryLevels{
+    private static final Filter TRANSPARENT_FILTER = Filter.createTransparentFilter();
 	public static final int NODE_NOT_FOUND = -1;
 	private static final boolean[] BOTH_SIDES = {true, false};
 	private static final boolean[] LEFT_SIDE = {true};
@@ -15,19 +18,19 @@ public class SummaryLevels{
 	private final NodeModel parentNode;
 	
 	public SummaryLevels(NodeModel parentNode) {
-		this(parentNode, false);
+		this(parentNode, TRANSPARENT_FILTER, false);
 	}
 	
-	public static SummaryLevels of(NodeModel parentNode) {
-		return new SummaryLevels(parentNode, false);
+	public static SummaryLevels of(NodeModel parentNode, Filter filter) {
+		return new SummaryLevels(parentNode, filter, false);
 	}
 
 	
-	public static SummaryLevels ignoringChildNodes(NodeModel parentNode) {
-		return new SummaryLevels(parentNode, true);
+	public static SummaryLevels ignoringChildNodes(NodeModel parentNode, Filter filter) {
+		return new SummaryLevels(parentNode, filter, true);
 	}
 	
-	private SummaryLevels(NodeModel parentNode, boolean ignoreChildNodes) {
+	private SummaryLevels(NodeModel parentNode, Filter filter, boolean ignoreChildNodes) {
 		this.parentNode = parentNode;
 		int highestSummaryLevel = 0;
 		int childCount = ignoreChildNodes ? 0 : parentNode.getChildCount();
@@ -45,7 +48,7 @@ public class SummaryLevels{
 						if (level > 0)
 							useSummaryAsItem = true;
 						level = 0;
-						if (child.hasVisibleContent()) {
+						if (child.hasVisibleContent(filter)) {
 							useSummaryAsItem = false;
 						}
 					} else {

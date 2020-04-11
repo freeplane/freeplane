@@ -64,13 +64,14 @@ import org.freeplane.features.filter.condition.ICombinedCondition;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
  */
-public abstract class AFilterComposerDialog extends JDialog implements IMapSelectionListener {
+public abstract class AFilterComposerDialog extends JDialog implements IMapViewChangeListener {
 	/**
 	 * @author Dimitry Polivaev
 	 */
@@ -623,10 +624,12 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapSelec
 	    return button;
     }
 
+	
 	@Override
-	public void afterMapChange(final MapModel oldMap, final MapModel newMap) {
-		editor.mapChanged(newMap);
-	}
+    public void afterViewChange(Component oldView, Component newView) {
+	    editor.filterChanged(newView  != null ? Controller.getCurrentController().getSelection().getFilter() : null);
+    }
+
 
 	private boolean applyChanges() {
 		internalConditionsModel.setSelectedItem(elementaryConditionList.getSelectedValue());

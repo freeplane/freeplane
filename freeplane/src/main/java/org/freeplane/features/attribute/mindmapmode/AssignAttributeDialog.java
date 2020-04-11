@@ -59,6 +59,7 @@ import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeRegistryElement;
 import org.freeplane.features.attribute.IAttributesListener;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
@@ -226,13 +227,14 @@ class AssignAttributeDialog extends JDialog implements IAttributesListener, IMap
 		}
 
 		private void iterate(final NodeModel node) {
-			if (node.hasVisibleContent()) {
-				if (!node.isRoot() || !skipRootBtn.isSelected()) {
-					performAction(node);
-				}
-			}
-			if (node.isFolded()) {
-				return;
+		    Filter filter = Controller.getCurrentController().getSelection().getFilter();
+		    if (node.hasVisibleContent(filter)) {
+		        if (!node.isRoot() || !skipRootBtn.isSelected()) {
+		            performAction(node);
+		        }
+		    }
+		    if (node.isFolded()) {
+		        return;
 			}
 			final Iterator<NodeModel> iterator = node.getChildren().iterator();
 			while (iterator.hasNext()) {

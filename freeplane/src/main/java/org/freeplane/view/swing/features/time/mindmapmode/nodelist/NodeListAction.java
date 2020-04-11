@@ -22,6 +22,8 @@ package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.filter.Filter;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev
@@ -43,6 +45,7 @@ public class NodeListAction extends AFreeplaneAction {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		nodeList.startup((node, reminder) -> node.hasVisibleContent());
+        Filter filter = Controller.getCurrentController().getSelection().getFilter();
+		nodeList.startup((node, reminder) -> node.hasVisibleContent(filter));
 	}
 }
