@@ -23,7 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -75,33 +75,30 @@ public class FilterHistory {
 		if (!filters.hasNext()) {
 			return;
 		}
-		Controller controller = Controller.getCurrentController();
-		final MapModel map = controller.getMap();
 		final Filter next = filters.next();
-		next.applyFilter(this, map, true);
+		FilterController.getCurrentFilterController().applyFilter(true, next);
 	}
 
 	void undo() {
 		Controller controller = Controller.getCurrentController();
-		final MapModel map = controller.getMap();
+		final IMapSelection selection = controller.getSelection();
 		final Filter previous = filters.previous();
-		undoImpl(map);
-		while (previous != filters.next()) {
-			;
-		}
+		undoImpl(selection);
+		while (previous != filters.next()) {/**/}
 		if (filters.nextIndex() > 1) {
 			filters.previous();
 		}
 	}
 
-	private void undoImpl( final MapModel map) {
+	private void undoImpl( final IMapSelection selection) {
 		if (!filters.hasPrevious()) {
 			return;
 		}
 		final Filter previous = filters.previous();
 		if (previous.appliesToVisibleNodesOnly()) {
-			undoImpl(map);
+			undoImpl(selection);
 		}
-		previous.applyFilter(this, map, true);
+		FilterController.getCurrentFilterController().applyFilter(true, previous);
+
 	}
 }

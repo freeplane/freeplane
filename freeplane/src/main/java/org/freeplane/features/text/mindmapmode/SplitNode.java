@@ -109,7 +109,7 @@ public class SplitNode extends AFreeplaneAction {
 			final MNodeStyleController nodeStyleController = (MNodeStyleController) NodeStyleController
 			    .getController();
 			nodeStyleController.copyStyle(node, lowerNode);
-			mapController.setFolded(lowerNode, !lowerNode.isFolded());
+			mapController.setFolded(lowerNode, !lowerNode.isFolded(), Controller.getCurrentController().getSelection().getFilter());
 		}
 	}
 

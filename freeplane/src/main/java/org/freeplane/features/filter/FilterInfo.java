@@ -29,14 +29,17 @@ public class FilterInfo {
 	static final int FILTER_SHOW_AS_DESCENDANT = 8;
 	static final int FILTER_SHOW_AS_HIDDEN = 16;
 	
-	private int info = FilterInfo.FILTER_SHOW_AS_INITIAL_VALUE;
+	static public final FilterInfo TRANSPARENT = new FilterInfo(FILTER_SHOW_AS_MATCHED);
+	
+	private int info;
 
-	/**
-	 *
-	 */
-	public FilterInfo() {
-		super();
-	}
+    public FilterInfo() {
+        this(FILTER_SHOW_AS_INITIAL_VALUE);
+    }
+    
+    private FilterInfo(int info) {
+        this.info = info;
+    }
 
 	void add(final int flag) {
 		if ((flag & (FilterInfo.FILTER_SHOW_AS_MATCHED | FilterInfo.FILTER_SHOW_AS_HIDDEN)) != 0) {

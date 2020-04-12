@@ -162,10 +162,10 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 
 	private boolean selectLastVisitedNode(RecentFile recentFile) {
 		if (recentFile != null && recentFile.lastVisitedNodeId != null) {
-			final MapModel map = Controller.getCurrentController().getMap();
+			IMapSelection selection = Controller.getCurrentController().getSelection();
+            final MapModel map = selection.getMap();
 			final NodeModel node = map.getNodeForID(recentFile.lastVisitedNodeId);
-			if (node != null && node.hasVisibleContent()) {
-				IMapSelection selection = Controller.getCurrentController().getSelection();
+			if (node != null && node.hasVisibleContent(selection.getFilter())) {
 				// don't override node selection done by UriManager.loadURI()
 				if (selection.isSelected(map.getRootNode()))
 					selection.selectAsTheOnlyOneSelected(node);

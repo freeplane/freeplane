@@ -3,6 +3,7 @@ package org.freeplane.features.filter;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapController.Direction;
@@ -35,13 +36,15 @@ public class NextPresentationItemAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final FilterController filterController = FilterController.getCurrentFilterController();
 		final Controller controller = Controller.getCurrentController();
-		final NodeModel start = controller.getSelection().getSelected();
+		IMapSelection selection = controller.getSelection();
+        final NodeModel start = selection.getSelected();
 		final IMapViewManager mapViewManager = controller.getMapViewManager();
-		final NodeModel next = filterController.findNext(start, null, direction, null);
+		Filter filter = selection.getFilter();
+        final NodeModel next = filterController.findNext(start, null, direction, null, filter);
 		if(next != null){
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
-			if (!next.hasVisibleContent()) {
-            	next.getFilterInfo().reset();
+			if (!next.hasVisibleContent(filter)) {
+			    filter.getFilterInfo(next).reset();
             	mapController.nodeRefresh(next);
             }
             final NodeModel[] path = next.getPathToRoot();

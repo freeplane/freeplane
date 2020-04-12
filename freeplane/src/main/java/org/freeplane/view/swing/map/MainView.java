@@ -60,6 +60,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.NamedIcon;
@@ -247,18 +248,18 @@ public class MainView extends ZoomableLabel {
 	}
 
 	public FoldingMark foldingMarkType(MapController mapController, NodeView nodeView) {
-		NodeModel node = nodeView.getModel();
+		final NodeModel node = nodeView.getModel();
 		if (nodeView.isFolded()) {
 			return FoldingMark.ITSELF_FOLDED;
 		}
-		final NodeModel node1 = node;
-		for (final NodeModel child : node1.getChildren()) {
-			if (child.hasVisibleContent() && nodeView.isChildHidden(child)) {
+		Filter filter = nodeView.getMap().getFilter();
+		for (final NodeModel child : node.getChildren()) {
+			if (child.hasVisibleContent(filter) && nodeView.isChildHidden(child)) {
 				return FoldingMark.ITSELF_FOLDED;
 			}
 		}
 		for (final NodeView childView : nodeView.getChildrenViews()) {
-			if (!childView.getModel().hasVisibleContent() && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, childView))) {
+			if (!childView.getModel().hasVisibleContent(filter) && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, childView))) {
 				return FoldingMark.UNVISIBLE_CHILDREN_FOLDED;
 			}
 		}

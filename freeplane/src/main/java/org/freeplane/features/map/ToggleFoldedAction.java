@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -42,12 +43,13 @@ class ToggleFoldedAction extends AFreeplaneAction {
 	@Override
 	public void actionPerformed(final ActionEvent e) {
 		MapController r = Controller.getCurrentModeController().getMapController();
+		Filter filter = Controller.getCurrentController().getSelection().getFilter();
 		final Collection<NodeModel> selectedNodes = r.getSelectedNodes();
 		if(selectedNodes.size() > 1)
-			r.toggleFolded(selectedNodes);
+			r.toggleFolded(filter, selectedNodes);
 		else {
 			final NodeModel selectedNode = r.getSelectedNode();
-			r.toggleFoldedAndScroll(selectedNode);
+			r.toggleFoldedAndScroll(selectedNode, filter);
 		}
 	}
 }

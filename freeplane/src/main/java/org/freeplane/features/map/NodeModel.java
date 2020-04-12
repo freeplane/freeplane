@@ -253,10 +253,6 @@ public class NodeModel{
 		return getExtensionContainer().getExtensions();
 	};
 
-	public FilterInfo getFilterInfo() {
-		return map.getFilterInfo(this);
-	}
-
 	public HistoryInformationModel getHistoryInformation() {
 		return sharedData.getHistoryInformation();
 	}
@@ -281,11 +277,19 @@ public class NodeModel{
 		return map;
 	}
 
-	public int getNodeLevel(final boolean countHidden) {
+    public int getNodeLevel() {
+        return getNodeLevel(true, null);
+    }
+    
+    public int getNodeLevel(Filter filter) {
+        return getNodeLevel(false, filter);
+    }
+    
+    private int getNodeLevel(final boolean countHidden, Filter filter) {
 		int level = 0;
 		NodeModel parent;
 		for (parent = getParentNode(); parent != null; parent = parent.getParentNode()) {
-			if (countHidden || parent.isVisible()) {
+			if (countHidden || parent.isVisible(filter)) {
 				level++;
 			}
 		}
@@ -297,7 +301,7 @@ public class NodeModel{
 	}
 
 	public NodeModel[] getPathToRoot() {
-		int i = getNodeLevel(true);
+		int i = getNodeLevel();
 		final NodeModel[] path = new NodeModel[i + 1];
 		NodeModel node = this;
 		while (i >= 0) {
@@ -407,12 +411,11 @@ public class NodeModel{
 		return getMap().getRootNode() == this;
 	}
 
-	public boolean hasVisibleContent() {
-		return ! isHiddenSummary() && satisfiesFilter();
+	public boolean hasVisibleContent(Filter filter) {
+		return ! isHiddenSummary() && satisfies(filter);
 	}
 
-	private boolean satisfiesFilter() {
-		final Filter filter = getMap().getFilter();
+	private boolean satisfies(Filter filter) {
 		return (filter == null || filter.isVisible(this));
 	}
 
@@ -420,8 +423,8 @@ public class NodeModel{
 		return SummaryNode.isHidden(this);
 	}
 
-	public boolean isVisible() {
-		return isHiddenSummary() || satisfiesFilter();
+	public boolean isVisible(Filter filter) {
+		return isHiddenSummary() || satisfies(filter);
 	}
 
 	public void remove(final int index) {
@@ -571,9 +574,9 @@ public class NodeModel{
 		insert(newNodeModel, getChildCount());
 	}
 
-	public NodeModel getVisibleAncestorOrSelf() {
+	public NodeModel getVisibleAncestorOrSelf(Filter filter) {
 		NodeModel node = this;
-		while (!node.hasVisibleContent()) {
+		while (!node.hasVisibleContent(filter)) {
 			node = node.getParentNode();
 		}
 		return node;

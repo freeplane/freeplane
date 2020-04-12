@@ -50,7 +50,8 @@ class SelectFilteredNodesAction extends AFreeplaneAction {
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		final NodeModel selected = selection.getSelected();
         final NodeModel rootNode = selected.getMap().getRootNode();
-		boolean nodeFound = rootNode.getFilterInfo().isMatched();
+		Filter filter = selection.getFilter();
+        boolean nodeFound = filter.getFilterInfo(rootNode).isMatched();
 		if(nodeFound){
 			selection.selectAsTheOnlyOneSelected(rootNode);
 		}
@@ -60,7 +61,7 @@ class SelectFilteredNodesAction extends AFreeplaneAction {
 			if(next == null){
 				break;
 			}
-			if(next.isHiddenSummary() || ! next.getFilterInfo().isMatched())
+			if(next.isHiddenSummary() || ! filter.getFilterInfo(next).isMatched())
 				continue;
 			mapController.displayNode(next);
 			if(nodeFound){
@@ -71,7 +72,7 @@ class SelectFilteredNodesAction extends AFreeplaneAction {
 				nodeFound = true;
 			}
 		}
-		if(selected.getFilterInfo().isMatched())
+		if(filter.getFilterInfo(selected).isMatched())
 		    selection.makeTheSelected(selected);
 	}
 }

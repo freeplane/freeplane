@@ -34,6 +34,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.security.AccessControlException;
+import java.util.Collection;
 import java.util.Vector;
 
 import javax.swing.ButtonModel;
@@ -75,7 +76,9 @@ import org.freeplane.features.filter.condition.SelectedViewCondition;
 import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.map.CloneOfSelectedViewCondition;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
+import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapNavigationUtils;
@@ -179,6 +182,27 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	public static FilterController getCurrentFilterController() {
 		return getController(Controller.getCurrentController());
 	}
+	
+    public static Filter getFilter(MapModel map) {
+        IMapSelection selection = Controller.getCurrentController().getSelection();
+        if(selection != null && selection.getMap() == map) {
+            return selection.getFilter();
+        }
+        Filter fallbackFilter = map.getExtension(Filter.class);
+        if(fallbackFilter == null) {
+            fallbackFilter  = Filter.createTransparentFilter();
+            map.putExtension(Filter.class, fallbackFilter);
+        }
+        return fallbackFilter;
+    }
+
+    public static void setFilter(MapModel map, Filter filter) {
+        IMapSelection selection = Controller.getCurrentController().getSelection();
+        if(selection != null && selection.getMap() == map)
+            selection.setFilter(filter);
+        else 
+            map.putExtension(Filter.class, filter);
+    }
 
 	public static void install() {
 		final Controller controller = Controller.getCurrentController();
@@ -225,16 +249,14 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	static final int USER_DEFINED_CONDITION_START_INDEX = 3;
 	final private QuickFilterAction quickFilterAction;
 	private int mapChangeCounter;
-    private final ViewAwareFilterAccessor filterAccessor;
 
 	public FilterController() {
 		Controller controller = Controller.getCurrentController();
 		filterMenuBuilder = new FilterMenuBuilder(controller, this);
-		filterAccessor = new ViewAwareFilterAccessor();
 		history = new FilterHistory();
 		filterChangeListener = new FilterChangeListener();
 		showAncestors = new JToggleButton.ToggleButtonModel();
-		final Filter transparentFilter = createTransparentFilter();
+		final Filter transparentFilter = Filter.createTransparentFilter();
 		hideMatchingNodes = new JToggleButton.ToggleButtonModel();
 		hideMatchingNodes.setSelected(transparentFilter.areMatchingNodesHidden());
 		hideMatchingNodes.addChangeListener(filterChangeListener);
@@ -257,7 +279,6 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		caseSensitiveButtonModel.setSelected(false);
 
 		controller.getMapViewManager().addMapViewChangeListener(this);
-		controller.getMapViewManager().addMapViewChangeListener(filterAccessor);
 		
         final AFreeplaneAction showFilterToolbar = new ToggleFilterToolbarAction("ShowFilterToolbarAction", "/filter_toolbar");
 		quickEditor = new FilterConditionEditor(this, 0, true);
@@ -340,13 +361,13 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	}
 
 	private void updateUI() {
-		final MapModel map = Controller.getCurrentController().getMap();
-		if (map != null) {
+		final IMapSelection selection = Controller.getCurrentController().getSelection();
+		if (selection != null) {
 			filterToolbar.setEnabled(true);
 			activeFilterConditionComboBox.setEnabled(true);
 			quickEditor.setEnabled(true);
-			quickEditor.mapChanged(map);
-			final Filter filter = map.getFilter();
+			final Filter filter = selection.getFilter();
+			quickEditor.filterChanged(filter);
 			updateSettingsFromFilter(filter);
 			quickFilterAction.setSelected(isFilterActive());
 
@@ -366,15 +387,75 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		final ICondition condition = condition(filter);
 		if(condition != selectedCondition && condition instanceof ASelectableCondition)
 			getFilterConditions().setSelectedItem(condition);
-		else
-			applyFilter(filter, Controller.getCurrentController().getMap(), force);
+        else {
+            applyFilter(force, filter);
+            getHistory().add(filter);
+        }
 	}
 
-	public void applyFilter(final Filter filter, MapModel map, final boolean force) {
-	    filter.applyFilter(this, map, force);
-		getHistory().add(filter);
+    public void applyFilter(MapModel map, boolean force, Filter filter) {
+        final IMapSelection selection = Controller.getCurrentController().getSelection();
+        if(selection != null && selection.getMap() == map)
+            applyFilter(force, filter);
+        else {
+            Filter oldFilter = map.putExtension(Filter.class, filter);
+            if (oldFilter == null || force || !filter.isConditionStronger(oldFilter)) {
+                filter.calculateFilterResults(map);
+            }
+        }
     }
 
+    public void applyFilter(final boolean force, final Filter filter) {
+        final IMapSelection selection = Controller.getCurrentController().getSelection();
+        if (selection != null) {
+            try {
+            	filter.displayFilterStatus();
+            	Controller.getCurrentController().getViewController().setWaitingCursor(true);
+            	final Filter oldFilter = selection.getFilter();
+            	selection.setFilter(filter);
+            	MapModel map = selection.getSelected().getMap();
+                if (force || !filter.isConditionStronger(oldFilter)) {
+            		filter.calculateFilterResults(map);
+            	}
+                final NodeModel selected = selection.getSelected();
+            	final NodeModel selectedVisible = selected.getVisibleAncestorOrSelf(filter);
+            	selection.keepNodePosition(selectedVisible, 0.5f, 0.5f);
+            	refreshMap(this, map);
+            	selectVisibleNode(filter);
+            }
+            finally {
+            	Controller.getCurrentController().getViewController().setWaitingCursor(false);
+            }
+        }
+    }
+    private void refreshMap(Object source, MapModel map) {
+        Controller.getCurrentModeController().getMapController().fireMapChanged(new MapChangeEvent(source, map, Filter.class, null, this, false));
+    }
+
+    private void selectVisibleNode(Filter filter) {
+        final IMapSelection mapSelection = Controller.getCurrentController().getSelection();
+        final Collection<NodeModel> selectedNodes = mapSelection.getSelection();
+        final NodeModel[] array = new NodeModel[selectedNodes.size()];
+        boolean next = false;
+        for(NodeModel node : selectedNodes.toArray(array)){
+            if(next){
+                if (!node.hasVisibleContent(filter)) {
+                    mapSelection.toggleSelected(node);
+                }
+            }
+            else
+                next = true;
+        }
+        NodeModel selected = mapSelection.getSelected();
+        if (!selected.hasVisibleContent(filter)) {
+            if(mapSelection.getSelection().size() > 1){
+                mapSelection.toggleSelected(selected);
+            }
+            else
+                mapSelection.selectAsTheOnlyOneSelected(selected.getVisibleAncestorOrSelf(filter));
+        }
+        mapSelection.setSiblingMaxLevel(mapSelection.getSelected().getNodeLevel(filter));
+    }
 	public void applyNoFiltering() {
 		getFilterConditions().setSelectedItem(NO_FILTERING);
 	}
@@ -425,6 +506,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		    applyToVisibleNodeOnly);
 		final JButton btnEdit = new JButton(controller.getAction("EditFilterAction"));
 		activeFilterConditionComboBox = new JComboBoxWithBorder(getFilterConditions());
+		activeFilterConditionComboBox.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		final JButton reapplyFilterBtn = new JButton(controller.getAction("ReapplyFilterAction"));
 		final JButton selectFilteredNodesBtn = new JButton(controller.getAction("SelectFilteredNodesAction"));
 		final JButton filterSelectedBtn = new JButton(controller.getAction("ApplySelectedViewConditionAction"));
@@ -458,13 +540,6 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		final DefaultConditionRenderer toolbarConditionRenderer = new DefaultConditionRenderer(TextUtils.getText("filter_no_filtering"), false);
 		activeFilterConditionComboBox.setRenderer(toolbarConditionRenderer);
 		return filterToolbar;
-	}
-
-	public Filter createTransparentFilter() {
-		if (inactiveFilter == null) {
-			inactiveFilter = Filter.createTransparentFilter();
-		}
-		return inactiveFilter;
 	}
 
 	protected ButtonModel getApplyToVisibleNodeOnly() {
@@ -655,7 +730,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	}
 
 	NodeModel findNext(final NodeModel from, final NodeModel end, final Direction direction,
-	                   final ASelectableCondition condition) {
+	                   final ASelectableCondition condition, Filter filter) {
 		NodeModel next = from;
 		for (;;) {
 			do {
@@ -672,7 +747,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 				if (next == null) {
 					return null;
 				}
-			} while (!next.hasVisibleContent());
+			} while (!next.hasVisibleContent(filter));
 			if (next == from) {
 				break;
 			}
@@ -727,10 +802,6 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		final ASelectableCondition selectedCondition = getSelectedCondition();
 		return NO_FILTERING != selectedCondition && null != selectedCondition;
 	}
-
-    public FilterAccessor getFilterAccessor() {
-        return filterAccessor;
-    }
 
     private FilterHistory getHistory() {
         return history;

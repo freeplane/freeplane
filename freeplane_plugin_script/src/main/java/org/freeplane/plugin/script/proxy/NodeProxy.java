@@ -40,6 +40,7 @@ import org.freeplane.features.explorer.MapExplorer;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.explorer.NodeNotFoundException;
 import org.freeplane.features.explorer.mindmapmode.MMapExplorerController;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.link.ConnectorModel;
@@ -303,7 +304,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public int getNodeLevel(final boolean countHidden) {
-		return getDelegate().getNodeLevel(countHidden);
+		NodeModel node = getDelegate();
+		return countHidden ? node.getNodeLevel() : node.getNodeLevel(FilterController.getFilter(node.getMap()));
 	}
 
 	// NodeRO: R
@@ -532,7 +534,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public boolean isVisible() {
-		return getDelegate().hasVisibleContent();
+        NodeModel node = getDelegate();
+		return getDelegate().hasVisibleContent(FilterController.getFilter(node.getMap()));
 	}
 
 	// Node: R/W
@@ -568,7 +571,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// Node: R/W
 	@Override
 	public void setFolded(final boolean folded) {
-		getMapController().setFolded(getDelegate(), folded);
+	    NodeModel node = getDelegate();
+        getMapController().setFolded(node, folded, FilterController.getFilter(node.getMap()));
 	}
 
     // Node: R/W

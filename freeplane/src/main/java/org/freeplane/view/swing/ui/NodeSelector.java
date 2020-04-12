@@ -78,8 +78,9 @@ public class NodeSelector {
 						if (!controller.getModeController().isBlocked() && controller.getSelection().size() <= 1) {
 							final NodeView nodeV = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class,
 							    e.getComponent());
-							if (nodeV.isDisplayable() && nodeV.getModel().hasVisibleContent()) {
-								nodeV.getMap().select();
+							MapView map = nodeV.getMap();
+							if (nodeV.isDisplayable() && nodeV.getModel().hasVisibleContent(map.getFilter())) {
+                                map.select();
 								controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
 							}
 						}

@@ -39,6 +39,7 @@ import javax.script.SimpleScriptContext;
 
 import org.apache.commons.io.FilenameUtils;
 import org.freeplane.core.util.FileUtils;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.script.proxy.ProxyFactory;
@@ -195,7 +196,8 @@ public class GenericScript implements IScript {
             // And if: Shouldn't it raise an ExecuteScriptException?
             throw new RuntimeException(e);
         } catch (final Throwable e) {
-			if (Controller.getCurrentController().getSelection() != null && node.hasVisibleContent()) {
+			IMapSelection selection = Controller.getCurrentController().getSelection();
+            if (selection != null && node != null && selection.getMap() == node.getMap() && node.hasVisibleContent(selection.getFilter())) {
                 Controller.getCurrentModeController().getMapController().select(node);
             }
             throw new ExecuteScriptException(e.getMessage(), e);

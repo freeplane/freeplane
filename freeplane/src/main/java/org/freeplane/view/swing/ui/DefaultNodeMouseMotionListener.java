@@ -12,6 +12,7 @@ import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.AutoHide;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.link.LinkController;
