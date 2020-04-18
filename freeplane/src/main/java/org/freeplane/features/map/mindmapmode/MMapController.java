@@ -204,14 +204,15 @@ public class MMapController extends MapController {
 			//$FALL-THROUGH$
 			case MMapController.NEW_CHILD: {
 				final boolean targetFolded = isFolded(targetNode);
-				IMapViewManager mapViewManager = getModeController().getController().getMapViewManager();
+				Controller controller = getModeController().getController();
+                IMapViewManager mapViewManager = controller.getMapViewManager();
 				if (targetFolded) {
 					if(! targetNode.isRoot() && mapViewManager.hasHiddenChildren(targetNode.getParentNode())){
 						mapViewManager.hideChildren(targetNode);
 						targetNode.setFolded(false);
 					}
 					else
-						unfold(targetNode);
+						unfold(targetNode, controller.getSelection().getFilter());
 				}
 				final int position = ResourceController.getResourceController().getProperty("placenewbranches").equals(
 				    "last") ? targetNode.getChildCount() - mapViewManager.getHiddenChildCount(targetNode) : 0;
@@ -863,7 +864,7 @@ public class MMapController extends MapController {
 		final NodeModel targetNode = target;
 		final boolean parentFolded = isFolded(targetNode);
 		if (parentFolded) {
-			unfold(targetNode);
+			unfold(targetNode, modeController.getController().getSelection().getFilter());
 		}
 		if (!isWriteable(target)) {
 			UITools.errorMessage(TextUtils.getText("node_is_write_protected"));

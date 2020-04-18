@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.mode.Controller;
 
@@ -24,8 +25,9 @@ public class NextNodeAction extends AFreeplaneAction {
 	 */
 	public void actionPerformed(final ActionEvent e) {
 		final FilterController filterController = FilterController.getCurrentFilterController();
-		final NodeModel start = Controller.getCurrentController().getSelection().getSelected();
-		final NodeModel next = filterController.findNext(start, null, direction, null);
+		IMapSelection selection = Controller.getCurrentController().getSelection();
+        final NodeModel start = selection.getSelected();
+		final NodeModel next = filterController.findNext(start, null, direction, null, selection.getFilter());
 		if(next != null){
 			Controller.getCurrentModeController().getMapController().select(next);
 		}

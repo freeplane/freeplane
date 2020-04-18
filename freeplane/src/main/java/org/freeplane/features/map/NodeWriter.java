@@ -31,6 +31,7 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkBuilder;
 import org.freeplane.features.map.MapWriter.Hint;
@@ -74,7 +75,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 
 	private void saveChildren(final ITreeWriter writer, final NodeModel node) throws IOException {
 		for (final NodeModel child: node.getChildren()) {
-		if (writeInvisible || child.isVisible()) {
+		if (writeInvisible || child.isVisible(FilterController.getFilter(node.getMap()))) {
 				writer.setHint(WriterHint.ALREADY_WRITTEN, isAlreadyWritten(child));
 				writer.addElement(child, nodeTag);
 			}

@@ -32,10 +32,6 @@ import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.filter.Filter;
-import org.freeplane.features.filter.FilterAccessor;
-import org.freeplane.features.filter.FilterController;
-import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -49,7 +45,6 @@ public class MapModel {
 	 */
 	protected int changesPerformedSinceLastSave = 0;
 	private final ExtensionContainer extensionContainer;
-	private FilterAccessor filterAccessor;
 	private IconRegistry iconRegistry;
 	final private List<IMapChangeListener> listeners;
 	final private Map<String, NodeModel> nodes;
@@ -63,10 +58,6 @@ public class MapModel {
 		this.root = null;
 		listeners = new LinkedList<IMapChangeListener>();
 		nodes = new HashMap<String, NodeModel>();
-		final FilterController filterController = FilterController.getCurrentFilterController();
-		if (filterController != null) {
-			filterAccessor = filterController.getFilterAccessor();
-		}
 		this.iconRegistry = iconRegistry;
 		this.nodeChangeAnnouncer = nodeChangeAnnouncer;
 	}
@@ -92,8 +83,9 @@ public class MapModel {
 		extensionContainer.addExtension(extension);
 	}
 
-	public IExtension putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
-		return extensionContainer.putExtension(clazz, extension);
+	@SuppressWarnings("unchecked")
+    public <T extends IExtension> T putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		return (T) extensionContainer.putExtension(clazz, extension);
 	}
 
 	public IExtension putExtension(final IExtension extension) {
@@ -146,10 +138,6 @@ public class MapModel {
 	 */
 	public File getFile() {
 			return url != null && url.getProtocol().equals("file") ? Compat.urlToFile(url) : null;
-	}
-
-	public Filter getFilter() {
-		return filterAccessor.getFilter(this);
 	}
 
 	public IconRegistry getIconRegistry() {
@@ -245,14 +233,10 @@ public class MapModel {
 
 	public boolean removeExtension(final IExtension extension) {
 		return extensionContainer.removeExtension(extension);
-	};
+	}
 
 	public void removeMapChangeListener(final IMapChangeListener listener) {
 		listeners.remove(listener);
-	};
-
-	public void setFilter(final Filter filter) {
-		filterAccessor.setFilter(this, filter);
 	}
 
 	public void setReadOnly(final boolean readOnly) {
@@ -317,8 +301,4 @@ public class MapModel {
 	public boolean isUndoActionRunning() {
 		return false;
 	}
-
-    FilterInfo getFilterInfo(NodeModel node) {
-        return filterAccessor.getFilterInfo(node);
-    }
 }

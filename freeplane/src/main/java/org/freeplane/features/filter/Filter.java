@@ -19,17 +19,15 @@
  */
 package org.freeplane.features.filter;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.WeakHashMap;
 
 import javax.swing.Icon;
 
+import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.hidden.NodeVisibility;
 import org.freeplane.features.filter.hidden.NodeVisibilityConfiguration;
-import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -37,41 +35,25 @@ import org.freeplane.features.mode.Controller;
 /**
  * @author Dimitry Polivaev
  */
-public class Filter {
-	static Filter createTransparentFilter() {
+public class Filter implements IExtension {
+    
+    public static Filter createTransparentFilter() {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		return new Filter(null, false, resourceController.getBooleanProperty("filter.showAncestors"), resourceController.getBooleanProperty("filter.showDescendants"), false);
 	}
 
-	public interface FilterInfoAccessor{
-		public FilterInfo getFilterInfo(NodeModel node);
+	static class FilterInfoAccessor {
+	    private final WeakHashMap<NodeModel, FilterInfo> filterInfos = new WeakHashMap<>();
+
+	    FilterInfo getFilterInfo(NodeModel node) {
+	        return filterInfos.computeIfAbsent(node, x -> new FilterInfo());
+	    }
+
 	}
 
-	static public FilterInfoAccessor DEFAULT_FILTER_INFO_ACCESSOR = new FilterInfoAccessor() {
-
-		@Override
-		public FilterInfo getFilterInfo(NodeModel node) {
-			return node.getFilterInfo();
-		}
-	};
-
-	static public Filter createOneTimeFilter(final ICondition condition, final boolean areAncestorsShown,
+	static public Filter createFilter(final ICondition condition, final boolean areAncestorsShown,
             final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly) {
-
-		FilterInfoAccessor oneTimeFilterAccessor = new FilterInfoAccessor() {
-			HashMap<NodeModel, FilterInfo> filterInfos = new HashMap<>();
-
-			@Override
-			public FilterInfo getFilterInfo(NodeModel node) {
-				FilterInfo filterInfo = filterInfos.get(node);
-				if(filterInfo == null) {
-					filterInfo = new FilterInfo();
-					filterInfos.put(node, filterInfo);
-				}
-				return filterInfo;
-			}
-		};
-		return new Filter(condition, false, areAncestorsShown, areDescendantsShown, applyToVisibleNodesOnly, oneTimeFilterAccessor);
+		return new Filter(condition, false, areAncestorsShown, areDescendantsShown, applyToVisibleNodesOnly);
 	}
 
 	final private boolean appliesToVisibleNodesOnly;
@@ -81,17 +63,13 @@ public class Filter {
 	final private FilterInfoAccessor accessor;
     final private boolean hidesMatchingNodes;
 
-    public Filter(final ICondition condition, final boolean hidesMatchingNodes, final boolean areAncestorsShown,
-            final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly) {
-		this(condition, hidesMatchingNodes, areAncestorsShown, areDescendantsShown, applyToVisibleNodesOnly, DEFAULT_FILTER_INFO_ACCESSOR);
-	}
 	public Filter(final ICondition condition, final boolean hidesMatchingNodes, final boolean areAncestorsShown,
-	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly,
-	              FilterInfoAccessor accessor) {
+	              final boolean areDescendantsShown, final boolean applyToVisibleNodesOnly) {
 		super();
 		this.condition = condition;
         this.hidesMatchingNodes = hidesMatchingNodes;
-		this.accessor = accessor;
+		this.accessor = new FilterInfoAccessor();
+
 		int options = FilterInfo.FILTER_SHOW_AS_MATCHED;
 		if (areAncestorsShown) {
 			options += FilterInfo.FILTER_SHOW_AS_ANCESTOR;
@@ -122,35 +100,6 @@ public class Filter {
 		}
 		else {
 			Controller.getCurrentController().getViewController().removeStatus("filter");
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.controller.filter.Filter#applyFilter(freeplane.modes.MindMap)
-	 */
-	public void applyFilter(Object source, final MapModel map, final boolean force) {
-		if (map == null) {
-			return;
-		}
-		try {
-			displayFilterStatus();
-			Controller.getCurrentController().getViewController().setWaitingCursor(true);
-			final Filter oldFilter = map.getFilter();
-			map.setFilter(this);
-			if (force || !isConditionStronger(oldFilter)) {
-				calculateFilterResults(map);
-			}
-			final IMapSelection selection = Controller.getCurrentController().getSelection();
-			final NodeModel selected = selection.getSelected();
-			final NodeModel selectedVisible = selected.getVisibleAncestorOrSelf();
-			selection.keepNodePosition(selectedVisible, 0.5f, 0.5f);
-			refreshMap(source, map);
-			selectVisibleNode();
-		}
-		finally {
-			Controller.getCurrentController().getViewController().setWaitingCursor(false);
 		}
 	}
 
@@ -227,7 +176,7 @@ public class Filter {
 	}
 
 	private boolean shouldRemainInvisible(final NodeModel node) {
-		return condition != null && appliesToVisibleNodesOnly && !node.hasVisibleContent();
+		return condition != null && appliesToVisibleNodesOnly && !node.hasVisibleContent(this);
 	}
 
 	private boolean filterChildren(final NodeModel node,
@@ -265,40 +214,13 @@ public class Filter {
 		FilterInfo filterInfo = getFilterInfo(node);
         return filterInfo.isNotChecked() || filterInfo.matches(this.options) != hidesMatchingNodes;
 	}
-	private void refreshMap(Object source, MapModel map) {
-		Controller.getCurrentModeController().getMapController().fireMapChanged(new MapChangeEvent(source, map, Filter.class, null, this, false));
-	}
 
 	private void resetFilter(final NodeModel node) {
 		getFilterInfo(node).reset();
 	}
 
-	private FilterInfo getFilterInfo(final NodeModel node) {
+	public FilterInfo getFilterInfo(final NodeModel node) {
 		return accessor.getFilterInfo(node);
 	}
 
-	private void selectVisibleNode() {
-		final IMapSelection mapSelection = Controller.getCurrentController().getSelection();
-		final Collection<NodeModel> selectedNodes = mapSelection.getSelection();
-		final NodeModel[] array = new NodeModel[selectedNodes.size()];
-		boolean next = false;
-		for(NodeModel node : selectedNodes.toArray(array)){
-			if(next){
-				if (!node.hasVisibleContent()) {
-					mapSelection.toggleSelected(node);
-				}
-			}
-			else
-				next = true;
-		}
-		NodeModel selected = mapSelection.getSelected();
-		if (!selected.hasVisibleContent()) {
-			if(mapSelection.getSelection().size() > 1){
-				mapSelection.toggleSelected(selected);
-			}
-			else
-				mapSelection.selectAsTheOnlyOneSelected(selected.getVisibleAncestorOrSelf());
-		}
-		mapSelection.setSiblingMaxLevel(mapSelection.getSelected().getNodeLevel(false));
-	}
 }

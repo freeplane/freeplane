@@ -68,7 +68,7 @@ public class ProxyUtils {
 
 	private static List<? extends Node> find(boolean withAncestors, boolean withDescendants, ICondition createCondition,
 											 NodeModel node, ScriptContext scriptContext) {
-		final Filter filter = Filter.createOneTimeFilter(createCondition, withAncestors, withDescendants, false);
+		final Filter filter = Filter.createFilter(createCondition, withAncestors, withDescendants, false);
 		filter.calculateFilterResults(node);
 		final List<NodeModel> allNodes = ProxyUtils.findImpl(null, node, false);
 		return ProxyUtils.createNodeList(allNodes.stream().filter(filter::isVisible)

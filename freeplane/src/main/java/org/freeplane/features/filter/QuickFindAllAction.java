@@ -70,7 +70,7 @@ class QuickFindAllAction extends AFreeplaneAction {
 		}
 		NodeModel next = rootNode;
 		for(;;){
-			next = filterController.findNext(next, rootNode, Direction.FORWARD, condition);
+			next = filterController.findNext(next, rootNode, Direction.FORWARD, condition, selection.getFilter());
 			if(next == null){
 				break;
 			}

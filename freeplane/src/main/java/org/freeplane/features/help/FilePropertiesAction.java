@@ -110,13 +110,13 @@ class FilePropertiesAction extends AFreeplaneAction {
         };
         final int nodeTotalNodeCount = getNodeCount(rootNode, trueCondition);
         final int nodeTotalLeafCount = getNodeCount(rootNode, isLeafCondition);
-        final Filter filter = map.getFilter();
+        final Filter filter = Controller.getCurrentController().getSelection().getFilter();
         final int nodeTotalFiltered;
         if(filter != null && filter.getCondition() != null){
             final ICondition matchesFilterCondition = new ICondition() {
                 @Override
 				public boolean checkNode(NodeModel node) {
-                    return node.getFilterInfo().isMatched()  && ! node.isHiddenSummary();
+                    return filter.getFilterInfo(node).isMatched()  && ! node.isHiddenSummary();
                 }
             };
             nodeTotalFiltered = getNodeCount(rootNode, matchesFilterCondition);

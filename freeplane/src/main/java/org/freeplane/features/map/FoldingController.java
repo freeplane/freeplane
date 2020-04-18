@@ -34,6 +34,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.IMouseWheelEventHandler;
 import org.freeplane.core.ui.IUserInputListenerFactory;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
@@ -212,7 +213,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		foldStageN(node, getMaxDepth(node) - 1);
 	}
 
-	public void foldStageN(final NodeModel node, final int stage) {
+	private void foldStageN(final NodeModel node, final int stage) {
 		final int k = depth(node);
 		if (k < stage) {
 			setFolded(node, false);
@@ -225,7 +226,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		}
 	}
 
-	protected int getMaxDepth(final NodeModel node) {
+	private int getMaxDepth(final NodeModel node) {
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		if (mapController.isFolded(node) || !node.hasChildren()) {
 			return depth(node);
@@ -281,7 +282,8 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 	private void setFolded(final NodeModel node, final boolean state) {
 		if (! node.isRoot()) {
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
-			mapController.setFolded(node, state);
+	        Filter filter = Controller.getCurrentController().getSelection().getFilter();
+			mapController.setFolded(node, state, filter);
 		}
 	}
 
@@ -300,7 +302,7 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		unfoldStageN(node, minDepth);
 	}
 
-	public void unfoldStageN(final NodeModel node, final int stage) {
+	private void unfoldStageN(final NodeModel node, final int stage) {
 		final int k = depth(node);
 		if (k < stage) {
 			setFolded(node, false);
@@ -317,7 +319,8 @@ public class FoldingController implements IMouseWheelEventHandler, IExtension {
 		if (node.isRoot())
 			return 0;
 		final int parentDepth = depth(node.getParentNode());
-		if (! node.hasVisibleContent() || AlwaysUnfoldedNode.isAlwaysUnfolded(node)) {
+		Filter filter = Controller.getCurrentController().getSelection().getFilter();
+        if (! node.hasVisibleContent(filter) || AlwaysUnfoldedNode.isAlwaysUnfolded(node)) {
 			return parentDepth;
 		}
 		else

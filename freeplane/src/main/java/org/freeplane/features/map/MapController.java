@@ -54,6 +54,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.DelayedRunner;
 import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.explorer.MapExplorerController;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -365,9 +366,9 @@ implements IExtension, NodeChangeAnnouncer{
 		return mapClipboardController;
 	}
 
-	public void unfoldAndScroll(final NodeModel node) {
-		final boolean wasFoldedOnCurrentView = canBeUnfoldedOnCurrentView(node);
-		unfold(node);
+	public void unfoldAndScroll(final NodeModel node, Filter filter) {
+		final boolean wasFoldedOnCurrentView = canBeUnfoldedOnCurrentView(node, filter);
+		unfold(node, filter);
 		if (wasFoldedOnCurrentView && ResourceController.getResourceController().getBooleanProperty("scrollOnUnfold")) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -379,36 +380,37 @@ implements IExtension, NodeChangeAnnouncer{
 		}
 	}
 
-	public void setFolded(final NodeModel node, final boolean fold) {
+	public void setFolded(final NodeModel node, final boolean fold, Filter filter) {
 		if(!fold || node.isRoot())
-			unfold(node);
+			unfold(node, filter);
 		else
 			fold(node);
 	}
 
 	public void toggleFolded(final NodeModel node) {
-		if (canBeUnfoldedOnCurrentView(node)) {
-			unfold(node);
+        Filter filter = Controller.getCurrentController().getSelection().getFilter();
+		if (canBeUnfoldedOnCurrentView(node, filter)) {
+			unfold(node, filter);
 		}
 		else{
 			fold(node);
 		}
 	}
 
-	public void toggleFoldedAndScroll(final NodeModel node){
-		if(canBeUnfoldedOnCurrentView(node))
-			unfoldAndScroll(node);
+	public void toggleFoldedAndScroll(final NodeModel node, Filter filter){
+		if(canBeUnfoldedOnCurrentView(node, filter))
+			unfoldAndScroll(node, filter);
 		else
 			fold(node);
 	}
 
-	public void unfold(final NodeModel node) {
+	public void unfold(final NodeModel node, Filter filter) {
 		if (node.getChildCount() == 0)
 			return;
 		final boolean hiddenChildShown = unfoldHiddenChildren(node);
 		boolean mapChanged = false;
-	    if (canBeUnfoldedOnCurrentView(node)) {
-	    	unfoldUpToVisibleChild(node);
+	    if (canBeUnfoldedOnCurrentView(node, filter)) {
+	    	unfoldUpToVisibleChild(node, filter);
 			mapChanged = true;
 		} else if (node.isFolded()) {
 			mapChanged = true;
@@ -452,13 +454,14 @@ implements IExtension, NodeChangeAnnouncer{
 			setFoldingState(node, false);
 		}
 		boolean childShown = false;
+        Filter filter = Controller.getCurrentController().getSelection().getFilter();
 		for(NodeModel child:node.getChildren()){
 			if (mapViewManager.showHiddenNode(child)) {
-				if (child.hasVisibleContent()) {
+				if (child.hasVisibleContent(filter)) {
 					childShown = true;
 					break;
-				} else if (canBeUnfoldedOnCurrentView(child)) {
-					unfoldUpToVisibleChild(child);
+				} else if (canBeUnfoldedOnCurrentView(child, filter)) {
+					unfoldUpToVisibleChild(child, filter);
 					childShown = true;
 					break;
 				}
@@ -497,26 +500,26 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 
-	public boolean canBeUnfoldedOnCurrentView(final NodeModel node) {
+	public boolean canBeUnfoldedOnCurrentView(final NodeModel node, Filter filter) {
 		final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		final boolean isFolded = mapViewManager.isFoldedOnCurrentView(node) ||  mapViewManager.hasHiddenChildren(node);
 		for(int i = 0; i < node.getChildCount(); i++){
 			final NodeModel child = node.getChildAt(i);
-			if(child.hasVisibleContent()){
+			if(child.hasVisibleContent(filter)){
 				if (isFolded)
 					return true;
-			} else if (node.getFilterInfo().isAncestor() && canBeUnfoldedOnCurrentView(child)) {
+			} else if (filter.getFilterInfo(node).isAncestor() && canBeUnfoldedOnCurrentView(child, filter)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private void unfoldUpToVisibleChild(final NodeModel node) {
+	private void unfoldUpToVisibleChild(final NodeModel node, Filter filter) {
 		for(int i = 0; i < node.getChildCount(); i++){
 			final NodeModel child = node.getChildAt(i);
-			if (!child.hasVisibleContent() && canBeUnfoldedOnCurrentView(child)) {
-				unfoldUpToVisibleChild(child);
+			if (!child.hasVisibleContent(filter) && canBeUnfoldedOnCurrentView(child, filter)) {
+				unfoldUpToVisibleChild(child, filter);
 			}
 		}
 		setFoldingState(node, false);
@@ -584,8 +587,12 @@ implements IExtension, NodeChangeAnnouncer{
 	 * link actions).
 	 */
 	public void displayNode(final NodeModel node, final ArrayList<NodeModel> nodesUnfoldedByDisplay) {
-		if (!node.hasVisibleContent()) {
-			node.getFilterInfo().reset();
+	    IMapSelection selection = Controller.getCurrentController().getSelection();
+	    if(node.getMap() != selection.getSelected().getMap())
+	        return;
+	    Filter filter = selection.getFilter();
+		if (!node.hasVisibleContent(filter)) {
+		    filter.getFilterInfo(node).reset();
 			nodeRefresh(node);
 		}
 		final NodeModel[] path = node.getPathToRoot();
@@ -1054,7 +1061,8 @@ implements IExtension, NodeChangeAnnouncer{
 			controller.getMapViewManager().changeToMap(map);
 		}
 		displayNode(node);
-		controller.getSelection().selectAsTheOnlyOneSelected(node);
+		IMapSelection selection = controller.getSelection();
+        selection.selectAsTheOnlyOneSelected(node);
 	}
 
 	public void selectMultipleNodes(final NodeModel focussed, final Collection<NodeModel> selecteds) {
@@ -1076,21 +1084,21 @@ implements IExtension, NodeChangeAnnouncer{
 		Collections.sort(collection, new NodesDepthComparator());
 	}
 
-	public void toggleFolded(final Collection<NodeModel> collection) {
-		Boolean shouldBeFolded = ! canBeUnfoldedOnCurrentView(collection);
+	public void toggleFolded(Filter filter, final Collection<NodeModel> collection) {
+		Boolean shouldBeFolded = ! canBeUnfoldedOnCurrentView(filter, collection);
 		final NodeModel nodes[] = collection.toArray(new NodeModel[]{});
 		for (final NodeModel node:nodes) {
-			setFolded(node, shouldBeFolded);
+			setFolded(node, shouldBeFolded, filter);
 		}
 	}
 
-	private boolean canBeUnfoldedOnCurrentView(Collection<NodeModel> collection) {
+	private boolean canBeUnfoldedOnCurrentView(Filter filter, Collection<NodeModel> collection) {
 		for(NodeModel node : collection){
 			if(node.isRoot())
 				return false;
 		}
 		for(NodeModel node : collection){
-			if(canBeUnfoldedOnCurrentView(node))
+			if(canBeUnfoldedOnCurrentView(node, filter))
 				return true;
 		}
 		return false;

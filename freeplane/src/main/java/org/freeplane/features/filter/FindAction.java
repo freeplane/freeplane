@@ -69,7 +69,7 @@ class FindAction extends AFreeplaneAction {
 
 		}
 		else {
-			editor.mapChanged(start.getMap());
+			editor.filterChanged(selection.getFilter());
 		}
 		editor.addAncestorListener(new AncestorListener() {
 			@Override
@@ -127,21 +127,23 @@ class FindAction extends AFreeplaneAction {
     }
 
 	void findNext(Direction direction) {
-		final MapModel map = Controller.getCurrentController().getMap();
+		Controller controller = Controller.getCurrentController();
+        final MapModel map = controller.getMap();
 		final FoundNodes info = FoundNodes.get(map);
 		if (info.condition == null) {
 			displayNoPreviousFindMessage();
 			return;
 		}
 		final FilterController filterController = FilterController.getCurrentFilterController();
-		final NodeModel start = Controller.getCurrentController().getSelection().getSelected();
+		final NodeModel start = controller.getSelection().getSelected();
 		final NodeModel root = map.getNodeForID(info.rootID);
 		if (root == null) {
 			info.condition = null;
 			displayNoPreviousFindMessage();
 			return;
 		}
-		final NodeModel next = filterController.findNext(start, null, direction, info.condition);
+		Filter filter = controller.getSelection().getFilter();
+		final NodeModel next = filterController.findNext(start, null, direction, info.condition, filter);
 		if (next == null) {
 			displayNotFoundMessage(root, info.condition);
 			return;

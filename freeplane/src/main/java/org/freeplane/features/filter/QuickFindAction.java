@@ -72,7 +72,7 @@ final class QuickFindAction extends AFreeplaneAction {
 		try
 		{
 			filterEditor.setSearchingBusyCursor();
-			next = filterController.findNext(selected, null, direction, condition);
+			next = filterController.findNext(selected, null, direction, condition, selection.getFilter());
 		}
 		finally
 		{

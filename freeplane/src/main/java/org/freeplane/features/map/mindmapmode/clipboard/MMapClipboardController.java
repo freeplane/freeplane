@@ -755,8 +755,9 @@ public class MMapClipboardController extends MapClipboardController implements M
 			UITools.errorMessage(message);
 			return;
 		}
-		try {
-			Controller.getCurrentController().getViewController().setWaitingCursor(true);
+		Controller controller = Controller.getCurrentController();
+        try {
+			controller.getViewController().setWaitingCursor(true);
 			if (newNodes == null) {
 				newNodes = new LinkedList<NodeModel>();
 			}
@@ -765,14 +766,14 @@ public class MMapClipboardController extends MapClipboardController implements M
 			final ModeController modeController = Controller.getCurrentModeController();
 			if (!asSibling && modeController.getMapController().isFolded(target)
 			        && ResourceController.getResourceController().getBooleanProperty(RESOURCE_UNFOLD_ON_PASTE)) {
-				modeController.getMapController().unfoldAndScroll(target);
+				modeController.getMapController().unfoldAndScroll(target, controller.getSelection().getFilter());
 			}
 			for (final NodeModel child : newNodes) {
 				AttributeController.getController().performRegistrySubtreeAttributes(child);
 			}
 		}
 		finally {
-			Controller.getCurrentController().getViewController().setWaitingCursor(false);
+			controller.getViewController().setWaitingCursor(false);
 		}
 	}
 

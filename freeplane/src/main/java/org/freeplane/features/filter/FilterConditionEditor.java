@@ -158,7 +158,7 @@ public class FilterConditionEditor extends JComponent {
 	final private FilterController filterController;
 	final private JComboBox filteredPropertiesComponent;
 	final private ExtendedComboBoxModel filteredPropertiesModel;
-	private WeakReference<MapModel> lastMap;
+	private WeakReference<Filter> lastFilter;
 	final private JComboBox values;
 	private ActionListener enterKeyActionListener;
 	final private JCheckBox btnDeny;
@@ -240,7 +240,7 @@ public class FilterConditionEditor extends JComponent {
         ignoreCaseAndApproximateMatchingPanel.add(ignoreDiacritics);
         ignoreDiacritics.setSelected(ResourceController.getResourceController().getBooleanProperty(
                 PROPERTY_FILTER_IGNORE_DIACRITICS));
-		mapChanged(Controller.getCurrentController().getMap());
+		filterChanged(null);
 
 		add(ignoreCaseAndApproximateMatchingPanel, gridBagConstraints);
 
@@ -310,9 +310,9 @@ public class FilterConditionEditor extends JComponent {
 
 	/**
 	 */
-	public void mapChanged(final MapModel newMap) {
-		if (newMap != null) {
-			if (lastMap != null && lastMap.get() == newMap) {
+	public void filterChanged(final Filter newFilter) {
+		if (newFilter != null) {
+			if (lastFilter != null && lastFilter.get() == newFilter) {
 				return;
 			}
 			filteredPropertiesModel.removeAllElements();
@@ -328,7 +328,7 @@ public class FilterConditionEditor extends JComponent {
 			filteredPropertiesComponent.setSelectedIndex(-1);
 			filteredPropertiesModel.setExtensionList(null);
 		}
-		lastMap = new WeakReference<MapModel>(newMap);
+		lastFilter = new WeakReference<>(newFilter);
 	}
 
 	public void setEnterKeyActionListener(ActionListener enterKeyActionListener) {

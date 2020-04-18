@@ -22,7 +22,7 @@ public class PeriodicLevelCondition extends ASelectableCondition {
 	}
 
 	public boolean checkNode(NodeModel node) {
-		final int nodeLevel = node.getNodeLevel(true);
+		final int nodeLevel = node.getNodeLevel();
 		return nodeLevel > 0 && nodeLevel % period == remainder;
 	}
 
