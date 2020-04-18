@@ -54,6 +54,7 @@ import org.freeplane.core.util.collection.ExtendedComboBoxModel;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
+import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 
@@ -240,7 +241,8 @@ public class FilterConditionEditor extends JComponent {
         ignoreCaseAndApproximateMatchingPanel.add(ignoreDiacritics);
         ignoreDiacritics.setSelected(ResourceController.getResourceController().getBooleanProperty(
                 PROPERTY_FILTER_IGNORE_DIACRITICS));
-		filterChanged(null);
+		IMapSelection selection = Controller.getCurrentController().getSelection();
+        filterChanged(selection != null ? selection.getFilter() : null);
 
 		add(ignoreCaseAndApproximateMatchingPanel, gridBagConstraints);
 
