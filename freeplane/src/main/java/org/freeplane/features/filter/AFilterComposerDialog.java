@@ -87,6 +87,8 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 
 		@Override
 		public void actionPerformed(final ActionEvent e) {
+		    if(Controller.getCurrentController().getSelection() == null)
+		        return;
 			ASelectableCondition newCond;
 			newCond = editor.getCondition();
 			if (newCond != null) {
