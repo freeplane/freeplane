@@ -31,6 +31,8 @@ import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Iterator;
 
 import javax.imageio.IIOException;
@@ -38,6 +40,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
@@ -130,8 +133,13 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 
 	@Override
 	protected void paintComponent(final Graphics g) {
-		if (componentHasNoArea() || disabledDueToJavaBug) {
-			return;
+	    AccessController.doPrivileged(//
+	            (PrivilegedAction<Void>)() -> paintComponentPrivileged(g));
+	}
+
+    private Void paintComponentPrivileged(final Graphics g) {
+        if (componentHasNoArea() || disabledDueToJavaBug) {
+			return null;
 		}
 		if (cachedImage == null && cachedImageWeakRef != null) {
 			cachedImage = cachedImageWeakRef.get();
@@ -147,7 +155,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		if (!isCachedImageValid()) {
 			final BufferedImage image = loadImageFromURL();
 			if (image == null || hasNoArea(image)) {
-				return;
+				return null;
 			}
 			BufferedImage scaledImage = null;
 			try {
@@ -155,7 +163,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			}
 			catch (final Exception e) {
 				LogUtils.severe(e);
-				return;
+				return null;
 			}
 			finally {
 				image.flush();
@@ -176,7 +184,8 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			disabledDueToJavaBug = true;
 		}
 		flushImage();
-	}
+		return null;
+    }
 
 	private void centerImagePosition(final int scaledImageWidth, final int scaledImageHeight) {
 		imageX = (getWidth() - scaledImageWidth) / 2;
