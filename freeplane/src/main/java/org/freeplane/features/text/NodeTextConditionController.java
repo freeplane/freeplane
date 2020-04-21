@@ -159,7 +159,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 			return NodeContainsCondition.loadIgnoreCase(element);
 		}
 		if (element.getName().equalsIgnoreCase(NodeContainsCondition.MATCH_CASE_NAME)) {
-			return NodeContainsCondition.loadIgnoreCase(element);
+			return NodeContainsCondition.loadMatchCase(element);
 		}
 		if (element.getName().equalsIgnoreCase(NodeTextCompareCondition.NAME)) {
 			return NodeTextCompareCondition.load(element);
