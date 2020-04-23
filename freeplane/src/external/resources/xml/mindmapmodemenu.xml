@@ -94,9 +94,11 @@
 				<Entry name="ImportMindmanagerFiles" />
 			</Entry>
 			<Entry builder="separator" />
-			<Entry name="PageAction" />
-			<Entry name="PrintPreviewAction" />
-			<Entry name="PrintAction" accelerator="control P" />
+            <Entry name="print">
+    			<Entry name="PageAction" />
+    			<Entry name="PrintPreviewAction" />
+    			<Entry name="PrintAction" accelerator="control P" />
+            </Entry>
 			<Entry builder="separator" />
 			<Entry name="FilePropertiesAction" />
 			<Entry builder="separator" />
