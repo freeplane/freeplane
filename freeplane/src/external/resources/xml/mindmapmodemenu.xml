@@ -110,34 +110,10 @@
 		</Entry>
 		<Entry name="edit">
 			<Entry usedBy = "EDITOR" >
-				<Entry name="menu_newNode">
-					<Entry name="NewChildAction" accelerator="INSERT" />
-					<Entry name="NewSiblingAction" accelerator="ENTER" />
-					<Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
-					<Entry name="NewParentNode" accelerator="shift INSERT" />
-					<Entry name="NewFreeNodeAction" />
-					<Entry name="NewSummaryAction" accelerator="alt shift INSERT"/>
-				</Entry>
-				<Entry name="CloudAction" accelerator="control shift B" />
-				<Entry name="AddConnectorAction" accelerator="control L" />
-				<Entry name="links">
-					<Entry name="SetLinkByFileChooserAction" accelerator="control shift K" />
-					<Entry name="SetLinkByTextFieldAction" accelerator="control K" />
-					<Entry name="ExtractLinkFromTextAction" />
-					<Entry builder="separator"/>
-					<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
-					<Entry name="AddMenuItemLinkAction" />
-					<Entry name="AddExecutionLinkAction" />
-					<Entry builder="separator" />
-					<Entry name="SetLinkAnchorAction" />
-					<Entry name="MakeLinkFromAnchorAction" />
-					<Entry name="MakeLinkToAnchorAction" />
-					<Entry name="ClearLinkAnchorAction" />
-				</Entry>
+                <Entry name="UndoAction" accelerator="control Z" />
+                <Entry name="RedoAction" accelerator="control Y" />
 				<Entry builder="separator" />
-				<Entry name="DeleteAction" accelerator="DELETE" />
-				<Entry builder="separator" />
-				<Entry name="menu_title">
+				<Entry name="menu_node_core">
 					<Entry name="EditAction" accelerator="F2" />
 					<Entry name="SetBooleanPropertyAction.edit_on_double_click" />
 					<Entry name="EditLongAction" accelerator="alt ENTER" />
@@ -148,36 +124,12 @@
 					<Entry builder="separator" />
 					<Entry name="SetImageByFileChooserAction" accelerator="alt shift K" />
 				</Entry>
-				<Entry name="icons">
-					<Entry name="IconSelectionPlugin" accelerator="control F2" />
-					<Entry name="menu_iconByCategory">
-						<Entry builder="icon_actions" />
-					</Entry>
-					<Entry name="progress">
-						<Entry name="IconProgressIconUpAction" accelerator="alt LESS" />
-						<Entry name="IconProgressIconDownAction" accelerator="alt shift LESS" />
-						<Entry builder="separator" />
-						<Entry name="IconProgressExtended10Action" />
-						<Entry name="IconProgressExtended25Action" />
-						<Entry builder="separator" />
-						<Entry name="IconProgressRemoveAction" />
-					</Entry>
-					<Entry name="IconUnionHierarchyAction" />
-					<Entry name="IconIntersectionHierarchyAction" />
-					<Entry name="menu_remove_icons">
-						<Entry name="RemoveIcon_0_Action" />
-						<Entry name="RemoveIconAction" />
-						<Entry name="RemoveAllIconsAction" />
-					</Entry>
-				</Entry>
 				<Entry name="menu_extensions">
 					<Entry name="EditDetailsAction" accelerator="F3" />
 					<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
 					<Entry name="CopyStyleExtensionsAction" />
 					<Entry name="DeleteDetailsAction" />
 					<Entry builder="separator" />
-					<Entry name="ExternalImageAddAction" />
-					<Entry name="ExternalImageRemoveAction" />
 					<Entry builder="separator" />
 					<Entry name="EditAttributesAction" accelerator="alt F9" />
 					<Entry name="attributes_AddAttributeAction" />
@@ -206,8 +158,6 @@
 					<Entry name="RemoveNoteAction" />
 				</Entry>
 				<Entry builder="separator" />
-				<Entry name="UndoAction" accelerator="control Z" />
-				<Entry name="RedoAction" accelerator="control Y" />
 				<Entry name="CutAction" accelerator="control X" />
 			</Entry>
 			<Entry name="menu_copy">
@@ -244,6 +194,62 @@
 				<Entry name="AllMapsNodeListAction" />
 			</Entry>
 		</Entry>
+        <Entry name="insert">
+          <Entry usedBy = "EDITOR" >
+            <Entry name="menu_newNode">
+              <Entry name="NewChildAction" accelerator="INSERT" />
+              <Entry name="NewSiblingAction" accelerator="ENTER" />
+              <Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
+              <Entry name="NewParentNode" accelerator="shift INSERT" />
+              <Entry name="NewFreeNodeAction" />
+              <Entry name="NewSummaryAction" accelerator="alt shift INSERT"/>
+              <Entry builder="separator" />
+              <Entry name="DeleteAction" accelerator="DELETE" />
+            </Entry>
+            <Entry name="CloudAction" accelerator="control shift B" />
+            <Entry name="AddConnectorAction" accelerator="control L" />
+            <Entry name="links">
+              <Entry name="SetLinkByFileChooserAction" accelerator="control shift K" />
+              <Entry name="SetLinkByTextFieldAction" accelerator="control K" />
+              <Entry name="ExtractLinkFromTextAction" />
+              <Entry builder="separator"/>
+              <Entry name="AddLocalLinkAction" accelerator="alt shift L" />
+              <Entry name="AddMenuItemLinkAction" />
+              <Entry name="AddExecutionLinkAction" />
+              <Entry builder="separator" />
+              <Entry name="SetLinkAnchorAction" />
+              <Entry name="MakeLinkFromAnchorAction" />
+              <Entry name="MakeLinkToAnchorAction" />
+              <Entry name="ClearLinkAnchorAction" />
+            </Entry>
+            <Entry name="ExternalImageAddAction" />
+            <Entry builder="separator" />
+            <Entry name="ExternalImageRemoveAction" />
+            <Entry name="icons">
+              <Entry name="IconSelectionPlugin" accelerator="control F2" />
+              <Entry name="menu_iconByCategory">
+                <Entry builder="icon_actions" />
+              </Entry>
+              <Entry name="progress">
+                <Entry name="IconProgressIconUpAction" accelerator="alt LESS" />
+                <Entry name="IconProgressIconDownAction" accelerator="alt shift LESS" />
+                <Entry builder="separator" />
+                <Entry name="IconProgressExtended10Action" />
+                <Entry name="IconProgressExtended25Action" />
+                <Entry builder="separator" />
+                <Entry name="IconProgressRemoveAction" />
+              </Entry>
+              <Entry name="IconUnionHierarchyAction" />
+              <Entry name="IconIntersectionHierarchyAction" />
+              <Entry name="menu_remove_icons">
+                <Entry name="RemoveIcon_0_Action" />
+                <Entry name="RemoveIconAction" />
+                <Entry name="RemoveAllIconsAction" />
+              </Entry>
+            </Entry>
+          </Entry>
+          <Entry builder="noActions" />
+        </Entry>
 		<Entry name="view">
 			<Entry builder="separator" />
 			<Entry name="NewMapViewAction" />
