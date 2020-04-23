@@ -1,38 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <FreeplaneUIEntries>
 	<Entry name="main_toolbar" builder="toolbar,ignore">
-		<Entry builder="separator" />
-		<Entry name="history">
-			<Entry name="BackAction" />
-			<Entry name="ForwardAction" />
-		</Entry>
-		<Entry name="update" builder="main_toolbar_update" />
-		<Entry name="main">
-			<Entry name="NavigationPreviousMapAction" />
-			<Entry name="NavigationNextMapAction" />
-		</Entry>
-		<Entry name="zoom" builder="main_toolbar_zoom" />
+        <Entry builder="separator" />
+        <Entry name="update" builder="main_toolbar_update" />
+        <Entry name="main">
+          <Entry name="NavigationPreviousMapAction" />
+          <Entry name="NavigationNextMapAction" />
+        </Entry>
+        <Entry builder="separator" />
 		<Entry name="open">
-			<Entry name="SetBooleanPropertyAction.view_mode" />
+            <Entry name="NewMapAction" />
 			<Entry name="OpenAction"/>
-			<Entry name="NewMapAction" />
 			<Entry name="SaveAction" />
-			<Entry name="SaveAsAction" />
 			<Entry name="PrintAction" />
-			<Entry name="PrintDirectAction" />
 			<Entry name="CloseAction" />
 		</Entry>
+        <Entry name="zoom" builder="main_toolbar_zoom" />
 		<Entry name="undo" usedBy = "EDITOR" >
-			<Entry builder="separator" />
 			<Entry name="UndoAction"/>
 			<Entry name="RedoAction"/>
 		</Entry>
+        <Entry builder="separator" />
+        <Entry name="SetBooleanPropertyAction.view_mode" />
+        <Entry builder="separator" />
+        <Entry name="history">
+          <Entry name="BackAction" />
+          <Entry name="ForwardAction" />
+        </Entry>
+        <Entry name="folding">
+          <Entry name="UnfoldOneLevelAction" />
+          <Entry name="FoldOneLevelAction" />
+          <Entry name="UnfoldAllAction" />
+          <Entry name="FoldAllAction" />
+        </Entry>
+        <Entry builder="separator" />
+        <Entry name="find">
+          <Entry name="FindAction" />
+          <Entry name="FindNextAction" />
+          <Entry name="FindPreviousAction" />
+          <Entry name="NodeListAction" />
+        </Entry>
         <Entry name="newNode" usedBy = "EDITOR" >
           <Entry builder="separator" />
           <Entry name="NewChildAction" />
           <Entry name="NewSiblingAction" />
         </Entry>  
 		<Entry name="font" usedBy = "EDITOR" >
+            <Entry builder="separator" />
 			<Entry builder="main_toolbar_style" />
 			<Entry builder="main_toolbar_font_name" />
 			<Entry builder="main_toolbar_font_size" />
@@ -44,29 +58,9 @@
 		</Entry>
 		<Entry usedBy = "EDITOR" >
 			<Entry builder="separator" />
-			<Entry name="TextAlignAction.LEFT" />
-			<Entry name="TextAlignAction.CENTER" />
-			<Entry name="TextAlignAction.RIGHT" />
-		</Entry>
-		<Entry usedBy = "EDITOR" >
-			<Entry builder="separator" />
 			<Entry name="CloudAction" />
 			<Entry name="CloudColorAction" />
 		</Entry>
-		<Entry builder="separator" />
-		<Entry name="folding">
-			<Entry name="UnfoldOneLevelAction" />
-			<Entry name="FoldOneLevelAction" />
-			<Entry name="UnfoldAllAction" />
-			<Entry name="FoldAllAction" />
-		</Entry>
-		<Entry name="find">
-			<Entry name="FindAction" />
-			<Entry name="FindNextAction" />
-			<Entry name="FindPreviousAction" />
-			<Entry name="NodeListAction" />
-		</Entry>
-		<Entry name="EnterPassword" />
 	</Entry>
 	<Entry name="main_menu" builder="main_menu">
 		<Entry name="file">
