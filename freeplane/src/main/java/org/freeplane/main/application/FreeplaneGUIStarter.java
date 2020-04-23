@@ -40,7 +40,6 @@ import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
-import org.freeplane.core.ui.menubuilders.generic.UserRole.Interfaces;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.MenuUtils;
@@ -111,9 +110,6 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		firstRun = !userPreferencesFile.exists();
 		new UserPropertiesUpdater().importOldProperties();
 		applicationResourceController = new ApplicationResourceController();
-		if(!userPreferencesFile.exists()) {
-			applicationResourceController.setProperty(ModeController.USER_INTERFACE_PROPERTY, Interfaces.SIMPLE.name());
-		}
 	}
 
 	@Override

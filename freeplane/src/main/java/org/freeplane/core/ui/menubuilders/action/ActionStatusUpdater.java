@@ -19,10 +19,10 @@ public class ActionStatusUpdater implements EntryPopupListener {
 	UserRole currentUserRole() {
 		Controller currentController = Controller.getCurrentController();
 		if(currentController == null)
-			return UserRole.ADVANCED_EDITOR;
+			return UserRole.EDITOR;
 		ModeController currentModeController = Controller.getCurrentModeController();
 		if(currentModeController == null)
-			return UserRole.ADVANCED_EDITOR;
+			return UserRole.EDITOR;
 		
 		MapModel map = currentController.getMap();
 		UserRole userRole = currentModeController.userRole(map);

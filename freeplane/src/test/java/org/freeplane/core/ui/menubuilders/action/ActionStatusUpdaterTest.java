@@ -25,7 +25,7 @@ public class ActionStatusUpdaterTest {
 		new EntryAccessor().setAction(actionEntry, someAction);
 
 		final ActionStatusUpdater actionSelectListener = new ActionStatusUpdater();
-		actionSelectListener.childEntriesWillBecomeVisible(menuEntry, UserRole.ADVANCED_EDITOR);
+		actionSelectListener.childEntriesWillBecomeVisible(menuEntry, UserRole.EDITOR);
 		verify(someAction).setSelected();
 	}
 
@@ -40,7 +40,7 @@ public class ActionStatusUpdaterTest {
 		new EntryAccessor().setAction(actionEntry, someAction);
 
 		final ActionStatusUpdater actionSelectListener = new ActionStatusUpdater();
-		actionSelectListener.childEntriesWillBecomeVisible(menuEntry, UserRole.ADVANCED_EDITOR);
+		actionSelectListener.childEntriesWillBecomeVisible(menuEntry, UserRole.EDITOR);
 
 		verify(someAction, never()).setSelected();
 	}

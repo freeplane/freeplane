@@ -60,8 +60,7 @@ import org.freeplane.features.ui.INodeViewLifeCycleListener;
  */
 public class ModeController extends AController implements FreeplaneActions{
 	public static final String VIEW_MODE_PROPERTY = "view_mode";
-	public static final String USER_INTERFACE_PROPERTY = "user_interface";
-	public static final List<String> USER_INTERFACE_PROPERTIES = Arrays.asList(VIEW_MODE_PROPERTY, USER_INTERFACE_PROPERTY);
+	public static final List<String> USER_INTERFACE_PROPERTIES = Arrays.asList(VIEW_MODE_PROPERTY);
 	// // 	final private Controller controller;
 	private final ExtensionContainer extensionContainer;
 	private final Collection<IExtensionCopier> copiers;
@@ -267,7 +266,7 @@ public class ModeController extends AController implements FreeplaneActions{
 	}
 
 	public UserRole userRole(MapModel map) {
-		return UserRole.ADVANCED_EDITOR;
+		return UserRole.EDITOR;
 	}
 	
 	public boolean isEditingLocked() {

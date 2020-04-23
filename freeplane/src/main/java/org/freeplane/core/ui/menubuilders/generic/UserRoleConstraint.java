@@ -24,39 +24,25 @@ package org.freeplane.core.ui.menubuilders.generic;
  * Dec 21, 2019
  */
 public enum UserRoleConstraint {
-	NO_CONSTRAINT(false, false) {
+	NO_CONSTRAINT(false) {
 		@Override
 		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
 			return entryConstraint;
 		}
 	},
-	ADVANCED(false, true) {
+	EDITOR(true) {
 		@Override
 		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
-			return entryConstraint.editorRequired ? UserRoleConstraint.ADVANCED_EDITOR : this;
+			return UserRoleConstraint.EDITOR;
 		}
-	}, 
-	EDITOR(true, false) {
-		@Override
-		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
-			return entryConstraint.advancedRequired ? UserRoleConstraint.ADVANCED_EDITOR : this;
-		}
-	}, 
-	ADVANCED_EDITOR(true, true) {
-		@Override
-		public UserRoleConstraint and(UserRoleConstraint entryConstraint) {
-			return this;
-		}
-	};
+	}; 
 	private final boolean editorRequired;
-	private final boolean advancedRequired;
-	private UserRoleConstraint(boolean editorRequired, boolean advancedRequired) {
+	private UserRoleConstraint(boolean editorRequired) {
 		this.editorRequired = editorRequired;
-		this.advancedRequired = advancedRequired;
 	}
 	
 	public boolean test(UserRole user) {
-		return (! editorRequired || user.isEditor) && (! advancedRequired || user.isAdvanced);
+		return (! editorRequired || user.isEditor);
 	}
 
 

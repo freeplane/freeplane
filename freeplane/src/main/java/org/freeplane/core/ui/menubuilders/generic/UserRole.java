@@ -24,27 +24,15 @@ package org.freeplane.core.ui.menubuilders.generic;
  * Dec 21, 2019
  */
 public enum UserRole {
-	SIMPLE_VIEWER(false, false), ADVANCED_VIEWER(false, true), 
-	SIMPLE_EDITOR(true, false), ADVANCED_EDITOR(true, true);
-
-	public enum Interfaces{
-		SIMPLE, ADVANCED
-	}
+	VIEWER(false), 
+	EDITOR(true);
 
 	final boolean isEditor;
-	final boolean isAdvanced;
-	private UserRole(boolean isEditor, boolean isAdvanced) {
+	private UserRole(boolean isEditor) {
 		this.isEditor = isEditor;
-		this.isAdvanced = isAdvanced;
 	}
-	public static UserRole of(Interfaces selectedInderface, boolean canEdit) {
-		switch (selectedInderface) {
-			case SIMPLE:
-				return canEdit ? SIMPLE_EDITOR : SIMPLE_VIEWER;
-			default:
-				return canEdit ? ADVANCED_EDITOR : ADVANCED_VIEWER;
-		}
-
+	public static UserRole of(boolean canEdit) {
+				return canEdit ? EDITOR : VIEWER;
 	}
 }
 
