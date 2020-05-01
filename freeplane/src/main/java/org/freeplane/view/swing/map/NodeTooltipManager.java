@@ -30,7 +30,6 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.MouseInsideListener;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.Compat;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
