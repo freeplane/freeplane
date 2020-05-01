@@ -607,7 +607,7 @@
               <Entry builder="separator" />
               <Entry name="DeleteAction" />
             </Entry>
-            <Entry name="menu_image" icon="/images/ExternalImageAddAction.svg">
+            <Entry name="menu_add_image" icon="/images/ExternalImageAddAction.svg">
               <Entry name="ExternalImageAddAction" />
               <Entry builder="separator" />
               <Entry name="ExternalImageRemoveAction" />
