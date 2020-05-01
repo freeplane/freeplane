@@ -117,7 +117,7 @@
 					<Entry name="EditAction" accelerator="F2" />
 					<Entry name="SetBooleanPropertyAction.edit_on_double_click" />
 					<Entry name="EditLongAction" accelerator="alt ENTER" />
-					<Entry name="SplitNode" accelerator="alt S" />
+					<Entry name="SplitNode" accelerator="alt shift S" />
 					<Entry builder="splitToWordsActions" />
 					<Entry builder="joinNodesActions" accelerator="control J" />
 					<Entry name="RevisionPluginAction" />
@@ -277,7 +277,7 @@
 				<Entry name="ToggleStatusAction" />
 				<Entry name="SetBooleanPropertyAction.show_creation_modification_in_status" />
 				<Entry name="ToggleScrollbarsAction" />
-				<Entry name="ShowFormatPanel" accelerator="alt P" />
+				<Entry name="ShowFormatPanel" accelerator="alt shift P" />
 			</Entry>
 			<Entry name="zoom">
 				<Entry name="ZoomInAction" accelerator="alt UP" />
@@ -363,7 +363,7 @@
               <Entry name="BlinkingNodeHookAction" />
               <Entry name="NodeColorBlendAction" />
               <Entry builder="separator" />
-              <Entry name="NodeBackgroundColorAction" accelerator="alt B" />
+              <Entry name="NodeBackgroundColorAction" accelerator="alt shift B" />
               <Entry builder="separator" />
               <Entry name="NodeShapeAction.fork" />
               <Entry name="NodeShapeAction.bubble" />
@@ -402,7 +402,7 @@
 				</Entry>
 				<Entry name="menu_manageStyles">
 					<Entry name="NewUserStyleAction" />
-					<Entry name="RedefineStyleAction" accelerator="alt R" />
+					<Entry name="RedefineStyleAction" accelerator="alt shift R" />
 					<Entry name="RemoveFormatAction" />
 					<Entry name="ManageConditionalStylesAction" />
 					<Entry name="ManageNodeConditionalStylesAction" />
