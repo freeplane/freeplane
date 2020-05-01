@@ -7,7 +7,7 @@ import java.util.Collections;
 import org.freeplane.features.filter.Filter;
 
 public class SummaryLevels{
-    private static final Filter TRANSPARENT_FILTER = Filter.createTransparentFilter();
+    private static final Filter TRANSPARENT_FILTER = new Filter(null, false, false, false, false);
 	public static final int NODE_NOT_FOUND = -1;
 	private static final boolean[] BOTH_SIDES = {true, false};
 	private static final boolean[] LEFT_SIDE = {true};
