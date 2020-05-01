@@ -52,6 +52,7 @@
 			<Entry name="FoldAllAction" />
 		</Entry>
 		<Entry name="find">
+			<Entry name="FPSearchAction" />
 			<Entry name="FindAction" />
 			<Entry name="FindNextAction" />
 			<Entry name="FindPreviousAction" />
@@ -229,6 +230,7 @@
 			<Entry name="ResetNodeLocationAction" accelerator="control R" />
 			<Entry builder="separator" />
 			<Entry name="find">
+				<Entry name="FPSearchAction" accelerator="control shift A" />
 				<Entry name="FindAction" accelerator="control G" />
 				<Entry name="FindNextAction"  accelerator="control shift G" />
 				<Entry name="FindPreviousAction" />
