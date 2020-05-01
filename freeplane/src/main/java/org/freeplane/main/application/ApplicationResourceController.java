@@ -42,6 +42,9 @@ import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.mindmapmode.MIconController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 /**
  * @author Dimitry Polivaev
@@ -205,36 +208,6 @@ public class ApplicationResourceController extends ResourceController {
 		});
 	}
 
-	@Override
-	public URL getFirstResource(final String... resourcePaths) {
-		final URL url = AccessController.doPrivileged(new PrivilegedAction<URL>() {
-			@Override
-			public URL run() {
-				for(final File directory : resourceDirectories) {
-					for(final String path : resourcePaths){
-						final String relName = removeSlashAtStart(path);
-						File fileResource = new File(directory, relName);
-						if (fileResource.exists()) {
-							try {
-								return Compat.fileToUrl(fileResource);
-							} catch (MalformedURLException e) {
-								throw new RuntimeException(e);
-							}
-						}
-					}
-				}
-				for(final String path : resourcePaths){
-					final URL url = ApplicationResourceController.super.getResource(path);
-					if(url  != null)
-						return url;
-				}
-				return null;
-			}
-		});
-		return url;
-
-	}
-
 	private String removeSlashAtStart(final String name) {
 		final String relName;
 		if (name.startsWith("/")) {
@@ -307,6 +280,7 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public void saveProperties() {
+        ((MIconController)MModeController.getMModeController().getExtension(IconController.class)).saveRecentlyUsedActions();
 		OutputStream out = null;
 		try {
 			out = new FileOutputStream(autoPropertiesFile);

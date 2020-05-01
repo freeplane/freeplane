@@ -3,6 +3,7 @@ package org.freeplane.features.map.mindmapmode;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.map.AlwaysUnfoldedNode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -25,7 +26,8 @@ public class SetAlwaysUnfoldedNodeFlagsAction extends AFreeplaneAction {
 	}
 
 	private void setAlwaysUnfoldedNodeFlags(final NodeModel node) {
-		if(! node.isFolded() && ! node.isRoot() && node.hasVisibleContent()){
+	    Filter filter = Controller.getCurrentController().getSelection().getFilter();
+		if(! node.isFolded() && ! node.isRoot() && node.hasVisibleContent(filter)){
 			flagController.undoableActivateHook(node, flagController);
 		}
 		for(NodeModel child : node.getChildren())

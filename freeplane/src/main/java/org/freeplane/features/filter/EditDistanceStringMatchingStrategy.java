@@ -9,8 +9,7 @@ public interface EditDistanceStringMatchingStrategy extends
 	
 	float matchProb();
 	
-	void init(final String searchTerm, final String searchText, final boolean subStringMatch,
-	          final boolean caseSensitive);
+	void init(final String searchTerm, final String searchText, final boolean subStringMatch);
 	
 }
 

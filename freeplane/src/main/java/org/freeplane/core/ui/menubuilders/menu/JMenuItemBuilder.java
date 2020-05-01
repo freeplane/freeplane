@@ -2,11 +2,15 @@ package org.freeplane.core.ui.menubuilders.menu;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 import org.dpolivaev.mnemonicsetter.MnemonicSetter;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -23,6 +27,7 @@ import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 
 public class JMenuItemBuilder implements EntryVisitor{
@@ -52,11 +57,17 @@ public class JMenuItemBuilder implements EntryVisitor{
 
 	@Override
 	public void visit(Entry entry) {
-		if ((entry.hasChildren() || entryAccessor.getAction(entry) == null) && !entryAccessor.getText(entry).isEmpty())
+	    if(Boolean.FALSE.equals(entry.getAttribute("allowed")))
+	        return;
+		if (containsSubmenu(entry))
 			addSubmenu(entry);
 		else
 			addActionItem(entry);
 	}
+
+    public boolean containsSubmenu(Entry entry) {
+        return (entry.hasChildren() || entryAccessor.getAction(entry) == null) && !entryAccessor.getText(entry).isEmpty();
+    }
 
 	private void addActionItem(Entry entry) {
 		final Component actionComponent = createActionComponent(entry);
@@ -105,11 +116,32 @@ public class JMenuItemBuilder implements EntryVisitor{
 		if(actionComponent != null){
 			menuSplitter.addMenuComponent(menu, actionComponent);
 		}
-		final JPopupMenu popupMenu = menu.getPopupMenu();
-		popupMenu.addPopupMenuListener(new PopupMenuListenerForEntry(entry, popupListener));
-		popupMenu.addPopupMenuListener(MnemonicSetter.INSTANCE);
+		PopupMenuListenerForEntry popupMenuListener = new PopupMenuListenerForEntry(entry, popupListener, resourceAccessor);
+		if(Compat.isMacOsX()) {
+			addPopupMenuListenersForMacOsX(menu, popupMenuListener);
+		}
+		else {
+			final JPopupMenu popupMenu = menu.getPopupMenu();
+			popupMenu.addPopupMenuListener(MnemonicSetter.INSTANCE);
+			popupMenu.addPopupMenuListener(popupMenuListener);
+		}
 		setTranslationKey(entry, menu);
 
+	}
+
+	private void addPopupMenuListenersForMacOsX(JMenu menu, PopupMenuListener popupMenuListener) {
+		menu.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				PopupMenuEvent popupMenuEvent = new PopupMenuEvent(e.getSource());
+				if(e.getStateChange() == ItemEvent.SELECTED) {
+				    popupMenuListener.popupMenuWillBecomeVisible(popupMenuEvent);
+				}
+				if(e.getStateChange() == ItemEvent.DESELECTED) {
+				    popupMenuListener.popupMenuWillBecomeInvisible(popupMenuEvent);
+				}
+			}
+		});
 	}
 
 	private void setTranslationKey(final Entry entry, Component actionComponent) {
@@ -125,7 +157,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {
-		return false;
+		return Boolean.FALSE.equals(entry.getAttribute("allowed")) || containsSubmenu(entry);
 	}
 
 }

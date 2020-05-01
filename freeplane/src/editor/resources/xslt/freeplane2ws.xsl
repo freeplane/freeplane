@@ -44,9 +44,10 @@
 	    </information>
 	    <resources>
 	        <!-- Application Resources -->
-	        <j2se version="1.7+"
+	        <j2se version="1.8+"
 	              href="http://java.sun.com/products/autodl/j2se"/>
 	              <jar href="freeplaneviewer.jar" main="true"/>
+	              <jar href="freeplaneapi_viewer.jar" main="false"/>
 	              <jar href="kitfox-svg-salamander-1.1.1-p1.jar" main="false"/>
 	    </resources>
 	    <security>

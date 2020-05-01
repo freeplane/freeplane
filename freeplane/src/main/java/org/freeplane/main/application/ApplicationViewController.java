@@ -30,7 +30,6 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -348,7 +347,7 @@ class ApplicationViewController extends FrameController {
 		frame.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
-				Controller.getCurrentController().quit(new ActionEvent(this, 0, "quit"));
+				Controller.getCurrentController().quit();
 			}
 			/*
 			 * fc, 14.3.2008: Completely removed, as it damaged the focus if for

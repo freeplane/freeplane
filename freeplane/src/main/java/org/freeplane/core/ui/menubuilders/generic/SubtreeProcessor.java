@@ -1,8 +1,13 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
+import java.util.function.Predicate;
+
 public class SubtreeProcessor implements EntryPopupListener {
-	public SubtreeProcessor() {
+	private final Predicate<Entry> entryFilter;
+
+    public SubtreeProcessor(Predicate<Entry> entryFilter) {
 		super();
+        this.entryFilter = entryFilter;
 	}
 
 	private PhaseProcessor processor;
@@ -13,7 +18,7 @@ public class SubtreeProcessor implements EntryPopupListener {
 
 	@Override
 	public void childEntriesWillBecomeVisible(Entry entry) {
-		if (RecursiveMenuStructureProcessor.shouldProcessOnEvent(entry)) {
+		if (entryFilter.test(entry)) {
 			buildChildren(entry);
 		}
 	}
@@ -38,7 +43,7 @@ public class SubtreeProcessor implements EntryPopupListener {
 
 	@Override
 	public void childEntriesHidden(Entry entry) {
-		if (RecursiveMenuStructureProcessor.shouldProcessOnEvent(entry)) {
+		if (entryFilter.test(entry)) {
 			destroyChildren(entry);
 		}
 	}

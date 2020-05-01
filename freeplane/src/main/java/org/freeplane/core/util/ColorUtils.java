@@ -116,4 +116,15 @@ public class ColorUtils {
 		final int b3 = b2 + (b1-b2)*a1 / NON_TRANSPARENT_ALPHA;
 		return new Color(r3, g3, b3);
 	}
+
+	public static boolean isDark(Color color) {
+		int r = color.getRed();
+		int g = color.getGreen();
+		int b = color.getBlue();
+		
+		double brightness = 0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b);
+		
+		boolean isDark = brightness < 128*128;
+		return isDark;
+	}
 }

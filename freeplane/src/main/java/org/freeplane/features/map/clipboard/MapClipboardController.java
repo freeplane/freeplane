@@ -30,6 +30,7 @@ import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -43,6 +44,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.clipboard.ClipboardController;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapWriter.Mode;
@@ -73,7 +75,7 @@ public class MapClipboardController implements IExtension, ClipboardController {
 	}
 
 	public void setClipboardContents(Transferable transferable) {
-		(Controller.getCurrentModeController().getExtension(ClipboardAccessor.class)).setClipboardContents(transferable);
+	    ClipboardAccessor.getInstance().setClipboardContents(transferable);
 	}
 
 	private void collectColors(final NodeModel node, final HashSet<Color> colors) {
@@ -241,14 +243,16 @@ public class MapClipboardController implements IExtension, ClipboardController {
 	}
 
 	public void saveHTML(final List<NodeModel> branchRootNodes, final File file) throws IOException {
-		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+		final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), //
+			StandardCharsets.UTF_8));
 		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(Controller.getCurrentModeController().getMapController(), fileout);
 		htmlWriter.writeHTML(branchRootNodes);
 	}
 
 	public boolean saveTXT(final NodeModel rootNodeOfBranch, final File file) {
 		try {
-			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), //
+				StandardCharsets.UTF_8));
 			writeTXT(rootNodeOfBranch, fileout,/* depth= */
 			0);
 			fileout.close();
@@ -281,7 +285,7 @@ public class MapClipboardController implements IExtension, ClipboardController {
 	private void writeChildrenRTF(final NodeModel node, final Writer fileout, final int depth,
 	                              final HashMap<Color, Integer> colorTable) throws IOException {
 		for (final NodeModel child : node.getChildren()) {
-			if (child.hasVisibleContent()) {
+			if (child.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
 				writeRTF(child, fileout, depth + 1, colorTable);
 			}
 			else {
@@ -293,7 +297,7 @@ public class MapClipboardController implements IExtension, ClipboardController {
 	private void writeChildrenText(final NodeModel node, final Writer fileout, final int depth, String indentation)
 	        throws IOException {
 		for (final NodeModel child : node.getChildren()) {
-			if (child.hasVisibleContent()) {
+			if (child.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
 				writeTXT(child, fileout, depth + 1, indentation);
 			}
 			else {
@@ -427,7 +431,7 @@ public class MapClipboardController implements IExtension, ClipboardController {
 		if (selection != null) {
 			final Transferable copy = copy(selection);
 			if (copy != null) {
-				ClipboardAccessor.getController().setClipboardContents(copy);
+				ClipboardAccessor.getInstance().setClipboardContents(copy);
 			}
 		}
 	}

@@ -30,8 +30,8 @@ public class ConnectorLabelEqualsCondition extends ConnectorLabelCondition {
 	public static final String NAME = "connector_label_equals";
 
 	public ConnectorLabelEqualsCondition(final String text, final boolean matchCase,
-			final boolean matchApproximately) {
-		super(text, matchCase, matchApproximately);
+			final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(text, matchCase, matchApproximately, ignoreDiacritics);
 	}
 
 	@Override
@@ -55,19 +55,14 @@ public class ConnectorLabelEqualsCondition extends ConnectorLabelCondition {
 		if (middleLabel == null) {
 			return false;
 		}
-		return getStringMatchingStrategy().matches(getText(), middleLabel, false, matchCase());
-		
-//		if (matchCase()) {
-//			return middleLabel.equals(getText());
-//		}
-//		return middleLabel.toLowerCase().equals(getText());
+		return getStringMatchingStrategy().matches(normalizedValue(), normalize(middleLabel), false);
 	}
 
 	@Override
 	protected String createDescription() {
 		final String condition = TextUtils.getText(LinkConditionController.CONNECTOR_LABEL);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_IS_EQUAL_TO);
-		return ConditionFactory.createDescription(condition, simpleCondition, getText(), matchCase(), matchApproximately());
+		return createDescription(condition, simpleCondition, getText());
 	}
 
 	@Override

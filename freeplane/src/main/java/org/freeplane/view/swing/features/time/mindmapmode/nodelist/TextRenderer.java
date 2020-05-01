@@ -37,6 +37,6 @@ class TextRenderer extends DefaultTableCellRenderer {
 
 	@Override
 	public void setValue(final Object value) {
-		setText((value == null) ? "" : ((TextHolder) value).getUntaggedNotesText());
+		setText((value == null) ? "" : ((TextHolder) value).getTextAsSingleLine());
 	}
 }

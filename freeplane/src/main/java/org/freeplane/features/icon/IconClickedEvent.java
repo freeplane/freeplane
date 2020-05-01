@@ -3,15 +3,15 @@ package org.freeplane.features.icon;
 import org.freeplane.features.map.NodeModel;
 
 public class IconClickedEvent {
-	private final UIIcon icon;
+	private final NamedIcon icon;
 	private final NodeModel node;
 	
-	public IconClickedEvent(final UIIcon icon, final NodeModel node) {
+	public IconClickedEvent(final NamedIcon icon, final NodeModel node) {
 		this.icon = icon;
 		this.node = node;
 	}
 	
-	public UIIcon getUIIcon() {
+	public NamedIcon getUIIcon() {
 		return icon;
 	}
 	

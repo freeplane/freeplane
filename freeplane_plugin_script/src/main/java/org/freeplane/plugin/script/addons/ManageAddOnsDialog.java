@@ -48,11 +48,11 @@ public class ManageAddOnsDialog extends JDialog {
 		final ManageAddOnsPanel manageAddOnsPanel = new ManageAddOnsPanel(filterNonThemes(addOns));
 		final ManageAddOnsPanel manageThemesPanel = new ManageAddOnsPanel(filterThemes(addOns));
 		addOnInstallerPanel = new AddOnInstallerPanel(manageAddOnsPanel, manageThemesPanel);
-		tabbedPane.addTab(getText("tab.install"), createIcon("/images/install_addons.png"), addOnInstallerPanel,
+		tabbedPane.addTab(getText("tab.install"), createIcon("/images/install_addons.svg"), addOnInstallerPanel,
 		    getText("tab.install.tooltip"));
-		tabbedPane.addTab(getText("tab.manage"), createIcon("/images/manage_addons.png"), manageAddOnsPanel,
+		tabbedPane.addTab(getText("tab.manage"), createIcon("/images/manage_addons.svg"), manageAddOnsPanel,
 		    getText("tab.manage.tooltip"));
-		tabbedPane.addTab(getText("tab.manage.themes"), createIcon("/images/manage_themes.png"), manageThemesPanel,
+		tabbedPane.addTab(getText("tab.manage.themes"), createIcon("/images/manage_themes.svg"), manageThemesPanel,
 		    getText("tab.manage.themes.tooltip"));
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		{

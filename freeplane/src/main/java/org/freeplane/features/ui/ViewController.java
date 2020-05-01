@@ -20,13 +20,11 @@
 package org.freeplane.features.ui;
 
 import java.awt.Component;
-import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
 import javax.swing.Icon;

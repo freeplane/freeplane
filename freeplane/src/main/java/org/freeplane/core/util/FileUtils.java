@@ -17,6 +17,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -154,7 +155,7 @@ public class FileUtils {
 		InputStream instream = null;
 		try {
 			instream = resource.openStream();
-			final BufferedReader input = new BufferedReader(new InputStreamReader(instream));
+			final BufferedReader input = new BufferedReader(new InputStreamReader(instream, StandardCharsets.UTF_8));
 			return slurp(input);
 		}
 		finally {

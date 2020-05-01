@@ -16,7 +16,7 @@ class GraphicIconFactory implements IconFactory {
 	private static final String DEFAULT_IMAGE_PATH = "/images/";
 	static final IconFactory FACTORY = new GraphicIconFactory();
 	private static final Icon ICON_NOT_FOUND = FACTORY.getIcon(ResourceController.getResourceController()
-	    .getResource(DEFAULT_IMAGE_PATH + "IconNotFound.png"));
+	    .getResource(DEFAULT_IMAGE_PATH + "IconNotFound.svg"));
 	
 	
 	private final WeakValueCache<String, Icon> ICON_CACHE = new WeakValueCache<String, Icon>();
@@ -27,11 +27,11 @@ class GraphicIconFactory implements IconFactory {
 	private GraphicIconFactory() {};
 
 	public Icon getIcon(final UIIcon uiIcon) {
-		return getIcon(uiIcon.getUrl(), DEFAULT_UI_ICON_HEIGHT);
+		return getIcon(uiIcon.getUrl(), DEFAULT_UI_ICON_HEIGTH);
 	}
 
 	public Icon getIcon(final URL url) {
-		return getIcon(url, DEFAULT_UI_ICON_HEIGHT);
+		return getIcon(url, DEFAULT_UI_ICON_HEIGTH);
 	}
 
 	private String createCacheKey(final URL url, final int heightPixels) {

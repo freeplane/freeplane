@@ -31,6 +31,8 @@ import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Iterator;
 
 import javax.imageio.IIOException;
@@ -38,9 +40,12 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.view.swing.map.MapView;
 
 import com.thebuzzmedia.imgscalr.Scalr;
 
@@ -130,9 +135,18 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 
 	@Override
 	protected void paintComponent(final Graphics g) {
-		if (componentHasNoArea() || disabledDueToJavaBug) {
-			return;
+	    AccessController.doPrivileged(//
+	            (PrivilegedAction<Void>)() -> paintComponentPrivileged(g));
+	}
+
+    private Void paintComponentPrivileged(final Graphics g) {
+        if (componentHasNoArea() || disabledDueToJavaBug) {
+			return null;
 		}
+        if(isPrinting()) {
+            paintOriginalImage(g);
+            return null;
+        }
 		if (cachedImage == null && cachedImageWeakRef != null) {
 			cachedImage = cachedImageWeakRef.get();
 			cachedImageWeakRef = null;
@@ -147,7 +161,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		if (!isCachedImageValid()) {
 			final BufferedImage image = loadImageFromURL();
 			if (image == null || hasNoArea(image)) {
-				return;
+				return null;
 			}
 			BufferedImage scaledImage = null;
 			try {
@@ -155,7 +169,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			}
 			catch (final Exception e) {
 				LogUtils.severe(e);
-				return;
+				return null;
 			}
 			finally {
 				image.flush();
@@ -176,9 +190,29 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			disabledDueToJavaBug = true;
 		}
 		flushImage();
-	}
+		return null;
+    }
 
-	private void centerImagePosition(final int scaledImageWidth, final int scaledImageHeight) {
+	private void paintOriginalImage(Graphics g) {
+        final BufferedImage image = loadImageFromURL();
+        if (image != null && !hasNoArea(image)) {
+            try {
+                g.drawImage(image, imageX, imageY, getWidth(), getHeight(), null);
+            }
+            catch (ClassCastException e) {
+                LogUtils.severe("Disabled bitmap image painting due to java bug https://bugs.openjdk.java.net/browse/JDK-8160328. Modify freeplane.sh to run java with option '-Dsun.java2d.xrender=false'");
+                disabledDueToJavaBug = true;
+            }
+        }
+    }
+
+
+    private boolean isPrinting() {
+	    MapView map = (MapView) SwingUtilities.getAncestorOfClass(MapView.class, this);
+	    return map != null && map.isPrinting();
+    }
+
+    private void centerImagePosition(final int scaledImageWidth, final int scaledImageHeight) {
 		imageX = (getWidth() - scaledImageWidth) / 2;
 		imageY = (getHeight() - scaledImageHeight) / 2;
 	}

@@ -44,7 +44,6 @@ import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
-import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
@@ -87,7 +86,6 @@ public class FModeControllerFactory {
 		modeController.addAction(new OpenPathAction());
 		userInputListenerFactory.setNodePopupMenu(new JPopupMenu());
 		final FreeplaneToolBar toolBar = new FreeplaneToolBar("main_toolbar", SwingConstants.HORIZONTAL);
-		FrameController frameController = (FrameController) controller.getViewController();
 		UIComponentVisibilityDispatcher.install(toolBar, "toolbarVisible");
 		userInputListenerFactory.addToolBar("/main_toolbar", ViewController.TOP, toolBar);
 		userInputListenerFactory.addToolBar("/filter_toolbar", FilterController.TOOLBAR_SIDE, FilterController.getCurrentFilterController().getFilterToolbar());

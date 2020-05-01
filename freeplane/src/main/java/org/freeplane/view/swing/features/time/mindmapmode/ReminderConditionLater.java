@@ -47,7 +47,7 @@ public class ReminderConditionLater extends ASelectableCondition {
 	protected String createDescription() {
 		final String reminder = TextUtils.getText(ReminderConditionController.FILTER_REMINDER);
 		final String before = TextUtils.getText(FILTER_REMINDER_LATER);
-		return ConditionFactory.createDescription(reminder, before, null, false, false);
+		return ConditionFactory.createDescription(reminder, before, null);
 	}
 
 	@Override

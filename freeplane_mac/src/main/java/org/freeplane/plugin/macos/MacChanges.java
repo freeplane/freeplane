@@ -19,7 +19,19 @@
  */
 package org.freeplane.plugin.macos;
 
+import java.awt.Desktop;
 import java.awt.EventQueue;
+import java.awt.desktop.AboutEvent;
+import java.awt.desktop.AboutHandler;
+import java.awt.desktop.OpenFilesEvent;
+import java.awt.desktop.OpenFilesHandler;
+import java.awt.desktop.OpenURIEvent;
+import java.awt.desktop.OpenURIHandler;
+import java.awt.desktop.PreferencesEvent;
+import java.awt.desktop.PreferencesHandler;
+import java.awt.desktop.QuitEvent;
+import java.awt.desktop.QuitHandler;
+import java.awt.desktop.QuitResponse;
 import java.io.File;
 import java.net.URI;
 
@@ -29,27 +41,14 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.main.application.MacOptions;
 
-import com.apple.eawt.AboutHandler;
-import com.apple.eawt.AppEvent.AboutEvent;
-import com.apple.eawt.AppEvent.OpenFilesEvent;
-import com.apple.eawt.AppEvent.OpenURIEvent;
-import com.apple.eawt.AppEvent.PreferencesEvent;
-import com.apple.eawt.AppEvent.QuitEvent;
-import com.apple.eawt.Application;
-import com.apple.eawt.OpenFilesHandler;
-import com.apple.eawt.OpenURIHandler;
-import com.apple.eawt.PreferencesHandler;
-import com.apple.eawt.QuitHandler;
-import com.apple.eawt.QuitResponse;
 
 public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesHandler, OpenURIHandler, QuitHandler{
 
-	private static Application fmMacApplication;
+	private static Desktop fmMacApplication;
 
 	private final Controller controller;
-
-	private int loadedMapCounter = 0;
 
 	static public void apply(Controller controller) {
 		new MacChanges(controller);
@@ -59,7 +58,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		this.controller = controller;
 		if(fmMacApplication==null){
 			// if a handleOpen comes here, directly, we know that FM is currently starting.
-			fmMacApplication = Application.getApplication();
+			fmMacApplication = Desktop.getDesktop();
 			fmMacApplication.setAboutHandler(this);
 			fmMacApplication.setPreferencesHandler(this);
 			fmMacApplication.setOpenFileHandler(this);
@@ -103,8 +102,7 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		try {
 			if(isStarting()) {
 				// restore at startup:
-				loadedMapCounter++;
-				System.setProperty("org.freeplane.param" + loadedMapCounter, uri.toString());
+			    MacOptions.macFilesToOpen.add(uri.toString());
 			} else {
 				// Direct loading
 				LinkController.getController().loadURI(uri);
@@ -139,8 +137,8 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		try {
 			if(isStarting()) {
 				// restore at startup:
-				loadedMapCounter++;
-				System.setProperty("org.freeplane.param" + loadedMapCounter, filePath);
+                MacOptions.macFilesToOpen.add(filePath);
+
 			} else {
 				// Direct loading
 				getModeController().getMapController().openMap(Compat.fileToUrl(new File(filePath)));

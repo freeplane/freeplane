@@ -6,23 +6,36 @@ import java.awt.Dimension;
 import java.awt.LayoutManager;
 
 import javax.swing.JToolBar.Separator;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 
-class ToolbarLayout implements LayoutManager {
+public class ToolbarLayout implements LayoutManager {
 
-	private BlockEndPosition blockEndPosition;
+    public static final int MAX_WIDTH_BY_PARENT_WIDTH = -1;
+    private BlockEndPosition blockEndPosition;
+	private int maximumWidth = MAX_WIDTH_BY_PARENT_WIDTH;
 
 	enum BlockEndPosition{ON_SEPARATOR, ANYWHERE};
 	ToolbarLayout(BlockEndPosition blockEndPosition){
 		this.blockEndPosition = blockEndPosition;
 		
 	}
-	public void addLayoutComponent(final String name, final Component comp) {
+	
+	public int getMaximumWidth() {
+        return maximumWidth;
+    }
+
+	public void setMaximumWidth(int maximumWidth) {
+        this.maximumWidth = maximumWidth;
+    }
+
+    public void addLayoutComponent(final String name, final Component comp) {
 	}
 
 	public void layoutContainer(final Container container) {
 		if(! container.isVisible())
 			return;
-		final int maxWidth = container.getParent().getWidth();
+		final int maximumWidth = calculateMaxWidth(container);
 		int heigth = 0;
 		int blockWidth = 0;
 		int blockHeight = 0;
@@ -33,11 +46,11 @@ class ToolbarLayout implements LayoutManager {
 		for (int i = 0;; i++) {
 			final Component component = i < container.getComponentCount() ? container.getComponent(i) : null;
 			if (component == null || component instanceof Separator || blockEndPosition == BlockEndPosition.ANYWHERE) {
-				if (i > container.getComponentCount() || lastBlockWidth + blockWidth > maxWidth) {
+				if (i > container.getComponentCount() || lastBlockWidth + blockWidth > maximumWidth) {
 					int x = 0;
 					for (int j = lastBlockStart; j < lastBlockFinish; j++) {
 						final Component c = container.getComponent(j);
-						final int width = getPreferredWidth(c, maxWidth);
+						final int width = getPreferredWidth(c, maximumWidth);
 						c.setBounds(x, heigth, width, lastBlockHeight);
 						x += width;
 					}
@@ -60,13 +73,28 @@ class ToolbarLayout implements LayoutManager {
 				lastBlockFinish = container.getComponentCount();
 				continue;
 			}
-			blockWidth += getPreferredWidth(component, maxWidth);
+			blockWidth += getPreferredWidth(component, maximumWidth);
 			final Dimension compPreferredSize = component.getPreferredSize();
 			blockHeight = Math.max(compPreferredSize.height, blockHeight);
 		}
 	}
+
+    private int calculateMaxWidth(final Container container) {
+        Container viewport = SwingUtilities.getAncestorOfClass(JViewport.class, container);
+        if (viewport != null)
+            return viewport.getWidth();
+        Container parent = container.getParent();
+        if (parent != null)
+            return parent.getWidth();
+        if (maximumWidth >= 0)
+            return maximumWidth;
+        
+        return Integer.MAX_VALUE;
+    }
 	private int getPreferredWidth(final Component c, final int maxWidth) {
-		final int width = c instanceof Separator && blockEndPosition == BlockEndPosition.ANYWHERE ? maxWidth : c.getPreferredSize().width;
+		final int width = ! c.isVisible() ? 0 : 
+				c instanceof Separator && blockEndPosition == BlockEndPosition.ANYWHERE ? maxWidth : 
+					c.getPreferredSize().width;
 		return width;
 	}
 
@@ -75,7 +103,7 @@ class ToolbarLayout implements LayoutManager {
 	}
 
 	public Dimension preferredLayoutSize(final Container container) {
-		final int maxWidth = container.getParent().getWidth();
+		final int maxWidth = calculateMaxWidth(container);
 		int width = 0;
 		int heigth = 0;
 		int blockWidth = 0;
@@ -118,11 +146,11 @@ class ToolbarLayout implements LayoutManager {
 	public void removeLayoutComponent(final Component comp) {
 	}
 
-	public static LayoutManager horizontal() {
+	public static ToolbarLayout horizontal() {
 		return new ToolbarLayout(BlockEndPosition.ON_SEPARATOR);
 	}
 
-	public static LayoutManager vertical() {
+	public static ToolbarLayout vertical() {
 		return new ToolbarLayout(BlockEndPosition.ANYWHERE);
 	}
 }

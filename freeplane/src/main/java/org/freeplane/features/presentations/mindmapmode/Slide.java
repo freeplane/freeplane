@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.filter.Filter;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.DisjunctConditions;
 import org.freeplane.features.filter.condition.ICondition;
@@ -157,7 +158,7 @@ public class Slide implements NamedElement<Slide>{
 		private Filter calculateFilterResults() {
 			MapModel map = getMap();
 			final ICondition condition = getEffectiveFilterCondition();
-			Filter filter = Filter.createOneTimeFilter(condition, true, showsDescendants, false);
+			Filter filter = Filter.createFilter(condition, true, showsDescendants, false);
 			filter.calculateFilterResults(map);
 			return filter;
 		}
@@ -175,7 +176,7 @@ public class Slide implements NamedElement<Slide>{
 
 		public void foldNodes() {
 			if(foldsNodes()) {
-				filter = new Filter(getEffectiveFilterCondition(), true, showsDescendants, false);
+				filter = new Filter(getEffectiveFilterCondition(), false, true, showsDescendants, false);
 				foldNodes(getMap().getRootNode());
 				filter = null;
 			}
@@ -315,7 +316,7 @@ public class Slide implements NamedElement<Slide>{
 		ArrayList<NodeModel> selectedNodes = new ArrayList<>(selectedNodeIds.size());
 		for (String id : selectedNodeIds) {
 			NodeModel node = map.getNodeForID(id);
-			if (node != null && (!onlyVisible || node.isVisible()))
+			if (node != null && (!onlyVisible || node.isVisible(Controller.getCurrentController().getSelection().getFilter())))
 				selectedNodes.add(node);
 		}
 		return selectedNodes;
@@ -420,7 +421,7 @@ public class Slide implements NamedElement<Slide>{
 			MapModel map = getMap();
 			NodeModel currentPlacedNode = map.getNodeForID(placedNodeId);
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
-			if(currentPlacedNode != null && currentPlacedNode.hasVisibleContent()) {
+			if(currentPlacedNode != null && currentPlacedNode.hasVisibleContent(selection.getFilter())) {
 				return currentPlacedNode;
 			} else {
 				return selection.getSelected();
@@ -438,7 +439,9 @@ public class Slide implements NamedElement<Slide>{
 	private void applyFilter() {
 		MapModel map = getMap();
 		final ICondition condition = getEffectiveFilterCondition();
-		new Filter(condition, showsAncestors, showsDescendants, false).applyFilter(this, map, false);
+		
+		Filter filter = new Filter(condition, false, showsAncestors, showsDescendants, false);
+		FilterController.getCurrentFilterController().applyFilter(map, false, filter);
 	}
 
 	public ICondition getEffectiveFilterCondition() {

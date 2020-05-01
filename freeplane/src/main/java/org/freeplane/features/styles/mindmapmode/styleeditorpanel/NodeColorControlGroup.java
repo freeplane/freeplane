@@ -80,7 +80,7 @@ class NodeColorControlGroup implements ControlGroup {
 		mNodeColor.layout(formBuilder);
 	}
 	
-	public void setStyle(NodeModel node) {
+	public void setStyle(NodeModel node, boolean canEdit) {
 		propertyChangeListener.setStyle(node);
 	}
 }

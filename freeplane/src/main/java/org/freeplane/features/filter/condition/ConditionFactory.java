@@ -25,16 +25,15 @@ import java.util.NoSuchElementException;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicLabelUI;
 
 import org.freeplane.core.resources.TranslatedObject;
+import org.freeplane.core.ui.svgicons.FixedSizeUIIcon;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.UIIcon;
-import org.freeplane.features.icon.ZoomedIcon;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -48,6 +47,7 @@ public class ConditionFactory {
 	public static final String FILTER_GT = ">";
 	public static final String FILTER_MATCH_CASE = "filter_match_case";
 	public static final String FILTER_MATCH_APPROX = "filter_match_approximately";
+	public static final String FILTER_IGNORE_DIACRITICS = "filter_ignore_diacritics";
 	public static final String FILTER_IS_EQUAL_TO = "filter_is_equal_to";
 	public static final String FILTER_STARTS_WITH = "filter_starts_with";
 	public static final String FILTER_IS_NOT_EQUAL_TO = "filter_is_not_equal_to";
@@ -72,17 +72,23 @@ public class ConditionFactory {
 		JLabel label = new JLabel();
 		Font font = label.getFont();
 		final int fontHeight = label.getFontMetrics(font).getHeight();
-		label.setIcon((ZoomedIcon.withHeigth(uiIcon, fontHeight)));
+		label.setIcon((FixedSizeUIIcon.withHeigth(uiIcon.getUrl(), fontHeight, uiIcon.hasStandardSize())));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setUI((BasicLabelUI)BasicLabelUI.createUI(label));
 		return label;
 	}
 
+	public static String createDescription(final String attribute, final String simpleCondition, final String value) {
+	    return createDescription(attribute, simpleCondition, value, false, false, false);
+	}
+
 	public static String createDescription(final String attribute, final String simpleCondition, final String value,
-	                                       final boolean matchCase, final boolean matchApproximately) {
+	                                       final boolean matchCase, final boolean matchApproximately,
+	                                       final boolean ignoreDiacritics) {
 		final String description = attribute + " " + simpleCondition + (value != null ? " \"" + value + "\"" : "")
 		        + (matchCase && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_MATCH_CASE) : "")
-		        + (matchApproximately && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_MATCH_APPROX) : "");
+		        + (matchApproximately && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_MATCH_APPROX) : ""
+		        + (ignoreDiacritics && value != null ? ", " + TextUtils.getText(ConditionFactory.FILTER_IGNORE_DIACRITICS) : ""));
 		return description;
 	}
 
@@ -104,9 +110,9 @@ public class ConditionFactory {
 
 	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
-	                                            final boolean matchApproximately) {
+	                                            final boolean matchApproximately, boolean ignoreDiacritics) {
 		return getConditionController(selectedItem).createCondition(selectedItem, simpleCond, value, matchCase,
-				matchApproximately);
+				matchApproximately, ignoreDiacritics);
 	}
 
 	public IElementaryConditionController getConditionController(final Object item) {

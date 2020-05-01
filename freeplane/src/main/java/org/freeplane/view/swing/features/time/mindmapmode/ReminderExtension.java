@@ -176,4 +176,8 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
 		}
 		displayState(stateAdded, parentNode, recurse);
 	}
+
+	boolean containsScript() {
+		return script != null && ! script.isEmpty();
+	}
 }

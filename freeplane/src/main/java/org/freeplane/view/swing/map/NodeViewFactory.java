@@ -19,6 +19,7 @@
  */
 package org.freeplane.view.swing.map;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
@@ -219,7 +220,8 @@ class NodeViewFactory {
 		final MapView map = nodeView.getMap();
 		view.setFont(map.getNoteFont());
 		view.setForeground(map.getNoteForeground());
-		view.setBackground(map.getNoteBackground());
+		final Color noteBackground = map.getNoteBackground();
+		view.setBackground(noteBackground != null ? noteBackground : map.getBackground());
 		view.setHorizontalAlignment(map.getNoteHorizontalAlignment());
 		view.updateText(newText);
 		view.setMinimumWidth(minNodeWidth);

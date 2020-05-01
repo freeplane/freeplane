@@ -36,7 +36,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterInfo;
-import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.ui.INodeViewVisitor;
 
 /**
@@ -70,7 +70,6 @@ public class NodeModel{
 
 	private List<NodeModel> children;
 	private NodeModel parent;
-	final private FilterInfo filterInfo;
 	private String id;
 	private MapModel map = null;
 	private int position = NodeModel.UNKNOWN_POSITION;
@@ -99,7 +98,6 @@ public class NodeModel{
 		children = new ArrayList<NodeModel>();
 		sharedData = new SharedNodeData();
 		init(userObject);
-		filterInfo = new FilterInfo();
 		clones = new Clones[]{new DetachedNodeList(this, TREE), new DetachedNodeList(this, CONTENT)};
 	}
 
@@ -107,7 +105,6 @@ public class NodeModel{
 		this.map = toBeCloned.map;
 		this.sharedData = toBeCloned.sharedData;
 		children = new ArrayList<NodeModel>();
-		filterInfo = new FilterInfo();
 		clones = new Clones[]{new DetachedNodeList(this, cloneType == TREE ? toBeCloned : this, TREE), new DetachedNodeList(this, toBeCloned, CONTENT)};
 	}
 
@@ -137,14 +134,14 @@ public class NodeModel{
 		return getExtensionContainer().putExtension(clazz, extension);
 	}
 
-	public void addIcon(final MindIcon icon) {
+	public void addIcon(final NamedIcon icon) {
 		getIconModel().addIcon(icon);
 		if (map != null) {
 			map.getIconRegistry().addIcon(icon);
 		}
 	}
 
-	public void addIcon(final MindIcon icon, final int position) {
+	public void addIcon(final NamedIcon icon, final int position) {
 		getIconModel().addIcon(icon, position);
 		getMap().getIconRegistry().addIcon(icon);
 	}
@@ -256,19 +253,15 @@ public class NodeModel{
 		return getExtensionContainer().getExtensions();
 	};
 
-	public FilterInfo getFilterInfo() {
-		return filterInfo;
-	}
-
 	public HistoryInformationModel getHistoryInformation() {
 		return sharedData.getHistoryInformation();
 	}
 
-	public MindIcon getIcon(final int position) {
+	public NamedIcon getIcon(final int position) {
 		return getIconModel().getIcon(position);
 	}
 
-	public List<MindIcon> getIcons() {
+	public List<NamedIcon> getIcons() {
 		return getIconModel().getIcons();
 	}
 
@@ -284,11 +277,19 @@ public class NodeModel{
 		return map;
 	}
 
-	public int getNodeLevel(final boolean countHidden) {
+    public int getNodeLevel() {
+        return getNodeLevel(true, null);
+    }
+    
+    public int getNodeLevel(Filter filter) {
+        return getNodeLevel(false, filter);
+    }
+    
+    private int getNodeLevel(final boolean countHidden, Filter filter) {
 		int level = 0;
 		NodeModel parent;
 		for (parent = getParentNode(); parent != null; parent = parent.getParentNode()) {
-			if (countHidden || parent.isVisible()) {
+			if (countHidden || parent.isVisible(filter)) {
 				level++;
 			}
 		}
@@ -300,7 +301,7 @@ public class NodeModel{
 	}
 
 	public NodeModel[] getPathToRoot() {
-		int i = getNodeLevel(true);
+		int i = getNodeLevel();
 		final NodeModel[] path = new NodeModel[i + 1];
 		NodeModel node = this;
 		while (i >= 0) {
@@ -410,12 +411,11 @@ public class NodeModel{
 		return getMap().getRootNode() == this;
 	}
 
-	public boolean hasVisibleContent() {
-		return ! isHiddenSummary() && satisfiesFilter();
+	public boolean hasVisibleContent(Filter filter) {
+		return ! isHiddenSummary() && satisfies(filter);
 	}
 
-	private boolean satisfiesFilter() {
-		final Filter filter = getMap().getFilter();
+	private boolean satisfies(Filter filter) {
 		return (filter == null || filter.isVisible(this));
 	}
 
@@ -423,8 +423,8 @@ public class NodeModel{
 		return SummaryNode.isHidden(this);
 	}
 
-	public boolean isVisible() {
-		return isHiddenSummary() || satisfiesFilter();
+	public boolean isVisible(Filter filter) {
+		return isHiddenSummary() || satisfies(filter);
 	}
 
 	public void remove(final int index) {
@@ -574,9 +574,9 @@ public class NodeModel{
 		insert(newNodeModel, getChildCount());
 	}
 
-	public NodeModel getVisibleAncestorOrSelf() {
+	public NodeModel getVisibleAncestorOrSelf(Filter filter) {
 		NodeModel node = this;
-		while (!node.hasVisibleContent()) {
+		while (!node.hasVisibleContent(filter)) {
 			node = node.getParentNode();
 		}
 		return node;

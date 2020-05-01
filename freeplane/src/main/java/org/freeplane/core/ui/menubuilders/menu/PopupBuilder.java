@@ -6,21 +6,27 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 
 public class PopupBuilder implements EntryVisitor {
-	final private EntryPopupListener popupListener;
-	private final JPopupMenu nodePopupMenu;
+	private final EntryPopupListener popupListener;
+	private final JPopupMenu popupMenu;
+    private final ResourceAccessor resourceAccessor;
 
-	public PopupBuilder(final JPopupMenu nodePopupMenu, final EntryPopupListener popupListener) {
+	public PopupBuilder(final JPopupMenu nodePopupMenu, final EntryPopupListener popupListener, 
+	        ResourceAccessor resourceAccessor) {
 		super();
 		this.popupListener =popupListener;
-		this.nodePopupMenu = nodePopupMenu;
+		this.popupMenu = nodePopupMenu;
+        this.resourceAccessor = resourceAccessor;
 	}
 
 	@Override
 	public void visit(Entry target) {
-		nodePopupMenu.addPopupMenuListener(new PopupMenuListenerForEntry(target, popupListener));
-		new EntryAccessor().setComponent(target, nodePopupMenu);
+		popupMenu.addPopupMenuListener(new PopupMenuListenerForEntry(target, popupListener, resourceAccessor));
+		EntryAccessor entryAccessor = new EntryAccessor();
+		entryAccessor.setText(target, "popup");
+        entryAccessor.setComponent(target, popupMenu);
 	}
 
 	@Override

@@ -198,7 +198,6 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 	@Override
 	protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
 		if(viewport != null){
-			MapView mapView = (MapView) viewport.getView();
 			final ActionAcceleratorManager acceleratorManager = ResourceController.getResourceController().getAcceleratorManager();
 			if(acceleratorManager.canProcessKeyEvent(e))
 				return false;

@@ -12,8 +12,9 @@ import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.core.ui.components.AutoHide;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.icon.IconController;
-import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.FoldingController;
 import org.freeplane.features.map.MapController;
@@ -72,7 +73,7 @@ public class DefaultNodeMouseMotionListener implements IMouseListener {
 		final MapController mapController = mc.getMapController();
 		if(e.getButton() == 1){
 			if(plainEvent){
-				UIIcon uiIcon = component.getUIIconAt(e.getPoint());
+				NamedIcon uiIcon = component.getUIIconAt(e.getPoint());
 				if(uiIcon != null){
 					final IconController iconController = mc.getExtension(IconController.class);
 					if(iconController.onIconClicked(node, uiIcon))

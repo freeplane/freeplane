@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
@@ -119,11 +120,11 @@ public class MapLoader{
 				try{
 					map = loadMap();
 					if (withView) {
-						createMapView(map);
-						enableAutosave(map);
 						final File newFile = urlToFileOrNull(newMapLocation);
 						if(newFile != null && ! asDocumentation)
 							fileManager().lock(map, newFile);
+						createMapView(map);
+						enableAutosave(map);
 					}
 				}
 				finally {
@@ -181,9 +182,9 @@ public class MapLoader{
 
 	private static URL fileToUrlOrNull(final File file) {
 		try {
-			return Compat.fileToUrl(file);
+			return Compat.fileToUrl(file.getCanonicalFile());
 		}
-		catch (MalformedURLException e) {
+		catch (IOException e) {
 			return null;
 		}
 	}
@@ -264,13 +265,13 @@ public class MapLoader{
 		final MMapModel map = new MMapModel();
 		if(asDocumentation) {
 			map.setReadOnly(true);
-			map.addExtension(DocuMapAttribute.instance);
+			map.addExtension(DocuMapAttribute.INSTANCE);
 		}
 		return map;
 	}
 
 	private void loadMapContent(final MMapModel map) throws IOException, XMLException {
-		try (InputStreamReader urlStreamReader = new InputStreamReader(inputStream)) {
+		try (InputStreamReader urlStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 			final ModeController modeController = Controller.getCurrentModeController();
 			modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
 		}

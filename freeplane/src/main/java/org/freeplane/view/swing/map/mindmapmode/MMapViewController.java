@@ -22,6 +22,7 @@ package org.freeplane.view.swing.map.mindmapmode;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+
 import javax.swing.JComponent;
 
 import org.apache.commons.lang.StringUtils;
@@ -31,9 +32,9 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
+import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.features.text.mindmapmode.EditNodeWYSIWYG;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
-import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.MapViewController;
@@ -45,12 +46,13 @@ import org.freeplane.view.swing.map.ZoomableLabel;
  * Jan 31, 2009
  */
 public class MMapViewController extends MapViewController implements IEditBaseCreator {
+	@Override
 	public EditNodeBase createEditor(final NodeModel node, final EditNodeBase.IEditControl editControl,
                              String text, final boolean editLong) {
 	    final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
 		final boolean editInternalWysiwyg = editLong && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
 		final boolean editExternal = editLong && StringUtils.equals(htmlEditingOption, "external");
-		if(! HtmlUtils.isHtmlNode(text)){
+		if(! HtmlUtils.isHtml(text)){
 			text = HtmlUtils.plainToHTML(text);
 		}
 		if (editInternalWysiwyg) {
@@ -83,7 +85,8 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	            editNodeWYSIWYG.setTitle("edit_details");
                 editNodeWYSIWYG.setFont(map.getDetailFont());
                 editNodeWYSIWYG.setTextColor(map.getDetailForeground());
-                editNodeWYSIWYG.setBackground (map.getDetailBackground());
+    			final Color detailBackground = map.getDetailBackground();
+                editNodeWYSIWYG.setBackground (detailBackground != null ? detailBackground : nodeView.getTextBackground());
                 editNodeWYSIWYG.setTextAlignment(map.getDetailHorizontalAlignment());
 			}
 			else if(EditedComponent.NOTE.equals(editControl.getEditType())){
@@ -91,7 +94,8 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	            editNodeWYSIWYG.setTitle("edit_note");
                 editNodeWYSIWYG.setFont(map.getNoteFont());
                 editNodeWYSIWYG.setTextColor(map.getNoteForeground());
-                editNodeWYSIWYG.setBackground (map.getNoteBackground());
+                final Color noteBackground = map.getNoteBackground();
+				editNodeWYSIWYG.setBackground (noteBackground != null ? noteBackground : map.getBackground());
                 editNodeWYSIWYG.setTextAlignment(map.getNoteHorizontalAlignment());
 			}
 			return editNodeWYSIWYG;
@@ -106,7 +110,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 		}
 		return createEditor(node, editControl, text, true);
     }
-	
+
 	private EditNodeBase createEditor(final NodeModel node, final EditedComponent parent, final String text,
 	                                                     final IEditControl editControl) {
 		final ZoomableLabel parentComponent;
@@ -126,11 +130,13 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 		if(parentComponent == null || ! parentComponent.isVisible()){
 			return null;
 		}
-		final EditNodeTextField textField = new EditNodeTextField(node, (ZoomableLabel) parentComponent, text, editControl);
+		final EditNodeTextField textField = new EditNodeTextField(node, parentComponent, text, editControl);
 		if(EditedComponent.TEXT.equals(parent))
 			textField.setBackground (nodeView.getTextBackground());
-		else if(EditedComponent.DETAIL.equals(parent))
-			textField.setBackground (nodeView.getMap().getDetailBackground());
+		else if(EditedComponent.DETAIL.equals(parent)) {
+			final Color detailBackground = nodeView.getMap().getDetailBackground();
+			textField.setBackground (detailBackground != null ? detailBackground : nodeView.getTextBackground());
+		}
 		return textField;
 	}
 
@@ -138,5 +144,5 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 		super(controller);
 		new EditNodeTextField(null, null, null, null);
     }
-	
+
 }

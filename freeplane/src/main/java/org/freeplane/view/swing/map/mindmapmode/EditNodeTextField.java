@@ -19,65 +19,8 @@
  */
 package org.freeplane.view.swing.map.mindmapmode;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Toolkit;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.io.Writer;
-import java.net.URI;
-import java.text.AttributedCharacterIterator;
-
-import javax.swing.Action;
-import javax.swing.ActionMap;
-import javax.swing.Icon;
-import javax.swing.InputMap;
-import javax.swing.JEditorPane;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JPopupMenu;
-import javax.swing.KeyStroke;
-import javax.swing.RootPaneContainer;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.border.MatteBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultEditorKit;
-import javax.swing.text.DefaultEditorKit.PasteAction;
-import javax.swing.text.Document;
-import javax.swing.text.JTextComponent;
-import javax.swing.text.NavigationFilter;
-import javax.swing.text.Position.Bias;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledEditorKit;
-import javax.swing.text.StyledEditorKit.BoldAction;
-import javax.swing.text.StyledEditorKit.ForegroundAction;
-import javax.swing.text.StyledEditorKit.ItalicAction;
-import javax.swing.text.StyledEditorKit.StyledTextAction;
-import javax.swing.text.StyledEditorKit.UnderlineAction;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.HTMLWriter;
-import javax.swing.text.html.StyleSheet;
-
+import com.lightdev.app.shtm.SHTMLPanel;
+import com.lightdev.app.shtm.SHTMLWriter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
@@ -86,6 +29,7 @@ import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.clipboard.ClipboardAccessor;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -104,7 +48,29 @@ import org.freeplane.view.swing.map.ZoomableLabel;
 import org.freeplane.view.swing.map.ZoomableLabelUI;
 import org.freeplane.view.swing.map.ZoomableLabelUI.LayoutData;
 
-import com.lightdev.app.shtm.SHTMLWriter;
+import javax.swing.*;
+import javax.swing.border.MatteBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.*;
+import javax.swing.text.DefaultEditorKit.PasteAction;
+import javax.swing.text.Position.Bias;
+import javax.swing.text.StyledEditorKit.BoldAction;
+import javax.swing.text.StyledEditorKit.ItalicAction;
+import javax.swing.text.StyledEditorKit.StyledTextAction;
+import javax.swing.text.StyledEditorKit.UnderlineAction;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.HTMLWriter;
+import javax.swing.text.html.StyleSheet;
+import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.*;
+import java.io.IOException;
+import java.io.Writer;
+import java.net.URI;
+import java.text.AttributedCharacterIterator;
 
 
 /**
@@ -368,8 +334,7 @@ public class EditNodeTextField extends EditNodeBase {
 				case KeyEvent.VK_ENTER: {
 					if (e.isControlDown() || e.isMetaDown())
 						break;
-					final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
-					if (enterConfirms == e.isAltDown() || e.isShiftDown()) {
+					if (e.isAltDown() || e.isShiftDown()) {
 						e.consume();
 						final Component component = e.getComponent();
 						final KeyEvent keyEvent = new KeyEvent(component, e.getID(), e.getWhen(), 0, keyCode, e
@@ -462,18 +427,6 @@ public class EditNodeTextField extends EditNodeBase {
 
 	private class MapViewChangeListener implements IMapViewChangeListener{
 		@Override
-		public void afterViewChange(Component oldView, Component newView) {
-        }
-
-		@Override
-		public void afterViewClose(Component oldView) {
-        }
-
-		@Override
-		public void afterViewCreated(Component mapView) {
-        }
-
-		@Override
 		public void beforeViewChange(Component oldView, Component newView) {
 			final String output = getNewText();
 			hideMe();
@@ -501,8 +454,8 @@ public class EditNodeTextField extends EditNodeBase {
 				if (target == null) {
 					return;
 				}
-				final Transferable contents = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(this);
-				if(contents.isDataFlavorSupported(DataFlavor.stringFlavor)){
+				final Transferable contents = ClipboardAccessor.getInstance().getClipboardContents();
+				if(contents !=  null && contents.isDataFlavorSupported(DataFlavor.stringFlavor)){
 					try {
 						String text = (String) contents.getTransferData(DataFlavor.stringFlavor);
 						target.replaceSelection(text);
@@ -525,16 +478,16 @@ public class EditNodeTextField extends EditNodeBase {
 		underlineAction.putValue(Action.NAME, TextUtils.getText("UnderlineAction.text"));
 		underlineAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control U"));
 
-		redAction = new ForegroundAction(TextUtils.getText("red"), Color.RED);
+		redAction = new ForegroundAction(TextUtils.getText("red"), SHTMLPanel.DARK_RED, SHTMLPanel.LIGHT_RED);
 		redAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control R"));
 
-		greenAction = new ForegroundAction(TextUtils.getText("green"), new Color(0, 0x80, 0));
+		greenAction = new ForegroundAction(TextUtils.getText("green"), SHTMLPanel.DARK_GREEN, SHTMLPanel.LIGHT_GREEN);
 		greenAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control G"));
 
-		blueAction = new ForegroundAction(TextUtils.getText("blue"), new Color(0, 0, 0xc0));
+		blueAction = new ForegroundAction(TextUtils.getText("blue"), SHTMLPanel.DARK_BLUE, SHTMLPanel.LIGHT_BLUE);
 		blueAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control L"));
 
-		blackAction = new ForegroundAction(TextUtils.getText("black"), Color.BLACK);
+		blackAction = new ForegroundAction(TextUtils.getText("black"), Color.BLACK, Color.WHITE);
 		blackAction.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke("control K"));
 
 		defaultColorAction = new ExtendedEditorKit.RemoveStyleAttributeAction(StyleConstants.Foreground, TextUtils.getText("DefaultColorAction.text"));
@@ -606,8 +559,8 @@ public class EditNodeTextField extends EditNodeBase {
 	private int verticalSpace;
 	private int horizontalSpace;
 	private MapViewChangeListener mapViewChangeListener;
-
-	@Override
+	
+    @Override
     protected JPopupMenu createPopupMenu(Component component) {
 		JPopupMenu menu = super.createPopupMenu(component);
 	    JMenu formatMenu = new JMenu(TextUtils.getText("simplyhtml.formatLabel"));

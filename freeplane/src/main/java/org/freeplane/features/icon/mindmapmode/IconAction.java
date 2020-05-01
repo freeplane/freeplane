@@ -23,67 +23,66 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.KeyStroke;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.icon.IIconInformation;
+import org.freeplane.core.ui.menubuilders.generic.UserRoleConstraint;
+import org.freeplane.core.ui.svgicons.FixedSizeUIIcon;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.MindIcon;
-import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.factory.IconFactory;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
 
-class IconAction extends AMultipleNodeAction implements IIconInformation {
+public class IconAction extends AMultipleNodeAction implements IconDescription {
 
-	private static final long serialVersionUID = 1L;
-	final private MindIcon mindIcon;
+    private static final long serialVersionUID = 1L;
+    final private MindIcon mindIcon;
 
-	public IconAction( final MindIcon _icon) {
-		super("IconAction." + _icon.getName(), _icon.getTranslatedDescription(), null);
-		mindIcon = _icon;
-		setIcon(getIcon());
-		putValue(Action.SHORT_DESCRIPTION, getTranslatedDescription());
-	}
+    public IconAction( final MindIcon mindIcon) {
+        super("IconAction." + mindIcon.getName(), mindIcon.getTranslatedDescription(), null);
+        this.mindIcon = mindIcon;
+        setIcon(FixedSizeUIIcon.withHeigth(//
+                mindIcon.getUrl(), IconFactory.DEFAULT_UI_ICON_HEIGTH.toBaseUnitsRounded(), mindIcon.hasStandardSize()));
+        putValue(Action.SHORT_DESCRIPTION, getTranslatedDescription());
+        addConstraint(UserRoleConstraint.EDITOR);
+    }
 
-	private MindIcon replaceByUserDefinedIcon() {
-		return IconStoreFactory.ICON_STORE.getMindIcon(mindIcon.getName());
-	}
+    private MindIcon replaceByUserDefinedIcon() {
+        return IconStoreFactory.ICON_STORE.getMindIcon(mindIcon.getName());
+    }
 
-	@Override
-	public void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MIconController) IconController.getController()).addIcon(node, replaceByUserDefinedIcon());
-	}
-	
-	public String getDescriptionTranslationKey() {
-		return mindIcon.getDescriptionTranslationKey();
-	}
+    @Override
+    public void actionPerformed(final ActionEvent e, final NodeModel node) {
+        ((MIconController) IconController.getController()).addIconByUserAction(node, this);
+    }
+    
+    public String getDescriptionTranslationKey() {
+        return mindIcon.getDescriptionTranslationKey();
+    }
 
-	@Override
-	public String getTextKey() {
-		return getDescriptionTranslationKey();
-	}
+    @Override
+    public String getTextKey() {
+        return getDescriptionTranslationKey();
+    }
 
-	public String getTranslatedDescription() {
-		return mindIcon.getTranslatedDescription();
-	}
+    public String getTranslatedDescription() {
+        return mindIcon.getTranslatedDescription();
+    }
 
-	public Icon getIcon() {
-		return IconFactory.getInstance().getIcon(replaceByUserDefinedIcon());
-	}
+    public Icon getIcon() {
+        return IconFactory.getInstance().getIcon(replaceByUserDefinedIcon());
+    }
+    
+    public Icon getActionIcon() {
+        return (Icon) getValue(Action.SMALL_ICON);
+    }
+    
+    public MindIcon getMindIcon() {
+        return replaceByUserDefinedIcon();
+    }
 
-	public KeyStroke getKeyStroke() {
-		final String keystrokeResourceName = mindIcon.getShortcutKey();
-		final String keyStrokeDescription = ResourceController.getResourceController().getProperty(keystrokeResourceName);
-		return UITools.getKeyStroke(keyStrokeDescription);
-	}
-
-	public MindIcon getMindIcon() {
-		return replaceByUserDefinedIcon();
-	}
-
-	public String getShortcutKey() {
-		return mindIcon.getShortcutKey();
-	}
+    public String getShortcutKey() {
+        return mindIcon.getShortcutKey();
+    }
 }

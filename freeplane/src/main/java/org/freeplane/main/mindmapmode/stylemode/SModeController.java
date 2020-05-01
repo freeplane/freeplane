@@ -122,7 +122,7 @@ public class SModeController extends MModeController {
     }
 
 	public boolean canEdit(NodeModel model) {
-		return model.getNodeLevel(true) >= 2;
+		return model.getNodeLevel() >= 2;
 	}
 
 	public boolean shouldCenterCompactMaps() {

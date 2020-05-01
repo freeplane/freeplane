@@ -16,7 +16,8 @@ public class NoteStyleAccessor {
 	final private String rule;
 	final private Color noteForeground;
 	public NoteStyleAccessor(ModeController modeController, NodeModel node, float zoom, boolean asHtmlFragment) {
-		MapModel map = modeController.getController().getMap();
+		final Controller controller = modeController.getController();
+		MapModel map = controller.getMap();
 		if(map != null){
 			final MapStyleModel model = MapStyleModel.getExtension(map);
 			final NodeModel noteStyleNode = model.getStyleNodeSafe(MapStyleModel.NOTE_STYLE);
@@ -32,7 +33,8 @@ public class NoteStyleAccessor {
 			else
 				cssRuleBuilder.withCSSFont(noteFont);
 			cssRuleBuilder.withColor(noteForeground)
-			.withBackground(noteBackground)
+			.withBackground((noteBackground != null ? noteBackground : //
+				controller.getMapViewManager().getMapViewComponent().getBackground()))
 			.withAlignment(alignment);
 			if(asHtmlFragment)
 				cssRuleBuilder.withMaxWidthAsPt(zoom, NodeSizeModel.getMaxNodeWidth(noteStyleNode), style.getMaxWidth(node));

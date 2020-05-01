@@ -25,6 +25,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,9 +34,12 @@ import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -270,7 +274,7 @@ class MindMapHTMLWriter {
 	private int writeHTML(final NodeModel model, final String parentID, int lastChildNumber, final boolean isRoot,
 	                      final boolean treatAsParagraph, final int depth)
 	        throws IOException {
-		if (!model.hasVisibleContent()) {
+		if (!model.hasVisibleContent(FilterController.getFilter(model.getMap()))) {
 			for (final NodeModel child : model.getChildren()) {
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber, false, false, depth);
 			}
@@ -381,15 +385,20 @@ class MindMapHTMLWriter {
 
 	private void writeIcons(final NodeModel model) throws IOException {
 		final IconController iconController = IconController.getController();
-		final Collection<MindIcon> icons = iconController.getIcons(model);
-		for (MindIcon icon : icons) {
-			final String iconFileName = icon.getSource();
-			fileout.write("<img src=\"icons/" + iconFileName + "\" alt=\"" + icon.getTranslatedDescription() + "\"");
-			if (iconFileName.endsWith(".svg")) {
-				final Quantity<LengthUnits> iconSize = iconController.getIconSize(model);
-				fileout.write(" height = \"" + iconSize.toBaseUnitsRounded() + "\"");
+		final Collection<NamedIcon> icons = iconController.getIcons(model);
+		for (NamedIcon icon : icons) {
+			if(icon instanceof MindIcon) {
+				MindIcon mindIcon = (MindIcon) icon;
+				try {
+                    final String iconFile =  new URI(null, mindIcon.getFile(), null).toString();
+                    fileout.write("<img src=\"icons/" + iconFile + "\" alt=\"" + mindIcon.getTranslatedDescription() + "\"");
+                    final Quantity<LengthUnits> iconSize = iconController.getIconSize(model);
+                    fileout.write(" height = \"" + iconSize.toBaseUnitsRounded() + "\"");
+                    fileout.write(">");
+                } catch (Exception e) {
+                    LogUtils.severe(e);
+                }
 			}
-			fileout.write(">");
 		}
 	}
 

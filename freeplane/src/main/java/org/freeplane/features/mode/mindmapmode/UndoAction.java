@@ -27,6 +27,7 @@ import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
@@ -94,7 +95,7 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener{
 		}
 	}
 	@Override
-    public void afterMapChange(final Object newMap) {};
+    public void afterMapChange(UserRole userRole, boolean isMapSelected) {};
 
 	public void setRedo(final Action redo) {
 		this.redo = redo;

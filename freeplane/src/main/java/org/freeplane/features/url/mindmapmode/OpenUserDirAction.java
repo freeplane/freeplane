@@ -24,6 +24,7 @@ import java.io.File;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
@@ -46,6 +47,6 @@ class OpenUserDirAction extends AFreeplaneAction {
 	}
 
 	@Override
-	public void afterMapChange(final Object newMap) {
+	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 	}
 }

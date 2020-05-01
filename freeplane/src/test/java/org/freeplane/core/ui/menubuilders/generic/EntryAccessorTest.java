@@ -43,7 +43,7 @@ public class EntryAccessorTest {
 	@Test
 	public void getsIconFromEntryAttributeIcon() throws Exception {
 		final Icon icon = new ImageIcon();
-		entry.setAttribute(EntryAccessor.ICON, icon);
+		entry.setAttribute(EntryAccessor.ICON_INSTANCE, icon);
 		final Icon entryIcon = entryAccessor.getIcon(entry);
 		Assert.assertThat(entryIcon, equalTo(icon));
 	}

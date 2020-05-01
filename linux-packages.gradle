@@ -1,5 +1,5 @@
 task freeplaneDeb(type: Deb) {
-    destinationDir = new File(globalDist)
+    destinationDirectory = new File(globalDist)
 
     packageName = 'freeplane'
     version = distVersion + "~upstream"

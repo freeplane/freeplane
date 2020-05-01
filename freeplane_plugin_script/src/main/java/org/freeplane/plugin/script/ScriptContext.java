@@ -1,6 +1,7 @@
 package org.freeplane.plugin.script;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -49,7 +50,7 @@ public class ScriptContext implements AccessedNodes{
 		try {
 			File file = new File(path);
 			if(file.isAbsolute()) {
-				return file.toURL();
+				return file.getCanonicalFile().toURL();
 			}
 			else  {
 				URL baseUrl = getBaseUrl();
@@ -57,10 +58,10 @@ public class ScriptContext implements AccessedNodes{
 					return new URL(baseUrl, path);
 				}
 				else
-					return file.getAbsoluteFile().toURL();
+					return file.getCanonicalFile().toURL();
 			}
 		}
-		catch (MalformedURLException e) {
+		catch (IOException e) {
 			throw new IllegalArgumentException(e);
 		}
 	}

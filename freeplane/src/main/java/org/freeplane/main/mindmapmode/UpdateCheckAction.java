@@ -84,15 +84,6 @@ class UpdateCheckAction extends AFreeplaneAction {
 				setTimer();
 			}
 
-			public void afterViewClose(final Component oldView) {
-			}
-
-			public void afterViewCreated(final Component mapView) {
-			}
-
-			public void beforeViewChange(final Component oldView, final Component newView) {
-			}
-
 			private void removeMe() {
 				controller.getMapViewManager().removeMapViewChangeListener(this);
 			}
@@ -129,7 +120,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 		}, "checkForUpdates").start();
 	}
 
-	private void addUpdateButton(final FreeplaneVersion lastVersion) {
+	private void updateButton(final FreeplaneVersion lastVersion) {
 		if (entry != null) {
 			Controller controller = Controller.getCurrentController();
 			final Component component = (Component) new EntryAccessor().getComponent(entry);
@@ -199,7 +190,7 @@ class UpdateCheckAction extends AFreeplaneAction {
 		checkForAddonsUpdates();
 		Controller.getCurrentController().getViewController().invokeLater(new Runnable() {
 			public void run() {
-				addUpdateButton(lastVersion);
+				updateButton(lastVersion);
 				if (autoRun) {
 					return;
 				}
@@ -283,18 +274,16 @@ class UpdateCheckAction extends AFreeplaneAction {
 		}
 		autorunEnabled = false;
 		final Date now = new Date();
-		final long nextCheckMillis = ResourceController.getResourceController().getLongProperty(LAST_UPDATE_CHECK_TIME,
-		    0)
-		        + ONE_DAY;
+		final long nextCheckMillis = ResourceController.getResourceController()//
+		        .getLongProperty(LAST_UPDATE_CHECK_TIME,0) + ONE_DAY;
 		final Date nextCheckDate = new Date(nextCheckMillis);
-		if (now.before(nextCheckDate)) {
-			final FreeplaneVersion knownNewVersion = getKnownNewVersion();
-			addUpdateButton(knownNewVersion);
-			return;
+		final FreeplaneVersion knownNewVersion = getKnownNewVersion();
+		updateButton(knownNewVersion);
+		if (nextCheckDate.before(now)) {
+		    autorunTimer = new Timer(CHECK_TIME, this);
+		    autorunTimer.setRepeats(false);
+		    autorunTimer.start();
 		}
-		autorunTimer = new Timer(CHECK_TIME, this);
-		autorunTimer.setRepeats(false);
-		autorunTimer.start();
 	}
 
 

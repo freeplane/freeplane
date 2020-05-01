@@ -22,6 +22,8 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.Option;
 
+import com.lightdev.app.shtm.SHTMLWriter;
+
 /**
  * Create a new XHTMLWriter which is able to write out a HTMLDocument as XHTML.
  * <p>
@@ -31,7 +33,7 @@ import javax.swing.text.html.Option;
  * 
  * @author Richard "Shred" Koerber
  */
-class XHTMLWriter extends FixedHTMLWriter {
+class XHTMLWriter extends SHTMLWriter {
 	/**
 	 * This FilterWriter will convert the output of Swing's HTMLWriter to XHTML
 	 * format. This is done by converting tags like &lt;br&gt; to
@@ -107,12 +109,6 @@ class XHTMLWriter extends FixedHTMLWriter {
 			}
 			else if (c == '<') {
 				insideTag = true;
-			}
-			if (c > 126) {
-				super.write("&#x", 0, 3);
-				super.write(Integer.toString(c, 16));
-				super.write(';');
-				return;
 			}
 			super.write(c);
 		}

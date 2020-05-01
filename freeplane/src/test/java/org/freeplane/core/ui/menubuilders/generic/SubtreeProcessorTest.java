@@ -14,9 +14,14 @@ import org.mockito.Mockito;
 
 
 public class SubtreeProcessorTest {
+
+    private static SubtreeProcessor createSubtreeProcessor() {
+        return new SubtreeProcessor(RecursiveMenuStructureProcessor::shouldProcessOnEvent);
+    }
+    
 	@Test
 	public void doesNotBuildEntriesWithoutDelay() throws Exception {
-		final SubtreeProcessor childProcessor = new SubtreeProcessor();
+		final SubtreeProcessor childProcessor = createSubtreeProcessor();
 		final PhaseProcessor processor = mock(PhaseProcessor.class);
 		when(processor.forChildren(Mockito.<Entry> any(), Mockito.<Entry> any())).thenReturn(processor);
 		childProcessor.setProcessor(processor);
@@ -29,7 +34,7 @@ public class SubtreeProcessorTest {
 
 	@Test
 	public void buildsEntriesWithDelay() throws Exception {
-		final SubtreeProcessor childProcessor = new SubtreeProcessor();
+		final SubtreeProcessor childProcessor = createSubtreeProcessor();
 		final PhaseProcessor processor = mock(PhaseProcessor.class);
 		when(processor.forChildren(Mockito.<Entry> any(), Mockito.<Entry> any())).thenReturn(processor);
 		childProcessor.setProcessor(processor);
@@ -41,7 +46,7 @@ public class SubtreeProcessorTest {
 
 	@Test
 	public void doesNotDestroyEntriesWithoutDelay() throws Exception {
-		final SubtreeProcessor childProcessor = new SubtreeProcessor();
+		final SubtreeProcessor childProcessor = createSubtreeProcessor();
 		final PhaseProcessor processor = mock(PhaseProcessor.class);
 		when(processor.forChildren(Mockito.<Entry> any(), Mockito.<Entry> any())).thenReturn(processor);
 		childProcessor.setProcessor(processor);
@@ -54,7 +59,7 @@ public class SubtreeProcessorTest {
 
 	@Test
 	public void destroysEntriesWithDelay() throws Exception {
-		final SubtreeProcessor childProcessor = new SubtreeProcessor();
+		final SubtreeProcessor childProcessor = createSubtreeProcessor();
 		final PhaseProcessor processor = mock(PhaseProcessor.class);
 		when(processor.forChildren(Mockito.<Entry> any(), Mockito.<Entry> any())).thenReturn(processor);
 		childProcessor.setProcessor(processor);

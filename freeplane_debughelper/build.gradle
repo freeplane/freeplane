@@ -11,10 +11,14 @@ dependencies {
 		exclusions.add('freeplane_mac')
 	}
 	parent.subprojects.findAll{! exclusions.contains(it.name)}.each {
-		runtime it
+		runtimeOnly it
 	}
 
-	runtime project(':freeplane').files('src/viewer/resources', 'src/editor/resources')
+	runtimeOnly project(':freeplane').sourceSets.viewer.resources.sourceDirectories
+	runtimeOnly project(':freeplane').sourceSets.editor.resources.sourceDirectories
+	runtimeOnly project(':freeplane').sourceSets.external.resources.sourceDirectories
+	runtimeOnly project(':freeplane').sourceSets.emojiGraphics.output.dirs
+	runtimeOnly project(':freeplane').sourceSets.emojiList.output.dirs
 }
 
 task(run, dependsOn: 'classes', type: JavaExec) {

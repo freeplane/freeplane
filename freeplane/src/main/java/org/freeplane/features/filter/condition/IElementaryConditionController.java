@@ -40,7 +40,8 @@ public interface IElementaryConditionController {
 
 	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
-	                                            final boolean approximateMatching);
+	                                            final boolean approximateMatching,
+	                                            final boolean ignoreDiacritics);
 
 	ComboBoxModel getConditionsForProperty(final Object property);
 

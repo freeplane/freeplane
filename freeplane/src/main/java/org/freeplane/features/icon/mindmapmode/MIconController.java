@@ -19,9 +19,7 @@
  */
 package org.freeplane.features.icon.mindmapmode;
 
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -29,7 +27,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -67,13 +64,14 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.filter.condition.ICondition;
-import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconContainedCondition;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.IconExistsCondition;
 import org.freeplane.features.icon.IconGroup;
 import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.INodeChangeListener;
@@ -84,15 +82,13 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.LogicalStyleController;
-import org.freeplane.features.ui.FrameController;
 
 /**
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
-	private static final Insets ICON_SUBMENU_INSETS = new Insets(3, 0, 3, 0);
-	private static final int ARROW_SIZE = Math.round(UITools.getUIFontSize(0.8));
-	private static final Font ARROW_FONT = new Font("SansSerif", 0, ARROW_SIZE);
+	private static final String RECENTLY_USED_ICONS_PROPERTY = "recently_used_icons";
+    private static final Insets ICON_SUBMENU_INSETS = new Insets(3, 0, 3, 0);
 	private static final ConditionPredicate DEPENDS_ON_ICON = new ConditionPredicate() {
 
 		@Override
@@ -103,7 +99,6 @@ public class MIconController extends IconController {
 	};
 
 	private final class IconActionBuilder implements EntryVisitor {
-		private final HashMap<String, Entry> submenuEntries = new HashMap<String, Entry>();
 		final private ModeController modeController;
 
 		public IconActionBuilder(ModeController modeController) {
@@ -113,7 +108,6 @@ public class MIconController extends IconController {
 		@Override
 		public void visit(Entry target) {
 			addIcons(target);
-			submenuEntries.clear();
 			updateIconToolbar(modeController);
 		}
 
@@ -124,40 +118,24 @@ public class MIconController extends IconController {
 		}
 
 		private void addIconGroup(final Entry target, final IconGroup group) {
-			if (group.getIcons().size() < 1) {
-				return;
-			}
-			final Entry item = new Entry();
-			EntryAccessor entryAccessor = new EntryAccessor();
-			entryAccessor.setIcon(item, group.getGroupIcon().getIcon());
-			item.setName(group.getDescriptionKey());
-			target.addChild(item);
-			for (final MindIcon icon : group.getIcons()) {
-				final String fileName = icon.getFileName();
-				addAction(item, "", icon, fileName);
-			}
+		    if (group.getIcons().size() < 1) {
+		        return;
+		    }
+		    final Entry item = new Entry();
+		    EntryAccessor entryAccessor = new EntryAccessor();
+		    entryAccessor.setIcon(item, group.getGroupIcon().getIcon());
+		    entryAccessor.setText(item, group.getDescription());
+		    target.addChild(item);
+		    for (final IconGroup childGroup : group.getGroups()) {
+		        if(childGroup.isLeaf()) {
+		            MindIcon icon = childGroup.getGroupIcon();
+		            entryAccessor.addChildAction(item, iconActions.get(icon.getName()));
+		        }
+		        else
+		            addIconGroup(item, childGroup);
+		    }
 		}
 
-		private void addAction(final Entry target, final String itemKey, final MindIcon icon,
-		                       final String fileName) {
-			final int separatorPosition = fileName.indexOf('/');
-			EntryAccessor entryAccessor = new EntryAccessor();
-			if (separatorPosition == -1) {
-				entryAccessor.addChildAction(target, iconActions.get(icon));
-			}
-			else {
-				final String submenuName = fileName.substring(0, separatorPosition);
-				final String submenuKey = itemKey + "/" + submenuName;
-				Entry submenu = submenuEntries.get(submenuKey);
-				if (submenu == null) {
-					submenu = new Entry();
-					entryAccessor.setText(submenu, submenuName);
-					submenuEntries.put(submenuKey, submenu);
-					target.addChild(submenu);
-				}
-				addAction(submenu, submenuKey, icon, fileName.substring(separatorPosition + 1));
-			}
-		}
 		@Override
 		public boolean shouldSkipChildren(Entry entry) {
 			return false;
@@ -166,7 +144,7 @@ public class MIconController extends IconController {
 
 	public static enum Keys {
 		ICONS
-	};
+	}
 
 	private static class ExtensionCopier implements IExtensionCopier {
 		@Override
@@ -178,9 +156,9 @@ public class MIconController extends IconController {
 		}
 
 		public void copy(final NodeModel from, final NodeModel to) {
-			final List<MindIcon> sourceIcons = from.getIcons();
-			final List<MindIcon> targetIcons = to.getIcons();
-			for (final MindIcon icon : sourceIcons) {
+			final List<NamedIcon> sourceIcons = from.getIcons();
+			final List<NamedIcon> targetIcons = to.getIcons();
+			for (final NamedIcon icon : sourceIcons) {
 				if (targetIcons.contains(icon)) {
 					continue;
 				}
@@ -193,9 +171,7 @@ public class MIconController extends IconController {
 			if (!key.equals(Keys.ICONS)) {
 				return;
 			}
-			while (from.removeIcon() > 0) {
-				;
-			}
+			while (from.removeIcon() > 0) {/**/}
 		}
 
 		@Override
@@ -203,11 +179,11 @@ public class MIconController extends IconController {
 			if (!key.equals(Keys.ICONS)) {
 				return;
 			}
-			final List<MindIcon> targetIcons = from.getIcons();
-			final List<MindIcon> whichIcons = which.getIcons();
-			final Iterator<MindIcon> targetIconIterator = targetIcons.iterator();
+			final List<NamedIcon> targetIcons = from.getIcons();
+			final List<NamedIcon> whichIcons = which.getIcons();
+			final Iterator<NamedIcon> targetIconIterator = targetIcons.iterator();
 			while (targetIconIterator.hasNext()) {
-				MindIcon icon = targetIconIterator.next();
+				NamedIcon icon = targetIconIterator.next();
 				if (!whichIcons.contains(icon)) {
 					continue;
 				}
@@ -216,13 +192,15 @@ public class MIconController extends IconController {
 		}
 		@Override
 		public void resolveParentExtensions(Object key, NodeModel to) {
+		    //
         }
 	}
 
-	private final Map<MindIcon, AFreeplaneAction> iconActions = new LinkedHashMap<MindIcon, AFreeplaneAction>();
+	private final Map<String, AFreeplaneAction> iconActions = new LinkedHashMap<>();
 	private final IconStore STORE = IconStoreFactory.ICON_STORE;
 	private final JToolBar iconToolBar;
 	private final Box iconBox;
+	private final FastAccessableIcons recentlyUsedIcons;
 
 	/**
 	 * @param modeController
@@ -234,11 +212,11 @@ public class MIconController extends IconController {
 		JAutoScrollBarPane iconToolBarScrollPane = new JAutoScrollBarPane(iconToolBar);
 		UITools.setScrollbarIncrement(iconToolBarScrollPane);
 		UITools.addScrollbarIncrementPropertyListener(iconToolBarScrollPane);
-		FrameController frameController = (FrameController) modeController.getController().getViewController();
 		iconBox = new CollapseableBoxBuilder().setPropertyNameBase("leftToolbarVisible").setResizeable(true).createBox(iconToolBarScrollPane, Direction.LEFT);
 		createIconActions(modeController);
 		createPreferences();
 		modeController.addUiBuilder(Phase.ACTIONS, "icon_actions", new IconActionBuilder(modeController));
+		recentlyUsedIcons = new FastAccessableIcons(modeController);
 	}
 
 	@Override
@@ -258,7 +236,12 @@ public class MIconController extends IconController {
 	}
 
 
-	public void addIcon(final NodeModel node, final MindIcon icon) {
+    public void addIconByUserAction(final NodeModel node, final IconAction action) {
+        addIcon(node, action.getMindIcon());
+        recentlyUsedIcons.add(action);
+    }
+
+    public void addIcon(final NodeModel node, final NamedIcon icon) {
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
@@ -336,7 +319,7 @@ public class MIconController extends IconController {
 		for (final MindIcon icon : STORE.getMindIcons()) {
 			final IconAction myAction = new IconAction(icon);
 			modeController.addActionIfNotAlreadySet(myAction);
-			iconActions.put(icon, myAction);
+			iconActions.put(icon.getName(), myAction);
 		}
 	}
 
@@ -350,12 +333,12 @@ public class MIconController extends IconController {
 		actions.add(modeController.getAction("RemoveAllIconsAction"));
 
 		for (final AFreeplaneAction iconAction : actions) {
-			final IIconInformation info = (IIconInformation) iconAction;
+			final IconDescription info = (IconDescription) iconAction;
 			optionPanelBuilder.addCreator("Keystrokes/icons", new IPropertyControlCreator() {
 				@Override
 				public IPropertyControl createControl() {
 					final KeyProperty keyProperty = new KeyProperty(info.getShortcutKey(), info.getTranslatedDescription());
-					keyProperty.setIcon(info.getIcon());
+					keyProperty.setIcon(info.getActionIcon());
 					keyProperty.disableModifiers();
 					return keyProperty;
 				}
@@ -385,7 +368,28 @@ public class MIconController extends IconController {
 	}
 	final static private Icon SUBMENU_ICON = BasicIconFactory.getMenuArrowIcon();
 	private JMenu getSubmenu( final IconGroup group) {
-		final JMenu menu = new JMenu() {
+		final JMenu menu = createToolbarSubmenu(group);
+		fillSubmenu(menu, group);
+		return menu;
+	}
+
+    private void fillSubmenu(final JMenu menu, final IconGroup group) {
+        for (final IconGroup childGroup : group.getGroups()) {
+		    if(childGroup.isLeaf()) {
+		        MindIcon groupIcon = childGroup.getGroupIcon();
+		        addActionToIconSubmenu(menu, groupIcon);
+		    }
+		    else {
+		        final JMenu submenu = new JMenu(childGroup.getDescription());
+		        submenu.setIcon(childGroup.getGroupIcon().getIcon());
+		        fillSubmenu(submenu, childGroup);
+		        addGroupToIconSubmenu(menu, submenu);
+		    }
+		}
+    }
+
+    private JMenu createToolbarSubmenu(final IconGroup group) {
+        final JMenu menu = new JMenu() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -410,41 +414,22 @@ public class MIconController extends IconController {
 
 
 		};
-		menu.setFont(ARROW_FONT);
 		menu.setMargin(ICON_SUBMENU_INSETS);
 		menu.setIcon(group.getGroupIcon().getIcon());
-		for (final MindIcon icon : group.getIcons()) {
-			addActionToIconSubmenu(menu, icon, icon.getFileName());
-		}
 		menu.setToolTipText(group.getDescription());
-		return menu;
-	}
+        return menu;
+    }
 
-	private void addActionToIconSubmenu(final JMenu menu, final MindIcon icon, final String fileName) {
-		final AFreeplaneAction myAction = iconActions.get(icon);
-		final int separatorPosition = fileName.indexOf('/');
-		if (separatorPosition == -1) {
+	private void addGroupToIconSubmenu(JMenu menu, JMenu submenu) {
+	    new MenuSplitter().addMenuComponent(menu, submenu,  menu.getItemCount());
+    }
+
+    private void addActionToIconSubmenu(final JMenu menu, final MindIcon icon) {
+		final AFreeplaneAction myAction = iconActions.get(icon.getName());
 			new MenuSplitter().addMenuComponent(menu, new JMenuItem(myAction),  menu.getItemCount());
-			return;
-		}
-		final String submenuName = fileName.substring(0, separatorPosition);
-		final int componentCount = menu.getItemCount();
-		if (componentCount != 0) {
-			final Component lastComponent = menu.getMenuComponent(componentCount - 1);
-			if (lastComponent instanceof JMenu) {
-				final JMenu lastSubmenu = (JMenu) lastComponent;
-				if (lastSubmenu.getText().equals(submenuName)) {
-					addActionToIconSubmenu(lastSubmenu, icon, fileName.substring(separatorPosition + 1));
-					return;
-				}
-			}
-		}
-		final JMenu submenu = new JMenu(submenuName);
-		menu.add(submenu);
-		addActionToIconSubmenu(submenu, icon, fileName.substring(separatorPosition + 1));
 	}
 
-	private void insertSubmenus(final JToolBar iconToolBar) {
+	private void insertSubmenus(final JToolBar iconToolBar, boolean isStructured) {
 		final JMenuBar iconMenuBar = new JMenuBar() {
 			private static final long serialVersionUID = 1L;
 
@@ -457,6 +442,7 @@ public class MIconController extends IconController {
 		iconMenuBar.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		iconMenuBar.setLayout(new GridLayout(0, 1));
 		for (final IconGroup iconGroup : STORE.getGroups()) {
+		    if(isStructured || iconGroup.getName().equals(IconStore.EMOJI_GROUP))
 			iconMenuBar.add(getSubmenu(iconGroup));
 		}
 		iconToolBar.add(iconMenuBar);
@@ -481,7 +467,7 @@ public class MIconController extends IconController {
 			return size;
 		}
 		final IActor actor = new IActor() {
-			private final MindIcon icon = node.getIcon(index);
+			private final NamedIcon icon = node.getIcon(index);
 
 			@Override
 			public void act() {
@@ -511,33 +497,37 @@ public class MIconController extends IconController {
 		iconToolBar.add(modeController.getAction("RemoveIconAction")).setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		iconToolBar.add(modeController.getAction("RemoveAllIconsAction")).setAlignmentX(
 		    JComponent.CENTER_ALIGNMENT);
-		iconToolBar.addSeparator();
-		if (ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar")) {
-			insertSubmenus(iconToolBar);
-			return;
-		}
-		final String[] fpIcons = ResourceController.getResourceController().getProperty("icons.list").split(";");
-		for (final String icon : fpIcons) {
-			final MindIcon mindIcon = STORE.getMindIcon(icon);
-			final AFreeplaneAction iconAction = iconActions.get(mindIcon);
-			iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		}
-		final Collection<MindIcon> userIcons = STORE.getUserIcons();
-		for (final MindIcon icon : userIcons) {
-			final AFreeplaneAction iconAction = iconActions.get(icon);
-			iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        iconToolBar.addSeparator();
+        recentlyUsedIcons.load(ResourceController.getResourceController().getProperty(RECENTLY_USED_ICONS_PROPERTY, ""));
+        recentlyUsedIcons.addPanelTo(iconToolBar);
+        boolean isStructured = ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar");
+		if (! isStructured)
+		    iconToolBar.addSeparator();
+		insertSubmenus(iconToolBar, isStructured);
+		if (! isStructured) {
+		    iconToolBar.addSeparator();
+		    for (final MindIcon mindIcon : STORE.getMindIcons()) {
+		        if(mindIcon.isShownOnToolbar()) {
+		            final AFreeplaneAction iconAction = iconActions.get(mindIcon.getName());
+		            iconToolBar.add(iconAction).setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		        }
+		    }
 		}
 	}
 
 	/** lists all icons that are available in the icon selection dialog. This may include user icons
 	 * if there are some installed. */
 	public static List<String> listStandardIconKeys() {
-		// the source of this list is the property "icons.list" in freeplane.properties
 		ArrayList<String> result = new ArrayList<String>();
 		final MIconController mIconController = (MIconController) IconController.getController();
 		for (MindIcon mindIcon : mIconController.getMindIcons())
 			result.add(mindIcon.getName());
 		return result;
 	}
+
+    public void saveRecentlyUsedActions() {
+        String initializer = recentlyUsedIcons.getInitializer();
+        ResourceController.getResourceController().setProperty(RECENTLY_USED_ICONS_PROPERTY, initializer);
+    }
 
 }

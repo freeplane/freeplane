@@ -111,7 +111,13 @@ public class FreeplaneToolBar extends JToolBar {
 			return;
 		}
 		final AbstractButton abstractButton = (AbstractButton) comp;
-		final String actionName = (String) abstractButton.getAction().getValue(Action.NAME);
+		configureToolbarButton(abstractButton);
+	}
+
+
+
+	public static void configureToolbarButton(final AbstractButton abstractButton) {
+        final String actionName = (String) abstractButton.getAction().getValue(Action.NAME);
 		abstractButton.setName(actionName);
 		if (null != abstractButton.getIcon()) {
 			final String text = abstractButton.getText();
@@ -124,7 +130,7 @@ public class FreeplaneToolBar extends JToolBar {
 			}
 		}
 		configureToolbarButtonSize(abstractButton);
-	}
+    }
 
 	public static void configureToolbarButtonSize(final AbstractButton abstractButton) {
 		if (System.getProperty("os.name").equals("Mac OS X")) {

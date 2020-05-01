@@ -129,7 +129,7 @@ public class FButtonBar extends JComponent implements IAcceleratorChangeListener
 	private JButton[] createButtonRow(final int modifiers) {
 		final JButton[] buttons = new JButton[BUTTON_NUMBER];
 		for (int i = 0; i < BUTTON_NUMBER; i++) {
-			final String name = "f" + (i + 1) + ".png";
+			final String name = "f" + (i + 1) + ".svg";
 			final JButton button = buttons[i] = new JButton(toImageIcon(IconStoreFactory.ICON_STORE.getUIIcon(name).getIcon())) {
 				/**
 				 *

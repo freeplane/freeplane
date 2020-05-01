@@ -1,39 +1,50 @@
 configurations{
 	mergedViewerDependencies
-    compile.extendsFrom(mergedViewerDependencies)
+	api.extendsFrom mergedViewerDependencies
 }
 
-dependencies {
-	
-	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
-	lib ':kitfox-svg-salamander-1.1.1-p1'
-	lib 'com.github.robtimus:data-url:1.0.1'
-	lib 'com.bulenkov:darcula:2018.2'
-
-    lib project(':JOrtho_0.4_freeplane')
-    compile project(':freeplane_api')
-	
-    lib 'commons-lang:commons-lang:2.6',
-            'commons-io:commons-io:2.4',
-            'commons-codec:commons-codec:1.8',
-            'com.jgoodies:jgoodies-forms:1.9.0',
-            'com.jgoodies:jgoodies-common:1.8.1'
-
-	lib  ('com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.17.3') {
-		exclude module: 'javahelp'
-		exclude module: 'mnemonicsetter'
-	}
-    
- 	testRuntime files('src/viewer/resources', 'src/editor/resources', 'src/external/resources')
-
-    // from flatDir "localGitDepsRepository":
-    lib ':idw-gpl-1.6.1'
-}
+apply from: './emoji.gradle'
 
 sourceSets {
     viewer {}
     editor {}
     external {}
+}
+
+dependencies {
+	mergedViewerDependencies 'org.dpolivaev.mnemonicsetter:mnemonicsetter:0.6'
+	lib ':kitfox-svg-salamander-1.1.1-p1'
+	lib 'com.github.robtimus:data-url:1.0.1'
+	lib 'com.bulenkov:darcula:2018.2'
+	lib 'com.twelvemonkeys.imageio:imageio-jpeg:3.5'
+
+    lib project(':JOrtho_0.4_freeplane')
+    api project(':freeplane_api')
+	
+    lib 'commons-lang:commons-lang:2.6',
+            'commons-io:commons-io:2.6',
+            'commons-codec:commons-codec:1.14',
+            'com.jgoodies:jgoodies-forms:1.9.0',
+            'com.jgoodies:jgoodies-common:1.8.1'
+
+	lib  ('com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.17.6') {
+		exclude module: 'javahelp'
+		exclude module: 'mnemonicsetter'
+	}
+    
+    // from flatDir "localGitDepsRepository":
+    lib ':idw-gpl-1.6.1'
+    
+    runtimeOnly sourceSets.emojiGraphics.output.dirs
+ 	runtimeOnly sourceSets.emojiList.output.dirs
+    
+}
+
+test {
+	classpath = project.sourceSets.test.runtimeClasspath + 
+		sourceSets.viewer.resources.sourceDirectories +
+ 		sourceSets.editor.resources.sourceDirectories +
+ 		sourceSets.external.resources.sourceDirectories
 }
 
 // work around for new gradle bug if subproject name equals to root dir name
@@ -43,6 +54,10 @@ eclipse {
 	}
 }
 
+processTestResources.dependsOn createEmojiList
+tasks.getByPath('eclipse').dependsOn createEmojiList
+
+
 ext.bundleDeps = configurations.lib.files.collect {
     externalizeJar(it)
 }
@@ -51,6 +66,7 @@ bundleDeps.add(0, "lib/freeplaneosgi-${project.version}.jar")
 bundleDeps.add(0, "lib/freeplane_mac-${project.version}.jar")
 bundleDeps.add(0, "lib/freeplaneeditor-${project.version}.jar")
 bundleDeps.add(0, "lib/freeplaneviewer.jar")
+bundleDeps.add("lib/${emojiJar.archiveFile.get().asFile.name}")
 
 ext.bundleExports = """\
                     com.inet.jortho,
@@ -184,9 +200,12 @@ task copyOSGiJars(type: Copy) {
           exclude('*-sources.jar')
      }
 	 from (project(':freeplane_mac').jar.outputs.files)
+	 from (project(':freeplane_api').file('build/libs/freeplaneapi_viewer.jar'))
      into(globalBin + '/core/' + pluginid + '/lib/')
 }
-copyOSGiJars.dependsOn project(':freeplane_mac').jar
+copyOSGiJars.dependsOn tasks.getByPath(':freeplane_mac:jar')
+copyOSGiJars.dependsOn tasks.getByPath(':freeplane_api:viewerApiJar')
+copyOSGiJars.dependsOn emojiJar
 
 task copyOSGiManifest(type: Copy) {
      from ("$buildDir/manifest/") {
@@ -205,7 +224,7 @@ task editorJar(type: PartialJar) {
         attributes("Manifest-Version": "1.0",
                    "Main-Class": "org.freeplane.main.application.FreeplaneMain")
     }
-    baseName = 'freeplaneeditor'
+    archiveBaseName = 'freeplaneeditor'
     dependsOn classes
 	includedClasses = [
 				"**/application/**",
@@ -228,7 +247,7 @@ task osgiJar(type: PartialJar) {
 	manifest = project.manifest {
 		attributes("Manifest-Version": "1.0")
 	}
-	baseName = 'freeplaneosgi'
+	archiveBaseName = 'freeplaneosgi'
 	dependsOn classes
 	includedClasses = [
 				"**/osgi/**"
@@ -251,13 +270,15 @@ task viewerJar(type: Jar) {
     }
 
     // this must be unversioned because the applet export code relies on this
-    archiveName = 'freeplaneviewer.jar'
+    archiveFileName = 'freeplaneviewer.jar'
     dependsOn classes
     from (sourceSets.main.output) {
         exclude (editorJar.includedClasses)
         exclude (osgiJar.includedClasses )
     }
     from (sourceSets.viewer.resources)
+    from (sourceSets.emojiList.output)
+    
     
     configurations.mergedViewerDependencies.files.each {
     	from(zipTree(it.path))
@@ -265,8 +286,6 @@ task viewerJar(type: Jar) {
 	
     includeEmptyDirs = false
 }
-
-apply from: './signjar.gradle'
 
 eclipseJdt {
     doLast {
@@ -306,5 +325,7 @@ build.dependsOn copyOSGiJars
 build.dependsOn copyOSGiManifest
 build.dependsOn copyExternalResources
 build.dependsOn copyDoc
+apply from: './signjar.gradle'
 
 apply from: './format_translation.gradle'
+

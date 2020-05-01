@@ -21,8 +21,6 @@ package org.freeplane.features.icon;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.freeplane.core.resources.ResourceController;
@@ -37,50 +35,41 @@ import org.freeplane.core.util.TextUtils;
  *
  */
 public class UserIcon extends MindIcon {
-	public UserIcon(final String name, final String fileName, final String description) {
-		super(name, fileName, description);
+	private static final String DEFAULT_IMAGE_PATH = //
+	        ResourceController.getResourceController().getFreeplaneUserDirectory() + "/icons";
+
+    public UserIcon(final String name, final String fileName, final String description, int order) {
+		super(name, fileName, description, order);
 	}
 
-	@Override
-	public String getPath() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append(ResourceController.getResourceController().getFreeplaneUserDirectory());
-		builder.append(SEPARATOR);
-		builder.append("icons");
-		builder.append(SEPARATOR);
-		builder.append(this.getFileName());
-		final String path = builder.toString().replace(File.separatorChar, '/');
-		return path;
-	}
+    @Override
+    public String getImagePath() {
+        return DEFAULT_IMAGE_PATH;
+    }
 
-	@Override
-	public URL getUrl() {
-		URL result = null;
-		final String urlString = getPath();
-		try {
-			result = new File(urlString).toURI().toURL();
-		}
-		catch (final MalformedURLException e) {
-			LogUtils.warn(String.format("could not create URL from [%s]", urlString));
-		}
-		return result;
-	}
-
+    @Override
+    public URL getUrl() {
+        URL result = null;
+        final String urlString = getPath();
+        try {
+            result = new File(urlString).toURI().toURL();
+        }
+        catch (final MalformedURLException e) {
+            LogUtils.warn(String.format("could not create URL from [%s]", urlString));
+        }
+        return result;
+    }
+    
 	@Override
 	public String getTranslatedDescription() {
 		String key = getDescriptionTranslationKey();
 		return TextUtils.getOptionalText("usericon_" + key, key);
 	}
 
-	@Override
-	public String getSource() {
-		final String path = getUrl().getPath();
-		final String iconName = getName();
-		try {
-			return new URI("file", iconName, null).getRawSchemeSpecificPart() + path.substring(path.length() - 4);
-		}
-		catch (URISyntaxException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Override
+    public boolean hasStandardSize() {
+        return false;
+    }
+	
+	
 }

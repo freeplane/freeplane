@@ -23,19 +23,16 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.KeyStroke;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.icon.IIconInformation;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.map.NodeModel;
 
 /**
  * @author foltin
  */
-class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformation {
+class RemoveAllIconsAction extends AMultipleNodeAction implements IconDescription {
 
 	private static final long serialVersionUID = 1L;
 
@@ -60,10 +57,6 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IIconInformati
 
 	public Icon getIcon() {
 		return (Icon) getValue(Action.SMALL_ICON);
-	}
-
-	public KeyStroke getKeyStroke() {
-		return UITools.getKeyStroke(ResourceController.getResourceController().getProperty(getShortcutKey()));
 	}
 
 	public String getShortcutKey() {

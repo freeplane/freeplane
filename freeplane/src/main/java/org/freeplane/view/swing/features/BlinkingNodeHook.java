@@ -130,6 +130,10 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 			}
 			final IActor actor = new IActor() {
 				@Override
+				public boolean isReadonly() {
+					return true;
+				}
+				@Override
 				public void act() {
 					EventQueue.invokeLater(new Runnable() {
 						@Override

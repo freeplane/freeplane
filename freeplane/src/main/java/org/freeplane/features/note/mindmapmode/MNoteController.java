@@ -153,10 +153,19 @@ public class MNoteController extends NoteController {
 			return htmlEditorPanel;
 		}
 		htmlEditorPanel = MTextController.getController().createSHTMLPanel(NoteModel.EDITING_PURPOSE);
+        htmlEditorPanel.shtmlPrefChanged("show_toolbars", 
+                ResourceController.getResourceController().getProperty("simplyhtml.note.show_toolbars"), 
+                ResourceController.getResourceController().getProperty("simplyhtml.show_toolbars"));
+        htmlEditorPanel.shtmlPrefChanged("show_menu", 
+                ResourceController.getResourceController().getProperty("simplyhtml.note.show_menu"), 
+                ResourceController.getResourceController().getProperty("simplyhtml.show_menu"));
 
 		// make sure that SHTML gets notified of relevant config changes!
-	   	ResourceController.getResourceController().addPropertyChangeListener(
-    			new FreeplaneToSHTMLPropertyChangeAdapter(htmlEditorPanel));
+        ResourceController.getResourceController().addPropertyChangeListener(
+                new FreeplaneToSHTMLPropertyChangeAdapter("simplyhtml.", htmlEditorPanel));
+
+        ResourceController.getResourceController().addPropertyChangeListener(
+                new FreeplaneToSHTMLPropertyChangeAdapter("simplyhtml.note.", htmlEditorPanel));
 
 		htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
 		final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();

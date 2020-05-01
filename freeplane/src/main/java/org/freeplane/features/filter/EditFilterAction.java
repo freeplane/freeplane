@@ -101,7 +101,7 @@ class EditFilterAction extends AFreeplaneAction {
 		if (filterDialog == null) {
 			filterDialog = new FilterComposerDialog();
 			getFilterDialog().setLocationRelativeTo(filterController.getFilterToolbar());
-			Controller.getCurrentController().getMapViewManager().addMapSelectionListener(filterDialog);
+			Controller.getCurrentController().getMapViewManager().addMapViewChangeListener(filterDialog);
 		}
 		return filterDialog;
 	}

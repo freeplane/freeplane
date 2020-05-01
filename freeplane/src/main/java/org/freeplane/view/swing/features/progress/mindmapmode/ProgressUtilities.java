@@ -2,7 +2,7 @@ package org.freeplane.view.swing.features.progress.mindmapmode;
 
 import java.util.List;
 
-import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.view.swing.features.filepreview.ExternalResource;
 
@@ -49,7 +49,7 @@ public class ProgressUtilities {
 	 * @return : true if OK icon is attached
 	 */
 	public boolean hasOKIcon(final NodeModel node) {
-		final List<MindIcon> icons = node.getIcons();
+		final List<NamedIcon> icons = node.getIcons();
 		for (int i = 0; i < icons.size(); i++) {
 			if (icons.get(i).getName().equals("button_ok")) {
 				return true;
@@ -64,7 +64,7 @@ public class ProgressUtilities {
 	 */
 	public boolean hasProgressIcons(final NodeModel node) {
 		final String[] iconNames = new String[] { "0%", "25%", "50%", "75%", "100%" };
-		final List<MindIcon> icons = node.getIcons();
+		final List<NamedIcon> icons = node.getIcons();
 		for (int i = 0; i < icons.size(); i++) {
 			for (int j = 0; j < iconNames.length; j++) {
 				if (icons.get(i).getName().equals(iconNames[j])) {

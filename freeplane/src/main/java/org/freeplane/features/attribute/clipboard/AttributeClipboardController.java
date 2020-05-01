@@ -26,7 +26,7 @@ public class AttributeClipboardController implements ClipboardController{
 	public void copy() {
 		final AttributeSelection attributeSelection = AttributeController.getAttributeSelection();
 		final Transferable t = copy(attributeSelection);
-		ClipboardAccessor.getController().setClipboardContents(t);
+		ClipboardAccessor.getInstance().setClipboardContents(t);
 	}
 
 	@Override

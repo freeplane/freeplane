@@ -162,10 +162,10 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 
 	private boolean selectLastVisitedNode(RecentFile recentFile) {
 		if (recentFile != null && recentFile.lastVisitedNodeId != null) {
-			final MapModel map = Controller.getCurrentController().getMap();
+			IMapSelection selection = Controller.getCurrentController().getSelection();
+            final MapModel map = selection.getMap();
 			final NodeModel node = map.getNodeForID(recentFile.lastVisitedNodeId);
-			if (node != null && node.hasVisibleContent()) {
-				IMapSelection selection = Controller.getCurrentController().getSelection();
+			if (node != null && node.hasVisibleContent(selection.getFilter())) {
 				// don't override node selection done by UriManager.loadURI()
 				if (selection.isSelected(map.getRootNode()))
 					selection.selectAsTheOnlyOneSelected(node);
@@ -180,11 +180,16 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
     }
 
 	@Override
-	public void afterViewCreated(final Component mapView) {
-		final MapModel map = getMapModel(mapView);
+	public void afterViewCreated(Component oldView, Component newView) {
+		final MapModel map = getMapModel(newView);
 		final RecentFile recentFile = findRecentFileByMapModel(map);
 		// the next line will only succeed if the map is already opened
-		if (saveLastPositionInMapEnabled() && ! selectLastVisitedNode(recentFile)) {
+		if(oldView instanceof MapView && newView instanceof MapView
+		        && ((MapView)oldView).getModel() == ((MapView)newView).getModel()) {
+		    List<NodeModel> nodes = ((MapView)oldView).getMapSelection().getOrderedSelection();
+            ((MapView)newView).getMapSelection().replaceSelection(nodes.toArray(new NodeModel[nodes.size()]));
+		}
+		else if (saveLastPositionInMapEnabled() && ! selectLastVisitedNode(recentFile)) {
 			ensureSelectLastVisitedNodeOnOpen(map, recentFile);
 		}
 	}
@@ -220,10 +225,6 @@ public class LastOpenedList implements IMapViewChangeListener, IMapChangeListene
 	    final IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();
 		return mapViewManager.getModel(mapView);
     }
-
-	@Override
-	public void beforeViewChange(final Component oldView, final Component newView) {
-	}
 
 	private int getMaxMenuEntries() {
 		return ResourceController.getResourceController().getIntProperty(LAST_OPENED_LIST_LENGTH, 25);

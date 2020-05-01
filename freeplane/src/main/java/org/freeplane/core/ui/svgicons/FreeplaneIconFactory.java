@@ -1,10 +1,7 @@
 package org.freeplane.core.ui.svgicons;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -13,11 +10,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
-
-import com.kitfox.svg.SVGCache;
-import com.kitfox.svg.SVGDiagram;
-import com.kitfox.svg.SVGUniverse;
-import com.kitfox.svg.app.beans.SVGIcon;
 
 /** utility methods to access Freeplane's (builtin and user) icons. */
 public class FreeplaneIconFactory {
@@ -41,7 +33,7 @@ public class FreeplaneIconFactory {
 		return new ImageIcon(resourceUrl);
 	}
 
-	private static boolean isSvgAntialiasEnabled() {
+	static boolean isSvgAntialiasEnabled() {
 		return ResourceController.getResourceController().getBooleanProperty(ANTIALIAS_SVG);
 	}
 
@@ -49,7 +41,7 @@ public class FreeplaneIconFactory {
 		return AccessController.doPrivileged(new PrivilegedAction<Icon>() {
 			@Override
 			public Icon run() {
-				return new SVGIconCreator(url).setHeight(heightPixels).create();
+				return new SVGIconCreator(url).setHeight(heightPixels).createIcon();
 			}
 		});
 	}
@@ -58,7 +50,7 @@ public class FreeplaneIconFactory {
 		return AccessController.doPrivileged(new PrivilegedAction<Icon>() {
 			@Override
 			public Icon run() {
-				return new SVGIconCreator(url).setWidth(widthPixels).create();
+				return new SVGIconCreator(url).setWidth(widthPixels).createIcon();
 			}
 		});
 	}
@@ -67,51 +59,9 @@ public class FreeplaneIconFactory {
 		return AccessController.doPrivileged(new PrivilegedAction<Icon>() {
 			@Override
 			public Icon run() {
-				return new SVGIconCreator(url).create();
+				return new SVGIconCreator(url).createIcon();
 			}
 		});
-	}
-
-	private static class SVGIconCreator {
-		private float aspectRatio;
-		private SVGIcon icon;
-		private URI svgUri;
-
-		SVGIconCreator(URL url) {
-			SVGUniverse svgUniverse = SVGCache.getSVGUniverse();
-			icon = new SVGIcon();
-			try {
-				try {
-					new URI(url.toString());
-					svgUri = svgUniverse.loadSVG(url);
-				}
-				catch (URISyntaxException ex) {
-					svgUri = svgUniverse.loadSVG(url.openStream(), url.getPath());
-				}
-				final SVGDiagram diagram = svgUniverse.getDiagram(svgUri);
-				aspectRatio = diagram.getHeight() / diagram.getWidth();
-			}
-			catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
-
-		public Icon create() {
-			icon.setAutosize(SVGIcon.AUTOSIZE_STRETCH);
-			icon.setAntiAlias(isSvgAntialiasEnabled());
-			icon.setSvgURI(svgUri);
-			return new CachingIcon(icon);
-		}
-
-		SVGIconCreator setHeight(final int heightPixels) {
-			icon.setPreferredSize(new Dimension((int) (heightPixels / aspectRatio), heightPixels));
-			return this;
-		}
-
-		SVGIconCreator setWidth(final int widthPixels) {
-			icon.setPreferredSize(new Dimension(widthPixels, (int) (widthPixels * aspectRatio)));
-			return this;
-		}
 	}
 
 	public static ImageIcon toImageIcon(Icon icon) {

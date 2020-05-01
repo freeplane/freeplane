@@ -79,7 +79,7 @@ class AboutAction extends AFreeplaneAction {
 
 	private void addMessage(Box box, String text) {
 		final JComponent textComponent;
-		if(HtmlUtils.isHtmlNode(text)) {
+		if(HtmlUtils.isHtml(text)) {
 			textComponent = new JLabel(text);
 		}
 		else {

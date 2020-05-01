@@ -107,7 +107,7 @@ public class HtmlUtils {
 	 * @param strictHTMLOnly if true does nothing unless the text starts with &lt;html&gt;
 	 * @param removeNewLines set to false to keep all blank lines. */
 	public static String htmlToPlain(final String text, final boolean strictHTMLOnly, final boolean removeNewLines) {
-		if (strictHTMLOnly && !HtmlUtils.isHtmlNode(text)) {
+		if (strictHTMLOnly && !HtmlUtils.isHtml(text)) {
 			return text;
 		}
 		if (PATTERNS == null) {
@@ -167,7 +167,16 @@ public class HtmlUtils {
 		return intermediate;
 	}
 
+	@Deprecated
 	public static boolean isHtmlNode(final String text) {
+	    return isHtml(text);
+	}
+	
+	public static String textToHTML(String text) {
+	    return text == null || isHtml(text) ? text : plainToHTML(text);
+	}
+	
+	public static boolean isHtml(final String text) {
 		for (int i = 0; i < text.length(); i++) {
 			final char ch = text.charAt(i);
 			if (ch == '<') {
@@ -215,7 +224,7 @@ public class HtmlUtils {
 				case '\r':
 					break;
 				default:
-					if (myChar < 32 || myChar > 126)
+					if (myChar < 32)
 						result.append("&#").append(Integer.toString(myChar)).append(';');
 					else
 						result.append(myChar);
@@ -234,7 +243,7 @@ public class HtmlUtils {
 	 * make it compareable.
 	 */
 	public static String removeHtmlTagsFromString(final String text) {
-		if (HtmlUtils.isHtmlNode(text)) {
+		if (HtmlUtils.isHtml(text)) {
 			return HtmlUtils.removeAllTagsFromString(text);
 		}
 		else {
@@ -372,7 +381,7 @@ public class HtmlUtils {
 		for (int i = 0; i < text.length(); ++i) {
 			myChar = text.charAt(i);
 			intValue = text.charAt(i);
-			if (intValue < 32 || intValue > 126) {
+			if (intValue < 32) {
 				if(result == null){
 					 result = new StringBuilder((int) (text.length() * 1.2));
 					 result.append(text.subSequence(0, i));
@@ -579,7 +588,7 @@ public class HtmlUtils {
 	}
 
 	public static String toXhtml(String htmlText) {
-		if (!HtmlUtils.isHtmlNode(htmlText)) {
+		if (!HtmlUtils.isHtml(htmlText)) {
 			return null;
 		}
 		final StringReader reader = new StringReader(htmlText);
@@ -754,7 +763,7 @@ public class HtmlUtils {
             String string = texts[i];
             if (i > 0)
                 builder.append('\n');
-            if (!isHtmlNode(string))
+            if (!isHtml(string))
                 string = plainToHTML(string);
             builder.append(htmlBodyPattern.matcher(string).replaceFirst("$1"));
         }

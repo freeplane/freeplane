@@ -26,32 +26,34 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.MultipleImage;
-import org.freeplane.features.map.NodeModel;
+import org.freeplane.core.util.Quantity;
 
 public class UIIconSet extends UIIcon {
-	final Collection<UIIcon> uiIcons;
+	private static final int ORDER = Integer.MAX_VALUE;
+    final Collection<NamedIcon> uiIcons;
 	final float zoom;
 
-	public Collection<UIIcon> getIcons() {
+	public Collection<NamedIcon> getIcons() {
 		return uiIcons;
 	}
 
-	List<UIIcon> imageIcons;
+	List<NamedIcon> imageIcons;
 	private MultipleImage compoundIcon;
 
-	public UIIconSet(final Collection<UIIcon> uiIcons, final float zoom) {
-		super("", "");
+	public UIIconSet(final Collection<NamedIcon> uiIcons, final float zoom) {
+		super("", "", ORDER);
 		this.zoom = zoom;
 		this.uiIcons = Collections.unmodifiableCollection(uiIcons);
-		imageIcons = new LinkedList<UIIcon>();
-		for (final UIIcon uiIcon : uiIcons) {
-			final UIIcon icon;
+		imageIcons = new LinkedList<NamedIcon>();
+		for (final NamedIcon uiIcon : uiIcons) {
+			final NamedIcon icon;
 			if (zoom == 1f) {
 				icon = uiIcon;
 			}
 			else {
-				icon = new ZoomedIcon(uiIcon, zoom);
+				icon = uiIcon.zoom(zoom);
 			}
 			imageIcons.add(icon);
 		}
@@ -63,18 +65,18 @@ public class UIIconSet extends UIIcon {
 	}
 	
 	@Override
-	public Icon getIcon(final NodeModel node) {
+	public Icon getIcon(Quantity<LengthUnits> iconHeight) {
 		if (compoundIcon == null) {
 			compoundIcon = new MultipleImage();
-			for (final UIIcon icon : imageIcons) {
-				compoundIcon.addIcon(icon, node);
+			for (final NamedIcon icon : imageIcons) {
+				compoundIcon.addIcon(icon, iconHeight);
 			}
 		}
 		return compoundIcon;
 	}
 
 	@Override
-	public int compareTo(final UIIcon uiIcon) {
+	public int compareTo(final NamedIcon uiIcon) {
 		return 1;
 	}
 

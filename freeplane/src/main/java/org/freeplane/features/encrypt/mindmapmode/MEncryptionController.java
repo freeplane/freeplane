@@ -55,6 +55,10 @@ public class MEncryptionController extends EncryptionController {
 		if(! encryptedMindMapNode.isAccessible())
 			return;
 		final IActor actor = new IActor() {
+			@Override
+			public boolean isReadonly() {
+				return true;
+			}
 			public void act() {
 				node.removeExtension(encryptedMindMapNode);
 				Controller.getCurrentModeController().getMapController().nodeChanged(node);

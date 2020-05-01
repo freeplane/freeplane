@@ -50,7 +50,6 @@ import org.freeplane.core.ui.ExampleFileFilter;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
-import org.freeplane.core.util.FixedHTMLWriter;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -86,6 +85,8 @@ import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.view.swing.features.filepreview.ImageAdder;
 import org.freeplane.view.swing.features.filepreview.ViewerController;
 import org.freeplane.view.swing.features.filepreview.ViewerController.PasteMode;
+
+import com.lightdev.app.shtm.SHTMLWriter;
 
 /**
  * @author Dimitry Polivaev
@@ -196,7 +197,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 		}
 	}
 
-	private static class PasteHtmlWriter extends FixedHTMLWriter {
+	private static class PasteHtmlWriter extends SHTMLWriter {
 		private final Element element;
 
 		public PasteHtmlWriter(final Writer writer, final Element element, final HTMLDocument doc, final int pos,
@@ -754,8 +755,9 @@ public class MMapClipboardController extends MapClipboardController implements M
 			UITools.errorMessage(message);
 			return;
 		}
-		try {
-			Controller.getCurrentController().getViewController().setWaitingCursor(true);
+		Controller controller = Controller.getCurrentController();
+        try {
+			controller.getViewController().setWaitingCursor(true);
 			if (newNodes == null) {
 				newNodes = new LinkedList<NodeModel>();
 			}
@@ -764,14 +766,14 @@ public class MMapClipboardController extends MapClipboardController implements M
 			final ModeController modeController = Controller.getCurrentModeController();
 			if (!asSibling && modeController.getMapController().isFolded(target)
 			        && ResourceController.getResourceController().getBooleanProperty(RESOURCE_UNFOLD_ON_PASTE)) {
-				modeController.getMapController().unfoldAndScroll(target);
+				modeController.getMapController().unfoldAndScroll(target, controller.getSelection().getFilter());
 			}
 			for (final NodeModel child : newNodes) {
 				AttributeController.getController().performRegistrySubtreeAttributes(child);
 			}
 		}
 		finally {
-			Controller.getCurrentController().getViewController().setWaitingCursor(false);
+			controller.getViewController().setWaitingCursor(false);
 		}
 	}
 
@@ -965,7 +967,7 @@ public class MMapClipboardController extends MapClipboardController implements M
     }
 
 	public Transferable getClipboardContents() {
-		return ClipboardAccessor.getController().getClipboardContents();
+		return ClipboardAccessor.getInstance().getClipboardContents();
 	}
 
 	@Override

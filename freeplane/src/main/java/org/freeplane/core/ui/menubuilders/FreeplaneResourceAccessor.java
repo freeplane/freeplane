@@ -2,6 +2,8 @@ package org.freeplane.core.ui.menubuilders;
 
 import java.net.URL;
 
+import javax.swing.Icon;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.core.util.TextUtils;
@@ -36,4 +38,9 @@ public class FreeplaneResourceAccessor implements ResourceAccessor {
 	public String getText(String key, String defaultValue) {
 		return TextUtils.getText(key, defaultValue);
 	}
+
+    @Override
+    public Icon getIcon(String key) {
+        return ResourceController.getResourceController().getIcon(key);
+    }
 }

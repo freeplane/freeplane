@@ -49,7 +49,7 @@ public class IconRegistry implements IExtension {
 			registryNodeIcons(mapController, rootNode);
 	}
 
-	public void addIcon(final UIIcon icon) {
+	public void addIcon(final NamedIcon icon) {
 		if(icon != null)
 			mapIcons.add(icon);
 	}
@@ -59,7 +59,7 @@ public class IconRegistry implements IExtension {
 	}
 
 	private void registryNodeIcons(final MapController mapController, final NodeModel node) {
-		for (final MindIcon icon : node.getIcons()) {
+		for (final NamedIcon icon : node.getIcons()) {
 			addIcon(icon);
 		}
 		for (final NodeModel child : node.getChildren()) {

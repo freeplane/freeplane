@@ -25,7 +25,7 @@ import javax.swing.Action;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.icon.IIconInformation;
+import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -43,17 +43,17 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		ArrayList<IIconInformation> actions = new ArrayList<IIconInformation>();
+		ArrayList<IconDescription> actions = new ArrayList<IconDescription>();
 		
 		final Controller controller = Controller.getCurrentController();
 
-		actions.add((IIconInformation) modeController.getAction("RemoveIcon_0_Action"));
-		actions.add((IIconInformation) modeController.getAction("RemoveIconAction"));
-		actions.add((IIconInformation) modeController.getAction("RemoveAllIconsAction"));
+		actions.add((IconDescription) modeController.getAction("RemoveIcon_0_Action"));
+		actions.add((IconDescription) modeController.getAction("RemoveIconAction"));
+		actions.add((IconDescription) modeController.getAction("RemoveAllIconsAction"));
 
 		final MIconController mIconController = (MIconController) IconController.getController();
 		for (AFreeplaneAction aFreeplaneAction : mIconController.getIconActions())
-			actions.add((IIconInformation) aFreeplaneAction);
+			actions.add((IconDescription) aFreeplaneAction);
 		
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(UITools.getCurrentFrame(), actions);
 		final NodeModel selected = controller.getSelection().getSelected();

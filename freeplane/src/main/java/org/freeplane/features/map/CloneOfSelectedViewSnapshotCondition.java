@@ -24,7 +24,6 @@ import java.util.HashSet;
 
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
@@ -61,5 +60,9 @@ public class CloneOfSelectedViewSnapshotCondition extends ASelectableCondition {
     protected String getName() {
 	    return NAME;
    }
-	public void toXml(final XMLElement element) {}
+	
+    @Override
+    public boolean canBePersisted() {
+        return false;
+    }
 }

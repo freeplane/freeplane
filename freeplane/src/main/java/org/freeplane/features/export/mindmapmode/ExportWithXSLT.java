@@ -30,7 +30,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.url.UrlManager;
 
 import javax.imageio.ImageIO;
@@ -44,6 +43,7 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -97,7 +97,7 @@ public class ExportWithXSLT implements IExportEngine {
 		final StringTokenizer tokenizer = new StringTokenizer(files, ",");
 		final File destinationDirectory = new File(targetDirectoryName);
 		while (tokenizer.hasMoreTokens()) {
-			final String sourceFile = tokenizer.nextToken();
+			final String sourceFile = tokenizer.nextToken().trim();
 			int nameStartPosition = sourceFile.lastIndexOf('/') + 1;
 			String sourceFileDirectory = nameStartPosition > 0 ? sourceFile.substring(0, nameStartPosition) : "";
 			String sourceFileName = nameStartPosition > 0 ? sourceFile.substring(nameStartPosition) : sourceFile;
@@ -122,7 +122,8 @@ public class ExportWithXSLT implements IExportEngine {
 		boolean success = true;
 		try {
 			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
-			    pDirectoryName + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION)));
+			    pDirectoryName + File.separator + "map" + UrlManager.FREEPLANE_FILE_EXTENSION), //
+				StandardCharsets.UTF_8));
 			new BranchXmlWriter(branches).writeXml(fileout, mode);
 		}
 		catch (final IOException e) {
@@ -167,9 +168,6 @@ public class ExportWithXSLT implements IExportEngine {
 
 	private String getMapXml(List<NodeModel> nodes, final Mode mode) throws IOException {
 		final StringWriter writer = new StringWriter();
-		final ModeController modeController = Controller.getCurrentModeController();
-		final Controller controller = modeController.getController();
-		final MapModel map = controller.getMap();
 		new BranchXmlWriter(nodes).writeXml(writer, mode);
 		return writer.getBuffer().toString();
 	}

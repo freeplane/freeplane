@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.ui.textchanger.TranslatedElementFactory;
 import org.freeplane.features.mode.ModeController;
 
@@ -37,7 +38,7 @@ class NavigationPanelController {
 		}
 
 		@Override
-		public void afterMapChange(final Object newMap) {
+		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 		}
 	}
 
@@ -58,7 +59,7 @@ class NavigationPanelController {
 		}
 
 		@Override
-		public void afterMapChange(final Object newMap) {
+		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 		}
 	}
 	@SuppressWarnings("serial")
@@ -77,7 +78,7 @@ class NavigationPanelController {
 		}
 		
 		@Override
-		public void afterMapChange(final Object newMap) {
+		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 		}
 	}
 	
@@ -99,7 +100,7 @@ class NavigationPanelController {
 		}
 
 		@Override
-		public void afterMapChange(final Object newMap) {
+		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 		}
 	}
 
@@ -120,7 +121,7 @@ class NavigationPanelController {
 		}
 
 		@Override
-		public void afterMapChange(final Object newMap) {
+		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 		}
 	}
 
@@ -141,7 +142,7 @@ class NavigationPanelController {
 		}
 
 		@Override
-		public void afterMapChange(final Object newMap) {
+		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 		}
 	}
 	
@@ -163,7 +164,7 @@ class NavigationPanelController {
 		}
 
 		@Override
-		public void afterMapChange(final Object newMap) {
+		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 		}
 	}
 	
@@ -183,7 +184,7 @@ class NavigationPanelController {
 		}
 
 		@Override
-		public void afterMapChange(final Object newMap) {
+		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 		}
 	}
 	

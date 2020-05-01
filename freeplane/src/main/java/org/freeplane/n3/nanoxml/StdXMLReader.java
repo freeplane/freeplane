@@ -100,7 +100,6 @@ public class StdXMLReader implements IXMLReader {
 	 *             if an I/O error occurred
 	 */
 	public StdXMLReader(final InputStream stream) throws IOException {
-		new PushbackInputStream(stream);
 		final StringBuilder charsRead = new StringBuilder();
 		final Reader reader = this.stream2reader(stream, charsRead);
 		currentReader = new StackedReader();

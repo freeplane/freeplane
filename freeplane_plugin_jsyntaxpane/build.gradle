@@ -1,5 +1,5 @@
 dependencies {
-    compile project(':freeplane')
+    implementation project(':freeplane')
 
     // from flatDir "localGitDepsRepository":
     // from the Debian "libjsyntaxpane-java" package:

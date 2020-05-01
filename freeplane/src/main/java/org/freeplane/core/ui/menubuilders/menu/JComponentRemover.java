@@ -12,7 +12,9 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 
 public class JComponentRemover implements EntryVisitor{
-	final private static MenuSplitter menuSplitter = new MenuSplitter(0);
+	public static JComponentRemover INSTANCE = new JComponentRemover();
+	private JComponentRemover(){/**/}
+	final private MenuSplitter menuSplitter = new MenuSplitter(0);
 
 	@Override
 	public void visit(Entry target) {

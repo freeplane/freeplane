@@ -37,6 +37,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -125,44 +128,46 @@ public class UrlManager implements IExtension {
 	 */
 	@SuppressWarnings("serial")
     public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector, boolean showHiddenFiles) {
-		final JFileChooser chooser = new JFileChooser(){
- 			@Override
-            protected JDialog createDialog(Component parent) throws HeadlessException {
- 				final JDialog dialog = super.createDialog(parent);
-	            final JComponent selector = createDirectorySelector(this);
+	    return AccessController.doPrivileged((PrivilegedAction<JFileChooser>)() -> {
+	        final JFileChooser chooser = new JFileChooser(){
+	            @Override
+	            protected JDialog createDialog(Component parent) throws HeadlessException {
+	                final JDialog dialog = super.createDialog(parent);
+	                final JComponent selector = createDirectorySelector(this);
 
-	            //Close dialog when escape is pressed
-	            InputMap in = dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-	            in.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "escape");
-	            ActionMap aMap = dialog.getRootPane().getActionMap();
-	            aMap.put("escape", new AbstractAction()
-	            		{
-	            		@Override
-						public void actionPerformed (ActionEvent e)
-	            		{
-	            			dialog.dispose();
-	            		}
-	            });
-	            if(selector != null){
-	            	dialog.getContentPane().add(selector, BorderLayout.NORTH);
-	            	dialog.pack();
+	                //Close dialog when escape is pressed
+	                InputMap in = dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+	                in.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "escape");
+	                ActionMap aMap = dialog.getRootPane().getActionMap();
+	                aMap.put("escape", new AbstractAction()
+	                {
+	                    @Override
+	                    public void actionPerformed (ActionEvent e)
+	                    {
+	                        dialog.dispose();
+	                    }
+	                });
+	                if(selector != null){
+	                    dialog.getContentPane().add(selector, BorderLayout.NORTH);
+	                    dialog.pack();
+	                }
+
+	                return dialog;
 	            }
 
-				return dialog;
-            }
-
-		};
-		if (getLastCurrentDir() != null) {
-			chooser.setCurrentDirectory(getLastCurrentDir());
-		}
-		if (showHiddenFiles) {
-			chooser.setFileHidingEnabled(false);
-		}
-		if (filter != null) {
-			chooser.addChoosableFileFilter(filter);
-			chooser.setFileFilter(filter);
-		}
-		return chooser;
+	        };
+	        if (getLastCurrentDir() != null) {
+	            chooser.setCurrentDirectory(getLastCurrentDir());
+	        }
+	        if (showHiddenFiles) {
+	            chooser.setFileHidingEnabled(false);
+	        }
+	        if (filter != null) {
+	            chooser.addChoosableFileFilter(filter);
+	            chooser.setFileFilter(filter);
+	        }
+	        return chooser;
+	    });
 	}
 
 	protected JComponent createDirectorySelector(JFileChooser chooser) {
@@ -241,7 +246,7 @@ public class UrlManager implements IExtension {
 			throws IOException, XMLException {
 		setURL(map, url);
 		InputStream inputStream = getLocation(url).openStream();
-		try (InputStreamReader urlStreamReader = new InputStreamReader(inputStream)) {
+		try (InputStreamReader urlStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
 			final ModeController modeController = Controller.getCurrentModeController();
 			modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
 		}

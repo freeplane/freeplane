@@ -53,7 +53,7 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 	final private boolean succeed;
 
 	PriorityCompareCondition(final String value, final int comparationResult, final boolean succeed) {
-		super(value, false, false);
+		super(value, false, false, false);
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
 	}
@@ -75,10 +75,10 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
     }
 
 	public boolean checkNode(final NodeModel node) {
-		final Collection<MindIcon> icons = IconController.getController().getIcons(node);
-		for (final MindIcon icon : icons) {
-			final String iconName = icon.getFileName();
-			if (iconName.length() != 10) {
+		final Collection<NamedIcon> icons = IconController.getController().getIcons(node);
+		for (final NamedIcon icon : icons) {
+			final String iconName = icon.getName();
+			if (iconName.length() != 6) {
 				continue;
 			}
 			if (!iconName.startsWith("full-")) {
@@ -101,7 +101,7 @@ public class PriorityCompareCondition extends CompareConditionAdapter {
 	}
 
 	private String getIconName() {
-		return "full-" + getConditionValue().toString();
+		return "full-" + conditionValue().toString();
 	}
 
 	public void fillXML(final XMLElement child) {

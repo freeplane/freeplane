@@ -45,7 +45,7 @@ public class TimeConditionModifiedAfter extends TimeConditionModifiedBefore{
 		final String filterTime = TextUtils.getText(TimeConditionController.FILTER_TIME);
 		final String dateAsString = getDate().toString();
 		final String after = TextUtils.getText(FILTER_MODIFIED_AFTER);
-		return ConditionFactory.createDescription(filterTime, after, dateAsString, false, false);
+		return ConditionFactory.createDescription(filterTime, after, dateAsString);
 	}
 
 	@Override

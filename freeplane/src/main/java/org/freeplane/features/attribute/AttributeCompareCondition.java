@@ -53,7 +53,8 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 		    SUCCEED, null));
 		final boolean matchApproximately = TreeXmlReader.xmlToBoolean(element.getAttribute(
 			    MATCH_APPROXIMATELY, null));
-		return new AttributeCompareCondition(attr, value, matchCase, compResult, succeed, matchApproximately);
+		return new AttributeCompareCondition(attr, value, matchCase, compResult, succeed, matchApproximately,
+		        Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
 	}
 
 	final private Object attribute;
@@ -63,8 +64,9 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 	/**
 	 */
 	public AttributeCompareCondition(final Object attribute, final Object value, final boolean matchCase,
-	                                 final int comparationResult, final boolean succeed, final boolean matchApproximately) {
-		super(value, matchCase, matchApproximately);
+	                                 final int comparationResult, final boolean succeed, final boolean matchApproximately, boolean ignoreDiacritics
+	                                 ) {
+		super(value, matchCase, matchApproximately, ignoreDiacritics);
 		this.attribute = attribute;
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
@@ -118,7 +120,6 @@ public class AttributeCompareCondition extends CompareConditionAdapter {
 		if (attribute instanceof String) child.setAttribute(ATTRIBUTE, (String) attribute);
 		child.setAttribute(COMPARATION_RESULT, Integer.toString(comparationResult));
 		child.setAttribute(SUCCEED, TreeXmlWriter.BooleanToXml(succeed));
-		child.setAttribute(MATCH_APPROXIMATELY, TreeXmlWriter.BooleanToXml(matchApproximately));
 	}
 
 	@Override

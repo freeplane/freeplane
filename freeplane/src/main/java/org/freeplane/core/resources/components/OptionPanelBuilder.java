@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.util.Arrays;
 import java.util.Map.Entry;
@@ -32,7 +33,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import javax.swing.ImageIcon;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.freeplane.core.io.IElementDOMHandler;
@@ -142,7 +142,7 @@ public class OptionPanelBuilder {
 				final String iconName = element.getAttribute("icon", null);
 				final Object displayedItem;
 				if(iconName != null) {
-					displayedItem = new ImageIcon(ResourceController.getResourceController().getResource("/images/" + iconName));
+					displayedItem = ResourceController.getResourceController().getIcon("/images/" + iconName);
 				}
 				else {
 					final String translationKey = element.getAttribute("text", "OptionPanel." + choice);
@@ -710,7 +710,7 @@ public class OptionPanelBuilder {
 	public void load(final URL menu) {
 		InputStreamReader reader = null;
 		try {
-			reader = new InputStreamReader(new BufferedInputStream(menu.openStream()));
+			reader = new InputStreamReader(new BufferedInputStream(menu.openStream()), StandardCharsets.UTF_8);
 			load(reader);
 		}
 		catch (final IOException e) {

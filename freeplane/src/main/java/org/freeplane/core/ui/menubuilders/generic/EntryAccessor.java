@@ -1,23 +1,21 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
-import java.net.URL;
+import java.awt.Component;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 
 public class EntryAccessor {
 
-	public static final String COMPONENT = "component";
-	public static final Class<AFreeplaneAction> ACTION = AFreeplaneAction.class;
-	public static final String TEXT = "text";
-	public static final String TEXT_KEY = "textKey";
-	public static final Class<Icon> ICON = Icon.class;
+	private static final String COMPONENT = "component";
+	private static final String TEXT = "text";
+	private static final String TEXT_KEY = "textKey";
+    public static final String ICON = "icon";
+	public static final Class<Icon> ICON_INSTANCE = Icon.class;
 	public static final String ACCELERATOR = "accelerator";
-	public final ResourceAccessor resourceAccessor;
+	private final ResourceAccessor resourceAccessor;
 	public static final String MENU_ELEMENT_SEPARATOR = " -> ";
 
 	public EntryAccessor(ResourceAccessor resourceAccessor) {
@@ -29,26 +27,15 @@ public class EntryAccessor {
     }
 
 	public Icon getIcon(final Entry entry) {
-		if (entry.getAttribute(ICON) != null)
-			return entry.getAttribute(ICON);
-		else {
+        if (entry.getAttribute(ICON_INSTANCE) != null)
+            return entry.getAttribute(ICON_INSTANCE);
+        String key = (String) entry.getAttribute(ICON);
+        if (key == null) {
 			String name = entry.getName();
-			final String key = name + ".icon";
-			final String iconResource = resourceAccessor.getProperty(key);
-			final Icon icon;
-			if (iconResource != null) {
-				final URL url = resourceAccessor.getResource(iconResource);
-				if(url != null)
-					icon = new ImageIcon(url);
-				else {
-					LogUtils.severe("Can not load icon '" + iconResource + "'");
-					icon = null;
-				}
-			}
-			else
-				icon = null;
-			return icon;
+			key = name + ".icon";
 		}
+        final Icon icon = resourceAccessor.getIcon(key);
+        return icon;
 
 	}
 
@@ -58,7 +45,7 @@ public class EntryAccessor {
 		else {
 			final String textKey = (String) entry.getAttribute(TEXT_KEY);
 			if (textKey != null)
-				return (String) resourceAccessor.getRawText(textKey);
+				return resourceAccessor.getRawText(textKey);
 			else {
 				final AFreeplaneAction action = getAction(entry);
 				if (action != null)
@@ -97,7 +84,7 @@ public class EntryAccessor {
 		else
 			return name;
 	}
-	
+
 	public String getTooltipKey(final Entry entry) {
 		final AFreeplaneAction action = getAction(entry);
 		if (action != null) {
@@ -107,24 +94,24 @@ public class EntryAccessor {
 		return null;
 	}
 
-	public Object getComponent(final Entry entry) {
-		return entry.getAttribute(COMPONENT);
+	public Component getComponent(final Entry entry) {
+		return (Component) entry.getAttribute(COMPONENT);
 	}
 
 	public Object removeComponent(final Entry entry) {
 		return entry.removeAttribute(COMPONENT);
 	}
 
-	public void setComponent(final Entry entry, Object component) {
+	public void setComponent(final Entry entry, Component component) {
 		entry.setAttribute(COMPONENT, component);
 	}
 
 	public AFreeplaneAction getAction(final Entry entry) {
-		return entry.getAttribute(ACTION);
+		return entry.getAction();
 	}
 
 	public void setAction(final Entry entry, AFreeplaneAction action) {
-		entry.setAttribute(ACTION, action);
+		entry.setAction(action);
 	}
 
 	public Object getAncestorComponent(final Entry entry) {
@@ -145,7 +132,7 @@ public class EntryAccessor {
 	}
 
 	public void setIcon(Entry entry, Icon icon) {
-		entry.setAttribute(ICON, icon);
+		entry.setAttribute(ICON_INSTANCE, icon);
 	}
 
 	public String getAccelerator(Entry entry) {
@@ -155,11 +142,12 @@ public class EntryAccessor {
 
 	public void addChildAction(Entry target, AFreeplaneAction action) {
 		final Entry actionEntry = new Entry();
+		actionEntry.addConstraint(target);
 		actionEntry.setName(action.getKey());
 		setAction(actionEntry, action);
 		target.addChild(actionEntry);
 	}
-	
+
 	public String getLocationDescription(Entry entry) {
 		final StringBuilder stringBuilder = new StringBuilder();
 		buildLocationDescription(entry, stringBuilder);

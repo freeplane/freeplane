@@ -37,19 +37,19 @@ class TimerBlinkTask extends TimerTask {
 	 */
 	private final ReminderExtension reminderExtension;
 	private boolean stateAdded = false;
-	private boolean runScript;
+	private boolean reminderTimeInTheFuture;
 	private boolean alreadyExecuted;
 
 	/**
 	 * @param b
 	 */
 	public TimerBlinkTask(final ReminderHook reminderController, final ReminderExtension reminderExtension,
-	                      final boolean stateAdded, boolean runScript) {
+	                      final boolean stateAdded, boolean reminderTimeInTheFuture) {
 		super();
 		this.reminderController = reminderController;
 		this.reminderExtension = reminderExtension;
 		this.stateAdded = stateAdded;
-		this.runScript = runScript;
+		this.reminderTimeInTheFuture = reminderTimeInTheFuture;
 		alreadyExecuted = false;
 	}
 
@@ -59,12 +59,12 @@ class TimerBlinkTask extends TimerTask {
 
 			@Override
 			public void run() {
-				if(runScript){
-					runScript = false;
+				if(reminderTimeInTheFuture && reminderExtension.containsScript()){
+					reminderTimeInTheFuture = false;
 					reminderController.runScript(reminderExtension);
 				}
 				if(! alreadyExecuted){
-					if(runScript && ResourceController.getResourceController().getBooleanProperty("remindersShowNotifications"))
+					if(reminderTimeInTheFuture && ResourceController.getResourceController().getBooleanProperty("remindersShowNotifications"))
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {

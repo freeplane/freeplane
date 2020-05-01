@@ -20,7 +20,6 @@
  */
 package org.freeplane.features.mode;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -160,13 +159,6 @@ public class Controller extends AController implements FreeplaneActions, IMapLif
 		if (shutdown()) {
 			System.exit(0);
 		}
-	}
-
-	/**
-	 * @param actionEvent
-	 */
-	public void quit(final ActionEvent actionEvent) {
-		getActions().get("QuitAction").actionPerformed(actionEvent);
 	}
 
 	public void selectMode(ModeController newModeController) {

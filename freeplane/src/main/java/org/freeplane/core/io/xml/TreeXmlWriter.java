@@ -79,10 +79,10 @@ public class TreeXmlWriter implements ITreeWriter {
 	    xmlwriter.flush();
     }
 
-	public TreeXmlWriter(final WriteManager writeManager, final Writer writer) {
+	public TreeXmlWriter(final WriteManager writeManager, final Writer writer, boolean restrictedCharset) {
 		super();
 		this.writeManager = writeManager;
-		xmlwriter = new XMLWriter(writer);
+		xmlwriter = new XMLWriter(writer, restrictedCharset);
 		hints = new HashMap<Object, Object>();
 	}
 

@@ -8,14 +8,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.freeplane.core.ui.AFreeplaneAction;
+
 /**
  * @author Dimitry
  *
  */
 public class Entry {
+	private static final Class<AFreeplaneAction> ACTION = AFreeplaneAction.class;
 	
 	private String name;
 	private Entry parent;
+	private UserRoleConstraint constraint = UserRoleConstraint.NO_CONSTRAINT;
+	
+	public AFreeplaneAction getAction() {
+		return getAttribute(ACTION);
+	}
+
+	public void setAction(AFreeplaneAction action) {
+		if(action != null)
+			action.addConstraint(constraint);
+		setAttribute(ACTION, action);
+	}
+
+	public void addConstraint(UserRoleConstraint constraint) {
+		this.constraint = this.constraint.and(constraint);
+	}
+
+	public void addConstraint(Entry entry) {
+		addConstraint(entry.constraint);
+	}
+
 	private List<String> builders;
 	final private Map<Object, Object> attributes;
 	final private ArrayList<Entry> childEntries;
@@ -247,5 +270,9 @@ public class Entry {
 
 	public void remove(Entry entry) {
 		childEntries.remove(entry);
+	}
+
+	public boolean isAllowed(UserRole userRole) {
+		return constraint.test(userRole);
 	}
 }

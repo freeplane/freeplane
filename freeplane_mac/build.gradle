@@ -1,11 +1,13 @@
-repositories {
-    maven {url 'http://devel.uji.es/nexus/content/repositories/releases/'}
+targetCompatibility='1.11'
+sourceCompatibility='1.11'
+
+if(System.env['JDK_11_HOME'] != null){
+    compileJava.options.fork = true
+    compileJava.options.forkOptions.javaHome= new File(System.env['JDK_11_HOME'])
 }
 
 dependencies {
-    compile (project(':freeplane')) {
+    implementation (project(':freeplane')) {
         transitive = false
     }
-    
-    compileOnly 'com.apple:applejavaextensions:1.5.4'
 }

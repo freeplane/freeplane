@@ -1,42 +1,41 @@
-def signJarProperties = file('signjar.properties')
+def signJarPropertyFile = file('signjar.properties')
 
-Properties props = new Properties()
-if (signJarProperties.exists())
+ext.signJarProperties = new Properties()
+if (signJarPropertyFile.exists())
 {
-    props.load(new FileInputStream(signJarProperties))
+    signJarProperties.load(new FileInputStream(signJarPropertyFile))
 }
 
-task signViewerJar(type: Exec) {
-    onlyIf { props['signjar.cardpass'] }
-    def freeplaneViewerJar = files(viewerJar).getSingleFile()
-	commandLine 'jarsigner', '-keystore',  'NONE', '-tsa', props['signjar.tsaurl'],
-		'-storetype', 'PKCS11', '-providerClass', 'sun.security.pkcs11.SunPKCS11',
-		'-providerArg', props['signjar.cfg'], '-storepass',  props['signjar.cardpass'], 
-		'-certchain', props['signjar.certchain'],
-		freeplaneViewerJar, props['signjar.owner']
-    dependsOn viewerJar
+def signJarTask(String name, String signedJarName) {
+	return tasks.create(name, Exec) {
+	    onlyIf { signJarProperties['signjar.cardpass'] }
+		commandLine 'jarsigner', '-keystore',  'NONE', '-tsa', signJarProperties['signjar.tsaurl'],
+			'-storetype', 'PKCS11', '-providerClass', 'sun.security.pkcs11.SunPKCS11',
+			'-providerArg', signJarProperties['signjar.cfg'], '-storepass',  signJarProperties['signjar.cardpass'], 
+			'-certchain', signJarProperties['signjar.certchain'],
+			file(globalBin + '/core/' + pluginid + '/lib/' + signedJarName), 
+			signJarProperties['signjar.owner']
+	    dependsOn copyOSGiJars
+    }
 }
 
-task signSvgJar(type: Exec) {
-	onlyIf { props['signjar.cardpass'] }
-	def svgJar = file('lib/kitfox-svg-salamander-1.1.1-p1.jar')
-	commandLine 'jarsigner', '-keystore',  'NONE', '-tsa', props['signjar.tsaurl'],
-		'-storetype', 'PKCS11', '-providerClass', 'sun.security.pkcs11.SunPKCS11',
-		'-providerArg', props['signjar.cfg'], '-storepass',  props['signjar.cardpass'], 
-		'-certchain', props['signjar.certchain'],
-		svgJar, props['signjar.owner']
-}
+signJarTask('signViewerJar', 'freeplaneviewer.jar')
+
+signJarTask('signViewerApiJar', 'freeplaneapi_viewer.jar')
+
+signJarTask('signSvgJar', 'kitfox-svg-salamander-1.1.1-p1.jar')
 
 task doNotSignViewerJar {
-    onlyIf { !props['signjar.cardpass'] }
+    onlyIf { !signJarProperties['signjar.cardpass'] }
     doLast {
         println('No ' + rootDir.path + '/freeplane/signjar.properties found')
         println('Applet is NOT signed!')
         println('(see ' + rootDir.path + '/freeplane/signjar-example.properties)')
     }
-    dependsOn viewerJar
+    dependsOn copyOSGiJars
 }
 
-// exactly one of three is always enabled (see above)!
-copyOSGiJars.dependsOn signViewerJar
-copyOSGiJars.dependsOn doNotSignViewerJar
+// exactly one of two is always enabled (see above)!
+build.dependsOn signViewerJar
+build.dependsOn signViewerApiJar
+build.dependsOn doNotSignViewerJar

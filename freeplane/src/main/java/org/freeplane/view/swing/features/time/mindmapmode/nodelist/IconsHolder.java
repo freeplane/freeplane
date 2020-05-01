@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.freeplane.features.icon.IconController;
-import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.map.NodeModel;
 /**
  * @author Dimitry Polivaev
@@ -32,15 +32,15 @@ import org.freeplane.features.map.NodeModel;
  */
 class IconsHolder implements Comparable<IconsHolder> {
 	final private String iconNames;
-	List<MindIcon> icons = new ArrayList<MindIcon>();
+	List<NamedIcon> icons = new ArrayList<>();
 
 	public IconsHolder(final NodeModel node) {
 		icons.addAll(IconController.getController().getIcons(node));
 		if (icons.size() > 0) {
-			final List<MindIcon> toSort = new ArrayList<MindIcon>(icons);
+			final List<NamedIcon> toSort = new ArrayList<>(icons);
 			Collections.sort(toSort);
 			final StringBuilder builder = new StringBuilder();
-			for (final MindIcon icon : toSort) {
+			for (final NamedIcon icon : toSort) {
 				builder.append(icon.getName()).append(" ");
 			}
 			iconNames = builder.toString();
@@ -54,7 +54,7 @@ class IconsHolder implements Comparable<IconsHolder> {
 		return toString().compareTo(compareToObject.toString());
 	}
 
-	public List<MindIcon> getIcons() {
+	public List<NamedIcon> getIcons() {
 		return icons;
 	}
 

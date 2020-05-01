@@ -21,7 +21,6 @@ package org.freeplane.features.filter.condition;
 
 import java.util.Date;
 
-import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
@@ -37,14 +36,11 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author ?
  *
  */
-abstract public class CompareConditionAdapter extends ASelectableCondition {
+abstract public class CompareConditionAdapter extends StringConditionAdapter {
 	public static final String OBJECT = "OBJECT";
-	public static final String MATCH_CASE = "MATCH_CASE";
-	public static final String MATCH_APPROXIMATELY = "MATCH_APPROXIMATELY";
-	public static final String VALUE = "VALUE";
+    public static final String VALUE = "VALUE";
+
 	private Comparable<?> conditionValue;
-	final private boolean matchCase;
-	final protected boolean matchApproximately;
 	final StringMatchingStrategy stringMatchingStrategy;
 	private int comparisonResult;
 	private boolean error;
@@ -52,10 +48,8 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 	abstract public boolean isEqualityCondition();
 
 	@SuppressWarnings("deprecation")
-	protected CompareConditionAdapter(final Object value, final boolean matchCase, final boolean matchApproximately) {
-		super();
-		this.matchCase = matchCase;
-		this.matchApproximately = matchApproximately;
+	protected CompareConditionAdapter(final Object value, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, ignoreDiacritics);
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 		final ResourceController resourceController = ResourceController.getResourceController();
@@ -88,18 +82,14 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 	}
 
 	protected CompareConditionAdapter(final Double value) {
-		super();
-		this.matchCase = false;
-		this.matchApproximately = false;
+		super(false, false, false);
 		conditionValue = value;
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
 
 	protected CompareConditionAdapter(final Long value) {
-		super();
-		this.matchCase = false;
-		this.matchApproximately = false;
+	    super(false, false, false);
 		conditionValue = value;
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
@@ -112,9 +102,7 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			child.setAttribute(OBJECT, TypeReference.toSpec(conditionValue));
 		}
 		else
-			child.setAttribute(CompareConditionAdapter.VALUE, conditionValue.toString());
-		child.setAttribute(CompareConditionAdapter.MATCH_CASE, TreeXmlWriter.BooleanToXml(matchCase));
-		child.setAttribute(CompareConditionAdapter.MATCH_APPROXIMATELY, TreeXmlWriter.BooleanToXml(matchApproximately));
+			child.setAttribute(VALUE, conditionValue.toString());
 	}
 
 	protected void compareTo(final Object transformedContent){
@@ -150,17 +138,18 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			return 0;
 		}
 		
-		final String valueAsString = conditionValue.toString();
-		final String text = transformedContent.toString();
+		final String normalizedValue = normalizedValue();
+		final String text = normalize(transformedContent);
 		if (isEqualityCondition())
 		{
-			return stringMatchingStrategy.matches(valueAsString, text, false, matchCase) ? 0 : -1;
+			return stringMatchingStrategy.matches(normalizedValue, text, false) ? 0 : -1;
 		}
 		else
 		{
-			return matchCase ? text.compareTo(valueAsString) : text.compareToIgnoreCase(valueAsString);
+			return text.compareTo(normalizedValue);
 		}
     }
+
 
 	protected int getComparisonResult() {
     	return comparisonResult;
@@ -201,14 +190,15 @@ abstract public class CompareConditionAdapter extends ASelectableCondition {
 			default:
 				throw new IllegalArgumentException();
 		}
-		return ConditionFactory.createDescription(attribute, simpleCondition, valueDescription(), matchCase, matchApproximately);
+		return createDescription(attribute, simpleCondition, valueDescription());
 	}
 
 	private String valueDescription() {
 		return conditionValue.toString();
 	}
 
-	public Comparable<?> getConditionValue() {
+	@Override
+    public Comparable<?> conditionValue() {
 		return conditionValue;
 	}
 }

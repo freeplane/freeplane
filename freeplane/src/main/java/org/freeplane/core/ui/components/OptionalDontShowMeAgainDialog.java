@@ -173,10 +173,10 @@ public class OptionalDontShowMeAgainDialog {
 		        5, 5, 0, 0), 0, 0));
 		final Icon questionMark;
 		if (mMessageType == ONLY_OK_SELECTION_IS_SHOWN) {
-			questionMark = ResourceController.getResourceController().getIcon("/images/icons/messagebox_warning.png");
+			questionMark = ResourceController.getResourceController().getIcon("/images/icons/messagebox_warning.svg");
 		}
 		else {
-			questionMark = ResourceController.getResourceController().getIcon("/images/icons/help.png");
+			questionMark = ResourceController.getResourceController().getIcon("/images/icons/help.svg");
 		}
 		mDialog.getContentPane().add(
 		    new JLabel(questionMark),

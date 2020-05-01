@@ -23,33 +23,39 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public class NodeContainsCondition extends ASelectableCondition implements NodeItemRelation {
-	static final String NAME = "node_contains_condition";
-	static final String VALUE = "VALUE";
-	static final String MATCH_APPROXIMATELY = "MATCH_APPROXIMATELY";
+public class NodeContainsCondition extends StringConditionAdapter implements NodeItemRelation {
+	static final String IGNORE_CASE_NAME = "node_contains_condition";
+	static final String MATCH_CASE_NAME = "match_case_node_contains_condition";
+    public static final String VALUE = "VALUE";
 
-	static ASelectableCondition load(final XMLElement element) {
+	static ASelectableCondition loadIgnoreCase(final XMLElement element) {
 		return new NodeContainsCondition(
-			element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE), 
+			element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE),
 			element.getAttribute(NodeContainsCondition.VALUE, null),
-			Boolean.valueOf(element.getAttribute(NodeContainsCondition.MATCH_APPROXIMATELY, null)));
+			false, Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
+			Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
 	}
 
+    static ASelectableCondition loadMatchCase(final XMLElement element) {
+        return new NodeContainsCondition(
+            element.getAttribute(NodeTextCompareCondition.ITEM, TextController.FILTER_NODE),
+            element.getAttribute(NodeContainsCondition.VALUE, null),
+            true, Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
+            Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
+    }
 	final private String value;
 	final private String nodeItem;
-	//final private String valueLowerCase;
-	final private boolean matchApproximately;
 	final StringMatchingStrategy stringMatchingStrategy;
 
-	public NodeContainsCondition(String nodeItem, final String value, final boolean matchApproximately) {
-		super();
+	public NodeContainsCondition(String nodeItem, final String value, boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, ignoreDiacritics);
 		this.value = value;
 		//this.valueLowerCase = value.toLowerCase();
 		this.nodeItem = nodeItem;
-		this.matchApproximately = matchApproximately; 
 		stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
@@ -66,17 +72,16 @@ public class NodeContainsCondition extends ASelectableCondition implements NodeI
 		}
 		return false;
 	}
-	
+
 	private boolean checkText(final Object o) {
-		//return o != null && o.toString().toLowerCase().indexOf(valueLowerCase) > -1;
-		return o != null && stringMatchingStrategy.matches(value, o.toString(), true, false);
+		return o != null && stringMatchingStrategy.matches(normalizedValue(), normalize(o), true);
 	}
 
 	@Override
 	protected String createDescription() {
 		final String nodeCondition = TextUtils.getText(nodeItem);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(nodeCondition, simpleCondition, value, false, matchApproximately);
+		return createDescription(nodeCondition, simpleCondition, value);
 	}
 
 	@Override
@@ -84,16 +89,20 @@ public class NodeContainsCondition extends ASelectableCondition implements NodeI
 		super.fillXML(child);
 		child.setAttribute(NodeContainsCondition.VALUE, value);
 		child.setAttribute(NodeTextCompareCondition.ITEM, nodeItem);
-		child.setAttribute(NodeContainsCondition.MATCH_APPROXIMATELY, Boolean.toString(matchApproximately));
 	}
 
 	@Override
     protected String getName() {
-	    return NAME;
+	    return matchCase ? MATCH_CASE_NAME : IGNORE_CASE_NAME;
     }
-	
+
 	public String getNodeItem() {
 		return nodeItem;
 	}
+
+    @Override
+    protected Object conditionValue() {
+        return value;
+    }
 
 }

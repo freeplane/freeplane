@@ -74,7 +74,8 @@
 			<Entry name="ApplyNoFilteringAction" />
 			<Entry name="EditFilterAction" />
 			<Entry builder="separator" />
-			<Entry name="ShowAncestorsAction" />
+			<Entry name="HideMatchingNodesAction" />
+            <Entry name="ShowAncestorsAction" />
 			<Entry name="ShowDescendantsAction" />
 			<Entry name="ApplyToVisibleAction" />
 			<Entry builder="separator" />

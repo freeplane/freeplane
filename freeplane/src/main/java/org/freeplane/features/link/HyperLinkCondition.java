@@ -23,7 +23,7 @@ import java.net.URI;
 
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
-import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -31,11 +31,11 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public abstract class HyperLinkCondition extends ASelectableCondition {
+public abstract class HyperLinkCondition extends StringConditionAdapter {
 	static final String TEXT = "TEXT";
 	final private String hyperlink;
-	public HyperLinkCondition(final String hyperlink) {
-		super();
+	public HyperLinkCondition(final String hyperlink, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, ignoreDiacritics);
 		this.hyperlink = hyperlink;
 	}
 
@@ -63,7 +63,13 @@ public abstract class HyperLinkCondition extends ASelectableCondition {
 		return hyperlink;
 	}
 	
-	protected void fillXML(XMLElement element){
+	@Override
+    protected Object conditionValue() {
+	    return hyperlink;
+    }
+
+    protected void fillXML(XMLElement element){
+        super.fillXML(element);
 		element.setAttribute(TEXT, hyperlink);
 	}
 }

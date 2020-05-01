@@ -253,7 +253,7 @@ public class AttributeController implements IExtension {
 				final boolean showIcon = Boolean.parseBoolean(showAttributeIcon);
 				if(showIcon) {
 					if (attributeIcon == null) {
-						attributeIcon = IconStoreFactory.ICON_STORE.getUIIcon("showAttributes.png");
+						attributeIcon = IconStoreFactory.ICON_STORE.getUIIcon("showAttributes.svg");
 					}
 					return attributeIcon;
 				}

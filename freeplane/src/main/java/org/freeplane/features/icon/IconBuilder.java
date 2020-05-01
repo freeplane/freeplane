@@ -20,6 +20,7 @@
 package org.freeplane.features.icon;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.Collection;
 
 import org.freeplane.core.io.IAttributeHandler;
@@ -28,6 +29,7 @@ import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
@@ -94,16 +96,23 @@ class IconBuilder implements IElementDOMHandler, IElementWriter {
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		final NodeModel node = (NodeModel) element;
 		final IconController iconController = IconController.getController();
-		final Collection<MindIcon> icons = forceFormatting ? iconController.getIcons(node)
+		final Collection<NamedIcon> icons = forceFormatting ? iconController.getIcons(node)
 		        : node.getIcons();
-		for (MindIcon icon : icons) {
+		for (NamedIcon icon : icons) {
 			final XMLElement iconElement = new XMLElement();
 			iconElement.setName("icon");
 			iconElement.setAttribute("BUILTIN", icon.getName());
 			if (forceFormatting) {
-				iconElement.setAttribute("src", icon.getSource());
-				iconElement.setAttribute("height",
-				    Integer.toString(iconController.getIconSize(node).toBaseUnitsRounded()));
+			    MindIcon mindIcon = (MindIcon) icon;
+			    String iconFile;
+                try {
+                    iconFile = new URI(null, mindIcon.getFile(), null).toString();
+                    iconElement.setAttribute("src", iconFile);
+                    iconElement.setAttribute("height",
+                            Integer.toString(iconController.getIconSize(node).toBaseUnitsRounded()));
+                } catch (Exception e) {
+                    LogUtils.severe(e);
+                }
 			}
 			writer.addElement(node, iconElement);
 		}

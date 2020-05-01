@@ -51,6 +51,7 @@ public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup 
 	
 	private BorderColorListener borderColorListener;
 	private BorderColorMatchesEdgeColorListener borderColorMatchesEdgeColorChangeListener;
+	private boolean canEdit;
 	
 	private class BorderColorListener extends ControlGroupChangeListener {
 		public BorderColorListener(final BooleanProperty mSet, final IPropertyControl mProperty) {
@@ -133,14 +134,15 @@ public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup 
 	}
 
 	@Override
-	public void setStyle(NodeModel node) {
+	public void setStyle(NodeModel node, boolean canEdit) {
+		this.canEdit = canEdit;
 		borderColorListener.setStyle(node);
 		borderColorMatchesEdgeColorChangeListener.setStyle(node);
 	}
 
 	private void enableOrDisableBorderColorControls() {
 		final boolean borderColorCanBeSet = ! mBorderColorMatchesEdgeColor.getBooleanValue();
-		mSetBorderColor.setEnabled(borderColorCanBeSet);
-		mBorderColor.setEnabled(borderColorCanBeSet);
+		mSetBorderColor.setEnabled(borderColorCanBeSet && canEdit);
+		mBorderColor.setEnabled(borderColorCanBeSet && canEdit);
 	}
 }

@@ -28,7 +28,6 @@ import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 
 
 /**

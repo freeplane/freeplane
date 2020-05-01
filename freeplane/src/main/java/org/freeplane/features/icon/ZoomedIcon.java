@@ -32,25 +32,15 @@ import javax.swing.ImageIcon;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.factory.IconFactory;
-import org.freeplane.features.map.NodeModel;
 
 public class ZoomedIcon extends UIIcon {
 	final static private Map<UIIcon, Map<Float, ImageIcon>> zoomedBitmapIcons = new HashMap<UIIcon, Map<Float, ImageIcon>>();
 	private final UIIcon uiIcon;
 	private final float zoom;
 	private ImageIcon zoomedIcon;
-	
-	public static Icon withHeigth(UIIcon uiIcon, int heightInPixel) {
-		Icon icon = uiIcon.getIcon();
-		int ownHeight = icon.getIconHeight();
-		if(ownHeight == heightInPixel)
-			return icon;
-		float zoom = ownHeight != 0 ? ((float)heightInPixel) / ownHeight : 0;
-		return new ZoomedIcon(uiIcon, zoom).getIcon();
-	}
 
 	public ZoomedIcon(final UIIcon uiIcon, final float zoom) {
-		super(uiIcon.getName(), uiIcon.getFileName(), uiIcon.getDescriptionTranslationKey(), uiIcon.getShortcutKey());
+		super(uiIcon.getName(), uiIcon.getFile(), uiIcon.getDescriptionTranslationKey(), uiIcon.getShortcutKey(), uiIcon.getOrder());
 		this.uiIcon = uiIcon;
 		this.zoom = zoom;
 	}
@@ -69,9 +59,8 @@ public class ZoomedIcon extends UIIcon {
 	}
 
 	@Override
-	public Icon getIcon(final NodeModel node) {
+	public Icon getIcon(Quantity<LengthUnits> iconHeight) {
 		if(uiIcon.getUrl().getPath().endsWith(".svg")) {
-			final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(node);
 			return IconFactory.getInstance().getIcon(this, iconHeight.zoomBy(zoom));
 		}
 		else {

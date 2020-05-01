@@ -99,7 +99,7 @@ public class TypeReference{
     	for (int i = 0; i < text.length(); ++i) {
     		myChar = text.charAt(i);
     		intValue = text.charAt(i);
-    		if (intValue < 32 || intValue == 34 || intValue == 38 || intValue == 124 || intValue > 126) {
+    		if (intValue < 32 || intValue == 34 || intValue == 38 || intValue == 124) {
     			result.append("&#x").append(Integer.toString(intValue, 16)).append(';');
     		}
     		else {

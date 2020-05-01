@@ -70,7 +70,8 @@ public class ManageAddOnsPanel extends JPanel {
 			Icon icon = icons.get(addOn);
 	        if (icon != null)
 	            return icon;
-	        icon = IconNotFound.createIconOrReturnNotFoundIcon(addOn.getName() + "-icon.png");
+	        String iconName = addOn.getName() + "-icon";
+            icon = IconNotFound.createIconOrReturnNotFoundIcon(iconName + ".svg", iconName + ".png");
 	        icons.put(addOn, icon);
 	        return icon;
 	    }

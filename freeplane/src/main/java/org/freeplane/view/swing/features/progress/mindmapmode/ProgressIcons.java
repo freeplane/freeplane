@@ -1,9 +1,12 @@
 package org.freeplane.view.swing.features.progress.mindmapmode;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.map.NodeModel;
 
@@ -13,13 +16,10 @@ import org.freeplane.features.map.NodeModel;
  * This class holds the static method to update the progress icons
  */
 public class ProgressIcons {
-	private static final long serialVersionUID = 1L;
 	public static final String EXTENDED_PROGRESS_ICON_IDENTIFIER = ".*[Pp]rogress_(tenth|quarter)_[0-9]{2}\\.[a-zA-Z0-9]*";
 	private final static String[] iconNames = new String[] { "0%", "25%", "50%", "75%", "100%" };
-	private final static MindIcon[] progressIcons = new MindIcon[] { new MindIcon(iconNames[0], iconNames[0] + ".png"),
-	        new MindIcon(iconNames[1], iconNames[1] + ".png"), new MindIcon(iconNames[2], iconNames[2] + ".png"),
-	        new MindIcon(iconNames[3], iconNames[3] + ".png"), new MindIcon(iconNames[4], iconNames[4] + ".png") };
-	private final static MindIcon OKIcon = new MindIcon("button_ok", "button_ok.png");
+	private final static MindIcon[] progressIcons = Stream.of(iconNames).map(IconStoreFactory.ICON_STORE::getMindIcon).toArray(MindIcon[]::new);
+	private final static MindIcon OKIcon = IconStoreFactory.ICON_STORE.getMindIcon("button_ok");
 
 	/**
 	 * This method increases/ decreases the progress icons.
@@ -34,7 +34,7 @@ public class ProgressIcons {
 		final ProgressUtilities progUtil = new ProgressUtilities();
 		final MIconController iconController = (MIconController) IconController.getController();
 		String activeIcon = null;
-		final List<MindIcon> icons = node.getIcons();
+		final List<NamedIcon> icons = node.getIcons();
 		//get active progress icon and remove it
 		if (progUtil.hasProgressIcons(node)) {
 			for (int i = 0; i < icons.size(); i++) {
@@ -186,7 +186,7 @@ public class ProgressIcons {
 		if (progUtil.hasProgressIcons(node) || progUtil.hasOKIcon(node)) {
 			final MIconController iconController = (MIconController) IconController.getController();
 			final String[] progressIconNames = new String[] { "0%", "25%", "50%", "75%", "100%", "button_ok" };
-			final List<MindIcon> icons = node.getIcons();
+			final List<NamedIcon> icons = node.getIcons();
 			//	remove progress icons
 			for (int i = 0; i < icons.size(); i++) {
 				String iconName = icons.get(i).getName();

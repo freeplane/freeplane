@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -38,13 +39,12 @@ public class AttributeMatchesCondition extends ASelectableCondition {
 	static final String ATTRIBUTE = "ATTRIBUTE";
 	static final String NAME = "attribute_matches_condition";
     static final String VALUE = "VALUE";
-    static final String MATCH_CASE = "MATCH_CASE";
 
 	static ASelectableCondition load(final XMLElement element) {
 		return new AttributeMatchesCondition(
 			AttributeConditionController.toAttributeObject(element.getAttribute(ATTRIBUTE, null)),
             element.getAttribute(VALUE, null),
-            Boolean.valueOf(element.getAttribute(MATCH_CASE, null))
+            Boolean.valueOf(element.getAttribute(StringConditionAdapter.MATCH_CASE, null))
 		    );
 	}
 
@@ -97,14 +97,14 @@ public class AttributeMatchesCondition extends ASelectableCondition {
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_REGEXP);
-		return ConditionFactory.createDescription(attribute.toString(), simpleCondition, value, isMatchCase(), false);
+		return ConditionFactory.createDescription(attribute.toString(), simpleCondition, value, isMatchCase(), false, false);
 	}
 
 	public void fillXML(final XMLElement child) {
 		super.fillXML(child);
 		if (attribute instanceof String) child.setAttribute(ATTRIBUTE, (String) attribute);
         child.setAttribute(VALUE, value);
-        child.setAttribute(MATCH_CASE, Boolean.toString(isMatchCase()));
+        child.setAttribute(StringConditionAdapter.MATCH_CASE, Boolean.toString(isMatchCase()));
 	}
 
 	@Override

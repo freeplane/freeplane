@@ -191,7 +191,7 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 		}
 	}
 
-	static final Icon editButtonImage = ResourceController.getResourceController().getIcon("/images/edit12.png");
+	static final Icon editButtonImage = ResourceController.getResourceController().getIcon("/images/edit12.svg");
 	private static final long serialVersionUID = 1L;
 // // 	final private Controller controller;
 	private ImportAttributesDialog importDialog = null;

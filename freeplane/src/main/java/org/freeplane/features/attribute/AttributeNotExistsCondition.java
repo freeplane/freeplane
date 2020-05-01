@@ -67,7 +67,7 @@ public class AttributeNotExistsCondition extends ASelectableCondition {
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_DOES_NOT_EXIST);
-		return ConditionFactory.createDescription(attribute.toString(), simpleCondition, null, false, false);
+		return ConditionFactory.createDescription(attribute.toString(), simpleCondition, null);
 	}
 
 	public void fillXML(final XMLElement child) {

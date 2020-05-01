@@ -33,29 +33,29 @@ import org.freeplane.features.mode.Controller;
  */
 @SelectableAction(checkOnNodeChange = true)
 class CloudAction extends AMultipleNodeAction {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	public CloudAction() {
-		super("CloudAction");
-	}
+    public CloudAction() {
+        super("CloudAction");
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.modes.mindmapmode.actions.MultipleNodeAction#actionPerformed
-	 * (freeplane.modes.NodeModel)
-	 */
-	@Override
-	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final MCloudController cloudController = (MCloudController) CloudController.getController();
-		cloudController.setCloud(node, CloudModel.getModel(node) == null);
-	}
+    /*
+     * (non-Javadoc)
+     * @see
+     * freeplane.modes.mindmapmode.actions.MultipleNodeAction#actionPerformed
+     * (freeplane.modes.NodeModel)
+     */
+    @Override
+    protected void actionPerformed(final ActionEvent e, final NodeModel node) {
+        final MCloudController cloudController = (MCloudController) CloudController.getController();
+        cloudController.setCloud(node, CloudModel.getModel(node) == null);
+    }
 
-	@Override
-	public void setSelected() {
-		setSelected(CloudModel.getModel(Controller.getCurrentModeController().getMapController().getSelectedNode()) != null);
-	}
+    @Override
+    public void setSelected() {
+        setSelected(CloudModel.getModel(Controller.getCurrentModeController().getMapController().getSelectedNode()) != null);
+    }
 }

@@ -277,7 +277,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 				UITools.setDialogLocationRelativeTo(htmlEditorWindow.getDialog(), node);
 			}
 			String content = getText();
-			if (!HtmlUtils.isHtmlNode(content)) {
+			if (!HtmlUtils.isHtml(content)) {
 				content = HtmlUtils.plainToHTML(content);
 			}
 			htmlEditorPanel.setCurrentDocumentContent(content);
@@ -309,7 +309,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			rootPane.putClientProperty(HTMLDialog.class, htmlEditorWindow);
 			// make sure that SHTML gets notified of relevant config changes!
 		   	ResourceController.getResourceController().addPropertyChangeListener(
-	    			new FreeplaneToSHTMLPropertyChangeAdapter(htmlEditorWindow.getHtmlEditorPanel()));
+	    			new FreeplaneToSHTMLPropertyChangeAdapter("simplyhtml.window.", htmlEditorWindow.getHtmlEditorPanel()));
 		}
 	    return htmlEditorWindow;
     }

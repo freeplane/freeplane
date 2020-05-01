@@ -1,9 +1,59 @@
 ===============================
+1.8.3
+===============================
+Usability improvements suggested by University of Oulu UX research group
+Bug fixes
+
+===============================
+1.8.2
+===============================
+Bug fixes
+
+===============================
+1.8.1
+===============================
+Filter hiding matching nodes with ancestors / descendants
+Hide and show note panel tool bar using freeplane menu
+Optionally ignore accents and diacritics in filter conditions
+Keep white space inside the line in search and replace dialog
+Set individual filter for each map view
+Improvements for MacOS Menus
+Bug fixes
+
+===============================
+1.8.0
+===============================
+Use UTF-8 encoding for mind map files
+Use emoticons from https://twemoji.twitter.com/ as icons
+Use only svg icons, remove png icons when svg icons can be used 
+Hierarchical icons for subtrees
+
+===============================
+1.7.14
+===============================
+Bug fixes
+Support Java 13
+"Enter" closes only dialogs with "confirms by default" check box
+
+===============================
+1.7.13
+===============================
+Bug fixes
+
+===============================
+1.7.12
+===============================
+Bug fixes
+
+===============================
 1.7.11
 ===============================
 Fix copying text from clipboard
 Scale icons in filter conditions
 Make LaTeX line spacing configurable
+Java 13 support
+Viewing/Editing user interfaces
+Simple/Advanced user interfaces
 
 ===============================
 1.7.10

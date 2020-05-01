@@ -47,7 +47,7 @@ public class MClipboardControllers extends ClipboardControllers{
 	}
 
 	public void paste() {
-		final Transferable t = ClipboardAccessor.getController().getClipboardContents();
+		final Transferable t = ClipboardAccessor.getInstance().getClipboardContents();
 		if(t != null) {
 			controllers.stream().filter(c -> c.canPaste(t))
 				.findFirst().ifPresent(c -> c.paste(t));

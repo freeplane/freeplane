@@ -32,7 +32,6 @@ public class NodeTextCompareCondition extends CompareConditionAdapter implements
 	static final String COMPARATION_RESULT = "COMPARATION_RESULT";
 	static final String NAME = "node_compare_condition";
 	static final String SUCCEED = "SUCCEED";
-	static final String MATCH_APPROXIMATELY = "MATCH_APPROXIMATELY";
 	static final String VALUE = "VALUE";
 	static final String ITEM = "ITEM";
 
@@ -56,7 +55,8 @@ public class NodeTextCompareCondition extends CompareConditionAdapter implements
 			matchCase, 
 			compResult, 
 			succeed,
-			matchApproximately);
+			matchApproximately,
+			Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null)));
 	}
 
 	final private int comparationResult;
@@ -64,8 +64,8 @@ public class NodeTextCompareCondition extends CompareConditionAdapter implements
 	final private String nodeItem;
 
 	NodeTextCompareCondition(String nodeItem, final Object value, final boolean matchCase, final int comparationResult,
-	                     final boolean succeed, final boolean matchApproximately) {
-		super(value, matchCase, matchApproximately);
+	                     final boolean succeed, final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(value, matchCase, matchApproximately, ignoreDiacritics);
 		this.comparationResult = comparationResult;
 		this.succeed = succeed;
 		this.nodeItem=nodeItem;
@@ -110,7 +110,6 @@ public class NodeTextCompareCondition extends CompareConditionAdapter implements
 		child.setAttribute(NodeTextCompareCondition.COMPARATION_RESULT, Integer.toString(comparationResult));
 		child.setAttribute(NodeTextCompareCondition.SUCCEED, TreeXmlWriter.BooleanToXml(succeed));
 		child.setAttribute(NodeTextCompareCondition.ITEM, nodeItem);
-		child.setAttribute(NodeTextCompareCondition.MATCH_APPROXIMATELY, TreeXmlWriter.BooleanToXml(matchApproximately));
 	}
 
 	@Override

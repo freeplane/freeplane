@@ -30,7 +30,7 @@ import org.freeplane.core.util.TextUtils;
  * Mar 2, 2011
  */
 @SuppressWarnings("serial")
-@SelectableAction(checkOnPopup = true)
+@SelectableAction
 public class SetBooleanPropertyAction extends AFreeplaneAction{
 
 	private String propertyName;
@@ -41,6 +41,12 @@ public class SetBooleanPropertyAction extends AFreeplaneAction{
 	    this.propertyName = propertyName;
 	    setIcon(propertyName + ".icon");
 	    setTooltip(getTooltipKey());
+	    setSelected();
+	    ResourceController.getResourceController().addPropertyChangeListener(//
+	    	(name, newValue, oldValue) -> {
+	    		if(this.propertyName.equals(name))
+	    			setSelected();
+		});
     }
 
 	public void actionPerformed(ActionEvent e) {
@@ -57,6 +63,8 @@ public class SetBooleanPropertyAction extends AFreeplaneAction{
 	public String getTooltipKey() {
 		return getTextKey() + ".tooltip";
 	}
+	
+	
 	
 	@Override
 	public void setSelected() {

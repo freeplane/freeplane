@@ -36,14 +36,14 @@ class FormatContentTransformer extends AbstractContentTransformer {
 		// - if error: use original text
 		// - if nodeNumbering add numbering
 		// - if html: enclose in html tag
-		final boolean isHtml = (obj instanceof String) && HtmlUtils.isHtmlNode((String)obj);
+		final boolean isHtml = (obj instanceof String) && HtmlUtils.isHtml((String)obj);
 		if (isHtml) {
 			obj = HtmlUtils.extractRawBody((String)obj);
 		}
 		if (hasFormat)
 			obj = FormatController.format(obj, format);
 		if (nodeNumbering && !node.isRoot()){
-			StringBuilder builder = new StringBuilder(node.getNodeLevel(true) * 2);
+			StringBuilder builder = new StringBuilder(node.getNodeLevel() * 2);
 			addNumbers(builder, node);
 			builder.append(' ');
 			if (isHtml) {

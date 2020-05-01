@@ -523,30 +523,22 @@ public class PseudoDamerauLevenshtein implements EditDistanceStringMatchingStrat
 	}
 
 	public void init(String searchTerm, String searchText,
-			boolean subStringMatch, boolean caseSensitive) 
+			boolean subStringMatch) 
 	{
 		if (searchTerm == null || searchText == null)
 		{
 			throw new IllegalArgumentException("Null searchText/searchTerm!");
 		}
 
-		if (caseSensitive)
-		{
-			this.searchTerm = searchTerm;
-			this.searchText = searchText;
-		}
-		else
-		{
-			this.searchTerm = searchTerm.toLowerCase();
-			this.searchText= searchText.toLowerCase();
-		}
-		this.type = subStringMatch ? Type.SemiGlobal : Type.Global;
+        this.searchTerm = searchTerm;
+        this.searchText = searchText;
+ 		this.type = subStringMatch ? Type.SemiGlobal : Type.Global;
 	}
 
 	public boolean matches(String searchTerm, String searchText,
-			boolean subStringMatch, boolean caseSensitive) 
+			boolean subStringMatch) 
 	{
-		init(searchTerm, searchText, subStringMatch, caseSensitive);
+		init(searchTerm, searchText, subStringMatch);
 		
 		return matchProb() > StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB; 
 	}

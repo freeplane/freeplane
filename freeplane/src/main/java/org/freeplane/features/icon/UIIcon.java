@@ -20,17 +20,14 @@
 package org.freeplane.features.icon;
 
 import java.net.URL;
-import java.util.regex.Pattern;
 
 import javax.swing.Icon;
-import javax.swing.KeyStroke;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.factory.IconFactory;
-import org.freeplane.features.map.NodeModel;
 
 /**
  * Base class for all icons used in FreePlane.
@@ -38,37 +35,37 @@ import org.freeplane.features.map.NodeModel;
  * @author Tamas Eppel
  *
  */
-public class UIIcon implements IIconInformation, Comparable<UIIcon> {
+public class UIIcon implements IconDescription, NamedIcon {
 	private static final String DEFAULT_IMAGE_PATH = "/images";
-	protected static final String SEPARATOR = "/";
 	protected static final String THEME_FOLDER_KEY = "icon.theme.folder";
 	protected static final ResourceController RESOURCE_CONTROLLER = ResourceController.getResourceController();
-	private static final Pattern parentDirPattern = Pattern.compile(SEPARATOR + "[^" + SEPARATOR + ".]+" + SEPARATOR
-	        + "\\.\\." + SEPARATOR);
 	private final String name;
-	private final String fileName;
+	private final String file;
 	private final String descriptionTranslationKey;
 	private final String shortcutKey;
 	private URL resourceURL;
+    private final int order;
 
-	public UIIcon(final String name, final String fileName) {
-		this(name, fileName, "", "?");
+	public UIIcon(final String name, final String file, int order) {
+		this(name, file, "", "?", order);
 	}
 
-	public UIIcon(final String name, final String fileName, final String descriptionTranslationKey) {
-		this(name, fileName, descriptionTranslationKey, "?");
+	public UIIcon(final String name, final String file, final String descriptionTranslationKey, int order) {
+		this(name, file, descriptionTranslationKey, "?", order);
 	}
 
-	public UIIcon(final String name, final String fileName, final String descriptionTranslationKey,
-	              final String shortcutKey) {
+	public UIIcon(final String name, final String file, final String descriptionTranslationKey,
+	              final String shortcutKey, int order) {
 		this.name = name;
-		this.fileName = fileName;
+		this.file = file;
 		this.descriptionTranslationKey = descriptionTranslationKey;
 		this.shortcutKey = shortcutKey;
+        this.order = order;
 	}
 
-	public String getFileName() {
-		return fileName;
+	@Override
+    public String getFile() {
+		return file;
 	}
 
 	/**
@@ -89,6 +86,7 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		return TextUtils.getText(descriptionTranslationKey, "");
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -98,14 +96,9 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 		return IconFactory.getInstance().getIcon(this);
 	}
 
-	public Icon getIcon(final NodeModel node) {
-		final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(node);
-		return IconFactory.getInstance().getIcon(this, iconHeight);
-	}
-
 	@Override
-	public KeyStroke getKeyStroke() {
-		return null;
+	public Icon getIcon(Quantity<LengthUnits> iconHeight) {
+		return IconFactory.getInstance().getIcon(this, iconHeight);
 	}
 
 	public String getImagePath() {
@@ -117,86 +110,41 @@ public class UIIcon implements IIconInformation, Comparable<UIIcon> {
 			return resourceURL;
 		}
 		final String path = getPath();
-		resourceURL = RESOURCE_CONTROLLER.getIconResource(path);
+		resourceURL = RESOURCE_CONTROLLER.getResource(path);
 		return resourceURL;
 	}
 
 	public String getPath() {
-		StringBuilder builder = new StringBuilder();
-		builder = new StringBuilder();
-		builder.append(this.getImagePath());
-		builder.append(SEPARATOR);
-		builder.append(fileName);
-		final String path = parentDirPattern.matcher(builder.toString()).replaceFirst(SEPARATOR);
-		return path;
+		return this.getImagePath() + '/' + file;
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((descriptionTranslationKey == null) ? 0 : descriptionTranslationKey.hashCode());
-		result = prime * result + ((fileName == null) ? 0 : fileName.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((shortcutKey == null) ? 0 : shortcutKey.hashCode());
-		result = prime * result + this.getClass().hashCode();
-		return result;
-	}
+    public int getOrder() {
+        return order;
+    }
 
 	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (this.getClass() != obj.getClass()) {
-			return false;
-		}
-		final UIIcon other = (UIIcon) obj;
-		if (descriptionTranslationKey == null) {
-			if (other.descriptionTranslationKey != null) {
-				return false;
-			}
-		}
-		else if (!descriptionTranslationKey.equals(other.descriptionTranslationKey)) {
-			return false;
-		}
-		if (fileName == null) {
-			if (other.fileName != null) {
-				return false;
-			}
-		}
-		else if (!fileName.equals(other.fileName)) {
-			return false;
-		}
-		if (name == null) {
-			if (other.name != null) {
-				return false;
-			}
-		}
-		else if (!name.equals(other.name)) {
-			return false;
-		}
-		if (shortcutKey == null) {
-			if (other.shortcutKey != null) {
-				return false;
-			}
-		}
-		else if (!shortcutKey.equals(other.shortcutKey)) {
-			return false;
-		}
-		return true;
-	}
+    public int hashCode() {
+	    return super.hashCode();
+     }
 
-	@Override
-	public int compareTo(final UIIcon uiIcon) {
-		return this.getPath().compareTo(uiIcon.getPath());
-	}
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 
-	@Override
+    @Override
 	public String toString() {
 		return name;
 	}
+
+	@Override
+	public NamedIcon zoom(float zoom) {
+		 return new ZoomedIcon(this, zoom);
+	}
+
+    @Override
+    public boolean hasStandardSize() {
+        return true;
+    }
 }

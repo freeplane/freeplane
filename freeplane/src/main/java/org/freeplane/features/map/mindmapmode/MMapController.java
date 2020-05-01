@@ -51,6 +51,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
@@ -203,14 +204,15 @@ public class MMapController extends MapController {
 			//$FALL-THROUGH$
 			case MMapController.NEW_CHILD: {
 				final boolean targetFolded = isFolded(targetNode);
-				IMapViewManager mapViewManager = getModeController().getController().getMapViewManager();
+				Controller controller = getModeController().getController();
+                IMapViewManager mapViewManager = controller.getMapViewManager();
 				if (targetFolded) {
 					if(! targetNode.isRoot() && mapViewManager.hasHiddenChildren(targetNode.getParentNode())){
 						mapViewManager.hideChildren(targetNode);
 						targetNode.setFolded(false);
 					}
 					else
-						unfold(targetNode);
+						unfold(targetNode, controller.getSelection().getFilter());
 				}
 				final int position = ResourceController.getResourceController().getProperty("placenewbranches").equals(
 				    "last") ? targetNode.getChildCount() - mapViewManager.getHiddenChildCount(targetNode) : 0;
@@ -370,7 +372,7 @@ public class MMapController extends MapController {
     }
 
 	public boolean close(final MapModel map) {
-		if (!(map.isSaved() || map.isDocumentation())) {
+		if (!(map.isSaved() || map.isReadOnly())) {
 			Controller.getCurrentController().getMapViewManager().changeToMap(map);
 			final String text = TextUtils.getText("save_unsaved") + "\n" + map.getTitle();
 			final String title = TextUtils.getText("SaveAction.text");
@@ -847,7 +849,7 @@ public class MMapController extends MapController {
 			controller.getMapViewManager().setMapTitles();
 			final AFreeplaneAction saveAction = controller.getModeController().getAction("SaveAction");
 			if(saveAction != null)
-				saveAction.setEnabled();
+				saveAction.setEnabled(UserRole.EDITOR);
 		}
 	}
 
@@ -862,7 +864,7 @@ public class MMapController extends MapController {
 		final NodeModel targetNode = target;
 		final boolean parentFolded = isFolded(targetNode);
 		if (parentFolded) {
-			unfold(targetNode);
+			unfold(targetNode, modeController.getController().getSelection().getFilter());
 		}
 		if (!isWriteable(target)) {
 			UITools.errorMessage(TextUtils.getText("node_is_write_protected"));
@@ -1028,6 +1030,11 @@ public class MMapController extends MapController {
 			return;
 		if(isFoldingPersistent()){
 			IActor foldingActor = new IActor() {
+				@Override
+				public boolean isReadonly() {
+					return true;
+				}
+
 				@Override
 				public void undo() {
 					unfoldHiddenChildren(node);

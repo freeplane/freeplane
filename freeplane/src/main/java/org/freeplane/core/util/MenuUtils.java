@@ -40,9 +40,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
-import org.freeplane.features.icon.MindIcon;
-import org.freeplane.features.map.MapController;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
@@ -52,15 +49,15 @@ public class MenuUtils {
 	public static class MenuEntry {
 		private final String key;
 		private final String label;
-		private final String iconKey;
+		private final Icon icon;
 		private final KeyStroke keyStroke;
 		private final String toolTipText;
 
-		public MenuEntry(final String key, final String label, final String iconKey, final KeyStroke keyStroke,
+		public MenuEntry(final String key, final String label, final Icon icon, final KeyStroke keyStroke,
 		                 final String toolTipText) {
 			this.key = key;
 			this.label = label;
-			this.iconKey = iconKey;
+			this.icon = icon;
 			this.keyStroke = keyStroke;
 			this.toolTipText = toolTipText;
 		}
@@ -77,10 +74,6 @@ public class MenuUtils {
 			return label;
 		}
 
-		public String getIconKey() {
-			return iconKey;
-		}
-
 		public KeyStroke getKeyStroke() {
 			return keyStroke;
 		}
@@ -89,21 +82,14 @@ public class MenuUtils {
 			return toolTipText;
 		}
 
-		public MindIcon createMindIcon() {
-			String resource = ResourceController.getResourceController().getProperty(iconKey, null);
-			if (resource == null) {
-				// this is the regular case: most MenuEntries (i.e. actions) will have the iconKey set
-				// but only for a few of these Icons are available
-				return null;
-			}
-			final String name = resource.replaceAll("/images/(.*).png", "../$1");
-			return new MindIcon(name);
-		}
-
 		@Override
 		public String toString() {
 			return label;
 		}
+
+        public Icon getIcon() {
+            return icon;
+        }
 	}
 
 	public static class MenuEntryTreeBuilder {
@@ -166,10 +152,10 @@ public class MenuUtils {
 
 		private MenuEntry menuEntry(final AFreeplaneAction action) {
 			String text = ActionUtils.getActionTitle(action);
-			String iconKey = action.getIconKey();
+			Icon icon = (Icon) action.getValue(Action.SMALL_ICON);
 			String tooltip = (String) action.getValue(Action.LONG_DESCRIPTION);
 			KeyStroke accelerator = acceleratorManager.getAccelerator(action);
-			final MenuEntry menuEntry = new MenuEntry(action.getKey(), text, iconKey, accelerator, tooltip);
+			final MenuEntry menuEntry = new MenuEntry(action.getKey(), text, icon, accelerator, tooltip);
 			return menuEntry;
 		}
 	}
@@ -199,38 +185,6 @@ public class MenuUtils {
 		final DefaultMutableTreeNode result = new DefaultMutableTreeNode(menuEntryTreeNode.getUserObject());
 		addAcceleratableChildrenRecursively(result, menuEntryTreeNode.children());
 		return result;
-	}
-
-	/** Could be (but currently isn't) used to generate a mindmap representation of the menu.
-	 * @param children Enumeration of DefaultMutableTreeNode from the menu tree. */
-	@SuppressWarnings("rawtypes")
-	public static void insertAsNodeModelRecursively(final NodeModel nodeModel, final Enumeration children,
-	                                                final MapController mapController) {
-		while (children.hasMoreElements()) {
-			final DefaultMutableTreeNode child = (DefaultMutableTreeNode) children.nextElement();
-			final NodeModel newNodeModel = insertAsNodeModel(nodeModel, child, mapController);
-			if (!child.isLeaf()) {
-				insertAsNodeModelRecursively(newNodeModel, child.children(), mapController);
-			}
-		}
-	}
-
-	private static NodeModel insertAsNodeModel(final NodeModel nodeModel, final DefaultMutableTreeNode treeNode,
-	                                           final MapController mapController) {
-		final MenuEntry menuEntry = (MenuEntry) treeNode.getUserObject();
-		final String text = menuEntry.getKeyStroke() == null ? menuEntry.getLabel() : menuEntry.getLabel() + ": "
-		        + MenuUtils.formatKeyStroke(menuEntry.getKeyStroke());
-		final NodeModel newNodeModel = mapController.newNode(text, nodeModel.getMap());
-		if (!treeNode.isLeaf()) {
-			newNodeModel.setFolded(true);
-		}
-		if (menuEntry.getIconKey() != null) {
-			final MindIcon mindIcon = menuEntry.createMindIcon();
-			if (mindIcon != null)
-				newNodeModel.addIcon(mindIcon);
-		}
-		nodeModel.insert(newNodeModel);
-		return newNodeModel;
 	}
 
 	// filters out non-acceleratable menu entries

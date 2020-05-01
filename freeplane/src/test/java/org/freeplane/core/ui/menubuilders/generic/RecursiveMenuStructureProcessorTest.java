@@ -208,7 +208,6 @@ public class RecursiveMenuStructureProcessorTest {
 		recursiveMenuStructureBuilder.addBuilderPair("builder", EntryVisitor.EMTPY, null);
 		recursiveMenuStructureBuilder.addBuilderPair("parent", EntryVisitor.EMTPY, null);
 		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("builder", "emptyBuilder");
-		recursiveMenuStructureBuilder.setSubtreeDefaultBuilderPair("emptyBuilder", "defaultBuilder");
 		final Entry root = new Entry();
 		root.setBuilders(asList("builder"));
 		final Entry parentEntry = new Entry();

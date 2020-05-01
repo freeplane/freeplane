@@ -1,7 +1,7 @@
 dependencies {
-    compile project(':freeplane')
-    compile project(':freeplane_plugin_jsyntaxpane')
-	lib ('org.codehaus.groovy:groovy-all:2.5.4') {
+    implementation project(':freeplane')
+    implementation project(':freeplane_plugin_jsyntaxpane')
+	lib ('org.codehaus.groovy:groovy-all:3.0.1') {
 		exclude group:'org.codehaus.groovy', module:'groovy-test'
 		exclude group:'org.codehaus.groovy', module:'groovy-test-junit5'
 		exclude group:'org.codehaus.groovy', module:'groovy-testng'
@@ -11,8 +11,8 @@ dependencies {
 		exclude group:'org.codehaus.groovy', module:'groovy-cli-commons'
 		exclude group:'org.codehaus.groovy', module:'groovy-cli-picocli'
 	}
-	lib 'org.codehaus.groovy:groovy-dateutil:2.5.4'
-	lib 'org.apache.ivy:ivy:2.4.0'
+	lib 'org.codehaus.groovy:groovy-dateutil:3.0.1'
+	lib 'org.apache.ivy:ivy:2.5.0'
 
 }
 

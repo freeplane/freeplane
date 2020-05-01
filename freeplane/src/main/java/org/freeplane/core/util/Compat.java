@@ -153,8 +153,8 @@ public class Compat {
 	    return Arrays.asList("gnome-shell", "mate", "other...").contains(System.getenv("DESKTOP_SESSION"));
     }
 
-	final public static String CURRENT_VERSION_DIR= File.separatorChar + "1.7.x";
-	final public static String PREVIOUS_VERSION_DIR_NAME = "1.6.x";
+	final public static String CURRENT_VERSION_DIR= File.separatorChar + "1.8.x";
+	final public static String PREVIOUS_VERSION_DIR_NAME = "1.7.x";
 
 	private static String userFpDir = null;
 
@@ -179,7 +179,7 @@ public class Compat {
 			try {
 				userFpDir = new File(getDefaultFreeplaneUserDirectory()).getCanonicalPath();
 			} catch (IOException e1) {
-				userFpDir = userFpDirPath;
+				throw new RuntimeException(e1);
 			}
 		}
 	}

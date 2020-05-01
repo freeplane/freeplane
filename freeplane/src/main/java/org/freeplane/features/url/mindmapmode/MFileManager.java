@@ -43,6 +43,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileLock;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -517,7 +518,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		int versionInfoLength = 1000;
 		final byte[] buffer = new byte[versionInfoLength];
 		final int readCount = file.read(buffer);
-		final String mapStart = new String(buffer, FileUtils.defaultCharset().name());
+		final String mapStart = new String(buffer, StandardCharsets.UTF_8.name());
 		final ByteArrayInputStream readBytes = new ByteArrayInputStream(buffer, 0, readCount);
 		final InputStream sequencedInput = new SequenceInputStream(readBytes, file);
 		Reader reader = null;
@@ -533,7 +534,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
 			IMapInputStreamConverter isConverter = versionInterpreter.getMapInputStreamConverter();
 			if (showResult != JOptionPane.OK_OPTION || isConverter == null) {
-				reader = new InputStreamReader(sequencedInput, FileUtils.defaultCharset());
+				reader = new InputStreamReader(sequencedInput, StandardCharsets.UTF_8);
 			}
 			else {
 				sequencedInput.close();
@@ -542,7 +543,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			}
 		}
 		else {
-			reader = new InputStreamReader(sequencedInput, FileUtils.defaultCharset());
+			reader = new InputStreamReader(sequencedInput, StandardCharsets.UTF_8);
 		}
 		try {
 			return Controller.getCurrentModeController().getMapController().getMapReader()
@@ -872,7 +873,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			if (lockedByOtherApplication) {
 				throw new IOException("can not obtain file lock for " + file);
 			}
-			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out));
+			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(out,//
+				StandardCharsets.UTF_8));
 			Controller.getCurrentModeController().getMapController().getMapWriter()
 			    .writeMapAsXml(map, fileout, Mode.FILE, true, false);
 		}
@@ -917,23 +919,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	@Override
-	public void afterViewChange(final Component oldView, final Component newView) {
-	}
-
-	@Override
-	public void afterViewClose(final Component oldView) {
-	}
-
-	@Override
-	public void afterViewCreated(final Component mapView) {
-		if (mapView != null) {
+	public void afterViewCreated(Component oldView, Component newView) {
+		if (newView != null) {
 			final FileOpener fileOpener = new FileOpener("mm", new DroppedMindMapOpener());
-			new DropTarget(mapView, fileOpener);
+			new DropTarget(newView, fileOpener);
 		}
-	}
-
-	@Override
-	public void beforeViewChange(final Component oldView, final Component newView) {
 	}
 
 	protected TreeSet<String> collectAvailableMapTemplates() {

@@ -353,7 +353,7 @@ class ScriptEditorPanel extends JDialog {
 			editorPane.setFont(font);
 
 		} catch (Exception e) {
-			LogUtils.warn(e);
+			LogUtils.severe(e);
 			editorPane.setContentType("text/plain");
 		}
 		mCentralUpperPanel.setContinuousLayout(true);

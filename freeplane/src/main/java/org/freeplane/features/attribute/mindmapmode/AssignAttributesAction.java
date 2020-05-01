@@ -24,7 +24,6 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.attribute.AttributeController;
-import org.freeplane.features.mode.Controller;
 
 class AssignAttributesAction extends AFreeplaneAction {
 	/**
@@ -38,7 +37,6 @@ class AssignAttributesAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final Controller controller = Controller.getCurrentController();
 		if (assignAttributeDialog == null) {
 			assignAttributeDialog = new AssignAttributeDialog(AttributeController.getController(),
 			    UITools.getCurrentFrame());

@@ -32,6 +32,7 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
+import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -63,14 +64,15 @@ public class LinkConditionController implements IElementaryConditionController {
 
 	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
 	                                            final Object value, final boolean matchCase,
-	                                            final boolean matchApproximately) {
+	                                            final boolean matchApproximately,
+                                                final boolean ignoreDiacritics) {
 		final TranslatedObject namedObject = (TranslatedObject) selectedItem;
 		if (namedObject.objectEquals(FILTER_LINK)) {
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new HyperLinkEqualsCondition((String) value, matchCase, matchApproximately);
+				return new HyperLinkEqualsCondition((String) value, matchCase, matchApproximately, ignoreDiacritics);
 			}
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-				return new HyperLinkContainsCondition((String) value, matchCase, matchApproximately);
+				return new HyperLinkContainsCondition((String) value, matchCase, matchApproximately, ignoreDiacritics);
 			}
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST)) {
 				return new HyperLinkExistsCondition();
@@ -79,10 +81,10 @@ public class LinkConditionController implements IElementaryConditionController {
 		}
 		if (namedObject.objectEquals(CONNECTOR_LABEL)) {
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-				return new ConnectorLabelEqualsCondition((String) value, matchCase, matchApproximately);
+				return new ConnectorLabelEqualsCondition((String) value, matchCase, matchApproximately, ignoreDiacritics);
 			}
 			if (simpleCond.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
-				return new ConnectorLabelContainsCondition((String) value, matchCase, matchApproximately);
+				return new ConnectorLabelContainsCondition((String) value, matchCase, matchApproximately, ignoreDiacritics);
 			}
 			return null;
 		}
@@ -144,10 +146,11 @@ public class LinkConditionController implements IElementaryConditionController {
 		if (element.getName().equalsIgnoreCase(HyperLinkEqualsCondition.NAME)) {
 			final String target = element.getAttribute(HyperLinkEqualsCondition.TEXT, null);
 			final boolean matchCase = Boolean.toString(true).equals(
-				    element.getAttribute(HyperLinkEqualsCondition.MATCH_CASE, null));
+				    element.getAttribute(StringConditionAdapter.MATCH_CASE, null));
 			final boolean matchApproximately = Boolean.toString(true).equals(
-					element.getAttribute(HyperLinkEqualsCondition.MATCH_APPROXIMATELY, null));
-			return new HyperLinkEqualsCondition(target, matchCase, matchApproximately);
+					element.getAttribute(StringConditionAdapter.MATCH_APPROXIMATELY, null));
+			return new HyperLinkEqualsCondition(target, matchCase, matchApproximately,
+			        Boolean.valueOf(element.getAttribute(StringConditionAdapter.IGNORE_DIACRITICS, null)));
 		}
 		if (element.getName().equalsIgnoreCase(HyperLinkContainsCondition.NAME)) {
 			final String target = element.getAttribute(HyperLinkContainsCondition.TEXT, null);
@@ -155,7 +158,8 @@ public class LinkConditionController implements IElementaryConditionController {
 				    element.getAttribute(HyperLinkContainsCondition.MATCH_CASE, null));
 			final boolean matchApproximately = Boolean.toString(true).equals(
 					element.getAttribute(HyperLinkContainsCondition.MATCH_APPROXIMATELY, null));
-			return new HyperLinkContainsCondition(target, matchCase, matchApproximately);
+			return new HyperLinkContainsCondition(target, matchCase, matchApproximately,
+			        Boolean.valueOf(element.getAttribute(StringConditionAdapter.IGNORE_DIACRITICS, null)));
 		}
 		if (element.getName().equalsIgnoreCase(HyperLinkExistsCondition.NAME)) {
 			return new HyperLinkExistsCondition();
@@ -166,7 +170,8 @@ public class LinkConditionController implements IElementaryConditionController {
 			    element.getAttribute(ConnectorLabelEqualsCondition.MATCH_CASE, null));
 			final boolean matchApproximately = Boolean.toString(true).equals(
 				    element.getAttribute(ConnectorLabelEqualsCondition.MATCH_APPROXIMATELY, null));
-			return new ConnectorLabelEqualsCondition(text, matchCase, matchApproximately);
+			return new ConnectorLabelEqualsCondition(text, matchCase, matchApproximately,
+			        Boolean.valueOf(element.getAttribute(StringConditionAdapter.IGNORE_DIACRITICS, null)));
 		}
 		if (element.getName().equalsIgnoreCase(ConnectorLabelContainsCondition.NAME)) {
 			final String text = element.getAttribute(ConnectorLabelContainsCondition.TEXT, null);
@@ -174,7 +179,8 @@ public class LinkConditionController implements IElementaryConditionController {
 			    element.getAttribute(ConnectorLabelEqualsCondition.MATCH_CASE, null));
 			final boolean matchApproximately = Boolean.toString(true).equals(
 				    element.getAttribute(ConnectorLabelEqualsCondition.MATCH_APPROXIMATELY, null));
-			return new ConnectorLabelContainsCondition(text, matchCase, matchApproximately);
+			return new ConnectorLabelContainsCondition(text, matchCase, matchApproximately,
+			        Boolean.valueOf(element.getAttribute(StringConditionAdapter.IGNORE_DIACRITICS, null)));
 		}
 		if (element.getName().equalsIgnoreCase(ConnectorExistsCondition.NAME)) {
 			return new ConnectorExistsCondition();

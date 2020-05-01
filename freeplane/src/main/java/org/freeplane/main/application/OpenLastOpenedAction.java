@@ -22,6 +22,7 @@ package org.freeplane.main.application;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.main.application.LastOpenedList.RecentFile;
 
 class OpenLastOpenedAction extends AFreeplaneAction {
@@ -40,6 +41,6 @@ class OpenLastOpenedAction extends AFreeplaneAction {
 	}
 
 	@Override
-	public void afterMapChange(final Object newMap) {
+	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
 	}
 }

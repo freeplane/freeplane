@@ -13,6 +13,8 @@ import java.util.List;
 import org.freeplane.api.IconsRO;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
+import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.map.NodeModel;
@@ -49,7 +51,7 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 	}
 
 	private int findIcon(final String iconID) {
-		final List<MindIcon> icons = getDelegate().getIcons();
+		final List<NamedIcon> icons = getDelegate().getIcons();
 		for (int i = 0; i < icons.size(); i++) {
 			if (icons.get(i).getName().equals(iconID)) {
 				return i;
@@ -64,20 +66,20 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 
 	@Override
 	public String getAt(int index) {
-		final List<MindIcon> icons = getDelegate().getIcons();
+		final List<NamedIcon> icons = getDelegate().getIcons();
 		return icons.size() <= index ? null : icons.get(index).getName();
 	}
 
 	@Override
 	public String getFirst() {
-		final List<MindIcon> icons = getDelegate().getIcons();
+		final List<NamedIcon> icons = getDelegate().getIcons();
 		return icons.isEmpty() ? null : icons.get(0).getName();
 	}
 
 	@Override
 	public boolean contains(String name) {
-		final List<MindIcon> icons = getDelegate().getIcons();
-		for (final MindIcon icon : icons) {
+		final List<NamedIcon> icons = getDelegate().getIcons();
+		for (final NamedIcon icon : icons) {
 			if (icon.getName().equals(name))
 				return true;
 		}
@@ -86,19 +88,19 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 
 	@Override
 	public int size() {
-		final List<MindIcon> icons = getDelegate().getIcons();
+		final List<NamedIcon> icons = getDelegate().getIcons();
 		return icons.size();
 	}
 
 	@Override
 	public List<String> getIcons() {
-		final List<MindIcon> icons = getDelegate().getIcons();
+		final List<NamedIcon> icons = getDelegate().getIcons();
 		final int size = icons.size();
 		if (size == 0) {
 			return Collections.emptyList();
 		}
 		final ArrayList<String> list = new ArrayList<String>(size);
-		for (final MindIcon icon : icons) {
+		for (final NamedIcon icon : icons) {
 			list.add(icon.getName());
 		}
 		return Collections.unmodifiableList(list);
@@ -106,14 +108,15 @@ class IconsProxy extends AbstractProxy<NodeModel> implements Proxy.Icons {
 
 	@Override
 	public List<URL> getUrls() {
-	    final List<MindIcon> icons = getDelegate().getIcons();
+	    final List<NamedIcon> icons = getDelegate().getIcons();
 	    final int size = icons.size();
 	    if (size == 0) {
 	        return Collections.emptyList();
 	    }
 	    final ArrayList<URL> list = new ArrayList<URL>(size);
-	    for (final MindIcon icon : icons) {
-	        list.add(icon.getUrl());
+	    for (final NamedIcon icon : icons) {
+	    	if(icon instanceof UIIcon )
+	    		list.add(((UIIcon) icon).getUrl());
 	    }
 	    return Collections.unmodifiableList(list);
 	}

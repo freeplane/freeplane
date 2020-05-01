@@ -25,14 +25,14 @@ import java.util.List;
 
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.Quantity;
-import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
 
 /**
  * @author Dimitry Polivaev 20.11.2008
  */
 public class NodeIconSetModel {
 	/** stores the icons associated with this node. */
-	protected List<MindIcon> icons;
+	protected List<NamedIcon> icons;
 	protected Quantity<LengthUnits> iconSize = null;
 
 	public void setIconSize(final Quantity<LengthUnits> iconSize)
@@ -45,12 +45,12 @@ public class NodeIconSetModel {
 		return iconSize;
 	}
 
-	void addIcon(final MindIcon icon) {
+	void addIcon(final NamedIcon icon) {
 		createIcons();
 		icons.add(icon);
 	}
 
-	void addIcon(final MindIcon icon, final int position) {
+	void addIcon(final NamedIcon icon, final int position) {
 		createIcons();
 		if (position > -1) {
 			icons.add(position, icon);
@@ -62,15 +62,15 @@ public class NodeIconSetModel {
 
 	private void createIcons() {
 		if (icons == null) {
-			icons = new ArrayList<MindIcon>();
+			icons = new ArrayList<NamedIcon>();
 		}
 	}
 
-	public MindIcon getIcon(final int position) {
+	public NamedIcon getIcon(final int position) {
 		return getIcons().get(position);
 	}
 
-	List<MindIcon> getIcons() {
+	List<NamedIcon> getIcons() {
 		if (icons == null) {
 			return Collections.emptyList();
 		}

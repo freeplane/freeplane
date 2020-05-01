@@ -84,7 +84,7 @@ import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 
 public class FreeplaneGUIStarter implements FreeplaneStarter {
-	private static final String JAVA_HEADLESS_PROPERTY = "java.awt.headless";
+	private static boolean ARE_SURVEYS_ENABLED = false;
 
 	static{
 		Compat.fixMousePointerForLinux();
@@ -183,7 +183,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			NodeHistory.install(controller);
 			MapExplorerConditionController.installFilterConditions();
 			final FreeplaneSurveyProperties freeplaneSurveyProperties = new FreeplaneSurveyProperties();
-			if(freeplaneSurveyProperties.mayAskUserToFillSurveys()) {
+			if(ARE_SURVEYS_ENABLED && freeplaneSurveyProperties.mayAskUserToFillSurveys()) {
 				controller.addApplicationLifecycleListener(new SurveyStarter(freeplaneSurveyProperties, new SurveyRunner(freeplaneSurveyProperties), Math.random()));
 			}
 			return controller;
@@ -369,15 +369,19 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
     private void loadMaps(final Controller controller, final String[] args) {
 		controller.selectMode(MModeController.MODENAME);
 		for (int i = 0; i < args.length; i++) {
-			String fileArgument = args[i];
-			try {
-				final LinkController linkController = LinkController.getController();
-				linkController.loadMap(fileArgument);
-			}
-			catch (final Exception ex) {
-				System.err.println("File " + fileArgument + " not loaded");
-			}
+			loadMap(args[i]);
 		}
+		MacOptions.macFilesToOpen.forEach(this::loadMap);
+    }
+
+    private void loadMap(String fileArgument) {
+        try {
+        	final LinkController linkController = LinkController.getController();
+        	linkController.loadMap(fileArgument);
+        }
+        catch (final Exception ex) {
+        	System.err.println("File " + fileArgument + " not loaded");
+        }
     }
 
    @Override

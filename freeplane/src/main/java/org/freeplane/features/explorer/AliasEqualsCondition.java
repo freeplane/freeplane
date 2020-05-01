@@ -22,7 +22,6 @@ package org.freeplane.features.explorer;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.filter.condition.ConditionFactory;
-import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
  * @author Dimitry Polivaev
@@ -30,43 +29,32 @@ import org.freeplane.n3.nanoxml.XMLElement;
  */
 public class AliasEqualsCondition extends AliasCondition {
 	public static final String NAME = "alias_equals";
-	public static final String MATCH_CASE = "MATCH_CASE";
-	public static final String MATCH_APPROXIMATELY = "MATCH_APPROXIMATELY";
 
-	private final boolean matchCase;
-	private final boolean matchApproximately;
 	private final StringMatchingStrategy stringMatchingStrategy;
 
-	public AliasEqualsCondition(final String alias, final boolean matchCase, final boolean matchApproximately) {
-		super(alias);
-		this.matchCase = matchCase;
-		this.matchApproximately = matchApproximately;
+	public AliasEqualsCondition(final String alias, final boolean matchCase, final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(alias, matchCase, matchApproximately, ignoreDiacritics);
 		this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
 			StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
 
-	@Override
+
+    @Override
 	protected boolean checkAlias(final String alias) {
-		return stringMatchingStrategy.matches(getAlias(), alias.toString(), false, matchCase);
+		return stringMatchingStrategy.matches(normalizedValue(), normalize(alias), false);
 	}
+
 
 	@Override
 	protected String createDescription() {
 		final String condition = TextUtils.getText(MapExplorerConditionController.FILTER_ALIAS);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_IS_EQUAL_TO);
-		return ConditionFactory.createDescription(condition, simpleCondition, getAlias(), matchCase, matchApproximately);
+		return createDescription(condition, simpleCondition, getAlias());
 	}
 
 	@Override
 	protected String getName() {
 		return NAME;
 	}
-	
-	@Override
-	public void fillXML(final XMLElement child) {
-		super.fillXML(child);
-		child.setAttribute(MATCH_CASE, Boolean.toString(matchCase));
-		child.setAttribute(MATCH_APPROXIMATELY, Boolean.toString(matchApproximately));
-	}
-	
+
 }

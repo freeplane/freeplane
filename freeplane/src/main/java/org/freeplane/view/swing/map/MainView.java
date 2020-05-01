@@ -49,18 +49,21 @@ import javax.swing.border.Border;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
-import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
@@ -245,18 +248,18 @@ public class MainView extends ZoomableLabel {
 	}
 
 	public FoldingMark foldingMarkType(MapController mapController, NodeView nodeView) {
-		NodeModel node = nodeView.getModel();
+		final NodeModel node = nodeView.getModel();
 		if (nodeView.isFolded()) {
 			return FoldingMark.ITSELF_FOLDED;
 		}
-		final NodeModel node1 = node;
-		for (final NodeModel child : node1.getChildren()) {
-			if (child.hasVisibleContent() && nodeView.isChildHidden(child)) {
+		Filter filter = nodeView.getMap().getFilter();
+		for (final NodeModel child : node.getChildren()) {
+			if (child.hasVisibleContent(filter) && nodeView.isChildHidden(child)) {
 				return FoldingMark.ITSELF_FOLDED;
 			}
 		}
 		for (final NodeView childView : nodeView.getChildrenViews()) {
-			if (!childView.getModel().hasVisibleContent() && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, childView))) {
+			if (!childView.getModel().hasVisibleContent(filter) && !FoldingMark.UNFOLDED.equals(foldingMarkType(mapController, childView))) {
 				return FoldingMark.UNVISIBLE_CHILDREN_FOLDED;
 			}
 		}
@@ -390,13 +393,14 @@ public class MainView extends ZoomableLabel {
 		final MultipleImage iconImages = new MultipleImage();
 		/* fc, 06.10.2003: images? */
 		final NodeModel model = node.getModel();
+		final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(model);
 		for (final UIIcon icon : IconController.getController().getStateIcons(model)) {
-			iconImages.addIcon(icon, model);
+			iconImages.addIcon(icon, iconHeight);
 		}
 		final ModeController modeController = getNodeView().getMap().getModeController();
-		final Collection<MindIcon> icons = IconController.getController(modeController).getIcons(model);
-		for (final MindIcon myIcon : icons) {
-			iconImages.addIcon(myIcon, model);
+		final Collection<NamedIcon> icons = IconController.getController(modeController).getIcons(model);
+		for (final NamedIcon myIcon : icons) {
+			iconImages.addIcon(myIcon, iconHeight);
 		}
 		addOwnIcons(iconImages, model);
 		setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
@@ -463,7 +467,7 @@ public class MainView extends ZoomableLabel {
 		URI link = NodeLinks.getLink(node);
 		if(link == null || "menuitem".equals(link.getScheme()) || ! LinkController.getController().formatNodeAsHyperlink(node))
 			return text;
-		if (HtmlUtils.isHtmlNode(text))
+		if (HtmlUtils.isHtml(text))
 			text = HtmlUtils.htmlToPlain(text);
 		StringBuilder sb = new StringBuilder("<html><body><a href=\"");
 		sb.append(link.toString());
@@ -598,17 +602,6 @@ public class MainView extends ZoomableLabel {
 	public MouseArea getMouseArea() {
 		return mouseArea;
 	}
-	public MouseArea whichMouseArea(Point point) {
-		final int x = point.x;
-		if(isInDragRegion(point))
-			return MouseArea.MOTION;
-		if(isInFoldingRegion(point))
-			return MouseArea.FOLDING;
-		if(isClickableLink(x))
-			return MouseArea.LINK;
-		return MouseArea.DEFAULT;
-	}
-
 
 	public void setMouseArea(MouseArea mouseArea) {
 		if(mouseArea.equals(this.mouseArea))
@@ -678,7 +671,7 @@ public class MainView extends ZoomableLabel {
 		return getNodeView().getZoomed(DRAG_OVAL_WIDTH);
 	}
 
-	public UIIcon getUIIconAt(Point coordinate){
+	public NamedIcon getUIIconAt(Point coordinate){
 		Icon icon = getIcon();
 		if(icon instanceof MultipleImage){
 			Rectangle iconRectangle = getIconRectangle();

@@ -22,6 +22,8 @@ package org.freeplane.features.map;
 import java.util.List;
 import java.util.Set;
 
+import org.freeplane.features.filter.Filter;
+
 
 /**
  * @author Dimitry Polivaev
@@ -76,4 +78,13 @@ public interface IMapSelection {
 	public void toggleSelected(final NodeModel node);
 	
 	public void replaceSelection(NodeModel[] nodes);
+	
+	Filter getFilter();
+	
+	void setFilter(Filter filter);
+
+    default MapModel getMap() {
+        return getSelected().getMap();
+    }
+	
 }

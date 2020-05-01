@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2020 Ismael Olea <ismael@olea.org> -->
+<component type="desktop-application">
+   <id>org.freeplane.App</id>
+   <metadata_license>CC0-1.0</metadata_license>
+   <project_license>GPL-2.0-or-later</project_license>
+   <launchable type="desktop-id">org.freeplane.App.desktop</launchable>
+   <name>Freeplane</name>
+   <name xml:lang="es">Freeplane</name>
+   <summary>Mind Mapping, Knowledge Management, Project Management. Develop, organize and communicate your ideas and knowledge in the most effective way</summary>
+   <summary xml:lang="es">Mapas mentales, gestión del conocimiento, gestión de proyectos... organiza y comunica tus ideas y conocimientos de la forma más efectiva</summary>
+   <description>
+   	<p>
+       Application for Mind Mapping, Knowledge Management, Project Management. Develop, organize and communicate your ideas and knowledge in the most effective way.
+   	</p>
+   	<p>
+       Freeplane is a free and open source software application that supports thinking, sharing information and getting things done at work, in school and at home. The software can be used for mind mapping and analyzing the information contained in mind maps.
+   	</p>
+   </description>
+   <screenshots>
+    <screenshot type="default">
+     <image>https://raw.githubusercontent.com/olea/flathub/org.freeplane.App/screenshots/screenshot-2.png</image>
+    </screenshot>
+    <screenshot type="default">
+     <image>https://raw.githubusercontent.com/olea/flathub/org.freeplane.App/screenshots/screenshot-1.png</image>
+    </screenshot>
+    <screenshot type="default">
+     <image>https://raw.githubusercontent.com/olea/flathub/org.freeplane.App/screenshots/screenshot-4.png</image>
+    </screenshot>
+    <screenshot type="default">
+     <image>https://raw.githubusercontent.com/olea/flathub/org.freeplane.App/screenshots/screenshot-3.png</image>
+    </screenshot>
+   </screenshots>
+
+   <categories>
+      <category>Office</category>
+      <category>Java</category>
+   </categories>
+
+   <mimetypes>
+      <mimetype>application/x-freeplane</mimetype>
+      <mimetype>application/x-freemind</mimetype>
+   </mimetypes>
+   
+   <url type="homepage">https://www.freeplane.org</url>
+   <url type="bugtracker">https://github.com/freeplane/freeplane/issues</url>
+   <url type="translate">https://hosted.weblate.org/projects/freeplane/</url>
+   <url type="help">https://www.freeplane.org/wiki/index.php/Home</url>
+   <url type="faq">https://www.freeplane.org/wiki/index.php/FAQ</url>
+   
+  <developer_name>Dimitry Polivaev</developer_name>
+
+  <update_contact>ismael@olea.org</update_contact>
+  
+  <content_rating type="oars-1.1" />
+
+  <releases>
+    <release version="1.8.1"  date="2020-03-28" >
+      <description>
+        <p>New release.</p>
+        <ul>
+            <li>Filter hiding matching nodes with ancestors / descendants</li>
+            <li>Hide and show note panel tool bar using freeplane menu</li>
+            <li>Optionally ignore accents and diacritics in filter conditions</li>
+            <li>Keep white space inside the line in search and replace dialog</li>
+            <li>Set individual filter for each map view</li>
+            <li>Improvements for MacOS Menus</li>
+            <li>Bug fixes</li>
+        </ul>
+      </description>
+    </release>
+  </releases>
+</component>
+  

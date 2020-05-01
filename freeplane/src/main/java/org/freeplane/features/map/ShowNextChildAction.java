@@ -49,7 +49,6 @@ public class ShowNextChildAction extends AFreeplaneAction {
 		final Controller controller = Controller.getCurrentController();
 		if(controller.getSelection() != null) {
 			final NodeModel selected = controller.getSelection().getSelected();
-			final MapController mapController = controller.getModeController().getMapController();
 		    final IMapViewManager mapViewManager = controller.getMapViewManager();
 			super.setEnabled(mapViewManager.isFoldedOnCurrentView(selected) || mapViewManager.hasHiddenChildren(selected));
 		}

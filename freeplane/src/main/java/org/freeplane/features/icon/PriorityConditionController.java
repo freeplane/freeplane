@@ -64,7 +64,8 @@ class PriorityConditionController implements IElementaryConditionController {
 
 	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCondition,
 	                                            final Object valueObj, final boolean matchCase,
-	                                            final boolean matchApproximately) {
+	                                            final boolean matchApproximately,
+                                                final boolean ignoreDiacritics) {
 		final String value = ((MindIcon) valueObj).getName().substring(5, 6);
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
 			return new PriorityCompareCondition(value, 0, true);

@@ -23,6 +23,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
+import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -30,41 +31,35 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-public class AttributeContainsCondition extends ASelectableCondition {
+public class AttributeContainsCondition extends StringConditionAdapter {
 	static final String ATTRIBUTE = "ATTRIBUTE";
 	static final String NAME = "attribute_contains_condition";
     static final String VALUE = "VALUE";
-    static final String MATCH_CASE = "MATCH_CASE";
-	static final String MATCH_APPROXIMATELY = "MATCH_APPROXIMATELY";
-    	
 
 	static ASelectableCondition load(final XMLElement element) {
 		return new AttributeContainsCondition(
 			AttributeConditionController.toAttributeObject(element.getAttribute(ATTRIBUTE, null)),
             element.getAttribute(VALUE, null),
             Boolean.valueOf(element.getAttribute(MATCH_CASE, null)),
-            Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null))
+            Boolean.valueOf(element.getAttribute(MATCH_APPROXIMATELY, null)),
+            Boolean.valueOf(element.getAttribute(IGNORE_DIACRITICS, null))
 		    );
 	}
 
 	final private Object attribute;
 	final private String value;
 	final private String comparedValue;
-	final private boolean matchCase;
-	final private boolean matchApproximately;
     final private StringMatchingStrategy stringMatchingStrategy;
 
     /**
 	 */
 	public AttributeContainsCondition(final Object attribute,final String value, final boolean matchCase,
-			final boolean matchApproximately) {
-		super();
+			final boolean matchApproximately, boolean ignoreDiacritics) {
+		super(matchCase, matchApproximately, ignoreDiacritics);
         this.attribute = attribute;
         this.value = value;
-        this.matchCase = matchCase;
         //this.comparedValue = matchCase ? value : value.toLowerCase();
         this.comparedValue = value;
-        this.matchApproximately = matchApproximately;
         this.stringMatchingStrategy = matchApproximately ? StringMatchingStrategy.DEFAULT_APPROXIMATE_STRING_MATCHING_STRATEGY :
         	StringMatchingStrategy.EXACT_STRING_MATCHING_STRATEGY;
 	}
@@ -97,13 +92,13 @@ public class AttributeContainsCondition extends ASelectableCondition {
 	}
 
 	private boolean checkText(String text) {
-	    return stringMatchingStrategy.matches(comparedValue, text, true, matchCase);
+	    return stringMatchingStrategy.matches(normalizedValue(), normalize(text), true);
     }
 
 	@Override
 	protected String createDescription() {
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_CONTAINS);
-		return ConditionFactory.createDescription(attribute.toString(), simpleCondition, value, matchCase, matchApproximately);
+		return createDescription(attribute.toString(), simpleCondition, value);
 	}
 
 	@Override
@@ -111,12 +106,15 @@ public class AttributeContainsCondition extends ASelectableCondition {
 		super.fillXML(child);
 		if (attribute instanceof String) child.setAttribute(ATTRIBUTE, (String) attribute);
         child.setAttribute(VALUE, value);
-        child.setAttribute(MATCH_CASE, Boolean.toString(matchCase));
-        child.setAttribute(MATCH_APPROXIMATELY, Boolean.toString(matchApproximately));
 	}
 
 	@Override
     protected String getName() {
 	    return NAME;
+    }
+
+    @Override
+    protected String conditionValue() {
+        return comparedValue;
     }
 }

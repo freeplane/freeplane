@@ -26,6 +26,7 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -58,15 +59,15 @@ public class BitmapViewerFactory implements IViewerFactory {
 
 	@Override
 	public ScalableComponent createViewer(final ExternalResource resource,
-			final URI uri, int maximumWidth) throws MalformedURLException,
+			final URI uri, int maximumWidth, float viewZoom) throws MalformedURLException,
 	        IOException {
 		final BitmapViewerComponent bitmapViewerComponent = new BitmapViewerComponent(uri);
 		final Dimension originalSize = bitmapViewerComponent.getOriginalSize();
-		float zoom = resource.getZoom();
-		if(zoom == -1){
-			zoom = resource.setZoom(originalSize.width, maximumWidth);
+		float resourceZoom = resource.getZoom();
+		if(resourceZoom == -1){
+			resourceZoom = resource.setZoom(originalSize.width, maximumWidth);
 		}
-		final ViewerLayoutManager viewerLayoutManager = new ViewerLayoutManager(1f, resource, originalSize);
+		final ViewerLayoutManager viewerLayoutManager = new ViewerLayoutManager(viewZoom, resource, originalSize);
 		((JComponent) bitmapViewerComponent).setLayout(viewerLayoutManager);
 
 		Dimension zoomedSize = viewerLayoutManager.calculatePreferredSize();
@@ -101,4 +102,16 @@ public class BitmapViewerFactory implements IViewerFactory {
 	public Dimension getOriginalSize(final JComponent viewer) {
 		return ((BitmapViewerComponent) viewer).getOriginalSize();
 	}
+
+    @Override
+    public ScalableComponent createViewer(URI uri, Dimension preferredSize,
+            Consumer<ScalableComponent> callback) throws MalformedURLException, IOException {
+        return createViewer(uri, preferredSize);
+    }
+
+    @Override
+    public ScalableComponent createViewer(URI uri, float zoom, Consumer<ScalableComponent> callback)
+            throws MalformedURLException, IOException {
+        return createViewer(uri, zoom);
+    }
 }

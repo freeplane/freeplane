@@ -22,6 +22,7 @@ package org.freeplane.features.map;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.mode.Controller;
 
 /**
@@ -42,7 +43,8 @@ class ToggleChildrenFoldedAction extends AFreeplaneAction {
 		final IMapSelection mapSelection = controller.getSelection();
 		final NodeModel model = mapSelection.getSelected();
 		MapController mapController = Controller.getCurrentModeController().getMapController();
-		mapController.toggleFolded(model.getChildren());
+		Filter filter = mapSelection.getFilter();
+        mapController.toggleFolded(filter, model.getChildren());
 		mapSelection.selectAsTheOnlyOneSelected(model);
 	}
 }

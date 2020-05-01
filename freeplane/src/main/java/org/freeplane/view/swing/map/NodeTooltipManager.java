@@ -264,6 +264,11 @@ public class NodeTooltipManager implements IExtension{
 		if (focusedWindow == null) {
 			return;
 		}
+        final ModeController mc = Controller.getCurrentController().getModeController();
+        final JPopupMenu popupmenu = mc.getUserInputListenerFactory().getNodePopupMenu();
+        if(popupmenu.isShowing()){
+            return;
+        }
 		if(insideComponent == component){
 			mouseOverComponent = true;
 			return;

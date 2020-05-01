@@ -54,7 +54,7 @@ html { height:100% }
             <xsl:attribute name="archive">
             <xsl:text>./</xsl:text>
             <xsl:value-of select="$destination_dir"/>
-            <xsl:text>./freeplaneviewer.jar,./kitfox-svg-salamander-1.1.1-p1.jar</xsl:text>
+            <xsl:text>./freeplaneviewer.jar,./freeplaneapi_viewer.jar,./kitfox-svg-salamander-1.1.1-p1.jar</xsl:text>
             </xsl:attribute>
             <xsl:attribute name="width">100%</xsl:attribute>
             <xsl:attribute name="height">100%</xsl:attribute>

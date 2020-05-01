@@ -10,6 +10,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.UserRoleConstraint;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -40,8 +41,8 @@ public class XmlEntryStructureBuilder implements EntryVisitor{
 		}
 	}
 
-	static public Entry buildMenuStructure(String xmlWithoutContent) {
-		final Reader reader = new StringReader(xmlWithoutContent);
+	static public Entry buildMenuStructure(String xml) {
+		final Reader reader = new StringReader(xml);
 		return buildMenuStructure(reader);
 	}
 
@@ -61,6 +62,7 @@ public class XmlEntryStructureBuilder implements EntryVisitor{
 }
 
 class MenuStructureXmlHandler extends DefaultHandler {
+	private static final String USED_BY = "usedBy";
 	private static final String NAME = "name";
 	private static final String BUILDER = "builder";
 	final private LinkedList<Entry> childStack;
@@ -83,10 +85,14 @@ class MenuStructureXmlHandler extends DefaultHandler {
 					child.setBuilders(Arrays.asList(attributeValue.split("\\s*,\\s*")));
 				else if(attributeName == NAME)
 					child.setName(attributeValue);
+				else if(attributeName == USED_BY)
+					child.addConstraint(UserRoleConstraint.valueOf(attributeValue));
 				else
 					child.setAttribute(attributeName, toValueObject(attributeValue));
 			}
-			childStack.getLast().addChild(child);
+			Entry parent = childStack.getLast();
+			child.addConstraint(parent);
+			parent.addChild(child);
 			childStack.add(child);
 		}
 	}

@@ -65,7 +65,8 @@ class CloneConditionController implements IElementaryConditionController {
     }
 
     public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCond,
-                                                final Object value, final boolean matchCase, final boolean approximateMatching) {
+                                                final Object value, final boolean matchCase, final boolean approximateMatching,
+                                                final boolean ignoreDiacritics) {
         return new CloneOfSelectedViewCondition();
     }
 
@@ -105,9 +106,6 @@ class CloneConditionController implements IElementaryConditionController {
 	}
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
-		if (element.getName().equalsIgnoreCase(CloneOfSelectedViewCondition.NAME)) {
-			return CloneOfSelectedViewCondition.load(element);
-		}
 		return null;
 	}
 

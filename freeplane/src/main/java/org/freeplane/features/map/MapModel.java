@@ -32,10 +32,7 @@ import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.filter.Filter;
-import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconRegistry;
-import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
@@ -48,7 +45,6 @@ public class MapModel {
 	 */
 	protected int changesPerformedSinceLastSave = 0;
 	private final ExtensionContainer extensionContainer;
-	private Filter filter = null;
 	private IconRegistry iconRegistry;
 	final private List<IMapChangeListener> listeners;
 	final private Map<String, NodeModel> nodes;
@@ -62,10 +58,6 @@ public class MapModel {
 		this.root = null;
 		listeners = new LinkedList<IMapChangeListener>();
 		nodes = new HashMap<String, NodeModel>();
-		final FilterController filterController = FilterController.getCurrentFilterController();
-		if (filterController != null) {
-			filter = filterController.createTransparentFilter();
-		}
 		this.iconRegistry = iconRegistry;
 		this.nodeChangeAnnouncer = nodeChangeAnnouncer;
 	}
@@ -91,8 +83,9 @@ public class MapModel {
 		extensionContainer.addExtension(extension);
 	}
 
-	public IExtension putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
-		return extensionContainer.putExtension(clazz, extension);
+	@SuppressWarnings("unchecked")
+    public <T extends IExtension> T putExtension(final Class<? extends IExtension> clazz, final IExtension extension) {
+		return (T) extensionContainer.putExtension(clazz, extension);
 	}
 
 	public IExtension putExtension(final IExtension extension) {
@@ -147,10 +140,6 @@ public class MapModel {
 			return url != null && url.getProtocol().equals("file") ? Compat.urlToFile(url) : null;
 	}
 
-	public Filter getFilter() {
-		return filter;
-	}
-
 	public IconRegistry getIconRegistry() {
 		return iconRegistry;
 	}
@@ -191,11 +180,7 @@ public class MapModel {
 	}
 
 	public boolean isReadOnly() {
-		return readOnly || isDocumentation();
-	}
-
-	public boolean isDocumentation() {
-		return containsExtension(DocuMapAttribute.class);
+		return readOnly;
 	}
 
 	public boolean isSaved() {
@@ -248,14 +233,10 @@ public class MapModel {
 
 	public boolean removeExtension(final IExtension extension) {
 		return extensionContainer.removeExtension(extension);
-	};
+	}
 
 	public void removeMapChangeListener(final IMapChangeListener listener) {
 		listeners.remove(listener);
-	};
-
-	public void setFilter(final Filter filter) {
-		this.filter = filter;
 	}
 
 	public void setReadOnly(final boolean readOnly) {

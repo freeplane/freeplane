@@ -48,15 +48,10 @@ public class NoteController implements IExtension {
 	 *
 	 */
 	public static final String NODE_NOTE_ICON = "accessories.plugins.NodeNoteIcon";
-	private static final UIIcon noteIcon= IconStoreFactory.ICON_STORE.getUIIcon("knotes.png");
-	public static final String bwNoteIconUrl;
-	public static final Icon bwNoteIcon;
+	private static final UIIcon noteIcon= IconStoreFactory.ICON_STORE.getUIIcon("knotes.svg");
+	public static final Icon bwNoteIcon = IconStoreFactory.ICON_STORE.getUIIcon("note_black_and_transp.svg").getIcon();
+	public static final String bwNoteIconUrl = "freeplaneresource:/images/note_black_and_transp.png";
 
-	static {
-			String bwNoteIconName = "note_black_and_transp.png";
-			bwNoteIconUrl = "freeplaneresource:/images/" + bwNoteIconName;
-			bwNoteIcon = IconStoreFactory.ICON_STORE.getUIIcon(bwNoteIconName).getIcon();
-	}
 	public static final String SHOW_NOTE_ICONS = "show_note_icons";
 	private static final Integer NOTE_TOOLTIP = 9;
 	public static final String SHOW_NOTES_IN_MAP = "show_notes_in_map";
@@ -82,7 +77,7 @@ public class NoteController implements IExtension {
 		super();
 		final ModeController modeController = Controller.getCurrentModeController();
 		this.modeController = modeController;
-		modeController.getMapController().getReadManager().addElementHandler("richcontent", new NoteBuilder(this));
+		modeController.getMapController().getReadManager().addElementHandler("richcontent", new NoteBuilder());
 		final NoteWriter noteWriter = new NoteWriter(this);
 		final WriteManager writeManager = modeController.getMapController().getWriteManager();
 		writeManager.addAttributeWriter("map", noteWriter);
@@ -127,7 +122,7 @@ public class NoteController implements IExtension {
 				tooltipBodyBegin.append("\">");
 				if(ResourceController.getResourceController().getBooleanProperty(SHOW_NOTE_ICON_IN_TOOLTIP)) {
 					tooltipBodyBegin.append("<img src =\"");
-					tooltipBodyBegin.append(bwNoteIconUrl.toString());
+					tooltipBodyBegin.append(bwNoteIconUrl);
 					tooltipBodyBegin.append("\">");
 				}
 				final String tooltipText = noteText.replaceFirst("<body>",

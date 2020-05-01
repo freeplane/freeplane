@@ -56,7 +56,7 @@ class NodeLevelCompareCondition extends CompareConditionAdapter {
 	}
 
 	public boolean checkNode(final NodeModel node) {
-		final long level = node.getNodeLevel(true);
+		final long level = node.getNodeLevel();
 		return succeed == (compareTo(level) == comparationResult);
 	}
 

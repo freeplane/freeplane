@@ -41,21 +41,21 @@ public class TextHolder implements Comparable<TextHolder> {
 		return toString().compareTo(compareToObject.toString());
 	}
 
-	public String getUntaggedNotesText() {
+	public String getTextAsSingleLine() {
 		final String notesText = textAccessor.getText();
 		if (notesText == null) {
 			return "";
 		}
 		if (untaggedNotesText == null || (originalNotesText != null && !originalNotesText.equals(notesText))) {
 			originalNotesText = notesText;
-			untaggedNotesText = HtmlUtils.htmlToPlain(notesText).replaceAll("\\s+", " ");
+			untaggedNotesText = HtmlUtils.htmlToPlain(notesText).replaceAll("\\s+\\n", " ");
 		}
 		return untaggedNotesText;
 	}
 
 	@Override
 	public String toString() {
-		return getUntaggedNotesText();
+		return getTextAsSingleLine();
 	}
 
 	public void setText(String newText) {

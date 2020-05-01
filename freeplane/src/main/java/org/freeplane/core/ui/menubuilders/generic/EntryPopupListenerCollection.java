@@ -1,11 +1,12 @@
 package org.freeplane.core.ui.menubuilders.generic;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
+import java.util.ListIterator;
 
 public class EntryPopupListenerCollection implements EntryPopupListener {
 
-	final private Collection<EntryPopupListener> listeners;
+	final private List<EntryPopupListener> listeners;
 
 	public EntryPopupListenerCollection() {
 			listeners = new ArrayList<EntryPopupListener>();
@@ -22,8 +23,9 @@ public class EntryPopupListenerCollection implements EntryPopupListener {
 	}
 
 	public void childEntriesHidden(Entry entry) {
-		for(EntryPopupListener entryPopupListener : listeners)
-			entryPopupListener.childEntriesHidden(entry);
+	    ListIterator<EntryPopupListener> reverseIterator = listeners.listIterator(listeners.size());
+		while(reverseIterator.hasPrevious())
+			reverseIterator.previous().childEntriesHidden(entry);
 	}
 
 	public void removeEntryPopupListener(EntryPopupListener entryPopupListener) {

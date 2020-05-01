@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
@@ -24,6 +25,7 @@ import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedNumber;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.NodeStream;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.plugin.script.ScriptContext;
@@ -49,11 +51,11 @@ public class ProxyUtils {
 	}
 
 	static List<? extends Node> find(final ICondition condition, final NodeModel node, final ScriptContext scriptContext) {
-		return ProxyUtils.createNodeList(ProxyUtils.findImpl(condition, node, true), scriptContext);
+		return ProxyUtils.createNodeList(ProxyUtils.findImpl(condition, node, false), scriptContext);
 	}
 
-	static List<? extends Node> findAll(final NodeModel node, final ScriptContext scriptContext, boolean breadthFirst) {
-		return ProxyUtils.createNodeList(ProxyUtils.findImpl(null, node, breadthFirst), scriptContext);
+	static List<? extends Node> findAll(final NodeModel node, final ScriptContext scriptContext, boolean depthFirst) {
+		return ProxyUtils.createNodeList(ProxyUtils.findImpl(null, node, depthFirst), scriptContext);
 	}
 
 	static List<? extends Node> find(final Closure<Boolean> closure, final NodeModel node, final ScriptContext scriptContext) {
@@ -66,9 +68,9 @@ public class ProxyUtils {
 
 	private static List<? extends Node> find(boolean withAncestors, boolean withDescendants, ICondition createCondition,
 											 NodeModel node, ScriptContext scriptContext) {
-		final Filter filter = Filter.createOneTimeFilter(createCondition, withAncestors, withDescendants, false);
+		final Filter filter = Filter.createFilter(createCondition, withAncestors, withDescendants, false);
 		filter.calculateFilterResults(node);
-		final List<NodeModel> allNodes = ProxyUtils.findImpl(null, node, true);
+		final List<NodeModel> allNodes = ProxyUtils.findImpl(null, node, false);
 		return ProxyUtils.createNodeList(allNodes.stream().filter(filter::isVisible)
 			.collect(Collectors.toList()), scriptContext);
 	}
@@ -134,25 +136,11 @@ public class ProxyUtils {
 	/** finds from any node downwards.
 	 * @param condition if null every node will match. */
 	@SuppressWarnings("unchecked")
-	private static List<NodeModel> findImpl(final ICondition condition, final NodeModel node, boolean breadthFirst) {
-		final boolean nodeMatches = condition == null || condition.checkNode(node);
-		// a shortcut for non-matching leaves
-		if (node.isLeaf() && !nodeMatches) {
-			return Collections.EMPTY_LIST;
-		}
-		final List<NodeModel> matches = new ArrayList<NodeModel>();
-		if (nodeMatches && breadthFirst) {
-			matches.add(node);
-		}
-		final Enumeration<NodeModel> children = node.children();
-		while (children.hasMoreElements()) {
-			final NodeModel child = children.nextElement();
-			matches.addAll(ProxyUtils.findImpl(condition, child, breadthFirst));
-		}
-		if (nodeMatches && !breadthFirst) {
-			matches.add(node);
-		}
-		return matches;
+	private static List<NodeModel> findImpl(final ICondition condition, final NodeModel node, boolean depthFirst) {
+		Stream<NodeModel> nodes = depthFirst ? NodeStream.bottomUpOf(node) : NodeStream.of(node);
+		if(condition != null)
+		    nodes = nodes.filter(condition::checkNode);
+		return nodes.collect(Collectors.toList());
 	}
 
 	public static List<Proxy.Node> createListOfChildren(final NodeModel nodeModel, final ScriptContext scriptContext) {

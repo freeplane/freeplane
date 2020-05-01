@@ -19,7 +19,6 @@
 package org.freeplane.core.io.xml;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Enumeration;
@@ -40,6 +39,7 @@ class XMLWriter {
 	 * Where to write the output to.
 	 */
 	private PrintWriter writer;
+	private final boolean restrictedCharset;
 
 	public void flush() {
 	    writer.flush();
@@ -48,20 +48,11 @@ class XMLWriter {
 	/**
 	 * Creates a new XML writer.
 	 * 
-	 * @param stream
-	 *            where to write the output to.
-	 */
-	public XMLWriter(final OutputStream stream) {
-		writer = new PrintWriter(stream);
-	}
-
-	/**
-	 * Creates a new XML writer.
-	 * 
 	 * @param writer
 	 *            where to write the output to.
 	 */
-	public XMLWriter(final Writer writer) {
+	public XMLWriter(final Writer writer, boolean restrictedCharset) {
+		this.restrictedCharset = restrictedCharset;
 		if (writer instanceof PrintWriter) {
 			this.writer = (PrintWriter) writer;
 		}
@@ -230,12 +221,17 @@ class XMLWriter {
 		for (int i = 0; i < str.length(); i++) {
 			final char c = str.charAt(i);
 			if (c > 0x7E) {
-				writer.print("&#x");
-				writer.print(Integer.toString(c, 16));
-				writer.print(';');
+				if (restrictedCharset) {
+					writer.print("&#x");
+					writer.print(Integer.toString(c, 16));
+					writer.print(';');
+				}
+				else {
+					writer.print(c);
+				}
 				continue;
 			}
-			if (xmlInclude) {
+			else if (xmlInclude) {
 				writer.print(c);
 				continue;
 			}

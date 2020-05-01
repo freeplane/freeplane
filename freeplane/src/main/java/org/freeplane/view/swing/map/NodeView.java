@@ -58,11 +58,12 @@ import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeController.Rules;
 import org.freeplane.features.edge.EdgeStyle;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.hidden.NodeVisibility;
 import org.freeplane.features.filter.hidden.NodeVisibilityConfiguration;
 import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
-import org.freeplane.features.icon.HierarchicalIcons;
+import org.freeplane.features.icon.hierarchicalicons.HierarchicalIcons;
 import org.freeplane.features.map.EncryptionModel;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.HistoryInformationModel;
@@ -168,7 +169,10 @@ public class NodeView extends JComponent implements INodeView {
 	private int calcShiftY(final LocationModel locationModel) {
 		try {
 			final NodeModel parent = model.getParentNode();
-			return locationModel.getShiftY().toBaseUnitsRounded() + (! getParentView().isSummary() && getMap().getModeController().hasOneVisibleChild(parent) ? getMainView().getSingleChildShift() : 0);
+			Filter filter = getMap().getFilter();
+			int singleChildShift = ! getParentView().isSummary() && getMap().getModeController().hasOneVisibleChild(parent, filter)
+			        ? getMainView().getSingleChildShift() : 0;
+            return locationModel.getShiftY().toBaseUnitsRounded() + singleChildShift;
 		}
 		catch (final NullPointerException e) {
 			return 0;
@@ -510,7 +514,7 @@ public class NodeView extends JComponent implements INodeView {
 		for (int i = index + 1; i < v.size(); i++) {
 			final NodeView nextView = v.get(i);
 			final NodeModel node = nextView.getModel();
-			if (node.hasVisibleContent()) {
+			if (node.hasVisibleContent(map.getFilter())) {
 				return nextView;
 			}
 			else if (! node.isHiddenSummary()){
@@ -533,7 +537,7 @@ public class NodeView extends JComponent implements INodeView {
 				break;
 			}
 		}
-		while (sibling.getModel().getNodeLevel(false) < getMap().getSiblingMaxLevel()) {
+		while (sibling.getModel().getNodeLevel(map.getFilter()) < getMap().getSiblingMaxLevel()) {
 			final NodeView first = sibling.getFirst(sibling.isRoot() ? lastSibling : null, this.isLeft(),
 			    !this.isLeft());
 			if (first == null) {
@@ -628,7 +632,7 @@ public class NodeView extends JComponent implements INodeView {
 		for (int i = index - 1; i >= 0; i--) {
 			final NodeView nextView = v.get(i);
 			final NodeModel node = nextView.getModel();
-			if (node.hasVisibleContent()) {
+			if (node.hasVisibleContent(map.getFilter())) {
 				return nextView;
 			}
 			else if (! node.isHiddenSummary()){
@@ -671,7 +675,7 @@ public class NodeView extends JComponent implements INodeView {
 				break;
 			}
 		}
-		while (sibling.getModel().getNodeLevel(false) < getMap().getSiblingMaxLevel()) {
+		while (sibling.getModel().getNodeLevel(map.getFilter()) < map.getSiblingMaxLevel()) {
 			final NodeView last = sibling.getLast(sibling.isRoot() ? previousSibling : null, this.isLeft(),
 			    !this.isLeft());
 			if (last == null) {
@@ -757,7 +761,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public NodeView getChildDistanceContainer(){
-		if (model.isVisible()) {
+		if (model.isVisible(map.getFilter())) {
 			return this;
 		}
 		NodeView parentView = getParentView();
@@ -834,7 +838,7 @@ public class NodeView extends JComponent implements INodeView {
 		if(isValid())
 			return getContent().isVisible();
 		else
-			return getModel().hasVisibleContent();
+			return getModel().hasVisibleContent(map.getFilter());
 	}
 
 	public boolean isLeft() {
@@ -1501,7 +1505,7 @@ public class NodeView extends JComponent implements INodeView {
 			if (rule == EdgeController.Rules.BY_BRANCH)
 				index = parentNode.getIndex(model) + 1;
 			else
-				index = model.getNodeLevel(false) + (model.isHiddenSummary() ? 1 : 0);
+				index = model.getNodeLevel(map.getFilter()) + (model.isHiddenSummary() ? 1 : 0);
 			final MapModel mapModel = map.getModel();
 			ModeController modeController = map.getModeController();
 			EdgeController edgeController = modeController.getExtension(EdgeController.class);

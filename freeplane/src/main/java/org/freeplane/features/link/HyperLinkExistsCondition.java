@@ -33,7 +33,7 @@ public class HyperLinkExistsCondition extends HyperLinkCondition {
 	public static final String NAME = "hyper_link_exists";
 
 	public HyperLinkExistsCondition() {
-		super(null);
+		super(null, false, false, false);
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class HyperLinkExistsCondition extends HyperLinkCondition {
 	protected String createDescription() {
 		final String condition = TextUtils.getText(LinkConditionController.FILTER_LINK);
 		final String simpleCondition = TextUtils.getText(ConditionFactory.FILTER_EXIST);
-		return ConditionFactory.createDescription(condition, simpleCondition, getHyperlink(), false, false);
+		return createDescription(condition, simpleCondition, getHyperlink());
 	}
 
 	@Override

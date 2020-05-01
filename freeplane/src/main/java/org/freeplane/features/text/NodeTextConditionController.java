@@ -70,19 +70,20 @@ class NodeTextConditionController implements IElementaryConditionController {
 	}
 
 	public ASelectableCondition createCondition(final Object selectedItem, final TranslatedObject simpleCondition,
-	                                            final Object value, final boolean matchCase, final boolean matchApproximately) {
+	                                            final Object value, final boolean matchCase, final boolean matchApproximately,
+                                                final boolean ignoreDiacritics) {
 		final String item = (String) ((TranslatedObject)selectedItem).getObject();
-		return createASelectableCondition(item, simpleCondition, value, matchCase, matchApproximately);
+		return createASelectableCondition(item, simpleCondition, value, matchCase, matchApproximately, ignoreDiacritics);
 	}
 
 	private ASelectableCondition createASelectableCondition(final String item, final TranslatedObject simpleCondition, final Object value,
-	                                                   final boolean matchCase, final boolean matchApproximately) {
+	                                                   final boolean matchCase, final boolean matchApproximately,
+	                                                   final boolean ignoreDiacritics) {
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_CONTAINS)) {
 			if (value.equals("")) {
 				return null;
 			}
-			return matchCase ? new MatchCaseNodeContainsCondition(item, value.toString(), matchApproximately) : 
-				               new NodeContainsCondition(item, value.toString(), matchApproximately);
+			return new NodeContainsCondition(item, value.toString(), matchCase, matchApproximately, ignoreDiacritics);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_REGEXP)) {
 			try {
@@ -94,22 +95,22 @@ class NodeTextConditionController implements IElementaryConditionController {
 			}
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_EQUAL_TO)) {
-			return new NodeTextCompareCondition(item, value, matchCase, 0, true, matchApproximately);
+			return new NodeTextCompareCondition(item, value, matchCase, 0, true, matchApproximately, ignoreDiacritics);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_IS_NOT_EQUAL_TO)) {
-			return new NodeTextCompareCondition(item, value, matchCase, 0, false, matchApproximately);
+			return new NodeTextCompareCondition(item, value, matchCase, 0, false, matchApproximately, ignoreDiacritics);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GT)) {
-			return new NodeTextCompareCondition(item, value, matchCase, 1, true, matchApproximately);
+			return new NodeTextCompareCondition(item, value, matchCase, 1, true, matchApproximately, ignoreDiacritics);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_GE)) {
-			return new NodeTextCompareCondition(item, value, matchCase, -1, false, matchApproximately);
+			return new NodeTextCompareCondition(item, value, matchCase, -1, false, matchApproximately, ignoreDiacritics);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LT)) {
-			return new NodeTextCompareCondition(item, value, matchCase, -1, true, matchApproximately);
+			return new NodeTextCompareCondition(item, value, matchCase, -1, true, matchApproximately, ignoreDiacritics);
 		}
 		if (simpleCondition.objectEquals(ConditionFactory.FILTER_LE)) {
-			return new NodeTextCompareCondition(item, value, matchCase, 1, false, matchApproximately);
+			return new NodeTextCompareCondition(item, value, matchCase, 1, false, matchApproximately, ignoreDiacritics);
 		}
 		return null;
 	}
@@ -154,11 +155,11 @@ class NodeTextConditionController implements IElementaryConditionController {
 	}
 
 	public ASelectableCondition loadCondition(final XMLElement element) {
-		if (element.getName().equalsIgnoreCase(NodeContainsCondition.NAME)) {
-			return NodeContainsCondition.load(element);
+		if (element.getName().equalsIgnoreCase(NodeContainsCondition.IGNORE_CASE_NAME)) {
+			return NodeContainsCondition.loadIgnoreCase(element);
 		}
-		if (element.getName().equalsIgnoreCase(MatchCaseNodeContainsCondition.NAME)) {
-			return MatchCaseNodeContainsCondition.load(element);
+		if (element.getName().equalsIgnoreCase(NodeContainsCondition.MATCH_CASE_NAME)) {
+			return NodeContainsCondition.loadMatchCase(element);
 		}
 		if (element.getName().equalsIgnoreCase(NodeTextCompareCondition.NAME)) {
 			return NodeTextCompareCondition.load(element);
@@ -166,11 +167,11 @@ class NodeTextConditionController implements IElementaryConditionController {
 		if (element.getName().equalsIgnoreCase(NodeMatchesRegexpCondition.NAME)) {
 			return NodeMatchesRegexpCondition.load(element);
 		}
-		if (element.getName().equalsIgnoreCase(NoteContainsCondition.NAME)) {
-			return NoteContainsCondition.load(element);
+		if (element.getName().equalsIgnoreCase(NoteContainsCondition.IGNORE_CASE_NAME)) {
+			return NoteContainsCondition.loadIgnoreCase(element);
 		}
-		if (element.getName().equalsIgnoreCase(MatchCaseNoteContainsCondition.NAME)) {
-			return MatchCaseNoteContainsCondition.load(element);
+		if (element.getName().equalsIgnoreCase(NoteContainsCondition.MATCH_CASE_NAME)) {
+			return NoteContainsCondition.loadMatchCase(element);
 		}
 		return null;
 	}

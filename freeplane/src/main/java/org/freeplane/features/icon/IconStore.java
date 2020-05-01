@@ -19,15 +19,11 @@
  */
 package org.freeplane.features.icon;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.features.icon.factory.MindIconFactory;
 
 /**
  * 
@@ -40,42 +36,30 @@ public class IconStore {
 	private final Map<String, IconGroup> groups;
 	private final Map<String, MindIcon> mindIcons;
 	private final Map<String, UIIcon> uiIcons;
+    public static final String EMOJI_GROUP = "emoji_group";
 
 	public IconStore() {
 		groups = new LinkedHashMap<String, IconGroup>();
-		mindIcons = new HashMap<String, MindIcon>();
+		mindIcons = new LinkedHashMap<>();
 		uiIcons = new HashMap<String, UIIcon>();
 	}
 
-	/**
-	 * Adds a new MindIcon group to the store.
-	 * 
-	 * @param group
-	 */
 	public void addGroup(final IconGroup group) {
 		groups.put(group.getName(), group);
-		for (final MindIcon icon : group.getIcons()) {
-			mindIcons.put(icon.getName(), icon);
-		}
+		addIcons(group);
 	}
 
-	/**
-	 * Adds a new MindIcon to the group with the given name.
-	 * 
-	 * @param groupName where to add the icon
-	 * @param icon to add
-	 */
-	public void addMindIcon(final String groupName, final MindIcon icon) {
-		if (!groups.containsKey(groupName)) {
-			final IconGroup group = new IconGroup(groupName, icon);
-			groups.put(groupName, group);
+    private void addIcons(final IconGroup group) {
+        for (final IconGroup subgroup : group.getGroups()) {
+		    if (subgroup.isLeaf())
+		        mindIcons.put(subgroup.getName(), subgroup.getGroupIcon());
+		    else
+		        addIcons(subgroup);
 		}
-		groups.get(groupName).addIcon(icon);
-		mindIcons.put(icon.getName(), icon);
-	}
+    }
 
-	public void addUIIcon(final UIIcon uiIcon) {
-		uiIcons.put(uiIcon.getFileName(), uiIcon);
+ 	public void addUIIcon(final UIIcon uiIcon) {
+		uiIcons.put(uiIcon.getFile(), uiIcon);
 	}
 
 	/**
@@ -89,18 +73,14 @@ public class IconStore {
 	 * @return all MindIcons from all groups in the store, including user icons
 	 */
 	public Collection<MindIcon> getMindIcons() {
-		final List<MindIcon> icons = new ArrayList<MindIcon>();
-		for (final IconGroup group : groups.values()) {
-			icons.addAll(group.getIcons());
-		}
-		return icons;
+		return mindIcons.values();
 	}
 
 	/**
 	 * @return all user icons in the store
 	 */
-	public Collection<MindIcon> getUserIcons() {
-		return groups.get("user").getIcons();
+	public List<MindIcon> getUserIcons() {
+	    return groups.get("user").getIcons();
 	}
 
 	/**
@@ -114,33 +94,24 @@ public class IconStore {
 		if (mindIcons.containsKey(name)) {
 			return mindIcons.get(name);
 		}
-		// icons in directory /image are not registered
-		final MindIcon mindIcon = MindIconFactory.createIcon(name);
-		if (ResourceController.getResourceController().getResource(mindIcon.getPath()) != null) {
-			return mindIcon;
-		}
 		return new IconNotFound(name);
 	}
 
 	/**
-	 * Returns a UIIcon with a given name. If one is not found in the store,
-	 * it will be created and stored.
+	 * Returns a UIIcon with a given name.
 	 * 
 	 * @param name of UIIcon to return
 	 * @return UIIcon with given name
 	 */
 	public UIIcon getUIIcon(final String name) {
-		UIIcon result;
 		if (mindIcons.containsKey(name)) {
-			result = mindIcons.get(name);
+		    return mindIcons.get(name);
 		}
 		else if (uiIcons.containsKey(name)) {
-			result = uiIcons.get(name);
+		    return uiIcons.get(name);
 		}
 		else {
-			result = new UIIcon(name, name);
-			uiIcons.put(name, result);
+		    return new IconNotFound(name);
 		}
-		return result;
 	}
 }

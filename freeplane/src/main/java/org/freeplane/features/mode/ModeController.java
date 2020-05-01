@@ -22,6 +22,7 @@ package org.freeplane.features.mode;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -32,14 +33,17 @@ import java.util.TreeMap;
 
 import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.features.filter.Filter;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.ITooltipProvider;
 import org.freeplane.features.map.MapController;
@@ -55,7 +59,9 @@ import org.freeplane.features.ui.INodeViewLifeCycleListener;
  * MindMapController as a sample.
  */
 public class ModeController extends AController implements FreeplaneActions{
-// // 	final private Controller controller;
+	public static final String VIEW_MODE_PROPERTY = "view_mode";
+	public static final List<String> USER_INTERFACE_PROPERTIES = Arrays.asList(VIEW_MODE_PROPERTY);
+	// // 	final private Controller controller;
 	private final ExtensionContainer extensionContainer;
 	private final Collection<IExtensionCopier> copiers;
 	private boolean isBlocked = false;
@@ -255,6 +261,18 @@ public class ModeController extends AController implements FreeplaneActions{
 	public void commit() {
 	}
 
+	public boolean canEdit(MapModel map) {
+		return canEdit() && map != null && ! map.isReadOnly() && ! isEditingLocked();
+	}
+
+	public UserRole userRole(MapModel map) {
+		return UserRole.EDITOR;
+	}
+	
+	public boolean isEditingLocked() {
+		return ResourceController.getResourceController().getBooleanProperty(VIEW_MODE_PROPERTY);
+	}
+
 	public void execute(final IActor actor, final MapModel map) {
 		actor.act();
 	}
@@ -295,10 +313,10 @@ public class ModeController extends AController implements FreeplaneActions{
 		return userInputListenerFactory;
 	}
 
-	public boolean hasOneVisibleChild(final NodeModel parent) {
+	public boolean hasOneVisibleChild(final NodeModel parent, Filter filter) {
 		int count = 0;
 		for (final NodeModel child : parent.getChildren()) {
-			if (child.hasVisibleContent()) {
+			if (child.hasVisibleContent(filter)) {
 				count++;
 			}
 			if (count == 2) {

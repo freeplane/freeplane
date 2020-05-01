@@ -5,9 +5,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
-
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -111,7 +108,6 @@ public class XsltExportEngine implements IExportEngine {
 
 	private StreamSource getMapXml(final List<NodeModel> branches) {
 		final StringWriter writer = new StringWriter();
-		final ModeController modeController = Controller.getCurrentModeController();
 		new BranchXmlWriter(branches).writeXml(writer, Mode.EXPORT);
 		final StringReader stringReader = new StringReader(writer.getBuffer().toString());
 		return new StreamSource(stringReader);

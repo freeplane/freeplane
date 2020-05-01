@@ -11,20 +11,20 @@
 ; Predrag Cuklin 18/06/2009 - Universial Version
 ;****************************************************************************
 
-#define MyVersion "1.7.11"
+#define MyVersion "1.8.3"
 #define MyStatus ""
 #define MyAppName "Freeplane"
 #define MyAppPublisher "Open source"
 #define MyAppURL "http://sourceforge.net/projects/freeplane/"
 #define MyAppExeName "freeplane.exe"
-#define ConfigurationDirectory 'Freeplane\1.7.x'
+#define ConfigurationDirectory 'Freeplane\1.8.x'
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{D3941722-C4DD-4509-88C4-0E87F675A859}
-AppCopyright=Copyright © 2000-2019 Freeplane team and others
+AppCopyright=Copyright © 2000-2020 Freeplane team and others
 AppName={#MyAppName}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
@@ -115,6 +115,28 @@ Name: {app}\plugins; Type: filesandordirs; Tasks: ; Languages:
 Name: {userappdata}\Freeplane; Flags: uninsneveruninstall; Tasks: ; Languages: 
 
 [Code]
+function CmdLineParamExists(const Value: string): Boolean;
+var
+  I: Integer;
+begin
+  Result := False;
+  for I := 1 to ParamCount do
+    if CompareText(ParamStr(I), Value) = 0 then
+    begin
+      Result := True;
+      Exit;
+    end;
+end;
+
+function DeleteConfigurationFilesForced: Boolean;
+begin
+  Result := CmdLineParamExists('/DELETE_CONFIGURATION_FILES');
+end;
+
+function KeepConfigurationFilesForced: Boolean;
+begin
+  Result := CmdLineParamExists('/KEEP_CONFIGURATION_FILES');
+end;
 // ask for delete config file during uninstall
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 var
@@ -124,7 +146,10 @@ begin
     usUninstall:
       begin
         UserConfigurationDirectory := ExpandConstant('{userappdata}\{#ConfigurationDirectory}');
-        if DirExists(UserConfigurationDirectory) AND (MsgBox(ExpandConstant('{cm:DeleteConfigurationFiles,{username}}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES) then
+        if KeepConfigurationFilesForced or (not DirExists(UserConfigurationDirectory)) or (UninstallSilent and (DeleteConfigurationFilesForced = False)) then begin
+          exit;
+        end
+        else if  (DeleteConfigurationFilesForced = True) OR (MsgBox(ExpandConstant('{cm:DeleteConfigurationFiles,{username}}'), mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES) then
           begin
              DelTree(UserConfigurationDirectory, True, True, True);
           end

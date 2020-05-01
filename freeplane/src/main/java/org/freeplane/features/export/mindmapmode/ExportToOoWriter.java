@@ -26,8 +26,6 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
-
 import javax.swing.filechooser.FileFilter;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -101,7 +99,6 @@ public class ExportToOoWriter implements IExportEngine {
 		final ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(file));
 		try {
 			final StringWriter writer = new StringWriter();
-			final ModeController controller = Controller.getCurrentModeController();
 			new BranchXmlWriter(branches).writeXml(writer, Mode.EXPORT);
 			final Result result = new StreamResult(zipout);
 

@@ -57,7 +57,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
@@ -415,7 +414,8 @@ public class MLinkController extends LinkController {
 		modeController.addAction(addArrowLinkAction);
 		setLinkByTextField = new SetLinkByTextFieldAction();
 		modeController.addAction(setLinkByTextField);
-		modeController.addAction(new AddLocalLinkAction());
+        modeController.addAction(new RemoveLinkAction());
+        modeController.addAction(new AddLocalLinkAction());
 		modeController.addAction(new AddMenuItemLinkAction());
 		modeController.addAction(new AddExecutionLinkAction());
 		modeController.addAction(new ExtractLinkFromTextAction());
@@ -617,12 +617,11 @@ public class MLinkController extends LinkController {
     private void addTextEditor(final JComponent popup, final String label, final JTextArea editor) {
 		final InputMap inputMap = editor.getInputMap();
 		final ActionMap actionMap = editor.getActionMap();
-		final boolean enterConfirms = ResourceController.getResourceController().getBooleanProperty("el__enter_confirms_by_default");
-		final KeyStroke close = KeyStroke.getKeyStroke(enterConfirms ? "ENTER" : "alt ENTER");
+		final KeyStroke close = KeyStroke.getKeyStroke("ENTER");
 		inputMap.put(close, CLOSE);
 		actionMap.put(CLOSE, new ClosePopupAction(CLOSE));
 
-		final KeyStroke enter = KeyStroke.getKeyStroke(! enterConfirms ? "ENTER" : "alt ENTER");
+		final KeyStroke enter = KeyStroke.getKeyStroke("alt ENTER");
 		final KeyStroke enter2 = KeyStroke.getKeyStroke("shift ENTER");
 		inputMap.put(enter, "INSERT_EOL");
 		inputMap.put(enter2, "INSERT_EOL");
@@ -1054,7 +1053,7 @@ public class MLinkController extends LinkController {
 		boolean addDocuMapAttribute = node.getMap().containsExtension(DocuMapAttribute.class)
 				&& ! modeController.containsExtension(DocuMapAttribute.class);
 		if(addDocuMapAttribute){
-			modeController.addExtension(DocuMapAttribute.class, DocuMapAttribute.instance);
+			modeController.addExtension(DocuMapAttribute.class, DocuMapAttribute.INSTANCE);
 		}
 		try{
 			super.loadURL(node, e);
@@ -1072,7 +1071,7 @@ public class MLinkController extends LinkController {
 		boolean addDocuMapAttribute = node.getMap().containsExtension(DocuMapAttribute.class)
 				&& ! modeController.containsExtension(DocuMapAttribute.class);
 		if(addDocuMapAttribute){
-			modeController.addExtension(DocuMapAttribute.class, DocuMapAttribute.instance);
+			modeController.addExtension(DocuMapAttribute.class, DocuMapAttribute.INSTANCE);
 		}
 		try{
 			super.loadURI(node, uri);

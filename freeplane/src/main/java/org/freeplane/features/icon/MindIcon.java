@@ -28,16 +28,16 @@ package org.freeplane.features.icon;
 public class MindIcon extends UIIcon {
 	private static final String DEFAULT_IMAGE_PATH = "/images/icons";
 	private static final String SHORTCUT_KEY = "IconAction.%s.shortcut";
-	public MindIcon(final String name) {
-		this(name, name + ".png", "");
+	public MindIcon(final String name, int order) {
+		this(name, name + ".svg", "", order);
 	}
 
-	public MindIcon(final String name, final String fileName) {
-		this(name, fileName, "");
+	public MindIcon(final String name, final String file, int order) {
+		this(name, file, "", order);
 	}
 
-	public MindIcon(final String name, final String fileName, final String description) {
-		super(name, fileName, description, String.format(SHORTCUT_KEY, name));
+	public MindIcon(final String name, final String file, final String description, int order) {
+		super(name, file, description, String.format(SHORTCUT_KEY, name), order);
 	}
 
 	@Override
@@ -45,9 +45,7 @@ public class MindIcon extends UIIcon {
 		return DEFAULT_IMAGE_PATH;
 	}
 
-	public String getSource() {
-		final String path = getUrl().getPath();
-		final String fileName = path.substring(path.lastIndexOf('/') + 1);
-		return fileName;
-	}
+    public boolean isShownOnToolbar() {
+        return true;
+    }
 }

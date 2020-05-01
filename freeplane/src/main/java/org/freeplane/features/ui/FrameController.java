@@ -73,7 +73,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.FixedBasicComboBoxEditor;
 import org.freeplane.core.ui.IUserInputListenerFactory;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.ContainerComboBoxEditor;
 import org.freeplane.core.ui.components.FixDarculaToggleButtonUI;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
@@ -82,7 +81,6 @@ import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.util.ClassLoaderFactory;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.format.ScannerController;
@@ -98,7 +96,6 @@ import org.freeplane.features.time.TimeComboBoxEditor;
 abstract public class FrameController implements ViewController {
 	private static final String DARCULA_LAF_NAME = "com.bulenkov.darcula.DarculaLaf";
 	private static final double DEFAULT_SCALING_FACTOR = 0.8;
-	private static final Quantity<LengthUnits> ICON_SIZE = new Quantity<LengthUnits>(12, LengthUnits.pt);
 
 	private final class HorizontalToolbarPanel extends JPanel {
 		/**

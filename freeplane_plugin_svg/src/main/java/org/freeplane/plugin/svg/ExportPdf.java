@@ -20,6 +20,12 @@
  */
 package org.freeplane.plugin.svg;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+
 import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.transcoder.SVGAbstractTranscoder;
@@ -27,6 +33,8 @@ import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.ImageTranscoder;
+import org.apache.fop.configuration.ConfigurationException;
+import org.apache.fop.configuration.DefaultConfiguration;
 import org.apache.fop.svg.AbstractFOPTranscoder;
 import org.apache.fop.svg.PDFTranscoder;
 import org.freeplane.core.resources.ResourceController;
@@ -40,12 +48,6 @@ import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.List;
-
 /**
  * @author foltin
  */
@@ -55,6 +57,7 @@ class ExportPdf extends ExportVectorGraphic {
 	public ExportPdf() {
 	}
 
+	@Override
 	public void export(List<NodeModel> branches, File chosenFile) {
 		MapModel map = branches.get(0).getMap();
 		if (!ExportController.getContoller().checkCurrentMap(map)){
@@ -85,7 +88,8 @@ class ExportPdf extends ExportVectorGraphic {
 		final FileOutputStream ostream = new FileOutputStream(chosenFile);
 		final BufferedOutputStream bufStream = new BufferedOutputStream(ostream);
 		final TranscoderOutput output = new TranscoderOutput(bufStream);
-		createPdfTranscoder().transcode(input, output);
+		final PDFTranscoder transcoder = createPdfTranscoder();
+		transcoder.transcode(input, output);
 		ostream.flush();
 		ostream.close();
 	}
@@ -105,10 +109,25 @@ class ExportPdf extends ExportVectorGraphic {
 		if(ResourceController.getResourceController().getBooleanProperty(PDF_CONVERT_TEXT_TO_SHAPES)) {
 			pdfTranscoder.addTranscodingHint(AbstractFOPTranscoder.KEY_AUTO_FONTS, Boolean.FALSE);
 		}
+		else {
+            DefaultConfiguration c = new DefaultConfiguration("cfg");
+            DefaultConfiguration fonts = new DefaultConfiguration("fonts");
+            DefaultConfiguration autodetect = new DefaultConfiguration("auto-detect");
+            fonts.addChild(autodetect);
+            c.addChild(fonts);
+            try {
+				pdfTranscoder.configure(c);
+			}
+			catch (ConfigurationException e) {
+				throw new RuntimeException(e);
+			}
+		}
 		return pdfTranscoder;
 	}
 
 
+
+	@Override
 	protected SVGGeneratorContext createGeneratorContext(final Document domFactory) {
 		final SVGGeneratorContext ctx = super.createGeneratorContext(domFactory);
 		if(ResourceController.getResourceController().getBooleanProperty(PDF_CONVERT_TEXT_TO_SHAPES))

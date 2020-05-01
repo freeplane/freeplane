@@ -25,7 +25,7 @@ public class RemoveAllAlwaysUnfoldedNodeFlagsAction extends AFreeplaneAction {
 	}
 
 	private void removeAlwaysUnfoldedNodeFlags(final NodeModel node) {
-		if(! node.isFolded() && ! node.isRoot() && node.hasVisibleContent()){
+		if(! node.isFolded() && ! node.isRoot() && node.hasVisibleContent(Controller.getCurrentController().getSelection().getFilter())){
 			flagController.undoableDeactivateHook(node);
 		}
 		for(NodeModel child : node.getChildren())
