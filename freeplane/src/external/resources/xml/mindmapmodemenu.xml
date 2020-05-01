@@ -596,12 +596,6 @@
         </Entry>
 		<Entry name="SetShortenerStateAction" />
           <Entry builder="separator" />
-          <Entry name="goto" processOnPopup="true">
-            <Entry builder="link_actions" />
-            <Entry builder="clone_actions" />
-            <Entry name="GotoNodeAction" />
-          </Entry>
-          <Entry builder="separator" />
           <Entry usedBy = "EDITOR" >
             <Entry name="menu_add_newNode" icon="/images/idea.svg">
               <Entry name="NewChildAction" />
@@ -643,6 +637,11 @@
 		<Entry name="AlwaysUnfoldedNodeAction" usedBy = "EDITOR" />
 		<Entry name="FreeNodeAction" usedBy = "EDITOR" />
 		<Entry builder="separator" />
+        <Entry name="goto" processOnPopup="true">
+          <Entry builder="link_actions" />
+          <Entry builder="clone_actions" />
+          <Entry name="GotoNodeAction" />
+        </Entry>
 		<Entry name="EnterPassword" />
 		<Entry name="node_popup_scripting" plugin="org.freeplane.plugin.script"
 			builder="userScripts" />
