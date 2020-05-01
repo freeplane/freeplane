@@ -255,7 +255,8 @@
               </Entry>
               <Entry name="IconUnionHierarchyAction" />
               <Entry name="IconIntersectionHierarchyAction" />
-              <Entry name="menu_remove_icons">
+              <Entry builder="separator" />
+              <Entry name="menu_remove_icons" icon="/images/icon_trash.svg" >
                 <Entry name="RemoveIcon_0_Action" />
                 <Entry name="RemoveIconAction" />
                 <Entry name="RemoveAllIconsAction" />
@@ -341,6 +342,56 @@
 		</Entry>
 		<Entry name="format" >
 			<Entry usedBy = "EDITOR" >
+            <Entry name="map_background">
+              <Entry name="MapBackgroundImageAction" />
+              <Entry name="SetBooleanMapPropertyAction.fit_to_viewport" />
+              <Entry name="MapBackgroundColorAction" />
+              <Entry name="MapBackgroundClearAction" />
+            </Entry>
+            <Entry name="menu_coreFormat">
+              <Entry name="BoldAction" accelerator="control B" />
+              <Entry name="ItalicAction" accelerator="control I" />
+              <Entry name="StrikeThroughAction"/>
+              <Entry name="IncreaseNodeFontAction" accelerator="control PLUS" />
+              <Entry name="DecreaseNodeFontAction" accelerator="control MINUS" />
+              <Entry builder="separator" />
+              <Entry name="TextAlignAction.LEFT" />
+              <Entry name="TextAlignAction.CENTER" />
+              <Entry name="TextAlignAction.RIGHT" />
+              <Entry builder="separator" />
+              <Entry name="NodeColorAction" accelerator="alt shift F" />
+              <Entry name="BlinkingNodeHookAction" />
+              <Entry name="NodeColorBlendAction" />
+              <Entry builder="separator" />
+              <Entry name="NodeBackgroundColorAction" accelerator="alt B" />
+              <Entry builder="separator" />
+              <Entry name="NodeShapeAction.fork" />
+              <Entry name="NodeShapeAction.bubble" />
+              <Entry builder="separator" />
+              <Entry name="UsePlainTextAction" accelerator="alt shift P" />
+              <Entry builder="separator" />
+              <Entry name="EdgeProperties">
+                <Entry builder="radio_button_group" name="edgeStyles" textKey="styles">
+                  <Entry name="EdgeStyleAsParentAction" />
+                  <Entry name="EdgeStyleAction.linear" />
+                  <Entry name="EdgeStyleAction.bezier" />
+                  <Entry name="EdgeStyleAction.sharp_linear" />
+                  <Entry name="EdgeStyleAction.sharp_bezier" />
+                  <Entry name="EdgeStyleAction.horizontal" />
+                  <Entry name="EdgeStyleAction.hide_edge" />
+                </Entry>
+                <Entry builder="radio_button_group" name="edge_widths">
+                  <Entry name="EdgeWidthAction_width_parent" />
+                  <Entry name="EdgeWidthAction_width_thin" />
+                  <Entry name="EdgeWidthAction_1" />
+                  <Entry name="EdgeWidthAction_2" />
+                  <Entry name="EdgeWidthAction_4" />
+                  <Entry name="EdgeWidthAction_8" />
+                </Entry>
+                <Entry name="EdgeColorAction" accelerator="alt shift E" />
+              </Entry>
+              <Entry builder="separator" />
+            </Entry>
 				<Entry name="styleActions" textKey="menu_applyStyle">
 					<Entry builder="style_actions" />
 				</Entry>
@@ -362,57 +413,6 @@
 				<Entry name="FormatCopy" accelerator="alt shift C" />
 				<Entry name="FormatPaste" accelerator="alt shift V" />
 				<Entry name="SetBooleanPropertyAction.copyFormatToNewSibling" />
-				<Entry builder="separator" />
-				<Entry name="map_background">
-					<Entry name="MapBackgroundImageAction" />
-					<Entry name="SetBooleanMapPropertyAction.fit_to_viewport" />
-					<Entry name="MapBackgroundColorAction" />
-					<Entry name="MapBackgroundClearAction" />
-				</Entry>
-				<Entry name="menu_coreFormat">
-					<Entry name="BoldAction" accelerator="control B" />
-					<Entry name="ItalicAction" accelerator="control I" />
-					<Entry name="StrikeThroughAction"/>
-					<Entry name="IncreaseNodeFontAction" accelerator="control PLUS" />
-					<Entry name="DecreaseNodeFontAction" accelerator="control MINUS" />
-					<Entry builder="separator" />
-					<Entry name="TextAlignAction.LEFT" />
-					<Entry name="TextAlignAction.CENTER" />
-					<Entry name="TextAlignAction.RIGHT" />
-					<Entry builder="separator" />
-					<Entry name="NodeColorAction" accelerator="alt shift F" />
-					<Entry name="BlinkingNodeHookAction" />
-					<Entry name="NodeColorBlendAction" />
-					<Entry builder="separator" />
-					<Entry name="NodeBackgroundColorAction" accelerator="alt B" />
-					<Entry builder="separator" />
-					<Entry name="NodeShapeAction.fork" />
-					<Entry name="NodeShapeAction.bubble" />
-					<Entry builder="separator" />
-					<Entry name="UsePlainTextAction" accelerator="alt shift P" />
-				</Entry>
-				<Entry builder="separator" />
-				<Entry name="EdgeProperties">
-					<Entry builder="radio_button_group" name="edgeStyles" textKey="styles">
-						<Entry name="EdgeStyleAsParentAction" />
-						<Entry name="EdgeStyleAction.linear" />
-						<Entry name="EdgeStyleAction.bezier" />
-						<Entry name="EdgeStyleAction.sharp_linear" />
-						<Entry name="EdgeStyleAction.sharp_bezier" />
-						<Entry name="EdgeStyleAction.horizontal" />
-						<Entry name="EdgeStyleAction.hide_edge" />
-					</Entry>
-					<Entry builder="radio_button_group" name="edge_widths">
-						<Entry name="EdgeWidthAction_width_parent" />
-						<Entry name="EdgeWidthAction_width_thin" />
-						<Entry name="EdgeWidthAction_1" />
-						<Entry name="EdgeWidthAction_2" />
-						<Entry name="EdgeWidthAction_4" />
-						<Entry name="EdgeWidthAction_8" />
-					</Entry>
-					<Entry name="EdgeColorAction" accelerator="alt shift E" />
-				</Entry>
-				<Entry builder="separator" />
 			</Entry>
 			<Entry builder="noActions" />
 		</Entry>
@@ -582,41 +582,66 @@
 		<Entry name="GotoNodeAction" />
 	</Entry>
 	<Entry name="node_popup" builder="node_popup">
-		<Entry name="EditLongAction" accelerator="alt ENTER" usedBy = "EDITOR" />
-		<Entry name="EditDetailsInDialogAction" accelerator="control F3" usedBy = "EDITOR" />
-		<Entry name="EditDetailsAction" accelerator="F3" usedBy = "EDITOR" />
-		<Entry name="DeleteDetailsAction" usedBy = "EDITOR" />
+        <Entry usedBy = "EDITOR" >
+    		<Entry name="EditLongAction" accelerator="alt ENTER" />
+    		<Entry name="EditDetailsInDialogAction" accelerator="control F3" />
+    		<Entry name="EditDetailsAction" accelerator="F3" />
+            <Entry name="EditNoteInDialogAction" />
+            <Entry name="EditAttributesAction"/>
+            <Entry name="menu_remove">
+    		    <Entry name="DeleteDetailsAction" />
+                <Entry name="RemoveNoteAction" />
+                <Entry name="RemoveAllAttributesAction" />
+            </Entry>
+        </Entry>
 		<Entry name="SetShortenerStateAction" />
-		<Entry name="EditNoteInDialogAction" usedBy = "EDITOR" />
-		<Entry name="ExternalImageAddAction" usedBy = "EDITOR" />
-		<Entry name="EditAttributesAction" accelerator="alt F9" usedBy = "EDITOR" />
+          <Entry builder="separator" />
+          <Entry name="goto" processOnPopup="true">
+            <Entry builder="link_actions" />
+            <Entry builder="clone_actions" />
+            <Entry name="GotoNodeAction" />
+          </Entry>
+          <Entry builder="separator" />
+          <Entry usedBy = "EDITOR" >
+            <Entry name="menu_add_newNode" icon="/images/idea.svg">
+              <Entry name="NewChildAction" />
+              <Entry name="NewSiblingAction" />
+              <Entry name="NewPreviousSiblingAction" />
+              <Entry name="NewParentNode" />
+              <Entry name="NewFreeNodeAction" />
+              <Entry name="NewSummaryAction"/>
+              <Entry builder="separator" />
+              <Entry name="DeleteAction" />
+            </Entry>
+            <Entry name="menu_image" icon="/images/ExternalImageAddAction.svg">
+              <Entry name="ExternalImageAddAction" />
+              <Entry builder="separator" />
+              <Entry name="ExternalImageRemoveAction" />
+            </Entry> 
+            <Entry name="menu_add_link" icon="/images/SetLinkByFileChooserAction.svg" >
+              <Entry name="SetLinkByFileChooserAction" />
+              <Entry name="SetLinkByTextFieldAction" />
+              <Entry builder="separator"/>
+              <Entry name="RemoveLinkAction" />
+              <Entry builder="separator"/>
+              <Entry name="ExtractLinkFromTextAction" />
+              <Entry name="AddLocalLinkAction" />
+              <Entry name="AddMenuItemLinkAction" />
+              <Entry name="AddExecutionLinkAction" />
+              <Entry builder="separator" />
+              <Entry name="SetLinkAnchorAction" />
+              <Entry name="MakeLinkFromAnchorAction" />
+              <Entry name="MakeLinkToAnchorAction" />
+              <Entry name="ClearLinkAnchorAction" />
+            </Entry>
+            <Entry name="styleActions" textKey="menu_applyStyle" >
+                <Entry builder="style_actions" />
+            </Entry>
+            <Entry name="AddConnectorAction" />
+         </Entry> 
 		<Entry builder="separator" />
-		<Entry name="NewSummaryAction" accelerator="alt shift INSERT" usedBy = "EDITOR" />
 		<Entry name="AlwaysUnfoldedNodeAction" usedBy = "EDITOR" />
 		<Entry name="FreeNodeAction" usedBy = "EDITOR" />
-		<Entry name="CloudAction" accelerator="control shift B" usedBy = "EDITOR" />
-		<Entry name="styleActions" textKey="menu_applyStyle" usedBy = "EDITOR" >
-				<Entry builder="style_actions" />
-		</Entry>
-		<Entry name="AddConnectorAction" accelerator="control L" usedBy = "EDITOR" />
-		<Entry name="links" builder="popup_navigate" usedBy = "EDITOR" >
-			<Entry name="SetLinkByFileChooserAction" accelerator="control shift K" />
-			<Entry name="SetLinkByTextFieldAction" accelerator="control K" />
-			<Entry name="ExtractLinkFromTextAction" />
-			<Entry builder="separator" />
-			<Entry name="AddLocalLinkAction" accelerator="alt shift L" />
-			<Entry name="AddMenuItemLinkAction" />
-			<Entry builder="separator" />
-			<Entry name="SetLinkAnchorAction" />
-			<Entry name="MakeLinkFromAnchorAction" />
-			<Entry name="MakeLinkToAnchorAction" />
-			<Entry name="ClearLinkAnchorAction" />
-		</Entry>
-		<Entry name="goto" processOnPopup="true">
-			<Entry builder="link_actions" />
-			<Entry builder="clone_actions" />
-			<Entry name="GotoNodeAction" />
-		</Entry>
 		<Entry builder="separator" />
 		<Entry name="EnterPassword" />
 		<Entry name="node_popup_scripting" plugin="org.freeplane.plugin.script"
@@ -624,11 +649,13 @@
 		<Entry name="SetNodeAliasAction" />
 		<Entry builder="separator" />
 		<Entry name="CutAction" accelerator="control X" usedBy = "EDITOR" />
-		<Entry name="CopyAction" accelerator="control C"/>
-		<Entry name="CopySingleAction" accelerator="control shift C" />
-		<Entry name="CopyIDAction" />
-		<Entry name="CopySuggestedReferenceAction" />
-		<Entry name="CopyNodeURIAction" />
+        <Entry name="menu_copy">
+          <Entry name="CopyAction" accelerator="control C" />
+          <Entry name="CopySingleAction" accelerator="control shift C" />
+          <Entry name="CopyIDAction" />
+          <Entry name="CopyNodeURIAction" />
+          <Entry name="CopyAttributes" />
+        </Entry>
 		<Entry name="PasteAction" accelerator="control V" usedBy = "EDITOR" />
 		<Entry name="SortNodes" usedBy = "EDITOR" />
 		<Entry name="UndoAction" usedBy = "EDITOR" />
