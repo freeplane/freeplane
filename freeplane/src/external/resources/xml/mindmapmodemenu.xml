@@ -130,7 +130,6 @@
 					<Entry name="CopyStyleExtensionsAction" />
 					<Entry name="DeleteDetailsAction" />
 					<Entry builder="separator" />
-					<Entry builder="separator" />
 					<Entry name="EditAttributesAction" accelerator="alt F9" />
 					<Entry name="attributes_AddAttributeAction" />
 					<Entry name="AssignAttributesAction" />
@@ -196,7 +195,7 @@
 		</Entry>
         <Entry name="insert">
           <Entry usedBy = "EDITOR" >
-            <Entry name="menu_newNode">
+            <Entry name="menu_newNode" icon="/images/idea.svg">
               <Entry name="NewChildAction" accelerator="INSERT" />
               <Entry name="NewSiblingAction" accelerator="ENTER" />
               <Entry name="NewPreviousSiblingAction" accelerator="shift ENTER" />
@@ -206,13 +205,26 @@
               <Entry builder="separator" />
               <Entry name="DeleteAction" accelerator="DELETE" />
             </Entry>
-            <Entry name="CloudAction" accelerator="control shift B" />
+            <Entry name="menu_cloud" icon="/images/Cloud24.svg" >
+              <Entry builder="radio_button_group">
+                <Entry name="CloudShapeAction.ARC" accelerator="control shift B" />
+                <Entry name="CloudShapeAction.STAR" />
+                <Entry name="CloudShapeAction.RECT" />
+                <Entry name="CloudShapeAction.ROUND_RECT" />
+              </Entry>
+              <Entry builder="separator" />
+              <Entry name="CloudColorAction" />
+              <Entry builder="separator" />
+              <Entry name="RemoveCloudAction"/>
+            </Entry>
             <Entry name="AddConnectorAction" accelerator="control L" />
-            <Entry name="links">
+            <Entry name="links" icon="/images/SetLinkByFileChooserAction.svg" >
               <Entry name="SetLinkByFileChooserAction" accelerator="control shift K" />
               <Entry name="SetLinkByTextFieldAction" accelerator="control K" />
-              <Entry name="ExtractLinkFromTextAction" />
               <Entry builder="separator"/>
+              <Entry name="RemoveLinkAction" />
+              <Entry builder="separator"/>
+              <Entry name="ExtractLinkFromTextAction" />
               <Entry name="AddLocalLinkAction" accelerator="alt shift L" />
               <Entry name="AddMenuItemLinkAction" />
               <Entry name="AddExecutionLinkAction" />
@@ -222,10 +234,12 @@
               <Entry name="MakeLinkToAnchorAction" />
               <Entry name="ClearLinkAnchorAction" />
             </Entry>
-            <Entry name="ExternalImageAddAction" />
-            <Entry builder="separator" />
-            <Entry name="ExternalImageRemoveAction" />
-            <Entry name="icons">
+            <Entry name="menu_image" icon="/images/ExternalImageAddAction.svg">
+              <Entry name="ExternalImageAddAction" />
+              <Entry builder="separator" />
+              <Entry name="ExternalImageRemoveAction" />
+            </Entry> 
+            <Entry name="icons" icon="/images/kalzium.svg">
               <Entry name="IconSelectionPlugin" accelerator="control F2" />
               <Entry name="menu_iconByCategory">
                 <Entry builder="icon_actions" />
@@ -376,15 +390,6 @@
 					<Entry name="NodeShapeAction.bubble" />
 					<Entry builder="separator" />
 					<Entry name="UsePlainTextAction" accelerator="alt shift P" />
-				</Entry>
-				<Entry name="cloud_shapes">
-					<Entry builder="radio_button_group">
-						<Entry name="CloudShapeAction.ARC" />
-						<Entry name="CloudShapeAction.STAR" />
-						<Entry name="CloudShapeAction.RECT" />
-						<Entry name="CloudShapeAction.ROUND_RECT" />
-					</Entry>
-					<Entry name="CloudColorAction" />
 				</Entry>
 				<Entry builder="separator" />
 				<Entry name="EdgeProperties">

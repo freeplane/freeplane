@@ -12,7 +12,8 @@ public class EntryAccessor {
 	private static final String COMPONENT = "component";
 	private static final String TEXT = "text";
 	private static final String TEXT_KEY = "textKey";
-	public static final Class<Icon> ICON = Icon.class;
+    public static final String ICON = "icon";
+	public static final Class<Icon> ICON_INSTANCE = Icon.class;
 	public static final String ACCELERATOR = "accelerator";
 	private final ResourceAccessor resourceAccessor;
 	public static final String MENU_ELEMENT_SEPARATOR = " -> ";
@@ -26,15 +27,15 @@ public class EntryAccessor {
     }
 
 	public Icon getIcon(final Entry entry) {
-		if (entry.getAttribute(ICON) != null)
-			return entry.getAttribute(ICON);
-		else {
+        if (entry.getAttribute(ICON_INSTANCE) != null)
+            return entry.getAttribute(ICON_INSTANCE);
+        String key = (String) entry.getAttribute(ICON);
+        if (key == null) {
 			String name = entry.getName();
-			final String key = name + ".icon";
-			
-			final Icon icon = resourceAccessor.getIcon(key);
-			return icon;
+			key = name + ".icon";
 		}
+        final Icon icon = resourceAccessor.getIcon(key);
+        return icon;
 
 	}
 
@@ -131,7 +132,7 @@ public class EntryAccessor {
 	}
 
 	public void setIcon(Entry entry, Icon icon) {
-		entry.setAttribute(ICON, icon);
+		entry.setAttribute(ICON_INSTANCE, icon);
 	}
 
 	public String getAccelerator(Entry entry) {

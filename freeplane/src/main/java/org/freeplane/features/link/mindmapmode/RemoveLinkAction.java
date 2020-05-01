@@ -17,45 +17,32 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.freeplane.features.cloud.mindmapmode;
+package org.freeplane.features.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
+import java.net.URI;
 
-import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.core.ui.SelectableAction;
-import org.freeplane.features.cloud.CloudController;
-import org.freeplane.features.cloud.CloudModel;
+import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 
-/**
- * @author foltin
- */
-@SelectableAction(checkOnNodeChange = true)
-class CloudAction extends AMultipleNodeAction {
+class RemoveLinkAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public CloudAction() {
-		super("CloudAction");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * freeplane.modes.mindmapmode.actions.MultipleNodeAction#actionPerformed
-	 * (freeplane.modes.NodeModel)
-	 */
-	@Override
-	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final MCloudController cloudController = (MCloudController) CloudController.getController();
-		cloudController.setCloud(node, CloudModel.getModel(node) == null);
+	public RemoveLinkAction() {
+		super("RemoveLinkAction");
 	}
 
 	@Override
-	public void setSelected() {
-		setSelected(CloudModel.getModel(Controller.getCurrentModeController().getMapController().getSelectedNode()) != null);
+	public void actionPerformed(final ActionEvent e) {
+	    final ModeController modeController = Controller.getCurrentModeController();
+	    final MLinkController linkController = (MLinkController) LinkController.getController();
+	    final NodeModel selectedNode = modeController.getMapController().getSelectedNode();
+	    linkController.setLink(selectedNode, (URI) null, LinkController.LINK_ABSOLUTE);
 	}
 }

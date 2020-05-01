@@ -87,7 +87,7 @@ public class MCloudController extends CloudController {
 	public MCloudController(final ModeController modeController) {
 		super(modeController);
 		modeController.registerExtensionCopier(new ExtensionCopier());
-		modeController.addAction(new CloudAction());
+		modeController.addAction(new RemoveCloudAction());
 		modeController.addAction(new CloudColorAction());
 		for(Shape shape : Shape.values()){
 				modeController.addAction(new CloudShapeAction(shape));
