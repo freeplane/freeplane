@@ -1,6 +1,7 @@
 ===============================
 1.8.3
 ===============================
+Usability improvements suggested by University of Oulu UX research group
 Bug fixes
 
 ===============================
