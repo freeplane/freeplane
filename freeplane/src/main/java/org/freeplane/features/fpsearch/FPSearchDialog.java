@@ -6,20 +6,18 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 // TODO: index menu: https://www.logicbig.com/tutorials/java-swing/menu-search-highlighting.html
 // TODO: Controller.getCurrentController().getViewController().getFreeplaneMenuBar()
+// TODO: optionally process localized prefs/menus!
 public class FPSearchDialog extends JDialog implements DocumentListener {
 
     private final int numberOfTextFieldColumns = 100;
     private JLabel searchLabel;
     private JTextField input;
     private JList resultList;
-    private PreferencesIndexer preferencesIndexer = new PreferencesIndexer();
-
-    private java.util.List<String> listOfPrefs;
+    private PreferencesIndexer preferencesIndexer;
 
     FPSearchDialog(Frame parent)
     {
@@ -45,14 +43,9 @@ public class FPSearchDialog extends JDialog implements DocumentListener {
         setPreferredSize(new Dimension(800, 600));
         pack();
 
-        listOfPrefs = new ArrayList<>();
-        listOfPrefs.add("Foo");
-        listOfPrefs.add("TextAlignmentVertical");
-        listOfPrefs.add("TextAlignmentHorizonal");
-        listOfPrefs.add("bar");
-        listOfPrefs.add("ApproxSearch");
-
         input.getDocument().addDocumentListener(this);
+
+        preferencesIndexer = new PreferencesIndexer();
 
         setVisible(true);
     }
@@ -69,19 +62,20 @@ public class FPSearchDialog extends JDialog implements DocumentListener {
 
     public void updateMatches(final String searchTerm)
     {
-        System.out.format("new text input: '%s'\n", searchTerm);
+        //System.out.format("new text input: '%s'\n", searchTerm);
 
         PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
 
         java.util.List<String> matches = new LinkedList<>();
-        for (final String prefsItem: listOfPrefs)
+        for (final PreferencesItem prefsItem: preferencesIndexer.getPrefs())
         {
-            pairwiseAlignment.init(searchTerm, prefsItem, true, false);
-            //if (pairwiseAlignment.matches(searchTerm, prefsItem, true, false))
+            //pairwiseAlignment.init(searchTerm, prefsItem.key, true);
+            if (pairwiseAlignment.matches(searchTerm, prefsItem.key, true) ||
+                pairwiseAlignment.matches(searchTerm, prefsItem.text, true))
             //if (prefsItem.startsWith(searchString))
-            if (pairwiseAlignment.matchProb() > 0.667)
+            //if (pairwiseAlignment.matchProb() > 0.667)
             {
-                matches.add(prefsItem);
+                matches.add(prefsItem.toString());
             }
         }
         resultList.setListData(matches.toArray());
