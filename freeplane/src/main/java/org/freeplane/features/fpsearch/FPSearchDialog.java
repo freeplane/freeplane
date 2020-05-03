@@ -1,16 +1,20 @@
 package org.freeplane.features.fpsearch;
 
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.OptionPanelBuilder;
+import org.freeplane.core.resources.components.ShowPreferencesAction;
 import org.freeplane.features.filter.PseudoDamerauLevenshtein;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.net.URL;
 import java.util.LinkedList;
 
-// TODO: index menu: https://www.logicbig.com/tutorials/java-swing/menu-search-highlighting.html
-// TODO: Controller.getCurrentController().getViewController().getFreeplaneMenuBar()
-// TODO: optionally process localized prefs/menus!
+// TODO: improve UI!
+// TODO: _optionally_ process localized prefs/menus!
 public class FPSearchDialog extends JDialog implements DocumentListener {
 
     private final int numberOfTextFieldColumns = 100;
@@ -18,10 +22,14 @@ public class FPSearchDialog extends JDialog implements DocumentListener {
     private JTextField input;
     private JList resultList;
     private PreferencesIndexer preferencesIndexer;
+    private MenuStructureIndexer menuStructureIndexer;
 
     FPSearchDialog(Frame parent)
     {
         super(parent,"Freeplane internal search",true);
+
+        loadSources();
+        resultList = new JList();
 
         searchLabel = new JLabel("Search for:");
         input = new JTextField("hello", numberOfTextFieldColumns);
@@ -33,8 +41,6 @@ public class FPSearchDialog extends JDialog implements DocumentListener {
         inputPanel.add(searchLabel);
         inputPanel.add(input);
 
-        resultList = new JList();
-
         getContentPane().setLayout(new GridLayout(2, 1));
         getContentPane().add(inputPanel);
         getContentPane().add(resultList);
@@ -45,9 +51,14 @@ public class FPSearchDialog extends JDialog implements DocumentListener {
 
         input.getDocument().addDocumentListener(this);
 
-        preferencesIndexer = new PreferencesIndexer();
-
+        showPrefsDialog();
         setVisible(true);
+    }
+
+    private void loadSources()
+    {
+        preferencesIndexer = new PreferencesIndexer();
+        menuStructureIndexer = new MenuStructureIndexer();
     }
 
     public void changedUpdate(DocumentEvent e) {
@@ -60,7 +71,7 @@ public class FPSearchDialog extends JDialog implements DocumentListener {
         updateMatches(input.getText());
     }
 
-    public void updateMatches(final String searchTerm)
+    private void updateMatches(final String searchTerm)
     {
         //System.out.format("new text input: '%s'\n", searchTerm);
 
@@ -79,6 +90,16 @@ public class FPSearchDialog extends JDialog implements DocumentListener {
             }
         }
         resultList.setListData(matches.toArray());
+    }
+
+    private void showPrefsDialog()
+    {
+        OptionPanelBuilder optionPanelBuilder = new OptionPanelBuilder();
+        final ResourceController resourceController = ResourceController.getResourceController();
+        URL preferences = resourceController.getResource("/xml/preferences.xml");
+        optionPanelBuilder.load(preferences);
+        ShowPreferencesAction showPreferencesAction = MModeController.createShowPreferencesAction(optionPanelBuilder);
+        showPreferencesAction.actionPerformed(null);
     }
 
     public static void main(String[] args)

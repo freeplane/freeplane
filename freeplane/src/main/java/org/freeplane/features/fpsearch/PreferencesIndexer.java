@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PreferencesIndexer
+class PreferencesIndexer
 {
     private final ResourceController resourceController = ResourceController.getResourceController();
     private String currentTab;
@@ -28,17 +28,17 @@ public class PreferencesIndexer
 
     private List<PreferencesItem> prefs;
 
-    public PreferencesIndexer()
+    PreferencesIndexer()
     {
         load();
     }
 
-    public List<PreferencesItem> getPrefs()
+    List<PreferencesItem> getPrefs()
     {
         return prefs;
     }
 
-    public void load() {
+    private void load() {
         URL preferences = resourceController.getResource("/xml/preferences.xml");
 
         InputStreamReader reader = null;
