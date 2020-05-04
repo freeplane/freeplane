@@ -53,7 +53,7 @@ class MenuStructureIndexer {
 
     private void loadMenuItems(final String prefix, final List<Entry> menuEntries, boolean toplevel)
     {
-        System.out.format("loadMenuItems(%s, %s, %b)\n", prefix, menuEntries.get(0).getParent().getPath(), toplevel);
+        //System.out.format("loadMenuItems(%s, %s, %b)\n", prefix, menuEntries.get(0).getParent().getPath(), toplevel);
         for (Entry menuEntry: menuEntries)
         {
             if (menuEntry.builders().contains("separator"))
@@ -73,8 +73,9 @@ class MenuStructureIndexer {
             }
             if (menuEntry.isLeaf())
             {
-                System.out.format("menuEntry: %s\n", menuEntry.getPath());
-                System.out.format("menuEntry: %s\n", path);
+                //System.out.format("menuEntry: %s\n", menuEntry.getPath());
+                //System.out.format("menuEntry: %s\n", path);
+                menuItems.add(path);
             }
             else
             {

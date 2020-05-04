@@ -10,17 +10,22 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.LinkedList;
 
+
 // TODO: improve UI!
 // TODO: _optionally_ process localized prefs/menus!
-public class FPSearchDialog extends JDialog implements DocumentListener {
+public class FPSearchDialog extends JDialog implements DocumentListener, ActionListener {
 
+    private JRadioButton searchMenusOption;
+    private JRadioButton searchPrefsOption;
     private final int numberOfTextFieldColumns = 100;
     private JLabel searchLabel;
     private JTextField input;
-    private JList resultList;
+    private PreferencesItemsResultTable resultTable;
     private PreferencesIndexer preferencesIndexer;
     private MenuStructureIndexer menuStructureIndexer;
 
@@ -29,21 +34,35 @@ public class FPSearchDialog extends JDialog implements DocumentListener {
         super(parent,"Freeplane internal search",true);
 
         loadSources();
-        resultList = new JList();
+        resultTable = new PreferencesItemsResultTable();
 
         searchLabel = new JLabel("Search for:");
-        input = new JTextField("hello", numberOfTextFieldColumns);
+        input = new JTextField("", numberOfTextFieldColumns);
         input.setEditable(true);
         input.setEnabled(true);
+
+        JPanel typeChoicePanel = new JPanel();
+        searchMenusOption = new JRadioButton("Search Menus");
+        searchMenusOption.addActionListener(this);
+        searchPrefsOption = new JRadioButton("Search Preferences");
+        searchPrefsOption.addActionListener(this);
+        typeChoicePanel.add(searchMenusOption);
+        typeChoicePanel.add(searchPrefsOption);
+        ButtonGroup typeChoiceButtonGroup = new ButtonGroup();
+        typeChoiceButtonGroup.add(searchMenusOption);
+        typeChoiceButtonGroup.add(searchPrefsOption);
+        searchPrefsOption.setSelected(true);
 
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridLayout(1, 2));
         inputPanel.add(searchLabel);
         inputPanel.add(input);
 
-        getContentPane().setLayout(new GridLayout(2, 1));
+        getContentPane().setLayout(new GridLayout(3, 1));
+        getContentPane().add(typeChoicePanel);
         getContentPane().add(inputPanel);
-        getContentPane().add(resultList);
+        JScrollPane resultTableScrollPane = new JScrollPane(resultTable);
+        getContentPane().add(resultTableScrollPane);
 
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setPreferredSize(new Dimension(800, 600));
@@ -51,7 +70,7 @@ public class FPSearchDialog extends JDialog implements DocumentListener {
 
         input.getDocument().addDocumentListener(this);
 
-        showPrefsDialog();
+        //showPrefsDialog();
         setVisible(true);
     }
 
@@ -71,25 +90,49 @@ public class FPSearchDialog extends JDialog implements DocumentListener {
         updateMatches(input.getText());
     }
 
+    public void actionPerformed(ActionEvent e){
+        updateMatches(input.getText());
+    }
+
     private void updateMatches(final String searchTerm)
     {
         //System.out.format("new text input: '%s'\n", searchTerm);
 
         PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
 
-        java.util.List<String> matches = new LinkedList<>();
-        for (final PreferencesItem prefsItem: preferencesIndexer.getPrefs())
+        if (searchMenusOption.isSelected())
         {
-            //pairwiseAlignment.init(searchTerm, prefsItem.key, true);
-            if (pairwiseAlignment.matches(searchTerm, prefsItem.key, true) ||
-                pairwiseAlignment.matches(searchTerm, prefsItem.text, true))
-            //if (prefsItem.startsWith(searchString))
-            //if (pairwiseAlignment.matchProb() > 0.667)
+            java.util.List<String> matches = new LinkedList<>();
+            for (final String menuPath :menuStructureIndexer.getMenuItems())
             {
-                matches.add(prefsItem.toString());
+                if (pairwiseAlignment.matches(searchTerm, menuPath, true))
+                {
+                    matches.add(menuPath);
+                }
+            }
+            //resultList.setListData(matches.toArray());
+        }
+        else if (searchPrefsOption.isSelected())
+        {
+            resultTable.clear();
+
+            java.util.List<PreferencesItem> matches = new LinkedList<>();
+            for (final PreferencesItem prefsItem: preferencesIndexer.getPrefs())
+                    //Arrays.asList(new PreferencesItem("tab", "sep", "single_instance", "Single Instance Mode"),
+                    //        new PreferencesItem("tab", "sep", "single_instance2", "Single Instance Second")))
+            {
+                //pairwiseAlignment.init(searchTerm, prefsItem.key, true);
+                //if (pairwiseAlignment.matches(searchTerm, prefsItem.key, true) ||
+                //        pairwiseAlignment.matches(searchTerm, prefsItem.text, true))
+                //if (pairwiseAlignment.matchProb() > 0.667)
+                if (prefsItem.key.contains(searchTerm) || prefsItem.text.contains(searchTerm))
+                {
+                    matches.add(prefsItem);
+                    //System.out.format("adding %s to table\n", prefsItem);
+                    resultTable.addPreferencesItem(prefsItem);
+                }
             }
         }
-        resultList.setListData(matches.toArray());
     }
 
     private void showPrefsDialog()
