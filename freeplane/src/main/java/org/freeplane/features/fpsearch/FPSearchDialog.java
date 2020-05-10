@@ -6,11 +6,13 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
+import java.util.Locale;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -31,6 +33,7 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ActionL
     private final int numberOfTextFieldColumns = 100;
     private JLabel searchLabel;
     private JTextField input;
+    private JList resultList;
     private PreferencesItemsResultTable resultTable;
     private PreferencesIndexer preferencesIndexer;
     private MenuStructureIndexer menuStructureIndexer;
@@ -41,6 +44,7 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ActionL
 
         loadSources();
         resultTable = new PreferencesItemsResultTable();
+        resultList = new JList();
 
         searchLabel = new JLabel("Search for:");
         input = new JTextField("", numberOfTextFieldColumns);
@@ -64,11 +68,13 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ActionL
         inputPanel.add(searchLabel);
         inputPanel.add(input);
 
-        getContentPane().setLayout(new GridLayout(3, 1));
+        getContentPane().setLayout(new GridLayout(4, 1));
         getContentPane().add(typeChoicePanel);
         getContentPane().add(inputPanel);
+        JScrollPane resultListScrollPane = new JScrollPane(resultList);
         JScrollPane resultTableScrollPane = new JScrollPane(resultTable);
         getContentPane().add(resultTableScrollPane);
+        getContentPane().add(resultListScrollPane);
 
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setPreferredSize(new Dimension(800, 600));
@@ -103,11 +109,16 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ActionL
     private void updateMatches(final String searchTerm)
     {
         //System.out.format("new text input: '%s'\n", searchTerm);
+        resultTable.clear();
+        resultList.setListData(new String[0]);
 
         PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
 
         if (searchMenusOption.isSelected())
         {
+            resultList.setVisible(true);
+            resultTable.setVisible(false);
+
             java.util.List<String> matches = new LinkedList<>();
             for (final String menuPath :menuStructureIndexer.getMenuItems())
             {
@@ -116,11 +127,12 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ActionL
                     matches.add(menuPath);
                 }
             }
-            //resultList.setListData(matches.toArray());
+            resultList.setListData(matches.toArray());
         }
         else if (searchPrefsOption.isSelected())
         {
-            resultTable.clear();
+            resultList.setVisible(false);
+            resultTable.setVisible(true);
 
             java.util.List<PreferencesItem> matches = new LinkedList<>();
             for (final PreferencesItem prefsItem: preferencesIndexer.getPrefs())
@@ -131,7 +143,7 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ActionL
                 //if (pairwiseAlignment.matches(searchTerm, prefsItem.key, true) ||
                 //        pairwiseAlignment.matches(searchTerm, prefsItem.text, true))
                 //if (pairwiseAlignment.matchProb() > 0.667)
-                if (prefsItem.key.contains(searchTerm) || prefsItem.text.contains(searchTerm))
+                if (prefsItem.key.contains(searchTerm.toLowerCase(Locale.ENGLISH)) || prefsItem.text.contains(searchTerm.toLowerCase(Locale.ENGLISH)))
                 {
                     matches.add(prefsItem);
                     //System.out.format("adding %s to table\n", prefsItem);
