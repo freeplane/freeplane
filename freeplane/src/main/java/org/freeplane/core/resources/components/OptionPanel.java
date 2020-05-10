@@ -18,6 +18,7 @@
 package org.freeplane.core.resources.components;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.dnd.DropTarget;
@@ -47,6 +48,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -63,6 +65,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.fpsearch.PreferencesItem;
 import org.freeplane.features.mode.Controller;
 
 import com.jgoodies.forms.builder.ButtonBarBuilder;
@@ -225,6 +228,34 @@ public class OptionPanel {
 		buttonPanel.setAlignmentX(JComponent.RIGHT_ALIGNMENT);
 		MnemonicSetter.INSTANCE.setComponentMnemonics(buttonPanel);
 		topDialog.getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+
+	}
+
+	public void highlight(PreferencesItem preferencesItem)
+	{
+		for (IPropertyControl control: this.controls)
+		{
+			if (control instanceof PropertyAdapter)
+			{
+				final PropertyAdapter property = (PropertyAdapter) control;
+				if (property.getName().equals(preferencesItem.key)) {
+					property.getLabelComponent().setForeground(Color.RED);
+					final JViewport viewPort = (JViewport) property.getLabelComponent().getParent().getParent();
+					//viewPort.scrollRectToVisible(property.getLabelComponent().getBounds());
+					new Thread() {
+						public void run() {
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException ie) {
+							    // nothing to do
+							}
+							viewPort.scrollRectToVisible(property.getLabelComponent().getBounds());
+						}
+					}.start();
+
+				}
+			}
+		}
 	}
 
 	private void saveOptionsToFile() {

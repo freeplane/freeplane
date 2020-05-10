@@ -42,6 +42,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.fpsearch.PreferencesItem;
 
 /**
  * @author foltin
@@ -52,14 +53,17 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final DefaultMutableTreeNode controls;
+	private PreferencesItem preferencesItem;
 
 	/**
 	 * @param controls
 	 *
 	 */
-	public ShowPreferencesAction( final DefaultMutableTreeNode controls) {
+	public ShowPreferencesAction( final DefaultMutableTreeNode controls, PreferencesItem preferencesItem) {
 		super("ShowPreferencesAction");
+
 		this.controls = controls;
+		this.preferencesItem = preferencesItem;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -93,6 +97,8 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 				}
 			}
 		});
+
+
 		final String marshalled = ResourceController.getResourceController().getProperty(
 		    OptionPanel.PREFERENCE_STORAGE_PROPERTY);
 		final OptionPanelWindowConfigurationStorage storage = OptionPanelWindowConfigurationStorage.decorateDialog(
@@ -105,6 +111,7 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 		}
 		options.buildPanel(controls);
 		options.setProperties();
+
 		final String title = TextUtils.getText("ShowPreferencesAction.dialog");
 		dialog.setTitle(title);
 		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -128,6 +135,12 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 		if (storage == null) {
 			UITools.setBounds(dialog, -1, -1, dialog.getPreferredSize().width + 50, -1);
 		}
+
+		if (this.preferencesItem != null)
+		{
+			options.highlight(this.preferencesItem);
+		}
+
 		dialog.setVisible(true);
 	}
 

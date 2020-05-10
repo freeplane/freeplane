@@ -1,19 +1,25 @@
 package org.freeplane.features.fpsearch;
 
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.components.OptionPanelBuilder;
-import org.freeplane.core.resources.components.ShowPreferencesAction;
-import org.freeplane.features.filter.PseudoDamerauLevenshtein;
-import org.freeplane.features.mode.mindmapmode.MModeController;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 import java.util.LinkedList;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import org.freeplane.features.filter.PseudoDamerauLevenshtein;
 
 
 // TODO: improve UI!
@@ -133,16 +139,6 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ActionL
                 }
             }
         }
-    }
-
-    private void showPrefsDialog()
-    {
-        OptionPanelBuilder optionPanelBuilder = new OptionPanelBuilder();
-        final ResourceController resourceController = ResourceController.getResourceController();
-        URL preferences = resourceController.getResource("/xml/preferences.xml");
-        optionPanelBuilder.load(preferences);
-        ShowPreferencesAction showPreferencesAction = MModeController.createShowPreferencesAction(optionPanelBuilder);
-        showPreferencesAction.actionPerformed(null);
     }
 
     public static void main(String[] args)

@@ -1,14 +1,28 @@
 package org.freeplane.features.fpsearch;
 
-import javax.swing.*;
-import javax.swing.event.CellEditorListener;
-import javax.swing.table.*;
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.EventObject;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.event.CellEditorListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.OptionPanel;
+import org.freeplane.core.resources.components.OptionPanelBuilder;
+import org.freeplane.core.resources.components.ShowPreferencesAction;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 
 class ShowPreferenceItemAction extends AbstractAction {
     private PreferencesItem preferencesItem;
@@ -20,7 +34,21 @@ class ShowPreferenceItemAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent actionEvent) {
         System.out.format("Showing preferences item: %s\n", preferencesItem);
+        showPrefsDialog();
     }
+
+    private void showPrefsDialog()
+    {
+        OptionPanelBuilder optionPanelBuilder = new OptionPanelBuilder();
+        final ResourceController resourceController = ResourceController.getResourceController();
+        URL preferences = resourceController.getResource("/xml/preferences.xml");
+        optionPanelBuilder.load(preferences);
+        ShowPreferencesAction showPreferencesAction = MModeController.createShowPreferencesAction(optionPanelBuilder, this.preferencesItem);
+        int uniqueId = new Long(System.currentTimeMillis()).intValue();
+        showPreferencesAction.actionPerformed(
+                new ActionEvent(this, uniqueId, OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + preferencesItem.tab));
+    }
+
 }
 
 public class PreferencesItemsResultTable extends JTable implements TableCellEditor, TableCellRenderer {
@@ -62,8 +90,11 @@ public class PreferencesItemsResultTable extends JTable implements TableCellEdit
                 int column = columnAtPoint(e.getPoint());
                 if (column == 2)
                 {
-                    JButton button = buttons.get(row);
-                    button.doClick();
+                    //JButton button = buttons.get(row);
+                    //button.doClick();
+                    PreferencesItem preferencesItem = (PreferencesItem)getModel().getValueAt(row, column);
+                    assert(preferencesItem != null);
+                    new ShowPreferenceItemAction(preferencesItem).actionPerformed(null);
                 }
             }
 
@@ -116,7 +147,9 @@ public class PreferencesItemsResultTable extends JTable implements TableCellEdit
             allocateButton(row);
             if (buttons.get(row) == null)
             {
-                buttons.set(row, new JButton(new ShowPreferenceItemAction((PreferencesItem)value)));
+                PreferencesItem preferencesItem = (PreferencesItem) value;
+                assert(preferencesItem != null);
+                buttons.set(row, new JButton(new ShowPreferenceItemAction(preferencesItem)));
             }
             return buttons.get(row);
         }
@@ -133,7 +166,9 @@ public class PreferencesItemsResultTable extends JTable implements TableCellEdit
             allocateButton(row);
             if (buttons.get(row) == null)
             {
-                JButton button = new JButton(new ShowPreferenceItemAction((PreferencesItem) value));
+                PreferencesItem preferencesItem = (PreferencesItem) value;
+                assert(preferencesItem != null);
+                JButton button = new JButton(new ShowPreferenceItemAction(preferencesItem));
                 buttons.set(row, button);
             }
             return buttons.get(row);
