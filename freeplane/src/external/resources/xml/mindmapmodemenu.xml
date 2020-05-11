@@ -591,7 +591,7 @@
             <Entry name="menu_remove">
     		    <Entry name="DeleteDetailsAction" />
                 <Entry name="RemoveNoteAction" />
-                <Entry name="RemoveAllAttributesAction" />
+                <Entry name="attributes_RemoveAllAttributesAction" />
             </Entry>
         </Entry>
 		<Entry name="SetShortenerStateAction" />
