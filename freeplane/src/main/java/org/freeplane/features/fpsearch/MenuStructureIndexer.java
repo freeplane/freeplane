@@ -1,12 +1,12 @@
 package org.freeplane.features.fpsearch;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-
-import java.util.LinkedList;
-import java.util.List;
 
 class MenuStructureIndexer {
     private List<String> menuItems;
@@ -25,12 +25,12 @@ class MenuStructureIndexer {
     {
         menuItems = new LinkedList<>();
         ModeController modeController = Controller.getCurrentModeController();
-        loadMenuItems("Menu", modeController.getUserInputListenerFactory()
-                .getGenericMenuStructure().getRoot().getChild("main_menu").children(), true);
-        loadMenuItems("Toolbar", modeController.getUserInputListenerFactory()
-                .getGenericMenuStructure().getRoot().getChild("main_toolbar").children(), true);
-        loadMenuItems("Popup", modeController.getUserInputListenerFactory()
-                .getGenericMenuStructure().getRoot().getChild("node_popup").children(), true);
+        final Entry root = modeController.getUserInputListenerFactory()
+                .getGenericMenuStructure().getRoot();
+        loadMenuItems("Menu", root.getChild("main_menu").children(), true);
+        loadMenuItems("Toolbar", root.getChild("main_toolbar").children(), true);
+        loadMenuItems("Map Popup", root.getChild("map_popup").children(), true);
+        loadMenuItems("Node Popup", root.getChild("node_popup").children(), true);
     }
 
     private String translateMenuItemComponent(final Entry entry) {
@@ -60,17 +60,34 @@ class MenuStructureIndexer {
             {
                 continue;
             }
-
-            String component = translateMenuItemComponent(menuEntry);
-            final String path;
-            if (toplevel)
+            Object usedBy = menuEntry.getAttribute("usedBy");
+            if (usedBy != null && !usedBy.equals("EDITOR"))
             {
-                path = prefix + ": "  + component;
+                continue;
+            }
+
+            boolean childrenAreToplevel;
+            final String path;
+            if (menuEntry.getName().equals(""))
+            {
+                // a meta data entry like <Entry usedBy = "EDITOR" > does not contribute to the path!
+                path = prefix;
+                childrenAreToplevel = toplevel;
             }
             else
             {
-                path = prefix + "->" + component;
+                String component = translateMenuItemComponent(menuEntry);
+                if (toplevel)
+                {
+                    path = prefix + ": "  + component;
+                }
+                else
+                {
+                    path = prefix + "->" + component;
+                }
+                childrenAreToplevel = false;
             }
+
             if (menuEntry.isLeaf())
             {
                 //System.out.format("menuEntry: %s\n", menuEntry.getPath());
@@ -79,7 +96,7 @@ class MenuStructureIndexer {
             }
             else
             {
-                loadMenuItems(path, menuEntry.children(), false);
+                loadMenuItems(path, menuEntry.children(), childrenAreToplevel);
             }
         }
     }
