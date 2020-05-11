@@ -42,7 +42,7 @@ public interface Connector extends ConnectorRO {
 	void setDashArray(int[] dashArray);
 	
 	/**
-	 * 0 <= opacity <= 255
+	 * 0 &lt;= opacity &lt;= 255
 	 * 
 	 * Since 1.7.10
 	 */
