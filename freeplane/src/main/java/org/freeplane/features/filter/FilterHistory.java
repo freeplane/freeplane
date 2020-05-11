@@ -68,7 +68,7 @@ public class FilterHistory {
 	}
 
 	private boolean isConditionStronger(final Filter oldFilter, final Filter newFilter) {
-		return newFilter.isConditionStronger(oldFilter);
+		return newFilter.canUseFilterResultsFrom(oldFilter);
 	}
 
 	void redo() {

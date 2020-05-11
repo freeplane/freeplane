@@ -60,7 +60,7 @@ public class Filter implements IExtension {
 	final private ICondition condition;
 	final int options;
 
-	final private FilterInfoAccessor accessor;
+	private FilterInfoAccessor accessor;
     final private boolean hidesMatchingNodes;
 
 	public Filter(final ICondition condition, final boolean hidesMatchingNodes, final boolean areAncestorsShown,
@@ -193,7 +193,7 @@ public class Filter implements IExtension {
 		return condition;
 	}
 
-	public boolean isConditionStronger(final Filter oldFilter) {
+	public boolean canUseFilterResultsFrom(final Filter oldFilter) {
 		return (!appliesToVisibleNodesOnly || appliesToVisibleNodesOnly == oldFilter.appliesToVisibleNodesOnly)
 		        && (condition != null && condition.equals(oldFilter.getCondition()) || condition == null
 		                && oldFilter.getCondition() == null);
@@ -222,5 +222,9 @@ public class Filter implements IExtension {
 	public FilterInfo getFilterInfo(final NodeModel node) {
 		return accessor.getFilterInfo(node);
 	}
+
+    public void useFilterResultsFrom(Filter anotherFilter) {
+        accessor = anotherFilter.accessor;
+    }
 
 }

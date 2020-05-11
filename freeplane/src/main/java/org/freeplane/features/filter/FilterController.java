@@ -399,7 +399,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
             applyFilter(force, filter);
         else {
             Filter oldFilter = map.putExtension(Filter.class, filter);
-            if (oldFilter == null || force || !filter.isConditionStronger(oldFilter)) {
+            if (oldFilter == null || force || !filter.canUseFilterResultsFrom(oldFilter)) {
                 filter.calculateFilterResults(map);
             }
         }
@@ -414,9 +414,12 @@ public class FilterController implements IExtension, IMapViewChangeListener {
             	final Filter oldFilter = selection.getFilter();
             	selection.setFilter(filter);
             	MapModel map = selection.getSelected().getMap();
-                if (force || !filter.isConditionStronger(oldFilter)) {
+                if (force || !filter.canUseFilterResultsFrom(oldFilter)) {
             		filter.calculateFilterResults(map);
             	}
+                else {
+                    filter.useFilterResultsFrom(oldFilter);
+                }
                 final NodeModel selected = selection.getSelected();
             	final NodeModel selectedVisible = selected.getVisibleAncestorOrSelf(filter);
             	selection.keepNodePosition(selectedVisible, 0.5f, 0.5f);
