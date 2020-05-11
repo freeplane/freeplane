@@ -484,8 +484,15 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		else {
 			filterCondition = selectedCondition;
 		}
-		final Filter filter = new Filter(filterCondition, hideMatchingNodes.isSelected(), showAncestors.isSelected(), showDescendants
-		    .isSelected(), applyToVisibleNodeOnly.isSelected());
+		final Filter baseFilter;
+		if (applyToVisibleNodeOnly.isSelected()) {
+		    baseFilter = Controller.getCurrentController().getSelection().getFilter();
+		}
+		else {
+		    baseFilter = null;
+		}
+        final Filter filter = new Filter(filterCondition, hideMatchingNodes.isSelected(), showAncestors.isSelected(), showDescendants
+		    .isSelected(), baseFilter);
 		return filter;
 	}
 
