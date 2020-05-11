@@ -40,7 +40,7 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ActionL
 
     FPSearchDialog(Frame parent)
     {
-        super(parent,"Freeplane internal search",true);
+        super(parent,"Freeplane internal search",false);
 
         loadSources();
         resultTable = new PreferencesItemsResultTable();
@@ -160,7 +160,6 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ActionL
             parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             parent.setPreferredSize(new Dimension(800, 600));
             parent.pack();
-            parent.setVisible(true);
 
             FPSearchDialog fpSearchDialog = new FPSearchDialog(parent);
         });
