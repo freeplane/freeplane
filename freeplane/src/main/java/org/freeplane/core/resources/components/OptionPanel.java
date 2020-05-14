@@ -21,6 +21,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Rectangle;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -238,21 +239,14 @@ public class OptionPanel {
 			if (control instanceof PropertyAdapter)
 			{
 				final PropertyAdapter property = (PropertyAdapter) control;
-				if (property.getName().equals(preferencesItem.key)) {
-					property.getLabelComponent().setForeground(Color.RED);
+				if (property.getName().equals(preferencesItem.key))
+				{
+					property.getLabelComponent().setForeground(Color.BLUE);
 					final JViewport viewPort = (JViewport) property.getLabelComponent().getParent().getParent();
-					//viewPort.scrollRectToVisible(property.getLabelComponent().getBounds());
-					new Thread() {
-						public void run() {
-							try {
-								Thread.sleep(1000);
-							} catch (InterruptedException ie) {
-							    // nothing to do
-							}
-							viewPort.scrollRectToVisible(property.getLabelComponent().getBounds());
-						}
-					}.start();
-
+					Rectangle bounds = property.getLabelComponent().getBounds();
+					// make sure the whole label is visible!
+					bounds.setBounds(bounds.getLocation().x, bounds.getLocation().y, bounds.getSize().width, bounds.getSize().height * 3);
+					viewPort.scrollRectToVisible(bounds);
 				}
 			}
 		}

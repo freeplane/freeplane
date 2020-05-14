@@ -24,6 +24,9 @@ import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Properties;
@@ -138,7 +141,12 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 
 		if (this.preferencesItem != null)
 		{
-			options.highlight(this.preferencesItem);
+			ComponentListener visibilityListener = new ComponentAdapter() {
+				public void componentShown(ComponentEvent evt) {
+					options.highlight(ShowPreferencesAction.this.preferencesItem);
+				}
+			};
+			dialog.addComponentListener(visibilityListener);
 		}
 
 		dialog.setVisible(true);
