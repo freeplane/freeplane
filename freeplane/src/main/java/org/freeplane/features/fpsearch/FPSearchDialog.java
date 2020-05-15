@@ -1,88 +1,62 @@
 package org.freeplane.features.fpsearch;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.LinkedList;
 import java.util.Locale;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.freeplane.features.filter.PseudoDamerauLevenshtein;
 
-
-// TODO: improve UI!
-// TODO: _optionally_ process localized prefs/menus!
-public class FPSearchDialog extends JDialog implements DocumentListener, ActionListener {
-
-    private JRadioButton searchMenusOption;
-    private JRadioButton searchPrefsOption;
-    private final int numberOfTextFieldColumns = 100;
-    private JLabel searchLabel;
+public class FPSearchDialog extends JDialog implements DocumentListener, ListCellRenderer<Object>, MouseListener {
     private JTextField input;
-    private JList resultList;
-    private PreferencesItemsResultTable resultTable;
+    private JList<Object> resultList;
+
     private PreferencesIndexer preferencesIndexer;
     private MenuStructureIndexer menuStructureIndexer;
 
     FPSearchDialog(Frame parent)
     {
-        super(parent,"Freeplane internal search",false);
+        super(parent,"Action search",false);
 
         loadSources();
-        resultTable = new PreferencesItemsResultTable();
-        resultList = new JList();
 
-        searchLabel = new JLabel("Search for:");
-        input = new JTextField("", numberOfTextFieldColumns);
-        input.setEditable(true);
-        input.setEnabled(true);
-
-        JPanel typeChoicePanel = new JPanel();
-        searchMenusOption = new JRadioButton("Search Menus");
-        searchMenusOption.addActionListener(this);
-        searchPrefsOption = new JRadioButton("Search Preferences");
-        searchPrefsOption.addActionListener(this);
-        typeChoicePanel.add(searchMenusOption);
-        typeChoicePanel.add(searchPrefsOption);
-        ButtonGroup typeChoiceButtonGroup = new ButtonGroup();
-        typeChoiceButtonGroup.add(searchMenusOption);
-        typeChoiceButtonGroup.add(searchPrefsOption);
-        searchPrefsOption.setSelected(true);
-
-        JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridLayout(1, 2));
-        inputPanel.add(searchLabel);
-        inputPanel.add(input);
-
-        getContentPane().setLayout(new GridLayout(4, 1));
-        getContentPane().add(typeChoicePanel);
-        getContentPane().add(inputPanel);
+        input = new JTextField("");
+        resultList = new JList<>();
+        resultList.setCellRenderer(this);
+        resultList.addMouseListener(this);
         JScrollPane resultListScrollPane = new JScrollPane(resultList);
-        JScrollPane resultTableScrollPane = new JScrollPane(resultTable);
-        getContentPane().add(resultTableScrollPane);
-        getContentPane().add(resultListScrollPane);
+        getContentPane().setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 1;
+        c.gridheight = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        getContentPane().add(input, c);
+        c.gridy = 1;
+        getContentPane().add(resultListScrollPane, c);
 
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setPreferredSize(new Dimension(800, 600));
         pack();
 
         input.getDocument().addDocumentListener(this);
 
-        //showPrefsDialog();
         setVisible(true);
     }
 
@@ -102,55 +76,33 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ActionL
         updateMatches(input.getText());
     }
 
-    public void actionPerformed(ActionEvent e){
-        updateMatches(input.getText());
-    }
-
     private void updateMatches(final String searchTerm)
     {
-        //System.out.format("new text input: '%s'\n", searchTerm);
-        resultTable.clear();
-        resultList.setListData(new String[0]);
+        resultList.setListData(new Object[0]);
 
-        PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
+        //PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
+        java.util.List<Object> matches = new LinkedList<>();
 
-        if (searchMenusOption.isSelected())
+        for (final MenuItem menuItem :menuStructureIndexer.getMenuItems())
         {
-            resultList.setVisible(true);
-            resultTable.setVisible(false);
-
-            java.util.List<String> matches = new LinkedList<>();
-            for (final String menuPath :menuStructureIndexer.getMenuItems())
+            if (menuItem.action == null || !menuItem.action.isEnabled())
             {
-                if (pairwiseAlignment.matches(searchTerm, menuPath, true))
-                {
-                    matches.add(menuPath);
-                }
+                continue;
             }
-            resultList.setListData(matches.toArray());
-        }
-        else if (searchPrefsOption.isSelected())
-        {
-            resultList.setVisible(false);
-            resultTable.setVisible(true);
-
-            java.util.List<PreferencesItem> matches = new LinkedList<>();
-            for (final PreferencesItem prefsItem: preferencesIndexer.getPrefs())
-                    //Arrays.asList(new PreferencesItem("tab", "sep", "single_instance", "Single Instance Mode"),
-                    //        new PreferencesItem("tab", "sep", "single_instance2", "Single Instance Second")))
+            if (menuItem.path.toLowerCase(Locale.ENGLISH).contains(searchTerm.toLowerCase(Locale.ENGLISH)))
             {
-                //pairwiseAlignment.init(searchTerm, prefsItem.key, true);
-                //if (pairwiseAlignment.matches(searchTerm, prefsItem.key, true) ||
-                //        pairwiseAlignment.matches(searchTerm, prefsItem.text, true))
-                //if (pairwiseAlignment.matchProb() > 0.667)
-                if (prefsItem.key.contains(searchTerm.toLowerCase(Locale.ENGLISH)) || prefsItem.text.contains(searchTerm.toLowerCase(Locale.ENGLISH)))
-                {
-                    matches.add(prefsItem);
-                    //System.out.format("adding %s to table\n", prefsItem);
-                    resultTable.addPreferencesItem(prefsItem);
-                }
+                matches.add(menuItem);
             }
         }
+        for (final PreferencesItem prefsItem: preferencesIndexer.getPrefs())
+        {
+            if (prefsItem.key.contains(searchTerm.toLowerCase(Locale.ENGLISH)) ||
+                prefsItem.text.toLowerCase(Locale.ENGLISH).contains(searchTerm.toLowerCase(Locale.ENGLISH)))
+            {
+                matches.add(prefsItem);
+            }
+        }
+        resultList.setListData(matches.toArray());
     }
 
     public static void main(String[] args)
@@ -163,5 +115,62 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ActionL
 
             FPSearchDialog fpSearchDialog = new FPSearchDialog(parent);
         });
+    }
+
+    @Override
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        JLabel label;
+        if (value instanceof PreferencesItem)
+        {
+            label = new JLabel(((PreferencesItem)value).text);
+            label.setForeground(Color.GRAY);
+        }
+        else
+        {
+            label = new JLabel(((MenuItem)value).path);
+            label.setForeground(Color.BLACK);
+        }
+        if (isSelected)
+        {
+            label.setForeground(Color.BLUE);
+        }
+        return label;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getClickCount() == 2)
+        {
+            int index = resultList.locationToIndex(e.getPoint());
+            Object value = resultList.getModel().getElementAt(index);
+            if (value instanceof PreferencesItem)
+            {
+                new ShowPreferenceItemAction((PreferencesItem)value).actionPerformed(null);
+            }
+            else
+            {
+                ((MenuItem)value).action.actionPerformed(null);
+            }
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

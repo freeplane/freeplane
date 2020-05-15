@@ -9,14 +9,14 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 class MenuStructureIndexer {
-    private List<String> menuItems;
+    private List<MenuItem> menuItems;
 
     MenuStructureIndexer()
     {
         load();
     }
 
-    List<String> getMenuItems()
+    List<MenuItem> getMenuItems()
     {
         return menuItems;
     }
@@ -27,10 +27,10 @@ class MenuStructureIndexer {
         ModeController modeController = Controller.getCurrentModeController();
         final Entry root = modeController.getUserInputListenerFactory()
                 .getGenericMenuStructure().getRoot();
-        loadMenuItems("Menu", root.getChild("main_menu").children(), true);
-        loadMenuItems("Toolbar", root.getChild("main_toolbar").children(), true);
-        loadMenuItems("Map Popup", root.getChild("map_popup").children(), true);
-        loadMenuItems("Node Popup", root.getChild("node_popup").children(), true);
+        loadMenuItems("Menu", root.getChild("main_menu").children(), true, false);
+        //loadMenuItems("Toolbar", root.getChild("main_toolbar").children(), true, false);
+        //loadMenuItems("Map Popup", root.getChild("map_popup").children(), true, false);
+        //loadMenuItems("Node Popup", root.getChild("node_popup").children(), true, false);
     }
 
     private String translateMenuItemComponent(final Entry entry) {
@@ -51,7 +51,7 @@ class MenuStructureIndexer {
         }
     }
 
-    private void loadMenuItems(final String prefix, final List<Entry> menuEntries, boolean toplevel)
+    private void loadMenuItems(final String prefix, final List<Entry> menuEntries, boolean toplevel, boolean toplevelPrefix)
     {
         //System.out.format("loadMenuItems(%s, %s, %b)\n", prefix, menuEntries.get(0).getParent().getPath(), toplevel);
         for (Entry menuEntry: menuEntries)
@@ -79,7 +79,13 @@ class MenuStructureIndexer {
                 String component = translateMenuItemComponent(menuEntry);
                 if (toplevel)
                 {
-                    path = prefix + ": "  + component;
+                    if (toplevelPrefix) {
+                        path = prefix + ": " + component;
+                    }
+                    else
+                    {
+                        path = component;
+                    }
                 }
                 else
                 {
@@ -92,11 +98,11 @@ class MenuStructureIndexer {
             {
                 //System.out.format("menuEntry: %s\n", menuEntry.getPath());
                 //System.out.format("menuEntry: %s\n", path);
-                menuItems.add(path);
+                menuItems.add(new MenuItem(path, menuEntry.getAction()));
             }
             else
             {
-                loadMenuItems(path, menuEntry.children(), childrenAreToplevel);
+                loadMenuItems(path, menuEntry.children(), childrenAreToplevel, toplevelPrefix);
             }
         }
     }
