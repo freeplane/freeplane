@@ -8,7 +8,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 import javax.swing.JDialog;
@@ -33,6 +34,8 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
     FPSearchDialog(Frame parent)
     {
         super(parent,"Action search",false);
+
+        setLocationRelativeTo(parent);
 
         loadSources();
 
@@ -81,7 +84,7 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
         resultList.setListData(new Object[0]);
 
         //PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
-        java.util.List<Object> matches = new LinkedList<>();
+        java.util.List<Object> matches = new ArrayList<Object>();
 
         for (final MenuItem menuItem :menuStructureIndexer.getMenuItems())
         {
@@ -102,6 +105,11 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
                 matches.add(prefsItem);
             }
         }
+        Collections.sort(matches, (Object o1, Object o2) -> {
+            final String s1 = (o1 instanceof MenuItem) ? ((MenuItem)o1).path : ((PreferencesItem)o1).text;
+            final String s2 = (o2 instanceof MenuItem) ? ((MenuItem)o2).path : ((PreferencesItem)o2).text;
+            return s1.compareTo(s2);
+        });
         resultList.setListData(matches.toArray());
     }
 
@@ -132,7 +140,8 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
         }
         if (isSelected)
         {
-            label.setForeground(Color.BLUE);
+            label.setOpaque(true);
+            label.setBackground(Color.BLUE);
         }
         return label;
     }
@@ -150,6 +159,9 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
             else
             {
                 ((MenuItem)value).action.actionPerformed(null);
+                // the list of enabled action might have changed:
+                updateMatches(input.getText());
+                resultList.revalidate();
             }
         }
     }

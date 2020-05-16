@@ -1,11 +1,9 @@
 package org.freeplane.features.fpsearch;
 
-import java.awt.Component;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.mode.Controller;
+import org.freeplane.core.ui.components.UITools;
 
 public class FPSearchAction extends AFreeplaneAction {
     static final String KEY = "FPSearchAction";
@@ -18,7 +16,6 @@ public class FPSearchAction extends AFreeplaneAction {
     @Override
     public void actionPerformed(final ActionEvent e)
     {
-        Component root = Controller.getCurrentController().getViewController().getCurrentRootComponent();
-        FPSearchDialog fpSearchDialog = new FPSearchDialog((Frame) root);
+        FPSearchDialog fpSearchDialog = new FPSearchDialog(UITools.getCurrentFrame());
     }
 }
