@@ -39,7 +39,6 @@
           <Entry name="FindNextAction" />
           <Entry name="FindPreviousAction" />
           <Entry name="NodeListAction" />
-	      <Entry name="FPSearchAction" />
         </Entry>
         <Entry name="newNode" usedBy = "EDITOR" >
           <Entry builder="separator" />
@@ -340,6 +339,7 @@
                 <Entry name="SetBooleanPropertyAction.simplyhtml.note.show_menu" />
                 <Entry name="SetBooleanPropertyAction.simplyhtml.note.show_toolbars" />
 			</Entry>
+			<Entry name="FPSearchAction" accelerator="control shift A"/>
 		</Entry>
 		<Entry name="format" >
 			<Entry usedBy = "EDITOR" >
@@ -446,7 +446,7 @@
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="SelectAllAction" accelerator="control A" />
-			<Entry name="SelectBranchAction" accelerator="control shift A" />
+			<Entry name="SelectBranchAction"/> <!--accelerator="control shift A" -->
 			<Entry builder="separator" />
 			<Entry name="MoveToRootAction" accelerator="ESCAPE" />
 			<Entry name="GotoNodeAction" />

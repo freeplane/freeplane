@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -19,12 +21,13 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 
-public class FPSearchDialog extends JDialog implements DocumentListener, ListCellRenderer<Object>, MouseListener {
+public class FPSearchDialog extends JDialog implements DocumentListener, ListCellRenderer<Object>, MouseListener, KeyListener {
     private JTextField input;
     private JList<Object> resultList;
 
@@ -40,9 +43,11 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
         loadSources();
 
         input = new JTextField("");
+        input.addKeyListener(this);
         resultList = new JList<>();
         resultList.setCellRenderer(this);
         resultList.addMouseListener(this);
+        resultList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane resultListScrollPane = new JScrollPane(resultList);
         getContentPane().setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -146,23 +151,28 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
         return label;
     }
 
+    private void executeItem(int index)
+    {
+        Object value = resultList.getModel().getElementAt(index);
+        if (value instanceof PreferencesItem)
+        {
+            new ShowPreferenceItemAction((PreferencesItem)value).actionPerformed(null);
+        }
+        else
+        {
+            ((MenuItem)value).action.actionPerformed(null);
+            // the list of enabled action might have changed:
+            updateMatches(input.getText());
+            resultList.revalidate();
+        }
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2)
         {
             int index = resultList.locationToIndex(e.getPoint());
-            Object value = resultList.getModel().getElementAt(index);
-            if (value instanceof PreferencesItem)
-            {
-                new ShowPreferenceItemAction((PreferencesItem)value).actionPerformed(null);
-            }
-            else
-            {
-                ((MenuItem)value).action.actionPerformed(null);
-                // the list of enabled action might have changed:
-                updateMatches(input.getText());
-                resultList.revalidate();
-            }
+            executeItem(index);
         }
     }
 
@@ -183,6 +193,65 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
 
     @Override
     public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+        final boolean wrapAround = false;
+
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+        {
+            dispose();
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+        {
+            if (resultList.getModel().getSize() > 0) {
+                int selectedIndex = resultList.getSelectedIndex();
+                int newIndex = selectedIndex + 1;
+                if (newIndex >= resultList.getModel().getSize())
+                {
+                    newIndex = wrapAround ? (0) : (resultList.getModel().getSize() - 1);
+                }
+                resultList.setSelectedIndex(newIndex);
+                resultList.ensureIndexIsVisible(newIndex);
+            }
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_UP)
+        {
+            if (resultList.getModel().getSize() > 0) {
+                int selectedIndex = resultList.getSelectedIndex();
+                if (selectedIndex == -1)
+                {
+                    resultList.setSelectedIndex(0);
+                }
+                else if (selectedIndex == 0 && wrapAround)
+                {
+                    resultList.setSelectedIndex(resultList.getModel().getSize() - 1);
+                }
+                else
+                {
+                    resultList.setSelectedIndex(selectedIndex - 1);
+                }
+                resultList.ensureIndexIsVisible(resultList.getSelectedIndex());
+            }
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            if (resultList.getSelectedIndex() >= 0)
+            {
+                executeItem(resultList.getSelectedIndex());
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
 
     }
 }
