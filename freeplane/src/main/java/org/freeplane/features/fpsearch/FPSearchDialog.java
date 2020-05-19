@@ -1,6 +1,5 @@
 package org.freeplane.features.fpsearch;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -14,9 +13,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -36,7 +35,7 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
 
     FPSearchDialog(Frame parent)
     {
-        super(parent,"Action search",false);
+        super(parent,"Command search",false);
 
         setLocationRelativeTo(parent);
 
@@ -48,6 +47,7 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
         resultList.setCellRenderer(this);
         resultList.addMouseListener(this);
         resultList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        resultList.addKeyListener(this);
         JScrollPane resultListScrollPane = new JScrollPane(resultList);
         getContentPane().setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -132,23 +132,17 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
 
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        JLabel label;
+        String text;
         if (value instanceof PreferencesItem)
         {
-            label = new JLabel(((PreferencesItem)value).text);
-            label.setForeground(Color.GRAY);
+            text = "Pref: " + ((PreferencesItem)value).text;
         }
         else
         {
-            label = new JLabel(((MenuItem)value).path);
-            label.setForeground(Color.BLACK);
+            MenuItem menuItem = (MenuItem) value;
+            text = menuItem.path;
         }
-        if (isSelected)
-        {
-            label.setOpaque(true);
-            label.setBackground(Color.BLUE);
-        }
-        return label;
+        return new DefaultListCellRenderer().getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
     }
 
     private void executeItem(int index)
@@ -161,9 +155,18 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
         else
         {
             ((MenuItem)value).action.actionPerformed(null);
-            // the list of enabled action might have changed:
-            updateMatches(input.getText());
-            resultList.revalidate();
+            // the list of enabled actions might have changed:
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try { Thread.sleep(200); }
+                    catch(InterruptedException e) {
+                    }
+                    updateMatches(input.getText());
+                    resultList.revalidate();
+                    resultList.repaint();
+                }
+            }).start();
         }
     }
 
