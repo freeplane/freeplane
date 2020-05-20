@@ -203,6 +203,10 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
 
     @Override
     public void keyTyped(KeyEvent e) {
+        if (e.getSource() == resultList)
+        {
+            input.setText(input.getText() + e.getKeyChar());
+        }
     }
 
     @Override
