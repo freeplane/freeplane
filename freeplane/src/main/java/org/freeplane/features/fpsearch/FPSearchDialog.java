@@ -163,6 +163,8 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
                     catch(InterruptedException e) {
                     }
                     updateMatches(input.getText());
+                    //if (resultList.getModel().getSize() > 0)
+                    //    resultList.setSelectedIndex(0);
                     resultList.revalidate();
                     resultList.repaint();
                 }
@@ -206,13 +208,18 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
     @Override
     public void keyPressed(KeyEvent e) {
 
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
         final boolean wrapAround = false;
 
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
         {
             dispose();
         }
-        else if (e.getKeyCode() == KeyEvent.VK_DOWN)
+        else if (e.getKeyCode() == KeyEvent.VK_DOWN && e.getSource() == input)
         {
             if (resultList.getModel().getSize() > 0) {
                 int selectedIndex = resultList.getSelectedIndex();
@@ -225,7 +232,7 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
                 resultList.ensureIndexIsVisible(newIndex);
             }
         }
-        else if (e.getKeyCode() == KeyEvent.VK_UP)
+        else if (e.getKeyCode() == KeyEvent.VK_UP && e.getSource() == input)
         {
             if (resultList.getModel().getSize() > 0) {
                 int selectedIndex = resultList.getSelectedIndex();
@@ -251,10 +258,5 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
                 executeItem(resultList.getSelectedIndex());
             }
         }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
     }
 }
