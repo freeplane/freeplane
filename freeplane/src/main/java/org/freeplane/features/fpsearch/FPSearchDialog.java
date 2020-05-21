@@ -14,8 +14,11 @@ import java.util.Collections;
 import java.util.Locale;
 
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -25,10 +28,15 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.ShowPreferencesAction;
+import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
+
 
 public class FPSearchDialog extends JDialog implements DocumentListener, ListCellRenderer<Object>, MouseListener, KeyListener {
     private JTextField input;
     private JList<Object> resultList;
+    private ImageIcon prefsIcon;
 
     private PreferencesIndexer preferencesIndexer;
     private MenuStructureIndexer menuStructureIndexer;
@@ -38,6 +46,8 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
         super(parent,"Command search",false);
 
         setLocationRelativeTo(parent);
+
+        prefsIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon(ShowPreferencesAction.KEY + ".icon"));
 
         loadSources();
 
@@ -133,16 +143,33 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         String text;
+        Icon icon = null;
+        String tooltip = null;
         if (value instanceof PreferencesItem)
         {
-            text = "Pref: " + ((PreferencesItem)value).text;
+            PreferencesItem prefsItem = (PreferencesItem)value;
+            text = prefsItem.text;
+            icon = prefsIcon;
+            tooltip = prefsItem.tooltip;
         }
         else
         {
             MenuItem menuItem = (MenuItem) value;
             text = menuItem.path;
+            icon = ResourceController.getResourceController().getIcon(menuItem.action.getIconKey());
+            //tooltip = TextUtils.getText(menuItem.action.getTooltipKey());
+            tooltip = "TODO: key binding";
         }
-        return new DefaultListCellRenderer().getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
+        JLabel label = (JLabel)(new DefaultListCellRenderer().getListCellRendererComponent(list, text, index, isSelected, cellHasFocus));
+        if (icon != null)
+        {
+            label.setIcon(icon);
+        }
+        if (tooltip != null)
+        {
+            label.setToolTipText(tooltip);
+        }
+        return label;
     }
 
     private void executeItem(int index)
@@ -210,12 +237,12 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyReleased(KeyEvent e) {
 
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyPressed(KeyEvent e) {
 
         final boolean wrapAround = false;
 

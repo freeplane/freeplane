@@ -55,6 +55,7 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
+	public static final String KEY = "ShowPreferencesAction";
 	private final DefaultMutableTreeNode controls;
 	private PreferencesItem preferencesItem;
 
@@ -63,7 +64,7 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 	 *
 	 */
 	public ShowPreferencesAction( final DefaultMutableTreeNode controls, PreferencesItem preferencesItem) {
-		super("ShowPreferencesAction");
+		super(KEY);
 
 		this.controls = controls;
 		this.preferencesItem = preferencesItem;

@@ -1,9 +1,11 @@
 package org.freeplane.features.fpsearch;
 
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.components.OptionPanel;
-import org.freeplane.core.util.FileUtils;
-import org.freeplane.core.util.TextUtils;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -12,12 +14,11 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
-import java.util.List;
+
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.OptionPanel;
+import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.TextUtils;
 
 class PreferencesIndexer
 {
@@ -90,7 +91,8 @@ class PreferencesIndexer
             Attribute name = startElement.getAttributeByName(new QName("name"));
             String prefKey = name.getValue();
             String prefText = TextUtils.getText(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + prefKey);
-            prefs.add(new PreferencesItem(currentTab, currentSeparator, prefKey, prefText));
+            String tooltipText = TextUtils.getRawText(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + prefKey + ".tooltip", null);
+            prefs.add(new PreferencesItem(currentTab, currentSeparator, prefKey, prefText, tooltipText));
             //System.out.format("tagsOpenendForCurrentPrefDeclaration=%d, prefKey=%s -> %s\n",
             //        tagsOpenendForCurrentPrefDeclaration, prefKey, prefText);
 
