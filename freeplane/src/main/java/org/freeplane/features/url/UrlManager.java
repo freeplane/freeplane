@@ -387,9 +387,14 @@ public class UrlManager implements IExtension {
 				map = System.getProperty("user.dir") + System.getProperty("file.separator") + map;
 			}
 			final NodeAndMapReference nodeAndMapReference = new NodeAndMapReference(map);
-			final URI uri = new File(nodeAndMapReference.getMapReference()).toURI();
-			final URI uriWithNodeReference = new URI(uri.getScheme(), null, uri.getPath(), nodeAndMapReference.getNodeReference());
-			loadURL(uriWithNodeReference);
+			if(nodeAndMapReference.hasFreeplaneFileExtension()) {
+			    final URI uri = new File(nodeAndMapReference.getMapReference()).toURI();
+			    final URI uriWithNodeReference = new URI(uri.getScheme(), null, uri.getPath(), nodeAndMapReference.getNodeReference());
+			    loadURL(uriWithNodeReference);
+			}
+			else {
+			    LogUtils.warn("Invalid mind map file extension, not opened: " + map);
+			}
 		}
 	}
 
