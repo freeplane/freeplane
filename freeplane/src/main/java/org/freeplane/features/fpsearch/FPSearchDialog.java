@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
+import javax.swing.Box;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -52,23 +53,18 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
         loadSources();
 
         input = new JTextField("");
+        input.setColumns(30);
         input.addKeyListener(this);
         resultList = new JList<>();
         resultList.setCellRenderer(this);
         resultList.addMouseListener(this);
         resultList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         resultList.addKeyListener(this);
+        Box box = Box.createVerticalBox();
         JScrollPane resultListScrollPane = new JScrollPane(resultList);
-        getContentPane().setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = 0;
-        c.gridwidth = 1;
-        c.gridheight = 1;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        getContentPane().add(input, c);
-        c.gridy = 1;
-        getContentPane().add(resultListScrollPane, c);
+        getContentPane().add(box);
+        box.add(input);
+        box.add(resultListScrollPane);
 
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         input.setSize(new Dimension(200, 20));
