@@ -90,7 +90,8 @@ class PreferencesIndexer
             String prefType = startElement.getName().toString();
             Attribute name = startElement.getAttributeByName(new QName("name"));
             String prefKey = name.getValue();
-            String prefText = TextUtils.getText(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + prefKey);
+            String prefText = TextUtils.getRawText(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + prefKey,
+                    "[" + OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + prefKey + "]");
             String tooltipText = TextUtils.getRawText(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + prefKey + ".tooltip", null);
             prefs.add(new PreferencesItem(currentTab, currentSeparator, prefKey, prefText, tooltipText));
             //System.out.format("tagsOpenendForCurrentPrefDeclaration=%d, prefKey=%s -> %s\n",

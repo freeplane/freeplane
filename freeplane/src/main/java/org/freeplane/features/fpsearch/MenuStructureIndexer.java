@@ -43,7 +43,7 @@ class MenuStructureIndexer {
         {
             key = entry.getName();
         }
-        final String tryText = TextUtils.getRawText(key);
+        final String tryText = TextUtils.getRawText(key, null);
         if (tryText != null) {
             return TextUtils.removeMnemonic(tryText);
         } else {
