@@ -11,6 +11,7 @@ import javax.swing.JMenu;
 
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
+import org.freeplane.core.ui.menubuilders.HeadlessFreeplaneRunner;
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
 import org.freeplane.core.ui.menubuilders.action.EntriesForAction;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
@@ -28,6 +29,10 @@ import org.mockito.ArgumentMatchers;
 public class MenuBuildProcessFactoryTest {
 	private PhaseProcessor phaseProcessor;
 	private FreeplaneActions freeplaneActions;
+
+	static {
+		new HeadlessFreeplaneRunner();
+	}
 
 	@Before
 	public void setup() {
