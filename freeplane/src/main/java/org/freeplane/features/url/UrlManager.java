@@ -62,6 +62,7 @@ import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -184,6 +185,8 @@ public class UrlManager implements IExtension {
 	}
 
 	private void updateLastDirectoryFromMap(final MapModel map) {
+	    if(map.containsExtension(DocuMapAttribute.class))
+	        return;
 		final File parentFile = getMapsParentFile(map);
 		if (parentFile != null) {
 			this.lastCurrentDir = parentFile;
