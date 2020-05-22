@@ -68,7 +68,7 @@ public class CollapseableBoxBuilder {
 		if(resizeable){
 			try {
 				int size = ResourceController.getResourceController().getIntProperty(sizePropertyName, 0);
-				if(size > 10) {
+				if(size > resizer.getDividerSize()) {
 					direction.setPreferredSize(component, size);
 				}
 			}
