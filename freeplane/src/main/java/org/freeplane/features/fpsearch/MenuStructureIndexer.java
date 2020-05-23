@@ -1,14 +1,23 @@
 package org.freeplane.features.fpsearch;
 
+import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.KeyStroke;
+
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
+import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
+import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 
 class MenuStructureIndexer {
+    private EntryAccessor entryAccessor;
+    IAcceleratorMap acceleratorMap;
     private List<MenuItem> menuItems;
 
     MenuStructureIndexer()
@@ -23,6 +32,10 @@ class MenuStructureIndexer {
 
     private void load()
     {
+        // this has some methods for getting stuff about menu items...
+        entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
+        acceleratorMap = ResourceController.getResourceController().getAcceleratorManager();
+
         menuItems = new LinkedList<>();
         ModeController modeController = Controller.getCurrentModeController();
         final Entry root = modeController.getUserInputListenerFactory()
@@ -34,21 +47,12 @@ class MenuStructureIndexer {
     }
 
     private String translateMenuItemComponent(final Entry entry) {
-        String key;
-        if (entry.getAction() != null)
+        String menuItemLabel = entryAccessor.getText(entry);
+        if (menuItemLabel != null)
         {
-            key = entry.getAction().getTextKey();
+            menuItemLabel = TextUtils.removeMnemonic(menuItemLabel);
         }
-        else
-        {
-            key = entry.getName();
-        }
-        final String tryText = TextUtils.getRawText(key, null);
-        if (tryText != null) {
-            return TextUtils.removeMnemonic(tryText);
-        } else {
-            return "[" + entry.getName() + "]";
-        }
+        return menuItemLabel;
     }
 
     private void loadMenuItems(final String prefix, final List<Entry> menuEntries, boolean toplevel, boolean toplevelPrefix)
@@ -96,9 +100,23 @@ class MenuStructureIndexer {
 
             if (menuEntry.isLeaf())
             {
+                KeyStroke accelerator = menuEntry.getAction() != null ? acceleratorMap.getAccelerator(menuEntry.getAction()) : null;
+                String acceleratorText =  null;
+                if (accelerator !=  null)
+                {
+                    acceleratorText = "";
+                    int modifiers = accelerator.getModifiers();
+                    if (modifiers > 0)
+                    {
+                        acceleratorText += KeyEvent.getKeyModifiersText(modifiers);
+                        acceleratorText += "+";
+                    }
+                    acceleratorText += KeyEvent.getKeyText(accelerator.getKeyCode());
+                }
+
                 //System.out.format("menuEntry: %s\n", menuEntry.getPath());
-                //System.out.format("menuEntry: %s\n", path);
-                menuItems.add(new MenuItem(path, menuEntry.getAction()));
+                //System.out.format("menuEntry: %s (accel = %s)\n", path, acceleratorText);
+                menuItems.add(new MenuItem(path, menuEntry.getAction(), acceleratorText));
             }
             else
             {

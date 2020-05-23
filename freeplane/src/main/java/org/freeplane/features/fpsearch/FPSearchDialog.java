@@ -3,8 +3,6 @@ package org.freeplane.features.fpsearch;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -157,7 +155,7 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
             text = menuItem.path;
             icon = ResourceController.getResourceController().getIcon(menuItem.action.getIconKey());
             //tooltip = TextUtils.getText(menuItem.action.getTooltipKey());
-            tooltip = "TODO: key binding";
+            tooltip = menuItem.accelerator;
         }
         JLabel label = (JLabel)(new DefaultListCellRenderer().getListCellRendererComponent(list, text, index, isSelected, cellHasFocus));
         if (icon != null)
