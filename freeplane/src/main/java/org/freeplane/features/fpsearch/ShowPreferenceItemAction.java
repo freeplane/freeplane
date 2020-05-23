@@ -20,7 +20,7 @@ class ShowPreferenceItemAction extends AbstractAction {
     }
 
     public void actionPerformed(ActionEvent actionEvent) {
-        System.out.format("Showing preferences item: %s\n", preferencesItem);
+        //System.out.format("Showing preferences item: %s\n", preferencesItem);
         showPrefsDialog();
     }
 

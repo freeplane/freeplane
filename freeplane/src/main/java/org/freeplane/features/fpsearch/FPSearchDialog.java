@@ -187,10 +187,14 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
                     catch(InterruptedException e) {
                     }
                     updateMatches(input.getText());
-                    //if (resultList.getModel().getSize() > 0)
-                    //    resultList.setSelectedIndex(0);
                     resultList.revalidate();
                     resultList.repaint();
+                    // restore selection if possible
+                    if (index < resultList.getModel().getSize())
+                    {
+                        resultList.setSelectedIndex(index);
+                        resultList.ensureIndexIsVisible(index);
+                    }
                 }
             }).start();
         }
