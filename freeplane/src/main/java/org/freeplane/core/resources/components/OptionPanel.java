@@ -66,7 +66,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.fpsearch.PreferencesItem;
+import org.freeplane.features.commandsearch.PreferencesItem;
 import org.freeplane.features.mode.Controller;
 
 import com.jgoodies.forms.builder.ButtonBarBuilder;

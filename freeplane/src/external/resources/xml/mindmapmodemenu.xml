@@ -161,7 +161,7 @@
 			</Entry>
 			<Entry name="menu_copy">
 				<Entry name="CopyAction" accelerator="control C" />
-				<Entry name="CopySingleAction" accelerator="control shift C" />
+				<Entry name="CopySingleAction" />
 				<Entry name="CopyIDAction" />
 				<Entry name="CopyNodeURIAction" />
 				<Entry name="CopyAttributes" />
@@ -339,7 +339,6 @@
                 <Entry name="SetBooleanPropertyAction.simplyhtml.note.show_menu" />
                 <Entry name="SetBooleanPropertyAction.simplyhtml.note.show_toolbars" />
 			</Entry>
-			<Entry name="FPSearchAction" accelerator="control shift A"/>
 		</Entry>
 		<Entry name="format" >
 			<Entry usedBy = "EDITOR" >
@@ -446,7 +445,7 @@
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="SelectAllAction" accelerator="control A" />
-			<Entry name="SelectBranchAction"/> <!--accelerator="control shift A" -->
+			<Entry name="SelectBranchAction" accelerator="control shift A" />
 			<Entry builder="separator" />
 			<Entry name="MoveToRootAction" accelerator="ESCAPE" />
 			<Entry name="GotoNodeAction" />
@@ -519,6 +518,8 @@
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="OpenUserDirAction" />
+			<Entry builder="separator" />
+			<Entry name="CommandSearchAction" accelerator="control shift C" />
 			<Entry builder="separator" />
 			<Entry name="ShowPreferencesAction" accelerator="control COMMA" builder="removeOnMac"/>
 			<Entry builder="conditionalActionBuilder" property="enableUserDefinedInterfaceStrings"
@@ -651,7 +652,7 @@
 		<Entry name="CutAction" accelerator="control X" usedBy = "EDITOR" />
         <Entry name="menu_copy">
           <Entry name="CopyAction" accelerator="control C" />
-          <Entry name="CopySingleAction" accelerator="control shift C" />
+          <Entry name="CopySingleAction" />
           <Entry name="CopyIDAction" />
           <Entry name="CopyNodeURIAction" />
           <Entry name="CopyAttributes" />

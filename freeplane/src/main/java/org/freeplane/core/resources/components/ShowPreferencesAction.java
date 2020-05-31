@@ -45,7 +45,7 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.fpsearch.PreferencesItem;
+import org.freeplane.features.commandsearch.PreferencesItem;
 
 /**
  * @author foltin

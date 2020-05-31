@@ -1,4 +1,22 @@
-package org.freeplane.features.fpsearch;
+/*
+ *  Freeplane - mind map editor
+ *
+ *  Copyright (C) 2020 Felix Natter, Dimitry Polivaev
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.freeplane.features.commandsearch;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -30,9 +48,10 @@ import javax.swing.event.DocumentListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.ShowPreferencesAction;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
+import org.freeplane.core.util.TextUtils;
 
 
-public class FPSearchDialog extends JDialog implements DocumentListener, ListCellRenderer<Object>, MouseListener, KeyListener {
+public class CommandSearchDialog extends JDialog implements DocumentListener, ListCellRenderer<Object>, MouseListener, KeyListener {
     private JTextField input;
     private JList<Object> resultList;
     private ImageIcon prefsIcon;
@@ -40,9 +59,9 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
     private PreferencesIndexer preferencesIndexer;
     private MenuStructureIndexer menuStructureIndexer;
 
-    FPSearchDialog(Frame parent)
+    CommandSearchDialog(Frame parent)
     {
-        super(parent,"Command search",false);
+        super(parent, TextUtils.getText("CommandSearchAction.text"),false);
 
         setLocationRelativeTo(parent);
 
@@ -133,7 +152,7 @@ public class FPSearchDialog extends JDialog implements DocumentListener, ListCel
             parent.setPreferredSize(new Dimension(800, 600));
             parent.pack();
 
-            FPSearchDialog fpSearchDialog = new FPSearchDialog(parent);
+            CommandSearchDialog commandSearchDialog = new CommandSearchDialog(parent);
         });
     }
 
