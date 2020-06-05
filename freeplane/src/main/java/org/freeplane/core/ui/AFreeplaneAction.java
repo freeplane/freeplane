@@ -67,7 +67,7 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	}
 
 	protected void setIcon(Icon icon) {
-		putValue(SMALL_ICON, toImageIcon(icon));
+		putValue(SMALL_ICON, icon);
 	}
 
 	protected void setTooltip(String tooltipKey) {
@@ -88,12 +88,12 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	//
 	public AFreeplaneAction(final String key, final String title, final Icon icon) {
 		//		this.controller = controller;
-		putValue(SMALL_ICON, toImageIcon(icon));
 		if (title != null && !title.equals("")) {
 			LabelAndMnemonicSetter.setLabelAndMnemonic(this, title);
 		}
 		this.rawText = title;
 		this.key = key;
+		setIcon(icon);
 	}
 
 	@Override
