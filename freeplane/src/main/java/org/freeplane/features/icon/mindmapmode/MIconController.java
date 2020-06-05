@@ -41,6 +41,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.plaf.basic.BasicIconFactory;
 
 import org.freeplane.core.resources.ResourceController;
@@ -369,23 +371,41 @@ public class MIconController extends IconController {
 	final static private Icon SUBMENU_ICON = BasicIconFactory.getMenuArrowIcon();
 	private JMenu getSubmenu( final IconGroup group) {
 		final JMenu menu = createToolbarSubmenu(group);
-		fillSubmenu(menu, group);
+		fillSubmenuOnSelect(menu, group);
 		return menu;
 	}
 
-    private void fillSubmenu(final JMenu menu, final IconGroup group) {
-        for (final IconGroup childGroup : group.getGroups()) {
-		    if(childGroup.isLeaf()) {
-		        MindIcon groupIcon = childGroup.getGroupIcon();
-		        addActionToIconSubmenu(menu, groupIcon);
-		    }
-		    else {
-		        final JMenu submenu = new JMenu(childGroup.getDescription());
-		        submenu.setIcon(childGroup.getGroupIcon().getIcon());
-		        fillSubmenu(submenu, childGroup);
-		        addGroupToIconSubmenu(menu, submenu);
-		    }
-		}
+    private void fillSubmenuOnSelect(final JMenu menu, final IconGroup group) {
+    	menu.addMenuListener(new MenuListener() {
+			@Override
+			public void menuSelected(MenuEvent e) {
+				menu.removeMenuListener(this);
+		        fillSubmenu(menu, group);
+			}
+
+			private void fillSubmenu(final JMenu menu, final IconGroup group) {
+				for (final IconGroup childGroup : group.getGroups()) {
+				    if(childGroup.isLeaf()) {
+				        MindIcon groupIcon = childGroup.getGroupIcon();
+				        addActionToIconSubmenu(menu, groupIcon);
+				    }
+				    else {
+				        final JMenu submenu = new JMenu(childGroup.getDescription());
+				        submenu.setIcon(childGroup.getGroupIcon().getIcon());
+				        fillSubmenuOnSelect(submenu, childGroup);
+				        addGroupToIconSubmenu(menu, submenu);
+				    }
+				}
+			}
+
+			@Override
+			public void menuDeselected(MenuEvent e) {
+			}
+
+			@Override
+			public void menuCanceled(MenuEvent e) {
+			}
+		});
     }
 
     private JMenu createToolbarSubmenu(final IconGroup group) {
