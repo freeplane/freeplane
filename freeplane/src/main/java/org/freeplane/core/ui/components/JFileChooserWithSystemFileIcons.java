@@ -4,14 +4,18 @@ import java.io.File;
 
 import javax.swing.Icon;
 import javax.swing.JFileChooser;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.filechooser.FileView;
-import javax.swing.plaf.FileChooserUI;
-import javax.swing.plaf.basic.BasicFileChooserUI;
 
 public class JFileChooserWithSystemFileIcons extends JFileChooser{
 
     private static final long serialVersionUID = 1;
+
+    private static final Icon directoryIcon = UIManager.getIcon("FileView.directoryIcon");
+    private static final Icon computerIcon = UIManager.getIcon("FileView.computerIcon");
+    private static final Icon hardDriveIcon = UIManager.getIcon("FileView.hardDriveIcon");
+    private static final Icon floppyDriveIcon = UIManager.getIcon("FileView.floppyDriveIcon");
 
     public JFileChooserWithSystemFileIcons() {
         super();
@@ -44,16 +48,31 @@ public class JFileChooserWithSystemFileIcons extends JFileChooser{
             if(getFileView() != null) {
                 icon = getFileView().getIcon(f);
             }
-            FileView uiFileView = getUI().getFileView(this);
-            if(uiFileView.getClass().getName().equals("com.sun.java.swing.plaf.windows.WindowsFileChooserUI.WindowsFileView"))
-                uiFileView = new BasicFileChooserUI(this).getFileView(this);
 
-            if(icon == null && uiFileView != null) {
-                icon = uiFileView.getIcon(f);
-            }
+            final FileView uiFileView;
+			if(icon == null && f.isDirectory()) {
+				final FileSystemView fsv = getFileSystemView();
+
+                if (fsv.isFloppyDrive(f)) {
+                    icon = floppyDriveIcon;
+                } else if (fsv.isDrive(f)) {
+                    icon = hardDriveIcon;
+                } else if (fsv.isComputerNode(f)) {
+                    icon = computerIcon;
+                } else {
+                    icon = directoryIcon;
+                }
+			}
+			else {
+				uiFileView = getUI().getFileView(this);
+
+				if(icon == null && uiFileView != null) {
+					icon = uiFileView.getIcon(f);
+				}
+			}
         }
         return icon;
     }
-    
-    
+
+
 }

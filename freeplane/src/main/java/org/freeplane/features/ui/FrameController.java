@@ -53,7 +53,6 @@ import javax.swing.Box;
 import javax.swing.ComboBoxEditor;
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -66,7 +65,6 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
-import javax.swing.plaf.metal.MetalFileChooserUI;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.freeplane.core.resources.ResourceController;
@@ -599,19 +597,6 @@ abstract public class FrameController implements ViewController {
 		final Dimension minimumThumbSize = new Dimension(30, 30);
 		UIManager.getLookAndFeelDefaults().put("ScrollBar.minimumThumbSize", minimumThumbSize);
 		UIManager.put("ScrollBar.minimumThumbSize", minimumThumbSize);
-		// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7077418
-		// NullPointerException in WindowsFileChooserUI when system icons missing/invalid
-		// set FileChooserUI to MetalFileChooserUI if no JFileChooser can be created
-		try {
-			UITools.newFileChooser();
-		}
-		catch (Throwable t) {
-			try {
-				UIManager.getLookAndFeelDefaults().put("FileChooserUI", MetalFileChooserUI.class.getName());
-			}
-			catch (Throwable t1) {
-			}
-		}
 		// Workaround for https://bugs.openjdk.java.net/browse/JDK-8179014
 		UIManager.put("FileChooser.useSystemExtensionHiding", false);
 		final Color color = UIManager.getColor("control");
