@@ -603,7 +603,7 @@ abstract public class FrameController implements ViewController {
 		// NullPointerException in WindowsFileChooserUI when system icons missing/invalid
 		// set FileChooserUI to MetalFileChooserUI if no JFileChooser can be created
 		try {
-			new JFileChooser();
+			UITools.newFileChooser();
 		}
 		catch (Throwable t) {
 			try {

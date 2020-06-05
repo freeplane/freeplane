@@ -26,6 +26,7 @@ import java.net.MalformedURLException;
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
@@ -48,7 +49,7 @@ class ImportFolderStructureAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final JFileChooser chooser = new JFileChooser();
+		final JFileChooser chooser = UITools.newFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle(TextUtils.getText("select_folder_for_importing"));
 		final ViewController viewController = Controller.getCurrentController().getViewController();

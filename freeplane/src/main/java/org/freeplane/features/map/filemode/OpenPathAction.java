@@ -26,6 +26,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mode.Controller;
 
 public class OpenPathAction extends AFreeplaneAction {
@@ -39,7 +40,7 @@ public class OpenPathAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final JFileChooser fileChooser = new JFileChooser();
+		final JFileChooser fileChooser = UITools.newFileChooser();
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		final int result = fileChooser.showOpenDialog((Component) e.getSource());
 		if(result == JFileChooser.APPROVE_OPTION){

@@ -211,7 +211,7 @@ public class AddOnInstallerPanel extends JPanel {
 	private JButton createFileChooser(final JTextField urlField) {
 		final JButton selectFile = new JButton(getText("search.file"),
 		    ResourceController.getResourceController().getIcon("OpenAction.icon"));
-		final JFileChooser fileChooser = new JFileChooser();
+		final JFileChooser fileChooser = UITools.newFileChooser();
 		selectFile.setToolTipText(getText("select.tooltip"));
 		selectFile.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 		selectFile.addActionListener(new ActionListener() {

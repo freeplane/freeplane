@@ -52,6 +52,7 @@ import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.ui.components.JFileChooserWithSystemFileIcons;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
@@ -119,18 +120,14 @@ public class UrlManager implements IExtension {
 	private void createActions() {
 	}
 
-	public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector) {
-		return getFileChooser(filter, useDirectorySelector, false);
-	}
-
 	/**
 	 * Creates a file chooser with the last selected directory as default.
 	 * @param useDirectorySelector
 	 */
 	@SuppressWarnings("serial")
-    public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector, boolean showHiddenFiles) {
+    public JFileChooser getFileChooser(final FileFilter filter) {
 	    return AccessController.doPrivileged((PrivilegedAction<JFileChooser>)() -> {
-	        final JFileChooser chooser = new JFileChooser(){
+	        final JFileChooser chooser = new JFileChooserWithSystemFileIcons(){
 	            @Override
 	            protected JDialog createDialog(Component parent) throws HeadlessException {
 	                final JDialog dialog = super.createDialog(parent);
@@ -159,9 +156,6 @@ public class UrlManager implements IExtension {
 	        };
 	        if (getLastCurrentDir() != null) {
 	            chooser.setCurrentDirectory(getLastCurrentDir());
-	        }
-	        if (showHiddenFiles) {
-	            chooser.setFileHidingEnabled(false);
 	        }
 	        if (filter != null) {
 	            chooser.addChoosableFileFilter(filter);

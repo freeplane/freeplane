@@ -648,7 +648,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 	abstract protected boolean applyModel(DefaultComboBoxModel model, int[] selectedIndices);
 
 	protected JFileChooser getFileChooser() {
-		final JFileChooser chooser = UrlManager.getController().getFileChooser(MindMapFilterFileFilter.filter, false);
+		final JFileChooser chooser = UrlManager.getController().getFileChooser(MindMapFilterFileFilter.filter);
 		return chooser;
 	}
 

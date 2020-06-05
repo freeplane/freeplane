@@ -258,7 +258,7 @@ public class OptionPanel {
 	}
 
 	private JFileChooser createFileChooser() {
-		final JFileChooser fileChooser = new JFileChooser(new File(Compat.getApplicationUserDirectory()));
+		final JFileChooser fileChooser = UITools.newFileChooser(new File(Compat.getApplicationUserDirectory()));
 		fileChooser.setMultiSelectionEnabled(false);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		final FileNameExtensionFilter filter = new FileNameExtensionFilter(FILE_EXTENSION, FILE_EXTENSION);

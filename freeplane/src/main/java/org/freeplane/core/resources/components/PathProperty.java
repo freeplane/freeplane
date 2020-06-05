@@ -37,6 +37,7 @@ import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
 
@@ -75,7 +76,7 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 	}
 
 	private JFileChooser createFileChooser() {
-		final JFileChooser fileChooser = new JFileChooser();
+		final JFileChooser fileChooser = UITools.newFileChooser();
 		if (path != null) {
 			fileChooser.setSelectedFile(new File(path));
 		}
