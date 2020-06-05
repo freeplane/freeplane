@@ -17,19 +17,21 @@ class GraphicIconFactory implements IconFactory {
 	static final IconFactory FACTORY = new GraphicIconFactory();
 	private static final Icon ICON_NOT_FOUND = FACTORY.getIcon(ResourceController.getResourceController()
 	    .getResource(DEFAULT_IMAGE_PATH + "IconNotFound.svg"));
-	
-	
+
+
 	private final WeakValueCache<String, Icon> ICON_CACHE = new WeakValueCache<String, Icon>();
 	private final WeakHashMap<Icon, URL> ICON_URLS = new WeakHashMap<Icon, URL>();
-	
 
-	
+
+
 	private GraphicIconFactory() {};
 
+	@Override
 	public Icon getIcon(final UIIcon uiIcon) {
 		return getIcon(uiIcon.getUrl(), DEFAULT_UI_ICON_HEIGTH);
 	}
 
+	@Override
 	public Icon getIcon(final URL url) {
 		return getIcon(url, DEFAULT_UI_ICON_HEIGTH);
 	}
@@ -38,10 +40,12 @@ class GraphicIconFactory implements IconFactory {
 		return url.toString() + "#" + heightPixels;
 	}
 
+	@Override
 	public Icon getIcon(UIIcon uiIcon, Quantity<LengthUnits> iconHeight) {
 		return getIcon(uiIcon.getUrl(), iconHeight);
 	}
 
+	@Override
 	public Icon getIcon(final URL url, Quantity<LengthUnits> iconHeight) {
 		Icon result = ICON_NOT_FOUND;
 		if (url != null) {
@@ -53,7 +57,7 @@ class GraphicIconFactory implements IconFactory {
 			else {
 				if (url.getPath().toLowerCase(Locale.ENGLISH).endsWith(".svg")) {
 					result = FreeplaneIconFactory.createSVGIcon(url, heightPixels);
-					ICON_URLS.put(FreeplaneIconFactory.toImageIcon(result), url);
+					ICON_URLS.put(result, url);
 				}
 				else {
 					result = FreeplaneIconFactory.createIconPrivileged(url);
@@ -66,10 +70,12 @@ class GraphicIconFactory implements IconFactory {
 		return result;
 	}
 
+	@Override
 	public boolean canScaleIcon(final Icon icon) {
 		return ICON_URLS.containsKey(icon);
 	}
 
+	@Override
 	public Icon getScaledIcon(final Icon icon, Quantity<LengthUnits> iconHeight) {
 		if (iconHeight.toBaseUnitsRounded() == icon.getIconHeight())
 			return icon;
