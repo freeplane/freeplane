@@ -19,6 +19,7 @@ import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.filter.condition.DelegateCondition;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.FormattedDate;
@@ -76,36 +77,27 @@ public class ProxyUtils {
 	}
 
 	static ICondition createCondition(final Closure<Boolean> closure, final ScriptContext scriptContext) {
-	    final ICondition condition = closure == null ? null : new ASelectableCondition() {
-			@Override
-			public boolean checkNode(final NodeModel node) {
-				try {
-					final Boolean result = closure
-					    .call(new Object[] { new NodeProxy(node, scriptContext) });
-					if (result == null) {
-						throw new RuntimeException("find(): closure returned null instead of boolean/Boolean");
-					}
-					return result;
-				}
-				catch (final ClassCastException e) {
-					throw new RuntimeException("find(): closure returned " + e.getMessage()
-					        + " instead of boolean/Boolean");
-				}
-			}
-
-			@Override
-			protected String createDescription() {
-				return "<Closure>";
-			}
-
-			@Override
-			protected String getName() {
-				return  "Closure";
-			}
-		};
+	    final ICondition condition = closure == null ? null : 
+	        new DelegateCondition(node -> checkNode(closure, scriptContext, node), "Closure");
 	    return condition;
     }
 
+    private static boolean checkNode(final Closure<Boolean> closure,
+            final ScriptContext scriptContext, final NodeModel node) {
+        try {
+            final Boolean result = closure
+                .call(new Object[] { new NodeProxy(node, scriptContext) });
+            if (result == null) {
+                throw new RuntimeException("find(): closure returned null instead of boolean/Boolean");
+            }
+            return result;
+        }
+        catch (final ClassCastException e) {
+            throw new RuntimeException("find(): closure returned " + e.getMessage()
+                    + " instead of boolean/Boolean");
+        }
+    }
+    
 	static List<? extends Node> find(final NodeCondition condition, final NodeModel node, final ScriptContext scriptContext) {
 		return ProxyUtils.find(createCondition(condition, scriptContext), node, scriptContext);
 	}
@@ -115,23 +107,9 @@ public class ProxyUtils {
 	}
 
 	static ICondition createCondition(final NodeCondition condition, final ScriptContext scriptContext) {
-		final ICondition filterCondition = condition == null ? null : new ASelectableCondition() {
-			@Override
-			public boolean checkNode(final NodeModel node) {
-				return condition.check(new NodeProxy(node, scriptContext));
-			}
-
-			@Override
-			protected String createDescription() {
-				return "<Code>";
-			}
-
-			@Override
-			protected String getName() {
-				return  "Code";
-			}
-		};
-	    return filterCondition;
+		final ICondition filterCondition = condition == null ? null : 
+		    new DelegateCondition(node -> condition.check(new NodeProxy(node, scriptContext)), "Code"); 
+		return filterCondition;
     }
 	/** finds from any node downwards.
 	 * @param condition if null every node will match. */
@@ -283,4 +261,5 @@ public class ProxyUtils {
     static FormattedDate createDefaultFormattedDateTime(final Date date) {
         return FormattedDate.createDefaultFormattedDate(date.getTime(), IFormattedObject.TYPE_DATETIME);
     }
+
 }

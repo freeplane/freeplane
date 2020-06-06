@@ -22,6 +22,7 @@ package org.freeplane.features.filter;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev
@@ -46,6 +47,6 @@ final class ApplyNoFilteringAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		filterController.applyNoFiltering();
+		filterController.applyNoFiltering(Controller.getCurrentController().getMap());
 	}
 }
