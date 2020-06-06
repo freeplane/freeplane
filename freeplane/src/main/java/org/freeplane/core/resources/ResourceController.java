@@ -86,9 +86,13 @@ public abstract class ResourceController {
 		this.resources.addResources(language, resources);
 	}
 
-	public void putUserResourceString(String key, String value) {
-		resources.putUserResourceString(key, value);
-	}
+    public void putUserResourceString(String key, String value) {
+        resources.putUserResourceString(key, value);
+    }
+
+    public void putResourceString(String key, String value) {
+        resources.putResourceString(key, value);
+    }
 
 	public void addPropertyChangeListener(final IFreeplanePropertyListener listener) {
 		propertyChangeListeners.add(listener);

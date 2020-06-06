@@ -34,10 +34,13 @@ import java.awt.desktop.QuitHandler;
 import java.awt.desktop.QuitResponse;
 import java.io.File;
 import java.net.URI;
+import java.util.ResourceBundle;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -57,6 +60,8 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 	private MacChanges(Controller controller) {
 		this.controller = controller;
 		if(fmMacApplication==null){
+		    String helpMenuTitle = TextUtils.getRawText("menu_help");
+		    ResourceController.getResourceController().putResourceString("menu_help", helpMenuTitle + " ");
 			// if a handleOpen comes here, directly, we know that FM is currently starting.
 			fmMacApplication = Desktop.getDesktop();
 			fmMacApplication.setAboutHandler(this);
