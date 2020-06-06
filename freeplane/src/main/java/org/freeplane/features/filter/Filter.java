@@ -107,7 +107,8 @@ public class Filter implements IExtension {
 	    this.accessor = new FilterInfoAccessor();
 		final NodeModel root = map.getRootNode();
 		resetFilter(root);
-		if (filterChildren(root, checkNode(root), false)) {
+		checkNode(root);
+		if (filterChildren(root, false, false)) {
 			addFilterResult(root, FilterInfo.FILTER_SHOW_AS_ANCESTOR);
 		}
 	}
@@ -144,7 +145,9 @@ public class Filter implements IExtension {
 		else {
 			addFilterResult(node, FilterInfo.FILTER_SHOW_AS_HIDDEN);
 		}
-		if (filterChildren(node, matchesCombinedFilter || hasMatchingAncestor, !matchesCombinedFilter
+		boolean childrenHaveMatchingAncestor = hasMatchingAncestor || matchesCombinedFilter && ! node.isRoot();
+        if (filterChildren(node, childrenHaveMatchingAncestor, 
+		        !matchesCombinedFilter
 		        || hasHiddenAncestor)) {
 		    addFilterResult(node, FilterInfo.FILTER_SHOW_AS_ANCESTOR);
 			hasMatchingDescendant = true;
