@@ -19,8 +19,6 @@
  */
 package org.freeplane.core.ui;
 
-import static org.freeplane.core.ui.svgicons.FreeplaneIconFactory.toImageIcon;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;

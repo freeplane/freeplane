@@ -20,6 +20,9 @@
 package org.freeplane.features.map;
 
 import java.awt.event.ActionEvent;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.filter.Filter;
@@ -41,10 +44,13 @@ class ToggleChildrenFoldedAction extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final IMapSelection mapSelection = controller.getSelection();
-		final NodeModel model = mapSelection.getSelected();
+		List<NodeModel> selectedNodes = mapSelection.getSortedSelection(true);
+		List<NodeModel> childNodes = selectedNodes.stream()
+		        .map(NodeModel::getChildren)
+		        .flatMap(List::stream)
+		        .collect(Collectors.toList());
 		MapController mapController = Controller.getCurrentModeController().getMapController();
 		Filter filter = mapSelection.getFilter();
-        mapController.toggleFolded(filter, model.getChildren());
-		mapSelection.selectAsTheOnlyOneSelected(model);
+        mapController.toggleFolded(filter, childNodes);
 	}
 }

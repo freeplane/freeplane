@@ -1069,13 +1069,13 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		}
 		if(differentSubtrees){
-			return getUniqueNodes(sortedNodes);
+			return getUniqueSubtreeRoots(sortedNodes);
 		}
 		else
 			return new ArrayList<NodeModel>(sortedNodes);
 	}
 
-	private ArrayList<NodeModel> getUniqueNodes(final Collection<NodeModel> sortedNodes) {
+	private ArrayList<NodeModel> getUniqueSubtreeRoots(final Collection<NodeModel> sortedNodes) {
 		final ArrayList<NodeModel> selectedNodes = new ArrayList<NodeModel>();
 		ADD_NODES: for (final NodeModel nodeModel : sortedNodes) {
 			final NodeModel parentNode = nodeModel.getParentNode();
