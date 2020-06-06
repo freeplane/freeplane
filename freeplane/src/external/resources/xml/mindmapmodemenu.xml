@@ -538,7 +538,7 @@
 			</Entry>
 			<Entry builder="separator" />
 		</Entry>
-		<Entry name="menu_help">
+		<Entry name="help" textKey="menu_help">
 			<Entry name="UpdateCheckAction" />
 			<Entry builder="separator" />
 			<Entry name="web_resources">
