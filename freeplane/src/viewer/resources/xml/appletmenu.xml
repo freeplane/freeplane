@@ -86,7 +86,7 @@
 		<Entry name="extras">
 				<Entry name="EnterPassword" />
 		</Entry>
-		<Entry name="help">
+		<Entry name="help" textKey="menu_help">
 				<Entry name="OpenFreeplaneSiteAction" />
 				<Entry name="AboutAction"/>
 		</Entry>
