@@ -70,6 +70,7 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.ConditionSnapshotFactory;
 import org.freeplane.features.filter.condition.DefaultConditionRenderer;
+import org.freeplane.features.filter.condition.DelegateCondition;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.condition.NoFilteringCondition;
 import org.freeplane.features.filter.condition.SelectedViewCondition;
@@ -393,16 +394,38 @@ public class FilterController implements IExtension, IMapViewChangeListener {
         }
 	}
 
+	public void applyNoFiltering(MapModel map) {
+	    final IMapSelection selection = Controller.getCurrentController().getSelection();
+	    if(selection != null && selection.getMap() == map) {
+	        getFilterConditions().setSelectedItem(NO_FILTERING);
+	    }
+	    else {
+            final Filter filter = new Filter(NO_FILTERING, hideMatchingNodes.isSelected(), showAncestors.isSelected(),
+                    showDescendants.isSelected(), null);
+            map.putExtension(Filter.class, filter);
+            filter.calculateFilterResults(map);
+	    }
+	}
+
     public void applyFilter(MapModel map, boolean force, Filter filter) {
         final IMapSelection selection = Controller.getCurrentController().getSelection();
-        if(selection != null && selection.getMap() == map)
+        if(selection != null && selection.getMap() == map) {
             applyFilter(force, filter);
+            getFilterConditions().setSelectedItem(toSelectableCondition(filter.getCondition()));
+        }
         else {
             Filter oldFilter = map.putExtension(Filter.class, filter);
             if (oldFilter == null || force || !filter.canUseFilterResultsFrom(oldFilter)) {
                 filter.calculateFilterResults(map);
             }
         }
+    }
+
+    private ASelectableCondition toSelectableCondition(ICondition condition) {
+        if(condition instanceof ASelectableCondition)
+            return (ASelectableCondition) condition;
+        else
+            return new DelegateCondition(condition, "Code");
     }
 
     public void applyFilter(final boolean force, final Filter filter) {
@@ -459,10 +482,6 @@ public class FilterController implements IExtension, IMapViewChangeListener {
         }
         mapSelection.setSiblingMaxLevel(mapSelection.getSelected().getNodeLevel(filter));
     }
-	public void applyNoFiltering() {
-		getFilterConditions().setSelectedItem(NO_FILTERING);
-	}
-
 	void applySelectedViewCondition() {
 		if (getFilterConditions().getSelectedItem() != selectedViewCondition) {
 			getFilterConditions().setSelectedItem(selectedViewCondition);

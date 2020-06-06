@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.mode.Controller;
 
 /**
  * @author Dimitry Polivaev
@@ -57,7 +58,7 @@ final class QuickFilterAction extends AFreeplaneAction {
 			return;
 		}
 		if (condition.equals(filterController.getSelectedCondition()))
-			filterController.applyNoFiltering();
+			filterController.applyNoFiltering(Controller.getCurrentController().getMap());
 		else {
 			setSelected(false);
 			filterController.apply(condition);
