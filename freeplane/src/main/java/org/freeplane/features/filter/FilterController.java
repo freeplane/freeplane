@@ -411,7 +411,8 @@ public class FilterController implements IExtension, IMapViewChangeListener {
         final IMapSelection selection = Controller.getCurrentController().getSelection();
         if(selection != null && selection.getMap() == map) {
             applyFilter(force, filter);
-            getFilterConditions().setSelectedItem(toSelectableCondition(filter.getCondition()));
+            updateSettingsFromFilter(filter);
+            getHistory().add(filter);
         }
         else {
             Filter oldFilter = map.putExtension(Filter.class, filter);
@@ -419,13 +420,6 @@ public class FilterController implements IExtension, IMapViewChangeListener {
                 filter.calculateFilterResults(map);
             }
         }
-    }
-
-    private ASelectableCondition toSelectableCondition(ICondition condition) {
-        if(condition instanceof ASelectableCondition)
-            return (ASelectableCondition) condition;
-        else
-            return new DelegateCondition(condition, "Code");
     }
 
     public void applyFilter(final boolean force, final Filter filter) {

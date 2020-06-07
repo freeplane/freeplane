@@ -437,11 +437,10 @@ public class Slide implements NamedElement<Slide>{
 	}
 
 	private void applyFilter() {
-		MapModel map = getMap();
 		final ICondition condition = getEffectiveFilterCondition();
 		
 		Filter filter = new Filter(condition, false, showsAncestors, showsDescendants, null);
-		FilterController.getCurrentFilterController().applyFilter(map, false, filter);
+		FilterController.getCurrentFilterController().applyFilter(false, filter);
 	}
 
 	public ICondition getEffectiveFilterCondition() {
