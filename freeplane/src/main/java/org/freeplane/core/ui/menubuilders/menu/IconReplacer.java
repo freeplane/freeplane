@@ -10,9 +10,9 @@ import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.factory.IconFactory;
 
-class MenuIconScaling {
+class IconReplacer {
 	
-	static void scaleIcon(final AbstractButton actionComponent) {
+	static void replaceByScaledImageIcon(final AbstractButton actionComponent) {
 		final Icon icon = actionComponent.getIcon();
 		final IconFactory imageIconFactory = IconFactory.getInstance();
 		if (icon != null && imageIconFactory.canScaleIcon(icon)) {
@@ -22,4 +22,11 @@ class MenuIconScaling {
 			actionComponent.setIcon(FreeplaneIconFactory.toImageIcon(imageIconFactory.getScaledIcon(icon, iconHeight)));
 		}
 	}
+
+    static void replaceByImageIcon(AbstractButton actionComponent) {
+        final Icon icon = actionComponent.getIcon();
+        if(icon != null) {
+            actionComponent.setIcon(FreeplaneIconFactory.toImageIcon(icon));
+        }
+    }
 }
