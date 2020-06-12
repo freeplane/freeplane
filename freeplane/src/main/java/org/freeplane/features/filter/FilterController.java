@@ -309,6 +309,8 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		controller.addAction(new ApplyToVisibleAction(this));
 		quickFilterAction = new QuickFilterAction(this, quickEditor);
 		controller.addAction(quickFilterAction);
+		controller.addAction(new QuickAndFilterAction(this, quickEditor));
+		controller.addAction(new QuickOrFilterAction(this, quickEditor));
 		controller.addAction(new QuickFindAction(this, quickEditor, Direction.BACK));
 		controller.addAction(new QuickFindAction(this, quickEditor, Direction.FORWARD));
 		controller.addAction(new QuickFindAllAction(this, quickEditor));
@@ -537,7 +539,9 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		final JButton applyFindPreviousBtn = new JButton(controller.getAction("QuickFindAction.BACK"));
 		final JButton applyFindNextBtn = new JButton(controller.getAction("QuickFindAction.FORWARD"));
 		final JAutoToggleButton applyQuickFilterBtn = new JAutoToggleButton(controller.getAction("QuickFilterAction"));
-		final JButton applyQuickSelectBtn = new JButton(controller.getAction("QuickFindAllAction"));
+        final JButton applyAndFilterBtn = new JButton(controller.getAction("QuickAndFilterAction"));
+        final JButton applyOrFilterBtn = new JButton(controller.getAction("QuickOrFilterAction"));
+        final JButton applyQuickSelectBtn = new JButton(controller.getAction("QuickFindAllAction"));
 		final JToggleButton applyQuickHighlightBtn = new JAutoToggleButton(controller.getAction("QuickHighlightAction"));
 
 		filterToolbar.addSeparator();
@@ -558,7 +562,9 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		filterToolbar.add(applyFindPreviousBtn);
 		filterToolbar.add(applyFindNextBtn);
 		filterToolbar.add(applyQuickSelectBtn);
-		filterToolbar.add(applyQuickFilterBtn);
+        filterToolbar.add(applyQuickFilterBtn);
+        filterToolbar.add(applyAndFilterBtn);
+        filterToolbar.add(applyOrFilterBtn);
 		filterToolbar.add(applyQuickHighlightBtn);
 		final DefaultConditionRenderer toolbarConditionRenderer = new DefaultConditionRenderer(TextUtils.getText("filter_no_filtering"), false);
 		activeFilterConditionComboBox.setRenderer(toolbarConditionRenderer);

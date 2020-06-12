@@ -447,7 +447,7 @@ public class Slide implements NamedElement<Slide>{
 		final ICondition  condition;
 		if(showsOnlySpecificNodes && filterCondition != null){
 			SelectedViewSnapshotCondition selectedViewSnapshotCondition = getFilterConditionForSelectedNodes();
-			condition = new DisjunctConditions(selectedViewSnapshotCondition, filterCondition);
+			condition = DisjunctConditions.combine(selectedViewSnapshotCondition, filterCondition);
 		}
 		else if (showsOnlySpecificNodes && filterCondition == null) {
 			condition = getFilterConditionForSelectedNodes();

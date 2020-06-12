@@ -31,11 +31,17 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
+import com.jgoodies.common.base.Objects;
+
 /**
  * @author Dimitry Polivaev
  */
 public class ConjunctConditions extends ASelectableCondition implements ICombinedCondition{
 	static final String NAME = "conjunct_condition";
+	
+	public static ConjunctConditions combine(final ASelectableCondition... conditions) {
+	    return  new ConjunctConditions(ConjunctConditions.combine(ConjunctConditions.class, conditions));
+	}
 
 	static ASelectableCondition load(final ConditionFactory conditionFactory, final XMLElement element) {
 		final Vector<XMLElement> children = element.getChildren();
@@ -50,10 +56,40 @@ public class ConjunctConditions extends ASelectableCondition implements ICombine
 		return new ConjunctConditions(conditions);
 	}
 
+    static ASelectableCondition[] combine(Class<? extends ASelectableCondition> targetClass, final ASelectableCondition... conditions) {
+        int conjunctConditionsCounter = 0;
+        int conjunctConditionsLength = 0;
+        for(ASelectableCondition condition : conditions) {
+            if(condition.getClass().equals(targetClass)) {
+                conjunctConditionsCounter++;
+                conjunctConditionsLength+=((ConjunctConditions)condition).conditions.length;
+            }
+        }
+        ASelectableCondition[] combinedConditions;
+        if(conjunctConditionsCounter == 0)
+            combinedConditions = conditions;
+        else {
+            combinedConditions = new ASelectableCondition[conditions.length + conjunctConditionsLength - conjunctConditionsCounter];
+            conjunctConditionsCounter = 0;
+            for(ASelectableCondition condition : conditions) {
+                if(condition.getClass().equals(targetClass)) {
+                    ASelectableCondition[] containedConditions = ((ConjunctConditions)condition).conditions;
+                    System.arraycopy(containedConditions, 0, combinedConditions, conjunctConditionsCounter, containedConditions.length);
+                    conjunctConditionsCounter += containedConditions.length;
+                }
+                else {
+                    combinedConditions[conjunctConditionsCounter] = condition;
+                    conjunctConditionsCounter++;
+                }
+            }
+        }
+        return combinedConditions;
+    }
+    
 	final private ASelectableCondition[] conditions;
 
-	public ConjunctConditions(final ASelectableCondition... conditions) {
-		this.conditions = conditions;
+	ConjunctConditions(final ASelectableCondition... conditions) {
+        this.conditions = conditions;
 	}
 
 	/*

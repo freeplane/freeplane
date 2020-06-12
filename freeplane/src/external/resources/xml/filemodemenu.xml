@@ -63,6 +63,8 @@
 			<Entry name="RedoFilterAction" />
 			<Entry name="ReapplyFilterAction" />
 			<Entry name="QuickFilterAction" />
+            <Entry name="QuickAndFilterAction" />
+            <Entry name="QuickOrFilterAction" />
 			<Entry name="ApplySelectedViewConditionAction" />
 			<Entry name="QuickFindAllAction" />
 			<Entry name="ApplyNoFilteringAction" />
