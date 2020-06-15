@@ -19,12 +19,13 @@ package org.freeplane.features.commandsearch;
 
 public class PreferencesItem {
 
-    public PreferencesItem(final String tab, final String separator, final String key, final String text, final String tooltip)
+    public PreferencesItem(final String tab, final String separator, final String key, final String text, final String path, final String tooltip)
     {
         this.tab = tab;
         this.separator = separator;
         this.key = key;
         this.text = text;
+        this.path = path;
         this.tooltip = tooltip;
     }
 
@@ -32,6 +33,7 @@ public class PreferencesItem {
     public String separator;
     public String key;
     public String text;
+    public String path;
     public String tooltip;
 
     @Override

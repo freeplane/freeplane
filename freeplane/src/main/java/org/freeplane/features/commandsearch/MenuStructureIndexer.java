@@ -53,12 +53,11 @@ class MenuStructureIndexer {
         // this has some methods for getting stuff about menu items...
         entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
         acceleratorMap = ResourceController.getResourceController().getAcceleratorManager();
-
         menuItems = new LinkedList<>();
         ModeController modeController = Controller.getCurrentModeController();
         final Entry root = modeController.getUserInputListenerFactory()
                 .getGenericMenuStructure().getRoot();
-        loadMenuItems("Menu", root.getChild("main_menu").children(), true, false);
+        loadMenuItems("Menu", root.getChild("main_menu").children(), true, false, 0);
         //loadMenuItems("Toolbar", root.getChild("main_toolbar").children(), true, false);
         //loadMenuItems("Map Popup", root.getChild("map_popup").children(), true, false);
         //loadMenuItems("Node Popup", root.getChild("node_popup").children(), true, false);
@@ -70,14 +69,28 @@ class MenuStructureIndexer {
         {
             menuItemLabel = TextUtils.removeMnemonic(menuItemLabel);
         }
+        //return menuItemLabel == null ? "["+entry.getName()+"]" : menuItemLabel;
         return menuItemLabel;
     }
 
-    private void loadMenuItems(final String prefix, final List<Entry> menuEntries, boolean toplevel, boolean toplevelPrefix)
+    private void indent(int depth)
     {
+        for (int i = 0; i < depth; i++)
+        {
+            System.out.print(' ');
+        }
+    }
+
+    private void loadMenuItems(final String prefix, final List<Entry> menuEntries,
+                               boolean toplevel, boolean toplevelPrefix, int depth)
+    {
+        //indent(depth);
         //System.out.format("loadMenuItems(%s, %s, %b)\n", prefix, menuEntries.get(0).getParent().getPath(), toplevel);
         for (Entry menuEntry: menuEntries)
         {
+            //indent(depth);
+            //System.out.format("entry: %s\n", menuEntry.toString());
+
             if (menuEntry.builders().contains("separator"))
             {
                 continue;
@@ -95,10 +108,22 @@ class MenuStructureIndexer {
                 // a meta data entry like <Entry usedBy = "EDITOR" > does not contribute to the path!
                 path = prefix;
                 childrenAreToplevel = toplevel;
+
+                if (!menuEntry.builders().isEmpty())
+                {
+                    //indent(depth);
+                    //System.out.format("menuEntry without name: %s, numChildren=%d\n",
+                    //        menuEntry.getPath(), menuEntry.children().size());
+                }
             }
             else
             {
                 String component = translateMenuItemComponent(menuEntry);
+                if (component == null)
+                {
+                    // item [component] could not be translated, omit it (like LastOpenedMaps)
+                    continue;
+                }
                 if (toplevel)
                 {
                     if (toplevelPrefix) {
@@ -132,13 +157,15 @@ class MenuStructureIndexer {
                     acceleratorText += KeyEvent.getKeyText(accelerator.getKeyCode());
                 }
 
-                //System.out.format("menuEntry: %s\n", menuEntry.getPath());
+                indent(depth);
+                //System.out.format("getLocationDescription=%s\n", entryAccessor.getLocationDescription(menuEntry));
+                //System.out.format("menuEntry: %s/%s, %s\n", path, menuEntry.getPath(), menuEntry.getAction());
                 //System.out.format("menuEntry: %s (accel = %s)\n", path, acceleratorText);
                 menuItems.add(new MenuItem(path, menuEntry.getAction(), acceleratorText));
             }
             else
             {
-                loadMenuItems(path, menuEntry.children(), childrenAreToplevel, toplevelPrefix);
+                loadMenuItems(path, menuEntry.children(), childrenAreToplevel, toplevelPrefix, depth + 1);
             }
         }
     }

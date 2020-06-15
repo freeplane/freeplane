@@ -40,6 +40,7 @@ import org.freeplane.core.util.TextUtils;
 class PreferencesIndexer
 {
     private final ResourceController resourceController = ResourceController.getResourceController();
+    private final String OPTIONPANEL_SEPARATOR_RESOURCE_PREFIX = "OptionPanel.separator.";
     private String currentTab;
     private String currentSeparator;
     private int tagsOpenendForCurrentPrefDeclaration = 0;
@@ -107,10 +108,22 @@ class PreferencesIndexer
             String prefType = startElement.getName().toString();
             Attribute name = startElement.getAttributeByName(new QName("name"));
             String prefKey = name.getValue();
-            String prefText = TextUtils.getRawText(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + prefKey,
-                    "[" + OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + prefKey + "]");
+            String textKey;
+            Attribute textAttribute = startElement.getAttributeByName(new QName("text"));
+            if (textAttribute != null)
+            {
+                textKey = textAttribute.getValue();
+            }
+            else
+            {
+                textKey = OptionPanel.OPTION_PANEL_RESOURCE_PREFIX  + prefKey;
+            }
+            String prefText = TextUtils.getRawText(textKey,"[" + textKey + "]");
             String tooltipText = TextUtils.getRawText(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + prefKey + ".tooltip", null);
-            prefs.add(new PreferencesItem(currentTab, currentSeparator, prefKey, prefText, tooltipText));
+            String currentSeparatorTranslated = TextUtils.getRawText(OPTIONPANEL_SEPARATOR_RESOURCE_PREFIX + currentSeparator, null);
+            String prefPath = currentSeparatorTranslated + "->" + prefText;
+
+            prefs.add(new PreferencesItem(currentTab, currentSeparatorTranslated, prefKey, prefText, prefPath, tooltipText));
             //System.out.format("tagsOpenendForCurrentPrefDeclaration=%d, prefKey=%s -> %s\n",
             //        tagsOpenendForCurrentPrefDeclaration, prefKey, prefText);
 

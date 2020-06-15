@@ -55,6 +55,7 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
     private JTextField input;
     private JList<Object> resultList;
     private ImageIcon prefsIcon;
+    private ImageIcon menuIcon;
 
     private PreferencesIndexer preferencesIndexer;
     private MenuStructureIndexer menuStructureIndexer;
@@ -66,6 +67,7 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
         setLocationRelativeTo(parent);
 
         prefsIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon(ShowPreferencesAction.KEY + ".icon"));
+        //menuIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon("/images/M_cir.svg"));
 
         loadSources();
 
@@ -115,7 +117,7 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
         resultList.setListData(new Object[0]);
 
         //PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
-        java.util.List<Object> matches = new ArrayList<Object>();
+        java.util.List<Object> matches = new ArrayList<>();
 
         for (final MenuItem menuItem :menuStructureIndexer.getMenuItems())
         {
@@ -131,7 +133,7 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
         for (final PreferencesItem prefsItem: preferencesIndexer.getPrefs())
         {
             if (prefsItem.key.contains(searchTerm.toLowerCase(Locale.ENGLISH)) ||
-                prefsItem.text.toLowerCase(Locale.ENGLISH).contains(searchTerm.toLowerCase(Locale.ENGLISH)))
+                prefsItem.path.toLowerCase(Locale.ENGLISH).contains(searchTerm.toLowerCase(Locale.ENGLISH)))
             {
                 matches.add(prefsItem);
             }
@@ -159,12 +161,12 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         String text;
-        Icon icon = null;
-        String tooltip = null;
+        Icon icon;
+        String tooltip;
         if (value instanceof PreferencesItem)
         {
             PreferencesItem prefsItem = (PreferencesItem)value;
-            text = prefsItem.text;
+            text = prefsItem.path;
             icon = prefsIcon;
             tooltip = prefsItem.tooltip;
         }
@@ -172,7 +174,8 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
         {
             MenuItem menuItem = (MenuItem) value;
             text = menuItem.path;
-            icon = ResourceController.getResourceController().getIcon(menuItem.action.getIconKey());
+            //icon = ResourceController.getResourceController().getIcon(menuItem.action.getIconKey());
+            icon = null;
             //tooltip = TextUtils.getText(menuItem.action.getTooltipKey());
             tooltip = menuItem.accelerator;
         }
@@ -204,6 +207,7 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
                 public void run() {
                     try { Thread.sleep(200); }
                     catch(InterruptedException e) {
+                        // nothing to do
                     }
                     updateMatches(input.getText());
                     resultList.revalidate();
