@@ -34,11 +34,11 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-public class DisjunctConditions extends ASelectableCondition implements ICombinedCondition {
+public class DisjunctConditions extends CombinedConditions implements ICombinedCondition {
 	static final String NAME = "disjunct_condition";
 
     public static DisjunctConditions combine(final ASelectableCondition... conditions) {
-        return  new DisjunctConditions(ConjunctConditions.combine(DisjunctConditions.class, conditions));
+        return  new DisjunctConditions(CombinedConditions.combine(DisjunctConditions.class, conditions));
     }
     
 	static ASelectableCondition load(final ConditionFactory conditionFactory, final XMLElement element) {
@@ -62,6 +62,11 @@ public class DisjunctConditions extends ASelectableCondition implements ICombine
 	DisjunctConditions(final ASelectableCondition... conditions) {
 		this.conditions = conditions;
 	}
+	
+    @Override
+    protected ASelectableCondition[] getConditions() {
+       return conditions;
+    }
 
 	/*
 	 * (non-Javadoc)
