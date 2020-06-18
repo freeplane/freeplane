@@ -78,7 +78,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		});
 		numOfIcons = icons.size();
         final int singleIconSize = (int) ((IconFactory.DEFAULT_UI_ICON_HEIGTH.toBaseUnits()+ 0.5) * 1.1);
-        int xDimension = (int) Math.ceil(Math.sqrt(numOfIcons)) * 16 / 9;
+        int xDimension = Math.min(20, (int) Math.ceil(Math.sqrt(numOfIcons)) * 16 / 9);
         final ToolbarLayout layout = ToolbarLayout.vertical();
         layout.setMaximumWidth(Math.min(singleIconSize * xDimension, UITools.getScreenBounds(frame.getGraphicsConfiguration()).width * 4 / 5));
         
@@ -93,9 +93,9 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
             label.addMouseListener(this);
 		}
 		Dimension preferredSize = iconPanel.getPreferredSize();
-		JScrollPane scrollPane = new JScrollPane(iconPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+		JScrollPane scrollPane = new JScrollPane(iconPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, 
 		        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setPreferredSize(preferredSize);
+		scrollPane.setPreferredSize(new Dimension(preferredSize.width, preferredSize.width / 2));
         getContentPane().add(scrollPane, BorderLayout.CENTER);
 		descriptionLabel = new JLabel(" ");
 		getContentPane().add(descriptionLabel, BorderLayout.SOUTH);
