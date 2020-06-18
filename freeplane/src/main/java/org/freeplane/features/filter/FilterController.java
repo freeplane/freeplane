@@ -21,11 +21,14 @@ package org.freeplane.features.filter;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -37,6 +40,7 @@ import java.security.AccessControlException;
 import java.util.Collection;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -44,7 +48,9 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
+import javax.swing.ToolTipManager;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.ChangeEvent;
@@ -70,7 +76,6 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.ConditionSnapshotFactory;
 import org.freeplane.features.filter.condition.DefaultConditionRenderer;
-import org.freeplane.features.filter.condition.DelegateCondition;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.filter.condition.NoFilteringCondition;
 import org.freeplane.features.filter.condition.SelectedViewCondition;
@@ -78,7 +83,6 @@ import org.freeplane.features.highlight.HighlightController;
 import org.freeplane.features.highlight.NodeHighlighter;
 import org.freeplane.features.map.CloneOfSelectedViewCondition;
 import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapChangeEvent;
 import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.map.MapModel;
@@ -530,7 +534,52 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 		final JToggleButton applyToVisibleBox = new JAutoToggleButton(controller.getAction("ApplyToVisibleAction"),
 		    applyToVisibleNodeOnly);
 		final JButton btnEdit = new JButton(controller.getAction("EditFilterAction"));
-		activeFilterConditionComboBox = new JComboBoxWithBorder(getFilterConditions());
+		activeFilterConditionComboBox = new JComboBoxWithBorder(getFilterConditions()){
+		    public String getToolTipText() {
+		        return "tooltip";    
+		    }
+		    
+            @Override
+            public JToolTip createToolTip() {
+                JToolTip tip = new JToolTip() {
+                    @Override
+                    public void setTipText(String tipText) {
+                        JComponent renderer = (JComponent) conditionRenderer.getCellRendererComponent(activeFilterConditionComboBox.getSelectedItem(), false);
+                        if(renderer.getPreferredSize().width > activeFilterConditionComboBox.getWidth() * 4 / 5) {
+                            renderer.setBorder(BorderFactory.createRaisedBevelBorder());
+                            add(renderer);
+                        }
+                    }
+                    @Override
+                    public Dimension getPreferredSize() {
+                        if(getComponentCount() == 0)
+                            return new Dimension();
+                        final Component renderer = getComponent(0);
+                        return renderer.getPreferredSize();
+                    }
+
+                    @Override
+                    public void layout() {
+                        if(getComponentCount() == 0)
+                            return;
+                        final Component renderer = getComponent(0);
+                        renderer.setLocation(0, 0);
+                        renderer.setSize(getSize());
+                    }
+                };
+                tip.setComponent(this);
+                return tip;
+            }
+
+            @Override
+            public Point getToolTipLocation(MouseEvent event) {
+                int position = getHeight() / 5;
+                return new Point(position, position);
+            }
+            
+            
+		};
+		ToolTipManager.sharedInstance().registerComponent(activeFilterConditionComboBox);
 		activeFilterConditionComboBox.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 		final JButton reapplyFilterBtn = new JButton(controller.getAction("ReapplyFilterAction"));
 		final JButton selectFilteredNodesBtn = new JButton(controller.getAction("SelectFilteredNodesAction"));
