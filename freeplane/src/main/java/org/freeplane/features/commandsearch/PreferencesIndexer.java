@@ -35,6 +35,7 @@ import javax.xml.stream.events.XMLEvent;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanel;
 import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 
 class PreferencesIndexer
@@ -119,6 +120,10 @@ class PreferencesIndexer
                 textKey = OptionPanel.OPTION_PANEL_RESOURCE_PREFIX  + prefKey;
             }
             String prefText = TextUtils.getRawText(textKey,"[" + textKey + "]");
+            if (prefText != null)
+            {
+                prefText = HtmlUtils.htmlToPlain(prefText);
+            }
             String tooltipText = TextUtils.getRawText(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + prefKey + ".tooltip", null);
             String currentSeparatorTranslated = TextUtils.getRawText(OPTIONPANEL_SEPARATOR_RESOURCE_PREFIX + currentSeparator, null);
             String prefPath = currentSeparatorTranslated + "->" + prefText;

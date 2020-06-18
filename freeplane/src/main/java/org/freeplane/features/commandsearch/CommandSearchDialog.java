@@ -67,7 +67,7 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
         setLocationRelativeTo(parent);
 
         prefsIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon(ShowPreferencesAction.KEY + ".icon"));
-        //menuIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon("/images/M_cir.svg"));
+        menuIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon("/images/menu_items.svg"));
 
         loadSources();
 
@@ -175,7 +175,7 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
             MenuItem menuItem = (MenuItem) value;
             text = menuItem.path;
             //icon = ResourceController.getResourceController().getIcon(menuItem.action.getIconKey());
-            icon = null;
+            icon = menuIcon;
             //tooltip = TextUtils.getText(menuItem.action.getTooltipKey());
             tooltip = menuItem.accelerator;
         }
