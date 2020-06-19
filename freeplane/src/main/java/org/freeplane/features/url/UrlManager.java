@@ -179,7 +179,7 @@ public class UrlManager implements IExtension {
 	}
 
 	private void updateLastDirectoryFromMap(final MapModel map) {
-	    if(map.containsExtension(DocuMapAttribute.class))
+	    if(map == null || map.containsExtension(DocuMapAttribute.class))
 	        return;
 		final File parentFile = getMapsParentFile(map);
 		if (parentFile != null) {
