@@ -35,10 +35,16 @@ class FastAccessableIcons {
                 return;
             }
         }
-        int maxCount = ResourceController.getResourceController().getIntProperty(FAST_ACCESS_ICON_NUMBER_PROPERTY);
-        while(actionCount >= maxCount)
-            panel.remove(--actionCount);
-        panel.add(createButton(action), 0);
+        int maxActionIndex = Math.max(0, 
+                ResourceController.getResourceController().getIntProperty(FAST_ACCESS_ICON_NUMBER_PROPERTY)) - 1;
+        for(int actionIndex =actionCount - 1; actionIndex > maxActionIndex; actionIndex--) {
+            panel.remove(actionIndex);
+        }
+        if(maxActionIndex >= 0) {
+            if(actionCount > maxActionIndex)
+                panel.remove(maxActionIndex);
+            panel.add(createButton(action), 0);
+        }
         panel.revalidate();
         panel.repaint();
     }
