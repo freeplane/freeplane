@@ -2,6 +2,8 @@
 1.8.6
 ===============================
 Bug fixes
+Performance improvements
+Quick "And filter" and "Or filter"
 
 ===============================
 1.8.5
