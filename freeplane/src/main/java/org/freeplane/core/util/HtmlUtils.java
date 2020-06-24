@@ -115,9 +115,9 @@ public class HtmlUtils {
 					Pattern.compile("(?ims)>[\n\t]+"),
 					Pattern.compile("(?ims)[\n\t ]+"),
 			        Pattern.compile("(?ims)<br[^>]*>"),
-			        Pattern.compile("(?ims)<p[^>]*>\\s+"),
-			        Pattern.compile("(?ims)<div[^>]*>\\s+"),
-			        Pattern.compile("(?ims)<tr[^>]*>\\s+"),
+			        Pattern.compile("(?ims)<p[^>]*>\\s*"),
+			        Pattern.compile("(?ims)<div[^>]*>\\s*"),
+			        Pattern.compile("(?ims)<tr[^>]*>\\s*"),
 			        Pattern.compile("(?ims)<dt[^>]*>"),
 			        Pattern.compile("(?ims)<dd[^>]*>"),
 			        Pattern.compile("(?ims)<td[^>]*>"),
@@ -171,11 +171,11 @@ public class HtmlUtils {
 	public static boolean isHtmlNode(final String text) {
 	    return isHtml(text);
 	}
-	
+
 	public static String textToHTML(String text) {
 	    return text == null || isHtml(text) ? text : plainToHTML(text);
 	}
-	
+
 	public static boolean isHtml(final String text) {
 		for (int i = 0; i < text.length(); i++) {
 			final char ch = text.charAt(i);
