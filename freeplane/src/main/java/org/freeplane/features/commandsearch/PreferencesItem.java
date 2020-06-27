@@ -17,7 +17,7 @@
  */
 package org.freeplane.features.commandsearch;
 
-class PreferencesItem {
+class PreferencesItem extends SearchItem {
 
     final String tab;
     final String separator;
@@ -34,6 +34,16 @@ class PreferencesItem {
         this.text = text;
         this.path = path;
         this.tooltip = tooltip;
+    }
+
+    @Override
+    int getItemTypeRank() {
+        return 1;
+    }
+
+    @Override
+    String getComparedText() {
+        return path;
     }
 
     @Override

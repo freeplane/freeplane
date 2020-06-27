@@ -123,7 +123,7 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
         resultList.setListData(new Object[0]);
 
         //PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
-        java.util.List<Object> matches = new ArrayList<>();
+        java.util.List<SearchItem> matches = new ArrayList<>();
 
         for (final MenuItem menuItem :menuStructureIndexer.getMenuItems())
         {
@@ -144,11 +144,7 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
                 matches.add(prefsItem);
             }
         }
-        Collections.sort(matches, (Object o1, Object o2) -> {
-            final String s1 = (o1 instanceof MenuItem) ? ((MenuItem)o1).path : ((PreferencesItem)o1).text;
-            final String s2 = (o2 instanceof MenuItem) ? ((MenuItem)o2).path : ((PreferencesItem)o2).text;
-            return s1.compareToIgnoreCase(s2);
-        });
+        Collections.sort(matches);
         resultList.setListData(matches.toArray());
     }
 

@@ -20,7 +20,7 @@ package org.freeplane.features.commandsearch;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 
-class MenuItem {
+class MenuItem extends SearchItem{
 
     final String path;
     final AFreeplaneAction action;
@@ -33,6 +33,16 @@ class MenuItem {
         this.accelerator = accelerator;
     }
 
+    @Override
+    int getItemTypeRank() {
+        return 2;
+    }
+
+    @Override
+    String getComparedText() {
+        return path;
+    }
+
     public String toString()
     {
         if (accelerator != null)
@@ -40,4 +50,5 @@ class MenuItem {
         else
             return path;
     }
+
 }
