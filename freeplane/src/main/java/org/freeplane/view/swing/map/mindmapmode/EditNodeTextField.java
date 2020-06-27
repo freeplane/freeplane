@@ -19,8 +19,63 @@
  */
 package org.freeplane.view.swing.map.mindmapmode;
 
-import com.lightdev.app.shtm.SHTMLPanel;
-import com.lightdev.app.shtm.SHTMLWriter;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.io.Writer;
+import java.net.URI;
+import java.text.AttributedCharacterIterator;
+
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.Icon;
+import javax.swing.InputMap;
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JPopupMenu;
+import javax.swing.KeyStroke;
+import javax.swing.RootPaneContainer;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.border.MatteBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.DefaultEditorKit.PasteAction;
+import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
+import javax.swing.text.NavigationFilter;
+import javax.swing.text.Position.Bias;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledEditorKit;
+import javax.swing.text.StyledEditorKit.BoldAction;
+import javax.swing.text.StyledEditorKit.ItalicAction;
+import javax.swing.text.StyledEditorKit.StyledTextAction;
+import javax.swing.text.StyledEditorKit.UnderlineAction;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.HTMLWriter;
+import javax.swing.text.html.StyleSheet;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
@@ -48,29 +103,8 @@ import org.freeplane.view.swing.map.ZoomableLabel;
 import org.freeplane.view.swing.map.ZoomableLabelUI;
 import org.freeplane.view.swing.map.ZoomableLabelUI.LayoutData;
 
-import javax.swing.*;
-import javax.swing.border.MatteBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.*;
-import javax.swing.text.DefaultEditorKit.PasteAction;
-import javax.swing.text.Position.Bias;
-import javax.swing.text.StyledEditorKit.BoldAction;
-import javax.swing.text.StyledEditorKit.ItalicAction;
-import javax.swing.text.StyledEditorKit.StyledTextAction;
-import javax.swing.text.StyledEditorKit.UnderlineAction;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.HTMLWriter;
-import javax.swing.text.html.StyleSheet;
-import java.awt.*;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
-import java.awt.event.*;
-import java.io.IOException;
-import java.io.Writer;
-import java.net.URI;
-import java.text.AttributedCharacterIterator;
+import com.lightdev.app.shtm.SHTMLPanel;
+import com.lightdev.app.shtm.SHTMLWriter;
 
 
 /**
