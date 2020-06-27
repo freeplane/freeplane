@@ -41,6 +41,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.net.URI;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -52,6 +53,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -780,5 +782,13 @@ public class UITools {
 		final boolean supportHidpi = Boolean.valueOf(System.getProperty("lookandfeel.scaleuifonts", configuredValue));
 		return supportHidpi;
 	}
+
+    public static JFileChooser newFileChooser() {
+       return new JFileChooserWithSystemFileIcons();
+    }
+
+    public static JFileChooser newFileChooser(File directory) {
+        return new JFileChooserWithSystemFileIcons(directory);
+    }
 
 }

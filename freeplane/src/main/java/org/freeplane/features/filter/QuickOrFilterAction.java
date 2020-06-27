@@ -22,13 +22,17 @@ package org.freeplane.features.filter;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.features.mode.Controller;
+import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.features.filter.condition.ASelectableCondition;
+import org.freeplane.features.filter.condition.ConjunctConditions;
+import org.freeplane.features.filter.condition.DisjunctConditions;
+import org.freeplane.features.filter.condition.NoFilteringCondition;
 
 /**
  * @author Dimitry Polivaev
  * Mar 30, 2009
  */
-final class ApplyNoFilteringAction extends AFreeplaneAction {
+class QuickOrFilterAction extends AFreeplaneAction {
 	/**
 	 * 
 	 */
@@ -37,16 +41,30 @@ final class ApplyNoFilteringAction extends AFreeplaneAction {
 	 * 
 	 */
 	private final FilterController filterController;
+	private final FilterConditionEditor filterEditor;
 
 	/**
 	 * @param filterController
+	 * @param quickEditor 
 	 */
-	ApplyNoFilteringAction(final FilterController filterController) {
-		super("ApplyNoFilteringAction");
+	QuickOrFilterAction(final FilterController filterController, FilterConditionEditor quickEditor) {
+		super("QuickOrFilterAction");
 		this.filterController = filterController;
+		this.filterEditor = quickEditor;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		filterController.applyNoFiltering(Controller.getCurrentController().getMap());
+		final ASelectableCondition condition = filterEditor.getCondition();
+		if(condition == null){
+			return;
+		}
+		ASelectableCondition selectedCondition = filterController.getSelectedCondition();
+        if (condition.equals(selectedCondition)) {
+            return;
+		} 
+        if(NoFilteringCondition.createCondition().equals(selectedCondition))
+            filterController.apply(condition);
+        else
+            filterController.apply(DisjunctConditions.combine(selectedCondition, condition));
 	}
 }

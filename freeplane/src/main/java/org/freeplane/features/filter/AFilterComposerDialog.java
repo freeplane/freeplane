@@ -207,7 +207,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 			if (selectedValues.length < 2) {
 				return;
 			}
-			final ASelectableCondition newCond = new ConjunctConditions(selectedValues);
+			final ASelectableCondition newCond = ConjunctConditions.combine(selectedValues);
 			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 			model.addElement(newCond);
 			validate();
@@ -230,7 +230,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 			if (selectedValues.length < 2) {
 				return;
 			}
-			final ASelectableCondition newCond = new DisjunctConditions(selectedValues);
+			final ASelectableCondition newCond = DisjunctConditions.combine(selectedValues);
 			final DefaultComboBoxModel model = (DefaultComboBoxModel) elementaryConditionList.getModel();
 			model.addElement(newCond);
 			validate();
@@ -648,7 +648,7 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 	abstract protected boolean applyModel(DefaultComboBoxModel model, int[] selectedIndices);
 
 	protected JFileChooser getFileChooser() {
-		final JFileChooser chooser = UrlManager.getController().getFileChooser(MindMapFilterFileFilter.filter, false);
+		final JFileChooser chooser = UrlManager.getController().getFileChooser(MindMapFilterFileFilter.filter);
 		return chooser;
 	}
 

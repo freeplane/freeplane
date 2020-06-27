@@ -28,6 +28,7 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -50,7 +51,7 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		final JFileChooser chooser = new JFileChooser();
+		final JFileChooser chooser = UITools.newFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setDialogTitle(TextUtils.getText("select_favorites_folder"));
 		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController().getCurrentRootComponent());

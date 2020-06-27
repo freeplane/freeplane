@@ -64,7 +64,7 @@ public class ExportDialog {
 	public static final String EXPORT_MAP_TITLE = "ExportAction.text";
 	public static final String EXPORT_BRANCHES_TITLE = "ExportBranchesAction.text";
 	/** the JFileChooser dialog used to choose filter and the file to export to. */
-	final private JFileChooser fileChooser = new JFileChooser();
+	final private JFileChooser fileChooser = UITools.newFileChooser();
 	final private Map<FileFilter, IExportEngine> exportEngines;
 
 	/**

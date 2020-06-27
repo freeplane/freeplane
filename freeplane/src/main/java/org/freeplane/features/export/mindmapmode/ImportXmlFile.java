@@ -25,6 +25,7 @@ import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ExampleFileFilter;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 
@@ -44,7 +45,7 @@ public class ImportXmlFile extends AFreeplaneAction {
 	public void actionPerformed(final ActionEvent e) {
 		final String type = "xml";
 		final Component component = Controller.getCurrentController().getViewController().getCurrentRootComponent();
-		final JFileChooser chooser = new JFileChooser();
+		final JFileChooser chooser = UITools.newFileChooser();
 		final ExampleFileFilter filter = new ExampleFileFilter(type, null);
 		chooser.setFileFilter(filter);
 		chooser.setAcceptAllFileFilterUsed(true);

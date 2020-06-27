@@ -1,9 +1,8 @@
 language: java
 sudo: false # Use container based builds. They are faster and we do not need sudo.
 dist: trusty
+
 jdk:
-  - openjdk8
-  - oraclejdk8
   - oraclejdk11
 
 #fails on because because java 9.0.1 is not compatible with gradle 4.0 currently used by travis

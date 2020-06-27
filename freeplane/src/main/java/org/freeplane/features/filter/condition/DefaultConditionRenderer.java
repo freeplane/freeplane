@@ -66,7 +66,7 @@ public class DefaultConditionRenderer implements ListCellRenderer, TableCellRend
 		return cellRendererComponent;
 	}
 	
-	private Component getCellRendererComponent(final Object value, final boolean isSelected) {
+	public Component getCellRendererComponent(final Object value, final boolean isSelected) {
 		final JComponent component;
 		if (value == null) {
 			component =  new JLabel(noValueText);

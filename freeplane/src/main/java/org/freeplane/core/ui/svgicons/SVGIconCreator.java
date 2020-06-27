@@ -29,10 +29,9 @@ class SVGIconCreator {
     }
 
     Icon createIcon() {
-        SVGIcon icon = createSvgIcon();
-        return new CachingIcon(icon);
+        return new CachingIcon(this::createSvgIcon);
     }
-    
+
     Dimension getSize() {
         SVGIcon icon = createSvgIcon();
         int iconWidth = icon.getIconWidth();
@@ -93,7 +92,7 @@ class SVGIconCreator {
                 svgUniverse.loadSVG(url);
         }
         catch (URISyntaxException ex) {
-            svgUri = svgUniverse.getStreamBuiltURI(url.getPath()); 
+            svgUri = svgUniverse.getStreamBuiltURI(url.getPath());
             diagramWasAlreadyLoaded = svgUniverse.getDiagram(svgUri, false) != null;
             if(! diagramWasAlreadyLoaded)
                 svgUniverse.loadSVG(url.openStream(), url.getPath());

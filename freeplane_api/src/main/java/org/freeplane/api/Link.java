@@ -43,7 +43,7 @@ public interface Link extends LinkRO {
 	boolean set(String target);
 
 	/** removes the link. Same as <code>node.link.text = null</code>.
-	 * @return <tt>true</tt> if there was a link to remove.
+	 * @return <code>true</code> if there was a link to remove.
 	 * @since 1.4 */
 	boolean remove();
 }

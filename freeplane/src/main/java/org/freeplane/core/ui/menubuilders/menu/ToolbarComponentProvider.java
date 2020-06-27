@@ -2,6 +2,7 @@ package org.freeplane.core.ui.menubuilders.menu;
 
 import java.awt.Component;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JToolBar.Separator;
 
@@ -24,12 +25,15 @@ public class ToolbarComponentProvider implements ComponentProvider {
 		final AFreeplaneAction action = entryAccessor.getAction(entry);
 		Component component;
 		if(action != null){
+		    AbstractButton actionComponent;
 			if (action.isSelectable()) {
-				component = new JAutoToggleButton(action);
+				actionComponent = new JAutoToggleButton(action);
 			}
 			else {
-				component = new JButton(action);
+				actionComponent = new JButton(action);
 			}
+			IconReplacer.replaceByImageIcon(actionComponent);
+			component = actionComponent;
 		}
 		else if(entry.builders().contains("separator")){
 			component = new Separator();

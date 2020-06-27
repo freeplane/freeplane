@@ -63,6 +63,8 @@
 			<Entry name="RedoFilterAction" />
 			<Entry name="ReapplyFilterAction" />
 			<Entry name="QuickFilterAction" />
+            <Entry name="QuickAndFilterAction" />
+            <Entry name="QuickOrFilterAction" />
 			<Entry name="ApplySelectedViewConditionAction" />
 			<Entry name="QuickFindAllAction" />
 			<Entry name="ApplyNoFilteringAction" />
@@ -85,7 +87,7 @@
 			</Entry>
 			<Entry builder="separator" />
 		</Entry>
-		<Entry name="help">
+		<Entry name="help" textKey="menu_help">
 			<Entry name="web_resources">
 				<Entry name="OpenFreeplaneSiteAction" />
                 <Entry name="AskForHelp" />

@@ -457,7 +457,7 @@ public class MMapClipboardController extends MapClipboardController implements M
     			imageFile.getParentFile().mkdirs();
             	String imgfilepath=imageFile.getAbsolutePath();
             	File tempFile = imageFile = new File(imgfilepath);
-            	final JFileChooser fileChooser = new JFileChooser(imageFile);
+            	final JFileChooser fileChooser = UITools.newFileChooser(imageFile);
             	final ExampleFileFilter filter = new ExampleFileFilter();
             	filter.addExtension(ImageAdder.IMAGE_FORMAT);
             	fileChooser.setAcceptAllFileFilterUsed(false);

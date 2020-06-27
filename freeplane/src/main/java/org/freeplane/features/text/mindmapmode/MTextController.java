@@ -435,7 +435,7 @@ public class MTextController extends TextController {
 		filter.addExtension("gif");
 		filter.setDescription(TextUtils.getText("bitmaps"));
 		final UrlManager urlManager = modeController.getExtension(UrlManager.class);
-		final JFileChooser chooser = urlManager.getFileChooser(null, false);
+		final JFileChooser chooser = urlManager.getFileChooser(null);
 		chooser.setFileFilter(filter);
 		chooser.setAcceptAllFileFilterUsed(false);
 		chooser.setAccessory(new BitmapImagePreview(chooser));

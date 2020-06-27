@@ -324,7 +324,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public JFileChooser getFileChooser(boolean useDirectorySelector) {
-		final JFileChooser fileChooser = getFileChooser(getFileFilter(), useDirectorySelector);
+		final JFileChooser fileChooser = getFileChooser(getFileFilter());
 		return fileChooser;
 	}
 
@@ -394,10 +394,10 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			return null;
 		}
 		if (getLastCurrentDir() != null) {
-			chooser = new JFileChooser(getLastCurrentDir());
+			chooser = UITools.newFileChooser(getLastCurrentDir());
 		}
 		else {
-			chooser = new JFileChooser();
+			chooser = UITools.newFileChooser();
 		}
 		chooser.setAcceptAllFileFilterUsed(true);
 		chooser.setFileFilter(chooser.getAcceptAllFileFilter());

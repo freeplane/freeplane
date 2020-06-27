@@ -34,8 +34,12 @@ import org.freeplane.n3.nanoxml.XMLElement;
 /**
  * @author Dimitry Polivaev
  */
-public class ConjunctConditions extends ASelectableCondition implements ICombinedCondition{
+public class ConjunctConditions extends CombinedConditions implements ICombinedCondition{
 	static final String NAME = "conjunct_condition";
+	
+	public static ConjunctConditions combine(final ASelectableCondition... conditions) {
+	    return  new ConjunctConditions(CombinedConditions.combine(ConjunctConditions.class, conditions));
+	}
 
 	static ASelectableCondition load(final ConditionFactory conditionFactory, final XMLElement element) {
 		final Vector<XMLElement> children = element.getChildren();
@@ -49,14 +53,19 @@ public class ConjunctConditions extends ASelectableCondition implements ICombine
 		}
 		return new ConjunctConditions(conditions);
 	}
-
+    
 	final private ASelectableCondition[] conditions;
 
-	public ConjunctConditions(final ASelectableCondition... conditions) {
-		this.conditions = conditions;
+	ConjunctConditions(final ASelectableCondition... conditions) {
+        this.conditions = conditions;
 	}
 
-	/*
+	@Override
+    protected ASelectableCondition[] getConditions() {
+       return conditions;
+    }
+
+    /*
 	 * (non-Javadoc)
 	 * @see
 	 * freeplane.controller.filter.condition.Condition#checkNode(freeplane.modes

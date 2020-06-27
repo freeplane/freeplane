@@ -172,7 +172,8 @@ public class OneTouchCollapseResizer extends JResizer {
 					resizedComponent.setPreferredSize(lastPreferredSize);
 				}
 				else {
-					lastPreferredSize = resizedComponent.isPreferredSizeSet() ?  resizedComponent.getPreferredSize() : null;
+					lastPreferredSize = resizedComponent.isPreferredSizeSet() 
+					        && direction.getPreferredSize(resizedComponent) > getDividerSize() ?  resizedComponent.getPreferredSize() : null;
 					resizedComponent.setPreferredSize(new Dimension(0,0));
 				}
 				IMapViewManager mapViewManager = Controller.getCurrentController().getMapViewManager();

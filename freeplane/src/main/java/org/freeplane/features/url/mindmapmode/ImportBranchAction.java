@@ -26,6 +26,7 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
@@ -48,7 +49,7 @@ class ImportBranchAction extends AFreeplaneAction {
 		if (parent == null) {
 			return;
 		}
-		final JFileChooser chooser = new JFileChooser();
+		final JFileChooser chooser = UITools.newFileChooser();
 		final FileFilter fileFilter = ((MFileManager) UrlManager.getController()).getFileFilter();
 		if (fileFilter != null) {
 			chooser.addChoosableFileFilter(fileFilter);

@@ -52,6 +52,7 @@ import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.extension.IExtension;
+import org.freeplane.core.ui.components.JFileChooserWithSystemFileIcons;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
@@ -62,6 +63,7 @@ import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -118,18 +120,14 @@ public class UrlManager implements IExtension {
 	private void createActions() {
 	}
 
-	public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector) {
-		return getFileChooser(filter, useDirectorySelector, false);
-	}
-
 	/**
 	 * Creates a file chooser with the last selected directory as default.
 	 * @param useDirectorySelector
 	 */
 	@SuppressWarnings("serial")
-    public JFileChooser getFileChooser(final FileFilter filter, boolean useDirectorySelector, boolean showHiddenFiles) {
+    public JFileChooser getFileChooser(final FileFilter filter) {
 	    return AccessController.doPrivileged((PrivilegedAction<JFileChooser>)() -> {
-	        final JFileChooser chooser = new JFileChooser(){
+	        final JFileChooser chooser = new JFileChooserWithSystemFileIcons(){
 	            @Override
 	            protected JDialog createDialog(Component parent) throws HeadlessException {
 	                final JDialog dialog = super.createDialog(parent);
@@ -159,9 +157,6 @@ public class UrlManager implements IExtension {
 	        if (getLastCurrentDir() != null) {
 	            chooser.setCurrentDirectory(getLastCurrentDir());
 	        }
-	        if (showHiddenFiles) {
-	            chooser.setFileHidingEnabled(false);
-	        }
 	        if (filter != null) {
 	            chooser.addChoosableFileFilter(filter);
 	            chooser.setFileFilter(filter);
@@ -184,6 +179,8 @@ public class UrlManager implements IExtension {
 	}
 
 	private void updateLastDirectoryFromMap(final MapModel map) {
+	    if(map == null || map.containsExtension(DocuMapAttribute.class))
+	        return;
 		final File parentFile = getMapsParentFile(map);
 		if (parentFile != null) {
 			this.lastCurrentDir = parentFile;
@@ -384,9 +381,14 @@ public class UrlManager implements IExtension {
 				map = System.getProperty("user.dir") + System.getProperty("file.separator") + map;
 			}
 			final NodeAndMapReference nodeAndMapReference = new NodeAndMapReference(map);
-			final URI uri = new File(nodeAndMapReference.getMapReference()).toURI();
-			final URI uriWithNodeReference = new URI(uri.getScheme(), null, uri.getPath(), nodeAndMapReference.getNodeReference());
-			loadURL(uriWithNodeReference);
+			if(nodeAndMapReference.hasFreeplaneFileExtension()) {
+			    final URI uri = new File(nodeAndMapReference.getMapReference()).toURI();
+			    final URI uriWithNodeReference = new URI(uri.getScheme(), null, uri.getPath(), nodeAndMapReference.getNodeReference());
+			    loadURL(uriWithNodeReference);
+			}
+			else {
+			    LogUtils.warn("Invalid mind map file extension, not opened: " + map);
+			}
 		}
 	}
 

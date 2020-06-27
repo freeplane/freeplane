@@ -158,7 +158,7 @@ public class Slide implements NamedElement<Slide>{
 		private Filter calculateFilterResults() {
 			MapModel map = getMap();
 			final ICondition condition = getEffectiveFilterCondition();
-			Filter filter = Filter.createFilter(condition, true, showsDescendants, false);
+			Filter filter = Filter.createFilter(condition, true, showsDescendants, null);
 			filter.calculateFilterResults(map);
 			return filter;
 		}
@@ -176,7 +176,7 @@ public class Slide implements NamedElement<Slide>{
 
 		public void foldNodes() {
 			if(foldsNodes()) {
-				filter = new Filter(getEffectiveFilterCondition(), false, true, showsDescendants, false);
+				filter = new Filter(getEffectiveFilterCondition(), false, true, showsDescendants, null);
 				foldNodes(getMap().getRootNode());
 				filter = null;
 			}
@@ -437,18 +437,17 @@ public class Slide implements NamedElement<Slide>{
 	}
 
 	private void applyFilter() {
-		MapModel map = getMap();
 		final ICondition condition = getEffectiveFilterCondition();
 		
-		Filter filter = new Filter(condition, false, showsAncestors, showsDescendants, false);
-		FilterController.getCurrentFilterController().applyFilter(map, false, filter);
+		Filter filter = new Filter(condition, false, showsAncestors, showsDescendants, null);
+		FilterController.getCurrentFilterController().applyFilter(false, filter);
 	}
 
 	public ICondition getEffectiveFilterCondition() {
 		final ICondition  condition;
 		if(showsOnlySpecificNodes && filterCondition != null){
 			SelectedViewSnapshotCondition selectedViewSnapshotCondition = getFilterConditionForSelectedNodes();
-			condition = new DisjunctConditions(selectedViewSnapshotCondition, filterCondition);
+			condition = DisjunctConditions.combine(selectedViewSnapshotCondition, filterCondition);
 		}
 		else if (showsOnlySpecificNodes && filterCondition == null) {
 			condition = getFilterConditionForSelectedNodes();
