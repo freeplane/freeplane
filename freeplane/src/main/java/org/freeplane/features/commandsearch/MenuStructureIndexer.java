@@ -38,9 +38,11 @@ class MenuStructureIndexer {
     private EntryAccessor entryAccessor;
     IAcceleratorMap acceleratorMap;
     private List<MenuItem> menuItems;
+    private boolean debug;
 
-    MenuStructureIndexer()
+    MenuStructureIndexer(boolean debug)
     {
+        this.debug = debug;
         load();
     }
 
@@ -59,9 +61,9 @@ class MenuStructureIndexer {
         final Entry root = modeController.getUserInputListenerFactory()
                 .getGenericMenuStructure().getRoot();
         loadMenuItems("Menu", root.getChild("main_menu").children(), true, false, 0);
-        //loadMenuItems("Toolbar", root.getChild("main_toolbar").children(), true, false);
-        //loadMenuItems("Map Popup", root.getChild("map_popup").children(), true, false);
-        //loadMenuItems("Node Popup", root.getChild("node_popup").children(), true, false);
+        //loadMenuItems("Toolbar", root.getChild("main_toolbar").children(), true, false, 0);
+        //loadMenuItems("Map Popup", root.getChild("map_popup").children(), true, false, 0);
+        //loadMenuItems("Node Popup", root.getChild("node_popup").children(), true, false, 0);
     }
 
     private String translateMenuItemComponent(final Entry entry) {
@@ -71,10 +73,10 @@ class MenuStructureIndexer {
             menuItemLabel = TextUtils.removeMnemonic(menuItemLabel);
             menuItemLabel = HtmlUtils.htmlToPlain(menuItemLabel);
         }
-        //return menuItemLabel == null ? "["+entry.getName()+"]" : menuItemLabel;
         return menuItemLabel;
     }
 
+    // This is for indenting debug messages
     private void indent(int depth)
     {
         for (int i = 0; i < depth; i++)
@@ -86,90 +88,120 @@ class MenuStructureIndexer {
     private void loadMenuItems(final String prefix, final List<Entry> menuEntries,
                                boolean toplevel, boolean toplevelPrefix, int depth)
     {
-        //indent(depth);
-        //System.out.format("loadMenuItems(%s, %s, %b)\n", prefix, menuEntries.get(0).getParent().getPath(), toplevel);
+        if (debug)
+        {
+            indent(depth);
+            System.out.format("loadMenuItems(%s, %s, %b)\n", prefix, menuEntries.get(0).getParent().getPath(), toplevel);
+        }
         for (Entry menuEntry: menuEntries)
         {
-            //indent(depth);
-            //System.out.format("entry: %s\n", menuEntry.toString());
+            processMenuEntry(menuEntry, prefix, toplevelPrefix, toplevel, depth);
+        }
+    }
 
-            if (menuEntry.builders().contains("separator"))
-            {
-                continue;
-            }
-            Object usedBy = menuEntry.getAttribute("usedBy");
-            if (usedBy != null && !usedBy.equals("EDITOR"))
-            {
-                continue;
-            }
+    private void processMenuEntry(Entry menuEntry, String prefix, boolean toplevelPrefix, boolean toplevel, int depth) {
+        if (debug)
+        {
+            indent(depth);
+            System.out.format("entry: %s\n", menuEntry.toString());
+        }
 
-            boolean childrenAreToplevel;
-            final String path;
-            if (menuEntry.getName().equals(""))
-            {
-                // a meta data entry like <Entry usedBy = "EDITOR" > does not contribute to the path!
-                path = prefix;
-                childrenAreToplevel = toplevel;
+        if (menuEntry.builders().contains("separator"))
+        {
+            return;
+        }
+        Object usedBy = menuEntry.getAttribute("usedBy");
+        if (usedBy != null && !usedBy.equals("EDITOR"))
+        {
+            return;
+        }
 
-                if (!menuEntry.builders().isEmpty())
+        boolean[] childrenAreToplevel = new boolean[1];
+        final String path = computePath(menuEntry, prefix, toplevel, toplevelPrefix, childrenAreToplevel, depth);
+        if (path == null)
+        {
+            return;
+        }
+
+        if (menuEntry.isLeaf())
+        {
+            recordLeafMenuEntry(menuEntry, path, depth);
+        }
+        else
+        {
+            loadMenuItems(path, menuEntry.children(), childrenAreToplevel[0], toplevelPrefix, depth + 1);
+        }
+    }
+
+    private String computePath(Entry menuEntry, String prefix, boolean toplevel, boolean toplevelPrefix, boolean[] childrenAreToplevel, int depth)
+    {
+        final String path;
+        if (menuEntry.getName().equals(""))
+        {
+            // a meta data entry like <Entry usedBy = "EDITOR" > does not contribute to the path!
+            path = prefix;
+            childrenAreToplevel[0] = toplevel;
+
+            if (!menuEntry.builders().isEmpty())
+            {
+                if (debug)
                 {
-                    //indent(depth);
-                    //System.out.format("menuEntry without name: %s, numChildren=%d\n",
-                    //        menuEntry.getPath(), menuEntry.children().size());
+                    indent(depth);
+                    System.out.format("menuEntry without name: %s, numChildren=%d\n",
+                            menuEntry.getPath(), menuEntry.children().size());
                 }
             }
-            else
+        }
+        else
+        {
+            String component = translateMenuItemComponent(menuEntry);
+            if (component == null)
             {
-                String component = translateMenuItemComponent(menuEntry);
-                if (component == null)
-                {
-                    // item [component] could not be translated, omit it (like LastOpenedMaps)
-                    continue;
-                }
-                if (toplevel)
-                {
-                    if (toplevelPrefix) {
-                        path = prefix + ": " + component;
-                    }
-                    else
-                    {
-                        path = component;
-                    }
+                // item [component] could not be translated, omit it (like LastOpenedMaps)
+                return null;
+            }
+            if (toplevel)
+            {
+                if (toplevelPrefix) {
+                    path = prefix + ": " + component;
                 }
                 else
                 {
-                    path = prefix + "->" + component;
+                    path = component;
                 }
-                childrenAreToplevel = false;
-            }
-
-            if (menuEntry.isLeaf())
-            {
-                KeyStroke accelerator = menuEntry.getAction() != null ? acceleratorMap.getAccelerator(menuEntry.getAction()) : null;
-                String acceleratorText =  null;
-                if (accelerator !=  null)
-                {
-                    acceleratorText = "";
-                    int modifiers = accelerator.getModifiers();
-                    if (modifiers > 0)
-                    {
-                        acceleratorText += KeyEvent.getKeyModifiersText(modifiers);
-                        acceleratorText += "+";
-                    }
-                    acceleratorText += KeyEvent.getKeyText(accelerator.getKeyCode());
-                }
-
-                indent(depth);
-                //System.out.format("getLocationDescription=%s\n", entryAccessor.getLocationDescription(menuEntry));
-                //System.out.format("menuEntry: %s/%s, %s\n", path, menuEntry.getPath(), menuEntry.getAction());
-                //System.out.format("menuEntry: %s (accel = %s)\n", path, acceleratorText);
-                menuItems.add(new MenuItem(path, menuEntry.getAction(), acceleratorText));
             }
             else
             {
-                loadMenuItems(path, menuEntry.children(), childrenAreToplevel, toplevelPrefix, depth + 1);
+                path = prefix + "->" + component;
             }
+            childrenAreToplevel[0] = false;
         }
+        return path;
+    }
+
+    private void recordLeafMenuEntry(Entry menuEntry, String path, int depth) {
+        KeyStroke accelerator = menuEntry.getAction() != null ? acceleratorMap.getAccelerator(menuEntry.getAction()) : null;
+        String acceleratorText =  null;
+        if (accelerator !=  null)
+        {
+            acceleratorText = "";
+            int modifiers = accelerator.getModifiers();
+            if (modifiers > 0)
+            {
+                acceleratorText += KeyEvent.getKeyModifiersText(modifiers);
+                acceleratorText += "+";
+            }
+            acceleratorText += KeyEvent.getKeyText(accelerator.getKeyCode());
+        }
+
+        if (debug)
+        {
+            indent(depth);
+            System.out.format("getLocationDescription=%s\n", entryAccessor.getLocationDescription(menuEntry));
+            System.out.format("menuEntry: %s/%s, %s\n", path, menuEntry.getPath(), menuEntry.getAction());
+            System.out.format("menuEntry: %s (accel = %s)\n", path, acceleratorText);
+        }
+        menuItems.add(new MenuItem(path, menuEntry.getAction(), acceleratorText));
     }
 
 }

@@ -18,6 +18,7 @@
  */
 package org.freeplane.features.commandsearch;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -29,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
-import javax.swing.Box;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -37,6 +37,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
@@ -72,22 +73,27 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
         loadSources();
 
         input = new JTextField("");
-        input.setColumns(30);
+        input.setColumns(40);
         input.addKeyListener(this);
         resultList = new JList<>();
         resultList.setCellRenderer(this);
         resultList.addMouseListener(this);
         resultList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         resultList.addKeyListener(this);
-        Box box = Box.createVerticalBox();
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
         JScrollPane resultListScrollPane = new JScrollPane(resultList);
-        getContentPane().add(box);
-        box.add(input);
-        box.add(resultListScrollPane);
+        getContentPane().add(panel);
+        panel.add(input, BorderLayout.NORTH);
+        panel.add(resultListScrollPane, BorderLayout.CENTER);
 
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        input.setSize(new Dimension(200, 20));
-        resultList.setSize(new Dimension(200, 240));
+        input.setSize(new Dimension(300, 20));
+        resultList.setSize(new Dimension(300, 240));
+        input.setText("type to search for preferences/menu items");
+        input.setSelectionStart(0);
+        input.setSelectionEnd(input.getText().length());
         //updateMatches(input.getText());
         pack();
 
@@ -99,7 +105,7 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
     private void loadSources()
     {
         preferencesIndexer = new PreferencesIndexer();
-        menuStructureIndexer = new MenuStructureIndexer();
+        menuStructureIndexer = new MenuStructureIndexer(false);
     }
 
     public void changedUpdate(DocumentEvent e) {
