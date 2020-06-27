@@ -34,7 +34,6 @@ import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.commandsearch.PreferencesItem;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
@@ -126,7 +125,7 @@ public class MModeController extends ModeController {
 	}
 
 	public static ShowPreferencesAction createShowPreferencesAction(OptionPanelBuilder optionPanelBuilder,
-																	PreferencesItem preferencesItem) {
+																	String selectedProperty) {
 	    final LookAndFeelInfo[] lafInfo = UIManager.getInstalledLookAndFeels();
 		final Vector<String> lafNames = new Vector<String>(lafInfo.length + 2);
 		final Vector<String> translatedLafNames = new Vector<String>(lafInfo.length + 2);
@@ -143,7 +142,7 @@ public class MModeController extends ModeController {
 		addCurrentLookAndFeelIfNecessary(lafNames, translatedLafNames);
 		optionPanelBuilder.addEditableComboProperty("Appearance/look_and_feel/lookandfeel", LOOKANDFEEL_PROPERTY, lafNames,
 		    translatedLafNames, IndexedTree.AS_CHILD);
-		return new ShowPreferencesAction(optionPanelBuilder.getRoot(), preferencesItem);
+		return new ShowPreferencesAction(optionPanelBuilder.getRoot(), selectedProperty);
     }
 
     private static void addCurrentLookAndFeelIfNecessary(Vector<String> lafNames, Vector<String> translatedLafNames) {

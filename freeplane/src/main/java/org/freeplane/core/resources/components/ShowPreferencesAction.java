@@ -45,7 +45,6 @@ import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.commandsearch.PreferencesItem;
 
 /**
  * @author foltin
@@ -57,17 +56,17 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	public static final String KEY = "ShowPreferencesAction";
 	private final DefaultMutableTreeNode controls;
-	private PreferencesItem preferencesItem;
+	private String selectedProperty;
 
 	/**
 	 * @param controls
 	 *
 	 */
-	public ShowPreferencesAction( final DefaultMutableTreeNode controls, PreferencesItem preferencesItem) {
+	public ShowPreferencesAction( final DefaultMutableTreeNode controls, String selectedProperty) {
 		super(KEY);
 
 		this.controls = controls;
-		this.preferencesItem = preferencesItem;
+		this.selectedProperty = selectedProperty;
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -140,11 +139,11 @@ public class ShowPreferencesAction extends AFreeplaneAction {
 			UITools.setBounds(dialog, -1, -1, dialog.getPreferredSize().width + 50, -1);
 		}
 
-		if (this.preferencesItem != null)
+		if (this.selectedProperty != null)
 		{
 			ComponentListener visibilityListener = new ComponentAdapter() {
 				public void componentShown(ComponentEvent evt) {
-					options.highlight(ShowPreferencesAction.this.preferencesItem);
+					options.highlight(ShowPreferencesAction.this.selectedProperty);
 				}
 			};
 			dialog.addComponentListener(visibilityListener);

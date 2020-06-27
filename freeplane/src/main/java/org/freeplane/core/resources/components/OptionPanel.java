@@ -66,7 +66,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.commandsearch.PreferencesItem;
 import org.freeplane.features.mode.Controller;
 
 import com.jgoodies.forms.builder.ButtonBarBuilder;
@@ -232,14 +231,14 @@ public class OptionPanel {
 
 	}
 
-	public void highlight(PreferencesItem preferencesItem)
+	public void highlight(String selectedProperty)
 	{
 		for (IPropertyControl control: this.controls)
 		{
 			if (control instanceof PropertyAdapter)
 			{
 				final PropertyAdapter property = (PropertyAdapter) control;
-				if (property.getName().equals(preferencesItem.key))
+				if (property.getName().equals(selectedProperty))
 				{
 					property.getLabelComponent().setForeground(Color.BLUE);
 					final JViewport viewPort = (JViewport) property.getLabelComponent().getParent().getParent();
