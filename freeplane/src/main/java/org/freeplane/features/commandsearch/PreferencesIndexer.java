@@ -125,10 +125,11 @@ class PreferencesIndexer
                 prefText = HtmlUtils.htmlToPlain(prefText);
             }
             String tooltipText = TextUtils.getRawText(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + prefKey + ".tooltip", null);
+            String currentTabTranslated = TextUtils.getRawText(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + currentTab, null);
             String currentSeparatorTranslated = TextUtils.getRawText(OPTIONPANEL_SEPARATOR_RESOURCE_PREFIX + currentSeparator, null);
             String prefPath = currentSeparatorTranslated + "->" + prefText;
 
-            prefs.add(new PreferencesItem(currentTab, currentSeparatorTranslated, prefKey, prefText, prefPath, tooltipText));
+            prefs.add(new PreferencesItem(currentTabTranslated, currentSeparatorTranslated, prefKey, prefText, prefPath, tooltipText));
             //System.out.format("tagsOpenendForCurrentPrefDeclaration=%d, prefKey=%s -> %s\n",
             //        tagsOpenendForCurrentPrefDeclaration, prefKey, prefText);
 
