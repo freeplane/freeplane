@@ -35,16 +35,29 @@ import org.freeplane.n3.nanoxml.StdXMLReader;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class AddOnsController {
+	private static final String PATH_SEPARATOR = File.pathSeparator;
+	private static final String FILES_TO_DELETE_ON_NEXT_START_PROPERTY = "addons.filesToDeleteOnNextStart";
 	private static final String ADDONS_DIR = "addons";
 	private static AddOnsController addOnsController;
 	private List<AddOnProperties> installedAddOns = new ArrayList<AddOnProperties>();
 	private boolean autoInstall;
     public static final String LATEST_VERSION_FILE = "version.properties";
 
-	public AddOnsController() {
+	private AddOnsController() {
+		deleteOldFiles();
 		createAddOnsDirIfNecessary();
 		registerPlugins();
 		autoInstall = true;
+	}
+
+	private void deleteOldFiles() {
+		String[] filesToDelete = ResourceController.getResourceController()
+				.getProperty(FILES_TO_DELETE_ON_NEXT_START_PROPERTY, "")
+				.split(PATH_SEPARATOR);
+		for(String path : filesToDelete) {
+			if(! path.isEmpty())
+				deleteFile(path);
+		}
 	}
 
 	private void createAddOnsDirIfNecessary() {
@@ -190,22 +203,40 @@ public class AddOnsController {
     }
 
 	public void deinstall(AddOnProperties addOn) {
+		String previousFilesToDeleteOnNextStart = ResourceController.getResourceController().getProperty(FILES_TO_DELETE_ON_NEXT_START_PROPERTY, "");
+		StringBuilder filesToDeleteOnNextStart = new StringBuilder(previousFilesToDeleteOnNextStart);
 		LogUtils.info("deinstalling " + addOn);
 		for (String[] rule : addOn.getDeinstallationRules()) {
 			if (rule[0].equals("delete")) {
-				final File file = new File(expandVariables(rule));
-				if (!file.exists()) {
-					LogUtils.warn("file " + expandVariables(rule) + " should be deleted but does not exist");
-				}
-				else {
-					if (file.delete())
-						LogUtils.info("deleted " + expandVariables(rule));
-					else
-						LogUtils.warn("could not delete file " + expandVariables(rule));
+				final String path = expandVariables(rule);
+				boolean deleted = deleteFile(path);
+				if (!deleted) {
+					filesToDeleteOnNextStart.append(PATH_SEPARATOR);
+					filesToDeleteOnNextStart.append(path);
 				}
 			}
 		}
 		installedAddOns.remove(addOn);
+		if(filesToDeleteOnNextStart.length() > previousFilesToDeleteOnNextStart.length()) {
+			ResourceController.getResourceController().setProperty(FILES_TO_DELETE_ON_NEXT_START_PROPERTY,
+				filesToDeleteOnNextStart.toString());
+		}
+	}
+
+	private boolean deleteFile(final String path) {
+		final File file = new File(path);
+		if (!file.exists()) {
+			LogUtils.warn("file " + path + " should be deleted but does not exist");
+		}
+		else {
+			if (file.delete())
+				LogUtils.info("deleted " + path);
+			else {
+				LogUtils.warn("could not delete file " + path);
+			}
+		}
+		boolean deleted = !file.exists();
+		return deleted;
 	}
 
 	private String expandVariables(String[] rule) {
