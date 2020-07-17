@@ -40,13 +40,8 @@ public class XmlImporter	{
 
 	public void importXml(final File inputFile, final File outputFile) throws FileNotFoundException, IOException,
 			XMLParseException, URISyntaxException, XMLException, MalformedURLException {
-		FileInputStream in = null;
-		try{
-			in = new FileInputStream(inputFile);
+		try(FileInputStream in = new FileInputStream(inputFile)){
 			importXml(in, outputFile);
-		}
-		finally {
-			FileUtils.silentlyClose(in);
 		}
 	}
 

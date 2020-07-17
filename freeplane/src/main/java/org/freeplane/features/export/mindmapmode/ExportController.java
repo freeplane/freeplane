@@ -80,11 +80,9 @@ public class ExportController implements IExtension{
 	}
 	
 	private void createXSLTExportActions( final String xmlDescriptorFile) {
-		InputStream xmlDescriptorStream = null;
-		try {
+		final URL resource = ResourceController.getResourceController().getResource(xmlDescriptorFile);
+		try (InputStream xmlDescriptorStream = resource.openStream()){
 			final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();
-			final URL resource = ResourceController.getResourceController().getResource(xmlDescriptorFile);
-			xmlDescriptorStream = resource.openStream();
 			final IXMLReader reader = new StdXMLReader(xmlDescriptorStream);
 			parser.setReader(reader);
 			final XMLElement xml = (XMLElement) parser.parse();
@@ -103,9 +101,6 @@ public class ExportController implements IExtension{
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);
-		}
-		finally {
-			FileUtils.silentlyClose(xmlDescriptorStream);
 		}
 	}
 

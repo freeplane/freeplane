@@ -85,13 +85,12 @@ class ExportPdf extends ExportVectorGraphic {
 		final Element rootE = doc.getDocumentElement();
 		g2d.getRoot(rootE);
 		final TranscoderInput input = new TranscoderInput(doc);
-		final FileOutputStream ostream = new FileOutputStream(chosenFile);
-		final BufferedOutputStream bufStream = new BufferedOutputStream(ostream);
-		final TranscoderOutput output = new TranscoderOutput(bufStream);
-		final PDFTranscoder transcoder = createPdfTranscoder();
-		transcoder.transcode(input, output);
-		ostream.flush();
-		ostream.close();
+		try (final FileOutputStream ostream = new FileOutputStream(chosenFile)) {
+		    final BufferedOutputStream bufStream = new BufferedOutputStream(ostream);
+		    final TranscoderOutput output = new TranscoderOutput(bufStream);
+		    final PDFTranscoder transcoder = createPdfTranscoder();
+		    transcoder.transcode(input, output);
+		}
 	}
 
 	@NotNull

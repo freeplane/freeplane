@@ -95,10 +95,8 @@ class HttpVersionClient {
     }
 
     private void parseHistory(final URL url, final FreeplaneVersion currentVersion) throws IOException {
-        BufferedReader in = null;
-        try {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream(), StandardCharsets.UTF_8))){
             // "version.txt" format
-            in = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream(), StandardCharsets.UTF_8));
             String line = in.readLine();
             while (line != null && !line.startsWith("=====")) {
                 line = in.readLine();
@@ -113,16 +111,6 @@ class HttpVersionClient {
             successful = true;
             if (remoteVersion.compareTo(currentVersion) > 0) {
                 parseHistory(currentVersion, in, line);
-            }
-        }
-        finally {
-            if (in != null) {
-                try {
-                    in.close();
-                }
-                catch (final IOException e) {
-                    LogUtils.warn("Couldn't close buffered reader.");
-                }
             }
         }
     }

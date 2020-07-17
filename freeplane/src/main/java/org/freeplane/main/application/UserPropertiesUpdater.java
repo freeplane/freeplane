@@ -90,26 +90,16 @@ public class UserPropertiesUpdater {
     }
 
 	Properties loadProperties(File userPreferencesFile) throws IOException {
-	    FileInputStream inputStream = null;
 	    Properties userProp = new Properties();
-	    try{
-	    inputStream = new FileInputStream(userPreferencesFile);
-	    userProp.load(inputStream);
-	    }
-	    finally {
-	    	org.freeplane.core.util.FileUtils.silentlyClose(inputStream);
+	    try (FileInputStream inputStream = new FileInputStream(userPreferencesFile)){
+	        userProp.load(inputStream);
 	    }
 	    return userProp;
     }
 
 	void saveProperties(Properties userProp, File userPreferencesFile) throws IOException {
-	    FileOutputStream outputStream = null;
-	    try{
-	    	outputStream = new FileOutputStream(userPreferencesFile);
+	    try(FileOutputStream outputStream = new FileOutputStream(userPreferencesFile)){
 	    	userProp.store(outputStream, null);
-	    }
-	    finally {
-	    	org.freeplane.core.util.FileUtils.silentlyClose(outputStream);
 	    }
     }
 }

@@ -52,13 +52,12 @@ class ExportSvg extends ExportVectorGraphic {
 			}
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
 			final SVGGraphics2D g2d = fillSVGGraphics2D(view);
-			final FileOutputStream bos = new FileOutputStream(chosenFile);
-			final BufferedOutputStream bufStream = new BufferedOutputStream(bos);
-			final OutputStreamWriter osw = new OutputStreamWriter(bufStream, "UTF-8");
-			g2d.stream(osw);
-			osw.flush();
-			bos.flush();
-			bos.close();
+			try (final FileOutputStream bos = new FileOutputStream(chosenFile)){
+	            final BufferedOutputStream bufStream = new BufferedOutputStream(bos);
+	            final OutputStreamWriter osw = new OutputStreamWriter(bufStream, "UTF-8");
+	            g2d.stream(osw);
+	            osw.flush();
+			}
 		}
 		catch (final Exception ex) {
 			org.freeplane.core.util.LogUtils.warn(ex);

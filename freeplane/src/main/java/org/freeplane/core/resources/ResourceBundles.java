@@ -145,15 +145,10 @@ public class ResourceBundles extends ResourceBundle {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
     private Map<String, String> getLanguageResources(final URL systemResource) throws IOException {
-		InputStream in = null;
-		try {
-			in = new BufferedInputStream(systemResource.openStream());
+		try (InputStream in= new BufferedInputStream(systemResource.openStream())){
 			final Properties bundle = new Properties();
 			bundle.load(in);
 			return new HashMap(bundle);
-        }
-        finally {
-        	FileUtils.silentlyClose(in);
         }
 	}
 

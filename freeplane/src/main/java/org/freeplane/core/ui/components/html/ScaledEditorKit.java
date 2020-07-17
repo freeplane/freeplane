@@ -45,15 +45,13 @@ public class ScaledEditorKit extends HTMLEditorKit {
 	public StyleSheet getStyleSheet() {
 		if (defaultStyles == null) {
 			defaultStyles = new StyleSheet();
-			StringReader r = new StringReader(ScaledHTML.styleChanges);
-			try {
+			try (StringReader r = new StringReader(ScaledHTML.styleChanges)){
 				defaultStyles.loadRules(r, null);
 			}
 			catch (Throwable e) {
 				// don't want to die in static initialization... 
 				// just display things wrong.
 			}
-			r.close();
 			defaultStyles.addStyleSheet(super.getStyleSheet());
 		}
 		return defaultStyles;

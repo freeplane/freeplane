@@ -187,15 +187,13 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 	}
 
 	private void loadFormats() throws Exception {
-		BufferedInputStream inputStream = null;
 		final File configXml = new File(pathToFile);
 		if (!configXml.exists()) {
 			LogUtils.info(pathToFile + " does not exist yet");
 			return;
 		}
-		try {
+		try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(configXml))){
 			final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();
-			inputStream = new BufferedInputStream(new FileInputStream(configXml));
 			final IXMLReader reader = new StdXMLReader(inputStream);
 			parser.setReader(reader);
 			final XMLElement loader = (XMLElement) parser.parse();
@@ -235,9 +233,6 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
 		}
 		catch (final IOException e) {
 			LogUtils.warn("error parsing " + configXml, e);
-		}
-		finally {
-			FileUtils.silentlyClose(inputStream);
 		}
 	}
 
@@ -286,11 +281,11 @@ public class FormatController implements IExtension, IFreeplanePropertyListener 
                 saver.addChild(patternFormat.toXml());
             }
 		}
-		final Writer writer = new FileWriter(pathToFile);
-		final XMLWriter xmlWriter = new XMLWriter(writer);
-		xmlWriter.addRawContent(header);
-		xmlWriter.write(saver, true);
-		writer.close();
+		try (final Writer writer = new FileWriter(pathToFile)) {
+		    final XMLWriter xmlWriter = new XMLWriter(writer);
+		    xmlWriter.addRawContent(header);
+		    xmlWriter.write(saver, true);
+		}
 	}
 
 	public List<PatternFormat> getDateFormats() {

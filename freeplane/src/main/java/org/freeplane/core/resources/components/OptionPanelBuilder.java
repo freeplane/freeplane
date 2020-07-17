@@ -708,16 +708,11 @@ public class OptionPanelBuilder {
 	}
 
 	public void load(final URL menu) {
-		InputStreamReader reader = null;
-		try {
-			reader = new InputStreamReader(new BufferedInputStream(menu.openStream()), StandardCharsets.UTF_8);
+		try (InputStreamReader reader = new InputStreamReader(new BufferedInputStream(menu.openStream()), StandardCharsets.UTF_8)){
 			load(reader);
 		}
 		catch (final IOException e) {
 			throw new RuntimeException(e);
-		}
-		finally {
-			FileUtils.silentlyClose(reader);
 		}
 	}
 

@@ -142,9 +142,7 @@ class ActivatorImpl implements BundleActivator {
 		}
 		final File manifest = new File(file, "META-INF/MANIFEST.MF");
 		if (manifest.exists()) {
-			InputStream manifestContent = null;
-			try {
-				manifestContent = new FileInputStream(manifest);
+			try (InputStream manifestContent = new FileInputStream(manifest)){
 				final Manifest bundleManifest = new Manifest(manifestContent);
 				final String name = bundleManifest.getMainAttributes().getValue("Bundle-SymbolicName");
 				if (name == null) {
@@ -165,9 +163,6 @@ class ActivatorImpl implements BundleActivator {
 			}
 			catch (final Exception e) {
 				e.printStackTrace();
-			}
-			finally {
-				FileUtils.silentlyClose(manifestContent);
 			}
 			return;
 		}

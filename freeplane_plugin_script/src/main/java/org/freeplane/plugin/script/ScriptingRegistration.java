@@ -250,9 +250,7 @@ class ScriptingRegistration {
 		});
 		final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();
 		for (File file : addonXmlFiles) {
-			BufferedInputStream inputStream = null;
-			try {
-				inputStream = new BufferedInputStream(new FileInputStream(file));
+			try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(file))){
 				final IXMLReader reader = new StdXMLReader(inputStream);
 				parser.setReader(reader);
 				final ScriptAddOnProperties addOn = new ScriptAddOnProperties((XMLElement) parser.parse());
@@ -261,9 +259,6 @@ class ScriptingRegistration {
 			}
 			catch (final Exception e) {
 				LogUtils.warn("error parsing " + file, e);
-			}
-			finally {
-				FileUtils.silentlyClose(inputStream);
 			}
 		}
 	}

@@ -68,18 +68,16 @@ public class ExportToOoWriter implements IExportEngine {
 	/**
 	 * @return true, if successful.
 	 */
-	private void applyXsltFile(final String xsltFileName, final StringWriter writer, final Result result)
-	        throws IOException {
+	private void applyXsltFile(final String xsltFileName, final StringWriter writer, final Result result) {
 		final URL xsltUrl = ResourceController.getResourceController().getResource(xsltFileName);
 		if (xsltUrl == null) {
 			LogUtils.severe("Can't find " + xsltFileName + " as resource.");
 			throw new IllegalArgumentException("Can't find " + xsltFileName + " as resource.");
 		}
-		final InputStream xsltStream = new BufferedInputStream(xsltUrl.openStream());
-		final Source xsltSource = new StreamSource(xsltStream);
-		try {
+		try (InputStream xsltStream = new BufferedInputStream(xsltUrl.openStream())){
 			final StringReader reader = new StringReader(writer.getBuffer().toString());
 			final TransformerFactory transFact = TransformerFactory.newInstance();
+			final Source xsltSource = new StreamSource(xsltStream);
 			final Transformer trans = transFact.newTransformer(xsltSource);
 			trans.transform(new StreamSource(reader), result);
 			return;
@@ -89,15 +87,11 @@ public class ExportToOoWriter implements IExportEngine {
 			LogUtils.warn(e);
 			return;
 		}
-		finally {
-			FileUtils.silentlyClose(xsltStream);
-		}
 	}
 
 
 	public void exportToOoWriter(List<NodeModel> branches, final File file) throws IOException {
-		final ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(file));
-		try {
+		try (final ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(file));){
 			final StringWriter writer = new StringWriter();
 			new BranchXmlWriter(branches).writeXml(writer, Mode.EXPORT);
 			final Result result = new StreamResult(zipout);
@@ -116,9 +110,6 @@ public class ExportToOoWriter implements IExportEngine {
 			zipout.putNextEntry(entry);
 			applyXsltFile("/xslt/export2oowriter.styles.xsl", writer, result);
 			zipout.closeEntry();
-		}
-		finally {
-			zipout.close();
 		}
 	}
 }

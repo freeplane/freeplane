@@ -155,12 +155,9 @@ class XHTMLWriter extends SHTMLWriter {
 	 *            Shell arguments
 	 */
 	public static void main(final String[] args) {
-		try {
-			final FileReader reader = new FileReader(args[0]);
-			final FileWriter writer = new FileWriter(args[1]);
+		try (final FileReader reader = new FileReader(args[0]);
+		        final FileWriter writer = new FileWriter(args[1]);){
 			XHTMLWriter.html2xhtml(reader, writer);
-			writer.close();
-			reader.close();
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);

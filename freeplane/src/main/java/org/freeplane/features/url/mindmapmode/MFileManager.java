@@ -95,7 +95,6 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.IMapInputStreamConverter;
-import org.freeplane.features.url.MapConversionException;
 import org.freeplane.features.url.MapVersionInterpreter;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLException;
@@ -513,22 +512,31 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	private NodeModel loadTreeImpl(final MapModel map, final File f) throws FileNotFoundException, IOException,
-	        XMLException, MapConversionException {
-		final BufferedInputStream file = new BufferedInputStream(new FileInputStream(f));
+	        XMLException {
 		int versionInfoLength = 1000;
 		final byte[] buffer = new byte[versionInfoLength];
-		final int readCount = file.read(buffer);
-		final String mapStart = new String(buffer, StandardCharsets.UTF_8.name());
-		final ByteArrayInputStream readBytes = new ByteArrayInputStream(buffer, 0, readCount);
-		final InputStream sequencedInput = new SequenceInputStream(readBytes, file);
-		Reader reader = null;
-		MapVersionInterpreter versionInterpreter = MapVersionInterpreter.getVersionInterpreter(mapStart);
-		map.addExtension(versionInterpreter);
-		if (versionInterpreter.anotherDialect) {
-			String message = versionInterpreter.getDialectInfo(f.getAbsolutePath());
-			UITools.showMessage(message, JOptionPane.WARNING_MESSAGE);
-		}
-		if (versionInterpreter.needsConversion) {
+        try (final BufferedInputStream file = new BufferedInputStream(new FileInputStream(f))) {
+            final int readCount = file.read(buffer);
+            final String mapStart = new String(buffer, StandardCharsets.UTF_8.name());
+            final ByteArrayInputStream readBytes = new ByteArrayInputStream(buffer, 0, readCount);
+            MapVersionInterpreter versionInterpreter = MapVersionInterpreter.getVersionInterpreter(mapStart);
+            map.addExtension(versionInterpreter);
+            if (versionInterpreter.anotherDialect) {
+                String message = versionInterpreter.getDialectInfo(f.getAbsolutePath());
+                UITools.showMessage(message, JOptionPane.WARNING_MESSAGE);
+            }
+            try (final InputStream sequencedInput = new SequenceInputStream(readBytes, file);
+                    Reader reader = openInputStream(f, sequencedInput, versionInterpreter)) {
+                return Controller.getCurrentModeController().getMapController().getMapReader()
+                    .createNodeTreeFromXml(map, reader, Mode.FILE);
+            }
+        }
+	}
+
+    private Reader openInputStream(final File file, final InputStream sequencedInput,
+            MapVersionInterpreter versionInterpreter) throws IOException, FileNotFoundException {
+        Reader reader;
+        if (versionInterpreter.needsConversion) {
 			final int showResult = OptionalDontShowMeAgainDialog.show("really_convert_to_current_version",
 			    "confirmation", MMapController.RESOURCES_CONVERT_TO_CURRENT_VERSION,
 			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
@@ -537,22 +545,14 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				reader = new InputStreamReader(sequencedInput, StandardCharsets.UTF_8);
 			}
 			else {
-				sequencedInput.close();
-				//reader = UrlManager.getUpdateReader(f, FREEPLANE_VERSION_UPDATER_XSLT);
-				reader = isConverter.getConvertedStream(f);
+				reader = isConverter.getConvertedStream(file);
 			}
 		}
 		else {
 			reader = new InputStreamReader(sequencedInput, StandardCharsets.UTF_8);
 		}
-		try {
-			return Controller.getCurrentModeController().getMapController().getMapReader()
-			    .createNodeTreeFromXml(map, reader, Mode.FILE);
-		}
-		finally {
-			FileUtils.silentlyClose(reader);
-		}
-	}
+        return reader;
+    }
 
 	/**@deprecated -- use LinkController*/
 	@Deprecated
@@ -859,9 +859,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	/**@deprecated -- use MMapIO*/
 	@Deprecated
 	public void writeToFile(final MapModel map, final File file) throws FileNotFoundException, IOException {
-		final FileOutputStream out = new FileOutputStream(file);
 		FileLock lock = null;
-		try {
+		try (final FileOutputStream out = new FileOutputStream(file)){
 			boolean lockedByOtherApplication = false;
 			try {
 				lock = out.getChannel().tryLock();
@@ -881,8 +880,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		finally {
 			if (lock != null && lock.isValid())
 				lock.release();
-			if (out != null)
-				out.close();
 		}
 	}
 

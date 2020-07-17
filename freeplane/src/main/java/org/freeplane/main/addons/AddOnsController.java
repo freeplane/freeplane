@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -73,18 +74,13 @@ public class AddOnsController {
 		}
 		final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();
 		for (File file : addonXmlFiles) {
-			BufferedInputStream inputStream = null;
-			try {
-				inputStream = new BufferedInputStream(new FileInputStream(file));
+			try (InputStream inputStream = new BufferedInputStream(new FileInputStream(file))){
 				final IXMLReader reader = new StdXMLReader(inputStream);
 				parser.setReader(reader);
 				registerInstalledAddOn(new AddOnProperties(AddOnType.PLUGIN, (XMLElement) parser.parse()));
 			}
 			catch (final Exception e) {
 				LogUtils.warn("error parsing " + file, e);
-			}
-			finally {
-				FileUtils.silentlyClose(inputStream);
 			}
 		}
 	}

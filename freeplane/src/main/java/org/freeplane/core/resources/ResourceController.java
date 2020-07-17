@@ -310,18 +310,13 @@ public abstract class ResourceController {
 	/** adds properties from url to properties. Existing properties in resultProps will be overridden.
 	 * @return false if anything went wrong. */
 	protected static boolean loadProperties(Properties resultProps, final URL url) {
-		InputStream in = null;
-		try {
-			in = new BufferedInputStream(url.openStream());
+		try (InputStream in = new BufferedInputStream(url.openStream()) ){
 			resultProps.load(in);
 			LogUtils.info("Loaded properties from " + url);
 			return true;
 		}
 		catch (final Exception ex) {
 			System.err.println("Could not load properties from " + url);
-		}
-		finally {
-			FileUtils.silentlyClose(in);
 		}
 		return false;
 	}

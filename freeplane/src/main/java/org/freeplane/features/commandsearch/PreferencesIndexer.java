@@ -59,14 +59,10 @@ class PreferencesIndexer
     }
 
     private void load() {
+        prefs = new LinkedList<>();
         URL preferences = resourceController.getResource("/xml/preferences.xml");
-
-        InputStreamReader reader = null;
-        try
+        try(InputStreamReader reader = new InputStreamReader(preferences.openStream(), StandardCharsets.UTF_8))
         {
-            prefs = new LinkedList<>();
-
-            reader = new InputStreamReader(preferences.openStream(), StandardCharsets.UTF_8);
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
             XMLEventReader eventReader = inputFactory.createXMLEventReader(reader);
             while (eventReader.hasNext()) {
@@ -85,10 +81,6 @@ class PreferencesIndexer
         catch (final javax.xml.stream.XMLStreamException|IOException e)
         {
             throw new RuntimeException(e);
-        }
-        finally
-        {
-            FileUtils.silentlyClose(reader);
         }
     }
 

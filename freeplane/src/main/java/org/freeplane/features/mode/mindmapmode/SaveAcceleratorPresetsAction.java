@@ -64,11 +64,11 @@ class SaveAcceleratorPresetsAction extends AFreeplaneAction {
 		}
 		try {
 			acceleratorsUserDirectory.mkdirs();
-			final OutputStream output = new BufferedOutputStream(new FileOutputStream(keysetFile));
-			final IUserInputListenerFactory userInputListenerFactory = Controller.getCurrentModeController()
-					.getUserInputListenerFactory();
-			ResourceController.getResourceController().getAcceleratorManager().storeAcceleratorPreset(output);
-			output.close();
+            final IUserInputListenerFactory userInputListenerFactory = Controller.getCurrentModeController()
+                    .getUserInputListenerFactory();
+			try (final OutputStream output = new BufferedOutputStream(new FileOutputStream(keysetFile))) {
+	            ResourceController.getResourceController().getAcceleratorManager().storeAcceleratorPreset(output);
+			}
 			userInputListenerFactory.rebuildMenus("load_accelerator_presets");
 		}
 		catch (final IOException e1) {

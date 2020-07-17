@@ -30,26 +30,18 @@ public class FileUtils {
 		final String path = resource.getPath();
 		final int index = path.lastIndexOf('/');
 		final String fileName = URLDecoder.decode(index > -1 ? path.substring(index + 1) : path);
-		InputStream in = null;
-		OutputStream out = null;
-		try {
-			in = resource.openStream();
-			out = new FileOutputStream(new File(destinationDirectory, fileName));
-			FileUtils.copyStream(in, out);
+		try (InputStream in = resource.openStream();
+		    OutputStream out = new FileOutputStream(new File(destinationDirectory, fileName))) {
+		        FileUtils.copyStream(in, out);
 		}
 		catch (final Exception e) {
 			LogUtils.severe("File not found or could not be copied. " + "Was searching for " + path
 			        + " and should go to " + destinationDirectory.getAbsolutePath());
 		}
-		finally {
-			FileUtils.silentlyClose(in, out);
-		}
 	}
 
 	public static void copyFromResource(final String path, final String fileName, final File destinationDirectory) {
 		final String pathToResource = path + fileName;
-		InputStream in = null;
-		OutputStream out = null;
 		try {
 			final URL resource;
 			if (pathToResource.startsWith("file:")) {
@@ -62,16 +54,14 @@ public class FileUtils {
 				LogUtils.severe("Cannot find resource: " + pathToResource);
 				return;
 			}
-			in = new BufferedInputStream(resource.openStream());
-			out = new FileOutputStream(new File(destinationDirectory, fileName));
-			FileUtils.copyStream(in, out);
+            try (InputStream in = new BufferedInputStream(resource.openStream());
+                    OutputStream out = new FileOutputStream(new File(destinationDirectory, fileName))) {
+                    FileUtils.copyStream(in, out);
+            }
 		}
 		catch (final Exception e) {
 			LogUtils.severe("File not found or could not be copied. " + "Was searching for " + pathToResource
 			        + " and should go to " + destinationDirectory.getAbsolutePath());
-		}
-		finally {
-			FileUtils.silentlyClose(in, out);
 		}
 	}
 
@@ -85,30 +75,8 @@ public class FileUtils {
 	}
 
 	public static void dumpStringToFile(final String string, final File outFile, String encoding) throws IOException {
-		FileOutputStream outStream = null;
-		OutputStreamWriter out = null;
-		try {
-			outStream = new FileOutputStream(outFile);
-			out = new OutputStreamWriter(outStream, encoding);
+        try (OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(outFile), encoding)){
 			out.write(string);
-		}
-		finally {
-			try {
-				if (out != null)
-					out.close();
-			}
-			catch (Exception e) {
-				// no rescue
-				e.printStackTrace();
-			}
-			try {
-				if (outStream != null)
-					outStream.close();
-			}
-			catch (Exception e) {
-				// no rescue
-				e.printStackTrace();
-			}
 		}
 	}
 
@@ -124,16 +92,11 @@ public class FileUtils {
 
 	public static Properties loadProperties(final String classpathRessource) {
 		final Properties props = new Properties();
-		InputStream in = null;
-		try {
-			in = FileUtils.class.getResource(classpathRessource).openStream();
+		try (InputStream in = FileUtils.class.getResource(classpathRessource).openStream()){
 			props.load(in);
 		}
 		catch (final IOException e) {
 			throw new RuntimeException(e);
-		}
-		finally {
-			FileUtils.silentlyClose(in);
 		}
 		return props;
 	}
@@ -152,16 +115,10 @@ public class FileUtils {
 
 	public static String slurpResource(final URL resource) throws IOException {
 		/* read the `resource` into s atring */
-		InputStream instream = null;
-		try {
-			instream = resource.openStream();
-			final BufferedReader input = new BufferedReader(new InputStreamReader(instream, StandardCharsets.UTF_8));
+		try (InputStream instream = resource.openStream()){
+			final BufferedReader input = new BufferedReader(new InputStreamReader(
+			            instream, StandardCharsets.UTF_8));
 			return slurp(input);
-		}
-		finally {
-			if (instream != null) {
-				instream.close();
-			}
 		}
 	}
 
@@ -182,15 +139,8 @@ public class FileUtils {
 	}
 
 	public static String slurpFile(final File file) throws IOException {
-		FileReader in = null;
-		try {
-			in = new FileReader(file);
+		try (FileReader in = new FileReader(file)){
 			return slurp(in);
-		}
-		finally {
-			if (in != null) {
-				in.close();
-			}
 		}
 	}
 
@@ -260,26 +210,15 @@ public class FileUtils {
 	 */
 	public static String readFile(final File pInputFile) {
 		final StringBuilder lines = new StringBuilder();
-		BufferedReader bufferedReader = null;
-		try {
-			bufferedReader = new BufferedReader(new FileReader(pInputFile));
+		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(pInputFile))){
 			final String endLine = System.getProperty("line.separator");
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
 				lines.append(line).append(endLine);
 			}
-			bufferedReader.close();
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);
-			if (bufferedReader != null) {
-				try {
-					bufferedReader.close();
-				}
-				catch (final Exception ex) {
-					LogUtils.severe(ex);
-				}
-			}
 			return null;
 		}
 		return lines.toString();
@@ -310,24 +249,11 @@ public class FileUtils {
 		}
 	}
 
-	/** to be used in a finally block. This method is null-safe. */
-	public static void silentlyClose(Closeable... streams) {
-		for (Closeable stream : streams) {
-			if (stream != null) {
-				try {
-					stream.close();
-				}
-				catch (IOException e) {
-					LogUtils.severe(e);
-				}
-			}
-		}
-	}
-
 	public static void copyFile(File in, File out) throws IOException {
-		FileChannel inChannel = new FileInputStream(in).getChannel();
-		FileChannel outChannel = new FileOutputStream(out).getChannel();
-		try {
+        try (   FileInputStream fileInputStream = new FileInputStream(in);
+                FileOutputStream fileOutputStream = new FileOutputStream(out);
+                FileChannel inChannel = fileInputStream.getChannel();
+		        FileChannel outChannel = fileOutputStream.getChannel()){
 			// inChannel.transferTo(0, inChannel.size(), outChannel);
 			// original -- apparently has trouble copying large files on Windows
 			// magic number for Windows, (64Mb - 32Kb)
@@ -336,14 +262,6 @@ public class FileUtils {
 			long position = 0;
 			while (position < size) {
 				position += inChannel.transferTo(position, maxCount, outChannel);
-			}
-		}
-		finally {
-			if (inChannel != null) {
-				inChannel.close();
-			}
-			if (outChannel != null) {
-				outChannel.close();
 			}
 		}
 	}

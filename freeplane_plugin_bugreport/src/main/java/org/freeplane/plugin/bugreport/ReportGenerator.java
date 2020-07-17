@@ -401,19 +401,18 @@ public class ReportGenerator extends StreamHandler {
 			final URL url = new URL(getBugTrackerUrl());
 			final URLConnection conn = url.openConnection();
 			conn.setDoOutput(true);
-			final OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8);
 			final String report = data.toString();
-			wr.write(report);
-			wr.flush();
-			// Get the response
-			final BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
-			final String line = rd.readLine();
-			if (line != null) {
-				System.out.println(line);
+			try (final OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), StandardCharsets.UTF_8)) {
+			    wr.write(report);
 			}
-			wr.close();
-			rd.close();
-			return line;
+			// Get the response
+			try (final BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
+			    final String line = rd.readLine();
+			    if (line != null) {
+			        System.out.println(line);
+			    }
+			    return line;
+			}
 		}
 		catch (final Exception e) {
 		}
