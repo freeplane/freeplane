@@ -89,7 +89,8 @@ import org.freeplane.features.styles.LogicalStyleController;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
-	private static final String RECENTLY_USED_ICONS_PROPERTY = "recently_used_icons";
+    private static final String RECENTLY_USED_ICONS_PROPERTY = "recently_used_icons";
+    private static final String USE_EMOJI_ICONS_PROPTERTY = "use_emoji_icons";
     private static final Insets ICON_SUBMENU_INSETS = new Insets(3, 0, 3, 0);
 	private static final ConditionPredicate DEPENDS_ON_ICON = new ConditionPredicate() {
 
@@ -120,9 +121,9 @@ public class MIconController extends IconController {
 		}
 
 		private void addIconGroup(final Entry target, final IconGroup group) {
-		    if (group.getIcons().size() < 1) {
+		    if (group.getIcons().size() < 1 
+		            || group.getName().equals(IconStore.EMOJI_GROUP) && ! areEmojiActionsEnabled())
 		        return;
-		    }
 		    final Entry item = new Entry();
 		    EntryAccessor entryAccessor = new EntryAccessor();
 		    entryAccessor.setIcon(item, group.getGroupIcon().getIcon());
@@ -462,13 +463,17 @@ public class MIconController extends IconController {
 		iconMenuBar.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		iconMenuBar.setLayout(new GridLayout(0, 1));
 		for (final IconGroup iconGroup : STORE.getGroups()) {
-		    if(isStructured || iconGroup.getName().equals(IconStore.EMOJI_GROUP))
+		    if(isStructured || iconGroup.getName().equals(IconStore.EMOJI_GROUP) && areEmojiActionsEnabled())
 			iconMenuBar.add(getSubmenu(iconGroup));
 		}
 		iconToolBar.add(iconMenuBar);
 	}
 
-	public void removeAllIcons(final NodeModel node) {
+	boolean areEmojiActionsEnabled() {
+	    return ResourceController.getResourceController().getBooleanProperty(USE_EMOJI_ICONS_PROPTERTY);
+    }
+
+    public void removeAllIcons(final NodeModel node) {
 		final int size = node.getIcons().size();
 		final MIconController iconController = (MIconController) IconController.getController();
 		for (int i = 0; i < size; i++) {
