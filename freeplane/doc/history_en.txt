@@ -2,6 +2,7 @@
 1.8.7
 ===============================
 Search in menus and preferences
+Remove emoji icons from menus and toolbar by user preference
 
 ===============================
 1.8.6
