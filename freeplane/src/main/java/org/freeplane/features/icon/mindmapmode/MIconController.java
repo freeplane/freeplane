@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.swing.Action;
 import javax.swing.Box;
@@ -66,6 +67,7 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.icon.EmojiIcon;
 import org.freeplane.features.icon.IconContainedCondition;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconDescription;
@@ -330,7 +332,7 @@ public class MIconController extends IconController {
 		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
 		final List<AFreeplaneAction> actions = new ArrayList<AFreeplaneAction>();
-		actions.addAll(iconActions.values());
+		actions.addAll(getIconActions());
 		actions.add(modeController.getAction("RemoveIcon_0_Action"));
 		actions.add(modeController.getAction("RemoveIconAction"));
 		actions.add(modeController.getAction("RemoveAllIconsAction"));
@@ -350,7 +352,12 @@ public class MIconController extends IconController {
 	}
 
 	public Collection<AFreeplaneAction> getIconActions() {
-		return Collections.unmodifiableCollection(iconActions.values());
+	    if(areEmojiActionsEnabled())
+	        return Collections.unmodifiableCollection(iconActions.values());
+	    else
+	        return iconActions.values().stream()
+	                .filter(action -> ((IconAction) action).getMindIcon().isShownOnToolbar())
+                    .collect(Collectors.toList());
 	}
 
 	/**
@@ -463,7 +470,8 @@ public class MIconController extends IconController {
 		iconMenuBar.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		iconMenuBar.setLayout(new GridLayout(0, 1));
 		for (final IconGroup iconGroup : STORE.getGroups()) {
-		    if(isStructured || iconGroup.getName().equals(IconStore.EMOJI_GROUP) && areEmojiActionsEnabled())
+		    if(isStructured && (! iconGroup.getName().equals(IconStore.EMOJI_GROUP) || areEmojiActionsEnabled())
+		            || iconGroup.getName().equals(IconStore.EMOJI_GROUP) && areEmojiActionsEnabled())
 			iconMenuBar.add(getSubmenu(iconGroup));
 		}
 		iconToolBar.add(iconMenuBar);
