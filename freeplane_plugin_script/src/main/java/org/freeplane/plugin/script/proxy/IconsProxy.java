@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.freeplane.api.IconsRO;
 import org.freeplane.features.icon.IconController;
-import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;

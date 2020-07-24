@@ -3,7 +3,6 @@ package org.freeplane.plugin.script.filter;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 
 import javax.swing.JComponent;
