@@ -428,7 +428,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			actionEntry.setName(modesMenuAction.getKey());
 			final ModeController modeController = controller.getModeController();
 			if (modeController != null && modeController.getModeName().equals(key)) {
-				actionEntry.setAttribute("selected", true);
+			    modesMenuAction.setSelected(true);
 			}
 			modesMenuEntry.addChild(actionEntry);
 			ResourceController.getResourceController().getProperty(("keystroke_mode_" + key));
@@ -453,7 +453,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final MapView currentMapView = (MapView) mapViewManager.getMapViewComponent();
 			if (currentMapView != null) {
 				if (mapView == currentMapView) {
-					actionEntry.setAttribute("selected", true);
+					action.setSelected(true);
 				}
 			}
 			mapsMenuEntry.addChild(actionEntry);

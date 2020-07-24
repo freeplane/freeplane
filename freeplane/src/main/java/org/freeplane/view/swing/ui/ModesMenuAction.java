@@ -22,9 +22,11 @@ package org.freeplane.view.swing.ui;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.features.mode.Controller;
 
+@SelectableAction
 class ModesMenuAction extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
 	private final String mode;
