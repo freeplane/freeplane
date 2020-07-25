@@ -172,6 +172,7 @@ class ScriptingRegistration {
 		registerScriptAddOns();
 		new ScriptingConfiguration();
 		new ScriptCompiler().compileScriptsOnPath(ScriptResources.getClasspath());
+		new CompiledScriptCleaner().removeOutdatedCompiledScripts();
 		if(! GraphicsEnvironment.isHeadless()){
 			registerGuiStuff(modeController);
 			createUserScriptsDirectory();

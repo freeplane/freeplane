@@ -35,7 +35,7 @@ import javax.xml.stream.events.XMLEvent;
 import org.freeplane.core.util.LogUtils;
 
 
-class CompiledFiles {
+class PrecompiledClasses {
 	private static final String FILE = "file";
 	private static final String COMPILED_FILES = "compiledFiles";
 	private static final String UTF_8 = "utf-8";
@@ -49,13 +49,13 @@ class CompiledFiles {
 		}
 	}
 	
-	CompiledFiles(long compilationTime, Set<String> filePaths) {
+	PrecompiledClasses(long compilationTime, Set<String> filePaths) {
 		super();
 		this.compilationTime = compilationTime;
 		this.filePaths = filePaths;
 	}
 
-	CompiledFiles(long compilationTime) {
+	PrecompiledClasses(long compilationTime) {
 		this.compilationTime = compilationTime;
 		this.filePaths = new HashSet<>();
 	}
@@ -132,7 +132,7 @@ class CompiledFiles {
 
 	}
 
-	static CompiledFiles readThrowExceptions(XMLEventReader eventReader) throws XMLStreamException {
+	static PrecompiledClasses readThrowExceptions(XMLEventReader eventReader) throws XMLStreamException {
 		long compilationTime = 0;
 		Set<String> files = new HashSet<>();
 		
@@ -167,10 +167,10 @@ class CompiledFiles {
             }
 		}
 		
-		return new CompiledFiles(compilationTime, files);
+		return new PrecompiledClasses(compilationTime, files);
 	}
 
-	public static CompiledFiles read(File input) {
+	public static PrecompiledClasses read(File input) {
 		try {
 			return readThrowExceptions(input);
 		}
@@ -182,11 +182,11 @@ class CompiledFiles {
 		catch (Exception e) {
 			LogUtils.severe(e);
 		}
-		return new CompiledFiles(0, Collections.<String>emptySet());
+		return new PrecompiledClasses(0, Collections.<String>emptySet());
 	}
 
 
-	public static CompiledFiles readThrowExceptions(File input) throws XMLStreamException, IOException {
+	public static PrecompiledClasses readThrowExceptions(File input) throws XMLStreamException, IOException {
         try (Reader in = new BufferedReader(new InputStreamReader(new FileInputStream(input), UTF_8))) {
         	XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         	XMLEventReader eventReader = inputFactory.createXMLEventReader(in);

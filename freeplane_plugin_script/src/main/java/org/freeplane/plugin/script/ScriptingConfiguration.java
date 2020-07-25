@@ -21,7 +21,12 @@ package org.freeplane.plugin.script;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -49,15 +54,22 @@ import org.freeplane.plugin.script.addons.ScriptAddOnProperties;
  */
 class ScriptingConfiguration {
 
-	private static final String JAR_REGEX = ".+\\.jar$";
     private static Map<String, Object> staticProperties = createStaticProperties();
+    
+    final static private FilenameFilter JAR_FILE_FILTER = new FilenameFilter() {
+        @Override
+        public boolean accept(final File dir, final String name) {
+            return name.endsWith(".jar");
+        }
+    };
 
 	ScriptingConfiguration() {
-	    ScriptResources.setClasspath(buildClasspath());
+	    ArrayList<String> classpath = buildClasspath();
+        ScriptResources.setClasspath(classpath);
 		addPluginDefaults();
 	}
 
-	private void addPluginDefaults() {
+ 	private void addPluginDefaults() {
 		final URL defaults = this.getClass().getResource(ResourceController.PLUGIN_DEFAULTS_RESOURCE);
 		if (defaults == null)
 			throw new RuntimeException("cannot open " + ResourceController.PLUGIN_DEFAULTS_RESOURCE);
@@ -88,19 +100,9 @@ class ScriptingConfiguration {
 		}
 		return file;
 	}
-
-	private FilenameFilter createFilenameFilter(final String regexp) {
-		final FilenameFilter filter = new FilenameFilter() {
-			@Override
-			public boolean accept(final File dir, final String name) {
-				return name.matches(regexp);
-			}
-		};
-		return filter;
-	}
 	private ArrayList<String> buildClasspath() {
 	    final ArrayList<String> classpath = new ArrayList<String>();
-	    classpath.add(ScriptResources.getCompiledScriptsDir().getAbsolutePath());
+	    classpath.add(ScriptResources.getPrecompiledScriptsDir().getAbsolutePath());
 	    addClasspathForAddOns(classpath);
         addClasspathForConfiguredEntries(classpath);
         return classpath;
@@ -145,7 +147,7 @@ class ScriptingConfiguration {
         }
         else if (file.isDirectory()) {
             classpath.add(file.getAbsolutePath());
-            for (final File jar : file.listFiles(createFilenameFilter(JAR_REGEX))) {
+            for (final File jar : file.listFiles(JAR_FILE_FILTER)) {
                 classpath.add(jar.getAbsolutePath());
             }
         }
@@ -158,7 +160,7 @@ class ScriptingConfiguration {
 		return ScriptResources.getClasspath();
 	}
 
-	public static Map<String, Object> getStaticProperties() {
+    public static Map<String, Object> getStaticProperties() {
         return staticProperties;
     }
 

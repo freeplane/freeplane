@@ -26,7 +26,7 @@ public class ScriptCompiler {
 	private static final String COMPILE_ONLY_CHANGED_SCRIPT_FILES = "compile_only_changed_script_files";
 	private final CompilerConfiguration compilerConfiguration;
 	private final GroovyClassLoader compilerClassLoader;
-	private CompiledFiles oldCompiledFiles;
+	private PrecompiledClasses oldCompiledFiles;
 	private boolean compileOnlyChangedScriptFiles;
 
 
@@ -39,7 +39,7 @@ public class ScriptCompiler {
 
 	CompilerConfiguration createCompilerConfiguration() {
 		final CompilerConfiguration configuration = GroovyScript.createCompilerConfiguration();
-		final File compiledScriptsDir = ScriptResources.getCompiledScriptsDir();
+		final File compiledScriptsDir = ScriptResources.getPrecompiledScriptsDir();
 		compiledScriptsDir.mkdirs();
 		configuration.setTargetDirectory(compiledScriptsDir);
 		Map<String, Object> jointOptions = new HashMap<>();
@@ -48,14 +48,14 @@ public class ScriptCompiler {
 	}
 
 	public  void compileScriptsOnPath(List<String> pathElements) {
-		CompiledFiles newCompiledFiles = new CompiledFiles(System.currentTimeMillis());
-        File compiledScriptsDir = ScriptResources.getCompiledScriptsDir();
-		final File compiledScriptListFile = compiledScriptListFile(compiledScriptsDir);
-		oldCompiledFiles = CompiledFiles.read(compiledScriptListFile);
+		PrecompiledClasses newCompiledFiles = new PrecompiledClasses(System.currentTimeMillis());
+        File precompiledScriptsDir = ScriptResources.getPrecompiledScriptsDir();
+		final File compiledScriptListFile = compiledScriptListFile(precompiledScriptsDir);
+		oldCompiledFiles = PrecompiledClasses.read(compiledScriptListFile);
         compileOnlyChangedScriptFiles = ResourceController.getResourceController().getBooleanProperty(COMPILE_ONLY_CHANGED_SCRIPT_FILES);
         for (String pathElement : pathElements) {
             final File dir = new File(pathElement);
-            if (dir.isDirectory() && ! compiledScriptsDir.equals(dir)) {
+            if (dir.isDirectory() && ! precompiledScriptsDir.equals(dir)) {
 				final Collection<File> compiledScripts = compileScriptsInDirectory(dir);
 				newCompiledFiles.addAll(compiledScripts);
 			}
