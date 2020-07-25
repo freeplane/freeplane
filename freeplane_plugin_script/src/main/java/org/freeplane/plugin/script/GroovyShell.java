@@ -149,18 +149,25 @@ class GroovyShell extends GroovyObjectSupport {
                 LogUtils.warn(e);
             }
         }
-        config.setTargetDirectory(classes);
-        long time = System.currentTimeMillis();
-        Class parsedClass = loader.parseClass(codeSource, false);
-        Properties properties = new Properties();
-        properties.setProperty("class", parsedClass.getName());
-        properties.setProperty("time", Long.toString(time));
-        properties.setProperty("source", codeSource.getFile().getAbsolutePath());
-        try (FileOutputStream out = new FileOutputStream(propertyFile)){
-            properties.store(out, "");
-        } catch (IOException e) {
+        File sourceFile = codeSource.getFile();
+        if(sourceFile != null) {
+            config.setTargetDirectory(classes);
+            long time = System.currentTimeMillis();
+            Class parsedClass = loader.parseClass(codeSource, false);
+            Properties properties = new Properties();
+            properties.setProperty("class", parsedClass.getName());
+            properties.setProperty("time", Long.toString(time));
+            properties.setProperty("source", sourceFile.getAbsolutePath());
+            try (FileOutputStream out = new FileOutputStream(propertyFile)){
+                properties.store(out, "");
+            } catch (IOException e) {
+            }
+            return parsedClass;
         }
-        return parsedClass;
+        else {
+            Class parsedClass = loader.parseClass(codeSource, false);
+            return parsedClass;
+        }
     }
 
     /**

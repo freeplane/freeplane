@@ -44,8 +44,10 @@ class CompiledScriptCleaner {
 
     private long lastDependencyModificationTime = calculateLastDependencyModificationTime();
     void removeOutdatedCompiledScripts() {
-        Stream.of(ScriptResources.getCompiledScriptsDir().listFiles())
-            .forEach(this::removeOutdated);
+        File[] cacheDirectories = ScriptResources.getCompiledScriptsDir().listFiles();
+        if(cacheDirectories != null)
+            Stream.of(cacheDirectories)
+                .forEach(this::removeOutdated);
     }
     
     private void removeOutdated(File cache) {
