@@ -52,7 +52,7 @@ public class ScriptCompiler {
         File precompiledScriptsDir = ScriptResources.getPrecompiledScriptsDir();
 		final File compiledScriptListFile = compiledScriptListFile(precompiledScriptsDir);
 		oldCompiledFiles = PrecompiledClasses.read(compiledScriptListFile);
-        compileOnlyChangedScriptFiles = ResourceController.getResourceController().getBooleanProperty(COMPILE_ONLY_CHANGED_SCRIPT_FILES);
+        compileOnlyChangedScriptFiles = compilesOnlyChangedScriptFiles();
         for (String pathElement : pathElements) {
             final File dir = new File(pathElement);
             if (dir.isDirectory() && ! precompiledScriptsDir.equals(dir)) {
@@ -62,6 +62,10 @@ public class ScriptCompiler {
         }
         oldCompiledFiles = null;
 		newCompiledFiles.write(compiledScriptListFile);
+    }
+
+    static boolean compilesOnlyChangedScriptFiles() {
+        return ResourceController.getResourceController().getBooleanProperty(COMPILE_ONLY_CHANGED_SCRIPT_FILES);
     }
 
 	private  Collection<File> compileScriptsInDirectory(File dir) {

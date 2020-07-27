@@ -38,6 +38,7 @@ import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.codehaus.groovy.runtime.EncodingGroovyMethods;
 import org.codehaus.groovy.runtime.InvokerHelper;
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 
 import groovy.lang.Binding;
@@ -110,32 +111,42 @@ class GroovyShell extends GroovyObjectSupport {
     /**
      * Parses the groovy code contained in codeSource and returns a java class.
      */
-    private Class parseClass(final GroovyCodeSource codeSource) throws CompilationFailedException {
-        // Don't cache scripts
+    private Class loadClass(final GroovyCodeSource codeSource) throws CompilationFailedException {
+        if(ScriptCompiler.compilesOnlyChangedScriptFiles()) {
+            return parseAndCache(codeSource);
+        }
+        else
+            return parseClass(codeSource);
+    }
+
+
+    private Class parseClass(final GroovyCodeSource codeSource) {
+        GroovyClassLoader loader = createClassLoader();
+        Class parsedClass = loader.parseClass(codeSource, false);
+        return parsedClass;
+    }
+
+
+    private Class parseAndCache(final GroovyCodeSource codeSource) {
         String md5;
         try {
             md5 = EncodingGroovyMethods.md5(codeSource.getName());
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-        GroovyClassLoader loader = AccessController.doPrivileged(new PrivilegedAction<GroovyClassLoader>() {
-            @Override
-            public GroovyClassLoader run() {
-                return new MyGroovyClassLoader(parentLoader, config);
-            }
-        });
         File cache = new File(ScriptResources.getCompiledScriptsDir(), md5);
         File propertyFile = new File(cache, "compiled.properties");
         File classes = new File(cache, "classes");
         if (propertyFile.exists() && classes.exists()) {
-            Properties properties = new Properties();
             try (InputStream in = new FileInputStream(propertyFile)) {
+                Properties properties = new Properties();
                 properties.load(in);
                 long compileTime = Long.parseLong(properties.getProperty("time"));
                 String source = properties.getProperty("source");
                 File sourceFile = new File(source);
                 if(sourceFile.canRead() && sourceFile.lastModified()< compileTime) {
                     String className = properties.getProperty("class");
+                    GroovyClassLoader loader = createClassLoader();
                     loader.addURL(ScriptClassLoader.pathToUrl(classes));
                     return loader.loadClass(className);
                 }
@@ -153,21 +164,31 @@ class GroovyShell extends GroovyObjectSupport {
         if(sourceFile != null) {
             config.setTargetDirectory(classes);
             long time = System.currentTimeMillis();
+            GroovyClassLoader loader = createClassLoader();
             Class parsedClass = loader.parseClass(codeSource, false);
-            Properties properties = new Properties();
-            properties.setProperty("class", parsedClass.getName());
-            properties.setProperty("time", Long.toString(time));
-            properties.setProperty("source", sourceFile.getAbsolutePath());
             try (FileOutputStream out = new FileOutputStream(propertyFile)){
+                Properties properties = new Properties();
+                properties.setProperty("class", parsedClass.getName());
+                properties.setProperty("time", Long.toString(time));
+                properties.setProperty("source", sourceFile.getAbsolutePath());
                 properties.store(out, "");
             } catch (IOException e) {
             }
             return parsedClass;
         }
-        else {
-            Class parsedClass = loader.parseClass(codeSource, false);
-            return parsedClass;
-        }
+        else
+            return parseClass(codeSource);
+    }
+
+
+    private GroovyClassLoader createClassLoader() {
+        GroovyClassLoader loader = AccessController.doPrivileged(new PrivilegedAction<GroovyClassLoader>() {
+            @Override
+            public GroovyClassLoader run() {
+                return new MyGroovyClassLoader(parentLoader, config);
+            }
+        });
+        return loader;
     }
 
     /**
@@ -179,7 +200,7 @@ class GroovyShell extends GroovyObjectSupport {
      * @return ready to run script
      */
     private Script parse(final GroovyCodeSource codeSource) throws CompilationFailedException {
-        return InvokerHelper.createScript(parseClass(codeSource), binding);
+        return InvokerHelper.createScript(loadClass(codeSource), binding);
     }
 
     /**
@@ -230,17 +251,17 @@ class MyGroovyClassLoader extends GroovyClassLoader {
         }
     }
 
+
+    MyGroovyClassLoader(final ClassLoader loader, final CompilerConfiguration config) {
+        super(loader, config);
+    }
+
     @Override
     protected PermissionCollection getPermissions(final CodeSource codeSource) {
         final PermissionCollection perms = new Permissions();
         perms.setReadOnly();
         return perms;
     }
-
-    MyGroovyClassLoader(final ClassLoader loader, final CompilerConfiguration config) {
-        super(loader, config);
-    }
-
     /**
      * creates a ClassCollector for a new compilation.
      *

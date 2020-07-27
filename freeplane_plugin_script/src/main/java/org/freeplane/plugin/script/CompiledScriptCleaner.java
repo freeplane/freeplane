@@ -15,15 +15,15 @@ import org.apache.commons.io.FileUtils;
 import org.freeplane.core.util.LogUtils;
 
 class CompiledScriptCleaner {
-    private static long calculateLastDependencyModificationTime() {
+    private long calculateLastDependencyModificationTime() {
         long lastModificationTime = ScriptResources.getClasspath().stream()
             .map(File::new)
-            .mapToLong(CompiledScriptCleaner::calculateLastDependencyModificationTime)
+            .mapToLong(this::calculateLastDependencyModificationTime)
             .reduce(0, Long::max);
         return lastModificationTime;
     }
     
-    private static long calculateLastDependencyModificationTime(File f) {
+    private long calculateLastDependencyModificationTime(File f) {
         if(f.isDirectory()) {
             try {
                 return Files.walk(Paths.get(f.toURI()), FileVisitOption.FOLLOW_LINKS)
@@ -41,16 +41,26 @@ class CompiledScriptCleaner {
             return 0;
         
     }
-
-    private long lastDependencyModificationTime = calculateLastDependencyModificationTime();
+    
     void removeOutdatedCompiledScripts() {
-        File[] cacheDirectories = ScriptResources.getCompiledScriptsDir().listFiles();
-        if(cacheDirectories != null)
-            Stream.of(cacheDirectories)
-                .forEach(this::removeOutdated);
+        File compiledScriptsDir = ScriptResources.getCompiledScriptsDir();
+        if(ScriptCompiler.compilesOnlyChangedScriptFiles()) {
+            File[] cacheDirectories = compiledScriptsDir.listFiles();
+            if(cacheDirectories != null) {
+                long lastDependencyModificationTime = calculateLastDependencyModificationTime();
+                Stream.of(cacheDirectories)
+                    .forEach(cache -> removeOutdated(cache, lastDependencyModificationTime));
+            }
+        } else {
+            try {
+                FileUtils.deleteDirectory(compiledScriptsDir);
+            } catch (IOException e) {
+                LogUtils.warn(e);
+            }
+        }
     }
     
-    private void removeOutdated(File cache) {
+    private void removeOutdated(File cache, long lastDependencyModificationTime) {
         File propertyFile = new File(cache, "compiled.properties");
         File classes = new File(cache, "classes");
         if (propertyFile.exists() && classes.exists()) {
