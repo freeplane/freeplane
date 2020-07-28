@@ -3,6 +3,7 @@
 ===============================
 Search in menus and preferences
 Remove emoji icons from menus and toolbar by user preference
+Cache compiled scripts
 
 ===============================
 1.8.6
