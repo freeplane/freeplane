@@ -24,10 +24,12 @@ class CompiledScriptCleaner {
     }
     
     private long calculateLastDependencyModificationTime(File f) {
+        final long lastModificationTime;
         if(f.isDirectory()) {
             try {
-                return Files.walk(Paths.get(f.toURI()), FileVisitOption.FOLLOW_LINKS)
-                .filter(path -> path.endsWith(".class"))
+                lastModificationTime = Files.walk(Paths.get(f.toURI()), FileVisitOption.FOLLOW_LINKS)
+                .filter(path -> 
+                    path.getFileName().toString().endsWith(".class"))
                 .map(Path::toFile)
                 .mapToLong(File::lastModified)
                 .reduce(0, Long::max);
@@ -36,10 +38,10 @@ class CompiledScriptCleaner {
             }
         }
         else if(f.getName().endsWith(".jar"))
-                return f.lastModified();
+            lastModificationTime = f.lastModified();
         else
-            return 0;
-        
+            lastModificationTime = 0;
+        return lastModificationTime;
     }
     
     void removeOutdatedCompiledScripts() {
@@ -62,8 +64,7 @@ class CompiledScriptCleaner {
     
     private void removeOutdated(File cache, long lastDependencyModificationTime) {
         File propertyFile = new File(cache, "compiled.properties");
-        File classes = new File(cache, "classes");
-        if (propertyFile.exists() && classes.exists()) {
+        if (propertyFile.exists()) {
             Properties properties = new Properties();
             try (InputStream in = new FileInputStream(propertyFile)) {
                 properties.load(in);
@@ -71,7 +72,7 @@ class CompiledScriptCleaner {
                 String source = properties.getProperty("source");
                 File sourceFile = new File(source);
                 if(! sourceFile.canRead() 
-                        || lastDependencyModificationTime > sourceFile.lastModified()
+                        || lastDependencyModificationTime >= compileTime
                         || sourceFile.lastModified() >= compileTime) {
                     FileUtils.deleteDirectory(cache);
                 }

@@ -162,6 +162,7 @@ class GroovyShell extends GroovyObjectSupport {
         }
         File sourceFile = codeSource.getFile();
         if(sourceFile != null) {
+            classes.mkdirs();
             config.setTargetDirectory(classes);
             long time = System.currentTimeMillis();
             GroovyClassLoader loader = createClassLoader();
@@ -173,6 +174,7 @@ class GroovyShell extends GroovyObjectSupport {
                 properties.setProperty("source", sourceFile.getAbsolutePath());
                 properties.store(out, "");
             } catch (IOException e) {
+                LogUtils.warn(e);
             }
             return parsedClass;
         }
