@@ -27,6 +27,7 @@ import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -316,10 +317,11 @@ public class MLogicalStyleController extends LogicalStyleController {
 			}
 			actions.clear();
 			final NodeModel rootNode = extension.getStyleMap().getRootNode();
-			final AssignStyleAction resetAction = new AssignStyleAction(null);
-			modeController.addActionIfNotAlreadySet(resetAction);
-			actions.add(resetAction);
-			new EntryAccessor().addChildAction(target, resetAction);
+            AssignStyleAction resetAction = new AssignStyleAction(null);
+            final AssignStyleAction action =  (AssignStyleAction) modeController.addActionIfNotAlreadySet(resetAction);
+            if(resetAction == action)
+                actions.add(resetAction);
+			new EntryAccessor().addChildAction(target, action);
 			addStyleMenu(target, rootNode, extension);
 		}
 
@@ -335,9 +337,10 @@ public class MLogicalStyleController extends LogicalStyleController {
 					if (userObject instanceof IStyle) {
 						final IStyle style = (IStyle) userObject;
 						if (null != extension.getStyleNode(style)) {
-							final AssignStyleAction action = new AssignStyleAction(style);
-							modeController.addActionIfNotAlreadySet(action);
-							actions.add(action);
+							AssignStyleAction newAction = new AssignStyleAction(style);
+                            final AssignStyleAction action =  (AssignStyleAction) modeController.addActionIfNotAlreadySet(newAction);
+                            if(newAction == action)
+                                actions.add(newAction);
 							entryAccessor.addChildAction(target, action);
 						}
 					}

@@ -61,9 +61,14 @@ public class AController {
 		}
 	}
 
-	public void addActionIfNotAlreadySet(AFreeplaneAction action) {
-		if(getAction(action.getKey())== null) 
-			addAction(action);
+	public AFreeplaneAction addActionIfNotAlreadySet(AFreeplaneAction action) {
+		AFreeplaneAction existingAction = getAction(action.getKey());
+        if(existingAction== null) {
+            addAction(action);
+            return action;
+        } else {
+            return existingAction;
+        }
 	}
 	
 	public AFreeplaneAction getAction(final String key) {

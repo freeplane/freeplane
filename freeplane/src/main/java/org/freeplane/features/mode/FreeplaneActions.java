@@ -7,5 +7,5 @@ public interface FreeplaneActions {
 	public AFreeplaneAction getAction(final String key);
 	AFreeplaneAction removeActionIfSet(final String key);
 	AFreeplaneAction removeAction(final String key);
-	void addActionIfNotAlreadySet(AFreeplaneAction action);
+	AFreeplaneAction addActionIfNotAlreadySet(AFreeplaneAction action);
 }

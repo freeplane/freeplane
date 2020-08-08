@@ -183,7 +183,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
 	@Override
-	public void removeAction(FreeplaneActions freeplaneActions, AFreeplaneAction action) {
+	public void removeActionAccelerator(FreeplaneActions freeplaneActions, AFreeplaneAction action) {
 		final KeyStroke oldKeystroke = removeAccelerator(action);
 		fireAcceleratorChanged(freeplaneActions, action, oldKeystroke, null);
 	}
