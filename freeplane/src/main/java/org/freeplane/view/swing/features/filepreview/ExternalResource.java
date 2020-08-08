@@ -3,10 +3,11 @@ package org.freeplane.view.swing.features.filepreview;
 import java.awt.Dimension;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.swing.JComponent;
+
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
@@ -19,7 +20,7 @@ public class ExternalResource implements IExtension {
 	public ExternalResource(URI uri) {
 		if(uri == null)
 			throw new NullPointerException();
-		viewers = new HashSet<NodeView>();
+		viewers = new LinkedHashSet<NodeView>();
 		this.uri = uri;
 	}
 
