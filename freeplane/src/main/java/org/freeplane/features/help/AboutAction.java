@@ -36,6 +36,7 @@ import javax.swing.SwingConstants;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.HtmlUtils;
@@ -103,4 +104,8 @@ class AboutAction extends AFreeplaneAction {
 		} catch (URISyntaxException e1) {
 		}
 	}
+
+    @Override
+    public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+    }
 }
