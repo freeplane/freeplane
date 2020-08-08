@@ -35,9 +35,6 @@ import org.freeplane.features.map.NodeModel;
  * @author foltin
  */
 public class ScriptingEngine {
-	static {
-		System.getProperties().putIfAbsent("nashorn.args", "--no-deprecation-warning");
-	}
 	public static final String SCRIPT_PREFIX = "script";
 	// need a File for caching! Scripts from String have to be cached elsewhere
     private static Map<File, IScript> fileScripts = new ConcurrentHashMap<File, IScript>();
