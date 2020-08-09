@@ -40,6 +40,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
@@ -171,8 +172,8 @@ class ScriptingRegistration {
 		});
 		registerScriptAddOns();
 		new ScriptingConfiguration();
-		new ScriptCompiler().compileScriptsOnPath(ScriptResources.getClasspath());
-		new CompiledScriptCleaner().removeOutdatedCompiledScripts();
+		ScriptCompiler scriptCompiler = new ScriptCompiler();
+        scriptCompiler.compileScriptsOnPath(ScriptResources.getClasspath());
 		if(! GraphicsEnvironment.isHeadless()){
 			registerGuiStuff(modeController);
 			createUserScriptsDirectory();

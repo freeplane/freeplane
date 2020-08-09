@@ -44,9 +44,9 @@ class CompiledScriptCleaner {
         return lastModificationTime;
     }
     
-    void removeOutdatedCompiledScripts() {
+    void removeOutdatedCompiledScripts(boolean compileOnlyChangedScriptFiles) {
         File compiledScriptsDir = ScriptResources.getCompiledScriptsDir();
-        if(ScriptCompiler.compilesOnlyChangedScriptFiles()) {
+        if(compileOnlyChangedScriptFiles) {
             File[] cacheDirectories = compiledScriptsDir.listFiles();
             if(cacheDirectories != null) {
                 long lastDependencyModificationTime = calculateLastDependencyModificationTime();

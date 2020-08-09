@@ -15,44 +15,60 @@ import org.codehaus.groovy.runtime.DefaultGroovyStaticMethods;
 import org.codehaus.groovy.tools.FileSystemCompiler;
 import org.codehaus.groovy.tools.javac.JavaAwareCompilationUnit;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 
 import groovy.lang.GroovyClassLoader;
 
-public class ScriptCompiler {
+class ScriptCompiler {
     private static final String GROOVY = "groovy";
     private static final String JAVA = "java";
 	private static final String COMPILED_SCRIPTS_FILE = ".compiledscripts";
+	private static final String LAST_JAVA_COMPILER_VERSION = "last_java_compiler_version";
 	private static final String COMPILE_ONLY_CHANGED_SCRIPT_FILES = "compile_only_changed_script_files";
+
+	private static boolean isCurrentJavaVersionCompatibleWithCachedClassFiles() {
+	    String lastJavaVersion = ResourceController.getResourceController().getProperty(LAST_JAVA_COMPILER_VERSION, null);
+	    return lastJavaVersion != null && Compat.JAVA_VERSION.compareTo(lastJavaVersion) >= 0;
+	}
+
+	private static CompilerConfiguration createCompilerConfiguration() {
+	    final CompilerConfiguration configuration = GroovyScript.createCompilerConfiguration();
+	    final File compiledScriptsDir = ScriptResources.getPrecompiledScriptsDir();
+	    compiledScriptsDir.mkdirs();
+	    configuration.setTargetDirectory(compiledScriptsDir);
+	    Map<String, Object> jointOptions = new HashMap<>();
+	    configuration.setJointCompilationOptions(jointOptions);
+	    return configuration;
+	}
+
+
+	
 	private final CompilerConfiguration compilerConfiguration;
 	private final GroovyClassLoader compilerClassLoader;
 	private PrecompiledClasses oldCompiledFiles;
-	private boolean compileOnlyChangedScriptFiles;
+	private final boolean compileOnlyChangedScriptFiles;
 
 
 
-	public ScriptCompiler() {
+	ScriptCompiler() {
 		final ScriptClassLoader scriptClassLoader = ScriptClassLoader.createClassLoader();
 		compilerClassLoader = new GroovyClassLoader(scriptClassLoader);
 		compilerConfiguration = createCompilerConfiguration();
+		compileOnlyChangedScriptFiles = isCurrentJavaVersionCompatibleWithCachedClassFiles() && compilesOnlyChangedScriptFiles();
 	}
 
-	CompilerConfiguration createCompilerConfiguration() {
-		final CompilerConfiguration configuration = GroovyScript.createCompilerConfiguration();
-		final File compiledScriptsDir = ScriptResources.getPrecompiledScriptsDir();
-		compiledScriptsDir.mkdirs();
-		configuration.setTargetDirectory(compiledScriptsDir);
-		Map<String, Object> jointOptions = new HashMap<>();
-		configuration.setJointCompilationOptions(jointOptions);
-		return configuration;
-	}
+	 void compileScriptsOnPath(List<String> pathElements) {
+		compileLibraryScripts(pathElements);
+        new CompiledScriptCleaner().removeOutdatedCompiledScripts(compileOnlyChangedScriptFiles);
+        ResourceController.getResourceController().setProperty(LAST_JAVA_COMPILER_VERSION, Compat.JAVA_VERSION);
+    }
 
-	public  void compileScriptsOnPath(List<String> pathElements) {
-		PrecompiledClasses newCompiledFiles = new PrecompiledClasses(System.currentTimeMillis());
+    private void compileLibraryScripts(List<String> pathElements) {
+        PrecompiledClasses newCompiledFiles = new PrecompiledClasses(System.currentTimeMillis());
         File precompiledScriptsDir = ScriptResources.getPrecompiledScriptsDir();
 		final File compiledScriptListFile = compiledScriptListFile(precompiledScriptsDir);
 		oldCompiledFiles = PrecompiledClasses.read(compiledScriptListFile);
-        compileOnlyChangedScriptFiles = compilesOnlyChangedScriptFiles();
         for (String pathElement : pathElements) {
             final File dir = new File(pathElement);
             if (dir.isDirectory() && ! precompiledScriptsDir.equals(dir)) {
