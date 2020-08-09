@@ -108,10 +108,15 @@ public class ScriptingEngine {
 		return createScript(script, "groovy", permissions);
 	}
 
-	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
-        return new ScriptRunner(createGroovyScript(script, permissions)) //
-            .execute(node);
-	}
+    public static Object executeScript(NodeModel node, File scriptFile, ScriptingPermissions permissions) {
+        final IScript script = ScriptingEngine.createScript(scriptFile, permissions, false);
+        return new ScriptRunner(script).execute(node);
+    }
+
+    public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
+     return new ScriptRunner(createGroovyScript(script, permissions)) //
+         .execute(node);
+ }
 
     public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
         return new ScriptRunner(createGroovyScript(script, null)) //
