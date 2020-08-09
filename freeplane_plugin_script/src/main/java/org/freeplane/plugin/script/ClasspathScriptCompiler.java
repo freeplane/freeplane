@@ -20,7 +20,7 @@ import org.freeplane.core.util.LogUtils;
 
 import groovy.lang.GroovyClassLoader;
 
-class ScriptCompiler {
+class ClasspathScriptCompiler {
     private static final String GROOVY = "groovy";
     private static final String JAVA = "java";
 	private static final String COMPILED_SCRIPTS_FILE = ".compiledscripts";
@@ -51,7 +51,7 @@ class ScriptCompiler {
 
 
 
-	ScriptCompiler() {
+	ClasspathScriptCompiler() {
 		final ScriptClassLoader scriptClassLoader = ScriptClassLoader.createClassLoader();
 		compilerClassLoader = new GroovyClassLoader(scriptClassLoader);
 		compilerConfiguration = createCompilerConfiguration();

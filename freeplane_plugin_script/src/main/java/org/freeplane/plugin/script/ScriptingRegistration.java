@@ -172,7 +172,7 @@ class ScriptingRegistration {
 		});
 		registerScriptAddOns();
 		new ScriptingConfiguration();
-		ScriptCompiler scriptCompiler = new ScriptCompiler();
+		ClasspathScriptCompiler scriptCompiler = new ClasspathScriptCompiler();
         scriptCompiler.compileScriptsOnPath(ScriptResources.getClasspath());
 		if(! GraphicsEnvironment.isHeadless()){
 			registerGuiStuff(modeController);

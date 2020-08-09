@@ -112,7 +112,7 @@ class GroovyShell extends GroovyObjectSupport {
      * Parses the groovy code contained in codeSource and returns a java class.
      */
     private Class loadClass(final GroovyCodeSource codeSource) throws CompilationFailedException {
-        if(ScriptCompiler.compilesOnlyChangedScriptFiles()) {
+        if(ClasspathScriptCompiler.compilesOnlyChangedScriptFiles()) {
             return parseAndCache(codeSource);
         }
         else
