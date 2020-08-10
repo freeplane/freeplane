@@ -46,12 +46,11 @@ class EditNodeExternalApplication extends EditNodeBase {
 		new Thread() {
 			@Override
 			public void run() {
-				FileWriter writer = null;
 				try {
 					final File temporaryFile = File.createTempFile("tmm", ".html");
-					writer = new FileWriter(temporaryFile);
-					writer.write(getText());
-					writer.close();
+					try(FileWriter writer = new FileWriter(temporaryFile)) {
+					    writer.write(getText());
+					}
 					final String htmlEditingCommand = ResourceController.getResourceController().getProperty(
 					    "html_editing_command");
 					final String expandedHtmlEditingCommand = new MessageFormat(htmlEditingCommand)
@@ -65,13 +64,6 @@ class EditNodeExternalApplication extends EditNodeBase {
 				}
 				catch (final Exception e) {
 					LogUtils.severe(e);
-					try {
-						if (writer != null) {
-							writer.close();
-						}
-					}
-					catch (final Exception e1) {
-					}
 				}
 			}
 		}.start();

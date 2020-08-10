@@ -12,5 +12,5 @@ public interface IAcceleratorMap {
 	public KeyStroke getAccelerator(AFreeplaneAction action);
 
 	void addAcceleratorChangeListener(FreeplaneActions freeplaneActions, IAcceleratorChangeListener changeListener);
-	void removeAction(FreeplaneActions freeplaneActions, AFreeplaneAction action);
+	void removeActionAccelerator(FreeplaneActions freeplaneActions, AFreeplaneAction action);
 }

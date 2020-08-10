@@ -91,34 +91,22 @@ class ImportExplorerFavoritesAction extends AFreeplaneAction {
 				}
 			}
 			for (int i = 0; i < list.length; i++) {
-				if (!list[i].isDirectory() && FileUtils.getExtension(list[i]).equals("url")) {
-					favoritesFound = true;
-					BufferedReader in = null;
-					try {
-						final NodeModel node = addNode(target, FileUtils.removeExtension(list[i].getName()));
-						in = new BufferedReader(new FileReader(list[i]));
-						String line = null;
-						while ((line = in.readLine()) != null) {
-							if (line.startsWith("URL=")) {
-								final String link = line.substring(4);
-                                ((MLinkController) LinkController.getController()).setLink(node,LinkController.createURI(link), LinkController.LINK_ABSOLUTE);
-								break;
-							}
-						}
-					}
-					catch (final Exception e) {
-						LogUtils.severe(e);
-					}
-					finally {
-						try {
-							if (in != null) {
-								in.close();
-							}
-						}
-						catch (final IOException e) {
-							LogUtils.warn(e);
-						}
-					}
+			    if (!list[i].isDirectory() && FileUtils.getExtension(list[i]).equals("url")) {
+			        favoritesFound = true;
+			        try (BufferedReader in = new BufferedReader(new FileReader(list[i]))){
+			            final NodeModel node = addNode(target, FileUtils.removeExtension(list[i].getName()));
+			            String line = null;
+			            while ((line = in.readLine()) != null) {
+			                if (line.startsWith("URL=")) {
+			                    final String link = line.substring(4);
+			                    ((MLinkController) LinkController.getController()).setLink(node,LinkController.createURI(link), LinkController.LINK_ABSOLUTE);
+			                    break;
+			                }
+			            }
+			        }
+			        catch (final Exception e) {
+			            LogUtils.severe(e);
+			        }
 				}
 			}
 		}

@@ -34,7 +34,6 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.ModeController;
 
@@ -127,18 +126,13 @@ public class LoadAcceleratorPresetsAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		InputStream in = null;
-		try {
-			in = resource.openStream();
+		try (InputStream in = resource.openStream()){
 			final ActionAcceleratorManager acclMgr = ResourceController.getResourceController().getAcceleratorManager();
 			acclMgr.loadAcceleratorPresets(in);
 			acclMgr.saveAcceleratorPresets();
 		}
 		catch (final IOException e1) {
 			e1.printStackTrace();
-	}
-		finally {
-			FileUtils.silentlyClose(in);
 	}
 }
 }

@@ -40,7 +40,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IValidator;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
-import org.freeplane.core.util.FileUtils;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.FilterController;
@@ -172,7 +172,8 @@ class ScriptingRegistration {
 		});
 		registerScriptAddOns();
 		new ScriptingConfiguration();
-		new ScriptCompiler().compileScriptsOnPath(ScriptResources.getClasspath());
+		ClasspathScriptCompiler scriptCompiler = new ClasspathScriptCompiler();
+        scriptCompiler.compileScriptsOnPath(ScriptResources.getClasspath());
 		if(! GraphicsEnvironment.isHeadless()){
 			registerGuiStuff(modeController);
 			createUserScriptsDirectory();
@@ -250,9 +251,7 @@ class ScriptingRegistration {
 		});
 		final IXMLParser parser = XMLLocalParserFactory.createLocalXMLParser();
 		for (File file : addonXmlFiles) {
-			BufferedInputStream inputStream = null;
-			try {
-				inputStream = new BufferedInputStream(new FileInputStream(file));
+			try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(file))){
 				final IXMLReader reader = new StdXMLReader(inputStream);
 				parser.setReader(reader);
 				final ScriptAddOnProperties addOn = new ScriptAddOnProperties((XMLElement) parser.parse());
@@ -261,9 +260,6 @@ class ScriptingRegistration {
 			}
 			catch (final Exception e) {
 				LogUtils.warn("error parsing " + file, e);
-			}
-			finally {
-				FileUtils.silentlyClose(inputStream);
 			}
 		}
 	}

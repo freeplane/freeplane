@@ -163,9 +163,9 @@ public class MapClipboardController implements IExtension, ClipboardController {
 	public String getAsHTML(final Collection<NodeModel> selectedNodes) {
 		try {
 			final StringWriter stringWriter = new StringWriter();
-			final BufferedWriter fileout = new BufferedWriter(stringWriter);
-			writeHTML(selectedNodes, fileout);
-			fileout.close();
+			try (BufferedWriter fileout = new BufferedWriter(stringWriter)) {
+			    writeHTML(selectedNodes, fileout);
+			}
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
@@ -177,11 +177,11 @@ public class MapClipboardController implements IExtension, ClipboardController {
 	public String getAsPlainText(final Collection<NodeModel> selectedNodes) {
 		try {
 			final StringWriter stringWriter = new StringWriter();
-			final BufferedWriter fileout = new BufferedWriter(stringWriter);
-			for (final Iterator<NodeModel> it = selectedNodes.iterator(); it.hasNext();) {
-				writeTXT(it.next(), fileout,/* depth= */0);
+			try (final BufferedWriter fileout = new BufferedWriter(stringWriter)) {
+			    for (final Iterator<NodeModel> it = selectedNodes.iterator(); it.hasNext();) {
+			        writeTXT(it.next(), fileout,/* depth= */0);
+			    }
 			}
-			fileout.close();
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
@@ -193,9 +193,9 @@ public class MapClipboardController implements IExtension, ClipboardController {
 	public String getAsRTF(final Collection<NodeModel> selectedNodes) {
 		try {
 			final StringWriter stringWriter = new StringWriter();
-			final BufferedWriter fileout = new BufferedWriter(stringWriter);
-			writeRTF(selectedNodes, fileout);
-			fileout.close();
+			try (final BufferedWriter fileout = new BufferedWriter(stringWriter)) {
+			    writeRTF(selectedNodes, fileout);
+			}
 			return stringWriter.toString();
 		}
 		catch (final Exception e) {
@@ -250,14 +250,11 @@ public class MapClipboardController implements IExtension, ClipboardController {
 	}
 
 	public boolean saveTXT(final NodeModel rootNodeOfBranch, final File file) {
-		try {
-			final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), //
-				StandardCharsets.UTF_8));
-			writeTXT(rootNodeOfBranch, fileout,/* depth= */
-			0);
-			fileout.close();
-			return true;
-		}
+	    try (final BufferedWriter fileout = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), //
+	            StandardCharsets.UTF_8))){
+	        writeTXT(rootNodeOfBranch, fileout,/* depth = */ 0);
+	        return true;
+	    }
 		catch (final Exception e) {
 			LogUtils.severe("Error in MindMapMapModel.saveTXT(): ", e);
 			return false;

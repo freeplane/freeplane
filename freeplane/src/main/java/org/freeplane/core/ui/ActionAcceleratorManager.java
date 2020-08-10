@@ -96,13 +96,8 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 			if (ResourceController.getResourceController().getFreeplaneUserDirectory() != null) {
 				final File defaultPresetsFile = getPresetsFile();
 				if(defaultPresetsFile.exists()) {
-					FileInputStream inputStream = null;
-					try{
-						inputStream = new FileInputStream(defaultPresetsFile);
+					try (FileInputStream inputStream = new FileInputStream(defaultPresetsFile)){
 						loadAcceleratorPresets(inputStream);
-					}
-					finally{
-						FileUtils.silentlyClose(inputStream);
 					}
 				}
 				else {
@@ -188,7 +183,7 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
 	@Override
-	public void removeAction(FreeplaneActions freeplaneActions, AFreeplaneAction action) {
+	public void removeActionAccelerator(FreeplaneActions freeplaneActions, AFreeplaneAction action) {
 		final KeyStroke oldKeystroke = removeAccelerator(action);
 		fireAcceleratorChanged(freeplaneActions, action, oldKeystroke, null);
 	}
@@ -297,10 +292,8 @@ public class ActionAcceleratorManager implements IKeyStrokeProcessor, IAccelerat
 	}
 
 	public void saveAcceleratorPresets() {
-		try {
-			final FileOutputStream output = new FileOutputStream(getPresetsFile());
+		try (final FileOutputStream output = new FileOutputStream(getPresetsFile())){
 			storeAcceleratorPreset(output);
-			output.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

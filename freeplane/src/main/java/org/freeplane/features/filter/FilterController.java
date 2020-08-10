@@ -754,16 +754,16 @@ public class FilterController implements IExtension, IMapViewChangeListener {
 	        throws IOException {
 		final XMLElement saver = new XMLElement();
 		saver.setName("filter_conditions");
-		final Writer writer = new FileWriter(pathToFilterFile);
-		for (int i = 0; i < filterConditionModel.getSize(); i++) {
-			final ASelectableCondition cond = (ASelectableCondition) filterConditionModel.getElementAt(i);
-			if (cond != null && cond.canBePersisted()) {
-				cond.toXml(saver);
-			}
+        for (int i = 0; i < filterConditionModel.getSize(); i++) {
+            final ASelectableCondition cond = (ASelectableCondition) filterConditionModel.getElementAt(i);
+            if (cond != null && cond.canBePersisted()) {
+                cond.toXml(saver);
+            }
+        }
+		try(final Writer writer = new FileWriter(pathToFilterFile)) {
+		    final XMLWriter xmlWriter = new XMLWriter(writer);
+		    xmlWriter.write(saver, true);
 		}
-		final XMLWriter xmlWriter = new XMLWriter(writer);
-		xmlWriter.write(saver, true);
-		writer.close();
 	}
 
 	void setFilterConditions(final DefaultComboBoxModel newConditionModel) {

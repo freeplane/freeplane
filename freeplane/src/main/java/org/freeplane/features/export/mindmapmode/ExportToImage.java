@@ -99,15 +99,12 @@ public class ExportToImage implements IExportEngine {
 					continue;
                 }
 				addDpiToMetadata(metadata);
-				final FileOutputStream outFile = new FileOutputStream(chosenFile);
-				final ImageOutputStream stream = ImageIO.createImageOutputStream(outFile);
-				try {
+				try ( final FileOutputStream outFile = new FileOutputStream(chosenFile);
+		              final ImageOutputStream stream = ImageIO.createImageOutputStream(outFile);
+				){
 					writer.setOutput(ImageIO.createImageOutputStream(outFile));
 					writer.write(metadata, new IIOImage(image, null, metadata), writeParam);
 					break;
-				} finally {
-					stream.close();
-					outFile.close();
 				}
 			}
 		}

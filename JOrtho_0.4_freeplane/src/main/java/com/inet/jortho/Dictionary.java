@@ -143,15 +143,14 @@ final class Dictionary extends DictionaryBase {
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public void load(final InputStream stream) throws IOException {
-		InputStream zip = new InflaterInputStream(stream);
-		zip = new BufferedInputStream(zip);
-		size = 0;
-		while (zip.available() > 0) {
-			final char c = (char) (zip.read() + (zip.read() << 8));
-			checkSize(size + 1);
-			tree[size++] = c;
+		try (InputStream zip = new BufferedInputStream(new InflaterInputStream(stream))){
+	        size = 0;
+	        while (zip.available() > 0) {
+	            final char c = (char) (zip.read() + (zip.read() << 8));
+	            checkSize(size + 1);
+	            tree[size++] = c;
+	        }
 		}
-		zip.close();
 		// Shrinken
 		trimToSize();
 	}
@@ -174,13 +173,12 @@ final class Dictionary extends DictionaryBase {
 	public void save(final OutputStream stream) throws IOException {
 		final Deflater deflater = new Deflater();
 		deflater.setLevel(Deflater.BEST_COMPRESSION);
-		final DeflaterOutputStream zip = new DeflaterOutputStream(stream, deflater);
-		for (int i = 0; i < size; i++) {
-			zip.write(tree[i]);
-			zip.write(tree[i] >> 8);
+		try (final DeflaterOutputStream zip = new DeflaterOutputStream(stream, deflater)) {
+		    for (int i = 0; i < size; i++) {
+		        zip.write(tree[i]);
+		        zip.write(tree[i] >> 8);
+		    }
 		}
-		zip.flush();
-		zip.close();
 	}
 
 	/**

@@ -52,7 +52,7 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 
 		final RecursiveMenuStructureProcessor acceleratorBuilder = new RecursiveMenuStructureProcessor();
 		acceleratorBuilder.setDefaultBuilderPair(new AcceleratorBuilder(acceleratorMap, entries),
-		    new AcceleratorDestroyer(entries));
+		    new AcceleratorDestroyer(modeController, acceleratorMap, entries));
 
         
         childProcessor = new SubtreeProcessor(RecursiveMenuStructureProcessor::shouldProcessOnEvent);

@@ -33,9 +33,14 @@ public final class ScriptClassLoader extends GroovyClassLoader {
 		return classLoader;
 	}
 
-	private static URL pathToUrl(String path) {
+	static URL pathToUrl(String path) {
+	    File file = new File(path);
+        return pathToUrl(file);
+    }
+
+    static URL pathToUrl(File file) {
         try {
-            return new File(path).toURI().toURL();
+            return file.toURI().toURL();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

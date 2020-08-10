@@ -20,8 +20,9 @@
 package org.freeplane.features.attribute;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ChangeEvent;
@@ -64,8 +65,8 @@ public class AttributeRegistry implements IExtension {
 	protected SortedMapVector elements;
 	protected boolean isAttributeLayoutChanged;
 	private boolean isRestricted;
-	private HashSet<IAttributesListener> attributeListeners = null;
-	private HashSet<ChangeListener> changeListeners = null;
+	private Set<IAttributesListener> attributeListeners = null;
+	private Set<ChangeListener> changeListeners = null;
 	private AttributeRegistryComboBoxColumnModel myComboBoxColumnModel = null;
 	private AttributeRegistryTableModel myTableModel = null;
 	private Boolean restrictionModel;
@@ -75,8 +76,8 @@ public class AttributeRegistry implements IExtension {
 	public AttributeRegistry(MapModel map, final AttributeController attributeController) {
 		super();
 		this.map = map;
-		attributeListeners = new HashSet<IAttributesListener>();
-		changeListeners = new HashSet<ChangeListener>();
+		attributeListeners = new LinkedHashSet<IAttributesListener>();
+		changeListeners = new LinkedHashSet<ChangeListener>();
 		isAttributeLayoutChanged = false;
 		this.attributeController = attributeController;
 		visibleElementsNumber = 0;

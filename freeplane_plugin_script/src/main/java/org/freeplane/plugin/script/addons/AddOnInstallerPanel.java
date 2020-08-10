@@ -143,7 +143,7 @@ public class AddOnInstallerPanel extends JPanel {
 					}
 					controller.getModeController().getMapController().fireMapCreated(newMap);
 					AddOnProperties addOn = (AddOnProperties) ScriptingEngine.executeScript(newMap.getRootNode(),
-					    getInstallScriptSource(), ScriptingPermissions.getPermissiveScriptingPermissions());
+					    getInstallScriptFile(), ScriptingPermissions.getPermissiveScriptingPermissions());
 					if (addOn != null) {
 						setStatusInfo(getText("status.success", addOn.getName()));
 						AddOnsController.getController().registerInstalledAddOn(addOn);
@@ -163,14 +163,14 @@ public class AddOnInstallerPanel extends JPanel {
 				}
 			}
 
-			private String getInstallScriptSource() throws IOException {
-				final ResourceController resourceController = ResourceController.getResourceController();
+            private File getInstallScriptFile() {
+                final ResourceController resourceController = ResourceController.getResourceController();
 				final File scriptDir = new File(resourceController.getInstallationBaseDir(), "scripts");
 				final File installScript = new File(scriptDir, "installScriptAddOn.groovy");
 				if (!installScript.exists())
 					throw new RuntimeException("internal error: installer not found at " + installScript);
-				return FileUtils.slurpFile(installScript);
-			}
+                return installScript;
+            }
 
 			private URL toURL(String urlText) throws MalformedURLException {
 				try {

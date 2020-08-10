@@ -143,10 +143,8 @@ public class ExportWithXSLT implements IExportEngine {
 		if(image == null){
 			return false;
 		}
-		try {
-			final FileOutputStream out = new FileOutputStream(directoryName + File.separator + "image.png");
+		try (final FileOutputStream out = new FileOutputStream(directoryName + File.separator + "image.png");){
 			ImageIO.write(image, "png", out);
-			out.close();
 			return true;
 		}
 		catch (final IOException e1) {
@@ -269,10 +267,9 @@ public class ExportWithXSLT implements IExportEngine {
 			LogUtils.severe("Can't find " + xsltFileName + " as resource.");
 			throw new IllegalArgumentException("Can't find " + xsltFileName + " as resource.");
 		}
-		final InputStream xsltFile = new BufferedInputStream(xsltUrl.openStream());
-		final Source xsltSource = new StreamSource(xsltFile);
-		final Result result = new StreamResult(saveFile);
-		try {
+		try (InputStream xsltFile = new BufferedInputStream(xsltUrl.openStream())){
+            final Source xsltSource = new StreamSource(xsltFile);
+            final Result result = new StreamResult(saveFile);
 			final TransformerFactory transFact = TransformerFactory.newInstance();
 			final Transformer trans = transFact.newTransformer(xsltSource);
 			trans.setParameter("file_ref", saveFile.getAbsoluteFile().toURI().toString());
@@ -299,9 +296,6 @@ public class ExportWithXSLT implements IExportEngine {
 		catch (final Exception e) {
 			LogUtils.warn(e);
 			return false;
-		}
-		finally {
-			FileUtils.silentlyClose(xsltFile);
 		}
 		return true;
     }

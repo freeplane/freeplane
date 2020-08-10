@@ -79,11 +79,9 @@ public class XsltExportEngine implements IExportEngine {
 	public void export(List<NodeModel> branches, File toFile) {
 		final Source xsltSource = new StreamSource(xsltFile);
 		final Source xmlSource = getMapXml(branches);
-		FileOutputStream outputStream = null;
 		final XsltExportPolicy xsltExportPolicy = new XsltExportPolicy();
-        try {
-        	Policy.setPolicy(xsltExportPolicy);
-        	outputStream = new FileOutputStream(toFile);
+		Policy.setPolicy(xsltExportPolicy);
+        try (OutputStream outputStream = new FileOutputStream(toFile)){
         	final Result result = new StreamResult(outputStream);
         	final TransformerFactory transFact = TransformerFactory.newInstance();
         	final Transformer trans = transFact.newTransformer(xsltSource);
@@ -95,14 +93,6 @@ public class XsltExportEngine implements IExportEngine {
         }
         finally {
         	xsltExportPolicy.remove();
-        	try {
-        		if (outputStream != null) {
-        			outputStream.close();
-        		}
-        	}
-        	catch (final IOException e) {
-        		LogUtils.severe(e);
-        	}
         }
 	}
 

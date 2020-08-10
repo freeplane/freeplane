@@ -20,8 +20,9 @@
 package org.freeplane.features.attribute;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.event.TableModelEvent;
@@ -49,7 +50,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 
 	private Vector<Attribute> attributes;
 	private AttributeTableLayoutModel layout;
-	private HashSet<TableModelListener> listeners;
+	private Set<TableModelListener> listeners;
 
 	public NodeAttributeTableModel() {
 		this(0);
@@ -71,7 +72,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 
 	public void addTableModelListener(final TableModelListener listener) {
 		if (listeners == null) {
-			listeners = new HashSet<TableModelListener>();
+			listeners = new LinkedHashSet<TableModelListener>();
 		}
 		listeners.add(listener);
 	}

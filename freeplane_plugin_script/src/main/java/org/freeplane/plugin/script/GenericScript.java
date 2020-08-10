@@ -137,13 +137,35 @@ public class GenericScript implements IScript {
 			Thread.currentThread().setContextClassLoader(scriptClassLoader);
 			ScriptEngineManager scriptEngineManager = createScriptEngineManager(scriptClassLoader);
 			final String extension = FilenameUtils.getExtension(scriptFile.getName());
-			engine = checkNotNull(scriptEngineManager.getEngineByExtension(extension), extension);
+			engine = getEngineByExtension(scriptEngineManager, extension);
 		}
 		finally {
 			Thread.currentThread().setContextClassLoader(contextClassLoader);
 		}
         compilationEnabled = !disableScriptCompilation(scriptFile);
         compileTimeStrategy = new CompileTimeStrategy(scriptFile);
+    }
+
+    private ScriptEngine getEngineByExtension(ScriptEngineManager scriptEngineManager,
+            final String extension) {
+        if(extension.equalsIgnoreCase("js")) {
+            return getJsEngineSuppressFalseErrorMessage(scriptEngineManager);
+        }
+        else
+            return checkNotNull(scriptEngineManager.getEngineByExtension(extension), extension);
+    }
+
+    private ScriptEngine getJsEngineSuppressFalseErrorMessage(
+            ScriptEngineManager scriptEngineManager) {
+        PrintStream err = System.err;
+        System.setErr(System.out);
+        try {
+            String extension = "js";
+            return checkNotNull(scriptEngineManager.getEngineByExtension(extension), extension);
+        }
+        finally {
+            System.setErr(err);
+        }
     }
 
 

@@ -164,9 +164,9 @@ public class StdXMLParser implements IXMLParser {
 			XMLUtil.errorExpectedInput(reader.getSystemID(), reader.getLineNr(), "<![[CDATA[");
 		}
 		validator.PCDataAdded(reader.getSystemID(), reader.getLineNr());
-		final Reader reader = new CDATAReader(this.reader);
-		builder.addPCData(reader, this.reader.getSystemID(), this.reader.getLineNr());
-		reader.close();
+		try (final Reader reader = new CDATAReader(this.reader)) {
+		    builder.addPCData(reader, this.reader.getSystemID(), this.reader.getLineNr());
+		}
 	}
 
 	/**
@@ -366,9 +366,9 @@ public class StdXMLParser implements IXMLParser {
 					reader.unread(str.charAt(0));
 				}
 				validator.PCDataAdded(reader.getSystemID(), reader.getLineNr());
-				final Reader r = new ContentReader(reader, entityResolver, buffer.toString());
-				builder.addPCData(r, reader.getSystemID(), reader.getLineNr());
-				r.close();
+				try (final Reader r = new ContentReader(reader, entityResolver, buffer.toString())) {
+				    builder.addPCData(r, reader.getSystemID(), reader.getLineNr());
+				}
 			}
 		}
 	}
@@ -383,11 +383,11 @@ public class StdXMLParser implements IXMLParser {
 		XMLUtil.skipWhitespace(reader, null);
 		final String target = XMLUtil.scanIdentifier(reader);
 		XMLUtil.skipWhitespace(reader, null);
-		final Reader reader = new PIReader(this.reader);
-		if (!target.equalsIgnoreCase("xml")) {
-			builder.newProcessingInstruction(target, reader);
+		try (final Reader reader = new PIReader(this.reader)) {
+		    if (!target.equalsIgnoreCase("xml")) {
+		        builder.newProcessingInstruction(target, reader);
+		    }
 		}
-		reader.close();
 	}
 
 	/**

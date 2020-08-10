@@ -263,17 +263,11 @@ public class ApplicationResourceController extends ResourceController {
 
 	private Properties readUsersPreferences(final Properties defaultPreferences) {
 		final Properties auto = new Properties(defaultPreferences);
-		InputStream in = null;
-		try {
-			final File autoPropertiesFile = getUserPreferencesFile();
-			in = new FileInputStream(autoPropertiesFile);
+		try (InputStream in = new FileInputStream(getUserPreferencesFile())){
 			auto.load(in);
 		}
 		catch (final Exception ex) {
 			System.err.println("User properties not found, new file created");
-		}
-		finally {
-			FileUtils.silentlyClose(in);
 		}
 		return auto;
 	}
@@ -281,9 +275,7 @@ public class ApplicationResourceController extends ResourceController {
 	@Override
 	public void saveProperties() {
         ((MIconController)MModeController.getMModeController().getExtension(IconController.class)).saveRecentlyUsedActions();
-		OutputStream out = null;
-		try {
-			out = new FileOutputStream(autoPropertiesFile);
+		try (OutputStream out = new FileOutputStream(autoPropertiesFile)){
 			final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(out, "8859_1");
 			outputStreamWriter.write("#Freeplane ");
 			outputStreamWriter.write(FreeplaneVersion.getVersion().toString());
@@ -293,15 +285,6 @@ public class ApplicationResourceController extends ResourceController {
 			((ResourceBundles)getResources()).saveUserResources();
 		}
 		catch (final Exception ex) {
-		}
-		finally {
-			if (out != null) {
-				try {
-					out.close();
-				}
-				catch (final IOException e) {
-				}
-			}
 		}
 		FilterController.getCurrentFilterController().saveConditions();
 	}

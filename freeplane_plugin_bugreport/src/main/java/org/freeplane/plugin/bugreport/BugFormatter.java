@@ -36,15 +36,13 @@ public class BugFormatter extends Formatter {
 		sb.append(message);
 		sb.append('\n');
 		if (record.getThrown() != null) {
-			try {
-				final StringWriter sw = new StringWriter();
-				final PrintWriter pw = new PrintWriter(sw);
+			try (final StringWriter sw = new StringWriter();
+                final PrintWriter pw = new PrintWriter(sw);
+			){
 				record.getThrown().printStackTrace(pw);
-				pw.close();
 				sb.append(sw.toString());
 			}
-			catch (final Exception ex) {
-			}
+			catch (final Exception ex) {/**/}
 		}
 		return sb.toString();
 	}

@@ -61,17 +61,12 @@ public class XsltPipeReaderFactory {
 			
 			@Override
 			public void run() {
-				InputStream xsltFile = null;
-				try{
-					xsltFile = xsltUrl.openStream();
+				try (InputStream xsltFile =xsltUrl.openStream();
+				        Writer writerToClose = writer){
 					final Result result = new StreamResult(writer);
 					transform(new StreamSource(in), xsltFile, result);
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
-				finally {
-					FileUtils.silentlyClose(xsltFile);
-					FileUtils.silentlyClose(writer);
 				}
 			}
 		}, "XSLT Transformation");

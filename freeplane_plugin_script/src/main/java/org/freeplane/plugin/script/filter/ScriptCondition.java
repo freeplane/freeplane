@@ -61,23 +61,19 @@ public class ScriptCondition extends ASelectableCondition {
 
 	@Override
     public boolean checkNode(final NodeModel node) {
-        final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		final PrintStream printStream = new PrintStream(out);
 		final Object result;
-        try {
+        try (final PrintStream printStream = new PrintStream(new ByteArrayOutputStream())){
 			result = scriptRunner.setOutStream(printStream).execute(node);
 			if(result instanceof Boolean)
 				return (Boolean) result;
 			if(result instanceof Number)
 				return ((Number) result).doubleValue() != 0;
 	        printStream.println(this + ": got '" + result + "' for " + node);
-	        printStream.close();
 	        final String info = TextUtils.format(SCRIPT_FILTER_ERROR_RESOURCE, createDescription(),
 	        	node.toString(), String.valueOf(result));
 	        setErrorStatus(info);
         }
         catch (ExecuteScriptException e) {
-        	printStream.close();
 			final String info = TextUtils.format(SCRIPT_FILTER_EXECUTE_ERROR_RESOURCE, createDescription(),
 			    node.toString(), e.getMessage());
 			setErrorStatus(info);

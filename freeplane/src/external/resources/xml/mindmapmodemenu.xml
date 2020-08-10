@@ -266,7 +266,6 @@
           <Entry builder="noActions" />
         </Entry>
 		<Entry name="view">
-			<Entry builder="separator" />
 			<Entry name="NewMapViewAction" />
 			<Entry name="controls">
 				<Entry name="ToggleMenubarAction" builder="removeOnMac" />
@@ -285,7 +284,6 @@
 				<Entry name="FitToPage" />
 			</Entry>
 			<Entry name="menu_viewmode" >
-				<Entry builder="separator" />
 				<Entry name="ViewLayoutTypeAction.OUTLINE" />
 				<Entry name="SetBooleanPropertyAction.outline_view_fits_window_width" />
 				<Entry name="ToggleFullScreenAction" accelerator="F11" />
@@ -390,7 +388,6 @@
                 </Entry>
                 <Entry name="EdgeColorAction" accelerator="alt shift E" />
               </Entry>
-              <Entry builder="separator" />
             </Entry>
 				<Entry name="styleActions" textKey="menu_applyStyle">
 					<Entry builder="style_actions" />
@@ -458,7 +455,6 @@
 			<Entry name="BackAction" accelerator="alt LEFT" />
 			<Entry name="ForwardAction" accelerator="alt RIGHT" />
 			<Entry name="links">
-				<Entry builder="separator" />
 				<Entry name="FollowLinkAction" accelerator="control ENTER" />
 				<Entry builder="menu_goto_links" />
 			</Entry>
@@ -489,7 +485,6 @@
 			<Entry name="QuickHighlightAction" />
 			<Entry name="QuickFindAction.BACK" />
 			<Entry name="QuickFindAction.FORWARD" />
-			<Entry builder="separator" />
 		</Entry>
 		<Entry name="extras">
 			<Entry name="TimeManagementAction" accelerator="control T" />
@@ -540,7 +535,6 @@
 			<Entry name="maps" processOnPopup="true">
 				<Entry builder="navigate_maps,radio_button_group" />
 			</Entry>
-			<Entry builder="separator" />
 		</Entry>
 		<Entry name="help" textKey="menu_help">
 			<Entry name="UpdateCheckAction" />

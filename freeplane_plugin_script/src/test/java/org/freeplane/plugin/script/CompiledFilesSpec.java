@@ -30,7 +30,7 @@ public class CompiledFilesSpec {
 	
 	@Test
 	public void filtersEmptySet() throws Exception {
-		final CompiledFiles uut = new CompiledFiles(0, Collections.<String>emptySet());
+		final PrecompiledClasses uut = new PrecompiledClasses(0, Collections.<String>emptySet());
 		Collection<File> files = Collections.emptySet();
 		assertThat(uut.filterNewAndNewer(files)).containsExactly();
 	}
@@ -39,7 +39,7 @@ public class CompiledFilesSpec {
 	@Test
 	public void filteringRemovesOlderFile() throws Exception {
 		final File file = file("file", 1);
-		final CompiledFiles uut = new CompiledFiles(2, Collections.singleton(file.getAbsolutePath()));
+		final PrecompiledClasses uut = new PrecompiledClasses(2, Collections.singleton(file.getAbsolutePath()));
 		Collection<File> files = Collections.singleton(file);
 		assertThat(uut.filterNewAndNewer(files)).containsExactly();
 	}
@@ -48,7 +48,7 @@ public class CompiledFilesSpec {
 	@Test
 	public void filteringKeepsNewFile() throws Exception {
 		final File file = file("file", 1);
-		final CompiledFiles uut = new CompiledFiles(2, Collections.singleton(file.getAbsolutePath()));
+		final PrecompiledClasses uut = new PrecompiledClasses(2, Collections.singleton(file.getAbsolutePath()));
 		final File newFile = file("newFile", 1);
 		Collection<File> files = Collections.singleton(newFile);
 		assertThat(uut.filterNewAndNewer(files)).containsExactly(newFile);
@@ -56,7 +56,7 @@ public class CompiledFilesSpec {
 	
 	@Test
 	public void savesToXml() throws Exception {
-		final CompiledFiles uut = new CompiledFiles(2, Collections.singleton("file"));
+		final PrecompiledClasses uut = new PrecompiledClasses(2, Collections.singleton("file"));
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
         // create XMLEventWriter
         final StringWriter stream = new StringWriter();
@@ -81,20 +81,20 @@ public class CompiledFilesSpec {
 
         XMLEventReader eventReader = inputFactory.createXMLEventReader(new StringReader(xml));
         
-        CompiledFiles uut = CompiledFiles.readThrowExceptions(eventReader);
+        PrecompiledClasses uut = PrecompiledClasses.readThrowExceptions(eventReader);
 		
-        final CompiledFiles expected = new CompiledFiles(2, Collections.singleton("file"));
+        final PrecompiledClasses expected = new PrecompiledClasses(2, Collections.singleton("file"));
 		assertThat(uut).isEqualToComparingFieldByField(expected);
 
 	}
 	
 	@Test
 	public void createsFromCollection() throws Exception {
-        final CompiledFiles compiledFiles = new CompiledFiles((long) 2);
+        final PrecompiledClasses compiledFiles = new PrecompiledClasses((long) 2);
 		compiledFiles.addAll(Collections.singleton(new File("file")));
-		CompiledFiles uut = compiledFiles;
+		PrecompiledClasses uut = compiledFiles;
 		
-        final CompiledFiles expected = new CompiledFiles(2, Collections.singleton(new File("file").getAbsolutePath()));
+        final PrecompiledClasses expected = new PrecompiledClasses(2, Collections.singleton(new File("file").getAbsolutePath()));
 		assertThat(uut).isEqualToComparingFieldByField(expected);
 
 	}

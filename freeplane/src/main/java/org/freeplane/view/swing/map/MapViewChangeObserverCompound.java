@@ -23,6 +23,7 @@ import java.awt.EventQueue;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
@@ -33,8 +34,8 @@ import org.freeplane.features.ui.IMapViewChangeListener;
  * Mar 19, 2009
  */
 class MapViewChangeObserverCompound {
-	final private HashSet<IMapSelectionListener> mapListeners = new HashSet<IMapSelectionListener>();
-	final private HashSet<IMapViewChangeListener> viewListeners = new HashSet<IMapViewChangeListener>();
+	final private HashSet<IMapSelectionListener> mapListeners = new LinkedHashSet<IMapSelectionListener>();
+	final private HashSet<IMapViewChangeListener> viewListeners = new LinkedHashSet<IMapViewChangeListener>();
 
 	void addListener(final IMapSelectionListener listener) {
 		mapListeners.add(listener);

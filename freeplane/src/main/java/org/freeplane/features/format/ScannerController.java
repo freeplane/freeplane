@@ -366,11 +366,11 @@ public class ScannerController implements IExtension, IFreeplanePropertyListener
 		for (Scanner scanner : scanners) {
 			saver.addChild(scanner.toXml());
 		}
-		final Writer writer = new FileWriter(pathToFile);
-		final XMLWriter xmlWriter = new XMLWriter(writer);
-		xmlWriter.addRawContent(header);
-		xmlWriter.write(saver, true);
-		writer.close();
+		try (final Writer writer = new FileWriter(pathToFile)) {
+		    final XMLWriter xmlWriter = new XMLWriter(writer);
+		    xmlWriter.addRawContent(header);
+		    xmlWriter.write(saver, true);
+		}
 	}
 
 	private String commentLines(String... comments) {

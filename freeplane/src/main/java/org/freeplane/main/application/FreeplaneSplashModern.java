@@ -75,17 +75,12 @@ public class FreeplaneSplashModern extends JWindow {
 		if(versionTextFont != null){
 			return;
 		}
-	    InputStream fontInputStream = null;
-		try {
-			fontInputStream = ResourceController.getResourceController().getResource("/fonts/intuitive-subset.ttf")
-			    .openStream();
+		try (InputStream fontInputStream= ResourceController.getResourceController()
+		        .getResource("/fonts/intuitive-subset.ttf").openStream()){
 			versionTextFont = Font.createFont(Font.TRUETYPE_FONT, fontInputStream);
 		}
 		catch (final Exception e) {
 			versionTextFont = new Font("Arial", Font.PLAIN, 12);
-		}
-		finally {
-			FileUtils.silentlyClose(fontInputStream);
 		}
     }
 

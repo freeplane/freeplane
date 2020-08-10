@@ -70,13 +70,12 @@ public class FileUserDictionary implements UserDictionaryProvider {
 	 */
 	public void addWord(final String word) {
 		try {
-			final FileOutputStream output = new FileOutputStream(file, true);
-			final Writer writer = new OutputStreamWriter(output, "UTF8");
-			if (file.length() > 0) {
-				writer.write("\n");
+			try (final Writer writer = new OutputStreamWriter(new FileOutputStream(file, true), "UTF8")) {
+	            if (file.length() > 0) {
+	                writer.write("\n");
+	            }
+	            writer.write(word);
 			}
-			writer.write(word);
-			writer.close();
 		}
 		catch (final Exception ex) {
 			ex.printStackTrace();
@@ -90,14 +89,14 @@ public class FileUserDictionary implements UserDictionaryProvider {
 		file = new File(fileBase + "UserDictionary_" + locale + ".txt");
 		try {
 			final FileInputStream input = new FileInputStream(file);
-			final Reader reader = new InputStreamReader(input, "UTF8");
-			final StringBuilder builder = new StringBuilder();
-			final char[] buffer = new char[4096];
-			int count;
-			while ((count = reader.read(buffer)) > 0) {
-				builder.append(buffer, 0, count);
+            final StringBuilder builder = new StringBuilder();
+            final char[] buffer = new char[4096];
+			try (final Reader reader = new InputStreamReader(input, "UTF8")) {
+	            int count = 0 ;
+	            while ((count = reader.read(buffer)) > 0) {
+	                builder.append(buffer, 0, count);
+	            }
 			}
-			reader.close();
 			return builder.toString();
 		}
 		catch (final IOException ex) {
@@ -111,10 +110,9 @@ public class FileUserDictionary implements UserDictionaryProvider {
 	 */
 	public void setUserWords(final String wordList) {
 		try {
-			final FileOutputStream output = new FileOutputStream(file);
-			final Writer writer = new OutputStreamWriter(output, "UTF8");
-			writer.write(wordList);
-			writer.close();
+			try (final Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF8")){
+			    writer.write(wordList);
+			}
 		}
 		catch (final Exception ex) {
 			ex.printStackTrace();

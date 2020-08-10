@@ -78,10 +78,9 @@ public class MapVersionInterpreter implements IExtension{
 	private static MapVersionInterpreter[] values = null;
 	private static MapVersionInterpreter[] values() {
 		if(values == null){
-			try {
-				DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder documentBuilder = domFactory.newDocumentBuilder();
-				InputStream resource = ResourceController.getResourceController().getResource("/xml/mapVersions.xml").openStream();
+			try (InputStream resource = ResourceController.getResourceController().getResource("/xml/mapVersions.xml").openStream()){
+	            DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
+	            DocumentBuilder documentBuilder = domFactory.newDocumentBuilder();
 				Document dom = documentBuilder.parse(resource);
 				Element root = dom.getDocumentElement();
 				NodeList dialectElements = root.getElementsByTagName("dialect");
@@ -98,7 +97,6 @@ public class MapVersionInterpreter implements IExtension{
 					int version = Integer.parseInt(dialectElement.getAttribute("version"));
 					values[i] = new MapVersionInterpreter(name, version, versionBegin, needsConversion, anotherDialect, appName, url);
 				}
-				resource.close();
 			} catch (Exception e) {
 				LogUtils.severe(e);
 				values = new MapVersionInterpreter[]{};

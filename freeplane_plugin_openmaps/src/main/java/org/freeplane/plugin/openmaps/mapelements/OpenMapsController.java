@@ -3,7 +3,7 @@ package org.freeplane.plugin.openmaps.mapelements;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.freeplane.plugin.openmaps.LocationChoosenListener;
@@ -27,7 +27,7 @@ public class OpenMapsController extends DefaultMapController implements MouseLis
 		super(map);
 		configureButtons();
 		
-		Listeners = new HashSet<LocationChoosenListener>();
+		Listeners = new LinkedHashSet<LocationChoosenListener>();
 		currentLocation = null;
 	}
 

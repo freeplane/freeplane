@@ -35,7 +35,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.plugin.script.ScriptEditorPanel.IScriptModel;
 import org.freeplane.plugin.script.ScriptEditorPanel.ScriptHolder;
-import org.freeplane.plugin.script.IFreeplaneScriptErrorHandler;
 
 /**
  * @author foltin

@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.swing.Action;
 import javax.swing.Box;
@@ -66,6 +67,7 @@ import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.features.filter.condition.ICondition;
+import org.freeplane.features.icon.EmojiIcon;
 import org.freeplane.features.icon.IconContainedCondition;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconDescription;
@@ -89,7 +91,8 @@ import org.freeplane.features.styles.LogicalStyleController;
  * @author Dimitry Polivaev
  */
 public class MIconController extends IconController {
-	private static final String RECENTLY_USED_ICONS_PROPERTY = "recently_used_icons";
+    private static final String RECENTLY_USED_ICONS_PROPERTY = "recently_used_icons";
+    private static final String USE_EMOJI_ICONS_PROPTERTY = "use_emoji_icons";
     private static final Insets ICON_SUBMENU_INSETS = new Insets(3, 0, 3, 0);
 	private static final ConditionPredicate DEPENDS_ON_ICON = new ConditionPredicate() {
 
@@ -120,9 +123,9 @@ public class MIconController extends IconController {
 		}
 
 		private void addIconGroup(final Entry target, final IconGroup group) {
-		    if (group.getIcons().size() < 1) {
+		    if (group.getIcons().size() < 1 
+		            || group.getName().equals(IconStore.EMOJI_GROUP) && ! areEmojiActionsEnabled())
 		        return;
-		    }
 		    final Entry item = new Entry();
 		    EntryAccessor entryAccessor = new EntryAccessor();
 		    entryAccessor.setIcon(item, group.getGroupIcon().getIcon());
@@ -329,7 +332,7 @@ public class MIconController extends IconController {
 		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
 		final List<AFreeplaneAction> actions = new ArrayList<AFreeplaneAction>();
-		actions.addAll(iconActions.values());
+		actions.addAll(getIconActions());
 		actions.add(modeController.getAction("RemoveIcon_0_Action"));
 		actions.add(modeController.getAction("RemoveIconAction"));
 		actions.add(modeController.getAction("RemoveAllIconsAction"));
@@ -349,7 +352,12 @@ public class MIconController extends IconController {
 	}
 
 	public Collection<AFreeplaneAction> getIconActions() {
-		return Collections.unmodifiableCollection(iconActions.values());
+	    if(areEmojiActionsEnabled())
+	        return Collections.unmodifiableCollection(iconActions.values());
+	    else
+	        return iconActions.values().stream()
+	                .filter(action -> ((IconAction) action).getMindIcon().isShownOnToolbar())
+                    .collect(Collectors.toList());
 	}
 
 	/**
@@ -462,13 +470,18 @@ public class MIconController extends IconController {
 		iconMenuBar.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		iconMenuBar.setLayout(new GridLayout(0, 1));
 		for (final IconGroup iconGroup : STORE.getGroups()) {
-		    if(isStructured || iconGroup.getName().equals(IconStore.EMOJI_GROUP))
+		    if(isStructured && (! iconGroup.getName().equals(IconStore.EMOJI_GROUP) || areEmojiActionsEnabled())
+		            || iconGroup.getName().equals(IconStore.EMOJI_GROUP) && areEmojiActionsEnabled())
 			iconMenuBar.add(getSubmenu(iconGroup));
 		}
 		iconToolBar.add(iconMenuBar);
 	}
 
-	public void removeAllIcons(final NodeModel node) {
+	boolean areEmojiActionsEnabled() {
+	    return ResourceController.getResourceController().getBooleanProperty(USE_EMOJI_ICONS_PROPTERTY);
+    }
+
+    public void removeAllIcons(final NodeModel node) {
 		final int size = node.getIcons().size();
 		final MIconController iconController = (MIconController) IconController.getController();
 		for (int i = 0; i < size; i++) {

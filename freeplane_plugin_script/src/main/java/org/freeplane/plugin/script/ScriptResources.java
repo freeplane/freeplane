@@ -28,7 +28,8 @@ public class ScriptResources {
 	private static final String USER_LIB_DIR = System.getProperty(USER_LIB_DIR_PROPERTY,"lib");
 	private static final String BUILTIN_SCRIPTS_DIR_PROPERTY = "org.freeplane.builtin.scripts.dir";
 	private static final String BUILTIN_SCRIPTS_DIR = System.getProperty(BUILTIN_SCRIPTS_DIR_PROPERTY,"scripts");
-    private static final String COMPILED_SCRIPTS_DIRECTORY = "compiledscripts";
+    private static final String PRECOMPILED_SCRIPTS_DIRECTORY = "compiledscripts";
+    private static final String COMPILED_SCRIPTS_DIRECTORY = "compiledscripts2";
     private static List<String> classpath;
     private static final File builtinScriptsDir = buildBuiltinScriptsDir();
     private static final File userScriptsDir = buildUserScriptsDir(ScriptResources.USER_SCRIPTS_DIR);
@@ -79,8 +80,12 @@ public class ScriptResources {
         return FileUtils.getAbsoluteFile(ResourceController.getResourceController().getFreeplaneUserDirectory(), userDir);
     }
 
-	static File getCompiledScriptsDir() {
-		return buildUserScriptsDir(COMPILED_SCRIPTS_DIRECTORY);
-	}
+    static File getPrecompiledScriptsDir() {
+        return buildUserScriptsDir(PRECOMPILED_SCRIPTS_DIRECTORY);
+    }
+
+    static File getCompiledScriptsDir() {
+        return buildUserScriptsDir(COMPILED_SCRIPTS_DIRECTORY);
+    }
 
 }

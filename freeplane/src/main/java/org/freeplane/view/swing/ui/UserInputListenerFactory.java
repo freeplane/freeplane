@@ -35,10 +35,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -145,7 +145,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 	private MouseWheelListener mapMouseWheelListener;
 	private JPopupMenu mapsPopupMenu;
 	private FreeplaneMenuBar menuBar;
-	final private HashSet<IMouseWheelEventHandler> mRegisteredMouseWheelEventHandler = new HashSet<IMouseWheelEventHandler>();
+	final private Set<IMouseWheelEventHandler> mRegisteredMouseWheelEventHandler = new LinkedHashSet<IMouseWheelEventHandler>();
 	private DragGestureListener nodeDragListener;
 	private DropTargetListener nodeDropTargetListener;
 	private KeyListener nodeKeyListener;
@@ -428,7 +428,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			actionEntry.setName(modesMenuAction.getKey());
 			final ModeController modeController = controller.getModeController();
 			if (modeController != null && modeController.getModeName().equals(key)) {
-				actionEntry.setAttribute("selected", true);
+			    modesMenuAction.setSelected(true);
 			}
 			modesMenuEntry.addChild(actionEntry);
 			ResourceController.getResourceController().getProperty(("keystroke_mode_" + key));
@@ -453,7 +453,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 			final MapView currentMapView = (MapView) mapViewManager.getMapViewComponent();
 			if (currentMapView != null) {
 				if (mapView == currentMapView) {
-					actionEntry.setAttribute("selected", true);
+					action.setSelected(true);
 				}
 			}
 			mapsMenuEntry.addChild(actionEntry);

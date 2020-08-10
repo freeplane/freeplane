@@ -35,9 +35,6 @@ import org.freeplane.features.map.NodeModel;
  * @author foltin
  */
 public class ScriptingEngine {
-	static {
-		System.getProperties().putIfAbsent("nashorn.args", "--no-deprecation-warning");
-	}
 	public static final String SCRIPT_PREFIX = "script";
 	// need a File for caching! Scripts from String have to be cached elsewhere
     private static Map<File, IScript> fileScripts = new ConcurrentHashMap<File, IScript>();
@@ -111,10 +108,15 @@ public class ScriptingEngine {
 		return createScript(script, "groovy", permissions);
 	}
 
-	public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
-        return new ScriptRunner(createGroovyScript(script, permissions)) //
-            .execute(node);
-	}
+    public static Object executeScript(NodeModel node, File scriptFile, ScriptingPermissions permissions) {
+        final IScript script = ScriptingEngine.createScript(scriptFile, permissions, false);
+        return new ScriptRunner(script).execute(node);
+    }
+
+    public static Object executeScript(NodeModel node, String script, ScriptingPermissions permissions) {
+     return new ScriptRunner(createGroovyScript(script, permissions)) //
+         .execute(node);
+ }
 
     public static Object executeScript(NodeModel node, String script, PrintStream printStream) {
         return new ScriptRunner(createGroovyScript(script, null)) //

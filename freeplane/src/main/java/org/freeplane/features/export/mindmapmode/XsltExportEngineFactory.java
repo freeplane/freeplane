@@ -83,9 +83,7 @@ class XsltExportEngineFactory {
 	 * @param xsltFile the file to open and search a line matching the pattern.
 	 */
 	private void extractFilterFromFile(final File xsltFile) {
-		BufferedReader xsl = null;
-		try {
-			xsl = new BufferedReader(new FileReader(xsltFile));
+		try (BufferedReader xsl = new BufferedReader(new FileReader(xsltFile))){
 			String line;
 			int l = 0;
 			boolean keyFound = false;
@@ -120,16 +118,6 @@ class XsltExportEngineFactory {
 		catch (final IOException e) {
 			LogUtils.warn(e);
 			UITools.errorMessage(TextUtils.getText("export_failed"));
-		}
-		finally {
-			if (xsl != null) {
-				try {
-					xsl.close();
-				}
-				catch (final IOException e) {
-					LogUtils.severe(e);
-				}
-			}
 		}
 	}
 

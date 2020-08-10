@@ -354,17 +354,17 @@ public class NonValidator implements IXMLValidator {
 			XMLUtil.skipTag(reader);
 			return;
 		}
-		final Reader subreader = new CDATAReader(reader);
-		final StringBuilder buf = new StringBuilder(1024);
-		for (;;) {
-			final int ch2 = subreader.read();
-			if (ch2 < 0) {
-				break;
-			}
-			buf.append((char) ch2);
+		try (Reader subreader = new CDATAReader(reader)) {
+	        final StringBuilder buf = new StringBuilder(1024);
+	        for (;;) {
+	            final int ch2 = subreader.read();
+	            if (ch2 < 0) {
+	                break;
+	            }
+	            buf.append((char) ch2);
+	        }
+	        reader.startNewStream(new StringReader(buf.toString()));
 		}
-		subreader.close();
-		reader.startNewStream(new StringReader(buf.toString()));
 	}
 
 	/**
@@ -495,8 +495,8 @@ public class NonValidator implements IXMLValidator {
 			XMLUtil.skipTag(reader);
 			return;
 		}
-		final Reader subreader = new CDATAReader(reader);
-		subreader.close();
+		try (final Reader subreader = new CDATAReader(reader)){/**/}
+		
 	}
 
 	/**

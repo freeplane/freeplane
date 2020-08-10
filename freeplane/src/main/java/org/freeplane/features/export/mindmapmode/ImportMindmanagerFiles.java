@@ -66,9 +66,7 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 	}
 
 	private void importMindmanagerFile(final File file) {
-		ZipInputStream in = null;
-		try {
-			in = new ZipInputStream(new FileInputStream(file));
+		try (ZipInputStream in = new ZipInputStream(new FileInputStream(file))){
 			while (in.available() != 0) {
 				final ZipEntry entry = in.getNextEntry();
 				if (entry == null) {
@@ -85,9 +83,6 @@ public class ImportMindmanagerFiles extends AFreeplaneAction {
 		}
 		catch (final Exception e) {
 			LogUtils.severe(e);
-		}
-		finally {
-			FileUtils.silentlyClose(in);
 		}
 	}
 

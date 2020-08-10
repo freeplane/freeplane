@@ -91,9 +91,8 @@ public class LockManager{
 		if (semaphoreFile.equals(lockedSemaphoreFile)) {
 			return null;
 		}
-		BufferedReader semaphoreReader = null;
-		try {
-			semaphoreReader = new BufferedReader(new FileReader(semaphoreFile));
+		try (BufferedReader semaphoreReader = new BufferedReader(new FileReader(semaphoreFile))){
+			;
 			final String lockingUser = semaphoreReader.readLine();
 			final String lockTime = semaphoreReader.readLine();
 			if (isLockExpired(lockTime)) {
@@ -107,11 +106,6 @@ public class LockManager{
 		catch (final FileNotFoundException e) {
 		}
 		catch (final NumberFormatException e) {
-		}
-		finally {
-			if (semaphoreReader != null) {
-				semaphoreReader.close();
-			}
 		}
 		writeSemaphoreFile(semaphoreFile);
 		release();
@@ -135,9 +129,24 @@ public class LockManager{
     }
 
 	private void writeSemaphoreFile(final File inSemaphoreFile) throws Exception {
-		FileOutputStream semaphoreOutputStream;
-		try {
-			semaphoreOutputStream = new FileOutputStream(inSemaphoreFile);
+		try (FileOutputStream semaphoreOutputStream  = new FileOutputStream(inSemaphoreFile)){
+	        FileLock lock = null;
+	        try {
+	            lock = semaphoreOutputStream.getChannel().tryLock();
+	            if (lock == null) {
+	                LogUtils.severe("Locking failed.");
+	                throw new Exception();
+	            }
+	        }
+	        catch (final UnsatisfiedLinkError eUle) {/**/}
+	        catch (final NoClassDefFoundError eDcdf) {/**/}
+	        semaphoreOutputStream.write(System.getProperty("user.name").getBytes());
+	        semaphoreOutputStream.write('\n');
+	        semaphoreOutputStream.write(String.valueOf(System.currentTimeMillis()).getBytes());
+	        FileUtils.setHidden(inSemaphoreFile, true, /* synchro= */false);
+	        if (lock != null) {
+	            lock.release();
+	        }
 		}
 		catch (final FileNotFoundException e) {
 			if (lockTimer != null) {
@@ -145,27 +154,5 @@ public class LockManager{
 			}
 			return;
 		}
-		FileLock lock = null;
-		try {
-			lock = semaphoreOutputStream.getChannel().tryLock();
-			if (lock == null) {
-				semaphoreOutputStream.close();
-				LogUtils.severe("Locking failed.");
-				throw new Exception();
-			}
-		}
-		catch (final UnsatisfiedLinkError eUle) {
-		}
-		catch (final NoClassDefFoundError eDcdf) {
-		}
-		semaphoreOutputStream.write(System.getProperty("user.name").getBytes());
-		semaphoreOutputStream.write('\n');
-		semaphoreOutputStream.write(String.valueOf(System.currentTimeMillis()).getBytes());
-		FileUtils.setHidden(inSemaphoreFile, true, /* synchro= */false);
-		if (lock != null) {
-			lock.release();
-		}
-		semaphoreOutputStream.close();
-		semaphoreOutputStream = null;
 	}
 }
