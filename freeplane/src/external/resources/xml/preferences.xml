@@ -179,7 +179,10 @@
 			<separator name="cloud">
 				<color name="standardcloudcolor" />
 				<combo name="standardcloudshape" enum="org.freeplane.features.cloud.CloudModel$Shape"/>
-			</separator>				
+			</separator>
+			<separator name="cmdsearch">
+				<combo name="cmdsearch_scope" enum="org.freeplane.features.commandsearch.CommandSearchDialog$Scope"/>
+			</separator>
 		</tab>
 		<tab name="Behaviour">
 			<separator name="behaviour">

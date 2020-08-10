@@ -22,6 +22,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -30,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -38,6 +42,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
@@ -53,6 +58,14 @@ import org.freeplane.core.util.TextUtils;
 
 
 public class CommandSearchDialog extends JDialog implements DocumentListener, ListCellRenderer<Object>, MouseListener, KeyListener {
+
+    public enum Scope{
+        MENUS, PREFERENCES, ALL
+    };
+
+    JRadioButton searchMenus;
+    JRadioButton searchPrefs;
+    JRadioButton searchBoth;
     private JTextField input;
     private JList<Object> resultList;
     private ImageIcon prefsIcon;
@@ -85,19 +98,56 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
         panel.setLayout(new BorderLayout());
         JScrollPane resultListScrollPane = new JScrollPane(resultList);
         getContentPane().add(panel);
-        panel.add(input, BorderLayout.NORTH);
+
+        ButtonGroup scopeGroup = new ButtonGroup();
+        JPanel scopePanel = new JPanel();
+        searchMenus = new JRadioButton(TextUtils.getText("cmdsearch.menuitems_rb"));
+        searchMenus.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ResourceController.getResourceController().setProperty("cmdsearch_scope", Scope.MENUS.name());
+                updateMatches(input.getText());
+            }
+        });
+        searchPrefs = new JRadioButton(TextUtils.getText("cmdsearch.preferences_rb"));
+        searchPrefs.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ResourceController.getResourceController().setProperty("cmdsearch_scope", Scope.PREFERENCES.name());
+                updateMatches(input.getText());
+            }
+        });
+        searchBoth = new JRadioButton(TextUtils.getText("cmdsearch.both_rb"));
+        searchBoth.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ResourceController.getResourceController().setProperty("cmdsearch_scope", Scope.ALL.name());
+                updateMatches(input.getText());
+            }
+        });
+        scopeGroup.add(searchMenus);
+        scopePanel.add(searchMenus);
+        scopeGroup.add(searchPrefs);
+        scopePanel.add(searchPrefs);
+        scopeGroup.add(searchBoth);
+        scopePanel.add(searchBoth);
+        Box whatbox = Box.createVerticalBox();
+        whatbox.add(scopePanel);
+        whatbox.add(input);
+        initScopeFromPrefs();
+
+        panel.add(whatbox, BorderLayout.NORTH);
         panel.add(resultListScrollPane, BorderLayout.CENTER);
 
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         input.setSize(new Dimension(300, 20));
         resultList.setSize(new Dimension(300, 240));
-        input.setText("type to search for preferences/menu items");
-        input.setSelectionStart(0);
-        input.setSelectionEnd(input.getText().length());
+        //setDefaultText();
         //updateMatches(input.getText());
         pack();
 
         input.getDocument().addDocumentListener(this);
+        input.requestFocus();
 
         setVisible(true);
     }
@@ -106,6 +156,30 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
     {
         preferencesIndexer = new PreferencesIndexer();
         menuStructureIndexer = new MenuStructureIndexer(false);
+    }
+
+    private void initScopeFromPrefs()
+    {
+        final ResourceController resourceController = ResourceController.getResourceController();
+         Scope scope = resourceController.getEnumProperty("cmdsearch_scope", Scope.ALL);
+         if (scope == Scope.MENUS)
+         {
+            searchMenus.setSelected(true);
+         }
+         else if (scope == Scope.PREFERENCES)
+         {
+             searchPrefs.setSelected(true);
+         }
+         else if (scope == Scope.ALL) {
+             searchBoth.setSelected(true);
+         }
+    }
+
+    private void setDefaultText()
+    {
+        input.setText("type to search for preferences/menu items");
+        input.setSelectionStart(0);
+        input.setSelectionEnd(input.getText().length());
     }
 
     public void changedUpdate(DocumentEvent e) {
@@ -118,34 +192,67 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
         updateMatches(input.getText());
     }
 
-    private void updateMatches(final String searchTerm)
+    private void updateMatches(final String searchInput)
     {
-        resultList.setListData(new Object[0]);
+        final String[] searchTerms = searchInput.split("\\s+");
+        for (int i = 0; i <searchTerms.length; i++)
+        {
+            searchTerms[i] = searchTerms[i].toLowerCase(Locale.ENGLISH);
+        }
 
         //PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
         java.util.List<SearchItem> matches = new ArrayList<>();
+        if (searchMenus.isSelected() || searchBoth.isSelected())
+        {
+            gatherMenuItemMatches(searchTerms, matches);
+        }
+        if (searchPrefs.isSelected() || searchBoth.isSelected())
+        {
+            gatherPreferencesMatches(searchTerms, matches);
+        }
 
+        Collections.sort(matches);
+        resultList.setListData(new Object[0]);
+        resultList.setListData(matches.toArray());
+    }
+
+    private boolean checkAndMatch(final String itemPath, final String[] searchTerms)
+    {
+        for (int i = 0; i < searchTerms.length; i++)
+        {
+            if (!itemPath.contains(searchTerms[i]))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void gatherMenuItemMatches(final String[] searchTerms, final java.util.List<SearchItem> matches)
+    {
         for (final MenuItem menuItem :menuStructureIndexer.getMenuItems())
         {
             if (menuItem.action == null || !menuItem.action.isEnabled())
             {
                 continue;
             }
-            if (menuItem.path.toLowerCase(Locale.ENGLISH).contains(searchTerm.toLowerCase(Locale.ENGLISH)))
+            if (checkAndMatch(menuItem.path.toLowerCase(Locale.ENGLISH), searchTerms))
             {
                 matches.add(menuItem);
             }
         }
+    }
+
+    private void gatherPreferencesMatches(final String[] searchTerms, final java.util.List<SearchItem> matches)
+    {
         for (final PreferencesItem prefsItem: preferencesIndexer.getPrefs())
         {
-            if (prefsItem.key.contains(searchTerm.toLowerCase(Locale.ENGLISH)) ||
-                prefsItem.path.toLowerCase(Locale.ENGLISH).contains(searchTerm.toLowerCase(Locale.ENGLISH)))
+            if (checkAndMatch(prefsItem.key.toLowerCase(Locale.ENGLISH), searchTerms) ||
+                checkAndMatch(prefsItem.path.toLowerCase(Locale.ENGLISH), searchTerms))
             {
                 matches.add(prefsItem);
             }
         }
-        Collections.sort(matches);
-        resultList.setListData(matches.toArray());
     }
 
     public static void main(String[] args)
