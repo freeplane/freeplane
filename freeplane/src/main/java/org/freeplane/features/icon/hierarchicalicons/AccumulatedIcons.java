@@ -61,7 +61,6 @@ class AccumulatedIcons  implements IExtension{
 	}
 
 	static boolean setStyleCheckForChange(final NodeModel node, Mode mode) {
-System.out.println("Setting icons for node " + node.getText());	    
 		final Collection<NamedIcon> ownIcons = IconController.getController().getIcons(node);
 		final AccumulatedIcons iconSet = new AccumulatedIcons(ownIcons);
 		boolean first = true;
