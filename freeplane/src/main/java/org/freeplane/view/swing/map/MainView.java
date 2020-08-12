@@ -385,25 +385,23 @@ public class MainView extends ZoomableLabel {
 	}
 
 	void updateIcons(final NodeView node) {
-		if(! node.getMap().showsIcons()) {
-			setIcon(null);
-			return;
+	    final MultipleImage iconImages = new MultipleImage();
+	    final NodeModel model = node.getModel();
+		if(node.getMap().showsIcons()) {
+		    //		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
+		    /* fc, 06.10.2003: images? */
+		    final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(model);
+		    for (final UIIcon icon : IconController.getController().getStateIcons(model)) {
+		        iconImages.addIcon(icon, iconHeight);
+		    }
+		    final ModeController modeController = getNodeView().getMap().getModeController();
+		    final Collection<NamedIcon> icons = IconController.getController(modeController).getIcons(model);
+		    for (final NamedIcon myIcon : icons) {
+		        iconImages.addIcon(myIcon, iconHeight);
+		    }
 		}
-//		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
-		final MultipleImage iconImages = new MultipleImage();
-		/* fc, 06.10.2003: images? */
-		final NodeModel model = node.getModel();
-		final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(model);
-		for (final UIIcon icon : IconController.getController().getStateIcons(model)) {
-			iconImages.addIcon(icon, iconHeight);
-		}
-		final ModeController modeController = getNodeView().getMap().getModeController();
-		final Collection<NamedIcon> icons = IconController.getController(modeController).getIcons(model);
-		for (final NamedIcon myIcon : icons) {
-			iconImages.addIcon(myIcon, iconHeight);
-		}
-		addOwnIcons(iconImages, model);
-		setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
+        addOwnIcons(iconImages, model);
+        setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
 	}
 
 	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
