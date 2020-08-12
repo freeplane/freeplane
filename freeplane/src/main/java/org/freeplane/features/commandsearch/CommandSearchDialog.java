@@ -54,6 +54,7 @@ import javax.swing.event.DocumentListener;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.ShowPreferencesAction;
+import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.util.TextUtils;
 
@@ -102,7 +103,8 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
 
         ButtonGroup scopeGroup = new ButtonGroup();
         JPanel scopePanel = new JPanel();
-        searchMenus = new JRadioButton(TextUtils.getText("cmdsearch.menuitems_rb"));
+        searchMenus = new JRadioButton("dummy");
+        LabelAndMnemonicSetter.setLabelAndMnemonic(searchMenus, TextUtils.getRawText("cmdsearch.menuitems_rb"));
         searchMenus.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -110,7 +112,8 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
                 updateMatches(input.getText());
             }
         });
-        searchPrefs = new JRadioButton(TextUtils.getText("cmdsearch.preferences_rb"));
+        searchPrefs = new JRadioButton("dummy");
+        LabelAndMnemonicSetter.setLabelAndMnemonic(searchPrefs, TextUtils.getRawText("cmdsearch.preferences_rb"));
         searchPrefs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -118,7 +121,8 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
                 updateMatches(input.getText());
             }
         });
-        searchBoth = new JRadioButton(TextUtils.getText("cmdsearch.both_rb"));
+        searchBoth = new JRadioButton("dummy");
+        LabelAndMnemonicSetter.setLabelAndMnemonic(searchBoth, TextUtils.getRawText("cmdsearch.both_rb"));
         searchBoth.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
