@@ -46,7 +46,7 @@ class DeleteDetailsAction extends AMultipleNodeAction {
 			return;
 		}
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
-		selection.keepNodePosition(selection.getSelected(), 0.0f, 0.0f);
+		selection.preserveSelectedNodeLocationOnScreen();
 		final MTextController controller = MTextController.getController();
 		controller.setDetailsHidden(node, false);
 		controller.setDetails(node, null);

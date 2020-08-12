@@ -445,7 +445,7 @@ public class FilterController implements IExtension, IMapViewChangeListener {
                 }
                 final NodeModel selected = selection.getSelected();
             	final NodeModel selectedVisible = selected.getVisibleAncestorOrSelf(filter);
-            	selection.keepNodePosition(selectedVisible, 0.5f, 0.5f);
+            	selection.preserveNodeLocationOnScreen(selectedVisible, 0.5f, 0.5f);
             	refreshMap(this, map);
             	selectVisibleNode(filter);
             }

@@ -46,7 +46,7 @@ public class MNodeMouseWheelListener extends DefaultNodeMouseWheelListener {
 		final ModeController modeController = map.getModeController();
 		final MNodeStyleController styleController = (MNodeStyleController) modeController.getExtension(NodeStyleController.class);
 		
-		selection.keepNodePosition(nodeView.getModel(), 0f, 0f);
+		selection.preserveNodeLocationOnScreen(nodeView.getModel());
 		
 		for (final NodeModel node: selection.getSelection()) { 
 			styleController.setMinNodeWidth(node, newZoomedWidthQuantity);

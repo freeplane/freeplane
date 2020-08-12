@@ -814,6 +814,6 @@ public class EditNodeTextField extends EditNodeBase {
 	}
 
 	private void keepNodePosition() {
-		nodeView.getMap().keepNodePosition(nodeView, 0 , 0);
+	    nodeView.getMap().preserveNodeLocationOnScreen(nodeView);
 	}
 }

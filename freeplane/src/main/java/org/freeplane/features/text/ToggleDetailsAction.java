@@ -50,7 +50,7 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 			return;
 		isHidden = !isHidden;
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
-		selection.keepNodePosition(selection.getSelected(), 0.0f, 0.0f);
+		selection.preserveSelectedNodeLocationOnScreen();
 		super.actionPerformed(e);
 	}
 	

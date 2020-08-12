@@ -245,11 +245,22 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return nodeView != null && MapView.this.isSelected(nodeView);
 		}
 
-		@Override
-		public void keepNodePosition(final NodeModel node, final float horizontalPoint, final float verticalPoint) {
-			final NodeView nodeView = getNodeView(node);
-			MapView.this.keepNodePosition(nodeView, horizontalPoint, verticalPoint);
-		}
+        @Override
+        public void preserveSelectedNodeLocationOnScreen() {
+            MapView.this.preserveSelectedNodeLocation();
+        }
+
+        @Override
+        public void preserveNodeLocationOnScreen(NodeModel node) {
+            final NodeView nodeView = getNodeView(node);
+            MapView.this.preserveNodeLocationOnScreen(nodeView);
+        }
+
+        @Override
+        public void preserveNodeLocationOnScreen(final NodeModel node, final float horizontalPoint, final float verticalPoint) {
+            final NodeView nodeView = getNodeView(node);
+            MapView.this.preserveNodeLocationOnScreen(nodeView, horizontalPoint, verticalPoint);
+        }
 
 		@Override
 		public void scrollNodeTreeToVisible(final NodeModel  node) {
@@ -343,12 +354,12 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				ids.add(node.getID());
 			return ids;
 		}
-		
+
 	    @Override
         public Filter getFilter() {
 	        return filter;
 	    }
-	    
+
 	    @Override
         public void setFilter(Filter filter) {
 	        MapView.this.filter = filter;
@@ -669,7 +680,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		addPropertyChangeListener(SPOTLIGHT_ENABLED, repaintOnClientPropertyChangeListener);
 	}
 
-	public void replaceSelection(final NodeView[] views) {
+    public void replaceSelection(final NodeView[] views) {
         selection.replace(views);
         if(views.length > 0)
         	views[0].requestFocusInWindow();
@@ -2279,13 +2290,23 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		mapScroller.setAnchorContentLocation();
 	}
 
-	void keepRootNodePosition() {
-		mapScroller.anchorToRoot();
+	void preserveRootNodeLocationOnScreen() {
+	    mapScroller.anchorToRoot();
 	}
 
-	public void keepNodePosition(final NodeView nodeView, final float horizontalPoint, final float verticalPoint) {
+    void preserveSelectedNodeLocation() {
+        preserveNodeLocationOnScreen(getSelected());
+    }
+
+    public void preserveNodeLocationOnScreen(NodeView nodeView) {
+        int horizontalPoint = nodeView.isLeft() ? 1 : 0;
+        preserveNodeLocationOnScreen(nodeView, horizontalPoint, 0);
+    }
+
+    public void preserveNodeLocationOnScreen(final NodeView nodeView, final float horizontalPoint, final float verticalPoint) {
 		mapScroller.anchorToNode(nodeView, horizontalPoint, verticalPoint);
 	}
+
 
 	public void display(final NodeModel node) {
 		final NodeView nodeView = getNodeView(node);

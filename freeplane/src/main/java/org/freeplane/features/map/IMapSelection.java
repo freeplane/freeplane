@@ -34,19 +34,19 @@ public interface IMapSelection {
 	public enum NodePosition {
 		WEST, CENTER, EAST;
 	}
-	
+
 	public void centerNode(final NodeModel node);
-	
+
 	public void centerNodeSlowly(final NodeModel node);
 
 	public void moveNodeTo(final NodeModel node, NodePosition position);
-	
+
 	public void slowlyMoveNodeTo(final NodeModel node, NodePosition position);
 
 	public NodeModel getSelected();
 
 	public Set<NodeModel> getSelection();
-	
+
 	public List<String> getOrderedSelectionIds();
 
 	public List<NodeModel> getOrderedSelection();
@@ -55,8 +55,12 @@ public interface IMapSelection {
 
 	public boolean isSelected(final NodeModel node);
 
-	public void keepNodePosition(final NodeModel node, float horizontalPoint, float verticalPoint);
-	
+    public void preserveSelectedNodeLocationOnScreen();
+
+    public void preserveNodeLocationOnScreen(NodeModel model);
+
+    public void preserveNodeLocationOnScreen(final NodeModel node, float horizontalPoint, float verticalPoint);
+
 	public void scrollNodeTreeToVisible(final NodeModel  node);
 
 	public void makeTheSelected(final NodeModel node);
@@ -76,15 +80,15 @@ public interface IMapSelection {
 	public int size();
 
 	public void toggleSelected(final NodeModel node);
-	
+
 	public void replaceSelection(NodeModel[] nodes);
-	
+
 	Filter getFilter();
-	
+
 	void setFilter(Filter filter);
 
     default MapModel getMap() {
         return getSelected().getMap();
     }
-	
+
 }

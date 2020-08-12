@@ -46,7 +46,7 @@ class SetShortenerStateAction extends AMultipleNodeAction {
 		final IMapSelection selection = controller.getSelection();
 		final NodeModel node = selection.getSelected();
 		controller.getMapViewManager().getComponent(node).requestFocusInWindow();
-		selection.keepNodePosition(node, 0.0f, 0.0f);
+		selection.preserveSelectedNodeLocationOnScreen();
 		super.actionPerformed(e);
 	}
 	

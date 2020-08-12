@@ -52,7 +52,7 @@ class EditDetailsAction extends AFreeplaneAction {
 		final Component node = viewController.getComponent(nodeModel);
 		node.requestFocus();
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
-		selection.keepNodePosition(nodeModel, 0.0f, 0.0f);
+		selection.preserveSelectedNodeLocationOnScreen();
 		final MTextController textController = (MTextController) MTextController.getController();
 		textController.editDetails(nodeModel, null, useDialog);
 	}

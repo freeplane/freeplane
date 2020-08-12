@@ -23,7 +23,7 @@ public class ShowNotesInMapAction extends AFreeplaneAction {
 		final MNoteController noteController = (MNoteController) NoteController.getController();
 		noteController.setShowNotesInMap(map, ! NoteController.getController().showNotesInMap(map));
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
-		selection.keepNodePosition(selection.getSelected(), 0.0f, 0.0f);
+		selection.preserveSelectedNodeLocationOnScreen();
 		setSelected();
 	}
 

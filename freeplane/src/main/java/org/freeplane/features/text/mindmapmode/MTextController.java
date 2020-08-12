@@ -621,7 +621,7 @@ public class MTextController extends TextController {
 			}
 
 			private void keepNodePosition() {
-				Controller.getCurrentController().getSelection().keepNodePosition(nodeModel, 0, 0);
+				Controller.getCurrentController().getSelection().preserveSelectedNodeLocationOnScreen();
 			}
 
 			@Override
@@ -957,7 +957,7 @@ public class MTextController extends TextController {
 			}
 
 			private void keepNodePosition() {
-				Controller.getCurrentController().getSelection().keepNodePosition(nodeModel, 0, 0);
+				Controller.getCurrentController().getSelection().preserveSelectedNodeLocationOnScreen();
 			}
 
 			@Override

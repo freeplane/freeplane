@@ -980,7 +980,7 @@ public class NodeView extends JComponent implements INodeView {
 			}
 		}
 		numberingChanged(nodeDeletionEvent.index+1);
-		map.keepRootNodePosition();
+		map.preserveRootNodeLocationOnScreen();
 		node.remove();
 		NodeView preferred = getPreferredVisibleChild(false, preferredChildIsLeft);
 		if (preferred == null) {
@@ -1383,7 +1383,7 @@ public class NodeView extends JComponent implements INodeView {
 	 * event.TreeModelEvent)
 	 */
 	private void treeStructureChanged() {
-		map.keepRootNodePosition();
+		map.preserveRootNodeLocationOnScreen();
 		for (NodeView child : getChildrenViews()) {
 			child.remove();
 		}
