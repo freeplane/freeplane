@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 import javax.swing.Box;
@@ -194,24 +195,26 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
 
     private void updateMatches(final String searchInput)
     {
-        final String[] searchTerms = searchInput.split("\\s+");
+        final String[] searchTerms = searchInput.trim().split("\\s+");
         for (int i = 0; i <searchTerms.length; i++)
         {
             searchTerms[i] = searchTerms[i].toLowerCase(Locale.ENGLISH);
         }
 
         //PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
-        java.util.List<SearchItem> matches = new ArrayList<>();
-        if (searchMenus.isSelected() || searchBoth.isSelected())
-        {
-            gatherMenuItemMatches(searchTerms, matches);
-        }
-        if (searchPrefs.isSelected() || searchBoth.isSelected())
-        {
-            gatherPreferencesMatches(searchTerms, matches);
-        }
+        List<SearchItem> matches = new ArrayList<>();
+        if(! searchTerms[0].isEmpty()) {
+            if (searchMenus.isSelected() || searchBoth.isSelected())
+            {
+                gatherMenuItemMatches(searchTerms, matches);
+            }
+            if (searchPrefs.isSelected() || searchBoth.isSelected())
+            {
+                gatherPreferencesMatches(searchTerms, matches);
+            }
 
-        Collections.sort(matches);
+            Collections.sort(matches);
+        }
         resultList.setListData(new Object[0]);
         resultList.setListData(matches.toArray());
     }
