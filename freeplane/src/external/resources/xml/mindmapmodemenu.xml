@@ -44,7 +44,7 @@
           <Entry builder="separator" />
           <Entry name="NewChildAction" />
           <Entry name="NewSiblingAction" />
-        </Entry>  
+        </Entry>
 		<Entry name="font" usedBy = "EDITOR" >
             <Entry builder="separator" />
 			<Entry builder="main_toolbar_style" />
@@ -161,7 +161,7 @@
 			</Entry>
 			<Entry name="menu_copy">
 				<Entry name="CopyAction" accelerator="control C" />
-				<Entry name="CopySingleAction" />
+				<Entry name="CopySingleAction" accelerator="control shift C" />
 				<Entry name="CopyIDAction" />
 				<Entry name="CopyNodeURIAction" />
 				<Entry name="CopyAttributes" />
@@ -238,7 +238,7 @@
               <Entry name="ExternalImageAddAction" />
               <Entry builder="separator" />
               <Entry name="ExternalImageRemoveAction" />
-            </Entry> 
+            </Entry>
             <Entry name="icons" icon="/images/kalzium.svg">
               <Entry name="IconSelectionPlugin" accelerator="control F2" />
               <Entry name="menu_iconByCategory">
@@ -516,7 +516,6 @@
 			<Entry builder="separator" />
 			<Entry name="OpenUserDirAction" />
 			<Entry builder="separator" />
-			<Entry name="CommandSearchAction" accelerator="control shift C" />
 			<Entry builder="separator" />
 			<Entry name="ShowPreferencesAction" accelerator="control COMMA" builder="removeOnMac"/>
 			<Entry builder="conditionalActionBuilder" property="enableUserDefinedInterfaceStrings"
@@ -537,8 +536,8 @@
 			</Entry>
 		</Entry>
 		<Entry name="help" textKey="menu_help">
-			<Entry name="UpdateCheckAction" />
-			<Entry builder="separator" />
+            <Entry name="CommandSearchAction" accelerator="control F1" />
+            <Entry builder="separator" />
 			<Entry name="web_resources">
 				<Entry name="OpenFreeplaneSiteAction" />
 				<Entry name="AskForHelp" />
@@ -547,6 +546,7 @@
 			</Entry>
 			<Entry builder="separator" />
 			<Entry name="AboutAction" builder="removeOnMac"/>
+            <Entry name="UpdateCheckAction" />
 			<Entry builder="separator" />
 			<Entry name="TutorialAction" />
 			<Entry name="DocumentationAction" accelerator="F1" />
@@ -609,7 +609,7 @@
               <Entry name="ExternalImageAddAction" />
               <Entry builder="separator" />
               <Entry name="ExternalImageRemoveAction" />
-            </Entry> 
+            </Entry>
             <Entry name="menu_add_link" icon="/images/SetLinkByFileChooserAction.svg" >
               <Entry name="SetLinkByFileChooserAction" />
               <Entry name="SetLinkByTextFieldAction" />
@@ -630,7 +630,7 @@
                 <Entry builder="style_actions" />
             </Entry>
             <Entry name="AddConnectorAction" />
-         </Entry> 
+         </Entry>
 		<Entry builder="separator" />
 		<Entry name="AlwaysUnfoldedNodeAction" usedBy = "EDITOR" />
 		<Entry name="FreeNodeAction" usedBy = "EDITOR" />
@@ -648,7 +648,7 @@
 		<Entry name="CutAction" accelerator="control X" usedBy = "EDITOR" />
         <Entry name="menu_copy">
           <Entry name="CopyAction" accelerator="control C" />
-          <Entry name="CopySingleAction" />
+          <Entry name="CopySingleAction" accelerator="control shift C" />
           <Entry name="CopyIDAction" />
           <Entry name="CopyNodeURIAction" />
           <Entry name="CopyAttributes" />
