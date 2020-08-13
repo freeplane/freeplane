@@ -52,7 +52,7 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 		actions.add((IconDescription) modeController.getAction("RemoveAllIconsAction"));
 
 		final MIconController mIconController = (MIconController) IconController.getController();
-		for (AFreeplaneAction aFreeplaneAction : mIconController.getIconActions())
+		for (AFreeplaneAction aFreeplaneAction : mIconController.getShownIconActions())
 			actions.add((IconDescription) aFreeplaneAction);
 		
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(UITools.getCurrentFrame(), actions);

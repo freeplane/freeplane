@@ -332,7 +332,7 @@ public class MIconController extends IconController {
 		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
 		final List<AFreeplaneAction> actions = new ArrayList<AFreeplaneAction>();
-		actions.addAll(getIconActions());
+		actions.addAll(getShownIconActions());
 		actions.add(modeController.getAction("RemoveIcon_0_Action"));
 		actions.add(modeController.getAction("RemoveIconAction"));
 		actions.add(modeController.getAction("RemoveAllIconsAction"));
@@ -351,14 +351,18 @@ public class MIconController extends IconController {
 		}
 	}
 
-	public Collection<AFreeplaneAction> getIconActions() {
+	public Collection<AFreeplaneAction> getShownIconActions() {
 	    if(areEmojiActionsEnabled())
-	        return Collections.unmodifiableCollection(iconActions.values());
+	        return getAllIconActions();
 	    else
 	        return iconActions.values().stream()
 	                .filter(action -> ((IconAction) action).getMindIcon().isShownOnToolbar())
                     .collect(Collectors.toList());
 	}
+
+    public Collection<AFreeplaneAction> getAllIconActions() {
+        return Collections.unmodifiableCollection(iconActions.values());
+    }
 
 	/**
 	 * @return
@@ -369,7 +373,7 @@ public class MIconController extends IconController {
 
 	public Collection<MindIcon> getMindIcons() {
 		final List<MindIcon> iconInfoList = new ArrayList<MindIcon>();
-		final Collection<AFreeplaneAction> iconActions = getIconActions();
+		final Collection<AFreeplaneAction> iconActions = getShownIconActions();
 		for (final Action action : iconActions) {
 			final MindIcon info = ((IconAction) action).getMindIcon();
 			iconInfoList.add(info);
