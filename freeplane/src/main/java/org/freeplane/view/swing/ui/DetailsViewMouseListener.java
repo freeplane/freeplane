@@ -61,7 +61,7 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
     	TextController controller = TextController.getController();
 		if (eventFromHideDisplayArea(e)){
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
-			selection.preserveNodeLocationOnScreen(model);
+			selection.preserveRootNodeLocationOnScreen();
     		controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
 		}
 		else {

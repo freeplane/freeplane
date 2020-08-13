@@ -55,7 +55,9 @@ public interface IMapSelection {
 
 	public boolean isSelected(final NodeModel node);
 
-    public void preserveSelectedNodeLocationOnScreen();
+	public void preserveRootNodeLocationOnScreen();
+
+	public void preserveSelectedNodeLocationOnScreen();
 
     public void preserveNodeLocationOnScreen(NodeModel model);
 

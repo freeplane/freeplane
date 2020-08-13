@@ -564,7 +564,7 @@ public class EditNodeTextField extends EditNodeBase {
 		parent.setPreferredSize(null);
 		if(SwingUtilities.getAncestorOfClass(MapView.class, nodeView) != null) {
 			nodeView.update();
-			keepNodePosition();
+			preserveRootNodeLocationOnScreen();
 		}
 		final Dimension textFieldSize = textfield.getSize();
 		final Point textFieldCoordinate = new Point();
@@ -593,7 +593,7 @@ public class EditNodeTextField extends EditNodeBase {
 	private int verticalSpace;
 	private int horizontalSpace;
 	private MapViewChangeListener mapViewChangeListener;
-	
+
     @Override
     protected JPopupMenu createPopupMenu(Component component) {
 		JPopupMenu menu = super.createPopupMenu(component);
@@ -779,7 +779,7 @@ public class EditNodeTextField extends EditNodeBase {
 			}
 		}
 
-        keepNodePosition();
+        preserveRootNodeLocationOnScreen();
 		parent.setPreferredSize(newParentSize);
 		parent.setText("");
         parent.setHorizontalAlignment(JLabel.LEFT);
@@ -813,7 +813,7 @@ public class EditNodeTextField extends EditNodeBase {
 		textfield.requestFocusInWindow();
 	}
 
-	private void keepNodePosition() {
-	    nodeView.getMap().preserveNodeLocationOnScreen(nodeView);
+	private void preserveRootNodeLocationOnScreen() {
+	    nodeView.getMap().preserveRootNodeLocationOnScreen();
 	}
 }

@@ -245,6 +245,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			return nodeView != null && MapView.this.isSelected(nodeView);
 		}
 
+		@Override
+		public void preserveRootNodeLocationOnScreen() {
+            MapView.this.preserveRootNodeLocationOnScreen();
+		}
+
         @Override
         public void preserveSelectedNodeLocationOnScreen() {
             MapView.this.preserveSelectedNodeLocation();
@@ -2290,11 +2295,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		mapScroller.setAnchorContentLocation();
 	}
 
-	void preserveRootNodeLocationOnScreen() {
+	public void preserveRootNodeLocationOnScreen() {
 	    mapScroller.anchorToRoot();
 	}
 
-    void preserveSelectedNodeLocation() {
+	public void preserveSelectedNodeLocation() {
         preserveNodeLocationOnScreen(getSelected());
     }
 

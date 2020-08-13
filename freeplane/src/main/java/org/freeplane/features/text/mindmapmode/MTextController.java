@@ -610,18 +610,18 @@ public class MTextController extends TextController {
 						modeController.resetRedo();
 					}
 					else {
-						keepNodePosition();
+						preserveRootNodeLocationOnScreen();
 						setDetailsHtmlText(nodeModel, null);
 					}
 				else {
-					keepNodePosition();
+					preserveRootNodeLocationOnScreen();
 					setDetailsHtmlText(nodeModel, newText);
 				}
 				stop();
 			}
 
-			private void keepNodePosition() {
-				Controller.getCurrentController().getSelection().preserveSelectedNodeLocationOnScreen();
+			private void preserveRootNodeLocationOnScreen() {
+				Controller.getCurrentController().getSelection().preserveRootNodeLocationOnScreen();
 			}
 
 			@Override
@@ -951,13 +951,13 @@ public class MTextController extends TextController {
 			@Override
 			public void ok(final String text) {
 				String processedText = makePlainIfNoFormattingFound(text);
-				keepNodePosition();
+				preserveRootNodeLocationOnScreen();
 				setGuessedNodeObject(nodeModel, processedText);
 				stop();
 			}
 
-			private void keepNodePosition() {
-				Controller.getCurrentController().getSelection().preserveSelectedNodeLocationOnScreen();
+			private void preserveRootNodeLocationOnScreen() {
+				Controller.getCurrentController().getSelection().preserveRootNodeLocationOnScreen();
 			}
 
 			@Override

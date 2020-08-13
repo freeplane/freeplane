@@ -21,6 +21,7 @@ package org.freeplane.features.text.mindmapmode;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
@@ -29,7 +30,7 @@ import org.freeplane.features.ui.IMapViewManager;
 
 class EditDetailsAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	final private boolean useDialog;
@@ -45,6 +46,7 @@ class EditDetailsAction extends AFreeplaneAction {
 	 * freeplane.controller.actions.ActorXml#act(freeplane.controller.actions.
 	 * generated.instance.XmlAction)
 	 */
+	@Override
 	public void actionPerformed(final ActionEvent arg0) {
 		final Controller controller = Controller.getCurrentController();
 		final NodeModel nodeModel = controller.getSelection().getSelected();
@@ -52,8 +54,8 @@ class EditDetailsAction extends AFreeplaneAction {
 		final Component node = viewController.getComponent(nodeModel);
 		node.requestFocus();
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
-		selection.preserveSelectedNodeLocationOnScreen();
-		final MTextController textController = (MTextController) MTextController.getController();
+		selection.preserveRootNodeLocationOnScreen();
+		final MTextController textController = MTextController.getController();
 		textController.editDetails(nodeModel, null, useDialog);
 	}
 }
