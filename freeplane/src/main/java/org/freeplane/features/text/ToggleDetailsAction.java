@@ -33,7 +33,7 @@ import org.freeplane.features.mode.Controller;
 @EnabledAction(checkOnNodeChange = true)
 class ToggleDetailsAction extends AMultipleNodeAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private boolean foundDetails;
@@ -50,10 +50,10 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 			return;
 		isHidden = !isHidden;
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
-		selection.preserveSelectedNodeLocationOnScreen();
+		selection.preserveRootNodeLocationOnScreen();
 		super.actionPerformed(e);
 	}
-	
+
  	@Override
     protected void actionPerformed(ActionEvent e, NodeModel node) {
 		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
@@ -64,7 +64,7 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 		controller.setDetailsHidden(node, isHidden);
     }
 
-    
+
     private void checkDetailsEnabled() {
         foundDetails = false;
         isHidden = false;
@@ -78,7 +78,7 @@ class ToggleDetailsAction extends AMultipleNodeAction {
             }
         }
     }
-    
+
     @Override
 	public void setSelected() {
     	try {
@@ -97,10 +97,10 @@ class ToggleDetailsAction extends AMultipleNodeAction {
     		setEnabled(false);
     	}
 	}
-   
+
     @Override
 	public void setEnabled() {
-		setSelected();		
+		setSelected();
 	}
 
 }

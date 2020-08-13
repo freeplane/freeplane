@@ -31,7 +31,7 @@ import org.freeplane.features.mode.Controller;
 @SelectableAction(checkOnNodeChange=true)
 class SetShortenerStateAction extends AMultipleNodeAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private boolean setShortened;
@@ -46,10 +46,10 @@ class SetShortenerStateAction extends AMultipleNodeAction {
 		final IMapSelection selection = controller.getSelection();
 		final NodeModel node = selection.getSelected();
 		controller.getMapViewManager().getComponent(node).requestFocusInWindow();
-		selection.preserveSelectedNodeLocationOnScreen();
+		selection.preserveRootNodeLocationOnScreen();
 		super.actionPerformed(e);
 	}
-	
+
 	private boolean isShortened() {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		if(node == null){
@@ -69,5 +69,5 @@ class SetShortenerStateAction extends AMultipleNodeAction {
 	public void setSelected() {
 		setSelected(isShortened());
 	}
-	
+
 }

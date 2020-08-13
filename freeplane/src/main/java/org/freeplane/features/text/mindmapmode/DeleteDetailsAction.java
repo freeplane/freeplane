@@ -21,6 +21,7 @@ package org.freeplane.features.text.mindmapmode;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
+
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.IMapSelection;
@@ -31,7 +32,7 @@ import org.freeplane.features.text.DetailTextModel;
 @EnabledAction(checkOnNodeChange = true)
 class DeleteDetailsAction extends AMultipleNodeAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -46,7 +47,7 @@ class DeleteDetailsAction extends AMultipleNodeAction {
 			return;
 		}
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
-		selection.preserveSelectedNodeLocationOnScreen();
+		selection.preserveRootNodeLocationOnScreen();
 		final MTextController controller = MTextController.getController();
 		controller.setDetailsHidden(node, false);
 		controller.setDetails(node, null);
