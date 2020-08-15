@@ -8,15 +8,17 @@ import org.freeplane.core.ui.AFreeplaneAction;
 
 public class IconItem extends SearchItem
 {
-    final Icon icon;
-    final AFreeplaneAction action;
-    final String path;
+    final private Icon icon;
+    final private AFreeplaneAction action;
+    final private String path;
+    final private String iconName;
 
-    public IconItem(final Icon icon, final AFreeplaneAction action, final String path)
+    public IconItem(final Icon icon, final AFreeplaneAction action, final String iconName, final String path)
     {
         this.icon = icon;
         this.action = action;
         this.path = path;
+        this.iconName = iconName;
     }
 
     @Override
@@ -27,7 +29,7 @@ public class IconItem extends SearchItem
 
     @Override
     String getDisplayText() {
-        return path;
+        return iconName + ", " + path;
     }
 
     @Override
@@ -48,7 +50,7 @@ public class IconItem extends SearchItem
 
     @Override
     String getComparedText() {
-        return path;
+        return  path + SearchItem.ITEM_PATH_SEPARATOR + iconName;
     }
 
     @Override

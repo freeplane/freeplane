@@ -63,7 +63,7 @@ class IconIndexer {
             if(childGroup.isLeaf()) {
                 MindIcon mindIcon = childGroup.getGroupIcon();
                 AFreeplaneAction action = iconActions.get(mindIcon.getName());
-                IconItem iconItem = new IconItem(mindIcon.getIcon(), action,  action.getRawText() + SearchItem.TOP_LEVEL_SEPARATOR + groupPath);
+                IconItem iconItem = new IconItem(mindIcon.getIcon(), action,  action.getRawText(), groupPath);
                 iconItems.add(iconItem);
             } else {
                 addIconGroup(subgroupPrefix, childGroup, iconActions);

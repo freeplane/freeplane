@@ -39,7 +39,7 @@ class MenuStructureIndexer {
     IAcceleratorMap acceleratorMap;
     private List<MenuItem> menuItems;
 
-    MenuStructureIndexer(boolean debug)
+    MenuStructureIndexer()
     {
         loadMenuItems();
     }
@@ -57,7 +57,7 @@ class MenuStructureIndexer {
         ModeController modeController = Controller.getCurrentModeController();
         final Entry root = modeController.getUserInputListenerFactory()
                 .getGenericMenuStructure().getRoot();
-        loadMenuItems("Menu", root.getChild("main_menu").children(), true, false, 0);
+        loadMenuItems("Menu", root.getChild("main_menu").children(), true, 0);
     }
 
     private String translateMenuItemComponent(final Entry entry) {
@@ -71,15 +71,15 @@ class MenuStructureIndexer {
     }
 
     private void loadMenuItems(final String prefix, final List<Entry> menuEntries,
-                               boolean toplevel, boolean toplevelPrefix, int depth)
+                               boolean toplevel, int depth)
     {
          for (Entry menuEntry: menuEntries)
         {
-            processMenuEntry(menuEntry, prefix, toplevelPrefix, toplevel, depth);
+            processMenuEntry(menuEntry, prefix, toplevel, depth);
         }
     }
 
-    private void processMenuEntry(Entry menuEntry, String prefix, boolean toplevelPrefix, boolean toplevel, int depth) {
+    private void processMenuEntry(Entry menuEntry, String prefix, boolean toplevel, int depth) {
         if (menuEntry.getName().equals("icons"))
         {
             return;
@@ -95,7 +95,7 @@ class MenuStructureIndexer {
         }
 
         boolean[] childrenAreToplevel = new boolean[1];
-        final String path = computePath(menuEntry, prefix, toplevel, toplevelPrefix, childrenAreToplevel);
+        final String path = computePath(menuEntry, prefix, toplevel, childrenAreToplevel);
         if (path == null)
         {
             return;
@@ -107,11 +107,11 @@ class MenuStructureIndexer {
         }
         else
         {
-            loadMenuItems(path, menuEntry.children(), childrenAreToplevel[0], toplevelPrefix, depth + 1);
+            loadMenuItems(path, menuEntry.children(), childrenAreToplevel[0], depth + 1);
         }
     }
 
-    private String computePath(Entry menuEntry, String prefix, boolean toplevel, boolean toplevelPrefix, boolean[] childrenAreToplevel)
+    private String computePath(Entry menuEntry, String prefix, boolean toplevel, boolean[] childrenAreToplevel)
     {
         final String path;
         if (contributesToPath(menuEntry)) {
@@ -123,13 +123,7 @@ class MenuStructureIndexer {
             }
             if (toplevel)
             {
-                if (toplevelPrefix) {
-                    path = prefix + SearchItem.TOP_LEVEL_SEPARATOR + component;
-                }
-                else
-                {
-                    path = component;
-                }
+                     path = component;
             }
             else
             {

@@ -5,7 +5,6 @@ import javax.swing.Icon;
 abstract class SearchItem implements Comparable<SearchItem>{
     
     static final String ITEM_PATH_SEPARATOR = "->";
-    static final String TOP_LEVEL_SEPARATOR = ": ";
 
     abstract int getItemTypeRank();
     abstract String getComparedText();

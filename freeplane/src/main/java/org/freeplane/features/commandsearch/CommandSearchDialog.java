@@ -60,6 +60,11 @@ import org.freeplane.core.util.TextUtils;
 public class CommandSearchDialog extends JDialog 
     implements DocumentListener, ListCellRenderer<Object>, MouseListener, KeyListener {
 
+    private static final int MINIMUM_INPUT_LENGTH = 2;
+    private static final String LIMIT_EXCEEDED_MESSAGE = TextUtils.getText("cmdsearch.limit_exceeded");
+    private static final Icon WARNING_ICON = ResourceController.getResourceController().getIcon("/images/icons/messagebox_warning.svg");
+    private static final int LIMIT_EXCEEDED_RANK = 100;
+
     public enum Scope{
         MENUS, PREFERENCES, ICONS, ALL
     }
@@ -82,7 +87,7 @@ public class CommandSearchDialog extends JDialog
         setLocationRelativeTo(parent);
 
         preferencesIndexer = new PreferencesIndexer();
-        menuStructureIndexer = new MenuStructureIndexer(false);
+        menuStructureIndexer = new MenuStructureIndexer();
         iconIndexer = new IconIndexer();
 
         input = new JTextField("");
@@ -197,7 +202,7 @@ public class CommandSearchDialog extends JDialog
 
         //PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
         List<SearchItem> matches = new ArrayList<>();
-        if(trimmedInput.length() >= 3) {
+        if(trimmedInput.length() >= MINIMUM_INPUT_LENGTH) {
             final String[] searchTerms = trimmedInput.split("\\s+");
             for (int i = 0; i <searchTerms.length; i++)
             {
@@ -217,6 +222,11 @@ public class CommandSearchDialog extends JDialog
             }
 
             Collections.sort(matches);
+        }
+        int itemLimit = ResourceController.getResourceController().getIntProperty("cmdsearch_item_limit");
+        if(matches.size() > itemLimit) {
+            matches = matches.subList(0, itemLimit);
+            matches.add(new InformationItem(LIMIT_EXCEEDED_MESSAGE, WARNING_ICON, LIMIT_EXCEEDED_RANK));
         }
         resultList.setListData(new Object[0]);
         resultList.setListData(matches.toArray());
