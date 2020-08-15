@@ -183,7 +183,8 @@
 			</separator>
 			<separator name="cmdsearch">
 				<combo name="cmdsearch_scope" enum="org.freeplane.features.commandsearch.CommandSearchDialog$Scope"/>
-                <number name="cmdsearch_item_limit" min = "10"/>
+                <number name="cmdsearch_item_limit" min="10"/>
+                <boolean name="cmdsearch_whole_words"/>
 			</separator>
 		</tab>
 		<tab name="Behaviour">

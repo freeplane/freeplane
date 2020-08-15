@@ -1,10 +1,27 @@
 package org.freeplane.features.commandsearch;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
+
 import javax.swing.Icon;
+
+import org.freeplane.core.resources.ResourceController;
 
 abstract class SearchItem implements Comparable<SearchItem>{
     
+    private static final int PATTERN_CACHE_SIZE = 10;
     static final String ITEM_PATH_SEPARATOR = "->";
+    private static final LinkedHashMap<String, Pattern> patterns = new LinkedHashMap<String, Pattern>(10+1) {
+
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<String, Pattern> eldest) {
+            return size() > PATTERN_CACHE_SIZE;
+        }
+        
+    };
 
     abstract int getItemTypeRank();
     abstract String getComparedText();
@@ -37,6 +54,18 @@ abstract class SearchItem implements Comparable<SearchItem>{
     }
     
     abstract protected boolean checkAndMatch(final String searchTerm);
+    
+    protected static boolean contains(String text, String word) {
+        if(ResourceController.getResourceController().getBooleanProperty("cmdsearch_whole_words"))
+            return containsWord(text, word);
+        else
+            return text.toLowerCase().contains(word);
+    }
+    public static boolean containsWord(String text, String word) {
+        return patterns.computeIfAbsent(word, 
+                    w -> Pattern.compile("\\b" + w + "\\b", Pattern.CASE_INSENSITIVE))
+                .matcher(text).find();
+    }
 
 
 

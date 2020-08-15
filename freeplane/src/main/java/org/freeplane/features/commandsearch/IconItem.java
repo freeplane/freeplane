@@ -55,7 +55,7 @@ public class IconItem extends SearchItem
 
     @Override
     protected boolean checkAndMatch(String searchTerm) {
-        return path.toLowerCase(Locale.ENGLISH).contains(searchTerm);
+        return contains(path, searchTerm);
     }
 
     @Override

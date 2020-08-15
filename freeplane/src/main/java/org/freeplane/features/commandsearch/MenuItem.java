@@ -77,7 +77,7 @@ class MenuItem extends SearchItem{
     @Override
     protected boolean checkAndMatch(String searchTerm) {
         return action != null && action.isEnabled() 
-                && path.toLowerCase(Locale.ENGLISH).contains(searchTerm);
+                && contains(path, searchTerm);
     }
 
     public String toString()
