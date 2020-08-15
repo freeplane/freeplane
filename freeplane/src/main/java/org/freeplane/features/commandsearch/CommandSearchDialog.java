@@ -77,8 +77,6 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
     JRadioButton searchAll;
     private JTextField input;
     private JList<Object> resultList;
-    private ImageIcon prefsIcon;
-    private ImageIcon menuIcon;
 
     private PreferencesIndexer preferencesIndexer;
     private MenuStructureIndexer menuStructureIndexer;
@@ -89,9 +87,6 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
         super(parent, TextUtils.getText("CommandSearchAction.text"),false);
 
         setLocationRelativeTo(parent);
-
-        prefsIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon(ShowPreferencesAction.KEY + ".icon"));
-        menuIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon("/images/menu_items.svg"));
 
         loadSources();
 
@@ -303,37 +298,13 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
 
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        String text;
-        Icon icon;
-        String tooltip;
-        if (value instanceof PreferencesItem)
-        {
-            PreferencesItem prefsItem = (PreferencesItem)value;
-            text = prefsItem.path;
-            icon = prefsIcon;
-            tooltip = prefsItem.tooltip;
-        }
-        else if (value instanceof MenuItem)
-        {
-            MenuItem menuItem = (MenuItem)value;
-            text = menuItem.path;
-            //icon = ResourceController.getResourceController().getIcon(menuItem.action.getIconKey());
-            icon = menuIcon;
-            //tooltip = TextUtils.getText(menuItem.action.getTooltipKey());
-            tooltip = menuItem.accelerator;
-        }
-        else if (value instanceof IconItem)
-        {
-            IconItem iconItem = (IconItem)value;
-            text = iconItem.path;
-            icon = iconItem.icon;
-            // TODO: tooltip for icons??
-            tooltip = "";
-        }
-        else
-        {
-            throw new RuntimeException("Unknown Itemtype!");
-        }
+
+        SearchItem item = (SearchItem)value;
+
+        String text = item.getDisplayText();
+        Icon icon = item.getTypeIcon();
+        String tooltip = item.getDisplayTooltip();
+
         JLabel label = (JLabel)(new DefaultListCellRenderer().getListCellRendererComponent(list, text, index, isSelected, cellHasFocus));
         if (icon != null)
         {
@@ -348,39 +319,25 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
 
     private void executeItem(int index)
     {
-        Object value = resultList.getModel().getElementAt(index);
-        if (value instanceof PreferencesItem)
-        {
-            new ShowPreferenceItemAction((PreferencesItem)value).actionPerformed(null);
-        }
-        else if (value instanceof MenuItem || value instanceof IconItem)
-        {
-            if (value instanceof MenuItem)
-            {
-                ((MenuItem)value).action.actionPerformed(null);
-            }
-            else if (value instanceof IconItem)
-            {
-                ((IconItem)value).action.actionPerformed(null);
-            }
-            else
-            {
-                throw new RuntimeException("Invalid item!");
-            }
+        SearchItem item = (SearchItem)(resultList.getModel().getElementAt(index));
+
+        boolean updateNecessary = item.execute();
+
+        if (updateNecessary) {
             // the list of enabled actions might have changed:
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    try { Thread.sleep(200); }
-                    catch(InterruptedException e) {
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
                         // nothing to do
                     }
                     updateMatches(input.getText());
                     resultList.revalidate();
                     resultList.repaint();
                     // restore selection if possible
-                    if (index < resultList.getModel().getSize())
-                    {
+                    if (index < resultList.getModel().getSize()) {
                         resultList.setSelectedIndex(index);
                         resultList.ensureIndexIsVisible(index);
                     }

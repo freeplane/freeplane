@@ -2,6 +2,7 @@ package org.freeplane.features.commandsearch;
 
 import javax.swing.Icon;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 public class IconItem extends SearchItem
@@ -15,6 +16,28 @@ public class IconItem extends SearchItem
         this.icon = icon;
         this.action = action;
         this.path = path;
+    }
+
+    @Override
+    Icon getTypeIcon() {
+        //return ResourceController.getResourceController().getIcon(action.getIconKey());
+        return icon;
+    }
+
+    @Override
+    String getDisplayText() {
+        return path;
+    }
+
+    @Override
+    String getDisplayTooltip() {
+        return null;
+    }
+
+    @Override
+    boolean execute() {
+        action.actionPerformed(null);
+        return true;
     }
 
     @Override
