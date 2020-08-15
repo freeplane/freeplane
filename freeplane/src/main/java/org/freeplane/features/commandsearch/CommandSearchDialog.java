@@ -29,6 +29,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -54,9 +55,15 @@ import javax.swing.event.DocumentListener;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.ShowPreferencesAction;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.mindmapmode.MIconController;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.main.mindmapmode.MModeControllerFactory;
 
 
 public class CommandSearchDialog extends JDialog implements DocumentListener, ListCellRenderer<Object>, MouseListener, KeyListener {
@@ -67,7 +74,7 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
 
     JRadioButton searchMenus;
     JRadioButton searchPrefs;
-    JRadioButton searchBoth;
+    JRadioButton searchAll;
     private JTextField input;
     private JList<Object> resultList;
     private ImageIcon prefsIcon;
@@ -75,6 +82,7 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
 
     private PreferencesIndexer preferencesIndexer;
     private MenuStructureIndexer menuStructureIndexer;
+    private Collection<AFreeplaneAction> allIcons;
 
     CommandSearchDialog(Frame parent)
     {
@@ -121,9 +129,9 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
                 updateMatches(input.getText());
             }
         });
-        searchBoth = new JRadioButton("dummy");
-        LabelAndMnemonicSetter.setLabelAndMnemonic(searchBoth, TextUtils.getRawText("cmdsearch.both_rb"));
-        searchBoth.addActionListener(new ActionListener() {
+        searchAll = new JRadioButton("dummy");
+        LabelAndMnemonicSetter.setLabelAndMnemonic(searchAll, TextUtils.getRawText("cmdsearch.all_rb"));
+        searchAll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ResourceController.getResourceController().setProperty("cmdsearch_scope", Scope.ALL.name());
@@ -134,8 +142,8 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
         scopePanel.add(searchMenus);
         scopeGroup.add(searchPrefs);
         scopePanel.add(searchPrefs);
-        scopeGroup.add(searchBoth);
-        scopePanel.add(searchBoth);
+        scopeGroup.add(searchAll);
+        scopePanel.add(searchAll);
         Box whatbox = Box.createVerticalBox();
         whatbox.add(scopePanel);
         whatbox.add(input);
@@ -161,6 +169,8 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
     {
         preferencesIndexer = new PreferencesIndexer();
         menuStructureIndexer = new MenuStructureIndexer(false);
+        final MIconController iconController = (MIconController) IconController.getController();
+        allIcons = iconController.getAllIconActions();
     }
 
     private void initScopeFromPrefs()
@@ -176,7 +186,7 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
              searchPrefs.setSelected(true);
          }
          else if (scope == Scope.ALL) {
-             searchBoth.setSelected(true);
+             searchAll.setSelected(true);
          }
     }
 
@@ -208,13 +218,17 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
         //PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
         List<SearchItem> matches = new ArrayList<>();
         if(! searchTerms[0].isEmpty()) {
-            if (searchMenus.isSelected() || searchBoth.isSelected())
+            if (searchMenus.isSelected() || searchAll.isSelected())
             {
                 gatherMenuItemMatches(searchTerms, matches);
             }
-            if (searchPrefs.isSelected() || searchBoth.isSelected())
+            if (searchPrefs.isSelected() || searchAll.isSelected())
             {
                 gatherPreferencesMatches(searchTerms, matches);
+            }
+            if (searchAll.isSelected())
+            {
+                gatherIconMatches(searchTerms, matches);
             }
 
             Collections.sort(matches);
@@ -262,6 +276,19 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
         }
     }
 
+    private void gatherIconMatches(final String[] searchTerms, final java.util.List<SearchItem> matches)
+    {
+        for (final AFreeplaneAction action : allIcons)
+        {
+            IconItem iconItem = new IconItem(ResourceController.getResourceController().getIcon(action.getIconKey()),
+                    action, action.getRawText());
+            if (checkAndMatch(iconItem.path.toLowerCase(Locale.ENGLISH), searchTerms))
+            {
+                matches.add(iconItem);
+            }
+        }
+    }
+
     public static void main(String[] args)
     {
         SwingUtilities.invokeLater(() -> {
@@ -286,14 +313,26 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
             icon = prefsIcon;
             tooltip = prefsItem.tooltip;
         }
-        else
+        else if (value instanceof MenuItem)
         {
-            MenuItem menuItem = (MenuItem) value;
+            MenuItem menuItem = (MenuItem)value;
             text = menuItem.path;
             //icon = ResourceController.getResourceController().getIcon(menuItem.action.getIconKey());
             icon = menuIcon;
             //tooltip = TextUtils.getText(menuItem.action.getTooltipKey());
             tooltip = menuItem.accelerator;
+        }
+        else if (value instanceof IconItem)
+        {
+            IconItem iconItem = (IconItem)value;
+            text = iconItem.path;
+            icon = iconItem.icon;
+            // TODO: tooltip for icons??
+            tooltip = "";
+        }
+        else
+        {
+            throw new RuntimeException("Unknown Itemtype!");
         }
         JLabel label = (JLabel)(new DefaultListCellRenderer().getListCellRendererComponent(list, text, index, isSelected, cellHasFocus));
         if (icon != null)
@@ -314,9 +353,20 @@ public class CommandSearchDialog extends JDialog implements DocumentListener, Li
         {
             new ShowPreferenceItemAction((PreferencesItem)value).actionPerformed(null);
         }
-        else
+        else if (value instanceof MenuItem || value instanceof IconItem)
         {
-            ((MenuItem)value).action.actionPerformed(null);
+            if (value instanceof MenuItem)
+            {
+                ((MenuItem)value).action.actionPerformed(null);
+            }
+            else if (value instanceof IconItem)
+            {
+                ((IconItem)value).action.actionPerformed(null);
+            }
+            else
+            {
+                throw new RuntimeException("Invalid item!");
+            }
             // the list of enabled actions might have changed:
             new Thread(new Runnable() {
                 @Override
