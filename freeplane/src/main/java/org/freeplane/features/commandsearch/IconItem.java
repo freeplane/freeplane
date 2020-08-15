@@ -1,8 +1,9 @@
 package org.freeplane.features.commandsearch;
 
+import java.util.Locale;
+
 import javax.swing.Icon;
 
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 
 public class IconItem extends SearchItem
@@ -48,6 +49,11 @@ public class IconItem extends SearchItem
     @Override
     String getComparedText() {
         return path;
+    }
+
+    @Override
+    protected boolean checkAndMatch(String searchTerm) {
+        return path.toLowerCase(Locale.ENGLISH).contains(searchTerm);
     }
 
     @Override

@@ -17,6 +17,8 @@
  */
 package org.freeplane.features.commandsearch;
 
+import java.util.Locale;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -80,5 +82,11 @@ class PreferencesItem extends SearchItem {
     public String toString()
     {
         return String.format("PreferencesItem[%s:%s:%s:%s]", tab, separator, key, text);
+    }
+
+    @Override
+    protected boolean checkAndMatch(String searchTerm) {
+        return key.toLowerCase(Locale.ENGLISH).contains(searchTerm) 
+                || path.toLowerCase(Locale.ENGLISH).contains(searchTerm);
     }
 }

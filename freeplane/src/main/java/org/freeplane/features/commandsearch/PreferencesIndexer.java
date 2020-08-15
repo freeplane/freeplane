@@ -17,6 +17,8 @@
  */
 package org.freeplane.features.commandsearch;
 
+import static org.freeplane.features.commandsearch.SearchItem.ITEM_PATH_SEPARATOR;
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -119,7 +121,7 @@ class PreferencesIndexer
             String tooltipText = TextUtils.getRawText(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + prefKey + ".tooltip", null);
             String currentTabTranslated = TextUtils.getRawText(OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + currentTab, null);
             String currentSeparatorTranslated = TextUtils.getRawText(OPTIONPANEL_SEPARATOR_RESOURCE_PREFIX + currentSeparator, null);
-            String prefPath = currentSeparatorTranslated + "->" + prefText;
+            String prefPath = currentSeparatorTranslated + ITEM_PATH_SEPARATOR + prefText;
 
             prefs.add(new PreferencesItem(currentTabTranslated, currentSeparatorTranslated, prefKey, prefText, prefPath, tooltipText));
             //System.out.format("tagsOpenendForCurrentPrefDeclaration=%d, prefKey=%s -> %s\n",

@@ -80,6 +80,10 @@ class MenuStructureIndexer {
     }
 
     private void processMenuEntry(Entry menuEntry, String prefix, boolean toplevelPrefix, boolean toplevel, int depth) {
+        if (menuEntry.getName().equals("icons"))
+        {
+            return;
+        }
         if (menuEntry.builders().contains("separator"))
         {
             return;
@@ -120,7 +124,7 @@ class MenuStructureIndexer {
             if (toplevel)
             {
                 if (toplevelPrefix) {
-                    path = prefix + ": " + component;
+                    path = prefix + SearchItem.TOP_LEVEL_SEPARATOR + component;
                 }
                 else
                 {
@@ -129,7 +133,7 @@ class MenuStructureIndexer {
             }
             else
             {
-                path = prefix + SearchItem.ITEM_SEPARATOR + component;
+                path = prefix + SearchItem.ITEM_PATH_SEPARATOR + component;
             }
             childrenAreToplevel[0] = false;
         } else {

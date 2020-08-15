@@ -18,6 +18,8 @@
  */
 package org.freeplane.features.commandsearch;
 
+import java.util.Locale;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -70,6 +72,12 @@ class MenuItem extends SearchItem{
     @Override
     String getComparedText() {
         return path;
+    }
+
+    @Override
+    protected boolean checkAndMatch(String searchTerm) {
+        return action != null && action.isEnabled() 
+                && path.toLowerCase(Locale.ENGLISH).contains(searchTerm);
     }
 
     public String toString()
