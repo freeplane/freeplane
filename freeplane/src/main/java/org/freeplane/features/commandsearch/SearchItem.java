@@ -56,10 +56,13 @@ abstract class SearchItem implements Comparable<SearchItem>{
     abstract protected boolean checkAndMatch(final String searchTerm);
     
     protected static boolean contains(String text, String word) {
-        if(ResourceController.getResourceController().getBooleanProperty("cmdsearch_whole_words"))
+        if(shouldSearchWholeWords())
             return containsWord(text, word);
         else
             return text.toLowerCase().contains(word);
+    }
+    static boolean shouldSearchWholeWords() {
+        return ResourceController.getResourceController().getBooleanProperty("cmdsearch_whole_words");
     }
     public static boolean containsWord(String text, String word) {
         return patterns.computeIfAbsent(word, 

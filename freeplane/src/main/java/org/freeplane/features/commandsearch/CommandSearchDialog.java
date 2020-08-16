@@ -60,7 +60,6 @@ import org.freeplane.core.util.TextUtils;
 public class CommandSearchDialog extends JDialog 
     implements DocumentListener, ListCellRenderer<Object>, MouseListener, KeyListener {
 
-    private static final int MINIMUM_INPUT_LENGTH = 2;
     private static final String LIMIT_EXCEEDED_MESSAGE = TextUtils.getText("cmdsearch.limit_exceeded");
     private static final Icon WARNING_ICON = ResourceController.getResourceController().getIcon("/images/icons/messagebox_warning.svg");
     private static final int LIMIT_EXCEEDED_RANK = 100;
@@ -202,7 +201,11 @@ public class CommandSearchDialog extends JDialog
 
         //PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
         List<SearchItem> matches = new ArrayList<>();
-        if(trimmedInput.length() >= MINIMUM_INPUT_LENGTH) {
+        if(trimmedInput.length() >= 1 
+                && (searchInput.length() >= 3
+                    || searchInput.endsWith(" ")
+                    || SearchItem.shouldSearchWholeWords())
+                ) {
             final String[] searchTerms = trimmedInput.split("\\s+");
             for (int i = 0; i <searchTerms.length; i++)
             {
