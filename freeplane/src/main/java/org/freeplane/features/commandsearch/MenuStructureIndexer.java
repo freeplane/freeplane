@@ -38,12 +38,10 @@ class MenuStructureIndexer {
     private EntryAccessor entryAccessor;
     IAcceleratorMap acceleratorMap;
     private List<MenuItem> menuItems;
-    private boolean debug;
 
-    MenuStructureIndexer(boolean debug)
+    MenuStructureIndexer()
     {
-        this.debug = debug;
-        load();
+        loadMenuItems();
     }
 
     List<MenuItem> getMenuItems()
@@ -51,19 +49,15 @@ class MenuStructureIndexer {
         return menuItems;
     }
 
-    private void load()
+    private void loadMenuItems()
     {
-        // this has some methods for getting stuff about menu items...
         entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
         acceleratorMap = ResourceController.getResourceController().getAcceleratorManager();
         menuItems = new LinkedList<>();
         ModeController modeController = Controller.getCurrentModeController();
         final Entry root = modeController.getUserInputListenerFactory()
                 .getGenericMenuStructure().getRoot();
-        loadMenuItems("Menu", root.getChild("main_menu").children(), true, false, 0);
-        //loadMenuItems("Toolbar", root.getChild("main_toolbar").children(), true, false, 0);
-        //loadMenuItems("Map Popup", root.getChild("map_popup").children(), true, false, 0);
-        //loadMenuItems("Node Popup", root.getChild("node_popup").children(), true, false, 0);
+        loadMenuItems("Menu", root.getChild("main_menu").children(), true, 0);
     }
 
     private String translateMenuItemComponent(final Entry entry) {
@@ -76,36 +70,20 @@ class MenuStructureIndexer {
         return menuItemLabel;
     }
 
-    // This is for indenting debug messages
-    private void indent(int depth)
-    {
-        for (int i = 0; i < depth; i++)
-        {
-            System.out.print(' ');
-        }
-    }
-
     private void loadMenuItems(final String prefix, final List<Entry> menuEntries,
-                               boolean toplevel, boolean toplevelPrefix, int depth)
+                               boolean toplevel, int depth)
     {
-        if (debug)
+         for (Entry menuEntry: menuEntries)
         {
-            indent(depth);
-            System.out.format("loadMenuItems(%s, %s, %b)\n", prefix, menuEntries.get(0).getParent().getPath(), toplevel);
-        }
-        for (Entry menuEntry: menuEntries)
-        {
-            processMenuEntry(menuEntry, prefix, toplevelPrefix, toplevel, depth);
+            processMenuEntry(menuEntry, prefix, toplevel, depth);
         }
     }
 
-    private void processMenuEntry(Entry menuEntry, String prefix, boolean toplevelPrefix, boolean toplevel, int depth) {
-        if (debug)
+    private void processMenuEntry(Entry menuEntry, String prefix, boolean toplevel, int depth) {
+        if (menuEntry.getName().equals("icons"))
         {
-            indent(depth);
-            System.out.format("entry: %s\n", menuEntry.toString());
+            return;
         }
-
         if (menuEntry.builders().contains("separator"))
         {
             return;
@@ -117,7 +95,7 @@ class MenuStructureIndexer {
         }
 
         boolean[] childrenAreToplevel = new boolean[1];
-        final String path = computePath(menuEntry, prefix, toplevel, toplevelPrefix, childrenAreToplevel, depth);
+        final String path = computePath(menuEntry, prefix, toplevel, childrenAreToplevel);
         if (path == null)
         {
             return;
@@ -125,35 +103,18 @@ class MenuStructureIndexer {
 
         if (menuEntry.isLeaf())
         {
-            recordLeafMenuEntry(menuEntry, path, depth);
+            recordLeafMenuEntry(menuEntry, path);
         }
         else
         {
-            loadMenuItems(path, menuEntry.children(), childrenAreToplevel[0], toplevelPrefix, depth + 1);
+            loadMenuItems(path, menuEntry.children(), childrenAreToplevel[0], depth + 1);
         }
     }
 
-    private String computePath(Entry menuEntry, String prefix, boolean toplevel, boolean toplevelPrefix, boolean[] childrenAreToplevel, int depth)
+    private String computePath(Entry menuEntry, String prefix, boolean toplevel, boolean[] childrenAreToplevel)
     {
         final String path;
-        if (menuEntry.getName().equals(""))
-        {
-            // a meta data entry like <Entry usedBy = "EDITOR" > does not contribute to the path!
-            path = prefix;
-            childrenAreToplevel[0] = toplevel;
-
-            if (!menuEntry.builders().isEmpty())
-            {
-                if (debug)
-                {
-                    indent(depth);
-                    System.out.format("menuEntry without name: %s, numChildren=%d\n",
-                            menuEntry.getPath(), menuEntry.children().size());
-                }
-            }
-        }
-        else
-        {
+        if (contributesToPath(menuEntry)) {
             String component = translateMenuItemComponent(menuEntry);
             if (component == null)
             {
@@ -162,24 +123,26 @@ class MenuStructureIndexer {
             }
             if (toplevel)
             {
-                if (toplevelPrefix) {
-                    path = prefix + ": " + component;
-                }
-                else
-                {
-                    path = component;
-                }
+                     path = component;
             }
             else
             {
-                path = prefix + "->" + component;
+                path = prefix + SearchItem.ITEM_PATH_SEPARATOR + component;
             }
             childrenAreToplevel[0] = false;
+        } else {
+            path = prefix;
+            childrenAreToplevel[0] = toplevel;
+
         }
         return path;
     }
 
-    private void recordLeafMenuEntry(Entry menuEntry, String path, int depth) {
+    public boolean contributesToPath(Entry menuEntry) {
+        return !menuEntry.getName().isEmpty();
+    }
+
+    private void recordLeafMenuEntry(Entry menuEntry, String path) {
         KeyStroke accelerator = menuEntry.getAction() != null ? acceleratorMap.getAccelerator(menuEntry.getAction()) : null;
         String acceleratorText =  null;
         if (accelerator !=  null)
@@ -192,14 +155,6 @@ class MenuStructureIndexer {
                 acceleratorText += "+";
             }
             acceleratorText += KeyEvent.getKeyText(accelerator.getKeyCode());
-        }
-
-        if (debug)
-        {
-            indent(depth);
-            System.out.format("getLocationDescription=%s\n", entryAccessor.getLocationDescription(menuEntry));
-            System.out.format("menuEntry: %s/%s, %s\n", path, menuEntry.getPath(), menuEntry.getAction());
-            System.out.format("menuEntry: %s (accel = %s)\n", path, acceleratorText);
         }
         menuItems.add(new MenuItem(path, menuEntry.getAction(), acceleratorText));
     }

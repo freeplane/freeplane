@@ -18,9 +18,18 @@
  */
 package org.freeplane.features.commandsearch;
 
+import java.util.Locale;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 
 class MenuItem extends SearchItem{
+
+    private static final ImageIcon menuIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon("/images/menu_items.svg"));
 
     final String path;
     final AFreeplaneAction action;
@@ -34,6 +43,28 @@ class MenuItem extends SearchItem{
     }
 
     @Override
+    Icon getTypeIcon() {
+        //icon = ResourceController.getResourceController().getIcon(menuItem.action.getIconKey());
+        return menuIcon;
+    }
+
+    @Override
+    String getDisplayText() {
+        return path;
+    }
+
+    @Override
+    String getDisplayTooltip() {
+        return accelerator;
+    }
+
+    @Override
+    boolean execute() {
+        action.actionPerformed(null);
+        return true;
+    }
+
+    @Override
     int getItemTypeRank() {
         return 2;
     }
@@ -41,6 +72,12 @@ class MenuItem extends SearchItem{
     @Override
     String getComparedText() {
         return path;
+    }
+
+    @Override
+    protected boolean checkAndMatch(String searchTerm) {
+        return action != null && action.isEnabled() 
+                && contains(path, searchTerm);
     }
 
     public String toString()

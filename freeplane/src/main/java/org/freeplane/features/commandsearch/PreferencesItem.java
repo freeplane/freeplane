@@ -17,7 +17,16 @@
  */
 package org.freeplane.features.commandsearch;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.components.ShowPreferencesAction;
+import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
+
 class PreferencesItem extends SearchItem {
+
+    private static final ImageIcon prefsIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon(ShowPreferencesAction.KEY + ".icon"));
 
     final String tab;
     final String separator;
@@ -47,8 +56,35 @@ class PreferencesItem extends SearchItem {
     }
 
     @Override
+    Icon getTypeIcon() {
+        return prefsIcon;
+    }
+
+    @Override
+    String getDisplayText() {
+        return path;
+    }
+
+    @Override
+    String getDisplayTooltip() {
+        return tooltip;
+    }
+
+    @Override
+    boolean execute() {
+        new ShowPreferenceItemAction(this).actionPerformed(null);
+        return false;
+    }
+
+    @Override
     public String toString()
     {
         return String.format("PreferencesItem[%s:%s:%s:%s]", tab, separator, key, text);
+    }
+
+    @Override
+    protected boolean checkAndMatch(String searchTerm) {
+        return contains(key, searchTerm)
+                || contains(path, searchTerm);
     }
 }

@@ -353,15 +353,15 @@ public class MIconController extends IconController {
 
 	public Collection<AFreeplaneAction> getShownIconActions() {
 	    if(areEmojiActionsEnabled())
-	        return getAllIconActions();
+	        return Collections.unmodifiableCollection(iconActions.values());
 	    else
 	        return iconActions.values().stream()
 	                .filter(action -> ((IconAction) action).getMindIcon().isShownOnToolbar())
                     .collect(Collectors.toList());
 	}
 
-    public Collection<AFreeplaneAction> getAllIconActions() {
-        return Collections.unmodifiableCollection(iconActions.values());
+    public Map<String, AFreeplaneAction> getAllIconActions() {
+        return Collections.unmodifiableMap(iconActions);
     }
 
 	/**
