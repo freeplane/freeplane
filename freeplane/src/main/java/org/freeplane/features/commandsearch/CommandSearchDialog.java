@@ -34,10 +34,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
 
+import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -49,6 +51,7 @@ import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -74,6 +77,8 @@ public class CommandSearchDialog extends JDialog
     private final JRadioButton searchAll;
     private final JTextField input;
     private final JList<Object> resultList;
+    private final JCheckBox closeAfterExecute;
+    private final JCheckBox searchWholeWords;
 
     private final PreferencesIndexer preferencesIndexer;
     private final MenuStructureIndexer menuStructureIndexer;
@@ -125,6 +130,34 @@ public class CommandSearchDialog extends JDialog
         panel.add(whatbox, BorderLayout.NORTH);
         panel.add(resultListScrollPane, BorderLayout.CENTER);
 
+        Box optionsBox = Box.createVerticalBox();
+        closeAfterExecute = new JCheckBox();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(closeAfterExecute, TextUtils.getRawText("cmdsearch.closeAfterExecute"));
+        closeAfterExecute.setSelected(ResourceController.getResourceController().getBooleanProperty("cmdsearch_close_after_execute"));
+        closeAfterExecute.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                ResourceController.getResourceController().setProperty("cmdsearch_close_after_execute", closeAfterExecute.isSelected());
+                updateMatches(input.getText());
+                input.requestFocus();
+            }
+        });
+        optionsBox.add(closeAfterExecute);
+
+        searchWholeWords = new JCheckBox();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(searchWholeWords, TextUtils.getRawText("cmdsearch.searchWholeWords"));
+        searchWholeWords.setSelected(ResourceController.getResourceController().getBooleanProperty("cmdsearch_whole_words"));
+        searchWholeWords.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                ResourceController.getResourceController().setProperty("cmdsearch_whole_words", searchWholeWords.isSelected());
+                updateMatches(input.getText());
+                input.requestFocus();
+            }
+        });
+        optionsBox.add(searchWholeWords);
+        panel.add(optionsBox, BorderLayout.SOUTH);
+
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         input.setSize(new Dimension(300, 20));
         resultList.setSize(new Dimension(300, 240));
@@ -146,6 +179,7 @@ public class CommandSearchDialog extends JDialog
             public void actionPerformed(ActionEvent e) {
                 ResourceController.getResourceController().setProperty("cmdsearch_scope", scope.name());
                 updateMatches(input.getText());
+                input.requestFocus();
             }
         });
         return searchPrefs;
@@ -285,6 +319,11 @@ public class CommandSearchDialog extends JDialog
         SearchItem item = (SearchItem)(resultList.getModel().getElementAt(index));
 
         boolean updateNecessary = item.execute();
+
+        if (closeAfterExecute.isSelected())
+        {
+            dispose();
+        }
 
         if (updateNecessary) {
             // the list of enabled actions might have changed:
