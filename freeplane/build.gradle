@@ -27,7 +27,7 @@ dependencies {
             'com.jgoodies:jgoodies-forms:1.9.0',
             'com.jgoodies:jgoodies-common:1.8.1'
 
-	lib  ('com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.17.7') {
+	lib  ('com.lightdev.app.shtm.simplyhtml:SimplyHTML:0.17.8') {
 		exclude module: 'javahelp'
 		exclude module: 'mnemonicsetter'
 	}
