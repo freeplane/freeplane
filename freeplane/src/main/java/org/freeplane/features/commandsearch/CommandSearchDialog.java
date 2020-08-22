@@ -122,8 +122,21 @@ public class CommandSearchDialog extends JDialog
         scopePanel.add(searchPrefs);
         scopeGroup.add(searchAll);
         scopePanel.add(searchAll);
+        searchWholeWords = new JCheckBox();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(searchWholeWords, TextUtils.getRawText("cmdsearch.searchWholeWords"));
+        searchWholeWords.setSelected(ResourceController.getResourceController().getBooleanProperty("cmdsearch_whole_words"));
+        searchWholeWords.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                ResourceController.getResourceController().setProperty("cmdsearch_whole_words", searchWholeWords.isSelected());
+                updateMatches(input.getText());
+                input.requestFocus();
+            }
+        });
+        
         Box whatbox = Box.createVerticalBox();
         whatbox.add(scopePanel);
+        whatbox.add(searchWholeWords);
         whatbox.add(input);
         initScopeFromPrefs();
 
@@ -144,25 +157,11 @@ public class CommandSearchDialog extends JDialog
         });
         optionsBox.add(closeAfterExecute);
 
-        searchWholeWords = new JCheckBox();
-        LabelAndMnemonicSetter.setLabelAndMnemonic(searchWholeWords, TextUtils.getRawText("cmdsearch.searchWholeWords"));
-        searchWholeWords.setSelected(ResourceController.getResourceController().getBooleanProperty("cmdsearch_whole_words"));
-        searchWholeWords.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                ResourceController.getResourceController().setProperty("cmdsearch_whole_words", searchWholeWords.isSelected());
-                updateMatches(input.getText());
-                input.requestFocus();
-            }
-        });
-        optionsBox.add(searchWholeWords);
         panel.add(optionsBox, BorderLayout.SOUTH);
 
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        input.setSize(new Dimension(300, 20));
-        resultList.setSize(new Dimension(300, 240));
-        //setDefaultText();
-        //updateMatches(input.getText());
+        input.setColumns(40);
+        resultList.setVisibleRowCount(20);
         pack();
 
         input.getDocument().addDocumentListener(this);
