@@ -9,10 +9,9 @@ import java.util.Map;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 
-public class EntriesForAction implements IEntriesForAction {
+public class EntriesForAction {
 	final Map<AFreeplaneAction, Collection<Entry>> entryMap = new HashMap<AFreeplaneAction, Collection<Entry>>();
 
-    @Override
     public void registerEntry(AFreeplaneAction action, Entry actionEntry) {
 		final Collection<Entry> collection = entryMap.get(action);
 		if (collection == null) {
@@ -24,7 +23,6 @@ public class EntriesForAction implements IEntriesForAction {
 			collection.add(actionEntry);
     }
 
-    @Override
     public void unregisterEntry(AFreeplaneAction action, Entry actionEntry) {
 		final Collection<Entry> collection = entryMap.get(action);
 		collection.remove(actionEntry);
@@ -36,4 +34,8 @@ public class EntriesForAction implements IEntriesForAction {
 		final Collection<Entry> collection = entryMap.get(action);
 		return collection != null ? collection : Collections.<Entry> emptyList();
 	}
+
+    public boolean contains(AFreeplaneAction action) {
+        return entryMap.containsKey(action);
+    }
 }

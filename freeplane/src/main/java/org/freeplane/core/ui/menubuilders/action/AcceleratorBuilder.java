@@ -8,9 +8,9 @@ import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 public class AcceleratorBuilder implements EntryVisitor{
 
 	private final IAcceleratorMap map;
-	private final IEntriesForAction entries;
+	private final EntriesForAction entries;
 
-	public AcceleratorBuilder(IAcceleratorMap map, IEntriesForAction entries) {
+	public AcceleratorBuilder(IAcceleratorMap map, EntriesForAction entries) {
 		this.map = map;
 		this.entries = entries;
 	}

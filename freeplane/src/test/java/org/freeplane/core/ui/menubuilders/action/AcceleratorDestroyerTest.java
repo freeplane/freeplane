@@ -17,7 +17,7 @@ public class AcceleratorDestroyerTest {
 		IAcceleratorMap acceleratorMap= mock(IAcceleratorMap.class);
 		FreeplaneActions freeplaneActions= mock(FreeplaneActions.class);
 		new EntryAccessor().setAction(actionEntry, action);
-		IEntriesForAction entries = mock(IEntriesForAction.class);
+		EntriesForAction entries = mock(EntriesForAction.class);
         final AcceleratorDestroyer acceleratorDestroyer = new AcceleratorDestroyer(freeplaneActions, acceleratorMap, entries);
 		acceleratorDestroyer.visit(actionEntry);
 		Mockito.verify(entries).unregisterEntry(action, actionEntry);

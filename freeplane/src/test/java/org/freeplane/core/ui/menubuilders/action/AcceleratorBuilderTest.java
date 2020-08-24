@@ -27,7 +27,7 @@ public class AcceleratorBuilderTest {
 		new EntryAccessor().setAction(actionEntry, action);
 
 		IAcceleratorMap map = mock(IAcceleratorMap.class);
-		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map,  mock(IEntriesForAction.class));
+		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map,  mock(EntriesForAction.class));
 		acceleratorBuilder.visit(actionEntry);
 		
 		Mockito.verify(map).setDefaultAccelerator(action, keyStroke);
@@ -43,7 +43,7 @@ public class AcceleratorBuilderTest {
 		actionEntry.setAttribute("accelerator", keyStroke);
 
 		IAcceleratorMap map = mock(IAcceleratorMap.class);
-		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map,  mock(IEntriesForAction.class));
+		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map,  mock(EntriesForAction.class));
 		acceleratorBuilder.visit(actionEntry);
 		
 		Mockito.verify(map, never()).setDefaultAccelerator(Mockito.<AFreeplaneAction> any(), Mockito.<String> any());
@@ -57,7 +57,7 @@ public class AcceleratorBuilderTest {
 		new EntryAccessor().setAction(actionEntry, action);
 
 		IAcceleratorMap map = mock(IAcceleratorMap.class);
-		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map,  mock(IEntriesForAction.class));
+		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map,  mock(EntriesForAction.class));
 		acceleratorBuilder.visit(actionEntry);
 		
 		Mockito.verify(map, never()).setDefaultAccelerator(Mockito.<AFreeplaneAction> any(), anyString());
@@ -71,7 +71,7 @@ public class AcceleratorBuilderTest {
 		new EntryAccessor().setAction(actionEntry, action);
 
 		IAcceleratorMap map = mock(IAcceleratorMap.class);
-		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map, mock(IEntriesForAction.class));
+		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map, mock(EntriesForAction.class));
 		acceleratorBuilder.visit(actionEntry);
 
 		Mockito.verify(map).setUserDefinedAccelerator(action);
@@ -86,7 +86,7 @@ public class AcceleratorBuilderTest {
 		new EntryAccessor().setAction(actionEntry, action);
 
 		IAcceleratorMap map = mock(IAcceleratorMap.class);
-		IEntriesForAction entries = mock(IEntriesForAction.class);
+		EntriesForAction entries = mock(EntriesForAction.class);
 		final AcceleratorBuilder acceleratorBuilder = new AcceleratorBuilder(map, entries);
 		acceleratorBuilder.visit(actionEntry);
 		

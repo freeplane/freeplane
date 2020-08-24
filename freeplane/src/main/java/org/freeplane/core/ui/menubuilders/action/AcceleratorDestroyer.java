@@ -8,11 +8,11 @@ import org.freeplane.features.mode.FreeplaneActions;
 
 public class AcceleratorDestroyer implements EntryVisitor{
 
-	private final IEntriesForAction entries;
+	private final EntriesForAction entries;
     private final FreeplaneActions freeplaneActions;
     private final IAcceleratorMap acceleratorMap;
 
-	public AcceleratorDestroyer(FreeplaneActions freeplaneActions, IAcceleratorMap acceleratorMap, IEntriesForAction entries) {
+	public AcceleratorDestroyer(FreeplaneActions freeplaneActions, IAcceleratorMap acceleratorMap, EntriesForAction entries) {
 		this.freeplaneActions = freeplaneActions;
         this.acceleratorMap = acceleratorMap;
         this.entries = entries;
@@ -22,7 +22,8 @@ public class AcceleratorDestroyer implements EntryVisitor{
 		final AFreeplaneAction action = new EntryAccessor().getAction(entry);
 		if (action != null) {
 			entries.unregisterEntry(action, entry);
-			acceleratorMap.removeActionAccelerator(freeplaneActions, action);
+			if(! entries.contains(action))
+			    acceleratorMap.removeActionAccelerator(freeplaneActions, action);
 		}
 	}
 
