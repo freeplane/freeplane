@@ -42,6 +42,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.MenuUtils;
@@ -87,14 +88,14 @@ public class SelectMenuItemDialog extends JDialog {
 	}
 
 	private class MenuIconRenderer extends DefaultTreeCellRenderer {
-		private static final String DEFAULT_ICON = "button";
+		private static final String DEFAULT_ICON = "menuitem_icon";
 		private static final long serialVersionUID = 1L;
 
 		public MenuIconRenderer() {
 			setOpenIcon(null);
 			setClosedIcon(null);
 			// set default
-			setLeafIcon(IconStoreFactory.ICON_STORE.getUIIcon(DEFAULT_ICON).getIcon());
+			setLeafIcon(ResourceController.getResourceController().getIcon(DEFAULT_ICON));
 		}
 
 		@Override
