@@ -28,6 +28,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -56,6 +58,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.util.TextUtils;
 
@@ -66,6 +69,7 @@ public class CommandSearchDialog extends JDialog
     private static final String LIMIT_EXCEEDED_MESSAGE = TextUtils.getText("cmdsearch.limit_exceeded");
     private static final Icon WARNING_ICON = ResourceController.getResourceController().getIcon("/images/icons/messagebox_warning.svg");
     private static final int LIMIT_EXCEEDED_RANK = 100;
+    private static final String WINDOW_CONFIG_PROPERTY = "cmdsearch_window_configuration";
 
     public enum Scope{
         MENUS, PREFERENCES, ICONS, ALL
@@ -162,10 +166,24 @@ public class CommandSearchDialog extends JDialog
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         input.setColumns(40);
         resultList.setVisibleRowCount(20);
-        pack();
+
+        final WindowConfigurationStorage windowConfigurationStorage = new WindowConfigurationStorage(WINDOW_CONFIG_PROPERTY);
+        if (ResourceController.getResourceController().getProperty(WINDOW_CONFIG_PROPERTY) != null) {
+            windowConfigurationStorage.restoreDialogPositions(this);
+        } else
+        {
+            pack();
+        }
 
         input.getDocument().addDocumentListener(this);
         input.requestFocus();
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                windowConfigurationStorage.storeDialogPositions(CommandSearchDialog.this);
+            }
+        });
 
         setVisible(true);
     }
