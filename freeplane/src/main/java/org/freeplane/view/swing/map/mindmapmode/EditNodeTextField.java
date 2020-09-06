@@ -103,6 +103,8 @@ import org.freeplane.view.swing.map.ZoomableLabel;
 import org.freeplane.view.swing.map.ZoomableLabelUI;
 import org.freeplane.view.swing.map.ZoomableLabelUI.LayoutData;
 
+import com.lightdev.app.shtm.bugfix.MapElementRemovingWorkaround;
+
 import com.lightdev.app.shtm.SHTMLPanel;
 import com.lightdev.app.shtm.SHTMLWriter;
 
@@ -690,6 +692,7 @@ public class EditNodeTextField extends EditNodeBase {
 		final HTMLDocument document = (HTMLDocument) textfield.getDocument();
 		final StyleSheet styleSheet = document.getStyleSheet();
 		styleSheet.addRule(ruleBuilder.toString());
+		MapElementRemovingWorkaround.removeAllMapElements(document);
 		textfield.setText(getText());
 		final MapView mapView = nodeView.getMap();
 		if(! mapView.isValid())
