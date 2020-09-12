@@ -103,13 +103,14 @@ public class SelectMenuItemDialog extends JDialog {
 		                                              final boolean expanded, final boolean leaf, final int row,
 		                                              final boolean hasFocus) {
 			super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-			if (leaf) {
-				final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-				final MenuEntry menuEntry = (MenuEntry) node.getUserObject();
-				Icon icon = menuEntry.getIcon();
-				if (icon != null) {
-				    setIcon(icon);
-				}
+			final DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+			Object userObject = node.getUserObject();
+			if(userObject instanceof MenuEntry) {
+			    final MenuEntry menuEntry = (MenuEntry) userObject;
+			    Icon icon = menuEntry.getIcon();
+			    if (icon != null) {
+			        setIcon(icon);
+			    }
 			}
 			return this;
 		}
@@ -164,7 +165,7 @@ public class SelectMenuItemDialog extends JDialog {
 	private JTree createTree() {
 		final DefaultMutableTreeNode treeRoot = MenuUtils.createMenuEntryTree(SELECTION_ROOT_KEY);
 		if (treeRoot.getUserObject() == null)
-			treeRoot.setUserObject(new MenuEntry(null, TextUtils.getText("select_menu_item_root_node")));
+			treeRoot.setUserObject(new MenuEntry(TextUtils.getText("select_menu_item_root_node"), null));
 		JTree jTree = new JTree(treeRoot);
 		jTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		// replace the standard icons

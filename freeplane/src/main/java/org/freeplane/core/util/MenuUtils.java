@@ -62,8 +62,8 @@ public class MenuUtils {
 			this.toolTipText = toolTipText;
 		}
 
-		public MenuEntry(String key, String label) {
-			this(key, label, null, null, null);
+		public MenuEntry(String label, final Icon icon) {
+			this(null, label, icon, null, null);
 		}
 
 		public String getKey() {
@@ -130,18 +130,26 @@ public class MenuUtils {
 		private DefaultMutableTreeNode menuNode2menuEntryNode(Entry menuItem) {
 			final EntryAccessor entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
 			final AFreeplaneAction action = entryAccessor.getAction(menuItem);
-			final String name = menuItem.getName();
-			if (menuItem.hasChildren() && StringUtils.isNotEmpty(name)) {
-				// the tree of Entrys contains pseudo elements like builder nodes that have to be skipped
-				String text = TextUtils.removeMnemonic(entryAccessor.getText(menuItem));
-				final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new MenuEntry(name, text));
-				if (action != null) {
-					final MenuEntry menuEntry = menuEntry(action);
-					node.add(new DefaultMutableTreeNode(menuEntry));
-				}
-				return node;
-			}
-			else if (action != null) {
+			if (menuItem.hasChildren()) {
+			    String textWithMnemonics = entryAccessor.getText(menuItem);
+                if (StringUtils.isNotEmpty(textWithMnemonics)) {
+                	// the tree of Entrys contains pseudo elements like builder nodes that have to be skipped
+                	String text = TextUtils.removeMnemonic(textWithMnemonics);
+                	final DefaultMutableTreeNode node = new DefaultMutableTreeNode(new MenuEntry(text,
+                	        entryAccessor.getIcon(menuItem)));
+                	if (action != null) {
+                		final MenuEntry menuEntry = menuEntry(action);
+                		node.add(new DefaultMutableTreeNode(menuEntry));
+                	}
+                	return node;
+                } else if (action != null) {
+                	final MenuEntry menuEntry = menuEntry(action);
+                	return new DefaultMutableTreeNode(menuEntry);
+                }
+                else {
+                	return null;
+                }
+            } else if (action != null) {
 				final MenuEntry menuEntry = menuEntry(action);
 				return new DefaultMutableTreeNode(menuEntry);
 			}
