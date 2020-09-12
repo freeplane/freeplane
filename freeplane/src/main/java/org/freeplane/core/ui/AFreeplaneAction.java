@@ -203,4 +203,9 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 		else
 			setEnabled(false);
 	}
+
+    public Icon getIcon() {
+        return ResourceController.getResourceController().getIcon(getIconKey());
+    }
+
 }

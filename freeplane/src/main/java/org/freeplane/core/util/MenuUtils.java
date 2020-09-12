@@ -273,7 +273,7 @@ public class MenuUtils {
 			return null;
 		final EntryAccessor entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
 		final AFreeplaneAction action = entryAccessor.getAction(menuItem);
-		return (Icon) action.getValue(Action.SMALL_ICON);
+		return action.getIcon();
 	}
 
 	private static IUserInputListenerFactory userInputFactory() {
