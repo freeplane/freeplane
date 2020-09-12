@@ -48,10 +48,6 @@ public class IconAction extends AMultipleNodeAction implements IconDescription {
         addConstraint(UserRoleConstraint.EDITOR);
     }
 
-    private MindIcon replaceByUserDefinedIcon() {
-        return IconStoreFactory.ICON_STORE.getMindIcon(mindIcon.getName());
-    }
-
     @Override
     public void actionPerformed(final ActionEvent e, final NodeModel node) {
         ((MIconController) IconController.getController()).addIconByUserAction(node, this);
@@ -71,7 +67,7 @@ public class IconAction extends AMultipleNodeAction implements IconDescription {
     }
 
     public Icon getIcon() {
-        return IconFactory.getInstance().getIcon(replaceByUserDefinedIcon());
+        return IconFactory.getInstance().getIcon(getMindIcon());
     }
     
     public Icon getActionIcon() {
@@ -79,7 +75,7 @@ public class IconAction extends AMultipleNodeAction implements IconDescription {
     }
     
     public MindIcon getMindIcon() {
-        return replaceByUserDefinedIcon();
+        return IconStoreFactory.ICON_STORE.getMindIcon(mindIcon.getName());
     }
 
     public String getShortcutKey() {
