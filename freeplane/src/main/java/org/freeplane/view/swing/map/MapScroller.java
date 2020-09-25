@@ -231,9 +231,6 @@ class MapScroller {
 			viewPosition.y += deltaY;
 			vp.setViewPosition(viewPosition);
 		}
-		else {
-//			map.repaintVisible();
-		}
 
 		if(scrolledNode != null)
 			scrollNodeToVisible(scrolledNode, extraWidth);
