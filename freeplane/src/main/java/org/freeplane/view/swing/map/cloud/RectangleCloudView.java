@@ -20,7 +20,8 @@ public class RectangleCloudView extends CloudView {
     }
 
 	@Override
-    protected void paintDecoration(Polygon p, Graphics2D g, Graphics2D gstroke) {
+    protected void paintDecoration(Graphics2D g, Graphics2D gstroke) {
+        Polygon p = getCoordinates();
 		final Rectangle bounds = p.getBounds();
 		final int distanceToConvexHull = (int) getDistanceToConvexHull();
 		bounds.x -= distanceToConvexHull;

@@ -42,7 +42,7 @@ import org.freeplane.view.swing.map.NodeView;
 abstract public class CloudView {
 	static final Stroke DEF_STROKE = new BasicStroke(1);
 
-	/** the layout functions can get the additional height of the clouded node . 
+	/** the layout functions can get the additional height of the clouded node .
 	 * @param cloud */
 	static public int getAdditionalHeigth(CloudModel cloud, final NodeView source) {
 		final CloudView heightCalculator = new CloudViewFactory().createCloudView(cloud, source);
@@ -139,26 +139,31 @@ abstract public class CloudView {
 		 * depending on the getIterativeLevel().
 		 */
 		/** get coordinates */
-		final LinkedList<Point> coordinates = new LinkedList<Point>();
-		source.getCoordinates(coordinates);
-		final ConvexHull hull = new ConvexHull();
-		final Vector<Point> res = hull.calculateHull(coordinates);
-		final Polygon p = new Polygon();
-		Point lastPt = null;
-		for (int i = 0; i < res.size(); ++i) {
-			final Point pt = (Point) res.get(i);
-			if(!pt.equals(lastPt)){
-				p.addPoint(pt.x, pt.y);
-				lastPt = pt;
-			}
-		}
-		final Point pt = (Point) res.get(0);
-		p.addPoint(pt.x, pt.y);
-		paintDecoration(p, g, gstroke);
+		paintDecoration(g, gstroke);
 		g.dispose();
 	}
-	
-	protected void paintDecoration(final Polygon p, Graphics2D g, Graphics2D gstroke){
+
+	protected Polygon getCoordinates() {
+        final Polygon p = new Polygon();
+        final LinkedList<Point> coordinates = new LinkedList<Point>();
+        source.getCoordinates(coordinates);
+        final ConvexHull hull = new ConvexHull();
+        final Vector<Point> res = hull.calculateHull(coordinates);
+        Point lastPt = null;
+        for (int i = 0; i < res.size(); ++i) {
+            final Point pt = (Point) res.get(i);
+            if(!pt.equals(lastPt)){
+                p.addPoint(pt.x, pt.y);
+                lastPt = pt;
+            }
+        }
+        final Point pt = (Point) res.get(0);
+        p.addPoint(pt.x, pt.y);
+        return p;
+	}
+
+	protected void paintDecoration(Graphics2D g, Graphics2D gstroke){
+	    Polygon p = getCoordinates();
 		fillPolygon(p, g);
 		double middleDistanceBetweenPoints = calcDistanceBetweenPoints();
 		final int[] xpoints = p.xpoints;
@@ -224,12 +229,12 @@ abstract public class CloudView {
 
 	abstract protected void paintDecoration(Graphics2D g, Graphics2D gstroke, double x0, double y0, double x1, double y1,
                                  double dx, double dy, double dxn, double dyn);
-	
+
     protected double calcDistanceBetweenPoints() {
 	    final double distanceBetweenPoints = getDistanceToConvexHull();
 		return distanceBetweenPoints;
     }
-    
+
 	protected double random(double min) {
 	    return (min + (1-min) * random.nextDouble());
     }
