@@ -1714,5 +1714,10 @@ public class NodeView extends JComponent implements INodeView {
 		return hiddenChildren != null && hiddenChildren.remove(node);
 	}
 
+    public Rectangle getInnerBounds() {
+        int spaceAround = getSpaceAround();
+        return new Rectangle(spaceAround, spaceAround, getWidth() - 2 * spaceAround, getHeight() - 2 * spaceAround);
+    }
+
 
 }

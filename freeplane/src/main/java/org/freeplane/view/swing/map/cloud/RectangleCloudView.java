@@ -20,14 +20,12 @@ public class RectangleCloudView extends CloudView {
     }
 
 	@Override
-    protected void paintDecoration(Polygon p, Graphics2D g, Graphics2D gstroke) {
-		final Rectangle bounds = p.getBounds();
-		final int distanceToConvexHull = (int) getDistanceToConvexHull();
-		bounds.x -= distanceToConvexHull;
-		bounds.y -= distanceToConvexHull;
-		bounds.width += 2 * distanceToConvexHull;
-		bounds.height += 2 * distanceToConvexHull;
-		if(isRound){
+    protected void paintDecoration(Graphics2D g, Graphics2D gstroke) {
+        final int distanceToConvexHull = (int) getDistanceToConvexHull();
+	    final Rectangle bounds = source.getInnerBounds();
+	    bounds.x -= distanceToConvexHull;
+	    bounds.width += 2 * distanceToConvexHull;
+	    if(isRound){
 			g.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, distanceToConvexHull, distanceToConvexHull);
 			gstroke.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, distanceToConvexHull, distanceToConvexHull);
 		}
