@@ -105,13 +105,7 @@ abstract class MainViewPainter{
 		final MapView map = mainView.getMap();
 		final MapController mapController = map.getModeController().getMapController();
 		final FoldingMark markType = mainView.foldingMarkType(mapController, nodeView);
-	    Point mousePosition = null;
-	    try {
-	        mousePosition = mainView.getMousePosition();
-        }
-        catch (Exception e) {
-        }
-		if(mousePosition != null && ! map.isPrinting()){
+		if(mainView.getMouseArea() != MouseArea.OUT && ! map.isPrinting()){
 			final int width = Math.max(MainView.FOLDING_CIRCLE_WIDTH, mainView.getZoomedFoldingSymbolHalfWidth() * 2);
 			final Point p = mainView.getNodeView().isLeft() ? getLeftPoint() : getRightPoint();
 			if(p.y + width/2 > mainView.getHeight())
