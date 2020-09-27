@@ -21,10 +21,13 @@ package org.freeplane.view.swing.map;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
@@ -55,8 +58,21 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
         }
 
 		private Timer timer;
+		
+		private JComponent backgroundComponent;
 
-		@Override
+        public void setBackgroundComponent(JComponent backgroundComponent) {
+            this.backgroundComponent = backgroundComponent;
+        }
+
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if(backgroundComponent != null)
+                backgroundComponent.paint(g);
+        }
+
+        @Override
 		public void setViewPosition(Point p) {
 			if(! layoutInProgress) {
 				Integer scrollingDelay = (Integer) getClientProperty(ViewController.SLOW_SCROLLING);
