@@ -219,8 +219,6 @@ class MapScroller {
 			return;
 		}
 		final JViewport vp = (JViewport) map.getParent();
-		final int scrollMode = vp.getScrollMode();
-		vp.setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
 		final Point viewPosition = vp.getViewPosition();
 		final Point oldAnchorContentLocation = anchorContentLocation;
 		final Point newAnchorContentLocation = getAnchorCenterPoint();
@@ -234,7 +232,6 @@ class MapScroller {
 
 		if(scrolledNode != null)
 			scrollNodeToVisible(scrolledNode, extraWidth);
-		vp.setScrollMode(scrollMode);
 		scrolledNode = null;
 		scrollingDirective = ScrollingDirective.DONE;
 		setAnchorView(map.getRoot());
