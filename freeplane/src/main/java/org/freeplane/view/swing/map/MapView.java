@@ -101,6 +101,7 @@ import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.map.NodeRelativePath;
+import org.freeplane.features.map.NodeSubtrees;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -1077,26 +1078,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		}
 		if(differentSubtrees){
-			return getUniqueSubtreeRoots(sortedNodes);
+			return NodeSubtrees.getUniqueSubtreeRoots(sortedNodes);
 		}
 		else
 			return new ArrayList<NodeModel>(sortedNodes);
-	}
-
-	private ArrayList<NodeModel> getUniqueSubtreeRoots(final Collection<NodeModel> sortedNodes) {
-		final ArrayList<NodeModel> selectedNodes = new ArrayList<NodeModel>();
-		ADD_NODES: for (final NodeModel nodeModel : sortedNodes) {
-			final NodeModel parentNode = nodeModel.getParentNode();
-			if(parentNode != null){
-				final int index = parentNode.getIndex(nodeModel);
-				for(final NodeModel parentClone : parentNode.subtreeClones())
-					if(selectedNodes.contains(parentClone.getChildAt(index)))
-						continue ADD_NODES;
-			}
-
-			selectedNodes.add(nodeModel);
-		}
-		return selectedNodes;
 	}
 
 	private boolean viewBelongsToSelectedSubtreeOrItsClone(final NodeView view) {
