@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.buildship.core.launch.runconfiguration">
+<listAttribute key="arguments"/>
+<booleanAttribute key="build_scans_enabled" value="false"/>
+<stringAttribute key="gradle_distribution" value="GRADLE_DISTRIBUTION(WRAPPER)"/>
+<stringAttribute key="gradle_user_home" value=""/>
+<stringAttribute key="java_home" value=""/>
+<listAttribute key="jvm_arguments"/>
+<booleanAttribute key="offline_mode" value="false"/>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
+</listAttribute>
+<booleanAttribute key="override_workspace_settings" value="true"/>
+<booleanAttribute key="show_console_view" value="true"/>
+<booleanAttribute key="show_execution_view" value="true"/>
+<listAttribute key="tasks"/>
+<stringAttribute key="working_dir" value="/Users/stuart/d2/dev/Freeplane"/>
+</launchConfiguration>
