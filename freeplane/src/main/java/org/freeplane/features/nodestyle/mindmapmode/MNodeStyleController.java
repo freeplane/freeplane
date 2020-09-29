@@ -30,6 +30,7 @@ import org.freeplane.core.util.Quantity;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.MapController;
+import org.freeplane.features.map.NodeIconSetModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -74,7 +75,18 @@ public class MNodeStyleController extends NodeStyleController {
 			if (fromBorder != null) {
 				fromBorder.copyTo(NodeBorderModel.createNodeBorderModel(to));
 			}
-
+//			NodeIconSetModel toIconsModel = to.getSharedData().getIcons();
+			if (to.getSharedData().getIcons() == null) {
+				int i = 0;
+				i += 1;
+			}
+			if (to == CopyFormat.getPattern()) {
+				CopyFormat.iconSize = from.getSharedData().getIcons().getIconSize();
+			}
+			if (from == CopyFormat.getPattern()) {
+				to.getSharedData().getIcons().setIconSize(CopyFormat.iconSize);
+				Controller.getCurrentModeController().getMapController().nodeChanged(to, NodeModel.NODE_ICON_SIZE, null, CopyFormat.iconSize);
+			}
 		}
 
 		@Override
