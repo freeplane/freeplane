@@ -102,6 +102,5 @@ class PasteFormat extends AMultipleNodeAction {
 			modeController.undoableRemoveExtensions(Keys.ICONS, node, node);
 			modeController.undoableCopyExtensions(Keys.ICONS, pattern, node);
 		}
-		
 	}
 }
