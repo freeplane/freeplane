@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # SETUP TOOLS
 export JAVA_HOME=~/Apps/mac/jdk-11.0.7.jdk/Contents/Home
 export GRADLE_BIN=/Users/stuart/Apps/mac/gradle-6.5.1/bin
@@ -31,14 +30,3 @@ gradle macDist   || exit $?
 cp settings.gradle.orig settings.gradle
 cp ./freeplane/src/test/java/org/freeplane/core/ui/menubuilders/menu/MenuBuildProcessFactoryTest.java.orig ./freeplane/src/test/java/org/freeplane/core/ui/menubuilders/menu/MenuBuildProcessFactoryTest.java
 cp ./freeplane/src/test/java/org/freeplane/core/ui/menubuilders/menu/JMenuItemBuilderTest.java.orig ./freeplane/src/test/java/org/freeplane/core/ui/menubuilders/menu/JMenuItemBuilderTest.java
-=======
-gradle clean
-gradle build
-gradle dist
-gradle macDist
-
-echo "Copy to /Applications"
-sudo cp -r BIN4mac_jre/Freeplane.app /Applications
-echo "Signing:"
-sudo codesign --force --deep --sign - /Applications/Freeplane.app
->>>>>>> 1.7.x
