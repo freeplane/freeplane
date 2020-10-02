@@ -43,10 +43,13 @@ public class MenuActionComponentProvider implements ComponentProvider {
 			}
 			else {
 				actionComponent = new JFreeplaneMenuItem(wrappedAction);
+				//actionComponent.setIcon(null);
 			}
 			final KeyStroke accelerator = accelerators.getAccelerator(action);
 			actionComponent.setAccelerator(accelerator);
-			IconReplacer.replaceByScaledImageIcon(actionComponent);
+			// SR - Don't use menu icons in macOS
+			//MenuIconScaling.scaleIcon(actionComponent);
+			actionComponent.setIcon(null);
 			return actionComponent;
 		}
 		else if(entry.builders().contains("separator")){

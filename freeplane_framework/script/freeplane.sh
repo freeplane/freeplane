@@ -163,7 +163,7 @@ if [ "${JAVA_TYPE}" != "sun" ]; then
 
   # this fixes font rendering for some people, see:
   # http://www.freeplane.org/wiki/index.php/Rendering_Issues
-  JAVA_OPTS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true $JAVA_OPTS"
+  JAVA_OPTS="-Dawt.useSystemAAFontSettings=on java -Dswing.aatext=true -Dswing.plaf.metal.controlFont='SF UI Text' -Dswing.plaf.metal.userFont='SF UI Text' -Dswing.aatext=true $JAVA_OPTS"
 
   # this sometimes helps with visual mindmap distortions (default in openjdk>=8!)
   # (but it can also create trouble so it's disabled by default):

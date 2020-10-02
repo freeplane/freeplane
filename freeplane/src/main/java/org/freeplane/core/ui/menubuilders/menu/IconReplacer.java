@@ -19,7 +19,8 @@ class IconReplacer {
 			final Font font = actionComponent.getFont();
 			final int fontHeight = actionComponent.getFontMetrics(font).getHeight();
 			final Quantity<LengthUnits> iconHeight = new Quantity<LengthUnits>(1.2 * fontHeight, LengthUnits.px);
-			actionComponent.setIcon(FreeplaneIconFactory.toImageIcon(imageIconFactory.getScaledIcon(icon, iconHeight)));
+			// SR - Don't use menuicons in macOS
+			//actionComponent.setIcon(FreeplaneIconFactory.toImageIcon(imageIconFactory.getScaledIcon(icon, iconHeight)));
 		}
 	}
 

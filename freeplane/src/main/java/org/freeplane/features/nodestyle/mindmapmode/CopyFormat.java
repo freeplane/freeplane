@@ -30,12 +30,15 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.LogicalStyleKeys;
+import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.core.util.Quantity;
 
 /**
  * @author foltin
  */
 class CopyFormat extends AFreeplaneAction {
 	private static NodeModel pattern = null;
+	public static Quantity<LengthUnits> iconSize = null;
 	/**
 	 * 
 	 */
@@ -99,6 +102,5 @@ class PasteFormat extends AMultipleNodeAction {
 			modeController.undoableRemoveExtensions(Keys.ICONS, node, node);
 			modeController.undoableCopyExtensions(Keys.ICONS, pattern, node);
 		}
-		
 	}
 }

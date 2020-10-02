@@ -19,6 +19,7 @@ if (macAppPropertiesFile.exists())
 
 task macDist {}
 
+<<<<<<< HEAD
 def defineMacBuildTasks = {
 
    def jpackage = macAppProperties['macapp.jpackage.jdk'] + '/bin/jpackage'
@@ -49,6 +50,93 @@ def defineMacBuildTasks = {
         copy {
     		from(macosapp_input_dir) {
             include '*.*'
+=======
+def defineMacBuildTasks = {boolean includeJavaRuntime -> 
+    def taskName = {base -> includeJavaRuntime ? base + '_jre' : base}
+    def bin4mac = taskName(rootDir.path + '/BIN4mac')
+    def macappfullpath = new File(bin4mac, 'Freeplane.app').absoluteFile
+    
+    def macosxapp = tasks.create (taskName('macosxapp')) {
+		mustRunAfter binZip
+
+		doFirst {
+		
+			if(! binZip.archivePath.exists())
+				ant.fail("File ${binZip.archivePath.path} not found")
+		
+			delete bin4mac + '/Freeplane.app'
+			mkdir bin4mac
+			
+			def zipExtracted = globalBin+'-extracted'
+			delete zipExtracted
+			mkdir zipExtracted
+			
+			copy {
+				from(zipTree(binZip.archivePath))
+				into(zipExtracted)
+			}
+			
+			def globalBinExtracted = zipExtracted + '/' + file(zipExtracted).list()[0]
+
+			ant.appbundler(
+				outputdirectory: bin4mac,
+				name: 'Freeplane',
+				displayname: 'Freeplane',
+				mainclassname: 'org.freeplane.launcher.Launcher',
+				shortversion: distVersion,
+				copyright: "Freeplane ${distVersion}",
+				identifier: 'org.freeplane.core',
+				icon: 'freeplane_framework/mac-appbundler/freeplane.icns',
+				signature: '????'
+			) {
+				if (includeJavaRuntime) {
+					if(macAppProperties['macapp.jdk.home'] != null) {
+						runtime(dir: macAppProperties['macapp.jdk.home'])
+					}
+					else {
+						def javaHomeJre = System.properties['java.home']
+						//def javaHomeJre = "/Users/stuart/apps/mac/jdk8_121/Home/jre"
+
+						def javaHome = javaHomeJre - ~/\/jre$/
+						//def javaHome = "/Users/stuart/apps/mac/jdk1.8.0_121.jdk/Contents/Home"
+						runtime(dir: javaHome)
+					}
+				}
+				classpath(dir: globalBinExtracted, includes: '*.jar')
+				option(value: "-Xmx512m")
+				option(value: "-Dapple.laf.useScreenMenuBar=true")
+				option(value: "-Xdock:name=Freeplane")
+			}
+
+			def dist_macos_info = macappfullpath.path + '/Contents/Info.plist'
+			ant.xslt(in: new File(dist_macos_info),
+				style: new File('freeplane_framework/mac-appbundler/mac_info_plist.xslt'),
+				out: new File(dist_macos_info + '2')
+			)
+			java.nio.file.Files.move(java.nio.file.Paths.get(dist_macos_info + '2'),
+									 java.nio.file.Paths.get(dist_macos_info),
+					   java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+
+			def macjavafullpath = macappfullpath.path + '/Contents/Java'
+			copy {
+				from(globalBinExtracted) {
+					 exclude('**/*.bat')
+					 exclude('**/*.exe')
+					 exclude('*.jar')
+	 				exclude('license.txt')
+				}
+				into(macjavafullpath)
+			}
+
+			def macresourcesfullpath = macappfullpath.path + '/Contents/Resources'
+			copy {
+				 from('freeplane_framework/mac-appbundler') {
+					 include('freeplanedoc.icns')
+				 }
+				 into(macresourcesfullpath)
+			}
+			delete zipExtracted
+>>>>>>> 1.7.x
         }
         into 'build/macosapp/input'
       }

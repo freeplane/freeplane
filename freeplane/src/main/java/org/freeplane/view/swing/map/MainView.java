@@ -38,8 +38,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
@@ -58,6 +60,7 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
+import org.freeplane.features.decoration.NodeViewDecorator;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.Filter;
@@ -65,6 +68,8 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.factory.IconFactory;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
@@ -400,9 +405,64 @@ public class MainView extends ZoomableLabel {
 		        iconImages.addIcon(myIcon, iconHeight);
 		    }
 		}
-        addOwnIcons(iconImages, model);
-        setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
+		addOwnIcons(iconImages, model);
+		addLinkDecorationIcons(iconImages, model); // TODO - Use IStateIconProvider to add icons (that is, register a StateIconProvider -- see NoteController.registerStateIconProvider for details.
+		setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
 	}
+
+
+
+	private void addLinkDecorationIcons(MultipleImage iconImages, NodeModel model) {
+		final URI link = NodeLinks.getLink(model);
+		if (link != null) {
+			addIconsBasedOnLinkType(link, iconImages, model);
+			
+
+//			String iconPath = "images/Link.png";
+//			if (link.toString().startsWith("#")) {
+//				iconPath = "images/LinkLocal.png";
+//			}
+//			else if (link.toString().startsWith("mailto:")) {
+//				iconPath = "images/Mail.png";
+//			}
+//			final Icon icon = getNodeView().getMap().getModeController()
+//					.getExtension(LinkController.class).getLinkIcon(link, model);
+//			if(icon != null)
+//				iconImages.addLinkIcon(icon, model);
+//
+//			
+//			ImageIcon icon = new ImageIcon(frame.getResource(iconPath));
+//			iconImages.addImage(icon);
+		}
+		
+	}
+	
+	/**
+	 * Adds icons (if applicable) to represent the type of link held by the this node, based on patterns (regexes)
+	 * stored in <code>nodeDecoration.ini</code>.
+	 * 
+	 * @param link The link held by this node
+	 * @param iconImages The list of iconImages already associated with this node, to which zero or more link-specific
+	 *            icons will be added.
+	 * @param model 
+	 */
+	private void addIconsBasedOnLinkType(URI link, MultipleImage iconImages, NodeModel model)
+	{
+		try {
+			MapView map = getNodeView().getMap();
+			NodeViewDecorator decorator = map.getNodeViewDecorator();
+			//FreeMindMain frame = map.getController().getFrame();
+			List<String> iconsForLink = decorator.getIconsForLink(link);
+			for(String iconName : iconsForLink) {
+				UIIcon icon = IconStoreFactory.ICON_STORE.getUIIcon(iconName); // + ".png");
+				iconImages.addIcon(icon, model.getSharedData().getIcons().getIconSize());
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
 
 	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
 		final URI link = NodeLinks.getLink(model);
