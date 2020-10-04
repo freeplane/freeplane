@@ -416,25 +416,7 @@ public class MainView extends ZoomableLabel {
 		final URI link = NodeLinks.getLink(model);
 		if (link != null) {
 			addIconsBasedOnLinkType(link, iconImages, model);
-			
-
-//			String iconPath = "images/Link.png";
-//			if (link.toString().startsWith("#")) {
-//				iconPath = "images/LinkLocal.png";
-//			}
-//			else if (link.toString().startsWith("mailto:")) {
-//				iconPath = "images/Mail.png";
-//			}
-//			final Icon icon = getNodeView().getMap().getModeController()
-//					.getExtension(LinkController.class).getLinkIcon(link, model);
-//			if(icon != null)
-//				iconImages.addLinkIcon(icon, model);
-//
-//			
-//			ImageIcon icon = new ImageIcon(frame.getResource(iconPath));
-//			iconImages.addImage(icon);
 		}
-		
 	}
 	
 	/**
@@ -449,13 +431,14 @@ public class MainView extends ZoomableLabel {
 	private void addIconsBasedOnLinkType(URI link, MultipleImage iconImages, NodeModel model)
 	{
 		try {
+			final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(model);
 			MapView map = getNodeView().getMap();
 			NodeViewDecorator decorator = map.getNodeViewDecorator();
 			//FreeMindMain frame = map.getController().getFrame();
 			List<String> iconsForLink = decorator.getIconsForLink(link);
 			for(String iconName : iconsForLink) {
 				UIIcon icon = IconStoreFactory.ICON_STORE.getUIIcon(iconName); // + ".png");
-				iconImages.addIcon(icon, model.getSharedData().getIcons().getIconSize());
+				iconImages.addIcon(icon, iconHeight);
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
