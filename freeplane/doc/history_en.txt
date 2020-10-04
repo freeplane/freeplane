@@ -2,6 +2,7 @@
 1.8.8
 ===============================
 Improve script API for non visible maps
+Improve map rendering performance
 Bug fixes
 
 ===============================
