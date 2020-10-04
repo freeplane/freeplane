@@ -11,5 +11,5 @@ include 'freeplane',
         'freeplane_plugin_script',
         'freeplane_plugin_svg',
         'freeplane_plugin_jsyntaxpane',
-		//////////'freeplane_debughelper',
+        //'freeplane_debughelper',
         'JOrtho_0.4_freeplane'
