@@ -19,147 +19,141 @@ if (macAppPropertiesFile.exists())
 
 task macDist {}
 
-def defineMacBuildTasks = {boolean includeJavaRuntime -> 
-    def taskName = {base -> includeJavaRuntime ? base + '_jre' : base}
-    def bin4mac = taskName(rootDir.path + '/BIN4mac')
-    def macappfullpath = new File(bin4mac, 'Freeplane.app').absoluteFile
-    
-    def macosxapp = tasks.create (taskName('macosxapp')) {
-		mustRunAfter binZip
+def defineMacBuildTasks = {
 
-		doFirst {
-		
-			if(! binZip.archivePath.exists())
-				ant.fail("File ${binZip.archivePath.path} not found")
-		
-			delete bin4mac + '/Freeplane.app'
-			mkdir bin4mac
-			
-			def zipExtracted = globalBin+'-extracted'
-			delete zipExtracted
-			mkdir zipExtracted
-			
-			copy {
-				from(zipTree(binZip.archivePath))
-				into(zipExtracted)
-			}
-			
-			def globalBinExtracted = zipExtracted + '/' + file(zipExtracted).list()[0]
+   def jpackage = macAppProperties['macapp.jpackage.jdk'] + '/bin/jpackage'
+   def zipExtracted = 'build/zip-extracted'
+   String macosapp_input_dir
 
-			ant.appbundler(
-				outputdirectory: bin4mac,
-				name: 'Freeplane',
-				displayname: 'Freeplane',
-				mainclassname: 'org.freeplane.launcher.Launcher',
-				shortversion: distVersion,
-				copyright: "Freeplane ${distVersion}",
-				identifier: 'org.freeplane.core',
-				icon: 'freeplane_framework/mac-appbundler/freeplane.icns',
-				signature: '????'
-			) {
-				if (includeJavaRuntime) {
-					if(macAppProperties['macapp.jdk.home'] != null) {
-						runtime(dir: macAppProperties['macapp.jdk.home'])
-					}
-					else {
-						def javaHomeJre = System.properties['java.home']
-						// def javaHomeJre = "/Users/stuart/apps/mac/jdk-11.0.7.jdk/Home/jre"
-
-						// def javaHome = javaHomeJre - ~/\/jre$/
-						def javaHome = "/Users/stuart/apps/mac/jdk-11.0.7.jdk/Contents/Home/"
-						runtime(dir: javaHome)
-					}
-				}
-				classpath(dir: globalBinExtracted, includes: '*.jar')
-				option(value: "-Xmx512m")
-				option(value: "-Dapple.laf.useScreenMenuBar=true")
-				option(value: "-Xdock:name=Freeplane")
-			}
-
-			def dist_macos_info = macappfullpath.path + '/Contents/Info.plist'
-			ant.xslt(in: new File(dist_macos_info),
-				style: new File('freeplane_framework/mac-appbundler/mac_info_plist.xslt'),
-				out: new File(dist_macos_info + '2')
-			)
-			java.nio.file.Files.move(java.nio.file.Paths.get(dist_macos_info + '2'),
-									 java.nio.file.Paths.get(dist_macos_info),
-					   java.nio.file.StandardCopyOption.REPLACE_EXISTING)
-
-			def macjavafullpath = macappfullpath.path + '/Contents/Java'
-			copy {
-				from(globalBinExtracted) {
-					 exclude('**/*.bat')
-					 exclude('**/*.exe')
-					 exclude('*.jar')
-	 				exclude('license.txt')
-				}
-				into(macjavafullpath)
-			}
-
-			def macresourcesfullpath = macappfullpath.path + '/Contents/Resources'
-			copy {
-				 from('freeplane_framework/mac-appbundler') {
-					 include('freeplanedoc.icns')
-				 }
-				 into(macresourcesfullpath)
-			}
-			delete zipExtracted
-        }
+   def macosapp_extractzip = tasks.create('macosapp_extractzip'){
+        mustRunAfter binZip
+    doFirst {
+      if(! binZip.archivePath.exists())
+        ant.fail("File ${binZip.archivePath.path} not found")
+      
+      delete zipExtracted
+      mkdir zipExtracted
+      
+      copy {
+        from(zipTree(binZip.archivePath))
+        into(zipExtracted)
+      }
+      macosapp_input_dir = zipExtracted + '/' + file(zipExtracted).list()[0] 
     }
+   }
 
-    def signMacApp= tasks.create (taskName('signMacApp'), Exec) {
+   def macosapp_input = tasks.create('macosapp_input'){
+    dependsOn macosapp_extractzip
+
+    doFirst {
+        copy {
+    		from(macosapp_input_dir) {
+            include '*.*'
+        }
+        into 'build/macosapp/input'
+      }
+     
+    }
+   }
+
+   def macosapp_deleteAppImage = tasks.create('macosapp_deleteAppImage', Delete) { 
+     delete 'build/macosapp/app-image' 
+   }
+
+   def jpackage_macosxapp = tasks.create ('jpackage_macosxapp', Exec) {
+   	commandLine jpackage,
+   	 '--name' , 'Freeplane',
+   	 '--type', 'app-image',
+     '--icon', 'freeplane_framework/mac-appbundler/freeplane.icns',
+     '--app-version', distVersion,
+     '--java-options', '-Xmx512m',
+     '--java-options', '-Dapple.laf.useScreenMenuBar=true',
+     '--java-options', '-Xdock:name=Freeplane',
+   	 '--input', 'build/macosapp/input',
+   	 '--main-jar', 'freeplanelauncher.jar',
+   	 '--runtime-image', macAppProperties['macapp.jdk.runtime.image'],
+     '--copyright', "Freeplane ${distVersion}",
+   	 '--dest', 'build/macosapp/app-image'
+
+     dependsOn macosapp_input, macosapp_deleteAppImage
+   }
+   
+   def macosapp_makeapp= tasks.create ('macosapp_makeapp') {
+	   dependsOn jpackage_macosxapp
+     doFirst {
+        copy {
+          from(macosapp_input_dir) {
+                include '*/**'
+          }
+          into 'build/macosapp/app-image/Freeplane.app/Contents/app'
+        }
+        copy {
+          from file ('freeplane_framework/mac-appbundler/freeplanedoc.icns')
+          into 'build/macosapp/app-image/Freeplane.app/Contents/Resources'
+        }
+
+        def dist_macos_info = 'build/macosapp/app-image/Freeplane.app/Contents/Info.plist'
+        ant.xslt(in: new File(dist_macos_info),
+          style: new File('freeplane_framework/mac-appbundler/mac_info_plist.xslt'),
+          out: new File(dist_macos_info + '2')
+        )
+        java.nio.file.Files.move(java.nio.file.Paths.get(dist_macos_info + '2'),
+                   java.nio.file.Paths.get(dist_macos_info),
+             java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+
+      }
+    }
+  
+  def signMacApp= tasks.create ('signMacApp', Exec) {
         onlyIf { Os.isFamily(Os.FAMILY_MAC) && macAppProperties['macapp.codesign.identity'] != null}
  
-        commandLine 'codesign', '--deep', '-s', macAppProperties['macapp.codesign.identity'], '-v', macappfullpath.path
 
-        dependsOn macosxapp
+      //  sudo codesign --force --deep --sign - /Applications/Freeplane.app  || exit $?
+
+        commandLine 'codesign', '--deep', '--force',
+        '--sign', '-',
+        'build/macosapp/app-image/Freeplane.app'
+        
+
+        dependsOn macosapp_makeapp
     }
 
-   def dmg4mac= tasks.create (taskName('dmg4mac'), Exec) {
-        onlyIf { Os.isFamily(Os.FAMILY_MAC) }
-        def dmgPath = globalDist + taskName('/freeplane_app') + '-' + distVersion + '.dmg';
+   def macosapp_copyvolumeicon= tasks.create ('macosapp_copyvolumeicon', Copy) {
+     
+    from file ('freeplane_framework/mac-appbundler/freeplane.icns')
+    into file('build/macosapp/app-resource-dir')
+    rename { String fileName ->
+    'Freeplane-volume.icns'
+    }
+    
+   }
+
+  def dmg4mac = tasks.create ('dmg4mac', Exec) {
+        def dmgPath = globalDist + '/freeplane' + '-' + distVersion + '.dmg';
         doFirst { 
             mkdir globalDist 
             file(dmgPath).delete()
         } 
 
-        commandLine 'hdiutil', 'create', '-srcfolder', macappfullpath.path,
-            dmgPath
+   	commandLine jpackage,
+   	 '--name' , 'Freeplane',
+   	 '--type', 'dmg',
+     '--app-version', distVersion,
+   	 '--app-image', 'build/macosapp/app-image',
+     '--mac-package-identifier', 'org.freeplane.core',
+     '--mac-package-name', 'Freeplane',
+     '--resource-dir', 'build/macosapp/app-resource-dir',
+   	 '--dest', globalDist
 
-        dependsOn macosxapp, signMacApp
+        dependsOn signMacApp, macosapp_copyvolumeicon
     }
-
-    def zip4mac = tasks.create (taskName('zip4mac'), Zip) {
-        destinationDir = new File(globalDist)
-        archiveName = taskName('freeplane_macos_bin') + '-' + distVersion + '.zip'
-
-        from(bin4mac) {
-            exclude('**/JavaAppLauncher')
-        }
-        from(bin4mac) {
-            include('**/JavaAppLauncher')
-            fileMode = 0775
-        }
-
-        into('freeplane-' + distVersion)
-        dependsOn macosxapp
-    }
-    
-    def cleanMac = tasks.create (taskName('cleanMac'), Delete) {
-        delete bin4mac
-    }
-
-    if (Os.isFamily(Os.FAMILY_MAC)) {
-        macDist.dependsOn dmg4mac
-    }
-    else {
-        macDist.dependsOn zip4mac
-    }
-    
-    clean.dependsOn cleanMac
 }
 
-if (Os.isFamily(Os.FAMILY_MAC)) {
-    defineMacBuildTasks(true)
-}
-defineMacBuildTasks(false)
+// if ( Os.isFamily(Os.FAMILY_MAC) 
+//         	&& macAppProperties['macapp.jdk.runtime.image'] != null
+//         	&& macAppProperties['macapp.jpackage.jdk'] != null
+//         	//&& macAppProperties['macapp.codesign.identity'] != null
+//         	) {
+// }
+
+    defineMacBuildTasks()
