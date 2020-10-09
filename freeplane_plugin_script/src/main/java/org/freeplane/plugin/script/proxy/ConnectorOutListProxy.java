@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.NodeModel;
@@ -30,6 +31,6 @@ class ConnectorOutListProxy extends AbstractCollection<Proxy.Connector> {
 
 	@Override
 	public int size() {
-		return NodeLinks.getLinks(node).size();
+		return (int) NodeLinks.getLinks(node).stream().filter(link -> link instanceof ConnectorModel).count();
 	}
 }
