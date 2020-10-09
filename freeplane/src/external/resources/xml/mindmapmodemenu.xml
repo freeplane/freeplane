@@ -516,7 +516,6 @@
 			<Entry builder="separator" />
 			<Entry name="OpenUserDirAction" />
 			<Entry builder="separator" />
-			<Entry builder="separator" />
 			<Entry name="ShowPreferencesAction" accelerator="control COMMA" builder="removeOnMac"/>
 			<Entry builder="conditionalActionBuilder" property="enableUserDefinedInterfaceStrings"
 				actionKey="TextChangeHotKeyAction"
