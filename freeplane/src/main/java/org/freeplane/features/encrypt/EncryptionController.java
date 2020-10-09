@@ -84,7 +84,7 @@ public class EncryptionController implements IExtension {
 			final boolean wasAccessible = encryptionModel.isAccessible();
 			if (!wasAccessible && !doPasswordCheckAndDecryptNode(node, encryptionModel, passwordStrategy))
 					return;
-			final boolean becomesFolded = wasAccessible;
+			final boolean becomesFolded = true;
 			final boolean becomesAccessible = ! wasAccessible;
 			Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(node);
 			final MapWriter mapWriter = Controller.getCurrentModeController().getMapController().getMapWriter();
