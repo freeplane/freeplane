@@ -62,22 +62,6 @@ import org.osgi.service.url.URLStreamHandlerService;
  * 05.01.2009
  */
 class ActivatorImpl implements BundleActivator {
-	private static void fixX11AppName() {
-		if(! System.getProperty("java.version").startsWith("1."))
-			return;
-		try {
-			Toolkit xToolkit = Toolkit.getDefaultToolkit();
-			if (xToolkit.getClass().getName().equals("sun.awt.X11.XToolkit"))
-			{
-				java.lang.reflect.Field awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
-				awtAppClassNameField.setAccessible(true);
-				awtAppClassNameField.set(xToolkit, "Freeplane");
-			}
-		} catch (NoSuchFieldException | SecurityException
-				| IllegalArgumentException | IllegalAccessException e) {
-			System.err.format("Couldn't set awtAppClassName: %s%n", e.getClass().getSimpleName() + ": " + e.getMessage());
-		}
-	}
 	
 	private static final String JAVA_HEADLESS_PROPERTY = "java.awt.headless";
 
@@ -296,7 +280,6 @@ class ActivatorImpl implements BundleActivator {
 		if(GraphicsEnvironment.isHeadless()) {
 			return new FreeplaneHeadlessStarter();
 		} else {
-			fixX11AppName();
 			return new FreeplaneGUIStarter(options);
 		}
     }
