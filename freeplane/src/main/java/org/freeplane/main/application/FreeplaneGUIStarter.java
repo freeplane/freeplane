@@ -86,10 +86,6 @@ import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 public class FreeplaneGUIStarter implements FreeplaneStarter {
 	private static boolean ARE_SURVEYS_ENABLED = false;
 
-	static{
-		Compat.fixMousePointerForLinux();
-	}
-
 
 	private final ApplicationResourceController applicationResourceController;
 // // 	private Controller controller;
@@ -110,6 +106,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		firstRun = !userPreferencesFile.exists();
 		new UserPropertiesUpdater().importOldProperties();
 		applicationResourceController = new ApplicationResourceController();
+		Compat.fixMousePointerForLinux();
 	}
 
 	@Override
