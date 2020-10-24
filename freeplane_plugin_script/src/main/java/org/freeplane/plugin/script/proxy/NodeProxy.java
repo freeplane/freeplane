@@ -1057,7 +1057,7 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 			@Override
 			public int compare(final NodeModel o1, final NodeModel o2) {
 				final NodeProxy p1 = new NodeProxy(o1, getScriptContext());
-				final NodeProxy p2 = new NodeProxy(o1, getScriptContext());
+				final NodeProxy p2 = new NodeProxy(o2, getScriptContext());
 				return closure.call(p1).compareTo(closure.call(p2));
 			}
 		};
