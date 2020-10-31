@@ -38,7 +38,6 @@ import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
@@ -58,7 +57,7 @@ public class ApplicationResourceController extends ResourceController {
 	public static final String FREEPLANE_GLOBALRESOURCEDIR_PROPERTY = "org.freeplane.globalresourcedir";
 	public static final String DEFAULT_FREEPLANE_GLOBALRESOURCEDIR = "resources";
 	private ArrayList<File> resourceDirectories;
-	
+
 	public static void showSysInfo() {
 		final StringBuilder info = new StringBuilder();
 		info.append("freeplane_version = ");
@@ -81,7 +80,7 @@ public class ApplicationResourceController extends ResourceController {
 		LogUtils.info(info.toString());
 	}
 
-	
+
 	public static String RESOURCE_BASE_DIRECTORY;
 	public static String INSTALLATION_BASE_DIRECTORY;
 	static {
@@ -118,6 +117,7 @@ public class ApplicationResourceController extends ResourceController {
 		setDefaultLocale(props);
 		autoPropertiesFile = getUserPreferencesFile();
 		addPropertyChangeListener(new IFreeplanePropertyListener() {
+			@Override
 			public void propertyChanged(final String propertyName, final String newValue, final String oldValue) {
 				if (propertyName.equals(ResourceBundles.RESOURCE_LANGUAGE)) {
 					loadAnotherLanguage();
@@ -274,7 +274,10 @@ public class ApplicationResourceController extends ResourceController {
 
 	@Override
 	public void saveProperties() {
-        ((MIconController)MModeController.getMModeController().getExtension(IconController.class)).saveRecentlyUsedActions();
+        MIconController iconController = (MIconController)MModeController.getMModeController().getExtension(IconController.class);
+        if(iconController == null)
+        	return;
+        iconController.saveRecentlyUsedActions();
 		try (OutputStream out = new FileOutputStream(autoPropertiesFile)){
 			final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(out, "8859_1");
 			outputStreamWriter.write("#Freeplane ");
