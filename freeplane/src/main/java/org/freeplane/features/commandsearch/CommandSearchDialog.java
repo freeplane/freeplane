@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -134,7 +135,7 @@ public class CommandSearchDialog extends JDialog
             public void actionPerformed(ActionEvent actionEvent) {
                 ResourceController.getResourceController().setProperty("cmdsearch_whole_words", searchWholeWords.isSelected());
                 updateMatches(input.getText());
-                input.requestFocus();
+                input.requestFocusInWindow();
             }
         });
         
@@ -156,7 +157,7 @@ public class CommandSearchDialog extends JDialog
             public void actionPerformed(ActionEvent actionEvent) {
                 ResourceController.getResourceController().setProperty("cmdsearch_close_after_execute", closeAfterExecute.isSelected());
                 updateMatches(input.getText());
-                input.requestFocus();
+                input.requestFocusInWindow();
             }
         });
         optionsBox.add(closeAfterExecute);
@@ -176,7 +177,6 @@ public class CommandSearchDialog extends JDialog
         }
 
         input.getDocument().addDocumentListener(this);
-        input.requestFocus();
 
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -184,6 +184,19 @@ public class CommandSearchDialog extends JDialog
                 windowConfigurationStorage.storeDialogPositions(CommandSearchDialog.this);
             }
         });
+        
+        this.addWindowFocusListener(new WindowFocusListener() {
+			
+			@Override
+			public void windowLostFocus(WindowEvent e) {
+			}
+			
+			@Override
+			public void windowGainedFocus(WindowEvent e) {
+				input.requestFocusInWindow();
+				removeWindowFocusListener(this);
+			}
+		});
 
         setVisible(true);
     }
@@ -196,7 +209,7 @@ public class CommandSearchDialog extends JDialog
             public void actionPerformed(ActionEvent e) {
                 ResourceController.getResourceController().setProperty("cmdsearch_scope", scope.name());
                 updateMatches(input.getText());
-                input.requestFocus();
+                input.requestFocusInWindow();
             }
         });
         return searchPrefs;
