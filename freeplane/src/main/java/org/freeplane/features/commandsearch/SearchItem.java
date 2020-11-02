@@ -26,8 +26,8 @@ abstract class SearchItem implements Comparable<SearchItem>{
     abstract int getItemTypeRank();
     abstract String getComparedText();
     abstract Icon getTypeIcon();
-    abstract String getDisplayText();
-    abstract String getDisplayTooltip();
+    abstract String getDisplayedText();
+    abstract String getTooltip();
 
     /**
      *

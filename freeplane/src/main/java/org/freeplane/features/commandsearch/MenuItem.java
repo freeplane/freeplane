@@ -49,12 +49,12 @@ class MenuItem extends SearchItem{
     }
 
     @Override
-    String getDisplayText() {
+    String getDisplayedText() {
         return path;
     }
 
     @Override
-    String getDisplayTooltip() {
+    String getTooltip() {
         return accelerator;
     }
 

@@ -328,9 +328,9 @@ public class CommandSearchDialog extends JDialog
 
         SearchItem item = (SearchItem)value;
 
-        String text = item.getDisplayText();
+        String text = item.getDisplayedText();
         Icon icon = item.getTypeIcon();
-        String tooltip = item.getDisplayTooltip();
+        String tooltip = item.getTooltip();
 
         JLabel label = (JLabel)(new DefaultListCellRenderer().getListCellRendererComponent(list, text, index, isSelected, cellHasFocus));
         if (icon != null)

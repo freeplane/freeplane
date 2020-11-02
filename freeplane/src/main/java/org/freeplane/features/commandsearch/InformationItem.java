@@ -32,12 +32,12 @@ public class InformationItem extends SearchItem {
     }
 
     @Override
-    String getDisplayText() {
+    String getDisplayedText() {
         return message;
     }
 
     @Override
-    String getDisplayTooltip() {
+    String getTooltip() {
         return null;
     }
 

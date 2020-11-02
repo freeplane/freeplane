@@ -26,12 +26,12 @@ public class IconItem extends SearchItem
     }
 
     @Override
-    String getDisplayText() {
+    String getDisplayedText() {
         return iconName + ", " + path;
     }
 
     @Override
-    String getDisplayTooltip() {
+    String getTooltip() {
         return null;
     }
 

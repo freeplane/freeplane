@@ -100,7 +100,6 @@ class PreferencesIndexer
         else if (currentTab != null && currentSeparator != null && tagsOpenendForCurrentPrefDeclaration == 0)
         {
             // preference item of any type
-            String prefType = startElement.getName().toString();
             Attribute name = startElement.getAttributeByName(new QName("name"));
             String prefKey = name.getValue();
             String textKey;
@@ -123,7 +122,8 @@ class PreferencesIndexer
             String currentSeparatorTranslated = TextUtils.getRawText(OPTIONPANEL_SEPARATOR_RESOURCE_PREFIX + currentSeparator, null);
             String prefPath = currentSeparatorTranslated + ITEM_PATH_SEPARATOR + prefText;
 
-            prefs.add(new PreferencesItem(currentTabTranslated, currentSeparatorTranslated, prefKey, prefText, prefPath, tooltipText));
+            String displayedText = currentTabTranslated + ITEM_PATH_SEPARATOR + prefPath;
+			prefs.add(new PreferencesItem(currentTabTranslated, currentSeparatorTranslated, prefKey, displayedText, prefPath, tooltipText));
             //System.out.format("tagsOpenendForCurrentPrefDeclaration=%d, prefKey=%s -> %s\n",
             //        tagsOpenendForCurrentPrefDeclaration, prefKey, prefText);
 
