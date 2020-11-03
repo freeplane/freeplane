@@ -18,8 +18,7 @@
  */
 package org.freeplane.features.commandsearch;
 
-import java.util.Locale;
-
+import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -31,31 +30,34 @@ class MenuItem extends SearchItem{
 
     private static final ImageIcon menuIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon("/images/menu_items.svg"));
 
-    final String path;
-    final AFreeplaneAction action;
-    final String accelerator;
+    private final AFreeplaneAction action;
+    private final String content;
+    private final String path;
 
-    MenuItem(final String path, final AFreeplaneAction action, final String accelerator)
+	private final String tooltip;
+
+
+    MenuItem(final AFreeplaneAction action, final String path, final String accelerator)
     {
         this.path = path;
         this.action = action;
-        this.accelerator = accelerator;
+		this.tooltip = (String) action.getValue(Action.SHORT_DESCRIPTION);
+        this.content = accelerator != null ? path + " (" + accelerator + ")" : path;
     }
 
     @Override
     Icon getTypeIcon() {
-        //icon = ResourceController.getResourceController().getIcon(menuItem.action.getIconKey());
         return menuIcon;
     }
 
     @Override
     String getDisplayedText() {
-        return path;
+        return content;
     }
 
     @Override
     String getTooltip() {
-        return accelerator;
+        return tooltip;
     }
 
     @Override
@@ -76,16 +78,13 @@ class MenuItem extends SearchItem{
 
     @Override
     protected boolean checkAndMatch(String searchTerm) {
-        return action != null && action.isEnabled() 
-                && contains(path, searchTerm);
+        return action.isEnabled() 
+                && contains(content, searchTerm);
     }
 
     public String toString()
     {
-        if (accelerator != null)
-            return path + " (" + accelerator + ")";
-        else
-            return path;
+    	return content;
     }
 
 }

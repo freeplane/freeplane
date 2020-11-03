@@ -18,6 +18,7 @@
  */
 package org.freeplane.features.commandsearch;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.List;
 import javax.swing.KeyStroke;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -139,24 +141,27 @@ class MenuStructureIndexer {
     }
 
     public boolean contributesToPath(Entry menuEntry) {
-        return !menuEntry.getName().isEmpty();
+    	return !menuEntry.getName().isEmpty();
     }
 
     private void recordLeafMenuEntry(Entry menuEntry, String path) {
-        KeyStroke accelerator = menuEntry.getAction() != null ? acceleratorMap.getAccelerator(menuEntry.getAction()) : null;
-        String acceleratorText =  null;
-        if (accelerator !=  null)
-        {
-            acceleratorText = "";
-            int modifiers = accelerator.getModifiers();
-            if (modifiers > 0)
-            {
-                acceleratorText += KeyEvent.getKeyModifiersText(modifiers);
-                acceleratorText += "+";
-            }
-            acceleratorText += KeyEvent.getKeyText(accelerator.getKeyCode());
-        }
-        menuItems.add(new MenuItem(path, menuEntry.getAction(), acceleratorText));
+    	AFreeplaneAction action = menuEntry.getAction();
+    	if (action != null) {
+    		KeyStroke accelerator = acceleratorMap.getAccelerator(action);
+    		String acceleratorText =  null;
+    		if (accelerator !=  null)
+    		{
+    			acceleratorText = "";
+    			int modifiers = accelerator.getModifiers();
+    			if (modifiers > 0)
+    			{
+    				acceleratorText += InputEvent.getModifiersExText(modifiers);
+    				acceleratorText += "+";
+    			}
+    			acceleratorText += KeyEvent.getKeyText(accelerator.getKeyCode());
+    		}
+    		menuItems.add(new MenuItem(action, path, acceleratorText));
+    	} 
     }
 
 }
