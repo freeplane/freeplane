@@ -37,17 +37,20 @@ class ItemChecker {
     }
 
 	boolean contains(String text, String word) {
+		String lowerCaseText = text.toLowerCase();
+		String lowerCaseWord = word.toLowerCase();
 		if(shouldSearchWholeWords)
-			return containsWord(text, word);
-		else
-			return text.toLowerCase().contains(word);
+			return containsWord(lowerCaseText, lowerCaseWord);
+		else {
+			return lowerCaseText.contains(lowerCaseWord);
+		}
 	}
     
-	private boolean containsWord(String text, String word) {
-		if (word.isEmpty())
+	private boolean containsWord(String lowerCaseText, String lowerCaseWord) {
+		if (lowerCaseWord.isEmpty())
 			return false;
-		return patterns.computeIfAbsent(word, ItemChecker::compilePattern)
-				.matcher(text).find();
+		return patterns.computeIfAbsent(lowerCaseWord, ItemChecker::compilePattern)
+				.matcher(lowerCaseText).find();
 	}
 	
 	private static Pattern compilePattern(String word) {
@@ -55,7 +58,7 @@ class ItemChecker {
 		boolean endsWithLetter = Character.isAlphabetic(word.codePointBefore(word.length()));
 		String startingWordBoundary = startsWithLetter ? "\\b" : "";
 		String endingWordBoundary = endsWithLetter ? "\\b" : "";
-		return Pattern.compile(startingWordBoundary + Pattern.quote(word) + endingWordBoundary, Pattern.CASE_INSENSITIVE);
+		return Pattern.compile(startingWordBoundary + Pattern.quote(word) + endingWordBoundary);
 	}
 	
 }
