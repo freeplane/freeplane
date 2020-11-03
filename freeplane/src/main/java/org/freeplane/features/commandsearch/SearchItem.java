@@ -65,10 +65,19 @@ abstract class SearchItem implements Comparable<SearchItem>{
         return ResourceController.getResourceController().getBooleanProperty("cmdsearch_whole_words");
     }
     public static boolean containsWord(String text, String word) {
-        return patterns.computeIfAbsent(word, 
-                    w -> Pattern.compile("\\b" + w + "\\b", Pattern.CASE_INSENSITIVE))
+    	if (word.isEmpty())
+    		return false;
+        return patterns.computeIfAbsent(word, SearchItem::compilePattern)
                 .matcher(text).find();
     }
+    
+	private static Pattern compilePattern(String word) {
+		boolean startsWithLetter = Character.isAlphabetic(word.codePointAt(0));
+		boolean endsWithLetter = Character.isAlphabetic(word.codePointBefore(word.length()));
+		String startingWordBoundary = startsWithLetter ? "\\b" : "";
+		String endingWordBoundary = endsWithLetter ? "\\b" : "";
+		return Pattern.compile(startingWordBoundary + Pattern.quote(word) + endingWordBoundary, Pattern.CASE_INSENSITIVE);
+	}
 
 
 
