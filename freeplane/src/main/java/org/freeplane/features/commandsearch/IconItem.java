@@ -52,8 +52,8 @@ public class IconItem extends SearchItem
     }
 
     @Override
-    protected boolean checkAndMatch(String searchTerm) {
-        return contains(iconName, searchTerm) || contains(path, searchTerm);
+    protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
+        return textChecker.contains(iconName, searchTerm) || textChecker.contains(path, searchTerm);
     }
 
     @Override

@@ -77,9 +77,9 @@ class MenuItem extends SearchItem{
     }
 
     @Override
-    protected boolean checkAndMatch(String searchTerm) {
+    protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
         return action.isEnabled() 
-                && contains(content, searchTerm);
+                && textChecker.contains(content, searchTerm);
     }
 
     public String toString()

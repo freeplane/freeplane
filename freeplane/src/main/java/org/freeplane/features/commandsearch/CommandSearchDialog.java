@@ -265,10 +265,13 @@ public class CommandSearchDialog extends JDialog
 
         //PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
         List<SearchItem> matches = new ArrayList<>();
-        if(trimmedInput.length() >= 1 
+        boolean shouldSearchWholeWords =  ResourceController.getResourceController().getBooleanProperty("cmdsearch_whole_words");
+        ItemChecker textChecker = new ItemChecker(shouldSearchWholeWords);
+
+		if(trimmedInput.length() >= 1 
                 && (searchInput.length() >= 3
                     || searchInput.endsWith(" ")
-                    || SearchItem.shouldSearchWholeWords())
+                    || shouldSearchWholeWords)
                 ) {
             final String[] searchTerms = trimmedInput.split("\\s+");
             for (int i = 0; i <searchTerms.length; i++)
@@ -277,15 +280,15 @@ public class CommandSearchDialog extends JDialog
             }
             if (searchMenus.isSelected() || searchAll.isSelected())
             {
-                findMatches(menuStructureIndexer.getMenuItems(), searchTerms, matches::add);
+            	textChecker.findMatchingItems(menuStructureIndexer.getMenuItems(), searchTerms, matches::add);
             }
             if (searchPrefs.isSelected() || searchAll.isSelected())
             {
-                findMatches(preferencesIndexer.getPrefs(), searchTerms, matches::add);
+            	textChecker.findMatchingItems(preferencesIndexer.getPrefs(), searchTerms, matches::add);
             }
             if (searchIcons.isSelected() || searchAll.isSelected())
             {
-                findMatches(iconIndexer.getIconItems(), searchTerms, matches::add);
+            	textChecker.findMatchingItems(iconIndexer.getIconItems(), searchTerms, matches::add);
             }
 
             Collections.sort(matches);
@@ -297,18 +300,6 @@ public class CommandSearchDialog extends JDialog
         }
         resultList.setListData(new Object[0]);
         resultList.setListData(matches.toArray());
-    }
-
-
-    public void findMatches(List<? extends SearchItem> items, final String[] searchTerms,
-            final Consumer<SearchItem> matches) {
-        for (final SearchItem prefsItem: items)
-        {
-            if (prefsItem.checkAndMatch(searchTerms))
-            {
-                matches.accept(prefsItem);
-            }
-        }
     }
 
     public static void main(String[] args)

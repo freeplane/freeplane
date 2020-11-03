@@ -47,7 +47,7 @@ public class InformationItem extends SearchItem {
     }
 
     @Override
-    protected boolean checkAndMatch(String searchTerm) {
+    protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
         return true;
     }
 
