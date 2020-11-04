@@ -6,10 +6,12 @@ import org.freeplane.core.ui.AFreeplaneAction;
 
 public class IconItem extends SearchItem
 {
-    final private Icon icon;
-    final private AFreeplaneAction action;
-    final private String path;
-    final private String iconName;
+    private final Icon icon;
+    private final AFreeplaneAction action;
+    private final String path;
+    private final String iconName;
+	private final String displayedText;
+	private final String comparedText;
 
     public IconItem(final Icon icon, final AFreeplaneAction action, final String iconName, final String path)
     {
@@ -17,17 +19,18 @@ public class IconItem extends SearchItem
         this.action = action;
         this.path = path;
         this.iconName = iconName;
+        this.displayedText = iconName + ", " + path;
+        this.comparedText = path + SearchItem.ITEM_PATH_SEPARATOR + iconName;
     }
 
     @Override
     Icon getTypeIcon() {
-        //return ResourceController.getResourceController().getIcon(action.getIconKey());
         return icon;
     }
 
     @Override
     String getDisplayedText() {
-        return iconName + ", " + path;
+		return displayedText;
     }
 
     @Override
@@ -48,18 +51,17 @@ public class IconItem extends SearchItem
 
     @Override
     String getComparedText() {
-        return  path + SearchItem.ITEM_PATH_SEPARATOR + iconName;
+		return  comparedText;
     }
 
     @Override
     protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
-        return textChecker.contains(iconName, searchTerm) || textChecker.contains(path, searchTerm);
+        return textChecker.contains(displayedText, searchTerm);
     }
 
-    @Override
-    public String toString()
-    {
-        return String.format("IconItem[%s:%s:%s:%s]", icon, action, path);
-    }
+	@Override
+	public String toString() {
+		return "IconItem [" + displayedText + "]";
+	}
 }
 

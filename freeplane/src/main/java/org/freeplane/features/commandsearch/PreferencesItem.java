@@ -26,21 +26,19 @@ import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 
 class PreferencesItem extends SearchItem {
 
-    private static final ImageIcon prefsIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon(ShowPreferencesAction.KEY + ".icon"));
+    private static final ImageIcon PREFERENCES_ICON = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon(ShowPreferencesAction.KEY + ".icon"));
 
     private final String tab;
-    private final String separator;
     private final String key;
     private final String displayedText;
     private final String path;
     private final String tooltip;
 
-    PreferencesItem(final String tab, final String separator, final String key, final String displayText, final String path, final String tooltip)
+    PreferencesItem(final String tab, final String separator, final String key, final String path, final String tooltip)
     {
         this.tab = tab;
-        this.separator = separator;
         this.key = key;
-        this.displayedText = displayText;
+        this.displayedText =  tab + ITEM_PATH_SEPARATOR + path;
         this.path = path;
         this.tooltip = tooltip;
     }
@@ -57,7 +55,7 @@ class PreferencesItem extends SearchItem {
 
     @Override
     Icon getTypeIcon() {
-        return prefsIcon;
+        return PREFERENCES_ICON;
     }
 
     @Override
@@ -76,13 +74,13 @@ class PreferencesItem extends SearchItem {
         return false;
     }
 
-    @Override
-    public String toString()
-    {
-        return String.format("PreferencesItem[%s:%s:%s:%s]", getTab(), separator, getKey(), displayedText);
-    }
 
     @Override
+	public String toString() {
+		return "PreferencesItem [displayedText=" + displayedText + "]";
+	}
+
+	@Override
     protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
         return textChecker.contains(getKey(), searchTerm)
                 || textChecker.contains(path, searchTerm);
@@ -95,6 +93,6 @@ class PreferencesItem extends SearchItem {
 	String getKey() {
 		return key;
 	}
-    
-    
+
+
 }

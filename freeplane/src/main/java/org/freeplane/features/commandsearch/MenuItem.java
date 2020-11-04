@@ -31,18 +31,18 @@ class MenuItem extends SearchItem{
     private static final ImageIcon menuIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon("/images/menu_items.svg"));
 
     private final AFreeplaneAction action;
-    private final String content;
-    private final String path;
+    private final String displayedText;
+    private final String comparedText;
 
 	private final String tooltip;
 
 
     MenuItem(final AFreeplaneAction action, final String path, final String accelerator)
     {
-        this.path = path;
+        this.comparedText = path;
         this.action = action;
 		this.tooltip = (String) action.getValue(Action.SHORT_DESCRIPTION);
-        this.content = accelerator != null ? path + " (" + accelerator + ")" : path;
+        this.displayedText = accelerator != null ? path + " (" + accelerator + ")" : path;
     }
 
     @Override
@@ -52,7 +52,7 @@ class MenuItem extends SearchItem{
 
     @Override
     String getDisplayedText() {
-        return content;
+        return displayedText;
     }
 
     @Override
@@ -73,18 +73,17 @@ class MenuItem extends SearchItem{
 
     @Override
     String getComparedText() {
-        return path;
+        return comparedText;
     }
 
     @Override
     protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
-        return action.isEnabled() 
-                && textChecker.contains(content, searchTerm);
+        return action.isEnabled()
+                && textChecker.contains(displayedText, searchTerm);
     }
 
-    public String toString()
-    {
-    	return content;
-    }
-
+	@Override
+	public String toString() {
+		return "MenuItem [" + displayedText + "]";
+	}
 }
