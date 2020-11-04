@@ -52,7 +52,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.Position.Bias;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
@@ -62,8 +61,9 @@ import org.freeplane.core.util.TextUtils;
 
 public class CommandSearchDialog extends JDialog
     implements DocumentListener, ListCellRenderer<Object>, MouseListener, KeyListener {
+	private static final long serialVersionUID = 1L;
 
-    private static final String LIMIT_EXCEEDED_MESSAGE = TextUtils.getText("cmdsearch.limit_exceeded");
+	private static final String LIMIT_EXCEEDED_MESSAGE = TextUtils.getText("cmdsearch.limit_exceeded");
     private static final Icon WARNING_ICON = ResourceController.getResourceController().getIcon("/images/icons/messagebox_warning.svg");
     private static final int LIMIT_EXCEEDED_RANK = 100;
     private static final String WINDOW_CONFIG_PROPERTY = "cmdsearch_window_configuration";
@@ -113,13 +113,8 @@ public class CommandSearchDialog extends JDialog
         input = new JTextField("");
         input.setColumns(40);
         input.addKeyListener(this);
-        resultList = new JList<Object>() {
-			private static final long serialVersionUID = 1L;
-			@Override
-			public int getNextMatch(String prefix, int startIndex, Bias bias) {
-				return -1;
-			}
-        };
+        resultList = new JList<>();
+        resultList.setFocusable(false);
         resultList.setCellRenderer(this);
         resultList.addMouseListener(this);
         resultList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -391,15 +386,10 @@ public class CommandSearchDialog extends JDialog
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if (e.getSource() == resultList)
-        {
-            input.setText(input.getText() + e.getKeyChar());
-        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
     }
 
     @Override
