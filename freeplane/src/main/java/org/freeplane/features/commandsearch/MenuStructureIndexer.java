@@ -18,17 +18,11 @@
  */
 package org.freeplane.features.commandsearch;
 
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.KeyStroke;
-
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
-import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.util.HtmlUtils;
@@ -38,7 +32,7 @@ import org.freeplane.features.mode.ModeController;
 
 class MenuStructureIndexer {
     private EntryAccessor entryAccessor;
-    IAcceleratorMap acceleratorMap;
+
     private List<MenuItem> menuItems;
 
     MenuStructureIndexer()
@@ -54,7 +48,6 @@ class MenuStructureIndexer {
     private void loadMenuItems()
     {
         entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
-        acceleratorMap = ResourceController.getResourceController().getAcceleratorManager();
         menuItems = new LinkedList<>();
         ModeController modeController = Controller.getCurrentModeController();
         final Entry root = modeController.getUserInputListenerFactory()
@@ -147,21 +140,8 @@ class MenuStructureIndexer {
     private void recordLeafMenuEntry(Entry menuEntry, String path) {
     	AFreeplaneAction action = menuEntry.getAction();
     	if (action != null) {
-    		KeyStroke accelerator = acceleratorMap.getAccelerator(action);
-    		String acceleratorText =  null;
-    		if (accelerator !=  null)
-    		{
-    			acceleratorText = "";
-    			int modifiers = accelerator.getModifiers();
-    			if (modifiers > 0)
-    			{
-    				acceleratorText += InputEvent.getModifiersExText(modifiers);
-    				acceleratorText += "+";
-    			}
-    			acceleratorText += KeyEvent.getKeyText(accelerator.getKeyCode());
-    		}
+    		String acceleratorText = AcceleratorDescriptionCreator.INSTANCE.createAcceleratorDescription(action);
     		menuItems.add(new MenuItem(action, path, acceleratorText));
-    	} 
+    	}
     }
-
 }

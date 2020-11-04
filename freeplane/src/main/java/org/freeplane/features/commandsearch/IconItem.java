@@ -8,18 +8,14 @@ public class IconItem extends SearchItem
 {
     private final Icon icon;
     private final AFreeplaneAction action;
-    private final String path;
-    private final String iconName;
 	private final String displayedText;
 	private final String comparedText;
 
-    public IconItem(final Icon icon, final AFreeplaneAction action, final String iconName, final String path)
+    public IconItem(final Icon icon, final AFreeplaneAction action, final String iconName, final String accelerator, final String path)
     {
         this.icon = icon;
         this.action = action;
-        this.path = path;
-        this.iconName = iconName;
-        this.displayedText = iconName + ", " + path;
+        this.displayedText = iconName + ", " + path + (accelerator != null ? " (" + accelerator + ")" : "");
         this.comparedText = path + SearchItem.ITEM_PATH_SEPARATOR + iconName;
     }
 
