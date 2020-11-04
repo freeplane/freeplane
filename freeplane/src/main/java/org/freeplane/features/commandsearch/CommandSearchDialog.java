@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.swing.Box;
-import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
@@ -46,7 +45,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
@@ -71,13 +69,28 @@ public class CommandSearchDialog extends JDialog
     private static final String WINDOW_CONFIG_PROPERTY = "cmdsearch_window_configuration";
 
     public enum Scope{
-        MENUS, PREFERENCES, ICONS, ALL
+        MENUS, PREFERENCES, ICONS;
+
+		String propertyName() {
+			return "cmdsearch_scope_" + name();
+		}
+
+		String labelName() {
+			return "cmdsearch.scope." + name();
+		}
+
+		boolean isEnabled() {
+			return ResourceController.getResourceController().getBooleanProperty(propertyName(), true);
+		}
+
+		void setEnabled(boolean selected) {
+			ResourceController.getResourceController().setProperty(propertyName(), selected);
+		}
     }
 
-    private final JRadioButton searchMenus;
-    private final JRadioButton searchPrefs;
-    private final JRadioButton searchIcons;
-    private final JRadioButton searchAll;
+    private final JCheckBox searchMenus;
+    private final JCheckBox searchPrefs;
+    private final JCheckBox searchIcons;
     private final JTextField input;
     private final JList<Object> resultList;
     private final JCheckBox closeAfterExecute;
@@ -117,20 +130,13 @@ public class CommandSearchDialog extends JDialog
         JScrollPane resultListScrollPane = new JScrollPane(resultList);
         getContentPane().add(panel);
 
-        ButtonGroup scopeGroup = new ButtonGroup();
         JPanel scopePanel = new JPanel();
-        searchMenus = createScopeButton(Scope.MENUS, "cmdsearch.menuitems_rb");
-        searchPrefs = createScopeButton(Scope.PREFERENCES, "cmdsearch.preferences_rb");
-        searchIcons = createScopeButton(Scope.ICONS, "cmdsearch.icons_rb");
-        searchAll = createScopeButton(Scope.ALL, "cmdsearch.all_rb");
-        scopeGroup.add(searchMenus);
+        searchMenus = createScopeButton(Scope.MENUS);
+        searchPrefs = createScopeButton(Scope.PREFERENCES);
+        searchIcons = createScopeButton(Scope.ICONS);
         scopePanel.add(searchMenus);
-        scopeGroup.add(searchIcons);
         scopePanel.add(searchIcons);
-        scopeGroup.add(searchPrefs);
         scopePanel.add(searchPrefs);
-        scopeGroup.add(searchAll);
-        scopePanel.add(searchAll);
         searchWholeWords = new JCheckBox();
         LabelAndMnemonicSetter.setLabelAndMnemonic(searchWholeWords, TextUtils.getRawText("cmdsearch.searchWholeWords"));
         searchWholeWords.setSelected(ResourceController.getResourceController().getBooleanProperty("cmdsearch_whole_words"));
@@ -208,13 +214,14 @@ public class CommandSearchDialog extends JDialog
         setVisible(true);
     }
 
-    private JRadioButton createScopeButton(Scope scope, String labelKey) {
-        JRadioButton searchPrefs = new JRadioButton();
-        LabelAndMnemonicSetter.setLabelAndMnemonic(searchPrefs, TextUtils.getRawText(labelKey));
+    private JCheckBox createScopeButton(Scope scope) {
+    	JCheckBox searchPrefs = new JCheckBox();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(searchPrefs, TextUtils.getRawText(scope.labelName()));
         searchPrefs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ResourceController.getResourceController().setProperty("cmdsearch_scope", scope.name());
+                boolean selected = searchPrefs.isSelected();
+				scope.setEnabled(selected);
                 updateMatches(input.getText());
                 input.requestFocusInWindow();
             }
@@ -225,38 +232,12 @@ public class CommandSearchDialog extends JDialog
 
     private void initScopeFromPrefs()
     {
-        final ResourceController resourceController = ResourceController.getResourceController();
-         Scope scope = resourceController.getEnumProperty("cmdsearch_scope", Scope.ALL);
-         switch (scope) {
-         case MENUS:
-             searchMenus.setSelected(true);
-             break;
-
-         case PREFERENCES:
-             searchPrefs.setSelected(true);
-             break;
-
-         case ICONS:
-             searchIcons.setSelected(true);
-             break;
-
-         case ALL:
-             searchAll.setSelected(true);
-             break;
-
-        default:
-            break;
-        }
+        searchMenus.setSelected(Scope.MENUS.isEnabled());
+        searchPrefs.setSelected(Scope.PREFERENCES.isEnabled());
+        searchIcons.setSelected(Scope.ICONS.isEnabled());
      }
 
-    private void setDefaultText()
-    {
-        input.setText("type to search for preferences/menu items");
-        input.setSelectionStart(0);
-        input.setSelectionEnd(input.getText().length());
-    }
-
-    @Override
+	@Override
 	public void changedUpdate(DocumentEvent e) {
         updateMatches(input.getText());
     }
@@ -288,15 +269,15 @@ public class CommandSearchDialog extends JDialog
             {
                 searchTerms[i] = searchTerms[i].toLowerCase(Locale.ENGLISH);
             }
-            if (searchMenus.isSelected() || searchAll.isSelected())
+            if (searchMenus.isSelected())
             {
             	textChecker.findMatchingItems(menuStructureIndexer.getMenuItems(), searchTerms, matches::add);
             }
-            if (searchPrefs.isSelected() || searchAll.isSelected())
+            if (searchPrefs.isSelected())
             {
             	textChecker.findMatchingItems(preferencesIndexer.getPrefs(), searchTerms, matches::add);
             }
-            if (searchIcons.isSelected() || searchAll.isSelected())
+            if (searchIcons.isSelected())
             {
             	textChecker.findMatchingItems(iconIndexer.getIconItems(), searchTerms, matches::add);
             }
