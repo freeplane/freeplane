@@ -35,9 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.Consumer;
 
-import javax.swing.Action;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
@@ -54,9 +52,9 @@ import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.Position.Bias;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
@@ -64,7 +62,7 @@ import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.util.TextUtils;
 
 
-public class CommandSearchDialog extends JDialog 
+public class CommandSearchDialog extends JDialog
     implements DocumentListener, ListCellRenderer<Object>, MouseListener, KeyListener {
 
     private static final String LIMIT_EXCEEDED_MESSAGE = TextUtils.getText("cmdsearch.limit_exceeded");
@@ -102,7 +100,13 @@ public class CommandSearchDialog extends JDialog
         input = new JTextField("");
         input.setColumns(40);
         input.addKeyListener(this);
-        resultList = new JList<>();
+        resultList = new JList<Object>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public int getNextMatch(String prefix, int startIndex, Bias bias) {
+				return -1;
+			}
+        };
         resultList.setCellRenderer(this);
         resultList.addMouseListener(this);
         resultList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -138,7 +142,7 @@ public class CommandSearchDialog extends JDialog
                 input.requestFocusInWindow();
             }
         });
-        
+
         Box whatbox = Box.createVerticalBox();
         whatbox.add(scopePanel);
         whatbox.add(searchWholeWords);
@@ -184,13 +188,13 @@ public class CommandSearchDialog extends JDialog
                 windowConfigurationStorage.storeDialogPositions(CommandSearchDialog.this);
             }
         });
-        
+
         this.addWindowFocusListener(new WindowFocusListener() {
-			
+
 			@Override
 			public void windowLostFocus(WindowEvent e) {
 			}
-			
+
 			@Override
 			public void windowGainedFocus(WindowEvent e) {
 				input.requestFocusInWindow();
@@ -249,13 +253,16 @@ public class CommandSearchDialog extends JDialog
         input.setSelectionEnd(input.getText().length());
     }
 
-    public void changedUpdate(DocumentEvent e) {
+    @Override
+	public void changedUpdate(DocumentEvent e) {
         updateMatches(input.getText());
     }
-    public void removeUpdate(DocumentEvent e) {
+    @Override
+	public void removeUpdate(DocumentEvent e) {
         updateMatches(input.getText());
     }
-    public void insertUpdate(DocumentEvent e) {
+    @Override
+	public void insertUpdate(DocumentEvent e) {
         updateMatches(input.getText());
     }
 
@@ -268,7 +275,7 @@ public class CommandSearchDialog extends JDialog
         boolean shouldSearchWholeWords =  ResourceController.getResourceController().getBooleanProperty("cmdsearch_whole_words");
         ItemChecker textChecker = new ItemChecker(shouldSearchWholeWords);
 
-		if(trimmedInput.length() >= 1 
+		if(trimmedInput.length() >= 1
                 && (searchInput.length() >= 3
                     || searchInput.endsWith(" ")
                     || shouldSearchWholeWords)
