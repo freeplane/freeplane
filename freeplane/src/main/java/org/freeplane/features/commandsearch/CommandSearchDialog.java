@@ -144,8 +144,11 @@ public class CommandSearchDialog extends JDialog
         });
 
         Box whatbox = Box.createVerticalBox();
+        scopePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         whatbox.add(scopePanel);
+        searchWholeWords.setAlignmentX(Component.CENTER_ALIGNMENT);
         whatbox.add(searchWholeWords);
+        input.setAlignmentX(Component.CENTER_ALIGNMENT);
         whatbox.add(input);
         initScopeFromPrefs();
 
