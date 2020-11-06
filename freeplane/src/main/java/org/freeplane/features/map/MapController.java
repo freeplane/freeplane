@@ -576,6 +576,8 @@ implements IExtension, NodeChangeAnnouncer{
 		modeController.addAction(new ToggleChildrenFoldedAction());
 		modeController.addAction(new ShowNextChildAction());
 		modeController.addAction(new GotoNodeAction());
+		modeController.addAction(new CloseAction());
+
 	}
 
 	public void displayNode(final NodeModel node) {
