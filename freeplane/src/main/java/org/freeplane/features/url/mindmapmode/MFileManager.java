@@ -603,8 +603,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				if (file != null) {
 					return openUntitledMap(file);
 				}
-				final MapController mapController = Controller.getCurrentModeController().getMapController();
-				final MapModel map = mapController.newMap();
+				ModeController modeController = Controller.getCurrentModeController();
+				final MapModel map =  new MapLoader(modeController).withView().getMap();
 				return map;
 			}
 		});
