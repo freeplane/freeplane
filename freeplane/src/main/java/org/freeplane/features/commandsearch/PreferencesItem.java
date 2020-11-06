@@ -17,11 +17,14 @@
  */
 package org.freeplane.features.commandsearch;
 
+import java.awt.event.InputEvent;
+
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.ShowPreferencesAction;
+import org.freeplane.core.ui.AccelerateableAction;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 
 class PreferencesItem extends SearchItem {
@@ -69,11 +72,18 @@ class PreferencesItem extends SearchItem {
     }
 
     @Override
-    boolean execute() {
+    void execute() {
         new ShowPreferenceItemAction(this).actionPerformed(null);
-        return false;
+    }
+    
+    @Override
+    void assignNewAccelerator() {
     }
 
+	@Override
+	boolean shouldUpdateResultList() {
+		return false;
+	}
 
     @Override
 	public String toString() {

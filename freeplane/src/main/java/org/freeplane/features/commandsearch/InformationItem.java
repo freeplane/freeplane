@@ -1,5 +1,7 @@
 package org.freeplane.features.commandsearch;
 
+import java.awt.event.InputEvent;
+
 import javax.swing.Icon;
 
 public class InformationItem extends SearchItem {
@@ -42,13 +44,22 @@ public class InformationItem extends SearchItem {
     }
 
     @Override
-    boolean execute() {
-        return false;
+    void execute() {
     }
-
+    
     @Override
+    void assignNewAccelerator() {
+    }
+    
+	@Override
+	boolean shouldUpdateResultList() {
+		return false;
+	}
+
+	@Override
     protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
         return true;
     }
+
 
 }

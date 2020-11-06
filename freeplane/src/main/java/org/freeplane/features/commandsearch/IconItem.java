@@ -1,21 +1,26 @@
 package org.freeplane.features.commandsearch;
 
+import java.awt.event.InputEvent;
+
 import javax.swing.Icon;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 
-public class IconItem extends SearchItem
-{
+public class IconItem extends SearchItem {
     private final Icon icon;
-    private final AFreeplaneAction action;
-	private final String displayedText;
-	private final String comparedText;
 
-    public IconItem(final Icon icon, final AFreeplaneAction action, final String iconName, final String accelerator, final String path)
-    {
+    private final AFreeplaneAction action;
+
+    private final String comparedText;
+
+    private String iconDescription;
+
+    public IconItem(final Icon icon, final AFreeplaneAction action, final String iconName,
+            final String path) {
         this.icon = icon;
         this.action = action;
-        this.displayedText = iconName + ", " + path + (accelerator != null ? " (" + accelerator + ")" : "");
+        iconDescription = iconName + ", " + path;
+
         this.comparedText = path + SearchItem.ITEM_PATH_SEPARATOR + iconName;
     }
 
@@ -26,7 +31,8 @@ public class IconItem extends SearchItem
 
     @Override
     String getDisplayedText() {
-		return displayedText;
+        String accelerator = AcceleratorDescriptionCreator.INSTANCE.createAcceleratorDescription(action);
+        return iconDescription + (accelerator != null ? " (" + accelerator + ")" : "");
     }
 
     @Override
@@ -35,8 +41,17 @@ public class IconItem extends SearchItem
     }
 
     @Override
-    boolean execute() {
+    void execute() {
         action.actionPerformed(null);
+    }
+    
+    @Override
+    void assignNewAccelerator() {
+        assignNewAccelerator(action);
+    }
+
+    @Override
+    boolean shouldUpdateResultList() {
         return true;
     }
 
@@ -47,17 +62,16 @@ public class IconItem extends SearchItem
 
     @Override
     String getComparedText() {
-		return  comparedText;
+        return comparedText;
     }
 
     @Override
     protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
-        return textChecker.contains(displayedText, searchTerm);
+        return textChecker.contains(getDisplayedText(), searchTerm);
     }
 
-	@Override
-	public String toString() {
-		return "IconItem [" + displayedText + "]";
-	}
+    @Override
+    public String toString() {
+        return "IconItem [" + getDisplayedText() + "]";
+    }
 }
-

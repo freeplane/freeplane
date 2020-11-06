@@ -18,6 +18,8 @@
  */
 package org.freeplane.features.commandsearch;
 
+import java.awt.event.InputEvent;
+
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -26,23 +28,21 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 
-class MenuItem extends SearchItem{
+class MenuItem extends SearchItem {
 
-    private static final ImageIcon menuIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon("/images/menu_items.svg"));
+    private static final ImageIcon menuIcon = FreeplaneIconFactory.toImageIcon(ResourceController
+            .getResourceController().getIcon("/images/menu_items.svg"));
 
     private final AFreeplaneAction action;
-    private final String displayedText;
-    private final String comparedText;
 
-	private final String tooltip;
+    private final String path;
 
+    private final String tooltip;
 
-    MenuItem(final AFreeplaneAction action, final String path, final String accelerator)
-    {
-        this.comparedText = path;
+    MenuItem(final AFreeplaneAction action, final String path) {
+        this.path = path;
         this.action = action;
-		this.tooltip = (String) action.getValue(Action.SHORT_DESCRIPTION);
-        this.displayedText = accelerator != null ? path + " (" + accelerator + ")" : path;
+        this.tooltip = (String) action.getValue(Action.SHORT_DESCRIPTION);
     }
 
     @Override
@@ -52,7 +52,8 @@ class MenuItem extends SearchItem{
 
     @Override
     String getDisplayedText() {
-        return displayedText;
+        String accelerator = AcceleratorDescriptionCreator.INSTANCE.createAcceleratorDescription(action);
+        return accelerator != null ? this.path + " (" + accelerator + ")" : this.path;
     }
 
     @Override
@@ -61,8 +62,17 @@ class MenuItem extends SearchItem{
     }
 
     @Override
-    boolean execute() {
+    void execute() {
         action.actionPerformed(null);
+    }
+    
+    @Override
+    void assignNewAccelerator() {
+        assignNewAccelerator(action);
+    }
+
+    @Override
+    boolean shouldUpdateResultList() {
         return true;
     }
 
@@ -73,17 +83,16 @@ class MenuItem extends SearchItem{
 
     @Override
     String getComparedText() {
-        return comparedText;
+        return path;
     }
 
     @Override
     protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
-        return action.isEnabled()
-                && textChecker.contains(displayedText, searchTerm);
+        return action.isEnabled() && textChecker.contains(getDisplayedText(), searchTerm);
     }
 
-	@Override
-	public String toString() {
-		return "MenuItem [" + displayedText + "]";
-	}
+    @Override
+    public String toString() {
+        return "MenuItem [" + getDisplayedText() + "]";
+    }
 }

@@ -140,8 +140,7 @@ class MenuStructureIndexer {
     private void recordLeafMenuEntry(Entry menuEntry, String path) {
     	AFreeplaneAction action = menuEntry.getAction();
     	if (action != null) {
-    		String acceleratorText = AcceleratorDescriptionCreator.INSTANCE.createAcceleratorDescription(action);
-    		menuItems.add(new MenuItem(action, path, acceleratorText));
+    		menuItems.add(new MenuItem(action, path));
     	}
     }
 }
