@@ -20,7 +20,6 @@ package org.freeplane.features.commandsearch;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,7 +41,6 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -50,7 +48,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -105,7 +102,7 @@ public class CommandSearchDialog extends JDialog
 
     CommandSearchDialog(Frame parent)
     {
-        super(parent, TextUtils.getText("CommandSearchAction.text"),false);
+        super(parent, TextUtils.getText("CommandSearchAction.text"),true);
 
         setLocationRelativeTo(parent);
 
