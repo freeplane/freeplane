@@ -57,13 +57,16 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapSelectionListener;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.ui.IMapViewChangeListener;
 
 
 public class CommandSearchDialog extends JDialog
-    implements DocumentListener, ListCellRenderer<Object>{
-	private static final SearchItem[] EMPTY_ARRAY = new SearchItem[0];
-
-    private static final long serialVersionUID = 1L;
+    implements DocumentListener, ListCellRenderer<SearchItem>, IMapSelectionListener{
+	private static final long serialVersionUID = 1L;
 
 	private static final String LIMIT_EXCEEDED_MESSAGE = TextUtils.getText("cmdsearch.limit_exceeded");
     private static final Icon WARNING_ICON = ResourceController.getResourceController().getIcon("/images/icons/messagebox_warning.svg");
@@ -85,7 +88,8 @@ public class CommandSearchDialog extends JDialog
     }
     
     private static class UpdateableListModel<E> extends DefaultListModel<E> {
-
+        private static final long serialVersionUID = 1L;
+        
         @Override
         public void fireContentsChanged(Object source, int index0, int index1) {
             super.fireContentsChanged(source, index0, index1);
@@ -125,9 +129,17 @@ public class CommandSearchDialog extends JDialog
     private final MenuStructureIndexer menuStructureIndexer;
     private final IconIndexer iconIndexer;
 
+    private final Controller controller;
+
+    private final ModeController modeController;
+
     CommandSearchDialog(Frame parent)
     {
-        super(parent, TextUtils.getText("CommandSearchAction.text"),true);
+        super(parent, TextUtils.getText("CommandSearchAction.text"), false);
+        
+        controller = Controller.getCurrentController();
+        modeController = Controller.getCurrentModeController();
+        controller.getMapViewManager().addMapSelectionListener(this);
 
         setLocationRelativeTo(parent);
 
@@ -215,6 +227,7 @@ public class CommandSearchDialog extends JDialog
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
+                controller.getMapViewManager().removeMapSelectionListener(CommandSearchDialog.this);
                 windowConfigurationStorage.storeDialogPositions(CommandSearchDialog.this);
             }
         });
@@ -234,6 +247,17 @@ public class CommandSearchDialog extends JDialog
 
         setVisible(true);
     }
+ 
+    
+
+    @Override
+    public void afterMapChange(MapModel oldMap, MapModel newMap) {
+        if(Controller.getCurrentModeController() != modeController) {
+            dispose();
+        }
+    }
+
+
 
     private JCheckBox createScopeButton(Scope scope) {
     	JCheckBox searchPrefs = new JCheckBox();
@@ -318,9 +342,7 @@ public class CommandSearchDialog extends JDialog
     }
 
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-
-        SearchItem item = (SearchItem)value;
+    public Component getListCellRendererComponent(JList<? extends SearchItem> list, SearchItem item, int index, boolean isSelected, boolean cellHasFocus) {
 
         String text = item.getDisplayedText();
         Icon icon = item.getTypeIcon();
