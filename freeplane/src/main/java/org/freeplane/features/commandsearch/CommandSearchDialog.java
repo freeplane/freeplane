@@ -36,9 +36,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import javax.swing.AbstractListModel;
 import javax.swing.Box;
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -61,7 +61,6 @@ import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.ui.IMapViewChangeListener;
 
 
 public class CommandSearchDialog extends JDialog
@@ -86,15 +85,24 @@ public class CommandSearchDialog extends JDialog
             setSelectionInterval(anchor, lead);
         }
     }
-    
-    private static class UpdateableListModel<E> extends DefaultListModel<E> {
-        private static final long serialVersionUID = 1L;
-        
+
+    private static class UpdateableListModel<E> extends AbstractListModel<E> {
+    	private final List<E> listData;
+
+        public UpdateableListModel(List<E> listData) {
+			this.listData = listData;
+		}
+		private static final long serialVersionUID = 1L;
+        @Override
+        public int getSize() { return listData.size(); }
+        @Override
+        public E getElementAt(int i) { return listData.get(i); }
+
         @Override
         public void fireContentsChanged(Object source, int index0, int index1) {
             super.fireContentsChanged(source, index0, index1);
         }
-        
+
     }
 
     public enum Scope{
@@ -136,7 +144,7 @@ public class CommandSearchDialog extends JDialog
     CommandSearchDialog(Frame parent)
     {
         super(parent, TextUtils.getText("CommandSearchAction.text"), false);
-        
+
         controller = Controller.getCurrentController();
         modeController = Controller.getCurrentModeController();
         controller.getMapViewManager().addMapSelectionListener(this);
@@ -247,8 +255,8 @@ public class CommandSearchDialog extends JDialog
 
         setVisible(true);
     }
- 
-    
+
+
 
     @Override
     public void afterMapChange(MapModel oldMap, MapModel newMap) {
@@ -305,7 +313,7 @@ public class CommandSearchDialog extends JDialog
         ItemChecker textChecker = new ItemChecker(shouldSearchWholeWords);
 
 		if(trimmedInput.length() >= 1
-		        && ( 
+		        && (
 		        searchInput.endsWith(" ")
 		        || shouldSearchWholeWords)
 		        || (searchInput.length() >= 3 && searchInput.codePoints().limit(3).count() == 3)
@@ -336,8 +344,7 @@ public class CommandSearchDialog extends JDialog
             matches = matches.subList(0, itemLimit);
             matches.add(new InformationItem(LIMIT_EXCEEDED_MESSAGE, WARNING_ICON, LIMIT_EXCEEDED_RANK));
         }
-        UpdateableListModel<SearchItem> model = new UpdateableListModel<>();
-        model.addAll(matches);
+        UpdateableListModel<SearchItem> model = new UpdateableListModel<>(matches);
         resultList.setModel(model);
     }
 
@@ -363,12 +370,12 @@ public class CommandSearchDialog extends JDialog
     protected boolean shouldAssignAccelerator(InputEvent event) {
         return event.isControlDown();
     }
-    
+
     private void executeItem(InputEvent event, int index)
     {
         ListModel<SearchItem> data = resultList.getModel();
-        SearchItem item = (SearchItem)(data.getElementAt(index));
-        
+        SearchItem item = (data.getElementAt(index));
+
         if(shouldAssignAccelerator(event)) {
             item.assignNewAccelerator();
         }
@@ -381,7 +388,7 @@ public class CommandSearchDialog extends JDialog
                 dispose();
             }
         }
-        
+
         if (item.shouldUpdateResultList()) {
             UpdateableListModel<SearchItem> model = (UpdateableListModel<SearchItem>) resultList.getModel();
             int lastElementIndex = model.getSize() - 1;
