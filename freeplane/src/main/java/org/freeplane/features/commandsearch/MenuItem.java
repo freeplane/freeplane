@@ -18,8 +18,6 @@
  */
 package org.freeplane.features.commandsearch;
 
-import java.awt.event.InputEvent;
-
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -63,7 +61,8 @@ class MenuItem extends SearchItem {
 
     @Override
     void execute() {
-        action.actionPerformed(null);
+        if(action.isEnabled())
+            action.actionPerformed(null);
     }
     
     @Override
@@ -88,7 +87,7 @@ class MenuItem extends SearchItem {
 
     @Override
     protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
-        return action.isEnabled() && textChecker.contains(getDisplayedText(), searchTerm);
+        return textChecker.contains(getDisplayedText(), searchTerm);
     }
 
     @Override

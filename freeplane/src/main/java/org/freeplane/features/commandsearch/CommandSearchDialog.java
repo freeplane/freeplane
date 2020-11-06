@@ -38,6 +38,7 @@ import java.util.Locale;
 
 import javax.swing.Box;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -47,6 +48,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -67,6 +69,29 @@ public class CommandSearchDialog extends JDialog
     private static final Icon WARNING_ICON = ResourceController.getResourceController().getIcon("/images/icons/messagebox_warning.svg");
     private static final int LIMIT_EXCEEDED_RANK = 100;
     private static final String WINDOW_CONFIG_PROPERTY = "cmdsearch_window_configuration";
+
+    private static class SingleSelectionList extends JList<SearchItem> {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void removeSelectionInterval(int index0, int index1) {
+            //ignore
+        }
+
+        @Override
+        public void addSelectionInterval(int anchor, int lead) {
+            setSelectionInterval(anchor, lead);
+        }
+    }
+    
+    private static class UpdateableListModel<E> extends DefaultListModel<E> {
+
+        @Override
+        public void fireContentsChanged(Object source, int index0, int index1) {
+            super.fireContentsChanged(source, index0, index1);
+        }
+        
+    }
 
     public enum Scope{
         MENUS, PREFERENCES, ICONS;
@@ -114,20 +139,7 @@ public class CommandSearchDialog extends JDialog
         input = new JTextField("");
         input.setColumns(40);
         input.addKeyListener(handler);
-        resultList = new JList<SearchItem>() {
-            private static final long serialVersionUID = 1L;
-
-            @Override
-            public void removeSelectionInterval(int index0, int index1) {
-                //ignore
-            }
-
-            @Override
-            public void addSelectionInterval(int anchor, int lead) {
-                setSelectionInterval(anchor, lead);
-            }
-
-        };
+        resultList = new SingleSelectionList();
         resultList.setFocusable(false);
         resultList.setCellRenderer(this);
         resultList.addMouseListener(handler);
@@ -269,9 +281,11 @@ public class CommandSearchDialog extends JDialog
         ItemChecker textChecker = new ItemChecker(shouldSearchWholeWords);
 
 		if(trimmedInput.length() >= 1
-                && (searchInput.length() >= 3
-                    || searchInput.endsWith(" ")
-                    || shouldSearchWholeWords)
+		        && ( 
+		        searchInput.endsWith(" ")
+		        || shouldSearchWholeWords)
+		        || (searchInput.length() >= 3 && searchInput.codePoints().limit(3).count() == 3)
+                || ! searchInput.codePoints().allMatch(Character::isAlphabetic)
                 ) {
             final String[] searchTerms = trimmedInput.split("\\s+");
             for (int i = 0; i <searchTerms.length; i++)
@@ -298,8 +312,9 @@ public class CommandSearchDialog extends JDialog
             matches = matches.subList(0, itemLimit);
             matches.add(new InformationItem(LIMIT_EXCEEDED_MESSAGE, WARNING_ICON, LIMIT_EXCEEDED_RANK));
         }
-        resultList.setListData(EMPTY_ARRAY);
-        resultList.setListData(matches.toArray(EMPTY_ARRAY));
+        UpdateableListModel<SearchItem> model = new UpdateableListModel<>();
+        model.addAll(matches);
+        resultList.setModel(model);
     }
 
     @Override
@@ -329,7 +344,8 @@ public class CommandSearchDialog extends JDialog
     
     private void executeItem(InputEvent event, int index)
     {
-        SearchItem item = (SearchItem)(resultList.getModel().getElementAt(index));
+        ListModel<SearchItem> data = resultList.getModel();
+        SearchItem item = (SearchItem)(data.getElementAt(index));
         
         if(shouldAssignAccelerator(event)) {
             item.assignNewAccelerator();
@@ -345,26 +361,12 @@ public class CommandSearchDialog extends JDialog
         }
         
         if (item.shouldUpdateResultList()) {
-            // the list of enabled actions might have changed:
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        // nothing to do
-                    }
-                    updateMatches(input.getText());
-                    resultList.revalidate();
-                    resultList.repaint();
-                    // restore selection if possible
-                    if (index < resultList.getModel().getSize()) {
-                        resultList.setSelectedIndex(index);
-                        resultList.ensureIndexIsVisible(index);
-                    }
-                }
-            }).start();
-        }
+            UpdateableListModel<SearchItem> model = (UpdateableListModel<SearchItem>) resultList.getModel();
+            int lastElementIndex = model.getSize() - 1;
+            if(lastElementIndex >= 0)
+                model.fireContentsChanged(this, 0, lastElementIndex);
+
+         }
     }
 
     class Handler implements MouseListener, KeyListener {

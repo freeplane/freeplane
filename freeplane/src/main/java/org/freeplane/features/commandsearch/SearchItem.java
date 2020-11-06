@@ -1,7 +1,5 @@
 package org.freeplane.features.commandsearch;
 
-import java.awt.event.InputEvent;
-
 import javax.swing.Icon;
 
 import org.freeplane.core.resources.ResourceController;
