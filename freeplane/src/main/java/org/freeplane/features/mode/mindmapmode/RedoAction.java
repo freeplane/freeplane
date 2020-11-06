@@ -64,5 +64,5 @@ class RedoAction extends AFreeplaneAction{
 		this.undo = undo;
 	}
 	@Override
-    public void afterMapChange(UserRole userRole, boolean isMapSelected) {}
+    public void afterMapChange(UserRole userRole) {}
 }

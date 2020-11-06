@@ -95,7 +95,7 @@ class UndoAction extends AFreeplaneAction implements IMapSelectionListener{
 		}
 	}
 	@Override
-    public void afterMapChange(UserRole userRole, boolean isMapSelected) {};
+    public void afterMapChange(UserRole userRole) {};
 
 	public void setRedo(final Action redo) {
 		this.redo = redo;

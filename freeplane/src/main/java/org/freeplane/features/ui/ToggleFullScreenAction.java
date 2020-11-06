@@ -53,6 +53,6 @@ public class ToggleFullScreenAction extends AFreeplaneAction {
 	}
 	
 	@Override
-	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+	public void afterMapChange(UserRole userRole) {
 	}
 }

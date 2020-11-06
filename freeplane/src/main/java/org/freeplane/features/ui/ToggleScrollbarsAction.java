@@ -47,6 +47,6 @@ class ToggleScrollbarsAction extends AFreeplaneAction {
 		setSelected(controller.areScrollbarsVisible());
 	}
 	@Override
-	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+	public void afterMapChange(UserRole userRole) {
 	}
 }

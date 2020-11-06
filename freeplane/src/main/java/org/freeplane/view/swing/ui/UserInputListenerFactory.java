@@ -123,7 +123,7 @@ public class UserInputListenerFactory implements IUserInputListenerFactory {
 					public void visit(Entry entry) {
 						final AFreeplaneAction action = entryAccessor.getAction(entry);
 						if (action != null) {
-							action.afterMapChange( userRole, map != null);
+							action.afterMapChange( userRole);
 						}
                         entry.removeAttribute("allowed");
                         entry.setAttribute("allowed", entry.isAllowed(userRole));
