@@ -243,7 +243,7 @@ public class MModeController extends ModeController {
 	}
 
 	public UserRole userRole(MapModel map) {
-		return UserRole.of(canEdit(map));
+		return map != null ? UserRole.of(canEdit(map)) : UserRole.NO_MAP;
 	}
 	
 	@Override

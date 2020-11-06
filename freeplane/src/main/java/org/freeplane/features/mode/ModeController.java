@@ -266,7 +266,7 @@ public class ModeController extends AController implements FreeplaneActions{
 	}
 
 	public UserRole userRole(MapModel map) {
-		return UserRole.EDITOR;
+		return map != null ? UserRole.EDITOR : UserRole.NO_MAP;
 	}
 	
 	public boolean isEditingLocked() {

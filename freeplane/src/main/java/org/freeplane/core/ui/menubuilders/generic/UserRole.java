@@ -24,7 +24,8 @@ package org.freeplane.core.ui.menubuilders.generic;
  * Dec 21, 2019
  */
 public enum UserRole {
-	VIEWER(false), 
+    NO_MAP(false), 
+    VIEWER(false), 
 	EDITOR(true);
 
 	final boolean isEditor;
