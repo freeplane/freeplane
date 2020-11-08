@@ -89,8 +89,7 @@ class PreferencesItem extends SearchItem {
 
 	@Override
     protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
-        return textChecker.contains(getKey(), searchTerm)
-                || textChecker.contains(path, searchTerm);
+        return textChecker.contains(path, searchTerm);
     }
 
 	String getTab() {
