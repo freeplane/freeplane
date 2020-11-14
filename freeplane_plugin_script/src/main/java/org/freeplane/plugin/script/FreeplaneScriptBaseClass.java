@@ -109,40 +109,56 @@ public abstract class FreeplaneScriptBaseClass extends Script {
 	    super();
 	    nodeMetaClass = InvokerHelper.getMetaClass(NodeRO.class);
     }
+    
+    public FreeplaneScriptBaseClass(Binding binding) {
+        this();
+        setBinding(binding);
+    }
 
-	void setScript(Object script) {
+    @Override
+    public void setBinding(Binding binding) {
+        super.setBinding(binding);
+        if(binding.hasVariable("node") && binding.hasVariable("c")) {
+            Object nodeProxy = binding.getVariable("node");
+            Object controllerProxy = binding.getVariable("c");
+            if (nodeProxy instanceof NodeRO && controllerProxy instanceof ControllerRO) {
+                boundVariables = binding.getVariables();
+                node = (NodeRO) nodeProxy;
+                controller = (ControllerRO) controllerProxy;
+            }
+        }
+    }
+
+    void setScript(Object script) {
 		this.script = script;
 	}
 
 	FreeplaneScriptBaseClass withBinding(final NodeModel node, ScriptContext scriptContext) {
-		@SuppressWarnings("rawtypes")
-		Binding binding = new Binding(new LinkedHashMap(getBinding().getVariables()));
+		try {
+        	FreeplaneScriptBaseClass instance = boundVariables != null ? getClass().newInstance() : this;
+        	instance.script = script;
+            ControllerRO controllerProxy = ProxyFactory.createController(scriptContext);
+            NodeRO nodeProxy = ProxyFactory.createNode(node, scriptContext);
+        	Binding binding = createBinding(nodeProxy, controllerProxy);
+        	instance.setBinding(binding);
+        	return instance;
+        }
+        catch (InstantiationException | IllegalAccessException e) {
+        	throw new RuntimeException(e);
+        }
+	}
+
+    protected Binding createBinding(NodeRO nodeProxy, ControllerRO controllerProxy) {
+        Binding binding = new Binding(new LinkedHashMap(getBinding().getVariables()));
 		for (Entry<String, Object> entry : ScriptingConfiguration.getStaticProperties().entrySet()) {
 			binding.setProperty(entry.getKey(), entry.getValue());
 		}
-		Proxy.Controller controllerProxy = ProxyFactory.createController(scriptContext);
-		Proxy.Node nodeProxy = ProxyFactory.createNode(node, scriptContext);
-		return withBinding(binding, controllerProxy, nodeProxy);
-	}
+		binding.setVariable("c", controllerProxy);
+		binding.setVariable("node", nodeProxy);
+        return binding;
+    }
 
-	private FreeplaneScriptBaseClass withBinding(Binding binding, ControllerRO controllerProxy, NodeRO nodeProxy) {
-		try {
-			binding.setVariable("c", controllerProxy);
-			binding.setVariable("node", nodeProxy);
-			FreeplaneScriptBaseClass instance = boundVariables != null ? getClass().newInstance() : this;
-			instance.script = script;
-			instance.node = nodeProxy;
-			instance.controller = controllerProxy;
-			instance.setBinding(binding);
-			instance.boundVariables = binding.getVariables();
-			return instance;
-		}
-		catch (InstantiationException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-    /* <ul>
+	/* <ul>
 	 * <li> translate raw node ids to nodes.
 	 * <li> "imports" node's methods into the script's namespace
 	 * </ul>
