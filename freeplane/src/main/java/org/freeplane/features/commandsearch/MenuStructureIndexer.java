@@ -18,15 +18,11 @@
  */
 package org.freeplane.features.commandsearch;
 
-import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.KeyStroke;
-
-import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.menubuilders.FreeplaneResourceAccessor;
-import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.util.HtmlUtils;
@@ -36,7 +32,7 @@ import org.freeplane.features.mode.ModeController;
 
 class MenuStructureIndexer {
     private EntryAccessor entryAccessor;
-    IAcceleratorMap acceleratorMap;
+
     private List<MenuItem> menuItems;
 
     MenuStructureIndexer()
@@ -52,7 +48,6 @@ class MenuStructureIndexer {
     private void loadMenuItems()
     {
         entryAccessor = new EntryAccessor(new FreeplaneResourceAccessor());
-        acceleratorMap = ResourceController.getResourceController().getAcceleratorManager();
         menuItems = new LinkedList<>();
         ModeController modeController = Controller.getCurrentModeController();
         final Entry root = modeController.getUserInputListenerFactory()
@@ -139,24 +134,13 @@ class MenuStructureIndexer {
     }
 
     public boolean contributesToPath(Entry menuEntry) {
-        return !menuEntry.getName().isEmpty();
+    	return !menuEntry.getName().isEmpty();
     }
 
     private void recordLeafMenuEntry(Entry menuEntry, String path) {
-        KeyStroke accelerator = menuEntry.getAction() != null ? acceleratorMap.getAccelerator(menuEntry.getAction()) : null;
-        String acceleratorText =  null;
-        if (accelerator !=  null)
-        {
-            acceleratorText = "";
-            int modifiers = accelerator.getModifiers();
-            if (modifiers > 0)
-            {
-                acceleratorText += KeyEvent.getKeyModifiersText(modifiers);
-                acceleratorText += "+";
-            }
-            acceleratorText += KeyEvent.getKeyText(accelerator.getKeyCode());
-        }
-        menuItems.add(new MenuItem(path, menuEntry.getAction(), acceleratorText));
+    	AFreeplaneAction action = menuEntry.getAction();
+    	if (action != null) {
+    		menuItems.add(new MenuItem(action, path));
+    	}
     }
-
 }

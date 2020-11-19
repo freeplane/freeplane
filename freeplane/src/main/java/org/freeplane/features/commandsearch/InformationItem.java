@@ -32,23 +32,32 @@ public class InformationItem extends SearchItem {
     }
 
     @Override
-    String getDisplayText() {
+    String getDisplayedText() {
         return message;
     }
 
     @Override
-    String getDisplayTooltip() {
+    String getTooltip() {
         return null;
     }
 
     @Override
-    boolean execute() {
-        return false;
+    void execute() {
     }
-
+    
     @Override
-    protected boolean checkAndMatch(String searchTerm) {
+    void assignNewAccelerator() {
+    }
+    
+	@Override
+	boolean shouldUpdateResultList() {
+		return false;
+	}
+
+	@Override
+    protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
         return true;
     }
+
 
 }

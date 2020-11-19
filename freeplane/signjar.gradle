@@ -8,34 +8,40 @@ if (signJarPropertyFile.exists())
 
 def signJarTask(String name, String signedJarName) {
 	return tasks.create(name, Exec) {
-	    onlyIf { signJarProperties['signjar.cardpass'] }
+		onlyIf { signJarProperties['signjar.cardpass'] }
 		commandLine 'jarsigner', '-keystore',  'NONE', '-tsa', signJarProperties['signjar.tsaurl'],
 			'-storetype', 'PKCS11', '-providerClass', 'sun.security.pkcs11.SunPKCS11',
 			'-providerArg', signJarProperties['signjar.cfg'], '-storepass',  signJarProperties['signjar.cardpass'], 
 			'-certchain', signJarProperties['signjar.certchain'],
 			file(globalBin + '/core/' + pluginid + '/lib/' + signedJarName), 
 			signJarProperties['signjar.owner']
-	    dependsOn copyOSGiJars
-    }
+		dependsOn copyOSGiJars
+	}
 }
 
-signJarTask('signViewerJar', 'freeplaneviewer.jar')
+if (signJarProperties['signjar.cardpass'])
+{
 
-signJarTask('signViewerApiJar', 'freeplaneapi_viewer.jar')
+	signJarTask('signViewerJar', 'freeplaneviewer.jar')
 
-signJarTask('signSvgJar', 'kitfox-svg-salamander-1.1.1-p1.jar')
+	signJarTask('signViewerApiJar', 'freeplaneapi_viewer.jar')
 
-task doNotSignViewerJar {
-    onlyIf { !signJarProperties['signjar.cardpass'] }
-    doLast {
-        println('No ' + rootDir.path + '/freeplane/signjar.properties found')
-        println('Applet is NOT signed!')
-        println('(see ' + rootDir.path + '/freeplane/signjar-example.properties)')
-    }
-    dependsOn copyOSGiJars
+	signJarTask('signSvgJar', 'kitfox-svg-salamander-1.1.1-p1.jar')
+
+	build.dependsOn signViewerJar
+	build.dependsOn signViewerApiJar
 }
+else
+{
+	task doNotSignViewerJar {
+		onlyIf { !signJarProperties['signjar.cardpass'] }
+		doLast {
+			println('No ' + rootDir.path + '/freeplane/signjar.properties found')
+			println('Applet is NOT signed!')
+			println('(see ' + rootDir.path + '/freeplane/signjar-example.properties)')
+		}
+		dependsOn copyOSGiJars
+	}
 
-// exactly one of two is always enabled (see above)!
-build.dependsOn signViewerJar
-build.dependsOn signViewerApiJar
-build.dependsOn doNotSignViewerJar
+	build.dependsOn doNotSignViewerJar
+}

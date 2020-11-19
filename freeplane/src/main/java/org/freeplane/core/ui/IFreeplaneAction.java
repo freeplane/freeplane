@@ -28,7 +28,7 @@ import org.freeplane.core.ui.menubuilders.generic.UserRole;
  * 09.07.2009
  */
 public interface IFreeplaneAction extends Action {
-	public void afterMapChange(UserRole userRole, boolean isMapSelected);
+	public void afterMapChange(UserRole userRole);
 
 	public boolean isSelected();
 

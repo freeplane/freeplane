@@ -107,8 +107,8 @@ public class AccelerateableAction implements IFreeplaneAction {
 	}
 
 	@Override
-	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
-		originalAction.afterMapChange( userRole, isMapSelected);
+	public void afterMapChange(UserRole userRole) {
+		originalAction.afterMapChange( userRole);
 	}
 
 	@Override

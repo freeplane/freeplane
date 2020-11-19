@@ -23,10 +23,13 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -86,10 +89,6 @@ import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 public class FreeplaneGUIStarter implements FreeplaneStarter {
 	private static boolean ARE_SURVEYS_ENABLED = false;
 
-	static{
-		Compat.fixMousePointerForLinux();
-	}
-
 
 	private final ApplicationResourceController applicationResourceController;
 // // 	private Controller controller;
@@ -103,6 +102,46 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 	private static final String LOAD_LAST_MAP = "load_last_map";
 	final private Options options;
 
+	private static void fixX11AppName() {
+		if(! System.getProperty("java.version").startsWith("1."))
+			return;
+		try {
+			Toolkit xToolkit = Toolkit.getDefaultToolkit();
+			if (xToolkit.getClass().getName().equals("sun.awt.X11.XToolkit"))
+			{
+				java.lang.reflect.Field awtAppClassNameField = xToolkit.getClass().getDeclaredField("awtAppClassName");
+				awtAppClassNameField.setAccessible(true);
+				awtAppClassNameField.set(xToolkit, "Freeplane");
+			}
+		} catch (NoSuchFieldException | SecurityException
+				| IllegalArgumentException | IllegalAccessException e) {
+			System.err.format("Couldn't set awtAppClassName: %s%n", e.getClass().getSimpleName() + ": " + e.getMessage());
+		}
+	}
+
+	private static void fixMousePointerForLinux(){
+		if (isX11WindowManager()) {
+			try {
+				Class<?> xwm = Class.forName("sun.awt.X11.XWM");
+				Field awt_wmgr = xwm.getDeclaredField("awt_wmgr");
+				awt_wmgr.setAccessible(true);
+				Field other_wm = xwm.getDeclaredField("OTHER_WM");
+				other_wm.setAccessible(true);
+				if (awt_wmgr.get(null).equals(other_wm.get(null))) {
+					Field metacity_wm = xwm.getDeclaredField("METACITY_WM");
+					metacity_wm.setAccessible(true);
+					awt_wmgr.set(null, metacity_wm.get(null));
+				}
+			}
+			catch (Exception x) {
+			}
+		}
+	}
+
+	private static boolean isX11WindowManager() {
+		return Arrays.asList("gnome-shell", "mate", "other...").contains(System.getenv("DESKTOP_SESSION"));
+    }
+
 	public FreeplaneGUIStarter(Options options) {
 		super();
 		this.options = options;
@@ -110,6 +149,8 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 		firstRun = !userPreferencesFile.exists();
 		new UserPropertiesUpdater().importOldProperties();
 		applicationResourceController = new ApplicationResourceController();
+		fixMousePointerForLinux();
+		fixX11AppName();
 	}
 
 	@Override

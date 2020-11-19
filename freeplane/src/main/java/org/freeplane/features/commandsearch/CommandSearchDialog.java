@@ -20,40 +20,36 @@ package org.freeplane.features.commandsearch;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
-import java.util.function.Consumer;
 
-import javax.swing.Action;
+import javax.swing.AbstractListModel;
 import javax.swing.Box;
-import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -61,26 +57,79 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.WindowConfigurationStorage;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.IMapSelectionListener;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 
 
-public class CommandSearchDialog extends JDialog 
-    implements DocumentListener, ListCellRenderer<Object>, MouseListener, KeyListener {
+public class CommandSearchDialog extends JDialog
+    implements DocumentListener, ListCellRenderer<SearchItem>, IMapSelectionListener{
+	private static final long serialVersionUID = 1L;
 
-    private static final String LIMIT_EXCEEDED_MESSAGE = TextUtils.getText("cmdsearch.limit_exceeded");
+	private static final String LIMIT_EXCEEDED_MESSAGE = TextUtils.getText("cmdsearch.limit_exceeded");
     private static final Icon WARNING_ICON = ResourceController.getResourceController().getIcon("/images/icons/messagebox_warning.svg");
     private static final int LIMIT_EXCEEDED_RANK = 100;
     private static final String WINDOW_CONFIG_PROPERTY = "cmdsearch_window_configuration";
 
-    public enum Scope{
-        MENUS, PREFERENCES, ICONS, ALL
+    private static class SingleSelectionList extends JList<SearchItem> {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public void removeSelectionInterval(int index0, int index1) {
+            //ignore
+        }
+
+        @Override
+        public void addSelectionInterval(int anchor, int lead) {
+            setSelectionInterval(anchor, lead);
+        }
     }
 
-    private final JRadioButton searchMenus;
-    private final JRadioButton searchPrefs;
-    private final JRadioButton searchIcons;
-    private final JRadioButton searchAll;
+    private static class UpdateableListModel<E> extends AbstractListModel<E> {
+    	private final List<E> listData;
+
+        public UpdateableListModel(List<E> listData) {
+			this.listData = listData;
+		}
+		private static final long serialVersionUID = 1L;
+        @Override
+        public int getSize() { return listData.size(); }
+        @Override
+        public E getElementAt(int i) { return listData.get(i); }
+
+        @Override
+        public void fireContentsChanged(Object source, int index0, int index1) {
+            super.fireContentsChanged(source, index0, index1);
+        }
+
+    }
+
+    public enum Scope{
+        MENUS, PREFERENCES, ICONS;
+
+		String propertyName() {
+			return "cmdsearch_scope_" + name();
+		}
+
+		String labelName() {
+			return "cmdsearch.scope." + name();
+		}
+
+		boolean isEnabled() {
+			return ResourceController.getResourceController().getBooleanProperty(propertyName(), true);
+		}
+
+		void setEnabled(boolean selected) {
+			ResourceController.getResourceController().setProperty(propertyName(), selected);
+		}
+    }
+
+    private final JCheckBox searchMenus;
+    private final JCheckBox searchPrefs;
+    private final JCheckBox searchIcons;
     private final JTextField input;
-    private final JList<Object> resultList;
+    private final JList<SearchItem> resultList;
     private final JCheckBox closeAfterExecute;
     private final JCheckBox searchWholeWords;
 
@@ -88,9 +137,17 @@ public class CommandSearchDialog extends JDialog
     private final MenuStructureIndexer menuStructureIndexer;
     private final IconIndexer iconIndexer;
 
+    private final Controller controller;
+
+    private final ModeController modeController;
+
     CommandSearchDialog(Frame parent)
     {
-        super(parent, TextUtils.getText("CommandSearchAction.text"),false);
+        super(parent, TextUtils.getText("CommandSearchAction.text"), false);
+
+        controller = Controller.getCurrentController();
+        modeController = Controller.getCurrentModeController();
+        controller.getMapViewManager().addMapSelectionListener(this);
 
         setLocationRelativeTo(parent);
 
@@ -98,34 +155,29 @@ public class CommandSearchDialog extends JDialog
         menuStructureIndexer = new MenuStructureIndexer();
         iconIndexer = new IconIndexer();
 
+        Handler handler = new Handler();
         input = new JTextField("");
         input.setColumns(40);
-        input.addKeyListener(this);
-        resultList = new JList<>();
+        input.addKeyListener(handler);
+        resultList = new SingleSelectionList();
+        resultList.setFocusable(false);
         resultList.setCellRenderer(this);
-        resultList.addMouseListener(this);
+        resultList.addMouseListener(handler);
         resultList.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        resultList.addKeyListener(this);
+        resultList.addKeyListener(handler);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         JScrollPane resultListScrollPane = new JScrollPane(resultList);
         getContentPane().add(panel);
 
-        ButtonGroup scopeGroup = new ButtonGroup();
         JPanel scopePanel = new JPanel();
-        searchMenus = createScopeButton(Scope.MENUS, "cmdsearch.menuitems_rb");
-        searchPrefs = createScopeButton(Scope.PREFERENCES, "cmdsearch.preferences_rb");
-        searchIcons = createScopeButton(Scope.ICONS, "cmdsearch.icons_rb");
-        searchAll = createScopeButton(Scope.ALL, "cmdsearch.all_rb");
-        scopeGroup.add(searchMenus);
+        searchMenus = createScopeButton(Scope.MENUS);
+        searchPrefs = createScopeButton(Scope.PREFERENCES);
+        searchIcons = createScopeButton(Scope.ICONS);
         scopePanel.add(searchMenus);
-        scopeGroup.add(searchIcons);
         scopePanel.add(searchIcons);
-        scopeGroup.add(searchPrefs);
         scopePanel.add(searchPrefs);
-        scopeGroup.add(searchAll);
-        scopePanel.add(searchAll);
         searchWholeWords = new JCheckBox();
         LabelAndMnemonicSetter.setLabelAndMnemonic(searchWholeWords, TextUtils.getRawText("cmdsearch.searchWholeWords"));
         searchWholeWords.setSelected(ResourceController.getResourceController().getBooleanProperty("cmdsearch_whole_words"));
@@ -134,13 +186,16 @@ public class CommandSearchDialog extends JDialog
             public void actionPerformed(ActionEvent actionEvent) {
                 ResourceController.getResourceController().setProperty("cmdsearch_whole_words", searchWholeWords.isSelected());
                 updateMatches(input.getText());
-                input.requestFocus();
+                input.requestFocusInWindow();
             }
         });
-        
+
         Box whatbox = Box.createVerticalBox();
+        scopePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         whatbox.add(scopePanel);
+        searchWholeWords.setAlignmentX(Component.CENTER_ALIGNMENT);
         whatbox.add(searchWholeWords);
+        input.setAlignmentX(Component.CENTER_ALIGNMENT);
         whatbox.add(input);
         initScopeFromPrefs();
 
@@ -156,7 +211,7 @@ public class CommandSearchDialog extends JDialog
             public void actionPerformed(ActionEvent actionEvent) {
                 ResourceController.getResourceController().setProperty("cmdsearch_close_after_execute", closeAfterExecute.isSelected());
                 updateMatches(input.getText());
-                input.requestFocus();
+                input.requestFocusInWindow();
             }
         });
         optionsBox.add(closeAfterExecute);
@@ -176,27 +231,52 @@ public class CommandSearchDialog extends JDialog
         }
 
         input.getDocument().addDocumentListener(this);
-        input.requestFocus();
 
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
+                controller.getMapViewManager().removeMapSelectionListener(CommandSearchDialog.this);
                 windowConfigurationStorage.storeDialogPositions(CommandSearchDialog.this);
             }
         });
 
+        this.addWindowFocusListener(new WindowFocusListener() {
+
+			@Override
+			public void windowLostFocus(WindowEvent e) {
+			}
+
+			@Override
+			public void windowGainedFocus(WindowEvent e) {
+				input.requestFocusInWindow();
+				removeWindowFocusListener(this);
+			}
+		});
+
         setVisible(true);
     }
 
-    private JRadioButton createScopeButton(Scope scope, String labelKey) {
-        JRadioButton searchPrefs = new JRadioButton();
-        LabelAndMnemonicSetter.setLabelAndMnemonic(searchPrefs, TextUtils.getRawText(labelKey));
+
+
+    @Override
+    public void afterMapChange(MapModel oldMap, MapModel newMap) {
+        if(Controller.getCurrentModeController() != modeController) {
+            dispose();
+        }
+    }
+
+
+
+    private JCheckBox createScopeButton(Scope scope) {
+    	JCheckBox searchPrefs = new JCheckBox();
+        LabelAndMnemonicSetter.setLabelAndMnemonic(searchPrefs, TextUtils.getRawText(scope.labelName()));
         searchPrefs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ResourceController.getResourceController().setProperty("cmdsearch_scope", scope.name());
+                boolean selected = searchPrefs.isSelected();
+				scope.setEnabled(selected);
                 updateMatches(input.getText());
-                input.requestFocus();
+                input.requestFocusInWindow();
             }
         });
         return searchPrefs;
@@ -205,44 +285,21 @@ public class CommandSearchDialog extends JDialog
 
     private void initScopeFromPrefs()
     {
-        final ResourceController resourceController = ResourceController.getResourceController();
-         Scope scope = resourceController.getEnumProperty("cmdsearch_scope", Scope.ALL);
-         switch (scope) {
-         case MENUS:
-             searchMenus.setSelected(true);
-             break;
-
-         case PREFERENCES:
-             searchPrefs.setSelected(true);
-             break;
-
-         case ICONS:
-             searchIcons.setSelected(true);
-             break;
-
-         case ALL:
-             searchAll.setSelected(true);
-             break;
-
-        default:
-            break;
-        }
+        searchMenus.setSelected(Scope.MENUS.isEnabled());
+        searchPrefs.setSelected(Scope.PREFERENCES.isEnabled());
+        searchIcons.setSelected(Scope.ICONS.isEnabled());
      }
 
-    private void setDefaultText()
-    {
-        input.setText("type to search for preferences/menu items");
-        input.setSelectionStart(0);
-        input.setSelectionEnd(input.getText().length());
-    }
-
-    public void changedUpdate(DocumentEvent e) {
+	@Override
+	public void changedUpdate(DocumentEvent e) {
         updateMatches(input.getText());
     }
-    public void removeUpdate(DocumentEvent e) {
+    @Override
+	public void removeUpdate(DocumentEvent e) {
         updateMatches(input.getText());
     }
-    public void insertUpdate(DocumentEvent e) {
+    @Override
+	public void insertUpdate(DocumentEvent e) {
         updateMatches(input.getText());
     }
 
@@ -252,27 +309,32 @@ public class CommandSearchDialog extends JDialog
 
         //PseudoDamerauLevenshtein pairwiseAlignment = new PseudoDamerauLevenshtein();
         List<SearchItem> matches = new ArrayList<>();
-        if(trimmedInput.length() >= 1 
-                && (searchInput.length() >= 3
-                    || searchInput.endsWith(" ")
-                    || SearchItem.shouldSearchWholeWords())
+        boolean shouldSearchWholeWords =  ResourceController.getResourceController().getBooleanProperty("cmdsearch_whole_words");
+        ItemChecker textChecker = new ItemChecker(shouldSearchWholeWords);
+
+		if(trimmedInput.length() >= 1
+		        && (
+		        searchInput.endsWith(" ")
+		        || shouldSearchWholeWords)
+		        || (searchInput.length() >= 3 && searchInput.codePoints().limit(3).count() == 3)
+                || ! searchInput.codePoints().allMatch(Character::isAlphabetic)
                 ) {
             final String[] searchTerms = trimmedInput.split("\\s+");
             for (int i = 0; i <searchTerms.length; i++)
             {
                 searchTerms[i] = searchTerms[i].toLowerCase(Locale.ENGLISH);
             }
-            if (searchMenus.isSelected() || searchAll.isSelected())
+            if (searchMenus.isSelected())
             {
-                findMatches(menuStructureIndexer.getMenuItems(), searchTerms, matches::add);
+            	textChecker.findMatchingItems(menuStructureIndexer.getMenuItems(), searchTerms, matches::add);
             }
-            if (searchPrefs.isSelected() || searchAll.isSelected())
+            if (searchPrefs.isSelected())
             {
-                findMatches(preferencesIndexer.getPrefs(), searchTerms, matches::add);
+            	textChecker.findMatchingItems(preferencesIndexer.getPrefs(), searchTerms, matches::add);
             }
-            if (searchIcons.isSelected() || searchAll.isSelected())
+            if (searchIcons.isSelected())
             {
-                findMatches(iconIndexer.getIconItems(), searchTerms, matches::add);
+            	textChecker.findMatchingItems(iconIndexer.getIconItems(), searchTerms, matches::add);
             }
 
             Collections.sort(matches);
@@ -282,42 +344,16 @@ public class CommandSearchDialog extends JDialog
             matches = matches.subList(0, itemLimit);
             matches.add(new InformationItem(LIMIT_EXCEEDED_MESSAGE, WARNING_ICON, LIMIT_EXCEEDED_RANK));
         }
-        resultList.setListData(new Object[0]);
-        resultList.setListData(matches.toArray());
-    }
-
-
-    public void findMatches(List<? extends SearchItem> items, final String[] searchTerms,
-            final Consumer<SearchItem> matches) {
-        for (final SearchItem prefsItem: items)
-        {
-            if (prefsItem.checkAndMatch(searchTerms))
-            {
-                matches.accept(prefsItem);
-            }
-        }
-    }
-
-    public static void main(String[] args)
-    {
-        SwingUtilities.invokeLater(() -> {
-            JFrame parent = new JFrame("FP Search Dialog Test");
-            parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            parent.setPreferredSize(new Dimension(800, 600));
-            parent.pack();
-
-            CommandSearchDialog commandSearchDialog = new CommandSearchDialog(parent);
-        });
+        UpdateableListModel<SearchItem> model = new UpdateableListModel<>(matches);
+        resultList.setModel(model);
     }
 
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<? extends SearchItem> list, SearchItem item, int index, boolean isSelected, boolean cellHasFocus) {
 
-        SearchItem item = (SearchItem)value;
-
-        String text = item.getDisplayText();
+        String text = item.getDisplayedText();
         Icon icon = item.getTypeIcon();
-        String tooltip = item.getDisplayTooltip();
+        String tooltip = item.getTooltip();
 
         JLabel label = (JLabel)(new DefaultListCellRenderer().getListCellRendererComponent(list, text, index, isSelected, cellHasFocus));
         if (icon != null)
@@ -331,80 +367,71 @@ public class CommandSearchDialog extends JDialog
         return label;
     }
 
-    private void executeItem(int index)
-    {
-        SearchItem item = (SearchItem)(resultList.getModel().getElementAt(index));
-
-        boolean updateNecessary = item.execute();
-
-        if (closeAfterExecute.isSelected())
-        {
-            dispose();
-        }
-
-        if (updateNecessary) {
-            // the list of enabled actions might have changed:
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        // nothing to do
-                    }
-                    updateMatches(input.getText());
-                    resultList.revalidate();
-                    resultList.repaint();
-                    // restore selection if possible
-                    if (index < resultList.getModel().getSize()) {
-                        resultList.setSelectedIndex(index);
-                        resultList.ensureIndexIsVisible(index);
-                    }
-                }
-            }).start();
-        }
+    protected boolean shouldAssignAccelerator(InputEvent event) {
+        return event.isControlDown();
     }
+
+    private void executeItem(InputEvent event, int index)
+    {
+        ListModel<SearchItem> data = resultList.getModel();
+        SearchItem item = (data.getElementAt(index));
+
+        if(shouldAssignAccelerator(event)) {
+            item.assignNewAccelerator();
+        }
+        else {
+
+            item.execute();
+
+            if (closeAfterExecute.isSelected())
+            {
+                dispose();
+            }
+        }
+
+        if (item.shouldUpdateResultList()) {
+            UpdateableListModel<SearchItem> model = (UpdateableListModel<SearchItem>) resultList.getModel();
+            int lastElementIndex = model.getSize() - 1;
+            if(lastElementIndex >= 0)
+                model.fireContentsChanged(this, 0, lastElementIndex);
+
+         }
+    }
+
+    class Handler implements MouseListener, KeyListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2)
         {
             int index = resultList.locationToIndex(e.getPoint());
-            executeItem(index);
+            executeItem(e, index);
+            return;
         }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if (e.getSource() == resultList)
-        {
-            input.setText(input.getText() + e.getKeyChar());
-        }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
     }
 
     @Override
@@ -452,8 +479,9 @@ public class CommandSearchDialog extends JDialog
         {
             if (resultList.getSelectedIndex() >= 0)
             {
-                executeItem(resultList.getSelectedIndex());
+                executeItem(e, resultList.getSelectedIndex());
             }
         }
+    }
     }
 }

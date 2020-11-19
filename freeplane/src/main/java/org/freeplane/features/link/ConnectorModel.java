@@ -209,8 +209,10 @@ public class ConnectorModel extends NodeLinkModel {
 		final NodeModel source = getSource();
 		if(sourceClone == source)
 			return this;
+		if(sourceClone.getMap().getNodeForID(source.getID()) == null)
+			return null;
 		final NodeModel target = getTarget();
-		if(target != null && target.getParentNode() != null && source.getParentNode() != null){
+		if(target != null && target.getParentNode() != null){
 			final NodeRelativePath nodeRelativePath = new NodeRelativePath(source, target);
 			final NodeModel commonAncestor = nodeRelativePath.commonAncestor();
 			final NodeModel ancestorClone = nodeRelativePath.ancestorForBegin(sourceClone);

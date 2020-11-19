@@ -129,6 +129,9 @@ class FindAction extends AFreeplaneAction {
 	void findNext(Direction direction) {
 		Controller controller = Controller.getCurrentController();
         final MapModel map = controller.getMap();
+        if (map == null) {
+			return;
+		}
 		final FoundNodes info = FoundNodes.get(map);
 		if (info.condition == null) {
 			displayNoPreviousFindMessage();

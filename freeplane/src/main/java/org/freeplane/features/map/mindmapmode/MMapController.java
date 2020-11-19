@@ -837,7 +837,7 @@ public class MMapController extends MapController {
 
 	@Override
 	public MapModel newMap() {
-		return new MapLoader(getMModeController()).withView().getMap();
+	    return MFileManager.getController(getModeController()).newMapFromDefaultTemplate();
 	}
 
 

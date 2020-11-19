@@ -27,19 +27,21 @@ import org.freeplane.features.mode.Controller;
 
 class NewMapViewAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 *
 	 */
 	public NewMapViewAction() {
 		super("NewMapViewAction");
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final MapModel map = Controller.getCurrentController().getMap();
-		Controller.getCurrentModeController().getMapController().createMapView(map);
+		if(map != null)
+			Controller.getCurrentModeController().getMapController().createMapView(map);
 	}
 }

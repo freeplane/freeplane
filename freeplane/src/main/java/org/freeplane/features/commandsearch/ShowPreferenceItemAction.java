@@ -48,10 +48,10 @@ class ShowPreferenceItemAction extends AbstractAction {
         final ResourceController resourceController = ResourceController.getResourceController();
         URL preferences = resourceController.getResource("/xml/preferences.xml");
         optionPanelBuilder.load(preferences);
-        ShowPreferencesAction showPreferencesAction = MModeController.createShowPreferencesAction(optionPanelBuilder, this.preferencesItem.key);
+        ShowPreferencesAction showPreferencesAction = MModeController.createShowPreferencesAction(optionPanelBuilder, this.preferencesItem.getKey());
         int uniqueId = new Long(System.currentTimeMillis()).intValue();
         showPreferencesAction.actionPerformed(
-                new ActionEvent(this, uniqueId, OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + preferencesItem.tab));
+                new ActionEvent(this, uniqueId, OptionPanel.OPTION_PANEL_RESOURCE_PREFIX + preferencesItem.getTab()));
     }
 
 }

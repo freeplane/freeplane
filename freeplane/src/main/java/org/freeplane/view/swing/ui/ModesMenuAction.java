@@ -37,10 +37,15 @@ class ModesMenuAction extends AFreeplaneAction {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
-		Controller.getCurrentController().selectMode(mode);
+		Controller controller = Controller.getCurrentController();
+        controller.selectMode(mode);
+        if (controller.getMap() == null) {
+            controller.getModeController().getMapController().newMap();
+      }
+
 	}
 
 	@Override
-	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+	public void afterMapChange(UserRole userRole) {
 	}
 }

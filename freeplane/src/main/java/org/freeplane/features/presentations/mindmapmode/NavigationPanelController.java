@@ -38,7 +38,7 @@ class NavigationPanelController {
 		}
 
 		@Override
-		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+		public void afterMapChange(UserRole userRole) {
 		}
 	}
 
@@ -59,7 +59,7 @@ class NavigationPanelController {
 		}
 
 		@Override
-		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+		public void afterMapChange(UserRole userRole) {
 		}
 	}
 	@SuppressWarnings("serial")
@@ -78,7 +78,7 @@ class NavigationPanelController {
 		}
 		
 		@Override
-		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+		public void afterMapChange(UserRole userRole) {
 		}
 	}
 	
@@ -100,7 +100,7 @@ class NavigationPanelController {
 		}
 
 		@Override
-		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+		public void afterMapChange(UserRole userRole) {
 		}
 	}
 
@@ -121,7 +121,7 @@ class NavigationPanelController {
 		}
 
 		@Override
-		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+		public void afterMapChange(UserRole userRole) {
 		}
 	}
 
@@ -142,7 +142,7 @@ class NavigationPanelController {
 		}
 
 		@Override
-		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+		public void afterMapChange(UserRole userRole) {
 		}
 	}
 	
@@ -164,7 +164,7 @@ class NavigationPanelController {
 		}
 
 		@Override
-		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+		public void afterMapChange(UserRole userRole) {
 		}
 	}
 	
@@ -184,7 +184,7 @@ class NavigationPanelController {
 		}
 
 		@Override
-		public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+		public void afterMapChange(UserRole userRole) {
 		}
 	}
 	

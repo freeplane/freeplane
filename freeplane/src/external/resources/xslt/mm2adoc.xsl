@@ -39,7 +39,7 @@
 	</xsl:template>
 
 	<xsl:template match="child::text()">
-		<xsl:value-of select="translate(., '&#160;&#xA;&#xD;', '  ')" />
+		<xsl:value-of select="translate(normalize-space(.),'&#160;',' ')" />
 	</xsl:template>
 
 	<xsl:template match="p|br|tr|div|li|pre">

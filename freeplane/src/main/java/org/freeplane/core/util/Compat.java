@@ -131,28 +131,6 @@ public class Compat {
 		}
 	}
 
-	public static void fixMousePointerForLinux(){
-        if (isX11WindowManager()) {
-        try {
-            Class<?> xwm = Class.forName("sun.awt.X11.XWM");
-            Field awt_wmgr = xwm.getDeclaredField("awt_wmgr");
-            awt_wmgr.setAccessible(true);
-            Field other_wm = xwm.getDeclaredField("OTHER_WM");
-            other_wm.setAccessible(true);
-            if (awt_wmgr.get(null).equals(other_wm.get(null))) {
-                Field metacity_wm = xwm.getDeclaredField("METACITY_WM");
-                metacity_wm.setAccessible(true);
-                awt_wmgr.set(null, metacity_wm.get(null));
-            }
-        }
-        catch (Exception x) {
-        }
-    }	}
-
-	public static boolean isX11WindowManager() {
-	    return Arrays.asList("gnome-shell", "mate", "other...").contains(System.getenv("DESKTOP_SESSION"));
-    }
-
 	final public static String CURRENT_VERSION_DIR= File.separatorChar + "1.8.x";
 	final public static String PREVIOUS_VERSION_DIR_NAME = "1.7.x";
 

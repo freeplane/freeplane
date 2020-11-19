@@ -197,7 +197,6 @@ abstract public class FrameController implements ViewController {
 		// this.controller = controller;
 		controller.setViewController(this);
 		controller.addAction(new ToggleFullScreenAction(this));
-		controller.addAction(new CloseAction());
 		controller.addAction(new ToggleMenubarAction(this));
 		controller.addAction(new ToggleScrollbarsAction(this));
 		controller.addAction(new ToggleToolbarAction("ToggleToolbarAction", "/main_toolbar"));

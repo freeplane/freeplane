@@ -18,8 +18,7 @@
  */
 package org.freeplane.features.commandsearch;
 
-import java.util.Locale;
-
+import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -27,40 +26,52 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 
-class MenuItem extends SearchItem{
+class MenuItem extends SearchItem {
 
-    private static final ImageIcon menuIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon("/images/menu_items.svg"));
+    private static final ImageIcon menuIcon = FreeplaneIconFactory.toImageIcon(ResourceController
+            .getResourceController().getIcon("/images/menu_items.svg"));
 
-    final String path;
-    final AFreeplaneAction action;
-    final String accelerator;
+    private final AFreeplaneAction action;
 
-    MenuItem(final String path, final AFreeplaneAction action, final String accelerator)
-    {
+    private final String path;
+
+    private final String tooltip;
+
+    MenuItem(final AFreeplaneAction action, final String path) {
         this.path = path;
         this.action = action;
-        this.accelerator = accelerator;
+        this.tooltip = (String) action.getValue(Action.SHORT_DESCRIPTION);
     }
 
     @Override
     Icon getTypeIcon() {
-        //icon = ResourceController.getResourceController().getIcon(menuItem.action.getIconKey());
         return menuIcon;
     }
 
     @Override
-    String getDisplayText() {
-        return path;
+    String getDisplayedText() {
+        String accelerator = AcceleratorDescriptionCreator.INSTANCE.createAcceleratorDescription(action);
+        return accelerator != null ? this.path + " (" + accelerator + ")" : this.path;
     }
 
     @Override
-    String getDisplayTooltip() {
-        return accelerator;
+    String getTooltip() {
+        return tooltip;
     }
 
     @Override
-    boolean execute() {
-        action.actionPerformed(null);
+    void execute() {
+        if(action.isEnabled())
+            action.actionPerformed(null);
+    }
+    
+    @Override
+    void assignNewAccelerator() {
+        assignNewAccelerator(action);
+    }
+
+    @Override
+    boolean shouldUpdateResultList() {
         return true;
     }
 
@@ -75,17 +86,12 @@ class MenuItem extends SearchItem{
     }
 
     @Override
-    protected boolean checkAndMatch(String searchTerm) {
-        return action != null && action.isEnabled() 
-                && contains(path, searchTerm);
+    protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
+        return textChecker.contains(getDisplayedText(), searchTerm);
     }
 
-    public String toString()
-    {
-        if (accelerator != null)
-            return path + " (" + accelerator + ")";
-        else
-            return path;
+    @Override
+    public String toString() {
+        return "MenuItem [" + getDisplayedText() + "]";
     }
-
 }

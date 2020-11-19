@@ -53,21 +53,14 @@ public class ReminderProxy extends AbstractProxy<NodeModel> implements Proxy.Rem
 //        reminderHook.add(getDelegate(), reminder);
 //    }
 
-    private void removeOldReminder(final ReminderHook reminderHook) {
-        final ReminderExtension oldReminder = getDelegate().getExtension(ReminderExtension.class);
-        if (oldReminder != null) {
-            reminderHook.remove(getDelegate(), oldReminder);
-        }
-    }
-
     // Reminder
     public void createOrReplace(Date remindAt, String periodUnit, Integer period) {
         final ReminderHook reminderHook = Controller.getCurrentModeController().getExtension(ReminderHook.class);
-        removeOldReminder(reminderHook);
+        reminderHook.undoableDeactivateHook(getDelegate());
         final ReminderExtension reminder = newReminder(remindAt);
         reminder.setPeriodUnitAsString(periodUnit);
         reminder.setPeriod(period);
-        reminderHook.add(getDelegate(), reminder);
+        reminderHook.undoableActivateHook(getDelegate(), reminder);
     }
 
     private ReminderExtension newReminder(Date remindAt) {
@@ -87,7 +80,7 @@ public class ReminderProxy extends AbstractProxy<NodeModel> implements Proxy.Rem
     // Reminder
     public void remove() {
         final ReminderHook reminderHook = Controller.getCurrentModeController().getExtension(ReminderHook.class);
-        removeOldReminder(reminderHook);
+        reminderHook.undoableDeactivateHook(getDelegate());
     }
 
     /** make <code>if (node.reminder) println "has reminder"</code> work. */

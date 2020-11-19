@@ -3,10 +3,12 @@ package org.freeplane.main.addons;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,19 +47,27 @@ public class AddOnsController {
     public static final String LATEST_VERSION_FILE = "version.properties";
 
 	private AddOnsController() {
-		deleteOldFiles();
+		deleteOldEmptyFiles();
 		createAddOnsDirIfNecessary();
 		registerPlugins();
 		autoInstall = true;
 	}
 
-	private void deleteOldFiles() {
-		String[] filesToDelete = ResourceController.getResourceController()
-				.getProperty(FILES_TO_DELETE_ON_NEXT_START_PROPERTY, "")
-				.split(PATH_SEPARATOR);
+	private void deleteOldEmptyFiles() {
+		ResourceController resourceController = ResourceController.getResourceController();
+		String propertyValue = resourceController
+				.getProperty(FILES_TO_DELETE_ON_NEXT_START_PROPERTY, "");
+		String[] filesToDelete = propertyValue.split(PATH_SEPARATOR);
+		if(! propertyValue.isEmpty()) {
+			resourceController.setProperty(FILES_TO_DELETE_ON_NEXT_START_PROPERTY, "");
+			resourceController.saveProperties();
+		}
 		for(String path : filesToDelete) {
-			if(! path.isEmpty())
-				deleteFile(path);
+			if(! path.isEmpty()) {
+				final File file = new File(path);
+				if(file.exists() && file.length() == 0L)
+					deleteFile(file);
+			}
 		}
 	}
 
@@ -221,17 +231,25 @@ public class AddOnsController {
 
 	private boolean deleteFile(final String path) {
 		final File file = new File(path);
+		return deleteFile(file);
+	}
+
+	private boolean deleteFile(final File file) {
 		if (!file.exists()) {
-			LogUtils.warn("file " + path + " should be deleted but does not exist");
+			LogUtils.warn("file " + file.getPath() + " should be deleted but does not exist");
 		}
 		else {
 			if (file.delete())
-				LogUtils.info("deleted " + path);
+				LogUtils.info("deleted " + file.getPath());
 			else {
-				LogUtils.warn("could not delete file " + path);
+				LogUtils.warn("could not delete file " + file.getPath());
 			}
 		}
 		boolean deleted = !file.exists();
+		if(! deleted) {
+			try(Writer truncating = new FileWriter(file, false)){} catch (IOException e) {
+			};
+		}
 		return deleted;
 	}
 

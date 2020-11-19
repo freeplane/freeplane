@@ -95,14 +95,13 @@ public abstract class AFreeplaneAction extends AbstractAction implements IFreepl
 	}
 
 	@Override
-	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
-		if (isMapSelected) {
-			setEnabled(userRole);
-		}
-		else {
+	public void afterMapChange(UserRole userRole) {
+		if (userRole == UserRole.NO_MAP) {
 			if (super.isEnabled()) {
 				setEnabled(false);
 			}
+		} else {
+			setEnabled(userRole);
 		}
 	}
 

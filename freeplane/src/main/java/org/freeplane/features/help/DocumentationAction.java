@@ -47,7 +47,7 @@ class DocumentationAction extends AFreeplaneAction {
 	}
 
 	@Override
-	public void afterMapChange(UserRole userRole, boolean isMapSelected) {
+	public void afterMapChange(UserRole userRole) {
 	}
 	
 }

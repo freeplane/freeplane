@@ -26,21 +26,19 @@ import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 
 class PreferencesItem extends SearchItem {
 
-    private static final ImageIcon prefsIcon = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon(ShowPreferencesAction.KEY + ".icon"));
+    private static final ImageIcon PREFERENCES_ICON = FreeplaneIconFactory.toImageIcon(ResourceController.getResourceController().getIcon(ShowPreferencesAction.KEY + ".icon"));
 
-    final String tab;
-    final String separator;
-    final String key;
-    final String text;
-    final String path;
-    final String tooltip;
+    private final String tab;
+    private final String key;
+    private final String displayedText;
+    private final String path;
+    private final String tooltip;
 
-    PreferencesItem(final String tab, final String separator, final String key, final String text, final String path, final String tooltip)
+    PreferencesItem(final String tab, final String separator, final String key, final String path, final String tooltip)
     {
         this.tab = tab;
-        this.separator = separator;
         this.key = key;
-        this.text = text;
+        this.displayedText =  tab + ITEM_PATH_SEPARATOR + path;
         this.path = path;
         this.tooltip = tooltip;
     }
@@ -52,39 +50,55 @@ class PreferencesItem extends SearchItem {
 
     @Override
     String getComparedText() {
-        return path;
+        return displayedText;
     }
 
     @Override
     Icon getTypeIcon() {
-        return prefsIcon;
+        return PREFERENCES_ICON;
     }
 
     @Override
-    String getDisplayText() {
-        return path;
+    String getDisplayedText() {
+        return displayedText;
     }
 
     @Override
-    String getDisplayTooltip() {
+    String getTooltip() {
         return tooltip;
     }
 
     @Override
-    boolean execute() {
+    void execute() {
         new ShowPreferenceItemAction(this).actionPerformed(null);
-        return false;
+    }
+    
+    @Override
+    void assignNewAccelerator() {
     }
 
-    @Override
-    public String toString()
-    {
-        return String.format("PreferencesItem[%s:%s:%s:%s]", tab, separator, key, text);
-    }
+	@Override
+	boolean shouldUpdateResultList() {
+		return false;
+	}
 
     @Override
-    protected boolean checkAndMatch(String searchTerm) {
-        return contains(key, searchTerm)
-                || contains(path, searchTerm);
+	public String toString() {
+		return "PreferencesItem [displayedText=" + displayedText + "]";
+	}
+
+	@Override
+    protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
+        return textChecker.contains(path, searchTerm);
     }
+
+	String getTab() {
+		return tab;
+	}
+
+	String getKey() {
+		return key;
+	}
+
+
 }

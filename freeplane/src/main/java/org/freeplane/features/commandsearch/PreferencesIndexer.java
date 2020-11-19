@@ -36,7 +36,6 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.OptionPanel;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 
@@ -100,7 +99,6 @@ class PreferencesIndexer
         else if (currentTab != null && currentSeparator != null && tagsOpenendForCurrentPrefDeclaration == 0)
         {
             // preference item of any type
-            String prefType = startElement.getName().toString();
             Attribute name = startElement.getAttributeByName(new QName("name"));
             String prefKey = name.getValue();
             String textKey;
@@ -123,10 +121,7 @@ class PreferencesIndexer
             String currentSeparatorTranslated = TextUtils.getRawText(OPTIONPANEL_SEPARATOR_RESOURCE_PREFIX + currentSeparator, null);
             String prefPath = currentSeparatorTranslated + ITEM_PATH_SEPARATOR + prefText;
 
-            prefs.add(new PreferencesItem(currentTabTranslated, currentSeparatorTranslated, prefKey, prefText, prefPath, tooltipText));
-            //System.out.format("tagsOpenendForCurrentPrefDeclaration=%d, prefKey=%s -> %s\n",
-            //        tagsOpenendForCurrentPrefDeclaration, prefKey, prefText);
-
+			prefs.add(new PreferencesItem(currentTabTranslated, currentSeparatorTranslated, prefKey, prefPath, tooltipText));
             tagsOpenendForCurrentPrefDeclaration = 1;
         }
         else if (tagsOpenendForCurrentPrefDeclaration > 0)
