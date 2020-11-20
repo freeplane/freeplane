@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1051px" height="1051px" viewBox="0 0 1051 1051" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 56.3 (81716) - https://sketch.com -->
+    <title>MarginNote_app_logo_mindmap_document_blue_deepwork.svg</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="450" cy="450" r="450"></circle>
+        <filter x="-7.5%" y="-7.5%" width="115.0%" height="115.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="6.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="18" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="8" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.859233469   0 0 0 0 0.837539789   0 0 0 0 0.837539789  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMorphology radius="1" operator="erode" in="SourceAlpha" result="shadowSpreadOuter2"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter2" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="20" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter2" in2="SourceAlpha" operator="out" result="shadowBlurOuter2"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.597316576   0 0 0 0 0.597316576   0 0 0 0 0.597316576  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter2" result="shadowMatrixOuter2"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="MarginNote_app_logo_mindmap_document_blue_deepwork.svg" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="MarginNote" transform="translate(75.500000, 75.500000)">
+            <g>
+                <g id="Oval">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use stroke="#E7E7E7" stroke-width="9" fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+                <path d="M326.453024,568.439519 C326.458242,568.815723 326.46086,569.192559 326.46086,569.570011 C326.46086,613.411799 291.142198,648.952591 247.574421,648.952591 C204.006644,648.952591 168.687982,613.411799 168.687982,569.570011 C168.687982,540.874699 183.818355,515.735501 206.488972,501.79028 C248.898479,466.159257 275.854465,412.729799 275.854465,353.00441 C275.854465,351.173998 275.829147,349.3495 275.778841,347.531246 C275.175267,343.573372 274.862183,339.519178 274.862183,335.3914 C274.862183,291.549612 310.180845,256.00882 353.748622,256.00882 C397.316399,256.00882 432.635061,291.549612 432.635061,335.3914 C432.635061,360.020085 421.489289,382.029163 403.996624,396.589572 L404.476042,396.808055 C357.115732,432.2303 326.46086,488.761807 326.46086,552.453142 C326.46086,557.941663 326.6885,563.377016 327.134855,568.750274 L326.453024,568.439546 Z" id="Combined-Shape" stroke="#2B8BE1" fill="#1D94FF"></path>
+                <path d="M521.932627,568.439519 C521.937845,568.815723 521.940463,569.192559 521.940463,569.570011 C521.940463,613.411799 486.621801,648.952591 443.054024,648.952591 C399.486247,648.952591 364.167585,613.411799 364.167585,569.570011 C364.167585,540.874699 379.297958,515.735501 401.968575,501.79028 C444.378082,466.159257 471.334068,412.729799 471.334068,353.00441 C471.334068,351.173998 471.30875,349.3495 471.258444,347.531246 C470.65487,343.573372 470.341786,339.519178 470.341786,335.3914 C470.341786,291.549612 505.660448,256.00882 549.228225,256.00882 C592.796002,256.00882 628.114664,291.549612 628.114664,335.3914 C628.114664,360.020085 616.968892,382.029163 599.476227,396.589572 L599.955645,396.808055 C552.595335,432.2303 521.940463,488.761807 521.940463,552.453142 C521.940463,557.941663 522.168104,563.377016 522.614458,568.750274 L521.932627,568.439546 Z" id="Combined-Shape-Copy" stroke="#2B8BE1" fill="#1D94FF"></path>
+                <path d="M650.441014,648.952591 C694.008791,648.952591 729.327453,613.411799 729.327453,569.570011 C729.994294,553.316241 725.315687,538.318632 717.217996,519.233525 C703.818308,481.660051 668.313214,424.657331 650.441014,424.657331 C624.929204,424.263088 596.578542,476.947058 580.277593,519.176378 C571.554576,537.475519 571.554576,553.865748 571.554576,569.570011 C571.554576,613.411799 606.873237,648.952591 650.441014,648.952591 Z" id="Oval-Copy-4" stroke="#2B8BE1" fill="#1D94FF"></path>
+            </g>
+        </g>
+    </g>
+</svg>

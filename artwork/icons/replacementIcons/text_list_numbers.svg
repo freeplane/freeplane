@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000px" height="1000px" viewBox="0 0 1000 1000" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>text_list_numbers</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#989898" offset="0%"></stop>
+            <stop stop-color="#333333" offset="100%"></stop>
+        </linearGradient>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="107.142857%" gradientTransform="translate(0.500000,0.500000),scale(1.000000,0.466667),rotate(90.000000),translate(-0.500000,-0.500000)" id="radialGradient-2">
+            <stop stop-color="#99C4FF" offset="0%"></stop>
+            <stop stop-color="#539BFF" offset="87.1067356%"></stop>
+            <stop stop-color="#4E94F5" offset="100%"></stop>
+        </radialGradient>
+        <polygon id="path-3" points="63.4202018 179.76 63.4202018 36.6246985 61.1798694 36.6246985 17.12 67.0207069 17.12 32.0154678 63.5446647 0 101.008 0 101.008 179.76"></polygon>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="69.7368421%" gradientTransform="translate(0.500000,0.500000),scale(1.000000,0.716981),rotate(90.000000),translate(-0.500000,-0.500000)" id="radialGradient-4">
+            <stop stop-color="#99C4FF" offset="0%"></stop>
+            <stop stop-color="#539BFF" offset="87.1067356%"></stop>
+            <stop stop-color="#4E94F5" offset="100%"></stop>
+        </radialGradient>
+        <path d="M1.712,316.019005 C1.712,281.809081 28.0295501,258.512 66.3990624,258.512 C103.415803,258.512 129.241437,279.724605 129.241437,310.133427 C129.241437,329.384173 118.788204,345.937362 88.0434026,374.752173 L54.1011418,407.000238 L54.1011418,409.20733 L131.824,409.20733 L131.824,439.984 L3.8026465,439.984 L3.8026465,414.111978 L64.0354048,355.330452 C87.0804993,332.724755 92.9625709,323.747699 92.9625709,312.585751 C92.9625709,298.36227 81.4025255,288.307741 65.1692703,288.307741 C47.9521815,288.307741 36.1461777,299.588432 36.1461777,315.896389 L36.1461777,316.632086 L1.712,316.632086 L1.712,316.019005 Z" id="path-5"></path>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="68.75%" gradientTransform="translate(0.500000,0.500000),scale(1.000000,0.727273),rotate(90.000000),translate(-0.500000,-0.500000)" id="radialGradient-6">
+            <stop stop-color="#99C4FF" offset="0%"></stop>
+            <stop stop-color="#539BFF" offset="87.1067356%"></stop>
+            <stop stop-color="#4E94F5" offset="100%"></stop>
+        </radialGradient>
+        <path d="M45.4902857,640.159346 L45.4902857,612.227902 L67.0125714,612.227902 C83.7657143,612.227902 95.1382857,602.296722 95.1382857,587.648232 C95.1382857,573.248021 84.1325714,564.06168 66.8902857,564.06168 C49.7702857,564.06168 38.3977143,573.86872 37.4194286,589.386189 L3.30171429,589.386189 C4.52457143,555.496037 29.3485714,534.144 67.8685714,534.144 C104.065143,534.144 130.112,554.254639 130.112,582.434363 C130.112,603.165701 117.272,619.303868 97.584,623.40048 L97.584,625.634995 C121.796571,628.36607 136.96,644.752517 136.96,668.339069 C136.96,699.746426 107.856,722.464 67.624,722.464 C28.248,722.464 1.58971429,700.367125 0,666.601113 L35.3405714,666.601113 C36.4411429,681.746162 49.0365714,691.304923 67.9908571,691.304923 C86.456,691.304923 99.296,680.753044 99.296,665.483855 C99.296,649.842247 87.1897143,640.159346 67.3794286,640.159346 L45.4902857,640.159346 Z" id="path-7"></path>
+    </defs>
+    <g id="text_list_numbers" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Lists/Numbered" transform="translate(71.836346, 71.836346)">
+            <g id="Group" transform="translate(49.648000, 66.768000)">
+                <rect id="Rectangle-Copy-8" fill="url(#linearGradient-1)" x="197.013478" y="55.64" width="558.112" height="68.48"></rect>
+                <rect id="Rectangle-Copy-10" fill="url(#linearGradient-1)" x="197.013478" y="325.28" width="558.112" height="68.48"></rect>
+                <rect id="Rectangle-Copy-12" fill="url(#linearGradient-1)" x="197.013478" y="594.92" width="558.112" height="68.48"></rect>
+                <g id="1" fill-rule="nonzero">
+                    <use fill="#6DAAFF" xlink:href="#path-3"></use>
+                    <use fill="url(#radialGradient-2)" xlink:href="#path-3"></use>
+                </g>
+                <g id="2" fill-rule="nonzero">
+                    <use fill="#6DAAFF" xlink:href="#path-5"></use>
+                    <use fill="url(#radialGradient-4)" xlink:href="#path-5"></use>
+                </g>
+                <g id="3" fill-rule="nonzero">
+                    <use fill="#6DAAFF" xlink:href="#path-7"></use>
+                    <use fill="url(#radialGradient-6)" xlink:href="#path-7"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

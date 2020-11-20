@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1001px" height="1000px" viewBox="0 0 1001 1000" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>outline</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="50%" id="radialGradient-1">
+            <stop stop-color="#99C4FF" offset="0%"></stop>
+            <stop stop-color="#539BFF" offset="87.1067356%"></stop>
+            <stop stop-color="#4E94F5" offset="100%"></stop>
+        </radialGradient>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="linearGradient-2">
+            <stop stop-color="#989898" offset="0%"></stop>
+            <stop stop-color="#333333" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="outline" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(1.000000, 0.000000)">
+        <g id="Lists/Outline" transform="translate(71.836346, 71.836346)">
+            <g id="Group" transform="translate(3.424000, 25.680000)">
+                <rect id="Rectangle" fill="url(#radialGradient-1)" x="0" y="0" width="171.2" height="171.2" rx="18"></rect>
+                <rect id="Rectangle" fill="url(#linearGradient-2)" x="214" y="51.36" width="428" height="68.48"></rect>
+                <rect id="Rectangle-Copy" fill="url(#radialGradient-1)" x="0" y="634.296" width="171.2" height="171.2" rx="18"></rect>
+                <rect id="Rectangle-Copy-6" fill="url(#linearGradient-2)" x="211.432" y="685.656" width="428" height="68.48"></rect>
+                <rect id="Rectangle-Copy-2" fill="url(#radialGradient-1)" x="214" y="420.296" width="171.2" height="171.2" rx="18"></rect>
+                <rect id="Rectangle-Copy-5" fill="url(#linearGradient-2)" x="422.008" y="471.656" width="428" height="68.48"></rect>
+                <rect id="Rectangle-Copy-3" fill="url(#radialGradient-1)" x="214" y="206.296" width="171.2" height="171.2" rx="18"></rect>
+                <rect id="Rectangle-Copy-4" fill="url(#linearGradient-2)" x="422.008" y="257.656" width="428" height="68.48"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

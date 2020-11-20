@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="500px" height="500px" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>todo_00_circle_unchecked</title>
+    <desc>Created with Sketch.</desc>
+    <g id="todo_00_circle" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-opacity="0.297803759">
+        <g id="TODO---Circle---000%" stroke="#888888" stroke-width="85">
+            <g id="TODO---Remainder-Circle">
+                <circle id="Remainder" transform="translate(250.499002, 250.499002) scale(1, -1) translate(-250.499002, -250.499002) " cx="250.499002" cy="250.499002" r="172.070858"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

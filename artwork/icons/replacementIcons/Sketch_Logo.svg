@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="394px" height="356px" viewBox="0 0 394 356" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>Sketch_Logo</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Sketch_Logo" fill-rule="nonzero">
+            <polygon id="Path" fill="#FDB300" points="85.790323 11.7151549 196.602823 0 307.415323 11.7151549 393.205645 126.881084 196.602823 355.823009 0 126.881084"></polygon>
+            <g id="Group" transform="translate(0.000000, 126.881084)">
+                <polygon id="Path" fill="#EA6C00" points="79.634 0 196.603 228.942 0 0"></polygon>
+                <polygon id="Path" fill="#EA6C00" transform="translate(294.903968, 114.471000) scale(-1, 1) translate(-294.903968, -114.471000) " points="276.236468 0 393.205468 228.942 196.602468 0"></polygon>
+                <polygon id="Path" fill="#FDAD00" points="79.634 0 313.572 0 196.603 228.942"></polygon>
+            </g>
+            <g id="Group">
+                <polygon id="Path" fill="#FDD231" points="196.603 0 85.79 11.715 79.634 126.881"></polygon>
+                <polygon id="Path" fill="#FDD231" transform="translate(255.086896, 63.440500) scale(-1, 1) translate(-255.086896, -63.440500) " points="313.571396 0 202.758396 11.715 196.602396 126.881"></polygon>
+                <polygon id="Path" fill="#FDAD00" transform="translate(350.310468, 69.298000) scale(-1, 1) translate(-350.310468, -69.298000) " points="307.414968 126.881 393.205968 11.715 387.048968 126.881"></polygon>
+                <polygon id="Path" fill="#FDAD00" points="0 126.881 85.79 11.715 79.634 126.881"></polygon>
+                <polygon id="Path" fill="#FEEEB7" points="196.603 0 79.634 126.881 313.572 126.881"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

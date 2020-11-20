@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000px" height="1000px" viewBox="0 0 1000 1000" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>MarginNote_app_logo_mindmap_document_blue_deepwork.svg</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="402.32" cy="402.32" r="402.32"></circle>
+        <filter x="-8.4%" y="-8.4%" width="116.8%" height="116.8%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="6.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="18" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="8" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.859233469   0 0 0 0 0.837539789   0 0 0 0 0.837539789  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMorphology radius="1" operator="erode" in="SourceAlpha" result="shadowSpreadOuter2"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter2" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="20" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter2" in2="SourceAlpha" operator="out" result="shadowBlurOuter2"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.597316576   0 0 0 0 0.597316576   0 0 0 0 0.597316576  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter2" result="shadowMatrixOuter2"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="MarginNote_app_logo_mindmap_document_blue_deepwork.svg" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="App/MarginNote" transform="translate(71.836346, 71.836346)">
+            <g id="MarginNote" transform="translate(25.680000, 25.680000)">
+                <g id="Oval">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use stroke="#E7E7E7" stroke-width="9" fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+                <path d="M316.26699,228.883264 C355.218519,228.883264 386.794972,260.658311 386.794972,299.854818 C386.794972,321.87362 376.830462,341.550448 361.191656,354.568106 L361.62176,354.762391 C319.278286,386.431347 291.870518,436.973791 291.870518,493.917663 C291.870518,498.825322 292.074095,503.685434 292.473265,508.490014 L291.861553,508.211264 L291.870518,509.220904 C291.870518,548.025446 260.922436,579.556216 222.508845,580.18295 L221.342536,580.192459 C182.391007,580.192459 150.814553,548.417411 150.814553,509.220904 C150.814553,483.57248 164.334967,461.101778 184.595009,448.632232 C222.520469,416.778656 246.626152,369.005246 246.626152,315.601632 C246.626152,313.956423 246.603274,312.316557 246.557819,310.682336 C246.017607,307.152856 245.739008,303.536577 245.739008,299.854818 C245.739008,260.658311 277.315461,228.883264 316.26699,228.883264 Z" id="Combined-Shape" stroke="#2B8BE1" fill="#1D94FF"></path>
+                <path d="M491.034443,228.883264 C529.985972,228.883264 561.562426,260.658311 561.562426,299.854818 C561.562426,321.87362 551.597915,341.550448 535.959109,354.568106 L536.389213,354.762391 C494.045739,386.431347 466.637971,436.973791 466.637971,493.917663 C466.637971,498.825322 466.841548,503.685434 467.240718,508.490014 L466.629007,508.211264 L466.637971,509.220904 C466.637971,548.025446 435.689889,579.556216 397.276298,580.18295 L396.109989,580.192459 C357.15846,580.192459 325.582007,548.417411 325.582007,509.220904 C325.582007,483.57248 339.10242,461.101778 359.362462,448.632232 C397.287922,416.778656 421.393605,369.005246 421.393605,315.601632 C421.393605,313.956423 421.370727,312.316557 421.325272,310.682336 C420.78506,307.152856 420.506461,303.536577 420.506461,299.854818 C420.506461,260.658311 452.082914,228.883264 491.034443,228.883264 Z" id="Combined-Shape-Copy" stroke="#2B8BE1" fill="#1D94FF"></path>
+                <path d="M581.523175,580.192459 C620.474704,580.192459 652.051158,548.417411 652.051158,509.220904 C652.647343,494.689312 648.46446,481.280782 641.224764,464.217848 C629.244848,430.625493 597.501716,379.662528 581.523175,379.662528 C558.714483,379.310057 533.367731,426.411868 518.793958,464.166756 C510.995193,480.527001 510.995193,495.180595 510.995193,509.220904 C510.995193,548.417411 542.571646,580.192459 581.523175,580.192459 Z" id="Oval-Copy-4" stroke="#2B8BE1" fill="#1D94FF"></path>
+            </g>
+        </g>
+    </g>
+</svg>

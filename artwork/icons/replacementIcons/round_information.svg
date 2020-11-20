@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1001px" height="1000px" viewBox="0 0 1001 1000" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>round_information</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="0.0213623056%" y1="50.0019945%" x2="100%" y2="50.0019945%" id="linearGradient-1">
+            <stop stop-color="#016AE4" offset="0.0105574324%"></stop>
+            <stop stop-color="#000000" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="8.35539435e-16%" y1="50%" x2="99.9997648%" y2="50%" id="linearGradient-2">
+            <stop stop-color="#0048CD" offset="0%"></stop>
+            <stop stop-color="#002AA0" offset="100%"></stop>
+        </linearGradient>
+        <radialGradient cx="5.87979933%" cy="6.87332533%" fx="5.87979933%" fy="6.87332533%" r="81.3538442%" id="radialGradient-3">
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="83.784%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="100%"></stop>
+        </radialGradient>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="50%" id="radialGradient-4">
+            <stop stop-color="#FFFFFF" stop-opacity="0.79381" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="83.784%"></stop>
+            <stop stop-color="#FFFFFF" stop-opacity="0" offset="100%"></stop>
+        </radialGradient>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="50%" id="radialGradient-5">
+            <stop stop-color="#0465CE" stop-opacity="0.196814904" offset="0%"></stop>
+            <stop stop-color="#0054FF" stop-opacity="0.41237" offset="100%"></stop>
+        </radialGradient>
+    </defs>
+    <g id="round_information" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 0.000000)">
+        <g id="Annotations/Information" transform="translate(71.836346, 71.836346)">
+            <g id="round_information" transform="translate(17.120000, 17.120000)">
+                <path d="M410.88,0 C184.31392,0 0,184.31392 0,410.88 C0,637.44608 184.31392,821.76 410.88,821.76 C637.44608,821.76 821.76,637.44608 821.76,410.88 C821.76,184.31392 637.44608,0 410.88,0 Z" id="Outer-border" fill="#003FC0" fill-rule="nonzero"></path>
+                <path d="M796.08,410.88 C796.08,623.28784 623.28784,796.08 410.88,796.08 C198.47216,796.08 25.68,623.28784 25.68,410.88 C25.68,198.47216 198.47216,25.68 410.88,25.68 C623.28784,25.68 796.08,198.47216 796.08,410.88 Z" id="Inner-border" fill="#649EFA" fill-rule="nonzero"></path>
+                <path d="M410.88,476.09008 C544.70704,476.09008 659.65072,400.02592 755.19744,292.85472 C706.06304,149.918128 570.28432,46.9088 410.88,46.9088 C251.47568,46.9088 115.69696,149.918128 66.56256,292.85472 C162.10928,400.02592 277.05296,476.09008 410.88,476.09008 Z" id="path2826" fill="url(#linearGradient-1)" fill-rule="nonzero"></path>
+                <path d="M410.88,476.09008 C277.05296,476.09008 162.10928,400.02592 66.56256,292.85472 C53.837264,329.88528 46.910512,369.58656 46.910512,410.88 C46.910512,611.57776 210.18224,774.8512 410.881712,774.8512 C611.581184,774.8512 774.852912,611.57776 774.852912,410.88 C774.852912,369.58656 767.919312,329.88528 755.199152,292.85472 C659.652432,400.02592 544.708752,476.09008 410.881712,476.09008 L410.88,476.09008 Z" id="path2828" fill="url(#linearGradient-2)" fill-rule="nonzero"></path>
+                <g id="layer4" transform="translate(25.680000, 25.680000)" fill="url(#radialGradient-3)">
+                    <path d="M770.4,385.2 C770.4,597.60784 597.60784,770.4 385.2,770.4 C172.79216,770.4 0,597.60784 0,385.2 C0,172.79216 172.79216,0 385.2,0 C597.60784,0 770.4,172.79216 770.4,385.2 Z" id="White-shine"></path>
+                </g>
+                <g id="layer3" fill="url(#radialGradient-4)">
+                    <path d="M410.88,0 C184.31392,0 0,184.31392 0,410.88 C0,637.44608 184.31392,821.76 410.88,821.76 C637.44608,821.76 821.76,637.44608 821.76,410.88 C821.76,184.31392 637.44608,0 410.88,0 Z" id="path3846"></path>
+                </g>
+                <g id="layer1" transform="translate(25.680000, 25.680000)" fill="url(#radialGradient-5)">
+                    <path d="M770.4,385.2 C770.4,597.60784 597.60784,770.4 385.2,770.4 C172.79216,770.4 0,597.60784 0,385.2 C0,172.79216 172.79216,0 385.2,0 C597.60784,0 770.4,172.79216 770.4,385.2 Z" id="Shine-overlay"></path>
+                </g>
+                <g id="layer2" transform="translate(297.888000, 124.976000)" fill="#FFFFFF" fill-rule="nonzero" stroke="#0064D4" stroke-width="5">
+                    <g id="g2831">
+                        <path d="M50.05888,308.39968 C50.05888,256.372 48.34688,255.516 0.58208,249.54112 L0.58208,220.53984 L183.97152,220.53984 L183.97152,490.93312 C183.97152,539.55392 188.2344,543.8168 233.44832,548.93568 L233.44832,582.19984 L0.58208,582.19984 L0.58208,548.93568 C45.796,543.8168 50.05888,539.55392 50.05888,490.93312 L50.05888,308.39968 Z M189.0904,74.67744 C189.0904,115.62848 156.68224,148.89264 114.8752,148.89264 C74.79728,148.89264 40.67712,115.62848 40.67712,74.67744 C40.67712,32.890944 74.79728,0.477648 114.8752,0.477648 C156.68224,0.477648 189.0904,32.890944 189.0904,74.67744 Z" id="path2833"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

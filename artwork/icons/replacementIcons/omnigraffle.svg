@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000px" height="1000px" viewBox="0 0 1000 1000" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>omnigraffle</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#79FFB0" offset="0%"></stop>
+            <stop stop-color="#00D156" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="omnigraffle" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="App/OmniGraffle">
+            <g id="Group" transform="translate(501.000000, 499.000000) rotate(9.000000) translate(-501.000000, -499.000000) translate(30.000000, -12.000000)">
+                <path d="M814,58.5 L128,58.5 C111.017244,58.5 95.6422439,65.383622 84.512933,76.512933 C73.383622,87.6422439 66.5,103.017244 66.5,120 L66.5,902 C66.5,918.982756 73.383622,934.357756 84.512933,945.487067 C95.6422439,956.616378 111.017244,963.5 128,963.5 L814,963.5 C830.982756,963.5 846.357756,956.616378 857.487067,945.487067 C868.616378,934.357756 875.5,918.982756 875.5,902 L875.5,120 C875.5,103.017244 868.616378,87.6422439 857.487067,76.512933 C846.357756,65.383622 830.982756,58.5 814,58.5 Z" id="Rectangle" stroke="#01D157" fill="url(#linearGradient-1)" transform="translate(471.000000, 511.000000) rotate(-9.000000) translate(-471.000000, -511.000000) "></path>
+                <g id="Group-13" transform="translate(475.662508, 503.711754) rotate(-9.000000) translate(-475.662508, -503.711754) translate(125.662508, 169.711754)" fill="#515151">
+                    <g id="Group-11" transform="translate(1.814665, 1.179726)" stroke="#979797">
+                        <ellipse id="Oval" cx="85.8267603" cy="80.6286645" rx="85.3267603" ry="80.1286645"></ellipse>
+                        <ellipse id="Oval-Copy-3" cx="493.125542" cy="111.433876" rx="85.3267603" ry="80.1286645"></ellipse>
+                        <ellipse id="Oval-Copy-5" cx="612.17324" cy="361.34658" rx="85.3267603" ry="80.1286645"></ellipse>
+                        <ellipse id="Oval-Copy-6" cx="467.471196" cy="585.371336" rx="85.3267603" ry="80.1286645"></ellipse>
+                        <ellipse id="Oval-Copy-7" cx="90.2946521" cy="581.032573" rx="85.3267603" ry="80.1286645"></ellipse>
+                        <ellipse id="Oval-Copy-8" cx="217.773694" cy="317.018893" rx="131.374871" ry="124.456352"></ellipse>
+                    </g>
+                    <polygon id="Rectangle" transform="translate(138.143110, 168.016971) rotate(61.000000) translate(-138.143110, -168.016971) " points="54.8633103 138.469307 221.336433 138.713479 221.42291 197.564636 54.9497879 197.320464"></polygon>
+                    <polygon id="Rectangle-Copy-16" transform="translate(149.584555, 464.512052) rotate(-63.000000) translate(-149.584555, -464.512052) " points="66.3809122 435.205891 232.870695 434.972957 232.788198 493.818213 66.2984147 494.051147"></polygon>
+                    <polygon id="Rectangle-Copy-13" transform="translate(373.133367, 205.462279) rotate(-37.000000) translate(-373.133367, -205.462279) " points="290.057822 178.517345 456.299006 178.240576 456.208912 232.407213 289.967728 232.683982"></polygon>
+                    <polygon id="Rectangle-Copy-14" transform="translate(435.594429, 342.426344) rotate(7.000000) translate(-435.594429, -342.426344) " points="322.582847 315.263069 548.583338 315.357877 548.606012 369.58962 322.605521 369.494812"></polygon>
+                    <polygon id="Rectangle-Copy-15" transform="translate(355.972331, 459.811726) rotate(47.000000) translate(-355.972331, -459.811726) " points="242.721542 432.549124 469.129624 432.940064 469.22312 487.074329 242.815039 486.683389"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
