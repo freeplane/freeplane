@@ -1,4 +1,4 @@
-. ./setup.sh
+. ./setupPaths.sh
 gradle clean             || exit $?
 gradle build             || exit $?
 gradle dist              || exit $?
