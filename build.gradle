@@ -35,7 +35,7 @@ allprojects {
 		maven { url 'https://resources.knopflerfish.org/repo/maven2/release/' }
 		maven { url "${project.gradle.gradleUserHomeDir}/local-artifacts" }
 		maven { url 'https://dl.bintray.com/freeplane/freeplane' }
-		maven { url 'https://repo.spring.io/plugins-release/' }
+		maven { url 'https://dl.bintray.com/ice1000/ice1000' }
 
         // this is necessary to grab both binary and source jars
         // for local (git) dependencies
