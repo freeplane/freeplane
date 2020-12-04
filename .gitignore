@@ -15,6 +15,12 @@
 #Ignore everything form IntelliJ
 .idea/
 
+#Ignore everything form VS Code
+.vscode/
+
+#Ignore everything form theia
+.theia/
+
 # TODO: needs cleanup
 *.diff
 */bin
