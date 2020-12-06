@@ -1117,8 +1117,8 @@ public class NodeView extends JComponent implements INodeView {
             UITools.convertPointToAncestor(nodeView, p, this);
             g.translate(p.x, p.y);
             if (nodeView.isSubtreeVisible()) {
-            nodeView.paintCloud(g);
-             }
+                nodeView.paintCloud(g);
+            }
             else {
                 nodeView.paintClouds(g);
             }
@@ -1413,6 +1413,7 @@ public class NodeView extends JComponent implements INodeView {
 		invalidate();
 		updateShape();
 		updateEdge();
+		updateCloud();
 		if (!isContentVisible()) {
 			mainView.setVisible(false);
 			return;
@@ -1453,7 +1454,6 @@ public class NodeView extends JComponent implements INodeView {
 		updateShortener(getModel(), textShortened);
 		mainView.updateIcons(this);
 		mainView.updateText(getModel());
-		updateCloud();
 		modelBackgroundColor = NodeStyleController.getController(getMap().getModeController()).getBackgroundColor(model);
 		revalidate();
 		repaint();
@@ -1733,7 +1733,20 @@ public class NodeView extends JComponent implements INodeView {
 
     public Rectangle getInnerBounds() {
         int spaceAround = getSpaceAround();
-        return new Rectangle(spaceAround, spaceAround, getWidth() - 2 * spaceAround, getHeight() - 2 * spaceAround);
+        if (isContentVisible())
+            return new Rectangle(spaceAround, spaceAround, getWidth() - 2 * spaceAround, getHeight() - 2 * spaceAround);
+        else {
+            Rectangle innerBounds = new Rectangle(spaceAround, spaceAround, -1, -1); 
+            getChildrenViews().stream()
+            .map(v -> {
+                Rectangle r = v.getInnerBounds();
+                r.x += v.getX(); 
+                r.y += v.getY(); 
+                return r;
+            })
+            .forEach(innerBounds::add);
+            return innerBounds.width >= 0 ? innerBounds : new Rectangle(spaceAround, spaceAround, 0, 0);
+        }
     }
 
 
