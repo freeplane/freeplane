@@ -201,7 +201,7 @@ public abstract class EdgeView {
 	}
 
 	protected boolean drawHiddenParentEdge() {
-		return getTarget().isParentHidden();
+		return false;
 	}
 
 	abstract protected void draw(Graphics2D g);
