@@ -21,14 +21,13 @@ package org.freeplane.features.nodestyle.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
-import org.freeplane.api.NodeShape;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.SelectableAction;
-import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
 @SelectableAction(checkOnNodeChange = true)
 class NodeShapeAction extends AMultipleNodeAction {
@@ -36,16 +35,16 @@ class NodeShapeAction extends AMultipleNodeAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private NodeShape actionShape;
+	final private Shape actionShape;
 
-	public NodeShapeAction( final NodeShape shape) {
-		super("NodeShapeAction." + shape.lowerCaseName());
+	public NodeShapeAction( final Shape shape) {
+		super("NodeShapeAction." + shape.toString());
 		actionShape = shape;
 	}
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) NodeStyleController.getController()).setShape(node, actionShape);
+		((MNodeStyleController) NodeStyleController.getController()).setShape(node, actionShape.toString());
 	}
 	
 

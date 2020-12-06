@@ -27,11 +27,11 @@ import java.awt.event.HierarchyListener;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
-import org.freeplane.api.NodeShape;
 import org.freeplane.core.ui.IMouseListener;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
@@ -85,22 +85,22 @@ class NodeViewFactory {
 	private MainViewPainter createViewPainter(final MainView view, ShapeConfigurationModel shapeConfiguration) {
 		final MainViewPainter shape;
 		switch(shapeConfiguration.getShape()){
-		case FORK:
+		case fork:
 			shape =  new ForkPainter(view);
 			break;
-		case BUBBLE:
+		case bubble:
 			shape =  new BubblePainter(view, shapeConfiguration);
 			break;
-		case OVAL:
+		case oval:
 			shape =  new OvalPainter(view, shapeConfiguration);
 			break;
-		case RECTANGLE:
+		case rectangle:
 			shape =  new RectanglePainter(view, shapeConfiguration);
 			break;
-		case WIDE_HEXAGON:
+		case wide_hexagon:
 			shape = new WideHexagonPainter(view, shapeConfiguration);
 			break;
-		case NARROW_HEXAGON:
+		case narrow_hexagon:
 			shape = new NarrowHexagonPainter(view, shapeConfiguration);
 			break;
 		default:
@@ -115,15 +115,15 @@ class NodeViewFactory {
 		final ModeController modeController = node.getMap().getModeController();
 		final NodeModel model = node.getModel();
 		ShapeConfigurationModel shapeConfiguration = NodeStyleController.getController(modeController).getShapeConfiguration(model);
-		if (shapeConfiguration.getShape().equals(NodeShape.COMBINED)) {
+		if (shapeConfiguration.getShape().equals(NodeStyleModel.Shape.combined)) {
 			if (node.isFolded()) {
-				shapeConfiguration= shapeConfiguration.withShape(NodeShape.BUBBLE);
+				shapeConfiguration= shapeConfiguration.withShape(NodeStyleModel.Shape.bubble);
 			}
 			else {
 				shapeConfiguration = ShapeConfigurationModel.FORK;
 			}
 		}
-		else while(shapeConfiguration.getShape().equals(NodeShape.AS_PARENT)){
+		else while(shapeConfiguration.getShape().equals(NodeStyleModel.Shape.as_parent)){
 			NodeView parent = node.getParentView();
 			if (parent == null)
 				shapeConfiguration = ShapeConfigurationModel.DEFAULT_ROOT_OVAL;

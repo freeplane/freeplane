@@ -23,7 +23,6 @@ import java.awt.Color;
 
 import javax.swing.SwingConstants;
 
-import org.freeplane.api.NodeShape;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.LogUtils;
@@ -34,7 +33,19 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev 20.11.2008
  */
 public class NodeStyleModel implements IExtension, Cloneable {
-    public enum HorizontalTextAlignment {
+	public enum Shape{fork(false), bubble, oval, rectangle, wide_hexagon, narrow_hexagon, as_parent(false), combined;
+		public final boolean hasConfiguration;
+
+		private Shape() {
+			this(true);
+		}
+		private Shape(boolean hasConfiguration) {
+			this.hasConfiguration = hasConfiguration;
+		}
+
+	}
+
+	public enum HorizontalTextAlignment {
 		DEFAULT(SwingConstants.LEFT), 
 		LEFT(SwingConstants.LEFT), 
 		RIGHT(SwingConstants.RIGHT), 
@@ -90,7 +101,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return styleModel == null ? null : styleModel.getNodeFormat();
 	}
 
-	public static NodeShape getShape(final NodeModel node) {
+	public static Shape getShape(final NodeModel node) {
 		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
 		return styleModel == null ? null : styleModel.getShape();
 	}
@@ -145,7 +156,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		styleModel.setShape(shape);
 	}
 
-	public static void setShape(final NodeModel node, final NodeShape shape) {
+	public static void setShape(final NodeModel node, final Shape shape) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setShape(shape);
 	}
@@ -240,7 +251,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	    return nodeFormat;
     }
 
-	public NodeShape getShape() {
+	public Shape getShape() {
 		return getShapeConfiguration().getShape();
 	}
 
@@ -298,13 +309,13 @@ public class NodeStyleModel implements IExtension, Cloneable {
 
 	public void setShape(final String shape) {
 		try {
-			this.setShapeConfiguration(getShapeConfiguration().withShape(shape != null ? NodeShape.ignoreCaseValueOf(shape) : null));
+			this.setShapeConfiguration(getShapeConfiguration().withShape(shape != null ? Shape.valueOf(shape) : null));
 		} catch (IllegalArgumentException e) {
 			LogUtils.warn("unknown shape " + shape);
 		}
 	}
 	
-	public void setShape(final NodeShape shape) {
+	public void setShape(final Shape shape) {
 		this.setShapeConfiguration(getShapeConfiguration().withShape(shape));
 	}
 	

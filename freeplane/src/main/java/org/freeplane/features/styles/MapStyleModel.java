@@ -34,7 +34,6 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ListDataListener;
 
-import org.freeplane.api.NodeShape;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LengthUnits;
@@ -139,7 +138,7 @@ public class MapStyleModel implements IExtension {
 			hints.put(NodeBuilder.FOLDING_LOADED, Boolean.TRUE);
 			root = mapReader.createNodeTreeFromXml(styleMap, styleReader, hints);
 			NodeStyleModel.setShapeConfiguration(root,
-			    ShapeConfigurationModel.NULL_SHAPE.withShape(NodeShape.OVAL).withUniform(true));
+			    ShapeConfigurationModel.NULL_SHAPE.withShape(NodeStyleModel.Shape.oval).withUniform(true));
 			NodeStyleModel.createNodeStyleModel(root).setFontSize(24);
 			styleMap.setRoot(root);
 			final Quantity<LengthUnits> styleBlockGap = ResourceController.getResourceController()
@@ -203,7 +202,7 @@ public class MapStyleModel implements IExtension {
 			predefinedStyleParentNode.setUserObject(new StyleTranslatedObject(groupName));
 			root.insert(predefinedStyleParentNode);
 		}
-		NodeStyleModel.setShape(predefinedStyleParentNode, NodeShape.BUBBLE);
+		NodeStyleModel.setShape(predefinedStyleParentNode, NodeStyleModel.Shape.bubble);
 		return predefinedStyleParentNode;
 	}
 

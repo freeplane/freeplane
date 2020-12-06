@@ -21,7 +21,6 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
 
-import org.freeplane.api.NodeShape;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
@@ -33,6 +32,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -69,7 +69,7 @@ class NodeShapeControlGroup implements ControlGroup {
 					NodeStyleController.class);
 			if(enabled){
 				styleController.setShapeConfiguration(node, ShapeConfigurationModel.NULL_SHAPE
-						.withShape(NodeShape.valueOf(mNodeShape.getValue()))
+						.withShape(NodeStyleModel.Shape.valueOf(mNodeShape.getValue()))
 						.withHorizontalMargin(mShapeHorizontalMargin.getQuantifiedValue())
 						.withVerticalMargin(mShapeVerticalMargin.getQuantifiedValue())
 						.withUniform(mUniformShape.getBooleanValue())
@@ -78,18 +78,18 @@ class NodeShapeControlGroup implements ControlGroup {
 			else {
 				styleController.setShapeConfiguration(node, ShapeConfigurationModel.NULL_SHAPE);
 			}
-			final NodeShape shape = styleController.getShape(node);
+			final Shape shape = styleController.getShape(node);
 			enableShapeConfigurationProperties(enabled, shape);
 		}
 
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
-			final NodeShape shape = NodeStyleModel.getShape(node);
+			final NodeStyleModel.Shape shape = NodeStyleModel.getShape(node);
 			ShapeConfigurationModel viewShape = styleController.getShapeConfiguration(node);
 			final boolean enabled = shape != null;
 			mSetNodeShape.setValue(enabled);
-			mNodeShape.setValue(viewShape.getShape().name());
+			mNodeShape.setValue(viewShape.getShape().toString());
 			enableShapeConfigurationProperties(enabled, shape);
 			mShapeHorizontalMargin.setQuantifiedValue(viewShape.getHorizontalMargin());
 			mShapeVerticalMargin.setQuantifiedValue(viewShape.getVerticalMargin());
@@ -99,7 +99,7 @@ class NodeShapeControlGroup implements ControlGroup {
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetNodeShape = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		mNodeShape = ComboProperty.of(NODE_SHAPE, NodeShape.class);
+		mNodeShape = ComboProperty.of(NODE_SHAPE, NodeStyleModel.Shape.class);
 		mShapeHorizontalMargin = new QuantityProperty<LengthUnits>(SHAPE_HORIZONTAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
 		mShapeVerticalMargin = new QuantityProperty<LengthUnits>(SHAPE_VERTICAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
 		mUniformShape = new BooleanProperty(UNIFORM_SHAPE);
@@ -125,7 +125,7 @@ class NodeShapeControlGroup implements ControlGroup {
 		propertyChangeListener.setStyle(node);
 	}
 	
-	private void enableShapeConfigurationProperties(final boolean enabled, final NodeShape shape) {
+	private void enableShapeConfigurationProperties(final boolean enabled, final Shape shape) {
 		final boolean enableConfigurationProperties = enabled && shape.hasConfiguration && canEdit;
 		mShapeHorizontalMargin.setEnabled(enableConfigurationProperties);
 		mShapeVerticalMargin.setEnabled(enableConfigurationProperties);

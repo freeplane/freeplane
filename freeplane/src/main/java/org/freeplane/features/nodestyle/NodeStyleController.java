@@ -24,7 +24,6 @@ import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Collection;
 
-import org.freeplane.api.NodeShape;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
@@ -43,6 +42,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ExclusivePropertyChain;
 import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
@@ -527,7 +527,7 @@ public class NodeStyleController implements IExtension {
 		return font.getSize();
 	}
 
-	public NodeShape getShape(final NodeModel node) {
+	public Shape getShape(final NodeModel node) {
 		final ShapeConfigurationModel shapeConfiguration = shapeHandlers.getProperty(node);
 		return shapeConfiguration.getShape();
 	}

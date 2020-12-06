@@ -22,7 +22,6 @@ package org.freeplane.features.nodestyle;
 import java.awt.Color;
 import java.io.IOException;
 
-import org.freeplane.api.NodeShape;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IAttributeWriter;
@@ -43,6 +42,7 @@ import org.freeplane.features.map.MapWriter;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeWriter;
+import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -405,9 +405,9 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 			ColorUtils.addColorAttributes(writer, "BACKGROUND_COLOR", "BACKGROUND_ALPHA", backgroundColor);
 		}
 		final ShapeConfigurationModel shapeConfiguration = forceFormatting ? nsc.getShapeConfiguration(node) : style.getShapeConfiguration();
-		final NodeShape shape = shapeConfiguration.getShape();
+		final Shape shape = shapeConfiguration.getShape();
 		if (shape != null) {
-			writer.addAttribute("STYLE", shape.lowerCaseName());
+			writer.addAttribute("STYLE", shape.toString());
 		}
 		final Quantity<LengthUnits> shapeHorizontalMargin = shapeConfiguration.getHorizontalMargin();
 		if (! shapeHorizontalMargin.equals(ShapeConfigurationModel.DEFAULT_MARGIN)) {
