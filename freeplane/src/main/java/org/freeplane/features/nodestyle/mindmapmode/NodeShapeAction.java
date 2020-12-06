@@ -23,9 +23,14 @@ import java.awt.event.ActionEvent;
 
 import org.freeplane.api.NodeShape;
 import org.freeplane.core.ui.AMultipleNodeAction;
+import org.freeplane.core.ui.SelectableAction;
+import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
 
+@SelectableAction(checkOnNodeChange = true)
 class NodeShapeAction extends AMultipleNodeAction {
 	/**
 	 * 
@@ -42,4 +47,19 @@ class NodeShapeAction extends AMultipleNodeAction {
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
 		((MNodeStyleController) NodeStyleController.getController()).setShape(node, actionShape);
 	}
+	
+
+    @Override
+    public void setSelected() {
+        final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
+        final NodeStyleModel model = NodeStyleModel.getModel(node);
+        if (model != null) {
+            if (actionShape.equals(model.getShape())) {
+                setSelected(true);
+                return;
+            }
+        }
+        setSelected(false);
+    }
+
 }

@@ -363,11 +363,16 @@
               <Entry builder="separator" />
               <Entry name="NodeBackgroundColorAction" accelerator="alt shift B" />
               <Entry builder="separator" />
-              <Entry name="NodeShapeAction.fork" />
-              <Entry name="NodeShapeAction.bubble" />
-              <Entry builder="separator" />
               <Entry name="UsePlainTextAction" accelerator="alt shift P" />
               <Entry builder="separator" />
+              <Entry builder="radio_button_group" name="nodeShapes" textKey="OptionPanel.nodeshape">
+	              <Entry name="NodeShapeAction.fork" />
+	              <Entry name="NodeShapeAction.bubble" />
+	              <Entry name="NodeShapeAction.oval" />
+	              <Entry name="NodeShapeAction.rectangle" />
+	              <Entry name="NodeShapeAction.wide_hexagon" />
+	              <Entry name="NodeShapeAction.narrow_hexagon" />
+	          </Entry>
               <Entry name="EdgeProperties">
                 <Entry builder="radio_button_group" name="edgeStyles" textKey="styles">
                   <Entry name="EdgeStyleAsParentAction" />
