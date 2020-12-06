@@ -128,13 +128,15 @@ public class MIconController extends IconController {
 		        return;
 		    final Entry item = new Entry();
 		    EntryAccessor entryAccessor = new EntryAccessor();
+		    entryAccessor.drawMenuIconAlways(item);
 		    entryAccessor.setIcon(item, group.getGroupIcon().getIcon());
 		    entryAccessor.setText(item, group.getDescription());
 		    target.addChild(item);
 		    for (final IconGroup childGroup : group.getGroups()) {
 		        if(childGroup.isLeaf()) {
 		            MindIcon icon = childGroup.getGroupIcon();
-		            entryAccessor.addChildAction(item, iconActions.get(icon.getName()));
+		            Entry actionItem = entryAccessor.addChildAction(item, iconActions.get(icon.getName()));
+		            entryAccessor.drawMenuIconAlways(actionItem);
 		        }
 		        else
 		            addIconGroup(item, childGroup);

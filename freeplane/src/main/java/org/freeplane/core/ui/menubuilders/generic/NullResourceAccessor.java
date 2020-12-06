@@ -39,4 +39,9 @@ class NullResourceAccessor implements ResourceAccessor {
     public Icon getIcon(String key) {
         return null;
     }
+
+    @Override
+    public boolean getBooleanProperty(String key, boolean defaultValue) {
+        return false;
+    }
 }

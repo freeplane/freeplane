@@ -5,6 +5,7 @@ import java.awt.Component;
 import javax.swing.Icon;
 
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 
 public class EntryAccessor {
@@ -13,6 +14,8 @@ public class EntryAccessor {
 	private static final String TEXT = "text";
 	private static final String TEXT_KEY = "textKey";
     public static final String ICON = "icon";
+    public static final String DRAW_MENU_ICON_ALWAYS = "draw_menu_icon_always";
+    public static final String SHOW_MENU_ICONS_PROPERTY = "show_menu_icons";
 	public static final Class<Icon> ICON_INSTANCE = Icon.class;
 	public static final String ACCELERATOR = "accelerator";
 	private final ResourceAccessor resourceAccessor;
@@ -134,18 +137,28 @@ public class EntryAccessor {
 	public void setIcon(Entry entry, Icon icon) {
 		entry.setAttribute(ICON_INSTANCE, icon);
 	}
+	
+	public void drawMenuIconAlways(Entry entry) {
+	    entry.setAttribute(DRAW_MENU_ICON_ALWAYS, Boolean.TRUE);
+	}
+	
+	public boolean removeMenuIcon(Entry entry) {
+	    return  ! resourceAccessor.getBooleanProperty(SHOW_MENU_ICONS_PROPERTY, true) 
+	            && ! Boolean.TRUE.equals(entry.getAttribute(DRAW_MENU_ICON_ALWAYS));
+	}
 
 	public String getAccelerator(Entry entry) {
 		String accelerator = (String) entry.getAttribute(ACCELERATOR);
 		return accelerator;
 	}
 
-	public void addChildAction(Entry target, AFreeplaneAction action) {
+	public Entry addChildAction(Entry target, AFreeplaneAction action) {
 		final Entry actionEntry = new Entry();
 		actionEntry.addConstraint(target);
 		actionEntry.setName(action.getKey());
 		setAction(actionEntry, action);
 		target.addChild(actionEntry);
+		return actionEntry;
 	}
 
 	public String getLocationDescription(Entry entry) {

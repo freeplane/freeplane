@@ -19,5 +19,7 @@ public interface ResourceAccessor {
 	public URL getResource(final String name);
 
 	public int getIntProperty(final String name, final int defaultValue);
+	
+	boolean getBooleanProperty(String key, boolean defaultValue);
 
 }
