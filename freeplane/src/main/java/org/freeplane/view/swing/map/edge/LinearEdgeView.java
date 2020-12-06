@@ -46,7 +46,7 @@ public class LinearEdgeView extends EdgeView {
 		final int w = getWidth();
 		if (w <= 1) {
 			g.drawLine(start.x, start.y, end.x, end.y);
-			if (isTargetEclipsed()) {
+			if (drawHiddenParentEdge()) {
 				g.setColor(g.getBackground());
 				g.setStroke(EdgeView.getEclipsedStroke());
 				g.drawLine(start.x, start.y, end.x, end.y);
@@ -65,7 +65,7 @@ public class LinearEdgeView extends EdgeView {
 			final int xs[] = { start.x, start.x + xctrl, end.x + childXctrl, end.x };
 			final int ys[] = { start.y, start.y + yctrl, end.y + childYctrl, end.y };
 			g.drawPolyline(xs, ys, 4);
-			if (isTargetEclipsed()) {
+			if (drawHiddenParentEdge()) {
 				g.setColor(g.getBackground());
 				g.setStroke(EdgeView.getEclipsedStroke());
 				g.drawPolyline(xs, ys, 4);
