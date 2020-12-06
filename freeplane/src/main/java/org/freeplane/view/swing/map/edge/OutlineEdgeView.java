@@ -25,7 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
 
-import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.api.NodeShape;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -62,7 +62,7 @@ public class OutlineEdgeView extends EdgeView {
 			final int y1 = end.y + gap * 13/8;
 			g.drawLine(start.x, start.y, start.x, y1);
 			int x2 = end.x;
-			if(NodeStyleModel.Shape.fork.equals(getTarget().getMainView().getShapeConfiguration().getShape()))
+			if(NodeShape.FORK.equals(getTarget().getMainView().getShapeConfiguration().getShape()))
 				x2 += getTarget().getContent().getWidth();
 			g.drawLine(start.x, y1, x2, y1);
 		}

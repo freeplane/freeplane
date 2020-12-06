@@ -45,6 +45,7 @@ import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.api.NodeShape;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.components.UITools;
@@ -79,8 +80,6 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.attribute.AttributeView;
@@ -954,8 +953,8 @@ public class NodeView extends JComponent implements INodeView {
 		if(wasFolded != isFolded || force) {
 			treeStructureChanged();
 			getMap().selectIfSelectionIsEmpty(this);
-			Shape shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
-			if (shape.equals(NodeStyleModel.Shape.combined))
+			NodeShape shape = NodeStyleController.getController(getMap().getModeController()).getShape(model);
+			if (shape.equals(NodeShape.COMBINED))
 				update();
 		}
 	}

@@ -21,25 +21,25 @@ package org.freeplane.features.nodestyle.mindmapmode;
 
 import java.awt.event.ActionEvent;
 
+import org.freeplane.api.NodeShape;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
 class NodeShapeAction extends AMultipleNodeAction {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	final private Shape actionShape;
+	final private NodeShape actionShape;
 
-	public NodeShapeAction( final Shape shape) {
-		super("NodeShapeAction." + shape.toString());
+	public NodeShapeAction( final NodeShape shape) {
+		super("NodeShapeAction." + shape.lowerCaseName());
 		actionShape = shape;
 	}
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		((MNodeStyleController) NodeStyleController.getController()).setShape(node, actionShape.toString());
+		((MNodeStyleController) NodeStyleController.getController()).setShape(node, actionShape);
 	}
 }

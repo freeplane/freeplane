@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 
+import org.freeplane.api.NodeShape;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IActor;
@@ -38,7 +39,6 @@ import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
-import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.styles.LogicalStyleKeys;
 
@@ -199,7 +199,7 @@ public class MNodeStyleController extends NodeStyleController {
 				return;
 			for(NodeModel source = to.getParentNode(); source != null; source = source.getParentNode() ){
 				if(hasOwnShape(source)){
-					final Shape shape = getShape(source);
+					final NodeShape shape = getShape(source);
 					NodeStyleModel.createNodeStyleModel(to).setShape(shape);
 					return;
 				}
@@ -207,10 +207,10 @@ public class MNodeStyleController extends NodeStyleController {
         }
 
 		private boolean hasOwnShape(NodeModel to) {
-	        return ! Shape.as_parent.equals(getShape(to));
+	        return ! NodeShape.AS_PARENT.equals(getShape(to));
         }
 
-		private Shape getShape(NodeModel node) {
+		private NodeShape getShape(NodeModel node) {
 			return modeController.getExtension(NodeStyleController.class).getShape(node);
 		}
 
@@ -249,8 +249,8 @@ public class MNodeStyleController extends NodeStyleController {
 		modeController.addAction(new NodeColorAction());
 		modeController.addAction(new NodeColorBlendAction());
 		modeController.addAction(new NodeBackgroundColorAction());
-		for(NodeStyleModel.Shape shape : NodeStyleModel.Shape.values()){
-			if(shape.equals(Shape.as_parent))
+		for(NodeShape shape : NodeShape.values()){
+			if(shape.equals(NodeShape.AS_PARENT))
 				break;
 			modeController.addAction(new NodeShapeAction(shape));
 		}
@@ -617,10 +617,10 @@ public class MNodeStyleController extends NodeStyleController {
     }
 
 	public void setShape(final NodeModel node, final String shape) {
-		setShape(node, shape == null ? null : Shape.valueOf(shape));
+		setShape(node, shape == null ? null : NodeShape.ignoreCaseValueOf(shape));
 	}
 
-	public void setShape(final NodeModel node, final Shape shape) {
+	public void setShape(final NodeModel node, final NodeShape shape) {
 		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
 		setShapeConfiguration(node, oldShape.withShape(shape));
 	}
@@ -661,8 +661,8 @@ public class MNodeStyleController extends NodeStyleController {
 				for (final NodeModel child : node.getChildren()) {
 					if(child.getViewers().isEmpty())
 						continue;
-					final Shape childShape = NodeStyleModel.getShape(child);
-					if (childShape == null || NodeStyleModel.Shape.as_parent.equals(childShape)) {
+					final NodeShape childShape = NodeStyleModel.getShape(child);
+					if (childShape == null || NodeShape.AS_PARENT.equals(childShape)) {
 						modeController.getMapController().nodeRefresh(child);
 						childShapeRefresh(child);
 					}
