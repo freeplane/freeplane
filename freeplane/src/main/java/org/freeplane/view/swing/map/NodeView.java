@@ -840,6 +840,21 @@ public class NodeView extends JComponent implements INodeView {
 		else
 			return getModel().hasVisibleContent(map.getFilter());
 	}
+	
+	boolean isSubtreeVisible() {
+	    if(isContentVisible())
+	        return true;
+        final Component[] components = getComponents();
+        for (int i = 0; i < components.length; i++) {
+        	if (!(components[i] instanceof NodeView)) {
+        		continue;
+        	}
+        	final NodeView view = (NodeView) components[i];
+        	if(view.isSubtreeVisible())
+        	    return true;
+        }
+        return false;
+	}
 
 	public boolean isLeft() {
 		if (getMap().getLayoutType() == MapViewLayout.OUTLINE) {
@@ -1038,29 +1053,31 @@ public class NodeView extends JComponent implements INodeView {
 				LogUtils.severe("ancestor map paintingMode = " + ancestorMap.getPaintingMode());
 			throw new NullPointerException();
 		}
-		if (isContentVisible()) {
-			final Graphics2D g2 = (Graphics2D) g;
-			final ModeController modeController = map.getModeController();
-			final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-			switch (paintingMode) {
-				case CLOUDS:
-					modeController.getController().getMapViewManager().setEdgesRenderingHint(g2);
-					final boolean isRoot = isRoot();
-					if (isRoot) {
-						paintCloud(g);
-					}
-                    paintClouds(g2);
-					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
-					break;
-				case NODES:
-					g2.setStroke(MainView.DEF_STROKE);
-					modeController.getController().getMapViewManager().setEdgesRenderingHint(g2);
-                    paintEdges(g2, this);
-					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
-					break;
-				default:
-					break;
-			}
+		final Graphics2D g2 = (Graphics2D) g;
+		final ModeController modeController = map.getModeController();
+		final Object renderingHint = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+		switch (paintingMode) {
+		case CLOUDS:
+		    if (isSubtreeVisible()) {
+		        modeController.getController().getMapViewManager().setEdgesRenderingHint(g2);
+		        final boolean isRoot = isRoot();
+		        if (isRoot) {
+		            paintCloud(g);
+		        }
+		        paintClouds(g2);
+		        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
+		    }
+		    break;
+		case NODES:
+		    if (isContentVisible()) {
+		        g2.setStroke(MainView.DEF_STROKE);
+		        modeController.getController().getMapViewManager().setEdgesRenderingHint(g2);
+		        paintEdges(g2, this);
+		        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
+		    }
+		    break;
+		default:
+		    break;
 		}
 		if (PAINT_DEBUG_BORDER && isSelected() && paintingMode.equals(PaintingMode.SELECTED_NODES)){
 			final int spaceAround = getZoomed(SPACE_AROUND);
@@ -1078,7 +1095,7 @@ public class NodeView extends JComponent implements INodeView {
     }
 
 	private void paintCloud(final Graphics g) {
-		if (!isContentVisible()) {
+		if (!isSubtreeVisible()) {
 			return;
 		}
 		final CloudModel cloudModel = getCloudModel();
@@ -1099,8 +1116,8 @@ public class NodeView extends JComponent implements INodeView {
             final Point p = new Point();
             UITools.convertPointToAncestor(nodeView, p, this);
             g.translate(p.x, p.y);
-            if (nodeView.isContentVisible()) {
-                nodeView.paintCloud(g);
+            if (nodeView.isSubtreeVisible()) {
+            nodeView.paintCloud(g);
              }
             else {
                 nodeView.paintClouds(g);

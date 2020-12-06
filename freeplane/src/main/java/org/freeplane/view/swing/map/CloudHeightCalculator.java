@@ -9,7 +9,7 @@ public class CloudHeightCalculator {
      * Calculates the tree height increment because of the clouds.
      */
     public int getAdditionalCloudHeigth(final NodeView node) {
-        if (!node.isContentVisible()) {
+        if (!node.isSubtreeVisible()) {
             return 0;
         }
         final CloudModel cloud = node.getCloudModel();
