@@ -224,6 +224,7 @@
 				<string name="SplitToWordsAction.auxiliaryWordList"/>
 				<string name="SplitToWordsAction.charactersAcceptedInWord"/>
 				<string name="SplitToWordsAction.nodeNumbersInLine"/>
+				<boolean name="SplitToWordsAction.capitalizeWords"/>
 				<boolean name="SplitToWordsAction.leaveOriginalNodeEmpty"/>
 				<boolean name="SplitToWordsAction.saveOriginalTextAsDetails"/>
 			</separator>

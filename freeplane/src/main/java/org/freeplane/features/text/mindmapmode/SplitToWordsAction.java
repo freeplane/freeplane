@@ -60,6 +60,7 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 	private Collection<String> auxiliaryWords;
 	private boolean leaveOriginalNodeEmpty;
 	private boolean saveOriginalTextAsDetails;
+    private boolean capitalizeWords;
 	
 	
 	@Override
@@ -69,6 +70,7 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 		auxiliaryWords = Arrays.asList(auxiliaryWordList.split("\\s*,\\s*"));
 		leaveOriginalNodeEmpty = ResourceController.getResourceController().getBooleanProperty("SplitToWordsAction.leaveOriginalNodeEmpty");
 		saveOriginalTextAsDetails = ResourceController.getResourceController().getBooleanProperty("SplitToWordsAction.saveOriginalTextAsDetails");
+		capitalizeWords = ResourceController.getResourceController().getBooleanProperty("SplitToWordsAction.capitalizeWords");
 		super.actionPerformed(e);
 	}
 
@@ -156,7 +158,7 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 	}
 
 	private String capitalize(String word) {
-		return word.substring(0, 1).toUpperCase() + word.substring(1);
+		return capitalizeWords ? word.substring(0, 1).toUpperCase() + word.substring(1) : word;
 	}
 
 }
