@@ -761,14 +761,7 @@ public class NodeView extends JComponent implements INodeView {
 	}
 
 	public NodeView getChildDistanceContainer(){
-		if (model.isVisible(map.getFilter())) {
-			return this;
-		}
-		NodeView parentView = getParentView();
-		if(parentView == null)
-			// actually should not happen
-			return this;
-		return parentView.getChildDistanceContainer();
+		return this;
 
 	}
 
