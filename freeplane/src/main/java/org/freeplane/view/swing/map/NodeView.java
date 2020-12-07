@@ -1745,7 +1745,10 @@ public class NodeView extends JComponent implements INodeView {
                 return r;
             })
             .forEach(innerBounds::add);
-            return innerBounds.width >= 0 ? innerBounds : new Rectangle(spaceAround, spaceAround, 0, 0);
+            innerBounds.y = spaceAround;
+            innerBounds.width = Math.max(0, innerBounds.width);
+            innerBounds.height = getHeight() - 2 * spaceAround;
+            return innerBounds;
         }
     }
 
