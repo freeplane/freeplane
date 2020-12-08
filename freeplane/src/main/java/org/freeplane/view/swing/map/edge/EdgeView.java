@@ -200,8 +200,8 @@ public abstract class EdgeView {
 		this.dash = dash;
 	}
 
-	protected boolean isTargetEclipsed() {
-		return getTarget().isParentHidden();
+	protected boolean drawHiddenParentEdge() {
+		return false;
 	}
 
 	abstract protected void draw(Graphics2D g);

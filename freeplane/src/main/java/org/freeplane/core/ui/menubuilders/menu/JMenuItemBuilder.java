@@ -108,10 +108,11 @@ public class JMenuItemBuilder implements EntryVisitor{
 		JMenu menu = new JMenu();
 		final String rawText = entryAccessor.getText(entry);
 		LabelAndMnemonicSetter.setLabelAndMnemonic(menu, rawText);
-		final Icon icon = entryAccessor.getIcon(entry);
-		if (icon != null) {
-			// SR - Don't use menu icons in macOS
-			//menu.setIcon(FreeplaneIconFactory.toImageIcon(icon));
+		if(! entryAccessor.removeMenuIcon(entry)) {
+		    final Icon icon = entryAccessor.getIcon(entry);
+		    if (icon != null) {
+		        menu.setIcon(FreeplaneIconFactory.toImageIcon(icon));
+		    }
 		}
 		addComponent(entry, menu);
 		if(actionComponent != null){

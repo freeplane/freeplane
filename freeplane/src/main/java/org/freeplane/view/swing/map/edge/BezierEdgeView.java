@@ -48,7 +48,7 @@ public class BezierEdgeView extends EdgeView {
 		final Stroke stroke = getStroke();
 		g.setStroke(stroke);
 		g.draw(graph);
-		if (isTargetEclipsed()) {
+		if (drawHiddenParentEdge()) {
 			g.setColor(g.getBackground());
 			g.setStroke(EdgeView.getEclipsedStroke());
 			g.draw(graph);

@@ -79,7 +79,7 @@ public class HorizontalEdgeView extends EdgeView {
 		xs = new int[] { start.x, xMiddle, xMiddle, end.x };
 		ys = new int[] { start.y, start.y, end.y, end.y };
 		g.drawPolyline(xs, ys, 4);
-		if (isTargetEclipsed()) {
+		if (drawHiddenParentEdge()) {
 			g.setColor(g.getBackground());
 			g.setStroke(EdgeView.getEclipsedStroke());
 			g.drawPolyline(xs, ys, 4);

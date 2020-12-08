@@ -47,9 +47,10 @@ public class MenuActionComponentProvider implements ComponentProvider {
 			}
 			final KeyStroke accelerator = accelerators.getAccelerator(action);
 			actionComponent.setAccelerator(accelerator);
-			// SR - Don't use menu icons in macOS
-			//MenuIconScaling.scaleIcon(actionComponent);
-			actionComponent.setIcon(null);
+			if(entryAccessor.removeMenuIcon(entry))
+			    actionComponent.setIcon(null);
+			else
+			    IconReplacer.replaceByScaledImageIcon(actionComponent);
 			return actionComponent;
 		}
 		else if(entry.builders().contains("separator")){

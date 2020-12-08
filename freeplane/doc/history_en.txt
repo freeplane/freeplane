@@ -1,4 +1,10 @@
 ===============================
+1.8.11
+===============================
+Draw clouds around hidden or filtered our nodes
+Don't indicate hidden or filtered out nodes by special edges
+
+===============================
 1.8.10
 ===============================
 Command search dialog improvements

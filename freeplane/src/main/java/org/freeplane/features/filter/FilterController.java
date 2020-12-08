@@ -443,11 +443,8 @@ public class FilterController implements IExtension, IMapViewChangeListener {
                 else {
                     filter.useFilterResultsFrom(oldFilter);
                 }
-                final NodeModel selected = selection.getSelected();
-            	final NodeModel selectedVisible = selected.getVisibleAncestorOrSelf(filter);
-            	selection.preserveNodeLocationOnScreen(selectedVisible, 0.5f, 0.5f);
             	refreshMap(this, map);
-            	selectVisibleNode(filter);
+            	selectVisibleNodes(selection);
             }
             finally {
             	Controller.getCurrentController().getViewController().setWaitingCursor(false);
@@ -458,29 +455,31 @@ public class FilterController implements IExtension, IMapViewChangeListener {
         Controller.getCurrentModeController().getMapController().fireMapChanged(new MapChangeEvent(source, map, Filter.class, null, this, false));
     }
 
-    private void selectVisibleNode(Filter filter) {
-        final IMapSelection mapSelection = Controller.getCurrentController().getSelection();
-        final Collection<NodeModel> selectedNodes = mapSelection.getSelection();
+    public void selectVisibleNodes(final IMapSelection selection ) {
+        Filter filter = selection.getFilter();
+        final NodeModel selectedVisible = selection.getSelected().getVisibleAncestorOrSelf(filter);
+        selection.preserveNodeLocationOnScreen(selectedVisible, 0.5f, 0.5f);
+        final Collection<NodeModel> selectedNodes = selection.getSelection();
         final NodeModel[] array = new NodeModel[selectedNodes.size()];
         boolean next = false;
         for(NodeModel node : selectedNodes.toArray(array)){
             if(next){
                 if (!node.hasVisibleContent(filter)) {
-                    mapSelection.toggleSelected(node);
+                    selection.toggleSelected(node);
                 }
             }
             else
                 next = true;
         }
-        NodeModel selected = mapSelection.getSelected();
+        NodeModel selected = selection.getSelected();
         if (!selected.hasVisibleContent(filter)) {
-            if(mapSelection.getSelection().size() > 1){
-                mapSelection.toggleSelected(selected);
+            if(selection.getSelection().size() > 1){
+                selection.toggleSelected(selected);
             }
             else
-                mapSelection.selectAsTheOnlyOneSelected(selected.getVisibleAncestorOrSelf(filter));
+                selection.selectAsTheOnlyOneSelected(selected.getVisibleAncestorOrSelf(filter));
         }
-        mapSelection.setSiblingMaxLevel(mapSelection.getSelected().getNodeLevel(filter));
+        selection.setSiblingMaxLevel(selection.getSelected().getNodeLevel(filter));
     }
 	void applySelectedViewCondition() {
 		if (getFilterConditions().getSelectedItem() != selectedViewCondition) {

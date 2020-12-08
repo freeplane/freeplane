@@ -34,6 +34,7 @@ import java.awt.desktop.QuitHandler;
 import java.awt.desktop.QuitResponse;
 import java.io.File;
 import java.net.URI;
+import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.freeplane.core.resources.ResourceController;
@@ -62,8 +63,11 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		if(fmMacApplication==null){
 		    String helpMenuTitle = TextUtils.getRawText("menu_help");
 		    ResourceController.getResourceController().putResourceString("menu_help", helpMenuTitle + " ");
-			// if a handleOpen comes here, directly, we know that FM is currently starting.
-			fmMacApplication = Desktop.getDesktop();
+		    final URL macProperties = this.getClass().getResource("freeplane_mac.properties");
+		    Controller.getCurrentController().getResourceController().addDefaults(macProperties);
+
+		    // if a handleOpen comes here, directly, we know that FM is currently starting.
+		    fmMacApplication = Desktop.getDesktop();
 			fmMacApplication.setAboutHandler(this);
 			fmMacApplication.setPreferencesHandler(this);
 			fmMacApplication.setOpenFileHandler(this);
