@@ -18,7 +18,7 @@ class IconReplacer {
 		if (icon != null && imageIconFactory.canScaleIcon(icon)) {
 			final Font font = actionComponent.getFont();
 			final int fontHeight = actionComponent.getFontMetrics(font).getHeight();
-			final Quantity<LengthUnits> iconHeight = new Quantity<LengthUnits>(1.2 * fontHeight, LengthUnits.px);
+			final Quantity<LengthUnits> iconHeight = new Quantity<LengthUnits>(fontHeight, LengthUnits.px);
 			actionComponent.setIcon(FreeplaneIconFactory.toImageIcon(imageIconFactory.getScaledIcon(icon, iconHeight)));
 		}
 	}
