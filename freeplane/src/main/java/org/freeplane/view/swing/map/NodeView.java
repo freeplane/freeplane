@@ -59,6 +59,7 @@ import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.edge.EdgeController.Rules;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.Filter;
+import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.hidden.NodeVisibility;
 import org.freeplane.features.filter.hidden.NodeVisibilityConfiguration;
 import org.freeplane.features.highlight.HighlightController;
@@ -902,6 +903,8 @@ public class NodeView extends JComponent implements INodeView {
 		}
 		if(property == NodeVisibilityConfiguration.class) {
 			updateAll();
+			if(event.getNewValue() != NodeVisibilityConfiguration.SHOW_HIDDEN_NODES)
+			    FilterController.getCurrentFilterController().selectVisibleNodes(getMap().getMapSelection());
 			return;
 		}
 
@@ -909,6 +912,8 @@ public class NodeView extends JComponent implements INodeView {
 				&& node.getMap().getRootNode().getExtension(NodeVisibilityConfiguration.class) != NodeVisibilityConfiguration.SHOW_HIDDEN_NODES) {
 			final NodeView parentView = getParentView();
 			parentView.setFolded(parentView.isFolded, true);
+            if(event.getNewValue() == NodeVisibility.HIDDEN && isSelected())
+                FilterController.getCurrentFilterController().selectVisibleNodes(getMap().getMapSelection());
 			return;
 		}
 
