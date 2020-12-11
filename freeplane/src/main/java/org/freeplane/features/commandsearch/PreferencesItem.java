@@ -31,7 +31,7 @@ class PreferencesItem extends SearchItem {
     private final String tab;
     private final String key;
     private final String displayedText;
-    private final String path;
+    private final String searchedText;
     private final String tooltip;
 
     PreferencesItem(final String tab, final String separator, final String key, final String path, final String tooltip)
@@ -39,7 +39,7 @@ class PreferencesItem extends SearchItem {
         this.tab = tab;
         this.key = key;
         this.displayedText =  tab + ITEM_PATH_SEPARATOR + path;
-        this.path = path;
+        this.searchedText = normalizeText(path);
         this.tooltip = tooltip;
     }
 
@@ -89,7 +89,7 @@ class PreferencesItem extends SearchItem {
 
 	@Override
     protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
-        return textChecker.contains(path, searchTerm);
+        return textChecker.contains(searchedText, searchTerm);
     }
 
 	String getTab() {

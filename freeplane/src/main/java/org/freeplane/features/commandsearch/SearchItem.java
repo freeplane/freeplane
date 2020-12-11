@@ -4,9 +4,14 @@ import javax.swing.Icon;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
+import org.freeplane.features.filter.condition.StringTransformer;
 
 abstract class SearchItem implements Comparable<SearchItem> {
     static final String ITEM_PATH_SEPARATOR = "->";
+    
+    static String normalizeText(String text) {
+        return StringTransformer.transform(text, true, true);
+    }
 
     abstract int getItemTypeRank();
 

@@ -37,8 +37,12 @@ class MenuItem extends SearchItem {
 
     private final String tooltip;
 
+    private final String searchedText;
+
     MenuItem(final AFreeplaneAction action, final String path) {
+        int searchedTextStart = path.indexOf(ITEM_PATH_SEPARATOR) + ITEM_PATH_SEPARATOR.length();
         this.path = path;
+        this.searchedText = normalizeText(path.substring(searchedTextStart));
         this.action = action;
         this.tooltip = (String) action.getValue(Action.SHORT_DESCRIPTION);
     }
@@ -52,6 +56,11 @@ class MenuItem extends SearchItem {
     String getDisplayedText() {
         String accelerator = AcceleratorDescriptionCreator.INSTANCE.createAcceleratorDescription(action);
         return accelerator != null ? this.path + " (" + accelerator + ")" : this.path;
+    }
+
+    String getSearchedText() {
+        String accelerator = AcceleratorDescriptionCreator.INSTANCE.createAcceleratorDescription(action);
+        return accelerator != null ? this.searchedText + " (" + normalizeText(accelerator) + ")" : this.path;
     }
 
     @Override
@@ -87,7 +96,7 @@ class MenuItem extends SearchItem {
 
     @Override
     protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
-        return textChecker.contains(getDisplayedText(), searchTerm);
+        return textChecker.contains(getSearchedText(), searchTerm);
     }
 
     @Override

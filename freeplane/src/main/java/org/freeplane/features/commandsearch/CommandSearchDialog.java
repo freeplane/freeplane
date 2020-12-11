@@ -18,6 +18,8 @@
  */
 package org.freeplane.features.commandsearch;
 
+import static org.freeplane.features.commandsearch.SearchItem.normalizeText;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Frame;
@@ -34,7 +36,6 @@ import java.awt.event.WindowFocusListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import javax.swing.AbstractListModel;
 import javax.swing.Box;
@@ -319,11 +320,7 @@ public class CommandSearchDialog extends JDialog
 		        || (searchInput.length() >= 3 && searchInput.codePoints().limit(3).count() == 3)
                 || ! searchInput.codePoints().allMatch(Character::isAlphabetic)
                 ) {
-            final String[] searchTerms = trimmedInput.split("\\s+");
-            for (int i = 0; i <searchTerms.length; i++)
-            {
-                searchTerms[i] = searchTerms[i].toLowerCase(Locale.ENGLISH);
-            }
+            final String[] searchTerms =  normalizeText(trimmedInput).split("\\s+");
             if (searchMenus.isSelected())
             {
             	textChecker.findMatchingItems(menuStructureIndexer.getMenuItems(), searchTerms, matches::add);

@@ -37,20 +37,18 @@ class ItemChecker {
     }
 
 	boolean contains(String text, String word) {
-		String lowerCaseText = text.toLowerCase();
-		String lowerCaseWord = word.toLowerCase();
 		if(shouldSearchWholeWords)
-			return containsWord(lowerCaseText, lowerCaseWord);
+			return containsWord(text, word);
 		else {
-			return lowerCaseText.contains(lowerCaseWord);
+			return text.contains(word);
 		}
 	}
     
-	private boolean containsWord(String lowerCaseText, String lowerCaseWord) {
-		if (lowerCaseWord.isEmpty())
+	private boolean containsWord(String text, String word) {
+		if (word.isEmpty())
 			return false;
-		return patterns.computeIfAbsent(lowerCaseWord, ItemChecker::compilePattern)
-				.matcher(lowerCaseText).find();
+		return patterns.computeIfAbsent(word, ItemChecker::compilePattern)
+				.matcher(text).find();
 	}
 	
 	private static Pattern compilePattern(String word) {
