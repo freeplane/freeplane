@@ -89,8 +89,7 @@ class MenuStructureIndexer {
             return;
         }
 
-        boolean[] childrenAreToplevel = new boolean[1];
-        final String path = computePath(menuEntry, prefix, toplevel, childrenAreToplevel);
+        final String path = computePath(menuEntry, prefix, toplevel);
         if (path == null)
         {
             return;
@@ -102,11 +101,11 @@ class MenuStructureIndexer {
         }
         else
         {
-            loadMenuItems(path, menuEntry.children(), childrenAreToplevel[0], depth + 1);
+            loadMenuItems(path, menuEntry.children(), toplevel && path == prefix, depth + 1);
         }
     }
 
-    private String computePath(Entry menuEntry, String prefix, boolean toplevel, boolean[] childrenAreToplevel)
+    private String computePath(Entry menuEntry, String prefix, boolean toplevel)
     {
         final String path;
         if (contributesToPath(menuEntry)) {
@@ -114,9 +113,9 @@ class MenuStructureIndexer {
             if (component == null)
             {
                 // item [component] could not be translated, omit it (like LastOpenedMaps)
-                return null;
+                path = null;
             }
-            if (toplevel)
+            else if (toplevel)
             {
                      path = component;
             }
@@ -124,10 +123,8 @@ class MenuStructureIndexer {
             {
                 path = prefix + SearchItem.ITEM_PATH_SEPARATOR + component;
             }
-            childrenAreToplevel[0] = false;
         } else {
             path = prefix;
-            childrenAreToplevel[0] = toplevel;
 
         }
         return path;
