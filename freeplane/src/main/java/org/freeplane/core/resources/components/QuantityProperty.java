@@ -32,12 +32,12 @@ import javax.swing.event.ChangeListener;
 
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
-import org.freeplane.core.util.Convertible;
+import org.freeplane.core.util.PhysicalUnit;
 import org.freeplane.core.util.Quantity;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class QuantityProperty<U extends Enum<U> & Convertible> extends PropertyBean implements IPropertyControl {
+public class QuantityProperty<U extends Enum<U> & PhysicalUnit> extends PropertyBean implements IPropertyControl {
 	final private JSpinner numberSpinner;
 	@SuppressWarnings("rawtypes")
 	final private JComboBox unitBox;

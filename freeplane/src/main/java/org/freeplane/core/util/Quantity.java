@@ -1,8 +1,8 @@
 package org.freeplane.core.util;
 
-public class Quantity <U extends Enum<U> & Convertible >{
+public class Quantity <U extends Enum<U> & PhysicalUnit >{
 	
-	public static <U extends Enum<U> & Convertible>  Quantity<U> fromString(String valueString, U defaultUnit) {
+	public static <U extends Enum<U> & PhysicalUnit>  Quantity<U> fromString(String valueString, U defaultUnit) {
 		if(valueString == null)
 			return null;
 		final int separatorPosition = valueString.lastIndexOf(' ');
@@ -80,7 +80,7 @@ public class Quantity <U extends Enum<U> & Convertible >{
 			throw new IllegalStateException("non negative value required");
 	}
 
-	public static <U extends Enum<U> & Convertible> void assertNonNegativeOrNull(Quantity<U> quantity) {
+	public static <U extends Enum<U> & PhysicalUnit> void assertNonNegativeOrNull(Quantity<U> quantity) {
 		if(quantity != null)
 			quantity.assertNonNegative();
 	}

@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class QuantityShould {
 
-	enum Metrics implements Convertible{
+	enum Metrics implements PhysicalUnit{
 		m(1d), cm(0.01d);
 
 		Metrics(double factor){

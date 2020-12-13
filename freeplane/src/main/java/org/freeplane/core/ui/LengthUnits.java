@@ -1,10 +1,10 @@
 package org.freeplane.core.ui;
 
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.Convertible;
+import org.freeplane.core.util.PhysicalUnit;
 import org.freeplane.core.util.Quantity;
 
-public enum LengthUnits implements Convertible{
+public enum LengthUnits implements PhysicalUnit{
 /*
 +---------+-------------+---------------+
 | px      | Pixels      | Varies        | 

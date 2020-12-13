@@ -1,8 +1,8 @@
 package org.freeplane.core.ui;
 
-import org.freeplane.core.util.Convertible;
+import org.freeplane.core.util.PhysicalUnit;
 
-public enum TimePeriodUnits implements Convertible{
+public enum TimePeriodUnits implements PhysicalUnit{
 /*
 +---------+-------------+---------------+
 | ms      | Milliseconds| 1             | 

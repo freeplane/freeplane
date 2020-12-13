@@ -1,5 +1,6 @@
 package org.freeplane.core.util;
 
-public interface Convertible {
+public interface PhysicalUnit {
 	double factor();
+	String name();
 }
