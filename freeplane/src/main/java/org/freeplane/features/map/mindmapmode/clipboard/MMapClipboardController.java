@@ -536,7 +536,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 	@Override
     public Transferable copy(IMapSelection selection) {
 	    final List<NodeModel> collection = selection.getSortedSelection(true);
-		final MindMapNodesSelection transferable = copy(new SummaryGroupEdgeListAdder(collection).addSummaryEdgeNodes(), false);
+		final MindMapNodesSelection transferable = copy(new SummaryGroupEdgeListAdder(collection).addSummaryEdgeNodes());
 		transferable.setNodeObjects(collection, false);
 		return transferable;
     }
@@ -551,7 +551,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 	}
 
 	private Transferable cut(final List<NodeModel> collection) {
-		final MindMapNodesSelection transferable = copy(new SummaryGroupEdgeListAdder(collection).addSummaryEdgeNodes(), true);
+		final MindMapNodesSelection transferable = copy(new SummaryGroupEdgeListAdder(collection).addSummaryEdgeNodes());
 		((MMapController) Controller.getCurrentModeController().getMapController()).deleteNodes(collection);
 		setClipboardContents(transferable);
 		return transferable;

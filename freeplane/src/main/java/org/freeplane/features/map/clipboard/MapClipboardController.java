@@ -88,9 +88,9 @@ public class MapClipboardController implements IExtension, ClipboardController {
 		}
 	}
 
-	public MindMapNodesSelection copy(final Collection<NodeModel> selectedNodes, final boolean copyInvisible) {
+	public MindMapNodesSelection copy(final Collection<NodeModel> selectedNodes) {
 		try {
-			final String forNodesFlavor = createForNodesFlavor(selectedNodes, copyInvisible);
+			final String forNodesFlavor = createForNodesFlavor(selectedNodes);
 			final String plainText = getAsPlainText(selectedNodes);
 			return new MindMapNodesSelection(forNodesFlavor, plainText, getAsRTF(selectedNodes),
 			    getAsHTML(selectedNodes));
@@ -105,14 +105,14 @@ public class MapClipboardController implements IExtension, ClipboardController {
 	}
 
 	public Transferable copy(final IMapSelection selection) {
-		return copy(selection.getSortedSelection(true), false);
+		return copy(selection.getSortedSelection(true));
 	}
 
-	public Transferable copy(final NodeModel node, final boolean saveInvisible) {
+	public Transferable copy(final NodeModel node) {
 		final StringWriter stringWriter = new StringWriter();
 		try {
 			Controller.getCurrentModeController().getMapController().getMapWriter().writeNodeAsXml(stringWriter, node, Mode.CLIPBOARD,
-			    saveInvisible, true, false);
+			    true, true, false);
 		}
 		catch (final IOException e) {
 			LogUtils.severe(e);
@@ -129,7 +129,7 @@ public class MapClipboardController implements IExtension, ClipboardController {
 			target.set(i, new SingleCopySource(node));
 			i++;
 		}
-		return copy(target, false);
+		return copy(target);
 	}
 
 	/**
@@ -144,7 +144,7 @@ public class MapClipboardController implements IExtension, ClipboardController {
 		modeController.addAction(new CopyNodeURIAction());
 	}
 
-	public String createForNodesFlavor(final Collection<NodeModel> selectedNodes, final boolean copyInvisible)
+	public String createForNodesFlavor(final Collection<NodeModel> selectedNodes)
 	        throws UnsupportedFlavorException, IOException {
 		String forNodesFlavor = "";
 		boolean firstLoop = true;
@@ -155,7 +155,7 @@ public class MapClipboardController implements IExtension, ClipboardController {
 			else {
 				forNodesFlavor += "<nodeseparator>";
 			}
-			forNodesFlavor += copy(tmpNode, copyInvisible).getTransferData(MindMapNodesSelection.mindMapNodesFlavor);
+			forNodesFlavor += copy(tmpNode).getTransferData(MindMapNodesSelection.mindMapNodesFlavor);
 		}
 		return forNodesFlavor;
 	}
