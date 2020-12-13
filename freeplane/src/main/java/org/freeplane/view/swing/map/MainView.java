@@ -73,7 +73,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
@@ -765,7 +765,7 @@ public class MainView extends ZoomableLabel {
 		return painter.getRightPoint();
 	}
 
-	public ShapeConfigurationModel getShapeConfiguration() {
+	public NodeGeometryModel getShapeConfiguration() {
 		return painter.getShapeConfiguration();
 	}
 

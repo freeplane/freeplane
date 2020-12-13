@@ -25,11 +25,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import org.freeplane.features.nodelocation.LocationModel;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 class OvalPainter extends VariableInsetsPainter {
 	private static final double MARGIN_FACTOR = Math.sqrt(2);
-	OvalPainter(MainView mainView,  ShapeConfigurationModel shapeConfigurationModel) {
+	OvalPainter(MainView mainView,  NodeGeometryModel shapeConfigurationModel) {
         super(mainView, shapeConfigurationModel);
     }
 

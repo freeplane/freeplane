@@ -4,13 +4,13 @@ import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
-public class ShapeConfigurationModel {
+public class NodeGeometryModel {
 	final private NodeStyleModel.Shape shape;
 	final private Quantity<LengthUnit> horizontalMargin;
 	final private Quantity<LengthUnit> verticalMargin;
 	final private  boolean isUniform;
 	
-	private ShapeConfigurationModel(final Shape shape, final Quantity<LengthUnit> horizontalMargin, final Quantity<LengthUnit> verticalMargin, final boolean isUniform) {
+	private NodeGeometryModel(final Shape shape, final Quantity<LengthUnit> horizontalMargin, final Quantity<LengthUnit> verticalMargin, final boolean isUniform) {
 		super();
 		this.shape = shape;
 		this.horizontalMargin = horizontalMargin;
@@ -38,7 +38,7 @@ public class ShapeConfigurationModel {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ShapeConfigurationModel other = (ShapeConfigurationModel) obj;
+		NodeGeometryModel other = (NodeGeometryModel) obj;
 		if (shape != other.shape)
 			return false;
 		if (isUniform != other.isUniform)
@@ -53,12 +53,12 @@ public class ShapeConfigurationModel {
 
 
 	final static public Quantity<LengthUnit> DEFAULT_MARGIN = new Quantity<LengthUnit>(2, LengthUnit.pt);
-	public static ShapeConfigurationModel NULL_SHAPE = new ShapeConfigurationModel(null, DEFAULT_MARGIN, DEFAULT_MARGIN, false);
-	public static final ShapeConfigurationModel AS_PARENT = NULL_SHAPE.withShape(Shape.as_parent);
-	public static final ShapeConfigurationModel FORK = NULL_SHAPE.withShape(Shape.fork);
+	public static NodeGeometryModel NULL_SHAPE = new NodeGeometryModel(null, DEFAULT_MARGIN, DEFAULT_MARGIN, false);
+	public static final NodeGeometryModel AS_PARENT = NULL_SHAPE.withShape(Shape.as_parent);
+	public static final NodeGeometryModel FORK = NULL_SHAPE.withShape(Shape.fork);
 	private static final Quantity<LengthUnit> DEFAULT_HORIZONTAL_OVAL_MARGIN = new Quantity<LengthUnit>(6, LengthUnit.pt);
 	private static final Quantity<LengthUnit> DEFAULT_VERTICAL_OVAL_MARGIN = new Quantity<LengthUnit>(12, LengthUnit.pt);
-	public static final ShapeConfigurationModel DEFAULT_ROOT_OVAL = NULL_SHAPE.withShape(Shape.oval)
+	public static final NodeGeometryModel DEFAULT_ROOT_OVAL = NULL_SHAPE.withShape(Shape.oval)
 			.withHorizontalMargin(DEFAULT_HORIZONTAL_OVAL_MARGIN).withVerticalMargin(DEFAULT_VERTICAL_OVAL_MARGIN);
 	public NodeStyleModel.Shape getShape() {
 		return shape;
@@ -72,17 +72,17 @@ public class ShapeConfigurationModel {
 	public boolean isUniform() {
 		return isUniform;
 	}
-	public ShapeConfigurationModel withShape(NodeStyleModel.Shape shape) {
-		return new ShapeConfigurationModel(shape, horizontalMargin, verticalMargin, isUniform);
+	public NodeGeometryModel withShape(NodeStyleModel.Shape shape) {
+		return new NodeGeometryModel(shape, horizontalMargin, verticalMargin, isUniform);
 	}
-	public ShapeConfigurationModel withHorizontalMargin(Quantity<LengthUnit> horizontalMargin) {
-		return new ShapeConfigurationModel(shape, horizontalMargin, verticalMargin, isUniform);
+	public NodeGeometryModel withHorizontalMargin(Quantity<LengthUnit> horizontalMargin) {
+		return new NodeGeometryModel(shape, horizontalMargin, verticalMargin, isUniform);
 	}
-	public ShapeConfigurationModel withVerticalMargin(Quantity<LengthUnit> verticalMargin) {
-		return new ShapeConfigurationModel(shape, horizontalMargin, verticalMargin, isUniform);
+	public NodeGeometryModel withVerticalMargin(Quantity<LengthUnit> verticalMargin) {
+		return new NodeGeometryModel(shape, horizontalMargin, verticalMargin, isUniform);
 	}
-	public ShapeConfigurationModel withUniform(boolean isUniform) {
-		return new ShapeConfigurationModel(shape, horizontalMargin, verticalMargin, isUniform);
+	public NodeGeometryModel withUniform(boolean isUniform) {
+		return new NodeGeometryModel(shape, horizontalMargin, verticalMargin, isUniform);
 	}
 	
 }

@@ -24,14 +24,14 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 class NarrowHexagonPainter extends VariableInsetsPainter {
 	private static final double HORIZONTAL_MARGIN_FACTOR = 1.0;
 	private static final double UNIFORM_HEIGHT_TO_WIDTH_RELATION = 2 / Math.sqrt(3);
 	private static final double VERTICAL_MARGIN_FACTOR = 2;
 
-	NarrowHexagonPainter(MainView mainView, ShapeConfigurationModel shapeConfigurationModel) {
+	NarrowHexagonPainter(MainView mainView, NodeGeometryModel shapeConfigurationModel) {
 		super(mainView, shapeConfigurationModel);
 	}
 

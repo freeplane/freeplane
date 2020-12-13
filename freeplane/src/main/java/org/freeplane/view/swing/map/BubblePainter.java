@@ -22,12 +22,12 @@ package org.freeplane.view.swing.map;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 class BubblePainter extends RectanglePainter {
 
 
-    BubblePainter(MainView mainView, ShapeConfigurationModel shapeConfiguration) {
+    BubblePainter(MainView mainView, NodeGeometryModel shapeConfiguration) {
 		super(mainView, shapeConfiguration);
 	}
 

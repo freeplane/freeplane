@@ -404,17 +404,17 @@ class NodeStyleBuilder implements IElementDOMHandler, IExtensionElementWriter, I
 		if (backgroundColor != null) {
 			ColorUtils.addColorAttributes(writer, "BACKGROUND_COLOR", "BACKGROUND_ALPHA", backgroundColor);
 		}
-		final ShapeConfigurationModel shapeConfiguration = forceFormatting ? nsc.getShapeConfiguration(node) : style.getShapeConfiguration();
+		final NodeGeometryModel shapeConfiguration = forceFormatting ? nsc.getShapeConfiguration(node) : style.getShapeConfiguration();
 		final Shape shape = shapeConfiguration.getShape();
 		if (shape != null) {
 			writer.addAttribute("STYLE", shape.toString());
 		}
 		final Quantity<LengthUnit> shapeHorizontalMargin = shapeConfiguration.getHorizontalMargin();
-		if (! shapeHorizontalMargin.equals(ShapeConfigurationModel.DEFAULT_MARGIN)) {
+		if (! shapeHorizontalMargin.equals(NodeGeometryModel.DEFAULT_MARGIN)) {
 			BackwardCompatibleQuantityWriter.forWriter(writer).writeQuantity("SHAPE_HORIZONTAL_MARGIN", shapeHorizontalMargin);
 		}
 		final Quantity<LengthUnit> shapeVerticalMargin = shapeConfiguration.getVerticalMargin();
-		if (! shapeVerticalMargin.equals(ShapeConfigurationModel.DEFAULT_MARGIN)) {
+		if (! shapeVerticalMargin.equals(NodeGeometryModel.DEFAULT_MARGIN)) {
 			BackwardCompatibleQuantityWriter.forWriter(writer).writeQuantity("SHAPE_VERTICAL_MARGIN", shapeVerticalMargin);
 		}
 		final boolean uniformShape = shapeConfiguration.isUniform();

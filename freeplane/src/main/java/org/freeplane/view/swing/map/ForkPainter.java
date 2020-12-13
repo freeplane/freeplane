@@ -28,7 +28,7 @@ import java.awt.Point;
 import java.awt.Stroke;
 
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 class ForkPainter extends MainViewPainter {
 
@@ -116,8 +116,8 @@ class ForkPainter extends MainViewPainter {
 	}
 
 	@Override
-	ShapeConfigurationModel getShapeConfiguration() {
-		return ShapeConfigurationModel.FORK;
+	NodeGeometryModel getShapeConfiguration() {
+		return NodeGeometryModel.FORK;
 	}
 
 }

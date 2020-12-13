@@ -39,7 +39,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.styles.LogicalStyleKeys;
 
 /**
@@ -167,8 +167,8 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichStyle.getFontSize()) {
 				fromStyle.setFontSize(null);
 			}
-			if (ShapeConfigurationModel.NULL_SHAPE != whichStyle.getShapeConfiguration()) {
-				fromStyle.setShapeConfiguration(ShapeConfigurationModel.NULL_SHAPE);
+			if (NodeGeometryModel.NULL_SHAPE != whichStyle.getShapeConfiguration()) {
+				fromStyle.setShapeConfiguration(NodeGeometryModel.NULL_SHAPE);
 			}
 			if (null != whichStyle.getColor()) {
 				fromStyle.setColor(null);
@@ -621,29 +621,29 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setShape(final NodeModel node, final Shape shape) {
-		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		final NodeGeometryModel oldShape = NodeStyleModel.getShapeConfiguration(node);
 		setShapeConfiguration(node, oldShape.withShape(shape));
 	}
 
 	public void setShapeHorizontalMargin(NodeModel node, Quantity<LengthUnit> margin) {
-		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		final NodeGeometryModel oldShape = NodeStyleModel.getShapeConfiguration(node);
 		setShapeConfiguration(node, oldShape.withHorizontalMargin(margin));
 	}
 
 	public void setShapeVerticalMargin(NodeModel node, Quantity<LengthUnit> margin) {
-		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		final NodeGeometryModel oldShape = NodeStyleModel.getShapeConfiguration(node);
 		setShapeConfiguration(node, oldShape.withVerticalMargin(margin));
 	}
 
 	public void setUniformShape(NodeModel node, boolean uniform) {
-		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		final NodeGeometryModel oldShape = NodeStyleModel.getShapeConfiguration(node);
 		setShapeConfiguration(node, oldShape.withUniform(uniform));
 	}
 
 
-	public void setShapeConfiguration(final NodeModel node, final ShapeConfigurationModel shape) {
+	public void setShapeConfiguration(final NodeModel node, final NodeGeometryModel shape) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		final NodeGeometryModel oldShape = NodeStyleModel.getShapeConfiguration(node);
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {

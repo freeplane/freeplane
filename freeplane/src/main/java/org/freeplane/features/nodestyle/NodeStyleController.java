@@ -71,7 +71,7 @@ public class NodeStyleController implements IExtension {
 // // //	final private Controller controller;
 	final private CombinedPropertyChain<Font, NodeModel> fontHandlers;
  	final private ModeController modeController;
-	final private ExclusivePropertyChain<ShapeConfigurationModel, NodeModel> shapeHandlers;
+	final private ExclusivePropertyChain<NodeGeometryModel, NodeModel> shapeHandlers;
 	final private ExclusivePropertyChain<Color, NodeModel> textColorHandlers;
 	final private ExclusivePropertyChain<HorizontalTextAlignment, NodeModel> horizontalTextAlignmentHandlers;
 	public static final String NODE_NUMBERING = "NodeNumbering";
@@ -86,7 +86,7 @@ public class NodeStyleController implements IExtension {
 		fontHandlers = new CombinedPropertyChain<Font, NodeModel>(true);
 		textColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
 		backgroundColorHandlers = new ExclusivePropertyChain<Color, NodeModel>();
-		shapeHandlers = new ExclusivePropertyChain<ShapeConfigurationModel, NodeModel>();
+		shapeHandlers = new ExclusivePropertyChain<NodeGeometryModel, NodeModel>();
 		horizontalTextAlignmentHandlers = new ExclusivePropertyChain<HorizontalTextAlignment, NodeModel>();
 		
 		addFontGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<Font, NodeModel>() {
@@ -116,18 +116,18 @@ public class NodeStyleController implements IExtension {
 				return getStyleBackgroundColor(node.getMap(), LogicalStyleController.getController(modeController).getStyles(node));
 			}
 		});
-		addShapeGetter(IPropertyHandler.STYLE, new IPropertyHandler<ShapeConfigurationModel, NodeModel>() {
-			public ShapeConfigurationModel getProperty(final NodeModel node, final ShapeConfigurationModel currentValue) {
+		addShapeGetter(IPropertyHandler.STYLE, new IPropertyHandler<NodeGeometryModel, NodeModel>() {
+			public NodeGeometryModel getProperty(final NodeModel node, final NodeGeometryModel currentValue) {
 				final MapModel map = node.getMap();
 				final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 				final Collection<IStyle> style = styleController.getStyles(node);
-				final ShapeConfigurationModel returnedShape = getStyleShape(map, style);
+				final NodeGeometryModel returnedShape = getStyleShape(map, style);
 				return returnedShape;
 			}
 		});
-		addShapeGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<ShapeConfigurationModel, NodeModel>() {
-			public ShapeConfigurationModel getProperty(final NodeModel node, final ShapeConfigurationModel currentValue) {
-				return ShapeConfigurationModel.AS_PARENT;
+		addShapeGetter(IPropertyHandler.DEFAULT, new IPropertyHandler<NodeGeometryModel, NodeModel>() {
+			public NodeGeometryModel getProperty(final NodeModel node, final NodeGeometryModel currentValue) {
+				return NodeGeometryModel.AS_PARENT;
 			}
 		});
 		
@@ -170,8 +170,8 @@ public class NodeStyleController implements IExtension {
 		return fontHandlers.addGetter(key, getter);
 	}
 
-	public IPropertyHandler<ShapeConfigurationModel, NodeModel> addShapeGetter(final Integer key,
-	                                                          final IPropertyHandler<ShapeConfigurationModel, NodeModel> getter) {
+	public IPropertyHandler<NodeGeometryModel, NodeModel> addShapeGetter(final Integer key,
+	                                                          final IPropertyHandler<NodeGeometryModel, NodeModel> getter) {
 		return shapeHandlers.addGetter(key, getter);
 	}
 
@@ -453,7 +453,7 @@ public class NodeStyleController implements IExtension {
 			return font;
 	}
 
-	private ShapeConfigurationModel getStyleShape(final MapModel map, final Collection<IStyle> style) {
+	private NodeGeometryModel getStyleShape(final MapModel map, final Collection<IStyle> style) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : style){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -464,7 +464,7 @@ public class NodeStyleController implements IExtension {
 			if (styleModel == null) {
 				continue;
 			}
-			final ShapeConfigurationModel shapeConfiguration = styleModel.getShapeConfiguration();
+			final NodeGeometryModel shapeConfiguration = styleModel.getShapeConfiguration();
 			if (shapeConfiguration.getShape() == null) {
 				continue;
 			}
@@ -528,12 +528,12 @@ public class NodeStyleController implements IExtension {
 	}
 
 	public Shape getShape(final NodeModel node) {
-		final ShapeConfigurationModel shapeConfiguration = shapeHandlers.getProperty(node);
+		final NodeGeometryModel shapeConfiguration = shapeHandlers.getProperty(node);
 		return shapeConfiguration.getShape();
 	}
 	
-	public ShapeConfigurationModel getShapeConfiguration(NodeModel node) {
-		final ShapeConfigurationModel shapeConfiguration = shapeHandlers.getProperty(node);
+	public NodeGeometryModel getShapeConfiguration(NodeModel node) {
+		final NodeGeometryModel shapeConfiguration = shapeHandlers.getProperty(node);
 		return shapeConfiguration;
 	}
 

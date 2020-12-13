@@ -31,7 +31,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
@@ -68,7 +68,7 @@ class NodeShapeControlGroup implements ControlGroup {
 			.getCurrentModeController().getExtension(
 					NodeStyleController.class);
 			if(enabled){
-				styleController.setShapeConfiguration(node, ShapeConfigurationModel.NULL_SHAPE
+				styleController.setShapeConfiguration(node, NodeGeometryModel.NULL_SHAPE
 						.withShape(NodeStyleModel.Shape.valueOf(mNodeShape.getValue()))
 						.withHorizontalMargin(mShapeHorizontalMargin.getQuantifiedValue())
 						.withVerticalMargin(mShapeVerticalMargin.getQuantifiedValue())
@@ -76,7 +76,7 @@ class NodeShapeControlGroup implements ControlGroup {
 						);
 			}
 			else {
-				styleController.setShapeConfiguration(node, ShapeConfigurationModel.NULL_SHAPE);
+				styleController.setShapeConfiguration(node, NodeGeometryModel.NULL_SHAPE);
 			}
 			final Shape shape = styleController.getShape(node);
 			enableShapeConfigurationProperties(enabled, shape);
@@ -86,7 +86,7 @@ class NodeShapeControlGroup implements ControlGroup {
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final NodeStyleModel.Shape shape = NodeStyleModel.getShape(node);
-			ShapeConfigurationModel viewShape = styleController.getShapeConfiguration(node);
+			NodeGeometryModel viewShape = styleController.getShapeConfiguration(node);
 			final boolean enabled = shape != null;
 			mSetNodeShape.setValue(enabled);
 			mNodeShape.setValue(viewShape.getShape().toString());

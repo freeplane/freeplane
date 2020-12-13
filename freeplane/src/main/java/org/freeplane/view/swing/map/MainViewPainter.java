@@ -28,7 +28,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.freeplane.features.map.MapController;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 abstract class MainViewPainter{
 
@@ -77,7 +77,7 @@ abstract class MainViewPainter{
 
 	abstract Point getRightPoint();
 
-	abstract ShapeConfigurationModel getShapeConfiguration();
+	abstract NodeGeometryModel getShapeConfiguration();
 
 	abstract void paintBackground(final Graphics2D graphics, final Color color);
 

@@ -23,13 +23,13 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Polygon;
 
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 abstract class VariableInsetsPainter extends ShapedPainter {
 	private double zoomedVerticalInset;
 	private double zoomedHorizontalInset;
 
-	VariableInsetsPainter(MainView mainView, ShapeConfigurationModel shapeConfiguration) {
+	VariableInsetsPainter(MainView mainView, NodeGeometryModel shapeConfiguration) {
 		super(mainView, shapeConfiguration);
         zoomedVerticalInset = zoomedHorizontalInset = 0;
 	}

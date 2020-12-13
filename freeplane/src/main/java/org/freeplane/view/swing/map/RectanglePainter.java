@@ -24,11 +24,11 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 class RectanglePainter extends ShapedPainter {
 
-    RectanglePainter(MainView mainView, ShapeConfigurationModel shapeConfiguration) {
+    RectanglePainter(MainView mainView, NodeGeometryModel shapeConfiguration) {
 		super(mainView, shapeConfiguration);
 	}
 
@@ -48,7 +48,7 @@ class RectanglePainter extends ShapedPainter {
 	@Override
 	Insets getInsets(){
 		int edgeWidthInset = (int) (mainView.getUnzoomedBorderWidth() - 1);
-    	final ShapeConfigurationModel shapeConfiguration = getShapeConfiguration();
+    	final NodeGeometryModel shapeConfiguration = getShapeConfiguration();
     	int horizontalMargin = shapeConfiguration.getHorizontalMargin().toBaseUnitsRounded() + edgeWidthInset;
     	int verticalMargin = shapeConfiguration.getVerticalMargin().toBaseUnitsRounded() + edgeWidthInset;
     	return new Insets(verticalMargin, horizontalMargin, verticalMargin, horizontalMargin);
