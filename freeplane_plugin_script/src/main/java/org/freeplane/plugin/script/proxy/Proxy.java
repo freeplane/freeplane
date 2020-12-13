@@ -284,13 +284,17 @@ public interface Proxy {
 	     * @since 1.5.6 */
 	    void setMaxNodeWidth(Quantity<LengthUnit> width);
 	}
+	
+    interface NodeGeometryRO extends org.freeplane.api.NodeGeometryRO { }
+
+    interface NodeGeometry extends NodeGeometryRO, org.freeplane.api.NodeGeometry {}
+
 
     public interface Properties extends org.freeplane.api.Properties { }
+    
     interface ReminderRO extends org.freeplane.api.ReminderRO { }
 
-    interface Reminder extends ReminderRO, org.freeplane.api.Reminder {
-
-    }
+    interface Reminder extends ReminderRO, org.freeplane.api.Reminder {}
 
     interface DependencyLookup extends org.freeplane.api.DependencyLookup {}
 }

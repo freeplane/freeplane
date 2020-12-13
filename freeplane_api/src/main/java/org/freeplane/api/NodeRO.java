@@ -462,7 +462,9 @@ public interface NodeRO {
 
     /**@since 1.8.11 */
 	Quantity<LengthUnit> getHorizontalShiftAsLength();
-
+	
+    /**@since 1.8.11 */
+    NodeGeometryRO getGeometry();
 
 	/**@since 1.7.2 */
 	DependencyLookup getPrecedents();

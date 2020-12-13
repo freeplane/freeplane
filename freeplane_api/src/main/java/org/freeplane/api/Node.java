@@ -364,4 +364,10 @@ public interface Node extends NodeRO {
 	  *
 	  *  @since 1.7.1 */
 	void setIsGlobal(boolean value);
+	
+    /**@since 1.8.11 */
+	@Override
+    NodeGeometry getGeometry();
+
+
 }

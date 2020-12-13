@@ -22,6 +22,7 @@ import org.freeplane.api.DependencyLookup;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
+import org.freeplane.api.NodeGeometry;
 import org.freeplane.api.NodeRO;
 import org.freeplane.api.NodeStyle;
 import org.freeplane.api.NodeToComparableMapper;
@@ -1182,4 +1183,9 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public DependencyLookup getDependents() {
 		return new DependencyLookupProxy(getDelegate(), getScriptContext(), DependencySearchStrategy.DEPENDENTS);
 	}
+
+    @Override
+    public NodeGeometry getGeometry() {
+        return new NodeGeometryProxy(getDelegate(), getScriptContext());
+    }
 }
