@@ -1,6 +1,6 @@
 package org.freeplane.core.ui;
 
-import org.freeplane.core.util.PhysicalUnit;
+import org.freeplane.api.PhysicalUnit;
 
 public enum TimePeriodUnits implements PhysicalUnit{
 /*

@@ -24,12 +24,12 @@ import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.Collection;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.format.PatternFormat;
@@ -76,9 +76,9 @@ public class NodeStyleController implements IExtension {
 	final private ExclusivePropertyChain<HorizontalTextAlignment, NodeModel> horizontalTextAlignmentHandlers;
 	public static final String NODE_NUMBERING = "NodeNumbering";
 	
-	private static final Quantity<LengthUnits> DEFAULT_MINIMUM_WIDTH = new Quantity<LengthUnits>(0, LengthUnits.cm);
-	private static final Quantity<LengthUnits> DEFAULT_MAXIMUM_WIDTH = new Quantity<LengthUnits>(10, LengthUnits.cm);
-	private static final Quantity<LengthUnits> DEFAULT_BORDER_WIDTH = new Quantity<LengthUnits>(1, LengthUnits.px);
+	private static final Quantity<LengthUnit> DEFAULT_MINIMUM_WIDTH = new Quantity<LengthUnit>(0, LengthUnit.cm);
+	private static final Quantity<LengthUnit> DEFAULT_MAXIMUM_WIDTH = new Quantity<LengthUnit>(10, LengthUnit.cm);
+	private static final Quantity<LengthUnit> DEFAULT_BORDER_WIDTH = new Quantity<LengthUnit>(1, LengthUnit.px);
 
 	public NodeStyleController(final ModeController modeController) {
 		this.modeController = modeController;
@@ -203,7 +203,7 @@ public class NodeStyleController implements IExtension {
 		return null;
 	}
 
-	private Quantity<LengthUnits> getMaxNodeWidth(final MapModel map, final Collection<IStyle> styleKeys) {
+	private Quantity<LengthUnit> getMaxNodeWidth(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -214,7 +214,7 @@ public class NodeStyleController implements IExtension {
 			if (sizeModel == null) {
 				continue;
 			}
-			final Quantity<LengthUnits> maxTextWidth = sizeModel.getMaxNodeWidth();
+			final Quantity<LengthUnit> maxTextWidth = sizeModel.getMaxNodeWidth();
 			if (maxTextWidth == null) {
 				continue;
 			}
@@ -223,7 +223,7 @@ public class NodeStyleController implements IExtension {
 		return DEFAULT_MAXIMUM_WIDTH;
 	}
 	
-	private Quantity<LengthUnits> getStyleMinWidth(final MapModel map, final Collection<IStyle> styleKeys) {
+	private Quantity<LengthUnit> getStyleMinWidth(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -234,7 +234,7 @@ public class NodeStyleController implements IExtension {
 			if (sizeModel == null) {
 				continue;
 			}
-			final Quantity<LengthUnits> minWidth = sizeModel.getMinNodeWidth();
+			final Quantity<LengthUnit> minWidth = sizeModel.getMinNodeWidth();
 			if (minWidth == null) {
 				continue;
 			}
@@ -263,7 +263,7 @@ public class NodeStyleController implements IExtension {
 		return false;
 	}
 	
-	private Quantity<LengthUnits> getBorderWidth(final MapModel map, final Collection<IStyle> styleKeys) {
+	private Quantity<LengthUnit> getBorderWidth(final MapModel map, final Collection<IStyle> styleKeys) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
 		for(IStyle styleKey : styleKeys){
 			final NodeModel styleNode = model.getStyleNode(styleKey);
@@ -274,7 +274,7 @@ public class NodeStyleController implements IExtension {
 			if (borderModel == null) {
 				continue;
 			}
-			final Quantity<LengthUnits> borderWidth = borderModel.getBorderWidth();
+			final Quantity<LengthUnit> borderWidth = borderModel.getBorderWidth();
 			if (borderWidth == null) {
 				continue;
 			}
@@ -582,19 +582,19 @@ public class NodeStyleController implements IExtension {
 		return false;
     }
 
-	public Quantity<LengthUnits> getMaxWidth(NodeModel node) {
+	public Quantity<LengthUnit> getMaxWidth(NodeModel node) {
 		final MapModel map = node.getMap();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 		final Collection<IStyle> style = styleController.getStyles(node);
-		final Quantity<LengthUnits> maxTextWidth = getMaxNodeWidth(map, style);
+		final Quantity<LengthUnit> maxTextWidth = getMaxNodeWidth(map, style);
 		return maxTextWidth;
     }
 
-	public Quantity<LengthUnits> getMinWidth(NodeModel node) {
+	public Quantity<LengthUnit> getMinWidth(NodeModel node) {
 		final MapModel map = node.getMap();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 		final Collection<IStyle> styles = styleController.getStyles(node);
-		final Quantity<LengthUnits> minWidth = getStyleMinWidth(map, styles);
+		final Quantity<LengthUnit> minWidth = getStyleMinWidth(map, styles);
 		return minWidth;
     }
 
@@ -618,11 +618,11 @@ public class NodeStyleController implements IExtension {
 		return borderDashMatchesEdgeDash;
 	}
 
-	public Quantity<LengthUnits> getBorderWidth(NodeModel node) {
+	public Quantity<LengthUnit> getBorderWidth(NodeModel node) {
 		final MapModel map = node.getMap();
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 		final Collection<IStyle> style = styleController.getStyles(node);
-		final Quantity<LengthUnits> borderWidth = getBorderWidth(map, style);
+		final Quantity<LengthUnit> borderWidth = getBorderWidth(map, style);
 		return borderWidth;
 	}
 

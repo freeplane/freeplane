@@ -35,17 +35,17 @@ import java.util.Vector;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.io.IElementDOMHandler;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.resources.ResourceBundles;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.IndexedTree;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.TimePeriodUnits;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 import org.freeplane.n3.nanoxml.XMLException;
@@ -129,7 +129,7 @@ public class OptionPanelBuilder {
 				addChoicesAndDisplayedItems(data, choices, displayedItems);
 				comboProperty = createComboProperty(name, choices, displayedItems);
 			}
-			final int verticalMargin = Quantity.fromString(data.getAttribute("vertical_margin", "0"), LengthUnits.pt).toBaseUnitsRounded();
+			final int verticalMargin = Quantity.fromString(data.getAttribute("vertical_margin", "0"), LengthUnit.pt).toBaseUnitsRounded();
 			return comboProperty.withVerticalMargin(verticalMargin);
 		}
 
@@ -262,7 +262,7 @@ public class OptionPanelBuilder {
 			return new IPropertyControlCreator() {
 				@Override
 				public IPropertyControl createControl() {
-					return new QuantityProperty<LengthUnits>(name, min, max, step, LengthUnits.valueOf(defaultUnit));
+					return new QuantityProperty<LengthUnit>(name, min, max, step, LengthUnit.valueOf(defaultUnit));
 				}
 			};
 		}

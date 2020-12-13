@@ -46,6 +46,8 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.plaf.basic.BasicIconFactory;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IPropertyControlCreator;
@@ -53,7 +55,6 @@ import org.freeplane.core.resources.components.KeyProperty;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IndexedTree;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.MenuSplitter;
 import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.JAutoScrollBarPane;
@@ -65,7 +66,6 @@ import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.icon.EmojiIcon;
 import org.freeplane.features.icon.IconContainedCondition;
@@ -292,11 +292,11 @@ public class MIconController extends IconController {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void changeIconSize(final NodeModel node, final Quantity<LengthUnits> iconSize)
+	public void changeIconSize(final NodeModel node, final Quantity<LengthUnit> iconSize)
 	{
 		final IActor actor = new IActor() {
 
-			private Quantity<LengthUnits> oldIconSize;
+			private Quantity<LengthUnit> oldIconSize;
 
 			@Override
 			public void act() {

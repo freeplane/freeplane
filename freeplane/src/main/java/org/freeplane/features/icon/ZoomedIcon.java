@@ -29,8 +29,8 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.features.icon.factory.IconFactory;
 
 public class ZoomedIcon extends UIIcon {
@@ -50,7 +50,7 @@ public class ZoomedIcon extends UIIcon {
 		if(uiIcon.getUrl().getPath().endsWith(".svg")) {
 			Icon icon = uiIcon.getIcon();
 			int ownHeight = icon.getIconHeight();
-			final Quantity<LengthUnits> iconHeight = new Quantity<>(ownHeight, LengthUnits.px);
+			final Quantity<LengthUnit> iconHeight = new Quantity<>(ownHeight, LengthUnit.px);
 			return IconFactory.getInstance().getIcon(this, iconHeight.zoomBy(zoom));
 		}
 		else {
@@ -59,7 +59,7 @@ public class ZoomedIcon extends UIIcon {
 	}
 
 	@Override
-	public Icon getIcon(Quantity<LengthUnits> iconHeight) {
+	public Icon getIcon(Quantity<LengthUnit> iconHeight) {
 		if(uiIcon.getUrl().getPath().endsWith(".svg")) {
 			return IconFactory.getInstance().getIcon(this, iconHeight.zoomBy(zoom));
 		}

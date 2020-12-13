@@ -1,16 +1,16 @@
 package org.freeplane.features.nodestyle;
 
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 
 public class ShapeConfigurationModel {
 	final private NodeStyleModel.Shape shape;
-	final private Quantity<LengthUnits> horizontalMargin;
-	final private Quantity<LengthUnits> verticalMargin;
+	final private Quantity<LengthUnit> horizontalMargin;
+	final private Quantity<LengthUnit> verticalMargin;
 	final private  boolean isUniform;
 	
-	private ShapeConfigurationModel(final Shape shape, final Quantity<LengthUnits> horizontalMargin, final Quantity<LengthUnits> verticalMargin, final boolean isUniform) {
+	private ShapeConfigurationModel(final Shape shape, final Quantity<LengthUnit> horizontalMargin, final Quantity<LengthUnit> verticalMargin, final boolean isUniform) {
 		super();
 		this.shape = shape;
 		this.horizontalMargin = horizontalMargin;
@@ -52,21 +52,21 @@ public class ShapeConfigurationModel {
 
 
 
-	final static public Quantity<LengthUnits> DEFAULT_MARGIN = new Quantity<LengthUnits>(2, LengthUnits.pt);
+	final static public Quantity<LengthUnit> DEFAULT_MARGIN = new Quantity<LengthUnit>(2, LengthUnit.pt);
 	public static ShapeConfigurationModel NULL_SHAPE = new ShapeConfigurationModel(null, DEFAULT_MARGIN, DEFAULT_MARGIN, false);
 	public static final ShapeConfigurationModel AS_PARENT = NULL_SHAPE.withShape(Shape.as_parent);
 	public static final ShapeConfigurationModel FORK = NULL_SHAPE.withShape(Shape.fork);
-	private static final Quantity<LengthUnits> DEFAULT_HORIZONTAL_OVAL_MARGIN = new Quantity<LengthUnits>(6, LengthUnits.pt);
-	private static final Quantity<LengthUnits> DEFAULT_VERTICAL_OVAL_MARGIN = new Quantity<LengthUnits>(12, LengthUnits.pt);
+	private static final Quantity<LengthUnit> DEFAULT_HORIZONTAL_OVAL_MARGIN = new Quantity<LengthUnit>(6, LengthUnit.pt);
+	private static final Quantity<LengthUnit> DEFAULT_VERTICAL_OVAL_MARGIN = new Quantity<LengthUnit>(12, LengthUnit.pt);
 	public static final ShapeConfigurationModel DEFAULT_ROOT_OVAL = NULL_SHAPE.withShape(Shape.oval)
 			.withHorizontalMargin(DEFAULT_HORIZONTAL_OVAL_MARGIN).withVerticalMargin(DEFAULT_VERTICAL_OVAL_MARGIN);
 	public NodeStyleModel.Shape getShape() {
 		return shape;
 	}
-	public Quantity<LengthUnits> getHorizontalMargin() {
+	public Quantity<LengthUnit> getHorizontalMargin() {
 		return horizontalMargin;
 	}
-	public Quantity<LengthUnits> getVerticalMargin() {
+	public Quantity<LengthUnit> getVerticalMargin() {
 		return verticalMargin;
 	}
 	public boolean isUniform() {
@@ -75,10 +75,10 @@ public class ShapeConfigurationModel {
 	public ShapeConfigurationModel withShape(NodeStyleModel.Shape shape) {
 		return new ShapeConfigurationModel(shape, horizontalMargin, verticalMargin, isUniform);
 	}
-	public ShapeConfigurationModel withHorizontalMargin(Quantity<LengthUnits> horizontalMargin) {
+	public ShapeConfigurationModel withHorizontalMargin(Quantity<LengthUnit> horizontalMargin) {
 		return new ShapeConfigurationModel(shape, horizontalMargin, verticalMargin, isUniform);
 	}
-	public ShapeConfigurationModel withVerticalMargin(Quantity<LengthUnits> verticalMargin) {
+	public ShapeConfigurationModel withVerticalMargin(Quantity<LengthUnit> verticalMargin) {
 		return new ShapeConfigurationModel(shape, horizontalMargin, verticalMargin, isUniform);
 	}
 	public ShapeConfigurationModel withUniform(boolean isUniform) {

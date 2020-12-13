@@ -48,14 +48,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.edge.EdgeController;
@@ -390,7 +390,7 @@ public class MainView extends ZoomableLabel {
 		if(node.getMap().showsIcons()) {
 		    //		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
 		    /* fc, 06.10.2003: images? */
-		    final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(model);
+		    final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(model);
 		    for (final UIIcon icon : IconController.getController().getStateIcons(model)) {
 		        iconImages.addIcon(icon, iconHeight);
 		    }

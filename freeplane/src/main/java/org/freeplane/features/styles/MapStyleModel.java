@@ -34,11 +34,11 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ListDataListener;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.FontSizeExtension;
 import org.freeplane.features.cloud.CloudModel;
@@ -141,7 +141,7 @@ public class MapStyleModel implements IExtension {
 			    ShapeConfigurationModel.NULL_SHAPE.withShape(NodeStyleModel.Shape.oval).withUniform(true));
 			NodeStyleModel.createNodeStyleModel(root).setFontSize(24);
 			styleMap.setRoot(root);
-			final Quantity<LengthUnits> styleBlockGap = ResourceController.getResourceController()
+			final Quantity<LengthUnit> styleBlockGap = ResourceController.getResourceController()
 			    .getLengthQuantityProperty("style_block_gap");
 			LocationModel.createLocationModel(root).setVGap(styleBlockGap);
 			insertStyleMap(parentMap, styleMap);
@@ -283,14 +283,14 @@ public class MapStyleModel implements IExtension {
 	}
 
 	private MapViewLayout mapViewLayout = MapViewLayout.MAP;
-	private Quantity<LengthUnits> maxNodeWidth = null;
-	private Quantity<LengthUnits> minNodeWidth = null;
+	private Quantity<LengthUnit> maxNodeWidth = null;
+	private Quantity<LengthUnit> minNodeWidth = null;
 
-	public void setMaxNodeWidth(final Quantity<LengthUnits> maxNodeWidth) {
+	public void setMaxNodeWidth(final Quantity<LengthUnit> maxNodeWidth) {
 		this.maxNodeWidth = maxNodeWidth;
 	}
 
-	public void setMinNodeWidth(final Quantity<LengthUnits> minNodeWidth) {
+	public void setMinNodeWidth(final Quantity<LengthUnit> minNodeWidth) {
 		this.minNodeWidth = minNodeWidth;
 	}
 

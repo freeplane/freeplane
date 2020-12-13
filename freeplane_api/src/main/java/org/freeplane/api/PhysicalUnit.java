@@ -1,4 +1,4 @@
-package org.freeplane.core.util;
+package org.freeplane.api;
 
 public interface PhysicalUnit {
 	double factor();

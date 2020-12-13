@@ -21,12 +21,12 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
 
+import org.freeplane.api.LengthUnit;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.NextColumnProperty;
 import org.freeplane.core.resources.components.QuantityProperty;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -50,8 +50,8 @@ class NodeShapeControlGroup implements ControlGroup {
 	private BooleanProperty mSetNodeShape;
 	private ComboProperty mNodeShape;
 	
-	private QuantityProperty<LengthUnits> mShapeHorizontalMargin;
-	private QuantityProperty<LengthUnits> mShapeVerticalMargin;
+	private QuantityProperty<LengthUnit> mShapeHorizontalMargin;
+	private QuantityProperty<LengthUnit> mShapeVerticalMargin;
 	private BooleanProperty mUniformShape;
 
 	private NodeShapeChangeListener propertyChangeListener;
@@ -100,8 +100,8 @@ class NodeShapeControlGroup implements ControlGroup {
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetNodeShape = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		mNodeShape = ComboProperty.of(NODE_SHAPE, NodeStyleModel.Shape.class);
-		mShapeHorizontalMargin = new QuantityProperty<LengthUnits>(SHAPE_HORIZONTAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
-		mShapeVerticalMargin = new QuantityProperty<LengthUnits>(SHAPE_VERTICAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
+		mShapeHorizontalMargin = new QuantityProperty<LengthUnit>(SHAPE_HORIZONTAL_MARGIN, 0, 1000, 0.1, LengthUnit.pt);
+		mShapeVerticalMargin = new QuantityProperty<LengthUnit>(SHAPE_VERTICAL_MARGIN, 0, 1000, 0.1, LengthUnit.pt);
 		mUniformShape = new BooleanProperty(UNIFORM_SHAPE);
 		propertyChangeListener = new NodeShapeChangeListener(mSetNodeShape, mNodeShape, mShapeHorizontalMargin, mShapeVerticalMargin, mUniformShape);
 		mSetNodeShape.addPropertyChangeListener(propertyChangeListener);

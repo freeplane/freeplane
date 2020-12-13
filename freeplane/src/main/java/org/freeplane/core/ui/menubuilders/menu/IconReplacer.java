@@ -5,9 +5,9 @@ import java.awt.Font;
 import javax.swing.AbstractButton;
 import javax.swing.Icon;
 
-import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.factory.IconFactory;
 
 class IconReplacer {
@@ -18,7 +18,7 @@ class IconReplacer {
 		if (icon != null && imageIconFactory.canScaleIcon(icon)) {
 			final Font font = actionComponent.getFont();
 			final int fontHeight = actionComponent.getFontMetrics(font).getHeight();
-			final Quantity<LengthUnits> iconHeight = new Quantity<LengthUnits>(fontHeight, LengthUnits.px);
+			final Quantity<LengthUnit> iconHeight = new Quantity<LengthUnit>(fontHeight, LengthUnit.px);
 			actionComponent.setIcon(FreeplaneIconFactory.toImageIcon(imageIconFactory.getScaledIcon(icon, iconHeight)));
 		}
 	}

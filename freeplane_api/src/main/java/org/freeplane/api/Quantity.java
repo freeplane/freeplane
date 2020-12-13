@@ -1,4 +1,4 @@
-package org.freeplane.core.util;
+package org.freeplane.api;
 
 public class Quantity <U extends Enum<U> & PhysicalUnit >{
 	

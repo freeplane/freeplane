@@ -23,14 +23,14 @@ import java.awt.Component;
 import java.awt.Font;
 import java.net.URI;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.html.CssRuleBuilder;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.clipboard.AttributeClipboardController;
 import org.freeplane.features.clipboard.ClipboardControllers;
@@ -150,7 +150,7 @@ public class AttributeController implements IExtension {
 		throw new UnsupportedOperationException();
 	}
 
-	public void performSetColumnWidth(final NodeModel node, final NodeAttributeTableModel model, final int col, final Quantity<LengthUnits> width) {
+	public void performSetColumnWidth(final NodeModel node, final NodeAttributeTableModel model, final int col, final Quantity<LengthUnit> width) {
 		throw new UnsupportedOperationException();
 	}
 

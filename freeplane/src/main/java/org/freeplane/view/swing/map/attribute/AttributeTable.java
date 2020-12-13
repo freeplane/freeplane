@@ -78,7 +78,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.api.LengthUnit;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
@@ -169,7 +169,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					final int modelColumnWidth = model.getColumnWidth(col).toBaseUnitsRounded();
 					final int currentColumnWidth = Math.round(table.getColumnModel().getColumn(col).getWidth() / zoom);
 					if (modelColumnWidth != currentColumnWidth) {
-						model.setColumnWidth(col, LengthUnits.pixelsInPt(currentColumnWidth));
+						model.setColumnWidth(col, LengthUnit.pixelsInPt(currentColumnWidth));
 					}
 				}
 			}
@@ -819,7 +819,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					int cellWidth = preferredSize.width + preferredSize.height +  EXTRA_HEIGHT + CURSOR_WIDTH + 1;
 					maxCellWidth = Math.max(cellWidth, maxCellWidth);
 				}
-				getAttributeTableModel().setColumnWidth(col, LengthUnits.pixelsInPt(maxCellWidth));
+				getAttributeTableModel().setColumnWidth(col, LengthUnit.pixelsInPt(maxCellWidth));
 			}
 		}
 	}

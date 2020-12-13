@@ -1,7 +1,7 @@
 package org.freeplane.core.io;
 
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.features.map.MapWriter;
 
 public class BackwardCompatibleQuantityWriter {
@@ -25,7 +25,7 @@ public class BackwardCompatibleQuantityWriter {
 		this.makeCompatible = makeCompatible;
 	}
 
-	public void writeQuantity(String name, final Quantity<LengthUnits> value) {
+	public void writeQuantity(String name, final Quantity<LengthUnit> value) {
 		if(makeCompatible){
 			writer.addAttribute(name, value.toBaseUnitsRounded());
 			writer.addAttribute(name+"_QUANTITY", value.toString());

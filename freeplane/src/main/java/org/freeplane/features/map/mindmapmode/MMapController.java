@@ -46,16 +46,16 @@ import java.util.WeakHashMap;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardControllers;
@@ -877,8 +877,8 @@ public class MMapController extends MapController {
 		newNode.addExtension(modeController.getExtension(FreeNode.class));
 		if(! addNewNode(newNode, target, target.getChildCount(), newNodeIsLeft))
 			return null;
-		final Quantity<LengthUnits> x = LengthUnits.pixelsInPt(pt.x);
-		final Quantity<LengthUnits> y = LengthUnits.pixelsInPt(pt.y);
+		final Quantity<LengthUnit> x = LengthUnit.pixelsInPt(pt.x);
+		final Quantity<LengthUnit> y = LengthUnit.pixelsInPt(pt.y);
 		((MLocationController)MLocationController.getController(modeController)).moveNodePosition(newNode, x, y);
 		final Component component = Controller.getCurrentController().getMapViewManager().getComponent(newNode);
 		if (component == null)

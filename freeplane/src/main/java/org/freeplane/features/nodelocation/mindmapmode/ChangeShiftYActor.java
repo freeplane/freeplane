@@ -19,9 +19,9 @@
  */
 package org.freeplane.features.nodelocation.mindmapmode;
 
-import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodelocation.LocationModel;
@@ -32,10 +32,10 @@ import org.freeplane.features.nodelocation.LocationModel;
  */
 final class ChangeShiftYActor implements IActor {
 	private final NodeModel node;
-	private final Quantity<LengthUnits> oldShiftY;
-	private final Quantity<LengthUnits> shiftY;
+	private final Quantity<LengthUnit> oldShiftY;
+	private final Quantity<LengthUnit> shiftY;
 
-	ChangeShiftYActor(final NodeModel node, final Quantity<LengthUnits> shiftY){
+	ChangeShiftYActor(final NodeModel node, final Quantity<LengthUnit> shiftY){
 		final LocationModel locationModel = LocationModel.getModel(node);
 		oldShiftY = locationModel.getShiftY();
 		this.node = node;
@@ -50,7 +50,7 @@ final class ChangeShiftYActor implements IActor {
 		return "moveNodePosition";
 	}
 
-	private void setShiftY(final NodeModel node, final Quantity<LengthUnits> shiftY) {
+	private void setShiftY(final NodeModel node, final Quantity<LengthUnit> shiftY) {
 		final LocationModel locationModel = LocationModel.createLocationModel(node);
 		locationModel.setShiftY(shiftY);
 		Controller.getCurrentModeController().getMapController().nodeChanged(node);

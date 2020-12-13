@@ -29,9 +29,9 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 
 /**
@@ -166,7 +166,7 @@ public class NodeAttributeTableModel implements IExtension, IAttributeTableModel
 	}
 
 	@Override
-	public Quantity<LengthUnits> getColumnWidth(final int col) {
+	public Quantity<LengthUnit> getColumnWidth(final int col) {
 		return getLayout().getColumnWidth(col);
 	}
 

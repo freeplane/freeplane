@@ -21,11 +21,11 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.QuantityProperty;
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -44,7 +44,7 @@ class ChildDistanceControlGroup implements ControlGroup {
 	private static final String VERTICAL_CHILD_GAP = "vertical_child_gap";
 
 	private BooleanProperty mSetChildDistance;
-	private QuantityProperty<LengthUnits> mChildDistance;
+	private QuantityProperty<LengthUnit> mChildDistance;
 
 	private ChildDistanceChangeListener propertyChangeListener;
 
@@ -64,8 +64,8 @@ class ChildDistanceControlGroup implements ControlGroup {
 			final ModeController modeController = Controller.getCurrentModeController();
 			final LocationModel locationModel = LocationModel.getModel(node);
 			final LocationController locationController = modeController.getExtension(LocationController.class);
-			final Quantity<LengthUnits> gap = locationModel.getVGap();
-			final Quantity<LengthUnits> viewGap = locationController.getMinimalDistanceBetweenChildren(node);
+			final Quantity<LengthUnit> gap = locationModel.getVGap();
+			final Quantity<LengthUnit> viewGap = locationController.getMinimalDistanceBetweenChildren(node);
 			mSetChildDistance.setValue(gap != LocationModel.DEFAULT_VGAP);
 			mChildDistance.setQuantifiedValue(viewGap);
 		}
@@ -73,7 +73,7 @@ class ChildDistanceControlGroup implements ControlGroup {
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetChildDistance = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		mChildDistance = new  QuantityProperty<LengthUnits>(VERTICAL_CHILD_GAP, 0, 1000, 0.1, LengthUnits.px);
+		mChildDistance = new  QuantityProperty<LengthUnit>(VERTICAL_CHILD_GAP, 0, 1000, 0.1, LengthUnit.px);
 		propertyChangeListener = new ChildDistanceChangeListener(mSetChildDistance, mChildDistance);
 		mSetChildDistance.addPropertyChangeListener(propertyChangeListener);
 		mChildDistance.addPropertyChangeListener(propertyChangeListener);

@@ -21,11 +21,12 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.QuantityProperty;
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeBorderModel;
@@ -46,7 +47,7 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 	private BooleanProperty mBorderWidthMatchesEdgeWidth;
 
 	private BooleanProperty mSetBorderWidth;
-	private QuantityProperty<LengthUnits> mBorderWidth;
+	private QuantityProperty<LengthUnit> mBorderWidth;
 
 	private BorderWidthMatchesEdgeWidthListener borderWidthMatchesEdgeChangeListener;
 	private BorderWidthListener borderWidthListener;
@@ -91,8 +92,8 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final NodeBorderModel nodeBorderModel = NodeBorderModel.getModel(node);
-			final Quantity<LengthUnits> width = nodeBorderModel != null ? nodeBorderModel.getBorderWidth() : null;
-			final Quantity<LengthUnits> viewWidth = styleController.getBorderWidth(node);
+			final Quantity<LengthUnit> width = nodeBorderModel != null ? nodeBorderModel.getBorderWidth() : null;
+			final Quantity<LengthUnit> viewWidth = styleController.getBorderWidth(node);
 			mSetBorderWidth.setValue(width != null);
 			mBorderWidth.setQuantifiedValue(viewWidth);
 			enableOrDisableBorderWidthControls();
@@ -107,7 +108,7 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 	
 	private void addBorderWidthControl(DefaultFormBuilder formBuilder) {
 		mSetBorderWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		mBorderWidth = new QuantityProperty<LengthUnits>(BORDER_WIDTH, 0, 100000, 0.1, LengthUnits.px);
+		mBorderWidth = new QuantityProperty<LengthUnit>(BORDER_WIDTH, 0, 100000, 0.1, LengthUnit.px);
 		borderWidthListener = new BorderWidthListener(mSetBorderWidth, mBorderWidth);
 		mSetBorderWidth.addPropertyChangeListener(borderWidthListener);
 		mBorderWidth.addPropertyChangeListener(borderWidthListener);

@@ -6,8 +6,8 @@ import java.awt.Font;
 
 import javax.swing.SwingConstants;
 
-import org.freeplane.core.util.PhysicalUnit;
-import org.freeplane.core.util.Quantity;
+import org.freeplane.api.PhysicalUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.features.nodestyle.FontUtils;
 import org.junit.Before;
 import org.junit.Test;

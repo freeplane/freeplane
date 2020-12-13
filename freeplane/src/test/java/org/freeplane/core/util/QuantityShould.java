@@ -3,6 +3,8 @@ package org.freeplane.core.util;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
+import org.freeplane.api.PhysicalUnit;
+import org.freeplane.api.Quantity;
 import org.junit.Test;
 
 public class QuantityShould {

@@ -30,10 +30,10 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.freeplane.api.PhysicalUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
-import org.freeplane.core.util.PhysicalUnit;
-import org.freeplane.core.util.Quantity;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

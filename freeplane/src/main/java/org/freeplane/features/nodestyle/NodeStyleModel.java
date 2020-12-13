@@ -23,10 +23,10 @@ import java.awt.Color;
 
 import javax.swing.SwingConstants;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 
 /**
@@ -161,12 +161,12 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		styleModel.setShape(shape);
 	}
 	
-	public static void setShapeHorizontalMargin(final NodeModel node, final Quantity<LengthUnits> margin) {
+	public static void setShapeHorizontalMargin(final NodeModel node, final Quantity<LengthUnit> margin) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withHorizontalMargin(margin));
 	}
 	
-	public static void setShapeVerticalMargin(final NodeModel node, final Quantity<LengthUnits> margin) {
+	public static void setShapeVerticalMargin(final NodeModel node, final Quantity<LengthUnit> margin) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withVerticalMargin(margin));
 	}

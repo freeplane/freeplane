@@ -23,9 +23,9 @@ import java.net.URL;
 
 import javax.swing.Icon;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.factory.IconFactory;
 
@@ -97,7 +97,7 @@ public class UIIcon implements IconDescription, NamedIcon {
 	}
 
 	@Override
-	public Icon getIcon(Quantity<LengthUnits> iconHeight) {
+	public Icon getIcon(Quantity<LengthUnit> iconHeight) {
 		return IconFactory.getInstance().getIcon(this, iconHeight);
 	}
 

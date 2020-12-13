@@ -57,13 +57,13 @@ import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.RenderedContent;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.link.ArrowType;
@@ -477,7 +477,7 @@ public class MLinkController extends LinkController {
         for (DashVariant  variant : DashVariant.values())
         	dashActions.add(new ChangeConnectorDashAction(this, link, variant));
         final JComboBoxWithBorder connectorDashes = createActionBox(dashActions.toArray(new AFreeplaneAction[dashActions.size()]));
-		final int verticalMargin = new Quantity<>(3, LengthUnits.pt).toBaseUnitsRounded();
+		final int verticalMargin = new Quantity<>(3, LengthUnit.pt).toBaseUnitsRounded();
         connectorDashes.setVerticalMargin(verticalMargin);
         addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_lines"), connectorDashes);
 

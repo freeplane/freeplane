@@ -68,6 +68,7 @@ import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.api.LengthUnit;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
@@ -658,6 +659,7 @@ public class UITools {
 		float factor = Defaults.DEFAULT_FONT_SCALING_FACTOR;
 		try {
 	        factor = UITools.getScaleFactor();
+	        LengthUnit.setScalingFactor(factor);
         }
         catch (Exception e) {
         }

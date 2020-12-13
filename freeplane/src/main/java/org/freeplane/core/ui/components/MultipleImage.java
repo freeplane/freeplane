@@ -28,8 +28,8 @@ import java.util.List;
 
 import javax.swing.Icon;
 
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.factory.IconFactory;
@@ -47,13 +47,13 @@ public class MultipleImage implements Icon {
 		mUIIcons.add(uiIcon);
 	}
 
-	public void addIcon(final NamedIcon uiIcon, Quantity<LengthUnits> iconHeight) {
+	public void addIcon(final NamedIcon uiIcon, Quantity<LengthUnit> iconHeight) {
 		mIcons.add(uiIcon.getIcon(iconHeight));
 		mUIIcons.add(uiIcon);
 	}
 
 	public void addLinkIcon(Icon icon, NodeModel node) {
-		final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(node);
+		final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(node);
 		final IconFactory iconFactory = IconFactory.getInstance();
 		final Icon scaledIcon = iconFactory.canScaleIcon(icon) ? iconFactory.getScaledIcon(icon, iconHeight) : icon;
 		mIcons.add(scaledIcon);
