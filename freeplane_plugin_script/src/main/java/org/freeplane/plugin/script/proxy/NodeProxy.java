@@ -947,13 +947,13 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 
 	@Override
-	public int getHorizontalShift(){
-		return LocationController.getController().getHorizontalShift(getDelegate()).toBaseUnitsRounded();
+	public Quantity<LengthUnit> getHorizontalShiftAsLength(){
+		return LocationController.getController().getHorizontalShift(getDelegate());
 	}
 
 	@Override
-	public int getVerticalShift(){
-		return LocationController.getController().getVerticalShift(getDelegate()).toBaseUnitsRounded();
+	public Quantity<LengthUnit> getVerticalShiftAsLength(){
+		return LocationController.getController().getVerticalShift(getDelegate());
 	}
 
 	@Override
@@ -989,8 +989,8 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	}
 
 	@Override
-	public int getMinimalDistanceBetweenChildren(){
-		return LocationController.getController().getMinimalDistanceBetweenChildren(getDelegate()).toBaseUnitsRounded();
+	public Quantity<LengthUnit> getMinimalDistanceBetweenChildrenAsLength(){
+		return LocationController.getController().getMinimalDistanceBetweenChildren(getDelegate());
 	}
 
 	@Override

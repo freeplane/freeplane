@@ -324,6 +324,16 @@ public interface Node extends NodeRO {
      * @since 1.5.6 */
 	void setMinimalDistanceBetweenChildren(String verticalShift);
 
+    /**@since 1.5.6 */
+    void setVerticalShift(Quantity<LengthUnit> verticalShift);
+
+    /**@since 1.5.6 */
+    void setMinimalDistanceBetweenChildren(Quantity<LengthUnit> verticalShift);
+
+    /**@since 1.5.6 */
+    void setHorizontalShift(Quantity<LengthUnit> verticalShift);
+
+
 	/**
 	 * A sort method that uses the result of the lambda ("block") for comparison. As this closure
 	 * will be called with a node as an argument (to be referenced by <code>it</code>) the search can

@@ -267,17 +267,6 @@ public interface Proxy {
     	 * @since 1.4.1
     	 */
 		void sortChildrenBy(Closure<Comparable<Object>> closure);
-
-	    /**@since 1.5.6 */
-		void setVerticalShift(Quantity<LengthUnit> verticalShift);
-
-	    /**@since 1.5.6 */
-		void setMinimalDistanceBetweenChildren(Quantity<LengthUnit> verticalShift);
-
-	    /**@since 1.5.6 */
-		void setHorizontalShift(Quantity<LengthUnit> verticalShift);
-
-
 	}
 
 	interface NodeStyleRO extends org.freeplane.api.NodeStyleRO {
