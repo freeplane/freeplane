@@ -835,21 +835,6 @@ public class NodeView extends JComponent implements INodeView {
 			return getModel().hasVisibleContent(map.getFilter());
 	}
 	
-	boolean isSubtreeVisible() {
-	    if(isContentVisible())
-	        return true;
-        final Component[] components = getComponents();
-        for (int i = 0; i < components.length; i++) {
-        	if (!(components[i] instanceof NodeView)) {
-        		continue;
-        	}
-        	final NodeView view = (NodeView) components[i];
-        	if(view.isSubtreeVisible())
-        	    return true;
-        }
-        return false;
-	}
-
 	public boolean isLeft() {
 		if (getMap().getLayoutType() == MapViewLayout.OUTLINE) {
 			return false;
@@ -1086,7 +1071,7 @@ public class NodeView extends JComponent implements INodeView {
 
 	@Override
     public void paint(Graphics g) {
-		if(isHierarchyVisible()) {
+		if(isSubtreeVisible()) {
 			super.paint(g);
 			paintDecoration((Graphics2D) g);
 		}
@@ -1687,9 +1672,24 @@ public class NodeView extends JComponent implements INodeView {
 		super.setBounds(x, y, width, height);
 	}
 
-	boolean isHierarchyVisible() {
-		return getHeight() > 2 * getSpaceAround();
+	boolean isSubtreeVisible() {
+	    if(isValid())
+	        return getHeight() > 2 * getSpaceAround();
+	    if(isContentVisible())
+	        return true;
+	    final Component[] components = getComponents();
+	    for (int i = 0; i < components.length; i++) {
+	        if (!(components[i] instanceof NodeView)) {
+	            continue;
+	        }
+	        final NodeView view = (NodeView) components[i];
+	        if(view.isSubtreeVisible())
+	            return true;
+	    }
+	    return false;
 	}
+
+
 
 	public enum Properties{HIDDEN_CHILDREN};
 
