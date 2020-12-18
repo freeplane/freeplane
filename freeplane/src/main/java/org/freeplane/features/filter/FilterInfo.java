@@ -42,8 +42,8 @@ public class FilterInfo {
     }
 
 	void add(final int flag) {
-		if ((flag & (FilterInfo.FILTER_SHOW_AS_MATCHED | FilterInfo.FILTER_SHOW_AS_HIDDEN)) != 0) {
-			info &= ~FilterInfo.FILTER_SHOW_AS_INITIAL_VALUE;
+		if ((flag & (FILTER_SHOW_AS_MATCHED | FILTER_SHOW_AS_HIDDEN)) != 0) {
+			info &= ~FILTER_SHOW_AS_INITIAL_VALUE;
 		}
 		info |= flag;
 	}
@@ -51,17 +51,17 @@ public class FilterInfo {
 	/**
 	 */
 	public boolean isAncestor() {
-		return (info & FilterInfo.FILTER_SHOW_AS_ANCESTOR) != 0;
+		return (info & (FILTER_SHOW_AS_ANCESTOR|FILTER_SHOW_AS_INITIAL_VALUE)) != 0;
 	}
 
 	/**
 	 */
 	public boolean isMatched() {
-		return (info & FilterInfo.FILTER_SHOW_AS_MATCHED) != 0;
+		return (info & FILTER_SHOW_AS_MATCHED) != 0;
 	}
 
 	public void reset() {
-		info = FilterInfo.FILTER_SHOW_AS_INITIAL_VALUE;
+		info = FILTER_SHOW_AS_INITIAL_VALUE;
 	}
 
 	boolean matches(final int filterOptions) {

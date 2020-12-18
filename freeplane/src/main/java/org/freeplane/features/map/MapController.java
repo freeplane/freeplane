@@ -505,7 +505,7 @@ implements IExtension, NodeChangeAnnouncer{
 		final boolean isFolded = mapViewManager.isFoldedOnCurrentView(node) ||  mapViewManager.hasHiddenChildren(node);
 		for(int i = 0; i < node.getChildCount(); i++){
 			final NodeModel child = node.getChildAt(i);
-			if(child.hasVisibleContent(filter)){
+			if(child.subtreeHasVisibleContent(filter)){
 				if (isFolded)
 					return true;
 			} else if (filter.getFilterInfo(node).isAncestor() && canBeUnfoldedOnCurrentView(child, filter)) {

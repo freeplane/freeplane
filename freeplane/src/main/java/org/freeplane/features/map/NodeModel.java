@@ -725,4 +725,10 @@ public class NodeModel{
 
 		this.attachClones();
 	}
+
+    public boolean subtreeHasVisibleContent(Filter filter) {
+        if (hasVisibleContent(filter))
+            return true;
+        return children.stream().allMatch(child -> child.subtreeHasVisibleContent(filter));
+    }
 }
