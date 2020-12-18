@@ -108,6 +108,7 @@ public class MapStyleModel implements IExtension {
 
 	private void insertStyleMap(MapModel map, MapModel styleMap) {
 		this.styleMap = styleMap;
+		styleMap.putExtension(MapStyleModel.class, this);
 		final NodeModel rootNode = styleMap.getRootNode();
 		createNodeStyleMap(rootNode);
 		styleMap.putExtension(IUndoHandler.class, map.getExtension(IUndoHandler.class));
@@ -124,10 +125,9 @@ public class MapStyleModel implements IExtension {
 		createNodeStyleMap(rootNode);
 	}
 
-	void createStyleMap(final MapModel parentMap, MapStyleModel mapStyleModel, final String styleMapStr) {
+	void createStyleMap(final MapModel parentMap, final String styleMapStr) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		MapModel styleMap = new StyleMapModel(parentMap.getIconRegistry(),
-		    AttributeRegistry.getRegistry(parentMap), modeController.getMapController());
+		MapModel styleMap = new StyleMapModel(parentMap, modeController.getMapController());
 		styleMap.createNewRoot();
 		final MapReader mapReader = modeController.getMapController().getMapReader();
 		final Reader styleReader = new StringReader(styleMapStr);
@@ -297,6 +297,7 @@ public class MapStyleModel implements IExtension {
 	void copyFrom(MapStyleModel source, boolean overwrite) {
 		if (overwrite && source.styleMap != null || styleMap == null) {
 			styleMap = source.styleMap;
+			styleMap.putExtension(MapStyleModel.class, this);
 			styleNodes = source.styleNodes;
 			initStylesComboBoxModel();
 			conditionalStyleModel = source.conditionalStyleModel;

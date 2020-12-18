@@ -89,10 +89,30 @@ public class UrlManager implements IExtension {
 	}
 
 	public static void install( final UrlManager urlManager) {
-		final ModeController modeController = Controller.getCurrentModeController();
-		modeController.addExtension(UrlManager.class, urlManager);
-		urlManager.init();
+	    final ModeController modeController = Controller.getCurrentModeController();
+	    modeController.addExtension(UrlManager.class, urlManager);
+	    urlManager.init();
 	}
+
+	public static URI getAbsoluteUri(final MapModel map, URI uri) throws MalformedURLException {
+	    if (uri == null  || uri.isAbsolute()) {
+	        return uri;
+	    }
+	    final String path = uri.getPath();
+	    try {
+	        URL context = map.getURL();
+	        if(context == null)
+	            return null;
+	        final URL url = new URL(context, path);
+	        return new URI(url.getProtocol(), url.getHost(), url.getPath(), uri.getQuery(), uri.getFragment());
+	    }
+	    catch (final URISyntaxException e) {
+	        LogUtils.severe(e);
+	        return null;
+	    }
+	}
+
+
 
 // // 	final private Controller controller;
 // 	final private ModeController modeController;
@@ -400,26 +420,6 @@ public class UrlManager implements IExtension {
 		return getAbsoluteUri(map, uri);
 	}
 
-
-	public URI getAbsoluteUri(final MapModel map, URI uri) throws MalformedURLException {
-//		final URI resolvedURI = resolveProjectUri(uri);
-		final URI resolvedURI = uri;
-		if (resolvedURI == null  || resolvedURI.isAbsolute()) {
-			return resolvedURI;
-		}
-		final String path = resolvedURI.getPath();
-		try {
-			URL context = map.getURL();
-			if(context == null)
-				return null;
-			final URL url = new URL(context, path);
-			return new URI(url.getProtocol(), url.getHost(), url.getPath(), uri.getQuery(), uri.getFragment());
-		}
-		catch (final URISyntaxException e) {
-			LogUtils.severe(e);
-			return null;
-		}
-	}
 
     //DOCEAR - added project relative uri resolution
 	@SuppressWarnings("unused")

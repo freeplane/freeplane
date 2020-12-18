@@ -19,9 +19,12 @@
  */
 package org.freeplane.features.styles;
 
+import java.net.URL;
+
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.icon.IconRegistry;
+import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeAnnouncer;
 
@@ -31,14 +34,20 @@ import org.freeplane.features.map.NodeChangeAnnouncer;
  */
 class StyleMapModel extends MapModel {
 	private static final String STYLES = "styles";
+    MapModel parentMap;
 
-	StyleMapModel(IconRegistry iconRegistry, AttributeRegistry attributeRegistry, NodeChangeAnnouncer nodeChangeAnnouncer) {
-		super(iconRegistry, nodeChangeAnnouncer);
-		addExtension(attributeRegistry);
-	}
-
+	StyleMapModel(MapModel parentMap, MapController mapController) {
+        super(parentMap.getIconRegistry(), mapController);
+        this.parentMap = parentMap;
+	    addExtension(AttributeRegistry.getRegistry(parentMap));
+    }
+	
 	@Override
 	public String getTitle() {
-		return TextUtils.getText(STYLES);
+	    return TextUtils.getText(STYLES);
 	}
+
+    public URL getURL() {
+        return parentMap.getURL();
+    }
 }
