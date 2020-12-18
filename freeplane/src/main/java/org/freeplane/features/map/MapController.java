@@ -508,7 +508,7 @@ implements IExtension, NodeChangeAnnouncer{
 			if(child.subtreeHasVisibleContent(filter)){
 				if (isFolded)
 					return true;
-			} else if (filter.getFilterInfo(node).isAncestor() && canBeUnfoldedOnCurrentView(child, filter)) {
+			} else if (filter.getFilterInfo(node).canBeAncestor() && canBeUnfoldedOnCurrentView(child, filter)) {
 				return true;
 			}
 		}

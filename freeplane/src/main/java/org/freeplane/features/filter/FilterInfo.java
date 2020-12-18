@@ -50,7 +50,7 @@ public class FilterInfo {
 
 	/**
 	 */
-	public boolean isAncestor() {
+	public boolean canBeAncestor() {
 		return (info & (FILTER_SHOW_AS_ANCESTOR|FILTER_SHOW_AS_INITIAL_VALUE)) != 0;
 	}
 
