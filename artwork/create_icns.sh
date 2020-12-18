@@ -2,5 +2,5 @@
 mkdir tmp
 cp -r Assets.xcassets/AppIcon.appiconset tmp/freeplane.iconset
 iconutil -c icns -o outputs/freeplane.icns tmp/freeplane.iconset
-rm -rf tmp/freeplane.iconset
-rm -rf tmp
+srm -rf tmp/freeplane.iconset
+srm -rf tmp
