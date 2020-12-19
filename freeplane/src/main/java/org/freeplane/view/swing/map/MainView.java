@@ -71,6 +71,7 @@ import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.link.icons.NodeViewDecorator;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
@@ -81,7 +82,6 @@ import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
-import org.freeplane.view.swing.map.linkicons.NodeViewDecorator;
 
 
 /**
@@ -406,36 +406,12 @@ public class MainView extends ZoomableLabel {
 		    }
 		}
         addOwnIcons(iconImages, model);
-		addLinkDecorationIcons(iconImages, model); // TODO - Use IStateIconProvider to add icons (that is, register a StateIconProvider -- see NoteController.registerStateIconProvider for details.
         setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
-	}
-	private void addLinkDecorationIcons(MultipleImage iconImages, NodeModel model) {
-		final URI link = NodeLinks.getLink(model);
-		if (link != null) {
-			addIconsBasedOnLinkType(link, iconImages, model);
-		}
-	}
-	private void addIconsBasedOnLinkType(URI link, MultipleImage iconImages, NodeModel model)
-	{
-		try {
-			final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(model);
-			NodeViewDecorator decorator = NodeViewDecorator.INSTANCE;
-			List<String> iconsForLink = decorator.getIconsForLink(link);
-			for(String iconName : iconsForLink) {
-				UIIcon icon = IconStoreFactory.ICON_STORE.getUIIcon(iconName + ".svg");
-				iconImages.addIcon(icon, iconHeight);
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}
 	}
 
 	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
-		final URI link = NodeLinks.getLink(model);
-		final Icon icon = getNodeView().getMap().getModeController().getExtension(LinkController.class).getLinkIcon(link, model);
-		if(icon != null)
-			iconImages.addLinkIcon(icon, model);
+		getNodeView().getMap()
+		        .getModeController().getExtension(LinkController.class).addLinkDecorationIcons(iconImages, model);
 	}
 
 	void updateTextColor(final NodeView node) {

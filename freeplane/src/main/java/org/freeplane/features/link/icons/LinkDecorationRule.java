@@ -1,4 +1,4 @@
-package org.freeplane.view.swing.map.linkicons;
+package org.freeplane.features.link.icons;
 
 import java.util.HashMap;
 import java.util.List;

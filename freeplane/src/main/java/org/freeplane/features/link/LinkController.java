@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,10 +56,13 @@ import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -74,7 +78,11 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.link.icons.NodeViewDecorator;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapController;
@@ -837,18 +845,29 @@ public class LinkController extends SelectionController implements IExtension {
 	    return ResourceController.getResourceController().getProperty("label_font_family");
     }
 
-	private static final String MENUITEM_ICON = "menuitem_icon";
-	private static final String EXECUTABLE_ICON = "executable_icon";
-	private static final String LINK_ICON = "link_icon";
-	private static final String MAIL_ICON = "mail_icon";
-	private static final String LINK_LOCAL_ICON = "link_local_icon";
+    private static final String MENUITEM_ICON = "menuitem_icon";
+    private static final String EXECUTABLE_ICON = "executable_icon";
+    private static final String LINK_ICON = "link_icon";
+    private static final String MAIL_ICON = "mail_icon";
+    private static final String LINK_LOCAL_ICON = "link_local_icon";
+    private static final String DECORATED_MENUITEM_ICON = "menuitem_icon";
+    private static final String DECORATED_EXECUTABLE_ICON = "executable_icon";
+    private static final String DECORATED_LINK_ICON = "decorated_link_icon";
+    private static final String DECORATED_MAIL_ICON = "decorated_mail_icon";
+    private static final String DECORATED_LINK_LOCAL_ICON = "decorated_link_local_icon";
 
 	public static enum LinkType{
-		LOCAL(LINK_LOCAL_ICON), MAIL(MAIL_ICON), EXECUTABLE(EXECUTABLE_ICON), MENU(MENUITEM_ICON), DEFAULT(LINK_ICON);
-		LinkType(String iconKey){
-			this.icon =  ResourceController.getResourceController().getIcon(iconKey);
+		LOCAL(LINK_LOCAL_ICON, DECORATED_LINK_LOCAL_ICON), 
+		MAIL(MAIL_ICON, DECORATED_MAIL_ICON), 
+		EXECUTABLE(EXECUTABLE_ICON ,DECORATED_EXECUTABLE_ICON), 
+		MENU(MENUITEM_ICON, DECORATED_MENUITEM_ICON), 
+		DEFAULT(LINK_ICON, DECORATED_LINK_ICON);
+        LinkType(String iconKey, String decoratedIconKey){
+                this.icon =  ResourceController.getResourceController().getIcon(iconKey);
+                this.decoratedIcon =  ResourceController.getResourceController().getIcon(decoratedIconKey);
 		}
-		final public Icon icon;
+        final public Icon icon;
+        final public Icon decoratedIcon;
 	}
 
 	public Icon getLinkIcon(final URI link, final NodeModel model) {
@@ -872,6 +891,40 @@ public class LinkController extends SelectionController implements IExtension {
 	    return linkType.icon;
 
 	}
+
+	public void addLinkDecorationIcons(MultipleImage iconImages, NodeModel model) {
+	    final URI link = NodeLinks.getLink(model);
+	    if (link != null) {
+	        addIconsBasedOnLinkType(link, iconImages, model);
+	    }
+	}
+
+	private void addIconsBasedOnLinkType(URI link, MultipleImage iconImages, NodeModel model)
+	{
+	    try {
+	        final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(model);
+	        NodeViewDecorator decorator = NodeViewDecorator.INSTANCE;
+	        List<String> iconsForLink = decorator.getIconsForLink(link);
+	        if(iconsForLink.isEmpty()) {
+	            Icon linkIcon = getLinkIcon(link,  model);
+	            if(linkIcon != null)
+	                iconImages.addLinkIcon(linkIcon, model);
+	        }
+	        else {
+	            final LinkType linkType = getLinkType(link, model);
+	            if(linkType != null && linkType.decoratedIcon != null) 
+	                iconImages.addLinkIcon(linkType.decoratedIcon, model);
+	            for(String iconName : iconsForLink) {
+	                UIIcon icon = IconStoreFactory.ICON_STORE.getUIIcon(iconName + ".svg");
+	                iconImages.addIcon(icon, iconHeight);
+	            }
+	        }
+	    } catch (Exception e) {
+	        System.out.println(e.getMessage());
+	        e.printStackTrace();
+	    }
+	}
+
 
 	public static LinkType getLinkType(final URI link, final NodeModel model) {
 		if (link == null)
