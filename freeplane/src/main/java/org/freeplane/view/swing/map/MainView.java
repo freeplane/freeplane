@@ -38,8 +38,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
@@ -65,6 +67,8 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.factory.IconFactory;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapController;
@@ -77,6 +81,7 @@ import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
+import org.freeplane.view.swing.map.linkicons.NodeViewDecorator;
 
 
 /**
@@ -401,7 +406,29 @@ public class MainView extends ZoomableLabel {
 		    }
 		}
         addOwnIcons(iconImages, model);
+		addLinkDecorationIcons(iconImages, model); // TODO - Use IStateIconProvider to add icons (that is, register a StateIconProvider -- see NoteController.registerStateIconProvider for details.
         setIcon((iconImages.getImageCount() > 0 ? iconImages : null));
+	}
+	private void addLinkDecorationIcons(MultipleImage iconImages, NodeModel model) {
+		final URI link = NodeLinks.getLink(model);
+		if (link != null) {
+			addIconsBasedOnLinkType(link, iconImages, model);
+		}
+	}
+	private void addIconsBasedOnLinkType(URI link, MultipleImage iconImages, NodeModel model)
+	{
+		try {
+			final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(model);
+			NodeViewDecorator decorator = NodeViewDecorator.INSTANCE;
+			List<String> iconsForLink = decorator.getIconsForLink(link);
+			for(String iconName : iconsForLink) {
+				UIIcon icon = IconStoreFactory.ICON_STORE.getUIIcon(iconName + ".svg");
+				iconImages.addIcon(icon, iconHeight);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
