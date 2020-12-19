@@ -902,7 +902,6 @@ public class LinkController extends SelectionController implements IExtension {
 	private void addIconsBasedOnLinkType(URI link, MultipleImage iconImages, NodeModel model)
 	{
 	    try {
-	        final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(model);
 	        NodeViewDecorator decorator = NodeViewDecorator.INSTANCE;
 	        List<String> iconsForLink = decorator.getIconsForLink(link);
 	        if(iconsForLink.isEmpty()) {
@@ -915,8 +914,8 @@ public class LinkController extends SelectionController implements IExtension {
 	            if(linkType != null && linkType.decoratedIcon != null) 
 	                iconImages.addLinkIcon(linkType.decoratedIcon, model);
 	            for(String iconName : iconsForLink) {
-	                UIIcon icon = IconStoreFactory.ICON_STORE.getUIIcon(iconName + ".svg");
-	                iconImages.addIcon(icon, iconHeight);
+	                Icon icon = ResourceController.getResourceController().getIcon("/images/" + iconName + ".svg");
+	                iconImages.addLinkIcon(icon, model);
 	            }
 	        }
 	    } catch (Exception e) {
