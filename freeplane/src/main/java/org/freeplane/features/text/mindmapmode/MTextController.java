@@ -1053,7 +1053,7 @@ public class MTextController extends TextController {
 	                                  String text, final boolean isNewNode, final boolean editInDialog,
 	                                  boolean internal) {
 		Controller.getCurrentModeController().setBlocked(true);
-		EditNodeBase base = getEditNodeBase(nodeModel, text, editControl, editInDialog);
+		EditNodeBase base = createContentSpecificEditor(nodeModel, text, editControl, editInDialog);
 		if (base != null || !internal) {
 			return base;
 		}
@@ -1062,7 +1062,7 @@ public class MTextController extends TextController {
 		return textFieldCreator.createEditor(nodeModel, editControl, text, editInDialog);
 	}
 
-	public EditNodeBase getEditNodeBase(final NodeModel nodeModel, final String text, final IEditControl editControl,
+	public EditNodeBase createContentSpecificEditor(final NodeModel nodeModel, final String text, final IEditControl editControl,
 	                                    final boolean editInDialog) {
 		final List<IContentTransformer> textTransformers = getTextTransformers();
 		for (IContentTransformer t : textTransformers) {
