@@ -582,16 +582,17 @@ public class MTextController extends TextController {
 		stopEditing();
 		Controller.getCurrentModeController().setBlocked(true);
 		String text = DetailTextModel.getDetailTextText(nodeModel);
-		final boolean isNewNode = text == null;
-		if (isNewNode) {
+		final boolean addsNewDetailsUsingInlineEditor = text == null && ! editLong;
+		if (addsNewDetailsUsingInlineEditor) {
 			final MTextController textController = MTextController.getController();
 			textController.setDetails(nodeModel, "<html>");
-			text = "";
 		}
+		if (text == null)
+		    text = "";
 		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
 			@Override
 			public void cancel() {
-				if (isNewNode) {
+				if (addsNewDetailsUsingInlineEditor) {
 					final String detailText = DetailTextModel.getDetailTextText(nodeModel);
 					final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 					if (detailText != null)
@@ -604,7 +605,7 @@ public class MTextController extends TextController {
 			@Override
 			public void ok(final String newText) {
 				if (HtmlUtils.isEmpty(newText))
-					if (isNewNode) {
+					if (addsNewDetailsUsingInlineEditor) {
 						final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 						modeController.undo();
 						modeController.resetRedo();
@@ -643,10 +644,12 @@ public class MTextController extends TextController {
 				return EditedComponent.DETAIL;
 			}
 		};
-		mCurrentEditor = createEditor(nodeModel, editControl, text, false, editLong, true);
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities
-		    .getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
-		mCurrentEditor.show(frame);
+		        .getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
+		EditNodeBase editor = createEditor(nodeModel, editControl, text, false, editLong, true);
+		if(! editLong)
+		    mCurrentEditor = editor;
+        editor.show(frame);
 	}
 
 	private void setDetailsHtmlText(final NodeModel node, final String newText) {
