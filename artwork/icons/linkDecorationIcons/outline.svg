@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 63.1 (101010) - https://sketch.com -->
+    <title>outline/outline</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="50%" id="radialGradient-1">
+            <stop stop-color="#99C4FF" offset="0%"></stop>
+            <stop stop-color="#539BFF" offset="87.1067356%"></stop>
+            <stop stop-color="#4E94F5" offset="100%"></stop>
+        </radialGradient>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="linearGradient-2">
+            <stop stop-color="#989898" offset="0%"></stop>
+            <stop stop-color="#333333" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="outline/outline">
+            <g id="Lists/Outline" transform="translate(7.183635, 7.183635)">
+                <g id="Group" transform="translate(0.342531, 2.568982)">
+                    <rect id="Rectangle" fill="url(#radialGradient-1)" x="0" y="0" width="17.1265461" height="17.1265461" rx="1.8"></rect>
+                    <rect id="Rectangle" fill="url(#linearGradient-2)" x="21.4081827" y="5.13796384" width="42.8163654" height="6.85061846"></rect>
+                    <rect id="Rectangle-Copy" fill="url(#radialGradient-1)" x="0" y="63.4538535" width="17.1265461" height="17.1265461" rx="1.8"></rect>
+                    <rect id="Rectangle-Copy-6" fill="url(#linearGradient-2)" x="21.1512845" y="68.5918173" width="42.8163654" height="6.85061846"></rect>
+                    <rect id="Rectangle-Copy-2" fill="url(#radialGradient-1)" x="21.4081827" y="42.0456708" width="17.1265461" height="17.1265461" rx="1.8"></rect>
+                    <rect id="Rectangle-Copy-5" fill="url(#linearGradient-2)" x="42.2169363" y="47.1836346" width="42.8163654" height="6.85061846"></rect>
+                    <rect id="Rectangle-Copy-3" fill="url(#radialGradient-1)" x="21.4081827" y="20.6374881" width="17.1265461" height="17.1265461" rx="1.8"></rect>
+                    <rect id="Rectangle-Copy-4" fill="url(#linearGradient-2)" x="42.2169363" y="25.775452" width="42.8163654" height="6.85061846"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
