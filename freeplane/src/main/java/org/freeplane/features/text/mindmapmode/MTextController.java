@@ -981,9 +981,11 @@ public class MTextController extends TextController {
 				return EditedComponent.TEXT;
 			}
 		};
-		mCurrentInlineEditor = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editLong, true);
 		final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
-		mCurrentInlineEditor.show(frame);
+		EditNodeBase editor = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editLong, true);
+		editor.show(frame);
+		if(! editLong)
+		    mCurrentInlineEditor = editor;
 	}
 
 	private EditNodeBase createEditor(final NodeModel nodeModel, final IEditControl editControl,
