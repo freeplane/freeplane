@@ -67,6 +67,7 @@ import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.core.util.collection.OptionalReference;
 import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.format.FormatController;
@@ -580,70 +581,16 @@ public class MTextController extends TextController {
 	public void editDetails(final NodeModel nodeModel, InputEvent e, final boolean editInDialog) {
 		final Controller controller = Controller.getCurrentController();
 		stopInlineEditing();
-		Controller.getCurrentModeController().setBlocked(true);
 		String text = DetailTextModel.getDetailTextText(nodeModel);
 		final boolean addsNewDetailsUsingInlineEditor = text == null && ! editInDialog;
 		if (addsNewDetailsUsingInlineEditor) {
+		    Controller.getCurrentModeController().setBlocked(true);
 			final MTextController textController = MTextController.getController();
 			textController.setDetails(nodeModel, "<html>");
 		}
 		if (text == null)
 		    text = "";
-		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
-			@Override
-			public void cancel() {
-				if (addsNewDetailsUsingInlineEditor) {
-					final String detailText = DetailTextModel.getDetailTextText(nodeModel);
-					final MModeController modeController = (MModeController) Controller.getCurrentModeController();
-					if (detailText != null)
-						modeController.undo();
-					modeController.resetRedo();
-				}
-				stop();
-			}
-
-			@Override
-			public void ok(final String newText) {
-				if (HtmlUtils.isEmpty(newText))
-					if (addsNewDetailsUsingInlineEditor) {
-						final MModeController modeController = (MModeController) Controller.getCurrentModeController();
-						modeController.undo();
-						modeController.resetRedo();
-					}
-					else {
-						preserveRootNodeLocationOnScreen();
-						setDetailsHtmlText(nodeModel, null);
-					}
-				else {
-					preserveRootNodeLocationOnScreen();
-					setDetailsHtmlText(nodeModel, newText);
-				}
-				stop();
-			}
-
-			private void preserveRootNodeLocationOnScreen() {
-				Controller.getCurrentController().getSelection().preserveRootNodeLocationOnScreen();
-			}
-
-			@Override
-			public void split(final String newText, final int position) {
-			}
-
-			private void stop() {
-				Controller.getCurrentModeController().setBlocked(false);
-				mCurrentInlineEditor = null;
-			}
-
-			@Override
-			public boolean canSplit() {
-				return false;
-			}
-
-			@Override
-			public EditedComponent getEditType() {
-				return EditedComponent.DETAIL;
-			}
-		};
+		final EditNodeBase.IEditControl editControl = new NodeDetailsEditor(addsNewDetailsUsingInlineEditor, nodeModel);
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities
 		        .getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
 		EditNodeBase editor = createEditor(nodeModel, editControl, text, false, editInDialog, true);
@@ -813,7 +760,172 @@ public class MTextController extends TextController {
 		return matcher.find();
 	}
 
-	private class EditEventDispatcher implements KeyEventDispatcher, INodeChangeListener, INodeSelectionListener {
+	private class NodeDetailsEditor implements EditNodeBase.IEditControl {
+        private final boolean addsNewDetailsUsingInlineEditor;
+
+        private final OptionalReference<NodeModel> nodeModel;
+
+        private NodeDetailsEditor(boolean addsNewDetailsUsingInlineEditor, NodeModel nodeModel) {
+            this.addsNewDetailsUsingInlineEditor = addsNewDetailsUsingInlineEditor;
+            this.nodeModel = new OptionalReference<>(nodeModel);
+        }
+
+        @Override
+        public void cancel() {
+        	if (nodeModel.isPresent() &&  addsNewDetailsUsingInlineEditor) {
+        		final String detailText = DetailTextModel.getDetailTextText(nodeModel.get());
+        		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+        		if (detailText != null)
+        			modeController.undo();
+        		modeController.resetRedo();
+        		stop();
+        	}
+        }
+
+        @Override
+        public void ok(final String newText) {
+            nodeModel.ifPresent(x -> ok(x, newText));
+        }
+        
+        private void ok(NodeModel nodeModel, final String newText) {
+        	if (HtmlUtils.isEmpty(newText))
+        		if (addsNewDetailsUsingInlineEditor) {
+        			final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+        			modeController.undo();
+        			modeController.resetRedo();
+        		}
+        		else {
+        			preserveRootNodeLocationOnScreen();
+        			setDetailsHtmlText(nodeModel, null);
+        		}
+        	else {
+        		preserveRootNodeLocationOnScreen();
+        		setDetailsHtmlText(nodeModel, newText);
+        	}
+        	if (addsNewDetailsUsingInlineEditor) {
+        	    stop();
+        	}
+        }
+
+        private void preserveRootNodeLocationOnScreen() {
+        	Controller.getCurrentController().getSelection().preserveRootNodeLocationOnScreen();
+        }
+
+        @Override
+        public void split(final String newText, final int position) {
+        }
+
+        private void stop() {
+        	Controller.getCurrentModeController().setBlocked(false);
+        	mCurrentInlineEditor = null;
+        }
+
+        @Override
+        public boolean canSplit() {
+        	return false;
+        }
+
+        @Override
+        public EditedComponent getEditType() {
+        	return EditedComponent.DETAIL;
+        }
+    }
+
+    private class NodeTextEditor implements IEditControl {
+        private final IMapViewManager viewController;
+
+        private final OptionalReference<NodeModel> nodeModel;
+
+        private final boolean addsNewNodeUsingInlineEditor;
+
+        private final NodeModel prevSelectedModel;
+
+        private final Controller controller;
+
+        private final boolean parentFolded;
+
+        private NodeTextEditor(IMapViewManager viewController, NodeModel nodeModel,
+                boolean addsNewNodeUsingInlineEditor, NodeModel prevSelectedModel,
+                Controller controller, boolean parentFolded) {
+            this.viewController = viewController;
+            this.nodeModel = new OptionalReference<>(nodeModel);
+            this.addsNewNodeUsingInlineEditor = addsNewNodeUsingInlineEditor;
+            this.prevSelectedModel = prevSelectedModel;
+            this.controller = controller;
+            this.parentFolded = parentFolded;
+        }
+
+        @Override
+        public void cancel() {
+            if (addsNewNodeUsingInlineEditor) {
+                nodeModel.ifPresent(this::cancel);
+                stop();
+            }
+        }
+        
+        private void cancel(NodeModel nodeModel) {
+        	if (nodeModel.getMap().equals(controller.getMap())) {
+        		if (nodeModel.getParentNode() != null) {
+        			controller.getSelection().selectAsTheOnlyOneSelected(nodeModel);
+        			final MModeController modeController = (MModeController) Controller.getCurrentModeController();
+        			modeController.undo();
+        			modeController.resetRedo();
+        		}
+        		final MapController mapController = Controller.getCurrentModeController().getMapController();
+        		if (parentFolded) {
+        			mapController.fold(prevSelectedModel);
+        		}
+        	}
+        }
+
+        private void stop() {
+        	Controller.getCurrentModeController().setBlocked(false);
+        	viewController.obtainFocusForSelected();
+        	mCurrentInlineEditor = null;
+        }
+
+        @Override
+        public void ok(final String text) {
+            nodeModel.ifPresent(x -> ok(x, text));
+            if (addsNewNodeUsingInlineEditor) {
+                stop();
+            }
+        }
+        
+        private void ok(NodeModel nodeModel, final String text) {
+        	String processedText = makePlainIfNoFormattingFound(text);
+        	preserveRootNodeLocationOnScreen();
+        	setGuessedNodeObject(nodeModel, processedText);
+        }
+
+        private void preserveRootNodeLocationOnScreen() {
+        	Controller.getCurrentController().getSelection().preserveRootNodeLocationOnScreen();
+        }
+
+        @Override
+        public void split(final String text, final int position) {
+            nodeModel.ifPresent(x -> split(x, text, position));
+        }
+        
+        private void split(NodeModel nodeModel, final String text, final int position) {
+        	String processedText = HtmlUtils.isHtml(text) ? removeHtmlHead(text) : text;
+        	splitNode(nodeModel, position, processedText);
+        	viewController.obtainFocusForSelected();
+        	stop();
+        }
+
+        @Override
+        public boolean canSplit() {
+        	return true;
+        }
+
+        @Override
+        public EditedComponent getEditType() {
+        	return EditedComponent.TEXT;
+        }
+    }
+
+    private class EditEventDispatcher implements KeyEventDispatcher, INodeChangeListener, INodeSelectionListener {
 		private final boolean editInDialog;
 		private final boolean parentFolded;
 		private final boolean isNewNode;
@@ -928,60 +1040,8 @@ public class MTextController extends TextController {
 			return;
 		};
 		final boolean addsNewNodeUsingInlineEditor = isNewNode && ! editInDialog;
-		final IEditControl editControl = new IEditControl() {
-			@Override
-			public void cancel() {
-				if (addsNewNodeUsingInlineEditor && nodeModel.getMap().equals(controller.getMap())) {
-					if (nodeModel.getParentNode() != null) {
-						controller.getSelection().selectAsTheOnlyOneSelected(nodeModel);
-						final MModeController modeController = (MModeController) Controller.getCurrentModeController();
-						modeController.undo();
-						modeController.resetRedo();
-					}
-					final MapController mapController = Controller.getCurrentModeController().getMapController();
-					if (parentFolded) {
-						mapController.fold(prevSelectedModel);
-					}
-				}
-				stop();
-			}
-
-			private void stop() {
-				Controller.getCurrentModeController().setBlocked(false);
-				viewController.obtainFocusForSelected();
-				mCurrentInlineEditor = null;
-			}
-
-			@Override
-			public void ok(final String text) {
-				String processedText = makePlainIfNoFormattingFound(text);
-				preserveRootNodeLocationOnScreen();
-				setGuessedNodeObject(nodeModel, processedText);
-				stop();
-			}
-
-			private void preserveRootNodeLocationOnScreen() {
-				Controller.getCurrentController().getSelection().preserveRootNodeLocationOnScreen();
-			}
-
-			@Override
-			public void split(final String text, final int position) {
-				String processedText = HtmlUtils.isHtml(text) ? removeHtmlHead(text) : text;
-				splitNode(nodeModel, position, processedText);
-				viewController.obtainFocusForSelected();
-				stop();
-			}
-
-			@Override
-			public boolean canSplit() {
-				return true;
-			}
-
-			@Override
-			public EditedComponent getEditType() {
-				return EditedComponent.TEXT;
-			}
-		};
+		final IEditControl editControl = new NodeTextEditor(viewController, nodeModel, addsNewNodeUsingInlineEditor,
+                prevSelectedModel, controller, parentFolded);
 		final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
 		EditNodeBase editor = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editInDialog, true);
 		editor.show(frame);
