@@ -577,12 +577,12 @@ public class MTextController extends TextController {
 		return showResult == JOptionPane.OK_OPTION;
 	}
 
-	public void editDetails(final NodeModel nodeModel, InputEvent e, final boolean editLong) {
+	public void editDetails(final NodeModel nodeModel, InputEvent e, final boolean editInDialog) {
 		final Controller controller = Controller.getCurrentController();
 		stopInlineEditing();
 		Controller.getCurrentModeController().setBlocked(true);
 		String text = DetailTextModel.getDetailTextText(nodeModel);
-		final boolean addsNewDetailsUsingInlineEditor = text == null && ! editLong;
+		final boolean addsNewDetailsUsingInlineEditor = text == null && ! editInDialog;
 		if (addsNewDetailsUsingInlineEditor) {
 			final MTextController textController = MTextController.getController();
 			textController.setDetails(nodeModel, "<html>");
@@ -646,8 +646,8 @@ public class MTextController extends TextController {
 		};
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities
 		        .getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
-		EditNodeBase editor = createEditor(nodeModel, editControl, text, false, editLong, true);
-		if(! editLong)
+		EditNodeBase editor = createEditor(nodeModel, editControl, text, false, editInDialog, true);
+		if(! editInDialog)
 		    mCurrentInlineEditor = editor;
         editor.show(frame);
 	}
@@ -786,7 +786,7 @@ public class MTextController extends TextController {
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void edit(final FirstAction action, final boolean editLong) {
+	public void edit(final FirstAction action, final boolean editInDialog) {
 		final Controller controller = Controller.getCurrentController();
 		final IMapSelection selection = controller.getSelection();
 		if (selection == null)
@@ -795,7 +795,7 @@ public class MTextController extends TextController {
 		if (selectedNode == null)
 			return;
 		if (FirstAction.EDIT_CURRENT.equals(action)) {
-			edit(selectedNode, selectedNode, false, false, editLong);
+			edit(selectedNode, selectedNode, false, false, editInDialog);
 		}
 		else if (!Controller.getCurrentModeController().isBlocked()) {
 			final int mode = FirstAction.ADD_CHILD.equals(action) ? MMapController.NEW_CHILD
@@ -814,7 +814,7 @@ public class MTextController extends TextController {
 	}
 
 	private class EditEventDispatcher implements KeyEventDispatcher, INodeChangeListener, INodeSelectionListener {
-		private final boolean editLong;
+		private final boolean editInDialog;
 		private final boolean parentFolded;
 		private final boolean isNewNode;
 		private final NodeModel prevSelectedModel;
@@ -823,9 +823,9 @@ public class MTextController extends TextController {
 
 		private EditEventDispatcher(ModeController modeController, NodeModel nodeModel, NodeModel prevSelectedModel,
 		                            boolean isNewNode,
-		                            boolean parentFolded, boolean editLong) {
+		                            boolean parentFolded, boolean editInDialog) {
 			this.modeController = modeController;
-			this.editLong = editLong;
+			this.editInDialog = editInDialog;
 			this.parentFolded = parentFolded;
 			this.isNewNode = isNewNode;
 			this.prevSelectedModel = prevSelectedModel;
@@ -849,12 +849,12 @@ public class MTextController extends TextController {
 				return false;
 			}
 			eventQueue.activate(e);
-			edit(nodeModel, prevSelectedModel, isNewNode, parentFolded, editLong);
+			edit(nodeModel, prevSelectedModel, isNewNode, parentFolded, editInDialog);
 			return true;
 		}
 
 		private boolean isMenuEvent(KeyEvent e) {
-			if (!editLong) {
+			if (!editInDialog) {
 				AFreeplaneAction editLongAcction = modeController.getAction("EditLongAction");
 				KeyStroke accelerator = ResourceController.getResourceController().getAcceleratorManager()
 				    .getAccelerator(editLongAcction);
@@ -900,7 +900,7 @@ public class MTextController extends TextController {
 	}
 
 	public void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel, final boolean isNewNode,
-	                 final boolean parentFolded, final boolean editLong) {
+	                 final boolean parentFolded, final boolean editInDialog) {
 		if (nodeModel == null || mCurrentInlineEditor != null) {
 			return;
 		}
@@ -923,14 +923,15 @@ public class MTextController extends TextController {
 		            .getBooleanProperty("display_inline_editor_for_all_new_nodes")
 		            && ! isTextFormattingDisabled(nodeModel)) {
 			keyEventDispatcher = new EditEventDispatcher(Controller.getCurrentModeController(), nodeModel,
-			    prevSelectedModel, isNewNode, parentFolded, editLong);
+			    prevSelectedModel, isNewNode, parentFolded, editInDialog);
 			keyEventDispatcher.install();
 			return;
-		} ;
+		};
+		final boolean addsNewNodeUsingInlineEditor = isNewNode && ! editInDialog;
 		final IEditControl editControl = new IEditControl() {
 			@Override
 			public void cancel() {
-				if (isNewNode && nodeModel.getMap().equals(controller.getMap())) {
+				if (addsNewNodeUsingInlineEditor && nodeModel.getMap().equals(controller.getMap())) {
 					if (nodeModel.getParentNode() != null) {
 						controller.getSelection().selectAsTheOnlyOneSelected(nodeModel);
 						final MModeController modeController = (MModeController) Controller.getCurrentModeController();
@@ -982,31 +983,31 @@ public class MTextController extends TextController {
 			}
 		};
 		final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
-		EditNodeBase editor = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editLong, true);
+		EditNodeBase editor = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editInDialog, true);
 		editor.show(frame);
-		if(! editLong)
+		if(! editInDialog)
 		    mCurrentInlineEditor = editor;
 	}
 
 	private EditNodeBase createEditor(final NodeModel nodeModel, final IEditControl editControl,
-	                                  String text, final boolean isNewNode, final boolean editLong,
+	                                  String text, final boolean isNewNode, final boolean editInDialog,
 	                                  boolean internal) {
 		Controller.getCurrentModeController().setBlocked(true);
-		EditNodeBase base = getEditNodeBase(nodeModel, text, editControl, editLong);
+		EditNodeBase base = getEditNodeBase(nodeModel, text, editControl, editInDialog);
 		if (base != null || !internal) {
 			return base;
 		}
 		final IEditBaseCreator textFieldCreator = (IEditBaseCreator) Controller.getCurrentController()
 		    .getMapViewManager();
-		return textFieldCreator.createEditor(nodeModel, editControl, text, editLong);
+		return textFieldCreator.createEditor(nodeModel, editControl, text, editInDialog);
 	}
 
 	public EditNodeBase getEditNodeBase(final NodeModel nodeModel, final String text, final IEditControl editControl,
-	                                    final boolean editLong) {
+	                                    final boolean editInDialog) {
 		final List<IContentTransformer> textTransformers = getTextTransformers();
 		for (IContentTransformer t : textTransformers) {
 			if (t instanceof IEditBaseCreator) {
-				final EditNodeBase base = ((IEditBaseCreator) t).createEditor(nodeModel, editControl, text, editLong);
+				final EditNodeBase base = ((IEditBaseCreator) t).createEditor(nodeModel, editControl, text, editInDialog);
 				if (base != null) {
 					return base;
 				}
