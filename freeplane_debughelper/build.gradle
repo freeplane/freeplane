@@ -21,6 +21,10 @@ dependencies {
 	runtimeOnly project(':freeplane').sourceSets.emojiList.output.dirs
 }
 
+java {
+   disableAutoTargetJvm()
+}
+
 task(run, dependsOn: 'classes', type: JavaExec) {
     main ='org.freeplane.launcher.Launcher'
     classpath = sourceSets.main.runtimeClasspath
@@ -37,7 +41,7 @@ task(run, dependsOn: 'classes', type: JavaExec) {
 
 task(debug, dependsOn: 'classes', type: JavaExec) {
     main = run.main
-    jvmArgs = run.allJvmArgs    
+    jvmArgs = run.allJvmArgs
     debug = true
 }
 
