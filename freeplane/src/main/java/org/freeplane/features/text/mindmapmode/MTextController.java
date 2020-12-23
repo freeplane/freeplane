@@ -120,7 +120,7 @@ public class MTextController extends TextController {
 	private static final String PARSE_DATA_PROPERTY = "parse_data";
 	public static final String NODE_TEXT = "NodeText";
 	private static Pattern FORMATTING_PATTERN = null;
-	private EditNodeBase mCurrentEditor = null;
+	private EditNodeBase mCurrentInlineEditor = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
 	private final EventBuffer eventQueue;
 	static {
@@ -579,7 +579,7 @@ public class MTextController extends TextController {
 
 	public void editDetails(final NodeModel nodeModel, InputEvent e, final boolean editLong) {
 		final Controller controller = Controller.getCurrentController();
-		stopEditing();
+		stopInlineEditing();
 		Controller.getCurrentModeController().setBlocked(true);
 		String text = DetailTextModel.getDetailTextText(nodeModel);
 		final boolean addsNewDetailsUsingInlineEditor = text == null && ! editLong;
@@ -631,7 +631,7 @@ public class MTextController extends TextController {
 
 			private void stop() {
 				Controller.getCurrentModeController().setBlocked(false);
-				mCurrentEditor = null;
+				mCurrentInlineEditor = null;
 			}
 
 			@Override
@@ -648,7 +648,7 @@ public class MTextController extends TextController {
 		        .getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
 		EditNodeBase editor = createEditor(nodeModel, editControl, text, false, editLong, true);
 		if(! editLong)
-		    mCurrentEditor = editor;
+		    mCurrentInlineEditor = editor;
         editor.show(frame);
 	}
 
@@ -708,7 +708,7 @@ public class MTextController extends TextController {
 
 	@Override
 	public void setDetailsHidden(final NodeModel node, final boolean isHidden) {
-		stopEditing();
+		stopInlineEditing();
 		DetailTextModel details = node.getExtension(DetailTextModel.class);
 		if (details == null || details.isHidden() == isHidden) {
 			return;
@@ -901,7 +901,7 @@ public class MTextController extends TextController {
 
 	public void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel, final boolean isNewNode,
 	                 final boolean parentFolded, final boolean editLong) {
-		if (nodeModel == null || mCurrentEditor != null) {
+		if (nodeModel == null || mCurrentInlineEditor != null) {
 			return;
 		}
 		final Controller controller = Controller.getCurrentController();
@@ -917,7 +917,7 @@ public class MTextController extends TextController {
 			return;
 		}
 		node.requestFocus();
-		stopEditing();
+		stopInlineEditing();
 		if (isNewNode && !eventQueue.isActive()
 		        && !ResourceController.getResourceController()
 		            .getBooleanProperty("display_inline_editor_for_all_new_nodes")
@@ -948,7 +948,7 @@ public class MTextController extends TextController {
 			private void stop() {
 				Controller.getCurrentModeController().setBlocked(false);
 				viewController.obtainFocusForSelected();
-				mCurrentEditor = null;
+				mCurrentInlineEditor = null;
 			}
 
 			@Override
@@ -981,9 +981,9 @@ public class MTextController extends TextController {
 				return EditedComponent.TEXT;
 			}
 		};
-		mCurrentEditor = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editLong, true);
+		mCurrentInlineEditor = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editLong, true);
 		final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
-		mCurrentEditor.show(frame);
+		mCurrentInlineEditor.show(frame);
 	}
 
 	private EditNodeBase createEditor(final NodeModel nodeModel, final IEditControl editControl,
@@ -1013,16 +1013,16 @@ public class MTextController extends TextController {
 		return null;
 	}
 
-	public void stopEditing() {
+	public void stopInlineEditing() {
 		if (keyEventDispatcher != null) {
 			keyEventDispatcher.uninstall();
 		}
-		if (mCurrentEditor != null) {
+		if (mCurrentInlineEditor != null) {
 			// Ensure that setText from the edit and the next action
 			// are parts of different transactions
-			mCurrentEditor.closeEdit();
+			mCurrentInlineEditor.closeEdit();
 			modeController.forceNewTransaction();
-			mCurrentEditor = null;
+			mCurrentInlineEditor = null;
 		}
 	}
 
