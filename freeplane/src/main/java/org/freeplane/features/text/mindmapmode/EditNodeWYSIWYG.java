@@ -303,16 +303,10 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	}
 
 	public HTMLDialog createHtmlEditor(final RootPaneContainer frame) throws Exception {
-		final JRootPane rootPane = frame.getRootPane();
-		HTMLDialog htmlEditorWindow = (HTMLDialog) rootPane.getClientProperty(HTMLDialog.class);
-		if (htmlEditorWindow == null) {
-			htmlEditorWindow = new HTMLDialog(this, "", "", frame);
-			rootPane.putClientProperty(HTMLDialog.class, htmlEditorWindow);
-			// make sure that SHTML gets notified of relevant config changes!
+			HTMLDialog htmlEditorWindow = new HTMLDialog(this, "", "", frame);
 		   	ResourceController.getResourceController().addPropertyChangeListener(
 	    			new FreeplaneToSHTMLPropertyChangeAdapter("simplyhtml.window.", htmlEditorWindow.getHtmlEditorPanel()));
-		}
-	    return htmlEditorWindow;
+		   	return htmlEditorWindow;
     }
 
 	public void setTextAlignment(int horizontalAlignment) {

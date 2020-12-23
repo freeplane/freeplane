@@ -15,11 +15,9 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 
 class NoteDialogStarter{
 	private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
-	private EditNodeBase mCurrentEditDialog = null;
 
 	void editNoteInDialog(final NodeModel nodeModel) {
 		final Controller controller = Controller.getCurrentController();
-	    stopEditing();
 		Controller.getCurrentModeController().setBlocked(true);
 		String text = NoteModel.getNoteText(nodeModel);
 		if(text ==  null){
@@ -28,7 +26,6 @@ class NoteDialogStarter{
 		final EditNodeBase.IEditControl editControl = new EditNodeBase.IEditControl() {
 			public void cancel() {
 				Controller.getCurrentModeController().setBlocked(false);
-				mCurrentEditDialog = null;
 			}
 
 			public void ok(final String newText) {
@@ -47,9 +44,9 @@ class NoteDialogStarter{
             }
 		};
 		final IEditBaseCreator textFieldCreator = (IEditBaseCreator) Controller.getCurrentController().getMapViewManager();
-		mCurrentEditDialog = textFieldCreator.createEditor(nodeModel, editControl, text, true);
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
-		mCurrentEditDialog.show(frame);
+		EditNodeBase editor = textFieldCreator.createEditor(nodeModel, editControl, text, true);
+		editor.show(frame);
 
     }
 
@@ -62,12 +59,5 @@ class NoteDialogStarter{
 			noteController.setNoteText(node, null);
 		else
 			noteController.setNoteText(node, trimmed);
-	}
-
-	private void stopEditing() {
-		if (mCurrentEditDialog != null) {
-			mCurrentEditDialog.closeEdit();
-			mCurrentEditDialog = null;
-		}
 	}
 }
