@@ -68,6 +68,7 @@ def defineMacBuildTasks = {
      '--app-version', distVersion,
      '--java-options', '-Xmx512m',
      '--java-options', '-Dapple.laf.useScreenMenuBar=true',
+     '--java-options', '-Dapple.awt.application.appearance=system',
      '--java-options', '-Xdock:name=Freeplane',
    	 '--input', 'build/macosapp/input',
    	 '--main-jar', 'freeplanelauncher.jar',
