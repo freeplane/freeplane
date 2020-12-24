@@ -61,7 +61,7 @@ import org.freeplane.features.ui.IMapViewManager;
 /**
  * @author foltin
  */
-public class EditNodeDialog extends EditNodeBase {
+abstract public class EditNodeDialog extends EditNodeBase {
 	private JTextComponent textComponent;
 	private final boolean enableSplit;
 
@@ -289,7 +289,6 @@ public class EditNodeDialog extends EditNodeBase {
 	/** Private variable to hold the last value of the "Enter confirms" state. */
 	final private KeyEvent firstEvent;
 	private String title;
-	private boolean isModal;
 
 	public EditNodeDialog(final NodeModel node, final String text, final KeyEvent firstEvent,
 	                      final IEditControl editControl, boolean enableSplit) {
@@ -316,7 +315,7 @@ public class EditNodeDialog extends EditNodeBase {
         }
 		final JDialog dialog = editor.getDialog();
 		configureDialog(dialog);
-		dialog.setModal(isModal);
+		dialog.setModal(false);
 		dialog.pack();
 		Controller.getCurrentModeController().getController().getMapViewManager().scrollNodeToVisible(node);
 		if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
@@ -351,9 +350,5 @@ public class EditNodeDialog extends EditNodeBase {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	protected void setModal(boolean isModal) {
-		this.isModal = isModal;
 	}
 }

@@ -47,7 +47,6 @@ class NoteDialogStarter{
 
 	void editNoteInDialog(final NodeModel nodeModel) {
 		final Controller controller = Controller.getCurrentController();
-		Controller.getCurrentModeController().setBlocked(true);
 		String text = NoteModel.getNoteText(nodeModel);
 		if(text ==  null){
 			text = "";

@@ -121,7 +121,7 @@ public class MTextController extends TextController {
 	private static final String PARSE_DATA_PROPERTY = "parse_data";
 	public static final String NODE_TEXT = "NodeText";
 	private static Pattern FORMATTING_PATTERN = null;
-	private EditNodeBase mCurrentInlineEditor = null;
+	private EditNodeBase currentBlockingEditor = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
 	private final EventBuffer eventQueue;
 	static {
@@ -584,7 +584,6 @@ public class MTextController extends TextController {
 		String text = DetailTextModel.getDetailTextText(nodeModel);
 		final boolean addsNewDetailsUsingInlineEditor = text == null && ! editInDialog;
 		if (addsNewDetailsUsingInlineEditor) {
-		    Controller.getCurrentModeController().setBlocked(true);
 			final MTextController textController = MTextController.getController();
 			textController.setDetails(nodeModel, "<html>");
 		}
@@ -594,8 +593,8 @@ public class MTextController extends TextController {
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities
 		        .getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
 		EditNodeBase editor = createEditor(nodeModel, editControl, text, false, editInDialog, true);
-		if(! editInDialog)
-		    mCurrentInlineEditor = editor;
+		if(editor.editorBlocks())
+		    currentBlockingEditor = editor;
         editor.show(frame);
 	}
 
@@ -817,7 +816,7 @@ public class MTextController extends TextController {
 
         private void stop() {
         	Controller.getCurrentModeController().setBlocked(false);
-        	mCurrentInlineEditor = null;
+        	currentBlockingEditor = null;
         }
 
         @Override
@@ -836,7 +835,7 @@ public class MTextController extends TextController {
 
         private final OptionalReference<NodeModel> nodeModel;
 
-        private final boolean addsNewNodeUsingInlineEditor;
+        private final boolean newNode;
 
         private final NodeModel prevSelectedModel;
 
@@ -844,23 +843,31 @@ public class MTextController extends TextController {
 
         private final boolean parentFolded;
 
+        private boolean editorBlocks;
+        
         private NodeTextEditor(IMapViewManager viewController, NodeModel nodeModel,
-                boolean addsNewNodeUsingInlineEditor, NodeModel prevSelectedModel,
+                boolean newNode,
+                NodeModel prevSelectedModel,
                 Controller controller, boolean parentFolded) {
             this.viewController = viewController;
+            this.newNode = newNode;
             this.nodeModel = new OptionalReference<>(nodeModel);
-            this.addsNewNodeUsingInlineEditor = addsNewNodeUsingInlineEditor;
+            this.editorBlocks = false;
             this.prevSelectedModel = prevSelectedModel;
             this.controller = controller;
             this.parentFolded = parentFolded;
         }
+        
+        void editorBlocks() {
+            editorBlocks = true;
+        }
 
         @Override
         public void cancel() {
-            if (addsNewNodeUsingInlineEditor) {
+            if (editorBlocks && newNode) {
                 nodeModel.ifPresent(this::cancel);
-                stop();
             }
+            stop();
         }
         
         private void cancel(NodeModel nodeModel) {
@@ -879,17 +886,17 @@ public class MTextController extends TextController {
         }
 
         private void stop() {
-        	Controller.getCurrentModeController().setBlocked(false);
-        	viewController.obtainFocusForSelected();
-        	mCurrentInlineEditor = null;
+            if (editorBlocks) {
+                Controller.getCurrentModeController().setBlocked(false);
+                currentBlockingEditor = null;
+                viewController.obtainFocusForSelected();
+            }
         }
 
         @Override
         public void ok(final String text) {
             nodeModel.ifPresent(x -> ok(x, text));
-            if (addsNewNodeUsingInlineEditor) {
-                stop();
-            }
+            stop();
         }
         
         private void ok(NodeModel nodeModel, final String text) {
@@ -1013,7 +1020,7 @@ public class MTextController extends TextController {
 
 	public void edit(final NodeModel nodeModel, final NodeModel prevSelectedModel, final boolean isNewNode,
 	                 final boolean parentFolded, final boolean editInDialog) {
-		if (nodeModel == null || mCurrentInlineEditor != null) {
+		if (nodeModel == null || currentBlockingEditor != null) {
 			return;
 		}
 		final Controller controller = Controller.getCurrentController();
@@ -1039,20 +1046,21 @@ public class MTextController extends TextController {
 			keyEventDispatcher.install();
 			return;
 		};
-		final boolean addsNewNodeUsingInlineEditor = isNewNode && ! editInDialog;
-		final IEditControl editControl = new NodeTextEditor(viewController, nodeModel, addsNewNodeUsingInlineEditor,
-                prevSelectedModel, controller, parentFolded);
+		final NodeTextEditor editControl = new NodeTextEditor(viewController, nodeModel,
+                isNewNode, prevSelectedModel, controller, parentFolded);
 		final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
 		EditNodeBase editor = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editInDialog, true);
+		if(editor.editorBlocks()) {
+		    Controller.getCurrentModeController().setBlocked(true);
+		    currentBlockingEditor = editor;
+		    editControl.editorBlocks();
+        }
 		editor.show(frame);
-		if(! editInDialog)
-		    mCurrentInlineEditor = editor;
 	}
 
 	private EditNodeBase createEditor(final NodeModel nodeModel, final IEditControl editControl,
 	                                  String text, final boolean isNewNode, final boolean editInDialog,
 	                                  boolean internal) {
-		Controller.getCurrentModeController().setBlocked(true);
 		EditNodeBase base = createContentSpecificEditor(nodeModel, text, editControl, editInDialog);
 		if (base != null || !internal) {
 			return base;
@@ -1080,12 +1088,12 @@ public class MTextController extends TextController {
 		if (keyEventDispatcher != null) {
 			keyEventDispatcher.uninstall();
 		}
-		if (mCurrentInlineEditor != null) {
+		if (currentBlockingEditor != null) {
 			// Ensure that setText from the edit and the next action
 			// are parts of different transactions
-			mCurrentInlineEditor.closeEdit();
+			currentBlockingEditor.closeEdit();
 			modeController.forceNewTransaction();
-			mCurrentInlineEditor = null;
+			currentBlockingEditor = null;
 		}
 	}
 

@@ -34,6 +34,11 @@ class LatexEditor extends EditNodeDialog {
 	LatexEditor(NodeModel nodeModel, String text, KeyEvent firstEvent, IEditControl editControl,
                           boolean enableSplit, JEditorPane textEditor) {
 	    super(nodeModel, text, firstEvent, editControl, enableSplit, textEditor);
-	    super.setModal(false);
     }
+	
+    @Override
+    protected boolean editorBlocks() {
+        return false;
+    }
+
 }

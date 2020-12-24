@@ -312,4 +312,10 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	public void setTextAlignment(int horizontalAlignment) {
 		this.horizontalAlignment = horizontalAlignment;
 	}
+	
+    @Override
+    protected boolean editorBlocks() {
+        return false;
+    }
+
 }
