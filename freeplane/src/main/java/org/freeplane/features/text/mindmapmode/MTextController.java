@@ -191,13 +191,13 @@ public class MTextController extends TextController {
 		modeController.addUiBuilder(Phase.ACTIONS, "splitInRowsActions", new EntryVisitor() {
 			@Override
 			public void visit(Entry target) {
-				final String[] rowNumbers = ResourceController.getResourceController()
-				    .getProperty("SplitInRowsAction.rowNumbers").split("[^\\d]+");
-				for (String rowNumberAsString : rowNumbers) {
+				final String[] nodeNumbersInLine = ResourceController.getResourceController()
+				    .getProperty("SplitInRowsAction.nodeNumbersInLine").split("[^\\d]+");
+				for (String nodeNumberInLineAsString : nodeNumbersInLine) {
 					try {
-						final int rowNumber = Integer.parseInt(rowNumberAsString);
-						if (rowNumber > 0) {
-							final SplitInRowsAction action = new SplitInRowsAction(rowNumber);
+						final int nodeNumberInLine = Integer.parseInt(nodeNumberInLineAsString);
+						if (nodeNumberInLine > 0) {
+							final SplitInRowsAction action = new SplitInRowsAction(nodeNumberInLine);
 							new EntryAccessor().addChildAction(target, action);
 							modeController.addAction(action);
 						}
