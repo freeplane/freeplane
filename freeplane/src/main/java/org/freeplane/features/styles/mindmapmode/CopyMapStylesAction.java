@@ -33,6 +33,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.url.mindmapmode.MFileManager;
+import org.freeplane.view.swing.features.filepreview.MindMapPreview;
 
 /**
  * @author Dimitry Polivaev
@@ -49,6 +50,7 @@ class CopyMapStylesAction extends AFreeplaneAction {
 		final ModeController modeController = controller.getModeController();
 		final MFileManager fileManager = MFileManager.getController(modeController);
 		final JFileChooser fileChooser = fileManager.getFileChooser(true);
+		new MindMapPreview(fileChooser);
 		fileChooser.setMultiSelectionEnabled(false);
 		final int returnVal = fileChooser.showOpenDialog(controller.getMapViewManager().getMapViewComponent());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
