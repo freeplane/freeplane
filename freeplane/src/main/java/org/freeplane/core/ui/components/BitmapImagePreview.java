@@ -46,15 +46,18 @@ public class BitmapImagePreview extends JComponent implements PropertyChangeList
 	 */
 	private static final long serialVersionUID = 1L;
 	protected static final int BORDER_WIDTH = 2;
-	protected final JFileChooser fc;
 
-	public BitmapImagePreview(final JFileChooser fc) {
+    public BitmapImagePreview(final JFileChooser fc) {
+        this();
+        fc.addPropertyChangeListener(this);
+        fc.setAccessory(this);
+    }
+    
+	public BitmapImagePreview() {
 		super();
-		this.fc = fc;
 		setBorder(new MatteBorder(BORDER_WIDTH, BORDER_WIDTH, BORDER_WIDTH, BORDER_WIDTH, Color.BLACK));
 		final int previewSize = ResourceController.getResourceController().getIntProperty("image_preview_size", 300);
 		setPreferredSize(new Dimension(previewSize, previewSize));
-		fc.addPropertyChangeListener(this);
 	}
 
 	@Override
@@ -72,13 +75,6 @@ public class BitmapImagePreview extends JComponent implements PropertyChangeList
 		else {
 			return;
 		}
-		if (file == null || !file.exists()) {
-			return;
-		}
-		if (getComponentCount() == 1) {
-			remove(0);
-		}
-		repaint();
 		try {
 			updateView(file);
 		}
@@ -91,6 +87,11 @@ public class BitmapImagePreview extends JComponent implements PropertyChangeList
 	}
 
 	protected void updateView(final File file) throws MalformedURLException, IOException {
+        removeView();
+        repaint();
+        if (file == null || !file.exists()) {
+            return;
+        }
 		final BitmapViewerComponent viewer = new BitmapViewerComponent(file.toURI());
 		viewer.setHint(Image.SCALE_FAST);
 		final Dimension size = getSize();
@@ -103,4 +104,11 @@ public class BitmapImagePreview extends JComponent implements PropertyChangeList
 		viewer.revalidate();
 		viewer.repaint();
 	}
+
+    protected void removeView() {
+        if (getComponentCount() == 1) {
+            remove(0);
+            repaint();
+        }
+    }
 }

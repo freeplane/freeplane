@@ -23,6 +23,8 @@ import java.awt.Component;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
@@ -99,6 +101,8 @@ import org.freeplane.features.url.MapVersionInterpreter;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
+import org.freeplane.view.swing.features.filepreview.ImagePreview;
+import org.freeplane.view.swing.features.filepreview.MindMapPreview;
 
 /**
  * @author Dimitry Polivaev
@@ -619,10 +623,22 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		final TreeSet<String> availableMapTemplates = collectAvailableMapTemplates();
 		availableMapTemplates.add(standardTemplatePath);
 		final Box verticalBox = Box.createVerticalBox();
+		MindMapPreview mindMapPreview = new MindMapPreview();
 		final JComboBox<String> templateComboBox = new JComboBox<>(new Vector<>(availableMapTemplates));
+		templateComboBox.addItemListener(new ItemListener() {
+            
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                    mindMapPreview.updateView(templateFile(e.getItem().toString()));
+                }
+            }
+        });
 		templateComboBox.setSelectedItem(standardTemplatePath);
 		templateComboBox.setAlignmentX(0f);
 		verticalBox.add(templateComboBox);
+		mindMapPreview.setAlignmentX(0f);
+        verticalBox.add(mindMapPreview);
 		final String checkBoxText = TextUtils.getRawText("OptionalDontShowMeAgainDialog.rememberMyDescision");
 		final JCheckBox mDontShowAgainBox = new JCheckBox();
 		mDontShowAgainBox.setAlignmentX(0f);
@@ -690,6 +706,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				}
 				else if (startFile.isDirectory()) {
 					final JFileChooser chooser = getFileChooser(true);
+					new MindMapPreview(chooser);
 					chooser.setCurrentDirectory(startFile);
 					final int returnVal = chooser
 					    .showOpenDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent());

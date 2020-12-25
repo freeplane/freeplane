@@ -439,7 +439,7 @@ public class MTextController extends TextController {
 		final JFileChooser chooser = urlManager.getFileChooser(null);
 		chooser.setFileFilter(filter);
 		chooser.setAcceptAllFileFilterUsed(false);
-		chooser.setAccessory(new BitmapImagePreview(chooser));
+		new BitmapImagePreview(chooser);
 		final int returnVal = chooser.showOpenDialog(viewController.getCurrentRootComponent());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return;
