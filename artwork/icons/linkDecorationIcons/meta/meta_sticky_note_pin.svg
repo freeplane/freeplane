@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 63.1 (101010) - https://sketch.com -->
+    <title>meta/meta_sticky_note_pin</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFF6AA" offset="0%"></stop>
+            <stop stop-color="#F0E579" offset="41.2030194%"></stop>
+            <stop stop-color="#FFF6A9" offset="100%"></stop>
+        </linearGradient>
+        <ellipse id="path-2" cx="23.6090909" cy="29.1529412" rx="4.16631016" ry="4.16470588"></ellipse>
+        <filter x="-18.0%" y="-18.0%" width="136.0%" height="136.0%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="meta/meta_sticky_note_pin">
+            <g id="Sticky-Note" transform="translate(13.000000, 2.800000)">
+                <g>
+                    <rect id="Rectangle" stroke="#757700" stroke-width="5.8" fill="url(#linearGradient-1)" x="2.9" y="16.3857143" width="68.4" height="75.1142857"></rect>
+                    <g id="Push-Pin" transform="translate(14.284492, 0.000000)">
+                        <g id="Oval">
+                            <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                            <use fill-opacity="0.741122159" fill="#181818" fill-rule="evenodd" xlink:href="#path-2"></use>
+                        </g>
+                        <line x1="12.3664574" y1="12.5631841" x2="23.6090909" y2="29.1529412" id="Line" stroke="#979797" stroke-width="5" stroke-linecap="round"></line>
+                        <ellipse id="Oval" fill="#B70000" cx="12.4449367" cy="12.4457711" rx="12.4449367" ry="12.4457711"></ellipse>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

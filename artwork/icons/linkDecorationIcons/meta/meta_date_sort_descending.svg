@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 63.1 (101010) - https://sketch.com -->
+    <title>meta/meta_date_sort_descending</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="meta/meta_date_sort_descending">
+            <g id="Annotations/Date/Descending" transform="translate(0.000000, -0.000000)">
+                <g id="Group" transform="translate(50.200000, 50.000000) scale(1, -1) translate(-50.200000, -50.000000) translate(9.700000, 5.000000)">
+                    <path d="M11,77.1428571 C4.92486775,77.1428571 -2.80872455e-15,72.2179894 0,66.1428571 L0,23.8571429 C-7.43989126e-16,17.7820106 4.92486775,12.8571429 11,12.8571429 L69.5462185,12.8571429 C75.6213507,12.8571429 80.5462185,17.7820106 80.5462185,23.8571429 L80.5462185,66.1428571 C80.5462185,72.2179894 75.6213507,77.1428571 69.5462185,77.1428571 L55.0342277,77.1428571 L40.6144068,90 L26.1945859,77.1428571 L11,77.1428571 Z" id="Combined-Shape" stroke="#999A9A" stroke-width="5.2" fill="#EFEFEF"></path>
+                    <path d="M40.6144068,0 L55.0342277,12.8571429 L69.5462185,12.8571429 C75.6213507,12.8571429 80.5462185,17.7820106 80.5462185,23.8571429 L80.546,38.571 L0,38.571 L0,23.8571429 C1.03236771e-15,17.7820106 4.92486775,12.8571429 11,12.8571429 L26.1945859,12.8571429 L40.6144068,0 Z" id="Combined-Shape" stroke="#A70E0E" stroke-width="5.2" fill="#DE5050"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
