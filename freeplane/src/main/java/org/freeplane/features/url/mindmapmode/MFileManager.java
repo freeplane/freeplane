@@ -615,10 +615,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	protected File chosenTemplateFile() {
-		final ResourceController resourceController = ResourceController.getResourceController();
-		boolean skipTemplateSelection = resourceController.getBooleanProperty("skip_template_selection");
-		if (skipTemplateSelection)
-			return defaultTemplateFile();
+	    final ResourceController resourceController = ResourceController.getResourceController();
+	    final boolean maySkipTemplateSelection = false;
+	    if(maySkipTemplateSelection) {
+	        boolean skipTemplateSelection = resourceController.getBooleanProperty("skip_template_selection");
+	        if (skipTemplateSelection)
+	            return defaultTemplateFile();
+	    }
 		final String standardTemplatePath = resourceController.getProperty(STANDARD_TEMPLATE);
 		final TreeSet<String> availableMapTemplates = collectAvailableMapTemplates();
 		availableMapTemplates.add(standardTemplatePath);
