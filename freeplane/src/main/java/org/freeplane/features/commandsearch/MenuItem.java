@@ -60,7 +60,7 @@ class MenuItem extends SearchItem {
 
     String getSearchedText() {
         String accelerator = AcceleratorDescriptionCreator.INSTANCE.createAcceleratorDescription(action);
-        return accelerator != null ? this.searchedText + " (" + normalizeText(accelerator) + ")" : this.path;
+        return accelerator != null ? this.searchedText + " (" + normalizeText(accelerator) + ")" : this.searchedText;
     }
 
     @Override
