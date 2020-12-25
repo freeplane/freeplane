@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class SplitInRowsActionShould {
+public class SplitToRowsActionShould {
 @Test
 public void testEscape() throws Exception {
 	assertTrue("&-^\\[]".matches("[\\[\\]\\-\\&\\\\\\^]+"));
