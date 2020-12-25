@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 63.1 (101010) - https://sketch.com -->
+    <title>general/general_signpost</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="general/general_signpost" fill-rule="nonzero">
+            <g id="signpost">
+                <ellipse id="Oval" fill="#787680" cx="50" cy="94.8275862" rx="12.0689655" ry="5.17241379"></ellipse>
+                <polygon id="Path" fill="#FFDA44" points="100 60.3448276 89.6551724 70.6896552 53.4482759 70.6896552 53.4482759 50 89.6551724 50"></polygon>
+                <polygon id="Path" fill="#91DC5A" points="46.5517241 32.7586207 46.5517241 53.4482759 10.3448276 53.4482759 0 43.1034483 10.3448276 32.7586207"></polygon>
+                <polygon id="Path" fill="#FF5023" points="100 25.862069 89.6551724 36.2068966 53.4482759 36.2068966 53.4482759 15.5172414 89.6551724 15.5172414"></polygon>
+                <path d="M53.4482759,5.17241379 L53.4482759,91.3793103 C53.4425952,93.2813825 51.9020722,94.8219055 50,94.8275862 C48.1014331,94.8135048 46.5658056,93.2778772 46.5517241,91.3793103 L46.5517241,5.17241379 L53.4482759,5.17241379 Z" id="Path" fill="#B39A7C"></path>
+                <path d="M53.4482759,9.01724138 C51.9293515,10.3758161 49.754279,10.71591 47.8931388,9.8858415 C46.0319986,9.05577297 44.8317044,7.21026551 44.8275862,5.17241379 C44.8275862,2.31576854 47.1433547,0 50,0 C52.8566453,0 55.1724138,2.31576854 55.1724138,5.17241379 C55.1828531,6.64349255 54.5536829,8.04654214 53.4482759,9.01724138 L53.4482759,9.01724138 Z" id="Path" fill="#D80027"></path>
+                <rect id="Rectangle" fill="#A7E37B" x="12.0689655" y="34.4827586" width="25.862069" height="5.17241379" rx="2.5862069"></rect>
+                <rect id="Rectangle" fill="#FF734F" x="60.3448276" y="17.2413793" width="25.862069" height="5.17241379" rx="2.5862069"></rect>
+                <rect id="Rectangle" fill="#FFE98F" x="60.3448276" y="51.7241379" width="25.862069" height="5.17241379" rx="2.5862069"></rect>
+                <circle id="Oval" fill="#FFFFFF" cx="47.4137931" cy="2.5862069" r="1"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

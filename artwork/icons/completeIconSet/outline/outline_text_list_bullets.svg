@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 63.1 (101010) - https://sketch.com -->
+    <title>outline/outline_text_list_bullets</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="50%" id="radialGradient-1">
+            <stop stop-color="#99C4FF" offset="0%"></stop>
+            <stop stop-color="#539BFF" offset="87.1067356%"></stop>
+            <stop stop-color="#4E94F5" offset="100%"></stop>
+        </radialGradient>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="linearGradient-2">
+            <stop stop-color="#989898" offset="0%"></stop>
+            <stop stop-color="#333333" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="outline/outline_text_list_bullets">
+            <g id="Lists/Bullets" transform="translate(7.183635, 7.183635)">
+                <g id="Group" transform="translate(2.740247, 7.364415)">
+                    <rect id="Rectangle-Copy-7" fill="url(#radialGradient-1)" x="0" y="0" width="17.1265461" height="17.1265461" rx="1.8"></rect>
+                    <rect id="Rectangle-Copy-8" fill="url(#linearGradient-2)" x="24.490961" y="5.13796384" width="55.661275" height="6.85061846"></rect>
+                    <rect id="Rectangle-Copy-9" fill="url(#radialGradient-1)" x="0" y="26.9743102" width="17.1265461" height="17.1265461" rx="1.8"></rect>
+                    <rect id="Rectangle-Copy-10" fill="url(#linearGradient-2)" x="24.490961" y="32.112274" width="55.661275" height="6.85061846"></rect>
+                    <rect id="Rectangle-Copy-11" fill="url(#radialGradient-1)" x="0" y="53.9486204" width="17.1265461" height="17.1265461" rx="1.8"></rect>
+                    <rect id="Rectangle-Copy-12" fill="url(#linearGradient-2)" x="24.490961" y="59.0865842" width="55.661275" height="6.85061846"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
