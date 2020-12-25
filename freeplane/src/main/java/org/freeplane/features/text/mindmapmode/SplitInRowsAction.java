@@ -19,7 +19,7 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.TransformationException;
 
 @SuppressWarnings("serial")
-public class SplitToWordsAction extends AMultipleNodeAction{
+public class SplitInRowsAction extends AMultipleNodeAction{
 	
 	static class PatternMaker {
 		static final Pattern ESCAPED_CHARACTERS = Pattern.compile("[\\[\\]\\-\\&\\\\\\^]");
@@ -32,24 +32,24 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 	}
 	
 	static{
-		ResourceController.getResourceController().setDefaultProperty("SplitToWordsAction.auxiliaryWordList", TextUtils.getText("defaultAuxiliaryWordList"));
+		ResourceController.getResourceController().setDefaultProperty("SplitInRowsAction.auxiliaryWordList", TextUtils.getText("defaultAuxiliaryWordList"));
 	}
 
-	private final int nodeNumberInLine;
+	private final int rowNumber;
 
-	public SplitToWordsAction(int nodeNumberInLine) {
-		super(createActionKey(nodeNumberInLine), createActionText(nodeNumberInLine), null);
+	public SplitInRowsAction(int rowNumber) {
+		super(createActionKey(rowNumber), createActionText(rowNumber), null);
 		auxiliaryWords = Collections.emptySet();
-		this.nodeNumberInLine = nodeNumberInLine;
+		this.rowNumber = rowNumber;
 	}
 
 	public static String createActionText(int nodeNumberInLine) {
-		final String key = SplitToWordsAction.class.getSimpleName() + ".text";
+		final String key = SplitInRowsAction.class.getSimpleName() + ".text";
 		return TextUtils.format(key, nodeNumberInLine);
 	}
 
 	public static String createActionKey(int nodeNumberInLine) {
-		return SplitToWordsAction.class.getSimpleName() + "." + nodeNumberInLine;
+		return SplitInRowsAction.class.getSimpleName() + "." + nodeNumberInLine;
 	}
 	
 	private static String charactersAcceptedInWord;
@@ -66,17 +66,17 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		compileWordPattern();
-		String auxiliaryWordList = ResourceController.getResourceController().getProperty("SplitToWordsAction.auxiliaryWordList").toLowerCase();
+		String auxiliaryWordList = ResourceController.getResourceController().getProperty("SplitInRowsAction.auxiliaryWordList").toLowerCase();
 		auxiliaryWords = Arrays.asList(auxiliaryWordList.split("\\s*,\\s*"));
-		leaveOriginalNodeEmpty = ResourceController.getResourceController().getBooleanProperty("SplitToWordsAction.leaveOriginalNodeEmpty");
-		saveOriginalTextAsDetails = ResourceController.getResourceController().getBooleanProperty("SplitToWordsAction.saveOriginalTextAsDetails");
-		capitalizeWords = ResourceController.getResourceController().getBooleanProperty("SplitToWordsAction.capitalizeWords");
+		leaveOriginalNodeEmpty = ResourceController.getResourceController().getBooleanProperty("SplitInRowsAction.leaveOriginalNodeEmpty");
+		saveOriginalTextAsDetails = ResourceController.getResourceController().getBooleanProperty("SplitInRowsAction.saveOriginalTextAsDetails");
+		capitalizeWords = ResourceController.getResourceController().getBooleanProperty("SplitInRowsAction.capitalizeWords");
 		super.actionPerformed(e);
 	}
 
 	void compileWordPattern() {
 		charactersAcceptedInWord = charactersAcceptedInWords();
-		wordRegularExpression = "[\\p{L}\\d" + charactersAcceptedInWord + "]+";
+		wordRegularExpression = "[\\p{L}\\d" + charactersAcceptedInWord + "]+[,.!?]?";
 		numberRegularExpression = "-?\\d+(?:[,.]\\d+)*";
 		final String newRegularExpression = numberRegularExpression+"|"+wordRegularExpression;
 		if(! newRegularExpression.equals(wordOrNumberRegularExpression)) {
@@ -86,7 +86,7 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 	}
 
 	private String charactersAcceptedInWords() {
-		final String characters = ResourceController.getResourceController().getProperty("SplitToWordsAction.charactersAcceptedInWord");
+		final String characters = ResourceController.getResourceController().getProperty("SplitInRowsAction.charactersAcceptedInWord");
 		return PatternMaker.escape(characters);
 	}
 
@@ -103,8 +103,20 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 			return;
 		}
 		String plainText = HtmlUtils.htmlToPlain(details).trim();
+        final Matcher matcher = compiledWordPattern.matcher(plainText);
+        int wordCount = 0;
+        while(matcher.find()) {
+            String word = matcher.group();
+            if (!auxiliaryWords.contains(word.toLowerCase()))
+                wordCount++;
+        }
+
+		if(wordCount == 0)
+		    return;
 		
-		
+		int nodeNumberInRow = (wordCount - 1) / rowNumber + 1;
+		matcher.reset();
+
 		int nodeCountInLine;
 		boolean newNode;
 		
@@ -119,12 +131,11 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 		}
 		
 		NodeModel currentNode = node;
-		final Matcher matcher = compiledWordPattern.matcher(plainText);
 		while (matcher.find()){
 			String word = matcher.group();
 			final String currentText;
 		    if(newNode) {
-				if (nodeCountInLine == nodeNumberInLine) {
+				if (nodeCountInLine == nodeNumberInRow) {
 					nodeCountInLine = 0;
 					currentNode = node;
 				}

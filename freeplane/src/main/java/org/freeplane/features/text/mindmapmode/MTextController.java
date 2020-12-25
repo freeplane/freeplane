@@ -188,16 +188,16 @@ public class MTextController extends TextController {
 		modeController.addAction(new EditDetailsAction(false));
 		modeController.addAction(new EditDetailsAction(true));
 		modeController.addAction(new DeleteDetailsAction());
-		modeController.addUiBuilder(Phase.ACTIONS, "splitToWordsActions", new EntryVisitor() {
+		modeController.addUiBuilder(Phase.ACTIONS, "splitInRowsActions", new EntryVisitor() {
 			@Override
 			public void visit(Entry target) {
 				final String[] nodeNumbersInLine = ResourceController.getResourceController()
-				    .getProperty("SplitToWordsAction.nodeNumbersInLine").split("[^\\d]+");
+				    .getProperty("SplitInRowsAction.nodeNumbersInLine").split("[^\\d]+");
 				for (String nodeNumberInLineAsString : nodeNumbersInLine) {
 					try {
 						final int nodeNumberInLine = Integer.parseInt(nodeNumberInLineAsString);
 						if (nodeNumberInLine > 0) {
-							final SplitToWordsAction action = new SplitToWordsAction(nodeNumberInLine);
+							final SplitInRowsAction action = new SplitInRowsAction(nodeNumberInLine);
 							new EntryAccessor().addChildAction(target, action);
 							modeController.addAction(action);
 						}

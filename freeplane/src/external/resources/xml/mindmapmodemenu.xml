@@ -118,7 +118,7 @@
 					<Entry name="SetBooleanPropertyAction.edit_on_double_click" />
 					<Entry name="EditLongAction" accelerator="alt ENTER" />
 					<Entry name="SplitNode" accelerator="alt shift S" />
-					<Entry builder="splitToWordsActions" />
+					<Entry builder="splitInRowsActions" />
 					<Entry builder="joinNodesActions" accelerator="control J" />
 					<Entry name="RevisionPluginAction" />
 					<Entry builder="separator" />
