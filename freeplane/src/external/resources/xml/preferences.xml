@@ -223,7 +223,7 @@
 			<separator name="SplitInRowsAction">
 				<string name="SplitInRowsAction.auxiliaryWordList"/>
 				<string name="SplitInRowsAction.charactersAcceptedInWord"/>
-				<string name="SplitInRowsAction.nodeNumbersInLine"/>
+				<string name="SplitInRowsAction.rowNumbers"/>
 				<boolean name="SplitInRowsAction.capitalizeWords"/>
 				<boolean name="SplitInRowsAction.leaveOriginalNodeEmpty"/>
 				<boolean name="SplitInRowsAction.saveOriginalTextAsDetails"/>
