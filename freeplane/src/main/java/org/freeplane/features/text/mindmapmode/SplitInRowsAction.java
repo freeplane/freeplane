@@ -43,13 +43,13 @@ public class SplitInRowsAction extends AMultipleNodeAction{
 		this.rowNumber = rowNumber;
 	}
 
-	public static String createActionText(int rowNumber) {
+	public static String createActionText(int nodeNumberInLine) {
 		final String key = SplitInRowsAction.class.getSimpleName() + ".text";
-		return TextUtils.format(key, rowNumber);
+		return TextUtils.format(key, nodeNumberInLine);
 	}
 
-	public static String createActionKey(int rowNumber) {
-		return SplitInRowsAction.class.getSimpleName() + "." + rowNumber;
+	public static String createActionKey(int nodeNumberInLine) {
+		return SplitInRowsAction.class.getSimpleName() + "." + nodeNumberInLine;
 	}
 	
 	private static String charactersAcceptedInWord;
