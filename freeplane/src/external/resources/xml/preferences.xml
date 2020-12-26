@@ -220,13 +220,13 @@
 				<boolean name="remindersShowNotifications" />
 				<time_period name="remindersStandardDelay" />
 			</separator>
-			<separator name="SplitInRowsAction">
-				<string name="SplitInRowsAction.auxiliaryWordList"/>
-				<string name="SplitInRowsAction.charactersAcceptedInWord"/>
-				<string name="SplitInRowsAction.nodeNumbersInLine"/>
-				<boolean name="SplitInRowsAction.capitalizeWords"/>
-				<boolean name="SplitInRowsAction.leaveOriginalNodeEmpty"/>
-				<boolean name="SplitInRowsAction.saveOriginalTextAsDetails"/>
+			<separator name="SplitToWordsAction">
+				<string name="SplitToWordsAction.auxiliaryWordList"/>
+				<string name="SplitToWordsAction.charactersAcceptedInWord"/>
+				<string name="SplitToWordsAction.nodeNumbersInLine"/>
+				<boolean name="SplitToWordsAction.capitalizeWords"/>
+				<boolean name="SplitToWordsAction.leaveOriginalNodeEmpty"/>
+				<boolean name="SplitToWordsAction.saveOriginalTextAsDetails"/>
 			</separator>
 			<separator name="JoinNodesAction">
 				<string name="JoinNodesAction.textSeparators"/>
