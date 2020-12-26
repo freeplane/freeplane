@@ -26,7 +26,9 @@ public class MindMapPreview extends BitmapImagePreview {
     public MindMapPreview() {
         super();
         final int previewSize = ResourceController.getResourceController().getIntProperty("image_preview_size", 300);
-        setPreferredSize(new Dimension(2 * previewSize, previewSize));
+        Dimension preferredSize = new Dimension(2 * previewSize, previewSize);
+        setPreferredSize(preferredSize);
+        setSize(preferredSize);
     }
 
     @Override
