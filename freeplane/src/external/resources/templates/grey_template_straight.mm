@@ -25,15 +25,15 @@
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
-<stylenode LOCALIZED_TEXT="styles.topic" COLOR="#ffffff" BACKGROUND_COLOR="#000000" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<stylenode TEXT="happy" COLOR="#ffffff" BACKGROUND_COLOR="#000000" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <icon BUILTIN="ksmiletris"/>
 <font SIZE="12" STRIKETHROUGH="false" ITALIC="false"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.subtopic" COLOR="#ffffff" BACKGROUND_COLOR="#000000" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<stylenode TEXT="neutral" COLOR="#ffffff" BACKGROUND_COLOR="#000000" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <icon BUILTIN="smiley-neutral"/>
 <font SIZE="12"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.subsubtopic" COLOR="#ffffff" BACKGROUND_COLOR="#000000" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<stylenode TEXT="unhappy" COLOR="#ffffff" BACKGROUND_COLOR="#000000" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <icon BUILTIN="smily_bad"/>
 <font SIZE="12"/>
 </stylenode>
