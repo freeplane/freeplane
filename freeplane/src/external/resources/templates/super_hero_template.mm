@@ -2,8 +2,8 @@
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node TEXT="start" LOCALIZED_STYLE_REF="AutomaticLayout.level.root" FOLDED="false" ID="Freemind_Link_1513112588" CREATED="1153430895318" MODIFIED="1606696817451" BACKGROUND_COLOR="#ffffff" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="10.0 pt" SHAPE_VERTICAL_MARGIN="10.0 pt">
 <hook NAME="accessories/plugins/AutomaticLayout.properties" VALUE="ALL"/>
-<hook NAME="MapStyle" background="#ffffff" zoom="1">
-    <properties fit_to_viewport="false" show_icon_for_attributes="true" show_note_icons="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff"/>
+<hook NAME="MapStyle" background="#ffffff">
+    <properties show_icon_for_attributes="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff" show_note_icons="true" fit_to_viewport="false"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt">
@@ -24,17 +24,22 @@
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
-<stylenode LOCALIZED_TEXT="styles.topic" COLOR="#127f81" STYLE="fork" BORDER_WIDTH="2.0 px" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#0000ff">
-<font NAME="Liberation Sans" SIZE="10" BOLD="true"/>
+<stylenode TEXT="happy" COLOR="#ffffff" BACKGROUND_COLOR="#126cb3" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="8.0 pt" SHAPE_VERTICAL_MARGIN="5.0 pt" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<icon BUILTIN="ksmiletris"/>
+<font SIZE="14"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.subtopic" COLOR="#b33207" STYLE="fork">
-<font NAME="Liberation Sans" SIZE="10" BOLD="true"/>
+<stylenode TEXT="neutral" COLOR="#ffffff" BACKGROUND_COLOR="#126cb3" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="8.0 pt" SHAPE_VERTICAL_MARGIN="5.0 pt" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<icon BUILTIN="smiley-neutral"/>
+<font SIZE="14"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.subsubtopic" COLOR="#578104">
-<font NAME="Liberation Sans" SIZE="10" BOLD="true"/>
+<stylenode TEXT="unhappy" COLOR="#ffffff" BACKGROUND_COLOR="#126cb3" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="8.0 pt" SHAPE_VERTICAL_MARGIN="5.0 pt" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<icon BUILTIN="smily_bad"/>
+<font SIZE="14"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.important">
+<stylenode LOCALIZED_TEXT="styles.important" BACKGROUND_COLOR="#f5131f" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <icon BUILTIN="yes"/>
+<font SIZE="11" BOLD="true"/>
+<edge COLOR="#f5131f"/>
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right" STYLE="bubble">

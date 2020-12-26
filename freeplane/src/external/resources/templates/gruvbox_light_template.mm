@@ -24,13 +24,13 @@
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
-<stylenode LOCALIZED_TEXT="styles.topic" COLOR="#127f81" STYLE="fork" BORDER_WIDTH="2.0 px" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#0000ff">
+<stylenode TEXT="happy" COLOR="#127f81" STYLE="fork" BORDER_WIDTH="2.0 px" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#0000ff">
 <font NAME="Liberation Sans" SIZE="10" BOLD="true"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.subtopic" COLOR="#b33207" STYLE="fork">
+<stylenode TEXT="neutral" COLOR="#b33207" STYLE="fork">
 <font NAME="Liberation Sans" SIZE="10" BOLD="true"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.subsubtopic" COLOR="#578104">
+<stylenode TEXT="unhappy" COLOR="#578104">
 <font NAME="Liberation Sans" SIZE="10" BOLD="true"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.important">
