@@ -35,7 +35,7 @@ dependencies {
     // from flatDir "localGitDepsRepository":
     lib ':idw-gpl-1.6.1'
     
-    lib 'org.violetlib:vaqua:9'
+    lib 'org.violetlib:vaqua:8'
 
     runtimeOnly sourceSets.emojiGraphics.output.dirs
  	runtimeOnly sourceSets.emojiList.output.dirs
