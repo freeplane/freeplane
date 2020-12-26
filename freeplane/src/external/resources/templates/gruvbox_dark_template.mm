@@ -24,17 +24,22 @@
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
-<stylenode LOCALIZED_TEXT="styles.topic" COLOR="#127f81" STYLE="fork" BORDER_WIDTH="2.0 px" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#0000ff">
-<font NAME="Liberation Sans" SIZE="10" BOLD="true"/>
+<stylenode TEXT="happy" COLOR="#ffffff" BACKGROUND_COLOR="#282828" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<icon BUILTIN="ksmiletris"/>
+<font SIZE="12" ITALIC="false"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.subtopic" COLOR="#b33207" STYLE="fork">
-<font NAME="Liberation Sans" SIZE="10" BOLD="true"/>
+<stylenode TEXT="neutral" COLOR="#ffffff" BACKGROUND_COLOR="#282828" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<icon BUILTIN="smiley-neutral"/>
+<font SIZE="12" ITALIC="false"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.subsubtopic" COLOR="#578104">
-<font NAME="Liberation Sans" SIZE="10" BOLD="true"/>
+<stylenode TEXT="unhappy" COLOR="#ffffff" BACKGROUND_COLOR="#282828" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<icon BUILTIN="smily_bad"/>
+<font SIZE="12" ITALIC="false"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.important">
+<stylenode LOCALIZED_TEXT="styles.important" COLOR="#ffffff" BACKGROUND_COLOR="#282828" BORDER_WIDTH="3.0 px" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <icon BUILTIN="yes"/>
+<font SIZE="12" ITALIC="false"/>
+<edge COLOR="#cc241d"/>
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right" STYLE="bubble">
