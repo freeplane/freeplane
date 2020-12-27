@@ -19,45 +19,45 @@
  */
 package org.freeplane.features.nodelocation;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 
 /**
  * @author Dimitry Polivaev
  */
 public class LocationModel implements IExtension {
-	public static final Quantity<LengthUnits> DEFAULT_HGAP = new Quantity<LengthUnits>(14, LengthUnits.pt);
+	public static final Quantity<LengthUnit> DEFAULT_HGAP = new Quantity<LengthUnit>(14, LengthUnit.pt);
 	public static final int DEFAULT_HGAP_PX = DEFAULT_HGAP.toBaseUnitsRounded();
-	public static Quantity<LengthUnits> DEFAULT_SHIFT_Y = new Quantity<LengthUnits>(0, LengthUnits.pt);
-	public static Quantity<LengthUnits> DEFAULT_VGAP = new Quantity<LengthUnits>(2, LengthUnits.pt);
+	public static Quantity<LengthUnit> DEFAULT_SHIFT_Y = new Quantity<LengthUnit>(0, LengthUnit.pt);
+	public static Quantity<LengthUnit> DEFAULT_VGAP = new Quantity<LengthUnit>(2, LengthUnit.pt);
 	public static final LocationModel NULL_LOCATION = new LocationModel() {
 		@Override
-		public void setHGap(final Quantity<LengthUnits> gap) {
+		public void setHGap(final Quantity<LengthUnit> gap) {
 			if (gap != getHGap()) {
 				throw new NoSuchMethodError();
 			}
 		}
 
 		@Override
-		public void setShiftY(final Quantity<LengthUnits> shiftY) {
+		public void setShiftY(final Quantity<LengthUnit> shiftY) {
 			if (shiftY != getShiftY()) {
 				throw new NoSuchMethodError();
 			}
 		}
 
 		@Override
-		public void setVGap(final Quantity<LengthUnits> gap) {
+		public void setVGap(final Quantity<LengthUnit> gap) {
 			if (gap != getVGap()) {
 				throw new NoSuchMethodError();
 			}
 		}
 	};
 	
-	private Quantity<LengthUnits> hGap;
-	private Quantity<LengthUnits> shiftY;
-	private Quantity<LengthUnits> vGap;
+	private Quantity<LengthUnit> hGap;
+	private Quantity<LengthUnit> shiftY;
+	private Quantity<LengthUnit> vGap;
 
 	public LocationModel(){
 		hGap = LocationModel.DEFAULT_HGAP;
@@ -80,19 +80,19 @@ public class LocationModel implements IExtension {
 	}
 
 
-	public Quantity<LengthUnits> getHGap() {
+	public Quantity<LengthUnit> getHGap() {
 		return hGap;
 	}
 
-	public Quantity<LengthUnits> getShiftY() {
+	public Quantity<LengthUnit> getShiftY() {
 		return shiftY;
 	}
 
-	public Quantity<LengthUnits> getVGap() {
+	public Quantity<LengthUnit> getVGap() {
 		return vGap;
 	}
 
-	public void setHGap(final Quantity<LengthUnits> gap) {
+	public void setHGap(final Quantity<LengthUnit> gap) {
 		assertNotNull(gap);
 		hGap = gap;
 	}
@@ -102,13 +102,13 @@ public class LocationModel implements IExtension {
 			throw new NullPointerException();
 	}
 
-	public void setShiftY(final Quantity<LengthUnits> shiftY) {
+	public void setShiftY(final Quantity<LengthUnit> shiftY) {
 		assertNotNull(shiftY);
 		this.shiftY = shiftY;
 	}
 
-	public void setVGap(final Quantity<LengthUnits> gap) {
+	public void setVGap(final Quantity<LengthUnit> gap) {
 		assertNotNull(gap);
-		vGap = gap.toBaseUnits() >= 0 ? gap : new Quantity<LengthUnits>(0, gap.unit);
+		vGap = gap.toBaseUnits() >= 0 ? gap : new Quantity<LengthUnit>(0, gap.unit);
 	}
 }

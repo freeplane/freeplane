@@ -3,6 +3,7 @@
 ===============================
 Draw clouds around hidden or filtered our nodes
 Don't indicate hidden or filtered out nodes by special edges
+Non blocking editing of node core, details and notes in dialogs
 
 ===============================
 1.8.10

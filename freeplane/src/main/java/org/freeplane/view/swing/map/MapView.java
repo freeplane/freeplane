@@ -1326,11 +1326,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
     private void loadBackgroundImage() {
  		final MapStyle mapStyle = getModeController().getExtension(MapStyle.class);
-		final String uriString = mapStyle.getProperty(model, MapStyle.RESOURCES_BACKGROUND_IMAGE);
 		backgroundComponent = null;
 		updateBackground();
-		if (uriString != null) {
-			final URI uri = assignAbsoluteURI(uriString);
+		final URI uri = mapStyle.getBackgroundImage(model);
+		if (uri != null) {
 			final ViewerController vc = getModeController().getExtension(ViewerController.class);
 			final IViewerFactory factory = vc.getViewerFactory();
 			if (uri != null) {
@@ -1338,21 +1337,6 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 		}
 		repaint();
-	}
-
-	private URI assignAbsoluteURI(final String uriString) {
-		final UrlManager urlManager = getModeController().getExtension(UrlManager.class);
-		URI uri = null;
-		try {
-			uri = urlManager.getAbsoluteUri(model, new URI(uriString));
-		}
-		catch (final URISyntaxException e) {
-			LogUtils.severe(e);
-		}
-        catch (final MalformedURLException e) {
-			LogUtils.severe(e);
-        }
-		return uri;
 	}
 
 	private void assignViewerToBackgroundComponent(final IViewerFactory factory, final URI uri) {
@@ -1797,7 +1781,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			}
 			final NodeView child = (NodeView) component;
 			if (!isPrinting) {
-				if(!child.isHierarchyVisible())
+				if(!child.isSubtreeVisible())
 					continue;
 				final Rectangle bounds = SwingUtilities.convertRectangle(source, child.getBounds(), this);
 				final JViewport vp = (JViewport) getParent();

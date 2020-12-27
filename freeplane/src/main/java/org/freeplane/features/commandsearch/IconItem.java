@@ -11,14 +11,16 @@ public class IconItem extends SearchItem {
 
     private final String comparedText;
 
-    private String iconDescription;
+    private final String iconDescription;
+
+    private final String searchedText;
 
     public IconItem(final Icon icon, final AFreeplaneAction action, final String iconName,
             final String path) {
         this.icon = icon;
         this.action = action;
-        iconDescription = iconName + ", " + path;
-
+        this.iconDescription = iconName + ", " + path;
+        this.searchedText = normalizeText(iconDescription);
         this.comparedText = path + SearchItem.ITEM_PATH_SEPARATOR + iconName;
     }
 
@@ -31,6 +33,11 @@ public class IconItem extends SearchItem {
     String getDisplayedText() {
         String accelerator = AcceleratorDescriptionCreator.INSTANCE.createAcceleratorDescription(action);
         return iconDescription + (accelerator != null ? " (" + accelerator + ")" : "");
+    }
+
+    private String getSearchedText() {
+        String accelerator = AcceleratorDescriptionCreator.INSTANCE.createAcceleratorDescription(action);
+        return searchedText + (accelerator != null ? " (" + normalizeText(accelerator) + ")" : "");
     }
 
     @Override
@@ -65,7 +72,7 @@ public class IconItem extends SearchItem {
 
     @Override
     protected boolean checkAndMatch(String searchTerm, ItemChecker textChecker) {
-        return textChecker.contains(getDisplayedText(), searchTerm);
+        return textChecker.contains(getSearchedText(), searchTerm);
     }
 
     @Override

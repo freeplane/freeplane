@@ -10,19 +10,19 @@ import java.awt.Stroke;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 abstract class ShapedPainter extends MainViewPainter {
 
-	final private ShapeConfigurationModel shapeConfiguration;
+	final private NodeGeometryModel shapeConfiguration;
 
-	ShapedPainter(MainView mainView, ShapeConfigurationModel shapeConfiguration) {
+	ShapedPainter(MainView mainView, NodeGeometryModel shapeConfiguration) {
 		super(mainView);
 		this.shapeConfiguration = shapeConfiguration;
 	}
 
 	@Override
-	ShapeConfigurationModel getShapeConfiguration(){
+	NodeGeometryModel getShapeConfiguration(){
 		return shapeConfiguration;
 	}
 

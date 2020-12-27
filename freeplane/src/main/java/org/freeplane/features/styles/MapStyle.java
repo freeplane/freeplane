@@ -23,6 +23,9 @@ import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
@@ -150,7 +153,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 						return;
 					}
 					final MapModel map = node.getMap();
-					mapStyleModel.createStyleMap(map, mapStyleModel, content);
+					mapStyleModel.createStyleMap(map, content);
 					map.getIconRegistry().addIcons(mapStyleModel.getStyleMap());
 				}
 				private boolean isContentEmpty(final String content) {
@@ -323,8 +326,10 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
     }
 
 	public Color getBackground(final MapModel map) {
-		final IExtension extension = map.getRootNode().getExtension(MapStyleModel.class);
-		final Color backgroundColor = extension != null ? ((MapStyleModel) extension).getBackgroundColor() : null;
+		MapStyleModel styleModel = map.getExtension(MapStyleModel.class);
+		if(styleModel == null)
+		    styleModel = map.getRootNode().getExtension(MapStyleModel.class);
+		final Color backgroundColor = styleModel != null ? styleModel.getBackgroundColor() : null;
 		if (backgroundColor != null) {
 			return backgroundColor;
 		}
@@ -334,9 +339,26 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		return standardMapBackgroundColor;
 	}
 
+	public URI getBackgroundImage(MapModel map) {
+	    MapStyleModel styleModel = map.getRootNode().getExtension(MapStyleModel.class);
+	    String uriString = styleModel.getProperty(MapStyle.RESOURCES_BACKGROUND_IMAGE);
+	    if(uriString != null) {
+	        try {
+	            return UrlManager.getAbsoluteUri(map, new URI(uriString));
+	        }
+	        catch (final URISyntaxException e) {
+	            LogUtils.severe(e);
+	        }
+	        catch (final MalformedURLException e) {
+	            LogUtils.severe(e);
+	        }
+	    }
+	    return null;
+	}
+
 	@Override
 	protected Class<MapStyleModel> getExtensionClass() {
-		return MapStyleModel.class;
+	    return MapStyleModel.class;
 	}
 
 	@Override
@@ -571,4 +593,5 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
     public Map<String, String> getPropertiesReadOnly(final MapModel model) {
         return Collections.unmodifiableMap(MapStyleModel.getExtension(model).getProperties());
     }
+
 }

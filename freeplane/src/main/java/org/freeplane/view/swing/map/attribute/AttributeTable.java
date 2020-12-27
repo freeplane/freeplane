@@ -78,7 +78,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
-import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.api.LengthUnit;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.TypedListCellRenderer;
 import org.freeplane.core.ui.components.UITools;
@@ -169,7 +169,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					final int modelColumnWidth = model.getColumnWidth(col).toBaseUnitsRounded();
 					final int currentColumnWidth = Math.round(table.getColumnModel().getColumn(col).getWidth() / zoom);
 					if (modelColumnWidth != currentColumnWidth) {
-						model.setColumnWidth(col, LengthUnits.pixelsInPt(currentColumnWidth));
+						model.setColumnWidth(col, LengthUnit.pixelsInPt(currentColumnWidth));
 					}
 				}
 			}
@@ -485,7 +485,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final AttributeTableModel model = (AttributeTableModel) getModel();
 			final String text = getValueForEdit(row, col);
 			final DialogTableCellEditor dialogTableCellEditor = new DialogTableCellEditor();
-			EditNodeBase base = textController.getEditNodeBase(model.getNode(), text, dialogTableCellEditor.getEditControl(), false);
+			EditNodeBase base = textController.createContentSpecificEditor(model.getNode(), text, dialogTableCellEditor.getEditControl(), false);
 			if(base != null){
 				dialogTableCellEditor.setEditBase(base);
 				return dialogTableCellEditor;
@@ -819,7 +819,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 					int cellWidth = preferredSize.width + preferredSize.height +  EXTRA_HEIGHT + CURSOR_WIDTH + 1;
 					maxCellWidth = Math.max(cellWidth, maxCellWidth);
 				}
-				getAttributeTableModel().setColumnWidth(col, LengthUnits.pixelsInPt(maxCellWidth));
+				getAttributeTableModel().setColumnWidth(col, LengthUnit.pixelsInPt(maxCellWidth));
 			}
 		}
 	}
@@ -898,7 +898,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				final Border border = BorderFactory.createLineBorder(gridColor);
 				final JComponent parent = (JComponent) getParent();
 				if(parent instanceof JViewport) {
-					JScrollPane scrollPane = (JScrollPane) parent.getParent();
+					JScrollPane scrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, parent);
 					scrollPane.setBorder(border);
 					scrollPane.setViewportBorder(border);
 				}

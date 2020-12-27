@@ -24,13 +24,13 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 class WideHexagonPainter extends VariableInsetsPainter {
 	private static final double VERTICAL_MARGIN_FACTOR = Math.sqrt(2);
 	private static final double UNIFORM_HEIGHT_TO_WIDTH_RELATION = Math.sqrt(3)/2;
 	private static final double HORIZONTAL_MARGIN_FACTOR = Math.sqrt(2)/ UNIFORM_HEIGHT_TO_WIDTH_RELATION;
-	WideHexagonPainter(MainView mainView, ShapeConfigurationModel shapeConfigurationModel) {
+	WideHexagonPainter(MainView mainView, NodeGeometryModel shapeConfigurationModel) {
 		super(mainView, shapeConfigurationModel);
 	}
 

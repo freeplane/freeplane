@@ -23,14 +23,14 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkBuilder;
@@ -152,7 +152,7 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 
 	private void writeIconSize(final ITreeWriter writer, final NodeModel node) {
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
-		Quantity<LengthUnits> iconSize = null;
+		Quantity<LengthUnit> iconSize = null;
 		if (forceFormatting) {
 			final IconController iconController = IconController.getController();
 			iconSize = iconController.getIconSize(node);

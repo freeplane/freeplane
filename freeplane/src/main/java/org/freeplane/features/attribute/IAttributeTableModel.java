@@ -19,14 +19,14 @@
  */
 package org.freeplane.features.attribute;
 
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 
 /**
  * @author Dimitry Polivaev
  */
 public interface IAttributeTableModel {
-	Quantity<LengthUnits> getColumnWidth(int col);
+	Quantity<LengthUnit> getColumnWidth(int col);
 
 	int getRowCount();
 

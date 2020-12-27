@@ -21,17 +21,17 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
 
+import org.freeplane.api.LengthUnit;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.NextColumnProperty;
 import org.freeplane.core.resources.components.QuantityProperty;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 
@@ -50,8 +50,8 @@ class NodeShapeControlGroup implements ControlGroup {
 	private BooleanProperty mSetNodeShape;
 	private ComboProperty mNodeShape;
 	
-	private QuantityProperty<LengthUnits> mShapeHorizontalMargin;
-	private QuantityProperty<LengthUnits> mShapeVerticalMargin;
+	private QuantityProperty<LengthUnit> mShapeHorizontalMargin;
+	private QuantityProperty<LengthUnit> mShapeVerticalMargin;
 	private BooleanProperty mUniformShape;
 
 	private NodeShapeChangeListener propertyChangeListener;
@@ -68,7 +68,7 @@ class NodeShapeControlGroup implements ControlGroup {
 			.getCurrentModeController().getExtension(
 					NodeStyleController.class);
 			if(enabled){
-				styleController.setShapeConfiguration(node, ShapeConfigurationModel.NULL_SHAPE
+				styleController.setShapeConfiguration(node, NodeGeometryModel.NULL_SHAPE
 						.withShape(NodeStyleModel.Shape.valueOf(mNodeShape.getValue()))
 						.withHorizontalMargin(mShapeHorizontalMargin.getQuantifiedValue())
 						.withVerticalMargin(mShapeVerticalMargin.getQuantifiedValue())
@@ -76,7 +76,7 @@ class NodeShapeControlGroup implements ControlGroup {
 						);
 			}
 			else {
-				styleController.setShapeConfiguration(node, ShapeConfigurationModel.NULL_SHAPE);
+				styleController.setShapeConfiguration(node, NodeGeometryModel.NULL_SHAPE);
 			}
 			final Shape shape = styleController.getShape(node);
 			enableShapeConfigurationProperties(enabled, shape);
@@ -86,7 +86,7 @@ class NodeShapeControlGroup implements ControlGroup {
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeStyleController styleController = NodeStyleController.getController();
 			final NodeStyleModel.Shape shape = NodeStyleModel.getShape(node);
-			ShapeConfigurationModel viewShape = styleController.getShapeConfiguration(node);
+			NodeGeometryModel viewShape = styleController.getShapeConfiguration(node);
 			final boolean enabled = shape != null;
 			mSetNodeShape.setValue(enabled);
 			mNodeShape.setValue(viewShape.getShape().toString());
@@ -100,8 +100,8 @@ class NodeShapeControlGroup implements ControlGroup {
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetNodeShape = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		mNodeShape = ComboProperty.of(NODE_SHAPE, NodeStyleModel.Shape.class);
-		mShapeHorizontalMargin = new QuantityProperty<LengthUnits>(SHAPE_HORIZONTAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
-		mShapeVerticalMargin = new QuantityProperty<LengthUnits>(SHAPE_VERTICAL_MARGIN, 0, 1000, 0.1, LengthUnits.pt);
+		mShapeHorizontalMargin = new QuantityProperty<LengthUnit>(SHAPE_HORIZONTAL_MARGIN, 0, 1000, 0.1, LengthUnit.pt);
+		mShapeVerticalMargin = new QuantityProperty<LengthUnit>(SHAPE_VERTICAL_MARGIN, 0, 1000, 0.1, LengthUnit.pt);
 		mUniformShape = new BooleanProperty(UNIFORM_SHAPE);
 		propertyChangeListener = new NodeShapeChangeListener(mSetNodeShape, mNodeShape, mShapeHorizontalMargin, mShapeVerticalMargin, mUniformShape);
 		mSetNodeShape.addPropertyChangeListener(propertyChangeListener);

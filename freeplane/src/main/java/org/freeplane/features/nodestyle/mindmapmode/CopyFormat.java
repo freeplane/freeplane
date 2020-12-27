@@ -21,6 +21,8 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.AMultipleNodeAction;
@@ -30,15 +32,13 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.LogicalStyleKeys;
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
 
 /**
  * @author foltin
  */
 class CopyFormat extends AFreeplaneAction {
 	private static NodeModel pattern = null;
-	public static Quantity<LengthUnits> iconSize = null;
+	public static Quantity<LengthUnit> iconSize = null;
 	/**
 	 * 
 	 */

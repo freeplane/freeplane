@@ -32,7 +32,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
@@ -62,7 +62,7 @@ class NodeViewFactory {
 
 	MainView newMainView(final NodeView node) {
 		final MainView view = new MainView();
-		ShapeConfigurationModel shapeConfiguration = shapeConfiguration(node);
+		NodeGeometryModel shapeConfiguration = shapeConfiguration(node);
 		final MainView oldView = node.getMainView();
 		if(oldView != null && oldView.getShapeConfiguration().equals(shapeConfiguration))
 			return oldView;
@@ -76,13 +76,13 @@ class NodeViewFactory {
 	}
 
 	void updateViewPainter(final NodeView node) {
-		ShapeConfigurationModel shapeConfiguration = shapeConfiguration(node);
+		NodeGeometryModel shapeConfiguration = shapeConfiguration(node);
 		final MainView mainView = node.getMainView();
 		final MainViewPainter painter = createViewPainter(mainView, shapeConfiguration);
 		mainView.setPainter(painter);
 	}
 
-	private MainViewPainter createViewPainter(final MainView view, ShapeConfigurationModel shapeConfiguration) {
+	private MainViewPainter createViewPainter(final MainView view, NodeGeometryModel shapeConfiguration) {
 		final MainViewPainter shape;
 		switch(shapeConfiguration.getShape()){
 		case fork:
@@ -111,24 +111,24 @@ class NodeViewFactory {
 		return shape;
 	}
 
-	private ShapeConfigurationModel shapeConfiguration(NodeView node) {
+	private NodeGeometryModel shapeConfiguration(NodeView node) {
 		final ModeController modeController = node.getMap().getModeController();
 		final NodeModel model = node.getModel();
-		ShapeConfigurationModel shapeConfiguration = NodeStyleController.getController(modeController).getShapeConfiguration(model);
+		NodeGeometryModel shapeConfiguration = NodeStyleController.getController(modeController).getShapeConfiguration(model);
 		if (shapeConfiguration.getShape().equals(NodeStyleModel.Shape.combined)) {
 			if (node.isFolded()) {
 				shapeConfiguration= shapeConfiguration.withShape(NodeStyleModel.Shape.bubble);
 			}
 			else {
-				shapeConfiguration = ShapeConfigurationModel.FORK;
+				shapeConfiguration = NodeGeometryModel.FORK;
 			}
 		}
 		else while(shapeConfiguration.getShape().equals(NodeStyleModel.Shape.as_parent)){
 			NodeView parent = node.getParentView();
 			if (parent == null)
-				shapeConfiguration = ShapeConfigurationModel.DEFAULT_ROOT_OVAL;
+				shapeConfiguration = NodeGeometryModel.DEFAULT_ROOT_OVAL;
 			else if (parent.getParentView() == null)
-				shapeConfiguration = ShapeConfigurationModel.FORK;
+				shapeConfiguration = NodeGeometryModel.FORK;
 			else
 				shapeConfiguration = parent.getMainView().getShapeConfiguration();
 		}

@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.freeplane.api.Convertible;
 import org.freeplane.api.FreeplaneVersion;
+import org.freeplane.api.LengthUnit;
 import org.freeplane.api.NodeCondition;
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
+import org.freeplane.api.Quantity;
 import org.freeplane.features.edge.EdgeStyle;
 import org.freeplane.features.filter.condition.ICondition;
 import org.freeplane.features.link.ArrowType;
@@ -267,17 +267,6 @@ public interface Proxy {
     	 * @since 1.4.1
     	 */
 		void sortChildrenBy(Closure<Comparable<Object>> closure);
-
-	    /**@since 1.5.6 */
-		void setVerticalShift(Quantity<LengthUnits> verticalShift);
-
-	    /**@since 1.5.6 */
-		void setMinimalDistanceBetweenChildren(Quantity<LengthUnits> verticalShift);
-
-	    /**@since 1.5.6 */
-		void setHorizontalShift(Quantity<LengthUnits> verticalShift);
-
-
 	}
 
 	interface NodeStyleRO extends org.freeplane.api.NodeStyleRO {
@@ -289,19 +278,23 @@ public interface Proxy {
 
 	    /** Set to null to restore default
 	     * @since 1.5.6 */
-	    void setMinNodeWidth(Quantity<LengthUnits> width);
+	    void setMinNodeWidth(Quantity<LengthUnit> width);
 
 	    /** Set to null to restore default
 	     * @since 1.5.6 */
-	    void setMaxNodeWidth(Quantity<LengthUnits> width);
+	    void setMaxNodeWidth(Quantity<LengthUnit> width);
 	}
+	
+    interface NodeGeometryRO extends org.freeplane.api.NodeGeometryRO { }
+
+    interface NodeGeometry extends NodeGeometryRO, org.freeplane.api.NodeGeometry {}
+
 
     public interface Properties extends org.freeplane.api.Properties { }
+    
     interface ReminderRO extends org.freeplane.api.ReminderRO { }
 
-    interface Reminder extends ReminderRO, org.freeplane.api.Reminder {
-
-    }
+    interface Reminder extends ReminderRO, org.freeplane.api.Reminder {}
 
     interface DependencyLookup extends org.freeplane.api.DependencyLookup {}
 }

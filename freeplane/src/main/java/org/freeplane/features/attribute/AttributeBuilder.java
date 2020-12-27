@@ -22,6 +22,8 @@ package org.freeplane.features.attribute;
 import java.io.IOException;
 import java.util.Vector;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.BackwardCompatibleQuantityWriter;
 import org.freeplane.core.io.IAttributeHandler;
@@ -32,9 +34,7 @@ import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.WriteManager;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
@@ -207,7 +207,7 @@ class AttributeBuilder implements IElementDOMHandler {
 				final NodeModel node = (NodeModel) userObject;
 				attributeController.createAttributeTableModel(node);
 				final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node).getLayout();
-				layout.setColumnWidth(0, LengthUnits.fromStringInPt(value));
+				layout.setColumnWidth(0, LengthUnit.fromStringInPt(value));
 			}
 		});
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE_LAYOUT, "VALUE_WIDTH", new IAttributeHandler() {
@@ -216,7 +216,7 @@ class AttributeBuilder implements IElementDOMHandler {
 				final NodeModel node = (NodeModel) userObject;
 				attributeController.createAttributeTableModel(node);
 				final AttributeTableLayoutModel layout = NodeAttributeTableModel.getModel(node).getLayout();
-				layout.setColumnWidth(1, LengthUnits.fromStringInPt(value));
+				layout.setColumnWidth(1, LengthUnit.fromStringInPt(value));
 			}
 		});
 		reader.addAttributeHandler(AttributeBuilder.XML_NODE_ATTRIBUTE, "NAME", new IAttributeHandler() {
@@ -302,15 +302,15 @@ class AttributeBuilder implements IElementDOMHandler {
 		}
 	}
 
-	private static final Quantity<LengthUnits> DEFAULT_COLUMN_WIDTH = new Quantity<LengthUnits>(60, LengthUnits.pt);
+	private static final Quantity<LengthUnit> DEFAULT_COLUMN_WIDTH = new Quantity<LengthUnit>(60, LengthUnit.pt);
 	static class AttributeWriter implements IAttributeWriter{
 		static AttributeWriter INSTANCE = new AttributeWriter();
 
 		@Override
 		public void writeAttributes(ITreeWriter writer, Object userObject, String tag) {
 			AttributeTableLayoutModel layout = (AttributeTableLayoutModel) userObject;
-			final Quantity<LengthUnits> firstColumnWidth = layout.getColumnWidth(0);
-			final Quantity<LengthUnits> secondColumnWidth = layout.getColumnWidth(1);
+			final Quantity<LengthUnit> firstColumnWidth = layout.getColumnWidth(0);
+			final Quantity<LengthUnit> secondColumnWidth = layout.getColumnWidth(1);
 			final boolean firstColumnHasOwnWidth = !DEFAULT_COLUMN_WIDTH.equals(firstColumnWidth);
 			final boolean secondColumnHasOwnWidth = !DEFAULT_COLUMN_WIDTH.equals(secondColumnWidth);
 			if (firstColumnHasOwnWidth) {
@@ -324,8 +324,8 @@ class AttributeBuilder implements IElementDOMHandler {
 	}
 	private void saveLayout(AttributeTableLayoutModel layout, final ITreeWriter writer) throws IOException {
 		if (layout != null) {
-			final Quantity<LengthUnits> firstColumnWidth = layout.getColumnWidth(0);
-			final Quantity<LengthUnits> secondColumnWidth = layout.getColumnWidth(1);
+			final Quantity<LengthUnit> firstColumnWidth = layout.getColumnWidth(0);
+			final Quantity<LengthUnit> secondColumnWidth = layout.getColumnWidth(1);
 			final boolean firstColumnHasOwnWidth = !DEFAULT_COLUMN_WIDTH.equals(firstColumnWidth);
 			final boolean secondColumnHasOwnWidth = !DEFAULT_COLUMN_WIDTH.equals(secondColumnWidth);
 			if (firstColumnHasOwnWidth || secondColumnHasOwnWidth ) {

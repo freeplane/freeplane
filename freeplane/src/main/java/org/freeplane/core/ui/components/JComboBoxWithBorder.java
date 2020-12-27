@@ -11,13 +11,13 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 
 @SuppressWarnings("serial")
 public class JComboBoxWithBorder<T> extends JComboBox<T>{
 	private static final int MAXIMUM_ROW_COUNT = 10;
-	static private final int MARGIN = new Quantity<LengthUnits>(2, LengthUnits.pt).toBaseUnitsRounded();
+	static private final int MARGIN = new Quantity<LengthUnit>(2, LengthUnit.pt).toBaseUnitsRounded();
 	static private final EmptyBorder STANDARD_BORDER = new EmptyBorder(0, MARGIN, 0, MARGIN);  
 	private RendererWithBorder rendererWithBorder;
 	private EmptyBorder border = STANDARD_BORDER;  

@@ -41,7 +41,6 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
@@ -50,14 +49,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.FreeplaneMenuBar;
 import org.freeplane.core.ui.components.MultipleImage;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.decoration.NodeViewDecorator;
@@ -68,7 +67,6 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
-import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
@@ -76,9 +74,9 @@ import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
@@ -395,7 +393,7 @@ public class MainView extends ZoomableLabel {
 		if(node.getMap().showsIcons()) {
 		    //		setHorizontalTextPosition(node.isLeft() ? SwingConstants.LEADING : SwingConstants.TRAILING);
 		    /* fc, 06.10.2003: images? */
-		    final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(model);
+		    final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(model);
 		    for (final UIIcon icon : IconController.getController().getStateIcons(model)) {
 		        iconImages.addIcon(icon, iconHeight);
 		    }
@@ -431,7 +429,7 @@ public class MainView extends ZoomableLabel {
 	private void addIconsBasedOnLinkType(URI link, MultipleImage iconImages, NodeModel model)
 	{
 		try {
-			final Quantity<LengthUnits> iconHeight = IconController.getController().getIconSize(model);
+			final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(model);
 			MapView map = getNodeView().getMap();
 			NodeViewDecorator decorator = map.getNodeViewDecorator();
 			//FreeMindMain frame = map.getController().getFrame();
@@ -808,7 +806,7 @@ public class MainView extends ZoomableLabel {
 		return painter.getRightPoint();
 	}
 
-	public ShapeConfigurationModel getShapeConfiguration() {
+	public NodeGeometryModel getShapeConfiguration() {
 		return painter.getShapeConfiguration();
 	}
 

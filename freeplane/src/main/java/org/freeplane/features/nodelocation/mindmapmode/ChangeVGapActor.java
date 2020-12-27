@@ -19,9 +19,9 @@
  */
 package org.freeplane.features.nodelocation.mindmapmode;
 
-import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodelocation.LocationModel;
@@ -32,10 +32,10 @@ import org.freeplane.features.nodelocation.LocationModel;
  */
 final class ChangeVGapActor implements IActor {
 	private final NodeModel node;
-	private final Quantity<LengthUnits> oldVgap;
-	private final Quantity<LengthUnits> vGap;
+	private final Quantity<LengthUnit> oldVgap;
+	private final Quantity<LengthUnit> vGap;
 
-	ChangeVGapActor(final NodeModel node, final Quantity<LengthUnits> vGap){
+	ChangeVGapActor(final NodeModel node, final Quantity<LengthUnit> vGap){
 		final LocationModel locationModel = LocationModel.getModel(node);
 		oldVgap = locationModel.getVGap();
 		this.node = node;
@@ -50,7 +50,7 @@ final class ChangeVGapActor implements IActor {
 		return "moveNodePosition";
 	}
 
-	private void setVGap(final NodeModel node, final Quantity<LengthUnits> parentVGap) {
+	private void setVGap(final NodeModel node, final Quantity<LengthUnit> parentVGap) {
 		LocationModel.createLocationModel(node).setVGap(parentVGap);
 		Controller.getCurrentModeController().getMapController().nodeChanged(node);
 	}

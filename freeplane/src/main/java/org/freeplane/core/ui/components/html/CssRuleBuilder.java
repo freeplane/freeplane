@@ -5,8 +5,8 @@ import java.awt.Font;
 
 import javax.swing.SwingConstants;
 
+import org.freeplane.api.Quantity;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.nodestyle.FontUtils;
 
 public class CssRuleBuilder {

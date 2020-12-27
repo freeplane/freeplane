@@ -34,11 +34,11 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ListDataListener;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.FontSizeExtension;
 import org.freeplane.features.cloud.CloudModel;
@@ -55,7 +55,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 /**
  * @author Dimitry Polivaev
@@ -108,6 +108,7 @@ public class MapStyleModel implements IExtension {
 
 	private void insertStyleMap(MapModel map, MapModel styleMap) {
 		this.styleMap = styleMap;
+		styleMap.putExtension(MapStyleModel.class, this);
 		final NodeModel rootNode = styleMap.getRootNode();
 		createNodeStyleMap(rootNode);
 		styleMap.putExtension(IUndoHandler.class, map.getExtension(IUndoHandler.class));
@@ -124,10 +125,10 @@ public class MapStyleModel implements IExtension {
 		createNodeStyleMap(rootNode);
 	}
 
-	void createStyleMap(final MapModel parentMap, MapStyleModel mapStyleModel, final String styleMapStr) {
+	void createStyleMap(final MapModel parentMap, final String styleMapStr) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		MapModel styleMap = new StyleMapModel(parentMap.getIconRegistry(),
-		    AttributeRegistry.getRegistry(parentMap), modeController.getMapController());
+        MapModel styleMap = new StyleMapModel(parentMap.getIconRegistry(),
+                AttributeRegistry.getRegistry(parentMap), modeController.getMapController());
 		styleMap.createNewRoot();
 		final MapReader mapReader = modeController.getMapController().getMapReader();
 		final Reader styleReader = new StringReader(styleMapStr);
@@ -138,10 +139,10 @@ public class MapStyleModel implements IExtension {
 			hints.put(NodeBuilder.FOLDING_LOADED, Boolean.TRUE);
 			root = mapReader.createNodeTreeFromXml(styleMap, styleReader, hints);
 			NodeStyleModel.setShapeConfiguration(root,
-			    ShapeConfigurationModel.NULL_SHAPE.withShape(NodeStyleModel.Shape.oval).withUniform(true));
+			    NodeGeometryModel.NULL_SHAPE.withShape(NodeStyleModel.Shape.oval).withUniform(true));
 			NodeStyleModel.createNodeStyleModel(root).setFontSize(24);
 			styleMap.setRoot(root);
-			final Quantity<LengthUnits> styleBlockGap = ResourceController.getResourceController()
+			final Quantity<LengthUnit> styleBlockGap = ResourceController.getResourceController()
 			    .getLengthQuantityProperty("style_block_gap");
 			LocationModel.createLocationModel(root).setVGap(styleBlockGap);
 			insertStyleMap(parentMap, styleMap);
@@ -283,20 +284,21 @@ public class MapStyleModel implements IExtension {
 	}
 
 	private MapViewLayout mapViewLayout = MapViewLayout.MAP;
-	private Quantity<LengthUnits> maxNodeWidth = null;
-	private Quantity<LengthUnits> minNodeWidth = null;
+	private Quantity<LengthUnit> maxNodeWidth = null;
+	private Quantity<LengthUnit> minNodeWidth = null;
 
-	public void setMaxNodeWidth(final Quantity<LengthUnits> maxNodeWidth) {
+	public void setMaxNodeWidth(final Quantity<LengthUnit> maxNodeWidth) {
 		this.maxNodeWidth = maxNodeWidth;
 	}
 
-	public void setMinNodeWidth(final Quantity<LengthUnits> minNodeWidth) {
+	public void setMinNodeWidth(final Quantity<LengthUnit> minNodeWidth) {
 		this.minNodeWidth = minNodeWidth;
 	}
 
 	void copyFrom(MapStyleModel source, boolean overwrite) {
 		if (overwrite && source.styleMap != null || styleMap == null) {
 			styleMap = source.styleMap;
+			styleMap.putExtension(MapStyleModel.class, this);
 			styleNodes = source.styleNodes;
 			initStylesComboBoxModel();
 			conditionalStyleModel = source.conditionalStyleModel;

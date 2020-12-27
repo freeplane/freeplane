@@ -428,13 +428,43 @@ public interface NodeRO {
 	Date getCreatedAt();
 
     /**@since 1.3.7 */
-	int getHorizontalShift();
+    default int getHorizontalShift() {
+        return getHorizontalShiftInScreenPixels();
+    }
 
     /**@since 1.3.7 */
-	int getVerticalShift();
+    default int getVerticalShift() {
+        return getVerticalShiftInScreenPixels();
+    }
 
     /**@since 1.3.7 */
-	int getMinimalDistanceBetweenChildren();
+    default int getMinimalDistanceBetweenChildren() {
+        return getMinimalDistanceBetweenChildrenInScreenPixels();
+    }
+    /**@since 1.8.11 */
+    default int getHorizontalShiftInScreenPixels() {
+        return getVerticalShiftAsLength().toBaseUnitsRounded();
+    }
+    /**@since 1.8.11 */
+    default int getVerticalShiftInScreenPixels() {
+        return getVerticalShiftAsLength().toBaseUnitsRounded();
+    }
+    /**@since 1.8.11 */
+    default int getMinimalDistanceBetweenChildrenInScreenPixels() {
+        return getMinimalDistanceBetweenChildrenAsLength().toBaseUnitsRounded();
+    }    
+
+    /**@since 1.8.11 */
+	Quantity<LengthUnit> getVerticalShiftAsLength();
+
+    /**@since 1.8.11 */
+	Quantity<LengthUnit> getMinimalDistanceBetweenChildrenAsLength();
+
+    /**@since 1.8.11 */
+	Quantity<LengthUnit> getHorizontalShiftAsLength();
+	
+    /**@since 1.8.11 */
+    NodeGeometryRO getGeometry();
 
 	/**@since 1.7.2 */
 	DependencyLookup getPrecedents();

@@ -21,9 +21,9 @@ package org.freeplane.features.nodelocation.mindmapmode;
 
 import java.util.ArrayList;
 
-import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -85,7 +85,7 @@ public class MLocationController extends LocationController {
 		modeController.addAction(new ResetNodeLocationAction());
 	}
 
-	public void moveNodePosition(final NodeModel node, final Quantity<LengthUnits> hGap, final Quantity<LengthUnits> shiftY) {
+	public void moveNodePosition(final NodeModel node, final Quantity<LengthUnit> hGap, final Quantity<LengthUnit> shiftY) {
 		final ModeController currentModeController = Controller.getCurrentModeController();
 		MapModel map = node.getMap();
 		ArrayList<IActor> actors = new ArrayList<IActor>(3);
@@ -96,17 +96,17 @@ public class MLocationController extends LocationController {
 		}
 	}
 
-	public void setHorizontalShift(NodeModel node, final Quantity<LengthUnits> horizontalShift){
+	public void setHorizontalShift(NodeModel node, final Quantity<LengthUnit> horizontalShift){
 		final IActor actor = new ChangeShiftXActor(node, horizontalShift);
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void setVerticalShift(NodeModel node, final Quantity<LengthUnits> verticalShift){
+	public void setVerticalShift(NodeModel node, final Quantity<LengthUnit> verticalShift){
 		final IActor actor = new ChangeShiftYActor(node, verticalShift);
 		Controller.getCurrentModeController().execute(actor, node.getMap());
 	}
 
-	public void setMinimalDistanceBetweenChildren(NodeModel node, final Quantity<LengthUnits> minimalDistanceBetweenChildren){
+	public void setMinimalDistanceBetweenChildren(NodeModel node, final Quantity<LengthUnit> minimalDistanceBetweenChildren){
 		if(node != null){
 			Quantity.assertNonNegativeOrNull(minimalDistanceBetweenChildren);
 			final IActor actor = new ChangeVGapActor(node, minimalDistanceBetweenChildren);

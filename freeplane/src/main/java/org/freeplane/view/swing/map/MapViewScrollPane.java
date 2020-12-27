@@ -25,6 +25,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JComponent;
@@ -152,6 +154,17 @@ public class MapViewScrollPane extends JScrollPane implements IFreeplaneProperty
 		super();
 		setViewport(new MapViewPort());
 		defaultBorder = getBorder();
+		
+		addHierarchyListener(new HierarchyListener() {
+            
+            @Override
+            public void hierarchyChanged(HierarchyEvent e) {
+                if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && isShowing() && ! isValid()) {
+                    revalidate();
+                    repaint();
+                }
+            }
+        });
 	}
 
 	@Override

@@ -40,7 +40,7 @@ import org.freeplane.features.mode.IPropertyHandler;
 import org.freeplane.features.mode.filemode.FModeController;
 import org.freeplane.features.nodelocation.LocationController;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
@@ -76,10 +76,10 @@ public class FModeControllerFactory {
 		LogicalStyleController.install(new LogicalStyleController(modeController));
 		MapStyle.install(true);
 		NodeStyleController.getController().addShapeGetter(new Integer(0),
-		    new IPropertyHandler<ShapeConfigurationModel, NodeModel>() {
+		    new IPropertyHandler<NodeGeometryModel, NodeModel>() {
 			    @Override
-				public ShapeConfigurationModel getProperty(final NodeModel node, final ShapeConfigurationModel currentValue) {
-				    return ShapeConfigurationModel.FORK;
+				public NodeGeometryModel getProperty(final NodeModel node, final NodeGeometryModel currentValue) {
+				    return NodeGeometryModel.FORK;
 			    }
 		    });
 		modeController.addAction(new CenterAction());

@@ -30,14 +30,14 @@ import java.util.Collection;
 
 import javax.swing.JScrollPane;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.DoubleClickTimer;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.IMouseListener;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.FreeNode;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
@@ -60,10 +60,10 @@ import org.freeplane.view.swing.ui.DefaultNodeMouseMotionListener;
  */
 public class MNodeMotionListener extends DefaultNodeMouseMotionListener implements IMouseListener {
 	private Point dragStartingPoint = null;
-	private Quantity<LengthUnits> originalHGap;
-	private Quantity<LengthUnits> originalAssignedParentVGap;
-	private Quantity<LengthUnits> minimalDistanceBetweenChildren;
-	private Quantity<LengthUnits> originalShiftY;
+	private Quantity<LengthUnit> originalHGap;
+	private Quantity<LengthUnit> originalAssignedParentVGap;
+	private Quantity<LengthUnit> minimalDistanceBetweenChildren;
+	private Quantity<LengthUnit> originalShiftY;
 	private static final String EDIT_ON_DOUBLE_CLICK = "edit_on_double_click";
 
 	public MNodeMotionListener() {
@@ -222,11 +222,11 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				final LocationModel locationModel = LocationModel.createLocationModel(node);
 				final int hGapChange = getHGapChange(dragNextPoint, node);
 				if(hGapChange != 0){
-					locationModel.setHGap(originalHGap.add(hGapChange, LengthUnits.px));
+					locationModel.setHGap(originalHGap.add(hGapChange, LengthUnit.px));
 				}
 				final int shiftYChange = getNodeShiftYChange(dragNextPoint, node);
 				if(shiftYChange != 0){
-					locationModel.setShiftY(originalShiftY.add(shiftYChange, LengthUnits.px));
+					locationModel.setShiftY(originalShiftY.add(shiftYChange, LengthUnit.px));
 				}
 				if(hGapChange != 0 || shiftYChange != 0)
 					c.getMapController().nodeRefresh(node);
@@ -240,7 +240,7 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 				LocationModel locationModel = LocationModel.createLocationModel(childDistanceContainer);
 				if(locationModel.getVGap().toBaseUnitsRounded() == newVGap)
 					return;
-				locationModel.setVGap(new Quantity<LengthUnits>(newVGap, LengthUnits.px).in(LengthUnits.pt));
+				locationModel.setVGap(new Quantity<LengthUnit>(newVGap, LengthUnit.px).in(LengthUnit.pt));
 				final MapController mapController = c.getMapController();
 				mapController.nodeRefresh(childDistanceContainer);
 				mapController.nodeRefresh(nodeV.getModel());
@@ -287,12 +287,12 @@ public class MNodeMotionListener extends DefaultNodeMouseMotionListener implemen
 		final NodeView parentView = nodeV.getParentView();
 		final NodeView childDistanceContainerView = parentView.getChildDistanceContainer();
 		NodeModel childDistanceContainer = childDistanceContainerView.getModel();
-		final Quantity<LengthUnits> parentVGap = locationController.getMinimalDistanceBetweenChildren(childDistanceContainer);
-		Quantity<LengthUnits> hgap = LocationModel.getModel(node).getHGap();
-		final Quantity<LengthUnits> shiftY = LocationModel.getModel(node).getShiftY();
+		final Quantity<LengthUnit> parentVGap = locationController.getMinimalDistanceBetweenChildren(childDistanceContainer);
+		Quantity<LengthUnit> hgap = LocationModel.getModel(node).getHGap();
+		final Quantity<LengthUnit> shiftY = LocationModel.getModel(node).getShiftY();
 		adjustNodeIndices(nodeV);
 		resetPositions(node);
-		final Quantity<LengthUnits> hGap = hgap;
+		final Quantity<LengthUnit> hGap = hgap;
 		locationController.moveNodePosition(node, hGap, shiftY);
 		locationController.setMinimalDistanceBetweenChildren(childDistanceContainer, parentVGap);
 		stopDrag();

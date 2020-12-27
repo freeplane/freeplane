@@ -23,10 +23,10 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.ui.AMultipleNodeAction;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.MapController;
@@ -40,7 +40,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeStyleModel.HorizontalTextAlignment;
 import org.freeplane.features.nodestyle.NodeStyleModel.Shape;
-import org.freeplane.features.nodestyle.ShapeConfigurationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.styles.LogicalStyleKeys;
 
 /**
@@ -174,8 +174,8 @@ public class MNodeStyleController extends NodeStyleController {
 			if (null != whichStyle.getFontSize()) {
 				fromStyle.setFontSize(null);
 			}
-			if (ShapeConfigurationModel.NULL_SHAPE != whichStyle.getShapeConfiguration()) {
-				fromStyle.setShapeConfiguration(ShapeConfigurationModel.NULL_SHAPE);
+			if (NodeGeometryModel.NULL_SHAPE != whichStyle.getShapeConfiguration()) {
+				fromStyle.setShapeConfiguration(NodeGeometryModel.NULL_SHAPE);
 			}
 			if (null != whichStyle.getColor()) {
 				fromStyle.setColor(null);
@@ -628,29 +628,29 @@ public class MNodeStyleController extends NodeStyleController {
 	}
 
 	public void setShape(final NodeModel node, final Shape shape) {
-		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		final NodeGeometryModel oldShape = NodeStyleModel.getShapeConfiguration(node);
 		setShapeConfiguration(node, oldShape.withShape(shape));
 	}
 
-	public void setShapeHorizontalMargin(NodeModel node, Quantity<LengthUnits> margin) {
-		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+	public void setShapeHorizontalMargin(NodeModel node, Quantity<LengthUnit> margin) {
+		final NodeGeometryModel oldShape = NodeStyleModel.getShapeConfiguration(node);
 		setShapeConfiguration(node, oldShape.withHorizontalMargin(margin));
 	}
 
-	public void setShapeVerticalMargin(NodeModel node, Quantity<LengthUnits> margin) {
-		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+	public void setShapeVerticalMargin(NodeModel node, Quantity<LengthUnit> margin) {
+		final NodeGeometryModel oldShape = NodeStyleModel.getShapeConfiguration(node);
 		setShapeConfiguration(node, oldShape.withVerticalMargin(margin));
 	}
 
 	public void setUniformShape(NodeModel node, boolean uniform) {
-		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		final NodeGeometryModel oldShape = NodeStyleModel.getShapeConfiguration(node);
 		setShapeConfiguration(node, oldShape.withUniform(uniform));
 	}
 
 
-	public void setShapeConfiguration(final NodeModel node, final ShapeConfigurationModel shape) {
+	public void setShapeConfiguration(final NodeModel node, final NodeGeometryModel shape) {
 		final ModeController modeController = Controller.getCurrentModeController();
-		final ShapeConfigurationModel oldShape = NodeStyleModel.getShapeConfiguration(node);
+		final NodeGeometryModel oldShape = NodeStyleModel.getShapeConfiguration(node);
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
@@ -685,10 +685,10 @@ public class MNodeStyleController extends NodeStyleController {
 		};
 		modeController.execute(actor, node.getMap());
 	}
-	public void setMinNodeWidth(final NodeModel node, final Quantity<LengthUnits> minNodeWidth) {
+	public void setMinNodeWidth(final NodeModel node, final Quantity<LengthUnit> minNodeWidth) {
 		Quantity.assertNonNegativeOrNull(minNodeWidth);
 	    final NodeSizeModel sizeModel = createOwnSizeModel(node);
-		final Quantity<LengthUnits> oldValue = NodeSizeModel.getMinNodeWidth(node);
+		final Quantity<LengthUnit> oldValue = NodeSizeModel.getMinNodeWidth(node);
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
@@ -710,16 +710,16 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 		};
 		getModeController().execute(actor, node.getMap());
-		final Quantity<LengthUnits> maxNodeWidth = getMaxWidth(node);
+		final Quantity<LengthUnit> maxNodeWidth = getMaxWidth(node);
 		if(maxNodeWidth != null && minNodeWidth != null && maxNodeWidth.toBaseUnits() < minNodeWidth.toBaseUnits()){
 			setMaxNodeWidth(node, minNodeWidth);
 		}
     }
 
-	public void setMaxNodeWidth(final NodeModel node, final Quantity<LengthUnits> maxNodeWidth) {
+	public void setMaxNodeWidth(final NodeModel node, final Quantity<LengthUnit> maxNodeWidth) {
 		Quantity.assertNonNegativeOrNull(maxNodeWidth);
 	    final NodeSizeModel sizeModel = createOwnSizeModel(node);
-		final Quantity<LengthUnits> oldValue = NodeSizeModel.getMaxNodeWidth(node);
+		final Quantity<LengthUnit> oldValue = NodeSizeModel.getMaxNodeWidth(node);
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {
@@ -741,7 +741,7 @@ public class MNodeStyleController extends NodeStyleController {
 			}
 		};
 		getModeController().execute(actor, node.getMap());
-		final Quantity<LengthUnits> minNodeWidth = getMinWidth(node);
+		final Quantity<LengthUnit> minNodeWidth = getMinWidth(node);
 		if(maxNodeWidth != null && minNodeWidth != null && maxNodeWidth.toBaseUnitsRounded() < minNodeWidth.toBaseUnitsRounded()){
 			setMinNodeWidth(node, maxNodeWidth);
 		}
@@ -851,8 +851,8 @@ public class MNodeStyleController extends NodeStyleController {
 		getModeController().execute(actor, node.getMap());
     }
 
-	public void setBorderWidth(final NodeModel node, final Quantity<LengthUnits> borderWidth) {
-		final Quantity<LengthUnits> oldBorderWidth = NodeBorderModel.getBorderWidth(node);
+	public void setBorderWidth(final NodeModel node, final Quantity<LengthUnit> borderWidth) {
+		final Quantity<LengthUnit> oldBorderWidth = NodeBorderModel.getBorderWidth(node);
 		final IActor actor = new IActor() {
 			@Override
 			public void act() {

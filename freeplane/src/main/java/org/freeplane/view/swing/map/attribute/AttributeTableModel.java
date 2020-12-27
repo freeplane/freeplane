@@ -24,9 +24,9 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
-import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.attribute.AttributeController;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.IAttributeTableModel;
@@ -100,7 +100,7 @@ abstract class AttributeTableModel extends AbstractTableModel
 	}
 
 	@Override
-	public Quantity<LengthUnits> getColumnWidth(final int col) {
+	public Quantity<LengthUnit> getColumnWidth(final int col) {
 		return getNodeAttributeModel().getColumnWidth(col);
 	}
 
@@ -121,7 +121,7 @@ abstract class AttributeTableModel extends AbstractTableModel
 		this.attributeRegistry = attributeRegistry;
 	}
 
-	public void setColumnWidth(final int col, final Quantity<LengthUnits> width) {
+	public void setColumnWidth(final int col, final Quantity<LengthUnit> width) {
 		getAttributeController().performSetColumnWidth(getNode(), getNodeAttributeModel(), col, width);
 	}
 

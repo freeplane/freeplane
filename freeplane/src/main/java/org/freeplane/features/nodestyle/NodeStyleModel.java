@@ -23,10 +23,10 @@ import java.awt.Color;
 
 import javax.swing.SwingConstants;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 
 /**
@@ -106,9 +106,9 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		return styleModel == null ? null : styleModel.getShape();
 	}
 
-	public static ShapeConfigurationModel getShapeConfiguration(final NodeModel node) {
+	public static NodeGeometryModel getShapeConfiguration(final NodeModel node) {
 		final NodeStyleModel styleModel = node.getExtension(NodeStyleModel.class);
-		return styleModel == null ? ShapeConfigurationModel.NULL_SHAPE : styleModel.getShapeConfiguration();
+		return styleModel == null ? NodeGeometryModel.NULL_SHAPE : styleModel.getShapeConfiguration();
 	}
 
 	public static Boolean isBold(final NodeModel node) {
@@ -161,12 +161,12 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		styleModel.setShape(shape);
 	}
 	
-	public static void setShapeHorizontalMargin(final NodeModel node, final Quantity<LengthUnits> margin) {
+	public static void setShapeHorizontalMargin(final NodeModel node, final Quantity<LengthUnit> margin) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withHorizontalMargin(margin));
 	}
 	
-	public static void setShapeVerticalMargin(final NodeModel node, final Quantity<LengthUnits> margin) {
+	public static void setShapeVerticalMargin(final NodeModel node, final Quantity<LengthUnit> margin) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withVerticalMargin(margin));
 	}
@@ -176,7 +176,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		styleModel.setShapeConfiguration(styleModel.getShapeConfiguration().withUniform(uniform));
 	}
 
-	public static void setShapeConfiguration(final NodeModel node, final ShapeConfigurationModel shape) {
+	public static void setShapeConfiguration(final NodeModel node, final NodeGeometryModel shape) {
 		final NodeStyleModel styleModel = NodeStyleModel.createNodeStyleModel(node);
 		styleModel.setShapeConfiguration(shape);
 	}
@@ -193,7 +193,7 @@ public class NodeStyleModel implements IExtension, Cloneable {
 	private Boolean isBold = null;
 	private Boolean isStrikedThrough = null;
 	private Boolean isItalic = null;
-	private ShapeConfigurationModel shapeConfiguration = ShapeConfigurationModel.NULL_SHAPE;
+	private NodeGeometryModel shapeConfiguration = NodeGeometryModel.NULL_SHAPE;
 	private Boolean nodeNumbering = null;
 	private String nodeFormat = null;
 	private  HorizontalTextAlignment horizontalTextAlignment = null;
@@ -323,11 +323,11 @@ public class NodeStyleModel implements IExtension, Cloneable {
 		this.horizontalTextAlignment = textAlignment;
 	}
 
-	public ShapeConfigurationModel getShapeConfiguration() {
+	public NodeGeometryModel getShapeConfiguration() {
 		return shapeConfiguration;
 	}
 
-	public void setShapeConfiguration(ShapeConfigurationModel shapeConfiguration) {
+	public void setShapeConfiguration(NodeGeometryModel shapeConfiguration) {
 		if (shapeConfiguration == null)
 			throw new RuntimeException("Null pointer as shapeConfiguration");
 		this.shapeConfiguration = shapeConfiguration;

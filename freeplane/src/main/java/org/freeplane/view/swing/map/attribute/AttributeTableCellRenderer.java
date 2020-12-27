@@ -31,9 +31,9 @@ import javax.swing.Icon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import org.freeplane.core.ui.LengthUnits;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.util.HtmlUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.attribute.NodeAttributeTableModel;
@@ -118,7 +118,7 @@ class AttributeTableCellRenderer extends DefaultTableCellRenderer {
 		final IconFactory iconFactory = IconFactory.getInstance();
 		if(icon != null && iconFactory.canScaleIcon(icon)){
 			final int fontSize = getFont().getSize();
-			scaledIcon = iconFactory.getScaledIcon(icon, new Quantity<LengthUnits>(fontSize, LengthUnits.px));
+			scaledIcon = iconFactory.getScaledIcon(icon, new Quantity<LengthUnit>(fontSize, LengthUnit.px));
 		}
 		else
 			scaledIcon = icon;

@@ -5,8 +5,8 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -39,10 +39,10 @@ public class MNodeMouseWheelListener extends DefaultNodeMouseWheelListener {
 		if(! nodeView.isSelected())
 			map.selectAsTheOnlyOneSelected(nodeView);
 
-		final double factor = e.isControlDown() ? 1 : 6 * LengthUnits.pt.factor();
+		final double factor = e.isControlDown() ? 1 : 6 * LengthUnit.pt.factor();
 		double newZoomedWidth =  Math.max((view.getWidth() - wheelRotation * factor) / map.getZoom(), 0);
 		final IMapSelection selection = Controller.getCurrentController().getSelection();
-		Quantity<LengthUnits> newZoomedWidthQuantity = LengthUnits.pixelsInPt(newZoomedWidth);
+		Quantity<LengthUnit> newZoomedWidthQuantity = LengthUnit.pixelsInPt(newZoomedWidth);
 		final ModeController modeController = map.getModeController();
 		final MNodeStyleController styleController = (MNodeStyleController) modeController.getExtension(NodeStyleController.class);
 

@@ -27,7 +27,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GridLayout;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -51,8 +50,8 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 
+import org.freeplane.api.LengthUnit;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.factory.IconFactory;
@@ -113,7 +112,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 
 	private static String lastSearchText = "";
 	private static int GAP = 1;
-	private int perIconSize = (int) (IconFactory.DEFAULT_UI_ICON_HEIGTH.in(LengthUnits.px).value * 1.15 + GAP * 2);
+	private int perIconSize = (int) (IconFactory.DEFAULT_UI_ICON_HEIGTH.in(LengthUnit.px).value * 1.15 + GAP * 2);
 	private JTextField filterTextField;
 	final private Color panelBackgroundColor = UIManager.getColor("Panel.background");
 	// </SR>

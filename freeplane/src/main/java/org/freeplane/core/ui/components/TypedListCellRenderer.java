@@ -26,9 +26,9 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.JList;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.icon.factory.IconFactory;
 
@@ -95,7 +95,7 @@ public class TypedListCellRenderer extends DefaultListCellRenderer{
 		final IconFactory iconFactory = IconFactory.getInstance();
 		if(icon != null && iconFactory.canScaleIcon(icon)){
 			final int fontSize = getFont().getSize();
-			setIcon(iconFactory.getScaledIcon(icon, new Quantity<LengthUnits>(fontSize, LengthUnits.px)));
+			setIcon(iconFactory.getScaledIcon(icon, new Quantity<LengthUnit>(fontSize, LengthUnit.px)));
 		}
 		else
 			setIcon(icon);

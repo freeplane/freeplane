@@ -30,15 +30,15 @@ import org.freeplane.features.map.NodeChangeAnnouncer;
  * Feb 6, 2011
  */
 class StyleMapModel extends MapModel {
-	private static final String STYLES = "styles";
+    private static final String STYLES = "styles";
 
-	StyleMapModel(IconRegistry iconRegistry, AttributeRegistry attributeRegistry, NodeChangeAnnouncer nodeChangeAnnouncer) {
-		super(iconRegistry, nodeChangeAnnouncer);
-		addExtension(attributeRegistry);
-	}
+    StyleMapModel(IconRegistry iconRegistry, AttributeRegistry attributeRegistry, NodeChangeAnnouncer nodeChangeAnnouncer) {
+        super(iconRegistry, nodeChangeAnnouncer);
+        addExtension(attributeRegistry);
+    }
 
-	@Override
-	public String getTitle() {
-		return TextUtils.getText(STYLES);
-	}
+    @Override
+    public String getTitle() {
+        return TextUtils.getText(STYLES);
+    }
 }

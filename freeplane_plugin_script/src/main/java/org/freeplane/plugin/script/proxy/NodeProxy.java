@@ -19,17 +19,18 @@ import org.freeplane.api.Attributes;
 import org.freeplane.api.Cloud;
 import org.freeplane.api.Connector;
 import org.freeplane.api.DependencyLookup;
+import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Node;
 import org.freeplane.api.NodeCondition;
+import org.freeplane.api.NodeGeometry;
 import org.freeplane.api.NodeRO;
 import org.freeplane.api.NodeStyle;
 import org.freeplane.api.NodeToComparableMapper;
+import org.freeplane.api.Quantity;
 import org.freeplane.api.Reminder;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.encrypt.Base64Coding;
 import org.freeplane.features.encrypt.EncryptionController;
@@ -947,66 +948,66 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 
 
 	@Override
-	public int getHorizontalShift(){
-		return LocationController.getController().getHorizontalShift(getDelegate()).toBaseUnitsRounded();
+	public Quantity<LengthUnit> getHorizontalShiftAsLength(){
+		return LocationController.getController().getHorizontalShift(getDelegate());
 	}
 
 	@Override
-	public int getVerticalShift(){
-		return LocationController.getController().getVerticalShift(getDelegate()).toBaseUnitsRounded();
+	public Quantity<LengthUnit> getVerticalShiftAsLength(){
+		return LocationController.getController().getVerticalShift(getDelegate());
 	}
 
 	@Override
 	public void setHorizontalShift(final int horizontalShift){
-		final Quantity<LengthUnits> horizontalShiftQuantity = new Quantity<LengthUnits>(horizontalShift, LengthUnits.px);
+		final Quantity<LengthUnit> horizontalShiftQuantity = new Quantity<LengthUnit>(horizontalShift, LengthUnit.px);
 		((MLocationController) LocationController.getController()).setHorizontalShift(getDelegate(),horizontalShiftQuantity);
 	}
 
 	@Override
-	public void setHorizontalShift(final Quantity<LengthUnits> verticalShift) {
+	public void setHorizontalShift(final Quantity<LengthUnit> verticalShift) {
 		((MLocationController) LocationController.getController()).setHorizontalShift(getDelegate(), verticalShift);
 	}
 
 	@Override
 	public void setHorizontalShift(final String verticalShift) {
-		((MLocationController) LocationController.getController()).setHorizontalShift(getDelegate(), Quantity.fromString(verticalShift, LengthUnits.px));
+		((MLocationController) LocationController.getController()).setHorizontalShift(getDelegate(), Quantity.fromString(verticalShift, LengthUnit.px));
 	}
 
 	@Override
 	public void setVerticalShift(final int verticalShift){
-		final Quantity<LengthUnits> verticalShiftQuantity = new Quantity<LengthUnits>(verticalShift, LengthUnits.px);
+		final Quantity<LengthUnit> verticalShiftQuantity = new Quantity<LengthUnit>(verticalShift, LengthUnit.px);
 		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), verticalShiftQuantity);
 	}
 
 	@Override
-	public void setVerticalShift(final Quantity<LengthUnits> verticalShift) {
+	public void setVerticalShift(final Quantity<LengthUnit> verticalShift) {
 		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), verticalShift);
 	}
 
 	@Override
 	public void setVerticalShift(final String verticalShift) {
-		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), Quantity.fromString(verticalShift, LengthUnits.px));
+		((MLocationController) LocationController.getController()).setVerticalShift(getDelegate(), Quantity.fromString(verticalShift, LengthUnit.px));
 	}
 
 	@Override
-	public int getMinimalDistanceBetweenChildren(){
-		return LocationController.getController().getMinimalDistanceBetweenChildren(getDelegate()).toBaseUnitsRounded();
+	public Quantity<LengthUnit> getMinimalDistanceBetweenChildrenAsLength(){
+		return LocationController.getController().getMinimalDistanceBetweenChildren(getDelegate());
 	}
 
 	@Override
 	public void setMinimalDistanceBetweenChildren(final int minimalDistanceBetweenChildren){
-		final Quantity<LengthUnits> minimalDistanceBetweenChildrenQuantity = new Quantity<LengthUnits>(minimalDistanceBetweenChildren, LengthUnits.px);
+		final Quantity<LengthUnit> minimalDistanceBetweenChildrenQuantity = new Quantity<LengthUnit>(minimalDistanceBetweenChildren, LengthUnit.px);
 		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildrenQuantity);
 	}
 
 	@Override
-	public void setMinimalDistanceBetweenChildren(final Quantity<LengthUnits> minimalDistanceBetweenChildren) {
+	public void setMinimalDistanceBetweenChildren(final Quantity<LengthUnit> minimalDistanceBetweenChildren) {
 		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), minimalDistanceBetweenChildren);
 	}
 
 	@Override
 	public void setMinimalDistanceBetweenChildren(final String minimalDistanceBetweenChildren) {
-		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), Quantity.fromString(minimalDistanceBetweenChildren, LengthUnits.px));
+		((MLocationController) LocationController.getController()).setMinimalDistanceBetweenChildren(getDelegate(), Quantity.fromString(minimalDistanceBetweenChildren, LengthUnit.px));
 	}
 
 	@Override
@@ -1182,4 +1183,9 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	public DependencyLookup getDependents() {
 		return new DependencyLookupProxy(getDelegate(), getScriptContext(), DependencySearchStrategy.DEPENDENTS);
 	}
+
+    @Override
+    public NodeGeometry getGeometry() {
+        return new NodeGeometryProxy(getDelegate(), getScriptContext());
+    }
 }

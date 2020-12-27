@@ -313,7 +313,7 @@ public class ApplicationResourceController extends ResourceController {
 				localeDef = new Locale(lang);
 				break;
 			case 5:
-				localeDef = new Locale(lang.substring(0, 1), lang.substring(3, 4));
+				localeDef = new Locale(lang.substring(0, 2), lang.substring(3, 5));
 				break;
 			default:
 				return;

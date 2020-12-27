@@ -7,10 +7,10 @@ import java.awt.Color;
 import java.util.Collection;
 import java.util.Set;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.TranslatedObject;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
@@ -81,7 +81,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
         return getMinNodeWidthQuantity().toBaseUnitsRounded();
     }
 
-	public Quantity<LengthUnits> getMinNodeWidthQuantity() {
+	public Quantity<LengthUnit> getMinNodeWidthQuantity() {
 		return getStyleController().getMinWidth(getDelegate());
 	}
 
@@ -89,7 +89,7 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
         return getMaxNodeWidthQuantity().toBaseUnitsRounded();
     }
 
-	public Quantity<LengthUnits> getMaxNodeWidthQuantity() {
+	public Quantity<LengthUnit> getMaxNodeWidthQuantity() {
 		return getStyleController().getMaxWidth(getDelegate());
 	}
 
@@ -176,34 +176,34 @@ class NodeStyleProxy extends AbstractProxy<NodeModel> implements Proxy.NodeStyle
     }
 
     public void setMinNodeWidth(int width) {
-        Quantity<LengthUnits> quantity = inPixels(width);
+        Quantity<LengthUnit> quantity = inPixels(width);
 		setMinNodeWidth(quantity);
     }
 
-	public Quantity<LengthUnits> inPixels(int width) {
-		Quantity<LengthUnits> quantity = width != -1 ? new Quantity<LengthUnits>(width, LengthUnits.px) : null;
+	public Quantity<LengthUnit> inPixels(int width) {
+		Quantity<LengthUnit> quantity = width != -1 ? new Quantity<LengthUnit>(width, LengthUnit.px) : null;
 		return quantity;
 	}
 
-	public void setMinNodeWidth(Quantity<LengthUnits> width) {
+	public void setMinNodeWidth(Quantity<LengthUnit> width) {
 		getStyleController().setMinNodeWidth(getDelegate(), width);
 	}
 
 	public void setMinNodeWidth(String width) {
-		getStyleController().setMinNodeWidth(getDelegate(), Quantity.fromString(width, LengthUnits.px));
+		getStyleController().setMinNodeWidth(getDelegate(), Quantity.fromString(width, LengthUnit.px));
 	}
 	
     public void setMaxNodeWidth(int width) {
-        Quantity<LengthUnits> quantity = inPixels(width);
+        Quantity<LengthUnit> quantity = inPixels(width);
 		setMaxNodeWidth(quantity);
     }
 
-	public void setMaxNodeWidth(Quantity<LengthUnits> width) {
+	public void setMaxNodeWidth(Quantity<LengthUnit> width) {
 		getStyleController().setMaxNodeWidth(getDelegate(), width);
 	}
 
 	public void setMaxNodeWidth(String width) {
-		getStyleController().setMaxNodeWidth(getDelegate(), Quantity.fromString(width, LengthUnits.px));
+		getStyleController().setMaxNodeWidth(getDelegate(), Quantity.fromString(width, LengthUnit.px));
 	}
 
     public boolean isNumberingEnabled() {

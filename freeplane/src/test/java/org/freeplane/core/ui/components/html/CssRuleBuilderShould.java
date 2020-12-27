@@ -6,8 +6,8 @@ import java.awt.Font;
 
 import javax.swing.SwingConstants;
 
-import org.freeplane.core.util.Convertible;
-import org.freeplane.core.util.Quantity;
+import org.freeplane.api.PhysicalUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.features.nodestyle.FontUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -107,7 +107,7 @@ public class CssRuleBuilderShould {
 		assertRule("text-align: right;");
 	}
 
-	enum Metrics implements Convertible{
+	enum Metrics implements PhysicalUnit{
 		m(1d), cm(0.01d);
 
 		Metrics(double factor){

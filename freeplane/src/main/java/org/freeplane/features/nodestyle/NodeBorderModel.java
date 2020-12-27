@@ -21,9 +21,9 @@ package org.freeplane.features.nodestyle;
 
 import java.awt.Color;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.NodeModel;
 
@@ -47,7 +47,7 @@ public class NodeBorderModel implements IExtension {
 	}
 
 	private Boolean borderWidthMatchesEdgeWidth = null;
-	private Quantity<LengthUnits> borderWidth = null;
+	private Quantity<LengthUnit> borderWidth = null;
 
 	private Boolean borderDashMatchesEdgeDash = null;
 	private DashVariant borderDash = null;
@@ -64,12 +64,12 @@ public class NodeBorderModel implements IExtension {
 		return extension == null ? null : extension.getBorderWidthMatchesEdgeWidth();
 	}
 
-	public static Quantity<LengthUnits> getBorderWidth(final NodeModel node) {
+	public static Quantity<LengthUnit> getBorderWidth(final NodeModel node) {
 		final NodeBorderModel extension = node.getExtension(NodeBorderModel.class);
 		return extension == null ? null : extension.getBorderWidth();
 	}
 
-	public Quantity<LengthUnits> getBorderWidth() {
+	public Quantity<LengthUnit> getBorderWidth() {
 		return borderWidth;
 	}
 
@@ -77,11 +77,11 @@ public class NodeBorderModel implements IExtension {
 		createNodeBorderModel(node).setBorderWidthMatchesEdgeWidth(borderWidthMatchesEdgeWidth);
 	}
 
-	public static void setBorderWidth(final NodeModel node, final Quantity<LengthUnits> borderWidth) {
+	public static void setBorderWidth(final NodeModel node, final Quantity<LengthUnit> borderWidth) {
 		createNodeBorderModel(node).setBorderWidth(borderWidth);
 	}
 
-	public void setBorderWidth(Quantity<LengthUnits> borderWidth) {
+	public void setBorderWidth(Quantity<LengthUnit> borderWidth) {
 		this.borderWidth = borderWidth;
 		
 	}

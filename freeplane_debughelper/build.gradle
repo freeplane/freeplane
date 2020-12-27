@@ -22,8 +22,8 @@ dependencies {
 }
 
 java {
-   disableAutoTargetJvm()
-}
+	disableAutoTargetJvm()
+} 
 
 task(run, dependsOn: 'classes', type: JavaExec) {
     main ='org.freeplane.launcher.Launcher'

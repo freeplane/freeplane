@@ -69,4 +69,9 @@ class EditNodeExternalApplication extends EditNodeBase {
 		}.start();
 		return;
 	}
+
+    @Override
+    protected boolean editorBlocks() {
+        return true;
+    }
 }

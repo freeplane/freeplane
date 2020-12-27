@@ -38,15 +38,15 @@ import java.util.Vector;
 
 import javax.swing.Icon;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.ActionAcceleratorManager;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.TimePeriodUnits;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.mode.AController.IActionOnChange;
 import org.freeplane.features.mode.Controller;
@@ -180,13 +180,13 @@ public abstract class ResourceController {
 	}
 
 	public int getLengthProperty(String name) {
-		final Quantity<LengthUnits> quantity = getLengthQuantityProperty(name);
+		final Quantity<LengthUnit> quantity = getLengthQuantityProperty(name);
 		return quantity.toBaseUnitsRounded();
 	}
 
-	public Quantity<LengthUnits> getLengthQuantityProperty(String name) {
+	public Quantity<LengthUnit> getLengthQuantityProperty(String name) {
 		final String property = getProperty(name);
-		final Quantity<LengthUnits> quantity = Quantity.fromString(property, LengthUnits.px);
+		final Quantity<LengthUnit> quantity = Quantity.fromString(property, LengthUnit.px);
 		return quantity;
 	}
 

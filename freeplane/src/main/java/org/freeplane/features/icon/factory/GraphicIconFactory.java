@@ -6,10 +6,10 @@ import java.util.WeakHashMap;
 
 import javax.swing.Icon;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.icon.UIIcon;
 
 class GraphicIconFactory implements IconFactory {
@@ -41,12 +41,12 @@ class GraphicIconFactory implements IconFactory {
 	}
 
 	@Override
-	public Icon getIcon(UIIcon uiIcon, Quantity<LengthUnits> iconHeight) {
+	public Icon getIcon(UIIcon uiIcon, Quantity<LengthUnit> iconHeight) {
 		return getIcon(uiIcon.getUrl(), iconHeight);
 	}
 
 	@Override
-	public Icon getIcon(final URL url, Quantity<LengthUnits> iconHeight) {
+	public Icon getIcon(final URL url, Quantity<LengthUnit> iconHeight) {
 		Icon result = ICON_NOT_FOUND;
 		if (url != null) {
 			final int heightPixels = iconHeight.toBaseUnitsRounded();
@@ -76,7 +76,7 @@ class GraphicIconFactory implements IconFactory {
 	}
 
 	@Override
-	public Icon getScaledIcon(final Icon icon, Quantity<LengthUnits> iconHeight) {
+	public Icon getScaledIcon(final Icon icon, Quantity<LengthUnit> iconHeight) {
 		if (iconHeight.toBaseUnitsRounded() == icon.getIconHeight())
 			return icon;
 		final URL iconUrl = ICON_URLS.get(icon);

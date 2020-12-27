@@ -21,11 +21,11 @@ package org.freeplane.features.styles.mindmapmode.styleeditorpanel;
 
 import java.beans.PropertyChangeEvent;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.QuantityProperty;
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.nodestyle.NodeSizeModel;
@@ -42,7 +42,7 @@ class MaxNodeWidthControlGroup implements ControlGroup {
 	private static final String MAX_NODE_WIDTH = "max_node_width";
 
 	private BooleanProperty mSetMaxNodeWidth;
-	private QuantityProperty<LengthUnits> mMaxNodeWidth;
+	private QuantityProperty<LengthUnit> mMaxNodeWidth;
 	private MaxNodeWidthChangeListener propertyChangeListener;
 
 	private class MaxNodeWidthChangeListener extends ControlGroupChangeListener {
@@ -61,8 +61,8 @@ class MaxNodeWidthControlGroup implements ControlGroup {
 		void setStyleOnExternalChange(NodeModel node) {
 			final NodeSizeModel nodeSizeModel = NodeSizeModel.getModel(node);
 			final NodeStyleController styleController = NodeStyleController.getController();
-			final Quantity<LengthUnits> width = nodeSizeModel != null ? nodeSizeModel.getMaxNodeWidth() : null;
-			final Quantity<LengthUnits> viewWidth = styleController.getMaxWidth(node);
+			final Quantity<LengthUnit> width = nodeSizeModel != null ? nodeSizeModel.getMaxNodeWidth() : null;
+			final Quantity<LengthUnit> viewWidth = styleController.getMaxWidth(node);
 			mSetMaxNodeWidth.setValue(width != null);
 			mMaxNodeWidth.setQuantifiedValue(viewWidth);
 		}
@@ -70,7 +70,7 @@ class MaxNodeWidthControlGroup implements ControlGroup {
 	
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetMaxNodeWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		mMaxNodeWidth = new QuantityProperty<LengthUnits>(MAX_NODE_WIDTH, 0, 100000, 0.1, LengthUnits.px);
+		mMaxNodeWidth = new QuantityProperty<LengthUnit>(MAX_NODE_WIDTH, 0, 100000, 0.1, LengthUnit.px);
 		propertyChangeListener = new MaxNodeWidthChangeListener(mSetMaxNodeWidth, mMaxNodeWidth);
 		mSetMaxNodeWidth.addPropertyChangeListener(propertyChangeListener);
 		mMaxNodeWidth.addPropertyChangeListener(propertyChangeListener);

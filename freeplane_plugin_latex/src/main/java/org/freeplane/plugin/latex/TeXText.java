@@ -6,9 +6,9 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.features.mode.Controller;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
@@ -44,26 +44,26 @@ public class TeXText
 
 		TeXFormula tf = new TeXFormula(sb.toString());
 
-        final Quantity<LengthUnits> latexInterlineSpacingQuantity = ResourceController.getResourceController().getLengthQuantityProperty(LATEX_INTERLINE_SPACING);
+        final Quantity<LengthUnit> latexInterlineSpacingQuantity = ResourceController.getResourceController().getLengthQuantityProperty(LATEX_INTERLINE_SPACING);
         int latexInterlineSpacingUnit = -1;
         float latexInterlineSpacingValue = (float)latexInterlineSpacingQuantity.value;
-        if (latexInterlineSpacingQuantity.unit == LengthUnits.px)
+        if (latexInterlineSpacingQuantity.unit == LengthUnit.px)
         {
             latexInterlineSpacingUnit = TeXConstants.UNIT_PIXEL;
         }
-        else if (latexInterlineSpacingQuantity.unit == LengthUnits.in)
+        else if (latexInterlineSpacingQuantity.unit == LengthUnit.in)
         {
             latexInterlineSpacingUnit = TeXConstants.UNIT_IN;
         }
-        else if (latexInterlineSpacingQuantity.unit == LengthUnits.mm)
+        else if (latexInterlineSpacingQuantity.unit == LengthUnit.mm)
         {
             latexInterlineSpacingUnit = TeXConstants.UNIT_MM;
         }
-        else if (latexInterlineSpacingQuantity.unit == LengthUnits.cm)
+        else if (latexInterlineSpacingQuantity.unit == LengthUnit.cm)
         {
             latexInterlineSpacingUnit = TeXConstants.UNIT_CM;
         }
-        else if (latexInterlineSpacingQuantity.unit == LengthUnits.pt)
+        else if (latexInterlineSpacingQuantity.unit == LengthUnit.pt)
         {
             latexInterlineSpacingUnit = TeXConstants.UNIT_PT;
         }

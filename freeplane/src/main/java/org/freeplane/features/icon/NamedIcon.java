@@ -21,8 +21,8 @@ package org.freeplane.features.icon;
 
 import javax.swing.Icon;
 
-import org.freeplane.core.ui.LengthUnits;
-import org.freeplane.core.util.Quantity;
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 
 /**
  * @author Dimitry Polivaev
@@ -32,7 +32,7 @@ public interface NamedIcon extends Comparable<NamedIcon> {
     String getName();
     String getFile();
 	Icon getIcon();
-	Icon getIcon(Quantity<LengthUnits> iconHeight);
+	Icon getIcon(Quantity<LengthUnit> iconHeight);
 	NamedIcon zoom(float zoom);
 	int getOrder();
 	boolean hasStandardSize();

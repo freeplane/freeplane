@@ -46,16 +46,16 @@ import java.util.WeakHashMap;
 
 import javax.swing.JOptionPane;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.LengthUnits;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.ConfigurationUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.Quantity;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.clipboard.ClipboardControllers;
 import org.freeplane.features.clipboard.mindmapmode.MClipboardControllers;
@@ -171,7 +171,7 @@ public class MMapController extends MapController {
 	}
 
 	public NodeModel addNewNode(int newNodeMode) {
-		stopEditing();
+		stopInlineEditing();
 		final NodeModel targetNode = getSelectedNode();
 		final NodeModel newNode;
 		switch (newNodeMode) {
@@ -259,17 +259,17 @@ public class MMapController extends MapController {
 		});
     }
 
-	private void stopEditing() {
+	private void stopInlineEditing() {
 		final TextController textController = TextController.getController();
 		if (textController instanceof MTextController) {
-			((MTextController) textController).stopEditing();
+			((MTextController) textController).stopInlineEditing();
 		}
     }
 
 	public void addNewSummaryNodeStartEditing(final NodeModel parentNode, final int start, final int end,
 			final int summaryLevel, final boolean isLeft) {
 		ModeController modeController = getMModeController();
-		stopEditing();
+		stopInlineEditing();
 		final NodeModel newSummaryNode = addNewNode(parentNode, end+1, isLeft);
 		final SummaryNode summary = modeController.getExtension(SummaryNode.class);
 		summary.undoableActivateHook(newSummaryNode, SUMMARY);
@@ -339,7 +339,7 @@ public class MMapController extends MapController {
 			UITools.errorMessage("not allowed");
 			return;
 		}
-		stopEditing();
+		stopInlineEditing();
 		insertSingleNewNode(newNode, parent, index, newNodeIsLeft);
 		for(NodeModel parentClone : parent.subtreeClones()){
 			if(parentClone != parent) {
@@ -859,7 +859,7 @@ public class MMapController extends MapController {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final TextController textController = TextController.getController();
 		if (textController instanceof MTextController) {
-			((MTextController) textController).stopEditing();
+			((MTextController) textController).stopInlineEditing();
 				modeController.forceNewTransaction();
 		}
 		final NodeModel target = getRootNode();
@@ -877,8 +877,8 @@ public class MMapController extends MapController {
 		newNode.addExtension(modeController.getExtension(FreeNode.class));
 		if(! addNewNode(newNode, target, target.getChildCount(), newNodeIsLeft))
 			return null;
-		final Quantity<LengthUnits> x = LengthUnits.pixelsInPt(pt.x);
-		final Quantity<LengthUnits> y = LengthUnits.pixelsInPt(pt.y);
+		final Quantity<LengthUnit> x = LengthUnit.pixelsInPt(pt.x);
+		final Quantity<LengthUnit> y = LengthUnit.pixelsInPt(pt.y);
 		((MLocationController)MLocationController.getController(modeController)).moveNodePosition(newNode, x, y);
 		final Component component = Controller.getCurrentController().getMapViewManager().getComponent(newNode);
 		if (component == null)
