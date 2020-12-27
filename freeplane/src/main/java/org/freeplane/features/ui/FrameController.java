@@ -78,6 +78,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.util.ClassLoaderFactory;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedObject;
@@ -533,14 +534,16 @@ abstract public class FrameController implements ViewController {
 
 	public static void setLookAndFeel(final String lookAndFeel, boolean supportHidpi) {
 		try {
-			if (System.getProperty("os.name", "").startsWith("Mac OS")) {
-			    UIManager.setLookAndFeel(new AquaLookAndFeel());
-			}
-			else if (lookAndFeel.equals("default")) {
-				String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
-				fixDarculaNPE(lookAndFeelClassName);
-				UIManager.setLookAndFeel(lookAndFeelClassName);
-				fixDarculaButtonUI();
+			if (lookAndFeel.equals("default")) {
+			    if (Compat.isMacOsX()) {
+			        UIManager.setLookAndFeel(new AquaLookAndFeel());
+			    }
+			    else {
+			        String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+			        fixDarculaNPE(lookAndFeelClassName);
+			        UIManager.setLookAndFeel(lookAndFeelClassName);
+			        fixDarculaButtonUI();
+			    }
 			}
 			else {
 				LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
