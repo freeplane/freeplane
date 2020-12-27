@@ -298,27 +298,29 @@ public class LinkController extends SelectionController implements IExtension {
 
 		final NodeModel source = link.getSource();
 		final NodeModel target = link.getTarget();
-		final IMapSelection selection = Controller.getCurrentModeController().getController().getSelection();
-		final JButton sourceButton = addLinks(arrowLinkPopup, source);
-		sourceButton.setEnabled(!selection.isSelected(source));
-		final JButton targetButton = addLinks(arrowLinkPopup, target);
-		targetButton.setEnabled(!selection.isSelected(target));
+		if(source != target) {
+		    final IMapSelection selection = Controller.getCurrentModeController().getController().getSelection();
+		    final JButton sourceButton = addLinks(arrowLinkPopup, source);
+		    sourceButton.setEnabled(!selection.isSelected(source));
+		    final JButton targetButton = addLinks(arrowLinkPopup, target);
+		    targetButton.setEnabled(!selection.isSelected(target));
 
-		sourceButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				sourceButton.setEnabled(false);
-				targetButton.setEnabled(true);
-			}
-		});
+		    sourceButton.addActionListener(new ActionListener() {
+		        @Override
+		        public void actionPerformed(ActionEvent e) {
+		            sourceButton.setEnabled(false);
+		            targetButton.setEnabled(true);
+		        }
+		    });
 
-		targetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				targetButton.setEnabled(false);
-				sourceButton.setEnabled(true);
-			}
-		});
+		    targetButton.addActionListener(new ActionListener() {
+		        @Override
+		        public void actionPerformed(ActionEvent e) {
+		            targetButton.setEnabled(false);
+		            sourceButton.setEnabled(true);
+		        }
+		    });
+		}
 	}
 
 	private void registerCloseActions(final JComponent arrowLinkPopup) {
@@ -344,11 +346,11 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public Color getColor(final ConnectorModel model) {
-		return model.getColor();
+		return model.getColor().orElseGet(this::getStandardConnectorColor);
 	}
 
 	public int[] getDashArray(final ConnectorModel model) {
-		return model.getDash();
+		return model.getDash().orElseGet(this::getStandardDashArray);
 	}
 
 	public String getLinkShortText(final NodeModel node) {
@@ -448,7 +450,7 @@ public class LinkController extends SelectionController implements IExtension {
 	private static final String RESOURCES_CONNECTOR_WIDTH = "connector_width";
 
 	public int getWidth(final ConnectorModel model) {
-		return model.getWidth();
+		return model.getWidth().orElseGet(this::getStandardConnectorWidth);
 	}
 
 	public void loadLink(final NodeModel node, String link) {
@@ -806,12 +808,25 @@ public class LinkController extends SelectionController implements IExtension {
 		final ConnectorArrows arrows = ConnectorArrows.valueOf(standard);
 		return arrows;
 	}
+	
+    public ArrowType getStandardStartArrow() {
+        return getStandardConnectorArrows().start;
+    }
+
+    public ArrowType getStandardEndArrow() {
+        return getStandardConnectorArrows().end;
+    }
 
 	public DashVariant getStandardDashVariant() {
 		final String standard = ResourceController.getResourceController().getProperty(RESOURCES_DASH_VARIANT);
 		final DashVariant variant = DashVariant.valueOf(standard);
 		return variant;
 	}
+	
+	   public int[] getStandardDashArray() {
+	       return getStandardDashVariant().variant;
+	   }
+
 
 	public Shape getStandardConnectorShape() {
 		final String standardShape = ResourceController.getResourceController().getProperty(RESOURCES_CONNECTOR_SHAPE);
@@ -826,7 +841,7 @@ public class LinkController extends SelectionController implements IExtension {
 	}
 
 	public int getOpacity(ConnectorModel connectorModel) {
-		return connectorModel.getAlpha();
+		return connectorModel.getAlpha().orElseGet(this::getStandardConnectorOpacity);
     }
 
 	public int getStandardLabelFontSize() {
@@ -939,4 +954,24 @@ public class LinkController extends SelectionController implements IExtension {
 		else
 			loadURI(uri);
 	}
+
+    public String getLabelFontFamily(ConnectorModel connectorModel) {
+        return connectorModel.getLabelFontFamily().orElseGet(this::getStandardLabelFontFamily);
+    }
+
+    public int getLabelFontSize(ConnectorModel connectorModel) {
+        return connectorModel.getLabelFontSize().orElseGet(this::getStandardLabelFontSize);
+    }
+
+    public Shape getShape(ConnectorModel connectorModel) {
+        return connectorModel.getShape().orElseGet(this::getStandardConnectorShape);
+    }
+
+    public Object getStartArrow(ConnectorModel connectorModel) {
+        return connectorModel.getStartArrow().orElseGet(this::getStandardStartArrow);
+    }
+
+    public Object getEndArrow(ConnectorModel connectorModel) {
+        return connectorModel.getEndArrow().orElseGet(this::getStandardEndArrow);
+    }
 }

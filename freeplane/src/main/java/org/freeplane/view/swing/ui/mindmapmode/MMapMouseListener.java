@@ -104,7 +104,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 		final Object object = mapView.detectCollision(new Point(originX, originY));
 		if (object instanceof ConnectorModel) {
 			final ConnectorModel arrowLinkModel = (ConnectorModel) object;
-			final Shape shape = arrowLinkModel.getShape();
+			final Shape shape = linkController().getShape(arrowLinkModel);
 			if (Shape.EDGE_LIKE.equals(shape)) {
 				return;
 			}
@@ -124,13 +124,17 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 			final Point draggedLinkNewEndPoint = draggedLink.getEndInclination();
 			draggedLink.setStartInclination(draggedLinkOldStartPoint);
 			draggedLink.setEndInclination(draggedLinkOldEndPoint);
-			((MLinkController) LinkController.getController(Controller.getCurrentController().getModeController())).setArrowLinkEndPoints(draggedLink,
+			linkController().setArrowLinkEndPoints(draggedLink,
 				draggedLinkNewStartPoint, draggedLinkNewEndPoint);
 			final MapView mapView = (MapView) e.getComponent();
 			mapView.repaintVisible();
 			draggedLink = null;
 		}
 	}
+
+    private MLinkController linkController() {
+        return (MLinkController) LinkController.getController(Controller.getCurrentController().getModeController());
+    }
 
 	@Override
     public void mouseClicked(MouseEvent e) {

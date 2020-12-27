@@ -39,15 +39,14 @@ import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.features.DashVariant;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.FontSizeExtension;
 import org.freeplane.features.cloud.CloudModel;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.edge.EdgeStyle;
-import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
-import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
@@ -58,9 +57,9 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeGeometryModel;
 
 /**
  * @author Dimitry Polivaev
@@ -73,7 +72,6 @@ public class MapStyleModel implements IExtension {
     public static final IStyle DEFAULT_STYLE = new StyleTranslatedObject("default");
     public static final IStyle BACKGROUND_SELECTION_STYLE = new StyleTranslatedObject("defaultstyle.backgroundSelection");
     public static final IStyle RECTANGULAR_SELECTION_STYLE = new StyleTranslatedObject("defaultstyle.rectangularSelection");
-    public static final IStyle CONNECTOR_STYLE = new StyleTranslatedObject("defaultstyle.connector");
 	public static final IStyle DETAILS_STYLE = new StyleTranslatedObject("defaultstyle.details");
 	public static final IStyle ATTRIBUTE_STYLE = new StyleTranslatedObject("defaultstyle.attributes");
 	public static final IStyle NOTE_STYLE = new StyleTranslatedObject("defaultstyle.note");
@@ -172,6 +170,20 @@ public class MapStyleModel implements IExtension {
 				predefinedStyleParentNode.insert(newNode, 1);
 				addStyleNode(newNode);
 			}
+
+			NodeLinks nodeLinks = NodeLinks.createLinkExtension(defaultStyleModel);
+			if(nodeLinks.getLinks().isEmpty()) {
+			    defaultStyleModel.createID();
+			    LinkController linkController = LinkController.getController();
+			    ConnectorModel connector = new ConnectorModel(defaultStyleModel, defaultStyleModel.getID(),
+			            linkController.getStandardConnectorArrows(), linkController.getStandardDashArray(),
+			            linkController.getStandardConnectorColor(), linkController.getStandardConnectorOpacity(),
+			            linkController.getStandardConnectorShape(), linkController.getStandardConnectorWidth(),
+			            linkController.getStandardLabelFontFamily(), linkController.getStandardLabelFontSize());
+			    connector.setMiddleLabel(TextUtils.getText("connector"));
+			    nodeLinks.addArrowlink(connector);
+			}
+
 			if (styleNodes.get(ATTRIBUTE_STYLE) == null) {
 				final NodeModel newNode = new NodeModel(ATTRIBUTE_STYLE, styleMap);
 				final int defaultFontSize = 9;
@@ -206,34 +218,6 @@ public class MapStyleModel implements IExtension {
                 final NodeModel newNode = new NodeModel(RECTANGULAR_SELECTION_STYLE, styleMap);
                 predefinedStyleParentNode.insert(newNode, 6);
                 addStyleNode(newNode);
-            }
-            if (styleNodes.get(CONNECTOR_STYLE) == null) {
-                final NodeModel newNode = new NodeModel(CONNECTOR_STYLE, styleMap);
-                predefinedStyleParentNode.insert(newNode, 7);
-                addStyleNode(newNode);
-                NodeLinks nodeLinks = NodeLinks.createLinkExtension(newNode);
-                ConnectorArrows a = ConnectorArrows.FORWARD;
-                int[] b = DashVariant.SOLID.variant;
-                Color c = Color.BLUE;
-                int h = 2;
-                Shape d = Shape.CUBIC_CURVE;
-                int e = 80;
-                String f = "Dialog";
-                int g = 9;
-                ConnectorModel arrowLink = new ConnectorModel(newNode, newNode.getID(),
-                    a, b,
-                    c, h,
-                    d, e,
-                    f, g) {
-                        @Override
-                        public NodeModel getTarget() {
-                            return getSource();
-                        }
-                    
-                };
-                arrowLink.setMiddleLabel("label");
-                nodeLinks.addArrowlink(arrowLink);
-
             }
 		}
 		catch (Exception e) {

@@ -38,6 +38,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Vector;
 
@@ -88,6 +89,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.LogicalStyleKeys;
+import org.freeplane.features.styles.MapStyleModel;
 
 /**
  * @author Dimitry Polivaev
@@ -146,11 +148,7 @@ public class MLinkController extends LinkController {
 		@Override
 		public void act() {
 			NodeLinks nodeLinks = NodeLinks.createLinkExtension(source);
-			arrowLink = new ConnectorModel(source, targetID,
-				getStandardConnectorArrows(), getStandardDashVariant().variant,
-				getStandardConnectorColor(), getStandardConnectorOpacity(),
-				getStandardConnectorShape(), getStandardConnectorWidth(),
-				getStandardLabelFontFamily(), getStandardLabelFontSize());
+			arrowLink = new ConnectorModel(source, targetID);
 			nodeLinks.addArrowlink(arrowLink);
 			fireNodeConnectorChange(source, arrowLink);
 		}
@@ -377,10 +375,10 @@ public class MLinkController extends LinkController {
 		return addConnector(source, target.createID());
 	}
 
-	public void changeArrowsOfArrowLink(final ConnectorModel link, final ArrowType startArrow, final ArrowType endArrow) {
+	public void changeArrowsOfArrowLink(final ConnectorModel link, final Optional<ArrowType> startArrow, final Optional<ArrowType> endArrow) {
 		final IActor actor = new IActor() {
-			final private ArrowType oldEndArrow = link.getEndArrow();
-			final private ArrowType oldStartArrow = link.getStartArrow();
+			final private Optional<ArrowType> oldEndArrow = link.getEndArrow();
+			final private Optional<ArrowType> oldStartArrow = link.getStartArrow();
 
 			@Override
 			public void act() {
@@ -428,12 +426,14 @@ public class MLinkController extends LinkController {
 	@Override
 	protected void createArrowLinkPopup(final ConnectorModel link, final JComponent arrowLinkPopup) {
 		super.createArrowLinkPopup(link, arrowLinkPopup);
-		addClosingAction(arrowLinkPopup, new RemoveConnectorAction(this, link));
+		boolean isDefault = MapStyleModel.DEFAULT_STYLE.equals(link.getSource().getUserObject());
+        if(! isDefault)
+		    addClosingAction(arrowLinkPopup, new RemoveConnectorAction(this, link));
 
 		addSeparator(arrowLinkPopup);
 		addAction(arrowLinkPopup, new ConnectorColorAction(this, link));
 
-		final JSlider transparencySlider = new JSlider(20, 255, link.getAlpha());
+		final JSlider transparencySlider = new JSlider(20, 255, getOpacity(link));
 		transparencySlider.setMinorTickSpacing(20);
 		transparencySlider.setPaintTicks(true);
 		transparencySlider.setSnapToTicks(true);
@@ -481,7 +481,7 @@ public class MLinkController extends LinkController {
         connectorDashes.setVerticalMargin(verticalMargin);
         addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_lines"), connectorDashes);
 
-		final SpinnerNumberModel widthModel = new SpinnerNumberModel(link.getWidth(),1, 32, 1);
+		final SpinnerNumberModel widthModel = new SpinnerNumberModel(getWidth(link),1, 32, 1);
 		final JSpinner widthSpinner = new JSpinner(widthModel);
 		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_width_label"), widthSpinner);
 
@@ -500,7 +500,7 @@ public class MLinkController extends LinkController {
 				public void itemStateChanged(ItemEvent e) {
 					final Object item = e.getItem();
 					if(item != null)
-						setLabelFontFamily(link, item.toString());
+						setLabelFontFamily(link, Optional.of(item.toString()));
 				}
 			});
 		}
@@ -530,22 +530,28 @@ public class MLinkController extends LinkController {
 							}
 						}
 
-						setLabelFontSize(link, size);
+						setLabelFontSize(link, Optional.of(size));
 					}
 				}
 			});
 		}
 		final JTextArea sourceLabelEditor;
-            sourceLabelEditor = new JTextArea(link.getSourceLabel());
-            addTextEditor(arrowLinkPopup, "edit_source_label", sourceLabelEditor);
+		final JTextArea middleLabelEditor;
+		final JTextArea targetLabelEditor ;
+		if(! isDefault) {
+		    sourceLabelEditor = new JTextArea(link.getSourceLabel());
+		    addTextEditor(arrowLinkPopup, "edit_source_label", sourceLabelEditor);
 
-		final JTextArea middleLabelEditor = new JTextArea(link.getMiddleLabel());
-        addTextEditor(arrowLinkPopup, "edit_middle_label"  ,middleLabelEditor);
+		    middleLabelEditor = new JTextArea(link.getMiddleLabel());
+		    addTextEditor(arrowLinkPopup, "edit_middle_label"  ,middleLabelEditor);
 
-        final JTextArea targetLabelEditor ;
-            targetLabelEditor = new JTextArea(link.getTargetLabel());
-        addTextEditor(arrowLinkPopup, "edit_target_label", targetLabelEditor);
-
+		    targetLabelEditor = new JTextArea(link.getTargetLabel());
+		    addTextEditor(arrowLinkPopup, "edit_target_label", targetLabelEditor);
+		}
+		else {
+		    sourceLabelEditor = middleLabelEditor = targetLabelEditor = null;
+		}
+		
 		arrowLinkPopup.addHierarchyListener(new HierarchyListener() {
             private Component focusOwner;
             private Window dialog;
@@ -574,15 +580,16 @@ public class MLinkController extends LinkController {
                     return;
                 }
                 final IMapSelection selection = Controller.getCurrentController().getSelection();
-				if (selection == null || selection.getSelected() == null)
+                if (selection == null || selection.getSelected() == null)
                     return;
+                if(! isDefault) {
                     setSourceLabel(link, sourceLabelEditor.getText());
                     setTargetLabel(link, targetLabelEditor.getText());
-                setMiddleLabel(link, middleLabelEditor.getText());
-                setOpacity(link, transparencySlider.getValue());
-                setWidth(link, widthModel.getNumber().intValue());
+                    setMiddleLabel(link, middleLabelEditor.getText());
+                }
+                setOpacity(link, Optional.of(transparencySlider.getValue()));
+                setWidth(link, Optional.of(widthModel.getNumber().intValue()));
             }
-
 		});
 
 	}
@@ -660,9 +667,9 @@ public class MLinkController extends LinkController {
 		addPopupComponent(popup, TextUtils.getText(label), scrollPane);
 	}
 
-	public void setConnectorColor(final ConnectorModel arrowLink, final Color color) {
-		final Color oldColor = arrowLink.getColor();
-		if (color == oldColor || color != null && color.equals(oldColor)) {
+	public void setConnectorColor(final ConnectorModel arrowLink, final Optional<Color> color) {
+		final  Optional<Color> oldColor = arrowLink.getColor();
+		if (color.equals(oldColor)) {
 			return;
 		}
 		final IActor actor = new IActor() {
@@ -688,9 +695,9 @@ public class MLinkController extends LinkController {
 		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
 	}
 
-	public void setConnectorDashArray(final ConnectorModel arrowLink, final int[] dash) {
-		final int[] oldDash = arrowLink.getDash();
-		if (dash == oldDash || dash != null && dash.equals(oldDash)) {
+	public void setConnectorDashArray(final ConnectorModel arrowLink, final Optional<int[]> dash) {
+		final Optional<int[]> oldDash = arrowLink.getDash();
+		if (dash.equals(oldDash)) {
 			return;
 		}
 		final IActor actor = new IActor() {
@@ -905,8 +912,8 @@ public class MLinkController extends LinkController {
 		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
 	}
 
-	public void setShape(final ConnectorModel connector, final Shape shape) {
-		final Shape oldShape = connector.getShape();
+	public void setShape(final ConnectorModel connector, final Optional<Shape> shape) {
+		final Optional<Shape> oldShape = connector.getShape();
 		if (oldShape.equals(shape)) {
 			return;
 		}
@@ -933,9 +940,9 @@ public class MLinkController extends LinkController {
 		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
 	}
 
-	public void setWidth(final ConnectorModel connector, final int width) {
-		final int oldWidth = connector.getWidth();
-		if (oldWidth == width) {
+	public void setWidth(final ConnectorModel connector, final Optional<Integer> width) {
+		final Optional<Integer> oldWidth = connector.getWidth();
+		if (oldWidth.equals(width)) {
 			return;
 		}
 		final IActor actor = new IActor() {
@@ -962,9 +969,9 @@ public class MLinkController extends LinkController {
 	}
 
 
-	public void setLabelFontSize(final ConnectorModel connector, final int width) {
-		final int oldWidth = connector.getLabelFontSize();
-		if (oldWidth == width) {
+	public void setLabelFontSize(final ConnectorModel connector, final Optional<Integer> width) {
+		final Optional<Integer> oldWidth = connector.getLabelFontSize();
+		if (oldWidth.equals(width)) {
 			return;
 		}
 		final IActor actor = new IActor() {
@@ -991,8 +998,8 @@ public class MLinkController extends LinkController {
 	}
 
 
-	public void setLabelFontFamily(final ConnectorModel connector, final String family) {
-		final String oldFamily = connector.getLabelFontFamily();
+	public void setLabelFontFamily(final ConnectorModel connector, final Optional<String> family) {
+		final Optional<String> oldFamily = connector.getLabelFontFamily();
 		if (oldFamily.equals(family)) {
 			return;
 		}
@@ -1019,9 +1026,9 @@ public class MLinkController extends LinkController {
 		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
 	}
 
-	public void setOpacity(final ConnectorModel connector, final int alpha) {
-		final int oldAlpha = connector.getAlpha();
-		if (oldAlpha == alpha) {
+	public void setOpacity(final ConnectorModel connector,  final Optional<Integer> alpha) {
+		final Optional<Integer> oldAlpha = connector.getAlpha();
+		if (oldAlpha.equals(alpha)) {
 			return;
 		}
 		final IActor actor = new IActor() {
@@ -1219,4 +1226,16 @@ public class MLinkController extends LinkController {
 			modeController.execute(actor, map);
 		}
 	}
+
+    public Shape getShape(ConnectorModel arrowLinkModel) {
+        return arrowLinkModel.getShape().orElseGet(this::getStandardConnectorShape);
+    }
+
+    public ArrowType getStartArrow(ConnectorModel arrowLinkModel) {
+        return arrowLinkModel.getStartArrow().orElseGet(() -> getStandardConnectorArrows().start);
+    }
+
+    public ArrowType getEndArrow(ConnectorModel arrowLinkModel) {
+        return arrowLinkModel.getEndArrow().orElseGet(() -> getStandardConnectorArrows().end);
+    }
 }

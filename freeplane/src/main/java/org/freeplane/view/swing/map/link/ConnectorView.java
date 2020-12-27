@@ -63,10 +63,11 @@ public class ConnectorView extends AConnectorView{
 	final private Color color;
 	final private BasicStroke stroke;
 	final private Color bgColor;
+    private final LinkController linkController;
 	/* Note, that source and target are nodeviews and not nodemodels!. */
 	public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target, Color bgColor) {
 		super(connectorModel, source, target);
-		final LinkController linkController = LinkController.getController(getModeController());
+		linkController = getLinkController();
 		textColor = linkController.getColor(connectorModel);
 		this.bgColor =bgColor;
 		final int alpha = linkController.getOpacity(connectorModel);
@@ -359,7 +360,7 @@ public class ConnectorView extends AConnectorView{
 
 	private void paintCurve(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint, boolean showsConnectors) {
 		final boolean selfLink = getSource() == getTarget();
-		final boolean isLine = ConnectorModel.Shape.LINE.equals(connectorModel.getShape());
+		final boolean isLine = ConnectorModel.Shape.LINE.equals(linkController.getShape(connectorModel));
 		arrowLinkCurve = null;
 		if (showsConnectors) {
 			if (startPoint != null && endPoint != null) {
@@ -371,7 +372,7 @@ public class ConnectorView extends AConnectorView{
 					arrowLinkCurve = createLine(startPoint, endPoint);
 			                    }
 			                }
-			                else if (ConnectorModel.Shape.LINEAR_PATH.equals(connectorModel.getShape()))
+			                else if (ConnectorModel.Shape.LINEAR_PATH.equals(linkController.getShape(connectorModel)))
 			                    arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
 			                else
 			                    arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
@@ -380,13 +381,13 @@ public class ConnectorView extends AConnectorView{
 				g.draw(arrowLinkCurve);
 			}
 		} 
-		if (isSourceVisible() && !(showsConnectors && connectorModel.getStartArrow().equals(ArrowType.NONE))) {
+		if (isSourceVisible() && !(showsConnectors && linkController.getStartArrow(connectorModel).equals(ArrowType.NONE))) {
 			if(!selfLink && isLine && endPoint != null)
 				paintArrow(g, endPoint, startPoint);
 			else
 				paintArrow(g, startPoint2, startPoint);
 		}
-		if (isTargetVisible() && !(showsConnectors && connectorModel.getEndArrow().equals(ArrowType.NONE))) {
+		if (isTargetVisible() && !(showsConnectors && linkController.getEndArrow(connectorModel).equals(ArrowType.NONE))) {
 			if(isLine && startPoint != null) {
                             if (selfLink)
 				paintArrow(g, startPoint, startPoint2);
@@ -438,8 +439,8 @@ public class ConnectorView extends AConnectorView{
 		}
 
 		final Font oldFont = g.getFont();
-		final String fontFamily = connectorModel.getLabelFontFamily();
-        final int fontSize = Math.round (connectorModel.getLabelFontSize() * UITools.FONT_SCALE_FACTOR);
+		final String fontFamily = linkController.getLabelFontFamily(connectorModel);
+        final int fontSize = Math.round (linkController.getLabelFontSize(connectorModel) * UITools.FONT_SCALE_FACTOR);
         final Font linksFont = new Font(fontFamily, 0, getZoomed(fontSize));
         g.setFont(linksFont);
 
@@ -459,6 +460,10 @@ public class ConnectorView extends AConnectorView{
                     middleTextRectangle = drawMiddleLabel(g, middleLabel, getCenterPoint());
 		}
 		g.setFont(oldFont);
+    }
+
+    private LinkController getLinkController() {
+        return LinkController.getController(getModeController());
     }
 
 	private CubicCurve2D createCubicCurve2D(Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {

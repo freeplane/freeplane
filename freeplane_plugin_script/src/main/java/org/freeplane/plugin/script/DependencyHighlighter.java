@@ -3,8 +3,11 @@ package org.freeplane.plugin.script;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
+
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.HighlightedElements;
@@ -17,8 +20,6 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.plugin.script.dependencies.RelatedElements;
-
-import javax.swing.*;
 
 class DependencyHighlighter {
 	private final LinkController linkController;
@@ -58,14 +59,11 @@ class DependencyHighlighter {
 			}
 
 			private ConnectorModel createConnector(final NodeModel source, final String targetId) {
-				return new ConnectorModel(source, targetId,
-						ConnectorArrows.FORWARD, null,
-						HighlightedTransformedObject.FAILURE_COLOR,
-						linkController.getStandardConnectorOpacity(),
-						linkController.getStandardConnectorShape(),
-						linkController.getStandardConnectorWidth(),
-						linkController.getStandardLabelFontFamily(),
-						linkController.getStandardLabelFontSize());
+ 				ConnectorModel connectorModel = new ConnectorModel(source, targetId);
+                connectorModel.setColor(Optional.of(HighlightedTransformedObject.FAILURE_COLOR));
+                connectorModel.setStartArrow(Optional.of(ConnectorArrows.FORWARD.start));
+                connectorModel.setEndArrow(Optional.of(ConnectorArrows.FORWARD.end));
+                return connectorModel;
 			}
 			@Override
 			public void run() {

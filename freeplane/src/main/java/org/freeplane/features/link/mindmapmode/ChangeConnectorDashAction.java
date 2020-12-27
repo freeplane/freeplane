@@ -21,6 +21,7 @@ package org.freeplane.features.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.DashVariant;
@@ -40,7 +41,7 @@ class ChangeConnectorDashAction extends AFreeplaneAction {
 		super("ChangeConnectorDashAction", "", dash.icon);
 		this.connector = connector;
 		this.dash = dash;
-		final int[] dash2 = connector.getDash();
+		final int[] dash2 = linkController.getDashArray(connector);
 		final int[] variant = dash.variant;
 		final boolean selected = dash2 == variant || variant != null && Arrays.equals(variant, dash2);
 		setSelected(selected);
@@ -48,6 +49,6 @@ class ChangeConnectorDashAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		final MLinkController linkController = (MLinkController) LinkController.getController();
-		linkController.setConnectorDashArray(connector, dash.variant);
+		linkController.setConnectorDashArray(connector, Optional.of(dash.variant));
 	}
 }

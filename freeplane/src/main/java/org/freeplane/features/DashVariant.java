@@ -8,7 +8,7 @@ import org.freeplane.core.ui.components.RenderedContentSupplier;
 import org.freeplane.core.ui.components.UITools;
 
 public enum DashVariant  implements RenderedContentSupplier<DashVariant> {
-	SOLID(null), 
+	SOLID(new int[] {}), 
 	CLOSE_DOTS(new int[]{3, 3}), 
 	DASHES(new int[]{7, 7}), 
 	DISTANT_DOTS(new int[]{2, 7}), 

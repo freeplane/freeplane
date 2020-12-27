@@ -21,6 +21,7 @@ package org.freeplane.features.link;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.util.Optional;
 
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
@@ -33,6 +34,9 @@ public class ConnectorModel extends NodeLinkModel {
 	
 	final private ConnectorProperties connectorProperties;
 	
+	public ConnectorModel(NodeModel source, String targetID) {
+	    this(source, targetID, new ConnectorProperties());
+	}
 	public ConnectorModel(final NodeModel source, final String targetID,
 			final ConnectorArrows connectorEnds, int[] dash, 
 			final Color color,final int alpha, final Shape shape, final int width,
@@ -46,27 +50,28 @@ public class ConnectorModel extends NodeLinkModel {
 		this.connectorProperties = connectorProperties;
 	}
 
-	public Shape getShape() {
+
+    public Optional<Shape> getShape() {
 	    return connectorProperties.getShape();
     }
 
-	public void setShape(Shape shape) {
+	public void setShape( Optional<Shape> shape) {
 	    connectorProperties.setShape(shape);
     }
 
-	public int[] getDash() {
+	public  Optional<int[]> getDash() {
 	    return connectorProperties.getDash();
     }
 
-	public void setDash(int[] dash) {
+	public void setDash(Optional<int[]> dash) {
 	    connectorProperties.setDash(dash);
     }
 
-	public Color getColor() {
+	public Optional<Color> getColor() {
 	    return connectorProperties.getColor();
     }
 
-	public ArrowType getEndArrow() {
+	public Optional<ArrowType> getEndArrow() {
 	    return connectorProperties.getEndArrow();
     }
 
@@ -82,7 +87,7 @@ public class ConnectorModel extends NodeLinkModel {
 	    return connectorProperties.getSourceLabel();
     }
 
-	public ArrowType getStartArrow() {
+	public Optional<ArrowType> getStartArrow() {
 	    return connectorProperties.getStartArrow();
     }
 
@@ -94,15 +99,15 @@ public class ConnectorModel extends NodeLinkModel {
 	    return connectorProperties.getTargetLabel();
     }
 
-	public int getWidth() {
+	public Optional<Integer> getWidth() {
 	    return connectorProperties.getWidth();
     }
 
-	public void setColor(Color color) {
+	public void setColor(Optional<Color> color) {
 	    connectorProperties.setColor(color);
     }
 
-	public void setEndArrow(ArrowType endArrow) {
+	public void setEndArrow(Optional<ArrowType> endArrow) {
 	    connectorProperties.setEndArrow(endArrow);
     }
 
@@ -126,7 +131,7 @@ public class ConnectorModel extends NodeLinkModel {
 	    connectorProperties.setSourceLabel(label);
     }
 
-	public void setStartArrow(ArrowType startArrow) {
+	public void setStartArrow(Optional<ArrowType> startArrow) {
 	    connectorProperties.setStartArrow(startArrow);
     }
 
@@ -138,31 +143,31 @@ public class ConnectorModel extends NodeLinkModel {
 	    connectorProperties.setTargetLabel(targetLabel);
     }
 
-	public void setWidth(int width) {
+	public void setWidth(Optional<Integer> width) {
 	    connectorProperties.setWidth(width);
     }
 
-	public void setAlpha(int alpha) {
+	public void setAlpha(Optional<Integer> alpha) {
 	    connectorProperties.setAlpha(alpha);
     }
 
-	public int getAlpha() {
+	public Optional<Integer> getAlpha() {
 	    return connectorProperties.getAlpha();
     }
 
-	public String getLabelFontFamily() {
+	public Optional<String> getLabelFontFamily() {
 	    return connectorProperties.getLabelFontFamily();
     }
 
-	public void setLabelFontFamily(String labelFontFamily) {
+	public void setLabelFontFamily(Optional<String> labelFontFamily) {
 	    connectorProperties.setLabelFontFamily(labelFontFamily);
     }
 
-	public int getLabelFontSize() {
+	public Optional<Integer> getLabelFontSize() {
 	    return connectorProperties.getLabelFontSize();
     }
 
-	public void setLabelFontSize(int labelFontSize) {
+	public void setLabelFontSize(Optional<Integer> labelFontSize) {
 	    connectorProperties.setLabelFontSize(labelFontSize);
     }
 

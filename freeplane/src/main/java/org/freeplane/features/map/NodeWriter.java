@@ -125,9 +125,9 @@ public class NodeWriter implements IElementWriter, IAttributeWriter {
 		if (parentNode != null && parentNode.isRoot()) {
 			writer.addAttribute("POSITION", node.isLeft() ? "left" : "right");
 		}
-		final boolean saveID = !mode.equals(Mode.STYLE);
-		if (saveID) {
-			final String id = node.createID();
+		final boolean shouldCreateId = !mode.equals(Mode.STYLE);
+		final String id = shouldCreateId ? node.createID() : node.getID();
+		if (id != null) {
 			writer.addAttribute("ID", id);
 			writeReferenceNodeId(writer, node);
 		}

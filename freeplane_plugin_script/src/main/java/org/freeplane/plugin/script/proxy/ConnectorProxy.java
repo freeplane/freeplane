@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.link.ArrowType;
@@ -23,27 +24,32 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
     public String getShape() {
-		return getConnector().getShape().name();
+		return getLinkController().getShape(getConnector()).name();
 	}
 	
-	public void setShape(String shape) {
-	    getLinkController().setShape(getConnector(), Shape.valueOf(shape));
+	public void setShape(String shapeName) {
+	    Shape shape = Shape.valueOf(shapeName);
+        setShape(shape);
 	}
 
+    public void setShape(Shape shape) {
+        getLinkController().setShape(getConnector(), Optional.of(shape));
+    }
+
     public String getLabelFontFamily() {
-		return getConnector().getLabelFontFamily();
+		return getLinkController().getLabelFontFamily(getConnector());
 	}
 	
 	public void setLabelFontFamily(String font) {
-	    getLinkController().setLabelFontFamily(getConnector(), font);
+	    getLinkController().setLabelFontFamily(getConnector(), Optional.of(font));
 	}
 
     public int getLabelFontSize() {
-		return getConnector().getLabelFontSize();
+		return getLinkController().getLabelFontSize(getConnector());
 	}
 	
 	public void setLabelFontSize(int size) {
-	    getLinkController().setLabelFontSize(getConnector(), size);
+	    getLinkController().setLabelFontSize(getConnector(), Optional.of(size));
 	}
 	
 	public Color getColor() {
@@ -51,7 +57,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 	
 	public void setColor(final Color color) {
-		getLinkController().setConnectorColor(getConnector(), color);
+		getLinkController().setConnectorColor(getConnector(), Optional.of(color));
 	}
 
 	public int getOpacity() {
@@ -59,7 +65,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 	
 	public void setOpacity(final int opacity) {
-		getLinkController().setOpacity(getConnector(), opacity);
+		getLinkController().setOpacity(getConnector(), Optional.of(opacity));
 	}
 
 	public int getWidth() {
@@ -67,7 +73,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 	
 	public void setWidth(final int width) {
-		getLinkController().setWidth(getConnector(), width);
+		getLinkController().setWidth(getConnector(), Optional.of(width));
 	}
 
 	public int[] getDashArray() {
@@ -75,7 +81,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 	
 	public void setDashArray(final int[] dashArray) {
-		getLinkController().setConnectorDashArray(getConnector(), dashArray);
+		getLinkController().setConnectorDashArray(getConnector(), Optional.of(dashArray != null ? dashArray : new int[] {}));
 	}
 
 	public String getColorCode() {
@@ -91,12 +97,12 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
     public boolean hasEndArrow() {
-        return getConnector().getEndArrow() == ArrowType.DEFAULT;
+        return getLinkController().getEndArrow(getConnector()) == ArrowType.DEFAULT;
     }
 
     @Deprecated
 	public ArrowType getEndArrow() {
-        return getConnector().getEndArrow();
+        return getLinkController().getEndArrow(getConnector());
 	}
 
     private MLinkController getLinkController() {
@@ -116,12 +122,12 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
     public boolean hasStartArrow() {
-        return getConnector().getStartArrow() == ArrowType.DEFAULT;
+        return getLinkController().getStartArrow(getConnector()) == ArrowType.DEFAULT;
     }
 
     @Deprecated
 	public ArrowType getStartArrow() {
-		return getConnector().getStartArrow();
+		return getLinkController().getStartArrow(getConnector());
 	}
 
 	public Node getTarget() {
@@ -134,7 +140,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 
     private void setEndArrowImpl(final ArrowType arrowType) {
         final ConnectorModel connector = getConnector();
-        getLinkController().changeArrowsOfArrowLink(connector, connector.getStartArrow(), arrowType);
+        getLinkController().changeArrowsOfArrowLink(connector, connector.getStartArrow(), Optional.of(arrowType));
     }
 
     public void setEndArrow(boolean showArrow) {
@@ -152,10 +158,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 
 	@Deprecated
 	public void setSimulatesEdge(final boolean simulatesEdge) {
-		if(simulatesEdge)
-			getLinkController().setShape(getConnector(), Shape.EDGE_LIKE);
-		else
-			getLinkController().setShape(getConnector(), Shape.CUBIC_CURVE);
+			setShape(simulatesEdge ? Shape.EDGE_LIKE : Shape.CUBIC_CURVE);
 	}
 
 	public void setSourceLabel(final String label) {
@@ -168,7 +171,8 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 
     private void setStartArrowImpl(final ArrowType arrowType) {
         final ConnectorModel connector = getConnector();
-        getLinkController().changeArrowsOfArrowLink(connector, arrowType, connector.getEndArrow());
+        MLinkController linkController = getLinkController();
+        linkController.changeArrowsOfArrowLink(connector, Optional.of(arrowType), connector.getEndArrow());
     }
 
 	@Deprecated
