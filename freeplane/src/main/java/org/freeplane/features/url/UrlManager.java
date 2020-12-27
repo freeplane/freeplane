@@ -23,6 +23,7 @@ import static java.util.Arrays.asList;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -43,6 +44,7 @@ import java.security.PrivilegedAction;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
+import javax.swing.Box;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -166,7 +168,18 @@ public class UrlManager implements IExtension {
 	                    }
 	                });
 	                if(selector != null){
-	                    dialog.getContentPane().add(selector, BorderLayout.NORTH);
+	                    JComponent contentPane = (JComponent) dialog.getContentPane();
+	                    JComponent north = (JComponent) ((BorderLayout)contentPane.getLayout()).getLayoutComponent(BorderLayout.NORTH);
+	                    if(north != null) {
+	                        Box verticalBox = Box.createVerticalBox();
+	                        contentPane.setAlignmentX(0);
+	                        north.setAlignmentX(0);
+	                        verticalBox.add(north);
+	                        verticalBox.add(selector);
+	                        contentPane.add(verticalBox, BorderLayout.NORTH);
+	                    }
+	                    else
+	                        contentPane.add(selector, BorderLayout.NORTH);
 	                    dialog.pack();
 	                }
 
