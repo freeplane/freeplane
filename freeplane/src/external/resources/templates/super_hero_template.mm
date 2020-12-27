@@ -10,36 +10,43 @@
 <font SIZE="24"/>
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right" STYLE="bubble">
 <stylenode LOCALIZED_TEXT="default" ICON_SIZE="12.0 pt" FORMAT_AS_HYPERLINK="false" COLOR="#000000" BACKGROUND_COLOR="#fff024" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="8.0 pt" SHAPE_VERTICAL_MARGIN="5.0 pt" BORDER_WIDTH_LIKE_EDGE="false" BORDER_WIDTH="1.9000000000000001 px" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0" BORDER_DASH_LIKE_EDGE="true" BORDER_DASH="SOLID" VGAP_QUANTITY="3.0 pt">
-<font NAME="Ubuntu" SIZE="11" BOLD="false" STRIKETHROUGH="false" ITALIC="false"/>
+<font NAME="Ubuntu" SIZE="10" BOLD="false" STRIKETHROUGH="false" ITALIC="false"/>
 <edge STYLE="bezier" COLOR="#09387a" WIDTH="3" DASH="SOLID"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.details"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.details" COLOR="#fff024" BACKGROUND_COLOR="#000000">
+<font BOLD="true"/>
+</stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.attributes">
 <font SIZE="9"/>
+<edge DASH="DASHES"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.note" COLOR="#000000" BACKGROUND_COLOR="#f6f9a1" TEXT_ALIGN="LEFT"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.note" COLOR="#000000" BACKGROUND_COLOR="#f6f9a1" TEXT_ALIGN="LEFT">
+<icon BUILTIN="clock2"/>
+<font SIZE="10" ITALIC="true"/>
+<edge COLOR="#000000"/>
+</stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.floating">
 <edge STYLE="hide_edge"/>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
-<stylenode TEXT="happy" COLOR="#ffffff" BACKGROUND_COLOR="#126cb3" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="8.0 pt" SHAPE_VERTICAL_MARGIN="5.0 pt" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<stylenode TEXT="Emote_happy" COLOR="#ffffff" BACKGROUND_COLOR="#126cb3" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="8.0 pt" SHAPE_VERTICAL_MARGIN="5.0 pt" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <icon BUILTIN="ksmiletris"/>
 <font SIZE="14"/>
 </stylenode>
-<stylenode TEXT="neutral" COLOR="#ffffff" BACKGROUND_COLOR="#126cb3" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="8.0 pt" SHAPE_VERTICAL_MARGIN="5.0 pt" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<stylenode TEXT="Emote_neutral" COLOR="#ffffff" BACKGROUND_COLOR="#126cb3" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="8.0 pt" SHAPE_VERTICAL_MARGIN="5.0 pt" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <icon BUILTIN="smiley-neutral"/>
 <font SIZE="14"/>
 </stylenode>
-<stylenode TEXT="unhappy" COLOR="#ffffff" BACKGROUND_COLOR="#126cb3" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="8.0 pt" SHAPE_VERTICAL_MARGIN="5.0 pt" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<stylenode TEXT="Emote_unhappy" COLOR="#ffffff" BACKGROUND_COLOR="#126cb3" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="8.0 pt" SHAPE_VERTICAL_MARGIN="5.0 pt" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <icon BUILTIN="smily_bad"/>
 <font SIZE="14"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.important" BACKGROUND_COLOR="#f5131f" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<stylenode LOCALIZED_TEXT="styles.important" BACKGROUND_COLOR="#f5131f" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="8.0 pt" SHAPE_VERTICAL_MARGIN="5.0 pt" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#c3131f">
 <icon BUILTIN="yes"/>
 <font SIZE="11" BOLD="true"/>
-<edge COLOR="#f5131f"/>
+<edge COLOR="#c3131f"/>
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right" STYLE="bubble">
