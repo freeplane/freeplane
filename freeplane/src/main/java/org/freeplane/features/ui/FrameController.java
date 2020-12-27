@@ -91,6 +91,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.time.TimeComboBoxEditor;
+import org.violetlib.aqua.AquaLookAndFeel;
 
 /**
  * @author Dimitry Polivaev
@@ -532,7 +533,10 @@ abstract public class FrameController implements ViewController {
 
 	public static void setLookAndFeel(final String lookAndFeel, boolean supportHidpi) {
 		try {
-			if (lookAndFeel.equals("default")) {
+			if (System.getProperty("os.name", "").startsWith("Mac OS")) {
+			    UIManager.setLookAndFeel(new AquaLookAndFeel());
+			}
+			else if (lookAndFeel.equals("default")) {
 				String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
 				fixDarculaNPE(lookAndFeelClassName);
 				UIManager.setLookAndFeel(lookAndFeelClassName);
@@ -568,7 +572,9 @@ abstract public class FrameController implements ViewController {
 					}
 				}
 			}
-		} catch (final Exception ex) {
+		}
+		catch (final Exception ex) {
+			ex.printStackTrace();
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
 		}
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);

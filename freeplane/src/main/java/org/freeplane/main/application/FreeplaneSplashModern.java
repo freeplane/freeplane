@@ -146,11 +146,11 @@ public class FreeplaneSplashModern extends JWindow {
     }
 
 	static public void main(String[] args){
-		try {
-			if (System.getProperty("os.name", "").startsWith("Mac OS")) {
-				UIManager.setLookAndFeel("org.violetlib.aqua.AquaLookAndFeel");
-			}
-		} catch (Exception e) {}
+//		try {
+//			if (System.getProperty("os.name", "").startsWith("Mac OS")) {
+//				UIManager.setLookAndFeel("org.violetlib.aqua.AquaLookAndFeel");
+//			}
+//		} catch (Exception e) {}
 
 		setFonts();
 		ApplicationResourceController applicationResourceController = new ApplicationResourceController();
