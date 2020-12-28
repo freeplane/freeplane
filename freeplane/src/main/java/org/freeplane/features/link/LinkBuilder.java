@@ -37,11 +37,9 @@ import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.url.MapVersionInterpreter;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -59,8 +57,6 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 
 	private NodeLinkModel createArrowLink(final NodeModel source, final String targetID) {
 		ConnectorModel connectorModel = new ConnectorModel(source, targetID);
-		if(source.getUserObject() == MapStyleModel.DEFAULT_STYLE) 
-		    connectorModel.setMiddleLabel(TextUtils.getText("connector"));
         return connectorModel;
 	}
 
@@ -290,25 +286,23 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		final String destinationId = target.createID();
 
 		if (destinationId != null) {
-			arrowLink.setAttribute("DESTINATION", destinationId);
+		    arrowLink.setAttribute("DESTINATION", destinationId);
 		}
-		if(model.getSource().getUserObject() != MapStyleModel.DEFAULT_STYLE) { 
-		    final String sourceLabel = model.getSourceLabel();
-		    if (sourceLabel != null) {
-		        arrowLink.setAttribute("SOURCE_LABEL", sourceLabel);
-		    }
-		    final String targetLabel = model.getTargetLabel();
-		    if (targetLabel != null) {
-		        arrowLink.setAttribute("TARGET_LABEL", targetLabel);
-		    }
-		    final String middleLabel = model.getMiddleLabel();
-		    if (middleLabel != null) {
-		        arrowLink.setAttribute("MIDDLE_LABEL", middleLabel);
-		    }
+		final String sourceLabel = model.getSourceLabel();
+		if (sourceLabel != null) {
+		    arrowLink.setAttribute("SOURCE_LABEL", sourceLabel);
+		}
+		final String targetLabel = model.getTargetLabel();
+		if (targetLabel != null) {
+		    arrowLink.setAttribute("TARGET_LABEL", targetLabel);
+		}
+		final String middleLabel = model.getMiddleLabel();
+		if (middleLabel != null) {
+		    arrowLink.setAttribute("MIDDLE_LABEL", middleLabel);
 		}
 		final Point startInclination = model.getStartInclination();
 		if (startInclination != null) {
-			arrowLink.setAttribute("STARTINCLINATION", TreeXmlWriter.PointToXml(startInclination));
+		    arrowLink.setAttribute("STARTINCLINATION", TreeXmlWriter.PointToXml(startInclination));
 		}
 		final Point endInclination = model.getEndInclination();
 		if (endInclination != null) {

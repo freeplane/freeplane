@@ -37,11 +37,13 @@ import java.awt.geom.Point2D;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -85,8 +87,13 @@ public class ConnectorView extends AConnectorView{
 
 	/**
 	 */
-	private Point calcInclination(final NodeView node, final int dellength) {
-		return new Point(dellength, 0);
+	private Point calcStandardInclination(final NodeView node, final int dellength) {
+		final int y ;
+		if(node.getModel().getUserObject().equals(MapStyleModel.DEFAULT_STYLE))
+		    y = - LOOP_INCLINE_OFFSET;
+		else
+		    y = 0;
+        return new Point(dellength, y);
 	}
 
 	/* (non-Javadoc)
@@ -297,12 +304,12 @@ public class ConnectorView extends AConnectorView{
 		if (connectorModel.getEndInclination() == null || connectorModel.getStartInclination() == null) {
 			final int dellength = isSourceVisible() && isTargetVisible() ? Math.max(40, (int)(startPoint.distance(endPoint) / getZoom())) : 40;
 			if (isSourceVisible() && connectorModel.getStartInclination() == null) {
-				final Point incl = calcInclination(source, dellength);
+				final Point incl = calcStandardInclination(source, dellength);
 				connectorModel.setStartInclination(incl);
 				startPoint = source.getLinkPoint(connectorModel.getStartInclination());
 			}
 			if (isTargetVisible() && connectorModel.getEndInclination() == null) {
-				final Point incl = calcInclination(target, dellength);
+				final Point incl = calcStandardInclination(target, dellength);
 				incl.y = -incl.y;
 				if (selfLink) {
 					fixInclineIfLoopNode(incl);
@@ -432,7 +439,12 @@ public class ConnectorView extends AConnectorView{
 
 	private void drawLabels(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
 	    final String sourceLabel = connectorModel.getSourceLabel();
-		final String middleLabel = connectorModel.getMiddleLabel();
+		final String middleLabel;
+	      if(MapStyleModel.DEFAULT_STYLE.equals(source.getModel().getUserObject())) 
+	          middleLabel = TextUtils.getText("connector");
+	      else
+	          middleLabel = connectorModel.getMiddleLabel();
+
 		final String targetLabel = connectorModel.getTargetLabel();
 		if (sourceLabel == null && middleLabel == null && targetLabel == null) {
 			return;
@@ -503,12 +515,7 @@ public class ConnectorView extends AConnectorView{
                 innerBounds.add(rect);
         }
 
-        private void fixInclineIfLoopNode(Point endIncline) {
-            if (endIncline.y < 0) {
-                endIncline.y -= LOOP_INCLINE_OFFSET;
-            }
-            else {
-                endIncline.y += LOOP_INCLINE_OFFSET;
-            }
-        }
+	private void fixInclineIfLoopNode(Point endIncline) {
+	    endIncline.y += LOOP_INCLINE_OFFSET;
+	}
 }

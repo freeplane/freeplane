@@ -37,6 +37,7 @@ import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
@@ -104,6 +105,8 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 		final Object object = mapView.detectCollision(new Point(originX, originY));
 		if (object instanceof ConnectorModel) {
 			final ConnectorModel arrowLinkModel = (ConnectorModel) object;
+			if(MapStyleModel.DEFAULT_STYLE.equals(arrowLinkModel.getSource().getUserObject()))
+			    return;
 			final Shape shape = linkController().getShape(arrowLinkModel);
 			if (Shape.EDGE_LIKE.equals(shape)) {
 				return;

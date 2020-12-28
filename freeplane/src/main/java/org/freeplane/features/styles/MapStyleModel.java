@@ -180,7 +180,6 @@ public class MapStyleModel implements IExtension {
 			            linkController.getStandardConnectorColor(), linkController.getStandardConnectorOpacity(),
 			            linkController.getStandardConnectorShape(), linkController.getStandardConnectorWidth(),
 			            linkController.getStandardLabelFontFamily(), linkController.getStandardLabelFontSize());
-			    connector.setMiddleLabel(TextUtils.getText("connector"));
 			    nodeLinks.addArrowlink(connector);
 			}
 
