@@ -151,16 +151,6 @@ class ConnectorProperties{
 		this.middleLabel = empty2null(middleLabel);
 	}
 
-	private boolean showControlPointsFlag;
-
-	public boolean getShowControlPointsFlag() {
-		return showControlPointsFlag;
-	}
-
-	public void setShowControlPoints(final boolean bShowControlPointsFlag) {
-		showControlPointsFlag = bShowControlPointsFlag;
-	}
-
 	public void setSourceLabel(final String label) {
 		sourceLabel = empty2null(label);
 	}

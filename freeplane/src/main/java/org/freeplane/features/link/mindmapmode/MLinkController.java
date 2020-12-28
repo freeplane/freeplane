@@ -491,7 +491,7 @@ public class MLinkController extends LinkController {
 			final GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			final String[] envFonts = gEnv.getAvailableFontFamilyNames();
 			DefaultComboBoxModel fonts = new DefaultComboBoxModel(envFonts);
-			fonts.setSelectedItem(link.getLabelFontFamily());
+			fonts.setSelectedItem(getLabelFontFamily(link));
 			JComboBox fontBox = new JComboBoxWithBorder(fonts);
 			fontBox.setEditable(false);
 			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_family"), fontBox);
@@ -507,7 +507,7 @@ public class MLinkController extends LinkController {
 		{
 			final Integer[] sizes = {4, 6, 8, 10, 12, 14, 16, 18, 24, 36};
 			DefaultComboBoxModel sizesModel = new DefaultComboBoxModel(sizes);
-			sizesModel.setSelectedItem(link.getLabelFontSize());
+			sizesModel.setSelectedItem(getLabelFontSize(link));
 			JComboBox sizesBox = new JComboBoxWithBorder(sizesModel);
 			sizesBox.setEditable(true);
 			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_size"), sizesBox);

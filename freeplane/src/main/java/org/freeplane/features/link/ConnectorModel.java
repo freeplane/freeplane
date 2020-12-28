@@ -119,14 +119,6 @@ public class ConnectorModel extends NodeLinkModel {
 	    connectorProperties.setMiddleLabel(middleLabel);
     }
 
-	public boolean getShowControlPointsFlag() {
-	    return connectorProperties.getShowControlPointsFlag();
-    }
-
-	public void setShowControlPoints(boolean bShowControlPointsFlag) {
-	    connectorProperties.setShowControlPoints(bShowControlPointsFlag);
-    }
-
 	public void setSourceLabel(String label) {
 	    connectorProperties.setSourceLabel(label);
     }

@@ -51,7 +51,6 @@ import org.freeplane.view.swing.map.NodeView;
  * This class represents a ArrowLink around a node.
  */
 public class ConnectorView extends AConnectorView{
-        private static final int LOOP_INCLINE_OFFSET = 45;
 	private static final int NORMAL_LENGTH = 50;
 	private static final float[] DOTTED_DASH = new float[] { 4, 7};
 	static final Stroke DEF_STROKE = new BasicStroke(1);
@@ -66,6 +65,7 @@ public class ConnectorView extends AConnectorView{
 	final private BasicStroke stroke;
 	final private Color bgColor;
     private final LinkController linkController;
+    private boolean showsControlPoints;
 	/* Note, that source and target are nodeviews and not nodemodels!. */
 	public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target, Color bgColor) {
 		super(connectorModel, source, target);
@@ -82,21 +82,21 @@ public class ConnectorView extends AConnectorView{
 		else{
 			stroke = UITools.createStroke((float) width, linkController.getDashArray(connectorModel), BasicStroke.JOIN_ROUND);
 		}
-
+		showsControlPoints = false;
 	}
+	
+	
+	public boolean isShowsControlPoints() {
+        return showsControlPoints;
+    }
 
-	/**
-	 */
-	private Point calcStandardInclination(final NodeView node, final int dellength) {
-		final int y ;
-		if(node.getModel().getUserObject().equals(MapStyleModel.DEFAULT_STYLE))
-		    y = - LOOP_INCLINE_OFFSET;
-		else
-		    y = 0;
-        return new Point(dellength, y);
-	}
 
-	/* (non-Javadoc)
+    public void setShowsControlPoints(boolean showsControlPoints) {
+        this.showsControlPoints = showsControlPoints;
+    }
+
+
+    /* (non-Javadoc)
 	 * @see org.freeplane.view.swing.map.link.ILinkView#detectCollision(java.awt.Point, boolean)
 	 */
 	public boolean detectCollision(final Point p, final boolean selectedOnly) {
@@ -281,11 +281,9 @@ public class ConnectorView extends AConnectorView{
 	 * @see org.freeplane.view.swing.map.link.ILinkView#paint(java.awt.Graphics)
 	 */
 	public void paint(final Graphics graphics) {
-        final boolean selfLink = getSource() == getTarget();
 		if (!isSourceVisible() && !isTargetVisible()) {
 			return;
 		}
-		Point startPoint = null, endPoint = null, startPoint2 = null, endPoint2 = null;
 		boolean targetIsLeft = false;
 		boolean sourceIsLeft = false;
 		final Graphics2D g = (Graphics2D) graphics.create();
@@ -293,35 +291,30 @@ public class ConnectorView extends AConnectorView{
 		g.setColor(color);
 		/* set stroke. */
 		g.setStroke(stroke);
-		if (isSourceVisible()) {
-			startPoint = source.getLinkPoint(connectorModel.getStartInclination());
-			sourceIsLeft = source.isLeft();
-		}
-		if (isTargetVisible()) {
-			endPoint = target.getLinkPoint(connectorModel.getEndInclination());
-			targetIsLeft = target.isLeft();
-		}
-		if (connectorModel.getEndInclination() == null || connectorModel.getStartInclination() == null) {
-			final int dellength = isSourceVisible() && isTargetVisible() ? Math.max(40, (int)(startPoint.distance(endPoint) / getZoom())) : 40;
-			if (isSourceVisible() && connectorModel.getStartInclination() == null) {
-				final Point incl = calcStandardInclination(source, dellength);
-				connectorModel.setStartInclination(incl);
-				startPoint = source.getLinkPoint(connectorModel.getStartInclination());
+        Point startInclination = connectorModel.getStartInclination();
+        Point endInclination = connectorModel.getEndInclination();
+		if (startInclination == null || endInclination == null) {
+		    InclinationRecommender recommender = new InclinationRecommender(linkController, this);
+			if (isSourceVisible() && startInclination == null) {
+			    startInclination = recommender.calcStartInclination();
 			}
 			if (isTargetVisible() && connectorModel.getEndInclination() == null) {
-				final Point incl = calcStandardInclination(target, dellength);
-				incl.y = -incl.y;
-				if (selfLink) {
-					fixInclineIfLoopNode(incl);
-				}
-				connectorModel.setEndInclination(incl);
-				endPoint = target.getLinkPoint(connectorModel.getEndInclination());
+			    endInclination = recommender.calcEndInclination();
 			}
 		}
+		Point startPoint = null, endPoint = null;
+        if (isSourceVisible()) {
+            startPoint = source.getLinkPoint(startInclination);
+            sourceIsLeft = source.isLeft();
+        }
+        if (isTargetVisible()) {
+            endPoint = target.getLinkPoint(endInclination);
+            targetIsLeft = target.isLeft();
+        }
 		final MapView map = getMap();
+		Point startPoint2 = null;
 		if (startPoint != null) {
 			startPoint2 = new Point(startPoint);
-			Point startInclination = connectorModel.getStartInclination();
 			if(endPoint == null){
 				normalizeLength(NORMAL_LENGTH, startInclination);
 			}
@@ -329,9 +322,9 @@ public class ConnectorView extends AConnectorView{
 				map.getZoomed(startInclination.y));
 
 		}
+		Point endPoint2 = null;
 		if (endPoint != null) {
 			endPoint2 = new Point(endPoint);
-			Point endInclination = connectorModel.getEndInclination();
 			if(startPoint == null){
 				normalizeLength(NORMAL_LENGTH, endInclination);
 			}
@@ -405,11 +398,11 @@ public class ConnectorView extends AConnectorView{
 				paintArrow(g, endPoint2, endPoint);
 		}
 		if(showsConnectors) {
-			if (connectorModel.getShowControlPointsFlag()) {
+			if (showsControlPoints) {
 				g.setColor(textColor);
 				g.setStroke(new BasicStroke(stroke.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, DOTTED_DASH, 0));
 			}
-			if (connectorModel.getShowControlPointsFlag() || !isSourceVisible() || !isTargetVisible()) {
+			if (showsControlPoints || !isSourceVisible() || !isTargetVisible()) {
 				if (startPoint != null) {
 					g.drawLine(startPoint.x, startPoint.y, startPoint2.x, startPoint2.y);
 					drawCircle(g, startPoint2, source.getZoomedFoldingSymbolHalfWidth());
@@ -515,7 +508,4 @@ public class ConnectorView extends AConnectorView{
                 innerBounds.add(rect);
         }
 
-	private void fixInclineIfLoopNode(Point endIncline) {
-	    endIncline.y += LOOP_INCLINE_OFFSET;
-	}
 }

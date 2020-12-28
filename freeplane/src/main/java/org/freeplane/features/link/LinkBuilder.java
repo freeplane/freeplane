@@ -130,7 +130,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				final String[] split = value.split(" ");
+				final String[] split = value.isEmpty() ? new String[] {} : value.split(" ");
 				int[] dash = new int[split.length];
 				int i = 0;
 				for(String s : split){
@@ -308,14 +308,10 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		if (endInclination != null) {
 			arrowLink.setAttribute("ENDINCLINATION", TreeXmlWriter.PointToXml(endInclination));
 		}
-		final String startArrow = model.getStartArrow().toString();
-		if (startArrow != null) {
-			arrowLink.setAttribute("STARTARROW", startArrow);
-		}
-		final String endArrow = model.getEndArrow().toString();
-		if (endArrow != null) {
-			arrowLink.setAttribute("ENDARROW", endArrow);
-		}
+        model.getStartArrow().ifPresent( startArrow -> 
+        arrowLink.setAttribute("STARTARROW", startArrow.name()));
+        model.getEndArrow().ifPresent( endArrow -> 
+        arrowLink.setAttribute("STARTARROW", endArrow.name()));
 		writer.addElement(model, arrowLink);
 	}
 

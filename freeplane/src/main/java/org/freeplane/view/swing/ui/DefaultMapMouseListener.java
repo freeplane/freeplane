@@ -66,7 +66,7 @@ public class DefaultMapMouseListener implements IMouseListener {
 			final MapView mapView = (MapView) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
 			final ModeController modeController = Controller.getCurrentController().getModeController();
 			if(isMapViewWithOriginalConectosAvailable(mapView)){
-				final java.lang.Object obj = mapView.detectCollision(e.getPoint());
+				final java.lang.Object obj = mapView.detectObject(e.getPoint());
 				popupForModel= LinkController.getController(modeController).getPopupForModel(obj);
 			}
 			else{
