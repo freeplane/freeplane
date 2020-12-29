@@ -23,7 +23,7 @@ public enum ConnectorArrows implements RenderedContentSupplier<ConnectorArrows>{
 	public final String text;
 	public final Icon icon;
 	
-	private RenderedContent<ConnectorArrows> renderedContent;
+	private final RenderedContent<ConnectorArrows> renderedContent;
 
 
 	
@@ -33,14 +33,12 @@ public enum ConnectorArrows implements RenderedContentSupplier<ConnectorArrows>{
 		final URL url = ResourceController.getResourceController().getResource("/images/" + iconName);
 		icon = url != null ? FreeplaneIconFactory.createSVGIcon(url) : null;
 		text = TextUtils.getText("ChangeConnectorArrowsAction." + description + ".text");
+		renderedContent = new RenderedContent<ConnectorArrows>(this, text, icon);
 	}
 
 	
 	@Override
 	public RenderedContent<ConnectorArrows> createRenderedContent() {
-		if(renderedContent == null) {
-			renderedContent = new RenderedContent<ConnectorArrows>(this, text, icon);
-		}
 		return renderedContent;
 	}
 }
