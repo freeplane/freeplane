@@ -1122,16 +1122,4 @@ public class MLinkController extends LinkController {
 			modeController.execute(actor, map);
 		}
 	}
-
-    public Shape getShape(ConnectorModel arrowLinkModel) {
-        return arrowLinkModel.getShape().orElseGet(this::getStandardConnectorShape);
-    }
-
-    public ArrowType getStartArrow(ConnectorModel arrowLinkModel) {
-        return arrowLinkModel.getStartArrow().orElseGet(() -> getStandardConnectorArrows().start);
-    }
-
-    public ArrowType getEndArrow(ConnectorModel arrowLinkModel) {
-        return arrowLinkModel.getEndArrow().orElseGet(() -> getStandardConnectorArrows().end);
-    }
 }

@@ -38,7 +38,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -85,6 +88,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.SelectionController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
@@ -344,14 +348,60 @@ public class LinkController extends SelectionController implements IExtension {
 			}
 		});
 	}
-
-	public Color getColor(final ConnectorModel model) {
-		return model.getColor().orElseGet(this::getStandardConnectorColor);
+	
+	private <T> T getProperty(ConnectorModel connector, 
+	        Function<ConnectorModel, Optional<T>> connectorFunction,
+	        Supplier<T> defaultValue) {
+	    Optional<T> ownValue = connectorFunction.apply(connector);
+	    if(ownValue.isPresent())
+	        return ownValue.get();
+	    if(MapStyleModel.DEFAULT_STYLE.equals(connector.getSource().getUserObject()))
+	        return defaultValue.get();
+	    NodeModel styleNode = MapStyleModel.getExtension(connector.getSource().getMap()).getStyleNode(MapStyleModel.DEFAULT_STYLE);
+	    return NodeLinks.getLinks(styleNode).stream()
+	    .filter(ConnectorModel.class::isInstance)
+	    .map(ConnectorModel.class::cast)
+	    .findFirst()
+	    .flatMap(connectorFunction)
+	    .orElseGet(defaultValue);
+	    
 	}
 
-	public int[] getDashArray(final ConnectorModel model) {
-		return model.getDash().orElseGet(this::getStandardDashArray);
+	public Color getColor(final ConnectorModel connector) {
+		return getProperty(connector, ConnectorModel::getColor, this::getStandardConnectorColor);
 	}
+
+	public int[] getDashArray(final ConnectorModel connector) {
+        return getProperty(connector, ConnectorModel::getDash, this::getStandardDashArray);
+	}
+    public int getWidth(final ConnectorModel connector) {
+        return getProperty(connector, ConnectorModel::getWidth, this::getStandardConnectorWidth);
+    }
+
+    public int getOpacity(ConnectorModel connector) {
+        return getProperty(connector, ConnectorModel::getAlpha, this::getStandardConnectorOpacity);
+    }
+
+
+    public String getLabelFontFamily(ConnectorModel connector) {
+        return getProperty(connector, ConnectorModel::getLabelFontFamily, this::getStandardLabelFontFamily);
+    }
+
+    public int getLabelFontSize(ConnectorModel connector) {
+        return getProperty(connector, ConnectorModel::getLabelFontSize, this::getStandardLabelFontSize);
+    }
+
+    public Shape getShape(ConnectorModel connector) {
+        return getProperty(connector, ConnectorModel::getShape, this::getStandardConnectorShape);
+    }
+
+    public ArrowType getStartArrow(ConnectorModel connector) {
+        return getProperty(connector, ConnectorModel::getStartArrow, this::getStandardStartArrow);
+    }
+
+    public ArrowType getEndArrow(ConnectorModel connector) {
+        return getProperty(connector, ConnectorModel::getEndArrow, this::getStandardEndArrow);
+    }
 
 	public String getLinkShortText(final NodeModel node) {
 		final URI uri = NodeLinks.getLink(node);
@@ -448,10 +498,6 @@ public class LinkController extends SelectionController implements IExtension {
 	private static final String RESOURCES_DASH_VARIANT = "connector_dash";
 	private static final String RESOURCES_CONNECTOR_COLOR_ALPHA = "connector_alpha";
 	private static final String RESOURCES_CONNECTOR_WIDTH = "connector_width";
-
-	public int getWidth(final ConnectorModel model) {
-		return model.getWidth().orElseGet(this::getStandardConnectorWidth);
-	}
 
 	public void loadLink(final NodeModel node, String link) {
 		NodeLinks links = NodeLinks.getLinkExtension(node);
@@ -840,10 +886,6 @@ public class LinkController extends SelectionController implements IExtension {
 		return alpha;
 	}
 
-	public int getOpacity(ConnectorModel connectorModel) {
-		return connectorModel.getAlpha().orElseGet(this::getStandardConnectorOpacity);
-    }
-
 	public int getStandardLabelFontSize() {
 		return ResourceController.getResourceController().getIntProperty("label_font_size", 12);
     }
@@ -954,24 +996,4 @@ public class LinkController extends SelectionController implements IExtension {
 		else
 			loadURI(uri);
 	}
-
-    public String getLabelFontFamily(ConnectorModel connectorModel) {
-        return connectorModel.getLabelFontFamily().orElseGet(this::getStandardLabelFontFamily);
-    }
-
-    public int getLabelFontSize(ConnectorModel connectorModel) {
-        return connectorModel.getLabelFontSize().orElseGet(this::getStandardLabelFontSize);
-    }
-
-    public Shape getShape(ConnectorModel connectorModel) {
-        return connectorModel.getShape().orElseGet(this::getStandardConnectorShape);
-    }
-
-    public ArrowType getStartArrow(ConnectorModel connectorModel) {
-        return connectorModel.getStartArrow().orElseGet(this::getStandardStartArrow);
-    }
-
-    public ArrowType getEndArrow(ConnectorModel connectorModel) {
-        return connectorModel.getEndArrow().orElseGet(this::getStandardEndArrow);
-    }
 }
