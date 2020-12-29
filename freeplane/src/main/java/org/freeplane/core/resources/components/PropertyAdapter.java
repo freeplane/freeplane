@@ -70,6 +70,11 @@ public class PropertyAdapter {
 		return name;
 	}
 	
+	public void setNameAsLabelAndToolTip() {
+	    this.label = name;
+	    this.tooltip = name + ".tooltip";
+	}
+	
 	protected void appendToForm(DefaultFormBuilder builder, JComponent component){
 		final String labelKey = getLabel();
 		final String optionalText = TextUtils.getOptionalText(labelKey);

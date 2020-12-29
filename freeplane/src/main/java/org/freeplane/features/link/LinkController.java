@@ -967,11 +967,11 @@ public class LinkController extends SelectionController implements IExtension {
         return connectorModel.getShape().orElseGet(this::getStandardConnectorShape);
     }
 
-    public Object getStartArrow(ConnectorModel connectorModel) {
+    public ArrowType getStartArrow(ConnectorModel connectorModel) {
         return connectorModel.getStartArrow().orElseGet(this::getStandardStartArrow);
     }
 
-    public Object getEndArrow(ConnectorModel connectorModel) {
+    public ArrowType getEndArrow(ConnectorModel connectorModel) {
         return connectorModel.getEndArrow().orElseGet(this::getStandardEndArrow);
     }
 }

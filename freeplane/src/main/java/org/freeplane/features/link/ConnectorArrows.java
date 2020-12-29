@@ -1,6 +1,8 @@
 package org.freeplane.features.link;
 
 import java.net.URL;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.swing.Icon;
 
@@ -17,6 +19,13 @@ public enum ConnectorArrows implements RenderedContentSupplier<ConnectorArrows>{
 	 BOTH(ArrowType.DEFAULT, ArrowType.DEFAULT, "both", "arrow-mode-both.svg");
 	
 	public static ConnectorArrows DEFAULT = ConnectorArrows.FORWARD;
+	
+	public static Optional<ConnectorArrows> of(ArrowType start, ArrowType end){
+	       return Stream.of(values())
+	               .filter(self -> self.start == start && self.end == end)
+	               .findAny();
+
+	}
 	
 	public final ArrowType start;
 	public final ArrowType end;

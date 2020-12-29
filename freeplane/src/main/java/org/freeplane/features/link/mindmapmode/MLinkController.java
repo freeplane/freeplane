@@ -47,6 +47,7 @@ import javax.swing.ActionMap;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.FocusManager;
 import javax.swing.InputMap;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
@@ -71,6 +72,7 @@ import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.link.mindmapmode.editor.ConnectorEditorPanel;
 import org.freeplane.features.link.HyperTextLinkModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.MapLinks;
@@ -421,114 +423,15 @@ public class MLinkController extends LinkController {
 	protected void createArrowLinkPopup(final ConnectorModel link, final JComponent arrowLinkPopup) {
 		super.createArrowLinkPopup(link, arrowLinkPopup);
 		boolean isDefault = MapStyleModel.DEFAULT_STYLE.equals(link.getSource().getUserObject());
-        if(! isDefault)
+        if(! isDefault) {
 		    addClosingAction(arrowLinkPopup, new RemoveConnectorAction(this, link));
-
-		addSeparator(arrowLinkPopup);
-		addAction(arrowLinkPopup, new ConnectorColorAction(this, link));
-
-		final JSlider transparencySlider = new JSlider(20, 255, getOpacity(link));
-		transparencySlider.setMinorTickSpacing(20);
-		transparencySlider.setPaintTicks(true);
-		transparencySlider.setSnapToTicks(true);
-		transparencySlider.setPaintTrack(true);
-		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_transparency_label"), transparencySlider);
-
-		addSeparator(arrowLinkPopup);
-
-
-		AFreeplaneAction[] arrowActions = new AFreeplaneAction[]{
-                new ChangeConnectorArrowsAction(this, ConnectorArrows.NONE, link),
-                new ChangeConnectorArrowsAction(this, ConnectorArrows.FORWARD, link),
-                new ChangeConnectorArrowsAction(this, ConnectorArrows.BACKWARD, link),
-                new ChangeConnectorArrowsAction(this, ConnectorArrows.BOTH, link)
-		};
-        JComboBoxWithBorder connectorArrows = createActionBox(arrowActions);
-		addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_arrows"), connectorArrows);
-
-        final boolean twoNodesConnector = ! link.getSource().equals(link.getTarget());
-        AFreeplaneAction[] shapeActions;
-        if(twoNodesConnector){
-            shapeActions = new AFreeplaneAction[] {
-                    new ChangeConnectorShapeAction(this, link, Shape.CUBIC_CURVE),
-                    new ChangeConnectorShapeAction(this, link, Shape.LINE),
-                    new ChangeConnectorShapeAction(this, link, Shape.LINEAR_PATH),
-                    new ChangeConnectorShapeAction(this, link, Shape.EDGE_LIKE)
-            };
+		    addSeparator(arrowLinkPopup);
         }
-        else {
-            shapeActions = new AFreeplaneAction[] {
-                    new ChangeConnectorShapeAction(this, link, Shape.CUBIC_CURVE),
-                    new ChangeConnectorShapeAction(this, link, Shape.LINE),
-                    new ChangeConnectorShapeAction(this, link, Shape.LINEAR_PATH)
-            };
-        }
-            final JComboBoxWithBorder connectorShapes = createActionBox(shapeActions);
-            addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_shapes"), connectorShapes);
-
-
-        ArrayList<AFreeplaneAction> dashActions = new ArrayList<AFreeplaneAction>();
-        for (DashVariant  variant : DashVariant.values())
-        	dashActions.add(new ChangeConnectorDashAction(this, link, variant));
-        final JComboBoxWithBorder connectorDashes = createActionBox(dashActions.toArray(new AFreeplaneAction[dashActions.size()]));
-		final int verticalMargin = new Quantity<>(3, LengthUnit.pt).toBaseUnitsRounded();
-        connectorDashes.setVerticalMargin(verticalMargin);
-        addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_lines"), connectorDashes);
-
-		final SpinnerNumberModel widthModel = new SpinnerNumberModel(getWidth(link),1, 32, 1);
-		final JSpinner widthSpinner = new JSpinner(widthModel);
-		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_width_label"), widthSpinner);
-
+		ConnectorEditorPanel comp = new ConnectorEditorPanel(modeController, link);
+		comp.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+        arrowLinkPopup.add(comp);
 		addSeparator(arrowLinkPopup);
-
-		{
-			final GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			final String[] envFonts = gEnv.getAvailableFontFamilyNames();
-			DefaultComboBoxModel fonts = new DefaultComboBoxModel(envFonts);
-			fonts.setSelectedItem(getLabelFontFamily(link));
-			JComboBox fontBox = new JComboBoxWithBorder(fonts);
-			fontBox.setEditable(false);
-			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_family"), fontBox);
-			fontBox.addItemListener(new ItemListener() {
-				@Override
-				public void itemStateChanged(ItemEvent e) {
-					final Object item = e.getItem();
-					if(item != null)
-						setLabelFontFamily(link, Optional.of(item.toString()));
-				}
-			});
-		}
-		{
-			final Integer[] sizes = {4, 6, 8, 10, 12, 14, 16, 18, 24, 36};
-			DefaultComboBoxModel sizesModel = new DefaultComboBoxModel(sizes);
-			sizesModel.setSelectedItem(getLabelFontSize(link));
-			JComboBox sizesBox = new JComboBoxWithBorder(sizesModel);
-			sizesBox.setEditable(true);
-			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_size"), sizesBox);
-			sizesBox.addItemListener(new ItemListener() {
-				@Override
-				public void itemStateChanged(ItemEvent e) {
-					final Object item = e.getItem();
-					if(item != null){
-						final int size;
-						if(item instanceof Integer)
-							size = (Integer)item;
-						else{
-							try{
-								size = Integer.valueOf(item.toString());
-								if(size <=0)
-									return;
-							}
-							catch (NumberFormatException ex){
-								return;
-							}
-						}
-
-						setLabelFontSize(link, Optional.of(size));
-					}
-				}
-			});
-		}
+  
 		final JTextArea sourceLabelEditor;
 		final JTextArea middleLabelEditor;
 		final JTextArea targetLabelEditor ;
@@ -581,8 +484,6 @@ public class MLinkController extends LinkController {
                     setTargetLabel(link, targetLabelEditor.getText());
                     setMiddleLabel(link, middleLabelEditor.getText());
                 }
-                setOpacity(link, Optional.of(transparencySlider.getValue()));
-                setWidth(link, Optional.of(widthModel.getNumber().intValue()));
             }
 		});
 
