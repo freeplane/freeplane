@@ -549,6 +549,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final String SHOW_CONNECTORS_PROPERTY = "show_connectors".intern();
 	private static final String SHOW_CONNECTOR_LINES = "true".intern();
 	private static final String HIDE_CONNECTOR_LINES = "false".intern();
+	private static final String SOME_CONNECTORS_PROPERTY = "connector_";
+
 	private static final String HIDE_CONNECTORS = "never".intern();
 	private static final String SHOW_CONNECTORS_FOR_SELECTION = "for_selection".intern();
 	private static final String SHOW_ICONS_PROPERTY = "show_icons";
@@ -604,7 +606,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	final private ComponentAdapter viewportSizeChangeListener;
 	private final INodeChangeListener connectorChangeListener;
 	public static final String SPOTLIGHT_ENABLED = "spotlight";
-
+ 
 	static {
 		final ResourceController resourceController = ResourceController.getResourceController();
 		final String stdcolor = resourceController.getProperty(
@@ -777,11 +779,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					mapView.repaint();
 					return;
 				}
-				if (propertyName.equals(SHOW_CONNECTORS_PROPERTY)) {
-					MapView.showConnectorsPropertyValue = ResourceController.getResourceController().getProperty(SHOW_CONNECTORS_PROPERTY).intern();
-					mapView.repaint();
-					return;
-				}
+                if (propertyName.equals(SHOW_CONNECTORS_PROPERTY)) {
+                    MapView.showConnectorsPropertyValue = ResourceController.getResourceController().getProperty(SHOW_CONNECTORS_PROPERTY).intern();
+                    mapView.repaint();
+                    return;
+                }
+                if (propertyName.startsWith(SOME_CONNECTORS_PROPERTY)) {
+                    MapView.showConnectorsPropertyValue = ResourceController.getResourceController().getProperty(SHOW_CONNECTORS_PROPERTY).intern();
+                    mapView.repaint();
+                    return;
+                }
 				if (propertyName.equals(SHOW_ICONS_PROPERTY)) {
 					MapView.showIcons = ResourceController.getResourceController().getBooleanProperty(SHOW_ICONS_PROPERTY);
 					mapView.updateIconsRecursively(mapView.getRoot());
