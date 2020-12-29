@@ -442,7 +442,7 @@ public class LinkController extends SelectionController implements IExtension {
 		return null;
 	}
 
-	public static final String RESOURCES_LINK_COLOR = "standardlinkcolor";
+	public static final String RESOURCES_LINK_COLOR = "connector_color";
 	private static final String RESOURCES_CONNECTOR_SHAPE = "connector_shape";
 	private static final String RESOURCES_CONNECTOR_ARROWS = "connector_arrows";
 	private static final String RESOURCES_DASH_VARIANT = "connector_dash";

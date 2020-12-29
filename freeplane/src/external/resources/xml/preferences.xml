@@ -132,7 +132,7 @@
 			<separator name="connectors">
 				<combo name="connector_arrows" enum="org.freeplane.features.link.ConnectorArrows"/>
 				<combo name="connector_dash" enum="org.freeplane.features.DashVariant"/>
-				<color name="standardlinkcolor" />
+				<color name="connector_color" />
 				<number name="connector_alpha" text="edit_transparency_label"
 					min="20" max="255" />
 				<combo name="connector_shape"  text="connector_shapes" enum="org.freeplane.features.link.ConnectorModel$Shape"/>
