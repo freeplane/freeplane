@@ -19,6 +19,7 @@
  */
 package org.freeplane.main.application;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
@@ -47,7 +48,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIManager;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
@@ -210,7 +210,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		overwrittenProperties.getFloatingWindowProperties().setUseFrame(true);
 
 		final ComponentProperties windowAreaProperties = overwrittenProperties.getWindowAreaProperties();
-		windowAreaProperties.setBackgroundColor(UIManager.getColor("Panel.background"));
+//		windowAreaProperties.setBackgroundColor(UIManager.getColor("Panel.background"));
+		windowAreaProperties.setBackgroundColor(new Color(47, 47, 47)); // SR: Fix the white strip in the window-tabs bar
 		windowAreaProperties.setInsets(null);
 		windowAreaProperties.setBorder(null);
 

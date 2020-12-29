@@ -165,10 +165,12 @@ public class UrlManager implements IExtension {
 	                        dialog.dispose();
 	                    }
 	                });
-	                if(selector != null){
-	                    dialog.getContentPane().add(selector, BorderLayout.NORTH);
-	                    dialog.pack();
-	                }
+
+	                //SR: Remove the “3-locations” selector as it messes up VAqua layout of FileChooser.
+	                //if(selector != null){
+	                //    dialog.getContentPane().add(selector, BorderLayout.NORTH);
+	                //    dialog.pack();
+	                //}
 
 	                return dialog;
 	            }
