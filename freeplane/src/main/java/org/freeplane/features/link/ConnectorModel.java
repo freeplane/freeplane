@@ -23,13 +23,29 @@ import java.awt.Color;
 import java.awt.Point;
 import java.util.Optional;
 
+import org.freeplane.core.ui.components.RenderedContent;
+import org.freeplane.core.ui.components.RenderedContentSupplier;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
 
 public class ConnectorModel extends NodeLinkModel {
 
-	public static enum Shape {
-		LINE, LINEAR_PATH, CUBIC_CURVE, EDGE_LIKE
+
+    public static enum Shape implements RenderedContentSupplier<Shape>{
+		LINE, LINEAR_PATH, CUBIC_CURVE, EDGE_LIKE;
+
+        private final RenderedContent<Shape> renderedContent;
+        
+        private Shape() {
+            String text = TextUtils.getText("ChangeConnectorShapeAction." + name() + ".text");
+            this.renderedContent = new RenderedContent<ConnectorModel.Shape>(this, text, null);
+        }
+
+        @Override
+        public RenderedContent<Shape> createRenderedContent() {
+            return renderedContent;
+        }
 	};
 	
 	final private ConnectorProperties connectorProperties;

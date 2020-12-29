@@ -131,24 +131,17 @@ public class MLinkController extends LinkController {
 		public void resolveParentExtensions(Object key, NodeModel to) {
         }
 	}
-	private final class CreateArrowLinkActor implements IActor {
-		private final String targetID;
-		private final NodeModel source;
-		private ConnectorModel arrowLink;
+	private final class AddArrowLinkActor implements IActor {
+		private final ConnectorModel arrowLink;
 
-		public ConnectorModel getArrowLink() {
-			return arrowLink;
-		}
-
-		private CreateArrowLinkActor(final String targetID, final NodeModel source) {
-			this.targetID = targetID;
-			this.source = source;
+		private AddArrowLinkActor(ConnectorModel arrowLink) {
+            this.arrowLink = arrowLink;
 		}
 
 		@Override
 		public void act() {
-			NodeLinks nodeLinks = NodeLinks.createLinkExtension(source);
-			arrowLink = new ConnectorModel(source, targetID);
+			NodeModel source = arrowLink.getSource();
+            NodeLinks nodeLinks = NodeLinks.createLinkExtension(source);
 			nodeLinks.addArrowlink(arrowLink);
 			fireNodeConnectorChange(source, arrowLink);
 		}
@@ -160,6 +153,7 @@ public class MLinkController extends LinkController {
 
 		@Override
 		public void undo() {
+		    NodeModel source = arrowLink.getSource();
 			final NodeLinks nodeLinks = NodeLinks.getLinkExtension(source);
 			nodeLinks.removeArrowlink(arrowLink);
 			fireNodeConnectorChange(source, arrowLink);
@@ -881,9 +875,10 @@ public class MLinkController extends LinkController {
 	}
 
 	public ConnectorModel addConnector(final NodeModel source, final String targetID) {
-		final CreateArrowLinkActor actor = new CreateArrowLinkActor(targetID, source);
-		Controller.getCurrentModeController().execute(actor, source.getMap());
-		return actor.getArrowLink();
+		ConnectorModel connector = new ConnectorModel(source, targetID);
+        final AddArrowLinkActor actor = new AddArrowLinkActor(connector);
+ 		Controller.getCurrentModeController().execute(actor, source.getMap());
+		return connector;
 	}
 
 	public void removeArrowLink(final ConnectorModel arrowLink) {

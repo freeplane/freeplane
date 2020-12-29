@@ -363,23 +363,23 @@ public class ConnectorView extends AConnectorView{
 		final boolean isLine = ConnectorModel.Shape.LINE.equals(linkController.getShape(connectorModel));
 		arrowLinkCurve = null;
 		if (showsConnectors) {
-			if (startPoint != null && endPoint != null) {
-				if(isLine) {
-			                    if (selfLink) {
-					arrowLinkCurve = createLine(startPoint, startPoint2);
-			                    }
-			                    else {
-					arrowLinkCurve = createLine(startPoint, endPoint);
-			                    }
-			                }
-			                else if (ConnectorModel.Shape.LINEAR_PATH.equals(linkController.getShape(connectorModel)))
-			                    arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
-			                else
-			                    arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
-			} 
-			if (arrowLinkCurve != null) {
-				g.draw(arrowLinkCurve);
-			}
+		    if (startPoint != null && endPoint != null) {
+		        if(isLine) {
+		            if (selfLink) {
+		                arrowLinkCurve = createLine(startPoint, startPoint2);
+		            }
+		            else {
+		                arrowLinkCurve = createLine(startPoint, endPoint);
+		            }
+		        }
+		        else if (ConnectorModel.Shape.LINEAR_PATH.equals(linkController.getShape(connectorModel)))
+		            arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
+		        else
+		            arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
+		    } 
+		    if (arrowLinkCurve != null) {
+		        g.draw(arrowLinkCurve);
+		    }
 		} 
 		if (isSourceVisible() && !(showsConnectors && linkController.getStartArrow(connectorModel).equals(ArrowType.NONE))) {
 			if(!selfLink && isLine && endPoint != null)

@@ -1733,7 +1733,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 							|| SHOW_CONNECTORS_FOR_SELECTION == showConnectors && (sourceView != null && sourceView.isSelected()
 							|| targetView != null && targetView.isSelected());
 					if(showConnector) {
-						if (areBothNodesVisible && (Shape.EDGE_LIKE.equals(ref.getShape()) || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE))
+						LinkController linkController = LinkController.getController(getModeController());
+                        if (areBothNodesVisible 
+                                && (
+                                Shape.EDGE_LIKE.equals(linkController.getShape(ref)) && ! ref.isSelfLink()
+                                || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE))
 							arrowLink = new EdgeLinkView(ref, getModeController(), sourceView, targetView);
 						else if(areBothNodesVisible || ! hideSingleEndConnectors)
 							arrowLink = new ConnectorView(ref, sourceView, targetView, getBackground());

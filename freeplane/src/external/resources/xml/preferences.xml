@@ -135,12 +135,7 @@
 				<color name="standardlinkcolor" />
 				<number name="connector_alpha" text="edit_transparency_label"
 					min="20" max="255" />
-				<combo name="connector_shape" text="connector_shapes">
-					<choice value="LINE" text="ChangeConnectorShapeAction.LINE.text" />
-					<choice value="LINEAR_PATH" text="ChangeConnectorShapeAction.LINEAR_PATH.text" />
-					<choice value="CUBIC_CURVE" text="ChangeConnectorShapeAction.CUBIC_CURVE.text" />
-					<choice value="EDGE_LIKE" text="ChangeConnectorShapeAction.EDGE_LIKE.text" />
-				</combo>
+				<combo name="connector_shape"  text="connector_shapes" enum="org.freeplane.features.link.ConnectorModel$Shape"/>
 				<number name="connector_width" text="edit_width_label" min="1"
 					max="32" />
 				<font name="label_font_family" />
