@@ -111,8 +111,8 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
 		borderDashListener = new BorderDashListener(mSetBorderDash, mBorderDash);
 		mSetBorderDash.addPropertyChangeListener(borderDashListener);
 		mBorderDash.addPropertyChangeListener(borderDashListener);
-		mSetBorderDash.layout(formBuilder);
-		mBorderDash.layout(formBuilder);
+		mSetBorderDash.appendToForm(formBuilder);
+		mBorderDash.appendToForm(formBuilder);
 	}
 	
 	public void addBorderDashMatchesEdgeDashControl(DefaultFormBuilder formBuilder) {
@@ -127,8 +127,8 @@ public class BorderDashAndDashMatchesEdgeControlGroup implements ControlGroup {
 				enableOrDisableBorderDashControls();
 			}
 		});
-		mSetBorderDashMatchesEdgeDash.layout(formBuilder);
-		mBorderDashMatchesEdgeDash.layout(formBuilder);
+		mSetBorderDashMatchesEdgeDash.appendToForm(formBuilder);
+		mBorderDashMatchesEdgeDash.appendToForm(formBuilder);
 	}
 
 	@Override

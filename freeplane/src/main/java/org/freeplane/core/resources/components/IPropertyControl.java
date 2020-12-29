@@ -24,7 +24,7 @@ public interface IPropertyControl {
 
 	String getName();
 
-	void layout(DefaultFormBuilder builder);
+	void appendToForm(DefaultFormBuilder builder);
 
 	void setEnabled(boolean pEnabled);
 }

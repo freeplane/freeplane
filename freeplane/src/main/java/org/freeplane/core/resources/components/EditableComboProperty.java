@@ -68,8 +68,8 @@ public abstract class EditableComboProperty<T> extends PropertyBean implements I
         return selected;
     }
 
-	public void layout(final DefaultFormBuilder builder) {
-		layout(builder, comboBox);
+	public void appendToForm(final DefaultFormBuilder builder) {
+		appendToForm(builder, comboBox);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

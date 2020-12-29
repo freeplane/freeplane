@@ -110,14 +110,14 @@ class NodeShapeControlGroup implements ControlGroup {
 		mShapeVerticalMargin.addPropertyChangeListener(propertyChangeListener);
 		mUniformShape.addPropertyChangeListener(propertyChangeListener);
 		
-		mSetNodeShape.layout(formBuilder);
-		mNodeShape.layout(formBuilder);
-		new NextColumnProperty(2).layout(formBuilder);
-		mShapeHorizontalMargin.layout(formBuilder);
-		new NextColumnProperty(2).layout(formBuilder);
-		mShapeVerticalMargin.layout(formBuilder);
-		new NextColumnProperty(2).layout(formBuilder);
-		mUniformShape.layout(formBuilder);
+		mSetNodeShape.appendToForm(formBuilder);
+		mNodeShape.appendToForm(formBuilder);
+		new NextColumnProperty(2).appendToForm(formBuilder);
+		mShapeHorizontalMargin.appendToForm(formBuilder);
+		new NextColumnProperty(2).appendToForm(formBuilder);
+		mShapeVerticalMargin.appendToForm(formBuilder);
+		new NextColumnProperty(2).appendToForm(formBuilder);
+		mUniformShape.appendToForm(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {

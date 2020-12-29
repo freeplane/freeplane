@@ -59,7 +59,7 @@ public class TabProperty implements IPropertyControl {
 	}
 
 	@Override
-	public void layout(final DefaultFormBuilder builder) {
+	public void appendToForm(final DefaultFormBuilder builder) {
 	}
 
 	@Override

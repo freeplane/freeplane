@@ -74,7 +74,7 @@ public class FontStrikeThroughControlGroup implements ControlGroup {
 		propertyChangeListener = new FontStrikeThroughChangeListener(mSetNodeFontStrikeThrough, mNodeFontStrikeThrough);
 		mSetNodeFontStrikeThrough.addPropertyChangeListener(propertyChangeListener);
 		mNodeFontStrikeThrough.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeFontStrikeThrough.layout(formBuilder);
-		mNodeFontStrikeThrough.layout(formBuilder);
+		mSetNodeFontStrikeThrough.appendToForm(formBuilder);
+		mNodeFontStrikeThrough.appendToForm(formBuilder);
 	}
 }

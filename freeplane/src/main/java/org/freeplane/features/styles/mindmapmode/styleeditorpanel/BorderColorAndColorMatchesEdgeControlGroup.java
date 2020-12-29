@@ -112,8 +112,8 @@ public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup 
 		borderColorListener = new BorderColorListener(mSetBorderColor, mBorderColor);
 		mSetBorderColor.addPropertyChangeListener(borderColorListener);
 		mBorderColor.addPropertyChangeListener(borderColorListener);
-		mSetBorderColor.layout(formBuilder);
-		mBorderColor.layout(formBuilder);
+		mSetBorderColor.appendToForm(formBuilder);
+		mBorderColor.appendToForm(formBuilder);
 	}
 	
 	public void addBorderColorMatchesEdgeColorControl(DefaultFormBuilder formBuilder) {
@@ -129,8 +129,8 @@ public class BorderColorAndColorMatchesEdgeControlGroup implements ControlGroup 
 			}
 		});
 		
-		mSetBorderColorMatchesEdgeColor.layout(formBuilder);
-		mBorderColorMatchesEdgeColor.layout(formBuilder);
+		mSetBorderColorMatchesEdgeColor.appendToForm(formBuilder);
+		mBorderColorMatchesEdgeColor.appendToForm(formBuilder);
 	}
 
 	@Override

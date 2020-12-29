@@ -70,7 +70,7 @@ public class PropertyAdapter {
 		return name;
 	}
 	
-	protected void layout(DefaultFormBuilder builder, JComponent component){
+	protected void appendToForm(DefaultFormBuilder builder, JComponent component){
 		final String labelKey = getLabel();
 		final String optionalText = TextUtils.getOptionalText(labelKey);
 		labelComponent = builder.append(optionalText, component);

@@ -74,8 +74,8 @@ class MinNodeWidthControlGroup implements ControlGroup {
 		propertyChangeListener = new MinNodeWidthChangeListener(mSetMinNodeWidth, mMinNodeWidth);
 		mSetMinNodeWidth.addPropertyChangeListener(propertyChangeListener);
 		mMinNodeWidth.addPropertyChangeListener(propertyChangeListener);
-		mSetMinNodeWidth.layout(formBuilder);
-		mMinNodeWidth.layout(formBuilder);
+		mSetMinNodeWidth.appendToForm(formBuilder);
+		mMinNodeWidth.appendToForm(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {

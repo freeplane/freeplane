@@ -176,7 +176,7 @@ class StyleControlGroup implements ControlGroup{
 	    mSetStyle = new BooleanProperty(ControlGroup.SET_RESOURCE);
 		final StyleChangeListener listener = new StyleChangeListener();
 		mSetStyle.addPropertyChangeListener(listener);
-		mSetStyle.layout(formBuilder);
+		mSetStyle.appendToForm(formBuilder);
 		formBuilder.append(new JLabel(TextUtils.getText("style")));
 		formBuilder.append(mStyleBox);
 		formBuilder.nextLine();

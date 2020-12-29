@@ -70,8 +70,8 @@ public class MaybeBooleanProperty extends PropertyBean implements IPropertyContr
 	}
 
 	@Override
-	public void layout(final DefaultFormBuilder builder) {
-		layout(builder, mButton);
+	public void appendToForm(final DefaultFormBuilder builder) {
+		appendToForm(builder, mButton);
 	}
 
 	@Override

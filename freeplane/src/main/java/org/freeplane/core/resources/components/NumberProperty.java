@@ -65,8 +65,8 @@ public class NumberProperty extends PropertyBean implements IPropertyControl {
 		return spinner.getValue().toString();
 	}
 
-	public void layout(final DefaultFormBuilder builder) {
-		layout(builder, spinner);
+	public void appendToForm(final DefaultFormBuilder builder) {
+		appendToForm(builder, spinner);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

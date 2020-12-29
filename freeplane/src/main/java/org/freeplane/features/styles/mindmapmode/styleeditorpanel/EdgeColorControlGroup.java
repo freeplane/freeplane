@@ -73,8 +73,8 @@ class EdgeColorControlGroup implements ControlGroup {
 		propertyChangeListener = new EdgeColorChangeListener(mSetEdgeColor, mEdgeColor);
 		mSetEdgeColor.addPropertyChangeListener(propertyChangeListener);
 		mEdgeColor.addPropertyChangeListener(propertyChangeListener);
-		mSetEdgeColor.layout(formBuilder);;
-		mEdgeColor.layout(formBuilder);;
+		mSetEdgeColor.appendToForm(formBuilder);;
+		mEdgeColor.appendToForm(formBuilder);;
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {

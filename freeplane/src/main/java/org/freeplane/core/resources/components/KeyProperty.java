@@ -64,7 +64,7 @@ public class KeyProperty extends PropertyBean implements IPropertyControl {
 		return mButton.getText();
 	}
 
-	public void layout(final DefaultFormBuilder builder) {
+	public void appendToForm(final DefaultFormBuilder builder) {
 		mButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				final GrabKeyDialog keyDialog = new GrabKeyDialog(getValue(), modifierMask);

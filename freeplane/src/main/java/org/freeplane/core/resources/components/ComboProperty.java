@@ -104,8 +104,8 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 		return possibleValues.get(mComboBox.getSelectedIndex());
 	}
 
-	public void layout(final DefaultFormBuilder builder) {
-		layout(builder, mComboBox);
+	public void appendToForm(final DefaultFormBuilder builder) {
+		appendToForm(builder, mComboBox);
 	}
 
 	public Vector<String> getPossibleValues() {

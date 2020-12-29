@@ -87,8 +87,8 @@ public class ColorProperty extends PropertyBean implements IPropertyControl, Act
 		return ColorUtils.colorToRGBAString(colorValue);
 	}
 
-	public void layout(final DefaultFormBuilder builder) {
-		layout(builder, mButton);
+	public void appendToForm(final DefaultFormBuilder builder) {
+		appendToForm(builder, mButton);
 		final JMenuItem item = new JFreeplaneMenuItem(TextUtils.getOptionalText("ColorProperty.ResetColor"));
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
