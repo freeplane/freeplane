@@ -248,9 +248,9 @@ public class AttributeManagerDialog extends JDialog implements IMapSelectionList
 	private void applyChanges() {
 		model.applyChanges();
 		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
-		modeController.delayedCommit();
 		final MapController mapController = modeController.getMapController();
 		final MapModel map = Controller.getCurrentController().getMap();
+		modeController.delayedCommit(map);
 		assert(AttributeRegistry.getRegistry(map) == model);
 		mapController.setSaved(map, false);
 	}
