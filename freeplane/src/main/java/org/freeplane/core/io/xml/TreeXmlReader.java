@@ -29,6 +29,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -77,8 +79,8 @@ public class TreeXmlReader implements IXMLBuilder {
 		if (tok.countTokens() != 2) {
 			throw new IllegalArgumentException("A point must consist of two numbers (and not: '" + string + "').");
 		}
-		final int x = Integer.parseInt(tok.nextToken());
-		final int y = Integer.parseInt(tok.nextToken());
+		final int x = Quantity.fromString(tok.nextToken(), LengthUnit.px).toBaseUnitsRounded();
+		final int y = Quantity.fromString(tok.nextToken(), LengthUnit.px).toBaseUnitsRounded();
 		return new Point(x, y);
 	}
 
