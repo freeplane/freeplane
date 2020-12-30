@@ -213,7 +213,7 @@ public class SModeControllerFactory {
 			@Override
 			public void nodeChanged(NodeChangeEvent event) {
 				final NodeModel node = event.getNode();
-				if (node.getUserObject().equals(MapStyleModel.DEFAULT_STYLE)) {
+				if (MapStyleModel.isDefaultStyleNode(node)) {
 					mapController
 					    .fireMapChanged(new MapChangeEvent(this, node.getMap(), MapStyle.MAP_STYLES, null, null));
 				}

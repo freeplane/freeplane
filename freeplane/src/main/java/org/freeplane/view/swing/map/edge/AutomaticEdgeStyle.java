@@ -48,7 +48,7 @@ public class AutomaticEdgeStyle {
 			else{
 				distance = origin.x - coordinate.x;
 			}
-			final NodeModel defaultStyleNode = mapStyleNodes.getStyleNode(MapStyleModel.DEFAULT_STYLE);
+			final NodeModel defaultStyleNode = mapStyleNodes.getDefaultStyleNode();
 			final NodeStyleController nodeStyleController = modeController.getExtension(NodeStyleController.class);
 			nodeColumnWidth = map.getZoomed(nodeStyleController.getMaxWidth(defaultStyleNode).toBaseUnitsRounded() + LocationModel.DEFAULT_HGAP_PX);
 		}

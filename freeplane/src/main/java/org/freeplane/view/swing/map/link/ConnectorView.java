@@ -433,7 +433,7 @@ public class ConnectorView extends AConnectorView{
 	private void drawLabels(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
 	    final String sourceLabel = connectorModel.getSourceLabel();
 		final String middleLabel;
-	      if(MapStyleModel.DEFAULT_STYLE.equals(source.getModel().getUserObject())) 
+	      if(MapStyleModel.isDefaultStyleNode(source.getModel())) 
 	          middleLabel = TextUtils.getText("connector");
 	      else
 	          middleLabel = connectorModel.getMiddleLabel();

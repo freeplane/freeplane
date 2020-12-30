@@ -422,7 +422,7 @@ public class MLinkController extends LinkController {
 	@Override
 	protected void createArrowLinkPopup(final ConnectorModel link, final JComponent arrowLinkPopup) {
 		super.createArrowLinkPopup(link, arrowLinkPopup);
-		boolean isDefault = MapStyleModel.DEFAULT_STYLE.equals(link.getSource().getUserObject());
+		boolean isDefault = MapStyleModel.isDefaultStyleNode(link.getSource());
         if(! isDefault) {
 		    addClosingAction(arrowLinkPopup, new RemoveConnectorAction(this, link));
 		    addSeparator(arrowLinkPopup);

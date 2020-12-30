@@ -355,9 +355,9 @@ public class LinkController extends SelectionController implements IExtension {
 	    Optional<T> ownValue = connectorFunction.apply(connector);
 	    if(ownValue.isPresent())
 	        return ownValue.get();
-	    if(MapStyleModel.DEFAULT_STYLE.equals(connector.getSource().getUserObject()))
+	    if(MapStyleModel.isDefaultStyleNode(connector.getSource()))
 	        return defaultValue.get();
-	    NodeModel styleNode = MapStyleModel.getExtension(connector.getSource().getMap()).getStyleNode(MapStyleModel.DEFAULT_STYLE);
+	    NodeModel styleNode = MapStyleModel.getExtension(connector.getSource().getMap()).getDefaultStyleNode();
 	    return NodeLinks.getLinks(styleNode).stream()
 	    .filter(ConnectorModel.class::isInstance)
 	    .map(ConnectorModel.class::cast)

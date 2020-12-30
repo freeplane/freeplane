@@ -39,7 +39,6 @@ import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.FontSizeExtension;
 import org.freeplane.features.cloud.CloudModel;
@@ -76,7 +75,17 @@ public class MapStyleModel implements IExtension {
 	public static final IStyle ATTRIBUTE_STYLE = new StyleTranslatedObject("defaultstyle.attributes");
 	public static final IStyle NOTE_STYLE = new StyleTranslatedObject("defaultstyle.note");
 	public static final IStyle FLOATING_STYLE = new StyleTranslatedObject("defaultstyle.floating");
+	
+    public static boolean isDefaultStyleNode(NodeModel node) {
+        return node.getUserObject().equals(MapStyleModel.DEFAULT_STYLE);
+    }
+    
+    public static boolean isStyleNode(NodeModel node) {
+        return node.isLeaf() && node.getMap().getClass().equals(StyleMapModel.class);
+    }
+    
 	private Map<IStyle, NodeModel> styleNodes;
+	private NodeModel defaultStyleNode;
 	private MapModel styleMap;
 	private ConditionalStyleModel conditionalStyleModel;
 	final private DefaultComboBoxModel stylesComboBoxModel;
@@ -120,6 +129,7 @@ public class MapStyleModel implements IExtension {
 		styleMap.putExtension(IUndoHandler.class, map.getExtension(IUndoHandler.class));
 		final MapStyleModel defaultStyleModel = new MapStyleModel();
 		defaultStyleModel.styleNodes = styleNodes;
+		defaultStyleNode = styleNodes.get(DEFAULT_STYLE);
 		initStylesComboBoxModel();
 		rootNode.putExtension(defaultStyleModel);
 	}
@@ -155,27 +165,26 @@ public class MapStyleModel implements IExtension {
 			NodeModel predefinedStyleParentNode = createStyleGroupNode(styleMap, STYLES_PREDEFINED);
 			createStyleGroupNode(styleMap, STYLES_USER_DEFINED);
 			createStyleGroupNode(styleMap, STYLES_AUTOMATIC_LAYOUT);
-			if (styleNodes.get(DEFAULT_STYLE) == null) {
-				final NodeModel newNode = new NodeModel(DEFAULT_STYLE, styleMap);
-				predefinedStyleParentNode.insert(newNode, 0);
-				addStyleNode(newNode);
+			if (defaultStyleNode == null) {
+				defaultStyleNode = new NodeModel(DEFAULT_STYLE, styleMap);
+				predefinedStyleParentNode.insert(defaultStyleNode, 0);
+				addStyleNode(defaultStyleNode);
 			}
-			NodeModel defaultStyleModel = styleNodes.get(DEFAULT_STYLE);
-			if (maxNodeWidth != null && null == NodeSizeModel.getMaxNodeWidth(defaultStyleModel))
-				NodeSizeModel.setMaxNodeWidth(defaultStyleModel, maxNodeWidth);
-			if (minNodeWidth != null && null == NodeSizeModel.getMinNodeWidth(defaultStyleModel))
-				NodeSizeModel.setNodeMinWidth(defaultStyleModel, minNodeWidth);
+			if (maxNodeWidth != null && null == NodeSizeModel.getMaxNodeWidth(defaultStyleNode))
+				NodeSizeModel.setMaxNodeWidth(defaultStyleNode, maxNodeWidth);
+			if (minNodeWidth != null && null == NodeSizeModel.getMinNodeWidth(defaultStyleNode))
+				NodeSizeModel.setNodeMinWidth(defaultStyleNode, minNodeWidth);
 			if (styleNodes.get(DETAILS_STYLE) == null) {
 				final NodeModel newNode = new NodeModel(DETAILS_STYLE, styleMap);
 				predefinedStyleParentNode.insert(newNode, 1);
 				addStyleNode(newNode);
 			}
 
-			NodeLinks nodeLinks = NodeLinks.createLinkExtension(defaultStyleModel);
+			NodeLinks nodeLinks = NodeLinks.createLinkExtension(defaultStyleNode);
 			if(nodeLinks.getLinks().isEmpty()) {
-			    defaultStyleModel.createID();
+			    defaultStyleNode.createID();
 			    LinkController linkController = LinkController.getController();
-			    ConnectorModel connector = new ConnectorModel(defaultStyleModel, defaultStyleModel.getID(),
+			    ConnectorModel connector = new ConnectorModel(defaultStyleNode, defaultStyleNode.getID(),
 			            linkController.getStandardConnectorArrows(), linkController.getStandardDashArray(),
 			            linkController.getStandardConnectorColor(), linkController.getStandardConnectorOpacity(),
 			            linkController.getStandardConnectorShape(), linkController.getStandardConnectorWidth(),
@@ -271,9 +280,14 @@ public class MapStyleModel implements IExtension {
 		final NodeModel node = getStyleNode(style);
 		if (node != null)
 			return node;
-		return getStyleNode(DEFAULT_STYLE);
+		return defaultStyleNode;
 	}
 
+
+    public NodeModel getDefaultStyleNode() {
+        return defaultStyleNode;
+    }
+    
 	public NodeModel getStyleNode(final IStyle style) {
 		if (style instanceof StyleNode) {
 			return ((StyleNode) style).getNode();
@@ -329,6 +343,7 @@ public class MapStyleModel implements IExtension {
 			styleMap = source.styleMap;
 			styleMap.putExtension(MapStyleModel.class, this);
 			styleNodes = source.styleNodes;
+			defaultStyleNode = styleNodes.get(DEFAULT_STYLE);
 			initStylesComboBoxModel();
 			conditionalStyleModel = source.conditionalStyleModel;
 		}
