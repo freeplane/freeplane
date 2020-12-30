@@ -303,7 +303,7 @@ class ControllerProxy implements Proxy.Controller {
 
     private FileFilter findExportFileFilterByDescription(List<FileFilter> fileFilters, String exportTypeDescription) {
 		for (FileFilter fileFilter : fileFilters) {
-            if (fileFilter.getDescription().equals(exportTypeDescription))
+            if (fileFilter.getDescription().contains(exportTypeDescription))
                 return fileFilter;
         }
         return null;
