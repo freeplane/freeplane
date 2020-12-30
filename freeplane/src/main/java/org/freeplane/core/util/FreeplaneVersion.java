@@ -32,7 +32,7 @@ public class FreeplaneVersion implements org.freeplane.api.FreeplaneVersion {
 	private static final FreeplaneVersion VERSION = FreeplaneVersion.loadVersion();
 	public static final String VERSION_KEY = "freeplane_version";
 	public static final String VERSION_PROPERTIES = "/version.properties";
-	public static final String XML_VERSION = "freeplane 1.8.0";
+	public static final String XML_VERSION = "freeplane 1.9.0";
 	/** major version, the 1 in "1.0.38 rc" */
 	private final int mMaj;
 	/** mid version, the 0 in "1.0.38 rc" */
