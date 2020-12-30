@@ -302,11 +302,11 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		}
 		final Point startInclination = model.getStartInclination();
 		if (startInclination != null) {
-		    arrowLink.setAttribute("STARTINCLINATION", TreeXmlWriter.PointToXml(startInclination));
+		    arrowLink.setAttribute("STARTINCLINATION", TreeXmlWriter.pointToXml(startInclination));
 		}
 		final Point endInclination = model.getEndInclination();
 		if (endInclination != null) {
-			arrowLink.setAttribute("ENDINCLINATION", TreeXmlWriter.PointToXml(endInclination));
+			arrowLink.setAttribute("ENDINCLINATION", TreeXmlWriter.pointToXml(endInclination));
 		}
         model.getStartArrow().ifPresent( startArrow -> 
         arrowLink.setAttribute("STARTARROW", startArrow.name()));

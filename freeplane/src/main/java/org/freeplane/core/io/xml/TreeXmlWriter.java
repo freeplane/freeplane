@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IElementWriter;
@@ -59,13 +61,13 @@ public class TreeXmlWriter implements ITreeWriter {
 		return sb.toString();
 	}
 
-	public static String PointToXml(final Point col) {
+	public static String pointToXml(final Point col) {
 		if (col == null) {
 			return null;
 		}
 		final Vector<String> l = new Vector<String>();
-		l.add(Integer.toString(col.x));
-		l.add(Integer.toString(col.y));
+		l.add(new Quantity<>(col.x, LengthUnit.px).in(LengthUnit.pt).toString());
+		l.add(new Quantity<>(col.y, LengthUnit.px).in(LengthUnit.pt).toString());
 		return TreeXmlWriter.listToString(l);
 	}
 
