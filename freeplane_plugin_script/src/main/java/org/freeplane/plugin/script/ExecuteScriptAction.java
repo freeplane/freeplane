@@ -27,6 +27,7 @@ import java.util.List;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -73,6 +74,7 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 		try {
 			final List<NodeModel> nodes = new ArrayList<NodeModel>();
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
+			MapModel map = selection.getMap();
             if (mode == ExecutionMode.ON_SINGLE_NODE) {
 				nodes.add(selection.getSelected());
 			}
@@ -111,12 +113,12 @@ public class ExecuteScriptAction extends AFreeplaneAction {
 						cause = ex.toString();
 					}
 					LogUtils.warn("error executing script " + scriptFile + " - giving up\n" + cause);
-					modeController.delayedRollback();
+					modeController.delayedRollback(map);
 					ScriptingEngine.showScriptExceptionErrorMessage(ex);
 					return;
 				}
 			}
-			modeController.delayedCommit();
+			modeController.delayedCommit(map);
 		}
 		finally {
 			Controller.getCurrentController().getViewController().setWaitingCursor(false);

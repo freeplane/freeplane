@@ -87,15 +87,13 @@ public class MModeController extends ModeController {
 			undoHandler.commit();
 	}
 
-	public void delayedCommit() {
-		final MMapModel map = (MMapModel) getController().getMap();
+	public void delayedCommit(MapModel map) {
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
 		if(undoHandler != null)
 			undoHandler.delayedCommit();
 	}
 
-	public void delayedRollback() {
-		final MMapModel map = (MMapModel) getController().getMap();
+	public void delayedRollback(MapModel map) {
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
 		if(undoHandler != null)
 			undoHandler.delayedRollback();
