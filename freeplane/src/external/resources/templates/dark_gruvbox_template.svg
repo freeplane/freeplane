@@ -103,7 +103,7 @@
         /><glyph unicode=" " horiz-adv-x="31.78711" d=""
       /></font
     ></defs
-    ><g font-size="22px" transform="translate(-180,-30)" fill="white" text-rendering="geometricPrecision" font-family="sans-serif" shape-rendering="crispEdges" stroke="white"
+    ><g font-size="22px" transform="translate(-180,-30)" fill="rgb(60,56,54)" text-rendering="geometricPrecision" font-family="sans-serif" shape-rendering="crispEdges" stroke="rgb(60,56,54)"
     ><rect x="0" width="881" height="428" y="0" clip-path="url(#clipPath1)" stroke="none"
     /></g
     ><g stroke-linecap="butt" font-size="22px" fill="rgb(147,161,161)" text-rendering="geometricPrecision" font-family="sans-serif" stroke-linejoin="round" stroke="rgb(147,161,161)" stroke-width="3" stroke-miterlimit="1"
@@ -165,12 +165,12 @@
     ><g font-size="22px" transform="translate(51,166)" fill-opacity="0.117647059262" fill="rgb(255,255,255)" text-rendering="geometricPrecision" font-family="sans-serif" shape-rendering="crispEdges" stroke="rgb(255,255,255)" stroke-opacity="0.117647059262"
     ><line y2="3" fill="none" x1="131" clip-path="url(#clipPath15)" x2="131" y1="1"
     /></g
-    ><g font-size="22px" transform="translate(51,166)" fill="white" text-rendering="geometricPrecision" font-family="sans-serif" shape-rendering="crispEdges" stroke="white"
+    ><g font-size="22px" transform="translate(51,166)" fill="rgb(60,56,54)" text-rendering="geometricPrecision" font-family="sans-serif" shape-rendering="crispEdges" stroke="rgb(60,56,54)"
     ><rect x="0" width="131" height="6" y="0" clip-path="url(#clipPath16)" stroke="none"
       /><text fill="rgb(187,187,187)" x="62" xml:space="preserve" y="11" clip-path="url(#clipPath16)" stroke="none"
       > </text
     ></g
-    ><g font-size="22px" transform="translate(182,166)" fill="white" text-rendering="geometricPrecision" font-family="sans-serif" shape-rendering="crispEdges" stroke="white"
+    ><g font-size="22px" transform="translate(182,166)" fill="rgb(60,56,54)" text-rendering="geometricPrecision" font-family="sans-serif" shape-rendering="crispEdges" stroke="rgb(60,56,54)"
     ><rect x="0" width="131" height="6" y="0" clip-path="url(#clipPath16)" stroke="none"
       /><text fill="rgb(187,187,187)" x="62" xml:space="preserve" y="11" clip-path="url(#clipPath16)" stroke="none"
       > </text
