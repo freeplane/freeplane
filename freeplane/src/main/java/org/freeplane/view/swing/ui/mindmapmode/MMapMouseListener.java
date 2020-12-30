@@ -21,6 +21,7 @@ package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.lang.ref.WeakReference;
 
 import javax.swing.JComponent;
 import org.freeplane.core.extension.IExtension;
@@ -47,7 +48,7 @@ import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 
 /** */
 public class MMapMouseListener extends DefaultMapMouseListener{
-	ConnectorView connectorView = null;
+    ConnectorView connectorView = null;
 	private Point connectorOldEndPoint;
 	private Point connectorOldStartPoint;
 
@@ -124,7 +125,7 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 			}
 			connectorOldStartPoint = connector.getStartInclination();
 			connectorOldEndPoint = connector.getEndInclination();
-			connectorView.setShowsControlPoints(true);
+			connectorView.enableControlPoints();
 			mapView.repaintVisible();
 		}
 	}
@@ -133,20 +134,20 @@ public class MMapMouseListener extends DefaultMapMouseListener{
 		super.mouseReleased(e);
 		if (connectorView != null) {
 		    ConnectorModel connector = connectorView.getModel();
-		    connectorView.setShowsControlPoints(false);
 			final Point connectorNewStartPoint = connector.getStartInclination();
 			final Point connectorNewEndPoint = connector.getEndInclination();
 			connector.setStartInclination(connectorOldStartPoint);
 			connector.setEndInclination(connectorOldEndPoint);
 			linkController().setArrowLinkEndPoints(connector,
 				connectorNewStartPoint, connectorNewEndPoint);
+			connectorView.disableControlPoints();
 			final MapView mapView = (MapView) e.getComponent();
 			mapView.repaintVisible();
 			connectorView = null;
 		}
 	}
 
-    private MLinkController linkController() {
+     private MLinkController linkController() {
         return (MLinkController) LinkController.getController(Controller.getCurrentController().getModeController());
     }
 

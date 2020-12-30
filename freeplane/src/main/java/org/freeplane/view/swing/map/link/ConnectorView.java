@@ -34,6 +34,7 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
+import java.lang.ref.WeakReference;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
@@ -51,6 +52,7 @@ import org.freeplane.view.swing.map.NodeView;
  * This class represents a ArrowLink around a node.
  */
 public class ConnectorView extends AConnectorView{
+    private static final String CONNECTOR_VIEW_SHOWS_CONTROL_POINTS = "connectorView.showsControlPoints";
 	private static final int NORMAL_LENGTH = 50;
 	private static final float[] DOTTED_DASH = new float[] { 4, 7};
 	static final Stroke DEF_STROKE = new BasicStroke(1);
@@ -65,7 +67,6 @@ public class ConnectorView extends AConnectorView{
 	final private BasicStroke stroke;
 	final private Color bgColor;
     private final LinkController linkController;
-    private boolean showsControlPoints;
 	/* Note, that source and target are nodeviews and not nodemodels!. */
 	public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target, Color bgColor) {
 		super(connectorModel, source, target);
@@ -82,20 +83,14 @@ public class ConnectorView extends AConnectorView{
 		else{
 			stroke = UITools.createStroke((float) width, linkController.getDashArray(connectorModel), BasicStroke.JOIN_ROUND);
 		}
-		showsControlPoints = false;
 	}
 	
 	
-	public boolean isShowsControlPoints() {
-        return showsControlPoints;
-    }
-
-
-    public void setShowsControlPoints(boolean showsControlPoints) {
-        this.showsControlPoints = showsControlPoints;
-    }
-
-
+//    public void setShowsControlPoints(boolean showsControlPoints) {
+//        this.showsControlPoints = showsControlPoints;
+//    }
+//
+//
     /* (non-Javadoc)
 	 * @see org.freeplane.view.swing.map.link.ILinkView#detectCollision(java.awt.Point, boolean)
 	 */
@@ -398,7 +393,8 @@ public class ConnectorView extends AConnectorView{
 				paintArrow(g, endPoint2, endPoint);
 		}
 		if(showsConnectors) {
-			if (showsControlPoints) {
+			boolean showsControlPoints = showsControlPoints();
+            if (showsControlPoints) {
 				g.setColor(textColor);
 				g.setStroke(new BasicStroke(stroke.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, DOTTED_DASH, 0));
 			}
@@ -419,11 +415,29 @@ public class ConnectorView extends AConnectorView{
 				}
 			}
 		}
+	}
+
+    public void enableControlPoints() {
+        getMap().putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, new WeakReference<>(connectorModel));  
     }
 
+
+    public void disableControlPoints() {
+        MapView map = getMap();
+        if(showsControlPoints())
+            map.putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, null);  
+    }
+
+	private boolean showsControlPoints() {
+	    @SuppressWarnings("unchecked")
+	    WeakReference<ConnectorModel> connectorReference = (WeakReference<ConnectorModel>) getMap().getClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS);
+	    boolean showsControlPoints = connectorReference != null && connectorReference.get() == getModel();
+	    return showsControlPoints;
+	}
+
 	private void drawCircle(Graphics2D g, Point p, int hw) {
-		g.setStroke(DEF_STROKE);
-		g.fillOval(p.x - hw, p.y - hw, hw*2, hw*2);
+	    g.setStroke(DEF_STROKE);
+	    g.fillOval(p.x - hw, p.y - hw, hw*2, hw*2);
     }
 
 	private void paintArrow(final Graphics2D g, Point from, Point to) {
@@ -507,5 +521,6 @@ public class ConnectorView extends AConnectorView{
 	    if (rect != null)
                 innerBounds.add(rect);
         }
+
 
 }
