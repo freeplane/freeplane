@@ -14,32 +14,39 @@
 <font NAME="Ubuntu" SIZE="11" BOLD="false" STRIKETHROUGH="false" ITALIC="false"/>
 <edge STYLE="bezier" COLOR="#2e3440" WIDTH="3" DASH="SOLID"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.details"/>
-<stylenode LOCALIZED_TEXT="defaultstyle.attributes">
-<font SIZE="9"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.details" COLOR="#ffffff" BACKGROUND_COLOR="#2e3440">
+<font SIZE="10"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.note" COLOR="#000000" BACKGROUND_COLOR="#f6f9a1" TEXT_ALIGN="LEFT"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.attributes" COLOR="#2e3440">
+<font NAME="Ubuntu Mono" SIZE="10"/>
+<edge DASH="DISTANT_DOTS"/>
+</stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.note" COLOR="#000000" BACKGROUND_COLOR="#f6f9a1" TEXT_ALIGN="LEFT">
+<icon BUILTIN="clock2"/>
+<font SIZE="10" ITALIC="true"/>
+</stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.floating">
 <edge STYLE="hide_edge"/>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
-<stylenode LOCALIZED_TEXT="styles.topic" COLOR="#3b4252" BACKGROUND_COLOR="#ebcb8b" BORDER_WIDTH="2.0 px" BORDER_COLOR="#88c0d0">
+<stylenode TEXT="Emote_happy" COLOR="#ffffff" BACKGROUND_COLOR="#2e3440" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <icon BUILTIN="ksmiletris"/>
-<font SIZE="14"/>
+<font NAME="Ubuntu" SIZE="14"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.subtopic" COLOR="#3b4252" BACKGROUND_COLOR="#ebcb8b" BORDER_WIDTH="2.0 px" BORDER_COLOR="#88c0d0">
+<stylenode TEXT="Emote_neutral" COLOR="#ffffff" BACKGROUND_COLOR="#2e3440" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <icon BUILTIN="smiley-neutral"/>
 <font SIZE="14"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.subsubtopic" COLOR="#3b4252" BACKGROUND_COLOR="#ebcb8b" BORDER_WIDTH="2.0 px" BORDER_COLOR="#88c0d0">
+<stylenode TEXT="Emote_unhappy" COLOR="#ffffff" BACKGROUND_COLOR="#2e3440" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <icon BUILTIN="smily_bad"/>
-<font SIZE="14"/>
+<font NAME="Ubuntu" SIZE="14"/>
+<edge COLOR="#81a1c1"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="styles.important" COLOR="#3b4252" BACKGROUND_COLOR="#ebcb8b" BORDER_WIDTH="3.0 px" BORDER_COLOR_LIKE_EDGE="true">
+<stylenode LOCALIZED_TEXT="styles.important" COLOR="#ffffff" BACKGROUND_COLOR="#bf616a" BORDER_COLOR="#bf616a">
 <icon BUILTIN="yes"/>
-<font SIZE="14"/>
+<font NAME="Ubuntu" SIZE="14"/>
 <edge COLOR="#bf616a"/>
 </stylenode>
 </stylenode>
