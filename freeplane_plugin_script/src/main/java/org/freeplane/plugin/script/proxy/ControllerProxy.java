@@ -285,8 +285,10 @@ class ControllerProxy implements Proxy.Controller {
 
     @Override
 	public void export(MindMap map, File destFile, String exportTypeDescription, boolean overwriteExisting) {
+        String destinationName = destFile.getName();
+        String destinationExtension = destinationName.substring(destinationName.lastIndexOf('.'));
 		List<FileFilter> fileFilters = ExportController.getContoller().getMapExportFileFilters();
-		final FileFilter filter = findExportFileFilterByDescription(fileFilters, exportTypeDescription);
+		final FileFilter filter = findExportFileFilterByDescription(fileFilters, exportTypeDescription, destinationExtension);
         if (filter == null) {
             throw new IllegalArgumentException("no export defined for '" + exportTypeDescription + "'");
         }
@@ -301,9 +303,14 @@ class ControllerProxy implements Proxy.Controller {
 		LogUtils.info("exported " + map.getFile() + " to " + destFile.getAbsolutePath());
     }
 
-    private FileFilter findExportFileFilterByDescription(List<FileFilter> fileFilters, String exportTypeDescription) {
+    private FileFilter findExportFileFilterByDescription(List<FileFilter> fileFilters, String exportTypeDescription, String destinationExtension) {
+        String exportTypeDescriptionLowerCase = exportTypeDescription.toLowerCase();
+        String destinationExtensionLowerCase = destinationExtension.toLowerCase();
 		for (FileFilter fileFilter : fileFilters) {
-            if (fileFilter.getDescription().contains(exportTypeDescription))
+            String filterDescriptionLowerCase = fileFilter.getDescription().toLowerCase();
+            if (filterDescriptionLowerCase.equals(exportTypeDescriptionLowerCase)
+                    || filterDescriptionLowerCase.contains(destinationExtensionLowerCase) &&
+                       filterDescriptionLowerCase.contains(exportTypeDescriptionLowerCase) )
                 return fileFilter;
         }
         return null;
