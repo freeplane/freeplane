@@ -360,7 +360,7 @@ public class TextController implements IExtension {
 				float zoom = view.getNodeView().getMap().getZoom();
 				final StringBuilder htmlBodyStyle = new StringBuilder("<body><div style=\"")
 				    .append(new CssRuleBuilder().withHTMLFont(font)
-				        .withColor(view.getForeground())
+				        .withColor(view.getUnselectedForeground())
 				        .withBackground(view.getNodeView().getTextBackground())
 				        .withAlignment(view.getHorizontalAlignment())
 				        .withMaxWidthAsPt(zoom, style.getMaxWidth(node)));

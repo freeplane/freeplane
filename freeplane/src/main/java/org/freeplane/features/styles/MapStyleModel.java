@@ -39,6 +39,7 @@ import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
+import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.FontSizeExtension;
 import org.freeplane.features.cloud.CloudModel;
@@ -56,9 +57,11 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodelocation.LocationModel;
+import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.view.swing.map.MapView;
 
 /**
  * @author Dimitry Polivaev
@@ -69,8 +72,7 @@ public class MapStyleModel implements IExtension {
 	public static final String STYLES_USER_DEFINED = "styles.user-defined";
 	public static final String STYLES_AUTOMATIC_LAYOUT = "styles.AutomaticLayout";
     public static final IStyle DEFAULT_STYLE = new StyleTranslatedObject("default");
-    public static final IStyle BACKGROUND_SELECTION_STYLE = new StyleTranslatedObject("defaultstyle.backgroundSelection");
-    public static final IStyle RECTANGULAR_SELECTION_STYLE = new StyleTranslatedObject("defaultstyle.rectangularSelection");
+    public static final IStyle SELECTION_STYLE = new StyleTranslatedObject("defaultstyle.selection");
 	public static final IStyle DETAILS_STYLE = new StyleTranslatedObject("defaultstyle.details");
 	public static final IStyle ATTRIBUTE_STYLE = new StyleTranslatedObject("defaultstyle.attributes");
 	public static final IStyle NOTE_STYLE = new StyleTranslatedObject("defaultstyle.note");
@@ -217,15 +219,19 @@ public class MapStyleModel implements IExtension {
 				predefinedStyleParentNode.insert(newNode, 4);
 				addStyleNode(newNode);
 			}
-            if (styleNodes.get(BACKGROUND_SELECTION_STYLE) == null) {
-                final NodeModel newNode = new NodeModel(BACKGROUND_SELECTION_STYLE, styleMap);
-                predefinedStyleParentNode.insert(newNode, 5);
-                addStyleNode(newNode);
-            }
-            if (styleNodes.get(RECTANGULAR_SELECTION_STYLE) == null) {
-                final NodeModel newNode = new NodeModel(RECTANGULAR_SELECTION_STYLE, styleMap);
-                predefinedStyleParentNode.insert(newNode, 6);
-                addStyleNode(newNode);
+            if (styleNodes.get(SELECTION_STYLE) == null) {
+                final NodeModel selectionStyleNode = new NodeModel(SELECTION_STYLE, styleMap);
+                ResourceController resourceController = ResourceController.getResourceController();
+                Color standardSelectionBackgroundColor = ColorUtils.stringToColor(resourceController.getProperty(
+                        MapView.RESOURCES_SELECTED_NODE_COLOR));
+                Color standardSelectionRectangleColor = ColorUtils.stringToColor(resourceController.getProperty(
+                        MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR));
+                NodeStyleModel.setShape(selectionStyleNode, NodeStyleModel.Shape.bubble);
+                NodeStyleModel.setBackgroundColor(selectionStyleNode, standardSelectionBackgroundColor);
+                NodeBorderModel.setBorderColor(selectionStyleNode, standardSelectionRectangleColor);
+                NodeBorderModel.setBorderColorMatchesEdgeColor(selectionStyleNode, false);
+                predefinedStyleParentNode.insert(selectionStyleNode, 5);
+                addStyleNode(selectionStyleNode);
             }
 		}
 		catch (Exception e) {

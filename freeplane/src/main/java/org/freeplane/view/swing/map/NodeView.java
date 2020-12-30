@@ -703,12 +703,13 @@ public class NodeView extends JComponent implements INodeView {
 		return right;
 	}
 
-	/**
-	 * @return returns the color that should used to select the node.
-	 */
-	public Color getSelectedColor() {
-		return MapView.standardSelectColor;
-	}
+    Color getSelectionTextColor() {
+        return getMap().getStandardSelectionTextColor();
+    }
+
+    public Color getSelectionBackgroundColor() {
+        return getMap().getStandardSelectionBackgroundColor();
+    }
 
 	/**
 		 * @return Returns the sHIFT.s
@@ -728,7 +729,7 @@ public class NodeView extends JComponent implements INodeView {
 	public Color getPaintedBackground() {
 		final Color color;
 		if (useSelectionColors()) {
-			color = getSelectedColor();
+			color = getSelectionBackgroundColor();
 		}
 		else {
 			color = getTextBackground();

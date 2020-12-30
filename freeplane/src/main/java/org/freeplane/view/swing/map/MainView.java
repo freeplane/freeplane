@@ -729,11 +729,26 @@ public class MainView extends ZoomableLabel {
 			borderColor = controller.getBorderColor(node);
 	}
 
-	public void paintComponentDefault(final Graphics graphics) {
-		super.paintComponent(graphics);
+	void paintComponentDefault(final Graphics graphics) {
+	    super.paintComponent(graphics);
 	}
+	
+	
 
-	public Insets getDefaultZoomedInsets() {
+	@Override
+	public Color getForeground() {
+	    NodeView nodeView = getNodeView();
+	    if(nodeView != null && nodeView.useSelectionColors()) {
+	        Color selectionTextColor = nodeView.getSelectionTextColor();
+	        if(selectionTextColor != null) {
+	            return selectionTextColor;
+	        }
+	    }
+	    return getUnselectedForeground();
+	}
+	
+
+    public Insets getDefaultZoomedInsets() {
 		return super.getZoomedInsets();
 	}
 
