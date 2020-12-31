@@ -10,9 +10,6 @@
 				<Entry accelerator="control shift B" name="CloudAction" />
 			</Entry>
 			<Entry name="icons">
-				<Entry name="icons">
-					<Entry builder="icon_actions" />
-				</Entry>
 				<Entry name="menu_remove_icons">
 					<Entry name="RemoveIcon_0_Action" />
 					<Entry name="RemoveIconAction" />
@@ -41,6 +38,16 @@
 				<Entry accelerator="control G" name="FindAction" />
 				<Entry name="FindNextAction"  accelerator="control shift G" />
 				<Entry name="FindPreviousAction" />
+			</Entry>
+		</Entry>
+		<Entry name="insert">
+			<Entry name="menu_group">
+				<Entry accelerator="control shift B" name="CloudAction" />
+			</Entry>
+			<Entry name="icons">
+				<Entry name="icons">
+					<Entry builder="icon_actions" />
+				</Entry>
 			</Entry>
 		</Entry>
 		<Entry name="view">
