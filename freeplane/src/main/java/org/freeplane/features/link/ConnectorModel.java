@@ -28,6 +28,7 @@ import org.freeplane.core.ui.components.RenderedContentSupplier;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeRelativePath;
+import org.freeplane.features.styles.IStyle;
 
 public class ConnectorModel extends NodeLinkModel {
 
@@ -95,12 +96,16 @@ public class ConnectorModel extends NodeLinkModel {
 	    return connectorProperties.getEndInclination();
     }
 
-	public String getMiddleLabel() {
-	    return connectorProperties.getMiddleLabel();
+	public Optional<String> getSourceLabel() {
+	    return connectorProperties.getSourceLabel();
     }
 
-	public String getSourceLabel() {
-	    return connectorProperties.getSourceLabel();
+    public Optional<String> getMiddleLabel() {
+        return connectorProperties.getMiddleLabel();
+    }
+
+    public Optional<String> getTargetLabel() {
+        return connectorProperties.getTargetLabel();
     }
 
 	public Optional<ArrowType> getStartArrow() {
@@ -111,10 +116,6 @@ public class ConnectorModel extends NodeLinkModel {
 	    return connectorProperties.getStartInclination();
     }
 
-	public String getTargetLabel() {
-	    return connectorProperties.getTargetLabel();
-    }
-
 	public Optional<Integer> getWidth() {
 	    return connectorProperties.getWidth();
     }
@@ -123,7 +124,13 @@ public class ConnectorModel extends NodeLinkModel {
 	    connectorProperties.setColor(color);
     }
 
-	public void setEndArrow(Optional<ArrowType> endArrow) {
+	public IStyle getStyle() {
+        return connectorProperties.getStyle();
+    }
+    public void setStyle(IStyle style) {
+        connectorProperties.setStyle(style);
+    }
+    public void setEndArrow(Optional<ArrowType> endArrow) {
 	    connectorProperties.setEndArrow(endArrow);
     }
 

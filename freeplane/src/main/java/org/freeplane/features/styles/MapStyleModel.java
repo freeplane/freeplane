@@ -70,6 +70,7 @@ import org.freeplane.view.swing.map.MapView;
 public class MapStyleModel implements IExtension {
 	public static final String STYLES_PREDEFINED = "styles.predefined";
 	public static final String STYLES_USER_DEFINED = "styles.user-defined";
+    private static final StyleTranslatedObject STYLE_USER_DEFINED_TRANSLATED_OBJECT = new StyleTranslatedObject(STYLES_USER_DEFINED);
 	public static final String STYLES_AUTOMATIC_LAYOUT = "styles.AutomaticLayout";
     public static final IStyle DEFAULT_STYLE = new StyleTranslatedObject("default");
     public static final IStyle SELECTION_STYLE = new StyleTranslatedObject("defaultstyle.selection");
@@ -84,6 +85,11 @@ public class MapStyleModel implements IExtension {
     
     public static boolean isStyleNode(NodeModel node) {
         return node.isLeaf() && node.getMap().getClass().equals(StyleMapModel.class);
+    }
+    
+
+    public static boolean isUserStyleNode(NodeModel node) {
+        return node.isLeaf() && node.getParentNode().getUserObject().equals(STYLE_USER_DEFINED_TRANSLATED_OBJECT);
     }
     
 	private Map<IStyle, NodeModel> styleNodes;
@@ -131,7 +137,7 @@ public class MapStyleModel implements IExtension {
 		styleMap.putExtension(IUndoHandler.class, map.getExtension(IUndoHandler.class));
 		final MapStyleModel defaultStyleModel = new MapStyleModel();
 		defaultStyleModel.styleNodes = styleNodes;
-		defaultStyleNode = styleNodes.get(DEFAULT_STYLE);
+		defaultStyleModel.defaultStyleNode = styleNodes.get(DEFAULT_STYLE);
 		initStylesComboBoxModel();
 		rootNode.putExtension(defaultStyleModel);
 	}
@@ -140,6 +146,7 @@ public class MapStyleModel implements IExtension {
 		final NodeModel rootNode = styleMap.getRootNode();
 		styleNodes.clear();
 		stylesComboBoxModel.removeAllElements();
+		defaultStyleNode = null;
 		createNodeStyleMap(rootNode);
 	}
 
@@ -268,6 +275,8 @@ public class MapStyleModel implements IExtension {
 		final IStyle userObject = (IStyle) node.getUserObject();
 		if (null == styleNodes.put(userObject, node))
 			stylesComboBoxModel.addElement(userObject);
+		if(userObject.equals(DEFAULT_STYLE))
+		    defaultStyleNode = node;
 	}
 
 	private void initStylesComboBoxModel() {
@@ -280,6 +289,8 @@ public class MapStyleModel implements IExtension {
 		final Object userObject = node.getUserObject();
 		if (null != styleNodes.remove(userObject))
 			stylesComboBoxModel.removeElement(userObject);
+		if(userObject.equals(DEFAULT_STYLE))
+		    defaultStyleNode = null;
 	}
 
 	public NodeModel getStyleNodeSafe(final IStyle style) {
@@ -347,9 +358,9 @@ public class MapStyleModel implements IExtension {
 	void copyFrom(MapStyleModel source, boolean overwrite) {
 		if (overwrite && source.styleMap != null || styleMap == null) {
 			styleMap = source.styleMap;
+			defaultStyleNode = styleNodes.get(DEFAULT_STYLE);
 			styleMap.putExtension(MapStyleModel.class, this);
 			styleNodes = source.styleNodes;
-			defaultStyleNode = styleNodes.get(DEFAULT_STYLE);
 			initStylesComboBoxModel();
 			conditionalStyleModel = source.conditionalStyleModel;
 		}

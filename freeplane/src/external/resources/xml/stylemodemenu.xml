@@ -49,6 +49,7 @@
 					<Entry builder="icon_actions" />
 				</Entry>
 			</Entry>
+			<Entry name="AddSelfConnectorAction" />
 		</Entry>
 		<Entry name="view">
 			<Entry name="controls">
@@ -153,6 +154,7 @@
 	<Entry name="node_popup"  builder="node_popup">
 		<Entry accelerator="alt shift C" name="FormatCopy" />
 		<Entry accelerator="alt shift V" name="FormatPaste" />
+		<Entry name="AddSelfConnectorAction" />
 		<Entry name="NewUserStyleAction" />
 		<Entry name="DeleteUserStyleAction" />
 		<Entry name="NewLevelStyleAction" />

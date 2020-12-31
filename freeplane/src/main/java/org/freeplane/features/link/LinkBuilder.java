@@ -36,10 +36,16 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.LogicalStyleModel;
+import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.StyleFactory;
+import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.url.MapVersionInterpreter;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -218,6 +224,21 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 				arrowLink.setLabelFontSize(Optional.of(Integer.parseInt(value.toString())));
 			}
 		});
+		reader.addAttributeHandler("arrowlink", "STYLE_REF", new IAttributeHandler() {
+		    @Override
+	            public void setAttribute(final Object userObject, final String value) {
+	                final ConnectorModel arrowLink = (ConnectorModel) userObject;
+	                arrowLink.setStyle(StyleFactory.create(value));
+	            }
+	        });
+		reader.addAttributeHandler("arrowlink", "LOCALIZED_STYLE_REF", new IAttributeHandler() {
+		    @Override
+	            public void setAttribute(final Object userObject, final String value) {
+	                final ConnectorModel arrowLink = (ConnectorModel) userObject;
+	                arrowLink.setStyle(StyleFactory.create(TranslatedObject.format(value)));
+	            }
+	        });
+
 	}
 
 	@Override
@@ -258,6 +279,17 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		}
 		final XMLElement arrowLink = new XMLElement();
 		arrowLink.setName("arrowlink");
+		final IStyle style = model.getStyle();
+		if (! MapStyleModel.DEFAULT_STYLE.equals(style)) {
+		    final String value = StyleTranslatedObject.toKeyString(style);
+		    if (style instanceof StyleTranslatedObject) {
+		        arrowLink.setAttribute("LOCALIZED_STYLE_REF", value);
+		    }
+		    else {
+		        arrowLink.setAttribute("STYLE_REF", value);
+		    }
+		}
+
 		model.getShape().ifPresent( shape ->
 		arrowLink.setAttribute("SHAPE", shape.name()));
         model.getColor().ifPresent( color ->
@@ -288,18 +320,14 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		if (destinationId != null) {
 		    arrowLink.setAttribute("DESTINATION", destinationId);
 		}
-		final String sourceLabel = model.getSourceLabel();
-		if (sourceLabel != null) {
-		    arrowLink.setAttribute("SOURCE_LABEL", sourceLabel);
-		}
-		final String targetLabel = model.getTargetLabel();
-		if (targetLabel != null) {
-		    arrowLink.setAttribute("TARGET_LABEL", targetLabel);
-		}
-		final String middleLabel = model.getMiddleLabel();
-		if (middleLabel != null) {
-		    arrowLink.setAttribute("MIDDLE_LABEL", middleLabel);
-		}
+        model.getSourceLabel().ifPresent( sourceLabel ->
+		    arrowLink.setAttribute("SOURCE_LABEL", sourceLabel));
+        
+        model.getTargetLabel().ifPresent( targetLabel ->
+		    arrowLink.setAttribute("TARGET_LABEL", targetLabel));
+        model.getMiddleLabel().ifPresent( middleLabel ->
+		    arrowLink.setAttribute("MIDDLE_LABEL", middleLabel));
+        
 		final Point startInclination = model.getStartInclination();
 		if (startInclination != null) {
 		    arrowLink.setAttribute("STARTINCLINATION", TreeXmlWriter.pointToXml(startInclination));

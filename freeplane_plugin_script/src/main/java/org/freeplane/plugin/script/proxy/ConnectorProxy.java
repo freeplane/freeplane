@@ -110,7 +110,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	public String getMiddleLabel() {
-		return getConnector().getMiddleLabel();
+		return getConnector().getMiddleLabel().orElse(null);
 	}
 
 	public Node getSource() {
@@ -118,7 +118,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	public String getSourceLabel() {
-		return getConnector().getSourceLabel();
+		return getConnector().getSourceLabel().orElse(null);
 	}
 
     public boolean hasStartArrow() {
@@ -135,7 +135,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
 	public String getTargetLabel() {
-		return getConnector().getTargetLabel();
+		return getConnector().getTargetLabel().orElse(null);
 	}
 
     private void setEndArrowImpl(final ArrowType arrowType) {

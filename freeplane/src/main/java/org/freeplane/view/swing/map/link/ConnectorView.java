@@ -445,14 +445,14 @@ public class ConnectorView extends AConnectorView{
     }
 
 	private void drawLabels(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
-	    final String sourceLabel = connectorModel.getSourceLabel();
+	    final String sourceLabel = linkController.getSourceLabel(connectorModel);
 		final String middleLabel;
 	      if(MapStyleModel.isDefaultStyleNode(source.getModel())) 
 	          middleLabel = TextUtils.getText("connector");
 	      else
-	          middleLabel = connectorModel.getMiddleLabel();
+	          middleLabel = linkController.getMiddleLabel(connectorModel);
 
-		final String targetLabel = connectorModel.getTargetLabel();
+		final String targetLabel = linkController.getTargetLabel(connectorModel);
 		if (sourceLabel == null && middleLabel == null && targetLabel == null) {
 			return;
 		}

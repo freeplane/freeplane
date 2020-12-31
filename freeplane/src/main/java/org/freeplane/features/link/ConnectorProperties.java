@@ -25,12 +25,15 @@ import java.util.Optional;
 
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.MapStyleModel;
 
 /**
  * @author Dimitry Polivaev
  * 23.03.2014
  */
 class ConnectorProperties{
+    private IStyle style;
 	private Optional<Color> color;
 	private Optional<Integer> alpha;
 	private Optional<ArrowType> endArrow;
@@ -44,11 +47,12 @@ class ConnectorProperties{
 	private Point startInclination;
 	private Point endInclination;
 	
-	private String sourceLabel;
-	private String middleLabel;
-	private String targetLabel;
+	private Optional<String> sourceLabel;
+	private Optional<String> middleLabel;
+	private Optional<String> targetLabel;
 
     public ConnectorProperties() {
+        style = MapStyleModel.DEFAULT_STYLE;
         this.startArrow = Optional.empty();
         this.endArrow = Optional.empty();
         this.dash = Optional.empty();
@@ -58,6 +62,9 @@ class ConnectorProperties{
         this.shape = Optional.empty();
         this.labelFontFamily = Optional.empty();
         this.labelFontSize = Optional.empty();
+        sourceLabel = Optional.empty();
+        middleLabel = Optional.empty();
+        targetLabel = Optional.empty();
     }
 	public ConnectorProperties(ConnectorArrows connectorEnds, int[] dash, final Color color,
 	                      final int alpha, final Shape shape, final int width,
@@ -74,7 +81,21 @@ class ConnectorProperties{
 		this.shape = Optional.of(shape);
 		this.labelFontFamily = Optional.of(labelFontFamily);
 		this.labelFontSize = Optional.of(labelFontSize);
+		this.style = MapStyleModel.DEFAULT_STYLE;
+        sourceLabel = Optional.empty();
+        middleLabel = Optional.empty();
+        targetLabel = Optional.empty();
 	}
+	
+    public IStyle getStyle() {
+        return style;
+    }
+
+    public void setStyle(final IStyle style) {
+        this.style = style;
+    }
+
+
 	public Optional<Shape> getShape() {
 		return shape;
 	}
@@ -107,13 +128,17 @@ class ConnectorProperties{
 		return new Point(endInclination);
 	}
 
-	public String getMiddleLabel() {
+	public Optional<String> getMiddleLabel() {
 		return middleLabel;
 	}
 
-	public String getSourceLabel() {
+	public Optional<String> getSourceLabel() {
 		return sourceLabel;
 	}
+
+    public Optional<String> getTargetLabel() {
+        return targetLabel;
+    }
 
 	public Optional<ArrowType> getStartArrow() {
 		return startArrow;
@@ -124,10 +149,6 @@ class ConnectorProperties{
 			return null;
 		}
 		return new Point(startInclination);
-	}
-
-	public String getTargetLabel() {
-		return targetLabel;
 	}
 
 	public Optional<Integer>  getWidth() {
@@ -148,11 +169,11 @@ class ConnectorProperties{
 	}
 
 	public void setMiddleLabel(final String middleLabel) {
-		this.middleLabel = empty2null(middleLabel);
+		this.middleLabel = emptyString2emptyOptional(middleLabel);
 	}
 
 	public void setSourceLabel(final String label) {
-		sourceLabel = empty2null(label);
+		sourceLabel = emptyString2emptyOptional(label);
 	}
 
 	public void setStartArrow(final Optional<ArrowType> startArrow) {
@@ -164,7 +185,7 @@ class ConnectorProperties{
 	}
 
 	public void setTargetLabel(final String targetLabel) {
-		this.targetLabel = empty2null(targetLabel);
+		this.targetLabel = emptyString2emptyOptional(targetLabel);
 	}
 
 	public void setWidth(final Optional<Integer> width) {
@@ -194,8 +215,8 @@ class ConnectorProperties{
     	this.labelFontSize = labelFontSize;
     }
 
-	private String empty2null(final String label) {
-		return "".equals(label) ? null : label;
+	private Optional<String> emptyString2emptyOptional(final String label) {
+		return "".equals(label) ? Optional.empty() : Optional.of(label);
 	}
 
 	public void changeInclination(int deltaX, final int deltaY, final NodeModel linkedNodeView,

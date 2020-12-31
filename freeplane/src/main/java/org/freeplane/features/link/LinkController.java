@@ -357,11 +357,17 @@ public class LinkController extends SelectionController implements IExtension {
 	        return ownValue.get();
 	    if(MapStyleModel.isDefaultStyleNode(connector.getSource()))
 	        return defaultValue.get();
-	    NodeModel styleNode = MapStyleModel.getExtension(connector.getSource().getMap()).getDefaultStyleNode();
-	    return NodeLinks.getLinks(styleNode).stream()
-	    .filter(ConnectorModel.class::isInstance)
-	    .map(ConnectorModel.class::cast)
-	    .findFirst()
+	    IStyle style = connector.getStyle();
+	    MapModel map = connector.getSource().getMap();
+	    MapStyleModel mapStyles = MapStyleModel.getExtension(map);
+        if(! MapStyleModel.DEFAULT_STYLE.equals(style)) {
+	        NodeModel styleNode = mapStyles.getStyleNode(style);
+	        Optional<T> styleProperty = NodeLinks.getSelfConnector(styleNode).flatMap(connectorFunction);
+	        if(styleProperty.isPresent())
+	            return styleProperty.get();
+	    }
+        NodeModel defaultStyleNode = mapStyles.getDefaultStyleNode();
+	    return NodeLinks.getSelfConnector(defaultStyleNode)
 	    .flatMap(connectorFunction)
 	    .orElseGet(defaultValue);
 	    
@@ -383,7 +389,19 @@ public class LinkController extends SelectionController implements IExtension {
     }
 
 
-    public String getLabelFontFamily(ConnectorModel connector) {
+    public String getMiddleLabel(ConnectorModel connector) {
+        return getProperty(connector, ConnectorModel::getMiddleLabel, () -> "");
+    }
+
+    public String getSourceLabel(ConnectorModel connector) {
+        return getProperty(connector, ConnectorModel::getSourceLabel, () -> "");
+    }
+
+    public String getTargetLabel(ConnectorModel connector) {
+        return getProperty(connector, ConnectorModel::getTargetLabel, () -> "");
+    }
+    
+   public String getLabelFontFamily(ConnectorModel connector) {
         return getProperty(connector, ConnectorModel::getLabelFontFamily, this::getStandardLabelFontFamily);
     }
 
@@ -996,4 +1014,5 @@ public class LinkController extends SelectionController implements IExtension {
 		else
 			loadURI(uri);
 	}
+
 }

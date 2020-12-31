@@ -44,6 +44,7 @@ import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.FocusManager;
 import javax.swing.InputMap;
@@ -90,8 +91,11 @@ import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
+import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.StyleString;
+import org.freeplane.features.styles.mindmapmode.ComboBoxRendererWithTooltip;
 
 /**
  * @author Dimitry Polivaev
@@ -416,7 +420,8 @@ public class MLinkController extends LinkController {
 		modeController.addAction(new SetLinkAnchorAction());
 		modeController.addAction(new MakeLinkToAnchorAction());
 		modeController.addAction(new MakeLinkFromAnchorAction());
-		modeController.addAction(new ClearLinkAnchorAction());
+        modeController.addAction(new ClearLinkAnchorAction());
+        modeController.addAction(new AddSelfConnectorAction());
 	}
 
 	@Override
@@ -427,6 +432,9 @@ public class MLinkController extends LinkController {
 		    addClosingAction(arrowLinkPopup, new RemoveConnectorAction(this, link));
 		    addSeparator(arrowLinkPopup);
         }
+        if(! MapStyleModel.isStyleNode(link.getSource()))
+            addStyleSelector(link, arrowLinkPopup);
+
 		ConnectorEditorPanel comp = new ConnectorEditorPanel(modeController, link);
 		comp.setAlignmentX(JComponent.LEFT_ALIGNMENT);
         arrowLinkPopup.add(comp);
@@ -436,13 +444,13 @@ public class MLinkController extends LinkController {
 		final JTextArea middleLabelEditor;
 		final JTextArea targetLabelEditor ;
 		if(! isDefault) {
-		    sourceLabelEditor = new JTextArea(link.getSourceLabel());
+		    sourceLabelEditor = new JTextArea(link.getSourceLabel().orElse(""));
 		    addTextEditor(arrowLinkPopup, "edit_source_label", sourceLabelEditor);
 
-		    middleLabelEditor = new JTextArea(link.getMiddleLabel());
+		    middleLabelEditor = new JTextArea(link.getMiddleLabel().orElse(""));
 		    addTextEditor(arrowLinkPopup, "edit_middle_label"  ,middleLabelEditor);
 
-		    targetLabelEditor = new JTextArea(link.getTargetLabel());
+		    targetLabelEditor = new JTextArea(link.getTargetLabel().orElse(""));
 		    addTextEditor(arrowLinkPopup, "edit_target_label", targetLabelEditor);
 		}
 		else {
@@ -488,6 +496,50 @@ public class MLinkController extends LinkController {
 		});
 
 	}
+
+    private void addStyleSelector(ConnectorModel link, JComponent arrowLinkPopup) {
+        MapModel map = link.getSource().getMap();
+        MapStyleModel styleMap = MapStyleModel.getExtension(map);
+        IStyle[] styles = styleMap.getStyles().stream().filter(key -> 
+         NodeLinks.getSelfConnector(styleMap.getStyleNode(key)).isPresent())
+        .toArray(IStyle[]::new);
+        final JComboBox<IStyle> stylesBox = new JComboBoxWithBorder(styles);
+        stylesBox.setSelectedItem(link.getStyle());
+        stylesBox.setPrototypeDisplayValue(new StyleString("XXXXXXXXXXXXXXXXXXXXXXXX"));
+        stylesBox.setRenderer(new ComboBoxRendererWithTooltip(stylesBox));
+        stylesBox.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+        stylesBox.addItemListener(item -> setConnectorStyle(link, (IStyle)stylesBox.getSelectedItem()));
+        arrowLinkPopup.add(stylesBox);
+    }
+
+    public void setConnectorStyle(ConnectorModel link, IStyle style) {
+        final IStyle oldStyle = link.getStyle();
+        if (style.equals(oldStyle)) {
+            return;
+        }
+        final IActor actor = new IActor() {
+            @Override
+            public void act() {
+                link.setStyle(style);
+                final NodeModel node = link.getSource();
+                fireNodeConnectorChange(node, link);
+            }
+
+            @Override
+            public String getDescription() {
+                return "setConnectorStyle";
+            }
+
+            @Override
+            public void undo() {
+                link.setStyle(oldStyle);
+                final NodeModel node = link.getSource();
+                fireNodeConnectorChange(node, link);
+            }
+        };
+        Controller.getCurrentModeController().execute(actor, link.getSource().getMap());
+
+    }
 
     @SuppressWarnings("serial")
     protected JComboBoxWithBorder createActionBox(AFreeplaneAction[] items) {
@@ -731,14 +783,11 @@ public class MLinkController extends LinkController {
 	}
 
 	public void setMiddleLabel(final ConnectorModel model, String label) {
-		if ("".equals(label)) {
-			label = null;
+		if (label == null) {
+			label = "";
 		}
-		String oldLabel = model.getMiddleLabel();
-		if ("".equals(oldLabel)) {
-			oldLabel = null;
-		}
-		if (label == oldLabel || label != null && label.equals(oldLabel)) {
+		String oldLabel = model.getMiddleLabel().orElse("");
+		if (label.equals(oldLabel)) {
 			return;
 		}
 		final IActor actor = new MiddleLabelSetter(model, oldLabel, label);
@@ -746,31 +795,25 @@ public class MLinkController extends LinkController {
 	}
 
 	public void setSourceLabel(final ConnectorModel model, String label) {
-		if ("".equals(label)) {
-			label = null;
-		}
-		String oldLabel = model.getSourceLabel();
-		if ("".equals(oldLabel)) {
-			oldLabel = null;
-		}
-		if (label == oldLabel || label != null && label.equals(oldLabel)) {
-			return;
-		}
+        if (label == null) {
+            label = "";
+        }
+        String oldLabel = model.getSourceLabel().orElse("");
+        if (label.equals(oldLabel)) {
+            return;
+        }
 		final IActor actor = new SourceLabelSetter(model, label, oldLabel);
 		Controller.getCurrentModeController().execute(actor, model.getSource().getMap());
 	}
 
 	public void setTargetLabel(final ConnectorModel model, String label) {
-		if ("".equals(label)) {
-			label = null;
-		}
-		String oldLabel = model.getTargetLabel();
-		if ("".equals(oldLabel)) {
-			oldLabel = null;
-		}
-		if (label == oldLabel || label != null && label.equals(oldLabel)) {
-			return;
-		}
+        if (label == null) {
+            label = "";
+        }
+        String oldLabel = model.getTargetLabel().orElse("");
+        if (label.equals(oldLabel)) {
+            return;
+        }
 		final IActor actor = new TargetLabelSetter(oldLabel, label, model);
 		Controller.getCurrentModeController().execute(actor, model.getSource().getMap());
 	}
