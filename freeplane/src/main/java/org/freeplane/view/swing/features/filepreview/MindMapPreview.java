@@ -20,13 +20,13 @@ public class MindMapPreview extends BitmapImagePreview {
 
     public MindMapPreview(final JFileChooser fc) {
         super(fc);
-        final int previewSize = ResourceController.getResourceController().getIntProperty("image_preview_size", 300);
-        setPreferredSize(new Dimension(2 * previewSize, previewSize));
+        final int previewSize = ResourceController.getResourceController().getIntProperty("image_preview_size", 200);
+        setPreferredSize(new Dimension(4 * previewSize, previewSize));
     }
     public MindMapPreview() {
         super();
-        final int previewSize = ResourceController.getResourceController().getIntProperty("image_preview_size", 300);
-        Dimension preferredSize = new Dimension(2 * previewSize, previewSize);
+        final int previewSize = ResourceController.getResourceController().getIntProperty("image_preview_size", 200);
+        Dimension preferredSize = new Dimension(4 * previewSize, previewSize);
         setPreferredSize(preferredSize);
         setSize(preferredSize);
     }
