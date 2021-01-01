@@ -74,6 +74,7 @@ class LoggingOutputStream extends ByteArrayOutputStream {
 		}
 		final Collection<Handler> handlers = LogHandlers.getHandlers();
 		final LogRecord logRecord = new LogRecord(level, record);
+		logRecord.setLoggerName(LoggingOutputStream.class.getName());
 		for(Handler handler : handlers) {
 				handler.publish(logRecord);
 		}
