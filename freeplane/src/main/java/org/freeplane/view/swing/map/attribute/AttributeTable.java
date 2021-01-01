@@ -898,7 +898,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 				final Border border = BorderFactory.createLineBorder(gridColor);
 				final JComponent parent = (JComponent) getParent();
 				if(parent instanceof JViewport) {
-					JScrollPane scrollPane = (JScrollPane) parent.getParent();
+					JScrollPane scrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, parent);
 					scrollPane.setBorder(border);
 					scrollPane.setViewportBorder(border);
 				}

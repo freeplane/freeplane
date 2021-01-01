@@ -78,6 +78,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.components.resizer.UIComponentVisibilityDispatcher;
 import org.freeplane.core.util.ClassLoaderFactory;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.features.format.FormattedObject;
@@ -87,6 +88,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.time.TimeComboBoxEditor;
+import org.violetlib.aqua.AquaLookAndFeel;
 
 /**
  * @author Dimitry Polivaev
@@ -533,10 +535,15 @@ abstract public class FrameController implements ViewController {
 	public static void setLookAndFeel(final String lookAndFeel, boolean supportHidpi) {
 		try {
 			if (lookAndFeel.equals("default")) {
-				String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
-				fixDarculaNPE(lookAndFeelClassName);
-				UIManager.setLookAndFeel(lookAndFeelClassName);
-				fixDarculaButtonUI();
+			    if (Compat.isMacOsX()) {
+			        UIManager.setLookAndFeel(new AquaLookAndFeel());
+			    }
+			    else {
+			        String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
+			        fixDarculaNPE(lookAndFeelClassName);
+			        UIManager.setLookAndFeel(lookAndFeelClassName);
+			        fixDarculaButtonUI();
+			    }
 			}
 			else {
 				LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
@@ -572,6 +579,7 @@ abstract public class FrameController implements ViewController {
 			}
 		}
 		catch (final Exception ex) {
+			ex.printStackTrace();
 			LogUtils.warn("Error while setting Look&Feel" + lookAndFeel);
 		}
 		UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
