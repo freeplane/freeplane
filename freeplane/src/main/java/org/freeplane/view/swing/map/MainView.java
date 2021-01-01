@@ -38,8 +38,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
@@ -65,8 +67,11 @@ import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.factory.IconFactory;
+import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.link.icons.NodeViewDecorator;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
@@ -405,10 +410,8 @@ public class MainView extends ZoomableLabel {
 	}
 
 	private void addOwnIcons(final MultipleImage iconImages, final NodeModel model) {
-		final URI link = NodeLinks.getLink(model);
-		final Icon icon = getNodeView().getMap().getModeController().getExtension(LinkController.class).getLinkIcon(link, model);
-		if(icon != null)
-			iconImages.addLinkIcon(icon, model);
+		getNodeView().getMap()
+		        .getModeController().getExtension(LinkController.class).addLinkDecorationIcons(iconImages, model);
 	}
 
 	void updateTextColor(final NodeView node) {

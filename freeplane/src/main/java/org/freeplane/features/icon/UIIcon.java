@@ -37,7 +37,6 @@ import org.freeplane.features.icon.factory.IconFactory;
  */
 public class UIIcon implements IconDescription, NamedIcon {
 	private static final String DEFAULT_IMAGE_PATH = "/images";
-	protected static final String THEME_FOLDER_KEY = "icon.theme.folder";
 	protected static final ResourceController RESOURCE_CONTROLLER = ResourceController.getResourceController();
 	private final String name;
 	private final String file;

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 63.1 (101010) - https://sketch.com -->
+    <title>code/file_code_Javascript</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="code/file_code_Javascript" fill-rule="nonzero">
+            <g id="Javascript" transform="translate(5.909091, 0.000000)">
+                <polygon id="path13" fill="#D4B830" points="8.0091716 89.8284024 0 0 88.0029586 0 79.9863905 89.8139053 43.9476331 99.8050296"></polygon>
+                <polygon id="path15" fill="#FDD83C" points="44.002071 92.1683432 73.1224852 84.0949704 79.9736686 7.34497041 44.002071 7.34497041 44.002071 92.1683432"></polygon>
+                <g id="Group" transform="translate(11.813314, 17.553254)">
+                    <polygon id="path18" fill="#4D4D4D" points="62.293216 22.3360953 46.7668639 22.3360953 46.7668639 11.0544385 63.2747544 11.0544385 64.252071 0.0369829941 35.2481657 0.0369829941 35.2481657 33.3526627 50.2683432 33.3526627 48.941716 47.6408284 35.2482249 50.1337278 35.2482249 61.6186391 59.239645 56.1597633"></polygon>
+                    <path d="M29.2295855,0.0369829941 L4.6286981,0.0369829941 L5.65029574,11.0588763 L18.1707098,11.0589769 L18.1707098,48.5460148 L12.0343192,47.6482249 L11.2497038,38.8618343 C11.2497038,38.8618343 3.87712033,38.8618343 0.190828402,38.8618343 L1.73402358,56.1597633 C29.2295855,61.6185 1.83825172,56.1557692 29.2295855,61.6185 L29.2295855,0.0369829941 Z" id="path24" fill="#000000"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
