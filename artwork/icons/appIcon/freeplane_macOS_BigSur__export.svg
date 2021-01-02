@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="freeplane_macos_bigsur__export-d" x1="50%" x2="50%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#5D6B6F"/>
+      <stop offset="100%" stop-color="#070707"/>
+    </linearGradient>
+    <path id="freeplane_macos_bigsur__export-a" d="M28.8732469,10.2274741 C28.8717157,9.96994383 28.8687469,9.71247602 28.861747,9.4550707 C28.8466221,8.8940415 28.8135286,8.32819981 28.7137481,7.77342058 C28.6125613,7.21064138 28.4473126,6.68686203 28.1869082,6.17552014 C27.9309101,5.67292822 27.5965064,5.21302365 27.1975093,4.81430635 C26.798606,4.41558905 26.3385782,4.08140277 25.8358006,3.82555995 C25.3239294,3.56509215 24.7995896,3.39990525 24.2361875,3.29874937 C23.6813478,3.19912473 23.115352,3.1660936 22.5543249,3.15093741 C22.2967331,3.14396868 22.0391412,3.14103119 21.7814869,3.13943745 C21.4756142,3.13756245 21.1697414,3.1377187 20.8638687,3.1377187 L17.312395,3.125 L14.6561646,3.125 L11.1675342,3.1377187 C10.8610677,3.1377187 10.5546013,3.13756245 10.2481348,3.13943745 C9.98994919,3.14103119 9.7318886,3.14396868 9.47379676,3.15093741 C8.91145717,3.1660936 8.34418012,3.19915598 7.78802798,3.29890562 C7.22387591,3.40003025 6.6987548,3.56515465 6.18619609,3.82543495 C5.68235607,4.08130902 5.22132823,4.41552655 4.82158119,4.81430635 C4.42189665,5.2129924 4.08686788,5.67280322 3.83040103,6.17530139 C3.56927796,6.68689328 3.40371669,7.21098512 3.30227994,7.77407682 C3.20240568,8.3286373 3.16931217,8.8942915 3.15409353,9.4550707 C3.14715609,9.71250727 3.14415611,9.96997508 3.14259362,10.2274741 C3.14071863,10.533223 3.125,10.9130029 3.125,11.2187205 L3.125,14.6590205 L3.125,17.3436982 L3.14087488,20.8570917 C3.14087488,21.1632156 3.14074988,21.4693395 3.14259362,21.7754633 C3.14415611,22.0333374 3.14715609,22.291149 3.15412478,22.5489293 C3.16931217,23.1106772 3.20246818,23.6773314 3.30243619,24.2328607 C3.40384169,24.7963898 3.56937171,25.3209192 3.83027603,25.8329173 C4.08677413,26.336228 4.4218654,26.7967263 4.82158119,27.1960061 C5.22129698,27.5952859 5.68219982,27.9299097 6.18594609,28.1861275 C6.6988173,28.4469391 7.22418841,28.6123447 7.78868423,28.7136256 C8.34458637,28.8134065 8.91167592,28.8465001 9.47379676,28.8616563 C9.7318886,28.868625 9.98998044,28.8715938 10.248166,28.8731563 C10.5546325,28.875 10.8610677,28.875 11.1675342,28.875 L14.6876957,28.875 L17.3505197,28.875 L20.8638687,28.875 C21.1697414,28.875 21.4756142,28.875 21.7814869,28.8731563 C22.0391412,28.8715938 22.2967331,28.868625 22.5543249,28.8616563 C23.1155708,28.8464689 23.6817541,28.813344 24.2368437,28.7135006 C24.7999021,28.6122197 25.3239919,28.4468766 25.8355819,28.1862213 C26.3384532,27.9300347 26.7985748,27.5953484 27.1975093,27.1960061 C27.5964439,26.7967888 27.9308164,26.336353 28.1868145,25.8331361 C28.4473751,25.3208879 28.6126238,24.7961086 28.7138731,24.2322044 C28.8135599,23.6768939 28.8466221,23.1104585 28.8617782,22.5489293 C28.8687469,22.2911177 28.8717157,22.0333062 28.8732469,21.7754633 C28.875,21.4693395 28.875,21.1632156 28.875,20.8570917 C28.875,20.8570917 28.875,17.4057293 28.875,17.3436982 L28.875,14.656208 C28.875,14.6103957 28.875,11.1445958 28.875,11.1445958 C28.875,10.8389094 28.875,10.5331918 28.8732469,10.2274741 Z"/>
+    <filter id="freeplane_macos_bigsur__export-b" width="114.3%" height="114.3%" x="-7.2%" y="-7.2%" filterUnits="objectBoundingBox">
+      <feMorphology in="SourceAlpha" operator="dilate" radius=".344" result="shadowSpreadOuter1"/>
+      <feOffset in="shadowSpreadOuter1" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation=".5"/>
+      <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"/>
+      <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.3 0"/>
+    </filter>
+    <filter id="freeplane_macos_bigsur__export-c" width="114.3%" height="114.3%" x="-7.2%" y="-7.2%" filterUnits="objectBoundingBox">
+      <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation=".5"/>
+      <feOffset in="shadowBlurInner1" result="shadowOffsetInner1"/>
+      <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+      <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.300562719 0"/>
+    </filter>
+    <filter id="freeplane_macos_bigsur__export-e" width="137.5%" height="139.1%" x="-18.8%" y="-19.6%" filterUnits="objectBoundingBox">
+      <feOffset in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation=".5"/>
+      <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0"/>
+      <feMerge>
+        <feMergeNode in="shadowMatrixOuter1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <radialGradient id="freeplane_macos_bigsur__export-g" cx="50%" cy="50%" r="48.62%" fx="50%" fy="50%" gradientTransform="matrix(.62653 .77795 -.7794 .62537 .576 -.202)">
+      <stop offset="0%" stop-color="#E0DCDC"/>
+      <stop offset="18.906%" stop-color="#D1CECE"/>
+      <stop offset="49.311%" stop-color="#CECCCC" stop-opacity=".804"/>
+      <stop offset="100%" stop-color="#CACACA" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="freeplane_macos_bigsur__export-h" width="120.8%" height="121.7%" x="-10.4%" y="-10.9%" filterUnits="objectBoundingBox">
+      <feOffset in="SourceAlpha" result="shadowOffsetOuter1"/>
+      <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation=".5"/>
+      <feColorMatrix in="shadowBlurOuter1" result="shadowMatrixOuter1" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0"/>
+      <feMerge>
+        <feMergeNode in="shadowMatrixOuter1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <path id="freeplane_macos_bigsur__export-i" d="M15.7300931,18.6135992 C15.8959164,18.1255841 16.0858667,17.520188 16.1421631,17.2462989 C16.2788827,16.5811396 16.5245847,14.7682139 16.4616122,14.7757673 C16.4379406,14.7913274 16.2442578,15.1758295 16.0454764,15.6449003 C15.2220359,17.5194917 13.9546329,18.7451477 12.5451109,19.028703 C11.6820689,19.2034589 11.0532547,19.0753509 10.0974698,18.5259695 C9.42732176,18.1407711 9.35970602,18.1310723 8.72952562,18.308427 L8.08201641,18.4904044 L8.38564883,19.204511 C9.05713033,20.6988022 10.1048693,21.7968685 11.2956708,22.2188382 C11.9303724,22.4378297 13.0850607,22.1390461 13.7673496,21.5687292 C14.5143105,20.9626693 15.3460046,19.7053183 15.7300931,18.6135992 Z"/>
+    <filter id="freeplane_macos_bigsur__export-j" width="111.9%" height="113.3%" x="-6%" y="-6.7%" filterUnits="objectBoundingBox">
+      <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation=".5"/>
+      <feOffset in="shadowBlurInner1" result="shadowOffsetInner1"/>
+      <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+      <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0.733205782   0 0 0 0 0.733205782   0 0 0 0 0.733205782  0 0 0 0.295487998 0"/>
+    </filter>
+    <path id="freeplane_macos_bigsur__export-k" d="M8.1965284,3.68232449 C8.03070509,4.17033953 7.84075479,4.77573561 7.78445845,5.04962474 C7.64773876,5.71478406 7.40203683,7.52770975 7.46500933,7.52015637 C7.48868094,7.50459624 7.68236371,7.12009416 7.88114511,6.65102331 C8.70458557,4.77643195 9.97198859,3.55077599 11.3815106,3.26722063 C12.2445526,3.09246471 12.8733668,3.22057278 13.8291517,3.76995414 C14.4992997,4.15515256 14.5669155,4.16485134 15.1970959,3.98749664 L15.8446051,3.80551924 L15.5409727,3.09141265 C14.8694912,1.59712149 13.8217522,0.49905512 12.6309507,0.0770854963 C11.9962491,-0.14190607 10.8415608,0.156877527 10.1592719,0.727194438 C9.412311,1.33325431 8.58061686,2.5906054 8.1965284,3.68232449 Z"/>
+    <filter id="freeplane_macos_bigsur__export-l" width="111.9%" height="113.3%" x="-6%" y="-6.7%" filterUnits="objectBoundingBox">
+      <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation=".5"/>
+      <feOffset in="shadowBlurInner1" result="shadowOffsetInner1"/>
+      <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+      <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0.733205782   0 0 0 0 0.733205782   0 0 0 0 0.733205782  0 0 0 0.295487998 0"/>
+    </filter>
+    <path id="freeplane_macos_bigsur__export-m" d="M15.091183,14.4899536 C14.9253597,14.9779686 14.7354094,15.5833647 14.679113,15.8572538 C14.5423933,16.5224131 14.2966914,18.3353388 14.3596639,18.3277855 C14.3833355,18.3122253 14.5770183,17.9277232 14.7757997,17.4586524 C15.5992401,15.584061 16.8666432,14.3584051 18.2761652,14.0748497 C19.1392072,13.9000938 19.7680214,14.0282019 20.7238063,14.5775832 C21.3939543,14.9627817 21.4615701,14.9724804 22.0917504,14.7951257 L22.7392597,14.6131483 L22.4356272,13.8990417 C21.7641457,12.4047506 20.7164068,11.3066842 19.5256053,10.8847146 C18.8909037,10.665723 17.7362154,10.9645066 17.0539265,11.5348235 C16.3069656,12.1408834 15.4752714,13.3982345 15.091183,14.4899536 Z"/>
+    <filter id="freeplane_macos_bigsur__export-n" width="111.9%" height="113.3%" x="-6%" y="-6.7%" filterUnits="objectBoundingBox">
+      <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation=".5"/>
+      <feOffset in="shadowBlurInner1" result="shadowOffsetInner1"/>
+      <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+      <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0.733205782   0 0 0 0 0.733205782   0 0 0 0 0.733205782  0 0 0 0.295487998 0"/>
+    </filter>
+    <path id="freeplane_macos_bigsur__export-o" d="M8.83543854,7.80597007 C9.00126184,7.31795504 9.19121214,6.71255895 9.24750848,6.43866982 C9.38422817,5.77351051 9.6299301,3.96058482 9.5669576,3.96813819 C9.54328599,3.98369833 9.34960322,4.36820041 9.15082182,4.83727125 C8.32738136,6.71186261 7.05997835,7.93751858 5.65045634,8.22107394 C4.78741431,8.39582986 4.1586001,8.26772178 3.20281521,7.71834043 C2.53266719,7.333142 2.46505145,7.32344322 1.83487106,7.50079792 L1.18736184,7.68277532 L1.49099426,8.39688192 C2.16247577,9.89117307 3.21021474,10.9892394 4.4010162,11.4112091 C5.03571781,11.6302006 6.19040612,11.331417 6.872695,10.7611001 C7.61965593,10.1550403 8.45135007,8.89768916 8.83543854,7.80597007 Z"/>
+    <filter id="freeplane_macos_bigsur__export-p" width="123.8%" height="126.6%" x="-11.9%" y="-13.3%" filterUnits="objectBoundingBox">
+      <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation=".5"/>
+      <feOffset dx="-1" in="shadowBlurInner1" result="shadowOffsetInner1"/>
+      <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+      <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0.733205782   0 0 0 0 0.733205782   0 0 0 0 0.733205782  0 0 0 0.295487998 0"/>
+    </filter>
+    <path id="freeplane_macos_bigsur__export-q" d="M2.24258242,15.0306691 C2.07675912,15.5186842 1.88680881,16.1240803 1.83051247,16.3979694 C1.69379278,17.0631287 1.44809085,18.8760544 1.51106335,18.868501 C1.53473497,18.8529409 1.72841773,18.4684388 1.92719913,17.999368 C2.7506396,16.1247766 4.01804261,14.8991206 5.42756461,14.6155653 C6.29060664,14.4408094 6.91942086,14.5689174 7.87520574,15.1182988 C8.54535376,15.5034972 8.6129695,15.513196 9.2431499,15.3358413 L9.89065911,15.1538639 L9.58702669,14.4397573 C8.91554519,12.9454661 7.86780621,11.8473998 6.67700476,11.4254302 C6.04230314,11.2064386 4.88761484,11.5052222 4.20532595,12.0755391 C3.45836503,12.681599 2.62667088,13.9389501 2.24258242,15.0306691 Z"/>
+    <filter id="freeplane_macos_bigsur__export-r" width="111.9%" height="113.3%" x="-6%" y="-6.7%" filterUnits="objectBoundingBox">
+      <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation=".5"/>
+      <feOffset in="shadowBlurInner1" result="shadowOffsetInner1"/>
+      <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+      <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0.733205782   0 0 0 0 0.733205782   0 0 0 0 0.733205782  0 0 0 0.295487998 0"/>
+    </filter>
+    <path id="freeplane_macos_bigsur__export-s" d="M21.6840391,7.26525451 C21.8498624,6.77723948 22.0398127,6.17184339 22.096109,5.89795426 C22.2328287,5.23279494 22.4785306,3.41986925 22.4155581,3.42742263 C22.3918865,3.44298276 22.1982038,3.82748484 21.9994224,4.29655569 C21.1759819,6.17114705 19.9085789,7.39680301 18.4990569,7.68035837 C17.6360149,7.85511429 17.0072006,7.72700622 16.0514158,7.17762486 C15.3812677,6.79242644 15.313652,6.78272766 14.6834716,6.96008236 L14.0359624,7.14205976 L14.3395948,7.85616636 C15.0110763,9.35045751 16.0588153,10.4485239 17.2496167,10.8704935 C17.8843184,11.0894851 19.0390067,10.7907015 19.7212955,10.2203846 C20.4682565,9.61432469 21.2999506,8.3569736 21.6840391,7.26525451 Z"/>
+    <filter id="freeplane_macos_bigsur__export-t" width="111.9%" height="113.3%" x="-6%" y="-6.7%" filterUnits="objectBoundingBox">
+      <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation=".5"/>
+      <feOffset in="shadowBlurInner1" result="shadowOffsetInner1"/>
+      <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+      <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0.733205782   0 0 0 0 0.733205782   0 0 0 0 0.733205782  0 0 0 0.295487998 0"/>
+    </filter>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <mask id="freeplane_macos_bigsur__export-f" fill="#fff">
+      <use xlink:href="#freeplane_macos_bigsur__export-a"/>
+    </mask>
+    <use fill="#000" filter="url(#freeplane_macos_bigsur__export-b)" xlink:href="#freeplane_macos_bigsur__export-a"/>
+    <use fill="#262626" xlink:href="#freeplane_macos_bigsur__export-a"/>
+    <use fill="#000" filter="url(#freeplane_macos_bigsur__export-c)" xlink:href="#freeplane_macos_bigsur__export-a"/>
+    <use stroke="url(#freeplane_macos_bigsur__export-d)" stroke-width=".688" xlink:href="#freeplane_macos_bigsur__export-a"/>
+    <g filter="url(#freeplane_macos_bigsur__export-e)" mask="url(#freeplane_macos_bigsur__export-f)">
+      <g transform="translate(4.063 4.844)">
+        <ellipse cx="11.953" cy="11.156" fill="url(#freeplane_macos_bigsur__export-g)" rx="8.391" ry="8.406"/>
+        <g filter="url(#freeplane_macos_bigsur__export-h)">
+          <use fill="#288BFF" xlink:href="#freeplane_macos_bigsur__export-i"/>
+          <use fill="#000" filter="url(#freeplane_macos_bigsur__export-j)" xlink:href="#freeplane_macos_bigsur__export-i"/>
+          <use fill="#FF9F00" xlink:href="#freeplane_macos_bigsur__export-k"/>
+          <use fill="#000" filter="url(#freeplane_macos_bigsur__export-l)" xlink:href="#freeplane_macos_bigsur__export-k"/>
+          <g transform="rotate(120 18.544 14.57)">
+            <use fill="#D529FF" xlink:href="#freeplane_macos_bigsur__export-m"/>
+            <use fill="#000" filter="url(#freeplane_macos_bigsur__export-n)" xlink:href="#freeplane_macos_bigsur__export-m"/>
+          </g>
+          <g transform="rotate(120 5.382 7.726)">
+            <use fill="#F9E700" xlink:href="#freeplane_macos_bigsur__export-o"/>
+            <use fill="#000" filter="url(#freeplane_macos_bigsur__export-p)" xlink:href="#freeplane_macos_bigsur__export-o"/>
+          </g>
+          <g transform="rotate(-120 5.696 15.111)">
+            <use fill="#3F9E00" xlink:href="#freeplane_macos_bigsur__export-q"/>
+            <use fill="#000" filter="url(#freeplane_macos_bigsur__export-r)" xlink:href="#freeplane_macos_bigsur__export-q"/>
+          </g>
+          <g transform="rotate(-120 18.23 7.185)">
+            <use fill="#FF2828" xlink:href="#freeplane_macos_bigsur__export-s"/>
+            <use fill="#000" filter="url(#freeplane_macos_bigsur__export-t)" xlink:href="#freeplane_macos_bigsur__export-s"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
