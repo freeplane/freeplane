@@ -1,0 +1,8 @@
+dependencies {
+    implementation project(':freeplane')
+    implementation project(':freeplane_plugin_jsyntaxpane')
+    lib 'io.github.gitbucket:markedj:1.0.16'
+}
+
+ext.bundleImports = 'de.sciss.syntaxpane*'
+
