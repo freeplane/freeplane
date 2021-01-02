@@ -12,10 +12,10 @@
  * See the License for the specific language governing permissions and 
  * limitations under the License.  
  */
-package jsyntaxpane.syntaxkits;
+package de.sciss.syntaxpane.syntaxkits;
 
-import jsyntaxpane.DefaultSyntaxKit;
-import jsyntaxpane.lexers.LaTeXLexer;
+import de.sciss.syntaxpane.DefaultSyntaxKit;
+import de.sciss.syntaxpane.lexers.LaTeXLexer;
 
 /**
  *

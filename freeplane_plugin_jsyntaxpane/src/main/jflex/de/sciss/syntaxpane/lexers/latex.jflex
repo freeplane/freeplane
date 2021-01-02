@@ -17,11 +17,11 @@
  * limitations under the License.
  */
 
-package jsyntaxpane.lexers;
+package de.sciss.syntaxpane.lexers;
 
 
-import jsyntaxpane.Token;
-import jsyntaxpane.TokenType;
+import de.sciss.syntaxpane.Token;
+import de.sciss.syntaxpane.TokenType;
 
 %%
 

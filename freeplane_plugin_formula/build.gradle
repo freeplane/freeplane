@@ -4,4 +4,4 @@ dependencies {
     implementation project(':freeplane_plugin_jsyntaxpane')
 }
 
-ext.bundleImports = 'org.freeplane.plugin.script.*,jsyntaxpane.*'
+ext.bundleImports = 'org.freeplane.plugin.script.*,de.sciss.syntaxpane.*'

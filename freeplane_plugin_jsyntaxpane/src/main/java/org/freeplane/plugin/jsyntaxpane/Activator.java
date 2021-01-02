@@ -4,16 +4,16 @@ import java.awt.GraphicsEnvironment;
 import java.util.Hashtable;
 import java.util.stream.Stream;
 
-import jsyntaxpane.DefaultSyntaxKit;
-import jsyntaxpane.syntaxkits.GroovySyntaxKit;
-import jsyntaxpane.syntaxkits.JavaSyntaxKit;
-import jsyntaxpane.util.Configuration;
-
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+
+import de.sciss.syntaxpane.DefaultSyntaxKit;
+import de.sciss.syntaxpane.syntaxkits.GroovySyntaxKit;
+import de.sciss.syntaxpane.syntaxkits.JavaSyntaxKit;
+import de.sciss.syntaxpane.util.Configuration;
 
 public class Activator implements BundleActivator {
 	/*
@@ -41,9 +41,9 @@ public class Activator implements BundleActivator {
             Configuration javaSyntaxKitConfig = new JavaSyntaxKit().getConfig();
             Stream.of("Action.insert-date", "Action.insert-date.Function","Script.insert-date.URL")//
                 .forEach(javaSyntaxKitConfig::remove);
-            final String components = "jsyntaxpane.components.PairsMarker" //
-            		+ ", jsyntaxpane.components.LineNumbersRuler" //
-            		+ ", jsyntaxpane.components.TokenMarker" //
+            final String components = "de.sciss.syntaxpane.components.PairsMarker" //
+            		+ ", de.sciss.syntaxpane.components.LineNumbersRuler" //
+            		+ ", de.sciss.syntaxpane.components.TokenMarker" //
             		+ ", org.freeplane.plugin.jsyntaxpane.NodeIdHighLighter";
             	new GroovySyntaxKit().setProperty("Components", components);
         }

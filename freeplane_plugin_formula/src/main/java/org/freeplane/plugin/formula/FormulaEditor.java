@@ -45,9 +45,9 @@ import org.freeplane.plugin.script.FormulaUtils;
 import org.freeplane.view.swing.ui.mindmapmode.GlassPaneManager;
 import org.freeplane.view.swing.ui.mindmapmode.INodeSelector;
 
-import jsyntaxpane.SyntaxDocument;
-import jsyntaxpane.Token;
-import jsyntaxpane.TokenType;
+import de.sciss.syntaxpane.SyntaxDocument;
+import de.sciss.syntaxpane.Token;
+import de.sciss.syntaxpane.TokenType;
 
 /**
  * @author Dimitry Polivaev
