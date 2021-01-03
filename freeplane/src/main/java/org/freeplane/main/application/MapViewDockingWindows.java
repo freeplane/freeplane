@@ -212,7 +212,8 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		
 		final ComponentProperties windowAreaProperties = overwrittenProperties.getWindowAreaProperties();
 //		windowAreaProperties.setBackgroundColor(UIManager.getColor("Panel.background"));
-		windowAreaProperties.setBackgroundColor(new Color(47, 47, 47)); // SR: Fix the white strip in the window-tabs bar
+		Color darkModeBackgroundColor = new Color(47, 47, 47);
+		windowAreaProperties.setBackgroundColor(darkModeBackgroundColor); // SR: Fix the white strip in the window-tabs bar
 		windowAreaProperties.setInsets(null);
 		windowAreaProperties.setBorder(null);
 
@@ -220,9 +221,10 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		tabbedPanelProperties.setTabLayoutPolicy(TabLayoutPolicy.COMPRESSION);
 		tabbedPanelProperties.setTabDropDownListVisiblePolicy(TabDropDownListVisiblePolicy.MORE_THAN_ONE_TAB);
 		tabbedPanelProperties.setShadowEnabled(false);
-		
+
 		TabAreaComponentsProperties tabAreaComponentsProperties = tabbedPanelProperties.getTabAreaComponentsProperties();
-		tabAreaComponentsProperties.getComponentProperties().setBackgroundColor(Color.red); // SET TAB BUTTON BACKGROUND COLOR
+		tabAreaComponentsProperties.getComponentProperties().setBackgroundColor(darkModeBackgroundColor); // SR: Set docking-window tab-button’s background to match dark-mode background.
+		tabAreaComponentsProperties.getComponentProperties().setForegroundColor(Color.white); // SR: Set docking-window tab-buttons’ foreground color to a light color.
 
 		final ComponentProperties contentPaneComponentProperties = tabbedPanelProperties.getContentPanelProperties().getComponentProperties();
 		contentPaneComponentProperties.setInsets(null);
