@@ -175,6 +175,9 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			FrameController.setLookAndFeel(lookandfeel, supportHidpi);
 			final JFrame frame;
 			frame = new JFrame("Freeplane");
+//			frame.getRootPane().putClientProperty("Aqua.windowStyle", "unifiedToolBar");
+//			frame.getRootPane().putClientProperty("Aqua.windowStyle", "texturedToolBar");
+//			frame.getRootPane().putClientProperty("Aqua.windowStyle", "combinedToolBar");
 			frame.setContentPane(new JPanel(){
 
 				@Override
