@@ -29,7 +29,6 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 	private static final String MARKDOWN_EDITOR_FONT_SIZE = "markdown_editor_font_size";
 	private static final String MARKDOWN_EDITOR_FONT = "markdown_editor_font";
 	private static final String MARKDOWN_EDITOR_DISABLE = "markdown_disable_editor";
-	private static final String MARKDOWN = "\\markdown";
 
 
 	public MarkdownRenderer() {
@@ -51,18 +50,6 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
         return html;
 	}
 
-	private static boolean checkForMarkdownPrefix(final String nodeText, final String prefix)
-	{
-		int startLength = prefix.length() + 1;
-		return nodeText.length() > startLength && nodeText.startsWith(prefix) &&
-			 Character.isWhitespace(nodeText.charAt(startLength - 1));
-	}
-
-	private boolean containsMarkdown(final String nodeText, final String nodeFormat)
-	{
-		return checkForMarkdownPrefix(nodeText, MARKDOWN) || MarkdownFormat.MARKDOWN_FORMAT.equals(nodeFormat);
-	}
-
 	@Override
 	public EditNodeBase createEditor(NodeModel node,
 			IEditControl editControl, String text, boolean editLong) {
@@ -75,8 +62,7 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 		// this option has been added to work around bugs in JSyntaxPane with Chinese characters
 		if (ResourceController.getResourceController().getBooleanProperty(MARKDOWN_EDITOR_DISABLE))
 			return null;
-
-		if(containsMarkdown(text, nodeFormat)){
+        if(MarkdownFormat.MARKDOWN_FORMAT.equals(nodeFormat)){
 			JEditorPane textEditor = new JEditorPane();
 			textEditor.setBackground(Color.WHITE);
 			textEditor.setForeground(Color.BLACK);
