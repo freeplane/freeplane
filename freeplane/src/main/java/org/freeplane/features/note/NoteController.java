@@ -91,11 +91,6 @@ public class NoteController implements IExtension {
 		return extension != null ? extension.getHtml() : null;
 	}
 
-	public final String getXmlNoteText(final NodeModel node) {
-		final NoteModel extension = node.getExtension(NoteModel.class);
-		return extension != null ? extension.getXml() : null;
-	}
-
 	/**
 	 * @param data.node
 	 */
