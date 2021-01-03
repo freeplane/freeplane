@@ -147,11 +147,11 @@ public class UrlManager implements IExtension {
 	@SuppressWarnings("serial")
     public JFileChooser getFileChooser(final FileFilter filter) {
 	    return AccessController.doPrivileged((PrivilegedAction<JFileChooser>)() -> {
-	        final JFileChooser chooser = new JFileChooserWithSystemFileIcons(){
+	        final JFileChooser chooser = new JFileChooser(){
 	            @Override
 	            protected JDialog createDialog(Component parent) throws HeadlessException {
 	                final JDialog dialog = super.createDialog(parent);
-	                final JComponent selector = createDirectorySelector(this);
+	                //final JComponent selector = createDirectorySelector(this);
 
 	                //Close dialog when escape is pressed
 	                InputMap in = dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -166,7 +166,7 @@ public class UrlManager implements IExtension {
 	                    }
 	                });
 
-	                //SR: Remove the “3-locations” selector as it messes up VAqua layout of FileChooser.
+	                // SR: Remove the “3-locations” selector as it messes up VAqua layout of FileChooser.
 	                //if(selector != null){
 	                //    dialog.getContentPane().add(selector, BorderLayout.NORTH);
 	                //    dialog.pack();
