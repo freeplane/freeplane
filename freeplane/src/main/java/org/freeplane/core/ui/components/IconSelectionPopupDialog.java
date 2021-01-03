@@ -174,7 +174,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		for (int i = 0; i < currentIconCount; ++i) {
 			final IconDescription icon = icons.get(i);
 			iconPanel.add(currentIconLabels[i] = new JLabel(icon.getIcon()));
-			currentIconLabels[i].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+//			currentIconLabels[i].setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED)); // SR Remove borders around icons
 			currentIconLabels[i].addMouseListener(this);
 		}
 		final int perIconSize = 27;
