@@ -23,9 +23,12 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.io.File;
 import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.logging.internal.LoggingOutputStream;
 
 /**
  * Utilities for logging to the standard logfile.
@@ -99,5 +102,16 @@ public class LogUtils {
 
 	public static Logger getLogger() {
 	    return LOGGER;
+    }
+
+    public static boolean isLikelyToStartErrorLog(LogRecord record) {
+        return record.getLevel() == Level.SEVERE
+                && (! LoggingOutputStream.STREAM_LOGGER_NAME.equals(record.getLoggerName())
+                        || matchesExceptionMessage(record.getMessage()));
+    }
+
+    private static final Pattern EXCEPTION_START = Pattern.compile("[\\w.]+?(?:Exception|Error)(?::.*)?");
+    static boolean matchesExceptionMessage(String message) {
+        return EXCEPTION_START.matcher(message).matches();
     }
 }
