@@ -76,6 +76,7 @@ import net.infonode.docking.properties.RootWindowProperties;
 import net.infonode.docking.theme.BlueHighlightDockingTheme;
 import net.infonode.docking.util.DockingUtil;
 import net.infonode.properties.gui.util.ComponentProperties;
+import net.infonode.tabbedpanel.TabAreaComponentsProperties;
 import net.infonode.tabbedpanel.TabAreaProperties;
 import net.infonode.tabbedpanel.TabAreaVisiblePolicy;
 import net.infonode.tabbedpanel.TabDropDownListVisiblePolicy;
@@ -204,11 +205,11 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 
 		RootWindowProperties rootWindowProperties = rootWindow.getRootWindowProperties();
 		rootWindowProperties.addSuperObject(new BlueHighlightDockingTheme().getRootWindowProperties());
-
+		
 		RootWindowProperties overwrittenProperties = new RootWindowProperties();
 
 		overwrittenProperties.getFloatingWindowProperties().setUseFrame(true);
-
+		
 		final ComponentProperties windowAreaProperties = overwrittenProperties.getWindowAreaProperties();
 //		windowAreaProperties.setBackgroundColor(UIManager.getColor("Panel.background"));
 		windowAreaProperties.setBackgroundColor(new Color(47, 47, 47)); // SR: Fix the white strip in the window-tabs bar
@@ -219,6 +220,9 @@ class MapViewDockingWindows implements IMapViewChangeListener {
 		tabbedPanelProperties.setTabLayoutPolicy(TabLayoutPolicy.COMPRESSION);
 		tabbedPanelProperties.setTabDropDownListVisiblePolicy(TabDropDownListVisiblePolicy.MORE_THAN_ONE_TAB);
 		tabbedPanelProperties.setShadowEnabled(false);
+		
+		TabAreaComponentsProperties tabAreaComponentsProperties = tabbedPanelProperties.getTabAreaComponentsProperties();
+		tabAreaComponentsProperties.getComponentProperties().setBackgroundColor(Color.red); // SET TAB BUTTON BACKGROUND COLOR
 
 		final ComponentProperties contentPaneComponentProperties = tabbedPanelProperties.getContentPanelProperties().getComponentProperties();
 		contentPaneComponentProperties.setInsets(null);
