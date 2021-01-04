@@ -49,6 +49,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.event.DocumentEvent;
@@ -78,6 +80,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	final private int numOfIcons;
 	private int result;
 	private JLabel selected;
+    private Timer filterTimer;
 
 	public IconSelectionPopupDialog(final Frame frame, final List<? extends IconDescription> icons) {
 		super(frame, TextUtils.getText("select_icon"));
@@ -128,12 +131,13 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
         contentPane.add(scrollPane, BorderLayout.CENTER);
 		descriptionLabel = new JLabel(" ");
 		contentPane.add(descriptionLabel, BorderLayout.SOUTH);
-		JLabel firstIcon = iconLabels.get(0);
-        final JLabel label = firstIcon;
-        selected = label;
-		highlight(firstIcon);
+		selected = iconLabels.get(0);
+        highlightSelected();
 		addKeyListener(this);
 		pack();
+        filterTimer = new Timer(300, this::filterIcons);
+        filterTimer.setRepeats(false);
+
 	}
 	
 	   private JTextField setupFilterTextField_and_KeyListener() {
@@ -143,17 +147,17 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
                 
                 @Override
                 public void removeUpdate(DocumentEvent e) {
-                    filterIcons();
+                    filterIconsLater();
                 }
                 
                 @Override
                 public void insertUpdate(DocumentEvent e) {
-                    filterIcons();
+                    filterIconsLater();
                 }
                 
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    filterIcons();
+                    filterIconsLater();
                 }
             });
 	        filterTextField.addKeyListener(new KeyListener() {
@@ -215,7 +219,11 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	        return filterTextField;
 	    }
 
-	    private void filterIcons() {
+	    private void filterIconsLater() {
+	        filterTimer.restart();
+	    }
+	    
+	    private void filterIcons(ActionEvent e) {
 	        String filterText = filterTextField.getText().toLowerCase();
 	        Pattern regex = null;
 
@@ -255,12 +263,20 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	                component.setVisible(true);
 	            }
 	        }
-	        if(selected == null && ! selected.isVisible()) {
-	            select(new Point(0, 0));
-	            if(selected != null)
-	                selected.scrollRectToVisible(new Rectangle());
-	        }
+	        SwingUtilities.invokeLater(this::adjustSelection);
 	    }
+
+        private void adjustSelection() {
+            if(! iconPanel.isValid()) {
+                SwingUtilities.invokeLater(this::adjustSelection);
+                return;
+            }
+            if(selected == null || ! selected.isVisible()) {
+                select(new Point(0, 0));
+            }
+            else
+                scrollToSelected();
+        }
 
         private String[] getTags(JLabel label) {
             IconDescription iconDescription = (IconDescription) label.getClientProperty(IconDescription.class);
@@ -382,8 +398,14 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
         return iconLabels.get(findIndex(location));
     }
 
-    private void highlight(JLabel label) {
-        label.setBorder(HIGHLIGHTED);
+    private void highlightSelected() {
+        selected.setBorder(HIGHLIGHTED);
+        scrollToSelected();
+    }
+
+    private void scrollToSelected() {
+        if(selected != null)
+            selected.scrollRectToVisible(new Rectangle(0, 0, selected.getWidth(), selected.getHeight()));
     }
 
 	/*
@@ -488,12 +510,12 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	}
 
 	private void select(final int index) {
-	    unhighlight(this.selected);
+	    unhighlightSelected();
 	    final String message;
 	    if(index >= 0) {
 	        JLabel newSelected = iconLabels.get(index);
 	        this.selected = newSelected;
-	        highlight(newSelected);
+	        highlightSelected();
 	        final IconDescription iconInformation = icons.get(index);
 	        final String keyStroke = ResourceController.getResourceController().getProperty(iconInformation.getShortcutKey());
 	        if (keyStroke != null) {
@@ -509,7 +531,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	    }
 	    descriptionLabel.setText(message);
 	}
-	private void unhighlight(final JLabel label) {
-	    label.setBorder(USUAL);
+	private void unhighlightSelected() {
+	    selected.setBorder(USUAL);
 	}
 }
