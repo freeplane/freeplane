@@ -58,7 +58,12 @@ class RemoveIconAction extends AMultipleNodeAction implements IconDescription {
 		return (String) getValue(Action.NAME);
 	}
 
-	public Icon getIcon() {
+    @Override
+    public String getFile() {
+        return "";
+    }
+
+    public Icon getIcon() {
 		return (Icon) getValue(Action.SMALL_ICON);
 	}
 

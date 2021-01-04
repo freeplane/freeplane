@@ -224,31 +224,30 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	                regex = Pattern.compile(filterText.substring(1).trim());
 	            }
 
-	            for (JLabel label :iconLabels) {
-                    IconDescription iconDesctiprion = (IconDescription) label.getClientProperty(IconDescription.class);
-                    String iconLabel = iconDesctiprion.getTranslatedDescription();;
-	                if (iconLabel.startsWith("icon_")) {
-	                    iconLabel = iconLabel.substring(5);
-	                }
+	            for (JLabel label : iconLabels) {
 	                boolean matches = false;
-	                if (filterText.startsWith("/")) {
-	                    matches = regex.matcher(iconLabel).matches();
-	                } else {
-	                    if (filterText.contains(" ")) {
-	                        matches = true;
-	                        StringTokenizer tokenizer = new StringTokenizer(filterText);
-	                        while (tokenizer.hasMoreTokens()) {
-	                            String token = tokenizer.nextToken();
-	                            matches = matches && iconLabel.toLowerCase().contains(token);
-	                            if (!matches) {
-	                                break;
-	                            }
-	                        }
-	                    } else {
-	                        matches = iconLabel.toLowerCase().contains(filterText);
-	                    }
-	                }
-	                label.setVisible(matches);
+                    for (String tag : getTags(label)) {
+                        if (filterText.startsWith("/")) {
+                            matches = regex.matcher(tag).matches();
+                        } else {
+                            if (filterText.contains(" ")) {
+                                matches = true;
+                                StringTokenizer tokenizer = new StringTokenizer(filterText);
+                                while (tokenizer.hasMoreTokens()) {
+                                    String token = tokenizer.nextToken();
+                                    matches = matches && tag.contains(token);
+                                    if (!matches) {
+                                        break;
+                                    }
+                                }
+                            } else {
+                                matches = tag.contains(filterText);
+                            }
+                            if(matches)
+                                break;
+                        }
+                    }
+                    label.setVisible(matches);
 	            }
 	        }
 	        else {
@@ -262,6 +261,15 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	                selected.scrollRectToVisible(new Rectangle());
 	        }
 	    }
+
+        private String[] getTags(JLabel label) {
+            IconDescription iconDescription = (IconDescription) label.getClientProperty(IconDescription.class);
+            String iconLabel = iconDescription.getTranslatedDescription();
+            if (iconLabel.startsWith("icon_")) {
+                iconLabel = iconLabel.substring(5);
+            }
+            return new String[] {iconLabel.toLowerCase(), iconDescription.getFile().toLowerCase()};
+        }
 
 	private void addIcon(final int pModifiers) {
 		result =  iconLabels.indexOf(selected);

@@ -62,8 +62,14 @@ public class IconAction extends AMultipleNodeAction implements IconDescription {
         return getDescriptionTranslationKey();
     }
 
+    @Override
     public String getTranslatedDescription() {
         return mindIcon.getTranslatedDescription();
+    }
+
+    @Override
+    public String getFile() {
+        return mindIcon.getFile();
     }
 
     public Icon getIcon() {

@@ -25,6 +25,8 @@ public interface IconDescription {
 	String getDescriptionTranslationKey();
 	
 	String getTranslatedDescription();
+	
+	String getFile();
 
 	Icon getIcon();
 	
