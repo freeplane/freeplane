@@ -31,8 +31,9 @@ import org.freeplane.core.util.logging.LogHandlers;
  * An OutputStream that writes contents to a Logger upon each call to flush()
  * See http://blogs.sun.com/nickstephen/entry/java_redirecting_system_out_and
  */
-class LoggingOutputStream extends ByteArrayOutputStream {
-	final private Level level;
+public class LoggingOutputStream extends ByteArrayOutputStream {
+    public static final String STREAM_LOGGER_NAME = LoggingOutputStream.class.getName();
+    final private Level level;
 	final private String lineSeparator;
 	private int availableSpace;
 	private final PrintStream out;
@@ -45,7 +46,7 @@ class LoggingOutputStream extends ByteArrayOutputStream {
 	 * @param mFileHandler
 	 *            Level at which to write the log message
 	 */
-	public LoggingOutputStream(Level level, final PrintStream out, int maximumLogSize) {
+	LoggingOutputStream(Level level, final PrintStream out, int maximumLogSize) {
 		super();
 		this.out = out;
 		this.level = level;
@@ -74,6 +75,7 @@ class LoggingOutputStream extends ByteArrayOutputStream {
 		}
 		final Collection<Handler> handlers = LogHandlers.getHandlers();
 		final LogRecord logRecord = new LogRecord(level, record);
+		logRecord.setLoggerName(STREAM_LOGGER_NAME);
 		for(Handler handler : handlers) {
 				handler.publish(logRecord);
 		}
