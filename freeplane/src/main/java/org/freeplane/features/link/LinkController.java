@@ -914,7 +914,7 @@ public class LinkController extends SelectionController implements IExtension {
 	            if(linkType != null && linkType.decoratedIcon != null) 
 	                iconImages.addLinkIcon(linkType.decoratedIcon, model);
 	            for(String iconName : iconsForLink) {
-	                Icon icon = ResourceController.getResourceController().getIcon("/images/linkicons/" + iconName + ".svg");
+	                Icon icon = ResourceController.getResourceController().getIcon("/images/icons/" + iconName + ".svg");
 	                iconImages.addLinkIcon(icon, model);
 	            }
 	        }

@@ -54,6 +54,12 @@ class RemoveAllIconsAction extends AMultipleNodeAction implements IconDescriptio
 	public String getTranslatedDescription() {
 		return (String) getValue(Action.NAME);
 	}
+	
+    @Override
+    public String getFile() {
+        return "";
+    }
+
 
 	public Icon getIcon() {
 		return (Icon) getValue(Action.SMALL_ICON);

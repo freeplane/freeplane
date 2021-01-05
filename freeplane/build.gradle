@@ -1,3 +1,5 @@
+import groovy.io.FileType
+
 configurations{
 	mergedViewerDependencies
 	api.extendsFrom mergedViewerDependencies
@@ -188,6 +190,31 @@ ext.bundleExports = """\
                     """
 ext.bundleActivator = 'org.freeplane.main.osgi.Activator'
 
+task generateIconGroupProperties {
+    def inputDir = file('src/viewer/resources/images/icons')
+	def groups = [];
+	def props = new Properties();
+	def relPath = {file -> inputDir.toURI().relativize(file.toURI())}
+	def collect
+	collect = { File file -> 
+		   	   def group = relPath(file).toString()
+		   	   if(! group.empty) {
+		   	       group = group[0..-2]
+			   	   def icons = []	
+				   file.eachFile(FileType.FILES) { f -> icons << relPath(f).toString()[0..-5]}
+			   	   groups << group
+				   props.put("icons.group.$group".toString(), icons.join(';'))
+			   }
+			   file.eachFile(FileType.DIRECTORIES) { f -> collect(f)}
+	}
+
+    doLast {
+		collect(inputDir)
+		props.put('icons.groups', groups.join(';'))
+        props.store(System.out, null)
+    }
+}
+
 task copyOSGiJars(type: Copy) {
         from ("$buildDir/libs") {
           include("*.jar")
@@ -278,7 +305,7 @@ task viewerJar(type: Jar) {
         exclude (editorJar.includedClasses)
         exclude (osgiJar.includedClasses )
     }
-    from (sourceSets.viewer.resources)
+    from (sourceSets.viewer.output)
     from (sourceSets.emojiList.output)
     
     
@@ -302,7 +329,7 @@ encoding//viewer-resources/translations=ISO-8859-1
 apply from: './git.gradle'
 
 task copyExternalResources(type: Copy) {
-    from(sourceSets.external.resources) {
+    from(sourceSets.external.output) {
         include('**')
     }
     into(globalBin + '/resources')

@@ -33,6 +33,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.menubuilders.XmlEntryStructureBuilder;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -167,7 +168,7 @@ public class IconStoreFactory {
         if (groupIcon == null) {
             groupIcon = icons.size() > 0 ? icons.get(0) : new IconNotFound("?");
         }
-        final String description = TextUtils.getText(String.format(GROUP_DESC_KEY, groupName));
+        final String description = TextUtils.getText(String.format(GROUP_DESC_KEY, groupName), StringUtils.capitalize(groupName));
 		IconGroup iconGroup = new IconGroup(groupName, groupIcon, description);
 		iconGroup.addIcons(icons);
         return iconGroup;

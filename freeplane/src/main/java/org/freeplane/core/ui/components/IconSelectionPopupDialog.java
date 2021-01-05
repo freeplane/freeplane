@@ -21,9 +21,13 @@
 package org.freeplane.core.ui.components;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -32,18 +36,25 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
-import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.TextUtils;
@@ -52,22 +63,29 @@ import org.freeplane.features.icon.factory.IconFactory;
 
 public class IconSelectionPopupDialog extends JDialog implements KeyListener, MouseListener {
 
-	/**
+	private static final BevelBorder USUAL = new BevelBorder(BevelBorder.RAISED);
+    private static final BevelBorder HIGHLIGHTED =  new BevelBorder(BevelBorder.LOWERED, Color.CYAN,
+            Color.CYAN);
+    /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static String lastSearchText = "";
 	final private JLabel descriptionLabel;
 	final private List<JLabel> iconLabels;
 	final private JPanel iconPanel = new JPanel();
 	final private List<? extends IconDescription> icons;
+	private final JTextField filterTextField;
 	private int mModifiers;
 	final private int numOfIcons;
 	private int result;
 	private JLabel selected;
+    private Timer filterTimer;
 
 	public IconSelectionPopupDialog(final Frame frame, final List<? extends IconDescription> icons) {
 		super(frame, TextUtils.getText("select_icon"));
-		getContentPane().setLayout(new BorderLayout());
+		Container contentPane = getContentPane();
+        contentPane.setLayout(new BorderLayout());
 		this.icons = icons;
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -87,25 +105,187 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		for (int i = 0; i < numOfIcons; ++i) {
 			final IconDescription icon = icons.get(i);
 			JLabel label = new JLabel(icon.getActionIcon());
+			label.putClientProperty(IconDescription.class, icon);
 			iconLabels.add(label);
             iconPanel.add(label);
-            label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+            label.setBorder(USUAL);
             label.addMouseListener(this);
 		}
 		Dimension preferredSize = iconPanel.getPreferredSize();
 		JScrollPane scrollPane = new JScrollPane(iconPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, 
 		        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setPreferredSize(new Dimension(preferredSize.width, preferredSize.width / 2));
-        getContentPane().add(scrollPane, BorderLayout.CENTER);
+		filterTextField = setupFilterTextField_and_KeyListener();
+		addWindowFocusListener(new WindowFocusListener() {
+            @Override
+            public void windowLostFocus(WindowEvent e) {
+            }
+            
+            @Override
+            public void windowGainedFocus(WindowEvent e) {
+                filterTextField.requestFocusInWindow();
+                removeWindowFocusListener(this);
+            }
+        });
+        contentPane.add(filterTextField, BorderLayout.NORTH);
+        contentPane.add(scrollPane, BorderLayout.CENTER);
 		descriptionLabel = new JLabel(" ");
-		getContentPane().add(descriptionLabel, BorderLayout.SOUTH);
-		JLabel firstIcon = iconLabels.get(0);
-        final JLabel label = firstIcon;
-        selected = label;
-		highlight(firstIcon);
+		contentPane.add(descriptionLabel, BorderLayout.SOUTH);
+		selected = iconLabels.get(0);
+        highlightSelected();
 		addKeyListener(this);
 		pack();
+        filterTimer = new Timer(300, this::filterIcons);
+        filterTimer.setRepeats(false);
+
 	}
+	
+	   private JTextField setupFilterTextField_and_KeyListener() {
+	        JTextField filterTextField = new JTextField();
+	        filterTextField.setText(lastSearchText);
+	        filterTextField.getDocument().addDocumentListener(new DocumentListener() {
+                
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    filterIconsLater();
+                }
+                
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    filterIconsLater();
+                }
+                
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    filterIconsLater();
+                }
+            });
+	        filterTextField.addKeyListener(new KeyListener() {
+	            public void keyPressed(KeyEvent keyEvent) {
+	                String filterText = filterTextField.getText();
+	                if (filterText.length() == 0) {
+	                    if (keyEvent.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+	                        IconSelectionPopupDialog.this.keyPressed(keyEvent);
+	                    }
+	                }
+	            }
+
+	            public void keyReleased(KeyEvent keyEvent) {
+	                boolean passCharOnToDialog = false;
+	                String filterText = filterTextField.getText();
+	                lastSearchText = filterText;
+	                if (!filterText.startsWith("/")) {
+	                    filterTextField.setCaretPosition(filterText.length());
+	                }
+	                if (filterText.startsWith(".") && filterText.length() == 2) {
+	                    filterTextField.setText("");
+	                    passCharOnToDialog = true;
+	                } else {
+	                    char keyChar = keyEvent.getKeyChar();
+	                    switch (keyChar) {
+	                    case KeyEvent.VK_ESCAPE:
+	                        if (filterText.length() > 0) {
+	                            // Consume the Esc here, clear the filterTextField.
+	                            filterTextField.setText("");
+	                            keyEvent.consume();
+	                            break;
+	                        }
+	                        // else fall through to IconSelectionPopupDialog.this.keyPressed(keyEvent) below
+	                    case KeyEvent.VK_LEFT:
+	                    case KeyEvent.VK_RIGHT:
+	                    case KeyEvent.VK_UP:
+	                    case KeyEvent.VK_DOWN:
+	                    case KeyEvent.VK_ENTER:
+	                    case KeyEvent.CHAR_UNDEFINED:
+	                        passCharOnToDialog = true;
+	                        break;
+	                    }
+	                }
+	                if (passCharOnToDialog) {
+	                    // Pass on to this dialog's keyPressed(...) method.
+	                    IconSelectionPopupDialog.this.keyPressed(keyEvent);
+	                    return;
+	                } else {
+	                    if (!filterText.startsWith(".")) {
+	                        iconPanel.revalidate();
+	                        iconPanel.repaint();
+	                    }
+	                }
+	            }
+
+	            public void keyTyped(KeyEvent keyEvent) {
+	            }
+	        });
+	        return filterTextField;
+	    }
+
+	    private void filterIconsLater() {
+	        filterTimer.restart();
+	    }
+	    
+	    private void filterIcons(ActionEvent e) {
+	        String filterText = filterTextField.getText().toLowerCase();
+	        Pattern regex = null;
+
+	        if (filterText.trim().length() > 0) {
+	            if (filterText.startsWith("/") && filterText.trim().length() >= 2) {
+	                regex = Pattern.compile(filterText.substring(1).trim());
+	            }
+
+	            for (JLabel label : iconLabels) {
+	                boolean matches = false;
+                    for (String tag : getTags(label)) {
+                        if (filterText.startsWith("/")) {
+                            matches = regex.matcher(tag).matches();
+                        } else {
+                            if (filterText.contains(" ")) {
+                                matches = true;
+                                StringTokenizer tokenizer = new StringTokenizer(filterText);
+                                while (tokenizer.hasMoreTokens()) {
+                                    String token = tokenizer.nextToken();
+                                    matches = matches && tag.contains(token);
+                                    if (!matches) {
+                                        break;
+                                    }
+                                }
+                            } else {
+                                matches = tag.contains(filterText);
+                            }
+                            if(matches)
+                                break;
+                        }
+                    }
+                    label.setVisible(matches);
+	            }
+	        }
+	        else {
+	            for (Component component : iconPanel.getComponents()) {
+	                component.setVisible(true);
+	            }
+	        }
+	        SwingUtilities.invokeLater(this::adjustSelection);
+	    }
+
+        private void adjustSelection() {
+            if(! iconPanel.isValid()) {
+                SwingUtilities.invokeLater(this::adjustSelection);
+                return;
+            }
+            if(selected == null || ! selected.isVisible()) {
+                select(new Point(0, 0));
+            }
+            else
+                scrollToSelected();
+        }
+
+        private String[] getTags(JLabel label) {
+            IconDescription iconDescription = (IconDescription) label.getClientProperty(IconDescription.class);
+            String iconLabel = iconDescription.getTranslatedDescription();
+            if (iconLabel.startsWith("icon_")) {
+                iconLabel = iconLabel.substring(5);
+            }
+            return new String[] {iconLabel.toLowerCase(), iconDescription.getFile().toLowerCase()};
+        }
 
 	private void addIcon(final int pModifiers) {
 		result =  iconLabels.indexOf(selected);
@@ -129,6 +309,8 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	}
 
 	private void cursorDown() {
+	    if(selected == null)
+	        return;
 		final Point newPosition = new Point(selected.getX(), selected.getY() + selected.getWidth() + 1);
 		int newIndex = findIndex(newPosition);
 		if (newIndex >= 0) {
@@ -137,18 +319,28 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	}
 
 	private void cursorLeft() {
-	    int selectedIndex = iconLabels.indexOf(selected) - 1;
-	    if(selectedIndex >= 0)
-	        select(selectedIndex);
+        if(selected == null)
+            return;
+        final Point newPosition = new Point(selected.getX() - 1, selected.getY());
+        int newIndex = findIndex(newPosition);
+        if (newIndex >= 0) {
+            select(newIndex);
+        }
 	}
 
 	private void cursorRight() {
-        int selectedIndex = iconLabels.indexOf(selected) + 1;
-        if(selectedIndex < iconLabels.size())
-            select(selectedIndex);
+        if(selected == null)
+            return;
+        final Point newPosition = new Point(selected.getX() + selected.getHeight() + 1, selected.getY());
+        int newIndex = findIndex(newPosition);
+        if (newIndex >= 0) {
+            select(newIndex);
+        }
 	}
 
 	private void cursorUp() {
+        if(selected == null)
+            return;
         final Point newPosition = new Point(selected.getX(), selected.getY() - 1);
         int newIndex = findIndex(newPosition);
         if (newIndex >= 0) {
@@ -206,8 +398,14 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
         return iconLabels.get(findIndex(location));
     }
 
-    private void highlight(JLabel label) {
-        label.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+    private void highlightSelected() {
+        selected.setBorder(HIGHLIGHTED);
+        scrollToSelected();
+    }
+
+    private void scrollToSelected() {
+        if(selected != null)
+            selected.scrollRectToVisible(new Rectangle(0, 0, selected.getWidth(), selected.getHeight()));
     }
 
 	/*
@@ -308,25 +506,32 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 
 	private void select(final Point location) {
 	    int index = findIndex(location);
-		select(index);
+	    select(index);
 	}
 
-    private void select(final int index) {
-        unhighlight(this.selected);
-        JLabel newSelected = iconLabels.get(index);
-        this.selected = newSelected;
-		highlight(newSelected);
-		final IconDescription iconInformation = icons.get(index);
-		final String keyStroke = ResourceController.getResourceController().getProperty(iconInformation.getShortcutKey());
-		if (keyStroke != null) {
-			descriptionLabel.setText(iconInformation.getTranslatedDescription() + ", " + keyStroke);
-		}
-		else {
-			descriptionLabel.setText(iconInformation.getTranslatedDescription());
-		}
-    }
-
-	private void unhighlight(final JLabel label) {
-	    label.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+	private void select(final int index) {
+	    unhighlightSelected();
+	    final String message;
+	    if(index >= 0) {
+	        JLabel newSelected = iconLabels.get(index);
+	        this.selected = newSelected;
+	        highlightSelected();
+	        final IconDescription iconInformation = icons.get(index);
+	        final String keyStroke = ResourceController.getResourceController().getProperty(iconInformation.getShortcutKey());
+	        if (keyStroke != null) {
+	            message = iconInformation.getTranslatedDescription() + ", " + keyStroke;
+	        }
+	        else {
+	            message = iconInformation.getTranslatedDescription();
+	        }
+	    }
+	    else {
+	        this.selected = null;
+	        message = "";
+	    }
+	    descriptionLabel.setText(message);
+	}
+	private void unhighlightSelected() {
+	    selected.setBorder(USUAL);
 	}
 }

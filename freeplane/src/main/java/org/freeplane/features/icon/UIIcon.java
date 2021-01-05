@@ -23,6 +23,7 @@ import java.net.URL;
 
 import javax.swing.Icon;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
@@ -82,7 +83,7 @@ public class UIIcon implements IconDescription, NamedIcon {
 
 	@Override
 	public String getTranslatedDescription() {
-		return TextUtils.getText(descriptionTranslationKey, "");
+		return TextUtils.getText(descriptionTranslationKey, StringUtils.capitalize(name));
 	}
 
 	@Override
