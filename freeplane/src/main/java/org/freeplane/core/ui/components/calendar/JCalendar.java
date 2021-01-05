@@ -13,6 +13,7 @@
  */
 package org.freeplane.core.ui.components.calendar;
 
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -49,10 +50,13 @@ public class JCalendar extends JPanel implements PropertyChangeListener, MouseLi
 		@Override
 		public void menuSelectionChanged(boolean isIncluded) {
 			if (!isIncluded) {
-				final Object source = EventQueue.getCurrentEvent().getSource();
-				if (source instanceof Component) {
-					final Component c = (Component) source;
-					isIncluded = SwingUtilities.isDescendingFrom(c, this);
+				AWTEvent currentEvent = EventQueue.getCurrentEvent();
+				if(currentEvent != null) {
+				    final Object source = currentEvent.getSource();
+				    if (source instanceof Component) {
+				        final Component c = (Component) source;
+				        isIncluded = SwingUtilities.isDescendingFrom(c, this);
+				    }
 				}
 			}
 			super.menuSelectionChanged(isIncluded);
