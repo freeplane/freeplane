@@ -88,13 +88,13 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.time.TimeComboBoxEditor;
-import org.violetlib.aqua.AquaLookAndFeel;
 
 /**
  * @author Dimitry Polivaev
  */
 abstract public class FrameController implements ViewController {
-	private static final String DARCULA_LAF_NAME = "com.bulenkov.darcula.DarculaLaf";
+	private static final String AQUA_LAF_NAME = "org.violetlib.aqua.AquaLookAndFeel.AquaLookAndFeel";
+    private static final String DARCULA_LAF_NAME = "com.bulenkov.darcula.DarculaLaf";
 	private static final double DEFAULT_SCALING_FACTOR = 0.8;
 
 	private final class HorizontalToolbarPanel extends JPanel {
@@ -535,10 +535,16 @@ abstract public class FrameController implements ViewController {
 	public static void setLookAndFeel(final String lookAndFeel, boolean supportHidpi) {
 		try {
 			if (lookAndFeel.equals("default")) {
+			    boolean lookAndFeelSet = false;
 			    if (Compat.isMacOsX()) {
-			        UIManager.setLookAndFeel(new AquaLookAndFeel());
+			        try {
+                        Class<?> lookAndFeelClass = FrameController.class.getClassLoader().loadClass(AQUA_LAF_NAME);
+                        UIManager.setLookAndFeel((LookAndFeel) lookAndFeelClass.getDeclaredConstructor().newInstance());
+                        lookAndFeelSet = true;
+                    } catch (Exception e) {
+                    }
 			    }
-			    else {
+			    if(! lookAndFeelSet) {
 			        String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
 			        fixDarculaNPE(lookAndFeelClassName);
 			        UIManager.setLookAndFeel(lookAndFeelClassName);
