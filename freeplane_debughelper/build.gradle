@@ -21,6 +21,10 @@ dependencies {
 	runtimeOnly project(':freeplane').sourceSets.emojiList.output.dirs
 }
 
+java {
+	disableAutoTargetJvm()
+} 
+
 task(run, dependsOn: 'classes', type: JavaExec) {
     main ='org.freeplane.launcher.Launcher'
     classpath = sourceSets.main.runtimeClasspath

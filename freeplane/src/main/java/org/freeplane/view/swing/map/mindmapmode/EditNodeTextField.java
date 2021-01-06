@@ -819,4 +819,9 @@ public class EditNodeTextField extends EditNodeBase {
 	private void preserveRootNodeLocationOnScreen() {
 	    nodeView.getMap().preserveRootNodeLocationOnScreen();
 	}
+	
+    @Override
+    protected boolean editorBlocks() {
+        return true;
+    }
 }

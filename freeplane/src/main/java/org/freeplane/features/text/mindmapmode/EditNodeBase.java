@@ -332,4 +332,6 @@ abstract public class EditNodeBase {
 	    this.background = background;
 
     }
+
+    protected abstract boolean editorBlocks();
 }

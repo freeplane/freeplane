@@ -121,10 +121,15 @@ public interface ControllerRO {
      *   println c.exportTypeDescriptions.join('\n')
      *   boolean overwriteExistingFile = true
      *   c.export(node.map, new File('/tmp/t.png'), 'Portable Network Graphic (PNG) (.png)', overwriteExistingFile)
+     *   c.export(node.map, new File('/tmp/t.png'), 'PNG', overwriteExistingFile)
+     *   c.export(node.map, new File('/tmp/t.png'), '', overwriteExistingFile)
      * </pre>
      * @param exportTypeDescription Use {@link #getExportTypeDescriptions()} to look up available exportTypes.
      *   Note that the file format does not suffice to specify a specific export since there may be more than
-     *   one, as for HTML.
+     *   one, as for HTML. 
+     *   
+     *   You can use a substring or an empty string instead of full description, if exported destination file extension
+     *   matches filter desription.
      * @since 1.3.5 */
     void export(MindMap map, File destinationFile, String exportTypeDescription, boolean overwriteExisting);
 }
