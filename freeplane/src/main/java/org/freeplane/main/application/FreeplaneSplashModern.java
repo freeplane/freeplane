@@ -39,7 +39,6 @@ import javax.swing.JRootPane;
 import javax.swing.JWindow;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.mode.Controller;
 
@@ -110,8 +109,9 @@ public class FreeplaneSplashModern extends JWindow {
 			final float versionFontSize= 20;
 			g2.setFont(versionTextFont.deriveFont(versionFontSize));
 			int versionStringWidth = g2.getFontMetrics().stringWidth(versionString);
-			final int xCoordinate = splashImage.getIconWidth() - versionStringWidth - 20;
-			final int yCoordinate = 20;
+			int distanceToRightEdge = 48;
+			final int xCoordinate = splashImage.getIconWidth() - versionStringWidth - distanceToRightEdge;
+			final int yCoordinate = 28;
 			g2.drawString(versionString, xCoordinate, yCoordinate);
 		}
 
