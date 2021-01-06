@@ -64,7 +64,7 @@ class CopyMapStylesAction extends AFreeplaneAction {
 	        final URL url = Compat.fileToUrl(file);
 			final MapModel map = controller.getMap();
 			MapStyle mapStyleController = MapStyle.getController(modeController);
-			mapStyleController.copyStyle(url, map, true);
+			mapStyleController.replaceStyle(url, map);
         }
         catch (MalformedURLException e1) {
 	        e1.printStackTrace();

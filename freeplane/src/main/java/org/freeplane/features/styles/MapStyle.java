@@ -43,12 +43,10 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -379,7 +377,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				MapModel styleMapContainer = new MapModel();
 				loader.load(Compat.fileToUrl(file), styleMapContainer);
 				if (null != MapStyleModel.getExtension(styleMapContainer)){
-					moveStyle(styleMapContainer, map, false);
+				    new StyleExchange(styleMapContainer, map).moveStyle(false);
 					return;
 				}
 			}
@@ -391,28 +389,12 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		MapModel styleMapContainer = new MapModel();
 		try {
 			loader.load(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), styleMapContainer);
-			moveStyle(styleMapContainer, map, false);
+			new StyleExchange(styleMapContainer, map).moveStyle(false);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
     }
 
-
-	private void moveStyle(final MapModel sourceMap, final MapModel targetMap, boolean overwrite) {
-	    final MapStyleModel source = sourceMap.getRootNode().removeExtension(MapStyleModel.class);
-	    if(source == null)
-	    	return;
-		final IExtension undoHandler = targetMap.getExtension(IUndoHandler.class);
-		source.getStyleMap().putExtension(IUndoHandler.class, undoHandler);
-		final NodeModel targetRoot = targetMap.getRootNode();
-		final MapStyleModel target = MapStyleModel.getExtension(targetRoot);
-		if(target == null){
-			targetRoot.addExtension(source);
-		}
-		else{
-			target.copyFrom(source, overwrite);
-		}
-    }
 
 
 	@Override
@@ -420,39 +402,13 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	    return null;
     }
 
-	public void copyStyle(final URL source, final MapModel targetMap, boolean undoable) {
-	    final MapModel styleMapContainer = new MapModel();
-		final IExtension oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
-		final ModeController modeController = Controller.getCurrentModeController();
-		final UrlManager urlManager = modeController.getExtension(UrlManager.class);
-		if (! urlManager.loadCatchExceptions(source, styleMapContainer))
-			return;
-		onCreate(styleMapContainer);
-		moveStyle(styleMapContainer, targetMap, true);
-		modeController.getExtension(AutomaticLayoutController.class).moveExtension(modeController, styleMapContainer, targetMap);
-		modeController.getExtension(AutomaticEdgeColorHook.class).moveExtension(modeController, styleMapContainer, targetMap);
-		LogicalStyleController.getController().refreshMap(targetMap);
-		if(! undoable){
-			return;
-		}
-		final IExtension newStyleModel = targetMap.getRootNode().getExtension(MapStyleModel.class);
-		IActor actor = new IActor() {
-			@Override
-			public void undo() {
-				targetMap.getRootNode().putExtension(oldStyleModel);
-			}
-
-			@Override
-			public String getDescription() {
-				return "moveStyle";
-			}
-
-			@Override
-			public void act() {
-				targetMap.getRootNode().putExtension(newStyleModel);
-			}
-		};
-		Controller.getCurrentModeController().execute(actor, targetMap);
+	public void replaceStyle(final URL source, final MapModel targetMap) {
+        final ModeController modeController = Controller.getCurrentModeController();
+        final UrlManager urlManager = modeController.getExtension(UrlManager.class);
+        final MapModel styleMapContainer = new MapModel();
+        if (! urlManager.loadCatchExceptions(source, styleMapContainer))
+            return;
+	    new StyleExchange(styleMapContainer, targetMap).replaceMapStylesAndAutomaticStyle();
 	}
 
 	@Override
