@@ -56,8 +56,6 @@ import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.api.LengthUnit;
-import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
@@ -78,8 +76,8 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.FilterController;
-import org.freeplane.features.icon.IconController;
-import org.freeplane.features.icon.UIIcon;
+import org.freeplane.features.icon.IconRegistry;
+import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.icons.NodeViewDecorator;
@@ -101,7 +99,6 @@ import org.freeplane.features.url.UrlManager;
  * @author Dimitry Polivaev
  */
 public class LinkController extends SelectionController implements IExtension {
-	private static final String LINK_ICON_ROOT = "/images/icons/links/";
     public static final String MENUITEM_SCHEME = "menuitem";
 	public static final String EXECUTE_APP_SCHEME = "execute";
 	public static LinkController getController() {
@@ -900,23 +897,25 @@ public class LinkController extends SelectionController implements IExtension {
 	    }
 	}
 
-	private void addIconsBasedOnLinkType(URI link, MultipleImage iconImages, NodeModel model)
+	private void addIconsBasedOnLinkType(URI link, MultipleImage iconImages, NodeModel node)
 	{
 	    try {
 	        NodeViewDecorator decorator = NodeViewDecorator.INSTANCE;
 	        List<String> iconsForLink = decorator.getIconsForLink(link);
 	        if(iconsForLink.isEmpty()) {
-	            Icon linkIcon = getLinkIcon(link,  model);
+	            Icon linkIcon = getLinkIcon(link,  node);
 	            if(linkIcon != null)
-	                iconImages.addLinkIcon(linkIcon, model);
+	                iconImages.addLinkIcon(linkIcon, node);
 	        }
 	        else {
-	            final LinkType linkType = getLinkType(link, model);
+	            final LinkType linkType = getLinkType(link, node);
 	            if(linkType != null && linkType.decoratedIcon != null) 
-	                iconImages.addLinkIcon(linkType.decoratedIcon, model);
+	                iconImages.addLinkIcon(linkType.decoratedIcon, node);
 	            for(String iconName : iconsForLink) {
-	                Icon icon = ResourceController.getResourceController().getIcon(LINK_ICON_ROOT + iconName + ".svg");
-	                iconImages.addLinkIcon(icon, model);
+	                MindIcon icon = IconStoreFactory.ICON_STORE.getMindIcon("links/" + iconName);
+	                final IconRegistry iconRegistry = node.getMap().getIconRegistry();
+                    iconRegistry.addIcon(icon);
+	                iconImages.addIcon(icon);
 	            }
 	        }
 	    } catch (Exception e) {
