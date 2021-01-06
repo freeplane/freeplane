@@ -143,14 +143,16 @@ public class IconStoreFactory {
 
     private void createClassicIcons() {
         final String[] groupNames = RESOURCE_CONTROLLER.getProperty(GROUP_NAMES_KEY).split(SEPARATOR);
+        IconGroup userIcons = getUserIcons();
 		for (final String groupName : groupNames) {
             if (USER_ICON_GROUP_NAME.equals(groupName)) {
-			    iconStore.addGroup(getUserIcons());
+                iconStore.addGroup(userIcons);
 			}
 			else {
 			    iconStore.addGroup(getBuiltinIconGroups(groupName));
 			}
 		}
+		userIcons.addGroups(loadUserIcons());
     }
 
 	private IconGroup getBuiltinIconGroups(final String groupName) {
@@ -204,7 +206,13 @@ public class IconStoreFactory {
     }
 
 	private IconGroup getUserIcons() {
-	    final List<IconGroup> icons;
+		MindIcon groupIcon = createMindIcon(USER_GROUP_ICON);
+		final String description = TextUtils.getText(String.format(GROUP_DESC_KEY, USER_ICON_GROUP_NAME));
+		return new IconGroup(USER_ICON_GROUP_NAME, groupIcon, description);
+	}
+
+    private List<IconGroup> loadUserIcons() {
+        final List<IconGroup> icons;
 		if (RESOURCE_CONTROLLER.isApplet()) {
 		    icons = Collections.emptyList();
 		}
@@ -219,10 +227,8 @@ public class IconStoreFactory {
 		        icons = getUserIconsFromDirectory(iconDir, "");
 		    }
 		}
-		MindIcon groupIcon = createMindIcon(USER_GROUP_ICON);
-		final String description = TextUtils.getText(String.format(GROUP_DESC_KEY, USER_ICON_GROUP_NAME));
-		return new IconGroup(USER_ICON_GROUP_NAME, groupIcon, description, icons);
-	}
+        return icons;
+    }
 
 	private List<IconGroup> getUserIconsFromDirectory(final File iconDir, final String dir) {
 		final String[] userIconArray = iconDir.list(new FilenameFilter() {
@@ -260,7 +266,7 @@ public class IconStoreFactory {
 			}
 			final String iconName = fullName.substring(0, fullName.length() - 4);
 			final String iconDescription = fileName.substring(0, fileName.length() - 4);
-			if (iconName.equals("")) {
+			if (iconName.equals("") || iconStore.containsMindIcon(iconName)) {
 				continue;
 			}
 			final UserIcon icon = new UserIcon(iconName, fullName, iconDescription, order++);
