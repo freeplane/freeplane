@@ -83,7 +83,8 @@ public class UIIcon implements IconDescription, NamedIcon {
 
 	@Override
 	public String getTranslatedDescription() {
-		return TextUtils.getText(descriptionTranslationKey, StringUtils.capitalize(name));
+        String translatedDescription = TextUtils.getText(descriptionTranslationKey, "");
+        return translatedDescription.isEmpty() ? StringUtils.capitalize(name.replaceFirst(".*/", "")) : translatedDescription;
 	}
 
 	@Override

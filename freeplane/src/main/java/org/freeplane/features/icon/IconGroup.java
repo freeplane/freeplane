@@ -20,6 +20,7 @@
 package org.freeplane.features.icon;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,7 +34,7 @@ import java.util.List;
 public class IconGroup {
 	private final String name;
 	private final List<IconGroup> groups ;
-	private final MindIcon groupIcon;
+	private MindIcon groupIcon;
 	private final String description;
 	
     public IconGroup(String groupName, final MindIcon groupIcon) {
@@ -48,8 +49,8 @@ public class IconGroup {
         this(name, groupIcon, description, new ArrayList<IconGroup>());
     }
     
-    public void addIcons(final List<MindIcon> icons) {
-        icons.stream().map(IconGroup::new).forEach(this.groups::add);
+    public void addIcons(final Collection<MindIcon> icons) {
+        icons.stream().map(IconGroup::new).forEach(this::addGroup);
     }
 
 	public IconGroup(String name, MindIcon groupIcon, String description, List<IconGroup> groups) {
@@ -77,15 +78,25 @@ public class IconGroup {
 
 
 	public MindIcon getGroupIcon() {
-		return groupIcon;
+	    if(groupIcon == null)
+	        groupIcon = new IconNotFound("?");
+		return groupIcon ;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
+	public void addGroups(final Collection<IconGroup> groups) {
+	    groups.stream().forEach(this::addGroup);
+	}
+	
     public void addGroup(final IconGroup group) {
         groups.add(group);
+        if (groupIcon == null) {
+            groupIcon = group.getGroupIcon();
+        }
+
     }
 
 	@Override

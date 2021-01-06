@@ -91,11 +91,15 @@ public class IconStore {
 		if(name == null){
 			return new IconNotFound(name);
 		}
-		if (mindIcons.containsKey(name)) {
+		if (containsMindIcon(name)) {
 			return mindIcons.get(name);
 		}
 		return new IconNotFound(name);
 	}
+
+	public boolean containsMindIcon(final String name) {
+        return mindIcons.containsKey(name);
+    }
 
 	/**
 	 * Returns a UIIcon with a given name.
@@ -104,7 +108,7 @@ public class IconStore {
 	 * @return UIIcon with given name
 	 */
 	public UIIcon getUIIcon(final String name) {
-		if (mindIcons.containsKey(name)) {
+		if (containsMindIcon(name)) {
 		    return mindIcons.get(name);
 		}
 		else if (uiIcons.containsKey(name)) {

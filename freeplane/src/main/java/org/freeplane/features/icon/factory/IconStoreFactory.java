@@ -43,7 +43,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.EmojiIcon;
 import org.freeplane.features.icon.IconGroup;
-import org.freeplane.features.icon.IconNotFound;
 import org.freeplane.features.icon.IconStore;
 import org.freeplane.features.icon.MindIcon;
 import org.freeplane.features.icon.UIIcon;
@@ -83,11 +82,12 @@ public class IconStoreFactory {
 
     private static final String USER_GROUP_ICON = "user_icon";
     private static final String USER_ICON_GROUP_NAME = "user";
-    private static final String SEPARATOR = ";";
+    public static final String SEPARATOR = ";";
 	private static final ResourceController RESOURCE_CONTROLLER = ResourceController.getResourceController();
     private static final String GROUP_NAMES_KEY = "icons.groups";
     private static final String STATE_ICON_NAMES_KEY = "icons.state";
-	private static final String GROUP_KEY = "icons.group.%s";
+    private static final String GROUP_KEY = "icons.group.%s";
+    private static final String GROUPS_KEY = "icons.groups.%s";
 	private static final String GROUP_ICON_KEY = "IconGroupPopupAction.%s.icon";
 	private static final String GROUP_DESC_KEY = "IconGroupPopupAction.%s.text";
 	private static final Pattern iconFileNamePattern = Pattern.compile(".*\\.(svg|png)$", Pattern.CASE_INSENSITIVE);
@@ -143,39 +143,76 @@ public class IconStoreFactory {
 
     private void createClassicIcons() {
         final String[] groupNames = RESOURCE_CONTROLLER.getProperty(GROUP_NAMES_KEY).split(SEPARATOR);
+        IconGroup userIcons = getUserIcons();
 		for (final String groupName : groupNames) {
             if (USER_ICON_GROUP_NAME.equals(groupName)) {
-			    iconStore.addGroup(getUserIcons());
+                iconStore.addGroup(userIcons);
 			}
 			else {
-			    iconStore.addGroup(getBuiltinIcons(groupName));
+			    iconStore.addGroup(getBuiltinIconGroups(groupName));
 			}
 		}
+		userIcons.addGroups(loadUserIcons());
     }
 
-	private IconGroup getBuiltinIcons(final String groupName) {
-        final String groupIconName = RESOURCE_CONTROLLER.getProperty(String.format(GROUP_ICON_KEY, groupName));
-		final String[] iconNames = RESOURCE_CONTROLLER.getProperty(String.format(GROUP_KEY, groupName))
-		    .split(SEPARATOR);
-		final List<MindIcon> icons = new ArrayList<MindIcon>(iconNames.length);
-		MindIcon groupIcon = null;
-		for (final String iconName : iconNames) {
-			final MindIcon icon = createMindIcon(iconName);
-			icons.add(icon);
-			if(iconName.equals(groupIconName))
-			    groupIcon = icon;
-		}
-        if (groupIcon == null) {
-            groupIcon = icons.size() > 0 ? icons.get(0) : new IconNotFound("?");
-        }
-        final String description = TextUtils.getText(String.format(GROUP_DESC_KEY, groupName), StringUtils.capitalize(groupName));
+	private IconGroup getBuiltinIconGroups(final String groupName) {
+        final List<MindIcon> icons = getBuiltinIcons(groupName);
+        final List<IconGroup> groups = getBuiltinGroups(groupName);
+        final String description = createDescription(groupName);
+        MindIcon groupIcon = findGroupIcon(icons, groups, groupName);
 		IconGroup iconGroup = new IconGroup(groupName, groupIcon, description);
 		iconGroup.addIcons(icons);
+		iconGroup.addGroups(groups);
         return iconGroup;
 	}
 
+    private String createDescription(final String groupName) {
+        String translatedDescription = TextUtils.getText(String.format(GROUP_DESC_KEY, groupName), "");
+        return translatedDescription.isEmpty() ? StringUtils.capitalize(groupName.replaceFirst(".*\\.", "")) : translatedDescription;
+    }
+
+    private MindIcon findGroupIcon(final List<MindIcon> icons, final List<IconGroup> groups,
+            final String groupName) {
+        String key = String.format(GROUP_ICON_KEY, groupName);
+        final String groupIconName = RESOURCE_CONTROLLER.getProperty(key);
+        MindIcon groupIcon = null;
+        if(groupIconName != null) {
+            groupIcon = icons.stream().filter(icon -> groupIconName.equals(icon.getName())).findAny().orElseGet(
+            () -> groups.stream().filter(group -> groupIconName.equals(group.getName())).map(IconGroup::getGroupIcon).findAny().orElse(null));
+        }
+        return groupIcon;
+    }
+
+    private List<IconGroup> getBuiltinGroups(final String groupName) {
+        String key = String.format(GROUPS_KEY, groupName);
+        final String[] groupNames = RESOURCE_CONTROLLER.getArrayProperty(key, IconStoreFactory.SEPARATOR);
+        final List<IconGroup> groups = new ArrayList<>(groupNames.length);
+        for (final String subGroupName : groupNames) {
+            final IconGroup subGroup = getBuiltinIconGroups(subGroupName);
+            groups.add(subGroup);
+        }
+        return groups;
+    }
+
+    private List<MindIcon> getBuiltinIcons(final String groupName) {
+        String key = String.format(GROUP_KEY, groupName);
+        final String[] iconNames = RESOURCE_CONTROLLER.getArrayProperty(key, IconStoreFactory.SEPARATOR);
+		final List<MindIcon> icons = new ArrayList<>(iconNames.length);
+        for (final String iconName : iconNames) {
+            final MindIcon icon = createMindIcon(iconName);
+            icons.add(icon);
+        }
+        return icons;
+    }
+
 	private IconGroup getUserIcons() {
-	    final List<IconGroup> icons;
+		MindIcon groupIcon = createMindIcon(USER_GROUP_ICON);
+		final String description = TextUtils.getText(String.format(GROUP_DESC_KEY, USER_ICON_GROUP_NAME));
+		return new IconGroup(USER_ICON_GROUP_NAME, groupIcon, description);
+	}
+
+    private List<IconGroup> loadUserIcons() {
+        final List<IconGroup> icons;
 		if (RESOURCE_CONTROLLER.isApplet()) {
 		    icons = Collections.emptyList();
 		}
@@ -190,10 +227,8 @@ public class IconStoreFactory {
 		        icons = getUserIconsFromDirectory(iconDir, "");
 		    }
 		}
-		MindIcon groupIcon = createMindIcon(USER_GROUP_ICON);
-		final String description = TextUtils.getText(String.format(GROUP_DESC_KEY, USER_ICON_GROUP_NAME));
-		return new IconGroup(USER_ICON_GROUP_NAME, groupIcon, description, icons);
-	}
+        return icons;
+    }
 
 	private List<IconGroup> getUserIconsFromDirectory(final File iconDir, final String dir) {
 		final String[] userIconArray = iconDir.list(new FilenameFilter() {
@@ -231,7 +266,7 @@ public class IconStoreFactory {
 			}
 			final String iconName = fullName.substring(0, fullName.length() - 4);
 			final String iconDescription = fileName.substring(0, fileName.length() - 4);
-			if (iconName.equals("")) {
+			if (iconName.equals("") || iconStore.containsMindIcon(iconName)) {
 				continue;
 			}
 			final UserIcon icon = new UserIcon(iconName, fullName, iconDescription, order++);

@@ -25,6 +25,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.Icon;
 
@@ -43,16 +44,21 @@ public class MultipleImage implements Icon {
 	}
 
 	public void addIcon(final NamedIcon uiIcon) {
-		mIcons.add(uiIcon.getIcon());
+		Icon icon = uiIcon.getIcon();
+		Objects.requireNonNull(icon);
+        mIcons.add(icon);
 		mUIIcons.add(uiIcon);
 	}
 
 	public void addIcon(final NamedIcon uiIcon, Quantity<LengthUnit> iconHeight) {
-		mIcons.add(uiIcon.getIcon(iconHeight));
+        Icon icon = uiIcon.getIcon(iconHeight);
+        Objects.requireNonNull(icon);
+        mIcons.add(icon);
 		mUIIcons.add(uiIcon);
 	}
 
 	public void addLinkIcon(Icon icon, NodeModel node) {
+	    Objects.requireNonNull(icon);
 		final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(node);
 		final IconFactory iconFactory = IconFactory.getInstance();
 		final Icon scaledIcon = iconFactory.canScaleIcon(icon) ? iconFactory.getScaledIcon(icon, iconHeight) : icon;
