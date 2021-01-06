@@ -45,7 +45,6 @@ import org.freeplane.core.ui.ActionAcceleratorManager;
 import org.freeplane.core.ui.TimePeriodUnits;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.util.ColorUtils;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.icon.factory.IconFactory;
 import org.freeplane.features.mode.AController.IActionOnChange;
@@ -389,6 +388,13 @@ public abstract class ResourceController {
 
 	public Locale getSystemLocale() {
         return systemLocale;
+    }
+
+    public String[] getArrayProperty(String key, String separator) {
+        String joinedValues = getProperty(key);
+        final String[] groupNames = joinedValues != null 
+                ? joinedValues.split(separator)  : new String[] {};
+        return groupNames;
     }
 
 }

@@ -101,7 +101,8 @@ import org.freeplane.features.url.UrlManager;
  * @author Dimitry Polivaev
  */
 public class LinkController extends SelectionController implements IExtension {
-	public static final String MENUITEM_SCHEME = "menuitem";
+	private static final String LINK_ICON_ROOT = "/images/icons/links/";
+    public static final String MENUITEM_SCHEME = "menuitem";
 	public static final String EXECUTE_APP_SCHEME = "execute";
 	public static LinkController getController() {
 		final ModeController modeController = Controller.getCurrentModeController();
@@ -914,7 +915,7 @@ public class LinkController extends SelectionController implements IExtension {
 	            if(linkType != null && linkType.decoratedIcon != null) 
 	                iconImages.addLinkIcon(linkType.decoratedIcon, model);
 	            for(String iconName : iconsForLink) {
-	                Icon icon = ResourceController.getResourceController().getIcon("/images/icons/" + iconName + ".svg");
+	                Icon icon = ResourceController.getResourceController().getIcon(LINK_ICON_ROOT + iconName + ".svg");
 	                iconImages.addLinkIcon(icon, model);
 	            }
 	        }

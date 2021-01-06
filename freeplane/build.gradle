@@ -190,25 +190,28 @@ ext.bundleActivator = 'org.freeplane.main.osgi.Activator'
 
 task generateIconGroupProperties {
     def inputDir = file('src/viewer/resources/images/icons')
-	def groups = [];
 	def props = new Properties();
 	def relPath = {file -> inputDir.toURI().relativize(file.toURI())}
+	def groupName = {file -> relPath(file).toString()[0..-2].replaceAll('/', '.')}
 	def collect
 	collect = { File file -> 
-		   	   def group = relPath(file).toString()
-		   	   if(! group.empty) {
-		   	       group = group[0..-2]
+		   	   def group = file == inputDir ? '' : groupName(file)
+		   	   def groupsPropertyName = group.isEmpty() ? 'icons.groups' :"icons.groups.$group".toString()
+		   	   def groups = []	
+			   file.eachFile(FileType.DIRECTORIES) { f -> groups << groupName(f)}
+			   if(! group.isEmpty()) { 
 			   	   def icons = []	
 				   file.eachFile(FileType.FILES) { f -> icons << relPath(f).toString()[0..-5]}
-			   	   groups << group
-				   props.put("icons.group.$group".toString(), icons.join(';'))
+				   if (! icons.isEmpty()) 
+				   	  props.put("icons.group.$group".toString(), icons.join(';'))
 			   }
+			   if (! groups.isEmpty()) 
+			       props.put(groupsPropertyName, groups.join(';'))
 			   file.eachFile(FileType.DIRECTORIES) { f -> collect(f)}
 	}
 
     doLast {
 		collect(inputDir)
-		props.put('icons.groups', groups.join(';'))
         props.store(System.out, null)
     }
 }

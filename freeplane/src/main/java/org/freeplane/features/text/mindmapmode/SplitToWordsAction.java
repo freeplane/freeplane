@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMultipleNodeAction;
 import org.freeplane.core.util.HtmlUtils;
@@ -158,7 +159,7 @@ public class SplitToWordsAction extends AMultipleNodeAction{
 	}
 
 	private String capitalize(String word) {
-		return capitalizeWords ? word.substring(0, 1).toUpperCase() + word.substring(1) : word;
+		return capitalizeWords ? StringUtils.capitalize(word) : word;
 	}
 
 }
