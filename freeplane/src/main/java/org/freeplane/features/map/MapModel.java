@@ -52,9 +52,11 @@ public class MapModel {
 	private NodeModel root;
 	private URL url;
 	private NodeChangeAnnouncer nodeChangeAnnouncer;
+    private final INodeDuplicator nodeDuplicator;
 
-	public MapModel(IconRegistry iconRegistry, NodeChangeAnnouncer nodeChangeAnnouncer) {
-		extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
+	public MapModel(INodeDuplicator nodeDuplicator, IconRegistry iconRegistry, NodeChangeAnnouncer nodeChangeAnnouncer) {
+		this.nodeDuplicator = nodeDuplicator;
+        extensionContainer = new ExtensionContainer(new HashMap<Class<? extends IExtension>, IExtension>());
 		this.root = null;
 		listeners = new LinkedList<IMapChangeListener>();
 		nodes = new HashMap<String, NodeModel>();
@@ -62,8 +64,8 @@ public class MapModel {
 		this.nodeChangeAnnouncer = nodeChangeAnnouncer;
 	}
 
-	public MapModel() {
-		this(null, null);
+	public MapModel(INodeDuplicator nodeDuplicator) {
+		this(nodeDuplicator, null, null);
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
 		iconRegistry = new IconRegistry(mapController, this);
@@ -301,4 +303,14 @@ public class MapModel {
 	public boolean isUndoActionRunning() {
 		return false;
 	}
+
+    NodeModel duplicate(NodeModel source, boolean withChildren) {
+        return getNodeDuplicator().duplicate(source, withChildren);
+    }
+
+    public INodeDuplicator getNodeDuplicator() {
+        return nodeDuplicator;
+    }
+	
+	
 }

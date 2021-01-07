@@ -52,6 +52,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -152,7 +153,7 @@ public class MapStyleModel implements IExtension {
 
 	void createStyleMap(final MapModel parentMap, final String styleMapStr) {
 		final ModeController modeController = Controller.getCurrentModeController();
-        MapModel styleMap = new StyleMapModel(parentMap.getIconRegistry(),
+        MapModel styleMap = new StyleMapModel(parentMap.getNodeDuplicator(), parentMap.getIconRegistry(),
                 AttributeRegistry.getRegistry(parentMap), modeController.getMapController());
 		styleMap.createNewRoot();
 		final MapReader mapReader = modeController.getMapController().getMapReader();

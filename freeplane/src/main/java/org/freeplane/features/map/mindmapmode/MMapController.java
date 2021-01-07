@@ -235,7 +235,7 @@ public class MMapController extends MapController {
 
 	@Override
 	protected MapClipboardController createMapClipboardController() {
-		final MMapClipboardController mapClipboardController = new MMapClipboardController();
+		final MMapClipboardController mapClipboardController = new MMapClipboardController(getMModeController());
 		final MClipboardControllers extension = (MClipboardControllers) getModeController().getExtension(ClipboardControllers.class);
 		extension.add(mapClipboardController);
 		return mapClipboardController;
@@ -441,9 +441,7 @@ public class MMapController extends MapController {
 	}
 
 	private void convertCloneToNode(final NodeModel node) {
-		final MModeController mModeController = getMModeController();
-		final MapClipboardController clipboardController = mModeController.getExtension(MapClipboardController.class);
-		final NodeModel duplicate = clipboardController.duplicate(node, false);
+		final NodeModel duplicate = node.duplicate(false);
 		IActor converter = new IActor() {
 
 			@Override
@@ -465,6 +463,7 @@ public class MMapController extends MapController {
 
 		};
 		final boolean shouldConvertChildNodes = node.subtreeClones().size() > 1;
+        final MModeController mModeController = getMModeController();
 		mModeController.execute(converter, node.getMap());
 		if(shouldConvertChildNodes)
 			for (NodeModel child : node.getChildren())
@@ -519,7 +518,7 @@ public class MMapController extends MapController {
     }
 
 	public MModeController getMModeController() {
-		return (MModeController) Controller.getCurrentModeController();
+		return (MModeController) getModeController();
 	}
 
 	public void insertNode(final NodeModel node, final NodeModel parent) {
@@ -828,7 +827,7 @@ public class MMapController extends MapController {
 	    // use new MMapModel() instead of calling this method with a null arg
 		if(existingNode == null)
 			throw new NullPointerException("null node not allowed.");
-		final MMapModel mindMapMapModel = new MMapModel();
+		final MMapModel mindMapMapModel = new MMapModel(duplicator());
 		mindMapMapModel.setRoot(existingNode);
 		mindMapMapModel.registryNodeRecursive(existingNode);
 		fireMapCreated(mindMapMapModel);
@@ -1008,7 +1007,7 @@ public class MMapController extends MapController {
 		controller.getViewController().setWaitingCursor(true);
 		try{
 			map.releaseResources();
-			final MMapModel newModel = new MMapModel();
+			final MMapModel newModel = new MMapModel(duplicator());
 			((MFileManager)MFileManager.getController()).loadAndLock(alternativeURL, newModel);
 			newModel.setURL(url);
 			newModel.setSaved(alternativeURL.equals(url));

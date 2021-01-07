@@ -374,7 +374,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		final File file = loader.defaultTemplateFile();
 		if (file != null) {
 			try {
-				MapModel styleMapContainer = new MapModel();
+				MapModel styleMapContainer = new MapModel(map.getNodeDuplicator());
 				loader.load(Compat.fileToUrl(file), styleMapContainer);
 				if (null != MapStyleModel.getExtension(styleMapContainer)){
 				    new StyleExchange(styleMapContainer, map).moveStyle(false);
@@ -386,7 +386,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				UITools.errorMessage(TextUtils.format("error_in_template", file));
 			}
 		};
-		MapModel styleMapContainer = new MapModel();
+		MapModel styleMapContainer = new MapModel(map.getNodeDuplicator());
 		try {
 			loader.load(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), styleMapContainer);
 			new StyleExchange(styleMapContainer, map).moveStyle(false);
@@ -405,7 +405,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public void replaceStyle(final URL source, final MapModel targetMap) {
         final ModeController modeController = Controller.getCurrentModeController();
         final UrlManager urlManager = modeController.getExtension(UrlManager.class);
-        final MapModel styleMapContainer = new MapModel();
+        final MapModel styleMapContainer = new MapModel(targetMap.getNodeDuplicator());
         if (! urlManager.loadCatchExceptions(source, styleMapContainer))
             return;
 	    new StyleExchange(styleMapContainer, targetMap).replaceMapStylesAndAutomaticStyle();

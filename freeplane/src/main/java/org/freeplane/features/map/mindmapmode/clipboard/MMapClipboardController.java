@@ -78,6 +78,7 @@ import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.SummaryGroupEdgeListAdder;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.url.UrlManager;
@@ -502,8 +503,8 @@ public class MMapClipboardController extends MapClipboardController implements M
 	/**
 	 * @param modeController
 	 */
-	public MMapClipboardController() {
-		super();
+	public MMapClipboardController(MModeController modeController) {
+		super(modeController);
 		createActions();
 	}
 

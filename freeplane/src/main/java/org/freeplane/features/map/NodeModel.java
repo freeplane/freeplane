@@ -731,4 +731,10 @@ public class NodeModel{
             return true;
         return children.stream().allMatch(child -> child.subtreeHasVisibleContent(filter));
     }
+
+    public NodeModel duplicate(boolean withChildren) {
+        return map.duplicate(this, withChildren);
+    }
+    
+    
 }
