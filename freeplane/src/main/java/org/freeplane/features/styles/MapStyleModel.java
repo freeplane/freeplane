@@ -40,6 +40,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.FontSizeExtension;
 import org.freeplane.features.cloud.CloudModel;
@@ -278,10 +279,16 @@ public class MapStyleModel implements IExtension {
 	}
 
 	public void addStyleNode(final NodeModel node) {
-		final IStyle userObject = (IStyle) node.getUserObject();
-		if (null == styleNodes.put(userObject, node))
-			stylesComboBoxModel.addElement(userObject);
-		if(userObject.equals(DEFAULT_STYLE))
+		Object userObject = node.getUserObject();
+		if(! (userObject instanceof IStyle)) {
+		    String description = userObject != null ? userObject + ", " + userObject.getClass().getName() : "null";
+            LogUtils.severe("Bad user object " + description);
+            return;
+		}
+        final IStyle style = (IStyle) userObject;
+		if (null == styleNodes.put(style, node))
+			stylesComboBoxModel.addElement(style);
+		if(style.equals(DEFAULT_STYLE))
 		    defaultStyleNode = node;
 	}
 
