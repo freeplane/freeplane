@@ -21,7 +21,7 @@ class StyleExchange {
 	
     void replaceMapStylesAndAutomaticStyle() {
 	    final ModeController modeController = Controller.getCurrentModeController();
-		final IExtension oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
+		final MapStyleModel oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
 		modeController.getExtension(MapStyle.class).onCreate(sourceMap);
 		moveStyle(true);
 		modeController.getExtension(AutomaticLayoutController.class).moveExtension(modeController, sourceMap, targetMap);
@@ -30,7 +30,7 @@ class StyleExchange {
 		makeUndoable(oldStyleModel);
 	}
 
-    private void makeUndoable(final IExtension oldStyleModel) {
+    private void makeUndoable(final MapStyleModel oldStyleModel) {
         final IExtension newStyleModel = targetMap.getRootNode().getExtension(MapStyleModel.class);
 		IActor actor = new IActor() {
 			@Override
