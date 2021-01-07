@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.stream.Stream;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
@@ -302,4 +303,13 @@ public class ConditionalStyleModel implements IExtension, Iterable<ConditionalSt
 		}
 		return false;
 	}
+
+    void addDifferentConditions(ConditionalStyleModel source) {
+        Item[] differentConditions = source.styles.stream().filter(i1 -> !contains(i1)).toArray(Item[]::new);
+        Stream.of(differentConditions).forEach(styles::add);
+    }
+
+    private boolean contains(Item item) {
+        return styles.stream().anyMatch(own -> item.style.equals(own.style) && item.condition.equals(own.condition));
+    }
 }

@@ -20,15 +20,29 @@ class StyleExchange {
     }
 	
     void replaceMapStylesAndAutomaticStyle() {
-	    final ModeController modeController = Controller.getCurrentModeController();
-		final MapStyleModel oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
-		modeController.getExtension(MapStyle.class).onCreate(sourceMap);
-		moveStyle(true);
-		modeController.getExtension(AutomaticLayoutController.class).moveExtension(modeController, sourceMap, targetMap);
-		modeController.getExtension(AutomaticEdgeColorHook.class).moveExtension(modeController, sourceMap, targetMap);
-		LogicalStyleController.getController().refreshMap(targetMap);
-		makeUndoable(oldStyleModel);
-	}
+        final ModeController modeController = Controller.getCurrentModeController();
+        final MapStyleModel oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
+        modeController.getExtension(MapStyle.class).onCreate(sourceMap);
+        moveStyle(true);
+        modeController.getExtension(AutomaticLayoutController.class).moveExtension(modeController, sourceMap, targetMap);
+        modeController.getExtension(AutomaticEdgeColorHook.class).moveExtension(modeController, sourceMap, targetMap);
+        LogicalStyleController.getController().refreshMap(targetMap);
+        makeUndoable(oldStyleModel);
+    }
+    
+    void copyMapStyles() {
+        final ModeController modeController = Controller.getCurrentModeController();
+        final MapStyleModel oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
+        modeController.getExtension(MapStyle.class).onCreate(sourceMap);
+        final MapStyleModel source = MapStyleModel.getExtension(sourceMap);
+        source.addUserStylesFrom(oldStyleModel);
+        source.addConditionalStylesFrom(oldStyleModel);
+        moveStyle(true);
+        LogicalStyleController.getController().refreshMap(targetMap);
+        makeUndoable(oldStyleModel);
+    }
+    
+    
 
     private void makeUndoable(final MapStyleModel oldStyleModel) {
         final IExtension newStyleModel = targetMap.getRootNode().getExtension(MapStyleModel.class);

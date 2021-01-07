@@ -30,6 +30,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -400,16 +401,32 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	@Override
     protected HookAction createHookAction() {
 	    return null;
-    }
+	}
+
+
+	private Optional<MapModel> loadStyleMapContainer(final URL source) {
+	    final ModeController modeController = Controller.getCurrentModeController();
+	    final UrlManager urlManager = modeController.getExtension(UrlManager.class);
+	    final MapModel styleMapContainer = new MapModel(modeController.getMapController().duplicator());
+	    if (urlManager.loadCatchExceptions(source, styleMapContainer))
+	        return Optional.of(styleMapContainer);
+	    else
+	        return Optional.empty();
+
+	}
+
 
 	public void replaceStyle(final URL source, final MapModel targetMap) {
-        final ModeController modeController = Controller.getCurrentModeController();
-        final UrlManager urlManager = modeController.getExtension(UrlManager.class);
-        final MapModel styleMapContainer = new MapModel(targetMap.getNodeDuplicator());
-        if (! urlManager.loadCatchExceptions(source, styleMapContainer))
-            return;
-	    new StyleExchange(styleMapContainer, targetMap).replaceMapStylesAndAutomaticStyle();
+	    loadStyleMapContainer(source).ifPresent(styleMapContainer ->
+	        new StyleExchange(styleMapContainer, targetMap).replaceMapStylesAndAutomaticStyle());
 	}
+
+    public void copyStyles(final URL source, final MapModel targetMap) {
+        loadStyleMapContainer(source).ifPresent(styleMapContainer ->
+            new StyleExchange(styleMapContainer, targetMap).copyMapStyles());
+    }
+    
+	
 
 	@Override
 	protected void saveExtension(final IExtension extension, final XMLElement element) {

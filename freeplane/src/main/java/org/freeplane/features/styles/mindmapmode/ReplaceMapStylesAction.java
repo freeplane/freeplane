@@ -40,9 +40,9 @@ import org.freeplane.view.swing.features.filepreview.MindMapPreview;
  * Mar 12, 2009
  */
 @SuppressWarnings("serial")
-class CopyMapStylesAction extends AFreeplaneAction {
-	CopyMapStylesAction() {
-		super("CopyMapStylesAction");
+class ReplaceMapStylesAction extends AFreeplaneAction {
+	ReplaceMapStylesAction() {
+		super("ReplaceMapStylesAction");
 	}
 
 	public void actionPerformed(final ActionEvent e) {
@@ -64,7 +64,7 @@ class CopyMapStylesAction extends AFreeplaneAction {
 	        final URL url = Compat.fileToUrl(file);
 			final MapModel map = controller.getMap();
 			MapStyle mapStyleController = MapStyle.getController(modeController);
-			mapStyleController.copyStyles(url, map);
+			mapStyleController.replaceStyle(url, map);
         }
         catch (MalformedURLException e1) {
 	        e1.printStackTrace();

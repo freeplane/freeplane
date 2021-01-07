@@ -378,6 +378,27 @@ public class MapStyleModel implements IExtension {
         conditionalStyleModel = source.conditionalStyleModel;
     }
 
+    void addUserStylesFrom(MapStyleModel source) {
+        
+        NodeModel targetGroup = getStyleNodeGroup(styleMap, STYLES_USER_DEFINED);
+        NodeModel sourceGroup = getStyleNodeGroup(source.styleMap, STYLES_USER_DEFINED);
+        
+        for(NodeModel styleNode : sourceGroup.getChildren()) {
+            IStyle sourceStyle = (IStyle) styleNode.getUserObject();
+            if(! styleNodes.containsKey(sourceStyle)) {
+                NodeModel duplicate = styleNode.duplicate(false);
+                duplicate.setMap(targetGroup.getMap());
+                targetGroup.insert(duplicate);
+                styleNodes.put(sourceStyle, duplicate);
+                stylesComboBoxModel.addElement(sourceStyle);
+            }
+        }
+    }
+    
+    void addConditionalStylesFrom(MapStyleModel source) {
+        conditionalStyleModel.addDifferentConditions(source.conditionalStyleModel);
+    }
+    
 	public void setProperty(String key, String value) {
 		if (value != null) {
 			properties.put(key, value);
