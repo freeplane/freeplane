@@ -63,7 +63,7 @@ class StyleExchange {
 	            targetRoot.addExtension(source);
 	        }
 	        else{
-	            target.copyFrom(source, overwrite);
+	            target.setStylesFrom(source, overwrite);
 	        }
 	    }
 

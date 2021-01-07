@@ -355,19 +355,27 @@ public class MapStyleModel implements IExtension {
 		this.minNodeWidth = minNodeWidth;
 	}
 
-	void copyFrom(MapStyleModel source, boolean overwrite) {
+	void setStylesFrom(MapStyleModel source, boolean overwrite) {
 		if (overwrite && source.styleMap != null || styleMap == null) {
-			styleMap = source.styleMap;
-			defaultStyleNode = styleNodes.get(DEFAULT_STYLE);
-			styleMap.putExtension(MapStyleModel.class, this);
-			styleNodes = source.styleNodes;
-			initStylesComboBoxModel();
-			conditionalStyleModel = source.conditionalStyleModel;
+			setStylesFrom(source);
 		}
 		if (overwrite && source.backgroundColor != null || backgroundColor == null) {
-			backgroundColor = source.backgroundColor;
+			setBackgroundFrom(source);
 		}
 	}
+
+    private void setBackgroundFrom(MapStyleModel source) {
+        backgroundColor = source.backgroundColor;
+    }
+
+    private void setStylesFrom(MapStyleModel source) {
+        styleMap = source.styleMap;
+        defaultStyleNode = styleNodes.get(DEFAULT_STYLE);
+        styleMap.putExtension(MapStyleModel.class, this);
+        styleNodes = source.styleNodes;
+        initStylesComboBoxModel();
+        conditionalStyleModel = source.conditionalStyleModel;
+    }
 
 	public void setProperty(String key, String value) {
 		if (value != null) {
