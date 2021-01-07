@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.beans.PropertyChangeEvent;
 import java.util.Optional;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
@@ -35,7 +36,7 @@ import org.freeplane.features.link.mindmapmode.MLinkController;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 class ConnectorColorControlGroup implements ControlGroup {
-	private static final String EDGE_COLOR = "edgecolor";
+	private static final String CONNECTOR_COLOR = "connector_color";
 
 	private BooleanProperty setColor;
 	private ColorProperty color;
@@ -72,7 +73,8 @@ class ConnectorColorControlGroup implements ControlGroup {
 
     public void addControlGroup(DefaultFormBuilder formBuilder) {
 		setColor = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		color = new ColorProperty(ConnectorColorControlGroup.EDGE_COLOR, ColorUtils.colorToString(EdgeController.STANDARD_EDGE_COLOR));
+		color = new ColorProperty(ConnectorColorControlGroup.CONNECTOR_COLOR, 
+		        ResourceController.getResourceController().getProperty(LinkController.RESOURCES_LINK_COLOR));
 		propertyChangeListener = new ConnectorColorChangeListener(setColor, color);
 		setColor.addPropertyChangeListener(propertyChangeListener);
 		color.addPropertyChangeListener(propertyChangeListener);

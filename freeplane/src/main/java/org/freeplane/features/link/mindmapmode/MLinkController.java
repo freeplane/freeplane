@@ -44,6 +44,7 @@ import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.FocusManager;
@@ -432,10 +433,8 @@ public class MLinkController extends LinkController {
 		    addClosingAction(arrowLinkPopup, new RemoveConnectorAction(this, link));
 		    addSeparator(arrowLinkPopup);
         }
-        if(! MapStyleModel.isStyleNode(link.getSource()))
-            addStyleSelector(link, arrowLinkPopup);
+        ConnectorEditorPanel comp = new ConnectorEditorPanel(this, link);
 
-		ConnectorEditorPanel comp = new ConnectorEditorPanel(modeController, link);
 		comp.setAlignmentX(JComponent.LEFT_ALIGNMENT);
         arrowLinkPopup.add(comp);
 		addSeparator(arrowLinkPopup);
@@ -496,21 +495,6 @@ public class MLinkController extends LinkController {
 		});
 
 	}
-
-    private void addStyleSelector(ConnectorModel link, JComponent arrowLinkPopup) {
-        MapModel map = link.getSource().getMap();
-        MapStyleModel styleMap = MapStyleModel.getExtension(map);
-        IStyle[] styles = styleMap.getStyles().stream().filter(key -> 
-         NodeLinks.getSelfConnector(styleMap.getStyleNode(key)).isPresent())
-        .toArray(IStyle[]::new);
-        final JComboBox<IStyle> stylesBox = new JComboBoxWithBorder(styles);
-        stylesBox.setSelectedItem(link.getStyle());
-        stylesBox.setPrototypeDisplayValue(new StyleString("XXXXXXXXXXXXXXXXXXXXXXXX"));
-        stylesBox.setRenderer(new ComboBoxRendererWithTooltip(stylesBox));
-        stylesBox.setAlignmentX(JComponent.LEFT_ALIGNMENT);
-        stylesBox.addItemListener(item -> setConnectorStyle(link, (IStyle)stylesBox.getSelectedItem()));
-        arrowLinkPopup.add(stylesBox);
-    }
 
     public void setConnectorStyle(ConnectorModel link, IStyle style) {
         final IStyle oldStyle = link.getStyle();

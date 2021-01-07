@@ -24,13 +24,21 @@ import java.awt.Container;
 import java.awt.HeadlessException;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.ConnectorModel;
+import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.link.mindmapmode.MLinkController;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -43,7 +51,11 @@ import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.StyleString;
+import org.freeplane.features.styles.mindmapmode.ComboBoxRendererWithTooltip;
 import org.freeplane.features.styles.mindmapmode.MUIFactory;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -63,13 +75,16 @@ public class ConnectorEditorPanel extends JPanel {
 
     private ConnectorModel connector;
 
+    private MLinkController linkController;
+
 	/**
 	 * @throws HeadlessException
 	 */
-	public ConnectorEditorPanel(final ModeController modeController, ConnectorModel connector) throws HeadlessException {
+	public ConnectorEditorPanel(MLinkController linkController, ConnectorModel connector) throws HeadlessException {
 		super();
+        this.linkController = linkController;
         this.connector = connector;
-		controlGroups = createControlGroups(modeController);
+		controlGroups = createControlGroups();
 		addHierarchyListener(new HierarchyListener() {
 
 			@Override
@@ -82,7 +97,7 @@ public class ConnectorEditorPanel extends JPanel {
 		});
 	}
 
-	private ControlGroup[] createControlGroups(ModeController modeController) {
+	private ControlGroup[] createControlGroups() {
 		return new ControlGroup[]{
 		        new ConnectorColorControlGroup(),
 		        new OpacityControlGroup(),
@@ -103,10 +118,42 @@ public class ConnectorEditorPanel extends JPanel {
 		final FormLayout rightLayout = new FormLayout(form, "");
 		final DefaultFormBuilder formBuilder = new DefaultFormBuilder(rightLayout);
 		formBuilder.border(Paddings.DLU2);
+        if(! MapStyleModel.isStyleNode(connector.getSource())) {
+            final JComboBox<IStyle> stylesBox = createStyleSelector(connector);
+            formBuilder.append(formBuilder.getComponentFactory().createLabel(TextUtils.getText("style")), 3);
+            formBuilder.append(stylesBox, 3);
+            formBuilder.nextLine();
+        }
+
 		for (ControlGroup controlGroup :controlGroups) {
 			controlGroup.addControlGroup(formBuilder);
-			controlGroup.updateValue(connector);
 		}
 		add(formBuilder.getPanel(), BorderLayout.CENTER);
+        updateValues();
 	}
+
+    public void updateValues() {
+        for (ControlGroup controlGroup :controlGroups) {
+            controlGroup.updateValue(connector);
+        }
+    }
+    
+    private JComboBox<IStyle> createStyleSelector(ConnectorModel link) {
+        MapModel map = link.getSource().getMap();
+        MapStyleModel styleMap = MapStyleModel.getExtension(map);
+        IStyle[] styles = styleMap.getStyles().stream().filter(key -> 
+         NodeLinks.getSelfConnector(styleMap.getStyleNode(key)).isPresent())
+        .toArray(IStyle[]::new);
+        final JComboBox<IStyle> stylesBox = new JComboBox(styles);
+        stylesBox.setSelectedItem(link.getStyle());
+        stylesBox.setPrototypeDisplayValue(new StyleString("XXXXXXXXXXXXXXXXXXXXXXXX"));
+        stylesBox.setRenderer(new ComboBoxRendererWithTooltip(stylesBox));
+        stylesBox.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+        stylesBox.addItemListener(item -> {
+            linkController.setConnectorStyle(link, (IStyle)stylesBox.getSelectedItem());
+            updateValues();
+        });
+        return stylesBox;
+    }
+
 }
