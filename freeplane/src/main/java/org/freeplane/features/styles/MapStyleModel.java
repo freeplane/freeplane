@@ -72,6 +72,7 @@ public class MapStyleModel implements IExtension {
 	public static final String STYLES_PREDEFINED = "styles.predefined";
 	public static final String STYLES_USER_DEFINED = "styles.user-defined";
     private static final StyleTranslatedObject STYLE_USER_DEFINED_TRANSLATED_OBJECT = new StyleTranslatedObject(STYLES_USER_DEFINED);
+    private static final StyleTranslatedObject STYLE_PREDEFINED_TRANSLATED_OBJECT = new StyleTranslatedObject(STYLES_PREDEFINED);
 	public static final String STYLES_AUTOMATIC_LAYOUT = "styles.AutomaticLayout";
     public static final IStyle DEFAULT_STYLE = new StyleTranslatedObject("default");
     public static final IStyle SELECTION_STYLE = new StyleTranslatedObject("defaultstyle.selection");
@@ -91,6 +92,10 @@ public class MapStyleModel implements IExtension {
 
     public static boolean isUserStyleNode(NodeModel node) {
         return node.isLeaf() && node.getParentNode().getUserObject().equals(STYLE_USER_DEFINED_TRANSLATED_OBJECT);
+    }
+    
+    public static boolean isPredefinedStyleNode(NodeModel node) {
+        return node.isLeaf() && node.getParentNode().getUserObject().equals(STYLE_PREDEFINED_TRANSLATED_OBJECT);
     }
     
 	private Map<IStyle, NodeModel> styleNodes;
