@@ -59,8 +59,11 @@ public class EvaluationDependencies implements IExtension{
 				getRecursively(accessingNodes, entry.getValue());
 			}
 		}
-		getRecursively(accessingNodes, onAnyNodeDependencies.keySet());
-		onAnyNodeDependencies.clear();
+		if(! onAnyNodeDependencies.isEmpty()) {
+		    ArrayList<NodeModel> onAnyNodeDependendingNodes = new ArrayList<>(onAnyNodeDependencies.keySet());
+		    onAnyNodeDependencies.clear();
+		    getRecursively(accessingNodes, onAnyNodeDependendingNodes);
+		}
 //		System.out.println("dependencies on(" + node + "): " + accessingNodes);
 	}
 
