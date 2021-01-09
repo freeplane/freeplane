@@ -333,15 +333,15 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	@Override
 	protected JComponent createDirectorySelector(final JFileChooser chooser) {
-		final JComboBox box = new JComboBoxWithBorder();
-		box.setEditable(false);
+		final JComboBox selector = new JComboBoxWithBorder();
+		selector.setEditable(false);
 		final File dir = getLastCurrentDir() != null ? getLastCurrentDir() : chooser.getCurrentDirectory();
 		final File templateDir = defaultStandardTemplateDir();
 		final File userTemplateDir = defaultUserTemplateDir();
-		box.addItem(new TranslatedObject(dir, TextUtils.getText("current_dir")));
-		box.addItem(new TranslatedObject(templateDir, TextUtils.getText("template_dir")));
-		box.addItem(new TranslatedObject(userTemplateDir, TextUtils.getText("user_template_dir")));
-		box.addActionListener(new ActionListener() {
+		selector.addItem(new TranslatedObject(dir, TextUtils.getText("current_dir")));
+		selector.addItem(new TranslatedObject(templateDir, TextUtils.getText("template_dir")));
+		selector.addItem(new TranslatedObject(userTemplateDir, TextUtils.getText("user_template_dir")));
+		selector.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				final JComboBox box = (JComboBox) e.getSource();
@@ -353,16 +353,16 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		File selectedDir = chooser.getCurrentDirectory();
 		final String selectedPath = selectedDir.getAbsolutePath();
 		if (!selectedDir.equals(dir)) {
-			for (int i = 0; i < box.getItemCount(); i++) {
-				TranslatedObject item = (TranslatedObject) box.getItemAt(i);
+			for (int i = 0; i < selector.getItemCount(); i++) {
+				TranslatedObject item = (TranslatedObject) selector.getItemAt(i);
 				File itemDir = (File) item.getObject();
 				if (itemDir.getAbsolutePath().equals(selectedPath)) {
-					box.setSelectedItem(item);
+					selector.setSelectedItem(item);
 					break;
 				}
 			}
 		}
-		return box;
+		return selector;
 	}
 
 	/**
