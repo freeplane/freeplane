@@ -74,6 +74,8 @@ import org.freeplane.core.ui.FileOpener;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
+import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser;
+import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser.Customizer;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
@@ -323,16 +325,17 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public JFileChooser getFileChooser(boolean useDirectorySelector) {
-		final JFileChooser fileChooser = getFileChooser(getFileFilter());
-		return fileChooser;
+	    final JFreeplaneCustomizableFileChooser chooser = getFileChooser(getFileFilter());
+	    final JComponent selector = createDirectorySelector(chooser);
+	    chooser.addOptionComponent(selector);
+	    return chooser;
 	}
 
-	public FileFilter getFileFilter() {
+    public FileFilter getFileFilter() {
 		return filefilter;
 	};
 
-	@Override
-	protected JComponent createDirectorySelector(final JFileChooser chooser) {
+	private JComponent createDirectorySelector(final JFileChooser chooser) {
 		final JComboBox selector = new JComboBoxWithBorder();
 		selector.setEditable(false);
 		final File dir = getLastCurrentDir() != null ? getLastCurrentDir() : chooser.getCurrentDirectory();
