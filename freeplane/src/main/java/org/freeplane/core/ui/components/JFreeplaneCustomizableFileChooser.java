@@ -89,13 +89,13 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
         final JDialog dialog = super.createDialog(parent);
         customizer.accept(dialog);
         if(optionComponents.size() == 1) {
-           dialog.getContentPane().add(optionComponents.get(0), BorderLayout.NORTH);
+           dialog.getContentPane().add(optionComponents.get(0), BorderLayout.SOUTH);
         }
         else if(optionComponents.size() > 1) {
             Box optionBox = Box.createVerticalBox();
             optionComponents.forEach(c -> c.setAlignmentX(LEFT_ALIGNMENT));
             optionComponents.forEach(optionBox::add);
-            dialog.getContentPane().add(optionBox, BorderLayout.NORTH);
+            dialog.getContentPane().add(optionBox, BorderLayout.SOUTH);
         }
         if(!dialog.getContentPane().isValid())
             dialog.pack();
