@@ -1,16 +1,16 @@
-<map version="freeplane 1.8.0">
+<map version="freeplane 1.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node TEXT="start" LOCALIZED_STYLE_REF="AutomaticLayout.level.root" FOLDED="false" ID="ID_1090958577" CREATED="1409300609620" MODIFIED="1606696799705">
 <hook NAME="accessories/plugins/AutomaticLayout.properties" VALUE="ALL"/>
 <font BOLD="true"/>
 <hook NAME="MapStyle" background="#eeeeee">
-    <properties show_icon_for_attributes="true" fit_to_viewport="false" show_note_icons="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff"/>
+    <properties show_icon_for_attributes="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff" show_note_icons="true" fit_to_viewport="false"/>
 
 <map_styles>
-<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt">
+<stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24 pt">
 <font SIZE="24"/>
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right" STYLE="bubble">
-<stylenode LOCALIZED_TEXT="default" ICON_SIZE="12.0 pt" FORMAT_AS_HYPERLINK="false" COLOR="#222222" BACKGROUND_COLOR="#eeeeee" STYLE="rectangle" SHAPE_HORIZONTAL_MARGIN="8.0 pt" SHAPE_VERTICAL_MARGIN="5.0 pt" BORDER_WIDTH_LIKE_EDGE="false" BORDER_WIDTH="1.9000000000000001 px" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0" BORDER_DASH_LIKE_EDGE="true" BORDER_DASH="SOLID" VGAP_QUANTITY="3.0 pt">
+<stylenode LOCALIZED_TEXT="default" ID="ID_1082331723" ICON_SIZE="12 pt" FORMAT_AS_HYPERLINK="false" COLOR="#222222" BACKGROUND_COLOR="#eeeeee" STYLE="rectangle" SHAPE_HORIZONTAL_MARGIN="8 pt" SHAPE_VERTICAL_MARGIN="5 pt" BORDER_WIDTH_LIKE_EDGE="false" BORDER_WIDTH="1.9 px" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0" BORDER_DASH_LIKE_EDGE="true" BORDER_DASH="SOLID" VGAP_QUANTITY="3 pt">
 <font NAME="Ubuntu" SIZE="11" BOLD="false" STRIKETHROUGH="false" ITALIC="false"/>
 <edge STYLE="horizontal" COLOR="#444444" WIDTH="3" DASH="SOLID"/>
 </stylenode>
@@ -23,21 +23,15 @@
 <edge STYLE="hide_edge"/>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 </stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.selection" COLOR="#222222" BACKGROUND_COLOR="#cc0033" STYLE="bubble" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#222222"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
-<stylenode TEXT="happy" COLOR="#ffffff" BACKGROUND_COLOR="#000000" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<stylenode TEXT="Emote_happy" ID="ID_150820948" COLOR="#ffffff" BACKGROUND_COLOR="#000000" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <icon BUILTIN="ksmiletris"/>
+<arrowlink COLOR="#676767" TRANSPARENCY="255" DESTINATION="ID_150820948" STARTINCLINATION="95.25 pt;-23.25 pt;" ENDINCLINATION="95.25 pt;0 pt;"/>
 <font SIZE="12" STRIKETHROUGH="false" ITALIC="false"/>
 </stylenode>
-<stylenode TEXT="neutral" COLOR="#ffffff" BACKGROUND_COLOR="#000000" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
-<icon BUILTIN="smiley-neutral"/>
-<font SIZE="12"/>
-</stylenode>
-<stylenode TEXT="unhappy" COLOR="#ffffff" BACKGROUND_COLOR="#000000" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
-<icon BUILTIN="smily_bad"/>
-<font SIZE="12"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.important" COLOR="#443333" BACKGROUND_COLOR="#dddddd" BORDER_WIDTH="3.0 px" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<stylenode LOCALIZED_TEXT="styles.important" COLOR="#443333" BACKGROUND_COLOR="#dddddd" BORDER_WIDTH="3 px" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <icon BUILTIN="yes"/>
 <font SIZE="12" BOLD="true"/>
 <edge COLOR="#cc0033"/>
@@ -53,7 +47,7 @@
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,2" COLOR="#ffffff" BACKGROUND_COLOR="#444444" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <font SIZE="14"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="AutomaticLayout.level,3" COLOR="#ffffff" BACKGROUND_COLOR="#666666" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<stylenode LOCALIZED_TEXT="AutomaticLayout.level,3" COLOR="#ffffff" BACKGROUND_COLOR="#676767" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <font SIZE="12"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,4" COLOR="#ffffff" BACKGROUND_COLOR="#888888" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
@@ -84,14 +78,5 @@
 </stylenode>
 </map_styles>
 </hook>
-<node TEXT="" FOLDED="true" POSITION="right" ID="ID_326188071" CREATED="1606859085082" MODIFIED="1606859085082">
-<node TEXT="" ID="ID_58162463" CREATED="1606859085463" MODIFIED="1606859085463">
-<node TEXT="" ID="ID_318693061" CREATED="1606859085629" MODIFIED="1606859085629">
-<node TEXT="" ID="ID_1638180181" CREATED="1606859085791" MODIFIED="1606859085791">
-<node TEXT="" ID="ID_909527204" CREATED="1606859085965" MODIFIED="1606859085965"/>
-</node>
-</node>
-</node>
-</node>
 </node>
 </map>
