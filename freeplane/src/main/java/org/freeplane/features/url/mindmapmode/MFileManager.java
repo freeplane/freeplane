@@ -65,6 +65,8 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.plaf.FileChooserUI;
+import javax.swing.plaf.basic.BasicFileChooserUI;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
@@ -371,14 +373,31 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
                         return;
                     }
                     File newDirectory = ((MindMapDirectoryFilter)filter).directory;
-                    EventQueue.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            fileChooser.setCurrentDirectory(newDirectory);
-                        }
-                    });
-                };
+                    if(! fileChooser.getCurrentDirectory().equals(newDirectory)) {
+                        fileChooser.setCurrentDirectory(newDirectory);
+                    }
+                }
             });
+        
+        fileChooser.addPropertyChangeListener(JFileChooser.DIRECTORY_CHANGED_PROPERTY, new PropertyChangeListener() {
+            @Override
+            public void propertyChange(final PropertyChangeEvent evt) {
+                if(fileChooser.getDialogType() == JFileChooser.OPEN_DIALOG) {
+                    resetNonExistingFileName();
+                }
+            }
+
+            private void resetNonExistingFileName() {
+                FileChooserUI ui = fileChooser.getUI();
+                if(ui instanceof BasicFileChooserUI) {
+                    BasicFileChooserUI basicUi = (BasicFileChooserUI) ui;
+                    File newSelectedFile = new File (fileChooser.getCurrentDirectory(), basicUi.getFileName());
+                    if (! newSelectedFile.exists()) {
+                        basicUi.setFileName("");
+                    }
+                }
+            };
+        });
 	    return fileChooser;
 	}
 
