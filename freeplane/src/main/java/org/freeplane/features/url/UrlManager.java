@@ -146,32 +146,35 @@ public class UrlManager implements IExtension {
 	 * @param useDirectorySelector
 	 */
 	@SuppressWarnings("serial")
+    public JFreeplaneCustomizableFileChooser getFileChooser() {
+        return AccessController.doPrivileged((PrivilegedAction<JFreeplaneCustomizableFileChooser>)() -> {
+            final JFreeplaneCustomizableFileChooser chooser = new JFreeplaneCustomizableFileChooser();
+            Customizer closeDialogCustomizer = dialog -> {
+                    InputMap in = dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+                    in.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "escape");
+                    ActionMap aMap = dialog.getRootPane().getActionMap();
+                    aMap.put("escape", new AbstractAction()
+                    {
+                        @Override
+                        public void actionPerformed (ActionEvent e)
+                        {
+                            dialog.dispose();
+                        }
+                    });
+            };
+            chooser.addCustomizer(closeDialogCustomizer);
+            if (getLastCurrentDir() != null) {
+                chooser.setCurrentDirectory(getLastCurrentDir());
+            }
+            return chooser;
+        });
+	    
+	}
     public JFreeplaneCustomizableFileChooser getFileChooser(final FileFilter filter) {
-	    return AccessController.doPrivileged((PrivilegedAction<JFreeplaneCustomizableFileChooser>)() -> {
-	        final JFreeplaneCustomizableFileChooser chooser = new JFreeplaneCustomizableFileChooser();
-	        Customizer closeDialogCustomizer = dialog -> {
-	                InputMap in = dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-	                in.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "escape");
-	                ActionMap aMap = dialog.getRootPane().getActionMap();
-	                aMap.put("escape", new AbstractAction()
-	                {
-	                    @Override
-	                    public void actionPerformed (ActionEvent e)
-	                    {
-	                        dialog.dispose();
-	                    }
-	                });
-	        };
-	        chooser.addCustomizer(closeDialogCustomizer);
-	        if (getLastCurrentDir() != null) {
-	            chooser.setCurrentDirectory(getLastCurrentDir());
-	        }
-	        if (filter != null) {
-	            chooser.addChoosableFileFilter(filter);
-	            chooser.setFileFilter(filter);
-	        }
-	        return chooser;
-	    });
+        JFreeplaneCustomizableFileChooser chooser = getFileChooser();
+        chooser.addChoosableFileFilter(filter);
+        chooser.setFileFilter(filter);
+        return chooser;
 	}
 	public File getLastCurrentDir() {
 		updateLastDirectoryFromCurrentMap();

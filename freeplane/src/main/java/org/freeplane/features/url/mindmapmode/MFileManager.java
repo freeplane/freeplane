@@ -20,9 +20,12 @@
 package org.freeplane.features.url.mindmapmode;
 
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
@@ -70,6 +73,7 @@ import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IPropertyControlCreator;
 import org.freeplane.core.resources.components.OptionPanelBuilder;
+import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.FileOpener;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
@@ -114,8 +118,28 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	static private class BackupFlag implements IExtension {
 	}
 
-	private class MindMapFilter extends FileFilter {
-		@Override
+	enum MindmapDirectory{
+	    MINDMAPS("mindmaps_desc"), TEMPLATES("template_dir"), USER_TEMPLATES("user_template_dir");
+	    final String key;
+
+        MindmapDirectory(String key){
+	        this.key = key;
+	    }
+	}
+	static private class MindMapDirectoryFilter extends FileFilter {
+	    
+	    final MindmapDirectory mindmapDirectory;
+	    final File directory;
+        final String description;
+	    
+	    
+		MindMapDirectoryFilter(MindmapDirectory mindmapDirectory, File directory) {
+            this.mindmapDirectory = mindmapDirectory;
+            this.directory = directory;
+            this.description = TextUtils.getText(mindmapDirectory.key) + " (*.mm)";
+        }
+
+        @Override
 		public boolean accept(final File f) {
 			if (f.isDirectory()) {
 				return true;
@@ -134,10 +158,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 		@Override
 		public String getDescription() {
-			return TextUtils.getText("mindmaps_desc");
+            return description;
 		}
 	}
-
+	
+    private final static FileFilter MINDMAP_FILE_FILTER = new CaseSensitiveFileNameExtensionFilter("mm", TextUtils.getText("mindmaps_desc"));
 	private static final String BACKUP_FILE_NUMBER = "backup_file_number";
 	private static File singleBackupDirectory;
 
@@ -242,8 +267,6 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return MFileManager.createBackupFile(backupDir, file, backupFileNumber, extension);
 	}
 
-	FileFilter filefilter = new MindMapFilter();
-
 	public MFileManager() {
 		super();
 		setLastCurrentDir(new File(getDefaultSaveDirFromPrefs()));
@@ -324,49 +347,45 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		modeController.addAction(new OpenUserDirAction());
 	}
 
-	public JFileChooser getFileChooser() {
-	    final JFreeplaneCustomizableFileChooser chooser = getFileChooser(getFileFilter());
-	    final JComponent selector = createDirectorySelector(chooser);
-	    chooser.addOptionComponent(selector);
-	    return chooser;
+	public JFreeplaneCustomizableFileChooser getFileChooser() {
+	    
+	    final JFreeplaneCustomizableFileChooser fileChooser = super.getFileChooser();
+        final File mapsDirectory = fileChooser.getCurrentDirectory();
+        final File templateDir = defaultStandardTemplateDir();
+        final File userTemplateDir = defaultUserTemplateDir();
+        
+        MindMapDirectoryFilter maps = new MindMapDirectoryFilter(MindmapDirectory.MINDMAPS, mapsDirectory);
+        MindMapDirectoryFilter templates = new MindMapDirectoryFilter(MindmapDirectory.TEMPLATES, templateDir);
+        MindMapDirectoryFilter userTemplates = new MindMapDirectoryFilter(MindmapDirectory.USER_TEMPLATES, userTemplateDir);
+        
+        fileChooser.addChoosableFileFilter(maps);
+        fileChooser.setFileFilter(maps);
+        fileChooser.addChoosableFileFilter(templates);
+        fileChooser.addChoosableFileFilter(userTemplates);
+        
+        fileChooser.addPropertyChangeListener(JFileChooser.FILE_FILTER_CHANGED_PROPERTY, new PropertyChangeListener() {
+                @Override
+                public void propertyChange(final PropertyChangeEvent evt) {
+                    final FileFilter filter = fileChooser.getFileFilter();
+                    if(! (filter instanceof MindMapDirectoryFilter)){
+                        return;
+                    }
+                    File newDirectory = ((MindMapDirectoryFilter)filter).directory;
+                    EventQueue.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            fileChooser.setCurrentDirectory(newDirectory);
+                        }
+                    });
+                };
+            });
+	    return fileChooser;
 	}
 
     public FileFilter getFileFilter() {
-		return filefilter;
+		return MINDMAP_FILE_FILTER;
 	};
 
-	private JComponent createDirectorySelector(final JFileChooser chooser) {
-		final JComboBox selector = new JComboBoxWithBorder();
-		selector.setEditable(false);
-		final File dir = getLastCurrentDir() != null ? getLastCurrentDir() : chooser.getCurrentDirectory();
-		final File templateDir = defaultStandardTemplateDir();
-		final File userTemplateDir = defaultUserTemplateDir();
-		selector.addItem(new TranslatedObject(dir, TextUtils.getText("current_dir")));
-		selector.addItem(new TranslatedObject(templateDir, TextUtils.getText("template_dir")));
-		selector.addItem(new TranslatedObject(userTemplateDir, TextUtils.getText("user_template_dir")));
-		selector.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				final JComboBox box = (JComboBox) e.getSource();
-				final TranslatedObject obj = (TranslatedObject) box.getSelectedItem();
-				final File dir = (File) obj.getObject();
-				chooser.setCurrentDirectory(dir);
-			}
-		});
-		File selectedDir = chooser.getCurrentDirectory();
-		final String selectedPath = selectedDir.getAbsolutePath();
-		if (!selectedDir.equals(dir)) {
-			for (int i = 0; i < selector.getItemCount(); i++) {
-				TranslatedObject item = (TranslatedObject) selector.getItemAt(i);
-				File itemDir = (File) item.getObject();
-				if (itemDir.getAbsolutePath().equals(selectedPath)) {
-					selector.setSelectedItem(item);
-					break;
-				}
-			}
-		}
-		return selector;
-	}
 
 	/**
 	 * Creates a proposal for a file name to save the map. Removes all illegal
