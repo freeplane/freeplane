@@ -46,7 +46,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ExampleFileFilter;
+import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
@@ -458,7 +458,7 @@ public class MMapClipboardController extends MapClipboardController implements M
             	String imgfilepath=imageFile.getAbsolutePath();
             	File tempFile = imageFile = new File(imgfilepath);
             	final JFileChooser fileChooser = UITools.newFileChooser(imageFile);
-            	final ExampleFileFilter filter = new ExampleFileFilter();
+            	final CaseSensitiveFileNameExtensionFilter filter = new CaseSensitiveFileNameExtensionFilter();
             	filter.addExtension(ImageAdder.IMAGE_FORMAT);
             	fileChooser.setAcceptAllFileFilterUsed(false);
             	fileChooser.setFileFilter(filter);

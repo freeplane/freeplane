@@ -19,7 +19,7 @@
  */
 package org.freeplane.features.export.mindmapmode;
 
-import org.freeplane.core.ui.ExampleFileFilter;
+import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -51,6 +51,6 @@ class ExportBranchesToHTML implements IExportEngine {
 	}
 
 	public FileFilter getFileFilter() {
-	    return new ExampleFileFilter("html", TextUtils.getText("ExportBranchToHTMLAction.text"));
+	    return new CaseSensitiveFileNameExtensionFilter("html", TextUtils.getText("ExportBranchToHTMLAction.text"));
     }
 }

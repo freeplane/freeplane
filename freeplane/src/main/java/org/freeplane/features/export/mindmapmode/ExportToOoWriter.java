@@ -18,7 +18,7 @@
 package org.freeplane.features.export.mindmapmode;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ExampleFileFilter;
+import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
@@ -48,7 +48,7 @@ public class ExportToOoWriter implements IExportEngine {
 
  	
 	public FileFilter getFileFilter(){
-		return new ExampleFileFilter("odt", TextUtils.getText("ExportToOoWriter.text"));
+		return new CaseSensitiveFileNameExtensionFilter("odt", TextUtils.getText("ExportToOoWriter.text"));
 	}
 	
 	public void export(List<NodeModel> branches, File chosenFile) {

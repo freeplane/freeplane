@@ -51,20 +51,7 @@ import java.util.Hashtable;
 
 import javax.swing.filechooser.FileFilter;
 
-/**
- * A convenience implementation of FileFilter that filters out all files except
- * for those type extensions that it knows about. Extensions are of the type
- * ".foo", which is typically found on Windows and Unix boxes, but not on
- * Macinthosh. Case is ignored. Example - create a new filter that filters out
- * all files but gif and jpg image files: JFileChooser chooser = new
- * JFileChooser(); ExampleFileFilter filter = new ExampleFileFilter( new
- * String{"gif", "jpg"}, "JPEG & GIF Images")
- * chooser.addChoosableFileFilter(filter); chooser.showOpenDialog(this);
- *
- * @version 1.14 01/23/03
- * @author Jeff Dinkins
- */
-public class ExampleFileFilter extends FileFilter {
+public class CaseSensitiveFileNameExtensionFilter extends FileFilter {
 	private String description = null;
 	private Hashtable<String, FileFilter> filters = null;
 	private String fullDescription = null;
@@ -75,7 +62,7 @@ public class ExampleFileFilter extends FileFilter {
 	 * Creates a file filter. If no filters are added, then all files are
 	 * accepted.
 	 */
-	public ExampleFileFilter() {
+	public CaseSensitiveFileNameExtensionFilter() {
 		filters = new Hashtable<String, FileFilter>();
 	}
 
@@ -83,7 +70,7 @@ public class ExampleFileFilter extends FileFilter {
 	 * Creates a file filter that accepts files with the given extension.
 	 * Example: new ExampleFileFilter("jpg");
 	 */
-	public ExampleFileFilter(final String extension) {
+	public CaseSensitiveFileNameExtensionFilter(final String extension) {
 		this(extension, null);
 	}
 
@@ -92,7 +79,7 @@ public class ExampleFileFilter extends FileFilter {
 	 * ExampleFileFilter("jpg", "JPEG Image Images"); Note that the "." before
 	 * the extension is not needed. If provided, it will be ignored.
 	 */
-	public ExampleFileFilter(final String extension, final String description) {
+	public CaseSensitiveFileNameExtensionFilter(final String extension, final String description) {
 		this();
 		if (extension != null) {
 			addExtension(extension);
@@ -107,7 +94,7 @@ public class ExampleFileFilter extends FileFilter {
 	 * ExampleFileFilter(String {"gif", "jpg"}); Note that the "." before the
 	 * extension is not needed adn will be ignored.
 	 */
-	public ExampleFileFilter(final String[] filters) {
+	public CaseSensitiveFileNameExtensionFilter(final String[] filters) {
 		this(filters, null);
 	}
 
@@ -117,7 +104,7 @@ public class ExampleFileFilter extends FileFilter {
 	 * "Gif and JPG Images"); Note that the "." before the extension is not
 	 * needed and will be ignored.
 	 */
-	public ExampleFileFilter(final String[] filters, final String description) {
+	public CaseSensitiveFileNameExtensionFilter(final String[] filters, final String description) {
 		this();
 		for (int i = 0; i < filters.length; i++) {
 			addExtension(filters[i]);
