@@ -786,11 +786,11 @@ public class UITools {
 	}
 
     public static JFileChooser newFileChooser() {
-       return new JFileChooserWithSystemFileIcons();
+       return new JFreeplaneCustomizableFileChooser();
     }
 
     public static JFileChooser newFileChooser(File directory) {
-        return new JFileChooserWithSystemFileIcons(directory);
+        return new JFreeplaneCustomizableFileChooser(directory);
     }
 
 }

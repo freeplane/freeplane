@@ -54,7 +54,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import org.freeplane.core.resources.IFreeplanePropertyListener;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.ExampleFileFilter;
+import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
@@ -429,14 +429,14 @@ public class MTextController extends TextController {
 			    .getText("not_saved_for_image_error"), "Freeplane", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
-		final ExampleFileFilter filter = new ExampleFileFilter();
+		final CaseSensitiveFileNameExtensionFilter filter = new CaseSensitiveFileNameExtensionFilter();
 		filter.addExtension("jpg");
 		filter.addExtension("jpeg");
 		filter.addExtension("png");
 		filter.addExtension("gif");
 		filter.setDescription(TextUtils.getText("bitmaps"));
 		final UrlManager urlManager = modeController.getExtension(UrlManager.class);
-		final JFileChooser chooser = urlManager.getFileChooser(null);
+		final JFileChooser chooser = urlManager.getFileChooser();
 		chooser.setFileFilter(filter);
 		chooser.setAcceptAllFileFilterUsed(false);
 		new BitmapImagePreview(chooser);

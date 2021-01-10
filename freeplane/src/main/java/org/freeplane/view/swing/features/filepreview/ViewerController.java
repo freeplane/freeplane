@@ -529,7 +529,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			return null;
 		}
 		final UrlManager urlManager = controller.getModeController().getExtension(UrlManager.class);
-		final JFileChooser chooser = urlManager.getFileChooser(null);
+		final JFileChooser chooser = urlManager.getFileChooser();
 		chooser.setAcceptAllFileFilterUsed(false);
 		final FileFilter fileFilter;
 		if (factories.size() > 1) {
