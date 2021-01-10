@@ -324,7 +324,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		modeController.addAction(new OpenUserDirAction());
 	}
 
-	public JFileChooser getFileChooser(boolean useDirectorySelector) {
+	public JFileChooser getFileChooser() {
 	    final JFreeplaneCustomizableFileChooser chooser = getFileChooser(getFileFilter());
 	    final JComponent selector = createDirectorySelector(chooser);
 	    chooser.addOptionComponent(selector);
@@ -575,7 +575,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public void open() {
-		final JFileChooser chooser = getFileChooser(false);
+		final JFileChooser chooser = getFileChooser();
 		chooser.setMultiSelectionEnabled(true);
 		final int returnVal = chooser
 		    .showOpenDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent());
@@ -692,7 +692,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 					file = getLastCurrentDir();
 				}
 				else if (startFile.isDirectory()) {
-					final JFileChooser chooser = getFileChooser(true);
+					final JFileChooser chooser = getFileChooser();
 					chooser.setCurrentDirectory(startFile);
 					final int returnVal = chooser
 					    .showOpenDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent());
@@ -778,7 +778,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public boolean saveAs(final MapModel map) {
-		final JFileChooser chooser = getFileChooser(true);
+		final JFileChooser chooser = getFileChooser();
 		if (getMapsParentFile(map) == null) {
 			File defaultFile = new File(getFileNameProposal(map)
 			        + org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION);
