@@ -47,31 +47,25 @@ package org.freeplane.core.ui;
 
 import java.io.File;
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.stream.Collectors;
 
 import javax.swing.filechooser.FileFilter;
 
 public class CaseSensitiveFileNameExtensionFilter extends FileFilter {
 	private String description = null;
-	private Hashtable<String, FileFilter> filters = null;
 	private String fullDescription = null;
 	private String mainExtension = null;
 	private boolean useExtensionsInDescription = true;
+    private HashSet<String> extensions;
 
 	/**
 	 * Creates a file filter. If no filters are added, then all files are
 	 * accepted.
 	 */
 	public CaseSensitiveFileNameExtensionFilter() {
-		filters = new Hashtable<String, FileFilter>();
-	}
-
-	/**
-	 * Creates a file filter that accepts files with the given extension.
-	 * Example: new ExampleFileFilter("jpg");
-	 */
-	public CaseSensitiveFileNameExtensionFilter(final String extension) {
-		this(extension, null);
+		extensions = new LinkedHashSet<String>();
 	}
 
 	/**
@@ -87,15 +81,6 @@ public class CaseSensitiveFileNameExtensionFilter extends FileFilter {
 		if (description != null) {
 			setDescription(description);
 		}
-	}
-
-	/**
-	 * Creates a file filter from the given string array. Example: new
-	 * ExampleFileFilter(String {"gif", "jpg"}); Note that the "." before the
-	 * extension is not needed adn will be ignored.
-	 */
-	public CaseSensitiveFileNameExtensionFilter(final String[] filters) {
-		this(filters, null);
 	}
 
 	/**
@@ -125,7 +110,7 @@ public class CaseSensitiveFileNameExtensionFilter extends FileFilter {
 				return true;
 			}
 			final String extension = getExtension(f);
-			if (extension != null && filters.get(getExtension(f)) != null) {
+			if (extension != null && extensions.contains(extension)) {
 				return true;
 			};
 		}
@@ -141,13 +126,10 @@ public class CaseSensitiveFileNameExtensionFilter extends FileFilter {
 	 * needed and will be ignored.
 	 */
 	public void addExtension(final String extension) {
-		if (filters == null) {
-			filters = new Hashtable<String, FileFilter>(5);
-		}
 		if (mainExtension == null) {
 			mainExtension = extension;
 		}
-		filters.put(extension.toLowerCase(), this);
+		extensions.add(extension.toLowerCase());
 		fullDescription = null;
 	}
 
@@ -160,13 +142,7 @@ public class CaseSensitiveFileNameExtensionFilter extends FileFilter {
 		if (fullDescription == null) {
 			if (description == null || isExtensionListInDescription()) {
 				fullDescription = description == null ? "(" : description + " (";
-				final Enumeration<String> extensions = filters.keys();
-				if (extensions != null) {
-					fullDescription += "." + extensions.nextElement();
-					while (extensions.hasMoreElements()) {
-						fullDescription += ", ." + extensions.nextElement();
-					}
-				}
+				fullDescription += extensions.stream().collect(Collectors.joining(", .", ".", ""));
 				fullDescription += ")";
 			}
 			else {
