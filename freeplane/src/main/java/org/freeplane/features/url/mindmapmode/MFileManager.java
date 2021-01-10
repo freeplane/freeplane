@@ -20,7 +20,6 @@
 package org.freeplane.features.url.mindmapmode;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.dnd.DropTarget;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -64,6 +63,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.plaf.FileChooserUI;
+import javax.swing.plaf.basic.BasicFileChooserUI;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
@@ -343,7 +344,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		modeController.addAction(new OpenUserDirAction());
 	}
 
-	public JFreeplaneCustomizableFileChooser getFileChooser() {
+	public JFreeplaneCustomizableFileChooser getMindMapFileChooser() {
 	    
 	    final JFreeplaneCustomizableFileChooser fileChooser = super.getFileChooser();
         final File mapsDirectory = fileChooser.getCurrentDirectory();
@@ -367,14 +368,31 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
                         return;
                     }
                     File newDirectory = ((MindMapDirectoryFilter)filter).directory;
-                    EventQueue.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            fileChooser.setCurrentDirectory(newDirectory);
-                        }
-                    });
-                };
+                    if(! fileChooser.getCurrentDirectory().equals(newDirectory)) {
+                        fileChooser.setCurrentDirectory(newDirectory);
+                    }
+                }
             });
+        
+        fileChooser.addPropertyChangeListener(JFileChooser.DIRECTORY_CHANGED_PROPERTY, new PropertyChangeListener() {
+            @Override
+            public void propertyChange(final PropertyChangeEvent evt) {
+                if(fileChooser.getDialogType() == JFileChooser.OPEN_DIALOG) {
+                    resetNonExistingFileName();
+                }
+            }
+
+            private void resetNonExistingFileName() {
+                FileChooserUI ui = fileChooser.getUI();
+                if(ui instanceof BasicFileChooserUI) {
+                    BasicFileChooserUI basicUi = (BasicFileChooserUI) ui;
+                    File newSelectedFile = new File (fileChooser.getCurrentDirectory(), basicUi.getFileName());
+                    if (! newSelectedFile.exists()) {
+                        basicUi.setFileName("");
+                    }
+                }
+            };
+        });
 	    return fileChooser;
 	}
 
@@ -590,7 +608,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public void open() {
-		final JFileChooser chooser = getFileChooser();
+		final JFileChooser chooser = getMindMapFileChooser();
 		chooser.setMultiSelectionEnabled(true);
 		final int returnVal = chooser
 		    .showOpenDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent());
@@ -722,7 +740,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 					file = getLastCurrentDir();
 				}
 				else if (startFile.isDirectory()) {
-                    final JFileChooser chooser = getFileChooser();
+                    final JFileChooser chooser = getMindMapFileChooser();
 					new MindMapPreview(chooser);
 					chooser.setCurrentDirectory(startFile);
 					final int returnVal = chooser
@@ -809,7 +827,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public boolean saveAs(final MapModel map) {
-		final JFileChooser chooser = getFileChooser();
+		final JFileChooser chooser = getMindMapFileChooser();
 		if (getMapsParentFile(map) == null) {
 			File defaultFile = new File(getFileNameProposal(map)
 			        + org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION);
