@@ -11,7 +11,7 @@
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right" STYLE="bubble">
 <stylenode LOCALIZED_TEXT="default" ID="ID_249848891" ICON_SIZE="12 pt" FORMAT_AS_HYPERLINK="false" COLOR="#000000" BACKGROUND_COLOR="#fff024" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="8 pt" SHAPE_VERTICAL_MARGIN="5 pt" BORDER_WIDTH_LIKE_EDGE="false" BORDER_WIDTH="1.9 px" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0" BORDER_DASH_LIKE_EDGE="true" BORDER_DASH="SOLID" VGAP_QUANTITY="3 pt">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" DASH="" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_249848891" STARTARROW="DEFAULT"/>
-<font NAME="Ubuntu" SIZE="10" BOLD="false" STRIKETHROUGH="false" ITALIC="false"/>
+<font NAME="SansSerif" SIZE="10" BOLD="false" STRIKETHROUGH="false" ITALIC="false"/>
 <edge STYLE="bezier" COLOR="#09387a" WIDTH="3" DASH="SOLID"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details" COLOR="#fff024" BACKGROUND_COLOR="#000000">
@@ -19,7 +19,6 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.attributes">
 <font SIZE="9"/>
-<edge DASH="DASHES"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.note" COLOR="#000000" BACKGROUND_COLOR="#f6f9a1" TEXT_ALIGN="LEFT">
 <icon BUILTIN="clock2"/>
@@ -33,14 +32,10 @@
 <stylenode LOCALIZED_TEXT="defaultstyle.selection" COLOR="#000000" BACKGROUND_COLOR="#f5131f" STYLE="bubble" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#f5131f"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
-<stylenode TEXT="Emote_happy" COLOR="#ffffff" BACKGROUND_COLOR="#126cb3" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="8 pt" SHAPE_VERTICAL_MARGIN="5 pt" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
-<icon BUILTIN="ksmiletris"/>
-<font SIZE="14"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.important" COLOR="#000000" BACKGROUND_COLOR="#f5131f" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="8 pt" SHAPE_VERTICAL_MARGIN="5 pt" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#c3131f">
+<stylenode LOCALIZED_TEXT="styles.important" ID="ID_254323574" STYLE="narrow_hexagon" SHAPE_HORIZONTAL_MARGIN="8 pt" SHAPE_VERTICAL_MARGIN="5 pt" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#c3131f">
 <icon BUILTIN="yes"/>
+<arrowlink COLOR="#c3131f" DESTINATION="ID_254323574"/>
 <font SIZE="11" BOLD="true"/>
-<edge COLOR="#c3131f"/>
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right" STYLE="bubble">

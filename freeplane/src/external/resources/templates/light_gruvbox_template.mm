@@ -10,10 +10,11 @@
 <font SIZE="24"/>
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right" STYLE="bubble">
 <stylenode LOCALIZED_TEXT="default" ID="ID_7974122" ICON_SIZE="12 pt" FORMAT_AS_HYPERLINK="false" COLOR="#3c3836" BACKGROUND_COLOR="#fbf1c7" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="8 pt" SHAPE_VERTICAL_MARGIN="5 pt" BORDER_WIDTH_LIKE_EDGE="false" BORDER_WIDTH="1.9 px" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0" BORDER_DASH_LIKE_EDGE="true" BORDER_DASH="SOLID" VGAP_QUANTITY="3 pt">
-<font NAME="Ubuntu" SIZE="11" BOLD="false" STRIKETHROUGH="false" ITALIC="false"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" DASH="" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_7974122" STARTARROW="DEFAULT"/>
+<font NAME="SansSerif" SIZE="11" BOLD="false" STRIKETHROUGH="false" ITALIC="false"/>
 <edge STYLE="bezier" COLOR="#93a1a1" WIDTH="3" DASH="SOLID"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.details" STYLE="oval" SHAPE_HORIZONTAL_MARGIN="8 pt" SHAPE_VERTICAL_MARGIN="5 pt"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.attributes">
 <font SIZE="9"/>
 </stylenode>
@@ -22,16 +23,12 @@
 <edge STYLE="hide_edge"/>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.selection" BACKGROUND_COLOR="#cc241d" STYLE="bubble" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#d79921"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.selection" COLOR="#ffffff" BACKGROUND_COLOR="#cc241d" STYLE="bubble" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#cc241d"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
-<stylenode TEXT="Emote_happy" ID="ID_325903929" COLOR="#ffffff" BACKGROUND_COLOR="#282828" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
-<icon BUILTIN="ksmiletris"/>
-<arrowlink DESTINATION="ID_325903929" STARTINCLINATION="99.75 pt;-33.75 pt;" ENDINCLINATION="101.25 pt;2.25 pt;"/>
-<font SIZE="12" ITALIC="false"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.important" COLOR="#ffffff" BACKGROUND_COLOR="#282828" BORDER_WIDTH="3 px" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
+<stylenode LOCALIZED_TEXT="styles.important" ID="ID_103960811" BORDER_WIDTH="3 px" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <icon BUILTIN="yes"/>
+<arrowlink COLOR="#cc241d" DESTINATION="ID_103960811"/>
 <font SIZE="12" ITALIC="false"/>
 <edge COLOR="#cc241d"/>
 </stylenode>

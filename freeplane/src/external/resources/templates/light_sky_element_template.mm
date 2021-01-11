@@ -8,16 +8,13 @@
 <font SIZE="24"/>
 <stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right" STYLE="bubble">
 <stylenode LOCALIZED_TEXT="default" ID="ID_4172522" ICON_SIZE="12 pt" FORMAT_AS_HYPERLINK="false" COLOR="#051552" BACKGROUND_COLOR="#5cd5e8" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="8 pt" SHAPE_VERTICAL_MARGIN="5 pt" BORDER_WIDTH_LIKE_EDGE="false" BORDER_WIDTH="1.7 px" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#1164b0" BORDER_DASH_LIKE_EDGE="true" BORDER_DASH="SOLID" VGAP_QUANTITY="3 pt">
-<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" DASH="" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_4172522" STARTINCLINATION="116.25 pt;0 pt;" ENDINCLINATION="116.25 pt;28.5 pt;" STARTARROW="DEFAULT"/>
-<font NAME="Ubuntu" SIZE="10" BOLD="false" STRIKETHROUGH="false" ITALIC="false"/>
+<arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" DASH="" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_4172522" STARTINCLINATION="116.02548 pt;0 pt;" ENDINCLINATION="116.02548 pt;28.43312 pt;" STARTARROW="DEFAULT"/>
+<font NAME="SansSerif" SIZE="10" BOLD="false" STRIKETHROUGH="false" ITALIC="false"/>
 <edge STYLE="bezier" COLOR="#051552" WIDTH="2" DASH="SOLID"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.details" COLOR="#fff024" BACKGROUND_COLOR="#000000">
-<font BOLD="true"/>
-</stylenode>
+<stylenode LOCALIZED_TEXT="defaultstyle.details" COLOR="#fff024" BACKGROUND_COLOR="#000000"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.attributes">
 <font SIZE="9"/>
-<edge DASH="DASHES"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.note" COLOR="#000000" BACKGROUND_COLOR="#f6f9a1" TEXT_ALIGN="LEFT">
 <icon BUILTIN="clock2"/>
@@ -28,25 +25,22 @@
 <edge STYLE="hide_edge"/>
 <cloud COLOR="#f0f0f0" SHAPE="ROUND_RECT"/>
 </stylenode>
-<stylenode LOCALIZED_TEXT="defaultstyle.selection" COLOR="#051552" BACKGROUND_COLOR="#cc7212" STYLE="bubble" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#1164b0"/>
+<stylenode LOCALIZED_TEXT="defaultstyle.selection" COLOR="#ffffff" BACKGROUND_COLOR="#cc7212" STYLE="bubble" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#1164b0"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.user-defined" POSITION="right" STYLE="bubble">
-<stylenode TEXT="Emote_happy" COLOR="#ffffff" BACKGROUND_COLOR="#053d8b" STYLE="wide_hexagon" SHAPE_HORIZONTAL_MARGIN="8 pt" SHAPE_VERTICAL_MARGIN="5 pt" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
-<icon BUILTIN="ksmiletris"/>
-<font SIZE="12" BOLD="true"/>
-</stylenode>
-<stylenode LOCALIZED_TEXT="styles.important" COLOR="#000000" BACKGROUND_COLOR="#cc7212" STYLE="wide_hexagon" SHAPE_HORIZONTAL_MARGIN="8 pt" SHAPE_VERTICAL_MARGIN="5 pt" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#9d5e19">
+<stylenode LOCALIZED_TEXT="styles.important" ID="ID_1823054225" COLOR="#fff024" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#9d5e19">
 <icon BUILTIN="yes"/>
+<arrowlink COLOR="#9d5e19" DESTINATION="ID_1823054225"/>
 <font SIZE="11" BOLD="true"/>
 <edge COLOR="#9d5e19"/>
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right" STYLE="bubble">
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level.root" COLOR="#ffffff" BACKGROUND_COLOR="#053d8b" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="10 pt" SHAPE_VERTICAL_MARGIN="10 pt" BORDER_COLOR_LIKE_EDGE="false" BORDER_COLOR="#2c2b29" BORDER_DASH_LIKE_EDGE="true">
-<font NAME="Ubuntu" SIZE="18"/>
+<font SIZE="18"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,1" COLOR="#ffffff" BACKGROUND_COLOR="#1164b0" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="8 pt" SHAPE_VERTICAL_MARGIN="5 pt" BORDER_COLOR="#2c2b29">
-<font NAME="Ubuntu" SIZE="16"/>
+<font SIZE="16"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="AutomaticLayout.level,2" COLOR="#ffffff" BACKGROUND_COLOR="#298bc8" STYLE="bubble" SHAPE_HORIZONTAL_MARGIN="8 pt" SHAPE_VERTICAL_MARGIN="5 pt" BORDER_COLOR_LIKE_EDGE="true" BORDER_COLOR="#f0f0f0">
 <font SIZE="14"/>
@@ -84,6 +78,5 @@
 </hook>
 <hook NAME="accessories/plugins/AutomaticLayout.properties" VALUE="ALL"/>
 <font BOLD="true"/>
-<node TEXT="color scheme from https://www.schemecolor.com/sky-element.php" POSITION="right" ID="ID_55865465" CREATED="1606686409008" MODIFIED="1606690146679" LINK="https://www.schemecolor.com/sky-element.php" HGAP_QUANTITY="44.75 pt" VSHIFT_QUANTITY="-60 pt"/>
 </node>
 </map>
