@@ -19,7 +19,7 @@ package org.freeplane.features.export.mindmapmode;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ExampleFileFilter;
+import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
@@ -305,6 +305,6 @@ public class ExportWithXSLT implements IExportEngine {
 	}
 
 	public FileFilter getFileFilter() {
-		return new ExampleFileFilter(getProperty("file_type"), TextUtils.getText(name + ".text"));
+		return new CaseSensitiveFileNameExtensionFilter(getProperty("file_type"), TextUtils.getText(name + ".text"));
     }
 }

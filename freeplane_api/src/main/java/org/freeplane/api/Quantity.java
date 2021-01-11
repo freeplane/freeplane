@@ -1,6 +1,12 @@
 package org.freeplane.api;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
+import java.util.Locale;
+
 public class Quantity <U extends Enum<U> & PhysicalUnit >{
+    private final static DecimalFormat  ROUNDING_FORMAT = new DecimalFormat("###.#####", DecimalFormatSymbols.getInstance(Locale.US));
 	
 	public static <U extends Enum<U> & PhysicalUnit>  Quantity<U> fromString(String valueString, U defaultUnit) {
 		if(valueString == null)
@@ -18,8 +24,12 @@ public class Quantity <U extends Enum<U> & PhysicalUnit >{
 			numberString = valueString;
 			unit = defaultUnit;
 		}
-		double doubleValue = Double.parseDouble(numberString);
-		return new Quantity<U>(doubleValue, unit);
+		try {
+            double doubleValue = ROUNDING_FORMAT.parse(numberString).doubleValue();
+            return new Quantity<U>(doubleValue, unit);
+        } catch (ParseException e) {
+            throw new NumberFormatException("Invalid number " + numberString);
+        }
 	}
 
 	final public double value;
@@ -40,7 +50,8 @@ public class Quantity <U extends Enum<U> & PhysicalUnit >{
 
 	@Override
 	public String toString() {
-		return value + " " + unit;
+	    String rounded = ROUNDING_FORMAT.format(value);
+		return rounded + " " + unit;
 	}
 
 	@Override
