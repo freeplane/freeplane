@@ -20,7 +20,7 @@
 package org.freeplane.features.export.mindmapmode;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ExampleFileFilter;
+import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -41,7 +41,7 @@ class ExportToHTML implements IExportEngine {
 	}
 
 	public FileFilter getFileFilter() {
-		return new ExampleFileFilter("html", TextUtils.getText("ExportToHTMLAction.text"));
+		return new CaseSensitiveFileNameExtensionFilter("html", TextUtils.getText("ExportToHTMLAction.text"));
     }
 	public void export(List<NodeModel> nodes,  File file) {
 		try {

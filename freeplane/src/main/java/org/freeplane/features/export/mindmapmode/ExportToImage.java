@@ -38,7 +38,7 @@ import javax.imageio.stream.ImageOutputStream;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ExampleFileFilter;
+import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -134,7 +134,7 @@ public class ExportToImage implements IExportEngine {
     }
 
 	public FileFilter getFileFilter() {
-		return new ExampleFileFilter(imageType, imageDescripton);
+		return new CaseSensitiveFileNameExtensionFilter(imageType, imageDescripton);
     }
 
 	private int getImageResolutionDPI() {

@@ -52,7 +52,8 @@ import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.ui.components.JFileChooserWithSystemFileIcons;
+import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser;
+import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser.Customizer;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
@@ -145,49 +146,36 @@ public class UrlManager implements IExtension {
 	 * @param useDirectorySelector
 	 */
 	@SuppressWarnings("serial")
-    public JFileChooser getFileChooser(final FileFilter filter) {
-	    return AccessController.doPrivileged((PrivilegedAction<JFileChooser>)() -> {
-	        final JFileChooser chooser = new JFileChooserWithSystemFileIcons(){
-	            @Override
-	            protected JDialog createDialog(Component parent) throws HeadlessException {
-	                final JDialog dialog = super.createDialog(parent);
-	                final JComponent selector = createDirectorySelector(this);
-
-	                //Close dialog when escape is pressed
-	                InputMap in = dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-	                in.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "escape");
-	                ActionMap aMap = dialog.getRootPane().getActionMap();
-	                aMap.put("escape", new AbstractAction()
-	                {
-	                    @Override
-	                    public void actionPerformed (ActionEvent e)
-	                    {
-	                        dialog.dispose();
-	                    }
-	                });
-	                if(selector != null){
-	                    dialog.getContentPane().add(selector, BorderLayout.NORTH);
-	                    dialog.pack();
-	                }
-
-	                return dialog;
-	            }
-
-	        };
-	        if (getLastCurrentDir() != null) {
-	            chooser.setCurrentDirectory(getLastCurrentDir());
-	        }
-	        if (filter != null) {
-	            chooser.addChoosableFileFilter(filter);
-	            chooser.setFileFilter(filter);
-	        }
-	        return chooser;
-	    });
+    public JFreeplaneCustomizableFileChooser getFileChooser() {
+        return AccessController.doPrivileged((PrivilegedAction<JFreeplaneCustomizableFileChooser>)() -> {
+            final JFreeplaneCustomizableFileChooser chooser = new JFreeplaneCustomizableFileChooser();
+            Customizer closeDialogCustomizer = dialog -> {
+                    InputMap in = dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+                    in.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "escape");
+                    ActionMap aMap = dialog.getRootPane().getActionMap();
+                    aMap.put("escape", new AbstractAction()
+                    {
+                        @Override
+                        public void actionPerformed (ActionEvent e)
+                        {
+                            dialog.dispose();
+                        }
+                    });
+            };
+            chooser.addCustomizer(closeDialogCustomizer);
+            if (getLastCurrentDir() != null) {
+                chooser.setCurrentDirectory(getLastCurrentDir());
+            }
+            return chooser;
+        });
+	    
 	}
-
-	protected JComponent createDirectorySelector(JFileChooser chooser) {
-        return null;
-    }
+    public JFreeplaneCustomizableFileChooser getFileChooser(final FileFilter filter) {
+        JFreeplaneCustomizableFileChooser chooser = getFileChooser();
+        chooser.addChoosableFileFilter(filter);
+        chooser.setFileFilter(filter);
+        return chooser;
+	}
 	public File getLastCurrentDir() {
 		updateLastDirectoryFromCurrentMap();
 		return lastCurrentDir;
