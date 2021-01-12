@@ -336,7 +336,7 @@ public class TextController implements IExtension {
 				        .withMaxWidthAsPt(zoom, NodeSizeModel.getMaxNodeWidth(detailStyleNode),
 				            style.getMaxWidth(node)))
 				    .append("\">");
-				String noteText = detailText.getHtml();
+				String noteText = detailText.getText();
 				final String tooltipText = noteText.replaceFirst("<body>", htmlBodyStyle.toString())
 				    .replaceFirst("</body>", "</div></body>");
 				return tooltipText;

@@ -76,13 +76,13 @@ public class SharedNodeData {
 	}
 
 	public void setXmlText(String content) {
-		xmlText = XmlUtils.makeValidXml(content);
+		xmlText = XmlUtils.replaceAscii0BySpace(content);
 		userObject = HtmlUtils.toHtml(xmlText);
 	}
 
 	public void setText(String text) {
 		try {
-			userObject = XmlUtils.makeValidXml(text);
+			userObject = XmlUtils.replaceAscii0BySpace(text);
 			xmlText = HtmlUtils.toXhtml(text);
 			if (xmlText != null && !xmlText.startsWith("<")) {
 				userObject = " " + text;

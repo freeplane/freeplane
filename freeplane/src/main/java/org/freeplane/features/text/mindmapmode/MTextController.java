@@ -629,7 +629,7 @@ public class MTextController extends TextController {
 				final boolean containsDetails = !(text == null || text.equals(""));
 				if (containsDetails) {
 					final DetailTextModel details = DetailTextModel.createDetailText(node);
-					details.setHtml(text);
+					details.setText(text);
 					details.setHidden(hidden);
 					node.addExtension(details);
 				}

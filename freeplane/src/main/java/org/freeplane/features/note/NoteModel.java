@@ -45,7 +45,7 @@ public class NoteModel extends RichTextModel implements IExtension {
 
 	public static String getNoteText(final NodeModel node) {
 		final NoteModel extension = NoteModel.getNote(node);
-		return extension != null ? extension.getHtml() : null;
+		return extension != null ? extension.getText() : null;
 	}
 
 }

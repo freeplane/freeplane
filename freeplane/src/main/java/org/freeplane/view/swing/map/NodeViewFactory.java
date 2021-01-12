@@ -199,7 +199,7 @@ class NodeViewFactory {
 			final NodeModel model = nodeView.getModel();
 			final NoteModel extension = NoteModel.getNote(model);
             if (extension != null)
-                newText = extension.getHtml();
+                newText = extension.getText();
 		}
 		if (oldText == null && newText == null) {
 			return;
@@ -252,7 +252,7 @@ class NodeViewFactory {
 			detailContent.setFont(map.getDetailFont());
 			detailContent.setHorizontalAlignment(map.getDetailHorizontalAlignment());
 			detailContent.setIcon(new ArrowIcon(nodeView, false));
-			detailContent.updateText(detailText.getHtml());
+			detailContent.updateText(detailText.getText());
 		}
 		detailContent.setForeground(map.getDetailForeground());
 		detailContent.setBackground(map.getDetailBackground());

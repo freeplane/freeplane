@@ -57,12 +57,12 @@ public class DetailTextModel extends RichTextModel implements IExtension {
 
 	public static String getDetailTextText(final NodeModel node) {
 		final DetailTextModel extension = DetailTextModel.getDetailText(node);
-		return extension != null ? extension.getHtml() : null;
+		return extension != null ? extension.getText() : null;
 	}
 
 	public static String getXmlDetailTextText(final NodeModel node) {
 		final DetailTextModel extension = DetailTextModel.getDetailText(node);
-		return extension != null ? extension.getHtml() : null;
+		return extension != null ? extension.getText() : null;
 	}
 
 	public void setLocalizedHtmlPropertyName(String localizedHtmlPropertyName) {

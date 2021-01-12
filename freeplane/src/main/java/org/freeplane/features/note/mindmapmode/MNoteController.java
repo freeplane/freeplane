@@ -268,7 +268,7 @@ public class MNoteController extends NoteController {
 				final boolean enabled = !(text == null || text.equals(""));
 				if (enabled) {
 					final NoteModel note = NoteModel.createNote(node);
-					note.setHtml(text);
+					note.setText(text);
 					node.addExtension(note);
 				}
 				else {
