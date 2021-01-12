@@ -5,6 +5,8 @@ import org.freeplane.core.util.XmlUtils;
 
 
 public class RichTextModel {
+    public static final String DEFAULT_CONTENT_TYPE = "html";
+    private String contentType = DEFAULT_CONTENT_TYPE;
 	private String text = null;
 	private String xml = null;
 
@@ -42,4 +44,12 @@ public class RichTextModel {
 		xml = XmlUtils.replaceAscii0BySpace(pXmlNoteText);
 		text = HtmlUtils.toHtml(xml);
 	}
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String format) {
+        this.contentType = format;
+    }
 }

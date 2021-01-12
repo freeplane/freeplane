@@ -49,44 +49,50 @@ import org.freeplane.n3.nanoxml.XMLElement;
 public class NodeTextBuilder implements IElementContentHandler, IElementWriter, IAttributeWriter, IExtensionElementWriter, IExtensionAttributeWriter {
 	public static final String XML_NODE_TEXT = "TEXT";
 	public static final String XML_NODE_LOCALIZED_TEXT = "LOCALIZED_TEXT";
-	public static final String XML_NODE_XHTML_CONTENT_TAG = "richcontent";
-	public static final String XML_NODE_XHTML_TYPE_NODE = "NODE";
-	public static final String XML_NODE_XHTML_TYPE_NOTE = "NOTE";
-	public static final String XML_NODE_XHTML_TYPE_DETAILS = "DETAILS";
-	public static final String XML_NODE_XHTML_TYPE_TAG = "TYPE";
-	public static final String XML_NODE_OBJECT = "OBJECT";
+	public static final String XML_NODE_RICHCONTENT_TAG = "richcontent";
+	public static final String XML_RICHCONTENT_TYPE_NODE = "NODE";
+	public static final String XML_RICHCONTENT_TYPE_NOTE = "NOTE";
+	public static final String XML_RICHCONTENT_TYPE_DETAILS = "DETAILS";
+	public static final String XML_RICHCONTENT_TYPE_ATTRIBUTE = "TYPE";
+    public static final String XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE = "CONTENT-TYPE";
+    public static final String XML_NODE_OBJECT = "OBJECT";
 	private static final String XML_NODE_TEXT_SHORTENED = "TEXT_SHORTENED";
 
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (attributes == null) {
 			return null;
 		}
-		final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
-		if (NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)
-				 || NodeTextBuilder.XML_NODE_XHTML_TYPE_DETAILS.equals(typeAttribute)) {
+		final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, null);
+		if (NodeTextBuilder.XML_RICHCONTENT_TYPE_NODE.equals(typeAttribute)
+				 || NodeTextBuilder.XML_RICHCONTENT_TYPE_DETAILS.equals(typeAttribute)) {
 			return parent;
 		}
 		return null;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object obj, final XMLElement attributes,
+	public void endElement(final Object parent, final String tag, final Object obj, final XMLElement element,
 	                       final String content) {
 		assert tag.equals("richcontent");
-		final String xmlText;
-		final Object localizedHtml = attributes.getAttribute("LOCALIZED_HTML", null);
+		final String text;
+		final Object localizedHtml = element.getAttribute("LOCALIZED_HTML", null);
 		if(localizedHtml != null)
-			xmlText = TextUtils.getRawText((String)localizedHtml);
+			text = TextUtils.getRawText((String)localizedHtml);
 		else
-			xmlText = content.trim();
-		final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
+			text = content.trim();
+		final String type = element.getAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, null);
 		final NodeModel nodeModel = (NodeModel) obj;
-		if (NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE.equals(typeAttribute)) {
-			nodeModel.setXmlText(xmlText);
+		if (NodeTextBuilder.XML_RICHCONTENT_TYPE_NODE.equals(type)) {
+			nodeModel.setXmlText(text);
 		}
-		else if (NodeTextBuilder.XML_NODE_XHTML_TYPE_DETAILS.equals(typeAttribute)) {
-			final boolean hidden = "true".equals(attributes.getAttribute("HIDDEN", "false"));
+		else if (NodeTextBuilder.XML_RICHCONTENT_TYPE_DETAILS.equals(type)) {
+			final boolean hidden = "true".equals(element.getAttribute("HIDDEN", "false"));
 			final DetailTextModel details = new DetailTextModel(hidden);
-			details.setXml(xmlText);
+			if(containsXml(element))
+			    details.setXml(text);
+			else
+			    details.setText(text);
+			final String contentType = element.getAttribute(XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, RichTextModel.DEFAULT_CONTENT_TYPE);
+			details.setContentType(contentType);
 			nodeModel.addExtension(details);
 			if(localizedHtml != null) {
 				details.setLocalizedHtmlPropertyName((String)localizedHtml);
@@ -217,8 +223,8 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		final TransformedXMLExtension transformedXML = node.getExtension(TransformedXMLExtension.class);
 		if (transformedXML != null || node.getXmlText() != null) {
 			final XMLElement htmlElement = new XMLElement();
-			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
-			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_NODE);
+			htmlElement.setName(NodeTextBuilder.XML_NODE_RICHCONTENT_TAG);
+			htmlElement.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_NODE);
 			final String xmlText;
 			if (transformedXML != null){
 				xmlText = transformedXML.xml;
@@ -235,23 +241,30 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	 * @see freeplane.io.INodeWriter#saveContent(freeplane.io.ITreeWriter,
 	 * java.lang.Object, java.lang.String)
 	 */
-	public void writeContent(final ITreeWriter writer, final Object element, final IExtension note) throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object object, final IExtension note) throws IOException {
 		DetailTextModel model = (DetailTextModel) note;
-		if (model.getXml() != null) {
-			final XMLElement htmlElement = new XMLElement();
-			htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
-			htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_DETAILS);
-			if(model.isHidden()){
-				htmlElement.setAttribute("HIDDEN", "true");
-			}
-			if(model.getLocalizedHtmlPropertyName() != null){
-				htmlElement.setAttribute("LOCALIZED_HTML", model.getLocalizedHtmlPropertyName());
-				writer.addElement(null, htmlElement);
-			}
-			else {
+		final XMLElement element = new XMLElement();
+		element.setName(NodeTextBuilder.XML_NODE_RICHCONTENT_TAG);
+        element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, model.getContentType());
+		element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_DETAILS);
+		if(model.isHidden()){
+		    element.setAttribute("HIDDEN", "true");
+		}
+		if(model.getLocalizedHtmlPropertyName() != null){
+		    element.setAttribute("LOCALIZED_HTML", model.getLocalizedHtmlPropertyName());
+		    writer.addElement(null, element);
+		}
+		else if (model.getXml() != null) {
 				final String content = model.getXml().replace('\0', ' ');
-				writer.addElement('\n' + content + '\n', htmlElement);
-			}
+				writer.addElement('\n' + content + '\n', element);
+		}
+		else {
+		    String text = model.getText();
+		    if(text != null) {
+		        element.setAttribute(IElementContentHandler.CONTAINS_XML, "false");
+		        element.setContent(text);
+		    }
+		    writer.addElement(null, element);
 		}
 		return;
 	}

@@ -22,5 +22,9 @@ package org.freeplane.core.io;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public interface IElementContentHandler extends IElementHandler {
-	void endElement(Object parent, String tag, Object node, XMLElement attributes, String content);
+    public static final String CONTAINS_XML = "xml";
+    default boolean containsXml(XMLElement element) {
+        return Boolean.parseBoolean(element.getAttribute(CONTAINS_XML, "true"));
+    }
+	void endElement(Object parent, String tag, Object node, XMLElement element, String content);
 }

@@ -99,6 +99,7 @@ import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.NodeItemRelation;
+import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
@@ -637,7 +638,10 @@ public class MTextController extends TextController {
 					final DetailTextModel details = node.getExtension(DetailTextModel.class);
 					if (null != details) {
 						hidden = details.isHidden();
-						node.removeExtension(DetailTextModel.class);
+						if(details.getContentType().equals(RichTextModel.DEFAULT_CONTENT_TYPE))
+						    node.removeExtension(DetailTextModel.class);
+						else
+						    details.setText(null);
 					}
 				}
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, DetailTextModel.class,

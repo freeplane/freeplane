@@ -58,6 +58,8 @@ import org.freeplane.features.note.NoteStyleAccessor;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
+import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.mindmapmode.FreeplaneToSHTMLPropertyChangeAdapter;
 import org.freeplane.features.text.mindmapmode.MTextController;
 
@@ -265,15 +267,19 @@ public class MNoteController extends NoteController {
 			}
 
 			private void setText(final String text) {
-				final boolean enabled = !(text == null || text.equals(""));
-				if (enabled) {
+				final boolean containsNote = !(text == null || text.equals(""));
+				if (containsNote) {
 					final NoteModel note = NoteModel.createNote(node);
 					note.setText(text);
 					node.addExtension(note);
 				}
 				else {
-					if (null != node.getExtension(NoteModel.class)) {
-						node.removeExtension(NoteModel.class);
+					NoteModel note = node.getExtension(NoteModel.class);
+                    if (null != note) {
+                        if(note.getContentType().equals(RichTextModel.DEFAULT_CONTENT_TYPE))
+                            node.removeExtension(NoteModel.class);
+                        else
+                            note.setText(null);
 					}
 				}
 				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NOTE_TEXT, oldText, text);
