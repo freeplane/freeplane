@@ -6,8 +6,9 @@ import org.freeplane.features.map.NodeModel;
 public class MarkdownFormat extends IdentityPatternFormat {
 
 	static final String MARKDOWN_FORMAT = "markdownPatternFormat";
+	static final MarkdownFormat INSTANCE = new MarkdownFormat();
 
-	MarkdownFormat() {
+	private MarkdownFormat() {
 		super(MARKDOWN_FORMAT);
 	}
 

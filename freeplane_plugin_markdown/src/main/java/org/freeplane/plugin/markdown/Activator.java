@@ -36,7 +36,7 @@ public class Activator implements BundleActivator {
 					//LattexNodeHook -> Menu insert
 					modeController.getExtension(TextController.class).addTextTransformer(//
 							new ConditionalContentTransformer(new MarkdownRenderer(), Activator.TOGGLE_PARSE_MARKDOWN));
-					modeController.getController().getExtension(FormatController.class).addPatternFormat(new MarkdownFormat());
+					modeController.getController().getExtension(FormatController.class).addPatternFormat(MarkdownFormat.INSTANCE);
 					if (modeController.getModeName().equals("MindMap")) {
 						addPreferencesToOptionPanel();
 					}
