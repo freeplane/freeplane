@@ -21,6 +21,7 @@ package org.freeplane.features.note;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.text.DetailTextModel;
 import org.freeplane.features.text.RichTextModel;
 
 /**
@@ -48,4 +49,19 @@ public class NoteModel extends RichTextModel implements IExtension {
 		return extension != null ? extension.getText() : null;
 	}
 
+    public static String getNoteContentType(final NodeModel node) {
+        final NoteModel extension = NoteModel.getNote(node);
+        return extension != null ? extension.getContentType() : null;
+    }
+
+    public NoteModel() {
+    }
+    
+    public NoteModel(String contentType, String text, String xml) {
+        super(contentType, text, xml);
+    }
+    
+    public NoteModel copy() {
+        return new NoteModel(getContentType(), getText(), getXml());
+    }
 }

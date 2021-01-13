@@ -17,12 +17,11 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.TransformationException;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
-
-import io.github.gitbucket.markedj.Marked;
-
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
 import org.freeplane.features.text.mindmapmode.MTextController;
+
+import io.github.gitbucket.markedj.Marked;
 
 public class MarkdownRenderer extends AbstractContentTransformer implements IEditBaseCreator {
 
@@ -42,12 +41,19 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
         if (!(content instanceof String)) {
             return content;
         }
-        if (transformedExtension == node.getUserObject() && textController.isTextFormattingDisabled(node))
-            return content;
-        
-        String markdown = (String) content;
-        String html = "<html>" + Marked.marked(markdown);
-        return html;
+        if (transformedExtension == node.getUserObject()) {
+            if (textController.isTextFormattingDisabled(node))
+                return content;
+            String nodeFormat = textController.getNodeFormat(node);
+            if(! MarkdownFormat.MARKDOWN_FORMAT.equals(nodeFormat))
+                return content;
+        }
+        if(transformedExtension == node.getUserObject()){
+            String markdown = (String) content;
+            String html = "<html>" + Marked.marked(markdown);
+            return html;
+          }
+        return content;
 	}
 
 	@Override

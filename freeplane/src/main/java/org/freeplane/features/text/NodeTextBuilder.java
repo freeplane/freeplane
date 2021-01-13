@@ -91,7 +91,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			    details.setXml(text);
 			else
 			    details.setText(text);
-			final String contentType = element.getAttribute(XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, RichTextModel.DEFAULT_CONTENT_TYPE);
+			final String contentType = element.getAttribute(XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, null);
 			details.setContentType(contentType);
 			nodeModel.addExtension(details);
 			if(localizedHtml != null) {
@@ -245,7 +245,9 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		DetailTextModel model = (DetailTextModel) note;
 		final XMLElement element = new XMLElement();
 		element.setName(NodeTextBuilder.XML_NODE_RICHCONTENT_TAG);
-        element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, model.getContentType());
+        String contentType = model.getContentType();
+        if(contentType  != null)
+            element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentType);
 		element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_DETAILS);
 		if(model.isHidden()){
 		    element.setAttribute("HIDDEN", "true");

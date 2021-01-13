@@ -58,7 +58,7 @@ class NoteBuilder implements IElementContentHandler {
 	                note.setText(text);
 	            final String contentType = element.getAttribute(
 	                    NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, 
-	                    RichTextModel.DEFAULT_CONTENT_TYPE);
+	                    null);
 	            note.setContentType(contentType);
 
 				((NodeModel) node).addExtension((IExtension) note);

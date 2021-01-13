@@ -27,44 +27,60 @@ import org.freeplane.features.map.NodeModel;
  */
 public class DetailTextModel extends RichTextModel implements IExtension {
 	public static final String EDITING_PURPOSE = "DetailText";
+    public static DetailTextModel createDetailText(final NodeModel node) {
+        DetailTextModel details = DetailTextModel.getDetailText(node);
+        if (details == null) {
+            details = new DetailTextModel(false);
+            node.addExtension(details);
+        }
+        return details;
+    }
+
+    public static DetailTextModel getDetailText(final NodeModel node) {
+        final DetailTextModel extension = (DetailTextModel) node.getExtension(DetailTextModel.class);
+        return extension;
+    }
+
+    public static String getDetailTextText(final NodeModel node) {
+        final DetailTextModel extension = DetailTextModel.getDetailText(node);
+        return extension != null ? extension.getText() : null;
+    }
+
+    public static String getDetailContentType(final NodeModel node) {
+        final DetailTextModel extension = DetailTextModel.getDetailText(node);
+        return extension != null ? extension.getContentType() : null;
+    }
+
+    public static String getXmlDetailTextText(final NodeModel node) {
+        final DetailTextModel extension = DetailTextModel.getDetailText(node);
+        return extension != null ? extension.getText() : null;
+    }
+
 	private boolean hidden = false;
 	private String localizedHtmlPropertyName;
 	public DetailTextModel(boolean hidden) {
 	    this.hidden = hidden;
     }
+	
+	public DetailTextModel(String contentType, String text, String xml, boolean hidden, String localizedHtmlPropertyName) {
+        super(contentType, text, xml);
+        this.hidden = hidden;
+        this.localizedHtmlPropertyName = localizedHtmlPropertyName;
+    }
+	
+	public DetailTextModel copy() {
+	    return new DetailTextModel(getContentType(), getText(), getXml(), hidden, localizedHtmlPropertyName);
+	}
 
-	public boolean isHidden() {
+
+    public boolean isHidden() {
     	return hidden;
     }
 
 	public void setHidden(boolean hidden) {
     	this.hidden = hidden;
     }
-
-	public static DetailTextModel createDetailText(final NodeModel node) {
-		DetailTextModel details = DetailTextModel.getDetailText(node);
-		if (details == null) {
-			details = new DetailTextModel(false);
-			node.addExtension(details);
-		}
-		return details;
-	}
-
-	public static DetailTextModel getDetailText(final NodeModel node) {
-		final DetailTextModel extension = (DetailTextModel) node.getExtension(DetailTextModel.class);
-		return extension;
-	}
-
-	public static String getDetailTextText(final NodeModel node) {
-		final DetailTextModel extension = DetailTextModel.getDetailText(node);
-		return extension != null ? extension.getText() : null;
-	}
-
-	public static String getXmlDetailTextText(final NodeModel node) {
-		final DetailTextModel extension = DetailTextModel.getDetailText(node);
-		return extension != null ? extension.getText() : null;
-	}
-
+	
 	public void setLocalizedHtmlPropertyName(String localizedHtmlPropertyName) {
 		this.localizedHtmlPropertyName = localizedHtmlPropertyName;
 	}
@@ -72,6 +88,10 @@ public class DetailTextModel extends RichTextModel implements IExtension {
 	public String getLocalizedHtmlPropertyName() {
 		return localizedHtmlPropertyName;
 	}
+
+    public boolean isEmpty() {
+        return ! hidden  && localizedHtmlPropertyName == null && super.isEmpty();
+    }
 
 
 }

@@ -9,6 +9,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.ConditionalContentTransformer;
+import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.main.mindmapmode.stylemode.SModeController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.osgi.framework.BundleActivator;
@@ -34,8 +35,10 @@ public class Activator implements BundleActivator {
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(final ModeController modeController) {
 					//LattexNodeHook -> Menu insert
-					modeController.getExtension(TextController.class).addTextTransformer(//
+					MTextController textController = (MTextController) modeController.getExtension(TextController.class);
+                    textController.addTextTransformer(//
 							new ConditionalContentTransformer(new MarkdownRenderer(), Activator.TOGGLE_PARSE_MARKDOWN));
+                    textController.addDetailContentType("markdown");
 					modeController.getController().getExtension(FormatController.class).addPatternFormat(MarkdownFormat.INSTANCE);
 					if (modeController.getModeName().equals("MindMap")) {
 						addPreferencesToOptionPanel();

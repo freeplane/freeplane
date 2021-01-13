@@ -23,6 +23,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.net.URI;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,6 +51,8 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.view.swing.map.MainView;
 
@@ -65,10 +68,10 @@ public class TextController implements IExtension {
 	public static final String FILTER_DETAILS = "filter_details";
 	private static final Integer NODE_TOOLTIP = 1;
 	private static final Integer DETAILS_TOOLTIP = 2;
+	public static final String MARK_TRANSFORMED_TEXT = "highlight_formulas";
 	private final List<IContentTransformer> textTransformers;
 	protected final ModeController modeController;
 	private boolean nodeNumberingEnabled = true;
-	public static final String MARK_TRANSFORMED_TEXT = "highlight_formulas";
 
 	public static boolean isMarkTransformedTextSet() {
 		return Controller.getCurrentController().getResourceController().getBooleanProperty(MARK_TRANSFORMED_TEXT);
@@ -113,7 +116,7 @@ public class TextController implements IExtension {
 		registerNodeTextTooltip();
 	}
 
-	public void addTextTransformer(IContentTransformer textTransformer) {
+    public void addTextTransformer(IContentTransformer textTransformer) {
 		textTransformers.add(textTransformer);
 		Collections.sort(textTransformers);
 	}
@@ -295,6 +298,26 @@ public class TextController implements IExtension {
 		else
 			return text.substring(0, length);
 	}
+
+	public String getDetailsContentType(NodeModel node) {
+	    Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
+	    final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+	    for(IStyle styleKey : collection){
+	        final NodeModel styleNode = model.getStyleNode(styleKey);
+	        if (styleNode == null) {
+	            continue;
+	        }
+	        final DetailTextModel details = DetailTextModel.getDetailText(styleNode);
+	        if (details != null) {
+	            String contentType = details.getContentType();
+	            if (contentType != null) {
+	                return contentType;
+	            }
+	        }
+	    } 
+	    return RichTextModel.DEFAULT_CONTENT_TYPE;
+	}
+
 
 	public void setDetailsHidden(NodeModel node, boolean isHidden) {
 		final DetailTextModel details = DetailTextModel.createDetailText(node);

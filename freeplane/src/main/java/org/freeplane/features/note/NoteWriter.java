@@ -64,7 +64,9 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 		else{
 		    element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, "UNKNOWN");
 		}
-        element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, note.getContentType());
+        String contentType = note.getContentType();
+        if(contentType  != null)
+            element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentType);
 		if (note.getXml() != null) {
         	final String content = note.getXml().replace('\0', ' ');
         	writer.addElement('\n' + content + '\n', element);

@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -124,6 +125,7 @@ public class MTextController extends TextController {
 	private static Pattern FORMATTING_PATTERN = null;
 	private EditNodeBase currentBlockingEditor = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
+    private final Set<String> detailContentTypes;
 	private final EventBuffer eventQueue;
 	static {
 		final UIResources defaultResources = SHTMLPanel.getResources();
@@ -131,7 +133,7 @@ public class MTextController extends TextController {
 			@Override
 			public String getString(final String key) {
 				if (key.equals("approximate_search_threshold")) {
-					return new Double(StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB).toString();
+					return Double.valueOf(StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB).toString();
 				}
 				String freeplaneKey = "simplyhtml." + key;
 				String resourceString = ResourceController.getResourceController().getText(freeplaneKey, null);
@@ -167,6 +169,8 @@ public class MTextController extends TextController {
 		super(modeController);
 		eventQueue = new EventBuffer();
 		editorPaneListeners = new LinkedList<IEditorPaneListener>();
+        detailContentTypes = new LinkedHashSet<>();
+        detailContentTypes.add(RichTextModel.DEFAULT_CONTENT_TYPE);
 		createActions();
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
 			@Override
@@ -265,6 +269,14 @@ public class MTextController extends TextController {
 			}
 		});
 	}
+
+    public boolean addDetailContentType(String e) {
+        return detailContentTypes.add(e);
+    }
+    
+    public String[] getDetailContentTypes() {
+        return detailContentTypes.stream().toArray(String[]::new);
+    }
 
 	private String[] getContent(final String text, final int pos) {
 		if (pos <= 0) {
@@ -609,53 +621,70 @@ public class MTextController extends TextController {
 	}
 
 	public void setDetails(final NodeModel node, final String newText) {
+	    if("".equals(newText)) {
+	        setDetails(node, null);
+	        return;
+	    }
+	        
 		final String oldText = DetailTextModel.getDetailTextText(node);
 		if (oldText == newText || null != oldText && oldText.equals(newText)) {
 			return;
 		}
-		final IActor actor = new IActor() {
-			boolean hidden = false;
-
-			@Override
-			public void act() {
-				setText(newText);
-			}
-
-			@Override
-			public String getDescription() {
-				return "setDetailText";
-			}
-
-			private void setText(final String text) {
-				final boolean containsDetails = !(text == null || text.equals(""));
-				if (containsDetails) {
-					final DetailTextModel details = DetailTextModel.createDetailText(node);
-					details.setText(text);
-					details.setHidden(hidden);
-					node.addExtension(details);
-				}
-				else {
-					final DetailTextModel details = node.getExtension(DetailTextModel.class);
-					if (null != details) {
-						hidden = details.isHidden();
-						if(details.getContentType().equals(RichTextModel.DEFAULT_CONTENT_TYPE))
-						    node.removeExtension(DetailTextModel.class);
-						else
-						    details.setText(null);
-					}
-				}
-				Controller.getCurrentModeController().getMapController().nodeChanged(node, DetailTextModel.class,
-				    oldText, text);
-			}
-
-			@Override
-			public void undo() {
-				setText(oldText);
-			}
-		};
-		Controller.getCurrentModeController().execute(actor, node.getMap());
+		
+        DetailTextModel oldDetails = DetailTextModel.getDetailText(node);
+        DetailTextModel newDetails= oldDetails == null ? new DetailTextModel(false) :  oldDetails.copy();
+        newDetails.setText(newText);
+        
+        setDetails(node, oldDetails, newDetails, "setDetailText");
+        
 	}
 
+    public void setDetailsContentType(final NodeModel node, final String newContentType) {
+        final String oldContentType = DetailTextModel.getDetailContentType(node);
+        if (oldContentType == newContentType || null != oldContentType && oldContentType.equals(newContentType)) {
+            return;
+        }
+        
+        DetailTextModel oldDetails = DetailTextModel.getDetailText(node);
+        DetailTextModel newDetails= oldDetails == null ? new DetailTextModel(false) :  oldDetails.copy();
+        newDetails.setContentType(newContentType);
+        
+        setDetails(node, oldDetails, newDetails, "setDetailContentType");
+    }
+
+    private void setDetails(final NodeModel node, DetailTextModel oldDetails,
+            DetailTextModel newDetails, String description) {
+        final IActor actor = new IActor() {
+            @Override
+            public void act() {
+                setDetails(newDetails);
+                Controller.getCurrentModeController().getMapController().nodeChanged(node, DetailTextModel.class,
+                        oldDetails, newDetails);
+            }
+
+            @Override
+            public String getDescription() {
+                return description;
+            }
+
+            @Override
+            public void undo() {
+                setDetails(oldDetails);
+                Controller.getCurrentModeController().getMapController().nodeChanged(node, DetailTextModel.class,
+                        newDetails, oldDetails);
+            }
+            private void setDetails(final DetailTextModel details) {
+                if(details.isEmpty()) {
+                    node.removeExtension(DetailTextModel.class);
+                }
+                else
+                    node.putExtension(details);
+            }
+
+        };
+        Controller.getCurrentModeController().execute(actor, node.getMap());
+    }
+    
 	@Override
 	public void setDetailsHidden(final NodeModel node, final boolean isHidden) {
 		stopInlineEditing();

@@ -20,12 +20,14 @@
 package org.freeplane.features.note;
 
 import java.awt.Component;
+import java.util.Collection;
 
 import javax.swing.Icon;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.UIIcon;
@@ -35,8 +37,12 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.MainView;
 
@@ -85,6 +91,26 @@ public class NoteController implements IExtension {
 		registerNoteTooltipProvider(modeController);
 		registerStateIconProvider();
 	}
+	
+	public String getNoteContentType(NodeModel node) {
+	    Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
+	    final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+	    for(IStyle styleKey : collection){
+	        final NodeModel styleNode = model.getStyleNode(styleKey);
+	        if (styleNode == null) {
+	            continue;
+	        }
+	        final NoteModel note = NoteModel.getNote(styleNode);
+	        if (note != null) {
+	            String contentType = note.getContentType();
+	            if (contentType != null) {
+	                return contentType;
+	            }
+	        }
+	    } 
+	    return RichTextModel.DEFAULT_CONTENT_TYPE;
+	}
+
 
 	public final String getNoteText(final NodeModel node) {
 		final NoteModel extension = node.getExtension(NoteModel.class);
@@ -132,7 +158,7 @@ public class NoteController implements IExtension {
 			@Override
 			public UIIcon getStateIcon(NodeModel node) {
 				boolean showIcon;
-				if(NoteModel.getNote(node) != null){
+				if(NoteModel.getNoteText(node) != null){
 					final String showNoteIcon = MapStyle.getController(modeController).getPropertySetDefault(node.getMap(), SHOW_NOTE_ICONS);
 					showIcon = Boolean.parseBoolean(showNoteIcon);
 					if(showIcon)
