@@ -95,6 +95,8 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.note.NoteModel;
+import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.text.DetailTextModel;
@@ -610,6 +612,25 @@ public class MTextController extends TextController {
 		    currentBlockingEditor = editor;
         editor.show(frame);
 	}
+	
+    public String getEditedText(final NodeModel node, Object content, String contentType) {
+        MNoteController noteController = MNoteController.getController();
+        String plainOrHtmlText;
+        if (content instanceof String) {
+            if (! isTextFormattingDisabled(node)) {
+                plainOrHtmlText = (String) content;
+            } else
+                plainOrHtmlText =  null;
+        } else if (content instanceof DetailTextModel && contentType.equals(this.getDetailsContentType(node))
+                || content instanceof NoteModel && contentType.equals(noteController.getNoteContentType(node))) {
+            plainOrHtmlText = ((RichTextModel) content).getText();
+        }
+        else
+            plainOrHtmlText =  null;
+        String text = plainOrHtmlText != null  ? HtmlUtils.htmlToPlain(plainOrHtmlText) : null;
+        return text;
+    }
+
 
 	private void setDetailsHtmlText(final NodeModel node, final String newText) {
 		if (newText != null) {
@@ -1103,12 +1124,12 @@ public class MTextController extends TextController {
 		return textFieldCreator.createEditor(nodeModel, editControl, text, editInDialog);
 	}
 
-	public EditNodeBase createContentSpecificEditor(final NodeModel nodeModel, final String text, final IEditControl editControl,
+	public EditNodeBase createContentSpecificEditor(final NodeModel nodeModel, final Object content, final IEditControl editControl,
 	                                    final boolean editInDialog) {
 		final List<IContentTransformer> textTransformers = getTextTransformers();
 		for (IContentTransformer t : textTransformers) {
 			if (t instanceof IEditBaseCreator) {
-				final EditNodeBase base = ((IEditBaseCreator) t).createEditor(nodeModel, editControl, text, editInDialog);
+				final EditNodeBase base = ((IEditBaseCreator) t).createEditor(nodeModel, editControl, content, editInDialog);
 				if (base != null) {
 					return base;
 				}

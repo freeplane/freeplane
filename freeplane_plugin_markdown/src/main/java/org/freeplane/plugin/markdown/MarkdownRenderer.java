@@ -58,8 +58,12 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 
 	@Override
 	public EditNodeBase createEditor(NodeModel node,
-			IEditControl editControl, String text, boolean editLong) {
+			IEditControl editControl, Object content, boolean editLong) {
 		MTextController textController = MTextController.getController();
+        String text = textController.getEditedText(node, content, MarkdownFormat.MARKDOWN_FORMAT);
+        if(text == null)
+            return null;
+
 		if (textController.isTextFormattingDisabled(node)) // Format=Text!
 			return null;
 		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();

@@ -77,8 +77,10 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		final Object localizedHtml = element.getAttribute("LOCALIZED_HTML", null);
 		if(localizedHtml != null)
 			text = TextUtils.getRawText((String)localizedHtml);
-		else
+		else if(content != null)
 			text = content.trim();
+		else
+		    text = null;
 		final String type = element.getAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, null);
 		final NodeModel nodeModel = (NodeModel) obj;
 		if (NodeTextBuilder.XML_RICHCONTENT_TYPE_NODE.equals(type)) {

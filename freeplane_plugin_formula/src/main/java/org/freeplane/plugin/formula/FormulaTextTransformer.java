@@ -17,7 +17,11 @@ import org.freeplane.features.format.FormattedFormula;
 import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.note.NoteModel;
+import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.text.AbstractContentTransformer;
+import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
@@ -26,7 +30,9 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.plugin.script.FormulaUtils;
 
 class FormulaTextTransformer extends AbstractContentTransformer implements IEditBaseCreator{
-	FormulaTextTransformer(int priority) {
+	public static final String CONTENT_TYPE_FORMULA = "FormulaContentType";
+
+    FormulaTextTransformer(int priority) {
 		super(priority);
 	}
 
@@ -73,23 +79,24 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
     	return true;
     }
 
-	@Override
-	public EditNodeBase createEditor(final NodeModel node, final EditNodeBase.IEditControl editControl,
-	                                 String text, final boolean editLong) {
-		MTextController textController = MTextController.getController();
-		if (textController.isTextFormattingDisabled(node))
-			return null;
-		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
-		if(firstKeyEvent != null){
-			if (firstKeyEvent.getKeyChar() == '='){
-				text = "=";
-			}
-			else{
-				return null;
-			}
-		}
-		if(text.startsWith("=")){
-			JEditorPane textEditor = new JEditorPane();
+    @Override
+    public EditNodeBase createEditor(final NodeModel node, final EditNodeBase.IEditControl editControl,
+            Object content, final boolean editLong) {
+        MTextController textController = MTextController.getController();
+        String text = textController.getEditedText(node, content, CONTENT_TYPE_FORMULA);
+        if(text == null)
+            return null;
+        final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
+        if(firstKeyEvent != null){
+            if (firstKeyEvent.getKeyChar() == '='){
+                text = "=";
+            }
+            else{
+                return null;
+            }
+        }
+        if(text.startsWith("=")){
+            JEditorPane textEditor = new JEditorPane();
 			textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 			textEditor.setBackground(Color.WHITE);
 			textEditor.setForeground(Color.BLACK);

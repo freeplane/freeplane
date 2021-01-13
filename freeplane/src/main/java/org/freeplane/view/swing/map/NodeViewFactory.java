@@ -232,11 +232,11 @@ class NodeViewFactory {
 	}
 
 	void updateDetails(NodeView nodeView, int minNodeWidth, int maxNodeWidth) {
-		final DetailTextModel detailText = DetailTextModel.getDetailText(nodeView.getModel());
-		if (detailText == null) {
+		if (DetailTextModel.getDetailTextText(nodeView.getModel()) == null) {
 			nodeView.removeContent(NodeView.DETAIL_VIEWER_POSITION);
 			return;
 		}
+		final DetailTextModel detailText = DetailTextModel.getDetailText(nodeView.getModel());
 		DetailsView detailContent = (DetailsView) nodeView.getContent(NodeView.DETAIL_VIEWER_POSITION);
 		if (detailContent == null) {
 			detailContent = createDetailView();

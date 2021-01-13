@@ -97,9 +97,9 @@ public class ConditionalContentTransformer implements IContentTransformer, IEdit
 	}
 
 	@Override
-	public EditNodeBase createEditor(NodeModel nodeModel, IEditControl editControl, String text, boolean editLong) {
+	public EditNodeBase createEditor(NodeModel nodeModel, IEditControl editControl, Object content, boolean editLong) {
 		if (target instanceof IEditBaseCreator && isTransformationActive())
-			return ((IEditBaseCreator)target).createEditor(nodeModel, editControl, text, editLong);
+			return ((IEditBaseCreator)target).createEditor(nodeModel, editControl, content, editLong);
 		else
 			return null;
 	}

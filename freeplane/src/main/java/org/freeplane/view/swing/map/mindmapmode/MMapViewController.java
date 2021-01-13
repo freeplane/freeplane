@@ -48,7 +48,8 @@ import org.freeplane.view.swing.map.ZoomableLabel;
 public class MMapViewController extends MapViewController implements IEditBaseCreator {
 	@Override
 	public EditNodeBase createEditor(final NodeModel node, final EditNodeBase.IEditControl editControl,
-                             String text, final boolean editLong) {
+                             Object content, final boolean editLong) {
+	    String text = (String) content;
 	    final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
 		final boolean editInternalWysiwyg = editLong && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
 		final boolean editExternal = editLong && StringUtils.equals(htmlEditingOption, "external");

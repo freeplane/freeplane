@@ -97,10 +97,12 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 
 	@Override
 	public EditNodeBase createEditor(NodeModel node,
-			IEditControl editControl, String text, boolean editLong) {
-		MTextController textController = MTextController.getController();
-		if (textController.isTextFormattingDisabled(node)) // Format=Text!
-			return null;
+			IEditControl editControl, Object content, boolean editLong) {
+        MTextController textController = MTextController.getController();
+        String text = textController.getEditedText(node, content, LatexFormat.LATEX_FORMAT);
+        if(text == null)
+            return null;
+
 		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
 		String nodeFormat = textController.getNodeFormat(node);
 		final String latexText = getLatexNode(text, nodeFormat, TargetMode.FOR_EDITOR);
