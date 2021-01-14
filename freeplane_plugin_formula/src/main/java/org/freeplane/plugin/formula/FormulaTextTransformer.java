@@ -83,40 +83,53 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
     public EditNodeBase createEditor(final NodeModel node, final EditNodeBase.IEditControl editControl,
             Object content, final boolean editLong) {
         MTextController textController = MTextController.getController();
-        String text = textController.getEditedText(node, content, CONTENT_TYPE_FORMULA);
+        String text = getEditedText(node, content, textController);
         if(text == null)
             return null;
+        JEditorPane textEditor = new JEditorPane();
+        textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+        textEditor.setBackground(Color.WHITE);
+        textEditor.setForeground(Color.BLACK);
+        textEditor.setSelectedTextColor(Color.BLUE);
+        final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
+        scrollPane.setMinimumSize(new Dimension(0, 60));
+        final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
         final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
-        if(firstKeyEvent != null){
-            if (firstKeyEvent.getKeyChar() == '='){
-                text = "=";
-            }
-            else{
-                return null;
-            }
-        }
-        if(text.startsWith("=")){
-            JEditorPane textEditor = new JEditorPane();
-			textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-			textEditor.setBackground(Color.WHITE);
-			textEditor.setForeground(Color.BLACK);
-			textEditor.setSelectedTextColor(Color.BLUE);
-			final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
-			scrollPane.setMinimumSize(new Dimension(0, 60));
-			final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
-			final EditNodeDialog editNodeDialog = new FormulaEditor(explorer, node, text, firstKeyEvent, editControl, false, textEditor);
-			editNodeDialog.setTitle(TextUtils.getText("formula_editor"));
-			textEditor.setContentType("text/groovy");
+        final EditNodeDialog editNodeDialog = new FormulaEditor(explorer, node, text, firstKeyEvent, editControl, false, textEditor);
+        editNodeDialog.setTitle(TextUtils.getText("formula_editor"));
+        textEditor.setContentType("text/groovy");
 
-			final String fontName = ResourceController.getResourceController().getProperty(FormulaEditor.GROOVY_EDITOR_FONT);
-			final int fontSize = ResourceController.getResourceController().getIntProperty(FormulaEditor.GROOVY_EDITOR_FONT_SIZE);
-			final Font font = UITools.scaleUI(new Font(fontName, Font.PLAIN, fontSize));
-			textEditor.setFont(font);
+        final String fontName = ResourceController.getResourceController().getProperty(FormulaEditor.GROOVY_EDITOR_FONT);
+        final int fontSize = ResourceController.getResourceController().getIntProperty(FormulaEditor.GROOVY_EDITOR_FONT_SIZE);
+        final Font font = UITools.scaleUI(new Font(fontName, Font.PLAIN, fontSize));
+        textEditor.setFont(font);
 
-			return editNodeDialog;
-		}
-		return null;
+        return editNodeDialog;
     }
+
+	private String getEditedText(final NodeModel node, Object content, MTextController textController) {
+		MNoteController noteController = MNoteController.getController();
+		String plainOrHtmlText;
+		if (content instanceof String) {
+		    if (! textController.isTextFormattingDisabled(node)) {
+		        final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
+	            if (firstKeyEvent != null && firstKeyEvent.getKeyChar() == '='){
+	            	plainOrHtmlText = "=";
+	            }
+	            else
+	            	plainOrHtmlText = (String) content;
+
+		    } else
+		        return null;
+		} else if (content instanceof DetailTextModel && CONTENT_TYPE_FORMULA.equals(textController.getDetailsContentType(node))
+		        || content instanceof NoteModel && CONTENT_TYPE_FORMULA.equals(noteController.getNoteContentType(node))) {
+		    plainOrHtmlText = ((RichTextModel) content).getTextOr("=");
+		}
+		else
+			return null;
+		String text = HtmlUtils.htmlToPlain(plainOrHtmlText);
+		return text;
+	}
 
 	@Override
 	public boolean markTransformation() {

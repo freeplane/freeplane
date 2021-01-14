@@ -7,6 +7,8 @@ import org.freeplane.features.format.FormatController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.note.NoteController;
+import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.ConditionalContentTransformer;
 import org.freeplane.features.text.mindmapmode.MTextController;
@@ -34,11 +36,12 @@ public class Activator implements BundleActivator {
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
 			    public void installExtension(final ModeController modeController) {
-					//LattexNodeHook -> Menu insert
 					MTextController textController = (MTextController) modeController.getExtension(TextController.class);
                     textController.addTextTransformer(//
 							new ConditionalContentTransformer(new MarkdownRenderer(), Activator.TOGGLE_PARSE_MARKDOWN));
-                    textController.addDetailContentType("markdown");
+                    textController.addDetailContentType(MarkdownFormat.MARKDOWN_FORMAT);
+					MNoteController noteController = (MNoteController) modeController.getExtension(NoteController.class);
+					noteController.addNoteContentType(MarkdownFormat.MARKDOWN_FORMAT);
 					modeController.getController().getExtension(FormatController.class).addPatternFormat(MarkdownFormat.INSTANCE);
 					if (modeController.getModeName().equals("MindMap")) {
 						addPreferencesToOptionPanel();

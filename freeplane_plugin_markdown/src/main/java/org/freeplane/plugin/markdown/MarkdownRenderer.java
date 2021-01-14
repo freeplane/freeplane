@@ -10,9 +10,14 @@ import javax.swing.JEditorPane;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.note.NoteModel;
+import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.text.AbstractContentTransformer;
+import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.TransformationException;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
@@ -60,7 +65,7 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 	public EditNodeBase createEditor(NodeModel node,
 			IEditControl editControl, Object content, boolean editLong) {
 		MTextController textController = MTextController.getController();
-        String text = textController.getEditedText(node, content, MarkdownFormat.MARKDOWN_FORMAT);
+        String text = getEditedText(node, content, textController);
         if(text == null)
             return null;
 
@@ -92,5 +97,24 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 			return editNodeDialog;
 		}
 		return null;
+	}
+
+	private String getEditedText(NodeModel node, Object content, MTextController textController) {
+		String contentType = MarkdownFormat.MARKDOWN_FORMAT;
+		MNoteController noteController = MNoteController.getController();
+		String plainOrHtmlText;
+		if (content instanceof String) {
+		    if (! textController.isTextFormattingDisabled(node)) {
+		        plainOrHtmlText = (String) content;
+		    } else
+		        plainOrHtmlText =  null;
+		} else if (content instanceof DetailTextModel && contentType.equals(textController.getDetailsContentType(node))
+		        || content instanceof NoteModel && contentType.equals(noteController.getNoteContentType(node))) {
+		    plainOrHtmlText = ((RichTextModel) content).getText();
+		}
+		else
+		    plainOrHtmlText =  null;
+		String text = plainOrHtmlText != null  ? HtmlUtils.htmlToPlain(plainOrHtmlText) : null;
+		return text;
 	}
 }

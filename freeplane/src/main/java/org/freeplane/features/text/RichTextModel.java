@@ -73,4 +73,8 @@ public class RichTextModel {
     public boolean isEmpty() {
         return contentType == null && text == null && xml == null;
     }
+
+	public String getTextOr(String fallback) {
+		return text == null ? fallback : text;
+	}
 }

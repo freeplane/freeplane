@@ -60,7 +60,7 @@ public class FreeplaneSplashModern extends JWindow {
 		super(frame);
 		splashResource = ResourceController.getResourceController().getResource(FREEPLANE_SPLASH_PNG);
 		splashImage = new ImageIcon(splashResource);
-		setBackground(new Color(0x57, 0xbf, 0x5e));
+		setBackground(new Color(40, 75, 144));
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
 		setLocation(screenSize.width / 2 - (labelSize.width / 2), screenSize.height / 2 - (labelSize.height / 2));

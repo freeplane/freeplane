@@ -596,14 +596,14 @@ public class MTextController extends TextController {
 	public void editDetails(final NodeModel nodeModel, InputEvent e, final boolean editInDialog) {
 		final Controller controller = Controller.getCurrentController();
 		stopInlineEditing();
-		String text = DetailTextModel.getDetailTextText(nodeModel);
+		DetailTextModel text = DetailTextModel.getDetailText(nodeModel);
 		final boolean addsNewDetailsUsingInlineEditor = text == null && ! editInDialog;
 		if (addsNewDetailsUsingInlineEditor) {
 			final MTextController textController = MTextController.getController();
 			textController.setDetails(nodeModel, "<html>");
 		}
 		if (text == null)
-		    text = "";
+		    text = new DetailTextModel(false);
 		final EditNodeBase.IEditControl editControl = new NodeDetailsEditor(addsNewDetailsUsingInlineEditor, nodeModel);
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities
 		        .getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
@@ -612,24 +612,6 @@ public class MTextController extends TextController {
 		    currentBlockingEditor = editor;
         editor.show(frame);
 	}
-	
-    public String getEditedText(final NodeModel node, Object content, String contentType) {
-        MNoteController noteController = MNoteController.getController();
-        String plainOrHtmlText;
-        if (content instanceof String) {
-            if (! isTextFormattingDisabled(node)) {
-                plainOrHtmlText = (String) content;
-            } else
-                plainOrHtmlText =  null;
-        } else if (content instanceof DetailTextModel && contentType.equals(this.getDetailsContentType(node))
-                || content instanceof NoteModel && contentType.equals(noteController.getNoteContentType(node))) {
-            plainOrHtmlText = ((RichTextModel) content).getText();
-        }
-        else
-            plainOrHtmlText =  null;
-        String text = plainOrHtmlText != null  ? HtmlUtils.htmlToPlain(plainOrHtmlText) : null;
-        return text;
-    }
 
 
 	private void setDetailsHtmlText(final NodeModel node, final String newText) {
@@ -695,7 +677,7 @@ public class MTextController extends TextController {
                         newDetails, oldDetails);
             }
             private void setDetails(final DetailTextModel details) {
-                if(details.isEmpty()) {
+                if(details == null || details.isEmpty()) {
                     node.removeExtension(DetailTextModel.class);
                 }
                 else
@@ -1112,8 +1094,8 @@ public class MTextController extends TextController {
 		editor.show(frame);
 	}
 
-	private EditNodeBase createEditor(final NodeModel nodeModel, final IEditControl editControl,
-	                                  String text, final boolean isNewNode, final boolean editInDialog,
+	public EditNodeBase createEditor(final NodeModel nodeModel, final IEditControl editControl,
+	                                  Object text, final boolean isNewNode, final boolean editInDialog,
 	                                  boolean internal) {
 		EditNodeBase base = createContentSpecificEditor(nodeModel, text, editControl, editInDialog);
 		if (base != null || !internal) {
