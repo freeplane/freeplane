@@ -64,7 +64,7 @@ import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.features.ui.ViewController;
@@ -248,20 +248,20 @@ class NodeProxy extends AbstractProxy<NodeModel> implements Proxy.Node {
 	// NodeRO: R
 	@Override
 	public Convertible getDetails() {
-		final String detailsText = DetailTextModel.getDetailTextText(getDelegate());
+		final String detailsText = DetailModel.getDetailText(getDelegate());
 		return (detailsText == null) ? null : new ConvertibleHtmlText(getDelegate(), getScriptContext(), detailsText);
 	}
 
 	// NodeRO: R
 	@Override
 	public String getDetailsText() {
-		return DetailTextModel.getDetailTextText(getDelegate());
+		return DetailModel.getDetailText(getDelegate());
 	}
 
 	// NodeRO: R
 	@Override
 	public boolean getHideDetails() {
-		final DetailTextModel detailText = DetailTextModel.getDetailText(getDelegate());
+		final DetailModel detailText = DetailModel.getDetail(getDelegate());
 		return detailText != null && detailText.isHidden();
     }
 

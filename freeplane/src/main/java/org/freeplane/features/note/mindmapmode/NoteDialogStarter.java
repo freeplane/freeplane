@@ -54,7 +54,7 @@ class NoteDialogStarter{
 		}
 		final EditNodeBase.IEditControl editControl = new NoteEditor(nodeModel);
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
-		EditNodeBase editor = MTextController.getController().createEditor(nodeModel, editControl, note, false, true, true);
+		EditNodeBase editor = MTextController.getController().createEditor(nodeModel, note, note.getTextOr(""), editControl, false, true, true);
 		editor.show(frame);
 
     }

@@ -21,7 +21,7 @@ package org.freeplane.features.note;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.RichTextModel;
 
 /**

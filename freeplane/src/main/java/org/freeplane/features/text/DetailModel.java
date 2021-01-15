@@ -25,51 +25,51 @@ import org.freeplane.features.map.NodeModel;
 /**
  * @author Dimitry Polivaev
  */
-public class DetailTextModel extends RichTextModel implements IExtension {
+public class DetailModel extends RichTextModel implements IExtension {
 	public static final String EDITING_PURPOSE = "DetailText";
-    public static DetailTextModel createDetailText(final NodeModel node) {
-        DetailTextModel details = DetailTextModel.getDetailText(node);
+    public static DetailModel createDetailText(final NodeModel node) {
+        DetailModel details = DetailModel.getDetail(node);
         if (details == null) {
-            details = new DetailTextModel(false);
+            details = new DetailModel(false);
             node.addExtension(details);
         }
         return details;
     }
 
-    public static DetailTextModel getDetailText(final NodeModel node) {
-        final DetailTextModel extension = (DetailTextModel) node.getExtension(DetailTextModel.class);
+    public static DetailModel getDetail(final NodeModel node) {
+        final DetailModel extension = (DetailModel) node.getExtension(DetailModel.class);
         return extension;
     }
 
-    public static String getDetailTextText(final NodeModel node) {
-        final DetailTextModel extension = DetailTextModel.getDetailText(node);
+    public static String getDetailText(final NodeModel node) {
+        final DetailModel extension = DetailModel.getDetail(node);
         return extension != null ? extension.getText() : null;
     }
 
     public static String getDetailContentType(final NodeModel node) {
-        final DetailTextModel extension = DetailTextModel.getDetailText(node);
+        final DetailModel extension = DetailModel.getDetail(node);
         return extension != null ? extension.getContentType() : null;
     }
 
-    public static String getXmlDetailTextText(final NodeModel node) {
-        final DetailTextModel extension = DetailTextModel.getDetailText(node);
+    public static String getDetailXml(final NodeModel node) {
+        final DetailModel extension = DetailModel.getDetail(node);
         return extension != null ? extension.getText() : null;
     }
 
 	private boolean hidden = false;
 	private String localizedHtmlPropertyName;
-	public DetailTextModel(boolean hidden) {
+	public DetailModel(boolean hidden) {
 	    this.hidden = hidden;
     }
 	
-	public DetailTextModel(String contentType, String text, String xml, boolean hidden, String localizedHtmlPropertyName) {
+	public DetailModel(String contentType, String text, String xml, boolean hidden, String localizedHtmlPropertyName) {
         super(contentType, text, xml);
         this.hidden = hidden;
         this.localizedHtmlPropertyName = localizedHtmlPropertyName;
     }
 	
-	public DetailTextModel copy() {
-	    return new DetailTextModel(getContentType(), getText(), getXml(), hidden, localizedHtmlPropertyName);
+	public DetailModel copy() {
+	    return new DetailModel(getContentType(), getText(), getXml(), hidden, localizedHtmlPropertyName);
 	}
 
 

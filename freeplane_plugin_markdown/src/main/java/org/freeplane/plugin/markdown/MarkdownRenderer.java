@@ -15,9 +15,8 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
-import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.text.AbstractContentTransformer;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.TransformationException;
@@ -37,18 +36,14 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 
 
 	public MarkdownRenderer() {
-		super(20);
+		super(30);
 	}
 
 	@Override
-	public Object transformContent(TextController textController,
-			Object content, NodeModel node, Object transformedExtension)
+	public Object transformContent(NodeModel node,
+			Object nodeProperty, Object content, TextController textController)
 			throws TransformationException {
-        if (!(content instanceof String)) {
-            return content;
-        }
-        
-        if(!canTransform(textController, content, node))
+        if(!canTransform(textController, nodeProperty, content, node))
         	return content;
         
         String markdown = (String) content;
@@ -56,63 +51,54 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
         return html;
 	}
 
-	private boolean canTransform(TextController textController, Object content, NodeModel node) {
-		return getEditedText(node, content, textController) != null;
+	private boolean canTransform(TextController textController, Object nodeProperty, Object content, NodeModel node) {
+		return getText(node, nodeProperty, content, textController) != null;
 	}
 
 	@Override
 	public EditNodeBase createEditor(NodeModel node,
-			IEditControl editControl, Object content, boolean editLong) {
+			Object nodeProperty, Object content, IEditControl editControl, boolean editLong) {
 		MTextController textController = MTextController.getController();
-        String text = getEditedText(node, content, textController);
+        String text = getText(node, nodeProperty, content, textController);
         if(text == null)
             return null;
+        if (ResourceController.getResourceController().getBooleanProperty(MARKDOWN_EDITOR_DISABLE))
+        	return null;
 
-		if (textController.isTextFormattingDisabled(node)) // Format=Text!
-			return null;
 		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
-		String nodeFormat = textController.getNodeFormat(node);
 
 		// this option has been added to work around bugs in JSyntaxPane with Chinese characters
-		if (ResourceController.getResourceController().getBooleanProperty(MARKDOWN_EDITOR_DISABLE))
-			return null;
-        if(MarkdownFormat.MARKDOWN_FORMAT.equals(nodeFormat)){
-			JEditorPane textEditor = new JEditorPane();
-			textEditor.setBackground(Color.WHITE);
-			textEditor.setForeground(Color.BLACK);
-			textEditor.setSelectedTextColor(Color.BLUE);
-			textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-			final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
-			scrollPane.setMinimumSize(new Dimension(0, 60));
-			final EditNodeDialog editNodeDialog = new MarkdownEditor(node, text, firstKeyEvent, editControl, false, textEditor);
-			editNodeDialog.setTitle(TextUtils.getText("markdown_editor"));
-			textEditor.setContentType("text/markdown");
+		JEditorPane textEditor = new JEditorPane();
+		textEditor.setBackground(Color.WHITE);
+		textEditor.setForeground(Color.BLACK);
+		textEditor.setSelectedTextColor(Color.BLUE);
+		textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
+		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
+		scrollPane.setMinimumSize(new Dimension(0, 60));
+		final EditNodeDialog editNodeDialog = new MarkdownEditor(node, text, firstKeyEvent, editControl, false, textEditor);
+		editNodeDialog.setTitle(TextUtils.getText("markdown_editor"));
+		textEditor.setContentType("text/markdown");
 
-			final String fontName = ResourceController.getResourceController().getProperty(MARKDOWN_EDITOR_FONT);
-			final int fontSize = ResourceController.getResourceController().getIntProperty(MARKDOWN_EDITOR_FONT_SIZE);
-			final Font font = UITools.scaleUI(new Font(fontName, Font.PLAIN, fontSize));
-			textEditor.setFont(font);
+		final String fontName = ResourceController.getResourceController().getProperty(MARKDOWN_EDITOR_FONT);
+		final int fontSize = ResourceController.getResourceController().getIntProperty(MARKDOWN_EDITOR_FONT_SIZE);
+		final Font font = UITools.scaleUI(new Font(fontName, Font.PLAIN, fontSize));
+		textEditor.setFont(font);
 
-			return editNodeDialog;
-		}
-		return null;
+		return editNodeDialog;
 	}
 
-	private String getEditedText(NodeModel node, Object content, TextController textController) {
+	private String getText(NodeModel node, Object nodeProperty, Object content, TextController textController) {
+		if(! (content instanceof String))
+			return null;
 		NoteController noteController = NoteController.getController();
-		String plainOrHtmlText;
-		if (content instanceof String) {
-		    if (! textController.isTextFormattingDisabled(node)) {
-		        plainOrHtmlText = (String) content;
-		    } else
-		        plainOrHtmlText =  null;
-		} else if (content instanceof DetailTextModel && MarkdownFormat.MARKDOWN_FORMAT.equals(textController.getDetailsContentType(node))
-		        || content instanceof NoteModel && MarkdownFormat.MARKDOWN_FORMAT.equals(noteController.getNoteContentType(node))) {
-		    plainOrHtmlText = ((RichTextModel) content).getText();
-		}
-		else
-		    plainOrHtmlText =  null;
-		String text = plainOrHtmlText != null  ? HtmlUtils.htmlToPlain(plainOrHtmlText) : null;
+		if (nodeProperty instanceof NodeModel) {
+		    if (textController.isTextFormattingDisabled(node))
+				return null;
+		} else if (!(nodeProperty instanceof DetailModel && MarkdownFormat.MARKDOWN_FORMAT.equals(textController.getDetailsContentType(node))
+		        || nodeProperty instanceof NoteModel && MarkdownFormat.MARKDOWN_FORMAT.equals(noteController.getNoteContentType(node))))
+		    return  null;
+		String plainOrHtmlText = (String) content;
+		String text = HtmlUtils.htmlToPlain(plainOrHtmlText);
 		return text;
 	}
 }

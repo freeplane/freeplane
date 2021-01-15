@@ -16,7 +16,7 @@ import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.LogicalStyleModel;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.plugin.script.FormulaCache;
 import org.freeplane.plugin.script.FormulaDependencies;
@@ -32,7 +32,7 @@ public class FormulaUpdateChangeListener implements INodeChangeListener, IMapCha
 		// ALTERNATIVE: property.getClass() == Class.class && IExtension.class.isAssignableFrom((Class<?>)property)
         if (NodeModel.NODE_TEXT.equals(property) || NodeAttributeTableModel.class.equals(property)
                 || NodeModel.NOTE_TEXT.equals(property) || NodeModel.NODE_ICON.equals(property)
-                || LogicalStyleModel.class.equals(property) || DetailTextModel.class.equals(property)) {
+                || LogicalStyleModel.class.equals(property) || DetailModel.class.equals(property)) {
             nodeChangedImpl(false, event.getNode());
 		}
 	}

@@ -5,6 +5,6 @@ import org.freeplane.features.map.NodeModel;
 
 
 public interface IEditBaseCreator{
-	public EditNodeBase createEditor(final NodeModel nodeModel, final EditNodeBase.IEditControl editControl,
-	                                 Object content, final boolean  editLong);
+	public EditNodeBase createEditor(final NodeModel node, Object nodeProperty,
+	                                 Object content, final EditNodeBase.IEditControl editControl, final boolean  editLong);
 }

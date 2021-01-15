@@ -62,7 +62,7 @@ import org.freeplane.features.note.NoteStyleAccessor;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.mindmapmode.FreeplaneToSHTMLPropertyChangeAdapter;
 import org.freeplane.features.text.mindmapmode.MTextController;

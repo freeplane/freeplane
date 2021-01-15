@@ -27,7 +27,7 @@ import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 
@@ -57,7 +57,7 @@ public class DetailContentTypeControlGroup implements ControlGroup {
 
 		@Override
 		void setStyleOnExternalChange(NodeModel node) {
-		    String contentType = DetailTextModel.getDetailContentType(node);
+		    String contentType = DetailModel.getDetailContentType(node);
 			String viewContentType = TextController.getController().getDetailsContentType(node);
 			
 			mSetContentType.setValue(contentType != null);

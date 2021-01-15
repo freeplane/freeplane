@@ -13,7 +13,7 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeChangeEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.plugin.script.FormulaCache;
 import org.freeplane.plugin.script.ScriptContext;
 
@@ -41,7 +41,7 @@ class NodeChangeListeners implements IExtension{
 		private static final long serialVersionUID = 1L;
 		{
 			put(NodeModel.NODE_TEXT, ChangedElement.TEXT);
-			put(DetailTextModel.class, ChangedElement.DETAILS);
+			put(DetailModel.class, ChangedElement.DETAILS);
 			put(NodeModel.NOTE_TEXT, ChangedElement.NOTE);
 			put(NodeAttributeTableModel.class, ChangedElement.ATTRIBUTE);
 			put(NodeModel.NODE_ICON, ChangedElement.ICON);

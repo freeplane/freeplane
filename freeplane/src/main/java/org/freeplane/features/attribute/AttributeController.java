@@ -198,7 +198,7 @@ public class AttributeController implements IExtension {
 					tooltip.append(attributes.getValueAt(i, 0));
 					tooltip.append("</td><td style='border: 1px solid;'>");
 					final Object object = attributes.getValueAt(i, 1);
-					final String text = getTransformedValue(node, textController, object);
+					final String text = getTransformedValue(node, attributes, textController, object);
 					if(object instanceof URI){
 						tooltip.append("<a");
 						tooltip.append(" href=\"");
@@ -217,9 +217,9 @@ public class AttributeController implements IExtension {
 				return tooltip.toString();
 			}
 
-			private String getTransformedValue(NodeModel node, final TextController textController, final Object value) {
+			private String getTransformedValue(NodeModel node, NodeAttributeTableModel attributes, final TextController textController, final Object value) {
 				try {
-					final String text = textController.getTransformedText(value, node, null);
+					final String text = textController.getTransformedText(value, node, attributes);
 					final boolean markTransformedText = TextController.isMarkTransformedTextSet();
 					final String unicodeText = HtmlUtils.unicodeToHTMLUnicodeEntity(text);
 					if (markTransformedText && text != value)

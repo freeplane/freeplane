@@ -444,7 +444,7 @@ public class MainView extends ZoomableLabel {
 			if(nodeView.isSelected()){
 				nodeView.getMap().getModeController().getController().getViewController().addObjectTypeInfo(transformedContent);
 			}
-			Icon icon = textController.getIcon(transformedContent, nodeModel, userObject);
+			Icon icon = textController.getIcon(transformedContent);
 			putClientProperty(TEXT_RENDERING_ICON, icon);
 			text = transformedContent.toString();
 			textModified = transformedContent instanceof HighlightedTransformedObject ? TextModificationState.HIGHLIGHT : TextModificationState.NONE;

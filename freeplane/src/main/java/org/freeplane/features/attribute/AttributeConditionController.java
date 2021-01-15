@@ -151,9 +151,9 @@ static final TranslatedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new Translate
             for(int i = 0; i < list.getSize();i++){
             	final Object value = list.getElementAt(i);
             	final TextController textController = TextController.getController();
-            	if (! textController.isFormula(value, null, null)) {
+            	if (! textController.isFormula(value)) {
 					try {
-						final Object transformedValue = textController.getTransformedObject(value, map.getRootNode(), null);
+						final Object transformedValue = textController.getTransformedObject(value, map.getRootNode(), element);
 						linkedList.add(transformedValue);
 					} catch (TransformationException e) {
 						LogUtils.severe(e);

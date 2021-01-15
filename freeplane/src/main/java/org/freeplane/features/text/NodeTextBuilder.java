@@ -88,7 +88,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		}
 		else if (NodeTextBuilder.XML_RICHCONTENT_TYPE_DETAILS.equals(type)) {
 			final boolean hidden = "true".equals(element.getAttribute("HIDDEN", "false"));
-			final DetailTextModel details = new DetailTextModel(hidden);
+			final DetailModel details = new DetailModel(hidden);
 			if(containsXml(element))
 			    details.setXml(text);
 			else
@@ -199,7 +199,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		}
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
-			final String text = TextController.getController().getTransformedTextNoThrow(data, node, data);
+			final String text = TextController.getController().getTransformedTextNoThrow(data, node, node);
 			if (!HtmlUtils.isHtml(text)) {
 				writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
 			}
@@ -244,7 +244,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	 * java.lang.Object, java.lang.String)
 	 */
 	public void writeContent(final ITreeWriter writer, final Object object, final IExtension note) throws IOException {
-		DetailTextModel model = (DetailTextModel) note;
+		DetailModel model = (DetailModel) note;
 		final XMLElement element = new XMLElement();
 		element.setName(NodeTextBuilder.XML_NODE_RICHCONTENT_TAG);
         String contentType = model.getContentType();

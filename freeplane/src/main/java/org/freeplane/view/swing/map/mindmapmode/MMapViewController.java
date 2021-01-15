@@ -48,15 +48,11 @@ import org.freeplane.view.swing.map.ZoomableLabel;
  */
 public class MMapViewController extends MapViewController implements IEditBaseCreator {
 	@Override
-	public EditNodeBase createEditor(final NodeModel node, final EditNodeBase.IEditControl editControl,
-                             Object content, final boolean editLong) {
+	public EditNodeBase createEditor(final NodeModel node, Object nodeProperty,
+                             Object content, final EditNodeBase.IEditControl editControl, final boolean editLong) {
 	    String text;
-		if (content instanceof RichTextModel)
-			text = ((RichTextModel) content).getTextOr("");
-		else if(content instanceof String)
+		if(content instanceof String)
 			text = (String) content;
-		else if(content == null)
-			text = "";
 		else
 			throw new IllegalArgumentException("Unknown content type " + content);
 	    final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
@@ -117,8 +113,9 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 			final EditNodeBase textfield = createEditor(node, editControl.getEditType(), text, editControl);
 			if(textfield != null)
 				return textfield;
+			else
+				return createEditor(node, nodeProperty, text, editControl, true);
 		}
-		return createEditor(node, editControl, text, true);
     }
 
 	private EditNodeBase createEditor(final NodeModel node, final EditedComponent parent, final String text,

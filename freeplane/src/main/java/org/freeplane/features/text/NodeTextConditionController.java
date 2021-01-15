@@ -200,7 +200,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 				result = transformedObject(parentNode);
 		}
 		else if(nodeItem.equals(TextController.FILTER_DETAILS)){
-			result = DetailTextModel.getDetailTextText(node);
+			result = DetailModel.getDetailText(node);
 		}
 		else if(nodeItem.equals(TextController.FILTER_NOTE)){
 			result = NoteModel.getNoteText(node);
@@ -214,7 +214,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 
 	private static Object transformedObject(final NodeModel node) {
 		final Object userObject = node.getUserObject();
-		return TextController.getController().getTransformedObjectNoFormattingNoThrow(userObject, node, null);
+		return TextController.getController().getTransformedObjectNoFormattingNoThrow(userObject, node, node);
 	}
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {

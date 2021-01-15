@@ -38,7 +38,7 @@ import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.MainView.TextModificationState;
@@ -239,12 +239,12 @@ class NodeViewFactory {
 
 	void updateDetails(NodeView nodeView, int minNodeWidth, int maxNodeWidth) {
 		NodeModel node = nodeView.getModel();
-		String detailTextText = DetailTextModel.getDetailTextText(node);
+		String detailTextText = DetailModel.getDetailText(node);
 		if (detailTextText == null) {
 			nodeView.removeContent(NodeView.DETAIL_VIEWER_POSITION);
 			return;
 		}
-		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
+		final DetailModel detailText = DetailModel.getDetail(node);
 		DetailsView detailContent = (DetailsView) nodeView.getContent(NodeView.DETAIL_VIEWER_POSITION);
 		if (detailContent == null) {
 			detailContent = createDetailView();
@@ -264,7 +264,7 @@ class NodeViewFactory {
 			try {
 				TextController textController = map.getModeController().getExtension(TextController.class);
 				final Object transformedContent = textController.getTransformedObject(detailTextText, node, detailText);
-				Icon icon = textController.getIcon(transformedContent, node, detailText);
+				Icon icon = textController.getIcon(transformedContent);
 				detailContent.putClientProperty(ZoomableLabel.TEXT_RENDERING_ICON, icon);
 				text = transformedContent.toString();
 			}

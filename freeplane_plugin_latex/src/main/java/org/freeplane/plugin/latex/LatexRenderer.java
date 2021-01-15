@@ -18,7 +18,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.text.AbstractContentTransformer;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.TransformationException;
@@ -44,10 +44,18 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 	}
 
 	@Override
-	public Object transformContent(TextController textController,
-			Object content, NodeModel node, Object transformedExtension)
+	public Object transformContent(NodeModel node,
+			Object nodeProperty, Object content, TextController textController)
 			throws TransformationException {
-		return content;
+		final String latext = getText(node, nodeProperty, content, TargetMode.FOR_ICON, textController);
+		if (latext == null)
+			return content;
+		final NodeStyleController ncs = NodeStyleController.getController(textController.getModeController());
+		final int maxWidth = ncs.getMaxWidth(node).toBaseUnitsRounded();
+		TeXText teXt = new TeXText(latext);
+		int fontSize = Math.round(ncs.getFontSize(node) * UITools.FONT_SCALE_FACTOR);
+		TeXIcon icon = teXt.createTeXIcon(TeXConstants.STYLE_DISPLAY, fontSize, TeXConstants.ALIGN_LEFT, maxWidth);
+		return icon;
 	}
 
 	private static boolean checkForLatexPrefix(final String nodeText, final String prefix)
@@ -78,27 +86,13 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 	}
 
 	@Override
-	public Icon getIcon(TextController textController, Object content,
-			NodeModel node, Object transformedExtension) {
-			final String latext = getText(textController, content, node, TargetMode.FOR_ICON, transformedExtension);
-			if (latext == null)
-				return null;
-			final NodeStyleController ncs = NodeStyleController.getController(textController.getModeController());
-			final int maxWidth = ncs.getMaxWidth(node).toBaseUnitsRounded();
-			TeXText teXt = new TeXText(latext);
-			int fontSize = Math.round(ncs.getFontSize(node) * UITools.FONT_SCALE_FACTOR);
-			TeXIcon icon = teXt.createTeXIcon(TeXConstants.STYLE_DISPLAY, fontSize, TeXConstants.ALIGN_LEFT, maxWidth);
-			return icon;
-	}
-
-	@Override
 	public EditNodeBase createEditor(NodeModel node,
-			IEditControl editControl, Object transformedExtension, boolean editLong) {
+			Object nodeProperty, Object content, IEditControl editControl, boolean editLong) {
 		// this option has been added to work around bugs in JSyntaxPane with Chinese characters
 		if (ResourceController.getResourceController().getBooleanProperty(LATEX_EDITOR_DISABLE))
 			return null;
         MTextController textController = MTextController.getController();
-        String latexText = getText(textController, null, node, TargetMode.FOR_EDITOR, transformedExtension);
+        String latexText = getText(node, nodeProperty, content, TargetMode.FOR_EDITOR, textController);
         if(latexText == null)
             return null;
 
@@ -124,24 +118,23 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		return editNodeDialog;
 	}
 
-	private String getText(TextController textController, Object content, NodeModel node, TargetMode targetMode, Object transformedExtension) {
-		String contentType = LatexFormat.LATEX_FORMAT;
+	private String getText(NodeModel node, Object nodeProperty, Object content, TargetMode targetMode, TextController textController) {
+		if(! (content instanceof String))
+			return null;
 		MNoteController noteController = MNoteController.getController();
-		String plainOrHtmlText;
 		String nodeFormat;
-		if (transformedExtension instanceof String) {
+		if (nodeProperty instanceof NodeModel) {
 		    if (! textController.isTextFormattingDisabled(node)) {
-		        plainOrHtmlText = (String) transformedExtension;
 		        nodeFormat = textController.getNodeFormat(node);
 		    } else
 		        return  null;
-		} else if (transformedExtension instanceof DetailTextModel && contentType.equals(textController.getDetailsContentType(node))
-		        || transformedExtension instanceof NoteModel && contentType.equals(noteController.getNoteContentType(node))) {
-		    plainOrHtmlText = ((RichTextModel) transformedExtension).getTextOr("");
+		} else if (nodeProperty instanceof DetailModel && LatexFormat.LATEX_FORMAT.equals(textController.getDetailsContentType(node))
+		        || nodeProperty instanceof NoteModel && LatexFormat.LATEX_FORMAT.equals(noteController.getNoteContentType(node))) {
 		    nodeFormat = LatexFormat.LATEX_FORMAT;
 		}
 		else
 		    return  null;
+		String plainOrHtmlText = (String) content;
 		String text = HtmlUtils.htmlToPlain(plainOrHtmlText);
 		String latexText = getLatexText(text, nodeFormat, targetMode);
 		return latexText;

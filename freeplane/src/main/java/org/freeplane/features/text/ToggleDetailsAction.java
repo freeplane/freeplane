@@ -56,7 +56,7 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 
  	@Override
     protected void actionPerformed(ActionEvent e, NodeModel node) {
-		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
+		final DetailModel detailText = DetailModel.getDetail(node);
 		if(detailText == null){
 			return;
 		}
@@ -70,7 +70,7 @@ class ToggleDetailsAction extends AMultipleNodeAction {
         isHidden = false;
         final Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
         for (final NodeModel node : nodes) {
-            final DetailTextModel detailText = DetailTextModel.getDetailText(node);
+            final DetailModel detailText = DetailModel.getDetail(node);
 			if (detailText != null) {
                 foundDetails = true;
                 isHidden = detailText.isHidden();
@@ -83,7 +83,7 @@ class ToggleDetailsAction extends AMultipleNodeAction {
 	public void setSelected() {
     	try {
     		NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
-    		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
+    		final DetailModel detailText = DetailModel.getDetail(node);
     		if (detailText == null) {
     			setSelected(false);
     			setEnabled(false);

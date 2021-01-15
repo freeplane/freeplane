@@ -47,7 +47,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.styles.MapStyleModel;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
 
@@ -292,7 +292,7 @@ class MindMapHTMLWriter {
 		}
 		final TextController textController = TextController.getController();
 		final Object userObject = model.getUserObject();
-		final String text = textController.getTransformedTextNoThrow(userObject, model, userObject);
+		final String text = textController.getTransformedTextNoThrow(userObject, model, model);
 		final boolean hasHtml = text.startsWith("<html>");
 		final boolean heading = basedOnHeadings && !hasHtml && model.hasChildren() && depth <= 6;
 		if (!treatAsParagraph && !basedOnHeadings) {
@@ -334,7 +334,7 @@ class MindMapHTMLWriter {
 		if (shouldOutputFontStyle) {
 			fileout.write("</span>");
 		}
-		final String detailText = DetailTextModel.getDetailTextText(model);
+		final String detailText = DetailModel.getDetailText(model);
 		if (detailText != null) {
 			writeModelContent(detailText);
 		}

@@ -53,11 +53,11 @@ public class ConditionalContentTransformer implements IContentTransformer, IEdit
 	}
 
 	@Override
-	public Object transformContent(TextController textController,
-			Object content, NodeModel node, Object transformedExtension)
+	public Object transformContent(NodeModel node,
+			Object nodeProperty, Object content, TextController textController)
 			throws TransformationException {
 		if (isTransformationActive())
-			return target.transformContent(textController, content, node, transformedExtension);
+			return target.transformContent(node, nodeProperty, content, textController);
 		else
 			return content;
 	}
@@ -69,21 +69,11 @@ public class ConditionalContentTransformer implements IContentTransformer, IEdit
 	
 
 	@Override
-	public boolean isFormula(TextController textController,
-			Object content, NodeModel node, Object transformedExtension) {
+	public boolean isFormula(Object content) {
 			if (isTransformationActive())
-				return target.isFormula(textController, content, node, transformedExtension);
+				return target.isFormula(content);
 			else
 				return false;
-	}
-
-	@Override
-	public Icon getIcon(TextController textController, Object content,
-			NodeModel node, Object transformedExtension) {
-		if (isTransformationActive())
-			return target.getIcon(textController, content, node, transformedExtension);
-		else
-			return null;
 	}
 
 	@Override
@@ -97,9 +87,9 @@ public class ConditionalContentTransformer implements IContentTransformer, IEdit
 	}
 
 	@Override
-	public EditNodeBase createEditor(NodeModel nodeModel, IEditControl editControl, Object content, boolean editLong) {
+	public EditNodeBase createEditor(NodeModel node, Object nodeProperty, Object content, IEditControl editControl, boolean editLong) {
 		if (target instanceof IEditBaseCreator && isTransformationActive())
-			return ((IEditBaseCreator)target).createEditor(nodeModel, editControl, content, editLong);
+			return ((IEditBaseCreator)target).createEditor(node, nodeProperty, content, editControl, editLong);
 		else
 			return null;
 	}

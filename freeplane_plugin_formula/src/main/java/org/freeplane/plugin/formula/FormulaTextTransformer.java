@@ -20,7 +20,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.text.AbstractContentTransformer;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
@@ -37,18 +37,18 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 	}
 
     @Override
-	public Object transformContent(TextController textController, final Object obj, final NodeModel node,
-                                   Object transformedExtension) {
+	public Object transformContent(final NodeModel node, Object nodeProperty, final Object obj,
+                                   TextController textController) {
         if (obj instanceof FormattedFormula) {
             final FormattedFormula formattedFormula = (FormattedFormula) obj;
-            final Object evaluationResult = transformContent(textController, formattedFormula.getObject(), node,
-                transformedExtension);
+            final Object evaluationResult = transformContent(node, nodeProperty, formattedFormula.getObject(),
+                textController);
             return new FormattedObject(evaluationResult, formattedFormula.getPattern());
         }
         if (!(obj instanceof String)) {
             return obj;
         }
-        if (transformedExtension == node.getUserObject() && textController.isTextFormattingDisabled(node))
+        if (nodeProperty == node && textController.isTextFormattingDisabled(node))
             return obj;
         final String text = obj.toString();
         if (!FormulaUtils.containsFormula(text)) {
@@ -61,17 +61,14 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
     }
 
     @Override
-	public boolean isFormula(TextController textController, final Object obj, final NodeModel node,
-    		Object transformedExtension) {
+	public boolean isFormula(final Object obj) {
     	if (obj instanceof FormattedFormula) {
     		final FormattedFormula formattedFormula = (FormattedFormula) obj;
-    		return isFormula(textController, formattedFormula.getObject(), node,transformedExtension);
+    		return isFormula(formattedFormula.getObject());
     	}
     	if (!(obj instanceof String)) {
     		return false;
     	}
-    	if (node != null && transformedExtension == node.getUserObject() && textController.isTextFormattingDisabled(node))
-    		return false;
     	final String text = obj.toString();
     	if (!FormulaUtils.containsFormula(text)) {
     		return false;
@@ -80,10 +77,10 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
     }
 
     @Override
-    public EditNodeBase createEditor(final NodeModel node, final EditNodeBase.IEditControl editControl,
-            Object content, final boolean editLong) {
+    public EditNodeBase createEditor(final NodeModel node, Object nodeProperty,
+            Object content, final EditNodeBase.IEditControl editControl, final boolean editLong) {
         MTextController textController = MTextController.getController();
-        String text = getEditedText(node, content, textController);
+        String text = getEditedText(node, nodeProperty, content, textController);
         if(text == null)
             return null;
         JEditorPane textEditor = new JEditorPane();
@@ -107,27 +104,25 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
         return editNodeDialog;
     }
 
-	private String getEditedText(final NodeModel node, Object content, MTextController textController) {
+	private String getEditedText(final NodeModel node, Object nodeProperty, Object content, MTextController textController) {
+		if(! (content instanceof String))
+			return null;
 		MNoteController noteController = MNoteController.getController();
-		String plainOrHtmlText;
-		if (content instanceof String) {
+		if (nodeProperty instanceof NodeModel) {
 		    if (! textController.isTextFormattingDisabled(node)) {
 		        final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
 	            if (firstKeyEvent != null && firstKeyEvent.getKeyChar() == '='){
-	            	plainOrHtmlText = "=";
+	            	return "=";
 	            }
-	            else
-	            	plainOrHtmlText = (String) content;
-
 		    } else
 		        return null;
-		} else if (content instanceof DetailTextModel && CONTENT_TYPE_FORMULA.equals(textController.getDetailsContentType(node))
-		        || content instanceof NoteModel && CONTENT_TYPE_FORMULA.equals(noteController.getNoteContentType(node))) {
-		    plainOrHtmlText = ((RichTextModel) content).getTextOr("=");
-		}
-		else
+		} else if (! (content instanceof DetailModel && CONTENT_TYPE_FORMULA.equals(textController.getDetailsContentType(node))
+		        || content instanceof NoteModel && CONTENT_TYPE_FORMULA.equals(noteController.getNoteContentType(node))))
 			return null;
+		String plainOrHtmlText = (String)content;
 		String text = HtmlUtils.htmlToPlain(plainOrHtmlText);
+        if(! FormulaUtils.containsFormula(text))
+        	return null;
 		return text;
 	}
 
