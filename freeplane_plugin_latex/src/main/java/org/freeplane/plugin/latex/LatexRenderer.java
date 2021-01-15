@@ -13,7 +13,6 @@ import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.note.NoteModel;
@@ -81,13 +80,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 	@Override
 	public Icon getIcon(TextController textController, Object content,
 			NodeModel node, Object transformedExtension) {
-		if(transformedExtension == node.getUserObject()){
-			String string = content.toString();
-			String nodeFormat = textController.getNodeFormat(node);
-			if (PatternFormat.IDENTITY_PATTERN.equals(nodeFormat))
-				return null;
-
-			final String latext = getLatexText(string, nodeFormat, TargetMode.FOR_ICON);
+			final String latext = getText(textController, content, node, TargetMode.FOR_ICON, transformedExtension);
 			if (latext == null)
 				return null;
 			final NodeStyleController ncs = NodeStyleController.getController(textController.getModeController());
@@ -96,18 +89,16 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 			int fontSize = Math.round(ncs.getFontSize(node) * UITools.FONT_SCALE_FACTOR);
 			TeXIcon icon = teXt.createTeXIcon(TeXConstants.STYLE_DISPLAY, fontSize, TeXConstants.ALIGN_LEFT, maxWidth);
 			return icon;
-		}
-		return null;
 	}
 
 	@Override
 	public EditNodeBase createEditor(NodeModel node,
-			IEditControl editControl, Object content, boolean editLong) {
+			IEditControl editControl, Object transformedExtension, boolean editLong) {
 		// this option has been added to work around bugs in JSyntaxPane with Chinese characters
 		if (ResourceController.getResourceController().getBooleanProperty(LATEX_EDITOR_DISABLE))
 			return null;
         MTextController textController = MTextController.getController();
-        String latexText = getEditedText(node, content, textController);
+        String latexText = getText(textController, null, node, TargetMode.FOR_EDITOR, transformedExtension);
         if(latexText == null)
             return null;
 
@@ -133,26 +124,26 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		return editNodeDialog;
 	}
 
-	private String getEditedText(NodeModel node, Object content, MTextController textController) {
+	private String getText(TextController textController, Object content, NodeModel node, TargetMode targetMode, Object transformedExtension) {
 		String contentType = LatexFormat.LATEX_FORMAT;
 		MNoteController noteController = MNoteController.getController();
 		String plainOrHtmlText;
 		String nodeFormat;
-		if (content instanceof String) {
+		if (transformedExtension instanceof String) {
 		    if (! textController.isTextFormattingDisabled(node)) {
-		        plainOrHtmlText = (String) content;
+		        plainOrHtmlText = (String) transformedExtension;
 		        nodeFormat = textController.getNodeFormat(node);
 		    } else
 		        return  null;
-		} else if (content instanceof DetailTextModel && contentType.equals(textController.getDetailsContentType(node))
-		        || content instanceof NoteModel && contentType.equals(noteController.getNoteContentType(node))) {
-		    plainOrHtmlText = ((RichTextModel) content).getTextOr("");
+		} else if (transformedExtension instanceof DetailTextModel && contentType.equals(textController.getDetailsContentType(node))
+		        || transformedExtension instanceof NoteModel && contentType.equals(noteController.getNoteContentType(node))) {
+		    plainOrHtmlText = ((RichTextModel) transformedExtension).getTextOr("");
 		    nodeFormat = LatexFormat.LATEX_FORMAT;
 		}
 		else
 		    return  null;
 		String text = HtmlUtils.htmlToPlain(plainOrHtmlText);
-		String latexText = getLatexText(text, nodeFormat, TargetMode.FOR_EDITOR);
+		String latexText = getLatexText(text, nodeFormat, targetMode);
 		return latexText;
 	}
 }

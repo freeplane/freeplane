@@ -24,10 +24,13 @@ import java.awt.Container;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.ui.IMouseListener;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
@@ -36,6 +39,9 @@ import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.HighlightedTransformedObject;
+import org.freeplane.features.text.TextController;
+import org.freeplane.view.swing.map.MainView.TextModificationState;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DetailsViewMouseListener;
 
@@ -232,11 +238,13 @@ class NodeViewFactory {
 	}
 
 	void updateDetails(NodeView nodeView, int minNodeWidth, int maxNodeWidth) {
-		if (DetailTextModel.getDetailTextText(nodeView.getModel()) == null) {
+		NodeModel node = nodeView.getModel();
+		String detailTextText = DetailTextModel.getDetailTextText(node);
+		if (detailTextText == null) {
 			nodeView.removeContent(NodeView.DETAIL_VIEWER_POSITION);
 			return;
 		}
-		final DetailTextModel detailText = DetailTextModel.getDetailText(nodeView.getModel());
+		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
 		DetailsView detailContent = (DetailsView) nodeView.getContent(NodeView.DETAIL_VIEWER_POSITION);
 		if (detailContent == null) {
 			detailContent = createDetailView();
@@ -252,7 +260,19 @@ class NodeViewFactory {
 			detailContent.setFont(map.getDetailFont());
 			detailContent.setHorizontalAlignment(map.getDetailHorizontalAlignment());
 			detailContent.setIcon(new ArrowIcon(nodeView, false));
-			detailContent.updateText(detailText.getText());
+			String text;
+			try {
+				TextController textController = map.getModeController().getExtension(TextController.class);
+				final Object transformedContent = textController.getTransformedObject(detailTextText, node, detailText);
+				Icon icon = textController.getIcon(transformedContent, node, detailText);
+				detailContent.putClientProperty(ZoomableLabel.TEXT_RENDERING_ICON, icon);
+				text = transformedContent.toString();
+			}
+			catch (Throwable e) {
+				LogUtils.warn(e.getMessage());
+				text = TextUtils.format("MainView.errorUpdateText", detailTextText, e.getLocalizedMessage());
+			}
+			detailContent.updateText(text);
 		}
 		detailContent.setForeground(map.getDetailForeground());
 		detailContent.setBackground(map.getDetailBackground());

@@ -13,6 +13,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.text.AbstractContentTransformer;
@@ -46,19 +47,17 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
         if (!(content instanceof String)) {
             return content;
         }
-        if (transformedExtension == node.getUserObject()) {
-            if (textController.isTextFormattingDisabled(node))
-                return content;
-            String nodeFormat = textController.getNodeFormat(node);
-            if(! MarkdownFormat.MARKDOWN_FORMAT.equals(nodeFormat))
-                return content;
-        }
-        if(transformedExtension == node.getUserObject()){
-            String markdown = (String) content;
-            String html = "<html>" + Marked.marked(markdown);
-            return html;
-          }
-        return content;
+        
+        if(!canTransform(textController, content, node))
+        	return content;
+        
+        String markdown = (String) content;
+        String html = "<html>" + Marked.marked(markdown);
+        return html;
+	}
+
+	private boolean canTransform(TextController textController, Object content, NodeModel node) {
+		return getEditedText(node, content, textController) != null;
 	}
 
 	@Override
@@ -99,17 +98,16 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 		return null;
 	}
 
-	private String getEditedText(NodeModel node, Object content, MTextController textController) {
-		String contentType = MarkdownFormat.MARKDOWN_FORMAT;
-		MNoteController noteController = MNoteController.getController();
+	private String getEditedText(NodeModel node, Object content, TextController textController) {
+		NoteController noteController = NoteController.getController();
 		String plainOrHtmlText;
 		if (content instanceof String) {
 		    if (! textController.isTextFormattingDisabled(node)) {
 		        plainOrHtmlText = (String) content;
 		    } else
 		        plainOrHtmlText =  null;
-		} else if (content instanceof DetailTextModel && contentType.equals(textController.getDetailsContentType(node))
-		        || content instanceof NoteModel && contentType.equals(noteController.getNoteContentType(node))) {
+		} else if (content instanceof DetailTextModel && MarkdownFormat.MARKDOWN_FORMAT.equals(textController.getDetailsContentType(node))
+		        || content instanceof NoteModel && MarkdownFormat.MARKDOWN_FORMAT.equals(noteController.getNoteContentType(node))) {
 		    plainOrHtmlText = ((RichTextModel) content).getText();
 		}
 		else
