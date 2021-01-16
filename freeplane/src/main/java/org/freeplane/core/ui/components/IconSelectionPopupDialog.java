@@ -361,9 +361,9 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 				final IconDescription icon = currentIcons.get(i);
 				rowPanel.add(currentIconLabels[i] = new JLabel(icon.getIcon()));
 				currentIconLabels[i].setBackground(panelBackgroundColor);
-				currentIconLabels[i]
-						.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0),
-								BorderFactory.createLineBorder(panelBackgroundColor, 1)));
+//				currentIconLabels[i]
+//						.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0),
+//								BorderFactory.createLineBorder(panelBackgroundColor, 1))); // SR: Disable borders around icons
 				currentIconLabels[i].addMouseListener(this);
 			} else {
 				rowPanel.add(new JLabel(" "));
@@ -377,7 +377,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		iconPanel.setMinimumSize(size);
 		iconPanel.setMaximumSize(size);
 		iconPanel.setSize(size);
-		iconPanel.repaint(100); // Try to fix icons not painting bug (shows up on macOS Catalina)
+		iconPanel.repaint(100); // SR: Try to fix icons not painting bug (shows up on macOS Catalina)
 	}
 
 	private void removeAllIconsFromIconPanel() {
