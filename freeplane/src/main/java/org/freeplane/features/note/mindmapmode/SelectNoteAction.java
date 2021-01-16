@@ -23,10 +23,7 @@ import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JEditorPane;
-import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
-import com.lightdev.app.shtm.SHTMLPanel;
 
 class SelectNoteAction extends AFreeplaneAction {
 	/**
@@ -57,16 +54,12 @@ class SelectNoteAction extends AFreeplaneAction {
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				final SHTMLPanel htmlEditorPanel = noteController.getHtmlEditorPanel();
 				if (! noteController.isNoteEditorShowing()) {
 					noteController.showNotesPanel(true);
 				}
 				else {
-					htmlEditorPanel.getMostRecentFocusOwner().requestFocusInWindow();
-					if (ResourceController.getResourceController().getBooleanProperty("goto_note_end_on_edit")) {
-						final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
-						editorPane.setCaretPosition(editorPane.getDocument().getLength());
-					}
+					final NotePanel htmlEditorPanel = noteController.getNotePanel();
+					htmlEditorPanel.requestFocusInWindow();
 				}
 			}
 		});

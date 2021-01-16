@@ -19,11 +19,9 @@
  */
 package org.freeplane.features.note.mindmapmode;
 
-import java.net.URL;
 import java.util.regex.Pattern;
 
 import javax.swing.SwingUtilities;
-import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.map.IMapSelectionListener;
@@ -32,19 +30,15 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.note.NoteModel;
-import org.freeplane.features.note.mindmapmode.MNoteController.NoteDocumentListener;
-
-import com.lightdev.app.shtm.SHTMLPanel;
 
 final class NoteManager implements INodeSelectionListener, IMapSelectionListener {
 	public final static Pattern HEAD = Pattern.compile("<head>.*</head>\n", Pattern.DOTALL);
 	private boolean ignoreEditorUpdate;
-	NoteDocumentListener mNoteDocumentListener;
-	private NodeModel node;
+	NodeModel node;
 	/**
 	 *
 	 */
-	final private MNoteController noteController;
+	final MNoteController noteController;
 
 	public NoteManager(final MNoteController noteController) {
 		this.noteController = noteController;
@@ -52,11 +46,11 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 
 	@Override
 	public void onDeselect(final NodeModel node) {
-		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
-		if (noteViewerComponent == null) {
+		final NotePanel notePanel = noteController.getNotePanel();
+		if (notePanel == null) {
 			return;
 		}
-		noteViewerComponent.getDocument().removeDocumentListener(mNoteDocumentListener);
+		notePanel.removeDocumentListener();
 		saveNote(node);
 		this.node = null;
 	}
@@ -71,16 +65,16 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		if (node == null) {
 			return;
 		}
-		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
-		if (noteViewerComponent == null) {
+		final NotePanel notePanel = noteController.getNotePanel();
+		if (notePanel == null) {
 			return;
 		}
 		boolean editorContentEmpty = true;
-		String documentText = noteViewerComponent.getDocumentText();
+		String documentText = notePanel.getDocumentText();
 		documentText = HEAD.matcher(documentText).replaceFirst("");
 		editorContentEmpty = HtmlUtils.isEmpty(documentText);
 		Controller.getCurrentModeController().getMapController().removeNodeSelectionListener(this);
-		if (noteViewerComponent.needsSaving()) {
+		if (notePanel.needsSaving()) {
 			try {
 				ignoreEditorUpdate = true;
 				if (editorContentEmpty) {
@@ -115,33 +109,24 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		if (ignoreEditorUpdate) {
 			return;
 		}
-		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
-		if (noteViewerComponent == null) {
+		final NotePanel notePanel = noteController.getNotePanel();
+		if (notePanel == null) {
 			return;
 		}
-		final HTMLDocument document = noteViewerComponent.getDocument();
-		document.removeDocumentListener(mNoteDocumentListener);
-		try {
-			final URL url = node.getMap().getURL();
-			if (url != null) {
-				document.setBase(url);
-			}
-			else {
-				document.setBase(new URL("file: "));
-			}
+		notePanel.removeDocumentListener();
+		if(node != null) {
+			notePanel.updateBaseUrl(node.getMap().getURL());
+			noteController.setDefaultStyle(this.node);
 		}
-		catch (final Exception e) {
-		}
-		noteController.setDefaultStyle(node);
-		final String note = node != null ? NoteModel.getNoteText(node) : null;
+		final String note = this.node != null ? NoteModel.getNoteText(this.node) : null;
 		if (note != null)
-			noteViewerComponent.setCurrentDocumentContent(note);
+			notePanel.setCurrentDocumentContent(note);
 		else
-			noteViewerComponent.setCurrentDocumentContent("");
+			notePanel.setCurrentDocumentContent("");
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				document.addDocumentListener(mNoteDocumentListener);
+				notePanel.installDocumentListener();
 			}
 		});
 	}
@@ -150,11 +135,12 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 	public void afterMapChange(MapModel oldMap, MapModel newMap) {
 		if(newMap == null) {
 			node = null;
-			final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
-			if(noteViewerComponent != null)
-				noteViewerComponent.setCurrentDocumentContent("");
+			final NotePanel notePanel = noteController.getNotePanel();
+			if(notePanel != null)
+				notePanel.setCurrentDocumentContent("");
 		}
 	}
+	
 
 	NodeModel getNode() {
 		return node;
