@@ -25,6 +25,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsDevice.WindowTranslucency;
+import java.awt.IllegalComponentStateException;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
@@ -42,12 +46,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.FreeplaneVersion;
 import org.freeplane.features.mode.Controller;
 
-/**
- * Class that displays a splash screen
- * Is run in a separate thread so that the applet continues to load in the background
- * @author Karsten Pawlik
- *
- */
 public class FreeplaneSplashModern extends JWindow {
 	/**
 	 *
@@ -60,14 +58,14 @@ public class FreeplaneSplashModern extends JWindow {
 		super(frame);
 		splashResource = ResourceController.getResourceController().getResource(FREEPLANE_SPLASH_PNG);
 		splashImage = new ImageIcon(splashResource);
-		setBackground(new Color(40, 75, 144));
+		GraphicsConfiguration gc = getGraphicsConfiguration();
+        GraphicsDevice gd = gc.getDevice();
+        int alpha = gd.isWindowTranslucencySupported(WindowTranslucency.TRANSLUCENT) ? 0 : 255;
+		setBackground(new Color(40, 75, 144, alpha));
 		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		final Dimension labelSize = new Dimension(splashImage.getIconWidth(), splashImage.getIconHeight());
 		setLocation(screenSize.width / 2 - (labelSize.width / 2), screenSize.height / 2 - (labelSize.height / 2));
 		setSize(labelSize);
-		RootPane rootPane = new RootPane();
-		rootPane.setSize(labelSize);
-		setRootPane(rootPane);
 	}
 
 	private void createVersionTextFont() {
@@ -86,38 +84,26 @@ public class FreeplaneSplashModern extends JWindow {
 	private final ImageIcon splashImage;
 	private final URL splashResource;
 
-	@SuppressWarnings("serial")
-    private class RootPane extends JRootPane{
-
-		public RootPane() {
-			setDoubleBuffered(false);
-		}
-
-		@Override
-		public void paintComponent(final Graphics g) {
-			final Graphics2D g2 = (Graphics2D) g;
-			splashImage.paintIcon(this, g2, 0, 0);
-			final String splashResourceType = splashResource.getProtocol();
-			final String classResourceType = getClass().getResource(FreeplaneSplashModern.class.getSimpleName() + ".class").getProtocol();
-			if(! splashResourceType.equals(classResourceType))
-				return;
-			g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			final FreeplaneVersion version = FreeplaneVersion.getVersion();
-			final String versionString = getVersionText(version);
-			g2.setColor(Color.WHITE);
-			createVersionTextFont();
-			final float versionFontSize= 20;
-			g2.setFont(versionTextFont.deriveFont(versionFontSize));
-			int versionStringWidth = g2.getFontMetrics().stringWidth(versionString);
-			int distanceToRightEdge = 48;
-			final int xCoordinate = splashImage.getIconWidth() - versionStringWidth - distanceToRightEdge;
-			final int yCoordinate = 28;
-			g2.drawString(versionString, xCoordinate, yCoordinate);
-		}
-
-		@Override
-		public void paintChildren(final Graphics g) {
-		}
+	@Override
+	public void paint(final Graphics g) {
+		final Graphics2D g2 = (Graphics2D) g;
+		splashImage.paintIcon(this, g2, 0, 0);
+		final String splashResourceType = splashResource.getProtocol();
+		final String classResourceType = getClass().getResource(FreeplaneSplashModern.class.getSimpleName() + ".class").getProtocol();
+		if(! splashResourceType.equals(classResourceType))
+			return;
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		final FreeplaneVersion version = FreeplaneVersion.getVersion();
+		final String versionString = getVersionText(version);
+		g2.setColor(Color.WHITE);
+		createVersionTextFont();
+		final float versionFontSize= 20;
+		g2.setFont(versionTextFont.deriveFont(versionFontSize));
+		int versionStringWidth = g2.getFontMetrics().stringWidth(versionString);
+		int distanceToRightEdge = 48;
+		final int xCoordinate = splashImage.getIconWidth() - versionStringWidth - distanceToRightEdge;
+		final int yCoordinate = 28;
+		g2.drawString(versionString, xCoordinate, yCoordinate);
 	}
 
 	private String getVersionText(final FreeplaneVersion version) {
