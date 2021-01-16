@@ -21,15 +21,20 @@ package org.freeplane.features.note.mindmapmode;
 
 import java.util.regex.Pattern;
 
+import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.note.NoteModel;
+import org.freeplane.features.text.RichTextModel;
+import org.freeplane.features.text.TextController;
 
 final class NoteManager implements INodeSelectionListener, IMapSelectionListener {
 	public final static Pattern HEAD = Pattern.compile("<head>.*</head>\n", Pattern.DOTALL);
@@ -66,7 +71,7 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 			return;
 		}
 		final NotePanel notePanel = noteController.getNotePanel();
-		if (notePanel == null) {
+		if (notePanel == null || ! notePanel.isEditable() || ! notePanel.needsSaving()) {
 			return;
 		}
 		boolean editorContentEmpty = true;
@@ -74,26 +79,24 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		documentText = HEAD.matcher(documentText).replaceFirst("");
 		editorContentEmpty = HtmlUtils.isEmpty(documentText);
 		Controller.getCurrentModeController().getMapController().removeNodeSelectionListener(this);
-		if (notePanel.needsSaving()) {
-			try {
-				ignoreEditorUpdate = true;
-				if (editorContentEmpty) {
-					noteController.setNoteText(node, null);
-				}
+		try {
+			ignoreEditorUpdate = true;
+			if (editorContentEmpty) {
+				noteController.setNoteText(node, null);
+			}
+			else {
+				final String oldText = noteController.getNoteText(node);
+				if (null == oldText)
+					noteController.setNoteText(node, documentText);
 				else {
-					final String oldText = noteController.getNoteText(node);
-					if (null == oldText)
+					final String oldTextWithoutHead = HEAD.matcher(oldText).replaceFirst("");
+					if (!oldTextWithoutHead.trim().equals(documentText.trim()))
 						noteController.setNoteText(node, documentText);
-					else {
-						final String oldTextWithoutHead = HEAD.matcher(oldText).replaceFirst("");
-						if (!oldTextWithoutHead.trim().equals(documentText.trim()))
-							noteController.setNoteText(node, documentText);
-					}
 				}
 			}
-			finally {
-				ignoreEditorUpdate = false;
-			}
+		}
+		finally {
+			ignoreEditorUpdate = false;
 		}
 		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(this);
 	}
@@ -114,15 +117,33 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 			return;
 		}
 		notePanel.removeDocumentListener();
-		if(node != null) {
+		if(node == null) {
+			return;
+		}
+		final String note = this.node != null ? NoteModel.getNoteText(this.node) : null;
+		TextController textController = TextController.getController();
+		if (note != null) {
+			try {
+				final Object transformedContent = textController.getTransformedObject(note, node, NoteModel.getNote(node));
+				Icon icon = textController.getIcon(transformedContent);
+				if(icon != null)
+					notePanel.setViewedImage(icon);
+				else if (transformedContent == note)
+					notePanel.setEditedContent(note);
+				else
+					notePanel.setViewedContent(transformedContent.toString());
+			}
+			catch (Throwable e) {
+				LogUtils.warn(e.getMessage());
+				notePanel.setViewedContent(TextUtils.format("MainView.errorUpdateText", note, e.getLocalizedMessage()));
+			}
 			notePanel.updateBaseUrl(node.getMap().getURL());
 			noteController.setDefaultStyle(this.node);
 		}
-		final String note = this.node != null ? NoteModel.getNoteText(this.node) : null;
-		if (note != null)
-			notePanel.setEditedContent(note);
+		else if (RichTextModel.DEFAULT_CONTENT_TYPE.equals(noteController.getNoteContentType(node)))
+				notePanel.setEditedContent("");
 		else
-			notePanel.setEditedContent("");
+			notePanel.setViewedContent("");
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

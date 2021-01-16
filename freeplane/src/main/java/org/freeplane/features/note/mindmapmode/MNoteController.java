@@ -203,8 +203,11 @@ public class MNoteController extends NoteController {
                 }
                 else
                     node.putExtension(note);
-				if(noteManager != null)
-					noteManager.updateEditor();
+				if(noteManager != null) {
+					IMapSelection selection = Controller.getCurrentController().getSelection();
+					if (selection != null && node.equals(selection.getSelected()))
+						noteManager.updateEditor();
+				}
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());

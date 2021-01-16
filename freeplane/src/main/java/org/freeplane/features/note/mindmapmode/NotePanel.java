@@ -1,6 +1,5 @@
 package org.freeplane.features.note.mindmapmode;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,6 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.net.URI;
 import java.net.URL;
 
@@ -30,6 +32,9 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
+import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController.NoteDocumentListener;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
@@ -51,7 +56,6 @@ class NotePanel extends JPanel {
 	private final Color defaultCaretColor;
 	private final NoteDocumentListener noteDocumentListener;
 
-
 	NotePanel(NoteManager noteManager, NoteDocumentListener noteDocumentListener) {
 		super(new CardLayout());
 		this.noteDocumentListener = noteDocumentListener;
@@ -65,8 +69,22 @@ class NotePanel extends JPanel {
 		viewerScrollPanel.setVisible(false);
 		add(viewerScrollPanel);
 		htmlViewerPanel = new JEditorPane();
+		htmlViewerPanel.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
 		htmlViewerPanel.setEditable(false);
 		iconViewerPanel = new JLabel();
+		
+		MouseListener editStarter = new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount() == 2)
+					editNote();
+			}
+			
+		};
+		htmlViewerPanel.addMouseListener(editStarter);
+		iconViewerPanel.addMouseListener(editStarter);
+		
 		ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
 
 	}
@@ -205,6 +223,8 @@ class NotePanel extends JPanel {
 	}
 
 	void setViewedImage(Icon icon) {
+		setVisible(iconViewerPanel);
+		iconViewerPanel.setIcon(icon);
 	}
 
 	private void setVisible(JComponent component) {
@@ -214,13 +234,21 @@ class NotePanel extends JPanel {
 		iconViewerPanel.setVisible(component == iconViewerPanel);
 		if(! htmlEditorPanel.isVisible())
 			htmlEditorPanel.setCurrentDocumentContent("");
-		if(! htmlViewerPanel.isVisible())
+		if(htmlViewerPanel.isVisible())
+			viewerScrollPanel.setViewportView(htmlViewerPanel);
+		else
 			htmlViewerPanel.setText("");
-		if(! iconViewerPanel.isVisible())
+		if(iconViewerPanel.isVisible())
+			viewerScrollPanel.setViewportView(iconViewerPanel);
+		else
 			iconViewerPanel.setIcon(null);
 		revalidate();
 	}
 
+	boolean isEditable() {
+		return htmlEditorPanel.isVisible();
+	}
+	
 	String getDocumentText() {
 		return htmlEditorPanel.getDocumentText();
 	}
@@ -269,6 +297,16 @@ class NotePanel extends JPanel {
 		}
 		catch (final Exception e) {
 		}
+	}
+	
+	private void editNote() {
+		final Controller controller = Controller.getCurrentController();
+		IMapSelection selection = controller.getSelection();
+		if(selection == null)
+			return;
+		final NodeModel node = selection.getSelected();
+		if(node == null)
+		new NoteDialogStarter().editNoteInDialog(node);
 	}
 
 }
