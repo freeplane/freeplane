@@ -43,6 +43,8 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DetailsViewMouseListener;
 
+import com.jgoodies.common.base.Objects;
+
 class NodeViewFactory {
 	private static NodeViewFactory factory;
 
@@ -196,55 +198,54 @@ class NodeViewFactory {
 
 
 	void updateNoteViewer(NodeView nodeView, int minNodeWidth, int maxNodeWidth) {
-		ZoomableLabel note = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
-		String oldText = note != null ? note.getText() : null;
 		String newText  = null;
+		Icon newIcon = null;
 		MapView map = nodeView.getMap();
 		if (map.showNotes()) {
 			final NodeModel model = nodeView.getModel();
-			final NoteModel extension = NoteModel.getNote(model);
-            if (extension != null) {
-    			String text = extension.getText();
+			final NoteModel note = NoteModel.getNote(model);
+            if (note != null) {
+    			String text = note.getText();
     			if(text != null) {
     			try {
     				TextController textController = map.getModeController().getExtension(TextController.class);
-    				final Object transformedContent = textController.getTransformedObject(model, extension, text);
-    				Icon icon = textController.getIcon(transformedContent);
-    				note.putClientProperty(ZoomableLabel.TEXT_RENDERING_ICON, icon);
-    				text = transformedContent.toString();
+    				final Object transformedContent = textController.getTransformedObject(model, note, text);
+    				newIcon = textController.getIcon(transformedContent);
+    				
+    				newText = transformedContent.toString();
     			}
     			catch (Throwable e) {
     				LogUtils.warn(e.getMessage());
-    				text = TextUtils.format("MainView.errorUpdateText", text, e.getLocalizedMessage());
+    				newText = TextUtils.format("MainView.errorUpdateText", text, e.getLocalizedMessage());
     			}
     			}
 			}
 		}
-		if (oldText == null && newText == null) {
+		ZoomableLabel noteView = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
+		if (noteView == null && newText == null && newIcon == null
+				|| noteView != null && newIcon == null 
+				&& Objects.equals(newText, noteView.getText())
+				&& noteView.getTextRenderingIcon() == null) {
 			return;
 		}
-		final ZoomableLabel view;
-		if (oldText != null && newText != null) {
-			view = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
-		}
-		else if (oldText == null && newText != null) {
-			view = NodeViewFactory.getInstance().createNoteViewer();
-			nodeView.addContent(view, NodeView.NOTE_VIEWER_POSITION);
-		}
-		else {
-			assert (oldText != null && newText == null);
+		if(noteView != null && newText == null && newIcon == null){
 			nodeView.removeContent(NodeView.NOTE_VIEWER_POSITION);
 			return;
 		}
-		view.setFont(map.getNoteFont());
-		view.setForeground(map.getNoteForeground());
+		if (noteView == null && (newText != null || newIcon != null)) {
+			noteView = NodeViewFactory.getInstance().createNoteViewer();
+			nodeView.addContent(noteView, NodeView.NOTE_VIEWER_POSITION);
+		}
+		noteView.setFont(map.getNoteFont());
+		noteView.setForeground(map.getNoteForeground());
 		final Color noteBackground = map.getNoteBackground();
-		view.setBackground(noteBackground != null ? noteBackground : map.getBackground());
-		view.setHorizontalAlignment(map.getNoteHorizontalAlignment());
-		view.updateText(newText);
-		view.setMinimumWidth(minNodeWidth);
-		view.setMaximumWidth(maxNodeWidth);
-		view.revalidate();
+		noteView.setBackground(noteBackground != null ? noteBackground : map.getBackground());
+		noteView.setHorizontalAlignment(map.getNoteHorizontalAlignment());
+		noteView.updateText(newText);
+		noteView.setTextRenderingIcon(newIcon);
+		noteView.setMinimumWidth(minNodeWidth);
+		noteView.setMaximumWidth(maxNodeWidth);
+		noteView.revalidate();
 		map.repaint();
 
 	}
@@ -277,7 +278,7 @@ class NodeViewFactory {
 				TextController textController = map.getModeController().getExtension(TextController.class);
 				final Object transformedContent = textController.getTransformedObject(node, detailText, detailTextText);
 				Icon icon = textController.getIcon(transformedContent);
-				detailContent.putClientProperty(ZoomableLabel.TEXT_RENDERING_ICON, icon);
+				detailContent.setTextRenderingIcon(icon);
 				text = transformedContent.toString();
 			}
 			catch (Throwable e) {

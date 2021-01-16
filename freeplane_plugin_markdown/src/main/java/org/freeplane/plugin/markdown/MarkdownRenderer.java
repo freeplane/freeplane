@@ -43,16 +43,13 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 	public Object transformContent(NodeModel node,
 			Object nodeProperty, Object content, TextController textController)
 			throws TransformationException {
-        if(!canTransform(textController, nodeProperty, content, node))
+        String text = getText(node, nodeProperty, content, textController);
+		if(text == null)
         	return content;
         
-        String markdown = (String) content;
+        String markdown = (String) text;
         String html = "<html>" + Marked.marked(markdown);
         return html;
-	}
-
-	private boolean canTransform(TextController textController, Object nodeProperty, Object content, NodeModel node) {
-		return getText(node, nodeProperty, content, textController) != null;
 	}
 
 	@Override

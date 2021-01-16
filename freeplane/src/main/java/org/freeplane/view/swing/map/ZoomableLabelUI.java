@@ -141,7 +141,7 @@ public class ZoomableLabelUI extends BasicLabelUI {
 				}
 			}
 		}
-		Icon textRenderingIcon = getTextRenderingIcon(zLabel);
+		Icon textRenderingIcon = zLabel.getTextRenderingIcon();
 		if(textRenderingIcon != null){
 			layoutLabelWithTextIcon(textRenderingIcon, icon, viewR, iconR, textR, zLabel);
 		}
@@ -365,7 +365,7 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	// Workaround for http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=7126361
 	private void superPaintSafe(final Graphics g, final ZoomableLabel label) {
 		try {
-			Icon textRenderingIcon = getTextRenderingIcon(label);
+			Icon textRenderingIcon = label.getTextRenderingIcon();
 			if(textRenderingIcon  != null)
 				paintIcons(g, label, textRenderingIcon);
 			else
@@ -397,8 +397,8 @@ public class ZoomableLabelUI extends BasicLabelUI {
 	    	String name = e.getPropertyName();
 	    	if (name == "text" || "font" == name || "foreground" == name
 	    			|| "ancestor" == name || "graphicsConfiguration" == name) {
-	    		JLabel lbl = ((JLabel) e.getSource());
-	    		if(getTextRenderingIcon(lbl) !=  null){
+	    		ZoomableLabel lbl = ((ZoomableLabel) e.getSource());
+	    		if(lbl.getTextRenderingIcon() !=  null){
 	    			ScaledHTML.updateRenderer(lbl, "");
 	    		}
 	    		else{
@@ -420,10 +420,6 @@ public class ZoomableLabelUI extends BasicLabelUI {
 		        super.propertyChange(e);
 
     }
-
-	private Icon getTextRenderingIcon(JLabel lbl) {
-		return (Icon) lbl.getClientProperty(ZoomableLabel.TEXT_RENDERING_ICON);
-	}
 
 	@Override
     protected void installComponents(JLabel c) {

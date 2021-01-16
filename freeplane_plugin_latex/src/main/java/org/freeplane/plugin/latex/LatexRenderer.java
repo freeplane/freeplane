@@ -67,24 +67,6 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 
 	private static enum TargetMode { FOR_ICON, FOR_EDITOR };
 
-	private String getLatexText(final String nodeText, final String nodeFormat, final TargetMode mode)
-	{
-		boolean includePrefix = mode == TargetMode.FOR_EDITOR;
-
-		if(checkForLatexPrefix(nodeText, LATEX)){
-			return includePrefix ? nodeText : nodeText.substring(LATEX.length() + 1);
-		}
-		else if(LatexFormat.LATEX_FORMAT.equals(nodeFormat)){
-			return nodeText;
-		} else if(checkForLatexPrefix(nodeText, UNPARSED_LATEX) && mode == TargetMode.FOR_EDITOR) {
-			return nodeText;
-		} else if(UnparsedLatexFormat.UNPARSED_LATEX_FORMAT.equals(nodeFormat) && mode == TargetMode.FOR_EDITOR) {
-			return nodeText;
-		} else {
-			return null;
-		}
-	}
-
 	@Override
 	public EditNodeBase createEditor(NodeModel node,
 			Object nodeProperty, Object content, IEditControl editControl, boolean editLong) {
@@ -139,4 +121,23 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		String latexText = getLatexText(text, nodeFormat, targetMode);
 		return latexText;
 	}
+	private String getLatexText(final String nodeText, final String nodeFormat, final TargetMode mode)
+	{
+		boolean includePrefix = mode == TargetMode.FOR_EDITOR;
+
+		if(checkForLatexPrefix(nodeText, LATEX)){
+			return includePrefix ? nodeText : nodeText.substring(LATEX.length() + 1);
+		}
+		else if(LatexFormat.LATEX_FORMAT.equals(nodeFormat)){
+			return nodeText;
+		} else if(checkForLatexPrefix(nodeText, UNPARSED_LATEX) && mode == TargetMode.FOR_EDITOR) {
+			return nodeText;
+		} else if(UnparsedLatexFormat.UNPARSED_LATEX_FORMAT.equals(nodeFormat) && mode == TargetMode.FOR_EDITOR) {
+			return nodeText;
+		} else {
+			return null;
+		}
+	}
+
+
 }

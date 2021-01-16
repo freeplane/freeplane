@@ -27,7 +27,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 
 @SuppressWarnings("serial")
 public class ZoomableLabel extends JLabel {
-	public static final String TEXT_RENDERING_ICON = "TextRenderingIcon";
+	private static final String TEXT_RENDERING_ICON = "TextRenderingIcon";
 
 	protected static final Graphics2D fmg;
 	static {
@@ -268,5 +268,15 @@ public class ZoomableLabel extends JLabel {
 		else
 			return width;
 	}
+
+	public Icon getTextRenderingIcon() {
+		return (Icon) getClientProperty(ZoomableLabel.TEXT_RENDERING_ICON);
+	}
+	
+	public void setTextRenderingIcon(Icon icon) {
+		putClientProperty(TEXT_RENDERING_ICON, icon);
+	}
+
+
 
 }
