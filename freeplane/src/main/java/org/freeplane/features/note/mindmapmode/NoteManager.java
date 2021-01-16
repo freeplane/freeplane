@@ -120,9 +120,9 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		}
 		final String note = this.node != null ? NoteModel.getNoteText(this.node) : null;
 		if (note != null)
-			notePanel.setCurrentDocumentContent(note);
+			notePanel.setEditedContent(note);
 		else
-			notePanel.setCurrentDocumentContent("");
+			notePanel.setEditedContent("");
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -137,7 +137,7 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 			node = null;
 			final NotePanel notePanel = noteController.getNotePanel();
 			if(notePanel != null)
-				notePanel.setCurrentDocumentContent("");
+				notePanel.setViewedContent("");
 		}
 	}
 	

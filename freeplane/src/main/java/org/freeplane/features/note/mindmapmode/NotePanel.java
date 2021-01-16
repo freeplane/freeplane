@@ -1,6 +1,7 @@
 package org.freeplane.features.note.mindmapmode;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -12,14 +13,21 @@ import java.net.URI;
 import java.net.URL;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JEditorPane;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.text.Document;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.note.NoteModel;
@@ -37,18 +45,28 @@ class NotePanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final SHTMLPanel htmlEditorPanel;
+	private final JScrollPane viewerScrollPanel;
+	private final JEditorPane htmlViewerPanel;
+	private final JLabel iconViewerPanel;
 	private final Color defaultCaretColor;
 	private final NoteDocumentListener noteDocumentListener;
 
 
-	public NotePanel(NoteManager noteManager, NoteDocumentListener noteDocumentListener) {
-		super(new BorderLayout());
+	NotePanel(NoteManager noteManager, NoteDocumentListener noteDocumentListener) {
+		super(new CardLayout());
 		this.noteDocumentListener = noteDocumentListener;
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
-		SHTMLPanel htmlEditorPanel = createHtmlEditorComponent(noteManager);
-		this.htmlEditorPanel = htmlEditorPanel;
+		this.htmlEditorPanel = createHtmlEditorComponent(noteManager);
 		this.defaultCaretColor = htmlEditorPanel.getEditorPane().getCaretColor();
+		htmlEditorPanel.setVisible(false);
+		add(htmlEditorPanel);
 
+		this.viewerScrollPanel = new JScrollPane(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		viewerScrollPanel.setVisible(false);
+		add(viewerScrollPanel);
+		htmlViewerPanel = new JEditorPane();
+		htmlViewerPanel.setEditable(false);
+		iconViewerPanel = new JLabel();
 		ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
 
 	}
@@ -122,7 +140,6 @@ class NotePanel extends JPanel {
 			public void focusGained(FocusEvent e) {
 			}
 		});
-		add(htmlEditorPanel, BorderLayout.CENTER);
 //		setDefaultFont();
 		htmlEditorPanel.setOpenHyperlinkHandler(new ActionListener() {
 			@Override
@@ -147,20 +164,61 @@ class NotePanel extends JPanel {
 	}
 
 	private HTMLDocument getDocument() {
-		return htmlEditorPanel.getDocument();
+		if(htmlEditorPanel.isVisible())
+			return htmlEditorPanel.getDocument();
+		else if(htmlViewerPanel.isVisible()) {
+			Document document = htmlViewerPanel.getDocument();
+			if(document instanceof HTMLDocument)
+				return (HTMLDocument) document;
+		}
+		return new HTMLDocument();
 	}
 
-	private JEditorPane getMostRecentFocusOwner() {
-		return htmlEditorPanel.getMostRecentFocusOwner();
+	private JComponent getMostRecentFocusOwner() {
+		if(htmlEditorPanel.isVisible())
+			return htmlEditorPanel.getMostRecentFocusOwner();
+		else if (htmlViewerPanel.isVisible())
+			return htmlViewerPanel;
+		else if (iconViewerPanel.isVisible())
+			return iconViewerPanel;
+		else
+			return null;
 	}
 
 	boolean needsSaving() {
 		return htmlEditorPanel.needsSaving();
 	}
 
-	void setCurrentDocumentContent(String note) {
+	void setEditedContent(String note) {
+		setVisible(htmlEditorPanel);
 		htmlEditorPanel.setCurrentDocumentContent(note);
-		
+	}
+
+	void setViewedContent(String note) {
+		setVisible(htmlViewerPanel);
+		if(! note.isEmpty()) {
+			String contentType = HtmlUtils.isHtml(note) ? "text/html" : "text/plain";
+			if(! htmlViewerPanel.getContentType().equals(contentType))
+				htmlViewerPanel.setContentType(contentType);
+		}
+		htmlViewerPanel.setText(note);
+	}
+
+	void setViewedImage(Icon icon) {
+	}
+
+	private void setVisible(JComponent component) {
+		htmlEditorPanel.setVisible(component == htmlEditorPanel);
+		viewerScrollPanel.setVisible(component != htmlEditorPanel);
+		htmlViewerPanel.setVisible(component == htmlViewerPanel);
+		iconViewerPanel.setVisible(component == iconViewerPanel);
+		if(! htmlEditorPanel.isVisible())
+			htmlEditorPanel.setCurrentDocumentContent("");
+		if(! htmlViewerPanel.isVisible())
+			htmlViewerPanel.setText("");
+		if(! iconViewerPanel.isVisible())
+			iconViewerPanel.setIcon(null);
+		revalidate();
 	}
 
 	String getDocumentText() {
@@ -168,7 +226,10 @@ class NotePanel extends JPanel {
 	}
 
 	private JEditorPane getEditorPane() {
-		return htmlEditorPanel.getEditorPane();
+		if(htmlEditorPanel.isVisible())
+			return htmlEditorPanel.getMostRecentFocusOwner();
+		else
+			return htmlViewerPanel;
 	}
 
 	void updateCaretColor(Color noteForeground) {
@@ -180,7 +241,8 @@ class NotePanel extends JPanel {
 	}
 
 	void removeDocumentListener() {
-		getDocument().removeDocumentListener(noteDocumentListener);
+		if(htmlEditorPanel.isVisible())
+			htmlEditorPanel.getDocument().removeDocumentListener(noteDocumentListener);
 	}
 
 	public boolean requestFocusInWindow() {
@@ -192,7 +254,8 @@ class NotePanel extends JPanel {
 	}
 
 	void installDocumentListener() {
-		getDocument().addDocumentListener(noteDocumentListener);
+		if(htmlEditorPanel.isVisible())
+			htmlEditorPanel.getDocument().addDocumentListener(noteDocumentListener);
 	}
 	
 	void updateBaseUrl(URL url) {
