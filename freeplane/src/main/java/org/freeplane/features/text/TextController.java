@@ -133,12 +133,12 @@ public class TextController implements IExtension {
 		return nodeModel.getText();
 	}
 
-	public Object getTransformedObject(Object object, final NodeModel nodeModel, Object extension)
+	public Object getTransformedObject(final NodeModel node, Object nodeProperty, Object content)
 	        throws TransformationException {
-		if (object instanceof String) {
-			String string = (String) object;
+		if (content instanceof String) {
+			String string = (String) content;
 			if (string.length() > 0 && string.charAt(0) == '\'') {
-				if (nodeModel != null && extension == nodeModel.getUserObject() && isTextFormattingDisabled(nodeModel))
+				if (node != null && nodeProperty == node.getUserObject() && isTextFormattingDisabled(node))
 					return string;
 				else
 					return string.substring(1);
@@ -147,18 +147,18 @@ public class TextController implements IExtension {
 		boolean markTransformation = false;
 		for (IContentTransformer textTransformer : getTextTransformers()) {
 			try {
-				Object in = object;
-				object = textTransformer.transformContent(nodeModel, extension, in, this);
-				markTransformation = markTransformation || textTransformer.markTransformation() && !in.equals(object);
+				Object in = content;
+				content = textTransformer.transformContent(node, nodeProperty, in, this);
+				markTransformation = markTransformation || textTransformer.markTransformation() && !in.equals(content);
 			}
 			catch (RuntimeException e) {
 				throw new TransformationException(e);
 			}
 		}
 		if (markTransformation)
-			return new HighlightedTransformedObject(object);
+			return new HighlightedTransformedObject(content);
 		else
-			return object;
+			return content;
 	}
 
 	public boolean isFormula(Object content) {
@@ -189,7 +189,7 @@ public class TextController implements IExtension {
 	/** returns an error message instead of a normal result if something goes wrong. */
 	public Object getTransformedObjectNoFormattingNoThrow(Object data, final NodeModel node, Object extension) {
 		try {
-			Object transformedObject = getTransformedObject(data, node, extension);
+			Object transformedObject = getTransformedObject(node, extension, data);
 			if (transformedObject instanceof HighlightedTransformedObject)
 				transformedObject =  ((HighlightedTransformedObject) transformedObject).getObject();
 			if (transformedObject instanceof IFormattedObject)
@@ -204,7 +204,7 @@ public class TextController implements IExtension {
 
 	public Object getTransformedObject(NodeModel node) throws TransformationException {
 		final Object userObject = node.getUserObject();
-		return getTransformedObject(userObject, node, node);
+		return getTransformedObject(node, node, userObject);
 	}
 
 	public Object getTransformedObjectNoThrow(NodeModel node) {
@@ -215,7 +215,7 @@ public class TextController implements IExtension {
 	/** convenience method for getTransformedText().toString. */
 	public String getTransformedText(Object text, final NodeModel nodeModel, Object extension)
 	        throws TransformationException {
-		text = getTransformedObject(text, nodeModel, extension);
+		text = getTransformedObject(nodeModel, extension, text);
 		return text.toString();
 	}
 

@@ -33,15 +33,13 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.DetailModel;
-import org.freeplane.features.text.HighlightedTransformedObject;
 import org.freeplane.features.text.TextController;
-import org.freeplane.view.swing.map.MainView.TextModificationState;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DetailsViewMouseListener;
 
@@ -201,11 +199,26 @@ class NodeViewFactory {
 		ZoomableLabel note = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
 		String oldText = note != null ? note.getText() : null;
 		String newText  = null;
-		if (nodeView.getMap().showNotes()) {
+		MapView map = nodeView.getMap();
+		if (map.showNotes()) {
 			final NodeModel model = nodeView.getModel();
 			final NoteModel extension = NoteModel.getNote(model);
-            if (extension != null)
-                newText = extension.getText();
+            if (extension != null) {
+    			String text = extension.getText();
+    			if(text != null) {
+    			try {
+    				TextController textController = map.getModeController().getExtension(TextController.class);
+    				final Object transformedContent = textController.getTransformedObject(model, extension, text);
+    				Icon icon = textController.getIcon(transformedContent);
+    				note.putClientProperty(ZoomableLabel.TEXT_RENDERING_ICON, icon);
+    				text = transformedContent.toString();
+    			}
+    			catch (Throwable e) {
+    				LogUtils.warn(e.getMessage());
+    				text = TextUtils.format("MainView.errorUpdateText", text, e.getLocalizedMessage());
+    			}
+    			}
+			}
 		}
 		if (oldText == null && newText == null) {
 			return;
@@ -223,7 +236,6 @@ class NodeViewFactory {
 			nodeView.removeContent(NodeView.NOTE_VIEWER_POSITION);
 			return;
 		}
-		final MapView map = nodeView.getMap();
 		view.setFont(map.getNoteFont());
 		view.setForeground(map.getNoteForeground());
 		final Color noteBackground = map.getNoteBackground();
@@ -263,7 +275,7 @@ class NodeViewFactory {
 			String text;
 			try {
 				TextController textController = map.getModeController().getExtension(TextController.class);
-				final Object transformedContent = textController.getTransformedObject(detailTextText, node, detailText);
+				final Object transformedContent = textController.getTransformedObject(node, detailText, detailTextText);
 				Icon icon = textController.getIcon(transformedContent);
 				detailContent.putClientProperty(ZoomableLabel.TEXT_RENDERING_ICON, icon);
 				text = transformedContent.toString();

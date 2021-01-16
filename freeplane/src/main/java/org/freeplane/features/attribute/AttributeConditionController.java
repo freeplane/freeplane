@@ -153,7 +153,7 @@ static final TranslatedObject ANY_ATTRIBUTE_NAME_OR_VALUE_OBJECT = new Translate
             	final TextController textController = TextController.getController();
             	if (! textController.isFormula(value)) {
 					try {
-						final Object transformedValue = textController.getTransformedObject(value, map.getRootNode(), element);
+						final Object transformedValue = textController.getTransformedObject(map.getRootNode(), element, value);
 						linkedList.add(transformedValue);
 					} catch (TransformationException e) {
 						LogUtils.severe(e);
