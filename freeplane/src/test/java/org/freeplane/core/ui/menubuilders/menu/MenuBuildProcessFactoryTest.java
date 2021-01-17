@@ -20,6 +20,7 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.mode.FreeplaneActions;
 import org.junit.Before;
 import org.junit.Test;
@@ -62,6 +63,8 @@ public class MenuBuildProcessFactoryTest {
 
 	@Test
 	public void ifProcessOnPopupIsSet_buildsWhenItBecomesVisible() throws Exception {
+		if(Compat.isMacOsX())
+			return;
 		final Entry menuStructure = XmlEntryStructureBuilder.buildMenuStructure(
 				"<Entry builder='main_menu'>"
 						+ "<Entry name='submenu'>"

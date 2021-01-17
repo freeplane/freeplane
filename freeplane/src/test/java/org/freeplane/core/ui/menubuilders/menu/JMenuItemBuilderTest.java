@@ -28,6 +28,7 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
+import org.freeplane.core.util.Compat;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
@@ -200,6 +201,8 @@ public class JMenuItemBuilderTest {
 	
 	@Test
 	public void whenPopupMenuBecomesVisible_itsOwnPopupListenerIsCalled() {
+		if(Compat.isMacOsX())
+			return;
 		menuEntry.addChild(actionEntry);
 		
 		menuActionGroupBuilder.visit(menuEntry);
@@ -212,6 +215,8 @@ public class JMenuItemBuilderTest {
 	
 	@Test
 	public void whenPopupMenuBecomesVisible_itsChildActionPopupListenerIsCalled() {
+		if(Compat.isMacOsX())
+			return;
 		menuEntry.addChild(actionEntry);
 		menuActionGroupBuilder.visit(menuEntry);
 		JMenu item = (JMenu) new EntryAccessor().getComponent(menuEntry);
@@ -227,6 +232,8 @@ public class JMenuItemBuilderTest {
 
 	@Test
 	public void whenPopupMenuBecomesVisible_itsChildGroupPopupListenerIsCalled() {
+		if(Compat.isMacOsX())
+			return;
 		menuEntry.addChild(groupEntry);
 		menuActionGroupBuilder.visit(menuEntry);
 		JMenu menu = (JMenu) new EntryAccessor().getComponent(menuEntry);
@@ -236,6 +243,8 @@ public class JMenuItemBuilderTest {
 
 	@Test
 	public void whenPopupMenuBecomesInvisible_popupListenerIsCalled() throws Exception {
+		if(Compat.isMacOsX())
+			return;
 		Entry parentMenuEntry = new Entry();
 		final JMenu parentMenu = new JMenu();
 		new EntryAccessor().setComponent(parentMenuEntry, parentMenu);
