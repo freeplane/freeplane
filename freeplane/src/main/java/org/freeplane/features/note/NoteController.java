@@ -27,6 +27,8 @@ import javax.swing.Icon;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
@@ -133,8 +135,8 @@ public class NoteController implements IExtension {
 				if(showNotesInMap(node.getMap()) && ! TextController.getController(modeController).isMinimized(node)){
 					return null;
 				}
-				final String noteText = NoteModel.getNoteText(node);
-				if (noteText == null)
+				final String data = NoteModel.getNoteText(node);
+				if (data == null)
 					return null;
 				float zoom = view.getNodeView().getMap().getZoom();
 				final String rule = new NoteStyleAccessor(modeController, node, zoom, true).getNoteCSSStyle();
@@ -146,7 +148,18 @@ public class NoteController implements IExtension {
 					tooltipBodyBegin.append(bwNoteIconUrl);
 					tooltipBodyBegin.append("\">");
 				}
-				final String tooltipText = noteText.replaceFirst("<body>",
+				String text;
+				try {
+					text = TextController.getController(modeController)
+							.getTransformedText(data, node, NoteModel.getNote(node));
+				}
+				catch (Exception e) {
+					text = TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
+				}				
+				if (!HtmlUtils.isHtml(text)) {
+					text = HtmlUtils.plainToHTML(text);
+				}
+				final String tooltipText = text.replaceFirst("<body>",
 					tooltipBodyBegin.toString()).replaceFirst("</body>", "</div></body>");
 				return tooltipText;
 			}

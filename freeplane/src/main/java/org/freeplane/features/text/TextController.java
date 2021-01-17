@@ -51,6 +51,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -213,10 +214,13 @@ public class TextController implements IExtension {
 	}
 
 	/** convenience method for getTransformedText().toString. */
-	public String getTransformedText(Object text, final NodeModel nodeModel, Object extension)
+	public String getTransformedText(Object object, final NodeModel nodeModel, Object extension)
 	        throws TransformationException {
-		text = getTransformedObject(nodeModel, extension, text);
-		return text.toString();
+		Object transformed = getTransformedObject(nodeModel, extension, object);
+		if(transformed instanceof Icon)
+			return object.toString();
+		else
+			return transformed.toString();
 	}
 
 	public String getTransformedTextNoThrow(Object text, final NodeModel nodeModel, Object extension) {
@@ -333,8 +337,8 @@ public class TextController implements IExtension {
 			}
 
 			private String getTooltip(final ModeController modeController, NodeModel node, MainView view) {
-				final DetailModel detailText = DetailModel.getDetail(node);
-				if (detailText == null || !(detailText.isHidden() || ShortenedTextModel.isShortened(node))) {
+				final DetailModel details = DetailModel.getDetail(node);
+				if (details == null || details.getTextOr("").isEmpty() || !(details.isHidden() || ShortenedTextModel.isShortened(node))) {
 					return null;
 				}
 				final NodeStyleController style = modeController.getExtension(NodeStyleController.class);
@@ -354,8 +358,20 @@ public class TextController implements IExtension {
 				        .withMaxWidthAsPt(zoom, NodeSizeModel.getMaxNodeWidth(detailStyleNode),
 				            style.getMaxWidth(node)))
 				    .append("\">");
-				String noteText = detailText.getText();
-				final String tooltipText = noteText.replaceFirst("<body>", htmlBodyStyle.toString())
+				String data = details.getText();
+				String text;
+				try {
+					text = TextController.getController(modeController)
+							.getTransformedText(data, node, details);
+				}
+				catch (Exception e) {
+					text = TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
+				}				
+				if (!HtmlUtils.isHtml(text)) {
+					text = HtmlUtils.plainToHTML(text);
+				}
+
+				final String tooltipText = text.replaceFirst("<body>", htmlBodyStyle.toString())
 				    .replaceFirst("</body>", "</div></body>");
 				return tooltipText;
 			}
