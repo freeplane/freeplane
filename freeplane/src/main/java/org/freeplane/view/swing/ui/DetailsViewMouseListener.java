@@ -28,7 +28,7 @@ import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.view.swing.map.NodeView;
@@ -62,7 +62,7 @@ public class DetailsViewMouseListener extends LinkNavigatorMouseListener {
 		if (eventFromHideDisplayArea(e)){
 			final IMapSelection selection = Controller.getCurrentController().getSelection();
 			selection.preserveRootNodeLocationOnScreen();
-    		controller.setDetailsHidden(model, ! DetailTextModel.getDetailText(model).isHidden());
+    		controller.setDetailsHidden(model, ! DetailModel.getDetail(model).isHidden());
 		}
 		else {
 			nodeSelector.extendSelection(e);

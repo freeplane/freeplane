@@ -1,23 +1,20 @@
+plugins {
+   id 'org.xbib.gradle.plugin.jflex' version '1.2.1'
+}
+
+
 dependencies {
     implementation project(':freeplane')
 
     // from flatDir "localGitDepsRepository":
     // from the Debian "libjsyntaxpane-java" package:
     // https://anonscm.debian.org/cgit/pkg-java/libjsyntaxpane-java.git
-    lib ':jsyntaxpane-0.9.6~r156-7' 
+    lib 'de.sciss:syntaxpane:1.2.0'
 }
 
 ext.bundleExports = """\
-                 jsyntaxpane,
-                 jsyntaxpane.lexers,
-                 jsyntaxpane.syntaxkits,
-                 jsyntaxpane.actions
+                 de.sciss.syntaxpane,
+                 de.sciss.syntaxpane.lexers,
+                 de.sciss.syntaxpane.syntaxkits,
+                 de.sciss.syntaxpane.actions
                  """
-
-task generateLaTeXLexer(type: Exec) {
-    onlyIf { !file('src/main/java/jsyntaxpane/lexers/LaTeXLexer.java').exists() }
-
-    commandLine 'jflex', '-d', 'src/main/java/jsyntaxpane/lexers/', 'src/main/java/jsyntaxpane/lexers/latex.flex'
-}
-
-compileJava.dependsOn generateLaTeXLexer

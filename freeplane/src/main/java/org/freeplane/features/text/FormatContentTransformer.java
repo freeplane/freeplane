@@ -2,6 +2,8 @@ package org.freeplane.features.text;
 
 import java.util.List;
 
+import javax.swing.Icon;
+
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.PatternFormat;
@@ -16,8 +18,8 @@ class FormatContentTransformer extends AbstractContentTransformer {
 		this.textController = textController;
 	}
 
-	public Object transformContent(TextController textController, Object obj, final NodeModel node, Object transformedExtension) {
-		if (obj == null || node == null || node.getUserObject() != transformedExtension)
+	public Object transformContent(final NodeModel node, Object nodeProperty, Object obj, TextController textController) {
+		if (obj == null || node == null || node != nodeProperty)
 			return obj;
 		final String format = textController.getNodeFormat(node);
 		final boolean nodeNumbering = textController.getNodeNumbering(node);
@@ -25,8 +27,8 @@ class FormatContentTransformer extends AbstractContentTransformer {
 	}
 
 	private Object expandFormat(Object obj, final NodeModel node, final String format, boolean nodeNumbering) {
-		final boolean hasFormat = format != null && format.length() != 0 && 
-				!PatternFormat.IDENTITY_PATTERN.equals(format) && !PatternFormat.STANDARD_FORMAT_PATTERN.equals(format);
+		final boolean hasFormat = format != null && format.length() != 0 && ! (obj instanceof Icon)
+				&& !PatternFormat.IDENTITY_PATTERN.equals(format) && !PatternFormat.STANDARD_FORMAT_PATTERN.equals(format);
 		if (!hasFormat && !nodeNumbering){
 			return obj;
 		}

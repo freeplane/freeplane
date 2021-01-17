@@ -87,6 +87,7 @@ import org.freeplane.features.attribute.AttributeRegistry;
 import org.freeplane.features.attribute.AttributeTableLayoutModel;
 import org.freeplane.features.attribute.ColumnWidthChangeEvent;
 import org.freeplane.features.attribute.IColumnWidthChangeListener;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.edge.EdgeModel;
 import org.freeplane.features.format.FormattedObject;
 import org.freeplane.features.format.IFormattedObject;
@@ -362,7 +363,8 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
     }
 
 	URI toUri(final Object value) {
-		return TextController.getController().toUri(value, attributeView.getNode(), null);
+		NodeModel node = attributeView.getNode();
+		return TextController.getController().toUri(value, node, NodeAttributeTableModel.getModel(node));
 	}
 
 	private void startEditing(EventObject e, final JComboBox comboBox) {
@@ -485,7 +487,7 @@ class AttributeTable extends JTable implements IColumnWidthChangeListener {
 			final AttributeTableModel model = (AttributeTableModel) getModel();
 			final String text = getValueForEdit(row, col);
 			final DialogTableCellEditor dialogTableCellEditor = new DialogTableCellEditor();
-			EditNodeBase base = textController.createContentSpecificEditor(model.getNode(), text, dialogTableCellEditor.getEditControl(), false);
+			EditNodeBase base = textController.createContentSpecificEditor(model.getNode(), text,model.getNodeAttributeModel(), dialogTableCellEditor.getEditControl(), false);
 			if(base != null){
 				dialogTableCellEditor.setEditBase(base);
 				return dialogTableCellEditor;

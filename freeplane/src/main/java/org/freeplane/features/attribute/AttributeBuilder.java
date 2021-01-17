@@ -297,7 +297,7 @@ class AttributeBuilder implements IElementDOMHandler {
 		if (table.getRowCount() > 0) {
 			final Vector<Attribute> attributes = table.getAttributes();
 			for (int i = 0; i < attributes.size(); i++) {
-				saveAttribute(node, writer, attributes.get(i));
+				saveAttribute(node, writer, table, attributes.get(i));
 			}
 		}
 	}
@@ -334,14 +334,14 @@ class AttributeBuilder implements IElementDOMHandler {
 		}
 	}
 
-	private void saveAttribute(NodeModel node, final ITreeWriter writer, final Attribute attr) throws IOException {
+	private void saveAttribute(NodeModel node, final ITreeWriter writer, NodeAttributeTableModel attributes, final Attribute attr) throws IOException {
 		final XMLElement attributeElement = new XMLElement();
 		attributeElement.setName(AttributeBuilder.XML_NODE_ATTRIBUTE);
 		attributeElement.setAttribute("NAME", attr.getName());
 		final Object value = attr.getValue();
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
-			attributeElement.setAttribute("VALUE", TextController.getController().getTransformedTextNoThrow(value, node, null));
+			attributeElement.setAttribute("VALUE", TextController.getController().getTransformedTextNoThrow(value, node, attributes));
 		}
 		else{
 			attributeElement.setAttribute("VALUE", value.toString());

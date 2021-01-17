@@ -54,8 +54,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.JTextComponent;
 
-import jsyntaxpane.actions.ActionUtils;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.UIBuilder;
@@ -63,6 +61,8 @@ import org.freeplane.core.ui.components.BlindIcon;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+
+import de.sciss.syntaxpane.actions.ActionUtils;
 
 /**
  */

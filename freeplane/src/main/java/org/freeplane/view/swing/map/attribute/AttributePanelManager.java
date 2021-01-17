@@ -233,7 +233,9 @@ public class AttributePanelManager{
             final List<PatternFormat> formats = FormatController.getController().getAllFormats();
             Vector<PatternFormat> items = new Vector<PatternFormat>(formats);
             for(int i = items.size()-1; i >= 0; i--){
-            	if(! items.get(i).canFormat(NodeAttributeTableModel.class))
+            	PatternFormat item = items.get(i);
+				if(item.getType().equals(PatternFormat.TYPE_IDENTITY) &&
+						! item.getType().endsWith(PatternFormat.IDENTITY_PATTERN))
             		items.remove(i);
             }
 			final JComboBox formatChooser = new JComboBoxWithBorder(items);

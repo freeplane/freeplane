@@ -64,7 +64,7 @@ import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.view.swing.features.filepreview.MapBackgroundClearAction;
 import org.freeplane.view.swing.features.filepreview.MapBackgroundImageAction;
@@ -398,7 +398,7 @@ public class MLogicalStyleController extends LogicalStyleController {
         if(styleNode != null){
             final MAttributeController attributeController = MAttributeController.getController();
             attributeController.copyAttributesToNode(styleNode, target);
-            final String detailTextText = DetailTextModel.getDetailTextText(styleNode);
+            final String detailTextText = DetailModel.getDetailText(styleNode);
             if(detailTextText != null)
                 textController.setDetails(target, detailTextText);
             final String noteText = NoteModel.getNoteText(styleNode);

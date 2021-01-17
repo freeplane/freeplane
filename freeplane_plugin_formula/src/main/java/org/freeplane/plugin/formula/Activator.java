@@ -10,6 +10,7 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.ConditionalContentTransformer;
+import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.main.osgi.IModeControllerExtensionProvider;
 import org.freeplane.plugin.formula.dependencies.ActionFactory;
 import org.osgi.framework.BundleActivator;
@@ -37,9 +38,10 @@ public class Activator implements BundleActivator {
 			ActionFactory.createActions(modeController);
 			if (!disablePluginProperty) {
 
-				TextController.getController(modeController).addTextTransformer(//
+				TextController textController = TextController.getController(modeController);
+                textController.addTextTransformer(//
 						new ConditionalContentTransformer(new FormulaTextTransformer(1), TOGGLE_PARSE_FORMULAS));
-
+                
 				// to enable Formulas in text templates:
 				// TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer(100));
 				final FormulaUpdateChangeListener listener = new FormulaUpdateChangeListener();

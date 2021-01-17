@@ -82,7 +82,7 @@ import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.mindmapmode.MFileManager;
@@ -791,7 +791,7 @@ class NodeList {
 		return row;
 	}
 	static private HashSet<Object> changeableProperties = new HashSet<Object>(
-			Arrays.asList(NodeModel.NODE_TEXT, NodeModel.NODE_ICON, DetailTextModel.class, NodeModel.NOTE_TEXT)
+			Arrays.asList(NodeModel.NODE_TEXT, NodeModel.NODE_ICON, DetailModel.class, NodeModel.NOTE_TEXT)
 			);
 
 	private boolean hasTableFieldValueChanged(Object property) {

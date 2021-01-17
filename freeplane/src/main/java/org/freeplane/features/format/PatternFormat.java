@@ -35,13 +35,13 @@ public abstract class PatternFormat /*extends Format*/ {
 	private static final String SERIALIZATION_SEPARATOR = ":";
 	public static final String IDENTITY_PATTERN = "NO_FORMAT";
 	public static final String STANDARD_FORMAT_PATTERN = "STANDARD_FORMAT";
+	static public final String TYPE_IDENTITY = "identity";
 
-	private static final PatternFormat IDENTITY = new IdentityPatternFormat();
+	private static final PatternFormat IDENTITY = new ContentTypeFormat(IDENTITY_PATTERN);
 	private static final PatternFormat STANDARD = new StandardPatternFormat();
 	static final String STYLE_FORMATTER = "formatter";
 	static final String STYLE_DATE = "date";
 	static final String STYLE_DECIMAL = "decimal";
-	static final String TYPE_IDENTITY = "identity";
 	static final String TYPE_STANDARD = "standard";
 	private static final String ELEMENT_NAME = "format";
 	private final String type;
@@ -244,9 +244,5 @@ public abstract class PatternFormat /*extends Format*/ {
     @Override
     public String toString() {
         return pattern;
-    }
-    
-    public boolean canFormat(Class<?> clazz){
-    	return true;
     }
 }

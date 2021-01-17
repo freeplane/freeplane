@@ -23,6 +23,7 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.NodeTextBuilder;
+import org.freeplane.features.text.RichTextModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -33,25 +34,37 @@ class NoteBuilder implements IElementContentHandler {
 		super();
 	}
 
-	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
-		if (attributes == null) {
+	public Object createElement(final Object parent, final String tag, final XMLElement element) {
+		if (element == null) {
 			return null;
 		}
-		final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
-		if (! NodeTextBuilder.XML_NODE_XHTML_TYPE_NOTE.equals(typeAttribute)) {
+		final Object typeAttribute = element.getAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, null);
+		if (! NodeTextBuilder.XML_RICHCONTENT_TYPE_NOTE.equals(typeAttribute)) {
 			return null;
 		}
 		return parent;
 	}
 
-	public void endElement(final Object parent, final String tag, final Object node, final XMLElement attributes,
-	                       final String content) {
-		if (tag.equals("richcontent")) {
-			final String xmlText = content.trim();
-			final Object typeAttribute = attributes.getAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, null);
-			if (NodeTextBuilder.XML_NODE_XHTML_TYPE_NOTE.equals(typeAttribute)) {
+	public void endElement(final Object parent, final String tag, final Object node, final XMLElement element,
+	        final String content) {
+	    if (tag.equals("richcontent")) {
+	        final String text;
+	        if(content != null)
+	            text = content.trim();
+	        else
+	            text = null;
+	        final Object typeAttribute = element.getAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, null);
+			if (NodeTextBuilder.XML_RICHCONTENT_TYPE_NOTE.equals(typeAttribute)) {
 				final NoteModel note = new NoteModel();
-				note.setXml(xmlText);
+	            if(containsXml(element))
+	                note.setXml(text);
+	            else
+	                note.setText(text);
+	            final String contentType = element.getAttribute(
+	                    NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, 
+	                    null);
+	            note.setContentType(contentType);
+
 				((NodeModel) node).addExtension((IExtension) note);
 			}
 		}

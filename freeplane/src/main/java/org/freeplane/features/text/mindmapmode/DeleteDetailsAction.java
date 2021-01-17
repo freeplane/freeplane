@@ -27,7 +27,7 @@ import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 
 @EnabledAction(checkOnNodeChange = true)
 class DeleteDetailsAction extends AMultipleNodeAction {
@@ -42,7 +42,7 @@ class DeleteDetailsAction extends AMultipleNodeAction {
 
 	@Override
 	protected void actionPerformed(final ActionEvent e, final NodeModel node) {
-		final DetailTextModel detailText = DetailTextModel.getDetailText(node);
+		final DetailModel detailText = DetailModel.getDetail(node);
 		if (detailText == null) {
 			return;
 		}
@@ -58,7 +58,7 @@ class DeleteDetailsAction extends AMultipleNodeAction {
 		boolean foundDetails = false;
 		final Collection<NodeModel> nodes = Controller.getCurrentModeController().getMapController().getSelectedNodes();
 		for (final NodeModel node : nodes) {
-			if (node != null && DetailTextModel.getDetailText(node) != null) {
+			if (node != null && DetailModel.getDetail(node) != null) {
 				foundDetails = true;
 				break;
 			}

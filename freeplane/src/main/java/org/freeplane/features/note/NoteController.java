@@ -20,12 +20,16 @@
 package org.freeplane.features.note;
 
 import java.awt.Component;
+import java.util.Collection;
 
 import javax.swing.Icon;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.UIIcon;
@@ -35,8 +39,12 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.MainView;
 
@@ -85,15 +93,30 @@ public class NoteController implements IExtension {
 		registerNoteTooltipProvider(modeController);
 		registerStateIconProvider();
 	}
+	
+	public String getNoteContentType(NodeModel node) {
+	    Collection<IStyle> collection = LogicalStyleController.getController(modeController).getStyles(node);
+	    final MapStyleModel model = MapStyleModel.getExtension(node.getMap());
+	    for(IStyle styleKey : collection){
+	        final NodeModel styleNode = model.getStyleNode(styleKey);
+	        if (styleNode == null) {
+	            continue;
+	        }
+	        final NoteModel note = NoteModel.getNote(styleNode);
+	        if (note != null) {
+	            String contentType = note.getContentType();
+	            if (contentType != null) {
+	                return contentType;
+	            }
+	        }
+	    } 
+	    return PatternFormat.IDENTITY_PATTERN;
+	}
+
 
 	public final String getNoteText(final NodeModel node) {
 		final NoteModel extension = node.getExtension(NoteModel.class);
-		return extension != null ? extension.getHtml() : null;
-	}
-
-	public final String getXmlNoteText(final NodeModel node) {
-		final NoteModel extension = node.getExtension(NoteModel.class);
-		return extension != null ? extension.getXml() : null;
+		return extension != null ? extension.getText() : null;
 	}
 
 	/**
@@ -112,8 +135,8 @@ public class NoteController implements IExtension {
 				if(showNotesInMap(node.getMap()) && ! TextController.getController(modeController).isMinimized(node)){
 					return null;
 				}
-				final String noteText = NoteModel.getNoteText(node);
-				if (noteText == null)
+				final String data = NoteModel.getNoteText(node);
+				if (data == null)
 					return null;
 				float zoom = view.getNodeView().getMap().getZoom();
 				final String rule = new NoteStyleAccessor(modeController, node, zoom, true).getNoteCSSStyle();
@@ -125,7 +148,18 @@ public class NoteController implements IExtension {
 					tooltipBodyBegin.append(bwNoteIconUrl);
 					tooltipBodyBegin.append("\">");
 				}
-				final String tooltipText = noteText.replaceFirst("<body>",
+				String text;
+				try {
+					text = TextController.getController(modeController)
+							.getTransformedText(data, node, NoteModel.getNote(node));
+				}
+				catch (Exception e) {
+					text = TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
+				}				
+				if (!HtmlUtils.isHtml(text)) {
+					text = HtmlUtils.plainToHTML(text);
+				}
+				final String tooltipText = text.replaceFirst("<body>",
 					tooltipBodyBegin.toString()).replaceFirst("</body>", "</div></body>");
 				return tooltipText;
 			}
@@ -137,7 +171,7 @@ public class NoteController implements IExtension {
 			@Override
 			public UIIcon getStateIcon(NodeModel node) {
 				boolean showIcon;
-				if(NoteModel.getNote(node) != null){
+				if(NoteModel.getNoteText(node) != null){
 					final String showNoteIcon = MapStyle.getController(modeController).getPropertySetDefault(node.getMap(), SHOW_NOTE_ICONS);
 					showIcon = Boolean.parseBoolean(showNoteIcon);
 					if(showIcon)

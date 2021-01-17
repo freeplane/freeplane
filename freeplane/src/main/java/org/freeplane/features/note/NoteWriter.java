@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeWriter;
+import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.features.map.MapModel;
@@ -53,20 +54,31 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 	 * @see freeplane.io.INodeWriter#saveContent(freeplane.io.ITreeWriter,
 	 * java.lang.Object, java.lang.String)
 	 */
-	public void writeContent(final ITreeWriter writer, final Object element, final IExtension note) throws IOException {
-		RichTextModel note1 = (RichTextModel) note;
-		if (note1.getXml() != null) {
-        	final XMLElement htmlElement = new XMLElement();
-    		htmlElement.setName(NodeTextBuilder.XML_NODE_XHTML_CONTENT_TAG);
-        	if(note instanceof NoteModel){
-            	htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, NodeTextBuilder.XML_NODE_XHTML_TYPE_NOTE);
-        	}
-        	else{
-        		htmlElement.setAttribute(NodeTextBuilder.XML_NODE_XHTML_TYPE_TAG, "UNKNOWN");
-        	}
-        	final String content = note1.getXml().replace('\0', ' ');
-        	writer.addElement('\n' + content + '\n', htmlElement);
+	public void writeContent(final ITreeWriter writer, final Object object, final IExtension extension) throws IOException {
+	    NoteModel note = (NoteModel) extension;
+		final XMLElement element = new XMLElement();
+		element.setName(NodeTextBuilder.XML_NODE_RICHCONTENT_TAG);
+		if(extension instanceof NoteModel){
+		    element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_NOTE);
+		}
+		else{
+		    element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, "UNKNOWN");
+		}
+        String contentType = note.getContentType();
+        if(contentType  != null)
+            element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentType);
+		if (note.getXml() != null) {
+        	final String content = note.getXml().replace('\0', ' ');
+        	writer.addElement('\n' + content + '\n', element);
         }
+		else {
+            String text = note.getText();
+            if(text != null) {
+                element.setAttribute(IElementContentHandler.CONTAINS_XML, "false");
+                element.setContent(text);
+            }
+            writer.addElement(null, element);
+		}
 		return;
 	}
 }

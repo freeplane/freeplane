@@ -31,6 +31,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -109,6 +111,7 @@ class ApplicationViewController extends FrameController {
 				return false;
 			}
 		};
+		mSplitPane.setResizeWeight(1.0d);
 		setSplitPaneLayoutManager();
 		final Component contentPane;
 		mapViewWindows = new MapViewDockingWindows();
@@ -126,6 +129,7 @@ class ApplicationViewController extends FrameController {
 	 */
 	@Override
 	public void changeNoteWindowLocation() {
+		saveSplitPanePosition();
 		mLocationPreferenceValue = resourceController.getProperty("note_location");
 		if(mMindMapComponent != null){
 			insertComponentIntoSplitPane(mMindMapComponent);
@@ -145,56 +149,64 @@ class ApplicationViewController extends FrameController {
 	public void insertComponentIntoSplitPane(final JComponent pMindMapComponent) {
 		// --- Save the Component --
 		mMindMapComponent = pMindMapComponent;
-		// --- Devider position variables --
-		int splitPanePosition = -1;
-		int lastSplitPanePosition = -1;
-		mapPane.setVisible(true);
 		mSplitPane.setLeftComponent(null);
 		mSplitPane.setRightComponent(null);
 		if ("right".equals(mLocationPreferenceValue)) {
 			mSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 			mSplitPane.setLeftComponent(mapPane);
 			mSplitPane.setRightComponent(pMindMapComponent);
-			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_RIGHT_POSITION, -1);
-			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_RIGHT_POSITION, -1);
 		}
 		else if ("left".equals(mLocationPreferenceValue)) {
 			mSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 			mSplitPane.setLeftComponent(pMindMapComponent);
 			mSplitPane.setRightComponent(mapPane);
-			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LEFT_POSITION, -1);
-			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_LEFT_POSITION, -1);
 		}
 		else if ("top".equals(mLocationPreferenceValue)) {
 			mSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 			mSplitPane.setLeftComponent(pMindMapComponent);
 			mSplitPane.setRightComponent(mapPane);
-			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_TOP_POSITION, -1);
-			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_TOP_POSITION, -1);
 		}
-		else if ("bottom".equals(mLocationPreferenceValue)) {
+		else {
 			mSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
 			mSplitPane.setLeftComponent(mapPane);
 			mSplitPane.setRightComponent(pMindMapComponent);
-			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_POSITION, -1);
-			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_POSITION, -1);
 		}
 		mSplitPane.setContinuousLayout(true);
 		mSplitPane.setOneTouchExpandable(false);
 		setSplitPaneLayoutManager();
-		/*
-		 * This means that the mind map area gets all the space that results
-		 * from resizing the window.
-		 */
-		mSplitPane.setResizeWeight(1.0d);
+		SwingUtilities.invokeLater(this::resetDividerLocation);
+
+	}
+	private void resetDividerLocation() {
+		int splitPanePosition = -1;
+		int lastSplitPanePosition = -1;
+		if ("right".equals(mLocationPreferenceValue)) {
+			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_RIGHT_POSITION, -1);
+			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_RIGHT_POSITION, -1);
+		}
+		else if ("left".equals(mLocationPreferenceValue)) {
+			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LEFT_POSITION, -1);
+			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_LEFT_POSITION, -1);
+		}
+		else if ("top".equals(mLocationPreferenceValue)) {
+			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_TOP_POSITION, -1);
+			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_TOP_POSITION, -1);
+		}
+		else if ("bottom".equals(mLocationPreferenceValue)) {
+			splitPanePosition = resourceController.getIntProperty(SPLIT_PANE_POSITION, -1);
+			lastSplitPanePosition = resourceController.getIntProperty(SPLIT_PANE_LAST_POSITION, -1);
+		}
+
 		if (splitPanePosition != -1 && lastSplitPanePosition != -1) {
 			mSplitPane.setDividerLocation(splitPanePosition);
 			mSplitPane.setLastDividerLocation(lastSplitPanePosition);
 		}
 		else {
 			mSplitPane.setDividerLocation(0.5);
+			mSplitPane.setLastDividerLocation(mSplitPane.getDividerLocation());
 		}
 	}
+
 
 	@Override
 	public boolean isApplet() {

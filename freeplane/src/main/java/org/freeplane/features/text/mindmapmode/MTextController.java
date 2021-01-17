@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,11 +95,14 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.nodestyle.mindmapmode.MNodeStyleController;
+import org.freeplane.features.note.NoteModel;
+import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.styles.ConditionPredicate;
 import org.freeplane.features.styles.LogicalStyleController;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.IContentTransformer;
 import org.freeplane.features.text.NodeItemRelation;
+import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.ShortenedTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
@@ -123,6 +127,7 @@ public class MTextController extends TextController {
 	private static Pattern FORMATTING_PATTERN = null;
 	private EditNodeBase currentBlockingEditor = null;
 	private final Collection<IEditorPaneListener> editorPaneListeners;
+    private final Set<String> detailContentTypes;
 	private final EventBuffer eventQueue;
 	static {
 		final UIResources defaultResources = SHTMLPanel.getResources();
@@ -130,7 +135,7 @@ public class MTextController extends TextController {
 			@Override
 			public String getString(final String key) {
 				if (key.equals("approximate_search_threshold")) {
-					return new Double(StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB).toString();
+					return Double.valueOf(StringMatchingStrategy.APPROXIMATE_MATCHING_MINPROB).toString();
 				}
 				String freeplaneKey = "simplyhtml." + key;
 				String resourceString = ResourceController.getResourceController().getText(freeplaneKey, null);
@@ -166,6 +171,9 @@ public class MTextController extends TextController {
 		super(modeController);
 		eventQueue = new EventBuffer();
 		editorPaneListeners = new LinkedList<IEditorPaneListener>();
+        detailContentTypes = new LinkedHashSet<>();
+        detailContentTypes.add(PatternFormat.STANDARD_FORMAT_PATTERN);
+        detailContentTypes.add(PatternFormat.IDENTITY_PATTERN);
 		createActions();
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
 			@Override
@@ -264,6 +272,14 @@ public class MTextController extends TextController {
 			}
 		});
 	}
+
+    public boolean addDetailContentType(String e) {
+        return detailContentTypes.add(e);
+    }
+    
+    public String[] getDetailContentTypes() {
+        return detailContentTypes.stream().toArray(String[]::new);
+    }
 
 	private String[] getContent(final String text, final int pos) {
 		if (pos <= 0) {
@@ -581,22 +597,23 @@ public class MTextController extends TextController {
 	public void editDetails(final NodeModel nodeModel, InputEvent e, final boolean editInDialog) {
 		final Controller controller = Controller.getCurrentController();
 		stopInlineEditing();
-		String text = DetailTextModel.getDetailTextText(nodeModel);
-		final boolean addsNewDetailsUsingInlineEditor = text == null && ! editInDialog;
+		DetailModel detail = DetailModel.getDetail(nodeModel);
+		final boolean addsNewDetailsUsingInlineEditor = detail == null && ! editInDialog;
 		if (addsNewDetailsUsingInlineEditor) {
 			final MTextController textController = MTextController.getController();
 			textController.setDetails(nodeModel, "<html>");
 		}
-		if (text == null)
-		    text = "";
+		if (detail == null)
+		    detail = new DetailModel(false);
 		final EditNodeBase.IEditControl editControl = new NodeDetailsEditor(addsNewDetailsUsingInlineEditor, nodeModel);
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities
 		        .getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
-		EditNodeBase editor = createEditor(nodeModel, editControl, text, false, editInDialog, true);
+		EditNodeBase editor = createEditor(nodeModel, detail, detail.getTextOr(""), editControl, false, editInDialog, true);
 		if(editor.editorBlocks())
 		    currentBlockingEditor = editor;
         editor.show(frame);
 	}
+
 
 	private void setDetailsHtmlText(final NodeModel node, final String newText) {
 		if (newText != null) {
@@ -608,54 +625,74 @@ public class MTextController extends TextController {
 	}
 
 	public void setDetails(final NodeModel node, final String newText) {
-		final String oldText = DetailTextModel.getDetailTextText(node);
+	    if("".equals(newText)) {
+	        setDetails(node, null);
+	        return;
+	    }
+	        
+		final String oldText = DetailModel.getDetailText(node);
 		if (oldText == newText || null != oldText && oldText.equals(newText)) {
 			return;
 		}
-		final IActor actor = new IActor() {
-			boolean hidden = false;
-
-			@Override
-			public void act() {
-				setText(newText);
-			}
-
-			@Override
-			public String getDescription() {
-				return "setDetailText";
-			}
-
-			private void setText(final String text) {
-				final boolean containsDetails = !(text == null || text.equals(""));
-				if (containsDetails) {
-					final DetailTextModel details = DetailTextModel.createDetailText(node);
-					details.setHtml(text);
-					details.setHidden(hidden);
-					node.addExtension(details);
-				}
-				else {
-					final DetailTextModel details = node.getExtension(DetailTextModel.class);
-					if (null != details) {
-						hidden = details.isHidden();
-						node.removeExtension(DetailTextModel.class);
-					}
-				}
-				Controller.getCurrentModeController().getMapController().nodeChanged(node, DetailTextModel.class,
-				    oldText, text);
-			}
-
-			@Override
-			public void undo() {
-				setText(oldText);
-			}
-		};
-		Controller.getCurrentModeController().execute(actor, node.getMap());
+		
+        DetailModel oldDetails = DetailModel.getDetail(node);
+        DetailModel newDetails= oldDetails == null ? new DetailModel(false) :  oldDetails.copy();
+        newDetails.setText(newText);
+        
+        setDetails(node, oldDetails, newDetails, "setDetailText");
+        
 	}
 
+    public void setDetailsContentType(final NodeModel node, final String newContentType) {
+        final String oldContentType = DetailModel.getDetailContentType(node);
+        if (oldContentType == newContentType || null != oldContentType && oldContentType.equals(newContentType)) {
+            return;
+        }
+        
+        DetailModel oldDetails = DetailModel.getDetail(node);
+        DetailModel newDetails= oldDetails == null ? new DetailModel(false) :  oldDetails.copy();
+        newDetails.setContentType(newContentType);
+        
+        setDetails(node, oldDetails, newDetails, "setDetailContentType");
+    }
+
+    private void setDetails(final NodeModel node, DetailModel oldDetails,
+            DetailModel newDetails, String description) {
+        final IActor actor = new IActor() {
+            @Override
+            public void act() {
+                setDetails(newDetails);
+                Controller.getCurrentModeController().getMapController().nodeChanged(node, DetailModel.class,
+                        oldDetails, newDetails);
+            }
+
+            @Override
+            public String getDescription() {
+                return description;
+            }
+
+            @Override
+            public void undo() {
+                setDetails(oldDetails);
+                Controller.getCurrentModeController().getMapController().nodeChanged(node, DetailModel.class,
+                        newDetails, oldDetails);
+            }
+            private void setDetails(final DetailModel details) {
+                if(details == null || details.isEmpty()) {
+                    node.removeExtension(DetailModel.class);
+                }
+                else
+                    node.putExtension(details);
+            }
+
+        };
+        Controller.getCurrentModeController().execute(actor, node.getMap());
+    }
+    
 	@Override
 	public void setDetailsHidden(final NodeModel node, final boolean isHidden) {
 		stopInlineEditing();
-		DetailTextModel details = node.getExtension(DetailTextModel.class);
+		DetailModel details = node.getExtension(DetailModel.class);
 		if (details == null || details.isHidden() == isHidden) {
 			return;
 		}
@@ -675,7 +712,7 @@ public class MTextController extends TextController {
 			}
 
 			private void setHidden(final boolean isHidden) {
-				final DetailTextModel details = DetailTextModel.createDetailText(node);
+				final DetailModel details = DetailModel.createDetailText(node);
 				details.setHidden(isHidden);
 				node.addExtension(details);
 				final NodeChangeEvent nodeChangeEvent = new NodeChangeEvent(node, DETAILS_HIDDEN, !isHidden, isHidden, true, false);
@@ -772,7 +809,7 @@ public class MTextController extends TextController {
         @Override
         public void cancel() {
         	if (nodeModel.isPresent() &&  addsNewDetailsUsingInlineEditor) {
-        		final String detailText = DetailTextModel.getDetailTextText(nodeModel.get());
+        		final String detailText = DetailModel.getDetailText(nodeModel.get());
         		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
         		if (detailText != null)
         			modeController.undo();
@@ -1049,7 +1086,7 @@ public class MTextController extends TextController {
 		final NodeTextEditor editControl = new NodeTextEditor(viewController, nodeModel,
                 isNewNode, prevSelectedModel, controller, parentFolded);
 		final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
-		EditNodeBase editor = createEditor(nodeModel, editControl, nodeModel.getText(), isNewNode, editInDialog, true);
+		EditNodeBase editor = createEditor(nodeModel, nodeModel, nodeModel.getText(), editControl, isNewNode, editInDialog, true);
 		if(editor.editorBlocks()) {
 		    Controller.getCurrentModeController().setBlocked(true);
 		    currentBlockingEditor = editor;
@@ -1058,24 +1095,24 @@ public class MTextController extends TextController {
 		editor.show(frame);
 	}
 
-	private EditNodeBase createEditor(final NodeModel nodeModel, final IEditControl editControl,
-	                                  String text, final boolean isNewNode, final boolean editInDialog,
-	                                  boolean internal) {
-		EditNodeBase base = createContentSpecificEditor(nodeModel, text, editControl, editInDialog);
+	public EditNodeBase createEditor(final NodeModel nodeModel, Object nodeProperty,
+	                                  Object content, final IEditControl editControl, final boolean isNewNode,
+	                                  final boolean editInDialog, boolean internal) {
+		EditNodeBase base = createContentSpecificEditor(nodeModel, content, nodeProperty, editControl, editInDialog);
 		if (base != null || !internal) {
 			return base;
 		}
 		final IEditBaseCreator textFieldCreator = (IEditBaseCreator) Controller.getCurrentController()
 		    .getMapViewManager();
-		return textFieldCreator.createEditor(nodeModel, editControl, text, editInDialog);
+		return textFieldCreator.createEditor(nodeModel, nodeProperty, content, editControl, editInDialog);
 	}
 
-	public EditNodeBase createContentSpecificEditor(final NodeModel nodeModel, final String text, final IEditControl editControl,
+	public EditNodeBase createContentSpecificEditor(final NodeModel nodeModel, final Object content, final Object ee, final IEditControl editControl,
 	                                    final boolean editInDialog) {
 		final List<IContentTransformer> textTransformers = getTextTransformers();
 		for (IContentTransformer t : textTransformers) {
 			if (t instanceof IEditBaseCreator) {
-				final EditNodeBase base = ((IEditBaseCreator) t).createEditor(nodeModel, editControl, text, editInDialog);
+				final EditNodeBase base = ((IEditBaseCreator) t).createEditor(nodeModel, ee, content, editControl, editInDialog);
 				if (base != null) {
 					return base;
 				}

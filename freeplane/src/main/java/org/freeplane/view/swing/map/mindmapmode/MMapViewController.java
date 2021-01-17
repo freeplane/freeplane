@@ -30,6 +30,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
@@ -47,8 +48,13 @@ import org.freeplane.view.swing.map.ZoomableLabel;
  */
 public class MMapViewController extends MapViewController implements IEditBaseCreator {
 	@Override
-	public EditNodeBase createEditor(final NodeModel node, final EditNodeBase.IEditControl editControl,
-                             String text, final boolean editLong) {
+	public EditNodeBase createEditor(final NodeModel node, Object nodeProperty,
+                             Object content, final EditNodeBase.IEditControl editControl, final boolean editLong) {
+	    String text;
+		if(content instanceof String)
+			text = (String) content;
+		else
+			throw new IllegalArgumentException("Unknown content type " + content);
 	    final String htmlEditingOption = ResourceController.getResourceController().getProperty("html_editing_option");
 		final boolean editInternalWysiwyg = editLong && StringUtils.equals(htmlEditingOption, "internal-wysiwyg");
 		final boolean editExternal = editLong && StringUtils.equals(htmlEditingOption, "external");
@@ -107,8 +113,9 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 			final EditNodeBase textfield = createEditor(node, editControl.getEditType(), text, editControl);
 			if(textfield != null)
 				return textfield;
+			else
+				return createEditor(node, nodeProperty, text, editControl, true);
 		}
-		return createEditor(node, editControl, text, true);
     }
 
 	private EditNodeBase createEditor(final NodeModel node, final EditedComponent parent, final String text,

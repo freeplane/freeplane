@@ -83,7 +83,7 @@ public class AttributeContainsCondition extends StringConditionAdapter {
                 continue;
             }
             final Object originalContent = attributes.getValueAt(i, 1);
-            String text = textController.getTransformedTextNoThrow(originalContent, node, null);
+            String text = textController.getTransformedTextNoThrow(originalContent, node, attributes);
             if (checkText(text)) {
 				return true;
 			}

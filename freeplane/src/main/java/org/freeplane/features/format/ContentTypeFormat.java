@@ -2,15 +2,11 @@ package org.freeplane.features.format;
 
 import org.freeplane.core.util.TextUtils;
 
-public class IdentityPatternFormat extends PatternFormat {
-	public IdentityPatternFormat(String pattern) {
+public class ContentTypeFormat extends PatternFormat {
+	public ContentTypeFormat(String pattern) {
 		super(pattern, TYPE_IDENTITY);
 	}
 	
-	IdentityPatternFormat() {
-		this(IDENTITY_PATTERN);
-	}
-
 	@Override
 	public String getStyle() {
 		return STYLE_FORMATTER;

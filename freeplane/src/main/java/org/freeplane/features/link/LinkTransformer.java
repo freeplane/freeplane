@@ -47,7 +47,7 @@ public class LinkTransformer extends AbstractContentTransformer {
     }
 
 	@Override
-	public Object transformContent(TextController textController, Object content, NodeModel node, Object transformedExtension) {
+	public Object transformContent(NodeModel node, Object nodeProperty, Object content, TextController textController) {
 		if(PatternFormat.IDENTITY_PATTERN.equals(textController.getNodeFormat(node)))
 			return content;
 		if(! (content instanceof URI))

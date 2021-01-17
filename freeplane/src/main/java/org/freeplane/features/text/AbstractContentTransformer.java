@@ -1,9 +1,5 @@
 package org.freeplane.features.text;
 
-import javax.swing.Icon;
-
-import org.freeplane.features.map.NodeModel;
-
 public abstract class AbstractContentTransformer implements IContentTransformer {
 	private int priority;
 
@@ -24,14 +20,8 @@ public abstract class AbstractContentTransformer implements IContentTransformer 
 	    return false;
     }
 
-	public Icon getIcon(TextController textController, Object content,
-			NodeModel node, Object transformedExtension) {
-		return null;
-	}
-
 	@Override
-	public boolean isFormula(TextController textController, Object content, NodeModel node,
-			Object transformedExtension) {
+	public boolean isFormula(Object content) {
 		return false;
 	}
 	

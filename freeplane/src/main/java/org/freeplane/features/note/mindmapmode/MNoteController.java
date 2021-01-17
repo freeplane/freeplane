@@ -19,24 +19,13 @@
  */
 package org.freeplane.features.note.mindmapmode;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.KeyboardFocusManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.net.URI;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-import javax.swing.BorderFactory;
-import javax.swing.InputMap;
-import javax.swing.JEditorPane;
-import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -44,8 +33,7 @@ import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.LogUtils;
-import org.freeplane.features.link.LinkController;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -55,14 +43,9 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.NoteStyleAccessor;
-import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
-import org.freeplane.features.text.mindmapmode.FreeplaneToSHTMLPropertyChangeAdapter;
-import org.freeplane.features.text.mindmapmode.MTextController;
-
-import com.lightdev.app.shtm.SHTMLEditorPane;
-import com.lightdev.app.shtm.SHTMLPanel;
+import org.freeplane.features.text.RichTextModel;
 
 /**
  * @author Dimitry Polivaev
@@ -76,7 +59,7 @@ public class MNoteController extends NoteController {
 
 		private void docEvent() {
 			final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-			if (focusOwner == null || !SwingUtilities.isDescendingFrom(focusOwner, htmlEditorPanel)) {
+			if (focusOwner == null || !SwingUtilities.isDescendingFrom(focusOwner, notePanel)) {
 				return;
 			}
 			final ModeController modeController = Controller.getCurrentModeController();
@@ -98,34 +81,20 @@ public class MNoteController extends NoteController {
 		}
 	}
 
-	private static class SouthPanel extends JPanel {
-		/**
-		 *
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public SouthPanel() {
-			super(new BorderLayout());
-			setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
-		}
-
-		@Override
-		protected boolean processKeyBinding(final KeyStroke ks, final KeyEvent e, final int condition,
-		                                    final boolean pressed) {
-			return super.processKeyBinding(ks, e, condition, pressed) || e.getKeyChar() == KeyEvent.VK_SPACE
-			        || e.getKeyChar() == KeyEvent.VK_ALT;
-		}
-	}
-
-	private static SHTMLPanel htmlEditorPanel;
-	private static Color defaultCaretColor;
-
 	public static final String RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION = "remove_notes_without_question";
 	public static final String RESOURCES_USE_DEFAULT_FONT_FOR_NOTES_TOO = "resources_use_default_font_for_notes_too";
 	public static final String RESOURCES_USE_MARGIN_TOP_ZERO_FOR_NOTES = "resources_use_margin_top_zero_for_notes";
 	static final String RESOURCES_USE_SPLIT_PANE = "use_split_pane";
+	private static NotePanel notePanel;
+
+	public static MNoteController getController() {
+	    return (MNoteController) NoteController.getController();
+	}
+
+
+	
 	private final NoteManager noteManager;
-	private SHTMLPanel noteViewerComponent;
+    private final Set<String> noteContentTypes;
 
 	/**
 	 * @param modeController
@@ -133,6 +102,9 @@ public class MNoteController extends NoteController {
 	public MNoteController(ModeController modeController) {
 		super();
 		noteManager = new NoteManager(this);
+        noteContentTypes = new LinkedHashSet<>();
+        noteContentTypes.add(PatternFormat.STANDARD_FORMAT_PATTERN);
+        noteContentTypes.add(PatternFormat.IDENTITY_PATTERN);
 		createActions(modeController);
 	}
 
@@ -148,90 +120,17 @@ public class MNoteController extends NoteController {
 		modeController.addAction(new SetBooleanMapPropertyAction(SHOW_NOTE_ICONS));
     }
 
-	SHTMLPanel getHtmlEditorPanel() {
-		if (htmlEditorPanel != null) {
-			return htmlEditorPanel;
-		}
-		htmlEditorPanel = MTextController.getController().createSHTMLPanel(NoteModel.EDITING_PURPOSE);
-        htmlEditorPanel.shtmlPrefChanged("show_toolbars", 
-                ResourceController.getResourceController().getProperty("simplyhtml.note.show_toolbars"), 
-                ResourceController.getResourceController().getProperty("simplyhtml.show_toolbars"));
-        htmlEditorPanel.shtmlPrefChanged("show_menu", 
-                ResourceController.getResourceController().getProperty("simplyhtml.note.show_menu"), 
-                ResourceController.getResourceController().getProperty("simplyhtml.show_menu"));
-
-		// make sure that SHTML gets notified of relevant config changes!
-        ResourceController.getResourceController().addPropertyChangeListener(
-                new FreeplaneToSHTMLPropertyChangeAdapter("simplyhtml.", htmlEditorPanel));
-
-        ResourceController.getResourceController().addPropertyChangeListener(
-                new FreeplaneToSHTMLPropertyChangeAdapter("simplyhtml.note.", htmlEditorPanel));
-
-		htmlEditorPanel.setMinimumSize(new Dimension(100, 100));
-		final SHTMLEditorPane editorPane = (SHTMLEditorPane) htmlEditorPanel.getEditorPane();
-		defaultCaretColor = editorPane.getCaretColor();
-
-		for (InputMap inputMap = editorPane.getInputMap(); inputMap != null; inputMap = inputMap.getParent()){
-			inputMap.remove(KeyStroke.getKeyStroke("ctrl pressed T"));
-			inputMap.remove(KeyStroke.getKeyStroke("ctrl shift pressed T"));
-			inputMap.remove(KeyStroke.getKeyStroke("ctrl pressed SPACE"));
-		}
-
-		editorPane.addFocusListener(new FocusListener() {
-			private SpellCheckerController spellCheckerController = null;
-			private boolean enabled = false;
-			@Override
-			public void focusLost(final FocusEvent e) {
-				if(! e.isTemporary()){
-					spellCheckerController.enableAutoSpell(editorPane, false);
-					enabled = false;
-					noteManager.saveNote();
-				}
-			}
-
-			@Override
-			public void focusGained(final FocusEvent e) {
-				if(! enabled){
-					initSpellChecker();
-					spellCheckerController.enableAutoSpell(editorPane, true);
-					enabled = true;
-				}
-			}
-
-			private void initSpellChecker() {
-				if (spellCheckerController != null) {
-					return;
-				}
-				spellCheckerController = SpellCheckerController.getController();
-				spellCheckerController.addSpellCheckerMenu(editorPane.getPopup());
-				spellCheckerController.enableShortKey(editorPane, true);
-			}
-		});
-
-		htmlEditorPanel.getSourceEditorPane().addFocusListener(new FocusListener() {
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				if(! e.isTemporary()){
-					noteManager.saveNote();
-				}
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-			}
-		});
-
-		return htmlEditorPanel;
-	}
-
-	SHTMLPanel getNoteViewerComponent() {
-		return noteViewerComponent;
-	}
+    public boolean addNoteContentType(String e) {
+        return noteContentTypes.add(e);
+    }
+    
+    public String[] getNoteContentTypes() {
+        return noteContentTypes.stream().toArray(String[]::new);
+    }
 
 	void hideNotesPanel() {
 		noteManager.saveNote();
-		noteViewerComponent.setVisible(false);
+		notePanel.setVisible(false);
 		Controller.getCurrentModeController().getController().getViewController().removeSplitPane();
 		ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "false");
 	}
@@ -249,45 +148,74 @@ public class MNoteController extends NoteController {
 	}
 
 	public void setNoteText(final NodeModel node, final String newText) {
-		final String oldText = getNoteText(node);
-		if (oldText == newText || null != oldText && oldText.equals(newText)) {
-			return;
-		}
-		final IActor actor = new IActor() {
-			@Override
-			public void act() {
-				setText(newText);
-			}
+        if("".equals(newText)) {
+            setNoteText(node, null);
+            return;
+        }
+            
+        final String oldText = NoteModel.getNoteText(node);
+        if (oldText == newText || null != oldText && oldText.equals(newText)) {
+            return;
+        }
+        
+        NoteModel oldNote = NoteModel.getNote(node);
+        NoteModel newNote= oldNote == null ? new NoteModel() :  oldNote.copy();
+        newNote.setText(newText);
+        
+        setNote(node, oldNote, newNote, "setNoteText");
+	}
 
-			@Override
-			public String getDescription() {
-				return "setNoteText";
-			}
 
-			private void setText(final String text) {
-				final boolean enabled = !(text == null || text.equals(""));
-				if (enabled) {
-					final NoteModel note = NoteModel.createNote(node);
-					note.setHtml(text);
-					node.addExtension(note);
+    public void setNoteContentType(final NodeModel node, final String newContentType) {
+        final String oldContentType = NoteModel.getNoteContentType(node);
+        if (oldContentType == newContentType || null != oldContentType && oldContentType.equals(newContentType)) {
+            return;
+        }
+
+        NoteModel oldNote = NoteModel.getNote(node);
+        NoteModel newNote= oldNote == null ? new NoteModel() :  oldNote.copy();
+        newNote.setContentType(newContentType);
+
+        setNote(node, oldNote, newNote, "setNoteContentType");
+    }
+    
+    private void setNote(final NodeModel node, NoteModel oldNote, NoteModel newNote, String description) {
+        final IActor actor = new IActor() {
+            @Override
+            public void act() {
+                setNote(newNote);
+                Controller.getCurrentModeController().getMapController()
+                    .nodeChanged(node, NodeModel.NOTE_TEXT, oldNote, newNote);
+            }
+
+            @Override
+            public String getDescription() {
+                return description;
+            }
+
+            @Override
+            public void undo() {
+                setNote(oldNote);
+                Controller.getCurrentModeController().getMapController()
+                    .nodeChanged(node, NodeModel.NOTE_TEXT, newNote, oldNote);
+            }
+            private void setNote(final NoteModel note) {
+                if(note.isEmpty()) {
+                    node.removeExtension(NoteModel.class);
+                }
+                else
+                    node.putExtension(note);
+				if(noteManager != null) {
+					IMapSelection selection = Controller.getCurrentController().getSelection();
+					if (selection != null && node.equals(selection.getSelected()))
+						noteManager.updateEditor();
 				}
-				else {
-					if (null != node.getExtension(NoteModel.class)) {
-						node.removeExtension(NoteModel.class);
-					}
-				}
-				Controller.getCurrentModeController().getMapController().nodeChanged(node, NodeModel.NOTE_TEXT, oldText, text);
-				if(noteManager != null)
-					noteManager.updateEditor();
-			}
-
-			@Override
-			public void undo() {
-				setText(oldText);
 			}
 		};
 		Controller.getCurrentModeController().execute(actor, node.getMap());
-	}
+    }
+
+
 
 	private boolean shouldUseSplitPane() {
 		return "true".equals(ResourceController.getResourceController().getProperty(
@@ -295,47 +223,27 @@ public class MNoteController extends NoteController {
 	}
 
 	void showNotesPanel(final boolean requestFocus) {
-		if (noteViewerComponent == null) {
-			noteViewerComponent = getHtmlEditorPanel();
+		if (notePanel == null) {
+			notePanel = new NotePanel(noteManager, new NoteDocumentListener());
 			noteManager.updateEditor();
 		}
-		final SouthPanel southPanel = new SouthPanel();
-		southPanel.add(noteViewerComponent, BorderLayout.CENTER);
-//		setDefaultFont();
-		noteViewerComponent.setOpenHyperlinkHandler(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent pE) {
-				try {
-					String uriText = pE.getActionCommand();
-					LinkController.getController().loadURI(noteManager.getNode(), new URI(uriText));
-				}
-				catch (final Exception e) {
-					LogUtils.severe(e);
-				}
-			}
-		});
-		noteViewerComponent.setVisible(true);
 		ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
-		Controller.getCurrentModeController().getController().getViewController().insertComponentIntoSplitPane(southPanel);
+		Controller.getCurrentModeController().getController().getViewController().insertComponentIntoSplitPane(notePanel);
+		notePanel.setVisible(true);
 		if (requestFocus) {
 			KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
 			EventQueue.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					final SHTMLPanel htmlEditorPanel = getHtmlEditorPanel();
-					htmlEditorPanel.getMostRecentFocusOwner().requestFocus();
-					if (ResourceController.getResourceController().getBooleanProperty("goto_note_end_on_edit")) {
-						final JEditorPane editorPane = htmlEditorPanel.getEditorPane();
-						editorPane.setCaretPosition(editorPane.getDocument().getLength());
-					}
+					notePanel.requestFocusInWindow();
 				}
 			});
 		}
-		southPanel.revalidate();
+		notePanel.revalidate();
 	}
 
 	void setDefaultStyle(NodeModel node) {
-	    final StyleSheet styleSheet = noteViewerComponent.getDocument().getStyleSheet();
+	    final StyleSheet styleSheet = notePanel.getStyleSheet();
 	    styleSheet.removeStyle("body");
 	    styleSheet.removeStyle("p");
 	    // set default font for notes:
@@ -343,7 +251,7 @@ public class MNoteController extends NoteController {
 	    final NoteStyleAccessor noteStyleAccessor = new NoteStyleAccessor(modeController, node, 1f, false);
 		String noteCssRule = noteStyleAccessor.getNoteCSSStyle();
 		Color noteForeground = noteStyleAccessor.getNoteForeground();
-		noteViewerComponent.getEditorPane().setCaretColor(noteForeground != null ? noteForeground : defaultCaretColor);
+		notePanel.updateCaretColor(noteForeground);
 		String bodyRule = new StringBuilder( "body {").append(noteCssRule).append("}\n").toString();
 		styleSheet.addRule(bodyRule);
 	    if (ResourceController.getResourceController().getBooleanProperty(
@@ -359,7 +267,7 @@ public class MNoteController extends NoteController {
 
 	boolean isEditing() {
 		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-        return focusOwner != null && noteViewerComponent != null && SwingUtilities.isDescendingFrom(focusOwner, noteViewerComponent);
+        return focusOwner != null && notePanel != null && SwingUtilities.isDescendingFrom(focusOwner, notePanel);
 	}
 
 	void setFocusToMap() {
@@ -371,13 +279,13 @@ public class MNoteController extends NoteController {
 	public void shutdownController() {
 		Controller.getCurrentModeController().getMapController().removeNodeSelectionListener(noteManager);
 		Controller.getCurrentController().getMapViewManager().removeMapSelectionListener(noteManager);
-		if (noteViewerComponent == null) {
+		if (notePanel == null) {
 			return;
 		}
-		noteViewerComponent.getActionMap().remove("jumpToMapAction");
+		notePanel.getActionMap().remove("jumpToMapAction");
 		if (shouldUseSplitPane()) {
 			hideNotesPanel();
-			noteViewerComponent = null;
+			notePanel = null;
 		}
 	}
 
@@ -388,7 +296,6 @@ public class MNoteController extends NoteController {
 		}
 		modeController.getMapController().addNodeSelectionListener(noteManager);
 		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(noteManager);
-		noteManager.mNoteDocumentListener = new NoteDocumentListener();
 	}
 
 	boolean isNoteEditorShowing() {
@@ -402,5 +309,9 @@ public class MNoteController extends NoteController {
 
 	public void editNoteInDialog(final NodeModel nodeModel) {
 		new NoteDialogStarter().editNoteInDialog(nodeModel);
+	}
+
+	NotePanel getNotePanel() {
+		return notePanel;
 	}
 }

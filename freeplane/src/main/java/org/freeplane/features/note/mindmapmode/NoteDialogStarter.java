@@ -14,6 +14,7 @@ import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
+import org.freeplane.features.text.mindmapmode.MTextController;
 
 class NoteDialogStarter{
 	private class NoteEditor implements EditNodeBase.IEditControl {
@@ -47,14 +48,13 @@ class NoteDialogStarter{
 
 	void editNoteInDialog(final NodeModel nodeModel) {
 		final Controller controller = Controller.getCurrentController();
-		String text = NoteModel.getNoteText(nodeModel);
-		if(text ==  null){
-			text = "";
+		NoteModel note = NoteModel.getNote(nodeModel);
+		if(note ==  null){
+			note = new NoteModel();
 		}
 		final EditNodeBase.IEditControl editControl = new NoteEditor(nodeModel);
-		final IEditBaseCreator textFieldCreator = (IEditBaseCreator) Controller.getCurrentController().getMapViewManager();
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities.getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
-		EditNodeBase editor = textFieldCreator.createEditor(nodeModel, editControl, text, true);
+		EditNodeBase editor = MTextController.getController().createEditor(nodeModel, note, note.getTextOr(""), editControl, false, true, true);
 		editor.show(frame);
 
     }

@@ -20,7 +20,7 @@
 package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
 import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.MTextController;
 
@@ -35,7 +35,7 @@ class DetailTextAccessor implements TextAccessor {
 	}
 
 	public String getText() {
-	    String details = DetailTextModel.getDetailTextText(node);
+	    String details = DetailModel.getDetailText(node);
 		return details != null ? details : "";
 	}
 

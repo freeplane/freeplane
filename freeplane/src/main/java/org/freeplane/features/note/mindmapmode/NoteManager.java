@@ -19,32 +19,32 @@
  */
 package org.freeplane.features.note.mindmapmode;
 
-import java.net.URL;
 import java.util.regex.Pattern;
 
+import javax.swing.Icon;
 import javax.swing.SwingUtilities;
-import javax.swing.text.html.HTMLDocument;
 
 import org.freeplane.core.util.HtmlUtils;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.note.NoteModel;
-import org.freeplane.features.note.mindmapmode.MNoteController.NoteDocumentListener;
-
-import com.lightdev.app.shtm.SHTMLPanel;
+import org.freeplane.features.text.RichTextModel;
+import org.freeplane.features.text.TextController;
 
 final class NoteManager implements INodeSelectionListener, IMapSelectionListener {
 	public final static Pattern HEAD = Pattern.compile("<head>.*</head>\n", Pattern.DOTALL);
 	private boolean ignoreEditorUpdate;
-	NoteDocumentListener mNoteDocumentListener;
-	private NodeModel node;
+	NodeModel node;
 	/**
 	 *
 	 */
-	final private MNoteController noteController;
+	final MNoteController noteController;
 
 	public NoteManager(final MNoteController noteController) {
 		this.noteController = noteController;
@@ -52,11 +52,11 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 
 	@Override
 	public void onDeselect(final NodeModel node) {
-		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
-		if (noteViewerComponent == null) {
+		final NotePanel notePanel = noteController.getNotePanel();
+		if (notePanel == null) {
 			return;
 		}
-		noteViewerComponent.getDocument().removeDocumentListener(mNoteDocumentListener);
+		notePanel.removeDocumentListener();
 		saveNote(node);
 		this.node = null;
 	}
@@ -71,35 +71,33 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		if (node == null) {
 			return;
 		}
-		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
-		if (noteViewerComponent == null) {
+		final NotePanel notePanel = noteController.getNotePanel();
+		if (notePanel == null || ! notePanel.isEditable() || ! notePanel.needsSaving()) {
 			return;
 		}
 		boolean editorContentEmpty = true;
-		String documentText = noteViewerComponent.getDocumentText();
+		String documentText = notePanel.getDocumentText();
 		documentText = HEAD.matcher(documentText).replaceFirst("");
 		editorContentEmpty = HtmlUtils.isEmpty(documentText);
 		Controller.getCurrentModeController().getMapController().removeNodeSelectionListener(this);
-		if (noteViewerComponent.needsSaving()) {
-			try {
-				ignoreEditorUpdate = true;
-				if (editorContentEmpty) {
-					noteController.setNoteText(node, null);
-				}
+		try {
+			ignoreEditorUpdate = true;
+			if (editorContentEmpty) {
+				noteController.setNoteText(node, null);
+			}
+			else {
+				final String oldText = noteController.getNoteText(node);
+				if (null == oldText)
+					noteController.setNoteText(node, documentText);
 				else {
-					final String oldText = noteController.getNoteText(node);
-					if (null == oldText)
+					final String oldTextWithoutHead = HEAD.matcher(oldText).replaceFirst("");
+					if (!oldTextWithoutHead.trim().equals(documentText.trim()))
 						noteController.setNoteText(node, documentText);
-					else {
-						final String oldTextWithoutHead = HEAD.matcher(oldText).replaceFirst("");
-						if (!oldTextWithoutHead.trim().equals(documentText.trim()))
-							noteController.setNoteText(node, documentText);
-					}
 				}
 			}
-			finally {
-				ignoreEditorUpdate = false;
-			}
+		}
+		finally {
+			ignoreEditorUpdate = false;
 		}
 		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(this);
 	}
@@ -112,49 +110,63 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 	}
 
 	void updateEditor() {
-		if (ignoreEditorUpdate) {
+		final NotePanel notePanel = noteController.getNotePanel();
+		if (notePanel == null) {
 			return;
 		}
-		final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
-		if (noteViewerComponent == null) {
+		if(node == null) {
 			return;
 		}
-		final HTMLDocument document = noteViewerComponent.getDocument();
-		document.removeDocumentListener(mNoteDocumentListener);
-		try {
-			final URL url = node.getMap().getURL();
-			if (url != null) {
-				document.setBase(url);
+		final String note = this.node != null ? NoteModel.getNoteText(this.node) : null;
+		TextController textController = TextController.getController();
+		if (note != null) {
+			try {
+				final Object transformedContent = textController.getTransformedObject(node, NoteModel.getNote(node), note);
+				Icon icon = textController.getIcon(transformedContent);
+				if(icon != null)
+					notePanel.setViewedImage(icon);
+				else if (transformedContent == note) {
+					if (ignoreEditorUpdate) {
+						return;
+					}
+					notePanel.removeDocumentListener();
+					notePanel.setEditedContent(note);
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							notePanel.installDocumentListener();
+						}
+					});
+				}
+				else
+					notePanel.setViewedContent(transformedContent.toString());
 			}
-			else {
-				document.setBase(new URL("file: "));
+			catch (Throwable e) {
+				LogUtils.warn(e.getMessage());
+				notePanel.setViewedContent(TextUtils.format("MainView.errorUpdateText", note, e.getLocalizedMessage()));
 			}
+			notePanel.updateBaseUrl(node.getMap().getURL());
+			noteController.setDefaultStyle(this.node);
+		} else {
+			String noteContentType = noteController.getNoteContentType(node);
+			if (PatternFormat.STANDARD_FORMAT_PATTERN.equals(noteContentType)
+					|| PatternFormat.IDENTITY_PATTERN.equals(noteContentType))
+					notePanel.setEditedContent("");
+			else
+				notePanel.setViewedContent("");
 		}
-		catch (final Exception e) {
-		}
-		noteController.setDefaultStyle(node);
-		final String note = node != null ? NoteModel.getNoteText(node) : null;
-		if (note != null)
-			noteViewerComponent.setCurrentDocumentContent(note);
-		else
-			noteViewerComponent.setCurrentDocumentContent("");
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				document.addDocumentListener(mNoteDocumentListener);
-			}
-		});
 	}
 
 	@Override
 	public void afterMapChange(MapModel oldMap, MapModel newMap) {
 		if(newMap == null) {
 			node = null;
-			final SHTMLPanel noteViewerComponent = noteController.getNoteViewerComponent();
-			if(noteViewerComponent != null)
-				noteViewerComponent.setCurrentDocumentContent("");
+			final NotePanel notePanel = noteController.getNotePanel();
+			if(notePanel != null)
+				notePanel.setViewedContent("");
 		}
 	}
+	
 
 	NodeModel getNode() {
 		return node;

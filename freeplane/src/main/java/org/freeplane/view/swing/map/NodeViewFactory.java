@@ -24,20 +24,26 @@ import java.awt.Container;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import org.freeplane.core.ui.IMouseListener;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
-import org.freeplane.features.nodestyle.NodeGeometryModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
-import org.freeplane.features.text.DetailTextModel;
+import org.freeplane.features.text.DetailModel;
+import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.ui.DefaultMapMouseListener;
 import org.freeplane.view.swing.ui.DetailsViewMouseListener;
+
+import com.jgoodies.common.base.Objects;
 
 class NodeViewFactory {
 	private static NodeViewFactory factory;
@@ -192,51 +198,65 @@ class NodeViewFactory {
 
 
 	void updateNoteViewer(NodeView nodeView, int minNodeWidth, int maxNodeWidth) {
-		ZoomableLabel note = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
-		String oldText = note != null ? note.getText() : null;
 		String newText  = null;
-		if (nodeView.getMap().showNotes()) {
+		Icon newIcon = null;
+		MapView map = nodeView.getMap();
+		if (map.showNotes()) {
 			final NodeModel model = nodeView.getModel();
-			final NoteModel extension = NoteModel.getNote(model);
-            if (extension != null)
-                newText = extension.getHtml();
+			final NoteModel note = NoteModel.getNote(model);
+            if (note != null) {
+    			String text = note.getText();
+    			if(text != null) {
+    			try {
+    				TextController textController = map.getModeController().getExtension(TextController.class);
+    				final Object transformedContent = textController.getTransformedObject(model, note, text);
+    				newIcon = textController.getIcon(transformedContent);
+    				newText = newIcon == null ? transformedContent.toString() : "";
+    			}
+    			catch (Throwable e) {
+    				LogUtils.warn(e.getMessage());
+    				newText = TextUtils.format("MainView.errorUpdateText", text, e.getLocalizedMessage());
+    			}
+    			}
+			}
 		}
-		if (oldText == null && newText == null) {
+		ZoomableLabel noteView = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
+		if (noteView == null && newText == null && newIcon == null
+				|| noteView != null && newIcon == null 
+				&& Objects.equals(newText, noteView.getText())
+				&& noteView.getTextRenderingIcon() == null) {
 			return;
 		}
-		final ZoomableLabel view;
-		if (oldText != null && newText != null) {
-			view = (ZoomableLabel) nodeView.getContent(NodeView.NOTE_VIEWER_POSITION);
-		}
-		else if (oldText == null && newText != null) {
-			view = NodeViewFactory.getInstance().createNoteViewer();
-			nodeView.addContent(view, NodeView.NOTE_VIEWER_POSITION);
-		}
-		else {
-			assert (oldText != null && newText == null);
+		if(noteView != null && newText == null && newIcon == null){
 			nodeView.removeContent(NodeView.NOTE_VIEWER_POSITION);
 			return;
 		}
-		final MapView map = nodeView.getMap();
-		view.setFont(map.getNoteFont());
-		view.setForeground(map.getNoteForeground());
+		if (noteView == null && (newText != null || newIcon != null)) {
+			noteView = NodeViewFactory.getInstance().createNoteViewer();
+			nodeView.addContent(noteView, NodeView.NOTE_VIEWER_POSITION);
+		}
+		noteView.setFont(map.getNoteFont());
+		noteView.setForeground(map.getNoteForeground());
 		final Color noteBackground = map.getNoteBackground();
-		view.setBackground(noteBackground != null ? noteBackground : map.getBackground());
-		view.setHorizontalAlignment(map.getNoteHorizontalAlignment());
-		view.updateText(newText);
-		view.setMinimumWidth(minNodeWidth);
-		view.setMaximumWidth(maxNodeWidth);
-		view.revalidate();
+		noteView.setBackground(noteBackground != null ? noteBackground : map.getBackground());
+		noteView.setHorizontalAlignment(map.getNoteHorizontalAlignment());
+		noteView.updateText(newText);
+		noteView.setTextRenderingIcon(newIcon);
+		noteView.setMinimumWidth(minNodeWidth);
+		noteView.setMaximumWidth(maxNodeWidth);
+		noteView.revalidate();
 		map.repaint();
 
 	}
 
 	void updateDetails(NodeView nodeView, int minNodeWidth, int maxNodeWidth) {
-		final DetailTextModel detailText = DetailTextModel.getDetailText(nodeView.getModel());
-		if (detailText == null) {
+		NodeModel node = nodeView.getModel();
+		String detailTextText = DetailModel.getDetailText(node);
+		if (detailTextText == null) {
 			nodeView.removeContent(NodeView.DETAIL_VIEWER_POSITION);
 			return;
 		}
+		final DetailModel detailText = DetailModel.getDetail(node);
 		DetailsView detailContent = (DetailsView) nodeView.getContent(NodeView.DETAIL_VIEWER_POSITION);
 		if (detailContent == null) {
 			detailContent = createDetailView();
@@ -247,12 +267,25 @@ class NodeViewFactory {
 			final ArrowIcon icon = new ArrowIcon(nodeView, true);
 			detailContent.setIcon(icon);
 			detailContent.updateText("");
+			detailContent.setTextRenderingIcon(null);
 		}
 		else {
 			detailContent.setFont(map.getDetailFont());
 			detailContent.setHorizontalAlignment(map.getDetailHorizontalAlignment());
 			detailContent.setIcon(new ArrowIcon(nodeView, false));
-			detailContent.updateText(detailText.getHtml());
+			String text;
+			try {
+				TextController textController = map.getModeController().getExtension(TextController.class);
+				final Object transformedContent = textController.getTransformedObject(node, detailText, detailTextText);
+				Icon icon = textController.getIcon(transformedContent);
+				detailContent.setTextRenderingIcon(icon);
+				text = icon == null ? transformedContent.toString() : "";
+			}
+			catch (Throwable e) {
+				LogUtils.warn(e.getMessage());
+				text = TextUtils.format("MainView.errorUpdateText", detailTextText, e.getLocalizedMessage());
+			}
+			detailContent.updateText(text);
 		}
 		detailContent.setForeground(map.getDetailForeground());
 		detailContent.setBackground(map.getDetailBackground());
