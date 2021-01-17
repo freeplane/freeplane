@@ -31,7 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ExampleFileFilter;
+import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
@@ -122,10 +122,10 @@ public class ExportDialog {
 			public void propertyChange(final PropertyChangeEvent evt) {
 				if (evt.getPropertyName().equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY)) {
 					final FileFilter filter = fileChooser.getFileFilter();
-					if(! (filter instanceof ExampleFileFilter)){
+					if(! (filter instanceof CaseSensitiveFileNameExtensionFilter)){
 						return;
 					}
-					final File acceptableFile = getAcceptableFile(selectedFile, (ExampleFileFilter) filter);
+					final File acceptableFile = getAcceptableFile(selectedFile, (CaseSensitiveFileNameExtensionFilter) filter);
 					EventQueue.invokeLater(new Runnable() {
 						@Override
 						public void run() {
@@ -136,10 +136,10 @@ public class ExportDialog {
 				}
 				if (selectedFile != null && evt.getPropertyName().equals(JFileChooser.DIRECTORY_CHANGED_PROPERTY)) {
 						final FileFilter filter = fileChooser.getFileFilter();
-						if(! (filter instanceof ExampleFileFilter)){
+						if(! (filter instanceof CaseSensitiveFileNameExtensionFilter)){
 							return;
 						}
-						final File acceptableFile = getAcceptableFile(selectedFile, (ExampleFileFilter) filter);
+						final File acceptableFile = getAcceptableFile(selectedFile, (CaseSensitiveFileNameExtensionFilter) filter);
 						final File currentDirectory = fileChooser.getCurrentDirectory();
 						if(currentDirectory != null){
 							final File file = new File (currentDirectory, acceptableFile.getName());
@@ -158,17 +158,17 @@ public class ExportDialog {
 			final int returnVal = fileChooser.showSaveDialog(parentframe);
 			final FileFilter currentfileFilter = fileChooser.getFileFilter();
 			final String lastFileFilterDescription = currentfileFilter.getDescription();
-			if(currentfileFilter instanceof ExampleFileFilter)
+			if(currentfileFilter instanceof CaseSensitiveFileNameExtensionFilter)
 				ResourceController.getResourceController().setProperty(
 					LAST_CHOOSEN_EXPORT_FILE_FILTER, lastFileFilterDescription);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				// we check which filter has been selected by the user and use its
 				// description as key for the map to get the corresponding XSLT file
-				if(! (currentfileFilter instanceof ExampleFileFilter)){
+				if(! (currentfileFilter instanceof CaseSensitiveFileNameExtensionFilter)){
 					UITools.errorMessage(TextUtils.getText("invalid_export_file"));
 					return;
 				}
-				final ExampleFileFilter fileFilter = (ExampleFileFilter) currentfileFilter;
+				final CaseSensitiveFileNameExtensionFilter fileFilter = (CaseSensitiveFileNameExtensionFilter) currentfileFilter;
 				final File selectedFile = getAcceptableFile(fileChooser.getSelectedFile(), fileFilter);
 				if (selectedFile == null) {
 					return;
@@ -194,7 +194,7 @@ public class ExportDialog {
 		}
 	}
 
-	private File getAcceptableFile(File selectedFile, final ExampleFileFilter fileFilter) {
+	private File getAcceptableFile(File selectedFile, final CaseSensitiveFileNameExtensionFilter fileFilter) {
 		if (selectedFile == null) {
 			return null;
 		}

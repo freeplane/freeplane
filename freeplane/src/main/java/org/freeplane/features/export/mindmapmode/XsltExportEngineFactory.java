@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.ExampleFileFilter;
+import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
@@ -122,7 +122,7 @@ class XsltExportEngineFactory {
 	}
 
 	private void addXsltFile(final String[] extensions, String description, final File xsltFile) {
-		final ExampleFileFilter filter = new ExampleFileFilter(extensions, TextUtils.getOptionalTranslation(description));
+		final CaseSensitiveFileNameExtensionFilter filter = new CaseSensitiveFileNameExtensionFilter(extensions, TextUtils.getOptionalTranslation(description));
 		final XsltExportEngine exporter = new XsltExportEngine(xsltFile);
 		controller.addMapExportEngine(filter, exporter);
 		controller.addBranchExportEngine(filter, exporter);

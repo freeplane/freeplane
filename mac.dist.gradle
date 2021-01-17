@@ -1,14 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.apache.tools.ant.filters.*
 
-def appBundlerJar = 'freeplane_framework/mac-appbundler/appbundler-1.0.jar'
-ant.taskdef(
-    name: "appbundler",
-    classname: 'com.oracle.appbundler.AppBundlerTask',
-    classpath: appBundlerJar,
-    onerror: "report"
-)
-
 def macAppPropertiesFile = file('macapp.properties')
 
 Properties macAppProperties = new Properties()

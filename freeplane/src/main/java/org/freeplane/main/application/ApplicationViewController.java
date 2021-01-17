@@ -28,6 +28,7 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -67,6 +69,13 @@ class ApplicationViewController extends FrameController {
 	private static final String SPLIT_PANE_POSITION = "split_pane_position";
 	private static final String SPLIT_PANE_RIGHT_POSITION = "split_pane_right_position";
 	private static final String SPLIT_PANE_TOP_POSITION = "split_pane_top_position";
+	
+
+    private static Image frameIcon(String size) {
+        return new ImageIcon(ResourceController.getResourceController().getResource(
+                "/images/Freeplane_frame_icon_"+ size + ".png")).getImage();
+    }
+
 	// // 	final private Controller controller;
 	final private JFrame frame;
 	/** Contains the value where the Note Window should be displayed (right, left, top, bottom) */
@@ -332,16 +341,14 @@ class ApplicationViewController extends FrameController {
 	public void initFrame(final JFrame frame) {
 		// Preserve the existing icon image under Mac OS X
 		if (!Compat.isMacOsX()) {
-			final ImageIcon mWindowIcon;
-			if (Compat.isLowerJdk(Compat.VERSION_1_6_0)) {
-				mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-				    "/images/Freeplane_frame_icon.png"));
-			}
-			else {
-				mWindowIcon = new ImageIcon(ResourceController.getResourceController().getResource(
-				    "/images/Freeplane_frame_icon_64x64.png"));
-			}
-			frame.setIconImage(mWindowIcon.getImage());
+			    frame.setIconImages(Arrays.asList(
+                        frameIcon("16x16"),
+                        frameIcon("32x32"),
+                        frameIcon("64x64"),
+                        frameIcon("128x128"),
+                        frameIcon("256x256"),
+                        frameIcon("512x512")
+			            ));
 		}
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
