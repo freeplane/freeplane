@@ -21,6 +21,7 @@ package org.freeplane.features.link.mindmapmode;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.util.Optional;
 
 import javax.swing.Action;
 
@@ -49,7 +50,7 @@ class ConnectorColorAction extends AFreeplaneAction {
 		final Color color = ColorTracker.showCommonJColorChooserDialog(controller.getSelection()
 		    .getSelected(), (String) this.getValue(Action.NAME), selectedColor, linkController.getStandardConnectorColor());
 		if(color != null){
-			linkController.setConnectorColor(arrowLink, color);
+			linkController.setConnectorColor(arrowLink, Optional.of(color));
 		}
 	}
 }

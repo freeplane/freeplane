@@ -21,70 +21,103 @@ package org.freeplane.features.link;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.util.Optional;
 
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.MapStyleModel;
 
 /**
  * @author Dimitry Polivaev
  * 23.03.2014
  */
 class ConnectorProperties{
-	private Color color;
-	private int alpha;
-	private ArrowType endArrow;
-	private int[] dash;
-	private Point endInclination;
-	private String middleLabel;
-	private String sourceLabel;
-	private ArrowType startArrow;
-	private Point startInclination;
-	private String targetLabel;
-	private int width;
-	private Shape shape;
-	
-	private String labelFontFamily;
-	private int labelFontSize;
+    private IStyle style;
+	private Optional<Color> color;
+	private Optional<Integer> alpha;
+	private Optional<ArrowType> endArrow;
+	private Optional<int[]> dash;
+	private Optional<ArrowType> startArrow;
+	private Optional<Integer> width;
+	private Optional<Shape> shape;
+	private Optional<String> labelFontFamily;
+	private Optional<Integer> labelFontSize;
 
+	private Point startInclination;
+	private Point endInclination;
+	
+	private Optional<String> sourceLabel;
+	private Optional<String> middleLabel;
+	private Optional<String> targetLabel;
+
+    public ConnectorProperties() {
+        style = MapStyleModel.DEFAULT_STYLE;
+        this.startArrow = Optional.empty();
+        this.endArrow = Optional.empty();
+        this.dash = Optional.empty();
+        this.color = Optional.empty();
+        this.alpha = Optional.empty();
+        this.width = Optional.empty();
+        this.shape = Optional.empty();
+        this.labelFontFamily = Optional.empty();
+        this.labelFontSize = Optional.empty();
+        sourceLabel = Optional.empty();
+        middleLabel = Optional.empty();
+        targetLabel = Optional.empty();
+    }
 	public ConnectorProperties(ConnectorArrows connectorEnds, int[] dash, final Color color,
 	                      final int alpha, final Shape shape, final int width,
 	                      final String labelFontFamily, final int labelFontSize) {
 		assert color != null;
 		assert shape != null;
 		assert connectorEnds!=null;
-		this.startArrow = connectorEnds.start;
-		this.endArrow = connectorEnds.end;
-		this.dash = dash;
-		this.color = color;
-		this.setAlpha(alpha);
-		this.width = width;
-		this.shape = shape;
-		this.labelFontFamily = labelFontFamily;
-		this.labelFontSize = labelFontSize;
+		this.startArrow = Optional.of(connectorEnds.start);
+		this.endArrow = Optional.of(connectorEnds.end);
+		this.dash = Optional.of(dash);
+		this.color = Optional.of(color);
+		this.alpha = Optional.of(alpha);
+		this.width = Optional.of(width);
+		this.shape = Optional.of(shape);
+		this.labelFontFamily = Optional.of(labelFontFamily);
+		this.labelFontSize = Optional.of(labelFontSize);
+		this.style = MapStyleModel.DEFAULT_STYLE;
+        sourceLabel = Optional.empty();
+        middleLabel = Optional.empty();
+        targetLabel = Optional.empty();
 	}
-	public Shape getShape() {
+	
+    public IStyle getStyle() {
+        return style;
+    }
+
+    public void setStyle(final IStyle style) {
+        this.style = style;
+    }
+
+
+	public Optional<Shape> getShape() {
 		return shape;
 	}
 
-	public void setShape(final Shape shape) {
-		assert shape != null;
+	public void setShape(final Optional<Shape> shape) {
 		this.shape = shape;
 	}
 
-	public int[] getDash() {
+	public Optional<int[]> getDash() {
 		return dash;
 	}
 
-	public void setDash(int[] dash) {
+	public void setDash(Optional<int[]> dash) {
 		this.dash = dash;
 	}
 
 	
-	public Color getColor() {
+	public Optional<Color> getColor() {
 		return color;
 	}
 
-	public ArrowType getEndArrow() {
+	public Optional<ArrowType> getEndArrow() {
 		return endArrow;
 	}
 
@@ -95,15 +128,19 @@ class ConnectorProperties{
 		return new Point(endInclination);
 	}
 
-	public String getMiddleLabel() {
+	public Optional<String> getMiddleLabel() {
 		return middleLabel;
 	}
 
-	public String getSourceLabel() {
+	public Optional<String> getSourceLabel() {
 		return sourceLabel;
 	}
 
-	public ArrowType getStartArrow() {
+    public Optional<String> getTargetLabel() {
+        return targetLabel;
+    }
+
+	public Optional<ArrowType> getStartArrow() {
 		return startArrow;
 	}
 
@@ -114,21 +151,15 @@ class ConnectorProperties{
 		return new Point(startInclination);
 	}
 
-	public String getTargetLabel() {
-		return targetLabel;
-	}
-
-	public int getWidth() {
+	public Optional<Integer>  getWidth() {
 		return width;
 	}
 
-	public void setColor(final Color color) {
-		assert color != null;
+	public void setColor(final Optional<Color> color) {
 		this.color = color;
 	}
 
-	public void setEndArrow(final ArrowType endArrow) {
-		assert endArrow != null;
+	public void setEndArrow(final Optional<ArrowType> endArrow) {
 		this.endArrow = endArrow;
 	}
 
@@ -138,25 +169,14 @@ class ConnectorProperties{
 	}
 
 	public void setMiddleLabel(final String middleLabel) {
-		this.middleLabel = empty2null(middleLabel);
-	}
-
-	private boolean showControlPointsFlag;
-
-	public boolean getShowControlPointsFlag() {
-		return showControlPointsFlag;
-	}
-
-	public void setShowControlPoints(final boolean bShowControlPointsFlag) {
-		showControlPointsFlag = bShowControlPointsFlag;
+		this.middleLabel = emptyString2emptyOptional(middleLabel);
 	}
 
 	public void setSourceLabel(final String label) {
-		sourceLabel = empty2null(label);
+		sourceLabel = emptyString2emptyOptional(label);
 	}
 
-	public void setStartArrow(final ArrowType startArrow) {
-		assert startArrow != null;
+	public void setStartArrow(final Optional<ArrowType> startArrow) {
 		this.startArrow = startArrow;
 	}
 
@@ -165,38 +185,38 @@ class ConnectorProperties{
 	}
 
 	public void setTargetLabel(final String targetLabel) {
-		this.targetLabel = empty2null(targetLabel);
+		this.targetLabel = emptyString2emptyOptional(targetLabel);
 	}
 
-	public void setWidth(final int width) {
+	public void setWidth(final Optional<Integer> width) {
 		this.width = width;
 	}
 
-	public void setAlpha(int alpha) {
+	public void setAlpha(Optional<Integer> alpha) {
 	    this.alpha = alpha;
     }
 
-	public int getAlpha() {
+	public Optional<Integer> getAlpha() {
 	    return alpha;
     }
-	public String getLabelFontFamily() {
+	public Optional<String> getLabelFontFamily() {
     	return labelFontFamily;
     }
 
-	public void setLabelFontFamily(String labelFontFamily) {
+	public void setLabelFontFamily(Optional<String> labelFontFamily) {
     	this.labelFontFamily = labelFontFamily;
     }
 
-	public int getLabelFontSize() {
+	public Optional<Integer>  getLabelFontSize() {
     	return labelFontSize;
     }
 
-	public void setLabelFontSize(int labelFontSize) {
+	public void setLabelFontSize(Optional<Integer>  labelFontSize) {
     	this.labelFontSize = labelFontSize;
     }
 
-	private String empty2null(final String label) {
-		return "".equals(label) ? null : label;
+	private Optional<String> emptyString2emptyOptional(final String label) {
+		return "".equals(label) ? Optional.empty() : Optional.of(label);
 	}
 
 	public void changeInclination(int deltaX, final int deltaY, final NodeModel linkedNodeView,

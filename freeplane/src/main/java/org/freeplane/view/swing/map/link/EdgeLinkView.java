@@ -55,11 +55,11 @@ public class EdgeLinkView extends AConnectorView {
 			edgeView = EdgeViewFactory.getInstance().getEdge(source, target, map);
 		}
 		Color color;
-		if (Shape.EDGE_LIKE.equals(model.getShape())) {
+		final LinkController linkController = LinkController.getController(modeController);
+		if (Shape.EDGE_LIKE.equals(linkController.getShape(model))) {
 			color = edgeView.getColor().darker();
 		}
 		else {
-			final LinkController linkController = LinkController.getController(modeController);
 			color = linkController.getColor(connectorModel);
 			final int alpha = linkController.getOpacity(connectorModel);
 			color =  ColorUtils.alphaToColor(alpha, color);

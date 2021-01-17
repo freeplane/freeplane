@@ -217,7 +217,7 @@ class MindMapHTMLWriter {
 
 	private void setDefaultsFrom(MapModel map) {
 		final MapStyleModel model = MapStyleModel.getExtension(map);
-		final NodeModel styleNode = model.getStyleNodeSafe(MapStyleModel.DEFAULT_STYLE);
+		final NodeModel styleNode = model.getDefaultStyleNode();
 		defaultFont = nodeStyleController.getFont(styleNode);
 		defaultColor = nodeStyleController.getColor(styleNode);
 	}

@@ -36,16 +36,17 @@ public class ConnectorLabelContainsCondition extends ConnectorLabelCondition {
 	}
 
 	@Override
-	protected boolean checkLink(final ConnectorModel connector) {
-		final String middleLabel = connector.getMiddleLabel();
+	public boolean check(final ConnectorModel connector) {
+	    LinkController linkController = LinkController.getController();
+		final String middleLabel = linkController.getMiddleLabel(connector);
 		if (contains(middleLabel)) {
 			return true;
 		}
-		final String sourceLabel = connector.getSourceLabel();
+		final String sourceLabel = linkController.getSourceLabel(connector);
 		if (contains(sourceLabel)) {
 			return true;
 		}
-		final String targetLabel = connector.getTargetLabel();
+		final String targetLabel = linkController.getTargetLabel(connector);
 		if (contains(targetLabel)) {
 			return true;
 		}

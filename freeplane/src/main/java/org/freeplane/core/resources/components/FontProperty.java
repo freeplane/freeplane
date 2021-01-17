@@ -53,8 +53,8 @@ public class FontProperty extends PropertyBean implements IPropertyControl {
 		return mAvailableFontFamilyNames[mFontComboBox.getSelectedIndex()];
 	}
 
-	public void layout(final DefaultFormBuilder builder) {
-		layout(builder, mFontComboBox);
+	public void appendToForm(final DefaultFormBuilder builder) {
+		appendToForm(builder, mFontComboBox);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

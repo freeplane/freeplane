@@ -78,7 +78,7 @@ public class FontItalicControlGroup implements ControlGroup {
 		propertyChangeListener = new FontItalicChangeListener(mSetNodeFontItalic, mNodeFontItalic);
 		mSetNodeFontItalic.addPropertyChangeListener(propertyChangeListener);
 		mNodeFontItalic.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeFontItalic.layout(formBuilder);
-		mNodeFontItalic.layout(formBuilder);
+		mSetNodeFontItalic.appendToForm(formBuilder);
+		mNodeFontItalic.appendToForm(formBuilder);
 	}
 }

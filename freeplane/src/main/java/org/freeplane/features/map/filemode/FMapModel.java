@@ -22,11 +22,12 @@ package org.freeplane.features.map.filemode;
 import java.io.File;
 
 import org.freeplane.features.attribute.AttributeRegistry;
+import org.freeplane.features.map.INodeDuplicator;
 import org.freeplane.features.map.MapModel;
 
 class FMapModel extends MapModel {
-	public FMapModel(final File[] roots) {
-		super();
+	public FMapModel(INodeDuplicator nodeDuplicator, final File[] roots) {
+		super(nodeDuplicator);
 		// create empty attribute registry
 		AttributeRegistry.getRegistry(this);
 		if(roots.length == 1)

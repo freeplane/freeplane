@@ -71,8 +71,8 @@ class NodeFontHyperLinkControlGroup implements ControlGroup {
 		propertyChangeListener = new FontHyperlinkChangeListener(mSetNodeFontHyperlink, mNodeFontHyperlink);
 		mSetNodeFontHyperlink.addPropertyChangeListener(propertyChangeListener);
 		mNodeFontHyperlink.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeFontHyperlink.layout(formBuilder);
-		mNodeFontHyperlink.layout(formBuilder);
+		mSetNodeFontHyperlink.appendToForm(formBuilder);
+		mNodeFontHyperlink.appendToForm(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {

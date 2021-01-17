@@ -105,7 +105,9 @@ import org.freeplane.features.map.NodeSubtrees;
 import org.freeplane.features.map.SummaryNode;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.nodestyle.NodeBorderModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
+import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.note.NoteController;
 import org.freeplane.features.print.FitMap;
 import org.freeplane.features.styles.MapStyle;
@@ -549,6 +551,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	private static final String SHOW_CONNECTORS_PROPERTY = "show_connectors".intern();
 	private static final String SHOW_CONNECTOR_LINES = "true".intern();
 	private static final String HIDE_CONNECTOR_LINES = "false".intern();
+	private static final String SOME_CONNECTORS_PROPERTY = "connector_";
+
 	private static final String HIDE_CONNECTORS = "never".intern();
 	private static final String SHOW_CONNECTORS_FOR_SELECTION = "for_selection".intern();
 	private static final String SHOW_ICONS_PROPERTY = "show_icons";
@@ -565,8 +569,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	private static final long serialVersionUID = 1L;
 	static boolean standardDrawRectangleForSelection;
-	static Color standardSelectColor;
-	static Color standardSelectRectangleColor;
+	private Color standardSelectionBackgroundColor;
+	private Color standardSelectionRectangleColor;
 	/** Used to identify a right click onto a link curve. */
 	private Vector<ILinkView> arrowLinkViews;
 	private Color background = null;
@@ -603,32 +607,27 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
 	final private ComponentAdapter viewportSizeChangeListener;
 	private final INodeChangeListener connectorChangeListener;
-	public static final String SPOTLIGHT_ENABLED = "spotlight";
+    private Color standardSelectionTextColor;
+    public static final String SPOTLIGHT_ENABLED = "spotlight";
 
 	static {
-		final ResourceController resourceController = ResourceController.getResourceController();
-		final String stdcolor = resourceController.getProperty(
-			    MapView.RESOURCES_SELECTED_NODE_COLOR);
-			MapView.standardSelectColor = ColorUtils.stringToColor(stdcolor);
-			final String stdtextcolor = resourceController.getProperty(
-			    MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR);
-			MapView.standardSelectRectangleColor = ColorUtils.stringToColor(stdtextcolor);
-			final String drawCircle = resourceController.getProperty(
-			    ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
-			MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
-			final String printOnWhite = resourceController
-			    .getProperty("printonwhitebackground");
-			MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
-			final int alpha = 255 - resourceController.getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
-			resourceController.setDefaultProperty(SPOTLIGHT_BACKGROUND_COLOR, ColorUtils.colorToRGBAString(new Color(0, 0, 0, alpha)));
-			spotlightBackgroundColor = resourceController.getColorProperty(SPOTLIGHT_BACKGROUND_COLOR);
-			hideSingleEndConnectorsPropertyValue = resourceController.getBooleanProperty(HIDE_SINGLE_END_CONNECTORS);
-			showConnectorsPropertyValue = resourceController.getProperty(SHOW_CONNECTORS_PROPERTY).intern();
-			showIcons = resourceController.getBooleanProperty(SHOW_ICONS_PROPERTY);
-			outlineHGap = resourceController.getLengthProperty(OUTLINE_HGAP_PROPERTY);
-			outlineViewFitsWindowWidth = resourceController.getBooleanProperty(OUTLINE_VIEW_FITS_WINDOW_WIDTH);
+	    final ResourceController resourceController = ResourceController.getResourceController();
+	    final String drawCircle = resourceController.getProperty(
+	            ResourceController.RESOURCE_DRAW_RECTANGLE_FOR_SELECTION);
+	    MapView.standardDrawRectangleForSelection = TreeXmlReader.xmlToBoolean(drawCircle);
+	    final String printOnWhite = resourceController
+	            .getProperty("printonwhitebackground");
+	    MapView.printOnWhiteBackground = TreeXmlReader.xmlToBoolean(printOnWhite);
+	    final int alpha = 255 - resourceController.getIntProperty(PRESENTATION_DIMMER_TRANSPARENCY, 0x70);
+	    resourceController.setDefaultProperty(SPOTLIGHT_BACKGROUND_COLOR, ColorUtils.colorToRGBAString(new Color(0, 0, 0, alpha)));
+	    spotlightBackgroundColor = resourceController.getColorProperty(SPOTLIGHT_BACKGROUND_COLOR);
+	    hideSingleEndConnectorsPropertyValue = resourceController.getBooleanProperty(HIDE_SINGLE_END_CONNECTORS);
+	    showConnectorsPropertyValue = resourceController.getProperty(SHOW_CONNECTORS_PROPERTY).intern();
+	    showIcons = resourceController.getBooleanProperty(SHOW_ICONS_PROPERTY);
+	    outlineHGap = resourceController.getLengthProperty(OUTLINE_HGAP_PROPERTY);
+	    outlineViewFitsWindowWidth = resourceController.getBooleanProperty(OUTLINE_VIEW_FITS_WINDOW_WIDTH);
 
-			createPropertyChangeListener();
+	    createPropertyChangeListener();
 	}
 
 	public MapView(final MapModel model, final ModeController modeController) {
@@ -749,12 +748,10 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 				}
 				final MapView mapView = (MapView) c;
 				if (propertyName.equals(RESOURCES_SELECTED_NODE_COLOR)) {
-					MapView.standardSelectColor = ColorUtils.stringToColor(newValue);
 					mapView.repaintSelecteds();
 					return;
 				}
 				if (propertyName.equals(RESOURCES_SELECTED_NODE_RECTANGLE_COLOR)) {
-					MapView.standardSelectRectangleColor = ColorUtils.stringToColor(newValue);
 					mapView.repaintSelecteds();
 					return;
 				}
@@ -777,11 +774,16 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 					mapView.repaint();
 					return;
 				}
-				if (propertyName.equals(SHOW_CONNECTORS_PROPERTY)) {
-					MapView.showConnectorsPropertyValue = ResourceController.getResourceController().getProperty(SHOW_CONNECTORS_PROPERTY).intern();
-					mapView.repaint();
-					return;
-				}
+                if (propertyName.equals(SHOW_CONNECTORS_PROPERTY)) {
+                    MapView.showConnectorsPropertyValue = ResourceController.getResourceController().getProperty(SHOW_CONNECTORS_PROPERTY).intern();
+                    mapView.repaint();
+                    return;
+                }
+                if (propertyName.startsWith(SOME_CONNECTORS_PROPERTY)) {
+                    MapView.showConnectorsPropertyValue = ResourceController.getResourceController().getProperty(SHOW_CONNECTORS_PROPERTY).intern();
+                    mapView.repaint();
+                    return;
+                }
 				if (propertyName.equals(SHOW_ICONS_PROPERTY)) {
 					MapView.showIcons = ResourceController.getResourceController().getBooleanProperty(SHOW_ICONS_PROPERTY);
 					mapView.updateIconsRecursively(mapView.getRoot());
@@ -823,24 +825,31 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 			node.repaintSelected();
 	}
 
-	public Object detectCollision(final Point p) {
-		if (arrowLinkViews == null) {
-			return null;
-		}
-		for (int i = 0; i < arrowLinkViews.size(); ++i) {
-			final ILinkView arrowView = arrowLinkViews.get(i);
-			if (arrowView.detectCollision(p, true)) {
-				return arrowView.getModel();
-			}
-		}
-		for (int i = 0; i < arrowLinkViews.size(); ++i) {
-			final ILinkView arrowView = arrowLinkViews.get(i);
-			if (arrowView.detectCollision(p, false)) {
-				return arrowView.getModel();
-			}
-		}
-		return null;
-	}
+    public Object detectView(final Point p) {
+        if (arrowLinkViews == null) {
+            return null;
+        }
+        for (int i = 0; i < arrowLinkViews.size(); ++i) {
+            final ILinkView arrowView = arrowLinkViews.get(i);
+            if (arrowView.detectCollision(p, true)) {
+                return arrowView;
+            }
+        }
+        for (int i = 0; i < arrowLinkViews.size(); ++i) {
+            final ILinkView arrowView = arrowLinkViews.get(i);
+            if (arrowView.detectCollision(p, false)) {
+                return arrowView;
+            }
+        }
+        return null;
+    }
+    
+    public Object detectObject(final Point p) {
+        Object view = detectView(p);
+        if(view instanceof ILinkView)
+            return ((ILinkView)view).getModel();
+        return null;
+    }
 
 	/**
 	 * Call preparePrinting() before printing and endPrinting() after printing
@@ -1272,6 +1281,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		if (property.equals(MapStyle.MAP_STYLES)){
 	        // set default font for notes:
 	        updateContentStyle();
+	        repaint();
 		}
 		if (property.equals(MapStyle.MAP_STYLES) && event.getMap().equals(model)
 		        || property.equals(ModelessAttributeController.ATTRIBUTE_VIEW_TYPE)
@@ -1407,7 +1417,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
         noteBackground = style.getBackgroundColor(noteStyleNode);
         noteForeground = style.getColor(noteStyleNode);
         noteHorizontalAlignment = style.getHorizontalTextAlignment(noteStyleNode).swingConstant;
-
+        updateSelectionColors();
     }
 
 	public boolean selectLeft(final boolean continious) {
@@ -1726,7 +1736,11 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 							|| SHOW_CONNECTORS_FOR_SELECTION == showConnectors && (sourceView != null && sourceView.isSelected()
 							|| targetView != null && targetView.isSelected());
 					if(showConnector) {
-						if (areBothNodesVisible && (Shape.EDGE_LIKE.equals(ref.getShape()) || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE))
+						LinkController linkController = LinkController.getController(getModeController());
+                        if (areBothNodesVisible 
+                                && (
+                                Shape.EDGE_LIKE.equals(linkController.getShape(ref)) && ! ref.isSelfLink()
+                                || sourceView.getMap().getLayoutType() == MapViewLayout.OUTLINE))
 							arrowLink = new EdgeLinkView(ref, getModeController(), sourceView, targetView);
 						else if(areBothNodesVisible || ! hideSingleEndConnectors)
 							arrowLink = new ConnectorView(ref, sourceView, targetView, getBackground());
@@ -1801,9 +1815,8 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		}
 		final Color c = g.getColor();
 		final Stroke s = g.getStroke();
-		g.setColor(MapView.standardSelectRectangleColor);
-		final Stroke standardSelectionStroke = NodeHighlighter.DEFAULT_STROKE;
-		g.setStroke(standardSelectionStroke);
+		g.setColor(getStandardSelectionRectangleColor());
+		g.setStroke(NodeHighlighter.DEFAULT_STROKE);
 		final Object renderingHint = getModeController().getController().getMapViewManager().setEdgesRenderingHint(g);
 		for (final NodeView selected : getSelection()) {
 			paintSelectionRectangle(g, selected);
@@ -1811,6 +1824,27 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 		g.setColor(c);
 		g.setStroke(s);
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, renderingHint);
+	}
+
+	private void updateSelectionColors() {
+	    ResourceController resourceController = ResourceController.getResourceController();
+	    standardSelectionBackgroundColor = ColorUtils.stringToColor(resourceController.getProperty(
+	            MapView.RESOURCES_SELECTED_NODE_COLOR));
+	    standardSelectionRectangleColor = ColorUtils.stringToColor(resourceController.getProperty(
+	            MapView.RESOURCES_SELECTED_NODE_RECTANGLE_COLOR));
+	    MapStyleModel styles = MapStyleModel.getExtension(model);
+	    NodeModel selectionStyle = styles.getStyleNode(MapStyleModel.SELECTION_STYLE);
+	    if(selectionStyle == null)
+	        return;
+	    Color styleBackgroundColor = NodeStyleModel.getBackgroundColor(selectionStyle);
+	    if(styleBackgroundColor != null)
+	        standardSelectionBackgroundColor = styleBackgroundColor;
+	    standardSelectionTextColor = NodeStyleModel.getColor(selectionStyle);
+	    if(styleBackgroundColor != null)
+	        standardSelectionBackgroundColor = styleBackgroundColor;
+	    Color styleBorderColor = NodeBorderModel.getBorderColor(selectionStyle);
+	    if(styleBorderColor != null)
+	        standardSelectionRectangleColor = styleBorderColor;
 	}
 
 	private RoundRectangle2D.Float getRoundRectangleAround(final NodeView selected, int gap, final int arcw) {
@@ -1980,6 +2014,7 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 	}
 
 	private void repaintSelecteds() {
+	    updateSelectionColors();
 		for (final NodeView selected : getSelection()) {
 			onSelectionChange(selected);
 		}
@@ -2343,6 +2378,18 @@ public class MapView extends JPanel implements Printable, Autoscroll, IMapChange
 
     public Filter getFilter() {
         return filter;
+    }
+
+    Color getStandardSelectionBackgroundColor() {
+        return standardSelectionBackgroundColor;
+    }
+    
+    Color getStandardSelectionTextColor() {
+        return standardSelectionTextColor;
+    }
+
+    Color getStandardSelectionRectangleColor() {
+        return standardSelectionRectangleColor;
     }
 
 }

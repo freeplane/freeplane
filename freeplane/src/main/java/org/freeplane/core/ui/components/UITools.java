@@ -556,14 +556,14 @@ public class UITools {
     }
 
 	public static BasicStroke createStroke(float width, final int[] dash, int join) {
-		final float[] fdash = toFloats(dash);
+		final float[] fdash = dashToFloats(dash);
 		final BasicStroke stroke = new BasicStroke(width, BasicStroke.CAP_BUTT, join, 1f, fdash, 0f);
         return stroke;
 	}
 
-	public static float[] toFloats(final int[] dash) {
+	private static float[] dashToFloats(final int[] dash) {
 		final float[] fdash;
-    	if(dash  != null){
+    	if(dash  != null && dash.length > 0){
     		fdash = new float[dash.length];
     		int i = 0;
     		for(float d : dash){

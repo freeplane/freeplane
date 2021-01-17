@@ -38,7 +38,7 @@ public class NextColumnProperty implements IPropertyControl {
 		return null;
 	}
 
-	public void layout(final DefaultFormBuilder builder) {
+	public void appendToForm(final DefaultFormBuilder builder) {
 		for(int i = 0; i < n; i++){
 			builder.append("");
 		}

@@ -49,8 +49,8 @@ public class BooleanProperty extends PropertyBean implements IPropertyControl {
 		return mCheckBox.isSelected() ? Boolean.TRUE.toString() : Boolean.FALSE.toString();
 	}
 
-	public void layout(final DefaultFormBuilder builder) {
-		layout(builder, mCheckBox);
+	public void appendToForm(final DefaultFormBuilder builder) {
+		appendToForm(builder, mCheckBox);
 		getLabelComponent().addMouseListener(new MouseAdapter() {
 
 			@Override

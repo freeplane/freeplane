@@ -48,7 +48,7 @@ public class TextLine implements IPropertyControl {
 	}
 
 	@Override
-	public void layout(final DefaultFormBuilder builder) {
+	public void appendToForm(final DefaultFormBuilder builder) {
 		if(builder.getColumn() != 1)
 			builder.nextLine();
 		builder.append(new JLabel(TextUtils.getOptionalText(getLabel())));

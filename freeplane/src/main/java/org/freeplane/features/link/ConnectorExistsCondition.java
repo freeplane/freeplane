@@ -35,7 +35,7 @@ public class ConnectorExistsCondition extends ConnectorLabelCondition {
 	}
 
 	@Override
-	protected boolean checkLink(final ConnectorModel connector) {
+	public boolean check(final ConnectorModel connector) {
 		return true;
 	}
 

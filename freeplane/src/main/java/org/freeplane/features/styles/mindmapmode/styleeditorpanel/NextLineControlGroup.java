@@ -40,6 +40,6 @@ public class NextLineControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		new NextLineProperty().layout(formBuilder);
+		new NextLineProperty().appendToForm(formBuilder);
 	}
 }

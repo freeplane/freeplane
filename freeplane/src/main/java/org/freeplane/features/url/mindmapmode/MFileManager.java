@@ -20,10 +20,9 @@
 package org.freeplane.features.url.mindmapmode;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.dnd.DropTarget;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedInputStream;
@@ -61,7 +60,6 @@ import java.util.regex.Pattern;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -70,7 +68,6 @@ import javax.swing.plaf.basic.BasicFileChooserUI;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.resources.components.ComboProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
 import org.freeplane.core.resources.components.IPropertyControlCreator;
@@ -79,9 +76,7 @@ import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.FileOpener;
 import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
-import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser;
-import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser.Customizer;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
@@ -90,7 +85,6 @@ import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapChangeEvent;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
@@ -107,6 +101,7 @@ import org.freeplane.features.url.MapVersionInterpreter;
 import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
+import org.freeplane.view.swing.features.filepreview.MindMapPreview;
 
 /**
  * @author Dimitry Polivaev
@@ -652,18 +647,33 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	protected File chosenTemplateFile() {
-		final ResourceController resourceController = ResourceController.getResourceController();
-		boolean skipTemplateSelection = resourceController.getBooleanProperty("skip_template_selection");
-		if (skipTemplateSelection)
-			return defaultTemplateFile();
+	    final ResourceController resourceController = ResourceController.getResourceController();
+	    final boolean maySkipTemplateSelection = false;
+	    if(maySkipTemplateSelection) {
+	        boolean skipTemplateSelection = resourceController.getBooleanProperty("skip_template_selection");
+	        if (skipTemplateSelection)
+	            return defaultTemplateFile();
+	    }
 		final String standardTemplatePath = resourceController.getProperty(STANDARD_TEMPLATE);
 		final TreeSet<String> availableMapTemplates = collectAvailableMapTemplates();
 		availableMapTemplates.add(standardTemplatePath);
 		final Box verticalBox = Box.createVerticalBox();
+		MindMapPreview mindMapPreview = new MindMapPreview();
 		final JComboBox<String> templateComboBox = new JComboBox<>(new Vector<>(availableMapTemplates));
+		templateComboBox.addItemListener(new ItemListener() {
+            
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                    mindMapPreview.updateView(templateFile(e.getItem().toString()));
+                }
+            }
+        });
 		templateComboBox.setSelectedItem(standardTemplatePath);
 		templateComboBox.setAlignmentX(0f);
 		verticalBox.add(templateComboBox);
+		mindMapPreview.setAlignmentX(0f);
+        verticalBox.add(mindMapPreview);
 		final String checkBoxText = TextUtils.getRawText("OptionalDontShowMeAgainDialog.rememberMyDescision");
 		final JCheckBox mDontShowAgainBox = new JCheckBox();
 		mDontShowAgainBox.setAlignmentX(0f);
@@ -730,7 +740,8 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 					file = getLastCurrentDir();
 				}
 				else if (startFile.isDirectory()) {
-					final JFileChooser chooser = getMindMapFileChooser();
+                    final JFileChooser chooser = getMindMapFileChooser();
+					new MindMapPreview(chooser);
 					chooser.setCurrentDirectory(startFile);
 					final int returnVal = chooser
 					    .showOpenDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent());

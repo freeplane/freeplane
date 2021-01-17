@@ -110,19 +110,19 @@ public class CloudColorShapeControlGroup implements ControlGroup {
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		addCloudColorControl(formBuilder);
-		new NextLineProperty().layout(formBuilder);
-		new NextColumnProperty(2).layout(formBuilder);
+		new NextLineProperty().appendToForm(formBuilder);
+		new NextColumnProperty(2).appendToForm(formBuilder);
 		addCloudShapeControl(formBuilder);
 	}
 	
 	private void addCloudColorControl(DefaultFormBuilder formBuilder) {
-		mSetCloud.layout(formBuilder);
-		mCloudColor.layout(formBuilder);
+		mSetCloud.appendToForm(formBuilder);
+		mCloudColor.appendToForm(formBuilder);
 	}
 
 	private void addCloudShapeControl(DefaultFormBuilder formBuilder) {
 		mCloudShape.addPropertyChangeListener(mPropertyListener);
-		mCloudShape.layout(formBuilder);
+		mCloudShape.appendToForm(formBuilder);
 	}
 
 	@Override

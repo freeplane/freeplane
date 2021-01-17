@@ -47,6 +47,7 @@ import org.freeplane.features.clipboard.ClipboardController;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.map.IMapSelection;
+import org.freeplane.features.map.INodeDuplicator;
 import org.freeplane.features.map.MapWriter.Mode;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -57,7 +58,7 @@ import org.freeplane.features.text.TextController;
 /**
  * @author Dimitry Polivaev
  */
-public class MapClipboardController implements IExtension, ClipboardController {
+public class MapClipboardController implements IExtension, ClipboardController, INodeDuplicator {
 	public static final String NODESEPARATOR = "<nodeseparator>";
 
 	public static MapClipboardController getController() {
@@ -68,9 +69,10 @@ public class MapClipboardController implements IExtension, ClipboardController {
 		Controller.getCurrentModeController().addExtension(MapClipboardController.class, clipboardController);
 	}
 
-
-	public MapClipboardController() {
+	private final ModeController modeController;
+	public MapClipboardController(ModeController modeController) {
 		super();
+        this.modeController = modeController;
 		createActions();
 	}
 
@@ -261,10 +263,10 @@ public class MapClipboardController implements IExtension, ClipboardController {
 		}
 	}
 
+	@Override
 	public NodeModel duplicate(final NodeModel source, boolean withChildren) {
 		try {
 			final StringWriter writer = new StringWriter();
-			ModeController modeController = Controller.getCurrentModeController();
 			modeController.getMapController().getMapWriter()
 			    .writeNodeAsXml(writer, source, Mode.CLIPBOARD, true, withChildren, false);
 			final String result = writer.toString();

@@ -82,7 +82,7 @@ public class EdgeDashControlGroup implements ControlGroup {
 		propertyChangeListener = new EdgeDashChangeListener(mSetEdgeDash, mEdgeDash);
 		mSetEdgeDash.addPropertyChangeListener(propertyChangeListener);
 		mEdgeDash.addPropertyChangeListener(propertyChangeListener);
-		mSetEdgeDash.layout(formBuilder);
-		mEdgeDash.layout(formBuilder);
+		mSetEdgeDash.appendToForm(formBuilder);
+		mEdgeDash.appendToForm(formBuilder);
 	}
 }

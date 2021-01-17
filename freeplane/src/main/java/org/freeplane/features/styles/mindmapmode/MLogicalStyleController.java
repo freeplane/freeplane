@@ -234,7 +234,8 @@ public class MLogicalStyleController extends LogicalStyleController {
 			modeController.addAction(new MapBackgroundImageAction());
 			modeController.addAction(new MapBackgroundClearAction());
 			modeController.addAction(new SetBooleanMapPropertyAction(MapStyle.FIT_TO_VIEWPORT));
-			modeController.addAction(new CopyMapStylesAction());
+            modeController.addAction(new CopyMapStylesAction());
+            modeController.addAction(new ReplaceMapStylesAction());
 		}
 		if(! GraphicsEnvironment.isHeadless()){
 			modeController.addUiBuilder(Phase.ACTIONS, "style_actions", new StyleMenuBuilder(modeController),

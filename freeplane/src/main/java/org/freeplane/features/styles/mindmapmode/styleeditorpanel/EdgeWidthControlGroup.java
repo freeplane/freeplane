@@ -76,8 +76,8 @@ public class EdgeWidthControlGroup implements ControlGroup {
 		propertyChangeListener = new EdgeWidthChangeListener(mSetEdgeWidth, mEdgeWidth);
 		mSetEdgeWidth.addPropertyChangeListener(propertyChangeListener);
 		mEdgeWidth.addPropertyChangeListener(propertyChangeListener);
-		mSetEdgeWidth.layout(formBuilder);
-		mEdgeWidth.layout(formBuilder);
+		mSetEdgeWidth.appendToForm(formBuilder);
+		mEdgeWidth.appendToForm(formBuilder);
 	}
 
 	@Override

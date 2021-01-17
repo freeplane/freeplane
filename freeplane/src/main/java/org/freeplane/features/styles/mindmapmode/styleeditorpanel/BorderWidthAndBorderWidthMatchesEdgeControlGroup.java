@@ -112,8 +112,8 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 		borderWidthListener = new BorderWidthListener(mSetBorderWidth, mBorderWidth);
 		mSetBorderWidth.addPropertyChangeListener(borderWidthListener);
 		mBorderWidth.addPropertyChangeListener(borderWidthListener);
-		mSetBorderWidth.layout(formBuilder);
-		mBorderWidth.layout(formBuilder);
+		mSetBorderWidth.appendToForm(formBuilder);
+		mBorderWidth.appendToForm(formBuilder);
 	}
 	
 	public void addBorderWidthMatchesEdgeWidthControl(DefaultFormBuilder formBuilder) {
@@ -129,8 +129,8 @@ public class BorderWidthAndBorderWidthMatchesEdgeControlGroup implements Control
 				enableOrDisableBorderWidthControls();
 			}
 		});
-		mSetBorderWidthMatchesEdgeWidth.layout(formBuilder);
-		mBorderWidthMatchesEdgeWidth.layout(formBuilder);
+		mSetBorderWidthMatchesEdgeWidth.appendToForm(formBuilder);
+		mBorderWidthMatchesEdgeWidth.appendToForm(formBuilder);
 	}
 
 	public void enableOrDisableBorderWidthControls() {

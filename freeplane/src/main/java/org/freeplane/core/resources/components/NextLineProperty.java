@@ -32,7 +32,7 @@ public class NextLineProperty implements IPropertyControl {
 		return null;
 	}
 
-	public void layout(final DefaultFormBuilder builder) {
+	public void appendToForm(final DefaultFormBuilder builder) {
 		builder.nextLine();
 	}
 

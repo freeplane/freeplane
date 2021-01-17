@@ -116,7 +116,7 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 		return path;
 	}
 
-	public void layout(final DefaultFormBuilder builder) {
+	public void appendToForm(final DefaultFormBuilder builder) {
 		final Box box = Box.createHorizontalBox();
 		box.setBorder(new EmptyBorder(5, 0, 5, 0));
 		filenameField = new JTextField();
@@ -142,7 +142,7 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 		selectButton.addActionListener(new SelectFileAction());
 		selectButton.setMaximumSize(new Dimension(1000, 1000));
 		box.add(selectButton);
-		layout(builder, box);
+		appendToForm(builder, box);
 	}
 
 	public void setEnabled(final boolean enabled) {

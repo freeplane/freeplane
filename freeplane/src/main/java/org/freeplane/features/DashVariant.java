@@ -1,5 +1,9 @@
 package org.freeplane.features;
 
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import javax.swing.Icon;
 
 import org.freeplane.core.ui.components.DashIconFactory;
@@ -8,7 +12,7 @@ import org.freeplane.core.ui.components.RenderedContentSupplier;
 import org.freeplane.core.ui.components.UITools;
 
 public enum DashVariant  implements RenderedContentSupplier<DashVariant> {
-	SOLID(null), 
+	SOLID(new int[] {}), 
 	CLOSE_DOTS(new int[]{3, 3}), 
 	DASHES(new int[]{7, 7}), 
 	DISTANT_DOTS(new int[]{2, 7}), 
@@ -17,6 +21,12 @@ public enum DashVariant  implements RenderedContentSupplier<DashVariant> {
 	public static DashVariant DEFAULT = DashVariant.SOLID;
 	public final int[] variant;
 	public final Icon icon;
+	
+	static public Optional<DashVariant> of(int[] variant) {
+	    return Stream.of(values())
+	        .filter(self -> Arrays.equals(self.variant, variant))
+	        .findAny();
+	}
 
 	private DashVariant(int[] variant) {
 		this.variant = variant;

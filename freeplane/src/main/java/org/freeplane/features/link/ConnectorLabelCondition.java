@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.link;
 
-import java.util.Set;
-
 import org.freeplane.features.filter.StringMatchingStrategy;
 import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.NodeModel;
@@ -30,7 +28,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * Mar 7, 2009
  */
-public abstract class ConnectorLabelCondition extends StringConditionAdapter {
+public abstract class ConnectorLabelCondition extends StringConditionAdapter implements ConnectorChecker {
 	static final String TEXT = "TEXT";
 	final private String text;
 	final private StringMatchingStrategy stringMatchingStrategy;
@@ -52,46 +50,10 @@ public abstract class ConnectorLabelCondition extends StringConditionAdapter {
 		return text;
 	}
 
-	abstract protected boolean checkLink(final ConnectorModel connector);
-
-	public boolean checkNode(final NodeModel node) {
-		final NodeLinks nodeLinks = NodeLinks.getLinkExtension(node);
-		if (nodeLinks != null) {
-			for (final NodeLinkModel l : nodeLinks.getLinks()) {
-				if (!(l instanceof ConnectorModel)) {
-					continue;
-				}
-				if (checkLink((ConnectorModel) l)) {
-					return true;
-				}
-			}
-		}
-		if (!node.hasID()) {
-			return false;
-		}
-		final MapLinks mapLinks = MapLinks.getLinks(node.getMap());
-		if (mapLinks == null) {
-			return false;
-		}
-		final Set<NodeLinkModel> targetLinks = mapLinks.get(node.getID());
-		if (targetLinks == null) {
-			return false;
-		}
-		for (final NodeLinkModel l : targetLinks) {
-			if (!(l instanceof ConnectorModel)) {
-				continue;
-			}
-			if (checkLink((ConnectorModel) l)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	abstract protected String createDescription();
-
-	protected abstract String getName();
-
+    public boolean checkNode(final NodeModel node) {
+        return NodeConnectorChecker.checkNodeConnectors(node, this);
+    }
+    
 	protected void fillXML(final XMLElement child) {
 	    super.fillXML(child);
 		child.setAttribute(TEXT, text);

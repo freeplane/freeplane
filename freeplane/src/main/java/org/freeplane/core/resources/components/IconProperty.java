@@ -74,8 +74,8 @@ public class IconProperty extends PropertyBean implements IPropertyControl, Acti
 		return mActualIcon.getName();
 	}
 
-	public void layout(final DefaultFormBuilder builder) {
-		layout(builder, mButton);
+	public void appendToForm(final DefaultFormBuilder builder) {
+		appendToForm(builder, mButton);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

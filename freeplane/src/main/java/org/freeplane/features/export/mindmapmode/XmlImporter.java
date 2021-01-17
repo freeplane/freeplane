@@ -66,7 +66,7 @@ public class XmlImporter	{
 		final Reader reader = new XsltPipeReaderFactory(xsltResource).getReader(in);
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MapController mapController = modeController.getMapController();
-		final MapModel map = new MMapModel();
+		final MapModel map = new MMapModel(mapController.duplicator());
 		modeController.getMapController().getMapReader().createNodeTreeFromXml(map, reader, Mode.FILE);
 		final URL mapUrl = Compat.fileToUrl(outputFile);
 		map.setURL(mapUrl);

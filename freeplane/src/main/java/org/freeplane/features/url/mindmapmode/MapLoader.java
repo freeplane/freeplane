@@ -262,7 +262,7 @@ public class MapLoader{
 	}
 
 	private MMapModel createMindMap() {
-		final MMapModel map = new MMapModel();
+		final MMapModel map = new MMapModel(mapController().duplicator());
 		if(asDocumentation) {
 			map.setReadOnly(true);
 			map.addExtension(DocuMapAttribute.INSTANCE);
@@ -272,7 +272,6 @@ public class MapLoader{
 
 	private void loadMapContent(final MMapModel map) throws IOException, XMLException {
 		try (InputStreamReader urlStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
-			final ModeController modeController = Controller.getCurrentModeController();
 			modeController.getMapController().getMapReader().createNodeTreeFromXml(map, urlStreamReader, Mode.FILE);
 		}
 	}

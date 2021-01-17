@@ -77,8 +77,8 @@ class ChildDistanceControlGroup implements ControlGroup {
 		propertyChangeListener = new ChildDistanceChangeListener(mSetChildDistance, mChildDistance);
 		mSetChildDistance.addPropertyChangeListener(propertyChangeListener);
 		mChildDistance.addPropertyChangeListener(propertyChangeListener);
-		mSetChildDistance.layout(formBuilder);
-		mChildDistance.layout(formBuilder);
+		mSetChildDistance.appendToForm(formBuilder);
+		mChildDistance.appendToForm(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {

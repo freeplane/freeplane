@@ -82,8 +82,8 @@ public class NodeBackgroundColorControlGroup implements ControlGroup {
 		propertyChangeListener = new BgColorChangeListener(mSetNodeBackgroundColor, mNodeBackgroundColor);
 		mSetNodeBackgroundColor.addPropertyChangeListener(propertyChangeListener);
 		mNodeBackgroundColor.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeBackgroundColor.layout(formBuilder);
-		mNodeBackgroundColor.layout(formBuilder);
+		mSetNodeBackgroundColor.appendToForm(formBuilder);
+		mNodeBackgroundColor.appendToForm(formBuilder);
 	}
 
 	

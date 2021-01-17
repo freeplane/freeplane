@@ -42,6 +42,6 @@ public class GroupSeparator implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		new SeparatorProperty(labelKey).layout(formBuilder);
+		new SeparatorProperty(labelKey).appendToForm(formBuilder);
 	}
 }

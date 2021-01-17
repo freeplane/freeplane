@@ -19,6 +19,9 @@
  */
 package org.freeplane.features.link;
 
+import java.util.Set;
+import java.util.function.Predicate;
+
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -33,6 +36,12 @@ import org.freeplane.features.filter.condition.ConditionFactory;
 import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.filter.condition.StringConditionAdapter;
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.StyleContainsCondition;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -43,10 +52,11 @@ public class LinkConditionController implements IElementaryConditionController {
 	static final String FILTER_LINK = "filter_link";
 	static final String CONNECTOR_LABEL = "connector_label";
 	static final String CONNECTOR = "connector";
-	private final ComboBoxModel values = new DefaultComboBoxModel();
+	private final DefaultComboBoxModel values = new DefaultComboBoxModel();
 
 	public boolean canEditValues(final Object property, final TranslatedObject simpleCond) {
-		return !simpleCond.objectEquals(ConditionFactory.FILTER_EXIST);
+		return ! (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST)
+		        || simpleCond.objectEquals(ConnectorStyleCondition.FILTER_STYLE));
 	}
 
 	public boolean canHandle(final Object selectedItem) {
@@ -89,9 +99,12 @@ public class LinkConditionController implements IElementaryConditionController {
 			return null;
 		}
 		if (namedObject.objectEquals(CONNECTOR)) {
-			if (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST)) {
-				return new ConnectorExistsCondition();
-			}
+            if (simpleCond.objectEquals(ConditionFactory.FILTER_EXIST)) {
+                return new ConnectorExistsCondition();
+            }
+            if (simpleCond.objectEquals(ConnectorStyleCondition.FILTER_STYLE)) {
+                return new ConnectorStyleCondition((IStyle) value);
+            }
 		}
 		return null;
 	}
@@ -111,7 +124,10 @@ public class LinkConditionController implements IElementaryConditionController {
 			        TextUtils.createTranslatedString(ConditionFactory.FILTER_CONTAINS) };
 		}
 		else {
-			linkConditionNames = new TranslatedObject[] { TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST) };
+			linkConditionNames = new TranslatedObject[] { 
+                    TextUtils.createTranslatedString(ConditionFactory.FILTER_EXIST), 
+                    TextUtils.createTranslatedString(ConnectorStyleCondition.FILTER_STYLE) 
+			        };
 		}
 		return new DefaultComboBoxModel(linkConditionNames);
 	}
@@ -129,6 +145,14 @@ public class LinkConditionController implements IElementaryConditionController {
 	}
 
 	public ComboBoxModel getValuesForProperty(final Object property, TranslatedObject simpleCond) {
+	    if(simpleCond.objectEquals(ConnectorStyleCondition.FILTER_STYLE)) {
+	        final MapModel map = Controller.getCurrentController().getMap();
+	        MapStyleModel styleMap = MapStyleModel.getExtension(map);
+	        IStyle[] styles = styleMap.getStyles().stream().filter(key -> 
+	         NodeLinks.getSelfConnector(styleMap.getStyleNode(key)).isPresent())
+	        .toArray(IStyle[]::new);
+	        return new DefaultComboBoxModel<>(styles);
+	    }
 		return values;
 	}
 
@@ -182,14 +206,18 @@ public class LinkConditionController implements IElementaryConditionController {
 			return new ConnectorLabelContainsCondition(text, matchCase, matchApproximately,
 			        Boolean.valueOf(element.getAttribute(StringConditionAdapter.IGNORE_DIACRITICS, null)));
 		}
-		if (element.getName().equalsIgnoreCase(ConnectorExistsCondition.NAME)) {
-			return new ConnectorExistsCondition();
-		}
+        if (element.getName().equalsIgnoreCase(ConnectorExistsCondition.NAME)) {
+            return new ConnectorExistsCondition();
+        }
+        if (element.getName().equalsIgnoreCase(ConnectorStyleCondition.NAME)) {
+            return ConnectorStyleCondition.load(element);
+        }
 		return null;
 	}
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {
-		if (((TranslatedObject)selectedProperty).objectEquals(CONNECTOR) ||
+		if (((TranslatedObject)selectedProperty).objectEquals(CONNECTOR)
+		        ||
 			(((TranslatedObject)selectedProperty).objectEquals(FILTER_LINK) &&
 					selectedCondition.objectEquals(ConditionFactory.FILTER_EXIST)))
 		{

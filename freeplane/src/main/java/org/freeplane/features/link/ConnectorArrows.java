@@ -1,6 +1,8 @@
 package org.freeplane.features.link;
 
 import java.net.URL;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.swing.Icon;
 
@@ -18,12 +20,19 @@ public enum ConnectorArrows implements RenderedContentSupplier<ConnectorArrows>{
 	
 	public static ConnectorArrows DEFAULT = ConnectorArrows.FORWARD;
 	
+	public static Optional<ConnectorArrows> of(ArrowType start, ArrowType end){
+	       return Stream.of(values())
+	               .filter(self -> self.start == start && self.end == end)
+	               .findAny();
+
+	}
+	
 	public final ArrowType start;
 	public final ArrowType end;
 	public final String text;
 	public final Icon icon;
 	
-	private RenderedContent<ConnectorArrows> renderedContent;
+	private final RenderedContent<ConnectorArrows> renderedContent;
 
 
 	
@@ -33,14 +42,12 @@ public enum ConnectorArrows implements RenderedContentSupplier<ConnectorArrows>{
 		final URL url = ResourceController.getResourceController().getResource("/images/" + iconName);
 		icon = url != null ? FreeplaneIconFactory.createSVGIcon(url) : null;
 		text = TextUtils.getText("ChangeConnectorArrowsAction." + description + ".text");
+		renderedContent = new RenderedContent<ConnectorArrows>(this, text, icon);
 	}
 
 	
 	@Override
 	public RenderedContent<ConnectorArrows> createRenderedContent() {
-		if(renderedContent == null) {
-			renderedContent = new RenderedContent<ConnectorArrows>(this, text, icon);
-		}
 		return renderedContent;
 	}
 }

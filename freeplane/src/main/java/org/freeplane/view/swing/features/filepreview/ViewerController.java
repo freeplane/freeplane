@@ -56,9 +56,10 @@ import org.freeplane.view.swing.map.NodeView;
 @NodeHookDescriptor(hookName = "ExternalObject", //
 onceForMap = false)
 public class ViewerController extends PersistentNodeHook implements INodeViewLifeCycleListener, IExtension {
-	private static final MExternalImageDropListener DTL = new MExternalImageDropListener();
+    private static final MExternalImageDropListener DTL = new MExternalImageDropListener();
 	private static final int BORDER_SIZE = 1;
 	public static final Border VIEWER_BORDER_INSTANCE = new ViewerBorder(BORDER_SIZE, Color.BLACK);
+	
 
 	private final class CombiFactory implements IViewerFactory {
 		private IViewerFactory factory;
@@ -448,6 +449,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	static final int VIEWER_POSITION = 5;
 	private final MyMouseListener mouseListener = new MyMouseListener();
 	final private Set<IViewerFactory> factories;
+    private final CombiFactory combiFactory;
 
 	public ViewerController() {
 		super();
@@ -456,6 +458,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		modeController.addINodeViewLifeCycleListener(this);
 		modeController.addExtension(this.getClass(), this);
 		factories.add(new BitmapViewerFactory());
+		combiFactory = new CombiFactory();
 	}
 
 	@Override
@@ -541,7 +544,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 		chooser.setFileFilter(fileFilter);
 		chooser.putClientProperty(FactoryFileFilter.class, fileFilter);
-		chooser.setAccessory(new ImagePreview(chooser));
+		new ImagePreview(chooser);
 		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController()
 		    .getCurrentRootComponent());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -720,7 +723,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 	}
 
 	private FileFilter getCombiFileFilter() {
-		return new FactoryFileFilter(new CombiFactory());
+		return new FactoryFileFilter(combiFactory);
 	}
 
 	public void addFactory(final IViewerFactory factory) {
@@ -803,6 +806,6 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
     }
 
 	public IViewerFactory getViewerFactory() {
-	    return new CombiFactory();
+	    return combiFactory;
     }
 }

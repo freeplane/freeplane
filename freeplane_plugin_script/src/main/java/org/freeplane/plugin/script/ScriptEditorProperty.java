@@ -66,8 +66,8 @@ class ScriptEditorProperty extends PropertyBean implements IPropertyControl, Act
 		return script;
 	}
 
-	public void layout(final DefaultFormBuilder builder) {
-		layout(builder, mButton);
+	public void appendToForm(final DefaultFormBuilder builder) {
+		appendToForm(builder, mButton);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

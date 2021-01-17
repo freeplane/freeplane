@@ -53,6 +53,7 @@ import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.DelayedRunner;
 import org.freeplane.features.clipboard.ClipboardControllers;
+import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;
@@ -361,7 +362,7 @@ implements IExtension, NodeChangeAnnouncer{
 
 
 	protected MapClipboardController createMapClipboardController() {
-		final MapClipboardController mapClipboardController = new MapClipboardController();
+		final MapClipboardController mapClipboardController = new MapClipboardController(modeController);
 		modeController.getExtension(ClipboardControllers.class).add(mapClipboardController);
 		return mapClipboardController;
 	}
@@ -794,7 +795,7 @@ implements IExtension, NodeChangeAnnouncer{
 			return;
 		try {
 			Controller.getCurrentController().getViewController().setWaitingCursor(true);
-			final MapModel newModel = new MapModel();
+			final MapModel newModel = new MapModel(duplicator());
 			UrlManager.getController().loadCatchExceptions(url, newModel);
 			newModel.setReadOnly(true);
 			newModel.setSaved(true);
@@ -832,12 +833,17 @@ implements IExtension, NodeChangeAnnouncer{
 	}
 
 	public MapModel newMap() {
-		final MapModel mindMapMapModel = new MapModel();
+		final MapModel mindMapMapModel = new MapModel(duplicator());
 		mindMapMapModel.createNewRoot();
 		fireMapCreated(mindMapMapModel);
 		createMapView(mindMapMapModel);
 		return mindMapMapModel;
 	}
+
+
+	public  INodeDuplicator duplicator() {
+        return modeController.getExtension(MapClipboardController.class);
+    }
 
 	public NodeModel newNode(final Object userObject, final MapModel map) {
 		return new NodeModel(userObject, map);

@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Optional;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.LogUtils;
@@ -141,6 +142,13 @@ public class NodeLinks implements IExtension {
 
 	public List<NodeLinkModel> getLinks() {
 		return Collections.unmodifiableList(links);
+	}
+	
+	public static Optional<ConnectorModel> getSelfConnector(NodeModel node) {
+	    return NodeLinks.getLinks(node).stream()
+        .filter(ConnectorModel.class::isInstance)
+        .map(ConnectorModel.class::cast)
+        .findFirst();
 	}
 
 	public void removeArrowlink(final NodeLinkModel link) {

@@ -40,11 +40,11 @@ public class TextBoxProperty extends PropertyBean implements IPropertyControl {
 		return mTextArea.getText();
 	}
 
-	public void layout(final DefaultFormBuilder builder) {
+	public void appendToForm(final DefaultFormBuilder builder) {
 		JScrollPane scrollPane = new JScrollPane(mTextArea);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		layout(builder, scrollPane);
+		appendToForm(builder, scrollPane);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

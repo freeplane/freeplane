@@ -84,7 +84,7 @@ public class FormatControlGroup implements ControlGroup {
         propertyChangeListener = new NodeFormatChangeListener(mSetNodeFormat, mNodeFormat);
         mSetNodeFormat.addPropertyChangeListener(propertyChangeListener);
         mNodeFormat.addPropertyChangeListener(propertyChangeListener);
-        mSetNodeFormat.layout(formBuilder);
-        mNodeFormat.layout(formBuilder);
+        mSetNodeFormat.appendToForm(formBuilder);
+        mNodeFormat.appendToForm(formBuilder);
 	}
 }

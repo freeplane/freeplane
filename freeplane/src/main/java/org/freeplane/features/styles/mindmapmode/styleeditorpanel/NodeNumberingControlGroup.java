@@ -77,7 +77,7 @@ public class NodeNumberingControlGroup implements ControlGroup {
 		propertyChangeListener = new NodeNumberingChangeListener(mSetNodeNumbering, mNodeNumbering);
 		mSetNodeNumbering.addPropertyChangeListener(propertyChangeListener);
 		mNodeNumbering.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeNumbering.layout(formBuilder);
-		mNodeNumbering.layout(formBuilder);
+		mSetNodeNumbering.appendToForm(formBuilder);
+		mNodeNumbering.appendToForm(formBuilder);
 	}
 }

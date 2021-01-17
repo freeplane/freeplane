@@ -153,7 +153,7 @@ public class OptionPanel {
 				tabIndex++;
 			}
 			else {
-				control.layout(bottomBuilder);
+				control.appendToForm(bottomBuilder);
 			}
 		}
 		tabbedPane.addChangeListener(new ChangeListener() {

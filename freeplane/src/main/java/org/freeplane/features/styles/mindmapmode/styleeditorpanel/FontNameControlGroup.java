@@ -79,7 +79,7 @@ public class FontNameControlGroup implements ControlGroup {
 		propertyChangeListener = new FontNameChangeListener(mSetNodeFontName, mNodeFontName);
 		mSetNodeFontName.addPropertyChangeListener(propertyChangeListener);
 		mNodeFontName.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeFontName.layout(formBuilder);
-		mNodeFontName.layout(formBuilder);
+		mSetNodeFontName.appendToForm(formBuilder);
+		mNodeFontName.appendToForm(formBuilder);
 	}
 }

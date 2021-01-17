@@ -29,6 +29,7 @@ import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
 import org.freeplane.core.util.SysUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.map.INodeDuplicator;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -49,9 +50,10 @@ public class MMapModel extends MapModel {
 	/**
 	 * The current version and all other version that don't need XML update for
 	 * sure.
+	 * @param nodeDuplicator 
 	 */
-	public MMapModel() {
-		super();
+	public MMapModel(INodeDuplicator nodeDuplicator) {
+		super(nodeDuplicator);
 		this.autosaveEnabled = false;
 		this.lockManager = ResourceController.getResourceController().getBooleanProperty(
 		"experimental_file_locking_on") ? new LockManager() : new DummyLockManager();

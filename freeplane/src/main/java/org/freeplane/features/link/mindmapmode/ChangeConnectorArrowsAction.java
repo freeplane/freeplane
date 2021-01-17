@@ -20,6 +20,7 @@
 package org.freeplane.features.link.mindmapmode;
 
 import java.awt.event.ActionEvent;
+import java.util.Optional;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.features.link.ArrowType;
@@ -42,13 +43,13 @@ class ChangeConnectorArrowsAction extends AFreeplaneAction {
 		this.arrowLink = arrowLink;
 		this.startArrow = arrows.start;
 		this.endArrow = arrows.end;
-		final boolean selected = arrowLink.getStartArrow().equals(startArrow)
-		        && arrowLink.getEndArrow().equals(endArrow);
+		final boolean selected = linkController.getStartArrow(arrowLink).equals(startArrow)
+		        && linkController.getEndArrow(arrowLink).equals(endArrow);
 		setSelected(selected);
 	}
 
 	public void actionPerformed(final ActionEvent e) {
 		final MLinkController linkController = (MLinkController) LinkController.getController();
-		linkController.changeArrowsOfArrowLink(arrowLink, startArrow, endArrow);
+		linkController.changeArrowsOfArrowLink(arrowLink, Optional.of(startArrow), Optional.of(endArrow));
 	}
 }

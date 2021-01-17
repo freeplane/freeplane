@@ -77,7 +77,7 @@ public class FontBoldControlGroup implements ControlGroup {
 		propertyChangeListener = new FontBoldChangeListener(mSetNodeFontBold, mNodeFontBold);
 		mSetNodeFontBold.addPropertyChangeListener(propertyChangeListener);
 		mNodeFontBold.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeFontBold.layout(formBuilder);
-		mNodeFontBold.layout(formBuilder);
+		mSetNodeFontBold.appendToForm(formBuilder);
+		mNodeFontBold.appendToForm(formBuilder);
 	}
 }

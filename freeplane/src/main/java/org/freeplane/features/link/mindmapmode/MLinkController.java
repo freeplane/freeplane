@@ -38,14 +38,18 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.FocusManager;
 import javax.swing.InputMap;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
@@ -70,6 +74,7 @@ import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
+import org.freeplane.features.link.mindmapmode.editor.ConnectorEditorPanel;
 import org.freeplane.features.link.HyperTextLinkModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.MapLinks;
@@ -87,7 +92,11 @@ import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
+import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleKeys;
+import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.StyleString;
+import org.freeplane.features.styles.mindmapmode.ComboBoxRendererWithTooltip;
 
 /**
  * @author Dimitry Polivaev
@@ -129,28 +138,17 @@ public class MLinkController extends LinkController {
 		public void resolveParentExtensions(Object key, NodeModel to) {
         }
 	}
-	private final class CreateArrowLinkActor implements IActor {
-		private final String targetID;
-		private final NodeModel source;
-		private ConnectorModel arrowLink;
+	private final class AddArrowLinkActor implements IActor {
+		private final ConnectorModel arrowLink;
 
-		public ConnectorModel getArrowLink() {
-			return arrowLink;
-		}
-
-		private CreateArrowLinkActor(final String targetID, final NodeModel source) {
-			this.targetID = targetID;
-			this.source = source;
+		private AddArrowLinkActor(ConnectorModel arrowLink) {
+            this.arrowLink = arrowLink;
 		}
 
 		@Override
 		public void act() {
-			NodeLinks nodeLinks = NodeLinks.createLinkExtension(source);
-			arrowLink = new ConnectorModel(source, targetID,
-				getStandardConnectorArrows(), getStandardDashVariant().variant,
-				getStandardConnectorColor(), getStandardConnectorOpacity(),
-				getStandardConnectorShape(), getStandardConnectorWidth(),
-				getStandardLabelFontFamily(), getStandardLabelFontSize());
+			NodeModel source = arrowLink.getSource();
+            NodeLinks nodeLinks = NodeLinks.createLinkExtension(source);
 			nodeLinks.addArrowlink(arrowLink);
 			fireNodeConnectorChange(source, arrowLink);
 		}
@@ -162,6 +160,7 @@ public class MLinkController extends LinkController {
 
 		@Override
 		public void undo() {
+		    NodeModel source = arrowLink.getSource();
 			final NodeLinks nodeLinks = NodeLinks.getLinkExtension(source);
 			nodeLinks.removeArrowlink(arrowLink);
 			fireNodeConnectorChange(source, arrowLink);
@@ -377,10 +376,10 @@ public class MLinkController extends LinkController {
 		return addConnector(source, target.createID());
 	}
 
-	public void changeArrowsOfArrowLink(final ConnectorModel link, final ArrowType startArrow, final ArrowType endArrow) {
+	public void changeArrowsOfArrowLink(final ConnectorModel link, final Optional<ArrowType> startArrow, final Optional<ArrowType> endArrow) {
 		final IActor actor = new IActor() {
-			final private ArrowType oldEndArrow = link.getEndArrow();
-			final private ArrowType oldStartArrow = link.getStartArrow();
+			final private Optional<ArrowType> oldEndArrow = link.getEndArrow();
+			final private Optional<ArrowType> oldStartArrow = link.getStartArrow();
 
 			@Override
 			public void act() {
@@ -422,130 +421,41 @@ public class MLinkController extends LinkController {
 		modeController.addAction(new SetLinkAnchorAction());
 		modeController.addAction(new MakeLinkToAnchorAction());
 		modeController.addAction(new MakeLinkFromAnchorAction());
-		modeController.addAction(new ClearLinkAnchorAction());
+        modeController.addAction(new ClearLinkAnchorAction());
+        modeController.addAction(new AddSelfConnectorAction());
 	}
 
 	@Override
 	protected void createArrowLinkPopup(final ConnectorModel link, final JComponent arrowLinkPopup) {
 		super.createArrowLinkPopup(link, arrowLinkPopup);
-		addClosingAction(arrowLinkPopup, new RemoveConnectorAction(this, link));
-
-		addSeparator(arrowLinkPopup);
-		addAction(arrowLinkPopup, new ConnectorColorAction(this, link));
-
-		final JSlider transparencySlider = new JSlider(20, 255, link.getAlpha());
-		transparencySlider.setMinorTickSpacing(20);
-		transparencySlider.setPaintTicks(true);
-		transparencySlider.setSnapToTicks(true);
-		transparencySlider.setPaintTrack(true);
-		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_transparency_label"), transparencySlider);
-
-		addSeparator(arrowLinkPopup);
-
-
-		AFreeplaneAction[] arrowActions = new AFreeplaneAction[]{
-                new ChangeConnectorArrowsAction(this, ConnectorArrows.NONE, link),
-                new ChangeConnectorArrowsAction(this, ConnectorArrows.FORWARD, link),
-                new ChangeConnectorArrowsAction(this, ConnectorArrows.BACKWARD, link),
-                new ChangeConnectorArrowsAction(this, ConnectorArrows.BOTH, link)
-		};
-        JComboBoxWithBorder connectorArrows = createActionBox(arrowActions);
-		addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_arrows"), connectorArrows);
-
-        final boolean twoNodesConnector = ! link.getSource().equals(link.getTarget());
-        AFreeplaneAction[] shapeActions;
-        if(twoNodesConnector){
-            shapeActions = new AFreeplaneAction[] {
-                    new ChangeConnectorShapeAction(this, link, Shape.CUBIC_CURVE),
-                    new ChangeConnectorShapeAction(this, link, Shape.LINE),
-                    new ChangeConnectorShapeAction(this, link, Shape.LINEAR_PATH),
-                    new ChangeConnectorShapeAction(this, link, Shape.EDGE_LIKE)
-            };
+		boolean isDefault = MapStyleModel.isDefaultStyleNode(link.getSource());
+        if(! isDefault) {
+		    addClosingAction(arrowLinkPopup, new RemoveConnectorAction(this, link));
+		    addSeparator(arrowLinkPopup);
         }
-        else {
-            shapeActions = new AFreeplaneAction[] {
-                    new ChangeConnectorShapeAction(this, link, Shape.CUBIC_CURVE),
-                    new ChangeConnectorShapeAction(this, link, Shape.LINE),
-                    new ChangeConnectorShapeAction(this, link, Shape.LINEAR_PATH)
-            };
-        }
-            final JComboBoxWithBorder connectorShapes = createActionBox(shapeActions);
-            addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_shapes"), connectorShapes);
+        ConnectorEditorPanel comp = new ConnectorEditorPanel(this, link);
 
-
-        ArrayList<AFreeplaneAction> dashActions = new ArrayList<AFreeplaneAction>();
-        for (DashVariant  variant : DashVariant.values())
-        	dashActions.add(new ChangeConnectorDashAction(this, link, variant));
-        final JComboBoxWithBorder connectorDashes = createActionBox(dashActions.toArray(new AFreeplaneAction[dashActions.size()]));
-		final int verticalMargin = new Quantity<>(3, LengthUnit.pt).toBaseUnitsRounded();
-        connectorDashes.setVerticalMargin(verticalMargin);
-        addPopupComponent(arrowLinkPopup, TextUtils.getText("connector_lines"), connectorDashes);
-
-		final SpinnerNumberModel widthModel = new SpinnerNumberModel(link.getWidth(),1, 32, 1);
-		final JSpinner widthSpinner = new JSpinner(widthModel);
-		addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_width_label"), widthSpinner);
-
+		comp.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+        arrowLinkPopup.add(comp);
 		addSeparator(arrowLinkPopup);
-
-		{
-			final GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			final String[] envFonts = gEnv.getAvailableFontFamilyNames();
-			DefaultComboBoxModel fonts = new DefaultComboBoxModel(envFonts);
-			fonts.setSelectedItem(link.getLabelFontFamily());
-			JComboBox fontBox = new JComboBoxWithBorder(fonts);
-			fontBox.setEditable(false);
-			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_family"), fontBox);
-			fontBox.addItemListener(new ItemListener() {
-				@Override
-				public void itemStateChanged(ItemEvent e) {
-					final Object item = e.getItem();
-					if(item != null)
-						setLabelFontFamily(link, item.toString());
-				}
-			});
-		}
-		{
-			final Integer[] sizes = {4, 6, 8, 10, 12, 14, 16, 18, 24, 36};
-			DefaultComboBoxModel sizesModel = new DefaultComboBoxModel(sizes);
-			sizesModel.setSelectedItem(link.getLabelFontSize());
-			JComboBox sizesBox = new JComboBoxWithBorder(sizesModel);
-			sizesBox.setEditable(true);
-			addPopupComponent(arrowLinkPopup, TextUtils.getText("edit_label_font_size"), sizesBox);
-			sizesBox.addItemListener(new ItemListener() {
-				@Override
-				public void itemStateChanged(ItemEvent e) {
-					final Object item = e.getItem();
-					if(item != null){
-						final int size;
-						if(item instanceof Integer)
-							size = (Integer)item;
-						else{
-							try{
-								size = Integer.valueOf(item.toString());
-								if(size <=0)
-									return;
-							}
-							catch (NumberFormatException ex){
-								return;
-							}
-						}
-
-						setLabelFontSize(link, size);
-					}
-				}
-			});
-		}
+  
 		final JTextArea sourceLabelEditor;
-            sourceLabelEditor = new JTextArea(link.getSourceLabel());
-            addTextEditor(arrowLinkPopup, "edit_source_label", sourceLabelEditor);
+		final JTextArea middleLabelEditor;
+		final JTextArea targetLabelEditor ;
+		if(! isDefault) {
+		    sourceLabelEditor = new JTextArea(link.getSourceLabel().orElse(""));
+		    addTextEditor(arrowLinkPopup, "edit_source_label", sourceLabelEditor);
 
-		final JTextArea middleLabelEditor = new JTextArea(link.getMiddleLabel());
-        addTextEditor(arrowLinkPopup, "edit_middle_label"  ,middleLabelEditor);
+		    middleLabelEditor = new JTextArea(link.getMiddleLabel().orElse(""));
+		    addTextEditor(arrowLinkPopup, "edit_middle_label"  ,middleLabelEditor);
 
-        final JTextArea targetLabelEditor ;
-            targetLabelEditor = new JTextArea(link.getTargetLabel());
-        addTextEditor(arrowLinkPopup, "edit_target_label", targetLabelEditor);
-
+		    targetLabelEditor = new JTextArea(link.getTargetLabel().orElse(""));
+		    addTextEditor(arrowLinkPopup, "edit_target_label", targetLabelEditor);
+		}
+		else {
+		    sourceLabelEditor = middleLabelEditor = targetLabelEditor = null;
+		}
+		
 		arrowLinkPopup.addHierarchyListener(new HierarchyListener() {
             private Component focusOwner;
             private Window dialog;
@@ -574,18 +484,46 @@ public class MLinkController extends LinkController {
                     return;
                 }
                 final IMapSelection selection = Controller.getCurrentController().getSelection();
-				if (selection == null || selection.getSelected() == null)
+                if (selection == null || selection.getSelected() == null)
                     return;
+                if(! isDefault) {
                     setSourceLabel(link, sourceLabelEditor.getText());
                     setTargetLabel(link, targetLabelEditor.getText());
-                setMiddleLabel(link, middleLabelEditor.getText());
-                setOpacity(link, transparencySlider.getValue());
-                setWidth(link, widthModel.getNumber().intValue());
+                    setMiddleLabel(link, middleLabelEditor.getText());
+                }
             }
-
 		});
 
 	}
+
+    public void setConnectorStyle(ConnectorModel link, IStyle style) {
+        final IStyle oldStyle = link.getStyle();
+        if (style.equals(oldStyle)) {
+            return;
+        }
+        final IActor actor = new IActor() {
+            @Override
+            public void act() {
+                link.setStyle(style);
+                final NodeModel node = link.getSource();
+                fireNodeConnectorChange(node, link);
+            }
+
+            @Override
+            public String getDescription() {
+                return "setConnectorStyle";
+            }
+
+            @Override
+            public void undo() {
+                link.setStyle(oldStyle);
+                final NodeModel node = link.getSource();
+                fireNodeConnectorChange(node, link);
+            }
+        };
+        Controller.getCurrentModeController().execute(actor, link.getSource().getMap());
+
+    }
 
     @SuppressWarnings("serial")
     protected JComboBoxWithBorder createActionBox(AFreeplaneAction[] items) {
@@ -660,9 +598,9 @@ public class MLinkController extends LinkController {
 		addPopupComponent(popup, TextUtils.getText(label), scrollPane);
 	}
 
-	public void setConnectorColor(final ConnectorModel arrowLink, final Color color) {
-		final Color oldColor = arrowLink.getColor();
-		if (color == oldColor || color != null && color.equals(oldColor)) {
+	public void setConnectorColor(final ConnectorModel arrowLink, final Optional<Color> color) {
+		final  Optional<Color> oldColor = arrowLink.getColor();
+		if (color.equals(oldColor)) {
 			return;
 		}
 		final IActor actor = new IActor() {
@@ -688,9 +626,9 @@ public class MLinkController extends LinkController {
 		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
 	}
 
-	public void setConnectorDashArray(final ConnectorModel arrowLink, final int[] dash) {
-		final int[] oldDash = arrowLink.getDash();
-		if (dash == oldDash || dash != null && dash.equals(oldDash)) {
+	public void setConnectorDashArray(final ConnectorModel arrowLink, final Optional<int[]> dash) {
+		final Optional<int[]> oldDash = arrowLink.getDash();
+		if (dash.equals(oldDash)) {
 			return;
 		}
 		final IActor actor = new IActor() {
@@ -829,14 +767,11 @@ public class MLinkController extends LinkController {
 	}
 
 	public void setMiddleLabel(final ConnectorModel model, String label) {
-		if ("".equals(label)) {
-			label = null;
+		if (label == null) {
+			label = "";
 		}
-		String oldLabel = model.getMiddleLabel();
-		if ("".equals(oldLabel)) {
-			oldLabel = null;
-		}
-		if (label == oldLabel || label != null && label.equals(oldLabel)) {
+		String oldLabel = model.getMiddleLabel().orElse("");
+		if (label.equals(oldLabel)) {
 			return;
 		}
 		final IActor actor = new MiddleLabelSetter(model, oldLabel, label);
@@ -844,39 +779,34 @@ public class MLinkController extends LinkController {
 	}
 
 	public void setSourceLabel(final ConnectorModel model, String label) {
-		if ("".equals(label)) {
-			label = null;
-		}
-		String oldLabel = model.getSourceLabel();
-		if ("".equals(oldLabel)) {
-			oldLabel = null;
-		}
-		if (label == oldLabel || label != null && label.equals(oldLabel)) {
-			return;
-		}
+        if (label == null) {
+            label = "";
+        }
+        String oldLabel = model.getSourceLabel().orElse("");
+        if (label.equals(oldLabel)) {
+            return;
+        }
 		final IActor actor = new SourceLabelSetter(model, label, oldLabel);
 		Controller.getCurrentModeController().execute(actor, model.getSource().getMap());
 	}
 
 	public void setTargetLabel(final ConnectorModel model, String label) {
-		if ("".equals(label)) {
-			label = null;
-		}
-		String oldLabel = model.getTargetLabel();
-		if ("".equals(oldLabel)) {
-			oldLabel = null;
-		}
-		if (label == oldLabel || label != null && label.equals(oldLabel)) {
-			return;
-		}
+        if (label == null) {
+            label = "";
+        }
+        String oldLabel = model.getTargetLabel().orElse("");
+        if (label.equals(oldLabel)) {
+            return;
+        }
 		final IActor actor = new TargetLabelSetter(oldLabel, label, model);
 		Controller.getCurrentModeController().execute(actor, model.getSource().getMap());
 	}
 
 	public ConnectorModel addConnector(final NodeModel source, final String targetID) {
-		final CreateArrowLinkActor actor = new CreateArrowLinkActor(targetID, source);
-		Controller.getCurrentModeController().execute(actor, source.getMap());
-		return actor.getArrowLink();
+		ConnectorModel connector = new ConnectorModel(source, targetID);
+        final AddArrowLinkActor actor = new AddArrowLinkActor(connector);
+ 		Controller.getCurrentModeController().execute(actor, source.getMap());
+		return connector;
 	}
 
 	public void removeArrowLink(final ConnectorModel arrowLink) {
@@ -905,8 +835,8 @@ public class MLinkController extends LinkController {
 		Controller.getCurrentModeController().execute(actor, arrowLink.getSource().getMap());
 	}
 
-	public void setShape(final ConnectorModel connector, final Shape shape) {
-		final Shape oldShape = connector.getShape();
+	public void setShape(final ConnectorModel connector, final Optional<Shape> shape) {
+		final Optional<Shape> oldShape = connector.getShape();
 		if (oldShape.equals(shape)) {
 			return;
 		}
@@ -933,9 +863,9 @@ public class MLinkController extends LinkController {
 		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
 	}
 
-	public void setWidth(final ConnectorModel connector, final int width) {
-		final int oldWidth = connector.getWidth();
-		if (oldWidth == width) {
+	public void setWidth(final ConnectorModel connector, final Optional<Integer> width) {
+		final Optional<Integer> oldWidth = connector.getWidth();
+		if (oldWidth.equals(width)) {
 			return;
 		}
 		final IActor actor = new IActor() {
@@ -962,9 +892,9 @@ public class MLinkController extends LinkController {
 	}
 
 
-	public void setLabelFontSize(final ConnectorModel connector, final int width) {
-		final int oldWidth = connector.getLabelFontSize();
-		if (oldWidth == width) {
+	public void setLabelFontSize(final ConnectorModel connector, final Optional<Integer> width) {
+		final Optional<Integer> oldWidth = connector.getLabelFontSize();
+		if (oldWidth.equals(width)) {
 			return;
 		}
 		final IActor actor = new IActor() {
@@ -991,8 +921,8 @@ public class MLinkController extends LinkController {
 	}
 
 
-	public void setLabelFontFamily(final ConnectorModel connector, final String family) {
-		final String oldFamily = connector.getLabelFontFamily();
+	public void setLabelFontFamily(final ConnectorModel connector, final Optional<String> family) {
+		final Optional<String> oldFamily = connector.getLabelFontFamily();
 		if (oldFamily.equals(family)) {
 			return;
 		}
@@ -1019,9 +949,9 @@ public class MLinkController extends LinkController {
 		Controller.getCurrentModeController().execute(actor, connector.getSource().getMap());
 	}
 
-	public void setOpacity(final ConnectorModel connector, final int alpha) {
-		final int oldAlpha = connector.getAlpha();
-		if (oldAlpha == alpha) {
+	public void setOpacity(final ConnectorModel connector,  final Optional<Integer> alpha) {
+		final Optional<Integer> oldAlpha = connector.getAlpha();
+		if (oldAlpha.equals(alpha)) {
 			return;
 		}
 		final IActor actor = new IActor() {

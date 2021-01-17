@@ -83,7 +83,7 @@ public class QuantityProperty<U extends Enum<U> & PhysicalUnit> extends Property
 	}
 
 	@Override
-	public void layout(final DefaultFormBuilder builder) {
+	public void appendToForm(final DefaultFormBuilder builder) {
 		Box box = new Box(BoxLayout.X_AXIS) {
 
 			@Override
@@ -94,7 +94,7 @@ public class QuantityProperty<U extends Enum<U> & PhysicalUnit> extends Property
 		};
 		box.add(numberSpinner);
 		box.add(unitBox);
-		layout(builder, box);
+		appendToForm(builder, box);
 	}
 
 	@Override

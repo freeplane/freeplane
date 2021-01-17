@@ -42,6 +42,6 @@ public class NextColumnControlGroup implements ControlGroup {
 
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
-		new NextColumnProperty(columns).layout(formBuilder);
+		new NextColumnProperty(columns).appendToForm(formBuilder);
 	}
 }

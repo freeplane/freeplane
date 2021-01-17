@@ -46,8 +46,8 @@ public class StringProperty extends PropertyBean implements IPropertyControl {
 		return mTextField.getText();
 	}
 
-	public void layout(final DefaultFormBuilder builder) {
-		layout(builder, mTextField);
+	public void appendToForm(final DefaultFormBuilder builder) {
+		appendToForm(builder, mTextField);
 	}
 
 	public void setEnabled(final boolean pEnabled) {

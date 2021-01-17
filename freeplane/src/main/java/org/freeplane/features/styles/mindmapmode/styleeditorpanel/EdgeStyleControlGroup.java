@@ -79,8 +79,8 @@ public class EdgeStyleControlGroup implements ControlGroup {
 		propertyChangeListener = new EdgeStyleChangeListener(mSetEdgeStyle, mEdgeStyle);
 		mSetEdgeStyle.addPropertyChangeListener(propertyChangeListener);
 		mEdgeStyle.addPropertyChangeListener(propertyChangeListener);
-		mSetEdgeStyle.layout(formBuilder);
-		mEdgeStyle.layout(formBuilder);
+		mSetEdgeStyle.appendToForm(formBuilder);
+		mEdgeStyle.appendToForm(formBuilder);
 	}
 
 	@Override

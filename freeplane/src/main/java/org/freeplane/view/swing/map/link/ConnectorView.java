@@ -34,14 +34,17 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
+import java.lang.ref.WeakReference;
 
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.ColorUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.ArrowType;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.NodeView;
 
@@ -49,7 +52,7 @@ import org.freeplane.view.swing.map.NodeView;
  * This class represents a ArrowLink around a node.
  */
 public class ConnectorView extends AConnectorView{
-        private static final int LOOP_INCLINE_OFFSET = 45;
+    private static final String CONNECTOR_VIEW_SHOWS_CONTROL_POINTS = "connectorView.showsControlPoints";
 	private static final int NORMAL_LENGTH = 50;
 	private static final float[] DOTTED_DASH = new float[] { 4, 7};
 	static final Stroke DEF_STROKE = new BasicStroke(1);
@@ -63,10 +66,11 @@ public class ConnectorView extends AConnectorView{
 	final private Color color;
 	final private BasicStroke stroke;
 	final private Color bgColor;
+    private final LinkController linkController;
 	/* Note, that source and target are nodeviews and not nodemodels!. */
 	public ConnectorView(final ConnectorModel connectorModel, final NodeView source, final NodeView target, Color bgColor) {
 		super(connectorModel, source, target);
-		final LinkController linkController = LinkController.getController(getModeController());
+		linkController = getLinkController();
 		textColor = linkController.getColor(connectorModel);
 		this.bgColor =bgColor;
 		final int alpha = linkController.getOpacity(connectorModel);
@@ -79,16 +83,15 @@ public class ConnectorView extends AConnectorView{
 		else{
 			stroke = UITools.createStroke((float) width, linkController.getDashArray(connectorModel), BasicStroke.JOIN_ROUND);
 		}
-
 	}
-
-	/**
-	 */
-	private Point calcInclination(final NodeView node, final int dellength) {
-		return new Point(dellength, 0);
-	}
-
-	/* (non-Javadoc)
+	
+	
+//    public void setShowsControlPoints(boolean showsControlPoints) {
+//        this.showsControlPoints = showsControlPoints;
+//    }
+//
+//
+    /* (non-Javadoc)
 	 * @see org.freeplane.view.swing.map.link.ILinkView#detectCollision(java.awt.Point, boolean)
 	 */
 	public boolean detectCollision(final Point p, final boolean selectedOnly) {
@@ -273,11 +276,9 @@ public class ConnectorView extends AConnectorView{
 	 * @see org.freeplane.view.swing.map.link.ILinkView#paint(java.awt.Graphics)
 	 */
 	public void paint(final Graphics graphics) {
-        final boolean selfLink = getSource() == getTarget();
 		if (!isSourceVisible() && !isTargetVisible()) {
 			return;
 		}
-		Point startPoint = null, endPoint = null, startPoint2 = null, endPoint2 = null;
 		boolean targetIsLeft = false;
 		boolean sourceIsLeft = false;
 		final Graphics2D g = (Graphics2D) graphics.create();
@@ -285,35 +286,30 @@ public class ConnectorView extends AConnectorView{
 		g.setColor(color);
 		/* set stroke. */
 		g.setStroke(stroke);
-		if (isSourceVisible()) {
-			startPoint = source.getLinkPoint(connectorModel.getStartInclination());
-			sourceIsLeft = source.isLeft();
-		}
-		if (isTargetVisible()) {
-			endPoint = target.getLinkPoint(connectorModel.getEndInclination());
-			targetIsLeft = target.isLeft();
-		}
-		if (connectorModel.getEndInclination() == null || connectorModel.getStartInclination() == null) {
-			final int dellength = isSourceVisible() && isTargetVisible() ? Math.max(40, (int)(startPoint.distance(endPoint) / getZoom())) : 40;
-			if (isSourceVisible() && connectorModel.getStartInclination() == null) {
-				final Point incl = calcInclination(source, dellength);
-				connectorModel.setStartInclination(incl);
-				startPoint = source.getLinkPoint(connectorModel.getStartInclination());
+        Point startInclination = connectorModel.getStartInclination();
+        Point endInclination = connectorModel.getEndInclination();
+		if (startInclination == null || endInclination == null) {
+		    InclinationRecommender recommender = new InclinationRecommender(linkController, this);
+			if (isSourceVisible() && startInclination == null) {
+			    startInclination = recommender.calcStartInclination();
 			}
 			if (isTargetVisible() && connectorModel.getEndInclination() == null) {
-				final Point incl = calcInclination(target, dellength);
-				incl.y = -incl.y;
-				if (selfLink) {
-					fixInclineIfLoopNode(incl);
-				}
-				connectorModel.setEndInclination(incl);
-				endPoint = target.getLinkPoint(connectorModel.getEndInclination());
+			    endInclination = recommender.calcEndInclination();
 			}
 		}
+		Point startPoint = null, endPoint = null;
+        if (isSourceVisible()) {
+            startPoint = source.getLinkPoint(startInclination);
+            sourceIsLeft = source.isLeft();
+        }
+        if (isTargetVisible()) {
+            endPoint = target.getLinkPoint(endInclination);
+            targetIsLeft = target.isLeft();
+        }
 		final MapView map = getMap();
+		Point startPoint2 = null;
 		if (startPoint != null) {
 			startPoint2 = new Point(startPoint);
-			Point startInclination = connectorModel.getStartInclination();
 			if(endPoint == null){
 				normalizeLength(NORMAL_LENGTH, startInclination);
 			}
@@ -321,9 +317,9 @@ public class ConnectorView extends AConnectorView{
 				map.getZoomed(startInclination.y));
 
 		}
+		Point endPoint2 = null;
 		if (endPoint != null) {
 			endPoint2 = new Point(endPoint);
-			Point endInclination = connectorModel.getEndInclination();
 			if(startPoint == null){
 				normalizeLength(NORMAL_LENGTH, endInclination);
 			}
@@ -359,34 +355,34 @@ public class ConnectorView extends AConnectorView{
 
 	private void paintCurve(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint, boolean showsConnectors) {
 		final boolean selfLink = getSource() == getTarget();
-		final boolean isLine = ConnectorModel.Shape.LINE.equals(connectorModel.getShape());
+		final boolean isLine = ConnectorModel.Shape.LINE.equals(linkController.getShape(connectorModel));
 		arrowLinkCurve = null;
 		if (showsConnectors) {
-			if (startPoint != null && endPoint != null) {
-				if(isLine) {
-			                    if (selfLink) {
-					arrowLinkCurve = createLine(startPoint, startPoint2);
-			                    }
-			                    else {
-					arrowLinkCurve = createLine(startPoint, endPoint);
-			                    }
-			                }
-			                else if (ConnectorModel.Shape.LINEAR_PATH.equals(connectorModel.getShape()))
-			                    arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
-			                else
-			                    arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
-			} 
-			if (arrowLinkCurve != null) {
-				g.draw(arrowLinkCurve);
-			}
+		    if (startPoint != null && endPoint != null) {
+		        if(isLine) {
+		            if (selfLink) {
+		                arrowLinkCurve = createLine(startPoint, startPoint2);
+		            }
+		            else {
+		                arrowLinkCurve = createLine(startPoint, endPoint);
+		            }
+		        }
+		        else if (ConnectorModel.Shape.LINEAR_PATH.equals(linkController.getShape(connectorModel)))
+		            arrowLinkCurve = createLinearPath(startPoint, startPoint2, endPoint2, endPoint);
+		        else
+		            arrowLinkCurve = createCubicCurve2D(startPoint, startPoint2, endPoint2, endPoint);
+		    } 
+		    if (arrowLinkCurve != null) {
+		        g.draw(arrowLinkCurve);
+		    }
 		} 
-		if (isSourceVisible() && !(showsConnectors && connectorModel.getStartArrow().equals(ArrowType.NONE))) {
+		if (isSourceVisible() && !(showsConnectors && linkController.getStartArrow(connectorModel).equals(ArrowType.NONE))) {
 			if(!selfLink && isLine && endPoint != null)
 				paintArrow(g, endPoint, startPoint);
 			else
 				paintArrow(g, startPoint2, startPoint);
 		}
-		if (isTargetVisible() && !(showsConnectors && connectorModel.getEndArrow().equals(ArrowType.NONE))) {
+		if (isTargetVisible() && !(showsConnectors && linkController.getEndArrow(connectorModel).equals(ArrowType.NONE))) {
 			if(isLine && startPoint != null) {
                             if (selfLink)
 				paintArrow(g, startPoint, startPoint2);
@@ -397,11 +393,12 @@ public class ConnectorView extends AConnectorView{
 				paintArrow(g, endPoint2, endPoint);
 		}
 		if(showsConnectors) {
-			if (connectorModel.getShowControlPointsFlag()) {
+			boolean showsControlPoints = showsControlPoints();
+            if (showsControlPoints) {
 				g.setColor(textColor);
 				g.setStroke(new BasicStroke(stroke.getLineWidth(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0, DOTTED_DASH, 0));
 			}
-			if (connectorModel.getShowControlPointsFlag() || !isSourceVisible() || !isTargetVisible()) {
+			if (showsControlPoints || !isSourceVisible() || !isTargetVisible()) {
 				if (startPoint != null) {
 					g.drawLine(startPoint.x, startPoint.y, startPoint2.x, startPoint2.y);
 					drawCircle(g, startPoint2, source.getZoomedFoldingSymbolHalfWidth());
@@ -418,11 +415,29 @@ public class ConnectorView extends AConnectorView{
 				}
 			}
 		}
+	}
+
+    public void enableControlPoints() {
+        getMap().putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, new WeakReference<>(connectorModel));  
     }
 
+
+    public void disableControlPoints() {
+        MapView map = getMap();
+        if(showsControlPoints())
+            map.putClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS, null);  
+    }
+
+	private boolean showsControlPoints() {
+	    @SuppressWarnings("unchecked")
+	    WeakReference<ConnectorModel> connectorReference = (WeakReference<ConnectorModel>) getMap().getClientProperty(CONNECTOR_VIEW_SHOWS_CONTROL_POINTS);
+	    boolean showsControlPoints = connectorReference != null && connectorReference.get() == getModel();
+	    return showsControlPoints;
+	}
+
 	private void drawCircle(Graphics2D g, Point p, int hw) {
-		g.setStroke(DEF_STROKE);
-		g.fillOval(p.x - hw, p.y - hw, hw*2, hw*2);
+	    g.setStroke(DEF_STROKE);
+	    g.fillOval(p.x - hw, p.y - hw, hw*2, hw*2);
     }
 
 	private void paintArrow(final Graphics2D g, Point from, Point to) {
@@ -430,16 +445,21 @@ public class ConnectorView extends AConnectorView{
     }
 
 	private void drawLabels(final Graphics2D g, Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
-	    final String sourceLabel = connectorModel.getSourceLabel();
-		final String middleLabel = connectorModel.getMiddleLabel();
-		final String targetLabel = connectorModel.getTargetLabel();
+	    final String sourceLabel = linkController.getSourceLabel(connectorModel);
+		final String middleLabel;
+	      if(source != null && MapStyleModel.isDefaultStyleNode(source.getModel())) 
+	          middleLabel = TextUtils.getText("connector");
+	      else
+	          middleLabel = linkController.getMiddleLabel(connectorModel);
+
+		final String targetLabel = linkController.getTargetLabel(connectorModel);
 		if (sourceLabel == null && middleLabel == null && targetLabel == null) {
 			return;
 		}
 
 		final Font oldFont = g.getFont();
-		final String fontFamily = connectorModel.getLabelFontFamily();
-        final int fontSize = Math.round (connectorModel.getLabelFontSize() * UITools.FONT_SCALE_FACTOR);
+		final String fontFamily = linkController.getLabelFontFamily(connectorModel);
+        final int fontSize = Math.round (linkController.getLabelFontSize(connectorModel) * UITools.FONT_SCALE_FACTOR);
         final Font linksFont = new Font(fontFamily, 0, getZoomed(fontSize));
         g.setFont(linksFont);
 
@@ -459,6 +479,10 @@ public class ConnectorView extends AConnectorView{
                     middleTextRectangle = drawMiddleLabel(g, middleLabel, getCenterPoint());
 		}
 		g.setFont(oldFont);
+    }
+
+    private LinkController getLinkController() {
+        return LinkController.getController(getModeController());
     }
 
 	private CubicCurve2D createCubicCurve2D(Point startPoint, Point startPoint2, Point endPoint2, Point endPoint) {
@@ -498,12 +522,5 @@ public class ConnectorView extends AConnectorView{
                 innerBounds.add(rect);
         }
 
-        private void fixInclineIfLoopNode(Point endIncline) {
-            if (endIncline.y < 0) {
-                endIncline.y -= LOOP_INCLINE_OFFSET;
-            }
-            else {
-                endIncline.y += LOOP_INCLINE_OFFSET;
-            }
-        }
+
 }

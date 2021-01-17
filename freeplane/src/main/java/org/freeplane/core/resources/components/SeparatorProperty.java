@@ -52,7 +52,7 @@ public class SeparatorProperty implements IPropertyControl {
 	}
 
 	@Override
-	public void layout(final DefaultFormBuilder builder) {
+	public void appendToForm(final DefaultFormBuilder builder) {
 		final String labelKey = getLabel();
 		final String text = TextUtils.getOptionalText(labelKey);
 		if (builder.getColumn() > 1)

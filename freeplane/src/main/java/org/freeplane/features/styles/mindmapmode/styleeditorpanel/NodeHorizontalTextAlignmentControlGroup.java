@@ -82,8 +82,8 @@ class NodeHorizontalTextAlignmentControlGroup implements ControlGroup {
 		propertyChangeListener = new NodeTextAlignmentChangeListener(mSetNodeTextAlignment, mNodeTextAlignment);
 		mSetNodeTextAlignment.addPropertyChangeListener(propertyChangeListener);
 		mNodeTextAlignment.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeTextAlignment.layout(formBuilder);
-		mNodeTextAlignment.layout(formBuilder);
+		mSetNodeTextAlignment.appendToForm(formBuilder);
+		mNodeTextAlignment.appendToForm(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {

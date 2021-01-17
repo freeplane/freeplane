@@ -76,8 +76,8 @@ class NodeColorControlGroup implements ControlGroup {
 		propertyChangeListener = new NodeColorChangeListener(mSetNodeColor, mNodeColor);
 		mSetNodeColor.addPropertyChangeListener(propertyChangeListener);
 		mNodeColor.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeColor.layout(formBuilder);
-		mNodeColor.layout(formBuilder);
+		mSetNodeColor.appendToForm(formBuilder);
+		mNodeColor.appendToForm(formBuilder);
 	}
 	
 	public void setStyle(NodeModel node, boolean canEdit) {

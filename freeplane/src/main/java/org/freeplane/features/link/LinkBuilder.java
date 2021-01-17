@@ -19,7 +19,6 @@
  */
 package org.freeplane.features.link;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.io.IOException;
 import java.net.URI;
@@ -28,6 +27,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 import org.freeplane.core.io.IAttributeHandler;
 import org.freeplane.core.io.IElementDOMHandler;
@@ -36,10 +36,16 @@ import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.core.io.ReadManager;
 import org.freeplane.core.io.xml.TreeXmlReader;
 import org.freeplane.core.io.xml.TreeXmlWriter;
+import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.styles.IStyle;
+import org.freeplane.features.styles.LogicalStyleModel;
+import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.styles.StyleFactory;
+import org.freeplane.features.styles.StyleTranslatedObject;
 import org.freeplane.features.url.MapVersionInterpreter;
 import org.freeplane.n3.nanoxml.XMLElement;
 
@@ -55,15 +61,9 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		processedLinks = new HashSet<NodeLinkModel>();
 	}
 
-	protected NodeLinkModel createArrowLink(final NodeModel source, final String targetID) {
-		return new ConnectorModel(source, targetID,
-				ConnectorArrows.DEFAULT, null,
-			linkController.getStandardConnectorColor(),
-			linkController.getStandardConnectorOpacity(),
-			linkController.getStandardConnectorShape(),
-		    linkController.getStandardConnectorWidth(),
-		    linkController.getStandardLabelFontFamily(),
-		    linkController.getStandardLabelFontSize());
+	private NodeLinkModel createArrowLink(final NodeModel source, final String targetID) {
+		ConnectorModel connectorModel = new ConnectorModel(source, targetID);
+        return connectorModel;
 	}
 
 	@Override
@@ -122,27 +122,27 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setShape(Shape.EDGE_LIKE);
+				arrowLink.setShape(Optional.of(Shape.EDGE_LIKE));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "SHAPE", new IAttributeHandler() {
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setShape(Shape.valueOf(value));
+				arrowLink.setShape(Optional.of(Shape.valueOf(value)));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "DASH", new IAttributeHandler() {
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				final String[] split = value.split(" ");
+				final String[] split = value.isEmpty() ? new String[] {} : value.split(" ");
 				int[] dash = new int[split.length];
 				int i = 0;
 				for(String s : split){
 					dash[i++] = Integer.parseInt(s);
 				}
-				arrowLink.setDash(dash);
+				arrowLink.setDash(Optional.of(dash));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "DESTINATION", new IAttributeHandler() {
@@ -192,21 +192,21 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setStartArrow(ArrowType.valueOf(value.toUpperCase(Locale.ENGLISH)));
+				arrowLink.setStartArrow(Optional.of(ArrowType.valueOf(value.toUpperCase(Locale.ENGLISH))));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "ENDARROW", new IAttributeHandler() {
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setEndArrow(ArrowType.valueOf(value.toUpperCase(Locale.ENGLISH)));
+				arrowLink.setEndArrow(Optional.of(ArrowType.valueOf(value.toUpperCase(Locale.ENGLISH))));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "WIDTH", new IAttributeHandler() {
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setWidth(Integer.parseInt(value.toString()));
+				arrowLink.setWidth(Optional.of(Integer.parseInt(value.toString())));
 			}
 		});
 
@@ -214,16 +214,31 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setLabelFontFamily(value.toString());
+				arrowLink.setLabelFontFamily(Optional.of(value.toString()));
 			}
 		});
 		reader.addAttributeHandler("arrowlink", "FONT_SIZE", new IAttributeHandler() {
 			@Override
 			public void setAttribute(final Object userObject, final String value) {
 				final ConnectorModel arrowLink = (ConnectorModel) userObject;
-				arrowLink.setLabelFontSize(Integer.parseInt(value.toString()));
+				arrowLink.setLabelFontSize(Optional.of(Integer.parseInt(value.toString())));
 			}
 		});
+		reader.addAttributeHandler("arrowlink", "STYLE_REF", new IAttributeHandler() {
+		    @Override
+	            public void setAttribute(final Object userObject, final String value) {
+	                final ConnectorModel arrowLink = (ConnectorModel) userObject;
+	                arrowLink.setStyle(StyleFactory.create(value));
+	            }
+	        });
+		reader.addAttributeHandler("arrowlink", "LOCALIZED_STYLE_REF", new IAttributeHandler() {
+		    @Override
+	            public void setAttribute(final Object userObject, final String value) {
+	                final ConnectorModel arrowLink = (ConnectorModel) userObject;
+	                arrowLink.setStyle(StyleFactory.create(TranslatedObject.format(value)));
+	            }
+	        });
+
 	}
 
 	@Override
@@ -232,20 +247,14 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		final String color = dom.getAttribute("COLOR", null);
 		final String transparency = dom.getAttribute("TRANSPARENCY", null);
 		if(color != null){
-			arrowLink.setColor(ColorUtils.stringToColor(color));
+			arrowLink.setColor(Optional.of(ColorUtils.stringToColor(color)));
 			if(transparency == null){
-				arrowLink.setAlpha(ColorUtils.NON_TRANSPARENT_ALPHA);
+				arrowLink.setAlpha(Optional.of(ColorUtils.NON_TRANSPARENT_ALPHA));
 			}
-		}
-		else{
-			arrowLink.setColor(linkController.getStandardConnectorColor());
 		}
 
 		if(transparency != null){
-			arrowLink.setAlpha(Integer.parseInt(transparency));
-		}
-		else if(color == null){
-			arrowLink.setAlpha(linkController.getStandardConnectorOpacity());
+			arrowLink.setAlpha(Optional.of(Integer.parseInt(transparency)));
 		}
 		fixSelfLoopedConnectorShape(arrowLink);
 	}
@@ -254,7 +263,7 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		if (connector.isSelfLink()
 				&& Shape.CUBIC_CURVE.equals(connector.getShape())
 				&& MapVersionInterpreter.isOlderThan(connector.getSource().getMap(), FREEPLANE_VERSION_WITH_CURVED_LOOPED_CONNECTORS))
-			connector.setShape(Shape.LINE);
+			connector.setShape(Optional.of(Shape.LINE));
 	}
 
 	void registerBy(final ReadManager reader) {
@@ -270,70 +279,67 @@ public class LinkBuilder implements IElementDOMHandler, IReadCompletionListener{
 		}
 		final XMLElement arrowLink = new XMLElement();
 		arrowLink.setName("arrowlink");
-		final Shape shape = model.getShape();
-		arrowLink.setAttribute("SHAPE", shape.toString());
-		final Color color = model.getColor();
-		arrowLink.setAttribute("COLOR", ColorUtils.colorToString(color));
-		final int width = model.getWidth();
-		arrowLink.setAttribute("WIDTH", Integer.toString(width));
-		final int alpha = model.getAlpha();
-		arrowLink.setAttribute("TRANSPARENCY", Integer.toString(alpha));
-		final int[]dash = model.getDash();
-		if (dash != null) {
-			StringBuilder sb = null;
-			for(int i : dash){
-				if(sb == null){
-					sb = new StringBuilder(dash.length * 4);
-				}
-				else{
-					sb.append(' ');
-				}
-				sb.append(i);
-			}
-			if(sb != null){
-				arrowLink.setAttribute("DASH", sb.toString());
-			}
+		final IStyle style = model.getStyle();
+		if (! MapStyleModel.DEFAULT_STYLE.equals(style)) {
+		    final String value = StyleTranslatedObject.toKeyString(style);
+		    if (style instanceof StyleTranslatedObject) {
+		        arrowLink.setAttribute("LOCALIZED_STYLE_REF", value);
+		    }
+		    else {
+		        arrowLink.setAttribute("STYLE_REF", value);
+		    }
 		}
 
-		final int fontSize = model.getLabelFontSize();
-		arrowLink.setAttribute("FONT_SIZE", Integer.toString(fontSize));
+		model.getShape().ifPresent( shape ->
+		arrowLink.setAttribute("SHAPE", shape.name()));
+        model.getColor().ifPresent( color ->
+		arrowLink.setAttribute("COLOR", ColorUtils.colorToString(color)));
+		model.getWidth().ifPresent( width ->
+		arrowLink.setAttribute("WIDTH", Integer.toString(width)));
+        model.getAlpha().ifPresent( alpha ->
+		arrowLink.setAttribute("TRANSPARENCY", Integer.toString(alpha)));
+        model.getDash().ifPresent( dash -> {
+                StringBuilder sb = new StringBuilder(dash.length * 4);
+                for(int i : dash){
+                    if(sb.length() > 0){
+                        sb.append(' ');
+                    }
+                    sb.append(i);
+                }
+                arrowLink.setAttribute("DASH", sb.toString());
+		});
 
-		final String fontFamily = model.getLabelFontFamily();
-		arrowLink.setAttribute("FONT_FAMILY", fontFamily);
+        model.getLabelFontSize().ifPresent( fontSize ->
+		arrowLink.setAttribute("FONT_SIZE", Integer.toString(fontSize)));
 
-		final String destinationLabel = target.createID();
+        model.getLabelFontFamily().ifPresent( fontFamily ->
+		arrowLink.setAttribute("FONT_FAMILY", fontFamily));
 
-		if (destinationLabel != null) {
-			arrowLink.setAttribute("DESTINATION", destinationLabel);
+		final String destinationId = target.createID();
+
+		if (destinationId != null) {
+		    arrowLink.setAttribute("DESTINATION", destinationId);
 		}
-		final String sourceLabel = model.getSourceLabel();
-		if (sourceLabel != null) {
-			arrowLink.setAttribute("SOURCE_LABEL", sourceLabel);
-		}
-		final String targetLabel = model.getTargetLabel();
-		if (targetLabel != null) {
-			arrowLink.setAttribute("TARGET_LABEL", targetLabel);
-		}
-		final String middleLabel = model.getMiddleLabel();
-		if (middleLabel != null) {
-			arrowLink.setAttribute("MIDDLE_LABEL", middleLabel);
-		}
+        model.getSourceLabel().ifPresent( sourceLabel ->
+		    arrowLink.setAttribute("SOURCE_LABEL", sourceLabel));
+        
+        model.getTargetLabel().ifPresent( targetLabel ->
+		    arrowLink.setAttribute("TARGET_LABEL", targetLabel));
+        model.getMiddleLabel().ifPresent( middleLabel ->
+		    arrowLink.setAttribute("MIDDLE_LABEL", middleLabel));
+        
 		final Point startInclination = model.getStartInclination();
 		if (startInclination != null) {
-			arrowLink.setAttribute("STARTINCLINATION", TreeXmlWriter.PointToXml(startInclination));
+		    arrowLink.setAttribute("STARTINCLINATION", TreeXmlWriter.pointToXml(startInclination));
 		}
 		final Point endInclination = model.getEndInclination();
 		if (endInclination != null) {
-			arrowLink.setAttribute("ENDINCLINATION", TreeXmlWriter.PointToXml(endInclination));
+			arrowLink.setAttribute("ENDINCLINATION", TreeXmlWriter.pointToXml(endInclination));
 		}
-		final String startArrow = model.getStartArrow().toString();
-		if (startArrow != null) {
-			arrowLink.setAttribute("STARTARROW", startArrow);
-		}
-		final String endArrow = model.getEndArrow().toString();
-		if (endArrow != null) {
-			arrowLink.setAttribute("ENDARROW", endArrow);
-		}
+        model.getStartArrow().ifPresent( startArrow -> 
+        arrowLink.setAttribute("STARTARROW", startArrow.name()));
+        model.getEndArrow().ifPresent( endArrow -> 
+        arrowLink.setAttribute("STARTARROW", endArrow.name()));
 		writer.addElement(model, arrowLink);
 	}
 

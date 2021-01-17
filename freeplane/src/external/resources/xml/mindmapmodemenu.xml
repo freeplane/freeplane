@@ -409,7 +409,8 @@
 					<Entry name="ManageConditionalStylesAction" />
 					<Entry name="ManageNodeConditionalStylesAction" />
 					<Entry builder="separator" />
-					<Entry name="CopyMapStylesAction" accelerator="control shift O" />
+					<Entry name="CopyMapStylesAction"/>
+					<Entry name="ReplaceMapStylesAction"/>
 					<Entry name="EditStylesAction" accelerator="control F11" />
 				</Entry>
 				<Entry name="FormatCopy" accelerator="alt shift C" />

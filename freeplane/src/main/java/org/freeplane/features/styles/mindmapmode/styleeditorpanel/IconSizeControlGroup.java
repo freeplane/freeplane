@@ -45,8 +45,8 @@ class IconSizeControlGroup implements ControlGroup{
 			propertyChangeListener = new IconSizeChangeListener(mSetIconSize, mIconSize);
 			mSetIconSize.addPropertyChangeListener(propertyChangeListener);
 			mIconSize.addPropertyChangeListener(propertyChangeListener);
-			mSetIconSize.layout(formBuilder);
-			mIconSize.layout(formBuilder);
+			mSetIconSize.appendToForm(formBuilder);
+			mIconSize.appendToForm(formBuilder);
 	}
 	@Override
 	public void setStyle(NodeModel node, boolean canEdit) {

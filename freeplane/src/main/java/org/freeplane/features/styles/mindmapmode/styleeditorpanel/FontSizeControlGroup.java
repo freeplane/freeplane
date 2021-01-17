@@ -89,7 +89,7 @@ public class FontSizeControlGroup implements ControlGroup {
 		propertyChangeListener = new FontSizeChangeListener(mSetNodeFontSize, mNodeFontSize);
 		mSetNodeFontSize.addPropertyChangeListener(propertyChangeListener);
 		mNodeFontSize.addPropertyChangeListener(propertyChangeListener);
-		mSetNodeFontSize.layout(formBuilder);
-		mNodeFontSize.layout(formBuilder);
+		mSetNodeFontSize.appendToForm(formBuilder);
+		mNodeFontSize.appendToForm(formBuilder);
 	}
 }

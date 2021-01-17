@@ -30,6 +30,7 @@ import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -43,12 +44,10 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.edge.AutomaticEdgeColorHook;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionFactory;
@@ -376,10 +375,10 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 		final File file = loader.defaultTemplateFile();
 		if (file != null) {
 			try {
-				MapModel styleMapContainer = new MapModel();
+				MapModel styleMapContainer = new MapModel(map.getNodeDuplicator());
 				loader.load(Compat.fileToUrl(file), styleMapContainer);
 				if (null != MapStyleModel.getExtension(styleMapContainer)){
-					moveStyle(styleMapContainer, map, false);
+				    new StyleExchange(styleMapContainer, map).moveStyle(false);
 					return;
 				}
 			}
@@ -388,72 +387,46 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				UITools.errorMessage(TextUtils.format("error_in_template", file));
 			}
 		};
-		MapModel styleMapContainer = new MapModel();
+		MapModel styleMapContainer = new MapModel(map.getNodeDuplicator());
 		try {
 			loader.load(ResourceController.getResourceController().getResource("/styles/viewer_standard.mm"), styleMapContainer);
-			moveStyle(styleMapContainer, map, false);
+			new StyleExchange(styleMapContainer, map).moveStyle(false);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
     }
 
 
-	private void moveStyle(final MapModel sourceMap, final MapModel targetMap, boolean overwrite) {
-	    final MapStyleModel source = sourceMap.getRootNode().removeExtension(MapStyleModel.class);
-	    if(source == null)
-	    	return;
-		final IExtension undoHandler = targetMap.getExtension(IUndoHandler.class);
-		source.getStyleMap().putExtension(IUndoHandler.class, undoHandler);
-		final NodeModel targetRoot = targetMap.getRootNode();
-		final MapStyleModel target = MapStyleModel.getExtension(targetRoot);
-		if(target == null){
-			targetRoot.addExtension(source);
-		}
-		else{
-			target.copyFrom(source, overwrite);
-		}
-    }
-
 
 	@Override
     protected HookAction createHookAction() {
 	    return null;
-    }
-
-	public void copyStyle(final URL source, final MapModel targetMap, boolean undoable) {
-	    final MapModel styleMapContainer = new MapModel();
-		final IExtension oldStyleModel = targetMap.getRootNode().removeExtension(MapStyleModel.class);
-		final ModeController modeController = Controller.getCurrentModeController();
-		final UrlManager urlManager = modeController.getExtension(UrlManager.class);
-		if (! urlManager.loadCatchExceptions(source, styleMapContainer))
-			return;
-		onCreate(styleMapContainer);
-		moveStyle(styleMapContainer, targetMap, true);
-		modeController.getExtension(AutomaticLayoutController.class).moveExtension(modeController, styleMapContainer, targetMap);
-		modeController.getExtension(AutomaticEdgeColorHook.class).moveExtension(modeController, styleMapContainer, targetMap);
-		LogicalStyleController.getController().refreshMap(targetMap);
-		if(! undoable){
-			return;
-		}
-		final IExtension newStyleModel = targetMap.getRootNode().getExtension(MapStyleModel.class);
-		IActor actor = new IActor() {
-			@Override
-			public void undo() {
-				targetMap.getRootNode().putExtension(oldStyleModel);
-			}
-
-			@Override
-			public String getDescription() {
-				return "moveStyle";
-			}
-
-			@Override
-			public void act() {
-				targetMap.getRootNode().putExtension(newStyleModel);
-			}
-		};
-		Controller.getCurrentModeController().execute(actor, targetMap);
 	}
+
+
+	private Optional<MapModel> loadStyleMapContainer(final URL source) {
+	    final ModeController modeController = Controller.getCurrentModeController();
+	    final UrlManager urlManager = modeController.getExtension(UrlManager.class);
+	    final MapModel styleMapContainer = new MapModel(modeController.getMapController().duplicator());
+	    if (urlManager.loadCatchExceptions(source, styleMapContainer))
+	        return Optional.of(styleMapContainer);
+	    else
+	        return Optional.empty();
+
+	}
+
+
+	public void replaceStyle(final URL source, final MapModel targetMap) {
+	    loadStyleMapContainer(source).ifPresent(styleMapContainer ->
+	        new StyleExchange(styleMapContainer, targetMap).replaceMapStylesAndAutomaticStyle());
+	}
+
+    public void copyStyles(final URL source, final MapModel targetMap) {
+        loadStyleMapContainer(source).ifPresent(styleMapContainer ->
+            new StyleExchange(styleMapContainer, targetMap).copyMapStyles());
+    }
+    
+	
 
 	@Override
 	protected void saveExtension(final IExtension extension, final XMLElement element) {

@@ -678,7 +678,7 @@ public class EditNodeTextField extends EditNodeBase {
 		inputMap.put((KeyStroke) removeFormattingAction.getValue(Action.ACCELERATOR_KEY), "removeFormattingAction");
 		actionMap.put("removeFormattingAction", removeFormattingAction);
 
-		final Color nodeTextColor = parent.getForeground();
+		final Color nodeTextColor = parent.getUnselectedForeground();
 		textfield.setCaretColor(nodeTextColor);
 		final StringBuilder ruleBuilder = new StringBuilder(100);
 		ruleBuilder.append("body {");
@@ -720,7 +720,7 @@ public class EditNodeTextField extends EditNodeBase {
 		assert( parent.isValid());
 		final int nodeWidth = parent.getWidth();
 		final int textFieldBorderWidth = 2;
-		textfield.setBorder(new MatteBorder(textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, nodeView.getSelectedColor()));
+		textfield.setBorder(new MatteBorder(textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, textFieldBorderWidth, nodeView.getSelectionBackgroundColor()));
 		final Dimension textFieldMinimumSize = textfield.getPreferredSize();
 		textFieldMinimumSize.width += 1;
         if(textFieldMinimumSize.width < extraWidth)
