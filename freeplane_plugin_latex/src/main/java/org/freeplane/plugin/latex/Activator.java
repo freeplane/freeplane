@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.Hashtable;
 
 import org.freeplane.features.format.FormatController;
+import org.freeplane.features.format.ContentTypeFormat;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -40,15 +41,15 @@ public class Activator implements BundleActivator {
 					final LatexNodeHook nodeHook = new LatexNodeHook();
 					
 					MTextController textController = (MTextController) modeController.getExtension(TextController.class);
-                    textController.addDetailContentType(LatexFormat.LATEX_FORMAT);
+                    textController.addDetailContentType(LatexRenderer.LATEX_FORMAT);
 					MNoteController noteController = (MNoteController) modeController.getExtension(NoteController.class);
-					noteController.addNoteContentType(LatexFormat.LATEX_FORMAT);
+					noteController.addNoteContentType(LatexRenderer.LATEX_FORMAT);
 
 					
 					textController.addTextTransformer(//
 							new ConditionalContentTransformer(new LatexRenderer(), Activator.TOGGLE_PARSE_LATEX));
-					modeController.getController().getExtension(FormatController.class).addPatternFormat(new LatexFormat());
-					modeController.getController().getExtension(FormatController.class).addPatternFormat(new UnparsedLatexFormat());
+					modeController.getController().getExtension(FormatController.class).addPatternFormat(new ContentTypeFormat(LatexRenderer.LATEX_FORMAT));
+					modeController.getController().getExtension(FormatController.class).addPatternFormat(new ContentTypeFormat(LatexRenderer.UNPARSED_LATEX_FORMAT));
 					if (modeController.getModeName().equals("MindMap")) {
 						modeController.addAction(new InsertLatexAction(nodeHook));
 						modeController.addAction(new EditLatexAction(nodeHook));

@@ -37,6 +37,8 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 	private static final String LATEX_EDITOR_DISABLE = "latex_disable_editor";
 	private static final String LATEX = "\\latex";
 	private static final String UNPARSED_LATEX = "\\unparsedlatex";
+	static final String LATEX_FORMAT = "latexPatternFormat";
+	static final String UNPARSED_LATEX_FORMAT = "unparsedLatexPatternFormat";
 
 
 	public LatexRenderer() {
@@ -110,9 +112,9 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		        nodeFormat = textController.getNodeFormat(node);
 		    } else
 		        return  null;
-		} else if (nodeProperty instanceof DetailModel && LatexFormat.LATEX_FORMAT.equals(textController.getDetailsContentType(node))
-		        || nodeProperty instanceof NoteModel && LatexFormat.LATEX_FORMAT.equals(noteController.getNoteContentType(node))) {
-		    nodeFormat = LatexFormat.LATEX_FORMAT;
+		} else if (nodeProperty instanceof DetailModel && LatexRenderer.LATEX_FORMAT.equals(textController.getDetailsContentType(node))
+		        || nodeProperty instanceof NoteModel && LatexRenderer.LATEX_FORMAT.equals(noteController.getNoteContentType(node))) {
+		    nodeFormat = LatexRenderer.LATEX_FORMAT;
 		}
 		else
 		    return  null;
@@ -128,11 +130,11 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		if(checkForLatexPrefix(nodeText, LATEX)){
 			return includePrefix ? nodeText : nodeText.substring(LATEX.length() + 1);
 		}
-		else if(LatexFormat.LATEX_FORMAT.equals(nodeFormat)){
+		else if(LatexRenderer.LATEX_FORMAT.equals(nodeFormat)){
 			return nodeText;
 		} else if(checkForLatexPrefix(nodeText, UNPARSED_LATEX) && mode == TargetMode.FOR_EDITOR) {
 			return nodeText;
-		} else if(UnparsedLatexFormat.UNPARSED_LATEX_FORMAT.equals(nodeFormat) && mode == TargetMode.FOR_EDITOR) {
+		} else if(LatexRenderer.UNPARSED_LATEX_FORMAT.equals(nodeFormat) && mode == TargetMode.FOR_EDITOR) {
 			return nodeText;
 		} else {
 			return null;

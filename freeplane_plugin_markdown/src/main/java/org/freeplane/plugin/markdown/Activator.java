@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.Hashtable;
 
 import org.freeplane.features.format.FormatController;
+import org.freeplane.features.format.ContentTypeFormat;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -39,10 +40,10 @@ public class Activator implements BundleActivator {
 					MTextController textController = (MTextController) modeController.getExtension(TextController.class);
                     textController.addTextTransformer(//
 							new ConditionalContentTransformer(new MarkdownRenderer(), Activator.TOGGLE_PARSE_MARKDOWN));
-                    textController.addDetailContentType(MarkdownFormat.MARKDOWN_FORMAT);
+                    textController.addDetailContentType(MarkdownRenderer.MARKDOWN_FORMAT);
 					MNoteController noteController = (MNoteController) modeController.getExtension(NoteController.class);
-					noteController.addNoteContentType(MarkdownFormat.MARKDOWN_FORMAT);
-					modeController.getController().getExtension(FormatController.class).addPatternFormat(MarkdownFormat.INSTANCE);
+					noteController.addNoteContentType(MarkdownRenderer.MARKDOWN_FORMAT);
+					modeController.getController().getExtension(FormatController.class).addPatternFormat(new ContentTypeFormat(MarkdownRenderer.MARKDOWN_FORMAT));
 					if (modeController.getModeName().equals("MindMap")) {
 						addPreferencesToOptionPanel();
 					}

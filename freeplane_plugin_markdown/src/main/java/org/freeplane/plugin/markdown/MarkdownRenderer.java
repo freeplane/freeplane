@@ -32,6 +32,7 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 	private static final String MARKDOWN_EDITOR_FONT_SIZE = "markdown_editor_font_size";
 	private static final String MARKDOWN_EDITOR_FONT = "markdown_editor_font";
 	private static final String MARKDOWN_EDITOR_DISABLE = "markdown_disable_editor";
+	static final String MARKDOWN_FORMAT = "markdownPatternFormat";
 
 
 	public MarkdownRenderer() {
@@ -88,9 +89,9 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 			return null;
 		NoteController noteController = NoteController.getController();
 		if (!(nodeProperty instanceof NodeModel  
-				&& MarkdownFormat.MARKDOWN_FORMAT.equals(textController.getNodeFormat(node))
-				|| nodeProperty instanceof DetailModel && MarkdownFormat.MARKDOWN_FORMAT.equals(textController.getDetailsContentType(node))
-		        || nodeProperty instanceof NoteModel && MarkdownFormat.MARKDOWN_FORMAT.equals(noteController.getNoteContentType(node))))
+				&& MarkdownRenderer.MARKDOWN_FORMAT.equals(textController.getNodeFormat(node))
+				|| nodeProperty instanceof DetailModel && MarkdownRenderer.MARKDOWN_FORMAT.equals(textController.getDetailsContentType(node))
+		        || nodeProperty instanceof NoteModel && MarkdownRenderer.MARKDOWN_FORMAT.equals(noteController.getNoteContentType(node))))
 		    return  null;
 		String plainOrHtmlText = (String) content;
 		String text = HtmlUtils.htmlToPlain(plainOrHtmlText);
