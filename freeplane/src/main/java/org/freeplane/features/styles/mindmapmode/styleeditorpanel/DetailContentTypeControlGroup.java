@@ -77,7 +77,7 @@ public class DetailContentTypeControlGroup implements ControlGroup {
         propertyChangeListener = new ContentTypeChangeListener(mSetContentType, mContentType);
         mSetContentType.addPropertyChangeListener(propertyChangeListener);
         mContentType.addPropertyChangeListener(propertyChangeListener);
-        mSetContentType.layout(formBuilder);
-        mContentType.layout(formBuilder);
+        mSetContentType.appendToForm(formBuilder);
+        mContentType.appendToForm(formBuilder);
 	}
 }
