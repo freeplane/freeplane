@@ -172,7 +172,8 @@ public class MTextController extends TextController {
 		eventQueue = new EventBuffer();
 		editorPaneListeners = new LinkedList<IEditorPaneListener>();
         detailContentTypes = new LinkedHashSet<>();
-        detailContentTypes.add(RichTextModel.DEFAULT_CONTENT_TYPE);
+        detailContentTypes.add(PatternFormat.STANDARD_FORMAT_PATTERN);
+        detailContentTypes.add(PatternFormat.IDENTITY_PATTERN);
 		createActions();
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
 			@Override

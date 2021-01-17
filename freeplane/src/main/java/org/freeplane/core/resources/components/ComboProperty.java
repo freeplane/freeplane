@@ -41,7 +41,11 @@ public class ComboProperty extends PropertyBean implements IPropertyControl, Act
 	static public Vector<Object> translate(final String[] possibles) {
 		final Vector<Object> displayedItems = new Vector<Object>(possibles.length);
 		for (int i = 0; i < possibles.length; i++) {
-			displayedItems.add(TextUtils.getText("OptionPanel." + possibles[i]));
+			String alternativeKey = possibles[i];
+			String alternativeText = TextUtils.getText(alternativeKey, null);
+			String key = "OptionPanel." + alternativeKey;
+			String text = alternativeText != null ? TextUtils.getText(key, alternativeText) : TextUtils.getText(key);
+			displayedItems.add(text);
 		}
 		return displayedItems;
 	}

@@ -310,7 +310,7 @@ public class TextController implements IExtension {
 	            }
 	        }
 	    } 
-	    return RichTextModel.DEFAULT_CONTENT_TYPE;
+	    return PatternFormat.IDENTITY_PATTERN;
 	}
 
 

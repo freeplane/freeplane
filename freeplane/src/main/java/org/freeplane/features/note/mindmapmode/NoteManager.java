@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
@@ -109,14 +110,10 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 	}
 
 	void updateEditor() {
-		if (ignoreEditorUpdate) {
-			return;
-		}
 		final NotePanel notePanel = noteController.getNotePanel();
 		if (notePanel == null) {
 			return;
 		}
-		notePanel.removeDocumentListener();
 		if(node == null) {
 			return;
 		}
@@ -128,8 +125,19 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 				Icon icon = textController.getIcon(transformedContent);
 				if(icon != null)
 					notePanel.setViewedImage(icon);
-				else if (transformedContent == note)
+				else if (transformedContent == note) {
+					if (ignoreEditorUpdate) {
+						return;
+					}
+					notePanel.removeDocumentListener();
 					notePanel.setEditedContent(note);
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							notePanel.installDocumentListener();
+						}
+					});
+				}
 				else
 					notePanel.setViewedContent(transformedContent.toString());
 			}
@@ -139,17 +147,14 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 			}
 			notePanel.updateBaseUrl(node.getMap().getURL());
 			noteController.setDefaultStyle(this.node);
+		} else {
+			String noteContentType = noteController.getNoteContentType(node);
+			if (PatternFormat.STANDARD_FORMAT_PATTERN.equals(noteContentType)
+					|| PatternFormat.IDENTITY_PATTERN.equals(noteContentType))
+					notePanel.setEditedContent("");
+			else
+				notePanel.setViewedContent("");
 		}
-		else if (RichTextModel.DEFAULT_CONTENT_TYPE.equals(noteController.getNoteContentType(node)))
-				notePanel.setEditedContent("");
-		else
-			notePanel.setViewedContent("");
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				notePanel.installDocumentListener();
-			}
-		});
 	}
 
 	@Override

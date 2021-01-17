@@ -15,6 +15,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.format.FormattedFormula;
 import org.freeplane.features.format.FormattedObject;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.note.NoteModel;
@@ -29,7 +30,7 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.plugin.script.FormulaUtils;
 
 class FormulaTextTransformer extends AbstractContentTransformer implements IEditBaseCreator{
-	public static final String CONTENT_TYPE_FORMULA = "FormulaContentType";
+	private static final String CONTENT_TYPE_FORMULA =  PatternFormat.STANDARD_FORMAT_PATTERN;
 
     FormulaTextTransformer(int priority) {
 		super(priority);

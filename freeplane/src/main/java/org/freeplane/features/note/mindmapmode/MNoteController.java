@@ -33,6 +33,7 @@ import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
+import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -102,7 +103,8 @@ public class MNoteController extends NoteController {
 		super();
 		noteManager = new NoteManager(this);
         noteContentTypes = new LinkedHashSet<>();
-        noteContentTypes.add(RichTextModel.DEFAULT_CONTENT_TYPE);
+        noteContentTypes.add(PatternFormat.STANDARD_FORMAT_PATTERN);
+        noteContentTypes.add(PatternFormat.IDENTITY_PATTERN);
 		createActions(modeController);
 	}
 

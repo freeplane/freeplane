@@ -42,10 +42,6 @@ public class Activator implements BundleActivator {
                 textController.addTextTransformer(//
 						new ConditionalContentTransformer(new FormulaTextTransformer(1), TOGGLE_PARSE_FORMULAS));
                 
-                if(textController instanceof MTextController) {
-                    ((MTextController)textController).addDetailContentType(FormulaTextTransformer.CONTENT_TYPE_FORMULA);
-                }
-
 				// to enable Formulas in text templates:
 				// TextController.getController(modeController).addTextTransformer(new FormulaTextTransformer(100));
 				final FormulaUpdateChangeListener listener = new FormulaUpdateChangeListener();
