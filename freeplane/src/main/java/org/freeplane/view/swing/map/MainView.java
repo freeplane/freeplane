@@ -446,7 +446,7 @@ public class MainView extends ZoomableLabel {
 			}
 			Icon icon = textController.getIcon(transformedContent);
 			setTextRenderingIcon(icon);
-			text = transformedContent.toString();
+			text = icon == null ? transformedContent.toString() : "";
 			textModified = transformedContent instanceof HighlightedTransformedObject ? TextModificationState.HIGHLIGHT : TextModificationState.NONE;
 		}
 		catch (Throwable e) {

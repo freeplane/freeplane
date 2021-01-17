@@ -218,8 +218,8 @@ public class ZoomableLabelUI extends BasicLabelUI {
 		        else {
 		            availTextWidth = viewR.width - (iconR.width + gap);
 		        }
-			textR.width = Math.min(availTextWidth, textRenderingIcon.getIconWidth());
-			textR.height = textRenderingIcon.getIconHeight();
+			textR.width = Math.min(availTextWidth, textRenderingIcon.getIconWidth()) + 4;
+			textR.height = textRenderingIcon.getIconHeight() + 4;
 
 
 		    /* Compute textR.x,y given the verticalTextPosition and
@@ -389,7 +389,7 @@ public class ZoomableLabelUI extends BasicLabelUI {
         if (icon != null) {
             icon.paintIcon(label, g, paintIconR.x, paintIconR.y);
         }
-        textRenderingIcon.paintIcon(label, g, paintTextR.x, paintTextR.y);
+        textRenderingIcon.paintIcon(label, g, paintTextR.x + 2, paintTextR.y + 2);
 	}
 
 	@Override

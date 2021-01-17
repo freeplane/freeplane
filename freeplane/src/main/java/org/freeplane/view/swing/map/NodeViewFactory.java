@@ -211,8 +211,7 @@ class NodeViewFactory {
     				TextController textController = map.getModeController().getExtension(TextController.class);
     				final Object transformedContent = textController.getTransformedObject(model, note, text);
     				newIcon = textController.getIcon(transformedContent);
-    				
-    				newText = transformedContent.toString();
+    				newText = newIcon == null ? transformedContent.toString() : "";
     			}
     			catch (Throwable e) {
     				LogUtils.warn(e.getMessage());
@@ -268,6 +267,7 @@ class NodeViewFactory {
 			final ArrowIcon icon = new ArrowIcon(nodeView, true);
 			detailContent.setIcon(icon);
 			detailContent.updateText("");
+			detailContent.setTextRenderingIcon(null);
 		}
 		else {
 			detailContent.setFont(map.getDetailFont());
@@ -279,7 +279,7 @@ class NodeViewFactory {
 				final Object transformedContent = textController.getTransformedObject(node, detailText, detailTextText);
 				Icon icon = textController.getIcon(transformedContent);
 				detailContent.setTextRenderingIcon(icon);
-				text = transformedContent.toString();
+				text = icon == null ? transformedContent.toString() : "";
 			}
 			catch (Throwable e) {
 				LogUtils.warn(e.getMessage());

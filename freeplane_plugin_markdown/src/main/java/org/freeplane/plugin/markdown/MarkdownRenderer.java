@@ -17,7 +17,6 @@ import org.freeplane.features.note.NoteController;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.DetailModel;
-import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.TransformationException;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
@@ -88,10 +87,9 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 		if(! (content instanceof String))
 			return null;
 		NoteController noteController = NoteController.getController();
-		if (nodeProperty instanceof NodeModel) {
-		    if (textController.isTextFormattingDisabled(node))
-				return null;
-		} else if (!(nodeProperty instanceof DetailModel && MarkdownFormat.MARKDOWN_FORMAT.equals(textController.getDetailsContentType(node))
+		if (!(nodeProperty instanceof NodeModel  
+				&& MarkdownFormat.MARKDOWN_FORMAT.equals(textController.getNodeFormat(node))
+				|| nodeProperty instanceof DetailModel && MarkdownFormat.MARKDOWN_FORMAT.equals(textController.getDetailsContentType(node))
 		        || nodeProperty instanceof NoteModel && MarkdownFormat.MARKDOWN_FORMAT.equals(noteController.getNoteContentType(node))))
 		    return  null;
 		String plainOrHtmlText = (String) content;

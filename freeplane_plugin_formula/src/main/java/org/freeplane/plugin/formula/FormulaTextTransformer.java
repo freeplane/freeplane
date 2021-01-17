@@ -21,7 +21,6 @@ import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.DetailModel;
-import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
@@ -45,13 +44,8 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
                 textController);
             return new FormattedObject(evaluationResult, formattedFormula.getPattern());
         }
-        if (!(obj instanceof String)) {
-            return obj;
-        }
-        if (nodeProperty == node && textController.isTextFormattingDisabled(node))
-            return obj;
-        final String text = obj.toString();
-        if (!FormulaUtils.containsFormula(text)) {
+        final String text = getViewedText(node, nodeProperty, obj, textController);
+        if (text == null || !FormulaUtils.containsFormula(text)) {
             return obj;
         }
         final String plainText = HtmlUtils.htmlToPlain(text);
@@ -105,19 +99,24 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
     }
 
 	private String getEditedText(final NodeModel node, Object nodeProperty, Object content, MTextController textController) {
-		if(! (content instanceof String))
-			return null;
-		MNoteController noteController = MNoteController.getController();
 		if (nodeProperty instanceof NodeModel) {
 		    if (! textController.isTextFormattingDisabled(node)) {
 		        final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
 	            if (firstKeyEvent != null && firstKeyEvent.getKeyChar() == '='){
 	            	return "=";
 	            }
-		    } else
-		        return null;
-		} else if (! (content instanceof DetailModel && CONTENT_TYPE_FORMULA.equals(textController.getDetailsContentType(node))
-		        || content instanceof NoteModel && CONTENT_TYPE_FORMULA.equals(noteController.getNoteContentType(node))))
+		    }
+		}
+		return getViewedText(node, nodeProperty, content, textController);
+
+	}
+		private String getViewedText(final NodeModel node, Object nodeProperty, Object content, TextController textController) {
+		if(! (content instanceof String))
+			return null;
+		MNoteController noteController = MNoteController.getController();
+		if (! (nodeProperty instanceof NodeModel && ! textController.isTextFormattingDisabled(node)
+				|| nodeProperty instanceof DetailModel && CONTENT_TYPE_FORMULA.equals(textController.getDetailsContentType(node))
+		        || nodeProperty instanceof NoteModel && CONTENT_TYPE_FORMULA.equals(noteController.getNoteContentType(node))))
 			return null;
 		String plainOrHtmlText = (String)content;
 		String text = HtmlUtils.htmlToPlain(plainOrHtmlText);
