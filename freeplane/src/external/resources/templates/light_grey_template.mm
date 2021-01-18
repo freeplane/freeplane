@@ -14,6 +14,8 @@
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#676767" WIDTH="2" TRANSPARENCY="255" DASH="" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_364653791" STARTINCLINATION="122.44586 pt;0 pt;" ENDINCLINATION="119.23567 pt;35.3121 pt;" STARTARROW="DEFAULT"/>
 <font NAME="SansSerif" SIZE="11" BOLD="false" STRIKETHROUGH="false" ITALIC="false"/>
 <edge STYLE="bezier" COLOR="#444444" WIDTH="3" DASH="SOLID"/>
+<richcontent CONTENT-TYPE="plain/auto" TYPE="DETAILS"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="plain/auto"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.attributes">

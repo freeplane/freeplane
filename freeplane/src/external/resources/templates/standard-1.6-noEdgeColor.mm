@@ -12,6 +12,8 @@
 <stylenode LOCALIZED_TEXT="default" ID="ID_207122690" COLOR="#000000" STYLE="fork">
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" DASH="" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_207122690" STARTARROW="DEFAULT"/>
 <font NAME="SansSerif" SIZE="10" BOLD="false" ITALIC="false"/>
+<richcontent CONTENT-TYPE="plain/auto" TYPE="DETAILS"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="plain/auto"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 <stylenode LOCALIZED_TEXT="defaultstyle.attributes">
@@ -36,7 +38,7 @@
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.important" ID="ID_3752836">
 <icon BUILTIN="yes"/>
-<arrowlink COLOR="#003399" DESTINATION="ID_3752836"/>
+<arrowlink COLOR="#003399" TRANSPARENCY="255" DESTINATION="ID_3752836"/>
 </stylenode>
 </stylenode>
 <stylenode LOCALIZED_TEXT="styles.AutomaticLayout" POSITION="right" STYLE="bubble">

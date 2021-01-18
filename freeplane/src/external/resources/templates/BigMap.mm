@@ -13,6 +13,8 @@
 <arrowlink SHAPE="CUBIC_CURVE" COLOR="#000000" WIDTH="2" TRANSPARENCY="200" DASH="" FONT_SIZE="9" FONT_FAMILY="SansSerif" DESTINATION="ID_1273250224" STARTARROW="DEFAULT"/>
 <font NAME="Arial" SIZE="9" BOLD="true" ITALIC="false"/>
 <edge STYLE="bezier" WIDTH="3"/>
+<richcontent CONTENT-TYPE="plain/auto" TYPE="DETAILS"/>
+<richcontent TYPE="NOTE" CONTENT-TYPE="plain/auto"/>
 </stylenode>
 <stylenode LOCALIZED_TEXT="defaultstyle.details" TEXT_ALIGN="LEFT">
 <font SIZE="11" BOLD="false"/>
