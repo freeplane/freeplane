@@ -158,6 +158,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				private boolean isContentEmpty(final String content) {
 					return content.indexOf('<') == -1;
 				}
+				
+                @Override
+                public boolean containsXml(XMLElement element) {
+                    return true;
+                }
 
 			}
 			);

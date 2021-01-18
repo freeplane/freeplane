@@ -22,6 +22,8 @@
 		<stylenode LOCALIZED_TEXT="styles.predefined" POSITION="right">
 		<stylenode LOCALIZED_TEXT="default" COLOR="#000000" STYLE="fork" ICON_SIZE="12.0 pt">
 		<font NAME="Arial" SIZE="10" BOLD="false" ITALIC="false"/>
+		<richcontent CONTENT-TYPE="plain/auto" TYPE="DETAILS"/>
+		<richcontent TYPE="NOTE" CONTENT-TYPE="plain/auto"/>
 		</stylenode>
 		<stylenode LOCALIZED_TEXT="defaultstyle.details"/>
 		<stylenode LOCALIZED_TEXT="defaultstyle.note" COLOR="#000000" BACKGROUND_COLOR="#ffffff" TEXT_ALIGN="LEFT" />

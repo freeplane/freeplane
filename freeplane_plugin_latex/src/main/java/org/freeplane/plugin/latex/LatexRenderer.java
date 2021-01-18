@@ -60,13 +60,6 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		return icon;
 	}
 
-	private static boolean checkForLatexPrefix(final String nodeText, final String prefix)
-	{
-		int startLength = prefix.length() + 1;
-		return nodeText.length() > startLength && nodeText.startsWith(prefix) &&
-			 Character.isWhitespace(nodeText.charAt(startLength - 1));
-	}
-
 	private static enum TargetMode { FOR_ICON, FOR_EDITOR };
 
 	@Override
@@ -106,40 +99,58 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		if(! (content instanceof String))
 			return null;
 		MNoteController noteController = MNoteController.getController();
-		String nodeFormat;
+		String contentType;
 		if (nodeProperty instanceof NodeModel) {
 		    if (! textController.isTextFormattingDisabled(node)) {
-		        nodeFormat = textController.getNodeFormat(node);
+		        contentType = textController.getNodeFormat(node);
 		    } else
 		        return  null;
-		} else if (nodeProperty instanceof DetailModel && LatexRenderer.LATEX_FORMAT.equals(textController.getDetailsContentType(node))
-		        || nodeProperty instanceof NoteModel && LatexRenderer.LATEX_FORMAT.equals(noteController.getNoteContentType(node))) {
-		    nodeFormat = LatexRenderer.LATEX_FORMAT;
-		}
-		else
+		} else if (nodeProperty instanceof DetailModel) {
+            String detailsContentType = textController.getDetailsContentType(node);
+            if (LatexRenderer.LATEX_FORMAT.equals(detailsContentType)
+                    || TextController.CONTENT_TYPE_AUTO.equals(detailsContentType)) {
+                contentType = detailsContentType;
+            } else
+                return  null;
+        } else if (nodeProperty instanceof NoteModel) {
+            String noteContentType = noteController.getNoteContentType(node);
+            if (LatexRenderer.LATEX_FORMAT.equals(noteContentType)
+                    || TextController.CONTENT_TYPE_AUTO.equals(noteContentType)) {
+                contentType = noteContentType;
+            } else
+                return  null;
+        } else
 		    return  null;
 		String plainOrHtmlText = (String) content;
 		String text = HtmlUtils.htmlToPlain(plainOrHtmlText);
-		String latexText = getLatexText(text, nodeFormat, targetMode);
+		String latexText = getLatexText(text, contentType, targetMode);
 		return latexText;
 	}
-	private String getLatexText(final String nodeText, final String nodeFormat, final TargetMode mode)
+	
+	private String getLatexText(final String nodeText, final String contentType, final TargetMode mode)
 	{
 		boolean includePrefix = mode == TargetMode.FOR_EDITOR;
 
-		if(checkForLatexPrefix(nodeText, LATEX)){
+		if(startsWithPrefix(nodeText, LATEX)){
 			return includePrefix ? nodeText : nodeText.substring(LATEX.length() + 1);
 		}
-		else if(LatexRenderer.LATEX_FORMAT.equals(nodeFormat)){
+		else if(LatexRenderer.LATEX_FORMAT.equals(contentType)){
 			return nodeText;
-		} else if(checkForLatexPrefix(nodeText, UNPARSED_LATEX) && mode == TargetMode.FOR_EDITOR) {
+		} else if(startsWithPrefix(nodeText, UNPARSED_LATEX) && mode == TargetMode.FOR_EDITOR) {
 			return nodeText;
-		} else if(LatexRenderer.UNPARSED_LATEX_FORMAT.equals(nodeFormat) && mode == TargetMode.FOR_EDITOR) {
+		} else if(LatexRenderer.UNPARSED_LATEX_FORMAT.equals(contentType) && mode == TargetMode.FOR_EDITOR) {
 			return nodeText;
 		} else {
 			return null;
 		}
 	}
+
+    private static boolean startsWithPrefix(final String nodeText, final String prefix)
+    {
+        int startLength = prefix.length() + 1;
+        return nodeText.length() > startLength && nodeText.startsWith(prefix) &&
+             Character.isWhitespace(nodeText.charAt(startLength - 1));
+    }
 
 
 }
