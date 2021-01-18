@@ -46,6 +46,7 @@ import org.freeplane.features.note.NoteStyleAccessor;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
 import org.freeplane.features.text.RichTextModel;
+import org.freeplane.features.text.TextController;
 
 /**
  * @author Dimitry Polivaev
@@ -103,8 +104,8 @@ public class MNoteController extends NoteController {
 		super();
 		noteManager = new NoteManager(this);
         noteContentTypes = new LinkedHashSet<>();
-        noteContentTypes.add(PatternFormat.STANDARD_FORMAT_PATTERN);
-        noteContentTypes.add(PatternFormat.IDENTITY_PATTERN);
+        noteContentTypes.add(TextController.CONTENT_TYPE_AUTO);
+        noteContentTypes.add(TextController.CONTENT_TYPE_HTML);
 		createActions(modeController);
 	}
 

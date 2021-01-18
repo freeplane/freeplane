@@ -30,7 +30,7 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.plugin.script.FormulaUtils;
 
 class FormulaTextTransformer extends AbstractContentTransformer implements IEditBaseCreator{
-	private static final String CONTENT_TYPE_FORMULA =  PatternFormat.STANDARD_FORMAT_PATTERN;
+	private static final String CONTENT_TYPE_FORMULA = TextController.CONTENT_TYPE_AUTO;
 
     FormulaTextTransformer(int priority) {
 		super(priority);

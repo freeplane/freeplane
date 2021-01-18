@@ -61,7 +61,10 @@ import org.freeplane.view.swing.map.MainView;
  * @author Dimitry Polivaev
  */
 public class TextController implements IExtension {
-	public static final String DETAILS_HIDDEN = "DETAILS_HIDDEN";
+    public static final String CONTENT_TYPE_HTML = "html";
+    public static final String CONTENT_TYPE_AUTO = "auto";
+
+    public static final String DETAILS_HIDDEN = "DETAILS_HIDDEN";
 	public static final String FILTER_NODE = "filter_node";
 	public static final String FILTER_ANYTEXT = "filter_any_text";
 	public static final String FILTER_NOTE = "filter_note";
@@ -314,7 +317,7 @@ public class TextController implements IExtension {
 	            }
 	        }
 	    } 
-	    return PatternFormat.IDENTITY_PATTERN;
+        return TextController.CONTENT_TYPE_HTML;
 	}
 
 

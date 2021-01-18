@@ -28,6 +28,7 @@ import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeWriter;
+import org.freeplane.features.text.ContentSyntax;
 import org.freeplane.features.text.NodeTextBuilder;
 import org.freeplane.features.text.RichTextModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -64,9 +65,11 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 		else{
 		    element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, "UNKNOWN");
 		}
+        boolean containsXml = note.getXml() != null;
         String contentType = note.getContentType();
-        if(contentType  != null)
-            element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentType);
+        ContentSyntax contentSyntax = containsXml ? ContentSyntax.XML : ContentSyntax.PLAIN;
+        element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentSyntax.with(contentType));
+
 		if (note.getXml() != null) {
         	final String content = note.getXml().replace('\0', ' ');
         	writer.addElement('\n' + content + '\n', element);
@@ -74,7 +77,6 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 		else {
             String text = note.getText();
             if(text != null) {
-                element.setAttribute(IElementContentHandler.CONTAINS_XML, "false");
                 element.setContent(text);
             }
             writer.addElement(null, element);

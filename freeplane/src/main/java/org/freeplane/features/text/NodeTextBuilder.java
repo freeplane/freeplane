@@ -57,7 +57,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
     public static final String XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE = "CONTENT-TYPE";
     public static final String XML_NODE_OBJECT = "OBJECT";
 	private static final String XML_NODE_TEXT_SHORTENED = "TEXT_SHORTENED";
-
+	
 	public Object createElement(final Object parent, final String tag, final XMLElement attributes) {
 		if (attributes == null) {
 			return null;
@@ -69,6 +69,12 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		}
 		return null;
 	}
+
+
+    @Override
+    public boolean containsXml(XMLElement element) {
+        return ContentSyntax.XML.matches(element.getAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, ContentSyntax.XML.prefix));
+    }
 
 	public void endElement(final Object parent, final String tag, final Object obj, final XMLElement element,
 	                       final String content) {
@@ -93,8 +99,10 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 			    details.setXml(text);
 			else
 			    details.setText(text);
-			final String contentType = element.getAttribute(XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, null);
-			details.setContentType(contentType);
+            final String contentType = element.getAttribute(
+                    NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, 
+                    ContentSyntax.XML.prefix);
+            details.setContentType(ContentSyntax.specificType(contentType));
 			nodeModel.addExtension(details);
 			if(localizedHtml != null) {
 				details.setLocalizedHtmlPropertyName((String)localizedHtml);
@@ -247,9 +255,10 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		DetailModel model = (DetailModel) note;
 		final XMLElement element = new XMLElement();
 		element.setName(NodeTextBuilder.XML_NODE_RICHCONTENT_TAG);
+		boolean containsXml = model.getXml() != null;
         String contentType = model.getContentType();
-        if(contentType  != null)
-            element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentType);
+        ContentSyntax contentSyntax = containsXml ? ContentSyntax.XML : ContentSyntax.PLAIN;
+        element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentSyntax.with(contentType));
 		element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_DETAILS);
 		if(model.isHidden()){
 		    element.setAttribute("HIDDEN", "true");
@@ -257,19 +266,19 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		if(model.getLocalizedHtmlPropertyName() != null){
 		    element.setAttribute("LOCALIZED_HTML", model.getLocalizedHtmlPropertyName());
 		    writer.addElement(null, element);
-		}
-		else if (model.getXml() != null) {
-				final String content = model.getXml().replace('\0', ' ');
-				writer.addElement('\n' + content + '\n', element);
-		}
-		else {
-		    String text = model.getText();
-		    if(text != null) {
-		        element.setAttribute(IElementContentHandler.CONTAINS_XML, "false");
-		        element.setContent(text);
-		    }
-		    writer.addElement(null, element);
-		}
+		} else {
+            if (containsXml) {
+            		final String content = model.getXml().replace('\0', ' ');
+            		writer.addElement('\n' + content + '\n', element);
+            }
+            else {
+                String text = model.getText();
+                if(text != null) {
+                    element.setContent(text);
+                }
+                writer.addElement(null, element);
+            }
+        }
 		return;
 	}
 

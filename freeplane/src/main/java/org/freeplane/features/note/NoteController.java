@@ -110,7 +110,7 @@ public class NoteController implements IExtension {
 	            }
 	        }
 	    } 
-	    return PatternFormat.IDENTITY_PATTERN;
+	    return TextController.CONTENT_TYPE_HTML;
 	}
 
 

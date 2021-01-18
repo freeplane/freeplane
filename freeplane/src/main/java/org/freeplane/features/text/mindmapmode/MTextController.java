@@ -122,7 +122,7 @@ import com.lightdev.app.shtm.UIResources;
  * @author Dimitry Polivaev
  */
 public class MTextController extends TextController {
-	private static final String PARSE_DATA_PROPERTY = "parse_data";
+    private static final String PARSE_DATA_PROPERTY = "parse_data";
 	public static final String NODE_TEXT = "NodeText";
 	private static Pattern FORMATTING_PATTERN = null;
 	private EditNodeBase currentBlockingEditor = null;
@@ -172,8 +172,8 @@ public class MTextController extends TextController {
 		eventQueue = new EventBuffer();
 		editorPaneListeners = new LinkedList<IEditorPaneListener>();
         detailContentTypes = new LinkedHashSet<>();
-        detailContentTypes.add(PatternFormat.STANDARD_FORMAT_PATTERN);
-        detailContentTypes.add(PatternFormat.IDENTITY_PATTERN);
+        detailContentTypes.add(CONTENT_TYPE_AUTO);
+        detailContentTypes.add(CONTENT_TYPE_HTML);
 		createActions();
 		ResourceController.getResourceController().addPropertyChangeListener(new IFreeplanePropertyListener() {
 			@Override

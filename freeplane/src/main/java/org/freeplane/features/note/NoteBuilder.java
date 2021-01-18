@@ -22,6 +22,7 @@ package org.freeplane.features.note;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.text.ContentSyntax;
 import org.freeplane.features.text.NodeTextBuilder;
 import org.freeplane.features.text.RichTextModel;
 import org.freeplane.n3.nanoxml.XMLElement;
@@ -62,11 +63,15 @@ class NoteBuilder implements IElementContentHandler {
 	                note.setText(text);
 	            final String contentType = element.getAttribute(
 	                    NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, 
-	                    null);
-	            note.setContentType(contentType);
+	                    ContentSyntax.XML.prefix);
+	            note.setContentType(ContentSyntax.specificType(contentType));
 
 				((NodeModel) node).addExtension((IExtension) note);
 			}
 		}
 	}
-}
+
+    @Override
+    public boolean containsXml(XMLElement element) {
+        return ContentSyntax.XML.matches(element.getAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, ContentSyntax.XML.prefix));
+    }}
