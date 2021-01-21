@@ -19,15 +19,23 @@
  */
 package org.freeplane.core.util;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
@@ -586,6 +594,56 @@ public class HtmlUtils {
 	public static String toHtml(final String xhtmlText) {
 		return HtmlUtils.SLASHED_TAGS_PATTERN.matcher(xhtmlText).replaceAll("<$1>");
 	}
+	
+
+	public static String objectToHtml(Object object) {
+		if(object == null)
+			return "";
+		if(object instanceof String) {
+			String text = (String) object;
+			if(isHtml(text))
+				return text;
+			else
+				return plainToHTML(text);
+		}
+		if(object instanceof Icon) 
+			return "<html><body>" + iconToHtml((Icon) object) + "</body></html>";
+		if(object instanceof RenderedImage) 
+			return "<html><body>" + imageToHtml((RenderedImage) object) + "</body></html>";
+		return "";
+	}
+
+	public static String iconToHtml(Icon icon) {
+		BufferedImage image = new BufferedImage(
+				icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+
+		// paint the image..
+		Graphics2D g = image.createGraphics();
+		g.setRenderingHint(
+				RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		icon.paintIcon(null, g, 0, 0);
+		g.dispose();
+
+		return imageToHtml(image);
+	}
+
+	public static String imageToHtml(RenderedImage image) {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(image, "png", baos);
+			System.out.println("baos.toByteArray() " + baos.toByteArray());
+			System.out.println("baos.toByteArray().length " + baos.toByteArray().length);
+			String data = Base64.getEncoder().encodeToString(baos.toByteArray());
+			String imageString = "data:image/png;base64," + data;
+			String html =
+					"<img src='" + imageString + "'>";
+			return html;
+		} catch (IOException e) {
+			return "";
+		}
+	}
+
 
 	public static String toXhtml(String htmlText) {
 		if (!HtmlUtils.isHtml(htmlText)) {

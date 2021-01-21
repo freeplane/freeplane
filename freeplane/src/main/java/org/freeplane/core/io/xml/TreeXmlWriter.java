@@ -182,14 +182,14 @@ public class TreeXmlWriter implements ITreeWriter {
 		}
 	}
 
-	public void addExtensionNodes(final Object map, final Collection<IExtension> extensions) throws IOException {
+	public void addExtensionNodes(final Object extensionContainer, final Collection<IExtension> extensions) throws IOException {
 		final Iterator<IExtension> extensionIterator = extensions.iterator();
 		while (extensionIterator.hasNext()) {
 			final IExtension extension = extensionIterator.next();
 			final Iterator<IExtensionElementWriter> writerIterator = writeManager.getExtensionElementWriters()
 			    .iterator(extension.getClass());
 			while (writerIterator.hasNext()) {
-				writerIterator.next().writeContent(this, map, extension);
+				writerIterator.next().writeContent(this, extensionContainer, extension);
 			}
 		}
 	}

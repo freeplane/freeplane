@@ -25,10 +25,14 @@ import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeWriter;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
+import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.MapWriter;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeWriter;
 import org.freeplane.features.text.ContentSyntax;
 import org.freeplane.features.text.NodeTextBuilder;
+import org.freeplane.features.text.TextController;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -53,7 +57,7 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 	 * @see freeplane.io.INodeWriter#saveContent(freeplane.io.ITreeWriter,
 	 * java.lang.Object, java.lang.String)
 	 */
-	public void writeContent(final ITreeWriter writer, final Object object, final IExtension extension) throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension) throws IOException {
 	    NoteModel note = (NoteModel) extension;
 		final XMLElement element = new XMLElement();
 		element.setName(NodeTextBuilder.XML_NODE_RICHCONTENT_TAG);
@@ -68,9 +72,21 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
         ContentSyntax contentSyntax = containsXml ? ContentSyntax.XML : ContentSyntax.PLAIN;
         element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentSyntax.with(contentType));
 
+		String transformedXhtml = "";
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
+		if (forceFormatting) {
+			String data = note.getText();
+			if(data != null) {
+				final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow((NodeModel) node, note, data);
+				if(! transformed.equals(data)) {
+					String transformedHtml = HtmlUtils.objectToHtml(transformed);
+					transformedXhtml = HtmlUtils.toXhtml(transformedHtml);
+				}
+			}
+		}
 		if (note.getXml() != null) {
         	final String content = note.getXml().replace('\0', ' ');
-        	writer.addElement('\n' + content + '\n', element);
+        	writer.addElement('\n' + content + '\n' + transformedXhtml, element);
         }
 		else {
             String text = note.getText();
@@ -79,7 +95,7 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
             	textElement.setContent(text);
             	element.addChild(textElement);
             }
-            writer.addElement(null, element);
+            writer.addElement(transformedXhtml, element);
 		}
 		return;
 	}

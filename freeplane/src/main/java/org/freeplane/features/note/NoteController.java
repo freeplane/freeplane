@@ -147,8 +147,8 @@ public class NoteController implements IExtension {
 				}
 				String text;
 				try {
-					text = TextController.getController(modeController)
-							.getTransformedText(data, node, NoteModel.getNote(node));
+					final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow((NodeModel) node, NoteModel.getNote(node), data);
+					text = HtmlUtils.objectToHtml(transformed);
 				}
 				catch (Exception e) {
 					text = TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());

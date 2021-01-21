@@ -203,7 +203,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		}
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
-			final String text = TextController.getController().getTransformedTextNoThrow(data, node, node);
+			final String text = TextController.getController().getTransformedTextNoThrow(node, node, data);
 			if (!HtmlUtils.isHtml(text)) {
 				writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
 			}
@@ -247,30 +247,45 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	 * @see freeplane.io.INodeWriter#saveContent(freeplane.io.ITreeWriter,
 	 * java.lang.Object, java.lang.String)
 	 */
-	public void writeContent(final ITreeWriter writer, final Object object, final IExtension note) throws IOException {
-		DetailModel model = (DetailModel) note;
+	public void writeContent(final ITreeWriter writer, final Object node, final IExtension extension) throws IOException {
+		DetailModel details = (DetailModel) extension;
 		final XMLElement element = new XMLElement();
 		element.setName(NodeTextBuilder.XML_NODE_RICHCONTENT_TAG);
-		boolean containsXml = model.getXml() != null;
-        String contentType = model.getContentType();
+		boolean containsXml = details.getXml() != null;
+        String contentType = details.getContentType();
         ContentSyntax contentSyntax = containsXml ? ContentSyntax.XML : ContentSyntax.PLAIN;
         element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentSyntax.with(contentType));
 		element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_DETAILS);
-		if(model.isHidden()){
+		if(details.isHidden()){
 		    element.setAttribute("HIDDEN", "true");
 		}
+		
+		String transformedXhtml = "";
+		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
+		if (forceFormatting) {
+			String data = details.getText();
+			if(data != null) {
+				final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow((NodeModel) node, details, data);
+				if(!transformed.equals(data)) {
+					String transformedHtml = HtmlUtils.objectToHtml(transformed);
+					transformedXhtml = HtmlUtils.toXhtml(transformedHtml);
+				}
+			}
+		}
+
+		
         if (containsXml) {
-        		final String content = model.getXml().replace('\0', ' ');
-        		writer.addElement('\n' + content + '\n', element);
+        		final String content = details.getXml().replace('\0', ' ');
+        		writer.addElement('\n' + content + '\n' + transformedXhtml, element);
         }
         else {
-            String text = model.getText();
+            String text = details.getText();
             if(text != null) {
             	XMLElement textElement = element.createElement(TEXT_ELEMENT);
             	textElement.setContent(text);
             	element.addChild(textElement);
             }
-            writer.addElement(null, element);
+            writer.addElement(transformedXhtml, element);
         }
 		return;
 	}

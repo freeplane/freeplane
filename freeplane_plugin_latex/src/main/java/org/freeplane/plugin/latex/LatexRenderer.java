@@ -3,6 +3,7 @@ package org.freeplane.plugin.latex;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.KeyEvent;
 
 import javax.swing.Icon;
@@ -53,10 +54,13 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		if (latext == null)
 			return content;
 		final NodeStyleController ncs = NodeStyleController.getController(textController.getModeController());
-		final int maxWidth = ncs.getMaxWidth(node).toBaseUnitsRounded();
+		int widthWithInsets = ncs.getMaxWidth(node).toBaseUnitsRounded();
+		final int maxWidth = Math.max(0, widthWithInsets - 4);
 		TeXText teXt = new TeXText(latext);
 		int fontSize = Math.round(ncs.getFontSize(node) * UITools.FONT_SCALE_FACTOR);
 		TeXIcon icon = teXt.createTeXIcon(TeXConstants.STYLE_DISPLAY, fontSize, TeXConstants.ALIGN_LEFT, maxWidth);
+		int insetSize = (widthWithInsets - maxWidth) / 2;
+		icon.setInsets(new Insets(insetSize, insetSize, insetSize, insetSize));
 		return icon;
 	}
 
