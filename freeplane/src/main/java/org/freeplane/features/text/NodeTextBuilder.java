@@ -47,6 +47,7 @@ import org.freeplane.features.styles.StyleString;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public class NodeTextBuilder implements IElementContentHandler, IElementWriter, IAttributeWriter, IExtensionElementWriter, IExtensionAttributeWriter {
+	public static final String TEXT_ELEMENT = "text";
 	public static final String XML_NODE_TEXT = "TEXT";
 	public static final String XML_NODE_LOCALIZED_TEXT = "LOCALIZED_TEXT";
 	public static final String XML_NODE_RICHCONTENT_TAG = "richcontent";
@@ -80,13 +81,12 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 	                       final String content) {
 		assert tag.equals("richcontent");
 		final String text;
-		final Object localizedHtml = element.getAttribute("LOCALIZED_HTML", null);
-		if(localizedHtml != null)
-			text = TextUtils.getRawText((String)localizedHtml);
-		else if(content != null)
+		if(content != null)
 			text = content.trim();
-		else
-		    text = null;
+		else {
+			XMLElement textElement = element.getFirstChildNamed(TEXT_ELEMENT);
+			text = textElement != null ? textElement.getContent() : null;
+		}
 		final String type = element.getAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, null);
 		final NodeModel nodeModel = (NodeModel) obj;
 		if (NodeTextBuilder.XML_RICHCONTENT_TYPE_NODE.equals(type)) {
@@ -104,9 +104,6 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
                     ContentSyntax.XML.prefix);
             details.setContentType(ContentSyntax.specificType(contentType));
 			nodeModel.addExtension(details);
-			if(localizedHtml != null) {
-				details.setLocalizedHtmlPropertyName((String)localizedHtml);
-			}
 		}
 	}
 
@@ -263,21 +260,18 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		if(model.isHidden()){
 		    element.setAttribute("HIDDEN", "true");
 		}
-		if(model.getLocalizedHtmlPropertyName() != null){
-		    element.setAttribute("LOCALIZED_HTML", model.getLocalizedHtmlPropertyName());
-		    writer.addElement(null, element);
-		} else {
-            if (containsXml) {
-            		final String content = model.getXml().replace('\0', ' ');
-            		writer.addElement('\n' + content + '\n', element);
+        if (containsXml) {
+        		final String content = model.getXml().replace('\0', ' ');
+        		writer.addElement('\n' + content + '\n', element);
+        }
+        else {
+            String text = model.getText();
+            if(text != null) {
+            	XMLElement textElement = element.createElement(TEXT_ELEMENT);
+            	textElement.setContent(text);
+            	element.addChild(textElement);
             }
-            else {
-                String text = model.getText();
-                if(text != null) {
-                    element.setContent(text);
-                }
-                writer.addElement(null, element);
-            }
+            writer.addElement(null, element);
         }
 		return;
 	}

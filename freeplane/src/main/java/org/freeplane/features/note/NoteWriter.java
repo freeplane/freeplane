@@ -77,7 +77,9 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 		else {
             String text = note.getText();
             if(text != null) {
-                element.setContent(text);
+            	XMLElement textElement = element.createElement(NodeTextBuilder.TEXT_ELEMENT);
+            	textElement.setContent(text);
+            	element.addChild(textElement);
             }
             writer.addElement(null, element);
 		}

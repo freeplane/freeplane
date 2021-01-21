@@ -57,19 +57,17 @@ public class DetailModel extends RichTextModel implements IExtension {
     }
 
 	private boolean hidden = false;
-	private String localizedHtmlPropertyName;
 	public DetailModel(boolean hidden) {
 	    this.hidden = hidden;
     }
 	
-	public DetailModel(String contentType, String text, String xml, boolean hidden, String localizedHtmlPropertyName) {
+	public DetailModel(String contentType, String text, String xml, boolean hidden) {
         super(contentType, text, xml);
         this.hidden = hidden;
-        this.localizedHtmlPropertyName = localizedHtmlPropertyName;
     }
 	
 	public DetailModel copy() {
-	    return new DetailModel(getContentType(), getText(), getXml(), hidden, localizedHtmlPropertyName);
+	    return new DetailModel(getContentType(), getText(), getXml(), hidden);
 	}
 
 
@@ -80,17 +78,9 @@ public class DetailModel extends RichTextModel implements IExtension {
 	public void setHidden(boolean hidden) {
     	this.hidden = hidden;
     }
-	
-	public void setLocalizedHtmlPropertyName(String localizedHtmlPropertyName) {
-		this.localizedHtmlPropertyName = localizedHtmlPropertyName;
-	}
-	
-	public String getLocalizedHtmlPropertyName() {
-		return localizedHtmlPropertyName;
-	}
 
     public boolean isEmpty() {
-        return ! hidden  && localizedHtmlPropertyName == null && super.isEmpty();
+        return ! hidden && super.isEmpty();
     }
 
 

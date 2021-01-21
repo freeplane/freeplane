@@ -24,7 +24,6 @@ import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.ContentSyntax;
 import org.freeplane.features.text.NodeTextBuilder;
-import org.freeplane.features.text.RichTextModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**
@@ -50,10 +49,12 @@ class NoteBuilder implements IElementContentHandler {
 	        final String content) {
 	    if (tag.equals("richcontent")) {
 	        final String text;
-	        if(content != null)
-	            text = content.trim();
-	        else
-	            text = null;
+			if(content != null)
+				text = content.trim();
+			else {
+				XMLElement textElement = element.getFirstChildNamed(NodeTextBuilder.TEXT_ELEMENT);
+				text = textElement != null ? textElement.getContent() : null;
+			}
 	        final Object typeAttribute = element.getAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, null);
 			if (NodeTextBuilder.XML_RICHCONTENT_TYPE_NOTE.equals(typeAttribute)) {
 				final NoteModel note = new NoteModel();
