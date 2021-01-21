@@ -3,8 +3,6 @@ package org.freeplane.core.util;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-import org.freeplane.core.util.ConstantObject;
-import org.freeplane.core.util.ObjectRule;
 import org.junit.Test;
 
 public class ConstantObjectShould {

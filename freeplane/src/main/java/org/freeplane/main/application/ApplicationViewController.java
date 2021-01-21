@@ -31,8 +31,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

@@ -40,7 +40,6 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;

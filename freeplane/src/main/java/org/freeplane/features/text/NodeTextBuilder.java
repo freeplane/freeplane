@@ -34,7 +34,6 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.TypeReference;
 import org.freeplane.features.format.IFormattedObject;
 import org.freeplane.features.map.MapWriter;

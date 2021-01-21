@@ -5,8 +5,6 @@ import static org.mockito.Mockito.mock;
 
 import java.util.List;
 
-import org.freeplane.features.explorer.AccessedNodes;
-import org.freeplane.features.explorer.ExploringStep;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.TextController;
 import org.mockito.Mockito;

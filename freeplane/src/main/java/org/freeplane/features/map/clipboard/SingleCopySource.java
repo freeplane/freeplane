@@ -29,7 +29,6 @@ import javax.swing.tree.MutableTreeNode;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.features.filter.Filter;
-import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.map.HistoryInformationModel;
 import org.freeplane.features.map.INodeView;

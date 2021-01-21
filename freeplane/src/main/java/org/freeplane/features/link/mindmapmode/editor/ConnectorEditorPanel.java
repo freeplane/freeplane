@@ -20,44 +20,24 @@
 package org.freeplane.features.link.mindmapmode.editor;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.HeadlessException;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.freeplane.core.resources.IFreeplanePropertyListener;
-import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.resources.components.SeparatorProperty;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.NodeLinks;
 import org.freeplane.features.link.mindmapmode.MLinkController;
-import org.freeplane.features.map.IMapChangeListener;
-import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.IMapSelectionListener;
-import org.freeplane.features.map.INodeChangeListener;
-import org.freeplane.features.map.INodeSelectionListener;
-import org.freeplane.features.map.MapChangeEvent;
-import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeChangeEvent;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.IStyle;
-import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.StyleString;
 import org.freeplane.features.styles.mindmapmode.ComboBoxRendererWithTooltip;
-import org.freeplane.features.styles.mindmapmode.MUIFactory;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Paddings;
 import com.jgoodies.forms.layout.FormLayout;

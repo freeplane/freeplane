@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.text.mindmapmode;
 
-import javax.swing.Icon;
-
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.IContentTransformer;

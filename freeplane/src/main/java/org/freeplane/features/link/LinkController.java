@@ -94,7 +94,6 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.SelectionController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
-import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;

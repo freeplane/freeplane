@@ -26,10 +26,6 @@ import java.util.Collection;
 
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.features.link.ConnectorModel;
-import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mode.Controller;
 
 abstract class ControlGroupChangeListener implements PropertyChangeListener {
 	final private Collection<IPropertyControl> properties;

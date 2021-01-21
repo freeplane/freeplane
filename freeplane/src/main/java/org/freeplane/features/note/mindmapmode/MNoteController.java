@@ -33,7 +33,6 @@ import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
@@ -45,7 +44,6 @@ import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.NoteStyleAccessor;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.SetBooleanMapPropertyAction;
-import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.TextController;
 
 /**

@@ -21,8 +21,6 @@ package org.freeplane.view.swing.ui.mindmapmode;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.lang.ref.WeakReference;
-
 import javax.swing.JComponent;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.UITools;

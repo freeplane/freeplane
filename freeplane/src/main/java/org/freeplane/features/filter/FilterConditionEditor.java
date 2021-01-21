@@ -55,7 +55,6 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.map.IMapSelection;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 
 /**

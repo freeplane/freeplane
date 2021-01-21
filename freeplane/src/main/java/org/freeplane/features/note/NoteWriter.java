@@ -23,14 +23,12 @@ import java.io.IOException;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.IAttributeWriter;
-import org.freeplane.core.io.IElementContentHandler;
 import org.freeplane.core.io.IExtensionElementWriter;
 import org.freeplane.core.io.ITreeWriter;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeWriter;
 import org.freeplane.features.text.ContentSyntax;
 import org.freeplane.features.text.NodeTextBuilder;
-import org.freeplane.features.text.RichTextModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

@@ -46,7 +46,6 @@
 package org.freeplane.core.ui;
 
 import java.io.File;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.stream.Collectors;

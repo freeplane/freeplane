@@ -1,8 +1,6 @@
 package org.freeplane.features.link;
 
 import java.util.Set;
-import java.util.function.Predicate;
-
 import org.freeplane.features.map.NodeModel;
 
 class NodeConnectorChecker {

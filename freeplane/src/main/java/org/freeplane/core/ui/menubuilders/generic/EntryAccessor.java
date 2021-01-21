@@ -5,7 +5,6 @@ import java.awt.Component;
 import javax.swing.Icon;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.TextUtils;
 
 public class EntryAccessor {
