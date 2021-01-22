@@ -124,12 +124,12 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	    }
 	}
 	static private class MindMapDirectoryFilter extends FileFilter {
-	    
+
 	    final MindmapDirectory mindmapDirectory;
 	    final File directory;
         final String description;
-	    
-	    
+
+
 		MindMapDirectoryFilter(MindmapDirectory mindmapDirectory, File directory) {
             this.mindmapDirectory = mindmapDirectory;
             this.directory = directory;
@@ -158,7 +158,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
             return description;
 		}
 	}
-	
+
     private final static FileFilter MINDMAP_FILE_FILTER = new CaseSensitiveFileNameExtensionFilter("mm", TextUtils.getText("mindmaps_desc"));
 	private static final String BACKUP_FILE_NUMBER = "backup_file_number";
 	private static File singleBackupDirectory;
@@ -345,21 +345,21 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 
 	public JFreeplaneCustomizableFileChooser getMindMapFileChooser() {
-	    
+
 	    final JFreeplaneCustomizableFileChooser fileChooser = super.getFileChooser();
         final File mapsDirectory = fileChooser.getCurrentDirectory();
         final File templateDir = defaultStandardTemplateDir();
         final File userTemplateDir = defaultUserTemplateDir();
-        
+
         MindMapDirectoryFilter maps = new MindMapDirectoryFilter(MindmapDirectory.MINDMAPS, mapsDirectory);
         MindMapDirectoryFilter templates = new MindMapDirectoryFilter(MindmapDirectory.TEMPLATES, templateDir);
         MindMapDirectoryFilter userTemplates = new MindMapDirectoryFilter(MindmapDirectory.USER_TEMPLATES, userTemplateDir);
-        
+
         fileChooser.addChoosableFileFilter(maps);
         fileChooser.setFileFilter(maps);
         fileChooser.addChoosableFileFilter(templates);
         fileChooser.addChoosableFileFilter(userTemplates);
-        
+
         fileChooser.addPropertyChangeListener(JFileChooser.FILE_FILTER_CHANGED_PROPERTY, new PropertyChangeListener() {
                 @Override
                 public void propertyChange(final PropertyChangeEvent evt) {
@@ -373,7 +373,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
                     }
                 }
             });
-        
+
         fileChooser.addPropertyChangeListener(JFileChooser.DIRECTORY_CHANGED_PROPERTY, new PropertyChangeListener() {
             @Override
             public void propertyChange(final PropertyChangeEvent evt) {
@@ -661,7 +661,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		MindMapPreview mindMapPreview = new MindMapPreview();
 		final JComboBox<String> templateComboBox = new JComboBox<>(new Vector<>(availableMapTemplates));
 		templateComboBox.addItemListener(new ItemListener() {
-            
+
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange() == ItemEvent.SELECTED) {
@@ -741,7 +741,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				}
 				else if (startFile.isDirectory()) {
                     final JFileChooser chooser = getMindMapFileChooser();
-					new MindMapPreview(chooser);
+                    chooser.setAccessory(new MindMapPreview(chooser));
 					chooser.setCurrentDirectory(startFile);
 					final int returnVal = chooser
 					    .showOpenDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent());

@@ -45,12 +45,13 @@ class CopyMapStylesAction extends AFreeplaneAction {
 		super("CopyMapStylesAction");
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
 		final Controller controller = Controller.getCurrentController();
 		final ModeController modeController = controller.getModeController();
 		final MFileManager fileManager = MFileManager.getController(modeController);
 		final JFileChooser fileChooser = fileManager.getMindMapFileChooser();
-		new MindMapPreview(fileChooser);
+		fileChooser.setAccessory(new MindMapPreview(fileChooser));
 		fileChooser.setMultiSelectionEnabled(false);
 		final int returnVal = fileChooser.showOpenDialog(controller.getMapViewManager().getMapViewComponent());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -69,6 +70,6 @@ class CopyMapStylesAction extends AFreeplaneAction {
         catch (MalformedURLException e1) {
 	        e1.printStackTrace();
         }
-		
+
 	}
 }

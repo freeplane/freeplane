@@ -50,9 +50,8 @@ public class BitmapImagePreview extends JComponent implements PropertyChangeList
     public BitmapImagePreview(final JFileChooser fc) {
         this();
         fc.addPropertyChangeListener(this);
-        fc.setAccessory(this);
     }
-    
+
 	public BitmapImagePreview() {
 		super();
 		setBorder(new MatteBorder(BORDER_WIDTH, BORDER_WIDTH, BORDER_WIDTH, BORDER_WIDTH, Color.BLACK));

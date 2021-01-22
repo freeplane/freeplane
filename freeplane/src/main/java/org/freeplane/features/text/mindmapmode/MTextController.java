@@ -273,7 +273,7 @@ public class MTextController extends TextController {
     public boolean addDetailContentType(String e) {
         return detailContentTypes.add(e);
     }
-    
+
     public String[] getDetailContentTypes() {
         return detailContentTypes.stream().toArray(String[]::new);
     }
@@ -452,7 +452,7 @@ public class MTextController extends TextController {
 		final JFileChooser chooser = urlManager.getFileChooser();
 		chooser.setFileFilter(filter);
 		chooser.setAcceptAllFileFilterUsed(false);
-		new BitmapImagePreview(chooser);
+		chooser.setAccessory(new BitmapImagePreview(chooser));
 		final int returnVal = chooser.showOpenDialog(viewController.getCurrentRootComponent());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
 			return;
@@ -626,18 +626,18 @@ public class MTextController extends TextController {
 	        setDetails(node, null);
 	        return;
 	    }
-	        
+
 		final String oldText = DetailModel.getDetailText(node);
 		if (oldText == newText || null != oldText && oldText.equals(newText)) {
 			return;
 		}
-		
+
         DetailModel oldDetails = DetailModel.getDetail(node);
         DetailModel newDetails= oldDetails == null ? new DetailModel(false) :  oldDetails.copy();
         newDetails.setText(newText);
-        
+
         setDetails(node, oldDetails, newDetails, "setDetailText");
-        
+
 	}
 
     public void setDetailsContentType(final NodeModel node, final String newContentType) {
@@ -645,11 +645,11 @@ public class MTextController extends TextController {
         if (oldContentType == newContentType || null != oldContentType && oldContentType.equals(newContentType)) {
             return;
         }
-        
+
         DetailModel oldDetails = DetailModel.getDetail(node);
         DetailModel newDetails= oldDetails == null ? new DetailModel(false) :  oldDetails.copy();
         newDetails.setContentType(newContentType);
-        
+
         setDetails(node, oldDetails, newDetails, "setDetailContentType");
     }
 
@@ -685,7 +685,7 @@ public class MTextController extends TextController {
         };
         Controller.getCurrentModeController().execute(actor, node.getMap());
     }
-    
+
 	@Override
 	public void setDetailsHidden(final NodeModel node, final boolean isHidden) {
 		stopInlineEditing();
@@ -819,7 +819,7 @@ public class MTextController extends TextController {
         public void ok(final String newText) {
             nodeModel.ifPresent(x -> ok(x, newText));
         }
-        
+
         private void ok(NodeModel nodeModel, final String newText) {
         	if (HtmlUtils.isEmpty(newText))
         		if (addsNewDetailsUsingInlineEditor) {
@@ -878,7 +878,7 @@ public class MTextController extends TextController {
         private final boolean parentFolded;
 
         private boolean editorBlocks;
-        
+
         private NodeTextEditor(IMapViewManager viewController, NodeModel nodeModel,
                 boolean newNode,
                 NodeModel prevSelectedModel,
@@ -891,7 +891,7 @@ public class MTextController extends TextController {
             this.controller = controller;
             this.parentFolded = parentFolded;
         }
-        
+
         void editorBlocks() {
             editorBlocks = true;
         }
@@ -903,7 +903,7 @@ public class MTextController extends TextController {
             }
             stop();
         }
-        
+
         private void cancel(NodeModel nodeModel) {
         	if (nodeModel.getMap().equals(controller.getMap())) {
         		if (nodeModel.getParentNode() != null) {
@@ -932,7 +932,7 @@ public class MTextController extends TextController {
             nodeModel.ifPresent(x -> ok(x, text));
             stop();
         }
-        
+
         private void ok(NodeModel nodeModel, final String text) {
         	String processedText = makePlainIfNoFormattingFound(text);
         	preserveRootNodeLocationOnScreen();
@@ -947,7 +947,7 @@ public class MTextController extends TextController {
         public void split(final String text, final int position) {
             nodeModel.ifPresent(x -> split(x, text, position));
         }
-        
+
         private void split(NodeModel nodeModel, final String text, final int position) {
         	String processedText = HtmlUtils.isHtml(text) ? removeHtmlHead(text) : text;
         	splitNode(nodeModel, position, processedText);
