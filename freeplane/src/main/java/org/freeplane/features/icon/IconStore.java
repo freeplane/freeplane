@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
+ *
  * Stores all kinds of icons used in Freeplane.
- * 
+ *
  * @author Tamas Eppel
  *
  */
@@ -49,7 +49,7 @@ public class IconStore {
 		addIcons(group);
 	}
 
-    private void addIcons(final IconGroup group) {
+    public void addIcons(final IconGroup group) {
         for (final IconGroup subgroup : group.getGroups()) {
 		    if (subgroup.isLeaf())
 		        mindIcons.put(subgroup.getName(), subgroup.getGroupIcon());
@@ -103,7 +103,7 @@ public class IconStore {
 
 	/**
 	 * Returns a UIIcon with a given name.
-	 * 
+	 *
 	 * @param name of UIIcon to return
 	 * @return UIIcon with given name
 	 */

@@ -49,9 +49,9 @@ import org.freeplane.features.icon.UIIcon;
 import org.freeplane.features.icon.UserIcon;
 
 /**
- * 
+ *
  * Factory for IconStore objects.
- * 
+ *
  * @author Tamas Eppel
  *
  */
@@ -93,19 +93,19 @@ public class IconStoreFactory {
 	private static final Pattern iconFileNamePattern = Pattern.compile(".*\\.(svg|png)$", Pattern.CASE_INSENSITIVE);
 	private static final String EMOJI_ENTRIES_RESOURCE = "/images/emoji/xml/emojientries.xml";
 	public static IconStore ICON_STORE = new IconStoreFactory().createIcons();
-	
+
 	private int order = 0;
     private final IconStore iconStore;
-	
+
 	private IconStoreFactory() {
 	    iconStore = new IconStore();
 	}
-	
+
     private MindIcon createMindIcon(final String name) {
         final String translationKeyLabel = name.indexOf('/') > 0 ? "" : ("icon_" + name);
         return new MindIcon(name, name + ".svg", translationKeyLabel, order++);
     }
-    
+
 	private IconStore createIcons() {
 		createClassicIcons();
 		createEmojiIcons();
@@ -153,6 +153,7 @@ public class IconStoreFactory {
 			}
 		}
 		userIcons.addGroups(loadUserIcons());
+		iconStore.addIcons(userIcons);
     }
 
 	private IconGroup getBuiltinIconGroups(final String groupName) {
@@ -232,6 +233,7 @@ public class IconStoreFactory {
 
 	private List<IconGroup> getUserIconsFromDirectory(final File iconDir, final String dir) {
 		final String[] userIconArray = iconDir.list(new FilenameFilter() {
+			@Override
 			public boolean accept(final File dir, final String name) {
 				return hasValidIconFileExtension(name) || new File(dir, name).isDirectory();
 			}
