@@ -59,7 +59,7 @@
 		<xsl:if test="@TYPE='NOTE'">
 			<xsl:text>&#xA;NOTE: </xsl:text>
 		</xsl:if>
-		<xsl:apply-templates mode="html"/>
+		<xsl:apply-templates select="html" mode="html"/>
 		<xsl:text>&#xA;&#xA;</xsl:text>
 	</xsl:template>
 

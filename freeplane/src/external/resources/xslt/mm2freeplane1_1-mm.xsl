@@ -9,6 +9,7 @@
 
 <xsl:template match="conditional_styles"/>
 <xsl:template match="map_styles"/>
+<xsl:template match="text[parent::richcontent]"/>
 <xsl:template match="map">
   <map version="0.9.0">
     <xsl:apply-templates select="node()"/>

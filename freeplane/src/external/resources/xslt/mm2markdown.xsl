@@ -78,6 +78,12 @@ ChangeLog: See: http://freeplane.sourceforge.net/
 		<xsl:apply-templates select="node"/>
 	</xsl:template>
 
+	<xsl:template match="richcontent[text]">
+		<xsl:text>&#xA;</xsl:text>
+		<xsl:value-of select="text/text()" />
+		<xsl:text>&#xA;</xsl:text>
+	</xsl:template>
+	
 	<xsl:template match="richcontent">
 		<xsl:text>&#xA;</xsl:text>
 		<xsl:apply-templates />

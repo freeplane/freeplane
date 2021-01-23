@@ -37,7 +37,7 @@
 	</xsl:template>
 	
 	<xsl:template match="richcontent">
-		<xsl:value-of select="normalize-space(translate(., '&#160;', ' '))" />
+		<xsl:value-of select="normalize-space(translate(html, '&#160;', ' '))" />
 	</xsl:template>
 
 </xsl:stylesheet>

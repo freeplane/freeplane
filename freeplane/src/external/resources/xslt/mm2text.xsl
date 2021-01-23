@@ -31,14 +31,14 @@
 		<xsl:apply-templates select="node"/>
 	</xsl:template>
 	
-	<xsl:template match="richcontent[normalize-space(.) != '']">
+	<xsl:template match="richcontent[normalize-space(html) != '']">
 		<xsl:if test="@TYPE='DETAILS'">
 			<xsl:text>DETAILS:&#xA;</xsl:text>
 		</xsl:if>
 		<xsl:if test="@TYPE='NOTE'">
 			<xsl:text>NOTE:&#xA;</xsl:text>
 		</xsl:if>
-		<xsl:apply-templates/>
+		<xsl:apply-templates select="html"/>
 		<xsl:text>&#xA;</xsl:text>
 	</xsl:template>
 
