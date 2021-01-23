@@ -3,8 +3,8 @@ package org.freeplane.plugin.latex;
 import java.net.URL;
 import java.util.Hashtable;
 
-import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.ContentTypeFormat;
+import org.freeplane.features.format.FormatController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -27,6 +27,7 @@ public class Activator implements BundleActivator {
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(final BundleContext context) throws Exception {
 		registerMindMapModeExtension(context);
 	}
@@ -36,16 +37,17 @@ public class Activator implements BundleActivator {
 		props.put("mode", new String[] { MModeController.MODENAME, SModeController.MODENAME });
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
-			    public void installExtension(final ModeController modeController) {
+			    @Override
+				public void installExtension(final ModeController modeController) {
 					//LattexNodeHook -> Menu insert
 					final LatexNodeHook nodeHook = new LatexNodeHook();
-					
-					MTextController textController = (MTextController) modeController.getExtension(TextController.class);
-                    textController.addDetailContentType(LatexRenderer.LATEX_FORMAT);
-					MNoteController noteController = (MNoteController) modeController.getExtension(NoteController.class);
-					noteController.addNoteContentType(LatexRenderer.LATEX_FORMAT);
 
-					
+					MTextController textController = (MTextController) modeController.getExtension(TextController.class);
+                    textController.addDetailContentType(LatexRenderer.LATEX_CONTENT_TYPE);
+					MNoteController noteController = (MNoteController) modeController.getExtension(NoteController.class);
+					noteController.addNoteContentType(LatexRenderer.LATEX_CONTENT_TYPE);
+
+
 					textController.addTextTransformer(//
 							new ConditionalContentTransformer(new LatexRenderer(), Activator.TOGGLE_PARSE_LATEX));
 					modeController.getController().getExtension(FormatController.class).addPatternFormat(new ContentTypeFormat(LatexRenderer.LATEX_FORMAT));
@@ -73,6 +75,7 @@ public class Activator implements BundleActivator {
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(final BundleContext context) throws Exception {
 	}
 }
