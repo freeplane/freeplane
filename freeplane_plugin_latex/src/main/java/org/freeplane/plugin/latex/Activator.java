@@ -53,7 +53,7 @@ public class Activator implements BundleActivator {
 					modeController.getController().getExtension(FormatController.class).addPatternFormat(new ContentTypeFormat(LatexRenderer.LATEX_FORMAT));
 					modeController.getController().getExtension(FormatController.class).addPatternFormat(new ContentTypeFormat(LatexRenderer.UNPARSED_LATEX_FORMAT));
 					if (modeController.getModeName().equals("MindMap")) {
-						modeController.addAction(new InsertLatexAction(nodeHook));
+						modeController.addAction(new InsertLatexAction());
 						modeController.addAction(new EditLatexAction(nodeHook));
 						modeController.addAction(new DeleteLatexAction(nodeHook));
 						addPreferencesToOptionPanel();
