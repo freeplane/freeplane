@@ -1,6 +1,6 @@
 <map version="freeplane 1.9.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node TEXT="start" FOLDED="false" ID="ID_1090958577" CREATED="1606664858024" MODIFIED="1606696828898" VGAP_QUANTITY="3 pt">
+<node LOCALIZED_TEXT="new_mindmap" FOLDED="false" ID="ID_1090958577" CREATED="1606664858024" MODIFIED="1606696828898" VGAP_QUANTITY="3 pt">
 <hook NAME="accessories/plugins/AutomaticLayout.properties" VALUE="ALL"/>
 <hook NAME="MapStyle" background="#3c3836">
     <properties show_icon_for_attributes="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff" show_note_icons="true" fit_to_viewport="false"/>
