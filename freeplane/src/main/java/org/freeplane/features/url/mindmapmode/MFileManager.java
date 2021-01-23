@@ -94,6 +94,7 @@ import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.IMapInputStreamConverter;
@@ -102,6 +103,7 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 import org.freeplane.view.swing.features.filepreview.MindMapPreview;
+import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
 
 /**
  * @author Dimitry Polivaev
@@ -125,13 +127,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	}
 	static private class MindMapDirectoryFilter extends FileFilter {
 
-	    final MindmapDirectory mindmapDirectory;
 	    final File directory;
         final String description;
 
 
 		MindMapDirectoryFilter(MindmapDirectory mindmapDirectory, File directory) {
-            this.mindmapDirectory = mindmapDirectory;
             this.directory = directory;
             this.description = TextUtils.getText(mindmapDirectory.key) + " (*.mm)";
         }
@@ -633,11 +633,27 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 	public MapModel newMapFromDefaultTemplate() {
 		return AccessController.doPrivileged(new PrivilegedAction<MapModel>() {
+			private boolean follow = false;
+			private File chosenFile;
+			private void chooseTemplateFile() {
+				final ResourceController resourceController = ResourceController.getResourceController();
+				final boolean maySkipTemplateSelection = false;
+				if(maySkipTemplateSelection) {
+					boolean skipTemplateSelection = resourceController.getBooleanProperty("skip_template_selection");
+					if (skipTemplateSelection) {
+						follow = resourceController.getBooleanProperty("follow_mind_map_by_default");
+						chosenFile = defaultTemplateFile();
+					}
+				}
+				TemplateChooser templateChooser = new TemplateChooser(false);
+				chosenFile = templateChooser.chosenTemplateFile();
+				follow = templateChooser.isConnectChecked();
+			}
 			@Override
 			public MapModel run() {
-				final File file = chosenTemplateFile();
-				if (file != null) {
-					return openUntitledMap(file);
+				chooseTemplateFile();
+				if (chosenFile != null) {
+					return openUntitledMap(chosenFile, follow);
 				}
 				ModeController modeController = Controller.getCurrentModeController();
 				final MapModel map =  new MapLoader(modeController).withView().getMap();
@@ -646,49 +662,66 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		});
 	}
 
-	protected File chosenTemplateFile() {
-	    final ResourceController resourceController = ResourceController.getResourceController();
-	    final boolean maySkipTemplateSelection = false;
-	    if(maySkipTemplateSelection) {
-	        boolean skipTemplateSelection = resourceController.getBooleanProperty("skip_template_selection");
-	        if (skipTemplateSelection)
-	            return defaultTemplateFile();
-	    }
-		final String standardTemplatePath = resourceController.getProperty(STANDARD_TEMPLATE);
-		final TreeSet<String> availableMapTemplates = collectAvailableMapTemplates();
-		availableMapTemplates.add(standardTemplatePath);
-		final Box verticalBox = Box.createVerticalBox();
-		MindMapPreview mindMapPreview = new MindMapPreview();
-		final JComboBox<String> templateComboBox = new JComboBox<>(new Vector<>(availableMapTemplates));
-		templateComboBox.addItemListener(new ItemListener() {
+	class TemplateChooser {
+		final private JCheckBox follow;
+		private Box verticalBox;
+		private JCheckBox mDontShowAgainBox;
+		private JComboBox<String> templateComboBox;
 
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange() == ItemEvent.SELECTED) {
-                    mindMapPreview.updateView(templateFile(e.getItem().toString()));
-                }
-            }
-        });
-		templateComboBox.setSelectedItem(standardTemplatePath);
-		templateComboBox.setAlignmentX(0f);
-		verticalBox.add(templateComboBox);
-		mindMapPreview.setAlignmentX(0f);
-        verticalBox.add(mindMapPreview);
-		final String checkBoxText = TextUtils.getRawText("OptionalDontShowMeAgainDialog.rememberMyDescision");
-		final JCheckBox mDontShowAgainBox = new JCheckBox();
-		mDontShowAgainBox.setAlignmentX(0f);
-		LabelAndMnemonicSetter.setLabelAndMnemonic(mDontShowAgainBox, checkBoxText);
-		verticalBox.add(mDontShowAgainBox);
-		JOptionPane.showMessageDialog(UITools.getCurrentFrame(), verticalBox, TextUtils.getText("select_template"),
-		    JOptionPane.PLAIN_MESSAGE);
-		final String selectedTemplate = (String) templateComboBox.getSelectedItem();
-		if (mDontShowAgainBox.isSelected()) {
-			resourceController.setProperty("skip_template_selection", true);
-			resourceController.setProperty(STANDARD_TEMPLATE, selectedTemplate);
+
+		public TemplateChooser(boolean followSelected) {
+			final ResourceController resourceController = ResourceController.getResourceController();
+			final String standardTemplatePath = resourceController.getProperty(STANDARD_TEMPLATE);
+			final TreeSet<String> availableMapTemplates = collectAvailableMapTemplates();
+			availableMapTemplates.add(standardTemplatePath);
+			verticalBox = Box.createVerticalBox();
+			follow = new JCheckBox();
+			LabelAndMnemonicSetter.setLabelAndMnemonic(follow, TextUtils.getRawText("followMindMap"));
+			follow.setAlignmentX(Component.LEFT_ALIGNMENT);
+			follow.setSelected(followSelected);
+			verticalBox.add(follow);
+
+			MindMapPreview mindMapPreview = new MindMapPreview();
+			templateComboBox = new JComboBox<>(new Vector<>(availableMapTemplates));
+			templateComboBox.addItemListener(new ItemListener() {
+
+				@Override
+				public void itemStateChanged(ItemEvent e) {
+					if(e.getStateChange() == ItemEvent.SELECTED) {
+						mindMapPreview.updateView(templateFile(e.getItem().toString()));
+					}
+				}
+			});
+			templateComboBox.setSelectedItem(standardTemplatePath);
+			templateComboBox.setAlignmentX(0f);
+			verticalBox.add(templateComboBox);
+			mindMapPreview.setAlignmentX(0f);
+			verticalBox.add(mindMapPreview);
+			final String checkBoxText = TextUtils.getRawText("OptionalDontShowMeAgainDialog.rememberMyDescision");
+			mDontShowAgainBox = new JCheckBox();
+			mDontShowAgainBox.setAlignmentX(0f);
+			LabelAndMnemonicSetter.setLabelAndMnemonic(mDontShowAgainBox, checkBoxText);
+			verticalBox.add(mDontShowAgainBox);
 		}
-		return templateFile(selectedTemplate);
-	}
 
+
+		File chosenTemplateFile() {
+			JOptionPane.showMessageDialog(UITools.getCurrentFrame(), verticalBox, TextUtils.getText("select_template"),
+				JOptionPane.PLAIN_MESSAGE);
+			final String selectedTemplate = (String) templateComboBox.getSelectedItem();
+			if (mDontShowAgainBox.isSelected()) {
+				final ResourceController resourceController = ResourceController.getResourceController();
+				resourceController.setProperty("skip_template_selection", true);
+				resourceController.setProperty("follow_mind_map_by_default", follow.isSelected());
+				resourceController.setProperty(STANDARD_TEMPLATE, selectedTemplate);
+			}
+			return templateFile(selectedTemplate);
+		}
+
+		public boolean isConnectChecked() {
+			return follow.isSelected();
+		}
+	}
 	@Override
 	public File defaultTemplateFile() {
 		final String userDefinedTemplateFilePath = ResourceController.getResourceController()
@@ -731,17 +764,20 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		return allUserTemplates;
 	}
 
-	public MapModel openUntitledMap(final File startFile) {
+	public MapModel openUntitledMap(final File startFile, boolean startFollow) {
 		return AccessController.doPrivileged(new PrivilegedAction<MapModel>() {
 			@Override
 			public MapModel run() {
 				final File file;
+				final boolean follow;
 				if (startFile == null) {
 					file = getLastCurrentDir();
+					follow = false;
 				}
 				else if (startFile.isDirectory()) {
                     final JFileChooser chooser = getMindMapFileChooser();
-                    chooser.setAccessory(new MindMapPreview(chooser));
+                    MindMapPreviewWithOptions previewWithOptions = new MindMapPreviewWithOptions(chooser, startFollow);
+					chooser.setAccessory(previewWithOptions);
 					chooser.setCurrentDirectory(startFile);
 					final int returnVal = chooser
 					    .showOpenDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent());
@@ -749,16 +785,20 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 						return null;
 					}
 					file = chooser.getSelectedFile();
+					follow = previewWithOptions.isFollowChecked();
 				}
 				else {
 					file = startFile;
+					follow = startFollow;
 				}
 				try {
 					final MMapController mapController = (MMapController) Controller.getCurrentModeController()
 					    .getMapController();
-					mapController.newMap(Compat.fileToUrl(file));
 					final Controller controller = Controller.getCurrentController();
+					mapController.newMap(Compat.fileToUrl(file), follow);
 					final MapModel map = controller.getMap();
+					MapStyle mapStyle = mapController.getModeController().getExtension(MapStyle.class);
+					mapStyle.setProperty(map, FREEPLANE_ADD_ON_FILE_EXTENSION, FILE_SCHEME);
 					return map;
 				}
 				catch (Exception e) {
@@ -987,6 +1027,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				})));
 		return templates;
 	}
+
 
 	public static MFileManager getController(ModeController modeController) {
 		return (MFileManager) modeController.getExtension(UrlManager.class);

@@ -158,7 +158,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 				private boolean isContentEmpty(final String content) {
 					return content.indexOf('<') == -1;
 				}
-				
+
                 @Override
                 public boolean containsXml(XMLElement element) {
                     return true;
@@ -369,8 +369,22 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public void onCreate(final MapModel map) {
 		final NodeModel rootNode = map.getRootNode();
 		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(rootNode);
-		if (mapStyleModel != null && mapStyleModel.getStyleMap() != null) {
-			return;
+		if (mapStyleModel != null) {
+			String followedMap = mapStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY);
+			if(followedMap != null) {
+				try {
+					URL followedMapUrl = new URI(followedMap).toURL();
+					copyMapStylesNoUndoNoRefresh(followedMapUrl, map);
+				}
+				catch (URISyntaxException | MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+			if (mapStyleModel.getStyleMap() != null) {
+				return;
+			}
 		}
 		createDefaultStyleMap(map);
 	}
@@ -430,8 +444,11 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
         loadStyleMapContainer(source).ifPresent(styleMapContainer ->
             new StyleExchange(styleMapContainer, targetMap).copyMapStyles());
     }
-    
-	
+
+    void copyMapStylesNoUndoNoRefresh(final URL source, final MapModel targetMap) {
+        loadStyleMapContainer(source).ifPresent(styleMapContainer ->
+            new StyleExchange(styleMapContainer, targetMap).copyMapStylesNoUndoNoRefresh());
+    }
 
 	@Override
 	protected void saveExtension(final IExtension extension, final XMLElement element) {

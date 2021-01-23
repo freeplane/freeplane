@@ -448,6 +448,7 @@ public class MapStyleModel implements IExtension {
 	}
 
 	ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
+	public static final String FOLLOWED_MAP_LOCATION_PROPERTY = "followedMapLocation";
 
 	ComboBoxModel getStylesAsComboBoxModel() {
 		return stylesComboBoxModel;

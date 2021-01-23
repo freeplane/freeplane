@@ -897,10 +897,11 @@ public class MMapController extends MapController {
 		return newNode;
 	}
 
-	/**@deprecated -- use MMapIO*/
+	/**@param follow
+	 * @deprecated -- use MMapIO*/
 	@Deprecated
-	public void newMap(final URL url){
-		new MapLoader(getMModeController()).load(url).unsetMapLocation().withView().getMap();
+	public void newMap(final URL url, boolean follow){
+		new MapLoader(getMModeController()).load(url).unsetMapLocation(follow).withView().getMap();
 	}
 
 	private WeakHashMap<MMapModel, Void> loadedMaps = new WeakHashMap<>();
@@ -920,9 +921,8 @@ public class MMapController extends MapController {
 	}
 
 
-
-	public MMapModel createUntitledMap(final URL url) throws IOException, XMLException {
-		return (MMapModel) new MapLoader(getMModeController()).load(url).unsetMapLocation().withView().getMap();
+	public MMapModel createUntitledMap(final URL url, boolean follow) throws IOException, XMLException {
+		return (MMapModel) new MapLoader(getMModeController()).load(url).unsetMapLocation(follow).withView().getMap();
 	}
 
 	public MapModel readMap(URL url) throws FileNotFoundException, XMLParseException, IOException, URISyntaxException {

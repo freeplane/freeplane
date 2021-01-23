@@ -28,7 +28,7 @@ import org.freeplane.features.url.UrlManager;
 
 class NewMapFromTemplateAction extends AFreeplaneAction {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	private File startFile;
@@ -38,8 +38,9 @@ class NewMapFromTemplateAction extends AFreeplaneAction {
 		this.startFile = file;
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
-		((MFileManager) UrlManager.getController()).openUntitledMap(startFile);
+		((MFileManager) UrlManager.getController()).openUntitledMap(startFile, false);
 	}
 
 	@Override

@@ -84,8 +84,8 @@ public class MMapIO extends MapIO{
 	public void open() {
 	    fileManager.open();
     }
-	public MapModel openUntitledMap(File startFile) {
-	    return fileManager.openUntitledMap(startFile);
+	public MapModel openUntitledMap(File startFile, boolean follow) {
+	    return fileManager.openUntitledMap(startFile, follow);
     }
 	public boolean save(MapModel map) {
 	    return fileManager.save(map);
@@ -112,13 +112,13 @@ public class MMapIO extends MapIO{
 	public MapModel newMapFromDefaultTemplate() {
 		return fileManager.newMapFromDefaultTemplate();
     }
-	public void newMap(URL url) throws FileNotFoundException, IOException,
+	public void newMap(URL url, boolean follow) throws FileNotFoundException, IOException,
 	URISyntaxException, XMLException {
-		mapController.newMap(url);
+		mapController.newMap(url, follow);
 	}
-	public MapModel createUntitledMap(URL url){
+	public MapModel createUntitledMap(URL url, boolean follow){
 		try {
-			return mapController.createUntitledMap(url);
+			return mapController.createUntitledMap(url, follow);
 		}
 		catch (Exception e) {
 			fileManager.handleLoadingException(e);
