@@ -50,7 +50,7 @@ public class JFileChooserWithSystemFileIcons extends JFileChooser{
             }
 
             final FileView uiFileView;
-			if(icon == null && f.isDirectory()) {
+			if(icon == null && directoryIcon != null && f.isDirectory()) {
 				final FileSystemView fsv = getFileSystemView();
 
                 if (fsv.isFloppyDrive(f)) {
@@ -59,11 +59,12 @@ public class JFileChooserWithSystemFileIcons extends JFileChooser{
                     icon = hardDriveIcon;
                 } else if (fsv.isComputerNode(f)) {
                     icon = computerIcon;
-                } else {
+                }
+                if(icon == null) {
                     icon = directoryIcon;
                 }
 			}
-			else {
+			if(icon == null) {
 				uiFileView = getUI().getFileView(this);
 
 				if(icon == null && uiFileView != null) {
