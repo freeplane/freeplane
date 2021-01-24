@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.stream.Stream;
 
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FreeplaneVersion;
@@ -47,27 +48,30 @@ public class UserPropertiesUpdater {
 	}
 
 	private void copyUserFilesFromPreviousVersionTo(File targetDirectory) {
-		final File parentDirectory = targetDirectory.getParentFile();
+		try {
+		File canonicalTargetDirectory = targetDirectory.getCanonicalFile();
+		final File parentDirectory = canonicalTargetDirectory.getParentFile();
 		final String previousDirName = Compat.PREVIOUS_VERSION_DIR_NAME;
 		final File sourceDirectory;
 		String old_userfpdir = System.getProperty(ORG_FREEPLANE_OLD_USERFPDIR);
-		if (isDefined(old_userfpdir))
-			sourceDirectory = new File(old_userfpdir, previousDirName);
-		else
-			sourceDirectory = new File(parentDirectory, previousDirName);
-		if (sourceDirectory.exists() && !sourceDirectory.getAbsolutePath().equals(targetDirectory.getAbsolutePath())) {
-			try {
+			if (isDefined(old_userfpdir))
+				sourceDirectory = new File(old_userfpdir, previousDirName).getCanonicalFile();
+			else
+				sourceDirectory = new File(parentDirectory, previousDirName).getCanonicalFile();
+			if (sourceDirectory.exists() && !sourceDirectory.equals(canonicalTargetDirectory)) {
 				parentDirectory.mkdirs();
-				org.apache.commons.io.FileUtils.copyDirectory(sourceDirectory, targetDirectory);
-				final File templateDirectory = new File(targetDirectory, "templates");
-				org.apache.commons.io.FileUtils.deleteDirectory(templateDirectory);
-				templateDirectory.mkdir();
+				org.apache.commons.io.FileUtils.copyDirectory(sourceDirectory,
+					canonicalTargetDirectory,
+					file -> ! Stream.of("logs", "templates", ".backup", "compiledscripts")
+					.map(name -> new File(sourceDirectory, name))
+					.anyMatch(file::equals),
+				true);
+				new File(canonicalTargetDirectory, "templates").mkdir();
 			}
-			catch (IOException e) {
-			}
-			return;
 		}
-    }
+		catch (IOException e) {
+		}
+	}
 
 	private boolean isDefined(String old_userfpdir) {
 	    return old_userfpdir != null;
