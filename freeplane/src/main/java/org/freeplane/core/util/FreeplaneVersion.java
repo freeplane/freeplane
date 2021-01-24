@@ -19,7 +19,6 @@
  */
 package org.freeplane.core.util;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -44,7 +43,7 @@ public class FreeplaneVersion implements org.freeplane.api.FreeplaneVersion {
 	/** release type e.g. "", "rc", "beta", "alpha" or "nightly_build". */
 	private String mType;
 
-	private final String revision;
+	private String revision = null;
 
 	public static FreeplaneVersion getVersion() {
 		return VERSION;
@@ -73,7 +72,7 @@ public class FreeplaneVersion implements org.freeplane.api.FreeplaneVersion {
 			final int min = info.length < 3 ? 0 : Integer.parseInt(info[2]);
 			final String type = info.length < 4 ? "" : info[3];
 			final int num = info.length < 5 ? 0 : Integer.parseInt(info[4]);
-			return new FreeplaneVersion(maj, mid, min, type, num, loadRevision());
+			return new FreeplaneVersion(maj, mid, min, type, num);
 		}
 		catch (final NumberFormatException e) {
 			throw new IllegalArgumentException("Wrong version token: " + pString, e);
@@ -116,21 +115,23 @@ public class FreeplaneVersion implements org.freeplane.api.FreeplaneVersion {
 
 	@Override
 	public String getRevision(){
+		if(revision == null) {
+			revision = loadRevision();
+		}
 		return revision;
 	}
 
-	public FreeplaneVersion(final int pMaj, final int pMid, final int pMin, final String pType, final int pNum, final String revision) {
+	public FreeplaneVersion(final int pMaj, final int pMid, final int pMin, final String pType, final int pNum) {
 		super();
 		mMaj = pMaj;
 		mMid = pMid;
 		mMin = pMin;
 		mType = pType;
 		mNum = pNum;
-		this.revision = revision;
 	}
 
 	public FreeplaneVersion(final int pMaj, final int pMid, final int pMin) {
-		this(pMaj, pMid, pMin, "", 0, "");
+		this(pMaj, pMid, pMin, "", 0);
 	}
 
 	/** Use it like this:
@@ -219,20 +220,16 @@ public class FreeplaneVersion implements org.freeplane.api.FreeplaneVersion {
 	}
 
 	private static String loadRevision() {
-		final URL gitInfo = ResourceController.getResourceController().getResource("/gitinfo.properties");
-		final String revision;
-		if(gitInfo != null){
-			Properties gitProps = new Properties();
-			try {
-		        gitProps.load(gitInfo.openStream());
-		    }
-		    catch (IOException e) {
-		    }
-			revision = gitProps.getProperty("git-revision", "");
+		try {
+			final URL gitInfo = ResourceController.getResourceController().getResource("/gitinfo.properties");
+			if(gitInfo != null){
+				Properties gitProps = new Properties();
+				gitProps.load(gitInfo.openStream());
+				return gitProps.getProperty("git-revision", "");
+			}
 		}
-		else{
-			revision = "";
+		catch (Exception e) {
 		}
-		return revision;
+		return "";
 	}
 }
