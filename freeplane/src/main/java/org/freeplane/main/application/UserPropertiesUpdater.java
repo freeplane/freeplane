@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.FreeplaneVersion;
 
 /**
  * @author Dimitry Polivaev
@@ -40,9 +41,8 @@ public class UserPropertiesUpdater {
 			return;
 		}
 		copyUserFilesFromPreviousVersionTo(userPreferencesFile.getParentFile());
-		if(userPreferencesFile.exists()){
-			removeVersionSpecificProperties(userPreferencesFile);
-			return;
+		if(userPreferencesFile.exists() && ! FreeplaneVersion.getVersion().isFinal()) {
+			removeProperties(userPreferencesFile, "lastOpened_1.0.20", "openedNow_1.3.04");
 		}
 	}
 
@@ -73,14 +73,10 @@ public class UserPropertiesUpdater {
 	    return old_userfpdir != null;
     }
 
-	private void removeVersionSpecificProperties(File userPreferencesFile) {
+	private void removeProperties(File userPreferencesFile, String... propertyNames) {
 		try {
 			Properties userProp = loadProperties(userPreferencesFile);
-			for(String name : new String[]{
-					"lastOpened_1.0.20",
-					"openedNow_1.3.04",
-					"browse_url_storage",
-					"single_backup_directory_path"})
+			for(String name : propertyNames)
 				userProp.remove(name);
 
 			saveProperties(userProp, userPreferencesFile);
