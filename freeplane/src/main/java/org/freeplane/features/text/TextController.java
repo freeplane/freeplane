@@ -51,7 +51,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeSizeModel;
 import org.freeplane.features.nodestyle.NodeStyleController;
-import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
@@ -191,9 +190,9 @@ public class TextController implements IExtension {
 	}
 
 	/** returns an error message instead of a normal result if something goes wrong. */
-	public Object getTransformedObjectNoFormattingNoThrow(Object data, final NodeModel node, Object extension) {
+	public Object getTransformedObjectNoFormattingNoThrow(final NodeModel node, Object nodeProperty, Object data) {
 		try {
-			Object transformedObject = getTransformedObject(node, extension, data);
+			Object transformedObject = getTransformedObject(node, nodeProperty, data);
 			if (transformedObject instanceof HighlightedTransformedObject)
 				transformedObject =  ((HighlightedTransformedObject) transformedObject).getObject();
 			if (transformedObject instanceof IFormattedObject)
@@ -213,21 +212,21 @@ public class TextController implements IExtension {
 
 	public Object getTransformedObjectNoThrow(NodeModel node) {
 		final Object userObject = node.getUserObject();
-		return getTransformedObjectNoFormattingNoThrow(userObject, node, node);
+		return getTransformedObjectNoFormattingNoThrow(node, node, userObject);
 	}
 
 	/** convenience method for getTransformedText().toString. */
-	public String getTransformedText(Object object, final NodeModel nodeModel, Object extension)
+	public String getTransformedText(final NodeModel node, Object nodeProperty, Object data)
 	        throws TransformationException {
-		Object transformed = getTransformedObject(nodeModel, extension, object);
+		Object transformed = getTransformedObject(node, nodeProperty, data);
 		if(transformed instanceof Icon)
-			return object.toString();
+			return data.toString();
 		else
 			return transformed.toString();
 	}
 
-	public String getTransformedTextNoThrow(Object text, final NodeModel nodeModel, Object extension) {
-		Object result = getTransformedObjectNoFormattingNoThrow(text, nodeModel, extension);
+	public String getTransformedTextNoThrow(final NodeModel node, Object nodeProperty, Object data) {
+		Object result = getTransformedObjectNoFormattingNoThrow(node, nodeProperty, data);
 		return result.toString();
 	}
 
@@ -260,7 +259,7 @@ public class TextController implements IExtension {
 			input = HtmlUtils.htmlToPlain((String) userObject);
 		else
 			input = userObject;
-		final String text = getTransformedTextNoThrow(input, nodeModel, nodeModel);
+		final String text = getTransformedTextNoThrow(nodeModel, nodeModel, input);
 		return text;
 	}
 
@@ -364,8 +363,8 @@ public class TextController implements IExtension {
 				String data = details.getText();
 				String text;
 				try {
-					text = TextController.getController(modeController)
-							.getTransformedText(data, node, details);
+					final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow((NodeModel) node, details, data);
+					text = HtmlUtils.objectToHtml(transformed);
 				}
 				catch (Exception e) {
 					text = TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());
@@ -404,7 +403,8 @@ public class TextController implements IExtension {
 				final Object data = node.getUserObject();
 				String text;
 				try {
-					text = getTransformedText(data, node, node);
+					final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow((NodeModel) node, node, data);
+					text = HtmlUtils.objectToHtml(transformed);
 					if (text.equals(getShortText(text)))
 						return null;
 				}
@@ -458,7 +458,7 @@ public class TextController implements IExtension {
 	}
 
 	public URI toUri(final Object value, final NodeModel node, Object extension) {
-		final Object transformedObject = getTransformedObjectNoFormattingNoThrow(value, node, extension);
+		final Object transformedObject = getTransformedObjectNoFormattingNoThrow(node, extension, value);
 		return LinkController.toUri(transformedObject);
 	}
 

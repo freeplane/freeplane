@@ -29,6 +29,8 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.Icon;
+
 import org.freeplane.api.LengthUnit;
 import org.freeplane.api.Quantity;
 import org.freeplane.core.resources.ResourceController;
@@ -271,30 +273,32 @@ class MindMapHTMLWriter {
 		return  false;
 	}
 
-	private int writeHTML(final NodeModel model, final String parentID, int lastChildNumber, final boolean isRoot,
+	private int writeHTML(final NodeModel node, final String parentID, int lastChildNumber, final boolean isRoot,
 	                      final boolean treatAsParagraph, final int depth)
 	        throws IOException {
-		if (!model.hasVisibleContent(FilterController.getFilter(model.getMap()))) {
-			for (final NodeModel child : model.getChildren()) {
+		if (!node.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
+			for (final NodeModel child : node.getChildren()) {
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber, false, false, depth);
 			}
 			return lastChildNumber;
 		}
 		boolean createFolding = false;
 		if (writeFoldingCode) {
-			createFolding = mapController.isFolded(model);
+			createFolding = mapController.isFolded(node);
 			if (getProperty("html_export_folding").equals("html_export_fold_all")) {
-				createFolding = model.hasChildren();
+				createFolding = node.hasChildren();
 			}
 			if (getProperty("html_export_folding").equals("html_export_no_folding") || basedOnHeadings || isRoot) {
 				createFolding = false;
 			}
 		}
 		final TextController textController = TextController.getController();
-		final Object userObject = model.getUserObject();
-		final String text = textController.getTransformedTextNoThrow(userObject, model, model);
-		final boolean hasHtml = text.startsWith("<html>");
-		final boolean heading = basedOnHeadings && !hasHtml && model.hasChildren() && depth <= 6;
+		final Object userObject = node.getUserObject();
+		Object transformed = textController.getTransformedObjectNoFormattingNoThrow(node, node, userObject);
+		boolean containsIcon = transformed instanceof Icon;
+		final String text =  containsIcon ? HtmlUtils.iconToHtml((Icon) transformed) :  transformed.toString();
+		final boolean containsHtml = ! containsIcon && text.startsWith("<html>");
+		final boolean heading = basedOnHeadings && !containsHtml && node.hasChildren() && depth <= 6;
 		if (!treatAsParagraph && !basedOnHeadings) {
 			fileout.write("<li>");
 		}
@@ -302,7 +306,7 @@ class MindMapHTMLWriter {
 			if (heading) {
 				fileout.write(lf + "<h" + depth + ">");
 			}
-			else if (!hasHtml) {
+			else if (!containsHtml) {
 				fileout.write("<p>");
 			}
 		}
@@ -312,12 +316,12 @@ class MindMapHTMLWriter {
 			localParentID = parentID + "_" + lastChildNumber;
 			writeFoldingButtons(localParentID);
 		}
-		final String fontStyle = fontStyle(nodeStyleController.getColor(model), nodeStyleController.getFont(model));
+		final String fontStyle = fontStyle(nodeStyleController.getColor(node), nodeStyleController.getFont(node));
 		boolean shouldOutputFontStyle = !fontStyle.equals("");
 		if (shouldOutputFontStyle) {
 			fileout.write("<span style=\"" + fontStyle + "\">");
 		}
-		String link = NodeLinks.getLinkAsString(model);
+		String link = NodeLinks.getLinkAsString(node);
 		if (link != null && ! text.contains(link)) {
 			if (link.endsWith(UrlManager.FREEPLANE_FILE_EXTENSION)) {
 				link += ".html";
@@ -325,36 +329,39 @@ class MindMapHTMLWriter {
 			fileout.write("<a href=\"" + link + "\" target=\"_blank\">");
 		}
 		if (ResourceController.getResourceController().getBooleanProperty("export_icons_in_html")) {
-			writeIcons(model);
+			writeIcons(node);
 		}
-		writeModelContent(text);
+		if(containsIcon)
+			fileout.write(text);
+		else
+			writeModelContent(text);
 		if (link != null) {
 			fileout.write("</a>" + lf);
 		}
 		if (shouldOutputFontStyle) {
 			fileout.write("</span>");
 		}
-		final String detailText = DetailModel.getDetailText(model);
+		final String detailText = DetailModel.getDetailText(node);
 		if (detailText != null) {
-			writeModelContent(detailText);
+			writeModelContent(node, DetailModel.getDetail(node), detailText);
 		}
-		final String noteContent = NoteModel.getNoteText(model);
+		final String noteContent = NoteModel.getNoteText(node);
 		if (noteContent != null) {
-			writeModelContent(noteContent);
+			writeModelContent(node, NoteModel.getNote(node), noteContent);
 		}
 		if (heading) {
 			fileout.write("</h" + depth + ">" + lf);
 		}
 		if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
-			for (final NodeModel child : model.getChildren()) {
+			for (final NodeModel child : node.getChildren()) {
 				lastChildNumber = writeHTML(child, parentID, lastChildNumber, /*isRoot=*/false,
 				    false, depth + 1);
 			}
 			return lastChildNumber;
 		}
-		if (model.hasChildren()) {
+		if (node.hasChildren()) {
 			if (getProperty("html_export_folding").equals("html_export_based_on_headings")) {
-				for (final NodeModel child : model.getChildren()) {
+				for (final NodeModel child : node.getChildren()) {
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
 					    /*isRoot=*/false, false, depth + 1);
 				}
@@ -363,14 +370,14 @@ class MindMapHTMLWriter {
 				fileout.write(lf + "<ul id=\"fold" + localParentID
 				        + "\" style=\"POSITION: relative; VISIBILITY: visible;\">" + lf);
 				int localLastChildNumber = 0;
-				for (final NodeModel child : model.getChildren()) {
+				for (final NodeModel child : node.getChildren()) {
 					localLastChildNumber = writeHTML(child, localParentID, localLastChildNumber,
 					    /* isRoot=*/false, false, depth + 1);
 				}
 			}
 			else {
 				fileout.write(lf + "<ul>" + lf);
-				for (final NodeModel child : model.getChildren()) {
+				for (final NodeModel child : node.getChildren()) {
 					lastChildNumber = writeHTML(child, parentID, lastChildNumber,
 					    /* isRoot= */false, false, depth + 1);
 				}
@@ -381,6 +388,12 @@ class MindMapHTMLWriter {
 			fileout.write("</li>" + lf);
 		}
 		return lastChildNumber;
+	}
+
+	private void writeModelContent(NodeModel node, Object nodeProperty, String data)  throws IOException{
+		final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow(node, nodeProperty, data);
+		String text = HtmlUtils.objectToHtml(transformed);
+		writeModelContent(text);
 	}
 
 	private void writeIcons(final NodeModel model) throws IOException {

@@ -20,7 +20,6 @@ package org.freeplane.features.export.mindmapmode;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.MapWriter.Mode;

@@ -219,7 +219,7 @@ public class AttributeController implements IExtension {
 
 			private String getTransformedValue(NodeModel node, NodeAttributeTableModel attributes, final TextController textController, final Object value) {
 				try {
-					final String text = textController.getTransformedText(value, node, attributes);
+					final String text = textController.getTransformedText(node, attributes, value);
 					final boolean markTransformedText = TextController.isMarkTransformedTextSet();
 					final String unicodeText = HtmlUtils.unicodeToHTMLUnicodeEntity(text);
 					if (markTransformedText && text != value)

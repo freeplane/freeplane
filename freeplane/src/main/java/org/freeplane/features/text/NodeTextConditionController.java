@@ -214,7 +214,7 @@ class NodeTextConditionController implements IElementaryConditionController {
 
 	private static Object transformedObject(final NodeModel node) {
 		final Object userObject = node.getUserObject();
-		return TextController.getController().getTransformedObjectNoFormattingNoThrow(userObject, node, node);
+		return TextController.getController().getTransformedObjectNoFormattingNoThrow(node, node, userObject);
 	}
 
 	public ListCellRenderer getValueRenderer(Object selectedProperty, TranslatedObject selectedCondition) {

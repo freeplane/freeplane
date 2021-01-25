@@ -24,8 +24,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.stream.Stream;
 
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.FreeplaneVersion;
 
 /**
  * @author Dimitry Polivaev
@@ -40,47 +42,45 @@ public class UserPropertiesUpdater {
 			return;
 		}
 		copyUserFilesFromPreviousVersionTo(userPreferencesFile.getParentFile());
-		if(userPreferencesFile.exists()){
-			removeVersionSpecificProperties(userPreferencesFile);
-			return;
+		if(userPreferencesFile.exists() && ! FreeplaneVersion.getVersion().isFinal()) {
+			removeProperties(userPreferencesFile, "lastOpened_1.0.20", "openedNow_1.3.04");
 		}
 	}
 
 	private void copyUserFilesFromPreviousVersionTo(File targetDirectory) {
-		final File parentDirectory = targetDirectory.getParentFile();
+		try {
+		File canonicalTargetDirectory = targetDirectory.getCanonicalFile();
+		final File parentDirectory = canonicalTargetDirectory.getParentFile();
 		final String previousDirName = Compat.PREVIOUS_VERSION_DIR_NAME;
 		final File sourceDirectory;
 		String old_userfpdir = System.getProperty(ORG_FREEPLANE_OLD_USERFPDIR);
-		if (isDefined(old_userfpdir))
-			sourceDirectory = new File(old_userfpdir, previousDirName);
-		else
-			sourceDirectory = new File(parentDirectory, previousDirName);
-		if (sourceDirectory.exists() && !sourceDirectory.getAbsolutePath().equals(targetDirectory.getAbsolutePath())) {
-			try {
+			if (isDefined(old_userfpdir))
+				sourceDirectory = new File(old_userfpdir, previousDirName).getCanonicalFile();
+			else
+				sourceDirectory = new File(parentDirectory, previousDirName).getCanonicalFile();
+			if (sourceDirectory.exists() && !sourceDirectory.equals(canonicalTargetDirectory)) {
 				parentDirectory.mkdirs();
-				org.apache.commons.io.FileUtils.copyDirectory(sourceDirectory, targetDirectory);
-				final File templateDirectory = new File(targetDirectory, "templates");
-				org.apache.commons.io.FileUtils.deleteDirectory(templateDirectory);
-				templateDirectory.mkdir();
+				org.apache.commons.io.FileUtils.copyDirectory(sourceDirectory,
+					canonicalTargetDirectory,
+					file -> ! Stream.of("logs", "templates", ".backup", "compiledscripts")
+					.map(name -> new File(sourceDirectory, name))
+					.anyMatch(file::equals),
+				true);
+				new File(canonicalTargetDirectory, "templates").mkdir();
 			}
-			catch (IOException e) {
-			}
-			return;
 		}
-    }
+		catch (IOException e) {
+		}
+	}
 
 	private boolean isDefined(String old_userfpdir) {
 	    return old_userfpdir != null;
     }
 
-	private void removeVersionSpecificProperties(File userPreferencesFile) {
+	private void removeProperties(File userPreferencesFile, String... propertyNames) {
 		try {
 			Properties userProp = loadProperties(userPreferencesFile);
-			for(String name : new String[]{
-					"lastOpened_1.0.20",
-					"openedNow_1.3.04",
-					"browse_url_storage",
-					"single_backup_directory_path"})
+			for(String name : propertyNames)
 				userProp.remove(name);
 
 			saveProperties(userProp, userPreferencesFile);

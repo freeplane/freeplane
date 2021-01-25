@@ -61,8 +61,6 @@ import org.freeplane.features.filter.condition.ConditionNotSatisfiedDecorator;
 import org.freeplane.features.filter.condition.ConjunctConditions;
 import org.freeplane.features.filter.condition.DisjunctConditions;
 import org.freeplane.features.filter.condition.ICombinedCondition;
-import org.freeplane.features.map.IMapSelectionListener;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewChangeListener;
 import org.freeplane.features.url.UrlManager;

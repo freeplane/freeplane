@@ -37,7 +37,6 @@ ChangeLog: See: http://freeplane.sourceforge.net/
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:output method="text" indent="no"/>
-	<xsl:strip-space elements="map node" />
 	<xsl:key name="refid" match="node" use="@ID" />
 
 	<!-- Template to print header #signs  -->
@@ -78,12 +77,19 @@ ChangeLog: See: http://freeplane.sourceforge.net/
 		<xsl:apply-templates select="node"/>
 	</xsl:template>
 
+	<xsl:template match="richcontent[text]">
+		<xsl:text>&#xA;</xsl:text>
+		<xsl:value-of select="text" />
+		<xsl:text>&#xA;</xsl:text>
+	</xsl:template>
+	
 	<xsl:template match="richcontent">
 		<xsl:text>&#xA;</xsl:text>
 		<xsl:apply-templates />
 		<xsl:text>&#xA;</xsl:text>
 	</xsl:template>
 
+	<xsl:template match="child::text()[normalize-space(.) = '']"/>
 	<xsl:template match="child::text()">
 		<xsl:value-of select="translate(normalize-space(.),'&#160;',' ')" />
 	</xsl:template>
@@ -93,6 +99,43 @@ ChangeLog: See: http://freeplane.sourceforge.net/
 		<xsl:if test="preceding-sibling::*">
 			<xsl:text>&#xA;</xsl:text>
 		</xsl:if>
+		<xsl:apply-templates/>
+	</xsl:template>
+
+	<!-- Convert Headings to markdown syntax -->
+	<xsl:template match="h1">
+		<xsl:text>&#xA;&#xA;</xsl:text>
+		<xsl:text># </xsl:text>
+		<xsl:apply-templates/>
+	</xsl:template>
+
+	<xsl:template match="h2">
+		<xsl:text>&#xA;&#xA;</xsl:text>
+		<xsl:text>## </xsl:text>
+		<xsl:apply-templates/>
+	</xsl:template>
+
+	<xsl:template match="h3">
+		<xsl:text>&#xA;&#xA;</xsl:text>
+		<xsl:text>### </xsl:text>
+		<xsl:apply-templates/>
+	</xsl:template>
+
+	<xsl:template match="h4">
+		<xsl:text>&#xA;&#xA;</xsl:text>
+		<xsl:text>#### </xsl:text>
+		<xsl:apply-templates/>
+	</xsl:template>
+
+	<xsl:template match="h5">
+		<xsl:text>&#xA;&#xA;</xsl:text>
+		<xsl:text>##### </xsl:text>
+		<xsl:apply-templates/>
+	</xsl:template>
+
+	<xsl:template match="h6">
+		<xsl:text>&#xA;&#xA;</xsl:text>
+		<xsl:text>###### </xsl:text>
 		<xsl:apply-templates/>
 	</xsl:template>
 
@@ -168,9 +211,9 @@ ChangeLog: See: http://freeplane.sourceforge.net/
 		<xsl:text> </xsl:text>
 		<!-- Node text -->
 		<xsl:if test="@TEXT">
-			<xsl:value-of select="normalize-space(@TEXT)" />
+			<xsl:value-of select="@TEXT" />
 			<xsl:text>&#xA;</xsl:text>
-    		</xsl:if>
+    	</xsl:if>
 		<xsl:apply-templates select="richcontent[@TYPE='NODE']"/>
 		<xsl:apply-templates select="richcontent[@TYPE='DETAILS']"/>
 		<xsl:apply-templates select="richcontent[@TYPE='NOTE']"/>

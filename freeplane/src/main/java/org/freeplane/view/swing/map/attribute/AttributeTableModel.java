@@ -135,7 +135,7 @@ abstract class AttributeTableModel extends AbstractTableModel
 			try {
 				final Object value = nodeAttributeModel.getValueAt(row, 1);
 				if (value != null)
-					textController.getTransformedText(value.toString(), getNode(), nodeAttributeModel);
+					textController.getTransformedText(getNode(), nodeAttributeModel, value.toString());
             }
             catch (Exception e) {
             	LogUtils.warn(e.getLocalizedMessage());

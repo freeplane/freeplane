@@ -27,14 +27,12 @@ import javax.swing.SwingUtilities;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.note.NoteModel;
-import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.TextController;
 
 final class NoteManager implements INodeSelectionListener, IMapSelectionListener {

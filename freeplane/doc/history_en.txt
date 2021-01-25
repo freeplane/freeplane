@@ -1,6 +1,15 @@
 ===============================
 1.9.0
 ===============================
+Connector styles configurable at user style nodes in style editor
+Selected node colors configurable at appropriate styles in use style editor
+Markdown support for node core, node details and notes
+Latex support for node core, node details and notes
+Formula support for node core, node details and notes
+New Freeplane Application icons and splash screen
+Configurable icons for links depending on link URL and file extension
+Following styles defined in external maps (synchronized when the map is loaded)
+New action for copying styles from other maps but keeping own user styles if they are different 
 
 ===============================
 1.8.12

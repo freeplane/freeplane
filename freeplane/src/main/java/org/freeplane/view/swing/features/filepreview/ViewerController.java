@@ -59,7 +59,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
     private static final MExternalImageDropListener DTL = new MExternalImageDropListener();
 	private static final int BORDER_SIZE = 1;
 	public static final Border VIEWER_BORDER_INSTANCE = new ViewerBorder(BORDER_SIZE, Color.BLACK);
-	
+
 
 	private final class CombiFactory implements IViewerFactory {
 		private IViewerFactory factory;
@@ -259,24 +259,24 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 			final ExternalResource nextView = new ExternalResource(nextUri);
 			nextView.setZoom(activeView.getZoom());
 			IActor actor = new IActor() {
-                
+
                 @Override
                 public void undo() {
                     remove(node, nextView);
                     add(node, activeView);
                 }
-                
+
                 @Override
                 public String getDescription() {
                     return "updateExtendedProgressIcons";
                 }
-                
+
                 @Override
                 public void act() {
                     remove(node, activeView);
                     add(node, nextView);
                 }
-            }; 
+            };
             Controller.getCurrentModeController().execute(actor, map);
 			ProgressIcons.updateExtendedProgressIcons(node, sNextURI);
 			return true;
@@ -544,7 +544,7 @@ public class ViewerController extends PersistentNodeHook implements INodeViewLif
 		}
 		chooser.setFileFilter(fileFilter);
 		chooser.putClientProperty(FactoryFileFilter.class, fileFilter);
-		new ImagePreview(chooser);
+		chooser.setAccessory(new ImagePreview(chooser));
 		final int returnVal = chooser.showOpenDialog(Controller.getCurrentController().getViewController()
 		    .getCurrentRootComponent());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {

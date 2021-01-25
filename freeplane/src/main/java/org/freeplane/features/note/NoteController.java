@@ -29,7 +29,6 @@ import org.freeplane.core.io.WriteManager;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.format.PatternFormat;
 import org.freeplane.features.icon.IStateIconProvider;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.UIIcon;
@@ -39,12 +38,10 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
-import org.freeplane.features.nodestyle.NodeStyleModel;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyle;
 import org.freeplane.features.styles.MapStyleModel;
-import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.view.swing.map.MainView;
 
@@ -150,8 +147,8 @@ public class NoteController implements IExtension {
 				}
 				String text;
 				try {
-					text = TextController.getController(modeController)
-							.getTransformedText(data, node, NoteModel.getNote(node));
+					final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow((NodeModel) node, NoteModel.getNote(node), data);
+					text = HtmlUtils.objectToHtml(transformed);
 				}
 				catch (Exception e) {
 					text = TextUtils.format("MainView.errorUpdateText", data, e.getLocalizedMessage());

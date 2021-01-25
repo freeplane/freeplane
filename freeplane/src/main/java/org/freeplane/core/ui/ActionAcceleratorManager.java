@@ -34,7 +34,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.action.IAcceleratorMap;
 import org.freeplane.core.util.ActionUtils;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.core.util.Pair;
 import org.freeplane.core.util.TextUtils;

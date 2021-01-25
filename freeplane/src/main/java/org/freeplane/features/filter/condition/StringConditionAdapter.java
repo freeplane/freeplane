@@ -1,6 +1,5 @@
 package org.freeplane.features.filter.condition;
 
-import org.freeplane.core.util.TextUtils;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 public abstract class StringConditionAdapter extends ASelectableCondition {

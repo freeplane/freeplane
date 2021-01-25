@@ -29,7 +29,6 @@ import javax.swing.JFileChooser;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.components.UITools;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.mode.Controller;
 

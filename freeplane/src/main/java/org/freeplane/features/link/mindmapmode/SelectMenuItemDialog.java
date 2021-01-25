@@ -48,7 +48,6 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.MenuUtils;
 import org.freeplane.core.util.MenuUtils.MenuEntry;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 

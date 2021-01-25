@@ -72,7 +72,7 @@ class NotePanel extends JPanel {
 		htmlViewerPanel.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
 		htmlViewerPanel.setEditable(false);
 		iconViewerPanel = new JLabel();
-		
+
 		MouseListener editStarter = new MouseAdapter() {
 
 			@Override
@@ -80,22 +80,22 @@ class NotePanel extends JPanel {
 				if(e.getClickCount() == 2)
 					editNote();
 			}
-			
+
 		};
 		htmlViewerPanel.addMouseListener(editStarter);
 		iconViewerPanel.addMouseListener(editStarter);
-		
+
 		ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
 
 	}
 
 	private SHTMLPanel createHtmlEditorComponent(NoteManager noteManager) {
 		SHTMLPanel htmlEditorPanel = MTextController.getController().createSHTMLPanel(NoteModel.EDITING_PURPOSE);
-        htmlEditorPanel.shtmlPrefChanged("show_toolbars", 
-                ResourceController.getResourceController().getProperty("simplyhtml.note.show_toolbars"), 
+        htmlEditorPanel.shtmlPrefChanged("show_toolbars",
+                ResourceController.getResourceController().getProperty("simplyhtml.note.show_toolbars"),
                 ResourceController.getResourceController().getProperty("simplyhtml.show_toolbars"));
-        htmlEditorPanel.shtmlPrefChanged("show_menu", 
-                ResourceController.getResourceController().getProperty("simplyhtml.note.show_menu"), 
+        htmlEditorPanel.shtmlPrefChanged("show_menu",
+                ResourceController.getResourceController().getProperty("simplyhtml.note.show_menu"),
                 ResourceController.getResourceController().getProperty("simplyhtml.show_menu"));
 
 		// make sure that SHTML gets notified of relevant config changes!
@@ -248,7 +248,7 @@ class NotePanel extends JPanel {
 	boolean isEditable() {
 		return htmlEditorPanel.isVisible();
 	}
-	
+
 	String getDocumentText() {
 		return htmlEditorPanel.getDocumentText();
 	}
@@ -273,6 +273,7 @@ class NotePanel extends JPanel {
 			htmlEditorPanel.getDocument().removeDocumentListener(noteDocumentListener);
 	}
 
+	@Override
 	public boolean requestFocusInWindow() {
 		if (ResourceController.getResourceController().getBooleanProperty("goto_note_end_on_edit")) {
 			final JEditorPane editorPane = getEditorPane();
@@ -285,7 +286,7 @@ class NotePanel extends JPanel {
 		if(htmlEditorPanel.isVisible())
 			htmlEditorPanel.getDocument().addDocumentListener(noteDocumentListener);
 	}
-	
+
 	void updateBaseUrl(URL url) {
 		try {
 			if (url != null) {
@@ -298,15 +299,15 @@ class NotePanel extends JPanel {
 		catch (final Exception e) {
 		}
 	}
-	
+
 	private void editNote() {
 		final Controller controller = Controller.getCurrentController();
 		IMapSelection selection = controller.getSelection();
 		if(selection == null)
 			return;
 		final NodeModel node = selection.getSelected();
-		if(node == null)
-		new NoteDialogStarter().editNoteInDialog(node);
+		if(node != null)
+			new NoteDialogStarter().editNoteInDialog(node);
 	}
 
 }

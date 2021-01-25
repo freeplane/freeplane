@@ -42,7 +42,6 @@ import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.styles.IStyle;
-import org.freeplane.features.styles.LogicalStyleModel;
 import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.styles.StyleFactory;
 import org.freeplane.features.styles.StyleTranslatedObject;

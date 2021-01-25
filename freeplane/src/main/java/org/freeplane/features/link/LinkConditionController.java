@@ -19,9 +19,6 @@
  */
 package org.freeplane.features.link;
 
-import java.util.Set;
-import java.util.function.Predicate;
-
 import javax.swing.ComboBoxEditor;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
@@ -37,11 +34,9 @@ import org.freeplane.features.filter.condition.DefaultConditionRenderer;
 import org.freeplane.features.filter.condition.IElementaryConditionController;
 import org.freeplane.features.filter.condition.StringConditionAdapter;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.MapStyleModel;
-import org.freeplane.features.styles.StyleContainsCondition;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 /**

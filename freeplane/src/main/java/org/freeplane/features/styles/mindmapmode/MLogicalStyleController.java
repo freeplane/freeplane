@@ -27,7 +27,6 @@ import java.util.List;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
-import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.IUserInputListenerFactory;
 import org.freeplane.core.ui.menubuilders.generic.ChildActionEntryRemover;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
@@ -236,6 +235,7 @@ public class MLogicalStyleController extends LogicalStyleController {
 			modeController.addAction(new SetBooleanMapPropertyAction(MapStyle.FIT_TO_VIEWPORT));
             modeController.addAction(new CopyMapStylesAction());
             modeController.addAction(new ReplaceMapStylesAction());
+            modeController.addAction(new ManageFollowedMindMapAction());
 		}
 		if(! GraphicsEnvironment.isHeadless()){
 			modeController.addUiBuilder(Phase.ACTIONS, "style_actions", new StyleMenuBuilder(modeController),

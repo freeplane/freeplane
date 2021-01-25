@@ -32,7 +32,6 @@ import java.net.URL;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
 import javax.swing.text.JTextComponent;

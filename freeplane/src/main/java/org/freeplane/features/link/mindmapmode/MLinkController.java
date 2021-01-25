@@ -21,7 +21,6 @@ package org.freeplane.features.link.mindmapmode;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -36,7 +35,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -44,34 +42,24 @@ import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
-import javax.swing.BorderFactory;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.FocusManager;
 import javax.swing.InputMap;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JSlider;
-import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.api.LengthUnit;
-import org.freeplane.api.Quantity;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.JComboBoxWithBorder;
 import org.freeplane.core.ui.components.RenderedContent;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.DashVariant;
 import org.freeplane.features.link.ArrowType;
-import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.mindmapmode.editor.ConnectorEditorPanel;
@@ -95,8 +83,6 @@ import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleKeys;
 import org.freeplane.features.styles.MapStyleModel;
-import org.freeplane.features.styles.StyleString;
-import org.freeplane.features.styles.mindmapmode.ComboBoxRendererWithTooltip;
 
 /**
  * @author Dimitry Polivaev

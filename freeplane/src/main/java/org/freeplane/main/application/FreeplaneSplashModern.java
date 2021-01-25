@@ -28,7 +28,6 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsDevice.WindowTranslucency;
-import java.awt.IllegalComponentStateException;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
@@ -39,7 +38,6 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JRootPane;
 import javax.swing.JWindow;
 
 import org.freeplane.core.resources.ResourceController;

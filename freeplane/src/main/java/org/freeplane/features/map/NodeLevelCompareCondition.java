@@ -24,7 +24,6 @@ import org.freeplane.core.io.xml.TreeXmlWriter;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.filter.condition.CompareConditionAdapter;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.n3.nanoxml.XMLElement;
 
 class NodeLevelCompareCondition extends CompareConditionAdapter {

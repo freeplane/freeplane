@@ -22,9 +22,7 @@ package org.freeplane.features.filter;
 import java.awt.event.ActionEvent;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.ui.SelectableAction;
 import org.freeplane.features.filter.condition.ASelectableCondition;
-import org.freeplane.features.filter.condition.ConjunctConditions;
 import org.freeplane.features.filter.condition.DisjunctConditions;
 import org.freeplane.features.filter.condition.NoFilteringCondition;
 

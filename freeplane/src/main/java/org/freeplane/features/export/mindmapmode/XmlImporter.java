@@ -13,7 +13,6 @@ import java.net.URL;
 import javax.swing.JOptionPane;
 
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.core.util.XsltPipeReaderFactory;
 import org.freeplane.features.map.MapController;

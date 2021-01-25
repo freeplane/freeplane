@@ -53,7 +53,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapReader;
 import org.freeplane.features.map.MapWriter.Hint;
 import org.freeplane.features.map.MapWriter.Mode;
-import org.freeplane.features.map.clipboard.MapClipboardController;
 import org.freeplane.features.map.NodeBuilder;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -449,6 +448,7 @@ public class MapStyleModel implements IExtension {
 	}
 
 	ArrayList<ListDataListener> listeners = new ArrayList<ListDataListener>();
+	public static final String FOLLOWED_MAP_LOCATION_PROPERTY = "followedMapLocation";
 
 	ComboBoxModel getStylesAsComboBoxModel() {
 		return stylesComboBoxModel;

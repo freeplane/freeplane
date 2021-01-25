@@ -3,9 +3,9 @@ package org.freeplane.plugin.latex;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.KeyEvent;
 
-import javax.swing.Icon;
 import javax.swing.JEditorPane;
 
 import org.freeplane.core.resources.ResourceController;
@@ -19,7 +19,6 @@ import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.note.mindmapmode.MNoteController;
 import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.DetailModel;
-import org.freeplane.features.text.RichTextModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.TransformationException;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
@@ -37,6 +36,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 	private static final String LATEX_EDITOR_DISABLE = "latex_disable_editor";
 	private static final String LATEX = "\\latex";
 	private static final String UNPARSED_LATEX = "\\unparsedlatex";
+	static final String LATEX_CONTENT_TYPE = "latex";
 	static final String LATEX_FORMAT = "latexPatternFormat";
 	static final String UNPARSED_LATEX_FORMAT = "unparsedLatexPatternFormat";
 
@@ -53,10 +53,13 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		if (latext == null)
 			return content;
 		final NodeStyleController ncs = NodeStyleController.getController(textController.getModeController());
-		final int maxWidth = ncs.getMaxWidth(node).toBaseUnitsRounded();
+		int widthWithInsets = ncs.getMaxWidth(node).toBaseUnitsRounded();
+		final int maxWidth = Math.max(0, widthWithInsets - 4);
 		TeXText teXt = new TeXText(latext);
 		int fontSize = Math.round(ncs.getFontSize(node) * UITools.FONT_SCALE_FACTOR);
 		TeXIcon icon = teXt.createTeXIcon(TeXConstants.STYLE_DISPLAY, fontSize, TeXConstants.ALIGN_LEFT, maxWidth);
+		int insetSize = (widthWithInsets - maxWidth) / 2;
+		icon.setInsets(new Insets(insetSize, insetSize, insetSize, insetSize));
 		return icon;
 	}
 
@@ -107,18 +110,24 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		        return  null;
 		} else if (nodeProperty instanceof DetailModel) {
             String detailsContentType = textController.getDetailsContentType(node);
-            if (LatexRenderer.LATEX_FORMAT.equals(detailsContentType)
-                    || TextController.CONTENT_TYPE_AUTO.equals(detailsContentType)) {
-                contentType = detailsContentType;
-            } else
-                return  null;
+            if (LatexRenderer.LATEX_CONTENT_TYPE.equals(detailsContentType)) {
+                contentType = LatexRenderer.LATEX_FORMAT;
+            }
+			else if (TextController.CONTENT_TYPE_AUTO.equals(detailsContentType)) {
+            contentType = detailsContentType;
+         }
+			else
+				return  null;
         } else if (nodeProperty instanceof NoteModel) {
             String noteContentType = noteController.getNoteContentType(node);
-            if (LatexRenderer.LATEX_FORMAT.equals(noteContentType)
-                    || TextController.CONTENT_TYPE_AUTO.equals(noteContentType)) {
+            if (LatexRenderer.LATEX_CONTENT_TYPE.equals(noteContentType)) {
                 contentType = noteContentType;
-            } else
-                return  null;
+            }
+			else if (TextController.CONTENT_TYPE_AUTO.equals(noteContentType)) {
+            contentType = LatexRenderer.LATEX_FORMAT;
+         }
+			else
+				return  null;
         } else
 		    return  null;
 		String plainOrHtmlText = (String) content;
@@ -126,19 +135,19 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		String latexText = getLatexText(text, contentType, targetMode);
 		return latexText;
 	}
-	
-	private String getLatexText(final String nodeText, final String contentType, final TargetMode mode)
+
+	private String getLatexText(final String nodeText, final String patternFormat, final TargetMode mode)
 	{
 		boolean includePrefix = mode == TargetMode.FOR_EDITOR;
 
 		if(startsWithPrefix(nodeText, LATEX)){
 			return includePrefix ? nodeText : nodeText.substring(LATEX.length() + 1);
 		}
-		else if(LatexRenderer.LATEX_FORMAT.equals(contentType)){
+		else if(LatexRenderer.LATEX_FORMAT.equals(patternFormat)){
 			return nodeText;
 		} else if(startsWithPrefix(nodeText, UNPARSED_LATEX) && mode == TargetMode.FOR_EDITOR) {
 			return nodeText;
-		} else if(LatexRenderer.UNPARSED_LATEX_FORMAT.equals(contentType) && mode == TargetMode.FOR_EDITOR) {
+		} else if(LatexRenderer.UNPARSED_LATEX_FORMAT.equals(patternFormat) && mode == TargetMode.FOR_EDITOR) {
 			return nodeText;
 		} else {
 			return null;

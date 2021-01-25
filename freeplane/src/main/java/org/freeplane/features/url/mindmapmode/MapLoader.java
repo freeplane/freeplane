@@ -16,14 +16,16 @@ import java.security.PrivilegedExceptionAction;
 import org.freeplane.core.resources.TranslatedObject;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.MapWriter.Mode;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.map.mindmapmode.MMapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.ui.IMapViewManager;
 import org.freeplane.features.url.mindmapmode.MFileManager.AlternativeFileMode;
 import org.freeplane.n3.nanoxml.XMLException;
@@ -37,6 +39,7 @@ public class MapLoader{
 	private URL newMapLocation;
 	private boolean saveAfterLoading;
 	private boolean withView;
+	private boolean followSourceMap;
 	private boolean unsetMapLocation;
 	private boolean asDocumentation;
 	private String selectedNodeId;
@@ -64,13 +67,22 @@ public class MapLoader{
 		this.inputStream = inputStream;
 		return this;
 	}
-		
+
 	public MapLoader newMapLocation(File associatedFile) {
 		this.newMapLocation = fileToUrlOrNull(associatedFile);
 		this.saveAfterLoading = false;
 		return this;
 	}
 
+	public MapLoader followOldMap() {
+		this.followSourceMap = true;
+		return this;
+	}
+
+	public MapLoader unsetMapLocation(boolean follow) {
+		this.followSourceMap = follow;
+		return unsetMapLocation();
+	}
 
 	public MapLoader unsetMapLocation() {
 		this.unsetMapLocation = true;
@@ -228,6 +240,18 @@ public class MapLoader{
 				map.getRootNode().setText(rootText.toString());
 			}
 		}
+
+		if(followSourceMap && sourceLocation != null && ! sourceLocation.equals(newMapLocation)) {
+			MapStyleModel properties = MapStyleModel.getExtension(map);
+			try {
+				properties.setProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY,
+					sourceLocation.toURI().toString());
+			}
+			catch (URISyntaxException e) {
+				LogUtils.severe(e);
+			}
+		}
+
 		map.setURL(newMapLocation);
 		if(saveAfterLoading && ! newMapLocation.equals(actualSourceLocation)) {
 			fileManager().save(map, map.getFile());

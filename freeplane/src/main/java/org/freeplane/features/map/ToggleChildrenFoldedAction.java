@@ -21,7 +21,6 @@ package org.freeplane.features.map;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.freeplane.core.ui.AFreeplaneAction;

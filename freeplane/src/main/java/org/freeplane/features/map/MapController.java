@@ -53,7 +53,6 @@ import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.DelayedRunner;
 import org.freeplane.features.clipboard.ClipboardControllers;
-import org.freeplane.features.clipboard.mindmapmode.MClipboardController;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.Filter;
 import org.freeplane.features.filter.FilterController;

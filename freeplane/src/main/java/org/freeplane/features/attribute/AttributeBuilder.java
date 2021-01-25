@@ -341,7 +341,7 @@ class AttributeBuilder implements IElementDOMHandler {
 		final Object value = attr.getValue();
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
-			attributeElement.setAttribute("VALUE", TextController.getController().getTransformedTextNoThrow(value, node, attributes));
+			attributeElement.setAttribute("VALUE", TextController.getController().getTransformedTextNoThrow(node, attributes, value));
 		}
 		else{
 			attributeElement.setAttribute("VALUE", value.toString());

@@ -20,7 +20,6 @@
 package org.freeplane.main.osgi;
 
 import java.awt.GraphicsEnvironment;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -34,7 +33,6 @@ import java.util.jar.Manifest;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.filter.FilterController;
 import org.freeplane.features.mode.Controller;

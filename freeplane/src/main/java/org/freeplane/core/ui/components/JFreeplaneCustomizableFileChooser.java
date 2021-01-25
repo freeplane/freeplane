@@ -25,9 +25,9 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
     private static final Icon computerIcon = UIManager.getIcon("FileView.computerIcon");
     private static final Icon hardDriveIcon = UIManager.getIcon("FileView.hardDriveIcon");
     private static final Icon floppyDriveIcon = UIManager.getIcon("FileView.floppyDriveIcon");
-    
+
     private final List<JComponent> optionComponents = new ArrayList<>();
-    
+
     public JFreeplaneCustomizableFileChooser() {
         super();
     }
@@ -40,9 +40,9 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
     public interface Customizer extends Consumer<JDialog>{
         Customizer DEFAULT = d -> {};
     }
-    
+
     private Consumer<JDialog> customizer = Customizer.DEFAULT;
-    
+
     public void addCustomizer(Customizer newCustomizer) {
         customizer = customizer.andThen(newCustomizer);
     }
@@ -50,7 +50,7 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
     public Consumer<JDialog> getCustomizer() {
         return customizer;
     }
-    
+
     @Override
     public Icon getIcon(File f) {
         Icon icon = null;
@@ -60,7 +60,7 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
             }
 
             final FileView uiFileView;
-			if(icon == null && f.isDirectory()) {
+			if(icon == null && f.isDirectory() && directoryIcon != null) {
 				final FileSystemView fsv = getFileSystemView();
 
                 if (fsv.isFloppyDrive(f)) {
@@ -69,11 +69,12 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
                     icon = hardDriveIcon;
                 } else if (fsv.isComputerNode(f)) {
                     icon = computerIcon;
-                } else {
+                }
+                if(icon == null) {
                     icon = directoryIcon;
                 }
 			}
-			else {
+			if(icon == null) {
 				uiFileView = getUI().getFileView(this);
 
 				if(icon == null && uiFileView != null) {

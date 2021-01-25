@@ -3,8 +3,8 @@ package org.freeplane.plugin.markdown;
 import java.net.URL;
 import java.util.Hashtable;
 
-import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.ContentTypeFormat;
+import org.freeplane.features.format.FormatController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
@@ -27,6 +27,7 @@ public class Activator implements BundleActivator {
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(final BundleContext context) throws Exception {
 		registerMindMapModeExtension(context);
 	}
@@ -36,13 +37,14 @@ public class Activator implements BundleActivator {
 		props.put("mode", new String[] { MModeController.MODENAME, SModeController.MODENAME });
 		context.registerService(IModeControllerExtensionProvider.class.getName(),
 		    new IModeControllerExtensionProvider() {
-			    public void installExtension(final ModeController modeController) {
+			    @Override
+				public void installExtension(final ModeController modeController) {
 					MTextController textController = (MTextController) modeController.getExtension(TextController.class);
                     textController.addTextTransformer(//
 							new ConditionalContentTransformer(new MarkdownRenderer(), Activator.TOGGLE_PARSE_MARKDOWN));
-                    textController.addDetailContentType(MarkdownRenderer.MARKDOWN_FORMAT);
+                    textController.addDetailContentType(MarkdownRenderer.MARKDOWN_CONTENT_TYPE);
 					MNoteController noteController = (MNoteController) modeController.getExtension(NoteController.class);
-					noteController.addNoteContentType(MarkdownRenderer.MARKDOWN_FORMAT);
+					noteController.addNoteContentType(MarkdownRenderer.MARKDOWN_CONTENT_TYPE);
 					modeController.getController().getExtension(FormatController.class).addPatternFormat(new ContentTypeFormat(MarkdownRenderer.MARKDOWN_FORMAT));
 					if (modeController.getModeName().equals("MindMap")) {
 						addPreferencesToOptionPanel();
@@ -64,6 +66,7 @@ public class Activator implements BundleActivator {
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(final BundleContext context) throws Exception {
 	}
 }

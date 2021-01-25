@@ -29,8 +29,6 @@ import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;
-import org.freeplane.features.styles.mindmapmode.styleeditorpanel.EnumToStringMapper;
-
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class ConnectorShapeControlGroup implements ControlGroup {

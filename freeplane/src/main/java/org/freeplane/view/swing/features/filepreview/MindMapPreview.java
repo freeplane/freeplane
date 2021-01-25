@@ -2,17 +2,12 @@ package org.freeplane.view.swing.features.filepreview;
 
 import java.awt.Dimension;
 import java.io.File;
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.URI;
-import java.util.Optional;
-
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.view.swing.features.filepreview.ViewerController.FactoryFileFilter;
 
 public class MindMapPreview extends BitmapImagePreview {
     private static final String EXTENSION = ".mm";

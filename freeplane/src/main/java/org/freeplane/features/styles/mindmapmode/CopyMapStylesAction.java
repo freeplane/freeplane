@@ -22,18 +22,20 @@ package org.freeplane.features.styles.mindmapmode;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.swing.JFileChooser;
 
 import org.freeplane.core.ui.AFreeplaneAction;
-import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
+import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.url.mindmapmode.MFileManager;
-import org.freeplane.view.swing.features.filepreview.MindMapPreview;
+import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
 
 /**
  * @author Dimitry Polivaev
@@ -45,12 +47,14 @@ class CopyMapStylesAction extends AFreeplaneAction {
 		super("CopyMapStylesAction");
 	}
 
-	public void actionPerformed(final ActionEvent e) {
+	@Override
+	public void actionPerformed(final ActionEvent event) {
 		final Controller controller = Controller.getCurrentController();
 		final ModeController modeController = controller.getModeController();
 		final MFileManager fileManager = MFileManager.getController(modeController);
 		final JFileChooser fileChooser = fileManager.getMindMapFileChooser();
-		new MindMapPreview(fileChooser);
+		MindMapPreviewWithOptions previewOptions = new MindMapPreviewWithOptions(fileChooser, false);
+		fileChooser.setAccessory(previewOptions);
 		fileChooser.setMultiSelectionEnabled(false);
 		final int returnVal = fileChooser.showOpenDialog(controller.getMapViewManager().getMapViewComponent());
 		if (returnVal != JFileChooser.APPROVE_OPTION) {
@@ -61,14 +65,15 @@ class CopyMapStylesAction extends AFreeplaneAction {
 			return;
 		}
 		try {
-	        final URL url = Compat.fileToUrl(file);
+	        final URL url = file.toURI().toURL();
 			final MapModel map = controller.getMap();
 			MapStyle mapStyleController = MapStyle.getController(modeController);
 			mapStyleController.copyStyles(url, map);
+			mapStyleController.setProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, previewOptions.isFollowChecked() ? url.toURI().toString() : null);
         }
-        catch (MalformedURLException e1) {
-	        e1.printStackTrace();
+        catch (MalformedURLException | URISyntaxException e) {
+	        LogUtils.severe(e);
         }
-		
+
 	}
 }

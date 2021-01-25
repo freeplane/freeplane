@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.collection.OptionalReference;
 import org.freeplane.features.map.NodeModel;
@@ -13,7 +12,6 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
-import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
 import org.freeplane.features.text.mindmapmode.MTextController;
 
 class NoteDialogStarter{

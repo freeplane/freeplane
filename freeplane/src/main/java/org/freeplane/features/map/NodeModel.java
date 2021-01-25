@@ -35,7 +35,6 @@ import org.freeplane.core.extension.ExtensionContainer;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.features.filter.Filter;
-import org.freeplane.features.filter.FilterInfo;
 import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.ui.INodeViewVisitor;
 

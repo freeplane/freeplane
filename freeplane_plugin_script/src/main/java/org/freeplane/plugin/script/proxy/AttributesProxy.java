@@ -124,7 +124,7 @@ class AttributesProxy extends AbstractProxy<NodeModel> implements Proxy.Attribut
 	private Object getAttributeValue(NodeAttributeTableModel attributeTableModel, final Attribute a) {
 		final Object value = a.getValue();
 		if(transformsValues) {
-			final Object content = TextController.getController().getTransformedObjectNoFormattingNoThrow(value, getDelegate(), attributeTableModel);
+			final Object content = TextController.getController().getTransformedObjectNoFormattingNoThrow(getDelegate(), attributeTableModel, value);
 			return content;
 		}
 		else

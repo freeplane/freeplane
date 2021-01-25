@@ -27,8 +27,6 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.resources.components.BooleanProperty;
 import org.freeplane.core.resources.components.ColorProperty;
 import org.freeplane.core.resources.components.IPropertyControl;
-import org.freeplane.core.util.ColorUtils;
-import org.freeplane.features.edge.EdgeController;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.mindmapmode.MLinkController;

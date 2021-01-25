@@ -5,10 +5,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import org.freeplane.core.ui.menubuilders.generic.SubtreeProcessor;
-import org.freeplane.core.ui.menubuilders.generic.Entry;
-import org.freeplane.core.ui.menubuilders.generic.PhaseProcessor;
-import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.junit.Test;
 import org.mockito.Mockito;
 
