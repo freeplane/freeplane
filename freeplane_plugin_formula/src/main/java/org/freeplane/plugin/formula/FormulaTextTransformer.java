@@ -12,6 +12,7 @@ import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.format.FormattedFormula;
 import org.freeplane.features.format.FormattedObject;
@@ -100,7 +101,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
     }
 
 	private String getEditedText(final NodeModel node, Object nodeProperty, Object content, MTextController textController) {
-		if (nodeProperty instanceof NodeModel) {
+		if (nodeProperty instanceof NodeModel || nodeProperty instanceof NodeAttributeTableModel) {
 		    if (! textController.isTextFormattingDisabled(node)) {
 		        final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
 	            if (firstKeyEvent != null && firstKeyEvent.getKeyChar() == '='){
@@ -115,7 +116,7 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 		if(! (content instanceof String))
 			return null;
 		MNoteController noteController = MNoteController.getController();
-		if (! (nodeProperty instanceof NodeModel && ! textController.isTextFormattingDisabled(node)
+		if (! ((nodeProperty instanceof NodeModel || nodeProperty instanceof NodeAttributeTableModel) && ! textController.isTextFormattingDisabled(node)
 				|| nodeProperty instanceof DetailModel && CONTENT_TYPE_FORMULA.equals(textController.getDetailsContentType(node))
 		        || nodeProperty instanceof NoteModel && CONTENT_TYPE_FORMULA.equals(noteController.getNoteContentType(node))))
 			return null;
