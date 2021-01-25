@@ -52,10 +52,12 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ComboBoxEditor;
 import javax.swing.Icon;
+import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.LookAndFeel;
 import javax.swing.RootPaneContainer;
 import javax.swing.Timer;
@@ -95,6 +97,7 @@ import org.freeplane.features.time.TimeComboBoxEditor;
 abstract public class FrameController implements ViewController {
 	private static final String AQUA_LAF_NAME = "org.violetlib.aqua.AquaLookAndFeel.AquaLookAndFeel";
     private static final String DARCULA_LAF_NAME = "com.bulenkov.darcula.DarculaLaf";
+    private static final String MOTIF_LAF_NAME = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
 	private static final double DEFAULT_SCALING_FACTOR = 0.8;
 
 	private final class HorizontalToolbarPanel extends JPanel {
@@ -548,7 +551,7 @@ abstract public class FrameController implements ViewController {
 			        String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
 			        fixDarculaNPE(lookAndFeelClassName);
 			        UIManager.setLookAndFeel(lookAndFeelClassName);
-			        fixDarculaButtonUI();
+			        fixLookAndFeelUI();
 			    }
 			}
 			else {
@@ -559,7 +562,7 @@ abstract public class FrameController implements ViewController {
 						String lookAndFeelClassName = lafInfo.getClassName();
 						fixDarculaNPE(lookAndFeelClassName);
 						UIManager.setLookAndFeel(lookAndFeelClassName);
-						fixDarculaButtonUI();
+						fixLookAndFeelUI();
 						setLnF = true;
 						break;
 					}
@@ -570,7 +573,7 @@ abstract public class FrameController implements ViewController {
 						final Class<?> lookAndFeelClass = userLibClassLoader.loadClass(lookAndFeel);
 						fixDarculaNPE(lookAndFeelClass.getName());
 						UIManager.setLookAndFeel((LookAndFeel) lookAndFeelClass.newInstance());
-						fixDarculaButtonUI();
+						fixLookAndFeelUI();
 						final ClassLoader uiClassLoader = lookAndFeelClass.getClassLoader();
 						if (userLibClassLoader != uiClassLoader)
 							userLibClassLoader.close();
@@ -622,8 +625,52 @@ abstract public class FrameController implements ViewController {
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
 	}
 
-	private static void fixDarculaButtonUI(){
-		if(UIManager.getLookAndFeel().getClass().getName().equals(DARCULA_LAF_NAME)) {
+    private static void fixLookAndFeelUI(){
+        LookAndFeel lookAndFeel = UIManager.getLookAndFeel();
+        fixDarculaButtonUI(lookAndFeel);
+        addHotKeysToMotifInputMaps(lookAndFeel);
+    }
+    
+	private static void addHotKeysToMotifInputMaps(LookAndFeel lookAndFeel) {
+        if(lookAndFeel.getClass().getName().equals(MOTIF_LAF_NAME)) {
+            UIDefaults uiDefaults = UIManager.getLookAndFeelDefaults();
+            uiDefaults.replaceAll((k, v) -> replaceMotifLazyInputMaps(k, v));
+         }
+    }
+	
+	private static Map<String, KeyStroke> keystrokes = new HashMap<>();
+
+    private static Object replaceMotifLazyInputMaps(Object k, Object v) {
+        if(!(v instanceof UIDefaults.LazyInputMap))
+            return v;
+        return new UIDefaults.LazyValue() {
+            @Override
+            public Object createValue(UIDefaults table) {
+                 Object value = ((UIDefaults.LazyInputMap) v).createValue(table);
+                 if (! (value instanceof InputMap))
+                     return value;
+                 InputMap inputMap = (InputMap) value;
+                 KeyStroke keyStrokeControlC = keystrokes.computeIfAbsent("control C", KeyStroke::getKeyStroke);
+                 if(inputMap.get(keyStrokeControlC) != null)
+                     return value;
+                 KeyStroke keyStrokeCopy = keystrokes.computeIfAbsent("COPY", KeyStroke::getKeyStroke);
+                 Object copyValue = inputMap.get(keyStrokeCopy);
+                 if(copyValue == null)
+                     return value;
+                 inputMap.put(keyStrokeControlC, copyValue);
+                 KeyStroke keyStrokePaste = keystrokes.computeIfAbsent("PASTE", KeyStroke::getKeyStroke);
+                 KeyStroke keyStrokeControlV = keystrokes.computeIfAbsent("control V", KeyStroke::getKeyStroke);
+                 inputMap.put(keyStrokeControlV, inputMap.get(keyStrokePaste));
+                 KeyStroke keyStrokeCut = keystrokes.computeIfAbsent("CUT", KeyStroke::getKeyStroke);
+                 KeyStroke keyStrokeControlX = keystrokes.computeIfAbsent("control X", KeyStroke::getKeyStroke);
+                 inputMap.put(keyStrokeControlX, inputMap.get(keyStrokeCut));
+                 return inputMap;
+           }
+        };
+    }
+
+    private static void fixDarculaButtonUI(LookAndFeel lookAndFeel){
+        if(lookAndFeel.getClass().getName().equals(DARCULA_LAF_NAME)) {
 			UIManager.put("ToggleButtonUI", FixDarculaToggleButtonUI.class.getName());
 			UIManager.put("Button.darcula.selection.color1", ColorUtils.rgbStringToColor("#687f88"));
 			UIManager.put("Button.darcula.selection.color2", ColorUtils.rgbStringToColor("#436188"));
