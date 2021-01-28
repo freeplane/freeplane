@@ -52,7 +52,7 @@ class ReplaceMapStylesAction extends AFreeplaneAction {
 		final Controller controller = Controller.getCurrentController();
 		final ModeController modeController = controller.getModeController();
 		final MFileManager fileManager = MFileManager.getController(modeController);
-		final JFileChooser fileChooser = fileManager.getFileChooser();
+		final JFileChooser fileChooser = fileManager.getMindMapFileChooser();
 		MindMapPreviewWithOptions previewOptions = new MindMapPreviewWithOptions(fileChooser, false);
 		fileChooser.setAccessory(previewOptions);
 		fileChooser.setMultiSelectionEnabled(false);
