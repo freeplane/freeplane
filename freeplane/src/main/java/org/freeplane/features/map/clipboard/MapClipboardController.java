@@ -53,6 +53,7 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.nodestyle.NodeStyleModel;
+import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.text.TextController;
 
 /**
@@ -267,11 +268,12 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 	public NodeModel duplicate(final NodeModel source, boolean withChildren) {
 		try {
 			final StringWriter writer = new StringWriter();
+			Mode copyMode = source.getUserObject() instanceof IStyle ? Mode.STYLE : Mode.CLIPBOARD;
 			modeController.getMapController().getMapWriter()
-			    .writeNodeAsXml(writer, source, Mode.CLIPBOARD, true, withChildren, false);
+			    .writeNodeAsXml(writer, source, copyMode, true, withChildren, false);
 			final String result = writer.toString();
-			final NodeModel copy = modeController.getMapController().getMapReader().createNodeTreeFromXml(
-			    source.getMap(), new StringReader(result), Mode.CLIPBOARD);
+            final NodeModel copy = modeController.getMapController().getMapReader().createNodeTreeFromXml(
+			    source.getMap(), new StringReader(result), copyMode);
 			copy.setFolded(false);
 			return copy;
 		}

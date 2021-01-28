@@ -102,8 +102,8 @@ public class MapStyleModel implements IExtension {
 	private NodeModel defaultStyleNode;
 	private MapModel styleMap;
 	private ConditionalStyleModel conditionalStyleModel;
-	final private DefaultComboBoxModel stylesComboBoxModel;
-	final private Map<String, String> properties;
+	private final DefaultComboBoxModel stylesComboBoxModel;
+	private final Map<String, String> properties;
 
 	Map<String, String> getProperties() {
 		return properties;
@@ -382,9 +382,9 @@ public class MapStyleModel implements IExtension {
 
     private void setStylesFrom(MapStyleModel source) {
         styleMap = source.styleMap;
-        defaultStyleNode = styleNodes.get(DEFAULT_STYLE);
         styleMap.putExtension(MapStyleModel.class, this);
         styleNodes = source.styleNodes;
+        defaultStyleNode = styleNodes.get(DEFAULT_STYLE);
         initStylesComboBoxModel();
         conditionalStyleModel = source.conditionalStyleModel;
     }
