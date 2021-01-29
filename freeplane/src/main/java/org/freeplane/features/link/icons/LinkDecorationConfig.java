@@ -23,31 +23,40 @@ import org.freeplane.core.util.LogUtils;
  * @author Stuart Robertson <stuartro@gmail.com>
  */
 class LinkDecorationConfig {
-	private static final String LINK_DECORATION_INI = "linkDecoration.ini";
+	private static final int MODIFICATION_CHECK_INTERVAL = 10*1000;
+
+    private static final int UNKNOWN = -1;
+
+    private static final String LINK_DECORATION_INI = "linkDecoration.ini";
 
 	private URL iniFile = ResourceController.getResourceController().getResource(LINK_DECORATION_INI);
 
 	private List<LinkDecorationRule> rules;
 
-	private long iniFileLastModified = -1;
+    private long nextCheckTimeMillis = UNKNOWN;
+    private long lastLoadedConfigurationTime = UNKNOWN;
+    private long lastKnownConfigurationFileModificationTime = UNKNOWN;
 
 	public LinkDecorationConfig() {
 
 	}
 
 	public List<LinkDecorationRule> getRules() {
-		if (iniFile != null && (rules == null || rulesFileHasChangedSinceLastLoad())) {
+		if (iniFile != null && (rules == null || rulesFileHasChanged())) {
 			loadRules();
 		}
 		return rules;
 	}
 
-	private boolean rulesFileHasChangedSinceLastLoad() {
-		if (iniFileLastModified == -1) {
-			return true;
-		}
-
-		return iniFileLastModified == iniFileLastModified();
+	private boolean rulesFileHasChanged() {
+	    if(lastLoadedConfigurationTime == UNKNOWN)
+	        return true;
+	    long currentTimeMillis = System.currentTimeMillis();
+        if(currentTimeMillis >= nextCheckTimeMillis) {
+            lastKnownConfigurationFileModificationTime = lastConfigurationFileModificationTime();
+            nextCheckTimeMillis = currentTimeMillis + MODIFICATION_CHECK_INTERVAL;
+        }
+        return lastLoadedConfigurationTime < lastKnownConfigurationFileModificationTime;
 	}
 
 	private void loadRules() {
@@ -59,7 +68,7 @@ class LinkDecorationConfig {
 					continue;
 				}
                 int descriptionStart = line.lastIndexOf("#");
-                int iconNameEnd = descriptionStart == -1 ? line.length() :  descriptionStart;
+                int iconNameEnd = descriptionStart == UNKNOWN ? line.length() :  descriptionStart;
                 int specificationEnd = line.lastIndexOf("|", iconNameEnd);
                 if(specificationEnd > 0 && iconNameEnd > specificationEnd) {
                     String matchSpecification  = line.substring(0, specificationEnd).trim();
@@ -72,14 +81,14 @@ class LinkDecorationConfig {
                     LogUtils.warn("Ignore link decoration rule " + line);
                 }
 			}
-			iniFileLastModified = iniFileLastModified();
+			lastLoadedConfigurationTime = lastConfigurationFileModificationTime();
 			Collections.sort(rules, Comparator.comparing(LinkDecorationRule::getMaximalScore).reversed());
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
 	}
 
-	private long iniFileLastModified() {
+	private long lastConfigurationFileModificationTime() {
         File file = Compat.urlToFile(iniFile);
         return file != null ? file.lastModified() : 0;
     }
