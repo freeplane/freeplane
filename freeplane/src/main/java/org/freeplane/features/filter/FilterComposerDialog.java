@@ -30,17 +30,19 @@ public class FilterComposerDialog extends AFilterComposerDialog{
 		}
     }
 	
-	protected boolean applyModel(DefaultComboBoxModel model, int[] selectedIndices) {
-		if(this.model != model)
+    @Override
+    protected boolean isSelectionValid(int[] selectedIndices) {
+        return selectedIndices.length == 1;
+    }
+    
+    @Override
+	protected void applyModel(DefaultComboBoxModel model, int[] selectedIndices) {
+		if(this.model != model || selectedIndices.length != 1)
 			throw new IllegalArgumentException();
-		if(selectedIndices.length > 1){
-			return false;
-		}
 		conditions.clear();
 		for(int i : selectedIndices){
 			conditions.add((ASelectableCondition) model.getElementAt(i));
 		}
-	    return true;
     }
 			
 	public List<ASelectableCondition> getConditions() {
@@ -65,4 +67,5 @@ public class FilterComposerDialog extends AFilterComposerDialog{
 	    	return conditions.isEmpty() ? null : conditions.get(0);
 	    return value;
 	}
+
 }

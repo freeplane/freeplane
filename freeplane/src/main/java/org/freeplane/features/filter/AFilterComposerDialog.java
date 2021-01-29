@@ -634,7 +634,8 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 	private boolean applyChanges() {
 		internalConditionsModel.setSelectedItem(elementaryConditionList.getSelectedValue());
 		final int[] selectedIndices = elementaryConditionList.getSelectedIndices();
-		if (applyModel(internalConditionsModel, selectedIndices)) {
+		if (isSelectionValid(selectedIndices)) {
+		    applyModel(internalConditionsModel, selectedIndices);
 			internalConditionsModel = null;
 			return true;
 		}
@@ -643,7 +644,8 @@ public abstract class AFilterComposerDialog extends JDialog implements IMapViewC
 		}
 	}
 
-	abstract protected boolean applyModel(DefaultComboBoxModel model, int[] selectedIndices);
+	abstract protected boolean isSelectionValid(int[] selectedIndices);
+	abstract protected void applyModel(DefaultComboBoxModel model, int[] selectedIndices);
 
 	protected JFileChooser getFileChooser() {
 		final JFileChooser chooser = UrlManager.getController().getFileChooser(MindMapFilterFileFilter.filter);

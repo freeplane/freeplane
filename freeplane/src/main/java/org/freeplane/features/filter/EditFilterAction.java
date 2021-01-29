@@ -57,6 +57,7 @@ class EditFilterAction extends AFreeplaneAction {
 	}
 	
 	private class FilterComposerDialog extends AFilterComposerDialog{
+	    private static final long serialVersionUID = 1L;
 
 		public FilterComposerDialog() {
 	        super(TextUtils.getText("filter_dialog"), false);
@@ -79,15 +80,14 @@ class EditFilterAction extends AFreeplaneAction {
 			return model;
 	    }
 		
-		protected boolean applyModel(DefaultComboBoxModel model, int[] selectedIndices) {
+		protected void applyModel(DefaultComboBoxModel model, int[] selectedIndices) {
 		    filterController.setFilterConditions(model);
-		    return true;
 	    }
-		
-		/**
-         * 
-         */
-        private static final long serialVersionUID = 1L;
+
+        @Override
+        protected boolean isSelectionValid(int[] selectedIndices) {
+            return true;
+        }
 		
 	}
 
