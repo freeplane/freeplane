@@ -66,18 +66,12 @@ abstract public class AManageConditionalStylesAction extends AFreeplaneAction {
 	    LabelAndMnemonicSetter.setLabelAndMnemonic(edit, TextUtils.getRawText("edit"));
 	    edit.setMaximumSize(UITools.MAX_BUTTON_DIMENSION);
 	    edit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
 				int selectedRow = conditionalStyleTable.getSelectedRow();
 				if(selectedRow == -1){
 					return;
 				}
-				final FilterComposerDialog filterComposerDialog = new FilterComposerDialog();
-				filterComposerDialog.addCondition(null);
-				filterComposerDialog.setConditionRenderer(ConditionalStyleTable.createConditionRenderer());
-				for(int i = 0; i < conditionalStyleTable.getRowCount(); i++){
-					final ASelectableCondition condition = (ASelectableCondition)conditionalStyleTable.getValueAt(i, 1);
-					filterComposerDialog.addCondition(condition);
-				}
+				FilterComposerDialog filterComposerDialog = conditionalStyleTable.filterComposer();
 				final ASelectableCondition value = (ASelectableCondition) conditionalStyleTable.getValueAt(selectedRow, 1);
 				final ASelectableCondition newCondition = filterComposerDialog.editCondition(value);
 				conditionalStyleTable.setValueAt(newCondition, selectedRow, 1);

@@ -35,6 +35,7 @@ class ConditionalStyleTable extends JTable {
     private static final long serialVersionUID = 1L;
 	private MapStyleModel styleModel;
 	private DefaultConditionRenderer conditionRenderer;
+    private FilterComposerDialog filterComposerDialog;
 	
 	@SuppressWarnings("serial")
     private class ConditionEditor extends AbstractCellEditor
@@ -60,14 +61,7 @@ class ConditionalStyleTable extends JTable {
 		public Component getTableCellEditorComponent(final JTable table, final Object value, boolean isSelected, int row, int column) {
 			btn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					final FilterComposerDialog filterComposerDialog = new FilterComposerDialog();
-					filterComposerDialog.addCondition(null);
-					filterComposerDialog.setConditionRenderer(ConditionalStyleTable.createConditionRenderer());
-					for(int i = 0; i < table.getRowCount(); i++){
-						final ASelectableCondition condition = (ASelectableCondition)table.getValueAt(i, 1);
-						filterComposerDialog.addCondition(condition);
-					}
-					cellEditorValue = filterComposerDialog.editCondition((ASelectableCondition) value);
+					cellEditorValue = filterComposer().editCondition((ASelectableCondition) value);
 				    btn.removeActionListener(this);
 				    fireEditingStopped();
 				}
@@ -88,7 +82,7 @@ class ConditionalStyleTable extends JTable {
 		}
 	}
 
-	public ConditionalStyleTable(MapStyleModel styleModel, TableModel tableModel) {
+	ConditionalStyleTable(MapStyleModel styleModel, TableModel tableModel) {
 	    super(tableModel);
 	    this.styleModel = styleModel;
 	    setCellSelectionEnabled(false);
@@ -133,6 +127,24 @@ class ConditionalStyleTable extends JTable {
 
 	public MapStyleModel getStyles() {
 	    return styleModel;
+    }
+
+    FilterComposerDialog filterComposer() {
+        if(filterComposerDialog == null) {
+            filterComposerDialog = createFilterComposer();
+        }
+        return filterComposerDialog;
+    }
+
+    private FilterComposerDialog createFilterComposer() {
+        FilterComposerDialog filterComposerDialog = new FilterComposerDialog();
+        filterComposerDialog.addCondition(null);
+        filterComposerDialog.setConditionRenderer(ConditionalStyleTable.createConditionRenderer());
+        for(int i = 0; i < getRowCount(); i++){
+            final ASelectableCondition condition = (ASelectableCondition)getValueAt(i, 1);
+            filterComposerDialog.addCondition(condition);
+        }
+        return filterComposerDialog;
     }
 
 }
