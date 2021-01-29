@@ -22,11 +22,6 @@ public class NodeViewDecorator
 		setDecorationConfig(decorationConfig);
 	}
 
-	LinkDecorationConfig getDecorationConfig()
-	{
-		return decorationConfig;
-	}
-
 	/**
 	 * Returns a list of zero or more icon names, representing the icons that will be added to the <code>nodeView</code>
 	 * that owns the given <code>link</code> (not persistently, but only in the view) so as to represent the link held
@@ -35,12 +30,12 @@ public class NodeViewDecorator
 	{
 		List<String> icons = new ArrayList<String>();
 		if (link != null) {
-			addIconsForLink(icons, link.toString());
+			addLinkIcon(icons, link.toString());
 		}
 		return icons;
 	}
 
-	void setDecorationConfig(LinkDecorationConfig decorationConfig)
+	private void setDecorationConfig(LinkDecorationConfig decorationConfig)
 	{
 		this.decorationConfig = decorationConfig;
 	}
@@ -52,30 +47,39 @@ public class NodeViewDecorator
 	 * @param icons The list of icon names to which 0 or more new icon names will be added.
 	 * @param link The link from the node under consideration.
 	 */
-	private void addIconsForLink(List<String> icons, String link)
+	private void addLinkIcon(List<String> icons, String link)
 	{
-		// STEP 1 - FIND MATCHING RULES
-		List<LinkMatchResult> matchResults = new ArrayList<LinkMatchResult>();
-		for (LinkDecorationRule rule : decorationConfig.getRules()) {
-			LinkMatchResult result = rule.matches(link);
-			if (result.matches) {
-				matchResults.add(result);
-			}
-		}
-		// STEP 2 - FIND MOST SPECIFIC MATCH RESULT, IF ANY
-		LinkMatchResult mostSpecificResult = null;
-		for (LinkMatchResult result : matchResults) {
-			if (mostSpecificResult == null && result.ruleHasIcon()) {
-				mostSpecificResult = result;
-			}
-			else {
-				if (result.matchLength > mostSpecificResult.matchLength && result.ruleHasIcon()) {
-					mostSpecificResult = result;
-				}
-			}
-		}
+		List<LinkMatchResult> matchResults = findMatchingResults(link);
+		LinkMatchResult mostSpecificResult = findResultWithHighestScore(matchResults);
 		if (mostSpecificResult != null) {
-			icons.add(mostSpecificResult.rule.getIconName());
+			icons.add(mostSpecificResult.getIconName());
 		}
 	}
+
+
+
+    private LinkMatchResult findResultWithHighestScore(List<LinkMatchResult> matchResults) {
+        LinkMatchResult mostSpecificResult = null;
+		for (LinkMatchResult result : matchResults) {
+			if (mostSpecificResult == null || result.getScore() > mostSpecificResult.getScore()) {
+				mostSpecificResult = result;
+			}
+		}
+        return mostSpecificResult;
+    }
+
+    private List<LinkMatchResult> findMatchingResults(String link) {
+        List<LinkMatchResult> matchResults = new ArrayList<LinkMatchResult>();
+		int matchedScore = 0;
+		for (LinkDecorationRule rule : decorationConfig.getRules()) {
+		    if(rule.getMaximalScore() < matchedScore)
+		        break;
+			LinkMatchResult result = rule.matches(link);
+			if (result.matches()) {
+				matchResults.add(result);
+				matchedScore = result.getScore();
+			}
+		}
+        return matchResults;
+    }
 }

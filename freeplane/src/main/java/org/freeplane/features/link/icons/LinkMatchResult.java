@@ -1,28 +1,25 @@
 package org.freeplane.features.link.icons;
 
-
-/**
- * Value class used to represent a link-match result.
- * 
- * @author Stuart Robertson <stuartro@gmail.com>
- */
 class LinkMatchResult
 {
-	boolean matches;
+	private final int score;
 
-	int matchLength;
+    private final String iconName;
 
-	LinkDecorationRule rule;
+	LinkMatchResult(int score, String iconName) {
+	    this.score = score;
+        this.iconName = iconName;
+    }
 
-	LinkMatchResult(boolean matches, int matchLength, LinkDecorationRule matchingRule)
-	{
-		super();
-		this.matches = matches;
-		this.matchLength = matchLength;
-		this.rule = matchingRule;
-	}
+    public boolean matches() {
+        return score > 0;
+    }
+    
+    public int getScore() {
+        return score;
+    }
 
-	boolean ruleHasIcon() {
-		return rule.getIconName() != null;
-	}
+    public String getIconName() {
+        return iconName;
+    }
 }

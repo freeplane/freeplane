@@ -2,16 +2,19 @@ package org.freeplane.features.link.icons;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
+import org.freeplane.core.util.LogUtils;
 
 /**
  * Loads and represents the contents of
@@ -26,28 +29,14 @@ class LinkDecorationConfig {
 
 	private List<LinkDecorationRule> rules;
 
-	private static String lineSplitterRegex = "([^|#]*)(\\|[^#]*)*([#].*)*";
-	private Pattern lineSplitterPattern;
-
 	private long iniFileLastModified = -1;
 
 	public LinkDecorationConfig() {
 
-		lineSplitterPattern = Pattern.compile(lineSplitterRegex);
 	}
 
-//	public void setIniFile(File iniFile) {
-//		this.iniFile = iniFile;
-//	}
-
-	/**
-	 * Returns a list of 0 or more {@link LinkDecorationRule} instances representing
-	 * the contents of the <code>FREEMIND_HOME/conf/linkDecoration.ini</code> file
-	 * (or some other ini file as specified via {@link #setIniFile(File)}.
-	 */
 	public List<LinkDecorationRule> getRules() {
 		if (iniFile != null && (rules == null || rulesFileHasChangedSinceLastLoad())) {
-			rules = new ArrayList<LinkDecorationRule>();
 			loadRules();
 		}
 		return rules;
@@ -61,37 +50,32 @@ class LinkDecorationConfig {
 		return iniFileLastModified == iniFileLastModified();
 	}
 
-	/**
-	 * Loads all lines of the file specified by {@link #iniFile} and attempts to
-	 * parse each non-blank line into a {@link LinkDecorationRule}, adding all such
-	 * rules to {@link #rules}.
-	 */
 	private void loadRules() {
+        rules = new ArrayList<LinkDecorationRule>();
 		try (BufferedReader inputStream = new BufferedReader(new InputStreamReader(iniFile.openStream()))){
 			while (inputStream.ready()) {
 			    String line = inputStream.readLine().trim();
 				if (isBlank(line) || isComment(line)) {
 					continue;
 				}
-				Matcher matcher = lineSplitterPattern.matcher(line);
-				if (matcher.matches()) {
-					LinkDecorationRule rule = new LinkDecorationRule();
-					String regexesString = matcher.group(1);
-					List<String> regexes = parseRegexes(regexesString, rule);
-					rule.setRegexes(regexes);
-
-					String iconName = matcher.group(2);
-					if (iconName != null) {
-						rule.setIconName(iconName.substring(1).trim());
-					}
-
-					rules.add(rule);
-				}
+                int descriptionStart = line.lastIndexOf("#");
+                int iconNameEnd = descriptionStart == -1 ? line.length() :  descriptionStart;
+                int specificationEnd = line.lastIndexOf("|", iconNameEnd);
+                if(specificationEnd > 0 && iconNameEnd > specificationEnd) {
+                    String matchSpecification  = line.substring(0, specificationEnd).trim();
+                    String iconName = line.substring(specificationEnd + 1, iconNameEnd).trim(); 
+                    DecorationRuleMatcher matcher = MatcherFactory.INSTANCE.matcherOf(matchSpecification);
+                    LinkDecorationRule rule = new LinkDecorationRule(matcher, iconName);
+                    rules.add(rule);
+                }
+                else {
+                    LogUtils.warn("Ignore link decoration rule " + line);
+                }
 			}
 			iniFileLastModified = iniFileLastModified();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e.getMessage(), e);
+			Collections.sort(rules, Comparator.comparing(LinkDecorationRule::getMaximalScore).reversed());
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
 		}
 	}
 
@@ -113,20 +97,7 @@ class LinkDecorationConfig {
 		StringTokenizer tokenizer = new StringTokenizer(regexesString, ",");
 		while (tokenizer.hasMoreTokens()) {
 			String regex = tokenizer.nextToken().trim();
-			regex = "(" + regex.substring(1, regex.length() - 1) + ")";
-
-			if (regex.startsWith("(^")) {
-				rule.setPrefixRule(true);
-			} else {
-				regex = "^.*" + regex;
-			}
-
-			if (regex.endsWith("$)")) {
-				rule.setSuffixRule(true);
-			} else {
-				regex = regex + ".*$";
-			}
-
+			regex = regex.substring(1, regex.length() - 1);
 			regexes.add(regex);
 		}
 		return regexes;
