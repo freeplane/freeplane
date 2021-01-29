@@ -23,4 +23,9 @@ class PatternBasedMatcher implements DecorationRuleMatcher{
         return matcher.find() ? matcher.group().length() : 0;
     }
 
+    @Override
+    public String toString() {
+        return "PatternBasedMatcher [" + pattern + "]";
+    }
+
 }

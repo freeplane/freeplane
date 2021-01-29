@@ -21,4 +21,9 @@ class LinkDecorationRule
     int getMaximalScore() {
         return matcher.getMaximalMatchLength();
     }
+
+    @Override
+    public String toString() {
+        return "LinkDecorationRule [matcher=" + matcher + ", iconName=" + iconName + "]";
+    }
 }
