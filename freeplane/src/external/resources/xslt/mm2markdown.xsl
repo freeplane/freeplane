@@ -201,12 +201,12 @@ ChangeLog: See: http://freeplane.sourceforge.net/
 				</xsl:if>
 			</xsl:when>
 		<!-- Create the headers from non-root node text using number signs -->
-			<xsl:otherwise>
+			<xsl:when test="@TEXT">
 				<xsl:text>&#xA;</xsl:text>
 				<xsl:call-template name="numberSign">
 					<xsl:with-param name="howMany" select="count(ancestor::*) - 1"/>
 				</xsl:call-template>
-			</xsl:otherwise>
+			</xsl:when>
 		</xsl:choose>
 		<xsl:text> </xsl:text>
 		<!-- Node text -->
