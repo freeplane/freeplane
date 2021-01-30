@@ -177,14 +177,12 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		writeManager.addAttributeWriter(NodeBuilder.XML_STYLENODE, this);
 	}
 
-	private static class TransformedXMLExtension implements IExtension{
-		final String xml;
-
-		public TransformedXMLExtension(String html) {
-	        super();
-	        this.xml = HtmlUtils.toXhtml(html);
+	private static class TransformedXMLExtension extends RichTextModel implements IExtension {
+		public TransformedXMLExtension(String contentType, String original, String html) {
+            super(contentType, original.equals(html) ? null : HtmlUtils.htmlToPlain(original), HtmlUtils.toXhtml(html));
         }
 	}
+	
 	public void writeAttributes(final ITreeWriter writer, final Object userObject, final String tag) {
 		if(! NodeWriter.shouldWriteSharedContent(writer))
 			return;
@@ -203,12 +201,13 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		}
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
-			final String text = TextController.getController().getTransformedTextNoThrow(node, node, data);
-			if (!HtmlUtils.isHtml(text)) {
+			TextController textController = TextController.getController();
+            final String text = textController.getTransformedTextNoThrow(node, node, data);
+			if (HtmlUtils.isHtml(text)) {
+			    String original = data.toString();
+				node.addExtension(new TransformedXMLExtension(textController.getNodeFormat(node), original, text));
+			} else {
 				writer.addAttribute(NodeTextBuilder.XML_NODE_TEXT, text.replace('\0', ' '));
-			}
-			else{
-				node.addExtension(new TransformedXMLExtension(text));
 			}
 		}
 		else{
@@ -222,24 +221,30 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		}
 	}
 
-	public void writeContent(final ITreeWriter writer, final Object element, final String tag) throws IOException {
+	public void writeContent(final ITreeWriter writer, final Object object, final String tag) throws IOException {
 		if(! NodeWriter.shouldWriteSharedContent(writer))
 			return;
-		final NodeModel node = (NodeModel) element;
+		final NodeModel node = (NodeModel) object;
 		final TransformedXMLExtension transformedXML = node.getExtension(TransformedXMLExtension.class);
 		if (transformedXML != null || node.getXmlText() != null) {
-			final XMLElement htmlElement = new XMLElement();
-			htmlElement.setName(NodeTextBuilder.XML_NODE_RICHCONTENT_TAG);
-			htmlElement.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_NODE);
+			final XMLElement element = new XMLElement();
+			element.setName(NodeTextBuilder.XML_NODE_RICHCONTENT_TAG);
+			element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_NODE);
 			final String xmlText;
 			if (transformedXML != null){
-				xmlText = transformedXML.xml;
+				xmlText = transformedXML.getXml();
+	            if(transformedXML.getText() != null) {
+	                element.setAttribute("FORMAT", transformedXML.getContentType());
+	                XMLElement textElement = element.createElement(TEXT_ELEMENT);
+	                textElement.setContent(transformedXML.getText());
+	                element.addChild(textElement);
+	            }
 				node.removeExtension(transformedXML);
 			}
 			else
 				xmlText = node.getXmlText();
 			final String content = xmlText.replace('\0', ' ');
-			writer.addElement('\n' + content + '\n', htmlElement);
+			writer.addElement('\n' + content + '\n', element);
 		}
 	}
 	/*
