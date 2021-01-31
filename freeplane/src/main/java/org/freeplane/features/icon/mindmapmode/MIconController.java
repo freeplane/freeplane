@@ -91,7 +91,7 @@ import org.freeplane.features.styles.LogicalStyleController;
  */
 public class MIconController extends IconController {
     private static final String RECENTLY_USED_ICONS_PROPERTY = "recently_used_icons";
-    private static final String USE_EMOJI_ICONS_PROPTERTY = "use_emoji_icons";
+    private static final String USE_EMOJI_ICONS_PROPERTY = "use_emoji_icons";
     private static final Insets ICON_SUBMENU_INSETS = new Insets(3, 0, 3, 0);
 	private static final ConditionPredicate DEPENDS_ON_ICON = new ConditionPredicate() {
 
@@ -483,7 +483,7 @@ public class MIconController extends IconController {
 	}
 
 	boolean areEmojiActionsEnabled() {
-	    return ResourceController.getResourceController().getBooleanProperty(USE_EMOJI_ICONS_PROPTERTY);
+	    return ResourceController.getResourceController().getBooleanProperty(USE_EMOJI_ICONS_PROPERTY);
     }
 
     public void removeAllIcons(final NodeModel node) {
