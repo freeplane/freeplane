@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 63.1 (101010) - https://sketch.com -->
+    <title>file/email_envelope</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <path d="M75.2129473,8.0680324 L72.2040951,5.05918007 L44.3326209,32.9306542 C40.8486866,36.4145885 34.9893426,36.4145885 31.5054084,32.9306542 L3.63393424,5.21754072 L0.625081921,8.22639305 L21.3703269,28.971638 L0.625081921,49.716883 L3.63393424,52.7257353 L24.3791792,31.9804903 L28.4965561,36.0978672 C31.0303264,38.6316375 34.3559001,40.0568834 37.8398343,40.0568834 C41.3237686,40.0568834 44.6493422,38.6316375 47.1831125,36.0978672 L51.3004894,31.9804903 L72.0457343,52.7257353 L75.0545867,49.716883 L54.3093418,28.971638 L75.2129473,8.0680324" id="path-1"></path>
+        <filter x="0.0%" y="0.0%" width="100.0%" height="100.0%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+        <path d="M69.3536034,58.1099973 L6.80114721,58.1099973 C3.1588523,58.1099973 0.149999976,55.101145 0.149999976,51.4588501 L0.149999976,6.80114721 C0.149999976,3.1588523 3.1588523,0.149999976 6.80114721,0.149999976 L69.3536034,0.149999976 C72.9958983,0.149999976 76.0047506,3.1588523 76.0047506,6.80114721 L76.0047506,51.4588501 C76.0047506,55.101145 72.9958983,58.1099973 69.3536034,58.1099973 L69.3536034,58.1099973 Z M6.64278656,4.42573749 C5.37590137,4.42573749 4.42573749,5.37590137 4.42573749,6.64278656 L4.42573749,51.3004894 C4.42573749,52.5673747 5.37590137,53.5175385 6.64278656,53.5175385 L69.1952427,53.5175385 C70.4621279,53.5175385 71.4122918,52.5673747 71.4122918,51.3004894 L71.4122918,6.64278656 C71.4122918,5.37590137 70.4621279,4.42573749 69.1952427,4.42573749 L6.64278656,4.42573749 L6.64278656,4.42573749 Z" id="path-3"></path>
+        <filter x="0.0%" y="0.0%" width="100.0%" height="100.0%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="file/email_envelope">
+            <g id="Group" transform="translate(11.000000, 20.000000)">
+                <rect id="Rectangle" fill="#CDCB9F" x="2.40652914" y="2.40652914" width="71.2999985" height="52.8999989"></rect>
+                <g id="email" transform="translate(0.106529, 0.106529)"></g>
+                <g id="Fill-3" fill-rule="nonzero">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#928C00" xlink:href="#path-1"></use>
+                </g>
+                <g id="Fill-4" fill-rule="nonzero">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                    <use fill="#928C00" xlink:href="#path-3"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

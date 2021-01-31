@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 63.1 (101010) - https://sketch.com -->
+    <title>file/video_avi</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <path d="M54.4476279,0 L2.61298605,0 C1.16986047,0 0,1.16964286 0,3.43928571 L0,98.2142857 C0,98.8303571 1.16986047,100 2.61298605,100 L74.187014,100 C75.6301395,100 76.8,98.8303571 76.8,98.2142857 L76.8,23.175 C76.8,21.9321429 76.6338977,21.5321429 76.340986,21.2375 L55.5585488,0.458928571 C55.2638512,0.166071429 54.8637767,0 54.4476279,0 Z" id="path-1"></path>
+        <path d="M18.6625,95.034375 L20.7679688,89.6339844 L29.1351563,89.6339844 L31.240625,95.034375 L35.5609375,95.034375 L27.6859375,74.8 L23.475,74.8 L15.6,95.034375 L18.6625,95.034375 Z M28.0960938,86.940625 L21.8070313,86.940625 L24.9515625,78.8742187 L28.0960938,86.940625 Z M48.0629896,95.034375 L55.2954115,74.8 L52.2602553,74.8 L46.6547865,90.4542969 L40.8579115,74.8 L36.3598646,74.8 L43.8383803,95.034375 L48.0629896,95.034375 Z M62.4380887,95.034375 L62.4380887,74.8 L58.2271512,74.8 L58.2271512,95.034375 L62.4380887,95.034375 Z" id="path-3"></path>
+        <filter x="-7.4%" y="-14.8%" width="113.8%" height="129.7%" filterUnits="objectBoundingBox" id="filter-4">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="file/video_avi">
+            <g id="file/AVI" transform="translate(11.000000, 0.000000)">
+                <g id="file/Generic" transform="translate(0.600000, 0.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <path stroke="#626262" stroke-width="1.4" d="M2.61298605,0.7 C2.07959922,0.7 1.59881136,0.925504223 1.26115963,1.36993093 C0.898761638,1.84692936 0.7,2.54509637 0.7,3.43928571 L0.7,98.2142857 C0.7,98.4219545 1.02021186,98.6723283 1.32459696,98.880345 C1.67260844,99.118176 2.12107086,99.3 2.61298605,99.3 L74.187014,99.3 C74.6789291,99.3 75.1273916,99.118176 75.475403,98.880345 C75.7797881,98.6723283 76.1,98.4219545 76.1,98.2142857 L76.1,23.175 C76.1,22.2934437 76.0628571,21.9506065 75.844555,21.7310142 L55.0636201,0.953949356 C54.7731758,0.665323519 54.1831398,0.7 2.61298605,0.7 Z"></path>
+                    <polygon id="Path" fill="#B5B3A6" fill-rule="nonzero" mask="url(#mask-2)" points="54.6 1.4330168 54.6 22.2 75.276405 22.1763331"></polygon>
+                </g>
+                <path d="M74.4822791,98.6 L3.51772093,98.6 C2.1272093,98.6 2,98.4903529 2,97.1215059 L2,69.8 L76,69.8 L76,97.1215059 C76,98.4903529 75.8727907,98.6 74.4822791,98.6 Z" id="Path" fill="#FF5A5A" fill-rule="nonzero"></path>
+                <polygon id="Path" fill="#0D0D0D" fill-rule="nonzero" points="29 61.6 29 41.4685714 29 21.6 60.4 41.6"></polygon>
+                <g id="AVI" fill-rule="nonzero">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                    <use fill="#FFFFFF" xlink:href="#path-3"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
