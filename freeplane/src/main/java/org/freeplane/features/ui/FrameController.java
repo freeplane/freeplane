@@ -95,7 +95,7 @@ import org.freeplane.features.time.TimeComboBoxEditor;
  * @author Dimitry Polivaev
  */
 abstract public class FrameController implements ViewController {
-	private static final String AQUA_LAF_NAME = "org.violetlib.aqua.AquaLookAndFeel.AquaLookAndFeel";
+	private static final String AQUA_LAF_NAME = "org.violetlib.aqua.AquaLookAndFeel";
     private static final String DARCULA_LAF_NAME = "com.bulenkov.darcula.DarculaLaf";
     private static final String MOTIF_LAF_NAME = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
 	private static final double DEFAULT_SCALING_FACTOR = 0.8;
