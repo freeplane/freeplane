@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
 
+import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -52,7 +53,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
-import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -63,9 +64,10 @@ import org.freeplane.features.icon.factory.IconFactory;
 
 public class IconSelectionPopupDialog extends JDialog implements KeyListener, MouseListener {
 
-	private static final BevelBorder USUAL = new BevelBorder(BevelBorder.RAISED);
-    private static final BevelBorder HIGHLIGHTED =  new BevelBorder(BevelBorder.LOWERED, Color.CYAN,
-            Color.CYAN);
+    private static int BORDER_THICKNESS = 2;
+    
+	private static final Border USUAL = BorderFactory.createEmptyBorder(BORDER_THICKNESS, BORDER_THICKNESS, BORDER_THICKNESS, BORDER_THICKNESS);
+    private static final Border HIGHLIGHTED =  BorderFactory.createLineBorder(Color.RED, BORDER_THICKNESS);
     /**
 	 * 
 	 */
@@ -114,6 +116,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		Dimension preferredSize = iconPanel.getPreferredSize();
 		JScrollPane scrollPane = new JScrollPane(iconPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, 
 		        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(singleIconSize);
 		scrollPane.setPreferredSize(new Dimension(preferredSize.width, preferredSize.width / 2));
 		filterTextField = setupFilterTextField_and_KeyListener();
 		addWindowFocusListener(new WindowFocusListener() {
