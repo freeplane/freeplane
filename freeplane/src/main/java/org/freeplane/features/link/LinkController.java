@@ -59,6 +59,8 @@ import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import org.freeplane.api.LengthUnit;
+import org.freeplane.api.Quantity;
 import org.freeplane.core.extension.Configurable;
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.io.ReadManager;
@@ -79,8 +81,10 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.DashVariant;
 import org.freeplane.features.explorer.MapExplorerController;
 import org.freeplane.features.filter.FilterController;
+import org.freeplane.features.icon.IconController;
 import org.freeplane.features.icon.IconRegistry;
 import org.freeplane.features.icon.MindIcon;
+import org.freeplane.features.icon.NamedIcon;
 import org.freeplane.features.icon.factory.IconStoreFactory;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.icons.NodeViewDecorator;
@@ -989,7 +993,8 @@ public class LinkController extends SelectionController implements IExtension {
 	                MindIcon icon = IconStoreFactory.ICON_STORE.getMindIcon("links/" + iconName);
 	                final IconRegistry iconRegistry = node.getMap().getIconRegistry();
                     iconRegistry.addIcon(icon);
-	                iconImages.addIcon(icon);
+                    final Quantity<LengthUnit> iconHeight = IconController.getController().getIconSize(node);
+                    iconImages.addIcon(icon, iconHeight);
 	            }
 	        }
 	    } catch (Exception e) {
