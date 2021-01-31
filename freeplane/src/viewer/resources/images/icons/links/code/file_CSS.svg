@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 63.1 (101010) - https://sketch.com -->
+    <title>code/file_CSS</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="code/file_CSS" fill-rule="nonzero">
+            <g id="css" transform="translate(5.000000, 0.000000)">
+                <polygon id="Path" fill="#0277BD" points="90 0 0 0 7.94117647 89.4736842 45 100 82.0588235 89.4736842"></polygon>
+                <polygon id="Path" fill="#039BE5" points="45 8.33333333 45 91.6666667 74.9756691 83.3119109 81.6666667 8.33333333"></polygon>
+                <polygon id="Path" fill="#FFFFFF" points="68.3333333 21.6666667 45 21.6666667 45 32.2237807 57.5562148 32.2237807 56.7974072 42.7808946 45 42.7808946 45 53.3380086 56.2744452 53.3380086 55.5156376 65.2147619 45 68.9044732 45 80 65.2468322 73.1325974 67.0515638 42.7808946"></polygon>
+                <path d="M45,21.6666667 L45,32.2237807 L20.8180237,32.2237807 L20,21.6666667 L45,21.6666667 Z M32.4932058,42.7808946 L33.0476139,53.3380086 L45,53.3380086 L45,42.7808946 L32.4932058,42.7808946 Z M33.5884335,58.6165656 L22.7176867,58.6165656 L23.5329927,73.1325974 L45,80 L45,68.9044732 L33.8520491,65.2147619 L33.5884335,58.6165656 Z" id="Shape" fill="#EEEEEE"></path>
+            </g>
+        </g>
+    </g>
+</svg>
