@@ -62,7 +62,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.icon.IconDescription;
 import org.freeplane.features.icon.factory.IconFactory;
 
-public class IconSelectionPopupDialog extends JDialog implements KeyListener, MouseListener {
+public class IconSelectionPopupDialog extends JDialog implements MouseListener {
 
     private static int BORDER_THICKNESS = 2;
     
@@ -136,7 +136,6 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 		contentPane.add(descriptionLabel, BorderLayout.SOUTH);
 		selected = iconLabels.get(0);
         highlightSelected();
-		addKeyListener(this);
 		pack();
         filterTimer = new Timer(300, this::filterIcons);
         filterTimer.setRepeats(false);
@@ -165,55 +164,10 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
             });
 	        filterTextField.addKeyListener(new KeyListener() {
 	            public void keyPressed(KeyEvent keyEvent) {
-	                String filterText = filterTextField.getText();
-	                if (filterText.length() == 0) {
-	                    if (keyEvent.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-	                        IconSelectionPopupDialog.this.keyPressed(keyEvent);
-	                    }
-	                }
+	                processKeyEvent(keyEvent);
 	            }
 
 	            public void keyReleased(KeyEvent keyEvent) {
-	                boolean passCharOnToDialog = false;
-	                String filterText = filterTextField.getText();
-	                lastSearchText = filterText;
-	                if (!filterText.startsWith("/")) {
-	                    filterTextField.setCaretPosition(filterText.length());
-	                }
-	                if (filterText.startsWith(".") && filterText.length() == 2) {
-	                    filterTextField.setText("");
-	                    passCharOnToDialog = true;
-	                } else {
-	                    char keyChar = keyEvent.getKeyChar();
-	                    switch (keyChar) {
-	                    case KeyEvent.VK_ESCAPE:
-	                        if (filterText.length() > 0) {
-	                            // Consume the Esc here, clear the filterTextField.
-	                            filterTextField.setText("");
-	                            keyEvent.consume();
-	                            break;
-	                        }
-	                        // else fall through to IconSelectionPopupDialog.this.keyPressed(keyEvent) below
-	                    case KeyEvent.VK_LEFT:
-	                    case KeyEvent.VK_RIGHT:
-	                    case KeyEvent.VK_UP:
-	                    case KeyEvent.VK_DOWN:
-	                    case KeyEvent.VK_ENTER:
-	                    case KeyEvent.CHAR_UNDEFINED:
-	                        passCharOnToDialog = true;
-	                        break;
-	                    }
-	                }
-	                if (passCharOnToDialog) {
-	                    // Pass on to this dialog's keyPressed(...) method.
-	                    IconSelectionPopupDialog.this.keyPressed(keyEvent);
-	                    return;
-	                } else {
-	                    if (!filterText.startsWith(".")) {
-	                        iconPanel.revalidate();
-	                        iconPanel.repaint();
-	                    }
-	                }
 	            }
 
 	            public void keyTyped(KeyEvent keyEvent) {
@@ -411,12 +365,8 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
             selected.scrollRectToVisible(new Rectangle(0, 0, selected.getWidth(), selected.getHeight()));
     }
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-	 */
-	@Override
-    public void keyPressed(final KeyEvent keyEvent) {
+	
+    public void processKeyEvent(final KeyEvent keyEvent) {
 		switch (keyEvent.getKeyCode()) {
 			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_KP_RIGHT:
@@ -444,28 +394,16 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 				addIcon(keyEvent.getModifiers());
 				return;
 		}
-		final int index = findIndexByKeyEvent(keyEvent);
-		if (index != -1) {
-			result = index;
-			mModifiers = keyEvent.getModifiers();
-			keyEvent.consume();
-			this.dispose();
+		if(keyEvent.isControlDown() || keyEvent.isMetaDown()) {
+		    final int index = findIndexByKeyEvent(keyEvent);
+		    if (index != -1) {
+		        result = index;
+		        mModifiers = keyEvent.getModifiers();
+		        keyEvent.consume();
+		        this.dispose();
+		    }
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
-	 */
-	@Override
-    public void keyReleased(final KeyEvent arg0) {/**/}
-
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
-	 */
-	@Override
-    public void keyTyped(final KeyEvent arg0) {/**/}
 
 	/*
 	 * (non-Javadoc)
@@ -535,6 +473,7 @@ public class IconSelectionPopupDialog extends JDialog implements KeyListener, Mo
 	    descriptionLabel.setText(message);
 	}
 	private void unhighlightSelected() {
-	    selected.setBorder(USUAL);
+	    if(selected != null)
+	        selected.setBorder(USUAL);
 	}
 }
