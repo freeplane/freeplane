@@ -95,9 +95,10 @@ import org.freeplane.features.time.TimeComboBoxEditor;
  * @author Dimitry Polivaev
  */
 abstract public class FrameController implements ViewController {
-	private static final String AQUA_LAF_NAME = "org.violetlib.aqua.AquaLookAndFeel";
-    private static final String DARCULA_LAF_NAME = "com.bulenkov.darcula.DarculaLaf";
-    private static final String MOTIF_LAF_NAME = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
+	private static final String AQUA_LAF_NAME = "VAqua";
+    private static final String AQUA_LAF_CLASS_NAME = "org.violetlib.aqua.AquaLookAndFeel";
+    private static final String DARCULA_LAF_CLASS_NAME = "com.bulenkov.darcula.DarculaLaf";
+    private static final String MOTIF_LAF__CLASS_NAME = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
 	private static final double DEFAULT_SCALING_FACTOR = 0.8;
 
 	private final class HorizontalToolbarPanel extends JPanel {
@@ -537,15 +538,18 @@ abstract public class FrameController implements ViewController {
 
 	public static void setLookAndFeel(final String lookAndFeel, boolean supportHidpi) {
 		try {
+            if (Compat.isMacOsX()) {
+                try {
+                    FrameController.class.getClassLoader().loadClass(AQUA_LAF_CLASS_NAME);
+                    UIManager.installLookAndFeel(AQUA_LAF_NAME, AQUA_LAF_CLASS_NAME);
+                } catch (Exception e) {
+                }
+            }
 			if (lookAndFeel.equals("default")) {
 			    boolean lookAndFeelSet = false;
 			    if (Compat.isMacOsX()) {
-			        try {
-                        Class<?> lookAndFeelClass = FrameController.class.getClassLoader().loadClass(AQUA_LAF_NAME);
-                        UIManager.setLookAndFeel((LookAndFeel) lookAndFeelClass.getDeclaredConstructor().newInstance());
-                        lookAndFeelSet = true;
-                    } catch (Exception e) {
-                    }
+			        String lafClassName = AQUA_LAF_CLASS_NAME;
+			        lookAndFeelSet = tryToSetLookAndFeel(lafClassName);
 			    }
 			    if(! lookAndFeelSet) {
 			        String lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
@@ -556,18 +560,17 @@ abstract public class FrameController implements ViewController {
 			}
 			else {
 				LookAndFeelInfo[] lafInfos = UIManager.getInstalledLookAndFeels();
-				boolean setLnF = false;
+				boolean lookAndFeelSet = false;
 				for (LookAndFeelInfo lafInfo : lafInfos) {
 					if (lafInfo.getName().equalsIgnoreCase(lookAndFeel)) {
 						String lookAndFeelClassName = lafInfo.getClassName();
 						fixDarculaNPE(lookAndFeelClassName);
-						UIManager.setLookAndFeel(lookAndFeelClassName);
+						lookAndFeelSet = tryToSetLookAndFeel(lookAndFeelClassName);
 						fixLookAndFeelUI();
-						setLnF = true;
 						break;
 					}
 				}
-				if (!setLnF) {
+				if (!lookAndFeelSet) {
 					final URLClassLoader userLibClassLoader = ClassLoaderFactory.getClassLoaderForUserLib();
 					try {
 						final Class<?> lookAndFeelClass = userLibClassLoader.loadClass(lookAndFeel);
@@ -620,8 +623,21 @@ abstract public class FrameController implements ViewController {
 			UIManager.getDefaults().put("control", Color.LIGHT_GRAY);
 	}
 
+    private static boolean tryToSetLookAndFeel(String lafClassName) {
+        boolean lookAndFeelSet;
+        try {
+            Class<?> lookAndFeelClass = FrameController.class.getClassLoader().loadClass(lafClassName);
+            LookAndFeel aquaLookAndFeelInstance = (LookAndFeel) lookAndFeelClass.getDeclaredConstructor().newInstance();
+            UIManager.setLookAndFeel(aquaLookAndFeelInstance);
+            lookAndFeelSet = true;
+        } catch (Exception e) {
+            lookAndFeelSet = false;
+        }
+        return lookAndFeelSet;
+    }
+
 	private static void fixDarculaNPE(String lookAndFeelClassName) throws UnsupportedLookAndFeelException {
-		if(lookAndFeelClassName.equals(DARCULA_LAF_NAME))
+		if(lookAndFeelClassName.equals(DARCULA_LAF_CLASS_NAME))
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
 	}
 
@@ -632,7 +648,7 @@ abstract public class FrameController implements ViewController {
     }
     
 	private static void addHotKeysToMotifInputMaps(LookAndFeel lookAndFeel) {
-        if(lookAndFeel.getClass().getName().equals(MOTIF_LAF_NAME)) {
+        if(lookAndFeel.getClass().getName().equals(MOTIF_LAF__CLASS_NAME)) {
             UIDefaults uiDefaults = UIManager.getLookAndFeelDefaults();
             uiDefaults.replaceAll((k, v) -> replaceMotifLazyInputMaps(k, v));
          }
@@ -670,7 +686,7 @@ abstract public class FrameController implements ViewController {
     }
 
     private static void fixDarculaButtonUI(LookAndFeel lookAndFeel){
-        if(lookAndFeel.getClass().getName().equals(DARCULA_LAF_NAME)) {
+        if(lookAndFeel.getClass().getName().equals(DARCULA_LAF_CLASS_NAME)) {
 			UIManager.put("ToggleButtonUI", FixDarculaToggleButtonUI.class.getName());
 			UIManager.put("Button.darcula.selection.color1", ColorUtils.rgbStringToColor("#687f88"));
 			UIManager.put("Button.darcula.selection.color2", ColorUtils.rgbStringToColor("#436188"));
