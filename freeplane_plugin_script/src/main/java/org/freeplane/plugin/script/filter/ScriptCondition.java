@@ -28,6 +28,7 @@ public class ScriptCondition extends ASelectableCondition {
 	final private ScriptRunner scriptRunner;
 	final private String source;
 	private boolean errorReported = false;
+    private String errorMessage;
 
 	static ASelectableCondition load(final XMLElement element) {
 	    final XMLElement child = element.getFirstChildNamed(TAG_NAME);
@@ -69,17 +70,22 @@ public class ScriptCondition extends ASelectableCondition {
 			if(result instanceof Number)
 				return ((Number) result).doubleValue() != 0;
 	        printStream.println(this + ": got '" + result + "' for " + node);
-	        final String info = TextUtils.format(SCRIPT_FILTER_ERROR_RESOURCE, createDescription(),
-	        	node.toString(), String.valueOf(result));
+            final String info = createErrorDescription(node, String.valueOf(result), SCRIPT_FILTER_ERROR_RESOURCE);
 	        setErrorStatus(info);
         }
         catch (ExecuteScriptException e) {
-			final String info = TextUtils.format(SCRIPT_FILTER_EXECUTE_ERROR_RESOURCE, createDescription(),
-			    node.toString(), e.getMessage());
+			final String info = createErrorDescription(node, String.valueOf(e.getMessage()), SCRIPT_FILTER_EXECUTE_ERROR_RESOURCE);
 			setErrorStatus(info);
         }
         return false;
 	}
+
+    private String createErrorDescription(final NodeModel node, String message, String template) {
+        final String info = TextUtils.format(template, !errorReported ?  createDescription() : "...",
+                node.createID() + ", " +  node.toString(), message.equals(errorMessage) ? "..." : message);
+        errorMessage = message;
+        return info;
+    }
 
 	@Override
 	public boolean checkNodeInFormulaContext(NodeModel node){
@@ -100,16 +106,16 @@ public class ScriptCondition extends ASelectableCondition {
 
 
 	private void setErrorStatus(final String info) {
-		if(! errorReported){
-			errorReported = true;
-			JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(), info,
-				TextUtils.getText("error"), JOptionPane.ERROR_MESSAGE);
-		}
-		LogUtils.warn(info);
-		String message = info.trim().replaceAll("\\s", " ");
-		if(message.length() > 80)
-			message = message.substring(0, 80);
-		Controller.getCurrentController().getViewController().out(message);
+	    LogUtils.warn(info);
+	    if(! errorReported){
+	        errorReported = true;
+	        JOptionPane.showMessageDialog(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner(), info,
+	                TextUtils.getText("error"), JOptionPane.ERROR_MESSAGE);
+	        String message = info.trim().replaceAll("\\s", " ");
+	        if(message.length() > 80)
+	            message = message.substring(0, 80);
+	        Controller.getCurrentController().getViewController().out(message);
+	    }
     }
 
 	@Override
