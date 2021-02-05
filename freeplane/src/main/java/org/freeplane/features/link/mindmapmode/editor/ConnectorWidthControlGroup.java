@@ -79,7 +79,7 @@ public class ConnectorWidthControlGroup implements ControlGroup {
 	@Override
 	public void addControlGroup(DefaultFormBuilder formBuilder) {
 		mSetWidth = new BooleanProperty(ControlGroup.SET_RESOURCE);
-		mWidth = new NumberProperty("edit_width_label", 20, 255, 20);
+		mWidth = new NumberProperty("edit_width_label", 1, 255, 1);
 		mWidth.setNameAsLabelAndToolTip();
 		propertyChangeListener = new ConnectorWidthChangeListener(mSetWidth, mWidth);
 		mSetWidth.addPropertyChangeListener(propertyChangeListener);
