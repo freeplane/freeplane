@@ -67,11 +67,6 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 		else{
 		    element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, "UNKNOWN");
 		}
-        boolean containsXml = note.getXml() != null;
-        String contentType = note.getContentType();
-        ContentSyntax contentSyntax = containsXml ? ContentSyntax.XML : ContentSyntax.PLAIN;
-        element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentSyntax.with(contentType));
-
 		String transformedXhtml = "";
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
@@ -84,7 +79,12 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 				}
 			}
 		}
-		if (note.getXml() != null) {
+        boolean containsXml = transformedXhtml.isEmpty() && note.getXml() != null;
+        String contentType = note.getContentType();
+        ContentSyntax contentSyntax = containsXml ? ContentSyntax.XML : ContentSyntax.PLAIN;
+        element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentSyntax.with(contentType));
+
+		if (containsXml) {
         	final String content = note.getXml().replace('\0', ' ');
         	writer.addElement('\n' + content + '\n' + transformedXhtml, element);
         }

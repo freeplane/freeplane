@@ -263,14 +263,6 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		DetailModel details = (DetailModel) extension;
 		final XMLElement element = new XMLElement();
 		element.setName(NodeTextBuilder.XML_NODE_RICHCONTENT_TAG);
-		boolean containsXml = details.getXml() != null;
-        String contentType = details.getContentType();
-        ContentSyntax contentSyntax = containsXml ? ContentSyntax.XML : ContentSyntax.PLAIN;
-        element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentSyntax.with(contentType));
-		element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_DETAILS);
-		if(details.isHidden()){
-		    element.setAttribute("HIDDEN", "true");
-		}
 		
 		String transformedXhtml = "";
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
@@ -284,8 +276,15 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 				}
 			}
 		}
-
 		
+        boolean containsXml = transformedXhtml.isEmpty() && details.getXml() != null;
+        String contentType = details.getContentType();
+        ContentSyntax contentSyntax = containsXml ? ContentSyntax.XML : ContentSyntax.PLAIN;
+        element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_CONTENT_TYPE_ATTRIBUTE, contentSyntax.with(contentType));
+        element.setAttribute(NodeTextBuilder.XML_RICHCONTENT_TYPE_ATTRIBUTE, NodeTextBuilder.XML_RICHCONTENT_TYPE_DETAILS);
+        if(details.isHidden()){
+            element.setAttribute("HIDDEN", "true");
+        }
         if (containsXml) {
         		final String content = details.getXml().replace('\0', ' ');
         		writer.addElement('\n' + content + '\n' + transformedXhtml, element);
@@ -294,7 +293,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
             String text = details.getText();
             if(text != null) {
             	XMLElement textElement = element.createElement(TEXT_ELEMENT);
-            	textElement.setContent(text);
+            	textElement.setContent(HtmlUtils.htmlToPlain(text));
             	element.addChild(textElement);
             }
             writer.addElement(transformedXhtml, element);
