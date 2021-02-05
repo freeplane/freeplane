@@ -19,6 +19,7 @@ public class FixedSizeUIIcon implements Icon {
     private final int height;
     private final URL url;
     private boolean failure = false;
+    private Image image;
 
 
     public FixedSizeUIIcon(URL url, int width, int height) {
@@ -31,7 +32,8 @@ public class FixedSizeUIIcon implements Icon {
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         if (isValid()) {
-            Image image = createImage();
+            if(image == null)
+                image = createImage();
             if(image != null)
                 g.drawImage(image, x, y, c);
         }
