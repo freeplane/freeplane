@@ -202,7 +202,14 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
 		final boolean forceFormatting = Boolean.TRUE.equals(writer.getHint(MapWriter.WriterHint.FORCE_FORMATTING));
 		if (forceFormatting) {
 			TextController textController = TextController.getController();
-            final String text = textController.getTransformedTextNoThrow(node, node, data);
+            final Object transformed = TextController.getController().getTransformedObjectNoFormattingNoThrow(node, node, data);
+            final String text;
+            if(!transformed.equals(data)) {
+                String transformedHtml = HtmlUtils.objectToHtml(transformed);
+                text = HtmlUtils.toXhtml(transformedHtml);
+            }
+            else
+                text = data.toString();
 			if (HtmlUtils.isHtml(text)) {
 			    String original = data.toString();
 				node.addExtension(new TransformedXMLExtension(textController.getNodeFormat(node), original, text));
