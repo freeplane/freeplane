@@ -69,9 +69,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.mode.Controller;
 
 import com.jgoodies.forms.builder.ButtonBarBuilder;
-import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.Borders;
-import com.jgoodies.forms.layout.FormLayout;
 
 public class OptionPanel {
 	private static final String FILE_EXTENSION = "freeplaneoptions";
@@ -132,19 +130,17 @@ public class OptionPanel {
 		centralPanel.setLayout(new GridLayout(1, 1));
 		final JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		FormLayout bottomLayout = null;
-		DefaultFormBuilder bottomBuilder = null;
 		initControls(controlsTree);
 		final Iterator<IPropertyControl> iterator = controls.iterator();
 		int tabIndex = 0;
+		PropertyPane propertyPane = null;
 		while (iterator.hasNext()) {
 			final IPropertyControl control = iterator.next();
-			if (control instanceof TabProperty) {
+            if (control instanceof TabProperty) {
 				final TabProperty newTab = (TabProperty) control;
-				bottomLayout = new FormLayout(newTab.getLayout(), "");
-				bottomBuilder = new DefaultFormBuilder(bottomLayout);
-				bottomBuilder.border(Borders.DIALOG);
-				final JScrollPane bottomComponent = new JScrollPane(bottomBuilder.getPanel());
+				propertyPane = new PropertyPane(newTab.getLayout());
+				propertyPane.border(Borders.DIALOG);
+				final JScrollPane bottomComponent = new JScrollPane(propertyPane);
 				UITools.setScrollbarIncrement(bottomComponent);
 				final String tabName = TextUtils.getOptionalText(newTab.getLabel());
 				tabStringToIndexMap.put(tabName, tabIndex);
@@ -153,7 +149,7 @@ public class OptionPanel {
 				tabIndex++;
 			}
 			else {
-				control.appendToForm(bottomBuilder);
+			    propertyPane.addProperty(control);
 			}
 		}
 		tabbedPane.addChangeListener(new ChangeListener() {
