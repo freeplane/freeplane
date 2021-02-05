@@ -52,10 +52,10 @@ public class ConditionalContentTransformer implements IContentTransformer, IEdit
 
 	@Override
 	public Object transformContent(NodeModel node,
-			Object nodeProperty, Object content, TextController textController)
+			Object nodeProperty, Object content, TextController textController, Mode mode)
 			throws TransformationException {
 		if (isTransformationActive())
-			return target.transformContent(node, nodeProperty, content, textController);
+			return target.transformContent(node, nodeProperty, content, textController, mode);
 		else
 			return content;
 	}

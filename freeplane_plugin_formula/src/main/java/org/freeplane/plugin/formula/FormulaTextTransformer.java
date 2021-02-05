@@ -39,11 +39,11 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 
     @Override
 	public Object transformContent(final NodeModel node, Object nodeProperty, final Object obj,
-                                   TextController textController) {
+                                   TextController textController, Mode mode) {
         if (obj instanceof FormattedFormula) {
             final FormattedFormula formattedFormula = (FormattedFormula) obj;
             final Object evaluationResult = transformContent(node, nodeProperty, formattedFormula.getObject(),
-                textController);
+                textController, mode);
             return new FormattedObject(evaluationResult, formattedFormula.getPattern());
         }
         final String text = getViewedText(node, nodeProperty, obj, textController);

@@ -21,6 +21,7 @@ import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.TransformationException;
+import org.freeplane.features.text.IContentTransformer.Mode;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
@@ -47,9 +48,11 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 
 	@Override
 	public Object transformContent(NodeModel node,
-			Object nodeProperty, Object content, TextController textController)
+			Object nodeProperty, Object content, TextController textController, Mode mode)
 			throws TransformationException {
-		final String latext = getText(node, nodeProperty, content, TargetMode.FOR_ICON, textController);
+        if(mode == Mode.TEXT)
+            return content;
+		final String latext = getText(node, nodeProperty, content, Target.VIEW, textController);
 		if (latext == null)
 			return content;
 		final NodeStyleController ncs = NodeStyleController.getController(textController.getModeController());
@@ -63,7 +66,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		return icon;
 	}
 
-	private static enum TargetMode { FOR_ICON, FOR_EDITOR };
+	private static enum Target { VIEW, EDITOR };
 
 	@Override
 	public EditNodeBase createEditor(NodeModel node,
@@ -72,7 +75,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		if (ResourceController.getResourceController().getBooleanProperty(LATEX_EDITOR_DISABLE))
 			return null;
         MTextController textController = MTextController.getController();
-        String latexText = getText(node, nodeProperty, content, TargetMode.FOR_EDITOR, textController);
+        String latexText = getText(node, nodeProperty, content, Target.EDITOR, textController);
         if(latexText == null)
             return null;
 
@@ -98,7 +101,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		return editNodeDialog;
 	}
 
-	private String getText(NodeModel node, Object nodeProperty, Object content, TargetMode targetMode, TextController textController) {
+	private String getText(NodeModel node, Object nodeProperty, Object content, Target targetMode, TextController textController) {
 		if(! (content instanceof String))
 			return null;
 		MNoteController noteController = MNoteController.getController();
@@ -136,18 +139,18 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		return latexText;
 	}
 
-	private String getLatexText(final String nodeText, final String patternFormat, final TargetMode mode)
+	private String getLatexText(final String nodeText, final String patternFormat, final Target mode)
 	{
-		boolean includePrefix = mode == TargetMode.FOR_EDITOR;
+		boolean includePrefix = mode == Target.EDITOR;
 
 		if(startsWithPrefix(nodeText, LATEX)){
 			return includePrefix ? nodeText : nodeText.substring(LATEX.length() + 1);
 		}
 		else if(LatexRenderer.LATEX_FORMAT.equals(patternFormat)){
 			return nodeText;
-		} else if(startsWithPrefix(nodeText, UNPARSED_LATEX) && mode == TargetMode.FOR_EDITOR) {
+		} else if(startsWithPrefix(nodeText, UNPARSED_LATEX) && mode == Target.EDITOR) {
 			return nodeText;
-		} else if(LatexRenderer.UNPARSED_LATEX_FORMAT.equals(patternFormat) && mode == TargetMode.FOR_EDITOR) {
+		} else if(LatexRenderer.UNPARSED_LATEX_FORMAT.equals(patternFormat) && mode == Target.EDITOR) {
 			return nodeText;
 		} else {
 			return null;

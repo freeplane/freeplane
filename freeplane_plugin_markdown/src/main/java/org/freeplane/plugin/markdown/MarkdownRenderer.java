@@ -42,8 +42,10 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 
 	@Override
 	public Object transformContent(NodeModel node,
-			Object nodeProperty, Object content, TextController textController)
+			Object nodeProperty, Object content, TextController textController, Mode mode)
 			throws TransformationException {
+	    if(mode == Mode.TEXT)
+	        return content;
         String text = getText(node, nodeProperty, content, textController);
 		if(text == null)
         	return content;

@@ -3,8 +3,9 @@ package org.freeplane.features.text;
 import org.freeplane.features.map.NodeModel;
 
 public interface IContentTransformer extends Comparable<IContentTransformer> {
+    enum Mode { VIEW, TEXT };
 
-	Object transformContent(NodeModel node, Object nodeProperty, Object content, TextController textController) throws TransformationException;
+	Object transformContent(NodeModel node, Object nodeProperty, Object content, TextController textController, Mode mode) throws TransformationException;
 	boolean isFormula(Object content);
 
 	/** used for determining the transformer sequence when more than one transformer is present.

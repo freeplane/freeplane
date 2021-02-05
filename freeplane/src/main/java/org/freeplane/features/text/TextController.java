@@ -54,6 +54,7 @@ import org.freeplane.features.nodestyle.NodeStyleController;
 import org.freeplane.features.styles.IStyle;
 import org.freeplane.features.styles.LogicalStyleController;
 import org.freeplane.features.styles.MapStyleModel;
+import org.freeplane.features.text.IContentTransformer.Mode;
 import org.freeplane.view.swing.map.MainView;
 
 /**
@@ -136,7 +137,12 @@ public class TextController implements IExtension {
 		return nodeModel.getText();
 	}
 
-	public Object getTransformedObject(final NodeModel node, Object nodeProperty, Object content)
+    public Object getTransformedObject(final NodeModel node, Object nodeProperty, Object content) 
+            throws TransformationException{
+        return getTransformedObject(node, nodeProperty, content, Mode.VIEW);
+    }
+    
+	private Object getTransformedObject(final NodeModel node, Object nodeProperty, Object content, Mode mode)
 	        throws TransformationException {
 		if (content instanceof String) {
 			String string = (String) content;
@@ -151,7 +157,7 @@ public class TextController implements IExtension {
 		for (IContentTransformer textTransformer : getTextTransformers()) {
 			try {
 				Object in = content;
-				content = textTransformer.transformContent(node, nodeProperty, in, this);
+				content = textTransformer.transformContent(node, nodeProperty, in, this, mode);
 				markTransformation = markTransformation || textTransformer.markTransformation() && !in.equals(content);
 			}
 			catch (RuntimeException e) {
@@ -189,10 +195,13 @@ public class TextController implements IExtension {
 		return PatternFormat.IDENTITY_PATTERN.equals(getNodeFormat(nodeModel));
 	}
 
-	/** returns an error message instead of a normal result if something goes wrong. */
-	public Object getTransformedObjectNoFormattingNoThrow(final NodeModel node, Object nodeProperty, Object data) {
+    public Object getTransformedObjectNoFormattingNoThrow(final NodeModel node, Object nodeProperty, Object data) {
+        return getTransformedObjectNoFormattingNoThrow(node, nodeProperty, data, Mode.VIEW);
+    }
+    
+	private Object getTransformedObjectNoFormattingNoThrow(final NodeModel node, Object nodeProperty, Object data, Mode mode) {
 		try {
-			Object transformedObject = getTransformedObject(node, nodeProperty, data);
+			Object transformedObject = getTransformedObject(node, nodeProperty, data, mode);
 			if (transformedObject instanceof HighlightedTransformedObject)
 				transformedObject =  ((HighlightedTransformedObject) transformedObject).getObject();
 			if (transformedObject instanceof IFormattedObject)
@@ -225,10 +234,13 @@ public class TextController implements IExtension {
 			return transformed.toString();
 	}
 
-	public String getTransformedTextNoThrow(final NodeModel node, Object nodeProperty, Object data) {
-		Object result = getTransformedObjectNoFormattingNoThrow(node, nodeProperty, data);
-		return result.toString();
-	}
+    public String getTransformedTextNoThrow(final NodeModel node, Object nodeProperty, Object data) {
+        Object result = getTransformedObjectNoFormattingNoThrow(node, nodeProperty, data);
+        return result.toString();
+    }
+    public String getTransformedTextForClipboard(final NodeModel node, Object nodeProperty, Object data) {
+        return getTransformedObjectNoFormattingNoThrow(node, nodeProperty, data, Mode.TEXT).toString();
+    }
 
 	public boolean isMinimized(NodeModel node) {
 		final ShortenedTextModel shortened = ShortenedTextModel.getShortenedTextModel(node);
@@ -237,8 +249,7 @@ public class TextController implements IExtension {
 
 	/** returns transformed text converted to plain text. */
 	public String getPlainTransformedText(NodeModel nodeModel) {
-		final String text = getTransformedTextNoThrow(nodeModel);
-		return HtmlUtils.htmlToPlain(text);
+		return HtmlUtils.htmlToPlain(getTransformedTextNoThrow(nodeModel));
 	}
 
 	public String getPlainTransformedTextWithoutNodeNumber(NodeModel node) {
@@ -253,14 +264,7 @@ public class TextController implements IExtension {
 	}
 
 	public String getTransformedTextNoThrow(NodeModel nodeModel) {
-		final Object userObject = nodeModel.getUserObject();
-		final Object input;
-		if (userObject instanceof String && HtmlUtils.isHtml((String) userObject))
-			input = HtmlUtils.htmlToPlain((String) userObject);
-		else
-			input = userObject;
-		final String text = getTransformedTextNoThrow(nodeModel, nodeModel, input);
-		return text;
+		return getTransformedTextNoThrow(nodeModel, nodeModel, nodeModel.getUserObject());
 	}
 
 	public String getShortPlainText(NodeModel nodeModel, int maximumCharacters, String continuationMark) {
