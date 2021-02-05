@@ -33,6 +33,7 @@ import java.util.Set;
 
 import javax.swing.Box;
 import javax.swing.JComponent;
+import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -176,6 +177,7 @@ public class JResizer extends JComponent {
 				SwingUtilities.convertPointToScreen(point2, e.getComponent());
 				if(point != null){
 					final JComponent parent = (JComponent) getParent();
+					JRootPane rootPane = getRootPane();
 					final Component resizedComponent = parent.getComponent(index);
 					final Dimension size = new Dimension(resizedComponent.getPreferredSize());
 					if(d.equals(Direction.RIGHT)){
@@ -190,6 +192,8 @@ public class JResizer extends JComponent {
 					else if(d.equals(Direction.DOWN)){
 						size.height -= (point2.y - point.y);
 					}
+                    size.width = Math.min(size.width, rootPane.getWidth() * 9 / 10 - CONTROL_SIZE);
+                    size.height = Math.min(size.height, rootPane.getHeight() * 9 / 10 - CONTROL_SIZE);
 					resizedComponent.setPreferredSize(new Dimension(Math.max(size.width, 0), Math.max(size.height, 0)));
 					parent.revalidate();
 					parent.repaint();
