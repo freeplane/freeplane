@@ -117,17 +117,17 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
                 contentType = LatexRenderer.LATEX_FORMAT;
             }
 			else if (TextController.CONTENT_TYPE_AUTO.equals(detailsContentType)) {
-            contentType = detailsContentType;
+			    contentType = TextController.CONTENT_TYPE_AUTO;
          }
 			else
 				return  null;
         } else if (nodeProperty instanceof NoteModel) {
             String noteContentType = noteController.getNoteContentType(node);
             if (LatexRenderer.LATEX_CONTENT_TYPE.equals(noteContentType)) {
-                contentType = noteContentType;
+                contentType = LatexRenderer.LATEX_FORMAT;
             }
 			else if (TextController.CONTENT_TYPE_AUTO.equals(noteContentType)) {
-            contentType = LatexRenderer.LATEX_FORMAT;
+			    contentType = TextController.CONTENT_TYPE_AUTO;
          }
 			else
 				return  null;
