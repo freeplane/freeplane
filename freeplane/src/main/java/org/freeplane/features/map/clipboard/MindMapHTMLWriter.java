@@ -28,6 +28,7 @@ import java.io.Writer;
 import java.net.URI;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.swing.Icon;
 
@@ -54,7 +55,7 @@ import org.freeplane.features.text.TextController;
 import org.freeplane.features.url.UrlManager;
 
 class MindMapHTMLWriter {
-	private static String lf = System.getProperty("line.separator");
+    private static String lf = System.getProperty("line.separator");
 
 	private static String convertSpecialChar(final char c) {
 		String cvt;
@@ -421,6 +422,7 @@ class MindMapHTMLWriter {
 		fileout.write(lf + "</script>" + lf);
 	}
 
+    private static final Pattern PARAGRAPH_PATTERN = Pattern.compile("^\s*<(?:p|h\\d|table)\\b");
 	private void writeModelContent(final String string) throws IOException {
 		if (string.matches(" +")) {
 			fileout.write("&nbsp;");
@@ -442,6 +444,9 @@ class MindMapHTMLWriter {
 				end = output.length();
 			}
 			output = output.substring(start, end);
+			boolean startsWithParagraph = PARAGRAPH_PATTERN.matcher(output).find();
+            if(! startsWithParagraph)
+		         fileout.write("<p>");
 			fileout.write(output);
 		}
 		else {
