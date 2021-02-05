@@ -422,7 +422,7 @@ class MindMapHTMLWriter {
 		fileout.write(lf + "</script>" + lf);
 	}
 
-    private static final Pattern PARAGRAPH_PATTERN = Pattern.compile("^\s*<(?:p|h\\d|table)\\b");
+    private static final Pattern PARAGRAPH_PATTERN = Pattern.compile("^\\s*<(?:p|h\\d|table)\\b");
 	private void writeModelContent(final String string) throws IOException {
 		if (string.matches(" +")) {
 			fileout.write("&nbsp;");
