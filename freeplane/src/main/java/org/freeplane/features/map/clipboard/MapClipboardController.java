@@ -33,7 +33,6 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -84,21 +83,11 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 	    ClipboardAccessor.getInstance().setClipboardContents(transferable);
 	}
 
-	private void collectColors(final NodeModel node, final HashSet<Color> colors) {
-		final Color color = NodeStyleModel.getColor(node);
-		if (color != null) {
-			colors.add(color);
-		}
-		for (final NodeModel child : node.getChildren()) {
-			collectColors(child, colors);
-		}
-	}
-
 	public MindMapNodesSelection copy(final Collection<NodeModel> selectedNodes) {
 		try {
 			final String forNodesFlavor = createForNodesFlavor(selectedNodes);
 			final String plainText = getAsPlainText(selectedNodes);
-			return new MindMapNodesSelection(forNodesFlavor, plainText, getAsRTF(selectedNodes),
+			return new MindMapNodesSelection(forNodesFlavor, plainText,
 			    getAsHTML(selectedNodes));
 		}
 		catch (final UnsupportedFlavorException ex) {
@@ -196,53 +185,6 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 		}
 	}
 
-	public String getAsRTF(final Collection<NodeModel> selectedNodes) {
-		try {
-			final StringWriter stringWriter = new StringWriter();
-			try (final BufferedWriter fileout = new BufferedWriter(stringWriter)) {
-			    writeRTF(selectedNodes, fileout);
-			}
-			return stringWriter.toString();
-		}
-		catch (final Exception e) {
-			LogUtils.severe(e);
-			return null;
-		}
-	}
-
-
-	private String rtfEscapeUnicodeAndSpecialCharacters(final String text) {
-		final int len = text.length();
-		final StringBuilder result = new StringBuilder(len);
-		int intValue;
-		char myChar;
-		for (int i = 0; i < len; ++i) {
-			myChar = text.charAt(i);
-			intValue = text.charAt(i);
-			if (intValue > 128) {
-				result.append("\\u").append(intValue).append("?");
-			}
-			else {
-				switch (myChar) {
-					case '\\':
-						result.append("\\\\");
-						break;
-					case '{':
-						result.append("\\{");
-						break;
-					case '}':
-						result.append("\\}");
-						break;
-					case '\n':
-						result.append(" \\line ");
-						break;
-					default:
-						result.append(myChar);
-				}
-			}
-		}
-		return result.toString();
-	}
 
 	public void saveHTML(final NodeModel rootNodeOfBranch, final File file) throws IOException {
 		saveHTML(Collections.singletonList(rootNodeOfBranch), file);
@@ -286,17 +228,6 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 		}
 	}
 
-	private void writeChildrenRTF(final NodeModel node, final Writer fileout, final int depth,
-	                              final HashMap<Color, Integer> colorTable) throws IOException {
-		for (final NodeModel child : node.getChildren()) {
-			if (child.hasVisibleContent(FilterController.getFilter(node.getMap()))) {
-				writeRTF(child, fileout, depth + 1, colorTable);
-			}
-			else {
-				writeChildrenRTF(child, fileout, depth, colorTable);
-			}
-		}
-	}
 
 	private void writeChildrenText(final NodeModel node, final Writer fileout, final int depth, String indentation)
 	        throws IOException {
@@ -313,89 +244,6 @@ public class MapClipboardController implements IExtension, ClipboardController, 
 	public void writeHTML(final Collection<NodeModel> selectedNodes, final Writer fileout) throws IOException {
 		final MindMapHTMLWriter htmlWriter = new MindMapHTMLWriter(Controller.getCurrentModeController().getMapController(), fileout);
 		htmlWriter.writeHTML(selectedNodes);
-	}
-
-	public boolean writeRTF(final Collection<NodeModel> selectedNodes, final BufferedWriter fileout) {
-		try {
-			final HashSet<Color> colors = new HashSet<Color>();
-			for (final Iterator<NodeModel> it = selectedNodes.iterator(); it.hasNext();) {
-				collectColors(it.next(), colors);
-			}
-			String colorTableString = "{\\colortbl;\\red0\\green0\\blue255;";
-			final HashMap<Color, Integer> colorTable = new HashMap<Color, Integer>();
-			int colorPosition = 2;
-			for (final Color color : colors) {
-				colorTableString += "\\red" + color.getRed() + "\\green" + color.getGreen() + "\\blue"
-				        + color.getBlue() + ";";
-				colorTable.put(color, new Integer(colorPosition));
-			}
-			colorTableString += "}";
-			fileout.write("{\\rtf1\\ansi\\ansicpg1252\\deff0\\deflang1033{\\fonttbl{\\f0\\fswiss\\fcharset0 Arial;}"
-			        + colorTableString + "}" + "\\viewkind4\\uc1\\pard\\f0\\fs20{}");
-			for (final Iterator<NodeModel> it = selectedNodes.iterator(); it.hasNext();) {
-				writeRTF(it.next(), fileout,/* depth= */0, colorTable);
-			}
-			fileout.write("}");
-			return true;
-		}
-		catch (final Exception e) {
-			LogUtils.severe(e);
-			return false;
-		}
-	}
-
-	public void writeRTF(final NodeModel mindMapNodeModel, final Writer fileout, final int depth,
-	                     final HashMap<Color, Integer> colorTable) throws IOException {
-		String pre = "{" + "\\li" + depth * 350;
-		String level;
-		if (depth <= 8) {
-			level = "\\outlinelevel" + depth;
-		}
-		else {
-			level = "";
-		}
-		String fontsize = "";
-		if (NodeStyleModel.getColor(mindMapNodeModel) != null) {
-			pre += "\\cf" + colorTable.get(NodeStyleModel.getColor(mindMapNodeModel)).intValue();
-		}
-		final NodeStyleModel font = NodeStyleModel.getModel(mindMapNodeModel);
-		if (font != null) {
-			if (Boolean.TRUE.equals(font.isItalic())) {
-				pre += "\\i ";
-			}
-			if (Boolean.TRUE.equals(font.isBold())) {
-				pre += "\\b ";
-			}
-			if (font.getFontSize() != null) {
-				fontsize = "\\fs" + Math.round(1.5 * font.getFontSize());
-				pre += fontsize;
-			}
-		}
-		pre += "{}";
-		fileout.write("\\li" + depth * 350 + level + "{}");
-		final String nodeText = TextController.getController().getPlainTransformedText(mindMapNodeModel);
-		if (nodeText.matches(" *")) {
-			fileout.write("o");
-		}
-		else {
-			final String text = rtfEscapeUnicodeAndSpecialCharacters(nodeText);
-			if (NodeLinks.getValidLink(mindMapNodeModel) != null) {
-				final String link = rtfEscapeUnicodeAndSpecialCharacters(NodeLinks.getLinkAsString(mindMapNodeModel));
-				if (text.contains(link)) {
-					fileout.write(pre + text + "}");
-				}
-				else {
-					fileout.write("{" + pre + text + "} ");
-					fileout.write("<{\\ul\\cf1 " + link + "}}>");
-				}
-			}
-			else {
-				fileout.write(pre + text + "}");
-			}
-		}
-		fileout.write("\\par");
-		fileout.write("\n");
-		writeChildrenRTF(mindMapNodeModel, fileout, depth, colorTable);
 	}
 
 	public void writeTXT(final NodeModel mindMapNodeModel, final Writer fileout, final int depth) throws IOException {

@@ -37,13 +37,11 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	public static DataFlavor mindMapNodesFlavor = null;
 	public static DataFlavor mindMapNodeObjectsFlavor = null;
 	public static DataFlavor mindMapNodeSingleObjectsFlavor = null;
-	public static DataFlavor rtfFlavor = null;
 	static {
 		try {
 			MindMapNodesSelection.mindMapNodesFlavor = new DataFlavor("text/freeplane-nodes; class=java.lang.String");
 			MindMapNodesSelection.mindMapNodeObjectsFlavor = new DataFlavor("application/freeplane-nodes; class=java.util.Collection");
 			MindMapNodesSelection.mindMapNodeSingleObjectsFlavor = new DataFlavor("application/freeplane-single-nodes; class=java.util.Collection");
-			MindMapNodesSelection.rtfFlavor = new DataFlavor("text/rtf; class=java.io.InputStream");
 			MindMapNodesSelection.htmlFlavor = new DataFlavor("text/html; class=java.lang.String");
 			MindMapNodesSelection.fileListFlavor = new DataFlavor("application/x-java-file-list; class=java.util.List");
 			MindMapNodesSelection.dropActionFlavor = new DataFlavor("text/drop-action; class=java.lang.String");
@@ -54,23 +52,21 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 	}
 	final private String htmlContent;
 	final private String nodesContent;
-	final private String rtfContent;
 	final private String stringContent;
 	private String dropActionContent;
 	private Collection<NodeModel> nodes;
 	private boolean selectionContainsSingleNodes;
 
-	public MindMapNodesSelection(final String nodesContent, final String stringContent, final String rtfContent,
+	public MindMapNodesSelection(final String nodesContent, final String stringContent,
 	                             final String htmlContent) {
 		this.nodesContent = nodesContent;
-		this.rtfContent = rtfContent;
 		this.stringContent = stringContent;
 		this.htmlContent = htmlContent;
 		this.dropActionContent = null;
 	}
 
 	public MindMapNodesSelection(final String nodesContent) {
-	    this(nodesContent, null, null, null);
+	    this(nodesContent, null, null);
     }
 
 	public Object getTransferData(final DataFlavor flavor) throws UnsupportedFlavorException {
@@ -82,10 +78,6 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 		}
 		if (flavor.equals(MindMapNodesSelection.dropActionFlavor)) {
 			return dropActionContent;
-		}
-		if (flavor.equals(MindMapNodesSelection.rtfFlavor)) {
-			final byte[] byteArray = rtfContent.getBytes();
-			return new ByteArrayInputStream(byteArray);
 		}
 		if (flavor.equals(MindMapNodesSelection.htmlFlavor) && htmlContent != null) {
 			return htmlContent;
@@ -103,7 +95,7 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 
 	public DataFlavor[] getTransferDataFlavors() {
 		return new DataFlavor[] { DataFlavor.stringFlavor, MindMapNodesSelection.mindMapNodesFlavor,
-		        MindMapNodesSelection.rtfFlavor, MindMapNodesSelection.htmlFlavor,
+		        MindMapNodesSelection.htmlFlavor,
 		        MindMapNodesSelection.dropActionFlavor, 
 		        MindMapNodesSelection.mindMapNodeObjectsFlavor , MindMapNodesSelection.mindMapNodeSingleObjectsFlavor };
 	}
@@ -113,9 +105,6 @@ public class MindMapNodesSelection implements Transferable, ClipboardOwner {
 			return true;
 		}
 		if (flavor.equals(MindMapNodesSelection.mindMapNodesFlavor) && nodesContent != null) {
-			return true;
-		}
-		if (flavor.equals(MindMapNodesSelection.rtfFlavor) && rtfContent != null) {
 			return true;
 		}
 		if (flavor.equals(MindMapNodesSelection.dropActionFlavor) && dropActionContent != null) {
