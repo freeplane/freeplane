@@ -443,7 +443,7 @@ public interface NodeRO {
     }
     /**@since 1.8.11 */
     default int getHorizontalShiftInScreenPixels() {
-        return getVerticalShiftAsLength().toBaseUnitsRounded();
+        return getHorizontalShiftAsLength().toBaseUnitsRounded();
     }
     /**@since 1.8.11 */
     default int getVerticalShiftInScreenPixels() {
