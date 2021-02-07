@@ -26,6 +26,7 @@ import org.freeplane.features.text.mindmapmode.IEditBaseCreator;
 import org.freeplane.features.text.mindmapmode.MTextController;
 
 import io.github.gitbucket.markedj.Marked;
+import io.github.gitbucket.markedj.Options;
 
 public class MarkdownRenderer extends AbstractContentTransformer implements IEditBaseCreator {
 
@@ -34,10 +35,17 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 	private static final String MARKDOWN_EDITOR_DISABLE = "markdown_disable_editor";
 	static final String MARKDOWN_CONTENT_TYPE = "markdown";
 	static final String MARKDOWN_FORMAT = "markdownPatternFormat";
+    private final Options options;
 
+    private Options createMarkdownOptions() {
+        Options options = new Options();
+        options.setWhitelist(null);
+        return options;
+    }
 
 	public MarkdownRenderer() {
 		super(30);
+		options = createMarkdownOptions();
 	}
 
 	@Override
@@ -51,9 +59,10 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
         	return content;
 
         String markdown = text;
-        String html = "<html><body>" + Marked.marked(markdown) + "</body></html>";
+        String html = "<html><body>" + Marked.marked(markdown, options) + "</body></html>";
         return html;
 	}
+
 
 	@Override
 	public EditNodeBase createEditor(NodeModel node,
