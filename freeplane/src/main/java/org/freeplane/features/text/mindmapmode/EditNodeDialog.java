@@ -24,7 +24,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -42,9 +41,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.RootPaneContainer;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
@@ -55,59 +52,26 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
-import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
-import org.freeplane.features.ui.IMapViewManager;
 
 /**
  * @author foltin
  */
-abstract public class EditNodeDialog extends EditNodeBase {
-	private JTextComponent textComponent;
+public class EditNodeDialog extends EditNodeBase {
+	private final JTextComponent textComponent;
 	private final boolean enableSplit;
 
 	private class LongNodeDialog extends EditDialog {
 
 		public LongNodeDialog(final RootPaneContainer frame, final String title, final Color background) {
 			super(EditNodeDialog.this, title, frame);
-			final IMapViewManager viewController = Controller.getCurrentModeController().getController()
-			    .getMapViewManager();
 			final JScrollPane editorScrollPane;
-			if (textComponent == null) {
-				JTextArea textArea = new JTextArea(getText());
-				textArea.setLineWrap(true);
-				textArea.setWrapStyleWord(true);
-				textComponent = textArea;
-				editorScrollPane = new JScrollPane(textComponent);
-				final SpellCheckerController spellCheckerController = SpellCheckerController.getController();
-				spellCheckerController.enableAutoSpell(textComponent, true);
-				final Font nodeFont = viewController.getFont(getNode());
-				textComponent.setFont(nodeFont);
-				final Color nodeTextColor = viewController.getTextColor(getNode());
-				textComponent.setForeground(nodeTextColor);
-				textComponent.setBackground(background);
-				textComponent.setCaretColor(nodeTextColor);
-				editorScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-				int preferredHeight = viewController.getComponent(getNode()).getHeight();
-				preferredHeight = Math.max(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
-				    .getProperty("el__min_default_window_height")));
-				preferredHeight = Math.min(preferredHeight, Integer.parseInt(ResourceController.getResourceController()
-				    .getProperty("el__max_default_window_height")));
-				int preferredWidth = viewController.getComponent(getNode()).getWidth();
-				preferredWidth = Math.max(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
-				    .getProperty("el__min_default_window_width")));
-				preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
-				    .getProperty("el__max_default_window_width")));
-				editorScrollPane.setPreferredSize(new Dimension(preferredWidth, preferredHeight));
+			textComponent.setText(getText());
+			final JScrollPane ancestorScrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, textComponent);
+			if (ancestorScrollPane != null) {
+			    editorScrollPane = ancestorScrollPane;
 			}
 			else {
-				textComponent.setText(getText());
-				final JScrollPane ancestorScrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, textComponent);
-				if (ancestorScrollPane != null) {
-					editorScrollPane = ancestorScrollPane;
-				}
-				else {
-					editorScrollPane = new JScrollPane(textComponent);
-				}
+			    editorScrollPane = new JScrollPane(textComponent);
 			}
 			final JButton okButton = new JButton();
 			final JButton cancelButton = new JButton();
@@ -290,16 +254,12 @@ abstract public class EditNodeDialog extends EditNodeBase {
 	final private KeyEvent firstEvent;
 	private String title;
 
-	public EditNodeDialog(final NodeModel node, final String text, final KeyEvent firstEvent,
-	                      final IEditControl editControl, boolean enableSplit) {
-		super(node, text, editControl);
-		this.firstEvent = firstEvent;
-		this.enableSplit = enableSplit;
-	}
-
-	public EditNodeDialog(NodeModel nodeModel, String text, KeyEvent firstEvent, IEditControl editControl,
+	public EditNodeDialog(NodeModel node, String text, KeyEvent firstEvent, boolean editorBlocks, 
+	        IEditControl editControl,
 	                      boolean enableSplit, JEditorPane textEditor) {
-		this(nodeModel, text, firstEvent, editControl, enableSplit);
+        super(node, text, editorBlocks, editControl);
+        this.firstEvent = firstEvent;
+        this.enableSplit = enableSplit;
 		textComponent = textEditor;
 	}
 

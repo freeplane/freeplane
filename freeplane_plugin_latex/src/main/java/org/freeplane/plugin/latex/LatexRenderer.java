@@ -89,7 +89,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 		textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 		scrollPane.setMinimumSize(new Dimension(0, 60));
-		final EditNodeDialog editNodeDialog = new LatexEditor(node, latexText, firstKeyEvent, editControl, false, textEditor);
+		final EditNodeDialog editNodeDialog = new EditNodeDialog(node, latexText, firstKeyEvent, false, editControl, false, textEditor);
 		editNodeDialog.setTitle(TextUtils.getText("latex_editor"));
 		textEditor.setContentType("text/latex");
 

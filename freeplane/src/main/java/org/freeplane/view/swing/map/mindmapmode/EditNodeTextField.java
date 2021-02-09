@@ -477,7 +477,7 @@ public class EditNodeTextField extends EditNodeBase {
 
 	@SuppressWarnings("serial")
     public EditNodeTextField(final NodeModel node, final ZoomableLabel parent, final String text, final IEditControl editControl) {
-		super(node, text, editControl);
+		super(node, text, true, editControl);
 		this.parent = parent;
 		this.layoutMapOnTextChange = ResourceController.getResourceController().getBooleanProperty("layout_map_on_text_change");
 		documentListener = new MyDocumentListener();
@@ -819,9 +819,4 @@ public class EditNodeTextField extends EditNodeBase {
 	private void preserveRootNodeLocationOnScreen() {
 	    nodeView.getMap().preserveRootNodeLocationOnScreen();
 	}
-	
-    @Override
-    protected boolean editorBlocks() {
-        return true;
-    }
 }

@@ -63,7 +63,7 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 
 	FormulaEditor(MapExplorerController mapExplorer, NodeModel nodeModel, String text, KeyEvent firstEvent, IEditControl editControl,
                           boolean enableSplit, JEditorPane textEditor) {
-	    super(nodeModel, text, firstEvent, editControl, enableSplit, textEditor);
+	    super(nodeModel, text, firstEvent, true, editControl, enableSplit, textEditor);
 		this.mapExplorer = mapExplorer;
 	    this.textEditor = textEditor;
     }
@@ -145,11 +145,4 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 		final boolean caretInsideStringToken = TokenType.isString(token);
 		return caretInsideStringToken;
 	}
-
-    
-    @Override
-    protected boolean editorBlocks() {
-        return true;
-    }
-
 }

@@ -245,7 +245,6 @@ abstract public class EditNodeBase {
 	protected static final int BUTTON_OK = 0;
 	protected static final int BUTTON_SPLIT = 2;
 	final private IEditControl editControl;
-// 	final private ModeController modeController;
 	protected NodeModel node;
 	private String text;
 	private Color background;
@@ -253,9 +252,10 @@ abstract public class EditNodeBase {
     	return background;
     }
 	protected FocusListener textFieldListener = null;
-	protected EditNodeBase(final NodeModel node, final String text,
+    private final boolean editorBlocks;
+	protected EditNodeBase(final NodeModel node, final String text, boolean editorBlocks,
 	                       final IEditControl editControl) {
-//		this.modeController = modeController;
+	    this.editorBlocks = editorBlocks;
 		this.editControl = editControl;
 		this.node = node;
 		this.text = text;
@@ -333,5 +333,7 @@ abstract public class EditNodeBase {
 
     }
 
-    protected abstract boolean editorBlocks();
+    protected boolean editorBlocks() {
+        return editorBlocks;
+    }
 }

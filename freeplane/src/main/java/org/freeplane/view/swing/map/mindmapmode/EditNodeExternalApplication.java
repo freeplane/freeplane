@@ -38,7 +38,7 @@ import org.freeplane.features.text.mindmapmode.EditNodeBase;
 class EditNodeExternalApplication extends EditNodeBase {
 
 	public EditNodeExternalApplication(final NodeModel node, final String text, final IEditControl editControl) {
-		super(node, text, editControl);
+		super(node, text, true, editControl);
 	}
 
 	@Override
@@ -69,9 +69,4 @@ class EditNodeExternalApplication extends EditNodeBase {
 		}.start();
 		return;
 	}
-
-    @Override
-    protected boolean editorBlocks() {
-        return true;
-    }
 }

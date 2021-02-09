@@ -84,7 +84,7 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
 		textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
 		scrollPane.setMinimumSize(new Dimension(0, 60));
-		final EditNodeDialog editNodeDialog = new MarkdownEditor(node, text, firstKeyEvent, editControl, false, textEditor);
+		final EditNodeDialog editNodeDialog = new EditNodeDialog(node, text, firstKeyEvent, false, editControl, false, textEditor);
 		editNodeDialog.setTitle(TextUtils.getText("markdown_editor"));
 		textEditor.setContentType("text/markdown");
 

@@ -229,7 +229,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
     }
 
 	public EditNodeWYSIWYG(final NodeModel node, final String text, final IEditControl editControl, boolean enableSplit) {
-		super(node, text, editControl);
+		super(node, text, false, editControl);
 	}
 
 	@Override
@@ -311,10 +311,4 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 	public void setTextAlignment(int horizontalAlignment) {
 		this.horizontalAlignment = horizontalAlignment;
 	}
-	
-    @Override
-    protected boolean editorBlocks() {
-        return false;
-    }
-
 }
