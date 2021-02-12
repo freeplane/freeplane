@@ -900,8 +900,8 @@ public class MMapController extends MapController {
 	/**@param follow
 	 * @deprecated -- use MMapIO*/
 	@Deprecated
-	public void newMap(final URL url, boolean follow){
-		new MapLoader(getMModeController()).load(url).unsetMapLocation(follow).withView().getMap();
+	public MapModel newMap(final URL url, boolean follow){
+		return new MapLoader(getMModeController()).load(url).unsetMapLocation(follow).withView().getMap();
 	}
 
 	private WeakHashMap<MMapModel, Void> loadedMaps = new WeakHashMap<>();

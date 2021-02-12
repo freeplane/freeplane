@@ -24,6 +24,7 @@ import java.awt.Container;
 import java.awt.HeadlessException;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
+
 import javax.swing.JPanel;
 
 import org.freeplane.core.resources.IFreeplanePropertyListener;

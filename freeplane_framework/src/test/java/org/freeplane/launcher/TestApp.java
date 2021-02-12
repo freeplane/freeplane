@@ -21,15 +21,17 @@ public class TestApp {
 		final Launcher launcher = Launcher.createForInstallation(freeplaneInstallationDirectory).disableSecurityManager();
 		HeadlessMapCreator mapCreator = launcher.launchHeadless();
 		final MindMap map = mapCreator.mapLoader(TestApp.class.getResource("/templateFile.mm")).unsetMapLocation().load();
-		final Node childNode = map.getRoot().createChild();
-		String value = "hello world";
-		childNode.setText(value);
-		final String nodeText = (String) mapCreator.script("node.to.text", "groovy").executeOn(childNode);
-		System.out.println("Read node value: " + nodeText);
-		if(! nodeText.equals(value))
-			throw new AssertionError("unexpected value returned");
-		map.saveAs(newMapFile);
-		System.out.println("Saved file " + newMapFile.getAbsolutePath());
+		if(map != null) {
+		    final Node childNode = map.getRoot().createChild();
+		    String value = "hello world";
+		    childNode.setText(value);
+		    final String nodeText = (String) mapCreator.script("node.to.text", "groovy").executeOn(childNode);
+		    System.out.println("Read node value: " + nodeText);
+		    if(! nodeText.equals(value))
+		        throw new AssertionError("unexpected value returned");
+		    map.saveAs(newMapFile);
+		    System.out.println("Saved file " + newMapFile.getAbsolutePath());
+		}
 		launcher.shutdown();
 	}
 

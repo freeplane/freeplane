@@ -409,13 +409,14 @@ class NodeList {
 			selectedNodes.add(getMindMapNode(row));
 		}
 		final ModeController mindMapController = Controller.getCurrentModeController();
-		MFileManager.getController(mindMapController).newMapFromDefaultTemplate();
-		final MapModel newMap = Controller.getCurrentController().getMap();
-		for (final NodeModel node : selectedNodes) {
-			final NodeModel copy = MapClipboardController.getController().duplicate(node, false);
-			if (copy != null) {
-				mindMapController.getMapController().insertNodeIntoWithoutUndo(copy, newMap.getRootNode());
-			}
+		final MapModel newMap = MFileManager.getController(mindMapController).newMapFromDefaultTemplate();
+		if(newMap != null) {
+		    for (final NodeModel node : selectedNodes) {
+		        final NodeModel copy = MapClipboardController.getController().duplicate(node, false);
+		        if (copy != null) {
+		            mindMapController.getMapController().insertNodeIntoWithoutUndo(copy, newMap.getRootNode());
+		        }
+		    }
 		}
 		disposeDialog();
 	}

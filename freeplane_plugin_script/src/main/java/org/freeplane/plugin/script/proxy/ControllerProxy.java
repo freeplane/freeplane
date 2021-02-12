@@ -255,7 +255,7 @@ class ControllerProxy implements Proxy.Controller {
 	public MindMap newMindMap() {
 		final MMapIO mapIO = MMapIO.getInstance();
 		final MapModel newMap = mapIO.newMapFromDefaultTemplate();
-		return new MapProxy(newMap, scriptContext);
+		return newMap != null ? new MapProxy(newMap, scriptContext) : null;
 	}
 
 

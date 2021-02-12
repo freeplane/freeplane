@@ -652,12 +652,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			@Override
 			public MapModel run() {
 				chooseTemplateFile();
-				if (chosenFile != null) {
-					return openUntitledMap(chosenFile, follow);
-				}
-				ModeController modeController = Controller.getCurrentModeController();
-				final MapModel map =  new MapLoader(modeController).withView().getMap();
-				return map;
+				return chosenFile != null ? openUntitledMap(chosenFile, follow) : null;
 			}
 		});
 	}
@@ -706,9 +701,11 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 
 
 		File chosenTemplateFile() {
-			JOptionPane.showMessageDialog(UITools.getCurrentFrame(), verticalBox, TextUtils.getText("select_template"),
+			int option = JOptionPane.showConfirmDialog(UITools.getCurrentFrame(), verticalBox, TextUtils.getText("select_template"),
 				JOptionPane.PLAIN_MESSAGE);
 			final String selectedTemplate = (String) templateComboBox.getSelectedItem();
+			if(option == JOptionPane.CLOSED_OPTION)
+			    return null;
 			if (mDontShowAgainBox.isSelected()) {
 				final ResourceController resourceController = ResourceController.getResourceController();
 				resourceController.setProperty("skip_template_selection", true);
@@ -795,8 +792,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 					final MMapController mapController = (MMapController) Controller.getCurrentModeController()
 					    .getMapController();
 					final Controller controller = Controller.getCurrentController();
-					mapController.newMap(Compat.fileToUrl(file), follow);
-					final MapModel map = controller.getMap();
+					final MapModel map = mapController.newMap(Compat.fileToUrl(file), follow);
 					MapStyle mapStyle = mapController.getModeController().getExtension(MapStyle.class);
 					mapStyle.setProperty(map, FREEPLANE_ADD_ON_FILE_EXTENSION, FILE_SCHEME);
 					return map;

@@ -131,6 +131,8 @@ public class MapLoader{
 				setWaitingCursor(true);
 				try{
 					map = loadMap();
+					if(map == null)
+					    return null;
 					if (withView) {
 						final File newFile = urlToFileOrNull(newMapLocation);
 						if(newFile != null && ! asDocumentation)
@@ -214,6 +216,8 @@ public class MapLoader{
 		}
 
 		final URL actualSourceLocation = inputStream != null ? null : asDocumentation ? sourceLocation : alternativeSourceLocation();
+		if(actualSourceLocation == null)
+		    return null;
 		final MMapModel map = createMindMap();
 		AccessController.doPrivileged(new PrivilegedExceptionAction<Void>() {
 

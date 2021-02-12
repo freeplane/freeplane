@@ -25,6 +25,7 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.UserRole;
 import org.freeplane.features.encrypt.SingleDesEncrypter;
 import org.freeplane.features.map.EncryptionModel;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -68,11 +69,13 @@ class EncryptedMap extends AFreeplaneAction {
 			return;
 		}
 		final ModeController modeController = Controller.getCurrentModeController();
-		MFileManager.getController(modeController).newMapFromDefaultTemplate();
-		NodeModel node = Controller.getCurrentController().getMap().getRootNode();
-		final EncryptionModel encryptedMindMapNode = new EncryptionModel(node, new SingleDesEncrypter(password));
-		node.addExtension(encryptedMindMapNode);
-		Controller.getCurrentModeController().getMapController().nodeChanged(node);
+		MapModel newMap = MFileManager.getController(modeController).newMapFromDefaultTemplate();
+		if(newMap != null) {
+		    NodeModel node = newMap.getRootNode();
+		    final EncryptionModel encryptedMindMapNode = new EncryptionModel(node, new SingleDesEncrypter(password));
+		    node.addExtension(encryptedMindMapNode);
+		    Controller.getCurrentModeController().getMapController().nodeChanged(node);
+		}
 	}
 	
 	@Override

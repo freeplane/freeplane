@@ -48,7 +48,7 @@ class MapViewChangeObserverCompound {
 	void afterMapViewChange(final MapView oldMap, final MapView newMap) {
 		final MapModel oldModel = getModel(oldMap);
 		final MapModel newModel = getModel(newMap);
-        if (oldModel != newModel) {
+        if (oldModel != newModel || newModel == null) {
             for (final IMapSelectionListener observer:mapListeners.toArray(new IMapSelectionListener[]{})) {
                 observer.afterMapChange(oldModel, newModel);
             }

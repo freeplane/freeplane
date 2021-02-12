@@ -60,6 +60,7 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapController.Direction;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
