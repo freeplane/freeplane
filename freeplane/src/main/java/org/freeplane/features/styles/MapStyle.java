@@ -27,9 +27,13 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.swing.JOptionPane;
+
 import java.util.Optional;
 import java.util.Properties;
 import java.util.Vector;
@@ -367,26 +371,14 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 
 	@Override
 	public void onCreate(final MapModel map) {
-		final NodeModel rootNode = map.getRootNode();
-		final MapStyleModel mapStyleModel = MapStyleModel.getExtension(rootNode);
-		if (mapStyleModel != null) {
-			String followedMap = mapStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY);
-			if(followedMap != null) {
-				try {
-					URL followedMapUrl = new URI(followedMap).toURL();
-					copyMapStylesNoUndoNoRefresh(followedMapUrl, map);
-				}
-				catch (URISyntaxException | MalformedURLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-			if (mapStyleModel.getStyleMap() != null) {
-				return;
-			}
-		}
-		createDefaultStyleMap(map);
+	    final NodeModel rootNode = map.getRootNode();
+	    final MapStyleModel mapStyleModel = MapStyleModel.getExtension(rootNode);
+	    if (mapStyleModel.getStyleMap() != null) {
+	        copyMapStylesNoUndoNoRefresh(map);
+	    }
+	    else {
+	        createDefaultStyleMap(map);
+	    }
 	}
 
 	private void createDefaultStyleMap(final MapModel map) {
@@ -435,19 +427,55 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 
-	public void replaceStyle(final URL source, final MapModel targetMap) {
-	    loadStyleMapContainer(source).ifPresent(styleMapContainer ->
+	public void replaceStyle(final File file, final MapModel targetMap) throws MalformedURLException {
+        final URL url = file.toURI().toURL();
+	    loadStyleMapContainer(url).ifPresent(styleMapContainer ->
 	        new StyleExchange(styleMapContainer, targetMap).replaceMapStylesAndAutomaticStyle());
 	}
 
-    public void copyStyles(final URL source, final MapModel targetMap) {
-        loadStyleMapContainer(source).ifPresent(styleMapContainer ->
+    public void copyStyles(final File file, final MapModel targetMap) throws MalformedURLException {
+        final URL url = file.toURI().toURL();
+        loadStyleMapContainer(url).ifPresent(styleMapContainer ->
             new StyleExchange(styleMapContainer, targetMap).copyMapStyles());
     }
 
-    void copyMapStylesNoUndoNoRefresh(final URL source, final MapModel targetMap) {
-        loadStyleMapContainer(source).ifPresent(styleMapContainer ->
-            new StyleExchange(styleMapContainer, targetMap).copyMapStylesNoUndoNoRefresh());
+    private void copyMapStylesNoUndoNoRefresh(final MapModel targetMap) {
+        MapStyleModel mapStyleModel = MapStyleModel.getExtension(targetMap);
+        String followedMap = mapStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY);
+        String lastUpdateTimeString = mapStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME);
+        long lastUpdateTime = lastUpdateTimeString != null ? Long.parseLong(lastUpdateTimeString) : 0;
+        String followedMapPath; 
+        if(followedMap != null) {
+            try {
+                URI source = new URI(followedMap);
+                boolean shouldUpdate;
+                long sourceLastModificationTime ;
+                if(source.getScheme().equalsIgnoreCase("file")) {
+                    File file = Paths.get(source).toFile();
+                    sourceLastModificationTime = file.lastModified();
+                    shouldUpdate = sourceLastModificationTime > lastUpdateTime;
+                    followedMapPath = file.getAbsolutePath();
+                } else {
+                    sourceLastModificationTime = lastUpdateTime;
+                    shouldUpdate = true;
+                    followedMapPath = followedMap;
+                }
+                if(shouldUpdate) {
+                    loadStyleMapContainer(source.toURL()).ifPresent(styleMapContainer ->
+                    {
+                        new StyleExchange(styleMapContainer, targetMap).copyMapStylesNoUndoNoRefresh();
+                        UITools.showMessage(TextUtils.format("stylesUpdated", followedMapPath), JOptionPane.INFORMATION_MESSAGE);
+                    });
+                }
+                if(sourceLastModificationTime > lastUpdateTime)
+                    MapStyleModel.getExtension(targetMap).setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME, Long.toString(sourceLastModificationTime));
+            }
+            catch (URISyntaxException | MalformedURLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+        }
     }
 
 	@Override

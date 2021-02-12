@@ -65,13 +65,13 @@ class CopyMapStylesAction extends AFreeplaneAction {
 			return;
 		}
 		try {
-	        final URL url = file.toURI().toURL();
 			final MapModel map = controller.getMap();
 			MapStyle mapStyleController = MapStyle.getController(modeController);
-			mapStyleController.copyStyles(url, map);
-			mapStyleController.setProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, previewOptions.isFollowChecked() ? url.toURI().toString() : null);
-        }
-        catch (MalformedURLException | URISyntaxException e) {
+			mapStyleController.copyStyles(file, map);
+            mapStyleController.setProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, previewOptions.isFollowChecked() ? file.toURI().toString() : null);
+            mapStyleController.setProperty(map, MapStyleModel.FOLLOWED_MAP_LAST_TIME, previewOptions.isFollowChecked() ? Long.toString(file.lastModified()) : null);
+       }
+        catch (MalformedURLException e) {
 	        LogUtils.severe(e);
         }
 

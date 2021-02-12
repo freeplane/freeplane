@@ -49,8 +49,10 @@ class ManageFollowedMindMapAction extends AFreeplaneAction{
 				catch (URISyntaxException e) {
 					LogUtils.warn(e);
 				}
-			if(choice == 1)
+			if(choice == 1) {
 				mapStyleController.setProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, null);
+				mapStyleController.setProperty(map, MapStyleModel.FOLLOWED_MAP_LAST_TIME, null);
+			}
 
 		}
 		else {
