@@ -34,6 +34,7 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.html.ScaledEditorKit;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.link.LinkController;
@@ -80,6 +81,7 @@ class NotePanel extends JPanel {
 		htmlViewerPanel = new JEditorPane();
 		htmlViewerPanel.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
 		htmlViewerPanel.setEditable(false);
+		htmlViewerPanel.setEditorKit(ScaledEditorKit.create());
 		iconViewerPanel = new JLabel();
 		iconViewerPanel.setVerticalAlignment(SwingConstants.TOP);
 
@@ -161,6 +163,9 @@ class NotePanel extends JPanel {
 			public void focusLost(FocusEvent e) {
 				if(! e.isTemporary()){
 					noteManager.saveNote();
+		           if(viewerScrollPanel.isVisible())
+		                noteManager.updateEditor();
+
 				}
 			}
 
@@ -330,6 +335,7 @@ class NotePanel extends JPanel {
             Component view = viewerScrollPanel.getViewport().getView();
             JEditorPane textPane = MTextController.getController().createEditorPane(() -> viewerScrollPanel, node, note, note.getTextOr(""));
             if(textPane != null) {
+                textPane.requestFocusInWindow();
                 textPane.addFocusListener(sourcePanelFocusListener);
                 textPane.addKeyListener(new KeyListener() {
                     
@@ -363,8 +369,6 @@ class NotePanel extends JPanel {
 	        String documentText = getDocumentText();
             String text  = HtmlUtils.isHtml(documentText) ? HEAD.matcher(documentText).replaceFirst("") :  documentText ;
 	        noteManager.saveNote(text);
-	        if(viewerScrollPanel.isVisible())
-	            noteManager.updateEditor();
 	    }
 
 }
