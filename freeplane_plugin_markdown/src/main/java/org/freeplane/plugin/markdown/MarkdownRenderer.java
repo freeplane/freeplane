@@ -1,12 +1,16 @@
 package org.freeplane.plugin.markdown;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
+import java.util.function.Supplier;
 
 import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
@@ -64,12 +68,18 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
     @Override
     public EditNodeBase createEditor(final NodeModel node, Object nodeProperty,
             Object content, final EditNodeBase.IEditControl editControl, final boolean editLong) {
-        JEditorPane textEditor = createTextEditorPane(node, nodeProperty, content);
+        JEditorPane textEditor = createTextEditorPane(this::createScrollPane, node, nodeProperty, content);
         return textEditor == null ? null :createEditor(node, editControl, textEditor);
     }
 
+    private JRestrictedSizeScrollPane createScrollPane() {
+        final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane();
+        scrollPane.setMinimumSize(new Dimension(0, 60));
+        return scrollPane;
+    }
+
     @Override
-    public JEditorPane createTextEditorPane(final NodeModel node, Object nodeProperty,
+    public JEditorPane createTextEditorPane(Supplier<JScrollPane> scrollPaneSupplier, final NodeModel node, Object nodeProperty,
             Object content) {
 		String text = getText(node, nodeProperty, content, MTextController.getController());
         if(text == null)
@@ -78,6 +88,7 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
         	return null;
 		// this option has been added to work around bugs in JSyntaxPane with Chinese characters
 		JEditorPane textEditor = new JEditorPane();
+		scrollPaneSupplier.get().setViewportView(textEditor);
 		textEditor.setContentType("text/markdown");
 		textEditor.setText(text);
 		textEditor.setBackground(Color.WHITE);

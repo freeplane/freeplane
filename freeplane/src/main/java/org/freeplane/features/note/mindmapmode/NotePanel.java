@@ -248,11 +248,11 @@ class NotePanel extends JPanel {
 		if(! htmlEditorPanel.isVisible())
 			htmlEditorPanel.setCurrentDocumentContent("");
 		if(htmlViewerPanel.isVisible())
-			viewerScrollPanel.setViewportView(htmlViewerPanel);
+			setViewerComponent(htmlViewerPanel);
 		else
 			htmlViewerPanel.setText("");
 		if(iconViewerPanel.isVisible())
-			viewerScrollPanel.setViewportView(iconViewerPanel);
+			setViewerComponent(iconViewerPanel);
 		else
 			iconViewerPanel.setIcon(null);
 		revalidate();
@@ -327,16 +327,16 @@ class NotePanel extends JPanel {
             if(note ==  null){
             	note = new NoteModel();
             }
-            JEditorPane textPane = MTextController.getController().createEditorPane(node, note, note.getTextOr(""));
+            Component view = viewerScrollPanel.getViewport().getView();
+            JEditorPane textPane = MTextController.getController().createEditorPane(() -> viewerScrollPanel, node, note, note.getTextOr(""));
             if(textPane != null) {
                 textPane.addFocusListener(sourcePanelFocusListener);
-                Component view = viewerScrollPanel.getViewport().getView();
                 textPane.addKeyListener(new KeyListener() {
                     
                     @Override
                     public void keyTyped(KeyEvent e) {
                         if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
-                            viewerScrollPanel.setViewportView(view);
+                            setViewerComponent(view);
                     }
                     
                     @Override
@@ -346,12 +346,17 @@ class NotePanel extends JPanel {
                     public void keyPressed(KeyEvent e) {
                     }
                 });
-                viewerScrollPanel.setViewportView(textPane);
             }
         }
 	}
 	
-	   void saveNote() {
+	private void setViewerComponent(Component view) {
+	       viewerScrollPanel.setViewportView(view);
+	       if(viewerScrollPanel.getRowHeader() != null)
+	           viewerScrollPanel.setRowHeader(null);
+    }
+
+    void saveNote() {
 	       if (! needsSaving()) {
 	            return;
 	        }

@@ -5,8 +5,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
+import java.util.function.Supplier;
 
 import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
@@ -71,12 +73,21 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
     @Override
     public EditNodeBase createEditor(final NodeModel node, Object nodeProperty,
             Object content, final EditNodeBase.IEditControl editControl, final boolean editLong) {
-        JEditorPane textEditor = createTextEditorPane(node, nodeProperty, content);
+        final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane();
+        scrollPane.setMinimumSize(new Dimension(0, 60));
+        JEditorPane textEditor = createTextEditorPane(this::createScrollPane, node, nodeProperty, content);
         return textEditor == null ? null :createEditor(node, editControl, textEditor);
     }
+    
+    private JRestrictedSizeScrollPane createScrollPane() {
+        final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane();
+        scrollPane.setMinimumSize(new Dimension(0, 60));
+        return scrollPane;
+    }
+
 
     @Override
-    public JEditorPane createTextEditorPane(final NodeModel node, Object nodeProperty,
+    public JEditorPane createTextEditorPane(Supplier<JScrollPane> scrollPaneSupplier, final NodeModel node, Object nodeProperty,
             Object content) {
 		// this option has been added to work around bugs in JSyntaxPane with Chinese characters
 		if (ResourceController.getResourceController().getBooleanProperty(LATEX_EDITOR_DISABLE))
@@ -86,6 +97,7 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
             return null;
 
 		JEditorPane textEditor = new JEditorPane();
+		scrollPaneSupplier.get().setViewportView(textEditor);
 		textEditor.setContentType("text/latex");
 		textEditor.setText(latexText);
 		textEditor.setBackground(Color.WHITE);

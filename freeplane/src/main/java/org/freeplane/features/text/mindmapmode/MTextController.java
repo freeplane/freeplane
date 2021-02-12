@@ -38,6 +38,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,6 +46,7 @@ import javax.swing.Icon;
 import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.RootPaneContainer;
 import javax.swing.SwingUtilities;
@@ -1183,12 +1185,12 @@ public class MTextController extends TextController {
 		return shtmlPanel;
 	}
 	
-	public JEditorPane createEditorPane(final NodeModel nodeModel, Object nodeProperty,
+	public JEditorPane createEditorPane(Supplier<JScrollPane> scrollPaneSupplier, final NodeModel nodeModel, Object nodeProperty,
 	        Object content) {
 	    final List<IContentTransformer> textTransformers = getTextTransformers();
 	    for (IContentTransformer t : textTransformers) {
 	        if (t instanceof IEditBaseCreator) {
-	            final JEditorPane pane = ((IEditBaseCreator) t).createTextEditorPane(nodeModel, nodeProperty, content);
+	            final JEditorPane pane = ((IEditBaseCreator) t).createTextEditorPane(scrollPaneSupplier, nodeModel, nodeProperty, content);
 	            if (pane != null) {
 	                return pane;
 	            }

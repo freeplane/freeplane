@@ -22,9 +22,11 @@ package org.freeplane.view.swing.map.mindmapmode;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.function.Supplier;
 
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
@@ -153,7 +155,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
     }
 
     @Override
-    public JEditorPane createTextEditorPane(NodeModel node, Object nodeProperty, Object content) {
+    public JEditorPane createTextEditorPane(Supplier<JScrollPane> scrollPaneSupplier, NodeModel node, Object nodeProperty, Object content) {
         return null;
     }
 

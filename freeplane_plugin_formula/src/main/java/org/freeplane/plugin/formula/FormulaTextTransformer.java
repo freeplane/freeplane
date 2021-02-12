@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
+import java.util.function.Supplier;
 
 import javax.swing.JEditorPane;
+import javax.swing.JScrollPane;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
@@ -74,17 +76,24 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
     @Override
     public EditNodeBase createEditor(final NodeModel node, Object nodeProperty,
             Object content, final EditNodeBase.IEditControl editControl, final boolean editLong) {
-        JEditorPane textEditor = createTextEditorPane(node, nodeProperty, content);
+        JEditorPane textEditor = createTextEditorPane(this::createScrollPane, node, nodeProperty, content);
         return textEditor == null ? null :createEditor(node, editControl, textEditor);
     }
 
+    private JRestrictedSizeScrollPane createScrollPane() {
+        final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane();
+        scrollPane.setMinimumSize(new Dimension(0, 60));
+        return scrollPane;
+    }
+
     @Override
-    public JEditorPane createTextEditorPane(final NodeModel node, Object nodeProperty,
+    public JEditorPane createTextEditorPane(Supplier<JScrollPane> scrollPaneSupplier, final NodeModel node, Object nodeProperty,
             Object content) {
         String text = getEditedText(node, nodeProperty, content, MTextController.getController());
         if(text == null)
             return null;
         JEditorPane textEditor = new JEditorPane();
+        scrollPaneSupplier.get().setViewportView(textEditor);
         textEditor.setContentType("text/groovy");
         textEditor.setText(text);
         textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
@@ -100,8 +109,6 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 
     private EditNodeBase createEditor(final NodeModel node,
             final EditNodeBase.IEditControl editControl, JEditorPane textEditor) {
-        final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
-        scrollPane.setMinimumSize(new Dimension(0, 60));
         final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
         final KeyEvent firstKeyEvent = MTextController.getController().getEventQueue().getFirstEvent();
         final EditNodeDialog editNodeDialog = new FormulaEditor(explorer, node, firstKeyEvent, editControl, false, textEditor);

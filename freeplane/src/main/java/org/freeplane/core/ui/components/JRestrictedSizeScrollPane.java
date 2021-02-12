@@ -8,11 +8,16 @@ import javax.swing.JScrollPane;
 @SuppressWarnings("serial")
 public class JRestrictedSizeScrollPane extends JScrollPane {
 
-	public JRestrictedSizeScrollPane(Component view) {
-	    super(view);
+	public JRestrictedSizeScrollPane() {
+	    super();
     }
 
-	@Override
+	public JRestrictedSizeScrollPane(Component view) {
+        super(view);
+        // TODO Auto-generated constructor stub
+    }
+
+    @Override
     public Dimension getPreferredSize() {
 		final Dimension preferredSize = super.getPreferredSize();
 		if(isPreferredSizeSet() || ! (isMaximumSizeSet() || isMinimumSizeSet())){
