@@ -68,38 +68,44 @@ public class LatexRenderer extends AbstractContentTransformer implements IEditBa
 
 	private static enum Target { VIEW, EDITOR };
 
-	@Override
-	public EditNodeBase createEditor(NodeModel node,
-			Object nodeProperty, Object content, IEditControl editControl, boolean editLong) {
+    @Override
+    public EditNodeBase createEditor(final NodeModel node, Object nodeProperty,
+            Object content, final EditNodeBase.IEditControl editControl, final boolean editLong) {
+        JEditorPane textEditor = createTextEditorPane(node, nodeProperty, content);
+        return textEditor == null ? null :createEditor(node, editControl, textEditor);
+    }
+
+    @Override
+    public JEditorPane createTextEditorPane(final NodeModel node, Object nodeProperty,
+            Object content) {
 		// this option has been added to work around bugs in JSyntaxPane with Chinese characters
 		if (ResourceController.getResourceController().getBooleanProperty(LATEX_EDITOR_DISABLE))
 			return null;
-        MTextController textController = MTextController.getController();
-        String latexText = getText(node, nodeProperty, content, Target.EDITOR, textController);
+        String latexText = getText(node, nodeProperty, content, Target.EDITOR, MTextController.getController());
         if(latexText == null)
             return null;
 
-		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
-
-
 		JEditorPane textEditor = new JEditorPane();
+		textEditor.setContentType("text/latex");
+		textEditor.setText(latexText);
 		textEditor.setBackground(Color.WHITE);
 		textEditor.setForeground(Color.BLACK);
 		textEditor.setSelectedTextColor(Color.BLUE);
 		textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
-		scrollPane.setMinimumSize(new Dimension(0, 60));
-		final EditNodeDialog editNodeDialog = new EditNodeDialog(node, latexText, firstKeyEvent, false, editControl, false, textEditor);
-		editNodeDialog.setTitle(TextUtils.getText("latex_editor"));
-		textEditor.setContentType("text/latex");
-
 		final String fontName = ResourceController.getResourceController().getProperty(LATEX_EDITOR_FONT);
 		final int fontSize = ResourceController.getResourceController().getIntProperty(LATEX_EDITOR_FONT_SIZE);
 		final Font font = UITools.scaleUI(new Font(fontName, Font.PLAIN, fontSize));
 		textEditor.setFont(font);
-
-		return editNodeDialog;
+        return textEditor;
 	}
+
+    private EditNodeBase createEditor(NodeModel node, IEditControl editControl,
+            JEditorPane textEditor) {
+        final KeyEvent firstKeyEvent = MTextController.getController().getEventQueue().getFirstEvent();
+		final EditNodeDialog editNodeDialog = new EditNodeDialog(node, firstKeyEvent, false, editControl, false, textEditor);
+		editNodeDialog.setTitle(TextUtils.getText("latex_editor"));
+		return editNodeDialog;
+    }
 
 	private String getText(NodeModel node, Object nodeProperty, Object content, Target targetMode, TextController textController) {
 		if(! (content instanceof String))

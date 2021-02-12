@@ -254,10 +254,10 @@ public class EditNodeDialog extends EditNodeBase {
 	final private KeyEvent firstEvent;
 	private String title;
 
-	public EditNodeDialog(NodeModel node, String text, KeyEvent firstEvent, boolean editorBlocks, 
+	public EditNodeDialog(NodeModel node, KeyEvent firstEvent, boolean editorBlocks, 
 	        IEditControl editControl,
 	                      boolean enableSplit, JEditorPane textEditor) {
-        super(node, text, editorBlocks, editControl);
+        super(node, textEditor.getText(), editorBlocks, editControl);
         this.firstEvent = firstEvent;
         this.enableSplit = enableSplit;
 		textComponent = textEditor;

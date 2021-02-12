@@ -1182,6 +1182,21 @@ public class MTextController extends TextController {
 		fireEditorPaneCreated(editorPane, purpose);
 		return shtmlPanel;
 	}
+	
+	public JEditorPane createEditorPane(final NodeModel nodeModel, Object nodeProperty,
+	        Object content) {
+	    final List<IContentTransformer> textTransformers = getTextTransformers();
+	    for (IContentTransformer t : textTransformers) {
+	        if (t instanceof IEditBaseCreator) {
+	            final JEditorPane pane = ((IEditBaseCreator) t).createTextEditorPane(nodeModel, nodeProperty, content);
+	            if (pane != null) {
+	                return pane;
+	            }
+	        }
+	    }
+	    return null;
+	}
+
 
 	public JEditorPane createEditorPane(Object purpose) {
 		@SuppressWarnings("serial")

@@ -61,9 +61,9 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 	private JEditorPane textEditor;
 	private MapExplorerController mapExplorer;
 
-	FormulaEditor(MapExplorerController mapExplorer, NodeModel nodeModel, String text, KeyEvent firstEvent, IEditControl editControl,
+	FormulaEditor(MapExplorerController mapExplorer, NodeModel nodeModel, KeyEvent firstEvent, IEditControl editControl,
                           boolean enableSplit, JEditorPane textEditor) {
-	    super(nodeModel, text, firstEvent, true, editControl, enableSplit, textEditor);
+	    super(nodeModel, firstEvent, true, editControl, enableSplit, textEditor);
 		this.mapExplorer = mapExplorer;
 	    this.textEditor = textEditor;
     }

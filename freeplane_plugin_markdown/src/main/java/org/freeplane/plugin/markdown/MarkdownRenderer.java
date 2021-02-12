@@ -1,14 +1,12 @@
 package org.freeplane.plugin.markdown;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JEditorPane;
 
 import org.freeplane.core.resources.ResourceController;
-import org.freeplane.core.ui.components.JRestrictedSizeScrollPane;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
@@ -63,38 +61,43 @@ public class MarkdownRenderer extends AbstractContentTransformer implements IEdi
         return html;
 	}
 
+    @Override
+    public EditNodeBase createEditor(final NodeModel node, Object nodeProperty,
+            Object content, final EditNodeBase.IEditControl editControl, final boolean editLong) {
+        JEditorPane textEditor = createTextEditorPane(node, nodeProperty, content);
+        return textEditor == null ? null :createEditor(node, editControl, textEditor);
+    }
 
-	@Override
-	public EditNodeBase createEditor(NodeModel node,
-			Object nodeProperty, Object content, IEditControl editControl, boolean editLong) {
-		MTextController textController = MTextController.getController();
-        String text = getText(node, nodeProperty, content, textController);
+    @Override
+    public JEditorPane createTextEditorPane(final NodeModel node, Object nodeProperty,
+            Object content) {
+		String text = getText(node, nodeProperty, content, MTextController.getController());
         if(text == null)
             return null;
         if (ResourceController.getResourceController().getBooleanProperty(MARKDOWN_EDITOR_DISABLE))
         	return null;
-
-		final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
-
 		// this option has been added to work around bugs in JSyntaxPane with Chinese characters
 		JEditorPane textEditor = new JEditorPane();
+		textEditor.setContentType("text/markdown");
+		textEditor.setText(text);
 		textEditor.setBackground(Color.WHITE);
 		textEditor.setForeground(Color.BLACK);
 		textEditor.setSelectedTextColor(Color.BLUE);
 		textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-		final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
-		scrollPane.setMinimumSize(new Dimension(0, 60));
-		final EditNodeDialog editNodeDialog = new EditNodeDialog(node, text, firstKeyEvent, false, editControl, false, textEditor);
-		editNodeDialog.setTitle(TextUtils.getText("markdown_editor"));
-		textEditor.setContentType("text/markdown");
-
 		final String fontName = ResourceController.getResourceController().getProperty(MARKDOWN_EDITOR_FONT);
 		final int fontSize = ResourceController.getResourceController().getIntProperty(MARKDOWN_EDITOR_FONT_SIZE);
 		final Font font = UITools.scaleUI(new Font(fontName, Font.PLAIN, fontSize));
 		textEditor.setFont(font);
-
-		return editNodeDialog;
+		return textEditor;
 	}
+
+    private EditNodeBase createEditor(NodeModel node, IEditControl editControl,
+            JEditorPane textEditor) {
+        final KeyEvent firstKeyEvent = MTextController.getController().getEventQueue().getFirstEvent();
+		final EditNodeDialog editNodeDialog = new EditNodeDialog(node, firstKeyEvent, false, editControl, false, textEditor);
+		editNodeDialog.setTitle(TextUtils.getText("markdown_editor"));
+		return editNodeDialog;
+    }
 
 	private String getText(NodeModel node, Object nodeProperty, Object content, TextController textController) {
 		if(! (content instanceof String))

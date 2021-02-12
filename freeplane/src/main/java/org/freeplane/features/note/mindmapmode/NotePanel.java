@@ -2,17 +2,20 @@ package org.freeplane.features.note.mindmapmode;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URI;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -24,7 +27,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.text.Document;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.StyleSheet;
 
@@ -45,9 +50,8 @@ import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
 
 class NotePanel extends JPanel {
-	/**
-	 *
-	 */
+    final static Pattern HEAD = Pattern.compile("<head>.*</head>\n", Pattern.DOTALL);
+
 	private static final long serialVersionUID = 1L;
 	private final SHTMLPanel htmlEditorPanel;
 	private final JScrollPane viewerScrollPanel;
@@ -56,8 +60,13 @@ class NotePanel extends JPanel {
 	private final Color defaultCaretColor;
 	private final NoteDocumentListener noteDocumentListener;
 
+    private final NoteManager noteManager;
+
+    private FocusListener sourcePanelFocusListener;
+
 	NotePanel(NoteManager noteManager, NoteDocumentListener noteDocumentListener) {
 		super(new CardLayout());
+        this.noteManager = noteManager;
 		this.noteDocumentListener = noteDocumentListener;
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
 		this.htmlEditorPanel = createHtmlEditorComponent(noteManager);
@@ -72,6 +81,7 @@ class NotePanel extends JPanel {
 		htmlViewerPanel.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
 		htmlViewerPanel.setEditable(false);
 		iconViewerPanel = new JLabel();
+		iconViewerPanel.setVerticalAlignment(SwingConstants.TOP);
 
 		MouseListener editStarter = new MouseAdapter() {
 
@@ -145,7 +155,7 @@ class NotePanel extends JPanel {
 			}
 		});
 
-		htmlEditorPanel.getSourceEditorPane().addFocusListener(new FocusListener() {
+		sourcePanelFocusListener = new FocusListener() {
 
 			@Override
 			public void focusLost(FocusEvent e) {
@@ -157,7 +167,8 @@ class NotePanel extends JPanel {
 			@Override
 			public void focusGained(FocusEvent e) {
 			}
-		});
+		};
+        htmlEditorPanel.getSourceEditorPane().addFocusListener(sourcePanelFocusListener);
 //		setDefaultFont();
 		htmlEditorPanel.setOpenHyperlinkHandler(new ActionListener() {
 			@Override
@@ -203,8 +214,10 @@ class NotePanel extends JPanel {
 			return null;
 	}
 
-	boolean needsSaving() {
-		return htmlEditorPanel.needsSaving();
+	private boolean needsSaving() {
+		return htmlEditorPanel.isVisible() && htmlEditorPanel.needsSaving()
+		        || viewerScrollPanel.isVisible() &&  (viewerScrollPanel.getViewport().getView() instanceof JTextComponent);
+		
 	}
 
 	void setEditedContent(String note) {
@@ -245,12 +258,15 @@ class NotePanel extends JPanel {
 		revalidate();
 	}
 
-	boolean isEditable() {
-		return htmlEditorPanel.isVisible();
-	}
-
-	String getDocumentText() {
-		return htmlEditorPanel.getDocumentText();
+	private String getDocumentText() {
+	    if(htmlEditorPanel.isVisible())
+	        return htmlEditorPanel.getDocumentText();
+	    else if(viewerScrollPanel.isVisible()) {
+	        Component view = viewerScrollPanel.getViewport().getView();
+	        if(view instanceof JTextComponent)
+	            return ((JTextComponent)view).getText();
+	    }
+	    return "";
 	}
 
 	private JEditorPane getEditorPane() {
@@ -261,7 +277,7 @@ class NotePanel extends JPanel {
 	}
 
 	void updateCaretColor(Color noteForeground) {
-		getEditorPane().setCaretColor(noteForeground != null ? noteForeground : defaultCaretColor);
+	    htmlEditorPanel.getEditorPane().setCaretColor(noteForeground != null ? noteForeground : defaultCaretColor);
 	}
 
 	StyleSheet getStyleSheet() {
@@ -306,8 +322,44 @@ class NotePanel extends JPanel {
 		if(selection == null)
 			return;
 		final NodeModel node = selection.getSelected();
-		if(node != null)
-			new NoteDialogStarter().editNoteInDialog(node);
+		if(node != null) {
+            NoteModel note = NoteModel.getNote(node);
+            if(note ==  null){
+            	note = new NoteModel();
+            }
+            JEditorPane textPane = MTextController.getController().createEditorPane(node, note, note.getTextOr(""));
+            if(textPane != null) {
+                textPane.addFocusListener(sourcePanelFocusListener);
+                Component view = viewerScrollPanel.getViewport().getView();
+                textPane.addKeyListener(new KeyListener() {
+                    
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+                            viewerScrollPanel.setViewportView(view);
+                    }
+                    
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                    }                    
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                    }
+                });
+                viewerScrollPanel.setViewportView(textPane);
+            }
+        }
 	}
+	
+	   void saveNote() {
+	       if (! needsSaving()) {
+	            return;
+	        }
+	        String documentText = getDocumentText();
+            String text  = HtmlUtils.isHtml(documentText) ? HEAD.matcher(documentText).replaceFirst("") :  documentText ;
+	        noteManager.saveNote(text);
+	        if(viewerScrollPanel.isVisible())
+	            noteManager.updateEditor();
+	    }
 
 }

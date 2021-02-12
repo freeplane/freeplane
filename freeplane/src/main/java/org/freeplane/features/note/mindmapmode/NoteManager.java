@@ -19,8 +19,6 @@
  */
 package org.freeplane.features.note.mindmapmode;
 
-import java.util.regex.Pattern;
-
 import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 
@@ -36,7 +34,6 @@ import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.TextController;
 
 final class NoteManager implements INodeSelectionListener, IMapSelectionListener {
-	public final static Pattern HEAD = Pattern.compile("<head>.*</head>\n", Pattern.DOTALL);
 	private boolean ignoreEditorUpdate;
 	NodeModel node;
 	/**
@@ -65,47 +62,6 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		updateEditor();
 	}
 
-	void saveNote() {
-		if (node == null) {
-			return;
-		}
-		final NotePanel notePanel = noteController.getNotePanel();
-		if (notePanel == null || ! notePanel.isEditable() || ! notePanel.needsSaving()) {
-			return;
-		}
-		boolean editorContentEmpty = true;
-		String documentText = notePanel.getDocumentText();
-		documentText = HEAD.matcher(documentText).replaceFirst("");
-		editorContentEmpty = HtmlUtils.isEmpty(documentText);
-		Controller.getCurrentModeController().getMapController().removeNodeSelectionListener(this);
-		try {
-			ignoreEditorUpdate = true;
-			if (editorContentEmpty) {
-				noteController.setNoteText(node, null);
-			}
-			else {
-				final String oldText = noteController.getNoteText(node);
-				if (null == oldText)
-					noteController.setNoteText(node, documentText);
-				else {
-					final String oldTextWithoutHead = HEAD.matcher(oldText).replaceFirst("");
-					if (!oldTextWithoutHead.trim().equals(documentText.trim()))
-						noteController.setNoteText(node, documentText);
-				}
-			}
-		}
-		finally {
-			ignoreEditorUpdate = false;
-		}
-		Controller.getCurrentModeController().getMapController().addNodeSelectionListener(this);
-	}
-
-	void saveNote(final NodeModel node) {
-		if (this.node != node) {
-			return;
-		}
-		saveNote();
-	}
 
 	void updateEditor() {
 		final NotePanel notePanel = noteController.getNotePanel();
@@ -165,8 +121,54 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		}
 	}
 	
+   void saveNote(final NodeModel node) {
+        if (this.node != node) {
+            return;
+        } 
+        saveNote();
+    }
+
+    void saveNote() {
+        if (node == null) {
+            return;
+        }
+        final NotePanel notePanel = noteController.getNotePanel();
+        if (notePanel != null) {
+            notePanel.saveNote();
+        }
+    }
+	
 
 	NodeModel getNode() {
 		return node;
 	}
+
+    void saveNote(String text) {
+        boolean isHtml = HtmlUtils.isHtml(text);
+        boolean editorContentEmpty = isHtml && HtmlUtils.isEmpty(text)
+                || ! isHtml && text.trim().isEmpty();
+        Controller.getCurrentModeController().getMapController().removeNodeSelectionListener(this);
+        try {
+            ignoreEditorUpdate = true;
+            if (editorContentEmpty) {
+                noteController.setNoteText(node, null);
+            }
+            else {
+                final String oldText = noteController.getNoteText(node);
+                if (null == oldText)
+                    noteController.setNoteText(node, text);
+                else if(isHtml){
+                    final String oldTextWithoutHead = NotePanel.HEAD.matcher(oldText).replaceFirst("");
+                    if (!oldTextWithoutHead.trim().equals(text.trim()))
+                        noteController.setNoteText(node, text);
+                }
+                else
+                    noteController.setNoteText(node, text);
+            }
+        }
+        finally {
+            ignoreEditorUpdate = false;
+        }
+        Controller.getCurrentModeController().getMapController().addNodeSelectionListener(this);
+    }
 }

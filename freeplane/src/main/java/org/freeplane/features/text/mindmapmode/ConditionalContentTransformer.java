@@ -19,6 +19,8 @@
  */
 package org.freeplane.features.text.mindmapmode;
 
+import javax.swing.JEditorPane;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.text.IContentTransformer;
@@ -91,5 +93,13 @@ public class ConditionalContentTransformer implements IContentTransformer, IEdit
 		else
 			return null;
 	}
+
+    @Override
+    public JEditorPane createTextEditorPane(NodeModel node, Object nodeProperty, Object content) {
+        if (target instanceof IEditBaseCreator && isTransformationActive())
+            return ((IEditBaseCreator)target).createTextEditorPane(node, nodeProperty, content);
+        else
+            return null;
+    }
 
 }

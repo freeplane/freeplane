@@ -74,28 +74,38 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
     @Override
     public EditNodeBase createEditor(final NodeModel node, Object nodeProperty,
             Object content, final EditNodeBase.IEditControl editControl, final boolean editLong) {
-        MTextController textController = MTextController.getController();
-        String text = getEditedText(node, nodeProperty, content, textController);
+        JEditorPane textEditor = createTextEditorPane(node, nodeProperty, content);
+        return textEditor == null ? null :createEditor(node, editControl, textEditor);
+    }
+
+    @Override
+    public JEditorPane createTextEditorPane(final NodeModel node, Object nodeProperty,
+            Object content) {
+        String text = getEditedText(node, nodeProperty, content, MTextController.getController());
         if(text == null)
             return null;
         JEditorPane textEditor = new JEditorPane();
+        textEditor.setContentType("text/groovy");
+        textEditor.setText(text);
         textEditor.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
         textEditor.setBackground(Color.WHITE);
         textEditor.setForeground(Color.BLACK);
         textEditor.setSelectedTextColor(Color.BLUE);
-        final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
-        scrollPane.setMinimumSize(new Dimension(0, 60));
-        final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
-        final KeyEvent firstKeyEvent = textController.getEventQueue().getFirstEvent();
-        final EditNodeDialog editNodeDialog = new FormulaEditor(explorer, node, text, firstKeyEvent, editControl, false, textEditor);
-        editNodeDialog.setTitle(TextUtils.getText("formula_editor"));
-        textEditor.setContentType("text/groovy");
-
         final String fontName = ResourceController.getResourceController().getProperty(FormulaEditor.GROOVY_EDITOR_FONT);
         final int fontSize = ResourceController.getResourceController().getIntProperty(FormulaEditor.GROOVY_EDITOR_FONT_SIZE);
         final Font font = UITools.scaleUI(new Font(fontName, Font.PLAIN, fontSize));
         textEditor.setFont(font);
+        return textEditor;
+    }
 
+    private EditNodeBase createEditor(final NodeModel node,
+            final EditNodeBase.IEditControl editControl, JEditorPane textEditor) {
+        final JRestrictedSizeScrollPane scrollPane = new JRestrictedSizeScrollPane(textEditor);
+        scrollPane.setMinimumSize(new Dimension(0, 60));
+        final MapExplorerController explorer = Controller.getCurrentModeController().getExtension(MapExplorerController.class);
+        final KeyEvent firstKeyEvent = MTextController.getController().getEventQueue().getFirstEvent();
+        final EditNodeDialog editNodeDialog = new FormulaEditor(explorer, node, firstKeyEvent, editControl, false, textEditor);
+        editNodeDialog.setTitle(TextUtils.getText("formula_editor"));
         return editNodeDialog;
     }
 

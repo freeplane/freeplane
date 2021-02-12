@@ -128,7 +128,7 @@ public class MNoteController extends NoteController {
     }
 
 	void hideNotesPanel() {
-		noteManager.saveNote();
+	    noteManager.saveNote();
 		notePanel.setVisible(false);
 		Controller.getCurrentModeController().getController().getViewController().removeSplitPane();
 		ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "false");
@@ -139,7 +139,7 @@ public class MNoteController extends NoteController {
 		final ModeController modeController = Controller.getCurrentModeController();
 		final Controller controller = modeController.getController();
 		final IMapSelection selection = controller.getSelection();
-		if (selection == null) {
+		if (selection == null || notePanel == null) {
 			return;
 		}
 		final NodeModel selected = selection.getSelected();

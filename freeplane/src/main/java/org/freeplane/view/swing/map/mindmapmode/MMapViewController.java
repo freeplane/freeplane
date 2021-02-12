@@ -24,6 +24,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 
 import org.apache.commons.lang.StringUtils;
 import org.freeplane.core.resources.ResourceController;
@@ -149,6 +150,11 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 	public MMapViewController(Controller controller) {
 		super(controller);
 		new EditNodeTextField(null, null, null, null);
+    }
+
+    @Override
+    public JEditorPane createTextEditorPane(NodeModel node, Object nodeProperty, Object content) {
+        return null;
     }
 
 }
