@@ -16,6 +16,8 @@ import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.plugin.script.dependencies.RelatedElements;
 
+import groovy.lang.GString;
+
 public class FormulaUtils {
 
 	/** evaluate text as a script if it starts with '='.
@@ -24,7 +26,8 @@ public class FormulaUtils {
 	public static Object evalIfScript(final NodeModel nodeModel, final String text){
 		if (textContainsFormula(text)) {
 			final String script = scriptOf(text);
-			return executeScript(nodeModel, script);
+			Object scriptResult = executeScript(nodeModel, script);
+            return (scriptResult instanceof GString) ? scriptResult.toString() : scriptResult;
 		}
 		else {
 			return text;
