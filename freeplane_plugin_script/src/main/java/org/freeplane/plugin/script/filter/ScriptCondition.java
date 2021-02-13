@@ -136,4 +136,18 @@ public class ScriptCondition extends ASelectableCondition {
 		return renderer;
     }
 
+    @Override
+    public int hashCode() {
+         return source.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (getClass() != obj.getClass())
+            return false;
+        ScriptCondition other = (ScriptCondition) obj;
+        return source.equals(other.source);
+    }
 }
