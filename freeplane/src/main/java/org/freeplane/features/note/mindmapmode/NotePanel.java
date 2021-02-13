@@ -53,6 +53,10 @@ import com.lightdev.app.shtm.SHTMLEditorPane;
 import com.lightdev.app.shtm.SHTMLPanel;
 
 class NotePanel extends JPanel {
+    private static final String CONTENT_TYPE_TEXT_PLAIN = "text/plain";
+
+    private static final String CONTENT_TYPE_TEXT_HTML = "text/html";
+
     final static Pattern HEAD = Pattern.compile("<head>.*</head>\n", Pattern.DOTALL);
 
 	private static final long serialVersionUID = 1L;
@@ -83,7 +87,7 @@ class NotePanel extends JPanel {
 		htmlViewerPanel = new JEditorPane();
 		htmlViewerPanel.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, false);
 		htmlViewerPanel.setEditable(false);
-		htmlViewerPanel.setEditorKit(ScaledEditorKit.create());
+		htmlViewerPanel.setEditorKitForContentType(CONTENT_TYPE_TEXT_HTML, ScaledEditorKit.create());
 		iconViewerPanel = new JLabel();
 		iconViewerPanel.setVerticalAlignment(SwingConstants.TOP);
 
@@ -223,8 +227,16 @@ class NotePanel extends JPanel {
 	}
 
 	private boolean needsSaving() {
-		return htmlEditorPanel.isVisible() && htmlEditorPanel.needsSaving()
-		        || viewerScrollPanel.isVisible() &&  (viewerScrollPanel.getViewport().getView() instanceof JTextComponent);
+		if (htmlEditorPanel.isVisible() && htmlEditorPanel.needsSaving())
+		    return true;
+        else if (viewerScrollPanel.isVisible()) {
+            Component view = viewerScrollPanel.getViewport().getView();
+            if (view instanceof JTextComponent)
+                return ((JTextComponent)view).isEditable();
+            else
+                return false;
+        } else
+            return false;
 		
 	}
 
@@ -236,7 +248,7 @@ class NotePanel extends JPanel {
 	void setViewedContent(String note) {
 		setVisible(htmlViewerPanel);
 		if(! note.isEmpty()) {
-			String contentType = HtmlUtils.isHtml(note) ? "text/html" : "text/plain";
+			String contentType = HtmlUtils.isHtml(note) ? CONTENT_TYPE_TEXT_HTML : CONTENT_TYPE_TEXT_PLAIN;
 			if(! htmlViewerPanel.getContentType().equals(contentType))
 				htmlViewerPanel.setContentType(contentType);
 		}
