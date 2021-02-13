@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -28,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.html.HTMLDocument;
@@ -162,9 +164,10 @@ class NotePanel extends JPanel {
 			@Override
 			public void focusLost(FocusEvent e) {
 				if(! e.isTemporary()){
-					noteManager.saveNote();
-		           if(viewerScrollPanel.isVisible())
-		                noteManager.updateEditor();
+				    noteManager.saveNote();
+				    System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());				    
+				    if(viewerScrollPanel.isVisible())
+				        noteManager.updateEditor();
 
 				}
 			}
@@ -337,6 +340,7 @@ class NotePanel extends JPanel {
             if(textPane != null) {
                 textPane.requestFocusInWindow();
                 textPane.addFocusListener(sourcePanelFocusListener);
+                textPane.getDocument().addDocumentListener(noteDocumentListener);
                 textPane.addKeyListener(new KeyListener() {
                     
                     @Override
@@ -357,6 +361,11 @@ class NotePanel extends JPanel {
 	}
 	
 	private void setViewerComponent(Component view) {
+	       Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+	       if(focusOwner instanceof JTextComponent 
+	               && ((JTextComponent)focusOwner).isEditable()
+	               && SwingUtilities.isDescendingFrom(focusOwner, this))
+	           return;
 	       viewerScrollPanel.setViewportView(view);
 	       if(viewerScrollPanel.getRowHeader() != null)
 	           viewerScrollPanel.setRowHeader(null);
