@@ -26,10 +26,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.net.URL;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
@@ -186,13 +189,13 @@ public class EditNodeWYSIWYG extends EditNodeBase {
         }
 	}
 
-	private static final Dimension PREFERRED_SIZE = new Dimension(600, 400);
+	private static final Dimension PREFERRED_CONTENT_SIZE = new Dimension(600, 400);
 
 	private String title;
 
 	private Font font;
 	private Color textColor = Color.BLACK;
-	private Dimension preferredSize = PREFERRED_SIZE;
+	private Dimension preferredContentSize = PREFERRED_CONTENT_SIZE;
 
 	private int horizontalAlignment = HorizontalTextAlignment.DEFAULT.swingConstant;
 
@@ -220,12 +223,12 @@ public class EditNodeWYSIWYG extends EditNodeBase {
     	this.textColor = textColor;
     }
 
-	public Dimension getPreferredSize() {
-    	return preferredSize;
+	public Dimension getPreferredContentSize() {
+    	return preferredContentSize;
     }
 
-	public void setPreferredSize(Dimension preferredSize) {
-    	this.preferredSize = preferredSize;
+	public void setPreferredContentSize(Dimension preferredSize) {
+    	this.preferredContentSize = preferredSize;
     }
 
 	public EditNodeWYSIWYG(final NodeModel node, final String text, final IEditControl editControl, boolean enableSplit) {
@@ -239,7 +242,8 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			htmlEditorWindow.setBase(this);
 			final String titleText;
 			titleText = TextUtils.getText(title);
-			htmlEditorWindow.getDialog().setTitle(titleText);
+			JDialog dialog = htmlEditorWindow.getDialog();
+            dialog.setTitle(titleText);
 			htmlEditorWindow.setSplitEnabled(getEditControl().canSplit());
 			final SHTMLPanel htmlEditorPanel = (htmlEditorWindow).getHtmlEditorPanel();
 			final StringBuilder ruleBuilder = new StringBuilder(100);
@@ -268,13 +272,21 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			else {
 				document.setBase(new URL("file: "));
 			}
-			htmlEditorPanel.setContentPanePreferredSize(preferredSize);
-			htmlEditorWindow.getDialog().pack();
+			htmlEditorPanel.setContentPanePreferredSize(preferredContentSize);
+			restoreDialogSize(dialog);
+			dialog.pack();
+			dialog.addComponentListener(new ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                   saveDialogSize(dialog);
+                }
+			    
+            });
 			if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
-				UITools.setDialogLocationUnder(htmlEditorWindow.getDialog(), node);
+				UITools.setDialogLocationUnder(dialog, node);
 			}
 			else {
-				UITools.setDialogLocationRelativeTo(htmlEditorWindow.getDialog(), node);
+				UITools.setDialogLocationRelativeTo(dialog, node);
 			}
 			String content = getText();
 			if (!HtmlUtils.isHtml(content)) {

@@ -23,6 +23,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -43,6 +44,7 @@ import javax.swing.WindowConstants;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.NodeModel;
@@ -52,6 +54,9 @@ import org.freeplane.features.spellchecker.mindmapmode.SpellCheckerController;
  * @author foltin
  */
 abstract public class EditNodeBase {
+    private static final String EDIT_NODE_DIALOG_HEIGHT_PROPERTY = "editNodeDialog.height";
+    private static final String EDIT_NODE_DIALOG_WIDTH_PROPERTY = "editNodeDialog.width";
+
 	public static enum EditedComponent{TEXT, DETAIL, NOTE}
 	abstract static class EditDialog{
 		 private final JDialog dialog;
@@ -336,4 +341,19 @@ abstract public class EditNodeBase {
     protected boolean editorBlocks() {
         return editorBlocks;
     }
+    
+    protected void saveDialogSize(final JDialog dialog) {
+        ResourceController resourceController = ResourceController.getResourceController();
+        resourceController.setProperty(EDIT_NODE_DIALOG_WIDTH_PROPERTY, dialog.getWidth());
+        resourceController.setProperty(EDIT_NODE_DIALOG_HEIGHT_PROPERTY, dialog.getHeight());
+    }
+    
+    protected void restoreDialogSize(final JDialog dialog) {
+        Dimension preferredSize = dialog.getPreferredSize();
+        ResourceController resourceController = ResourceController.getResourceController();
+        preferredSize.width = Math.max(preferredSize.width, resourceController.getIntProperty(EDIT_NODE_DIALOG_WIDTH_PROPERTY, 0));
+        preferredSize.height = Math.max(preferredSize.height, resourceController.getIntProperty(EDIT_NODE_DIALOG_HEIGHT_PROPERTY, 0));
+        dialog.setPreferredSize(preferredSize);
+    }
+
 }

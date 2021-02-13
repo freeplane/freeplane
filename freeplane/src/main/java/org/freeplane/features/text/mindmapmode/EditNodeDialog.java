@@ -57,7 +57,7 @@ import org.freeplane.features.mode.Controller;
  * @author foltin
  */
 public class EditNodeDialog extends EditNodeBase {
-	private final JTextComponent textComponent;
+    private final JTextComponent textComponent;
 	private final boolean enableSplit;
 
 	private class LongNodeDialog extends EditDialog {
@@ -192,6 +192,7 @@ public class EditNodeDialog extends EditNodeBase {
 			contentPane.add(editorScrollPane, BorderLayout.CENTER);
 			final boolean areButtonsAtTheTop = ResourceController.getResourceController().getBooleanProperty("el__buttons_above");
 			contentPane.add(buttonPane, areButtonsAtTheTop ? BorderLayout.NORTH : BorderLayout.SOUTH);
+            textComponent.requestFocus();
 		}
 
 		/*
@@ -221,12 +222,6 @@ public class EditNodeDialog extends EditNodeBase {
 		@Override
 		protected boolean isChanged() {
 			return !getText().equals(textComponent.getText());
-		}
-
-		@Override
-		public void show() {
-			textComponent.requestFocus();
-			super.show();
 		}
 
 		/*
@@ -276,6 +271,7 @@ public class EditNodeDialog extends EditNodeBase {
 		final JDialog dialog = editor.getDialog();
 		configureDialog(dialog);
 		dialog.setModal(false);
+        restoreDialogSize(dialog);
 		dialog.pack();
 		Controller.getCurrentModeController().getController().getMapViewManager().scrollNodeToVisible(node);
 		if (ResourceController.getResourceController().getBooleanProperty("el__position_window_below_node")) {
@@ -292,6 +288,7 @@ public class EditNodeDialog extends EditNodeBase {
 
 			@Override
 			public void componentResized(final ComponentEvent e) {
+			    saveDialogSize(dialog);
 			}
 
 			@Override
@@ -311,4 +308,5 @@ public class EditNodeDialog extends EditNodeBase {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 }

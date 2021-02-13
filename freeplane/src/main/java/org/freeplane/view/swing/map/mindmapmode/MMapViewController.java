@@ -76,7 +76,7 @@ public class MMapViewController extends MapViewController implements IEditBaseCr
 			preferredWidth = Math.min(preferredWidth, Integer.parseInt(ResourceController.getResourceController()
 					.getProperty("el__max_default_window_width")));
 			final Dimension preferredSize = new Dimension(preferredWidth, preferredHeight);
-			editNodeWYSIWYG.setPreferredSize(preferredSize);
+			editNodeWYSIWYG.setPreferredContentSize(preferredSize);
 			final MainView mainView = (MainView) getComponent(node);
 	        final NodeView nodeView = mainView.getNodeView();
 			if(EditedComponent.TEXT.equals(editControl.getEditType())){
