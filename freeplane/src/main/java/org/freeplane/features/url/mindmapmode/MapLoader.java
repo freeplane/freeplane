@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
@@ -245,16 +247,6 @@ public class MapLoader{
 			}
 		}
 
-		if(followSourceMap && sourceLocation != null && ! sourceLocation.equals(newMapLocation)) {
-			MapStyleModel properties = MapStyleModel.getExtension(map);
-			try {
-				properties.setProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY,
-					sourceLocation.toURI().toString());
-			}
-			catch (URISyntaxException e) {
-				LogUtils.severe(e);
-			}
-		}
 
 		map.setURL(newMapLocation);
 		if(saveAfterLoading && ! newMapLocation.equals(actualSourceLocation)) {
@@ -263,10 +255,29 @@ public class MapLoader{
 		else {
 			map.setSaved(actualSourceLocation != null && actualSourceLocation.equals(newMapLocation));
 		}
+		setFollowedMapProperties(map);
 		mapController().addLoadedMap(map);
 		mapController().fireMapCreated(map);
 		return map;
 	}
+
+    private void setFollowedMapProperties(final MMapModel map) {
+        if(followSourceMap && sourceLocation != null && ! sourceLocation.equals(newMapLocation)) {
+			MapStyleModel properties = MapStyleModel.getExtension(map);
+			try {
+				URI sourceUri = sourceLocation.toURI();
+                properties.setProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY,
+					sourceUri.toString());
+                if(sourceUri.getScheme().equalsIgnoreCase("file")) {
+                    File file = Paths.get(sourceUri).toFile();
+                    properties.setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME, Long.toString(file.lastModified()));
+                }
+			}
+			catch (URISyntaxException e) {
+				LogUtils.severe(e);
+			}
+		}
+    }
 
 	private void loadMap(final MMapModel map, URL sourceLocation)
 			throws IOException, XMLException, FileNotFoundException, XMLParseException {

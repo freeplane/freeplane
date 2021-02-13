@@ -56,6 +56,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Vector;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 import javax.swing.Box;
 import javax.swing.JCheckBox;
@@ -331,7 +332,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		controller.addAction(new NewMapAction());
 		final File userTemplates = defaultUserTemplateDir();
 		userTemplates.mkdir();
-		modeController.addAction(new NewMapFromTemplateAction("new_map_from_user_templates", userTemplates));
+		modeController.addAction(new NewMapFromTemplateAction("new_map_from_user_templates"));
 		modeController.addAction(new SaveAction());
 		modeController.addAction(new SaveAsAction());
 		modeController.addAction(new ExportBranchAction());
@@ -775,7 +776,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
                     final JFileChooser chooser = getMindMapFileChooser();
                     MindMapPreviewWithOptions previewWithOptions = new MindMapPreviewWithOptions(chooser, startFollow);
 					chooser.setAccessory(previewWithOptions);
-					chooser.setCurrentDirectory(startFile);
+					Stream.of(chooser.getChoosableFileFilters())
+					    .filter(filter -> filter instanceof MindMapDirectoryFilter)
+					    .map(MindMapDirectoryFilter.class::cast)
+					    .filter(filter -> filter.directory.equals(startFile))
+					    .findFirst()
+					    .ifPresent(filter -> chooser.setFileFilter(filter));
+                    chooser.setCurrentDirectory(startFile);
 					final int returnVal = chooser
 					    .showOpenDialog(Controller.getCurrentController().getMapViewManager().getMapViewComponent());
 					if (returnVal != JFileChooser.APPROVE_OPTION) {
