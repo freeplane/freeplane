@@ -32,9 +32,7 @@ import org.freeplane.features.text.mindmapmode.MTextController;
 import org.freeplane.plugin.script.FormulaUtils;
 
 class FormulaTextTransformer extends AbstractContentTransformer implements IEditBaseCreator{
-	private static final String CONTENT_TYPE_FORMULA = TextController.CONTENT_TYPE_AUTO;
-
-    FormulaTextTransformer(int priority) {
+	FormulaTextTransformer(int priority) {
 		super(priority);
 	}
 
@@ -132,9 +130,9 @@ class FormulaTextTransformer extends AbstractContentTransformer implements IEdit
 		if(! (content instanceof String))
 			return null;
 		MNoteController noteController = MNoteController.getController();
-		if (! ((nodeProperty instanceof NodeModel || nodeProperty instanceof NodeAttributeTableModel) && ! textController.isTextFormattingDisabled(node)
-				|| nodeProperty instanceof DetailModel && CONTENT_TYPE_FORMULA.equals(textController.getDetailsContentType(node))
-		        || nodeProperty instanceof NoteModel && CONTENT_TYPE_FORMULA.equals(noteController.getNoteContentType(node))))
+		if (nodeProperty instanceof NodeModel && textController.isTextFormattingDisabled(node)
+			|| nodeProperty instanceof DetailModel && TextController.CONTENT_TYPE_HTML.equals(textController.getDetailsContentType(node))
+		    || nodeProperty instanceof NoteModel && TextController.CONTENT_TYPE_HTML.equals(noteController.getNoteContentType(node)))
 			return null;
 		String plainOrHtmlText = (String)content;
 		String text = HtmlUtils.htmlToPlain(plainOrHtmlText);

@@ -147,7 +147,7 @@ public class TextController implements IExtension {
 		if (content instanceof String) {
 			String string = (String) content;
 			if (string.length() > 0 && string.charAt(0) == '\'') {
-				if (node != null && nodeProperty == node.getUserObject() && isTextFormattingDisabled(node))
+				if (node != null && nodeProperty == node && isTextFormattingDisabled(node))
 					return string;
 				else
 					return string.substring(1);

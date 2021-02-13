@@ -23,7 +23,6 @@ import org.freeplane.features.text.AbstractContentTransformer;
 import org.freeplane.features.text.DetailModel;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.text.TransformationException;
-import org.freeplane.features.text.IContentTransformer.Mode;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.IEditControl;
 import org.freeplane.features.text.mindmapmode.EditNodeDialog;
