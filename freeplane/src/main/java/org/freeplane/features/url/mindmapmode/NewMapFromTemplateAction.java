@@ -31,16 +31,17 @@ class NewMapFromTemplateAction extends AFreeplaneAction {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	private File startFile;
 
-	public NewMapFromTemplateAction(String key, File file) {
+	public NewMapFromTemplateAction(String key) {
 		super(key);
-		this.startFile = file;
 	}
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
-		((MFileManager) UrlManager.getController()).openUntitledMap(startFile, false);
+        MFileManager fileManager = (MFileManager) UrlManager.getController();
+        final File userTemplateDir = fileManager.defaultUserTemplateDir();
+        File startDirectory = userTemplateDir.listFiles().length != 0 ? userTemplateDir : fileManager.defaultStandardTemplateDir();
+        fileManager.openUntitledMap(startDirectory, false);
 	}
 
 	@Override
