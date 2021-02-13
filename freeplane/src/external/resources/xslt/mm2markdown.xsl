@@ -42,13 +42,31 @@ ChangeLog: See: http://freeplane.sourceforge.net/
 	<!-- Template to print header #signs  -->
 	<xsl:template name="numberSign">
 		<xsl:param name="howMany">1</xsl:param>
-		<xsl:if test="$howMany &gt; 0">
+		<xsl:if test="$howMany &gt; 0 and ($howMany &lt; 7)">
 			<!-- Add 1 number signs (#) to result tree. -->
 			<xsl:text>#</xsl:text>
 			<!-- Print remaining ($howMany - 1) number signs. -->
 			<xsl:call-template name="numberSign">
 				<xsl:with-param name="howMany" select="$howMany - 1"/>
 			</xsl:call-template>
+		</xsl:if>
+                <xsl:if test="$howMany = 7">
+			<xsl:text>*</xsl:text>
+		</xsl:if>
+		<xsl:if test="$howMany = 8">
+			<xsl:text>  +</xsl:text>
+		</xsl:if>
+		<xsl:if test="$howMany = 9">
+			<xsl:text>    -</xsl:text>
+		</xsl:if>
+		<xsl:if test="$howMany = 10">
+			<xsl:text>      *</xsl:text>
+		</xsl:if>
+		<xsl:if test="$howMany = 11">
+			<xsl:text>        +</xsl:text>
+		</xsl:if>
+		<xsl:if test="$howMany = 12">
+			<xsl:text>          -</xsl:text>
 		</xsl:if>
 	</xsl:template>
 
@@ -235,4 +253,4 @@ ChangeLog: See: http://freeplane.sourceforge.net/
 		<xsl:value-of select="translate(@NAME, $uppercase, $lowercase)" />: '<xsl:value-of select="@VALUE" />'
 		<xsl:text>&#13;</xsl:text>
 	</xsl:template>
-</xsl:stylesheet> 
+</xsl:stylesheet>
