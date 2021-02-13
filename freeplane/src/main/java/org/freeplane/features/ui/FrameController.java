@@ -547,7 +547,8 @@ abstract public class FrameController implements ViewController {
             }
 			if (lookAndFeel.equals("default")) {
 			    boolean lookAndFeelSet = false;
-			    if (Compat.isMacOsX()) {
+			    boolean useAquaLafForMacosAsDefault = false;
+                if (useAquaLafForMacosAsDefault && Compat.isMacOsX()) {
 			        String lafClassName = AQUA_LAF_CLASS_NAME;
 			        lookAndFeelSet = tryToSetLookAndFeel(lafClassName);
 			    }
