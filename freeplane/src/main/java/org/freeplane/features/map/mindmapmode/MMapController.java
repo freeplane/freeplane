@@ -983,10 +983,15 @@ public class MMapController extends MapController {
 		new MapLoader(getMModeController()).load(url).withView().asDocumentation().getMap();
 	}
 
-	/**@throws XMLException
-	 * @deprecated -- use MMapIO*/
-	@Deprecated
     public void restoreCurrentMap() throws FileNotFoundException, IOException, URISyntaxException, XMLException {
+	    restoreCurrentMap(true);
+	}
+    
+    public void restoreCurrentMapIgnoreAlternatives() throws FileNotFoundException, IOException, URISyntaxException, XMLException {
+        restoreCurrentMap(false);
+    }
+    
+    private void restoreCurrentMap(boolean checkAlternatives) throws FileNotFoundException, IOException, URISyntaxException, XMLException {
 	    final Controller controller = Controller.getCurrentController();
         final MapModel map = controller.getMap();
         final URL url = map.getURL();
@@ -1001,7 +1006,7 @@ public class MMapController extends MapController {
 			return;
 		}
 
-		final URL alternativeURL = MFileManager.getController(getMModeController()).getAlternativeURL(url, AlternativeFileMode.ALL);
+		final URL alternativeURL = checkAlternatives ? MFileManager.getController(getMModeController()).getAlternativeURL(url, AlternativeFileMode.ALL) : url;
 		if(alternativeURL == null)
 			return;
 		controller.getViewController().setWaitingCursor(true);

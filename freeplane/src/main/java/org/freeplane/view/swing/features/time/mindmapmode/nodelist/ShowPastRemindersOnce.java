@@ -28,6 +28,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 import org.freeplane.features.map.NodeModel;
 
 
@@ -60,7 +61,7 @@ public class ShowPastRemindersOnce {
 					listIsShown = true;
 					final int showResult = OptionalDontShowMeAgainDialog.show("OptionPanel.reminder.showPastRemindersOnStart", "confirmation",
 					    "reminder.showPastRemindersOnStart",
-					    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
+					    MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
 					if (showResult != JOptionPane.OK_OPTION) {
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override

@@ -61,6 +61,7 @@ import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.IEditHandler.FirstAction;
 import org.freeplane.core.ui.components.BitmapImagePreview;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
@@ -589,7 +590,7 @@ public class MTextController extends TextController {
 	public boolean useRichTextInEditor(String key) {
 		final int showResult = OptionalDontShowMeAgainDialog.show(
 		    "OptionPanel." + key, "edit.decision", key,
-		    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
+		    MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
 		return showResult == JOptionPane.OK_OPTION;
 	}
 

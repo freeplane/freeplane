@@ -21,6 +21,7 @@ package org.freeplane.features.edge;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 import org.freeplane.features.edge.AutomaticEdgeColor.Rule;
 import org.freeplane.features.edge.mindmapmode.MEdgeController;
 import org.freeplane.features.map.IMapChangeListener;
@@ -73,7 +74,7 @@ public class AutomaticEdgeColorHook extends PersistentNodeHook implements IExten
 				final boolean edgeStylesEquals = controller.getColor(child).equals(controller.getColor(parent));
 				if(! edgeStylesEquals){
 					OptionalDontShowMeAgainDialog.show("edge_is_formatted_by_style", "confirmation",
-					    "ignore_edge_format_by_style", OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_SHOWN);
+					    "ignore_edge_format_by_style", MessageType.ONLY_OK_SELECTION_IS_SHOWN);
 				}
 			}
 	    }

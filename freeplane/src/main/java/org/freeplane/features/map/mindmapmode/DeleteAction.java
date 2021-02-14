@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -49,7 +50,7 @@ class DeleteAction extends AFreeplaneAction {
 		final Controller controller = Controller.getCurrentController();
 		final int showResult = OptionalDontShowMeAgainDialog.show("really_remove_node", "confirmation",
 		    MModeController.RESOURCES_DELETE_NODES_WITHOUT_QUESTION,
-		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
+		    MessageType.ONLY_OK_SELECTION_IS_STORED);
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}

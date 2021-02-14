@@ -42,10 +42,12 @@ import org.freeplane.features.url.mindmapmode.MFileManager;
 
 public class MMapModel extends MapModel {
 	private static int unnamedMapsNumber = 1;
+	private static final long UNKNOWN_MODIFICATION_TIME = -1;
 	private LockManager lockManager;
 	private Timer timerForAutomaticSaving;
 	private int titleNumber = 0;
 	private boolean autosaveEnabled;
+    private long lastKnownModificationTime = UNKNOWN_MODIFICATION_TIME;
 
 	/**
 	 * The current version and all other version that don't need XML update for
@@ -59,8 +61,27 @@ public class MMapModel extends MapModel {
 		"experimental_file_locking_on") ? new LockManager() : new DummyLockManager();
 	}
 
-
 	@Override
+    public void setURL(URL v) {
+        super.setURL(v);
+        updateLastKnownFileModificationTime();
+    }
+
+    public void updateLastKnownFileModificationTime() {
+        this.lastKnownModificationTime = getLastFileModificationTime();
+    }
+
+    private long getLastFileModificationTime() {
+        File file = getFile();
+        long lastKnownModificationTime = file != null ? file.lastModified() : UNKNOWN_MODIFICATION_TIME;
+        return lastKnownModificationTime;
+    }
+    
+    public boolean hasExternalFileChanged() {
+        return lastKnownModificationTime != getLastFileModificationTime();
+    }
+
+    @Override
 	public void beforeViewCreated() {
 		if(! containsExtension(IUndoHandler.class))
 			addExtension(IUndoHandler.class, new UndoHandler(MMapModel.this));

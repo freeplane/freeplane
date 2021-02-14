@@ -74,6 +74,7 @@ import org.freeplane.features.styles.MapViewLayout;
 import org.freeplane.features.text.TextController;
 import org.freeplane.features.time.TimeController;
 import org.freeplane.features.ui.FrameController;
+import org.freeplane.features.url.mindmapmode.ExternalMapChangeMonitor;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.main.addons.AddOnsController;
 import org.freeplane.main.application.CommandLineParser.Options;
@@ -303,6 +304,7 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			}
 
 			private void finishStartup() {
+			    ExternalMapChangeMonitor.install(controller.getMapViewManager());
 				focusCurrentView();
 				contentPane.setVisible(true);
 				frame.toFront();

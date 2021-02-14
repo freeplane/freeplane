@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.EnabledAction;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -51,7 +52,7 @@ class RemoveNoteAction extends AFreeplaneAction{
 	public void actionPerformed(final ActionEvent e) {
 		final int showResult = OptionalDontShowMeAgainDialog.show("really_remove_notes", "confirmation",
 		    MNoteController.RESOURCES_REMOVE_NOTES_WITHOUT_QUESTION,
-		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
+		    MessageType.ONLY_OK_SELECTION_IS_STORED);
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}

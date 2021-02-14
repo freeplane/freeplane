@@ -101,7 +101,10 @@ public class MaybeBooleanProperty extends PropertyBean implements IPropertyContr
 	}
 
 	private int transformString(final String string) {
-		if (string.toLowerCase().equals(TRUE_VALUE)) {
+	    if (string == null) {
+            return MaybeBooleanProperty.ASK_VALUE_INT;
+	    }
+	    else if (string.toLowerCase().equals(TRUE_VALUE)) {
 			return MaybeBooleanProperty.TRUE_VALUE_INT;
 		}
 		else if (string.toLowerCase().equals(FALSE_VALUE)) {

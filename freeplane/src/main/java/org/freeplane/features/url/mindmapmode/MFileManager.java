@@ -79,6 +79,7 @@ import org.freeplane.core.ui.IndexedTree;
 import org.freeplane.core.ui.LabelAndMnemonicSetter;
 import org.freeplane.core.ui.components.JFreeplaneCustomizableFileChooser;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FileUtils;
@@ -576,7 +577,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
         if (versionInterpreter.needsConversion) {
 			final int showResult = OptionalDontShowMeAgainDialog.show("really_convert_to_current_version",
 			    "confirmation", MMapController.RESOURCES_CONVERT_TO_CURRENT_VERSION,
-			    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
+			    MessageType.ONLY_OK_SELECTION_IS_STORED);
 			IMapInputStreamConverter isConverter = versionInterpreter.getMapInputStreamConverter();
 			if (showResult != JOptionPane.OK_OPTION || isConverter == null) {
 				reader = new InputStreamReader(sequencedInput, StandardCharsets.UTF_8);
@@ -860,6 +861,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		if (!saved) {
 			return false;
 		}
+		map.updateLastKnownFileModificationTime();
 		map.setReadOnly(false);
 		final URL urlAfter = map.getURL();
 		final MMapController mapController = (MMapController) Controller.getCurrentModeController().getMapController();

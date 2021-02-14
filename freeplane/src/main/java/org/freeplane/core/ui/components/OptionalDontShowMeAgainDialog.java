@@ -50,12 +50,11 @@ import org.freeplane.features.mode.Controller;
 public class OptionalDontShowMeAgainDialog {
 	private static final String REMEMBER_MY_DESCISION = "OptionalDontShowMeAgainDialog.rememberMyDescision";
 	public static final String DONT_SHOW_AGAIN = "OptionalDontShowMeAgainDialog.dontShowAgain";
-	public final static int BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED = 1;
-	public final static int ONLY_OK_SELECTION_IS_STORED = 0;
-	public final static int ONLY_OK_SELECTION_IS_SHOWN = 2;
+	public enum MessageType {ONLY_OK_SELECTION_IS_STORED, ONLY_CANCEL_SELECTION_IS_STORED, 
+	    BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED , ONLY_OK_SELECTION_IS_SHOWN } 
 
 	static public int show(final String pMessageId, final String pTitleId,
-	                       final String pPropertyName, final int pMessageType) {
+	                       final String pPropertyName, final MessageType pMessageType) {
 		return new OptionalDontShowMeAgainDialog(pMessageId, pTitleId, pPropertyName, pMessageType).show()
 		    .getResult();
 	}
@@ -64,7 +63,7 @@ public class OptionalDontShowMeAgainDialog {
 	private JDialog mDialog;
 	private JCheckBox mDontShowAgainBox;
 	final private String mMessageId;
-	final private int mMessageType;
+	final private MessageType mMessageType;
 	final private NodeModel mNode;
 	final private Frame mParent;
 	final private String mPropertyName;
@@ -72,7 +71,7 @@ public class OptionalDontShowMeAgainDialog {
 	final private String mTitleId;
 
 	private OptionalDontShowMeAgainDialog(final String pMessageId, final String pTitleId,
-	                                      final String pPropertyName, final int pMessageType) {
+	                                      final String pPropertyName, final MessageType pMessageType) {
 		//		this.controller = controller;
 		Controller controller = Controller.getCurrentController();
 		mParent = UITools.getCurrentFrame();
@@ -92,17 +91,22 @@ public class OptionalDontShowMeAgainDialog {
 	private void close(final int pResult) {
 		mResult = pResult;
 		if (mDontShowAgainBox.isSelected()) {
-			if (mMessageType == OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED) {
-				if (mResult == JOptionPane.OK_OPTION) {
-					setProperty("true");
-				}
-			}
-			else {
-				setProperty((mResult == JOptionPane.OK_OPTION) ? "true" : "false");
-			}
-		}
-		else {
-			setProperty("");
+		    switch (mMessageType) {
+            case ONLY_OK_SELECTION_IS_STORED:
+                if (mResult == JOptionPane.OK_OPTION) {
+                    setProperty("true");
+                }
+                break;
+
+            case ONLY_CANCEL_SELECTION_IS_STORED:
+                if (mResult == JOptionPane.CANCEL_OPTION) {
+                    setProperty("false");
+                }
+                break;
+            default:
+                setProperty((mResult == JOptionPane.OK_OPTION) ? "true" : "false");
+                break;
+            }
 		}
 		mDialog.setVisible(false);
 		mDialog.dispose();
@@ -125,11 +129,13 @@ public class OptionalDontShowMeAgainDialog {
 
 	private OptionalDontShowMeAgainDialog show() {
 		final String property = getProperty();
-		if (StringUtils.equals(property, "true")) {
+		if (mMessageType != MessageType.ONLY_CANCEL_SELECTION_IS_STORED && StringUtils.equals(property, "true")) {
 			mResult = JOptionPane.OK_OPTION;
 			return this;
 		}
-		if (mMessageType == BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED && StringUtils.equals(property, "false")) {
+		if ((mMessageType == MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED
+		        || mMessageType == MessageType.ONLY_CANCEL_SELECTION_IS_STORED)
+		        && StringUtils.equals(property, "false")) {
 			mResult = JOptionPane.CANCEL_OPTION;
 			return this;
 		}
@@ -172,7 +178,7 @@ public class OptionalDontShowMeAgainDialog {
 		    new GridBagConstraints(1, 0, 1, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
 		        5, 5, 0, 0), 0, 0));
 		final Icon questionMark;
-		if (mMessageType == ONLY_OK_SELECTION_IS_SHOWN) {
+		if (mMessageType == MessageType.ONLY_OK_SELECTION_IS_SHOWN) {
 			questionMark = ResourceController.getResourceController().getIcon("/images/icons/messagebox_warning.svg");
 		}
 		else {
@@ -183,7 +189,7 @@ public class OptionalDontShowMeAgainDialog {
 		    new GridBagConstraints(0, 0, 1, 2, 1.0, 2.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
 		        5, 5, 0, 0), 0, 0));
 		String boxString;
-		if (mMessageType != OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED) {
+		if (mMessageType != MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED) {
 			boxString = DONT_SHOW_AGAIN;
 		}
 		else {
@@ -196,7 +202,7 @@ public class OptionalDontShowMeAgainDialog {
 		    new GridBagConstraints(0, 2, 3, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
 		        5, 5, 0, 0), 0, 0));
 		final String okText;
-		if (mMessageType == ONLY_OK_SELECTION_IS_SHOWN) {
+		if (mMessageType == MessageType.ONLY_OK_SELECTION_IS_SHOWN) {
 			okText = TextUtils.getRawText("ok");
 		}
 		else {
@@ -209,7 +215,7 @@ public class OptionalDontShowMeAgainDialog {
 		    okButton,
 		    new GridBagConstraints(2, 3, 1, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(
 		        5, 5, 0, 0), 0, 0));
-		if (mMessageType != ONLY_OK_SELECTION_IS_SHOWN) {
+		if (mMessageType != MessageType.ONLY_OK_SELECTION_IS_SHOWN) {
 			final JButton cancelButton = new JButton(TextUtils.getRawText("OptionalDontShowMeAgainDialog.cancel"));
 			LabelAndMnemonicSetter.setLabelAndMnemonic(cancelButton, null);
 			cancelButton.addActionListener(cancelAction);

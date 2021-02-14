@@ -116,6 +116,7 @@ import org.freeplane.features.ui.FrameController;
 import org.freeplane.features.ui.ToggleToolbarAction;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.features.url.UrlManager;
+import org.freeplane.features.url.mindmapmode.ExternalMapChangeMonitor;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.features.url.mindmapmode.SaveAll;
 import org.freeplane.main.mindmapmode.stylemode.SModeControllerFactory;

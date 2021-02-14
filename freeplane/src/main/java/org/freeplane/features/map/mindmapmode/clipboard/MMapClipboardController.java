@@ -48,6 +48,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.CaseSensitiveFileNameExtensionFilter;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.HtmlUtils;
@@ -985,7 +986,7 @@ public class MMapClipboardController extends MapClipboardController implements M
 		}
 		final int showResult = OptionalDontShowMeAgainDialog.show("really_cut_node", "confirmation",
 		    MMapClipboardController.RESOURCES_CUT_NODES_WITHOUT_QUESTION,
-		    OptionalDontShowMeAgainDialog.ONLY_OK_SELECTION_IS_STORED);
+		    MessageType.ONLY_OK_SELECTION_IS_STORED);
 		if (showResult != JOptionPane.OK_OPTION) {
 			return;
 		}

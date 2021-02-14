@@ -18,6 +18,7 @@
 				<boolean name="skip_template_selection" />
 			</separator>
 			<separator name="load">
+				<boolean name="monitor_external_mind_map_file_changes" />
 				<combo name="load_folding">
 					<choice value="always_fold_all_after_load" />
 					<choice value="load_folding_from_map_default_fold_all" />

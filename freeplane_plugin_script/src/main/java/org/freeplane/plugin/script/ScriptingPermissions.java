@@ -30,6 +30,7 @@ import javax.swing.JOptionPane;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog;
+import org.freeplane.core.ui.components.OptionalDontShowMeAgainDialog.MessageType;
 import org.freeplane.core.util.TextUtils;
 
 /**
@@ -159,7 +160,7 @@ public class ScriptingPermissions {
 		if (! executeScriptsWithoutAsking()) {
     		final int showResult = OptionalDontShowMeAgainDialog.show("really_execute_script", "confirmation",
     		    ScriptingPermissions.RESOURCES_EXECUTE_SCRIPTS_WITHOUT_ASKING,
-    		    OptionalDontShowMeAgainDialog.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
+    		    MessageType.BOTH_OK_AND_CANCEL_OPTIONS_ARE_STORED);
     		if (showResult != JOptionPane.OK_OPTION) {
     			throw new ExecuteScriptException(new SecurityException(TextUtils.getText("script_execution_disabled")));
     		}

@@ -275,6 +275,12 @@ public class MapModel {
 	public void setURL(final URL v) {
 		url = v;
 	}
+	
+	public boolean hasExternalFileChanged() {
+	    return false;
+	}
+	
+	public void updateLastKnownFileModificationTime() {/**/}
 
 	public void unregistryNodes(final NodeModel node) {
 		final List<NodeModel> children = node.getChildren();
