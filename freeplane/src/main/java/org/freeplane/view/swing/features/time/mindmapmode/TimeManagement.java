@@ -98,7 +98,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		private JCalendar calendarComponent;
 		private JComboBox dateFormatChooser;
 
-		public JTimePanel(boolean useTriple, int colCount) {
+		private JTimePanel(boolean useTriple, int colCount) {
 	        super();
 	        init(useTriple, colCount);
 	        final NodeModel selected = reminderHook.getModeController().getMapController().getSelectedNode();
@@ -316,7 +316,6 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		}
 	}
 	private Calendar calendar;
-	public final static String REMINDER_HOOK_NAME = "plugins/TimeManagementReminder.xml";
 	private static TimeManagement sCurrentlyOpenTimeManagement = null;
 	private JDialog dialog;
 	private final ReminderHook reminderHook;
@@ -440,11 +439,11 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		class DateFormatComboBoxElement {
 			private final PatternFormat dateFormat;
 
-			DateFormatComboBoxElement(PatternFormat dateFormat) {
+			private DateFormatComboBoxElement(PatternFormat dateFormat) {
 				this.dateFormat = dateFormat;
 			}
 
-			PatternFormat getDateFormat() {
+			private PatternFormat getDateFormat() {
 				return dateFormat;
 			}
 
@@ -513,7 +512,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 		return dateFormatChooser;
 	}
 
-	void insertTime(final Dialog dialog, final JButton appendButton) {
+	private void insertTime(final Dialog dialog, final JButton appendButton) {
 	    FormattedDate date = getCalendarDate();
 	    final String dateAsString = dateFormat.formatObject(date).toString();
 	    final Window parentWindow;

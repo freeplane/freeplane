@@ -32,7 +32,7 @@ class DateRenderer extends DefaultTableCellRenderer {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-	DateFormat formatter;
+	private DateFormat formatter;
 
 	public DateRenderer() {
 		super();

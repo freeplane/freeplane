@@ -30,10 +30,10 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev
  * Mar 6, 2009
  */
-public class ReminderConditionBefore extends ReminderCondition {
+class ReminderConditionBefore extends ReminderCondition {
 	static final String NAME = "reminder_condition_before";
 
-	public ReminderConditionBefore(final FormattedDate date) {
+	ReminderConditionBefore(final FormattedDate date) {
 		super(date);
 	}
 

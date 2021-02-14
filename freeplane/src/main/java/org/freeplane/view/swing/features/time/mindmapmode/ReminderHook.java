@@ -304,7 +304,7 @@ public class ReminderHook extends PersistentNodeHook implements IExtension {
 	 * @author Dimitry
 	 *
 	 */
-	enum NotificationOptions {
+	private enum NotificationOptions {
 		SELECT_NODE, REMOVE_REMINDER, REMIND_ME_LATER, CLOSE;
 
 		@Override

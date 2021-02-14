@@ -27,13 +27,13 @@ import org.freeplane.features.map.NodeModel;
  * 03.10.2013
  */
 /** removes html in notes before comparison. */
-public class TextHolder implements Comparable<TextHolder> {
+class TextHolder implements Comparable<TextHolder> {
 	final private TextAccessor textAccessor;
 	private String originalNotesText = null;
 	private String untaggedNotesText = null;
 
 
-	public TextHolder(final TextAccessor textAccessor) {
+	TextHolder(final TextAccessor textAccessor) {
 		this.textAccessor = textAccessor;
 	}
 

@@ -40,7 +40,7 @@ import org.freeplane.n3.nanoxml.XMLElement;
  * @author Dimitry Polivaev
  * 21.12.2008
  */
-public class ReminderConditionController implements IElementaryConditionController {
+class ReminderConditionController implements IElementaryConditionController {
 	static final String FILTER_REMINDER = "filter_reminder";
 	private final ComboBoxEditor editor = new TimeComboBoxEditor(true);
 	private final ComboBoxModel values = new DefaultComboBoxModel();
@@ -140,7 +140,7 @@ public class ReminderConditionController implements IElementaryConditionControll
 	    return null;
     }
 
-	public static ASelectableCondition create(final TranslatedObject simpleCond, final FormattedDate date) {
+	private static ASelectableCondition create(final TranslatedObject simpleCond, final FormattedDate date) {
     	if (simpleCond.objectEquals(ReminderConditionLater.FILTER_REMINDER_LATER)) {
     		return new ReminderConditionLater();
     	}

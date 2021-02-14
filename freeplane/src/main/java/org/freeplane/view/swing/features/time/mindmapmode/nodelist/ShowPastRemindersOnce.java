@@ -88,10 +88,6 @@ public class ShowPastRemindersOnce {
 		});
 	}
 
-	public boolean alreadyExecuted(){
-		return listIsShown;
-	}
-
 	public long timeLimit() {
 		if(timeLimit == UNDEFINED)
 			timeLimit = System.currentTimeMillis();

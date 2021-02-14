@@ -25,7 +25,7 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev
  * 03.10.2013
  */
-public interface TextAccessor {
+interface TextAccessor {
 	String getText();
 
 	void setText(String newText);

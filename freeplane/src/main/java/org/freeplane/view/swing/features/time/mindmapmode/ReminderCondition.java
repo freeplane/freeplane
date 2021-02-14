@@ -23,13 +23,13 @@ import org.freeplane.features.filter.condition.ASelectableCondition;
 import org.freeplane.features.format.FormattedDate;
 import org.freeplane.n3.nanoxml.XMLElement;
 
-public abstract class ReminderCondition extends ASelectableCondition {
+abstract class ReminderCondition extends ASelectableCondition {
 	static final String DATE = "DATE";
 	static final String FILTER_REMINDER_AFTER = "filter_reminder_after";
 	static final String FILTER_REMINDER_BEFORE = "filter_reminder_before";
 
 	final private FormattedDate date;
-	public ReminderCondition(final FormattedDate date) {
+	ReminderCondition(final FormattedDate date) {
 		this.date = date;
 	}
 

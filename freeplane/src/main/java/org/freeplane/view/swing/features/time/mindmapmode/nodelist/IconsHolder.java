@@ -32,7 +32,7 @@ import org.freeplane.features.map.NodeModel;
  */
 class IconsHolder implements Comparable<IconsHolder> {
 	final private String iconNames;
-	List<NamedIcon> icons = new ArrayList<>();
+	private List<NamedIcon> icons = new ArrayList<>();
 
 	public IconsHolder(final NodeModel node) {
 		icons.addAll(IconController.getController().getIcons(node));

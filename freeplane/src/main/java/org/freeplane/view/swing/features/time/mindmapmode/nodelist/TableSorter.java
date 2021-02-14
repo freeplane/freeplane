@@ -247,21 +247,21 @@ class TableSorter extends AbstractTableModel {
 			return ((Comparable<Object>) o1).compareTo(o2);
 		}
 	};
-	public static final int DESCENDING = -1;
+	private static final int DESCENDING = -1;
 	private static Directive EMPTY_DIRECTIVE = new Directive(-1, TableSorter.NOT_SORTED);
 	public static final Comparator<Object> LEXICAL_COMPARATOR = new Comparator<Object>() {
 		public int compare(final Object o1, final Object o2) {
 			return o1.toString().compareTo(o2.toString());
 		}
 	};
-	public static final int NOT_SORTED = 0;
+	private static final int NOT_SORTED = 0;
 	private static final long serialVersionUID = 1L;
 	final private Map<Class<?>, Comparator<Object>> columnComparators = new HashMap<Class<?>, Comparator<Object>>();
 	private int[] modelToView;
 	final private MouseListener mouseListener;
 	final private List<Directive> sortingColumns = new ArrayList<Directive>();
 	private JTableHeader tableHeader;
-	protected TableModel tableModel;
+	private TableModel tableModel;
 	final private TableModelListener tableModelListener;
 	private Row[] viewToModel;
 
@@ -272,12 +272,6 @@ class TableSorter extends AbstractTableModel {
 
 	public TableSorter(final TableModel tableModel) {
 		this();
-		setTableModel(tableModel);
-	}
-
-	public TableSorter(final TableModel tableModel, final JTableHeader tableHeader) {
-		this();
-		setTableHeader(tableHeader);
 		setTableModel(tableModel);
 	}
 
@@ -305,7 +299,7 @@ class TableSorter extends AbstractTableModel {
 		return tableModel.getColumnName(column);
 	}
 
-	protected Comparator<Object> getComparator(final int column) {
+	private Comparator<Object> getComparator(final int column) {
 		final Class<?> columnType = tableModel.getColumnClass(column);
 		final Comparator<Object> comparator = columnComparators.get(columnType);
 		if (comparator != null) {
@@ -326,7 +320,7 @@ class TableSorter extends AbstractTableModel {
 		return TableSorter.EMPTY_DIRECTIVE;
 	}
 
-	protected Icon getHeaderRendererIcon(final int column, final int size) {
+	private Icon getHeaderRendererIcon(final int column, final int size) {
 		final Directive directive = getDirective(column);
 		if (directive == TableSorter.EMPTY_DIRECTIVE) {
 			return null;
@@ -388,7 +382,7 @@ class TableSorter extends AbstractTableModel {
 		return sortingColumns.size() != 0;
 	}
 
-	public int modelIndex(final int viewIndex) {
+	private int modelIndex(final int viewIndex) {
 		return getViewToModel()[viewIndex].modelIndex;
 	}
 

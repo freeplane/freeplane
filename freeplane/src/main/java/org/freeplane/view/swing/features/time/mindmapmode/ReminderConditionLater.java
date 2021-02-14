@@ -28,10 +28,9 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev
  * Mar 5, 2009
  */
-public class ReminderConditionLater extends ASelectableCondition {
+class ReminderConditionLater extends ASelectableCondition {
 	static final String NAME = "reminder_condition_later";
 	static final String FILTER_REMINDER_LATER = "filter_reminder_later";
-	static final String FILTER_REMINDER_EARLIER = "filter_reminder_earlier";
 
 	public boolean checkNode(final NodeModel node) {
 		final ReminderExtension reminder = ReminderExtension.getExtension(node);

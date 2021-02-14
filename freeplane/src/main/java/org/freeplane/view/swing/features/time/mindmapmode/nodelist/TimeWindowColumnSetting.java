@@ -10,8 +10,8 @@ class TimeWindowColumnSetting {
 		return timeWindowColumnSetting;
 	}
 
-	protected int columnSorting;
-	protected int columnWidth;
+	private int columnSorting;
+	private int columnWidth;
 
 	public int getColumnSorting() {
 		return columnSorting;

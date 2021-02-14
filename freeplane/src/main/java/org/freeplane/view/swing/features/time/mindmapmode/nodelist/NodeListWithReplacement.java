@@ -24,13 +24,13 @@ import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.HtmlUtils;
 import org.freeplane.core.util.TextUtils;
 
-public class NodeListWithReplacement extends NodeList{
-	class HolderAccessor{
+class NodeListWithReplacement extends NodeList{
+	private class HolderAccessor{
 		HolderAccessor() {
 	        super();
         }
 
-		public void changeString(final TextHolder textHolder, final String newText) {
+		private void changeString(final TextHolder textHolder, final String newText) {
 			textHolder.setText(newText);
 		}
 
@@ -38,7 +38,7 @@ public class NodeListWithReplacement extends NodeList{
 			return mFlatNodeTableFilterModel.getRowCount();
 		}
 
-		public TextHolder[] getNodeHoldersAt(final int row) {
+		private TextHolder[] getNodeHoldersAt(final int row) {
 			return new TextHolder[]{
 					(TextHolder) sorter.getValueAt(row, nodeTextColumn),
 					(TextHolder) sorter.getValueAt(row, nodeDetailsColumn),
@@ -51,7 +51,7 @@ public class NodeListWithReplacement extends NodeList{
 	final private JComboBox mFilterTextReplaceField;
 	private final JCheckBox useRegexInReplace;
 
-	public NodeListWithReplacement(String windowTitle, boolean searchInAllMaps, String windowPreferenceStorageProperty) {
+	NodeListWithReplacement(String windowTitle, boolean searchInAllMaps, String windowPreferenceStorageProperty) {
 		super(windowTitle, searchInAllMaps, windowPreferenceStorageProperty);
 		mFilterTextSearchField.addKeyListener(new KeyAdapter() {
 			@Override

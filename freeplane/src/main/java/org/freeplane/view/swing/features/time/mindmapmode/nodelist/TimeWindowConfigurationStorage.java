@@ -27,26 +27,14 @@ class TimeWindowConfigurationStorage extends WindowConfigurationStorage {
 	    super("time_window_configuration_storage");
     }
 
-	protected List<TimeWindowColumnSetting> timeWindowColumnSettingList = new ArrayList<TimeWindowColumnSetting>();
-
-	public void addAtTimeWindowColumnSetting(final int position, final TimeWindowColumnSetting timeWindowColumnSetting) {
-		timeWindowColumnSettingList.add(position, timeWindowColumnSetting);
-	}
+	private List<TimeWindowColumnSetting> timeWindowColumnSettingList = new ArrayList<TimeWindowColumnSetting>();
 
 	public void addTimeWindowColumnSetting(final TimeWindowColumnSetting timeWindowColumnSetting) {
 		timeWindowColumnSettingList.add(timeWindowColumnSetting);
 	}
 
-	public void clearTimeWindowColumnSettingList() {
-		timeWindowColumnSettingList.clear();
-	}
-
 	public List<TimeWindowColumnSetting> getListTimeWindowColumnSettingList() {
 		return java.util.Collections.unmodifiableList(timeWindowColumnSettingList);
-	}
-
-	public TimeWindowColumnSetting getTimeWindowColumnSetting(final int index) {
-		return timeWindowColumnSettingList.get(index);
 	}
 
 	@Override
@@ -55,9 +43,5 @@ class TimeWindowConfigurationStorage extends WindowConfigurationStorage {
 		while (iterator.hasNext()) {
 			iterator.next().marschall(xml);
 		}
-	}
-
-	public int sizeTimeWindowColumnSettingList() {
-		return timeWindowColumnSettingList.size();
 	}
 }

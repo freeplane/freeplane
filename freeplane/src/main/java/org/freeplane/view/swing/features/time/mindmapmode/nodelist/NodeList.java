@@ -320,7 +320,7 @@ class NodeList {
 	private final TextRenderer textRenderer;
 
 	private final String windowTitle;
-	public interface NodeFilter {
+	interface NodeFilter {
 		boolean showsNode(NodeModel node, ReminderExtension reminder) ;
 	}
 	TableSorter sorter;
@@ -401,7 +401,7 @@ class NodeList {
 		}
 	}
 
-	protected void exportSelectedRowsAndClose() {
+	private void exportSelectedRowsAndClose() {
 		final int[] selectedRows = tableView.getSelectedRows();
 		final List<NodeModel> selectedNodes = new ArrayList<NodeModel>();
 		for (int i = 0; i < selectedRows.length; i++) {

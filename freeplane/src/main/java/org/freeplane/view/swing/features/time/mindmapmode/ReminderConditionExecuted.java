@@ -28,7 +28,7 @@ import org.freeplane.features.map.NodeModel;
  * @author Dimitry Polivaev
  * Mar 5, 2009
  */
-public class ReminderConditionExecuted extends ASelectableCondition {
+class ReminderConditionExecuted extends ASelectableCondition {
 	static final String NAME = "reminder_condition_earlier";
 	static final String FILTER_REMINDER_EXECUTED = "filter_reminder_executed";
 
