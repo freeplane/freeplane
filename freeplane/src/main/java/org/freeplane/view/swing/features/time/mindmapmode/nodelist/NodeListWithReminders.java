@@ -106,7 +106,7 @@ public class NodeListWithReminders extends NodeList{
 	}
 
 	private void runScript(ReminderHook c, NodeModel n, ReminderExtension r, int row) {
-		c.runScript(r);
+		r.runScript();
 	}
 	private void removeReminders(boolean selectedOnly) {
 		apply(selectedOnly,	this::removeReminder);

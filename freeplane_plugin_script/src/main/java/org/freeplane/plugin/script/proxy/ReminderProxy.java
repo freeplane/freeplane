@@ -64,7 +64,8 @@ public class ReminderProxy extends AbstractProxy<NodeModel> implements Proxy.Rem
     }
 
     private ReminderExtension newReminder(Date remindAt) {
-        final ReminderExtension reminder = new ReminderExtension(getDelegate());
+        final ReminderHook reminderHook = Controller.getCurrentModeController().getExtension(ReminderHook.class);
+        final ReminderExtension reminder = new ReminderExtension(reminderHook, getDelegate());
         reminder.setRemindUserAt(remindAt.getTime());
         return reminder;
     }

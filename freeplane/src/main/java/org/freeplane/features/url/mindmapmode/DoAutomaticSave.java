@@ -19,9 +19,12 @@
  */
 package org.freeplane.features.url.mindmapmode;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
-import java.util.TimerTask;
+
+import javax.swing.Timer;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
@@ -33,91 +36,81 @@ import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.url.UrlManager;
 
-public class DoAutomaticSave extends TimerTask {
-	static final String AUTOSAVE_EXTENSION = "autosave";
-	/**
-	 * This value is compared with the result of
-	 * getNumberOfChangesSinceLastSave(). If the values coincide, no further
-	 * automatic saving is performed until the value changes again.
-	 */
-	private int changeState;
-	final private boolean filesShouldBeDeletedAfterShutdown;
-	final private MapModel model;
-	final private int numberOfFiles;
-	private final File singleBackupDirectory;
-	static final String BACKUP_DIR = ".backup";
+public class DoAutomaticSave implements ActionListener {
+    static final String AUTOSAVE_EXTENSION = "autosave";
+    /**
+     * This value is compared with the result of
+     * getNumberOfChangesSinceLastSave(). If the values coincide, no further
+     * automatic saving is performed until the value changes again.
+     */
+    private int changeState;
+    final private boolean filesShouldBeDeletedAfterShutdown;
+    final private MapModel model;
+    final private int numberOfFiles;
+    private final File singleBackupDirectory;
+    static final String BACKUP_DIR = ".backup";
 
-	public DoAutomaticSave(final MapModel model, final int numberOfTempFiles,
-	                       final boolean filesShouldBeDeletedAfterShutdown, boolean useSingleBackupDirectory,
-	                       final String singleBackupDirectory) {
-		this.model = model;
-		numberOfFiles = ((numberOfTempFiles > 0) ? numberOfTempFiles : 1);
-		this.filesShouldBeDeletedAfterShutdown = filesShouldBeDeletedAfterShutdown;
-		this.singleBackupDirectory = useSingleBackupDirectory ? new File(singleBackupDirectory) : null;
-		changeState = model.getNumberOfChangesSinceLastSave();
-	}
+    public DoAutomaticSave(final MapModel model, final int numberOfTempFiles,
+            final boolean filesShouldBeDeletedAfterShutdown, boolean useSingleBackupDirectory,
+            final String singleBackupDirectory) {
+        this.model = model;
+        numberOfFiles = ((numberOfTempFiles > 0) ? numberOfTempFiles : 1);
+        this.filesShouldBeDeletedAfterShutdown = filesShouldBeDeletedAfterShutdown;
+        this.singleBackupDirectory = useSingleBackupDirectory ? new File(singleBackupDirectory) : null;
+        changeState = model.getNumberOfChangesSinceLastSave();
+    }
 
-	@Override
-	public void run() {
-		/* Map is dirty enough? */
-		if (model.getNumberOfChangesSinceLastSave() == changeState) {
-			return;
-		}
-		changeState = model.getNumberOfChangesSinceLastSave();
-		if (changeState == 0) {
-			/* map was recently saved. */
-			return;
-		}
-		try {
-			cancel();
-			Controller.getCurrentController().getViewController().invokeAndWait(new Runnable() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        /* Map is dirty enough? */
+        if (model.getNumberOfChangesSinceLastSave() == changeState) {
+            return;
+        }
+        changeState = model.getNumberOfChangesSinceLastSave();
+        if (changeState == 0) {
+            /* map was recently saved. */
+            return;
+        }
+        Timer timer =  (Timer) e.getSource();
+        timer.stop();
+        try {
+            final ModeController currentModeController = Controller.getCurrentModeController();
+            if(!(currentModeController instanceof MModeController))
+                return;
+            MModeController modeController = ((MModeController) currentModeController);
+            final File pathToStore;
+            final URL url = model.getURL();
+            final File file = new File(url != null ? url.getFile() //
+                    : model.getTitle() + UrlManager.FREEPLANE_FILE_EXTENSION);
+            if (url == null) {
+                pathToStore = new File(ResourceController.getResourceController()
+                        .getFreeplaneUserDirectory(), BACKUP_DIR);
+            }
+            else if (singleBackupDirectory != null) {
+                pathToStore = singleBackupDirectory;
+            }
+            else {
+                pathToStore = new File(file.getParent(), BACKUP_DIR);
+            }
+            pathToStore.mkdirs();
+            final File tempFile = MFileManager.renameBackupFiles(pathToStore, file, numberOfFiles,
+                    AUTOSAVE_EXTENSION);
+            if (tempFile == null) {
+                return;
+            }
+            if (filesShouldBeDeletedAfterShutdown) {
+                tempFile.deleteOnExit();
+            }
+            if(file.canWrite()) {
+                ((MFileManager) UrlManager.getController())
+                .saveInternal((MMapModel) model, tempFile, true /*=internal call*/);
+                modeController.getController().getViewController()
+                .out(TextUtils.format("automatically_save_message", tempFile));
+            }
+        }
+        catch (final Exception ex) {
+            LogUtils.severe("Error in automatic MapModel.save(): ", ex);
+        }
+    }
 
-				@Override
-				public void run() {
-					/* Now, it is dirty, we save it. */
-					try {
-						final ModeController currentModeController = Controller.getCurrentModeController();
-						if(!(currentModeController instanceof MModeController))
-							return;
-						MModeController modeController = ((MModeController) currentModeController);
-						final File pathToStore;
-						final URL url = model.getURL();
-						final File file = new File(url != null ? url.getFile() //
-						        : model.getTitle() + UrlManager.FREEPLANE_FILE_EXTENSION);
-						if (url == null) {
-							pathToStore = new File(ResourceController.getResourceController()
-							    .getFreeplaneUserDirectory(), BACKUP_DIR);
-						}
-						else if (singleBackupDirectory != null) {
-							pathToStore = singleBackupDirectory;
-						}
-						else {
-							pathToStore = new File(file.getParent(), BACKUP_DIR);
-						}
-						pathToStore.mkdirs();
-						final File tempFile = MFileManager.renameBackupFiles(pathToStore, file, numberOfFiles,
-						    AUTOSAVE_EXTENSION);
-						if (tempFile == null) {
-							return;
-						}
-						if (filesShouldBeDeletedAfterShutdown) {
-							tempFile.deleteOnExit();
-						}
-						if(file.canWrite()) {
-							((MFileManager) UrlManager.getController())
-							.saveInternal((MMapModel) model, tempFile, true /*=internal call*/);
-							modeController.getController().getViewController()
-							.out(TextUtils.format("automatically_save_message", tempFile));
-						}
-					}
-					catch (final Exception e) {
-						LogUtils.severe("Error in automatic MapModel.save(): ", e);
-					}
-				}
-			});
-		}
-		catch (final Exception e) {
-			LogUtils.severe(e);
-		}
-	}
 }

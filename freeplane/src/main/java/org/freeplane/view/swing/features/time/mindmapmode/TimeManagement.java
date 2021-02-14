@@ -292,7 +292,7 @@ class TimeManagement implements PropertyChangeListener, IMapSelectionListener {
 						script = alreadyPresentHook.getScript();
 					reminderHook.undoableToggleHook(node);
 				}
-				final ReminderExtension reminderExtension = new ReminderExtension(node);
+				final ReminderExtension reminderExtension = new ReminderExtension(reminderHook, node);
 				reminderExtension.setRemindUserAt(date.getTime());
 				reminderExtension.setPeriodUnit(periodPanel.getPeriodUnit());
 				reminderExtension.setPeriod(periodPanel.getPeriod());

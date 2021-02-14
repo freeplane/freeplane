@@ -19,60 +19,73 @@
  */
 package org.freeplane.view.swing.features.time.mindmapmode;
 
-import java.util.Date;
-import java.util.Timer;
+import java.awt.event.ActionEvent;
+
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import org.freeplane.core.extension.IExtension;
-import org.freeplane.core.util.SysUtils;
+import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.LogUtils;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.IMapChangeListener;
-import org.freeplane.features.map.MapChangeEvent;
+import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeDeletionEvent;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.NodeMoveEvent;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
+import org.freeplane.features.script.IScriptStarter;
+import org.freeplane.view.swing.features.time.mindmapmode.nodelist.ShowPastRemindersOnce;
 
 /**
  * @author Dimitry Polivaev 30.11.2008
  */
 public class ReminderExtension implements IExtension, IMapChangeListener {
-	static final int BLINKING_PERIOD = 1000;
-	/**
-	 */
-	public static ReminderExtension getExtension(final NodeModel node) {
-		return node.getExtension(ReminderExtension.class);
-	}
-
-	private final NodeModel node;
-	private long remindUserAt = 0;
-	private PeriodUnit periodUnit;
-	private int period;
-	private Timer timer;
-	private String script;
-	private TimerBlinkTask task;
-
-	public ReminderExtension(final NodeModel node) {
-		this.node = node;
-	}
-
-	public NodeModel getNode() {
-		return node;
-	}
-
-	public long getRemindUserAt() {
-		return remindUserAt;
-	}
-
-	public void setRemindUserAt(final long remindUserAt) {
-		this.remindUserAt = remindUserAt;
-	}
-
-
-	public PeriodUnit getPeriodUnit() {
-    	return periodUnit;
+    private static final ShowPastRemindersOnce pastReminders = new ShowPastRemindersOnce();
+    private static final int BLINKING_PERIOD = 1000;
+    /**
+     */
+    public static ReminderExtension getExtension(final NodeModel node) {
+        return node.getExtension(ReminderExtension.class);
     }
 
-	public void setPeriodUnit(PeriodUnit periodUnit) {
-    	this.periodUnit = periodUnit;
+    private final NodeModel node;
+    private long remindUserAt = 0;
+    private PeriodUnit periodUnit;
+    private int period;
+    private Timer timer;
+    private String script;
+    private final ReminderHook reminderController;
+    private boolean stateAdded = false;
+    private boolean reminderTimeInTheFuture = false;
+    private boolean alreadyExecuted = false;
+
+    public ReminderExtension(ReminderHook reminderController, final NodeModel node) {
+        this.reminderController = reminderController;
+        this.node = node;
+    }
+
+    public NodeModel getNode() {
+        return node;
+    }
+
+    public long getRemindUserAt() {
+        return remindUserAt;
+    }
+
+    public void setRemindUserAt(final long remindUserAt) {
+        this.remindUserAt = remindUserAt;
+    }
+
+
+    public PeriodUnit getPeriodUnit() {
+        return periodUnit;
+    }
+
+    public void setPeriodUnit(PeriodUnit periodUnit) {
+        this.periodUnit = periodUnit;
     }
 
     public String getPeriodUnitAsString() {
@@ -83,101 +96,160 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
         this.periodUnit = PeriodUnit.valueOf(periodUnit);
     }
 
-	public int getPeriod() {
-    	return period;
+    public int getPeriod() {
+        return period;
     }
 
-	public void setPeriod(int period) {
-    	this.period = period;
+    public void setPeriod(int period) {
+        this.period = period;
     }
 
-	public String getScript() {
-    	return script;
+    public String getScript() {
+        return script;
     }
 
-	public void setScript(String script) {
-    	this.script = script;
+    public void setScript(String script) {
+        this.script = script;
+    }
+    
+    void scheduleTimer() {
+        final long fireTime = pastReminders.timeLimit();
+        reminderTimeInTheFuture = fireTime < remindUserAt;
+        long timeBeforeReminder = remindUserAt - System.currentTimeMillis();
+        int delay = (int) Math.min(Integer.MAX_VALUE, Math.max(0, timeBeforeReminder));
+        if (timer == null) {
+            timer = new Timer(delay, this::remind);
+            timer.setRepeats(false);
+        }
+        timer.start();
+        final NodeModel node = getNode();
+        if(! reminderTimeInTheFuture)
+            pastReminders.addNode(node);
+        displayState(ClockState.CLOCK_VISIBLE, node, false);
     }
 
-	public void scheduleTimer(final TimerBlinkTask task, final Date date) {
-		if (timer == null) {
-			timer = SysUtils.createTimer(getClass().getSimpleName());
-		}
-		timer.schedule(task, date, BLINKING_PERIOD);
-		this.task = task;
-	}
 
-	public void deactivateTimer() {
-		if (timer == null) {
-			return;
-		}
-		timer.cancel();
-		timer = null;
-		task = null;
-	}
+    void deactivateTimer() {
+        if (timer == null) {
+            return;
+        }
+        displayState(null, getNode(), true);
+        timer.stop();
+        timer = null;
+    }
 
-	private void displayStateIcon(final NodeModel parent, final ClockState state) {
-		if (task != null && ! task.alreadyExecuted() || !isAncestorNode(parent)) {
-			return;
-		}
-		displayState(state, parent, true);
-	}
+    private boolean isAncestorNode(final NodeModel parent) {
+        for (NodeModel n = node; n != null; n = n.getParentNode()) {
+            if (n.equals(parent)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	private boolean isAncestorNode(final NodeModel parent) {
-		for (NodeModel n = node; n != null; n = n.getParentNode()) {
-			if (n.equals(parent)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    private boolean containsScript() {
+        return script != null && ! script.isEmpty();
+    }
 
-	@Override
-	public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
-		displayStateIcon(parent, ClockState.CLOCK_VISIBLE);
-	}
+    private void remind(ActionEvent e) {
+        if(! alreadyExecuted && remindUserAt > System.currentTimeMillis()) {
+            scheduleTimer();
+            return;
+        }
+            
+        if(reminderTimeInTheFuture && containsScript()){
+            reminderTimeInTheFuture = false;
+            runScript();
+        }
+        if(! alreadyExecuted){
+            if(reminderTimeInTheFuture && ResourceController.getResourceController().getBooleanProperty("remindersShowNotifications"))
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        reminderController.showNotificationPopup(ReminderExtension.this);
+                    }
+                });
 
-	@Override
-	public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
-		displayStateIcon(nodeMoveEvent.newParent, ClockState.CLOCK_VISIBLE);
-	}
+            alreadyExecuted = true;
+        }
+        stateAdded = !stateAdded;
+        blink(stateAdded);
+        timer.setDelay(BLINKING_PERIOD);
+        timer.start();
+    }
 
-	@Override
-	public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
-		displayStateIcon(nodeDeletionEvent.parent, null);
-	}
+    public void runScript() {
+    	if(! containsScript())
+    		return;
+    	final String script = getScript();
+    	ModeController modeController = reminderController.getModeController();
+        final IScriptStarter starter = modeController.getExtension(IScriptStarter.class);
+    	if(starter == null)
+    		return;
+    	final NodeModel node = getNode();
+    	final MapModel map = node.getMap();
+    	final Controller controller = modeController.getController();
+    	if(! controller.getMapViewManager().getMaps(modeController.getModeName()).containsValue(map))
+    		return;
+    	try {
+    		starter.executeScript(node, script);
+    	}
+    	catch (Exception e) {
+    		LogUtils.warn(e);
+    		UITools.errorMessage(TextUtils.format("reminder_script_error", e.toString(), node.getMap().getTitle(), node.getID()));
+    	}
+    }
 
-	@Override
-	public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
-		displayStateIcon(nodeMoveEvent.oldParent, null);
-	}
+    private void blink(final boolean stateAdded) {
+        if (getNode().getMap() != Controller.getCurrentController().getMap()) {
+            return;
+        }
+        displayState((stateAdded) ? ClockState.CLOCK_INVISIBLE : ClockState.CLOCK_VISIBLE, getNode(), true);
+        if(! ResourceController.getResourceController().getBooleanProperty(ReminderHook.REMINDERS_BLINK))
+            deactivateTimer();
+    }
 
-	@Override
-	public void mapChanged(final MapChangeEvent event) {
-	}
+    private void displayStateIcon(final NodeModel parent, final ClockState state) {
+        if (alreadyExecuted || !isAncestorNode(parent)) {
+            return;
+        }
+        displayState(state, parent, true);
+    }
 
-	@Override
-	public void onNodeDeleted(NodeDeletionEvent nodeDeletionEvent) {
-	}
+    private void displayState(final ClockState stateAdded, final NodeModel pNode,
+            final boolean recurse) {
+        if(stateAdded != null)
+            pNode.putExtension(stateAdded);
+        else
+            pNode.removeExtension(ClockState.class);
+        Controller.getCurrentModeController().getMapController().nodeRefresh(pNode);
+        if (!recurse) {
+            return;
+        }
+        final NodeModel parentNode = pNode.getParentNode();
+        if (parentNode == null) {
+            return;
+        }
+        displayState(stateAdded, parentNode, recurse);
+    }
 
-	public void displayState(final ClockState stateAdded, final NodeModel pNode,
-	                  final boolean recurse) {
-		if(stateAdded != null)
-			pNode.putExtension(stateAdded);
-		else
-			pNode.removeExtension(ClockState.class);
-		Controller.getCurrentModeController().getMapController().nodeRefresh(pNode);
-		if (!recurse) {
-			return;
-		}
-		final NodeModel parentNode = pNode.getParentNode();
-		if (parentNode == null) {
-			return;
-		}
-		displayState(stateAdded, parentNode, recurse);
-	}
+    @Override
+    public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
+        displayStateIcon(parent, ClockState.CLOCK_VISIBLE);
+    }
 
-	boolean containsScript() {
-		return script != null && ! script.isEmpty();
-	}
+    @Override
+    public void onNodeMoved(NodeMoveEvent nodeMoveEvent) {
+        displayStateIcon(nodeMoveEvent.newParent, ClockState.CLOCK_VISIBLE);
+    }
+
+    @Override
+    public void onPreNodeDelete(NodeDeletionEvent nodeDeletionEvent) {
+        displayStateIcon(nodeDeletionEvent.parent, null);
+    }
+
+    @Override
+    public void onPreNodeMoved(NodeMoveEvent nodeMoveEvent) {
+        displayStateIcon(nodeMoveEvent.oldParent, null);
+    }
 }

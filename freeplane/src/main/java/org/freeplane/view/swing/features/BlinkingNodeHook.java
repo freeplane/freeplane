@@ -23,16 +23,15 @@ package org.freeplane.view.swing.features;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collections;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
 
-import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import org.freeplane.core.extension.IExtension;
 import org.freeplane.core.undo.IActor;
-import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapLifeCycleListener;
 import org.freeplane.features.map.INodeView;
@@ -52,8 +51,8 @@ import org.freeplane.view.swing.map.NodeView;
  */
 @NodeHookDescriptor(hookName = "accessories/plugins/BlinkingNodeHook.properties", onceForMap = false)
 public class BlinkingNodeHook extends PersistentNodeHook {
-	protected class TimerColorChanger extends TimerTask implements IExtension, IMapChangeListener,
-	        IMapLifeCycleListener {
+	protected class TimerColorChanger implements IExtension, IMapChangeListener,
+	        IMapLifeCycleListener, ActionListener {
 		final private NodeModel node;
 		final private Timer timer;
 
@@ -62,13 +61,13 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 			final MapController mapController = Controller.getCurrentModeController().getMapController();
 			mapController.addUIMapChangeListener(this);
 			mapController.addMapLifeCycleListener(this);
-			timer = SysUtils.createTimer(getClass().getSimpleName());
-			timer.schedule(this, 500, 500);
 			BlinkingNodeHook.colors.clear();
 			BlinkingNodeHook.colors.add(Color.BLUE);
 			BlinkingNodeHook.colors.add(Color.RED);
 			BlinkingNodeHook.colors.add(Color.MAGENTA);
 			BlinkingNodeHook.colors.add(Color.CYAN);
+			timer = new Timer(500, this);
+			timer.start();
 		}
 
 		public Iterable<NodeModel> getNodes() {
@@ -81,40 +80,35 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 
 		/** TimerTask method to enable the selection after a given time. */
 		@Override
-		public void run() {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					final Iterable<NodeModel> nodes = getNodes();
-					if (Controller.getCurrentModeController().isBlocked()) {
-						return;
-					}
-					for(NodeModel node :nodes) {
-						node.acceptViewVisitor(new INodeViewVisitor() {
-							@Override
-							public void visit(final INodeView nodeView) {
-								if(! (nodeView instanceof NodeView)){
-									return;
-								}
-								final Component container = ((NodeView)nodeView).getMainView();
-								if (container == null || !container.isVisible()) {
-									return;
-								}
-								final Color col = container.getForeground();
-								int index = -1;
-								if (col != null && BlinkingNodeHook.colors.contains(col)) {
-									index = BlinkingNodeHook.colors.indexOf(col);
-								}
-								index++;
-								if (index >= BlinkingNodeHook.colors.size()) {
-									index = 0;
-								}
-								container.setForeground(BlinkingNodeHook.colors.get(index));
-							}
-						});
-					}
-				}
-			});
+		public void actionPerformed(ActionEvent e) {
+		    final Iterable<NodeModel> nodes = getNodes();
+		    if (Controller.getCurrentModeController().isBlocked()) {
+		        return;
+		    }
+		    for(NodeModel node :nodes) {
+		        node.acceptViewVisitor(new INodeViewVisitor() {
+		            @Override
+		            public void visit(final INodeView nodeView) {
+		                if(! (nodeView instanceof NodeView)){
+		                    return;
+		                }
+		                final Component container = ((NodeView)nodeView).getMainView();
+		                if (container == null || !container.isVisible()) {
+		                    return;
+		                }
+		                final Color col = container.getForeground();
+		                int index = -1;
+		                if (col != null && BlinkingNodeHook.colors.contains(col)) {
+		                    index = BlinkingNodeHook.colors.indexOf(col);
+		                }
+		                index++;
+		                if (index >= BlinkingNodeHook.colors.size()) {
+		                    index = 0;
+		                }
+		                container.setForeground(BlinkingNodeHook.colors.get(index));
+		            }
+		        });
+		    }
 		}
 
 		@Override
@@ -159,7 +153,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 		@Override
 		public void onRemove(final MapModel map) {
 			if (node.getMap().equals(map)) {
-				timer.cancel();
+				timer.stop();
 			}
 		}
 	}
@@ -187,7 +181,7 @@ public class BlinkingNodeHook extends PersistentNodeHook {
 	@Override
 	public void remove(final NodeModel node, final IExtension extension) {
 		final TimerColorChanger timer = ((TimerColorChanger) extension);
-		timer.getTimer().cancel();
+		timer.getTimer().stop();
 		final MapController mapController = Controller.getCurrentModeController().getMapController();
 		mapController.removeMapChangeListener(timer);
 		mapController.removeMapLifeCycleListener(timer);

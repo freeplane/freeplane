@@ -928,7 +928,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	boolean saveInternal(final MMapModel map, final File file, final boolean isInternal) {
 		try {
 			if (map.getTimerForAutomaticSaving() != null) {
-				map.getTimerForAutomaticSaving().cancel();
+				map.getTimerForAutomaticSaving().stop();
 			}
 			writeToFile(map, file);
 			map.scheduleTimerForAutomaticSaving();

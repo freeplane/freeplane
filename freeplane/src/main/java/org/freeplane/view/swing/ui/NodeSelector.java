@@ -23,18 +23,18 @@ import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.swing.FocusManager;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.text.JTextComponent;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.SysUtils;
 import org.freeplane.features.map.IMapSelection;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -53,42 +53,32 @@ public class NodeSelector {
 	private static final String SELECTION_METHOD = "selection_method";
 	private final MovedMouseEventFilter windowMouseTracker = new MovedMouseEventFilter();
 
-	protected class TimeDelayedSelection extends TimerTask {
-		final private MouseEvent e;
+	protected class TimeDelayedSelection implements ActionListener {
+		final private MouseEvent mouseEvent;
 
 		TimeDelayedSelection(final MouseEvent e) {
-			this.e = e;
+			this.mouseEvent = e;
 		}
 
-		/** TimerTask method to enable the selection after a given time. */
 		@Override
-		public void run() {
-			/*
-			 * formerly in ControllerAdapter. To guarantee, that
-			 * point-to-select does not change selection if any meta key is
-			 * pressed.
-			 */
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					if (e.getModifiers() != 0) {
-						return;
-					}
-					try {
-						Controller controller = Controller.getCurrentController();
-						if (!controller.getModeController().isBlocked() && controller.getSelection().size() <= 1) {
-							final NodeView nodeV = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class,
-							    e.getComponent());
-							MapView map = nodeV.getMap();
-							if (nodeV.isDisplayable() && nodeV.getModel().hasVisibleContent(map.getFilter())) {
-                                map.select();
-								controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
-							}
-						}
-					}
-					catch (NullPointerException e) {
-					}
-				}
-			});
+		public void actionPerformed(ActionEvent event) {
+		    if (mouseEvent.getModifiers() != 0) {
+		        return;
+		    }
+		    try {
+		        Controller controller = Controller.getCurrentController();
+		        if (!controller.getModeController().isBlocked() && controller.getSelection().size() <= 1) {
+		            final NodeView nodeV = (NodeView) SwingUtilities.getAncestorOfClass(NodeView.class,
+		                    mouseEvent.getComponent());
+		            MapView map = nodeV.getMap();
+		            if (nodeV.isDisplayable() && nodeV.getModel().hasVisibleContent(map.getFilter())) {
+		                map.select();
+		                controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
+		            }
+		        }
+		    }
+		    catch (NullPointerException e) {
+		    }
 		}
 	}
 
@@ -116,13 +106,14 @@ public class NodeSelector {
 			return;
 		}
 		if (selectionMethod.equals(SELECTION_METHOD_DIRECT)) {
-			new TimeDelayedSelection(e).run();
+			new TimeDelayedSelection(e).actionPerformed(new ActionEvent(this, 0, ""));
 			return;
 		}
 		final int timeForDelayedSelection = ResourceController.getResourceController().getIntProperty(
 		    TIME_FOR_DELAYED_SELECTION, 0);
-		timerForDelayedSelection = SysUtils.createTimer(getClass().getSimpleName());
-		timerForDelayedSelection.schedule(new TimeDelayedSelection(e), timeForDelayedSelection);
+		timerForDelayedSelection = new Timer(timeForDelayedSelection, new TimeDelayedSelection(e));
+		timerForDelayedSelection.setRepeats(false);
+		timerForDelayedSelection.start();
 	}
 
 	protected boolean isInside(final MouseEvent e) {
@@ -132,7 +123,7 @@ public class NodeSelector {
 
 	public void stopTimerForDelayedSelection() {
 		if (timerForDelayedSelection != null) {
-			timerForDelayedSelection.cancel();
+			timerForDelayedSelection.stop();
 		}
 		timerForDelayedSelection = null;
 		controlRegionForDelayedSelection = null;

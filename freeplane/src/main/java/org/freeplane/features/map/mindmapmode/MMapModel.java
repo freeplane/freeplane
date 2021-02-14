@@ -22,12 +22,12 @@ package org.freeplane.features.map.mindmapmode;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.net.URL;
-import java.util.Timer;
+
+import javax.swing.Timer;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.undo.IUndoHandler;
 import org.freeplane.core.undo.UndoHandler;
-import org.freeplane.core.util.SysUtils;
 import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.map.INodeDuplicator;
 import org.freeplane.features.map.MapModel;
@@ -88,7 +88,7 @@ public class MMapModel extends MapModel {
 		getLockManager().release();
 		/* cancel the timer, if map is closed. */
 		if (getTimerForAutomaticSaving() != null) {
-			getTimerForAutomaticSaving().cancel();
+			getTimerForAutomaticSaving().stop();
 		}
 		autosaveEnabled = false;
 		super.releaseResources();
@@ -143,9 +143,10 @@ public class MMapModel extends MapModel {
 		    "single_backup_directory");
 		final String singleBackupDirectory = ResourceController.getResourceController()
 		    .getProperty("single_backup_directory_path");
-		final Timer timer = SysUtils.createTimer("TimerForAutomaticSaving");
-		timer.schedule(new DoAutomaticSave(this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown,
-		    useSingleBackupDirectory, singleBackupDirectory), delay, delay);
+		final Timer timer = new Timer(delay, new DoAutomaticSave(this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown,
+	            useSingleBackupDirectory, singleBackupDirectory));
+		timer.setRepeats(true);
+		timer.start();
 		this.timerForAutomaticSaving = timer;
 	}
 
