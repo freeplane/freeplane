@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.features.time.mindmapmode;
 
 import java.awt.event.ActionEvent;
+import java.time.Duration;
 
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -45,6 +46,7 @@ import org.freeplane.view.swing.features.time.mindmapmode.nodelist.ShowPastRemin
 public class ReminderExtension implements IExtension, IMapChangeListener {
     private static final ShowPastRemindersOnce pastReminders = new ShowPastRemindersOnce();
     private static final int BLINKING_PERIOD = 1000;
+    private static final int MAXIMAL_DELAY = (int) Duration.ofMinutes(5).toMillis();
     /**
      */
     public static ReminderExtension getExtension(final NodeModel node) {
@@ -59,7 +61,7 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
     private String script;
     private final ReminderHook reminderController;
     private boolean stateAdded = false;
-    private boolean reminderTimeInTheFuture = false;
+    private boolean reminderInThePast = false;
     private boolean alreadyExecuted = false;
 
     public ReminderExtension(ReminderHook reminderController, final NodeModel node) {
@@ -113,9 +115,8 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
     }
     
     void scheduleTimer() {
-        final long fireTime = pastReminders.timeLimit();
-        reminderTimeInTheFuture = fireTime < remindUserAt;
         long timeBeforeReminder = remindUserAt - System.currentTimeMillis();
+        reminderInThePast = timeBeforeReminder < - MAXIMAL_DELAY;
         int delay = (int) Math.min(Integer.MAX_VALUE, Math.max(0, timeBeforeReminder));
         if (timer == null) {
             timer = new Timer(delay, this::remind);
@@ -123,7 +124,7 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
         }
         timer.start();
         final NodeModel node = getNode();
-        if(! reminderTimeInTheFuture)
+        if(reminderInThePast)
             pastReminders.addNode(node);
         displayState(ClockState.CLOCK_VISIBLE, node, false);
     }
@@ -157,12 +158,12 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
             return;
         }
             
-        if(reminderTimeInTheFuture && containsScript()){
-            reminderTimeInTheFuture = false;
+        if(!reminderInThePast && containsScript()){
+            reminderInThePast = true;
             runScript();
         }
         if(! alreadyExecuted){
-            if(reminderTimeInTheFuture && ResourceController.getResourceController().getBooleanProperty("remindersShowNotifications"))
+            if(!reminderInThePast && ResourceController.getResourceController().getBooleanProperty("remindersShowNotifications"))
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {

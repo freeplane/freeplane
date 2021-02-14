@@ -20,6 +20,7 @@
 package org.freeplane.view.swing.features.time.mindmapmode.nodelist;
 
 import java.awt.GraphicsEnvironment;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +36,7 @@ import org.freeplane.features.map.NodeModel;
  * Feb 20, 2009
  */
 public class ShowPastRemindersOnce {
-	private static final long UNDEFINED = - 1;
 	private boolean listIsShown;
-	private long timeLimit = UNDEFINED;
 	private final List<NodeModel> nodes = new ArrayList<NodeModel>();
 
 	/**
@@ -88,15 +87,8 @@ public class ShowPastRemindersOnce {
 		});
 	}
 
-	public long timeLimit() {
-		if(timeLimit == UNDEFINED)
-			timeLimit = System.currentTimeMillis();
-		return timeLimit;
-	}
-
 	private void reset() {
 		listIsShown = false;
 		nodes.clear();
-		timeLimit = UNDEFINED;
 	}
 }
