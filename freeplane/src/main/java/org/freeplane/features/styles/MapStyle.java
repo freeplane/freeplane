@@ -467,7 +467,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
                         UITools.showMessage(TextUtils.format("stylesUpdated", followedMapPath), JOptionPane.INFORMATION_MESSAGE);
                     });
                 }
-                if(sourceLastModificationTime > lastUpdateTime)
+                if(sourceLastModificationTime != lastUpdateTime)
                     MapStyleModel.getExtension(targetMap).setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME, Long.toString(sourceLastModificationTime));
             }
             catch (URISyntaxException | MalformedURLException e) {
