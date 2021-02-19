@@ -47,7 +47,7 @@ class ShowHideNoteAction extends AFreeplaneAction {
 
 	public void actionPerformed(final ActionEvent e) {
 		if (! noteController.isNoteEditorShowing()) {
-			noteController.showNotesPanel(true);
+			noteController.showNotesPanel();
 		}
 		else {
 			(noteController).hideNotesPanel();

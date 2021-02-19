@@ -221,7 +221,7 @@ public class MNoteController extends NoteController {
 		    MNoteController.RESOURCES_USE_SPLIT_PANE));
 	}
 
-	void showNotesPanel(final boolean requestFocus) {
+	void showNotesPanel() {
 		if (notePanel == null) {
 			notePanel = new NotePanel(noteManager, new NoteDocumentListener());
 			noteManager.updateEditor();
@@ -229,15 +229,6 @@ public class MNoteController extends NoteController {
 		ResourceController.getResourceController().setProperty(MNoteController.RESOURCES_USE_SPLIT_PANE, "true");
 		Controller.getCurrentModeController().getController().getViewController().insertComponentIntoSplitPane(notePanel);
 		notePanel.setVisible(true);
-		if (requestFocus) {
-			KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
-			EventQueue.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					notePanel.requestFocusInWindow();
-				}
-			});
-		}
 		notePanel.revalidate();
 	}
 
@@ -291,7 +282,7 @@ public class MNoteController extends NoteController {
 	public void startupController() {
 		final ModeController modeController = Controller.getCurrentModeController();
 		if (shouldUseSplitPane()) {
-			showNotesPanel(false);
+			showNotesPanel();
 		}
 		modeController.getMapController().addNodeSelectionListener(noteManager);
 		Controller.getCurrentController().getMapViewManager().addMapSelectionListener(noteManager);

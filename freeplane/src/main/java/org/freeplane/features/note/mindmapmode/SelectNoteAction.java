@@ -52,16 +52,14 @@ class SelectNoteAction extends AFreeplaneAction {
 			return;
 		}
 		KeyboardFocusManager.getCurrentKeyboardFocusManager().clearGlobalFocusOwner();
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				if (! noteController.isNoteEditorShowing()) {
-					noteController.showNotesPanel(true);
-				}
-				else {
-					final NotePanel htmlEditorPanel = noteController.getNotePanel();
-					htmlEditorPanel.requestFocusInWindow();
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+        	if (! noteController.isNoteEditorShowing()) {
+        		noteController.showNotesPanel();
+        		EventQueue.invokeLater(noteController.getNotePanel()::editNote);
+        	}
+        	else {
+                noteController.getNotePanel().editNote();
+        	}
+        });
 	}
 }

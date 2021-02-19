@@ -309,8 +309,7 @@ class NotePanel extends JPanel {
 			htmlEditorPanel.getDocument().removeDocumentListener(noteDocumentListener);
 	}
 
-	@Override
-	public boolean requestFocusInWindow() {
+	private boolean requestFocusInEditorPane() {
 		if (ResourceController.getResourceController().getBooleanProperty("goto_note_end_on_edit")) {
 			final JEditorPane editorPane = getEditorPane();
 			editorPane.setCaretPosition(editorPane.getDocument().getLength());
@@ -336,7 +335,12 @@ class NotePanel extends JPanel {
 		}
 	}
 
-	private void editNote() {
+	void editNote() {
+	       if (htmlEditorPanel.isVisible()) {
+	           requestFocusInEditorPane();
+	           return;
+	       }
+
 		final Controller controller = Controller.getCurrentController();
 		IMapSelection selection = controller.getSelection();
 		if(selection == null)
