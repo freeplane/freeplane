@@ -66,23 +66,8 @@ class ScriptingPolicy extends Policy {
 			userLibCodeSource = new CodeSource(null, (Certificate[])null);
 		}
 		this.userLibCodeSource = userLibCodeSource;
-		permissions.add(new RuntimePermission("accessDeclaredMembers"));
-		permissions.add(new RuntimePermission("accessClassInPackage.*"));
-		permissions.add(new RuntimePermission("getProtectionDomain"));
-		permissions.add(new RuntimePermission("modifyThreadGroup"));
-		permissions.add(new RuntimePermission("queuePrintJob"));
-		permissions.add(new RuntimePermission("setIO"));
-		permissions.add(new RuntimePermission("exitVM.0"));
-		permissions.add(new RuntimePermission("setContextClassLoader"));
-		permissions.add(new PropertyPermission("*", "read,write"));
-		permissions.add(new AdminPermission("*", "resolve,resource"));
-		permissions.add(new AWTPermission("showWindowWithoutWarningBanner"));
-		permissions.add(new AWTPermission("accessClipboard"));
-		permissions.add(new AWTPermission("accessEventQueue"));
-		permissions.add(new AWTPermission("setWindowAlwaysOnTop"));
 		permissions.add(new FilePermission(Compat.getApplicationUserDirectory() + "/resources/-", "read"));
 		permissions.add(new FilePermission(Compat.getApplicationUserDirectory() + "/icons/-", "read"));
-		permissions.add(new LoggingPermission("control", ""));
 	}
 
 
