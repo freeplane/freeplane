@@ -49,7 +49,7 @@ public class FormulaUtils {
 	}
 
 	private static boolean startsWithEqualSign(final String text) {
-		return text != null && text.length() > 2 && text.charAt(0) == '=';
+		return text != null && text.length() >= 2 && text.charAt(0) == '=';
 	}
 
 	private static boolean secondCharIsntSpecial(final char secondChar) {
