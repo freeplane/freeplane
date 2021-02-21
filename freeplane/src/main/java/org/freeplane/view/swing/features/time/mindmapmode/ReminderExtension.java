@@ -175,7 +175,7 @@ public class ReminderExtension implements IExtension, IMapChangeListener {
         }
         stateAdded = !stateAdded;
         blink(stateAdded);
-        timer.setDelay(BLINKING_PERIOD);
+        timer.setInitialDelay(BLINKING_PERIOD);
         timer.start();
     }
 
