@@ -53,6 +53,7 @@ final class NoteManager implements INodeSelectionListener, IMapSelectionListener
 		}
 		notePanel.removeDocumentListener();
 		saveNote(node);
+        notePanel.stopEditing();
 		this.node = null;
 	}
 

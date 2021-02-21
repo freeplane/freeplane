@@ -70,6 +70,8 @@ class NotePanel extends JPanel {
     private final NoteManager noteManager;
 
     private FocusListener sourcePanelFocusListener;
+    
+    private boolean isEditing = false;
 
 	NotePanel(NoteManager noteManager, NoteDocumentListener noteDocumentListener) {
 		super(new CardLayout());
@@ -167,9 +169,8 @@ class NotePanel extends JPanel {
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				if(! e.isTemporary()){
+				if(isEditing && ! e.isTemporary()){
 				    noteManager.saveNote();
-				    System.out.println(KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner());				    
 				    if(viewerScrollPanel.isVisible())
 				        noteManager.updateEditor();
 
@@ -241,6 +242,7 @@ class NotePanel extends JPanel {
 	}
 
 	void setEditedContent(String note) {
+	    isEditing = true;
 		setVisible(htmlEditorPanel);
 		htmlEditorPanel.setCurrentDocumentContent(note);
 	}
@@ -362,6 +364,7 @@ class NotePanel extends JPanel {
                     @Override
                     public void keyTyped(KeyEvent e) {
                         if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
+                            isEditing = false;
                             setViewerComponent(view);
                     }
                     
@@ -372,16 +375,18 @@ class NotePanel extends JPanel {
                     public void keyPressed(KeyEvent e) {
                     }
                 });
+                isEditing = true;
             }
         }
 	}
 	
 	private void setViewerComponent(Component view) {
 	       Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-	       if(focusOwner instanceof JTextComponent 
+	       if(isEditing && focusOwner instanceof JTextComponent 
 	               && ((JTextComponent)focusOwner).isEditable()
 	               && SwingUtilities.isDescendingFrom(focusOwner, this))
 	           return;
+	       isEditing = false;
 	       viewerScrollPanel.setViewportView(view);
 	       if(viewerScrollPanel.getRowHeader() != null)
 	           viewerScrollPanel.setRowHeader(null);
@@ -395,5 +400,9 @@ class NotePanel extends JPanel {
             String text  = HtmlUtils.isHtml(documentText) ? HEAD.matcher(documentText).replaceFirst("") :  documentText ;
 	        noteManager.saveNote(text);
 	    }
+
+    void stopEditing() {
+        isEditing = false;
+    }
 
 }
