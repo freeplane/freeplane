@@ -373,7 +373,7 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	public void onCreate(final MapModel map) {
 	    final NodeModel rootNode = map.getRootNode();
 	    final MapStyleModel mapStyleModel = MapStyleModel.getExtension(rootNode);
-	    if (mapStyleModel.getStyleMap() != null) {
+	    if (mapStyleModel != null && mapStyleModel.getStyleMap() != null) {
 	        copyMapStylesNoUndoNoRefresh(map);
 	    }
 	    else {
