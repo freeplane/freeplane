@@ -199,7 +199,7 @@ public class MNoteController extends NoteController {
                     .nodeChanged(node, NodeModel.NOTE_TEXT, newNote, oldNote);
             }
             private void setNote(final NoteModel note) {
-                if(note.isEmpty()) {
+                if(note == null || note.isEmpty()) {
                     node.removeExtension(NoteModel.class);
                 }
                 else
