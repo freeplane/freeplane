@@ -2,11 +2,9 @@
 <tabbed_pane>
 <tab name="plugins">
     <separator name="markdown">
-        <textbox name="markdown_macros" lines="25"/>
         <font name="markdown_editor_font"/>
         <number name="markdown_editor_font_size" min="4" max="216"/>
         <boolean name="markdown_disable_editor"/>
-        <length name="markdown_interline_spacing" defaultUnit = "pt" min="0" max = "1000" step = "0.1"/>
     </separator>
 </tab>
 </tabbed_pane>
