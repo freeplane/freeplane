@@ -20,7 +20,7 @@ public class ImagePreview extends BitmapImagePreview {
 	protected void updateView(final File file) {
 	    removeView();
 		final Object fileFilter = fc.getClientProperty(FactoryFileFilter.class);
-		if(! (fileFilter instanceof FactoryFileFilter))
+		if(! (fileFilter instanceof FactoryFileFilter) || file == null)
 			return;
 		final FactoryFileFilter factoryFileFilter = (FactoryFileFilter) fileFilter;
 		final IViewerFactory factory = factoryFileFilter.getFactory();
