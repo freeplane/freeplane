@@ -145,7 +145,7 @@ public class ScriptCondition extends ASelectableCondition {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (getClass() != obj.getClass())
+        if (obj == null || getClass() != obj.getClass())
             return false;
         ScriptCondition other = (ScriptCondition) obj;
         return source.equals(other.source);
