@@ -257,10 +257,8 @@ abstract public class EditNodeBase {
     	return background;
     }
 	protected FocusListener textFieldListener = null;
-    private final boolean editorBlocks;
 	protected EditNodeBase(final NodeModel node, final String text, boolean editorBlocks,
 	                       final IEditControl editControl) {
-	    this.editorBlocks = editorBlocks;
 		this.editControl = editControl;
 		this.node = node;
 		this.text = text;
@@ -335,11 +333,6 @@ abstract public class EditNodeBase {
 	abstract public void show(RootPaneContainer frame);
 	public void setBackground(Color background) {
 	    this.background = background;
-
-    }
-
-    protected boolean editorBlocks() {
-        return editorBlocks;
     }
     
     protected void saveDialogSize(final JDialog dialog) {
