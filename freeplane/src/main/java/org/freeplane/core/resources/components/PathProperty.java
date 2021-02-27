@@ -65,7 +65,7 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 
 	final private boolean isDir;
 	final private String[] suffixes;
-	private String path;
+	private String value;
 	private JTextField filenameField;
 	private JButton selectButton;
 
@@ -77,8 +77,8 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 
 	private JFileChooser createFileChooser() {
 		final JFileChooser fileChooser = UITools.newFileChooser();
-		if (path != null) {
-			fileChooser.setSelectedFile(new File(path));
+		if (value != null) {
+			fileChooser.setSelectedFile(new File(path()));
 		}
 		FileFilter filter = null;
 		if (isDir) {
@@ -111,25 +111,35 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 		return fileChooser;
 	}
 
-	@Override
+	private String path() {
+        if (value == null) {
+            return null;
+        }
+        String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
+        String path = TextUtils.replaceAtBegin(value, "{freeplaneuserdir}", freeplaneUserDirectory);
+        path = TextUtils.replaceAtBegin(path, "{user.home}", System.getProperty("user.home"));
+        return path;
+    }
+
+    @Override
 	public String getValue() {
-		return path;
+		return value;
 	}
 
 	public void appendToForm(final DefaultFormBuilder builder) {
 		final Box box = Box.createHorizontalBox();
 		box.setBorder(new EmptyBorder(5, 0, 5, 0));
 		filenameField = new JTextField();
-		filenameField.setText(path);
+		filenameField.setText(value);
 		filenameField.addFocusListener(new FocusListener() {
 			public void focusLost(FocusEvent e) {
 				final String text = filenameField.getText();
 				if (text == null || text.length() == 0) {
-					filenameField.setText(path);
+					filenameField.setText(value);
 					JOptionPane.showConfirmDialog(e.getComponent(), TextUtils.getText("OptionPanel.path_property_may_not_be_empty"), "", JOptionPane.WARNING_MESSAGE);
 				}
 				else {
-					path = text;
+					value = text;
 				}
 			}
 			public void focusGained(FocusEvent e) {
@@ -154,16 +164,8 @@ public class PathProperty extends PropertyBean implements IPropertyControl {
 
 	@Override
 	public void setValue(String value) {
-		if (value != null) {
-			value = value.replace("{freeplaneuserdir}", ResourceController.getResourceController()
-			    .getFreeplaneUserDirectory());
-			value = value.replace("{user.home}", System.getProperty("user.home"));
-			this.path = value;
-		}
-		else {
-			this.path = null;
-		}
+	    this.value = value;
 		if (filenameField != null)
-			filenameField.setText(path);
+			filenameField.setText(value);
 	}
 }

@@ -188,7 +188,14 @@ public class TextUtils {
 		return FormatController.getController().getDefaultDateTimeFormat();
 	}
 
-	/** Shortcut for scripting: Copies <code>string</code> to the system clipboard. */
+	static public String replaceAtBegin(String source, String from, String to) {
+        if (source != null && source.startsWith(from)) {
+            source = to + source.substring(from.length());
+        }
+        return source;
+    }
+
+    /** Shortcut for scripting: Copies <code>string</code> to the system clipboard. */
 	public static void copyToClipboard(String string) {
 	    ClipboardAccessor.getInstance().setClipboardContents(string);
     }

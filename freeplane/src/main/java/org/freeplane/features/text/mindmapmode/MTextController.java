@@ -126,7 +126,8 @@ public class MTextController extends TextController {
 	public static final String NODE_TEXT = "NodeText";
 	private static Pattern FORMATTING_PATTERN = null;
 	private EditNodeBase currentBlockingEditor = null;
-	private final Collection<IEditorPaneListener> editorPaneListeners;
+
+    private final Collection<IEditorPaneListener> editorPaneListeners;
     private final Set<String> detailContentTypes;
 	private final EventBuffer eventQueue;
 	static {
@@ -609,8 +610,6 @@ public class MTextController extends TextController {
 		final RootPaneContainer frame = (RootPaneContainer) SwingUtilities
 		        .getWindowAncestor(controller.getMapViewManager().getMapViewComponent());
 		EditNodeBase editor = createEditor(nodeModel, detail, detail.getTextOr(""), editControl, false, editInDialog, true);
-		if(editor.editorBlocks())
-		    currentBlockingEditor = editor;
         editor.show(frame);
 	}
 
@@ -814,7 +813,6 @@ public class MTextController extends TextController {
         		if (detailText != null)
         			modeController.undo();
         		modeController.resetRedo();
-        		stop();
         	}
         }
 
@@ -839,7 +837,6 @@ public class MTextController extends TextController {
         		setDetailsHtmlText(nodeModel, newText);
         	}
         	if (addsNewDetailsUsingInlineEditor) {
-        	    stop();
         	}
         }
 
@@ -849,11 +846,6 @@ public class MTextController extends TextController {
 
         @Override
         public void split(final String newText, final int position) {
-        }
-
-        private void stop() {
-        	Controller.getCurrentModeController().setBlocked(false);
-        	currentBlockingEditor = null;
         }
 
         @Override
@@ -880,8 +872,6 @@ public class MTextController extends TextController {
 
         private final boolean parentFolded;
 
-        private boolean editorBlocks;
-
         private NodeTextEditor(IMapViewManager viewController, NodeModel nodeModel,
                 boolean newNode,
                 NodeModel prevSelectedModel,
@@ -889,22 +879,16 @@ public class MTextController extends TextController {
             this.viewController = viewController;
             this.newNode = newNode;
             this.nodeModel = new OptionalReference<>(nodeModel);
-            this.editorBlocks = false;
             this.prevSelectedModel = prevSelectedModel;
             this.controller = controller;
             this.parentFolded = parentFolded;
         }
 
-        void editorBlocks() {
-            editorBlocks = true;
-        }
-
         @Override
         public void cancel() {
-            if (editorBlocks && newNode) {
+            if (newNode) {
                 nodeModel.ifPresent(this::cancel);
             }
-            stop();
         }
 
         private void cancel(NodeModel nodeModel) {
@@ -922,18 +906,9 @@ public class MTextController extends TextController {
         	}
         }
 
-        private void stop() {
-            if (editorBlocks) {
-                Controller.getCurrentModeController().setBlocked(false);
-                currentBlockingEditor = null;
-                viewController.obtainFocusForSelected();
-            }
-        }
-
         @Override
         public void ok(final String text) {
             nodeModel.ifPresent(x -> ok(x, text));
-            stop();
         }
 
         private void ok(NodeModel nodeModel, final String text) {
@@ -955,7 +930,6 @@ public class MTextController extends TextController {
         	String processedText = HtmlUtils.isHtml(text) ? removeHtmlHead(text) : text;
         	splitNode(nodeModel, position, processedText);
         	viewController.obtainFocusForSelected();
-        	stop();
         }
 
         @Override
@@ -1087,11 +1061,6 @@ public class MTextController extends TextController {
                 isNewNode, prevSelectedModel, controller, parentFolded);
 		final RootPaneContainer frame = (RootPaneContainer) UITools.getCurrentRootComponent();
 		EditNodeBase editor = createEditor(nodeModel, nodeModel, nodeModel.getText(), editControl, isNewNode, editInDialog, true);
-		if(editor.editorBlocks()) {
-		    Controller.getCurrentModeController().setBlocked(true);
-		    currentBlockingEditor = editor;
-		    editControl.editorBlocks();
-        }
 		editor.show(frame);
 	}
 
@@ -1248,4 +1217,13 @@ public class MTextController extends TextController {
 	public boolean canEdit() {
 		return true;
 	}
+
+    public void setCurrentBlockingEditor(EditNodeBase currentBlockingEditor) {
+        this.currentBlockingEditor = currentBlockingEditor;
+    }
+
+    public void unsetCurrentBlockingEditor(EditNodeBase currentBlockingEditor) {
+        if(this.currentBlockingEditor == currentBlockingEditor)
+            this.currentBlockingEditor = null;
+    }
 }

@@ -114,6 +114,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 	public static final String STANDARD_TEMPLATE = "standard_template";
 	private static final String DEFAULT_SAVE_DIR_PROPERTY = "default_save_dir";
 	private static final String BACKUP_EXTENSION = "bak";
+    static final String BACKUP_DIR = ".backup";
 	private static final int DEBUG_OFFSET = 0;
 
 	static private class BackupFlag implements IExtension {
@@ -219,10 +220,15 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		}
 	}
 
-	private static File backupDir(final File file) {
+	static File backupDir(final File file) {
 		if (singleBackupDirectory != null)
 			return singleBackupDirectory;
-		return new File(file.getParentFile(), DoAutomaticSave.BACKUP_DIR);
+		else if (file == null) {
+           return new File(ResourceController.getResourceController()
+                    .getFreeplaneUserDirectory(), BACKUP_DIR);
+        }
+		else 
+		    return new File(file.getParentFile(), BACKUP_DIR);
 	}
 
 	static File createBackupFile(final File backupDir, final File file, final int number, final String extension) {
@@ -282,17 +288,13 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 		createPreferences();
 		if (ResourceController.getResourceController().getBooleanProperty("single_backup_directory")) {
 			String value = ResourceController.getResourceController().getProperty("single_backup_directory_path");
-			// vb, 2010-10-14: I'm not exactly happy with putting this here - if you have a better place move it!
-			if (value != null && value.indexOf("{freeplaneuserdir}") >= 0) {
-				value = value.replace("{freeplaneuserdir}", ResourceController.getResourceController()
-				    .getFreeplaneUserDirectory());
-				ResourceController.getResourceController().setProperty("single_backup_directory_path", value);
-			}
+			String freeplaneUserDirectory = ResourceController.getResourceController().getFreeplaneUserDirectory();
+			value = TextUtils.replaceAtBegin(value, "{freeplaneuserdir}", freeplaneUserDirectory);
 			singleBackupDirectory = new File(value);
 		}
 	}
 
-	private void createPreferences() {
+    private void createPreferences() {
 		final MModeController modeController = (MModeController) Controller.getCurrentModeController();
 		final OptionPanelBuilder optionPanelBuilder = modeController.getOptionPanelBuilder();
 		optionPanelBuilder.addCreator("Environment/load", new IPropertyControlCreator() {
@@ -639,13 +641,10 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			private File chosenFile;
 			private void chooseTemplateFile() {
 				final ResourceController resourceController = ResourceController.getResourceController();
-				final boolean maySkipTemplateSelection = false;
-				if(maySkipTemplateSelection) {
-					boolean skipTemplateSelection = resourceController.getBooleanProperty("skip_template_selection");
-					if (skipTemplateSelection) {
-						follow = resourceController.getBooleanProperty("follow_mind_map_by_default");
-						chosenFile = defaultTemplateFile();
-					}
+				boolean skipTemplateSelection = resourceController.getBooleanProperty("skip_template_selection");
+				if (skipTemplateSelection) {
+				    follow = resourceController.getBooleanProperty("follow_mind_map_by_default");
+				    chosenFile = defaultTemplateFile();
 				}
 				TemplateChooser templateChooser = new TemplateChooser(false);
 				chosenFile = templateChooser.chosenTemplateFile();

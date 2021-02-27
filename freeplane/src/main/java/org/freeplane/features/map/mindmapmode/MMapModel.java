@@ -160,12 +160,7 @@ public class MMapModel extends MapModel {
 		if (delay == 0) {
 			return;
 		}
-		final boolean useSingleBackupDirectory = ResourceController.getResourceController().getBooleanProperty(
-		    "single_backup_directory");
-		final String singleBackupDirectory = ResourceController.getResourceController()
-		    .getProperty("single_backup_directory_path");
-		final Timer timer = new Timer(delay, new DoAutomaticSave(this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown,
-	            useSingleBackupDirectory, singleBackupDirectory));
+		final Timer timer = new Timer(delay, new DoAutomaticSave(this, numberOfTempFiles, filesShouldBeDeletedAfterShutdown));
 		timer.setRepeats(true);
 		timer.start();
 		this.timerForAutomaticSaving = timer;

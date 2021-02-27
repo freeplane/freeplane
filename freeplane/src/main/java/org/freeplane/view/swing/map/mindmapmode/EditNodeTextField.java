@@ -323,6 +323,9 @@ public class EditNodeTextField extends EditNodeBase {
 		@Override
 		public void focusGained(final FocusEvent e) {
 			popupShown = false;
+			ModeController modeController = Controller.getCurrentModeController();
+            modeController.setBlocked(true);
+            ((MTextController)modeController.getExtension(TextController.class)).setCurrentBlockingEditor(EditNodeTextField.this);
 		}
 
 		@Override
@@ -557,6 +560,9 @@ public class EditNodeTextField extends EditNodeBase {
 		if (textfield == null) {
 			return;
 		}
+		ModeController modeController = Controller.getCurrentModeController();
+        modeController.setBlocked(false);
+		((MTextController)modeController.getExtension(TextController.class)).unsetCurrentBlockingEditor(EditNodeTextField.this);
 		final JEditorPane textfield = this.textfield;
 		this.textfield = null;
 		textfield.getDocument().removeDocumentListener(documentListener);
