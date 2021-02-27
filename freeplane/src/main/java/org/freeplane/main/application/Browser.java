@@ -3,6 +3,7 @@ package org.freeplane.main.application;
 import java.io.IOException;
 import java.net.URI;
 import java.text.MessageFormat;
+import java.text.Normalizer;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
@@ -63,11 +64,10 @@ public class Browser {
 		else if (osName.startsWith("Mac OS")) {
 			String browserCommand = null;
 			try {
-				final Object[] messageArguments = { uriString, uriString };
-				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
-				    .getProperty("default_browser_command_mac"));
-				browserCommand = formatter.format(messageArguments);
-				Controller.exec(browserCommand);
+				if(uri.getScheme().equals("file"))
+					uriString = decodedString(uri);
+				browserCommand = ResourceController.getResourceController().getProperty("default_browser_command_mac");
+				Controller.exec(new String[]{browserCommand, uriString});
 			}
 			catch (final IOException ex2) {
 				UITools
@@ -80,11 +80,8 @@ public class Browser {
 		else {
 			String browserCommand = null;
 			try {
-				final Object[] messageArguments = { uriString, uriString };
-				final MessageFormat formatter = new MessageFormat(ResourceController.getResourceController()
-				    .getProperty("default_browser_command_other_os"));
-				browserCommand = formatter.format(messageArguments);
-				Controller.exec(browserCommand);
+				browserCommand = ResourceController.getResourceController().getProperty("default_browser_command_other_os");
+				Controller.exec(new String[]{browserCommand, uriString});
 			}
 			catch (final IOException ex2) {
 				UITools
@@ -95,4 +92,51 @@ public class Browser {
 			}
 		}
 	}
+	
+    private String decodedString(URI uri) {
+
+        StringBuffer sb = new StringBuffer();
+        String scheme = uri.getScheme();
+		if (scheme != null) {
+            sb.append(scheme);
+            sb.append(':');
+        }
+        if (uri.isOpaque()) {
+            sb.append(uri.getSchemeSpecificPart());
+        } else {
+        	String host = uri.getHost();
+            if (host != null) {
+                sb.append("//");
+                if (uri.getUserInfo() != null) {
+                    sb.append(uri.getUserInfo());
+                    sb.append('@');
+                }
+                boolean needBrackets = ((host.indexOf(':') >= 0)
+                                    && !host.startsWith("[")
+                                    && !host.endsWith("]"));
+                if (needBrackets) sb.append('[');
+                sb.append(host);
+                if (needBrackets) sb.append(']');
+                if (uri.getPort() != -1) {
+                    sb.append(':');
+                    sb.append(uri.getPort());
+                }
+            } else if (uri.getAuthority() != null) {
+                sb.append("//");
+                sb.append(uri.getAuthority());
+            }
+            if (uri.getPath() != null)
+                sb.append(uri.getPath());
+            if (uri.getQuery() != null) {
+                sb.append('?');
+                sb.append(uri.getQuery());
+            }
+        }
+        if (uri.getFragment() != null) {
+            sb.append('#');
+            sb.append(uri.getFragment());
+        }
+        return sb.toString();
+    }
+
 }
