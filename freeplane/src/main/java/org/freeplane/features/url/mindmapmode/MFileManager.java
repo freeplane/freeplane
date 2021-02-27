@@ -639,13 +639,10 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 			private File chosenFile;
 			private void chooseTemplateFile() {
 				final ResourceController resourceController = ResourceController.getResourceController();
-				final boolean maySkipTemplateSelection = false;
-				if(maySkipTemplateSelection) {
-					boolean skipTemplateSelection = resourceController.getBooleanProperty("skip_template_selection");
-					if (skipTemplateSelection) {
-						follow = resourceController.getBooleanProperty("follow_mind_map_by_default");
-						chosenFile = defaultTemplateFile();
-					}
+				boolean skipTemplateSelection = resourceController.getBooleanProperty("skip_template_selection");
+				if (skipTemplateSelection) {
+				    follow = resourceController.getBooleanProperty("follow_mind_map_by_default");
+				    chosenFile = defaultTemplateFile();
 				}
 				TemplateChooser templateChooser = new TemplateChooser(false);
 				chosenFile = templateChooser.chosenTemplateFile();
