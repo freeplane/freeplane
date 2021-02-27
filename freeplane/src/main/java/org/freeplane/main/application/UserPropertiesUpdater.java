@@ -19,13 +19,17 @@
  */
 package org.freeplane.main.application;
 
+import static java.util.Arrays.asList;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.stream.Stream;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.FreeplaneVersion;
 
@@ -41,53 +45,59 @@ public class UserPropertiesUpdater {
 		if(userPreferencesFile.exists()){
 			return;
 		}
-		copyUserFilesFromPreviousVersionTo(userPreferencesFile.getParentFile());
-		if(userPreferencesFile.exists() && ! FreeplaneVersion.getVersion().isFinal()) {
-			removeProperties(userPreferencesFile, "lastOpened_1.0.20", "openedNow_1.3.04");
+		File previousPropertyDirectory = copyUserFilesFromPreviousVersionTo(userPreferencesFile.getParentFile());
+		if(userPreferencesFile.exists()) {
+            try {
+                Properties userProp = loadProperties(userPreferencesFile);
+                if(! FreeplaneVersion.getVersion().isFinal()) {
+                    for(String name : asList("lastOpened_1.0.20", "openedNow_1.3.04"))
+                        userProp.remove(name);
+                }
+                String value = userProp.getProperty("single_backup_directory_path");
+                String previousPropertyDirectoryPath = previousPropertyDirectory.getPath();
+                if (value.startsWith(previousPropertyDirectoryPath)) {
+                    value = "{freeplaneuserdir}" + value.substring(previousPropertyDirectoryPath.length());
+                    userProp.setProperty("single_backup_directory_path", value);
+                }
+            
+            	saveProperties(userProp, userPreferencesFile);
+            }
+            catch (IOException e) {
+            }
 		}
 	}
 
-	private void copyUserFilesFromPreviousVersionTo(File targetDirectory) {
-		try {
-		File canonicalTargetDirectory = targetDirectory.getCanonicalFile();
-		final File parentDirectory = canonicalTargetDirectory.getParentFile();
-		final String previousDirName = Compat.PREVIOUS_VERSION_DIR_NAME;
-		final File sourceDirectory;
-		String old_userfpdir = System.getProperty(ORG_FREEPLANE_OLD_USERFPDIR);
-			if (isDefined(old_userfpdir))
-				sourceDirectory = new File(old_userfpdir, previousDirName).getCanonicalFile();
-			else
-				sourceDirectory = new File(parentDirectory, previousDirName).getCanonicalFile();
-			if (sourceDirectory.exists() && !sourceDirectory.equals(canonicalTargetDirectory)) {
-				parentDirectory.mkdirs();
-				org.apache.commons.io.FileUtils.copyDirectory(sourceDirectory,
-					canonicalTargetDirectory,
-					file -> ! Stream.of("logs", "templates", ".backup", "compiledscripts")
-					.map(name -> new File(sourceDirectory, name))
-					.anyMatch(file::equals),
-				true);
-				new File(canonicalTargetDirectory, "templates").mkdir();
-			}
-		}
-		catch (IOException e) {
-		}
+	private File copyUserFilesFromPreviousVersionTo(File targetDirectory) {
+	    try {
+	        File canonicalTargetDirectory = targetDirectory.getCanonicalFile();
+	        final File parentDirectory = canonicalTargetDirectory.getParentFile();
+	        final String previousDirName = Compat.PREVIOUS_VERSION_DIR_NAME;
+	        String old_userfpdir = System.getProperty(ORG_FREEPLANE_OLD_USERFPDIR);
+	        File previousPropertyDirectory;
+            if (isDefined(old_userfpdir))
+	            previousPropertyDirectory = new File(old_userfpdir, previousDirName).getCanonicalFile();
+	        else
+	            previousPropertyDirectory = new File(parentDirectory, previousDirName).getCanonicalFile();
+	        if (previousPropertyDirectory.exists() && !previousPropertyDirectory.equals(canonicalTargetDirectory)) {
+	            parentDirectory.mkdirs();
+	            org.apache.commons.io.FileUtils.copyDirectory(previousPropertyDirectory,
+	                    canonicalTargetDirectory,
+	                    file -> ! Stream.of("logs", "templates", ".backup", "compiledscripts")
+	                    .map(name -> new File(previousPropertyDirectory, name))
+	                    .anyMatch(file::equals),
+	                    true);
+	            new File(canonicalTargetDirectory, "templates").mkdir();
+	        }
+	        return previousPropertyDirectory;
+	    }
+	    catch (IOException e) {
+	        return null;
+	    }
 	}
 
 	private boolean isDefined(String old_userfpdir) {
 	    return old_userfpdir != null;
-    }
-
-	private void removeProperties(File userPreferencesFile, String... propertyNames) {
-		try {
-			Properties userProp = loadProperties(userPreferencesFile);
-			for(String name : propertyNames)
-				userProp.remove(name);
-
-			saveProperties(userProp, userPreferencesFile);
-        }
-        catch (IOException e) {
-        }
-    }
+	}
 
 	Properties loadProperties(File userPreferencesFile) throws IOException {
 	    Properties userProp = new Properties();

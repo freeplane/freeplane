@@ -47,16 +47,12 @@ public class DoAutomaticSave implements ActionListener {
     final private boolean filesShouldBeDeletedAfterShutdown;
     final private MapModel model;
     final private int numberOfFiles;
-    private final File singleBackupDirectory;
-    static final String BACKUP_DIR = ".backup";
 
     public DoAutomaticSave(final MapModel model, final int numberOfTempFiles,
-            final boolean filesShouldBeDeletedAfterShutdown, boolean useSingleBackupDirectory,
-            final String singleBackupDirectory) {
+            final boolean filesShouldBeDeletedAfterShutdown) {
         this.model = model;
         numberOfFiles = ((numberOfTempFiles > 0) ? numberOfTempFiles : 1);
         this.filesShouldBeDeletedAfterShutdown = filesShouldBeDeletedAfterShutdown;
-        this.singleBackupDirectory = useSingleBackupDirectory ? new File(singleBackupDirectory) : null;
         changeState = model.getNumberOfChangesSinceLastSave();
     }
 
@@ -78,20 +74,10 @@ public class DoAutomaticSave implements ActionListener {
             if(!(currentModeController instanceof MModeController))
                 return;
             MModeController modeController = ((MModeController) currentModeController);
-            final File pathToStore;
             final URL url = model.getURL();
             final File file = new File(url != null ? url.getFile() //
                     : model.getTitle() + UrlManager.FREEPLANE_FILE_EXTENSION);
-            if (url == null) {
-                pathToStore = new File(ResourceController.getResourceController()
-                        .getFreeplaneUserDirectory(), BACKUP_DIR);
-            }
-            else if (singleBackupDirectory != null) {
-                pathToStore = singleBackupDirectory;
-            }
-            else {
-                pathToStore = new File(file.getParent(), BACKUP_DIR);
-            }
+            final File pathToStore = MFileManager.backupDir(url != null ? file : null);
             pathToStore.mkdirs();
             final File tempFile = MFileManager.renameBackupFiles(pathToStore, file, numberOfFiles,
                     AUTOSAVE_EXTENSION);
