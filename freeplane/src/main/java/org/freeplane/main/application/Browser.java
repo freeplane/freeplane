@@ -3,7 +3,6 @@ package org.freeplane.main.application;
 import java.io.IOException;
 import java.net.URI;
 import java.text.MessageFormat;
-import java.text.Normalizer;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
