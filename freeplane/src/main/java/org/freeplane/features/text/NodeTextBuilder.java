@@ -206,7 +206,12 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
             final String text;
             if(!transformed.equals(data)) {
                 String transformedHtml = HtmlUtils.objectToHtml(transformed);
-                text = HtmlUtils.toXhtml(transformedHtml);
+                if (HtmlUtils.isHtml(transformedHtml))
+                    text = HtmlUtils.toXhtml(transformedHtml);
+                else if(!transformedHtml.isEmpty())
+                    text = transformedHtml;
+                else
+                    text = data.toString();
             }
             else
                 text = data.toString();
