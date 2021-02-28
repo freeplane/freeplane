@@ -59,8 +59,8 @@ import org.freeplane.features.map.IMapSelectionListener;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.MapWriter.Mode;
-import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.DocuMapAttribute;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.n3.nanoxml.XMLException;
@@ -143,7 +143,7 @@ public class UrlManager implements IExtension {
 	@SuppressWarnings("serial")
     public JFreeplaneCustomizableFileChooser getFileChooser() {
         return AccessController.doPrivileged((PrivilegedAction<JFreeplaneCustomizableFileChooser>)() -> {
-            final JFreeplaneCustomizableFileChooser chooser = new JFreeplaneCustomizableFileChooser();
+            final JFreeplaneCustomizableFileChooser chooser = new JFreeplaneCustomizableFileChooser(getLastCurrentDir());
             Customizer closeDialogCustomizer = dialog -> {
                     InputMap in = dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
                     in.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE,0), "escape");
@@ -158,12 +158,9 @@ public class UrlManager implements IExtension {
                     });
             };
             chooser.addCustomizer(closeDialogCustomizer);
-            if (getLastCurrentDir() != null) {
-                chooser.setCurrentDirectory(getLastCurrentDir());
-            }
             return chooser;
         });
-	    
+
 	}
     public JFreeplaneCustomizableFileChooser getFileChooser(final FileFilter filter) {
         JFreeplaneCustomizableFileChooser chooser = getFileChooser();
