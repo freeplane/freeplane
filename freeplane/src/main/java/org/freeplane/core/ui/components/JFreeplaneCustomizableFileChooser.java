@@ -12,6 +12,7 @@ import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
 
 public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 
@@ -21,15 +22,19 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 
     public JFreeplaneCustomizableFileChooser() {
         super();
-        putClientProperty("FileChooser.useShellFolder", Boolean.FALSE);
     }
 
     public JFreeplaneCustomizableFileChooser(File currentDirectory) {
         super(currentDirectory);
-        putClientProperty("FileChooser.useShellFolder", Boolean.FALSE);
     }
 
-    @FunctionalInterface
+    @Override
+	protected void setup(FileSystemView view) {
+        putClientProperty("FileChooser.useShellFolder", Boolean.FALSE);
+    	super.setup(view);
+	}
+
+	@FunctionalInterface
     public interface Customizer extends Consumer<JDialog>{
         Customizer DEFAULT = d -> {};
     }
