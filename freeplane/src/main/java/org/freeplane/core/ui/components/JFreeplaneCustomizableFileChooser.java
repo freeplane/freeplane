@@ -30,10 +30,12 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 
     public JFreeplaneCustomizableFileChooser() {
         super();
+        putClientProperty("FileChooser.useShellFolder", Boolean.FALSE);
     }
 
     public JFreeplaneCustomizableFileChooser(File currentDirectory) {
         super(currentDirectory);
+        putClientProperty("FileChooser.useShellFolder", Boolean.FALSE);
     }
 
     @FunctionalInterface
