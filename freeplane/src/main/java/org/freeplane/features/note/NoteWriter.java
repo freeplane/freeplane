@@ -86,7 +86,7 @@ class NoteWriter implements IExtensionElementWriter, IAttributeWriter {
 
 		if (containsXml) {
         	final String content = note.getXml().replace('\0', ' ');
-        	writer.addElement('\n' + content + '\n' + transformedXhtml, element);
+        	writer.addElement(content, element);
         }
 		else {
             String text = note.getText();

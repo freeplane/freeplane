@@ -206,12 +206,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
             final String text;
             if(!transformed.equals(data)) {
                 String transformedHtml = HtmlUtils.objectToHtml(transformed);
-                if (HtmlUtils.isHtml(transformedHtml))
-                    text = HtmlUtils.toXhtml(transformedHtml);
-                else if(!transformedHtml.isEmpty())
-                    text = transformedHtml;
-                else
-                    text = data.toString();
+                text = HtmlUtils.toXhtml(transformedHtml);
             }
             else
                 text = data.toString();
@@ -292,7 +287,7 @@ public class NodeTextBuilder implements IElementContentHandler, IElementWriter, 
         }
         if (containsXml) {
         		final String content = details.getXml().replace('\0', ' ');
-        		writer.addElement('\n' + content + '\n' + transformedXhtml, element);
+        		writer.addElement(content, element);
         }
         else {
             String text = details.getText();

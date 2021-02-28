@@ -599,19 +599,21 @@ public class HtmlUtils {
 	public static String objectToHtml(Object object) {
 		if(object == null)
 			return "";
-		if(object instanceof String) {
-			String text = (String) object;
-			if(isHtml(text))
-				return text;
-			else
-				return plainToHTML(text);
-		}
+        if(object instanceof String) 
+            return plainTextToHtml((String)object);
 		if(object instanceof Icon) 
-			return "<html><body>" + iconToHtml((Icon) object) + "</body></html>";
+		    return "<html><body>" + iconToHtml((Icon) object) + "</body></html>";
 		if(object instanceof RenderedImage) 
-			return "<html><body>" + imageToHtml((RenderedImage) object) + "</body></html>";
-		return "";
+		    return "<html><body>" + imageToHtml((RenderedImage) object) + "</body></html>";
+		return plainTextToHtml(object.toString());
 	}
+
+    private static String plainTextToHtml(String text) {
+        if(isHtml(text))
+		    return text;
+		else
+		    return plainToHTML(text);
+    }
 
 	public static String iconToHtml(Icon icon) {
 		BufferedImage image = new BufferedImage(
