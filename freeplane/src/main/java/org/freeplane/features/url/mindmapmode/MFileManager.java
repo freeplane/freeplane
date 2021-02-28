@@ -227,7 +227,7 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
            return new File(ResourceController.getResourceController()
                     .getFreeplaneUserDirectory(), BACKUP_DIR);
         }
-		else 
+		else
 		    return new File(file.getParentFile(), BACKUP_DIR);
 	}
 
@@ -643,12 +643,14 @@ public class MFileManager extends UrlManager implements IMapViewChangeListener {
 				final ResourceController resourceController = ResourceController.getResourceController();
 				boolean skipTemplateSelection = resourceController.getBooleanProperty("skip_template_selection");
 				if (skipTemplateSelection) {
-				    follow = resourceController.getBooleanProperty("follow_mind_map_by_default");
 				    chosenFile = defaultTemplateFile();
+				    follow = resourceController.getBooleanProperty("follow_mind_map_by_default");
 				}
-				TemplateChooser templateChooser = new TemplateChooser(false);
-				chosenFile = templateChooser.chosenTemplateFile();
-				follow = templateChooser.isConnectChecked();
+				else {
+					TemplateChooser templateChooser = new TemplateChooser(false);
+					chosenFile = templateChooser.chosenTemplateFile();
+					follow = templateChooser.isConnectChecked();
+				}
 			}
 			@Override
 			public MapModel run() {
