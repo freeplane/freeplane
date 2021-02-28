@@ -25,6 +25,9 @@ import java.awt.event.ActionEvent;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.util.Compat;
@@ -70,9 +73,12 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 				}
 			}
 		}
-		final String inputValue = UITools.showInputDialog(
-		    Controller.getCurrentController().getSelection().getSelected(), TextUtils.getText("edit_link_manually"), linkAsString);
-		if (inputValue != null && ! inputValue.matches("\\w+://")) {
+		JTextField inputField = new JTextField(60);
+		inputField.setText(linkAsString);
+
+		int result = UITools.showConfirmDialog(Controller.getCurrentController().getSelection().getSelected(), inputField,  TextUtils.getText("edit_link_manually"), JOptionPane.OK_CANCEL_OPTION);
+		String inputValue = inputField.getText();
+		if (result == JOptionPane.OK_OPTION && ! inputValue.matches("\\w+://")) {
 			final MLinkController linkController = (MLinkController) MLinkController.getController();
 			if (inputValue.equals("")) {
 				linkController.setLink(selectedNode, (URI) null, LinkController.LINK_ABSOLUTE);
