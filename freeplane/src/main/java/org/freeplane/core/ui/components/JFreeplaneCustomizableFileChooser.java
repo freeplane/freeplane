@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.HeadlessException;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -13,6 +14,8 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
+
+import org.freeplane.core.util.Compat;
 
 public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 
@@ -33,6 +36,45 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
         putClientProperty("FileChooser.useShellFolder", Boolean.FALSE);
     	super.setup(view);
 	}
+
+
+
+	@SuppressWarnings("serial")
+	@Override
+	public void setCurrentDirectory(File dir) {
+		if(dir != null && Compat.isWindowsOS() && dir.getClass().equals(File.class)
+				&& Boolean.FALSE.equals(getClientProperty("FileChooser.useShellFolder"))) {
+			try {
+				setDirectoryBehavingLikeShellFolder(dir);
+			return;
+			}
+			catch (IOException e) {
+			}
+		}
+		super.setCurrentDirectory(dir);
+	}
+
+	private void setDirectoryBehavingLikeShellFolder(File dir) throws IOException {
+			File shellFile = new File(dir.getCanonicalPath()) {
+				@Override
+				public File getParentFile() {
+					return getFileSystemView().getParentDirectory(this);
+				}
+
+				@Override
+				public File getCanonicalFile() throws IOException {
+					return this;
+				}
+
+				@Override
+				public String getCanonicalPath() throws IOException {
+					return getPath();
+				}
+			};
+			super.setCurrentDirectory(shellFile);
+	}
+
+
 
 	@FunctionalInterface
     public interface Customizer extends Consumer<JDialog>{
