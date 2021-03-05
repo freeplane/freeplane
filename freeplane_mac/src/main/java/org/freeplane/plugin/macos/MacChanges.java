@@ -21,6 +21,7 @@ package org.freeplane.plugin.macos;
 
 import java.awt.Desktop;
 import java.awt.EventQueue;
+import java.awt.Window;
 import java.awt.desktop.AboutEvent;
 import java.awt.desktop.AboutHandler;
 import java.awt.desktop.OpenFilesEvent;
@@ -36,6 +37,8 @@ import java.io.File;
 import java.net.URI;
 import java.net.URL;
 
+import javax.swing.JFrame;
+
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.util.Compat;
@@ -46,6 +49,9 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.application.MacOptions;
 
+import com.apple.eawt.Application;
+import com.apple.eawt.FullScreenUtilities;
+
 
 public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesHandler, OpenURIHandler, QuitHandler{
 
@@ -55,6 +61,12 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 
 	static public void apply(Controller controller) {
 		new MacChanges(controller);
+	}
+	
+	public static void setFullScreen(Window window, boolean requestFullScreen) {
+		boolean hasFullScreen = window.getY() == 0;
+		if(hasFullScreen != requestFullScreen)
+			Application.getApplication().requestToggleFullScreen(window);
 	}
 
 	private MacChanges(Controller controller) {

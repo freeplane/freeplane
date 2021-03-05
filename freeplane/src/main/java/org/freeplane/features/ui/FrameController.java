@@ -466,15 +466,29 @@ abstract public class FrameController implements ViewController {
 	}
 
 	public void setFullScreen(final boolean fullScreen) {
-		final JFrame frame = (JFrame) getCurrentRootComponent();
-		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 		if (fullScreen == isFullScreenEnabled()) {
 			return;
 		}
+		final JFrame frame = (JFrame) getCurrentRootComponent();
+		if(Compat.isMacOsX())
+			setFullScreenOnMac(fullScreen, frame);
+		else			
+			setFullScreenOnNonMac(frame, fullScreen);
+		ToolTipManager.sharedInstance().setEnabled(true);
+	}
+
+	private void setFullScreenOnMac(final boolean fullScreen, final JFrame frame) {
+		if (Compat.setFullScreenOnMac(frame, fullScreen))
+			ResourceController.getResourceController().firePropertyChanged(FULLSCREEN_ENABLED_PROPERTY,
+				    Boolean.toString(!fullScreen), Boolean.toString(fullScreen));
+	}
+
+	private void setFullScreenOnNonMac(JFrame frame, final boolean fullScreen) {
+		ResourceController.getResourceController().firePropertyChanged(FULLSCREEN_ENABLED_PROPERTY,
+			    Boolean.toString(!fullScreen), Boolean.toString(fullScreen));
+		final Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 		ToolTipManager.sharedInstance().setEnabled(false);
 		final Controller controller = getController();
-		ResourceController.getResourceController().firePropertyChanged(FULLSCREEN_ENABLED_PROPERTY,
-		    Boolean.toString(!fullScreen), Boolean.toString(fullScreen));
 		Iterable<Window> visibleFrames = collectVisibleFrames(frame);
 		if (fullScreen) {
 			final GraphicsConfiguration graphicsConfiguration = frame.getGraphicsConfiguration();
@@ -514,7 +528,6 @@ abstract public class FrameController implements ViewController {
 			}
 			showWindows(visibleFrames);
 		}
-		ToolTipManager.sharedInstance().setEnabled(true);
 		if (focusOwner != null)
 			focusOwner.requestFocus();
 	}
