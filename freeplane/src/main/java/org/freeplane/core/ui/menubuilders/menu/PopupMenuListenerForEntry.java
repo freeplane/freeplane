@@ -10,6 +10,7 @@ import javax.swing.event.PopupMenuListener;
 import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
+import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 
 class PopupMenuListenerForEntry implements PopupMenuListener{
@@ -55,25 +56,17 @@ class PopupMenuListenerForEntry implements PopupMenuListener{
 		popupTimer.start();
 	}
 
-	private boolean containsSubmenu(Entry entry) {
-	    if (entry.hasChildren() || entryAccessor.getAction(entry) == null) {
-            String text = entryAccessor.getText(entry);
-            return text != null && !text.isEmpty();
-	    }
-	    return false;
-	}
-
 	private void fireChildEntriesWillBecomeVisible(final Entry entry) {
 		popupListener.childEntriesWillBecomeVisible(entry);
 		for (Entry child : entry.children())
-			if (!containsSubmenu(child))
+			if (!RecursiveMenuStructureProcessor.shouldProcessUiOnEvent(child))
 				fireChildEntriesWillBecomeVisible(child);
 	}
 
 	private void fireChildEntriesHidden(final Entry entry) {
 	    popupListener.childEntriesHidden(entry);
 		for (Entry child : entry.children())
-			if (!containsSubmenu(child))
+			if (!RecursiveMenuStructureProcessor.shouldProcessUiOnEvent(child))
 				fireChildEntriesHidden(child);
 	}
 

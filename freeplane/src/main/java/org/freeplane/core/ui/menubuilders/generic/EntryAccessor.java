@@ -141,7 +141,11 @@ public class EntryAccessor {
 	    entry.setAttribute(DRAW_MENU_ICON_ALWAYS, Boolean.TRUE);
 	}
 	
-	public boolean removeMenuIcon(Entry entry) {
+	public void processUiOnPopup(Entry entry) {
+	    entry.setAttribute(RecursiveMenuStructureProcessor.PROCESS_ON_POPUP, RecursiveMenuStructureProcessor.UI);
+	}
+	
+	public boolean shouldRemoveMenuIcon(Entry entry) {
 	    return  ! resourceAccessor.getBooleanProperty(SHOW_MENU_ICONS_PROPERTY, true) 
 	            && ! Boolean.TRUE.equals(entry.getAttribute(DRAW_MENU_ICON_ALWAYS));
 	}

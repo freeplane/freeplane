@@ -12,6 +12,7 @@ import org.freeplane.core.ui.menubuilders.generic.BuilderDestroyerPair.VisitorTy
 
 public class RecursiveMenuStructureProcessor{
 
+	static final String UI = "UI";
 	final private Map<String, BuilderDestroyerPair> visitors;
 	final private Map<String, String> subtreeDefaultVisitors;
 	private LinkedList<String> subtreeDefaultVisitorStack;
@@ -72,6 +73,10 @@ public class RecursiveMenuStructureProcessor{
 		return TRUE.equals(target.getAttribute(PROCESS_ON_POPUP));
 	}
 
+	public static boolean shouldProcessUiOnEvent(Entry target) {
+		return shouldProcessOnEvent(target) || UI.equals(target.getAttribute(PROCESS_ON_POPUP));
+	}
+	
 	private void processChildren(Entry target, VisitorType visitorType) {
 		final int originalDefaultBuilderStackSize = subtreeDefaultVisitorStack.size();
 		final String visitorToCall = visitorToCall(target);
