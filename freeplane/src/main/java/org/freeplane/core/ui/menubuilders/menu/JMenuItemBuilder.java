@@ -24,6 +24,7 @@ import org.freeplane.core.ui.menubuilders.generic.Entry;
 import org.freeplane.core.ui.menubuilders.generic.EntryAccessor;
 import org.freeplane.core.ui.menubuilders.generic.EntryPopupListener;
 import org.freeplane.core.ui.menubuilders.generic.EntryVisitor;
+import org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor;
 import org.freeplane.core.ui.menubuilders.generic.ResourceAccessor;
 import org.freeplane.core.ui.svgicons.FreeplaneIconFactory;
 import org.freeplane.core.ui.textchanger.TranslatedElement;
@@ -108,7 +109,7 @@ public class JMenuItemBuilder implements EntryVisitor{
 		JMenu menu = new JMenu();
 		final String rawText = entryAccessor.getText(entry);
 		LabelAndMnemonicSetter.setLabelAndMnemonic(menu, rawText);
-		if(! entryAccessor.removeMenuIcon(entry)) {
+		if(! entryAccessor.shouldRemoveMenuIcon(entry)) {
 		    final Icon icon = entryAccessor.getIcon(entry);
 		    if (icon != null) {
 		        menu.setIcon(FreeplaneIconFactory.toImageIcon(icon));
@@ -159,7 +160,8 @@ public class JMenuItemBuilder implements EntryVisitor{
 
 	@Override
 	public boolean shouldSkipChildren(Entry entry) {
-		return Boolean.FALSE.equals(entry.getAttribute("allowed")) || containsSubmenu(entry);
+		return Boolean.FALSE.equals(entry.getAttribute("allowed")) 
+				|| RecursiveMenuStructureProcessor.shouldProcessUiOnEvent(entry);
 	}
 
 }

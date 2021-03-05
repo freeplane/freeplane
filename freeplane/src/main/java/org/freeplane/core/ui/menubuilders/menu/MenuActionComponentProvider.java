@@ -46,7 +46,7 @@ public class MenuActionComponentProvider implements ComponentProvider {
 			}
 			final KeyStroke accelerator = accelerators.getAccelerator(action);
 			actionComponent.setAccelerator(accelerator);
-			if(entryAccessor.removeMenuIcon(entry))
+			if(entryAccessor.shouldRemoveMenuIcon(entry))
 			    actionComponent.setIcon(null);
 			else
 			    IconReplacer.replaceByScaledImageIcon(actionComponent);

@@ -60,7 +60,6 @@ import org.freeplane.features.icon.IconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapController.Direction;
-import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
@@ -175,21 +174,28 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 			    .getProperty("lookandfeel"));
 			final boolean supportHidpi = UITools.shouldScaleUIFonts();
 			FrameController.setLookAndFeel(lookandfeel, supportHidpi);
-			final JFrame frame;
-			frame = new JFrame("Freeplane");
-			frame.setContentPane(new JPanel(){
-
+			SwingUtilities.invokeAndWait(new Runnable() {
 				@Override
-				protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
-					return super.processKeyBinding(ks, e, condition, pressed)
-							|| MenuKeyProcessor.INSTANCE.processKeyBinding(ks, e, condition, pressed);
-				}
+				public void run() {
+					final JFrame frame;
+					frame = new JFrame("Freeplane");
+					frame.setContentPane(new JPanel(){
 
+						@Override
+						protected boolean processKeyBinding(KeyStroke ks, KeyEvent e, int condition, boolean pressed) {
+							return super.processKeyBinding(ks, e, condition, pressed)
+									|| MenuKeyProcessor.INSTANCE.processKeyBinding(ks, e, condition, pressed);
+						}
+
+					});
+					frame.setName(UITools.MAIN_FREEPLANE_FRAME);
+					final MMapViewController mapViewController = new MMapViewController(controller);
+					viewController = new ApplicationViewController(controller, mapViewController, frame);
+					splash = new FreeplaneSplashModern(frame);
+					mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
+				}
 			});
-			frame.setName(UITools.MAIN_FREEPLANE_FRAME);
-			final MMapViewController mapViewController = new MMapViewController(controller);
-			viewController = new ApplicationViewController(controller, mapViewController, frame);
-			splash = new FreeplaneSplashModern(frame);
+
 			if (!System.getProperty("org.freeplane.nosplash", "false").equals("true")) {
 				SwingUtilities.invokeAndWait(new Runnable() {
 					@Override
@@ -198,7 +204,6 @@ public class FreeplaneGUIStarter implements FreeplaneStarter {
 					}
 				});
 			}
-			mapViewController.addMapViewChangeListener(applicationResourceController.getLastOpenedList());
 			controller.addExtension(HighlightController.class, new HighlightController());
 			FilterController.install();
 			PrintController.install();

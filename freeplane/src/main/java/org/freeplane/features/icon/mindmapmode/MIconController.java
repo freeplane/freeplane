@@ -117,19 +117,23 @@ public class MIconController extends IconController {
 
 		private void addIcons(final Entry target) {
 			for (final IconGroup iconGroup : STORE.getGroups()) {
-				addIconGroup(target, iconGroup);
+				addIconGroup(target, iconGroup, false);
 			}
 		}
 
-		private void addIconGroup(final Entry target, final IconGroup group) {
-		    if (group.getIcons().size() < 1 
-		            || group.getName().equals(IconStore.EMOJI_GROUP) && ! areEmojiActionsEnabled())
+		private void addIconGroup(final Entry target, final IconGroup group, boolean isEmoji) {
+		    if (group.getIcons().size() < 1)
 		        return;
+			isEmoji = isEmoji || group.getName().equals(IconStore.EMOJI_GROUP);
+			if (isEmoji && ! areEmojiActionsEnabled())
+				return;
 		    final Entry item = new Entry();
 		    EntryAccessor entryAccessor = new EntryAccessor();
 		    entryAccessor.drawMenuIconAlways(item);
 		    entryAccessor.setIcon(item, group.getGroupIcon().getIcon());
 		    entryAccessor.setText(item, group.getDescription());
+		    if(isEmoji)
+		    	entryAccessor.processUiOnPopup(item);
 		    target.addChild(item);
 		    for (final IconGroup childGroup : group.getGroups()) {
 		        if(childGroup.isLeaf()) {
@@ -138,7 +142,7 @@ public class MIconController extends IconController {
 		            entryAccessor.drawMenuIconAlways(actionItem);
 		        }
 		        else
-		            addIconGroup(item, childGroup);
+		            addIconGroup(item, childGroup, isEmoji);
 		    }
 		}
 

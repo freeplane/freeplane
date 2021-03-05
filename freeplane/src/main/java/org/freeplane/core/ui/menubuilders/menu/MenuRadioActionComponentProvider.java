@@ -50,7 +50,7 @@ public class MenuRadioActionComponentProvider implements ComponentProvider {
 			buttonGroup.add(actionComponent);
 			final KeyStroke accelerator = accelerators.getAccelerator(action);
 			actionComponent.setAccelerator(accelerator);
-            if(entryAccessor.removeMenuIcon(entry))
+            if(entryAccessor.shouldRemoveMenuIcon(entry))
                 actionComponent.setIcon(null);
             else
                 IconReplacer.replaceByScaledImageIcon(actionComponent);
