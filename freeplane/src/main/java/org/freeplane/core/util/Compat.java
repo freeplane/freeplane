@@ -1,5 +1,6 @@
 package org.freeplane.core.util;
 
+import java.awt.Window;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -11,6 +12,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.JFrame;
 
 import org.freeplane.features.mode.Controller;
 
@@ -133,6 +136,19 @@ public class Compat {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void setFullScreenOnMac(JFrame frame, boolean fullScreen) {
+		try {
+			final Class<?> macChanges = Controller.class.getClassLoader().loadClass(
+			    "org.freeplane.plugin.macos.MacChanges");
+			final Method method = macChanges.getMethod("setFullScreen", JFrame.class, boolean.class);
+			method.invoke(null, frame, fullScreen);
+		}
+		catch (final Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	private static String userFpDir = null;
 
