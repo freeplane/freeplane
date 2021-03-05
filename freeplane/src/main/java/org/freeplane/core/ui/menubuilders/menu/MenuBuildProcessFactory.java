@@ -84,18 +84,16 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		        resourceAccessor);
         JComponentRemover destroyer = JComponentRemover.INSTANCE;
 		uiBuilder.addBuilderPair("menu", menuBuilder, destroyer);
-        uiBuilder.addBuilderPair("radio_button_group", EntryVisitor.SKIP, EntryVisitor.SKIP);
+		uiBuilder.addBuilderPair("radio_button_group", //
+			    new JMenuRadioGroupBuilder(entryPopupListenerCollection, acceleratorMap, new AcceleratebleActionProvider(),
+			        resourceAccessor), JRadioButtonGroupComponentRemover.INSTANCE);
 
         final RecursiveMenuStructureProcessor menuItemBuilder = new RecursiveMenuStructureProcessor();
         menuItemBuilder.setDefaultBuilderPair(menuBuilder, destroyer);
         menuItemBuilder.addBuilderPair("skip", EntryVisitor.SKIP, EntryVisitor.SKIP);
         menuItemBuilder.addBuilderPair("noActions", new EmptyMenuItemBuilder(resourceAccessor), destroyer);
 
-        menuItemBuilder.addBuilderPair("radio_button_group", //
-            new JMenuRadioGroupBuilder(entryPopupListenerCollection, acceleratorMap, acceleratebleActionProvider,
-                resourceAccessor), 
-                new JRadioButtonGroupComponentRemover()
-                );
+        menuItemBuilder.addBuilderPair("radio_button_group", EntryVisitor.SKIP, EntryVisitor.SKIP);
 
         actionBuilder.addBuilderPair("ignore", new ChildEntryFilter() {
 			@Override
