@@ -19,14 +19,18 @@
  */
 package org.freeplane.features.link.mindmapmode;
 
+import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.UITools;
@@ -75,6 +79,18 @@ class SetLinkByTextFieldAction extends AFreeplaneAction {
 		}
 		JTextField inputField = new JTextField(60);
 		inputField.setText(linkAsString);
+		inputField.setSelectionStart(0);
+		inputField.setSelectionEnd(linkAsString.length());
+		inputField.addHierarchyListener(new HierarchyListener() {
+			@Override
+			public void hierarchyChanged(HierarchyEvent e) {
+				Component component = e.getComponent();
+				if(0 != (e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) && component.isShowing()) {
+					SwingUtilities.invokeLater(component::requestFocus);
+					component.removeHierarchyListener(this);
+				}
+			}
+		});
 
 		int result = UITools.showConfirmDialog(Controller.getCurrentController().getSelection().getSelected(), inputField,  TextUtils.getText("edit_link_manually"), JOptionPane.OK_CANCEL_OPTION);
 		String inputValue = inputField.getText();
