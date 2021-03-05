@@ -35,7 +35,6 @@ import java.awt.desktop.QuitResponse;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
-import java.util.ResourceBundle;
 
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
@@ -62,7 +61,9 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		this.controller = controller;
 		if(fmMacApplication==null){
 		    String helpMenuTitle = TextUtils.getRawText("menu_help");
-		    ResourceController.getResourceController().putResourceString("menu_help", helpMenuTitle + " ");
+		    ResourceController resourceController = ResourceController.getResourceController();
+		    if(resourceController.getBooleanProperty("use_emoji_icons"))
+		    	resourceController.putResourceString("menu_help", helpMenuTitle + " ");
 		    final URL macProperties = this.getClass().getResource("freeplane_mac.properties");
 		    Controller.getCurrentController().getResourceController().addDefaults(macProperties);
 
