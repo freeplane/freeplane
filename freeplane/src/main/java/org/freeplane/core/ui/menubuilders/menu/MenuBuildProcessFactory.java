@@ -72,7 +72,7 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 
 		uiBuilder.addBuilder("main_menu", new JMenubarBuilder(userInputListenerFactory));
         uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu");
-        uiBuilder.setSubtreeDefaultBuilderPair("menu", "skip");
+        // uiBuilder.setSubtreeDefaultBuilderPair("menu", "skip");
 		
 		uiBuilder.addBuilder("map_popup", new PopupBuilder(userInputListenerFactory.getMapPopup(), entryPopupListenerCollection, resourceAccessor));
 		uiBuilder.setSubtreeDefaultBuilderPair("map_popup", "skip");
@@ -83,7 +83,7 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		JMenuItemBuilder menuBuilder = new JMenuItemBuilder(entryPopupListenerCollection, acceleratorMap, acceleratebleActionProvider,
 		        resourceAccessor);
         JComponentRemover destroyer = JComponentRemover.INSTANCE;
-		uiBuilder.addBuilder("menu", menuBuilder);
+		uiBuilder.addBuilderPair("menu", menuBuilder, destroyer);
         uiBuilder.addBuilderPair("radio_button_group", EntryVisitor.SKIP, EntryVisitor.SKIP);
 
         final RecursiveMenuStructureProcessor menuItemBuilder = new RecursiveMenuStructureProcessor();
@@ -122,7 +122,8 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		PhaseProcessor menuItemProcessor = new PhaseProcessor(buildPhaseListeners)
 		.withPhase(UI, menuItemBuilder);
 		
-        SubtreeProcessor menuProcessor = new SubtreeProcessor(e -> menuBuilder.containsSubmenu(e) && ! e.builders().contains("radio_button_group"));
+        SubtreeProcessor menuProcessor = new SubtreeProcessor(e -> RecursiveMenuStructureProcessor.shouldProcessUiOnEvent(e)
+        		&& ! e.builders().contains("radio_button_group"));
         entryPopupListenerCollection.addEntryPopupListener(menuProcessor);
         entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
 		menuProcessor.setProcessor(menuItemProcessor);
