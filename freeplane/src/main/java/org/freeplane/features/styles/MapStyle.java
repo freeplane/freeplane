@@ -427,16 +427,35 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 
-	public void replaceStyle(final File file, final MapModel targetMap) throws MalformedURLException {
+	public void replaceStyle(final File file, final MapModel targetMap, boolean shouldFollow) throws MalformedURLException {
         final URL url = file.toURI().toURL();
 	    loadStyleMapContainer(url).ifPresent(styleMapContainer ->
-	        new StyleExchange(styleMapContainer, targetMap).replaceMapStylesAndAutomaticStyle());
+	        {
+				new StyleExchange(styleMapContainer, targetMap).replaceMapStylesAndAutomaticStyle();
+				updateFollowProperties(targetMap, file, shouldFollow);
+			});
+	}
+	
+	private void updateFollowProperties(final MapModel map, File sourceFile, boolean shouldFollow) {
+		if(shouldFollow) {
+			setProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, sourceFile.toURI().toString());
+			setProperty(map, MapStyleModel.FOLLOWED_MAP_LAST_TIME, Long.toString(sourceFile.lastModified()));
+			
+		}
+		else {
+			String followedMapUri = getProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY);
+			if(followedMapUri != null && sourceFile.toURI().toString().equals(followedMapUri))
+				setProperty(map, MapStyleModel.FOLLOWED_MAP_LAST_TIME, Long.toString(sourceFile.lastModified()));
+		}
 	}
 
-    public void copyStyles(final File file, final MapModel targetMap) throws MalformedURLException {
+    public void copyStyles(final File file, final MapModel targetMap, boolean shouldFollow) throws MalformedURLException {
         final URL url = file.toURI().toURL();
         loadStyleMapContainer(url).ifPresent(styleMapContainer ->
-            new StyleExchange(styleMapContainer, targetMap).copyMapStyles());
+            {
+				new StyleExchange(styleMapContainer, targetMap).copyMapStyles();
+				updateFollowProperties(targetMap, file, shouldFollow);
+			});
     }
 
     private void copyMapStylesNoUndoNoRefresh(final MapModel targetMap) {

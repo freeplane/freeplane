@@ -25,7 +25,9 @@ class StyleExchange {
         modeController.getExtension(MapStyle.class).onCreate(sourceMap);
         moveStyle(true);
         targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY,
-        	oldStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY));
+            	oldStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY));
+        targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME,
+            	oldStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME));
         modeController.getExtension(AutomaticLayoutController.class).moveExtension(modeController, sourceMap, targetMap);
         modeController.getExtension(AutomaticEdgeColorHook.class).moveExtension(modeController, sourceMap, targetMap);
         makeUndoableAndRefreshView(oldStyleModel);
@@ -46,7 +48,9 @@ class StyleExchange {
         source.addConditionalStylesFrom(oldStyleModel);
         moveStyle(true);
         targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY,
-        	oldStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY));
+            	oldStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY));
+        targetMap.getRootNode().getExtension(MapStyleModel.class).setProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME,
+        		oldStyleModel.getProperty(MapStyleModel.FOLLOWED_MAP_LAST_TIME));
 	}
 
     private void makeUndoableAndRefreshView(final MapStyleModel oldStyleModel) {
