@@ -189,7 +189,8 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
     public List<Integer> getStartInclination() {
-        return pointToList(getConnector().getStartInclination());
+        Point startInclination = getConnector().getStartInclination();
+        return startInclination != null ? pointToList(startInclination) : null;
     }
 
     public void setInclination(final List<Integer> startPoint, final List<Integer> endPoint) {
@@ -199,7 +200,8 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
     }
 
     public List<Integer> getEndInclination() {
-        return pointToList(getConnector().getEndInclination());
+        Point endInclination = getConnector().getEndInclination();
+        return endInclination != null ? pointToList(endInclination) : null;
     }
     
     private Point listToPoint(List<Integer> point) {
