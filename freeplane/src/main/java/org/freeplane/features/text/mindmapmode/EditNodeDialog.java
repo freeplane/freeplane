@@ -270,6 +270,7 @@ public class EditNodeDialog extends EditNodeBase {
             textComponent.setCaretPosition(textComponent.getDocument().getLength());
         }
 		final JDialog dialog = editor.getDialog();
+		getEditControl().getEditType().installHolder(node, dialog);
 		configureDialog(dialog);
         restoreDialogSize(dialog);
 		dialog.pack();

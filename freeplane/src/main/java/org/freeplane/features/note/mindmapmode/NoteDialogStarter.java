@@ -13,6 +13,7 @@ import org.freeplane.features.note.NoteModel;
 import org.freeplane.features.text.mindmapmode.EditNodeBase;
 import org.freeplane.features.text.mindmapmode.EditNodeBase.EditedComponent;
 import org.freeplane.features.text.mindmapmode.MTextController;
+import org.freeplane.features.text.mindmapmode.NoteTextEditorHolder;
 
 class NoteDialogStarter{
 	private class NoteEditor implements EditNodeBase.IEditControl {
@@ -45,6 +46,11 @@ class NoteDialogStarter{
     private static final Pattern HTML_HEAD = Pattern.compile("\\s*<head>.*</head>", Pattern.DOTALL);
 
 	void editNoteInDialog(final NodeModel nodeModel) {
+	    NoteTextEditorHolder editorHolder = nodeModel.getExtension(NoteTextEditorHolder.class);
+	    if(editorHolder != null) {
+	        editorHolder.activate();
+	        return;
+	    }
 		final Controller controller = Controller.getCurrentController();
 		NoteModel note = NoteModel.getNote(nodeModel);
 		if(note ==  null){

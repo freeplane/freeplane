@@ -26,6 +26,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -57,7 +58,25 @@ abstract public class EditNodeBase {
     private static final String EDIT_NODE_DIALOG_HEIGHT_PROPERTY = "editNodeDialog.height";
     private static final String EDIT_NODE_DIALOG_WIDTH_PROPERTY = "editNodeDialog.width";
 
-	public static enum EditedComponent{TEXT, DETAIL, NOTE}
+	public static enum EditedComponent{
+	    TEXT {
+            @Override
+            void installHolder(NodeModel node, Window window) {
+                node.addExtension(new CoreTextEditorHolder(node, window));
+            }
+        }, DETAIL {
+            @Override
+            void installHolder(NodeModel node, Window window) {
+                node.addExtension(new DetailTextEditorHolder(node, window));
+            }
+        }, NOTE {
+            @Override
+            void installHolder(NodeModel node, Window window) {
+                node.addExtension(new NoteTextEditorHolder(node, window));
+            }
+        };
+	    abstract void installHolder(NodeModel node, Window window);
+	}
 	abstract static class EditDialog{
 		 private final JDialog dialog;
 		protected JDialog getDialog() {

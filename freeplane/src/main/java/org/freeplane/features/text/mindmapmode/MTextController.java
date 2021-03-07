@@ -598,6 +598,12 @@ public class MTextController extends TextController {
 	public void editDetails(final NodeModel nodeModel, InputEvent e, final boolean editInDialog) {
 		final Controller controller = Controller.getCurrentController();
 		stopInlineEditing();
+		DetailTextEditorHolder editorHolder = nodeModel.getExtension(DetailTextEditorHolder.class);
+		if(editorHolder != null) {
+		    editorHolder.activate();
+		    return;
+		}
+
 		DetailModel detail = DetailModel.getDetail(nodeModel);
 		final boolean addsNewDetailsUsingInlineEditor = detail == null && ! editInDialog;
 		if (addsNewDetailsUsingInlineEditor) {
@@ -1048,6 +1054,12 @@ public class MTextController extends TextController {
 		}
 		node.requestFocus();
 		stopInlineEditing();
+		CoreTextEditorHolder editorHolder = nodeModel.getExtension(CoreTextEditorHolder.class);
+		if(editorHolder != null) {
+		    editorHolder.activate();
+		    return;
+		}
+
 		if (isNewNode && !eventQueue.isActive()
 		        && !ResourceController.getResourceController()
 		            .getBooleanProperty("display_inline_editor_for_all_new_nodes")

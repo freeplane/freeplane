@@ -66,10 +66,11 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 
 		HTMLDialog(final EditNodeBase base, final String title, String purpose, final RootPaneContainer frame) throws Exception {
 			super(base, title, frame);
-			getDialog().setModal(ResourceController.getResourceController().getBooleanProperty("enforceModalEditorDialogs"));
+			JDialog dialog = getDialog();
+            dialog.setModal(ResourceController.getResourceController().getBooleanProperty("enforceModalEditorDialogs"));
 			createEditorPanel(purpose);
 			getContentPane().add(htmlEditorPanel, BorderLayout.CENTER);
-			UITools.addEscapeActionToDialog(getDialog(), new CancelAction());
+			UITools.addEscapeActionToDialog(dialog, new CancelAction());
 			final JButton okButton = new JButton();
 			final JButton cancelButton = new JButton();
 			splitButton = new JButton();
@@ -86,10 +87,10 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			});
 			final SplitAction splitAction = new SplitAction();
 			splitButton.addActionListener(splitAction);
-			UITools.addKeyActionToDialog(getDialog(), submitAction, "alt ENTER", "submit");
+			UITools.addKeyActionToDialog(dialog, submitAction, "alt ENTER", "submit");
 			final KeyStroke splitNodeHotKey = ResourceController.getResourceController().getAcceleratorManager().getAccelerator("SplitNode");
 			if(splitNodeHotKey != null)
-				UITools.addKeyActionToDialog(getDialog(), splitAction, splitNodeHotKey.toString(), "split");
+				UITools.addKeyActionToDialog(dialog, splitAction, splitNodeHotKey.toString(), "split");
 			final JPanel buttonPane = new JPanel();
 			buttonPane.add(okButton);
 			buttonPane.add(cancelButton);
@@ -244,6 +245,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 			titleText = TextUtils.getText(title);
 			JDialog dialog = htmlEditorWindow.getDialog();
             dialog.setTitle(titleText);
+            getEditControl().getEditType().installHolder(node, dialog);
 			htmlEditorWindow.setSplitEnabled(getEditControl().canSplit());
 			final SHTMLPanel htmlEditorPanel = (htmlEditorWindow).getHtmlEditorPanel();
 			final StringBuilder ruleBuilder = new StringBuilder(100);
