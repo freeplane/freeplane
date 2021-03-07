@@ -3,6 +3,7 @@ package org.freeplane.core.ui.menubuilders.menu;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.ACCELERATORS;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.ACTIONS;
 import static org.freeplane.core.ui.menubuilders.generic.PhaseProcessor.Phase.UI;
+import static org.freeplane.core.ui.menubuilders.generic.RecursiveMenuStructureProcessor.PROCESS_ON_POPUP;
 
 import java.util.List;
 
@@ -74,7 +75,7 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
         uiBuilder.setSubtreeDefaultBuilderPair("main_menu", "menu");
 		
 		uiBuilder.addBuilder("map_popup", new PopupBuilder(userInputListenerFactory.getMapPopup(), entryPopupListenerCollection, resourceAccessor));
-		uiBuilder.setSubtreeDefaultBuilderPair("map_popup", "skip");
+		uiBuilder.setSubtreeDefaultBuilderPair("map_popup", "menu");
 		uiBuilder.addBuilder("node_popup", new PopupBuilder(userInputListenerFactory.getNodePopupMenu(), entryPopupListenerCollection, resourceAccessor));
 		uiBuilder.setSubtreeDefaultBuilderPair("node_popup", "menu");
 
@@ -119,8 +120,8 @@ public class MenuBuildProcessFactory implements BuildProcessFactory {
 		PhaseProcessor menuItemProcessor = new PhaseProcessor(buildPhaseListeners)
 		.withPhase(UI, menuItemBuilder);
 		
-        SubtreeProcessor menuProcessor = new SubtreeProcessor(e -> RecursiveMenuStructureProcessor.shouldProcessUiOnEvent(e)
-        		&& ! e.builders().contains("radio_button_group"));
+        SubtreeProcessor menuProcessor = new SubtreeProcessor(e -> 
+                UI.equals(e.getAttribute(PROCESS_ON_POPUP)));
         entryPopupListenerCollection.addEntryPopupListener(menuProcessor);
         entryPopupListenerCollection.addEntryPopupListener(actionSelectListener);
 		menuProcessor.setProcessor(menuItemProcessor);
