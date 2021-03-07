@@ -64,11 +64,11 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 	private static Predicate<Window> getToggleFullScreenMethod(){
 		try {
 			Class<? extends Object> app = Class.forName("com.apple.eawt.Application");
-			Object geta = app.getMethod("getApplication").invoke(null);
-			Method toggleFullScreenMethod = geta.getClass().getMethod("requestToggleFullScreen", Window.class);
+			Object application = app.getMethod("getApplication").invoke(null);
+			Method toggleFullScreenMethod = application.getClass().getMethod("requestToggleFullScreen", Window.class);
 			return window -> {
 				try {
-					toggleFullScreenMethod.invoke(geta, window);
+					toggleFullScreenMethod.invoke(application, window);
 					return true;
 				}
 				catch (Exception e) {
