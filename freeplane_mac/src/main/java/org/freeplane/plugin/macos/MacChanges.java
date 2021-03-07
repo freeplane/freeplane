@@ -34,6 +34,8 @@ import java.awt.desktop.QuitEvent;
 import java.awt.desktop.QuitHandler;
 import java.awt.desktop.QuitResponse;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URL;
 
@@ -50,9 +52,6 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.features.ui.ViewController;
 import org.freeplane.main.application.MacOptions;
 
-import com.apple.eawt.Application;
-import com.apple.eawt.FullScreenUtilities;
-
 
 public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesHandler, OpenURIHandler, QuitHandler{
 
@@ -60,15 +59,38 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 
 	private final Controller controller;
 
+	private final static Method toggleFullScreenMethod = getToggleFullScreenMethod();
+
+	private static Method getToggleFullScreenMethod(){
+		try {
+			Class<? extends Object> app = Class.forName("com.apple.eawt.Application");
+			Object geta = app.getMethod("getApplication").invoke(null);
+			Method toggleFullScreenMethod = geta.getClass().getMethod("requestToggleFullScreen", Window.class);
+			return toggleFullScreenMethod;
+		}
+		catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			LogUtils.warn(e);
+			return null;
+		}
+	}
+
 	static public void apply(Controller controller) {
 		new MacChanges(controller);
 	}
-	
+
 	public static void setFullScreen(JFrame window, boolean requestFullScreen) {
+		if(toggleFullScreenMethod == null)
+			return;
 		boolean hasFullScreen = window.getY() == 0;
 		if(hasFullScreen != requestFullScreen)
-			Application.getApplication().requestToggleFullScreen(window);
-		window.getRootPane().putClientProperty(ViewController.FULLSCREEN_ENABLED_PROPERTY, requestFullScreen);
+			try {
+				toggleFullScreenMethod.invoke(null, window);
+				window.getRootPane().putClientProperty(ViewController.FULLSCREEN_ENABLED_PROPERTY, requestFullScreen);
+			}
+			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				LogUtils.severe(e);
+			}
 	}
 
 	private MacChanges(Controller controller) {

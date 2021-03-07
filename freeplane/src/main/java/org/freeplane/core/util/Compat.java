@@ -1,6 +1,5 @@
 package org.freeplane.core.util;
 
-import java.awt.Window;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -136,10 +135,8 @@ public class Compat {
 			e.printStackTrace();
 		}
 	}
-	
-	public static boolean setFullScreenOnMac(JFrame frame, boolean fullScreen) {
-		if (!Compat.isMacOsX()) {
-			return false;
+
+	public static void setFullScreenOnMac(JFrame frame, boolean fullScreen) {
 		try {
 			final Class<?> macChanges = Controller.class.getClassLoader().loadClass(
 			    "org.freeplane.plugin.macos.MacChanges");
