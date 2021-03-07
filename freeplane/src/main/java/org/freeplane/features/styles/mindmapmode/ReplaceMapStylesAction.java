@@ -24,6 +24,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 
 import javax.swing.JFileChooser;
 
@@ -33,7 +34,6 @@ import org.freeplane.features.map.MapModel;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.styles.MapStyle;
-import org.freeplane.features.styles.MapStyleModel;
 import org.freeplane.features.url.mindmapmode.MFileManager;
 import org.freeplane.view.swing.features.filepreview.MindMapPreviewWithOptions;
 
@@ -67,9 +67,7 @@ class ReplaceMapStylesAction extends AFreeplaneAction {
 		try {
 			final MapModel map = controller.getMap();
 			MapStyle mapStyleController = MapStyle.getController(modeController);
-			mapStyleController.replaceStyle(file, map);
-			mapStyleController.setProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, previewOptions.isFollowChecked() ? file.toURI().toString() : null);
-            mapStyleController.setProperty(map, MapStyleModel.FOLLOWED_MAP_LAST_TIME, previewOptions.isFollowChecked() ? Long.toString(file.lastModified()) : null);
+			mapStyleController.replaceStyle(file, map, previewOptions.isFollowChecked());
         }
         catch (MalformedURLException e) {
 	        LogUtils.severe(e);

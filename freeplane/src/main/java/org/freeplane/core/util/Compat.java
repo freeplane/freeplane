@@ -140,17 +140,15 @@ public class Compat {
 	public static boolean setFullScreenOnMac(JFrame frame, boolean fullScreen) {
 		if (!Compat.isMacOsX()) {
 			return false;
-		}
 		try {
 			final Class<?> macChanges = Controller.class.getClassLoader().loadClass(
 			    "org.freeplane.plugin.macos.MacChanges");
-			final Method method = macChanges.getMethod("setFullScreen", Window.class, boolean.class);
+			final Method method = macChanges.getMethod("setFullScreen", JFrame.class, boolean.class);
 			method.invoke(null, frame, fullScreen);
 		}
 		catch (final Exception e) {
 			e.printStackTrace();
 		}
-		return fullScreen == (frame.getY() == 0);
 	}
 
 

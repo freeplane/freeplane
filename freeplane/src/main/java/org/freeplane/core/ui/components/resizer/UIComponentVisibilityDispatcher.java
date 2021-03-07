@@ -24,11 +24,14 @@ import java.awt.Container;
 import java.awt.Frame;
 
 import javax.swing.JComponent;
+import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 
 import org.freeplane.core.resources.ResourceController;
+import org.freeplane.core.util.Compat;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
+import org.freeplane.features.ui.ViewController;
 
 /**
  * @author Dimitry Polivaev
@@ -59,7 +62,7 @@ public class UIComponentVisibilityDispatcher {
 
 	public String completeVisiblePropertyKey() {
 		final String completeKeyString;
-		if (isContainedInFullWindow()) {
+		if (isContainedInFullScreenWindow()) {
 			completeKeyString = key + ".fullscreen";
 		}
 		else {
@@ -68,9 +71,9 @@ public class UIComponentVisibilityDispatcher {
 		return completeKeyString;
 	}
 
-	private boolean isContainedInFullWindow() {
-		final Component root = SwingUtilities.getRoot(component);
-		return root instanceof Frame && !((Frame) root).isResizable();
+	private boolean isContainedInFullScreenWindow() {
+		JRootPane rootPane = component.getRootPane();
+		return rootPane != null && Boolean.TRUE.equals(rootPane.getClientProperty(ViewController.FULLSCREEN_ENABLED_PROPERTY));
 	}
 
 	public void toggleVisibility() {
@@ -101,7 +104,7 @@ public class UIComponentVisibilityDispatcher {
 		if(resizer == null)
 			component.setVisible(visible);
 		else {
-			final boolean containedInFullWindow = isContainedInFullWindow();
+			final boolean containedInFullWindow = isContainedInFullScreenWindow();
 			if (visible || ! containedInFullWindow || containedInFullWindow && ! visible)
 				resizer.setVisible(visible || ! containedInFullWindow);
 			resizer.setExpanded(visible);

@@ -2,7 +2,9 @@ package org.freeplane.core.ui.components;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.LayoutManager;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,6 +40,24 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 	}
 
 
+
+	@Override
+	public Dimension getPreferredSize() {
+		return fixAquaFileChooserUIPreferredSize();
+	}
+
+	private Dimension fixAquaFileChooserUIPreferredSize() {
+		Dimension preferredSize = super.getPreferredSize();
+		if(isPreferredSizeSet() || ! getUI().getClass().getSimpleName().equals("AquaFileChooserUI")) {
+			return preferredSize;
+		}
+		LayoutManager layout = getLayout();
+		Dimension layoutPrefSize = layout.preferredLayoutSize(this);
+		Dimension maximumSize = super.getMaximumSize();
+		int width = Math.min(maximumSize.width, Math.max(preferredSize.width, layoutPrefSize.width));
+		int height = Math.min(maximumSize.height, Math.max(preferredSize.height, layoutPrefSize.height));
+		return new Dimension(width, height);
+	}
 
 	@SuppressWarnings("serial")
 	@Override

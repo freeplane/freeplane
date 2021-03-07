@@ -47,6 +47,7 @@ import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
+import org.freeplane.features.ui.ViewController;
 import org.freeplane.main.application.MacOptions;
 
 import com.apple.eawt.Application;
@@ -63,10 +64,11 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		new MacChanges(controller);
 	}
 	
-	public static void setFullScreen(Window window, boolean requestFullScreen) {
+	public static void setFullScreen(JFrame window, boolean requestFullScreen) {
 		boolean hasFullScreen = window.getY() == 0;
 		if(hasFullScreen != requestFullScreen)
 			Application.getApplication().requestToggleFullScreen(window);
+		window.getRootPane().putClientProperty(ViewController.FULLSCREEN_ENABLED_PROPERTY, requestFullScreen);
 	}
 
 	private MacChanges(Controller controller) {

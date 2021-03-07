@@ -57,6 +57,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 import javax.swing.LookAndFeel;
 import javax.swing.RootPaneContainer;
@@ -287,8 +288,13 @@ abstract public class FrameController implements ViewController {
 		return isFullScreenEnabled(getCurrentRootComponent());
 	}
 
-	boolean isFullScreenEnabled(final Component currentRootComponent) {
-		return currentRootComponent instanceof Frame && !((Frame) currentRootComponent).isResizable();
+	boolean isFullScreenEnabled(final Component component) {
+		if(component instanceof JFrame) {
+			JRootPane rootPane = ((JFrame)component).getRootPane();
+			return rootPane != null && Boolean.TRUE.equals(rootPane.getClientProperty(ViewController.FULLSCREEN_ENABLED_PROPERTY));
+		}
+		return false;
+
 	}
 
 	@Override
@@ -478,9 +484,19 @@ abstract public class FrameController implements ViewController {
 	}
 
 	private void setFullScreenOnMac(final boolean fullScreen, final JFrame frame) {
-		if (Compat.setFullScreenOnMac(frame, fullScreen))
+		Compat.setFullScreenOnMac(frame, fullScreen);
+		if (Boolean.valueOf(fullScreen).equals(frame.getRootPane().getClientProperty(FULLSCREEN_ENABLED_PROPERTY))) {
 			ResourceController.getResourceController().firePropertyChanged(FULLSCREEN_ENABLED_PROPERTY,
 				    Boolean.toString(!fullScreen), Boolean.toString(fullScreen));
+			final Controller controller = getController();
+			for (int j = 0; j < 4; j++) {
+				final Iterable<JComponent> toolBars = controller.getModeController().getUserInputListenerFactory()
+				    .getToolBars(j);
+				for (final JComponent toolBar : toolBars) {
+					UIComponentVisibilityDispatcher.of(toolBar).resetVisible();
+				}
+			}
+		}
 	}
 
 	private void setFullScreenOnNonMac(JFrame frame, final boolean fullScreen) {
@@ -501,6 +517,7 @@ abstract public class FrameController implements ViewController {
 			frame.setBounds(bounds);
 			frame.setUndecorated(true);
 			frame.setResizable(false);
+			frame.getRootPane().putClientProperty(FULLSCREEN_ENABLED_PROPERTY, fullScreen);
 			setUIComponentsVisible(controller.getMapViewManager(), isMenubarVisible());
 			for (int j = 0; j < 4; j++) {
 				final Iterable<JComponent> toolBars = controller.getModeController().getUserInputListenerFactory()
