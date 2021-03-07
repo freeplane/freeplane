@@ -60,7 +60,7 @@ class CopyFormat extends AFreeplaneAction {
 		final ModeController modeController = Controller.getCurrentModeController();
 		modeController.copyExtensions(LogicalStyleKeys.NODE_STYLE, node, pattern);
 		modeController.copyExtensions(LogicalStyleKeys.LOGICAL_STYLE, node, pattern);
-		if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewSiblingIncludesIcons")) {
+		if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewNodeIncludesIcons")) {
 			modeController.copyExtensions(Keys.ICONS, node, pattern);
 		}
 	}
@@ -95,7 +95,7 @@ class PasteFormat extends AMultipleNodeAction {
 		modeController.undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, pattern, node);
 		modeController.undoableRemoveExtensions(LogicalStyleKeys.NODE_STYLE, node, node);
 		modeController.undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, pattern, node);
-		if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewSiblingIncludesIcons")) {
+		if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewNodeIncludesIcons")) {
 			modeController.undoableRemoveExtensions(Keys.ICONS, node, node);
 			modeController.undoableCopyExtensions(Keys.ICONS, pattern, node);
 		}

@@ -205,7 +205,8 @@
 					<choice value="ADD_CHILD" />
 				</combo>
 				<boolean name="copyFormatToNewSibling"/>
-				<boolean name="copyFormatToNewSiblingIncludesIcons"/>
+				<boolean name="copyFormatToNewChild"/>
+				<boolean name="copyFormatToNewNodeIncludesIcons"/>
 				<boolean name="scrollOnUnfold"/>
 				<boolean name="shouldCenterSmallMaps"/>
 				<boolean name="pasteImagesFromFiles"/>

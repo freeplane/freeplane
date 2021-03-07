@@ -417,6 +417,7 @@
 				<Entry name="FormatCopy" accelerator="alt shift C" />
 				<Entry name="FormatPaste" accelerator="alt shift V" />
 				<Entry name="SetBooleanPropertyAction.copyFormatToNewSibling" />
+				<Entry name="SetBooleanPropertyAction.copyFormatToNewChild" />
 			</Entry>
 			<Entry builder="noActions" />
 		</Entry>

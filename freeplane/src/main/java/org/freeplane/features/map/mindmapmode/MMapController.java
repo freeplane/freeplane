@@ -188,11 +188,7 @@ public class MMapController extends MapController {
 						return null;
 					}
 					if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewSibling")) {
-						getMModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, targetNode, newNode);
-						getMModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, targetNode, newNode);
-						if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewSiblingIncludesIcons")) {
-							getMModeController().undoableCopyExtensions(Keys.ICONS, targetNode, newNode);
-						}
+						copyFormat(targetNode, newNode);
 					}
 					startEditingAfterSelect(newNode);
 					select(newNode);
@@ -221,6 +217,9 @@ public class MMapController extends MapController {
 				if (newNode == null) {
 					return null;
 				}
+                if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewChild")) {
+                    copyFormat(targetNode, newNode);
+                }
 				startEditingAfterSelect(newNode);
 				select(newNode);
 				break;
@@ -230,6 +229,14 @@ public class MMapController extends MapController {
 		}
 		return newNode;
 	}
+
+    private void copyFormat(final NodeModel source, final NodeModel target) {
+        getMModeController().undoableCopyExtensions(LogicalStyleKeys.NODE_STYLE, source, target);
+        getMModeController().undoableCopyExtensions(LogicalStyleKeys.LOGICAL_STYLE, source, target);
+        if(ResourceController.getResourceController().getBooleanProperty("copyFormatToNewNodeIncludesIcons")) {
+        	getMModeController().undoableCopyExtensions(Keys.ICONS, source, target);
+        }
+    }
 
 
 
