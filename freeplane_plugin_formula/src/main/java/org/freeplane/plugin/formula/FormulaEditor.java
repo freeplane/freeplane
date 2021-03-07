@@ -77,6 +77,7 @@ class FormulaEditor extends EditNodeDialog implements INodeSelector {
 	@Override
 	protected void configureDialog(JDialog dialog) {
 		addPreviewPane(dialog);
+		dialog.setModal(false);
 	}
 
 	private void addPreviewPane(JDialog dialog) {

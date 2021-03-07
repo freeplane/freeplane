@@ -66,7 +66,7 @@ public class EditNodeWYSIWYG extends EditNodeBase {
 
 		HTMLDialog(final EditNodeBase base, final String title, String purpose, final RootPaneContainer frame) throws Exception {
 			super(base, title, frame);
-			getDialog().setModal(false);
+			getDialog().setModal(ResourceController.getResourceController().getBooleanProperty("enforceModalEditorDialogs"));
 			createEditorPanel(purpose);
 			getContentPane().add(htmlEditorPanel, BorderLayout.CENTER);
 			UITools.addEscapeActionToDialog(getDialog(), new CancelAction());

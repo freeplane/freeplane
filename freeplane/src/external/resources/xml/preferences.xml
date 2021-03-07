@@ -209,6 +209,7 @@
 				<boolean name="scrollOnUnfold"/>
 				<boolean name="shouldCenterSmallMaps"/>
 				<boolean name="pasteImagesFromFiles"/>
+				<boolean name="enforceModalEditorDialogs" />
 			</separator>
 			<separator name="reminderOptions">
 				<maybe_boolean name="reminder.showPastRemindersOnStart" />

@@ -64,6 +64,7 @@ public class EditNodeDialog extends EditNodeBase {
 
 		public LongNodeDialog(final RootPaneContainer frame, final String title, final Color background) {
 			super(EditNodeDialog.this, title, frame);
+			getDialog().setModal(ResourceController.getResourceController().getBooleanProperty("enforceModalEditorDialogs"));
 			final JScrollPane editorScrollPane;
 			textComponent.setText(getText());
 			final JScrollPane ancestorScrollPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, textComponent);
@@ -270,7 +271,6 @@ public class EditNodeDialog extends EditNodeBase {
         }
 		final JDialog dialog = editor.getDialog();
 		configureDialog(dialog);
-		dialog.setModal(false);
         restoreDialogSize(dialog);
 		dialog.pack();
 		Controller.getCurrentModeController().getController().getMapViewManager().scrollNodeToVisible(node);
