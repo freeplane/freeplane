@@ -543,7 +543,7 @@ public class MIconController extends IconController {
         recentlyUsedIcons.load(ResourceController.getResourceController().getProperty(RECENTLY_USED_ICONS_PROPERTY, ""));
         recentlyUsedIcons.addPanelTo(iconToolBar);
         boolean isStructured = ResourceController.getResourceController().getBooleanProperty("structured_icon_toolbar");
-		if (! isStructured)
+		if (! isStructured && areEmojiActionsEnabled())
 		    iconToolBar.addSeparator();
 		insertSubmenus(iconToolBar, isStructured);
 		if (! isStructured) {
