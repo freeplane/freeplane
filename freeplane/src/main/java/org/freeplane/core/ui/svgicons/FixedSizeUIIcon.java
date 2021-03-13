@@ -3,7 +3,9 @@ package org.freeplane.core.ui.svgicons;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
@@ -18,8 +20,11 @@ public class FixedSizeUIIcon implements Icon {
     private final int width;
     private final int height;
     private final URL url;
-    private boolean failure = false;
     private Image image;
+	private double scaleX = 1;
+	private double scaleY = 1;
+	private boolean failure = false;
+	private FixedSizeUIIcon chainedIcon = null;
 
 
     public FixedSizeUIIcon(URL url, int width, int height) {
@@ -33,28 +38,60 @@ public class FixedSizeUIIcon implements Icon {
     public void paintIcon(Component c, Graphics g, int x, int y) {
         if (isValid()) {
             if(image == null)
-                image = createImage();
+                createImage(g);
             if(image != null)
-                g.drawImage(image, x, y, c);
+				drawImage(c, g, x, y);
         }
     }
 
-    private boolean isValid() {
+	private void drawImage(Component c, Graphics g, int x, int y) {
+		final Graphics2D gg = (Graphics2D) g;
+		final AffineTransform transform = gg.getTransform();
+		if(scaleX != transform.getScaleX() || scaleY != transform.getScaleY()) {
+			chainedIcon().paintIcon(c, g, x, y);
+		}
+		else if(scaleX == 1 && scaleY == 1) {
+			gg.drawImage(image, x, y, c);
+		}
+		else {
+			AffineTransform newTransform = AffineTransform.getTranslateInstance(
+					x * transform.getScaleX() + transform.getTranslateX(), 
+					y * transform.getScaleY()  + transform.getTranslateY());
+			gg.setTransform(newTransform);
+			gg.drawImage(image, 0, 0, null);
+			gg.setTransform(transform);
+		}
+	}
+
+    private Icon chainedIcon() {
+		if(chainedIcon == null)
+			chainedIcon = new FixedSizeUIIcon(url, width, height);
+		return chainedIcon;
+	}
+
+	private boolean isValid() {
         return width >= 0 && height >= 0 && failure == false;
     }
 
-    private Image createImage() {
+    private void createImage(Graphics g) {
         try {
+        	final Graphics2D g2 = (Graphics2D) g;
+    		final AffineTransform transform = g2.getTransform();
+    		scaleX = transform.getScaleX();
+    		scaleY = transform.getScaleY();
+    		final int scaledWidth = (int) (getIconWidth() * scaleX);
+    		final int scaledHeight = (int) (getIconHeight() * scaleY);
+
             if(url.getPath().endsWith(".svg"))
-                return new SVGIconCreator(url).setHeight(height).setWidth(width).loadImage();
+            	image = new SVGIconCreator(url).setHeight(scaledHeight).setWidth(scaledWidth).loadImage();
             else {
-                Image unloadedScaledImage = ImageIO.read(url).getScaledInstance(width, height, Image.SCALE_SMOOTH);
-                return new ImageIcon(unloadedScaledImage).getImage();
+                Image unloadedScaledImage = ImageIO.read(url).getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+                image = new ImageIcon(unloadedScaledImage).getImage();
             }
         } catch (Exception e) {
             LogUtils.severe(e);
             failure = true;
-            return null;
+            image = null;
         }
     }
 
