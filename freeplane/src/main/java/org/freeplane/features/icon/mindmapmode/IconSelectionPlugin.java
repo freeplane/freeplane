@@ -19,13 +19,16 @@ package org.freeplane.features.icon.mindmapmode;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.Action;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AFreeplaneAction;
 import org.freeplane.core.ui.components.IconSelectionPopupDialog;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.features.icon.IconDescription;
+import org.freeplane.features.icon.EmojiIcon;
 import org.freeplane.features.icon.IconController;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -36,11 +39,18 @@ import org.freeplane.features.mode.ModeController;
  */
 public class IconSelectionPlugin extends AFreeplaneAction {
 	private static final long serialVersionUID = 1L;
+    private static final String ADD_EMOJIS_TO_ICON_SELECTOR = "add_emojis_to_icon_selector";
 
 	public IconSelectionPlugin() {
 		super("IconSelectionPlugin");
 	}
 
+	
+	private boolean areEmojisAvailbleFromIconSelector() {
+	    return ResourceController.getResourceController().getBooleanProperty(ADD_EMOJIS_TO_ICON_SELECTOR);
+    }
+
+	
 	public void actionPerformed(final ActionEvent e) {
 		final ModeController modeController = Controller.getCurrentModeController();
 		ArrayList<IconDescription> actions = new ArrayList<IconDescription>();
@@ -52,7 +62,11 @@ public class IconSelectionPlugin extends AFreeplaneAction {
 		actions.add((IconDescription) modeController.getAction("RemoveAllIconsAction"));
 
 		final MIconController mIconController = (MIconController) IconController.getController();
-		for (AFreeplaneAction aFreeplaneAction : mIconController.getShownIconActions())
+		Collection<AFreeplaneAction> iconActions =areEmojisAvailbleFromIconSelector() ? 
+				mIconController.getIconActions() : 
+					mIconController.getIconActions(icon -> ! (icon instanceof EmojiIcon));
+		
+		for (AFreeplaneAction aFreeplaneAction : iconActions)
 			actions.add((IconDescription) aFreeplaneAction);
 		
 		final IconSelectionPopupDialog selectionDialog = new IconSelectionPopupDialog(UITools.getCurrentFrame(), actions);

@@ -169,7 +169,9 @@
 			</separator>
 			<separator name="icon_properties">
 				<boolean name="structured_icon_toolbar" />
-				<boolean name="use_emoji_icons" />
+				<boolean name="add_emojis_to_menu" />
+				<boolean name="add_emojis_to_icon_toolbar" />
+				<boolean name="add_emojis_to_icon_selector" />
                 <boolean name="show_icons" />
                 <number name="fast_access_icon_number" min="0" max="100"/>
 			</separator>

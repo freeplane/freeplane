@@ -98,10 +98,10 @@ public class MacChanges implements  AboutHandler, OpenFilesHandler, PreferencesH
 		if(fmMacApplication==null){
 		    String helpMenuTitle = TextUtils.getRawText("menu_help");
 		    ResourceController resourceController = ResourceController.getResourceController();
-		    if(resourceController.getBooleanProperty("use_emoji_icons"))
-		    	resourceController.putResourceString("menu_help", helpMenuTitle + " ");
 		    final URL macProperties = this.getClass().getResource("freeplane_mac.properties");
 		    Controller.getCurrentController().getResourceController().addDefaults(macProperties);
+		    if(resourceController.getBooleanProperty("add_emojis_to_menu"))
+		    	resourceController.putResourceString("menu_help", helpMenuTitle + " ");
 
 		    // if a handleOpen comes here, directly, we know that FM is currently starting.
 		    fmMacApplication = Desktop.getDesktop();

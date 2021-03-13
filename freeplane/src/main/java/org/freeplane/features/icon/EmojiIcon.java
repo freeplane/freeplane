@@ -66,9 +66,4 @@ public class EmojiIcon extends MindIcon {
 		String key = getDescriptionTranslationKey();
 		return key;
 	}
-
-    @Override
-    public boolean isShownOnToolbar() {
-        return false;
-    }
 }
