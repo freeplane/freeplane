@@ -17,11 +17,16 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.Compat;
 
 public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 
-    private static final long serialVersionUID = 1;
+    private static final String FILE_CHOOSER_SPECIAL_FOLDERS_PROPERTY = "file_chooser_shows_special_folders";
+
+	private static final String USE_SHELL_FOLDER_JAVA_PROPERTY = "FileChooser.useShellFolder";
+
+	private static final long serialVersionUID = 1;
 
     private final List<JComponent> optionComponents = new ArrayList<>();
 
@@ -35,7 +40,8 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 
     @Override
 	protected void setup(FileSystemView view) {
-        putClientProperty("FileChooser.useShellFolder", Boolean.FALSE);
+        putClientProperty(USE_SHELL_FOLDER_JAVA_PROPERTY, 
+        		ResourceController.getResourceController().getBooleanProperty(FILE_CHOOSER_SPECIAL_FOLDERS_PROPERTY));
     	super.setup(view);
 	}
 
@@ -63,7 +69,7 @@ public class JFreeplaneCustomizableFileChooser extends JFileChooser{
 	@Override
 	public void setCurrentDirectory(File dir) {
 		if(dir != null && Compat.isWindowsOS() && dir.getClass().equals(File.class)
-				&& Boolean.FALSE.equals(getClientProperty("FileChooser.useShellFolder"))) {
+				&& Boolean.FALSE.equals(getClientProperty(USE_SHELL_FOLDER_JAVA_PROPERTY))) {
 			try {
 				setDirectoryBehavingLikeShellFolder(dir);
 			return;
