@@ -130,6 +130,14 @@ public interface NodeRO {
 	 * @since 1.2 */
 	String getDetailsText();
 
+	/**
+	 * 
+	 * Returns details content type.
+	 * 
+	 * @since 1.9.0
+	 */
+	String getDetailsContentType();
+
 	/** returns the text of the details as a Convertible like {@link #getNote()} for notes:
 	 * <ul>
 	 * <li>node.details.to.plain plain text of the node, possibly after formula evaluation
@@ -204,6 +212,14 @@ public interface NodeRO {
 	/** Returns the HTML text of the node. (Notes always contain HTML text.)
 	 * @throws org.freeplane.plugin.script.ExecuteScriptException */
 	String getNoteText();
+	
+	/**
+	 * 
+	 * Returns note content type.
+	 * 
+	 * @since 1.9.0
+	 */
+	String getNoteContentType();
 
 	/** @since 1.2 */
 	Node getParent();

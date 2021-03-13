@@ -94,6 +94,16 @@ public interface Node extends NodeRO {
 
     /** Sets the raw (HTML) note text. */
     void setDetailsText(String html);
+    
+	/**
+	 * 
+	 * Sets details content type.
+	 * 
+	 * Use null to remove.
+	 * 
+	 * @since 1.9.0
+	 */
+    void setDetailsContentType(String contentType);
 
 	/** use node.hideDetails = true/false to control visibility of details.
 	 * @since 1.2 */
@@ -151,6 +161,16 @@ public interface Node extends NodeRO {
 	/** Sets the raw (HTML) note text. */
 	void setNoteText(String html);
 
+	/**
+	 * 
+	 * Sets note content type.
+	 * 
+	 * Use null to remove.
+	 * 
+	 * @since 1.9.0
+	 */
+    void setNoteContentType(String contentType);
+    
 	/** If <code>value</code> is a String the node object is set to it verbatim. For all other argument types it's
 	 * an alias for {@link #setObject(Object)}.
 	 * <pre>
