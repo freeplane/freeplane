@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import org.freeplane.core.util.ColorUtils;
 import org.freeplane.features.link.ArrowType;
+import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
 import org.freeplane.features.link.LinkController;
@@ -97,12 +98,12 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
     public boolean hasEndArrow() {
-        return getLinkController().getEndArrow(getConnector()) == ArrowType.DEFAULT;
+        return getEndArrow() == ArrowType.DEFAULT;
     }
 
     @Deprecated
 	public ArrowType getEndArrow() {
-        return getLinkController().getEndArrow(getConnector());
+        return getLinkController().getArrows(getConnector()).end;
 	}
 
     private MLinkController getLinkController() {
@@ -122,12 +123,12 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 	}
 
     public boolean hasStartArrow() {
-        return getLinkController().getStartArrow(getConnector()) == ArrowType.DEFAULT;
+        return getStartArrow() == ArrowType.DEFAULT;
     }
 
     @Deprecated
 	public ArrowType getStartArrow() {
-		return getLinkController().getStartArrow(getConnector());
+		return getLinkController().getArrows(getConnector()).start;
 	}
 
 	public Node getTarget() {
@@ -140,7 +141,8 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
 
     private void setEndArrowImpl(final ArrowType arrowType) {
         final ConnectorModel connector = getConnector();
-        getLinkController().changeArrowsOfArrowLink(connector, connector.getStartArrow(), Optional.of(arrowType));
+        MLinkController linkController = getLinkController();
+		linkController.changeArrowsOfArrowLink(connector, ConnectorArrows.of(linkController.getArrows(connector).start, arrowType));
     }
 
     public void setEndArrow(boolean showArrow) {
@@ -172,7 +174,7 @@ class ConnectorProxy extends AbstractProxy<ConnectorModel> implements Proxy.Conn
     private void setStartArrowImpl(final ArrowType arrowType) {
         final ConnectorModel connector = getConnector();
         MLinkController linkController = getLinkController();
-        linkController.changeArrowsOfArrowLink(connector, Optional.of(arrowType), connector.getEndArrow());
+        linkController.changeArrowsOfArrowLink(connector, ConnectorArrows.of(arrowType, linkController.getArrows(connector).end));
     }
 
 	@Deprecated

@@ -32,7 +32,6 @@ import org.freeplane.features.styles.IStyle;
 
 public class ConnectorModel extends NodeLinkModel {
 
-
     public static enum Shape implements RenderedContentSupplier<Shape>{
 		LINE, LINEAR_PATH, CUBIC_CURVE, EDGE_LIKE;
 
@@ -88,10 +87,6 @@ public class ConnectorModel extends NodeLinkModel {
 	    return connectorProperties.getColor();
     }
 
-	public Optional<ArrowType> getEndArrow() {
-	    return connectorProperties.getEndArrow();
-    }
-
 	public Point getEndInclination() {
 	    return connectorProperties.getEndInclination();
     }
@@ -106,10 +101,6 @@ public class ConnectorModel extends NodeLinkModel {
 
     public Optional<String> getTargetLabel() {
         return connectorProperties.getTargetLabel();
-    }
-
-	public Optional<ArrowType> getStartArrow() {
-	    return connectorProperties.getStartArrow();
     }
 
 	public Point getStartInclination() {
@@ -130,10 +121,14 @@ public class ConnectorModel extends NodeLinkModel {
     public void setStyle(IStyle style) {
         connectorProperties.setStyle(style);
     }
-    public void setEndArrow(Optional<ArrowType> endArrow) {
-	    connectorProperties.setEndArrow(endArrow);
-    }
-
+    
+    
+	public Optional<ConnectorArrows> getArrows() {
+		return connectorProperties.getArrows();
+	}
+	public void setArrows(Optional<ConnectorArrows> arrows) {
+		connectorProperties.setArrows(arrows);
+	}
 	public void setEndInclination(Point endInclination) {
 	    connectorProperties.setEndInclination(endInclination);
     }
@@ -144,10 +139,6 @@ public class ConnectorModel extends NodeLinkModel {
 
 	public void setSourceLabel(String label) {
 	    connectorProperties.setSourceLabel(label);
-    }
-
-	public void setStartArrow(Optional<ArrowType> startArrow) {
-	    connectorProperties.setStartArrow(startArrow);
     }
 
 	public void setStartInclination(Point startInclination) {

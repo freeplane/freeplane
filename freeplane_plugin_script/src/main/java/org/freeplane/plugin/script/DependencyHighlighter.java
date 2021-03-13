@@ -61,8 +61,7 @@ class DependencyHighlighter {
 			private ConnectorModel createConnector(final NodeModel source, final String targetId) {
  				ConnectorModel connectorModel = new ConnectorModel(source, targetId);
                 connectorModel.setColor(Optional.of(HighlightedTransformedObject.FAILURE_COLOR));
-                connectorModel.setStartArrow(Optional.of(ConnectorArrows.FORWARD.start));
-                connectorModel.setEndArrow(Optional.of(ConnectorArrows.FORWARD.end));
+                connectorModel.setArrows(Optional.of(ConnectorArrows.FORWARD));
                 return connectorModel;
 			}
 			@Override

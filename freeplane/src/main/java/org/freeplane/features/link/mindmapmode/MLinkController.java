@@ -59,15 +59,15 @@ import org.freeplane.core.ui.components.RenderedContent;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.undo.IActor;
 import org.freeplane.core.util.TextUtils;
-import org.freeplane.features.link.ArrowType;
+import org.freeplane.features.link.ConnectorArrows;
 import org.freeplane.features.link.ConnectorModel;
 import org.freeplane.features.link.ConnectorModel.Shape;
-import org.freeplane.features.link.mindmapmode.editor.ConnectorEditorPanel;
 import org.freeplane.features.link.HyperTextLinkModel;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.link.MapLinks;
 import org.freeplane.features.link.NodeLinkModel;
 import org.freeplane.features.link.NodeLinks;
+import org.freeplane.features.link.mindmapmode.editor.ConnectorEditorPanel;
 import org.freeplane.features.map.IExtensionCopier;
 import org.freeplane.features.map.IMapChangeListener;
 import org.freeplane.features.map.IMapSelection;
@@ -362,15 +362,13 @@ public class MLinkController extends LinkController {
 		return addConnector(source, target.createID());
 	}
 
-	public void changeArrowsOfArrowLink(final ConnectorModel link, final Optional<ArrowType> startArrow, final Optional<ArrowType> endArrow) {
+	public void changeArrowsOfArrowLink(final ConnectorModel link, final Optional<ConnectorArrows> arrows) {
 		final IActor actor = new IActor() {
-			final private Optional<ArrowType> oldEndArrow = link.getEndArrow();
-			final private Optional<ArrowType> oldStartArrow = link.getStartArrow();
+			final private Optional<ConnectorArrows> oldArrows = link.getArrows();
 
 			@Override
 			public void act() {
-				link.setStartArrow(startArrow);
-				link.setEndArrow(endArrow);
+				link.setArrows(arrows);
 				fireNodeConnectorChange(link.getSource(), link);
 			}
 
@@ -381,8 +379,7 @@ public class MLinkController extends LinkController {
 
 			@Override
 			public void undo() {
-				link.setStartArrow(oldStartArrow);
-				link.setEndArrow(oldEndArrow);
+				link.setArrows(oldArrows);
 				fireNodeConnectorChange(link.getSource(), link);
 			}
 		};
