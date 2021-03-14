@@ -86,13 +86,12 @@ def defineMacBuildTasks = {
         }
 
         def dist_macos_info = 'build/macosapp/app-image/Freeplane.app/Contents/Info.plist'
-        ant.xslt(in: new File(dist_macos_info),
+        ant.move(file:dist_macos_info, tofile:dist_macos_info + '2')
+
+        ant.xslt(in: new File(dist_macos_info + '2'),
           style: new File('freeplane_framework/mac-appbundler/mac_info_plist.xslt'),
-          out: new File(dist_macos_info + '2')
+          out: new File(dist_macos_info)
         )
-        java.nio.file.Files.move(java.nio.file.Paths.get(dist_macos_info + '2'),
-                   java.nio.file.Paths.get(dist_macos_info),
-             java.nio.file.StandardCopyOption.REPLACE_EXISTING)
 
       }
     }
