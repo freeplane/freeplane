@@ -67,7 +67,7 @@ public class MModeController extends ModeController {
 
 	private void addUndoableActor(final IActor actor, final MapModel map) {
 		final IUndoHandler undoHandler = map.getExtension(IUndoHandler.class);
-		if(undoHandler != null)
+		if(undoHandler != null && ! undoHandler.isUndoActionRunning())
 			undoHandler.addActor(actor);
 	}
 
