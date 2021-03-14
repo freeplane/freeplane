@@ -67,7 +67,7 @@ class ReplaceMapStylesAction extends AFreeplaneAction {
 		try {
 			final MapModel map = controller.getMap();
 			MapStyle mapStyleController = MapStyle.getController(modeController);
-			mapStyleController.replaceStyle(file, map, previewOptions.isFollowChecked());
+			mapStyleController.replaceStyles(file, map, previewOptions.isFollowChecked());
         }
         catch (MalformedURLException e) {
 	        LogUtils.severe(e);

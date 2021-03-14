@@ -427,35 +427,58 @@ public class MapStyle extends PersistentNodeHook implements IExtension, IMapLife
 	}
 
 
-	public void replaceStyle(final File file, final MapModel targetMap, boolean shouldFollow) throws MalformedURLException {
-        final URL url = file.toURI().toURL();
+	public void replaceStyles(final File file, final MapModel targetMap, boolean shouldFollow) throws MalformedURLException {
+        URI uri = file.toURI();
+        replaceStyles(uri, targetMap, shouldFollow);
+	}
+	
+	public void replaceStyles(URI uri, MapModel targetMap, boolean shouldFollow) throws MalformedURLException{
+		final URL url = uri.toURL();
 	    loadStyleMapContainer(url).ifPresent(styleMapContainer ->
 	        {
 				new StyleExchange(styleMapContainer, targetMap).replaceMapStylesAndAutomaticStyle();
-				updateFollowProperties(targetMap, file, shouldFollow);
+				updateFollowProperties(targetMap, uri, shouldFollow);
 			});
 	}
-	
-	private void updateFollowProperties(final MapModel map, File sourceFile, boolean shouldFollow) {
+
+
+	private void updateFollowProperties(final MapModel map, URI uri, boolean shouldFollow) {
 		if(shouldFollow) {
-			setProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, sourceFile.toURI().toString());
-			setProperty(map, MapStyleModel.FOLLOWED_MAP_LAST_TIME, Long.toString(sourceFile.lastModified()));
+			setProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY, uri.toString());
+			updateLastModificationTime(map, uri);
 			
 		}
 		else {
 			String followedMapUri = getProperty(map, MapStyleModel.FOLLOWED_MAP_LOCATION_PROPERTY);
-			if(followedMapUri != null && sourceFile.toURI().toString().equals(followedMapUri))
-				setProperty(map, MapStyleModel.FOLLOWED_MAP_LAST_TIME, Long.toString(sourceFile.lastModified()));
+			if(followedMapUri != null && uri.toString().equals(followedMapUri)) {
+				updateLastModificationTime(map, uri);
+			}
 		}
 	}
 
-    public void copyStyles(final File file, final MapModel targetMap, boolean shouldFollow) throws MalformedURLException {
-        final URL url = file.toURI().toURL();
+	public void updateLastModificationTime(final MapModel map, URI uri) {
+		String lastModified;
+		if("file".equalsIgnoreCase(uri.getScheme())) {
+			lastModified = Long.toString(Paths.get(uri).toFile().lastModified());
+		}
+		else
+			lastModified = null;
+		setProperty(map, MapStyleModel.FOLLOWED_MAP_LAST_TIME, lastModified);
+	}
+	
+
+	public void copyStyles(URI uri, MapModel targetMap, boolean shouldFollow) throws MalformedURLException {
+		final URL url = uri.toURL();
         loadStyleMapContainer(url).ifPresent(styleMapContainer ->
             {
 				new StyleExchange(styleMapContainer, targetMap).copyMapStyles();
-				updateFollowProperties(targetMap, file, shouldFollow);
+				updateFollowProperties(targetMap, uri, shouldFollow);
 			});
+	}
+
+    public void copyStyles(final File file, final MapModel targetMap, boolean shouldFollow) throws MalformedURLException {
+        URI uri = file.toURI();
+        copyStyles(uri, targetMap, shouldFollow);
     }
 
     private void copyMapStylesNoUndoNoRefresh(final MapModel targetMap) {
