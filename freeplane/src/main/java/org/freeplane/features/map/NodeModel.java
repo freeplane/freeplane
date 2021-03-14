@@ -726,10 +726,12 @@ public class NodeModel{
 	}
 
     public boolean subtreeHasVisibleContent(Filter filter) {
-        if (hasVisibleContent(filter))
-            return true;
-        return children.stream().allMatch(child -> child.subtreeHasVisibleContent(filter));
+        return hasVisibleContent(filter) || childSubtreesHaveVisibleContent(filter);
     }
+
+	public boolean childSubtreesHaveVisibleContent(Filter filter) {
+		return children.stream().allMatch(child -> child.subtreeHasVisibleContent(filter));
+	}
 
     public NodeModel duplicate(boolean withChildren) {
         return map.duplicate(this, withChildren);
