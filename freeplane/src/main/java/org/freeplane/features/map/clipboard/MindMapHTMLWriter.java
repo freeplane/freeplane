@@ -372,7 +372,7 @@ class MindMapHTMLWriter {
 			if (heading) {
 				writer.write(lf + "<h" + depth + ">");
 			}
-			else if (!containsHtml) {
+			else if (!containsHtml && ! isListElement) {
 				writer.write("<p>");
 			}
 			boolean createFolding =  childSubtreesHaveVisibleContent && shouldCreateFoldingCode(node);
