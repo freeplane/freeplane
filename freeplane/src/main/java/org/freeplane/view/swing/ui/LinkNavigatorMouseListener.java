@@ -29,6 +29,7 @@ import java.net.URI;
 
 import javax.swing.SwingUtilities;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.AMouseListener;
 import org.freeplane.core.util.Compat;
 import org.freeplane.core.util.LogUtils;
@@ -63,7 +64,7 @@ public class LinkNavigatorMouseListener extends AMouseListener {
 	public void mouseClicked(final MouseEvent e) {
     	final ZoomableLabel component = (ZoomableLabel) e.getComponent();
     	if(e.getClickCount() == 1 && e.getButton() == 1)
-    		if(Compat.isPlainEvent(e)){
+    		if(Compat.isCtrlEvent(e) || Compat.isPlainEvent(e) && ResourceController.getResourceController().getBooleanProperty(DefaultNodeMouseMotionListener.OPEN_LINKS_ON_PLAIN_CLICKS)){
     			final String link = component.getLink(e.getPoint());
     			if(link != null){
     				if (link != null) {
