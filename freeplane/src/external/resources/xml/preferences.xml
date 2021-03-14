@@ -311,6 +311,7 @@
 					<choice value="html_export_fold_currently_folded" />
 					<choice value="html_export_fold_all" />
 					<choice value="html_export_based_on_headings" />
+					<boolean name="html_export_includes_colors" />
 				</combo>
 				<boolean name="export_icons_in_html" />
 			</separator>
