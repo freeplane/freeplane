@@ -365,7 +365,7 @@ public class MIconController extends IconController {
 	public Collection<AFreeplaneAction> getIconActions(Predicate<MindIcon> filter) {
 		return iconActions.values().stream()
 				.filter(action -> filter.test(((IconAction) action).getMindIcon()))
-				.collect(Collectors.toUnmodifiableList());
+				.collect(Collectors.toList());
 	}
 
     public Map<String, AFreeplaneAction> getAllIconActions() {
