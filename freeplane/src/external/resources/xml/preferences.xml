@@ -173,8 +173,9 @@
 				<boolean name="add_emojis_to_menu" />
 				<boolean name="add_emojis_to_icon_toolbar" />
 				<boolean name="add_emojis_to_icon_selector" />
-                <boolean name="show_icons" />
-                <number name="fast_access_icon_number" min="0" max="100"/>
+				<boolean name="show_icons" />
+				<boolean name="showLinkSpecificIcons" />
+				<number name="fast_access_icon_number" min="0" max="100"/>
 			</separator>
 		</tab>
 		<tab name="Defaults">

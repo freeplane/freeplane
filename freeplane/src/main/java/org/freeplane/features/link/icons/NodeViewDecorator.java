@@ -2,8 +2,10 @@ package org.freeplane.features.link.icons;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.freeplane.core.resources.ResourceController;
 import org.freeplane.view.swing.map.NodeView;
 
 /**
@@ -13,6 +15,8 @@ import org.freeplane.view.swing.map.NodeView;
  */
 public class NodeViewDecorator
 {
+	private static final String SHOW_LINK_SPECIFIC_ICONS_PROPERTY = "showLinkSpecificIcons";
+
 	private LinkDecorationConfig decorationConfig;
 	
 	public static NodeViewDecorator INSTANCE = new NodeViewDecorator(new LinkDecorationConfig());
@@ -28,11 +32,15 @@ public class NodeViewDecorator
 	 */
 	public List<String> getIconsForLink(URI link)
 	{
-		List<String> icons = new ArrayList<String>();
-		if (link != null) {
-			addLinkIcon(icons, link.toString());
+		if(ResourceController.getResourceController().getBooleanProperty(SHOW_LINK_SPECIFIC_ICONS_PROPERTY)) {
+			List<String> icons = new ArrayList<String>();
+			if (link != null) {
+				addLinkIcon(icons, link.toString());
+			}
+			return icons;
 		}
-		return icons;
+		else
+			return Collections.emptyList();
 	}
 
 	private void setDecorationConfig(LinkDecorationConfig decorationConfig)
