@@ -26,10 +26,11 @@ import org.freeplane.features.DashVariant;
 import org.freeplane.features.map.NodeModel;
 
 public class EdgeModel implements IExtension {
-	public static final int WIDTH_PARENT = -1;
-	public static final int DEFAULT_WIDTH = -1;
-	static public final String EDGEWIDTH_THIN = "thin";
-	public static final int WIDTH_THIN = 0;
+	public static final int PARENT_WIDTH = -1;
+	public static final int AUTO_WIDTH = PARENT_WIDTH;
+	static public final String THIN_WIDTH_NAME = "thin";
+	public static final int THIN_WIDTH = 0;
+	public static final int STANDARD_WIDTH = 1;
 
 	public static EdgeModel createEdgeModel(final NodeModel node) {
 		EdgeModel edge = (EdgeModel) node.getExtension(EdgeModel.class);
@@ -50,7 +51,7 @@ public class EdgeModel implements IExtension {
 
 	private Color color;
 	private EdgeStyle style;
-	private int width = EdgeModel.DEFAULT_WIDTH;
+	private int width = EdgeModel.AUTO_WIDTH;
 	private DashVariant dash;
 
 	public DashVariant getDash() {

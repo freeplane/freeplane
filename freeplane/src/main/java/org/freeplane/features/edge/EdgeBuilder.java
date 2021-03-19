@@ -95,8 +95,8 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter, IEleme
 		reader.addAttributeHandler("edge", "WIDTH", new IAttributeHandler() {
 			public void setAttribute(final Object userObject, final String value) {
 				final EdgeModel edge = (EdgeModel) userObject;
-				if (value.equals(EdgeModel.EDGEWIDTH_THIN)) {
-					edge.setWidth(EdgeModel.WIDTH_THIN);
+				if (value.equals(EdgeModel.THIN_WIDTH_NAME)) {
+					edge.setWidth(EdgeModel.THIN_WIDTH);
 				}
 				else {
 					edge.setWidth(Integer.parseInt(value.toString()));
@@ -150,7 +150,7 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter, IEleme
 		final Color color = forceFormatting ? ec.getColor(node) : model.getColor();
 		final int width = forceFormatting ? ec.getWidth(node) : model.getWidth();
 		final DashVariant dash = forceFormatting ? ec.getDash(node) : model.getDash();
-		if (forceFormatting || style != null || color != null || width != EdgeModel.DEFAULT_WIDTH || dash != null) {
+		if (forceFormatting || style != null || color != null || width != EdgeModel.AUTO_WIDTH || dash != null) {
 			final XMLElement edge = new XMLElement();
 			edge.setName("edge");
 			boolean relevant = false;
@@ -166,9 +166,9 @@ class EdgeBuilder implements IElementDOMHandler, IExtensionElementWriter, IEleme
 				ColorUtils.setColorAttributes(edge, "COLOR", "ALPHA", color);
 				relevant = true;
 			}
-			if (width != EdgeModel.WIDTH_PARENT) {
-				if (width == EdgeModel.WIDTH_THIN) {
-					edge.setAttribute("WIDTH", EdgeModel.EDGEWIDTH_THIN);
+			if (width != EdgeModel.PARENT_WIDTH) {
+				if (width == EdgeModel.THIN_WIDTH) {
+					edge.setAttribute("WIDTH", EdgeModel.THIN_WIDTH_NAME);
 				}
 				else {
 					edge.setAttribute("WIDTH", Integer.toString(width));

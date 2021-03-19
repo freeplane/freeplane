@@ -78,7 +78,6 @@ public class NodeStyleController implements IExtension {
 	
 	private static final Quantity<LengthUnit> DEFAULT_MINIMUM_WIDTH = new Quantity<LengthUnit>(0, LengthUnit.cm);
 	private static final Quantity<LengthUnit> DEFAULT_MAXIMUM_WIDTH = new Quantity<LengthUnit>(10, LengthUnit.cm);
-	private static final Quantity<LengthUnit> DEFAULT_BORDER_WIDTH = new Quantity<LengthUnit>(1, LengthUnit.px);
 
 	public NodeStyleController(final ModeController modeController) {
 		this.modeController = modeController;
@@ -280,7 +279,7 @@ public class NodeStyleController implements IExtension {
 			}
 			return borderWidth;
 		}
-		return DEFAULT_BORDER_WIDTH;
+		return null;
 	}
 	
 	
@@ -623,7 +622,8 @@ public class NodeStyleController implements IExtension {
 		final LogicalStyleController styleController = LogicalStyleController.getController(modeController);
 		final Collection<IStyle> style = styleController.getStyles(node);
 		final Quantity<LengthUnit> borderWidth = getBorderWidth(map, style);
-		return borderWidth;
+		return borderWidth != null ? borderWidth : 
+			new Quantity<>(modeController.getExtension(EdgeController.class).getWidth(node), LengthUnit.px);
 	}
 
 	public DashVariant getBorderDash(NodeModel node) {

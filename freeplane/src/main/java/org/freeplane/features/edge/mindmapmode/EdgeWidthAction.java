@@ -48,10 +48,10 @@ class EdgeWidthAction extends AMultipleNodeAction {
 	}
 
 	private static String width2String(final int width) {
-		if (width == EdgeModel.WIDTH_PARENT) {
+		if (width == EdgeModel.PARENT_WIDTH) {
 			return "EdgeWidthAction_width_parent";
 		}
-		if (width == EdgeModel.WIDTH_THIN) {
+		if (width == EdgeModel.THIN_WIDTH) {
 			return "EdgeWidthAction_width_thin";
 		}
 		return "EdgeWidthAction_" + width;
@@ -81,7 +81,7 @@ class EdgeWidthAction extends AMultipleNodeAction {
 		final NodeModel node = Controller.getCurrentModeController().getMapController().getSelectedNode();
 		final EdgeModel model = EdgeModel.getModel(node);
 		if (model == null) {
-			if (mWidth == EdgeModel.WIDTH_PARENT) {
+			if (mWidth == EdgeModel.PARENT_WIDTH) {
 				setSelected(true);
 				return;
 			}
