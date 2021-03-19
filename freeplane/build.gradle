@@ -37,7 +37,7 @@ dependencies {
     // from flatDir "localGitDepsRepository":
     lib ':idw-gpl-1.6.1'
     
-    lib 'org.violetlib:vaqua:9'
+    maclib 'org.violetlib:vaqua:9'
 
     runtimeOnly sourceSets.emojiGraphics.output.dirs
  	runtimeOnly sourceSets.emojiList.output.dirs
@@ -65,6 +65,9 @@ tasks.getByPath('eclipse').dependsOn createEmojiList
 ext.bundleDeps = configurations.lib.files.collect {
     externalizeJar(it)
 }
+bundleDeps.addAll(configurations.maclib.files.collect {
+    externalizeJar(it)
+})
 bundleDeps.add(0, "lib/freeplaneosgi-${project.version}.jar")
 // this is built from :freeplane_mac on a Mac!
 bundleDeps.add(0, "lib/freeplane_mac-${project.version}.jar")

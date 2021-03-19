@@ -36,7 +36,6 @@ task freeplaneDeb(type: Deb) {
 
     from(globalBin) {
         include('**')
-        exclude('**/vaqua-*.jar')
         exclude('freeplane.sh')
         into('/usr/share/freeplane')
     }
