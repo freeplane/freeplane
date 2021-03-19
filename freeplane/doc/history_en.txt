@@ -10,6 +10,16 @@ New Freeplane Application icons and splash screen
 Configurable icons for links depending on link URL and file extension
 Following styles defined in external maps (synchronized when the map is loaded)
 New action for copying styles from other maps but keeping own user styles if they are different 
+Fix default edge and node widths
+Option to open node links only if Control key is pressed
+Add background colors to generated HTML
+Option to disable all colors in generated HTML
+Speed up file dialogs
+Support VAqua Look and Feel for MacOS
+Scripting API extended to support the new features
+Copy images pasted into rich text editors
+Mind map template previews
+Replace SplitToWords by SplitInRows
 
 ===============================
 1.8.12
