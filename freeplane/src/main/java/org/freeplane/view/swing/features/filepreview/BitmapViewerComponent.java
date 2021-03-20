@@ -294,16 +294,10 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		final File tempDir = new File(System.getProperty("java.io.tmpdir"), "freeplane");
 		tempDir.mkdirs();
 		try {
-			synchronized(LOCK) {
-				if(cacheFile == null)
-					cacheFile = File.createTempFile("cachedImage", ".jpg", tempDir);
-				else{
-					cacheFile.delete();
-					cacheFile.createNewFile();
-				}
-
-			}
-			ImageIO.write(cachedImage, "jpg", cacheFile);
+			if(cacheFile == null)
+				cacheFile = File.createTempFile("cachedImage", ".image", tempDir);
+			if (!ImageIO.write(cachedImage, "jpg", cacheFile))
+				ImageIO.write(cachedImage, "png", cacheFile);
 		}
 		catch (final IOException e) {
 			if(cacheFile != null) {
