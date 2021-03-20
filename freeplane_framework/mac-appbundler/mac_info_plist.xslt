@@ -31,6 +31,8 @@
 
         <key>NSHighResolutionCapable</key>
         <true/>
+        <key>NSRequiresAquaSystemAppearance</key>
+        <false/>
 	<key>CFBundleURLTypes</key>
 	<array>
 	    <dict>
