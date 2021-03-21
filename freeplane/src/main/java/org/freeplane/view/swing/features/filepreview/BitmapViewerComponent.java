@@ -36,6 +36,10 @@ import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Iterator;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
@@ -48,6 +52,7 @@ import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.view.swing.map.MapView;
 
+import com.thebuzzmedia.imgscalr.AsyncScalr;
 import com.thebuzzmedia.imgscalr.Scalr;
 
 /**
@@ -55,6 +60,30 @@ import com.thebuzzmedia.imgscalr.Scalr;
  * 22.08.2009
  */
 public class BitmapViewerComponent extends JComponent implements ScalableComponent {
+	
+	private static class AsyncScalrService extends AsyncScalr{
+		public static ExecutorService getService(){
+			if(service == null) {
+				checkService();
+				Runtime.getRuntime().addShutdownHook(new Thread() {
+		            /**
+		             * @see java.lang.Thread#run()
+		             */
+		            @Override
+		            public void run() {
+		            	service.shutdown();
+		                try {
+		                    if (!service.awaitTermination(5, TimeUnit.SECONDS)) {
+		                    }
+		                } catch (InterruptedException e) {
+		                    e.printStackTrace();
+		                }
+		            }
+		        });
+			}
+			return service;
+		};
+	}
 
 	enum CacheType {
 		IC_DISABLE, IC_FILE, IC_RAM
@@ -63,7 +92,8 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	private static final long serialVersionUID = 1L;
 	private File cacheFile;
 	private int hint;
-	private BufferedImage cachedImage;
+	private AtomicReference<BufferedImage> cachedImage;
+	private AtomicInteger targetWidth = new AtomicInteger();
 	private WeakReference<BufferedImage> cachedImageWeakRef;
 	private final URL url;
 	private final Dimension originalSize;
@@ -78,7 +108,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		originalSize = readImageSize(url);
 		hint = Image.SCALE_SMOOTH;
 		scaleEnabled = true;
-		cachedImage = null;
+		cachedImage = new AtomicReference<>();
 	}
 
 	static private Dimension readImageSize(URL url) throws IOException {
@@ -136,57 +166,59 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
             paintOriginalImage(g);
             return null;
         }
-		if (cachedImage == null && cachedImageWeakRef != null) {
-			cachedImage = cachedImageWeakRef.get();
-			cachedImageWeakRef = null;
-		}
 		final Graphics2D g2 = (Graphics2D) g;
 		final AffineTransform transform = g2.getTransform();
 		final double scaleX = transform.getScaleX();
 		final double scaleY = transform.getScaleY();
-		int cachedImageWidth = (int) (getWidth() * scaleX);
-		int cachedImageHeight = (int) (getHeight() * scaleY);
-		if (cachedImage == null && cacheFile != null) {
-			loadImageFromCacheFile();
-			if (!isCachedImageValid(cachedImageWidth, cachedImageHeight)) {
-				cacheFile.delete();
-				cacheFile = null;
-			}
-		}
-		if (!isCachedImageValid(cachedImageWidth, cachedImageHeight)) {
-			final BufferedImage image = loadImageFromURL();
-			if (image == null || hasNoArea(image)) {
-				return null;
-			}
-			BufferedImage scaledImage = null;
-			try {
-				scaledImage = Scalr.resize(image, Scalr.Mode.BEST_FIT_BOTH, cachedImageWidth, cachedImageHeight);
-			}
-			catch (final Exception e) {
-				LogUtils.severe(e);
-				return null;
-			}
-			finally {
-				image.flush();
-			}
-			final int scaledImageHeight = scaledImage.getHeight();
-			final int scaledImageWidth = scaledImage.getWidth();
-			imageX = (cachedImageWidth - scaledImageWidth) / 2;
-			imageY = (cachedImageHeight - scaledImageHeight) / 2;
-			cachedImage = scaledImage;
-			if (getCacheType().equals(CacheType.IC_FILE)) {
-				writeCacheFile();
-			}
+		final int targetWidth = getWidth();
+		int requiredImageWidth = (int) (targetWidth * scaleX);
+		int requiredImageHeight = (int) (getHeight() * scaleY);
+		BufferedImage cachedImage = loadImageFromCacheFile();
+		
+		if (!isCachedImageValid(requiredImageWidth, requiredImageHeight)) {
+			if(this.targetWidth.getAndSet(targetWidth) != targetWidth)
+				AsyncScalrService.getService().submit(() -> {
+					if(targetWidth != getWidth()) {
+						return;
+					}
+					final BufferedImage image = loadImageFromURL();
+					if (image == null || hasNoArea(image)) {
+						return;
+					}
+					BufferedImage scaledImage = null;
+					try {
+						scaledImage = Scalr.resize(image, Scalr.Mode.BEST_FIT_BOTH, requiredImageWidth, requiredImageHeight);
+					}
+					finally {
+						image.flush();
+					}
+					setCachedImage(scaledImage);
+					final int scaledImageHeight = scaledImage.getHeight();
+					final int scaledImageWidth = scaledImage.getWidth();
+					imageX = (requiredImageWidth - scaledImageWidth) / 2;
+					imageY = (requiredImageHeight - scaledImageHeight) / 2;
+					if (getCacheType().equals(CacheType.IC_FILE)) {
+						writeCacheFile();
+					}
+					SwingUtilities.invokeLater(() -> {
+						if(isVisible())
+							this.targetWidth.set(0);
+							repaint();
+					});
+				});
 		}
 		try {
+			if (cachedImage == null || hasNoArea(cachedImage)) {
+				return null;
+			}
 			if(scaleX != 1 || scaleY != 1) {
 				Graphics2D gg = (Graphics2D)g.create();
 				gg.setTransform(AffineTransform.getTranslateInstance(imageX + transform.getTranslateX(), imageY  + transform.getTranslateY()));
-				gg.drawImage(cachedImage, 0, 0, null);
+				gg.drawImage(cachedImage, 0, 0, requiredImageWidth, requiredImageHeight, null);
 				gg.dispose();
 			}
 			else
-				g.drawImage(cachedImage, imageX, imageY, null);
+				g.drawImage(cachedImage, imageX, imageY, requiredImageWidth, requiredImageHeight, null);
 		}
 		catch (ClassCastException e) {
 			LogUtils.severe("Disabled bitmap image painting due to java bug https://bugs.openjdk.java.net/browse/JDK-8160328. Modify freeplane.sh to run java with option '-Dsun.java2d.xrender=false'");
@@ -228,36 +260,42 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		return false;
 	}
 
-	private void loadImageFromCacheFile() {
+	private BufferedImage loadImageFromCacheFile() {
+		final BufferedImage cachedImage = getCachedImage();
 		try {
-			cachedImage = ImageIO.read(cacheFile);
+			if (cachedImage == null && cacheFile != null) {
+				final BufferedImage image = ImageIO.read(cacheFile);
+				setCachedImage(image);
+				return image;
+			}
 		}
 		catch (final IOException e) {
 			logImageReadingException(e);
 		}
+		return cachedImage;
 	}
 
 	private boolean isCachedImageValid(int width, int height) {
-		return cachedImage != null
-		        && (!scaleEnabled || componentHasSameWidthAsCachedImage()
+		return getCachedImage() != null
+		        && (!scaleEnabled || componentHasSameWidthAsCachedImage(width)
 		                && cachedImageHeightFitsComponentHeight(height) || cachedImageWidthFitsComponentWidth(width)
 		                && componentHasSameHeightAsCachedImage(height));
 	}
 
 	private boolean componentHasSameHeightAsCachedImage(int height) {
-		return 1 >= Math.abs(height - cachedImage.getHeight());
+		return 1 >= Math.abs(height - getCachedImage().getHeight());
 	}
 
 	private boolean cachedImageWidthFitsComponentWidth(int width) {
-		return width >= cachedImage.getWidth();
+		return width >= getCachedImage().getWidth();
 	}
 
 	private boolean cachedImageHeightFitsComponentHeight(int height) {
-		return height >= cachedImage.getHeight();
+		return height >= getCachedImage().getHeight();
 	}
 
-	private boolean componentHasSameWidthAsCachedImage() {
-		return 1 >= Math.abs(getWidth() - cachedImage.getWidth());
+	private boolean componentHasSameWidthAsCachedImage(int width) {
+		return 1 >= Math.abs(width - getCachedImage().getWidth());
 	}
 
 	private BufferedImage loadImageFromURL() {
@@ -288,11 +326,11 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	private void flushImage() {
 		final CacheType cacheType = getCacheType();
 		if (CacheType.IC_RAM.equals(cacheType)) {
-			cachedImage.flush();
+			getCachedImage().flush();
 		}
 		else {
-			cachedImageWeakRef = new WeakReference<BufferedImage>(cachedImage);
-			cachedImage = null;
+			cachedImageWeakRef = new WeakReference<BufferedImage>(getCachedImage());
+			setCachedImage(null);
 		}
 	}
 
@@ -306,6 +344,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		try {
 			if(cacheFile == null)
 				cacheFile = File.createTempFile("cachedImage", ".image", tempDir);
+			final BufferedImage cachedImage = getCachedImage();
 			if (!ImageIO.write(cachedImage, "jpg", cacheFile))
 				ImageIO.write(cachedImage, "png", cacheFile);
 		}
@@ -364,5 +403,19 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 
 	private boolean isUnderMaximumSize(final Dimension size) {
 		return maximumSize.getWidth() >= size.width || maximumSize.getHeight() >= size.height;
+	}
+
+	private BufferedImage getCachedImage() {
+		BufferedImage image = cachedImage.get();
+		if (image == null && cachedImageWeakRef != null) {
+			image = cachedImageWeakRef.get();
+			setCachedImage(image);
+			cachedImageWeakRef = null;
+		}
+		return image;
+	}
+
+	private void setCachedImage(BufferedImage cachedImage) {
+		this.cachedImage.set(cachedImage);
 	}
 }
