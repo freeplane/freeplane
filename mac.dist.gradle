@@ -71,6 +71,8 @@ def defineMacBuildTasks =  { architecture ->
      '--java-options', '-Xmx512m',
      '--java-options', '-Dapple.laf.useScreenMenuBar=true',
      '--java-options', '-Xdock:name=Freeplane',
+     '--java-options', '--add-exports', 
+     '--java-options', 'java.desktop/com.apple.eawt=ALL-UNNAMED',
    	 '--input', 'build/macosapp/input',
      '--main-class', 'org.freeplane.launcher.Launcher',
   	 '--main-jar', 'freeplanelauncher.jar',
