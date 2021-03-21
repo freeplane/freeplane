@@ -71,7 +71,7 @@ public class FreeplaneSplashModern extends JWindow {
 			return;
 		}
 		try (InputStream fontInputStream= ResourceController.getResourceController()
-		        .getResource("/fonts/intuitive-subset.ttf").openStream()){
+		        .getResource("/fonts/gentium-subset.ttf").openStream()){
 			versionTextFont = Font.createFont(Font.TRUETYPE_FONT, fontInputStream);
 		}
 		catch (final Exception e) {
