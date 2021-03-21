@@ -21,7 +21,9 @@ package org.freeplane.view.swing.features.filepreview;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -69,7 +71,6 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	private int imageY;
 	private boolean scaleEnabled;
 	private Dimension maximumSize = null;
-	private final static Object LOCK = new Object();
 	private static boolean disabledDueToJavaBug = false;
 
 	public BitmapViewerComponent(final URI uri) throws MalformedURLException, IOException {
@@ -139,21 +140,27 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			cachedImage = cachedImageWeakRef.get();
 			cachedImageWeakRef = null;
 		}
+		final Graphics2D g2 = (Graphics2D) g;
+		final AffineTransform transform = g2.getTransform();
+		final double scaleX = transform.getScaleX();
+		final double scaleY = transform.getScaleY();
+		int cachedImageWidth = (int) (getWidth() * scaleX);
+		int cachedImageHeight = (int) (getHeight() * scaleY);
 		if (cachedImage == null && cacheFile != null) {
 			loadImageFromCacheFile();
-			if (!isCachedImageValid()) {
+			if (!isCachedImageValid(cachedImageWidth, cachedImageHeight)) {
 				cacheFile.delete();
 				cacheFile = null;
 			}
 		}
-		if (!isCachedImageValid()) {
+		if (!isCachedImageValid(cachedImageWidth, cachedImageHeight)) {
 			final BufferedImage image = loadImageFromURL();
 			if (image == null || hasNoArea(image)) {
 				return null;
 			}
 			BufferedImage scaledImage = null;
 			try {
-				scaledImage = Scalr.resize(image, Scalr.Mode.BEST_FIT_BOTH, getWidth(), getHeight());
+				scaledImage = Scalr.resize(image, Scalr.Mode.BEST_FIT_BOTH, cachedImageWidth, cachedImageHeight);
 			}
 			catch (final Exception e) {
 				LogUtils.severe(e);
@@ -164,14 +171,22 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 			}
 			final int scaledImageHeight = scaledImage.getHeight();
 			final int scaledImageWidth = scaledImage.getWidth();
-			centerImagePosition(scaledImageWidth, scaledImageHeight);
+			imageX = (cachedImageWidth - scaledImageWidth) / 2;
+			imageY = (cachedImageHeight - scaledImageHeight) / 2;
 			cachedImage = scaledImage;
 			if (getCacheType().equals(CacheType.IC_FILE)) {
 				writeCacheFile();
 			}
 		}
 		try {
-			g.drawImage(cachedImage, imageX, imageY, null);
+			if(scaleX != 1 || scaleY != 1) {
+				Graphics2D gg = (Graphics2D)g.create();
+				gg.setTransform(AffineTransform.getTranslateInstance(imageX + transform.getTranslateX(), imageY  + transform.getTranslateY()));
+				gg.drawImage(cachedImage, 0, 0, null);
+				gg.dispose();
+			}
+			else
+				g.drawImage(cachedImage, imageX, imageY, null);
 		}
 		catch (ClassCastException e) {
 			LogUtils.severe("Disabled bitmap image painting due to java bug https://bugs.openjdk.java.net/browse/JDK-8160328. Modify freeplane.sh to run java with option '-Dsun.java2d.xrender=false'");
@@ -200,12 +215,7 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 	    return map != null && map.isPrinting();
     }
 
-    private void centerImagePosition(final int scaledImageWidth, final int scaledImageHeight) {
-		imageX = (getWidth() - scaledImageWidth) / 2;
-		imageY = (getHeight() - scaledImageHeight) / 2;
-	}
-
-	private boolean componentHasNoArea() {
+    private boolean componentHasNoArea() {
 		return getWidth() == 0 || getHeight() == 0;
 	}
 
@@ -227,23 +237,23 @@ public class BitmapViewerComponent extends JComponent implements ScalableCompone
 		}
 	}
 
-	private boolean isCachedImageValid() {
+	private boolean isCachedImageValid(int width, int height) {
 		return cachedImage != null
 		        && (!scaleEnabled || componentHasSameWidthAsCachedImage()
-		                && cachedImageHeightFitsComponentHeight() || cachedImageWidthFitsComponentWidth()
-		                && componentHasSameHeightAsCachedImage());
+		                && cachedImageHeightFitsComponentHeight(height) || cachedImageWidthFitsComponentWidth(width)
+		                && componentHasSameHeightAsCachedImage(height));
 	}
 
-	private boolean componentHasSameHeightAsCachedImage() {
-		return 1 >= Math.abs(getHeight() - cachedImage.getHeight());
+	private boolean componentHasSameHeightAsCachedImage(int height) {
+		return 1 >= Math.abs(height - cachedImage.getHeight());
 	}
 
-	private boolean cachedImageWidthFitsComponentWidth() {
-		return getWidth() >= cachedImage.getWidth();
+	private boolean cachedImageWidthFitsComponentWidth(int width) {
+		return width >= cachedImage.getWidth();
 	}
 
-	private boolean cachedImageHeightFitsComponentHeight() {
-		return getHeight() >= cachedImage.getHeight();
+	private boolean cachedImageHeightFitsComponentHeight(int height) {
+		return height >= cachedImage.getHeight();
 	}
 
 	private boolean componentHasSameWidthAsCachedImage() {
