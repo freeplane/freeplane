@@ -26,6 +26,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
 import org.apache.batik.svggen.SVGGeneratorContext;
 import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.batik.transcoder.SVGAbstractTranscoder;
@@ -33,12 +37,15 @@ import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.ImageTranscoder;
+import org.apache.fop.apps.FOPException;
 import org.apache.fop.configuration.ConfigurationException;
 import org.apache.fop.configuration.DefaultConfiguration;
 import org.apache.fop.svg.AbstractFOPTranscoder;
+import org.apache.fop.svg.PDFDocumentGraphics2DConfigurator;
 import org.apache.fop.svg.PDFTranscoder;
 import org.freeplane.core.resources.ResourceController;
 import org.freeplane.core.ui.components.UITools;
+import org.freeplane.core.util.TextUtils;
 import org.freeplane.features.export.mindmapmode.ExportController;
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
@@ -109,11 +116,7 @@ class ExportPdf extends ExportVectorGraphic {
 			pdfTranscoder.addTranscodingHint(AbstractFOPTranscoder.KEY_AUTO_FONTS, Boolean.FALSE);
 		}
 		else {
-            DefaultConfiguration c = new DefaultConfiguration("cfg");
-            DefaultConfiguration fonts = new DefaultConfiguration("fonts");
-            DefaultConfiguration autodetect = new DefaultConfiguration("auto-detect");
-            fonts.addChild(autodetect);
-            c.addChild(fonts);
+            DefaultConfiguration c = createFontConfiguration();
             try {
 				pdfTranscoder.configure(c);
 			}
@@ -122,6 +125,38 @@ class ExportPdf extends ExportVectorGraphic {
 			}
 		}
 		return pdfTranscoder;
+	}
+
+	private static DefaultConfiguration createFontConfiguration() {
+		DefaultConfiguration c = new DefaultConfiguration("cfg");
+		DefaultConfiguration fonts = new DefaultConfiguration("fonts");
+		DefaultConfiguration autodetect = new DefaultConfiguration("auto-detect");
+		fonts.addChild(autodetect);
+		c.addChild(fonts);
+		final Thread fontCreationThread = new Thread(() -> {
+		try {
+			PDFDocumentGraphics2DConfigurator.createFontInfo(c, false);
+		} catch (FOPException e) {
+			throw new RuntimeException(e);
+		}});
+		try {
+			fontCreationThread.start();
+			fontCreationThread.join(3000);
+			if(fontCreationThread.isAlive()) {
+				final String warning = TextUtils.getText("firstTimePdfExportWarning");
+				final JTextArea textArea = new JTextArea( warning);
+				textArea.setEditable(false);
+				textArea.setLineWrap(true);
+				textArea.setWrapStyleWord(true);
+				textArea.setColumns(80);
+				JOptionPane.showMessageDialog(UITools.getCurrentRootComponent(),
+						new JScrollPane(textArea), "Freeplane", JOptionPane.WARNING_MESSAGE);
+				fontCreationThread.join();
+			}
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		return c;
 	}
 
 
